@@ -19,6 +19,9 @@ class AssociationColumnsResolver
     /** @var string */
     const PRODUCT_ASSOCIATION_SUFFIX = '-products';
 
+    /** @var string */
+    const PRODUCT_MODEL_ASSOCIATION_SUFFIX = '-productmodels';
+
     /** @var AssociationTypeRepositoryInterface */
     protected $assocTypeRepository;
 
@@ -46,6 +49,7 @@ class AssociationColumnsResolver
             foreach ($assocTypes as $assocType) {
                 $fieldNames[] = $assocType->getCode() . self::GROUP_ASSOCIATION_SUFFIX;
                 $fieldNames[] = $assocType->getCode() . self::PRODUCT_ASSOCIATION_SUFFIX;
+                $fieldNames[] = $assocType->getCode() . self::PRODUCT_MODEL_ASSOCIATION_SUFFIX;
             }
             $this->assocFieldsCache = $fieldNames;
         }

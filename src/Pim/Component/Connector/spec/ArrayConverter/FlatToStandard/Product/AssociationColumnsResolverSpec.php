@@ -25,8 +25,10 @@ class AssociationColumnsResolverSpec extends ObjectBehavior
             [
                 "ASSOC_TYPE_1-groups",
                 "ASSOC_TYPE_1-products",
+                "ASSOC_TYPE_1-productmodels",
                 "ASSOC_TYPE_2-groups",
-                "ASSOC_TYPE_2-products"
+                "ASSOC_TYPE_2-products",
+                "ASSOC_TYPE_2-productmodels",
             ]
         );
     }

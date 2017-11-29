@@ -39,10 +39,10 @@ class PartialUpdateProductIntegration extends AbstractProductTestCase
 
         $this->createProduct('product_associations', [
             'associations'  => [
-                'PACK'         => ['groups'   => [], 'products' => []],
-                'SUBSTITUTION' => ['groups'   => [], 'products' => []],
-                'UPSELL'       => ['groups'   => [], 'products' => []],
-                'X_SELL'       => ['groups'   => ['groupA'], 'products' => ['product_categories']],
+                'PACK'         => ['groups'   => [], 'products' => [], 'productmodels' => []],
+                'SUBSTITUTION' => ['groups'   => [], 'products' => [], 'productmodels' => []],
+                'UPSELL'       => ['groups'   => [], 'products' => [], 'productmodels' => []],
+                'X_SELL'       => ['groups'   => ['groupA'], 'products' => ['product_categories'], 'productmodels' => []],
             ],
         ]);
 
@@ -71,10 +71,10 @@ class PartialUpdateProductIntegration extends AbstractProductTestCase
                 ],
             ],
             'associations'  => [
-                'PACK'         => ['groups'   => [], 'products' => []],
-                'SUBSTITUTION' => ['groups'   => [], 'products' => []],
-                'UPSELL'       => ['groups'   => [], 'products' => []],
-                'X_SELL'       => ['groups'   => ['groupA'], 'products' => ['product_categories']],
+                'PACK'         => ['groups'   => [], 'products' => [], 'productmodels' => []],
+                'SUBSTITUTION' => ['groups'   => [], 'products' => [], 'productmodels' => []],
+                'UPSELL'       => ['groups'   => [], 'products' => [], 'productmodels' => []],
+                'X_SELL'       => ['groups'   => ['groupA'], 'products' => ['product_categories'], 'productmodels' => []],
             ],
         ]);
     }
@@ -705,10 +705,10 @@ JSON;
             'created'       => '2016-06-14T13:12:50+02:00',
             'updated'       => '2016-06-14T13:12:50+02:00',
             'associations'  => [
-                'PACK'         => ['groups'   => ['groupA'], 'products' => ['product_categories', 'product_family']],
-                'SUBSTITUTION' => ['groups'   => [], 'products' => []],
-                'UPSELL'       => ['groups'   => [], 'products' => []],
-                'X_SELL'       => ['groups'   => ['groupA'], 'products' => ['product_categories']],
+                'PACK'         => ['groups'   => ['groupA'], 'products' => ['product_categories', 'product_family'], 'productmodels' => []],
+                'SUBSTITUTION' => ['groups'   => [], 'products' => [], 'productmodels' => []],
+                'UPSELL'       => ['groups'   => [], 'products' => [], 'productmodels' => []],
+                'X_SELL'       => ['groups'   => ['groupA'], 'products' => ['product_categories'], 'productmodels' => []],
             ],
         ];
 
@@ -753,10 +753,10 @@ JSON;
             'created'       => '2016-06-14T13:12:50+02:00',
             'updated'       => '2016-06-14T13:12:50+02:00',
             'associations'  => [
-                'PACK'         => ['groups'   => [], 'products' => []],
-                'SUBSTITUTION' => ['groups'   => [], 'products' => []],
-                'UPSELL'       => ['groups'   => [], 'products' => []],
-                'X_SELL'       => ['groups'   => [], 'products' => ['product_categories']],
+                'PACK'         => ['groups'   => [], 'products' => [], 'productmodels' => []],
+                'SUBSTITUTION' => ['groups'   => [], 'products' => [], 'productmodels' => []],
+                'UPSELL'       => ['groups'   => [], 'products' => [], 'productmodels' => []],
+                'X_SELL'       => ['groups'   => [], 'products' => ['product_categories'], 'productmodels' => []],
            ],
         ];
 
@@ -806,10 +806,10 @@ JSON;
             'created'       => '2016-06-14T13:12:50+02:00',
             'updated'       => '2016-06-14T13:12:50+02:00',
             'associations'  => [
-                'PACK'         => ['groups'   => [], 'products' => []],
-                'SUBSTITUTION' => ['groups'   => [], 'products' => []],
-                'UPSELL'       => ['groups'   => [], 'products' => []],
-                'X_SELL'       => ['groups'   => [], 'products' => []],
+                'PACK'         => ['groups'   => [], 'products' => [], 'productmodels' => []],
+                'SUBSTITUTION' => ['groups'   => [], 'products' => [], 'productmodels' => []],
+                'UPSELL'       => ['groups'   => [], 'products' => [], 'productmodels' => []],
+                'X_SELL'       => ['groups'   => [], 'products' => [], 'productmodels' => []],
             ],
         ];
 
@@ -1185,10 +1185,10 @@ JSON;
             'created'       => '2016-06-14T13:12:50+02:00',
             'updated'       => '2016-06-14T13:12:50+02:00',
             'associations'  => [
-                'PACK'         => ['groups'   => [], 'products' => []],
-                'SUBSTITUTION' => ['groups'   => [], 'products' => []],
-                'UPSELL'       => ['groups'   => [], 'products' => []],
-                'X_SELL'       => ['groups'   => ['groupA'], 'products' => ['product_categories']],
+                'PACK'         => ['groups'   => [], 'products' => [], 'productmodels' => []],
+                'SUBSTITUTION' => ['groups'   => [], 'products' => [], 'productmodels' => []],
+                'UPSELL'       => ['groups'   => [], 'products' => [], 'productmodels' => []],
+                'X_SELL'       => ['groups'   => ['groupA'], 'products' => ['product_categories'], 'productmodels' => []],
             ],
         ];
 

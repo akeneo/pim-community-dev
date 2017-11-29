@@ -22,6 +22,9 @@ class AssociationFieldAdder extends AbstractFieldAdder
     protected $productRepository;
 
     /** @var IdentifiableObjectRepositoryInterface */
+    protected $productModelRepository;
+
+    /** @var IdentifiableObjectRepositoryInterface */
     protected $groupRepository;
 
     /** @var ProductBuilderInterface */
@@ -29,17 +32,20 @@ class AssociationFieldAdder extends AbstractFieldAdder
 
     /**
      * @param IdentifiableObjectRepositoryInterface $productRepository
+     * @param IdentifiableObjectRepositoryInterface $productModelRepository
      * @param IdentifiableObjectRepositoryInterface $groupRepository
      * @param ProductBuilderInterface               $productBuilder
      * @param array                                 $supportedFields
      */
     public function __construct(
         IdentifiableObjectRepositoryInterface $productRepository,
+        IdentifiableObjectRepositoryInterface $productModelRepository,
         IdentifiableObjectRepositoryInterface $groupRepository,
         ProductBuilderInterface $productBuilder,
         array $supportedFields
     ) {
         $this->productRepository = $productRepository;
+        $this->productModelRepository = $productModelRepository;
         $this->groupRepository = $groupRepository;
         $this->productBuilder = $productBuilder;
         $this->supportedFields = $supportedFields;
@@ -100,6 +106,7 @@ class AssociationFieldAdder extends AbstractFieldAdder
             }
             $this->addAssociatedProducts($association, $items['products']);
             $this->addAssociatedGroups($association, $items['groups']);
+            $this->addAssociatedProductModels($association, $items['productmodels']);
         }
     }
 
@@ -123,6 +130,29 @@ class AssociationFieldAdder extends AbstractFieldAdder
                 );
             }
             $association->addProduct($associatedProduct);
+        }
+    }
+
+    /**
+     * @param AssociationInterface $association
+     * @param array                $productModelsIdentifiers
+     *
+     * @throws InvalidPropertyException
+     */
+    protected function addAssociatedProductModels(AssociationInterface $association, $productModelsIdentifiers)
+    {
+        foreach ($productModelsIdentifiers as $productModelIdentifier) {
+            $associatedProductModel = $this->productModelRepository->findOneByIdentifier($productModelIdentifier);
+            if (null === $associatedProductModel) {
+                throw InvalidPropertyException::validEntityCodeExpected(
+                    'associations',
+                    'product model identifier',
+                    'The product model does not exist',
+                    static::class,
+                    $productModelIdentifier
+                );
+            }
+            $association->addProductModel($associatedProductModel);
         }
     }
 

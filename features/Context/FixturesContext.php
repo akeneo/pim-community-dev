@@ -1374,6 +1374,10 @@ class FixturesContext extends BaseFixturesContext
             if (isset($row['groups'])) {
                 $values['associations'][$row['type']]['groups'] = explode(',', $row['groups']);
             }
+
+            if (isset($row['productmodels'])) {
+                $values['associations'][$row['type']]['productmodels'] = explode(',', $row['productmodels']);
+            }
         }
 
         assertEquals([], $filter->filter($this->getProduct($identifier), $values));

@@ -10,15 +10,17 @@ use Pim\Component\Catalog\Builder\ProductBuilderInterface;
 use Pim\Component\Catalog\Model\AssociationInterface;
 use Pim\Component\Catalog\Model\GroupInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Model\ProductModelInterface;
 
 class AssociationFieldAdderSpec extends ObjectBehavior
 {
     function let(
         IdentifiableObjectRepositoryInterface $productRepository,
+        IdentifiableObjectRepositoryInterface $productModelRepository,
         IdentifiableObjectRepositoryInterface $groupRepository,
         ProductBuilderInterface $productBuilder
     ) {
-        $this->beConstructedWith($productRepository, $groupRepository, $productBuilder, ['associations']);
+        $this->beConstructedWith($productRepository, $productModelRepository, $groupRepository, $productBuilder, ['associations']);
     }
 
     function it_is_an_adder()
@@ -84,11 +86,11 @@ class AssociationFieldAdderSpec extends ObjectBehavior
                 'associations',
                 'association format is not valid for the association type "assoc_type_code".',
                 'Pim\Component\Catalog\Updater\Adder\AssociationFieldAdder',
-                ['assoc_type_code' => ['products' => [1], 'groups' => []]]
+                ['assoc_type_code' => ['products' => [1], 'groups' => [], 'productmodels' => [],]]
             )
         )->during(
             'addFieldData',
-            [$product, 'associations', ['assoc_type_code' => ['products' => [1], 'groups' => []]]]
+            [$product, 'associations', ['assoc_type_code' => ['products' => [1], 'groups' => [], 'productmodels' => [],]]]
         );
 
         $this->shouldThrow(
@@ -96,11 +98,11 @@ class AssociationFieldAdderSpec extends ObjectBehavior
                 'associations',
                 'association format is not valid for the association type "assoc_type_code".',
                 'Pim\Component\Catalog\Updater\Adder\AssociationFieldAdder',
-                ['assoc_type_code' => ['products' => [], 'groups' => [2]]]
+                ['assoc_type_code' => ['products' => [], 'groups' => [2], 'productmodels' => [],]]
             )
         )->during(
             'addFieldData',
-            [$product, 'associations', ['assoc_type_code' => ['products' => [], 'groups' => [2]]]]
+            [$product, 'associations', ['assoc_type_code' => ['products' => [], 'groups' => [2], 'productmodels' => [],]]]
         );
 
         $this->shouldThrow(
@@ -119,6 +121,7 @@ class AssociationFieldAdderSpec extends ObjectBehavior
 
     function it_adds_association_field(
         $productRepository,
+        $productModelRepository,
         $groupRepository,
         $productBuilder,
         ProductInterface $product,
@@ -127,6 +130,9 @@ class AssociationFieldAdderSpec extends ObjectBehavior
         ProductInterface $assocProductOne,
         ProductInterface $assocProductTwo,
         ProductInterface $assocProductThree,
+        ProductModelInterface $assocProductModelOne,
+        ProductModelInterface $assocProductModelTwo,
+        ProductModelInterface $assocProductModelThree,
         GroupInterface $assocGroupOne,
         GroupInterface $assocGroupTwo
     ) {
@@ -139,14 +145,21 @@ class AssociationFieldAdderSpec extends ObjectBehavior
         $productRepository->findOneByIdentifier('assocProductTwo')->willReturn($assocProductTwo);
         $productRepository->findOneByIdentifier('assocProductThree')->willReturn($assocProductThree);
 
+        $productModelRepository->findOneByIdentifier('assocProductModelOne')->willReturn($assocProductModelOne);
+        $productModelRepository->findOneByIdentifier('assocProductModelTwo')->willReturn($assocProductModelTwo);
+        $productModelRepository->findOneByIdentifier('assocProductModelThree')->willReturn($assocProductModelThree);
+
         $groupRepository->findOneByIdentifier('assocGroupOne')->willReturn($assocGroupOne);
         $groupRepository->findOneByIdentifier('assocGroupTwo')->willReturn($assocGroupTwo);
 
         $xsellAssociation->addProduct($assocProductOne)->shouldBeCalled();
         $xsellAssociation->addProduct($assocProductTwo)->shouldBeCalled();
         $xsellAssociation->addGroup($assocGroupOne)->shouldBeCalled();
+        $xsellAssociation->addProductModel($assocProductModelOne)->shouldBeCalled();
+        $xsellAssociation->addProductModel($assocProductModelTwo)->shouldBeCalled();
 
         $upsellAssociation->addProduct($assocProductThree)->shouldBeCalled();
+        $upsellAssociation->addProductModel($assocProductModelThree)->shouldBeCalled();
         $upsellAssociation->addGroup($assocGroupTwo)->shouldBeCalled();
 
         $this->addFieldData(
@@ -155,10 +168,12 @@ class AssociationFieldAdderSpec extends ObjectBehavior
             [
                 'xsell' => [
                     'products' => ['assocProductOne', 'assocProductTwo'],
+                    'productmodels' => ['assocProductModelOne', 'assocProductModelTwo'],
                     'groups' => ['assocGroupOne']
                 ],
                 'upsell' => [
                     'products' => ['assocProductThree'],
+                    'productmodels' => ['assocProductModelThree'],
                     'groups' => ['assocGroupTwo']
                 ]
             ]

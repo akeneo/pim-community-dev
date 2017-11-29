@@ -12,16 +12,17 @@ use Pim\Component\Catalog\Model\AssociationInterface;
 use Pim\Component\Catalog\Model\AssociationTypeInterface;
 use Pim\Component\Catalog\Model\GroupInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
-use Prophecy\Promise\ReturnPromise;
+use Pim\Component\Catalog\Model\ProductModelInterface;
 
 class AssociationFieldSetterSpec extends ObjectBehavior
 {
     function let(
         IdentifiableObjectRepositoryInterface $productRepository,
+        IdentifiableObjectRepositoryInterface $productModelRepository,
         IdentifiableObjectRepositoryInterface $groupRepository,
         ProductBuilderInterface $productBuilder
     ) {
-        $this->beConstructedWith($productRepository, $groupRepository, $productBuilder, ['associations']);
+        $this->beConstructedWith($productRepository, $productModelRepository, $groupRepository, $productBuilder, ['associations']);
     }
 
     function it_is_a_setter()
@@ -69,11 +70,11 @@ class AssociationFieldSetterSpec extends ObjectBehavior
                 'associations',
                 'association format is not valid for the association type "assoc_type_code".',
                 'Pim\Component\Catalog\Updater\Setter\AssociationFieldSetter',
-                ['assoc_type_code' => ['products' => [1], 'groups' => []]]
+                ['assoc_type_code' => ['products' => [1], 'groups' => [], 'productmodels' => [],]]
             )
         )->during(
             'setFieldData',
-            [$product, 'associations', ['assoc_type_code' => ['products' => [1], 'groups' => []]]]
+            [$product, 'associations', ['assoc_type_code' => ['products' => [1], 'groups' => [], 'productmodels' => []]]]
         );
 
         $this->shouldThrow(
@@ -98,12 +99,13 @@ class AssociationFieldSetterSpec extends ObjectBehavior
             )
         )->during(
             'setFieldData',
-            [$product, 'associations', ['assoc_type_code' => ['products' => 'string', 'groups' => []]]]
+            [$product, 'associations', ['assoc_type_code' => ['products' => 'string', 'groups' => [], 'productmodels' => []]]]
         );
     }
 
     function it_sets_association_field(
         $productRepository,
+        $productModelRepository,
         $groupRepository,
         $productBuilder,
         ProductInterface $product,
@@ -112,6 +114,9 @@ class AssociationFieldSetterSpec extends ObjectBehavior
         ProductInterface $assocProductOne,
         ProductInterface $assocProductTwo,
         ProductInterface $assocProductThree,
+        ProductModelInterface $assocProductModelOne,
+        ProductModelInterface $assocProductModelTwo,
+        ProductModelInterface $assocProductModelThree,
         GroupInterface $assocGroupOne,
         GroupInterface $assocGroupTwo,
         AssociationTypeInterface $xsellAssociationType,
@@ -120,9 +125,11 @@ class AssociationFieldSetterSpec extends ObjectBehavior
         $xsellAssociation->getAssociationType()->willReturn($xsellAssociationType);
         $xsellAssociation->getGroups()->willReturn(new ArrayCollection());
         $xsellAssociation->getProducts()->willReturn(new ArrayCollection());
+        $xsellAssociation->getProductModels()->willReturn(new ArrayCollection());
         $upsellAssociation->getAssociationType()->willReturn($upsellAssociationType);
         $upsellAssociation->getGroups()->willReturn(new ArrayCollection());
         $upsellAssociation->getProducts()->willReturn(new ArrayCollection());
+        $upsellAssociation->getProductModels()->willReturn(new ArrayCollection());
 
         $product->getAssociations()->willReturn(
             new ArrayCollection([$xsellAssociation->getWrappedObject(), $upsellAssociation->getWrappedObject()])
@@ -136,15 +143,22 @@ class AssociationFieldSetterSpec extends ObjectBehavior
         $productRepository->findOneByIdentifier('assocProductTwo')->willReturn($assocProductTwo);
         $productRepository->findOneByIdentifier('assocProductThree')->willReturn($assocProductThree);
 
+        $productModelRepository->findOneByIdentifier('assocProductModelOne')->willReturn($assocProductModelOne);
+        $productModelRepository->findOneByIdentifier('assocProductModelTwo')->willReturn($assocProductModelTwo);
+        $productModelRepository->findOneByIdentifier('assocProductModelThree')->willReturn($assocProductModelThree);
+
         $groupRepository->findOneByIdentifier('assocGroupOne')->willReturn($assocGroupOne);
         $groupRepository->findOneByIdentifier('assocGroupTwo')->willReturn($assocGroupTwo);
 
         $xsellAssociation->addProduct($assocProductOne)->shouldBeCalled();
         $xsellAssociation->addProduct($assocProductTwo)->shouldBeCalled();
         $xsellAssociation->addGroup($assocGroupOne)->shouldBeCalled();
+        $xsellAssociation->addProductModel($assocProductModelOne)->shouldBeCalled();
+        $xsellAssociation->addProductModel($assocProductModelTwo)->shouldBeCalled();
 
         $upsellAssociation->addProduct($assocProductThree)->shouldBeCalled();
         $upsellAssociation->addGroup($assocGroupTwo)->shouldBeCalled();
+        $upsellAssociation->addProductModel($assocProductModelThree)->shouldBeCalled();
 
         $this->setFieldData(
             $product,
@@ -152,10 +166,12 @@ class AssociationFieldSetterSpec extends ObjectBehavior
             [
                 'xsell' => [
                     'products' => ['assocProductOne', 'assocProductTwo'],
+                    'productmodels' => ['assocProductModelOne', 'assocProductModelTwo'],
                     'groups' => ['assocGroupOne']
                 ],
                 'upsell' => [
                     'products' => ['assocProductThree'],
+                    'productmodels' => ['assocProductModelThree'],
                     'groups' => ['assocGroupTwo']
                 ]
             ]
@@ -183,7 +199,7 @@ class AssociationFieldSetterSpec extends ObjectBehavior
             [
                 $product,
                 'associations',
-                ['non valid association type code' => ['groups' => [], 'products' => []]]
+                ['non valid association type code' => ['groups' => [], 'products' => [], 'productmodels' => []]]
             ]
         );
     }
@@ -253,7 +269,7 @@ class AssociationFieldSetterSpec extends ObjectBehavior
             [
                 $product,
                 'associations',
-                ['xsell' => ['groups' => ['not existing group'], 'products' => []]]
+                ['xsell' => ['groups' => ['not existing group'], 'products' => [], 'productmodels' => [],]]
             ]
         );
     }
@@ -265,44 +281,22 @@ class AssociationFieldSetterSpec extends ObjectBehavior
         AssociationInterface $upsellAssociation,
         AssociationTypeInterface $upsellAssociationType,
         AssociationTypeInterface $xsellAssociationType,
-        ArrayCollection $xsellProducts,
-        ArrayCollection $upsellGroups,
-        \ArrayIterator $xsellProductIterator,
-        \ArrayIterator $upsellGroupIterator,
         ProductInterface $product1,
         ProductInterface $product2,
+        ProductModelInterface $productModel1,
+        ProductModelInterface $productModel2,
         GroupInterface $group1,
         GroupInterface $group2
     ) {
-        $xsellProductIterator->rewind()->shouldBeCalled();
-        $xsellProductCount = 2;
-        $xsellProductIterator->valid()->will(
-            function () use (&$xsellProductCount) {
-                return $xsellProductCount-- > 0;
-            }
-        );
-        $xsellProductIterator->next()->shouldBeCalled();
-        $xsellProductIterator->current()->will(new ReturnPromise([$product1, $product2]));
-        $xsellProducts->getIterator()->willReturn($xsellProductIterator);
-
         $xsellAssociationType->getCode()->willReturn('xsell');
         $xsellAssociation->getAssociationType()->willReturn($xsellAssociationType);
-        $xsellAssociation->getProducts()->willReturn($xsellProducts);
-
-        $upsellGroupIterator->rewind()->shouldBeCalled();
-        $upsellGroupCount = 2;
-        $upsellGroupIterator->valid()->will(
-            function () use (&$upsellGroupCount) {
-                return $upsellGroupCount-- > 0;
-            }
-        );
-        $upsellGroupIterator->next()->shouldBeCalled();
-        $upsellGroupIterator->current()->will(new ReturnPromise([$group1, $group2]));
-        $upsellGroups->getIterator()->willReturn($upsellGroupIterator);
+        $xsellAssociation->getProducts()->willReturn(new ArrayCollection([$product1->getWrappedObject(), $product2->getWrappedObject()]));
+        $xsellAssociation->getProductModels()->willReturn(new ArrayCollection([$productModel1->getWrappedObject(), $productModel2->getWrappedObject()]));
 
         $upsellAssociationType->getCode()->willReturn('upsell');
         $upsellAssociation->getAssociationType()->willReturn($upsellAssociationType);
-        $upsellAssociation->getGroups()->willReturn($upsellGroups);
+        $upsellAssociation->getGroups()->willReturn(new ArrayCollection([$group1->getWrappedObject(), $group2->getWrappedObject()]));
+        $upsellAssociation->getProductModels()->willReturn(new ArrayCollection([$productModel1->getWrappedObject(), $productModel2->getWrappedObject()]));
 
         $product->getAssociations()->willReturn(
             new ArrayCollection([$xsellAssociation->getWrappedObject(), $upsellAssociation->getWrappedObject()])
@@ -310,8 +304,13 @@ class AssociationFieldSetterSpec extends ObjectBehavior
 
         $xsellAssociation->removeProduct($product1)->shouldBeCalled();
         $xsellAssociation->removeProduct($product2)->shouldBeCalled();
+        $xsellAssociation->removeProductModel($productModel1)->shouldBeCalled();
+        $xsellAssociation->removeProductModel($productModel2)->shouldBeCalled();
+
         $upsellAssociation->removeGroup($group1)->shouldBeCalled();
         $upsellAssociation->removeGroup($group2)->shouldBeCalled();
+        $upsellAssociation->removeProductModel($productModel1)->shouldBeCalled();
+        $upsellAssociation->removeProductModel($productModel2)->shouldBeCalled();
 
         $productBuilder->addMissingAssociations($product)->shouldBeCalled();
         $product->getAssociationForTypeCode('xsell')->willReturn($xsellAssociation);
@@ -323,9 +322,11 @@ class AssociationFieldSetterSpec extends ObjectBehavior
             [
                 'xsell' => [
                     'products' => [],
+                    'productmodels' => [],
                 ],
                 'upsell' => [
-                    'groups' => []
+                    'groups' => [],
+                    'productmodels' => [],
                 ]
             ]
         );

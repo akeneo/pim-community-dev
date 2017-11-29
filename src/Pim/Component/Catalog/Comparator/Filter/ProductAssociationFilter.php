@@ -72,7 +72,7 @@ class ProductAssociationFilter implements FilterInterface
         }
 
         foreach ($convertedItem['associations'] as $association) {
-            if (!empty($association['products']) || !empty($association['groups'])) {
+            if (!empty($association['products']) || !empty($association['groups']) || !empty($association['productmodels'])) {
                 return true;
             }
         }

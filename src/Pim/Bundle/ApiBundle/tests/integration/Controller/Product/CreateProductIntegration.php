@@ -224,7 +224,8 @@ JSON;
         "associations": {
             "X_SELL": {
                 "groups": ["groupA"],
-                "products": ["simple"]
+                "products": ["simple"],
+                "productmodels": []
             }
         }
     }
@@ -250,18 +251,22 @@ JSON;
                 "PACK"         => [
                     "groups"   => [],
                     "products" => [],
+                    "productmodels" => [],
                 ],
                 "SUBSTITUTION" => [
                     "groups"   => [],
                     "products" => [],
+                    "productmodels" => [],
                 ],
                 "UPSELL"       => [
                     "groups"   => [],
                     "products" => [],
+                    "productmodels" => [],
                 ],
                 "X_SELL"       => [
                     "groups"   => ["groupA"],
                     "products" => ["simple"],
+                    "productmodels" => [],
                 ],
             ],
         ];
