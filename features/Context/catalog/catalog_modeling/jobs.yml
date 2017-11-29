@@ -56,6 +56,16 @@ jobs:
             linesPerFile: 10000
             filePathProduct:      /tmp/1_products_export_%locale%_%scope%.xlsx
             filePathProductModel: /tmp/2_product_models_export_%locale%_%scope%.xlsx
+    csv_product_model_export:
+        connector: Akeneo CSV Connector
+        alias:     csv_product_model_export
+        label:     Demo CSV product model export
+        type:      export
+        configuration:
+            delimiter:  ;
+            enclosure:  '"'
+            withHeader: true
+            with_media: true
     xlsx_product_grid_context_quick_export:
         connector: Akeneo XLSX Connector
         alias: xlsx_product_grid_context_quick_export

@@ -679,6 +679,7 @@ class DataGridContext extends PimContext implements PageObjectAware
      *
      * @throws ExpectationException
      *
+     * @Then /^I should not see the product models? (.*)$/
      * @Then /^I should not see products? (.*)$/
      * @Then /^I should not see attributes? (?!(.*)in group )(.*)$/
      * @Then /^I should not see channels? (.*)$/
