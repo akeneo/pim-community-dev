@@ -18,7 +18,7 @@ class ObjectIdHydrator implements HydratorInterface
      */
     public function hydrate($qb, array $options = [])
     {
-        $qb->hydrate(false)->select('_id');
+        $qb->select('_id');
 
         $results = $qb->getQuery()->execute();
 
