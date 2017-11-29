@@ -48,8 +48,11 @@ define(
             events: {
                 'click .remove-item': 'removeItemFromBasket'
             },
-            imagePath: () => {
-                throw new Error('You have to define "imagePath" method using "setImagePath" method.')
+            imagePathMethod: () => {
+                throw new Error('You have to define "imagePathMethod" method using "setImagePathMethod" method.')
+            },
+            labelMethod: () => {
+                throw new Error('You have to define "labelMethod" method using "setLabelMethod" method.')
             },
 
             /**
@@ -296,7 +299,7 @@ define(
              * @param {Event} event
              */
             removeItemFromBasket: function (event) {
-                this.removeItem(event.currentTarget.dataset.itemCode);
+                this.removeItem(event.currentTarget.dataset.itemcode);
                 if (this.datagridModel) {
                     this.updateChecked(this.datagridModel);
                 }
@@ -312,15 +315,22 @@ define(
                             items: items,
                             title: __('pim_enrich.form.basket.title'),
                             emptyLabel: __('pim_enrich.form.basket.empty_basket'),
-                            imagePath: this.imagePath.bind(this),
+                            imagePathMethod: this.imagePathMethod.bind(this),
+                            columnName: this.config.columnName,
+                            identifierName: this.config.columnName,
+                            labelMethod: this.labelMethod.bind(this),
                         }));
 
                         this.delegateEvents();
                     }.bind(this));
             },
 
-            setImagePath: function (f) {
-                this.imagePath = f;
+            setImagePathMethod: function (f) {
+                this.imagePathMethod = f;
+            },
+
+            setLabelMethod: function (f) {
+                this.labelMethod = f;
             },
 
             /**

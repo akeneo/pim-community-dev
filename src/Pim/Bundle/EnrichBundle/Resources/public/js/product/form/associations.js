@@ -631,13 +631,17 @@ define(
                     });
                     modal.open();
 
-                    form.setImagePath(function (item) {
+                    form.setImagePathMethod(function (item) {
                         let filePath = null;
                         if (item.meta.image !== null) {
                             filePath = item.meta.image.filePath;
                         }
 
                         return MediaUrlGenerator.getMediaShowUrl(filePath, 'thumbnail_small');
+                    });
+
+                    form.setLabelMethod(function (item) {
+                        return item.meta.label[this.getLocale()];
                     });
 
                     form.setElement(modal.$('.modal-body')).render();

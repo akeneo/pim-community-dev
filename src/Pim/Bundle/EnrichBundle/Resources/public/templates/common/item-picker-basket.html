@@ -2,31 +2,26 @@
     <div class="AknColumnConfigurator-columnHeader">
         <%- title %>
     </div>
-    <div class="AknColumnConfigurator-listContainer basket-inner">
-        <!-- TODO Rename AssetCollectionField to ThumbnailCollection or something like this -->
-        <div class="AknAssetCollectionField AknAssetCollectionField--withoutBorder">
-            <ul class="AknAssetCollectionField-list">
-                <% if (!_.isEmpty(items)) { %>
-                <% _.each(items, function (item) { %>
-                <li class="AknAssetCollectionField-listItem" data-itemCode="<%- item.code %>">
-                    <div class="AknAssetCollectionField-assetThumbnail" style="background-image: url('<%- imagePath(item) %>')">
+    <div class="AknGrid--gallery AknColumnConfigurator-listContainer">
+        <div class="AknGridContainer AknGridContainer--withCheckbox">
+            <div class="AknGrid">
+                <div class="AknGrid-body basket-inner">
+                    <% if (!_.isEmpty(items)) { %>
+                    <% _.each(items, function (item) { %>
+                    <div data-itemCode="<%- item[columnName] %>" class="AknGrid-bodyRow AknGrid-bodyRow--thumbnail AknGrid-bodyRow--withoutTopBorder">
+                        <div class="AknGrid-fullImage" style="background-image: url('<%- imagePathMethod(item) %>')"></div>
+                        <div class="AknButton AknButton--important AknButton--micro AknButton-squareIcon AknButton-squareIcon--delete AknAssetCollectionField-icon remove-item" data-itemCode="<%- item[columnName] %>"></div>
+                        <div class="AknGrid-title"><%- labelMethod(item) %></div>
+                        <div class="AknGrid-subTitle"><%- item[identifierName] %></div>
                     </div>
-                    <div>
-                        <% if (item.description) { %>
-                        <%- item.description.substring(0, 120) %><%- item.description.length > 120 ? '...' : '' %>
-                        <% } %>
+                    <% }); %>
+                    <% } else { %>
+                    <div class="empty-basket">
+                        <%- emptyLabel %>
                     </div>
-                    <div class="AknIconButton AknIconButton--grey AknIconButton--small AknAssetCollectionField-icon">
-                        <i class="icon-trash remove-item" data-itemCode="<%- item.code %>"></i>
-                    </div>
-                </li>
-                <% }); %>
-                <% } else { %>
-                <li class="empty-basket">
-                    <%- emptyLabel %>
-                </li>
-                <% } %>
-            </ul>
+                    <% } %>
+                </div>
+            </div>
         </div>
     </div>
 </div>
