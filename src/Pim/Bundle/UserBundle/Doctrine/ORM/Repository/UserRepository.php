@@ -2,7 +2,6 @@
 
 namespace Pim\Bundle\UserBundle\Doctrine\ORM\Repository;
 
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityRepository;
 use Pim\Bundle\UserBundle\Repository\UserRepositoryInterface;
 
@@ -49,16 +48,5 @@ class UserRepository extends EntityRepository implements UserRepositoryInterface
         $qb->where($qb->expr()->in('g.id', $groupIds));
 
         return $qb->getQuery()->getResult();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function countAll(): int
-    {
-        $qb = $this->createQueryBuilder('u')
-            ->select('count(u.id)');
-
-        return (int) $qb->getQuery()->getSingleScalarResult();
     }
 }

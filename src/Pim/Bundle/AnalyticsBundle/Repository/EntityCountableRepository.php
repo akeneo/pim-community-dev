@@ -3,7 +3,7 @@
 namespace Pim\Bundle\AnalyticsBundle\Repository;
 
 use Akeneo\Component\StorageUtils\Repository\CountableRepositoryInterface;
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
 
 /**
@@ -18,7 +18,7 @@ class EntityCountableRepository extends EntityRepository implements CountableRep
     /**
      * {@inheritdoc}
      */
-    public function __construct(EntityManager $em, $entityName)
+    public function __construct(EntityManagerInterface $em, $entityName)
     {
         parent::__construct($em, $em->getClassMetadata($entityName));
     }

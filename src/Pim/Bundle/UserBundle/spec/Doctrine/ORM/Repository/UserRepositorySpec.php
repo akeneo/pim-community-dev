@@ -80,18 +80,4 @@ class UserRepositorySpec extends ObjectBehavior
 
         $this->findByGroupIds($groupIds);
     }
-
-    function it_counts_all_users($em, QueryBuilder $qb, AbstractQuery $query)
-    {
-        $em->createQueryBuilder()->willReturn($qb);
-        $qb->select('u')->willReturn($qb);
-        $qb->from('user', 'u', null)->willReturn($qb);
-
-        $qb->select('count(u.id)')->willReturn($qb);
-
-        $qb->getQuery()->willReturn($query);
-        $query->getSingleScalarResult()->shouldBeCalled();
-
-        $this->countAll();
-    }
 }

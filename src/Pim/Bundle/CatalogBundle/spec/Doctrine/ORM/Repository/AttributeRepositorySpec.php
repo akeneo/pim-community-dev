@@ -33,19 +33,6 @@ class AttributeRepositorySpec extends ObjectBehavior
         $this->shouldImplement('Pim\Component\Catalog\Repository\AttributeRepositoryInterface');
     }
 
-    function it_count_all_attributes($em, QueryBuilder $queryBuilder, AbstractQuery $query)
-    {
-        $em->createQueryBuilder()->willReturn($queryBuilder);
-        $queryBuilder->select('a')->willReturn($queryBuilder);
-        $queryBuilder->from('attribute', 'a', null)->willReturn($queryBuilder);
-        $queryBuilder->select('COUNT(a.id)')->willReturn($queryBuilder);
-
-        $queryBuilder->getQuery()->willReturn($query);
-        $query->getSingleScalarResult()->shouldBeCalled();
-
-        $this->countAll();
-    }
-
     function it_finds_the_axis_attribute(
         $em,
         QueryBuilder $queryBuilder,
