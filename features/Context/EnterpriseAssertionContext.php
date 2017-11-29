@@ -15,16 +15,6 @@ use Context\AssertionContext as BaseAssertionContext;
 class EnterpriseAssertionContext extends BaseAssertionContext
 {
     /**
-     * @Then /^the asset basket should contain (.*)$/
-     */
-    public function theAssetBasketShouldContain($entities)
-    {
-        foreach ($this->getMainContext()->listToArray($entities) as $entity) {
-            $this->getAssetBasketItem($entity);
-        }
-    }
-
-    /**
      * @Then /^the "([^"]*)" asset gallery should contain (.*)$/
      */
     public function theAssetGalleryShouldContains($field, $entities)
@@ -98,7 +88,7 @@ class EnterpriseAssertionContext extends BaseAssertionContext
      */
     public function theAssetBasketItemShouldContainThumbnailForContext($code, $channelCode, $localeCode = null)
     {
-        $baksetItem = $this->getAssetBasketItem($code);
+        $baksetItem = $this->getItemPickerBasketItems($code);
         $thumbnail  = $this->spin(function () use ($baksetItem) {
             return $baksetItem->find('css', '.AknAssetCollectionField-assetThumbnail');
         }, 'Impossible to find the thumbnail');
@@ -192,21 +182,6 @@ class EnterpriseAssertionContext extends BaseAssertionContext
                 )
             );
         }
-    }
-
-    /**
-     * @param string $code
-     *
-     * @throws \Exception
-     *
-     * @return NodeElement
-     */
-    protected function getAssetBasketItem($code)
-    {
-        return $this->spin(function () use ($code) {
-            return $this->getSession()->getPage()
-                ->find('css', sprintf('.item-picker-basket li[data-itemCode="%s"]', $code));
-        }, sprintf('Cannot find asset "%s" in basket', $code));
     }
 
     /**

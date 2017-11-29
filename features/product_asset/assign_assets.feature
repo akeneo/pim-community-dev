@@ -19,7 +19,7 @@ Feature: Assign assets to a product
     And I should see the columns Thumbnail, Code, Description, End of use, Created at and Last updated at
     And I check the row "paint"
     And I check the row "chicagoskyline"
-    Then the asset basket should contain paint, chicagoskyline
+    Then the item picker basket should contain paint, chicagoskyline
     And I confirm the asset modification
     Then the "Front view" asset gallery should contain paint, chicagoskyline
     And I save the product
@@ -30,7 +30,7 @@ Feature: Assign assets to a product
     And I check the row "akene"
     And the rows "autumn, akene" should be checked
     And I remove "chicagoskyline" from the basket
-    Then the asset basket should contain akene, autumn
+    Then the item picker basket should contain akene, autumn
     And I confirm the asset modification
     Then the "Front view" asset gallery should contain akene, autumn
     And I save the product
@@ -138,4 +138,4 @@ Feature: Assign assets to a product
     And I should see the columns Thumbnail, Code, Description, End of use, Created at and Last updated at
     And I check the row "video_9"
     And I check the row "video_10"
-    Then the asset basket should contain video_9, video_10
+    Then the item picker basket should contain video_9, video_10

@@ -19,7 +19,7 @@ Feature: Revert an assets collection in a product
     And I start to manage assets for "gallery"
     And I check the row "paint"
     And I check the row "chicagoskyline"
-    Then the asset basket should contain chicagoskyline, paint
+    Then the item picker basket should contain chicagoskyline, paint
     And I confirm the asset modification
     Then the "gallery" asset gallery should contain paint, chicagoskyline
     When I save the product
@@ -31,7 +31,7 @@ Feature: Revert an assets collection in a product
     And I start to manage assets for "gallery"
     And I search "paint"
     And I uncheck the row "paint"
-    Then the asset basket should contain chicagoskyline
+    Then the item picker basket should contain chicagoskyline
     And I confirm the asset modification
     Then the "gallery" asset gallery should contain chicagoskyline
     When I save the product

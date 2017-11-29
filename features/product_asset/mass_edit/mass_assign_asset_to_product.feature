@@ -26,7 +26,7 @@ Feature: Edit asset collection of many products at once
     And I should see the columns Thumbnail, Code, Description, End of use, Created at and Last updated at
     And I check the row "paint"
     And I check the row "chicagoskyline"
-    Then the asset basket should contain paint, chicagoskyline
+    Then the item picker basket should contain paint, chicagoskyline
     And I confirm the asset modification
     Then the "Front view" asset gallery should contain paint, chicagoskyline
     And I confirm mass edit
