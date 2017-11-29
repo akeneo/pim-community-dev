@@ -1,3 +1,8 @@
+pimee_api_category_asset_list:
+    path: /asset-categories
+    defaults: { _controller: pimee_api.controller.asset_category:listAction, _format: json }
+    methods: [GET]
+
 pimee_api_category_asset_get:
     path: /asset-categories/{code}
     defaults: { _controller: pimee_api.controller.asset_category:getAction, _format: json }

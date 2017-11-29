@@ -13,5 +13,5 @@ services:
         class: '%pim_api.repository.api_resource.class%'
         arguments:
             - '@doctrine.orm.entity_manager'
-            - '%pim_catalog.entity.category.class%'
+            - '%pimee_product_asset.model.category.class%'
             - '@pimee_product_asset.repository.asset_category'
