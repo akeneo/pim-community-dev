@@ -50,3 +50,4 @@ datagrid:
                     sorter:    product_completeness
             default:
                 updated: '%oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC'
+        filters: {}

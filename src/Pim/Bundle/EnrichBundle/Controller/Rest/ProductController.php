@@ -151,7 +151,7 @@ class ProductController
      *
      * @return JsonResponse
      */
-    public function indexAction(Request $request)
+    public function indexAction(Request $request): JsonResponse
     {
         $productIdentifiers = explode(',', $request->get('identifiers'));
         $products = $this->cursorableRepository->getItemsFromIdentifiers($productIdentifiers);
@@ -413,7 +413,7 @@ class ProductController
      *
      * @return array
      */
-    protected function getNormalizationContext()
+    protected function getNormalizationContext(): array
     {
         return $this->userContext->toArray() + [
             'filter_types'               => ['pim.internal_api.product_value.view'],

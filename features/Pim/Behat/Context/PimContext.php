@@ -16,7 +16,7 @@ class PimContext extends RawMinkContext implements KernelAwareContext
     /** @var KernelInterface */
     private $kernel;
 
-    /** @var  string */
+    /** @var string */
     protected $mainContextClass;
 
     /** @var FeatureContext */

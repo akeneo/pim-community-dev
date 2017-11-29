@@ -2884,42 +2884,4 @@ class WebUser extends PimContext
 
         return (null === $badge) ? 0 : intval($badge->getText());
     }
-
-    /**
-     * @Given /^I remove "([^"]*)" from the basket$/
-     */
-    public function iRemoveFromTheBasket($entity)
-    {
-        $removeButton = $this->spin(function () use ($entity) {
-            return $this->getSession()->getPage()
-                ->find('css', sprintf('.item-picker-basket li[data-itemCode="%s"] .remove-item', $entity));
-        }, 'Cannot find button to remove from basket');
-
-        $removeButton->click();
-    }
-
-    /**
-     * @Then /^the item picker basket should contain (.*)$/
-     */
-    public function theItemPickerBasketShouldContain($entities)
-    {
-        foreach ($this->getMainContext()->listToArray($entities) as $entity) {
-            $this->getItemPickerBasketItems($entity);
-        }
-    }
-
-    /**
-     * @param string $code
-     *
-     * @throws \Exception
-     *
-     * @return NodeElement
-     */
-    protected function getItemPickerBasketItems($code)
-    {
-        return $this->spin(function () use ($code) {
-            return $this->getSession()->getPage()
-                ->find('css', sprintf('.item-picker-basket *[data-itemCode="%s"]', $code));
-        }, sprintf('Cannot find item "%s" in basket', $code));
-    }
 }
