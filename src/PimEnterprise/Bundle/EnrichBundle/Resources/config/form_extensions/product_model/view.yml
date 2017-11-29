@@ -1,0 +1,238 @@
+extensions:
+    pimee-product-model-view-form:
+        module: pimee/product-model-view-form
+
+    pimee-product-model-view-form-breadcrumbs:
+        module: pim/common/breadcrumbs
+        parent: pimee-product-model-view-form
+        targetZone: breadcrumbs
+        config:
+            tab: pim-menu-products
+            itemPath: code
+
+    pimee-product-model-view-form-user-navigation:
+        module: pim/menu/user-navigation
+        parent: pimee-product-model-view-form
+        targetZone: user-menu
+        config:
+            userAccount: pim_menu.user.user_account
+            logout: pim_menu.user.logout
+
+    pimee-product-model-view-form-main-image:
+        module: pim/form/common/main-image
+        parent: pimee-product-model-view-form
+        targetZone: main-image
+
+    pimee-product-model-view-form-variant-navigation:
+        module: pim/product-edit-form/variant-navigation
+        parent: pimee-product-model-view-form
+        targetZone: navigation
+
+    pimee-product-model-view-form-cache-invalidator:
+        module: pim/cache-invalidator
+        parent: pimee-product-model-view-form
+        position: 1000
+
+    pimee-product-model-view-form-sequential-edit:
+        module: pim/product-edit-form/sequential-edit
+        parent: pimee-product-model-view-form
+        targetZone: bottom-panel
+        aclResourceId: pim_enrich_product_model_edit_attributes
+        position: 100
+
+    pimee-product-model-view-form-left-column:
+        module: pim/form/common/column
+        parent: pimee-product-model-view-form
+        position: 5
+        targetZone: column
+        config:
+          stateCode: product_edit_form
+          navigationTitle: pim_enrich.entity.product.navigation
+
+    pimee-product-model-view-form-column-tabs-navigation:
+        module: pim/form/common/column-tabs-navigation
+        parent: pimee-product-model-view-form-left-column
+        targetZone: navigation
+        position: 10
+        config:
+          title: pim_enrich.entity.product.navigation
+
+    pimee-product-model-view-form-meta:
+        module: pim/form/common/meta
+        parent: pimee-product-model-view-form-left-column
+        targetZone: bottom
+        position: 10
+        config:
+            label: pim_enrich.entity.product.infos
+
+    pimee-product-model-view-form-column-tabs:
+        module: pim/form/common/column-tabs
+        parent: pimee-product-model-view-form
+        targetZone: content
+        position: 100
+
+    pimee-product-model-view-form-product-model-label:
+        module: pim/product-model-edit-form/product-model-label
+        parent: pimee-product-model-view-form
+        targetZone: title
+        position: 100
+
+    pimee-product-model-view-form-secondary-actions:
+        module: pim/form/common/secondary-actions
+        parent: pimee-product-model-view-form
+        targetZone: buttons
+        position: 50
+
+    pimee-product-model-view-form-family:
+        module: pim/product-edit-form/meta/family
+        parent: pimee-product-model-view-form-meta
+        targetZone: meta
+        position: 70
+
+    pimee-product-model-view-form-family-variant:
+        module: pim/product-edit-form/meta/family-variant
+        parent: pimee-product-model-view-form-meta
+        targetZone: meta
+        position: 80
+
+    pimee-product-model-view-form-created:
+        module: pim/product-edit-form/meta/created
+        parent: pimee-product-model-view-form-meta
+        targetZone: meta
+        position: 90
+        config:
+            label: pim_enrich.entity.product.meta.created
+            labelBy: pim_enrich.entity.product.meta.created_by
+
+    pimee-product-model-view-form-updated:
+        module: pim/product-edit-form/meta/updated
+        parent: pimee-product-model-view-form-meta
+        targetZone: meta
+        position: 100
+        config:
+            label: pim_enrich.entity.product.meta.updated
+            labelBy: pim_enrich.entity.product.meta.updated_by
+
+    pimee-product-model-view-form-attributes:
+        module: pim/product-edit-form/attributes
+        parent: pimee-product-model-view-form-column-tabs
+        targetZone: container
+        aclResourceId: pim_enrich_product_model_edit_attributes
+        position: 90
+        config:
+            removeAttributeRoute: pim_enrich_product_remove_attribute_rest
+            removeAttributeACL: pim_enrich_product_remove_attribute
+            tabTitle: pim_enrich.form.product.tab.attributes.title
+            deletionFailed: pim_enrich.form.product.flash.attribute_deletion_error
+
+    pimee-product-model-view-form-categories:
+        module: pim/product-edit-form/categories
+        parent: pimee-product-model-view-form-column-tabs
+        targetZone: container
+        aclResourceId: pim_enrich_product_categories_view #TODO
+        position: 100
+        config:
+            tabCode: pim-product-edit-form-categories
+            itemCategoryListRoute: pim_enrich_product_model_listcategories
+            itemCategoryTreeRoute: pim_enrich_product_model_category_rest_list
+
+    pimee-product-model-view-form-attribute-group-selector:
+        module: pim/form/common/attributes/attribute-group-selector
+        parent: pimee-product-model-view-form-attributes
+        targetZone: other-actions
+        position: 100
+
+    pimee-product-model-view-form-attribute-scope-switcher:
+        module: pim/product-edit-form/scope-switcher
+        parent: pimee-product-model-view-form
+        targetZone: context
+        position: 100
+        config:
+            context: base_product
+
+    pimee-product-model-view-form-attribute-locale-switcher:
+        module: pim/product-edit-form/locale-switcher
+        parent: pimee-product-model-view-form
+        targetZone: context
+        position: 110
+        config:
+            context: base_product
+
+    pimee-product-model-view-form-complete-variant-product:
+        module: pim/product-model-edit-form/complete-variant-product
+        parent: pimee-product-model-view-form
+        targetZone: meta
+        position: 120
+        config:
+            context: base_product
+
+    pimee-product-model-view-form-read-only-parent-attributes:
+        module: pim/product-edit-form/attributes/read-only-parent-attributes
+        parent: pimee-product-model-view-form-attributes
+        targetZone: self
+        position: 100
+
+    pimee-product-model-view-form-read-only-variant-axes:
+        module: pim/product-edit-form/attributes/variant-axes
+        parent: pimee-product-model-view-form-attributes
+        targetZone: self
+        position: 110
+
+    pimee-product-model-view-form-locale-specific:
+        module: pim/product-edit-form/attributes/locale-specific
+        parent: pimee-product-model-view-form-attributes
+        targetZone: self
+        position: 100
+
+    pimee-product-model-view-form-localizable:
+        module: pim/product-edit-form/attributes/localizable
+        parent: pimee-product-model-view-form-attributes
+        targetZone: self
+        position: 90
+
+    pimee-product-model-view-form-history:
+        module: pim/product-model-edit-form/history
+        parent: pimee-product-model-view-form-column-tabs
+        targetZone: container
+        aclResourceId: pim_enrich_product_model_history
+        position: 140
+        config:
+            tabCode: pim-product-edit-form-history
+
+    pimee-product-model-view-form-copy-scope-switcher:
+        module: pim/product-edit-form/scope-switcher
+        parent: pimee-product-model-view-form-copy
+        targetZone: context-selectors
+        position: 100
+        config:
+            context: copy_product
+
+    pimee-product-model-view-form-copy-locale-switcher:
+        module: pim/product-edit-form/locale-switcher
+        parent: pimee-product-model-view-form-copy
+        targetZone: context-selectors
+        position: 110
+        config:
+            context: copy_product
+
+    pimee-product-model-view-form-completeness-filter:
+        module: pim/product-edit-form/attributes/completeness
+        parent: pimee-product-model-view-form-attributes
+        targetZone: self
+        position: 100
+
+    pimee-product-model-view-form-attribute-filter:
+        module: pim/product-edit-form/attribute-filter
+        parent: pimee-product-model-view-form-attributes
+        targetZone: other-actions
+        position: 110
+
+    pimee-product-model-view-form-attribute-filter-all:
+        module: pim/product-edit-form/attribute-filter-all
+        parent: pimee-product-model-view-form-attribute-filter
+        position: 100
+
+    pimee-product-model-view-form-attribute-filter-missing-required:
+        module: pim/product-edit-form/attribute-filter-missing-required
+        parent: pimee-product-model-view-form-attribute-filter
+        position: 110

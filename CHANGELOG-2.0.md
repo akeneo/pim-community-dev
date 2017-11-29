@@ -1,3 +1,14 @@
+# 2.0.x
+
+## Improvements
+
+- PIM-6364: Apply categories permissions on products models
+
+## BC breaks
+
+- PIM-6364: Rename service `pimee_security.voter.product` to `pimee_security.voter.product_and_product_model`
+- PIM-6364: Rename class `PimEnterprise\Bundle\SecurityBundle\Voter\ProductVoter` to `PimEnterprise\Bundle\SecurityBundle\Voter\ProductAndProductModelVoter`
+
 # 2.0.7 (2017-11-23)
 
 ## Better manage products with variants
@@ -26,7 +37,7 @@
 
 ## BC breaks
 
-- PÏM-6450: Add service `pim_catalog.builder.variant_product` as new argument to `pim_enrich.controller.rest.product`.
+- PIM-6450: Add service `pim_catalog.builder.variant_product` as new argument to `pim_enrich.controller.rest.product`.
 
 # 2.0.5 (2017-10-26)
 
