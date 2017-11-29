@@ -15,7 +15,8 @@ define(
         'pimee/template/picker/asset-collection',
         'pim/fetcher-registry',
         'pim/form-builder',
-        'backbone/bootstrap-modal'
+        'backbone/bootstrap-modal',
+        'routing'
     ],
     function (
         $,
@@ -24,7 +25,8 @@ define(
         Backbone,
         template,
         FetcherRegistry,
-        FormBuilder
+        FormBuilder,
+        Routing
     ) {
         return Backbone.View.extend({
             className: 'AknAssetCollectionField',
