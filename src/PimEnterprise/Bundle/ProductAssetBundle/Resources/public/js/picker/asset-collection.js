@@ -10,6 +10,7 @@ define(
     [
         'jquery',
         'underscore',
+        'oro/translator',
         'backbone',
         'pimee/template/picker/asset-collection',
         'pim/fetcher-registry',
@@ -19,6 +20,7 @@ define(
     function (
         $,
         _,
+        __,
         Backbone,
         template,
         FetcherRegistry,
@@ -106,13 +108,17 @@ define(
                     });
                     modal.open();
 
-                    form.setImagePath(function (item) {
+                    form.setImagePathMethod(function (item) {
                         return Routing.generate('pimee_product_asset_thumbnail', {
                             code: item.code,
                             filter: 'thumbnail',
                             channelCode: this.getScope(),
                             localeCode: this.getLocale()
                         });
+                    });
+
+                    form.setLabelMethod(function (item) {
+                        return item.description;
                     });
 
                     form.setElement(modal.$('.modal-body'))
