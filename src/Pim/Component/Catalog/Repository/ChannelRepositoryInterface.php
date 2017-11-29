@@ -17,6 +17,13 @@ use Pim\Component\Catalog\Model\CurrencyInterface;
 interface ChannelRepositoryInterface extends IdentifiableObjectRepositoryInterface, ObjectRepository
 {
     /**
+     * Return the number of existing channels
+     *
+     * @return int
+     */
+    public function countAll();
+
+    /**
      * Return an array of channel codes
      *
      * @return array
