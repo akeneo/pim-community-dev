@@ -89,6 +89,18 @@ abstract class AbstractProductQueryBuilderTestCase extends TestCase
     }
 
     /**
+     * @param array $data
+     */
+    protected function createFamily(array $data)
+    {
+        $family = $this->get('pim_catalog.factory.family')->create();
+        $this->get('pim_catalog.updater.family')->update($family, $data);
+        $constraints = $this->get('validator')->validate($family);
+        $this->assertCount(0, $constraints);
+        $this->get('pim_catalog.saver.family')->save($family);
+    }
+
+    /**
      * @param array $filters
      *
      * @return CursorInterface

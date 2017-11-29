@@ -39,6 +39,7 @@ class ProductIndexingIntegration extends TestCase
             'groups'        => [],
             'completeness'  => [],
             'values'        => [],
+            'label'         => []
         ];
 
         $this->assertIndexingFormat('bar', $expected);
@@ -63,6 +64,7 @@ class ProductIndexingIntegration extends TestCase
             'groups'        => [],
             'completeness'  => [],
             'values'        => [],
+            'label'         => []
         ];
 
         $this->assertIndexingFormat('baz', $expected);
@@ -297,8 +299,9 @@ class ProductIndexingIntegration extends TestCase
 
                         ],
                     ],
-                ],
+                ]
             ],
+            'label'         => []
         ];
 
         $this->assertIndexingFormat('foo', $expected);
