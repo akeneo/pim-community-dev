@@ -152,7 +152,7 @@ class ProductDraftBuilder implements ProductDraftBuilderInterface
      *
      * @return array
      */
-    protected function getOriginalValue(array $originalValues, string $code, ?string $locale, ?string $channel)
+    protected function getOriginalValue(array $originalValues, string $code, ?string $locale, ?string $channel): array
     {
         if (!isset($originalValues[$code])) {
             return [];
