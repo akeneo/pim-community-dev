@@ -108,3 +108,4 @@ services:
             - '@pim_api.repository.locale'
             - '@akeneo_file_storage.file_storage.filesystem_provider'
             - '@akeneo_file_storage.file_storage.file.streamed_file_fetcher'
+            - '@pim_serializer'

@@ -16,16 +16,18 @@ namespace PimEnterprise\Bundle\ApiBundle\Controller;
 use Akeneo\Component\FileStorage\Exception\FileTransferException;
 use Akeneo\Component\FileStorage\File\FileFetcherInterface;
 use Akeneo\Component\FileStorage\FilesystemProvider;
-use Akeneo\Component\FileStorage\Model\FileInfoInterface;
-use Akeneo\Component\FileStorage\StreamedFileResponse;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Pim\Component\Catalog\Model\LocaleInterface;
 use PimEnterprise\Component\ProductAsset\FileStorage;
 use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
+use PimEnterprise\Component\ProductAsset\Model\ReferenceInterface;
 use Symfony\Component\HttpFoundation\File\Exception\FileNotFoundException;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
  * @author Damien Carcel <damien.carcel@akeneo.com>
@@ -46,22 +48,28 @@ class AssetReferenceController
     /** @var FileFetcherInterface */
     protected $fileFetcher;
 
+    /** @var NormalizerInterface */
+    protected $normalizer;
+
     /**
      * @param IdentifiableObjectRepositoryInterface $assetRepository
      * @param IdentifiableObjectRepositoryInterface $localeRepository
      * @param FilesystemProvider                    $filesystemProvider
      * @param FileFetcherInterface                  $fileFetcher
+     * @param NormalizerInterface                   $normalizer
      */
     public function __construct(
         IdentifiableObjectRepositoryInterface $assetRepository,
         IdentifiableObjectRepositoryInterface $localeRepository,
         FilesystemProvider $filesystemProvider,
-        FileFetcherInterface $fileFetcher
+        FileFetcherInterface $fileFetcher,
+        NormalizerInterface $normalizer
     ) {
         $this->assetRepository = $assetRepository;
         $this->localeRepository = $localeRepository;
         $this->filesystemProvider = $filesystemProvider;
         $this->fileFetcher = $fileFetcher;
+        $this->normalizer = $normalizer;
     }
 
     /**
@@ -71,29 +79,14 @@ class AssetReferenceController
      * @throws NotFoundHttpException
      * @throws UnprocessableEntityHttpException
      *
-     * @return StreamedFileResponse
+     * @return Response
      *
      * @AclAncestor("pim_api_asset_reference_list")
      */
-    public function downloadAction(string $assetCode, string $localeCode): StreamedFileResponse
+    public function downloadAction(string $assetCode, string $localeCode): Response
     {
-        $asset = $this->getAsset($assetCode);
         $locale = $this->getLocale($localeCode);
-        $referenceFile = $this->getReferenceFile($asset, $locale);
-
-        if (null === $locale) {
-            $notFoundMessage = sprintf('Reference file for the asset "%s" does not exist.', $assetCode);
-        } else {
-            $notFoundMessage = sprintf(
-                'Reference file for the asset "%s" and the locale "%s" does not exist.',
-                $assetCode,
-                $locale->getCode()
-            );
-        }
-
-        if (null === $referenceFile) {
-            throw new NotFoundHttpException($notFoundMessage);
-        }
+        $referenceFile = $this->getReference($assetCode, $locale)->getFileInfo();
 
         $fs = $this->filesystemProvider->getFilesystem(FileStorage::ASSET_STORAGE_ALIAS);
         $options = [
@@ -108,25 +101,36 @@ class AssetReferenceController
         } catch (FileTransferException $e) {
             throw new UnprocessableEntityHttpException($e->getMessage(), $e);
         } catch (FileNotFoundException $e) {
+            $localizableMessage = null !== $locale ? sprintf(' and the locale "%s"', $locale->getCode()) : '';
+            $notFoundMessage = sprintf(
+                'Reference file for the asset "%s"%s does not exist.',
+                $assetCode,
+                $localizableMessage
+            );
+
             throw new NotFoundHttpException($notFoundMessage, $e);
         }
     }
 
     /**
      * @param string $assetCode
+     * @param string $localeCode
      *
      * @throws NotFoundHttpException
+     * @throws UnprocessableEntityHttpException
      *
-     * @return AssetInterface
+     * @return Response
+     *
+     * @AclAncestor("pim_api_asset_reference_list")
      */
-    protected function getAsset(string $assetCode): AssetInterface
+    public function getAction(string $assetCode, string $localeCode): Response
     {
-        $asset = $this->assetRepository->findOneByIdentifier($assetCode);
-        if (null === $asset) {
-            throw new NotFoundHttpException(sprintf('Asset "%s" does not exist.', $assetCode));
-        }
+        $locale = $this->getLocale($localeCode);
+        $reference = $this->getReference($assetCode, $locale);
 
-        return $asset;
+        $normalizedReference = $this->normalizer->normalize($reference, 'external_api');
+
+        return new JsonResponse($normalizedReference);
     }
 
     /**
@@ -151,34 +155,62 @@ class AssetReferenceController
     }
 
     /**
-     * @param AssetInterface       $asset
+     * @param string               $assetCode
      * @param null|LocaleInterface $locale
      *
+     * @throws NotFoundHttpException
      * @throws UnprocessableEntityHttpException
      *
-     * @return null|FileInfoInterface
+     * @return ReferenceInterface
      */
-    protected function getReferenceFile(AssetInterface $asset, ?LocaleInterface $locale): ?FileInfoInterface
+    protected function getReference(string $assetCode, ?LocaleInterface $locale): ReferenceInterface
     {
+        $asset = $this->getAsset($assetCode);
+
         if ($asset->isLocalizable() && null === $locale) {
             throw new UnprocessableEntityHttpException(sprintf(
-                'The asset "%s" is localizable, you cannot fetch one of its references without locale.',
+                'The asset "%s" is localizable, you must provide a locale and the locale "no_locale" does not exist.',
                 $asset->getCode()
             ));
         }
 
         if (!$asset->isLocalizable() && null !== $locale) {
             throw new UnprocessableEntityHttpException(sprintf(
-                'The asset "%s" is not localizable, you cannot fetch its references with a locale.',
+                'The asset "%s" is not localizable, you must provide the string "no_locale" as a locale.',
                 $asset->getCode()
             ));
         }
 
         $reference = $asset->getReference($locale);
-        if (null === $reference) {
-            return null;
+
+        $localizableMessage = null !== $locale ? sprintf(' and the locale "%s"', $locale->getCode()) : '';
+        $notFoundMessage = sprintf(
+            'Reference file for the asset "%s"%s does not exist.',
+            $asset->getCode(),
+            $localizableMessage
+        );
+
+        if (null === $reference || null === $reference->getFileInfo()) {
+            throw new NotFoundHttpException($notFoundMessage);
         }
 
-        return $reference->getFileInfo();
+        return $reference;
+    }
+
+    /**
+     * @param string $assetCode
+     *
+     * @throws NotFoundHttpException
+     *
+     * @return AssetInterface
+     */
+    protected function getAsset(string $assetCode): AssetInterface
+    {
+        $asset = $this->assetRepository->findOneByIdentifier($assetCode);
+        if (null === $asset) {
+            throw new NotFoundHttpException(sprintf('Asset "%s" does not exist.', $assetCode));
+        }
+
+        return $asset;
     }
 }
