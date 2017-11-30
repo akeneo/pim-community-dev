@@ -21,7 +21,8 @@
 /*!40000 ALTER TABLE `acl_classes` DISABLE KEYS */;
 INSERT INTO `acl_classes` (`class_type`) VALUES
     ('pim_api_asset_category_list'),
-    ('pim_api_asset_category_edit');
+    ('pim_api_asset_category_edit'),
+    ('pim_api_asset_reference_list');
 ;
 /*!40000 ALTER TABLE `acl_classes` ENABLE KEYS */;
 
@@ -46,7 +47,8 @@ INSERT INTO `acl_entries`
 SELECT id, NULL, 2, NULL, 0, 0, 1, 'all', 0, 0
 FROM `acl_classes` WHERE `class_type` IN (
     'pim_api_asset_category_list',
-    'pim_api_asset_category_edit'
+    'pim_api_asset_category_edit',
+    'pim_api_asset_reference_list'
 );
 /*!40000 ALTER TABLE `acl_entries` ENABLE KEYS */;
 
@@ -66,7 +68,8 @@ SELECT NULL, id, 'action', 1
 FROM `acl_classes`
 WHERE `class_type` IN (
     'pim_api_asset_category_list',
-    'pim_api_asset_category_edit'
+    'pim_api_asset_category_edit',
+    'pim_api_asset_reference_list'
 );
 /*!40000 ALTER TABLE `acl_object_identities` ENABLE KEYS */;
 
@@ -80,7 +83,8 @@ SELECT aoi.id, aoi.id
 FROM `acl_object_identities` aoi JOIN `acl_classes` ac on `aoi`.`class_id` = `ac`.`id`
 WHERE ac.`class_type` IN (
     'pim_api_asset_category_list',
-    'pim_api_asset_category_edit'
+    'pim_api_asset_category_edit',
+    'pim_api_asset_reference_list'
 );
 /*!40000 ALTER TABLE `acl_object_identity_ancestors` ENABLE KEYS */;
 

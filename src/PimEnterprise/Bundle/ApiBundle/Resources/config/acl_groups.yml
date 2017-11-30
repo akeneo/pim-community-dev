@@ -1,3 +1,7 @@
 pim_api.acl_group.asset_category:
     order: 20
     permission_group: api
+
+pim_api.acl_group.asset_reference:
+    order: 30
+    permission_group: api
