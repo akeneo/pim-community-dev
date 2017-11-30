@@ -171,6 +171,7 @@ Feature: Import families
       | code     | attributes         | attribute_as_image |
       | tractors | sku,name,side_view | side_view          |
 
+  @ce
   Scenario: Successfully fail when attribute_as_image is invalid
     Given the "footwear" catalog configuration
     And I am logged in as "Julia"

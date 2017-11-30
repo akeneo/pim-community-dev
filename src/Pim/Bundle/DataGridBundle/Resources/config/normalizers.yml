@@ -16,6 +16,7 @@ services:
         class: '%pim_datagrid.normalizer.product.class%'
         arguments:
             - '@pim_catalog.filter.chained'
+            - '@pim_enrich.normalizer.image'
         tags:
             - { name: pim_serializer.normalizer }
 
@@ -25,6 +26,7 @@ services:
             - '@pim_catalog.filter.chained'
             - '@pim_catalog.doctrine.query.find_variant_product_completeness'
             - '@pim_catalog.product_models.image_as_label'
+            - '@pim_enrich.normalizer.image'
         tags:
             - { name: pim_serializer.normalizer }
 
@@ -76,6 +78,7 @@ services:
         class: '%pim_datagrid.normalizer.group_product.class%'
         arguments:
             - '@pim_catalog.filter.chained'
+            - '@pim_enrich.normalizer.image'
         tags:
             - { name: pim_serializer.normalizer }
 

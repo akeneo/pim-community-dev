@@ -165,10 +165,11 @@ interface ProductModelInterface extends
      * Get product model label
      *
      * @param string|null $localeCode
+     * @param string|null $scopeCode
      *
      * @return string
      */
-    public function getLabel(?string $localeCode): string;
+    public function getLabel(?string $localeCode, ?string $scopeCode): string;
 
     /**
      * Get product model image

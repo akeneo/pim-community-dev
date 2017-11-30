@@ -18,7 +18,7 @@ Prev: Forrige
 Next: Næste
 Today: I dag
 Wk: Wk
-Done: Udført
+Done: Gjort
 AM: AM
 A: A
 PM: PM
@@ -44,7 +44,7 @@ jstree:
   product:
     all: Alle produkter
     unclassified: Ikke-klassificerede produkter
-  no_tree: Intet træ tilgængeligt
+  no_tree: Intet tilgængelig træ
   include_sub: Inkluder underkategorier
   loading: Indlæser ...
 datetimepicker:

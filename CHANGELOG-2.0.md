@@ -6,7 +6,6 @@
 
 # 2.0.7 (2017-11-23)
 
-
 ## Better manage products with variants!
 
 - PIM-6567: Add edition capabilities to family variants from the UI (distribution of the attributes)

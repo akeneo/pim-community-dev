@@ -5,6 +5,7 @@ namespace spec\Pim\Component\Catalog\Normalizer\Indexing\Product;
 use Doctrine\Common\Collections\Collection;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Entity\Group;
+use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ValueCollectionInterface;
@@ -38,7 +39,8 @@ class PropertiesNormalizerSpec extends ObjectBehavior
         $serializer,
         ProductInterface $product,
         ValueCollectionInterface $valueCollection,
-        Collection $completenesses
+        Collection $completenesses,
+        AttributeInterface $sku
     ) {
         $product->getId()->willReturn(67);
         $family = null;
@@ -46,6 +48,7 @@ class PropertiesNormalizerSpec extends ObjectBehavior
         $now = new \DateTime('now', new \DateTimeZone('UTC'));
 
         $product->getIdentifier()->willReturn('sku-001');
+        $product->getFamily()->willReturn($family);
         $product->getCreated()->willReturn($now);
         $serializer
             ->normalize($family, ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX)
@@ -79,6 +82,7 @@ class PropertiesNormalizerSpec extends ObjectBehavior
                 'groups'        => [],
                 'completeness'  => [],
                 'values'        => [],
+                'label'         => [],
             ]
         );
     }
@@ -87,13 +91,15 @@ class PropertiesNormalizerSpec extends ObjectBehavior
         $serializer,
         ProductInterface $product,
         ValueCollectionInterface $valueCollection,
-        Collection $completenesses
+        Collection $completenesses,
+        AttributeInterface $sku
     ) {
         $product->getId()->willReturn(67);
         $family = null;
         $now = new \DateTime('now', new \DateTimeZone('UTC'));
 
         $product->getIdentifier()->willReturn('sku-001');
+        $product->getFamily()->willReturn($family);
 
         $product->getFamily()->willReturn($family);
         $serializer->normalize($family, ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX)->willReturn($family);
@@ -134,6 +140,7 @@ class PropertiesNormalizerSpec extends ObjectBehavior
                 'groups'        => [],
                 'completeness'  => ['the completenesses'],
                 'values'        => [],
+                'label'         => [],
             ]
         );
     }
@@ -143,12 +150,16 @@ class PropertiesNormalizerSpec extends ObjectBehavior
         ProductInterface $product,
         ValueCollectionInterface $valueCollection,
         FamilyInterface $family,
-        Collection $completenesses
+        Collection $completenesses,
+        AttributeInterface $sku
     ) {
         $now = new \DateTime('now', new \DateTimeZone('UTC'));
 
         $product->getId()->willReturn(67);
         $product->getIdentifier()->willReturn('sku-001');
+        $product->getFamily()->willReturn($family);
+        $family->getAttributeAsLabel()->willReturn($sku);
+        $sku->getCode()->willReturn('sku');
 
         $product->getCreated()->willReturn($now);
         $serializer->normalize(
@@ -243,6 +254,7 @@ class PropertiesNormalizerSpec extends ObjectBehavior
                         ],
                     ],
                 ],
+                'label'         => [],
             ]
         );
     }

@@ -280,7 +280,11 @@ class ProductModelController
                 ));
             }
 
-            $normalizedChildren[] = $this->entityWithFamilyVariantNormalizer->normalize($child, 'internal_api');
+            $normalizedChildren[] = $this->entityWithFamilyVariantNormalizer->normalize(
+                $child,
+                'internal_api',
+                ['locale' => $this->userContext->getCurrentLocaleCode()]
+            );
         }
 
         return new JsonResponse($normalizedChildren);

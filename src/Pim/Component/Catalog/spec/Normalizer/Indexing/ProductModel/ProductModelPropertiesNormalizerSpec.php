@@ -3,6 +3,7 @@
 namespace spec\Pim\Component\Catalog\Normalizer\Indexing\ProductModel;
 
 use PhpSpec\ObjectBehavior;
+use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Component\Catalog\Model\FamilyVariantInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
@@ -41,6 +42,7 @@ class ProductModelPropertiesNormalizerSpec extends ObjectBehavior
         ProductModelInterface $productModel,
         ValueCollectionInterface $productValueCollection,
         FamilyInterface $family,
+        AttributeInterface $sku,
         FamilyVariantInterface $familyVariant
     ) {
         $productModel->getId()->willReturn(67);
@@ -49,6 +51,7 @@ class ProductModelPropertiesNormalizerSpec extends ObjectBehavior
         $productModel->getParent()->willReturn(null);
 
         $productModel->getCode()->willReturn('sku-001');
+        $productModel->getFamily()->willReturn(null);
         $productModel->getCreated()->willReturn($now);
         $serializer
             ->normalize($family, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_MODEL_INDEX)
@@ -66,6 +69,8 @@ class ProductModelPropertiesNormalizerSpec extends ObjectBehavior
 
         $familyVariant->getCode()->willReturn('family_variant_1');
         $familyVariant->getFamily()->willReturn($family);
+        $family->getAttributeAsLabel()->willReturn($sku);
+        $sku->getCode()->willReturn('sku');
         $productModel->getFamilyVariant()->willReturn($familyVariant);
         $serializer
             ->normalize($family, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_MODEL_INDEX)
@@ -86,6 +91,7 @@ class ProductModelPropertiesNormalizerSpec extends ObjectBehavior
                 'categories'     => ['category_A', 'category_B'],
                 'parent'         => null,
                 'values'         => [],
+                'label'          => [],
             ]
         );
     }
@@ -95,12 +101,14 @@ class ProductModelPropertiesNormalizerSpec extends ObjectBehavior
         ProductModelInterface $productModel,
         ValueCollectionInterface $productValueCollection,
         FamilyInterface $family,
+        AttributeInterface $sku,
         FamilyVariantInterface $familyVariant
     ) {
         $now = new \DateTime('now', new \DateTimeZone('UTC'));
 
         $productModel->getId()->willReturn(67);
         $productModel->getCode()->willReturn('sku-001');
+        $productModel->getFamily()->willReturn(null);
 
         $productModel->getParent()->willReturn(null);
 
@@ -118,6 +126,8 @@ class ProductModelPropertiesNormalizerSpec extends ObjectBehavior
 
         $familyVariant->getCode()->willReturn('family_variant_B');
         $familyVariant->getFamily()->willReturn($family);
+        $family->getAttributeAsLabel()->willReturn($sku);
+        $sku->getCode()->willReturn('sku');
         $productModel->getFamilyVariant()->willReturn($familyVariant);
         $serializer
             ->normalize($family, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_MODEL_INDEX)
@@ -169,6 +179,7 @@ class ProductModelPropertiesNormalizerSpec extends ObjectBehavior
                         ],
                     ],
                 ],
+                'label'          => [],
             ]
         );
     }
@@ -179,12 +190,14 @@ class ProductModelPropertiesNormalizerSpec extends ObjectBehavior
         ProductModelInterface $parent,
         ValueCollectionInterface $valueCollection,
         FamilyInterface $family,
+        AttributeInterface $sku,
         FamilyVariantInterface $familyVariant
     ) {
         $now = new \DateTime('now', new \DateTimeZone('UTC'));
 
         $productModel->getId()->willReturn(67);
         $productModel->getCode()->willReturn('sku-001');
+        $productModel->getFamily()->willReturn(null);
 
         $productModel->getParent()->willReturn($parent);
         $parent->getCode()->willReturn('parent_A');
@@ -203,6 +216,8 @@ class ProductModelPropertiesNormalizerSpec extends ObjectBehavior
 
         $familyVariant->getCode()->willReturn('family_variant_B');
         $familyVariant->getFamily()->willReturn($family);
+        $family->getAttributeAsLabel()->willReturn($sku);
+        $sku->getCode()->willReturn('sku');
         $productModel->getFamilyVariant()->willReturn($familyVariant);
         $serializer
             ->normalize($family, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_MODEL_INDEX)
@@ -218,7 +233,7 @@ class ProductModelPropertiesNormalizerSpec extends ObjectBehavior
         $valueCollection->isEmpty()->willReturn(false);
 
         $productModel->getCategoryCodes()->willReturn(['category_A', 'category_B']);
-        
+
         $serializer->normalize($valueCollection, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_MODEL_INDEX, [])
             ->willReturn(
                 [
@@ -273,6 +288,7 @@ class ProductModelPropertiesNormalizerSpec extends ObjectBehavior
                         ],
                     ],
                 ],
+                'label'          => [],
             ]
         );
     }

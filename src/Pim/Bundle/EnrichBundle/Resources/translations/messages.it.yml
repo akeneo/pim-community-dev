@@ -95,17 +95,17 @@ pim_enrich:
         invalid_attribute: L'attributo con codice "attribute_code" non è comune ai prodotti selezionati, attributo saltato.
         no_valid_attribute: Nessuno degli attributi selezionati può essere applicato a questo prodotto.
     classify-add:
-      label: Aggiungi a categorie
+      label: Aggiungi alle categorie
       description: Gli articoli saranno posizionati nelle seguenti categorie, il posizionamento attuale è mantenuto.
       success_flash: L'articolo/gli articoli è stato classificato nelle categorie selezionate
       launched_flash: L'azione di massa "aggiungi alle categorie" è stata lanciata. Sarai avvisato quando finisce.
     classify-move:
       label: Sposta tra categorie
-      description: I prodotti saranno posizionati nelle seguenti categorie, il posizionamento attuale viene perso.
+      description: I prodotti saranno posizionati nelle seguenti categorie; il posizionamento attuale viene perso.
       success_flash: Il prodotto/i prodotti è stato spostato/sono stati spostati nelle categorie selezionate
       launched_flash: L'azione di massa "sposta nelle categorie" è stata lanciata. Sarai avvisato quando finisce.
     classify-remove:
-      label: Rimuovi da categorie
+      label: Rimuovi dalle categorie
       description: I prodotti verranno rimossi dalle seguenti categorie.
       success_flash: Il prodotto/i prodotti è stato rimosso/sono stati rimossi dalle categorie selezionate
       launched_flash: L'azione di massa "rimuovi dalle categorie" è stata lanciata. Sarai avvisato quando finisce.
@@ -121,7 +121,7 @@ pim_enrich:
       launched_flash: L'azione di massa "aggiungi ai gruppi" è stata lanciata. Sarai avvisato quando finisce.
       no_group: Al momento non c'è nessun gruppo. Si prega di iniziare con la creazione di un gruppo.
     set-attribute-requirements:
-      label: Impostare i requisiti degli attributi
+      label: Imposta i requisiti degli attributi
       description: I seguenti attributi richiesti verranno applicati alle famiglie selezionate
       success_flash: Gli attributi richiesti sono stati applicati alle famiglie selezionate
       launched_flash: L'azione di massa "imposta i requisiti di attributo" è stata lanciata. Sarai avvisato quando finisce.
@@ -643,7 +643,7 @@ pim_enrich.mass_edit_action:
     message.warning: Non esiste un attributo in comune per i prodotti selezionati. Si prega di cambiare la selezione.
     no_attribute.warning: Non esiste un attributo in comune per i prodotti selezionati. Si prega di cambiare la selezione.
   classify:
-    label: Aggiungi a categorie
+    label: Aggiungi alle categorie
     description: Gli articoli saranno posizionati nelle seguenti categorie, il posizionamento attuale è mantenuto.
     success_flash: L'articolo/gli articoli è stato classificato nelle categorie selezionate
   change-family:
@@ -656,7 +656,7 @@ pim_enrich.mass_edit_action:
     description: Selezionare i gruppi in cui aggiungere gli articoli selezionati
     success_flash: Gli articoli sono stati aggiunti ai gruppi selezionati con successo
   set-attribute-requirements:
-    label: Impostare i requisiti degli attributi
+    label: Imposta i requisiti degli attributi
     description: I seguenti attributi richiesti verranno applicati alle famiglie selezionate
     success_flash: Gli attributi richiesti sono stati applicati alle famiglie selezionate
 To enable: Per attivare
@@ -779,9 +779,9 @@ batch_jobs:
     clean:
       label: Pulisci i file per gli attributi comuni
   set_attribute_requirements:
-    label: Impostare i requisiti degli attributi
+    label: Imposta i requisiti degli attributi
     perform:
-      label: Impostare i requisiti degli attributi
+      label: Imposta i requisiti degli attributi
   csv_product_quick_export:
     quick_export.label: Esportazione rapida prodotti in Csv
     perform:

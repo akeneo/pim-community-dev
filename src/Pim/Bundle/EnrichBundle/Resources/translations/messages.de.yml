@@ -95,7 +95,7 @@ pim_enrich:
         invalid_attribute: Das Attribut mit dem Code "attribute_code" ist kein gemeinsames Attribut der ausgewählten Produkte. Attribut übersprungen.
         no_valid_attribute: Keines der ausgewählten Attribute kann auf dieses Produkt angewendet werden.
     classify-add:
-      description: Die Produkte werden den folgenden Kategorien zugeordnet, bereits bestehende Zuordnungen bleiben erhalten.
+      description: Die Produkte werden den folgenden Kategorien zugeordnet. Bestehende Zuordnungen bleiben erhalten.
       success_flash: Die Produkte wurden den ausgewählten Kategorien zugeordnet
       launched_flash: Die Massenbearbeitung "zu Kategorien hinzufügen" wurde gestartet. Sie werden benachrichtigt, sobald diese erledigt ist.
     classify-move:
@@ -312,7 +312,7 @@ btn:
   next: Vor
   back: Zurück
   confirm: Bestätigen
-  to grid: Zurück zur Listenansicht
+  to grid: Zurück zur Übersicht
   to parent: Zurück zur übergeordneten Ebene
   download_pdf: PDF
   download: Download
@@ -473,8 +473,8 @@ Attribute type: Attributtyp
 Defaultvalue: Standardwert
 Variant: Variante
 Smart: Smart
-Useable as grid column: Verwendbar als Spalte in der Listenansicht
-Useable as grid filter: Anwendbar in der Listenansicht
+Useable as grid column: Verwendbar als Spalte in der Übersicht
+Useable as grid filter: Verwendbar im Raster
 Family: Produktfamilie
 Available locales: Verfügbare Gebietsschemata
 Locale specific: Gebietsschema-spezifisch
@@ -638,11 +638,9 @@ pim_enrich.mass_edit_action:
     message.warning: Für die ausgewählten Produkte gibt es keine gemeinsamen Attribute. Bitte passen Sie Ihre Auswahl an.
     no_attribute.warning: Für die ausgewählten Produkte gibt es keine gemeinsamen Attribute. Bitte passen Sie Ihre Auswahl an.
   classify:
-    label: Zu Kategorien hinzufügen
-    description: Die Produkte werden den folgenden Kategorien zugeordnet, bereits bestehende Zuordnungen bleiben erhalten.
+    description: Die Produkte werden den folgenden Kategorien zugeordnet. Bestehende Zuordnungen bleiben erhalten.
     success_flash: Die Produkte wurden den ausgewählten Kategorien zugeordnet
   change-family:
-    label: Produktfamilie ändern
     description: Die Produktfamilie der ausgewählten Produkte wird auf die gewählte Produktfamilie geändert
     success_flash: Die Produktfamilie der ausgewählten Produkte wurde erfolgreich geändert
     no_family: Keine Familie
@@ -810,4 +808,4 @@ pim_enrich_attribute_form:
   availableLocales: Verfügbare Gebietsschemata
   locale_specific: Gebietsschema-spezifisch
   group: Attributgruppe
-  useableAsGridFilter: Anwendbar in der Listenansicht
+  useableAsGridFilter: Verwendbar im Raster

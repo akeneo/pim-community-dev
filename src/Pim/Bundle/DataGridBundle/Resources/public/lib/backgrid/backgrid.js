@@ -1982,6 +1982,7 @@ var Header = Backgrid.Header = Backbone.View.extend({
 
   /** @property */
   tagName: "thead",
+  className: "AknGrid-header",
 
   /**
      Initializer. Initializes this table head view to contain a single header
@@ -2046,6 +2047,7 @@ var Body = Backgrid.Body = Backbone.View.extend({
 
   /** @property */
   tagName: "tbody",
+  className: "AknGrid-body",
 
   /**
      Initializer.

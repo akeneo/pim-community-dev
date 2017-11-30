@@ -141,6 +141,15 @@ extensions:
         module: pim/datagrid/configure-columns-action
         parent: pim-product-index-grid-container
         targetZone: toolbar
+        position: 10
+
+    pim-product-index-display-selector:
+        module: pim/datagrid/display-selector
+        parent: pim-product-index-grid-container
+        targetZone: toolbar
+        position: 20
+        config:
+            gridName: product-grid
 
     pim-product-index-grid:
         module: pim/grid/table
