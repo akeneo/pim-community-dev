@@ -40,6 +40,7 @@ datagrid:
         properties:
             id: ~
             technical_id: ~
+            document_type: ~
         sorters:
             columns:
                 identifier:
