@@ -1,0 +1,13 @@
+<div class="AknGrid grid">
+    <div class="AknGrid-body">
+        <% _.each(products, product => { %>
+            <div title="<%- product.name %>" class="AknGrid-bodyRow AknGrid-bodyRow--thumbnail AknGrid-bodyRow--withoutTopBorder">
+                <div class="AknIconButton AknIconButton--remove AknIconButton--topLeft" data-identifier="<%- product.identifier %>">remove</div>
+                <div class="AknGrid-fullImage" style="background-image: url('<%- product.image %>')"></div>
+                <div class="AknGrid-title"><%- product.label %></div>
+                <div class="AknGrid-subTitle"><%- product.identifier %></div>
+                <span class="AknBadge AknBadge--medium AknBadge--topRight AknBadge--<%- product.completenessType %>"><%- product.completeness %>%</span>
+            </div>
+        <% }) %>
+    </div>
+</div>

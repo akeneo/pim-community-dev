@@ -223,6 +223,10 @@ extensions:
         config:
             aclAddAssociations: pim_enrich_associations_edit
 
+    pim-product-edit-form-associations-products-list:
+        module: pim/product-edit-form/associated-products-list
+        parent: pim-product-edit-form-associations
+
     pim-product-edit-form-attribute-group-selector:
         module: pim/form/common/attributes/attribute-group-selector
         parent: pim-product-edit-form-attributes

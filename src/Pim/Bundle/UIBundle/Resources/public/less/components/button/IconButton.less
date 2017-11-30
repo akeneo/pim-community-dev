@@ -161,4 +161,24 @@
   &--remove {
     .imageIcon("../../../images/icon-remove.svg");
   }
+
+  &--topLeft {
+    position: absolute;
+    top: 0;
+    left: 0;
+    margin: 10px;
+    width: 25px;
+    height: 25px;
+    color: @AknSlateGrey;
+    border-radius: 20px;
+    text-align: center;
+    background-color: white;
+    opacity: 1;
+    background-size: 15px;
+    z-index: 2;
+
+    &:hover {
+      background-color: white;
+    }
+  }
 }
