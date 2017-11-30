@@ -274,16 +274,11 @@ class DelegatingProductSaver implements SaverInterface, BulkSaverInterface
     private function getFullProduct(ProductInterface $filteredProduct): ProductInterface
     {
         if (null === $filteredProduct->getId()) {
-            return $filteredProduct;
+            return $this->mergeDataOnProduct->merge($filteredProduct);
         }
 
         $fullProduct = $this->productRepository->find($filteredProduct->getId());
-        if (null === $fullProduct) {
-            return $filteredProduct;
-        }
 
-        $fullProduct = $this->mergeDataOnProduct->merge($filteredProduct, $fullProduct);
-
-        return $fullProduct;
+        return $this->mergeDataOnProduct->merge($filteredProduct, $fullProduct);
     }
 }

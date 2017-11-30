@@ -8,13 +8,16 @@ use Akeneo\Component\StorageUtils\Exception\InvalidObjectException;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Util\ClassUtils;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Entity\Attribute;
+use Pim\Component\Catalog\EntityWithFamilyVariant\AddParent;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Component\Catalog\Model\Product;
 use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Model\ProductModelInterface;
 use Pim\Component\Catalog\Model\ValueInterface;
+use Pim\Component\Catalog\Model\VariantProductInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
+use Pim\Component\Catalog\Repository\ProductModelRepositoryInterface;
 use Pim\Component\Catalog\Value\ScalarValue;
 use PimEnterprise\Component\Security\NotGrantedDataMergerInterface;
 use Prophecy\Argument;
@@ -25,9 +28,21 @@ class MergeDataOnProductSpec extends ObjectBehavior
         NotGrantedDataMergerInterface $valuesMerger,
         NotGrantedDataMergerInterface $associationMerger,
         NotGrantedDataMergerInterface $categoryMerger,
-        AttributeRepositoryInterface $attributeRepository
+        AttributeRepositoryInterface $attributeRepository,
+        AddParent $addParent,
+        ProductModelRepositoryInterface $productModelRepository
     ) {
-        $this->beConstructedWith([$valuesMerger, $associationMerger, $categoryMerger], $attributeRepository);
+        $this->beConstructedWith(
+            [$valuesMerger, $associationMerger, $categoryMerger],
+            $attributeRepository,
+            $addParent,
+            $productModelRepository
+        );
+    }
+
+    function it_return_filtered_product_when_it_is_new(ProductInterface $filteredProduct)
+    {
+        $this->merge($filteredProduct)->shouldReturn($filteredProduct);
     }
 
     function it_applies_values_from_filtered_product_to_full_product(

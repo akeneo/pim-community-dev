@@ -79,10 +79,14 @@ class NotGrantedAssociatedProductMerger implements NotGrantedDataMergerInterface
     /**
      * {@inheritdoc}
      */
-    public function merge($filteredProduct, $fullProduct)
+    public function merge($filteredProduct, $fullProduct = null)
     {
         if (!$filteredProduct instanceof ProductInterface) {
             throw InvalidObjectException::objectExpected(ClassUtils::getClass($filteredProduct), ProductInterface::class);
+        }
+
+        if (null === $fullProduct) {
+            return $filteredProduct;
         }
 
         if (!$fullProduct instanceof ProductInterface) {

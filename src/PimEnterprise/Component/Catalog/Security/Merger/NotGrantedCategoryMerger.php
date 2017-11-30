@@ -71,10 +71,14 @@ class NotGrantedCategoryMerger implements NotGrantedDataMergerInterface
     /**
      * {@inheritdoc}
      */
-    public function merge($filteredEntityWithCategories, $fullEntityWithCategories)
+    public function merge($filteredEntityWithCategories, $fullEntityWithCategories = null)
     {
         if (!$filteredEntityWithCategories instanceof CategoryAwareInterface) {
             throw InvalidObjectException::objectExpected(ClassUtils::getClass($filteredEntityWithCategories), CategoryAwareInterface::class);
+        }
+
+        if (null === $fullEntityWithCategories) {
+            return $filteredEntityWithCategories;
         }
 
         if (!$fullEntityWithCategories instanceof CategoryAwareInterface) {

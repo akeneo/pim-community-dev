@@ -23,12 +23,12 @@ use Akeneo\Component\StorageUtils\Exception\InvalidObjectException;
 interface NotGrantedDataMergerInterface
 {
     /**
-     * @param $filteredItem
-     * @param $fullItem
+     * @param mixed      $filteredItem
+     * @param mixed|null $fullItem
      *
      * @return mixed
      *
      * @throws InvalidObjectException
      */
-    public function merge($filteredItem, $fullItem);
+    public function merge($filteredItem, $fullItem = null);
 }

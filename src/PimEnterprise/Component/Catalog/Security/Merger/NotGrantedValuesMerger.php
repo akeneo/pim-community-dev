@@ -118,18 +118,22 @@ class NotGrantedValuesMerger implements NotGrantedDataMergerInterface
     /**
      * {@inheritdoc}
      */
-    public function merge($filteredProduct, $fullProduct)
+    public function merge($filteredEntityWithValues, $fullEntityWithValues = null)
     {
-        if (!$filteredProduct instanceof EntityWithValuesInterface) {
-            throw InvalidObjectException::objectExpected(ClassUtils::getClass($filteredProduct), EntityWithValuesInterface::class);
+        if (!$filteredEntityWithValues instanceof EntityWithValuesInterface) {
+            throw InvalidObjectException::objectExpected(ClassUtils::getClass($filteredEntityWithValues), EntityWithValuesInterface::class);
         }
 
-        if (!$fullProduct instanceof EntityWithValuesInterface) {
-            throw InvalidObjectException::objectExpected(ClassUtils::getClass($fullProduct), EntityWithValuesInterface::class);
+        if (null === $fullEntityWithValues) {
+            return $filteredEntityWithValues;
+        }
+
+        if (!$fullEntityWithValues instanceof EntityWithValuesInterface) {
+            throw InvalidObjectException::objectExpected(ClassUtils::getClass($fullEntityWithValues), EntityWithValuesInterface::class);
         }
 
         $rawValuesToMerge = [];
-        foreach ($fullProduct->getRawValues() as $attributeCode => $values) {
+        foreach ($fullEntityWithValues->getRawValues() as $attributeCode => $values) {
             $isGrantedAttribute = $this->isGrantedAttribute($attributeCode);
             if (null !== $isGrantedAttribute && false === $isGrantedAttribute) {
                 $rawValuesToMerge[$attributeCode] = $values;
@@ -142,23 +146,23 @@ class NotGrantedValuesMerger implements NotGrantedDataMergerInterface
             }
         }
 
-        if ($filteredProduct instanceof EntityWithFamilyVariantInterface) {
-            $values = clone $filteredProduct->getValuesForVariation();
+        if ($filteredEntityWithValues instanceof EntityWithFamilyVariantInterface) {
+            $values = clone $filteredEntityWithValues->getValuesForVariation();
         } else {
-            $values = clone $filteredProduct->getValues();
+            $values = clone $filteredEntityWithValues->getValues();
         }
 
-        $fullProduct->setValues($values);
+        $fullEntityWithValues->setValues($values);
 
         if (!empty($rawValuesToMerge)) {
             $notGrantedValues = $this->valueCollectionFactory->createFromStorageFormat($rawValuesToMerge);
 
             foreach ($notGrantedValues as $notGrantedValue) {
-                $fullProduct->addValue($notGrantedValue);
+                $fullEntityWithValues->addValue($notGrantedValue);
             }
         }
 
-        return $fullProduct;
+        return $fullEntityWithValues;
     }
 
     /**

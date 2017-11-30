@@ -34,6 +34,8 @@ services:
                 - '@pimee_catalog.security.merger.not_granted_associated_product'
                 - '@pimee_catalog.security.merger.not_granted_category'
             - '@pim_catalog.repository.attribute'
+            - '@pim_catalog.entity_with_family_variant.add_parent_to_product'
+            - '@pim_catalog.repository.product_model_without_permission'
 
     pimee_catalog.security.merger.merge_data_on_product_model:
         class: '%pimee_catalog.security.merger.merge_data_on_product_model.class%'
@@ -41,3 +43,4 @@ services:
             -
                 - '@pimee_catalog.security.merger.not_granted_values'
                 - '@pimee_catalog.security.merger.not_granted_category'
+            - '@pim_catalog.repository.product_model_without_permission'

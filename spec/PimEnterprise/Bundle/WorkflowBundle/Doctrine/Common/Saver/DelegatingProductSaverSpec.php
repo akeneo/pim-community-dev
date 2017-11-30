@@ -134,12 +134,9 @@ class DelegatingProductSaverSpec extends ObjectBehavior
         $completenessManager,
         $eventDispatcher,
         $mergeDataOnProduct,
-        $productRepository,
-        ProductInterface $filteredProduct,
-        ProductInterface $fullProduct
+        ProductInterface $filteredProduct
     ) {
-        $productRepository->find(42)->willReturn($fullProduct);
-        $mergeDataOnProduct->merge($filteredProduct, $fullProduct)->willReturn($filteredProduct);
+        $mergeDataOnProduct->merge($filteredProduct)->willReturn($filteredProduct);
         
         $filteredProduct->getId()->willReturn(null);
 

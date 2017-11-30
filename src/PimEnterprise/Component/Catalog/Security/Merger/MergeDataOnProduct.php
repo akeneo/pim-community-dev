@@ -14,10 +14,13 @@ declare(strict_types=1);
 namespace PimEnterprise\Component\Catalog\Security\Merger;
 
 use Akeneo\Component\StorageUtils\Exception\InvalidObjectException;
+use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Doctrine\Common\Util\ClassUtils;
+use Pim\Component\Catalog\EntityWithFamilyVariant\AddParent;
 use Pim\Component\Catalog\Model\EntityWithFamilyVariantInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
+use Pim\Component\Catalog\Repository\ProductModelRepositoryInterface;
 use Pim\Component\Catalog\Value\ScalarValue;
 use PimEnterprise\Component\Security\NotGrantedDataMergerInterface;
 
@@ -32,30 +35,46 @@ class MergeDataOnProduct implements NotGrantedDataMergerInterface
     /** @var AttributeRepositoryInterface */
     private $attributeRepository;
 
+    /** @var AddParent */
+    private $addParent;
+
+    /** @var ProductModelRepositoryInterface */
+    private $productModelRepository;
+
     /**
-     * @param NotGrantedDataMergerInterface        [] $mergers
-     * @param AttributeRepositoryInterface          $attributeRepository
+     * @param NotGrantedDataMergerInterface[]  $mergers
+     * @param AttributeRepositoryInterface     $attributeRepository
+     * @param AddParent                        $addParent
+     * @param ProductModelRepositoryInterface  $productModelRepository
      */
     public function __construct(
         array $mergers,
-        AttributeRepositoryInterface $attributeRepository
+        AttributeRepositoryInterface $attributeRepository,
+        AddParent $addParent,
+        ProductModelRepositoryInterface $productModelRepository
     ) {
         $this->mergers = $mergers;
         $this->attributeRepository = $attributeRepository;
+        $this->addParent = $addParent;
+        $this->productModelRepository = $productModelRepository;
     }
 
-    public function merge($filteredProduct, $fullProduct)
+    public function merge($filteredProduct, $fullProduct = null)
     {
         if (!$filteredProduct instanceof ProductInterface) {
             throw InvalidObjectException::objectExpected(ClassUtils::getClass($filteredProduct), ProductInterface::class);
         }
 
-        if (!$fullProduct instanceof ProductInterface) {
-            throw InvalidObjectException::objectExpected(ClassUtils::getClass($fullProduct), ProductInterface::class);
+        if ($filteredProduct instanceof EntityWithFamilyVariantInterface) {
+            $filteredProduct = $this->setParent($filteredProduct);
         }
 
-        if (null === $filteredProduct->getId() || null === $fullProduct) {
+        if (null === $fullProduct) {
             return $filteredProduct;
+        }
+
+        if (!$fullProduct instanceof ProductInterface) {
+            throw InvalidObjectException::objectExpected(ClassUtils::getClass($fullProduct), ProductInterface::class);
         }
 
         $fullProduct->setEnabled($filteredProduct->isEnabled());
@@ -73,8 +92,13 @@ class MergeDataOnProduct implements NotGrantedDataMergerInterface
         ));
 
         if ($filteredProduct instanceof EntityWithFamilyVariantInterface) {
-            $fullProduct->setParent($filteredProduct->getParent());
-            $fullProduct->setFamilyVariant($filteredProduct->getFamilyVariant());
+            if ($fullProduct instanceof EntityWithFamilyVariantInterface) {
+                $fullProduct->setFamilyVariant($filteredProduct->getFamilyVariant());
+            } elseif (null !== $filteredProduct->getParent()) {
+                $fullProduct = $this->addParent->to($fullProduct, $filteredProduct->getParent()->getCode());
+            }
+
+            $fullProduct = $this->setParent($fullProduct);
         }
 
         foreach ($this->mergers as $merger) {
@@ -82,5 +106,22 @@ class MergeDataOnProduct implements NotGrantedDataMergerInterface
         }
 
         return $fullProduct;
+    }
+
+    /**
+     * @param EntityWithFamilyVariantInterface $filteredProduct
+     *
+     * @return EntityWithFamilyVariantInterface
+     */
+    private function setParent(EntityWithFamilyVariantInterface $entityWithFamilyVariant): EntityWithFamilyVariantInterface
+    {
+        if (null === $entityWithFamilyVariant->getParent()) {
+            return $entityWithFamilyVariant;
+        }
+
+        $parent = $this->productModelRepository->find($entityWithFamilyVariant->getParent()->getId());
+        $entityWithFamilyVariant->setParent($parent);
+
+        return $entityWithFamilyVariant;
     }
 }
