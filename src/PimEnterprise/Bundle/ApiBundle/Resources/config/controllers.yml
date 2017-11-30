@@ -3,6 +3,7 @@ parameters:
     pimee_api.controller.product_draft.class: PimEnterprise\Bundle\ApiBundle\Controller\ProductDraftController
     pimee_api.controller.product_proposal.class: PimEnterprise\Bundle\ApiBundle\Controller\ProductProposalController
     pimee_api.controller.category_asset.class: PimEnterprise\Bundle\ApiBundle\Controller\AssetCategoryController
+    pimee_api.controller.asset_reference.class: PimEnterprise\Bundle\ApiBundle\Controller\AssetReferenceController
 
 services:
     pimee_api.controller.published_product:
@@ -99,3 +100,6 @@ services:
             - '@pim_api.pagination.parameter_validator'
             - '@pim_api.pagination.offset_hal_paginator'
             - '%pim_api.configuration%'
+
+    pimee_api.controller.asset_reference:
+        class: '%pimee_api.controller.asset_reference.class%'
