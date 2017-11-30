@@ -12,6 +12,7 @@
 namespace PimEnterprise\Component\Workflow\Model;
 
 use Pim\Component\Catalog\Model\AbstractAssociation;
+use Doctrine\Common\Collections\Collection;
 
 /**
  * Association entity
@@ -20,4 +21,11 @@ use Pim\Component\Catalog\Model\AbstractAssociation;
  */
 class PublishedProductAssociation extends AbstractAssociation implements PublishedProductAssociationInterface
 {
+    /**
+     * @TODO see issue PIM-6564
+     */
+    public function getProductModels(): Collection
+    {
+        return $this->owner->getOriginalProduct()->getAssociationForType($this->associationType)->getProductModels();
+    }
 }

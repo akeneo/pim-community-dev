@@ -147,19 +147,23 @@ JSON;
                 "associations": {
                     "X_SELL": {
                         "products": ["product_viewable_by_everybody_2"],
-                        "groups": []
+                        "groups": [],
+                        "productmodels": []
                     },
                     "PACK": {
                         "products": [],
-                        "groups": []
+                        "groups": [],
+                        "productmodels": []
                     },
                     "UPSELL": {
                         "products": [],
-                        "groups": []
+                        "groups": [],
+                        "productmodels": []
                     },
                     "SUBSTITUTION": {
                         "products": [],
-                        "groups": []
+                        "groups": [],
+                        "productmodels": []
                     }
                 },
                 "metadata": {
