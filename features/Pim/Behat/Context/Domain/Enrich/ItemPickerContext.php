@@ -24,14 +24,14 @@ class ItemPickerContext extends PimContext
     {
         $removeButton = $this->spin(function () use ($entity) {
             return $this->getSession()->getPage()
-                ->find('css', sprintf('.item-picker-basket li[data-itemCode="%s"] .remove-item', $entity));
+                ->find('css', sprintf('.item-picker-basket .remove-item[data-itemCode="%s"]', $entity));
         }, 'Cannot find button to remove from basket');
 
         $removeButton->click();
     }
 
     /**
-     * @Then the item picker basket should contain :entities
+     * @Then /^the item picker basket should contain (.+)$/
      */
     public function theItemPickerBasketShouldContain($entities)
     {
