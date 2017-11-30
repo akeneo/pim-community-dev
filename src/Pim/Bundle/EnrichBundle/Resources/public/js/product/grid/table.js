@@ -42,6 +42,15 @@ define(
             },
 
             /**
+             * Returns the stored display type for the given grid
+             *
+             * @return {String}
+             */
+            getStoredDisplayType() {
+                return localStorage.getItem(`display-selector:${this.config.gridName}`);
+            },
+
+            /**
              * Fetch default view for grid
              * @return {Promise}
              */
@@ -85,6 +94,8 @@ define(
                     );
                 }
 
+                resp.metadata = this.applyDisplayType(resp.metadata);
+
                 $(`#grid-${gridName}`).data({
                     metadata: resp.metadata,
                     data: JSON.parse(resp.data)
@@ -97,6 +108,36 @@ define(
                 datagridBuilder([StateListener]);
 
                 this.loadingMask.hide();
+            },
+
+            /**
+             * Gets the allowed display types from the datagrid config and applies them
+             * The allowed options are:
+             *
+             * manageColumns: Display column selector button or not
+             * rowView: The module to display a row
+             * label: The name of the display type in the display-selector
+             *
+             * @param  {Object} gridMetadata
+             * @param  {Object} selectedType
+             * @return {Object}
+             */
+            applyDisplayType(gridMetadata) {
+                const selectedType = this.getStoredDisplayType();
+                const metadata = Object.assign({}, gridMetadata);
+                const displayTypes = metadata.options.displayTypes || {};
+                const displayType = displayTypes[selectedType];
+
+                if (selectedType === 'default' || undefined === displayType) {
+                    return gridMetadata;
+                }
+
+                metadata.options.manageColumns = displayType.manageColumns;
+                metadata.options.rowView = displayType.rowView;
+
+                $('#product-grid').addClass(`AknGrid--${selectedType}`);
+
+                return metadata;
             },
 
             /**

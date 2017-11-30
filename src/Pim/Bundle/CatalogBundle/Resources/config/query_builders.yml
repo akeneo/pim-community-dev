@@ -14,6 +14,7 @@ parameters:
     pim_catalog.doctrine.query.filter.object_id_resolver.class:   Pim\Bundle\CatalogBundle\Doctrine\Common\Filter\ObjectIdResolver
     pim_catalog.doctrine.query.filter.object_code_resolver.class: Pim\Bundle\CatalogBundle\Doctrine\Common\Filter\ObjectCodeResolver
 
+    pim_catalog.query.elasticsearch.filter.label_or_identifier.class: Pim\Bundle\CatalogBundle\Elasticsearch\Filter\Field\LabelOrIdentifierFilter
     pim_catalog.query.elasticsearch.filter.identifier.class: Pim\Bundle\CatalogBundle\Elasticsearch\Filter\IdentifierFilter
     pim_catalog.query.elasticsearch.filter.id.class: Pim\Bundle\CatalogBundle\Elasticsearch\Filter\Field\IdFilter
     pim_catalog.query.elasticsearch.filter.family.class: Pim\Bundle\CatalogBundle\Elasticsearch\Filter\Field\FamilyFilter
@@ -44,6 +45,7 @@ parameters:
     pim_catalog.query.elasticsearch.sorter.attribute.text_area.class: Pim\Bundle\CatalogBundle\Elasticsearch\Sorter\Attribute\TextAreaSorter
 
 services:
+
     pim_catalog.query.product_query_builder_factory:
         class: '%pim_catalog.query.elasticsearch.product_query_builder_factory.class%'
         arguments:
@@ -174,6 +176,17 @@ services:
             - { name: 'pim_catalog.elasticsearch.query.product_filter', priority: 30 }
             - { name: 'pim_catalog.elasticsearch.query.product_model_filter', priority: 30 }
             - { name: 'pim_catalog.elasticsearch.query.product_and_product_model_filter', priority: 30 }
+
+    pim_catalog.query.elasticsearch.filter.label_or_identifier:
+        class: '%pim_catalog.query.elasticsearch.filter.label_or_identifier.class%'
+        arguments:
+            - ['label_or_identifier']
+            - ['CONTAINS']
+        tags:
+            - { name: 'pim_catalog.elasticsearch.query.product_filter', priority: 30 }
+            - { name: 'pim_catalog.elasticsearch.query.product_model_filter', priority: 30 }
+            - { name: 'pim_catalog.elasticsearch.query.product_and_product_model_filter', priority: 30 }
+
 
     pim_catalog.query.elasticsearch.filter.id:
         class: '%pim_catalog.query.elasticsearch.filter.id.class%'
