@@ -14,7 +14,7 @@ function(_, Backgrid, ActionCell) {
 
         /** @property {Object} */
         defaults: _.extend({}, Backgrid.Column.prototype.defaults, {
-            name: '',
+            name: 'rowActions',
             label: '',
             editable: false,
             cell: ActionCell,

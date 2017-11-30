@@ -35,7 +35,7 @@ define(
             getRenderableColumns() {
                 const type = this.getCompletenessCellType();
 
-                return [type, 'massAction', ''];
+                return [type, 'massAction', 'rowActions'];
             },
 
             /**
@@ -143,7 +143,7 @@ define(
 
                 if (columnName === type) {
                     $(cellElement).addClass('AknBadge--topRight');
-                } else if (columnName === '') {
+                } else if (columnName === 'rowActions') {
                     $('.AknIconButton', cellElement).addClass('AknIconButton--white');
                 }
             }
