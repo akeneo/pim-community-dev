@@ -7,6 +7,8 @@ String[] features = ["features"]
 String launchUnitTests = "yes"
 String launchIntegrationTests = "yes"
 String launchBehatTests = "yes"
+String verboseOutputs = "yes"
+String dotsPerLine = "50"
 
 stage("Build") {
     milestone 1
@@ -16,6 +18,8 @@ stage("Build") {
                 choice(choices: 'yes\nno', description: 'Run unit tests and code style checks', name: 'launchUnitTests'),
                 choice(choices: 'yes\nno', description: 'Run integration tests', name: 'launchIntegrationTests'),
                 choice(choices: 'yes\nno', description: 'Run behat tests', name: 'launchBehatTests'),
+                choice(choices: 'no\nyes', description: 'Enable Verbose mode', name: 'verboseOutputs'),
+                string(defaultValue: '50', description: 'Number of dots per line', name: 'dotsperline'),
                 string(defaultValue: 'ee,ce,ceodm,eeodm', description: 'PIM edition the behat tests should run on (comma separated values)', name: 'editions'),
                 string(defaultValue: 'features,vendor/akeneo/pim-community-dev/features', description: 'Behat scenarios to build', name: 'features'),
             ])
@@ -25,6 +29,8 @@ stage("Build") {
             launchUnitTests = userInput['launchUnitTests']
             launchIntegrationTests = userInput['launchIntegrationTests']
             launchBehatTests = userInput['launchBehatTests']
+            verboseOutputs = userInput['verboseOutputs']
+            dotsPerLine = userInput['dotsperline']
         }
     }
     milestone 2
@@ -267,7 +273,7 @@ stage("Test") {
                         }
 
                         return messages
-                    }, 30, "ceodm")
+                    }, 30, "ceodm", verboseOutputs, dotsPerLine)
                 } else {
                     echo "Skipping integration test"
                 }
@@ -308,7 +314,7 @@ stage("Test") {
                         }
 
                         return messages
-                    }, 100, "ce")
+                    }, 100, "ce", verboseOutputs, dotsPerLine)
                 } else {
                     echo "Skipping behat test"
                 }
@@ -349,7 +355,7 @@ stage("Test") {
                         }
 
                         return messages
-                    }, 150, "ee")
+                    }, 150, "ee", verboseOutputs, dotsPerLine)
                 } else {
                     echo "Skipping behat test"
                 }
@@ -390,7 +396,7 @@ stage("Test") {
                         }
 
                         return messages
-                    }, 100, "ceodm")
+                    }, 100, "ceodm", verboseOutputs, dotsPerLine)
                 } else {
                     echo "Skipping behat test"
                 }
@@ -431,7 +437,7 @@ stage("Test") {
                         }
 
                         return messages
-                    }, 150, "eeodm")
+                    }, 100, "eeodm", verboseOutputs, dotsPerLine)
                 } else {
                     echo "Skipping behat test"
                 }
@@ -516,12 +522,14 @@ def withGrunt(body) {
     }
 }
 
-def queue(body, scale, edition) {
+def queue(body, scale, edition, verboseOutputs, dotsPerLine) {
+    def verbosity = (verboseOutputs == "yes") ? "-v" : ""
+    def linesize = (dotsPerLine.isNumber())? dotsPerLine :"50"
     clearTemplateNames()
     def uuid = UUID.randomUUID().toString()
     podTemplate(label: "pubsub-" + uuid, containers: [
         containerTemplate(name: "php", ttyEnabled: true, command: 'cat', image: "akeneo/apache-php:php-5.6", resourceRequestCpu: '100m', alwaysPullImage: true, resourceRequestMemory: '200Mi'),
-        containerTemplate(name: "gcloud", ttyEnabled: true, command: 'cat', image: "eu.gcr.io/akeneo-ci/gcloud:1.0.17", resourceRequestCpu: '100m', resourceRequestMemory: '200Mi', envVars: [envVar(key: "PUBSUB_PROJECT_ID", value: "akeneo-ci")])
+        containerTemplate(name: "gcloud", ttyEnabled: true, command: 'cat', image: "eu.gcr.io/akeneo-ci/gcloud:1.0.19", resourceRequestCpu: '100m', resourceRequestMemory: '200Mi', envVars: [envVar(key: "PUBSUB_PROJECT_ID", value: "akeneo-ci")])
     ], annotations: [
         podAnnotation(key: "pod.beta.kubernetes.io/init-containers", value: "[{\"name\": \"pim\", \"imagePullPolicy\": \"Always\", \"image\": \"eu.gcr.io/akeneo-ci/pim-community-dev:pull-request-${env.CHANGE_ID}-build-${env.BUILD_NUMBER}-${edition}\", \"command\": [\"sh\", \"-c\", \"cp -Rp /pim /home/jenkins\"], \"volumeMounts\":[{\"name\":\"workspace-volume\",\"mountPath\":\"/home/jenkins\"}]}]")
     ], volumes: [
@@ -556,7 +564,7 @@ def queue(body, scale, edition) {
 
                 try {
                     sh "kubectl apply -f /home/jenkins/pim/.ci/k8s/"
-                    sh "gcloud.phar job:wait ${NODE_NAME}-results-subscription ${size} ${env.WORKSPACE} --ansi"
+                    sh "gcloud.phar ${verbosity} job:wait --dotsperline ${linesize} ${NODE_NAME}-results-subscription ${size} ${env.WORKSPACE} --ansi"
                 } finally {
                     sh "kubectl delete job ${NODE_NAME} --namespace=jenkins-prod"
                     sh "gcloud.phar pubsub:topic:delete ${NODE_NAME}"
