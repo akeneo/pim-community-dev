@@ -15,8 +15,8 @@ define(
         'pimee/template/picker/asset-collection',
         'pim/fetcher-registry',
         'pim/form-builder',
-        'backbone/bootstrap-modal',
-        'routing'
+        'routing',
+        'backbone/bootstrap-modal'
     ],
     function (
         $,

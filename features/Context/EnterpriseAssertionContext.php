@@ -78,25 +78,6 @@ class EnterpriseAssertionContext extends BaseAssertionContext
     }
 
     /**
-     * @Then /^the asset basket item "([^"]+)" should contain the thumbnail for channel "([^"]+)"(?: and locale "([^"]+)")?$/
-     *
-     * @param string      $code
-     * @param string      $channelCode
-     * @param string|null $localeCode
-     *
-     * @throws ExpectationException
-     */
-    public function theAssetBasketItemShouldContainThumbnailForContext($code, $channelCode, $localeCode = null)
-    {
-        $baksetItem = $this->getItemPickerBasketItems($code);
-        $thumbnail  = $this->spin(function () use ($baksetItem) {
-            return $baksetItem->find('css', '.AknAssetCollectionField-assetThumbnail');
-        }, 'Impossible to find the thumbnail');
-
-        $this->checkThumbnailUrlForContext($thumbnail, $code, $channelCode, $localeCode);
-    }
-
-    /**
      * @Then /^the "([^"]*)" asset gallery item "([^"]*)" should contain the thumbnail for channel "([^"]+)"(?: and locale "([^"]+)")?$/
      *
      * @param string      $field
@@ -207,7 +188,7 @@ class EnterpriseAssertionContext extends BaseAssertionContext
      *
      * @throws ExpectationException
      */
-    protected function checkThumbnailUrlForContext(NodeElement $thumbnail, $code, $channelCode, $localeCode = null)
+    public function checkThumbnailUrlForContext(NodeElement $thumbnail, $code, $channelCode, $localeCode = null)
     {
         $rawStyle = $thumbnail->getAttribute('style');
 
