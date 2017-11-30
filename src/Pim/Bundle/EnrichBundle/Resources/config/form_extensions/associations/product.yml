@@ -3,7 +3,6 @@ extensions:
         module: pim/common/item-picker
         config:
             datagridName: association-product-picker-grid
-            title: pim_enrich.form.product.tab.associations.manage
             description: pim_enrich.form.product.tab.associations.manage_description
             categoryTreeRoute: pim_enrich_categorytree
             columnName: identifier

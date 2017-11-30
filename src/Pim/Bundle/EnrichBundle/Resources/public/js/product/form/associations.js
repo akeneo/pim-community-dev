@@ -57,7 +57,7 @@ define(
             events: {
                 'click .associations-list li': 'changeAssociationType',
                 'click .target-button': 'changeAssociationTargets',
-                'click .add-products': 'addProducts'
+                'click .add-associations': 'addAssociations'
             },
             datagrids: {},
 
@@ -178,7 +178,7 @@ define(
                                 associationTypes,
                                 {code: this.getCurrentAssociationType()}
                             ),
-                            addProductsLabel: __('pim_enrich.form.product.tab.associations.add_products')
+                            addAssociationsLabel: __('pim_enrich.form.product.tab.associations.add_associations')
                         })
                     );
                     this.renderPanes();
@@ -594,15 +594,20 @@ define(
             },
 
             /**
-             * Opens the panel to select new products
+             * Opens the panel to select new products to associate
              */
-            addProducts: function () {
+            addAssociations: function () {
                 this.manageProducts().then((productIdentifiers) => {
                     const assocType = this.getCurrentAssociationType();
                     const assocTarget = this.getCurrentAssociationTarget();
-                    this.updateFormDataAssociations(productIdentifiers, assocType, assocTarget);
+                    const previousIdentifiers = this.getFormData().associations[assocType][assocTarget];
 
-                    this.trigger('collection:change', productIdentifiers);
+                    this.updateFormDataAssociations(
+                        previousIdentifiers.concat(productIdentifiers),
+                        assocType,
+                        assocTarget
+                    );
+
                     this.render();
                 });
             },
@@ -616,45 +621,53 @@ define(
                 let deferred = $.Deferred();
 
                 FormBuilder.build('pim-associations-product-picker-form').then((form) => {
-                    let modal = new Backbone.BootstrapModal({
-                        className: 'modal modal--fullPage modal--topButton',
-                        modalOptions: {
-                            backdrop: 'static',
-                            keyboard: false
-                        },
-                        allowCancel: true,
-                        okCloses: false,
-                        title: '',
-                        content: '',
-                        cancelText: ' ',
-                        okText: __('confirmation.title')
-                    });
-                    modal.open();
+                    FetcherRegistry
+                        .getFetcher('association-type')
+                        .fetch(this.getCurrentAssociationType())
+                        .then((associationType) => {
+                            form.setCustomTitle(__('pim_enrich.form.product.tab.associations.manage', {
+                                associationType: associationType.labels[UserContext.get('catalogLocale')]
+                            }));
 
-                    form.setImagePathMethod(function (item) {
-                        let filePath = null;
-                        if (item.meta.image !== null) {
-                            filePath = item.meta.image.filePath;
-                        }
+                            form.setImagePathMethod(function (item) {
+                                let filePath = null;
+                                if (item.meta.image !== null) {
+                                    filePath = item.meta.image.filePath;
+                                }
 
-                        return MediaUrlGenerator.getMediaShowUrl(filePath, 'thumbnail_small');
-                    });
+                                return MediaUrlGenerator.getMediaShowUrl(filePath, 'thumbnail_small');
+                            });
 
-                    form.setLabelMethod(function (item) {
-                        return item.meta.label[this.getLocale()];
-                    });
+                            form.setLabelMethod(function (item) {
+                                return item.meta.label[this.getLocale()];
+                            });
 
-                    form.setElement(modal.$('.modal-body')).render();
+                            let modal = new Backbone.BootstrapModal({
+                                className: 'modal modal--fullPage modal--topButton',
+                                modalOptions: {
+                                    backdrop: 'static',
+                                    keyboard: false
+                                },
+                                allowCancel: true,
+                                okCloses: false,
+                                title: '',
+                                content: '',
+                                cancelText: ' ',
+                                okText: __('confirmation.title')
+                            });
+                            modal.open();
+                            modal.on('cancel', deferred.reject);
+                            modal.on('ok', () => {
+                                const products = form.getItems().sort((a, b) => {
+                                    return a.code < b.code;
+                                });
+                                modal.close();
 
-                    modal.on('cancel', deferred.reject);
-                    modal.on('ok', () => {
-                        const products = form.getItems().sort((a, b) => {
-                            return a.code < b.code;
+                                deferred.resolve(products);
+                            });
+
+                            form.setElement(modal.$('.modal-body')).render();
                         });
-                        modal.close();
-
-                        deferred.resolve(products);
-                    });
                 });
 
                 return deferred.promise();

@@ -478,9 +478,9 @@ pim_enrich:
                         number_of_associations: "{{ productCount }} product(s) and {{ groupCount }} group(s)"
                     association_type_selector: Association type
                     target: Target
-                    manage: Add products to association
-                    manage_description: Select the products you want to add to the current product
-                    add_products: Add products
+                    manage: Add {{ associationType }} associations
+                    manage_description: Select the products you want to associate with the current product
+                    add_associations: Add associations
                 attributes:
                     title: Attributes
                     btn:

@@ -54,6 +54,7 @@ define(
             labelMethod: () => {
                 throw new Error('You have to define "labelMethod" method using "setLabelMethod" method.')
             },
+            title: '',
 
             /**
              * {@inheritdoc}
@@ -61,6 +62,7 @@ define(
             initialize: function (config) {
                 this.datagridModel = null;
                 this.config = config.config;
+                this.title = __(this.config.title);
 
                 if (undefined === this.config.datagridName) {
                     throw new Error('You have to add parameter "datagridName" to the configuration of this module.');
@@ -110,7 +112,7 @@ define(
                 }
 
                 this.$el.html(this.template({
-                    title: __(this.config.title),
+                    title: this.title,
                     description: __(this.config.description),
                     locale: this.getLocale(),
                     datagridIdentifier: this.datagrid.name
@@ -325,12 +327,31 @@ define(
                     }.bind(this));
             },
 
+            /**
+             * Updates the function generating the path of the basket images
+             *
+             * @param {Function} f
+             */
             setImagePathMethod: function (f) {
                 this.imagePathMethod = f;
             },
 
+            /**
+             * Updates the function generating the label of the basket images
+             *
+             * @param {Function} f
+             */
             setLabelMethod: function (f) {
                 this.labelMethod = f;
+            },
+
+            /**
+             * Allows overriding of the default title
+             *
+             * @param {String} title
+             */
+            setCustomTitle: function (title) {
+                this.title = title;
             },
 
             /**

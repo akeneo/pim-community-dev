@@ -50,4 +50,32 @@ datagrid:
                     sorter:    product_completeness
             default:
                 updated: '%oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC'
-        filters: {}
+        filters:
+            columns:
+                family:
+                    type:      product_family
+                    label:     Family
+                    data_name: family
+                    options:
+                        field_options:
+                            multiple: true
+                            attr:
+                                empty_choice: true
+                enabled:
+                    type:      product_enabled
+                    ftype:     choice
+                    label:     Status
+                    data_name: enabled
+                    options:
+                        field_options:
+                            choices:
+                                Enabled: 1
+                                Disabled: 0
+                completeness:
+                    type:      product_completeness
+                    label:     Complete
+                    data_name: ratio
+                label_or_identifier:
+                    type: label_or_identifier
+                    label: Label or identifier
+                    data_name: label_or_identifier
