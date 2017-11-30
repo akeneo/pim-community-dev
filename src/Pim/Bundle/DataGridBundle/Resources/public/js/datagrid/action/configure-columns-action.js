@@ -71,7 +71,7 @@ define(
             initialize: function () {
                 mediator.once('grid_load:start', this.setupOptions.bind(this));
 
-                 BaseForm.prototype.initialize.apply(this, arguments);
+                BaseForm.prototype.initialize.apply(this, arguments);
             },
 
             /**
@@ -82,6 +82,10 @@ define(
             setupOptions: function(collection, gridContainer) {
                 const options = gridContainer.options;
                 this.options = options;
+
+                if (_.has(options, 'manageColumns') && false === options.manageColumns) {
+                    return;
+                }
 
                 if (_.has(options, 'label')) {
                     this.label = __(options.label);

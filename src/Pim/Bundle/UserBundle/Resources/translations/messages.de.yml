@@ -76,7 +76,7 @@ Birthday: Geburtstag
 API key: API-Schlüssel
 Ui locale: UI-Gebietsschema
 UI locale: UI-Gebietsschema
-User salt: Benutzer-Salt
+User salt: Benutzer-Streuung
 Current password: Aktuelles Passwort
 New password: Neues Passwort
 Repeat new password: Neues Passwort (Wiederholung)
@@ -154,4 +154,4 @@ Forgot Password: Passwort vergessen
 Request: Anfrage
 Check Email: Posteingang überprüfen
 password_reset_email_sent: Eine E-Mail wurde an %email% gesendet. Klicken Sie auf den Link darin, um Ihr Passwort zurückzusetzen.
-Go to homepage: Zur Startseite
+Go to homepage: Zurück zur Hauptseite

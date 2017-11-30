@@ -161,7 +161,13 @@ class DataGridContext extends PimContext implements PageObjectAware
                 $this->assertColumnContainsValue($code, $data['column'], $data['value']);
 
                 return true;
-            }, sprintf('Expecting column "%s" to contain "%s" on row %s', $data['column'], $data['value'], $code));
+            }, sprintf(
+                'Expecting column "%s" to contain "%s" on row "%s", found "%s"',
+                $data['column'],
+                $data['value'],
+                $code,
+                $this->getDatagrid()->getColumnValue($data['column'], $code)
+            ));
         }
     }
 
@@ -1118,6 +1124,34 @@ class DataGridContext extends PimContext implements PageObjectAware
                 )
             );
         }
+    }
+
+    /**
+      * @param string $typeLabel
+      *
+      * @Then /^I should see "([^"]*)" in the display dropdown$/
+      *
+      * @throws ExpectationException
+      */
+    public function iShouldSeeInTheDisplayDropdown($typeLabel)
+    {
+        return $this->getCurrentPage()->getDropdownButton($typeLabel);
+    }
+
+    /**
+      * @param string $typeLabel
+      *
+      * @Then /^I should see the "([^"]*)" display in the datagrid$/
+      *
+      * @throws ExpectationException
+      */
+    public function iShouldSeeTheDisplayInTheDatagrid($typeLabel)
+    {
+        return $this->spin(function () use ($typeLabel) {
+            return $this->getCurrentPage()->find('css',
+                 sprintf('.AknGrid--%s', strtolower($typeLabel))
+             );
+        }, sprintf('Display type %s is not shown in the datagrid', $typeLabel));
     }
 
     /**

@@ -2,7 +2,6 @@
 
 namespace Pim\Component\Catalog\Validator\Constraints;
 
-use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Model\FamilyInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
@@ -12,7 +11,7 @@ use Symfony\Component\Validator\ConstraintValidator;
  *
  * This validator will check that:
  * - the attribute defined as label is an attribute of the family
- * - the attribute type is "image"
+ * - the attribute type is defined as parameter
  *
  * @author    Pierre Allard <pierre.allard@akeneo.com>
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
@@ -20,6 +19,17 @@ use Symfony\Component\Validator\ConstraintValidator;
  */
 class FamilyAttributeAsImageValidator extends ConstraintValidator
 {
+    /** @var string[] */
+    protected $validAttributeTypes;
+
+    /**
+     * @param string[] $validAttributeTypes
+     */
+    public function __construct(array $validAttributeTypes)
+    {
+        $this->validAttributeTypes = $validAttributeTypes;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -42,7 +52,12 @@ class FamilyAttributeAsImageValidator extends ConstraintValidator
 
         if (!$this->isAttributeAsImageTypeValid($family)) {
             $this->context
-                ->buildViolation($constraint->messageAttributeType)
+                ->buildViolation(sprintf(
+                    $constraint->messageAttributeType,
+                    join(', ', array_map(function ($validAttributeType) {
+                        return sprintf('"%s"', $validAttributeType);
+                    }, $this->validAttributeTypes))
+                ))
                 ->atPath($constraint->propertyPath)
                 ->addViolation();
         }
@@ -72,7 +87,7 @@ class FamilyAttributeAsImageValidator extends ConstraintValidator
      */
     protected function isAttributeAsImageTypeValid(FamilyInterface $family): bool
     {
-        return AttributeTypes::IMAGE === $family->getAttributeAsImage()->getType();
+        return in_array($family->getAttributeAsImage()->getType(), $this->validAttributeTypes);
     }
 
     /**

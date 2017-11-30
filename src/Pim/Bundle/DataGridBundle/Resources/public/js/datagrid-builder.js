@@ -187,7 +187,9 @@ define([
                     toolbarOptions: metadata.options.toolbarOptions || {},
                     multipleSorting: metadata.options.multipleSorting || false,
                     entityHint: metadata.options.entityHint,
-                    row: metadata.options.rowView ? requireContext(metadata.options.rowView) : null
+                    row: metadata.options.rowView ? requireContext(metadata.options.rowView) : null,
+                    displayTypes: metadata.options.displayTypes,
+                    manageColumns: metadata.options.manageColumns
                 };
             },
 

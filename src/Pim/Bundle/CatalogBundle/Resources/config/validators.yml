@@ -192,6 +192,8 @@ services:
 
     pim_catalog.validator.constraint.family_attribute_as_image:
         class: '%pim_catalog.validator.constraint.family_attribute_as_image.class%'
+        arguments:
+            - [ 'pim_catalog_image' ]
         tags:
             - { name: validator.constraint_validator, alias: pim_family_attribute_as_image_validator }
 

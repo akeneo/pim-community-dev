@@ -34,8 +34,8 @@ class ProductModelNormalizer implements NormalizerInterface
     /** @var NormalizerInterface */
     private $versionNormalizer;
 
-    /** @var NormalizerInterface */
-    private $fileNormalizer;
+    /** @var ImageNormalizer */
+    private $imageNormalizer;
 
     /** @var VersionManager */
     private $versionManager;
@@ -73,11 +73,12 @@ class ProductModelNormalizer implements NormalizerInterface
     /** @var NormalizerInterface */
     private $incompleteValuesNormalizer;
 
+
     /**
      * @param NormalizerInterface                       $normalizer
      * @param NormalizerInterface                       $versionNormalizer
-     * @param NormalizerInterface                       $fileNormalizer
      * @param VersionManager                            $versionManager
+     * @param ImageNormalizer                           $imageNormalizer
      * @param AttributeConverterInterface               $localizedConverter
      * @param ConverterInterface                        $productValueConverter
      * @param FormProviderInterface                     $formProvider
@@ -93,8 +94,8 @@ class ProductModelNormalizer implements NormalizerInterface
     public function __construct(
         NormalizerInterface $normalizer,
         NormalizerInterface $versionNormalizer,
-        NormalizerInterface $fileNormalizer,
         VersionManager $versionManager,
+        ImageNormalizer $imageNormalizer,
         AttributeConverterInterface $localizedConverter,
         ConverterInterface $productValueConverter,
         FormProviderInterface $formProvider,
@@ -107,17 +108,17 @@ class ProductModelNormalizer implements NormalizerInterface
         AscendantCategoriesInterface $ascendantCategoriesQuery,
         NormalizerInterface $incompleteValuesNormalizer
     ) {
-        $this->normalizer            = $normalizer;
-        $this->versionNormalizer     = $versionNormalizer;
-        $this->fileNormalizer        = $fileNormalizer;
-        $this->versionManager        = $versionManager;
-        $this->localizedConverter    = $localizedConverter;
+        $this->normalizer = $normalizer;
+        $this->versionNormalizer = $versionNormalizer;
+        $this->versionManager = $versionManager;
+        $this->imageNormalizer = $imageNormalizer;
+        $this->localizedConverter = $localizedConverter;
         $this->productValueConverter = $productValueConverter;
-        $this->formProvider          = $formProvider;
-        $this->localeRepository      = $localeRepository;
-        $this->entityValuesFiller    = $entityValuesFiller;
-        $this->attributesProvider    = $attributesProvider;
-        $this->navigationNormalizer  = $navigationNormalizer;
+        $this->formProvider = $formProvider;
+        $this->localeRepository = $localeRepository;
+        $this->entityValuesFiller = $entityValuesFiller;
+        $this->attributesProvider = $attributesProvider;
+        $this->navigationNormalizer = $navigationNormalizer;
         $this->variantProductRatioQuery = $variantProductRatioQuery;
         $this->imageAsLabel = $imageAsLabel;
         $this->ascendantCategoriesQuery = $ascendantCategoriesQuery;
@@ -174,7 +175,7 @@ class ProductModelNormalizer implements NormalizerInterface
                 'model_type'                => 'product_model',
                 'attributes_for_this_level' => $levelAttributes,
                 'attributes_axes'           => $axesAttributes,
-                'image'                     => $this->normalizeImage($closestImage, $format, $context),
+                'image'                     => $this->normalizeImage($closestImage, $context),
                 'variant_navigation'        => $this->navigationNormalizer->normalize($productModel, $format, $context),
                 'ascendant_category_ids'    => $this->ascendantCategoriesQuery->getCategoryIds($productModel),
                 'completenesses'            => $this->incompleteValuesNormalizer->normalize($productModel, $format, $context),
@@ -211,17 +212,12 @@ class ProductModelNormalizer implements NormalizerInterface
 
     /**
      * @param ValueInterface|null $data
-     * @param string|null         $format
      * @param array               $context
      *
      * @return array|null
      */
-    private function normalizeImage(?ValueInterface $data, ?string $format, array $context = []): ?array
+    private function normalizeImage(?ValueInterface $data, array $context = []): ?array
     {
-        if (null === $data || null === $data->getData()) {
-            return null;
-        }
-
-        return $this->fileNormalizer->normalize($data->getData(), $format, $context);
+        return $this->imageNormalizer->normalize($data, $context['locale']);
     }
 }
