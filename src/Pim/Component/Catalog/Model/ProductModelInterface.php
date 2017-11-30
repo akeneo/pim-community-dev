@@ -32,7 +32,7 @@ interface ProductModelInterface extends
      *
      * @return string
      */
-    public function getCode(): string;
+    public function getCode(): ?string;
 
     /**
      * Sets the product model identifier.

@@ -429,6 +429,14 @@ abstract class AbstractProduct implements ProductInterface
     /**
      * {@inheritdoc}
      */
+    public function setCategories(Collection $categories): void
+    {
+        $this->categories = $categories;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function removeCategory(BaseCategoryInterface $category)
     {
         $this->categories->removeElement($category);
@@ -462,6 +470,14 @@ abstract class AbstractProduct implements ProductInterface
         sort($codes);
 
         return $codes;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setGroups(Collection $groups): void
+    {
+        $this->groups = $groups;
     }
 
     /**
@@ -623,9 +639,9 @@ abstract class AbstractProduct implements ProductInterface
     /**
      * {@inheritdoc}
      */
-    public function setAssociations(array $associations = [])
+    public function setAssociations(Collection $associations)
     {
-        $this->associations = new ArrayCollection($associations);
+        $this->associations = $associations;
 
         return $this;
     }
@@ -674,5 +690,13 @@ abstract class AbstractProduct implements ProductInterface
         $this->uniqueData->add($uniqueData);
 
         return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setUniqueData(Collection $data): void
+    {
+        $this->uniqueData = $data;
     }
 }
