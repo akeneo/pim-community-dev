@@ -158,7 +158,7 @@ pim_enrich:
       history:
         version: Versión
         author: Autor
-        logged_at: Registrado el
+        logged_at: Sesión iniciada el
         from: De
         modified: Modificado
         old_value: Valor anterior

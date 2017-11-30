@@ -161,7 +161,13 @@ class DataGridContext extends PimContext implements PageObjectAware
                 $this->assertColumnContainsValue($code, $data['column'], $data['value']);
 
                 return true;
-            }, sprintf('Expecting column "%s" to contain "%s" on row %s', $data['column'], $data['value'], $code));
+            }, sprintf(
+                'Expecting column "%s" to contain "%s" on row "%s", found "%s"',
+                $data['column'],
+                $data['value'],
+                $code,
+                $this->getDatagrid()->getColumnValue($data['column'], $code)
+            ));
         }
     }
 

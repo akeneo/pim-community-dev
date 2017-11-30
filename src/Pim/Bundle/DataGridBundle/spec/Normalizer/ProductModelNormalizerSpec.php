@@ -5,6 +5,7 @@ namespace spec\Pim\Bundle\DataGridBundle\Normalizer;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface;
 use Pim\Bundle\DataGridBundle\Normalizer\ProductModelNormalizer;
+use Pim\Bundle\EnrichBundle\Normalizer\ImageNormalizer;
 use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Component\Catalog\Model\FamilyTranslationInterface;
@@ -26,9 +27,10 @@ class ProductModelNormalizerSpec extends ObjectBehavior
         NormalizerInterface $normalizer,
         CollectionFilterInterface $filter,
         VariantProductRatioInterface $findVariantProductCompletenessQuery,
-        ImageAsLabel $imageAsLabel
+        ImageAsLabel $imageAsLabel,
+        ImageNormalizer $imageNormalizer
     ) {
-        $this->beConstructedWith($filter, $findVariantProductCompletenessQuery, $imageAsLabel);
+        $this->beConstructedWith($filter, $findVariantProductCompletenessQuery, $imageAsLabel, $imageNormalizer);
 
         $normalizer->implement(NormalizerInterface::class);
         $this->setNormalizer($normalizer);
@@ -58,6 +60,7 @@ class ProductModelNormalizerSpec extends ObjectBehavior
         $filter,
         $findVariantProductCompletenessQuery,
         $imageAsLabel,
+        $imageNormalizer,
         ProductModelInterface $productModel,
         FamilyVariantInterface $familyVariant,
         FamilyInterface $family,
@@ -72,6 +75,7 @@ class ProductModelNormalizerSpec extends ObjectBehavior
             'filter_types' => ['pim.transform.product_value.structured'],
             'locales'      => ['en_US'],
             'channels'     => ['ecommerce'],
+            'data_locale'  => 'en_US',
         ];
 
         $findVariantProductCompletenessQuery->findComplete($productModel)->willReturn($completeness);
@@ -113,11 +117,9 @@ class ProductModelNormalizerSpec extends ObjectBehavior
         $productModel->getLabel('en_US', 'ecommerce')->willReturn('Purple tshirt');
 
         $imageAsLabel->value($productModel)->willReturn($image);
-        $normalizer->normalize($image, Argument::any(), Argument::any())->willReturn([
-            'data' => [
-                'filePath'         => '/p/i/m/4/all.png',
-                'originalFileName' => 'all.png',
-            ],
+        $imageNormalizer->normalize($image, Argument::any())->willReturn([
+            'filePath'         => '/p/i/m/4/all.png',
+            'originalFileName' => 'all.png',
         ]);
 
         $localeEN->getCode()->willReturn('en_US');
@@ -155,8 +157,7 @@ class ProductModelNormalizerSpec extends ObjectBehavior
             ],
         ];
 
-        $this->normalize($productModel, 'datagrid',
-            ['locales' => ['en_US'], 'channels' => ['ecommerce']])->shouldReturn($data);
+        $this->normalize($productModel, 'datagrid', $context)->shouldReturn($data);
     }
 
     function it_normalizes_a_product_model_without_label(
@@ -164,6 +165,7 @@ class ProductModelNormalizerSpec extends ObjectBehavior
         $filter,
         $findVariantProductCompletenessQuery,
         $imageAsLabel,
+        $imageNormalizer,
         ProductModelInterface $productModel,
         FamilyVariantInterface $familyVariant,
         FamilyInterface $family,
@@ -178,6 +180,7 @@ class ProductModelNormalizerSpec extends ObjectBehavior
             'filter_types' => ['pim.transform.product_value.structured'],
             'locales'      => ['en_US'],
             'channels'     => ['ecommerce'],
+            'data_locale'  => 'en_US',
         ];
 
         $findVariantProductCompletenessQuery->findComplete($productModel)->willReturn($completeness);
@@ -219,11 +222,9 @@ class ProductModelNormalizerSpec extends ObjectBehavior
         $productModel->getLabel('en_US', 'ecommerce')->willReturn('Purple tshirt');
 
         $imageAsLabel->value($productModel)->willReturn($image);
-        $normalizer->normalize($image, Argument::any(), Argument::any())->willReturn([
-            'data' => [
-                'filePath'         => '/p/i/m/4/all.png',
-                'originalFileName' => 'all.png',
-            ],
+        $imageNormalizer->normalize($image, Argument::any())->willReturn([
+            'filePath'         => '/p/i/m/4/all.png',
+            'originalFileName' => 'all.png',
         ]);
 
         $localeEN->getCode()->willReturn('en_US');
@@ -261,7 +262,6 @@ class ProductModelNormalizerSpec extends ObjectBehavior
             ],
         ];
 
-        $this->normalize($productModel, 'datagrid', ['locales' => ['en_US'], 'channels' => ['ecommerce']])
-            ->shouldReturn($data);
+        $this->normalize($productModel, 'datagrid', $context)->shouldReturn($data);
     }
 }

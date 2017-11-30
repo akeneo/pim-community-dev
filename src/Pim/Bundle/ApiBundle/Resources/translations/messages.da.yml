@@ -29,7 +29,7 @@ pim_api:
       list: List sammenhængstyper
   acl_group:
     overall_access: Samlede Web API-adgang
-    attribute: Egenskaber
+    attribute: Attributter
     attribute_option: Attribut valg
     attribute_group: Attributgrupper
     category: Kategorier

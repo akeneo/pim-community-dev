@@ -218,10 +218,11 @@ interface ProductInterface extends
      * Get product label
      *
      * @param string $locale
+     * @param string $scopeCode
      *
      * @return mixed|string
      */
-    public function getLabel($locale = null);
+    public function getLabel($locale = null, $scopeCode = null);
 
     /**
      * Set family

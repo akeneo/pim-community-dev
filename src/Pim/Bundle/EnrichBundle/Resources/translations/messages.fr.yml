@@ -577,7 +577,7 @@ pim_title.association_type:
   edit: "Types d'association %association type.label% | Modifier"
 pim_title.group_type:
   index: "Types de groupe"
-  edit: "Types de groupe %group type.label% | Modifier"
+  edit: "Type de groupe %group type.label% | Modifier"
 pim_title.mass_edit_product_action:
   choose: "Édition de masse | Choisir"
   configure: "Édition de masse | Configurer"
