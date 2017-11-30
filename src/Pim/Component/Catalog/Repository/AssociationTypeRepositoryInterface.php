@@ -24,4 +24,12 @@ interface AssociationTypeRepositoryInterface extends IdentifiableObjectRepositor
      * @return AssociationTypeInterface[]
      */
     public function findMissingAssociationTypes(ProductInterface $product);
+
+    /**
+     * Return the number of association types
+     *
+     * @return int
+     */
+    public function countAll(): int;
+
 }
