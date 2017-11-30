@@ -31,5 +31,4 @@ interface AssociationTypeRepositoryInterface extends IdentifiableObjectRepositor
      * @return int
      */
     public function countAll(): int;
-
 }
