@@ -1,6 +1,7 @@
 config:
     paths:
         oro/datagrid/expand-cell:                  pimenterprisedatagrid/js/datagrid/cell/expand-cell
+        oro/datagrid/asset-row:                    pimenterprisedatagrid/js/datagrid/row/asset-row
         oro/datagrid/approve-proposal-action:      pimenterprisedatagrid/js/datagrid/action/approve-proposal-action
         oro/datagrid/reject-proposal-action:       pimenterprisedatagrid/js/datagrid/action/reject-proposal-action
         oro/datagrid/remove-proposal-action:       pimenterprisedatagrid/js/datagrid/action/remove-proposal-action

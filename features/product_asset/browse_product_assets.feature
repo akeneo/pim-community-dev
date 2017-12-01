@@ -71,3 +71,14 @@ Feature: Browse product assets
     And the row "minivan" should contain:
       | column      | value  |
       | description | My car |
+
+  Scenario: Successfully select a display type for product assets
+    Given I am on the assets grid
+    And I press "Gallery" on the "List" dropdown button
+    Then I should see the "Gallery" display in the datagrid
+
+  Scenario: Successfully keep selected display type on refresh
+    Given I am on the assets grid
+    And I press "Gallery" on the "List" dropdown button
+    And I refresh current page
+    Then I should see the "Gallery" display in the datagrid

@@ -132,6 +132,14 @@ extensions:
         parent: pimee-asset-index-grid-container
         targetZone: toolbar
 
+    pimee-asset-index-display-selector:
+        module: pim/datagrid/display-selector
+        parent: pimee-asset-index-grid-container
+        targetZone: toolbar
+        position: 20
+        config:
+            gridName: asset-grid
+
     pimee-asset-index-grid:
         module: pim/grid/table
         parent: pimee-asset-index-grid-container
