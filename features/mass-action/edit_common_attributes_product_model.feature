@@ -6,6 +6,8 @@ Feature: Edit common attributes of many products and product models at once
 
   Background:
     Given the "catalog_modeling" catalog configuration
+    And there is no "product" in the catalog
+    And there is no "product model" in the catalog
     And the following "Brand" attribute options: Abibas, Nyke, Ribouk
     And the following root product models:
       | code      | family_variant      | brand  |
