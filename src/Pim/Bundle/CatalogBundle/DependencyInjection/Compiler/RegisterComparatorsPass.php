@@ -62,7 +62,8 @@ class RegisterComparatorsPass implements CompilerPassInterface
      *
      * @return array
      */
-    private function sortComparatorsByPriority(array $comparatorServices) {
+    private function sortComparatorsByPriority(array $comparatorServices)
+    {
         uasort($comparatorServices, function ($a, $b) {
             $priorityA = isset($a[0]['priority']) ? $a[0]['priority'] : 0;
             $priorityB = isset($b[0]['priority']) ? $b[0]['priority'] : 0;
