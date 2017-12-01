@@ -26,7 +26,8 @@ define(
         'pim/datagrid/state',
         'require-context',
         'pim/form-builder',
-        'pim/media-url-generator'
+        'pim/media-url-generator',
+        'pim/security-context'
     ],
     function (
         $,
@@ -46,7 +47,8 @@ define(
         DatagridState,
         requireContext,
         FormBuilder,
-        MediaUrlGenerator
+        MediaUrlGenerator,
+        securityContext
     ) {
         let state = {};
 
@@ -60,11 +62,14 @@ define(
                 'click .add-associations': 'addAssociations'
             },
             datagrids: {},
+            config: {},
 
             /**
              * {@inheritdoc}
              */
-            initialize: function () {
+            initialize: function (meta) {
+                this.config = meta.config;
+
                 state = {
                     associationTarget: 'products'
                 };
@@ -178,7 +183,8 @@ define(
                                 associationTypes,
                                 {code: this.getCurrentAssociationType()}
                             ),
-                            addAssociationsLabel: __('pim_enrich.form.product.tab.associations.add_associations')
+                            addAssociationsLabel: __('pim_enrich.form.product.tab.associations.add_associations'),
+                            addAssociationVisible: this.isAddAssociationsVisible()
                         })
                     );
                     this.renderPanes();
@@ -591,6 +597,10 @@ define(
              */
             isVisible: function () {
                 return true;
+            },
+
+            isAddAssociationsVisible: function () {
+                return securityContext.isGranted(this.config.aclAddAssociations);
             },
 
             /**
