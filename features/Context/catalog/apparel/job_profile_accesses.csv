@@ -22,6 +22,7 @@ publish_product;IT support,Manager,Redactor;
 unpublish_product;IT support,Manager,Redactor;
 edit_common_attributes;IT support,Manager,Redactor;
 set_attribute_requirements;IT support,Manager,Redactor;
+add_to_existing_product_model;IT support,Manager,Redactor;
 csv_product_quick_export;IT support,Manager,Redactor;
 xlsx_tablet_product_export;IT support,Manager,Redactor;
 xlsx_group_export;IT support,Manager,Redactor;
