@@ -174,8 +174,7 @@ class FilteredProductAndProductModelReader implements
             $options['default_scope'] = $channel->getCode();
         }
 
-        // $productQueryBuilder = $this->pqbFactory->create($options);
-        $productQueryBuilder = $this->pqbFactory->create();
+        $productQueryBuilder = $this->pqbFactory->create($options);
 
         return $productQueryBuilder->execute();
     }

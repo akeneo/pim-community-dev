@@ -126,7 +126,7 @@ class ProductAndProductModelQueryBuilder implements ProductQueryBuilderInterface
             !$hasAncestorsIdsFilter;
     }
 
-    private function hasRawFilter(string $filterProperty, string $value)
+    private function hasRawFilter(string $filterProperty, string $value): bool
     {
         return !empty(array_filter(
             $this->getRawFilters(),
