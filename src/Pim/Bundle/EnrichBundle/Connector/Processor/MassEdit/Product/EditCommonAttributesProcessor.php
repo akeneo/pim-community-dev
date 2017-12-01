@@ -169,16 +169,24 @@ class EditCommonAttributesProcessor extends AbstractProcessor
         $attribute = $this->attributeRepository->findOneByIdentifier($attributeCode);
         $family = $entity->getFamily();
 
+        if (null === $family) {
+            return true;
+        }
+
         if (!$family->hasAttribute($attribute)) {
             return false;
         }
 
         if ($entity instanceof VariantProductInterface || $entity instanceof ProductModelInterface) {
-            $familyVariant = $entity->getFamilyVariant();
             $level = $entity->getVariationLevel();
-            $attributeSet = $familyVariant->getVariantAttributeSet($level);
+            $familyVariant = $entity->getFamilyVariant();
+            if ($level > 0) {
+                $attributeSet = $familyVariant->getVariantAttributeSet($level);
 
-            return $attributeSet->hasAttribute($attribute);
+                return $attributeSet->hasAttribute($attribute);
+            }
+
+            return $familyVariant->getCommonAttributes()->contains($attribute);
         }
 
         return true;
@@ -191,7 +199,7 @@ class EditCommonAttributesProcessor extends AbstractProcessor
      *
      * @return bool
      */
-    protected function isProductValid(ProductInterface $product)
+    protected function isProductValid(EntityWithFamilyInterface $product)
     {
         //TODO: use pm validator
         $violations = $this->validator->validate($product);
