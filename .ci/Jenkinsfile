@@ -148,8 +148,8 @@ stage("Build") {
                 echo "Skipping Community Edition ODM matrix"
             }
         },
-         "pim-ee-odm": {
-             if (editions.contains("eeodm")) {
+        "pim-ee-odm": {
+            if (editions.contains("eeodm")) {
                 withBuildNode({
                     checkout([$class: 'GitSCM',
                         branches: [[name: '1.7']],
@@ -253,7 +253,7 @@ stage("Test") {
                 }
             },
             "phpunit-integration": {
-                if (editions.contains("ceodm") && launchIntegrationTests.equals("yes")) {
+                if (editions.contains("ce") && launchIntegrationTests.equals("yes")) {
                     queue({
                         def files = sh (returnStdout: true, script: 'find /home/jenkins/pim/src -name "*Integration.php" -exec sh -c "grep -Ho \'function test\' {} | uniq -c"  \\; | sed "s/:function test//"').tokenize('\n')
                         def messages = new net.sf.json.JSONArray()
@@ -273,7 +273,7 @@ stage("Test") {
                         }
 
                         return messages
-                    }, 10, "ceodm", verboseOutputs, dotsPerLine)
+                    }, 10, "ce", verboseOutputs, dotsPerLine)
                 } else {
                     echo "Skipping integration test"
                 }
@@ -400,7 +400,7 @@ stage("Test") {
                 } else {
                     echo "Skipping behat test"
                 }
-	          },
+            },
             "behat-ee-odm": {
                 if (launchBehatTests.equals("yes") && editions.contains("eeodm")) {
                     queue({
