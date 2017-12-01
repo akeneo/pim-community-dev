@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Component\Connector\Writer\Database;
+namespace Pim\Bundle\EnrichBundle\Connector\Writer\MassEdit\Product;
 
 use Akeneo\Component\Batch\Item\InitializableInterface;
 use Akeneo\Component\Batch\Item\ItemWriterInterface;
@@ -9,16 +9,18 @@ use Akeneo\Component\Batch\Step\StepExecutionAwareInterface;
 use Akeneo\Component\StorageUtils\Cache\CacheClearerInterface;
 use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
 use Pim\Bundle\VersioningBundle\Manager\VersionManager;
+use Pim\Component\Catalog\Model\EntityWithFamilyInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Model\ProductModelInterface;
 
 /**
  * Product writer
  *
- * @author    Benoit Jacquemont <benoit@akeneo.com>
- * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
+ * @author    Julien Sanchez <julien@akeneo.com>
+ * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductWriter implements ItemWriterInterface, StepExecutionAwareInterface, InitializableInterface
+class ProductAndProductModelWriter implements ItemWriterInterface, StepExecutionAwareInterface, InitializableInterface
 {
     /** @var VersionManager */
     protected $versionManager;
@@ -29,6 +31,9 @@ class ProductWriter implements ItemWriterInterface, StepExecutionAwareInterface,
     /** @var BulkSaverInterface */
     protected $productSaver;
 
+    /** @var BulkSaverInterface */
+    protected $productModelSaver;
+
     /** @var CacheClearerInterface */
     protected $cacheClearer;
 
@@ -37,15 +42,18 @@ class ProductWriter implements ItemWriterInterface, StepExecutionAwareInterface,
      *
      * @param VersionManager        $versionManager
      * @param BulkSaverInterface    $productSaver
+     * @param BulkSaverInterface    $productModelSaver
      * @param CacheClearerInterface $cacheClearer
      */
     public function __construct(
         VersionManager $versionManager,
         BulkSaverInterface $productSaver,
+        BulkSaverInterface $productModelSaver,
         CacheClearerInterface $cacheClearer
     ) {
         $this->versionManager = $versionManager;
         $this->productSaver = $productSaver;
+        $this->productModelSaver = $productModelSaver;
         $this->cacheClearer = $cacheClearer;
     }
 
@@ -54,11 +62,19 @@ class ProductWriter implements ItemWriterInterface, StepExecutionAwareInterface,
      */
     public function write(array $items)
     {
-        foreach ($items as $item) {
-            $this->incrementCount($item);
-        }
+        $products = array_filter($items, function ($item) {
+            return $item instanceof ProductInterface;
+        });
+        $productModels = array_filter($items, function ($item) {
+            return $item instanceof ProductModelInterface;
+        });
 
-        $this->productSaver->saveAll($items);
+        array_walk($items, function ($item) {
+            $this->incrementCount($item);
+        });
+
+        $this->productSaver->saveAll($products);
+        $this->productModelSaver->saveAll($productModels);
         $this->cacheClearer->clear();
     }
 
@@ -81,11 +97,11 @@ class ProductWriter implements ItemWriterInterface, StepExecutionAwareInterface,
     }
 
     /**
-     * @param ProductInterface $product
+     * @param EntityWithFamilyInterface $entity
      */
-    protected function incrementCount(ProductInterface $product)
+    protected function incrementCount(EntityWithFamilyInterface $entity)
     {
-        if ($product->getId()) {
+        if ($entity->getId()) {
             $this->stepExecution->incrementSummaryInfo('process');
         } else {
             $this->stepExecution->incrementSummaryInfo('create');

@@ -74,7 +74,6 @@ class CountImpactedProducts
         $pmqb = $this->productAndProductModelQueryBuilderFactory->create(['filters' => $filters]);
         $pmqb->addFilter('entity_type', Operators::EQUALS, ProductInterface::class);
         $pmqb->addFilter('ancestor.id', Operators::IN_LIST, $productModelIds);
-
         $count = $pmqb->execute()->count();
 
         return $count;
