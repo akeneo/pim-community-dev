@@ -31,6 +31,8 @@ default:
                     - 'Context\EnterpriseFeatureContext'
                 - Context\EnterpriseFileTransformerContext:
                     - 'Context\EnterpriseFeatureContext'
+                - Context\EnterpriseItemPickerContext:
+                    - 'Context\EnterpriseFeatureContext'
                 - Pim\Behat\Context\AttributeValidationContext:
                     - 'Context\EnterpriseFeatureContext'
                 - Pim\Behat\Context\Domain\Collect\ImportProfilesContext:
@@ -96,8 +98,6 @@ default:
                     - 'Context\EnterpriseFeatureContext'
                 - Pim\Behat\Context\Storage\VariantProductStorage:
                     - '@pim_catalog.repository.product'
-                - Pim\Behat\Context\Domain\Enrich\ItemPickerContext:
-                    - 'Context\EnterpriseFeatureContext'
     extensions:
         Behat\ChainedStepsExtension: ~
         Behat\MinkExtension:
