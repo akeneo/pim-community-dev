@@ -259,7 +259,7 @@ stage("Test") {
                         def messages = new net.sf.json.JSONArray()
                         for (line in files) {
                             def file = line.tokenize(' ') 
-                            messages.add([
+                            def commands = [
                                 [container: "php", script: "./app/console --env=test pim:install --force"],
                                 [container: "php", script: "mkdir -p app/cache app/logs app/archive /tmp/pim app/file_storage app/uploads"],
                                 [container: "php", script: "chmod 777 /tmp"],
@@ -269,9 +269,13 @@ stage("Test") {
                                     junit: [in: "/home/jenkins/pim/", name: "junit_output.xml"],
                                     script: "php -d error_reporting='E_ALL' ./bin/phpunit -c app/phpunit.xml.dist " + file[1] + " --log-junit junit_output.xml"
                                 ]
-                            ])
+                            ]
+                            def message = new net.sf.json.JSONObject()
+                            message.put("name",file[1])
+                            message.put("commands",commands)
+                            messages.add(message)
                         }
-
+                        
                         return messages
                     }, 20, "ce", verboseOutputs, dotsPerLine)
                 } else {
@@ -289,7 +293,7 @@ stage("Test") {
                         def messages = new net.sf.json.JSONArray()
 
                         for (scenario in scenarios) {
-                            messages.add([
+                            def commands = [
                                 [container: "php", script: "cp .ci/akeneo-behat.conf /etc/apache2/sites-available/000-default.conf"],
                                 [container: "php", script: "rm -rf /tmp/behat/screenshots/*"],
                                 [container: "php", script: "sed -i '2 a umask(0000);' bin/behat"],
@@ -310,7 +314,11 @@ stage("Test") {
                                     artifacts: [in: "/tmp/behat/screenshots", name: "*.png"],
                                     script: "su docker -c 'php ./bin/behat --strict -vv " + scenario + "'"
                                 ]
-                            ])
+                            ]
+                            def message = new net.sf.json.JSONObject()
+                            message.put("name",scenario)
+                            message.put("commands",commands)
+                            messages.add(message)
                         }
 
                         return messages
@@ -330,7 +338,7 @@ stage("Test") {
                         def messages = new net.sf.json.JSONArray()
 
                         for (scenario in scenarios) {
-                            messages.add([
+                            def commands = [
                                 [container: "php", script: "cp .ci/akeneo-behat.conf /etc/apache2/sites-available/000-default.conf"],
                                 [container: "php", script: "rm -rf /tmp/behat/screenshots/*"],
                                 [container: "php", script: "sed -i '2 a umask(0000);' bin/behat"],
@@ -351,7 +359,11 @@ stage("Test") {
                                     artifacts: [in: "/tmp/behat/screenshots", name: "*.png"],
                                     script: "su docker -c 'php ./bin/behat --strict -vv " + scenario + "'"
                                 ]
-                            ])
+                            ]
+                            def message = new net.sf.json.JSONObject()
+                            message.put("name",scenario)
+                            message.put("commands",commands)
+                            messages.add(message)
                         }
 
                         return messages
@@ -371,7 +383,7 @@ stage("Test") {
                         def messages = new net.sf.json.JSONArray()
 
                         for (scenario in scenarios) {
-                            messages.add([
+                            def commands = [
                                 [container: "php", script: "cp .ci/akeneo-behat.conf /etc/apache2/sites-available/000-default.conf"],
                                 [container: "php", script: "rm -rf /tmp/behat/screenshots/*"],
                                 [container: "php", script: "sed -i '2 a umask(0000);' bin/behat"],
@@ -392,7 +404,11 @@ stage("Test") {
                                     artifacts: [in: "/tmp/behat/screenshots", name: "*.png"],
                                     script: "su docker -c 'php ./bin/behat --strict -vv " + scenario + "'"
                                 ]
-                            ])
+                            ]
+                            def message = new net.sf.json.JSONObject()
+                            message.put("name",scenario)
+                            message.put("commands",commands)
+                            messages.add(message)
                         }
 
                         return messages
@@ -412,7 +428,7 @@ stage("Test") {
                         def messages = new net.sf.json.JSONArray()
 
                         for (scenario in scenarios) {
-                            messages.add([
+                            def commands = [
                                 [container: "php", script: "cp .ci/akeneo-behat.conf /etc/apache2/sites-available/000-default.conf"],
                                 [container: "php", script: "rm -rf /tmp/behat/screenshots/*"],
                                 [container: "php", script: "sed -i '2 a umask(0000);' bin/behat"],
@@ -433,7 +449,11 @@ stage("Test") {
                                     artifacts: [in: "/tmp/behat/screenshots", name: "*.png"],
                                     script: "su docker -c 'php ./bin/behat --strict -vv " + scenario + "'"
                                 ]
-                            ])
+                            ]
+                            def message = new net.sf.json.JSONObject()
+                            message.put("name",scenario)
+                            message.put("commands",commands)
+                            messages.add(message)
                         }
 
                         return messages
