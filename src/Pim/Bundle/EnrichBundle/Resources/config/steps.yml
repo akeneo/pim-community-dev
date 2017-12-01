@@ -95,7 +95,7 @@ services:
             - 'perform'
             - '@event_dispatcher'
             - '@akeneo_batch.job_repository'
-            - '@pim_enrich.connector.reader.mass_edit.family'
+            - '@pim_enrich.reader.database.product'
             - '@pim_enrich.connector.processor.mass_edit.product.add_to_existing_product_model'
             - '@pim_connector.writer.database.product'
 

@@ -11,18 +11,25 @@ define(
     [
         'underscore',
         'pim/mass-edit-form/product/operation',
-        'pim/template/mass-edit/product/add-to-existing-product-model',
-        'pim/user-context'
+        'pim/template/mass-edit/product/add-to-existing-product-model'
     ],
     function (
         _,
         BaseOperation,
-        template,
-        UserContext
+        template
     ) {
         return BaseOperation.extend({
             template: _.template(template),
             events: {
+            },
+
+            /**
+             * {@inheritdoc}
+             */
+            configure: function () {
+                this.listenTo(this.getRoot(), 'pim_enrich:form:entity:post_update', this.updateModel);
+
+                return BaseOperation.prototype.configure.apply(this, arguments);
             },
 
             /**
@@ -39,22 +46,27 @@ define(
                 return this;
             },
 
-            updateModel: function (event) {
-                this.setValue(event.target.value);
+            /**
+             * Updates the model to store action
+             *
+             * @param {Object} formData
+             */
+            updateModel: function (formData) {
+                if (formData.jobInstanceCode === 'add_to_existing_product_model') {
+                    formData.actions = [{
+                        field: 'productModelCode',
+                        value: formData.product_model
+                    }];
+
+                    this.setData(formData, {silent: true});
+                }
             },
 
-            setValue: function (comment) {
-                let data = this.getFormData();
-                data.actions = [{
-                    field: 'comment',
-                    value: comment,
-                    username: UserContext.get('username')
-                }];
-                this.setData(data);
-            },
-
+            /**
+             * {@inheritdoc}
+             */
             getValue: function () {
-                const action = _.findWhere(this.getFormData().actions, { field: 'comment' });
+                const action = _.findWhere(this.getFormData().actions, { field: 'productModelCode' });
 
                 return action ? action.value : null;
             }
