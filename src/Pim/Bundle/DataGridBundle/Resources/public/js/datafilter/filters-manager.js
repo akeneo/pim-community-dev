@@ -333,8 +333,8 @@ define(
                 selectedList: 0,
                 classes: 'AknFilterBox-addFilterButton AknFilterBox-addFilterButton--asPanel filter-list select-filter-widget',
                 position: {
-                    at: 'right top',
-                    my: 'right top',
+                    at: 'left top',
+                    my: 'left top',
                 }
             };
 

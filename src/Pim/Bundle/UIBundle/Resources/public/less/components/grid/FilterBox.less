@@ -24,9 +24,8 @@
     justify-content: flex-end;
     padding: 0 0 1px 0;
     background: none;
-    margin: 0 0 10px 0;
+    margin: 10px 0 10px 0;
     flex-wrap: wrap;
-    margin-top: -@AknPaddingLeftColumn;
     background: white;
   }
 
@@ -35,7 +34,7 @@
     background: white;
     padding: 10px 0 1px 0;
     margin: -10px 0 10px 0;
-    top: 0px;
+    top: 0;
     z-index: 1;
   }
 
@@ -65,13 +64,17 @@
     order: -1;
     flex-grow: 1;
     display: flex;
+    margin-top: -20px;
   }
 
   &-filterContainer {
-    margin-right: 30px;
     cursor: pointer;
     position: relative;
-    margin-top: @AknPaddingLeftColumn;
+    margin-top: 20px;
+  }
+
+  &--search &-filterContainer {
+    margin-top: 10px;
   }
 
   &-filter {
@@ -158,10 +161,12 @@
   }
 
   &--search &-list {
+    margin-right: 30px;
     display: flex;
     flex-grow: 1;
     align-items: center;
     justify-content: flex-end;
+    flex-wrap: wrap;
   }
 
   &--search &-addFilterButton {
@@ -175,7 +180,7 @@
     background: url("../../../images/icon-filters.svg") no-repeat left 50%;
     flex-grow: 1;
     padding-left: 35px !important; // The padding is updated by JS method.
-    margin-top: 30px;
     margin-left: 10px;
+    margin-top: 10px;
   }
 }

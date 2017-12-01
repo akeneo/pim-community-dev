@@ -278,8 +278,10 @@ define(
          */
         outsideClickListener(event) {
             if (!$(event.target).closest(this.criteriaSelector).length &&
-                $(event.target).closest('.app').length &&
-                this.popupCriteriaShowed) {
+                (
+                    $(event.target).closest('.app').length ||
+                    $(event.target).closest('.modal--fullPage').length
+                ) && this.popupCriteriaShowed) {
                 this._hideCriteria();
                 this.setValue(this._formatRawValue(this._readDOMValue()));
 

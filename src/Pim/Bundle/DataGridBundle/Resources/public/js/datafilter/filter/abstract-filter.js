@@ -17,7 +17,7 @@ function($, _, Backbone, app) {
      *     - product_completeness-filter (Displays the completeness like a select)
      *     - product_scope-filter (Displays the scope like a select)
      *     - select-row-filter (unused?)
-     *   - text-filter (Displays a choice contains/dies not contains... Only on process tracker "Type", "User")
+     *   - text-filter (Displays a choice contains/does not contains... Only on process tracker "Type", "User")
      *     - choice-filter (Displays a choice contains/does not contains/equals... and 1 text field. "SKU", all text fields)
      *       - date-filter (Displays a choice between/not between/more/less and 2 datepickers. "Created at", "Release date")
      *         - datetime-filter (unused?)
