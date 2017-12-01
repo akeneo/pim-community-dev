@@ -15,7 +15,7 @@ class Version
     const VERSION = '2.0.7';
 
     /** @staticvar string */
-    const VERSION_CODENAME = 'Rebel Rabbit';
+    const VERSION_CODENAME = 'unknown';
 
     /** @staticvar string */
     const EDITION = 'CE';
