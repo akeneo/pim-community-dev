@@ -8,6 +8,7 @@ use Pim\Bundle\EnrichBundle\Connector\Processor\AbstractProcessor;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\VariantProductInterface;
 use Pim\Component\Connector\Processor\Denormalization\Product\AddParent;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
  * Processor to add products to an existing product model
@@ -21,12 +22,16 @@ class AddToExistingProductModelProcessor extends AbstractProcessor
     /** @var AddParent */
     private $addParent;
 
+    /** @var ValidatorInterface */
+    private $validator;
+
     /**
      * @param AddParent $addParent
      */
-    public function __construct(AddParent $addParent)
+    public function __construct(AddParent $addParent, ValidatorInterface $validator)
     {
         $this->addParent = $addParent;
+        $this->validator = $validator;
     }
 
     /**
@@ -51,6 +56,26 @@ class AddToExistingProductModelProcessor extends AbstractProcessor
             return null;
         }
 
+        if (!$this->isProductValid($product)) {
+            return null;
+        }
+
         return $product;
+    }
+
+
+    /**
+     * Validate the product
+     *
+     * @param ProductInterface $product
+     *
+     * @return bool
+     */
+    protected function isProductValid(ProductInterface $product)
+    {
+        $violations = $this->validator->validate($product);
+        $this->addWarningMessage($violations, $product);
+
+        return 0 === $violations->count();
     }
 }

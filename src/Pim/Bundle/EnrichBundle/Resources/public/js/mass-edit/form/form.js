@@ -83,7 +83,8 @@ define(
                     __: __
                 }));
 
-                this.$('.step').empty().append(step.render().$el);
+                this.$('.step').empty().append(step.$el);
+                step.render();
 
                 this.delegateEvents();
             },

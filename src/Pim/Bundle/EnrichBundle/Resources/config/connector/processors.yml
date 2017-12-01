@@ -38,6 +38,7 @@ services:
         class: '%pim_enrich.connector.processor.mass_edit.product.add_to_existing_product_model.class%'
         arguments:
             - '@pim_connector.processor.denormalization.add_parent_to_product'
+            - '@validator'
 
     pim_enrich.connector.processor.mass_edit.family.set_requirements:
         class: '%pim_enrich.connector.processor.mass_edit.family.set_requirements.class%'
