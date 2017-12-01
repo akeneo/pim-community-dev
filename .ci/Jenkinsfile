@@ -273,7 +273,7 @@ stage("Test") {
                         }
 
                         return messages
-                    }, 10, "ce", verboseOutputs, dotsPerLine)
+                    }, 20, "ce", verboseOutputs, dotsPerLine)
                 } else {
                     echo "Skipping integration test"
                 }
