@@ -102,5 +102,7 @@ grid.view_selector:
     remove: Sind Sie sicher, dass Sie diese Ansicht löschen möchten?
     delete: Löschen bestätigen
 grid.view_selector.flash.updated: Tabellen-Ansicht erfolgreich aktualisiert
+grid.display_selector:
+  label: Anzeige
 Client ID: Client-ID
 Secret: Secret

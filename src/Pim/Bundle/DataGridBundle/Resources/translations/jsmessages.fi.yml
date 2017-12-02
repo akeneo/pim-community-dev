@@ -101,5 +101,7 @@ grid.view_selector:
     remove: Haluatko varmasti poistaa tämän näkymän?
     delete: Vahvista poisto
 grid.view_selector.flash.updated: Datagrid-näkymä päivitetty
+grid.display_selector:
+  label: Näytä
 Client ID: Asiakastunnus
 Secret: Asiakassalaisuus
