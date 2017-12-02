@@ -1,0 +1,9 @@
+services:
+    pim_api.stream.asset_category_partial_update_stream:
+        class: '%pim_api.stream.stream_resource_response.class%'
+        arguments:
+            - '@http_kernel'
+            - '@pim_catalog.validator.unique_value_set'
+            - '%pim_api.configuration%'
+            - 'pimee_api.controller.asset_category:partialUpdateAction'
+            - 'code'

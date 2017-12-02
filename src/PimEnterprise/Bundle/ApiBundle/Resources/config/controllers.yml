@@ -98,4 +98,5 @@ services:
             - '@router'
             - '@pim_api.pagination.parameter_validator'
             - '@pim_api.pagination.offset_hal_paginator'
+            - '@pim_api.stream.asset_category_partial_update_stream'
             - '%pim_api.configuration%'
