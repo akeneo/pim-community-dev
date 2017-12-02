@@ -19,7 +19,7 @@ use Symfony\Component\HttpFoundation\RequestMatcherInterface;
 class ContentTypeNegotiator
 {
     /** @var array */
-    protected $map = [];
+    protected $rulesByPriority = [];
 
     /**
      * Returns the allowed content types for a given request.
@@ -32,18 +32,21 @@ class ContentTypeNegotiator
      */
     public function getContentTypes(Request $request)
     {
-        foreach ($this->map as $elements) {
-            if (!$elements['request_matcher']->matches($request)) {
-                continue;
+        ksort($this->rulesByPriority);
+        foreach ($this->rulesByPriority as $rules) {
+            foreach ($rules as $rule) {
+                if (!$rule['request_matcher']->matches($request)) {
+                    continue;
+                }
+
+                $rule = $rule['rule'];
+
+                if (!empty($rule['stop'])) {
+                    throw new StopFormatListenerException('Stopped content type negotiator');
+                }
+
+                return $rule['content_types'];
             }
-
-            $rule = $elements['rule'];
-
-            if (!empty($rule['stop'])) {
-                throw new StopFormatListenerException('Stopped content type negotiator');
-            }
-
-            return $rule['content_types'];
         }
 
         return [];
@@ -57,6 +60,6 @@ class ContentTypeNegotiator
      */
     public function add(RequestMatcherInterface $requestMatcher, array $rule)
     {
-        $this->map[] = ['request_matcher' => $requestMatcher, 'rule' => $rule];
+        $this->rulesByPriority[$rule['priority']][] = ['request_matcher' => $requestMatcher, 'rule' => $rule];
     }
 }
