@@ -63,3 +63,6 @@ pim_catalog:
     301: In questo campo sono previsti uno "scope" valido e una lingua.
     302: In questo campo è previsto uno "scope" valido.
     303: In questo campo è previsto un formato di associazione valido.
+    pim_immutable_product_validator: Lo stesso identificatore è già impostato su un altro prodotto
+    pim_immutable_product_model_validator: Lo stesso codice è già usato in un altro modello di prodotto.
+

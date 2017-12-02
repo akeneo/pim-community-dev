@@ -149,7 +149,7 @@ pim_enrich:
     product:
       navigation: Produkt navigation
       infos: Produkt info
-      index_title: "[] -Inf, 1] {{ count }} resultat |] 1, Inf [{{ count }} resultater"
+      index_title: "] -Inf, 1] {{ count }} resultat |] 1, Inf [{{ count }} resultater"
       title: produkt
       locale: Landestandard
       category: Kategori
@@ -333,12 +333,16 @@ pim_enrich:
       message:
         created: Familien blev oprettet
       variant:
+        common:
+          title: Fælles attributter
+          empty: Der er ingen fælles attributter
         axis.label: Variant akse
         level_1.label: Variant attributter niveau 1
         level_2.label: Variant attributter niveau to
         add_variant: Tilføje variant
         create_label: Opret en ny familie variant
         create_description: I en familie variant, kan du definere en struktur for produkter med varianter. Vælge antallet af administrerede variant niveauer, de attributter, der bruges som variant akser for hvert niveau, og derefter definere hvordan attributterne er fordelt.
+        update_description: Træk & drop attributter til de valgte variant niveau at have disse attributter, forvaltes på den variant plan.
         create: Opret
         cancel: Annuller
         code: Kode
@@ -346,6 +350,12 @@ pim_enrich:
         levels: Variant niveauer
         axis_level: Variant akse niveau
         required: Påkrævet
+        confirm_attribute_removal:
+          title: Bekræfte Fjern attributter
+          message: Ved at fjerne disse attributter vil du lægge dem tilbage i de fælles attributter af den familie variant og fjerne værdier fra variant varerne
+    family_variant:
+      info:
+        update_successful: Familie variant opdateret. Produkter med varianter vil blive opdateret med ændringerne.
     attribute_option:
       code: Kode
       label: Etiket
@@ -403,6 +413,7 @@ pim_enrich:
         email: E-mail
         regexp: Regulære udtryk
         url: URL
+      title: attribut
     attribute_group:
       info:
         update_failed: Attributgruppe kunne ikke opdateres
@@ -917,10 +928,10 @@ pim_enrich:
       description: Den valgte produktattributter vil blive redigeret med følgende data for landestandard <span class="highlight">{{ locale }}</span> og den kanal <span class="highlight">{{ channel }}</span>, valgt i gitteret produkter.
   index:
     association_type:
-      title: "[] -Inf, 1] {{ count }} association type |] 1, Inf [{{ count }} association typer"
+      title: "] -Inf, 1] {{ count }} association type |] 1, Inf [{{ count }} association typer"
       create_btn: opret sammenhængstype
     import_profiles:
-      title: "[] -Inf, 1] {{ count }} import profil |] 1, Inf [{{ count }} import profiler"
+      title: "] -Inf, 1] {{ count }} import profil |] 1, Inf [{{ count }} import profiler"
       create_btn: opret import profil
       list: Vælg et job
       create_popin:
@@ -930,10 +941,10 @@ pim_enrich:
     import_history:
       title: importer rapporter
     group:
-      title: "[] -Inf, 1] {{ count }} group |] 1, Inf [{{ count }} grupper"
+      title: "] -Inf, 1] {{ count }} group |] 1, Inf [{{ count }} grupper"
       create_btn: Opret gruppe
     export_profiles:
-      title: "[] -Inf, 1] {{ count }} eksportprofil |] 1, Inf [{{ count }} export profiler"
+      title: "] -Inf, 1] {{ count }} eksportprofil |] 1, Inf [{{ count }} export profiler"
       create_btn: opret eksportprofil
       create_popin:
         title: Opret
@@ -942,38 +953,38 @@ pim_enrich:
     export_history:
       title: eksportere rapporterne
     family:
-      title: "[] -Inf, 1] {{ count }} familie |] 1, Inf [{{ count }} familier"
+      title: "] -Inf, 1] {{ count }} familie |] 1, Inf [{{ count }} familier"
       create_btn: opret familie
     grouptype:
-      title: "[] -Inf, 1] {{ count }} gruppetype |] 1, Inf [{{ count }} gruppe typer"
+      title: "] -Inf, 1] {{ count }} gruppetype |] 1, Inf [{{ count }} gruppe typer{{ count }}"
       create_btn: opret gruppetype
     currency:
-      title: "[] -Inf, 1] {{ count }} valuta |] 1, Inf [{{ count }} valutaer"
+      title: "] -Inf, 1] {{ count }} valuta |] 1, Inf [{{ count }} valutaer"
     locale:
-      title: "[] -Inf, 1] {{ count }} locale |] 1, Inf [{{ count }} landestandarder"
+      title: "] -Inf, 1] {{ count }} locale |] 1, Inf [{{ count }} landestandarder"
     user:
-      title: "[] -Inf, 1] {{ count }} brugeren |] 1, Inf [{{ count }} brugere"
+      title: "] -Inf, 1] {{ count }} brugeren |] 1, Inf [{{ count }} brugere"
       create_btn: Opret bruger
     user_role:
-      title: "[] -Inf, 1] {{ count }} rolle |] 1, Inf [{{ count }} roller"
+      title: "] -Inf, 1] {{ count }} rolle |] 1, Inf [{{ count }} roller"
       create_btn: Opret rolle
     user_group:
-      title: "[] -Inf, 1] {{ count }} group |] 1, Inf [{{ count }} grupper"
+      title: "] -Inf, 1] {{ count }} group |] 1, Inf [{{ count }} grupper"
       create_btn: Opret gruppe
     process_tracker:
-      title: "[] -Inf, 1] {{ count }} operation |] 1, Inf [{{ count }} operationer"
+      title: "] -Inf, 1] {{ count }} operation |] 1, Inf [{{ count }} operationer"
     channel:
-      title: "[] -Inf, 1] {{ count }} kanal |] 1, Inf [{{ count }} kanaler"
+      title: "] -Inf, 1] {{ count }} kanal |] 1, Inf [{{ count }} kanaler"
       create_btn: opret kanal
     attribute:
-      title: "[] -Inf, 1] {{ count }} attribut |] 1, Inf [{{ count }} attributter"
+      title: "] -Inf, 1] {{ count }} attribut |] 1, Inf [{{ count }} attributter"
       create_btn: opret attribut
       modal_title: Vælg attributtype
     attribute_group:
       title: Attributgrupper
       create_btn: Opret
     api_connection:
-      title: "[] -Inf, 1] {{ count }} API tilslutning |] 1, Inf [{{ count }} API forbindelser"
+      title: "] -Inf, 1] {{ count }} API forbindelse |] 1, Inf [{{ count }} API forbindelser"
       create_btn: Opret
   mass_edit:
     next: Næste
