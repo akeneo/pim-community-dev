@@ -2,7 +2,7 @@ parameters:
     pimee_security.voter.attribute.class: PimEnterprise\Bundle\SecurityBundle\Voter\AttributeVoter
     pimee_security.voter.attribute_group.class: PimEnterprise\Bundle\SecurityBundle\Voter\AttributeGroupVoter
     pimee_security.voter.category.class: PimEnterprise\Bundle\SecurityBundle\Voter\CategoryVoter
-    pimee_security.voter.product.class: PimEnterprise\Bundle\SecurityBundle\Voter\ProductVoter
+    pimee_security.voter.product_and_product_model.class: PimEnterprise\Bundle\SecurityBundle\Voter\ProductAndProductModelVoter
     pimee_security.voter.job_profile.class: PimEnterprise\Bundle\SecurityBundle\Voter\JobProfileVoter
     pimee_security.voter.product_draft.class: PimEnterprise\Bundle\SecurityBundle\Voter\ProductDraftVoter
     pimee_security.voter.locale.class: PimEnterprise\Bundle\SecurityBundle\Voter\LocaleVoter
@@ -33,8 +33,8 @@ services:
         tags:
             - { name: security.voter }
 
-    pimee_security.voter.product:
-        class: '%pimee_security.voter.product.class%'
+    pimee_security.voter.product_and_product_model:
+        class: '%pimee_security.voter.product_and_product_model.class%'
         arguments:
             - '@pimee_security.repository.category_access'
         tags:

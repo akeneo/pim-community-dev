@@ -2,6 +2,7 @@ parameters:
     pimee_catalog.event_subscriber.index_products.class: PimEnterprise\Bundle\CatalogBundle\EventSubscriber\IndexProductsSubscriber
     pimee_catalog.event_subscriber.filter_not_granted_product_data.class: PimEnterprise\Bundle\CatalogBundle\EventSubscriber\FilterNotGrantedProductDataSubscriber
     pimee_catalog.event_subscriber.merger_not_granted_product_data.class: PimEnterprise\Bundle\CatalogBundle\EventSubscriber\MergeNotGrantedProductDataSubscriber
+    pimee_catalog.event_subscriber.filter_not_granted_product_model_data.class: PimEnterprise\Bundle\CatalogBundle\EventSubscriber\FilterNotGrantedProductModelDataSubscriber
     pimee_catalog.event_subscriber.refresh_product.class: PimEnterprise\Bundle\CatalogBundle\EventSubscriber\RefreshProductDataSubscriber
 
 services:
@@ -16,6 +17,13 @@ services:
 
     pimee_catalog.event_subscriber.filter_not_granted_product_data:
         class: '%pimee_catalog.event_subscriber.filter_not_granted_product_data.class%'
+        arguments:
+            - '@service_container'
+        tags:
+            - { name: doctrine.event_subscriber }
+
+    pimee_catalog.event_subscriber.filter_not_granted_product_model_data:
+        class: '%pimee_catalog.event_subscriber.filter_not_granted_product_model_data.class%'
         arguments:
             - '@service_container'
         tags:

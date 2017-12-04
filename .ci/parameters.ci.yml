@@ -1,0 +1,14 @@
+parameters:
+    database_driver:                       pdo_mysql
+    database_host:                         127.0.0.1
+    database_port:                         ~
+    database_name:                         akeneo_pim
+    database_user:                         akeneo_pim
+    database_password:                     akeneo_pim
+    locale:                                en
+    secret:                                ThisTokenIsNotSoSecretChangeIt
+    installer_data:                        PimEnterpriseInstallerBundle:minimal
+    product_index_name:                    akeneo_pim_product
+    product_model_index_name:              akeneo_pim_product_model
+    product_and_product_model_index_name:  akeneo_pim_product_and_product_model
+    index_hosts:                          'elastic:changeme@127.0.0.1: 9200'

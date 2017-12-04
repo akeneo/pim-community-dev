@@ -120,7 +120,6 @@ CSV;
             'a_localized_and_scopable_text_area' => [
                 ['data' => 'FR text', 'locale' => 'fr_FR', 'scope' => 'tablet'],
                 ['data' => 'EN text', 'locale' => 'en_US', 'scope' => 'tablet'],
-                ['data' => 'DE text', 'locale' => 'de_DE', 'scope' => 'tablet'],
             ]
         ]]);
         $this->createProductDraft($productA, 'mary', ['values' => [
@@ -128,7 +127,6 @@ CSV;
             'a_localized_and_scopable_text_area' => [
                 ['data' => 'French text', 'locale' => 'fr_FR', 'scope' => 'tablet'],
                 ['data' => 'English text', 'locale' => 'en_US', 'scope' => 'tablet'],
-                ['data' => 'German text', 'locale' => 'de_DE', 'scope' => 'tablet'],
             ]
         ]]);
         $this->get('doctrine')->getManager()->refresh($productA);
@@ -148,7 +146,6 @@ CSV;
             'a_text' => [['data' => 'the simple text', 'locale' => null, 'scope' => null]],
             'a_localized_and_scopable_text_area' => [
                 ['data' => 'French text', 'locale' => 'fr_FR', 'scope' => 'tablet'],
-                ['data' => 'German text', 'locale' => 'de_DE', 'scope' => 'tablet'],
                 ['data' => 'An english text', 'locale' => 'en_US', 'scope' => 'tablet'],
             ]
         ];

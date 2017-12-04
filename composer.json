@@ -47,8 +47,10 @@
         "kriswallsmith/buzz": "^0.15",
         "pdepend/pdepend": "2.1.*",
         "phpmd/phpmd": "1.*",
-        "phpspec/phpspec": "3.0.*",
-        "phpunit/phpunit": "5.4.*",
+        "phpspec/phpspec": "~3.4.2",
+        "phpunit/phpunit": "~5.7.22",
+        "sebastian/exporter": "~2.0.0",
+        "liuggio/fastest": "dev-master",
         "sensiolabs/behat-page-object-extension": "2.1.0",
         "squizlabs/php_codesniffer": "2.*"
     },

@@ -11,7 +11,9 @@
 
 namespace PimEnterprise\Bundle\SecurityBundle\Voter;
 
+use Akeneo\Component\Classification\CategoryAwareInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Model\ProductModelInterface;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;
 use PimEnterprise\Component\Security\Attributes;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
@@ -20,16 +22,14 @@ use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
- * Product voter, allows to know if products can be published, reviewed, edited, consulted by a
+ * Product and product model voter, allows to know if products can be published, reviewed, edited, consulted by a
  * user depending on his user groups
  *
  * @author Julien Janvier <julien.janvier@akeneo.com>
  */
-class ProductVoter extends Voter implements VoterInterface
+class ProductAndProductModelVoter extends Voter implements VoterInterface
 {
-    /**
-     * @var CategoryAccessRepository
-     */
+    /** @var CategoryAccessRepository */
     protected $categoryAccessRepo;
 
     /**
@@ -47,14 +47,12 @@ class ProductVoter extends Voter implements VoterInterface
     {
         $result = VoterInterface::ACCESS_ABSTAIN;
 
-        if ($object instanceof ProductInterface) {
-            foreach ($attributes as $attribute) {
-                if ($this->supports($attribute, $object)) {
-                    $result = VoterInterface::ACCESS_DENIED;
+        foreach ($attributes as $attribute) {
+            if ($this->supports($attribute, $object)) {
+                $result = VoterInterface::ACCESS_DENIED;
 
-                    if ($this->voteOnAttribute($attribute, $object, $token)) {
-                        return VoterInterface::ACCESS_GRANTED;
-                    }
+                if ($this->voteOnAttribute($attribute, $object, $token)) {
+                    return VoterInterface::ACCESS_GRANTED;
                 }
             }
         }
@@ -63,19 +61,22 @@ class ProductVoter extends Voter implements VoterInterface
     }
 
     /**
-     * Determines if a product is accessible for the user,
+     * Determines if a category aware entity is accessible for the user,
      * - no categories : the product is accessible
      * - categories : we apply category's permissions
      *
-     * @param ProductInterface $product   the product
-     * @param UserInterface    $user      the user
-     * @param string           $attribute the attribute
+     * @param CategoryAwareInterface $categoryAwareEntity
+     * @param UserInterface          $user the user
+     * @param string                 $attribute the attribute
      *
      * @return bool
      */
-    protected function isProductAccessible(ProductInterface $product, UserInterface $user, $attribute)
-    {
-        if (count($product->getCategories()) === 0) {
+    protected function isCategoryAwareEntityAccessible(
+        CategoryAwareInterface $categoryAwareEntity,
+        UserInterface $user,
+        $attribute
+    ) {
+        if (count($categoryAwareEntity->getCategories()) === 0) {
             return VoterInterface::ACCESS_GRANTED;
         }
 
@@ -90,7 +91,7 @@ class ProductVoter extends Voter implements VoterInterface
         $categoryAttribute = $productToCategory[$attribute];
 
         $categoryIds = [];
-        foreach ($product->getCategories() as $category) {
+        foreach ($categoryAwareEntity->getCategories() as $category) {
             $categoryIds[] = $category->getId();
         }
 
@@ -103,7 +104,7 @@ class ProductVoter extends Voter implements VoterInterface
     protected function supports($attribute, $subject)
     {
         return in_array($attribute, [Attributes::VIEW, Attributes::EDIT, Attributes::OWN]) &&
-            $subject instanceof ProductInterface;
+            ($subject instanceof ProductInterface || $subject instanceof ProductModelInterface);
     }
 
     /**
@@ -111,6 +112,6 @@ class ProductVoter extends Voter implements VoterInterface
      */
     protected function voteOnAttribute($attribute, $subject, TokenInterface $token)
     {
-        return $this->isProductAccessible($subject, $token->getUser(), $attribute);
+        return $this->isCategoryAwareEntityAccessible($subject, $token->getUser(), $attribute);
     }
 }

@@ -1,9 +1,17 @@
 parameters:
     pimee_enrich.provider.form.product.class: PimEnterprise\Bundle\EnrichBundle\Provider\Form\ProductFormProvider
+    pimee_enrich.provider.form.product_model.class: PimEnterprise\Bundle\EnrichBundle\Provider\Form\ProductModelFormProvider
 
 services:
     pimee_enrich.provider.form.product:
         class: '%pimee_enrich.provider.form.product.class%'
+        arguments:
+            - '@security.authorization_checker'
+        tags:
+            - { name: pim_enrich.provider.form, priority: 90 }
+
+    pimee_enrich.provider.form.product_model:
+        class: '%pimee_enrich.provider.form.product_model.class%'
         arguments:
             - '@security.authorization_checker'
         tags:

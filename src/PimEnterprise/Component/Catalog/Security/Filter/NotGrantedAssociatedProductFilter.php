@@ -39,15 +39,15 @@ class NotGrantedAssociatedProductFilter implements NotGrantedDataFilterInterface
     /**
      * {@inheritdoc}
      */
-    public function filter($product)
+    public function filter($objectWithCategories)
     {
-        if (!$product instanceof ProductInterface) {
-            throw InvalidObjectException::objectExpected(ClassUtils::getClass($product), ProductInterface::class);
+        if (!$objectWithCategories instanceof ProductInterface) {
+            throw InvalidObjectException::objectExpected(ClassUtils::getClass($objectWithCategories), ProductInterface::class);
         }
 
-        $associatedProductIds = $this->productRepository->getAssociatedProductIds($product);
+        $associatedProductIds = $this->productRepository->getAssociatedProductIds($objectWithCategories);
 
-        foreach ($product->getAssociations() as $association) {
+        foreach ($objectWithCategories->getAssociations() as $association) {
             foreach ($associatedProductIds as $associatedProductId) {
                 if ($associatedProductId['association_id'] == $association->getId()) {
                     try {
@@ -59,6 +59,6 @@ class NotGrantedAssociatedProductFilter implements NotGrantedDataFilterInterface
             }
         }
 
-        return $product;
+        return $objectWithCategories;
     }
 }
