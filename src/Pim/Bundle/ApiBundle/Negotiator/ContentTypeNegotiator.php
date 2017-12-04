@@ -32,18 +32,21 @@ class ContentTypeNegotiator
      */
     public function getContentTypes(Request $request)
     {
-        foreach ($this->map as $elements) {
-            if (!$elements['request_matcher']->matches($request)) {
-                continue;
+        ksort($this->map);
+        foreach ($this->map as $rulesByPriority) {
+            foreach ($rulesByPriority as $elements) {
+                if (!$elements['request_matcher']->matches($request)) {
+                    continue;
+                }
+
+                $rule = $elements['rule'];
+
+                if (!empty($rule['stop'])) {
+                    throw new StopFormatListenerException('Stopped content type negotiator');
+                }
+
+                return $rule['content_types'];
             }
-
-            $rule = $elements['rule'];
-
-            if (!empty($rule['stop'])) {
-                throw new StopFormatListenerException('Stopped content type negotiator');
-            }
-
-            return $rule['content_types'];
         }
 
         return [];
@@ -57,6 +60,6 @@ class ContentTypeNegotiator
      */
     public function add(RequestMatcherInterface $requestMatcher, array $rule)
     {
-        $this->map[] = ['request_matcher' => $requestMatcher, 'rule' => $rule];
+        $this->map[$rule['priority']][] = ['request_matcher' => $requestMatcher, 'rule' => $rule];
     }
 }
