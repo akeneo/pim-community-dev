@@ -8,6 +8,7 @@ Feature: Browse job executions
     Given a "clothing" catalog configuration
     And I am logged in as "Peter"
 
+  @unstable
   Scenario: Successfully view job executions depending on given permissions
     Given I am on the exports page
     And I am on the "csv_clothing_product_export" export job page

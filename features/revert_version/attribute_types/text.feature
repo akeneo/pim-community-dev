@@ -8,6 +8,7 @@ Feature: Revert product attributes to a previous version
     Given a "clothing" catalog configuration
     And I am logged in as "Julia"
 
+  @unstable
   Scenario: Successfully revert a text attribute
     Given I am on the products page
     And I create a new product
