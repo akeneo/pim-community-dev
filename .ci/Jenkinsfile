@@ -3,7 +3,7 @@
 import org.csanchez.jenkins.plugins.kubernetes.pipeline.PodTemplateAction
 
 String[] features = ["features", "vendor/akeneo/pim-community-dev/features"]
-String ceBranch = "2.0.x-dev"
+String ceBranch = "2.1.x-dev"
 String ceOwner = "akeneo"
 String launchUnitTests = "yes"
 String launchIntegrationTests = "yes"
@@ -17,7 +17,7 @@ stage("Build") {
     if (env.BRANCH_NAME =~ /^PR-/) {
         timeout(time:5, unit:'DAYS') {
             userInput = input(message: 'Launch tests?', parameters: [
-                string(defaultValue: '2.0.x-dev', description: 'Community Edition branch used for the build', name: 'ce_branch'),
+                string(defaultValue: '2.1.x-dev', description: 'Community Edition branch used for the build', name: 'ce_branch'),
                 string(defaultValue: 'akeneo', description: 'Owner of the repository on GitHub', name: 'ce_owner'),
                 choice(choices: 'yes\nno', description: 'Run unit tests and code style checks', name: 'launchUnitTests'),
                 choice(choices: 'yes\nno', description: 'Run integration tests', name: 'launchIntegrationTests'),
