@@ -55,32 +55,32 @@ define(
                 'click .target-button': 'changeAssociationTargets'
             },
 
-            fetchAssociatedProducts(associationTypes) {
-                const associationType = this.getCurrentAssociationType();
-                const associationTypeId = _.findWhere(associationTypes, {code: associationType}).meta.id;
-                const product = this.getFormData().meta.id;
-                const dataLocale = UserContext.get('catalogLocale');
+            // fetchAssociatedProducts(associationTypes) {
+            //     const associationType = this.getCurrentAssociationType();
+            //     const associationTypeId = _.findWhere(associationTypes, {code: associationType}).meta.id;
+            //     const product = this.getFormData().meta.id;
+            //     const dataLocale = UserContext.get('catalogLocale');
 
-                const params = {
-                    product,
-                    dataLocale,
-                    'associationType': associationTypeId,
-                    'alias': 'association-product-grid'
-                };
+            //     const params = {
+            //         product,
+            //         dataLocale,
+            //         'associationType': associationTypeId,
+            //         'alias': 'association-product-grid'
+            //     };
 
-                const associatedProductsUrl = Routing.generate('pim_datagrid_load', {
-                    alias: 'association-product-grid',
-                    associationType: associationTypeId,
-                    product,
-                    params,
-                    dataLocale,
-                    'association-product-grid[_filter][scope][value]': 'ecommerce',
-                    'association-product-grid[_sort_by][is_associated]': 'DESC',
-                    'association-product-grid[_filter][is_associated][value]': 1
-                });
+            //     const associatedProductsUrl = Routing.generate('pim_datagrid_load', {
+            //         alias: 'association-product-grid',
+            //         associationType: associationTypeId,
+            //         product,
+            //         params,
+            //         dataLocale,
+            //         'association-product-grid[_filter][scope][value]': 'ecommerce',
+            //         'association-product-grid[_sort_by][is_associated]': 'DESC',
+            //         'association-product-grid[_filter][is_associated][value]': 1
+            //     });
 
-                return $.getJSON(associatedProductsUrl);
-            },
+            //     return $.getJSON(associatedProductsUrl);
+            // },
 
             initialize: function () {
                 state = {
@@ -88,26 +88,28 @@ define(
                 };
 
                 this.datagrids = {
-                    // products: {
-                    //     name: 'association-product-grid',
-                    //     getInitialParams: function (associationType) {
-                    //         var params = {
-                    //             product: this.getFormData().meta.id
-                    //         };
-                    //         params[this.datagrids.products.paramName] =
-                    //             this.datagrids.products.getParamValue(associationType);
-                    //         params.dataLocale = UserContext.get('catalogLocale');
+                    products: {
+                        name: 'association-product-grid',
+                        getInitialParams: function (associationType) {
+                            var params = {
+                                product: this.getFormData().meta.id,
+                                'association-product-grid[_filter][is_associated][value]': 1
+                            };
+                            params[this.datagrids.products.paramName] =
+                                this.datagrids.products.getParamValue(associationType);
+                            params.dataLocale = UserContext.get('catalogLocale');
+                            console.log(params);
 
-                    //         return params;
-                    //     }.bind(this),
-                    //     paramName: 'associationType',
-                    //     getParamValue: function (associationType) {
-                    //         return _.findWhere(state.associationTypes, {code: associationType}).meta.id;
-                    //     }.bind(this),
-                    //     getModelIdentifier: function (model) {
-                    //         return model.get('identifier');
-                    //     }
-                    // },
+                            return params;
+                        }.bind(this),
+                        paramName: 'associationType',
+                        getParamValue: function (associationType) {
+                            return _.findWhere(state.associationTypes, {code: associationType}).meta.id;
+                        }.bind(this),
+                        getModelIdentifier: function (model) {
+                            return model.get('identifier');
+                        }
+                    },
                     groups: {
                         name: 'association-group-grid',
                         getInitialParams: function (associationType) {
@@ -205,7 +207,7 @@ define(
 
                     this.renderPanes();
 
-                    if (associationTypes.length && currentAssociationTarget !== 'products') {
+                    if (associationTypes.length) {
                         var currentGrid = this.datagrids[currentAssociationTarget];
                         this.renderGrid(
                             currentGrid.name,
@@ -214,12 +216,12 @@ define(
                         this.setListenerSelectors();
                     }
 
-                    if (currentAssociationTarget === 'products') {
-                        this.fetchAssociatedProducts(associationTypes).then((response) => {
-                            const responseJSON = JSON.parse(response.data);
-                            this.getRoot().trigger('datagrid:associations:ready', responseJSON.data, this.$('.AknGrid--gallery'));
-                        });
-                    }
+                    // if (currentAssociationTarget === 'products') {
+                    //     this.fetchAssociatedProducts(associationTypes).then((response) => {
+                    //         const responseJSON = JSON.parse(response.data);
+                    //         this.getRoot().trigger('datagrid:associations:ready', responseJSON.data, this.$('.AknGrid--gallery'));
+                    //     });
+                    // }
 
                     this.delegateEvents();
                 }.bind(this));
@@ -251,7 +253,7 @@ define(
                 if (this.isVisible()) {
                     this.$('.selection-inputs input').val('');
                     state.selectedAssociations = {};
-                    // this.render();
+                    this.render();
                 }
             },
 
