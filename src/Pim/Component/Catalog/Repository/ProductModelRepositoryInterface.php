@@ -102,7 +102,7 @@ interface ProductModelRepositoryInterface extends
      *
      * @return array
      */
-    public function getFamilyLeafProductModels(
+    public function searchLastLevelByCode(
         FamilyVariantInterface $familyVariant,
         string $search,
         int $limit,

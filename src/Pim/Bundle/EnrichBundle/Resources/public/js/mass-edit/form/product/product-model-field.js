@@ -48,7 +48,8 @@ define(
             },
 
             /**
-             * Updates the choice URL when the model change
+             * When the model data is updated with a new family variant, drops the previous value and re-render the
+             * field.
              */
             onPostUpdate() {
                 if (this.getFormData().family_variant !== this.previousFamilyVariant) {

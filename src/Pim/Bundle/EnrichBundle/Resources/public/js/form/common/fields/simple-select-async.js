@@ -38,6 +38,7 @@ define(
             },
             template: _.template(template),
             choiceUrl: null,
+            resultsPerPage: 20,
 
             /**
              * {@inheritdoc}
@@ -107,7 +108,7 @@ define(
                 return {
                     search: term,
                     options: {
-                        limit: 20,
+                        limit: this.resultsPerPage,
                         page: page,
                         catalogLocale: UserContext.get('catalogLocale')
                     }
@@ -122,7 +123,7 @@ define(
              * @returns {Object}
              */
             select2Results(response) {
-                const more = 20 === Object.keys(response).length;
+                const more = this.resultsPerPage === Object.keys(response).length;
 
                 // The result is already formatted for select2
                 if (response.results) {

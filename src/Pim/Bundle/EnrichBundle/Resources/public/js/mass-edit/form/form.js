@@ -84,6 +84,8 @@ define(
                 }));
 
                 this.$('.step').empty().append(step.$el);
+                // We need to have the step in the DOM as soon as possible for extensions that call render() and
+                // postRender()
                 step.render();
 
                 this.delegateEvents();

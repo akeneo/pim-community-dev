@@ -33,7 +33,7 @@ pim_enrich_product_model_rest_children_list:
 
 pim_enrich_product_model_family_variant_leaf:
     path: /rest/family-variant-leaf
-    defaults: { _controller: pim_enrich.controller.rest.product_model:familyVariantLeafAction }
+    defaults: { _controller: pim_enrich.controller.rest.product_model:searchLastLevelProductModelByCode }
     methods: [GET]
 
 pim_enrich_product_model_category_rest_list:

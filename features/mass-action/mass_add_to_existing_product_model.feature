@@ -45,7 +45,7 @@ Feature: Apply a add to products to existing product model
     And I should see the text "Skipped 1"
     And I should see the text "Product and product model families should be the same."
 
-  Scenario: Successfully show validation error on family issues
+  Scenario: Successfully adds products to product model
     Given I am on the "1111111171" product page
     When I visit the "Product" group
     And I fill in the following information:

@@ -26,7 +26,8 @@ class AddToExistingProductModelProcessor extends AbstractProcessor
     private $validator;
 
     /**
-     * @param AddParent $addParent
+     * @param AddParent          $addParent
+     * @param ValidatorInterface $validator
      */
     public function __construct(AddParent $addParent, ValidatorInterface $validator)
     {
@@ -71,7 +72,7 @@ class AddToExistingProductModelProcessor extends AbstractProcessor
      *
      * @return bool
      */
-    protected function isProductValid(ProductInterface $product)
+    private function isProductValid(ProductInterface $product): bool
     {
         $violations = $this->validator->validate($product);
         $this->addWarningMessage($violations, $product);

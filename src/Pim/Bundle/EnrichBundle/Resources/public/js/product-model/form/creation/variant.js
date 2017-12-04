@@ -111,7 +111,7 @@ function (
             const variantData = responseJSON.data;
 
             return {
-                more: 20 === Object.keys(variantData).length,
+                more: this.resultsPerPage === Object.keys(variantData).length,
                 results: variantData.map(item => this.convertBackendItem(item))
             };
         },

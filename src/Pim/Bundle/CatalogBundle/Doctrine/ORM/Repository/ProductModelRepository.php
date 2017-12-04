@@ -183,16 +183,17 @@ class ProductModelRepository extends EntityRepository implements ProductModelRep
     /**
      * {@inheritdoc}
      */
-    public function getFamilyLeafProductModels(
+    public function searchLastLevelByCode(
         FamilyVariantInterface $familyVariant,
         string $search,
         int $limit,
         int $page = 0
     ): array {
         $qb = $this
-            ->createQueryBuilder('pm')
-            ->where('pm.code like :search')
-            ->setParameter('search', sprintf('%%%s%%', $search))
+            ->createQueryBuilder('pm');
+
+        $qb->where($qb->expr()->like('pm.code', '?1'))
+            ->setParameter(1, '%' . $search . '%')
             ->setParameter('familyVariant', $familyVariant->getId())
             ->setFirstResult($page * $limit)
             ->setMaxResults($limit);

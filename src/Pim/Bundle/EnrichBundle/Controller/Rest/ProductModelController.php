@@ -296,13 +296,13 @@ class ProductModelController
     }
 
     /**
-     * Returns the product models belonging to a Family Variant with a given search string
+     * Returns the last level of product models belonging to a Family Variant with a given search code
      *
      * @param Request $request
      *
      * @return JsonResponse
      */
-    public function familyVariantLeafAction(Request $request): JsonResponse
+    public function searchLastLevelProductModelByCode(Request $request): JsonResponse
     {
         $search = $request->query->get('search');
         $options = $request->query->get('options');
@@ -313,7 +313,7 @@ class ProductModelController
             throw new \InvalidArgumentException(sprintf('Unknown family variant code "%s"', $familyVariantCode));
         }
 
-        $productModels = $this->productModelRepository->getFamilyLeafProductModels(
+        $productModels = $this->productModelRepository->searchLastLevelByCode(
             $familyVariant,
             $search,
             self::PRODUCT_MODELS_LIMIT,
