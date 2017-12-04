@@ -81,7 +81,7 @@ class AssetReferenceController
      *
      * @return Response
      *
-     * @AclAncestor("pim_api_asset_reference_list")
+     * @AclAncestor("pim_api_asset_list")
      */
     public function downloadAction(string $assetCode, string $localeCode): Response
     {
@@ -121,7 +121,7 @@ class AssetReferenceController
      *
      * @return Response
      *
-     * @AclAncestor("pim_api_asset_reference_list")
+     * @AclAncestor("pim_api_asset_list")
      */
     public function getAction(string $assetCode, string $localeCode): Response
     {

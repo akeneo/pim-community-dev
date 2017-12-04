@@ -4,6 +4,7 @@ parameters:
     pimee_api.controller.product_proposal.class: PimEnterprise\Bundle\ApiBundle\Controller\ProductProposalController
     pimee_api.controller.category_asset.class: PimEnterprise\Bundle\ApiBundle\Controller\AssetCategoryController
     pimee_api.controller.asset_reference.class: PimEnterprise\Bundle\ApiBundle\Controller\AssetReferenceController
+    pimee_api.controller.asset_variation.class: PimEnterprise\Bundle\ApiBundle\Controller\AssetVariationController
 
 services:
     pimee_api.controller.published_product:
@@ -110,3 +111,6 @@ services:
             - '@akeneo_file_storage.file_storage.filesystem_provider'
             - '@akeneo_file_storage.file_storage.file.streamed_file_fetcher'
             - '@pim_serializer'
+
+    pimee_api.controller.asset_variation:
+        class: '%pimee_api.controller.asset_variation.class%'
