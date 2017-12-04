@@ -117,16 +117,26 @@ class ProductAndProductModelQueryBuilder implements ProductQueryBuilderInterface
         $hasIdentifierFilter = $this->hasRawFilter('field', 'identifier');
         $hasEntityTypeFilter = $this->hasRawFilter('field', 'entity_type');
         $hasAncestorsIdsFilter = $this->hasRawFilter('field', 'ancestor.id');
+        $hasSelfAndAncestorsIdsFilter = $this->hasRawFilter('field', 'self_and_ancestor.id');
 
         return !$hasAttributeFilters &&
             !$hasParentFilter &&
             !$hasIdFilter &&
             !$hasIdentifierFilter &&
             !$hasEntityTypeFilter &&
-            !$hasAncestorsIdsFilter;
+            !$hasAncestorsIdsFilter &&
+            !$hasSelfAndAncestorsIdsFilter;
     }
 
-    private function hasRawFilter(string $filterProperty, string $value)
+    /**
+     * Checks whether the raw filters contains a filter on a particular field.
+     *
+     * @param string $filterProperty
+     * @param string $value
+     *
+     * @return bool
+     */
+    private function hasRawFilter(string $filterProperty, string $value): bool
     {
         return !empty(array_filter(
             $this->getRawFilters(),
