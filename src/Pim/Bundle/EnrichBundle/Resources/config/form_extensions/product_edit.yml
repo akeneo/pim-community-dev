@@ -168,6 +168,7 @@ extensions:
         module: pim/product/add-select/attribute
         parent: pim-product-edit-form-attributes
         targetZone: other-actions
+        aclResourceId: pim_enrich_product_add_attribute
         position: 90
         config:
             searchParameters:
