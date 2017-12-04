@@ -35,6 +35,7 @@ function (
             SimpleSelectAsync.prototype.initialize.apply(this, arguments);
 
             this.previousFamily = null;
+            this.readOnly = true;
         },
 
         /**
@@ -64,12 +65,13 @@ function (
                             'family-variant-grid[family_id]': familyId,
                             'family-variant-grid[localeCode]': UserContext.get('catalogLocale')
                         }));
-
+                        this.readOnly = false;
                         this.setData({[this.fieldName]: null});
 
                         this.render();
                     });
                 } else {
+                    this.readOnly = true;
                     this.setData({[this.fieldName]: null});
 
                     this.render();

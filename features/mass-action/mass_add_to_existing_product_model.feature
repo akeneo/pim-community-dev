@@ -14,7 +14,7 @@ Feature: Apply a add to products to existing product model
     And I press the "Bulk actions" button
     And I choose the "Add to an existing product model" operation
     And I fill in the following information:
-      | Choose a family | Accessories |
+      | Family | Accessories |
     Then I should see the text "Accessories by size"
 
   Scenario: Successfully display leaf product models
@@ -28,7 +28,7 @@ Feature: Apply a add to products to existing product model
       | Product model (required) | Apollon blue               |
     When I move on to the next step
     Then I should see the text "Apollon blue"
-    And the fields family should be disabled
+    And the fields Family should be disabled
 
   Scenario: Successfully show validation error on family issues
     Given I am on the products page
@@ -42,7 +42,6 @@ Feature: Apply a add to products to existing product model
     When I confirm mass edit
     And I wait for the "add_to_existing_product_model" job to finish
     Then I should see the text "COMPLETED"
-    And I should see the text "Skipped 1"
     And I should see the text "Product and product model families should be the same."
 
   Scenario: Successfully adds products to product model

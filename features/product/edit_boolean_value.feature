@@ -11,7 +11,7 @@ Feature: Edit a boolean value
     And I create a product
     And I fill in the following information in the popin:
       | SKU    | gladiator |
-      | family | T-shirts  |
+      | Family | T-shirts  |
     And I press the "Save" button in the popin
     And I wait to be on the "gladiator" product page
     And I visit the "Additional information" group
