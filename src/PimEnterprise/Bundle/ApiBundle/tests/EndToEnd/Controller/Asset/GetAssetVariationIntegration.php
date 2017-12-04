@@ -16,34 +16,34 @@ namespace PimEnterprise\Bundle\ApiBundle\tests\EndToEnd\Controller\Asset;
 /**
  * @author Damien Carcel <damien.carcel@akeneo.com>
  */
-class GetAssetReferenceIntegration extends AbstractAssetTestCase
+class GetAssetVariationIntegration extends AbstractAssetTestCase
 {
-    public function testGetReferenceForNonLocalizableAsset()
+    public function testGetVariationForNonLocalizableAsset()
     {
         $standardizedAssets = $this->getStandardizedAssets();
         $client = $this->createAuthenticatedClient();
 
-        $client->request('GET', 'api/rest/v1/assets/non_localizable_asset/reference-files/no_locale');
+        $client->request('GET', 'api/rest/v1/assets/non_localizable_asset/variation-files/ecommerce/no_locale');
         $response = $client->getResponse();
 
         $this->assertSame($response->getStatusCode(), 200);
         $this->assertResponseContent(
-            $this->getExpectedReference($standardizedAssets['non_localizable_asset'], null),
+            $this->getExpectedVariation($standardizedAssets['non_localizable_asset'], 'ecommerce', null),
             $response->getContent()
         );
     }
 
-    public function testGetReferenceForLocalizableAsset()
+    public function testGetVariationForLocalizableAsset()
     {
         $standardizedAssets = $this->getStandardizedAssets();
         $client = $this->createAuthenticatedClient();
 
-        $client->request('GET', 'api/rest/v1/assets/localizable_asset/reference-files/en_US');
+        $client->request('GET', 'api/rest/v1/assets/localizable_asset/variation-files/ecommerce/en_US');
         $response = $client->getResponse();
 
         $this->assertSame($response->getStatusCode(), 200);
         $this->assertResponseContent(
-            $this->getExpectedReference($standardizedAssets['localizable_asset'], 'en_US'),
+            $this->getExpectedVariation($standardizedAssets['localizable_asset'], 'ecommerce', 'en_US'),
             $response->getContent()
         );
     }
@@ -51,17 +51,20 @@ class GetAssetReferenceIntegration extends AbstractAssetTestCase
     /**
      * Should be an integration test.
      */
-    public function testLocalizableAssetReferenceDoesNotExistsForGivenLocale()
+    public function testLocalizableAssetVariationDoesNotExistsForGivenLocale()
     {
         $client = $this->createAuthenticatedClient();
 
-        $client->request('GET', 'api/rest/v1/assets/localizable_asset_without_references/reference-files/en_US');
+        $client->request(
+            'GET',
+            'api/rest/v1/assets/localizable_asset_without_references/variation-files/ecommerce/en_US'
+        );
         $response = $client->getResponse();
 
         $expectedContent = <<<JSON
 {
     "code": 404,
-    "message": "Reference file for the asset \"localizable_asset_without_references\" and the locale \"en_US\" does not exist."
+    "message": "Variation file for the asset \"localizable_asset_without_references\" and the channel \"ecommerce\" and the locale \"en_US\" does not exist."
 }
 JSON;
 
@@ -72,20 +75,20 @@ JSON;
     /**
      * Should be an integration test.
      */
-    public function testAssetReferenceDoesNotExists()
+    public function testAssetVariationDoesNotExists()
     {
         $client = $this->createAuthenticatedClient();
 
         $client->request(
             'GET',
-            'api/rest/v1/assets/non_localizable_asset_without_references/reference-files/no_locale'
+            'api/rest/v1/assets/non_localizable_asset_without_references/variation-files/ecommerce/no_locale'
         );
         $response = $client->getResponse();
 
         $expectedContent = <<<JSON
 {
     "code": 404,
-    "message": "Reference file for the asset \"non_localizable_asset_without_references\" does not exist."
+    "message": "Variation file for the asset \"non_localizable_asset_without_references\" and the channel \"ecommerce\" does not exist."
 }
 JSON;
 
@@ -100,7 +103,7 @@ JSON;
     {
         $client = $this->createAuthenticatedClient();
 
-        $client->request('GET', 'api/rest/v1/assets/ham_and_jam/reference-files/no_locale');
+        $client->request('GET', 'api/rest/v1/assets/ham_and_jam/variation-files/ecommerce/no_locale');
         $response = $client->getResponse();
 
         $expectedContent = <<<JSON
@@ -117,11 +120,14 @@ JSON;
     /**
      * Should be an integration test.
      */
-    public function testLocaleDoesNotExist()
+    public function testGivenLocaleDoesNotExist()
     {
         $client = $this->createAuthenticatedClient();
 
-        $client->request('GET', 'api/rest/v1/assets/non_localizable_asset_without_references/reference-files/ham');
+        $client->request(
+            'GET',
+            'api/rest/v1/assets/non_localizable_asset_without_references/variation-files/ecommerce/ham'
+        );
         $response = $client->getResponse();
 
         $expectedContent = <<<JSON
@@ -138,13 +144,37 @@ JSON;
     /**
      * Should be an integration test.
      */
+    public function testGivenChannelDoesNotExist()
+    {
+        $client = $this->createAuthenticatedClient();
+
+        $client->request(
+            'GET',
+            'api/rest/v1/assets/non_localizable_asset_without_references/variation-files/jam/en_US'
+        );
+        $response = $client->getResponse();
+
+        $expectedContent = <<<JSON
+{
+    "code": 404,
+    "message": "Channel \"jam\" does not exist."
+}
+JSON;
+
+        $this->assertSame(404, $response->getStatusCode());
+        $this->assertJsonStringEqualsJsonString($expectedContent, $response->getContent());
+    }
+
+    /**
+     * Should be an integration test.
+     */
     public function testThatItFailsWhenNoLocaleProvidedToGetLocalizableAsset()
     {
         $client = $this->createAuthenticatedClient();
 
         $client->request(
             'GET',
-            'api/rest/v1/assets/localizable_asset_without_references/reference-files/no_locale'
+            'api/rest/v1/assets/localizable_asset_without_references/variation-files/ecommerce/no_locale'
         );
         $response = $client->getResponse();
 
@@ -168,7 +198,7 @@ JSON;
 
         $client->request(
             'GET',
-            'api/rest/v1/assets/non_localizable_asset_without_references/reference-files/en_US'
+            'api/rest/v1/assets/non_localizable_asset_without_references/variation-files/ecommerce/en_US'
         );
         $response = $client->getResponse();
 
@@ -184,49 +214,75 @@ JSON;
     }
 
     /**
+     * Should be an integration test.
+     */
+    public function testLocaleIsNotActivated()
+    {
+        $client = $this->createAuthenticatedClient();
+
+        $client->request(
+            'GET',
+            'api/rest/v1/assets/localizable_asset_without_references/variation-files/ecommerce/fr_FR'
+        );
+        $response = $client->getResponse();
+
+        $expectedContent = <<<JSON
+{
+    "code": 404,
+    "message": "There is no variation file for the locale \"fr_FR\" and the channel \"ecommerce\" as the locale \"fr_FR\" is not activated for the channel \"ecommerce\"."
+}
+JSON;
+
+        $this->assertSame(404, $response->getStatusCode());
+        $this->assertJsonStringEqualsJsonString($expectedContent, $response->getContent());
+    }
+
+    /**
      * @param array  $expected
      * @param string $responseContent
      */
     private function assertResponseContent(array $expected, string $responseContent): void
     {
-        $reference = json_decode($responseContent, true);
-        ksort($reference);
+        $variation = json_decode($responseContent, true);
+        ksort($variation);
 
-        $this->assertEquals($expected, $reference);
+        $this->assertEquals($expected, $variation);
     }
 
     /**
      * @param string      $expected
+     * @param string      $channel
      * @param null|string $locale
      *
      * @throws \PHPUnit_Framework_AssertionFailedError
      *
      * @return array
      */
-    private function getExpectedReference(string $expected, ?string $locale): array
+    private function getExpectedVariation(string $expected, string $channel, ?string $locale): array
     {
         $expected = json_decode($expected, true);
         $expected = $this->sanitizeNormalizedAsset($expected);
 
-        if (null === $locale) {
-            $normalizedReference = $expected['reference_files'][0];
-            unset($normalizedReference['_link']['self']);
+        foreach ($expected['variation_files'] as $normalizedVariation) {
+            if (null === $locale && $channel === $normalizedVariation['channel']) {
+                unset($normalizedVariation['_link']['self']);
 
-            return $normalizedReference;
-        }
+                return $normalizedVariation;
+            }
 
-        foreach ($expected['reference_files'] as $normalizedReference) {
-            if ($locale === $normalizedReference['locale']) {
-                unset($normalizedReference['_link']['self']);
+            if ($locale === $normalizedVariation['locale'] && $channel === $normalizedVariation['channel']) {
+                unset($normalizedVariation['_link']['self']);
 
-                return $normalizedReference;
+                return $normalizedVariation;
             }
         }
 
-        throw new \PHPUnit_Framework_AssertionFailedError(sprintf(
-            'No asset "%s" reference found for locale "%s"',
-            $expected['code'],
-            $locale ?? 'no_locale'
-        ));
+        throw new \PHPUnit_Framework_AssertionFailedError(
+            sprintf(
+                'No asset "%s" variation found for locale "%s"',
+                $expected['code'],
+                $locale ?? 'no_locale'
+            )
+        );
     }
 }
