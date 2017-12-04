@@ -54,34 +54,6 @@ define(
                 'click .associations-list li': 'changeAssociationType',
                 'click .target-button': 'changeAssociationTargets'
             },
-
-            // fetchAssociatedProducts(associationTypes) {
-            //     const associationType = this.getCurrentAssociationType();
-            //     const associationTypeId = _.findWhere(associationTypes, {code: associationType}).meta.id;
-            //     const product = this.getFormData().meta.id;
-            //     const dataLocale = UserContext.get('catalogLocale');
-
-            //     const params = {
-            //         product,
-            //         dataLocale,
-            //         'associationType': associationTypeId,
-            //         'alias': 'association-product-grid'
-            //     };
-
-            //     const associatedProductsUrl = Routing.generate('pim_datagrid_load', {
-            //         alias: 'association-product-grid',
-            //         associationType: associationTypeId,
-            //         product,
-            //         params,
-            //         dataLocale,
-            //         'association-product-grid[_filter][scope][value]': 'ecommerce',
-            //         'association-product-grid[_sort_by][is_associated]': 'DESC',
-            //         'association-product-grid[_filter][is_associated][value]': 1
-            //     });
-
-            //     return $.getJSON(associatedProductsUrl);
-            // },
-
             initialize: function () {
                 state = {
                     associationTarget: 'products'
@@ -92,13 +64,11 @@ define(
                         name: 'association-product-grid',
                         getInitialParams: function (associationType) {
                             var params = {
-                                product: this.getFormData().meta.id,
-                                'association-product-grid[_filter][is_associated][value]': 1
+                                product: this.getFormData().meta.id
                             };
                             params[this.datagrids.products.paramName] =
                                 this.datagrids.products.getParamValue(associationType);
                             params.dataLocale = UserContext.get('catalogLocale');
-                            console.log(params);
 
                             return params;
                         }.bind(this),
@@ -152,17 +122,6 @@ define(
                     }.bind(this));
                 }.bind(this));
 
-                this.listenTo(this.getRoot(), 'datagrid:unselectModel:association-product-grid', identifier => {
-                    const associations = this.getFormData().associations;
-                    const type           = this.getCurrentAssociationType();
-
-                    associations[type].products = associations[type].products.filter(product => {
-                        return identifier.toString() !== product;
-                    });
-
-                    this.setData({'associations': associations}, { silent: true });
-                });
-
                 this.listenTo(this.getRoot(), 'pim_enrich:form:entity:post_update', this.postUpdate.bind(this));
 
                 this.listenTo(this.getRoot(), 'pim_enrich:form:locale_switcher:change', function (localeEvent) {
@@ -179,7 +138,6 @@ define(
                 }
 
                 this.loadAssociationTypes().then(function (associationTypes) {
-                    const currentAssociationTarget = this.getCurrentAssociationTarget();
                     var currentAssociationType = associationTypes.length ? _.first(associationTypes).code : null;
 
                     if (null === this.getCurrentAssociationType() ||
@@ -196,7 +154,7 @@ define(
                             product: this.getFormData(),
                             locale: UserContext.get('catalogLocale'),
                             associationTypes: associationTypes,
-                            currentAssociationTarget,
+                            currentAssociationTarget: this.getCurrentAssociationTarget(),
                             currentAssociationTypeCode: this.getCurrentAssociationType(),
                             currentAssociationType: _.findWhere(
                                 associationTypes,
@@ -204,24 +162,16 @@ define(
                             )
                         })
                     );
-
                     this.renderPanes();
 
                     if (associationTypes.length) {
-                        var currentGrid = this.datagrids[currentAssociationTarget];
+                        var currentGrid = this.datagrids[this.getCurrentAssociationTarget()];
                         this.renderGrid(
                             currentGrid.name,
                             currentGrid.getInitialParams(this.getCurrentAssociationType())
                         );
                         this.setListenerSelectors();
                     }
-
-                    // if (currentAssociationTarget === 'products') {
-                    //     this.fetchAssociatedProducts(associationTypes).then((response) => {
-                    //         const responseJSON = JSON.parse(response.data);
-                    //         this.getRoot().trigger('datagrid:associations:ready', responseJSON.data, this.$('.AknGrid--gallery'));
-                    //     });
-                    // }
 
                     this.delegateEvents();
                 }.bind(this));

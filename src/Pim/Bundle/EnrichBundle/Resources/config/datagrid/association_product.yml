@@ -48,38 +48,8 @@ datagrid:
                 type:          field
         properties:
             id: ~
-        sorters:
-            columns:
-                identifier:
-                    data_name: identifier
-                    sorter: product_field
-                is_associated:
-                    data_name: is_associated
-                    sorter:    product_is_associated
-                family:
-                    data_name: familyLabel
-                    sorter:    product_family
-                enabled:
-                    data_name: enabled
-                    sorter:    product_field
-                completeness:
-                    data_name: ratio
-                    sorter:    product_completeness
-                created:
-                    data_name: created
-                    sorter:    product_field
-                updated:
-                    data_name: updated
-                    sorter:    product_field
-            default:
-                is_associated: '%oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC'
         filters:
             columns:
-                is_associated:
-                    type:      product_is_associated
-                    ftype:     boolean
-                    label:     Is associated
-                    data_name: is_associated
                 label_or_identifier:
                     type: label_or_identifier
                     label: Label or identifier
