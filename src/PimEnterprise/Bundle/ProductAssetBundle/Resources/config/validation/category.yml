@@ -20,3 +20,7 @@ PimEnterprise\Component\ProductAsset\Model\CategoryTranslation:
         label:
             - Length:
                 max: 100
+        locale:
+            - Pim\Component\Catalog\Validator\Constraints\Locale:
+                payload:
+                    standardPropertyName: labels

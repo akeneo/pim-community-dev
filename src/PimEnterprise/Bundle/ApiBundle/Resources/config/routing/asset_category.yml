@@ -1,9 +1,19 @@
-pimee_api_category_asset_list:
+pimee_api_asset_category_list:
     path: /asset-categories
     defaults: { _controller: pimee_api.controller.asset_category:listAction, _format: json }
     methods: [GET]
 
-pimee_api_category_asset_get:
+pimee_api_asset_category_get:
     path: /asset-categories/{code}
     defaults: { _controller: pimee_api.controller.asset_category:getAction, _format: json }
     methods: [GET]
+
+pimee_api_asset_category_create:
+    path: /asset-categories
+    defaults: { _controller: pimee_api.controller.asset_category:createAction, _format: json}
+    methods: [POST]
+
+pimee_api_asset_category_partial_update:
+    path: /asset-categories/{code}
+    defaults: { _controller: pimee_api.controller.asset_category:partialUpdateAction, _format: json}
+    methods: [PATCH]
