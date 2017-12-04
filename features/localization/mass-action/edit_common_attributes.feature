@@ -23,7 +23,7 @@ Feature: Edit common localized attributes of many products at once
 
   Scenario: Successfully update many price values at once
     Given I select rows boots and sandals
-    And I press "Modifier les informations du produit" on the "Actions de masse" dropdown button
+    And I press "Actions de masse" on the "Actions de masse" dropdown button
     When I choose the "Modifier les attributs communs" operation
     And I display the Price attribute
     And I change the "Price" to "100,50 USD"
@@ -37,7 +37,7 @@ Feature: Edit common localized attributes of many products at once
 
   Scenario: Successfully update many metric values at once
     Given I select rows boots and sandals
-    And I press "Modifier les informations du produit" on the "Actions de masse" dropdown button
+    And I press "Actions de masse" on the "Actions de masse" dropdown button
     When I choose the "Modifier les attributs communs" operation
     And I display the Weight attribute
     And I change the "Weight" to "600,55"
@@ -47,7 +47,7 @@ Feature: Edit common localized attributes of many products at once
 
   Scenario: Successfully update many number values at once
     Given I select rows boots and sandals
-    And I press "Modifier les informations du produit" on the "Actions de masse" dropdown button
+    And I press "Actions de masse" on the "Actions de masse" dropdown button
     When I choose the "Modifier les attributs communs" operation
     And I display the Time attribute
     And I change the "Time" to "25,75"
@@ -60,7 +60,7 @@ Feature: Edit common localized attributes of many products at once
 
   Scenario: Successfully update many date values at once
     Given I select rows boots and sandals
-    And I press "Modifier les informations du produit" on the "Actions de masse" dropdown button
+    And I press "Actions de masse" on the "Actions de masse" dropdown button
     When I choose the "Modifier les attributs communs" operation
     And I display the Date attribute
     And I change the "Date" to "28/05/2015"
@@ -73,7 +73,7 @@ Feature: Edit common localized attributes of many products at once
 
   Scenario: Fail to update many price values at once
     Given I select rows boots and sandals
-    And I press "Modifier les informations du produit" on the "Actions de masse" dropdown button
+    And I press "Actions de masse" on the "Actions de masse" dropdown button
     When I choose the "Modifier les attributs communs" operation
     And I display the Price attribute
     And I change the "Price" to "100.50 USD"
@@ -83,7 +83,7 @@ Feature: Edit common localized attributes of many products at once
 
   Scenario: Fail to update many metric values at once
     Given I select rows boots and sandals
-    And I press "Modifier les informations du produit" on the "Actions de masse" dropdown button
+    And I press "Actions de masse" on the "Actions de masse" dropdown button
     When I choose the "Modifier les attributs communs" operation
     And I display the Weight attribute
     And I change the "Weight" to "600.55"
@@ -92,7 +92,7 @@ Feature: Edit common localized attributes of many products at once
 
   Scenario: Fail to update many number values at once
     Given I select rows boots and sandals
-    And I press "Modifier les informations du produit" on the "Actions de masse" dropdown button
+    And I press "Actions de masse" on the "Actions de masse" dropdown button
     When I choose the "Modifier les attributs communs" operation
     And I display the Time attribute
     And I change the "Time" to "25.75"
