@@ -4,6 +4,7 @@ namespace Pim\Behat\Context\Storage;
 
 use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\TableNode;
+use Doctrine\Common\Util\ClassUtils;
 use Doctrine\ORM\EntityManagerInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\VariantProductInterface;
@@ -102,6 +103,24 @@ class ProductStorage implements Context
             if (null !== $productValue) {
                 throw new \Exception(sprintf('Product value for product "%s" exists', $identifier));
             }
+        }
+    }
+
+    /**
+     * @Then :productIdentifier should be a product
+     */
+    public function productShouldNotHaveAParent(string $productIdentifier): void
+    {
+        $product = $this->productRepository->findOneByIdentifier($productIdentifier);
+
+        if (null === $product) {
+            throw new \Exception(sprintf('The product "%s" does not exist', $productIdentifier));
+        }
+
+        if (!$product instanceof ProductInterface || $productIdentifier instanceof VariantProductInterface) {
+            throw new \Exception(
+                sprintf('The given object must be a variant product, %s given', ClassUtils::getClass($product))
+            );
         }
     }
 }

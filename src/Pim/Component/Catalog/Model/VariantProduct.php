@@ -93,6 +93,14 @@ class VariantProduct extends AbstractProduct implements VariantProductInterface
     /**
      * {@inheritdoc}
      */
+    public function getCategoriesForVariation(): Collection
+    {
+        return $this->categories;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function addCategory(CategoryInterface $category)
     {
         if (!$this->categories->contains($category) && !$this->hasAncestryCategory($category)) {

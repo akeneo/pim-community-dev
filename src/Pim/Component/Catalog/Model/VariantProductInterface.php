@@ -2,6 +2,8 @@
 
 namespace Pim\Component\Catalog\Model;
 
+use Doctrine\Common\Collections\Collection;
+
 /**
  * Variant product. An entity that belongs to a family variant and that contains flexible values,
  * completeness, categories, associations and much more...
@@ -12,4 +14,10 @@ namespace Pim\Component\Catalog\Model;
  */
 interface VariantProductInterface extends ProductInterface, EntityWithFamilyVariantInterface
 {
+    /**
+     * Return the categories for a variation
+     *
+     * @return Collection
+     */
+    public function getCategoriesForVariation(): Collection;
 }

@@ -191,4 +191,15 @@ interface ValueCollectionInterface extends ProductUniqueValueCollectionInterface
      * @return ValueInterface
      */
     public function next();
+
+    /**
+     * Returns all the elements of this collection that satisfy the predicate $closure.
+     * The order of the elements is preserved.
+     * A **new** collection is returned.
+     *
+     * @param \Closure $filterBy
+     *
+     * @return ValueCollectionInterface
+     */
+    public function filter(\Closure $filterBy);
 }

@@ -74,6 +74,11 @@ interface ProductInterface extends
     public function addGroup(GroupInterface $group);
 
     /**
+     * @param Collection $groups
+     */
+    public function setGroups(Collection $groups): void;
+
+    /**
      * Remove a group
      *
      * @param GroupInterface $group
@@ -106,11 +111,11 @@ interface ProductInterface extends
     /**
      * Set types of associations
      *
-     * @param AssociationInterface[] $associations
+     * @param Collection $associations
      *
      * @return ProductInterface
      */
-    public function setAssociations(array $associations = []);
+    public function setAssociations(Collection $associations);
 
     /**
      * Add a type of an association
@@ -260,4 +265,9 @@ interface ProductInterface extends
      * @return ProductInterface
      */
     public function addUniqueData(ProductUniqueDataInterface $uniqueData);
+
+    /**
+     * @param $data Collection
+     */
+    public function setUniqueData(Collection $data): void;
 }
