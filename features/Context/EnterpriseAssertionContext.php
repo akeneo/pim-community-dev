@@ -48,6 +48,26 @@ class EnterpriseAssertionContext extends BaseAssertionContext
     }
 
     /**
+     * @Then /^the "([^"]*)" asset gallery should be empty$/
+     *
+     * @throws ExpectationException
+     */
+    public function theAssetGalleryShouldBeEmpty($field)
+    {
+        $fieldContainer = $this->getCurrentPage()->findFieldContainer($field);
+
+        if (0 !== count($fieldContainer->findAll('css', '.AknAssetCollectionField-listItem'))) {
+            throw $this->createExpectationException(
+                sprintf(
+                    'Incorrect item count in asset gallery (expected: %s, current: %s)',
+                    0,
+                    count($fieldContainer->findAll('css', '.AknAssetCollectionField li'))
+                )
+            );
+        }
+    }
+
+    /**
      * @param $version
      *
      * @Then /^the version (\d+) should be marked as published$/

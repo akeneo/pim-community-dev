@@ -135,8 +135,6 @@ class DelegatingProductSaver implements SaverInterface, BulkSaverInterface
         $this->objectManager->flush();
 
         foreach ($productsToCompute as $product) {
-            $this->completenessManager->generateMissingForProduct($product);
-
             $this->eventDispatcher->dispatch(StorageEvents::POST_SAVE, new GenericEvent($product, $options));
         }
 

@@ -15,6 +15,7 @@ use Akeneo\Component\Classification\Model\CategoryInterface as BaseCategoryInter
 use Akeneo\Component\Classification\Model\TagInterface as BaseTagInterface;
 use Akeneo\Component\Versioning\Model\VersionableInterface;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\LocaleInterface;
 
@@ -440,6 +441,14 @@ class Asset implements AssetInterface, VersionableInterface
         }
 
         return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setCategories(Collection $categories): void
+    {
+        $this->categories = $categories;
     }
 
     /**

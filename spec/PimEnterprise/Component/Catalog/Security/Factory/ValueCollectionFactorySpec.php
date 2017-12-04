@@ -99,16 +99,16 @@ class ValueCollectionFactorySpec extends ObjectBehavior
         $actualValues = $this->createFromStorageFormat($productValues);
 
         $actualValues->shouldReturn($valueCollection);
-        $actualValues->shouldHaveCount(1);
+        $actualValues->count()->shouldReturn(1);
     }
 
     function it_skips_unknown_attributes_when_creating_a_values_collection_from_the_storage_format(
         $valueCollectionFactory,
         $attributeRepository,
         $logger,
-        ValueFactory $valueFactory,
-        ValueCollection $valueCollection
+        ValueFactory $valueFactory
     ) {
+        $valueCollection = new ValueCollection();
         $attributeRepository->findOneByIdentifier('attribute_that_does_not_exists')->willReturn(null);
 
         $valueFactory->create(Argument::cetera())->shouldNotBeCalled();
@@ -124,6 +124,6 @@ class ValueCollectionFactorySpec extends ObjectBehavior
         ]);
 
         $actualValues->shouldReturnAnInstanceOf($valueCollection);
-        $actualValues->shouldHaveCount(0);
+        $actualValues->count()->shouldReturn(0);
     }
 }

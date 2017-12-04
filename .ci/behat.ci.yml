@@ -1,15 +1,15 @@
 default:
     suites:
-        TEST-enterprise-pim:
+        all:
             paths:
-                - '%paths.base%/features'
-                - '%paths.base%/vendor/akeneo/pim-community-dev/features'
+            filters:
+                tags: "~skip&&~skip-pef&&~skip-nav&&~doc&&~unstable&&~unstable-app&&~deprecated&&~@unstable-app&&~ce"
             contexts:
                 - Behat\MinkExtension\Context\MinkContext
                 - Context\EnterpriseFeatureContext:
                     - 'Context\EnterpriseFeatureContext'
                     -
-                        base_url: 'http://akeneo/'
+                        base_url: 'http://127.0.0.1/'
                         timeout: 50000
                         window_width: 1280
                         window_height: 1024
@@ -79,7 +79,7 @@ default:
                     - 'Context\EnterpriseFeatureContext'
                 - PimEnterprise\Behat\Context\NavigationContext:
                     - 'Context\EnterpriseFeatureContext'
-                    - 'http://akeneo/'
+                    - 'http://127.0.0.1/'
                 - Pim\Behat\Context\Storage\ProductStorage:
                     - '@pim_connector.array_converter.flat_to_standard.product.attribute_column_info_extractor'
                     - '@pim_catalog.repository.product'
@@ -94,8 +94,6 @@ default:
                     - '@pim_catalog.saver.product_model'
                 - Pim\Behat\Context\Domain\Enrich\FamilyVariantConfigurationContext:
                     - 'Context\EnterpriseFeatureContext'
-                - Pim\Behat\Context\Storage\VariantProductStorage:
-                    - '@pim_catalog.repository.product'
     extensions:
         Behat\ChainedStepsExtension: ~
         Behat\MinkExtension:
@@ -107,8 +105,8 @@ default:
                     symfony2: ~
                 selenium2:
                     selenium2:
-                        wd_host: 'http://selenium:4444/wd/hub'
-            base_url: 'http://akeneo/'
+                        wd_host: 'http://127.0.0.1:4444/wd/hub'
+            base_url: 'http://127.0.0.1/'
             files_path: 'features/Context/fixtures/'
         Behat\Symfony2Extension:
             kernel:
@@ -119,9 +117,11 @@ default:
                 page: [Context\Page]
             factory:
                 page_parameters:
-                    base_url: 'http://akeneo/'
+                    base_url: 'http://127.0.0.1/'
         Pim\Behat\Extension\PimFormatter\PimFormatterExtension: ~
+        Liuggio\Fastest\Behat\ListFeaturesExtension\Extension: ~
 
     formatters:
+        pretty: true
         pim:
             output_path: app/build/logs/behat/

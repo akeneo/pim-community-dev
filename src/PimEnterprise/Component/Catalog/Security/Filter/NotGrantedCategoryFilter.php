@@ -11,16 +11,18 @@
 
 namespace PimEnterprise\Component\Catalog\Security\Filter;
 
+use Akeneo\Component\Classification\CategoryAwareInterface;
 use Akeneo\Component\StorageUtils\Exception\InvalidObjectException;
 use Doctrine\Common\Util\ClassUtils;
 use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Model\ProductModelInterface;
 use PimEnterprise\Component\Security\Attributes;
 use PimEnterprise\Component\Security\Exception\ResourceAccessDeniedException;
 use PimEnterprise\Component\Security\NotGrantedDataFilterInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 /**
- * Filter not granted categories from a product
+ * Filter not granted categories from an entity with categories
  *
  * @author Marie Bochu <marie.bochu@akeneo.com>
  */
@@ -40,34 +42,51 @@ class NotGrantedCategoryFilter implements NotGrantedDataFilterInterface
     /**
      * {@inheritdoc}
      */
-    public function filter($product)
+    public function filter($objectWithCategories)
     {
-        if (!$product instanceof ProductInterface) {
-            throw InvalidObjectException::objectExpected(ClassUtils::getClass($product), ProductInterface::class);
+        if (!$objectWithCategories instanceof CategoryAwareInterface) {
+            throw InvalidObjectException::objectExpected(
+                ClassUtils::getClass($objectWithCategories),
+                CategoryAwareInterface::class
+            );
         }
 
-        if (0 === $product->getCategories()->count()) {
-            return $product;
+        if (0 === $objectWithCategories->getCategories()->count()) {
+            return $objectWithCategories;
         }
 
         $categoriesToRemove = [];
-        foreach ($product->getCategories() as $index => $category) {
+        foreach ($objectWithCategories->getCategories() as $index => $category) {
             if (!$this->authorizationChecker->isGranted(Attributes::VIEW_ITEMS, $category)) {
                 $categoriesToRemove[$index] = $category;
             }
         }
 
-        if (count($categoriesToRemove) === $product->getCategories()->count()) {
-            throw new ResourceAccessDeniedException($product, sprintf(
-                'You can neither view, nor update, nor delete the product "%s", as it is only categorized in categories on which you do not have a view permission.',
-                $product->getIdentifier()
-            ));
+        if (count($categoriesToRemove) === $objectWithCategories->getCategories()->count()) {
+            if ($objectWithCategories instanceof ProductModelInterface) {
+                throw new ResourceAccessDeniedException($objectWithCategories, sprintf(
+                    'You can neither view, nor update, nor delete the product model "%s", as it is only categorized in categories on which you do not have a view permission.',
+                    $objectWithCategories->getCode()
+                ));
+            }
+
+            if ($objectWithCategories instanceof ProductInterface) {
+                throw new ResourceAccessDeniedException($objectWithCategories, sprintf(
+                    'You can neither view, nor update, nor delete the product "%s", as it is only categorized in categories on which you do not have a view permission.',
+                    $objectWithCategories->getIdentifier()
+                ));
+            }
+
+            throw new ResourceAccessDeniedException(
+                $objectWithCategories,
+                'You can neither view, nor update, nor delete this entity, as it is only categorized in categories on which you do not have a view permission.'
+            );
         }
 
         foreach ($categoriesToRemove as $index => $category) {
-            $product->getCategories()->remove($index);
+            $objectWithCategories->getCategories()->remove($index);
         }
 
-        return $product;
+        return $objectWithCategories;
     }
 }

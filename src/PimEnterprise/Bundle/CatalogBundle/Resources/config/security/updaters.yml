@@ -3,6 +3,7 @@ parameters:
     pimee_catalog.security.updater.setter.granted_association_field.class: PimEnterprise\Component\Catalog\Security\Updater\Setter\GrantedAssociationFieldSetter
     pimee_catalog.security.updater.entity_with_granted_values_property_setter.class: PimEnterprise\Component\Catalog\Security\Updater\Setter\EntityWithGrantedValuesPropertySetter
     pimee_catalog.security.updater.granted_product.class: PimEnterprise\Component\Catalog\Security\Updater\GrantedProductUpdater
+    pimee_catalog.security.updater.granted_product_model.class: PimEnterprise\Component\Catalog\Security\Updater\GrantedProductModelUpdater
 
 services:
     pimee_catalog.security.updater.setter.granted_category_field:
@@ -55,6 +56,16 @@ services:
             - '@pim_catalog.comparator.filter.product'
             - ['enabled', 'family', 'categories', 'groups']
             - ['associations']
+
+    pimee_catalog.security.updater.granted_product_model:
+        class: '%pimee_catalog.security.updater.granted_product_model.class%'
+        decorates: pim_catalog.updater.product_model
+        decoration_inner_name: pim_catalog.updater.product_model_with_values_permission
+        arguments:
+            - '@pim_catalog.updater.product_model_with_values_permission'
+            - '@security.authorization_checker'
+            - '@pim_catalog.comparator.filter.product_model'
+            - ['categories']
 
     pim_catalog.updater.product_without_permission:
         class: '%pim_catalog.updater.product.class%'
