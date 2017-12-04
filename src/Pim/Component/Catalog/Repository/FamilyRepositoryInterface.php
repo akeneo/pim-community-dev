@@ -49,13 +49,6 @@ interface FamilyRepositoryInterface extends
     public function findByIds(array $familyIds);
 
     /**
-     * Return the number of existing families
-     *
-     * @return int
-     */
-    public function countAll();
-
-    /**
      * Checks if a family has the attribute with specified code.
      *
      * @param int    $id

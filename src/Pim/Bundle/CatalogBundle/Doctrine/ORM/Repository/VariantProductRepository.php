@@ -30,4 +30,17 @@ class VariantProductRepository extends ProductRepository implements VariantProdu
 
         return $qb->getQuery()->execute();
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function countAll(): int
+    {
+        $qb = $this
+            ->createQueryBuilder('vp')
+            ->select('COUNT(vp.id)')
+            ->where('vp.parent IS NOT NULL');
+
+        return (int) $qb->getQuery()->getSingleScalarResult();
+    }
 }

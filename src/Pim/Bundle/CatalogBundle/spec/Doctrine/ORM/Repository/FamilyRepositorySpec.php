@@ -31,17 +31,6 @@ class FamilyRepositorySpec extends ObjectBehavior
         $this->shouldImplement('Pim\Component\Catalog\Repository\FamilyRepositoryInterface');
     }
 
-    function it_count_all_families($em, QueryBuilder $queryBuilder, AbstractQuery $query)
-    {
-        $em->createQueryBuilder()->willReturn($queryBuilder);
-        $queryBuilder->select('f')->willReturn($queryBuilder);
-        $queryBuilder->from('family', 'f', null)->willReturn($queryBuilder);
-        $queryBuilder->select('COUNT(f.id)')->willReturn($queryBuilder);
-        $queryBuilder->getQuery()->willReturn($query);
-        $query->getSingleScalarResult()->shouldBeCalled();
-        $this->countAll();
-    }
-
     function it_checks_if_family_has_attribute($em, QueryBuilder $queryBuilder, AbstractQuery $query)
     {
         $em->createQueryBuilder()->willReturn($queryBuilder);

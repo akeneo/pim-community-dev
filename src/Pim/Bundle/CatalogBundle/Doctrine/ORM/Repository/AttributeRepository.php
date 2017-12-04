@@ -357,17 +357,4 @@ class AttributeRepository extends EntityRepository implements
 
         return $qb->getQuery()->getResult();
     }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function countAll()
-    {
-        $count = $this->createQueryBuilder('a')
-            ->select('COUNT(a.id)')
-            ->getQuery()
-            ->getSingleScalarResult();
-
-        return $count;
-    }
 }

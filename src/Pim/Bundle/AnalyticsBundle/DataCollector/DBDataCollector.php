@@ -3,12 +3,8 @@
 namespace Pim\Bundle\AnalyticsBundle\DataCollector;
 
 use Akeneo\Component\Analytics\DataCollectorInterface;
-use Pim\Bundle\UserBundle\Repository\UserRepositoryInterface;
-use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
-use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
-use Pim\Component\Catalog\Repository\FamilyRepositoryInterface;
+use Akeneo\Component\StorageUtils\Repository\CountableRepositoryInterface;
 use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
-use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
 
 /**
  * Collects the structure of the PIM catalog:
@@ -25,37 +21,55 @@ use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
  */
 class DBDataCollector implements DataCollectorInterface
 {
-    /** @var ChannelRepositoryInterface */
+    /** @var CountableRepositoryInterface */
     protected $channelRepository;
 
-    /** @var ProductRepositoryInterface */
+    /** @var CountableRepositoryInterface */
     protected $productRepository;
 
     /** @var LocaleRepositoryInterface */
     protected $localeRepository;
 
-    /** @var FamilyRepositoryInterface */
+    /** @var CountableRepositoryInterface */
     protected $familyRepository;
 
-    /** @var UserRepositoryInterface */
+    /** @var CountableRepositoryInterface */
     protected $userRepository;
 
+    /** @var CountableRepositoryInterface */
+    protected $productModelRepository;
+
+    /** @var CountableRepositoryInterface */
+    protected $variantProductRepository;
+
+    /** @var CountableRepositoryInterface */
+    protected $familyVariantRepository;
+
     /**
-     * @param ChannelRepositoryInterface   $channelRepository
-     * @param ProductRepositoryInterface   $productRepository
-     * @param LocaleRepositoryInterface    $localeRepository
-     * @param FamilyRepositoryInterface    $familyRepository
-     * @param UserRepositoryInterface      $userRepository
+     * @param CountableRepositoryInterface            $channelRepository
+     * @param CountableRepositoryInterface            $productRepository
+     * @param LocaleRepositoryInterface             $localeRepository
+     * @param CountableRepositoryInterface             $familyRepository
+     * @param CountableRepositoryInterface               $userRepository
+     * @param CountableRepositoryInterface       $productModelRepository
+     * @param CountableRepositoryInterface     $variantProductRepository
+     * @param CountableRepositoryInterface      $familyVariantRepository
      */
     public function __construct(
-        ChannelRepositoryInterface $channelRepository,
-        ProductRepositoryInterface $productRepository,
+        CountableRepositoryInterface $channelRepository,
+        CountableRepositoryInterface $productRepository,
         LocaleRepositoryInterface $localeRepository,
-        FamilyRepositoryInterface $familyRepository,
-        UserRepositoryInterface $userRepository
+        CountableRepositoryInterface $familyRepository,
+        CountableRepositoryInterface $userRepository,
+        CountableRepositoryInterface $productModelRepository,
+        CountableRepositoryInterface $variantProductRepository,
+        CountableRepositoryInterface $familyVariantRepository
     ) {
         $this->channelRepository = $channelRepository;
         $this->productRepository = $productRepository;
+        $this->productModelRepository = $productModelRepository;
+        $this->variantProductRepository = $variantProductRepository;
+        $this->familyVariantRepository = $familyVariantRepository;
         $this->localeRepository = $localeRepository;
         $this->familyRepository = $familyRepository;
         $this->userRepository = $userRepository;
@@ -67,11 +81,14 @@ class DBDataCollector implements DataCollectorInterface
     public function collect()
     {
         return [
-            'nb_channels'   => $this->channelRepository->countAll(),
-            'nb_locales'    => $this->localeRepository->countAllActivated(),
-            'nb_products'   => $this->productRepository->countAll(),
-            'nb_families'   => $this->familyRepository->countAll(),
-            'nb_users'      => $this->userRepository->countAll(),
+            'nb_channels'           => $this->channelRepository->countAll(),
+            'nb_locales'            => $this->localeRepository->countAllActivated(),
+            'nb_products'           => $this->productRepository->countAll(),
+            'nb_product_models'     => $this->productModelRepository->countAll(),
+            'nb_variant_products'   => $this->variantProductRepository->countAll(),
+            'nb_family_variants'    => $this->familyVariantRepository->countAll(),
+            'nb_families'           => $this->familyRepository->countAll(),
+            'nb_users'              => $this->userRepository->countAll(),
         ];
     }
 }

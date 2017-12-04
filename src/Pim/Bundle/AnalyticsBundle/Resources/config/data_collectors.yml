@@ -41,11 +41,14 @@ services:
     pim_analytics.data_collector.database:
         class: '%pim_analytics.data_collector.database.class%'
         arguments:
-            - '@pim_catalog.repository.channel'
-            - '@pim_catalog.repository.product'
+            - '@pim_analytics.repository.channel'
+            - '@pim_analytics.repository.product'
             - '@pim_catalog.repository.locale'
-            - '@pim_catalog.repository.family'
-            - '@pim_user.repository.user'
+            - '@pim_analytics.repository.family'
+            - '@pim_analytics.repository.user'
+            - '@pim_analytics.repository.product_model'
+            - '@pim_analytics.repository.variant_product'
+            - '@pim_analytics.repository.family_variant'
         tags:
             - { name: pim_analytics.data_collector, type: update_checker }
             - { name: pim_analytics.data_collector, type: system_info_report }
@@ -53,7 +56,7 @@ services:
     pim_analytics.data_collector.attribute:
         class: '%pim_analytics.data_collector.attribute.class%'
         arguments:
-            - '@pim_catalog.repository.attribute'
+            - '@pim_analytics.repository.attribute'
             - '@pim_analytics.query.count_localizable_attribute'
             - '@pim_analytics.query.count_scopable_attribute'
             - '@pim_analytics.query.count_localizable_scopable_attribute'

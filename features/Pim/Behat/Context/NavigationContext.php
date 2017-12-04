@@ -181,23 +181,17 @@ class NavigationContext extends PimContext implements PageObjectAware
      * @param string $not
      * @param string $page
      *
-     * @return null|Step\Then
      * @Given /^I should( not)? be able to access the ([^"]*) page$/
      */
     public function iShouldNotBeAbleToAccessThePage($not, $page)
     {
+        $this->iAmOnThePage($page);
+
         if (!$not) {
-            $this->iAmOnThePage($page);
-
-            return $this->getMainContext()->getSubcontext('assertions')->assertPageNotContainsText('Forbidden');
+            $this->getMainContext()->getSubcontext('assertions')->assertPageNotContainsText('Forbidden');
+        } else {
+            $this->getMainContext()->getSubcontext('assertions')->assertPageContainsText('Forbidden');
         }
-
-        $page = isset($this->getPageMapping()[$page]) ? $this->getPageMapping()[$page] : $page;
-
-        $this->currentPage = $page;
-        $this->getCurrentPage()->open();
-
-        return new Then('I should see the text "Forbidden"');
     }
 
     /**

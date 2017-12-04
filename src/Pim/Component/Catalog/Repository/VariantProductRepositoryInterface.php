@@ -13,7 +13,6 @@ use Pim\Component\Catalog\Model\VariantProductInterface;
  */
 interface VariantProductRepositoryInterface
 {
-
     /**
      * Finds products with the same parent than the provided $product.
      *

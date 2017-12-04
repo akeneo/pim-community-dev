@@ -3,18 +3,17 @@
 namespace spec\Pim\Bundle\AnalyticsBundle\DataCollector;
 
 use Akeneo\Component\Analytics\DataCollectorInterface;
+use Akeneo\Component\StorageUtils\Repository\CountableRepositoryInterface;
 use Pim\Bundle\AnalyticsBundle\DataCollector\AttributeDataCollector;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\AnalyticsBundle\Doctrine\Query\CountLocalizableAttribute;
 use Pim\Bundle\AnalyticsBundle\Doctrine\Query\CountScopableAndLocalizableAttribute;
 use Pim\Bundle\AnalyticsBundle\Doctrine\Query\CountScopableAttribute;
-use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
-use Prophecy\Argument;
 
 class AttributeDataCollectorSpec extends ObjectBehavior
 {
     function let(
-        AttributeRepositoryInterface $attributeRepository,
+        CountableRepositoryInterface $attributeRepository,
         CountLocalizableAttribute $countLocalizableAttribute,
         CountScopableAttribute $countScopableAttribute,
         CountScopableAndLocalizableAttribute $countScopableAndLocalizableAttribute
