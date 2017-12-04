@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace PimEnterprise\Component\Security\Authorization;
 
 use Doctrine\Common\Util\ClassUtils;
-use Pim\Component\Catalog\Model\ReferableInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
@@ -48,13 +47,11 @@ class CachedAuthorizationChecker implements AuthorizationCheckerInterface
     }
 
     /**
-     * Not referable and null objects can't be cached because we can't guarantee a unique index for similar objects.
-     *
      * {@inheritdoc}
      */
     public function isGranted($attributes, $object = null): bool
     {
-        if (null === $object || (is_object($object) && !$object instanceof ReferableInterface)) {
+        if (null === $object) {
             return $this->authorizationChecker->isGranted($attributes, $object);
         }
 
@@ -86,6 +83,8 @@ class CachedAuthorizationChecker implements AuthorizationCheckerInterface
 
     /**
      * Get object as string to build the cache index.
+     * We use the hash of the serialized object as a key because voters results are often based on object
+     * content (properties), so when the content of an object changes, its cache key must be different.
      *
      * @param mixed $object
      *
@@ -94,15 +93,10 @@ class CachedAuthorizationChecker implements AuthorizationCheckerInterface
     private function getObjectAsIndex($object): string
     {
         if (is_object($object)) {
-            $class = ClassUtils::getClass($object);
-            $reference = $object->getReference();
-
-            $objectIndex = sprintf('%s_%s', $class, $reference);
-        } else {
-            $objectIndex = (string) $object;
+            return md5(serialize(($object)));
         }
 
-        return $objectIndex;
+        return (string) $object;
     }
 
     /**
