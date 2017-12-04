@@ -13,19 +13,21 @@ extensions:
         targetZone: title
         position: 90
 
-    pim-attribute-create-form-delete:
-        module: pim/attribute-edit-form/delete
+    pim-attribute-create-form-user-navigation:
+        module: pim/menu/user-navigation
         parent: pim-attribute-create-form
-        targetZone: buttons
-        position: 100
-        aclResourceId: pim_enrich_attribute_remove
+        targetZone: user-menu
         config:
-            trans:
-                title: confirmation.remove.attribute
-                content: pim_enrich.confirmation.delete_item
-                success: flash.attribute.removed
-                fail: error.removing.attribute
-            redirect: pim_enrich_attribute_index
+            userAccount: pim_menu.user.user_account
+            logout: pim_menu.user.logout
+
+    pim-attribute-create-form-breadcrumbs:
+        module: pim/common/breadcrumbs
+        parent: pim-attribute-create-form
+        targetZone: breadcrumbs
+        config:
+            tab: pim-menu-settings
+            item: pim-menu-settings-attribute
 
     pim-attribute-create-form-save-buttons:
         module: pim/form/common/save-buttons

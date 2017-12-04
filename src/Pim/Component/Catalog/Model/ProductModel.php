@@ -84,7 +84,7 @@ class ProductModel implements ProductModelInterface
     /**
      * {@inheritdoc}
      */
-    public function getCode(): string
+    public function getCode(): ?string
     {
         return $this->code;
     }
@@ -261,6 +261,14 @@ class ProductModel implements ProductModelInterface
         }
 
         return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setCategories(Collection $categories): void
+    {
+        $this->categories = $categories;
     }
 
     /**

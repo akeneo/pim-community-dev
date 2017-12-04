@@ -37,7 +37,6 @@ class ParentFieldSetter extends AbstractFieldSetter
      */
     public function setFieldData($product, $field, $data, array $options = []): void
     {
-        // TODO: To test against "VariantProductInterface" instead of "ProductInterface" in PIM-6791.
         if (!$product instanceof ProductInterface) {
             throw InvalidObjectException::objectExpected(
                 ClassUtils::getClass($product),
@@ -45,7 +44,6 @@ class ParentFieldSetter extends AbstractFieldSetter
             );
         }
 
-        // TODO: This is to be removed in PIM-6791.
         if (!$product instanceof VariantProductInterface) {
             if (null === $data) {
                 return;

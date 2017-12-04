@@ -407,6 +407,7 @@ pim_enrich:
                 update_failed: The attribute could not be updated.
                 create_successful: Attribute successfully created.
                 create_failed: The attribute could not be created.
+                field_not_ready: "The attribute cannot be saved right now. The following fields are not ready: {{ fields }}"
             scopable: Scopable
             type:
                 pim_catalog_identifier:             Identifier
@@ -427,6 +428,7 @@ pim_enrich:
                 email: E-mail
                 regexp: Regular expression
                 url: URL
+            title: attribute
         attribute_group:
             info:
                 update_failed: Attribute group could not be updated

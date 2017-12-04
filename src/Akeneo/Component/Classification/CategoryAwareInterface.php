@@ -4,6 +4,7 @@ namespace Akeneo\Component\Classification;
 
 use Akeneo\Component\Classification\Model\CategoryInterface;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 
 /**
  * Implementing this interface allows to be aware of categories
@@ -39,4 +40,9 @@ interface CategoryAwareInterface
      * @return array
      */
     public function getCategoryCodes();
+
+    /**
+     * @param Collection $categories
+     */
+    public function setCategories(Collection $categories): void;
 }

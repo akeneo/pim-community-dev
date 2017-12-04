@@ -84,6 +84,8 @@ default:
                     - '@pim_catalog.saver.product_model'
                 - Pim\Behat\Context\Domain\Enrich\FamilyVariantConfigurationContext:
                     - 'Context\FeatureContext'
+                - Pim\Behat\Context\Storage\VariantProductStorage:
+                    - '@pim_catalog.repository.product'
     extensions:
         Behat\ChainedStepsExtension: ~
         Behat\MinkExtension:
