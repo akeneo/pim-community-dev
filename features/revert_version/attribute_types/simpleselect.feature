@@ -13,7 +13,7 @@ Feature: Revert product attributes to a previous version
     And I create a product
     And I fill in the following information in the popin:
       | SKU    | jean  |
-      | family | Pants |
+      | Family | Pants |
     And I press the "Save" button in the popin
     And I wait to be on the "jean" product page
     And I change the Manufacturer to "Desigual"
@@ -46,7 +46,7 @@ Feature: Revert product attributes to a previous version
     And I create a product
     And I fill in the following information in the popin:
       | SKU    | marcel |
-      | family | Tees   |
+      | Family | Tees   |
     And I press the "Save" button in the popin
     And I wait to be on the "marcel" product page
     And I visit the "Marketing" group

@@ -11,8 +11,8 @@ Feature: Update product history when rules are executed
     And I am on the products grid
     And I create a product
     And I fill in the following information in the popin:
-      | SKU             | converse-sneakers |
-      | Choose a family | Sneakers          |
+      | SKU    | converse-sneakers |
+      | Family | Sneakers          |
     And I press the "Save" button in the popin
     And I wait to be on the "converse-sneakers" product page
     And I fill in the following information:
