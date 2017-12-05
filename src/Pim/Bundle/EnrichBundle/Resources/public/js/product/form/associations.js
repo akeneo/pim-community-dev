@@ -618,7 +618,7 @@ define(
                         assocTarget
                     );
 
-                    this.render();
+                    $('.save', this.getRoot().$el).trigger('click');
                 });
             },
 
