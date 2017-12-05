@@ -1,4 +1,6 @@
-<div class="AknGrid-bodyRow-remove AknIconButton AknIconButton--remove AknIconButton--topLeft"></div>
+<% if (canRemoveAssociation) { %>
+    <div class="AknGrid-bodyRow-remove AknIconButton AknIconButton--remove AknIconButton--topLeft"></div>
+<% } %>
 <div class="AknGrid-fullImage" style="background-image: url('<%- imagePath %>')"></div>
 <div class="AknGrid-title"><%- label %></div>
-<div class="AknGrid-subTitle"><%- identifier %></div>
+<div class="AknGrid-description"><%- identifier %></div>

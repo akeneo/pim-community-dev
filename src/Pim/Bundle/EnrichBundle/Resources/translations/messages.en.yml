@@ -243,6 +243,8 @@ pim_enrich:
             edit: Edit an association type
             remove: Remove an association type
             history: View association type history
+        association:
+            remove: Remove associations to a product
         job_tracker:
             index: View process tracker
         api_connection:

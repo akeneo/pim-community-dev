@@ -12,7 +12,8 @@ define(
         'oro/datagrid/product-row',
         'pim/media-url-generator',
         'pim/template/product/tab/associated-product-row',
-        'oro/mediator'
+        'oro/mediator',
+        'pim/security-context'
     ],
     function(
         _,
@@ -20,7 +21,8 @@ define(
         BaseRow,
         mediaUrlGenerator,
         thumbnailTemplate,
-        mediator
+        mediator,
+        SecurityContext
     ) {
         return BaseRow.extend({
             thumbnailTemplate: _.template(thumbnailTemplate),
@@ -35,14 +37,32 @@ define(
                 return mediaUrlGenerator.getMediaShowUrl(image, 'thumbnail');
             },
 
+            canRemoveAssociation() {
+                return SecurityContext.isGranted('pim_enrich_product_association_remove');
+            },
+
+            getTemplateOptions() {
+                const isProductModel = this.isProductModel();
+                const label = this.model.get('label');
+                const canRemoveAssociation = this.canRemoveAssociation();
+
+                return {
+                    useLayerStyle: isProductModel,
+                    label,
+                    identifier: this.model.get('identifier'),
+                    imagePath: this.getThumbnailImagePath(),
+                    canRemoveAssociation
+                };
+            },
+
             render() {
-                BaseRow.prototype.render.call(this, arguments);
+                const row = BaseRow.prototype.render.call(this, arguments);
 
-                this.row.off('click');
+                row.off('click');
 
-                $('.AknIconButton--remove', this.row).on('click', () => {
+                $('.AknIconButton--remove', row).on('click', () => {
                     mediator.trigger('datagrid:unselectModel:association-product-grid', this.model);
-                    this.row.remove();
+                    row.remove();
                 });
             },
 
