@@ -104,6 +104,13 @@ class FlatFileIterator implements FileIteratorInterface
             return null;
         }
 
+        $data = array_map(
+            function ($item) {
+                return (string) $item;
+            },
+            $data
+        );
+
         return $data;
     }
 
