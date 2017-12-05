@@ -46,7 +46,7 @@ class AddToExistingProductModelProcessorSpec extends ObjectBehavior
         $this->process($product);
     }
 
-    function it_adds_warning_during_process(
+    function it_adds_warning_on_exception(
         $addParent,
         ProductInterface $product,
         StepExecution $stepExecution,
@@ -62,7 +62,7 @@ class AddToExistingProductModelProcessorSpec extends ObjectBehavior
         $this->process($product);
     }
 
-    function it_skips_variant_product(
+    function it_adds_warning_for_variant_product(
         VariantProductInterface $product,
         StepExecution $stepExecution,
         JobParameters $jobParameters
@@ -71,6 +71,7 @@ class AddToExistingProductModelProcessorSpec extends ObjectBehavior
         $stepExecution->getJobParameters()->willReturn($jobParameters);
         $jobParameters->get('actions')->willReturn([['value' => '42']]);
         $stepExecution->incrementSummaryInfo('skipped_products')->shouldBeCalled();
+        $stepExecution->addWarning(Argument::cetera())->shouldBeCalled();
 
         $this->process($product);
     }

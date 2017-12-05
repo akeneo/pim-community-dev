@@ -101,7 +101,7 @@ define(
                     content: this.templateModal({
                         choices: translatedChoices,
                         modalTitle: __(modalTitle),
-                        subTitle: __(subTitle),
+                        subTitle: __(subTitle)
                     })
                 }).open();
 
