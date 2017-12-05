@@ -15,7 +15,7 @@ Feature: Update the product associations
     And I visit the "Associations" column tab
 
   Scenario: Successfully add an association
-    When I press the "Add associations" button and wait for modal
+    When I press the "Add associations" button
     And I check the row "patrick"
     Then the item picker basket should contain patrick
     And I press the "Confirm" button
