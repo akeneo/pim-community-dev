@@ -96,9 +96,9 @@ class TeamworkAssistantWidgetDecorator extends ElementDecorator
             return $this->find('css', sprintf('.teamwork-assistant-completeness-%s', $sectionName));
         }, sprintf('"%s" box not found in completeness.', $sectionName));
 
-        $box->getParent()->mouseOver();
-
         return $this->spin(function () use ($box) {
+            $box->getParent()->mouseOver();
+
             return $box->getParent()->find('css', 'a');
         }, sprintf('Link not found in box "%s" of the teamwork assistant widget.', $sectionName));
     }
