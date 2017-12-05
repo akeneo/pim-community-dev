@@ -15,16 +15,6 @@ use Context\AssertionContext as BaseAssertionContext;
 class EnterpriseAssertionContext extends BaseAssertionContext
 {
     /**
-     * @Then /^the asset basket should contain (.*)$/
-     */
-    public function theAssetBasketShouldContain($entities)
-    {
-        foreach ($this->getMainContext()->listToArray($entities) as $entity) {
-            $this->getAssetBasketItem($entity);
-        }
-    }
-
-    /**
      * @Then /^the "([^"]*)" asset gallery should contain (.*)$/
      */
     public function theAssetGalleryShouldContains($field, $entities)
@@ -85,25 +75,6 @@ class EnterpriseAssertionContext extends BaseAssertionContext
                 sprintf('Expecting to see version %d marked as published, but is not', $version)
             );
         }
-    }
-
-    /**
-     * @Then /^the asset basket item "([^"]+)" should contain the thumbnail for channel "([^"]+)"(?: and locale "([^"]+)")?$/
-     *
-     * @param string      $code
-     * @param string      $channelCode
-     * @param string|null $localeCode
-     *
-     * @throws ExpectationException
-     */
-    public function theAssetBasketItemShouldContainThumbnailForContext($code, $channelCode, $localeCode = null)
-    {
-        $baksetItem = $this->getAssetBasketItem($code);
-        $thumbnail  = $this->spin(function () use ($baksetItem) {
-            return $baksetItem->find('css', '.AknAssetCollectionField-assetThumbnail');
-        }, 'Impossible to find the thumbnail');
-
-        $this->checkThumbnailUrlForContext($thumbnail, $code, $channelCode, $localeCode);
     }
 
     /**
@@ -195,21 +166,6 @@ class EnterpriseAssertionContext extends BaseAssertionContext
     }
 
     /**
-     * @param string $code
-     *
-     * @throws \Exception
-     *
-     * @return NodeElement
-     */
-    protected function getAssetBasketItem($code)
-    {
-        return $this->spin(function () use ($code) {
-            return $this->getSession()->getPage()
-                ->find('css', sprintf('.asset-basket li[data-asset="%s"]', $code));
-        }, sprintf('Cannot find asset "%s" in basket', $code));
-    }
-
-    /**
      * @param string      $code
      * @param NodeElement $fieldContainer
      *
@@ -232,7 +188,7 @@ class EnterpriseAssertionContext extends BaseAssertionContext
      *
      * @throws ExpectationException
      */
-    protected function checkThumbnailUrlForContext(NodeElement $thumbnail, $code, $channelCode, $localeCode = null)
+    public function checkThumbnailUrlForContext(NodeElement $thumbnail, $code, $channelCode, $localeCode = null)
     {
         $rawStyle = $thumbnail->getAttribute('style');
 

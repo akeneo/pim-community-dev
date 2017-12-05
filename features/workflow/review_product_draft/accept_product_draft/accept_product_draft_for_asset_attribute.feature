@@ -33,7 +33,7 @@ Feature: Review a product draft
     And I start to manage assets for "gallery"
     When I check the row "paint"
     And I check the row "machine"
-    Then the asset basket should contain paint, machine
+    Then the item picker basket should contain paint, machine
     When I confirm the asset modification
     Then the "gallery" asset gallery should contain paint, machine, bridge
     When I save the product

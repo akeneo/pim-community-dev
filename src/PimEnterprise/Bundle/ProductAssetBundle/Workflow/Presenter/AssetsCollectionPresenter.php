@@ -79,7 +79,7 @@ class AssetsCollectionPresenter implements PresenterInterface
         foreach ($assets as $asset) {
             $variation = $asset->getVariations()[0];
             $result .= sprintf(
-                '<div class="asset-thumbnail AknThumbnail" style="background-image: url(\'%s\')">' .
+                '<div class="AknThumbnail" style="background-image: url(\'%s\')">' .
                     '<span class="AknThumbnail-label">%s</span>' .
                 '</div>',
                 $this->router->generate('pimee_product_asset_thumbnail', [

@@ -50,10 +50,11 @@ class ProductCategoryAccessSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            'oro_datagrid.datgrid.build.after.product-group-grid'         => 'filter',
-            'oro_datagrid.datgrid.build.after.association-product-grid'   => 'filter',
-            'oro_datagrid.datgrid.build.after.product-grid'               => 'filter',
-            'oro_datagrid.datgrid.build.after.published-product-grid'     => 'filter',
+            'oro_datagrid.datgrid.build.after.product-group-grid'              => 'filter',
+            'oro_datagrid.datgrid.build.after.association-product-grid'        => 'filter',
+            'oro_datagrid.datgrid.build.after.product-grid'                    => 'filter',
+            'oro_datagrid.datgrid.build.after.association-product-picker-grid' => 'filter',
+            'oro_datagrid.datgrid.build.after.published-product-grid'          => 'filter',
         ];
     }
 

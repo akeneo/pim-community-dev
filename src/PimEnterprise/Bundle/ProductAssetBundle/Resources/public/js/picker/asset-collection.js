@@ -10,19 +10,23 @@ define(
     [
         'jquery',
         'underscore',
+        'oro/translator',
         'backbone',
         'pimee/template/picker/asset-collection',
         'pim/fetcher-registry',
         'pim/form-builder',
+        'routing',
         'backbone/bootstrap-modal'
     ],
     function (
         $,
         _,
+        __,
         Backbone,
         template,
         FetcherRegistry,
-        FormBuilder
+        FormBuilder,
+        Routing
     ) {
         return Backbone.View.extend({
             className: 'AknAssetCollectionField',
@@ -92,27 +96,40 @@ define(
 
                 FormBuilder.build('pimee-product-asset-picker-form').then(function (form) {
                     let modal = new Backbone.BootstrapModal({
-                        className: 'modal modal-asset modal--fullPage modal--topButton',
+                        className: 'modal modal--fullPage modal--topButton',
                         modalOptions: {
                             backdrop: 'static',
                             keyboard: false
                         },
                         allowCancel: true,
                         okCloses: false,
-                        title: _.__('pimee_product_asset.form.product.asset.manage_asset.title'),
+                        title: '',
                         content: '',
-                        cancelText: _.__('pimee_product_asset.form.product.asset.manage_asset.cancel'),
-                        okText: _.__('pimee_product_asset.form.product.asset.manage_asset.confirm')
+                        cancelText: ' ',
+                        okText: __('confirmation.title')
                     });
                     modal.open();
 
+                    form.setImagePathMethod(function (item) {
+                        return Routing.generate('pimee_product_asset_thumbnail', {
+                            code: item.code,
+                            filter: 'thumbnail',
+                            channelCode: this.getScope(),
+                            localeCode: this.getLocale()
+                        });
+                    });
+
+                    form.setLabelMethod(function (item) {
+                        return item.description;
+                    });
+
                     form.setElement(modal.$('.modal-body'))
                         .render()
-                        .setAssets(this.data);
+                        .setItems(this.data);
 
                     modal.on('cancel', deferred.reject);
                     modal.on('ok', function () {
-                        var assets = _.sortBy(form.getAssets(), 'code');
+                        var assets = _.sortBy(form.getItems(), 'code');
                         modal.close();
 
                         deferred.resolve(assets);
