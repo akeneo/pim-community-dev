@@ -407,7 +407,6 @@ JSON;
      *
      * @param array $data
      *
-     * @throws \PHPUnit_Framework_AssertionFailedError
      * @throws \Exception
      *
      * @return AssetInterface
@@ -446,8 +445,6 @@ JSON;
      * Creates an asset with data but no references.
      *
      * @param array $data
-     *
-     * @throws \PHPUnit_Framework_AssertionFailedError
      *
      * @return AssetInterface
      */
