@@ -7,9 +7,7 @@ use Akeneo\Component\Batch\Item\ItemWriterInterface;
 use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\Batch\Step\StepExecutionAwareInterface;
 use Akeneo\Component\StorageUtils\Cache\CacheClearerInterface;
-use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
-use Pim\Bundle\VersioningBundle\Manager\VersionManager;
 
 /**
  * Save all descendance of a product model.
@@ -24,14 +22,21 @@ class ProductModelDescendantsWriter implements ItemWriterInterface, StepExecutio
     protected $stepExecution;
 
     /** @var SaverInterface */
-    private $descendantsSaver;
+    protected $descendantsSaver;
+
+    /** @var CacheClearerInterface */
+    protected $cacheClearer;
 
     /**
-     * @param SaverInterface $descendantsSaver
+     * @param SaverInterface        $descendantsSaver
+     * @param CacheClearerInterface $cacheClearer
      */
-    public function __construct(SaverInterface $descendantsSaver)
-    {
+    public function __construct(
+        SaverInterface $descendantsSaver,
+        CacheClearerInterface $cacheClearer = null
+    ) {
         $this->descendantsSaver = $descendantsSaver;
+        $this->cacheClearer = $cacheClearer;
     }
 
     /**
@@ -45,6 +50,8 @@ class ProductModelDescendantsWriter implements ItemWriterInterface, StepExecutio
                 $this->stepExecution->incrementSummaryInfo('process');
             }
         }
+
+        $this->cacheClearer->clear();
     }
 
     /**
