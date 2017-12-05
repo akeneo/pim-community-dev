@@ -1,6 +1,9 @@
 extensions:
     pimee-product-model-view-form:
         module: pimee/product-model-view-form
+        config:
+            forwarded-events:
+                'pim_enrich:form:field:extension:add': 'pim_enrich:form:field:extension:add'
 
     pimee-product-model-view-form-breadcrumbs:
         module: pim/common/breadcrumbs

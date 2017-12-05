@@ -3,6 +3,8 @@ extensions:
         module: pimee/product-view-form
         config:
             routeKey: pimee_workflow_published_product_view
+            forwarded-events:
+                'pim_enrich:form:field:extension:add': 'pim_enrich:form:field:extension:add'
 
     pimee-published-product-view-main-image:
         module: pim/form/common/main-image
