@@ -1,5 +1,17 @@
 # 2.0.x
 
+## Better manage products with variants!
+
+- PIM-6349: Adds mass edit to add products to an existing product model
+
+## Update jobs
+
+IMPORTANT: In order to use the new mass edit, please execute `bin/console akeneo:batch:create-job internal add_to_existing_product_model mass_edit add_to_existing_product_model '{}' 'Add products to an existing product model' --env=prod`
+
+## BC breaks
+
+Changes the constructor of `Pim\Bundle\EnrichBundle\Controller\Rest\ProductModelController` to add `Pim\Component\Catalog\Repository\FamilyVariantRepositoryInterface` 
+
 ## Bug fixes
 
 - PIM-6958: fix loading a product with a reference data that is not available (simpleselect or multiselect)

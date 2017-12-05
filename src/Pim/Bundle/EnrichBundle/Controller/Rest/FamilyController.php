@@ -328,7 +328,6 @@ class FamilyController
         ));
     }
 
-
     /**
      * Gets families with familyVariants
      *

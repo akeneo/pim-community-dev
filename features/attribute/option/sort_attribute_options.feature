@@ -27,7 +27,7 @@ Feature: Sort attribute options
     And I create a product
     And I fill in the following information in the popin:
       | SKU    | boots |
-      | family | Boots |
+      | Family | Boots |
     And I press the "Save" button in the popin
     And I wait to be on the "boots" product page
     When I visit the "Colors" group
@@ -45,7 +45,7 @@ Feature: Sort attribute options
     And I create a product
     And I fill in the following information in the popin:
       | SKU    | boots |
-      | family | Boots |
+      | Family | Boots |
     And I press the "Save" button in the popin
     And I wait to be on the "boots" product page
     When I visit the "Colors" group

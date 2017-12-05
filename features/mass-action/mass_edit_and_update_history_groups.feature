@@ -11,7 +11,7 @@ Feature: Update product history when mass editing products
     And I create a product
     And I fill in the following information in the popin:
       | SKU    | boots |
-      | family | Boots |
+      | Family | Boots |
     And I press the "Save" button in the popin
     And I wait to be on the "boots" product page
     And I save the product
@@ -19,7 +19,7 @@ Feature: Update product history when mass editing products
     And I create a product
     And I fill in the following information in the popin:
       | SKU    | sneakers |
-      | family | Sneakers |
+      | Family | Sneakers |
     And I press the "Save" button in the popin
     And I wait to be on the "sneakers" product page
     And I save the product
@@ -27,7 +27,7 @@ Feature: Update product history when mass editing products
     And I create a product
     And I fill in the following information in the popin:
       | SKU    | sandals |
-      | family | Sandals |
+      | Family | Sandals |
     And I press the "Save" button in the popin
     And I wait to be on the "sandals" product page
     And I save the product

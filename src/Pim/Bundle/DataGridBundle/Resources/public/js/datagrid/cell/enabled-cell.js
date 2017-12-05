@@ -25,7 +25,7 @@ define(['oro/datagrid/string-cell', 'oro/translator'],
                 var enabled = true === value ? 'enabled' : 'disabled';
 
                 this.$el.empty().html('<div class="AknBadge AknBadge--medium AknBadge--' + enabled + ' status-' + enabled + '">' +
-                    '<i class="AknBadge-icon icon-status-' + enabled + ' icon-circle"></i>' + __(enabled) + '</div>');
+                    '<i class="AknBadge-icon icon-status-' + enabled + ' icon-circle"></i>' + __('pim_enrich.entity.product.btn.' + enabled) + '</div>');
 
                 return this;
             }

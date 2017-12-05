@@ -14,6 +14,7 @@ use Pim\Component\Catalog\Comparator\Filter\EntityWithValuesFilter;
 use Pim\Component\Catalog\Localization\Localizer\AttributeConverterInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
 use Pim\Component\Catalog\Model\VariantProductInterface;
+use Pim\Component\Catalog\Repository\FamilyVariantRepositoryInterface;
 use Pim\Component\Catalog\Repository\ProductModelRepositoryInterface;
 use Pim\Component\Enrich\Converter\ConverterInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -29,6 +30,8 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class ProductModelController
 {
+    private const PRODUCT_MODELS_LIMIT = 20;
+
     /** @var NormalizerInterface */
     private $normalizer;
 
@@ -71,6 +74,9 @@ class ProductModelController
     /** @var NormalizerInterface */
     private $violationNormalizer;
 
+    /** @var FamilyVariantRepositoryInterface */
+    private $familyVariantRepository;
+
     /**
      * @param ProductModelRepositoryInterface   $productModelRepository
      * @param NormalizerInterface               $normalizer
@@ -86,6 +92,7 @@ class ProductModelController
      * @param EntityWithFamilyVariantNormalizer $entityWithFamilyVariantNormalizer
      * @param SimpleFactoryInterface            $productModelFactory
      * @param NormalizerInterface               $violationNormalizer
+     * @param FamilyVariantRepositoryInterface  $familyVariantRepository
      */
     public function __construct(
         ProductModelRepositoryInterface $productModelRepository,
@@ -101,7 +108,8 @@ class ProductModelController
         NormalizerInterface $constraintViolationNormalizer,
         EntityWithFamilyVariantNormalizer $entityWithFamilyVariantNormalizer,
         SimpleFactoryInterface $productModelFactory,
-        NormalizerInterface $violationNormalizer
+        NormalizerInterface $violationNormalizer,
+        FamilyVariantRepositoryInterface $familyVariantRepository
     ) {
         $this->productModelRepository        = $productModelRepository;
         $this->normalizer                    = $normalizer;
@@ -117,6 +125,7 @@ class ProductModelController
         $this->entityWithFamilyVariantNormalizer = $entityWithFamilyVariantNormalizer;
         $this->productModelFactory           = $productModelFactory;
         $this->violationNormalizer = $violationNormalizer;
+        $this->familyVariantRepository = $familyVariantRepository;
     }
 
     /**
@@ -284,6 +293,41 @@ class ProductModelController
         }
 
         return new JsonResponse($normalizedChildren);
+    }
+
+    /**
+     * Returns the last level of product models belonging to a Family Variant with a given search code
+     *
+     * @param Request $request
+     *
+     * @return JsonResponse
+     */
+    public function searchLastLevelProductModelByCode(Request $request): JsonResponse
+    {
+        $search = $request->query->get('search');
+        $options = $request->query->get('options');
+        $familyVariantCode = $options['family_variant'];
+        $page = intval($options['page']) - 1;
+        $familyVariant = $this->familyVariantRepository->findOneByIdentifier($familyVariantCode);
+        if (null === $familyVariant) {
+            throw new \InvalidArgumentException(sprintf('Unknown family variant code "%s"', $familyVariantCode));
+        }
+
+        $productModels = $this->productModelRepository->searchLastLevelByCode(
+            $familyVariant,
+            $search,
+            self::PRODUCT_MODELS_LIMIT,
+            $page
+        );
+
+        $normalizedProductModels = [];
+        foreach ($productModels as $productModel) {
+            $normalizedProductModels[$productModel->getCode()] = $this->normalizeProductModel(
+                $productModel
+            );
+        }
+
+        return new JsonResponse($normalizedProductModels);
     }
 
     /**

@@ -14,7 +14,7 @@ Feature: Delete an attribute
     And I create a product
     And I fill in the following information in the popin:
       | SKU    | caterpillar_1 |
-      | family | Boots         |
+      | Family | Boots         |
     And I press the "Save" button in the popin
     And I wait to be on the "caterpillar_1" product page
     And I visit the "Product information" group

@@ -11,24 +11,24 @@ Feature: Create a product model
 
   Scenario: Create a product model with a single level variant
     When I create a product model
-    And I should see the Code, Family and family_variant fields
-    And the field family_variant should be disabled
+    And I should see the Code, Family and Variant fields
+    And the field Variant should be disabled
     When I fill in the following information in the popin:
-      | Code             | shoes_variant |
-      | Choose a family  | Shoes         |
-      | Choose a variant | Shoes by size |
+      | Code    | shoes_variant |
+      | Family  | Shoes         |
+      | Variant | Shoes by size |
     And I press the "Save" button
     And I should be on the product model "shoes_variant" edit page
     And I should see the text "shoes_variant"
 
   Scenario: Create a product model with multiple level variant
     When I create a product model
-    And I should see the Code, Family and family_variant fields
-    And the field family_variant should be disabled
+    And I should see the Code, Family and Variant fields
+    And the field Variant should be disabled
     When I fill in the following information in the popin:
-      | Code             | clothing_color_and_size    |
-      | Choose a family  | Clothing                   |
-      | Choose a variant | Clothing by color and size |
+      | Code    | clothing_color_and_size    |
+      | Family  | Clothing                   |
+      | Variant | Clothing by color and size |
     And I press the "Save" button
     And I should be on the product model "clothing_color_and_size" edit page
     And I should see the text "clothing_color_and_size"
@@ -44,11 +44,11 @@ Feature: Create a product model
     And the following family variants:
       | code  | family  | variant-axes_1    | variant-attributes_1 | label-en_US |
       | tv    | led_tvs | display_diagonal  | name                 | LED TV      |
-    And I should see the Code, Family and family_variant fields
-    And the field family_variant should be disabled
+    And I should see the Code, Family and Variant fields
+    And the field Variant should be disabled
     When I fill in the following information in the popin:
-      | Code             | tv_display_diagonal |
-      | Choose a family  | LED TVs             |
+      | Code   | tv_display_diagonal |
+      | Family | LED TVs             |
     Then I should see the text "LED TVs"
     And I should see the text "LED TV"
     And I press the "Save" button
@@ -57,12 +57,12 @@ Feature: Create a product model
 
   Scenario: Create a product model with single variant and multiple axes
     When I create a product model
-    And I should see the Code, Family and family_variant fields
-    And the field family_variant should be disabled
+    And I should see the Code, Family and Variant fields
+    And the field Variant should be disabled
     When I fill in the following information in the popin:
-      | Code             | clothing_color_size    |
-      | Choose a family  | Clothing               |
-      | Choose a variant | Clothing by color/size |
+      | Code    | clothing_color_size    |
+      | Family  | Clothing               |
+      | Variant | Clothing by color/size |
     And I press the "Save" button
     And I should be on the product model "clothing_color_size" edit page
     And I should see the text "clothing_color_size"
@@ -70,10 +70,10 @@ Feature: Create a product model
   Scenario: Display only families with variants
     When I create a product model
     And the following families:
-      | code     |
-      | hats     |
-    And I should see the Code, Family and family_variant fields
-    And the field family_variant should be disabled
+      | code |
+      | hats |
+    And I should see the Code, Family and Variant fields
+    And the field Variant should be disabled
     When I press the "Choose a family" button
     Then I should see the text "Accessories"
     And I should see the text "Clothing"
@@ -82,11 +82,11 @@ Feature: Create a product model
 
   Scenario: Select only child variant of family by default
     When I create a product model
-    And I should see the Code, Family and family_variant fields
-    And the field family_variant should be disabled
+    And I should see the Code, Family and Variant fields
+    And the field Variant should be disabled
     When I fill in the following information in the popin:
-      | Code             | accessories_size |
-      | Choose a family  | Accessories      |
+      | Code   | accessories_size |
+      | Family | Accessories      |
     Then I should see the text "Accessories by size"
     And I press the "Save" button
     And I should be on the product model "accessories_size" edit page
@@ -94,8 +94,8 @@ Feature: Create a product model
 
   Scenario: Display validation error for duplicate code
     When I create a product model
-    And I should see the Code, Family and family_variant fields
-    And the field family_variant should be disabled
+    And I should see the Code, Family and Variant fields
+    And the field Variant should be disabled
     When I fill in the following information in the popin:
       | Code | artemis |
     And I press the "Save" button
@@ -103,10 +103,10 @@ Feature: Create a product model
 
   Scenario: Display validation error for missing family variant
     When I create a product model
-    And I should see the Code, Family and family_variant fields
-    And the field family_variant should be disabled
+    And I should see the Code, Family and Variant fields
+    And the field Variant should be disabled
     When I fill in the following information in the popin:
-      | Code | artemis |
+      | Code | artemiz |
     And I press the "Save" button
     And I should see the text "The product model family variant must not be empty."
 
@@ -128,15 +128,3 @@ Feature: Create a product model
     And I am on the products grid
     And I press the "Create product and product models" button
     Then I should see the SKU and Family fields
-
-  Scenario: Remove family variant field value if family is removed
-    When I create a product model
-    And I should see the Code, Family and family_variant fields
-    And the field family_variant should be disabled
-    When I fill in the following information in the popin:
-      | Choose a family | Clothing |
-      | Choose a variant | Clothing by color/size |
-    And I press the "Save" button
-    Then I should see the text "The product model code must not be empty."
-    And I clear the family of the product model
-    Then the field family_variant should be disabled

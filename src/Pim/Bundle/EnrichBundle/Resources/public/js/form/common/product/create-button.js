@@ -66,8 +66,6 @@ define(
              */
             getAllowedChoices(choices) {
                 return Object.values(choices).filter(choice => {
-                    choice.title = __(choice.title);
-
                     return SecurityContext.isGranted(choice.aclResourceId);
                 });
             },
@@ -93,11 +91,17 @@ define(
                     return this.openFormModal(null, firstChoice.form);
                 }
 
+                const translatedChoices = [];
+                Object.keys(allowedChoices).forEach((key) => {
+                    translatedChoices[key] = allowedChoices[key];
+                    translatedChoices[key].title = __(translatedChoices[key].title);
+                });
+
                 this.modal = new Backbone.BootstrapModal({
                     content: this.templateModal({
-                        choices: allowedChoices,
+                        choices: translatedChoices,
                         modalTitle: __(modalTitle),
-                        subTitle: __(subTitle)
+                        subTitle: __(subTitle),
                     })
                 }).open();
 
