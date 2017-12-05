@@ -45,6 +45,11 @@ class AddToExistingProductModelProcessor extends AbstractProcessor
 
         if ($product instanceof VariantProductInterface) {
             $this->stepExecution->incrementSummaryInfo('skipped_products');
+            $this->stepExecution->addWarning(
+                'The parent of a variant product cannot be changed',
+                [],
+                new DataInvalidItem($product)
+            );
 
             return null;
         }
