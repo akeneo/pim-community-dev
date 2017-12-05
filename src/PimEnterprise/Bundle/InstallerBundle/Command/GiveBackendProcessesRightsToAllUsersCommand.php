@@ -92,6 +92,7 @@ class GiveBackendProcessesRightsToAllUsersCommand extends ContainerAwareCommand
             'compute_completeness_of_products_family',
             'compute_product_models_descendants',
             'compute_family_variant_structure_changes',
+            'add_to_existing_product_model'
         ];
     }
 

@@ -11,7 +11,7 @@ Feature: Display the product history
     And I create a product
     And I fill in the following information in the popin:
       | SKU    | sandals-001 |
-      | family | Sandals     |
+      | Family | Sandals     |
     And I press the "Save" button in the popin
     And I wait to be on the "sandals-001" product page
     And I fill in the following information:
