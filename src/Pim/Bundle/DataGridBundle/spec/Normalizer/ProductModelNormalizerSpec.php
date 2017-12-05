@@ -155,6 +155,7 @@ class ProductModelNormalizerSpec extends ObjectBehavior
                 'complete' => 3,
                 'total' => 12
             ],
+            'is_checked' => false,
         ];
 
         $this->normalize($productModel, 'datagrid', $context)->shouldReturn($data);
@@ -260,6 +261,7 @@ class ProductModelNormalizerSpec extends ObjectBehavior
                 'complete' => 3,
                 'total' => 12
             ],
+            'is_checked' => false,
         ];
 
         $this->normalize($productModel, 'datagrid', $context)->shouldReturn($data);

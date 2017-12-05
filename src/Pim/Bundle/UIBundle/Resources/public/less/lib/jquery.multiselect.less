@@ -221,15 +221,25 @@
   }
 
   &.ui-multiselect-menu {
-    top: 0 !important;
-    width: @AknThirdColumnWidth !important;
-    min-width: @AknThirdColumnWidth !important;
-    height: 100vh !important;
-    border-right: 1px solid @AknBorderColor;
     background: white;
     padding: 15px 20px !important;
-    z-index: 750;
-    transition: left @AknColumnTiming @AknColumnTransition;
+
+    &:not(.AknFilterBox-addFilterButton--asPanel) {
+      top: 0 !important;
+      width: @AknThirdColumnWidth !important;
+      min-width: @AknThirdColumnWidth !important;
+      height: 100vh !important;
+      border-right: 1px solid @AknBorderColor;
+      z-index: 750;
+      transition: left @AknColumnTiming @AknColumnTransition;
+    }
+
+    &.AknFilterBox-addFilterButton--asPanel {
+      height: auto;
+      border: 1px solid @AknBorderColor;
+      max-height: 300px;
+      overflow: auto;
+    }
 
     .ui-multiselect-filter {
       border-bottom: 1px solid @AknLightPurple;

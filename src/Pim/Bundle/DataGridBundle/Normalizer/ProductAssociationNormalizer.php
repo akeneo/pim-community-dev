@@ -17,6 +17,7 @@ use Symfony\Component\Serializer\SerializerAwareTrait;
 class ProductAssociationNormalizer implements NormalizerInterface, SerializerAwareInterface
 {
     use SerializerAwareTrait;
+
     /**
      * {@inheritdoc}
      */

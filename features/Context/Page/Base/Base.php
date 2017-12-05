@@ -289,6 +289,14 @@ class Base extends Page
             );
         }
         if (null === $button) {
+            $button = $this->getFirstVisible(
+                $this->findAll(
+                    'xpath',
+                    sprintf("//*[contains(@class, 'AknButton')][normalize-space(text()) = '%s']", $locator)
+                )
+            );
+        }
+        if (null === $button) {
             $button =  $this->getFirstVisible(
                 $this->findAll('css', sprintf('a[title="%s"]', $locator))
             );

@@ -3,6 +3,7 @@
 namespace Pim\Bundle\EnrichBundle\Controller\Rest;
 
 use Akeneo\Component\StorageUtils\Remover\RemoverInterface;
+use Akeneo\Component\StorageUtils\Repository\CursorableRepositoryInterface;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
@@ -37,6 +38,9 @@ class ProductController
 {
     /** @var ProductRepositoryInterface */
     protected $productRepository;
+
+    /** @var CursorableRepositoryInterface */
+    protected $cursorableRepository;
 
     /** @var AttributeRepositoryInterface */
     protected $attributeRepository;
@@ -84,25 +88,27 @@ class ProductController
     protected $variantProductBuilder;
 
     /**
-     * @param ProductRepositoryInterface   $productRepository
-     * @param AttributeRepositoryInterface $attributeRepository
-     * @param ObjectUpdaterInterface       $productUpdater
-     * @param SaverInterface               $productSaver
-     * @param NormalizerInterface          $normalizer
-     * @param ValidatorInterface           $validator
-     * @param UserContext                  $userContext
-     * @param ObjectFilterInterface        $objectFilter
-     * @param CollectionFilterInterface    $productEditDataFilter
-     * @param RemoverInterface             $productRemover
-     * @param ProductBuilderInterface      $productBuilder
-     * @param AttributeConverterInterface  $localizedConverter
-     * @param FilterInterface              $emptyValuesFilter
-     * @param ConverterInterface           $productValueConverter
-     * @param NormalizerInterface          $constraintViolationNormalizer
-     * @param ProductBuilderInterface      $variantProductBuilder
+     * @param ProductRepositoryInterface    $productRepository
+     * @param CursorableRepositoryInterface $cursorableRepository
+     * @param AttributeRepositoryInterface  $attributeRepository
+     * @param ObjectUpdaterInterface        $productUpdater
+     * @param SaverInterface                $productSaver
+     * @param NormalizerInterface           $normalizer
+     * @param ValidatorInterface            $validator
+     * @param UserContext                   $userContext
+     * @param ObjectFilterInterface         $objectFilter
+     * @param CollectionFilterInterface     $productEditDataFilter
+     * @param RemoverInterface              $productRemover
+     * @param ProductBuilderInterface       $productBuilder
+     * @param AttributeConverterInterface   $localizedConverter
+     * @param FilterInterface               $emptyValuesFilter
+     * @param ConverterInterface            $productValueConverter
+     * @param NormalizerInterface           $constraintViolationNormalizer
+     * @param ProductBuilderInterface       $variantProductBuilder
      */
     public function __construct(
         ProductRepositoryInterface $productRepository,
+        CursorableRepositoryInterface $cursorableRepository,
         AttributeRepositoryInterface $attributeRepository,
         ObjectUpdaterInterface $productUpdater,
         SaverInterface $productSaver,
@@ -120,6 +126,7 @@ class ProductController
         ProductBuilderInterface $variantProductBuilder
     ) {
         $this->productRepository = $productRepository;
+        $this->cursorableRepository = $cursorableRepository;
         $this->attributeRepository = $attributeRepository;
         $this->productUpdater = $productUpdater;
         $this->productSaver = $productSaver;
@@ -138,6 +145,27 @@ class ProductController
     }
 
     /**
+     * Returns a set of products from identifiers parameter
+     *
+     * @param Request $request
+     *
+     * @return JsonResponse
+     */
+    public function indexAction(Request $request): JsonResponse
+    {
+        $productIdentifiers = explode(',', $request->get('identifiers'));
+        $products = $this->cursorableRepository->getItemsFromIdentifiers($productIdentifiers);
+
+        $normalizedProducts = $this->normalizer->normalize(
+            $products,
+            'internal_api',
+            $this->getNormalizationContext()
+        );
+
+        return new JsonResponse($normalizedProducts);
+    }
+
+    /**
      * @param string $id Product id
      *
      * @throws NotFoundHttpException If product is not found or the user cannot see it
@@ -148,15 +176,10 @@ class ProductController
     {
         $product = $this->findProductOr404($id);
 
-        $normalizationContext = $this->userContext->toArray() + [
-            'filter_types'               => ['pim.internal_api.product_value.view'],
-            'disable_grouping_separator' => true
-        ];
-
         $normalizedProduct = $this->normalizer->normalize(
             $product,
             'internal_api',
-            $normalizationContext
+            $this->getNormalizationContext()
         );
 
         return new JsonResponse($normalizedProduct);
@@ -192,15 +215,10 @@ class ProductController
         if (0 === $violations->count()) {
             $this->productSaver->save($product);
 
-            $normalizationContext = $this->userContext->toArray() + [
-                'filter_types'               => ['pim.internal_api.product_value.view'],
-                'disable_grouping_separator' => true
-            ];
-
             return new JsonResponse($this->normalizer->normalize(
                 $product,
                 'internal_api',
-                $normalizationContext
+                $this->getNormalizationContext()
             ));
         }
 
@@ -245,15 +263,10 @@ class ProductController
         if (0 === $violations->count()) {
             $this->productSaver->save($product);
 
-            $normalizationContext = $this->userContext->toArray() + [
-                'filter_types'               => ['pim.internal_api.product_value.view'],
-                'disable_grouping_separator' => true
-            ];
-
             $normalizedProduct = $this->normalizer->normalize(
                 $product,
                 'internal_api',
-                $normalizationContext
+                $this->getNormalizationContext()
             );
 
             return new JsonResponse($normalizedProduct);
@@ -393,5 +406,18 @@ class ProductController
         }
 
         $this->productUpdater->update($product, $data);
+    }
+
+    /**
+     * Get the context used for product normalization
+     *
+     * @return array
+     */
+    protected function getNormalizationContext(): array
+    {
+        return $this->userContext->toArray() + [
+            'filter_types'               => ['pim.internal_api.product_value.view'],
+            'disable_grouping_separator' => true
+        ];
     }
 }

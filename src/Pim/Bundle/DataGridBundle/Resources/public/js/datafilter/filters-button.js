@@ -11,10 +11,14 @@ define(
         FiltersManager
     ) {
         return BaseForm.extend({
+            displayAsPanel: false,
+
             /**
              * @inheritdoc
              */
-            initialize() {
+            initialize(meta) {
+                this.displayAsPanel = undefined === meta.config.displayAsPanel ? false : meta.config.displayAsPanel;
+
                 mediator.once('datagrid_filters:loaded', this.showFilterManager.bind(this));
 
                 BaseForm.prototype.initialize.apply(this, arguments);
@@ -26,7 +30,10 @@ define(
              * @param {Object} options
              */
             showFilterManager(options) {
+                options.displayAsPanel = this.displayAsPanel;
+
                 const filtersList = new FiltersManager(options);
+
                 this.$el.append(filtersList.render().$el);
 
                 mediator.trigger('datagrid_filters:build.post', filtersList);

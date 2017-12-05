@@ -80,7 +80,6 @@ class ProductModelNormalizer implements NormalizerInterface, NormalizerAwareInte
         $data['updated'] = $this->normalizer->normalize($productModel->getUpdated(), $format, $context);
         $data['label'] = $productModel->getLabel($locale, $channel);
         $data['image'] = $this->normalizeImage($closestImage, $context);
-
         $data['groups'] = null;
         $data['enabled'] = null;
         $data['completeness'] = null;
@@ -88,6 +87,7 @@ class ProductModelNormalizer implements NormalizerInterface, NormalizerAwareInte
         $data['technical_id'] = $productModel->getId();
         $data['search_id'] = IdEncoder::encode($data['document_type'], $data['technical_id']);
         $data['complete_variant_product'] = $variantProductCompleteness->value($channel, $locale);
+        $data['is_checked'] = false;
 
         return $data;
     }

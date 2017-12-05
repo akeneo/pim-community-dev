@@ -183,6 +183,7 @@ config:
                     options:
                         urls:
                             get: pim_enrich_product_rest_get
+                            list: pim_enrich_product_rest_index
                 product-model:
                     module: pim/product-model-fetcher
                     options:
@@ -854,6 +855,7 @@ config:
         pim/create/properties/general:     pimenrich/js/create/form/properties/general
         pim/common/simple-view:            pimenrich/js/form/common/simple-view
         pim/common/grid-title:             pimenrich/js/form/common/grid-title
+        pim/common/item-picker:            pimenrich/js/common/item-picker
 
         # Root
         pim/form/common/edit-form: pimenrich/js/form/common/edit-form
@@ -971,6 +973,8 @@ config:
         pim/template/common/form-container:                       pimenrich/templates/common/form-container.html
         pim/template/common/no-data:                              pimenrich/templates/common/no-data.html
         pim/template/common/grid:                                 pimenrich/templates/common/grid.html
+        pim/template/common/item-picker:                          pimenrich/templates/common/item-picker.html
+        pim/template/common/item-picker-basket:                   pimenrich/templates/common/item-picker-basket.html
 
         pim/template/form/group-selector:                         pimenrich/templates/form/group-selector.html
         pim/template/form/save:                                   pimenrich/templates/form/save.html

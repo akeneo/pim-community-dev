@@ -17,3 +17,4 @@ services:
                 - 'product-variant-group-grid'
                 - 'product-group-grid'
                 - 'published-product-grid'
+                - 'association-product-picker-grid'

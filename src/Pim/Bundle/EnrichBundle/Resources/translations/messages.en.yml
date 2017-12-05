@@ -174,7 +174,8 @@ pim_enrich:
             add_attribute: Add an attribute to a product
             remove_attribute: Remove an attribute from a product
             categories_view: Consult the categories of a product
-            associations_view: View the association types of a product
+            associations_view: View the associations of a product
+            associations_edit: Edit the associations of a product
             change_family: Change product family
             change_state: Change state of product
             add_to_groups: Add product to groups
