@@ -40,6 +40,9 @@ class JobQueueConsumerCommand extends ContainerAwareCommand
 
     public const COMMAND_NAME = 'akeneo:batch:job-queue-consumer-daemon';
 
+    /** Interval in seconds to wait after an exception occurred.*/
+    private const EXCEPTION_WAIT_INTERVAL = 5;
+
     /** Interval in microseconds before checking if the process is still running. */
     private const RUNNING_PROCESS_CHECK_INTERVAL = 200000;
 
@@ -82,13 +85,13 @@ class JobQueueConsumerCommand extends ContainerAwareCommand
 
                 $this->getJobExecutionManager()->updateHealthCheck($jobExecutionMessage);
 
-                $nbIterationBeforeUpdatingHealthcheck = self::HEALTH_CHECK_INTERVAL * 1000000 / self::RUNNING_PROCESS_CHECK_INTERVAL;
+                $nbIterationBeforeUpdatingHealthCheck = self::HEALTH_CHECK_INTERVAL * 1000000 / self::RUNNING_PROCESS_CHECK_INTERVAL;
                 $iteration = 1;
 
                 while ($process->isRunning()) {
-                    if ($iteration < $nbIterationBeforeUpdatingHealthcheck) {
+                    if ($iteration < $nbIterationBeforeUpdatingHealthCheck) {
                         $iteration++;
-                        usleep(200000);
+                        usleep(self::RUNNING_PROCESS_CHECK_INTERVAL);
 
                         continue;
                     }
@@ -113,6 +116,8 @@ class JobQueueConsumerCommand extends ContainerAwareCommand
             } catch (\Throwable $t) {
                 $errOutput->writeln(sprintf('An error occurred: %s', $t->getMessage()));
                 $errOutput->writeln($t->getTraceAsString());
+
+                sleep(self::EXCEPTION_WAIT_INTERVAL);
             }
         } while (false === $input->getOption('run-once'));
     }
