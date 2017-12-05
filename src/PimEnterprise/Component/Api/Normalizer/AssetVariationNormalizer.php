@@ -51,7 +51,7 @@ class AssetVariationNormalizer implements NormalizerInterface
         $route = $this->router->generate(
             'pim_api_asset_variation_download',
             [
-                'assetCode' => $standardNormalizedVariation['asset'],
+                'code' => $standardNormalizedVariation['asset'],
                 'channelCode' => $standardNormalizedVariation['channel'],
                 'localeCode' => $localeCode,
             ],

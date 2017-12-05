@@ -133,10 +133,10 @@ abstract class AbstractAssetTestCase extends ApiTestCase
     {
       "_link": {
         "download": {
-          "href": "http://localhost/api/rest/v1/assets/non_localizable_asset/variations/ecommerce/no_locale/download"
+          "href": "http://localhost/api/rest/v1/assets/non_localizable_asset/variation-files/ecommerce/no_locale/download"
         },
         "self": {
-          "href": "http://localhost/api/rest/v1/assets/non_localizable_asset/variations/ecommerce/no_locale"
+          "href": "http://localhost/api/rest/v1/assets/non_localizable_asset/variation-files/ecommerce/no_locale"
         }
       },
       "locale":null,
@@ -146,10 +146,10 @@ abstract class AbstractAssetTestCase extends ApiTestCase
     {
       "_link": {
         "download": {
-          "href": "http://localhost/api/rest/v1/assets/non_localizable_asset/variations/ecommerce_china/no_locale/download"
+          "href": "http://localhost/api/rest/v1/assets/non_localizable_asset/variation-files/ecommerce_china/no_locale/download"
         },
         "self": {
-          "href": "http://localhost/api/rest/v1/assets/non_localizable_asset/variations/ecommerce_china/no_locale"
+          "href": "http://localhost/api/rest/v1/assets/non_localizable_asset/variation-files/ecommerce_china/no_locale"
         }
       },
       "locale":null,
@@ -159,10 +159,10 @@ abstract class AbstractAssetTestCase extends ApiTestCase
     {
       "_link": {
         "download": {
-          "href": "http://localhost/api/rest/v1/assets/non_localizable_asset/variations/tablet/no_locale/download"
+          "href": "http://localhost/api/rest/v1/assets/non_localizable_asset/variation-files/tablet/no_locale/download"
         },
         "self": {
-          "href": "http://localhost/api/rest/v1/assets/non_localizable_asset/variations/tablet/no_locale"
+          "href": "http://localhost/api/rest/v1/assets/non_localizable_asset/variation-files/tablet/no_locale"
         }
       },
       "locale":null,
@@ -236,10 +236,10 @@ JSON;
     {
       "_link": {
         "download": {
-          "href": "http://localhost/api/rest/v1/assets/localizable_asset/variations/ecommerce/en_US/download"
+          "href": "http://localhost/api/rest/v1/assets/localizable_asset/variation-files/ecommerce/en_US/download"
         },
         "self": {
-          "href": "http://localhost/api/rest/v1/assets/localizable_asset/variations/ecommerce/en_US"
+          "href": "http://localhost/api/rest/v1/assets/localizable_asset/variation-files/ecommerce/en_US"
         }
       },
       "locale": "en_US",
@@ -249,10 +249,10 @@ JSON;
     {
       "_link": {
         "download": {
-          "href": "http://localhost/api/rest/v1/assets/localizable_asset/variations/ecommerce_china/en_US/download"
+          "href": "http://localhost/api/rest/v1/assets/localizable_asset/variation-files/ecommerce_china/en_US/download"
         },
         "self": {
-          "href": "http://localhost/api/rest/v1/assets/localizable_asset/variations/ecommerce_china/en_US"
+          "href": "http://localhost/api/rest/v1/assets/localizable_asset/variation-files/ecommerce_china/en_US"
         }
       },
       "locale": "en_US",
@@ -262,10 +262,10 @@ JSON;
     {
       "_link": {
         "download": {
-          "href": "http://localhost/api/rest/v1/assets/localizable_asset/variations/tablet/en_US/download"
+          "href": "http://localhost/api/rest/v1/assets/localizable_asset/variation-files/tablet/en_US/download"
         },
         "self": {
-          "href": "http://localhost/api/rest/v1/assets/localizable_asset/variations/tablet/en_US"
+          "href": "http://localhost/api/rest/v1/assets/localizable_asset/variation-files/tablet/en_US"
         }
       },
       "locale": "en_US",
@@ -275,10 +275,10 @@ JSON;
     {
       "_link": {
         "download": {
-          "href": "http://localhost/api/rest/v1/assets/localizable_asset/variations/tablet/fr_FR/download"
+          "href": "http://localhost/api/rest/v1/assets/localizable_asset/variation-files/tablet/fr_FR/download"
         },
         "self": {
-          "href": "http://localhost/api/rest/v1/assets/localizable_asset/variations/tablet/fr_FR"
+          "href": "http://localhost/api/rest/v1/assets/localizable_asset/variation-files/tablet/fr_FR"
         }
       },
       "locale": "fr_FR",
@@ -288,10 +288,10 @@ JSON;
     {
       "_link": {
         "download": {
-          "href": "http://localhost/api/rest/v1/assets/localizable_asset/variations/tablet/de_DE/download"
+          "href": "http://localhost/api/rest/v1/assets/localizable_asset/variation-files/tablet/de_DE/download"
         },
         "self": {
-          "href": "http://localhost/api/rest/v1/assets/localizable_asset/variations/tablet/de_DE"
+          "href": "http://localhost/api/rest/v1/assets/localizable_asset/variation-files/tablet/de_DE"
         }
       },
       "locale": "de_DE",
@@ -301,10 +301,10 @@ JSON;
     {
       "_link": {
         "download": {
-          "href": "http://localhost/api/rest/v1/assets/localizable_asset/variations/ecommerce_china/zh_CN/download"
+          "href": "http://localhost/api/rest/v1/assets/localizable_asset/variation-files/ecommerce_china/zh_CN/download"
         },
         "self": {
-          "href": "http://localhost/api/rest/v1/assets/localizable_asset/variations/ecommerce_china/zh_CN"
+          "href": "http://localhost/api/rest/v1/assets/localizable_asset/variation-files/ecommerce_china/zh_CN"
         }
       },
       "locale": "zh_CN",

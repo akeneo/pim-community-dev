@@ -72,7 +72,7 @@ class AssetReferenceNormalizerSpec extends ObjectBehavior
         $router->generate(
             'pim_api_asset_reference_download',
             [
-                'assetCode' => 'the_reference_asset',
+                'code' => 'the_reference_asset',
                 'localeCode' => 'no_locale',
             ],
             UrlGeneratorInterface::ABSOLUTE_URL
@@ -106,7 +106,7 @@ class AssetReferenceNormalizerSpec extends ObjectBehavior
         $router->generate(
             'pim_api_asset_reference_download',
             [
-                'assetCode' => 'the_reference_asset',
+                'code' => 'the_reference_asset',
                 'localeCode' => 'a_locale',
             ],
             UrlGeneratorInterface::ABSOLUTE_URL

@@ -55,7 +55,7 @@ class AssetReferenceNormalizer implements NormalizerInterface
         $route = $this->router->generate(
             'pim_api_asset_reference_download',
             [
-                'assetCode' => $reference->getAsset()->getCode(),
+                'code' => $reference->getAsset()->getCode(),
                 'localeCode' => $localeCode ?: 'no_locale',
             ],
             UrlGeneratorInterface::ABSOLUTE_URL
