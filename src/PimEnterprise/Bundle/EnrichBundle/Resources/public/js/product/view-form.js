@@ -32,6 +32,10 @@ define(
             initialize: function (meta) {
                 this.config = meta.config;
 
+                if (_.has(this.config, 'forwarded-events')) {
+                    this.forwardMediatorEvents(this.config['forwarded-events']);
+                }
+
                 return BaseForm.prototype.initialize.apply(this, arguments);
             },
 
@@ -40,10 +44,6 @@ define(
              */
             configure: function () {
                 Backbone.Router.prototype.once('route', this.unbindEvents);
-
-                if (_.has(__moduleConfig, 'forwarded-events')) {
-                    this.forwardMediatorEvents(__moduleConfig['forwarded-events']);
-                }
 
                 this.listenTo(this.getRoot(), 'pim_enrich:form:field:extension:add', this.addFieldExtension);
 
