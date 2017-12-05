@@ -35,7 +35,7 @@ class FieldConverter implements FieldConverterInterface
     /**
      * {@inheritdoc}
      */
-    public function convert(string $fieldName, string $value): ConvertedField
+    public function convert(string $fieldName, $value): ConvertedField
     {
         $associationFields = $this->assocFieldResolver->resolveAssociationColumns();
 
@@ -50,6 +50,11 @@ class FieldConverter implements FieldConverterInterface
             $categories = $this->fieldSplitter->splitCollection($value);
 
             return new ConvertedField($fieldName, $categories);
+        }
+
+        // Code must be alpha-numeric
+        if (in_array($fieldName, ['parent', 'code', 'family_variant'])) {
+            return new ConvertedField($fieldName, (string) $value);
         }
 
         return new ConvertedField($fieldName, $value);
