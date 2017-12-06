@@ -66,7 +66,6 @@ class AssociatedProductDatasource extends ProductDatasource
         $from = null !== $this->getConfiguration('from', false) ?
             (int)$this->getConfiguration('from', false) : 0;
 
-        $this->pqb->addFilter('identifier', Operators::NOT_EQUAL, $currentProduct->getIdentifier());
         $productCursor = $this->pqb->execute();
 
         $associatedProducts = $this->getAssociatedProducts(
