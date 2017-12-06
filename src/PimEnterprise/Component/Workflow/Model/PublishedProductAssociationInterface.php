@@ -10,14 +10,16 @@
  */
 
 namespace PimEnterprise\Component\Workflow\Model;
+
 use Doctrine\Common\Collections\Collection;
+use Pim\Component\Catalog\Model\AssociationInterface;
 
 /**
  * Published product association interface
  *
  * @author Julien Janvier <julien.janvier@akeneo.com>
  */
-interface PublishedProductAssociationInterface
+interface PublishedProductAssociationInterface extends AssociationInterface
 {
     /**
      * @return Collection

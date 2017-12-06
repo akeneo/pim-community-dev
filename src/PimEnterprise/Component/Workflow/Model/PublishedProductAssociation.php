@@ -11,8 +11,8 @@
 
 namespace PimEnterprise\Component\Workflow\Model;
 
-use Pim\Component\Catalog\Model\AbstractAssociation;
 use Doctrine\Common\Collections\Collection;
+use Pim\Component\Catalog\Model\AbstractAssociation;
 
 /**
  * Association entity
