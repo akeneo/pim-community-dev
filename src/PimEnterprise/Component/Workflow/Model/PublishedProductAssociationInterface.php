@@ -10,6 +10,7 @@
  */
 
 namespace PimEnterprise\Component\Workflow\Model;
+use Doctrine\Common\Collections\Collection;
 
 /**
  * Published product association interface
@@ -18,4 +19,8 @@ namespace PimEnterprise\Component\Workflow\Model;
  */
 interface PublishedProductAssociationInterface
 {
+    /**
+     * @return Collection
+     */
+    public function getProductModels(): Collection;
 }

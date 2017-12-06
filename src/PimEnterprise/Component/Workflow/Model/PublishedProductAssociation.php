@@ -22,7 +22,7 @@ use Doctrine\Common\Collections\Collection;
 class PublishedProductAssociation extends AbstractAssociation implements PublishedProductAssociationInterface
 {
     /**
-     * @TODO see issue PIM-6564
+     * {@inheritdoc}
      */
     public function getProductModels(): Collection
     {
