@@ -1,6 +1,7 @@
 parameters:
     pimee_api.normalizer.product.class: PimEnterprise\Component\Api\Normalizer\ProductNormalizer
     pimee_api.normalizer.published_product.class: PimEnterprise\Component\Api\Normalizer\PublishedProductNormalizer
+    pimee_api.normalizer.asset_reference.class: PimEnterprise\Component\Api\Normalizer\AssetReferenceNormalizer
 
 services:
     pimee_api.normalizer.product:
@@ -17,5 +18,12 @@ services:
         class: '%pimee_api.normalizer.published_product.class%'
         arguments:
             - '@pim_api.normalizer.product.community'
+        tags:
+            - { name: pim_serializer.normalizer, priority: 100 }
+
+    pimee_api.normalizer.asset_reference:
+        class: '%pimee_api.normalizer.asset_reference.class%'
+        arguments:
+            - '@router'
         tags:
             - { name: pim_serializer.normalizer, priority: 100 }

@@ -3,6 +3,10 @@ asset_channel_configurations:
         configuration:
             scale:
                 width: 500
+    ecommerce_china:
+        configuration:
+            scale:
+                width: 500
     tablet:
         configuration:
             resize:

@@ -7,3 +7,7 @@ pim_api_asset_category_edit:
     type: action
     label: pim_api.acl.asset_category.edit
     group_name: pim_api.acl_group.asset_category
+pim_api_asset_reference_list:
+    type: action
+    label: pim_api.acl.asset_reference.list
+    group_name: pim_api.acl_group.asset_reference

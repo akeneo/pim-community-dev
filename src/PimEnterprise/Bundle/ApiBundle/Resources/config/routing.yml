@@ -13,3 +13,7 @@ product_proposal:
 asset_category:
     resource: '@PimEnterpriseApiBundle/Resources/config/routing/asset_category.yml'
     prefix: /rest/v1
+
+asset_reference:
+    resource: '@PimEnterpriseApiBundle/Resources/config/routing/asset_reference.yml'
+    prefix: /rest/v1
