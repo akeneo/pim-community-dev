@@ -3,7 +3,6 @@
 namespace Pim\Component\Catalog\Model;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use Pim\Component\Catalog\Model\ProductModelInterface;
 use Doctrine\Common\Collections\Collection;
 
 /**
