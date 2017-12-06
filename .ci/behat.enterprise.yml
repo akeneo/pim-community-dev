@@ -98,8 +98,6 @@ default:
                     - 'Context\EnterpriseFeatureContext'
                 - Pim\Behat\Context\Storage\VariantProductStorage:
                     - '@pim_catalog.repository.product'
-                - Pim\Behat\Context\Domain\Enrich\ItemPickerContext:
-                    - 'Context\EnterpriseFeatureContext'
     extensions:
         Behat\ChainedStepsExtension: ~
         Behat\MinkExtension:
