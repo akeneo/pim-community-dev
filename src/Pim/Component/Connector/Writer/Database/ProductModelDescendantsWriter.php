@@ -51,7 +51,9 @@ class ProductModelDescendantsWriter implements ItemWriterInterface, StepExecutio
             }
         }
 
-        $this->cacheClearer->clear();
+        if (null !== $this->cacheClearer) {
+            $this->cacheClearer->clear();
+        }
     }
 
     /**
