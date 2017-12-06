@@ -15,6 +15,7 @@ Changes the constructor of `Pim\Bundle\EnrichBundle\Controller\Rest\ProductModel
 ## Bug fixes
 
 - PIM-6958: fix loading a product with a reference data that is not available (simpleselect or multiselect)
+- PIM-7037: Allows code to be an integer on product model import
 
 # 2.0.7 (2017-11-23)
 

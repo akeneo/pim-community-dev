@@ -5,7 +5,7 @@ namespace spec\Pim\Component\Connector\Reader\File;
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\Filesystem\Exception\FileNotFoundException;
 
-class FileIteratorSpec extends ObjectBehavior
+class FlatFileIteratorSpec extends ObjectBehavior
 {
     function let()
     {
@@ -60,6 +60,7 @@ Est'
             ]
         );
     }
+
     function it_gets_current_row_from_an_archive()
     {
         $this->beConstructedWith('csv', $this->getPath() . DIRECTORY_SEPARATOR  . 'caterpillar_import.zip', [
@@ -74,7 +75,6 @@ Est'
             [
                 'CAT-001',
                 'boots',
-                'caterpillar_boots',
                 'winter_collection',
                 'Caterpillar 1',
                 'Model 1 boots',
@@ -83,6 +83,18 @@ Est'
                 '37',
             ]
         );
+    }
+
+    function it_gets_current_row_as_string()
+    {
+        $this->beConstructedWith('xlsx', $this->getPath() . DIRECTORY_SEPARATOR  . 'product_with_integer.xlsx');
+
+        $this->rewind();
+        $this->next();
+        $this->current()->shouldReturn([
+            '3455165118829',
+            'clothing_color_size',
+        ]);
     }
 
     function it_returns_null_at_the_end_of_file()
