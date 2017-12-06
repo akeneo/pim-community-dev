@@ -43,8 +43,7 @@ define(
             render: function () {
                 this.$el.html(this.template({
                     operations: this.getParent().getOperations(),
-                    currentOperation: this.getParent().getCurrentOperation(),
-                    __: __
+                    currentOperation: this.getParent().getCurrentOperation()
                 }));
 
                 this.delegateEvents();
@@ -95,6 +94,13 @@ define(
              * {@inheritdoc}
              */
             getDescription: function () {
+                return '';
+            },
+
+            /**
+             * {@inheritdoc}
+             */
+            getIllustrationClass: function () {
                 return '';
             }
         });

@@ -26,8 +26,8 @@ Feature: Product creation
     Given I create a product
     Then I should see the SKU and Family fields
     And I fill in the following information in the popin:
-      | SKU             | caterpillar_1 |
-      | Choose a family | Sandals       |
+      | SKU    | caterpillar_1 |
+      | Family | Sandals       |
     And I press the "Save" button in the popin
     Then I should be on the product "caterpillar_1" edit page
     And I should see the text "caterpillar_1"

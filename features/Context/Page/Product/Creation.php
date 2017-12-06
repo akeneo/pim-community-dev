@@ -50,20 +50,6 @@ class Creation extends Form
     }
 
     /**
-     * Clear select2 family field
-     *
-     * @throws TimeoutException
-     */
-    public function clearFamily()
-    {
-        $resetButton = $this->spin(function () {
-            return $this->find('css', '.modal .select2-search-choice-close');
-        }, 'Can not find family reset button');
-
-        $resetButton->click();
-    }
-
-    /**
      * Find a validation tooltip containing a text
      *
      * @param string $text

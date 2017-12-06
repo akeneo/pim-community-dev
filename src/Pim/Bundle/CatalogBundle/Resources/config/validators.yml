@@ -53,6 +53,7 @@ parameters:
     pim_catalog.validator.constraint.invalid_variant_product_parent.class: Pim\Component\Catalog\Validator\Constraints\VariantProductParentValidator
     pim_catalog.validator.constraint.immutable_variant_axis_values.class:  Pim\Component\Catalog\Validator\Constraints\ImmutableVariantAxesValuesValidator
     pim_catalog.validator.constraint.family_attribute_used_as_axis.class:  Pim\Component\Catalog\Validator\Constraints\FamilyAttributeUsedAsAxisValidator
+    pim_catalog.validator.constraint.unique_product.class:                 Pim\Component\Catalog\Validator\Constraints\UniqueEntityValidator
 
 services:
     # Helpers
@@ -408,3 +409,10 @@ services:
         class: '%pim_catalog.validator.constraint.family_attribute_used_as_axis.class%'
         tags:
             - { name: validator.constraint_validator, alias: pim_family_attribute_used_as_axis }
+
+    pim_catalog.validator.constraint.unique_product:
+        class: '%pim_catalog.validator.constraint.unique_product.class%'
+        arguments:
+            - '@doctrine.orm.entity_manager'
+        tags:
+            - { name: validator.constraint_validator, alias: pim_unique_product_validator }

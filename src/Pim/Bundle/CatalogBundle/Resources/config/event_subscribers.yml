@@ -18,6 +18,7 @@ parameters:
     pim_catalog.event_subscriber.compute_family_variant_structure_changes.class: Pim\Bundle\CatalogBundle\EventSubscriber\ComputeFamilyVariantStructureChangesSubscriber
     pim_catalog.event_subscriber.remove_attributes_from_family_variants_on_family_update.class: Pim\Bundle\CatalogBundle\EventSubscriber\RemoveAttributesFromFamilyVariantsOnFamilyUpdateSubscriber
     pim_catalog.event_subscriber.save_family_variants_on_family_update.class: Pim\Bundle\CatalogBundle\EventSubscriber\SaveFamilyVariantOnFamilyUpdateSubscriber
+    pim_catalog.event_subscriber.add_parent_to_product.class: Pim\Bundle\CatalogBundle\EventSubscriber\AddParentAProductSubscriber
 
 services:
     # Subscribers
@@ -138,6 +139,15 @@ services:
             - '@pim_catalog.family_variant.add_unique_attributes'
         tags:
             - { name: kernel.event_subscriber }
+
+    pim_catalog.event_subscriber.add_parent_to_product:
+        class: '%pim_catalog.event_subscriber.add_parent_to_product.class%'
+        arguments:
+            - '@pim_catalog.doctrine.query.convert_product_to_variant_product'
+            - '@doctrine.orm.entity_manager'
+        tags:
+            - { name: kernel.event_subscriber }
+            - { name: doctrine.event_listener, event: preUpdate, connection: default }
 
     pim_catalog.event_subscriber.index_product_model_completedata:
         class: '%pim_catalog.event_subscriber.index_product_model_complete.class%'

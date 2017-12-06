@@ -8,10 +8,12 @@ use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use Akeneo\Component\StorageUtils\Exception\PropertyException;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
-use Pim\Component\Catalog\Builder\ProductBuilderInterface;
 use Pim\Component\Catalog\Comparator\Filter\FilterInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Model\VariantProductInterface;
 use Pim\Component\Catalog\ProductModel\Filter\AttributeFilterInterface;
+use Pim\Component\Connector\Processor\Denormalization\Product\AddParent;
+use Pim\Component\Connector\Processor\Denormalization\Product\FindProductToImport;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Security\Core\Exception\InvalidArgumentException;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
@@ -31,11 +33,11 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class ProductProcessor extends AbstractProcessor implements ItemProcessorInterface, StepExecutionAwareInterface
 {
-    /** @var ProductBuilderInterface */
-    protected $productBuilder;
+    /** @var FindProductToImport */
+    private $findProductToImport;
 
-    /** @var ProductBuilderInterface */
-    private $variantProductBuilder;
+    /** @var AddParent */
+    private $addParent;
 
     /** @var ObjectUpdaterInterface */
     protected $updater;
@@ -54,8 +56,8 @@ class ProductProcessor extends AbstractProcessor implements ItemProcessorInterfa
 
     /**
      * @param IdentifiableObjectRepositoryInterface $repository
-     * @param ProductBuilderInterface               $productBuilder
-     * @param ProductBuilderInterface               $variantProductBuilder
+     * @param FindProductToImport                   $findProductToImport
+     * @param AddParent                             $addParent
      * @param ObjectUpdaterInterface                $updater
      * @param ValidatorInterface                    $validator
      * @param ObjectDetacherInterface               $detacher
@@ -64,8 +66,8 @@ class ProductProcessor extends AbstractProcessor implements ItemProcessorInterfa
      */
     public function __construct(
         IdentifiableObjectRepositoryInterface $repository,
-        ProductBuilderInterface $productBuilder,
-        ProductBuilderInterface $variantProductBuilder,
+        FindProductToImport $findProductToImport,
+        AddParent $addParent,
         ObjectUpdaterInterface $updater,
         ValidatorInterface $validator,
         ObjectDetacherInterface $detacher,
@@ -74,8 +76,8 @@ class ProductProcessor extends AbstractProcessor implements ItemProcessorInterfa
     ) {
         parent::__construct($repository);
 
-        $this->productBuilder = $productBuilder;
-        $this->variantProductBuilder = $variantProductBuilder;
+        $this->findProductToImport = $findProductToImport;
+        $this->addParent = $addParent;
         $this->updater = $updater;
         $this->validator = $validator;
         $this->detacher = $detacher;
@@ -99,7 +101,7 @@ class ProductProcessor extends AbstractProcessor implements ItemProcessorInterfa
             $this->skipItemWithMessage($item, 'The identifier must be filled');
         }
 
-        $parent = $item['parent'] ?? '';
+        $parentProductModelCode = $item['parent'] ?? '';
 
         try {
             $item = $this->productAttributeFilter->filter($item);
@@ -107,7 +109,7 @@ class ProductProcessor extends AbstractProcessor implements ItemProcessorInterfa
             $familyCode = $this->getFamilyCode($item);
             $filteredItem = $this->filterItemData($item);
 
-            $product = $this->findOrCreateProduct($identifier, $familyCode, $parent);
+            $product = $this->findProductToImport->fromFlatData($identifier, $familyCode, $parentProductModelCode);
         } catch (AccessDeniedException $e) {
             $this->skipItemWithMessage($item, $e->getMessage(), $e);
         }
@@ -126,6 +128,14 @@ class ProductProcessor extends AbstractProcessor implements ItemProcessorInterfa
                 $this->stepExecution->incrementSummaryInfo('product_skipped_no_diff');
 
                 return null;
+            }
+        }
+
+        if ('' !== $parentProductModelCode && !$product instanceof VariantProductInterface) {
+            try {
+                $product = $this->addParent->to($product, $parentProductModelCode);
+            } catch (\InvalidArgumentException $e) {
+                $this->skipItemWithMessage($item, $e->getMessage(), $e);
             }
         }
 
@@ -176,9 +186,9 @@ class ProductProcessor extends AbstractProcessor implements ItemProcessorInterfa
      *
      * @return string
      */
-    protected function getFamilyCode(array $item)
+    protected function getFamilyCode(array $item): string
     {
-        return isset($item['family']) ? $item['family'] : '';
+        return $item['family'] ?? '';
     }
 
     /**

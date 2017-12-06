@@ -2627,18 +2627,6 @@ class WebUser extends PimContext
     }
 
     /**
-     * @Then /^I clear the family of the product model$/
-     */
-    public function iClearTheFamilyOfTheProductModel()
-    {
-        $this->spin(function () {
-            $this->getCurrentPage()->clearFamily();
-
-            return true;
-        }, sprintf('Cannot clear the product model family'));
-    }
-
-    /**
      * Clear the Unit of Work
      */
     public function clearUOW()

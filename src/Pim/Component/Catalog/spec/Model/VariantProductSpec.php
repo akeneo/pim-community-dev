@@ -3,6 +3,7 @@
 namespace spec\Pim\Component\Catalog\Model;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Model\Association;
@@ -11,9 +12,12 @@ use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\CategoryInterface;
 use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Component\Catalog\Model\FamilyVariantInterface;
+use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
 use Pim\Component\Catalog\Model\ValueCollectionInterface;
 use Pim\Component\Catalog\Model\ValueInterface;
+use Pim\Component\Catalog\Model\VariantProductInterface;
+use Prophecy\Argument;
 
 class VariantProductSpec extends ObjectBehavior
 {
@@ -56,12 +60,19 @@ class VariantProductSpec extends ObjectBehavior
         Association $assoc1,
         Association $assoc2,
         AssociationTypeInterface $assocType1,
-        AssociationTypeInterface $assocType2
+        AssociationTypeInterface $assocType2,
+        Collection $associations,
+        \Iterator $associationsIterator
     ) {
+        $associations->getIterator()->willReturn($associationsIterator);
+        $associationsIterator->current()->willReturn($assoc1, $assoc2);
+        $associationsIterator->rewind()->shouldBeCalled();
+        $associationsIterator->valid()->willReturn(true, true, false);
+
         $assoc1->getAssociationType()->willReturn($assocType1);
         $assoc2->getAssociationType()->willReturn($assocType2);
 
-        $this->setAssociations([$assoc1, $assoc2]);
+        $this->setAssociations($associations);
         $this->getAssociationForType($assocType1)->shouldReturn($assoc1);
     }
 
@@ -69,21 +80,33 @@ class VariantProductSpec extends ObjectBehavior
         Association $assoc1,
         Association $assoc2,
         AssociationTypeInterface $assocType1,
-        AssociationTypeInterface $assocType2
+        AssociationTypeInterface $assocType2,
+        Collection $associations,
+        \Iterator $associationsIterator
     ) {
+        $associations->getIterator()->willReturn($associationsIterator);
+        $associationsIterator->current()->willReturn($assoc1, $assoc2);
+        $associationsIterator->next()->shouldBeCalled();
+        $associationsIterator->rewind()->shouldBeCalled();
+        $associationsIterator->valid()->willReturn(true, true, false);
+
         $assocType1->getCode()->willReturn('ASSOC_TYPE_1');
         $assocType2->getCode()->willReturn('ASSOC_TYPE_2');
         $assoc1->getAssociationType()->willReturn($assocType1);
         $assoc2->getAssociationType()->willReturn($assocType2);
 
-        $this->setAssociations([$assoc1, $assoc2]);
+        $this->setAssociations($associations);
         $this->getAssociationForTypeCode('ASSOC_TYPE_2')->shouldReturn($assoc2);
     }
 
     function it_returns_null_when_i_try_to_get_an_association_with_an_empty_collection(
-        AssociationTypeInterface $assocType1
+        AssociationTypeInterface $assocType1,
+        Collection $associations,
+        \Iterator $associationsIterator
     ) {
-        $this->setAssociations([]);
+        $associations->getIterator()->willReturn($associationsIterator);
+
+        $this->setAssociations($associations);
         $this->getAssociationForType($assocType1)->shouldReturn(null);
     }
 

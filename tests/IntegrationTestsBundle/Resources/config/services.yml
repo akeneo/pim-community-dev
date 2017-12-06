@@ -65,3 +65,24 @@ services:
         class: '%akeneo_integration_tests.launcher.job_launcher.class%'
         arguments:
             - '@kernel'
+
+    akeneo_integration_tests.catalog.factory.product:
+        class: 'Akeneo\Test\IntegrationTestsBundle\Fixture\Factory\Product'
+        arguments:
+            - '@pim_catalog.builder.product'
+            - '@pim_catalog.updater.product'
+            - '@validator'
+
+    akeneo_integration_tests.catalog.factory.product_model:
+        class: 'Akeneo\Test\IntegrationTestsBundle\Fixture\Factory\ProductModel'
+        arguments:
+            - '@pim_catalog.factory.product_model'
+            - '@pim_catalog.updater.product_model'
+            - '@pim_catalog.repository.product_model'
+            - '@validator'
+
+    akeneo_integration_tests.fixture.saver.entity_with_value:
+        class: 'Akeneo\Test\IntegrationTestsBundle\Doctrine\Repository\EntityWithValue'
+        arguments:
+            - '@doctrine.orm.default_entity_manager'
+            - '@pim_serializer'

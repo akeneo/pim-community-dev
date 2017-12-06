@@ -372,6 +372,7 @@ services:
             - '@pim_enrich.normalizer.entity_with_family_variant'
             - '@pim_catalog.factory.product_model'
             - '@pim_enrich.normalizer.violation'
+            - '@pim_catalog.repository.family_variant'
 
     pim_enrich.controller.rest.product_category:
         class: '%pim_enrich.controller.rest.product_category.class%'

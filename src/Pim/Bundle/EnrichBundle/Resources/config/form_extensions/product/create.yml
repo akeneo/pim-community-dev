@@ -19,10 +19,11 @@ extensions:
             identifier: identifier
 
     pim-product-create-family:
-        module: pim/form/common/creation/family
+        module: pim/form/common/fields/simple-select-async
         parent: pim-product-create-modal
         targetZone: fields
         position: 20
         config:
-            identifier: family
-            loadUrl: pim_enrich_family_rest_index
+            fieldName: family
+            label: pim_enrich.entity.product.meta.family.title
+            choiceRoute: pim_enrich_family_rest_index
