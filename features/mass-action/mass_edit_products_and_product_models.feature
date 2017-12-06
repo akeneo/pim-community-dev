@@ -37,24 +37,6 @@ Feature: Apply a mass action on products only (and not product models)
     When I move to the confirm page
     Then I should see the text "You are about to update 6 products with the following information, please confirm."
 
-  Scenario: Mass edits common attributes of only products within a selection of products and product models
-    Given I show the filter "color"
-    And I filter by "color" with operator "in list" and value "Crimson red"
-    And I select rows model-tshirt-divided-crimson-red, running-shoes-m-crimson-red and tshirt-unique-size-crimson-red
-    And I press the "Bulk actions" button
-    And I choose the "Edit common attributes" operation
-    And I display the Composition attribute
-    And I change the "Composition" to "My composition"
-    When I confirm mass edit
-    And I wait for the "edit_common_attributes" job to finish
-    When I go on the last executed job resume of "edit_common_attributes"
-    Then I should see the text "COMPLETED"
-    And I should see the text "processed 2"
-    And I should see the text "skipped 1"
-    And I should see the text "Bulk actions do not support Product models entities yet."
-    And attribute composition of "tshirt-unique-size-crimson-red" should be "My composition"
-    And attribute composition of "running-shoes-m-crimson-red" should be "My composition"
-
   Scenario: Mass edits family of only products within a selection of products and product models
     Given I show the filter "color"
     And I filter by "color" with operator "in list" and value "Navy blue"

@@ -57,6 +57,10 @@ Feature: Edit common attributes of many products and product models at once
     And the product "col-white-m" should have the following values:
       | composition | 100% cotton   |
       | weight      | 500.0000 GRAM |
+    When I go on the last executed job resume of "edit_common_attributes"
+    Then I should see the text "COMPLETED"
+    And I should see the text "read 3"
+    And I should see the text "processed 3"
 
   Scenario: Mass edit attributes of a sub product model inside a family variant with 2 levels of hierarchy
     Given I am on the products grid
@@ -75,6 +79,10 @@ Feature: Edit common attributes of many products and product models at once
     And the product "col-white-m" should have the following values:
       | composition | 100% cotton   |
       | weight      | 500.0000 GRAM |
+    When I go on the last executed job resume of "edit_common_attributes"
+    Then I should see the text "COMPLETED"
+    And I should see the text "read 2"
+    And I should see the text "processed 2"
 
   Scenario: Mass edit attributes of a product model inside a family variant with 1 levels of hierarchy
     Given I am on the products grid
@@ -90,6 +98,10 @@ Feature: Edit common attributes of many products and product models at once
     Then the product model value brand of "model-nin" should be "[Nyke]"
     And the product value brand of "nin-s" should be "[Nyke]"
     And the product value composition of "nin-s" should be "100% cotton"
+    When I go on the last executed job resume of "edit_common_attributes"
+    Then I should see the text "COMPLETED"
+    And I should see the text "read 2"
+    And I should see the text "processed 2"
 
   Scenario: Mass edit attributes of a product model and a non variant product at the same time
     Given I am on the products grid
@@ -112,12 +124,16 @@ Feature: Edit common attributes of many products and product models at once
       | weight | 500.0000 GRAM |
     And the product "tool-tee" should have the following values:
       | weight | 500.0000 GRAM |
+    When I go on the last executed job resume of "edit_common_attributes"
+    Then I should see the text "COMPLETED"
+    And I should see the text "read 4"
+    And I should see the text "processed 4"
 
   Scenario: It does not update ancestors' attributes
     Given I am on the products grid
     And I show the filter "color"
-    And I filter by "color" with operator "IN LIST" and value "[white]"
     And I show the filter "size"
+    And I filter by "color" with operator "IN LIST" and value "[white]"
     And I filter by "size" with operator "IN LIST" and value "[m]"
     And I select rows col-white-m
     And I press the "Bulk actions" button
@@ -131,10 +147,14 @@ Feature: Edit common attributes of many products and product models at once
     When I confirm mass edit
     And I wait for the "edit_common_attributes" job to finish
     Then the product model value brand of "model-col" should be "[Abibas]"
-    Then the product model value brand of "model-col-white" should be "[Abibas]"
-    Then the product model value composition of "model-col-white" should be "cotton 90%, viscose 10%"
-    Then the product model "model-col" should not have the following values "composition, weight"
-    Then the product model "model-col-white" should not have the following values weight
+    And the product model value brand of "model-col-white" should be "[Abibas]"
+    And the product model value composition of "model-col-white" should be "cotton 90%, viscose 10%"
+    And the product model "model-col" should not have the following values "composition, weight"
+    And the product model "model-col-white" should not have the following values weight
+    When I go on the last executed job resume of "edit_common_attributes"
+    Then I should see the text "COMPLETED"
+    And I should see the text "read 1"
+    And I should see the text "processed 1"
 
   Scenario: Mass edit attributes of all selected products and product models
     Given I am on the products grid
@@ -165,8 +185,12 @@ Feature: Edit common attributes of many products and product models at once
     And the product "nin-s" should have the following values:
       | weight      | 500.0000 GRAM |
       | composition | 100% cotton   |
+    When I go on the last executed job resume of "edit_common_attributes"
+    Then I should see the text "COMPLETED"
+    And I should see the text "read 6"
+    And I should see the text "processed 6"
 
-  Scenario: Mass edit attributes of all but some one product model
+  Scenario: Mass edit attributes of all but one product model
     Given I am on the products grid
     And I select rows model-col
     And I select all entities
@@ -196,3 +220,7 @@ Feature: Edit common attributes of many products and product models at once
       | brand       |           |
       | weight      |           |
       | composition | 100% wool |
+    When I go on the last executed job resume of "edit_common_attributes"
+    Then I should see the text "COMPLETED"
+    And I should see the text "read 4"
+    And I should see the text "processed 4"

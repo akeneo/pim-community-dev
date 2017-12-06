@@ -64,7 +64,7 @@ class SelfAndAncestorFilter extends AbstractFieldFilter
 
         switch ($operator) {
             case Operators::IN_LIST:
-                $ancestorClause = [
+                $selfClause = [
                     'terms' => [
                         'id' => $values,
                     ],
@@ -74,22 +74,22 @@ class SelfAndAncestorFilter extends AbstractFieldFilter
                         self::ANCESTOR_ID_ES_FIELD => $values,
                     ],
                 ];
-                $this->searchQueryBuilder->addShould($ancestorClause);
+                $this->searchQueryBuilder->addShould($selfClause);
                 $this->searchQueryBuilder->addShould($ancestorsClause);
                 break;
             case Operators::NOT_IN_LIST:
-                $ancestorClause = [
-                    'terms' => [
-                        self::ANCESTOR_ID_ES_FIELD => $values,
-                    ],
-                ];
                 $selfClause = [
                     'terms' => [
                         'id' => $values,
                     ]
                 ];
+                $ancestorsClause = [
+                    'terms' => [
+                        self::ANCESTOR_ID_ES_FIELD => $values,
+                    ],
+                ];
                 $this->searchQueryBuilder->addMustNot($selfClause);
-                $this->searchQueryBuilder->addMustNot($ancestorClause);
+                $this->searchQueryBuilder->addMustNot($ancestorsClause);
                 break;
         }
     }
