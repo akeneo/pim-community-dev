@@ -70,11 +70,11 @@ class AssociationFieldSetterSpec extends ObjectBehavior
                 'associations',
                 'association format is not valid for the association type "assoc_type_code".',
                 'Pim\Component\Catalog\Updater\Setter\AssociationFieldSetter',
-                ['assoc_type_code' => ['products' => [1], 'groups' => [], 'productmodels' => [],]]
+                ['assoc_type_code' => ['products' => [1], 'groups' => [], 'product_models' => [],]]
             )
         )->during(
             'setFieldData',
-            [$product, 'associations', ['assoc_type_code' => ['products' => [1], 'groups' => [], 'productmodels' => []]]]
+            [$product, 'associations', ['assoc_type_code' => ['products' => [1], 'groups' => [], 'product_models' => []]]]
         );
 
         $this->shouldThrow(
@@ -99,7 +99,7 @@ class AssociationFieldSetterSpec extends ObjectBehavior
             )
         )->during(
             'setFieldData',
-            [$product, 'associations', ['assoc_type_code' => ['products' => 'string', 'groups' => [], 'productmodels' => []]]]
+            [$product, 'associations', ['assoc_type_code' => ['products' => 'string', 'groups' => [], 'product_models' => []]]]
         );
     }
 
@@ -166,12 +166,12 @@ class AssociationFieldSetterSpec extends ObjectBehavior
             [
                 'xsell' => [
                     'products' => ['assocProductOne', 'assocProductTwo'],
-                    'productmodels' => ['assocProductModelOne', 'assocProductModelTwo'],
+                    'product_models' => ['assocProductModelOne', 'assocProductModelTwo'],
                     'groups' => ['assocGroupOne']
                 ],
                 'upsell' => [
                     'products' => ['assocProductThree'],
-                    'productmodels' => ['assocProductModelThree'],
+                    'product_models' => ['assocProductModelThree'],
                     'groups' => ['assocGroupTwo']
                 ]
             ]
@@ -199,7 +199,7 @@ class AssociationFieldSetterSpec extends ObjectBehavior
             [
                 $product,
                 'associations',
-                ['non valid association type code' => ['groups' => [], 'products' => [], 'productmodels' => []]]
+                ['non valid association type code' => ['groups' => [], 'products' => [], 'product_models' => []]]
             ]
         );
     }
@@ -269,7 +269,7 @@ class AssociationFieldSetterSpec extends ObjectBehavior
             [
                 $product,
                 'associations',
-                ['xsell' => ['groups' => ['not existing group'], 'products' => [], 'productmodels' => [],]]
+                ['xsell' => ['groups' => ['not existing group'], 'products' => [], 'product_models' => [],]]
             ]
         );
     }
@@ -322,11 +322,11 @@ class AssociationFieldSetterSpec extends ObjectBehavior
             [
                 'xsell' => [
                     'products' => [],
-                    'productmodels' => [],
+                    'product_models' => [],
                 ],
                 'upsell' => [
                     'groups' => [],
-                    'productmodels' => [],
+                    'product_models' => [],
                 ]
             ]
         );

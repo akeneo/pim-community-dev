@@ -6,7 +6,7 @@
 - PIM-6621: add search on label and code on products and product models
 - PIM-6966: Add tracker information for product model, product variant and family variant
 - PIM-6990: Add new screen for managing product associations
-- PIM-6996: Associate products to product models during import using the `<assocType>-productmodels` pattern in an new column
+- PIM-6996: Associate products to product models during import using the `<assocType>-product_models` pattern in an new column
 
 
 ## BC breaks

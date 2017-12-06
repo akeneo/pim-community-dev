@@ -86,11 +86,11 @@ class AssociationFieldAdderSpec extends ObjectBehavior
                 'associations',
                 'association format is not valid for the association type "assoc_type_code".',
                 'Pim\Component\Catalog\Updater\Adder\AssociationFieldAdder',
-                ['assoc_type_code' => ['products' => [1], 'groups' => [], 'productmodels' => [],]]
+                ['assoc_type_code' => ['products' => [1], 'groups' => [], 'product_models' => [],]]
             )
         )->during(
             'addFieldData',
-            [$product, 'associations', ['assoc_type_code' => ['products' => [1], 'groups' => [], 'productmodels' => [],]]]
+            [$product, 'associations', ['assoc_type_code' => ['products' => [1], 'groups' => [], 'product_models' => [],]]]
         );
 
         $this->shouldThrow(
@@ -98,11 +98,11 @@ class AssociationFieldAdderSpec extends ObjectBehavior
                 'associations',
                 'association format is not valid for the association type "assoc_type_code".',
                 'Pim\Component\Catalog\Updater\Adder\AssociationFieldAdder',
-                ['assoc_type_code' => ['products' => [], 'groups' => [2], 'productmodels' => [],]]
+                ['assoc_type_code' => ['products' => [], 'groups' => [2], 'product_models' => [],]]
             )
         )->during(
             'addFieldData',
-            [$product, 'associations', ['assoc_type_code' => ['products' => [], 'groups' => [2], 'productmodels' => [],]]]
+            [$product, 'associations', ['assoc_type_code' => ['products' => [], 'groups' => [2], 'product_models' => [],]]]
         );
 
         $this->shouldThrow(
@@ -168,12 +168,12 @@ class AssociationFieldAdderSpec extends ObjectBehavior
             [
                 'xsell' => [
                     'products' => ['assocProductOne', 'assocProductTwo'],
-                    'productmodels' => ['assocProductModelOne', 'assocProductModelTwo'],
+                    'product_models' => ['assocProductModelOne', 'assocProductModelTwo'],
                     'groups' => ['assocGroupOne']
                 ],
                 'upsell' => [
                     'products' => ['assocProductThree'],
-                    'productmodels' => ['assocProductModelThree'],
+                    'product_models' => ['assocProductModelThree'],
                     'groups' => ['assocGroupTwo']
                 ]
             ]

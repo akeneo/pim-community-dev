@@ -61,12 +61,12 @@ class AssociationFieldSetter extends AbstractFieldSetter
      *     "XSELL": {
      *         "groups": ["group1", "group2"],
      *         "products": ["AKN_TS1", "AKN_TSH2"],
-     *         "productmodels": ["MODEL_AKN_TS1", "MODEL_AKN_TSH2"]
+     *         "product_models": ["MODEL_AKN_TS1", "MODEL_AKN_TSH2"]
      *     },
      *     "UPSELL": {
      *         "groups": ["group3", "group4"],
      *         "products": ["AKN_TS3", "AKN_TSH4"],
-     *         "productmodels": ["MODEL_AKN_TS3 "MODEL_AKN_TSH4"]
+     *         "product_models": ["MODEL_AKN_TS3 "MODEL_AKN_TSH4"]
      *     },
      * }
      */
@@ -93,12 +93,12 @@ class AssociationFieldSetter extends AbstractFieldSetter
      *     "XSELL": {
      *         "groups": ["group1", "group2"],
      *         "products": ["AKN_TS1", "AKN_TSH2"],
-     *         "productmodels": ["MODEL_AKN_TS1", "MODEL_AKN_TSH2"]
+     *         "product_models": ["MODEL_AKN_TS1", "MODEL_AKN_TSH2"]
      *     },
      *     "UPSELL": {
      *         "groups": ["group3", "group4"],
      *         "products": ["AKN_TS3", "AKN_TSH4"],
-     *         "productmodels": ["MODEL_AKN_TS3 "MODEL_AKN_TSH4"]
+     *         "product_models": ["MODEL_AKN_TS3 "MODEL_AKN_TSH4"]
      *     },
      * }
      */
@@ -124,7 +124,7 @@ class AssociationFieldSetter extends AbstractFieldSetter
                         $association->removeGroup($groupToRemove);
                     }
                 }
-                if (isset($currentData['productmodels'])) {
+                if (isset($currentData['product_models'])) {
                     foreach ($association->getProductModels() as $productModelToRemove) {
                         $association->removeProductModel($productModelToRemove);
                     }
@@ -170,8 +170,8 @@ class AssociationFieldSetter extends AbstractFieldSetter
             if (isset($items['groups'])) {
                 $this->setAssociatedGroups($association, $items['groups']);
             }
-            if (isset($items['productmodels'])) {
-                $this->setAssociatedProductModels($association, $items['productmodels']);
+            if (isset($items['product_models'])) {
+                $this->setAssociatedProductModels($association, $items['product_models']);
             }
         }
     }
@@ -279,7 +279,7 @@ class AssociationFieldSetter extends AbstractFieldSetter
     protected function checkAssociationData($field, array $data, $assocTypeCode, $items)
     {
         if (!is_array($items) || !is_string($assocTypeCode) ||
-            (!isset($items['products']) && !isset($items['groups']) && !isset($items['productmodels']))
+            (!isset($items['products']) && !isset($items['groups']) && !isset($items['product_models']))
         ) {
             throw InvalidPropertyTypeException::validArrayStructureExpected(
                 $field,

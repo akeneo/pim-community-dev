@@ -252,9 +252,9 @@ class ProductStandardIntegration extends TestCase
                 'created'       => '2016-06-14T13:12:50+02:00',
                 'updated'       => '2016-06-14T13:12:50+02:00',
                 'associations'  => [
-                    'PACK'   => ['groups' => [], 'products' => ['bar', 'baz'], 'productmodels' => []],
-                    'UPSELL' => ['groups' => ['groupA'], 'products' => [], 'productmodels' => []],
-                    'X_SELL' => ['groups' => ['groupB'], 'products' => ['bar'], 'productmodels' => []],
+                    'PACK'   => ['groups' => [], 'products' => ['bar', 'baz'], 'product_models' => []],
+                    'UPSELL' => ['groups' => ['groupA'], 'products' => [], 'product_models' => []],
+                    'X_SELL' => ['groups' => ['groupB'], 'products' => ['bar'], 'product_models' => []],
                 ],
             ];
 

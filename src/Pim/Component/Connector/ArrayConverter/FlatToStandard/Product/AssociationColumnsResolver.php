@@ -20,7 +20,7 @@ class AssociationColumnsResolver
     const PRODUCT_ASSOCIATION_SUFFIX = '-products';
 
     /** @var string */
-    const PRODUCT_MODEL_ASSOCIATION_SUFFIX = '-productmodels';
+    const PRODUCT_MODEL_ASSOCIATION_SUFFIX = '-product_models';
 
     /** @var AssociationTypeRepositoryInterface */
     protected $assocTypeRepository;

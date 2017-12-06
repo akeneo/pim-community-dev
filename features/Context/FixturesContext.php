@@ -1375,8 +1375,8 @@ class FixturesContext extends BaseFixturesContext
                 $values['associations'][$row['type']]['groups'] = explode(',', $row['groups']);
             }
 
-            if (isset($row['productmodels'])) {
-                $values['associations'][$row['type']]['productmodels'] = explode(',', $row['productmodels']);
+            if (isset($row['product_models'])) {
+                $values['associations'][$row['type']]['product_models'] = explode(',', $row['product_models']);
             }
         }
 

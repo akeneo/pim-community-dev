@@ -660,22 +660,22 @@ JSON;
                 "PACK"         => [
                     "groups"   => [],
                     "products" => [],
-                    "productmodels" => [],
+                    "product_models" => [],
                 ],
                 "SUBSTITUTION" => [
                     "groups"   => [],
                     "products" => [],
-                    "productmodels" => [],
+                    "product_models" => [],
                 ],
                 "UPSELL"       => [
                     "groups"   => [],
                     "products" => [],
-                    "productmodels" => [],
+                    "product_models" => [],
                 ],
                 "X_SELL"       => [
                     "groups"   => ["groupA"],
                     "products" => ["simple"],
-                    "productmodels" => [],
+                    "product_models" => [],
                 ],
             ],
         ];

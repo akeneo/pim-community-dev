@@ -13,7 +13,7 @@ Feature: Execute a job
   Scenario: Successfully import a csv file of products with product model associations
     Given the following CSV file to import:
       """
-      sku;family;X_SELL-productmodels;UPSELL-productmodels
+      sku;family;X_SELL-product_models;UPSELL-product_models
       SKU-001;clothing;amor,brooksblue;
       1111111171;accessories;;brookspink
       """
@@ -23,8 +23,8 @@ Feature: Execute a job
     And I launch the import job
     And I wait for the "csv_catalog_modeling_product_import" job to finish
     Then the product "SKU-001" should have the following associations:
-      | type   | productmodels   |
+      | type   | product_models   |
       | X_SELL | amor,brooksblue |
     And the product "1111111171" should have the following associations:
-      | type   | productmodels   |
+      | type   | product_models   |
       | UPSELL | brookspink      |

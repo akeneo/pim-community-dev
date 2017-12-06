@@ -106,7 +106,7 @@ class AssociationFieldAdder extends AbstractFieldAdder
             }
             $this->addAssociatedProducts($association, $items['products']);
             $this->addAssociatedGroups($association, $items['groups']);
-            $this->addAssociatedProductModels($association, $items['productmodels']);
+            $this->addAssociatedProductModels($association, $items['product_models']);
         }
     }
 

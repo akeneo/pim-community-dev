@@ -64,12 +64,12 @@ class AssociationsNormalizerSpec extends ObjectBehavior
                 'PACK' => [
                     'groups' => [],
                     'products' => ['product_code'],
-                    'productmodels' => ['product_model_code'],
+                    'product_models' => ['product_model_code'],
                 ],
                 'XSELL' => [
                     'groups' => ['group_code'],
                     'products' => [],
-                    'productmodels' => [],
+                    'product_models' => [],
                 ]
             ]
         );

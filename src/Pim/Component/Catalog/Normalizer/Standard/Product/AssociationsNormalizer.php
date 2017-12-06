@@ -33,9 +33,9 @@ class AssociationsNormalizer implements NormalizerInterface
                 $data[$code]['products'][] = $product->getReference();
             }
 
-            $data[$code]['productmodels'] = [];
+            $data[$code]['product_models'] = [];
             foreach ($association->getProductModels() as $productModel) {
-                $data[$code]['productmodels'][] = $productModel->getCode();
+                $data[$code]['product_models'][] = $productModel->getCode();
             }
         }
 

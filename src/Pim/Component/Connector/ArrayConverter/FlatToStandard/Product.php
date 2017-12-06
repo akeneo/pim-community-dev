@@ -105,7 +105,7 @@ class Product implements ArrayConverterInterface
      *     'categories': 'tshirt,men'
      *     'XSELL-groups': 'akeneo_tshirt, oro_tshirt',
      *     'XSELL-product': 'AKN_TS, ORO_TSH',
-     *     'XSELL-productmodels': 'MODEL_AKN_TS, MODEL_ORO_TSH'
+     *     'XSELL-product_models': 'MODEL_AKN_TS, MODEL_ORO_TSH'
      * ]
      *
      * After:
@@ -171,7 +171,7 @@ class Product implements ArrayConverterInterface
      *          "XSELL": {
      *              "groups": ["akeneo_tshirt", "oro_tshirt"],
      *              "products": ["AKN_TS", "ORO_TSH"]
-     *              "productmodels": ["MODEL_AKN_TS", "MODEL_ORO_TSH"]
+     *              "product_models": ["MODEL_AKN_TS", "MODEL_ORO_TSH"]
      *          }
      *      }
      * }
