@@ -38,7 +38,7 @@ define(
             },
 
             canRemoveAssociation() {
-                return SecurityContext.isGranted('pim_enrich_product_association_remove');
+                return SecurityContext.isGranted('pim_enrich_associations_remove');
             },
 
             getTemplateOptions() {

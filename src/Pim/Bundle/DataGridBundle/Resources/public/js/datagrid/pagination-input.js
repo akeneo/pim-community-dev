@@ -46,7 +46,11 @@ define(
         initialize: function (options) {
             this.appendToGrid = options.appendToGrid;
             this.gridElement = options.gridElement;
-            this.gridName = options.gridName;
+            this.gridName = options.config.gridName;
+
+            if (null === this.gridName || undefined === this.gridName) {
+                throw Error('You must set the gridName for the oro/datagrid/pagination-input');
+            }
 
             if (this.appendToGrid) {
                 mediator.on('datagrid_collection_set_after', this.setupPagination.bind(this));
@@ -161,7 +165,9 @@ define(
     });
 
     PaginationInput.init = function(gridContainer, gridName) {
-        return new PaginationInput({ appendToGrid: true, gridElement: $(gridContainer).find('.grid-container'), gridName });
+        return new PaginationInput({ appendToGrid: true, gridElement: $(gridContainer).find('.grid-container'), config: {
+            gridName
+        } });
     };
 
     return PaginationInput;

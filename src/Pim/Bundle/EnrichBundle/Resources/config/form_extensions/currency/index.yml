@@ -48,6 +48,8 @@ extensions:
         module: oro/datagrid/pagination-input
         parent: pim-currency-index-grid-container
         targetZone: toolbar
+        config:
+            gridName: currency-grid
 
     pim-currency-index-grid:
         module: pim/form/common/index/grid
