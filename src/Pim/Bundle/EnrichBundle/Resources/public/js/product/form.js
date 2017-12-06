@@ -312,8 +312,8 @@ define(
              */
             forwardMediatorEvents: function (events) {
                 _.each(events, function (localEvent, mediatorEvent) {
-                    this.listenTo(mediator, mediatorEvent, function () {
-                        this.trigger(localEvent, ...arguments);
+                    this.listenTo(mediator, mediatorEvent, function (...args) {
+                        this.trigger(localEvent, ...args);
                     });
                 }.bind(this));
             }
