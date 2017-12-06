@@ -24,6 +24,18 @@ mappings:
                 type: 'keyword'
         dynamic_templates:
             -
+                label_scopable_localizable_structure:
+                    path_match: 'label.*'
+                    match_mapping_type: 'object'
+                    mapping:
+                        type: 'object'
+            -
+                label:
+                    path_match: 'label.*'
+                    mapping:
+                        type: 'keyword'
+                        normalizer: 'text_normalizer'
+            -
                 family:
                     path_match: 'family.labels.*'
                     mapping:

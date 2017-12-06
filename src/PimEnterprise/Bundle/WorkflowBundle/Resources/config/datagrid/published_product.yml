@@ -225,3 +225,7 @@ datagrid:
                     ftype:     date
                     data_name: updated
                     label:     Updated At
+                label_or_identifier:
+                    type: label_or_identifier
+                    label: Label or identifier
+                    data_name: label_or_identifier
