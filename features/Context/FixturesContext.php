@@ -392,6 +392,7 @@ class FixturesContext extends BaseFixturesContext
      */
     public function theFollowingProductValues(TableNode $table)
     {
+        $products = [];
         foreach ($table->getHash() as $row) {
             $row = array_merge(['locale' => null, 'scope' => null, 'value' => null], $row);
 
@@ -403,12 +404,13 @@ class FixturesContext extends BaseFixturesContext
                 $attributeCode .= '-' . $row['scope'];
             }
 
-            $data = [
-                'sku'          => $row['product'],
-                $attributeCode => $this->replacePlaceholders($row['value'])
-            ];
+            $products[$row['product']][$attributeCode] = $this->replacePlaceholders($row['value']);
+        }
 
-            $this->createProduct($data);
+        foreach ($products as $identifier => $product) {
+            $product['sku'] = $identifier;
+
+            $this->createProduct($product);
         }
     }
 
