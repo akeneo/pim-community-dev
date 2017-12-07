@@ -101,6 +101,8 @@ extensions:
         module: oro/datafilter/filters-list
         parent: pimee-published-product-index-column-inner
         targetZone: filters
+        config:
+            displayedAsColumn: true
 
     pimee-published-product-index-actions-panel:
         module: oro/datagrid/actions-panel
@@ -117,7 +119,6 @@ extensions:
         parent: pimee-published-product-index-grid-container
         targetZone: toolbar
         position: 10
-
 
     pimee-published-product-index-display-selector:
         module: pim/datagrid/display-selector

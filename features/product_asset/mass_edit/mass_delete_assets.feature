@@ -10,11 +10,11 @@ Feature: Mass delete assets
     And I am on the assets grid
 
   Scenario: Successfully mass delete many assets
-    Given I select rows mouette, mountain and mugs
+    Given I select rows paint, chicagoskyline and akene
     And I press the "Delete" button
     Then I should see the text "Are you sure you want to delete the selected assets?"
     When I confirm the removal
-    Then I should not see assets mouette, mountain and mugs
+    Then I should not see assets paint, chicagoskyline and akene
     And the grid should contain 12 elements
 
   Scenario: Successfully mass delete one asset
