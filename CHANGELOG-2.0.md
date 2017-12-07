@@ -1,8 +1,15 @@
 # 2.0.x
 
+## Bug fixes
+
+- PIM-7035: fix reset login page style and error 500 thrown after submitting form
+- PIM-7045: fix memory leak in step `Compute product model descendants` for product model import
+- PIM-6958: fix loading a product with a reference data that is not available (simpleselect or multiselect)
+
 ## Better manage products with variants!
 
 - PIM-6349: Adds mass edit to add products to an existing product model
+- PIM-6791: Change a product in a variant product by import
 
 ## Update jobs
 
@@ -11,12 +18,6 @@ IMPORTANT: In order to use the new mass edit, please execute `bin/console akeneo
 ## BC breaks
 
 Changes the constructor of `Pim\Bundle\EnrichBundle\Controller\Rest\ProductModelController` to add `Pim\Component\Catalog\Repository\FamilyVariantRepositoryInterface` 
-
-## Bug fixes
-
-- PIM-7035: fix reset login page style and error 500 thrown after submitting form
-- PIM-7045: fix memory leak in step `Compute product model descendants` for product model import
-- PIM-6958: fix loading a product with a reference data that is not available (simpleselect or multiselect)
 
 # 2.0.7 (2017-11-23)
 
