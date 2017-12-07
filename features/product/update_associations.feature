@@ -18,6 +18,5 @@ Feature: Update the product associations
     When I press the "Add associations" button
     And I check the row "patrick"
     Then the item picker basket should contain patrick
-    And I press the "Confirm" button
-    And I save the product
-    Then the rows "patrick" should be checked
+    And I press the "Confirm" button in the popin
+    Then I should see product "patrick"

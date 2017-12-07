@@ -64,7 +64,8 @@ define(
                 const row = $(this.rowTemplate(templateOptions));
                 const thumbnail = this.thumbnailTemplate(templateOptions);
 
-                row.empty().append(thumbnail);
+                row.html(thumbnail);
+
                 this.renderCells(row);
                 this.$el.empty().html(row);
 

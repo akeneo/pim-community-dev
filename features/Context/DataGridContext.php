@@ -903,6 +903,26 @@ class DataGridContext extends PimContext implements PageObjectAware
     }
 
     /**
+     * @param string $rows
+     *
+     * @throws ExpectationException
+     *
+     * @When /^I remove the rows? "([^"]+)"$/
+     */
+    public function iRemoveTheRows($rows)
+    {
+        $rows = $this->getMainContext()->listToArray($rows);
+
+        foreach ($rows as $row) {
+            $this->spin(function () use ($row) {
+                $gridRow  = $this->getDatagrid()->getRow($row);
+                $removeButton = $gridRow->find('css', '.AknGrid-bodyRow-remove');
+                $removeButton->click();
+            }, sprintf('Unable to uncheck the row "%s"', $row));
+        }
+    }
+
+    /**
      * @param string      $rows
      * @param string|null $notChecked If not null, it checks checkbox is not checked.
      *
