@@ -15,6 +15,18 @@ use Pim\Component\Catalog\Repository\ProductModelRepositoryInterface;
  * An ancestor is a product model that is either a parent or a grand parent.
  * Look for documents having the given ancestor(s).
  *
+ * Imagine the following tree:
+ *      RPM
+ *       \___PM1
+ *            \___P11
+ *            \___P12
+ *       \___PM2
+ *            \___P21
+ *
+ * Using this filter with "IN LIST PM1" would return:
+ *            \___P11
+ *            \___P12
+ *
  * @author    Samir Boulil <samir.boulil@akeneo.com>
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
