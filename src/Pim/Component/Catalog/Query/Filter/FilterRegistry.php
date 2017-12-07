@@ -6,7 +6,7 @@ use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 
 /**
- * Aims to register and retrieve filters useable on product query builder
+ * Aims to register and retrieve filters usable on product query builder
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
@@ -14,10 +14,10 @@ use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
  */
 class FilterRegistry implements FilterRegistryInterface
 {
-    /** @var AttributeFilterInterface[] priorized attribute filters */
+    /** @var AttributeFilterInterface[] prioritized attribute filters */
     protected $attributeFilters = [];
 
-    /** @var FieldFilterInterface[] priorized field filters */
+    /** @var FieldFilterInterface[] prioritized field filters */
     protected $fieldFilters = [];
 
     /** @var AttributeRepositoryInterface */

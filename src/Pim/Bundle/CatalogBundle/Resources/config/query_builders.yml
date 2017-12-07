@@ -59,6 +59,16 @@ services:
             - '@pim_catalog.factory.product_cursor'
             - '@pim_catalog.query.product_query_builder_resolver'
 
+    pim_catalog.query.product_proposal_query_builder_factory:
+        class: '%pim_catalog.query.elasticsearch.product_query_builder_factory.class%'
+        arguments:
+            - '%pim_catalog.query.product_query_builder.class%'
+            - '@pim_catalog.repository.attribute'
+            - '@pim_catalog.query.filter.product_registry'
+            - '@pim_catalog.query.sorter.registry'
+            - '@pimee_workflow.factory.product_proposal_cursor'
+            - '@pim_catalog.query.product_query_builder_resolver'
+
     pim_catalog.query.product_query_builder_search_after_size_factory:
         class: '%pim_catalog.query.elasticsearch.product_query_builder_factory.class%'
         arguments:
