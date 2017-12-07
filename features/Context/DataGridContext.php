@@ -917,6 +917,7 @@ class DataGridContext extends PimContext implements PageObjectAware
             $this->spin(function () use ($row) {
                 $gridRow  = $this->getDatagrid()->getRow($row);
                 $removeButton = $gridRow->find('css', '.AknGrid-bodyRow-remove');
+                $removeButton->mouseOver();
                 $removeButton->click();
             }, sprintf('Unable to uncheck the row "%s"', $row));
         }

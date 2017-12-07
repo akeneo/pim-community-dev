@@ -114,19 +114,13 @@ Feature: Associate a product
   Scenario: Detect unsaved changes when modifying associations
     Given I edit the "charcoal-boots" product
     When I visit the "Associations" column tab
-    And I check the row "gray-boots"
+    And I press the "Add associations" button
     And I check the row "black-boots"
-    Then I should see the text "There are unsaved changes."
-    And I visit the "Attributes" column tab
-    Then I should see the text "There are unsaved changes."
-    When I save the product
+    And I press the "Confirm" button in the popin
     Then I should not see the text "There are unsaved changes."
-    When I visit the "Associations" column tab
-    And I uncheck the rows "black-boots"
-    Then I should see the text "There are unsaved changes."
-    And I check the rows "black-boots"
-    # Wait for the fade-out of the message
-    And I wait 1 seconds
+    And I remove the row "black-boots"
+    And I should see the text "There are unsaved changes."
+    And I save the product
     Then I should not see the text "There are unsaved changes."
 
   @jira https://akeneo.atlassian.net/browse/PIM-5295
