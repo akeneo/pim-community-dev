@@ -48,17 +48,7 @@ class RulesExecutor implements ItemWriterInterface
      */
     public function write(array $products)
     {
-        $productIds = array_reduce(
-            $products,
-            function ($carry, ProductInterface $product) {
-                if (null !== $product->getId()) {
-                    $carry[] = (string) $product->getId();
-                }
-
-                return $carry;
-            },
-            []
-        );
+        $productIds = $this->getProductIds($products);
 
         if (!empty($productIds)) {
             $ruleDefinitions = $this->ruleRepository->findAllOrderedByPriority();
@@ -67,5 +57,22 @@ class RulesExecutor implements ItemWriterInterface
                 $this->runner->run($ruleDefinition, ['selected_products' => $productIds]);
             }
         }
+    }
+
+    /**
+     * @param array $entitiesWithFamily
+     *
+     * @return string[]
+     */
+    private function getProductIds(array $entitiesWithFamily): array
+    {
+        $productIds = [];
+        foreach ($entitiesWithFamily as $entityWithFamily) {
+            if ($entityWithFamily instanceof ProductInterface) {
+                $productIds[] = (string) $entityWithFamily->getId();
+            }
+        }
+
+        return $productIds;
     }
 }
