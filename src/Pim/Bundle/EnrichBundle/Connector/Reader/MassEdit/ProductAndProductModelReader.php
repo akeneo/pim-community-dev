@@ -21,10 +21,8 @@ use Pim\Component\Catalog\Query\ProductQueryBuilderFactoryInterface;
 use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
 
 /**
- * Product reader that only returns product entities and skips product models.
- *
- * TODO: This class is unused for now (replaced by both FilteredProductReader and FilteredProductModelReader).
- * This class has to be used for mass actions PIM-6357 after removing the skip part.
+ * Special reader that will select all the ancestry of the selected items
+ * (to get all the product models and products that are possibly impacted by the mass edit).
  *
  * @author    Samir Boulil <samir.boulil@akeneo.com>
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
@@ -88,7 +86,7 @@ class ProductAndProductModelReader implements
         }
 
         $filters = $this->getConfiguredFilters();
-        $this->productsAndProductModels = $this->getProductsCursor($filters, $channel);
+        $this->productsAndProductModels = $this->getCursor($filters, $channel);
     }
 
     /**
@@ -144,6 +142,9 @@ class ProductAndProductModelReader implements
      * Returns the filters from the configuration.
      * The parameters can be in the 'filters' root node, or in filters data node (e.g. for export).
      *
+     * Here we transform the ID filter into SELF_AND_ANCESTOR.ID in order to retrieve
+     * all the product models and products that are possibly impacted by the mass edit.
+     *
      * @return array
      */
     private function getConfiguredFilters(): array
@@ -173,7 +174,7 @@ class ProductAndProductModelReader implements
      *
      * @return CursorInterface
      */
-    private function getProductsCursor(array $filters, ChannelInterface $channel = null): CursorInterface
+    private function getCursor(array $filters, ChannelInterface $channel = null): CursorInterface
     {
         $options = ['filters' => $filters];
 
@@ -181,9 +182,9 @@ class ProductAndProductModelReader implements
             $options['default_scope'] = $channel->getCode();
         }
 
-        $productQueryBuilder = $this->pqbFactory->create($options);
+        $queryBuilder = $this->pqbFactory->create($options);
 
-        return $productQueryBuilder->execute();
+        return $queryBuilder->execute();
     }
 
     /**

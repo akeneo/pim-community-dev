@@ -32,6 +32,7 @@ class SelfAndAncestorFilter extends AbstractFieldFilter
 
     /**
      * @param ProductModelRepositoryInterface $productModelRepository
+     * @param ProductRepositoryInterface      $productRepository
      * @param array                           $supportedFields
      * @param array                           $supportedOperators
      */

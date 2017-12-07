@@ -1222,7 +1222,7 @@ class FixturesContext extends BaseFixturesContext
      *
      * @Given /^the product model value (\w+) of "([^"]*)" should be "(.*)"$/
      */
-    public function theValueOfShouldBe(string $attribute, string $identifier, string $value)
+    public function theProductModelValueOfShouldBe(string $attribute, string $identifier, string $value)
     {
         $productValue = $this->getProductModelValue($identifier, strtolower($attribute));
 
@@ -1942,7 +1942,7 @@ class FixturesContext extends BaseFixturesContext
      *
      * @return ValueInterface
      */
-    protected function getProductModelValue($identifier, $attribute, $locale = null, $scope = null)
+    private function getProductModelValue(string $identifier, string $attribute, string $locale = null, string $scope = null)
     {
         if (null === $productModel = $this->getProductModel($identifier)) {
             throw new \InvalidArgumentException(sprintf('Could not find product model with code "%s"', $identifier));

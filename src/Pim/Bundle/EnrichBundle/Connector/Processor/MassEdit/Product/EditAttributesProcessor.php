@@ -28,9 +28,6 @@ class EditAttributesProcessor extends AbstractProcessor
     /** @var ValidatorInterface */
     protected $productModelValidator;
 
-    /** @var array */
-    protected $skippedAttributes = [];
-
     /** @var ObjectUpdaterInterface */
     protected $productUpdater;
 
@@ -100,7 +97,7 @@ class EditAttributesProcessor extends AbstractProcessor
     }
 
     /**
-     * Set data from $actions to the given $product
+     * Set data from $actions to the given $entity
      *
      * @param EntityWithFamilyInterface $entity
      * @param array                     $filteredValues
@@ -134,7 +131,7 @@ class EditAttributesProcessor extends AbstractProcessor
     }
 
     /**
-     * Validate the product
+     * Validate the entity
      *
      * @param EntityWithFamilyInterface $entity
      *
@@ -153,6 +150,8 @@ class EditAttributesProcessor extends AbstractProcessor
     }
 
     /**
+     * Sadly, this is override in Enterprise Edition to check the permissions of the entity.
+     *
      * @param EntityWithFamilyInterface $entity
      *
      * @return bool
@@ -167,10 +166,6 @@ class EditAttributesProcessor extends AbstractProcessor
      */
     protected function addWarning(EntityWithFamilyInterface $entity): void
     {
-        /*
-         * We don't give the product to addWarning because we don't want that step executor
-         * calls the toString method which hydrate lot of model
-         */
         $this->stepExecution->addWarning(
             'pim_enrich.mass_edit_action.edit-common-attributes.message.no_valid_attribute',
             [],
