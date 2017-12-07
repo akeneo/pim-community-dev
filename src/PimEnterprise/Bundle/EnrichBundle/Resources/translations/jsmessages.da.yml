@@ -54,7 +54,7 @@ pimee_enrich:
           added: Gruppe {{ group }} vil være tilladt at {{ permission }} attributgruppe
   entity:
     product:
-      index_title: "[] -Inf, 1] {{ count }} resultat |] 1, Inf [{{ count }} resultater"
+      index_title: "] -Inf, 1] {{ count }} resultat |] 1, Inf [{{ count }} resultater"
       navigation: Offentliggjorte produkter
       history:
         published: Publiceret

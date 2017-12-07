@@ -1,0 +1,6 @@
+pim_api:
+  acl:
+    asset_category:
+      list: Listaa assettikategoriat
+  acl_group:
+    asset_category: Assettikategoriat

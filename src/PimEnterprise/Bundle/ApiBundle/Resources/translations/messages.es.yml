@@ -1,0 +1,6 @@
+pim_api:
+  acl:
+    asset_category:
+      list: Lista de categorías de recursos
+  acl_group:
+    asset_category: Categorías de recursos
