@@ -54,7 +54,7 @@ services:
             - '@akeneo_batch.job_repository'
             - '@pim_enrich.reader.database.product_and_product_model'
             - '@pim_enrich.connector.processor.mass_edit.product.edit_attributes'
-            - '@pimee_enrich.connector.writer.mass_edit.product'
+            - '@pimee_enrich.connector.writer.mass_edit.product_and_product_model'
             - 1000
 
     # CSV Quick Export steps ------------------------------------------------------------------------------------------

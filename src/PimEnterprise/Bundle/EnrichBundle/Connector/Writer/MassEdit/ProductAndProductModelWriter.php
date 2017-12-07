@@ -15,12 +15,13 @@ namespace PimEnterprise\Bundle\EnrichBundle\Connector\Writer\MassEdit;
 
 use Akeneo\Component\StorageUtils\Cache\CacheClearerInterface;
 use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
+use Pim\Bundle\EnrichBundle\Connector\Writer\MassEdit\ProductAndProductModelWriter as BaseWriter;
 use Pim\Bundle\VersioningBundle\Manager\VersionManager;
 use Pim\Component\Catalog\Model\EntityWithFamilyInterface;
+use Pim\Component\Catalog\Model\ProductModelInterface;
 use PimEnterprise\Component\Security\Attributes;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationCredentialsNotFoundException;
-use Pim\Bundle\EnrichBundle\Connector\Writer\MassEdit\ProductAndProductModelWriter as BaseWriter;
 
 /**
  * Product and product model writer
@@ -33,16 +34,16 @@ class ProductAndProductModelWriter extends BaseWriter
     private $authorizationChecker;
 
     /**
-     * @param VersionManager                $versionManager
      * @param BulkSaverInterface            $productSaver
      * @param BulkSaverInterface            $productModelSaver
+     * @param VersionManager                $versionManager
      * @param CacheClearerInterface         $cacheClearer
      * @param AuthorizationCheckerInterface $authorizationChecker
      */
     public function __construct(
-        VersionManager $versionManager,
         BulkSaverInterface $productSaver,
         BulkSaverInterface $productModelSaver,
+        VersionManager $versionManager,
         CacheClearerInterface $cacheClearer,
         AuthorizationCheckerInterface $authorizationChecker
     ) {
@@ -80,9 +81,9 @@ class ProductAndProductModelWriter extends BaseWriter
      */
     protected function incrementCount(EntityWithFamilyInterface $entityWithFamily): void
     {
-        if ($this->hasPermissions($entityWithFamily)) {
+        if ($this->hasPermissions($entityWithFamily) || $entityWithFamily instanceof ProductModelInterface) {
             $this->stepExecution->incrementSummaryInfo('process');
-        } else {
+        } elseif ($entityWithFamily) {
             $this->stepExecution->incrementSummaryInfo('proposal');
         }
     }

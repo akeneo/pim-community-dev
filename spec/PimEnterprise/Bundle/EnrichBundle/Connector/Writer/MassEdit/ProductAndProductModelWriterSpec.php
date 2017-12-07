@@ -28,9 +28,9 @@ class ProductAndProductModelWriterSpec extends ObjectBehavior
         StepExecution $stepExecution
     ) {
         $this->beConstructedWith(
-            $versionManager,
             $productSaver,
             $productModelSaver,
+            $versionManager,
             $cacheClearer,
             $authorizationChecker
         );

@@ -68,7 +68,9 @@ class RulesExecutor implements ItemWriterInterface
     {
         $productIds = [];
         foreach ($entitiesWithFamily as $entityWithFamily) {
-            if ($entityWithFamily instanceof ProductInterface) {
+            if ($entityWithFamily instanceof ProductInterface &&
+                null !== $entityWithFamily->getId()
+            ) {
                 $productIds[] = (string) $entityWithFamily->getId();
             }
         }

@@ -4,11 +4,19 @@ parameters:
 
 services:
     pimee_enrich.connector.writer.mass_edit.product:
-        class: '%pimee_enrich.connector.writer.mass_edit.product_and_product_model.class%'
+        class: '%pimee_enrich.connector.writer.mass_edit.product.class%'
         arguments:
             - '@pim_versioning.manager.version'
-            - '@pim_catalog.saver.product'
+            - '@pimee_workflow.saver.product_delegating'
+            - '@pim_connector.doctrine.cache_clearer'
+            - '@security.authorization_checker'
+
+    pimee_enrich.connector.writer.mass_edit.product_and_product_model:
+        class: '%pimee_enrich.connector.writer.mass_edit.product_and_product_model.class%'
+        arguments:
+            - '@pimee_workflow.saver.product_delegating'
             - '@pim_catalog.saver.product_model'
+            - '@pim_versioning.manager.version'
             - '@pim_connector.doctrine.cache_clearer'
             - '@security.authorization_checker'
 
