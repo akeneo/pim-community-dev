@@ -1,9 +1,8 @@
 # 2.0.x
 
-## Improvements
+## Better manage products with variants
 
 - PIM-6364: Apply categories permissions on products models
-- PIM-6791: Change a product in a variant product by import
 
 ## BC breaks
 
