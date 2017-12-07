@@ -32,8 +32,8 @@ Feature: Export products according to a date
     And I wait for the "csv_footwear_product_export" job to finish
     Then exported file of "csv_footwear_product_export" should contain:
       """
-      sku;categories;enabled;family;groups;color;description-en_US-mobile;lace_color;manufacturer;name-en_US;PACK-groups;PACK-products;price-EUR;price-USD;rating;side_view;size;SUBSTITUTION-groups;SUBSTITUTION-products;top_view;UPSELL-groups;UPSELL-products;weather_conditions;X_SELL-groups;X_SELL-products
-      SNKRS-1B;summer_collection;1;sneakers;;black;;;;"Model 1";;;50.00;70.00;;;45;;;;;;hot;;
+      sku;categories;enabled;family;groups;color;description-en_US-mobile;lace_color;manufacturer;name-en_US;PACK-groups;PACK-product_models;PACK-products;price-EUR;price-USD;rating;side_view;size;SUBSTITUTION-groups;SUBSTITUTION-product_models;SUBSTITUTION-products;top_view;UPSELL-groups;UPSELL-product_models;UPSELL-products;weather_conditions;X_SELL-groups;X_SELL-product_models;X_SELL-products
+      SNKRS-1B;summer_collection;1;sneakers;;black;;;;Model 1;;;;50.00;70.00;;;45;;;;;;;;hot;;;
 
       """
 

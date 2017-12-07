@@ -24,6 +24,9 @@ class AssociationFieldSetter extends AbstractFieldSetter
     protected $productRepository;
 
     /** @var IdentifiableObjectRepositoryInterface */
+    protected $productModelRepository;
+
+    /** @var IdentifiableObjectRepositoryInterface */
     protected $groupRepository;
 
     /** @var ProductBuilderInterface */
@@ -31,17 +34,20 @@ class AssociationFieldSetter extends AbstractFieldSetter
 
     /**
      * @param IdentifiableObjectRepositoryInterface $productRepository
+     * @param IdentifiableObjectRepositoryInterface $productModelRepository
      * @param IdentifiableObjectRepositoryInterface $groupRepository
      * @param ProductBuilderInterface               $productBuilder
      * @param array                                 $supportedFields
      */
     public function __construct(
         IdentifiableObjectRepositoryInterface $productRepository,
+        IdentifiableObjectRepositoryInterface $productModelRepository,
         IdentifiableObjectRepositoryInterface $groupRepository,
         ProductBuilderInterface $productBuilder,
         array $supportedFields
     ) {
         $this->productRepository = $productRepository;
+        $this->productModelRepository = $productModelRepository;
         $this->groupRepository = $groupRepository;
         $this->productBuilder = $productBuilder;
         $this->supportedFields = $supportedFields;
@@ -54,11 +60,13 @@ class AssociationFieldSetter extends AbstractFieldSetter
      * {
      *     "XSELL": {
      *         "groups": ["group1", "group2"],
-     *         "products": ["AKN_TS1", "AKN_TSH2"]
+     *         "products": ["AKN_TS1", "AKN_TSH2"],
+     *         "product_models": ["MODEL_AKN_TS1", "MODEL_AKN_TSH2"]
      *     },
      *     "UPSELL": {
      *         "groups": ["group3", "group4"],
-     *         "products": ["AKN_TS3", "AKN_TSH4"]
+     *         "products": ["AKN_TS3", "AKN_TSH4"],
+     *         "product_models": ["MODEL_AKN_TS3 "MODEL_AKN_TSH4"]
      *     },
      * }
      */
@@ -84,11 +92,13 @@ class AssociationFieldSetter extends AbstractFieldSetter
      * {
      *     "XSELL": {
      *         "groups": ["group1", "group2"],
-     *         "products": ["AKN_TS1", "AKN_TSH2"]
+     *         "products": ["AKN_TS1", "AKN_TSH2"],
+     *         "product_models": ["MODEL_AKN_TS1", "MODEL_AKN_TSH2"]
      *     },
      *     "UPSELL": {
      *         "groups": ["group3", "group4"],
-     *         "products": ["AKN_TS3", "AKN_TSH4"]
+     *         "products": ["AKN_TS3", "AKN_TSH4"],
+     *         "product_models": ["MODEL_AKN_TS3 "MODEL_AKN_TSH4"]
      *     },
      * }
      */
@@ -112,6 +122,11 @@ class AssociationFieldSetter extends AbstractFieldSetter
                 if (isset($currentData['groups'])) {
                     foreach ($association->getGroups() as $groupToRemove) {
                         $association->removeGroup($groupToRemove);
+                    }
+                }
+                if (isset($currentData['product_models'])) {
+                    foreach ($association->getProductModels() as $productModelToRemove) {
+                        $association->removeProductModel($productModelToRemove);
                     }
                 }
 
@@ -155,6 +170,32 @@ class AssociationFieldSetter extends AbstractFieldSetter
             if (isset($items['groups'])) {
                 $this->setAssociatedGroups($association, $items['groups']);
             }
+            if (isset($items['product_models'])) {
+                $this->setAssociatedProductModels($association, $items['product_models']);
+            }
+        }
+    }
+
+    /**
+     * @param AssociationInterface $association
+     * @param array                $productModelsIdentifiers
+     *
+     * @throws InvalidPropertyException
+     */
+    protected function setAssociatedProductModels(AssociationInterface $association, $productModelsIdentifiers)
+    {
+        foreach ($productModelsIdentifiers as $productModelIdentifier) {
+            $associatedProductModel = $this->productModelRepository->findOneByIdentifier($productModelIdentifier);
+            if (null === $associatedProductModel) {
+                throw InvalidPropertyException::validEntityCodeExpected(
+                    'associations',
+                    'Product model identifier',
+                    'The product model does not exist',
+                    static::class,
+                    $productModelIdentifier
+                );
+            }
+            $association->addProductModel($associatedProductModel);
         }
     }
 
@@ -238,7 +279,7 @@ class AssociationFieldSetter extends AbstractFieldSetter
     protected function checkAssociationData($field, array $data, $assocTypeCode, $items)
     {
         if (!is_array($items) || !is_string($assocTypeCode) ||
-            (!isset($items['products']) && !isset($items['groups']))
+            (!isset($items['products']) && !isset($items['groups']) && !isset($items['product_models']))
         ) {
             throw InvalidPropertyTypeException::validArrayStructureExpected(
                 $field,

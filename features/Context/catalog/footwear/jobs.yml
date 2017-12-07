@@ -15,23 +15,6 @@ jobs:
             groupsColumn:       groups
             realTimeVersioning: true
             decimalSeparator:   .
-    csv_footwear_product_import:
-        connector: Akeneo CSV Connector
-        alias:     csv_product_import
-        label:     Demo CSV product import
-        type:      import
-        configuration:
-            filePath:           /tmp/product.csv
-            uploadAllowed:      true
-            delimiter:          ;
-            enclosure:          '"'
-            enabled:            true
-            categoriesColumn:   categories
-            familyColumn:       family
-            groupsColumn:       groups
-            realTimeVersioning: true
-            decimalSeparator: .
-            dateFormat: yyyy-MM-dd
     csv_footwear_product_export:
         connector: Akeneo CSV Connector
         alias:     csv_product_export

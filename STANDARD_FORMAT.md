@@ -406,7 +406,7 @@ Let's consider a *bar* product, without any product value, except an identifier 
 * a family
 * several groups
 * several categories
-* several associations related to groups and/or other products
+* several associations related to groups, product models and/or other products
 
 Its standard format would be the following:
         
@@ -436,6 +436,7 @@ Its standard format would be the following:
           "associations" => array:3 [
             "PACK" => array:1 [
               "groups" => []
+              "product_models" => []
               "products" => array:2 [
                 0 => "foo"
                 1 => "baz"
@@ -445,12 +446,14 @@ Its standard format would be the following:
               "groups" => array:1 [
                 0 => "groupA"
               ]
+              "product_models" => []
               "products" => []
             ]
             "X_SELL" => array:2 [
               "groups" => array:1 [
                 0 => "groupB"
               ]
+              "product_models" => []
               "products" => array:1 [
                 0 => "foo"
               ]
@@ -468,7 +471,7 @@ Its standard format would be the following:
 | values        | array          |                                                                           | see below                                                                                        |
 | created       | string         | `"2016-06-13T00:00:00+02:00"`                                             | formatted to ISO-8601 (see above)                                                                |
 | updated  	    | string         | `"2016-06-13T00:00:00+02:00"`                                             | formatted to ISO-8601 (see above)                                                                |
-| associations  | array          | `["X_SELL" => ["groups" => [0 => "groupA"], "products" => [0 => "foo"]]]` | see below                                                                                        |
+| associations  | array          | `["X_SELL" => ["groups" => [0 => "groupA"], "product_models" => [], "products" => [0 => "foo"]]]` | see below                                                                                        |
 Fields *family_variant* and *parent* are detailed in the [variant product](#variant-product) section.
 
 
@@ -481,6 +484,7 @@ The structure of the array is composed as below:
             "groups" => array:1 [
               0 => "groupB"
             ]
+            "product_models" => []
             "products" => array:1 [
               0 => "foo"
             ]
@@ -505,7 +509,7 @@ Let's now consider a catalog with all attribute types possible and a *foo* produ
 * a family
 * several groups
 * several categories
-* several associations related to groups and/or other products
+* several associations related to groups, product models and/or other products
 
 Its standard format would be the following:
 
@@ -754,6 +758,7 @@ Its standard format would be the following:
           "associations" => array:3 [
             "PACK" => array:1 [
               "groups" => []
+              "product_models" => []
               "products" => array:2 [
                 0 => "bar"
                 1 => "baz"
@@ -763,12 +768,14 @@ Its standard format would be the following:
               "groups" => array:1 [
                 0 => "groupA"
               ]
+              "product_models" => []
               "products" => []
             ]
             "X_SELL" => array:2 [
               "groups" => array:1 [
                 0 => "groupB"
               ]
+              "product_models" => []
               "products" => array:1 [
                 0 => "bar"
               ]

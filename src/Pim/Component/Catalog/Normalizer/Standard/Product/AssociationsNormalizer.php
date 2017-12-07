@@ -32,6 +32,11 @@ class AssociationsNormalizer implements NormalizerInterface
             foreach ($association->getProducts() as $product) {
                 $data[$code]['products'][] = $product->getReference();
             }
+
+            $data[$code]['product_models'] = [];
+            foreach ($association->getProductModels() as $productModel) {
+                $data[$code]['product_models'][] = $productModel->getCode();
+            }
         }
 
         ksort($data);

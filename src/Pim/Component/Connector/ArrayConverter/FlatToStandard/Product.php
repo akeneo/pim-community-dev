@@ -104,7 +104,8 @@ class Product implements ArrayConverterInterface
      *     'enabled': '1',
      *     'categories': 'tshirt,men'
      *     'XSELL-groups': 'akeneo_tshirt, oro_tshirt',
-     *     'XSELL-product': 'AKN_TS, ORO_TSH'
+     *     'XSELL-product': 'AKN_TS, ORO_TSH',
+     *     'XSELL-product_models': 'MODEL_AKN_TS, MODEL_ORO_TSH'
      * ]
      *
      * After:
@@ -170,6 +171,7 @@ class Product implements ArrayConverterInterface
      *          "XSELL": {
      *              "groups": ["akeneo_tshirt", "oro_tshirt"],
      *              "products": ["AKN_TS", "ORO_TSH"]
+     *              "product_models": ["MODEL_AKN_TS", "MODEL_ORO_TSH"]
      *          }
      *      }
      * }
@@ -227,10 +229,12 @@ class Product implements ArrayConverterInterface
         if (false === $withAssociations) {
             $isGroupAssPattern = '/^\w+'.AssociationColumnsResolver::GROUP_ASSOCIATION_SUFFIX.'$/';
             $isProductAssPattern = '/^\w+'.AssociationColumnsResolver::PRODUCT_ASSOCIATION_SUFFIX.'$/';
+            $isProductModelAssPattern = '/^\w+'.AssociationColumnsResolver::PRODUCT_MODEL_ASSOCIATION_SUFFIX.'$/';
             foreach (array_keys($mappedItem) as $field) {
                 $isGroup = (1 === preg_match($isGroupAssPattern, $field));
                 $isProduct = (1 === preg_match($isProductAssPattern, $field));
-                if ($isGroup || $isProduct) {
+                $isProductModel = (1 === preg_match($isProductModelAssPattern, $field));
+                if ($isGroup || $isProduct || $isProductModel) {
                     unset($mappedItem[$field]);
                 }
             }

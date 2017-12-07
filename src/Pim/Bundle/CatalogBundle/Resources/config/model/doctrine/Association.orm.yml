@@ -57,3 +57,16 @@ Pim\Component\Catalog\Model\Association:
                     product_id:
                         referencedColumnName: id
                         onDelete: CASCADE
+
+        productModels:
+            targetEntity: Pim\Component\Catalog\Model\ProductModelInterface
+            joinTable:
+                name: pim_catalog_association_product_model
+                joinColumns:
+                    association_id:
+                        onDelete: CASCADE
+                        referencedColumnName: id
+                inverseJoinColumns:
+                    product_model_id:
+                        referencedColumnName: id
+                        onDelete: CASCADE

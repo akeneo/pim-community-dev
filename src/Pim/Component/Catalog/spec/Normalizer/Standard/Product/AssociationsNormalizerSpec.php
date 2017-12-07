@@ -8,6 +8,7 @@ use Pim\Component\Catalog\Model\AssociationInterface;
 use Pim\Component\Catalog\Model\AssociationTypeInterface;
 use Pim\Component\Catalog\Model\GroupInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Model\ProductModelInterface;
 
 class AssociationsNormalizerSpec extends ObjectBehavior
 {
@@ -38,42 +39,23 @@ class AssociationsNormalizerSpec extends ObjectBehavior
         AssociationTypeInterface $associationType2,
         GroupInterface $group1,
         ProductInterface $productAssociated,
-        \ArrayIterator $association1Iterator,
-        \ArrayIterator $association2Iterator
+        ProductModelInterface $productModelAssociated
     ) {
         $group1->getCode()->willReturn('group_code');
         $associationType1->getCode()->willReturn('XSELL');
         $association1->getAssociationType()->willReturn($associationType1);
-        $association1->getGroups()->willReturn($association1Iterator);
+        $association1->getGroups()->willReturn(new ArrayCollection([$group1->getWrappedObject()]));
         $association1->getProducts()->willReturn(new ArrayCollection());
-
-        $association1Iterator->rewind()->willReturn($group1);
-        $valueCount = 1;
-        $association1Iterator->valid()->will(
-            function () use (&$valueCount) {
-                return $valueCount-- > 0;
-            }
-        );
-        $association1Iterator->current()->willReturn($group1);
-        $association1Iterator->next()->willReturn(null);
-        $association1Iterator->count()->willReturn(1);
+        $association1->getProductModels()->willReturn(new ArrayCollection());
 
         $productAssociated->getReference()->willReturn('product_code');
         $associationType2->getCode()->willReturn('PACK');
         $association2->getAssociationType()->willReturn($associationType2);
         $association2->getGroups()->willReturn(new ArrayCollection());
-        $association2->getProducts()->willReturn($association2Iterator);
+        $association2->getProducts()->willReturn(new ArrayCollection([$productAssociated->getWrappedObject()]));
 
-        $association2Iterator->rewind()->willReturn($productAssociated);
-        $valueCount2 = 1;
-        $association2Iterator->valid()->will(
-            function () use (&$valueCount2) {
-                return $valueCount2-- > 0;
-            }
-        );
-        $association2Iterator->current()->willReturn($productAssociated);
-        $association2Iterator->next()->willReturn(null);
-        $association2Iterator->count()->willReturn(1);
+        $productModelAssociated->getCode()->willReturn('product_model_code');
+        $association2->getProductModels()->willReturn(new ArrayCollection([$productModelAssociated->getWrappedObject()]));
 
         $product->getAssociations()->willReturn([$association1, $association2]);
 
@@ -81,11 +63,13 @@ class AssociationsNormalizerSpec extends ObjectBehavior
             [
                 'PACK' => [
                     'groups' => [],
-                    'products' => ['product_code']
+                    'products' => ['product_code'],
+                    'product_models' => ['product_model_code'],
                 ],
                 'XSELL' => [
                     'groups' => ['group_code'],
-                    'products' => []
+                    'products' => [],
+                    'product_models' => [],
                 ]
             ]
         );
