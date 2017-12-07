@@ -13,6 +13,7 @@ namespace PimEnterprise\Behat\Context\TeamworkAssistant;
 
 use Behat\Gherkin\Node\TableNode;
 use Context\Spin\SpinCapableTrait;
+use PHPUnit\Framework\Assert;
 use Pim\Behat\Context\PimContext;
 use PimEnterprise\Bundle\TeamworkAssistantBundle\Datagrid\DatagridViewTypes;
 use PimEnterprise\Component\TeamworkAssistant\Model\ProjectInterface;
@@ -80,8 +81,8 @@ class ProjectContext extends PimContext
         $datagridView = $project->getDatagridView();
         $type = $datagridView->getType();
 
-        assertNotNull($datagridView, 'The project %s does not have a datagrid view');
-        assertEquals(
+        Assert::assertNotNull($datagridView, 'The project %s does not have a datagrid view');
+        Assert::assertEquals(
             DatagridViewTypes::PROJECT_VIEW,
             $type,
             sprintf(

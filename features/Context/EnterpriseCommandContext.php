@@ -4,6 +4,7 @@ namespace Context;
 
 use Behat\Gherkin\Node\TableNode;
 use Context\Spin\SpinCapableTrait;
+use PHPUnit\Framework\Assert;
 use Pim\Bundle\CatalogBundle\Command\GetProductCommand;
 use Pim\Bundle\CatalogBundle\Command\UpdateProductCommand;
 use Pim\Component\Catalog\Model\ProductInterface;
@@ -138,7 +139,7 @@ class EnterpriseCommandContext extends CommandContext
 
             $diff = static::arrayIntersect($normalizedPublishedProduct, $expectedResult);
 
-            assertEquals(
+            Assert::assertEquals(
                 $expectedResult,
                 $diff
             );
@@ -192,7 +193,7 @@ class EnterpriseCommandContext extends CommandContext
 
             $changes = $this->sanitizeDraftFileChanges($proposal->getChanges());
 
-            assertEquals($changes, $expectedResult);
+            Assert::assertEquals($changes, $expectedResult);
         }
     }
 
@@ -367,7 +368,7 @@ class EnterpriseCommandContext extends CommandContext
             }
             $diff = $this->arrayIntersect($actual, $expected);
 
-            assertEquals(
+            Assert::assertEquals(
                 $expected,
                 $diff
             );
@@ -397,7 +398,7 @@ class EnterpriseCommandContext extends CommandContext
                 $expected = json_decode($filter['result']);
                 $actual   = json_decode($commandTester->getDisplay());
 
-                assertEquals($expected, $actual);
+                Assert::assertEquals($expected, $actual);
 
                 return true;
             }, sprintf('Impossible to assert result "%s" for filter "%s"', $filter['result'], $filter['filter']));

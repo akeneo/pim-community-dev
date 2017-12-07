@@ -12,6 +12,7 @@ use Behat\Gherkin\Node\PyStringNode;
 use Behat\Gherkin\Node\TableNode;
 use Context\FixturesContext as BaseFixturesContext;
 use Context\Spin\SpinCapableTrait;
+use PHPUnit\Framework\Assert;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
 use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
@@ -356,7 +357,7 @@ class EnterpriseFixturesContext extends BaseFixturesContext
     {
         $total = count($this->getProposalRepository()->findAll());
 
-        assertEquals($expectedTotal, $total);
+        Assert::assertEquals($expectedTotal, $total);
     }
 
     /**
@@ -500,12 +501,12 @@ class EnterpriseFixturesContext extends BaseFixturesContext
                     if ('' === $expectedValue) {
                         assertEmpty((string) $assetValue);
                     } else {
-                        assertEquals($expectedValue, $assetValue);
+                        Assert::assertEquals($expectedValue, $assetValue);
                     }
                     break;
                 case 'tags':
                     if ('' === $expectedValue) {
-                        assertEquals([], $assetValue->toArray());
+                        Assert::assertEquals([], $assetValue->toArray());
                     } else {
                         $expectedValue = explode(',', $expectedValue);
                         $tags = array_map(function ($tag) {
@@ -516,9 +517,9 @@ class EnterpriseFixturesContext extends BaseFixturesContext
                     break;
                 case 'endOfUseAt':
                     if ('' === $expectedValue) {
-                        assertEquals(null, $assetValue);
+                        Assert::assertEquals(null, $assetValue);
                     } else {
-                        assertEquals($expectedValue, $assetValue->format('Y-m-d'));
+                        Assert::assertEquals($expectedValue, $assetValue->format('Y-m-d'));
                     }
                     break;
                 default:
@@ -726,7 +727,7 @@ class EnterpriseFixturesContext extends BaseFixturesContext
             return (int) $value === (int) $delay ? $value : null;
         }, sprintf('Asset delay reminder of %s does not change to %s', $username, $delay));
 
-        assertEquals($value, $delay);
+        Assert::assertEquals($value, $delay);
     }
 
     /**
@@ -953,17 +954,17 @@ class EnterpriseFixturesContext extends BaseFixturesContext
             $asset = $this->getAsset($data['code']);
             $this->refresh($asset);
 
-            assertEquals($data['code'], $asset->getCode());
+            Assert::assertEquals($data['code'], $asset->getCode());
             if (array_key_exists('description', $data)) {
-                assertEquals($data['description'], $asset->getDescription());
+                Assert::assertEquals($data['description'], $asset->getDescription());
             }
 
             if (array_key_exists('categories', $data)) {
-                assertEquals($data['categories'], implode(',', $asset->getCategoryCodes()));
+                Assert::assertEquals($data['categories'], implode(',', $asset->getCategoryCodes()));
             }
 
             if (array_key_exists('tags', $data)) {
-                assertEquals($data['tags'], implode(',', $asset->getTagCodes()));
+                Assert::assertEquals($data['tags'], implode(',', $asset->getTagCodes()));
             }
         }
     }
@@ -979,7 +980,7 @@ class EnterpriseFixturesContext extends BaseFixturesContext
             $tag = $this->getTag($data['code']);
             $this->refresh($tag);
 
-            assertEquals($data['code'], $tag->getCode());
+            Assert::assertEquals($data['code'], $tag->getCode());
         }
     }
 
@@ -997,21 +998,21 @@ class EnterpriseFixturesContext extends BaseFixturesContext
             $this->refresh($assetCategory);
 
             if (isset($data['label-en_US'])) {
-                assertEquals($data['label-en_US'], $assetCategory->getTranslation('en_US')->getLabel());
+                Assert::assertEquals($data['label-en_US'], $assetCategory->getTranslation('en_US')->getLabel());
             }
 
             if (isset($data['label-fr_FR'])) {
-                assertEquals($data['label-fr_FR'], $assetCategory->getTranslation('fr_FR')->getLabel());
+                Assert::assertEquals($data['label-fr_FR'], $assetCategory->getTranslation('fr_FR')->getLabel());
             }
 
             if (isset($data['label-de_DE'])) {
-                assertEquals($data['label-de_DE'], $assetCategory->getTranslation('de_DE')->getLabel());
+                Assert::assertEquals($data['label-de_DE'], $assetCategory->getTranslation('de_DE')->getLabel());
             }
 
             if (empty($data['parent'])) {
-                assertNull($assetCategory->getParent());
+                Assert::assertNull($assetCategory->getParent());
             } else {
-                assertEquals($data['parent'], $assetCategory->getParent()->getCode());
+                Assert::assertEquals($data['parent'], $assetCategory->getParent()->getCode());
             }
         }
     }

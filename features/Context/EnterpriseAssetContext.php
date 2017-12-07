@@ -6,6 +6,7 @@ use Behat\Gherkin\Node\TableNode;
 use Behat\Mink\Exception\ElementNotFoundException;
 use Context\Page\Asset\Edit;
 use Context\Spin\SpinCapableTrait;
+use PHPUnit\Framework\Assert;
 use Pim\Behat\Context\PimContext;
 use PimEnterprise\Bundle\ProductAssetBundle\Doctrine\Common\Saver\AssetVariationSaver;
 use PimEnterprise\Component\ProductAsset\Updater\FilesUpdaterInterface;
@@ -336,7 +337,7 @@ class EnterpriseAssetContext extends PimContext
                 return $category->getCode();
             }
         )->toArray();
-        assertEquals($this->getMainContext()->listToArray($categoryCodes), $categories);
+        Assert::assertEquals($this->getMainContext()->listToArray($categoryCodes), $categories);
     }
 
     /**
@@ -350,7 +351,7 @@ class EnterpriseAssetContext extends PimContext
         $asset = $this->getFixturesContext()->getAsset($assetCode);
 
         $assetTagCodes = $asset->getTagCodes();
-        assertEquals($this->getMainContext()->listToArray($expectedTagCodes), $assetTagCodes);
+        Assert::assertEquals($this->getMainContext()->listToArray($expectedTagCodes), $assetTagCodes);
     }
 
     /**

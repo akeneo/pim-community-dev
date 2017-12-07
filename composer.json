@@ -24,11 +24,6 @@
         },
         "classmap": [ "app/AppKernel.php", "app/AppCache.php", "tests/AppKernelTest.php"]
     },
-    "autoload-dev": {
-        "files": [
-            "vendor/phpunit/phpunit/src/Framework/Assert/Functions.php"
-        ]
-    },
     "require": {
         "akeneo/pim-community-dev": "2.1.x-dev@dev",
         "phpspec/php-diff": "1.0.2"
