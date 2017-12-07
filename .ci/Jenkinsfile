@@ -39,7 +39,6 @@ stage("Build") {
                 sh "bin/console --ansi pim:installer:dump-require-paths"
             }
             container("node") {
-                sh "yarn config set cache-folder /shared/.yarn"
                 sh "yarn install --no-progress"
                 sh "yarn run webpack"
             }
@@ -88,7 +87,6 @@ stage("Build") {
                         sh "bin/console --ansi pim:installer:dump-require-paths"
                     }
                     container("node") {
-                        sh "yarn config set cache-folder /shared/.yarn"
                         sh "yarn install --no-progress"
                         sh "yarn run webpack"
                     }
@@ -311,7 +309,7 @@ def withBuildNode(body) {
     withCredentials([string(credentialsId: 'composer-token', variable: 'token')]) {
         podTemplate(label: "build-" + uuid, containers: [
             containerTemplate(name: "docker", image: "paulwoelfel/docker-gcloud", ttyEnabled: true, command: 'cat', envVars: [envVar(key: "DOCKER_API_VERSION", value: "1.23")], resourceRequestCpu: '100m', resourceRequestMemory: '200Mi'),
-            containerTemplate(name: "php", ttyEnabled: true, command: 'cat', image: "eu.gcr.io/akeneo-ci/php:7.1-fpm", envVars: [envVar(key: "COMPOSER_HOME", value: "/shared/.composer"), envVar(key: "COMPOSER_AUTH", value: "{\"github-oauth\":{\"github.com\": \"$token\"}}")], resourceRequestCpu: '750m', resourceRequestMemory: '2000Mi'),
+            containerTemplate(name: "php", ttyEnabled: true, command: 'cat', image: "eu.gcr.io/akeneo-ci/php:7.1-fpm", envVars: [envVar(key: "COMPOSER_AUTH", value: "{\"github-oauth\":{\"github.com\": \"$token\"}}")], resourceRequestCpu: '750m', resourceRequestMemory: '2000Mi'),
             containerTemplate(name: "node", ttyEnabled: true, command: 'cat', image: "node:8", resourceRequestCpu: '750m', resourceRequestMemory: '2000Mi')
         ], volumes: [
             hostPathVolume(hostPath: "/var/run/docker.sock", mountPath: "/var/run/docker.sock")
