@@ -7,3 +7,9 @@ pimee_api_asset_get:
     path: /assets/{code}
     defaults: { _controller: pimee_api.controller.asset:getAction, _format: json }
     methods: [GET]
+
+pimee_api_asset_create:
+    path: /assets
+    defaults: { _controller: pimee_api.controller.asset:createAction, _format: json }
+    methods: [POST]
+

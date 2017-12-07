@@ -13,21 +13,33 @@ declare(strict_types=1);
 
 namespace PimEnterprise\Bundle\ApiBundle\Controller;
 
+use Akeneo\Component\StorageUtils\Exception\PropertyException;
+use Akeneo\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
+use Akeneo\Component\StorageUtils\Saver\SaverInterface;
+use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
+use Pim\Bundle\ApiBundle\Documentation;
+use Pim\Component\Api\Exception\DocumentedHttpException;
 use Pim\Component\Api\Exception\PaginationParametersException;
+use Pim\Component\Api\Exception\ViolationHttpException;
 use Pim\Component\Api\Pagination\PaginationTypes;
 use Pim\Component\Api\Pagination\PaginatorInterface;
 use Pim\Component\Api\Pagination\ParameterValidatorInterface;
 use Pim\Component\Api\Repository\PageableRepositoryInterface;
 use Pim\Component\Api\Repository\SearchAfterPageableRepositoryInterface;
+use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
 use PimEnterprise\Component\Security\Exception\ResourceAccessDeniedException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
+use Symfony\Component\Routing\Router;
+use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
  * @author Damien Carcel <damien.carcel@akeneo.com>
@@ -55,6 +67,21 @@ class AssetController
     /** @var PaginatorInterface */
     protected $searchAfterPaginator;
 
+    /** @var SimpleFactoryInterface */
+    protected $factory;
+
+    /** @var ValidatorInterface */
+    protected $validator;
+
+    /** @var ObjectUpdaterInterface */
+    protected $updater;
+
+    /** @var SaverInterface */
+    protected $saver;
+
+    /** @var RouterInterface */
+    protected $router;
+
     /** @var array */
     protected $apiConfiguration;
 
@@ -66,6 +93,11 @@ class AssetController
      * @param ParameterValidatorInterface            $parameterValidator
      * @param PaginatorInterface                     $offsetPaginator
      * @param PaginatorInterface                     $searchAfterPaginator
+     * @param SimpleFactoryInterface                 $factory
+     * @param ValidatorInterface                     $validator
+     * @param ObjectUpdaterInterface                 $updater
+     * @param SaverInterface                         $saver
+     * @param RouterInterface                        $router
      * @param array                                  $apiConfiguration
      */
     public function __construct(
@@ -76,6 +108,11 @@ class AssetController
         ParameterValidatorInterface $parameterValidator,
         PaginatorInterface $offsetPaginator,
         PaginatorInterface $searchAfterPaginator,
+        SimpleFactoryInterface $factory,
+        ValidatorInterface $validator,
+        ObjectUpdaterInterface $updater,
+        SaverInterface $saver,
+        RouterInterface $router,
         array $apiConfiguration
     ) {
         $this->identifiableRepository = $identifiableRepository;
@@ -85,6 +122,11 @@ class AssetController
         $this->parameterValidator = $parameterValidator;
         $this->offsetPaginator = $offsetPaginator;
         $this->searchAfterPaginator = $searchAfterPaginator;
+        $this->factory = $factory;
+        $this->validator = $validator;
+        $this->updater = $updater;
+        $this->saver = $saver;
+        $this->router = $router;
         $this->apiConfiguration = $apiConfiguration;
     }
 
@@ -140,6 +182,102 @@ class AssetController
             $this->searchAfterIdentifier($queryParameters);
 
         return new JsonResponse($paginatedAssets);
+    }
+
+    /**
+     * @param Request $request
+     *
+     * @throws BadRequestHttpException
+     * @throws UnprocessableEntityHttpException
+     *
+     * @return Response
+     *
+     * @AclAncestor("pim_api_asset_edit")
+     */
+    public function createAction(Request $request): Response
+    {
+        $data = $this->getDecodedContent($request->getContent());
+
+        $asset = $this->factory->create();
+        $this->updateAsset($asset, $data, 'post_asset');
+        $this->validateAsset($asset);
+
+        $this->saver->save($asset);
+
+        $response = $this->getResponse($asset, Response::HTTP_CREATED);
+
+        return $response;
+    }
+
+    /**
+     * @param string $content content of a request to decode
+     *
+     * @throws BadRequestHttpException
+     *
+     * @return array
+     */
+    protected function getDecodedContent(string $content): array
+    {
+        $decodedContent = json_decode($content, true);
+
+        if (null === $decodedContent) {
+            throw new BadRequestHttpException('Invalid json message received');
+        }
+
+        return $decodedContent;
+    }
+
+    /**
+     * @param AssetInterface $asset
+     * @param integer        $status
+     *
+     * @return Response
+     */
+    protected function getResponse(AssetInterface $asset, int $status): Response
+    {
+        $response = new Response(null, $status);
+        $route = $this->router->generate(
+            'pimee_api_asset_get',
+            ['code' => $asset->getCode()],
+            Router::ABSOLUTE_URL
+        );
+
+        $response->headers->set('Location', $route);
+
+        return $response;
+    }
+
+    /**
+     * @param AssetInterface $asset
+     * @param array          $data
+     * @param string         $anchor
+     *
+     * @throws DocumentedHttpException
+     */
+    protected function updateAsset(AssetInterface $asset, array $data, string $anchor)
+    {
+        try {
+            $this->updater->update($asset, $data);
+        } catch (PropertyException $exception) {
+            throw new DocumentedHttpException(
+                Documentation::URL . $anchor,
+                sprintf('%s Check the expected format on the API documentation.', $exception->getMessage()),
+                $exception
+            );
+        }
+    }
+
+    /**
+     * @param AssetInterface $asset
+     *
+     * @throws ViolationHttpException
+     */
+    protected function validateAsset(AssetInterface $asset)
+    {
+        $violations = $this->validator->validate($asset);
+        if (0 !== $violations->count()) {
+            throw new ViolationHttpException($violations);
+        }
     }
 
     /**

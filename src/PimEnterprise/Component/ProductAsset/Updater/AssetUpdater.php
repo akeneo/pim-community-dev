@@ -15,6 +15,8 @@ use Akeneo\Component\Classification\Repository\CategoryRepositoryInterface;
 use Akeneo\Component\Classification\Repository\TagRepositoryInterface;
 use Akeneo\Component\StorageUtils\Exception\InvalidObjectException;
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
+use Akeneo\Component\StorageUtils\Exception\UnknownPropertyException;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Doctrine\Common\Util\ClassUtils;
 use PimEnterprise\Component\ProductAsset\Factory\AssetFactory;
@@ -72,10 +74,51 @@ class AssetUpdater implements ObjectUpdaterInterface
         }
 
         foreach ($data as $field => $item) {
+            $this->validateDataType($field, $item);
             $this->setData($asset, $field, $item);
         }
 
         return $this;
+    }
+
+    /**
+     * Validate the data type of a field.
+     *
+     * @param string $field
+     * @param mixed  $data
+     *
+     * @throws InvalidPropertyTypeException
+     * @throws UnknownPropertyException
+     */
+    protected function validateDataType($field, $data)
+    {
+        if (in_array($field, ['categories', 'tags'])) {
+            if (!is_array($data)) {
+                throw InvalidPropertyTypeException::arrayExpected($field, static::class, $data);
+            }
+
+            foreach ($data as $key => $value) {
+                if (null !== $value && !is_scalar($value)) {
+                    throw InvalidPropertyTypeException::validArrayStructureExpected(
+                        $field,
+                        sprintf('one of the "%s" values is not a scalar', $field),
+                        static::class,
+                        $data
+                    );
+                }
+            }
+        } elseif (in_array($field, ['code', 'description', 'end_of_use'])) {
+            if (null !== $data && !is_scalar($data)) {
+                throw InvalidPropertyTypeException::scalarExpected($field, static::class, $data);
+            }
+
+        } elseif ('localized' === $field) {
+            if (null !== $data && !is_scalar($data)) {
+                throw InvalidPropertyTypeException::booleanExpected($field, static::class, $data);
+            }
+        } else {
+            throw UnknownPropertyException::unknownProperty($field);
+        }
     }
 
     /**
@@ -178,7 +221,7 @@ class AssetUpdater implements ObjectUpdaterInterface
         } catch (\Exception $e) {
             throw InvalidPropertyException::dateExpected(
                 'end_of_use',
-                'yyyy-mm-dd',
+                \Datetime::ISO8601,
                 static::class,
                 $data
             );
@@ -187,7 +230,7 @@ class AssetUpdater implements ObjectUpdaterInterface
         if (!preg_match('/^\d{4}-\d{2}-\d{2}/', $data)) {
             throw InvalidPropertyException::dateExpected(
                 'end_of_use',
-                'yyyy-mm-dd',
+                \Datetime::ISO8601,
                 static::class,
                 $data
             );

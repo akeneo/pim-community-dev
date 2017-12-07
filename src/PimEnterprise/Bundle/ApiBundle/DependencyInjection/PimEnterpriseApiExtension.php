@@ -38,6 +38,7 @@ class PimEnterpriseApiExtension extends Extension
         $loader->load('security.yml');
         $loader->load('repositories.yml');
         $loader->load('routers.yml');
+        $loader->load('updaters.yml');
         $loader->load('stream.yml');
     }
 }
