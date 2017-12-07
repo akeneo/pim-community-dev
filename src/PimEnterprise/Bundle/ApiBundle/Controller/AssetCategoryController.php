@@ -20,6 +20,7 @@ use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Gedmo\Exception\UnexpectedValueException;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Pim\Bundle\ApiBundle\Documentation;
+use Pim\Bundle\ApiBundle\Stream\StreamResourceResponse;
 use Pim\Component\Api\Exception\DocumentedHttpException;
 use Pim\Component\Api\Exception\PaginationParametersException;
 use Pim\Component\Api\Exception\ViolationHttpException;
@@ -31,6 +32,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 use Symfony\Component\Routing\Router;
@@ -70,6 +72,9 @@ class AssetCategoryController
     /** @var PaginatorInterface */
     protected $paginator;
 
+    /** @var StreamResourceResponse */
+    protected $partialUpdateStreamResource;
+
     /** @var array */
     protected $apiConfiguration;
 
@@ -95,6 +100,7 @@ class AssetCategoryController
         RouterInterface $router,
         ParameterValidatorInterface $parameterValidator,
         PaginatorInterface $paginator,
+        StreamResourceResponse $partialUpdateStreamResource,
         array $apiConfiguration
     ) {
         $this->repository = $repository;
@@ -106,6 +112,7 @@ class AssetCategoryController
         $this->router = $router;
         $this->parameterValidator = $parameterValidator;
         $this->paginator = $paginator;
+        $this->partialUpdateStreamResource = $partialUpdateStreamResource;
         $this->apiConfiguration = $apiConfiguration;
     }
 
@@ -140,7 +147,7 @@ class AssetCategoryController
      *
      * @AclAncestor("pim_api_asset_category_list")
      */
-    public function listAction(Request $request)
+    public function listAction(Request $request): Response
     {
         try {
             $this->parameterValidator->validate($request->query->all());
@@ -185,7 +192,7 @@ class AssetCategoryController
      *
      * @AclAncestor("pim_api_asset_category_edit")
      */
-    public function createAction(Request $request)
+    public function createAction(Request $request): Response
     {
         $data = $this->getDecodedContent($request->getContent());
 
@@ -211,7 +218,7 @@ class AssetCategoryController
      *
      * @AclAncestor("pim_api_asset_category_edit")
      */
-    public function partialUpdateAction(Request $request, $code)
+    public function partialUpdateAction(Request $request, string $code): Response
     {
         $data = $this->getDecodedContent($request->getContent());
 
@@ -241,6 +248,23 @@ class AssetCategoryController
     }
 
     /**
+     * @param Request $request
+     *
+     * @throws HttpException
+     *
+     * @return Response
+     *
+     * @AclAncestor("pim_api_asset_category_edit")
+     */
+    public function partialUpdateListAction(Request $request): Response
+    {
+        $resource = $request->getContent(true);
+        $response = $this->partialUpdateStreamResource->streamResponse($resource);
+
+        return $response;
+    }
+
+    /**
      * Get the JSON decoded content. If the content is not a valid JSON, it throws an error 400.
      *
      * @param string $content content of a request to decode
@@ -249,7 +273,7 @@ class AssetCategoryController
      *
      * @return array
      */
-    protected function getDecodedContent($content)
+    protected function getDecodedContent($content): array
     {
         $decodedContent = json_decode($content, true);
 
@@ -269,7 +293,7 @@ class AssetCategoryController
      *
      * @throws DocumentedHttpException
      */
-    protected function updateCategory(CategoryInterface $category, array $data, $anchor)
+    protected function updateCategory(CategoryInterface $category, array $data, $anchor): void
     {
         try {
             $this->updater->update($category, $data);
@@ -290,7 +314,7 @@ class AssetCategoryController
      *
      * @throws ViolationHttpException
      */
-    protected function validateCategory(CategoryInterface $category)
+    protected function validateCategory(CategoryInterface $category): void
     {
         $violations = $this->validator->validate($category);
         if (0 !== $violations->count()) {
@@ -306,7 +330,7 @@ class AssetCategoryController
      *
      * @return Response
      */
-    protected function getResponse(CategoryInterface $category, $status)
+    protected function getResponse(CategoryInterface $category, $status): Response
     {
         $response = new Response(null, $status);
         $route = $this->router->generate(
@@ -331,7 +355,7 @@ class AssetCategoryController
      *
      * @throws UnprocessableEntityHttpException
      */
-    protected function validateCodeConsistency($code, array $data)
+    protected function validateCodeConsistency(string $code, array $data): void
     {
         if (isset($data['code']) && $code !== $data['code']) {
             throw new UnprocessableEntityHttpException(
