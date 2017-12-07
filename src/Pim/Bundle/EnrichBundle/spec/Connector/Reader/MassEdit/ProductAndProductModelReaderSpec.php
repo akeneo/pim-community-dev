@@ -30,7 +30,6 @@ class ProductAndProductModelReaderSpec extends ObjectBehavior
         ProductQueryBuilderFactoryInterface $pqbFactory,
         ChannelRepositoryInterface $channelRepository,
         CompletenessManager $completenessManager,
-        MetricConverter $metricConverter,
         ObjectDetacherInterface $objectDetacher,
         StepExecution $stepExecution
     ) {
@@ -38,9 +37,7 @@ class ProductAndProductModelReaderSpec extends ObjectBehavior
             $pqbFactory,
             $channelRepository,
             $completenessManager,
-            $metricConverter,
-            $objectDetacher,
-            true
+            $objectDetacher
         );
 
         $this->setStepExecution($stepExecution);
@@ -55,7 +52,6 @@ class ProductAndProductModelReaderSpec extends ObjectBehavior
     function it_reads_products_and_product_models(
         $pqbFactory,
         $channelRepository,
-        $metricConverter,
         $stepExecution,
         $completenessManager,
         ChannelInterface $channel,
@@ -114,7 +110,6 @@ class ProductAndProductModelReaderSpec extends ObjectBehavior
         $cursor->next()->shouldBeCalled();
 
         $stepExecution->incrementSummaryInfo('read')->shouldBeCalledTimes(6);
-        $metricConverter->convert(Argument::any(), $channel)->shouldBeCalledTimes(6);
 
         $productModel1->getCode()->willReturn('product_model_1');
         $productModel2->getCode()->willReturn('product_model_2');

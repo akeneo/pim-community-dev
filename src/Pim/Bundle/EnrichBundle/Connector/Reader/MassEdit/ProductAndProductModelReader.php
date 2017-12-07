@@ -4,19 +4,15 @@ declare(strict_types=1);
 
 namespace Pim\Bundle\EnrichBundle\Connector\Reader\MassEdit;
 
-use Akeneo\Component\Batch\Item\DataInvalidItem;
 use Akeneo\Component\Batch\Item\InitializableInterface;
 use Akeneo\Component\Batch\Item\ItemReaderInterface;
 use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\Batch\Step\StepExecutionAwareInterface;
 use Akeneo\Component\StorageUtils\Cursor\CursorInterface;
-use Pim\Component\Catalog\Converter\MetricConverter;
 use Pim\Component\Catalog\Exception\ObjectNotFoundException;
 use Pim\Component\Catalog\Manager\CompletenessManager;
 use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\EntityWithFamilyInterface;
-use Pim\Component\Catalog\Model\ProductInterface;
-use Pim\Component\Catalog\Model\ProductModelInterface;
 use Pim\Component\Catalog\Query\ProductQueryBuilderFactoryInterface;
 use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
 
@@ -42,9 +38,6 @@ class ProductAndProductModelReader implements
     /** @var CompletenessManager */
     private $completenessManager;
 
-    /** @var MetricConverter */
-    private $metricConverter;
-
     /** @var StepExecution */
     private $stepExecution;
 
@@ -55,18 +48,15 @@ class ProductAndProductModelReader implements
      * @param ProductQueryBuilderFactoryInterface $pqbFactory
      * @param ChannelRepositoryInterface          $channelRepository
      * @param CompletenessManager                 $completenessManager
-     * @param MetricConverter                     $metricConverter
      */
     public function __construct(
         ProductQueryBuilderFactoryInterface $pqbFactory,
         ChannelRepositoryInterface $channelRepository,
-        CompletenessManager $completenessManager,
-        MetricConverter $metricConverter
+        CompletenessManager $completenessManager
     ) {
         $this->pqbFactory = $pqbFactory;
         $this->channelRepository = $channelRepository;
         $this->completenessManager = $completenessManager;
-        $this->metricConverter = $metricConverter;
     }
 
     /**
@@ -88,16 +78,15 @@ class ProductAndProductModelReader implements
      */
     public function read(): ?EntityWithFamilyInterface
     {
-        $entityWithFamily = $this->getNextEntityWithFamily();
+        $entity = null;
 
-        if (null !== $entityWithFamily) {
-            $channel = $this->getConfiguredChannel();
-            if (null !== $channel) {
-                $this->metricConverter->convert($entityWithFamily, $channel);
-            }
+        if ($this->productsAndProductModels->valid()) {
+            $entity = $this->productsAndProductModels->current();
+            $this->productsAndProductModels->next();
+            $this->stepExecution->incrementSummaryInfo('read');
         }
 
-        return $entityWithFamily;
+        return $entity;
     }
 
     /**
@@ -179,23 +168,5 @@ class ProductAndProductModelReader implements
         $queryBuilder = $this->pqbFactory->create($options);
 
         return $queryBuilder->execute();
-    }
-
-    /**
-     * This reader makes sure we return only product entities.
-     *
-     * @return null|EntityWithFamilyInterface
-     */
-    private function getNextEntityWithFamily(): ?EntityWithFamilyInterface
-    {
-        $entity = null;
-
-        if ($this->productsAndProductModels->valid()) {
-            $entity = $this->productsAndProductModels->current();
-            $this->productsAndProductModels->next();
-            $this->stepExecution->incrementSummaryInfo('read');
-        }
-
-        return $entity;
     }
 }

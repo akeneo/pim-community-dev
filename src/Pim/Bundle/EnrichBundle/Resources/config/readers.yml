@@ -20,7 +20,6 @@ services:
             - '@pim_enrich.query.mass_edit_product_and_product_model_query_builder_factory'
             - '@pim_catalog.repository.channel'
             - '@pim_catalog.manager.completeness'
-            - '@pim_catalog.converter.metric'
 
     pim_enrich.reader.database.product:
         class: '%pim_enrich.reader.database.filtered_product_reader.class%'
