@@ -1,4 +1,4 @@
-# 2.0.x
+# 2.0.8 (2017-12-07)
 
 ## Better manage products with variants
 
