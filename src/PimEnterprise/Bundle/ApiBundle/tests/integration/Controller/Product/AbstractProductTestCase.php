@@ -280,19 +280,23 @@ JSON;
     "associations": {
         "X_SELL": {
             "products": ["product_viewable_by_everybody_2", "product_not_viewable_by_redactor"],
-            "groups": []
+            "groups": [],
+            "product_models": []
         },
         "PACK": {
             "products": [],
-            "groups": []
+            "groups": [],
+            "product_models": []
         },
         "UPSELL": {
             "products": [],
-            "groups": []
+            "groups": [],
+            "product_models": []
         },
         "SUBSTITUTION": {
             "products": [],
-            "groups": []
+            "groups": [],
+            "product_models": []
         }
     },
     "metadata": {

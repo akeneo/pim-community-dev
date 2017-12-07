@@ -11,6 +11,7 @@
 
 namespace PimEnterprise\Component\Workflow\Model;
 
+use Doctrine\Common\Collections\Collection;
 use Pim\Component\Catalog\Model\AbstractAssociation;
 
 /**
@@ -20,4 +21,11 @@ use Pim\Component\Catalog\Model\AbstractAssociation;
  */
 class PublishedProductAssociation extends AbstractAssociation implements PublishedProductAssociationInterface
 {
+    /**
+     * {@inheritdoc}
+     */
+    public function getProductModels(): Collection
+    {
+        return $this->owner->getOriginalProduct()->getAssociationForType($this->associationType)->getProductModels();
+    }
 }

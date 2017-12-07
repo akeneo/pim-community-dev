@@ -53,7 +53,7 @@ class AbstractPublishedProductExportTestCase extends TestCase
 
         $productsToPublish[] = $this->createProduct('product_without_category', [
             'associations' => [
-                'X_SELL' => ['products' => ['product_viewable_by_everybody_2', 'product_not_viewable_by_redactor']]
+                'X_SELL' => ['products' => ['product_viewable_by_everybody_2', 'product_not_viewable_by_redactor'], 'product_models' => []]
             ]
         ]);
 
