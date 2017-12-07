@@ -14,6 +14,7 @@ Changes the constructor of `Pim\Bundle\EnrichBundle\Controller\Rest\ProductModel
 
 ## Bug fixes
 
+- PIM-7035: fix reset login page style and error 500 thrown after submitting form
 - PIM-7045: fix memory leak in step `Compute product model descendants` for product model import
 - PIM-6958: fix loading a product with a reference data that is not available (simpleselect or multiselect)
 
