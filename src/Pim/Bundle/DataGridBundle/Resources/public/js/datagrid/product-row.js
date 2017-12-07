@@ -26,6 +26,7 @@ define(
             tagName: 'div',
             rowTemplate: _.template(rowTemplate),
             thumbnailTemplate: _.template(thumbnailTemplate),
+            renderedRow: null,
 
             /**
              * Return the columns for the cells that should be rendered
@@ -75,7 +76,9 @@ define(
 
                 this.delegateEvents();
 
-                return row;
+                this.renderedRow = row;
+
+                return this;
             },
 
             /**

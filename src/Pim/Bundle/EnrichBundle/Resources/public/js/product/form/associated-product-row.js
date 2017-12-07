@@ -27,6 +27,9 @@ define(
         return BaseRow.extend({
             thumbnailTemplate: _.template(thumbnailTemplate),
 
+            /**
+             * {@inheritdoc}
+             */
             getThumbnailImagePath() {
                 const image = this.model.get('image');
 
@@ -37,10 +40,19 @@ define(
                 return mediaUrlGenerator.getMediaShowUrl(image, 'thumbnail');
             },
 
+            /**
+             * Returns true if the user has the right to remove an association,
+             * hide the remove button in this case.
+             *
+             * @return {Boolean}
+             */
             canRemoveAssociation() {
                 return SecurityContext.isGranted('pim_enrich_associations_remove');
             },
 
+            /**
+             * {@inheritdoc}
+             */
             getTemplateOptions() {
                 const isProductModel = this.isProductModel();
                 const label = this.model.get('label');
@@ -55,8 +67,13 @@ define(
                 };
             },
 
+            /**
+             * {@inheritdoc}
+             */
             render() {
-                const row = BaseRow.prototype.render.call(this, arguments);
+                BaseRow.prototype.render.call(this, arguments);
+
+                const row = this.renderedRow;
 
                 row.off('click');
 
