@@ -126,6 +126,8 @@ extensions:
         module: oro/datafilter/filters-list
         parent: pim-product-index-column-inner
         targetZone: filters
+        config:
+            displayedAsColumn: true
 
     pim-product-index-actions-panel:
         module: oro/datagrid/actions-panel
