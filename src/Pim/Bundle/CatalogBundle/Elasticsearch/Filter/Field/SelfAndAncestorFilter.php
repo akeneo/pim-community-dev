@@ -18,19 +18,19 @@ use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
  *
  * Imagine the following tree:
  *      RPM
- *       \___PM1
- *            \___P11
- *            \___P12
- *       \___PM2
- *            \___P21
- *
+ *         \PM1
+ *            \P11
+ *            \P12
+ *         \PM2
+ *            \P21
+ * 
  * Using this filter with "IN LIST PM1" would return:
- *       \___PM1
- *            \___P11
- *            \___P12
- *
- * Contrary to the ancestor filter, here PM1 itself is returned.
- *
+ *         \PM1
+ *            \P11
+ *            \P12
+ * 
+ * Contrary to the ancestor filter, here PM1 itself is as well returned.
+ * 
  * @author    Samir Boulil <samir.boulil@akeneo.com>
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)

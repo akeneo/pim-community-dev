@@ -45,9 +45,6 @@ class ProductAndProductModelReader implements
     /** @var MetricConverter */
     private $metricConverter;
 
-    /** @var bool */
-    private $generateCompleteness;
-
     /** @var StepExecution */
     private $stepExecution;
 
@@ -59,20 +56,17 @@ class ProductAndProductModelReader implements
      * @param ChannelRepositoryInterface          $channelRepository
      * @param CompletenessManager                 $completenessManager
      * @param MetricConverter                     $metricConverter
-     * @param bool                                $generateCompleteness
      */
     public function __construct(
         ProductQueryBuilderFactoryInterface $pqbFactory,
         ChannelRepositoryInterface $channelRepository,
         CompletenessManager $completenessManager,
-        MetricConverter $metricConverter,
-        $generateCompleteness
+        MetricConverter $metricConverter
     ) {
         $this->pqbFactory = $pqbFactory;
         $this->channelRepository = $channelRepository;
         $this->completenessManager = $completenessManager;
         $this->metricConverter = $metricConverter;
-        $this->generateCompleteness = (bool) $generateCompleteness;
     }
 
     /**
@@ -81,7 +75,7 @@ class ProductAndProductModelReader implements
     public function initialize(): void
     {
         $channel = $this->getConfiguredChannel();
-        if (null !== $channel && $this->generateCompleteness) {
+        if (null !== $channel) {
             $this->completenessManager->generateMissingForChannel($channel);
         }
 
