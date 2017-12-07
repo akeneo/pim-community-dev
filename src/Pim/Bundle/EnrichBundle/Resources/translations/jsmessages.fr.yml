@@ -393,6 +393,7 @@ pim_enrich:
         update_failed: L'attribut n'a pas pu être mis à jour.
         create_successful: Attribut créé avec succès.
         create_failed: L'attribut n'a pas pu être créé.
+        field_not_ready: 'L''attribut ne peut être sauvé dès maintenant. Les champs suivants ne sont pas prêts : {{ fields }}'
       scopable: Décliné par canal
       type:
         pim_catalog_identifier: Identifiant
@@ -413,6 +414,7 @@ pim_enrich:
         email: E-mail
         regexp: Expression régulière
         url: URL
+      title: attribut
     attribute_group:
       info:
         update_failed: Le groupe d'attributs n'a pas pu être mis à jour.

@@ -90,7 +90,7 @@ alert:
     error_occured_during_submission: Virhe lomakkeen lähettämisessä palvelimelle
     save_before_edit_other: Rekisteröi muiden rivien muokkauksesi ennen tämän muokkaamista
   session_storage:
-    not_available: 'Web-selain ei ole yhteensopiva sessionStorage:n kanssa. Ota yhteyttä järjestelmänvalvojaan.'
+    not_available: Web-selain ei ole yhteensopiva sessionStorage:n kanssa. Ota yhteyttä järjestelmänvalvojaan.
 confirm:
   attribute_option:
     cancel_edition_on_new_option_text: Varoitus, menetät tallentamattomat tiedot. Oletko varma, että haluat peruuttaa muutoksesi tallentamatta tätä uutta mahdollisuutta?
@@ -402,6 +402,7 @@ pim_enrich:
         email: Sähköposti
         regexp: Tavallinen virke
         url: URL-osoite
+      title: attribuutti
     attribute_group:
       info:
         update_failed: Attribuuttiyhmää ei voitu päivittää
@@ -1013,7 +1014,7 @@ pim_enrich:
           field: Perhe
         add_to_group:
           label: Lisää ryhmiin
-          label_count: "{1}Lisää <span class=\"AknFullPage-title--highlight\">1 tuote</span> to groups|] 1, Inf [Lisää <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} tuotetta</span> ryhmiin"
+          label_count: "{1}Lisää <span class=\"AknFullPage-title--highlight\">1 tuote</span> ryhmiin|] 1, Inf [Lisää <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} tuotetta</span> ryhmiin"
           description: Valitse ryhmät joihin valitut tuotteet lisätään
           field: Ryhmät
         add_to_category:

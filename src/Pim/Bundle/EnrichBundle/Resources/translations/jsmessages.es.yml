@@ -345,6 +345,7 @@ pim_enrich:
         email: Correo electrónico
         regexp: Expresión regular
         url: URL
+      title: atributo
     attribute_group:
       info:
         update_successful: Grupo de atributos actualizado correctamente

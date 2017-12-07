@@ -376,6 +376,7 @@ pim_enrich:
         email: E-Mail
         regexp: Regulärer Ausdruck
         url: URL
+      title: Attribut
     attribute_group:
       info:
         update_failed: Die Attributgruppe konnte nicht aktualisiert werden

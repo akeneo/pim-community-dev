@@ -310,6 +310,7 @@ pim_enrich:
         email: Correu electrònic
         regexp: Expressió regular
         url: URL
+      title: atribut
     attribute_group:
       info:
         update_successful: Grup d'atributs actualitzat correctament

@@ -305,6 +305,7 @@ pim_enrich:
         email: E-mail
         regexp: Регулярное выражение
         url: URL
+      title: атрибут
     attribute_group:
       info:
         update_successful: Группа атрибутов успешно обновлена

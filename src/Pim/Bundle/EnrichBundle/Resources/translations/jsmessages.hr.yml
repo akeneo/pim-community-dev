@@ -310,6 +310,7 @@ pim_enrich:
         email: Adresa e-pošte
         regexp: Regularni izraz
         url: URL
+      title: atribut
     attribute_group:
       info:
         update_successful: Atribut grupe je uspješno ažuriran
