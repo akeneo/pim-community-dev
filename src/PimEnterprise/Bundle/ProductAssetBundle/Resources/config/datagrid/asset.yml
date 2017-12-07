@@ -67,7 +67,7 @@ datagrid:
         filters:
             columns:
                 code:
-                    type:      string
+                    type:      search
                     label:     pimee_product_asset.code.label
                     data_name: asset.code
                 description:

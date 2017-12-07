@@ -121,6 +121,8 @@ extensions:
         module: oro/datafilter/filters-list
         parent: pimee-asset-index-column-inner
         targetZone: filters
+        config:
+            displayedAsColumn: true
 
     pimee-asset-index-actions-panel:
         module: oro/datagrid/actions-panel

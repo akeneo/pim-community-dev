@@ -17,8 +17,6 @@ Feature: Filter product assets
 
     Examples:
       | filter      | operator         | value                     | result                                                              | count |
-      | code        | contains         | ma                        | man_wall, machine                                                   | 2     |
-      | code        | is equal to      | bridge                    | bridge                                                              | 1     |
       | tags        | in list          | women                     | mouette                                                             | 1     |
       | tags        | in list          | lacework, men             | eagle, minivan                                                      | 2     |
       | tags        | is empty         |                           | photo                                                               | 1     |
@@ -27,6 +25,11 @@ Feature: Filter product assets
       | endOfUseAt  | less than        | 01/01/2030                | dog, autumn, paint, akene                                           | 4     |
       | description | contains         | animal                    | dog, mouette                                                        | 2     |
       | description | does not contain | water                     | paint, chicagoskyline, akene, dog, machine, minivan, mouette, tiger | 8     |
+
+  Scenario: Successfully search on code
+    When I search "ma"
+    Then the grid should contain 2 elements
+    And I should see entities man_wall and machine
 
   Scenario: Successfully filter product assets by category
     When I select the "Asset main catalog" tree
