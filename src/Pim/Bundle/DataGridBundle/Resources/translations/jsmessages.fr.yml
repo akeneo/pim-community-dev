@@ -103,5 +103,9 @@ grid.view_selector:
     remove: Êtes-vous sûr(e) de vouloir supprimer cette vue ?
     delete: Supprimer l'élément
 grid.view_selector.flash.updated: Vue de grille mise à jour avec succès
+grid.display_selector:
+  label: Affichage
+  gallery: Galerie
+  list: Liste
 Client ID: ID du client
 Secret: Secret 

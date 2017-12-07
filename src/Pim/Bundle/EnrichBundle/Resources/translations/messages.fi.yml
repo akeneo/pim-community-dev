@@ -152,7 +152,7 @@ pim_enrich:
       add_to_groups: Lisää tuote ryhmiin
       mass_edit: Tuotteen massaedit-toiminnot
       comment: Kommentoi tuotteita
-      download: 'Lataa tuote PDF:nä'
+      download: Lataa tuote PDF:nä
       history: Näytä tuotehistoria
     product_model:
       create: Luo tuotemalli
@@ -780,21 +780,21 @@ batch_jobs:
     perform:
       label: Aseta vaaditut attribuutit
   csv_product_quick_export:
-    quick_export.label: 'Tuotteen nopea vienti CSV:nä'
+    quick_export.label: Tuotteen nopea vienti CSV:nä
     perform:
-      label: 'Tuotteen nopea vienti CSV:nä'
+      label: Tuotteen nopea vienti CSV:nä
   csv_product_grid_context_quick_export:
-    quick_export.label: 'Tuoteruudukon kontekstin nopea vienti CSV:nä'
+    quick_export.label: Tuoteruudukon kontekstin nopea vienti CSV:nä
     perform:
-      label: 'Tuoteruudukon kontekstin nopea vienti CSV:nä'
+      label: Tuoteruudukon kontekstin nopea vienti CSV:nä
   xlsx_product_quick_export:
-    quick_export.label: 'Tuotteen nopea vienti XLSX:nä'
+    quick_export.label: Tuotteen nopea vienti XLSX:nä
     perform:
-      label: 'Tuotteen nopea vienti XLSX:nä'
+      label: Tuotteen nopea vienti XLSX:nä
   xlsx_product_grid_context_quick_export:
-    quick_export.label: 'Tuoteruudukon kontekstin nopea vienti XLSX:nä'
+    quick_export.label: Tuoteruudukon kontekstin nopea vienti XLSX:nä
     perform:
-      label: 'Tuoteruudukon kontekstin nopea vienti XLSX:nä'
+      label: Tuoteruudukon kontekstin nopea vienti XLSX:nä
 mass_edit report:
   overview: Massamuokkaa vientejä
 job_tracker:

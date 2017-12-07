@@ -103,5 +103,7 @@ grid.view_selector:
     remove: Sei sicuro di voler cancellare questa visualizzazione?
     delete: Conferma cancellazione
 grid.view_selector.flash.updated: La griglia di dati è stata aggiornata con successo
+grid.display_selector:
+  label: Mostra
 Client ID: ID cliente
 Secret: Segreto
