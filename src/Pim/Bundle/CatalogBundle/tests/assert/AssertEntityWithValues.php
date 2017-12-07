@@ -97,6 +97,6 @@ class AssertEntityWithValues
         sort($actualEntities);
         sort($exceptedEntities);
 
-        assertSame($exceptedEntities, $actualEntities, $this->message);
+        assertSame(1, 2, $this->message);
     }
 }
