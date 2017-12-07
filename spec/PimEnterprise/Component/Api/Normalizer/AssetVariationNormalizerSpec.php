@@ -5,15 +5,13 @@ namespace spec\PimEnterprise\Component\Api\Normalizer;
 use PhpSpec\ObjectBehavior;
 use PimEnterprise\Component\Api\Normalizer\AssetVariationNormalizer;
 use PimEnterprise\Component\ProductAsset\Model\VariationInterface;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class AssetVariationNormalizerSpec extends ObjectBehavior
 {
-    function let(NormalizerInterface $standardNormalizer, RouterInterface $router)
+    function let(NormalizerInterface $standardNormalizer)
     {
-        $this->beConstructedWith($standardNormalizer, $router);
+        $this->beConstructedWith($standardNormalizer);
     }
 
     function it_is_initializable()
@@ -33,44 +31,8 @@ class AssetVariationNormalizerSpec extends ObjectBehavior
         $this->supportsNormalization(new \stdClass(), 'external_api')->shouldReturn(false);
     }
 
-    function it_normalizes_a_non_localizable_variation(
+    function it_normalizes_an_asset_variation(
         $standardNormalizer,
-        $router,
-        VariationInterface $variation
-    ) {
-        $standardNormalizer->normalize($variation, 'external_api', [])->willReturn([
-            'code' => 'path/to/variation_file.jpg',
-            'asset' => 'an_asset',
-            'locale' => null,
-            'channel' => 'ecommerce',
-            'reference_file' => 'path/to/reference_file.jpg',
-        ]);
-
-        $router->generate(
-            'pim_api_asset_variation_download',
-            [
-                'code' => 'an_asset',
-                'channelCode' => 'ecommerce',
-                'localeCode' => 'no_locale',
-            ],
-            UrlGeneratorInterface::ABSOLUTE_URL
-        )->willReturn('/assets/an_asset/variation-files/ecommerce/no_locale/download');
-
-        $this->normalize($variation, 'external_api', [])->shouldReturn([
-            '_link' => [
-                'download' => [
-                    'href' => '/assets/an_asset/variation-files/ecommerce/no_locale/download',
-                ],
-            ],
-            'locale' => null,
-            'channel' => 'ecommerce',
-            'code' => 'path/to/variation_file.jpg',
-        ]);
-    }
-
-    function it_normalizes_a_localizable_variation(
-        $standardNormalizer,
-        $router,
         VariationInterface $variation
     ) {
         $standardNormalizer->normalize($variation, 'external_api', [])->willReturn([
@@ -81,22 +43,7 @@ class AssetVariationNormalizerSpec extends ObjectBehavior
             'reference_file' => 'path/to/reference_file.jpg',
         ]);
 
-        $router->generate(
-            'pim_api_asset_variation_download',
-            [
-                'code' => 'an_asset',
-                'channelCode' => 'ecommerce',
-                'localeCode' => 'en_US',
-            ],
-            UrlGeneratorInterface::ABSOLUTE_URL
-        )->willReturn('/assets/an_asset/variation-files/ecommerce/en_US/download');
-
         $this->normalize($variation, 'external_api', [])->shouldReturn([
-            '_link' => [
-                'download' => [
-                    'href' => '/assets/an_asset/variation-files/ecommerce/en_US/download',
-                ],
-            ],
             'locale' => 'en_US',
             'channel' => 'ecommerce',
             'code' => 'path/to/variation_file.jpg',

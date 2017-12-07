@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace PimEnterprise\Bundle\ApiBundle\tests\EndToEnd\Controller\Asset;
 
+use PimEnterprise\Bundle\ApiBundle\Controller\AssetVariationController;
+
 /**
  * @author Damien Carcel <damien.carcel@akeneo.com>
  */
@@ -281,7 +283,7 @@ JSON;
             sprintf(
                 'No asset "%s" variation found for locale "%s"',
                 $expected['code'],
-                $locale ?? 'no_locale'
+                $locale ?? AssetVariationController::NON_LOCALIZABLE_VARIATION
             )
         );
     }

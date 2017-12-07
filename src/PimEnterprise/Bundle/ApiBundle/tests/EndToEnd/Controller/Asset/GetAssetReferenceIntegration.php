@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace PimEnterprise\Bundle\ApiBundle\tests\EndToEnd\Controller\Asset;
 
+use PimEnterprise\Bundle\ApiBundle\Controller\AssetReferenceController;
+
 /**
  * @author Damien Carcel <damien.carcel@akeneo.com>
  */
@@ -226,7 +228,7 @@ JSON;
         throw new \PHPUnit_Framework_AssertionFailedError(sprintf(
             'No asset "%s" reference found for locale "%s"',
             $expected['code'],
-            $locale ?? 'no_locale'
+            $locale ?? AssetReferenceController::NON_LOCALIZABLE_REFERENCE
         ));
     }
 }

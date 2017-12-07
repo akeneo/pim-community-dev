@@ -34,7 +34,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  */
 class AssetReferenceController
 {
-    protected const NON_LOCALIZABLE_REFERENCE = 'no_locale';
+    public const NON_LOCALIZABLE_REFERENCE = 'no_locale';
 
     /** @var IdentifiableObjectRepositoryInterface */
     protected $assetRepository;

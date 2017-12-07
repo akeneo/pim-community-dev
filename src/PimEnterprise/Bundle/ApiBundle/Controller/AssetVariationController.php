@@ -35,7 +35,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  */
 class AssetVariationController
 {
-    protected const NON_LOCALIZABLE_VARIATION = 'no_locale';
+    public const NON_LOCALIZABLE_VARIATION = 'no_locale';
 
     /** @var IdentifiableObjectRepositoryInterface */
     protected $assetRepository;
