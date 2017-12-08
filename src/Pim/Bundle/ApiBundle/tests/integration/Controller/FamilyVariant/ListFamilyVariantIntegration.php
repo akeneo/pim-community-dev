@@ -216,7 +216,7 @@ JSON;
         $client->request('GET', 'api/rest/v1/families/unknownFamily/variants');
         $expected = <<<JSON
 {
-    "code" : "404",
+    "code" : 404,
     "message" : "Family \"unknownFamily\" does not exist."
 }
 JSON;
