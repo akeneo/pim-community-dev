@@ -1,3 +1,10 @@
+# 2.0.x
+
+## Bug fixes
+
+- PIM-7022: Grey read-only fields on product-model edit form too
+
+
 # 2.0.8 (2017-12-07)
 
 ## Better manage products with variants
