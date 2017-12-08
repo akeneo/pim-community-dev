@@ -77,7 +77,7 @@ class ProductAndProductModelVoter extends Voter implements VoterInterface
         $attribute
     ) {
         if (count($categoryAwareEntity->getCategories()) === 0) {
-            return VoterInterface::ACCESS_GRANTED;
+            return true;
         }
 
         $productToCategory = [

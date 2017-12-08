@@ -8,6 +8,10 @@
 - API-496: Get an asset variation file
 - PIM-7029: Add a search by code on assets grid
 
+## Bug fixes
+
+- TIP-827: Change caching strategy of the authorization checker
+
 # 2.1.0-ALPHA1
 
 ## Improvements
