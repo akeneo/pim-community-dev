@@ -4,6 +4,7 @@ namespace Pim\Component\Catalog\Updater\Remover;
 
 use Akeneo\Component\StorageUtils\Exception\PropertyException;
 use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Model\ProductModelInterface;
 
 /**
  * Remove a data from a product field
@@ -17,14 +18,14 @@ interface FieldRemoverInterface extends RemoverInterface
     /**
      * Remove field data
      *
-     * @param ProductInterface $product The product to modify
-     * @param string           $field   The field of the product to modify
-     * @param mixed            $data    The data to remove
-     * @param array            $options Options passed to the remover
+     * @param ProductInterface|ProductModelInterface $product The product to modify
+     * @param string                                 $field   The field of the product to modify
+     * @param mixed                                  $data    The data to remove
+     * @param array                                  $options Options passed to the remover
      *
      * @throws PropertyException
      */
-    public function removeFieldData(ProductInterface $product, $field, $data, array $options = []);
+    public function removeFieldData($product, $field, $data, array $options = []);
 
     /**
      * Supports the field
