@@ -60,7 +60,7 @@ class AssociationFieldAdder extends AbstractFieldAdder
      *     },
      * }
      */
-    public function addFieldData(ProductInterface $product, $field, $data, array $options = [])
+    public function addFieldData($product, $field, $data, array $options = [])
     {
         $this->checkData($field, $data);
         $this->addMissingAssociations($product);
@@ -70,9 +70,9 @@ class AssociationFieldAdder extends AbstractFieldAdder
     /**
      * Add missing associations (if association type has been added after the last processing)
      *
-     * @param ProductInterface $product
+     * @param ProductInterface|ProductModelInterface $product
      */
-    protected function addMissingAssociations(ProductInterface $product)
+    protected function addMissingAssociations($product)
     {
         $this->productBuilder->addMissingAssociations($product);
     }
@@ -80,12 +80,12 @@ class AssociationFieldAdder extends AbstractFieldAdder
     /**
      * Add products and groups to associations
      *
-     * @param ProductInterface $product
-     * @param mixed            $data
+     * @param ProductInterface|ProductModelInterface $product
+     * @param mixed                                  $data
      *
      * @throws InvalidPropertyException
      */
-    protected function addProductsAndGroupsToAssociations(ProductInterface $product, $data)
+    protected function addProductsAndGroupsToAssociations($product, $data)
     {
         foreach ($data as $typeCode => $items) {
             $association = $product->getAssociationForTypeCode($typeCode);

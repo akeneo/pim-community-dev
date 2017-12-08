@@ -36,7 +36,7 @@ class GroupFieldAdder extends AbstractFieldAdder
      *
      * Expected data input format : ["group_code"]
      */
-    public function addFieldData(ProductInterface $product, $field, $data, array $options = [])
+    public function addFieldData($product, $field, $data, array $options = [])
     {
         $this->checkData($field, $data);
 

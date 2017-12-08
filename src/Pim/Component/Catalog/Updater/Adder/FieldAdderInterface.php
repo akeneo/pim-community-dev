@@ -24,7 +24,7 @@ interface FieldAdderInterface extends AdderInterface
      *
      * @throws PropertyException
      */
-    public function addFieldData(ProductInterface $product, $field, $data, array $options = []);
+    public function addFieldData($product, $field, $data, array $options = []);
 
     /**
      * Supports the field
