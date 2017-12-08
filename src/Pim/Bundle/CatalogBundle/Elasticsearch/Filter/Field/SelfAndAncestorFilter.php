@@ -10,6 +10,7 @@ use Pim\Component\Catalog\Exception\ObjectNotFoundException;
 use Pim\Component\Catalog\Query\Filter\FieldFilterHelper;
 use Pim\Component\Catalog\Query\Filter\Operators;
 use Pim\Component\Catalog\Repository\ProductModelRepositoryInterface;
+use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
 
 /**
  * An ancestor is a product model that is either a parent or a grand parent.
@@ -24,31 +25,40 @@ use Pim\Component\Catalog\Repository\ProductModelRepositoryInterface;
  *            \P21
  *
  * Using this filter with "IN LIST PM1" would return:
+ *         \PM1
  *            \P11
  *            \P12
+ *
+ * Contrary to the ancestor filter, here PM1 itself is as well returned.
  *
  * @author    Samir Boulil <samir.boulil@akeneo.com>
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class AncestorFilter extends AbstractFieldFilter
+class SelfAndAncestorFilter extends AbstractFieldFilter
 {
     private const ANCESTOR_ID_ES_FIELD = 'ancestors.ids';
 
     /** @var IdentifiableObjectRepositoryInterface */
     private $productModelRepository;
 
+    /** @var ProductRepositoryInterface */
+    private $productRepository;
+
     /**
      * @param ProductModelRepositoryInterface $productModelRepository
+     * @param ProductRepositoryInterface      $productRepository
      * @param array                           $supportedFields
      * @param array                           $supportedOperators
      */
     public function __construct(
         ProductModelRepositoryInterface $productModelRepository,
+        ProductRepositoryInterface $productRepository,
         array $supportedFields,
         array $supportedOperators
     ) {
         $this->productModelRepository = $productModelRepository;
+        $this->productRepository = $productRepository;
         $this->supportedFields = $supportedFields;
         $this->supportedOperators = $supportedOperators;
     }
@@ -63,36 +73,39 @@ class AncestorFilter extends AbstractFieldFilter
         }
 
         if (!$this->supportsOperator($operator)) {
-            throw InvalidOperatorException::notSupported($operator, AncestorFilter::class);
+            throw InvalidOperatorException::notSupported($operator, SelfAndAncestorFilter::class);
         }
 
         $this->checkValues($values);
 
         switch ($operator) {
             case Operators::IN_LIST:
-                $this->searchQueryBuilder->addShould(
-                    [
-                        [
-                            'terms' => [
-                                self::ANCESTOR_ID_ES_FIELD => $values,
-                            ],
-                        ]
-                    ]
-                );
-                break;
-            case Operators::NOT_IN_LIST:
-                $mustNotClause = [
+                $selfClause = [
+                    'terms' => [
+                        'id' => $values,
+                    ],
+                ];
+                $ancestorsClause = [
                     'terms' => [
                         self::ANCESTOR_ID_ES_FIELD => $values,
                     ],
                 ];
-                $filterClause = [
-                    'exists' => [
-                        'field' => self::ANCESTOR_ID_ES_FIELD,
+                $this->searchQueryBuilder->addShould($selfClause);
+                $this->searchQueryBuilder->addShould($ancestorsClause);
+                break;
+            case Operators::NOT_IN_LIST:
+                $selfClause = [
+                    'terms' => [
+                        'id' => $values,
+                    ]
+                ];
+                $ancestorsClause = [
+                    'terms' => [
+                        self::ANCESTOR_ID_ES_FIELD => $values,
                     ],
                 ];
-                $this->searchQueryBuilder->addMustNot($mustNotClause);
-                $this->searchQueryBuilder->addFilter($filterClause);
+                $this->searchQueryBuilder->addMustNot($selfClause);
+                $this->searchQueryBuilder->addMustNot($ancestorsClause);
                 break;
         }
     }
@@ -109,9 +122,9 @@ class AncestorFilter extends AbstractFieldFilter
         FieldFilterHelper::checkArray(self::ANCESTOR_ID_ES_FIELD, $values, static::class);
         foreach ($values as $value) {
             FieldFilterHelper::checkString(self::ANCESTOR_ID_ES_FIELD, $value, static::class);
-            if (!$this->isValidId($value)) {
+            if (!$this->isValidProductModelId($value) && !$this->isValidProductId($value)) {
                 throw new ObjectNotFoundException(
-                    sprintf('Object "product model" with ID "%s" does not exist', $value)
+                    sprintf('Object with ID "%s" does not exist as a product nor as a product model', $value)
                 );
             }
         }
@@ -122,10 +135,30 @@ class AncestorFilter extends AbstractFieldFilter
      *
      * @return bool
      */
-    private function isValidId(string $value): bool
+    private function isValidProductModelId(string $value): bool
     {
+        if (0 !== strpos($value, 'product_model_')) {
+            return false;
+        }
+
         $id = str_replace('product_model_', '', $value);
 
         return null !== $this->productModelRepository->findOneBy(['id' => $id]);
+    }
+
+    /**
+     * @param string $value
+     *
+     * @return bool
+     */
+    private function isValidProductId(string $value): bool
+    {
+        if (0 !== strpos($value, 'product_')) {
+            return false;
+        }
+
+        $id = str_replace('product_', '', $value);
+
+        return null !== $this->productRepository->findOneBy(['id' => $id]);
     }
 }

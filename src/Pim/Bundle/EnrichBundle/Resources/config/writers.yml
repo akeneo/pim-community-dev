@@ -1,0 +1,11 @@
+parameters:
+    pim_enrich.writer.database.product_and_product_model_writer.class: Pim\Bundle\EnrichBundle\Connector\Writer\MassEdit\ProductAndProductModelWriter
+
+services:
+    pim_enrich.writer.database.product_and_product_model_writer:
+        class: '%pim_enrich.writer.database.product_and_product_model_writer.class%'
+        arguments:
+            - '@pim_versioning.manager.version'
+            - '@pim_catalog.saver.product'
+            - '@pim_catalog.saver.product_model'
+            - '@pim_connector.doctrine.cache_clearer'

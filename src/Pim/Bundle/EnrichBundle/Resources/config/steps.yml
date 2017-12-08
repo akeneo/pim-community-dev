@@ -55,7 +55,7 @@ services:
             - 'perform'
             - '@event_dispatcher'
             - '@akeneo_batch.job_repository'
-            - '@pim_enrich.reader.database.product_and_product_model'
+            - '@pim_enrich.reader.database.filtered_product_and_product_model'
             - '@pim_enrich.connector.processor.mass_edit.product.update_value'
             - '@pim_connector.writer.database.product'
 
@@ -65,7 +65,7 @@ services:
             - 'perform'
             - '@event_dispatcher'
             - '@akeneo_batch.job_repository'
-            - '@pim_enrich.reader.database.product_and_product_model'
+            - '@pim_enrich.reader.database.filtered_product_and_product_model'
             - '@pim_enrich.connector.processor.mass_edit.product.add_value'
             - '@pim_connector.writer.database.product'
 
@@ -75,7 +75,7 @@ services:
             - 'perform'
             - '@event_dispatcher'
             - '@akeneo_batch.job_repository'
-            - '@pim_enrich.reader.database.product_and_product_model'
+            - '@pim_enrich.reader.database.filtered_product_and_product_model'
             - '@pim_enrich.connector.processor.mass_edit.product.remove_value'
             - '@pim_connector.writer.database.product'
 
@@ -86,8 +86,8 @@ services:
             - '@event_dispatcher'
             - '@akeneo_batch.job_repository'
             - '@pim_enrich.reader.database.product_and_product_model'
-            - '@pim_enrich.connector.processor.mass_edit.product.edit_common_attributes'
-            - '@pim_connector.writer.database.product'
+            - '@pim_enrich.connector.processor.mass_edit.product.edit_attributes'
+            - '@pim_enrich.writer.database.product_and_product_model_writer'
 
     pim_enrich.step.add_to_existing_product_model.mass_edit:
         class: '%pim_connector.step.item_step.class%'

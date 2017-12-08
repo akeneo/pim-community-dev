@@ -3,6 +3,7 @@
 ## Better manage products with variants!
 
 - PIM-6349: Adds mass edit to add products to an existing product model
+- PIM-6357: Adds mass edit of attributes for product and product models
 
 ## Update jobs
 

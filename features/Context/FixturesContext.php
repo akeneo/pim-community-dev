@@ -1022,6 +1022,7 @@ class FixturesContext extends BaseFixturesContext
      * @param string $value
      *
      * @Given /^attribute (\w+) of "([^"]*)" should be "(.*)"$/
+     * @Given /^the product value (\w+) of "([^"]*)" should be "(.*)"$/
      */
     public function theOfShouldBe($attribute, $identifier, $value)
     {
@@ -1071,7 +1072,7 @@ class FixturesContext extends BaseFixturesContext
      * @param string $identifier
      * @param string $value
      *
-     * @Given /^the (\w+) (\w+) (\w+) of "([^"]*)" should be "(.*)"$/
+     * @Given /^the ((?!product)\w+) (\w+) (\w+) of "([^"]*)" should be "(.*)"$/
      */
     public function theScopableAndLocalizableOfShouldBe($lang, $scope, $attribute, $identifier, $value)
     {
@@ -1212,6 +1213,20 @@ class FixturesContext extends BaseFixturesContext
             $productValue = $this->getProductValue($identifier, strtolower($attribute));
             assertEquals($data, $productValue->getData()->getData());
         }
+    }
+
+    /**
+     * @param string $attribute
+     * @param string $identifier
+     * @param string $value
+     *
+     * @Given /^the product model value (\w+) of "([^"]*)" should be "(.*)"$/
+     */
+    public function theProductModelValueOfShouldBe(string $attribute, string $identifier, string $value)
+    {
+        $productValue = $this->getProductModelValue($identifier, strtolower($attribute));
+
+        $this->assertDataEquals((string) $productValue->getData(), $value);
     }
 
     /**
@@ -1907,6 +1922,36 @@ class FixturesContext extends BaseFixturesContext
             throw new \InvalidArgumentException(
                 sprintf(
                     'Could not find product value for attribute "%s" in locale "%s" for scope "%s"',
+                    $attribute,
+                    $locale,
+                    $scope
+                )
+            );
+        }
+
+        return $value;
+    }
+
+    /**
+     * @param string $identifier
+     * @param string $attribute
+     * @param string $locale
+     * @param string $scope
+     *
+     * @throws \InvalidArgumentException
+     *
+     * @return ValueInterface
+     */
+    private function getProductModelValue(string $identifier, string $attribute, string $locale = null, string $scope = null)
+    {
+        if (null === $productModel = $this->getProductModel($identifier)) {
+            throw new \InvalidArgumentException(sprintf('Could not find product model with code "%s"', $identifier));
+        }
+
+        if (null === $value = $productModel->getValue($attribute, $locale, $scope)) {
+            throw new \InvalidArgumentException(
+                sprintf(
+                    'Could not find product model value for attribute "%s" in locale "%s" for scope "%s"',
                     $attribute,
                     $locale,
                     $scope
