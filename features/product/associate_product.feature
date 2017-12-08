@@ -64,7 +64,7 @@ Feature: Associate a product
     And I visit the "Display products" target
     And I press the "Add associations" button
     And I check the rows "shoelaces, gray-boots, brown-boots and green-boots"
-    And I press the "Confirm" button in the popin
+    When I press the "Confirm" button in the popin
     Then I should not see the text "There are unsaved changes."
     And I should see the text "4 product(s) and 1 group(s)"
     And I visit the "Upsell" association type
