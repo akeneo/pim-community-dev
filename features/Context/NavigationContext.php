@@ -4,6 +4,7 @@ namespace Context;
 
 use Akeneo\Component\Batch\Model\JobInstance;
 use Oro\Bundle\UserBundle\Entity\Role;
+use PHPUnit\Framework\Assert;
 use Pim\Behat\Context\NavigationContext as BaseNavigationContext;
 use Pim\Bundle\CatalogBundle\Entity\Category;
 use Pim\Component\Catalog\Model\AssociationTypeInterface;
@@ -97,7 +98,7 @@ class NavigationContext extends BaseNavigationContext
             $actualFullUrl = $this->getSession()->getCurrentUrl();
             $result = $actualFullUrl === $url;
 
-            assertTrue($result, sprintf('Expecting to be on page "%s", not "%s"', $url, $actualFullUrl));
+            Assert::assertTrue($result, sprintf('Expecting to be on page "%s", not "%s"', $url, $actualFullUrl));
 
             return true;
         }, "Expected to be redirected to channel '%s'", $url);

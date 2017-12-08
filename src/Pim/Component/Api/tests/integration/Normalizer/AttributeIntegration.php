@@ -11,8 +11,6 @@ namespace Pim\Component\Api\tests\integration\Normalizer;
  */
 class AttributeIntegration extends AbstractNormalizerTestCase
 {
-    protected $purgeDatabaseForEachTest = false;
-
     public function testAttributeIdentifier()
     {
         $expected = [

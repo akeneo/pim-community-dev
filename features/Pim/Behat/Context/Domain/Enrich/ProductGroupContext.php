@@ -6,6 +6,7 @@ use Behat\Gherkin\Node\TableNode;
 use Behat\Mink\Element\NodeElement;
 use Behat\Mink\Exception\ExpectationException;
 use Context\Spin\SpinCapableTrait;
+use PHPUnit\Framework\Assert;
 use Pim\Behat\Context\PimContext;
 use Pim\Component\Catalog\Model\GroupInterface;
 
@@ -118,7 +119,7 @@ class ProductGroupContext extends PimContext
      */
     public function theProductGroupPropertyShouldBeDisabled($field)
     {
-        assertTrue(
+        Assert::assertTrue(
             $this->findPropertyFieldByLabel($field)->hasAttribute('disabled'),
             sprintf('Expecting field "%s" to be disabled.', $field)
         );
@@ -135,7 +136,7 @@ class ProductGroupContext extends PimContext
             return $this->getSession()->getPage()->find('css', sprintf('label:contains("%s")', $label));
         }, sprintf('Unable to find a label containing "%s"', $label));
 
-        assertTrue($node->hasAttribute('for'));
+        Assert::assertTrue($node->hasAttribute('for'));
 
         return $this->spin(function () use ($node) {
             return $this->getSession()->getPage()->find('css', sprintf('#%s', $node->getAttribute('for')));

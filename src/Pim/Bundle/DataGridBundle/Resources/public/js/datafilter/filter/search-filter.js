@@ -28,6 +28,8 @@ define(
 
             timer: null,
 
+            isSearch: true,
+
             timeoutDelay: 500,
 
             className: 'AknFilterBox-searchContainer filter-item search-filter',

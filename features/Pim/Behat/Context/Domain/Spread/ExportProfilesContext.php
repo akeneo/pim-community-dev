@@ -7,6 +7,8 @@ use Behat\Gherkin\Node\PyStringNode;
 use Behat\Gherkin\Node\TableNode;
 use Behat\Mink\Exception\ExpectationException;
 use Context\Spin\SpinCapableTrait;
+use PHPUnit\Framework\Assert;
+use PHPUnit\Framework\AssertionFailedError;
 use Pim\Behat\Context\Domain\ImportExportContext;
 use Symfony\Component\Yaml\Yaml;
 
@@ -51,14 +53,14 @@ class ExportProfilesContext extends ImportExportContext
      *
      * @Then /^exported file of "([^"]*)" should be empty$/
      *
-     * @throws \PHPUnit_Framework_AssertionFailedError
+     * @throws AssertionFailedError
      */
     public function exportedFileOfShouldBeEmpty($code)
     {
         $this->spin(function () use ($code) {
             $path = $this->getExportedFile($code);
             $content = trim(file_get_contents($path));
-            assertEmpty($content);
+            Assert::assertEmpty($content);
 
             return true;
         }, sprintf('Cannot validate that job %s is empty', $code));

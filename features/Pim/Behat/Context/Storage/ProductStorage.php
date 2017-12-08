@@ -6,6 +6,7 @@ use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\TableNode;
 use Doctrine\Common\Util\ClassUtils;
 use Doctrine\ORM\EntityManagerInterface;
+use PHPUnit\Framework\Assert;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\VariantProductInterface;
 use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
@@ -75,7 +76,7 @@ class ProductStorage implements Context
         /** @var VariantProductInterface $product */
         $product = $this->productRepository->findOneByIdentifier($productIdentifier);
 
-        assertEquals($product->getParent()->getCode(), $parentCode);
+        Assert::assertEquals($product->getParent()->getCode(), $parentCode);
     }
 
     /**

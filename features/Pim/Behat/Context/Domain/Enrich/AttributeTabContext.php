@@ -5,6 +5,7 @@ namespace Pim\Behat\Context\Domain\Enrich;
 use Context\Spin\SpinCapableTrait;
 use Context\Spin\TimeoutException;
 use Context\Traits\ClosestTrait;
+use PHPUnit\Framework\Assert;
 use Pim\Behat\Context\PimContext;
 
 class AttributeTabContext extends PimContext
@@ -155,7 +156,7 @@ class AttributeTabContext extends PimContext
             return $attributeTab->getLabelField($fieldLabel);
         }, sprintf('Cannot find the %s on comparison field', $fieldLabel));
 
-        assertNotNull($field);
+        Assert::assertNotNull($field);
     }
 
     /**

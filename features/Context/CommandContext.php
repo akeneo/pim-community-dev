@@ -3,6 +3,7 @@
 namespace Context;
 
 use Behat\Gherkin\Node\TableNode;
+use PHPUnit\Framework\Assert;
 use Pim\Behat\Context\PimContext;
 use Pim\Bundle\CatalogBundle\Command\GetProductCommand;
 use Pim\Bundle\CatalogBundle\Command\QueryProductCommand;
@@ -51,7 +52,7 @@ class CommandContext extends PimContext
             $actual   = json_decode($commandTester->getDisplay());
             sort($expected);
             sort($actual);
-            assertEquals($expected, $actual);
+            Assert::assertEquals($expected, $actual);
         }
     }
 
@@ -121,7 +122,7 @@ class CommandContext extends PimContext
             }
             $diff = $this->arrayIntersect($actual, $expected);
 
-            assertEquals(
+            Assert::assertEquals(
                 $expected,
                 $diff
             );

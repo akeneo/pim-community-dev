@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Pim\Behat\Context\Domain\Enrich;
 
 use Context\Spin\SpinCapableTrait;
+use PHPUnit\Framework\Assert;
 use Pim\Behat\Context\PimContext;
 
 /**
@@ -76,7 +77,7 @@ class FamilyVariantConfigurationContext extends PimContext
             );
         }, sprintf('Cannot find attribute for label "%s" and level "%s"', $attributeLabel, $level));
 
-        assertNotNull($attribute);
+        Assert::assertNotNull($attribute);
     }
 
     /**
@@ -104,7 +105,7 @@ class FamilyVariantConfigurationContext extends PimContext
             );
         }, sprintf('Cannot find attribute for label "%s" and level "%s"', $attributeLabel, $level));
 
-        assertNull($attribute->find('css', '.AknIconButton--delete'));
+        Assert::assertNull($attribute->find('css', '.AknIconButton--delete'));
     }
 
     /**
