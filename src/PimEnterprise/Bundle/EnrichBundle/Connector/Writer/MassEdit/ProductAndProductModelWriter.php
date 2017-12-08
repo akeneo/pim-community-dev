@@ -67,8 +67,12 @@ class ProductAndProductModelWriter extends BaseWriter
      */
     protected function hasPermissions(EntityWithFamilyInterface $entityWithValue): bool
     {
+        if (null === $entityWithValue->getId()) {
+            return true;
+        }
+
         try {
-            $hasRight = $this->hasRightsOverEntity($entityWithValue);
+            $hasRight = $this->authorizationChecker->isGranted(Attributes::OWN, $entityWithValue);
         } catch (AuthenticationCredentialsNotFoundException $e) {
             $hasRight = true;
         }
@@ -86,19 +90,5 @@ class ProductAndProductModelWriter extends BaseWriter
         } elseif ($entityWithFamily) {
             $this->stepExecution->incrementSummaryInfo('proposal');
         }
-    }
-
-    /**
-     * @param EntityWithFamilyInterface $entityWithValue
-     *
-     * @return bool
-     */
-    private function hasRightsOverEntity(EntityWithFamilyInterface $entityWithValue): bool
-    {
-        if (null === $entityWithValue->getId()) {
-            return true;
-        }
-
-        return $this->authorizationChecker->isGranted(Attributes::OWN, $entityWithValue);
     }
 }
