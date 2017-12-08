@@ -178,7 +178,7 @@ class ProductPropertiesNormalizer implements NormalizerInterface, SerializerAwar
      *
      * @return array
      */
-    private function getAncestorsCodes(EntityWithFamilyVariantInterface $entityWithFamilyVariant): array
+    private function getAncestorsCodes(EntityWithFamilyVariantInterface $entityWithFamilyVariant)
     {
         $ancestorsCodes = [];
         while (null !== $parent = $entityWithFamilyVariant->getParent()) {

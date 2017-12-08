@@ -366,6 +366,7 @@ services:
             - '@pim_catalog.comparator.filter.product_model'
             - '@pim_enrich.converter.enrich_to_standard.product_value'
             - '@pim_catalog.updater.product_model'
+            - '@pim_catalog.remover.product_model'
             - '@pim_catalog.validator.product'
             - '@pim_catalog.saver.product_model'
             - '@pim_enrich.normalizer.product_violation'

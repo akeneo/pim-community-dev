@@ -7,6 +7,7 @@ confirmation:
         attribute_group:  Are you sure you want to delete this attribute group?
         family:           Are you sure you want to delete this family?
         product:          Are you sure you want to delete this product?
+        product_model:    Are you sure you want to delete this product model? All its children, product models and variant products, will be also deleted.
         channel:          Are you sure you want to delete this channel?
         group:            Are you sure you want to delete this group?
         group_type:       Are you sure you want to delete this group type?
@@ -49,6 +50,8 @@ flash:
         removed: Family successfully removed
     product:
         removed: Product successfully removed
+    product_model:
+        removed: Product model successfully removed
     channel:
         removed: Channel successfully removed
     group:
@@ -256,12 +259,13 @@ pim_enrich:
             info:
                 create_successful: Product model successfully created
                 update_successful: Product model successfully updated. The completeness of its variant products will be recalculated.
+                deletion_successful: Product model successfully deleted.
                 update_failed: The product model could not be updated.
                 field_not_ready: "The product model cannot be saved right now. The following fields are not ready: {{ fields }}"
             read_only_parent_attribute_from_common: This attribute can be updated on the common attributes.
             read_only_parent_attribute_from_model: "This attribute can be updated on the attributes by {{ axes }}"
             variant_axis: Variant axis
-            title: products
+            title: product models
             add_child:
                 create: Add new
                 cancel: Cancel
@@ -448,6 +452,7 @@ pim_enrich:
         delete:
             attribute: Are you sure you want to delete this attribute from the product?
             attribute_group: Are you sure you want to remove the attribute {{ attribute }} from this attribute group?
+            product_model: Confirm deletion
     info:
         not_applicable: N/A
         entity:
@@ -1400,6 +1405,7 @@ pim_menu:
         group_type: Group types
         locale: Locales
         product: Products
+        product_model: Product Models
         published_product: Published Products
         export_history: Exports history
         export_profile: Export profiles

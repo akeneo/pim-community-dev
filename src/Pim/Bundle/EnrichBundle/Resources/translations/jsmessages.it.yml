@@ -390,6 +390,7 @@ pim_enrich:
         email: E-mail
         regexp: Espressione regolare
         url: URL
+      title: attributo
     attribute_group:
       info:
         update_failed: Gruppo di attributi non può essere aggiornato

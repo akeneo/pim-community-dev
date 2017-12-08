@@ -322,6 +322,7 @@ pim_enrich:
         email: E-mail
         regexp: Reguliere expressie
         url: URL
+      title: attribuut
     attribute_group:
       info:
         update_successful: Attribuutgroep succesvol bijgewerkt

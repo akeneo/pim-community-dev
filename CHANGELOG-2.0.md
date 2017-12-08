@@ -2,8 +2,26 @@
 
 ## Better manage products with variants!
 
-- PIM-6349: Adds mass edit to add products to an existing product model
+- PIM-6341: Allow cascade deletion of product models via the grid and PEF
 - PIM-6357: Adds mass edit of attributes for product and product models
+
+## BC breaks
+
+- MySQL table constraints and elasticsearch indexes have changed. Please execute the pending migrations using the `doctrine:migrations:migrate` console command.
+
+
+# 2.0.8 (2017-12-07)
+
+## Bug fixes
+
+- PIM-7035: fix reset login page style and error 500 thrown after submitting form
+- PIM-7045: fix memory leak in step `Compute product model descendants` for product model import
+- PIM-6958: fix loading a product with a reference data that is not available (simpleselect or multiselect)
+
+## Better manage products with variants!
+
+- PIM-6349: Adds mass edit to add products to an existing product model
+- PIM-6791: Change a product in a variant product by import
 
 ## Update jobs
 
@@ -13,9 +31,6 @@ IMPORTANT: In order to use the new mass edit, please execute `bin/console akeneo
 
 Changes the constructor of `Pim\Bundle\EnrichBundle\Controller\Rest\ProductModelController` to add `Pim\Component\Catalog\Repository\FamilyVariantRepositoryInterface` 
 
-## Bug fixes
-
-- PIM-6958: fix loading a product with a reference data that is not available (simpleselect or multiselect)
 
 # 2.0.7 (2017-11-23)
 
@@ -52,10 +67,6 @@ Changes the constructor of `Pim\Bundle\EnrichBundle\Controller\Rest\ProductModel
 - Replace `Pim\Component\Catalog\Builder\ProductBuilderInterface` by `Pim\Component\Connector\Processor\Denormalization\Product\AddParent` and `Pim\Component\Connector\Processor\Denormalization\Product\FindProductToImport` in `Pim\Component\Connector\Processor\Denormalization\ProductProcessor`
 - Change method signature from `Pim\Component\Catalog\Model\ProductInterface::setAssociations(array $associations)` to `Pim\Component\Catalog\Model\ProductInterface::setAssociations(Collection $associations)`
 
-## New jobs
-IMPORTANT: In order for your PIM to work properly, you will need to run the following commands to add the missing job instances.
-- Add the job instance `compute_family_variant_structure_changes`: `bin/console akeneo:batch:create-job "internal" "compute_family_variant_structure_changes" "compute_family_variant_structure_changes" "compute_family_variant_structure_changes" '{"family_variant_codes":["null"]}' "Compute family variant structure changes" --env=prod`
-
 # 2.0.6 (2017-11-03)
 
 ## Better manage products with variants!
@@ -88,6 +99,8 @@ IMPORTANT: In order for your PIM to work properly, you will need to run the foll
 ## Update jobs
 
 IMPORTANT: In order to use the new quick exports, please execute `bin/console doctrine:migrations:migrate` to migrate your configurations.
+IMPORTANT: In order for your PIM to work properly, you will need to run the following commands to add the missing job instances.
+- Add the job instance `compute_family_variant_structure_changes`: `bin/console akeneo:batch:create-job "internal" "compute_family_variant_structure_changes" "compute_family_variant_structure_changes" "compute_family_variant_structure_changes" '{"family_variant_codes":["null"]}' "Compute family variant structure changes" --env=prod`
 
 # 2.0.5 (2017-10-26)
 

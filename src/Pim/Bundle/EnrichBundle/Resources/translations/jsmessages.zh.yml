@@ -305,6 +305,7 @@ pim_enrich:
         email: 电子邮件
         regexp: 正则表达式
         url: 链接地址
+      title: 属性
     attribute_group:
       info:
         update_successful: 属性组已更新

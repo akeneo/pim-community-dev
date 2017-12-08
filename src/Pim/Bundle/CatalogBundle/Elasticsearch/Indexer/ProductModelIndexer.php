@@ -28,6 +28,9 @@ class ProductModelIndexer implements IndexerInterface, BulkIndexerInterface, Rem
     private $normalizer;
 
     /** @var Client */
+    private $productClient;
+
+    /** @var Client */
     private $productModelClient;
 
     /** @var Client */
@@ -39,16 +42,19 @@ class ProductModelIndexer implements IndexerInterface, BulkIndexerInterface, Rem
     /**
      * @param NormalizerInterface $normalizer
      * @param Client              $productModelClient
+     * @param Client              $productClient
      * @param Client              $productAndProductModelClient
      * @param string              $indexType
      */
     public function __construct(
         NormalizerInterface $normalizer,
+        Client $productClient,
         Client $productModelClient,
         Client $productAndProductModelClient,
         string $indexType
     ) {
         $this->normalizer = $normalizer;
+        $this->productClient = $productClient;
         $this->productModelClient = $productModelClient;
         $this->productAndProductModelClient = $productAndProductModelClient;
         $this->indexType = $indexType;
@@ -143,6 +149,38 @@ class ProductModelIndexer implements IndexerInterface, BulkIndexerInterface, Rem
             $this->indexType,
             self::PRODUCT_MODEL_IDENTIFIER_PREFIX . (string) $objectId
         );
+
+        $this->removeDescendantsOf($objectId);
+    }
+
+    /**
+     * Queries all the different ES indexes to remove any document having a reference to this objectId in its ancestors
+     */
+    private function removeDescendantsOf($objectId): void
+    {
+        $this->productClient->deleteByQuery([
+            'query' => [
+                'term' => [
+                    'ancestors.ids' => self::PRODUCT_MODEL_IDENTIFIER_PREFIX.$objectId,
+                ],
+            ],
+        ]);
+
+        $this->productModelClient->deleteByQuery([
+            'query' => [
+                'term' => [
+                    'ancestors.ids' => self::PRODUCT_MODEL_IDENTIFIER_PREFIX.$objectId,
+                ],
+            ],
+        ]);
+
+        $this->productAndProductModelClient->deleteByQuery([
+            'query' => [
+                'term' => [
+                    'ancestors.ids' => self::PRODUCT_MODEL_IDENTIFIER_PREFIX.$objectId,
+                ],
+            ],
+        ]);
     }
 
     /**

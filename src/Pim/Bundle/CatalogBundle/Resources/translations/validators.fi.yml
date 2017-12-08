@@ -64,3 +64,6 @@ pim_catalog:
     301: Tämä kenttä vaatii kelvollisen laajuuden ja lokaation.
     302: Tämä kenttä vaatii kelvollisen laajuuden.
     303: Tämä kenttä vaatii kelvollisen assosiaatiomuodon.
+    pim_immutable_product_validator: Sama tunnus on jo toisen tuotteen käytössä
+    pim_immutable_product_model_validator: Sama tunnus on jo toisen tuotemallin käytössä.
+
