@@ -8,6 +8,7 @@ use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Behat\Gherkin\Node\TableNode;
 use Behat\MinkExtension\Context\RawMinkContext;
+use PHPUnit\Framework\Assert;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
 use Pim\Component\Catalog\Repository\FamilyVariantRepositoryInterface;
@@ -174,19 +175,19 @@ class ProductModelStorage extends RawMinkContext
                 $actualParent = $productModel->getParent();
                 $expectedParent = $this->productModelRepository->findOneByIdentifier($value);
 
-                assertSame($actualParent, $expectedParent);
+                Assert::assertSame($actualParent, $expectedParent);
                 break;
             case 'family_variant':
                 $actualFamilyVariant = $productModel->getFamilyVariant();
                 $expectedFamilyVariant = $this->familyVariantRepository->findOneByIdentifier($value);
 
-                assertSame($actualFamilyVariant, $expectedFamilyVariant);
+                Assert::assertSame($actualFamilyVariant, $expectedFamilyVariant);
                 break;
             case 'categories':
                 $actualCategoryCodes = $productModel->getCategoryCodes();
                 $expectedCategoryCodes = explode(',', $value);
 
-                assertSame($actualCategoryCodes, $expectedCategoryCodes);
+                Assert::assertSame($actualCategoryCodes, $expectedCategoryCodes);
                 break;
         }
     }
@@ -211,18 +212,18 @@ class ProductModelStorage extends RawMinkContext
         );
 
         if ('' === $value) {
-            assertEmpty((string)$productValue);
+            Assert::assertEmpty((string)$productValue);
         } elseif ('prices' === $attribute->getBackendType() && null !== $priceCurrency) {
             // $priceCurrency can be null if we want to test all the currencies at the same time
             // in this case, it's a simple string comparison
             // example: 180.00 EUR, 220.00 USD
 
             $price = $productValue->getPrice($priceCurrency);
-            assertEquals($value, $price->getData());
+            Assert::assertEquals($value, $price->getData());
         } elseif ('date' === $attribute->getBackendType()) {
-            assertEquals($value, $productValue->getData()->format('Y-m-d'));
+            Assert::assertEquals($value, $productValue->getData()->format('Y-m-d'));
         } else {
-            assertEquals($value, (string)$productValue);
+            Assert::assertEquals($value, (string)$productValue);
         }
     }
 }

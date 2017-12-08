@@ -7,6 +7,7 @@ use Context\Spin\TimeoutException;
 use Doctrine\Common\Util\ClassUtils;
 use Doctrine\Common\Util\Debug;
 use Doctrine\Common\Util\Inflector;
+use PHPUnit\Framework\Assert;
 use Pim\Component\Catalog\Model\FamilyVariant;
 use Pim\Component\Catalog\Model\ProductInterface;
 
@@ -188,18 +189,18 @@ class FixturesContext extends PimContext
     {
         switch ($value) {
             case 'true':
-                assertTrue($data);
+                Assert::assertTrue($data);
                 break;
 
             case 'false':
-                assertFalse($data);
+                Assert::assertFalse($data);
                 break;
 
             default:
                 if ($data instanceof \DateTime) {
                     $data = $data->format('Y-m-d');
                 }
-                assertEquals($value, $data);
+                Assert::assertEquals($value, $data);
         }
     }
 

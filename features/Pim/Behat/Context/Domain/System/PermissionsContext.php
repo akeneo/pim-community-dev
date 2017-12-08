@@ -3,6 +3,7 @@
 namespace Pim\Behat\Context\Domain\System;
 
 use Context\Spin\SpinCapableTrait;
+use PHPUnit\Framework\Assert;
 use Pim\Behat\Context\PimContext;
 
 /**
@@ -90,7 +91,7 @@ class PermissionsContext extends PimContext
         }
 
         foreach ($this->listToArray($acls) as $acl) {
-            assertTrue($permissionElement->$method($acl));
+            Assert::assertTrue($permissionElement->$method($acl));
         }
     }
 }

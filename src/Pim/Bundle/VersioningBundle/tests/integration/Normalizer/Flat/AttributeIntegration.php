@@ -13,8 +13,6 @@ use Pim\Bundle\VersioningBundle\tests\integration\Normalizer\Flat\AbstractFlatNo
  */
 class AttributeIntegration extends AbstractFlatNormalizerTestCase
 {
-    protected $purgeDatabaseForEachTest = false;
-
     public function testAttributeIdentifier()
     {
         $this->assert('sku', [

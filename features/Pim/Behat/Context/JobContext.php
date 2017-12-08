@@ -9,6 +9,7 @@ use Akeneo\Component\Batch\Model\JobInstance;
 use Behat\ChainedStepsExtension\Step\Then;
 use Behat\Gherkin\Node\TableNode;
 use Context\Spin\SpinCapableTrait;
+use PHPUnit\Framework\Assert;
 use Symfony\Component\Validator\ConstraintViolationInterface;
 
 class JobContext extends PimContext
@@ -146,7 +147,7 @@ class JobContext extends PimContext
             return $page->find('css', sprintf('[data-name="%s"] .select2-default', $label));
         }, sprintf('Field "%s" not found.', $label));
 
-        assertEquals($field->getValue(), $message);
+        Assert::assertEquals($field->getValue(), $message);
     }
 
     /**

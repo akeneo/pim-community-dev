@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\UIBundle\Tests\Unit\Form\Transformer;
 
+use PHPUnit\Framework\TestCase;
 use Pim\Bundle\UIBundle\Form\Transformer\AjaxEntityTransformer;
 
 /**
@@ -11,7 +12,7 @@ use Pim\Bundle\UIBundle\Form\Transformer\AjaxEntityTransformer;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class AjaxEntityTransformerTest extends \PHPUnit_Framework_TestCase
+class AjaxEntityTransformerTest extends TestCase
 {
     protected $repository;
 
