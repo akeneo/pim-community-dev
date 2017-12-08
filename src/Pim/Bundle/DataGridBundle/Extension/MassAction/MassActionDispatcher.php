@@ -66,9 +66,7 @@ class MassActionDispatcher
     /**
      * Dispatch datagrid mass action
      *
-     * @param Request $request
-     *
-     * @throws \LogicException
+     * @param array $parameters
      *
      * @return MassActionResponseInterface
      */
@@ -87,9 +85,7 @@ class MassActionDispatcher
      *
      * If Inset is defined, it returns filter on entity ids, else it returns all applied filters on the grid
      *
-     * @param Request $request
-     *
-     * @throws \LogicException
+     * @param array $parameters
      *
      * @return array
      */
@@ -106,14 +102,7 @@ class MassActionDispatcher
         if (true === $parameters['inset']) {
             $filters = [['field' => 'id', 'operator' => 'IN', 'value' => $parameters['values']]];
         } else {
-            if (empty($parameters['values'])) {
-                $filters = $datasource->getProductQueryBuilder()->getRawFilters();
-            } else {
-                $filters = array_merge(
-                    $datasource->getProductQueryBuilder()->getRawFilters(),
-                    [['field' => 'id', 'operator' => 'NOT IN', 'value' => $parameters['values']]]
-                );
-            }
+            $filters = $datasource->getProductQueryBuilder()->getRawFilters();
         }
 
         $datasourceParams = $datasource->getParameters();

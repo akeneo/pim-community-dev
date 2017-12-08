@@ -14,6 +14,7 @@ use Pim\Component\Catalog\Converter\MetricConverter;
 use Pim\Component\Catalog\Exception\ObjectNotFoundException;
 use Pim\Component\Catalog\Manager\CompletenessManager;
 use Pim\Component\Catalog\Model\ChannelInterface;
+use Pim\Component\Catalog\Model\EntityWithFamilyInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
 use Pim\Component\Catalog\Query\ProductQueryBuilderFactoryInterface;
@@ -93,7 +94,7 @@ class FilteredProductAndProductModelReader implements
     /**
      * {@inheritdoc}
      */
-    public function read(): ?ProductInterface
+    public function read(): ?EntityWithFamilyInterface
     {
         $product = null;
         $product = $this->getNextProduct();
@@ -183,7 +184,7 @@ class FilteredProductAndProductModelReader implements
      *
      * @return null|ProductInterface
      */
-    private function getNextProduct(): ?ProductInterface
+    private function getNextProduct(): ?EntityWithFamilyInterface
     {
         $entity = null;
 
@@ -192,21 +193,21 @@ class FilteredProductAndProductModelReader implements
 
             $this->productsAndProductModels->next();
 
-            if ($entity instanceof ProductModelInterface) {
-                if ($this->stepExecution) {
-                    $this->stepExecution->incrementSummaryInfo('skip');
+            // if ($entity instanceof ProductModelInterface) {
+            //     if ($this->stepExecution) {
+            //         $this->stepExecution->incrementSummaryInfo('skip');
 
-                    $warning = 'Bulk actions do not support Product models entities yet.';
-                    $this->stepExecution->addWarning(
-                        $warning,
-                        [],
-                        new DataInvalidItem(['code' => $entity->getCode()])
-                    );
-                }
+            //         $warning = 'Bulk actions do not support Product models entities yet.';
+            //         $this->stepExecution->addWarning(
+            //             $warning,
+            //             [],
+            //             new DataInvalidItem(['code' => $entity->getCode()])
+            //         );
+            //     }
 
-                $entity = null;
-                continue;
-            }
+            //     $entity = null;
+            //     continue;
+            // }
 
             $this->stepExecution->incrementSummaryInfo('read');
 

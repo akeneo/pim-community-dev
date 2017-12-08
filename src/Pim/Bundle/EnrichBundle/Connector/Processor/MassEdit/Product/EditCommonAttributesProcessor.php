@@ -4,10 +4,14 @@ namespace Pim\Bundle\EnrichBundle\Connector\Processor\MassEdit\Product;
 
 use Akeneo\Component\Batch\Item\DataInvalidItem;
 use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
+use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Doctrine\Common\Util\ClassUtils;
 use Pim\Bundle\EnrichBundle\Connector\Processor\AbstractProcessor;
+use Pim\Component\Catalog\Model\EntityWithFamilyInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Model\ProductModelInterface;
+use Pim\Component\Catalog\Model\VariantProductInterface;
 use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -32,50 +36,62 @@ class EditCommonAttributesProcessor extends AbstractProcessor
     /** @var ObjectUpdaterInterface */
     protected $productUpdater;
 
+    /** @var ObjectUpdaterInterface */
+    protected $productModelUpdater;
+
     /** @var ObjectDetacherInterface */
-    protected $productDetacher;
+    protected $detacher;
+
+    /** @var IdentifiableObjectRepositoryInterface */
+    protected $attributeRepository;
 
     /**
-     * @param ValidatorInterface                  $validator
-     * @param ProductRepositoryInterface          $productRepository
-     * @param ObjectUpdaterInterface              $productUpdater
-     * @param ObjectDetacherInterface             $productDetacher
+     * @param ValidatorInterface                    $validator
+     * @param ProductRepositoryInterface            $productRepository
+     * @param ObjectUpdaterInterface                $productUpdater
+     * @param ObjectUpdaterInterface                $productModelUpdater
+     * @param ObjectDetacherInterface               $productDetacher
+     * @param IdentifiableObjectRepositoryInterface $attributeRepository
      */
     public function __construct(
         ValidatorInterface $validator,
         ProductRepositoryInterface $productRepository,
         ObjectUpdaterInterface $productUpdater,
-        ObjectDetacherInterface $productDetacher
+        ObjectUpdaterInterface $productModelUpdater,
+        ObjectDetacherInterface $productDetacher,
+        IdentifiableObjectRepositoryInterface $attributeRepository
     ) {
         $this->validator = $validator;
         $this->productRepository = $productRepository;
         $this->productUpdater = $productUpdater;
-        $this->productDetacher = $productDetacher;
+        $this->productModelUpdater = $productModelUpdater;
+        $this->detacher = $productDetacher;
+        $this->attributeRepository = $attributeRepository;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function process($product)
+    public function process($entity)
     {
         $actions = $this->getConfiguredActions();
 
-        if (!$this->isProductEditable($product)) {
+        if (!$this->isEntityEditable($entity)) {
             $this->stepExecution->incrementSummaryInfo('skipped_products');
-            $this->productDetacher->detach($product);
+            $this->detacher->detach($entity);
 
             return null;
         }
 
-        $product = $this->updateProduct($product, $actions[0]);
-        if (null !== $product && !$this->isProductValid($product)) {
+        $entity = $this->updateEntity($entity, $actions[0]);
+        if (null !== $entity && !$this->isProductValid($entity)) {
             $this->stepExecution->incrementSummaryInfo('skipped_products');
-            $this->productDetacher->detach($product);
+            $this->detacher->detach($entity);
 
             return null;
         }
 
-        return $product;
+        return $entity;
     }
 
     /**
@@ -103,14 +119,14 @@ class EditCommonAttributesProcessor extends AbstractProcessor
      *      ]
      * ]
      *
-     * @param ProductInterface $product
-     * @param array            $actions
+     * @param EntityWithFamilyInterface $entity
+     * @param array                     $actions
      *
      * @throws \LogicException
      *
      * @return ProductInterface $product
      */
-    protected function updateProduct(ProductInterface $product, array $actions)
+    protected function updateEntity(EntityWithFamilyInterface $entity, array $actions)
     {
         $normalizedValues = $actions['normalized_values'];
         $filteredValues = [];
@@ -120,34 +136,57 @@ class EditCommonAttributesProcessor extends AbstractProcessor
              * We don't call that method directly on the product model because it hydrates
              * lot of models and it causes memory leak...
              */
-            if ($this->isAttributeEditable($product, $attributeCode)) {
+            if ($this->isAttributeEditable($entity, $attributeCode)) {
                 $filteredValues['values'][$attributeCode] = $values;
             }
         }
 
         if (empty($filteredValues)) {
             $this->stepExecution->incrementSummaryInfo('skipped_products');
-            $this->addWarning($product);
-            $this->productDetacher->detach($product);
+            $this->addWarning($entity);
+            $this->detacher->detach($entity);
 
             return null;
         }
 
-        $this->productUpdater->update($product, $filteredValues);
+        if ($entity instanceof ProductInterface) {
+            $this->productUpdater->update($entity, $filteredValues);
+        } else {
+            $this->productModelUpdater->update($entity, $filteredValues);
+        }
 
-        return $product;
+        return $entity;
     }
 
     /**
-     * @param ProductInterface $product
-     * @param $attributeCode
+     * @param EntityWithFamilyInterface $entity
+     * @param string                    $attributeCode
      *
      * @return bool
      */
-    protected function isAttributeEditable(ProductInterface $product, $attributeCode)
+    protected function isAttributeEditable(EntityWithFamilyInterface $entity, string $attributeCode)
     {
-        if (!$this->productRepository->hasAttributeInFamily($product->getId(), $attributeCode)) {
+        $attribute = $this->attributeRepository->findOneByIdentifier($attributeCode);
+        $family = $entity->getFamily();
+
+        if (null === $family) {
+            return true;
+        }
+
+        if (!$family->hasAttribute($attribute)) {
             return false;
+        }
+
+        if ($entity instanceof VariantProductInterface || $entity instanceof ProductModelInterface) {
+            $level = $entity->getVariationLevel();
+            $familyVariant = $entity->getFamilyVariant();
+            if ($level > 0) {
+                $attributeSet = $familyVariant->getVariantAttributeSet($level);
+
+                return $attributeSet->hasAttribute($attribute);
+            }
+
+            return $familyVariant->getCommonAttributes()->contains($attribute);
         }
 
         return true;
@@ -160,8 +199,9 @@ class EditCommonAttributesProcessor extends AbstractProcessor
      *
      * @return bool
      */
-    protected function isProductValid(ProductInterface $product)
+    protected function isProductValid(EntityWithFamilyInterface $product)
     {
+        //TODO: use pm validator
         $violations = $this->validator->validate($product);
         $this->addWarningMessage($violations, $product);
 
@@ -169,19 +209,19 @@ class EditCommonAttributesProcessor extends AbstractProcessor
     }
 
     /**
-     * @param ProductInterface $product
+     * @param EntityWithFamilyInterface $entity
      *
      * @return bool
      */
-    protected function isProductEditable(ProductInterface $product)
+    protected function isEntityEditable(EntityWithFamilyInterface $entity)
     {
         return true;
     }
 
     /**
-     * @param ProductInterface $product
+     * @param EntityWithFamilyInterface $entity
      */
-    protected function addWarning(ProductInterface $product)
+    protected function addWarning(EntityWithFamilyInterface $entity)
     {
         /*
          * We don't give the product to addWarning because we don't want that step executor
@@ -192,9 +232,9 @@ class EditCommonAttributesProcessor extends AbstractProcessor
             [],
             new DataInvalidItem(
                 [
-                    'class'  => ClassUtils::getClass($product),
-                    'id'     => $product->getId(),
-                    'string' => $product->getIdentifier(),
+                    'class'  => ClassUtils::getClass($entity),
+                    'id'     => $entity->getId(),
+                    'string' => $entity instanceof ProductInterface ? $entity->getIdentifier() : $entity->getCode(),
                 ]
             )
         );
