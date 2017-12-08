@@ -82,7 +82,7 @@ JSON;
         $client->request('GET', 'api/rest/v1/families/unknownFamily/variants/familyVariantA1');
         $expected = <<<JSON
 {
-    "code" : "404",
+    "code" : 404,
     "message" : "Family \"unknownFamily\" does not exist."
 }
 JSON;
@@ -99,7 +99,7 @@ JSON;
         $client->request('GET', 'api/rest/v1/families/familyA/variants/unknownFamilyVariant');
         $expected = <<<JSON
 {
-    "code" : "404",
+    "code" : 404,
     "message" : "Family variant \"unknownFamilyVariant\" does not exist or is not a variant of the family \"familyA\"."
 }
 JSON;
@@ -116,7 +116,7 @@ JSON;
         $client->request('GET', 'api/rest/v1/families/familyA/variants/variantFamilyB');
         $expected = <<<JSON
 {
-    "code" : "404",
+    "code" : 404,
     "message" : "Family variant \"variantFamilyB\" does not exist or is not a variant of the family \"familyA\"."
 }
 JSON;
