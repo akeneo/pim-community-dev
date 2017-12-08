@@ -65,7 +65,7 @@ Feature: Edit common attributes of many products and product models at once
   Scenario: Mass edit attributes of a sub product model inside a family variant with 2 levels of hierarchy
     Given I am on the products grid
     And I show the filter "color"
-    And I filter by "color" with operator "IN LIST" and value "[white]"
+    And I filter by "color" with operator "IN LIST" and value "white"
     And I select rows model-col-white
     And I press the "Bulk actions" button
     And I choose the "Edit common attributes" operation
