@@ -36,6 +36,7 @@ define(
 
             configure: function () {
                 this.listenTo(this.getRoot(), 'pim_enrich:form:change-family:after', this.save);
+                this.listenTo(this.getRoot(), 'pim_enrich:form:update-association', this.save);
 
                 return BaseSave.prototype.configure.apply(this, arguments);
             },

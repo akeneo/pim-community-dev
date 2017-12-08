@@ -618,7 +618,7 @@ define(
                         assocTarget
                     );
 
-                    $('.save', this.getRoot().$el).trigger('click');
+                    this.getRoot().trigger('pim_enrich:form:update-association');
                 });
             },
 
