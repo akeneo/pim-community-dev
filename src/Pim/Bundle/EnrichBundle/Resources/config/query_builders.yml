@@ -5,7 +5,6 @@ parameters:
     pim_enrich.elasticsearch.cursor_factory.class: Pim\Bundle\EnrichBundle\Elasticsearch\CursorFactory
     pim_enrich.query.elasticsearch.product_and_model_query_builder_factory.class: Pim\Bundle\EnrichBundle\Elasticsearch\ProductAndProductModelQueryBuilderFactory
     pim_enrich.query.product_and_product_model_query_builder.class: Pim\Bundle\EnrichBundle\ProductQueryBuilder\ProductAndProductModelQueryBuilder
-    pim_enrich.query.mass_edit_product_and_product_model_query_builder.class: Pim\Bundle\EnrichBundle\ProductQueryBuilder\MassEditProductAndProductModelQueryBuilder
 
 services:
     # Filters
@@ -80,8 +79,3 @@ services:
             - '%pim_enrich.query.product_and_product_model_query_builder.class%'
             - '@pim_enrich.query.product_and_product_model_query_builder_factory.with_product_and_product_model_cursor'
 
-    pim_enrich.query.mass_edit_product_and_product_model_query_builder_factory:
-        class: '%pim_enrich.query.elasticsearch.product_and_model_query_builder_factory.class%'
-        arguments:
-            - '%pim_enrich.query.mass_edit_product_and_product_model_query_builder.class%'
-            - '@pim_enrich.query.product_and_product_model_query_builder_factory.with_product_and_product_model_cursor'
