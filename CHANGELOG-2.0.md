@@ -1,3 +1,15 @@
+# 2.0.x
+
+## Better manage products with variants!
+
+- PIM-6341: Allow cascade deletion of product models via the grid and PEF
+
+
+## BC breaks
+
+- MySQL table constraints and elasticsearch indexes have changed. Please execute the pending migrations using the `doctrine:migrations:migrate` console command.
+
+
 # 2.0.8 (2017-12-07)
 
 ## Bug fixes
@@ -18,6 +30,7 @@ IMPORTANT: In order to use the new mass edit, please execute `bin/console akeneo
 ## BC breaks
 
 Changes the constructor of `Pim\Bundle\EnrichBundle\Controller\Rest\ProductModelController` to add `Pim\Component\Catalog\Repository\FamilyVariantRepositoryInterface` 
+
 
 # 2.0.7 (2017-11-23)
 

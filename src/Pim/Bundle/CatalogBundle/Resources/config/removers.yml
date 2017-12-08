@@ -28,6 +28,13 @@ services:
             - '@event_dispatcher'
             - '%pim_catalog.model.product.interface%'
 
+    pim_catalog.remover.product_model:
+        class: '%pim_catalog.remover.base.class%'
+        arguments:
+            - '@pim_catalog.object_manager.product'
+            - '@event_dispatcher'
+            - '%pim_catalog.model.product_model.interface%'
+
     pim_catalog.remover.association_type:
         class: '%pim_catalog.remover.base.class%'
         arguments:
