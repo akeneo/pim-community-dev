@@ -1,9 +1,9 @@
 pim_api_asset_reference_download:
-    path: /assets/{assetCode}/reference-files/{localeCode}/download
+    path: /assets/{code}/reference-files/{localeCode}/download
     defaults: { _controller: pimee_api.controller.asset_reference:downloadAction, _format: json }
     methods: [GET]
 
 pim_api_asset_reference_get:
-    path: /assets/{assetCode}/reference-files/{localeCode}
+    path: /assets/{code}/reference-files/{localeCode}
     defaults: { _controller: pimee_api.controller.asset_reference:getAction, _format: json }
     methods: [GET]

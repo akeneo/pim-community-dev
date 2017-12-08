@@ -3,8 +3,8 @@ pim_api:
         asset_category:
             edit: Create and update asset categories
             list: List asset categories
-        asset_reference:
+        asset:
             list: List assets, and list and download their reference and variation files
     acl_group:
         asset_category: Asset categories
-        asset_reference: Asset references
+        asset: Assets

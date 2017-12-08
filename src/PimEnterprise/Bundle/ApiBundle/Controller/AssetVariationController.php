@@ -18,10 +18,11 @@ use Akeneo\Component\FileStorage\File\FileFetcherInterface;
 use Akeneo\Component\FileStorage\FilesystemProvider;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
+use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\LocaleInterface;
 use PimEnterprise\Component\ProductAsset\FileStorage;
 use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
-use PimEnterprise\Component\ProductAsset\Model\ReferenceInterface;
+use PimEnterprise\Component\ProductAsset\Model\VariationInterface;
 use Symfony\Component\HttpFoundation\File\Exception\FileNotFoundException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -32,12 +33,15 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 /**
  * @author Damien Carcel <damien.carcel@akeneo.com>
  */
-class AssetReferenceController
+class AssetVariationController
 {
-    public const NON_LOCALIZABLE_REFERENCE = 'no_locale';
+    public const NON_LOCALIZABLE_VARIATION = 'no_locale';
 
     /** @var IdentifiableObjectRepositoryInterface */
     protected $assetRepository;
+
+    /** @var IdentifiableObjectRepositoryInterface */
+    protected $channelRepository;
 
     /** @var IdentifiableObjectRepositoryInterface */
     protected $localeRepository;
@@ -53,6 +57,7 @@ class AssetReferenceController
 
     /**
      * @param IdentifiableObjectRepositoryInterface $assetRepository
+     * @param IdentifiableObjectRepositoryInterface $channelRepository
      * @param IdentifiableObjectRepositoryInterface $localeRepository
      * @param FilesystemProvider                    $filesystemProvider
      * @param FileFetcherInterface                  $fileFetcher
@@ -60,12 +65,14 @@ class AssetReferenceController
      */
     public function __construct(
         IdentifiableObjectRepositoryInterface $assetRepository,
+        IdentifiableObjectRepositoryInterface $channelRepository,
         IdentifiableObjectRepositoryInterface $localeRepository,
         FilesystemProvider $filesystemProvider,
         FileFetcherInterface $fileFetcher,
         NormalizerInterface $normalizer
     ) {
         $this->assetRepository = $assetRepository;
+        $this->channelRepository = $channelRepository;
         $this->localeRepository = $localeRepository;
         $this->filesystemProvider = $filesystemProvider;
         $this->fileFetcher = $fileFetcher;
@@ -74,6 +81,7 @@ class AssetReferenceController
 
     /**
      * @param string $code
+     * @param string $channelCode
      * @param string $localeCode
      *
      * @throws NotFoundHttpException
@@ -83,29 +91,30 @@ class AssetReferenceController
      *
      * @AclAncestor("pim_api_asset_list")
      */
-    public function downloadAction(string $code, string $localeCode): Response
+    public function downloadAction(string $code, string $channelCode, string $localeCode): Response
     {
-        $referenceFile = $this->getReference($code, $localeCode)->getFileInfo();
+        $variationFile = $this->getVariation($code, $channelCode, $localeCode)->getFileInfo();
 
         $fs = $this->filesystemProvider->getFilesystem(FileStorage::ASSET_STORAGE_ALIAS);
         $options = [
             'headers' => [
-                'Content-Type'        => $referenceFile->getMimeType(),
-                'Content-Disposition' => sprintf('attachment; filename="%s"', $referenceFile->getOriginalFilename())
+                'Content-Type'        => $variationFile->getMimeType(),
+                'Content-Disposition' => sprintf('attachment; filename="%s"', $variationFile->getOriginalFilename())
             ]
         ];
 
         try {
-            return $this->fileFetcher->fetch($fs, $referenceFile->getKey(), $options);
+            return $this->fileFetcher->fetch($fs, $variationFile->getKey(), $options);
         } catch (FileTransferException $e) {
             throw new UnprocessableEntityHttpException($e->getMessage(), $e);
         } catch (FileNotFoundException $e) {
-            $localizableMessage = static::NON_LOCALIZABLE_REFERENCE !== $localeCode
+            $localizableMessage = static::NON_LOCALIZABLE_VARIATION !== $localeCode
                 ? sprintf(' and the locale "%s"', $localeCode)
                 : '';
             $notFoundMessage = sprintf(
-                'Reference file for the asset "%s"%s does not exist.',
+                'Variation file for the asset "%s" and the channel "%s"%s does not exist.',
                 $code,
+                $channelCode,
                 $localizableMessage
             );
 
@@ -115,6 +124,7 @@ class AssetReferenceController
 
     /**
      * @param string $code
+     * @param string $channelCode
      * @param string $localeCode
      *
      * @throws NotFoundHttpException
@@ -124,13 +134,30 @@ class AssetReferenceController
      *
      * @AclAncestor("pim_api_asset_list")
      */
-    public function getAction(string $code, string $localeCode): Response
+    public function getAction(string $code, string $channelCode, string $localeCode): Response
     {
-        $reference = $this->getReference($code, $localeCode);
+        $variation = $this->getVariation($code, $channelCode, $localeCode);
 
-        $normalizedReference = $this->normalizer->normalize($reference, 'external_api');
+        $normalizedVariation = $this->normalizer->normalize($variation, 'external_api');
 
-        return new JsonResponse($normalizedReference);
+        return new JsonResponse($normalizedVariation);
+    }
+
+    /**
+     * @param string $channelCode
+     *
+     * @throws NotFoundHttpException
+     *
+     * @return ChannelInterface
+     */
+    protected function getChannel(string $channelCode): ChannelInterface
+    {
+        $channel = $this->channelRepository->findOneByIdentifier($channelCode);
+        if (null === $channel) {
+            throw new NotFoundHttpException(sprintf('Channel "%s" does not exist.', $channelCode));
+        }
+
+        return $channel;
     }
 
     /**
@@ -142,7 +169,7 @@ class AssetReferenceController
      */
     protected function getLocale(string $localeCode): ?LocaleInterface
     {
-        if (static::NON_LOCALIZABLE_REFERENCE === $localeCode) {
+        if (static::NON_LOCALIZABLE_VARIATION === $localeCode) {
             return null;
         }
 
@@ -156,16 +183,22 @@ class AssetReferenceController
 
     /**
      * @param string $code
+     * @param string $channelCode
      * @param string $localeCode
      *
      * @throws NotFoundHttpException
      * @throws UnprocessableEntityHttpException
      *
-     * @return ReferenceInterface
+     * @return VariationInterface
      */
-    protected function getReference(string $code, string $localeCode): ReferenceInterface
-    {
+    protected function getVariation(
+        string $code,
+        string $channelCode,
+        string $localeCode
+    ): VariationInterface {
+        $channel = $this->getChannel($channelCode);
         $locale = $this->getLocale($localeCode);
+        $this->validateLocaleIsActivatedForChannel($locale, $channel);
 
         $asset = $this->getAsset($code);
 
@@ -183,20 +216,38 @@ class AssetReferenceController
             ));
         }
 
-        $reference = $asset->getReference($locale);
+        $variation = $asset->getVariation($channel, $locale);
 
         $localizableMessage = null !== $locale ? sprintf(' and the locale "%s"', $locale->getCode()) : '';
         $notFoundMessage = sprintf(
-            'Reference file for the asset "%s"%s does not exist.',
-            $asset->getCode(),
+            'Variation file for the asset "%s" and the channel "%s"%s does not exist.',
+            $code,
+            $channel->getCode(),
             $localizableMessage
         );
 
-        if (null === $reference || null === $reference->getFileInfo()) {
+        if (null === $variation || null === $variation->getFileInfo()) {
             throw new NotFoundHttpException($notFoundMessage);
         }
 
-        return $reference;
+        return $variation;
+    }
+
+    /**
+     * @param null|LocaleInterface $locale
+     * @param ChannelInterface     $channel
+     */
+    protected function validateLocaleIsActivatedForChannel(?LocaleInterface $locale, ChannelInterface $channel): void
+    {
+        if (null !== $locale && !$channel->hasLocale($locale)) {
+            throw new NotFoundHttpException(sprintf(
+                'There is no variation file for the locale "%s" and the channel "%s" as the locale "%s" is not activated for the channel "%s".',
+                $locale->getCode(),
+                $channel->getCode(),
+                $locale->getCode(),
+                $channel->getCode()
+            ));
+        }
     }
 
     /**

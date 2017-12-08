@@ -13,10 +13,7 @@ declare(strict_types=1);
 
 namespace PimEnterprise\Component\Api\Normalizer;
 
-use Pim\Component\Api\Hal\Link;
 use PimEnterprise\Component\ProductAsset\Model\ReferenceInterface;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -24,17 +21,6 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  */
 class AssetReferenceNormalizer implements NormalizerInterface
 {
-    /** @var RouterInterface */
-    private $router;
-
-    /**
-     * @param RouterInterface $router
-     */
-    public function __construct(RouterInterface $router)
-    {
-        $this->router = $router;
-    }
-
     /**
      * {@inheritdoc}
      */
@@ -44,7 +30,6 @@ class AssetReferenceNormalizer implements NormalizerInterface
 
         if (null === $reference->getFileInfo()) {
             return [
-                '_link' => (object) [],
                 'locale' => $localeCode,
                 'code' => null,
             ];
@@ -52,18 +37,7 @@ class AssetReferenceNormalizer implements NormalizerInterface
 
         $code = $reference->getFileInfo()->getKey();
 
-        $route = $this->router->generate(
-            'pim_api_asset_reference_download',
-            [
-                'assetCode' => $reference->getAsset()->getCode(),
-                'localeCode' => $localeCode ?: 'no_locale',
-            ],
-            UrlGeneratorInterface::ABSOLUTE_URL
-        );
-        $link = new Link('download', $route);
-
         return [
-            '_link' => $link->toArray(),
             'locale' => $localeCode,
             'code' => $code,
         ];

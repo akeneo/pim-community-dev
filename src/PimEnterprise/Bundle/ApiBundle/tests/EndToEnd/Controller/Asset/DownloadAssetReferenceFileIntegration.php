@@ -167,7 +167,7 @@ JSON;
         $expectedContent = <<<JSON
 {
     "code": 422,
-    "message": "The asset \"localizable_asset_without_references\" is localizable, you must provide a locale and the locale \"no_locale\" does not exist."
+    "message": "The asset \"localizable_asset_without_references\" is localizable, you must provide an existing locale code. \"no_locale\" is only allowed when the asset is not localizable."
 }
 JSON;
 

@@ -5,6 +5,7 @@
 - API-440: Create an asset category with the API
 - API-441: Update partially an asset category with the API
 - API-488: Get an asset reference file
+- API-496: Get an asset variation file
 - PIM-7029: Add a search by code on assets grid
 
 # 2.1.0-ALPHA1
