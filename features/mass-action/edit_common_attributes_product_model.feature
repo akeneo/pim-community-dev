@@ -132,7 +132,7 @@ Feature: Edit common attributes of many products and product models at once
   Scenario: It does not update ancestors' attributes
     Given I am on the products grid
     And I show the filter "size"
-    And I filter by "size" with operator "IN LIST" and value "[m]"
+    And I filter by "size" with operator "IN LIST" and value "m"
     And I select rows col-white-m
     And I press the "Bulk actions" button
     And I choose the "Edit common attributes" operation
