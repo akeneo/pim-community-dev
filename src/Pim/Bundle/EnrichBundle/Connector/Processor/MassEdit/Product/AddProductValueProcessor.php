@@ -4,7 +4,7 @@ namespace Pim\Bundle\EnrichBundle\Connector\Processor\MassEdit\Product;
 
 use Akeneo\Component\StorageUtils\Updater\PropertyAdderInterface;
 use Pim\Bundle\EnrichBundle\Connector\Processor\AbstractProcessor;
-use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Model\EntityWithValuesInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
@@ -52,11 +52,11 @@ class AddProductValueProcessor extends AbstractProcessor
     /**
      * Validate the product
      *
-     * @param ProductInterface $product
+     * @param ProductInterface|ProductModelInterface $product
      *
      * @return bool
      */
-    protected function isProductValid(ProductInterface $product)
+    protected function isProductValid($product)
     {
         $violations = $this->validator->validate($product);
         $this->addWarningMessage($violations, $product);
@@ -67,10 +67,10 @@ class AddProductValueProcessor extends AbstractProcessor
     /**
      * Add data from $actions to the given $product
      *
-     * @param ProductInterface $product
+     * @param ProductInterface|ProductModelInterface $product
      * @param array            $actions
      */
-    protected function addData(ProductInterface $product, array $actions)
+    protected function addData($product, array $actions)
     {
         foreach ($actions as $action) {
             $this->propertyAdder->addData($product, $action['field'], $action['value']);

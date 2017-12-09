@@ -10,6 +10,7 @@ use Pim\Component\Catalog\Builder\ProductBuilderInterface;
 use Pim\Component\Catalog\Model\AssociationInterface;
 use Pim\Component\Catalog\Model\EntityWithValuesInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Model\ProductModelInterface;
 
 /**
  * Sets the association field
@@ -54,11 +55,13 @@ class AssociationFieldSetter extends AbstractFieldSetter
      * {
      *     "XSELL": {
      *         "groups": ["group1", "group2"],
-     *         "products": ["AKN_TS1", "AKN_TSH2"]
+     *         "products": ["AKN_TS1", "AKN_TSH2"],
+     *         "product_models": ["amor"]
      *     },
      *     "UPSELL": {
      *         "groups": ["group3", "group4"],
-     *         "products": ["AKN_TS3", "AKN_TSH4"]
+     *         "products": ["AKN_TS3", "AKN_TSH4"],
+     *         "product_models": ["amor"]
      *     },
      * }
      */
@@ -84,11 +87,13 @@ class AssociationFieldSetter extends AbstractFieldSetter
      * {
      *     "XSELL": {
      *         "groups": ["group1", "group2"],
-     *         "products": ["AKN_TS1", "AKN_TSH2"]
+     *         "products": ["AKN_TS1", "AKN_TSH2"],
+     *         "product_models": ["amor"]
      *     },
      *     "UPSELL": {
      *         "groups": ["group3", "group4"],
-     *         "products": ["AKN_TS3", "AKN_TSH4"]
+     *         "products": ["AKN_TS3", "AKN_TSH4"],
+     *         "product_models": ["amor"]
      *     },
      * }
      */
