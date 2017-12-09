@@ -3,10 +3,6 @@ pimee_product_asset:
     product:
       asset:
         manage: Gestió de recursos
-        panel:
-          basket:
-            title: Cistella
-            empty_basket: La cistella és buida
         manage_asset:
           title: Gestió de recursos
           cancel: Cancelar

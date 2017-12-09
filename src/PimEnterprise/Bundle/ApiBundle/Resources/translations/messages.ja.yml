@@ -1,0 +1,6 @@
+pim_api:
+  acl:
+    asset_category:
+      list: アセットカテゴリーリスト
+  acl_group:
+    asset_category: アセットカテゴリー

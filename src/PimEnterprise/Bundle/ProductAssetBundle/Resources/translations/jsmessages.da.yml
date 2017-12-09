@@ -3,10 +3,6 @@ pimee_product_asset:
     product:
       asset:
         manage: Administrer formue
-        panel:
-          basket:
-            title: Indkøbskurv
-            empty_basket: Indkøbskurven er tom
         manage_asset:
           title: Administrer formue
           cancel: Annuller

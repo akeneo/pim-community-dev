@@ -1,0 +1,62 @@
+teamwork_assistant:
+  common:
+    required: 必須
+    warning: プロジェクトの計算に時間がかかっているため、表示に時間がかかっています。
+  grid:
+    view_selector:
+      create: プロジェクトを作成
+      edit: プロジェクトの編集
+      remove: プロジェクトの削除
+      create_from_view: このビューからプロジェクトを作成します。
+      loading: 読み込んでいます.
+      start_new_project: プロジェクトを新規作成
+      confirmation:
+        remove: この製品を削除してもよろしいですか？
+        delete: 削除を確認する
+      popin_title: 作成
+      projects: プロジェクト
+  project:
+    label: 名前
+    locale: ロケール
+    channel: チャンネル
+    label_maxlength: 値が長すぎます。{{ max }} 以下の文字数で設定してください。
+    description: 説明
+    due_date: 期限
+    due_date_past: 過去の日付を選択できません。
+    leaving_scope: プロジェクトのスコープから出る
+  edit_project_modal:
+    saved: プロジェクトが保存されました
+    title: プロジェクトの編集
+    confirm: 保存
+    cancel: キャンセル
+  create_project_modal:
+    saved: プロジェクトが保存されました、計算が終了するときに通知されます。
+    title: プロジェクトを作成
+    confirm: 保存
+    cancel: キャンセル
+  widget:
+    no_project: プロジェクトは現在ありません
+    no_project_create: プロジェクトを新規作成
+    description: 説明
+    due_date: 期日
+    todo: TODO
+    in_progress: 処理中
+    done: 完了
+    all_contributors: 全ての貢献者
+    display_products: ディスプレイ製品
+    placeholder:
+      contributor_selector: 検索の投稿者
+      project_selector: プロジェクトを検索
+    completeness:
+      to_start: 開始する製品
+      in_progress: 処理中の製品
+      done: 製品の実行
+pim_datagrid:
+  view_selector:
+    project: プロジェクト
+pim_dashboard:
+  widget:
+    last_operations:
+      job_type:
+        refresh_project_completeness_calculation: チームワーク アシスタント
+        project_calculation: チームワーク アシスタント

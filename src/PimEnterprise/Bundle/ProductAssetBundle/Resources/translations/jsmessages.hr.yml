@@ -3,10 +3,6 @@ pimee_product_asset:
     product:
       asset:
         manage: Upravljanje imovinom
-        panel:
-          basket:
-            title: Košarica
-            empty_basket: Košarica je prazna
         manage_asset:
           title: Upravljanje imovinom
           cancel: Poništi

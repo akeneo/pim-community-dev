@@ -3,10 +3,6 @@ pimee_product_asset:
     product:
       asset:
         manage: Управление активами
-        panel:
-          basket:
-            title: Корзина
-            empty_basket: Корзина пуста
         manage_asset:
           title: Управление активами
           cancel: Отмена
