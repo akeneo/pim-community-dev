@@ -1,0 +1,11 @@
+pimee_enrich.acl.locale.edit_permissions: ロケールのアクセス権限の管理
+pimee_enrich.acl.category.edit_permissions: カテゴリ権限の管理
+pimee_enrich.acl.attribute_group.edit_permissions: 属性グループの権限管理
+pimee_importexport.acl.export_profile.edit_permissions: エクスポートプロファイルの権限管理
+pimee_importexport.acl.import_profile.edit_permissions: インポートプロファイルの権限管理
+pimee_enrich.groups.label: 所有者グループ
+pim_analytics:
+  info_type:
+    nb_custom_locale_accesses: カスタム ロケールのアクセス数
+    nb_custom_category_accesses: カスタムカテゴリーアクセスの数
+    nb_custom_attribute_group_accesses: カスタム属性グループアクセスの数

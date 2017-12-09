@@ -1,0 +1,12 @@
+pimee_dashboard:
+  widget:
+    product_drafts:
+      title: レビューに対する提案
+      date: 日付
+      author: 作成者
+      product: 製品
+      review: レビュー
+      empty: 製品の下書きはありません
+  version:
+    community_edition: CE
+    enterprise_edition: EE
