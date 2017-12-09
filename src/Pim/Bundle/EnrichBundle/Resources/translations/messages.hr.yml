@@ -141,7 +141,6 @@ pim_enrich:
       add_attribute: Dodavanje atributa proizvoda
       remove_attribute: Ukloni atribut proizvodu
       categories_view: Pogledajte kategorije proizvoda
-      associations_view: Pogledaj tipove pridruživanja proizvoda
       change_family: Promjena obitelji proizvoda
       change_state: Promjena stanja proizvoda
       add_to_groups: Dodaj proizvod u grupe

@@ -146,7 +146,6 @@ pim_enrich:
       add_attribute: Lisää määrite tuotteeseen
       remove_attribute: Poista määrite tuotteesta
       categories_view: Katso tuotteen kategorioita
-      associations_view: Tarkastele tuotteen määritetyyppejä
       change_family: Vaihda tuoteryhmää
       change_state: Muuta tuotteen tilaa
       add_to_groups: Lisää tuote ryhmiin

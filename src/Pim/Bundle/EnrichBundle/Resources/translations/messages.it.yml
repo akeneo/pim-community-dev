@@ -146,7 +146,6 @@ pim_enrich:
       add_attribute: Aggiungere un attributo ad un articolo
       remove_attribute: Rimuovere un attributo da un articolo
       categories_view: Consultare le categorie di un articolo
-      associations_view: Mostra i tipi di associazione di un articolo
       change_family: Cambia la famiglia dell'articolo
       change_state: Cambia lo stato dell'articolo
       add_to_groups: Aggiungi l'articolo ai gruppi

@@ -1,4 +1,5 @@
 confirmation:
+  title: Conferma
   remove:
     item: Sei sicuro di voler eliminare questo articolo?
     association_type: Sei sicuro di voler eliminare questo tipo di associazione?
@@ -390,6 +391,7 @@ pim_enrich:
         email: E-mail
         regexp: Espressione regolare
         url: URL
+      title: attributo
     attribute_group:
       info:
         update_failed: Gruppo di attributi non può essere aggiornato
@@ -752,6 +754,9 @@ pim_enrich:
             select_attributes: Aggiungi attributi
             add: Aggiungi
             attributes_groups_selected: '{{ itemsCount }} gruppo(i) selezionato(i)'
+    basket:
+      title: Basket
+      empty_basket: Il basket è vuoto
   job:
     upload: Rilascia i tuoi file {{ type }} qui, o clicca per selezionare dal disco
   export:

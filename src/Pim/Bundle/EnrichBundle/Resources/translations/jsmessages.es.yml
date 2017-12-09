@@ -1,4 +1,5 @@
 confirmation:
+  title: Confirmar
   remove:
     item: '¿Está seguro de que desea borrar este elemento?'
     association_type: '¿Está seguro que desea eliminar este tipo de asociación?'
@@ -345,6 +346,7 @@ pim_enrich:
         email: Correo electrónico
         regexp: Expresión regular
         url: URL
+      title: atributo
     attribute_group:
       info:
         update_successful: Grupo de atributos actualizado correctamente
@@ -669,6 +671,9 @@ pim_enrich:
           toolbox:
             select_attributes: Agregar atributos
             add: Agregar
+    basket:
+      title: Cesta
+      empty_basket: La cesta está vacía
   export:
     product:
       data:

@@ -1,4 +1,5 @@
 confirmation:
+  title: Подтверждение
   remove:
     item: Вы уверены, что хотите удалить этот элемент?
     association_type: Вы действительно хотите удалить этот тип ассоциации?
@@ -305,6 +306,7 @@ pim_enrich:
         email: E-mail
         regexp: Регулярное выражение
         url: URL
+      title: атрибут
     attribute_group:
       info:
         update_successful: Группа атрибутов успешно обновлена
@@ -613,6 +615,9 @@ pim_enrich:
           toolbox:
             select_attributes: Добавить атрибуты
             add: Добавить
+    basket:
+      title: Корзина
+      empty_basket: Корзина пуста
   export:
     product:
       data:
