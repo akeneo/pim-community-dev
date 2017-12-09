@@ -3,10 +3,6 @@ pimee_product_asset:
     product:
       asset:
         manage: Assets verwalten
-        panel:
-          basket:
-            title: Warenkorb
-            empty_basket: Der Warenkorb ist leer
         manage_asset:
           title: Assets verwalten
           cancel: Abbrechen

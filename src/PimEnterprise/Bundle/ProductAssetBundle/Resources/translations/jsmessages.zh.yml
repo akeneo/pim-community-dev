@@ -3,10 +3,6 @@ pimee_product_asset:
     product:
       asset:
         manage: 管理资产
-        panel:
-          basket:
-            title: 购物篮
-            empty_basket: 购物车是空的
         manage_asset:
           title: 管理资产
           cancel: 取消

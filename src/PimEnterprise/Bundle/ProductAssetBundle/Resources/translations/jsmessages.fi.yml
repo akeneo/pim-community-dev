@@ -3,10 +3,6 @@ pimee_product_asset:
     product:
       asset:
         manage: Hallinnoi resursseja
-        panel:
-          basket:
-            title: Kori
-            empty_basket: Kori on tyhjä
         manage_asset:
           title: Hallinnoi resursseja
           cancel: Peruuta

@@ -3,10 +3,6 @@ pimee_product_asset:
     product:
       asset:
         manage: Gérer les ressources
-        panel:
-          basket:
-            title: Panier
-            empty_basket: Panier est vide
         manage_asset:
           title: Gérer les ressources
           cancel: Annuler

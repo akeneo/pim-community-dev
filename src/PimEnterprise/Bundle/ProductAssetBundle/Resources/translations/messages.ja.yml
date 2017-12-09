@@ -1,0 +1,247 @@
+pimee_product_asset:
+  acl:
+    asset:
+      index: アセットを高める
+      create: アセットを作成
+      remove: アセットを削除
+      categories_view: アセットのカテゴリを参照
+      mass_upload: アセットの大量アップロード
+    category_asset_picker:
+      list: アセットピッカーのアセットカテゴリーリスト
+    category:
+      create: 新しいアセットカテゴリを作成
+      edit: アセットカテゴリを編集
+      list: アセットカテゴリーリスト
+      remove: アセットカテゴリを削除
+      manage: アセットカテゴリ権限の管理
+      history: アセットカテゴリの履歴を表示
+  acl_group:
+    asset: 製品のアセット
+    category: アセットカテゴリー
+  enrich_asset:
+    button:
+      upload: アップロード
+      delete: 削除
+      download: ダウンロード
+      generate_from_reference: 参照から生成
+      reset_variations: バリエーションをリセット
+    confirmation.remove: このアセット"%asset%"を削除してもよろしいですか？
+    confirmation.subTitle: アセット
+    grid:
+      edit: アセットのプロパティを編集
+    view:
+      title: 製品のアセット
+      code: コード
+      description: 説明
+      end_of_use: 使用の終了
+      reference: リファレンス
+      filename: ファイル名
+      width: 幅
+      height: 高さ
+      resolution: 解決策
+      colors: 色空間
+      filesize: ファイルのサイズ
+      filetype: ファイルの種類
+      actions: アクション
+      download: ダウンロード
+      tag: タグ
+      no_reference: 参照ファイルはアップロードされていません
+      no_variation: バリエーションファイルがまだ生成されていません。
+    flash:
+      update:
+        success: アセットが更新されました。
+        error: アセットが更新されていません。エラーが発生しました。
+      create:
+        success: アセットが作成されました。
+        error: アセットが作成されていません。エラーが発生しました。
+      remove:
+        success: アセットが削除されました。
+  enrich_reference:
+    flash:
+      delete:
+        success: 参照ファイルが削除されました。
+        error: 参照ファイルは削除されていません。エラーが発生しました。
+  enrich_variation:
+    flash:
+      transformation:
+        invalid_options: 無効なオプションによりバリエーション %channel% を生成することは不可能。
+        image_width_error: アップロードされた画像は幅変換が必要なものよりも小さいのでバリエーション %channel% を生成することは不可能。
+        image_height_error: アップロードされた画像は高さ変換が必要なものよりも小さいのでバリエーション %channel% を生成することは不可能。
+        not_applicable: バリエーション %channel% を生成することは不可能。
+        non_registered: Mime タイプ %mimeType% の %transformation% 変換が登録されていません。バリエーション %channel% を生成することは不可能です。
+        error: バリエーション %channel% を生成することは不可能。
+        success: バリエーションファイルは正常に生成されました。
+      update:
+        success: バリエーションファイルが更新されました。
+        error: バリエーションファイルは更新されていません。エラーが発生しました。
+      delete:
+        success: バリエーションファイルが削除されました。
+        error: バリエーションファイルは削除されていません。エラーが発生しました。
+  popin.create:
+    title: 新しいアセットの作成
+    is_localized: ローカライズ可能
+  menu: アセット
+  page_tab:
+    title:
+      view: 製品アセット %asset.code% | 表示
+      edit: 製品アセット %asset.code% |編集
+      index: 製品のアセット
+  code:
+    label: コード
+  thumbnail:
+    label: サムネイル
+  status:
+    label: ステータス
+  description:
+    label: 説明
+  endOfUse:
+    label: 使用の終了
+  createdAt:
+    label: 作成日
+  updatedAt:
+    label: 最終更新日
+  tags:
+    label: タグ
+  tabs:
+    properties.title: プロパティ
+    variations.title: バリエーション
+    categories.title: カテゴリ
+  validation:
+    code:
+      not_empty: コードが必要です。それは空にできません。
+      unique: コードが被っています。
+      new_generation: 私たちはあなたのために新しいものを生成します。
+  notAvailable:
+    label: 利用できません
+  asset:
+    title: アセット
+  mass_upload:
+    menu: アセットをアップロードする
+    new: 新しいアセットを作成します
+    add_files: ファイルを追加
+    start: アップロードを開始
+    cancel: アップロードのキャンセル
+    import: インポート
+    executed: 大量アップロードの実行
+    error:
+      upload: アップロード中にエラーが発生
+      code: アセットの無効なコードの形式
+      localizable: アセットは存在しますが、ローカライズができません。
+      invalid_locale: ロケールが無効です
+  category:
+    menu: アセットカテゴリー
+    permissions:
+      view.label: アセットの表示を許可
+      view.help: このカテゴリのアセットを表示することができます
+      edit.label: アセットの編集を許可
+      edit.help: このカテゴリ内のアセットを編集することができます (アクセス権限の許可を意味します)
+      no_access_to_products: 全てのツリーにおいてアセットへのアクセス権限がありません。管理者に問い合わせてください。
+      apply_on_children.label: 子要素に変更を適用します。
+      apply_on_children.help: 全ての子要素の権限をコピーし、すでに存在する権限は保持される
+  mass_edit_action:
+    asset:
+      page_title: アセット
+      page_subtitle: 一括編集(1 アセット)|一括編集 (%count% アセット)
+      confirm: 更新しようとしている以下のアセットの内容について、ご確認ください。|更新しようとしている以下の %count% 件のアセットの内容について、ご確認ください。
+      steps:
+        first: アセットを選択する
+        second: 構成
+        third: 確認
+pim_enrich:
+  mass_edit_action:
+    asset-classify-move:
+      label: アセットをカテゴリに移動する
+      description: アセットは以下のカテゴリに配置され、既存の表示順は削除されます。
+      success_flash: 選択したカテゴリにアセットが移動されました
+      launched_flash: カテゴリに移動する一括操作が開始されています。終了後に通知されます。
+    add-tags-to-assets:
+      label: タグをアセットに追加
+      description: タグがアセットに追加されました。タグが存在しない場合は、作成されます。
+      success_flash: アセットにタグが追加されました
+      launched_flash: タグをアセットに追加する一括操作が開始されています。終了後に通知されます。
+      message.error: 与えられたタグは存在しません
+pim:
+  grid:
+    mass_action:
+      mass_classify_assets: 分類
+      add_tags_to_assets: タグを追加
+      delete_assets: アセットを削除
+btn.create.asset: アセットを作成
+btn.drag_or_upload: ファイルをドラッグアンドドロップするか、ここをクリック
+job_execution.summary:
+  variations_not_generated: バリエーションは生成されません
+  pimee_product_asset.mass_upload.new: ファイルから作成されたアセット
+  pimee_product_asset.mass_upload.updated: アセットの更新
+  error: アセットファイルの処理中のエラー
+  skipped_assets: スキップされたアセット
+assets_mass_upload.steps:
+  asset_mass_upload.title: アセットの大量アップロード
+import_asset.steps.channel_configuration_processor.title: プロセスのチャネル構成
+mass_upload: アセットの大量アップロード
+batch_jobs:
+  apply_assets_mass_upload:
+    label: アセットの大量アップロード
+    perform.label: 大量アップロード
+  yml_asset_channel_configuration_import:
+    label: Yaml においてアセットチャネル構成のインポート
+    validation.label: ファイルの検証
+    import_asset.label: Yaml においてアセットチャネル構成のインポート
+  yml_asset_channel_configuration_export:
+    label: Yaml においてアセットチャネル構成のエクスポート
+    export.label: Yaml においてアセットチャネル構成のエクスポート
+  csv_asset_import:
+    label: アセットを CSV 形式でインポート
+    validation.label: ファイルの検証
+    import_tags.label: タグを CSV 形式でインポート
+    import_asset.label: アセットを CSV 形式でインポート
+  csv_asset_export:
+    label: アセットを CSV 形式でエクスポート
+    export.label: アセットを CSV 形式でエクスポート
+  csv_asset_variation_export:
+    label: アセットバリエーションを CSV 形式でエクスポート
+    export.label: アセットバリエーションを CSV 形式でエクスポート
+  csv_tag_import:
+    label: タグを CSV 形式でインポート
+    validation.label: ファイルの検証
+    import.label: タグを CSV 形式でインポート
+  csv_asset_category_import:
+    label: アセットカテゴリを CSV 形式でインポート
+    validation.label: ファイルの検証
+    import_asset_category.label: アセットカテゴリを CSV 形式でインポート
+  csv_asset_configuration_import:
+    label: アセットチャネル構成を CSV 形式でインポート
+    validation.label: ファイルの検証
+    import_asset.label: アセットチャネル構成を CSV 形式でインポート
+  csv_asset_category_export:
+    label: アセットカテゴリを CSV 形式でエクスポート
+    export.label: アセットカテゴリを CSV 形式でエクスポート
+  xlsx_tag_import:
+    label: タグをXLSX形式でインポート
+    validation.label: ファイルの検証
+    import.label: タグをXLSX形式でインポート
+  xlsx_asset_import:
+    label: アセットをXLSX形式でインポート
+    validation.label: ファイルの検証
+    import_tags.label: タグをXLSX形式でインポート
+    import_asset.label: アセットをXLSX形式でインポート
+  xlsx_asset_category_import:
+    label: アセットカテゴリをXLSX形式でインポート
+    validation.label: ファイルの検証
+    import_asset_category.label: アセットカテゴリをXLSX形式でインポート
+  xlsx_asset_export:
+    label: アセットをXLSX形式でエクスポート
+    export.label: アセットをXLSX形式でエクスポート
+  xlsx_asset_category_export:
+    label: アセットカテゴリをXLSX形式でエクスポート
+    export.label: アセットカテゴリをXLSX形式でエクスポート
+  xlsx_asset_variation_export:
+    label: アセットカテゴリをXLSX形式でエクスポート
+    export.label: アセットカテゴリをXLSX形式でエクスポート
+  classify_assets:
+    perform.label: アセットをカテゴリに移動する
+  add_tags_to_assets:
+    perform.label: タグをアセットに追加
+pim_analytics:
+  info_type:
+    nb_assets: アセット数
+pim_assets_collection: アセットのコレクション

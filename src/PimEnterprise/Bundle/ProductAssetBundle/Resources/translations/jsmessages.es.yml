@@ -3,10 +3,6 @@ pimee_product_asset:
     product:
       asset:
         manage: Gestionar recursos
-        panel:
-          basket:
-            title: Cesta
-            empty_basket: La cesta está vacía
         manage_asset:
           title: Gestionar recursos
           cancel: Cancelar

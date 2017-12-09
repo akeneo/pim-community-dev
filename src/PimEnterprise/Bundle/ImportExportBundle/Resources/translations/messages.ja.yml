@@ -1,0 +1,7 @@
+job_profile.permissions:
+  execute.label: ジョブプロファイルの実行を許可
+  edit.label: ジョブプロファイルの編集を許可
+pimee_import_export:
+  job_profile:
+    tab:
+      permission.title: パーミッション
