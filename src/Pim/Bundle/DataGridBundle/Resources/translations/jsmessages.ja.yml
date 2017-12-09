@@ -41,9 +41,10 @@ oro_datagrid.select.visible: "すべて表示"
 oro_datagrid.select.none: "なし"
 pim.grid.ajax_choice_filter.label_empty: 空
 pim.grid.choice_filter:
-  label_empty: 空値
+  label_empty: 空
   label_in_list: リストに存在する
 Available Columns: 利用可能な列
+Displayed Columns: 選択された項目
 datagrid_view.columns.min_message: 最低でも1つの表示する列を選択してください
 pim_datagrid:
   column_configurator:
@@ -52,12 +53,21 @@ pim_datagrid:
     all_groups: すべてのグループ
     search: 検索
     clear: クリア
+    displayed_columns: 選択された項目
     apply: 適用
     cancel: キャンセル
     remove_column: 削除
+  mass_action:
+    delete:
+      confirm_title: 削除の確認
+      confirm_ok: OK
+      empty_selection: 商品が選択されていません
 pim.grid.mass_action.quick_export.title: クイック エクスポート
+pim.grid.mass_action.quick_export.launched: クイックエクスポート処理が開始されました。
 pim.grid.action.launch.title: 起動
 pim.grid.action.show.title: 表示
+Please select view: ビューを選択してください。
+Loading...: 読み込んでいます.
 View: ビュー
 from: 開始
 to: 終了

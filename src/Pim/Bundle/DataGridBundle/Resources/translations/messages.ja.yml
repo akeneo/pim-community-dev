@@ -15,6 +15,7 @@ oro.grid.datagrid.page_size.all: すべて
 oro.grid.mass_action.delete.success_message: "{0} 削除されたエンティティはありませんでした| {1} 1件のエンティティが削除されました|]1,Inf [%count% 件のエンティティが削除されました"
 datagrid_view:
   views: ビュー
+  default: デフォルトビュー
   create: ビューを作成
   placeholder: 新しいビューの名前
   remove: このビューを削除

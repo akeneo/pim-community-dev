@@ -1,63 +1,18 @@
 pim_connector:
-  jobs:
-    csv_product_export:
-      title: 商品をCSV形式でエクスポート
-      export.title: 商品エクスポート
-    csv_category_export:
-      title: カテゴリをCSV形式でエクスポート
-      export.title: カテゴリエクスポート
-    csv_attribute_export:
-      title: 属性をCSV形式でエクスポート
-      export.title: 属性エクスポート
-    csv_attribute_option_export:
-      title: 属性オプションをCSV形式でエクスポート
-      export.title: 属性オプションのエクスポート
-    csv_association_type_export:
-      title: CSVエクスポートで関連付ける種別
-      export.title: エクスポートに関連付ける種別
-    csv_group_export:
-      title: CSVにエクスポートするグループ
-      export.title: グループエクスポート
-    csv_product_import:
-      title: 製品をCSV形式でインポート
-      validation.title: ファイルの検証
-      import.title: 製品のインポート
-      import_associations.title: 関連付けのインポート
-    csv_category_import:
-      title: カテゴリをCSV形式でインポート
-      validation.title: ファイルの検証
-      import.title: カテゴリのインポート
-    csv_attribute_import:
-      title: 属性をCSV形式でインポート
-      validation.title: ファイルの検証
-      import.title: 属性のインポート
-    csv_attribute_option_import:
-      title: 属性オプションをCSV形式でインポート
-      validation.title: ファイルの検証
-      import.title: 属性オプションのインポート
-    csv_association_type_import:
-      title: 関連タイプをCSVでインポート
-      validation.title: ファイルの検証
-      import.title: 関連付けタイプのインポート
-    csv_family_import:
-      validation.title: ファイルの検証
-    csv_group_import:
-      title: グループをCSVでインポート
-      validation.title: ファイルの検証
-      import.title: グループのインポート
-    csv_variant_group_import:
-      validation.title: ファイルの検証
   steps:
     dummy_reader.title: ダミーリーダー
     product_reader.title: 製品抽出
     entity_reader.title: エンティティ抽出
     csv_reader:
       title: CSV リーダー
-      invalid_item_columns_count: '%totalColumnsCount% 列を想定していますが、実際には%itemColumnsCount% 列が%csvPath%の%lineno%にあります'
+    file_reader:
+      invalid_item_columns_count: '%totalColumnsCount% 列を想定していますが、実際には%itemColumnsCount% 列が%filePath%の%lineno%にあります'
     csv_product_reader.title: CSV 製品リーダー
     csv_category_reader.title: CSV カテゴリー リーダー
+    csv_variant_group .title: バリアントグループのCSVリーダー
     dummy_processor.title: ダミーのプロセッサ
     product_processor.title: 製品の作成
+    variant_group_processor.title: バリアントグループの作成/更新
     category_processor.title: カテゴリの作成
     association_processor.title: 関連付けの作成
     product_association_processor.title: 関連付けの作成
@@ -71,63 +26,344 @@ pim_connector:
     file_writer.title: 出力
     product_writer.title: 製品ストレージ
     category_writer.title: カテゴリストレージ
+    variant_group_writer.title: バリアントグループストレージ
     writer.title: エンティティ ストレージ
     csv_writer.title: CSVライター
   export:
-    delimiter:
-      label: 区切り文字
-      help: 特定の文字をフィールド区切り文字として使用
-    enclosure:
-      label: エンクロージャ
-      help: 特定の文字をフィールドのエンクロージャーとして使用
-    withHeader:
-      label: ヘッダー行あり
-      help: 列名を出力するかどうか
-    filePath:
-      label: ファイルのパス
-      help: ファイル システムで生成されたファイルの書き込み先
-    channel:
-      label: チャンネル
-      help: エクスポートするチャンネル
+    csv:
+      delimiter:
+        label: 区切り文字
+        help: 特定の文字をフィールド区切り文字として使用
+      enclosure:
+        label: エンクロージャ
+        help: 特定の文字をフィールドのエンクロージャーとして使用
+      withHeader:
+        label: ヘッダー行あり
+        help: 列名を出力するかどうか
+      with_media:
+        label: エクスポート ファイルと画像
+        help: 製品ファイルと画像をエクスポートするかどうか
+      filePath:
+        label: ファイルのパス
+        help: ファイル システムで生成されたファイルの書き込み先
+      decimalSeparator:
+        label: 小数点の区切り
+        help: 小数点の区切り文字を決定する
+      dateFormat:
+        label: 日付フォーマット
+        help: 日付フィールドの形式を決定
+    xlsx:
+      lines_per_files:
+        label: ファイルごとの行数
+        help: 1ファイルあたりの行の数を定義する
+      withHeader:
+        label: ヘッダー行あり
+        help: 列名を出力するかどうか
+      with_media:
+        label: エクスポート ファイルと画像
+        help: 製品ファイルと画像をエクスポートするかどうか
+      filePath:
+        label: ファイルのパス
+        help: ファイル システムで生成されたファイルの書き込み先
+      decimalSeparator:
+        label: 小数点の区切り
+        help: 小数点の区切り文字を決定する
+      dateFormat:
+        label: 日付フォーマット
+        help: 日付フィールドの形式を決定
+    yml:
+      filePath:
+        label: ファイルのパス
+        help: ファイル システムで生成されたファイルの書き込み先
   import:
-    enabled:
-      label: 製品を有効にする
-      help: インポートした製品を有効にするか否か
-    categoriesColumn:
-      label: カテゴリ列
-      help: カテゴリ列の名前
-    familyColumn:
-      label: ファミリー列
-      help: ファミリー列の名前
-    groupsColumn:
-      label: グループ]列
-      help: グループ]列の名前
-    filePath:
-      label: ファイル
-    yamlFilePath:
-      label: ファイル
-    uploadAllowed:
-      label: ファイルのアップロードを許可
-      help: 直接ファイルのアップロードを許可するかどうか
-    delimiter:
-      label: 区切り文字
-    enclosure:
-      label: エンクロージャ
-      help: 特定の文字をフィールドのエンクロージャーとして使用
-    escape:
-      label: エスケープ
-      help: 特定の文字をフィールドのエスケープ文字として使用
-    circularRefsChecked:
-      label: 参照がループしていないか確認してください
-      help: もしYesの場合は、データはカテゴリ間の循環参照がないかを確認した上で処理されます
-    realTimeVersioning:
-      label: リアルタイム更新履歴
-      help: 商品履歴は自動的にアップデートされます。自動アップデートをオフにするとパフォーマンスが向上します。
+    csv:
+      enabled:
+        label: 製品を有効にする
+        help: インポートした製品を有効にするか否か
+      categoriesColumn:
+        label: カテゴリ列
+        help: カテゴリ列の名前
+      familyColumn:
+        label: ファミリー列
+        help: ファミリー列の名前
+      groupsColumn:
+        label: グループ]列
+        help: グループ]列の名前
+      filePath:
+        label: ファイル
+        help: インポートするCSVファイル
+      uploadAllowed:
+        label: ファイルのアップロードを許可
+        help: 直接ファイルのアップロードを許可するかどうか
+      delimiter:
+        label: 区切り文字
+        help: 特定の文字をCSVファイルのフィールド区切り文字として使用
+      enclosure:
+        label: エンクロージャ
+        help: 特定の文字をフィールドのエンクロージャーとして使用
+      escape:
+        label: エスケープ
+        help: 特定の文字をフィールドのエスケープ文字として使用
+      circularRefsChecked:
+        label: 参照がループしていないか確認してください
+        help: もしYesの場合は、データはカテゴリ間の循環参照がないかを確認した上で処理されます
+      realTimeVersioning:
+        label: リアルタイム更新履歴
+        help: 商品履歴は自動的にアップデートされます。自動アップデートをオフにするとパフォーマンスが向上します。
+      copyValuesToProducts:
+        label: バリアントグループの値を商品にコピー
+        help: 商品はバリアントグループの値で自動的に更新されます。無効にすることでバリアントグループのみを更新できます。
+      enabledComparison:
+        label: 値を比較
+        help: 比較機能を有効にすると、インポート前と後の値を比較できます。インポートされた値が元の値に近い場合はインポート処理が速くなります。
+      decimalSeparator:
+        label: 小数点の区切り
+        help: 特定の文字をフィールドの小数点の区切り文字として使用
+      dateFormat:
+        label: 日付フォーマット
+        help: ファイルの任意の日付列を指定する。例えばDD/MM/YYYYから、30/04/2014
+    xlsx:
+      enabled:
+        label: 製品を有効にする
+        help: インポートした製品を有効にするか否か
+      categoriesColumn:
+        label: カテゴリ列
+        help: カテゴリ列の名前
+      familyColumn:
+        label: ファミリー列
+        help: ファミリー列の名前
+      groupsColumn:
+        label: グループ]列
+        help: グループ]列の名前
+      filePath:
+        label: ファイル
+        help: インポートするXLSXファイル
+      uploadAllowed:
+        label: ファイルのアップロードを許可
+        help: 直接ファイルのアップロードを許可するかどうか
+      circularRefsChecked:
+        label: 参照がループしていないか確認してください
+        help: もしYesの場合は、データはカテゴリ間の循環参照がないかを確認した上で処理されます
+      realTimeVersioning:
+        label: リアルタイム更新履歴
+        help: 商品履歴は自動的にアップデートされます。自動アップデートをオフにするとパフォーマンスが向上します。
+      copyValuesToProducts:
+        label: バリアントグループの値を商品にコピー
+        help: 商品はバリアントグループの値で自動的に更新されます。無効にすることでバリアントグループのみを更新できます。
+      enabledComparison:
+        label: 値を比較
+        help: 比較機能を有効にすると、インポート前と後の値を比較できます。インポートされた値が元の値に近い場合はインポート処理が速くなります。
+      decimalSeparator:
+        label: 小数点の区切り
+        help: 特定の文字をフィールドの小数点の区切り文字として使用
+      dateFormat:
+        label: 日付フォーマット
+        help: ファイルの任意の日付列を指定する。例えばDD/MM/YYYYから、30/04/2014
+    yml:
+      filePath:
+        label: ファイル
+        help: インポートするYMLファイル
+      uploadAllowed:
+        label: ファイルのアップロードを許可
+        help: 直接ファイルのアップロードを許可するかどうか
 job_execution.summary:
   read: 読み込み
+  read_lines: 行の読み込み
   write: 書き込み
   skip: スキップ
   create: 作成
+  process: 処理済
+  update_products: 更新された製品
+  process_products: 処理済商品
+  skip_products: スキップされた製品
+  displayed: 最初の警告が表示されます
   charset_validator:
     title: 'ファイルの文字コード:'
     skipped: スキップしました。拡張子がホワイトリストにあります
+  product_skipped_no_diff: スキップされた製品 (変更なし)
+  product_skipped_no_associations: スキップされた商品 (関連性はなし)
+batch_jobs:
+  csv_product_export:
+    label: 商品をCSV形式でエクスポート
+    export.label: 商品エクスポート
+  csv_category_export:
+    label: カテゴリをCSV形式でエクスポート
+    export.label: カテゴリエクスポート
+  csv_attribute_export:
+    label: 属性をCSV形式でエクスポート
+    export.label: 属性エクスポート
+  csv_attribute_option_export:
+    label: 属性オプションをCSV形式でエクスポート
+    export.label: 属性オプションのエクスポート
+  csv_association_type_export:
+    label: CSVエクスポートで関連付ける種別
+    export.label: エクスポートに関連付ける種別
+  csv_group_export:
+    label: CSVにエクスポートするグループ
+    export.label: グループエクスポート
+  csv_variant_group_export:
+    label: バリアントグループをCSVにエクスポート
+    export.label: バリアントグループをエクスポート
+  csv_family_export:
+    label: ファミリーをCSV形式でエクスポート
+    export.label: ファミリーエクスポート
+  csv_product_import:
+    label: 製品をCSV形式でインポート
+    validation.label: ファイルの検証
+    import.label: 製品のインポート
+    import_associations.label: 関連付けのインポート
+  csv_category_import:
+    label: カテゴリをCSV形式でインポート
+    validation.label: ファイルの検証
+    import.label: カテゴリのインポート
+  csv_attribute_import:
+    label: 属性をCSV形式でインポート
+    validation.label: ファイルの検証
+    import.label: 属性のインポート
+  csv_attribute_option_import:
+    label: 属性オプションをCSV形式でインポート
+    validation.label: ファイルの検証
+    import.label: 属性オプションのインポート
+  csv_association_type_import:
+    label: 関連タイプをCSVでインポート
+    validation.label: ファイルの検証
+    import.label: 関連付けタイプのインポート
+  csv_family_import:
+    label: ファミリーをCSV形式でインポート
+    validation.label: ファイルの検証
+    import.label: ファミリーインポート
+  csv_group_import:
+    label: グループをCSVでインポート
+    validation.label: ファイルの検証
+    import.label: グループのインポート
+  csv_variant_group_import:
+    label: バリアントグループをCSVからインポート
+    validation.label: ファイルの検証
+    import.label: バリアントグループをインポート
+  csv_channel_export:
+    label: チャネルをCSV形式でエクスポート
+    export.label: チャネルエクスポート
+  csv_locale_export:
+    label: ロケールをCSV形式でエクスポート
+    export.label: ロケールエクスポート
+  csv_attribute_group_export:
+    label: 属性グループをCSV形式でエクスポート
+    export.label: 属性グループエクスポート
+  csv_currency_export:
+    label: 通貨をCSV形式でエクスポート
+    export.label: 通貨エクスポート
+  csv_group_type_export:
+    label: グループタイプをCSV形式でエクスポート
+    export.label: グループタイプエクスポート
+  csv_channel_import:
+    label: チャネルをCSV形式でインポート
+    validation.label: ファイルの検証
+    import.label: チャネルインポート
+  csv_locale_import:
+    label: ロケールをCSV形式でインポート
+    validation.label: ファイルの検証
+    import.label: ロケールインポート
+  csv_attribute_group_import:
+    label: 属性グループをCSV形式でインポート
+    validation.label: ファイルの検証
+    import.label: 属性グループインポート
+  csv_currency_import:
+    label: 通貨をCSV形式でインポート
+    validation.label: ファイルの検証
+    import.label: 通貨インポート
+  csv_group_type_import:
+    label: グループタイプをCSV形式でインポート
+    validation.label: ファイルの検証
+    import.label: グループタイプインポート
+  xlsx_category_import:
+    label: カテゴリをXLSX 形式でインポート
+    validation.label: ファイルの検証
+    import.label: カテゴリのインポート
+  xlsx_association_type_import:
+    label: 関連タイプをXLSX形式でインポート
+    validation.label: ファイルの検証
+    import.label: 関連付けタイプのインポート
+  xlsx_attribute_import:
+    label: 属性をXLSX形式でインポート
+    validation.label: ファイルの検証
+    import.label: 属性のインポート
+  xlsx_attribute_option_import:
+    label: 属性オプションをXLSX形式でインポート
+    validation.label: ファイルの検証
+    import.label: 属性オプションのインポート
+  xlsx_family_import:
+    label: ファミリーをXLSX形式でインポート
+    validation.label: ファイルの検証
+    import.label: ファミリーインポート
+  xlsx_product_export:
+    label: 商品をXLSX形式でエクスポート
+    export.label: 商品エクスポート
+  xlsx_product_import:
+    label: 製品をXLSX形式でインポート
+    validation.label: ファイルの検証
+    import.label: 製品のインポート
+    import_associations.label: 関連付けのインポート
+  xlsx_group_export:
+    label: グループをXLSX形式でエクスポート
+    export.label: グループエクスポート
+  xlsx_variant_group_export:
+    label: バリアントグループをXLSX形式でエクスポート
+    export.label: バリアントグループをエクスポート
+  xlsx_group_import:
+    label: グループをXLSX形式でインポート
+    validation.label: ファイルの検証
+    import.label: グループのインポート
+  xlsx_variant_group_import:
+    label: バリアントグループをXLSX形式でインポート
+    validation.label: ファイルの検証
+    import.label: バリアントグループをインポート
+  xlsx_family_export:
+    label: ファミリーをXLSX形式でエクスポート
+    export.label: ファミリーエクスポート
+  xlsx_category_export:
+    label: カテゴリをXLSX形式でエクスポート
+    export.label: カテゴリエクスポート
+  xlsx_attribute_export:
+    label: 属性をXLSX形式でエクスポート
+    export.label: 属性をXLSX形式でエクスポート
+  xlsx_attribute_option_export:
+    label: 属性オプションをXLSX形式でエクスポート
+    export.label: 属性オプションをXLSX形式でエクスポート
+  xlsx_association_type_export:
+    label: 関連タイプをXLSX形式でエクスポート
+    export.label: 関連タイプをXLSX形式でエクスポート
+  xlsx_channel_export:
+    label: チャネルをXLSX形式でエクスポート
+    export.label: チャネルエクスポート
+  xlsx_locale_export:
+    label: ロケールをXLSX形式でエクスポート
+    export.label: ロケールエクスポート
+  xlsx_attribute_group_export:
+    label: 属性グループをXLSX形式でエクスポート
+    export.label: 属性グループエクスポート
+  xlsx_currency_export:
+    label: 通貨をXLSX形式でエクスポート
+    export.label: 通貨エクスポート
+  xlsx_group_type_export:
+    label: グループタイプをXLSX形式でエクスポート
+    export.label: グループタイプエクスポート
+  xlsx_channel_import:
+    label: チャネルをXLSX形式でインポート
+    validation.label: ファイルの検証
+    import.label: チャネルインポート
+  xlsx_locale_import:
+    label: ロケールをXLSX形式でインポート
+    validation.label: ファイルの検証
+    import.label: ロケールインポート
+  xlsx_attribute_group_import:
+    label: 属性グループをXLSX形式でインポート
+    validation.label: ファイルの検証
+    import.label: 属性グループインポート
+  xlsx_currency_import:
+    label: 通貨をXLSX形式でインポート
+    validation.label: ファイルの検証
+    import.label: 通貨インポート
+  xlsx_group_type_import:
+    label: グループタイプをXLSX形式でインポート
+    validation.label: ファイルの検証
+    import.label: グループタイプインポート
