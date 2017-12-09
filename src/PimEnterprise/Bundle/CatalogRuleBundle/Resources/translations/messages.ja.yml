@@ -1,0 +1,118 @@
+pimee_catalog_rule:
+  datagrid:
+    rule-grid:
+      actions:
+        delete: 削除
+        execute: 実行
+      title: ルール
+      column:
+        code: コード
+        conditions: 状態
+        actions: アクション
+        impacted_product_count:
+          label: 影響を受ける製品
+          count: '影響を受ける {0,1}%count% 製品 |]1、Inf [%count% の影響を受ける製品'
+          no_yet_calculated: 未計算
+      mass_edit_action:
+        impacted_product_count: 影響を受ける製品を計算する
+        execute: 選択したルールを実行する
+        delete: 選択したルールを削除する
+  actions:
+    type:
+      "copy": '%from_field% は %to_field% にコピーされ、'
+      "copy_value": '%from_field% は %to_field% にコピーされ、'
+      "set": '%value% を %field% に設定し、'
+      "set_value": '%value% を %field% に設定し、'
+      "add": '%value% を %field% に追加し、'
+      "remove": '%field% から %value% を削除し、'
+  condition:
+    label: もし %field% %operator% %value%
+    operators:
+      "STARTS WITH": で始まる
+      "ENDS WITH": で終わる
+      "CONTAINS": 含む
+      "DOES NOT CONTAIN": 含まない
+      "EMPTY": 空
+      "NOT EMPTY": 空ではない
+      "IN": で
+      "NOT IN": 含まない
+      "IN CHILDREN": 子要素中に
+      "NOT IN CHILDREN": 子要素中になし
+      "UNCLASSIFIED": 非機密である
+      "IN OR UNCLASSIFIED": 非機密である
+      "BETWEEN": の間
+      "NOT BETWEEN": の間ではない
+      "=": 等しい
+      "!=": 等しくない
+      ">": より大きい
+      ">=": 等しいかそれより大きい
+      "<": 以下
+      "<=": 等しいかそれより小さい
+  acl_group:
+    rule: ルール
+  acl:
+    rule:
+      view_permissions: ルールの表示
+      delete_permissions: ルールを削除
+      impacted_product_count_permissions: ルールの影響を受ける製品を計算する
+      execute_permissions: ルールを実行
+  attribute:
+    tab:
+      rule.title: ルール
+    grid:
+      is_smart.label: スマート
+    acl:
+      rule.view_permissions: ルールの表示
+  product:
+    tooltip:
+      product_attribute_affected_by_a_rule.content: この属性の値は<strong>%rule%</strong>に従います。つまり、ルールの条件が有効な場合、変更が上書きされます。
+      variant_attribute_affected_by_a_rule.content: バリアントのグループの属性は、製品の属性に優位度を持ちます。これは、このバリアントのグループのすべての属性が含まれている製品に対応する値をオーバーライドすることを意味します。ルール <strong>%rule%</strong> は、製品には適用されません。
+      loading.title: 読み込んでいます.
+    history: 適用されたルール "%rule%"
+  product_value:
+    tooltip:
+      affected_by.title: 'ルールによって影響を受けます'
+  steps:
+    product_rule_definition_reader.title: 製品ルールインポートのリーダー
+    rule_definition_processor.title: 製品ルールインポートのプロセッサー
+    product_rule_definition_writer.title: 製品ルールインポートのライター
+    rules_execution.title: ルールの実行
+  notification:
+    rule:
+      executed: ルールの実行完了
+      launched: ルールの実行が開始されました。完了後、あなたに通知されます。
+    mass_edit_rule:
+      success: ルール完了の影響を受ける製品の計算
+      error: ルールの影響を受ける製品の計算中に発生したエラー
+  popin:
+    execute_rules:
+      confirm_title: 実行の確認
+      confirm_content: すべてのルールを実行しますか？(時間がかかるかもしれません)
+btn:
+  Execute rules: ルールを実行
+rule: ルールの設定
+mass_edit_rule: ルールの設定
+job_execution.summary.rule_calculated: ルールの数
+batch_jobs:
+  yml_rule_import:
+    label: ルールを、YAML形式でインポートする
+    import.label: ルールのインポート
+  yml_rule_export:
+    label: ルールを、YAML形式でエクスポートする
+    export.label: ルールのエクスポート
+  rule_impacted_product_count:
+    label: ルールの影響を受ける製品
+    perform.label: 影響を受けた製品をカウント
+    execute_rules.label: ルールの実行
+  csv_product_import_with_rules:
+    label: ルールのある CSV 形式で製品をインポート
+    execute_rules.label: ルールの実行
+    validation.label: ファイルの検証
+    import.label: 製品のインポート
+    import_associations.label: 関連付けのインポート
+  xlsx_product_import_with_rules:
+    label: ルールのあるXLSX 形式で製品のインポート
+    execute_rules.label: ルールの実行
+    validation.label: ファイルの検証
+    import.label: 製品のインポート
+    import_associations.label: 関連付けのインポート
