@@ -1,5 +1,6 @@
 An identifier attribute already exists.: 識別子の属性は既に存在します。
 Attribute code may contain only letters, numbers and underscore: 属性のコードは、文字、数字およびアンダー スコアのみを含めることができます。
+Attribute code may contain only letters (at least one), numbers and underscores: 属性のコードは、文字(少なくとも一つ)、数字およびアンダースコアのみを含めることができます。
 This attribute type can't be used as a grid filter: この属性タイプは、グリッドのフィルターとして使用できません。
 This code is not available: このコードは使用できません。
 This attribute type must be required: この属性タイプは必須です
@@ -9,3 +10,73 @@ No default value may be specified for this attribute type: この属性タイプ
 This value should be Yes or No: この値はYesまたはNoでなければなりません
 This value should not be blank: この値は空白にできません
 Option code may contain only letters, numbers and underscores: オプションのコードは半角英数字とアンダースコアが利用可能です
+Option code may contain only letters (at least one), numbers and underscores: オプションのコードは、文字(少なくとも一つ)、数字およびアンダースコアのみを含めることができます。
+This value should not be a decimal.: この値に10 進数は利用できません。
+'The file extension is not allowed (allowed extensions: %extensions%).': 'この拡張子は許可されていません (利用できる拡張子: %extensions%)。'
+"The value %value% is already set on another product for the unique attribute %attribute%": '%value% は既にユニーク属性の %attribute% を持つ他の製品で使用されています。'
+The same identifier is already set on another product: 同じ識別子が、既に別の製品に設定してあります
+regex.comma_or_semicolon.message: このフィールドには、コンマやセミコロンを含めないでください。
+file.extensions.message: 'この拡張子は許可されていません (利用できる拡張子: %extensions%)。'
+"This type of value expects the use of {{ decimal_separator }} to separate decimals.": 値の型は、{{ decimal_separator }} を用いて10進数を分割することを期待します。
+"This type of value expects the use of dot (.) to separate decimals.": 値の型は、ドット(.) を用いて10進数を分割することを期待します。
+"This type of value expects the use of comma (,) to separate decimals.": 値の型は、コンマ(,) を用いて10進数を分割することを期待します。
+"This type of value expects the use of arabic decimal separator (٫) to separate decimals.": 値の型は、アラビア語小数点記号(٫) を用いて10進数を分割することを期待します。
+"This type of value expects the use of the format {{ date_format }} for dates.": 値の型は、{{ date_format }} を用いた日付形式を期待しています。
+"The category \"%category%\" has to be a root category.": '「%category%」のカテゴリは、ルート カテゴリでなければなりません。'
+"The attribute \"%attributeCode%\" does not exist.": '「%attributeCode%」属性が存在しません。'
+"The attribute \"%attributeCode%\" is not a metric attribute.": 属性「%attributeCode%」は、メートルの属性ではありません。
+"The unit \"%unitCode%\" does not exist or does not belong to the default metric family of the given attribute \"%attributeCode%\".": 単位「%unitCode%」が存在しない、または特定の属性「%attributeCode%」の既定のメートルファミリーに属していません。
+"The currency \"%currency%\" has to be activated.": 通貨「%currency%」を、アクティブにしてください。
+product_model.code.not_blank.message: 製品モデルコードは空にしないでください。
+product_model.code.unique.message: 同じコードが、既に別の製品モデルに設定してあります。
+product_model.family_variant.not_blank.message: 製品モデルのファミリーバリアントは空にしないでください。
+pim_catalog:
+  constraint:
+    can_have_family_variant_empty_axis_value: 'このエンティティの軸として定義されている属性「%attribute%」は空にすることはできません。'
+    can_have_family_variant_duplicate_axis_value: '別の兄弟エンティティが既にこの"%values%"を持っているため、これを属性軸"%attributes%"にセットすることができません。'
+    can_have_family_variant_unexpected_attribute: '属性セットにないため、このエンティティに"%attribute%"プロパティをセットできません'
+    cannot_have_product_model_as_parent: '"%product_model%"は製品モデル"%parent_product_model%"を親に設定できません'
+    cannot_have_parent: '製品モデル「%product_model%」は、親をを持つことはできません'
+    attribute_does_not_belong_to_family: '属性「%attribute%」はファミリー「%family%」に属していません'
+    variant_product_invalid_family: '異なる製品のファミリは、親よりも同じでなければいけません'
+    not_null_family: あなたの製品は識別子"%sku%"を持つため、ファミリーは"null"になることができません。
+    variant_product_has_parent: '異なる商品「%variant_product%」は、親をを持つ必要があります'
+    invalid_variant_product_parent: '異なる商品「%variant_product%」は、親としての製品モデル「%product_model%」を持つことはできません、(この製品モデルでは、子として他製品モデルを持つことができます)'
+    modified_variant_axis_value: '異なる軸「%variant_axis%」は変更できません、与えられた「%provided_value%」'
+    family_variant_attributes_unique: 属性は一意でなければなりません、「%attributes%」は異なる属性セットで何度か使用
+    family_variant_axes_unique: 異なる軸は一意でなければなりません、「%attributes%」は異なる属性セットで何度か使用
+    family_variant_axes_immutable: '「%level%」レベルの異なる軸は変更できません。'
+    family_variant_axes_attribute_type_unique: 異なる軸「%axis%」は、一意または識別子とすることはできません。
+    family_variant_axes_attribute_type: バリアント軸「%axis%」は、ブール値、単純な選択、単純な参照データまたはメトリックである必要がある
+    family_variant_axes_wrong_type: バリアント軸「%axis%」は、localizable, scopable そしてロケール固有にすることはできません
+    family_variant_axes_number_of_axes: 'バリアント属性セットは %max_axes_number% 軸以上持つことはできません。'
+    family_variant_no_axis: 属性セットの「%level%」レベルのための軸を定義するために、少なくとも一つの属性定義が必要
+    family_variant_axis_level: 軸としてセットされた同じバリアント属性セットの中で、属性「%axis%」は属性としてセットしなければならない
+    family_variant_has_family_attribute: '属性「%attribute%」はファミリー「%family%」の属性ではないため、ファミリーバリアント「%family_variant%」に追加することはできません'
+    family_variant_level_do_not_exist: レベル「%level%」にセットされるバリアント属性はない
+    family_variant_no_level: 家族のバリアントで定義される少なくとも 1 つのレベルがあります。
+    family_variant_maximum_number_of_level: ファミリーバリアントが「%level%」レベル以上持つことはできません。
+    family_variant_unique_attributes_in_last_level: 製品レベルで一意な属性「%attribute%」を設定する必要があります。
+    product_identifier: 識別子「%s」は存在しません。
+    0: 予期しないエラーが発生しました。
+    100: 予期しない値
+    101: このフィールドは、ブール値を期待しています。
+    102: このフィールドは、浮動小数点値を期待しています。
+    103: このフィールドでは、整数値を期待しています。
+    104: このフィールドでは、数値を期待しています。
+    105: このフィールドは、文字列値を期待しています。
+    106: このフィールドは、配列の値を期待しています。
+    107: このフィールドは、配列の配列を値として受け付けます。
+    200: 内部エラーが発生しました。
+    201: 内部エラーが発生しました。
+    202: このフィールドでは、数値を期待しています。
+    203: このフィールドは、文字列値を期待しています。
+    204: このフィールドは、文字列値を期待しています。
+    205: 内部エラーが発生しました。
+    300: このフィールドは、有効なエンティティ コードを期待しています。
+    301: このフィールドは、有効なスコープとロケールを期待しています。
+    302: このフィールドは、有効なスコープを期待しています。
+    303: このフィールドは、有効な関連付け形式を期待しています。
+    pim_immutable_product_validator: 同じ識別子が、既に別の製品に設定してあります
+    pim_immutable_product_model_validator: 同じコードが、既に別の製品モデルに設定してあります。
+

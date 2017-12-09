@@ -437,6 +437,7 @@ pim_enrich:
       complete_variant_product: varianttituote
       complete_variant_products: varianttituotteet
       family_variant: Tuotevariantti
+      product_model: Tuotemalli
       flash:
         product_model_added: Varianttituote lisätty onnistuneesti tuotemalliin
         variant_product_added: Varianttituote lisätty onnistuneesti tuotemalliin
@@ -1081,13 +1082,14 @@ page_title:
   pim_enrich_associationtype_edit: Assosiaatiotyyppi {{ association type.label }} | Muokkaa
   pim_enrich_grouptype_index: Ryhmätyypit
   pim_enrich_grouptype_edit: Ryhmätyyppi {{ group type.label }} | Muokkaa
-  pim_enrich_mass_edit_action_choose: Massaedit | Valitse
-  pim_enrich_mass_edit_action_configure: Massaedit | Määritä
+  pim_enrich_mass_edit_action_choose: Massamuokkaus | Valitse
+  pim_enrich_mass_edit_action_configure: Massamuokkaus | Määritä
   pim_enrich_mass_edit_action_perform: Massamuokkas | Suorita
   pim_enrich_job_tracker_index: Prosessiseurain
   pim_enrich_job_tracker_show: Prosessin tracker | Näytä työ
   pim_enrich_api_connection_index: API -yhteydet
   pim_enrich_api_connection_create: API -yhteydet| Luo
+  pim_enrich_mass_edit_action: Massaedit
   pim_analytics_system_info_index: Järjestelmätiedot
 batch_jobs:
   add_product_value:

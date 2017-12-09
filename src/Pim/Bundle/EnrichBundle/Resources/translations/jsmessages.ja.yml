@@ -1,29 +1,47 @@
 confirmation:
   remove:
     item: このアイテムを削除してもよろしいですか?
-    association type: この関連付けタイプを削除してもよろしいですか。
+    association_type: この関連付けタイプを削除してもよろしいですか。
     attribute: この属性を削除してもよろしいですか。
+    attribute_group: この属性グループを削除してもよろしいですか？
     family: このファミリーを削除してもよろしいですか。
     product: この製品を削除してもよろしいですか。
     channel: このチャンネルを削除してもよろしいですか。
     group: このグループを削除してもよろしいですか。
-    variant group: このバリアントのグループを削除してもよろしいですか。
-    group type: このグループタイプを削除してもよろしいですか。
-    import profile: このインポートのプロファイルを削除してもよろしいですか。
-    export profile: このエクスポートプロファイルを削除してもよろしいですか。
+    group_type: このグループタイプを削除してもよろしいですか。
+    import_profile: このインポートのプロファイルを削除してもよろしいですか。
+    export_profile: このエクスポートプロファイルを削除してもよろしいですか。
     user: このユーザーを削除してもよろしいですか?
     role: このロールを削除してもよろしいですか？
+    job_instance: 本当にこのジョブインスタンスを削除しますか？
+    api_connection: この API の接続を解除しますか？この接続を通じたすべての API 呼び出しがエラーになります。
 pim_datagrid:
   mass_action_group:
+    bulk_actions:
+      label: 一括アクション
     quick_export:
       label: クイック エクスポート
+  mass_action:
+    delete:
+      label: 削除
+      confirm_content: 選択された製品を削除してもよろしいですか？
+      success: 選択した製品が正常に削除されました。
+      error: 選択した製品の削除中にエラーが発生しました、やり直してください
+  view_selector:
+    view: ビュー
+    create_view_modal:
+      create: 作成
+      confirm: OK
+      cancel: キャンセル
 flash:
   item:
     removed: アイテムを削除しました
-  association type:
+  association_type:
     removed: 関連タイプを削除しました
   attribute:
     removed: 属性を削除しました
+  attribute_group:
+    removed: 属性グループを削除しました
   family:
     removed: ファミリーを削除しました
   product:
@@ -32,9 +50,7 @@ flash:
     removed: チャンネルを削除しました
   group:
     removed: グループを削除しました
-  variant group:
-    removed: バリアントグループを削除しました
-  group type:
+  group_type:
     removed: グループタイプを削除しました
   import profile:
     removed: インポートプロファイルを削除しました
@@ -44,16 +60,22 @@ flash:
     removed: ユーザーを削除しました
   role:
     removed: ロールを削除しました
+  job_instance:
+    removed: ジョブインスタンスを削除しました
+  api_connection:
+    removed: APIコネクションを削除しました
 error:
+  common: エラーが発生しました
+  creating:
+    product: 製品識別子として属性が構成されていない、またはそれを編集する権限を持っていません。
   removing:
     item: このアイテムを削除できません
-    association type: この関連付けタイプを削除することはできません
+    association_type: この関連付けタイプを削除することはできません
     attribute: この属性は削除できません
     family: このファミリーを削除できません
     product: この製品を削除できません
     channel: このチャンネルを削除できません
     group: このグループは削除できません
-    variant group: このバリアントグループは削除できません
     group type: このグループタイプは削除できません
     import profile: このインポートプロファイルは削除できません
     export profile: このエクスポートプロファイルは削除できません
@@ -62,12 +84,16 @@ error:
     attribute_option: 属性オプションの削除中にエラーが発生しました
   saving:
     attribute_option: 属性オプションを保存できません
+    export_profile: エクスポート プロファイルを保存できません。すべてのフィルターが設定されているか、確認してください。
 alert:
   attribute_option:
     error_occured_during_submission: フォームの情報をサーバーに送信中にエラーが発生しました
     save_before_edit_other: 他を編集する前に、あなたが他の行で行った変更を確定してください
+  session_storage:
+    not_available: あなたのウェブブラウザはsessionStorageと互換性がありません。管理者に問い合わせてください。
 confirm:
   attribute_option:
+    cancel_edition_on_new_option_text: 警告：未保存のデータは失われます。この新しいオプションの変更を取り消しますか？
     cancel_edition_on_new_option_title: 変更をキャンセル
 label:
   attribute_option:
@@ -80,36 +106,84 @@ Classify the product: 製品を分類
 Delete the product: 製品を削除
 Change status: ステータスの変更
 Toggle status: ステータスを切り替える
-pim.grid.mass_action.quick_export.csv_all: CSV (すべての属性)
-pim.grid.mass_action.delete: 削除
-pim.grid.mass_action.mass_edit: 一括編集
-pim.grid.mass_action.sequential_edit: シーケンシャル編集
+pim:
+  grid:
+    mass_action:
+      quick_export:
+        csv_all: CSV (すべての属性)
+        csv_grid_context: CSV (グリッド コンテキスト)
+        xlsx_all: エクセル (すべての属性)
+        xlsx_grid_context: エクセル (グリッド コンテキスト)
+      delete: 削除
+      mass_edit: 一括操作
+      category_edit: 製品をカテゴリに移動する
+      sequential_edit: 連続編集
 jstree.create: 作成
+jstree.done: 完了
 switch_on: "はい"
 switch_off: "いいえ"
 pim_enrich:
   item:
     list:
       delete.label: 削除
+      delete.error: アイテム削除中のエラー
+    delete:
+      confirm.content: この{{ itemName }} を削除してよろしいですか？このアクションは元に戻せません。
+      confirm.title: '{{ itemName }} を削除する'
+  navigation:
+    link:
+      back_to_grid: グリッドに戻る
+    other_actions: その他の操作
   entity:
     save:
       label: 保存
+    info:
+      update_failed: 更新に失敗しました
+      update_successful: 正常に更新されました
+    create_popin:
+      code: コード
+      label: ラベル
+      labels:
+        save: 保存
+        cancel: キャンセル
     product:
+      navigation: 製品操作
+      infos: 製品情報
+      index_title: "] - Inf ファイル、1] {{ count }} 結果 |] 1、Inf [{{ count }} 結果"
       title: 商品
+      locale: ロケール
+      category: カテゴリ
+      create: 作成
+      subTitle: 製品を作成
+      modalTitle: アクションを選択する
+      filters: フィルタ
+      selected: 選択した結果
+      common: 一般
       btn:
-        enable: 有効
         enabled: 有効
-        disable: 無効
         disabled: 無効
         download_pdf: PDF
+        compare_translate: 比較/翻訳
         delete: 削除
         save: 保存
       history:
         version: バージョン
         author: 作成者
         logged_at: ログイン日
-        old_values: 古い値
-        new_values: 新しい値
+        from: 開始
+        modified: 修正
+        old_value: 古い値
+        new_value: 新しい値
+        actions: アクション
+      info:
+        deletion_successful: 商品を削除しました。
+        deletion_failed: 製品を削除できませんでした。
+        update_successful: 商品を更新しました。
+        update_failed: 製品を更新できませんでした。
+        field_not_ready: この製品をすぐに保存できません。次のフィールドが準備ができていません：{{ fields }}
+        already_in_upload: ファイルはすでに {{ locale }} ローケル と {{ scope }} スコープでこの属性のためにアップロードされています
+      error:
+        upload: ファイルをアップロード中にエラーが発生
       meta:
         created: 作成日時
         created_by: 投稿
@@ -118,62 +192,317 @@ pim_enrich:
         family:
           title: ファミリー
           none: なし
+        family_variant:
+          title: バリアント
+          none: なし
         groups:
           title: グループ
           modal:
+            title: '{{ group }} グループ'
             view_group: 表示グループ
             group_label: ラベル
+            more_products: '{{ count }} 件以上の商品...'
             close: 閉じる
+        status: ステータス
+        scope: チャンネル
+        locale: ロケール
       copy:
         select: 選択
         all: すべて
         all_visible: すべて表示
         none: なし
         copy: コピー
-      variant_group:
-        switch:
-          "yes": はい
-          "no": いいえ
       optional_attribute:
         remove: 属性を削除
+      locale_specific_attribute:
+        unavailable: このロケールの特定のフィールドは、このロケールでは利用できません。
+      localizable:
+        channel_locale_unavailable: このローカライズ可能なフィールドは {{ locale }} ローケルと{{ channel }} チャンネル で使用できません
+      media:
+        upload: アップロードするためにドラッグアンドドロップするか、ここをクリック
+      create_popin:
+        type: 製品
+        title: 作成
+        labels:
+          family: ファミリーを選択してください
+          save: 保存
+          cancel: キャンセル
+      message:
+        created: 製品を作成しました
+      completeness: 網羅率
+      sequential_edit:
+        item_limit: 連続編集で最初に表示された1000件のアイテムのみ ({{ count }} 選択)
+        empty: あなたの選択は空です。検索条件を変更してください
+    product_model:
+      create_popin:
+        type: 製品モデル
+        title: 製品モデルを作成
+        content: 商品モデルは異なる商品を集め、共通プロパティの強化を用意にする
+      info:
+        create_successful: 製品モデルを作成しました
+        update_successful: 製品モデルが正常に更新されました。そのバリエーションの商品の完全性が再計算されます。
+        update_failed: 製品モデルを更新できませんでした。
+        field_not_ready: この製品モデルをすぐに保存できません。次のフィールドが準備ができていません：{{ fields }}
+      read_only_parent_attribute_from_common: この属性は、共通の属性を更新できます。
+      read_only_parent_attribute_from_model: "この属性は、{{ axes }} によって属性で更新できます。"
+      variant_axis: バリアントの軸
+      title: 製品
+      add_child:
+        create: 新しく追加
+        cancel: キャンセル
+        confirm: 確認
+        create_label: "新しい {{ axes }} を追加します。"
+        fields:
+          required_label: バリアントの軸
+          code: コード
+    association_type:
+      info:
+        deletion_successful: 関連タイプが正常に削除されました。
+        deletion_failed: 関連タイプを削除できませんでした。
+        update_successful: 関連タイプが正常に更新されました。
+        update_failed: 関連タイプを更新できませんでした。
+        field_not_ready: この連合タイプをすぐに保存できません。次のフィールドが準備ができていません：{{ fields }}
+      meta:
+        created: 作成日時
+        created_by: 作成者：
+        updated: 更新日時
+        updated_by: 更新者：
+      btn:
+        save: 保存
+      title: 関連タイプ
+      create_popin:
+        title: 作成
+      message:
+        created: 関連タイプを削除しました
+    group_type:
+      info:
+        deletion_successful: グループタイプは削除されました。
+        deletion_failed: グループタイプを削除できませんでした。
+        update_successful: グループタイプを更新しました。
+        update_failed: グループタイプを更新できませんでした。
+        field_not_ready: このグループタイプをすぐに保存できません。次のフィールドが準備ができていません：{{ fields }}
+      meta:
+        created: 作成日時
+        created_by: 作成者：
+        updated: 更新日時
+        updated_by: 更新者：
+      btn:
+        save: 保存
+      title: グループタイプ
+      create_popin:
+        title: 作成
+      message:
+        created: グループタイプを作成しました
+    channel:
+      title: チャネル
+      info:
+        deletion_successful: チャンネルを削除しました。
+        deletion_failed: チャンネルを削除できませんでした。
+        update_successful: チャンネルを更新しました。
+        update_failed: チャンネルを更新できませんでした。
+        create_successful: チャンネルを作成しました。
+        create_failed: チャンネルを作成できませんでした。
+        field_not_ready: このチャネルをすぐに保存できません。次のフィールドが準備ができていません：{{ fields }}
+      meta:
+        created: 作成日時
+        created_by: 作成者：
+        updated: 更新日時
+        updated_by: 更新者：
+      btn:
+        save: 保存
+    family:
+      title: ファミリー
+      selected: 選択したファミリー
+      info:
+        update_successful: ファミリーを更新しました。
+        create_successful: チャンネルを作成しました。
+        update_failed: ファミリーの更新中にエラーが発生しました
+        cant_remove_attribute_as_label: ラベルとして使用される属性は削除できません
+        cant_remove_attribute_as_image: メイン画像として使用される属性を削除できません。
+        attribute_edit_permission_is_not_granted: あなたはファミリー属性を編集する権限がありません
+        cant_remove_attribute_used_as_axis: ファミリーバリアントで使われるバリアント軸である属性は削除できません
+      meta:
+        created: 作成日時
+        created_by: 作成者：
+        updated: 更新日時
+        updated_by: 更新者：
+      btn:
+        save: 保存
+      create_popin:
+        title: 作成
+      message:
+        created: ファミリーを作成しました
+      variant:
+        common:
+          title: 共通の属性
+          empty: 共通の属性はありません。
+        axis.label: バリアントの軸
+        level_1.label: バリアント属性レベル 1
+        level_2.label: バリアント属性レベル 2
+        add_variant: バリエーションを追加
+        create_label: 新しいファミリーバリアントを作成
+        create_description: ファミリーバリアントでは、バリエーションを含む製品の構造を定義できます。管理するバリアントのレベル、各レベルのバリアントの軸として使用される属性の数を選択し、属性を分散する方法を定義します。
+        update_description: '。バリアントレベルでこれらの属性を管理できるよう、選択したバリアントレベルで属性をドラッグ＆ドロップする。'
+        create: 作成
+        cancel: キャンセル
+        code: コード
+        label: ラベル
+        levels: 様々 なレベル
+        axis_level: 様々な軸レベル
+        required: 必須
+        confirm_attribute_removal:
+          title: 属性の削除を確認します。
+          message: これらの属性を削除することで、ファミリーバリ円との共通属性に戻すことになり、バリアント製品から削除することになる
+    family_variant:
+      info:
+        update_successful: 家族のバリアントが正常に更新されました。バリエーションを含む商品は、変更内容に従って更新されます。
     attribute_option:
       code: コード
       label: ラベル
+      actions: アクション
+    group:
+      title: グループ
+      info:
+        deletion_successful: グループを削除しました。
+        deletion_failed: グループを削除できませんでした。
+        update_successful: グループを更新しました。
+        update_failed: グループを更新できませんでした。
+        field_not_ready: このグループをすぐに保存できません。次のフィールドが準備ができていません：{{ fields }}
+      btn:
+        save: 保存
+      meta:
+        product_count: 製品
+        created: 作成日時
+        created_by: 作成者：
+        updated: 更新日時
+        updated_by: 更新者：
+      create_popin:
+        title: 作成
+      message:
+        created: グループを作成しました
+    job_instance:
+      title: ジョブプロファイル
+      info:
+        update_failed: ジョブプロファイルを更新できませんでした。
+        update_successful: ジョブプロファイルを正常に更新しました。
+    attribute:
+      info:
+        deletion_successful: 属性を削除しました
+        deletion_failed: 属性を削除できませんでした。
+        update_successful: 属性を更新しました
+        update_failed: 属性を更新できませんでした。
+        create_successful: 属性を作成しました
+        create_failed: 属性を作成できませんでした。
+      scopable: Scopable
+      type:
+        pim_catalog_identifier: 識別子
+        pim_catalog_text: テキスト
+        pim_catalog_textarea: テキスト エリア
+        pim_catalog_number: 数値
+        pim_catalog_price_collection: 価格
+        pim_catalog_multiselect: 複数選択
+        pim_catalog_simpleselect: 単純選択
+        pim_catalog_file: ファイル
+        pim_catalog_image: イメージ
+        pim_catalog_boolean: "Yes/No"
+        pim_catalog_date: 日付
+        pim_catalog_metric: メトリック
+        pim_reference_data_simpleselect: データの単純な選択を参照
+        pim_reference_data_multiselect: データの複数の選択を参照
+      validation_rule:
+        email: 電子メール
+        regexp: 正規表現
+        url: URL
+      title: 属性
+    attribute_group:
+      info:
+        update_failed: 属性グループを更新できませんでした。
+        update_successful: 属性グループを作成しました
+    api_connection:
+      create_popin:
+        title: 作成
+      message:
+        created: APIコネクションを作成しました
   confirmation:
     leave: このページから移動してもよろしいですか？
+    discard_changes: このページから移動する場合は {{ entity }} に対する変更が失われます。
+    delete_item: 削除を確認する
+    remove_item: 削除を確認
+    remove: 削除
+    delete:
+      attribute: 商品からこの属性を削除してもよろしいですか？
+      attribute_group: 属性 {{ attribute }} をこの属性グループから削除してもよろしいですか。
   info:
     not_applicable: N/A
     entity:
       updated: 保存されていない変更があります。
+  error:
+    upload: ファイルをアップロード中にエラーが発生しました。
+  alert:
+    not_allowed: このページにアクセスすることはできません
+    error_occured: ページをロード中にエラーが発生しました。
   form:
+    required: (必須)
+    product_model:
+      choose_variant: バリアントを選択します
+      complete_variant_product: バリアント製品
+      complete_variant_products: バリアント製品
+      family_variant: バリアント
+      product_model: 製品モデル
+      flash:
+        product_model_added: 製品モデルが製品モデルに正常に追加されました
+        variant_product_added: 異なる製品が製品モデルに正常に追加されました
     product:
       tab:
         associations:
+          title: 関連
           info:
             none_exist: 関連タイプがありません。
-            show_products: 製品を表示
-            show_groups: グループを表示
+            show_products: ディスプレイ製品
+            show_groups: ディスプレイグループ
+            number_of_associations: "{{ productCount }} 件の製品と{{ groupCount }} 件のグループ"
+          association_type_selector: 関連タイプ
+          target: ターゲット
         attributes:
           title: 属性
           btn:
             add: 追加
             add_attributes: 属性を追加
           info:
+            search_attributes: 検索...
             no_available_attributes: これ以上追加する属性はありません
+            attributes_selected: "{{ itemsCount }} 属性の選択"
             no_match: 一致するものがみつかりません
+            load_more: 他の結果を読み込み中です…
+          attribute_group_selector: 属性グループ
+          attribute_group_all: すべて
+          attribute_group.to_fill_count: "{1}1 空の必要な属性 |]1、Inf [{{ count }} 空の必要な属性"
+          attribute_filter:
+            display: 表示
+            all: 全ての属性
+            missing_required: すべての不足している必要属性
         categories:
           title: カテゴリ
       panel:
         completeness:
           title: 完全性
+          info:
+            no_family: ファミリーが未定義です。この製品の完全性を計算するファミリーを定義してください。
+            no_completeness: 商品のファミリーを変更しました。新しいファミリーの完全性を計算するために、まずは保存して下さい。
+          missing_values: "{1}1 欠測値 |]1、Inf [{{ count }} 欠測値"
         history:
           title: 履歴
       switch:
-        "no": いいえ
-        "yes": はい
+        "no": "いいえ"
+        "yes": "はい"
       sequential_edit:
         info:
           products: 製品
+          previous: '{{ product }} を保存せずにスキップします。'
+          next: '{{ product }} を保存せずにスキップします。'
+        btn:
+          save_and_next: 保存して次へ
+          save_and_finish: 保存して終了
       change_family:
         modal:
           title: 製品ファミリーを変更
@@ -181,14 +510,884 @@ pim_enrich:
           keep_attributes: 削除する属性はありません。
           change_family_to: ファミリーを変更
           empty_selection: ファミリーを選択してください
+      flash:
+        attribute_deletion_error: 属性の削除中にエラーが発生
       mass_edit:
         select_attributes: 属性の選択
         select: 選択
+    association_type:
+      tab:
+        properties:
+          title: プロパティ
+          general: 全般プロパティ
+          code: コード
+          label_translations: ラベルの翻訳
+        history:
+          title: 履歴
+    group_type:
+      tab:
+        properties:
+          title: プロパティ
+          general: 全般プロパティ
+          code: コード
+          label_translations: ラベルの翻訳
+        history:
+          title: 履歴
+    channel:
+      tab:
+        history:
+          title: 履歴
+        properties:
+          title: プロパティ
+          general: 全般
+          code: コード
+          currencies: 通貨
+          locales: ロケール
+          category_tree: カテゴリ ツリー
+          label_translations: ラベルの翻訳
+          label_conversion_units: 製品のエクスポート時に使用する各メトリック属性の変換ユニットを選択します
+          conversion_unit:
+            do_not_convert: 変換しない
+    family:
+      tab:
+        properties:
+          title: プロパティ
+          general: 全般
+          code: コード
+          attribute_as_label: ラベルとして使用する属性
+          attribute_as_image: メイン画像として使用される属性
+          empty_attribute_as_image: 選択されていません
+          label_translations: ラベルの翻訳
+        attributes:
+          title: 属性
+          label_label: ラベル
+          toolbox:
+            select_attributes_by_groups: グループによる追加
+            select_attributes: 属性を追加
+            add: 追加
+            attributes_groups_selected: '{{ itemsCount }} グループの選択'
+          not_required_label: 任意
+          required_label: 必須
+        variant:
+          title: 種類
+          flash:
+            family_variant_created: ファミリーバリアントを作成しました
+        history:
+          title: 履歴
     attribute_option:
+      flash:
+        option_created: 属性オプションを作成しました
+        error_creating_option: 属性オプションの作成中にエラーが発生しました
       add_option_modal:
+        title: 属性オプションの追加
         confirm: 追加
         cancel: キャンセル
     entity:
       switch:
-        "no": いいえ
-        "yes": はい
+        "no": "いいえ"
+        "yes": "はい"
+    group:
+      tab:
+        properties:
+          title: プロパティ
+          general: 全般プロパティ
+          code: コード
+          type: タイプ
+          label_translations: ラベルの翻訳
+        history:
+          title: 履歴
+        products:
+          title: 製品
+    attribute_group:
+      tab:
+        properties:
+          title: プロパティ
+          general: 全般プロパティ
+          code: コード
+          label_translations: ラベルの翻訳
+        attribute:
+          title: 属性
+          table:
+            name: 名前
+            type: タイプ
+            scopable: Scopable
+            localizable: ローカライズ可能
+        history.title: 履歴
+    common:
+      tab:
+        attributes:
+          btn:
+            add: 追加
+            add_attributes: 属性を追加
+          info:
+            search_attributes: 検索...
+            no_available_attributes: これ以上追加する属性はありません
+    job_execution:
+      loading: 読み込んでいます.
+      title.details: 実行の詳細
+      refreshBtn.title: 更新
+      meta:
+        status.title: ステータス
+      button:
+        show_profile.title: プロファイルを表示
+        download_log.title: ログをダウンロード
+        download_file.title: 生成されたファイルをダウンロードする
+        download_archive.title: 生成されたアーカイブをダウンロードする
+      summary:
+        fetching: ジョブの実行に関するデータを収集しています...
+        warning: 警告
+        header.step: ステップ
+        header.status: ステータス
+        header.warnings: 警告
+        header.summary: サマリ
+        header.start: 開始
+        header.end: 終了
+    job_instance:
+      fail:
+        launch: ジョブプロファイルを処理できませんでした。ジョブプロファイルが有効で、処理する権限があるか確認して下さい。
+        save: ジョブプロファイルを保存できませんでした。ジョブプロファイルの編集権限があるか確認して下さい。
+      title:
+        import: プロファイルをインポート
+        export: プロファイルをエクスポート
+      button:
+        edit.title: 編集
+        export.title: 今すぐエクスポート
+        import.launch: 今すぐインポート
+        import.upload: アップロードしてインポートする
+        import.upload_file: ファイルのアップロード
+      meta:
+        job: ジョブ
+        connector: コネクター
+      subsection:
+        last_executions: 最後の実行
+      tab:
+        content:
+          title: コンテンツ
+        properties:
+          title: プロパティ
+          code:
+            title: コード
+          label:
+            title: ラベル
+          decimal_separator:
+            title: 小数点の区切り
+            help: 小数点の区切り文字を決定する
+          date_format:
+            title: 日付フォーマット
+            help: 日付フィールドの形式を決定
+          file_path:
+            title: ファイルのパス
+            help: ファイル システムで生成されたファイルの書き込み先
+          delimiter:
+            title: 区切り文字
+            help: 特定の文字をフィールド区切り文字として使用
+          enclosure:
+            title: エンクロージャ
+            help: 特定の文字をフィールドのエンクロージャーとして使用
+          with_header:
+            title: ヘッダー行あり
+            help: 列名を出力するかどうか
+          with_media:
+            title: エクスポート ファイルと画像
+            help: 製品ファイルと画像をエクスポートするかどうか
+          lines_per_file:
+            title: ファイルごとの行数
+            help: 1ファイルあたりの行の数を定義する
+          upload_allowed:
+            title: ファイルのアップロードを許可
+            help: 直接ファイルのアップロードを許可するかどうか
+          categories_column:
+            title: カテゴリ列
+            help: カテゴリ列の名前
+          escape:
+            title: エスケープ
+            help: 特定の文字をフィールドのエスケープ文字として使用
+          family_column:
+            title: ファミリー列
+            help: ファミリー列の名前
+          groups_column:
+            title: グループ]列
+            help: グループ]列の名前
+          enabled:
+            title: 製品を有効にする
+            help: インポートした製品を有効にするか否か
+          enabled_comparison:
+            title: 値を比較
+            help: 比較機能を有効にすると、インポート前と後の値を比較できます。インポートされた値が元の値に近い場合はインポート処理が速くなります。
+          real_time_versioning:
+            title: リアルタイム更新履歴
+            help: 商品履歴は自動的にアップデートされます。自動アップデートをオフにするとパフォーマンスが向上します。
+          family_variant_column:
+            title: ファミリーバリアントの列
+        history:
+          title: 履歴
+      file_path: ファイルのパス
+    attribute:
+      meta:
+        created: 作成日時
+        created_by: by
+        updated: 最終更新
+        updated_by: by
+      tab:
+        properties:
+          title: プロパティ
+          section:
+            common: 全般パラメータ
+            type_specific: タイプ固有のパラメーター
+            validation: パラメータによる値チェック
+          label:
+            allowed_extensions: 利用できる拡張子
+            auto_option_sorting: アルファベット順のオプションを自動的に並べ替える
+            available_locales: 使用可能なロケール
+            code: コード
+            date_max: 最大日
+            date_min: 最小日
+            decimals_allowed: 10 進数の値が使用できます
+            default_metric_unit: 既定のメトリック単位
+            group: 属性グループ
+            is_locale_specific: ロケール固有
+            localizable: ロケールごとの値
+            max_characters: 最大文字数
+            max_file_size: 最大ファイル サイズ (MB)
+            metric_family: メトリックファミリー
+            minimum_input_length: オートコンプリートの最小長
+            negative_allowed: 負の値を許可
+            number_max: 最大数
+            number_min: 最小数
+            reference_data_name: 参照データタイプ
+            scopable: チャンネルごとの値
+            type: タイプ
+            unique: ユニーク値
+            useable_as_grid_filter: グリッドで使用可能
+            validation_regexp: 正規表現
+            validation_rule: 値チェックルール
+            wysiwyg_enabled: リッチ テキスト エディターを有効
+          default_label:
+            default_metric_unit: 単位を選択
+            group: 属性グループを選択
+            metric_family: ファミリーを選択してください
+            reference_data_name: 参照データタイプを選ぶ
+        labels:
+          title: ラベルの翻訳
+        choices:
+          title: オプション
+        history:
+          title: 履歴
+    mass_edit:
+      family:
+        attributes:
+          label_label: ラベル
+          toolbox:
+            select_attributes_by_groups: グループによる追加
+            select_attributes: 属性を追加
+            add: 追加
+            attributes_groups_selected: '{{ itemsCount }} グループの選択'
+  job:
+    upload: '{{ type }} ファイルをドロップするか、またはディスクを参照するをクリックしてください'
+  export:
+    product:
+      data:
+        title: 商品をフィルターする
+      structure:
+        title: データをフィルターする
+        attributes:
+          title: 属性
+      filter:
+        channel:
+          title: チャンネル
+          help: チャンネルは、製品の値と、データを選択するために使用するローケルおよび製品を選択するために使用するツリーのスコープを定義しています。
+        locales:
+          title: ロケール
+          help: 'ロケールは、エクスポートするローカライズされた製品の値を定義します。例: フランス語で書かれた唯一の製品情報。'
+        attributes:
+          title: 属性
+          edit: 編集
+          label: "{0} すべての属性 |{1} 1つの属性の選択 |]1、Inf [{{ count }} 属性の選択"
+          help: 'エクスポートする製品情報を選択します。例: 技術的な属性のみ。'
+          empty: 全ての属性がエクスポートされます
+          modal:
+            apply: 適用
+            cancel: キャンセル
+            title: 属性の選択
+        attributes_selector:
+          attribute_group: 属性グループ
+          attributes: "{{ itemsCount }} 属性で検索"
+          selected: "選択された属性"
+          clear: クリア
+          all_group: すべてのグループ
+          empty_selection: 全ての属性がエクスポートされます
+          title: 属性
+          description: エクスポートする製品情報を選択
+        family:
+          title: ファミリー
+          help: '製品のファミリーによってエクスポートする製品を選択します。例: 靴とドレスのみをエクスポート。'
+          operators:
+            IN: リストに存在する
+            "NOT IN": 一覧にありません
+            EMPTY: ファミリーを持たない製品
+            "NOT EMPTY": ファミリーを持つ製品
+          empty_selection: ファミリーの条件なし
+        updated:
+          title: 時間条件
+          operators:
+            ALL: 日付の条件なし
+            "SINCE LAST N DAYS": 過去 n 日間 （例. 6日） で更新された製品
+            ">": この日付以降に更新された製品
+            "SINCE LAST JOB": 最後のエクスポートから更新された製品
+        enabled:
+          title: ステータス
+          help: '製品の状態でエクスポートする製品を選択します。例: いかなる状態でも製品をエクスポートします。'
+          value:
+            all: すべて
+            enabled: 有効
+            disabled: 無効
+        completeness:
+          title: 完全性
+          help: 製品の完全性によってエクスポートする製品を選択します。
+          operators:
+            ALL: 完全性の条件なし
+            ">=": 少なくとも1つの選択されたローケルで完了します
+            "GREATER OR EQUALS THAN ON ALL LOCALES": 全ての選択されたローケルで完了します
+            LOWER THAN ON ALL LOCALES: 全ての選択されたローケルで完了しません
+          empty_selection: ファミリーを選択
+        category:
+          title: カテゴリ
+          help: エクスポートする製品を選択するために、（上記のチャネルによって定義される）ツリー内の製品カテゴリを使用する
+        identifier:
+          title: 識別子
+          help: カンマやスペース、改行で分けられている製品識別子をエクスポートで利用する
+        metric:
+          operators:
+            "=": 等しい
+            "!=": 等しくない
+            ">=": 以上
+            ">": より大きい
+            "<=": 以下
+            "<": より低い
+            EMPTY: 空値
+            NOT EMPTY: 空ではない
+        string:
+          operators:
+            ALL: すべて
+            CONTAINS: 含む
+            DOES NOT CONTAIN: 含まない
+            "=": 等しい
+            STARTS WITH: で始まる
+            ENDS WITH: で終わる
+            EMPTY: 空値
+            NOT EMPTY: 空ではない
+        price-collection:
+          operators:
+            "=": 等しい
+            "!=": 等しくない
+            ">=": 以上
+            ">": より大きい
+            "<=": 以下
+            "<": より低い
+            EMPTY: 空値
+            NOT EMPTY: 空ではない
+        multi_select:
+          operators:
+            IN: リストに存在する
+            EMPTY: 空値
+            NOT EMPTY: 空ではない
+        media:
+          operators:
+            CONTAINS: 含む
+            DOES NOT CONTAIN: 含まない
+            "=": 等しい
+            STARTS WITH: で始まる
+            ENDS WITH: で終わる
+            EMPTY: 空値
+            NOT EMPTY: 空ではない
+        date:
+          operators:
+            ">": より大きい
+            "<": より低い
+            "=": 等しい
+            "!=": 等しくない
+            BETWEEN: の間
+            NOT BETWEEN: の間ではない
+            EMPTY: 空値
+            NOT EMPTY: 空ではない
+        number:
+          operators:
+            "=": 等しい
+            "!=": 等しくない
+            ">=": 以上
+            ">": より大きい
+            "<=": 以下
+            "<": より低い
+            EMPTY: 空値
+            NOT EMPTY: 空ではない
+      properties:
+        title: プロパティ
+      global_settings:
+        title: グローバル設定
+  mass_edit_action:
+    edit_common_attributes:
+      description: 選択した商品の属性は以下のロケール <span class="highlight">{{ locale }}</span> のデータとチャンネル <span class="highlight">{{ channel }}</span> で編集され、製品のグリット内で選ばれます。
+  index:
+    association_type:
+      title: "] - Inf ファイル、1] {{ count }} 関連付けの種類 |] 1、Inf [{{ count }} 関連型"
+      create_btn: 関連タイプ作成
+    import_profiles:
+      title: "] - Inf ファイル、1] {{ count }} インポート プロファイル |] 1、Inf [{{ count }} プロファイルのインポート"
+      create_btn: インポート プロファイルを作成
+      list: ジョブ選択
+      create_popin:
+        title: 作成
+      message:
+        created: インポートプロファイルを作成しました
+    import_history:
+      title: レポートのインポート
+    group:
+      title: "] - Inf ファイル、1] {{ count }} グループ |] 1、Inf [{{ count }} グループ"
+      create_btn: グループを作成
+    export_profiles:
+      title: "] - Inf ファイル、1] {{ count }} エクスポートプロファイル |] 1、Inf [{{ count }} プロファイルのエクスポート"
+      create_btn: エクスポート プロファイルを作成
+      create_popin:
+        title: 作成
+      message:
+        created: エクスポートプロファイルを作成しました
+    export_history:
+      title: レポートのエクスポート
+    family:
+      title: "] - Inf ファイル、1] {{ count }} ファミリー |] 1、Inf [{{ count }} ファミリー"
+      create_btn: ファミリーを作成
+    grouptype:
+      title: "] - Inf ファイル、1] {{ count }} グループタイプ |] 1、Inf [{{ count }} グループタイプ"
+      create_btn: グループタイプ作成
+    currency:
+      title: "] - Inf ファイル、1] {{ count }} 通貨 |] 1、Inf [{{ count }} 通貨"
+    locale:
+      title: "] - Inf ファイル、1] {{ count }} ロケール |] 1、Inf [{{ count }} ロケール"
+    user:
+      title: "] - Inf ファイル、1] {{ count }} ユーザ |] 1、Inf [{{ count }} ユーザ"
+      create_btn: ユーザー作成
+    user_role:
+      title: "] - Inf ファイル、1] {{ count }} ロール |] 1、Inf [{{ count }} ロール"
+      create_btn: 権限を作成
+    user_group:
+      title: "] - Inf ファイル、1] {{ count }} グループ |] 1、Inf [{{ count }} グループ"
+      create_btn: グループを作成
+    process_tracker:
+      title: "] - Inf ファイル、1] {{ count }} オペレーション|] 1、Inf [{{ count }} オペレーション"
+    channel:
+      title: "] - Inf ファイル、1] {{ count }} チャネル |] 1、Inf [{{ count }} チャネル"
+      create_btn: チャンネルを作成します
+    attribute:
+      title: "] - Inf ファイル、1] {{ count }} 属性 |] 1、Inf [{{ count }} 属性"
+      create_btn: 属性を作成
+      modal_title: 属性の種類を選択
+    attribute_group:
+      title: 属性グループ
+      create_btn: 作成
+    api_connection:
+      title: "] - Inf ファイル、1] {{ count }} APIコネクション|] 1、Inf [{{ count }} APIコネクション"
+      create_btn: 作成
+  mass_edit:
+    next: 次
+    previous: 戻る
+    cancel: キャンセル
+    confirm: 確認
+    product:
+      title: 製品一括操作
+      confirm: "{1}更新しようとしている以下の商品の内容について、ご確認ください。|] 1, Inf [更新しようとしている以下の {{ itemsCount }} 件の商品の内容について、ご確認ください。"
+      step:
+        select:
+          label: 商品を選択してください
+        choose:
+          title: 製品一括操作
+          label_count: "0, Inf [あなたのアクションを選択"
+        configure:
+          label: 構成
+        confirm:
+          label: 確認
+        launch_error:
+          label: 一括編集操作の起動中にエラーが発生しました
+        launched:
+          label: '"{{ operation }}" 一括操作が開始されています。終了後に通知されます。'
+      operation:
+        change_status:
+          label: ステータスの変更
+          label_count: "{1}ステータスを変更<span class=\"AknFullPage-title--highlight\"> 1 製品</span> |]1、Inf [ ステータスを変更 <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} 製品</span>"
+          description: 選択した製品は有効または無効になります。
+          field: 有効にするには
+        edit_common:
+          label: 共通の属性を編集
+          label_count: "{1}共通の属性を編集<span class=\"AknFullPage-title--highlight\"> 1 製品</span> |]1、Inf [共通の属性を編集<span class=\"AknFullPage-title--highlight\">{{ itemsCount }} 製品</span>"
+          description: 選択された製品の属性は、製品グリッドで選択されたロケール{{ locale }} とチャンネル{{ scope }} のための次のデータで編集される。
+        change_family:
+          label: ファミリーの変更
+          label_count: "{1}ファミリーを変更<span class=\"AknFullPage-title--highlight\"> 1 製品</span> |]1、Inf [ ファミリーを変更 <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} 製品</span>"
+          description: 選択した製品のファミリーを選択したファミリーに変更します
+          field: ファミリー
+        add_to_group:
+          label: グループに追加
+          label_count: "{1}追加 <span class=\"AknFullPage-title--highlight\"> 1 グループに</span> |]1、Inf [ 追加 <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} グループに</span>"
+          description: 選択した製品を追加するグループを選択します
+          field: グループ
+        add_to_category:
+          label: カテゴリーに追加
+          label_count: "{1}追加 <span class=\"AknFullPage-title--highlight\"> 1 カテゴリに</span> |]1、Inf [ 追加 <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} カテゴリに</span>"
+          description: 製品は以下のカテゴリに配置されます、既存の表示順が保持されます。
+        move_to_category:
+          label: カテゴリ間を移動
+          label_count: "{1}動かす <span class=\"AknFullPage-title--highlight\"> 1 カテゴリ間を</span> |]1、Inf [ 動かす <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} カテゴリを</span>"
+          description: 製品は以下のカテゴリに配置され、既存の表示順は削除されます。
+        remove_from_category:
+          label: カテゴリから削除
+          label_count: "{1}取り除く <span class=\"AknFullPage-title--highlight\"> 1 製品</span> |]1、Inf [ 取り除く <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} 製品</span>"
+          description: 次のカテゴリから製品が削除されます。
+    family:
+      title: ファミリー一括操作
+      confirm: "{1}更新しようとしている以下のファミリーの内容について、ご確認ください。|] 1, Inf [更新しようとしている以下の {{ itemsCount }} 件のファミリーの内容について、ご確認ください。"
+      step:
+        select:
+          label: ファミリーを選択
+        choose:
+          title: ファミリー一括操作
+          label_count: "0, Inf [あなたのアクションを選択"
+        configure:
+          label: 構成
+        confirm:
+          label: 確認
+        launched:
+          label: '"{{ operation }}" 一括操作が開始されています。終了後に通知されます。'
+      operation:
+        set_requirements:
+          label: 属性の要件を設定
+          description: 以下の属性要件が選択したファミリーに適用されます
+          label_count: "{1}必須属性をセット<span class=\"AknFullPage-title--highlight\"> 1 ファミリー</span> |]1、Inf [必須属性をセット<span class=\"AknFullPage-title--highlight\">{{ itemsCount }} ファミリー</span>"
+pim_enrich.error:
+  exception.title: ' {{ status_code }} のエラーが発生しました。'
+  http:
+    403: このページにアクセスすることはできません
+page_title:
+  oro_default: ダッシュ ボード
+  pim_enrich_attributegroup_index: 属性グループ
+  pim_enrich_attributegroup_create: 属性グループ |作成
+  pim_enrich_attributegroup_edit: 属性グループ {{ group.label }} |編集
+  pim_enrich_categorytree_index: カテゴリツリー
+  pim_enrich_categorytree_create: カテゴリ ツリー |作成
+  pim_enrich_categorytree_edit: カテゴリツリー {{ category.label }} |編集
+  pim_enrich_categorytree_create_tree: カテゴリ ツリー |作成
+  pim_enrich_attribute_index: 属性
+  pim_enrich_attribute_create: 属性 |作成
+  pim_enrich_attribute_edit: 属性 {{ attribute.label }} |編集
+  pim_enrich_product_index: 製品
+  pim_enrich_product_edit: 製品 {{ product.label }} |編集
+  pim_enrich_product_model_edit: 製品モデル {{ product.label }} |編集
+  pim_enrich_family_index: ファミリー
+  pim_enrich_family_edit: ファミリー {{ family.label }} |編集
+  pim_enrich_channel_index: チャンネル
+  pim_enrich_channel_create: チャンネル |作成
+  pim_enrich_channel_edit: チャンネル {{ channel.label }} |編集
+  pim_enrich_currency_index: 通貨
+  pim_enrich_locale_index: ロケール
+  pim_enrich_group_index: グループ
+  pim_enrich_group_edit: グループ {{ group.label }} |編集
+  pim_enrich_associationtype_index: 関連タイプ
+  pim_enrich_associationtype_edit: 関連タイプ {{ association type.label }} |編集
+  pim_enrich_grouptype_index: グループタイプ
+  pim_enrich_grouptype_edit: グループタイプ {{ group type.label }} |編集
+  pim_enrich_mass_edit_action_choose: 一括編集 |選択
+  pim_enrich_mass_edit_action_configure: 一括編集 |構成
+  pim_enrich_mass_edit_action_perform: 一括編集 |実行
+  pim_enrich_job_tracker_index: プロセストラッカー
+  pim_enrich_job_tracker_show: プロセストラッカー |ジョブの表示
+  pim_enrich_api_connection_index: API 接続
+  pim_enrich_api_connection_create: API 接続 |作成
+  pim_enrich_mass_edit_action: 一括編集
+  pim_analytics_system_info_index: システム情報
+batch_jobs:
+  add_product_value:
+    label: 製品の値を追加
+    perform:
+      label: 製品の値を追加
+  update_product_value:
+    label: 製品の値を更新
+    perform:
+      label: 製品の値を更新
+  edit_common_attributes:
+    label: 共通の属性を編集
+    perform:
+      label: 共通の属性を編集
+    cleaner:
+      label: 共通の属性を持つファイルを削除
+  set_attribute_requirements:
+    label: 属性の要件を設定
+    perform:
+      label: 属性の要件を設定
+  csv_product_quick_export:
+    quick_export.label: CSV 製品のクイックエクスポート
+    quick_export_product_model.label: CSV 製品モデルのクイックエクスポート
+    perform:
+      label: CSV 製品のクイックエクスポート
+  csv_product_grid_context_quick_export:
+    quick_export.label: CSV製品のグリッドコンテキストのクイックエクスポート
+    quick_export_product_model.label: CSV製品モデルのグリッドコンテキストのクイックエクスポート
+    perform:
+      label: CSV製品のグリッドコンテキストのクイックエクスポート
+  xlsx_product_quick_export:
+    quick_export.label: XSLX製品のクイックエクスポート
+    quick_export_product_model.label: XSLX製品モデルのクイックエクスポート
+    perform:
+      label: XSLX製品のクイックエクスポート
+  xlsx_product_grid_context_quick_export:
+    quick_export.label: XSLX製品のグリッドコンテキストのクイックエクスポート
+    quick_export_product_model.label: XSLX製品モデルのグリッドコンテキストのクイックエクスポート
+    perform:
+      label: XSLX製品のグリッドコンテキストのクイックエクスポート
+  csv_product_export:
+    label: 商品をCSV形式でエクスポート
+    export.label: 商品エクスポート
+  csv_product_model_export:
+    label: 製品モデルをCSV形式でエクスポート
+    export.label: 商品エクスポート
+  csv_category_export:
+    label: カテゴリをCSV形式でエクスポート
+    export.label: カテゴリエクスポート
+  csv_attribute_export:
+    label: 属性をCSV形式でエクスポート
+    export.label: 属性エクスポート
+  csv_attribute_option_export:
+    label: 属性オプションをCSV形式でエクスポート
+    export.label: 属性オプションのエクスポート
+  csv_association_type_export:
+    label: CSVエクスポートで関連付ける種別
+    export.label: エクスポートに関連付ける種別
+  csv_group_export:
+    label: CSVにエクスポートするグループ
+    export.label: グループエクスポート
+  csv_family_export:
+    label: ファミリーをCSV形式でエクスポート
+    export.label: ファミリーエクスポート
+  csv_family_variant_export:
+    label: ファミリーバリアントをCSV形式でエクスポート
+    export.label: ファミリーバリアントをエクスポート
+  csv_product_import:
+    label: 製品をCSV形式でインポート
+    validation.label: ファイルの検証
+    import.label: 製品のインポート
+    import_associations.label: 関連付けのインポート
+  csv_product_model_import:
+    label: 製品モデルをCSV形式でインポート
+  csv_category_import:
+    label: カテゴリをCSV形式でインポート
+    validation.label: ファイルの検証
+    import.label: カテゴリのインポート
+  csv_attribute_import:
+    label: 属性をCSV形式でインポート
+    validation.label: ファイルの検証
+    import.label: 属性のインポート
+  csv_attribute_option_import:
+    label: 属性オプションをCSV形式でインポート
+    validation.label: ファイルの検証
+    import.label: 属性オプションのインポート
+  csv_association_type_import:
+    label: 関連タイプをCSVでインポート
+    validation.label: ファイルの検証
+    import.label: 関連付けタイプのインポート
+  csv_family_import:
+    label: ファミリーをCSV形式でインポート
+    validation.label: ファイルの検証
+    import.label: ファミリーインポート
+  csv_family_variant_import:
+    label: ファミリーバリアントをCSV形式でインポート
+    validation.label: ファイルの検証
+    import.label: ファミリーバリアントをインポート
+  csv_group_import:
+    label: グループをCSVでインポート
+    validation.label: ファイルの検証
+    import.label: グループのインポート
+  csv_channel_export:
+    label: チャネルをCSV形式でエクスポート
+    export.label: チャネルエクスポート
+  csv_locale_export:
+    label: ロケールをCSV形式でエクスポート
+    export.label: ロケールエクスポート
+  csv_attribute_group_export:
+    label: 属性グループをCSV形式でエクスポート
+    export.label: 属性グループエクスポート
+  csv_currency_export:
+    label: 通貨をCSV形式でエクスポート
+    export.label: 通貨エクスポート
+  csv_group_type_export:
+    label: グループタイプをCSV形式でエクスポート
+    export.label: グループタイプエクスポート
+  csv_channel_import:
+    label: チャネルをCSV形式でインポート
+    validation.label: ファイルの検証
+    import.label: チャネルインポート
+  csv_locale_import:
+    label: ロケールをCSV形式でインポート
+    validation.label: ファイルの検証
+    import.label: ロケールインポート
+  csv_attribute_group_import:
+    label: 属性グループをCSV形式でインポート
+    validation.label: ファイルの検証
+    import.label: 属性グループインポート
+  csv_currency_import:
+    label: 通貨をCSV形式でインポート
+    validation.label: ファイルの検証
+    import.label: 通貨インポート
+  csv_group_type_import:
+    label: グループタイプをCSV形式でインポート
+    validation.label: ファイルの検証
+    import.label: グループタイプインポート
+  xlsx_category_import:
+    label: カテゴリをXLSX 形式でインポート
+    validation.label: ファイルの検証
+    import.label: カテゴリのインポート
+  xlsx_association_type_import:
+    label: 関連タイプをXLSX形式でインポート
+    validation.label: ファイルの検証
+    import.label: 関連付けタイプのインポート
+  xlsx_attribute_import:
+    label: 属性をXLSX形式でインポート
+    validation.label: ファイルの検証
+    import.label: 属性のインポート
+  xlsx_attribute_option_import:
+    label: 属性オプションをXLSX形式でインポート
+    validation.label: ファイルの検証
+    import.label: 属性オプションのインポート
+  xlsx_family_import:
+    label: ファミリーをXLSX形式でインポート
+    validation.label: ファイルの検証
+    import.label: ファミリーインポート
+  xlsx_family_variant_import:
+    label: ファミリーバリアントをXLSX形式でインポート
+    validation.label: ファイルの検証
+    import.label: ファミリーバリアントをインポート
+  xlsx_product_export:
+    label: 商品をXLSX形式でエクスポート
+    export.label: 商品エクスポート
+  xlsx_product_model_export:
+    label: 商品モデルをXLSX形式でエクスポート
+    export.label: 商品モデルをエクスポート
+  xlsx_product_import:
+    label: 製品をXLSX形式でインポート
+    validation.label: ファイルの検証
+    import.label: 製品のインポート
+    import_associations.label: 関連付けのインポート
+  xlsx_product_model_import:
+    label: 商品モデルをXLSX形式でインポート
+  xlsx_group_export:
+    label: グループをXLSX形式でエクスポート
+    export.label: グループエクスポート
+  xlsx_group_import:
+    label: グループをXLSX形式でインポート
+    validation.label: ファイルの検証
+    import.label: グループのインポート
+  xlsx_family_export:
+    label: ファミリーをXLSX形式でエクスポート
+    export.label: ファミリーエクスポート
+  xlsx_family_variant_export:
+    label: ファミリーバリアントをXLSX形式でエクスポート
+    export.label: ファミリーバリアントをエクスポート
+  xlsx_category_export:
+    label: カテゴリをXLSX形式でエクスポート
+    export.label: カテゴリエクスポート
+  xlsx_attribute_export:
+    label: 属性をXLSX形式でエクスポート
+    export.label: 属性をXLSX形式でエクスポート
+  xlsx_attribute_option_export:
+    label: 属性オプションをXLSX形式でエクスポート
+    export.label: 属性オプションをXLSX形式でエクスポート
+  xlsx_association_type_export:
+    label: 関連タイプをXLSX形式でエクスポート
+    export.label: 関連タイプをXLSX形式でエクスポート
+  xlsx_channel_export:
+    label: チャネルをXLSX形式でエクスポート
+    export.label: チャネルエクスポート
+  xlsx_locale_export:
+    label: ロケールをXLSX形式でエクスポート
+    export.label: ロケールエクスポート
+  xlsx_attribute_group_export:
+    label: 属性グループをXLSX形式でエクスポート
+    export.label: 属性グループエクスポート
+  xlsx_currency_export:
+    label: 通貨をXLSX形式でエクスポート
+    export.label: 通貨エクスポート
+  xlsx_group_type_export:
+    label: グループタイプをXLSX形式でエクスポート
+    export.label: グループタイプエクスポート
+  xlsx_channel_import:
+    label: チャネルをXLSX形式でインポート
+    validation.label: ファイルの検証
+    import.label: チャネルインポート
+  xlsx_locale_import:
+    label: ロケールをXLSX形式でインポート
+    validation.label: ファイルの検証
+    import.label: ロケールインポート
+  xlsx_attribute_group_import:
+    label: 属性グループをXLSX形式でインポート
+    validation.label: ファイルの検証
+    import.label: 属性グループインポート
+  xlsx_currency_import:
+    label: 通貨をXLSX形式でインポート
+    validation.label: ファイルの検証
+    import.label: 通貨インポート
+  xlsx_group_type_import:
+    label: グループタイプをXLSX形式でインポート
+    validation.label: ファイルの検証
+    import.label: グループタイプインポート
+job_tracker:
+  download_archive:
+    archive: 生成されたアーカイブをダウンロードする
+    output: 生成されたファイルをダウンロードする
+    input: 読み取りファイルをダウンロードする
+    invalid_xlsx: 無効なデータをダウンロード
+    invalid_csv: 無効なデータをダウンロード
+pim_menu:
+  tab:
+    activity: アクティビティ
+    imports: インポート
+    products: 製品
+    exports: エクスポート
+    settings: 設定
+    system: システム
+    help:
+      title: ヘルプ
+      helper: アケネオヘルプセンターを開く
+  item:
+    association_type: 関連タイプ
+    attribute: 属性
+    attribute_group: 属性グループ
+    category: カテゴリ
+    channel: チャンネル
+    currency: 通貨
+    dashboard: ダッシュ ボード
+    family: ファミリー
+    group: グループ
+    group_type: グループタイプ
+    locale: ロケール
+    product: 製品
+    published_product: 公開済み製品
+    export_history: エクスポート履歴
+    export_profile: エクスポートプロファイル
+    import_history: インポート履歴
+    import_profile: インポートプロファイル
+    configuration: 設定
+    user_management: ユーザー管理
+    user: ユーザー
+    user_group: グループ
+    user_role: 権限
+    info: システム情報
+    job_tracker: プロセストラッカー
+    api_connection: API 接続
+  navigation:
+    activity: アクティビティナビゲーション
+    system: システムナビゲーション
+    user: ユーザー管理ナビゲーション
+    settings: 設定ナビゲーション
+  user:
+    logout: ログアウト
+    user_account: マイアカウント
+pim_notification:
+  mark_all_as_read: 全て既読にする
+  no_notifications: 通知はありません
+  loading: 読み込んでいます.

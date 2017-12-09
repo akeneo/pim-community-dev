@@ -449,6 +449,7 @@ pim_enrich:
       complete_variant_product: produit variant
       complete_variant_products: produits variants
       family_variant: Variante
+      product_model: Modèle de produit
       flash:
         product_model_added: Le modèle de produit a été correctement ajouté au modèle de produit
         variant_product_added: Le produit variant a été correctement ajouté au modèle de produit
@@ -1100,6 +1101,7 @@ page_title:
   pim_enrich_job_tracker_show: Traqueur de processus | Voir la tâche
   pim_enrich_api_connection_index: Connexions API
   pim_enrich_api_connection_create: Connexions d'API | Créer
+  pim_enrich_mass_edit_action: Edition en masse
   pim_analytics_system_info_index: Informations système
 batch_jobs:
   add_product_value:

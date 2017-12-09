@@ -27,9 +27,15 @@ Action performed.: アクションを実行しました。
 Action is not performed.: アクションは実行されません。
 Please, select item to perform action.: アクションを実行する項目を選択してください。
 View per page: 1ページあたりの表示
+Enabled: 有効
+Disabled: 無効
+not_available: N/A
+"Yes": true
+"No": false
 oro.datagrid.entityHint: エンティティ
 oro.datagrid.noentities: レコードが見つかりません
-oro.datagrid.noresults: "結果は見つかりませんでした。検索条件を変更してお試しください。"
+oro.datagrid.noresults: "検索結果はありません。"
+oro.datagrid.noresults_subTitle: "新しい検索条件を再度実行してください。"
 oro.datagrid.nocolumns: このグリッドを構成する列がありません。
 oro.datagrid.pagination.label: "ページ"
 oro.datagrid.pagination.totalPages: "/ {{ totalPages }}"
@@ -39,25 +45,63 @@ oro.datagrid.action.refresh: "更新"
 oro_datagrid.select.all: "すべて"
 oro_datagrid.select.visible: "すべて表示"
 oro_datagrid.select.none: "なし"
+oro_datagrid.select.select: "選択"
 pim.grid.ajax_choice_filter.label_empty: 空
-pim.grid.choice_filter:
-  label_empty: 空値
-  label_in_list: リストに存在する
+pim.grid.ajax_choice_filter.label_not_empty: 空ではない
+pim:
+  grid:
+    choice_filter:
+      label_empty: 空
+      label_not_empty: 空ではない
+      label_in_list: リストに存在する
+      operator: オペレータ
+    price_filter:
+      label: 通貨
+    category_filter:
+      done: 完了
 Available Columns: 利用可能な列
+Displayed Columns: 選択された項目
 datagrid_view.columns.min_message: 最低でも1つの表示する列を選択してください
 pim_datagrid:
   column_configurator:
     label: 列
-    title: 列の選択
+    title: 列を設定します。
     all_groups: すべてのグループ
     search: 検索
     clear: クリア
+    displayed_columns: 選択された項目
     apply: 適用
     cancel: キャンセル
     remove_column: 削除
+    description: 列として表示する情報を選択
+    attribute_groups: 属性グループ
+  mass_action:
+    delete:
+      confirm_title: 削除を確認する
+      confirm_ok: OK
+      empty_selection: 商品が選択されていません
 pim.grid.mass_action.quick_export.title: クイック エクスポート
+pim.grid.mass_action.quick_export.launched: クイックエクスポート処理が開始されました。
 pim.grid.action.launch.title: 起動
 pim.grid.action.show.title: 表示
+Please select view: ビューを選択してください。
+Loading...: 読み込んでいます.
 View: ビュー
 from: 開始
 to: 終了
+grid.view_selector:
+  default_view: デフォルトビュー
+  save_changes: このビューを保存
+  remove: このビューを削除
+  create_view: ビューを作成
+  create: 作成
+  search: 検索
+  views: ビュー
+  placeholder: 新しいビューの名前
+  choose_label: ビューのラベルを選択
+  confirmation:
+    remove: 本当に削除したいですか?
+    delete: 削除を確認する
+grid.view_selector.flash.updated: データグリッドビューを更新しました
+Client ID: クライアントID
+Secret: 秘密鍵
