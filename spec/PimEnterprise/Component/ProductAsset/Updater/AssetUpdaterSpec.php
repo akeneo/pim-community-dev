@@ -4,6 +4,7 @@ namespace spec\PimEnterprise\Component\ProductAsset\Updater;
 
 use Akeneo\Component\Classification\Repository\CategoryRepositoryInterface;
 use Akeneo\Component\Classification\Repository\TagRepositoryInterface;
+use Akeneo\Component\StorageUtils\Exception\ImmutablePropertyException;
 use Akeneo\Component\StorageUtils\Exception\InvalidObjectException;
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
@@ -324,6 +325,32 @@ class AssetUpdaterSpec extends ObjectBehavior
         $this
             ->shouldThrow(
                 UnknownPropertyException::unknownProperty('unknown_property')
+            )
+            ->during('update', [$asset, $values, []]);
+    }
+
+    function it_throws_an_exception_updating_an_existing_unlocalizable_asset_as_localizable(AssetInterface $asset) {
+        $values = ['localized'  => true];
+
+        $asset->getId()->willReturn(1);
+        $asset->isLocalizable()->willReturn(false);
+
+        $this
+            ->shouldThrow(
+                ImmutablePropertyException::immutableProperty('localized', true, AssetUpdater::class)
+            )
+            ->during('update', [$asset, $values, []]);
+    }
+
+    function it_throws_an_exception_updating_an_existing_localizable_asset_as_unlocalizable(AssetInterface $asset) {
+        $values = ['localized'  => false];
+
+        $asset->getId()->willReturn(1);
+        $asset->isLocalizable()->willReturn(true);
+
+        $this
+            ->shouldThrow(
+                ImmutablePropertyException::immutableProperty('localized', false, AssetUpdater::class)
             )
             ->during('update', [$asset, $values, []]);
     }

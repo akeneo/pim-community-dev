@@ -210,6 +210,40 @@ class AssetController
     }
 
     /**
+     * @param Request $request
+     * @param string  $code
+     *
+     * @throws BadRequestHttpException
+     * @throws UnprocessableEntityHttpException
+     *
+     * @return Response
+     *
+     * @AclAncestor("pim_api_asset_edit")
+     */
+    public function partialUpdateAction(Request $request, string $code): Response
+    {
+        $data = $this->getDecodedContent($request->getContent());
+
+        $asset = $this->identifiableRepository->findOneByIdentifier($code);
+        $isCreation = null === $asset;
+
+        if ($isCreation) {
+            $asset = $this->factory->create();
+            $this->validateCodeConsistency($code, $data);
+            $data['code'] = $code;
+        }
+        $this->updateAsset($asset, $data, 'post_asset');
+        $this->validateAsset($asset);
+
+        $this->saver->save($asset);
+
+        $status = $isCreation ? Response::HTTP_CREATED : Response::HTTP_NO_CONTENT;
+        $response = $this->getResponse($asset, $status);
+
+        return $response;
+    }
+
+    /**
      * @param string $content content of a request to decode
      *
      * @throws BadRequestHttpException
@@ -341,5 +375,24 @@ class AssetController
         );
 
         return $paginatedAssets;
+    }
+
+    /**
+     * @param string $code code provided in the url
+     * @param array  $data body of the request already decoded
+     *
+     * @throws UnprocessableEntityHttpException
+     */
+    protected function validateCodeConsistency(string $code, array $data): void
+    {
+        if (isset($data['code']) && $code !== $data['code']) {
+            throw new UnprocessableEntityHttpException(
+                sprintf(
+                    'The code "%s" provided in the request body must match the code "%s" provided in the url.',
+                    $data['code'],
+                    $code
+                )
+            );
+        }
     }
 }

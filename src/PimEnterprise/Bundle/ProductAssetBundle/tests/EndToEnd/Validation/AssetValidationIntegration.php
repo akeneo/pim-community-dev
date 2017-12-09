@@ -105,6 +105,24 @@ class AssetValidationIntegration extends TestCase
         $this->assertSame('description', $violation->getPropertyPath());
     }
 
+    public function testAssetImmutableLocalizableProperty()
+    {
+        $asset = $this->get('pimee_api.repository.asset')->findOneByIdentifier('cat');
+        $references = $asset->getReferences();
+        count($references);
+        $this->getUpdater()->update($asset, ['localized' => false]);
+
+        $references = $asset->getReferences();
+        count($references);
+
+        $violations = $this->getValidator()->validate($asset);
+        $violation = current($violations)[0];
+
+        $this->assertCount(1, $violations);
+        $this->assertSame('This property cannot be changed.', $violation->getMessage());
+        $this->assertSame('localized', $violation->getPropertyPath());
+    }
+
     /**
      * @return ValidatorInterface
      */

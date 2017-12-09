@@ -13,6 +13,7 @@ namespace PimEnterprise\Component\ProductAsset\Updater;
 
 use Akeneo\Component\Classification\Repository\CategoryRepositoryInterface;
 use Akeneo\Component\Classification\Repository\TagRepositoryInterface;
+use Akeneo\Component\StorageUtils\Exception\ImmutablePropertyException;
 use Akeneo\Component\StorageUtils\Exception\InvalidObjectException;
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
@@ -314,9 +315,14 @@ class AssetUpdater implements ObjectUpdaterInterface
     /**
      * @param AssetInterface $asset
      * @param bool           $isLocalized
+     *
+     * @throws ImmutablePropertyException
      */
     protected function setLocalized(AssetInterface $asset, $isLocalized)
     {
+        if (null !== $asset->getId() && $asset->isLocalizable() !== $isLocalized) {
+            throw ImmutablePropertyException::immutableProperty('localized', $isLocalized, self::class);
+        }
         $this->assetFactory->createReferences($asset, $isLocalized);
     }
 }
