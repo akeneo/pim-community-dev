@@ -1,0 +1,8 @@
+pimee_dashboard:
+  widget:
+    product_drafts:
+      date: 日付
+      author: 作成者
+      product: 製品
+      review: レビュー
+      empty: レビューに対する提案はありません

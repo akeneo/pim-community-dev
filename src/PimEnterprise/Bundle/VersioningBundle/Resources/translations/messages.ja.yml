@@ -1,0 +1,4 @@
+flash.version.revert.product: 正常に、製品を以前のバージョンに復元しました。
+flash.error.revert.product: このバージョンは復元できません。検証中にエラーが発生しました。
+flash.error.revert.product_has_variant: バリアントグループに属しているため、製品は復元されません。
+pimee_versioning.acl.product_version.revert: 製品を復元

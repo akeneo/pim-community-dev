@@ -1,0 +1,5 @@
+pimee_datagrid:
+  cell:
+    expand:
+      expandText: 展開
+      collapseText: 閉じる

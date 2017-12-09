@@ -1,0 +1,159 @@
+pimee_workflow:
+  product_draft:
+    author: 作成者
+    created: 提案
+    changes: 変更
+    locale: ロケールのコンテキスト
+    product:
+      label: 製品ラベル
+    attribute:
+      label: 属性
+    status:
+      label: ステータス
+      working_copy: 作業コピー
+      in_progress: 処理中
+      ready: 承認待ち
+      can_be_partially_reviewed: 部分的に確認できる
+      can_not_be_approved: レビューできません
+      can_not_be_deleted: 削除できません
+    status_message:
+      can_be_partially_reviewed: "あなたは変更権限がありませんので、提案を部分的にレビューすることができます。\n権限の変更を管理者に問い合わせてください。"
+      can_not_be_approved: "あなたは変更権限がありませんので、提案をレビューすることができません。\n権限の変更を管理者に問い合わせてください。"
+      can_not_be_deleted: "あなたは変更権限がありませんので、提案を削除することができません。\n権限の変更を管理者に問い合わせてください。"
+      in_progress: この提案は現在進行中、まだ提出されていません。
+    action:
+      approve: すべて承認
+      refuse: すべて拒否
+      remove: 削除
+      partial_approve: 製品 %product% の属性 %attribute% に変更を承認する
+      partial_reject: 製品 %product% の属性 %attribute% に変更を拒否する
+    notification:
+      partial_approve: '%owner% は、製品の %product% の %attributes% の値を受け入れます'
+      partial_approve_number: '%owner% は、製品の %product% の %attributes_count% の値を受け入れます'
+      partial_reject: '%owner% は、製品の %product% の %attributes% の値を拒否します'
+      partial_reject_number: '%owner% は、製品の %product% の %attributes_count% の値を拒否する'
+      partial_remove: '%owner% は、製品の %product% の %attributes% の値を削除します'
+      partial_remove_number: '%owner% は、製品の %product% の %attributes_count% の値を削除しました'
+      approve: '%owner% は、製品の %product% の提案を受け入れます'
+      refuse: '%owner% は、製品の %product% の提案を拒否しました'
+      remove: '%owner% は、製品の %product% の提案を削除しました'
+    mass_review_action:
+      approve: 承認を全て選択しました。
+      refuse: 全ての選択を拒否
+      error:
+        draft_not_ready: この提案は承認される準備ができていません
+        not_product_owner: あなたは、この提案に関連する製品を所有していません
+        cannot_edit_attributes: この提案によって変更された属性を編集することはできません
+        invalid_draft: この提案は、次のエラーのため適用できません。%error%
+  proposal:
+    to_review: '%author.firstname% %author.lastname% は、製品 %product.label% のレビュー提案を送信します'
+    individual_import: '%author.firstname% %author.lastname% は、ジョブインポートのレビュー提案を送信します'
+    generic_import: ジョブインポートのレビューをするための提案があります
+    original_value: オリジナル
+    new_value: 新規
+    no_diff: 値「%value%」は、提案と作業コピー間で同じです。
+    draft_in_progress: この製品の下書きは、%author% で進行中です。
+  published_product:
+    index: 公開済み製品
+    title: 公開済み製品
+  acl.published_product:
+    index: 公開された製品を管理
+  product:
+    permission:
+      label: パーミッション
+      own: レビュー/公開
+      edit: 編集
+      view: ビュー
+  steps:
+    product_draft_processor.title: 提案プロセッサ
+    approve.title: 提案を承諾する
+    refuse.title: 提案を拒否する
+  mass_edit_action:
+    published:
+      page_title: 公開済み製品
+      page_subtitle: 一括編集(1件)|一括編集(%count% 件)
+      title: 操作を選択
+      subtitle: 選択した公開製品に対して実行したい操作を選択してください|選択した %count% 件の公開製品に対して実行したい操作を選択してください
+      confirm: 更新しようとしている以下の公開製品の内容について、ご確認ください。|更新しようとしている以下の %count% 件の公開製品の内容について、ご確認ください。
+      steps:
+        first: 公開された製品を選択
+        second: 操作を選択
+        third: 構成
+        fourth: 確認
+pimee_workflow_product_draft_notification_new_proposal: 新しい提案
+pimee_workflow_import_notification_new_proposals: インポートからの新しい提案
+btn.publish: 公開
+btn.unpublish: 非公開
+pimee_workflow_product_draft_notification_partial_approve: 提案は、部分的に承認
+pimee_workflow_product_draft_notification_partial_reject: 提案は、部分的に拒否
+pimee_workflow_product_draft_notification_partial_remove: 提案は、部分的に削除
+pimee_workflow_product_draft_notification_approve: 提案の承認
+pimee_workflow_product_draft_notification_refuse: 提案が却下されました
+pimee_workflow_product_draft_notification_remove: 提案が削除されました
+flash:
+  product:
+    published: 製品は、正常に公開されています
+    unpublished: 製品は、正常に非公開になりました
+  product_draft:
+    approve:
+      success: 提案が正常に適用されました。
+      error: この提案は、次のエラーのため適用できません。%error%
+    refuse:
+      success: 提案は拒否されました。
+    remove:
+      success: 提案は削除されました。
+pim_menu:
+  item:
+    published_product: 公開済み製品
+    proposal: 提案
+pim_title:
+  published_product:
+    index: 公開済み製品
+    view: 公開製品 %product.sku% |ビュー
+  product:
+    dispatch: "製品 %product.sku%"
+    show: "製品 %product.sku% | 表示"
+  proposal:
+    index: 提案
+btn.editworkingcopy: 作業コピーを編集
+confirmation:
+  product:
+    publish: この製品を公開してもよろしいですか？
+    unpublish: この製品を非公開にしてもよろしいですか？
+proposal.overview: 提案
+Attributes.title: 属性
+Completeness.title: 完全性
+publish_product.steps.publish_product_tasklet.title: 製品を公開する
+unpublish_product.steps.unpublish_product_tasklet.title: 製品を非公開にする
+approve_product_draft.steps.approve.title: 提案を承諾する
+approve_product_draft.steps.refuse.title: 提案を拒否
+job_execution.summary:
+  approved: 承認済
+  refused: 拒否
+  mass_published: 公開済み製品
+  mass_unpublished: 非公開製品
+  proposal: 提案が作成されました
+  proposal_deleted: 削除された提案
+  proposal_updated: 更新された提案
+  proposal_created: 作成された提案
+  proposal_skipped: スキップされた提案 (変更なし)
+published products: 公開済み製品
+batch_jobs:
+  csv_published_product_export:
+    label: 公開済み商品をCSVにエクスポート
+    export.label: 公開済み商品のエクスポート
+  csv_product_proposal_import:
+    label: 製品提案をCSV形式でインポート
+    import.label: 製品提案をインポート
+  approve_product_draft:
+    label: 提案を承諾する
+    perform.label: 提案を承諾する
+  refuse_product_draft:
+    label: 提案を拒否する
+    perform.label: 提案を拒否する
+  xlsx_published_product_export:
+    label: 公開済み商品をXLSX形式でエクスポート
+    export.label: 公開済み商品のエクスポート
+  xlsx_product_proposal_import:
+    label: 製品提案をXLSX形式でインポート
+    import.label: 製品提案をXLSX形式でインポート
