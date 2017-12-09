@@ -1,0 +1,26 @@
+pim_api:
+  acl:
+    rights: Web API のアクセス権限
+    attribute:
+      edit: 属性を作成、更新する
+      list: 属性リスト
+    attribute_option:
+      edit: 属性オプションを作成、更新する
+      list: 属性オプションの表示
+    category:
+      edit: カテゴリを更新、作成する
+      list: カテゴリリスト
+    family:
+      edit: ファミリーを作成、更新する
+      list: ファミリーのリスト
+    channel.list: チャンネル一覧
+    locale.list: ロケール一覧
+  acl_group:
+    overall_access: Web API の全体的なアクセス
+    attribute: 属性
+    attribute_option: 属性オプション
+    category: カテゴリ
+    family: ファミリー
+    channel: チャンネル
+    locale: ロケール
+rights.api: Web API のアクセス権限

@@ -2,3 +2,17 @@ job_execution:
   summary:
     display_item: アイテムを表示
     hide_item: アイテムを隠す
+pim_connector:
+  export:
+    categories:
+      selector:
+        modal:
+          title: カテゴリ選択
+          cancel: キャンセル
+          confirm: 確認
+        label: "{0} すべての製品 |{1} 1つのカテゴリの選択 |]1、Inf [{{ count }} カテゴリの選択"
+        edit: 編集
+        title: カテゴリ選択
+    locales:
+      validation:
+        not_blank: ロケールは 1 つ選択する必要があります。エクスポートするロケールを選択してください。

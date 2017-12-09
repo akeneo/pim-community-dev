@@ -14,23 +14,15 @@ oro.grid.mass_action.delete.confirm_content: 選択した項目を削除して�
 oro.grid.datagrid.page_size.all: すべて
 oro.grid.mass_action.delete.success_message: "{0} 削除されたエンティティはありませんでした| {1} 1件のエンティティが削除されました|]1,Inf [%count% 件のエンティティが削除されました"
 datagrid_view:
-  views: ビュー
-  create: ビューを作成
-  placeholder: 新しいビューの名前
-  remove: このビューを削除
-  save_changes: このビューを保存
-  choose_label: ビューのラベルを選択
   columns:
     min_message: 最低でも1つの表示する列を選択してください
   label:
     unique_message: ラベルは一意でなければなりません
     not_blank_message: ラベル名を入力してください
-confirmation.remove.datagrid view: このデータグリッド ビューを削除してもよろしいですか？
-flash.datagrid view:
+grid.view_selector.flash:
   created: データグリッドビューを作成しました
-  updated: データグリッドビューを更新しました
   removed: データグリッドビューを削除しました
-  not removable: このビューを削除する権限を持っていません
+  not_removable: このビューを削除する権限を持っていません
 quick_export: クイック エクスポート
 import: インポート
 export: エクスポート
