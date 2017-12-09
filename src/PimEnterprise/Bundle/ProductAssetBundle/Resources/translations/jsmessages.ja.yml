@@ -1,0 +1,80 @@
+pimee_product_asset:
+  form:
+    product:
+      asset:
+        manage: アセット管理
+        panel:
+          basket:
+            title: バスケット
+            empty_basket: カートが空です。
+        manage_asset:
+          title: アセット管理
+          cancel: キャンセル
+          confirm: 確認
+        title: アセット管理
+        description: 製品に添付するアセットを選択
+  enrich_asset:
+    grid:
+      edit: アセットのプロパティを編集
+  enrich_variation:
+    popin:
+      delete:
+        title: 削除を確認する
+        message: このアイテムを削除しますか？
+      reset:
+        title: バリエーションをリセット
+        message: 変更を本当にリセットしますか？
+  mass_upload:
+    menu: アセットをアップロードする
+    btn:
+      remove_all_files: ファイルを全て削除する
+      delete: 削除
+      import: インポート
+      upload: アセットをアップロードする
+    success:
+      new: 新しいアセットを作成します
+      imported: アセット処理からインポートされたファイル
+      canceled: アップロードが正常に取り消されました
+      deleted: アップロードされたファイルは正常に削除されました
+    error:
+      list: すでにアップロードされたファイルを読み込めません
+      upload: イメージのアップロード中にエラーが発生
+      delete: エラー発生。サーバーからファイルを削除できません
+      import: インポート中にエラーが発生しました
+      filename: アセットの無効なファイル名
+      code: アセットの無効なコードの形式
+      locale: アセットは存在しますが、ローカライズができません。
+      invalid_locale: ロケールが無効です
+      exists: すでに同じ名前のファイルがインポートされています
+      conflicts: ファイル名の競合
+    grid:
+      medias: メディア
+      filename: ファイル名
+      filetype: ファイルの種類
+      status: ステータス
+      progress: 進行状況
+      actions: アクション
+    action:
+      cancel: キャンセル
+      remove: 削除
+    status:
+      added: 追加
+      queued: 処理待ち
+      uploading: アップロード中
+      error: エラー
+      success: 成功
+    drag_and_drop: アセットをドラッグアンドドロップするか、ここをクリック
+  datagrid:
+    mass_action:
+      delete:
+        confirm_content: 選択したアセットを削除してもよろしいですか？
+        success: 選択したアセットが正常に削除されました。
+        error: 選択されたアセットの削除中にエラーが発生しました、やり直してください。
+        empty_selection: アセットが1つも選択されていません
+pim_dashboard:
+  widget:
+    last_operations:
+      job_type:
+        mass_upload: 大量アップロード
+page_title:
+  pimee_product_asset_mass_upload: アセットをアップロードする

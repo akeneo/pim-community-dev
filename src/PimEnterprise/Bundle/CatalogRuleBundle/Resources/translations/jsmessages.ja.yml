@@ -1,0 +1,68 @@
+pimee_catalog_rule:
+  overview: "] - Inf ファイル、1] {{ count }} ルール |] 1、Inf [{{ count }} ルール"
+  execution_button: ルールを実行
+  selected: 'ルール選択済み'
+  popin:
+    execute_rules:
+      confirm_title: 実行を確認する
+      confirm_content: すべてのルールを実行しますか？(時間がかかるかもしれません)
+  notification:
+    fail: この操作は行えません
+    launched: ルールの実行が開始されました。完了後、あなたに通知されます。
+  attribute:
+    list:
+      code.label: コード
+      condition.label: 状態
+      action.label: アクション
+      no_rule_yet.label: 現時点のルールはなし
+  rule:
+    condition:
+      if.label: もし
+    action:
+      then.label: その後
+      set_value.label: セットされています
+      copy_value.label: がコピーされた
+      set.label: セットされています
+      copy.label: がコピーされた
+      add.label: が追加された
+      remove.label: は削除される
+  datagrid:
+    rule-grid:
+      actions:
+        execute:
+          confirm_title: 実行を確認する
+          confirm_content: このルールを削除してもよろしいですか？
+          confirm_ok: OK
+      mass_edit_action:
+        confirm_title: 計算を確認する
+        confirm_content: ルールの影響を受ける製品を計算しますか？
+        confirm_ok: OK
+      mass_action:
+        execute:
+          confirm_ok: OK
+          confirm_title: 実行を確認する
+          confirm_content: 選択中のルールを実行しようとしていますが、よろしいでしょうか？
+          success: 選択されたルールの影響を受ける一括操作が開始されています。終了後に通知されます。
+          error: ルールの実行中にエラーが発生しました。
+          empty_selection: ルールが選択されていません。
+        delete:
+          confirm_ok: OK
+          confirm_title: 削除を確認する
+          confirm_content: 選択中のルールを削除しようとしていますが、よろしいでしょうか？
+          success: あなたは正常にルールを削除しました
+          error: ルールの削除中にエラーが発生しました。
+          empty_selection: ルールが選択されていません。
+  form:
+    attribute:
+      tab:
+        rules:
+          title: ルール
+confirmation:
+  remove:
+    rule: このルールを削除してよろしいですか？このアクションは元に戻せません。
+flash:
+  rule:
+    removed: ルールを削除しました
+    impacted_product_count: ルールの影響を受ける製品を計算する一括操作が開始されています。終了後に通知されます。
+    executed: ルールの実行が開始されました。完了後、あなたに通知されます。
+pim_dashboard.widget.last_operations.job_type.mass_edit_rule: ルールの設定

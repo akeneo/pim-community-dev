@@ -2,16 +2,16 @@ pimee_product_asset:
   form:
     product:
       asset:
-        manage: Hallinnoi resursseja
+        manage: Hallinnoi assetteja
         panel:
           basket:
             title: Kori
             empty_basket: Kori on tyhjä
         manage_asset:
-          title: Hallinnoi resursseja
+          title: Hallinnoi assetteja
           cancel: Peruuta
           confirm: Vahvista
-        title: Hallinnoi resursseja
+        title: Hallinnoi assetteja
         description: Valitse assetit, jotka haluat liittää tuotteelle
   enrich_asset:
     grid:

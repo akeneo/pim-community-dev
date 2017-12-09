@@ -1,0 +1,42 @@
+View the product: 製品を表示
+Unpublish the product: 製品の取り下げ
+Approve: 承認
+Refuse: 拒否
+Approve selected: 承認を選択しました。
+Refuse selected: 選択の拒否
+oro:
+  datagrid:
+    noentities:
+      proposal: レビューする提案はありません
+    noresults:
+      proposal: レビュー提案がありません。検索条件を変更してください。
+pimee_workflow:
+  entity:
+    published_product:
+      btn:
+        original_product: 作業コピーを編集します。
+    proposal:
+      modal.title: コメントを残す (255 文字まで)
+  proposal:
+    overview: "] - Inf ファイル、1] {{ count }} 提案 |] 1、Inf [{{ count }} 提案"
+    selected: 提案選択済み
+    mass_action_group:
+      review:
+        label: 一括アクション
+    partial_accept:
+      modal.title: 部分的な情報を承認する
+      modal.label: コメント (省略可能)
+      modal.error: エラーが発生しました、提案が部分的に承認されていません
+      modal.success: 提案は、部分的に正常に検証されました
+    partial_approve:
+      modal:
+        title: 部分的変更を承認します。
+        label: コメント (省略可能)
+        error: エラーが発生しました、提案が部分的に承認されていません
+        success: 変更が承諾されました。
+    partial_reject:
+      modal:
+        title: 部分的変更を拒否します。
+        label: コメント (省略可能)
+        error: エラーが発生しました、提案が部分的に拒否されています
+        success: 変更が拒否されました

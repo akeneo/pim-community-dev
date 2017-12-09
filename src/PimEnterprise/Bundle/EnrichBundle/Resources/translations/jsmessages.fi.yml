@@ -16,10 +16,10 @@ permission-changes:
 pim_enrich:
   entity:
     attribute_label:
-      pim_assets_collection: Resurssien keruu
+      pim_assets_collection: Assettikokoelma
     attribute:
       type:
-        pim_assets_collection: Resurssien keruu
+        pim_assets_collection: Asettikokoelma
   form:
     attribute:
       tab:
@@ -41,7 +41,7 @@ pimee_enrich:
     channel:
       tab:
         asset-transformation:
-          title: Resurssien muunnokset
+          title: Assettien muunnokset
     attribute_group:
       tab:
         permission:
@@ -199,7 +199,7 @@ pimee_enrich:
           field: Kategoriat
 pim_menu:
   tab:
-    asset: Resurssit
+    asset: Assetit
   item:
     asset_category: Assettikategoriat
     proposal: Ehdotukset
@@ -210,7 +210,7 @@ page_title:
   pimee_workflow_proposal_index: Ehdotukset
   pimee_workflow_published_product_index: Julkaistut tuotteet
   pimee_workflow_published_product_view: Julkaistu tuote {{ product.label }} | Näytä
-  pimee_product_asset_index: Resurssit
+  pimee_product_asset_index: Assetit
   pimee_product_asset_edit: Assetti {{ asset.label }} | Muokkaus
   pimee_asset_categorytree_index: Kategoriat
   pimee_asset_categorytree_edit: Kategoria {{ category.label }} | Muokkaus
