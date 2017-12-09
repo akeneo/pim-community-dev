@@ -839,6 +839,7 @@ page_title:
   pim_enrich_mass_edit_action_configure: Массовое редактирование | Настройка
   pim_enrich_job_tracker_index: Трекер процессов
   pim_enrich_job_tracker_show: Трекер процессов | Показать задание
+  pim_enrich_mass_edit_action: Массовое редактирование
   pim_analytics_system_info_index: Информация о системе
 batch_jobs:
   add_product_value:

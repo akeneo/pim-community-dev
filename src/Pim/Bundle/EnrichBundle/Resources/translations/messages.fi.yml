@@ -150,7 +150,7 @@ pim_enrich:
       change_family: Vaihda tuoteryhmää
       change_state: Muuta tuotteen tilaa
       add_to_groups: Lisää tuote ryhmiin
-      mass_edit: Tuotteen massaedit-toiminnot
+      mass_edit: Tuotteen massamuokkaus-toiminnot
       comment: Kommentoi tuotteita
       download: Lataa tuote PDF:nä
       history: Näytä tuotehistoria
@@ -579,11 +579,11 @@ pim_title.group_type:
   index: "Ryhmätyypit"
   edit: "Ryhmätyypit %group type.label% | Muokkaa"
 pim_title.mass_edit_product_action:
-  choose: "Massaedit | Valitse"
-  configure: "Massaedit | Määritä"
+  choose: "Massamuokkaus | Valitse"
+  configure: "Massamuokkus | Määritä"
 pim_title.mass_edit_family_action:
-  choose: "Massaedit | Valitse"
-  configure: "Massaedit | Määritä"
+  choose: "Massamuokkaus | Valitse"
+  configure: "Massamuokkaus | Määritä"
 pim_title.job_tracker:
   index: Prosessiseurain
   show: "Prosessin tracker | Näytä työ"
@@ -743,9 +743,9 @@ Selected products successfully deleted: Valitut tuotteet poistettiin
 pim_mass_edit:
   notification:
     mass_edit:
-      error: <strong>%label%</strong> massaeditointi päättyi
-      warning: <strong>%label%</strong>n massaeditointi päättyi, joitakin varoituksia
-      success: <strong>%label%</strong> massaeditointi päättyi
+      error: <strong>%label%</strong> massamuokkaus päättyi
+      warning: <strong>%label%</strong>n massamuokkaus päättyi, joitakin varoituksia
+      success: <strong>%label%</strong> massamuokkaus päättyi
     quick_export:
       error: <strong>%label%</strong>n pikavienti epäonnistui
       warning: <strong>%label%</strong>n pikavienti päättyi, joitakin varoituksia

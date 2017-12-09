@@ -1,21 +1,25 @@
 Job: ジョブ
 Connector: コネクター
 pim_import_export:
+  job: ジョブ
+  connector: コネクター
   status:
     - 準備完了
   batch_status:
     1: 完了
-    2: 開始中
+    2: 開始中...
     3: 開始
     4: 停止中
-    5: 停止済
+    5: 停止
     6: 失敗
-    7: 中断
+    7: 破棄された
     8: 不明
   download_archive:
+    archive: 生成したアーカイブをダウンロード | 生成したアーカイブをダウンロード
     output: 生成したファイルをダウンロード | 生成したファイルをダウンロード
     input: 読み込んだファイルをダウンロード | 読み込んだファイルをダウンロード
-    invalid: 無効なデータをダウンロード
+    invalid_xlsx: 無効なデータをダウンロード
+    invalid_csv: 無効なデータをダウンロード
   notification:
     export:
       error: エクスポート<strong>%label%</strong> が失敗しました
@@ -25,6 +29,12 @@ pim_import_export:
       error: インポート <strong>%label%</strong> が失敗しました
       warning: インポート <strong>%label%</strong> がいくつかのエラーで終了しました
       success: インポート <strong>%label%</strong> が完了しました
+  list: ジョブ選択
+  job_profile:
+    tab:
+      property.title: 全般プロパティ
+      history.title: 履歴
+      job_content.title: コンテンツ
 pim_title.export_profile.index: エクスポート プロファイルの管理
 pim_title.export_profile.edit: '%job.label% のエクスポート プロファイル |編集'
 pim_title.export_profile.show: '%job.label% のエクスポート プロファイル |表示'
@@ -37,18 +47,10 @@ pim_title.import_execution.index: インポート実行履歴
 pim_title.import_execution.show: インポートの実行 |詳細
 export profile:
   title: エクスポートプロファイル
-  overview: エクスポート プロファイルの概要
-  create: エクスポート プロファイルを作成
   edit: エクスポート プロファイルを編集
-export report:
-  overview: レポートのエクスポート
 import profile:
   title: インポートプロファイル
-  overview: インポート プロファイルの概要
-  create: インポート プロファイルを作成
   edit: インポート プロファイルを編集
-import report:
-  overview: レポートのインポート
 pim_importexport:
   acl:
     export_profile:
@@ -58,7 +60,11 @@ pim_importexport:
       edit: エクスポート プロファイルを編集
       remove: エクスポート プロファイルを削除
       launch: エクスポート プロファイルを起動
+      property_edit: エクスポート プロファイルの一般プロパティを編集
+      property_show: エクスポート プロファイルの一般プロパティを表示
       history: エクスポートプロファイルの履歴を表示
+      content_edit: エクスポート プロファイルを編集
+      content_show: エクスポート プロファイルを表示
     import_profile:
       index: インポートプロファイルリストを表示
       create: インポート プロファイルを作成
@@ -84,7 +90,6 @@ btn:
   create:
     export profile: エクスポート プロファイルを作成
     import profile: インポート プロファイルを作成
-Upload and import: アップロードとインポート
 Upload and import now: アップロードしてインポートする
 import now: 今すぐインポート
 export now: 今すぐエクスポート
@@ -97,21 +102,18 @@ flash:
     created: エクスポートが正常に作成されました。
     removed: エクスポートを削除しました
     updated: エクスポートを正常に更新しました
+    running: エクスポートを実行しています。
   import:
     created: インポートを正常に作成しました
     removed: インポートを削除しました
     updated: インポートが正常に更新されました
-pim_menu:
-  item:
-    export_history: エクスポート履歴
-    export_profile: エクスポートプロファイル
-    import_history: インポート履歴
-    import_profile: インポートプロファイル
+    running: エクスポートを実行しています。
 General properties: 全般プロパティ
 History: 履歴
 pane.accordion:
   properties: プロパティ
   global_settings: グローバル設定
+  filters: フィルタ
 popin.create:
   export_profile.title: 新しいエクスポート プロファイルを作成
   import_profile.title: 新しいインポート プロファイルを作成
@@ -128,20 +130,25 @@ job_execution.summary:
   skip: スキップ
   create: 作成
   update: 更新
+  update_products: 更新された製品
+  skip_products: スキップされた製品
+  displayed: 最初の警告が表示されます
   charset_validator:
     title: 'ファイルの文字コード:'
     skipped: スキップしました。拡張子がホワイトリストにあります
 Step: ステップ
 Status: ステータス
+Warnings: 警告
 Summary: サマリ
 Start: 開始
 End: 終了
 set_attribute_requirements: 属性の要件を設定
 COMPLETED: 完了
-STARTING: 開始中
+STARTING: 開始中...
 STARTED: 開始
 STOPPING: 停止中
-STOPPED: 停止済
+STOPPED: 停止
 FAILED: 失敗
-ABANDONED: 中断
+ABANDONED: 破棄された
 UNKNOWN: 不明
+warning.label: 警告

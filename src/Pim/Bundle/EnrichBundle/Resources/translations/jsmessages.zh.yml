@@ -813,6 +813,7 @@ page_title:
   pim_enrich_mass_edit_action_configure: 批量编辑|配置
   pim_enrich_job_tracker_index: 过程跟踪器
   pim_enrich_job_tracker_show: 过程跟踪器 |显示作业
+  pim_enrich_mass_edit_action: 批量编辑
   pim_analytics_system_info_index: 系统信息
 batch_jobs:
   add_product_value:
