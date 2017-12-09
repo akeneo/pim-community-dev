@@ -141,7 +141,6 @@ pim_enrich:
       add_attribute: 将属性添加到产品
       remove_attribute: 从产品中删除属性
       categories_view: 咨询产品的类别
-      associations_view: 查看产品的关联类型
       change_family: 更改产品品类
       change_state: 更改产品状态
       add_to_groups: 将商品添加到组

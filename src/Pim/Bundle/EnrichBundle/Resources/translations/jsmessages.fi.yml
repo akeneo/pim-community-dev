@@ -1,4 +1,5 @@
 confirmation:
+  title: Vahvista
   remove:
     item: Oletko varma että haluat poistaa tämän kohteen?
     association_type: Oletko varma, että haluat poistaa tämän liitostyypin?
@@ -401,6 +402,7 @@ pim_enrich:
         email: Sähköposti
         regexp: Tavallinen virke
         url: URL-osoite
+      title: attribuutti
     attribute_group:
       info:
         update_failed: Attribuuttiyhmää ei voitu päivittää
@@ -767,6 +769,9 @@ pim_enrich:
             select_attributes: Lisää attribuutteja
             add: Lisää
             attributes_groups_selected: '{{ itemsCount }} ryhmä(ä) valittu'
+    basket:
+      title: Kori
+      empty_basket: Kori on tyhjä
   job:
     upload: Pudota {{ type }}-tiedosto tähän tai klikkaa selataksesi tiedostoja
   export:

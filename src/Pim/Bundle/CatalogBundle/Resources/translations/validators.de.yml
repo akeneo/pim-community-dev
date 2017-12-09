@@ -56,3 +56,6 @@ pim_catalog:
     301: Dieses Feld erwartet einen validen Gültigkeitsbereich und Gebietsschema.
     302: Dieses Feld erwartet einen validen Gültigkeitsbereich.
     303: Dieses Feld erwartet ein valides Format für Verbindungen.
+    pim_immutable_product_validator: Diese Kennung ist bereits für ein anderes Produkt in Verwendung
+    pim_immutable_product_model_validator: Diese Kennung ist bereits für ein anderes Produktmodell in Verwendung.
+

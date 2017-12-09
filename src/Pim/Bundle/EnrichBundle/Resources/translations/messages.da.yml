@@ -146,7 +146,6 @@ pim_enrich:
       add_attribute: Tilføj en attribut til et produkt
       remove_attribute: Fjerne en attribut fra et produkt
       categories_view: Konsultere kategorierne af et produkt
-      associations_view: Se sammenhængstyper for et produkt
       change_family: Ændre produktfamilie
       change_state: Ændre tilstand af produktet
       add_to_groups: Tilføj produkt til grupper

@@ -141,7 +141,6 @@ pim_enrich:
       add_attribute: Afegir un atribut a un producte
       remove_attribute: Treure un atribut d'un producte
       categories_view: Consultar les categories d'un producte
-      associations_view: Mostra els tipus d'associació d'un producte
       change_family: Canviar la família del producte
       change_state: Canviar l'estat del producte
       add_to_groups: Afegir el producte a grups

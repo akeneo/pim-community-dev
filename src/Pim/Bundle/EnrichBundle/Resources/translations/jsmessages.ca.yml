@@ -1,4 +1,5 @@
 confirmation:
+  title: Confirmar
   remove:
     item: Esteu segur que voleu eliminar aquest element?
     association_type: Esteu segur que voleu suprimir aquest tipus d'associació?
@@ -310,6 +311,7 @@ pim_enrich:
         email: Correu electrònic
         regexp: Expressió regular
         url: URL
+      title: atribut
     attribute_group:
       info:
         update_successful: Grup d'atributs actualitzat correctament
@@ -618,6 +620,9 @@ pim_enrich:
           toolbox:
             select_attributes: Afegir atributs
             add: Afegir
+    basket:
+      title: Cistella
+      empty_basket: La cistella és buida
   export:
     product:
       data:

@@ -322,6 +322,7 @@ pim_enrich:
         email: E-mail
         regexp: Reguliere expressie
         url: URL
+      title: attribuut
     attribute_group:
       info:
         update_successful: Attribuutgroep succesvol bijgewerkt
@@ -619,6 +620,9 @@ pim_enrich:
           toolbox:
             select_attributes: Attributen toevoegen
             add: Toevoegen
+    basket:
+      title: Mandje
+      empty_basket: Mandje is leeg
   export:
     product:
       data:
