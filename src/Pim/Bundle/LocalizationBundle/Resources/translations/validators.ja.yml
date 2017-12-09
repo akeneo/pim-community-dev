@@ -1,0 +1,5 @@
+"This type of value expects the use of {{ decimal_separator }} to separate decimals.": 値の型は、{{ decimal_separator }} を用いて10進数を分割することを期待します。
+"This type of value expects the use of dot (.) to separate decimals.": 値の型は、ドット(.) を用いて10進数を分割することを期待します。
+"This type of value expects the use of comma (,) to separate decimals.": 値の型は、コンマ(,) を用いて10進数を分割することを期待します。
+"This type of value expects the use of arabic decimal separator (٫) to separate decimals.": 値の型は、アラビア語小数点記号(٫) を用いて10進数を分割することを期待します。
+"This type of value expects the use of the format {{ date_format }} for dates.": 値の型は、{{ date_format }} を用いた日付形式を期待しています。

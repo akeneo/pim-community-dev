@@ -15,8 +15,15 @@ confirmation:
     role: このロールを削除してもよろしいですか？
 pim_datagrid:
   mass_action_group:
+    bulk_actions:
+      label: 一括アクション
     quick_export:
       label: クイック エクスポート
+  mass_action:
+    delete:
+      confirm_content: 選択された製品を削除してもよろしいですか？
+      success: 選択した製品が正常に削除されました。
+      error: 商品の削除中にエラーが発生しました、やり直してください
 flash:
   item:
     removed: アイテムを削除しました
@@ -62,12 +69,16 @@ error:
     attribute_option: 属性オプションの削除中にエラーが発生しました
   saving:
     attribute_option: 属性オプションを保存できません
+    export_profile: エクスポート プロファイルを保存できません。すべてのフィルターが設定されているか、確認してください。
 alert:
   attribute_option:
     error_occured_during_submission: フォームの情報をサーバーに送信中にエラーが発生しました
     save_before_edit_other: 他を編集する前に、あなたが他の行で行った変更を確定してください
+  session_storage:
+    not_available: あなたのウェブブラウザはsessionStorageと互換性がありません。管理者に問い合わせてください。
 confirm:
   attribute_option:
+    cancel_edition_on_new_option_text: 警告：未保存のデータは失われます。この新しいオプションの変更を取り消しますか？
     cancel_edition_on_new_option_title: 変更をキャンセル
 label:
   attribute_option:
@@ -80,10 +91,18 @@ Classify the product: 製品を分類
 Delete the product: 製品を削除
 Change status: ステータスの変更
 Toggle status: ステータスを切り替える
-pim.grid.mass_action.quick_export.csv_all: CSV (すべての属性)
-pim.grid.mass_action.delete: 削除
-pim.grid.mass_action.mass_edit: 一括編集
-pim.grid.mass_action.sequential_edit: シーケンシャル編集
+pim:
+  grid:
+    mass_action:
+      quick_export:
+        csv_all: CSV (すべての属性)
+        csv_grid_context: CSV (グリッド コンテキスト)
+        xlsx_all: エクセル (すべての属性)
+        xlsx_grid_context: エクセル (グリッド コンテキスト)
+      delete: 製品を削除
+      mass_edit: 製品情報を変更
+      category_edit: 製品をカテゴリに移動する
+      sequential_edit: 順次、製品を編集
 jstree.create: 作成
 switch_on: "はい"
 switch_off: "いいえ"
@@ -91,9 +110,19 @@ pim_enrich:
   item:
     list:
       delete.label: 削除
+      delete.error: アイテム削除中のエラー
+    delete:
+      confirm.content: この{{ itemName }} を削除してよろしいですか？このアクションは元に戻せません。
+      confirm.title: '{{ itemName }} を削除する'
+  navigation:
+    link:
+      back_to_grid: グリッドに戻る
   entity:
     save:
       label: 保存
+    info:
+      update_failed: 更新に失敗しました
+      update_successful: 正常に更新されました
     product:
       title: 商品
       btn:
@@ -102,14 +131,31 @@ pim_enrich:
         disable: 無効
         disabled: 無効
         download_pdf: PDF
+        compare_translate: 比較/翻訳
         delete: 削除
         save: 保存
+        save_and_back: 保存してグリッドに戻る
       history:
         version: バージョン
         author: 作成者
         logged_at: ログイン日
+        more: 詳細
+        less: より少ない
+        from: 開始
+        modified: 修正
+        property: プロパティ
         old_values: 古い値
         new_values: 新しい値
+        actions: アクション
+      info:
+        deletion_successful: 商品を削除しました。
+        deletion_failed: 製品を削除できませんでした。
+        update_successful: 商品を更新しました。
+        update_failed: 製品を更新できませんでした。
+        field_not_ready: この製品をすぐに保存できません。次のフィールドが準備ができていません：{{ fields }}
+        already_in_upload: ファイルはすでに {{ locale }} ローケル と {{ scope }} スコープでこの属性のためにアップロードされています
+      error:
+        upload: ファイルをアップロード中にエラーが発生
       meta:
         created: 作成日時
         created_by: 投稿
@@ -121,8 +167,10 @@ pim_enrich:
         groups:
           title: グループ
           modal:
+            title: '{{ group }} グループ'
             view_group: 表示グループ
             group_label: ラベル
+            more_products: '{{ count }} 件以上の商品...'
             close: 閉じる
       copy:
         select: 選択
@@ -131,49 +179,106 @@ pim_enrich:
         none: なし
         copy: コピー
       variant_group:
+        updated_by: バリアントグループによって更新
         switch:
-          "yes": はい
-          "no": いいえ
+          "yes": "はい"
+          "no": "いいえ"
       optional_attribute:
         remove: 属性を削除
+      locale_specific_attribute:
+        unavailable: このロケールの特定のフィールドは、このロケールでは利用できません。
+      localizable:
+        channel_locale_unavailable: このローカライズ可能なフィールドは {{ locale }} ローケルと{{ channel }} チャンネル で使用できません
+      media:
+        upload: アップロードするためにドラッグアンドドロップするか、ここをクリック
+      create_popin:
+        title: 新しい製品を作成
+        labels:
+          family: ファミリーを選択してください
+          save: 保存
+          cancel: キャンセル
     attribute_option:
       code: コード
       label: ラベル
+    variant_group:
+      title: バリアントグループ
+      info:
+        deletion_successful: バリアントグループは正常に削除されました。
+        deletion_failed: バリアントグループは削除できませんでした。
+        update_successful: バリアントグループを更新しました。
+        update_failed: バリアントグループは更新できませんでした。
+        field_not_ready:
+          The variant group cannot be saved right now. The following fields are not ready:
+            - フィールド
+        already_in_upload: ファイルはすでに {{ locale }} ローケル と {{ scope }} スコープでこの属性のためにアップロードされています
+        no_attributes: このバリアントグループはまだ属性を持たない
+      btn:
+        save: 保存
+      meta:
+        product_count: 製品
+        created: 作成日時
+        created_by: 作成者：
+        updated: 更新日時
+        updated_by: 更新者：
   confirmation:
     leave: このページから移動してもよろしいですか？
+    discard_changes: このページから移動する場合は {{ entity }} に対する変更が失われます。
+    delete_item: 削除を確認する
+    delete:
+      attribute: 商品からこの属性を削除してもよろしいですか？
   info:
     not_applicable: N/A
     entity:
       updated: 保存されていない変更があります。
+  error:
+    upload: ファイルをアップロード中にエラーが発生しました。
+  alert:
+    not_allowed: このページにアクセスすることはできません
+    error_occured: ページをロード中にエラーが発生しました。
   form:
+    required: (必須)
     product:
       tab:
         associations:
+          title: 関連
           info:
             none_exist: 関連タイプがありません。
             show_products: 製品を表示
             show_groups: グループを表示
+            number_of_associations: "{{ productCount }} 件の製品と{{ groupCount }} 件のグループ"
         attributes:
           title: 属性
           btn:
             add: 追加
             add_attributes: 属性を追加
           info:
+            search_attributes: 検索...
             no_available_attributes: これ以上追加する属性はありません
+            attributes_selected: "{{ attributeCount }} 属性が選択済み"
             no_match: 一致するものがみつかりません
+            load_more: 他の結果を読み込み中です…
         categories:
           title: カテゴリ
       panel:
         completeness:
           title: 完全性
+          info:
+            no_family: ファミリーが未定義です。この製品の完全性を計算するファミリーを定義してください。
+            no_completeness: 商品のファミリーを変更しました。新しいファミリーの完全性を計算するために、まずは保存して下さい。
+          missing_values: 不明な値
         history:
           title: 履歴
       switch:
-        "no": いいえ
-        "yes": はい
+        "no": "いいえ"
+        "yes": "はい"
       sequential_edit:
         info:
           products: 製品
+          previous: '{{ product }} を保存せずにスキップします。'
+          next: '{{ product }} を保存せずにスキップします。'
+        btn:
+          save_and_next: 保存して次へ
+          save_and_finish: 保存して終了
       change_family:
         modal:
           title: 製品ファミリーを変更
@@ -181,14 +286,183 @@ pim_enrich:
           keep_attributes: 削除する属性はありません。
           change_family_to: ファミリーを変更
           empty_selection: ファミリーを選択してください
+      flash:
+        attribute_deletion_error: 属性の削除中にエラーが発生
       mass_edit:
         select_attributes: 属性の選択
         select: 選択
     attribute_option:
+      flash:
+        option_created: 属性オプションを作成しました
+        error_creating_option: 属性オプションの作成中にエラーが発生しました
       add_option_modal:
+        title: 属性オプションの追加
         confirm: 追加
         cancel: キャンセル
     entity:
       switch:
-        "no": いいえ
-        "yes": はい
+        "no": "いいえ"
+        "yes": "はい"
+    variant_group:
+      tab:
+        properties:
+          title: プロパティ
+          general: 全般プロパティ
+          code: コード
+          type: タイプ
+          axis: 軸
+          label_translations: ラベルの翻訳
+        history:
+          title: 履歴
+        products:
+          title: 製品
+        attributes:
+          title: 属性
+    common:
+      tab:
+        attributes:
+          btn:
+            add: 追加
+            add_attributes: 属性を追加
+          info:
+            search_attributes: 検索...
+            no_available_attributes: これ以上追加する属性はありません
+  export:
+    product:
+      data:
+        title: 商品をフィルターする
+      structure:
+        title: データをフィルターする
+        attributes:
+          title: 属性
+      filter:
+        channel:
+          title: チャンネル
+          help: チャンネルは、製品の値と、データを選択するために使用するローケルおよび製品を選択するために使用するツリーのスコープを定義しています。
+        locales:
+          title: ロケール
+          help: 'ロケールは、エクスポートするローカライズされた製品の値を定義します。例: フランス語で書かれた唯一の製品情報。'
+        attributes:
+          title: 属性
+          edit: 編集
+          label: "{0} すべての属性 |{1} 1つの属性の選択 |]1、Inf [{{ count }} 属性の選択"
+          help: 'エクスポートする製品情報を選択します。例: 技術的な属性のみ。'
+          empty: 全ての属性がエクスポートされます
+          modal:
+            apply: 適用
+            cancel: キャンセル
+            title: 属性の選択
+        attributes_selector:
+          attribute_group: 属性グループ
+          attributes: "{{ attributeCount }} 属性で検索"
+          selected: "選択された属性"
+          clear: クリア
+          all_group: すべてのグループ
+          empty_selection: 全ての属性がエクスポートされます
+        family:
+          title: ファミリー
+          help: '製品のファミリーによってエクスポートする製品を選択します。例: 靴とドレスのみをエクスポート。'
+          operators:
+            IN: リストに存在する
+            "NOT IN": 一覧にありません
+            EMPTY: ファミリーを持たない製品
+            "NOT EMPTY": ファミリーを持つ製品
+          empty_selection: ファミリーの条件なし
+        updated:
+          title: 時間条件
+          operators:
+            ALL: 日付の条件なし
+            "SINCE LAST N DAYS": 過去 n 日間 （例. 6日） で更新された製品
+            ">": この日付以降に更新された製品
+            "SINCE LAST JOB": 最後のエクスポートから更新された製品
+        enabled:
+          title: ステータス
+          help: '製品の状態でエクスポートする製品を選択します。例: いかなる状態でも製品をエクスポートします。'
+          value:
+            all: すべて
+            enabled: 有効
+            disabled: 無効
+        completeness:
+          title: 完全性
+          help: 製品の完全性によってエクスポートする製品を選択します。
+          operators:
+            ALL: 完全性の条件なし
+            ">=": 少なくとも1つの選択されたローケルで完了します
+            "GREATER OR EQUALS THAN ON ALL LOCALES": 全ての選択されたローケルで完了します
+            LOWER THAN ON ALL LOCALES: 全ての選択されたローケルで完了しません
+          empty_selection: ファミリーを選択
+        category:
+          title: カテゴリ
+          help: エクスポートする製品を選択するために、（上記のチャネルによって定義される）ツリー内の製品カテゴリを使用する
+        identifier:
+          title: 識別子
+          help: カンマやスペース、改行で分けられている、エクスポートしたい製品の識別子
+        metric:
+          operators:
+            "=": 等しい
+            "!=": 等しくない
+            ">=": 以上
+            ">": より大きい
+            "<=": 以下
+            "<": より低い
+            EMPTY: 空値
+            NOT EMPTY: 空ではない
+        string:
+          operators:
+            ALL: すべて
+            CONTAINS: 含む
+            DOES NOT CONTAIN: 含まない
+            "=": 等しい
+            STARTS WITH: で始まる
+            ENDS WITH: で終わる
+            EMPTY: 空値
+            NOT EMPTY: 空ではない
+        price-collection:
+          operators:
+            "=": 等しい
+            "!=": 等しくない
+            ">=": 以上
+            ">": より大きい
+            "<=": 以下
+            "<": より低い
+            EMPTY: 空値
+            NOT EMPTY: 空ではない
+        multi_select:
+          operators:
+            IN: リストに存在する
+            EMPTY: 空値
+            NOT EMPTY: 空ではない
+        media:
+          operators:
+            CONTAINS: 含む
+            DOES NOT CONTAIN: 含まない
+            "=": 等しい
+            STARTS WITH: で始まる
+            ENDS WITH: で終わる
+            EMPTY: 空値
+            NOT EMPTY: 空ではない
+        date:
+          operators:
+            ">": より大きい
+            "<": より低い
+            "=": 等しい
+            "!=": 等しくない
+            BETWEEN: の間
+            NOT BETWEEN: の間ではない
+            EMPTY: 空値
+            NOT EMPTY: 空ではない
+        number:
+          operators:
+            "=": 等しい
+            "!=": 等しくない
+            ">=": 以上
+            ">": より大きい
+            "<=": 以下
+            "<": より低い
+            EMPTY: 空値
+            NOT EMPTY: 空ではない
+  mass_edit_action:
+    edit_common_attributes:
+      description: 選択した商品の属性は以下のロケール <span class="highlight">{{ locale }}</span> のデータとチャンネル <span class="highlight">{{ channel }}</span> で編集され、製品のグリット内で選ばれます。
+pim_enrich.error:
+  exception.title: ' {{ status_code }} のエラーが発生しました。'

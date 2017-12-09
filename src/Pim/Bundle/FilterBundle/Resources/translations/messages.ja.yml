@@ -11,6 +11,7 @@ oro.filter.form.label_type_equals: 等しい
 oro.filter.form.label_type_start_with: で始まる
 oro.filter.form.label_type_end_with: で終わる
 oro.filter.form.label_type_empty: 空
+oro.filter.form.label_type_in_list: リストに存在する
 oro.filter.form.label_date_type_between: の間
 oro.filter.form.label_date_type_not_between: の間ではない
 oro.filter.form.label_date_type_more_than: 以上
