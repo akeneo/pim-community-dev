@@ -26,7 +26,7 @@ pimee_product_asset:
       generate_from_reference: Luo viittauksesta
       reset_variations: Nollaa variaatiot
     confirmation.remove: Oletko varma, että haluat poistaa assetin "%asset%" ?
-    confirmation.subTitle: Resurssit
+    confirmation.subTitle: Assetit
     grid:
       edit: Muokkaa assetin ominaisuuksia
     view:
@@ -78,12 +78,12 @@ pimee_product_asset:
         success: Variaatiotiedosto on poistettu.
         error: Variaatiotiedostoa ei ole poistettu. Tapahtui virhe.
   popin.create:
-    title: Luo uusi resurssi
+    title: Luo uusi assetti
     is_localized: Lokalisoitavissa
-  menu: Resurssit
+  menu: Assetit
   page_tab:
     title:
-      view: Tuoteresurssi %asset.code% | Näkymä
+      view: Tuotteen assetti %asset.code% | Näkymä
       edit: Tuotteen assetti %asset.code% | Muokkaa
       index: Tuotteen assetit
   code:
@@ -140,7 +140,7 @@ pimee_product_asset:
       apply_on_children.help: Kopioi käyttöoikeusmuutokset kaikkiin alatason objekteihin, olemassaolevat käyttöoikeudet alatason objekteihin pysyvät muuttumattomina
   mass_edit_action:
     asset:
-      page_title: Resurssit
+      page_title: Assetit
       page_subtitle: Massamuokkaus (1 assetti)|Massamuokkaus (%count% assettia)
       confirm: Olet päivittämässä assetin seuraavilla tiedoilla. Ole hyvä ja vahvista.|Olet päivittämässä %count% assettia seuraavilla tiedoilla. Ole hyvä ja vahvista.
       steps:
@@ -244,4 +244,4 @@ batch_jobs:
 pim_analytics:
   info_type:
     nb_assets: Assettien lukumäärä
-pim_assets_collection: Resurssien keruu
+pim_assets_collection: Assettikokoelma

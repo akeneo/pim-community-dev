@@ -1,0 +1,221 @@
+View the product: 製品を表示
+pimee_enrich.product_history.action.revert: このバージョンに戻す
+permission-changes:
+  category:
+    grant: グループ<strong>{{ group }}</strong>は、このカテゴリでは<strong>{{ permission }}</strong>される
+    revoke: グループ<strong>{{ group }}</strong>は、このカテゴリでは<strong>{{ permission }}</strong>されない
+  locale:
+    grant: グループ<strong>{{ group }}</strong>は、このロケールでは<strong>{{ permission }}</strong>される
+    revoke: グループ<strong>{{ group }}</strong>は、このロケールでは<strong>{{ permission }}</strong>されません
+  attribute group:
+    grant: グループ<strong>{{ group }}</strong>は、この属性グループでは<strong>{{ permission }}</strong>される
+    revoke: グループ<strong>{{ group }}</strong>は、この属性グループでは<strong>{{ permission }}</strong>されない
+  job profile:
+    grant: グループ<strong>{{ group }}</strong>は、<strong>{{ permission }}</strong>される
+    revoke: グループ<strong>{{ group }}</strong>は、<strong>{{ permission }}</strong>されません
+pim_enrich:
+  entity:
+    attribute_label:
+      pim_assets_collection: アセットのコレクション
+    attribute:
+      type:
+        pim_assets_collection: アセットのコレクション
+  form:
+    attribute:
+      tab:
+        properties:
+          label:
+            is_read_only: 読み取り専用
+pim:
+  grid:
+    mass_action:
+      asset_edit: アセット一括編集
+pimee_enrich:
+  form:
+    job_instance:
+      tab:
+        permission:
+          title: パーミッション
+          added: グループ {{ group }} は、{{ permission }} ジョブのプロファイルが許可されます。
+          execute.label: ジョブプロファイルの実行を許可
+          edit.label: ジョブプロファイルの編集を許可
+          removed: グループ {{ group }} は、{{ permission }} ジョブのプロファイルが許可されません
+    channel:
+      tab:
+        asset-transformation:
+          title: アセット変換
+    attribute_group:
+      tab:
+        permission:
+          title: パーミッション
+          view.label: 属性の表示を許可
+          edit.label: 属性の編集を許可
+          removed: グループ {{ group }} は、{{ permission }} 属性のグループが許可されません
+          added: グループ {{ group }} は、{{ permission }} 属性のグループが許可されます
+  entity:
+    product:
+      index_title: "] - Inf ファイル、1] {{ count }} 結果 |] 1、Inf [{{ count }} 結果"
+      navigation: 公開済み製品
+      history:
+        published: 公開済み
+        revert: 復元
+      smart_attribute:
+        come_from: "この属性は、ルールによって更新することができます。"
+      btn:
+        publish: 公開する
+        publish_this_version: このバージョンを公開する
+        unpublish: 非公開
+        save_draft: 下書きを保存
+      flash:
+        product_unpublished: 製品を非公開にしました
+        product_published: 製品を公開しました
+        product_not_published: この製品を公開できませんでした
+        product_not_unpublished: この製品を非公開にできませんでした
+        product_reverted: 製品を復元しました
+      meta:
+        published: 公開バージョン
+        owner_groups: 所有者グループ
+        draft_status: 下書き状態
+        draft:
+          in_progress: 処理中
+          sent_for_approval: 承認待ち
+          working_copy: 作業コピー
+      tab:
+        proposals:
+          title: 提案
+          messages:
+            approve:
+              success: 提案が正常に適用されました。
+              error: この提案は、次のエラーのため適用できません。エラー：{{ error }}
+            reject:
+              success: 提案は拒否されました。
+            remove:
+              success: 提案は削除されました。
+      confirmation:
+        revert:
+          title: 復元の確認
+          content: 本当にこのバージョンに製品を復元しますか？
+        publish:
+          title: この製品を公開する
+          content: この製品を公開してもよろしいですか？
+        unpublish:
+          title: 製品の取り下げ
+          content: この製品を非公開にしてもよろしいですか？
+      info:
+        update_successful: 製品の作業コピーが更新されました
+      copy:
+        source:
+          working_copy: 作業コピー
+          draft: 自分の下書き
+          draft_of: "{{ author }} の下書き"
+    product_draft:
+      info:
+        update_successful: 製品の下書きは正常に保存されました
+        update_failed: 製品の下書きを更新できませんでした。
+        value_modified: この値は現在の下書きによって編集される
+      flash:
+        sent_for_approval: 製品下書き承認のため送信
+        draft_not_sendable: 承認を得るためにこの下書きは送信できません。
+      btn:
+        send_for_approval: 承認のために送信
+        sent_for_approval: 承認のために送信
+      modal:
+        accept_proposal: 提案を受け入れる
+        accept_selected_proposal: 選択した提案を受け入れる
+        reject_proposal: 提案を拒否
+        reject_selected_proposal: 選択した提案を拒否
+        remove_proposal: 提案を削除する
+        send_for_approval: 承認のために送信
+        cancel: キャンセル
+        confirm: 送信
+        title: あなたの提案のコメント (オプション - 最大 255 文字)
+        characters: 文字数。
+      confirmation:
+        discard_changes: 未保存の変更は失われます。変更を保存せずに、下書きを承諾へ送信しますか？
+        discard_changes_title: この下書きを送信してもよろしいですか？
+  asset_transformation:
+    not_found: 変更を発見できませんでした
+    title:
+      transformation: 変換
+      options: オプション
+    colorspace:
+      title: カラースペース
+      options:
+        colorspace: '%value% カラー スペース'
+    resize:
+      title: サイズを変更
+      options:
+        width: '幅 %value%px'
+        height: '高さ %value%px'
+    resolution:
+      title: 解決策
+      options:
+        resolution: '%value%'
+        resolution-unit: '%value%'
+    scale:
+      title: スケール
+      options:
+        width: '幅 %value%px'
+        height: '高さ %value%px'
+        ratio: '率 %value%%'
+    thumbnail:
+      title: サムネイル
+      options:
+        width: '幅 %value%px'
+        height: '高さ %value%px'
+  mass_edit:
+    next: 次
+    previous: 戻る
+    cancel: キャンセル
+    confirm: 確認
+    product:
+      operation:
+        publish:
+          label: 公開
+          label_count: "{1}公開 <span class=\"AknFullPage-title--highlight\"> 1 製品</span> |]1、Inf [ 公開 <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} 製品</span>"
+          description: 製品を公開予定
+          warning: 選択した {{ itemsCount }} の製品を公開予定です。
+        unpublish:
+          label: 非公開
+          label_count: "{1}未公開 <span class=\"AknFullPage-title--highlight\"> 1 製品</span> |]1、Inf [ 未公開 <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} 製品</span>"
+          description: この製品は未公開予定
+          warning: 選択した {{ itemsCount }} の製品を未公開予定です。
+    asset:
+      title: アセット/一括編集 ({{ itemsCount }} アセット)
+      step:
+        select:
+          label: アセットを選択する
+        choose:
+          title: アセット一括操作
+          label_count: "0, Inf [あなたのアクションを選択"
+        configure:
+          label: 構成
+        confirm:
+          label: 確認
+      operation:
+        add_tag:
+          label: タグをアセットに追加
+          description: タグはアセットに追加されます。
+          field: タグ
+        add_to_category:
+          label: アセットをカテゴリに分類
+          description: アセットは以下のカテゴリに配置されます、既存の表示順が保持されます。
+          field: カテゴリ
+pim_menu:
+  tab:
+    asset: アセット
+  item:
+    asset_category: アセットカテゴリー
+    proposal: 提案
+    published_product: 公開済み製品
+    rule: ルール
+    upload_asset: アセットをアップロードする
+page_title:
+  pimee_workflow_proposal_index: 提案
+  pimee_workflow_published_product_index: 公開済み製品
+  pimee_workflow_published_product_view: 公開製品 {{ product.label }} | ビュー
+  pimee_product_asset_index: アセット
+  pimee_product_asset_edit: アセット {{ asset.label }} |編集
+  pimee_asset_categorytree_index: カテゴリ
+  pimee_asset_categorytree_edit: カテゴリ {{ category.label }} |編集
+  pimee_catalog_rule_rule_index: ルール
