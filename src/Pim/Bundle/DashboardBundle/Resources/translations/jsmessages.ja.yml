@@ -10,3 +10,5 @@ pim_dashboard:
       job_type:
         import: インポート
         export: エクスポート
+        mass_edit: 一括編集
+        quick_export: クイック エクスポート

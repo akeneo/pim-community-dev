@@ -18,6 +18,12 @@ pim_base_connector:
     csv_group_export:
       title: CSVにエクスポートするグループ
       export.title: グループエクスポート
+    csv_variant_group_export:
+      title: バリアントグループをCSVにエクスポート
+      export.title: バリアントグループをエクスポート
+    csv_family_export:
+      title: ファミリーをCSV形式でエクスポート
+      export.title: ファミリーエクスポート
     csv_product_import:
       title: 製品をCSV形式でインポート
       validation.title: ファイルの検証
@@ -44,7 +50,9 @@ pim_base_connector:
       validation.title: ファイルの検証
       import.title: グループのインポート
     csv_variant_group_import:
+      title: バリアントグループをCSVからインポート
       validation.title: ファイルの検証
+      import.title: バリアントグループをインポート
   steps:
     dummy_reader.title: ダミーリーダー
     product_reader.title: 製品抽出
@@ -54,8 +62,10 @@ pim_base_connector:
       invalid_item_columns_count: '%totalColumnsCount% 列を想定していますが、実際には%itemColumnsCount% 列が%csvPath%の%lineno%にあります'
     csv_product_reader.title: CSV 製品リーダー
     csv_category_reader.title: CSV カテゴリー リーダー
+    csv_variant_group .title: バリアントグループのCSVリーダー
     dummy_processor.title: ダミーのプロセッサ
     product_processor.title: 製品の作成
+    variant_group_processor.title: バリアントグループの作成/更新
     category_processor.title: カテゴリの作成
     association_processor.title: 関連付けの作成
     product_association_processor.title: 関連付けの作成
@@ -69,6 +79,7 @@ pim_base_connector:
     file_writer.title: 出力
     product_writer.title: 製品ストレージ
     category_writer.title: カテゴリストレージ
+    variant_group_writer.title: バリアントグループストレージ
     writer.title: エンティティ ストレージ
     csv_writer.title: CSVライター
   export:
@@ -87,6 +98,12 @@ pim_base_connector:
     channel:
       label: チャンネル
       help: エクスポートするチャンネル
+    decimalSeparator:
+      label: 小数点の区切り
+      help: 小数点の区切り文字を決定する
+    dateFormat:
+      label: 日付フォーマット
+      help: 日付フィールドの形式を決定
   import:
     enabled:
       label: 製品を有効にする
@@ -102,8 +119,10 @@ pim_base_connector:
       help: グループ]列の名前
     filePath:
       label: ファイル
+      help: インポートするCSVファイル
     yamlFilePath:
       label: ファイル
+      help: インポートするYAMLファイル
     uploadAllowed:
       label: ファイルのアップロードを許可
       help: 直接ファイルのアップロードを許可するかどうか
@@ -122,3 +141,6 @@ pim_base_connector:
     realTimeVersioning:
       label: リアルタイム更新履歴
       help: 商品履歴は自動的にアップデートされます。自動アップデートをオフにするとパフォーマンスが向上します。
+    copyValuesToProducts:
+      label: バリアントグループの値を商品にコピー
+      help: 商品はバリアントグループの値で自動的に更新されます。無効にすることでバリアントグループのみを更新できます。

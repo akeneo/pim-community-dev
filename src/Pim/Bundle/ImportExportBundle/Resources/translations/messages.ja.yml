@@ -13,6 +13,7 @@ pim_import_export:
     7: 中断
     8: 不明
   download_archive:
+    archive: 生成したアーカイブをダウンロード | 生成したアーカイブをダウンロード
     output: 生成したファイルをダウンロード | 生成したファイルをダウンロード
     input: 読み込んだファイルをダウンロード | 読み込んだファイルをダウンロード
     invalid: 無効なデータをダウンロード
@@ -25,6 +26,7 @@ pim_import_export:
       error: インポート <strong>%label%</strong> が失敗しました
       warning: インポート <strong>%label%</strong> がいくつかのエラーで終了しました
       success: インポート <strong>%label%</strong> が完了しました
+  list: ジョブ選択
 pim_title.export_profile.index: エクスポート プロファイルの管理
 pim_title.export_profile.edit: '%job.label% のエクスポート プロファイル |編集'
 pim_title.export_profile.show: '%job.label% のエクスポート プロファイル |表示'
@@ -97,10 +99,12 @@ flash:
     created: エクスポートが正常に作成されました。
     removed: エクスポートを削除しました
     updated: エクスポートを正常に更新しました
+    running: エクスポートを実行しています。
   import:
     created: インポートを正常に作成しました
     removed: インポートを削除しました
     updated: インポートが正常に更新されました
+    running: エクスポートを実行しています。
 pim_menu:
   item:
     export_history: エクスポート履歴
@@ -128,6 +132,9 @@ job_execution.summary:
   skip: スキップ
   create: 作成
   update: 更新
+  update_products: 更新された製品
+  skip_products: スキップされた製品
+  displayed: 最初の警告が表示されます
   charset_validator:
     title: 'ファイルの文字コード:'
     skipped: スキップしました。拡張子がホワイトリストにあります

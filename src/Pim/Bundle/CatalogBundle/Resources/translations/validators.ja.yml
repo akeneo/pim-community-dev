@@ -1,5 +1,6 @@
 An identifier attribute already exists.: 識別子の属性は既に存在します。
 Attribute code may contain only letters, numbers and underscore: 属性のコードは、文字、数字およびアンダー スコアのみを含めることができます。
+Attribute code may contain only letters (at least one), numbers and underscores: 属性のコードは、文字(少なくとも一つ)、数字およびアンダースコアのみを含めることができます。
 This attribute type can't be used as a grid filter: この属性タイプは、グリッドのフィルターとして使用できません。
 This code is not available: このコードは使用できません。
 This attribute type must be required: この属性タイプは必須です
@@ -9,4 +10,15 @@ No default value may be specified for this attribute type: この属性タイプ
 This value should be Yes or No: この値はYesまたはNoでなければなりません
 This value should not be blank: この値は空白にできません
 Option code may contain only letters, numbers and underscores: オプションのコードは半角英数字とアンダースコアが利用可能です
+Option code may contain only letters (at least one), numbers and underscores: オプションのコードは、文字(少なくとも一つ)、数字およびアンダースコアのみを含めることができます。
 This color is already used by another channel: この色は既に他のチャネルで使用しています。
+This value should not be a decimal.: この値に10 進数は利用できません。
+'The file extension is not allowed (allowed extensions: %extensions%).': 'この拡張子は許可されていません (利用できる拡張子: %extensions%)。'
+"The value %value% is already set on another product for the unique attribute %attribute%": '%value% は既にユニーク属性の %attribute% を持つ他の製品で使用されています。'
+regex.comma_or_semicolon.message: このフィールドには、コンマやセミコロンを含めないでください。
+file.extensions.message: 'この拡張子は許可されていません (利用できる拡張子: %extensions%)。'
+"This type of value expects the use of {{ decimal_separator }} to separate decimals.": 値の型は、{{ decimal_separator }} を用いて10進数を分割することを期待します。
+"This type of value expects the use of dot (.) to separate decimals.": 値の型は、ドット(.) を用いて10進数を分割することを期待します。
+"This type of value expects the use of comma (,) to separate decimals.": 値の型は、コンマ(,) を用いて10進数を分割することを期待します。
+"This type of value expects the use of arabic decimal separator (٫) to separate decimals.": 値の型は、アラビア語小数点記号(٫) を用いて10進数を分割することを期待します。
+"This type of value expects the use of the format {{ date_format }} for dates.": 値の型は、{{ date_format }} を用いた日付形式を期待しています。

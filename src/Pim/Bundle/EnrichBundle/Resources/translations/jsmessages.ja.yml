@@ -17,6 +17,11 @@ pim_datagrid:
   mass_action_group:
     quick_export:
       label: クイック エクスポート
+  mass_action:
+    delete:
+      confirm_content: 選択された製品を削除してもよろしいですか？
+      success: 選択した製品が正常に削除されました。
+      error: 選択した製品の削除中にエラーが発生しました、やり直してください
 flash:
   item:
     removed: アイテムを削除しました
@@ -66,8 +71,11 @@ alert:
   attribute_option:
     error_occured_during_submission: フォームの情報をサーバーに送信中にエラーが発生しました
     save_before_edit_other: 他を編集する前に、あなたが他の行で行った変更を確定してください
+  session_storage:
+    not_available: あなたのウェブブラウザはsessionStorageと互換性がありません。管理者に問い合わせてください。
 confirm:
   attribute_option:
+    cancel_edition_on_new_option_text: 警告：未保存のデータは失われます。この新しいオプションの変更を取り消しますか？
     cancel_edition_on_new_option_title: 変更をキャンセル
 label:
   attribute_option:
@@ -91,9 +99,19 @@ pim_enrich:
   item:
     list:
       delete.label: 削除
+      delete.error: アイテム削除中のエラー
+    delete:
+      confirm.content: この{{ itemName }} を削除してよろしいですか？このアクションは元に戻せません。
+      confirm.title: '{{ itemName }} を削除する'
+  navigation:
+    link:
+      back_to_grid: グリッドに戻る
   entity:
     save:
       label: 保存
+    info:
+      update_failed: 更新に失敗しました
+      update_successful: 正常に更新されました
     product:
       title: 商品
       btn:
@@ -102,14 +120,31 @@ pim_enrich:
         disable: 無効
         disabled: 無効
         download_pdf: PDF
+        compare_translate: 比較/翻訳
         delete: 削除
         save: 保存
+        save_and_back: 保存してグリッドに戻る
       history:
         version: バージョン
         author: 作成者
         logged_at: ログイン日
+        more: 詳細
+        less: より少ない
+        from: 開始
+        modified: 修正
+        property: プロパティ
         old_values: 古い値
         new_values: 新しい値
+        actions: アクション
+      info:
+        deletion_successful: 商品を削除しました。
+        deletion_failed: 製品を削除できませんでした。
+        update_successful: 商品を更新しました。
+        update_failed: 製品を更新できませんでした。
+        field_not_ready: この製品をすぐに保存できません。次のフィールドが準備ができていません：{{ fields }}
+        already_in_upload: ファイルはすでに {{ locale }} ローケル と {{ scope }} スコープでこの属性のためにアップロードされています
+      error:
+        upload: ファイルをアップロード中にエラーが発生
       meta:
         created: 作成日時
         created_by: 投稿
@@ -121,8 +156,10 @@ pim_enrich:
         groups:
           title: グループ
           modal:
+            title: '{{ group }} グループ'
             view_group: 表示グループ
             group_label: ラベル
+            more_products: '{{ count }} 件以上の商品...'
             close: 閉じる
       copy:
         select: 選択
@@ -131,41 +168,66 @@ pim_enrich:
         none: なし
         copy: コピー
       variant_group:
+        updated_by: バリアントグループによって更新
         switch:
           "yes": "はい"
           "no": "いいえ"
       optional_attribute:
         remove: 属性を削除
+      locale_specific_attribute:
+        unavailable: このロケールの特定のフィールドは、このロケールでは利用できません。
+      localizable:
+        channel_locale_unavailable: このローカライズ可能なフィールドは {{ locale }} ローケルと{{ channel }} チャンネル で使用できません
+      media:
+        upload: アップロードするためにドラッグアンドドロップするか、ここをクリック
     attribute_option:
       code: コード
       label: ラベル
   confirmation:
     leave: このページから移動してもよろしいですか？
+    discard_changes: このページから移動する場合は {{ entity }} に対する変更が失われます。
+    delete_item: 削除を確認する
+    delete:
+      product_attribute: 商品からこの属性を削除してもよろしいですか？
   info:
     not_applicable: N/A
     entity:
       updated: 保存されていない変更があります。
+  error:
+    upload: ファイルをアップロード中にエラーが発生しました。
+  alert:
+    not_allowed: このページにアクセスすることはできません
+    error_occured: ページをロード中にエラーが発生しました。
   form:
     product:
       tab:
         associations:
+          title: 関連
           info:
             none_exist: 関連タイプがありません。
             show_products: 製品を表示
             show_groups: グループを表示
+            number_of_associations: "{{ productCount }} 件の製品と{{ groupCount }} 件のグループ"
         attributes:
           title: 属性
           btn:
             add: 追加
             add_attributes: 属性を追加
           info:
+            search_attributes: 検索...
             no_available_attributes: これ以上追加する属性はありません
+            attributes_selected: "{{ attributeCount }} 属性が選択済み"
             no_match: 一致するものがみつかりません
+            load_more: 他の結果を読み込み中です…
         categories:
           title: カテゴリ
       panel:
         completeness:
           title: 完全性
+          info:
+            no_family: ファミリーが未定義です。この製品の完全性を計算するファミリーを定義してください。
+            no_completeness: 商品のファミリーを変更しました。新しいファミリーの完全性を計算するために、まずは保存して下さい。
+          missing_values: 不明な値
         history:
           title: 履歴
       switch:
@@ -174,6 +236,11 @@ pim_enrich:
       sequential_edit:
         info:
           products: 製品
+          previous: '{{ product }} を保存せずにスキップします。'
+          next: '{{ product }} を保存せずにスキップします。'
+        btn:
+          save_and_next: 保存して次へ
+          save_and_finish: 保存して終了
       change_family:
         modal:
           title: 製品ファミリーを変更
@@ -181,14 +248,25 @@ pim_enrich:
           keep_attributes: 削除する属性はありません。
           change_family_to: ファミリーを変更
           empty_selection: ファミリーを選択してください
+      flash:
+        attribute_deletion_error: 属性の削除中にエラーが発生
       mass_edit:
         select_attributes: 属性の選択
         select: 選択
     attribute_option:
+      flash:
+        option_created: 属性オプションを作成しました
+        error_creating_option: 属性オプションの作成中にエラーが発生しました
       add_option_modal:
+        title: 属性オプションの追加
         confirm: 追加
         cancel: キャンセル
     entity:
       switch:
         "no": "いいえ"
         "yes": "はい"
+  mass_edit_action:
+    edit_common_attributes:
+      description: 選択した商品の属性は以下のロケール <span class="highlight">{{ locale }}</span> のデータとチャンネル <span class="highlight">{{ channel }}</span> で編集され、製品のグリット内で選ばれます。
+pim_enrich.error:
+  exception.title: ' {{ status_code }} のエラーが発生しました。'
