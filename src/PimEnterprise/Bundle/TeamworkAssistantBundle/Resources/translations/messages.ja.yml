@@ -1,0 +1,51 @@
+project_calculation: プロジェクトの計算
+project_created: あなたのための新しいプロジェクト
+project_finished: プロジェクト完成
+teamwork_assistant:
+  project:
+    required: この値は空白にできません
+    label_maxlength: 値が長すぎます。{{ max }} 以下の文字数で設定してください。
+    project_identifier: プロジェクト {{ project }} は存在しません。
+    project_locale: プロジェクトのロケール {{ locale }} を有効にする必要があります。
+    project_due_date: 過去の日付を選択できません。
+  notification:
+    project_calculation:
+      error: <strong>%project_label%</strong> のプロジェクトの計算は失敗しました
+      warning: <strong>%project_label%</strong> のプロジェクトの計算はいくつかの警告で終了
+      success: プロジェクト <strong>%project_label%</strong> は準備ができて、貢献者が通知されます。始めましょう!
+      start: 開始
+    message: '「%project_label%」を豊かにする新製品があります。予定日は「%due_date%」.'
+    project_finished:
+      contributor: おめでとう! あなたの %project_label% は 製品の 100% です。
+      owner: '%due_date% の %project_label% は終了しました。'
+      show: 表示
+    due_date:
+      contributor: あなたの %project_label% は、製品の %percent%% です。%due_date% を最後の製品に記入するのを忘れないでください。
+      owner: '%due_date% の %project_label% は100%完了ではありません。'
+      start: 開始
+  datagrid:
+    project_completeness: プロジェクトの進捗状況
+    contributor_todo: タスク
+    contributor_in_progress: 処理中
+    contributor_done: 完了
+    owner_todo: Todo (プロジェクトの概要)
+    owner_in_progress: 処理中 (プロジェクトの概要)
+    owner_done: 完了 (プロジェクトの概要)
+batch_jobs:
+  project_calculation:
+    project_calculation:
+      label: プロジェクトの計算
+    prepare_project_calculation:
+      label: プロジェクト計算の準備をします。
+    clean_contributor_group:
+      label: プロジェクトのロケールに対するユーザー権限を確認してください。
+  refresh_project_completeness_calculation:
+    label: プロジェクトの完全性を更新します。
+    refresh_project_completeness_calculation:
+      label: プロジェクトの完全性を更新します。
+job_execution:
+  summary:
+    processed_products: 処理済商品
+pim_analytics:
+  info_type:
+    nb_projects: プロジェクト数
