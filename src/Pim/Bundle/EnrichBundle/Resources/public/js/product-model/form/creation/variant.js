@@ -11,53 +11,31 @@ define([
     'jquery',
     'underscore',
     'oro/translator',
-    'pim/form/common/fields/field',
-    'pim/form',
     'pim/fetcher-registry',
     'pim/router',
     'pim/user-context',
-    'pim/template/form/common/fields/select'
+    'pim/form/common/fields/simple-select-async'
 ],
 function (
     $,
     _,
     __,
-    BaseField,
-    BaseForm,
     FetcherRegistry,
     Routing,
     UserContext,
-    template
+    SimpleSelectAsync
 ) {
-    return BaseField.extend({
-        events: {
-            'change select': function (event) {
-                this.setData({
-                    family_variant: event.target.value
-                });
-            }
-        },
-
-        template: _.template(template),
-        defaultLabel: __('pim_enrich.form.product_model.choose_variant'),
-        fieldLabel: 'family_variant',
-        fieldId: 'family_variant',
-        fieldName: 'family_variant',
-        readOnly: true,
-        choices: [],
-        defaultValue: null,
-        errors: [],
+    return SimpleSelectAsync.extend({
+        previousFamily: null,
 
         /**
          * {@inheritdoc}
          */
-        initialize(config) {
-            this.config = config.config;
-            this.choices = [];
-            this.errors = [];
-            this.defaultValue = null;
+        initialize() {
+            SimpleSelectAsync.prototype.initialize.apply(this, arguments);
 
-            BaseForm.prototype.initialize.apply(this, arguments);
+            this.previousFamily = null;
+            this.readOnly = true;
         },
 
         /**
@@ -67,69 +45,45 @@ function (
             this.listenTo(
                 this.getRoot(),
                 'pim_enrich:form:entity:post_update',
-                this.updateOnFamilyChange.bind(this)
+                this.onPostUpdate.bind(this)
             );
 
-            return BaseForm.prototype.configure.apply(this, arguments);
+            return SimpleSelectAsync.prototype.configure.apply(this, arguments);
         },
 
         /**
-         * Listen for changes on the 'family' key in the form data
+         * Updates the choice URL when the model changed
          */
-        updateOnFamilyChange(changed) {
-            const family = this.getFormData().family;
+        onPostUpdate() {
+            if (this.getFormData().family !== this.previousFamily) {
+                this.previousFamily = this.getFormData().family;
 
-            if (_.isEmpty(family)) {
-                return this.resetSelectField();
-            }
+                if (this.getFormData().family) {
+                    this.getFamilyIdFromCode(this.getFormData().family).then((familyId) => {
+                        this.setChoiceUrl(Routing.generate(this.config.loadUrl, {
+                            alias: 'family-variant-grid',
+                            'family-variant-grid[family_id]': familyId,
+                            'family-variant-grid[localeCode]': UserContext.get('catalogLocale')
+                        }));
+                        this.readOnly = false;
+                        this.setData({[this.fieldName]: null});
 
-            if (changed.family) {
-                this.getFamilyIdFromCode(family)
-                    .then(this.renderVariantsForFamily.bind(this));
-            }
-        },
+                        this.render();
+                    });
+                } else {
+                    this.readOnly = true;
+                    this.setData({[this.fieldName]: null});
 
-        /**
-         * Clear the choices and selected value of the field and re-render
-         */
-        resetSelectField() {
-            this.choices = [];
-            this.readOnly = true;
-            this.errors = [];
-            this.$('select.select2').select2('val', '');
-            this.setData(
-                { family_variant: null },
-                { unset: true, silent: true }
-            );
-            this.render();
-        },
-
-        render() {
-            const errors = this.getRoot().validationErrors || [];
-            this.errors = errors.filter(error => error.path === this.fieldName)
-
-            return BaseField.prototype.render.apply(this, arguments);
-        },
-
-        /**
-         * {@inheritdoc}
-         */
-        renderInput() {
-            return this.template({
-                fieldId: this.fieldId,
-                fieldName: this.fieldName,
-                value: this.defaultValue || this.getFormData()[this.fieldName],
-                choices: this.choices,
-                multiple: false,
-                readOnly: this.readOnly,
-                labels: {
-                    defaultLabel: this.defaultLabel
+                    this.render();
                 }
-            });
+            }
         },
 
         /**
-         * Get the code for a given family id
+         * Get the id for a given family code
+         *
+         * @param {String} code
+         *
          * @return {Promise}
          */
         getFamilyIdFromCode(code) {
@@ -139,66 +93,77 @@ function (
         },
 
         /**
-         * Loads the variants for a family based on a family id then render
-         * a select2 dropdown with the variants
-         * @param  {String} family The id of a family
-         * @return {Promise}       The JSON load promise
+         * Get the label of a family variant from its code
+         *
+         * @param {String} code
+         *
+         * @return {Promise}
          */
-        renderVariantsForFamily(family) {
-            const locale = UserContext.get('catalogLocale');
-            const variantLoadUrl = Routing.generate(this.config.loadUrl, {
-                alias: 'family-variant-grid',
-                'family-variant-grid[family_id]': family,
-                'family-variant-grid[localeCode]': locale
-            });
-
-            this.resetSelectField();
-
-            return $.getJSON(variantLoadUrl).then((response) => {
-                const responseJSON = JSON.parse(response.data);
-                const variantData = responseJSON.data;
-
-                this.readOnly = false;
-                this.choices = this.formatChoices(variantData);
-
-                if (variantData.length === 1) {
-                    this.defaultValue = variantData[0].familyVariantCode;
-                    this.setData(
-                        { family_variant: this.defaultValue },
-                        { silent: true }
-                    );
-                }
-
-                this.render();
-            });
-        },
-
-        /**
-         * Format the variant data to return an object
-         * Example:
-         *     {
-         *         'Clothing color and size': 'clothing_color_and_size',
-         *         ...
-         *     }
-         * @param  {Array} variants An array of variant for a family
-         * @return {Object}
-         */
-        formatChoices(variants) {
-            const choices = {};
-
-            for (const variant in variants) {
-                const code = variants[variant].familyVariantCode;
-                choices[code] = variants[variant].label;
-            }
-
-            return choices;
+        getFamilyVariantLabelFromCode(code) {
+            return FetcherRegistry.getFetcher('family-variant')
+                .fetch(code)
+                .then(familyVariant => familyVariant.labels[UserContext.get('catalogLocale')]);
         },
 
         /**
          * {@inheritdoc}
          */
+        select2Results(response) {
+            const responseJSON = JSON.parse(response.data);
+            const variantData = responseJSON.data;
+
+            return {
+                more: this.resultsPerPage === Object.keys(variantData).length,
+                results: variantData.map(item => this.convertBackendItem(item))
+            };
+        },
+
+        /**
+         * {@inheritdoc}
+         */
+        convertBackendItem(item) {
+            return {
+                id: item.familyVariantCode,
+                text: item.label
+            };
+        },
+
+        /**
+         * {@inheritdoc}
+         */
+        select2InitSelection(element, callback) {
+            const id = $(element).val();
+            if ('' !== id) {
+                this.getFamilyVariantLabelFromCode(id).then(function (label) {
+                    callback({
+                        id: id,
+                        text: label
+                    });
+                });
+            }
+        },
+
+        /**
+         * {@inheritdoc}
+         *
+         * We override this method to automatically select the first element when there is only 1 choice
+         */
         postRender() {
-            this.$('select.select2').select2();
+            SimpleSelectAsync.prototype.postRender.apply(this, arguments);
+
+            if (!this.getFormData()[this.fieldName] && this.choiceUrl) {
+                $.getJSON(this.choiceUrl, this.select2Data.bind(this)).then((response) => {
+                    const results = this.select2Results(response).results;
+
+                    if (results.length === 1) {
+                        this.setData({[this.fieldName]: results[0].id});
+                        this.$('.select2').select2('val', results[0].id);
+                    } else {
+                        this.setData({[this.fieldName]: null});
+                        this.$('.select2').select2('val', '');
+                    }
+                });
+            }
         }
     });
 });

@@ -67,6 +67,7 @@ services:
         class: '%pim_connector.writer.database.product_model_descendants.class%'
         arguments:
             - '@pim_catalog.saver.product_model_descendants'
+            - '@pim_connector.doctrine.cache_clearer'
 
     pim_connector.writer.database.product_association:
         class: '%pim_connector.writer.database.product_association.class%'

@@ -29,6 +29,14 @@ class ComposerScripts
     }
 
     /**
+     * @param Event $event
+     */
+    public static function warnUserForPendingMigrations(Event $event)
+    {
+        $event->getIO()->writeError('<warning>Please don\'t forget to execute the pending migrations using the `doctrine:migrations:migrate` console command.</warning>');
+    }
+
+    /**
      * Copy the upgrades/ folder from PIM dependency to the standard edition
      *
      * @param Event $event

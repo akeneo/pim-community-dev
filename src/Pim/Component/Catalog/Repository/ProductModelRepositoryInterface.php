@@ -93,4 +93,19 @@ interface ProductModelRepositoryInterface extends
      * @return array
      */
     public function findRootProductModels(FamilyVariantInterface $familyVariant): array;
+
+    /**
+     * @param FamilyVariantInterface $familyVariant
+     * @param String                 $search
+     * @param int                    $limit
+     * @param int                    $page
+     *
+     * @return array
+     */
+    public function searchLastLevelByCode(
+        FamilyVariantInterface $familyVariant,
+        string $search,
+        int $limit,
+        int $page = 0
+    ): array;
 }

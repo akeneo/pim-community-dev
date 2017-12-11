@@ -7,7 +7,7 @@ define(
             return FormRegistry.getFormMeta(formName).then((formMeta) => {
                 if (undefined === formMeta) {
                     throw new Error(`
-                        The extension ${formName} was not found. Are you sure you registered it properly?
+                        The extension "${formName}" was not found. Are you sure you registered it properly?
                         Check your form_extension files and be sure to clear your prod cache before proceeding
                     `);
                 }
@@ -22,7 +22,7 @@ define(
 
                 if (typeof FormClass !== 'function') {
                     throw new Error(`
-                        The extension ${formMeta.module} must return a function.
+                        The extension "${formMeta.module}" must return a function.
                         It returns: ${typeof FormClass}`
                     );
                 }

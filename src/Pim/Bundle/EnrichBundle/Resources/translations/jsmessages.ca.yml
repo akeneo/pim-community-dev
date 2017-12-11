@@ -849,6 +849,7 @@ page_title:
   pim_enrich_mass_edit_action_configure: Editar en massa | Configurar
   pim_enrich_job_tracker_index: Seguiment del procés
   pim_enrich_job_tracker_show: Seguiment del procés | Mostrar tasca
+  pim_enrich_mass_edit_action: Edició massiva
   pim_analytics_system_info_index: Informació del sistema
 batch_jobs:
   add_product_value:

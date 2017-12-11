@@ -828,6 +828,7 @@ page_title:
   pim_enrich_grouptype_index: Groepstypen
   pim_enrich_mass_edit_action_choose: Massa bewerken | Kies
   pim_enrich_mass_edit_action_configure: Massa bewerken | Configureren
+  pim_enrich_mass_edit_action: Massa bewerken
   pim_analytics_system_info_index: Systeeminformatie
 batch_jobs:
   update_product_value:
