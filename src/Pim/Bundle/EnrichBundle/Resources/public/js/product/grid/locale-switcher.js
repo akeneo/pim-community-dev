@@ -94,7 +94,7 @@ define(
              * @return {String}        The translated locale
              */
             getDisplayName(locale) {
-                return __(locale.language);
+                return locale.language;
             },
 
             /**

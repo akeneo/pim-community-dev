@@ -2,7 +2,6 @@
 
 namespace Context\Page\Batch;
 
-use Behat\Mink\Driver\BrowserKitDriver;
 use Behat\Mink\Exception\ElementNotFoundException;
 use Context\Page\Base\Wizard;
 
@@ -24,7 +23,8 @@ class Operation extends Wizard
         'Set attributes requirements'      => 'Batch SetAttributeRequirements',
         'Add to categories'                => 'Batch Classify',
         'Move between categories'          => 'Batch Classify',
-        'Remove from categories'           => 'Batch Classify'
+        'Remove from categories'           => 'Batch Classify',
+        'Add to an existing product model' => 'Batch AddToExistingProductModel'
     );
 
     /**

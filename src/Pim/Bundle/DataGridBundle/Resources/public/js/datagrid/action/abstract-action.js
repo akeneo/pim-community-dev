@@ -75,7 +75,7 @@ function($, _, Backbone, routing, router, __, mediator, messenger, error, Dialog
             this.datagrid = options.datagrid;
 
             _.each(this.messages, _.bind(function (message, key) {
-                this.messages[key] = __(message);
+                this.messages[key] = message;
             }, this));
 
             _.defaults(this.messages, this.defaultMessages);

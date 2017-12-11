@@ -19,7 +19,7 @@ Feature: Display the localized product history for complex prices
     And I create a product
     And I fill in the following information in the popin:
       | SKU    | sandal          |
-      | family | [super_sandals] |
+      | Family | [super_sandals] |
     And I press the "Save" button in the popin
     And I should be on the product "sandal" edit page
     And I edit the "sandal" product

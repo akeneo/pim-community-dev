@@ -99,8 +99,8 @@ Feature: Edit common attributes of many products at once
     And I collapse the column
     And I create a product
     And I fill in the following information in the popin:
-      | SKU             | Shoes |
-      | Choose a family | Heels |
+      | SKU    | Shoes |
+      | Family | Heels |
     And I press the "Save" button in the popin
     Then I should be on the product "Shoes" edit page
     And I am on the products grid

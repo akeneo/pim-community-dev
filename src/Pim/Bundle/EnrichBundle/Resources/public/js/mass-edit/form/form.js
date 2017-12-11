@@ -79,10 +79,14 @@ define(
                     previousLabel: __('pim_enrich.mass_edit.previous'),
                     nextLabel: __('pim_enrich.mass_edit.next'),
                     confirmLabel: __('pim_enrich.mass_edit.confirm'),
+                    illustrationClass: step.getIllustrationClass(),
                     __: __
                 }));
 
-                this.$('.step').empty().append(step.render().$el);
+                this.$('.step').empty().append(step.$el);
+                // We need to have the step in the DOM as soon as possible for extensions that call render() and
+                // postRender()
+                step.render();
 
                 this.delegateEvents();
             },

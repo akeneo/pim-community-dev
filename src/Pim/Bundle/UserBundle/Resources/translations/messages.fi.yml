@@ -7,7 +7,7 @@ pim_user:
       password.title: Salasana
       business_unit.title: Liiketoimintayksiköt
       email_synchronization.title: Sähköpostin synkronoinnin asetukset
-      interfaces.title: Rajapinnat
+      interfaces.title: Käyttöliittymät
   group:
     tab:
       general.title: Yleinen
@@ -57,9 +57,9 @@ Date of birth: Syntymäaika
 Avatar: Avatar
 Additional emails: Lisää sähköposteja
 Add another email: Lisää toinen sähköpostiosoite
-Catalog locale: Katalogin lokaatio
-Catalog scope: Katalogin laajuus
-Default tree: Oletusarvoinen puu
+Catalog locale: Tuotekatalogin lokaatio
+Catalog scope: Tuotekatalogin kanava
+Default tree: Oletuskategoria
 Business Units: Liiketoimintayksiköt
 Email synchronization settings: Sähköpostin synkronoinnin asetukset
 Host: Isäntä

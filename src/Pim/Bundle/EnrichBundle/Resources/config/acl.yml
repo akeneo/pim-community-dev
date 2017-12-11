@@ -94,6 +94,10 @@ pim_enrich_product_model_history:
     type: action
     label: pim_enrich.acl.product_model.history
     group_name: pim_enrich.acl_group.product_model
+pim_enrich_product_model_remove:
+    type: action
+    label: pim_enrich.acl.product_model.remove
+    group_name: pim_enrich.acl_group.product_model
 
 # Mass edit action
 pim_enrich_mass_edit:

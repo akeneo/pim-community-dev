@@ -26,6 +26,10 @@ mappings:
                 type: 'keyword'
             parent:
                 type: 'keyword'
+            ancestors.codes:
+                type: 'keyword'
+            ancestors.ids:
+                type: 'keyword'
         dynamic_templates:
             -
                 label_scopable_localizable_structure:
