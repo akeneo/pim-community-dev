@@ -68,7 +68,7 @@ function (
          * {@inheritdoc}
          */
         getFieldValue: function (field) {
-            var value = $(field).val();
+            const value = $(field).val();
 
             return this.config.isMultiple && null === value ? [] : value;
         }

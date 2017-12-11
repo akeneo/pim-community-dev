@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace Pim\Bundle\EnrichBundle\Controller\Rest;
 
 use Akeneo\Component\StorageUtils\Factory\SimpleFactoryInterface;
+use Akeneo\Component\StorageUtils\Remover\RemoverInterface;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
@@ -14,6 +15,7 @@ use Pim\Component\Catalog\Comparator\Filter\EntityWithValuesFilter;
 use Pim\Component\Catalog\Localization\Localizer\AttributeConverterInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
 use Pim\Component\Catalog\Model\VariantProductInterface;
+use Pim\Component\Catalog\Repository\FamilyVariantRepositoryInterface;
 use Pim\Component\Catalog\Repository\ProductModelRepositoryInterface;
 use Pim\Component\Enrich\Converter\ConverterInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -29,6 +31,8 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class ProductModelController
 {
+    private const PRODUCT_MODELS_LIMIT = 20;
+
     /** @var NormalizerInterface */
     private $normalizer;
 
@@ -53,6 +57,9 @@ class ProductModelController
     /** @var ObjectUpdaterInterface */
     private $productModelUpdater;
 
+    /** @var RemoverInterface */
+    private $productModelRemover;
+
     /** @var ValidatorInterface */
     private $validator;
 
@@ -71,6 +78,9 @@ class ProductModelController
     /** @var NormalizerInterface */
     private $violationNormalizer;
 
+    /** @var FamilyVariantRepositoryInterface */
+    private $familyVariantRepository;
+
     /**
      * @param ProductModelRepositoryInterface   $productModelRepository
      * @param NormalizerInterface               $normalizer
@@ -86,6 +96,7 @@ class ProductModelController
      * @param EntityWithFamilyVariantNormalizer $entityWithFamilyVariantNormalizer
      * @param SimpleFactoryInterface            $productModelFactory
      * @param NormalizerInterface               $violationNormalizer
+     * @param FamilyVariantRepositoryInterface  $familyVariantRepository
      */
     public function __construct(
         ProductModelRepositoryInterface $productModelRepository,
@@ -96,12 +107,14 @@ class ProductModelController
         EntityWithValuesFilter $emptyValuesFilter,
         ConverterInterface $productValueConverter,
         ObjectUpdaterInterface $productModelUpdater,
+        RemoverInterface $productModelRemover,
         ValidatorInterface $validator,
         SaverInterface $productModelSaver,
         NormalizerInterface $constraintViolationNormalizer,
         EntityWithFamilyVariantNormalizer $entityWithFamilyVariantNormalizer,
         SimpleFactoryInterface $productModelFactory,
-        NormalizerInterface $violationNormalizer
+        NormalizerInterface $violationNormalizer,
+        FamilyVariantRepositoryInterface $familyVariantRepository
     ) {
         $this->productModelRepository        = $productModelRepository;
         $this->normalizer                    = $normalizer;
@@ -111,12 +124,14 @@ class ProductModelController
         $this->emptyValuesFilter             = $emptyValuesFilter;
         $this->productValueConverter         = $productValueConverter;
         $this->productModelUpdater           = $productModelUpdater;
+        $this->productModelRemover           = $productModelRemover;
         $this->validator                     = $validator;
         $this->productModelSaver             = $productModelSaver;
         $this->constraintViolationNormalizer = $constraintViolationNormalizer;
         $this->entityWithFamilyVariantNormalizer = $entityWithFamilyVariantNormalizer;
         $this->productModelFactory           = $productModelFactory;
         $this->violationNormalizer = $violationNormalizer;
+        $this->familyVariantRepository = $familyVariantRepository;
     }
 
     /**
@@ -291,6 +306,58 @@ class ProductModelController
     }
 
     /**
+     * Returns the last level of product models belonging to a Family Variant with a given search code
+     *
+     * @param Request $request
+     *
+     * @return JsonResponse
+     */
+    public function searchLastLevelProductModelByCode(Request $request): JsonResponse
+    {
+        $search = $request->query->get('search');
+        $options = $request->query->get('options');
+        $familyVariantCode = $options['family_variant'];
+        $page = intval($options['page']) - 1;
+        $familyVariant = $this->familyVariantRepository->findOneByIdentifier($familyVariantCode);
+        if (null === $familyVariant) {
+            throw new \InvalidArgumentException(sprintf('Unknown family variant code "%s"', $familyVariantCode));
+        }
+
+        $productModels = $this->productModelRepository->searchLastLevelByCode(
+            $familyVariant,
+            $search,
+            self::PRODUCT_MODELS_LIMIT,
+            $page
+        );
+
+        $normalizedProductModels = [];
+        foreach ($productModels as $productModel) {
+            $normalizedProductModels[$productModel->getCode()] = $this->normalizeProductModel(
+                $productModel
+            );
+        }
+
+        return new JsonResponse($normalizedProductModels);
+    }
+
+    /**
+     * Remove product model
+     *
+     * @param int $id
+     *
+     * @AclAncestor("pim_enrich_product_model_remove")
+     *
+     * @return JsonResponse
+     */
+    public function removeAction($id): JsonResponse
+    {
+        $productModel = $this->findProductModelOr404($id);
+        $this->productModelRemover->remove($productModel);
+
+        return new JsonResponse();
+    }
+
+    /**
      * @param ProductModelInterface $productModel
      *
      * @return array
@@ -333,5 +400,28 @@ class ProductModelController
         }
 
         $this->productModelUpdater->update($productModel, $data);
+    }
+
+    /**
+     * Find a product model by its id or throw a 404
+     *
+     * @param string $id the product id
+     *
+     * @throws NotFoundHttpException
+     *
+     * @return ProductModelInterface
+     */
+    protected function findProductModelOr404($id): ProductModelInterface
+    {
+        $productModel = $this->productModelRepository->find($id);
+        $productModel = $this->objectFilter->filterObject($productModel, 'pim.internal_api.product.view') ? null : $productModel;
+
+        if (null === $productModel) {
+            throw new NotFoundHttpException(
+                sprintf('ProductModel with id %s could not be found.', $id)
+            );
+        }
+
+        return $productModel;
     }
 }

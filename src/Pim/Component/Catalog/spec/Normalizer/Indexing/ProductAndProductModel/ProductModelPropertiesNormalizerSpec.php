@@ -124,6 +124,10 @@ class ProductModelPropertiesNormalizerSpec extends ObjectBehavior
                         'fr_FR' => 1
                     ]
                 ],
+                'ancestors' => [
+                    'ids' => [],
+                    'codes' => [],
+                ],
                 'label' => []
             ]
         );
@@ -226,6 +230,10 @@ class ProductModelPropertiesNormalizerSpec extends ObjectBehavior
                         'fr_FR' => 1
                     ]
                 ],
+                'ancestors' => [
+                    'ids' => [],
+                    'codes' => [],
+                ],
                 'label' => []
             ]
         );
@@ -252,6 +260,8 @@ class ProductModelPropertiesNormalizerSpec extends ObjectBehavior
 
         $productModel->getParent()->willReturn($parent);
         $parent->getCode()->willReturn('parent_A');
+        $parent->getId()->willReturn(1);
+        $parent->getParent()->willReturn(null);
 
         $productModel->getCreated()->willReturn($now);
         $serializer->normalize(
@@ -348,6 +358,10 @@ class ProductModelPropertiesNormalizerSpec extends ObjectBehavior
                     'ecommerce' => [
                         'fr_FR' => 1
                     ]
+                ],
+                'ancestors' => [
+                    'ids' => ['product_model_1'],
+                    'codes' => ['parent_A'],
                 ],
                 'label' => []
             ]

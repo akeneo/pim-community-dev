@@ -8,6 +8,7 @@ confirmation:
         attribute_group:  Are you sure you want to delete this attribute group?
         family:           Are you sure you want to delete this family?
         product:          Are you sure you want to delete this product?
+        product_model:    Are you sure you want to delete this product model? All its children, product models and variant products, will be also deleted.
         channel:          Are you sure you want to delete this channel?
         group:            Are you sure you want to delete this group?
         group_type:       Are you sure you want to delete this group type?
@@ -50,6 +51,8 @@ flash:
         removed: Family successfully removed
     product:
         removed: Product successfully removed
+    product_model:
+        removed: Product model successfully removed
     channel:
         removed: Channel successfully removed
     group:
@@ -240,6 +243,7 @@ pim_enrich:
                 title: Create
                 labels:
                     family: Choose a family
+                    family_variant: Choose a family variant
                     save: Save
                     cancel: Cancel
             message:
@@ -256,12 +260,13 @@ pim_enrich:
             info:
                 create_successful: Product model successfully created
                 update_successful: Product model successfully updated. The completeness of its variant products will be recalculated.
+                deletion_successful: Product model successfully deleted.
                 update_failed: The product model could not be updated.
                 field_not_ready: "The product model cannot be saved right now. The following fields are not ready: {{ fields }}"
             read_only_parent_attribute_from_common: This attribute can be updated on the common attributes.
             read_only_parent_attribute_from_model: "This attribute can be updated on the attributes by {{ axes }}"
             variant_axis: Variant axis
-            title: products
+            title: product models
             add_child:
                 create: Add new
                 cancel: Cancel
@@ -448,6 +453,7 @@ pim_enrich:
         delete:
             attribute: Are you sure you want to delete this attribute from the product?
             attribute_group: Are you sure you want to remove the attribute {{ attribute }} from this attribute group?
+            product_model: Confirm deletion
     info:
         not_applicable: N/A
         entity:
@@ -460,10 +466,12 @@ pim_enrich:
     form:
         required: (required)
         product_model:
+            choose_product_model: Choose a product model
             choose_variant: Choose a variant
             complete_variant_product: variant product
             complete_variant_products: variant products
             family_variant: Variant
+            product_model: Product model
             flash:
                 product_model_added: Product model successfully added to the product model
                 variant_product_added: Variant product successfully added to the product model
@@ -1063,6 +1071,10 @@ pim_enrich:
                     label: Remove from categories
                     label_count: "{1}Remove <span class=\"AknFullPage-title--highlight\">1 product</span> from categories|] 1, Inf [Remove <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span> from categories"
                     description: The products will be removed from the following categories.
+                add_to_existing_product_model:
+                    label: Add to an existing product model
+                    label_count: "{1}Add <span class=\"AknFullPage-title--highlight\">1 product</span> to an existing product model|] 1, Inf [Add <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span> to an existing product model"
+                    description: The product model selected will gather the products and allows the enrichment of their common properties.
         family:
             title: Families bulk action
             confirm: "{1}You are about to update a family with the following information, please confirm.|] 1, Inf [You are about to update {{ itemsCount }} families with the following information, please confirm."
@@ -1125,6 +1137,7 @@ page_title:
     pim_enrich_job_tracker_show:           Process tracker | Show job
     pim_enrich_api_connection_index:       API connections
     pim_enrich_api_connection_create:      API connections | Create
+    pim_enrich_mass_edit_action:           Mass Edit
     pim_analytics_system_info_index:       System information
 
 # Batch job labels
@@ -1143,6 +1156,10 @@ batch_jobs:
             label: Edit common attributes
         cleaner:
             label: Clean files for common attributes
+    add_to_existing_product_model:
+        label: Add to an existing product model
+        perform:
+            label: Add to an existing product model
     set_attribute_requirements:
         label: Set attributes requirements
         perform:
@@ -1394,6 +1411,7 @@ pim_menu:
         group_type: Group types
         locale: Locales
         product: Products
+        product_model: Product Models
         published_product: Published Products
         export_history: Exports history
         export_profile: Export profiles

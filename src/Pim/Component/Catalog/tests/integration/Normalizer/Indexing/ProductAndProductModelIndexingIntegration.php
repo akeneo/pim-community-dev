@@ -55,6 +55,10 @@ class ProductAndProductModelIndexingIntegration extends TestCase
             ],
             'at_least_complete' => [],
             'at_least_incomplete' => [],
+            'ancestors' => [
+                'ids' => [],
+                'codes' => [],
+            ],
             'label'         => [],
             'document_type' => ProductModelInterface::class,
             'attributes_for_this_level' => ['a_text']
@@ -101,6 +105,10 @@ class ProductAndProductModelIndexingIntegration extends TestCase
             ],
             'at_least_complete' => [],
             'at_least_incomplete' => [],
+            'ancestors' => [
+                'ids' => ['product_model_150'],
+                'codes' => ['qux'],
+            ],
             'label'         => [],
             'document_type' => ProductModelInterface::class,
             'attributes_for_this_level' => ['a_simple_select']
@@ -153,6 +161,10 @@ class ProductAndProductModelIndexingIntegration extends TestCase
                     ],
                 ],
             ],
+            'ancestors' => [
+                'ids' => ['product_model_151', 'product_model_150'],
+                'codes' => ['quux', 'qux'],
+            ],
             'label'         => [],
             'document_type' => ProductInterface::class,
             'attributes_for_this_level' => ['sku', 'a_yes_no']
@@ -182,8 +194,12 @@ class ProductAndProductModelIndexingIntegration extends TestCase
             'family_variant'            => null,
             'parent'                    => null,
             'values'                    => [],
+            'ancestors' => [
+                'ids' => [],
+                'codes' => [],
+            ],
             'label'                     => [],
-            'document_type'             => ProductInterface::class,
+            'document_type'              => ProductInterface::class,
             'attributes_for_this_level' => ['sku'],
         ];
 
@@ -423,6 +439,10 @@ class ProductAndProductModelIndexingIntegration extends TestCase
                         ],
                     ],
                 ],
+            ],
+            'ancestors' => [
+                'ids' => [],
+                'codes' => [],
             ],
             'label' => [],
             'document_type' => ProductInterface::class,

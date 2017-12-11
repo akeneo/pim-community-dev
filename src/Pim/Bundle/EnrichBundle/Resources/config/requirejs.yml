@@ -46,6 +46,8 @@ config:
             url: pim_enrich_group_rest_remove
         pim/remover/product:
             url: pim_enrich_product_rest_remove
+        pim/remover/product-model:
+            url: pim_enrich_product_model_rest_remove
         pim/remover/job-instance-import:
             url: pim_enrich_job_instance_rest_import_delete
         pim/remover/job-instance-export:
@@ -594,6 +596,7 @@ config:
         pim/remover/channel:             pimenrich/js/remover/channel
         pim/remover/family:              pimenrich/js/remover/family
         pim/remover/product:             pimenrich/js/remover/product-remover
+        pim/remover/product-model:       pimenrich/js/remover/product-model-remover
         pim/remover/group:               pimenrich/js/remover/group-remover
         pim/remover/job-instance-import: pimenrich/js/remover/job-instance-import-remover
         pim/remover/job-instance-export: pimenrich/js/remover/job-instance-export-remover
@@ -717,6 +720,7 @@ config:
         # Product model
         pim/product-model-edit-form/product-model-label: pimenrich/js/product-model/form/product-model-label
         pim/product-model-edit-form/save: pimenrich/js/product-model/form/save
+        pim/product-model-edit-form/delete:                     pimenrich/js/product-model/form/delete
         pim/product-model-edit-form/complete-variant-product: pimenrich/js/product-model/form/complete-variant-product
         pim/product-model-edit-form/history: pimenrich/js/product/form/history
         pim/product-model/form/creation/variant: pimenrich/js/product-model/form/creation/variant
@@ -788,15 +792,19 @@ config:
         pim/filter/attribute/date:             pimenrich/js/filter/attribute/date
 
         # Mass edit
-        pim/mass-edit-form/form:                           pimenrich/js/mass-edit/form/form
-        pim/mass-edit-form/choose:                         pimenrich/js/mass-edit/form/choose
-        pim/mass-edit-form/product/operation:              pimenrich/js/mass-edit/form/product/operation
-        pim/mass-edit-form/product/change-status:          pimenrich/js/mass-edit/form/product/change-status
-        pim/mass-edit-form/product/edit-common-attributes: pimenrich/js/mass-edit/form/product/edit-common-attributes
-        pim/mass-edit-form/product/change-family:          pimenrich/js/mass-edit/form/product/change-family
-        pim/mass-edit-form/product/add-to-group:           pimenrich/js/mass-edit/form/product/add-to-group
-        pim/mass-edit-form/product/category:               pimenrich/js/mass-edit/form/product/category
-        pim/mass-edit-form/family/set-requirements:        pimenrich/js/mass-edit/form/family/set-requirements
+        pim/mass-edit-form/form:                                      pimenrich/js/mass-edit/form/form
+        pim/mass-edit-form/choose:                                    pimenrich/js/mass-edit/form/choose
+        pim/mass-edit-form/product/operation:                         pimenrich/js/mass-edit/form/product/operation
+        pim/mass-edit-form/product/change-status:                     pimenrich/js/mass-edit/form/product/change-status
+        pim/mass-edit-form/product/edit-common-attributes:            pimenrich/js/mass-edit/form/product/edit-common-attributes
+        pim/mass-edit-form/product/add-to-existing-product-model:     pimenrich/js/mass-edit/form/product/add-to-existing-product-model
+        pim/mass-edit-form/product/change-family:                     pimenrich/js/mass-edit/form/product/change-family
+        pim/mass-edit-form/product/add-to-group:                      pimenrich/js/mass-edit/form/product/add-to-group
+        pim/mass-edit-form/product/category:                          pimenrich/js/mass-edit/form/product/category
+        pim/mass-edit-form/product/mass-edit-field:                   pimenrich/js/mass-edit/form/product/mass-edit-field
+        pim/mass-edit-form/product/product-model-field:               pimenrich/js/mass-edit/form/product/product-model-field
+        pim/mass-edit-form/product/variant-field:                     pimenrich/js/mass-edit/form/product/variant-field
+        pim/mass-edit-form/family/set-requirements:                   pimenrich/js/mass-edit/form/family/set-requirements
 
         # Product edit form
         pim/field-manager: pimenrich/js/product/field-manager
@@ -889,7 +897,6 @@ config:
         pim/form/common/secondary-actions:                   pimenrich/js/form/common/secondary-actions
         pim/form/common/index/confirm-button:                pimenrich/js/form/common/index/confirm-button
         pim/form/common/creation/field:                      pimenrich/js/form/common/creation/field
-        pim/form/common/creation/family:                     pimenrich/js/form/common/creation/family
         pim/form/common/creation/modal:                      pimenrich/js/form/common/creation/modal
         pim/form/common/creation/modal/client:               pimenrich/js/form/common/creation/modal/client
         pim/form/common/creation/type:                       pimenrich/js/form/common/creation/type
@@ -1013,7 +1020,6 @@ config:
         pim/template/form/creation/modal:                         pimenrich/templates/form/creation/modal.html
 
         pim/template/form/creation/field:                         pimenrich/templates/form/creation/field.html
-        pim/template/form/creation/family:                        pimenrich/templates/form/creation/family.html
         pim/template/form/creation/type:                          pimenrich/templates/form/creation/type.html
         pim/template/form/creation/job:                           pimenrich/templates/form/creation/job.html
         pim/template/form/column:                                 pimenrich/templates/form/column.html
@@ -1117,14 +1123,15 @@ config:
         pim/template/grid/mass-actions:                      pimenrich/templates/grid/mass-actions.html
         pim/template/grid/mass-actions-confirm:              pimenrich/templates/grid/mass-actions-confirm.html
 
-        pim/template/mass-edit/form:                           pimenrich/templates/mass-edit/form.html
-        pim/template/mass-edit/choose:                         pimenrich/templates/mass-edit/choose.html
-        pim/template/mass-edit/product/change-status:          pimenrich/templates/mass-edit/product/change-status.html
-        pim/template/mass-edit/product/edit-common-attributes: pimenrich/templates/mass-edit/product/edit-common-attributes.html
-        pim/template/mass-edit/product/change-family:          pimenrich/templates/mass-edit/product/change-family.html
-        pim/template/mass-edit/product/add-to-group:           pimenrich/templates/mass-edit/product/add-to-group.html
-        pim/template/mass-edit/product/category:               pimenrich/templates/mass-edit/product/category.html
-        pim/template/mass-edit/family/set-requirements:        pimenrich/templates/mass-edit/family/set-requirements.html
+        pim/template/mass-edit/form:                                        pimenrich/templates/mass-edit/form.html
+        pim/template/mass-edit/choose:                                      pimenrich/templates/mass-edit/choose.html
+        pim/template/mass-edit/product/change-status:                       pimenrich/templates/mass-edit/product/change-status.html
+        pim/template/mass-edit/product/edit-common-attributes:              pimenrich/templates/mass-edit/product/edit-common-attributes.html
+        pim/template/mass-edit/product/add-to-existing-product-model:       pimenrich/templates/mass-edit/product/add-to-existing-product-model.html
+        pim/template/mass-edit/product/change-family:                       pimenrich/templates/mass-edit/product/change-family.html
+        pim/template/mass-edit/product/add-to-group:                        pimenrich/templates/mass-edit/product/add-to-group.html
+        pim/template/mass-edit/product/category:                            pimenrich/templates/mass-edit/product/category.html
+        pim/template/mass-edit/family/set-requirements:                     pimenrich/templates/mass-edit/family/set-requirements.html
 
         pim/template/menu/tab:                               pimenrich/templates/menu/tab.html
         pim/template/menu/help:                              pimenrich/templates/menu/help.html

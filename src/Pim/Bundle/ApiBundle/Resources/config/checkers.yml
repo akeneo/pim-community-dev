@@ -8,4 +8,4 @@ services:
             - '@pim_catalog.repository.locale'
             - '@pim_catalog.repository.attribute'
             - '@pim_catalog.repository.category'
-            - ['family', 'enabled', 'groups', 'categories', 'completeness']
+            - ['family', 'enabled', 'groups', 'categories', 'completeness', 'identifier', 'created', 'updated']

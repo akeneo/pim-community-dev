@@ -29,6 +29,8 @@ interface EntityWithFamilyVariantInterface extends EntityWithFamilyInterface
      * For example, if this entity has 2 parents, it's on level 2.
      * If it has 0 parent, it's on level 0.
      *
+     * Which means the oldest is at level 0.
+     *
      * @return int
      */
     public function getVariationLevel(): int;

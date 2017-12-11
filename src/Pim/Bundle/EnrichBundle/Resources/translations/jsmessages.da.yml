@@ -449,6 +449,7 @@ pim_enrich:
       complete_variant_product: variant produkt
       complete_variant_products: variant produkter
       family_variant: Variant
+      product_model: Produktmodel
       flash:
         product_model_added: Produktmodellen føjet til produktmodellen
         variant_product_added: Variant produkt føjet til produktmodellen
@@ -1103,6 +1104,7 @@ page_title:
   pim_enrich_job_tracker_show: Process overvågning | Vis job
   pim_enrich_api_connection_index: API-forbindelser
   pim_enrich_api_connection_create: API forbindelser | Oprette
+  pim_enrich_mass_edit_action: Masse Rediger
   pim_analytics_system_info_index: Systemoplysninger
 batch_jobs:
   add_product_value:

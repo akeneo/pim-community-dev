@@ -83,7 +83,8 @@ class ProductPropertiesNormalizerSpec extends ObjectBehavior
         $product->getCompletenesses()->willReturn($completenesses);
         $completenesses->isEmpty()->willReturn(false);
 
-        $serializer->normalize($completenesses, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX, [])->willReturn(['the completenesses']);
+        $serializer->normalize($completenesses, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX,
+            [])->willReturn(['the completenesses']);
 
         $this->normalize($product, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)->shouldReturn(
             [
@@ -99,6 +100,10 @@ class ProductPropertiesNormalizerSpec extends ObjectBehavior
                 'family_variant' => null,
                 'parent'         => null,
                 'values'         => [],
+                'ancestors'      => [
+                    'ids'   => [],
+                    'codes' => [],
+                ],
                 'label'          => []
             ]
         );
@@ -153,13 +158,14 @@ class ProductPropertiesNormalizerSpec extends ObjectBehavior
 
         $completenesses->isEmpty()->willReturn(false);
         $product->getCompletenesses()->willReturn($completenesses);
-        $serializer->normalize($completenesses, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX, [])->willReturn(
+        $serializer->normalize($completenesses, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX,
+            [])->willReturn(
             [
                 'ecommerce' => [
                     'en_US' => [
-                        66
-                    ]
-                ]
+                        66,
+                    ],
+                ],
             ]
         );
 
@@ -180,26 +186,26 @@ class ProductPropertiesNormalizerSpec extends ObjectBehavior
 
         $this->normalize($product, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)->shouldReturn(
             [
-                'id'            => 'product_67',
-                'identifier'    => 'sku-001',
-                'created'       => $now->format('c'),
-                'updated'       => $now->format('c'),
-                'family' => [
+                'id'             => 'product_67',
+                'identifier'     => 'sku-001',
+                'created'        => $now->format('c'),
+                'updated'        => $now->format('c'),
+                'family'         => [
                     'code'   => 'family',
                     'labels' => [
                         'fr_FR' => 'Une famille',
                         'en_US' => 'A family',
                     ],
                 ],
-                'enabled'       => true,
-                'categories'    => ['first_category', 'second_category'],
-                'groups'        => ['first_group', 'second_group', 'another_group'],
-                'in_group' => [
-                    'first_group'     => true,
-                    'second_group'    => true,
+                'enabled'        => true,
+                'categories'     => ['first_category', 'second_category'],
+                'groups'         => ['first_group', 'second_group', 'another_group'],
+                'in_group'       => [
+                    'first_group'   => true,
+                    'second_group'  => true,
                     'another_group' => true,
                 ],
-                'completeness'  => [
+                'completeness'   => [
                     'ecommerce' => [
                         'en_US' => [
                             66,
@@ -208,12 +214,148 @@ class ProductPropertiesNormalizerSpec extends ObjectBehavior
                 ],
                 'family_variant' => null,
                 'parent'         => null,
-                'values'        => [
+                'values'         => [
                     'a_size-decimal' => [
                         '<all_channels>' => [
                             '<all_locales>' => '10.51',
                         ],
                     ],
+                ],
+                'ancestors'      => [
+                    'ids'   => [],
+                    'codes' => [],
+                ],
+                'label'          => [],
+            ]
+        );
+    }
+
+    function it_normalizes_variant_product_properties_with_fields_and_values(
+        $serializer,
+        VariantProductInterface $variantProduct,
+        ValueCollectionInterface $valueCollection,
+        FamilyInterface $family,
+        FamilyVariantInterface $familyVariant,
+        Collection $completenesses,
+        ProductModelInterface $subProductModel,
+        ProductModelInterface $rootProductModel
+    ) {
+        $now = new \DateTime('now', new \DateTimeZone('UTC'));
+
+        $variantProduct->getId()->willReturn(67);
+        $variantProduct->getIdentifier()->willReturn('sku-001');
+
+        $variantProduct->getCreated()->willReturn($now);
+        $serializer->normalize(
+            $variantProduct->getWrappedObject()->getCreated(),
+            ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX
+        )->willReturn($now->format('c'));
+
+        $variantProduct->getUpdated()->willReturn($now);
+        $serializer->normalize(
+            $variantProduct->getWrappedObject()->getUpdated(),
+            ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX
+        )->willReturn($now->format('c'));
+
+        $variantProduct->getFamily()->willReturn($family);
+        $serializer
+            ->normalize($family, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)
+            ->willReturn([
+                'code'   => 'family',
+                'labels' => [
+                    'fr_FR' => 'Une famille',
+                    'en_US' => 'A family',
+                ],
+            ]);
+
+        $variantProduct->isEnabled()->willReturn(true);
+        $variantProduct->getGroupCodes()->willReturn(['first_group', 'second_group', 'another_group']);
+        $variantProduct->getCategoryCodes()->willReturn(
+            [
+                'first_category',
+                'second_category',
+            ]
+        );
+
+        $completenesses->isEmpty()->willReturn(false);
+        $variantProduct->getCompletenesses()->willReturn($completenesses);
+        $serializer->normalize($completenesses, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX,
+            [])->willReturn(
+            [
+                'ecommerce' => [
+                    'en_US' => [
+                        66,
+                    ],
+                ],
+            ]
+        );
+
+        $variantProduct->getValues()
+            ->shouldBeCalledTimes(2)
+            ->willReturn($valueCollection);
+        $valueCollection->isEmpty()->willReturn(false);
+        $serializer->normalize($valueCollection, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX, [])
+            ->willReturn(
+                [
+                    'a_size-decimal' => [
+                        '<all_channels>' => [
+                            '<all_locales>' => '10.51',
+                        ],
+                    ],
+                ]
+            );
+
+        $variantProduct->getFamilyVariant()->willReturn($familyVariant);
+
+        $variantProduct->getParent()->willReturn($subProductModel);
+        $subProductModel->getId()->willReturn(4);
+        $subProductModel->getCode()->willReturn('model-tshirt-xs');
+        $subProductModel->getParent()->willReturn($rootProductModel);
+        $rootProductModel->getId()->willReturn(1);
+        $rootProductModel->getCode()->willReturn('model-tshirt');
+        $rootProductModel->getParent()->willReturn(null);
+
+        $this->normalize($variantProduct,
+            ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)->shouldReturn(
+            [
+                'id'             => 'product_67',
+                'identifier'     => 'sku-001',
+                'created'        => $now->format('c'),
+                'updated'        => $now->format('c'),
+                'family'         => [
+                    'code'   => 'family',
+                    'labels' => [
+                        'fr_FR' => 'Une famille',
+                        'en_US' => 'A family',
+                    ],
+                ],
+                'enabled'        => true,
+                'categories'     => ['first_category', 'second_category'],
+                'groups'         => ['first_group', 'second_group', 'another_group'],
+                'in_group'       => [
+                    'first_group'   => true,
+                    'second_group'  => true,
+                    'another_group' => true,
+                ],
+                'completeness'   => [
+                    'ecommerce' => [
+                        'en_US' => [
+                            66,
+                        ],
+                    ],
+                ],
+                'family_variant' => null,
+                'parent'         => 'model-tshirt-xs',
+                'values'         => [
+                    'a_size-decimal' => [
+                        '<all_channels>' => [
+                            '<all_locales>' => '10.51',
+                        ],
+                    ],
+                ],
+                'ancestors'      => [
+                    'ids'   => ['product_model_4', 'product_model_1'],
+                    'codes' => ['model-tshirt-xs', 'model-tshirt'],
                 ],
                 'label'          => [],
             ]
@@ -228,12 +370,10 @@ class ProductPropertiesNormalizerSpec extends ObjectBehavior
         FamilyInterface $family,
         AttributeInterface $sku,
         FamilyVariantInterface $familyVariant,
-        ProductModelInterface $parent
+        ProductModelInterface $subProductModel,
+        ProductModelInterface $rootProductModel
     ) {
         $now = new \DateTime('now', new \DateTimeZone('UTC'));
-
-        $variantProduct->getParent()->willReturn($parent);
-        $parent->getCode()->willReturn('parent_A');
 
         $variantProduct->getId()->willReturn(67);
         $variantProduct->getIdentifier()->willReturn('sku-001');
@@ -262,7 +402,8 @@ class ProductPropertiesNormalizerSpec extends ObjectBehavior
         $variantProduct->getCategoryCodes()->willReturn([]);
         $valueCollection->isEmpty()->willReturn(true);
 
-        $serializer->normalize($family, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)->willReturn(
+        $serializer->normalize($family,
+            ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)->willReturn(
             [
                 'code'   => 'family',
                 'labels' => [
@@ -277,25 +418,38 @@ class ProductPropertiesNormalizerSpec extends ObjectBehavior
         $serializer->normalize($completenesses, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX, [])
             ->willReturn(['the completenesses']);
 
-        $this->normalize($variantProduct, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)->shouldReturn([
-                'id'            => 'product_67',
-                'identifier'    => 'sku-001',
-                'created'       => $now->format('c'),
-                'updated'       => $now->format('c'),
-                'family' => [
+        $variantProduct->getParent()->willReturn($subProductModel);
+        $subProductModel->getId()->willReturn(4);
+        $subProductModel->getCode()->willReturn('model-tshirt-xs');
+        $subProductModel->getParent()->willReturn($rootProductModel);
+        $rootProductModel->getId()->willReturn(1);
+        $rootProductModel->getCode()->willReturn('model-tshirt');
+        $rootProductModel->getParent()->willReturn(null);
+
+        $this->normalize($variantProduct,
+            ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)->shouldReturn([
+                'id'             => 'product_67',
+                'identifier'     => 'sku-001',
+                'created'        => $now->format('c'),
+                'updated'        => $now->format('c'),
+                'family'         => [
                     'code'   => 'family',
                     'labels' => [
                         'fr_FR' => 'Une famille',
                         'en_US' => 'A family',
                     ],
                 ],
-                'enabled'       => false,
-                'categories'    => [],
-                'groups'        => [],
-                'completeness'  => ['the completenesses'],
+                'enabled'        => false,
+                'categories'     => [],
+                'groups'         => [],
+                'completeness'   => ['the completenesses'],
                 'family_variant' => 'family_variant_A',
-                'parent'        => 'parent_A',
-                'values'        => [],
+                'parent'         => 'model-tshirt-xs',
+                'values'         => [],
+                'ancestors'      => [
+                    'ids'   => ['product_model_4', 'product_model_1'],
+                    'codes' => ['model-tshirt-xs', 'model-tshirt'],
+                ],
                 'label'         => [],
             ]
         );
@@ -309,12 +463,9 @@ class ProductPropertiesNormalizerSpec extends ObjectBehavior
         FamilyInterface $family,
         AttributeInterface $sku,
         FamilyVariantInterface $familyVariant,
-        ProductModelInterface $parent
+        ProductModelInterface $rootProductModel
     ) {
         $now = new \DateTime('now', new \DateTimeZone('UTC'));
-
-        $variantProduct->getParent()->willReturn($parent);
-        $parent->getCode()->willReturn('parent_A');
 
         $variantProduct->getId()->willReturn(67);
         $variantProduct->getIdentifier()->willReturn('sku-001');
@@ -359,13 +510,14 @@ class ProductPropertiesNormalizerSpec extends ObjectBehavior
 
         $completenesses->isEmpty()->willReturn(false);
         $variantProduct->getCompletenesses()->willReturn($completenesses);
-        $serializer->normalize($completenesses, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX, [])->willReturn(
+        $serializer->normalize($completenesses, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX,
+            [])->willReturn(
             [
                 'ecommerce' => [
                     'en_US' => [
-                        66
-                    ]
-                ]
+                        66,
+                    ],
+                ],
             ]
         );
 
@@ -373,15 +525,16 @@ class ProductPropertiesNormalizerSpec extends ObjectBehavior
             ->shouldBeCalledTimes(2)
             ->willReturn($valueCollection);
         $valueCollection->isEmpty()->willReturn(false);
-        $serializer->normalize($valueCollection, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX, [])
+        $serializer->normalize($valueCollection, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX,
+            [])
             ->willReturn(
                 [
-                    'a_size-decimal' => [
+                    'a_size-decimal'         => [
                         '<all_channels>' => [
                             '<all_locales>' => '10.51',
                         ],
                     ],
-                    'a_date-date' => [
+                    'a_date-date'            => [
                         '<all_channels>' => [
                             '<all_locales>' => '2017-05-05',
                         ],
@@ -394,28 +547,34 @@ class ProductPropertiesNormalizerSpec extends ObjectBehavior
                 ]
             );
 
-        $this->normalize($variantProduct, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)->shouldReturn(
+        $variantProduct->getParent()->willReturn($rootProductModel);
+        $rootProductModel->getId()->willReturn(1);
+        $rootProductModel->getCode()->willReturn('model-tshirt');
+        $rootProductModel->getParent()->willReturn(null);
+
+        $this->normalize($variantProduct,
+            ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)->shouldReturn(
             [
-                'id'            => 'product_67',
-                'identifier'    => 'sku-001',
-                'created'       => $now->format('c'),
-                'updated'       => $now->format('c'),
-                'family' => [
+                'id'             => 'product_67',
+                'identifier'     => 'sku-001',
+                'created'        => $now->format('c'),
+                'updated'        => $now->format('c'),
+                'family'         => [
                     'code'   => 'family',
                     'labels' => [
                         'fr_FR' => 'Une famille',
                         'en_US' => 'A family',
                     ],
                 ],
-                'enabled'       => true,
-                'categories'    => ['first_category', 'second_category'],
-                'groups'        => ['first_group', 'second_group', 'another_group'],
-                'in_group' => [
-                    'first_group'     => true,
-                    'second_group'    => true,
+                'enabled'        => true,
+                'categories'     => ['first_category', 'second_category'],
+                'groups'         => ['first_group', 'second_group', 'another_group'],
+                'in_group'       => [
+                    'first_group'   => true,
+                    'second_group'  => true,
                     'another_group' => true,
                 ],
-                'completeness'  => [
+                'completeness'   => [
                     'ecommerce' => [
                         'en_US' => [
                             66,
@@ -423,14 +582,14 @@ class ProductPropertiesNormalizerSpec extends ObjectBehavior
                     ],
                 ],
                 'family_variant' => 'family_variant_A',
-                'parent'         => 'parent_A',
-                'values'        => [
-                    'a_size-decimal' => [
+                'parent'         => 'model-tshirt',
+                'values'         => [
+                    'a_size-decimal'         => [
                         '<all_channels>' => [
                             '<all_locales>' => '10.51',
                         ],
                     ],
-                    'a_date-date' => [
+                    'a_date-date'            => [
                         '<all_channels>' => [
                             '<all_locales>' => '2017-05-05',
                         ],
@@ -440,6 +599,10 @@ class ProductPropertiesNormalizerSpec extends ObjectBehavior
                             '<all_locales>' => 'OPTION_A',
                         ],
                     ],
+                ],
+                'ancestors'      => [
+                    'ids'   => ['product_model_1'],
+                    'codes' => ['model-tshirt'],
                 ],
                 'label'          => [],
             ]

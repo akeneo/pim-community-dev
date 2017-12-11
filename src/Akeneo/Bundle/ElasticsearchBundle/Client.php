@@ -286,4 +286,15 @@ class Client
     {
         return $this->indexName;
     }
+
+    /**
+     * @param array $body an array containing a query compatible with https://www.elastic.co/guide/en/elasticsearch/reference/5.5/docs-delete-by-query.html
+     */
+    public function deleteByQuery(array $body): void
+    {
+        $this->client->deleteByQuery([
+            'index' => $this->indexName,
+            'body' => $body,
+        ]);
+    }
 }

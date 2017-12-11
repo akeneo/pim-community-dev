@@ -165,9 +165,15 @@ define(
                     type: 'POST',
                     data: JSON.stringify(data)
                 }).fail(function (response) {
-                    const errors = response.responseJSON ?
+                    if (response.responseJSON) {
+                        this.getRoot().trigger(
+                            'pim_enrich:form:entity:bad_request',
+                            {'sentData': this.getFormData(), 'response': response.responseJSON.values}
+                        );
+                    }
+
+                    this.validationErrors = response.responseJSON ?
                         this.normalize(response.responseJSON) : [{message: __('error.common')}];
-                    this.validationErrors = errors;
                     this.render();
                 }.bind(this))
                 .always(() => loadingMask.remove());

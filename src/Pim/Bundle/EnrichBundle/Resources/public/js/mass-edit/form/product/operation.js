@@ -39,7 +39,7 @@ define(
             /**
              * The label displayed in the operation list
              *
-             * @return {string}
+             * @return {String}
              */
             getLabel: function () {
                 return __(this.config.label);
@@ -48,7 +48,7 @@ define(
             /**
              * Returns the title of the operation
              *
-             * @returns {string}
+             * @returns {String}
              */
             getTitle() {
                 return __(this.config.title);
@@ -66,9 +66,18 @@ define(
             },
 
             /**
+             * Returns the main illustration of this operation
+             *
+             * @returns {String}
+             */
+            getIllustrationClass: function () {
+                return this.config.illustration || 'products';
+            },
+
+            /**
              * Get the operation description
              *
-             * @return {string}
+             * @return {String}
              */
             getDescription: function () {
                 return __(this.config.description);
@@ -77,7 +86,7 @@ define(
             /**
              * Get the operation code
              *
-             * @return {string}
+             * @return {String}
              */
             getCode: function () {
                 return this.config.code;
@@ -86,7 +95,7 @@ define(
             /**
              * Get the operation icon
              *
-             * @return {string}
+             * @return {String}
              */
             getIcon: function () {
                 return this.config.icon;
@@ -95,7 +104,7 @@ define(
             /**
              * Get job instance code to launch
              *
-             * @return {string}
+             * @return {String}
              */
             getJobInstanceCode: function () {
                 return this.config.jobInstanceCode;
@@ -108,6 +117,8 @@ define(
              */
             setReadOnly: function (readOnly) {
                 this.readOnly = readOnly;
+
+                this.triggerExtensions('mass-edit:update-read-only', this.readOnly);
             },
 
             /**
