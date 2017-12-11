@@ -26,7 +26,6 @@ define(
         'pim/datagrid/state',
         'require-context',
         'pim/form-builder',
-        'pim/media-url-generator',
         'pim/security-context'
     ],
     function (
@@ -47,7 +46,6 @@ define(
         DatagridState,
         requireContext,
         FormBuilder,
-        MediaUrlGenerator,
         securityContext
     ) {
         let state = {};
@@ -607,15 +605,33 @@ define(
              * Opens the panel to select new products to associate
              */
             addAssociations: function () {
-                this.manageProducts().then((productIdentifiers) => {
+                this.manageProducts().then((productAndProductModelIdentifiers) => {
+                    let productIds = [];
+                    let productModelIds = [];
+                    productAndProductModelIdentifiers.forEach((item) => {
+                        const matchProductModel = item.match(/^product_model_(.*)$/);
+                        if (matchProductModel) {
+                            productModelIds.push(matchProductModel[1]);
+                        } else {
+                            const matchProduct = item.match(/^product_(.*)$/);
+                            productIds.push(matchProduct[1]);
+                        }
+                    });
+
                     const assocType = this.getCurrentAssociationType();
-                    const assocTarget = this.getCurrentAssociationTarget();
-                    const previousIdentifiers = this.getFormData().associations[assocType][assocTarget];
+                    const previousProductIds = this.getFormData().associations[assocType]['products'];
+                    const previousProductModelIds = this.getFormData().associations[assocType]['product_models'];
 
                     this.updateFormDataAssociations(
-                        previousIdentifiers.concat(productIdentifiers),
+                        previousProductIds.concat(productIds),
                         assocType,
-                        assocTarget
+                        'products'
+                    );
+
+                    this.updateFormDataAssociations(
+                        previousProductModelIds.concat(productModelIds),
+                        assocType,
+                        'product_models'
                     );
 
                     this.getRoot().trigger('pim_enrich:form:update-association');
@@ -638,19 +654,6 @@ define(
                             form.setCustomTitle(__('pim_enrich.form.product.tab.associations.manage', {
                                 associationType: associationType.labels[UserContext.get('catalogLocale')]
                             }));
-
-                            form.setImagePathMethod(function (item) {
-                                let filePath = null;
-                                if (item.meta.image !== null) {
-                                    filePath = item.meta.image.filePath;
-                                }
-
-                                return MediaUrlGenerator.getMediaShowUrl(filePath, 'thumbnail_small');
-                            });
-
-                            form.setLabelMethod(function (item) {
-                                return item.meta.label[this.getLocale()];
-                            });
 
                             let modal = new Backbone.BootstrapModal({
                                 className: 'modal modal--fullPage modal--topButton',

@@ -1,7 +1,10 @@
 'use strict';
 
 /**
- * Extension to display full screen item picker to choose elements from a grid
+ * This extension allows user to display a fullscreen item picker.
+ * It overrides the default item picker because we have to manage 2 types of entities:
+ * - products (identified by their identifier)
+ * - product models (identifier by their code)
  *
  * @author    Pierre Allard <pierre.allard@akeneo.com>
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
@@ -11,15 +14,15 @@ define(
     [
         'oro/translator',
         'pim/common/item-picker',
-        'pim/fetcher-registry'
+        'pim/fetcher-registry',
+        'pim/media-url-generator'
     ], function (
         __,
         ItemPicker,
-        FetcherRegistry
+        FetcherRegistry,
+        MediaUrlGenerator
     ) {
         return ItemPicker.extend({
-            // Remove this.config.fetcher
-
             /**
              * {@inheritdoc}
              */
@@ -69,6 +72,31 @@ define(
                     }.bind(this));
             },
 
+            /**
+             * {@inheritdoc}
+             */
+            imagePathMethod: function (item) {
+                let filePath = null;
+                if (item.meta.image !== null) {
+                    filePath = item.meta.image.filePath;
+                }
+
+                return MediaUrlGenerator.getMediaShowUrl(filePath, 'thumbnail_small');
+            },
+
+            /**
+             * {@inheritdoc}
+             */
+            labelMethod: function (item) {
+                return item.meta.label[this.getLocale()];
+            },
+
+            /**
+             * Returns the method to display unique codes for basket deletion
+             *
+             * @param {Object} item
+             * @returns {string}
+             */
             itemCodeMethod: function (item) {
                 if (item.code) {
                     return 'product_model_' + item.code;
