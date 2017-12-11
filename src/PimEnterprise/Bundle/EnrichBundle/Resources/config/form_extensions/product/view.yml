@@ -3,6 +3,8 @@ extensions:
         module: pimee/product-view-form
         config:
             routeKey: pim_enrich_product_edit
+            forwarded-events:
+                'pim_enrich:form:field:extension:add': 'pim_enrich:form:field:extension:add'
 
     pimee-product-view-breadcrumbs:
         module: pim/common/breadcrumbs

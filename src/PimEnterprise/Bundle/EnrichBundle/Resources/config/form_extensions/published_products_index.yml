@@ -113,6 +113,8 @@ extensions:
         module: oro/datagrid/pagination-input
         parent: pimee-published-product-index-grid-container
         targetZone: toolbar
+        config:
+            gridName: published-product-grid
 
     pimee-published-product-index-columns:
         module: pim/datagrid/configure-columns-action

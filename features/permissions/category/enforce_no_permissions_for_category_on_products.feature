@@ -77,23 +77,6 @@ Feature: Enforce no permissions for a category
     Then the grid should contain 4 elements
     And I should see products unclassifiedOne, unclassifiedTwo, inProtectedTree and inProtectedNode
 
-  Scenario: Display only granted products in association products grid, I see all products
-    Given I am logged in as "Julia"
-    And I edit the "grantedOne" product
-    When I visit the "Associations" column tab
-    And I wait 3 seconds
-    Then the grid should contain 2 elements
-
-  Scenario: Display only granted products in association products grid, I see a sub set of products
-    Given I am logged in as "Julia"
-    And the following product category accesses:
-      | product category  | user group | access |
-      | winter_collection | Manager    | own    |
-      | summer_collection | IT support | all    |
-    When I edit the "grantedOne" product
-    And I visit the "Associations" column tab
-    Then the grid should contain 1 elements
-
   @jira https://akeneo.atlassian.net/browse/PIM-5402
   Scenario: Successfully manage a product category when there is no permission
     Given I am logged in as "Mary"

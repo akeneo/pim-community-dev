@@ -54,6 +54,8 @@ extensions:
         module: oro/datagrid/pagination-input
         parent: pim-proposal-index-grid-container
         targetZone: toolbar
+        config:
+            gridName: proposal-grid
 
     pim-proposal-index-grid:
         module: pim/form/common/index/grid

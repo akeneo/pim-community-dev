@@ -31,13 +31,15 @@ Feature: Publish many products at once
     And I edit the "unionjack" product
     When I visit the "Associations" column tab
     And I visit the "Cross sell" association type
+    And I press the "Add associations" button
     And I check the row "jackadi"
-    And I save the product
+    And I press the "Confirm" button in the popin
     And I edit the "jackadi" product
     When I visit the "Associations" column tab
     And I visit the "Cross sell" association type
+    And I press the "Add associations" button
     And I check the row "unionjack"
-    And I save the product
+    And I press the "Confirm" button in the popin
     And I am on the products grid
     And I select rows unionjack and jackadi
     And I press the "Bulk actions" button
@@ -68,19 +70,22 @@ Feature: Publish many products at once
     And I edit the "unionjack" product
     When I visit the "Associations" column tab
     And I visit the "Cross sell" association type
+    And I press the "Add associations" button
     And I check the row "jackadi"
-    And I save the product
+    And I press the "Confirm" button in the popin
     And I edit the "teafortwo" product
     When I visit the "Associations" column tab
     And I visit the "Cross sell" association type
+    And I press the "Add associations" button
     And I check the row "jackadi"
     And I check the row "unionjack"
-    And I save the product
+    And I press the "Confirm" button in the popin
     And I edit the "jackadi" product
     When I visit the "Associations" column tab
     And I visit the "Cross sell" association type
+    And I press the "Add associations" button
     And I check the row "teafortwo"
-    And I save the product
+    And I press the "Confirm" button in the popin
     And I am on the products grid
     And I select rows unionjack and jackadi
     And I press the "Bulk actions" button
@@ -108,8 +113,9 @@ Feature: Publish many products at once
     And I edit the "unionjack" product
     When I visit the "Associations" column tab
     And I visit the "Cross sell" association type
+    And I press the "Add associations" button
     And I check the row "jackadi"
-    And I save the product
+    And I press the "Confirm" button in the popin
     And I am on the products grid
     And I select rows unionjack and jackadi
     And I press the "Bulk actions" button
