@@ -16,7 +16,7 @@ use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\StorageUtils\Updater\PropertyAdderInterface;
 use Oro\Bundle\UserBundle\Entity\UserManager;
 use Pim\Bundle\EnrichBundle\Connector\Processor\MassEdit\Product\AddProductValueProcessor as BaseProcessor;
-use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Model\EntityWithValuesInterface;
 use PimEnterprise\Component\Security\Attributes;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
@@ -89,11 +89,11 @@ class AddProductValueWithPermissionProcessor extends BaseProcessor
     }
 
     /**
-     * @param ProductInterface $product
+     * @param EntityWithValuesInterface $product
      *
      * @return bool
      */
-    protected function hasRight(ProductInterface $product)
+    protected function hasRight(EntityWithValuesInterface $product)
     {
         $isAuthorized = $this->authorizationChecker->isGranted(Attributes::OWN, $product);
 

@@ -22,9 +22,9 @@ services:
             - 'perform'
             - '@event_dispatcher'
             - '@akeneo_batch.job_repository'
-            - '@pim_enrich.reader.database.filtered_product_and_product_model'
+            - '@pim_enrich.reader.database.product_and_product_model'
             - '@pimee_enrich.mass_edit.add_product_value.processor'
-            - '@pim_connector.writer.database.product'
+            - '@pim_enrich.writer.database.product_and_product_model_writer'
 
     pimee_enrich.step.update_product_value_with_permission.perform:
         class: '%pim_connector.step.item_step.class%'
@@ -32,9 +32,9 @@ services:
             - 'perform'
             - '@event_dispatcher'
             - '@akeneo_batch.job_repository'
-            - '@pim_enrich.reader.database.filtered_product_and_product_model'
+            - '@pim_enrich.reader.database.product_and_product_model'
             - '@pimee_enrich.mass_edit.update_product_value.processor'
-            - '@pim_connector.writer.database.product'
+            - '@pim_enrich.writer.database.product_and_product_model_writer'
 
     pimee_enrich.step.remove_product_value_with_permission.perform:
         class: '%pim_connector.step.item_step.class%'
@@ -42,9 +42,9 @@ services:
             - 'perform'
             - '@event_dispatcher'
             - '@akeneo_batch.job_repository'
-            - '@pim_enrich.reader.database.filtered_product_and_product_model'
+            - '@pim_enrich.reader.database.product_and_product_model'
             - '@pimee_enrich.mass_edit.remove_product_value.processor'
-            - '@pim_connector.writer.database.product'
+            - '@pim_enrich.writer.database.product_and_product_model_writer'
 
     pimee_enrich.step.edit_common_attributes_with_permission.perform:
         class: '%pim_connector.step.item_step.class%'
