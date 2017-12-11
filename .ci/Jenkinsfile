@@ -322,7 +322,7 @@ stage("Test") {
                             messagesEE.add(message)
                         }
                         return messagesEE
-                    }, 150, "ee")
+                    }, 150, "ee", verboseOutputs, dotsPerLine)
                 } else {
                     echo "Skipping behat test"
                 }
@@ -367,7 +367,7 @@ stage("Test") {
                         }
 
                         return messagesCE
-                    }, 100, "ceodm")
+                    }, 100, "ceodm", verboseOutputs, dotsPerLine)
                 } else {
                     echo "Skipping behat test"
                 }
@@ -407,7 +407,7 @@ stage("Test") {
                             messagesEE.add(message)
                         }
                         return messagesEE
-                    }, 150, "eeodm")
+                    }, 150, "eeodm", verboseOutputs, dotsPerLine)
                 } else {
                     echo "Skipping behat test"
                 }
