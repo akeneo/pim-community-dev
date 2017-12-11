@@ -45,7 +45,7 @@ Feature: Edit common attributes of many products at once
     And I select rows sneakers
     And I select all entities
     And I press the "Bulk actions" button
-    And I choose the "Edit common attributes" operation
+    And I choose the "Edit attributes" operation
     And I display the Weight attribute
     And I change the "Weight" to "600"
     And I confirm mass edit

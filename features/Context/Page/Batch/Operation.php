@@ -14,9 +14,9 @@ use Context\Page\Base\Wizard;
  */
 class Operation extends Wizard
 {
-    protected $steps = array(
+    protected $steps = [
         'Change status'                    => 'Batch ChangeStatus',
-        'Edit common attributes'           => 'Batch EditCommonAttributes',
+        'Edit attributes'                  => 'Batch EditCommonAttributes',
         'Modifier les attributs communs'   => 'Batch EditCommonAttributes',
         'Change family'                    => 'Batch ChangeFamily',
         'Add to groups'                    => 'Batch AddToGroups',
@@ -24,8 +24,8 @@ class Operation extends Wizard
         'Add to categories'                => 'Batch Classify',
         'Move between categories'          => 'Batch Classify',
         'Remove from categories'           => 'Batch Classify',
-        'Add to an existing product model' => 'Batch AddToExistingProductModel'
-    );
+        'Add to an existing product model' => 'Batch AddToExistingProductModel',
+    ];
 
     /**
      * @param string $operation
