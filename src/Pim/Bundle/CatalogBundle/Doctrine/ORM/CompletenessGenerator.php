@@ -199,7 +199,7 @@ SQL;
 
         $tempTableName = self::MISSING_TABLE;
         $createSql = <<<SQL
-    CREATE TEMPORARY TABLE {$tempTableName} (locale_id int, channel_id int, product_id int)
+    CREATE TEMPORARY TABLE {$tempTableName} (locale_id int, channel_id int, product_id int, primary key(product_id, locale_id, channel_id))
 SQL;
 
         $createSql = $this->applyTableNames($createSql);
@@ -210,44 +210,12 @@ SQL;
         $sql = $this->applyCriteria($sql, $criteria);
         $sql = $this->applyTableNames($sql);
 
-        $fetchStmt = $this->connection->prepare($sql);
-        foreach ($criteria as $placeholder => $value) {
-            $fetchStmt->bindValue($placeholder, $value);
-        }
-        $fetchStmt->execute();
-
         $insertSql = <<<SQL
     INSERT INTO {$tempTableName} (locale_id, channel_id, product_id) 
-    VALUES (:locale_id, :channel_id, :product_id)
+    $sql
 SQL;
         $insertStmt = $this->connection->prepare($insertSql);
-        $count = 0;
-
-        try {
-            while ($completeness = $fetchStmt->fetch()) {
-                if ($count === 0) {
-                    $this->connection->beginTransaction();
-                }
-
-                $insertStmt->bindValue('locale_id', $completeness['locale_id']);
-                $insertStmt->bindValue('channel_id', $completeness['channel_id']);
-                $insertStmt->bindValue('product_id', $completeness['product_id']);
-                $insertStmt->execute();
-                $count++;
-
-                if ($count === $this->commitBatchSize) {
-                    $this->connection->commit();
-                    $count = 0;
-                }
-            }
-
-            if ($count > 0) {
-                $this->connection->commit();
-            }
-        } catch (\Exception $e) {
-            $this->connection->rollBack();
-            throw $e;
-        }
+        $insertStmt->execute($criteria);
     }
 
     /**
@@ -356,47 +324,13 @@ MISSING_SQL;
         $sql = $this->applyCriteria($sql, $criteria);
         $sql = $this->applyTableNames($sql);
 
-        $fetchStmt = $this->connection->prepare($sql);
-        foreach ($criteria as $placeholder => $value) {
-            $fetchStmt->bindValue($placeholder, $value);
-        }
-        $fetchStmt->execute();
 
         $insertSql = <<<SQL
     REPLACE pim_catalog_completeness (locale_id, channel_id, product_id, ratio, missing_count, required_count) 
-    VALUES (:locale_id, :channel_id, :product_id, :ratio, :missing_count, :required_count)
+    $sql
 SQL;
         $insertStmt = $this->connection->prepare($insertSql);
-        $count = 0;
-
-        try {
-            while ($completeness = $fetchStmt->fetch()) {
-                if ($count === 0) {
-                    $this->connection->beginTransaction();
-                }
-
-                $insertStmt->bindValue('locale_id', $completeness['locale_id']);
-                $insertStmt->bindValue('channel_id', $completeness['channel_id']);
-                $insertStmt->bindValue('product_id', $completeness['product_id']);
-                $insertStmt->bindValue('ratio', $completeness['ratio']);
-                $insertStmt->bindValue('missing_count', $completeness['missing_count']);
-                $insertStmt->bindValue('required_count', $completeness['required_count']);
-                $insertStmt->execute();
-                $count++;
-
-                if ($count === $this->commitBatchSize) {
-                    $this->connection->commit();
-                    $count = 0;
-                }
-            }
-
-            if ($count > 0) {
-                $this->connection->commit();
-            }
-        } catch (\Exception $e) {
-            $this->connection->rollBack();
-            throw $e;
-        }
+        $insertStmt->execute($criteria);
     }
 
     /**
