@@ -1,0 +1,4 @@
+pimee_api_asset_get:
+    path: /assets/{code}
+    defaults: { _controller: pimee_api.controller.asset:getAction, _format: json }
+    methods: [GET]

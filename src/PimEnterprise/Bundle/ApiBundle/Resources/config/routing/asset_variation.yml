@@ -1,9 +1,9 @@
-pim_api_asset_variation_download:
+pimee_api_asset_variation_download:
     path: /assets/{code}/variation-files/{channelCode}/{localeCode}/download
     defaults: { _controller: pimee_api.controller.asset_variation:downloadAction, _format: json }
     methods: [GET]
 
-pim_api_asset_variation_get:
+pimee_api_asset_variation_get:
     path: /assets/{code}/variation-files/{channelCode}/{localeCode}
     defaults: { _controller: pimee_api.controller.asset_variation:getAction, _format: json }
     methods: [GET]

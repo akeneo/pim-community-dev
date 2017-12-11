@@ -49,7 +49,7 @@ class AssetVariationNormalizer implements NormalizerInterface
         $normalizedVariation = $this->componentNormalizer->normalize($variation, $format, $context);
 
         $route = $this->router->generate(
-            'pim_api_asset_variation_download',
+            'pimee_api_asset_variation_download',
             [
                 'code' => $variation->getAsset()->getCode(),
                 'channelCode' => $normalizedVariation['channel'],

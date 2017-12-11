@@ -42,7 +42,7 @@ class AssetReferenceNormalizerSpec extends ObjectBehavior
         $asset->getCode()->willReturn('the_reference_asset');
 
         $router->generate(
-            'pim_api_asset_reference_download',
+            'pimee_api_asset_reference_download',
             [
                 'code' => 'the_reference_asset',
                 'localeCode' => 'no_locale',
@@ -76,7 +76,7 @@ class AssetReferenceNormalizerSpec extends ObjectBehavior
         $asset->getCode()->willReturn('the_reference_asset');
 
         $router->generate(
-            'pim_api_asset_reference_download',
+            'pimee_api_asset_reference_download',
             [
                 'code' => 'the_reference_asset',
                 'localeCode' => 'a_locale',
