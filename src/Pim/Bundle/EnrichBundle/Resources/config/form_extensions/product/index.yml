@@ -138,6 +138,8 @@ extensions:
         module: oro/datagrid/pagination-input
         parent: pim-product-index-grid-container
         targetZone: toolbar
+        config:
+            gridName: product-grid
 
     pim-product-index-columns:
         module: pim/datagrid/configure-columns-action

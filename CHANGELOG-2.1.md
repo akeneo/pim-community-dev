@@ -7,6 +7,7 @@
 - PIM-6966: Add tracker information for product model, product variant and family variant
 - PIM-6990: Add new screen for managing product associations
 - PIM-6996: Associate products to product models during import using the `<assocType>-product_models` pattern in an new column
+- PIM-6342: Display and remove associations gallery view
 
 
 ## BC breaks

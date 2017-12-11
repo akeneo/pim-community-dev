@@ -48,6 +48,8 @@ extensions:
         module: oro/datagrid/pagination-input
         parent: pim-locale-index-grid-container
         targetZone: toolbar
+        config:
+            gridName: locale-grid
 
     pim-locale-index-grid:
         module: pim/form/common/index/grid

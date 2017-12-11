@@ -52,6 +52,10 @@ pim_enrich_associations_edit:
     type: action
     label: pim_enrich.acl.product.associations_edit
     group_name: pim_enrich.acl_group.product
+pim_enrich_associations_remove:
+    type: action
+    label: pim_enrich.acl.association.remove
+    group_name: pim_enrich.acl_group.product
 pim_enrich_product_change_family:
     type: action
     label: pim_enrich.acl.product.change_family

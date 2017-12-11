@@ -26,6 +26,7 @@ define(
             tagName: 'div',
             rowTemplate: _.template(rowTemplate),
             thumbnailTemplate: _.template(thumbnailTemplate),
+            renderedRow: null,
 
             /**
              * Return the columns for the cells that should be rendered
@@ -63,7 +64,8 @@ define(
                 const row = $(this.rowTemplate(templateOptions));
                 const thumbnail = this.thumbnailTemplate(templateOptions);
 
-                row.empty().append(thumbnail);
+                row.html(thumbnail);
+
                 this.renderCells(row);
                 this.$el.empty().html(row);
 
@@ -73,7 +75,11 @@ define(
                     row.toggleClass('AknGrid-bodyRow--selected', checked);
                 });
 
-                return this.delegateEvents();
+                this.delegateEvents();
+
+                this.renderedRow = row;
+
+                return this;
             },
 
             /**

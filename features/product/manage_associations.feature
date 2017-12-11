@@ -57,7 +57,7 @@ Feature: Manage associations
     When I edit the "<product_sku>" product
     And I visit the "Associations" column tab
     And I visit the "<group_name>" association type
-    Then the rows "<checked_rows>" should be checked
+    Then I should see the text "<checked_rows>"
 
   Examples:
     | product_sku                           | group_name | checked_rows                 |

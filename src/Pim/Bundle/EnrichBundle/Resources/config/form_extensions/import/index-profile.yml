@@ -47,6 +47,8 @@ extensions:
         module: oro/datagrid/pagination-input
         parent: pim-import-profile-index-grid-container
         targetZone: toolbar
+        config:
+            gridName: import-profile-grid
 
     pim-import-profile-index-grid:
         module: pim/form/common/index/grid
