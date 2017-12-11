@@ -94,20 +94,12 @@ class AssociationFieldSetter extends AbstractFieldSetter
      *     "XSELL": {
      *         "groups": ["group1", "group2"],
      *         "products": ["AKN_TS1", "AKN_TSH2"],
-<<<<<<< Updated upstream
      *         "product_models": ["MODEL_AKN_TS1", "MODEL_AKN_TSH2"]
-=======
-     *         "product_models": ["amor"]
->>>>>>> Stashed changes
      *     },
      *     "UPSELL": {
      *         "groups": ["group3", "group4"],
      *         "products": ["AKN_TS3", "AKN_TSH4"],
-<<<<<<< Updated upstream
      *         "product_models": ["MODEL_AKN_TS3 "MODEL_AKN_TSH4"]
-=======
-     *         "product_models": ["amor"]
->>>>>>> Stashed changes
      *     },
      * }
      */
