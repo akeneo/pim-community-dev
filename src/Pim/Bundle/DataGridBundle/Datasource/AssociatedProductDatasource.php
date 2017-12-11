@@ -7,9 +7,9 @@ use Akeneo\Component\StorageUtils\Exception\InvalidObjectException;
 use Oro\Bundle\DataGridBundle\Datasource\ResultRecord;
 use Pim\Bundle\DataGridBundle\Extension\Pager\PagerExtension;
 use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Model\ProductModelInterface;
 use Pim\Component\Catalog\Query\Filter\Operators;
 use Pim\Component\Catalog\Query\ProductQueryBuilderInterface;
-use Pim\Component\Catalog\Query\Sorter\Directions;
 
 /**
  * Product datasource dedicated to the product association datagrid.
@@ -66,12 +66,10 @@ class AssociatedProductDatasource extends ProductDatasource
         $from = null !== $this->getConfiguration('from', false) ?
             (int)$this->getConfiguration('from', false) : 0;
 
-        $productCursor = $this->pqb->execute();
-
         $associatedProducts = $this->getAssociatedProducts(
             $associatedProductsIdentifiers,
             $limit,
-            0,
+            $from,
             $locale,
             $scope
         );
@@ -96,6 +94,9 @@ class AssociatedProductDatasource extends ProductDatasource
             if ($association->getAssociationType()->getId() === (int)$associationTypeId) {
                 foreach ($association->getProducts() as $associatedProduct) {
                     $identifiers[] = $associatedProduct->getIdentifier();
+                }
+                foreach ($association->getProductModels() as $associatedProductModel) {
+                    $identifiers[] = $associatedProductModel->getCode();
                 }
             }
         }
@@ -124,44 +125,42 @@ class AssociatedProductDatasource extends ProductDatasource
 
         $products = $pqb->execute();
 
-        return $this->normalizeProducts($products, $associatedProductsIdentifiers, $locale, $scope);
+        return $this->normalizeProductsAndProductModels($products, $locale, $scope);
     }
 
     /**
      * @param CursorInterface $products
-     * @param string[]        $associatedProductsIdentifiers
      * @param string          $locale
      * @param string          $scope
      *
      * @return array
      */
-    protected function normalizeProducts(
+    protected function normalizeProductsAndProductModels(
         CursorInterface $products,
-        array $associatedProductsIdentifiers,
         $locale,
         $scope
     ) {
         $dataLocale = $this->getParameters()['dataLocale'];
 
         $context = [
-            'locales'     => [$locale],
-            'channels'    => [$scope],
-            'data_locale' => $dataLocale,
+            'locales'       => [$locale],
+            'channels'      => [$scope],
+            'data_locale'   => $dataLocale,
+            'is_associated' => true,
         ];
 
         $data = [];
         foreach ($products as $product) {
-            $context['is_associated'] = in_array($product->getIdentifier(), $associatedProductsIdentifiers);
-
-            $normalizedProduct = array_merge(
+            $normalized = array_merge(
                 $this->normalizer->normalize($product, 'datagrid', $context),
                 [
                     'id'         => $product->getId(),
                     'dataLocale' => $dataLocale,
+                    'is_associated' => true,
                 ]
             );
 
-            $data[] = new ResultRecord($normalizedProduct);
+            $data[] = new ResultRecord($normalized);
         }
 
         return $data;

@@ -137,8 +137,8 @@ services:
         class: '%pim_datagrid.datasource.associated_product.class%'
         arguments:
             - '@pim_catalog.object_manager.product'
-            - '@pim_catalog.query.product_query_builder_from_size_factory'
-            - '@pim_datagrid.normalizer.product_association'
+            - '@pim_enrich.query.product_and_product_model_query_builder_from_size_factory'
+            - '@pim_serializer'
         tags:
             - { name: oro_datagrid.datasource, type: pim_datasource_associated_product }
 
