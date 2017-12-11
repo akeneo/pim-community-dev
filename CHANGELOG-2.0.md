@@ -1,9 +1,15 @@
 # 2.0.x
 
-## Improvements
+## Bug fixes
+
+- PIM-7022: Grey read-only fields on product-model edit form too
+
+
+# 2.0.8 (2017-12-07)
+
+## Better manage products with variants
 
 - PIM-6364: Apply categories permissions on products models
-- PIM-6791: Change a product in a variant product by import
 
 ## BC breaks
 

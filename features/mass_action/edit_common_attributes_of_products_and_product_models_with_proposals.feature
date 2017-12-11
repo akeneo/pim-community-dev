@@ -7,8 +7,11 @@ Feature: Apply permissions for an attribute group when mass edit common attribut
   Background:
     Given the "clothing" catalog configuration
     And the following family:
-      | code       | attributes |
-      | high_heels | sku,name   |
+      | code       | attributes    |
+      | high_heels | sku,name,size |
+    And the following family variants:
+      | code            | family     | variant-axes_1 | variant-attributes_1 |
+      | high_heels_size | high_heels | size           | sku,size             |
     And the following category:
       | code | label-en_US | parent          |
       | hat  | Hat         | 2014_collection |
@@ -21,18 +24,25 @@ Feature: Apply permissions for an attribute group when mass edit common attribut
       | tees             | Manager    | own    |
       | pants            | Manager    | own    |
     And the following products:
-      | sku          | categories | family     |
-      | owned        | hat        | high_heels |
-      | editable     | tees       | high_heels |
-      | viewable     | pants      | high_heels |
-      | notviewable  | jeans      | high_heels |
-      | unclassified |            | high_heels |
+      | sku                  | categories | family     |
+      | product_owned        | hat        | high_heels |
+      | product_editable     | tees       | high_heels |
+      | product_viewable     | pants      | high_heels |
+      | product_notviewable  | jeans      | high_heels |
+      | product_unclassified |            | high_heels |
+    And the following root product models:
+      | code                       | parent | family_variant  | categories |
+      | product_model_owned        |        | high_heels_size | hat        |
+      | product_model_editable     |        | high_heels_size | tees       |
+      | product_model_viewable     |        | high_heels_size | pants      |
+      | product_model_notviewable  |        | high_heels_size | jeans      |
+      | product_model_unclassified |        | high_heels_size |            |
 
   @jira https://akeneo.atlassian.net/browse/PIM-3980 https://akeneo.atlassian.net/browse/PIM-4775
   Scenario: Successfully creates proposal on editable products
     Given I am logged in as "Mary"
     And I am on the products grid
-    When I select rows viewable, editable and owned
+    When I select rows product_viewable, product_editable, product_owned, product_model_viewable, product_model_editable and product_model_owned
     And I press the "Bulk actions" button
     And I choose the "Edit common attributes" operation
     And I should see available attributes Name, Manufacturer and Description in group "Product information"
@@ -42,17 +52,17 @@ Feature: Apply permissions for an attribute group when mass edit common attribut
     And I wait for the "edit_common_attributes" job to finish
     And I go on the last executed job resume of "edit_common_attributes"
     Then I should see the text "Proposal created 1"
-    And I should see the text "skipped products 1"
-    And I should see the text "processed 1"
+    And I should see the text "skipped products 2"
+    And I should see the text "processed 3"
     When I logout
     And I am logged in as "Julia"
-    And I edit the "viewable" product
+    And I edit the "product_viewable" product
     And I visit the "Proposals" column tab
     Then the grid should contain 0 elements
-    When I edit the "editable" product
+    When I edit the "product_editable" product
     And I visit the "Proposals" column tab
     Then I should see the text "A draft is in progress by Mary for this product"
     And the grid should contain 1 elements
-    When I edit the "owned" product
+    When I edit the "product_owned" product
     And I visit the "Proposals" column tab
     Then the grid should contain 0 elements

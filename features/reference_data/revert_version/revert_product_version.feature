@@ -26,7 +26,7 @@ Feature: Revert a product to a previous version
     And I create a product
     And I fill in the following information in the popin:
       | SKU    | red-heels  |
-      | family | high_heels |
+      | Family | high_heels |
     And I press the "Save" button in the popin
     And I wait to be on the "red-heels" product page
     And I visit the "Other" group

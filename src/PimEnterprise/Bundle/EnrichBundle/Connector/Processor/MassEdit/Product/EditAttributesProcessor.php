@@ -3,7 +3,7 @@
 /*
  * This file is part of the Akeneo PIM Enterprise Edition.
  *
- * (c) 2016 Akeneo SAS (http://www.akeneo.com)
+ * (c) 2017 Akeneo SAS (http://www.akeneo.com)
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -12,12 +12,12 @@
 namespace PimEnterprise\Bundle\EnrichBundle\Connector\Processor\MassEdit\Product;
 
 use Akeneo\Component\Batch\Model\StepExecution;
-use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
+use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Oro\Bundle\UserBundle\Entity\UserManager;
-use Pim\Bundle\EnrichBundle\Connector\Processor\MassEdit\Product\EditCommonAttributesProcessor as BaseProcessor;
-use Pim\Component\Catalog\Model\ProductInterface;
-use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
+use Pim\Bundle\EnrichBundle\Connector\Processor\MassEdit\Product\EditAttributesProcessor as BaseProcessor;
+use Pim\Component\Catalog\EntityWithFamilyVariant\CheckAttributeEditable;
+use Pim\Component\Catalog\Model\EntityWithFamilyInterface;
 use PimEnterprise\Component\Security\Attributes;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
@@ -25,14 +25,11 @@ use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
- * It edits a product value but check if the user has right to mass edit the product (if he is the owner).
+ * It edits an entity with values but check if the user has right to mass edit the product (if he is the owner).
  *
- * @author Adrien Pétremann <adrien.petremann@akeneo.com>
- *
- * @deprecated please use PimEnterprise\Bundle\EnrichBundle\Connector\Processor\MassEdit\Product\EditAttributesProcessor
- *             instead, will be removed in 2.1.
+ * @author Samir Boulil <samir.boulil@akeneo.com>
  */
-class EditCommonAttributesProcessor extends BaseProcessor
+class EditAttributesProcessor extends BaseProcessor
 {
     /** @var TokenStorageInterface */
     protected $tokenStorage;
@@ -44,28 +41,34 @@ class EditCommonAttributesProcessor extends BaseProcessor
     protected $authorizationChecker;
 
     /**
-     * @param ValidatorInterface            $validator
-     * @param ProductRepositoryInterface    $productRepository
-     * @param ObjectUpdaterInterface        $productUpdater
-     * @param ObjectDetacherInterface       $productDetacher
-     * @param UserManager                   $userManager
-     * @param TokenStorageInterface         $tokenStorage
-     * @param AuthorizationCheckerInterface $authorizationChecker
+     * @param ValidatorInterface                    $productValidator
+     * @param ValidatorInterface                    $productModelValidator
+     * @param ObjectUpdaterInterface                $productUpdater
+     * @param ObjectUpdaterInterface                $productModelUpdater
+     * @param IdentifiableObjectRepositoryInterface $attributeRepository
+     * @param CheckAttributeEditable                $checkAttributeEditable
+     * @param UserManager                           $userManager
+     * @param TokenStorageInterface                 $tokenStorage
+     * @param AuthorizationCheckerInterface         $authorizationChecker
      */
     public function __construct(
-        ValidatorInterface $validator,
-        ProductRepositoryInterface $productRepository,
+        ValidatorInterface $productValidator,
+        ValidatorInterface $productModelValidator,
         ObjectUpdaterInterface $productUpdater,
-        ObjectDetacherInterface $productDetacher,
+        ObjectUpdaterInterface $productModelUpdater,
+        IdentifiableObjectRepositoryInterface $attributeRepository,
+        CheckAttributeEditable $checkAttributeEditable,
         UserManager $userManager,
         TokenStorageInterface $tokenStorage,
         AuthorizationCheckerInterface $authorizationChecker
     ) {
         parent::__construct(
-            $validator,
-            $productRepository,
+            $productValidator,
+            $productModelValidator,
             $productUpdater,
-            $productDetacher
+            $productModelUpdater,
+            $attributeRepository,
+            $checkAttributeEditable
         );
 
         $this->tokenStorage = $tokenStorage;
@@ -102,14 +105,14 @@ class EditCommonAttributesProcessor extends BaseProcessor
     /**
      * {@inheritdoc}
      */
-    protected function isProductEditable(ProductInterface $product)
+    protected function isEntityEditable(EntityWithFamilyInterface $entity): bool
     {
-        if (!$this->authorizationChecker->isGranted(Attributes::OWN, $product)
-            && !$this->authorizationChecker->isGranted(Attributes::EDIT, $product)
+        if (!$this->authorizationChecker->isGranted(Attributes::OWN, $entity)
+            && !$this->authorizationChecker->isGranted(Attributes::EDIT, $entity)
         ) {
             return false;
         }
 
-        return parent::isProductEditable($product);
+        return parent::isEntityEditable($entity);
     }
 }
