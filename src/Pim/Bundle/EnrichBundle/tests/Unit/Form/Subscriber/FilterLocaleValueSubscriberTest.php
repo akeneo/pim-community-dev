@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\EnrichBundle\tests\Unit\Form\Subscriber;
 
+use PHPUnit\Framework\TestCase;
 use Pim\Bundle\EnrichBundle\Form\Subscriber\FilterLocaleValueSubscriber;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ValueInterface;
@@ -13,7 +14,7 @@ use Pim\Component\Catalog\Model\ValueInterface;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class FilterLocaleValueSubscriberTest extends \PHPUnit_Framework_TestCase
+class FilterLocaleValueSubscriberTest extends TestCase
 {
     const CURRENT_LOCALE = 'fr_FR';
     const COMPARISON_LOCALE = 'fr_BE';
