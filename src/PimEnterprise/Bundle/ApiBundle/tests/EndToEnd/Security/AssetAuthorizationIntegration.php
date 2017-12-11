@@ -70,6 +70,40 @@ JSON;
     }
 
     /**
+     * Should be an integration test.
+     */
+    public function testAccessGrantedForListingAssets()
+    {
+        $client = $this->createAuthenticatedClient();
+
+        $client->request('GET', '/api/rest/v1/assets');
+
+        $response = $client->getResponse();
+        $this->assertSame(Response::HTTP_OK, $response->getStatusCode());
+    }
+
+    /**
+     * Should be an integration test.
+     */
+    public function testAccessDeniedForListingAssets()
+    {
+        $client = $this->createAuthenticatedClient([], [], null, null, 'julia', 'julia');
+
+        $client->request('GET', '/api/rest/v1/assets');
+
+        $expectedResponse = <<<JSON
+{
+    "code": 403,
+    "message": "Access forbidden. You are not allowed to list assets."
+}
+JSON;
+
+        $response = $client->getResponse();
+        $this->assertSame(Response::HTTP_FORBIDDEN, $response->getStatusCode());
+        $this->assertJsonStringEqualsJsonString($expectedResponse, $response->getContent());
+    }
+
+    /**
      * {@inheritdoc}
      */
     protected function getConfiguration()

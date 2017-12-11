@@ -365,6 +365,78 @@ JSON;
 }
 JSON;
 
+        $assets['localizable_asset_without_references'] = <<<JSON
+{
+    "_links": {
+        "self": {
+            "href": "http://localhost/api/rest/v1/assets/localizable_asset_without_references"
+        }
+    },
+    "code": "localizable_asset_without_references",
+    "localized": true,
+    "description": "Another useful description.",
+    "end_of_use": "2041-01-01T00:00:00+01:00",
+    "tags": ["akeneo"],
+    "categories": ["asset_main_catalog"],
+    "variation_files": [],
+    "reference_files": []
+}
+JSON;
+
+        $assets['non_localizable_asset_without_references'] = <<<JSON
+{
+    "_links": {
+        "self": {
+            "href": "http://localhost/api/rest/v1/assets/non_localizable_asset_without_references"
+        }
+    },
+    "code": "non_localizable_asset_without_references",
+    "localized": false,
+    "description": "Another useful description.",
+    "end_of_use": "2041-01-01T00:00:00+01:00",
+    "tags": ["akeneo"],
+    "categories": ["asset_main_catalog"],
+    "variation_files": [],
+    "reference_files": []
+}
+JSON;
+
+        $assets['cat'] = <<<JSON
+{
+    "_links": {
+        "self": {
+            "href": "http://localhost/api/rest/v1/assets/cat"
+        }
+    },
+    "code": "cat",
+    "localized": true,
+    "description": null,
+    "end_of_use": "2041-04-02T00:00:00+01:00",
+    "tags": ["animal"],
+    "categories": ["asset_main_catalog"],
+    "variation_files": [],
+    "reference_files": []
+}
+JSON;
+
+        $assets['dog'] = <<<JSON
+{
+    "_links": {
+        "self": {
+            "href": "http://localhost/api/rest/v1/assets/dog"
+        }
+    },
+    "code": "dog",
+    "localized": false,
+    "description": null,
+    "end_of_use": null,
+    "tags": [],
+    "categories": [],
+    "variation_files": [],
+    "reference_files": []
+}
+JSON;
+
         return $assets;
     }
 
