@@ -86,7 +86,7 @@ extensions:
             labelCount: pim_enrich.mass_edit.product.operation.add_to_category.label_count
             description: pim_enrich.mass_edit.product.operation.add_to_category.description
             code: add_to_category
-            jobInstanceCode: add_product_value
+            jobInstanceCode: add_to_category
             listRoute: pim_enrich_product_listcategories
             childrenRoute: pim_enrich_categorytree_children
             icon: icon-folder_in
@@ -103,7 +103,7 @@ extensions:
             labelCount: pim_enrich.mass_edit.product.operation.move_to_category.label_count
             description: pim_enrich.mass_edit.product.operation.move_to_category.description
             code: move_to_category
-            jobInstanceCode: update_product_value
+            jobInstanceCode: move_to_category
             listRoute: pim_enrich_product_listcategorieslue
             childrenRoute: pim_enrich_categorytree_children
             icon: icon-folder_move
@@ -120,7 +120,7 @@ extensions:
             labelCount: pim_enrich.mass_edit.product.operation.remove_from_category.label_count
             description: pim_enrich.mass_edit.product.operation.remove_from_category.description
             code: remove_from_category
-            jobInstanceCode: remove_product_value
+            jobInstanceCode: remove_from_category
             listRoute: pim_enrich_product_listcategorieslue
             childrenRoute: pim_enrich_categorytree_children
             icon: icon-folder_out

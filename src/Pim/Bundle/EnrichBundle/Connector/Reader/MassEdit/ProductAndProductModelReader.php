@@ -44,19 +44,25 @@ class ProductAndProductModelReader implements
     /** @var CursorInterface */
     private $productsAndProductModels;
 
+    /** @var boolean */
+    private $readChildren;
+
     /**
      * @param ProductQueryBuilderFactoryInterface $pqbFactory
      * @param ChannelRepositoryInterface          $channelRepository
      * @param CompletenessManager                 $completenessManager
+     * @param boolean                             $readChildren
      */
     public function __construct(
         ProductQueryBuilderFactoryInterface $pqbFactory,
         ChannelRepositoryInterface $channelRepository,
-        CompletenessManager $completenessManager
+        CompletenessManager $completenessManager,
+        $readChildren
     ) {
-        $this->pqbFactory = $pqbFactory;
-        $this->channelRepository = $channelRepository;
+        $this->pqbFactory          = $pqbFactory;
+        $this->channelRepository   = $channelRepository;
         $this->completenessManager = $completenessManager;
+        $this->readChildren        = $readChildren;
     }
 
     /**
@@ -138,13 +144,15 @@ class ProductAndProductModelReader implements
             $filters = $filters['data'];
         }
 
-        $filters = array_map(function ($filter) {
-            if ('id' === $filter['field']) {
-                $filter['field'] = 'self_and_ancestor.id';
-            }
+        if ($this->readChildren) {
+            $filters = array_map(function ($filter) {
+                if ('id' === $filter['field']) {
+                    $filter['field'] = 'self_and_ancestor.id';
+                }
 
-            return $filter;
-        }, $filters);
+                return $filter;
+            }, $filters);
+        }
 
         return array_filter($filters, function ($filter) {
             return count($filter) > 0;

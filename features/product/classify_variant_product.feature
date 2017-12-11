@@ -28,4 +28,4 @@ Feature: Classify a variant product
     When I visit the "Categories" column tab
     And I visit the "Master" tab
     Then I should see 4 category count
-    And the category of the product "nin-black-m" should be "tshirts, summer, spring and long_sleeves"
+    And the category of the product "nin-black-m" should be "tshirts, summer, spring, long_sleeves"

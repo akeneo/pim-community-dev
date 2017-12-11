@@ -22,6 +22,6 @@ Feature: Classify many products and product models at once
     When I confirm mass edit
     And I wait for the "add_product_value" job to finish
     Then the categories of the product model "aphrodite" should be "master_men, master_women_blouses, print_clothing and supplier_zaro"
-    Then the categories of "1111111114" should be "master_men, master_women_blouses, print_clothing and supplier_zaro"
-    Then the categories of "1111111171" should be "master_accessories_bags, master_men, print_accessories and supplier_zaro"
+    Then the categories of the product "1111111114" should be "master_men, master_women_blouses, print_clothing and supplier_zaro"
+    Then the categories of the product "1111111171" should be "master_accessories_bags, master_men, print_accessories and supplier_zaro"
     Then the categories of the product model "amor" should be "master_men, master_men_blazers and supplier_zaro"

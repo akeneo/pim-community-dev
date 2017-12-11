@@ -101,11 +101,10 @@ Feature: Apply a mass action on products only (and not product models)
     And I expand the "master" category
     And I press the "Women" button
     And I confirm mass edit
-    And I wait for the "add_product_value" job to finish
-    When I go on the last executed job resume of "add_product_value"
+    And I wait for the "add_to_category" job to finish
+    When I go on the last executed job resume of "add_to_category"
     Then I should see the text "COMPLETED"
-    And I should see the text "processed 2"
-    And I should see the text "skipped 1"
+    And I should see the text "processed 3"
     And I should see the text "Bulk actions do not support Product models entities yet."
     When I am on the products grid
     And I open the category tree
@@ -125,11 +124,10 @@ Feature: Apply a mass action on products only (and not product models)
     And I expand the "master" category
     And I press the "Women" button
     And I confirm mass edit
-    And I wait for the "update_product_value" job to finish
-    When I go on the last executed job resume of "update_product_value"
+    And I wait for the "move_to_category" job to finish
+    When I go on the last executed job resume of "move_to_category"
     Then I should see the text "COMPLETED"
-    And I should see the text "processed 2"
-    And I should see the text "skipped 1"
+    And I should see the text "processed 3"
     And I should see the text "Bulk actions do not support Product models entities yet."
     When I am on the products grid
     And I open the category tree
@@ -156,11 +154,10 @@ Feature: Apply a mass action on products only (and not product models)
     And I expand the "suppliers" category
     And I press the "Zaro" button
     And I confirm mass edit
-    And I wait for the "remove_product_value" job to finish
-    When I go on the last executed job resume of "remove_product_value"
+    And I wait for the "remove_from_category" job to finish
+    When I go on the last executed job resume of "remove_from_category"
     Then I should see the text "COMPLETED"
-    And I should see the text "processed 2"
-    And I should see the text "skipped 1"
+    And I should see the text "processed 3"
     And I should see the text "Bulk actions do not support Product models entities yet."
     And the product "another-watch" should not have any category
     And the categories of the product "cult-of-luna-black-m" should be "long_sleeves"

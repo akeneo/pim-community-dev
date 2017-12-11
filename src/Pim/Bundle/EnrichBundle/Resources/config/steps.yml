@@ -57,7 +57,7 @@ services:
             - '@akeneo_batch.job_repository'
             - '@pim_enrich.reader.database.filtered_product_and_product_model'
             - '@pim_enrich.connector.processor.mass_edit.product.update_value'
-            - '@pim_enrich.writer.database.product_and_product_model_writer'
+            - '@pim_connector.writer.database.product'
 
     pim_enrich.step.add_product_value.mass_edit:
         class: '%pim_connector.step.item_step.class%'
@@ -67,7 +67,7 @@ services:
             - '@akeneo_batch.job_repository'
             - '@pim_enrich.reader.database.filtered_product_and_product_model'
             - '@pim_enrich.connector.processor.mass_edit.product.add_value'
-            - '@pim_enrich.writer.database.product_and_product_model_writer'
+            - '@pim_connector.writer.database.product'
 
     pim_enrich.step.remove_product_value.mass_edit:
         class: '%pim_connector.step.item_step.class%'
@@ -76,6 +76,36 @@ services:
             - '@event_dispatcher'
             - '@akeneo_batch.job_repository'
             - '@pim_enrich.reader.database.filtered_product_and_product_model'
+            - '@pim_enrich.connector.processor.mass_edit.product.remove_value'
+            - '@pim_connector.writer.database.product'
+
+    pim_enrich.step.move_to_category.mass_edit:
+        class: '%pim_connector.step.item_step.class%'
+        arguments:
+            - 'perform'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@pim_enrich.reader.database.grouped_product_and_product_model'
+            - '@pim_enrich.connector.processor.mass_edit.product.update_value'
+            - '@pim_enrich.writer.database.product_and_product_model_writer'
+
+    pim_enrich.step.add_to_category.mass_edit:
+        class: '%pim_connector.step.item_step.class%'
+        arguments:
+            - 'perform'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@pim_enrich.reader.database.grouped_product_and_product_model'
+            - '@pim_enrich.connector.processor.mass_edit.product.add_value'
+            - '@pim_enrich.writer.database.product_and_product_model_writer'
+
+    pim_enrich.step.remove_from_category.mass_edit:
+        class: '%pim_connector.step.item_step.class%'
+        arguments:
+            - 'perform'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@pim_enrich.reader.database.grouped_product_and_product_model'
             - '@pim_enrich.connector.processor.mass_edit.product.remove_value'
             - '@pim_enrich.writer.database.product_and_product_model_writer'
 

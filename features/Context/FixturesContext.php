@@ -1421,7 +1421,7 @@ class FixturesContext extends BaseFixturesContext
      * @param string $categoryCodes
      *
      *
-     * @Given /^(?:the )?categor(?:y|ies) of "([^"]*)" should be "([^"]*)"$/
+     * @Given /^(?:the )?categor(?:y|ies) of the product "([^"]*)" should be "([^"]*)"$/
      */
     public function theCategoriesOfTheProductShouldBe($productCode, $categoryCodes)
     {
@@ -1433,9 +1433,9 @@ class FixturesContext extends BaseFixturesContext
                     return $category->getCode();
                 }
             )->toArray();
-            asort($categories);
-            asort($expectedCategories);
-            assertEquals($expectedCategories, $categories);
+            sort($categories);
+            sort($expectedCategories);
+            Assert::assertEquals($expectedCategories, $categories);
 
             return true;
         }, sprintf('Cannot assert that %s categories are %s', $productCode, $categoryCodes));
@@ -1458,9 +1458,9 @@ class FixturesContext extends BaseFixturesContext
                     return $category->getCode();
                 }
             )->toArray();
-            asort($categories);
-            asort($expectedCategories);
-            assertEquals($expectedCategories, $categories);
+            sort($categories);
+            sort($expectedCategories);
+            Assert::assertEquals($expectedCategories, $categories);
 
             return true;
         }, sprintf('Cannot assert that %s categories are %s', $productModelCode, $categoryCodes));
