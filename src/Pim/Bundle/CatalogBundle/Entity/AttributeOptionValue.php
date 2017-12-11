@@ -121,7 +121,7 @@ class AttributeOptionValue implements AttributeOptionValueInterface
      */
     public function setLabel($label)
     {
-        $this->value = $label;
+        $this->value = (string) $label;
 
         return $this;
     }
