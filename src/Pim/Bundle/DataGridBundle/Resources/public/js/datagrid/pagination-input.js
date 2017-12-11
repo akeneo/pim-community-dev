@@ -49,7 +49,7 @@ define(
             this.gridName = options.config.gridName;
 
             if (null === this.gridName || undefined === this.gridName) {
-                throw Error('You must set the gridName for the oro/datagrid/pagination-input');
+                throw Error('You must set the gridName in the form_extensions config for the oro/datagrid/pagination-input');
             }
 
             if (this.appendToGrid) {
