@@ -36,7 +36,7 @@ Feature: Update product history when mass editing products
     And I press the "Bulk actions" button
 
   Scenario: Display history when editing product attributes
-    Given I choose the "Edit common attributes" operation
+    Given I choose the "Edit attributes" operation
     And I display the Name attribute
     And I change the "Name" to "cool boots"
     And I confirm mass edit
