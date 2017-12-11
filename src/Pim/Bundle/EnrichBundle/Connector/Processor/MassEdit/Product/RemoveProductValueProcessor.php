@@ -5,6 +5,7 @@ namespace Pim\Bundle\EnrichBundle\Connector\Processor\MassEdit\Product;
 use Akeneo\Component\StorageUtils\Updater\PropertyRemoverInterface;
 use Pim\Bundle\EnrichBundle\Connector\Processor\AbstractProcessor;
 use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Model\ProductModelInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
@@ -54,11 +55,11 @@ class RemoveProductValueProcessor extends AbstractProcessor
     /**
      * Validate the product
      *
-     * @param ProductInterface $product
+     * @param ProductInterface|ProductModelInterface $product
      *
      * @return bool
      */
-    protected function isProductValid(ProductInterface $product)
+    protected function isProductValid($product)
     {
         $violations = $this->validator->validate($product);
         $this->addWarningMessage($violations, $product);
@@ -69,12 +70,10 @@ class RemoveProductValueProcessor extends AbstractProcessor
     /**
      * Set data from $actions to the given $product
      *
-     * @param ProductInterface $product
-     * @param array            $actions
-     *
-     * @return UpdateProductValueProcessor
+     * @param ProductInterface|ProductModelInterface $product
+     * @param array                                  $actions
      */
-    protected function removeValuesFromProduct(ProductInterface $product, array $actions)
+    protected function removeValuesFromProduct($product, array $actions)
     {
         foreach ($actions as $action) {
             $this->propertyRemover->removeData($product, $action['field'], $action['value']);

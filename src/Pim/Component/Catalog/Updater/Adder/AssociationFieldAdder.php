@@ -8,6 +8,7 @@ use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterfa
 use Pim\Component\Catalog\Builder\ProductBuilderInterface;
 use Pim\Component\Catalog\Model\AssociationInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Model\ProductModelInterface;
 
 /**
  * Association field adder
@@ -58,15 +59,17 @@ class AssociationFieldAdder extends AbstractFieldAdder
      * {
      *     "XSELL": {
      *         "groups": ["group1", "group2"],
-     *         "products": ["AKN_TS1", "AKN_TSH2"]
+     *         "products": ["AKN_TS1", "AKN_TSH2"],
+     *         "product_models": ["amor"]
      *     },
      *     "UPSELL": {
      *         "groups": ["group3", "group4"],
-     *         "products": ["AKN_TS3", "AKN_TSH4"]
+     *         "products": ["AKN_TS3", "AKN_TSH4"],
+     *         "product_models": ["amor"]
      *     },
      * }
      */
-    public function addFieldData(ProductInterface $product, $field, $data, array $options = [])
+    public function addFieldData($product, $field, $data, array $options = [])
     {
         $this->checkData($field, $data);
         $this->addMissingAssociations($product);
@@ -76,9 +79,9 @@ class AssociationFieldAdder extends AbstractFieldAdder
     /**
      * Add missing associations (if association type has been added after the last processing)
      *
-     * @param ProductInterface $product
+     * @param ProductInterface|ProductModelInterface $product
      */
-    protected function addMissingAssociations(ProductInterface $product)
+    protected function addMissingAssociations($product)
     {
         $this->productBuilder->addMissingAssociations($product);
     }
@@ -86,12 +89,12 @@ class AssociationFieldAdder extends AbstractFieldAdder
     /**
      * Add products and groups to associations
      *
-     * @param ProductInterface $product
-     * @param mixed            $data
+     * @param ProductInterface|ProductModelInterface $product
+     * @param mixed                                  $data
      *
      * @throws InvalidPropertyException
      */
-    protected function addProductsAndGroupsToAssociations(ProductInterface $product, $data)
+    protected function addProductsAndGroupsToAssociations($product, $data)
     {
         foreach ($data as $typeCode => $items) {
             $association = $product->getAssociationForTypeCode($typeCode);
