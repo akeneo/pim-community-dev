@@ -14,10 +14,10 @@ jobs:
         alias:     remove_product_value
         label:     Mass remove products values
         type:      mass_edit
-    edit_common_attributes:
+    edit_attributes:
         connector: Akeneo Mass Edit Connector
-        alias:     edit_common_attributes
-        label:     Mass edit common product attributes
+        alias:     edit_attributes
+        label:     Mass edit product attributes
         type:      mass_edit
     set_attribute_requirements:
         connector: Akeneo Mass Edit Connector

@@ -17,7 +17,7 @@ extensions:
             labelCount: pim_enrich.mass_edit.product.step.choose.label_count
 
     pim-mass-product-edit-configure-edit-common:
-        module: pim/mass-edit-form/product/edit-common-attributes
+        module: pim/mass-edit-form/product/edit-attributes
         parent: pim-mass-product-edit
         position: 110
         aclResourceId: pim_enrich_product_edit_attributes
@@ -27,7 +27,7 @@ extensions:
             labelCount: pim_enrich.mass_edit.product.operation.edit_common.label_count
             description: pim_enrich.mass_edit.product.operation.edit_common.description
             code: edit_common
-            jobInstanceCode: edit_common_attributes
+            jobInstanceCode: edit_attributes
             icon: icon-edit
             illustration: attributes
 

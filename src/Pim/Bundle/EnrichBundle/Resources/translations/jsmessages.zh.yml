@@ -724,7 +724,7 @@ pim_enrich:
       global_settings:
         title: 全局设置
   mass_edit_action:
-    edit_common_attributes:
+    edit_attributes:
       description: 使用产品网格中的本地化语言 <span class="highlight">{{ locale }}</span> 和通道 <span class="highlight">{{ channel }}</span>对应的数据，对所选的产品属性进行编辑
   index:
     import_profiles:
@@ -824,7 +824,7 @@ batch_jobs:
     label: 更新商品值
     perform:
       label: 更新商品值
-  edit_common_attributes:
+  edit_attributes:
     label: 编辑共同属性
     perform:
       label: 编辑共同属性

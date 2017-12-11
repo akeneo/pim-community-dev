@@ -1,7 +1,7 @@
 'use strict';
 
 /**
- * Mass Edit Common Attributes exclusive module.
+ * Mass Edit attributes exclusive module.
  *
  * It listens to any change on the Product Edit Form and update accordingly an
  * hidden field that contains the JSON value of the whole form.

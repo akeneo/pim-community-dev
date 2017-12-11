@@ -84,7 +84,7 @@ pim_enrich:
       description: Gli articoli selezionati saranno attivati o disattivati.
       success_flash: Lo stato dell'articolo/degli articoli è stato modificato
       launched_flash: L'azione di massa "modifica stato" è stata lanciata. Sarai avvisato quando finisce.
-    edit-common-attributes:
+    edit-attributes:
       label: Modificare gli attributi
       description: Gli attributi del prodotto selezionato verranno modificati con i seguenti dati per le impostazioni di localizzazione selezionate.
       empty: Si prega di selezionare l'attributo/gli attributi che si desidera modificare
@@ -635,7 +635,7 @@ pim_enrich.mass_edit_action:
     label: Modificare lo stato
     description: Gli articoli selezionati saranno attivati o disattivati.
     success_flash: Lo stato dell'articolo/degli articoli è stato modificato
-  edit-common-attributes:
+  edit-attributes:
     label: Modifica gli attributi comuni
     description: Gli attributi del prodotto selezionato verranno modificati con i seguenti dati per le impostazioni di localizzazione selezionate.
     empty: Si prega di selezionare l'attributo/gli attributi che si desidera modificare
@@ -756,11 +756,11 @@ job_execution.summary:
   skipped_attributes: Attributi saltati
   skipped_families: Famiglie saltate
 pim_mass_edit_execution_show: Esecuzione modifiche di massa | Dettagli
-edit_common_attributes.steps.edit_common_attributes_processor.title: Modifica gli attributi comuni
+edit_attributes.steps.edit_attributes_processor.title: Modifica gli attributi comuni
 update_product_value.steps.update_product_value_processor.title: Aggiorna il valore di prodotto
 remove_product_value.steps.update_product_value_processor.title: Rimuovi il valore di prodotto
-edit_common_attributes: Modifica gli attributi comuni
-edit_common_attributes_clean: Pulisci i file per gli attributi comuni
+edit_attributes: Modifica gli attributi comuni
+edit_attributes_clean: Pulisci i file per gli attributi comuni
 perform.steps.duplicated.title: Dimensione Duplicata
 perform.steps.excluded.title: Prodotto escluso
 batch_jobs:
@@ -772,7 +772,7 @@ batch_jobs:
     label: Aggiorna il valore di prodotto
     perform:
       label: Aggiorna il valore di prodotto
-  edit_common_attributes:
+  edit_attributes:
     label: Modifica gli attributi comuni
     perform:
       label: Modifica gli attributi comuni

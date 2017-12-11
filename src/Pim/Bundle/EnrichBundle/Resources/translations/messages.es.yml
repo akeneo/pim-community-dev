@@ -84,7 +84,7 @@ pim_enrich:
       description: Los productos seleccionados serán habilitados o inhabilitados.
       success_flash: Estado de los producto(s) han sido cambiados
       launched_flash: La acción en masa "cambiar estado" ha sido lanzada.  Será notificado una vez finalizada.
-    edit-common-attributes:
+    edit-attributes:
       label: Editar atributos
       description: Los atributos de producto seleccionados serán editados con la siguiente información para el local elegido.
       empty: Por favor, seleccione atributo(s) que desea editar
@@ -621,7 +621,7 @@ pim_enrich.mass_edit_action:
     label: Cambiar el estado
     description: Los productos seleccionados serán habilitados o inhabilitados.
     success_flash: Estado de los producto(s) han sido cambiados
-  edit-common-attributes:
+  edit-attributes:
     label: Editar atributos comunes
     description: Los atributos de producto seleccionados serán editados con la siguiente información para el local elegido.
     empty: Por favor, seleccione atributo(s) que desea editar
@@ -739,11 +739,11 @@ job_execution.summary:
   skipped_attributes: Atributos omitidos
   skipped_families: Familias omitidas
 pim_mass_edit_execution_show: Exclusiones de edición en masa | Detalles
-edit_common_attributes.steps.edit_common_attributes_processor.title: Editar atributos comunes
+edit_attributes.steps.edit_attributes_processor.title: Editar atributos comunes
 update_product_value.steps.update_product_value_processor.title: Actualizar el valor del producto
 remove_product_value.steps.update_product_value_processor.title: Quitar el valor del producto
-edit_common_attributes: Editar atributos comunes
-edit_common_attributes_clean: Limpiar archivos para los atributos comunes
+edit_attributes: Editar atributos comunes
+edit_attributes_clean: Limpiar archivos para los atributos comunes
 perform.steps.duplicated.title: Eje duplicado
 perform.steps.excluded.title: Producto excluido
 batch_jobs:
@@ -755,7 +755,7 @@ batch_jobs:
     label: Actualizar el valor del producto
     perform:
       label: Actualizar el valor del producto
-  edit_common_attributes:
+  edit_attributes:
     label: Editar atributos comunes
     perform:
       label: Editar atributos comunes

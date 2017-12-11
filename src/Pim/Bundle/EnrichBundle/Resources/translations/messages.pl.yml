@@ -98,7 +98,7 @@ pim_enrich:
       description: Wybrane produkty zostaną włączone lub wyłączone.
       success_flash: Status produktu (produktów) został zmieniony
       launched_flash: Masowe zadanie "zmiany statusu" zostało uruchomione. Zostaniesz powiadomiony o jego zakończeniu.
-    edit-common-attributes:
+    edit-attributes:
       label: Edytuj atrybuty
       description: Atrybuty wybranych produktów zostaną zaktualizowane o następujące wartości, przy wybranym ustawieniu regionalnym.
       empty: Proszę wybrać atrybut(y), które chcesz edytować
@@ -667,7 +667,7 @@ pim_enrich.mass_edit_action:
     label: Zmiana statusu (Włącz / Wyłącz)
     description: Wybrane produkty zostaną włączone lub wyłączone.
     success_flash: Status produktu (produktów) został zmieniony
-  edit-common-attributes:
+  edit-attributes:
     label: Edytuj wspólne atrybuty
     description: Atrybuty wybranych produktów zostaną zaktualizowane o następujące wartości, przy wybranym ustawieniu regionalnym.
     empty: Proszę wybrać atrybut(y), które chcesz edytować
@@ -786,13 +786,13 @@ job_execution.summary:
   skipped_products: Pominięte produkty
   skipped_attributes: Pominięte atrybuty
 pim_mass_edit_execution_show: Wykonania masowej edycji | Szczegóły
-edit_common_attributes.steps.edit_common_attributes_processor.title: Edytuj wspólne atrybuty
+edit_attributes.steps.edit_attributes_processor.title: Edytuj wspólne atrybuty
 update_product_value.steps.update_product_value_processor.title: Aktualizacja wartości produktu
 add_to_variant_group_clean.steps.excluded.title: Wykluczone produkty
 add_to_variant_group_clean.steps.duplicated.title: Duplikowane Osie
 add_to_variant_group.steps.excluded.title: Wykluczone produkty
 add_to_variant_group.steps.duplicated.title: Duplikowane Osie
-edit_common_attributes: Edytuj wspólne atrybuty
+edit_attributes: Edytuj wspólne atrybuty
 perform.steps.duplicated.title: Duplikowane Osie
 perform.steps.excluded.title: Wykluczone produkty
 batch_jobs:
@@ -800,7 +800,7 @@ batch_jobs:
     label: Aktualizacja wartości produktu
     perform:
       label: Aktualizacja wartości produktu
-  edit_common_attributes:
+  edit_attributes:
     label: Edytuj wspólne atrybuty
     perform:
       label: Edytuj wspólne atrybuty

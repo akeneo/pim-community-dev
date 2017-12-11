@@ -349,7 +349,7 @@ pim_enrich:
           operators:
             ALL: Tudo
   mass_edit_action:
-    edit_common_attributes:
+    edit_attributes:
       description: Os atributos dos produtos selecionados serão editados com os seguintes dados para a linguagem <span class="highlight">{{ locale }}</span> e o canal <span class="highlight">{{ channel }}</span>, escolhidos na grelha de produtos.
 pim_enrich.error:
   exception.title: Ora bolas! Ocorreu o erro {{ status_code }}...

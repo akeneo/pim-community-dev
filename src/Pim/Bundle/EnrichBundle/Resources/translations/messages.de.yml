@@ -84,7 +84,7 @@ pim_enrich:
       description: Die ausgewählten Produkte werden aktiviert oder deaktiviert.
       success_flash: Der Produktstatus wurde geändert
       launched_flash: Die Massenbearbeitung "Status ändern" wurde gestartet. Sie werden benachrichtigt, sobald diese erledigt ist.
-    edit-common-attributes:
+    edit-attributes:
       label: Attribute bearbeiten
       description: Die ausgewählten Produktattribute werden mit den folgenden Daten für das ausgewählte Gebietsschema bearbeitet.
       empty: Bitte wählen Sie die Attribute aus, welche Sie bearbeiten möchten
@@ -630,7 +630,7 @@ pim_enrich.mass_edit_action:
     label: Status ändern
     description: Die ausgewählten Produkte werden aktiviert oder deaktiviert.
     success_flash: Der Produktstatus wurde geändert
-  edit-common-attributes:
+  edit-attributes:
     label: Gemeinsame Attribute bearbeiten
     description: Die ausgewählten Produktattribute werden mit den folgenden Daten für das ausgewählte Gebietsschema bearbeitet.
     empty: Bitte wählen Sie die Attribute aus, welche Sie bearbeiten möchten
@@ -751,11 +751,11 @@ job_execution.summary:
   skipped_attributes: Übersprungene Attribute
   skipped_families: Übersprungene Produktfamilien
 pim_mass_edit_execution_show: Ausgeführte Massenbearbeitung | Details
-edit_common_attributes.steps.edit_common_attributes_processor.title: Gemeinsame Attribute bearbeiten
+edit_attributes.steps.edit_attributes_processor.title: Gemeinsame Attribute bearbeiten
 update_product_value.steps.update_product_value_processor.title: Wert des Produkts aktualisieren
 remove_product_value.steps.update_product_value_processor.title: Produktwert entfernen
-edit_common_attributes: Gemeinsame Attribute bearbeiten
-edit_common_attributes_clean: Bereinige Dateien für gemeinsame Attribute
+edit_attributes: Gemeinsame Attribute bearbeiten
+edit_attributes_clean: Bereinige Dateien für gemeinsame Attribute
 perform.steps.duplicated.title: Doppelte Achse
 perform.steps.excluded.title: Ausgeschlossene Produkte
 batch_jobs:
@@ -767,7 +767,7 @@ batch_jobs:
     label: Wert des Produkts aktualisieren
     perform:
       label: Wert des Produkts aktualisieren
-  edit_common_attributes:
+  edit_attributes:
     label: Gemeinsame Attribute bearbeiten
     perform:
       label: Gemeinsame Attribute bearbeiten

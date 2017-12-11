@@ -84,7 +84,7 @@ pim_enrich:
       description: 将启用或禁用选定的产品。
       success_flash: 产品状态已更改
       launched_flash: 批量操作"更改状态"已经启动。完成后会通知您。
-    edit-common-attributes:
+    edit-attributes:
       label: 编辑属性
       description: 使用被选择的本地化语言对应的数据来编缉所选定的产品属性。
       empty: 请选择你要编辑的属性
@@ -621,7 +621,7 @@ pim_enrich.mass_edit_action:
     label: 更改状态
     description: 将启用或禁用选定的产品。
     success_flash: 产品状态已更改
-  edit-common-attributes:
+  edit-attributes:
     label: 编辑共同属性
     description: 使用被选择的本地化语言对应的数据来编缉所选定的产品属性。
     empty: 请选择你要编辑的属性
@@ -738,11 +738,11 @@ job_execution.summary:
   skipped_products: 跳过的产品
   skipped_attributes: 跳过的属性
 pim_mass_edit_execution_show: 批量编辑执行 |详细信息
-edit_common_attributes.steps.edit_common_attributes_processor.title: 编辑共同属性
+edit_attributes.steps.edit_attributes_processor.title: 编辑共同属性
 update_product_value.steps.update_product_value_processor.title: 更新商品值
 remove_product_value.steps.update_product_value_processor.title: 移除商品值
-edit_common_attributes: 编辑共同属性
-edit_common_attributes_clean: 为共同的属性清理文件
+edit_attributes: 编辑共同属性
+edit_attributes_clean: 为共同的属性清理文件
 perform.steps.duplicated.title: 重复的轴
 perform.steps.excluded.title: 被排除在外的产品
 batch_jobs:
@@ -754,7 +754,7 @@ batch_jobs:
     label: 更新商品值
     perform:
       label: 更新商品值
-  edit_common_attributes:
+  edit_attributes:
     label: 编辑共同属性
     perform:
       label: 编辑共同属性

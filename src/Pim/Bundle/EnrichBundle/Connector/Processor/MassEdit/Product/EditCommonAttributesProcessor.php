@@ -191,7 +191,7 @@ class EditCommonAttributesProcessor extends AbstractProcessor
          * calls the toString method which hydrate lot of model
          */
         $this->stepExecution->addWarning(
-            'pim_enrich.mass_edit_action.edit-common-attributes.message.no_valid_attribute',
+            'pim_enrich.mass_edit_action.edit-attributes.message.no_valid_attribute',
             [],
             new DataInvalidItem(
                 [

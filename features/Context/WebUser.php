@@ -2675,7 +2675,7 @@ class WebUser extends PimContext
                 return str_repeat('foobar ', 50);
             case 'product edit.longtext':
                 return str_repeat('foobar ', 9500);
-            case 'batch editcommonattributes.comment':
+            case 'batch editattributes.comment':
                 return str_repeat('foobar ', 40);
             default:
                 return '!@#-?_'.$this->lorem(250);

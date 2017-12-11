@@ -794,7 +794,7 @@ config:
         pim/mass-edit-form/choose:                                    pimenrich/js/mass-edit/form/choose
         pim/mass-edit-form/product/operation:                         pimenrich/js/mass-edit/form/product/operation
         pim/mass-edit-form/product/change-status:                     pimenrich/js/mass-edit/form/product/change-status
-        pim/mass-edit-form/product/edit-common-attributes:            pimenrich/js/mass-edit/form/product/edit-common-attributes
+        pim/mass-edit-form/product/edit-attributes:            pimenrich/js/mass-edit/form/product/edit-attributes
         pim/mass-edit-form/product/add-to-existing-product-model:     pimenrich/js/mass-edit/form/product/add-to-existing-product-model
         pim/mass-edit-form/product/change-family:                     pimenrich/js/mass-edit/form/product/change-family
         pim/mass-edit-form/product/add-to-group:                      pimenrich/js/mass-edit/form/product/add-to-group
@@ -1120,7 +1120,7 @@ config:
         pim/template/mass-edit/form:                                        pimenrich/templates/mass-edit/form.html
         pim/template/mass-edit/choose:                                      pimenrich/templates/mass-edit/choose.html
         pim/template/mass-edit/product/change-status:                       pimenrich/templates/mass-edit/product/change-status.html
-        pim/template/mass-edit/product/edit-common-attributes:              pimenrich/templates/mass-edit/product/edit-common-attributes.html
+        pim/template/mass-edit/product/edit-attributes:              pimenrich/templates/mass-edit/product/edit-attributes.html
         pim/template/mass-edit/product/add-to-existing-product-model:       pimenrich/templates/mass-edit/product/add-to-existing-product-model.html
         pim/template/mass-edit/product/change-family:                       pimenrich/templates/mass-edit/product/change-family.html
         pim/template/mass-edit/product/add-to-group:                        pimenrich/templates/mass-edit/product/add-to-group.html

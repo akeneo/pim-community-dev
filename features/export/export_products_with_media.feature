@@ -53,20 +53,20 @@ Feature: Export products with media
     And I am on the products grid
     And I select rows FLIPFLOP-1R and FLIPFLOP-1C
     And I press the "Bulk actions" button
-    And I choose the "Edit common attributes" operation
+    And I choose the "Edit attributes" operation
     And I display the Picture attribute
     And I attach file "akeneo.jpg" to "Picture"
     And I confirm mass edit
-    And I wait for the "edit_common_attributes" job to finish
+    And I wait for the "edit_attributes" job to finish
     Then the file "picture" of products FLIPFLOP-1R and FLIPFLOP-1C should be "akeneo.jpg"
     And I am on the products grid
     And I select row FLIPFLOP-1C
     And I press the "Bulk actions" button
-    And I choose the "Edit common attributes" operation
+    And I choose the "Edit attributes" operation
     And I display the Picture attribute
     And I attach file "" to "Picture"
     And I confirm mass edit
-    And I wait for the "edit_common_attributes" job to finish
+    And I wait for the "edit_attributes" job to finish
     And I launched the completeness calculator
     And I am on the "csv_footwear_product_export" export job page
     When I launch the export job

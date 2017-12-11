@@ -14,18 +14,18 @@ Feature: Apply a mass action on all entities
       | sandals     | sandals | Tiny sandals | sandals      | 10 USD, 15 EUR | 42   | red   |
     And I am logged in as "Julia"
 
-  Scenario: Edit common attributes of all products
+  Scenario: Edit attributes of all products
     When I am on the products grid
     And I select rows super_boots
     And I select all entities
     And I press the "Bulk actions" button
-    And I choose the "Edit common attributes" operation
+    And I choose the "Edit attributes" operation
     And I move on to the choose step
-    And I choose the "Edit common attributes" operation
+    And I choose the "Edit attributes" operation
     And I display the Name attribute
     And I change the "Name" to "Same product"
     And I confirm mass edit
-    And I wait for the "edit_common_attributes" job to finish
+    And I wait for the "edit_attributes" job to finish
     Then the product "super_boots" should have the following values:
       | name-en_US | Same product |
     And the product "ultra_boots" should have the following values:

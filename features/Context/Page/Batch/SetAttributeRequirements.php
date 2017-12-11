@@ -8,7 +8,7 @@ use Context\Spin\SpinCapableTrait;
 use Pim\Behat\Decorator\Common\AddSelect\AttributeGroupAddSelectDecorator;
 
 /**
- * Edit common attributes page
+ * Edit attributes page
  *
  * @author    Gildas Quemener <gildas@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)

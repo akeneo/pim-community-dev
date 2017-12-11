@@ -84,7 +84,7 @@ pim_enrich:
       description: Valitut tuotteet otetaan käyttöön tai pois käytöstä.
       success_flash: Tuotteiden tila on muutettu
       launched_flash: Massatoiminto "Muuta tilaa" on käynnistetty. Sinulle ilmoitetaan, kun se on valmis.
-    edit-common-attributes:
+    edit-attributes:
       label: Muokkaa attribuutteja
       description: Valitun tuotteen attribuutit muokataan seuraavalla valitun lokaation datalla.
       empty: Ole hyvä ja valitse attribuutit joita haluat muokata
@@ -636,7 +636,7 @@ pim_enrich.mass_edit_action:
     label: Muuta tuotteen tila
     description: Valitut tuotteet otetaan käyttöön tai pois käytöstä.
     success_flash: Tuotteiden tila on muutettu
-  edit-common-attributes:
+  edit-attributes:
     label: Muokkaa yleisiä attribuutteja
     description: Valitun tuotteen attribuutit muokataan seuraavalla valitun lokaation datalla.
     empty: Ole hyvä ja valitse attribuutit joita haluat muokata
@@ -757,11 +757,11 @@ job_execution.summary:
   skipped_attributes: Ohitetut attribuutit
   skipped_families: Ohitetut perheet
 pim_mass_edit_execution_show: Massamuokkaa suoritteita | Tiedot
-edit_common_attributes.steps.edit_common_attributes_processor.title: Muokkaa yleisiä attribuutteja
+edit_attributes.steps.edit_attributes_processor.title: Muokkaa yleisiä attribuutteja
 update_product_value.steps.update_product_value_processor.title: Päivitä tuotteen arvo
 remove_product_value.steps.update_product_value_processor.title: Poista tuotteen arvo
-edit_common_attributes: Muokkaa yleisiä attribuutteja
-edit_common_attributes_clean: Puhdista tiedostot yleisille attribuuteille
+edit_attributes: Muokkaa yleisiä attribuutteja
+edit_attributes_clean: Puhdista tiedostot yleisille attribuuteille
 perform.steps.duplicated.title: Päällekkäät akselit
 perform.steps.excluded.title: Poissuljetut tuotteet
 batch_jobs:
@@ -769,7 +769,7 @@ batch_jobs:
     label: Päivitä tuotteen arvo
     perform:
       label: Päivitä tuotteen arvo
-  edit_common_attributes:
+  edit_attributes:
     label: Muokkaa yleisiä attribuutteja
     perform:
       label: Muokkaa yleisiä attribuutteja

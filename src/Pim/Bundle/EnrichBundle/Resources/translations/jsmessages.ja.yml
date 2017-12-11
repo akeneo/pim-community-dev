@@ -925,7 +925,7 @@ pim_enrich:
       global_settings:
         title: グローバル設定
   mass_edit_action:
-    edit_common_attributes:
+    edit_attributes:
       description: 選択した商品の属性は以下のロケール <span class="highlight">{{ locale }}</span> のデータとチャンネル <span class="highlight">{{ channel }}</span> で編集され、製品のグリット内で選ばれます。
   index:
     association_type:
@@ -1111,7 +1111,7 @@ batch_jobs:
     label: 製品の値を更新
     perform:
       label: 製品の値を更新
-  edit_common_attributes:
+  edit_attributes:
     label: 共通の属性を編集
     perform:
       label: 共通の属性を編集
