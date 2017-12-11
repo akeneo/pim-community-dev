@@ -181,6 +181,25 @@ class ProductModelController
     }
 
     /**
+     * Returns a set of product models from identifiers parameter
+     *
+     * @param Request $request
+     *
+     * @return JsonResponse
+     */
+    public function indexAction(Request $request): JsonResponse
+    {
+        $productModelIdentifiers = explode(',', $request->get('identifiers'));
+        $productModels = $this->productModelRepository->findByIdentifiers($productModelIdentifiers);
+
+        $normalizedProductModels = array_map(function ($productModel) {
+            return $this->normalizeProductModel($productModel);
+        }, $productModels);
+
+        return new JsonResponse($normalizedProductModels);
+    }
+
+    /**
      * @param Request $request
      *
      * @AclAncestor("pim_enrich_product_model_create")

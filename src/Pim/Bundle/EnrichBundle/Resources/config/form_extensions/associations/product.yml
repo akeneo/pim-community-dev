@@ -1,6 +1,6 @@
 extensions:
     pim-associations-product-picker-form:
-        module: pim/common/item-picker
+        module: pim/product-edit-form/product-and-product-model-picker
         config:
             datagridName: association-product-picker-grid
             description: pim_enrich.form.product.tab.associations.manage_description
