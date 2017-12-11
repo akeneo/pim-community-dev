@@ -14,7 +14,7 @@ Feature: Revert product attributes to a previous version
     And I create a product
     And I fill in the following information in the popin:
       | SKU    | t-shirt |
-      | family | Tees    |
+      | Family | Tees    |
     And I press the "Save" button in the popin
     And  I am on the "t-shirt" product page
     And I visit the "Media" group

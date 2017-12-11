@@ -6,6 +6,7 @@ publish_product;All;
 unpublish_product;All;
 edit_common_attributes;All;
 set_attribute_requirements;All;
+add_to_existing_product_model;All;
 approve_product_draft;All;
 refuse_product_draft;All;
 apply_assets_mass_upload;All;

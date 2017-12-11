@@ -14,7 +14,7 @@ Feature: Revert product attributes to a previous version
     And I create a product
     And I fill in the following information in the popin:
       | SKU    | akeneo-jacket |
-      | family | Jackets       |
+      | Family | Jackets       |
     And I press the "Save" button in the popin
     And I wait to be on the "akeneo-jacket" product page
     And I switch the scope to "mobile"
@@ -33,7 +33,7 @@ Feature: Revert product attributes to a previous version
     And I create a product
     And I fill in the following information in the popin:
       | SKU    | akeneo-jacket |
-      | family | Jackets       |
+      | Family | Jackets       |
     And I press the "Save" button in the popin
     And I wait to be on the "akeneo-jacket" product page
     And I switch the scope to "mobile"
@@ -52,7 +52,7 @@ Feature: Revert product attributes to a previous version
     And I create a product
     And I fill in the following information in the popin:
       | SKU    | akeneo-jacket |
-      | family | Jackets       |
+      | Family | Jackets       |
     And I press the "Save" button in the popin
     And I wait to be on the "akeneo-jacket" product page
     And I switch the scope to "mobile"

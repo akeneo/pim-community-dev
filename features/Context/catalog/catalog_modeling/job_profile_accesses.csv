@@ -8,6 +8,7 @@ publish_product;All;
 unpublish_product;All;
 edit_common_attributes;All;
 set_attribute_requirements;All;
+add_to_existing_product_model;All;
 csv_product_quick_export;All;
 csv_published_product_quick_export;All;
 rule_impacted_product_count;All;
