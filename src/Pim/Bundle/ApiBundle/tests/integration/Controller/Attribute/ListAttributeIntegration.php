@@ -2,7 +2,6 @@
 
 namespace Pim\Bundle\ApiBundle\tests\integration\Controller\Attribute;
 
-use Akeneo\Test\Integration\Configuration;
 use Pim\Bundle\ApiBundle\tests\integration\ApiTestCase;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -25,11 +24,11 @@ class ListAttributeIntegration extends ApiTestCase
 		"self": {
 			"href": "http://localhost/api/rest/v1/attributes?page=1&limit=10&with_count=false"
 		},
-		"next": {
-			"href": "http://localhost/api/rest/v1/attributes?page=2&limit=10&with_count=false"
-		},
 		"first": {
 			"href": "http://localhost/api/rest/v1/attributes?page=1&limit=10&with_count=false"
+		},
+		"next": {
+			"href": "http://localhost/api/rest/v1/attributes?page=2&limit=10&with_count=false"
 		}
 	},
 	"current_page": 1,
@@ -309,15 +308,15 @@ JSON;
     "max_characters"         : null,
     "validation_rule"        : null,
     "validation_regexp"      : null,
-    "wysiwyg_enabled"        : false,
+    "wysiwyg_enabled"        : null,
     "number_min"             : null,
     "number_max"             : null,
-    "decimals_allowed"       : false,
-    "negative_allowed"       : false,
+    "decimals_allowed"       : null,
+    "negative_allowed"       : null,
     "date_min"               : null,
     "date_max"               : null,
     "max_file_size"          : null,
-    "minimum_input_length"   : 0,
+    "minimum_input_length"   : null,
     "sort_order"             : 0,
     "localizable"            : true,
     "scopable"               : false,
@@ -346,15 +345,15 @@ JSON;
     "max_characters"         : null,
     "validation_rule"        : null,
     "validation_regexp"      : null,
-    "wysiwyg_enabled"        : false,
+    "wysiwyg_enabled"        : null,
     "number_min"             : null,
     "number_max"             : null,
-    "decimals_allowed"       : false,
-    "negative_allowed"       : false,
+    "decimals_allowed"       : null,
+    "negative_allowed"       : null,
     "date_min"               : null,
     "date_max"               : null,
     "max_file_size"          : null,
-    "minimum_input_length"   : 0,
+    "minimum_input_length"   : null,
     "sort_order"             : 0,
     "localizable"            : true,
     "scopable"               : true,
@@ -386,12 +385,12 @@ JSON;
     "wysiwyg_enabled"        : false,
     "number_min"             : null,
     "number_max"             : null,
-    "decimals_allowed"       : false,
-    "negative_allowed"       : false,
+    "decimals_allowed"       : null,
+    "negative_allowed"       : null,
     "date_min"               : null,
     "date_max"               : null,
     "max_file_size"          : null,
-    "minimum_input_length"   : 0,
+    "minimum_input_length"   : null,
     "sort_order"             : 10,
     "localizable"            : true,
     "scopable"               : true,
@@ -428,8 +427,8 @@ JSON;
     "date_min"               : null,
     "date_max"               : null,
     "max_file_size"          : null,
-    "minimum_input_length"   : 0,
-    "sort_order"             : null,
+    "minimum_input_length"   : null,
+    "sort_order"             : 0,
     "localizable"            : false,
     "scopable"               : false,
     "labels"                 : {},
