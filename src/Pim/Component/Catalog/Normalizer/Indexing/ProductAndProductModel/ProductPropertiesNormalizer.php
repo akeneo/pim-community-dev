@@ -137,7 +137,6 @@ class ProductPropertiesNormalizer implements NormalizerInterface, SerializerAwar
 
     /**
      * @param $product
-     * @param $data
      *
      * @return array
      */

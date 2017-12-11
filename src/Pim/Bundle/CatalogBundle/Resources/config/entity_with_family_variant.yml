@@ -1,6 +1,10 @@
 parameters:
     pim_catalog.entity_with_family_variant.keep_only_values_for_variation.class: Pim\Component\Catalog\EntityWithFamilyVariant\KeepOnlyValuesForVariation
+    pim_catalog.entity_with_family_variant.check_attribute_editable.class: Pim\Component\Catalog\EntityWithFamilyVariant\CheckAttributeEditable
 
 services:
     pim_catalog.entity_with_family_variant.keep_only_values_for_variation:
         class: '%pim_catalog.entity_with_family_variant.keep_only_values_for_variation.class%'
+
+    pim_catalog.entity_with_family_variant.check_attribute_editable:
+        class: '%pim_catalog.entity_with_family_variant.check_attribute_editable.class%'

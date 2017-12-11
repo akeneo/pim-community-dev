@@ -141,7 +141,7 @@ class ProductModelPropertiesNormalizer implements NormalizerInterface, Serialize
      *
      * @return array
      */
-    private function getAncestorsCodes(ProductModelInterface $productModel)
+    private function getAncestorsCodes(ProductModelInterface $productModel): array
     {
         $ancestorsCodes = [];
         while (null !== $parent = $productModel->getParent()) {

@@ -3,6 +3,8 @@
 namespace Pim\Bundle\EnrichBundle\tests\Unit\Form\Subscriber;
 
 use Pim\Bundle\EnrichBundle\Form\Subscriber\FilterLocaleValueSubscriber;
+use Pim\Component\Catalog\Model\AttributeInterface;
+use Pim\Component\Catalog\Model\ValueInterface;
 
 /**
  * Test related class
@@ -147,11 +149,11 @@ class FilterLocaleValueSubscriberTest extends \PHPUnit_Framework_TestCase
      * @param mixed $attribute
      * @param mixed $locale
      *
-     * @return \Pim\Component\Catalog\Model\ProductValue
+     * @return \Pim\Component\Catalog\Model\ValueInterface
      */
     private function getProductValueMock($attribute, $locale)
     {
-        $value = $this->createMock('Pim\Component\Catalog\Model\ProductValue');
+        $value = $this->createMock(ValueInterface::class);
 
         $value->expects($this->any())
             ->method('getAttribute')
@@ -171,7 +173,7 @@ class FilterLocaleValueSubscriberTest extends \PHPUnit_Framework_TestCase
      */
     private function getAttributeMock($localizable = true)
     {
-        $attribute = $this->createMock('Pim\Bundle\CatalogBundle\Entity\Attribute');
+        $attribute = $this->createMock(AttributeInterface::class);
 
         $attribute->expects($this->any())
             ->method('isLocalizable')

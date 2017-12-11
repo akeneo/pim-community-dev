@@ -56,7 +56,7 @@ class ProductAndProductModelIndexingIntegration extends TestCase
             'at_least_complete' => [],
             'at_least_incomplete' => [],
             'ancestors' => [
-                'ids'   => [],
+                'ids' => [],
                 'codes' => [],
             ],
             'document_type' => ProductModelInterface::class,
@@ -105,7 +105,7 @@ class ProductAndProductModelIndexingIntegration extends TestCase
             'at_least_complete' => [],
             'at_least_incomplete' => [],
             'ancestors' => [
-                'ids'   => ['product_model_150'],
+                'ids' => ['product_model_150'],
                 'codes' => ['qux'],
             ],
             'document_type' => ProductModelInterface::class,
@@ -160,7 +160,7 @@ class ProductAndProductModelIndexingIntegration extends TestCase
                 ],
             ],
             'ancestors' => [
-                'ids'   => ['product_model_151', 'product_model_150'],
+                'ids' => ['product_model_151', 'product_model_150'],
                 'codes' => ['quux', 'qux'],
             ],
             'document_type' => ProductInterface::class,
@@ -192,7 +192,7 @@ class ProductAndProductModelIndexingIntegration extends TestCase
             'parent'                    => null,
             'values'                    => [],
             'ancestors' => [
-                'ids'   => [],
+                'ids' => [],
                 'codes' => [],
             ],
             'document_type'              => ProductInterface::class,
@@ -437,7 +437,7 @@ class ProductAndProductModelIndexingIntegration extends TestCase
                 ],
             ],
             'ancestors' => [
-                'ids'   => [],
+                'ids' => [],
                 'codes' => [],
             ],
             'document_type' => ProductInterface::class,
