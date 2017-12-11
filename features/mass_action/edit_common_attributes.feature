@@ -22,7 +22,7 @@ Feature: Apply permissions for an attribute group when mass edit common attribut
   Scenario: Successfully display read only attributes
     Given I select rows highheels
     And I press the "Bulk actions" button
-    And I choose the "Edit common attributes" operation
+    And I choose the "Edit attributes" operation
     Then I should see available attributes Name, Manufacturer and Description in group "Product information"
     And I should see available attributes Price and Rating in group "Marketing"
     When I display the Price, Name and Rating attribute
@@ -32,7 +32,7 @@ Feature: Apply permissions for an attribute group when mass edit common attribut
     And I confirm mass edit
     And I wait for the "edit_common_attributes" job to finish
     And I go on the last executed job resume of "edit_common_attributes"
-    And I should see the text "Clean files for common attributes"
+    And I should see the text "Clean files for attributes"
     And I edit the "highheels" product
     And I visit the "Marketing" group
     Then I should see the text "2 stars"
