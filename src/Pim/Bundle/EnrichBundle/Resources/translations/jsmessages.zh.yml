@@ -1,4 +1,5 @@
 confirmation:
+  title: 确认
   remove:
     item: 确实要删除这个项目吗?
     association_type: 确实要删除这个相关类型吗?
@@ -305,6 +306,7 @@ pim_enrich:
         email: 电子邮件
         regexp: 正则表达式
         url: 链接地址
+      title: 属性
     attribute_group:
       info:
         update_successful: 属性组已更新
@@ -596,6 +598,9 @@ pim_enrich:
           toolbox:
             select_attributes: 添加属性
             add: 增加
+    basket:
+      title: 购物篮
+      empty_basket: 购物车是空的
   export:
     product:
       data:

@@ -5,8 +5,18 @@ pim_dashboard:
       status: ステータス
       date: 日付
       type: タイプ
-      profile name: プロファイル名
+      profile_name: プロファイル名
       details: 詳細
+      warning_count: 警告
       job_type:
         import: インポート
         export: エクスポート
+        mass_edit: 一括編集
+        quick_export: クイック エクスポート
+        compute_product_models_descendants: 製品モデルの子孫を計算します。
+    completeness:
+      load_more: 'さらに読み込む...'
+    header:
+      view_all: 全て表示
+page_title:
+  pim_dashboard_index: ダッシュ ボード

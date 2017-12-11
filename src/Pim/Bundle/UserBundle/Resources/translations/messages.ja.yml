@@ -7,26 +7,31 @@ pim_user:
       password.title: パスワード
       business_unit.title: 部署
       email_synchronization.title: メール同期設定
+      interfaces.title: インタフェース
+  group:
+    tab:
+      general.title: 全般
+      users.title: ユーザー
 oro.user.controller:
-  group.message.saved: グループが保存されました
-  role.message.saved: ロールを保存しました
-  user.message.saved: ユーザーを保存しました
-  status.message.saved: ステータスを保存しました
+  group.message.saved: "グループが保存されました"
+  role.message.saved: "ロールを保存しました"
+  user.message.saved: "ユーザーを保存しました"
+  status.message.saved: "ステータスを保存しました"
 oro.user.grid.users:
   columns:
-    username: ユーザー名
-    email: 電子メール
-    firstName: 名
-    lastName: 姓
-    createdAt: 作成日
-    updatedAt: 更新日
-    enabled: ステータス
+    username: "ユーザー名"
+    email: "電子メール"
+    firstName: "名"
+    lastName: "姓"
+    createdAt: "作成日"
+    updatedAt: "更新日"
+    enabled: "ステータス"
 oro.user.grid.roles:
   columns:
-    label: ラベル
+    label: "ラベル"
 oro.user.grid.groups:
   columns:
-    name: 名前
+    name: "名前"
 pim_title:
   user.index: ユーザー
   user_role.index: 権限
@@ -59,18 +64,29 @@ Business Units: 部署
 Email synchronization settings: メール同期設定
 Host: ホスト
 Port: ポート
+Ssl: SSL
 Last logged in: 最終ログイン
 Login count: ログイン回数
 Additional Information: 追加情報
+Interfaces: インタフェース
 Basic Information: 基本情報
 Contact Information: 連絡先情報
 User name: ユーザー名
 Birthday: 誕生日
 API key: API キー
+Ui locale: UI ロケール
+UI locale: UI ロケール
+User salt: ユーザソルト
+Current password: 現在のパスワード
+New password: 新しいパスワード
+Repeat new password: 新しいパスワード (再入力)
 Generate key: キーを生成
 Primary: プライマリ
 Removed user: 削除されたユーザ
 user:
+  product_grid_filters: 製品グリッドフィルター
+  default_product_grid_view:
+    label: デフォルト製品のグリッドビュー
   default_grid_view:
     none: なし
 Role: ロール

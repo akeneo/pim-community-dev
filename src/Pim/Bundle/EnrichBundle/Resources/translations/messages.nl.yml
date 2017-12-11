@@ -129,7 +129,6 @@ pim_enrich:
       add_attribute: Voeg een attribuut toe aan een product
       remove_attribute: Verwijder een attribuut van een product
       categories_view: Raadpleeg de categorieën van een product
-      associations_view: Bekijk de associatietypes van een product
       change_family: Productfamilie wijzigen
       change_state: Status van product wijzigen
       add_to_groups: Product toevoegen aan groepen

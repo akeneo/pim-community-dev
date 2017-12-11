@@ -1,4 +1,5 @@
 confirmation:
+  title: Bestätigen
   remove:
     item: Möchten Sie dieses Element wirklich löschen?
     association_type: Möchten Sie diesen Verbindungstyp wirklich löschen?
@@ -376,6 +377,7 @@ pim_enrich:
         email: E-Mail
         regexp: Regulärer Ausdruck
         url: URL
+      title: Attribut
     attribute_group:
       info:
         update_failed: Die Attributgruppe konnte nicht aktualisiert werden
@@ -730,6 +732,9 @@ pim_enrich:
             select_attributes: Attribute hinzufügen
             add: Hinzufügen
             attributes_groups_selected: '{{ itemsCount }} Gruppe(n) ausgewählt'
+    basket:
+      title: Warenkorb
+      empty_basket: Der Warenkorb ist leer
   job:
     upload: Upload {{ type }}-Datei per Drag & Drop oder hier klicken
   export:

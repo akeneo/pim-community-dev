@@ -54,3 +54,6 @@ pim_catalog:
     301: Este campo debe contener un objetivo y local válidos.
     302: Este campo debe contener un objetivo válido.
     303: Este campo debe contener un formato de asociación válido.
+    pim_immutable_product_validator: El mismo identificador se encuentra ya en otro producto
+    pim_immutable_product_model_validator: El mismo código se encuentra ya en otro modelo de producto.
+
