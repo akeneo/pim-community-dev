@@ -42,7 +42,7 @@ CSV;
                     [
                         'field'    => 'an_image',
                         'operator' => '=',
-                        'value'    => 'akeneo.png',
+                        'value'    => 'akeneo.pdf',
                     ],
                 ],
                 'structure' => [
