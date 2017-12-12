@@ -14,7 +14,14 @@ Feature: Update the product associations
     And I am on the "spongebob" product page
     And I visit the "Associations" column tab
 
-  Scenario: Successfully add and delete an association
+  Scenario: Successfully add an association
+    When I press the "Add associations" button
+    And I check the row "patrick"
+    Then the item picker basket should contain patrick
+    And I press the "Confirm" button in the popin
+    Then I should see product "patrick"
+
+  Scenario: Successfully delete an association
     When I press the "Add associations" button
     And I check the row "patrick"
     Then the item picker basket should contain patrick
@@ -26,7 +33,14 @@ Feature: Update the product associations
     When I save the product
     Then I should not see product "patrick"
 
-  Scenario: Successfully add and delete a product model as association
+  Scenario: Successfully add a product model as association
+    When I press the "Add associations" button
+    And I check the row "Elegance"
+    Then the item picker basket should contain Elegance
+    And I press the "Confirm" button in the popin
+    Then I should see product "Elegance"
+
+  Scenario: Successfully delete a product model as association
     When I press the "Add associations" button
     And I check the row "Elegance"
     Then the item picker basket should contain Elegance
