@@ -355,6 +355,16 @@ define(
             },
 
             /**
+             * Returns the method to display unique codes for basket deletion
+             *
+             * @param {Object} item
+             * @returns {string}
+             */
+            itemCodeMethod: function (item) {
+                return item[this.config.columnName];
+            },
+
+            /**
              * Get the current locale
              *
              * @return {string}

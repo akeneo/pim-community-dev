@@ -482,16 +482,23 @@ define(
              * @param {Object} datagrid
              */
             unselectModel: function (model, datagrid) {
-                const assocType           = this.getCurrentAssociationType();
-                const assocTarget         = this.getDatagridTarget(datagrid);
-                let currentAssociations = _.uniq(this.getCurrentAssociations(datagrid));
+                const assocType = this.getCurrentAssociationType();
+                const assocTarget = this.getDatagridTarget(datagrid);
 
-                const index = currentAssociations.indexOf(datagrid.getModelIdentifier(model));
-                if (-1 !== index) {
-                    currentAssociations.splice(index, 1);
+                let assocSubTarget = assocTarget;
+                if (assocTarget === 'products') {
+                    // We check from what association target we have to remove model (products or product_models)
+                    assocSubTarget = (model.attributes.document_type === 'product') ? 'products' : 'product_models';
                 }
 
-                this.updateFormDataAssociations(currentAssociations, assocType, assocTarget);
+                const associationsField = this.getFormData().associations;
+                let associations = associationsField[assocType][assocSubTarget];
+                const index = associations.indexOf(datagrid.getModelIdentifier(model));
+                if (-1 !== index) {
+                    associations.splice(index, 1);
+                }
+
+                this.updateFormDataAssociations(associations, assocType, assocSubTarget);
                 this.updateSelectedAssociations('unselect', datagrid, model.id);
             },
 

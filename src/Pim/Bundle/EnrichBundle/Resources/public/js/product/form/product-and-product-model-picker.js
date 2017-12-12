@@ -12,11 +12,13 @@
  */
 define(
     [
+        'jquery',
         'oro/translator',
         'pim/common/item-picker',
         'pim/fetcher-registry',
         'pim/media-url-generator'
     ], function (
+        $,
         __,
         ItemPicker,
         FetcherRegistry,
@@ -57,19 +59,19 @@ define(
                     FetcherRegistry.getFetcher('product-model').fetchByIdentifiers(productModelIds),
                     FetcherRegistry.getFetcher('product').fetchByIdentifiers(productIds)
                 ).then(function (productModels, products) {
-                        this.$('.basket').html(this.basketTemplate({
-                            items: products.concat(productModels),
-                            title: __('pim_enrich.form.basket.title'),
-                            emptyLabel: __('pim_enrich.form.basket.empty_basket'),
-                            imagePathMethod: this.imagePathMethod.bind(this),
-                            columnName: this.config.columnName,
-                            identifierName: this.config.columnName,
-                            labelMethod: this.labelMethod.bind(this),
-                            itemCodeMethod: this.itemCodeMethod.bind(this),
-                        }));
+                    this.$('.basket').html(this.basketTemplate({
+                        items: products.concat(productModels),
+                        title: __('pim_enrich.form.basket.title'),
+                        emptyLabel: __('pim_enrich.form.basket.empty_basket'),
+                        imagePathMethod: this.imagePathMethod.bind(this),
+                        columnName: this.config.columnName,
+                        identifierName: this.config.columnName,
+                        labelMethod: this.labelMethod.bind(this),
+                        itemCodeMethod: this.itemCodeMethod.bind(this)
+                    }));
 
-                        this.delegateEvents();
-                    }.bind(this));
+                    this.delegateEvents();
+                }.bind(this));
             },
 
             /**
@@ -92,10 +94,7 @@ define(
             },
 
             /**
-             * Returns the method to display unique codes for basket deletion
-             *
-             * @param {Object} item
-             * @returns {string}
+             * {@inheritdoc}
              */
             itemCodeMethod: function (item) {
                 if (item.code) {
