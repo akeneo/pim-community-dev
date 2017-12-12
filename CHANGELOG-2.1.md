@@ -1,3 +1,8 @@
+# 2.1.x
+- API-429: Create an asset with the API
+- API-430: Update partially an asset with the API
+- API-431: Update partially a list of assets with the API
+
 # 2.1.0-ALPHA2 (2017-12-15)
 
 ## Improvements
@@ -15,7 +20,6 @@
 - API-443: Prevent getting asset via media file url with the API
 - PIM-7029: Add a search by code on assets grid
 - PIM-7024: Add search on label and code on published products
-- API-429: Create a category with the API
 
 ## Bug fixes
 
