@@ -3,31 +3,34 @@
 namespace spec\Pim\Bundle\DataGridBundle\Normalizer;
 
 use PhpSpec\ObjectBehavior;
+use Pim\Bundle\DataGridBundle\Normalizer\ProductAssociationNormalizer;
 use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\Completeness;
 use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Component\Catalog\Model\FamilyTranslationInterface;
 use Pim\Component\Catalog\Model\LocaleInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
+use Symfony\Component\Serializer\SerializerAwareInterface;
 use Symfony\Component\Serializer\SerializerInterface;
 
 class ProductAssociationNormalizerSpec extends ObjectBehavior
 {
     function let(SerializerInterface $serializer)
     {
-        $serializer->implement('Symfony\Component\Serializer\Normalizer\NormalizerInterface');
+        $serializer->implement(NormalizerInterface::class);
         $this->setSerializer($serializer);
     }
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('Pim\Bundle\DataGridBundle\Normalizer\ProductAssociationNormalizer');
-        $this->shouldBeAnInstanceOf('Symfony\Component\Serializer\SerializerAwareInterface');
+        $this->shouldHaveType(ProductAssociationNormalizer::class);
+        $this->shouldBeAnInstanceOf(SerializerAwareInterface::class);
     }
 
     function it_is_a_normalizer()
     {
-        $this->shouldImplement('Symfony\Component\Serializer\Normalizer\NormalizerInterface');
+        $this->shouldImplement(NormalizerInterface::class);
     }
 
     function it_supports_datagrid_format_and_product_value(ProductInterface $product)
@@ -72,7 +75,7 @@ class ProductAssociationNormalizerSpec extends ObjectBehavior
         $updated = new \DateTime('2017-01-01T01:04:34+01:00');
         $product->getUpdated()->willReturn($updated);
         $serializer->normalize($updated, 'datagrid', $context)->willReturn('2017-01-01T01:04:34+01:00');
-        $product->getLabel('en_US')->willReturn('Purple tshirt');
+        $product->getLabel('en_US', 'ecommerce')->willReturn('Purple tshirt');
         $product->getCompletenesses()->willReturn([$completeness]);
         $completeness->getLocale()->willReturn($localeEN);
         $completeness->getChannel()->willReturn($channelEcommerce);
@@ -129,7 +132,7 @@ class ProductAssociationNormalizerSpec extends ObjectBehavior
         $updated = new \DateTime('2017-01-01T01:04:34+01:00');
         $product->getUpdated()->willReturn($updated);
         $serializer->normalize($updated, 'datagrid', $context)->willReturn('2017-01-01T01:04:34+01:00');
-        $product->getLabel('en_US')->willReturn('Purple tshirt');
+        $product->getLabel('en_US', 'ecommerce')->willReturn('Purple tshirt');
         $product->getCompletenesses()->willReturn([$completeness]);
         $completeness->getLocale()->willReturn($localeEN);
         $completeness->getChannel()->willReturn($channelEcommerce);
