@@ -28,23 +28,12 @@ services:
         tags:
             - { name: 'pim_catalog.elasticsearch.query.sorter', priority: 30 }
 
-    pim_enrich.factory.product_and_product_model_from_size_cursor:
-        class: '%pim_enrich.elasticsearch.from_size_cursor_factory.class%'
+    # Services used by the products and product models' grid
+    pim_enrich.query.product_and_product_model_query_builder_from_size_factory:
+        class: '%pim_enrich.query.elasticsearch.product_and_model_query_builder_factory.class%'
         arguments:
-            - '@akeneo_elasticsearch.client.product_and_product_model'
-            - '@pim_catalog.repository.product'
-            - '@pim_catalog.repository.product_model'
-            - '%pim_catalog.factory.product_cursor.page_size%'
-            - 'pim_catalog_product'
-
-    pim_enrich.factory.product_and_product_model_cursor:
-        class: '%pim_enrich.elasticsearch.cursor_factory.class%'
-        arguments:
-            - '@akeneo_elasticsearch.client.product_and_product_model'
-            - '@pim_catalog.repository.product'
-            - '@pim_catalog.repository.product_model'
-            - '%pim_catalog.factory.product_cursor.page_size%'
-            - 'pim_catalog_product'
+            - '%pim_enrich.query.product_and_product_model_query_builder.class%'
+            - '@pim_enrich.query.product_query_builder_from_size_factory.with_product_and_product_model_from_size_cursor'
 
     pim_enrich.query.product_query_builder_from_size_factory.with_product_and_product_model_from_size_cursor:
         public: false
@@ -57,11 +46,22 @@ services:
             - '@pim_enrich.factory.product_and_product_model_from_size_cursor'
             - '@pim_catalog.elasticsearch.product_query_builder_from_size_resolver'
 
-    pim_enrich.query.product_and_product_model_query_builder_from_size_factory:
+    pim_enrich.factory.product_and_product_model_from_size_cursor:
+        public: false
+        class: '%pim_enrich.elasticsearch.from_size_cursor_factory.class%'
+        arguments:
+            - '@akeneo_elasticsearch.client.product_and_product_model'
+            - '@pim_catalog.repository.product'
+            - '@pim_catalog.repository.product_model'
+            - '%pim_catalog.factory.product_cursor.page_size%'
+            - 'pim_catalog_product'
+
+    # Services used by the mass edit
+    pim_enrich.query.product_and_product_model_query_builder_factory:
         class: '%pim_enrich.query.elasticsearch.product_and_model_query_builder_factory.class%'
         arguments:
             - '%pim_enrich.query.product_and_product_model_query_builder.class%'
-            - '@pim_enrich.query.product_query_builder_from_size_factory.with_product_and_product_model_from_size_cursor'
+            - '@pim_enrich.query.product_and_product_model_query_builder_factory.with_product_and_product_model_cursor'
 
     pim_enrich.query.product_and_product_model_query_builder_factory.with_product_and_product_model_cursor:
         public: false
@@ -74,12 +74,17 @@ services:
             - '@pim_enrich.factory.product_and_product_model_cursor'
             - '@pim_catalog.query.product_query_builder_resolver'
 
-    pim_enrich.query.product_and_product_model_query_builder_factory:
-        class: '%pim_enrich.query.elasticsearch.product_and_model_query_builder_factory.class%'
+    pim_enrich.factory.product_and_product_model_cursor:
+        public: false
+        class: '%pim_enrich.elasticsearch.cursor_factory.class%'
         arguments:
-            - '%pim_enrich.query.product_and_product_model_query_builder.class%'
-            - '@pim_enrich.query.product_and_product_model_query_builder_factory.with_product_and_product_model_cursor'
+            - '@akeneo_elasticsearch.client.product_and_product_model'
+            - '@pim_catalog.repository.product'
+            - '@pim_catalog.repository.product_model'
+            - '%pim_catalog.factory.product_cursor.page_size%'
+            - 'pim_catalog_product'
 
+    # Misc
     pim_enrich.query.mass_edit_product_and_product_model_query_builder_factory:
         class: '%pim_enrich.query.elasticsearch.product_and_model_query_builder_factory.class%'
         arguments:
