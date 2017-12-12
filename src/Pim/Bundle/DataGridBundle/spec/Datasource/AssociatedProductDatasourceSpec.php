@@ -4,6 +4,7 @@ namespace spec\Pim\Bundle\DataGridBundle\Datasource;
 
 use Akeneo\Component\StorageUtils\Cursor\CursorInterface;
 use Akeneo\Component\StorageUtils\Exception\InvalidObjectException;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Persistence\ObjectManager;
 use Oro\Bundle\DataGridBundle\Datagrid\Datagrid;
@@ -119,6 +120,7 @@ class AssociatedProductDatasourceSpec extends ObjectBehavior
         $associationIterator->next()->shouldBeCalled();
 
         $association->getProducts()->willReturn([$associatedProduct1, $associatedProduct2]);
+        $association->getProductModels()->willReturn(new ArrayCollection());
         $association->getAssociationType()->willReturn($associationType);
         $associationType->getId()->willReturn(1);
 

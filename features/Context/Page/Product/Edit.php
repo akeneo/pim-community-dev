@@ -667,4 +667,28 @@ class Edit extends ProductEditForm
             return $dropdownMenu->find('css', '.save-product-and-back');
         }, '"Save and back" button not found');
     }
+
+    /**
+     * Select a row in the association datagrid
+     *
+     * @param string $value
+     * @param bool   $check
+     */
+    public function selectRow($value, $check = true)
+    {
+        $this->spin(function () use ($value) {
+            $title = $this->find('css', sprintf('.AknGrid .AknGrid-title:contains("%s")', $value));
+            if (null === $title) {
+                return null;
+            }
+
+            $row = $this->getClosest($title, 'AknGrid-bodyRow');
+            $row->mouseOver();
+
+            $removeButton = $row->find('css', '.AknGrid-bodyRow-remove');
+            $removeButton->click();
+
+            return true;
+        }, sprintf('Impossible to find a row with "%s"', $value));
+    }
 }
