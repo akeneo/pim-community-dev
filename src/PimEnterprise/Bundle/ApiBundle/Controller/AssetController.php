@@ -20,6 +20,7 @@ use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Pim\Bundle\ApiBundle\Documentation;
+use Pim\Bundle\ApiBundle\Stream\StreamResourceResponse;
 use Pim\Component\Api\Exception\DocumentedHttpException;
 use Pim\Component\Api\Exception\PaginationParametersException;
 use Pim\Component\Api\Exception\ViolationHttpException;
@@ -34,6 +35,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 use Symfony\Component\Routing\Router;
@@ -82,6 +84,9 @@ class AssetController
     /** @var RouterInterface */
     protected $router;
 
+    /** @var StreamResourceResponse */
+    protected $partialUpdateStreamResource;
+
     /** @var array */
     protected $apiConfiguration;
 
@@ -98,6 +103,7 @@ class AssetController
      * @param ObjectUpdaterInterface                 $updater
      * @param SaverInterface                         $saver
      * @param RouterInterface                        $router
+     * @param StreamResourceResponse                 $partialUpdateStreamResource
      * @param array                                  $apiConfiguration
      */
     public function __construct(
@@ -113,6 +119,7 @@ class AssetController
         ObjectUpdaterInterface $updater,
         SaverInterface $saver,
         RouterInterface $router,
+        StreamResourceResponse $partialUpdateStreamResource,
         array $apiConfiguration
     ) {
         $this->identifiableRepository = $identifiableRepository;
@@ -127,6 +134,7 @@ class AssetController
         $this->updater = $updater;
         $this->saver = $saver;
         $this->router = $router;
+        $this->partialUpdateStreamResource = $partialUpdateStreamResource;
         $this->apiConfiguration = $apiConfiguration;
     }
 
@@ -239,6 +247,23 @@ class AssetController
 
         $status = $isCreation ? Response::HTTP_CREATED : Response::HTTP_NO_CONTENT;
         $response = $this->getResponse($asset, $status);
+
+        return $response;
+    }
+
+    /**
+     * @param Request $request
+     *
+     * @throws HttpException
+     *
+     * @return Response
+     *
+     * @AclAncestor("pim_api_asset_edit")
+     */
+    public function partialUpdateListAction(Request $request): Response
+    {
+        $resource = $request->getContent(true);
+        $response = $this->partialUpdateStreamResource->streamResponse($resource);
 
         return $response;
     }

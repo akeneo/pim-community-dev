@@ -447,7 +447,7 @@ JSON;
      */
     protected function sanitizeNormalizedAsset(array $asset): array
     {
-        DateSanitizer::sanitize($asset['end_of_use']);
+        $asset['end_of_use'] = DateSanitizer::sanitize($asset['end_of_use']);
 
         ksort($asset);
 

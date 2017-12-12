@@ -102,6 +102,7 @@ services:
             - '@router'
             - '@pim_api.pagination.parameter_validator'
             - '@pim_api.pagination.offset_hal_paginator'
+            - '@pim_api.stream.asset_category_partial_update_stream'
             - '%pim_api.configuration%'
 
     pimee_api.controller.asset_reference:
@@ -138,6 +139,7 @@ services:
             - '@pimee_api.updater.asset'
             - '@pimee_product_asset.saver.asset'
             - '@router'
+            - '@pim_api.stream.asset_partial_update_stream'
             - '%pim_api.configuration%'
 
     pimee_api.controller.asset_tag:
