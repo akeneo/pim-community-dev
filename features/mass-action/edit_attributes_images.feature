@@ -1,8 +1,8 @@
 @javascript
-Feature: Edit common attributes of many products at once
+Feature: Edit attributes of many products at once
   In order to update many products with the same information
   As a product manager
-  I need to be able to edit common attributes of many products at once
+  I need to be able to Edit attributes of many products at once
 
   Background:
     Given a "footwear" catalog configuration
@@ -28,27 +28,12 @@ Feature: Edit common attributes of many products at once
     And I am logged in as "Julia"
     And I am on the products grid
 
-  @jira https://akeneo.atlassian.net/browse/PIM-3282, https://akeneo.atlassian.net/browse/PIM-3880
-  Scenario: Successfully mass edit products on the non default channel
-    Given the following product values:
-      | product   | attribute                | value                   |
-      | boots     | description-en_US-tablet | A beautiful description |
-      | boots     | weight                   | 500 GRAM                |
-      | sneakers  | description-en_US-tablet | A beautiful description |
-      | sneakers  | weight                   | 500 GRAM                |
-      | sandals   | weight                   | 500 GRAM                |
-      | pump      | weight                   | 500 GRAM                |
-      | highheels | weight                   | 500 GRAM                |
-    When I show the filter "description"
-    And I switch the scope to "Tablet"
-    And I filter by "description" with operator "contains" and value "A beautiful description"
-    And I select rows sneakers
-    And I select all entities
+  Scenario: Successfully update many images values at once
+    Given I select rows sandals and sneakers
     And I press the "Bulk actions" button
-    And I choose the "Edit common attributes" operation
-    And I display the Weight attribute
-    And I change the "Weight" to "600"
+    And I choose the "Edit attributes" operation
+    And I display the Side view attribute
+    And I attach file "SNKRS-1R.png" to "Side view"
     And I confirm mass edit
-    And I wait for the "edit_common_attributes" job to finish
-    Then the metric "Weight" of products boots and sneakers should be "600"
-    And the metric "Weight" of products sandals, pump and highheels should be "500"
+    And I wait for the "edit_attributes" job to finish
+    Then the file "side_view" of products sandals and sneakers should be "SNKRS-1R.png"

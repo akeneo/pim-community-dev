@@ -167,7 +167,7 @@ class EditAttributesProcessor extends AbstractProcessor
     protected function addWarning(EntityWithFamilyInterface $entity): void
     {
         $this->stepExecution->addWarning(
-            'pim_enrich.mass_edit_action.edit-common-attributes.message.no_valid_attribute',
+            'pim_enrich.mass_edit_action.edit-attributes.message.no_valid_attribute',
             [],
             new DataInvalidItem(
                 [

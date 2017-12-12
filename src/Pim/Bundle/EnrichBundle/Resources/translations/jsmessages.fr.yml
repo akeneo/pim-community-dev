@@ -926,7 +926,7 @@ pim_enrich:
       global_settings:
         title: Paramètres généraux
   mass_edit_action:
-    edit_common_attributes:
+    edit_attributes:
       description: Les attributs des produits sélectionnés vont être édités avec les données suivantes pour la locale <span class="highlight">{{ locale }}</span> et le canal <span class="highlight">{{ channel }}</span>, choisis dans la grille des produits.
   index:
     association_type:
@@ -1112,7 +1112,7 @@ batch_jobs:
     label: Mise à jour de la valeur du produit
     perform:
       label: Mise à jour de la valeur du produit
-  edit_common_attributes:
+  edit_attributes:
     label: Modifier les attributs communs
     perform:
       label: Modifier les attributs communs

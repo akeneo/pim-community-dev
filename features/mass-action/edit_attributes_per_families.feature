@@ -1,8 +1,8 @@
 @javascript
-Feature: Edit common attributes of many products at once
+Feature: Edit attributes of many products at once
   In order to update many products with the same information
   As a product manager
-  I need to be able to edit common attributes of many products at once
+  I need to be able to Edit attributes of many products at once
 
   Background:
     Given a "footwear" catalog configuration
@@ -28,12 +28,47 @@ Feature: Edit common attributes of many products at once
     And I am logged in as "Julia"
     And I am on the products grid
 
-  Scenario: Successfully update many metric values at once
+  @jira https://akeneo.atlassian.net/browse/PIM-2163
+  Scenario: Allow editing only common attributes define from families
+    Given I select rows boots and highheels
+    And I press the "Bulk actions" button
+    And I choose the "Edit attributes" operation
+    Then I should see available attributes Name, Manufacturer and Description in group "Product information"
+    And I should see available attributes Price and Rating in group "Marketing"
+    And I should see available attribute Size in group "Sizes"
+    And I should see available attribute Color in group "Colors"
+    And I add available attributes Name and Weather conditions
+    And I change the "Weather conditions" to "Cold, Wet"
+    And I change the "Name" to "Product"
+    And I should see the text "Product"
+    And I confirm mass edit
+    And I wait for the "edit_attributes" job to finish
+    Then the product "boots" should have the following values:
+      | name-en_US         | Product       |
+      | weather_conditions | [cold], [wet] |
+    And the product "highheels" should have the following values:
+      | name-en_US | Product |
+
+  @jira https://akeneo.atlassian.net/browse/PIM-2183
+  Scenario: Allow edition on common attributes with value not in family and no value on family
+    Given the following product values:
+      | product | attribute    | value |
+      | boots   | buckle_color | Blue  |
+    When I select rows boots and high_heels
+    And I press the "Bulk actions" button
+    And I choose the "Edit attributes" operation
+    Then I should see available attribute Buckle in group "Other"
+
+  Scenario: Successfully update many price values at once
     Given I select rows boots and sandals
     And I press the "Bulk actions" button
-    And I choose the "Edit common attributes" operation
-    And I display the Weight attribute
-    And I change the "Weight" to "600"
+    And I choose the "Edit attributes" operation
+    And I display the Price attribute
+    And I change the "Price" to "100 USD"
+    And I change the "Price" to "150 EUR"
     And I confirm mass edit
-    And I wait for the "edit_common_attributes" job to finish
-    Then the metric "Weight" of products boots and sandals should be "600"
+    And I wait for the "edit_attributes" job to finish
+    Then the prices "Price" of products boots and sandals should be:
+      | amount | currency |
+      | 100    | USD      |
+      | 150    | EUR      |

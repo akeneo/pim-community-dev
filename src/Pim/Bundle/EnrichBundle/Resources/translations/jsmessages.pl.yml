@@ -625,7 +625,7 @@ pim_enrich:
       global_settings:
         title: Ustawienia ogólne
   mass_edit_action:
-    edit_common_attributes:
+    edit_attributes:
       description: Atrybuty wybranych produktów będą edytowane z następującymi danymi dla ustawienia regionalnego <span class = "highlight"> {{ locale }} </span> oraz kanału <span class = "highlight"> {{ channel }} </span>, wybrane z listy produktów.
   index:
     group:
@@ -675,7 +675,7 @@ batch_jobs:
     label: Aktualizacja wartości produktu
     perform:
       label: Aktualizacja wartości produktu
-  edit_common_attributes:
+  edit_attributes:
     label: Edytuj wspólne atrybuty
     perform:
       label: Edytuj wspólne atrybuty

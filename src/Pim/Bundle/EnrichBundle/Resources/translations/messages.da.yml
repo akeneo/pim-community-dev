@@ -84,7 +84,7 @@ pim_enrich:
       description: De valgte produkter vil blive aktiveret eller deaktiveret.
       success_flash: Produkt(er) status er blevet ændret
       launched_flash: Bulk-handlingen "Skift status" er blevet iværksat. Du får besked, når det er afsluttet.
-    edit-common-attributes:
+    edit-attributes:
       label: Rediger attributter
       description: De valgte produktattributter vil blive redigeret med følgende data for den valgte landestandard.
       empty: Vælg venligst den eller de attribut(ter), du vil redigere
@@ -636,7 +636,7 @@ pim_enrich.mass_edit_action:
     label: Skift status
     description: De valgte produkter vil blive aktiveret eller deaktiveret.
     success_flash: Produkt(er) status er blevet ændret
-  edit-common-attributes:
+  edit-attributes:
     label: Rediger fælles attributter
     description: De valgte produktattributter vil blive redigeret med følgende data for den valgte landestandard.
     empty: Vælg venligst den eller de attribut(ter), du vil redigere
@@ -757,11 +757,11 @@ job_execution.summary:
   skipped_attributes: Egneskaber sprunget over
   skipped_families: Familier sprunget over
 pim_mass_edit_execution_show: Masse redigere udførsler | Detaljer
-edit_common_attributes.steps.edit_common_attributes_processor.title: Rediger fælles attributter
+edit_attributes.steps.edit_attributes_processor.title: Rediger fælles attributter
 update_product_value.steps.update_product_value_processor.title: Opdatere produktets værdi
 remove_product_value.steps.update_product_value_processor.title: Fjern produktværdi
-edit_common_attributes: Rediger fælles attributter
-edit_common_attributes_clean: Rens filer til fælles attributter
+edit_attributes: Rediger fælles attributter
+edit_attributes_clean: Rens filer til fælles attributter
 perform.steps.duplicated.title: Duplikeret akse
 perform.steps.excluded.title: Udelukkede produkt
 batch_jobs:
@@ -773,7 +773,7 @@ batch_jobs:
     label: Opdatere produktets værdi
     perform:
       label: Opdatere produktets værdi
-  edit_common_attributes:
+  edit_attributes:
     label: Rediger fælles attributter
     perform:
       label: Rediger fælles attributter

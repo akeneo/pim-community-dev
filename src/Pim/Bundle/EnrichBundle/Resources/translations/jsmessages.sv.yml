@@ -688,7 +688,7 @@ pim_enrich:
       global_settings:
         title: Globala inställningar
   mass_edit_action:
-    edit_common_attributes:
+    edit_attributes:
       description: Valda produktens attribut kommer att redigeras med följande uppgifter för det språk <span class="highlight">{{ locale }}</span> och den kanal <span class="highlight">{{ channel }}</span>, valda i produktlistan.
 pim_enrich.error:
   exception.title: Oh snap! Ett {{ status_code }} fel uppstod...

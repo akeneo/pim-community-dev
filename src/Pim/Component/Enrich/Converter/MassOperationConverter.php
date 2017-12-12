@@ -15,7 +15,7 @@ use Pim\Component\Enrich\Converter\ConverterInterface;
  */
 class MassOperationConverter implements ConverterInterface
 {
-    const EDIT_COMMON_JOB_CODE = 'edit_common_attributes';
+    const EDIT_COMMON_JOB_CODE = 'edit_attributes';
 
     /** @var UserContext */
     protected $userContext;

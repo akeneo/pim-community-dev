@@ -84,7 +84,7 @@ pim_enrich:
       description: Les produits sélectionnés vont être activés ou désactivés.
       success_flash: Le statut des produits ont été changés
       launched_flash: L'action de masse "changement de statut" a été lancée. Vous serez notifié(e) lorsque la modification sera terminée.
-    edit-common-attributes:
+    edit-attributes:
       label: Modifier des attributs
       description: Les attributs sélectionnés du produit vont être modifiés avec les valeurs suivantes pour la locale choisie.
       empty: Veuillez sélectionner le ou les attribut(s) à modifier
@@ -636,7 +636,7 @@ pim_enrich.mass_edit_action:
     label: Changer le statut
     description: Les produits sélectionnés vont être activés ou désactivés.
     success_flash: Le statut des produits ont été changés
-  edit-common-attributes:
+  edit-attributes:
     label: Modifier les attributs communs
     description: Les attributs sélectionnés du produit vont être modifiés avec les valeurs suivantes pour la locale choisie.
     empty: Veuillez sélectionner le ou les attribut(s) à modifier
@@ -757,11 +757,11 @@ job_execution.summary:
   skipped_attributes: Attributs ignorés
   skipped_families: Familles ignorées
 pim_mass_edit_execution_show: Exécutions des éditions en masse | Détails
-edit_common_attributes.steps.edit_common_attributes_processor.title: Modifier les attributs communs
+edit_attributes.steps.edit_attributes_processor.title: Modifier les attributs communs
 update_product_value.steps.update_product_value_processor.title: Mise à jour de la valeur du produit
 remove_product_value.steps.update_product_value_processor.title: Suppression de la valeur du produit
-edit_common_attributes: Modifier les attributs communs
-edit_common_attributes_clean: Nettoyer les fichiers pour les attributs communs
+edit_attributes: Modifier les attributs communs
+edit_attributes_clean: Nettoyer les fichiers pour les attributs communs
 perform.steps.duplicated.title: Axe dupliqué
 perform.steps.excluded.title: Produit exclu
 batch_jobs:
@@ -773,7 +773,7 @@ batch_jobs:
     label: Mise à jour de la valeur du produit
     perform:
       label: Mise à jour de la valeur du produit
-  edit_common_attributes:
+  edit_attributes:
     label: Modifier les attributs communs
     perform:
       label: Modifier les attributs communs

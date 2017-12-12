@@ -914,7 +914,7 @@ pim_enrich:
       global_settings:
         title: Yleiset asetukset
   mass_edit_action:
-    edit_common_attributes:
+    edit_attributes:
       description: Tuoteruudukosta valitun tuotteen attribuutit muokataan seuraavilla tiedoilla lokaatiolle <span class="highlight">{{ locale }}</span> ja kanavalle <span class="highlight">{{ channel }}</span>.
   index:
     association_type:
@@ -1100,7 +1100,7 @@ batch_jobs:
     label: Päivitä tuotteen arvo
     perform:
       label: Päivitä tuotteen arvo
-  edit_common_attributes:
+  edit_attributes:
     label: Muokkaa yleisiä attribuutteja
     perform:
       label: Muokkaa yleisiä attribuutteja

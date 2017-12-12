@@ -873,7 +873,7 @@ pim_enrich:
       global_settings:
         title: Globale Einstellungen
   mass_edit_action:
-    edit_common_attributes:
+    edit_attributes:
       description: Die ausgewählten Produktattribute werden für die folgenden Daten des Gebietsschemas <span class="bold-purple">{{ locale }}</span> und dem Ausgabekanal <span class="bold-purple">{{ channel }}</span>, welche in der Produktübersicht ausgewählt sind, bearbeitet.
   index:
     association_type:
@@ -1015,7 +1015,7 @@ batch_jobs:
     label: Wert des Produkts aktualisieren
     perform:
       label: Wert des Produkts aktualisieren
-  edit_common_attributes:
+  edit_attributes:
     label: Gemeinsame Attribute bearbeiten
     perform:
       label: Gemeinsame Attribute bearbeiten

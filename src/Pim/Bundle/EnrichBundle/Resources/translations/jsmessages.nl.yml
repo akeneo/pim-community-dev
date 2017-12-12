@@ -756,7 +756,7 @@ pim_enrich:
       global_settings:
         title: Algemene instellingen
   mass_edit_action:
-    edit_common_attributes:
+    edit_attributes:
       description: Het attribuut van het geselecteerde product zal worden gewijzigd met de volgende data voor de landinstelling <span class="highlight">{{ locale }}</span> en het kanaal <span class="highlight">{{ channel }}</span> gekozen in het product raster.
   index:
     import_profiles:

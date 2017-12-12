@@ -1,8 +1,8 @@
 @javascript
-Feature: Edit common attributes with permissions
-  In order to update attributes with edit common attributes
+Feature: Edit attributes with permissions
+  In order to update attributes with Edit attributes
   As a product manager
-  I need to be able to add attributes with edit common attributes when I have no 'add attribute' permission
+  I need to be able to add attributes with Edit attributes when I have no 'add attribute' permission
 
   Background:
     Given a "footwear" catalog configuration
@@ -16,10 +16,10 @@ Feature: Edit common attributes with permissions
     And I am on the products grid
     And I select row boots
     And I press the "Bulk actions" button
-    When I choose the "Edit common attributes" operation
+    When I choose the "Edit attributes" operation
     Then I should see the text "Select attributes"
     And I display the Name attribute
     And I change the "Name" to "boots"
     And I confirm mass edit
-    And I wait for the "edit_common_attributes" job to finish
+    And I wait for the "edit_attributes" job to finish
     And the english localizable value name of "boots" should be "boots"

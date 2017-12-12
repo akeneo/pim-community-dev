@@ -1,6 +1,6 @@
 'use strict';
 /**
- * Edit common attributes operation
+ * Edit attributes operation
  *
  * @author    Julien Sanchez <julien@akeneo.com>
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
@@ -17,7 +17,7 @@ define(
         'pim/form-builder',
         'pim/fetcher-registry',
         'pim/i18n',
-        'pim/template/mass-edit/product/edit-common-attributes'
+        'pim/template/mass-edit/product/edit-attributes'
     ],
     function (
         $,
@@ -81,7 +81,7 @@ define(
 
                 this.formPromise.then(function (form) {
                     this.$el.html(this.template());
-                    form.setElement(this.$('.edit-common-attributes')).render();
+                    form.setElement(this.$('.edit-attributes')).render();
                     form.trigger('pim_enrich:form:update_read_only', this.readOnly);
 
                     // This method renders a complete PEF page, we need to remove useless elements manually.

@@ -756,7 +756,7 @@ pim_enrich:
       global_settings:
         title: Configuració global
   mass_edit_action:
-    edit_common_attributes:
+    edit_attributes:
       description: Els atributs del producte seleccionat s'editaran amb les següents dades per la configuració regional <span class="highlight">{{ locale }}</span> i el canal <span class="highlight">{{ channel }}</span>, seleccionats a la quadrícula de productes.
   index:
     import_profiles:
@@ -856,7 +856,7 @@ batch_jobs:
     label: Actualitzar el valor del producte
     perform:
       label: Actualitzar el valor del producte
-  edit_common_attributes:
+  edit_attributes:
     label: Editar atributs comuns
     perform:
       label: Editar atributs comuns

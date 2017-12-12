@@ -808,7 +808,7 @@ pim_enrich:
       global_settings:
         title: Configuración global
   mass_edit_action:
-    edit_common_attributes:
+    edit_attributes:
       description: Los atributos seleccionados serán editados con la siguiente información para el local <span class="highlight">{{ locale }}</span> y el canal <span class="highlight">{{ channel }}</span> elegidos en la grilla de productos.
   index:
     import_profiles:
@@ -908,7 +908,7 @@ batch_jobs:
     label: Actualizar el valor del producto
     perform:
       label: Actualizar el valor del producto
-  edit_common_attributes:
+  edit_attributes:
     label: Editar atributos comunes
     perform:
       label: Editar atributos comunes

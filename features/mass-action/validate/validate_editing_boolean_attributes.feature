@@ -1,5 +1,5 @@
 @javascript
-Feature: Validate editing common date attributes of multiple products
+Feature: Validate editing common boolean attributes of multiple products
   In order to update multiple products with valid data
   As a product manager
   I need values to be validated when editing common attributes of products
@@ -40,34 +40,24 @@ Feature: Validate editing common date attributes of multiple products
     And I am logged in as "Julia"
     And I am on the products grid
 
-  Scenario: Successfully mass edit a date attribute
+  Scenario: Successfully mass edit a boolean attribute
     Given I select rows boots and sneakers
     And I press the "Bulk actions" button
-    And I choose the "Edit common attributes" operation
-    And I display the Date attribute
-    And I change the Date to "01/01/2015"
+    And I choose the "Edit attributes" operation
+    And I display the Available attribute
+    And I check the "Available" switch
     And I confirm mass edit
-    And I wait for the "edit_common_attributes" job to finish
-    Then attribute Date of "boots" should be "2015-01-01"
-    And attribute Date of "sneakers" should be "2015-01-01"
+    And I wait for the "edit_attributes" job to finish
+    Then attribute Available of "boots" should be "true"
+    And attribute Available of "sneakers" should be "true"
     When I am on the products grid
     And I select rows boots, sandals and sneakers
     And I press the "Bulk actions" button
-    And I choose the "Edit common attributes" operation
-    And I display the Date attribute
+    And I choose the "Edit attributes" operation
+    And I display the Available attribute
+    And I uncheck the "Available" switch
     And I confirm mass edit
-    And I wait for the "edit_common_attributes" job to finish
-    Then attribute Date of "boots" should be ""
-    And attribute Date of "sandals" should be ""
-    And attribute Date of "sneakers" should be ""
-    When I am on the products grid
-    And I select rows boots, sandals and sneakers
-    And I press the "Bulk actions" button
-    And I choose the "Edit common attributes" operation
-    And I display the Date attribute
-    And I change the Date to "01/01/2013"
-    And I move on to the next step
-    Then I should see validation tooltip "This date should be 2014-01-01 or after."
-    And attribute Date of "boots" should be ""
-    And attribute Date of "sandals" should be ""
-    And attribute Date of "sneakers" should be ""
+    And I wait for the "edit_attributes" job to finish
+    Then attribute Available of "boots" should be "false"
+    And attribute Available of "sneakers" should be "false"
+    And attribute Available of "sandals" should be "false"

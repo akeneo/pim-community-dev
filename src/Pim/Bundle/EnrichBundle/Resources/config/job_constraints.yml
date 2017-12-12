@@ -12,7 +12,7 @@ services:
                 - 'update_product_value'
                 - 'add_product_value'
                 - 'remove_product_value'
-                - 'edit_common_attributes'
+                - 'edit_attributes'
                 - 'add_to_existing_product_model'
         tags:
             - { name: akeneo_batch.job.job_parameters.constraint_collection_provider }

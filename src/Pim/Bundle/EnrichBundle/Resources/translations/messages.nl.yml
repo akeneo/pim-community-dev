@@ -73,7 +73,7 @@ pim_enrich:
       description: De geselecteerde producten zullen worden ingeschakeld of uitgeschakeld.
       success_flash: De status van één of meerdere producten is gewijzigd
       launched_flash: De massa actie "verander status" is gestart. U wordt op de hoogte gebracht wanneer dit is voltooid.
-    edit-common-attributes:
+    edit-attributes:
       label: Bewerk attributen
       description: De attributen van het geselecteerde product zullen worden bewerkt met de volgende gegevens voor de gekozen lokalisatie.
       empty: Selecteer de attributen die u wilt bewerken
@@ -577,7 +577,7 @@ pim_enrich.mass_edit_action:
     label: Status wijzigen
     description: De geselecteerde producten zullen worden ingeschakeld of uitgeschakeld.
     success_flash: De status van één of meerdere producten is gewijzigd
-  edit-common-attributes:
+  edit-attributes:
     description: De attributen van het geselecteerde product zullen worden bewerkt met de volgende gegevens voor de gekozen lokalisatie.
     empty: Selecteer de attributen die u wilt bewerken
     success_flash: Productattributen zijn bijgewerkt

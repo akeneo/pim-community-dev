@@ -29,16 +29,16 @@ Feature: Display jobs execution in job tracker
     When I am on the products grid
     Then I select rows Boots, Sandals and Sneakers
     And I press the "Bulk actions" button
-    And I choose the "Edit common attributes" operation
+    And I choose the "Edit attributes" operation
     And I display the Name attribute
     And I change the "Name" to "boots"
     And I confirm mass edit
-    And I wait for the "edit_common_attributes" job to finish
+    And I wait for the "edit_attributes" job to finish
     When I am on the dashboard page
     When I am on the job tracker page
     And I should see the columns Job, Type, Started at, Status and Warnings
     And the grid should contain 1 element
-    And I should see entity Mass edit common product attributes
+    And I should see entity Mass edit product attributes
 
   Scenario: Display an import in the job tracker
     Given I am logged in as "Julia"

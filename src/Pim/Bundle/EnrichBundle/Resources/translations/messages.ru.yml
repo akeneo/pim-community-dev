@@ -84,7 +84,7 @@ pim_enrich:
       description: Выбранные продукты будут активированы или деактивированы.
       success_flash: Статус продукта(ов) был изменен
       launched_flash: Было начато массовое действие «изменить статус». Вы будете уведомлены, когда оно будет завершено.
-    edit-common-attributes:
+    edit-attributes:
       label: Редактировать атрибуты
       description: Выбранные атрибуты продуктов будут изменены следующими данными для выбранной локали.
       empty: Пожалуйста, выберите один или несколько атрибутов, которые вы хотите редактировать
@@ -621,7 +621,7 @@ pim_enrich.mass_edit_action:
     label: Изменить статус
     description: Выбранные продукты будут активированы или деактивированы.
     success_flash: Статус продукта(ов) был изменен
-  edit-common-attributes:
+  edit-attributes:
     label: Изменить общие атрибуты
     description: Выбранные атрибуты продуктов будут изменены следующими данными для выбранной локали.
     empty: Пожалуйста, выберите один или несколько атрибутов, которые вы хотите редактировать
@@ -738,11 +738,11 @@ job_execution.summary:
   skipped_products: Пропущенные продукты
   skipped_attributes: Пропущенные атрибуты
 pim_mass_edit_execution_show: Задачи массового редактирования | Детали
-edit_common_attributes.steps.edit_common_attributes_processor.title: Изменить общие атрибуты
+edit_attributes.steps.edit_attributes_processor.title: Изменить общие атрибуты
 update_product_value.steps.update_product_value_processor.title: Обновить значение продукта
 remove_product_value.steps.update_product_value_processor.title: Удалить значение продукта
-edit_common_attributes: Изменить общие атрибуты
-edit_common_attributes_clean: Редактировать файлы общих атрибутов
+edit_attributes: Изменить общие атрибуты
+edit_attributes_clean: Редактировать файлы общих атрибутов
 perform.steps.duplicated.title: Продублированные оси
 perform.steps.excluded.title: Исключенные продукты
 batch_jobs:
@@ -754,7 +754,7 @@ batch_jobs:
     label: Обновить значение продукта
     perform:
       label: Обновить значение продукта
-  edit_common_attributes:
+  edit_attributes:
     label: Изменить общие атрибуты
     perform:
       label: Изменить общие атрибуты

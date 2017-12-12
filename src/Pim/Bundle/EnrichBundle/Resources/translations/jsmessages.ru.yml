@@ -750,7 +750,7 @@ pim_enrich:
       global_settings:
         title: Глобальные настройки
   mass_edit_action:
-    edit_common_attributes:
+    edit_attributes:
       description: Атрибуты выбранного продукта будут редактироваться со следующими данными для локали <span class="highlight">{{ locale }}</span> и канала <span class="highlight">{{ channel }}</span>, выбранных в таблице продуктов.
   index:
     import_profiles:
@@ -850,7 +850,7 @@ batch_jobs:
     label: Обновить значение продукта
     perform:
       label: Обновить значение продукта
-  edit_common_attributes:
+  edit_attributes:
     label: Изменить общие атрибуты
     perform:
       label: Изменить общие атрибуты

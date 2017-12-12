@@ -98,7 +98,7 @@ pim_enrich:
       description: De utvalda produkterna kommer att aktiveras eller inaktiveras.
       success_flash: Produkt(er) status har ändrats
       launched_flash: Massåtgärd "ändra status" har inletts. Du meddelas när det är gjort.
-    edit-common-attributes:
+    edit-attributes:
       label: Redigera Attribut
       description: Valda produktens attribut kommer att redigeras med följande uppgifter för det valda språket.
       empty: Välj de attribut(er) som du vill redigera
@@ -700,7 +700,7 @@ pim_enrich.mass_edit_action:
     label: Ändra status (aktivera / inaktivera)
     description: De utvalda produkterna kommer att aktiveras eller inaktiveras.
     success_flash: Produkt(er) status har ändrats
-  edit-common-attributes:
+  edit-attributes:
     label: Redigera vanliga attribut(er)
     description: Den valda produktens attribut kommer att redigeras med följande uppgifter för det valda språket.
     empty: Välj de attribut(er) som du vill redigera
@@ -844,7 +844,7 @@ job_execution.summary:
   skipped_attributes: Överhoppade attribut
   skipped_families: Överhoppade familjer
 pim_mass_edit_execution_show: Massa redigera utförande | Detaljer
-edit_common_attributes.steps.edit_common_attributes_processor.title: Redigera vanliga attribut
+edit_attributes.steps.edit_attributes_processor.title: Redigera vanliga attribut
 update_product_value.steps.update_product_value_processor.title: Uppdatera produktens värde
 remove_product_value.steps.update_product_value_processor.title: Ta bort produktvärde
 add_to_variant_group_clean.steps.excluded.title: Utesluten produkt
@@ -852,8 +852,8 @@ add_to_variant_group_clean.steps.duplicated.title: Duplicerade Axis
 add_to_variant_group.steps.excluded.title: Uteslutna produkt
 add_to_variant_group.steps.duplicated.title: Duplicerade Axis
 add_to_variant_group.steps.cleaner.warning.description: 'Produkten kan inte anges i den valda variantgrupp: duplicera variation axelvärden med en annan produkt i urval'
-edit_common_attributes: Redigera vanliga attribut(er)
-edit_common_attributes_clean: Rensa filer för vanliga attribut
+edit_attributes: Redigera vanliga attribut(er)
+edit_attributes_clean: Rensa filer för vanliga attribut
 perform.steps.duplicated.title: Duplicerade Axlar
 perform.steps.excluded.title: Uteslutna produkt
 batch_jobs:
@@ -865,7 +865,7 @@ batch_jobs:
     label: Uppdatera produktens värde
     perform:
       label: Uppdatera produktens värde
-  edit_common_attributes:
+  edit_attributes:
     label: Redigera vanliga attribut
     perform:
       label: Redigera vanliga attribut

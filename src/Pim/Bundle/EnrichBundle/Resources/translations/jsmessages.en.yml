@@ -949,7 +949,7 @@ pim_enrich:
             global_settings:
                 title: Global settings
     mass_edit_action:
-        edit_common_attributes:
+        edit_attributes:
             description: The selected product's attributes will be edited with the following data for the locale <span class="highlight">{{ locale }}</span> and the channel <span class="highlight">{{ channel }}</span>, chosen in the products grid.
     index:
         association_type:
@@ -1040,8 +1040,8 @@ pim_enrich:
                     description: The selected products will be enabled or disabled.
                     field: To enable
                 edit_common:
-                    label: Edit common attributes
-                    label_count: "{1}Edit common attributes of <span class=\"AknFullPage-title--highlight\">1 product</span>|] 1, Inf [Edit common attributes of <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span>"
+                    label: Edit attributes
+                    label_count: "{1}Edit attributes of <span class=\"AknFullPage-title--highlight\">1 product</span>|] 1, Inf [Edit attributes of <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span>"
                     description: The selected product's attributes will be edited with the following data for the locale {{ locale }} and the channel {{ scope }}, chosen in the products grid.
                 change_family:
                     label: Change family
@@ -1144,10 +1144,10 @@ batch_jobs:
         label: Update product value
         perform:
             label: Update product value
-    edit_common_attributes:
-        label: Edit common attributes
+    edit_attributes:
+        label: Edit attributes
         perform:
-            label: Edit common attributes
+            label: Edit attributes
         cleaner:
             label: Clean files for common attributes
     add_to_existing_product_model:

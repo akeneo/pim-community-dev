@@ -896,7 +896,7 @@ pim_enrich:
       global_settings:
         title: Impostazioni Globali
   mass_edit_action:
-    edit_common_attributes:
+    edit_attributes:
       description: Gli attributi dei prodotto selezionati nella griglia verranno modificati con i dati seguenti per le impostazioni internazionali <span class="highlight">{{ locale }}</span> e per il canale <span class="highlight">{{ channel }}</span>.
   index:
     association_type:
@@ -1082,7 +1082,7 @@ batch_jobs:
     label: Aggiorna il valore di prodotto
     perform:
       label: Aggiorna il valore di prodotto
-  edit_common_attributes:
+  edit_attributes:
     label: Modifica gli attributi comuni
     perform:
       label: Modifica gli attributi comuni
