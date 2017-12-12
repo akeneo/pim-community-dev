@@ -20,7 +20,7 @@ Feature: Edit asset collection of many products at once
   Scenario: Allow editing all attributes on configuration screen
     Given I select rows boots, sneakers and sandals
     And I press the "Bulk actions" button
-    And I choose the "Edit common attributes" operation
+    And I choose the "Edit attributes" operation
     And I display the Front view attribute
     And I start to manage assets for "Front view"
     And I should see the columns Thumbnail, Code, Description, End of use, Created at and Last updated at
