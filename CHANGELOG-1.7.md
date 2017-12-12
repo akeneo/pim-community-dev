@@ -1,3 +1,12 @@
+# 1.7.x
+
+## Bug fixes
+
+- PIM-7054 optimize completeness generator
+
+
+# 1.7.14 (2017-11-21)
+
 # 1.7.13 (2017-11-09)
 
 ## Bug fixes
