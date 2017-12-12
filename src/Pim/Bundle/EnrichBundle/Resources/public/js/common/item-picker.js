@@ -320,7 +320,8 @@ define(
                             imagePathMethod: this.imagePathMethod.bind(this),
                             columnName: this.config.columnName,
                             identifierName: this.config.columnName,
-                            labelMethod: this.labelMethod.bind(this)
+                            labelMethod: this.labelMethod.bind(this),
+                            itemCodeMethod: this.itemCodeMethod.bind(this)
                         }));
 
                         this.delegateEvents();

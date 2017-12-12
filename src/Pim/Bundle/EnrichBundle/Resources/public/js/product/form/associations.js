@@ -626,8 +626,8 @@ define(
                     });
 
                     const assocType = this.getCurrentAssociationType();
-                    const previousProductIds = this.getFormData().associations[assocType]['products'];
-                    const previousProductModelIds = this.getFormData().associations[assocType]['product_models'];
+                    const previousProductIds = this.getFormData().associations[assocType].products;
+                    const previousProductModelIds = this.getFormData().associations[assocType].product_models;
 
                     this.updateFormDataAssociations(
                         previousProductIds.concat(productIds),

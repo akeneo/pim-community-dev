@@ -19,6 +19,7 @@
 - API-443: Prevent getting asset via media file url of the API
 - PIM-6996: Associate products to product models during import using the `<assocType>-product_models` pattern in an new column
 - PIM-6342: Display and remove associations gallery view
+- PIM-7033: Allow user to select product models as associations in UI
 - PIM-7051: Add images to associated products that have asset collection as main image
 - PIM-7046: Add ability to customise empty grid message and illustration
 - PIM-6917: Fix CSS glitches
@@ -47,7 +48,7 @@ Removed typehint of ProductInterface in the Pim\Component\Catalog\Updater\Setter
 ## Improvements
 
 - PIM-6480: Add gallery view and display selector to the product grid
-- PIM-6621: add search on label and code on products and product models
+- PIM-6621: Add search on label and code on products and product models
 - PIM-6966: Add tracker information for product model, product variant and family variant
 - PIM-6990: Add new screen for managing product associations
 
