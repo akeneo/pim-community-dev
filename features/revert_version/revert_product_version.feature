@@ -121,7 +121,7 @@ Feature: Revert a product to a previous version
     Then I visit the "History" column tab
     Then I should see 3 versions in the history
     When I revert the product version number 2
-    Then the category of "sandals" should be "winter_collection"
+    Then the category of the product "sandals" should be "winter_collection"
 
   @skip-nav @jira https://akeneo.atlassian.net/browse/PIM-5796
   Scenario: Hide revert button if user cannot revert a product
