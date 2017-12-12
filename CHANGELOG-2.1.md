@@ -6,6 +6,10 @@
 - API-443: Prevent getting asset via media file url of the API
 - PIM-6996: Associate products to product models during import using the `<assocType>-product_models` pattern in an new column
 - PIM-6342: Display and remove associations gallery view
+- PIM-7051: Add images to associated products that have asset collection as main image
+
+## BC breaks
+- Change the constructor of `Pim\Bundle\DataGridBundle\Normalizer\ProductAssociationNormalizer` to add `Pim\Bundle\EnrichBundle\Normalizer\ImageNormalizer` parameter
 
 ## Update jobs
 
