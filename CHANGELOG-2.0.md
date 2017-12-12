@@ -1,5 +1,10 @@
 # 2.0.x
 
+## Bug fixes
+
+- PIM-7037: Allows code to be an integer on product model import
+- PIM-7011: XLS Options Import - Simple select attribute option cannot be updated for options with numeric codes
+
 ## Better manage products with variants!
 
 - PIM-6341: Allow cascade deletion of product models via the grid and PEF
@@ -17,7 +22,6 @@
 - PIM-7035: fix reset login page style and error 500 thrown after submitting form
 - PIM-7045: fix memory leak in step `Compute product model descendants` for product model import
 - PIM-6958: fix loading a product with a reference data that is not available (simpleselect or multiselect)
-- PIM-7011: XLS Options Import - Simple select attribute option cannot be updated for options with numeric codes
 
 ## Better manage products with variants!
 
