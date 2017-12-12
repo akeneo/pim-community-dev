@@ -319,7 +319,7 @@ Feature: Read a single product by applying rules
               - tshirts
       """
     Then product "my-jacket" should be enabled
-    And the category of "my-jacket" should be "jackets"
+    And the category of the product "my-jacket" should be "jackets"
     And the product rule "set_jacket" is executed
     Then the product "my-jacket" should have the following values:
       | name-fr_FR               | Veste blanche      |
@@ -334,7 +334,7 @@ Feature: Read a single product by applying rules
       | price-EUR                | 180.00             |
       | description-fr_FR-tablet | En cuir            |
     Then product "my-jacket" should be disabled
-    And the category of "my-jacket" should be "winter_top, tshirts"
+    And the category of the product "my-jacket" should be "winter_top, tshirts"
 
 
   Scenario: Successfully execute a rule with copier actions to update non empty values on all kind of attributes
@@ -577,11 +577,11 @@ Feature: Read a single product by applying rules
             items:
               - tshirts
       """
-    And the category of "my-jacket" should be "jackets"
+    And the category of the product "my-jacket" should be "jackets"
     And the product rule "rule_sku_jacket" is executed
     Then the product "my-jacket" should have the following values:
       | weather_conditions | [cold], [dry], [hot], [wet] |
-    And the category of "my-jacket" should be "jackets, tshirts"
+    And the category of the product "my-jacket" should be "jackets, tshirts"
 
   Scenario: Successfully execute a rule with an "equals" condition
     Given the following products:
