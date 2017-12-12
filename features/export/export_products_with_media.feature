@@ -53,7 +53,7 @@ Feature: Export products with media
     And I am on the products grid
     And I select rows FLIPFLOP-1R and FLIPFLOP-1C
     And I press the "Bulk actions" button
-    And I choose the "Edit common attributes" operation
+    And I choose the "Edit attributes" operation
     And I display the Picture attribute
     And I attach file "akeneo.jpg" to "Picture"
     And I confirm mass edit
@@ -62,7 +62,7 @@ Feature: Export products with media
     And I am on the products grid
     And I select row FLIPFLOP-1C
     And I press the "Bulk actions" button
-    And I choose the "Edit common attributes" operation
+    And I choose the "Edit attributes" operation
     And I display the Picture attribute
     And I attach file "" to "Picture"
     And I confirm mass edit

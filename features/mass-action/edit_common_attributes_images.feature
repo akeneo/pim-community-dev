@@ -31,7 +31,7 @@ Feature: Edit common attributes of many products at once
   Scenario: Successfully update many images values at once
     Given I select rows sandals and sneakers
     And I press the "Bulk actions" button
-    And I choose the "Edit common attributes" operation
+    And I choose the "Edit attributes" operation
     And I display the Side view attribute
     And I attach file "SNKRS-1R.png" to "Side view"
     And I confirm mass edit
