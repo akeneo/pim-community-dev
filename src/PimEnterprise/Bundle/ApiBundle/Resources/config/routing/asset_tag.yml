@@ -1,0 +1,4 @@
+pimee_api_asset_tag_get:
+    path: /asset-tags/{code}
+    defaults: { _controller: pimee_api.controller.asset_tag:getAction, _format: json }
+    methods: [GET]
