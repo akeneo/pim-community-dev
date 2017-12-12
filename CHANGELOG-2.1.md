@@ -9,6 +9,7 @@
 - PIM-7051: Add images to associated products that have asset collection as main image
 
 ## BC breaks
+
 - Change the constructor of `Pim\Bundle\DataGridBundle\Normalizer\ProductAssociationNormalizer` to add `Pim\Bundle\EnrichBundle\Normalizer\ImageNormalizer` parameter
 
 ## Update jobs
