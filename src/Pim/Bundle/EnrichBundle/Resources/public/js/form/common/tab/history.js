@@ -13,7 +13,7 @@ define([
         __
     ) {
         return BaseForm.extend({
-            className: 'tabbable tabs-left history',
+            className: 'tabbable history',
             historyGrid: null,
 
             /**
