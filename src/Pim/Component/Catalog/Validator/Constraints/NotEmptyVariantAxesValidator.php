@@ -60,9 +60,10 @@ class NotEmptyVariantAxesValidator extends ConstraintValidator
 
         foreach ($axes as $axis) {
             $value = $entity->getValue($axis->getCode());
+            $isEmptyMetricValue = (null !== $value && $value->getData() instanceof MetricInterface &&
+                null === $value->getData()->getData());
 
-            if ((null === $value || (empty($value->getData()) && !is_bool($value->getData()))) ||
-                (null !== $value && $value->getData() instanceof MetricInterface && null === $value->getData()->getData())) {
+            if ((null === $value || (empty($value->getData()) && !is_bool($value->getData()))) || $isEmptyMetricValue) {
                 $this->context->buildViolation(NotEmptyVariantAxes::EMPTY_AXIS_VALUE, [
                     '%attribute%' => $axis->getCode()
                 ])->atPath($constraint->propertyPath)->addViolation();
