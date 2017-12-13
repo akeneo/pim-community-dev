@@ -136,6 +136,10 @@ class Grid extends Index
         ],
         'label_or_identifier' => [
             'Pim\Behat\Decorator\Grid\Filter\SearchDecorator',
+        ],
+        'parent' => [
+            'Pim\Behat\Decorator\Grid\Filter\BaseDecorator',
+            'Pim\Behat\Decorator\Grid\Filter\ChoiceDecorator',
         ]
     ];
 

@@ -45,9 +45,9 @@ class ParentFilter extends AbstractFieldFilter implements FieldFilterInterface
             throw new \LogicException('The search query builder is not initialized in the filter.');
         }
 
-        if ($operator === Operators::IN_LIST) {
-            $this->checkValue($field, $value);
-        }
+//        if ($operator === Operators::IN_LIST) {
+//            $this->checkValue($field, $value);
+//        }
 
         switch ($operator) {
             case Operators::IN_LIST:
@@ -83,7 +83,7 @@ class ParentFilter extends AbstractFieldFilter implements FieldFilterInterface
      *
      * @throws ObjectNotFoundException
      */
-    protected function checkValue($field, $values)
+    protected function checkValue($field, $values): bool
     {
         FieldFilterHelper::checkArray($field, $values, static::class);
         foreach ($values as $value) {

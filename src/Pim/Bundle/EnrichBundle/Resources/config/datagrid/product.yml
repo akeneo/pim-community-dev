@@ -279,3 +279,12 @@ datagrid:
                     type: label_or_identifier
                     label: Label or identifier
                     data_name: label_or_identifier
+                parent:
+                    label:         Parent
+                    data_name:     parent
+                    type:          product_value_string
+                    ftype:         parent
+                    options:
+                        field_options:
+                            attr:
+                                choice_list: true

@@ -125,6 +125,7 @@ config:
         oro/datafilter/select-filter:               pimdatagrid/js/datafilter/filter/select-filter
         oro/datafilter/select-row-filter:           pimdatagrid/js/datafilter/filter/select-row-filter
         oro/datafilter/text-filter:                 pimdatagrid/js/datafilter/filter/text-filter
+        oro/datafilter/parent-filter:               pimdatagrid/js/datafilter/filter/parent-filter
         pim/filter/text:                            pimdatagrid/js/datafilter/filter/text-filter
         oro/datafilter/abstract-formatter:          pimdatagrid/js/datafilter/formatter/abstract-formatter
         oro/datafilter/filters-manager:             pimdatagrid/js/datafilter/filters-manager

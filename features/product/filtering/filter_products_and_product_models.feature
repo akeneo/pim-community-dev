@@ -43,3 +43,8 @@ Feature: Filter product and product models
     When I am on the products page
     Then I should see products tshirt-unique-color
     And I should see the product models tshirt-kurt-cobain-s
+
+  Scenario: Successfully filters on the parent field
+    Given I am on the products grid
+    When I filter by "parent" with operator "IN LIST" and value "model-braided-hat"
+    Then I should see products braided-hat-m, braided-hat-xxxl
