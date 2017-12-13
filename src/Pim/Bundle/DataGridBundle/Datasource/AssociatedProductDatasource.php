@@ -6,6 +6,7 @@ use Akeneo\Component\StorageUtils\Cursor\CursorInterface;
 use Akeneo\Component\StorageUtils\Exception\InvalidObjectException;
 use Oro\Bundle\DataGridBundle\Datasource\ResultRecord;
 use Pim\Bundle\DataGridBundle\Extension\Pager\PagerExtension;
+use Pim\Component\Catalog\Model\AssociationInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
 use Pim\Component\Catalog\Query\Filter\Operators;
@@ -55,15 +56,10 @@ class AssociatedProductDatasource extends ProductDatasource
             throw InvalidObjectException::objectExpected($sourceProduct, ProductInterface::class);
         }
 
-        $associatedProductsIdentifiers = $this->getAssociatedProductsIdentifiers(
-            $sourceProduct,
-            $this->getConfiguration('association_type_id')
-        );
+        $association = $this->getAssociation($sourceProduct, $this->getConfiguration('association_type_id'));
 
-        $associatedProductModelsIdentifiers = $this->getAssociatedProductModelsIdentifiers(
-            $sourceProduct,
-            $this->getConfiguration('association_type_id')
-        );
+        $associatedProductsIdentifiers = $this->getAssociatedProductIdentifiers($association);
+        $associatedProductModelsIdentifiers = $this->getAssociatedProductModelIdentifiers($association);
 
         $limit = (int)$this->getConfiguration(PagerExtension::PER_PAGE_PARAM, false);
         $locale = $this->getConfiguration('locale_code');
@@ -80,7 +76,7 @@ class AssociatedProductDatasource extends ProductDatasource
         );
 
         $productModelLimit = $limit - count($associatedProducts);
-
+        $associatedProductModels = [];
         if ($productModelLimit > 0) {
             $productModelFrom = $from - count($associatedProductsIdentifiers) + count($associatedProducts);
             $associatedProductModels = $this->getAssociatedProductModels(
@@ -90,8 +86,6 @@ class AssociatedProductDatasource extends ProductDatasource
                 $locale,
                 $scope
             );
-        } else {
-            $associatedProductModels = [];
         }
 
         $rows = ['totalRecords' => count($associatedProductsIdentifiers) + count($associatedProductModelsIdentifiers)];
@@ -101,42 +95,30 @@ class AssociatedProductDatasource extends ProductDatasource
     }
 
     /**
-     * @param ProductInterface $sourceProduct
-     * @param string           $associationTypeId
+     * @param AssociationInterface $association
      *
      * @return string[]
      */
-    protected function getAssociatedProductsIdentifiers(ProductInterface $sourceProduct, $associationTypeId)
+    protected function getAssociatedProductIdentifiers(AssociationInterface $association): array
     {
         $identifiers = [];
-
-        foreach ($sourceProduct->getAssociations() as $association) {
-            if ($association->getAssociationType()->getId() === (int)$associationTypeId) {
-                foreach ($association->getProducts() as $associatedProduct) {
-                    $identifiers[] = $associatedProduct->getIdentifier();
-                }
-            }
+        foreach ($association->getProducts() as $associatedProduct) {
+            $identifiers[] = $associatedProduct->getIdentifier();
         }
 
         return $identifiers;
     }
 
     /**
-     * @param ProductInterface $sourceProduct
-     * @param string           $associationTypeId
+     * @param AssociationInterface $association
      *
      * @return string[]
      */
-    protected function getAssociatedProductModelsIdentifiers(ProductInterface $sourceProduct, $associationTypeId)
+    protected function getAssociatedProductModelIdentifiers(AssociationInterface $association): array
     {
         $identifiers = [];
-
-        foreach ($sourceProduct->getAssociations() as $association) {
-            if ($association->getAssociationType()->getId() === (int)$associationTypeId) {
-                foreach ($association->getProductModels() as $associatedProduct) {
-                    $identifiers[] = $associatedProduct->getCode();
-                }
-            }
+        foreach ($association->getProductModels() as $associatedProduct) {
+            $identifiers[] = $associatedProduct->getCode();
         }
 
         return $identifiers;
@@ -263,5 +245,21 @@ class AssociatedProductDatasource extends ProductDatasource
         $pqb = $this->factory->create($factoryConfig);
 
         return $pqb;
+    }
+
+    /**
+     * @param ProductInterface           $product
+     * @param mixed                      $associationTypeId
+     * @return null|AssociationInterface
+     */
+    private function getAssociation(ProductInterface $sourceProduct, $associationTypeId): ?AssociationInterface
+    {
+        foreach ($sourceProduct->getAssociations() as $association) {
+            if ($association->getAssociationType()->getId() === (int)$associationTypeId) {
+                return $association;
+            }
+        }
+
+        return null;
     }
 }

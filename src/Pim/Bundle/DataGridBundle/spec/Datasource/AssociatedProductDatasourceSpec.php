@@ -4,7 +4,6 @@ namespace spec\Pim\Bundle\DataGridBundle\Datasource;
 
 use Akeneo\Component\StorageUtils\Cursor\CursorInterface;
 use Akeneo\Component\StorageUtils\Exception\InvalidObjectException;
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Persistence\ObjectManager;
 use Oro\Bundle\DataGridBundle\Datagrid\Datagrid;
@@ -16,6 +15,7 @@ use Pim\Bundle\DataGridBundle\Datasource\ParameterizableInterface;
 use Pim\Component\Catalog\Model\AssociationInterface;
 use Pim\Component\Catalog\Model\AssociationTypeInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Model\ProductModelInterface;
 use Pim\Component\Catalog\Query\Filter\Operators;
 use Pim\Component\Catalog\Query\ProductQueryBuilderFactoryInterface;
 use Pim\Component\Catalog\Query\ProductQueryBuilderInterface;
@@ -76,15 +76,20 @@ class AssociatedProductDatasourceSpec extends ObjectBehavior
         Datagrid $datagrid,
         ProductQueryBuilderInterface $pqb,
         ProductQueryBuilderInterface $pqbAsso,
+        ProductQueryBuilderInterface $pqbAssoProductModel,
         ProductInterface $currentProduct,
         ProductInterface $associatedProduct1,
         ProductInterface $associatedProduct2,
+        ProductModelInterface $associatedProductModel,
         Collection $associationCollection,
         AssociationInterface $association,
         AssociationTypeInterface $associationType,
         \ArrayIterator $associationIterator,
         CursorInterface $productCursor,
-        CursorInterface $associatedProductCursor
+        CursorInterface $associatedProductCursor,
+        CursorInterface $associatedProductModelCursor,
+        Collection $collectionProductModel,
+        \Iterator $collectionIterator
     ) {
         $pqbFactory->create([
             'repository_parameters' => [],
@@ -110,6 +115,9 @@ class AssociatedProductDatasourceSpec extends ObjectBehavior
         $associatedProduct2->getIdentifier()->willReturn('associated_product_2');
         $associatedProduct2->getId()->willReturn('3');
         $associatedProduct2->getImage()->willReturn('imagePath.png');
+        $associatedProductModel->getCode()->willReturn('associated_product_model_1');
+        $associatedProductModel->getId()->willReturn('2');
+        $associatedProductModel->getImage()->shouldBeCalled();
         $currentProduct->getAssociations()->willReturn($associationCollection);
         $currentProduct->getIdentifier()->willReturn('current_product');
 
@@ -117,17 +125,22 @@ class AssociatedProductDatasourceSpec extends ObjectBehavior
         $associationIterator->rewind()->shouldBeCalled();
         $associationIterator->valid()->willReturn(true, false);
         $associationIterator->current()->willReturn($association);
-        $associationIterator->next()->shouldBeCalled();
 
         $association->getProducts()->willReturn([$associatedProduct1, $associatedProduct2]);
-        $association->getProductModels()->willReturn(new ArrayCollection());
+        $association->getProductModels()->willReturn($collectionProductModel);
+        $collectionProductModel->getIterator()->willReturn($collectionIterator);
+        $collectionIterator->rewind()->shouldBeCalled();
+        $collectionIterator->valid()->willReturn(true, false);
+        $collectionIterator->current()->willReturn($associatedProductModel);
+        $collectionIterator->next()->shouldBeCalled();
+
         $association->getAssociationType()->willReturn($associationType);
         $associationType->getId()->willReturn(1);
 
         $pqb->execute()->willReturn($productCursor);
         $productCursor->count()->willReturn(2);
 
-        $pqb->getRawFilters()->shouldBeCalledTimes(1)->willReturn(null);
+        $pqb->getRawFilters()->shouldBeCalledTimes(2)->willReturn(null);
 
         $pqbFactory->create([
             'repository_parameters' => [],
@@ -145,12 +158,48 @@ class AssociatedProductDatasourceSpec extends ObjectBehavior
                 Operators::IN_LIST,
                 ['associated_product_1', 'associated_product_2']
             )->shouldBeCalled();
+        $pqbAsso
+            ->addFilter(
+                'entity_type',
+                Operators::EQUALS,
+                ProductInterface::class
+            )->shouldBeCalled();
         $pqbAsso->execute()->willReturn($associatedProductCursor);
 
         $associatedProductCursor->rewind()->shouldBeCalled();
         $associatedProductCursor->valid()->willReturn(true, true, false);
         $associatedProductCursor->current()->willReturn($associatedProduct1, $associatedProduct2);
         $associatedProductCursor->next()->shouldBeCalled();
+
+        // Prout prout
+        $pqbFactory->create([
+            'repository_parameters' => [],
+            'repository_method'     => 'createQueryBuilder',
+            'limit'                 => 40,
+            'from'                  => 0,
+            'default_locale'        => 'a_locale',
+            'default_scope'         => 'a_channel',
+            'filters'               => null,
+        ])->willReturn($pqbAssoProductModel);
+
+        $pqbAssoProductModel
+            ->addFilter(
+                'identifier',
+                Operators::IN_LIST,
+                ['associated_product_model_1']
+            )->shouldBeCalled();
+        $pqbAssoProductModel
+            ->addFilter(
+                'entity_type',
+                Operators::EQUALS,
+                ProductModelInterface::class
+            )->shouldBeCalled();
+        $pqbAssoProductModel->execute()->willReturn($associatedProductModelCursor);
+
+        $associatedProductModelCursor->rewind()->shouldBeCalled();
+        $associatedProductModelCursor->valid()->willReturn(true, false);
+        $associatedProductModelCursor->current()->willReturn($associatedProductModel);
+        $associatedProductModelCursor->next()->shouldBeCalled();
 
         $productNormalizer->normalize($currentProduct, Argument::cetera())->shouldNotBeCalled();
 
@@ -190,13 +239,31 @@ class AssociatedProductDatasourceSpec extends ObjectBehavior
             'completeness'  => null,
         ]);
 
+        $productNormalizer->normalize($associatedProductModel, 'datagrid', [
+            'locales'       => ['a_locale'],
+            'channels'      => ['a_channel'],
+            'data_locale'   => 'a_locale',
+            'is_associated' => true,
+        ])->willReturn([
+            'identifier'    => 'associated_product_model_1',
+            'family'        => null,
+            'enabled'       => true,
+            'values'        => [],
+            'created'       => '2000-01-01',
+            'updated'       => '2000-01-01',
+            'is_checked'    => true,
+            'is_associated' => true,
+            'label'         => 'associated_product_model_1',
+            'completeness'  => null,
+        ]);
+
         $results = $this->getResults();
         $results->shouldBeArray();
         $results->shouldHaveCount(2);
         $results->shouldHaveKey('data');
-        $results->shouldHaveKeyWithValue('totalRecords', 2);
+        $results->shouldHaveKeyWithValue('totalRecords', 3);
         $results['data']->shouldBeArray();
-        $results['data']->shouldHaveCount(2);
+        $results['data']->shouldHaveCount(3);
         $results['data']->shouldBeAnArrayOfInstanceOf(ResultRecord::class);
     }
 

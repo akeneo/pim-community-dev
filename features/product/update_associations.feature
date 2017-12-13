@@ -37,21 +37,23 @@ Feature: Update the product associations
 
   Scenario: Successfully add a product model as association
     Given I press the "Add associations" button
-    And I check the row "Elegance"
-    And the item picker basket should contain Elegance
+    And I search "juno"
+    And I check the row "juno"
+    And the item picker basket should contain juno
     When I press the "Confirm" button in the popin
-    Then I should see product "Elegance"
+    Then I should see product "juno"
     And I should see the text "0 product(s), 1 product model(s) and 0 group(s)"
 
   Scenario: Successfully delete a product model as association
     Given I press the "Add associations" button
-    And I check the row "Elegance"
-    And the item picker basket should contain Elegance
+    And I search "juno"
+    And I check the row "juno"
+    And the item picker basket should contain juno
     And I press the "Confirm" button in the popin
-    And I should see product "Elegance"
-    And I remove the row "Elegance"
+    And I should see product "juno"
+    And I remove the row "juno"
     And I should see the text "There are unsaved changes"
-    And I should not see product "Elegance"
+    And I should not see product "juno"
     When I save the product
-    Then I should not see product "Elegance"
+    Then I should not see product "juno"
     And I should see the text "0 product(s), 0 product model(s) and 0 group(s)"
