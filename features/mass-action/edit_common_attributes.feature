@@ -30,7 +30,7 @@ Feature: Edit common attributes of many products at once
     Given I am on the products grid
     And I select rows boots, sandals and sneakers
     And I press the "Bulk actions" button
-    And I choose the "Edit common attributes" operation
+    And I choose the "Edit attributes" operation
     Then I should see available attributes Name, Manufacturer and Description in group "Product information"
     And I should see available attributes Price and Rating in group "Marketing"
     And I should see available attribute Side view in group "Media"
@@ -43,7 +43,7 @@ Feature: Edit common attributes of many products at once
     Given I am on the products grid
     And I select rows boots, sandals and sneakers
     When I press the "Bulk actions" button
-    And I choose the "Edit common attributes" operation
+    And I choose the "Edit attributes" operation
     And I display the Name attribute
     Then I should see a remove link next to the "Name" field
     When I remove the "Name" attribute
@@ -55,7 +55,7 @@ Feature: Edit common attributes of many products at once
     Given I am on the products grid
     And I select rows boots, sandals and sneakers
     And I press the "Bulk actions" button
-    And I choose the "Edit common attributes" operation
+    And I choose the "Edit attributes" operation
     And I display the Name attribute
     And I change the "Name" to "boots"
     Then I should see a remove link next to the "Name" field
@@ -69,7 +69,7 @@ Feature: Edit common attributes of many products at once
     Given I am on the products grid
     And I select rows boots and sneakers
     And I press the "Bulk actions" button
-    And I choose the "Edit common attributes" operation
+    And I choose the "Edit attributes" operation
     And I display the Weather conditions attribute
     And I change the "Weather conditions" to "Dry, Hot"
     And I confirm mass edit
@@ -85,7 +85,7 @@ Feature: Edit common attributes of many products at once
     And I set product "pump" family to "sneakers"
     When I select rows pump and sneakers
     And I press the "Bulk actions" button
-    And I choose the "Edit common attributes" operation
+    And I choose the "Edit attributes" operation
     And I display the Name attribute
     And I change the "Name" to "boots"
     And I confirm mass edit
@@ -106,7 +106,7 @@ Feature: Edit common attributes of many products at once
     And I am on the products grid
     When I select row Shoes
     And I press the "Bulk actions" button
-    And I choose the "Edit common attributes" operation
+    And I choose the "Edit attributes" operation
     And I display the Price attribute
     And I change the "Price" to "100 USD"
     And I change the "Price" to "150 EUR"
@@ -125,7 +125,7 @@ Feature: Edit common attributes of many products at once
     And I am on the products grid
     And I select rows boots and sneakers
     And I press the "Bulk actions" button
-    And I choose the "Edit common attributes" operation
+    And I choose the "Edit attributes" operation
     And I display the Weather conditions attribute
     And I change the "Weather conditions" to "Dry, Hot"
     And I confirm mass edit
@@ -140,7 +140,7 @@ Feature: Edit common attributes of many products at once
     Given I am on the products grid
     And I select rows boots and sandals
     And I press the "Bulk actions" button
-    And I choose the "Edit common attributes" operation
+    And I choose the "Edit attributes" operation
     And I display the Weight and Name attribute
     Then I visit the "Other" group
     And I change the "Weight" to "Edith"
@@ -152,7 +152,7 @@ Feature: Edit common attributes of many products at once
     And I am on the products grid
     And I select rows boots and sandals
     And I press the "Bulk actions" button
-    And I choose the "Edit common attributes" operation
+    And I choose the "Edit attributes" operation
     Then I should not see the text "Product information"
     And I should not see the text "Weight"
     And I should not see the text "Name"
@@ -163,7 +163,7 @@ Feature: Edit common attributes of many products at once
     And I set product "pump" family to "boots"
     When I select rows boots and pump
     And I press the "Bulk actions" button
-    And I choose the "Edit common attributes" operation
+    And I choose the "Edit attributes" operation
     And I display the Description attribute
     And I change the Description to "&$@(B°ar'<"
     And I confirm mass edit
@@ -187,7 +187,7 @@ Feature: Edit common attributes of many products at once
     Then I am on the products grid
     And I select rows sandals, sneakers
     And I press the "Bulk actions" button
-    And I choose the "Edit common attributes" operation
+    And I choose the "Edit attributes" operation
     And I display the Name, Price and Size attribute
     And I change the "Name" to "boots"
     Then I visit the "Marketing" group
@@ -233,7 +233,7 @@ Feature: Edit common attributes of many products at once
     And I am on the products grid
     When I select rows boots, sandals and sneakers
     And I press the "Bulk actions" button
-    And I choose the "Edit common attributes" operation
+    And I choose the "Edit attributes" operation
     And I display the Description and Name and Comment attribute
     And I change the "Name" to "\$\(touch \/tmp\/inject.txt\) && \$\$ || `ls`; \"echo \"SHELL_INJECTION\"\""
     And I change the "Description" to ";`echo \"SHELL_INJECTION\"`"
@@ -264,7 +264,7 @@ Feature: Edit common attributes of many products at once
     And I am on the products grid
     And I select rows boots, sandals and sneakers
     And I press the "Bulk actions" button
-    When I choose the "Edit common attributes" operation
+    When I choose the "Edit attributes" operation
     Then I should see the text "[tablet]"
     And I should not see the text "undefined"
 
@@ -279,7 +279,7 @@ Feature: Edit common attributes of many products at once
     And I am on the products grid
     Given I select rows boots, sandals and sneakers
     When I press the "Bulk actions" button
-    And I choose the "Edit common attributes" operation
+    And I choose the "Edit attributes" operation
     And I display the Name attribute
     And I move on to the next step
     Then I should not see the text "There are errors in the attributes form"
@@ -289,7 +289,7 @@ Feature: Edit common attributes of many products at once
     Given I am on the products grid
     And I select rows boots, sandals and sneakers
     And I press the "Bulk actions" button
-    When I choose the "Edit common attributes" operation
+    When I choose the "Edit attributes" operation
     Then The available attributes button should be enabled
     And I display the Name attribute
     And I change the "Name" to "boots"
@@ -301,7 +301,7 @@ Feature: Edit common attributes of many products at once
     Given I am on the products grid
     And I select rows boots, sandals and sneakers
     And I press the "Bulk actions" button
-    When I choose the "Edit common attributes" operation
+    When I choose the "Edit attributes" operation
     And I display the Price attribute
     And I display the Name attribute
     And I move to the confirm page

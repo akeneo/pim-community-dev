@@ -32,7 +32,7 @@ Feature: Edit common attributes of many products at once
   Scenario: Allow editing only common attributes define from families
     Given I select rows boots and highheels
     And I press the "Bulk actions" button
-    And I choose the "Edit common attributes" operation
+    And I choose the "Edit attributes" operation
     Then I should see available attributes Name, Manufacturer and Description in group "Product information"
     And I should see available attributes Price and Rating in group "Marketing"
     And I should see available attribute Size in group "Sizes"
@@ -56,13 +56,13 @@ Feature: Edit common attributes of many products at once
       | boots   | buckle_color | Blue  |
     When I select rows boots and high_heels
     And I press the "Bulk actions" button
-    And I choose the "Edit common attributes" operation
+    And I choose the "Edit attributes" operation
     Then I should see available attribute Buckle in group "Other"
 
   Scenario: Successfully update many price values at once
     Given I select rows boots and sandals
     And I press the "Bulk actions" button
-    And I choose the "Edit common attributes" operation
+    And I choose the "Edit attributes" operation
     And I display the Price attribute
     And I change the "Price" to "100 USD"
     And I change the "Price" to "150 EUR"

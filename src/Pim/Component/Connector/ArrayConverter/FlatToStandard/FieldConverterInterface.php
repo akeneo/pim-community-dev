@@ -12,16 +12,15 @@ namespace Pim\Component\Connector\ArrayConverter\FlatToStandard;
 interface FieldConverterInterface
 {
     /**
-     *
      * Convert a field from a flat file data (CSV or XLSX file for instance).
      * It guesses its names and its values depending on the data read from the data source.
      *
      * For instance, the category value "cat1,cat2" should be transformed in an array ['cat1', 'cat2']
      *
      * @param string $fieldName
-     * @param string $value
+     * @param mixed  $value
      *
      * @return ConvertedField
      */
-    public function convert(string $fieldName, string $value): ConvertedField;
+    public function convert(string $fieldName, $value): ConvertedField;
 }

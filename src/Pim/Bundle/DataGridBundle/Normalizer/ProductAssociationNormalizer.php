@@ -29,6 +29,7 @@ class ProductAssociationNormalizer implements NormalizerInterface, SerializerAwa
 
         $data = [];
         $locale = current($context['locales']);
+        $channel = current($context['channels']);
 
         $data['identifier'] = $product->getIdentifier();
         $data['family'] = $this->getFamilyLabel($product, $locale);
@@ -38,7 +39,7 @@ class ProductAssociationNormalizer implements NormalizerInterface, SerializerAwa
 
         $data['is_checked'] = $context['is_associated'];
         $data['is_associated'] = $context['is_associated'];
-        $data['label'] = $product->getLabel($locale);
+        $data['label'] = $product->getLabel($locale, $channel);
         $data['completeness'] = $this->getCompleteness($product, $context);
 
         return $data;

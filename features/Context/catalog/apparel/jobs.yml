@@ -291,7 +291,7 @@ jobs:
     edit_common_attributes:
         connector: Akeneo Mass Edit Connector
         alias:     edit_common_attributes
-        label:     Mass edit common product attributes
+        label:     Mass edit product attributes
         type:      mass_edit
     add_to_existing_product_model:
         connector: Akeneo Mass Edit Connector
