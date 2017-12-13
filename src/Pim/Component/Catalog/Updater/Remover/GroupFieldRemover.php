@@ -5,7 +5,6 @@ namespace Pim\Component\Catalog\Updater\Remover;
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
-use Pim\Component\Catalog\Model\ProductInterface;
 
 /**
  * Remove one or several groups to a product
@@ -36,7 +35,7 @@ class GroupFieldRemover extends AbstractFieldRemover
      *
      * Expected data input format : ["group_code", "another_group_code"]
      */
-    public function removeFieldData(ProductInterface $product, $field, $data, array $options = [])
+    public function removeFieldData($product, $field, $data, array $options = [])
     {
         $this->checkData($field, $data);
 

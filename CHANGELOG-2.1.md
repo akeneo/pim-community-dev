@@ -7,6 +7,24 @@
 - PIM-6996: Associate products to product models during import using the `<assocType>-product_models` pattern in an new column
 - PIM-6342: Display and remove associations gallery view
 
+## Update jobs
+
+IMPORTANT: In order to use the new mass edit, please execute
+
+```
+bin/console akeneo:batch:create-job internal add_to_category mass_edit add_to_category '{}' 'Mass add to categories' --env=prod
+bin/console akeneo:batch:create-job internal move_to_category mass_edit move_to_category '{}' 'Mass move to categories' --env=prod
+bin/console akeneo:batch:create-job internal remove_from_category mass_edit remove_from_category '{}' 'Mass remove from categories' --env=prod
+```
+
+## BC breaks
+
+### Interfaces
+
+Removed typehint of ProductInterface in the Pim\Component\Catalog\Updater\Adder\FieldAdderInterface and Pim\Component\Catalog\Updater\Adder\AttributeAdderInterface
+Removed typehint of ProductInterface in the Pim\Component\Catalog\Updater\Remover\FieldRemoverInterface and Pim\Component\Catalog\Updater\Remover\AttributeRemoverInterface
+Removed typehint of ProductInterface in the Pim\Component\Catalog\Updater\Setter\FieldSetterInterface and Pim\Component\Catalog\Updater\Setter\AttributeSetterInterface
+
 # 2.1.0-ALPHA1
 
 ## Improvements

@@ -11,6 +11,9 @@ services:
                 - 'update_product_value'
                 - 'add_product_value'
                 - 'remove_product_value'
+                - 'move_to_category'
+                - 'add_to_category'
+                - 'remove_from_category'
                 - 'edit_common_attributes'
                 - 'add_to_existing_product_model'
         tags:

@@ -7,6 +7,9 @@ parameters:
     pim_enrich.job.name.update_product_value: 'update_product_value'
     pim_enrich.job.name.add_product_value: 'add_product_value'
     pim_enrich.job.name.remove_product_value: 'remove_product_value'
+    pim_enrich.job.name.move_to_category: 'move_to_category'
+    pim_enrich.job.name.add_to_category: 'add_to_category'
+    pim_enrich.job.name.remove_from_category: 'remove_from_category'
     pim_enrich.job.name.edit_common_attributes: 'edit_common_attributes'
     pim_enrich.job.name.add_to_existing_product_model: 'add_to_existing_product_model'
     pim_enrich.job.name.set_attribute_requirements: 'set_attribute_requirements'
@@ -97,6 +100,39 @@ services:
             - '@akeneo_batch.job_repository'
             -
                 - '@pim_enrich.step.remove_product_value.mass_edit'
+        tags:
+            - { name: akeneo_batch.job, connector: '%pim_enrich.connector_name.mass_edit%', type: '%pim_enrich.job.mass_edit_type%' }
+
+    pim_enrich.job.move_to_category:
+        class: '%pim_connector.job.simple_job.class%'
+        arguments:
+            - '%pim_enrich.job.name.move_to_category%'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            -
+                - '@pim_enrich.step.move_to_category.mass_edit'
+        tags:
+            - { name: akeneo_batch.job, connector: '%pim_enrich.connector_name.mass_edit%', type: '%pim_enrich.job.mass_edit_type%' }
+
+    pim_enrich.job.add_to_category:
+        class: '%pim_connector.job.simple_job.class%'
+        arguments:
+            - '%pim_enrich.job.name.add_to_category%'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            -
+                - '@pim_enrich.step.add_to_category.mass_edit'
+        tags:
+            - { name: akeneo_batch.job, connector: '%pim_enrich.connector_name.mass_edit%', type: '%pim_enrich.job.mass_edit_type%' }
+
+    pim_enrich.job.remove_from_category:
+        class: '%pim_connector.job.simple_job.class%'
+        arguments:
+            - '%pim_enrich.job.name.remove_from_category%'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            -
+                - '@pim_enrich.step.remove_from_category.mass_edit'
         tags:
             - { name: akeneo_batch.job, connector: '%pim_enrich.connector_name.mass_edit%', type: '%pim_enrich.job.mass_edit_type%' }
 

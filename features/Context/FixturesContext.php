@@ -1421,21 +1421,49 @@ class FixturesContext extends BaseFixturesContext
      * @param string $categoryCodes
      *
      *
-     * @Given /^(?:the )?categor(?:y|ies) of "([^"]*)" should be "([^"]*)"$/
+     * @Given /^(?:the )?categor(?:y|ies) of the product "([^"]*)" should be "([^"]*)"$/
      */
-    public function theCategoriesOfShouldBe($productCode, $categoryCodes)
+    public function theCategoriesOfTheProductShouldBe($productCode, $categoryCodes)
     {
-        $this->spin(function () use ($productCode, $categoryCodes) {
+        $expectedCategories = $this->listToArray($categoryCodes);
+        $this->spin(function () use ($productCode, $expectedCategories) {
             $product    = $this->getProduct($productCode);
             $categories = $product->getCategories()->map(
                 function ($category) {
                     return $category->getCode();
                 }
             )->toArray();
-            Assert::assertEquals($this->listToArray($categoryCodes), $categories);
+            sort($categories);
+            sort($expectedCategories);
+            Assert::assertEquals($expectedCategories, $categories);
 
             return true;
         }, sprintf('Cannot assert that %s categories are %s', $productCode, $categoryCodes));
+    }
+
+    /**
+     * @param string $productModelCode
+     * @param string $categoryCodes
+     *
+     *
+     * @Given /^(?:the )?categor(?:y|ies) of the product model "([^"]*)" should be "([^"]*)"$/
+     */
+    public function theCategoriesOfTheProductModelShouldBe($productModelCode, $categoryCodes)
+    {
+        $expectedCategories = $this->listToArray($categoryCodes);
+        $this->spin(function () use ($productModelCode, $expectedCategories) {
+            $product    = $this->getProductModel($productModelCode);
+            $categories = $product->getCategories()->map(
+                function ($category) {
+                    return $category->getCode();
+                }
+            )->toArray();
+            sort($categories);
+            sort($expectedCategories);
+            Assert::assertEquals($expectedCategories, $categories);
+
+            return true;
+        }, sprintf('Cannot assert that %s categories are %s', $productModelCode, $categoryCodes));
     }
 
     /**

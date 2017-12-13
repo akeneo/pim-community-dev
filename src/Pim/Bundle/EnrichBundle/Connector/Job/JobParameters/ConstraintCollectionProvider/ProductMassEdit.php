@@ -40,7 +40,7 @@ class ProductMassEdit implements ConstraintCollectionProviderInterface
                     'actions'            => new NotNull(),
                     'realTimeVersioning' => new Type('bool'),
                     'user_to_notify'     => new Type('string'),
-                    'is_user_authenticated' => new Type('bool'),
+                    'is_user_authenticated' => new Type('bool')
                 ]
             ]
         );
