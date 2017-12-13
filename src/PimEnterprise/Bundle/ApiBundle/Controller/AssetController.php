@@ -313,7 +313,7 @@ class AssetController
      *
      * @throws DocumentedHttpException
      */
-    protected function updateAsset(AssetInterface $asset, array $data, string $anchor)
+    protected function updateAsset(AssetInterface $asset, array $data, string $anchor): void
     {
         try {
             $this->updater->update($asset, $data);
@@ -331,7 +331,7 @@ class AssetController
      *
      * @throws ViolationHttpException
      */
-    protected function validateAsset(AssetInterface $asset)
+    protected function validateAsset(AssetInterface $asset): void
     {
         $violations = $this->validator->validate($asset);
         if (0 !== $violations->count()) {
