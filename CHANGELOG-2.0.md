@@ -36,7 +36,7 @@ IMPORTANT: In order to use the new mass edit, please execute `bin/console akeneo
 
 ## BC breaks
 
-Changes the constructor of `Pim\Bundle\EnrichBundle\Controller\Rest\ProductModelController` to add `Pim\Component\Catalog\Repository\FamilyVariantRepositoryInterface` 
+Changes the constructor of `Pim\Bundle\EnrichBundle\Controller\Rest\ProductModelController` to add `Pim\Component\Catalog\Repository\FamilyVariantRepositoryInterface`
 
 
 # 2.0.7 (2017-11-23)

@@ -6,8 +6,6 @@ namespace Akeneo\Test\IntegrationTestsBundle\Launcher;
 
 use Akeneo\Bundle\BatchBundle\Command\BatchCommand;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
-use Symfony\Component\Console\Input\ArrayInput;
-use Symfony\Component\Console\Output\BufferedOutput;
 use Symfony\Component\Console\Tester\CommandTester;
 use Symfony\Component\HttpKernel\KernelInterface;
 
@@ -48,6 +46,10 @@ class CommandLauncher
 
         if (null !== $username) {
             $arrayInput['--username'] = $username;
+        }
+
+        if (isset($config['arguments'])) {
+            $arrayInput = array_merge($arrayInput, $config['arguments']);
         }
 
         $command = $application->find($commandName);
