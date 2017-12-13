@@ -15,39 +15,43 @@ Feature: Update the product associations
     And I visit the "Associations" column tab
 
   Scenario: Successfully add an association
-    When I press the "Add associations" button
+    Given I press the "Add associations" button
     And I check the row "patrick"
-    Then the item picker basket should contain patrick
-    And I press the "Confirm" button in the popin
+    And the item picker basket should contain patrick
+    When I press the "Confirm" button in the popin
     Then I should see product "patrick"
+    And I should see the text "1 product(s), 0 product model(s) and 0 group(s)"
 
   Scenario: Successfully delete an association
-    When I press the "Add associations" button
+    Given I press the "Add associations" button
     And I check the row "patrick"
-    Then the item picker basket should contain patrick
+    And the item picker basket should contain patrick
     And I press the "Confirm" button in the popin
-    Then I should see product "patrick"
-    When I select rows patrick
-    Then I should see the text "There are unsaved changes"
+    And I should see product "patrick"
+    And I remove the row "patrick"
+    And I should see the text "There are unsaved changes"
     And I should not see product "patrick"
     When I save the product
     Then I should not see product "patrick"
+    And I should see the text "0 product(s), 0 product model(s) and 0 group(s)"
 
   Scenario: Successfully add a product model as association
-    When I press the "Add associations" button
+    Given I press the "Add associations" button
     And I check the row "Elegance"
-    Then the item picker basket should contain Elegance
-    And I press the "Confirm" button in the popin
+    And the item picker basket should contain Elegance
+    When I press the "Confirm" button in the popin
     Then I should see product "Elegance"
+    And I should see the text "0 product(s), 1 product model(s) and 0 group(s)"
 
   Scenario: Successfully delete a product model as association
-    When I press the "Add associations" button
+    Given I press the "Add associations" button
     And I check the row "Elegance"
-    Then the item picker basket should contain Elegance
+    And the item picker basket should contain Elegance
     And I press the "Confirm" button in the popin
-    Then I should see product "Elegance"
-    When I select rows Elegance
-    Then I should see the text "There are unsaved changes"
+    And I should see product "Elegance"
+    And I remove the row "Elegance"
+    And I should see the text "There are unsaved changes"
     And I should not see product "Elegance"
     When I save the product
     Then I should not see product "Elegance"
+    And I should see the text "0 product(s), 0 product model(s) and 0 group(s)"

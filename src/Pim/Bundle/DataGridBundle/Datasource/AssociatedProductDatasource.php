@@ -50,13 +50,18 @@ class AssociatedProductDatasource extends ProductDatasource
      */
     public function getResults()
     {
-        $currentProduct = $this->getConfiguration('current_product', false);
-        if (!$currentProduct instanceof ProductInterface) {
-            throw InvalidObjectException::objectExpected($currentProduct, ProductInterface::class);
+        $sourceProduct = $this->getConfiguration('current_product', false);
+        if (!$sourceProduct instanceof ProductInterface) {
+            throw InvalidObjectException::objectExpected($sourceProduct, ProductInterface::class);
         }
 
         $associatedProductsIdentifiers = $this->getAssociatedProductsIdentifiers(
-            $currentProduct,
+            $sourceProduct,
+            $this->getConfiguration('association_type_id')
+        );
+
+        $associatedProductModelsIdentifiers = $this->getAssociatedProductModelsIdentifiers(
+            $sourceProduct,
             $this->getConfiguration('association_type_id')
         );
 
@@ -64,7 +69,7 @@ class AssociatedProductDatasource extends ProductDatasource
         $locale = $this->getConfiguration('locale_code');
         $scope = $this->getConfiguration('scope_code');
         $from = null !== $this->getConfiguration('from', false) ?
-            (int)$this->getConfiguration('from', false) : 0;
+            (int) $this->getConfiguration('from', false) : 0;
 
         $associatedProducts = $this->getAssociatedProducts(
             $associatedProductsIdentifiers,
@@ -74,29 +79,62 @@ class AssociatedProductDatasource extends ProductDatasource
             $scope
         );
 
-        $rows = ['totalRecords' => count($associatedProducts)];
-        $rows['data'] = $associatedProducts;
+        $productModelLimit = $limit - count($associatedProducts);
+
+        if ($productModelLimit > 0) {
+            $productModelFrom = $from - count($associatedProductsIdentifiers) + count($associatedProducts);
+            $associatedProductModels = $this->getAssociatedProductModels(
+                $associatedProductModelsIdentifiers,
+                $productModelLimit,
+                max($productModelFrom, 0),
+                $locale,
+                $scope
+            );
+        } else {
+            $associatedProductModels = [];
+        }
+
+        $rows = ['totalRecords' => count($associatedProductsIdentifiers) + count($associatedProductModelsIdentifiers)];
+        $rows['data'] = array_merge($associatedProducts, $associatedProductModels);
 
         return $rows;
     }
 
     /**
-     * @param ProductInterface $product
+     * @param ProductInterface $sourceProduct
      * @param string           $associationTypeId
      *
      * @return string[]
      */
-    protected function getAssociatedProductsIdentifiers(ProductInterface $product, $associationTypeId)
+    protected function getAssociatedProductsIdentifiers(ProductInterface $sourceProduct, $associationTypeId)
     {
         $identifiers = [];
 
-        foreach ($product->getAssociations() as $association) {
+        foreach ($sourceProduct->getAssociations() as $association) {
             if ($association->getAssociationType()->getId() === (int)$associationTypeId) {
                 foreach ($association->getProducts() as $associatedProduct) {
                     $identifiers[] = $associatedProduct->getIdentifier();
                 }
-                foreach ($association->getProductModels() as $associatedProductModel) {
-                    $identifiers[] = $associatedProductModel->getCode();
+            }
+        }
+
+        return $identifiers;
+    }
+
+    /**
+     * @param ProductInterface $sourceProduct
+     * @param string           $associationTypeId
+     *
+     * @return string[]
+     */
+    protected function getAssociatedProductModelsIdentifiers(ProductInterface $sourceProduct, $associationTypeId)
+    {
+        $identifiers = [];
+
+        foreach ($sourceProduct->getAssociations() as $association) {
+            if ($association->getAssociationType()->getId() === (int)$associationTypeId) {
+                foreach ($association->getProductModels() as $associatedProduct) {
+                    $identifiers[] = $associatedProduct->getCode();
                 }
             }
         }
@@ -122,7 +160,31 @@ class AssociatedProductDatasource extends ProductDatasource
     ) {
         $pqb = $this->createQueryBuilder($limit, $from, $locale, $scope);
         $pqb->addFilter('identifier', Operators::IN_LIST, $associatedProductsIdentifiers);
+        $pqb->addFilter('entity_type', Operators::EQUALS, ProductInterface::class);
+        $products = $pqb->execute();
 
+        return $this->normalizeProductsAndProductModels($products, $locale, $scope);
+    }
+
+    /**
+     * @param array  $associatedProductModelsIdentifiers
+     * @param int    $limit
+     * @param int    $from
+     * @param string $locale
+     * @param string $scope
+     *
+     * @return array
+     */
+    protected function getAssociatedProductModels(
+        array $associatedProductModelsIdentifiers,
+        $limit,
+        $from,
+        $locale,
+        $scope
+    ) {
+        $pqb = $this->createQueryBuilder($limit, $from, $locale, $scope);
+        $pqb->addFilter('identifier', Operators::IN_LIST, $associatedProductModelsIdentifiers);
+        $pqb->addFilter('entity_type', Operators::EQUALS, ProductModelInterface::class);
         $products = $pqb->execute();
 
         return $this->normalizeProductsAndProductModels($products, $locale, $scope);

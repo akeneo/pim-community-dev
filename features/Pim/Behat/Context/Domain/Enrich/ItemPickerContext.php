@@ -51,7 +51,7 @@ class ItemPickerContext extends PimContext
     {
         return $this->spin(function () use ($code) {
             return $this->getSession()->getPage()
-                ->find('css', sprintf('.item-picker-basket .AknGrid-title:contains("%s")', $code));
+                ->find('css', sprintf('.item-picker-basket .AknGrid-subTitle:contains("%s")', $code));
         }, sprintf('Cannot find item "%s" in basket', $code));
     }
 }
