@@ -35,7 +35,7 @@ JSON;
     /**
      * Should be an integration test.
      */
-    public function testAccessGrantedForGettingATag()
+    public function testAccessGrantedWithARedactorUserForGettingATag()
     {
         $client = $this->createAuthenticatedClient([], [], null, null, 'julia', 'julia');
 
@@ -48,7 +48,7 @@ JSON;
     /**
      * Should be an integration test.
      */
-    public function testAccessGrantedForGettingAListOfTags()
+    public function testAccessGrantedWithARedactorUserForGettingAListOfTags()
     {
         $client = $this->createAuthenticatedClient([], [], null, null, 'julia', 'julia');
 

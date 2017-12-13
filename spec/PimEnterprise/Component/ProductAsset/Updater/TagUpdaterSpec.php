@@ -3,8 +3,11 @@
 namespace spec\PimEnterprise\Component\ProductAsset\Updater;
 
 use Akeneo\Component\StorageUtils\Exception\InvalidObjectException;
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
+use Akeneo\Component\StorageUtils\Exception\UnknownPropertyException;
 use PhpSpec\ObjectBehavior;
 use PimEnterprise\Component\ProductAsset\Model\TagInterface;
+use PimEnterprise\Component\ProductAsset\Updater\TagUpdater;
 
 class TagUpdaterSpec extends ObjectBehavior
 {
@@ -41,5 +44,25 @@ class TagUpdaterSpec extends ObjectBehavior
         ];
 
         $this->update($tag, $values, []);
+    }
+
+    function it_throws_exception_when_code_is_not_scalar(TagInterface $tag)
+    {
+        $this->shouldThrow(
+            InvalidPropertyTypeException::scalarExpected('code', TagUpdater::class, [])
+        )->during(
+            'update',
+            [$tag, ['code' => []]]
+        );
+    }
+
+    function it_throws_exception_when_a_property_is_unknown(TagInterface $tag)
+    {
+        $this->shouldThrow(
+            UnknownPropertyException::unknownProperty('michel')
+        )->during(
+            'update',
+            [$tag, ['michel' => 'michel']]
+        );
     }
 }

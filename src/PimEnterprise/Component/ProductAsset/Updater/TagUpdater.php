@@ -12,6 +12,8 @@
 namespace PimEnterprise\Component\ProductAsset\Updater;
 
 use Akeneo\Component\StorageUtils\Exception\InvalidObjectException;
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
+use Akeneo\Component\StorageUtils\Exception\UnknownPropertyException;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Doctrine\Common\Util\ClassUtils;
 use PimEnterprise\Component\ProductAsset\Model\TagInterface;
@@ -41,6 +43,7 @@ class TagUpdater implements ObjectUpdaterInterface
         }
 
         foreach ($data as $field => $item) {
+            $this->validateDataType($field, $item);
             $this->setData($tag, $field, $item);
         }
 
@@ -68,5 +71,25 @@ class TagUpdater implements ObjectUpdaterInterface
     protected function setCode(TagInterface $tag, $code)
     {
         $tag->setCode($code);
+    }
+
+    /**
+     * Validate the data type of a field.
+     *
+     * @param string $field
+     * @param mixed  $data
+     *
+     * @throws InvalidPropertyTypeException
+     * @throws UnknownPropertyException
+     */
+    protected function validateDataType($field, $data)
+    {
+        if ('code' === $field) {
+            if (null !== $data && !is_scalar($data)) {
+                throw InvalidPropertyTypeException::scalarExpected($field, static::class, $data);
+            }
+        } else {
+            throw UnknownPropertyException::unknownProperty($field);
+        }
     }
 }

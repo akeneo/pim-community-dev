@@ -149,7 +149,7 @@ class AssetTagController
         ];
 
         $assetTagsNormalized = [];
-        foreach ($assetTags as $assetTag){
+        foreach ($assetTags as $assetTag) {
             $assetTagsNormalized[] = ['code' => $assetTag->getCode()];
         }
 
@@ -284,7 +284,7 @@ class AssetTagController
      *
      * @return Response
      */
-    protected function getResponse(TagInterface $tag, $status)
+    protected function getResponse(TagInterface $tag, $status): Response
     {
         $response = new Response(null, $status);
         $route = $this->router->generate(

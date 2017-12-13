@@ -14,7 +14,7 @@ namespace PimEnterprise\Bundle\ApiBundle\tests\EndToEnd\Controller\AssetTag;
 use PimEnterprise\Bundle\ApiBundle\tests\EndToEnd\Controller\Asset\AbstractAssetTestCase;
 
 /**
- * @author    Philippe Mossière <philippe.mossiere@akeneo.com>
+ * @author Philippe Mossière <philippe.mossiere@akeneo.com>
  */
 class GetAssetTagIntegration extends AbstractAssetTestCase
 {

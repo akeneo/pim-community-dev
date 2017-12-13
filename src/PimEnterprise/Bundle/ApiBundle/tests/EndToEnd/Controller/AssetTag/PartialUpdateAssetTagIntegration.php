@@ -9,27 +9,27 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class PartialUpdateAssetTagIntegration extends AbstractAssetTagTestCase
 {
-    public function testCreationOfAnAssetTag()
+    public function testUpdateOfAnAssetTag()
     {
         $client = $this->createAuthenticatedClient();
 
         $data =
 <<<JSON
 {
-    "code": "michel"
+    "code": "animal"
 }
 JSON;
-        $client->request('PATCH', 'api/rest/v1/asset-tags/michel', [], [], [], $data);
+        $client->request('PATCH', 'api/rest/v1/asset-tags/animal', [], [], [], $data);
 
-        $tag = $this->get('pimee_product_asset.repository.tag')->findOneByIdentifier('michel');
+        $tag = $this->get('pimee_product_asset.repository.tag')->findOneByIdentifier('animal');
 
-        $tagStandard = ['code' => 'michel'];
+        $tagStandard = ['code' => 'animal'];
 
         $response = $client->getResponse();
-        $this->assertSame(Response::HTTP_CREATED, $response->getStatusCode());
+        $this->assertSame(Response::HTTP_NO_CONTENT, $response->getStatusCode());
         $this->assertSame($tagStandard, ['code' => $tag->getCode()]);
         $this->assertArrayHasKey('location', $response->headers->all());
-        $this->assertSame('http://localhost/api/rest/v1/asset-tags/michel', $response->headers->get('location'));
+        $this->assertSame('http://localhost/api/rest/v1/asset-tags/animal', $response->headers->get('location'));
         $this->assertSame('', $response->getContent());
     }
 
@@ -50,28 +50,6 @@ JSON;
         $response = $client->getResponse();
         $this->assertSame(Response::HTTP_CREATED, $response->getStatusCode());
         $this->assertSame($tagStandard, ['code' => $tag->getCode()]);
-    }
-
-    /**
-     * Should be an integration test.
-     */
-    public function testResponseWhenContentIsNotValid()
-    {
-        $client = $this->createAuthenticatedClient();
-
-        $data = '{';
-
-        $expectedContent = <<<JSON
-            {
-                "code": 400,
-                "message": "Invalid json message received"
-            }
-JSON;
-
-        $client->request('PATCH', 'api/rest/v1/asset-tags/michel', [], [], [], $data);
-        $response = $client->getResponse();
-        $this->assertSame(Response::HTTP_BAD_REQUEST, $response->getStatusCode());
-        $this->assertJsonStringEqualsJsonString($expectedContent, $response->getContent());
     }
 
     /**
@@ -99,6 +77,37 @@ JSON;
             "message": "Tag code may contain only letters, numbers and underscores"
         }
     ]
+}
+JSON;
+
+        $client->request('PATCH', 'api/rest/v1/asset-tags/~MICHEL', [], [], [], $data);
+
+        $response = $client->getResponse();
+        $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
+        $this->assertJsonStringEqualsJsonString($expectedContent, $response->getContent());
+    }
+
+    public function testResponseWhenUpdateFailed()
+    {
+        $client = $this->createAuthenticatedClient();
+
+        $data =
+<<<JSON
+{
+    "michel": "michel"
+}
+JSON;
+
+        $expectedContent =
+<<<JSON
+{
+    "code": 422,
+    "message": "Property \"michel\" does not exist. Check the expected format on the API documentation.",
+     "_links": {
+         "documentation": {
+             "href": "http:\/\/api.akeneo.com\/api-reference.html#patch_asset_tags__code_"
+        }
+    }
 }
 JSON;
 
