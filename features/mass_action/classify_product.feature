@@ -43,7 +43,7 @@ Feature: Classify many products at once for the tree I have access
     And I click on the "vintage" category
     And I click on the "classy" category
     And I confirm mass edit
-    And I wait for the "add_product_value" job to finish
+    And I wait for the "add_to_category" job to finish
     And I am on the products grid
     And I open the category tree
     And I select the "Shoes" tree
@@ -62,7 +62,7 @@ Feature: Classify many products at once for the tree I have access
     And I click on the "sandals" category
     And I click on the "sneakers" category
     And I confirm mass edit
-    And I wait for the "update_product_value" job to finish
+    And I wait for the "move_to_category" job to finish
     And I am on the products grid
     And I open the category tree
     And I select the "Shoes" tree
@@ -82,7 +82,7 @@ Feature: Classify many products at once for the tree I have access
     And I click on the "vintage" category
     And I click on the "classy" category
     And I confirm mass edit
-    And I wait for the "update_product_value" job to finish
+    And I wait for the "move_to_category" job to finish
     And I am on the products grid
     And I open the category tree
     And I select the "Shoes" tree
