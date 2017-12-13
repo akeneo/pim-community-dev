@@ -1987,54 +1987,6 @@ class WebUser extends PimContext
 
     /**
      * @param string $sku
-     * @param string $categoryCode
-     *
-     * @Then /^the categor(?:y|ies) of (?:the )?product "([^"]*)" should be "([^"]*)"$/
-     */
-    public function theCategoryOfProductShouldBe($sku, $expectedCategoryCodes)
-    {
-        $product = $this->getFixturesContext()->getProduct($sku);
-        $actualCategoryCodes = $product->getCategoryCodes();
-
-        foreach ($this->listToArray($expectedCategoryCodes) as $expectedCategoryCode) {
-            Assert::assertContains(
-                $expectedCategoryCode,
-                $actualCategoryCodes,
-                sprintf(
-                    'Product "%s" should contain "%s" as category.',
-                    $sku,
-                    $expectedCategoryCode
-                )
-            );
-        }
-    }
-
-    /**
-     * @param string $code
-     * @param string $expectedCategoryCodes
-     *
-     * @Then /^the categor(?:y|ies) of (?:the )?product model "([^"]*)" should be "([^"]*)"$/
-     */
-    public function theCategoryOfProductModelShouldBe($code, $expectedCategoryCodes)
-    {
-        $productModel = $this->getFixturesContext()->getProductModel($code);
-        $actualCategoryCodes = $productModel->getCategoryCodes();
-
-        foreach ($this->listToArray($expectedCategoryCodes) as $expectedCategoryCode) {
-            Assert::assertContains(
-                $expectedCategoryCode,
-                $actualCategoryCodes,
-                sprintf(
-                    'Product model "%s" should contain "%s" as category.',
-                    $code,
-                    $expectedCategoryCode
-                )
-            );
-        }
-    }
-
-    /**
-     * @param string $sku
      *
      * @Then /^the product "([^"]*)" should not have any category$/
      */

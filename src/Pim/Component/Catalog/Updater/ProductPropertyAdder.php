@@ -8,6 +8,7 @@ use Akeneo\Component\StorageUtils\Updater\PropertyAdderInterface;
 use Doctrine\Common\Util\ClassUtils;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Model\ProductModelInterface;
 use Pim\Component\Catalog\Updater\Adder\AdderRegistryInterface;
 use Pim\Component\Catalog\Updater\Adder\AttributeAdderInterface;
 
@@ -43,10 +44,10 @@ class ProductPropertyAdder implements PropertyAdderInterface
      */
     public function addData($product, $field, $data, array $options = [])
     {
-        if (!$product instanceof ProductInterface) {
+        if (!($product instanceof ProductInterface || $product instanceof ProductModelInterface)) {
             throw InvalidObjectException::objectExpected(
                 ClassUtils::getClass($product),
-                ProductInterface::class
+                sprintf('%s or %s', ProductInterface::class, ProductModelInterface::class)
             );
         }
 

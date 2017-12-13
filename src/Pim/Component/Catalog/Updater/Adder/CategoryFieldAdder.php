@@ -5,7 +5,6 @@ namespace Pim\Component\Catalog\Updater\Adder;
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
-use Pim\Component\Catalog\Model\ProductInterface;
 
 /**
  * Adds the category field
@@ -36,7 +35,7 @@ class CategoryFieldAdder extends AbstractFieldAdder
      *
      * Expected data input format : ["category_code"]
      */
-    public function addFieldData(ProductInterface $product, $field, $data, array $options = [])
+    public function addFieldData($product, $field, $data, array $options = [])
     {
         $this->checkData($field, $data);
 

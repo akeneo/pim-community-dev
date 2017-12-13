@@ -6,6 +6,7 @@ use Akeneo\Component\StorageUtils\Exception\InvalidObjectException;
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
+use Doctrine\Common\Util\ClassUtils;
 use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
@@ -42,7 +43,10 @@ class FamilyFieldSetter extends AbstractFieldSetter
     public function setFieldData($product, $field, $data, array $options = [])
     {
         if (!$product instanceof ProductInterface) {
-            throw InvalidObjectException::objectExpected($product, ProductInterface::class);
+            throw InvalidObjectException::objectExpected(
+                ClassUtils::getClass($product),
+                ProductInterface::class
+            );
         }
 
         $this->checkData($field, $data);

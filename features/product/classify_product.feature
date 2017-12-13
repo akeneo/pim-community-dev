@@ -21,7 +21,7 @@ Feature: Classify a product
     And I click on the "winter_collection" category
     And I press the "Save" button
     Then I should not see the text "There are unsaved changes."
-    And the categories of "tea" should be "summer_collection and winter_collection"
+    And the categories of the product "tea" should be "summer_collection and winter_collection"
 
   Scenario: Count product categories
     Given I edit the "tea" product

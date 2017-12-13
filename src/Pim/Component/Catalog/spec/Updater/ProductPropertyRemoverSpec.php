@@ -74,12 +74,12 @@ class ProductPropertyRemoverSpec extends ObjectBehavior
         );
     }
 
-    function it_throws_an_exception_when_trying_to_remove_anything_else_than_a_product()
+    function it_throws_an_exception_when_trying_to_remove_anything_else_than_a_product_or_a_product_model()
     {
         $this->shouldThrow(
             InvalidObjectException::objectExpected(
                 'stdClass',
-                'Pim\Component\Catalog\Model\ProductInterface'
+                'Pim\Component\Catalog\Model\ProductInterface or Pim\Component\Catalog\Model\ProductModelInterface'
             )
         )->during(
             'removeData',
