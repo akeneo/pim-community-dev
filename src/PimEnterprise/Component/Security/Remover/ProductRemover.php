@@ -14,6 +14,7 @@ namespace PimEnterprise\Component\Security\Remover;
 use Akeneo\Component\StorageUtils\Exception\InvalidObjectException;
 use Akeneo\Component\StorageUtils\Remover\BulkRemoverInterface;
 use Akeneo\Component\StorageUtils\Remover\RemoverInterface;
+use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Doctrine\Common\Util\ClassUtils;
 use Pim\Component\Catalog\Model\ProductInterface;
 use PimEnterprise\Component\Security\Attributes;
@@ -36,69 +37,87 @@ class ProductRemover implements RemoverInterface, BulkRemoverInterface
     /** @var AuthorizationCheckerInterface */
     protected $authorizationChecker;
 
+    /** @var IdentifiableObjectRepositoryInterface */
+    protected $productRepository;
+
     /**
-     * @param RemoverInterface              $remover
-     * @param BulkRemoverInterface          $bulkRemover
-     * @param AuthorizationCheckerInterface $authorizationChecker
+     * @param RemoverInterface                      $remover
+     * @param BulkRemoverInterface                  $bulkRemover
+     * @param AuthorizationCheckerInterface         $authorizationChecker
+     * @param IdentifiableObjectRepositoryInterface $productRepository
      */
-    public function __construct(RemoverInterface $remover, BulkRemoverInterface $bulkRemover, AuthorizationCheckerInterface $authorizationChecker)
-    {
+    public function __construct(
+        RemoverInterface $remover,
+        BulkRemoverInterface $bulkRemover,
+        AuthorizationCheckerInterface $authorizationChecker,
+        IdentifiableObjectRepositoryInterface $filteredProductRepository
+    ) {
         $this->remover = $remover;
         $this->bulkRemover = $bulkRemover;
         $this->authorizationChecker = $authorizationChecker;
+        $this->productRepository = $filteredProductRepository;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function remove($product, array $options = []): void
+    public function remove($filteredProduct, array $options = []): void
     {
-        $this->ensureIsAProduct($product);
-        $this->checkUserAuthorization($product);
+        $this->ensureIsAProduct($filteredProduct);
+        $this->checkUserAuthorization($filteredProduct);
 
-        $this->remover->remove($product, $options);
+        // As $filteredProduct is a product filtered with only granted data and is unknown by doctrine,
+        // we have to find the full product to be able to remove it.
+        $fullProduct = $this->productRepository->findOneByIdentifier($filteredProduct->getIdentifier());
+
+        $this->remover->remove($fullProduct, $options);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function removeAll(array $products, array $options = []): void
+    public function removeAll(array $filteredProducts, array $options = []): void
     {
-        foreach ($products as $product) {
-            $this->ensureIsAProduct($product);
-            $this->checkUserAuthorization($product);
+        $fullProducts = [];
+        foreach ($filteredProducts as $filteredProduct) {
+            $this->ensureIsAProduct($filteredProduct);
+            $this->checkUserAuthorization($filteredProduct);
+
+            // As $filteredProduct is a product filtered with only granted data and is unknown by doctrine,
+            // we have to find the full product to be able to remove it.
+            $fullProducts[] = $this->productRepository->findOneByIdentifier($filteredProduct->getIdentifier());
         }
 
-        $this->bulkRemover->removeAll($products, $options);
+        $this->bulkRemover->removeAll($fullProducts, $options);
     }
 
     /**
-     * @param mixed $product
+     * @param mixed $filteredProduct
      *
      * @throws InvalidObjectException If the parameter is not a instance of ProductInterface.
      */
-    protected function ensureIsAProduct($product): void
+    protected function ensureIsAProduct($filteredProduct): void
     {
-        if (!$product instanceof ProductInterface) {
+        if (!$filteredProduct instanceof ProductInterface) {
             throw InvalidObjectException::objectExpected(
-                ClassUtils::getClass($product),
+                ClassUtils::getClass($filteredProduct),
                 ProductInterface::class
             );
         }
     }
 
     /**
-     * @param ProductInterface $product
+     * @param ProductInterface $filteredProduct
      *
      * @throws ResourceAccessDeniedException If the user is not owner on the product.
      */
-    protected function checkUserAuthorization(ProductInterface $product): void
+    protected function checkUserAuthorization(ProductInterface $filteredProduct): void
     {
-        $isOwner = $this->authorizationChecker->isGranted(Attributes::OWN, $product);
+        $isOwner = $this->authorizationChecker->isGranted(Attributes::OWN, $filteredProduct);
 
         if (!$isOwner) {
             throw new ResourceAccessDeniedException(
-                $product,
+                $filteredProduct,
                 'You can delete a product only if it is classified in at least one category on which you have an own permission.'
             );
         }

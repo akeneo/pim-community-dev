@@ -7,8 +7,8 @@ Feature: Approve draft
     Given a "clothing" catalog configuration
     And the following product:
       | sku           | categories |
-      | akeneo_tshirt | tshirts    |
-      | akeneo_sweat  | tshirts    |
+      | akeneo_tshirt | tops       |
+      | akeneo_sweat  | tops       |
 
   @jira https://akeneo.atlassian.net/browse/PIM-4596
   Scenario: Successfully approve a draft

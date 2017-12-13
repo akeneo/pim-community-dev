@@ -87,7 +87,7 @@ class IndexingProductIntegration extends TestCase
         $indexedProductFoo = $this->esProductClient->get(self::DOCUMENT_TYPE, $foo->getId());
         $this->assertSame(['categoryA', 'categoryA1', 'categoryB', 'master'], $indexedProductFoo['_source']['categories']);
         $this->assertSame(['<all_channels>' => ['<all_locales>' => 'my data updated']], $indexedProductFoo['_source']['values']['a_text-text']);
-        $this->assertSame(['<all_channels>' => ['<all_locales>' => '15.6000']], $indexedProductFoo['_source']['values']['a_number_float-decimal']);
+        $this->assertSame(['<all_channels>' => ['<all_locales>' => '15.6']], $indexedProductFoo['_source']['values']['a_number_float-decimal']);
         $this->assertSame(['<all_channels>' => ['<all_locales>' => ['optionA']]], $indexedProductFoo['_source']['values']['a_multi_select-options']);
     }
 
@@ -111,7 +111,7 @@ class IndexingProductIntegration extends TestCase
         $indexedProductFoo = $this->esProductClient->get(self::DOCUMENT_TYPE, $foo->getId());
         $this->assertSame(['categoryA', 'categoryA1', 'categoryB', 'master'], $indexedProductFoo['_source']['categories']);
         $this->assertSame(['<all_channels>' => ['<all_locales>' => 'my data updated']], $indexedProductFoo['_source']['values']['a_text-text']);
-        $this->assertSame(['<all_channels>' => ['<all_locales>' => '15.6000']], $indexedProductFoo['_source']['values']['a_number_float-decimal']);
+        $this->assertSame(['<all_channels>' => ['<all_locales>' => '15.6']], $indexedProductFoo['_source']['values']['a_number_float-decimal']);
         $this->assertSame(['<all_channels>' => ['<all_locales>' => ['optionA']]], $indexedProductFoo['_source']['values']['a_multi_select-options']);
     }
 

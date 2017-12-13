@@ -2,19 +2,21 @@ parameters:
     pimee_catalog.security.merger.not_granted_category.class: PimEnterprise\Component\Catalog\Security\Merger\NotGrantedCategoryMerger
     pimee_catalog.security.merger.not_granted_associated_product.class: PimEnterprise\Component\Catalog\Security\Merger\NotGrantedAssociatedProductMerger
     pimee_catalog.security.merger.not_granted_values.class: PimEnterprise\Component\Catalog\Security\Merger\NotGrantedValuesMerger
+    pimee_catalog.security.merger.merge_data_on_product.class: PimEnterprise\Component\Catalog\Security\Merger\MergeDataOnProduct
+    pimee_catalog.security.merger.merge_data_on_product_model.class: PimEnterprise\Component\Catalog\Security\Merger\MergeDataOnProductModel
 
 services:
     pimee_catalog.security.merger.not_granted_category:
         class: '%pimee_catalog.security.merger.not_granted_category.class%'
         arguments:
             - '@security.authorization_checker'
-            - '@pim_catalog.repository.product_category'
+            - '@pim_catalog.updater.category_field_without_permission'
 
     pimee_catalog.security.merger.not_granted_associated_product:
         class: '%pimee_catalog.security.merger.not_granted_associated_product.class%'
         arguments:
             - '@security.authorization_checker'
-            - '@pim_catalog.repository.product'
+            - '@pim_catalog.updater.association_field_without_permission'
 
     pimee_catalog.security.merger.not_granted_values:
         class: '%pimee_catalog.security.merger.not_granted_values.class%'
@@ -22,4 +24,23 @@ services:
             - '@security.authorization_checker'
             - '@pim_catalog.repository.cached_attribute'
             - '@pim_catalog.repository.cached_locale'
-            - '@pim_catalog.factory.value_collection_without_permission'
+            - '@pim_catalog.factory.value_collection'
+
+    pimee_catalog.security.merger.merge_data_on_product:
+        class: '%pimee_catalog.security.merger.merge_data_on_product.class%'
+        arguments:
+            -
+                - '@pimee_catalog.security.merger.not_granted_values'
+                - '@pimee_catalog.security.merger.not_granted_associated_product'
+                - '@pimee_catalog.security.merger.not_granted_category'
+            - '@pim_catalog.repository.attribute'
+            - '@pim_catalog.entity_with_family_variant.add_parent_to_product'
+            - '@pim_catalog.repository.product_model_without_permission'
+
+    pimee_catalog.security.merger.merge_data_on_product_model:
+        class: '%pimee_catalog.security.merger.merge_data_on_product_model.class%'
+        arguments:
+            -
+                - '@pimee_catalog.security.merger.not_granted_values'
+                - '@pimee_catalog.security.merger.not_granted_category'
+            - '@pim_catalog.repository.product_model_without_permission'

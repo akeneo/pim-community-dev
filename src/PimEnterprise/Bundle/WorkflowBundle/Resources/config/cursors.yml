@@ -3,8 +3,7 @@ services:
         class: '%akeneo_elasticsearch.cursor.cursor_factory.class%'
         arguments:
             - '@akeneo_elasticsearch.client.product'
-            - '@pim_catalog.object_manager.product'
-            - '%pimee_workflow.entity.published_product.class%'
+            - '@pimee_workflow.repository.published_product'
             - '%akeneo_elasticsearch.cursor.cursor.class%'
             - '%pim_catalog.factory.product_cursor.page_size%'
             - 'pimee_workflow_published_product'
@@ -13,8 +12,7 @@ services:
         class: '%akeneo_elasticsearch.cursor.from_size_cursor_factory.class%'
         arguments:
             - '@akeneo_elasticsearch.client.product'
-            - '@pim_catalog.object_manager.product'
-            - '%pimee_workflow.entity.published_product.class%'
+            - '@pimee_workflow.repository.published_product'
             - '%akeneo_elasticsearch.cursor.from_size_cursor.class%'
             - '%pim_catalog.factory.product_cursor.page_size%'
             - 'pimee_workflow_published_product'
@@ -23,8 +21,7 @@ services:
         class: '%akeneo_elasticsearch.cursor.search_after_size_cursor_factory.class%'
         arguments:
             - '@akeneo_elasticsearch.client.product'
-            - '@pim_catalog.object_manager.product'
-            - '%pimee_workflow.entity.published_product.class%'
+            - '@pimee_workflow.repository.published_product'
             - '%akeneo_elasticsearch.cursor.search_after_size_cursor.class%'
             - '%pim_catalog.factory.product_cursor.page_size%'
             - 'pimee_workflow_published_product'

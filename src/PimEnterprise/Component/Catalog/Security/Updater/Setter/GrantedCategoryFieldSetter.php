@@ -13,7 +13,9 @@ namespace PimEnterprise\Component\Catalog\Security\Updater\Setter;
 
 use Akeneo\Component\Classification\CategoryAwareInterface;
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
+use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Persistence\ObjectRepository;
+use Doctrine\Common\Util\ClassUtils;
 use Pim\Component\Catalog\Updater\Setter\AbstractFieldSetter;
 use Pim\Component\Catalog\Updater\Setter\FieldSetterInterface;
 use PimEnterprise\Component\Security\Attributes;
@@ -22,7 +24,7 @@ use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Security\Core\Exception\InvalidArgumentException;
 
 /**
- * Check if category is at least "viewable" to be associated to a product
+ * Check if category is at least "viewable" to be associated to a resource
  *
  * @author Marie Bochu <marie.bochu@akeneo.com>
  */
@@ -40,39 +42,45 @@ class GrantedCategoryFieldSetter extends AbstractFieldSetter implements FieldSet
     /** @var TokenStorageInterface */
     private $tokenStorage;
 
+    /** @var ObjectManager */
+    private $entityManager;
+
     /**
-     * @param FieldSetterInterface            $categoryFieldSetter
-     * @param AuthorizationCheckerInterface   $authorizationChecker
-     * @param ObjectRepository                $categoryAccessRepository
-     * @param TokenStorageInterface           $tokenStorage
-     * @param array                           $supportedFields
+     * @param FieldSetterInterface          $categoryFieldSetter
+     * @param AuthorizationCheckerInterface $authorizationChecker
+     * @param ObjectRepository              $categoryAccessRepository
+     * @param TokenStorageInterface         $tokenStorage
+     * @param ObjectManager                 $entityManager
+     * @param array                         $supportedFields
      */
     public function __construct(
         FieldSetterInterface $categoryFieldSetter,
         AuthorizationCheckerInterface $authorizationChecker,
         ObjectRepository $categoryAccessRepository,
         TokenStorageInterface $tokenStorage,
+        ObjectManager $entityManager,
         array $supportedFields
     ) {
         $this->categoryFieldSetter = $categoryFieldSetter;
         $this->authorizationChecker = $authorizationChecker;
         $this->categoryAccessRepository = $categoryAccessRepository;
         $this->tokenStorage = $tokenStorage;
+        $this->entityManager = $entityManager;
         $this->supportedFields = $supportedFields;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function setFieldData($product, $field, $data, array $options = [])
+    public function setFieldData($entityWithCategories, $field, $data, array $options = [])
     {
-        $areCategoriesVisible = $this->areAllCategoriesVisibleOnProduct($product);
-        $wasOwner = $this->authorizationChecker->isGranted([Attributes::OWN], $product);
+        $areCategoriesVisible = $this->areAllCategoriesVisibleOnEntity($entityWithCategories);
+        $wasOwner = $this->authorizationChecker->isGranted([Attributes::OWN], $entityWithCategories);
 
-        $this->categoryFieldSetter->setFieldData($product, $field, $data, $options);
+        $this->categoryFieldSetter->setFieldData($entityWithCategories, $field, $data, $options);
 
         $isOwner = false;
-        foreach ($product->getCategories() as $category) {
+        foreach ($entityWithCategories->getCategories() as $category) {
             if (!$this->authorizationChecker->isGranted([Attributes::VIEW_ITEMS], $category)) {
                 throw InvalidPropertyException::validEntityCodeExpected(
                     $field,
@@ -87,11 +95,11 @@ class GrantedCategoryFieldSetter extends AbstractFieldSetter implements FieldSet
             }
         }
 
-        if (count($product->getCategories()) === 0 && $areCategoriesVisible) {
+        if (count($entityWithCategories->getCategories()) === 0 && $areCategoriesVisible) {
             $isOwner = true;
         }
 
-        if ($wasOwner && !$isOwner && null !== $product->getId()) {
+        if ($wasOwner && !$isOwner && null !== $entityWithCategories->getId()) {
             throw new InvalidArgumentException(
                 'You should at least keep your product in one category on which you have an own permission.'
             );
@@ -99,18 +107,28 @@ class GrantedCategoryFieldSetter extends AbstractFieldSetter implements FieldSet
     }
 
     /**
-     * In the case the user removes all categories from a product he owns, he will not loose the ownership of product
-     * (because an uncategorized product is automatically owned) except if there is still a category the user can not
-     * view attached to the product.
-     * This method check if there are categories he can not view on the product.
+     * In the case the user removes all categories from an resource he owns, he will not loose the ownership of this resource
+     * (because an uncategorized resource is automatically owned) except if there is still a category the user can not
+     * view attached to the resource.
+     * This method check if there are categories he can not view on the resource.
      *
-     * @param CategoryAwareInterface $product
+     * @param CategoryAwareInterface $entityWithCategories
      *
      * @return bool
      */
-    protected function areAllCategoriesVisibleOnProduct(CategoryAwareInterface $product)
+    protected function areAllCategoriesVisibleOnEntity(CategoryAwareInterface $entityWithCategories)
     {
-        $categoryCodes = $product->getCategoryCodes();
+        if (null === $entityWithCategories->getId()) {
+            return true;
+        }
+
+        $entityWithoutPermission = $this->entityManager->getRepository(ClassUtils::getClass($entityWithCategories))
+            ->find($entityWithCategories->getId());
+        if (null === $entityWithoutPermission) {
+            return true;
+        }
+
+        $categoryCodes = $entityWithoutPermission->getCategoryCodes();
         if (count($categoryCodes) === 0) {
             return true;
         }

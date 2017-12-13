@@ -5,6 +5,7 @@ namespace spec\PimEnterprise\Component\Security\Remover;
 use Akeneo\Component\StorageUtils\Exception\InvalidObjectException;
 use Akeneo\Component\StorageUtils\Remover\BulkRemoverInterface;
 use Akeneo\Component\StorageUtils\Remover\RemoverInterface;
+use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\ProductInterface;
 use PimEnterprise\Component\Security\Attributes;
@@ -14,9 +15,13 @@ use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 class ProductRemoverSpec extends ObjectBehavior
 {
-    function let(RemoverInterface $remover, BulkRemoverInterface $bulkRemover, AuthorizationCheckerInterface $authorizationChecker)
-    {
-        $this->beConstructedWith($remover, $bulkRemover, $authorizationChecker);
+    function let(
+        RemoverInterface $remover,
+        BulkRemoverInterface $bulkRemover,
+        AuthorizationCheckerInterface $authorizationChecker,
+        IdentifiableObjectRepositoryInterface $productRepository
+    ) {
+        $this->beConstructedWith($remover, $bulkRemover, $authorizationChecker, $productRepository);
     }
 
     function it_is_initializable()
@@ -24,26 +29,47 @@ class ProductRemoverSpec extends ObjectBehavior
         $this->shouldHaveType(ProductRemover::class);
     }
 
-    function it_removes_a_product(ProductInterface $product, $remover, $authorizationChecker)
-    {
+    function it_removes_a_product(
+        ProductInterface $product,
+        $remover,
+        $authorizationChecker,
+        $productRepository,
+        ProductInterface $fullProduct
+    ) {
         $authorizationChecker->isGranted(Attributes::OWN, $product)->willReturn(true);
 
         $options = ['option' => 'foo'];
 
-        $remover->remove($product, $options)->shouldBeCalled();
+        $product->getIdentifier()->willReturn('code');
+        $productRepository->findOneByIdentifier('code')->willReturn($fullProduct);
+
+        $remover->remove($fullProduct, $options)->shouldBeCalled();
         $this->remove($product, $options);
     }
 
-    function it_removes_a_list_of_products(ProductInterface $firstProduct, ProductInterface $secondProduct, $bulkRemover, $authorizationChecker)
-    {
+    function it_removes_a_list_of_products(
+        ProductInterface $firstProduct,
+        ProductInterface $secondProduct,
+        $bulkRemover,
+        $authorizationChecker,
+        $productRepository,
+        ProductInterface $fullFirstProduct,
+        ProductInterface $fullSecondProduct
+    ) {
         $authorizationChecker->isGranted(Attributes::OWN, $firstProduct)->willReturn(true);
         $authorizationChecker->isGranted(Attributes::OWN, $secondProduct)->willReturn(true);
 
-        $products = [$firstProduct, $secondProduct];
+        $firstProduct->getIdentifier()->willReturn('code1');
+        $productRepository->findOneByIdentifier('code1')->willReturn($fullFirstProduct);
+
+        $secondProduct->getIdentifier()->willReturn('code2');
+        $productRepository->findOneByIdentifier('code2')->willReturn($fullSecondProduct);
+
+        $products = [$fullFirstProduct, $fullSecondProduct];
         $options = ['option' => 'foo'];
 
         $bulkRemover->removeAll($products, $options)->shouldBeCalled();
-        $this->removeAll($products, $options);
+        $this->removeAll([$firstProduct, $secondProduct], $options);
     }
 
     function it_throws_an_exception_when_the_object_to_remove_is_not_a_product()
