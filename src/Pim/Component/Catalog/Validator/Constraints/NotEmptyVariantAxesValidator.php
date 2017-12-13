@@ -4,7 +4,7 @@ namespace Pim\Component\Catalog\Validator\Constraints;
 
 use Pim\Component\Catalog\FamilyVariant\EntityWithFamilyVariantAttributesProvider;
 use Pim\Component\Catalog\Model\EntityWithFamilyVariantInterface;
-use Pim\Component\Catalog\Model\Metric;
+use Pim\Component\Catalog\Model\MetricInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
@@ -62,7 +62,7 @@ class NotEmptyVariantAxesValidator extends ConstraintValidator
             $value = $entity->getValue($axis->getCode());
 
             if ((null === $value || (empty($value->getData()) && !is_bool($value->getData()))) ||
-                (null !== $value && $value->getData() instanceof Metric && null === $value->getData()->getData())) {
+                (null !== $value && $value->getData() instanceof MetricInterface && null === $value->getData()->getData())) {
                 $this->context->buildViolation(NotEmptyVariantAxes::EMPTY_AXIS_VALUE, [
                     '%attribute%' => $axis->getCode()
                 ])->atPath($constraint->propertyPath)->addViolation();
