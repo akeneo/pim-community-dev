@@ -6,6 +6,7 @@
 - PIM-7011: XLS Options Import - Simple select attribute option cannot be updated for options with numeric codes
 - PIM-7039: Association grid, scopable attributes used as labels do not appear
 - PIM-6980: Missing labels for attribute prevent you from creating a variant family
+- PIM-7030: Not allow empty Metric value as axis for variant products
 
 ## Better manage products with variants!
 
