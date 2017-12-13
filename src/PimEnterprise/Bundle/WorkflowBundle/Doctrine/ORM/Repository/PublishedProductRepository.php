@@ -14,6 +14,7 @@ namespace PimEnterprise\Bundle\WorkflowBundle\Doctrine\ORM\Repository;
 use Doctrine\ORM\NoResultException;
 use Doctrine\ORM\QueryBuilder;
 use Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\ProductRepository;
+use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Model\AssociationTypeInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\AttributeOptionInterface;
@@ -175,10 +176,22 @@ class PublishedProductRepository extends ProductRepository implements PublishedP
      */
     public function countPublishedProductsForAttributeOption(AttributeOptionInterface $option)
     {
-        $productQb = $this->queryBuilderFactory->create();
-        $productQb->addFilter($option->getAttribute()->getCode(), Operators::IN_LIST, [$option->getCode()]);
+        $qb = $this->createQueryBuilder('pp');
 
-        return $productQb->execute()->count();
+        if (AttributeTypes::OPTION_MULTI_SELECT === $option->getAttribute()->getType()) {
+            $qb
+                ->innerJoin('pp.values', 'ppv')
+                ->innerJoin('ppv.options', 'ppvo')
+                ->where($qb->expr()->eq('ppvo.id', ':option_id'));
+        } else {
+            $qb
+                ->innerJoin('pp.values', 'ppv')
+                ->where($qb->expr()->eq('ppv.option', ':option_id'));
+        }
+
+        $qb->setParameter('option_id', $option->getId());
+
+        return $this->getCountFromQB($qb);
     }
 
     /**
