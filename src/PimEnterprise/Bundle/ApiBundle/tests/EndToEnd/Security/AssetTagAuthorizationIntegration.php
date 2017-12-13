@@ -2,7 +2,6 @@
 
 namespace PimEnterprise\Bundle\ApiBundle\tests\EndToEnd\Security;
 
-use Akeneo\Component\Classification\Model\TagInterface;
 use Pim\Bundle\ApiBundle\tests\integration\ApiTestCase;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -38,35 +37,25 @@ JSON;
      */
     public function testAccessGrantedForGettingATag()
     {
-        $this->createTag(['code' => 'a_tag']);
-
         $client = $this->createAuthenticatedClient([], [], null, null, 'julia', 'julia');
 
-        $client->request('GET', '/api/rest/v1/asset-tags/a_tag');
+        $client->request('GET', '/api/rest/v1/asset-tags/animal');
 
         $response = $client->getResponse();
         $this->assertSame(Response::HTTP_OK, $response->getStatusCode());
     }
 
     /**
-     * Creates an asset tag with data.
-     *
-     * @param array $data
-     *
-     * @return TagInterface
+     * Should be an integration test.
      */
-    private function createTag(array $data): TagInterface
+    public function testAccessGrantedForGettingAListOfTags()
     {
-        $tag = $this->get('pimee_product_asset.factory.tag')->create();
+        $client = $this->createAuthenticatedClient([], [], null, null, 'julia', 'julia');
 
-        $this->get('pimee_product_asset.updater.tag')->update($tag, $data);
+        $client->request('GET', '/api/rest/v1/asset-tags');
 
-        $errors = $this->get('validator')->validate($tag);
-        $this->assertCount(0, $errors);
-
-        $this->get('pimee_product_asset.saver.tag')->save($tag);
-
-        return $tag;
+        $response = $client->getResponse();
+        $this->assertSame(Response::HTTP_OK, $response->getStatusCode());
     }
 
     /**

@@ -139,4 +139,7 @@ services:
     pimee_api.controller.asset_tag:
         class : '%pimee_api.controller.asset_tag.class%'
         arguments:
-            - '@pimee_product_asset.repository.tag'
+            - '@pimee_api.repository.tag'
+            - '@pim_api.pagination.parameter_validator'
+            - '@pim_api.pagination.offset_hal_paginator'
+            - '%pim_api.configuration%'
