@@ -3,7 +3,9 @@
     <span class="AknVariantNavigation-listProductModelLabel">
         <%- entity.label %>
     </span>
-    <span class="AknVariantNavigation-listProductModelCompleteness AknVariantNavigation-listProductCompleteness--<%- getClass(entity.completeness.ratio) %>">
-        <%- entity.completeness.display %>
-    </span>
+    <% if (entity.completeness) { %>
+        <span class="AknVariantNavigation-listProductModelCompleteness AknVariantNavigation-listProductCompleteness--<%- getClass(entity.completeness.ratio) %>">
+            <%- entity.completeness.display %>
+        </span>
+    <% } %>
 </div>

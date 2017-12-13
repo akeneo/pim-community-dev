@@ -18,7 +18,7 @@ extensions:
         config:
             userAccount: pim_menu.user.user_account
             logout: pim_menu.user.logout
-            
+
     pim-api-connection-index-grid-title:
         module: pim/common/grid-title
         parent: pim-api-connection-index
@@ -48,6 +48,8 @@ extensions:
         module: oro/datagrid/pagination-input
         parent: pim-api-connection-index-grid-container
         targetZone: toolbar
+        config:
+            gridName: api-connection-grid
 
     pim-api-connection-index-grid:
         module: pim/form/common/index/grid

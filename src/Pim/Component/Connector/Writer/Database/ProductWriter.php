@@ -2,6 +2,7 @@
 
 namespace Pim\Component\Connector\Writer\Database;
 
+use Akeneo\Component\Batch\Item\InitializableInterface;
 use Akeneo\Component\Batch\Item\ItemWriterInterface;
 use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\Batch\Step\StepExecutionAwareInterface;
@@ -17,7 +18,7 @@ use Pim\Component\Catalog\Model\ProductInterface;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductWriter implements ItemWriterInterface, StepExecutionAwareInterface
+class ProductWriter implements ItemWriterInterface, StepExecutionAwareInterface, InitializableInterface
 {
     /** @var VersionManager */
     protected $versionManager;
@@ -53,9 +54,6 @@ class ProductWriter implements ItemWriterInterface, StepExecutionAwareInterface
      */
     public function write(array $items)
     {
-        $jobParameters = $this->stepExecution->getJobParameters();
-        $realTimeVersioning = $jobParameters->get('realTimeVersioning');
-        $this->versionManager->setRealTimeVersioning($realTimeVersioning);
         foreach ($items as $item) {
             $this->incrementCount($item);
         }
@@ -70,6 +68,16 @@ class ProductWriter implements ItemWriterInterface, StepExecutionAwareInterface
     public function setStepExecution(StepExecution $stepExecution)
     {
         $this->stepExecution = $stepExecution;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function initialize()
+    {
+        $jobParameters = $this->stepExecution->getJobParameters();
+        $realTimeVersioning = $jobParameters->get('realTimeVersioning');
+        $this->versionManager->setRealTimeVersioning($realTimeVersioning);
     }
 
     /**

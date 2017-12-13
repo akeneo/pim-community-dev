@@ -18,10 +18,11 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class ProductModelIndexerSpec extends ObjectBehavior
 {
-    function let(NormalizerInterface $normalizer, Client $productModelClient, Client $productAndProductModelClient)
+    function let(NormalizerInterface $normalizer, Client $productClient, Client $productModelClient, Client $productAndProductModelClient)
     {
         $this->beConstructedWith(
             $normalizer,
+            $productClient,
             $productModelClient,
             $productAndProductModelClient,
             'an_index_type_for_test_purpose'
@@ -131,10 +132,34 @@ class ProductModelIndexerSpec extends ObjectBehavior
         $this->indexAll([]);
     }
 
-    function it_deletes_product_models_from_elasticsearch_index($productModelClient, $productAndProductModelClient)
+    function it_deletes_product_models_from_elasticsearch_index($productClient, $productModelClient, $productAndProductModelClient)
     {
         $productModelClient->delete('an_index_type_for_test_purpose', '40')->shouldBeCalled();
         $productAndProductModelClient->delete('an_index_type_for_test_purpose', 'product_model_40')->shouldBeCalled();
+
+        $productClient->deleteByQuery([
+            'query' => [
+                'term' => [
+                    'ancestors.ids' => 'product_model_40',
+                ],
+            ],
+        ])->shouldBeCalled();
+
+        $productModelClient->deleteByQuery([
+            'query' => [
+                'term' => [
+                    'ancestors.ids' => 'product_model_40',
+                ],
+            ],
+        ])->shouldBeCalled();
+
+        $productAndProductModelClient->deleteByQuery([
+            'query' => [
+                'term' => [
+                    'ancestors.ids' => 'product_model_40',
+                ],
+            ],
+        ])->shouldBeCalled();
 
         $this->remove(40)->shouldReturn(null);
     }

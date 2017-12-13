@@ -618,7 +618,7 @@ define(
                         assocTarget
                     );
 
-                    this.render();
+                    this.getRoot().trigger('pim_enrich:form:update-association');
                 });
             },
 

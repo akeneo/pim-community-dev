@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Pim\Component\Catalog\Normalizer\Indexing\ProductAndProductModel;
 
+use Pim\Component\Catalog\Model\EntityWithFamilyVariantInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
 use Pim\Component\Catalog\Model\VariantProductInterface;
@@ -29,6 +30,7 @@ class ProductPropertiesNormalizer implements NormalizerInterface, SerializerAwar
     private const FIELD_IN_GROUP = 'in_group';
     private const FIELD_ID = 'id';
     private const FIELD_PARENT = 'parent';
+    private const FIELD_ANCESTORS = 'ancestors';
 
     /**
      * {@inheritdoc}
@@ -93,6 +95,8 @@ class ProductPropertiesNormalizer implements NormalizerInterface, SerializerAwar
                 $context
             ) : [];
 
+        $data[self::FIELD_ANCESTORS] = $this->getAncestors($product);
+
         $data[StandardPropertiesNormalizer::FIELD_LABEL] = $this->getLabel(
             $data[StandardPropertiesNormalizer::FIELD_VALUES],
             $product
@@ -111,11 +115,12 @@ class ProductPropertiesNormalizer implements NormalizerInterface, SerializerAwar
      */
     private function getLabel(array $values, ProductInterface $product): array
     {
-        if (null === $product->getFamily()) {
+        $family = $product->getFamily();
+        if (null === $family || null === $family->getAttributeAsLabel()) {
             return [];
         }
 
-        $valuePath = sprintf('%s-text', $product->getFamily()->getAttributeAsLabel()->getCode());
+        $valuePath = sprintf('%s-text', $family->getAttributeAsLabel()->getCode());
         if (!isset($values[$valuePath])) {
             return [];
         }
@@ -156,5 +161,59 @@ class ProductPropertiesNormalizer implements NormalizerInterface, SerializerAwar
             $productModelNormalizedValues,
             $this->getAllParentsValues($productModel->getParent(), $context)
         );
+    }
+
+    /**
+     * @param $product
+     *
+     * @return array
+     */
+    private function getAncestors($product): array
+    {
+        $ancestorsIds = [];
+        $ancestorsCodes = [];
+        if ($product instanceof VariantProductInterface) {
+            $ancestorsIds = $this->getAncestorsIds($product);
+            $ancestorsCodes = $this->getAncestorsCodes($product);
+        }
+
+        $ancestors = [
+            'ids'   => $ancestorsIds,
+            'codes' => $ancestorsCodes,
+        ];
+
+        return $ancestors;
+    }
+
+    /**
+     * @param EntityWithFamilyVariantInterface $entityWithFamilyVariant
+     *
+     * @return array
+     */
+    private function getAncestorsIds(EntityWithFamilyVariantInterface $entityWithFamilyVariant): array
+    {
+        $ancestorsIds = [];
+        while (null !== $parent = $entityWithFamilyVariant->getParent()) {
+            $ancestorsIds[] = 'product_model_' . $parent->getId();
+            $entityWithFamilyVariant = $parent;
+        }
+
+        return $ancestorsIds;
+    }
+
+    /**
+     * @param EntityWithFamilyVariantInterface $entityWithFamilyVariant
+     *
+     * @return array
+     */
+    private function getAncestorsCodes(EntityWithFamilyVariantInterface $entityWithFamilyVariant)
+    {
+        $ancestorsCodes = [];
+        while (null !== $parent = $entityWithFamilyVariant->getParent()) {
+            $ancestorsCodes[] = $parent->getCode();
+            $entityWithFamilyVariant = $parent;
+        }
+
+        return $ancestorsCodes;
     }
 }

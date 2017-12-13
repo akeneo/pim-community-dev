@@ -149,7 +149,7 @@ class MediaFileController
     public function getAction(Request $request, $code)
     {
         $media = $this->mediaRepository->findOneByIdentifier(urldecode($code));
-        if (null === $media) {
+        if (null === $media || FileStorage::CATALOG_STORAGE_ALIAS !== $media->getStorage()) {
             throw new NotFoundHttpException(sprintf('Media file "%s" does not exist.', $code));
         }
 

@@ -48,6 +48,8 @@ extensions:
         module: oro/datagrid/pagination-input
         parent: pim-user-group-index-grid-container
         targetZone: toolbar
+        config:
+            gridName: pim-user-group-grid
 
     pim-user-group-index-grid:
         module: pim/form/common/index/grid

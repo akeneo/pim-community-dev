@@ -72,7 +72,7 @@ Pim\Component\Catalog\Model\ProductModel:
             joinColumns:
                 parent_id:
                     referencedColumnName: id
-                    onDelete: 'SET NULL'
+                    onDelete: CASCADE
             gedmo:
                 - treeParent
         familyVariant:

@@ -1008,6 +1008,7 @@ page_title:
   pim_enrich_job_tracker_index: Prozess-Tracker
   pim_enrich_job_tracker_show: Prozess-Tracker | Job anzeigen
   pim_enrich_api_connection_index: API-Verbindungen
+  pim_enrich_mass_edit_action: Massenbearbeitung
   pim_analytics_system_info_index: Systeminformationen
 batch_jobs:
   add_product_value:

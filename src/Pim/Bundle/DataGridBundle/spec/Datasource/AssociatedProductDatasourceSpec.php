@@ -75,19 +75,15 @@ class AssociatedProductDatasourceSpec extends ObjectBehavior
         Datagrid $datagrid,
         ProductQueryBuilderInterface $pqb,
         ProductQueryBuilderInterface $pqbAsso,
-        ProductQueryBuilderInterface $pqbNonAsso,
         ProductInterface $currentProduct,
         ProductInterface $associatedProduct1,
         ProductInterface $associatedProduct2,
-        ProductInterface $nonAssociatedProduct1,
-        ProductInterface $nonAssociatedProduct2,
         Collection $associationCollection,
         AssociationInterface $association,
         AssociationTypeInterface $associationType,
         \ArrayIterator $associationIterator,
         CursorInterface $productCursor,
-        CursorInterface $associatedProductCursor,
-        CursorInterface $nonAssociatedProductCursor
+        CursorInterface $associatedProductCursor
     ) {
         $pqbFactory->create([
             'repository_parameters' => [],
@@ -113,13 +109,6 @@ class AssociatedProductDatasourceSpec extends ObjectBehavior
         $associatedProduct2->getIdentifier()->willReturn('associated_product_2');
         $associatedProduct2->getId()->willReturn('3');
         $associatedProduct2->getImage()->willReturn('imagePath.png');
-        $nonAssociatedProduct1->getIdentifier()->willReturn('non_associated_product_1');
-        $nonAssociatedProduct1->getId()->willReturn('4');
-        $nonAssociatedProduct1->getImage()->willReturn('imagePath.png');
-        $nonAssociatedProduct2->getIdentifier()->willReturn('non_associated_product_2');
-        $nonAssociatedProduct2->getId()->willReturn('5');
-        $nonAssociatedProduct2->getImage()->willReturn('imagePath.png');
-
         $currentProduct->getAssociations()->willReturn($associationCollection);
         $currentProduct->getIdentifier()->willReturn('current_product');
 
@@ -133,15 +122,10 @@ class AssociatedProductDatasourceSpec extends ObjectBehavior
         $association->getAssociationType()->willReturn($associationType);
         $associationType->getId()->willReturn(1);
 
-        $pqb->addFilter('identifier', Operators::NOT_EQUAL, 'current_product')->shouldBeCalled();
         $pqb->execute()->willReturn($productCursor);
-        $productCursor->count()->willReturn(4);
+        $productCursor->count()->willReturn(2);
 
-        $pqb->getRawFilters()->shouldBeCalledTimes(2)->willReturn([[
-            'field'    => 'identifier',
-            'operator' => Operators::NOT_EQUAL,
-            'value'    => 'current_product',
-        ]]);
+        $pqb->getRawFilters()->shouldBeCalledTimes(1)->willReturn(null);
 
         $pqbFactory->create([
             'repository_parameters' => [],
@@ -150,12 +134,9 @@ class AssociatedProductDatasourceSpec extends ObjectBehavior
             'from'                  => 0,
             'default_locale'        => 'a_locale',
             'default_scope'         => 'a_channel',
-            'filters'               => [[
-                'field'    => 'identifier',
-                'operator' => Operators::NOT_EQUAL,
-                'value'    => 'current_product',
-            ]],
+            'filters'               => null,
         ])->willReturn($pqbAsso);
+
         $pqbAsso
             ->addFilter(
                 'identifier',
@@ -168,32 +149,6 @@ class AssociatedProductDatasourceSpec extends ObjectBehavior
         $associatedProductCursor->valid()->willReturn(true, true, false);
         $associatedProductCursor->current()->willReturn($associatedProduct1, $associatedProduct2);
         $associatedProductCursor->next()->shouldBeCalled();
-
-        $pqbFactory->create([
-            'repository_parameters' => [],
-            'repository_method'     => 'createQueryBuilder',
-            'limit'                 => 40,
-            'from'                  => 0,
-            'default_locale'        => 'a_locale',
-            'default_scope'         => 'a_channel',
-            'filters'               => [[
-                'field'    => 'identifier',
-                'operator' => Operators::NOT_EQUAL,
-                'value'    => 'current_product',
-            ]],
-        ])->willReturn($pqbNonAsso);
-        $pqbNonAsso
-            ->addFilter(
-                'identifier',
-                Operators::NOT_IN_LIST,
-                ['associated_product_1', 'associated_product_2']
-            )->shouldBeCalled();
-        $pqbNonAsso->execute()->willReturn($nonAssociatedProductCursor);
-
-        $nonAssociatedProductCursor->rewind()->shouldBeCalled();
-        $nonAssociatedProductCursor->valid()->willReturn(true, true, false);
-        $nonAssociatedProductCursor->current()->willReturn($nonAssociatedProduct1, $nonAssociatedProduct2);
-        $nonAssociatedProductCursor->next()->shouldBeCalled();
 
         $productNormalizer->normalize($currentProduct, Argument::cetera())->shouldNotBeCalled();
 
@@ -233,49 +188,13 @@ class AssociatedProductDatasourceSpec extends ObjectBehavior
             'completeness'  => null,
         ]);
 
-        $productNormalizer->normalize($nonAssociatedProduct1, 'datagrid', [
-            'locales'       => ['a_locale'],
-            'channels'      => ['a_channel'],
-            'data_locale'   => 'a_locale',
-            'is_associated' => false,
-        ])->willReturn([
-            'identifier'    => 'non_associated_product_1',
-            'family'        => null,
-            'enabled'       => true,
-            'values'        => [],
-            'created'       => '2000-01-01',
-            'updated'       => '2000-01-01',
-            'is_checked'    => false,
-            'is_associated' => false,
-            'label'         => 'non_associated_product_1',
-            'completeness'  => null,
-        ]);
-
-        $productNormalizer->normalize($nonAssociatedProduct2, 'datagrid', [
-            'locales'       => ['a_locale'],
-            'channels'      => ['a_channel'],
-            'data_locale'   => 'a_locale',
-            'is_associated' => false,
-        ])->willReturn([
-            'identifier'    => 'non_associated_product_2',
-            'family'        => null,
-            'enabled'       => true,
-            'values'        => [],
-            'created'       => '2000-01-01',
-            'updated'       => '2000-01-01',
-            'is_checked'    => false,
-            'is_associated' => false,
-            'label'         => 'non_associated_product_2',
-            'completeness'  => null,
-        ]);
-
         $results = $this->getResults();
         $results->shouldBeArray();
         $results->shouldHaveCount(2);
         $results->shouldHaveKey('data');
-        $results->shouldHaveKeyWithValue('totalRecords', 4);
+        $results->shouldHaveKeyWithValue('totalRecords', 2);
         $results['data']->shouldBeArray();
-        $results['data']->shouldHaveCount(4);
+        $results['data']->shouldHaveCount(2);
         $results['data']->shouldBeAnArrayOfInstanceOf(ResultRecord::class);
     }
 

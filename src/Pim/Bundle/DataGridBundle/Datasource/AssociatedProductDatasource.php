@@ -66,29 +66,18 @@ class AssociatedProductDatasource extends ProductDatasource
         $from = null !== $this->getConfiguration('from', false) ?
             (int)$this->getConfiguration('from', false) : 0;
 
-        $this->pqb->addFilter('identifier', Operators::NOT_EQUAL, $currentProduct->getIdentifier());
         $productCursor = $this->pqb->execute();
-        $rows = ['totalRecords' => $productCursor->count()];
 
-        if (Directions::ASCENDING === $this->sortOrder) {
-            $rows['data'] = $this->getProductsSortedByIsAssociatedAsc(
-                $associatedProductsIdentifiers,
-                $limit,
-                $from,
-                $locale,
-                $scope
-            );
-        } elseif (Directions::DESCENDING === $this->sortOrder) {
-            $rows['data'] = $this->getProductsSortedByIsAssociatedDesc(
-                $associatedProductsIdentifiers,
-                $limit,
-                $from,
-                $locale,
-                $scope
-            );
-        } else {
-            $rows['data'] = $this->normalizeProducts($productCursor, $associatedProductsIdentifiers, $locale, $scope);
-        }
+        $associatedProducts = $this->getAssociatedProducts(
+            $associatedProductsIdentifiers,
+            $limit,
+            0,
+            $locale,
+            $scope
+        );
+
+        $rows = ['totalRecords' => count($associatedProducts)];
+        $rows['data'] = $associatedProducts;
 
         return $rows;
     }
@@ -115,94 +104,6 @@ class AssociatedProductDatasource extends ProductDatasource
     }
 
     /**
-     * Gets associated products first, then gets non associated products only if
-     * the limit (number of product per page) is not reached.
-     *
-     * @param array  $associatedProductsIdentifiers
-     * @param int    $limit
-     * @param int    $from
-     * @param string $locale
-     * @param string $scope
-     *
-     * @return array
-     */
-    protected function getProductsSortedByIsAssociatedDesc(
-        array $associatedProductsIdentifiers,
-        $limit,
-        $from,
-        $locale,
-        $scope
-    ) {
-        $associatedProducts = $this->getAssociatedProducts(
-            $associatedProductsIdentifiers,
-            $limit,
-            $from,
-            $locale,
-            $scope
-        );
-
-        $nonAssociatedProducts = [];
-        $nbAssociated = count($associatedProducts);
-        if ($limit > $nbAssociated) {
-            $limit -= $nbAssociated;
-
-            $nonAssociatedProducts = $this->getNonAssociatedProducts(
-                $associatedProductsIdentifiers,
-                $limit,
-                0,
-                $locale,
-                $scope
-            );
-        }
-
-        return array_merge($associatedProducts, $nonAssociatedProducts);
-    }
-
-    /**
-     * Gets non associated products first, then gets associated products only if
-     * the limit (number of product per page) is not reached.
-     *
-     * @param array  $associatedProductsIdentifiers
-     * @param int    $limit
-     * @param int    $from
-     * @param string $locale
-     * @param string $scope
-     *
-     * @return array
-     */
-    protected function getProductsSortedByIsAssociatedAsc(
-        array $associatedProductsIdentifiers,
-        $limit,
-        $from,
-        $locale,
-        $scope
-    ) {
-        $nonAssociatedProducts = $this->getNonAssociatedProducts(
-            $associatedProductsIdentifiers,
-            $limit,
-            $from,
-            $locale,
-            $scope
-        );
-
-        $associatedProducts = [];
-        $nbNonAssociated = count($nonAssociatedProducts);
-        if ($limit > $nbNonAssociated) {
-            $limit -= $nbNonAssociated;
-
-            $associatedProducts = $this->getAssociatedProducts(
-                $associatedProductsIdentifiers,
-                $limit,
-                0,
-                $locale,
-                $scope
-            );
-        }
-
-        return array_merge($nonAssociatedProducts, $associatedProducts);
-    }
-
-    /**
      * @param array  $associatedProductsIdentifiers
      * @param int    $limit
      * @param int    $from
@@ -220,30 +121,6 @@ class AssociatedProductDatasource extends ProductDatasource
     ) {
         $pqb = $this->createQueryBuilder($limit, $from, $locale, $scope);
         $pqb->addFilter('identifier', Operators::IN_LIST, $associatedProductsIdentifiers);
-
-        $products = $pqb->execute();
-
-        return $this->normalizeProducts($products, $associatedProductsIdentifiers, $locale, $scope);
-    }
-
-    /**
-     * @param array  $associatedProductsIdentifiers
-     * @param int    $limit
-     * @param int    $from
-     * @param string $locale
-     * @param string $scope
-     *
-     * @return array
-     */
-    protected function getNonAssociatedProducts(
-        array $associatedProductsIdentifiers,
-        $limit,
-        $from,
-        $locale,
-        $scope
-    ) {
-        $pqb = $this->createQueryBuilder($limit, $from, $locale, $scope);
-        $pqb->addFilter('identifier', Operators::NOT_IN_LIST, $associatedProductsIdentifiers);
 
         $products = $pqb->execute();
 

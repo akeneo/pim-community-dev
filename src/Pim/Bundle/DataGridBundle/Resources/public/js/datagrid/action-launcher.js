@@ -2,10 +2,11 @@
 define([
     'jquery',
     'underscore',
+    'oro/translator',
     'backbone',
     'pim/template/datagrid/action-launcher-button',
     'pim/template/datagrid/action-launcher-list-item'
-], function($, _, Backbone, buttonTemplate, listItemTemplate) {
+], function($, _, __, Backbone, buttonTemplate, listItemTemplate) {
     'use strict';
 
     /**
@@ -134,8 +135,10 @@ define([
         render: function () {
             this.$el.empty();
 
-            var $el = $(this.buttonTemplate({
-                label: _.__(this.label || this.action.label),
+            const labelKey = this.label || this.action.label;
+
+            const $el = $(this.buttonTemplate({
+                label: labelKey ? __(labelKey) : '',
                 icon: this.icon,
                 className: this.className ? this.className : '',
                 iconClassName: this.iconClassName,
@@ -159,8 +162,10 @@ define([
         renderAsListItem: function () {
             this.$el.empty();
 
-            var $el = $(this.listItemTemplate({
-                label: _.__(this.label || this.action.label),
+            const labelKey = this.label || this.action.label;
+
+            const $el = $(this.listItemTemplate({
+                label: labelKey ? __(labelKey) : '',
                 className: 'AknDropdown-menuLink' + (this.className ? ' ' + this.className : ''),
                 link: this.link,
                 action: this.action,
