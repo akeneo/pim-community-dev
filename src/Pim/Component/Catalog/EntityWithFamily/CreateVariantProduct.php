@@ -94,6 +94,7 @@ class CreateVariantProduct
         $variantProduct->setCreated($product->getCreated());
         $variantProduct->setUpdated($product->getUpdated());
         $variantProduct->setUniqueData($product->getUniqueData());
+        $variantProduct->setRawValues($product->getRawValues());
 
         return $variantProduct;
     }

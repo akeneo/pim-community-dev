@@ -255,6 +255,7 @@ class ProductNormalizerIntegration extends TestCase
                 'PACK'   => ['groups' => [], 'products' => ['bar', 'baz']],
                 'UPSELL' => ['groups' => ['groupA'], 'products' => []],
                 'X_SELL' => ['groups' => ['groupB'], 'products' => ['bar']],
+                'SUBSTITUTION' => ['groups' => [], 'products' => []],
             ],
         ];
 
@@ -339,6 +340,7 @@ class ProductNormalizerIntegration extends TestCase
                 'PACK'   => ['groups' => [], 'products' => ['bar', 'baz']],
                 'UPSELL' => ['groups' => ['groupA'], 'products' => []],
                 'X_SELL' => ['groups' => ['groupB'], 'products' => ['bar']],
+                'SUBSTITUTION' => ['groups' => [], 'products' => []],
             ],
         ];
 

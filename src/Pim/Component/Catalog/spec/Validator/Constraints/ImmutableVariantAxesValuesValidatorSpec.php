@@ -26,12 +26,11 @@ use Symfony\Component\Validator\Violation\ConstraintViolationBuilderInterface;
 class ImmutableVariantAxesValuesValidatorSpec extends ObjectBehavior
 {
     function let(
-        EntityManagerInterface $entityManager,
         EntityWithFamilyVariantAttributesProvider $attributesProvider,
         ValueCollectionFactoryInterface $valueCollectionFactory,
         ExecutionContextInterface $context
     ) {
-        $this->beConstructedWith($entityManager, $attributesProvider, $valueCollectionFactory);
+        $this->beConstructedWith($attributesProvider, $valueCollectionFactory);
 
         $this->initialize($context);
     }
@@ -91,7 +90,6 @@ class ImmutableVariantAxesValuesValidatorSpec extends ObjectBehavior
 
     function it_adds_a_violation_if_the_variant_axis_values_are_updated(
         $context,
-        $entityManager,
         $attributesProvider,
         $valueCollectionFactory,
         VariantProductInterface $variantProduct,
@@ -127,8 +125,7 @@ class ImmutableVariantAxesValuesValidatorSpec extends ObjectBehavior
         $sizeAttribute->getCode()->willReturn('size');
         $colorAttribute->getCode()->willReturn('color');
 
-        $entityManager->getUnitOfWork()->willReturn($uow);
-        $uow->getOriginalEntityData($variantProduct)->willReturn(['rawValues' => $originalRawData]);
+        $variantProduct->getRawValues()->willReturn($originalRawData);
         $valueCollectionFactory->createFromStorageFormat($originalRawData)->willReturn($originalValues);
 
         $originalValues->getByCodes('size')->willReturn($originalSizeValue);

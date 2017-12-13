@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Pim\Component\Connector\Processor\Denormalization\Product;
+namespace spec\Pim\Component\Catalog\EntityWithFamilyVariant;
 
 use Pim\Component\Catalog\EntityWithFamily\CreateVariantProduct;
 use Pim\Component\Catalog\EntityWithFamily\Event\ParentHasBeenAddedToProduct;
@@ -8,7 +8,7 @@ use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
 use Pim\Component\Catalog\Model\VariantProductInterface;
 use Pim\Component\Catalog\Repository\ProductModelRepositoryInterface;
-use Pim\Component\Connector\Processor\Denormalization\Product\AddParent;
+use Pim\Component\Catalog\EntityWithFamilyVariant\AddParent;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
