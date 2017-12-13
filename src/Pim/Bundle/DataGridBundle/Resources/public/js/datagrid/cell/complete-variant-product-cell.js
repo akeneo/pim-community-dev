@@ -38,7 +38,7 @@ define(['oro/datagrid/string-cell', 'oro/translator'],
                         cssClass += 'warning';
                     }
 
-                    completeness = '<span class="AknBadge AknBadge--'+cssClass+'">'+data.complete+' / '+data.total +'</span>';
+                    completeness = '<span class="AknBadge AknBadge--medium AknBadge--'+cssClass+'">'+data.complete+' / '+data.total +'</span>';
                 }
 
                 this.$el.empty().html(completeness);
