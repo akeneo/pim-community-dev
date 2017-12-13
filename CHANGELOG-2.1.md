@@ -9,6 +9,7 @@
 - API-427: Get an asset with the API
 - API-443: Prevent getting asset via media file url with the API
 - PIM-7029: Add a search by code on assets grid
+- PIM-7024: Add search on label and code on published products
 
 ## Bug fixes
 
