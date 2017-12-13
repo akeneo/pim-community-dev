@@ -29,6 +29,7 @@ services:
             - { name: 'pim_catalog.elasticsearch.query.sorter', priority: 30 }
 
     # Services used by the products and product models' grid
+    # here, products and product models should be gathered by the most top level product model
     pim_enrich.query.product_and_product_model_query_builder_from_size_factory:
         class: '%pim_enrich.query.elasticsearch.product_and_model_query_builder_factory.class%'
         arguments:
@@ -57,6 +58,7 @@ services:
             - 'pim_catalog_product'
 
     # Services used by the mass edit
+    # here, products and product models should not be gathered
     pim_enrich.query.product_and_product_model_query_builder_factory:
         class: '%pim_enrich.query.elasticsearch.product_and_model_query_builder_factory.class%'
         arguments:
