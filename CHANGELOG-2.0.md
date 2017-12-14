@@ -3,8 +3,8 @@
 ## Bug fixes
 
 - PIM-7022: Grey read-only fields on product-model edit form too
+- PIM-7059: Fix variant product mass deletion
 - API-352: rework the way permissions on products are applied
-
 
 # 2.0.8 (2017-12-07)
 
