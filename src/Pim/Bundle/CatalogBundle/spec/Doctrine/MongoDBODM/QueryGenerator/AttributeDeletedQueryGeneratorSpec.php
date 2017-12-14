@@ -23,12 +23,12 @@ class AttributeDeletedQueryGeneratorSpec extends ObjectBehavior
             [
                 ['normalizedData.label-en_US' => [ '$exists' => true ]],
                 ['$unset' => ['normalizedData.label-en_US' => '']],
-                ['multiple' => true]
+                ['multiple' => true, 'w' => 0,]
             ],
             [
                 ['normalizedData.label-fr_FR' => [ '$exists' => true ]],
                 ['$unset' => ['normalizedData.label-fr_FR' => '']],
-                ['multiple' => true]
+                ['multiple' => true, 'w' => 0,]
             ]
         ]);
     }

@@ -1,6 +1,5 @@
 parameters:
     pim_catalog.event_subscriber.product_category.class:             Pim\Bundle\CatalogBundle\EventSubscriber\ProductCategorySubscriber
-    pim_catalog.event_subscriber.product_template_attribute.class:   Pim\Bundle\CatalogBundle\EventSubscriber\ProductTemplateAttributeSubscriber
     pim_catalog.event_subscriber.create_attribute_requirement.class: Pim\Bundle\CatalogBundle\EventSubscriber\CreateAttributeRequirementSubscriber
     pim_catalog.event_subscriber.localizable.class:                  Pim\Bundle\CatalogBundle\EventSubscriber\LocalizableSubscriber
     pim_catalog.event_subscriber.scopable.class:                     Pim\Bundle\CatalogBundle\EventSubscriber\ScopableSubscriber
@@ -74,15 +73,6 @@ services:
         class: '%pim_catalog.event_subscriber.product_category.class%'
         arguments:
             - '@pim_catalog.saver.product'
-        tags:
-            - { name: kernel.event_subscriber }
-
-    pim_catalog.event_subscriber.product_template_attribute:
-        class: '%pim_catalog.event_subscriber.product_template_attribute.class%'
-        arguments:
-            - '@doctrine.orm.entity_manager'
-            - '@pim_catalog.builder.product_template'
-            - '@pim_catalog.repository.product_template'
         tags:
             - { name: kernel.event_subscriber }
 
