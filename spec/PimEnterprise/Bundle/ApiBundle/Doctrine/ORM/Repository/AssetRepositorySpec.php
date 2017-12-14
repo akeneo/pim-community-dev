@@ -18,7 +18,6 @@ class AssetRepositorySpec extends ObjectBehavior
         AssetRepositoryInterface $assetRepository,
         ClassMetadata $classMetadata
     ) {
-
         $em->getClassMetadata(AssetInterface::class)->willReturn($classMetadata);
         $this->beConstructedWith(
             $em,

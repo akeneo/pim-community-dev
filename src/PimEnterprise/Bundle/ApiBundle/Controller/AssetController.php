@@ -187,13 +187,13 @@ class AssetController
         reset($assets);
 
         $paginationParameters = [
-            'query_parameters'    => $queryParameters,
-            'search_after'        => [
+            'query_parameters' => $queryParameters,
+            'search_after'     => [
                 'next' => false !== $lastAsset ? $lastAsset->getCode() : null,
                 'self' => $queryParameters['search_after'] ?? null,
             ],
-            'list_route_name'     => 'pimee_api_asset_list',
-            'item_route_name'     => 'pimee_api_asset_get',
+            'list_route_name'  => 'pimee_api_asset_list',
+            'item_route_name'  => 'pimee_api_asset_get',
         ];
 
         $paginatedAssets = $this->searchAfterPaginator->paginate(
