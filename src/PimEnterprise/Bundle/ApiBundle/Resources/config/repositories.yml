@@ -20,4 +20,6 @@ services:
     pimee_api.repository.asset:
         class: '%pimee_api.repository.asset.class%'
         arguments:
+            - '@doctrine.orm.entity_manager'
+            - '%pimee_product_asset.model.asset.class%'
             - '@pimee_product_asset.repository.asset'

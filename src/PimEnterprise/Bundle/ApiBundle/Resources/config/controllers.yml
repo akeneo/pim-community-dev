@@ -127,4 +127,10 @@ services:
         class : '%pimee_api.controller.asset.class%'
         arguments:
             - '@pimee_api.repository.asset'
+            - '@pimee_api.repository.asset'
+            - '@pimee_api.repository.asset'
             - '@pim_serializer'
+            - '@pim_api.pagination.parameter_validator'
+            - '@pim_api.pagination.offset_hal_paginator'
+            - '@pim_api.pagination.search_after_hal_paginator'
+            - '%pim_api.configuration%'
