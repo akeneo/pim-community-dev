@@ -4,6 +4,7 @@ namespace Pim\Component\Catalog\Validator\Constraints;
 
 use Pim\Component\Catalog\FamilyVariant\EntityWithFamilyVariantAttributesProvider;
 use Pim\Component\Catalog\Model\EntityWithFamilyVariantInterface;
+use Pim\Component\Catalog\Model\MetricInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
@@ -49,7 +50,8 @@ class NotEmptyVariantAxesValidator extends ConstraintValidator
         // be on the 3 level sub_product_model_2 -> sub_product_model_1 -> root_product_model) and will return the axes
         // on the 3 level.
         if ($entity instanceof ProductModelInterface && null !== $entity->getParent()) {
-            if (null !== $entity->getParent()->getParent() || 1 === (int) $entity->getParent()->getFamilyVariant()->getNumberOfLevel()) {
+            if (null !== $entity->getParent()->getParent() ||
+                1 === (int) $entity->getParent()->getFamilyVariant()->getNumberOfLevel()) {
                 return;
             }
         }
@@ -58,8 +60,10 @@ class NotEmptyVariantAxesValidator extends ConstraintValidator
 
         foreach ($axes as $axis) {
             $value = $entity->getValue($axis->getCode());
+            $isEmptyMetricValue = (null !== $value && $value->getData() instanceof MetricInterface &&
+                null === $value->getData()->getData());
 
-            if (null === $value || (empty($value->getData()) && !is_bool($value->getData()))) {
+            if ((null === $value || (empty($value->getData()) && !is_bool($value->getData()))) || $isEmptyMetricValue) {
                 $this->context->buildViolation(NotEmptyVariantAxes::EMPTY_AXIS_VALUE, [
                     '%attribute%' => $axis->getCode()
                 ])->atPath($constraint->propertyPath)->addViolation();
