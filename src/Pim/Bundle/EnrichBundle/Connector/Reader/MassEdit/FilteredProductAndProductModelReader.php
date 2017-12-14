@@ -193,7 +193,7 @@ class FilteredProductAndProductModelReader implements
                 if ($this->stepExecution) {
                     $this->stepExecution->incrementSummaryInfo('skip');
 
-                    $warning = 'Bulk actions do not support Product models entities yet.';
+                    $warning = 'This bulk action doesn\'t support Product models entities yet.';
                     $this->stepExecution->addWarning(
                         $warning,
                         [],
