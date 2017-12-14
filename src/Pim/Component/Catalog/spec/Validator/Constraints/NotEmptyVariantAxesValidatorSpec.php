@@ -7,6 +7,7 @@ use Pim\Component\Catalog\FamilyVariant\EntityWithFamilyVariantAttributesProvide
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\EntityWithFamilyVariantInterface;
 use Pim\Component\Catalog\Model\FamilyVariantInterface;
+use Pim\Component\Catalog\Model\MetricInterface;
 use Pim\Component\Catalog\Model\ValueInterface;
 use Pim\Component\Catalog\Validator\Constraints\NotEmptyVariantAxes;
 use Prophecy\Argument;
@@ -109,6 +110,38 @@ class NotEmptyVariantAxesValidatorSpec extends ObjectBehavior
             ->buildViolation(
                 NotEmptyVariantAxes::EMPTY_AXIS_VALUE, [
                     '%attribute%' => 'color'
+                ]
+            )
+            ->willReturn($violation);
+        $violation->atPath('attribute')->willReturn($violation);
+        $violation->addViolation()->shouldBeCalled();
+
+        $this->validate($entity, $constraint);
+    }
+
+    function it_raises_a_violation_if_the_entity_has_no_value_for_an_metric_axis(
+        $axesProvider,
+        $context,
+        EntityWithFamilyVariantInterface $entity,
+        FamilyVariantInterface $familyVariant,
+        NotEmptyVariantAxes $constraint,
+        AttributeInterface $attribute,
+        MetricInterface $metric,
+        ValueInterface $value,
+        ConstraintViolationBuilderInterface $violation
+    ) {
+        $entity->getFamilyVariant()->willReturn($familyVariant);
+        $axesProvider->getAxes($entity)->willReturn([$attribute]);
+        
+        $value->getData()->willReturn($metric);
+        $metric->getData()->willReturn(null);
+        $attribute->getCode()->willReturn('display_diagonal');
+        $entity->getValue('display_diagonal')->willReturn(null);
+
+        $context
+            ->buildViolation(
+                NotEmptyVariantAxes::EMPTY_AXIS_VALUE, [
+                    '%attribute%' => 'display_diagonal'
                 ]
             )
             ->willReturn($violation);
