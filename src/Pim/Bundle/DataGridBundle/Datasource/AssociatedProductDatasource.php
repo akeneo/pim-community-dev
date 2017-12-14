@@ -157,7 +157,6 @@ class AssociatedProductDatasource extends ProductDatasource
                 $this->normalizer->normalize($product, 'datagrid', $context),
                 [
                     'id'         => $product->getId(),
-                    'image'      => $product->getImage(),
                     'dataLocale' => $dataLocale,
                 ]
             );

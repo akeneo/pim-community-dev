@@ -3,18 +3,23 @@
 namespace spec\Pim\Bundle\DataGridBundle\Normalizer;
 
 use PhpSpec\ObjectBehavior;
+use Pim\Bundle\EnrichBundle\Normalizer\ImageNormalizer;
 use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\Completeness;
 use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Component\Catalog\Model\FamilyTranslationInterface;
 use Pim\Component\Catalog\Model\LocaleInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Model\ValueInterface;
+use Prophecy\Argument;
 use Symfony\Component\Serializer\SerializerInterface;
 
 class ProductAssociationNormalizerSpec extends ObjectBehavior
 {
-    function let(SerializerInterface $serializer)
+    function let(SerializerInterface $serializer, ImageNormalizer $imageNormalizer)
     {
+        $this->beConstructedWith($imageNormalizer);
+
         $serializer->implement('Symfony\Component\Serializer\Normalizer\NormalizerInterface');
         $this->setSerializer($serializer);
     }
@@ -40,16 +45,20 @@ class ProductAssociationNormalizerSpec extends ObjectBehavior
 
     function it_normalizes_a_product_with_label(
         $serializer,
+        $imageNormalizer,
         ProductInterface $product,
         FamilyInterface $family,
         FamilyTranslationInterface $familyEN,
         Completeness $completeness,
         LocaleInterface $localeEN,
         ChannelInterface $channelEcommerce,
-        ProductInterface $currentProduct
-    ) {
+        ProductInterface $currentProduct,
+        ValueInterface $image
+    )
+    {
         $context = [
             'locales'             => ['en_US'],
+            'data_locale'         => 'en_US',
             'channels'            => ['ecommerce'],
             'current_product'     => $currentProduct,
             'association_type_id' => 1,
@@ -81,6 +90,12 @@ class ProductAssociationNormalizerSpec extends ObjectBehavior
         $localeEN->getCode()->willReturn('en_US');
         $channelEcommerce->getCode()->willReturn('ecommerce');
 
+        $product->getImage()->willReturn($image);
+        $imageNormalizer->normalize($image, Argument::any())->willReturn([
+            'filePath' => '/p/i/m/4/all.png',
+            'originalFileName' => 'all.png',
+        ]);
+
         $data = [
             'identifier'    => 'purple_tshirt',
             'family'        => 'Tshirt',
@@ -90,23 +105,32 @@ class ProductAssociationNormalizerSpec extends ObjectBehavior
             'is_checked'    => false,
             'is_associated' => false,
             'label'         => 'Purple tshirt',
-            'completeness'  => 76
+            'completeness'  => 76,
+            'image'         => [
+                'filePath' => '/p/i/m/4/all.png',
+                'originalFileName' => 'all.png',
+            ]
         ];
 
         $this->normalize($product, 'datagrid', $context)->shouldReturn($data);
     }
+
     function it_normalizes_a_product_without_label(
         $serializer,
+        $imageNormalizer,
         ProductInterface $product,
         FamilyInterface $family,
         FamilyTranslationInterface $familyEN,
         Completeness $completeness,
         LocaleInterface $localeEN,
         ChannelInterface $channelEcommerce,
-        ProductInterface $currentProduct
-    ) {
+        ProductInterface $currentProduct,
+        ValueInterface $image
+    )
+    {
         $context = [
             'locales'             => ['en_US'],
+            'data_locale'         => 'en_US',
             'channels'            => ['ecommerce'],
             'current_product'     => $currentProduct,
             'association_type_id' => 1,
@@ -138,6 +162,12 @@ class ProductAssociationNormalizerSpec extends ObjectBehavior
         $localeEN->getCode()->willReturn('en_US');
         $channelEcommerce->getCode()->willReturn('ecommerce');
 
+        $product->getImage()->willReturn($image);
+        $imageNormalizer->normalize($image, Argument::any())->willReturn([
+            'filePath' => '/p/i/m/4/all.png',
+            'originalFileName' => 'all.png',
+        ]);
+
         $data = [
             'identifier'    => 'purple_tshirt',
             'family'        => '[tshirt]',
@@ -147,7 +177,11 @@ class ProductAssociationNormalizerSpec extends ObjectBehavior
             'is_checked'    => false,
             'is_associated' => false,
             'label'         => 'Purple tshirt',
-            'completeness'  => 76
+            'completeness'  => 76,
+            'image'         => [
+                'filePath' => '/p/i/m/4/all.png',
+                'originalFileName' => 'all.png',
+            ]
         ];
 
         $this->normalize($product, 'datagrid', $context)->shouldReturn($data);

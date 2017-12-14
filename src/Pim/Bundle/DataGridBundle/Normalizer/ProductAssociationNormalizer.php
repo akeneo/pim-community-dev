@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\DataGridBundle\Normalizer;
 
+use Pim\Bundle\EnrichBundle\Normalizer\ImageNormalizer;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\SerializerAwareInterface;
@@ -17,6 +18,17 @@ use Symfony\Component\Serializer\SerializerAwareTrait;
 class ProductAssociationNormalizer implements NormalizerInterface, SerializerAwareInterface
 {
     use SerializerAwareTrait;
+
+    /** @var ImageNormalizer */
+    protected $imageNormalizer;
+
+    /**
+     * @param ImageNormalizer           $imageNormalizer
+     */
+    public function __construct(ImageNormalizer $imageNormalizer)
+    {
+        $this->imageNormalizer = $imageNormalizer;
+    }
 
     /**
      * {@inheritdoc}
@@ -40,6 +52,7 @@ class ProductAssociationNormalizer implements NormalizerInterface, SerializerAwa
         $data['is_associated'] = $context['is_associated'];
         $data['label'] = $product->getLabel($locale);
         $data['completeness'] = $this->getCompleteness($product, $context);
+        $data['image'] = $this->imageNormalizer->normalize($product->getImage(), $context['data_locale']);
 
         return $data;
     }
