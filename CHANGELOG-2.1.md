@@ -8,10 +8,7 @@
 - PIM-6342: Display and remove associations gallery view
 - PIM-7051: Add images to associated products that have asset collection as main image
 - PIM-7046: Add ability to customise empty grid message and illustration
-
-## BC breaks
-
-- Change the constructor of `Pim\Bundle\DataGridBundle\Normalizer\ProductAssociationNormalizer` to add `Pim\Bundle\EnrichBundle\Normalizer\ImageNormalizer` parameter
+- PIM-6917: Fix CSS glitches
 
 ## Update jobs
 
@@ -30,6 +27,7 @@ bin/console akeneo:batch:create-job internal remove_from_category mass_edit remo
 Removed typehint of ProductInterface in the Pim\Component\Catalog\Updater\Adder\FieldAdderInterface and Pim\Component\Catalog\Updater\Adder\AttributeAdderInterface
 Removed typehint of ProductInterface in the Pim\Component\Catalog\Updater\Remover\FieldRemoverInterface and Pim\Component\Catalog\Updater\Remover\AttributeRemoverInterface
 Removed typehint of ProductInterface in the Pim\Component\Catalog\Updater\Setter\FieldSetterInterface and Pim\Component\Catalog\Updater\Setter\AttributeSetterInterface
+- Change the constructor of `Pim\Bundle\DataGridBundle\Normalizer\ProductAssociationNormalizer` to add `Pim\Bundle\EnrichBundle\Normalizer\ImageNormalizer` parameter
 
 # 2.1.0-ALPHA1
 
