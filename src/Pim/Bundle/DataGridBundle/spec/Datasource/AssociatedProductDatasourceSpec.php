@@ -171,7 +171,6 @@ class AssociatedProductDatasourceSpec extends ObjectBehavior
         $associatedProductCursor->current()->willReturn($associatedProduct1, $associatedProduct2);
         $associatedProductCursor->next()->shouldBeCalled();
 
-        // Prout prout
         $pqbFactory->create([
             'repository_parameters' => [],
             'repository_method'     => 'createQueryBuilder',

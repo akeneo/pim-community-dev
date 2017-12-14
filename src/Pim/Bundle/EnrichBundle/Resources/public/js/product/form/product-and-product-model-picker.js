@@ -29,14 +29,14 @@ define(
              * {@inheritdoc}
              */
             selectModel: function (model) {
-                this.addItem(model.attributes.document_type + '_' + model.get(this.config.columnName));
+                this.addItem(`${model.attributes.document_type}_${model.get(this.config.columnName)}`);
             },
 
             /**
              * {@inheritdoc}
              */
             unselectModel: function (model) {
-                this.removeItem(model.attributes.document_type + '_' + model.get(this.config.columnName));
+                this.removeItem(`${model.attributes.document_type}_${model.get(this.config.columnName)}`);
             },
 
             /**
@@ -59,17 +59,7 @@ define(
                     FetcherRegistry.getFetcher('product-model').fetchByIdentifiers(productModelIds),
                     FetcherRegistry.getFetcher('product').fetchByIdentifiers(productIds)
                 ).then(function (productModels, products) {
-                    this.$('.basket').html(this.basketTemplate({
-                        items: products.concat(productModels),
-                        title: __('pim_enrich.form.basket.title'),
-                        emptyLabel: __('pim_enrich.form.basket.empty_basket'),
-                        imagePathMethod: this.imagePathMethod.bind(this),
-                        columnName: this.config.columnName,
-                        identifierName: this.config.columnName,
-                        labelMethod: this.labelMethod.bind(this),
-                        itemCodeMethod: this.itemCodeMethod.bind(this)
-                    }));
-
+                    this.renderBasket(products.concat(productModels));
                     this.delegateEvents();
                 }.bind(this));
             },
@@ -98,9 +88,9 @@ define(
              */
             itemCodeMethod: function (item) {
                 if (item.code) {
-                    return 'product_model_' + item.code;
+                    return `product_model_${item.code}`;
                 } else {
-                    return 'product_' + item[this.config.columnName];
+                    return `product_${item[this.config.columnName]}`;
                 }
             }
         });

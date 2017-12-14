@@ -81,7 +81,7 @@ Feature: Execute a job
     Given I edit the "SKU-001" product
     When I visit the "Associations" column tab
     And I visit the "Cross sell" association type
-    Then I should see the text "2 product(s) and 1 group(s)"
+    Then I should see the text "2 product(s), 0 product model(s) and 1 group(s)"
     And the english localizable value name of "SKU-001" should be "Before"
 
   Scenario: Successfully skip associations without modification
@@ -132,7 +132,7 @@ Feature: Execute a job
     When I edit the "SKU-001" product
     And I visit the "Associations" column tab
     And I visit the "Cross sell" association type
-    Then I should see the text "0 product(s) and 0 group(s)"
+    Then I should see the text "0 product(s), 0 product model(s) and 0 group(s)"
 
   @jira https://akeneo.atlassian.net/browse/PIM-6019
   Scenario: Successfully import product without remove already existing associations when option "compare values" is set to false

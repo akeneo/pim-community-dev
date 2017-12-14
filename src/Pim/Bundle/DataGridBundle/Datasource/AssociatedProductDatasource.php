@@ -57,6 +57,9 @@ class AssociatedProductDatasource extends ProductDatasource
         }
 
         $association = $this->getAssociation($sourceProduct, $this->getConfiguration('association_type_id'));
+        if (null === $association) {
+            return ['totalRecords' => 0, 'data' => []];
+        }
 
         $associatedProductsIdentifiers = $this->getAssociatedProductIdentifiers($association);
         $associatedProductModelsIdentifiers = $this->getAssociatedProductModelIdentifiers($association);
@@ -248,7 +251,7 @@ class AssociatedProductDatasource extends ProductDatasource
     }
 
     /**
-     * @param ProductInterface           $product
+     * @param ProductInterface           $sourceProduct
      * @param mixed                      $associationTypeId
      * @return null|AssociationInterface
      */
