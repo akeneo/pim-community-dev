@@ -1,0 +1,12 @@
+parameters:
+    pimee_enrich.reader.database.filtered_product_and_product_model.class: PimEnterprise\Bundle\EnrichBundle\Connector\Reader\MassEdit\FilteredProductAndProductModelReader
+
+services:
+    pimee_enrich.reader.database.filtered_product_and_product_model:
+        class: '%pimee_enrich.reader.database.filtered_product_and_product_model.class%'
+        arguments:
+            - '@pim_enrich.query.product_and_product_model_query_builder_factory'
+            - '@pim_catalog.repository.channel'
+            - '@pim_catalog.manager.completeness'
+            - '@pim_catalog.converter.metric'
+            - true
