@@ -225,7 +225,8 @@ define(
                             if (_.isEmpty(fields)) {
                                 objectValuesDom.append(this.noDataTemplate({
                                     hint: __('oro.datagrid.noresults'),
-                                    subHint: __('oro.datagrid.noresults_subTitle')
+                                    subHint: __('oro.datagrid.noresults_subTitle'),
+                                    imageClass: ''
                                 }));
                             } else {
                                 objectValuesDom.append(fieldsView);

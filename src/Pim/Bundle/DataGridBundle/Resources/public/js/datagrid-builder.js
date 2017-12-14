@@ -189,7 +189,8 @@ define([
                     entityHint: metadata.options.entityHint,
                     row: metadata.options.rowView ? requireContext(metadata.options.rowView) : null,
                     displayTypes: metadata.options.displayTypes,
-                    manageColumns: metadata.options.manageColumns
+                    manageColumns: metadata.options.manageColumns,
+                    emptyGridOptions: metadata.options.emptyGridOptions
                 };
             },
 
