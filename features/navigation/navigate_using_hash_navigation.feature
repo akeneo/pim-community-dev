@@ -48,7 +48,7 @@ Feature: Navigate the application in hash navigation mode
     And I am on the products grid
     When I select rows boots and sneakers
     And I press the "Bulk actions" button
-    And I choose the "Edit common attributes" operation
+    And I choose the "Edit attributes" operation
     And I display the Name attribute
     And I reload the page
-    Then I should see the text "Edit common attributes"
+    Then I should see the text "Edit attributes"

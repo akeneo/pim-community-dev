@@ -11,6 +11,7 @@ use Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\ColumnsMapper;
 use Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\ColumnsMerger;
 use Pim\Component\Connector\ArrayConverter\FlatToStandard\ProductModel\FieldConverter;
 use Pim\Component\Connector\ArrayConverter\FlatToStandard\ProductModel;
+use Pim\Component\Connector\Exception\DataArrayConversionException;
 use Pim\Component\Connector\Exception\StructureArrayConversionException;
 
 class ProductModelSpec extends ObjectBehavior
@@ -162,6 +163,18 @@ class ProductModelSpec extends ObjectBehavior
                 ]
             ]
         ]);
+    }
+
+    function it_throws_an_exception_if_the_fields_are_not_scalar($attributeColumnsResolver)
+    {
+        $attributeColumnsResolver->resolveAttributeColumns()->willReturn([]);
+
+        $this->shouldThrow(DataArrayConversionException::class)->during('convert', [[
+            'code' => ['code'],
+            'parent' => '1234',
+            'family_variant' => 'family_variant',
+            'categories' => 'tshirt,pull',
+        ]]);
     }
 
     function it_throws_an_exception_if_family_variant_is_different_from_the_parent(
