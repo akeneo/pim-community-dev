@@ -23,3 +23,10 @@ services:
             - '@doctrine.orm.entity_manager'
             - '%pimee_product_asset.model.asset.class%'
             - '@pimee_product_asset.repository.asset'
+
+    pimee_api.repository.tag:
+        class: '%pim_api.repository.api_resource.class%'
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '%pimee_product_asset.model.tag.class%'
+            - '@pimee_product_asset.repository.tag'

@@ -2,6 +2,9 @@
 
 ## Improvements
 
+- API-529: Get an asset tag
+- API-530: Get a list of asset tags
+- API-531: Upsert a single asset tag
 - API-440: Create an asset category with the API
 - API-441: Update partially an asset category with the API
 - API-488: Get an asset reference file with the API

@@ -25,3 +25,7 @@ asset_variation:
 asset:
     resource: '@PimEnterpriseApiBundle/Resources/config/routing/asset.yml'
     prefix: /rest/v1
+
+asset-tag:
+    resource: '@PimEnterpriseApiBundle/Resources/config/routing/asset_tag.yml'
+    prefix: /rest/v1
