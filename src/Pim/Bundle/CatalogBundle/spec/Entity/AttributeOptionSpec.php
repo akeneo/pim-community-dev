@@ -20,6 +20,12 @@ class AttributeOptionSpec extends ObjectBehavior
         $this->getOptionValue()->shouldReturn(null);
     }
 
+    function its_code_is_a_string()
+    {
+        $this->setCode(1234);
+        $this->getCode()->shouldReturn('1234');
+    }
+
     function it_returns_the_expected_translation(AttributeOptionValueInterface $en, AttributeOptionValueInterface $fr)
     {
         $en->getLocale()->willReturn('en');
