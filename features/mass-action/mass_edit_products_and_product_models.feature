@@ -52,7 +52,7 @@ Feature: Apply a mass action on products only (and not product models)
     And I should see the text "skipped 1"
     And I should see the text "Skipped products 1"
     And I should see the text "The variant product family must be the same than its parent: tshirt-unique-size-navy-blue"
-    And I should see the text "Bulk actions do not support Product models entities yet."
+    And I should see the text "This bulk action doesn't support Product models entities yet."
     And the family of product "watch" should be "shoes"
     And the family of product "tshirt-unique-size-crimson-red" should be "clothing"
     And the family of product model "model-tshirt-divided-crimson-red" should be "clothing"
@@ -69,7 +69,7 @@ Feature: Apply a mass action on products only (and not product models)
     Then I should see the text "COMPLETED"
     And I should see the text "processed 2"
     And I should see the text "skipped 1"
-    And I should see the text "Bulk actions do not support Product models entities yet."
+    And I should see the text "This bulk action doesn't support Product models entities yet."
     And product "watch" should be disabled
     And product "tshirt-unique-size-navy-blue" should be disabled
 
@@ -86,7 +86,7 @@ Feature: Apply a mass action on products only (and not product models)
     Then I should see the text "COMPLETED"
     And I should see the text "processed 2"
     And I should see the text "skipped 1"
-    And I should see the text "Bulk actions do not support Product models entities yet."
+    And I should see the text "This bulk action doesn't support Product models entities yet."
     Then "related" group should contain "watch, tshirt-unique-size-navy-blue"
 
   Scenario: Mass edits add categories of only products within a selection of products and product models
@@ -106,7 +106,7 @@ Feature: Apply a mass action on products only (and not product models)
     Then I should see the text "COMPLETED"
     And I should see the text "processed 2"
     And I should see the text "skipped 1"
-    And I should see the text "Bulk actions do not support Product models entities yet."
+    And I should see the text "This bulk action doesn't support Product models entities yet."
     When I am on the products grid
     And I open the category tree
     Then I should be able to use the following filters:
@@ -130,7 +130,7 @@ Feature: Apply a mass action on products only (and not product models)
     Then I should see the text "COMPLETED"
     And I should see the text "processed 2"
     And I should see the text "skipped 1"
-    And I should see the text "Bulk actions do not support Product models entities yet."
+    And I should see the text "This bulk action doesn't support Product models entities yet."
     When I am on the products grid
     And I open the category tree
     Then I should be able to use the following filters:
@@ -161,6 +161,6 @@ Feature: Apply a mass action on products only (and not product models)
     Then I should see the text "COMPLETED"
     And I should see the text "processed 2"
     And I should see the text "skipped 1"
-    And I should see the text "Bulk actions do not support Product models entities yet."
+    And I should see the text "This bulk action doesn't support Product models entities yet."
     And the product "another-watch" should not have any category
     And the categories of the product "cult-of-luna-black-m" should be "long_sleeves"
