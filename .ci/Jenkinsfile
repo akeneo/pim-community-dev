@@ -120,7 +120,7 @@ stage("Test") {
             "php-cs-fixer": {
                 if (launchUnitTests.equals("yes")) {
                     withPhp({
-                        try {    
+                        try {
                             sh "cd /home/jenkins/pim && ./bin/php-cs-fixer fix --diff --dry-run --config=.php_cs.php --format=junit > ${env.WORKSPACE}/junit_output.xml"
                         } finally {
                             junit "junit_output.xml"
