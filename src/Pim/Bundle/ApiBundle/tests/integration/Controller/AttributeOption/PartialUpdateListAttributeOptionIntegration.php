@@ -1,30 +1,28 @@
 <?php
 
-declare(strict_types=1);
-
-namespace Pim\Bundle\ApiBundle\tests\integration\Controller\FamilyVariant;
+namespace Pim\Bundle\ApiBundle\tests\integration\Controller\AttributeOption;
 
 use Pim\Bundle\ApiBundle\Stream\StreamResourceResponse;
 use Pim\Bundle\ApiBundle\tests\integration\ApiTestCase;
 use Symfony\Component\HttpFoundation\Response;
 
-class PartialUpdateListFamilyVariantIntegration extends ApiTestCase
+class PartialUpdateListAttributeOptionIntegration extends ApiTestCase
 {
-    public function testCreateAndUpdateAListOfFamilyVariants()
+    public function testHttpHeadersInResponseWhenAnAttributeOptionIsUpdated()
     {
         $data = <<<JSON
-    {"code": "newFamilyVariant", "variant_attribute_sets": [{"level": 1, "axes": ["a_ref_data_simple_select"], "attributes": ["a_ref_data_simple_select"]}]}
-    {"code": "familyVariantA1","labels": {"en_US": "US label"}}
-    {"code": "familyVariantA1","labels": {"fr_FR": "FR label"}}
+    {"code": "optionA","labels": {"en_US": "A Option"}}
+    {"code": "optionB","labels": {"en_US": "B Option"}}
+    {"code": "optionC","labels": {"en_US": "Option C"}}
 JSON;
 
         $expectedContent = <<<JSON
-{"line":1,"code":"newFamilyVariant","status_code":201}
-{"line":2,"code":"familyVariantA1","status_code":204}
-{"line":3,"code":"familyVariantA1","status_code":204}
+{"line":1,"code":"optionA","status_code":204}
+{"line":2,"code":"optionB","status_code":204}
+{"line":3,"code":"optionC","status_code":201}
 JSON;
 
-        $response = $this->executeStreamRequest('PATCH', 'api/rest/v1/families/familyA/variants', [], [], [], $data);
+        $response = $this->executeStreamRequest('PATCH', 'api/rest/v1/attributes/a_multi_select/options', [], [], [], $data);
         $httpResponse = $response['http_response'];
 
         $this->assertSame(Response::HTTP_OK, $httpResponse->getStatusCode());
@@ -32,50 +30,43 @@ JSON;
         $this->assertArrayHasKey('content-type', $httpResponse->headers->all());
         $this->assertSame(StreamResourceResponse::CONTENT_TYPE, $httpResponse->headers->get('content-type'));
 
-        $expectedFamilies = [
-            'newFamilyVariant' => [
-                'code'                   => 'newFamilyVariant',
-                'labels'                 => [],
-                'family'                 => 'familyA',
-                'variant_attribute_sets' => [
-                    [
-                        'level'      => 1,
-                        'axes'       => ['a_ref_data_simple_select'],
-                        'attributes' => ['a_ref_data_simple_select', 'sku'],
-                    ]
+        $expectedOptions = [
+            'optionA' => [
+                'code' => 'optionA',
+                'attribute' => 'a_multi_select',
+                'sort_order' => 10,
+                'labels' => [
+                    'en_US' => 'A Option',
                 ],
             ],
-            'familyVariantA1'    => [
-                'code'                   => 'familyVariantA1',
-                'labels'                 => [
-                    'en_US' => 'US label',
-                    'fr_FR' => 'FR label',
+            'optionB' => [
+                'code' => 'optionB',
+                'attribute' => 'a_multi_select',
+                'sort_order' => 20,
+                'labels' => [
+                    'en_US' => 'B Option',
                 ],
-                'family'                 => 'familyA',
-                'variant_attribute_sets' => [
-                    [
-                        'level'      => 1,
-                        'axes'       => ['a_simple_select'],
-                        'attributes' => ['a_simple_select', 'a_text'],
-                    ],
-                    [
-                        'level'      => 2,
-                        'axes'       => ['a_yes_no'],
-                        'attributes' => ['sku', 'a_text_area', 'a_yes_no'],
-                    ],
+            ],
+            'optionC' => [
+                'code' => 'optionC',
+                'attribute' => 'a_multi_select',
+                'sort_order' => 1,
+                'labels' => [
+                    'en_US' => 'Option C',
                 ],
             ],
         ];
 
-        $this->assertSameFamilyVariants($expectedFamilies['newFamilyVariant'], 'newFamilyVariant');
-        $this->assertSameFamilyVariants($expectedFamilies['familyVariantA1'], 'familyVariantA1');
+        $this->assertSameAttributeOptions($expectedOptions['optionA'], 'a_multi_select.optionA');
+        $this->assertSameAttributeOptions($expectedOptions['optionB'], 'a_multi_select.optionB');
+        $this->assertSameAttributeOptions($expectedOptions['optionC'], 'a_multi_select.optionC');
     }
 
     public function testPartialUpdateListWithMaxNumberOfResourcesAllowed()
     {
         $maxNumberResources = $this->getMaxNumberResources();
 
-        $json = '{"code": "my_code_%s", "variant_attribute_sets": [{"level": 1, "axes": ["a_simple_select"], "attributes": ["a_simple_select"]}]}';
+        $json = '{"code": "my_code_%s", "labels": {"en_US": "Option"}}';
         for ($i = 0; $i < $maxNumberResources; $i++) {
             $data[] = sprintf($json, $i);
         }
@@ -86,7 +77,7 @@ JSON;
         }
         $expectedContent = implode(PHP_EOL, $expectedContent);
 
-        $response = $this->executeStreamRequest('PATCH', 'api/rest/v1/families/familyA/variants', [], [], [], $data);
+        $response = $this->executeStreamRequest('PATCH', 'api/rest/v1/attributes/a_multi_select/options', [], [], [], $data);
         $httpResponse = $response['http_response'];
 
         $this->assertSame(Response::HTTP_OK, $httpResponse->getStatusCode());
@@ -106,14 +97,14 @@ JSON;
         $data = implode(PHP_EOL, $data);
 
         $expectedContent =
-<<<JSON
+            <<<JSON
     {
         "code": 413,
         "message": "Too many resources to process, ${maxNumberResources} is the maximum allowed."
     }
 JSON;
 
-        $client->request('PATCH', 'api/rest/v1/families', [], [], [], $data);
+        $client->request('PATCH', 'api/rest/v1/attributes/a_multi_select/options', [], [], [], $data);
 
         $response = $client->getResponse();
         $this->assertJsonStringEqualsJsonString($expectedContent, $response->getContent());
@@ -136,7 +127,7 @@ JSON;
         ];
 
         $data =
-<<<JSON
+            <<<JSON
 ${line['invalid_json_1']}
 ${line['invalid_json_2']}
 ${line['invalid_json_3']}
@@ -150,7 +141,7 @@ ${line['invalid_json_4']}
 JSON;
 
         $expectedContent =
-<<<JSON
+            <<<JSON
 {"line":1,"status_code":400,"message":"Invalid json message received"}
 {"line":2,"status_code":400,"message":"Invalid json message received"}
 {"line":3,"status_code":400,"message":"Invalid json message received"}
@@ -163,7 +154,7 @@ JSON;
 {"line":10,"status_code":400,"message":"Invalid json message received"}
 JSON;
 
-        $response = $this->executeStreamRequest('PATCH', 'api/rest/v1/families', [], [], [], $data);
+        $response = $this->executeStreamRequest('PATCH', 'api/rest/v1/attributes/a_multi_select/options', [], [], [], $data);
         $httpResponse = $response['http_response'];
 
 
@@ -174,7 +165,7 @@ JSON;
     public function testErrorWhenIdentifierIsMissing()
     {
         $data =
-<<<JSON
+            <<<JSON
     {"identifier": "my_identifier"}
     {"code": null}
     {"code": ""}
@@ -183,7 +174,7 @@ JSON;
 JSON;
 
         $expectedContent =
-<<<JSON
+            <<<JSON
 {"line":1,"status_code":422,"message":"Code is missing."}
 {"line":2,"status_code":422,"message":"Code is missing."}
 {"line":3,"status_code":422,"message":"Code is missing."}
@@ -191,45 +182,45 @@ JSON;
 {"line":5,"status_code":422,"message":"Code is missing."}
 JSON;
 
-        $response = $this->executeStreamRequest('PATCH', 'api/rest/v1/families/familyA/variants', [], [], [], $data);
+        $response = $this->executeStreamRequest('PATCH', 'api/rest/v1/attributes/a_multi_select/options', [], [], [], $data);
         $httpResponse = $response['http_response'];
 
         $this->assertSame(Response::HTTP_OK, $httpResponse->getStatusCode());
         $this->assertSame($expectedContent, $response['content']);
     }
 
-    public function testUpdateFamilyWhenUpdaterFailed()
+    public function testUpdateAttributeOptionWhenUpdaterFailed()
     {
         $data =
-<<<JSON
+            <<<JSON
     {"code": "foo", "attributes":"bar"}
 JSON;
 
         $expectedContent =
-<<<JSON
-{"line":1,"code":"foo","status_code":422,"message":"Property \"attributes\" does not exist. Check the expected format on the API documentation.","_links":{"documentation":{"href":"http:\/\/api.akeneo.com\/api-reference.html#patch_families__family_code__variants__code__"}}}
+            <<<JSON
+{"line":1,"code":"foo","status_code":422,"message":"Property \"attributes\" does not exist. Check the expected format on the API documentation.","_links":{"documentation":{"href":"http:\/\/api.akeneo.com\/api-reference.html#patch_attributes__attribute_code__options__code_"}}}
 JSON;
 
-        $response = $this->executeStreamRequest('PATCH', 'api/rest/v1/families/familyA/variants', [], [], [], $data);
+        $response = $this->executeStreamRequest('PATCH', 'api/rest/v1/attributes/a_multi_select/options', [], [], [], $data);
         $httpResponse = $response['http_response'];
 
         $this->assertSame(Response::HTTP_OK, $httpResponse->getStatusCode());
         $this->assertSame($expectedContent, $response['content']);
     }
 
-    public function testUpdateFamilyWhenValidationFailed()
+    public function testUpdateAttributeOptionWhenValidationFailed()
     {
         $data =
-<<<JSON
+            <<<JSON
     {"code": "foo,"}
 JSON;
 
         $expectedContent =
-<<<JSON
-{"line":1,"code":"foo,","status_code":422,"message":"Validation failed.","errors":[{"property":"variant_attribute_sets","message":"There should be at least one level defined in the family variant"},{"property":"code","message":"Family variant code may contain only letters, numbers and underscores"}]}
+            <<<JSON
+{"line":1,"code":"foo,","status_code":422,"message":"Validation failed.","errors":[{"property":"code","message":"Option code may contain only letters, numbers and underscores"}]}
 JSON;
 
-        $response = $this->executeStreamRequest('PATCH', 'api/rest/v1/families/familyA/variants', [], [], [], $data);
+        $response = $this->executeStreamRequest('PATCH', 'api/rest/v1/attributes/a_multi_select/options', [], [], [], $data);
         $httpResponse = $response['http_response'];
 
         $this->assertSame(Response::HTTP_OK, $httpResponse->getStatusCode());
@@ -239,12 +230,12 @@ JSON;
     public function testPartialUpdateListWithBadContentType()
     {
         $data =
-<<<JSON
+            <<<JSON
     {"code": "my_code"}
 JSON;
 
         $expectedContent =
-<<<JSON
+            <<<JSON
     {
         "code": 415,
         "message": "\"application\/json\" in \"Content-Type\" header is not valid. Only \"application\/vnd.akeneo.collection+json\" is allowed."
@@ -253,16 +244,11 @@ JSON;
 
         $client = $this->createAuthenticatedClient();
         $client->setServerParameter('CONTENT_TYPE', 'application/json');
-        $client->request('PATCH', 'api/rest/v1/families/familyA/variants', [], [], [], $data);
+        $client->request('PATCH', 'api/rest/v1/attributes/a_multi_select/options', [], [], [], $data);
 
         $response = $client->getResponse();
         $this->assertSame(Response::HTTP_UNSUPPORTED_MEDIA_TYPE, $response->getStatusCode());
         $this->assertJsonStringEqualsJsonString($expectedContent, $response->getContent());
-    }
-
-    protected function getBufferSize()
-    {
-        return $this->getParameter('api_input_buffer_size');
     }
 
     protected function getMaxNumberResources()
@@ -270,17 +256,22 @@ JSON;
         return $this->getParameter('api_input_max_resources_number');
     }
 
-    /**
-     * @param array  $expectedFamily normalized data of the family variant that should be created
-     * @param string $code           code of the family variant that should be created
-     */
-    protected function assertSameFamilyVariants(array $expectedFamily, $code): void
+    protected function getBufferSize()
     {
-        $familyVariant = $this->get('pim_catalog.repository.family_variant')->findOneByIdentifier($code);
-        $normalizer = $this->get('pim_catalog.normalizer.standard.family_variant');
-        $standardizedFamilyVariant = $normalizer->normalize($familyVariant);
+        return $this->getParameter('api_input_buffer_size');
+    }
 
-        $this->assertSame($expectedFamily, $standardizedFamilyVariant);
+    /**
+     * @param array  $expectedAttributeOption normalized data of the attribute option that should be created
+     * @param string $code           code of the attribute option that should be created
+     */
+    protected function assertSameAttributeOptions(array $expectedAttributeOption, $code): void
+    {
+        $attributeOption = $this->get('pim_catalog.repository.attribute_option')->findOneByIdentifier($code);
+        $normalizer = $this->get('pim_catalog.normalizer.standard.attribute_option');
+        $standardizedAttributeOption = $normalizer->normalize($attributeOption);
+
+        $this->assertSame($expectedAttributeOption, $standardizedAttributeOption);
     }
 
     /**
