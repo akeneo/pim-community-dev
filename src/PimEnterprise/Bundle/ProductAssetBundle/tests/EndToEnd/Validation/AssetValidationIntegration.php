@@ -18,9 +18,9 @@ use PimEnterprise\Component\ProductAsset\Model\Asset;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
- * @author    Alexandre Hocquard <alexandre.hocquard@akeneo.com>
+ * @author Alexandre Hocquard <alexandre.hocquard@akeneo.com>
  *
- * TODO: should be integration tests.
+ * TODO: should be acceptante tests.
  */
 class AssetValidationIntegration extends TestCase
 {

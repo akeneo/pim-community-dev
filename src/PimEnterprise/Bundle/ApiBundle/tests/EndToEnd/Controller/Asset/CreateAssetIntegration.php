@@ -20,7 +20,6 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class CreateAssetIntegration extends AbstractAssetTestCase
 {
-
     public function testCreationOfAnAsset()
     {
         $client = $this->createAuthenticatedClient();
