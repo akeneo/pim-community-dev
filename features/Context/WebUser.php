@@ -1664,14 +1664,14 @@ class WebUser extends PimContext
     public function iPressTheButton($button, $modalWait = null)
     {
         $this->spin(function () use ($button, $modalWait) {
-            $this->getCurrentPage()->pressButton($button, true);
-
-            if (null !== $modalWait) {
-                return null !== $this->getCurrentPage()->find('css', '.modal');
+            if (null !== $modalWait && null !== $this->getCurrentPage()->find('css', '.modal')) {
+                return true;
             }
 
-            return true;
-        }, sprintf("Can not find any '%s' button", $button));
+            $this->getCurrentPage()->pressButton($button, true);
+
+            return null === $modalWait;
+        }, sprintf("Can not find any '%s' button%s", $button, null !== $modalWait ? ' or no modal found' : ''));
     }
 
     /**

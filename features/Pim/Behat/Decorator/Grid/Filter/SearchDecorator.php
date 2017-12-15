@@ -63,11 +63,15 @@ class SearchDecorator extends ElementDecorator
 
     /**
      * Search a value in the search filter
+     * It dispatch a fake keydown event to run the search.
      *
      * @param string $value
      */
     public function search($value)
     {
         $this->setValue($value);
+        $this->getSession()->executeScript(
+            '$(\'.search-filter [name="value"]\')[0].dispatchEvent(new KeyboardEvent(\'keydown\', {\'key\':\'Shift\'}))'
+        );
     }
 }

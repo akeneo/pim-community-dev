@@ -111,13 +111,10 @@ class AssociatedProductDatasourceSpec extends ObjectBehavior
 
         $associatedProduct1->getIdentifier()->willReturn('associated_product_1');
         $associatedProduct1->getId()->willReturn('2');
-        $associatedProduct1->getImage()->willReturn('imagePath.png');
         $associatedProduct2->getIdentifier()->willReturn('associated_product_2');
         $associatedProduct2->getId()->willReturn('3');
-        $associatedProduct2->getImage()->willReturn('imagePath.png');
         $associatedProductModel->getCode()->willReturn('associated_product_model_1');
         $associatedProductModel->getId()->willReturn('2');
-        $associatedProductModel->getImage()->shouldBeCalled();
         $currentProduct->getAssociations()->willReturn($associationCollection);
         $currentProduct->getIdentifier()->willReturn('current_product');
 
