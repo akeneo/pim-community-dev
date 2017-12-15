@@ -44,7 +44,14 @@ Feature: Filter product and product models
     Then I should see products tshirt-unique-color
     And I should see the product models tshirt-kurt-cobain-s
 
-  Scenario: Successfully filters on the parent field
+  Scenario: Successfully filters on the parent field with codes
     Given I am on the products grid
-    When I filter by "parent" with operator "IN LIST" and value "model-braided-hat"
-    Then I should see products braided-hat-m, braided-hat-xxxl
+    When I filter by "parent" with operator "in list" and value "model-braided-hat,diana"
+    Then I should see products braided-hat-m, braided-hat-xxxl, diana_pink, diana_red
+
+  Scenario: Successfully filters on the parent field with empty operator
+    Given I am on the products grid
+    And I show the filter "weight"
+    And I filter by "weight" with operator "is not empty" and value ""
+    When I filter by "parent" with operator "is empty" and value ""
+    Then I should see products Scarf, Sunglasses, Bag, Belt, Hat

@@ -139,7 +139,7 @@ class Grid extends Index
         ],
         'parent' => [
             'Pim\Behat\Decorator\Grid\Filter\BaseDecorator',
-            'Pim\Behat\Decorator\Grid\Filter\ChoiceDecorator',
+            'Pim\Behat\Decorator\Grid\Filter\StringDecorator',
         ]
     ];
 
