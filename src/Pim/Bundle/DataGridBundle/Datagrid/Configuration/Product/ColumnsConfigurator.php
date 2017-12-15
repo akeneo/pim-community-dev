@@ -58,6 +58,7 @@ class ColumnsConfigurator implements ConfiguratorInterface
         $this->configuration = $configuration;
         $this->preparePropertiesColumns();
         $this->prepareAttributesColumns();
+        $this->prepareOtherColumns();
         $this->sortColumns();
         $this->addColumns();
     }
@@ -168,5 +169,16 @@ class ColumnsConfigurator implements ConfiguratorInterface
             sprintf(self::SOURCE_PATH, self::AVAILABLE_COLUMNS_KEY),
             $this->availableColumns
         );
+    }
+
+    private function prepareOtherColumns()
+    {
+        $otherColumns = $this->configuration->offsetGetByPath(
+            sprintf('[%s]', FormatterConfiguration::OTHER_COLUMNS_KEY)
+        );
+
+        foreach ($otherColumns as $columnCode => $columnData) {
+            $this->attributesColumns[$columnCode] = $columnData;
+        }
     }
 }
