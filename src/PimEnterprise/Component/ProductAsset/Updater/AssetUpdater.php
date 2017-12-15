@@ -75,51 +75,10 @@ class AssetUpdater implements ObjectUpdaterInterface
         }
 
         foreach ($data as $field => $item) {
-            $this->validateDataType($field, $item);
             $this->setData($asset, $field, $item);
         }
 
         return $this;
-    }
-
-    /**
-     * Validate the data type of a field.
-     *
-     * @param string $field
-     * @param mixed  $data
-     *
-     * @throws InvalidPropertyTypeException
-     * @throws UnknownPropertyException
-     */
-    protected function validateDataType($field, $data)
-    {
-        if (in_array($field, ['categories', 'tags'])) {
-            if (!is_array($data)) {
-                throw InvalidPropertyTypeException::arrayExpected($field, static::class, $data);
-            }
-
-            foreach ($data as $key => $value) {
-                if (null !== $value && !is_scalar($value)) {
-                    throw InvalidPropertyTypeException::validArrayStructureExpected(
-                        $field,
-                        sprintf('one of the "%s" values is not a scalar', $field),
-                        static::class,
-                        $data
-                    );
-                }
-            }
-        } elseif (in_array($field, ['code', 'description', 'end_of_use'])) {
-            if (null !== $data && !is_scalar($data)) {
-                throw InvalidPropertyTypeException::scalarExpected($field, static::class, $data);
-            }
-
-        } elseif ('localized' === $field) {
-            if (null !== $data && !is_scalar($data)) {
-                throw InvalidPropertyTypeException::booleanExpected($field, static::class, $data);
-            }
-        } else {
-            throw UnknownPropertyException::unknownProperty($field);
-        }
     }
 
     /**
@@ -128,25 +87,37 @@ class AssetUpdater implements ObjectUpdaterInterface
      * @param mixed          $data
      *
      * @throws InvalidPropertyException
+     * @throws UnknownPropertyException
      */
     protected function setData(AssetInterface $asset, $field, $data)
     {
         switch ($field) {
             case 'tags':
+                $this->validateIsArrayOfScalar($field, $data);
                 $this->setTags($asset, $data);
                 break;
             case 'categories':
+                $this->validateIsArrayOfScalar($field, $data);
                 $this->setCategories($asset, $data);
                 break;
             case 'end_of_use':
-                $this->validateDateFormat($data);
+                $this->validateDateFormat($field, $data);
                 $asset->setEndOfUseAt(new \DateTime($data));
                 break;
             case 'localized':
+                $this->validateIsBoolean($field, $data);
                 $this->setLocalized($asset, $data);
                 break;
-            default:
+            case 'code':
+                $this->validateIsScalar($field, $data);
                 $this->accessor->setValue($asset, $field, $data);
+                break;
+            case 'description':
+                $this->validateIsScalar($field, $data);
+                $this->accessor->setValue($asset, $field, $data);
+                break;
+            default:
+                throw UnknownPropertyException::unknownProperty($field);
         }
     }
 
@@ -207,12 +178,15 @@ class AssetUpdater implements ObjectUpdaterInterface
     }
 
     /**
+     * @param string $field
      * @param string $data
      *
      * @throws InvalidPropertyException
      */
-    protected function validateDateFormat($data)
+    protected function validateDateFormat(string $field, $data)
     {
+        $this->validateIsScalar($field, $data);
+
         if (null === $data) {
             return;
         }
@@ -221,7 +195,7 @@ class AssetUpdater implements ObjectUpdaterInterface
             new \DateTime($data);
         } catch (\Exception $e) {
             throw InvalidPropertyException::dateExpected(
-                'end_of_use',
+                $field,
                 \Datetime::ISO8601,
                 static::class,
                 $data
@@ -230,7 +204,7 @@ class AssetUpdater implements ObjectUpdaterInterface
 
         if (!preg_match('/^\d{4}-\d{2}-\d{2}/', $data)) {
             throw InvalidPropertyException::dateExpected(
-                'end_of_use',
+                $field,
                 \Datetime::ISO8601,
                 static::class,
                 $data
@@ -324,5 +298,55 @@ class AssetUpdater implements ObjectUpdaterInterface
             throw ImmutablePropertyException::immutableProperty('localized', $isLocalized, self::class);
         }
         $this->assetFactory->createReferences($asset, $isLocalized);
+    }
+
+    /**
+     * @param string $field
+     * @param mixed  $data
+     *
+     * @throws InvalidPropertyTypeException
+     */
+    protected function validateIsArrayOfScalar(string $field, $data): void
+    {
+        if (!is_array($data)) {
+            throw InvalidPropertyTypeException::arrayExpected($field, static::class, $data);
+        }
+
+        foreach ($data as $key => $value) {
+            if (null !== $value && !is_scalar($value)) {
+                throw InvalidPropertyTypeException::validArrayStructureExpected(
+                    $field,
+                    sprintf('one of the "%s" values is not a scalar', $field),
+                    static::class,
+                    $data
+                );
+            }
+        }
+    }
+
+    /**
+     * @param string $field
+     * @param mixed  $data
+     *
+     * @throws InvalidPropertyTypeException
+     */
+    protected function validateIsScalar(string $field, $data): void
+    {
+        if (null !== $data && !is_scalar($data)) {
+            throw InvalidPropertyTypeException::scalarExpected($field, static::class, $data);
+        }
+    }
+
+    /**
+     * @param string $field
+     * @param mixed  $data
+     *
+     * @throws InvalidPropertyTypeException
+     */
+    protected function validateIsBoolean(string $field, $data): void
+    {
+        if (null !== $data && !is_scalar($data)) {
+            throw InvalidPropertyTypeException::booleanExpected($field, static::class, $data);
+        }
     }
 }
