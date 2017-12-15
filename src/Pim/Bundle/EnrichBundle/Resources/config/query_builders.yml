@@ -62,7 +62,7 @@ services:
     pim_enrich.query.product_and_product_model_query_builder_factory:
         class: '%pim_enrich.query.elasticsearch.product_and_model_query_builder_factory.class%'
         arguments:
-            - '%pim_enrich.query.product_and_product_model_query_builder.class%'
+            - '%pim_enrich.query.mass_edit_product_and_product_model_query_builder.class%'
             - '@pim_enrich.query.product_and_product_model_query_builder_factory.with_product_and_product_model_cursor'
 
     pim_enrich.query.product_and_product_model_query_builder_factory.with_product_and_product_model_cursor:
@@ -85,10 +85,3 @@ services:
             - '@pim_catalog.repository.product_model'
             - '%pim_catalog.factory.product_cursor.page_size%'
             - 'pim_catalog_product'
-
-    # Misc
-    pim_enrich.query.mass_edit_product_and_product_model_query_builder_factory:
-        class: '%pim_enrich.query.elasticsearch.product_and_model_query_builder_factory.class%'
-        arguments:
-            - '%pim_enrich.query.mass_edit_product_and_product_model_query_builder.class%'
-            - '@pim_enrich.query.product_and_product_model_query_builder_factory.with_product_and_product_model_cursor'
