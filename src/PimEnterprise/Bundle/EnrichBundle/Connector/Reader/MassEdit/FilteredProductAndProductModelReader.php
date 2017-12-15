@@ -25,7 +25,7 @@ use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
  * @author    Elodie Raposo <elodie.raposo@akeneo.com>
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
- * @deprecated create for correct PIM-7053 but need to be remove in PIM-6367
+ * @deprecated Created to fix PIM-7053 but needed to be removed in PIM-6367
  */
 class FilteredProductAndProductModelReader implements
     ItemReaderInterface,
@@ -93,7 +93,6 @@ class FilteredProductAndProductModelReader implements
      */
     public function read(): ?ProductInterface
     {
-        $product = null;
         $product = $this->getNextProduct();
 
         if (null !== $product) {
@@ -158,12 +157,12 @@ class FilteredProductAndProductModelReader implements
     }
 
     /**
-     * @param array            $filters
-     * @param ChannelInterface $channel
+     * @param array                 $filters
+     * @param ChannelInterface|null $channel
      *
      * @return CursorInterface
      */
-    private function getProductsCursor(array $filters, ChannelInterface $channel = null): CursorInterface
+    private function getProductsCursor(array $filters, ?ChannelInterface $channel = null): CursorInterface
     {
         $options = ['filters' => $filters];
 
