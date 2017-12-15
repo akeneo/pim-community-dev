@@ -208,7 +208,7 @@ Feature: Associate a product
     And I visit the "Associations" tab
     Then the rows "gray-boots" should be checked
 
-  @unstable @jira https://akeneo.atlassian.net/browse/PIM-6113
+  @jira https://akeneo.atlassian.net/browse/PIM-6113
   Scenario: Do not keep saved product association groups after switching association type
     Given I edit the "charcoal-boots" product
     And I visit the "Associations" tab
