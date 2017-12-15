@@ -102,7 +102,7 @@ class CompletenessGenerator extends BaseCompletenessGenerator implements Complet
 
         $tempTableName = self::COMPLETE_ASSETS_TABLE;
         $createSql = <<<SQL
-CREATE TEMPORARY TABLE {$tempTableName} (value_id INT, locale_id INT, channel_id INT)
+CREATE TEMPORARY TABLE {$tempTableName} (value_id INT, locale_id INT, channel_id INT, primary key(value_id, locale_id, channel_id))
 SQL;
         $createSql = $this->applyTableNames($createSql);
         $tempTableStmt = $this->connection->prepare($createSql);
