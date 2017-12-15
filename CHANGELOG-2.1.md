@@ -1,3 +1,15 @@
+# 2.1.x
+
+## Improvements
+
+- API-415: Update a list of options of a simple or multi select attribute
+
+## BC breaks
+
+### Constructors
+
+- Change the constructor of `Pim\Bundle\ApiBundle\Controller\AttributeOptionController` to add `Pim\Bundle\ApiBundle\Stream\StreamResourceResponse` paramater
+
 # 2.1.0-ALPHA2 (2017-12-15)
 
 ## Improvements
