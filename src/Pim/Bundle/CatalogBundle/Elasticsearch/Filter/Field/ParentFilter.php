@@ -45,9 +45,9 @@ class ParentFilter extends AbstractFieldFilter implements FieldFilterInterface
             throw new \LogicException('The search query builder is not initialized in the filter.');
         }
 
-//        if ($operator === Operators::IN_LIST) {
-//            $this->checkValue($field, $value);
-//        }
+        if ($operator === Operators::IN_LIST) {
+            $this->checkValue($field, $value);
+        }
 
         switch ($operator) {
             case Operators::IN_LIST:
@@ -83,16 +83,11 @@ class ParentFilter extends AbstractFieldFilter implements FieldFilterInterface
      *
      * @throws ObjectNotFoundException
      */
-    protected function checkValue($field, $values): bool
+    protected function checkValue($field, $values)
     {
         FieldFilterHelper::checkArray($field, $values, static::class);
         foreach ($values as $value) {
             FieldFilterHelper::checkIdentifier($field, $value, static::class);
-            if (null === $this->productModelRepository->findOneByIdentifier($value)) {
-                throw new ObjectNotFoundException(
-                    sprintf('Object "product model" with code "%s" does not exist', $value)
-                );
-            }
         }
     }
 }
