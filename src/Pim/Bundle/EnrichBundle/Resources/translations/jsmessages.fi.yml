@@ -246,7 +246,6 @@ pim_enrich:
       read_only_parent_attribute_from_common: Tätä attribuuttia voidaan muokata yhteisissä attribuuteissa.
       read_only_parent_attribute_from_model: "Tätä attribuuttia voidaan muokata {{ axes }} attribuuteissa"
       variant_axis: Varianttiulottuvuus
-      title: tuotteet
       add_child:
         create: Luo uusi
         cancel: Peruuta
@@ -421,6 +420,7 @@ pim_enrich:
     delete:
       attribute: Oletko varma, että haluat poistaa tämän määritteen tuotteesta?
       attribute_group: Oletko varma, että haluat poistaa attribuutin {{ attribute }} tästä attribuuttiryhmästä?
+      product_model: Vahvista poisto
   info:
     not_applicable: Ei mitään
     entity:
@@ -437,6 +437,7 @@ pim_enrich:
       complete_variant_product: varianttituote
       complete_variant_products: varianttituotteet
       family_variant: Tuotevariaatio
+      product_model: Tuotemalli
       flash:
         product_model_added: Varianttituote lisätty onnistuneesti tuotemalliin
         variant_product_added: Varianttituote lisätty onnistuneesti tuotemalliin
@@ -1090,6 +1091,7 @@ page_title:
   pim_enrich_job_tracker_show: Prosessin tracker | Näytä työ
   pim_enrich_api_connection_index: API -yhteydet
   pim_enrich_api_connection_create: API -yhteydet| Luo
+  pim_enrich_mass_edit_action: Massaedit
   pim_analytics_system_info_index: Järjestelmätiedot
 batch_jobs:
   update_product_value:

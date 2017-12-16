@@ -105,5 +105,7 @@ grid.view_selector:
 grid.view_selector.flash.updated: DataGrid visningen er opdateret
 grid.display_selector:
   label: Vis
+  gallery: Galleri
+  list: Liste
 Client ID: Klient ID
 Secret: Hemmelighed

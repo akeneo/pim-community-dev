@@ -47,7 +47,7 @@ job_execution.summary:
   skipped_in_sub_product_model: modèles de produits sans parent ignorés
 batch_jobs:
   csv_product_export:
-    label: Export produits en CSV
+    label: Export des produits en CSV
     export.label: Export des produits
   csv_product_model_export:
     label: Export de modèles de produit en CSV
