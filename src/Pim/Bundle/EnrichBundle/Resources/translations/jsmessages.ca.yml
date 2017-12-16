@@ -208,7 +208,6 @@ pim_enrich:
         created: Producte creat correctament
       completeness: Complet
     product_model:
-      title: productes
       add_child:
         cancel: Cancelar
         confirm: Confirmar
@@ -325,6 +324,7 @@ pim_enrich:
     remove: Eliminar
     delete:
       attribute: Esteu segur que voleu suprimir aquest atribut del producte?
+      product_model: Confirmar l'eliminació
   info:
     not_applicable: N/D
     entity:

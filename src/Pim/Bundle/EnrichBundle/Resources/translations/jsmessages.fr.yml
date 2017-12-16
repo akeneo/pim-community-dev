@@ -226,6 +226,7 @@ pim_enrich:
         title: Créer
         labels:
           family: Choisir une famille
+          family_variant: Sélectionnez une variante de famille
           save: Enregistrer
           cancel: Annuler
       message:
@@ -247,7 +248,6 @@ pim_enrich:
       read_only_parent_attribute_from_common: Cet attribut peut être mis à jour sur les attributs communs.
       read_only_parent_attribute_from_model: "Cet attribut peut être mis à jour sur les attributs par {{ axes }}"
       variant_axis: Axe de variante
-      title: Produits
       add_child:
         create: Créer
         cancel: Annuler
@@ -434,6 +434,7 @@ pim_enrich:
     delete:
       attribute: Êtes-vous sûr(e) de vouloir supprimer cet attribut du produit ?
       attribute_group: Êtes vous sûr(e) de vouloir retirer l'attribut {{ attribute }} de ce groupe d'attributs ?
+      product_model: Supprimer l'élément
   info:
     not_applicable: N/A
     entity:
@@ -446,6 +447,7 @@ pim_enrich:
   form:
     required: (obligatoire)
     product_model:
+      choose_product_model: Choisissez un modèle de produit
       choose_variant: Choisissez une variante
       complete_variant_product: produit variant
       complete_variant_products: produits variants
@@ -465,6 +467,9 @@ pim_enrich:
             number_of_associations: "{{ productCount }} produit(s) et {{ groupCount }} groupe(s)"
           association_type_selector: Type d'association
           target: Destination
+          manage: Ajouter des associations {{ associationType }}
+          manage_description: Sélectionner les produits que vous souhaitez associer avec le produit actuel
+          add_associations: Ajouter des associations
         attributes:
           title: Attributs
           btn:
@@ -786,7 +791,7 @@ pim_enrich:
             attributes_groups_selected: '{{ itemsCount }} groupe(s) sélectionné(s)'
     basket:
       title: Panier
-      empty_basket: Panier est vide
+      empty_basket: Le panier est vide
   job:
     upload: Déposez votre fichier {{ type }} ici, ou cliquez ici pour le chercher sur votre disque
   export:
@@ -1046,6 +1051,10 @@ pim_enrich:
           label: Retirer des catégories
           label_count: "{1}Retirer <span class=\"AknFullPage-title--highlight\">1 produit</span> de catégories|] 1, Inf [Retirer <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} produits</span> de categories"
           description: Les produits seront retirés des catégories suivantes.
+        add_to_existing_product_model:
+          label: Ajouter à un modèle de produit existant
+          label_count: "{1}Ajouter <span class=\"AknFullPage-title--highlight\">1 produit</span> à un modèle de produit existant|] 1, Inf [Ajouter <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} produits</span> à un modèle de produit existant"
+          description: Le modèle de produit sélectionné va rassembler des produits et améliorer l'enrichissement de leurs propriétés communes.
     family:
       title: Action de masse sur les familles
       confirm: "{1}Vous êtes sur le point de mettre à jour une famille avec les renseignements suivants, merci de confirmer.|] 1, Inf [Vous êtes sur le point de mettre à jour {{ itemsCount }} familles avec les renseignements suivants, merci de confirmer."
@@ -1098,8 +1107,8 @@ page_title:
   pim_enrich_associationtype_edit: Type d'association {{ association type.label }} | Modification
   pim_enrich_grouptype_index: Types de groupe
   pim_enrich_grouptype_edit: Type de groupe {{ group type.label }} | Modification
-  pim_enrich_mass_edit_action_choose: Édition de masse | Choisir
-  pim_enrich_mass_edit_action_configure: Édition de masse | Configurer
+  pim_enrich_mass_edit_action_choose: Édition en masse | Choisir
+  pim_enrich_mass_edit_action_configure: Édition en masse | Configurer
   pim_enrich_mass_edit_action_perform: Edition en masse | Effectuer
   pim_enrich_job_tracker_index: Traqueur de processus
   pim_enrich_job_tracker_show: Traqueur de processus | Voir la tâche
@@ -1122,6 +1131,10 @@ batch_jobs:
       label: Modifier les attributs communs
     cleaner:
       label: Nettoyer les fichiers pour les attributs communs
+  add_to_existing_product_model:
+    label: Ajouter à un modèle de produit existant
+    perform:
+      label: Ajouter à un modèle de produit existant
   set_attribute_requirements:
     label: Configurer les exigences d'attributs
     perform:
@@ -1147,7 +1160,7 @@ batch_jobs:
     perform:
       label: Export rapide de la grille de produits en XLSX
   csv_product_export:
-    label: Export produits en CSV
+    label: Export des produits en CSV
     export.label: Export des produits
   csv_product_model_export:
     label: Export de modèles de produit en CSV
