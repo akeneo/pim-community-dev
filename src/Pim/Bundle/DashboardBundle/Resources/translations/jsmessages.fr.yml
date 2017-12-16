@@ -16,4 +16,4 @@ pim_dashboard:
     completeness:
       load_more: 'Voir plus...'
     header:
-      view_all: Tout voir
+      view_all: Afficher tout

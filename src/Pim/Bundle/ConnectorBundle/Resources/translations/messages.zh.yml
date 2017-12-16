@@ -63,6 +63,12 @@ batch_jobs:
   csv_group_export:
     label: 分组导出到CSV
     export.label: 分组导出
+  csv_variant_group_export:
+    label: 在 CSV中导入款式组
+    export.label: 导入款式组
+  csv_family_export:
+    label: 在CSV导入品类
+    export.label: 品类导出
   csv_product_import:
     label: 从CSV导入产品
     validation.label: 文件验证
@@ -85,13 +91,17 @@ batch_jobs:
     validation.label: 文件验证
     import.label: 相关类型导入
   csv_family_import:
+    label: 从CSV导入品类
     validation.label: 文件验证
+    import.label: 品类导入
   csv_group_import:
     label: 从CSV导入分组
     validation.label: 文件验证
     import.label: 分组导入
   csv_variant_group_import:
+    label: 在 CSV 中导入款式组
     validation.label: 文件验证
+    import.label: 导入款式组
   csv_channel_import:
     validation.label: 文件验证
   csv_locale_import:
@@ -121,6 +131,7 @@ batch_jobs:
   xlsx_family_import:
     label: 在XLSX导入品类
     validation.label: 文件验证
+    import.label: 品类导入
   xlsx_product_export:
     label: 产品导出到 XLSX
     export.label: 产品导出
@@ -134,6 +145,7 @@ batch_jobs:
     export.label: 分组导出
   xlsx_variant_group_export:
     label: 款式组导出到XLSX
+    export.label: 导入款式组
   xlsx_group_import:
     label: 从XLSX导入分组
     validation.label: 文件验证
@@ -144,6 +156,7 @@ batch_jobs:
     import.label: 导入款式组
   xlsx_family_export:
     label: 在XLSX导入品类
+    export.label: 品类导出
   xlsx_category_export:
     label: 在XLSX中导出分类
     export.label: 分类导出

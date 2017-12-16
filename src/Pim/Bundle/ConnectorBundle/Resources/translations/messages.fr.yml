@@ -47,7 +47,7 @@ job_execution.summary:
   item_position: lignes lues
 batch_jobs:
   csv_product_export:
-    label: Export produits en CSV
+    label: Export des produits en CSV
     export.label: Export des produits
   csv_category_export:
     label: Export des catégories en CSV
