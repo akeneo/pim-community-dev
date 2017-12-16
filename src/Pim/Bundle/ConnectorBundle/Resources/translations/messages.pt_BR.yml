@@ -170,6 +170,7 @@ job_execution.summary:
     title: 'Codificação do arquivo:'
     skipped: pulado, extensão na lista branca
   product_skipped_no_diff: produto pulado (nenhuma diferença)
+  product_skipped_no_associations: produto ignorado (associações não detectadas)
 batch_jobs:
   csv_product_export:
     label: Exportação de produto em CSV
