@@ -89,7 +89,6 @@ pim_enrich:
       description: Valitun tuotteen attribuutit muokataan seuraavalla valitun lokaation datalla.
       empty: Ole hyvä ja valitse attribuutit joita haluat muokata
       success_flash: Työ "Tuotteiden tilan päivitys" on tällä hetkellä käynnissä
-      launched_flash: Massatoiminto "Muokkaa yleisiä attribuutteja" on käynnistetty. Sinulle ilmoitetaan, kun se on valmis.
       message:
         warning: Valituille tuotteille ei ole yhteistä attribuuttia. Vaihda valintaasi.
         invalid_attribute: Attribuutti koodilla "attribute_code" ei yhdistä valittuja tuotteita, attributti ohitettu.
@@ -134,17 +133,17 @@ pim_enrich:
       next: Siirry "%product%" tallentamatta.
   acl:
     locale:
-      index: Lista lokaatioista
+      index: Listaa lokaatiot
     currency:
-      index: Lista valuutoista
+      index: Listaa valuutat
       toggle: Vaihda valuuttaa
     product:
       index: Lista tuotteista
       create: Luo tuote
       edit_attributes: Muokkaa tuotteen ominaisuuksia
       remove: Poista tuote
-      add_attribute: Lisää määrite tuotteeseen
-      remove_attribute: Poista määrite tuotteesta
+      add_attribute: Lisää attribuutti tuotteeseen
+      remove_attribute: Poista attribuutti tuotteesta
       categories_view: Katso tuotteen kategorioita
       associations_view: Tarkastele tuotteen assosiaatiotyyppejä
       change_family: Vaihda tuoteryhmää
@@ -180,13 +179,13 @@ pim_enrich:
       edit_properties: Muokkaa tuoteperheen ominaisuuksia
       edit_attributes: Muokkaa tuoteperheen määritteitä
       remove: Poista tuoteperhe
-      history: Tarkastele tuoteperheen historiaa
+      history: Näytä tuoteperheen historia
     attribute_group:
-      index: Listaa määriteryhmät
-      create: Luo määriteryhmä
+      index: Listaa attribuuttiryhmät
+      create: Luo attribuuttiryhmä
       edit: Muokkaa attribuuttiryhmää
-      remove: Poista määriteryhmä
-      sort: Lajittele attribuuttiryhmiä
+      remove: Poista attribuuttiryhmä
+      sort: Järjestä attribuuttiryhmiä
       add_attribute: Lisää attribuutti ryhmään
       remove_attribute: Poista attribuutti ryhmästä
       history: Näytä attribuuttiryhmien historia
@@ -195,7 +194,7 @@ pim_enrich:
       create: Luo attribuutti
       edit: Muokkaa attribuuttia
       remove: Poista attribuutti
-      sort: Lajittele attribuutit attribuuttiryhmän sisällä
+      sort: Järjestä attribuutit attribuuttiryhmän sisällä
       history: Näytä attribuuttien historia
     group:
       index: Listaa ryhmät
@@ -374,7 +373,7 @@ flash:
   family:
     updated: Tuoteperhe päivitetty
     removed: Tuoteperhe poistettu
-    identifier not removable: Tunnus-määritettä ei voi poistaa tuoteperheestä
+    identifier not removable: Tunniste-attribuuttia ei voi poistaa tuoteperheestä
     label attribute not removable: Attribuuttia ei voi poistaa koska sitä käytetään tuoteperheen nimikkeenä
     attribute not found: Attribuutti ei kuulu tähän tuoteperheeseen
     attributes added: Attribuutit lisätty tuoteperheeseen
@@ -456,8 +455,8 @@ Required: Vaadittu
 Unique: Ainutlaatuinen
 Not required: Ei vaadittu
 Translatable: Käännettävissä
-Scopable: Scopable
-Localizable: Lokalisoitavissa
+Scopable: Kanavakohtainen
+Localizable: Kielikohtainen
 Unique value: Yksilöllinen arvo
 Attribute group: Attribuuttiryhmä
 Other: Muu
@@ -482,7 +481,7 @@ Useable as grid column: Käytettävissä ruudukko-sarakkeena
 Useable as grid filter: Käytettävissä ruudukossa
 Family: Perhe
 Available locales: Saatavilla olevat alueet
-Locale specific: Aluespesifi
+Locale specific: Aluekohtainen arvo
 default: Oletusarvo
 Axis: Akseli
 Add attributes: Lisää attribuutteja
@@ -637,7 +636,7 @@ pim_enrich.mass_edit_action:
     description: Valitut tuotteet otetaan käyttöön tai pois käytöstä.
     success_flash: Tuotteiden tila on muutettu
   edit-common-attributes:
-    label: Muokkaa yleisiä attribuutteja
+    label: Muokkaa attribuutteja
     description: Valitun tuotteen attribuutit muokataan seuraavalla valitun lokaation datalla.
     empty: Ole hyvä ja valitse attribuutit joita haluat muokata
     success_flash: Tuotteen attribuutit on päivitetty
@@ -757,11 +756,10 @@ job_execution.summary:
   skipped_attributes: Ohitetut attribuutit
   skipped_families: Ohitetut perheet
 pim_mass_edit_execution_show: Massamuokkaa suoritteita | Tiedot
-edit_common_attributes.steps.edit_common_attributes_processor.title: Muokkaa yleisiä attribuutteja
+edit_common_attributes.steps.edit_common_attributes_processor.title: Muokkaa attribuutteja
 update_product_value.steps.update_product_value_processor.title: Päivitä tuotteen arvo
 remove_product_value.steps.update_product_value_processor.title: Poista tuotteen arvo
-edit_common_attributes: Muokkaa yleisiä attribuutteja
-edit_common_attributes_clean: Puhdista tiedostot yleisille attribuuteille
+edit_common_attributes: Muokkaa attribuutteja
 perform.steps.duplicated.title: Päällekkäät akselit
 perform.steps.excluded.title: Poissuljetut tuotteet
 batch_jobs:
@@ -770,11 +768,9 @@ batch_jobs:
     perform:
       label: Päivitä tuotteen arvo
   edit_common_attributes:
-    label: Muokkaa yleisiä attribuutteja
+    label: Muokkaa attribuutteja
     perform:
-      label: Muokkaa yleisiä attribuutteja
-    clean:
-      label: Puhdista tiedostot yleisille attribuuteille
+      label: Muokkaa attribuutteja
   set_attribute_requirements:
     label: Aseta vaaditut attribuutit
     perform:
@@ -810,6 +806,6 @@ pim_enrich_attribute_form:
   localizable: Kielikohtainen arvo
   unique: Yksilöllinen arvo
   availableLocales: Saatavilla olevat alueet
-  locale_specific: Aluespesifi
+  locale_specific: Aluekohtainen arvo
   group: Attribuuttiryhmä
   useableAsGridFilter: Käytettävissä ruudukossa

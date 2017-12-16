@@ -207,7 +207,6 @@ pim_enrich:
         created: 产品已创建
       completeness: 完成
     product_model:
-      title: 产品
       add_child:
         cancel: 取消
         confirm: 确认
@@ -317,6 +316,9 @@ pim_enrich:
     discard_changes: 如果你离开页面，将丢失更改 {{ entity }}。
     delete_item: 确定删除
     remove: 删除
+    delete:
+      attribute: 你确定你想要从产品中删除此属性？
+      product_model: 确定删除
   info:
     not_applicable: 不适用
     entity:
@@ -514,11 +516,20 @@ pim_enrich:
             title: 代码
           label:
             title: 标签
+          decimal_separator:
+            title: 小数分隔符
+            help: 确定小数点分隔符
+          date_format:
+            title: 日期格式
+            help: 确定日期字段的格式
           file_path:
             title: 文件路径
             help: 将生成的文件写到哪里
           delimiter:
             title: 分隔符
+            help: 作为字段分隔符的单个字符
+          enclosure:
+            title: 附件
             help: 作为字段分隔符的单个字符
           with_header:
             title: 包含标题
@@ -535,6 +546,9 @@ pim_enrich:
           categories_column:
             title: 大类列
             help: 大类列名称
+          escape:
+            title: 退出
+            help: 作为字段空白的单个字符
           family_column:
             title: 分类列
             help: 分类列的名称
@@ -544,6 +558,9 @@ pim_enrich:
           enabled:
             title: 启用此商品
             help: 是否启用导入的商品
+          enabled_comparison:
+            title: 比对值
+            help: 开启原始值与导入值的比较。如果导入值与原始值比较接近，可以加快导入速度。
           real_time_versioning:
             title: 实时历史记录更新
             help: 关闭产品历史自动更新以提高性能
@@ -632,6 +649,7 @@ pim_enrich:
           title: 产品族
           help: 按品类选中产品进行导出。例如︰ 只导出鞋和衣服。
           operators:
+            IN: 在列表中
             "NOT IN": 不在列表中
             EMPTY: 没有品类的产品
             "NOT EMPTY": 有品类的产品
@@ -671,6 +689,7 @@ pim_enrich:
             ">": 大于
             "<=": 低于或等于
             "<": 低于
+            EMPTY: 为空
             NOT EMPTY: 不是空的
         string:
           operators:
@@ -680,6 +699,7 @@ pim_enrich:
             "=": 等于
             STARTS WITH: 开始于
             ENDS WITH: 结束于
+            EMPTY: 为空
             NOT EMPTY: 不是空的
         price-collection:
           operators:
@@ -689,9 +709,12 @@ pim_enrich:
             ">": 大于
             "<=": 低于或等于
             "<": 低于
+            EMPTY: 为空
             NOT EMPTY: 不是空的
         multi_select:
           operators:
+            IN: 在列表中
+            EMPTY: 为空
             NOT EMPTY: 不是空的
         media:
           operators:
@@ -700,6 +723,7 @@ pim_enrich:
             "=": 等于
             STARTS WITH: 开始于
             ENDS WITH: 结束于
+            EMPTY: 为空
             NOT EMPTY: 不是空的
         date:
           operators:
@@ -709,6 +733,7 @@ pim_enrich:
             "!=": 不等于
             BETWEEN: 介于
             NOT BETWEEN: 不介于
+            EMPTY: 为空
             NOT EMPTY: 不是空的
         number:
           operators:
@@ -718,14 +743,12 @@ pim_enrich:
             ">": 大于
             "<=": 低于或等于
             "<": 低于
+            EMPTY: 为空
             NOT EMPTY: 不是空的
       properties:
         title: 属性
       global_settings:
         title: 全局设置
-  mass_edit_action:
-    edit_common_attributes:
-      description: 使用产品网格中的本地化语言 <span class="highlight">{{ locale }}</span> 和通道 <span class="highlight">{{ channel }}</span>对应的数据，对所选的产品属性进行编辑
   index:
     import_profiles:
       list: 选择一份作业
@@ -767,7 +790,7 @@ pim_enrich:
           description: 将启用或禁用选定的产品。
           field: 启用
         edit_common:
-          label: 编辑共同属性
+          label: 编辑属性
         change_family:
           description: 选定产品的品类将更改为被选定的品类
           field: 产品族
@@ -825,11 +848,9 @@ batch_jobs:
     perform:
       label: 更新商品值
   edit_common_attributes:
-    label: 编辑共同属性
+    label: 编辑属性
     perform:
-      label: 编辑共同属性
-    cleaner:
-      label: 为共同的属性清理文件
+      label: 编辑属性
   csv_product_export:
     label: 产品导出到CSV
     export.label: 产品导出
@@ -850,6 +871,9 @@ batch_jobs:
   csv_group_export:
     label: 分组导出到CSV
     export.label: 分组导出
+  csv_family_export:
+    label: 在CSV导入品类
+    export.label: 品类导出
   csv_product_import:
     label: 从CSV导入产品
     validation.label: 文件验证
@@ -872,7 +896,9 @@ batch_jobs:
     validation.label: 文件验证
     import.label: 相关类型导入
   csv_family_import:
+    label: 从CSV导入品类
     validation.label: 文件验证
+    import.label: 品类导入
   csv_family_variant_import:
     validation.label: 文件验证
   csv_group_import:
@@ -908,6 +934,7 @@ batch_jobs:
   xlsx_family_import:
     label: 在XLSX导入品类
     validation.label: 文件验证
+    import.label: 品类导入
   xlsx_family_variant_import:
     validation.label: 文件验证
   xlsx_product_export:
@@ -927,6 +954,7 @@ batch_jobs:
     import.label: 分组导入
   xlsx_family_export:
     label: 在XLSX导入品类
+    export.label: 品类导出
   xlsx_category_export:
     label: 在XLSX中导出分类
     export.label: 分类导出

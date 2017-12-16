@@ -246,7 +246,6 @@ pim_enrich:
       read_only_parent_attribute_from_common: この属性は、共通の属性を更新できます。
       read_only_parent_attribute_from_model: "この属性は、{{ axes }} によって属性で更新できます。"
       variant_axis: バリアントの軸
-      title: 製品
       add_child:
         create: 新しく追加
         cancel: キャンセル
@@ -432,6 +431,7 @@ pim_enrich:
     delete:
       attribute: 商品からこの属性を削除してもよろしいですか？
       attribute_group: 属性 {{ attribute }} をこの属性グループから削除してもよろしいですか。
+      product_model: 削除を確認する
   info:
     not_applicable: N/A
     entity:
@@ -924,9 +924,6 @@ pim_enrich:
         title: プロパティ
       global_settings:
         title: グローバル設定
-  mass_edit_action:
-    edit_common_attributes:
-      description: 選択した商品の属性は以下のロケール <span class="highlight">{{ locale }}</span> のデータとチャンネル <span class="highlight">{{ channel }}</span> で編集され、製品のグリット内で選ばれます。
   index:
     association_type:
       title: "] - Inf ファイル、1] {{ count }} 関連付けの種類 |] 1、Inf [{{ count }} 関連型"
@@ -1016,9 +1013,7 @@ pim_enrich:
           description: 選択した製品は有効または無効になります。
           field: 有効にするには
         edit_common:
-          label: 共通の属性を編集
-          label_count: "{1}共通の属性を編集<span class=\"AknFullPage-title--highlight\"> 1 製品</span> |]1、Inf [共通の属性を編集<span class=\"AknFullPage-title--highlight\">{{ itemsCount }} 製品</span>"
-          description: 選択された製品の属性は、製品グリッドで選択されたロケール{{ locale }} とチャンネル{{ scope }} のための次のデータで編集される。
+          label: 属性を編集
         change_family:
           label: ファミリーの変更
           label_count: "{1}ファミリーを変更<span class=\"AknFullPage-title--highlight\"> 1 製品</span> |]1、Inf [ ファミリーを変更 <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} 製品</span>"
@@ -1112,11 +1107,9 @@ batch_jobs:
     perform:
       label: 製品の値を更新
   edit_common_attributes:
-    label: 共通の属性を編集
+    label: 属性を編集
     perform:
-      label: 共通の属性を編集
-    cleaner:
-      label: 共通の属性を持つファイルを削除
+      label: 属性を編集
   set_attribute_requirements:
     label: 属性の要件を設定
     perform:

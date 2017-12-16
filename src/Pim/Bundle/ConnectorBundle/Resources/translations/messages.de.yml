@@ -68,8 +68,8 @@ batch_jobs:
     label: Gruppen-Export in CSV-Datei
     export.label: Gruppen-Export
   csv_family_export:
-    label: Exportiere Produktfamilie in CSV-Datei
-    export.label: Exportiere Produktfamilie
+    label: Produktfamilien-Export als CSV-Datei
+    export.label: Produktfamilien-Export
   csv_family_variant_export:
     label: Produktfamilienvarianten-Export als CSV-Datei
     export.label: Produktfamilienvarianten-Export
@@ -197,7 +197,7 @@ batch_jobs:
     import.label: Gruppen-Import
   xlsx_family_export:
     label: Produktfamilien-Eport als XLSX-Datei
-    export.label: Exportiere Produktfamilie
+    export.label: Produktfamilien-Export
   xlsx_family_variant_export:
     label: Produktfamilienvarianten-Export als XLSX-Datei
     export.label: Produktfamilienvarianten-Export
