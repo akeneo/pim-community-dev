@@ -320,6 +320,50 @@ class FeatureContext extends PimContext implements KernelAwareContext
     }
 
     /**
+     *
+     *
+     * @param string $message
+     * @param string $label
+     *
+     * @throws ExpectationException
+     *
+     * @When /^I click on "(?P<message>(?:[^"]|\\")*)" footer message of the field "(?P<label>(?:[^"]|\\")*)"$/
+     */
+    public function clickOnMessageOfField($message, $label)
+    {
+        $footerMessage = $this->getCurrentPage()->findFieldFooterMessageForField($label, $message);
+
+        if (null !== $footerMessage) {
+            $footerMessage->click();
+
+            return;
+        }
+
+        throw new ExpectationException(
+            sprintf('Cannot find any footer message "%s" for field "%s"', $message, $label),
+            $this->getSession()
+        );
+    }
+
+    /**
+     * @When /^I open the completeness dropdown$/
+     */
+    public function iOpenTheCompletenessDropdown()
+    {
+        $dropdown = $this->getCurrentPage()->getCompletenessDropdownButton();
+        $dropdown->click();
+    }
+
+    /**
+     * @When /^I click on the missing required attributes overview link$/
+     */
+    public function iClickOnTheMissingRequiredAttributesOverviewLink()
+    {
+        $link = $this->getCurrentPage()->getMissingRequiredAttributesOverviewLink();
+        $link->click();
+    }
+
+    /**
      * Execute javascript
      *
      * @param string $script
