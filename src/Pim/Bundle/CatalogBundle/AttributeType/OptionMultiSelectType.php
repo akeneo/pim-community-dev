@@ -24,10 +24,6 @@ class OptionMultiSelectType extends AbstractAttributeType
                 'name'      => 'minimumInputLength',
                 'fieldType' => 'pim_number'
             ],
-            'options' => [
-                'name'      => 'options',
-                'fieldType' => 'pim_enrich_options'
-            ],
             'autoOptionSorting' => [
                 'name'      => 'autoOptionSorting',
                 'fieldType' => 'switch',
