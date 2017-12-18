@@ -209,10 +209,32 @@ class CheckPublishedProductOnRemovalSubscriber implements EventSubscriberInterfa
      */
     private function countPublishedProductsForAttributeOption(AttributeOptionInterface $option): int
     {
-        $productQb = $this->queryBuilderFactory->create();
-        $productQb->addFilter($option->getAttribute()->getCode(), Operators::IN_LIST, [$option->getCode()]);
+        $count = 0;
+        $channelCodes = $option->getAttribute()->isScopable()
+            ? $this->channelRepository->getChannelCodes()
+            : [null] ;
+        $localeCodes = $option->getAttribute()->isLocalizable()
+            ? $this->localeRepository->getActivatedLocaleCodes()
+            : [null] ;
 
-        return $productQb->execute()->count();
+        foreach ($channelCodes as $channelCode) {
+            foreach ($localeCodes as $localeCode) {
+                $productQb = $this->queryBuilderFactory->create();
+                $productQb->addFilter(
+                    $option->getAttribute()->getCode(),
+                    Operators::IN_LIST,
+                    [$option->getCode()],
+                    [
+                        'scope' => $channelCode,
+                        'locale' => $localeCode,
+                    ]
+                );
+
+                $count += $productQb->execute()->count();
+            }
+        }
+
+        return $count;
     }
 
     /**
