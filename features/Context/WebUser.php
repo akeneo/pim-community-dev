@@ -1664,8 +1664,12 @@ class WebUser extends PimContext
     public function iPressTheButton($button, $modalWait = null)
     {
         $this->spin(function () use ($button, $modalWait) {
-            if (null !== $modalWait && null !== $this->getCurrentPage()->find('css', '.modal')) {
-                return true;
+            if (null !== $modalWait) {
+                foreach ($this->getCurrentPage()->findAll('css', '.modal') as $modal) {
+                    if ($modal->isVisible()) {
+                        return true;
+                    }
+                }
             }
 
             $this->getCurrentPage()->pressButton($button, true);

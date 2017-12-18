@@ -28,7 +28,7 @@ Feature: Execute a job
     Given I edit the "SKU-001" product
     When I visit the "Associations" column tab
     And I visit the "Cross sell" association type
-    Then I should see the text "2 product(s) and 1 group(s)"
+    Then I should see the text "2 product(s), 0 product model(s) and 1 group(s)"
 
   @pim-2445
   Scenario: Successfully skip associations with not existing product (owner side)

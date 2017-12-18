@@ -26,7 +26,7 @@ Feature: Associate a product
     And I press the "Add associations" button
     And I check the row "shoelaces"
     And I press the "Confirm" button in the popin
-    Then I should see the text "1 product(s) and 0 group(s)"
+    Then I should see the text "1 product(s), 0 product model(s) and 0 group(s)"
     Then I should see product "shoelaces"
 
   @jira https://akeneo.atlassian.net/browse/PIM-4788
@@ -40,7 +40,7 @@ Feature: Associate a product
     And I edit the "charcoal-boots" product
     And I visit the "Associations" column tab
     And I visit the "Upsell" association type
-    Then I should see the text "0 product(s) and 1 group(s)"
+    Then I should see the text "0 product(s), 0 product model(s) and 1 group(s)"
     And the row "caterpillar_boots" should be checked
 
   @jira https://akeneo.atlassian.net/browse/PIM-4788
