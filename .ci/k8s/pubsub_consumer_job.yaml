@@ -122,9 +122,9 @@ spec:
             - { name: POD_NAME, valueFrom: { fieldRef: { fieldPath: metadata.name } } }
             - { name: NAMESPACE, valueFrom: { fieldRef: { fieldPath: metadata.namespace } } }
           volumeMounts:
-            - { name: pim, mountPath: /home/jenkins }
-            - { name: artifacts, mountPath: /tmp/behat/screenshots }
-            - { name: tmp-pod, mountPath: /tmp/pod }
+            - { name: pim, mountPath: /home/jenkins, readOnly: true }
+            - { name: artifacts, mountPath: /tmp/behat/screenshots, readOnly: false }
+            - { name: tmp-pod, mountPath: /tmp/pod, readOnly: false }
           resources:
             requests: {cpu: "100m", memory: "100Mi"}
       volumes:
