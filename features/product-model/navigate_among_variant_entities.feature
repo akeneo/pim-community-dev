@@ -83,11 +83,11 @@ Feature: Navigate among variant entities
     And completeness for element "XXL" in the variant children selector for level 1 should be "85%"
 
   Scenario: If I can't edit an attribute that comes from a parent, I can click on a link to open the related entity
-#    When I edit the "1111111127" product
     When I am on the "1111111127" product page
-    And I wait 600 seconds
     And I visit the "Marketing" group
-#    And I wait 10 seconds
     Then I should see the text "This attribute can be updated on the attributes by Color"
-    When I follow the link "This attribute can be updated on the attributes by Color"
-    And I wait 300 seconds
+    When I click on "This attribute can be updated on the attributes by Color" footer message of the field "Variation Name"
+    Then I should be on the product model "apollon_red" edit page
+    When I visit the "ERP" group
+    And I click on "This attribute can be updated on the common attributes." footer message of the field "Supplier"
+    Then I should be on the product model "apollon" edit page

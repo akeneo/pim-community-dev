@@ -6,6 +6,7 @@ use Behat\Mink\Element\Element;
 use Behat\Mink\Element\NodeElement;
 use Behat\Mink\Exception\ElementNotFoundException;
 use Behat\Mink\Exception\ExpectationException;
+use Pim\Behat\Decorator\Completeness\DropdownDecorator;
 use Pim\Behat\Decorator\VariantNavigationDecorator;
 
 /**
@@ -35,12 +36,20 @@ class ProductEditForm extends Form
                 'Available attributes list'       => ['css' => '.add-attribute .select2-results'],
                 'Available attributes search'     => ['css' => '.add-attribute .select2-search input[type="text"]'],
                 'Select2 dropmask'                => ['css' => '.select2-drop-mask'],
+                'Completeness dropdown'            => [
+                    'css'        => '.AknCompletenessPanel-block',
+                    'decorators' => [
+                        DropdownDecorator::class
+                    ]
+                ],
+                'Completeness dropdown button' => ['css' => '.AknTitleContainer-meta .AknDropdown'],
                 'Variant navigation' => [
                     'css'        => '.AknVariantNavigation',
                     'decorators' => [
                         VariantNavigationDecorator::class
                     ]
-                ]
+                ],
+                'Missing required attributes overview' => ['css' => '.AknTitleContainer-meta .AknSubsection-comment--clickable']
             ]
         );
     }
@@ -691,5 +700,39 @@ class ProductEditForm extends Form
     public function getVariantNavigation()
     {
         return $this->getElement('Variant navigation');
+    }
+
+    /**
+     * @return NodeElement|null
+     */
+    public function findFieldFooterMessageForField($fieldLabel, $message)
+    {
+        $fieldContainer = $this->findFieldContainer($fieldLabel);
+
+        $clickableMessage = $this->spin(function () use ($fieldContainer) {
+            return $fieldContainer->find('css', '.AknFieldContainer-clickable');
+        }, sprintf('Cannot find any clickable message for field "%s"', $fieldLabel));
+
+        if ($message === $clickableMessage->getText()) {
+            return $clickableMessage;
+        }
+
+        return null;
+    }
+
+    /**
+     * @return NodeElement
+     */
+    public function getCompletenessDropdownButton()
+    {
+        return $this->getElement('Completeness dropdown button');
+    }
+
+    /**
+     * @return NodeElement
+     */
+    public function getMissingRequiredAttributesOverviewLink()
+    {
+        return $this->getElement('Missing required attributes overview');
     }
 }
