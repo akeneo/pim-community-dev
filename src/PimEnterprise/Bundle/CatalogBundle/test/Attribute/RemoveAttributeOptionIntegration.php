@@ -3,7 +3,7 @@
 namespace PimEnterprise\Bundle\CatalogBundle\tests\integration;
 
 use Akeneo\Test\Integration\Configuration;
-use Akeneo\TestEnterprise\Integration\TestCase;
+use Akeneo\Test\Integration\TestCase;
 use Pim\Bundle\CatalogBundle\Entity\Attribute;
 use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
 use Pim\Component\Catalog\AttributeTypes;
