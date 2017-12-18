@@ -89,7 +89,6 @@ pim_enrich:
       description: Atributi odabranih proizvoda će se uređivati s podacima za odabrane postavke lokalizacije.
       empty: Odaberi atribut(e) koje želiš urediti
       success_flash: Proces ažuriranja statusa proizvoda se izvodi
-      launched_flash: Pokrenuta je masovna radnja "uređivanje zajedničkih atributa". Biti ćete obaviješteni kad bude gotovo.
       message:
         warning: Ne postoji zajednički atribut za odabrane proizvode. Promijenite odabir.
         invalid_attribute: Atribut sa kodom "attribute_code" nije zajednički za odabrane proizvode, atribut je preskočen.
@@ -621,7 +620,7 @@ pim_enrich.mass_edit_action:
     description: Odabrani proizvodi će biti omogućeni ili onemogućeni.
     success_flash: Status proizvoda se promijenio
   edit-common-attributes:
-    label: Uredi uobičajene atribute
+    label: Uredi atribute
     description: Atributi odabranih proizvoda će se uređivati s podacima za odabrane postavke lokalizacije.
     empty: Odaberi atribut(e) koje želiš urediti
     success_flash: Atribut(i) proizvoda su ažurirani
@@ -737,11 +736,10 @@ job_execution.summary:
   skipped_products: Preskočeni proizvodi
   skipped_attributes: Preskočeni atributi
 pim_mass_edit_execution_show: Izvođenje masovnog uređivanja | Detalji
-edit_common_attributes.steps.edit_common_attributes_processor.title: Uredi uobičajene atribute
+edit_common_attributes.steps.edit_common_attributes_processor.title: Uredi atribute
 update_product_value.steps.update_product_value_processor.title: Ažuriraj vrijednosti proizvoda
 remove_product_value.steps.update_product_value_processor.title: Uklanjanje vrijednosti proizvoda
-edit_common_attributes: Uredi uobičajene atribute
-edit_common_attributes_clean: Obriši datoteke za uobičajene atribute
+edit_common_attributes: Uredi atribute
 perform.steps.duplicated.title: Dvostruke osi
 perform.steps.excluded.title: Isključeni proizvod
 batch_jobs:
@@ -754,11 +752,9 @@ batch_jobs:
     perform:
       label: Ažuriraj vrijednosti proizvoda
   edit_common_attributes:
-    label: Uredi uobičajene atribute
+    label: Uredi atribute
     perform:
-      label: Uredi uobičajene atribute
-    clean:
-      label: Obriši datoteke za uobičajene atribute
+      label: Uredi atribute
   csv_product_quick_export:
     quick_export.label: Brzi izvoz proizvoda u Csv
     perform:

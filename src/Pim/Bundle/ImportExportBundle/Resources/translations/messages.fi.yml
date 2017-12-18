@@ -54,10 +54,10 @@ import profile:
 pim_importexport:
   acl:
     export_profile:
-      index: Tuontiprofiilin listaus
+      index: Vientiprofiilien listaus
       create: Vientiprofiilin luonti
       show: Näytä vientiprofiili
-      edit: Editoi vientiprofiilia
+      edit: Muokkaa vientiprofiilia
       remove: Poista vientiprofiili
       launch: Käynnistä vientiprofiili
       property_edit: Muokkaa vientiprofiilin yleisiä ominaisuuksia
@@ -67,21 +67,21 @@ pim_importexport:
       content_show: Näytä vientiprofiilin sisältö
     import_profile:
       index: Näytä tuontiprofiilien lista
-      create: Vientiprofiilin luonti
-      show: Näytä vientiprofiili
-      edit: Editoi vientiprofiilia
-      remove: Poista vientiprofiili
-      launch: Käynnistä vientiprofiili
-      history: Näytä vientiprofiilin historia
+      create: Tuontiprofiilin luonti
+      show: Näytä tuontiprofiili
+      edit: Muokkaa vientiprofiilia
+      remove: Poista tuontiprofiili
+      launch: Käynnistä tuontiprofiili
+      history: Näytä tuontiprofiilin historia
     export_execution:
       index: Näytä vientiraporttien lista
       show: Näytä vientiraportin yksityiskohdat
       dl_log: Lataa vientiraporttilogi
-      dl_files: Lataa viedyt tiedosto
+      dl_files: Lataa viedyt tiedostot
     import_execution:
-      index: Näytä vientiraporttien lista
-      show: Näytä vientiraportin yksityiskohdat
-      dl_log: Lataa vientiraporttilogi
+      index: Näytä tuontiraporttien lista
+      show: Näytä tuontiraportin yksityiskohdat
+      dl_log: Lataa tuontiraporttilogi
       dl_files: Lataa tuodut tiedostot
   acl_group:
     export: Vientiprofiili

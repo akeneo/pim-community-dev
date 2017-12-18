@@ -207,7 +207,6 @@ pim_enrich:
         created: Продукт успешно создан
       completeness: Завершено
     product_model:
-      title: продукты
       add_child:
         cancel: Отмена
         confirm: Подтверждение
@@ -319,6 +318,7 @@ pim_enrich:
     remove: Удалить
     delete:
       attribute: Вы уверены, что хотите удалить этот атрибут из продукта?
+      product_model: Подтвердить удаление
   info:
     not_applicable: Н/Д
     entity:
@@ -749,9 +749,6 @@ pim_enrich:
         title: Свойства
       global_settings:
         title: Глобальные настройки
-  mass_edit_action:
-    edit_common_attributes:
-      description: Атрибуты выбранного продукта будут редактироваться со следующими данными для локали <span class="highlight">{{ locale }}</span> и канала <span class="highlight">{{ channel }}</span>, выбранных в таблице продуктов.
   index:
     import_profiles:
       list: Выберите задание
@@ -793,7 +790,7 @@ pim_enrich:
           description: Выбранные продукты будут активированы или деактивированы.
           field: Включить
         edit_common:
-          label: Изменить общие атрибуты
+          label: Редактировать атрибуты
         change_family:
           description: Семейство для выбранных продуктов будет изменено на выбранное семейство
           field: Семейство
@@ -851,11 +848,9 @@ batch_jobs:
     perform:
       label: Обновить значение продукта
   edit_common_attributes:
-    label: Изменить общие атрибуты
+    label: Редактировать атрибуты
     perform:
-      label: Изменить общие атрибуты
-    cleaner:
-      label: Редактировать файлы общих атрибутов
+      label: Редактировать атрибуты
   csv_product_export:
     label: Экспорт продуктов в CSV
     export.label: Экспорт продуктов
@@ -867,6 +862,9 @@ batch_jobs:
   csv_attribute_export:
     label: Экспорт атрибутов в CSV
     export.label: Экспорт атрибутов
+  csv_attribute_option_export:
+    label: Экспорт элементов списочных атрибутов в CSV
+    export.label: Экспорт элементов списочных атрибутов
   csv_association_type_export:
     label: Экспорт типов ассоциаций в CSV
     export.label: Экспорт типов ассоциаций
@@ -890,8 +888,9 @@ batch_jobs:
     validation.label: Проверка файла
     import.label: Импорт атрибутов
   csv_attribute_option_import:
-    label: Импорт выборов атрибутов из CSV
+    label: Импорт элементов списочных атрибутов из CSV
     validation.label: Проверка файла
+    import.label: Импорт элементов списочных атрибутов
   csv_association_type_import:
     label: Импорт типов ассоциаций из CSV
     validation.label: Проверка файла
@@ -931,6 +930,7 @@ batch_jobs:
   xlsx_attribute_option_import:
     label: Импорт элементов списочных атрибутов из XLSX
     validation.label: Проверка файла
+    import.label: Импорт элементов списочных атрибутов
   xlsx_family_import:
     label: Импорт семейств из XLSX
     validation.label: Проверка файла

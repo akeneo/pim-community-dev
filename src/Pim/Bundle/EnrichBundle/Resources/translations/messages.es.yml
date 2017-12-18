@@ -89,7 +89,6 @@ pim_enrich:
       description: Los atributos de producto seleccionados serán editados con la siguiente información para el local elegido.
       empty: Por favor, seleccione atributo(s) que desea editar
       success_flash: El trabajo de actualización del estado de producto(s) está ejecutándose
-      launched_flash: La acción en masa "editar atributos comunes" ha sido lanzada. Será notificado una vez finalizada.
       message:
         warning: No hay ningún atributo en común para los productos seleccionados. Por favor cambie su selección.
         invalid_attribute: El atributo con el código "attribute_code" no es común para los productos seleccionados, atributo ignorado.
@@ -622,7 +621,7 @@ pim_enrich.mass_edit_action:
     description: Los productos seleccionados serán habilitados o inhabilitados.
     success_flash: Estado de los producto(s) han sido cambiados
   edit-common-attributes:
-    label: Editar atributos comunes
+    label: Editar atributos
     description: Los atributos de producto seleccionados serán editados con la siguiente información para el local elegido.
     empty: Por favor, seleccione atributo(s) que desea editar
     success_flash: Atributo(s) del producto(s) han sido actualizados
@@ -739,11 +738,10 @@ job_execution.summary:
   skipped_attributes: Atributos omitidos
   skipped_families: Familias omitidas
 pim_mass_edit_execution_show: Exclusiones de edición en masa | Detalles
-edit_common_attributes.steps.edit_common_attributes_processor.title: Editar atributos comunes
+edit_common_attributes.steps.edit_common_attributes_processor.title: Editar atributos
 update_product_value.steps.update_product_value_processor.title: Actualizar el valor del producto
 remove_product_value.steps.update_product_value_processor.title: Quitar el valor del producto
-edit_common_attributes: Editar atributos comunes
-edit_common_attributes_clean: Limpiar archivos para los atributos comunes
+edit_common_attributes: Editar atributos
 perform.steps.duplicated.title: Eje duplicado
 perform.steps.excluded.title: Producto excluido
 batch_jobs:
@@ -756,11 +754,9 @@ batch_jobs:
     perform:
       label: Actualizar el valor del producto
   edit_common_attributes:
-    label: Editar atributos comunes
+    label: Editar atributos
     perform:
-      label: Editar atributos comunes
-    clean:
-      label: Limpiar archivos para los atributos comunes
+      label: Editar atributos
   csv_product_quick_export:
     quick_export.label: Exportación rápida de producto en CSV
     perform:

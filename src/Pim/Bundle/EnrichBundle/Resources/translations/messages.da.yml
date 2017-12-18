@@ -89,7 +89,6 @@ pim_enrich:
       description: De valgte produktattributter vil blive redigeret med følgende data for den valgte landestandard.
       empty: Vælg venligst den eller de attribut(ter), du vil redigere
       success_flash: Kørslen der opdaterer produkt(er) status kører i øjeblikket
-      launched_flash: Handlingen bulk "redigere fælles attributter" er blevet statrtet. Du får besked, når det er afsluttet.
       message:
         warning: Der er ingen fælles egenskaber for de valgte produkter. Ændre venligst dit valg.
         invalid_attribute: Attribut med koden "attribute_code" er ikke fælles for de valgte produkter, attributten springes over.
@@ -637,7 +636,7 @@ pim_enrich.mass_edit_action:
     description: De valgte produkter vil blive aktiveret eller deaktiveret.
     success_flash: Produkt(er) status er blevet ændret
   edit-common-attributes:
-    label: Rediger fælles attributter
+    label: Rediger attributter
     description: De valgte produktattributter vil blive redigeret med følgende data for den valgte landestandard.
     empty: Vælg venligst den eller de attribut(ter), du vil redigere
     success_flash: Produkt(er) attribut(ter) er blevet opdateret
@@ -757,11 +756,10 @@ job_execution.summary:
   skipped_attributes: Egneskaber sprunget over
   skipped_families: Familier sprunget over
 pim_mass_edit_execution_show: Masse redigere udførsler | Detaljer
-edit_common_attributes.steps.edit_common_attributes_processor.title: Rediger fælles attributter
+edit_common_attributes.steps.edit_common_attributes_processor.title: Rediger attributter
 update_product_value.steps.update_product_value_processor.title: Opdatere produktets værdi
 remove_product_value.steps.update_product_value_processor.title: Fjern produktværdi
-edit_common_attributes: Rediger fælles attributter
-edit_common_attributes_clean: Rens filer til fælles attributter
+edit_common_attributes: Rediger attributter
 perform.steps.duplicated.title: Duplikeret akse
 perform.steps.excluded.title: Udelukkede produkt
 batch_jobs:
@@ -774,11 +772,9 @@ batch_jobs:
     perform:
       label: Opdatere produktets værdi
   edit_common_attributes:
-    label: Rediger fælles attributter
+    label: Rediger attributter
     perform:
-      label: Rediger fælles attributter
-    clean:
-      label: Rens filer til fælles attributter
+      label: Rediger attributter
   set_attribute_requirements:
     label: Indstil attribut krav
     perform:

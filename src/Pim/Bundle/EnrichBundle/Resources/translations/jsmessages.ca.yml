@@ -207,7 +207,6 @@ pim_enrich:
         created: Producte creat correctament
       completeness: Complet
     product_model:
-      title: productes
       add_child:
         cancel: Cancelar
         confirm: Confirmar
@@ -324,6 +323,7 @@ pim_enrich:
     remove: Eliminar
     delete:
       attribute: Esteu segur que voleu suprimir aquest atribut del producte?
+      product_model: Confirmar l'eliminació
   info:
     not_applicable: N/D
     entity:
@@ -755,9 +755,6 @@ pim_enrich:
         title: Propietats
       global_settings:
         title: Configuració global
-  mass_edit_action:
-    edit_common_attributes:
-      description: Els atributs del producte seleccionat s'editaran amb les següents dades per la configuració regional <span class="highlight">{{ locale }}</span> i el canal <span class="highlight">{{ channel }}</span>, seleccionats a la quadrícula de productes.
   index:
     import_profiles:
       list: Seleccioneu un job
@@ -799,7 +796,7 @@ pim_enrich:
           description: Els productes seleccionats seran activats o desactivats.
           field: Per activar
         edit_common:
-          label: Editar atributs comuns
+          label: Editar atributs
         change_family:
           description: La família dels productes seleccionats es canviarà per la família escollida
           field: Família
@@ -857,11 +854,9 @@ batch_jobs:
     perform:
       label: Actualitzar el valor del producte
   edit_common_attributes:
-    label: Editar atributs comuns
+    label: Editar atributs
     perform:
-      label: Editar atributs comuns
-    cleaner:
-      label: Netejar arxius per atributs comuns
+      label: Editar atributs
   csv_product_export:
     label: Exportar productes a CSV
     export.label: Exportar productes

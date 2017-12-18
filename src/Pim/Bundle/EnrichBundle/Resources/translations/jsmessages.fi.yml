@@ -2,7 +2,7 @@ confirmation:
   remove:
     item: Oletko varma että haluat poistaa tämän kohteen?
     association_type: Oletko varma, että haluat poistaa tämän assosiaatiotyypin?
-    attribute: Oletko varma, että haluat poistaa tämän määritteen?
+    attribute: Oletko varma, että haluat poistaa tämän attribuutin?
     attribute_group: Oletko varma, että haluat poistaa tämän attribuuttiryhmän?
     family: Oletko varma, että haluat poistaa tämän ryhmän?
     product: Oletko varma, että haluat poistaa tämän tuotteen?
@@ -217,7 +217,7 @@ pim_enrich:
       locale_specific_attribute:
         unavailable: Tämä lokaatiospesifi-kenttä ei ole käytettävissä tässä maassa
       localizable:
-        channel_locale_unavailable: Lokalisoitavaa kenttää ei voi käyttää lokaatiossa '{{ locale }}' ja kanavassa '{{ channel }}'
+        channel_locale_unavailable: Kielikohtaista kenttää ei voi käyttää lokaatiossa '{{ locale }}' ja kanavassa '{{ channel }}'
       media:
         upload: Vedä ja pudota tuodaksesi tai klikkaa tästä
       create_popin:
@@ -246,7 +246,6 @@ pim_enrich:
       read_only_parent_attribute_from_common: Tätä attribuuttia voidaan muokata yhteisissä attribuuteissa.
       read_only_parent_attribute_from_model: "Tätä attribuuttia voidaan muokata {{ axes }} attribuuteissa"
       variant_axis: Varianttiulottuvuus
-      title: tuotteet
       add_child:
         create: Luo uusi
         cancel: Peruuta
@@ -382,7 +381,7 @@ pim_enrich:
         update_failed: Attribuuttia ei voitu päivittää.
         create_successful: Attribuutin luominen onnistui.
         create_failed: Attribuuttia ei voitu luoda.
-      scopable: Scopable
+      scopable: Kanavakohtainen
       type:
         pim_catalog_identifier: Tunniste
         pim_catalog_text: Teksti
@@ -419,8 +418,9 @@ pim_enrich:
     remove_item: Vahvista poisto
     remove: Poista
     delete:
-      attribute: Oletko varma, että haluat poistaa tämän määritteen tuotteesta?
+      attribute: Oletko varma, että haluat poistaa tämän attribuutin tuotteesta?
       attribute_group: Oletko varma, että haluat poistaa attribuutin {{ attribute }} tästä attribuuttiryhmästä?
+      product_model: Vahvista poisto
   info:
     not_applicable: Ei mitään
     entity:
@@ -500,7 +500,7 @@ pim_enrich:
           change_family_to: Vaihda perhe olemaan
           empty_selection: Valitse perhe
       flash:
-        attribute_deletion_error: Määritteen poistamisen aikana tapahtui virhe
+        attribute_deletion_error: Attribuutin poistamisen aikana tapahtui virhe
       mass_edit:
         select_attributes: Valitse attribuutit
         select: Valitse
@@ -568,7 +568,7 @@ pim_enrich:
         option_created: Määritteen asetuksen luominen onnistui
         error_creating_option: Virhe yritettäessä luoda määritteen asetusta
       add_option_modal:
-        title: Lisää määritteen vaihtoehto
+        title: Lisää attribuutin vaihtoehto
         confirm: Lisää
         cancel: Peruuta
     entity:
@@ -599,8 +599,8 @@ pim_enrich:
           table:
             name: Nimi
             type: Tyyppi
-            scopable: Scopable
-            localizable: Lokalisoitavissa
+            scopable: Kanavakohtainen
+            localizable: Kielikohtainen
         history.title: Historia
     common:
       tab:
@@ -734,7 +734,7 @@ pim_enrich:
             decimals_allowed: Desimaaliarvot sallittu
             default_metric_unit: Metrinen oletusyksikkö
             group: Attribuuttiryhmä
-            is_locale_specific: Aluespesifi
+            is_locale_specific: Aluekohtainen arvo
             localizable: Kielikohtainen arvo
             max_characters: Maksimimerkkimäärä
             max_file_size: Suurin tiedostokoko (Mt)
@@ -913,9 +913,6 @@ pim_enrich:
         title: Ominaisuudet
       global_settings:
         title: Yleiset asetukset
-  mass_edit_action:
-    edit_common_attributes:
-      description: Tuoteruudukosta valitun tuotteen attribuutit muokataan seuraavilla tiedoilla lokaatiolle <span class="highlight">{{ locale }}</span> ja kanavalle <span class="highlight">{{ channel }}</span>.
   index:
     association_type:
       title: "] -Inf, 1] {{ count }} assosiaatiotyyppi|] 1, Inf [{{ count }} assosiaatiotyyppiä"
@@ -1005,9 +1002,7 @@ pim_enrich:
           description: Valitut tuotteet otetaan käyttöön tai pois käytöstä.
           field: Ottaa käyttöön
         edit_common:
-          label: Muokkaa yleisiä attribuutteja
-          label_count: "{1}Muuta <span class=\"AknFullPage-title--highlight\">1 tuotteen yhteisiä attribuutteja</span>|] 1, Inf [Muuta <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} tuotteen yhteisiä attribuutteja</span>"
-          description: Valittujen tuotteiden attribuutteja muokataan lokaatiolle {{ locale }} ja kanavalle {{ scope }}, jotka on valittu tuotenäkymällä.
+          label: Muokkaa attribuutteja
         change_family:
           label: Muuta perhe
           label_count: "{1}Muuta <span class=\"AknFullPage-title--highlight\">1 tuotteen perhe</span>|] 1, Inf [Muuta <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} tuotteen perhe</span>"
@@ -1101,11 +1096,9 @@ batch_jobs:
     perform:
       label: Päivitä tuotteen arvo
   edit_common_attributes:
-    label: Muokkaa yleisiä attribuutteja
+    label: Muokkaa attribuutteja
     perform:
-      label: Muokkaa yleisiä attribuutteja
-    cleaner:
-      label: Puhdista tiedostot yleisille attribuuteille
+      label: Muokkaa attribuutteja
   set_attribute_requirements:
     label: Aseta vaaditut attribuutit
     perform:

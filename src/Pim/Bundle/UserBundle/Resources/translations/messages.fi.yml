@@ -7,7 +7,7 @@ pim_user:
       password.title: Salasana
       business_unit.title: Liiketoimintayksiköt
       email_synchronization.title: Sähköpostin synkronoinnin asetukset
-      interfaces.title: Käyttöliittymät
+      interfaces.title: Käyttöliittymä
   group:
     tab:
       general.title: Yleinen
@@ -95,7 +95,7 @@ General: Yleinen
 Entity: Entiteetti
 Capabilities: Ominaisuudet
 Save and close: Tallenna ja sulje
-Has role: On rooli
+Has role: Roolissa
 role:
   title: rooli
   overview: rooli
@@ -143,7 +143,7 @@ oro:
       NONE: Ei yhtään
 Create group: Luo ryhmä
 btn.create.user-group: Luo ryhmä
-Has group: Ryhmä on olemassa
+Has group: Ryhmässä
 Save and Close: Tallenna ja sulje
 user-group.overview: Ryhmät
 Log in: Kirjaudu
