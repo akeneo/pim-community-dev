@@ -100,7 +100,11 @@ class RootEndpointIntegration extends ApiTestCase
                 "methods": ["GET"]
             },
             "pim_api_attribute_option_partial_update": {
-                "route": "/api/rest/v1/attributes/{attributeCode}/options/{optionCode}",
+                "route": "/api/rest/v1/attributes/{attributeCode}/options/{code}",
+                "methods": ["PATCH"]
+            },
+            "pim_api_attribute_option_partial_update_list": {
+                "route": "/api/rest/v1/attributes/{attributeCode}/options",
                 "methods": ["PATCH"]
             },
             "pim_api_channel_list": {

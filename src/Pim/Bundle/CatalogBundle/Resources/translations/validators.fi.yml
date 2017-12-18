@@ -40,6 +40,7 @@ pim_catalog:
     variant_product_has_parent: 'Variantilla "%variant_product%" on oltava ylätason tuote'
     invalid_variant_product_parent: 'Variantilla "%variant_product%" ei voi olla tuotemallia "%product_model%" ylätason tuotteena, (tähän tuotemalliin voi kuulua vain toisia tuotemalleja)'
     modified_variant_axis_value: 'Varianttiulottuvuutta "%variant_axis%" ei voi muokata arvolla "%provided_value%"'
+    family_variant_axes_wrong_type: Variantin ulottuvuus ”%axis%” ei voi olla aluekohtainen, kanavakohtainen eikä kielikohtainen
     family_variant_no_axis: Vähintään yksi attribuutti on määritettävä varianttiulottuvuudeksi tasolla "%level%"
     family_variant_level_do_not_exist: Tasolla "%level%" ei ole määritetty varianttiattribuuttia
     family_variant_no_level: Vähintään yksi taso on määritettävä varianttiperheelle

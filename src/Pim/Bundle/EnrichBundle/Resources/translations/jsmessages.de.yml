@@ -233,7 +233,6 @@ pim_enrich:
       read_only_parent_attribute_from_common: Dieses Attribut muss als gemeinsames Attribut bearbeitet werden.
       read_only_parent_attribute_from_model: "Dieses Attribut muss als Attribut von {{ axes }} bearbeitet werden"
       variant_axis: Variantenachse(n)
-      title: Produkte
       add_child:
         cancel: Abbrechen
         confirm: Bestätigen
@@ -393,6 +392,7 @@ pim_enrich:
     delete:
       attribute: Sind Sie sicher, dass Sie dieses Attribut vom Produkt löschen möchten?
       attribute_group: Soll das Attribut {{ attribute }} wirklich aus dieser Attributgruppe entfernt werden?
+      product_model: Löschen bestätigen
   info:
     not_applicable: N/A
     entity:
@@ -1067,8 +1067,8 @@ batch_jobs:
     label: Gruppen-Export in CSV-Datei
     export.label: Gruppen-Export
   csv_family_export:
-    label: Exportiere Produktfamilie in CSV-Datei
-    export.label: Exportiere Produktfamilie
+    label: Produktfamilien-Export als CSV-Datei
+    export.label: Produktfamilien-Export
   csv_product_import:
     label: Produkt-Export als CSV-Datei
     validation.label: Dateivalidierung
@@ -1181,7 +1181,7 @@ batch_jobs:
     import.label: Gruppen-Import
   xlsx_family_export:
     label: Produktfamilien-Eport als XLSX-Datei
-    export.label: Exportiere Produktfamilie
+    export.label: Produktfamilien-Export
   xlsx_category_export:
     label: Kategorie-Export als XLSX-Datei
     export.label: Kategorie export

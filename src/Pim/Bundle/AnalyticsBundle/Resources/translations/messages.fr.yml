@@ -19,6 +19,9 @@ pim_analytics:
     registered_bundles: Paquets installés
     nb_channels: Nombre de canaux
     nb_products: Nombre de produits
+    nb_product_models: Nombre de modèles de produit
+    nb_variant_products: Nombre de produits variants
+    nb_family_variants: Nombre de variantes de famille
     nb_attributes: Nombre d'attributs
     nb_scopable_attributes: Nombre d’attributs déclinés par canal
     nb_localizable_attributes: Nombre d’attributs traduisibles

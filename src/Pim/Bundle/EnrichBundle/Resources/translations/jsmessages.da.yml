@@ -226,6 +226,7 @@ pim_enrich:
         title: Opret
         labels:
           family: Vælg familie
+          family_variant: Vælg en familie variant
           save: Gem
           cancel: Annuller
       message:
@@ -247,7 +248,6 @@ pim_enrich:
       read_only_parent_attribute_from_common: Denne attribut kan blive opdateret på de fælles attributter.
       read_only_parent_attribute_from_model: "Denne attribut kan opdateres på attributterne af {{ axes }}"
       variant_axis: Variant akse
-      title: produkter
       add_child:
         create: Tilføj ny
         cancel: Annuller
@@ -394,6 +394,7 @@ pim_enrich:
         update_failed: Atributten kunne ikke opdateres.
         create_successful: Atributten blev oprettet.
         create_failed: Atributten kunne ikke oprettes.
+        field_not_ready: 'Attributten kan ikke gemmes lige nu. Følgende felter er ikke klar: {{ fields }}'
       scopable: Omfangbar
       type:
         pim_catalog_identifier: Identifikator
@@ -433,6 +434,7 @@ pim_enrich:
     delete:
       attribute: Er du sikker på du vil slette denne attribut fra produktet?
       attribute_group: Vil du fjerne attributten {{ attribute }} fra denne attributgruppe?
+      product_model: Bekræft sletning
   info:
     not_applicable: Ikke tilgængelig
     entity:
@@ -445,6 +447,7 @@ pim_enrich:
   form:
     required: (Påkrævet)
     product_model:
+      choose_product_model: Vælg en produktmodel
       choose_variant: Vælg en variant
       complete_variant_product: variant produkt
       complete_variant_products: variant produkter
@@ -464,6 +467,9 @@ pim_enrich:
             number_of_associations: "{{ productCount }} produkter og {{ groupCount }} grupper"
           association_type_selector: Sammenhængstyper
           target: Mål
+          manage: Tilføj {{ associationType }} foreninger
+          manage_description: Vælg de produkter, du vil knytte til det aktuelle produkt
+          add_associations: Tilføj tilknytning
         attributes:
           title: Attributter
           btn:
@@ -1045,6 +1051,10 @@ pim_enrich:
           label: Fjern fra kategorier
           label_count: "{1}Fjern <span class=\"AknFullPage-title--highlight\"> 1 produkt</span> fra kategorier |] 1, Inf [Fjern <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} produkter</span> fra kategorier"
           description: Produkterne vil blive fjernet fra følgende kategorier.
+        add_to_existing_product_model:
+          label: Føj til en eksisterende produktmodel
+          label_count: "{1}Add <span class=\"AknFullPage-title--highlight\"> 1 produkt</span> til en eksisterende produktmodel |] 1, Inf [Tilføj <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} produkter</span> til en eksisterende produktmodel"
+          description: Den valgte produktmodel vil samle produkterne og giver mulighed for berigelse af deres fælles egenskaber.
     family:
       title: Familier massehandling
       confirm: "{1} Du er ved at opdatere et produkt med følgende oplysninger, bekræft venligst. |Du er ved at opdatere {{ itemsCount }} produkter med følgende oplysninger, bekræft venligst."
@@ -1121,6 +1131,10 @@ batch_jobs:
       label: Rediger fælles attributter
     cleaner:
       label: Rens filer til fælles attributter
+  add_to_existing_product_model:
+    label: Føj til en eksisterende produktmodel
+    perform:
+      label: Føj til en eksisterende produktmodel
   set_attribute_requirements:
     label: Indstil attribut krav
     perform:

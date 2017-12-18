@@ -9,6 +9,8 @@ pim_import_export:
     archive: 下载生成的文件 | 下载生成的文件
     output: 下载生成的文件 | 下载生成的文件
     input: 下载文件 | 下载文件
+    invalid_xlsx: 下载无效数据
+    invalid_csv: 下载无效数据
   notification:
     export:
       error: 导出<strong>%label%</strong>失败

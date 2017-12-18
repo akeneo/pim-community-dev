@@ -2,6 +2,18 @@
 
 ## Improvements
 
+- API-415: Update a list of options of a simple or multi select attribute
+
+## BC breaks
+
+### Constructors
+
+- Change the constructor of `Pim\Bundle\ApiBundle\Controller\AttributeOptionController` to add `Pim\Bundle\ApiBundle\Stream\StreamResourceResponse` paramater
+
+# 2.1.0-ALPHA2 (2017-12-15)
+
+## Improvements
+
 - PIM-6996: Associate products to product models during import using the `<assocType>-product_models` pattern in an new column
 - API-443: Prevent getting asset via media file url of the API
 - PIM-6996: Associate products to product models during import using the `<assocType>-product_models` pattern in an new column
