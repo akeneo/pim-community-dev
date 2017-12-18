@@ -60,6 +60,9 @@ batch_jobs:
   csv_group_export:
     label: 分组导出到CSV
     export.label: 分组导出
+  csv_family_export:
+    label: 在CSV导入品类
+    export.label: 品类导出
   csv_product_import:
     label: 从CSV导入产品
     validation.label: 文件验证
@@ -84,7 +87,9 @@ batch_jobs:
     validation.label: 文件验证
     import.label: 相关类型导入
   csv_family_import:
+    label: 从CSV导入品类
     validation.label: 文件验证
+    import.label: 品类导入
   csv_family_variant_import:
     validation.label: 文件验证
   csv_group_import:
@@ -120,6 +125,7 @@ batch_jobs:
   xlsx_family_import:
     label: 在XLSX导入品类
     validation.label: 文件验证
+    import.label: 品类导入
   xlsx_family_variant_import:
     validation.label: 文件验证
   xlsx_product_export:
@@ -141,6 +147,7 @@ batch_jobs:
     import.label: 分组导入
   xlsx_family_export:
     label: 在XLSX导入品类
+    export.label: 品类导出
   xlsx_category_export:
     label: 在XLSX中导出分类
     export.label: 分类导出

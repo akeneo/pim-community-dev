@@ -247,7 +247,6 @@ pim_enrich:
       read_only_parent_attribute_from_common: この属性は、共通の属性を更新できます。
       read_only_parent_attribute_from_model: "この属性は、{{ axes }} によって属性で更新できます。"
       variant_axis: バリアントの軸
-      title: 製品
       add_child:
         create: 新しく追加
         cancel: キャンセル
@@ -433,6 +432,7 @@ pim_enrich:
     delete:
       attribute: 商品からこの属性を削除してもよろしいですか？
       attribute_group: 属性 {{ attribute }} をこの属性グループから削除してもよろしいですか。
+      product_model: 削除を確認する
   info:
     not_applicable: N/A
     entity:
@@ -449,6 +449,7 @@ pim_enrich:
       complete_variant_product: バリアント製品
       complete_variant_products: バリアント製品
       family_variant: バリアント
+      product_model: 製品モデル
       flash:
         product_model_added: 製品モデルが製品モデルに正常に追加されました
         variant_product_added: 異なる製品が製品モデルに正常に追加されました
@@ -1103,6 +1104,7 @@ page_title:
   pim_enrich_job_tracker_show: プロセストラッカー |ジョブの表示
   pim_enrich_api_connection_index: API 接続
   pim_enrich_api_connection_create: API 接続 |作成
+  pim_enrich_mass_edit_action: 一括編集
   pim_analytics_system_info_index: システム情報
 batch_jobs:
   add_product_value:

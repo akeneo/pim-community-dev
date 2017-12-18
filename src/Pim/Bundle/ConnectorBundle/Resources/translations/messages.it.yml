@@ -40,7 +40,7 @@ job_execution.summary:
     title: 'Codifica del file:'
     skipped: saltato, estensione nella white list
   product_skipped_no_diff: prodotto saltato (nessuna differenza)
-  product_skipped_no_associations: prodotto saltato (nessuna associazione rilevata)
+  product_skipped_no_associations: prodotto saltato (associazioni non rilevate)
   product_model_skipped_no_diff: modello di prodotto saltato (nessuna differenza)
   item_position: linee lette
   skipped_in_root_product_model: modello di prodotto con padre saltato
