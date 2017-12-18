@@ -23,6 +23,11 @@ pim_api:
                 content_types: ['application/vnd.akeneo.collection+json']
                 priority: 20
             -
+                path: '^/api/rest/v\d+/attributes/.+/options$'
+                methods: ['PATCH']
+                content_types: ['application/vnd.akeneo.collection+json']
+                priority: 20
+            -
                 path: '^/api/oauth/v\d+/token'
                 content_types: ['application/json', 'application/x-www-form-urlencoded']
                 priority: 30

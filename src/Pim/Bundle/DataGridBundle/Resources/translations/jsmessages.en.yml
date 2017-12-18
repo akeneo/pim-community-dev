@@ -127,3 +127,8 @@ grid.display_selector:
 # Credentials cell
 Client ID: Client ID
 Secret: Secret
+
+grid.empty_results:
+    associated_product:
+        hint: There are no associated products
+        subHint: 'Click on the button "Add associations" to associate this product'

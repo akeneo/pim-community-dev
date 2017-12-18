@@ -52,7 +52,7 @@ Feature: Apply a mass action on products only (and not product models)
     And I should see the text "skipped 1"
     And I should see the text "Skipped products 1"
     And I should see the text "The variant product family must be the same than its parent: tshirt-unique-size-navy-blue"
-    And I should see the text "Bulk actions do not support Product models entities yet."
+    And I should see the text "This bulk action doesn't support Product models entities yet."
     And the family of product "watch" should be "shoes"
     And the family of product "tshirt-unique-size-crimson-red" should be "clothing"
     And the family of product model "model-tshirt-divided-crimson-red" should be "clothing"
@@ -69,7 +69,7 @@ Feature: Apply a mass action on products only (and not product models)
     Then I should see the text "COMPLETED"
     And I should see the text "processed 2"
     And I should see the text "skipped 1"
-    And I should see the text "Bulk actions do not support Product models entities yet."
+    And I should see the text "This bulk action doesn't support Product models entities yet."
     And product "watch" should be disabled
     And product "tshirt-unique-size-navy-blue" should be disabled
 
@@ -86,10 +86,10 @@ Feature: Apply a mass action on products only (and not product models)
     Then I should see the text "COMPLETED"
     And I should see the text "processed 2"
     And I should see the text "skipped 1"
-    And I should see the text "Bulk actions do not support Product models entities yet."
+    And I should see the text "This bulk action doesn't support Product models entities yet."
     Then "related" group should contain "watch, tshirt-unique-size-navy-blue"
 
-  Scenario: Mass edits add categories of only products within a selection of products and product models
+  Scenario: Mass edits add categories of products and product models
     Given I show the filter "color"
     And I filter by "color" with operator "in list" and value "Navy blue"
     And I select rows watch, tshirt-unique-size-navy-blue and model-tshirt-divided-navy-blue
@@ -105,14 +105,13 @@ Feature: Apply a mass action on products only (and not product models)
     When I go on the last executed job resume of "add_to_category"
     Then I should see the text "COMPLETED"
     And I should see the text "processed 3"
-    And I should see the text "Bulk actions do not support Product models entities yet."
     When I am on the products grid
     And I open the category tree
     Then I should be able to use the following filters:
-      | filter   | operator | value        | result                              |
-      | category |          | master_women | watch, tshirt-unique-size-navy-blue |
+      | filter   | operator | value        | result                                                              |
+      | category |          | master_women | watch, tshirt-unique-size-navy-blue, model-tshirt-divided-navy-blue |
 
-  Scenario: Mass edits move categories of only products within a selection of products and product models
+  Scenario: Mass edits move categories of products and product models
     Given I show the filter "color"
     And I filter by "color" with operator "in list" and value "Navy blue"
     And I select rows watch, tshirt-unique-size-navy-blue and model-tshirt-divided-navy-blue
@@ -128,14 +127,13 @@ Feature: Apply a mass action on products only (and not product models)
     When I go on the last executed job resume of "move_to_category"
     Then I should see the text "COMPLETED"
     And I should see the text "processed 3"
-    And I should see the text "Bulk actions do not support Product models entities yet."
     When I am on the products grid
     And I open the category tree
     Then I should be able to use the following filters:
-      | filter   | operator | value        | result                              |
-      | category |          | master_women | watch, tshirt-unique-size-navy-blue |
+      | filter   | operator | value        | result                                                              |
+      | category |          | master_women | watch, tshirt-unique-size-navy-blue, model-tshirt-divided-navy-blue |
 
-  Scenario: Mass edits remove categories of only products within a selection of products and product models
+  Scenario: Mass edits remove categories of products and product models
     Given I show the filter "color"
     And I filter by "color" with operator "in list" and value "Black"
     And I select rows another-watch, cult-of-luna-black-m and model-nin-black
@@ -158,6 +156,5 @@ Feature: Apply a mass action on products only (and not product models)
     When I go on the last executed job resume of "remove_from_category"
     Then I should see the text "COMPLETED"
     And I should see the text "processed 3"
-    And I should see the text "Bulk actions do not support Product models entities yet."
     And the product "another-watch" should not have any category
     And the categories of the product "cult-of-luna-black-m" should be "long_sleeves"

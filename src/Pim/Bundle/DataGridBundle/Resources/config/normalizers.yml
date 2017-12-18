@@ -32,6 +32,8 @@ services:
 
     pim_datagrid.normalizer.product_association:
         class: '%pim_datagrid.normalizer.product_association.class%'
+        arguments:
+            - '@pim_enrich.normalizer.image'
         tags:
             - { name: pim_serializer.normalizer }
 

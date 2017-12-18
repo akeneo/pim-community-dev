@@ -28,19 +28,6 @@ define(
             thumbnailTemplate: _.template(thumbnailTemplate),
 
             /**
-             * {@inheritdoc}
-             */
-            getThumbnailImagePath() {
-                const image = this.model.get('image');
-
-                if (undefined === image || null === image) {
-                    return '/media/show/undefined/preview';
-                }
-
-                return mediaUrlGenerator.getMediaShowUrl(image, 'thumbnail');
-            },
-
-            /**
              * Returns true if the user has the right to remove an association,
              * hide the remove button in this case.
              *

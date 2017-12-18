@@ -94,7 +94,8 @@ define(
                 multipleSorting:     true,
                 rowActions:          [],
                 massActionsGroups:   [],
-                massActions:         []
+                massActions:         [],
+                emptyGridOptions: null
             },
 
             /**
@@ -354,22 +355,34 @@ define(
                 this.loadingMask.hide();
             },
 
-            /**
-             * Render no data block.
-             */
-            renderNoDataBlock: function () {
-                var entityHint = (this.entityHint || __('oro.datagrid.entityHint')).toLowerCase();
-                var key = 'oro.datagrid.' + (_.isEmpty(this.collection.state.filters) ? 'noentities' : 'noresults');
+            getDefaultNoDataOptions() {
+                const entityHint = (this.entityHint || __('oro.datagrid.entityHint')).toLowerCase();
+                let key = 'oro.datagrid.' + (_.isEmpty(this.collection.state.filters) ? 'noentities' : 'noresults');
 
                 if (Translator.has('jsmessages:' + key + '.' + entityHint)) {
                     key += '.' + entityHint;
                 }
 
-                this.$(this.selectors.noDataBlock).html($(this.noDataTemplate({
-                    hint: __(key, {entityHint: entityHint}).replace('\n', '<br />'),
-                    subHint: __('oro.datagrid.noresults_subTitle')
-                }))).hide();
+                const hint = __(key, {entityHint: entityHint}).replace('\n', '<br />');
+                const subHint = __('oro.datagrid.noresults_subTitle');
 
+                return { hint, subHint, imageClass: '' };
+            },
+
+            /**
+             * Render no data block.
+             */
+            renderNoDataBlock: function () {
+                const customOptions = this.emptyGridOptions;
+                let options = this.getDefaultNoDataOptions();
+
+                if (null !== customOptions && undefined !== customOptions) {
+                    options = customOptions;
+                    options.hint = __(options.hint);
+                    options.subHint = __(options.subHint);
+                }
+
+                this.$(this.selectors.noDataBlock).html($(this.noDataTemplate(options))).hide();
                 this._updateNoDataBlock();
             },
 

@@ -9,6 +9,10 @@ datagrid:
                 columnName: is_checked
             rowView: pim/product-edit-form/associated-product-row
             manageFilters: false
+            emptyGridOptions:
+                hint: grid.empty_results.associated_product.hint
+                subHint: grid.empty_results.associated_product.subHint
+                imageClass: AknGridContainer-noDataImage--associations
         source:
             type:              pim_datasource_associated_product
             entity:            '%pim_catalog.entity.product.class%'
