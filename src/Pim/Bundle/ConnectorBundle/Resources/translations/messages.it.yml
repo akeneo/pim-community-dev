@@ -181,7 +181,7 @@ job_execution.summary:
     title: 'Codifica del file:'
     skipped: saltato, estensione nella white list
   product_skipped_no_diff: prodotto saltato (nessuna differenza)
-  product_skipped_no_associations: prodotto saltato (nessuna associazione rilevata)
+  product_skipped_no_associations: prodotto saltato (associazioni non rilevate)
 batch_jobs:
   csv_product_export:
     label: Esportazione prodotti in CSV

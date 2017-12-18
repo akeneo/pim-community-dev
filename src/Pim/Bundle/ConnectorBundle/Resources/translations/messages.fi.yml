@@ -179,6 +179,7 @@ job_execution.summary:
     title: 'Tiedoston koodaus:'
     skipped: ohitetaan, laajennus valkolistattu
   product_skipped_no_diff: ohitettu tuote (ei eroavaisuuksia)
+  product_skipped_no_associations: ohitettu tuote (ei havaittuja assosiaatioita)
 batch_jobs:
   csv_product_export:
     label: Tuotteiden vienti CSV-muodossa
