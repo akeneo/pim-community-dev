@@ -16,7 +16,8 @@ spec:
             - { mountPath: /home/jenkins, name: pim }
       containers:
         - name: mysql
-          image: eu.gcr.io/akeneo-ci/mysql:5.7-5
+          image: mariadb:10.3.2
+#eu.gcr.io/akeneo-ci/mysql:5.7-5
           volumeMounts:
             - { name: tmp-pod, mountPath: /tmp/pod, readOnly: true }
             - { name: mysql, mountPath: /var/lib/mysql }
