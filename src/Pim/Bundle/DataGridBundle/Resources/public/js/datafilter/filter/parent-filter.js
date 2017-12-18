@@ -48,6 +48,16 @@ define(['underscore', 'oro/translator', 'oro/datafilter/choice-filter'],
                 } else {
                     this._disableListSelection();
                 }
+                this._focusCriteria();
+            },
+
+            /**
+             * Focus filter criteria input
+             *
+             * @protected
+             */
+            _focusCriteria: function _focusCriteria() {
+                this.$(this.criteriaSelector + ' input.select2-input').focus().select();
             },
 
             /**
