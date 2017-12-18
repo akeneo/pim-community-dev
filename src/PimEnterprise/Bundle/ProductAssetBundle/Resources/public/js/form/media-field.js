@@ -1,28 +1,28 @@
 'use strict';
 
 /**
- * This file adds the logic for the creation popin of the asset creation
+ * This file adds the logic for the creation popin of the asset creation.
  *
  * @deprecated This is to drop completely and replace by real BaseForm components.
  */
 define(
     [
         'jquery',
-        'pim/dialogform',
+        'oro/translator',
         'oro/mediator',
         'routing',
         'pimee/productasset/uploader',
         'pim/router',
         'bootstrap.bootstrapswitch'
     ],
-    function ($, DialogForm, mediator, Routing, Uploader, router) {
+    function ($, __, mediator, Routing, Uploader, router) {
         return {
             initialize() {
                 mediator.on('dialog:open:after', this.initializeDropzone.bind(this));
             },
 
             initializeDropzone() {
-                let uploader   = new Uploader();
+                new Uploader();
                 let dialog     = $('div.ui-dialog[aria-describedby="pimee_product_asset_create"]');
                 let fileInput  = dialog.find('input[type=file]');
                 let codeInput  = dialog.find('.code-field input[type="text"]');
@@ -73,7 +73,7 @@ define(
                 if (!codeInput.val()) {
                     iconDiv.append(icon);
                     icon.tooltip({
-                        title: "translate pimee_product_asset.validation.code.not_empty",
+                        title: __('pimee_product_asset.form.asset.not_empty'),
                         placement: 'right'
                     });
 
@@ -83,7 +83,7 @@ define(
                 if (!codeInput.val().match('^[a-zA-Z0-9_]+$')) {
                     iconDiv.append(icon);
                     icon.tooltip({
-                        title: "translate pimee_product_asset.validation.code.alpha_numeric_plus_underscore",
+                        title: __('pimee_product_asset.form.asset.alpha_numeric_plus_underscore'),
                         placement: 'right'
                     });
 
@@ -97,7 +97,7 @@ define(
                         codeInput.val(data.nextCode);
                         iconDiv.empty().append(icon);
                         icon.tooltip({
-                            title: "translate pimee_product_asset.validation.code.unique + pimee_product_asset.validation.code.new_generation",
+                            title: __('pimee_product_asset.form.asset.unique'),
                             placement: 'right'
                         });
                     } else if ('click' === event.type || 'keypress' === event.type) {
@@ -108,12 +108,10 @@ define(
                             formData.append(dataField.name, dataField.value);
                         });
 
-                        let input = $(dialog).find("input[type='file']").get(0);
+                        let input = $(dialog).find('input[type="file"]').get(0);
                         if (undefined !== input.files[0]) {
                             formData.append('pimee_product_asset_create[reference_file][uploadedFile]', input.files[0]);
                         }
-
-                        console.log(formData);
 
                         $.ajax({
                             url: Routing.generate('pimee_product_asset_create'),

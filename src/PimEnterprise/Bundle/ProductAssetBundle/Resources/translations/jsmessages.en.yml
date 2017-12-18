@@ -13,6 +13,10 @@ pimee_product_asset:
                     confirm: Confirm
                 title: Manage assets
                 description: Choose the assets you want to attach to your product
+        asset:
+            not_empty: Code is required. It can not be empty.
+            alpha_numeric_plus_underscore: The code should be only alphanumeric or underscore.
+            unique: Code must be unique. We generated a new one for you.
     enrich_asset:
         grid:
             edit: Edit properties of the asset
