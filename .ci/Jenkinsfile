@@ -11,7 +11,6 @@ String verboseOutputs = "yes"
 String dotsPerLine = "50"
 
 stage("Build") {
-
     milestone 1
     if (env.BRANCH_NAME =~ /^PR-/) {
         timeout(time:5, unit:'DAYS') {
@@ -191,7 +190,7 @@ stage("Test") {
                         def messages = new net.sf.json.JSONArray()
 
                         for (line in files) {
-                            def file = line.tokenize(' ') 
+                            def file = line.tokenize(' ')
                             def commands = [
                                 [container: "php", script: "bin/console --env=test pim:install --force"],
                                 [container: "php", script: "chmod 777 -R var/cache var/logs app/archive /tmp/pim app/file_storage app/uploads"],
@@ -305,7 +304,6 @@ stage("Test") {
 
                         return messages
                     }, 150, "ee", verboseOutputs, dotsPerLine)
-
                 } else {
                     echo "Skipping behat test"
                 }
