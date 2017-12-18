@@ -194,11 +194,6 @@ services:
         tags:
             - { name: form.type, alias: pim_enrich_available_locales }
 
-    pim_enrich.form.type.options:
-        class: '%pim_enrich.form.type.attribute_property_options.class%'
-        tags:
-            - { name: form.type, alias: pim_enrich_options }
-
     # Mass edit form types
     pim_enrich.form.type.choose_action:
         class: '%pim_enrich.form.type.choose_action.class%'
