@@ -4,18 +4,11 @@ define(['underscore', 'oro/translator', 'oro/datafilter/choice-filter'],
         'use strict';
 
         /**
-         * Number filter: formats value as a number
-         *
-         * @export  oro/datafilter/number-filter
-         * @class   oro.datafilter.NumberFilter
+         * @export  oro/datafilter/parentFilter
+         * @class   oro.datafilter.parentFilter
          * @extends oro.datafilter.ChoiceFilter
          */
         return ChoiceFilter.extend({
-            /**
-             * Initialize.
-             *
-             * @param {Object} options
-             */
             initialize: function() {
                 this.choices = [
                     {'label': __('pim.grid.choice_filter.label_in_list'), 'value': 'in'},
@@ -52,22 +45,20 @@ define(['underscore', 'oro/translator', 'oro/datafilter/choice-filter'],
             },
 
             /**
-             * Focus filter criteria input
-             *
-             * @protected
+             * {@inheritDoc}
              */
             _focusCriteria: function _focusCriteria() {
                 this.$(this.criteriaSelector + ' input.select2-input').focus().select();
             },
 
             /**
-             * @inheritDoc
+             * {@inheritDoc}
              */
             _readDOMValue: function() {
                 const operator = this.emptyChoice ? this.$('.active .operator_choice').data('value') : 'in';
 
                 return {
-                    value: _.contains(['empty', 'not empty'], operator) ? '' : this._getInputValue(this.criteriaValueSelectors.value),
+                    value: ['empty', 'not empty'].includes(operator) ? '' : this._getInputValue(this.criteriaValueSelectors.value),
                     type: operator
                 };
             },
