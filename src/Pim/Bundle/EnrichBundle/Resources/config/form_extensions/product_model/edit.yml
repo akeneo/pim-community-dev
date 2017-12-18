@@ -213,6 +213,12 @@ extensions:
         config:
             context: base_product
 
+    pim-product-model-edit-form-total-missing-required-attributes:
+        module: pim/product-edit-form/total-missing-required-attributes
+        parent: pim-product-model-edit-form
+        targetZone: meta
+        position: 140
+
     pim-product-model-edit-form-validation:
         module: pim/product-edit-form/attributes/validation
         parent: pim-product-model-edit-form-attributes

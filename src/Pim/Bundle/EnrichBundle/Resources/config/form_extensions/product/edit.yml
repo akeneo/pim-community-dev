@@ -81,6 +81,13 @@ extensions:
         module: pim/product-edit-form/product-completeness
         parent: pim-product-edit-form
         targetZone: meta
+        position: 100
+
+    pim-product-edit-form-total-missing-required-attributes:
+        module: pim/product-edit-form/total-missing-required-attributes
+        parent: pim-product-edit-form
+        targetZone: meta
+        position: 120
 
     pim-product-edit-form-secondary-actions:
         module: pim/form/common/secondary-actions

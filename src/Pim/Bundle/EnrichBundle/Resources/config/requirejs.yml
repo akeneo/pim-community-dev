@@ -683,6 +683,7 @@ config:
         # Product
         pim/product-edit-form/product-label:                     pimenrich/js/product/form/product-label
         pim/product-edit-form/product-completeness:              pimenrich/js/product/form/product-completeness
+        pim/product-edit-form/total-missing-required-attributes: pimenrich/js/product/form/total-missing-required-attributes
         pim/product-edit-form/attribute-filter:                  pimenrich/js/product/form/attribute-filter
         pim/product-edit-form/attribute-filter-all:              pimenrich/js/product/form/attribute-filter-all
         pim/product-edit-form/attribute-filter-missing-required: pimenrich/js/product/form/attribute-filter-missing-required
@@ -1111,6 +1112,7 @@ config:
         pim/template/product/create-modal-content:           pimenrich/templates/product/create-modal-content.html
         pim/template/product/add-select/attribute/line:      pimenrich/templates/product/form/add-select/attribute/line.html
         pim/template/product/form/product-completeness:      pimenrich/templates/product/form/product-completeness.html
+        pim/template/product/form/total-missing-required-attributes: pimenrich/templates/product/form/total-missing-required-attributes.html
         pim/template/product/form/variant-navigation/navigation: pimenrich/templates/product/form/variant-navigation/navigation.html
         pim/template/product/form/variant-navigation/product-item: pimenrich/templates/product/form/variant-navigation/product-item.html
         pim/template/product/form/variant-navigation/product-model-item: pimenrich/templates/product/form/variant-navigation/product-model-item.html

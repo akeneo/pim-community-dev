@@ -236,6 +236,10 @@ define(
                         });
                     });
 
+                if (sessionStorage.getItem('filter_missing_required_attributes')) {
+                    sessionStorage.removeItem('filter_missing_required_attributes');
+                    this.filterRequiredAttributes();
+                }
 
                 return this;
             },
