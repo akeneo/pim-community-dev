@@ -205,7 +205,6 @@ pim_enrich:
         created: Product succesvol aangemaakt
       completeness: Voltooien
     product_model:
-      title: producten
       add_child:
         cancel: Annuleren
         fields:
@@ -334,6 +333,9 @@ pim_enrich:
     discard_changes: Als u deze pagina verlaat worden veranderingen aan {{ entity }} niet opgeslagen.
     delete_item: Verwijderen bevestigen
     remove: Verwijderen
+    delete:
+      attribute: Bent u zeker dat u dit attribuut wil verwijderen van het product?
+      product_model: Verwijderen bevestigen
   info:
     not_applicable: Niet beschikbaar
     entity:
@@ -534,6 +536,12 @@ pim_enrich:
             title: Code
           label:
             title: Label
+          decimal_separator:
+            title: Decimaal scheidingsteken
+            help: Bepaal het decimaal scheidingsteken
+          date_format:
+            title: Datumnotatie
+            help: Bepaal het formaat van de datumvelden
           file_path:
             title: Bestandspad
             help: Waar het gegenereerde bestand op het bestandssysteem op te slaan
@@ -570,6 +578,9 @@ pim_enrich:
           enabled:
             title: Het product inschakelen
             help: Of geïmporteerd product moet worden ingeschakeld
+          enabled_comparison:
+            title: Vergelijk de waarden
+            help: Activeer de vergelijking tussen originele en geïmporteerde waarden. Kan import versnellen als geïmporteerde waarden erg gelijkaardig zijn aan originele waarden
           real_time_versioning:
             title: Real-time geschiedenis bijwerken
             help: Betekent dat de productgeschiedenis automatisch wordt bijgewerkt. Dit kan worden uitgeschakeld om de prestaties te verbeteren
@@ -855,6 +866,9 @@ batch_jobs:
   csv_group_export:
     label: Groepexport in CSV
     export.label: Groepexport
+  csv_family_export:
+    label: Familie export in CSV
+    export.label: Familie export
   csv_product_import:
     label: Productimport in CSV
     validation.label: Bestandsvalidatie
@@ -877,7 +891,9 @@ batch_jobs:
     validation.label: Bestandsvalidatie
     import.label: Associatietype-import
   csv_family_import:
+    label: Familie import in CSV
     validation.label: Bestandsvalidatie
+    import.label: Familie import
   csv_family_variant_import:
     validation.label: Bestandsvalidatie
   csv_group_import:
@@ -938,6 +954,7 @@ batch_jobs:
   xlsx_family_import:
     label: Familie import in XLSX
     validation.label: Bestandsvalidatie
+    import.label: Familie import
   xlsx_family_variant_import:
     validation.label: Bestandsvalidatie
   xlsx_product_export:
@@ -957,6 +974,7 @@ batch_jobs:
     import.label: Groep importeren
   xlsx_family_export:
     label: Familie export in XLSX
+    export.label: Familie export
   xlsx_category_export:
     label: Categorie export in XLSX
     export.label: Categorie-export

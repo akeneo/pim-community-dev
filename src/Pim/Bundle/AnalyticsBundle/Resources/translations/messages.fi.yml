@@ -21,8 +21,8 @@ pim_analytics:
     nb_products: Tuotteiden määrä
     nb_attributes: Attribuuttien määrä
     nb_scopable_attributes: Kanavakohtaisten attribuuttien määrä
-    nb_localizable_attributes: Lokalisoitavien attribuuttien määrä
-    nb_scopable_localizable_attributes: Lokalisoitavien ja kanavakohtaisten attribuuttien määrä
+    nb_localizable_attributes: Kielikohtaisten attribuuttien määrä
+    nb_scopable_localizable_attributes: Kielikohtaisten ja kanavakohtaisten attribuuttien määrä
     nb_locales: Lokaatioiden määrä
     nb_families: Perheiden määrä
     nb_users: Käyttäjien määrä

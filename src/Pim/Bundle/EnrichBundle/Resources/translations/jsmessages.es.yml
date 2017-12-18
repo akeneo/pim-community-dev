@@ -170,6 +170,7 @@ pim_enrich:
         deletion_failed: El producto no puede ser eliminado.
         update_successful: Producto actualizado con éxito.
         update_failed: El producto no puede ser actualizado.
+        field_not_ready: 'El producto no se puede guardar ahora. Los siguientes campos no están listos: {{ fields }}'
         already_in_upload: Un fichero ya está siendo cargado por este atributo en el local "{{ locale }}" y objetivo "{{ scope }}"
       error:
         upload: Ocurrió un error durante la carga del fichero
@@ -220,7 +221,6 @@ pim_enrich:
         created: Producto creado éxitosamente
       completeness: Completo
     product_model:
-      title: productos
       add_child:
         cancel: Cancelar
         confirm: Confirmar
@@ -360,6 +360,7 @@ pim_enrich:
     remove: Quitar
     delete:
       attribute: '¿Está usted seguro que desea eliminar el atributo de este producto?'
+      product_model: Confirmar la eliminación
   info:
     not_applicable: N / A
     entity:

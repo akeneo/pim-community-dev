@@ -15,6 +15,6 @@ pim_dashboard:
     completeness:
       load_more: 'Carrega''n més...'
     header:
-      view_all: Veure tots
+      view_all: Mostra tots
 page_title:
   pim_dashboard_index: Panell de contol
