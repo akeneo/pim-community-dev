@@ -44,15 +44,15 @@ datagrid:
             updated:
                 label:         Updated At
                 type:          field
-            groups:
-                label:         Groups
-                data_name:     groups
-                type:          field
             complete_variant_products:
                 label:         Variant products
                 data_name:     complete_variant_product
                 frontend_type: complete-variant-product
         other_columns:
+            groups:
+                label:         Groups
+                data_name:     groups
+                type:          field
             parent:
                 label: Parent
                 data_name: parent
