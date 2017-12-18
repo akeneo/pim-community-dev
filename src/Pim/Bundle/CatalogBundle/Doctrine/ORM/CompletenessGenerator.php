@@ -199,7 +199,7 @@ SQL;
 
         $tempTableName = self::MISSING_TABLE;
         $createSql = <<<SQL
-    CREATE TEMPORARY TABLE {$tempTableName} (locale_id int, channel_id int, product_id int)
+    CREATE TEMPORARY TABLE {$tempTableName} (locale_id int, channel_id int, product_id int, primary key(product_id, locale_id, channel_id))
 SQL;
 
         $createSql = $this->applyTableNames($createSql);

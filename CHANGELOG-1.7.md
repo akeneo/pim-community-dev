@@ -1,6 +1,8 @@
-# 1.7.X 
+# 1.7.15 (2017-12-18) 
 
 - GITHUB-7202: Ensure commit batch size value is always an int, cheers @bghitulescu!
+- PIM-7017: Permission on "Add attribute to a product" is not properly applied
+- PIM-7054 optimize completeness generator
 
 # 1.7.14 (2017-11-21)
 
