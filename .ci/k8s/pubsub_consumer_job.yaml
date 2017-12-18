@@ -88,7 +88,7 @@ spec:
               wait $CHILD_PID
               if [[ -f "/tmp/pod/main-terminated" ]]; then exit 0; fi
           volumeMounts:
-            - { name: pim, mountPath: /home/jenkins }
+            - { name: pim, mountPath: /home/jenkins, readOnly: true }
             - { name: tmp-pod, mountPath: /tmp/pod, readOnly: true }
           resources:
             requests: {cpu: "100m", memory: "200Mi"}
