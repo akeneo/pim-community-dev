@@ -35,7 +35,7 @@ jobs:
     csv_product_import_with_rules:
         connector: Akeneo CSV Connector
         alias:     csv_product_import_with_rules
-        label:     CSV Demo product import with rules
+        label:     Demo CSV product import with rules
         type:      import
         configuration:
             filePath:           /tmp/product.csv

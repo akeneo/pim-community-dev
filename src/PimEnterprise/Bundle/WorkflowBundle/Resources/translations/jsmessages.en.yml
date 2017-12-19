@@ -43,3 +43,23 @@ pimee_workflow:
                 label: Leave a comment (optional)
                 error: An error occured, the proposal has not been partially rejected
                 success: The changes have been successfully rejected
+
+batch_jobs:
+    csv_published_product_export:
+        label: Published product export in CSV
+        export.label: Published product export
+    csv_product_proposal_import:
+        label: Product proposal import in CSV
+        import.label: Product proposal import
+    approve_product_draft:
+        label: Approve proposal
+        perform.label: Approve proposal
+    refuse_product_draft:
+        label: Refuse proposals
+        perform.label: Refuse proposals
+    xlsx_published_product_export:
+        label: Published product export in XLSX
+        export.label: Published product export
+    xlsx_product_proposal_import:
+        label: Product proposal import in XLSX
+        import.label: Product proposal import in XLSX
