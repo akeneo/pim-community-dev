@@ -75,7 +75,7 @@ JSON;
     /**
      * Should be an integration test.
      */
-    public function testAccessGrantedForCreatingAnAssetReference()
+    public function testAccessGrantedForPartialUpdatingAnAssetReference()
     {
         $this->createAsset(['code' => 'an_asset', 'localized' => false]);
         $filePath = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'akeneo.jpg';
@@ -85,10 +85,10 @@ JSON;
 
         $file = new UploadedFile($filePath, 'akeneo.jpg');
 
-        $client->request('POST', '/api/rest/v1/assets/an_asset/reference-files/no_locale', [], ['file' => $file]);
+        $client->request('PATCH', '/api/rest/v1/assets/an_asset/reference-files/no_locale', [], ['file' => $file]);
 
         $response = $client->getResponse();
-        $this->assertSame(Response::HTTP_CREATED, $response->getStatusCode());
+        $this->assertSame(Response::HTTP_NO_CONTENT, $response->getStatusCode());
     }
 
     /**
@@ -136,7 +136,7 @@ JSON;
     /**
      * Should be an integration test.
      */
-    public function testAccessDeniedForCreatingAnAssetReference()
+    public function testAccessDeniedForPartialUpdatingAnAssetReference()
     {
         $this->createAsset(['code' => 'an_asset', 'localized' => false]);
         $filePath = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'akeneo.jpg';
@@ -160,7 +160,7 @@ JSON;
 
         $file = new UploadedFile($filePath, 'akeneo.jpg');
 
-        $client->request('POST', '/api/rest/v1/assets/an_asset/reference-files/no_locale', [], ['file' => $file]);
+        $client->request('PATCH', '/api/rest/v1/assets/an_asset/reference-files/no_locale', [], ['file' => $file]);
 
         $response = $client->getResponse();
         $this->assertSame(Response::HTTP_FORBIDDEN, $response->getStatusCode());

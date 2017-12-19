@@ -5,6 +5,7 @@ namespace PimEnterprise\Bundle\ApiBundle\tests\EndToEnd\Security;
 use Pim\Bundle\ApiBundle\tests\integration\ApiTestCase;
 use PimEnterprise\Component\ProductAsset\FileStorage;
 use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -36,7 +37,7 @@ JSON;
     /**
      * Should be an integration test.
      */
-    public function testAccessGrantedForGettingAnAssetReference()
+    public function testAccessGrantedForGettingAnAssetVariation()
     {
         $this->createAsset(['code' => 'an_asset', 'localized' => false]);
 
@@ -51,7 +52,7 @@ JSON;
     /**
      * Should be an integration test.
      */
-    public function testAccessGrantedForDownloadingAnAssetReferenceFile()
+    public function testAccessGrantedForDownloadingAnAssetVariationFile()
     {
         $this->createAsset(['code' => 'an_asset', 'localized' => false]);
 
@@ -74,7 +75,26 @@ JSON;
     /**
      * Should be an integration test.
      */
-    public function testAccessDeniedForGettingAnAssetReference()
+    public function testAccessGrantedForPartialUpdatingAnAssetVariation()
+    {
+        $this->createAsset(['code' => 'an_asset', 'localized' => false]);
+        $filePath = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'akeneo.jpg';
+        copy($this->getFixturePath('akeneo.jpg'), $filePath);
+
+        $client = $this->createAuthenticatedClient([], ['CONTENT_TYPE' => 'multipart/form-data']);
+
+        $file = new UploadedFile($filePath, 'akeneo.jpg');
+
+        $client->request('PATCH', '/api/rest/v1/assets/an_asset/variation-files/ecommerce/no_locale', [], ['file' => $file]);
+
+        $response = $client->getResponse();
+        $this->assertSame(Response::HTTP_NO_CONTENT, $response->getStatusCode());
+    }
+
+    /**
+     * Should be an integration test.
+     */
+    public function testAccessDeniedForGettingAnAssetVariation()
     {
         $client = $this->createAuthenticatedClient([], [], null, null, 'julia', 'julia');
 
@@ -95,7 +115,7 @@ JSON;
     /**
      * Should be an integration test.
      */
-    public function testAccessDeniedForDownloadingAnAssetReferenceFile()
+    public function testAccessDeniedForDownloadingAnAssetVariationFile()
     {
         $client = $this->createAuthenticatedClient([], [], null, null, 'julia', 'julia');
 
@@ -107,6 +127,40 @@ JSON;
     "message": "Access forbidden. You are not allowed to list asset variations."
 }
 JSON;
+
+        $response = $client->getResponse();
+        $this->assertSame(Response::HTTP_FORBIDDEN, $response->getStatusCode());
+        $this->assertJsonStringEqualsJsonString($expectedResponse, $response->getContent());
+    }
+
+    /**
+     * Should be an integration test.
+     */
+    public function testAccessDeniedForPartialUpdatingAnAssetVariation()
+    {
+        $this->createAsset(['code' => 'an_asset', 'localized' => false]);
+        $filePath = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'akeneo.jpg';
+        copy($this->getFixturePath('akeneo.jpg'), $filePath);
+
+        $client = $this->createAuthenticatedClient(
+            [],
+            ['CONTENT_TYPE' => 'multipart/form-data'],
+            null,
+            null,
+            'julia',
+            'julia'
+        );
+
+        $expectedResponse = <<<JSON
+{
+    "code": 403,
+    "message": "Access forbidden. You are not allowed to create or update asset variations."
+}
+JSON;
+
+        $file = new UploadedFile($filePath, 'akeneo.jpg');
+
+        $client->request('PATCH', '/api/rest/v1/assets/an_asset/variation-files/ecommerce/no_locale', [], ['file' => $file]);
 
         $response = $client->getResponse();
         $this->assertSame(Response::HTTP_FORBIDDEN, $response->getStatusCode());
