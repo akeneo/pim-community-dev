@@ -38,8 +38,7 @@ define(
                 return $.post(
                     Routing.generate('pim_enrich_family_variant_rest_create'),
                     JSON.stringify(this.getFormData())
-                )
-                .fail((xhr) => {
+                ).fail((xhr) => {
                     this.trigger('pim_enrich:form:entity:validation_error', xhr.responseJSON);
                 });
             }
