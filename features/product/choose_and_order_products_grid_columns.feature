@@ -14,17 +14,17 @@ Feature: Choose and order product grids columns
     And I am on the products grid
 
   Scenario: Successfully display default columns
-    Then I should see the columns ID, Image, Label, Family, Status, Complete, Created At, Updated At, Groups, Variant products
+    Then I should see the columns ID, Image, Label, Family, Status, Complete, Created At, Updated At, Variant products
 
   @skip
   Scenario: Successfully hide some columns
     Given I hide the "Label" column
-    Then I should see the columns Sku, Family, Status, Complete, Created At, Updated At, Groups
+    Then I should see the columns Sku, Family, Status, Complete, Created At, Updated At
 
   @skip
   Scenario: Successfully order some columns
     Given I put the "Complete" column before the "Sku" one
-    Then I should see the columns Sku, Family, Status, Complete, Created At, Updated At, Groups
+    Then I should see the columns Sku, Family, Status, Complete, Created At, Updated At
 
   Scenario: Successfully hide removed attribute column that was previously selected to be displayed
     Given I display the columns SKU, Family and Name

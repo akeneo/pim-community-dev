@@ -5,7 +5,6 @@ namespace Pim\Bundle\DataGridBundle\Datagrid\Configuration\Product;
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use Oro\Bundle\DataGridBundle\Extension\Formatter\Configuration as FormatterConfiguration;
 use Pim\Bundle\DataGridBundle\Datagrid\Configuration\ConfiguratorInterface;
-use Pim\Component\Catalog\AttributeTypes;
 
 /**
  * Columns configurator for product grid, first column is identifier, then properties then ordered attributes
@@ -176,6 +175,10 @@ class ColumnsConfigurator implements ConfiguratorInterface
         $otherColumns = $this->configuration->offsetGetByPath(
             sprintf('[%s]', FormatterConfiguration::OTHER_COLUMNS_KEY)
         );
+
+        if (null === $otherColumns) {
+            return;
+        }
 
         foreach ($otherColumns as $columnCode => $columnData) {
             $this->attributesColumns[$columnCode] = $columnData;

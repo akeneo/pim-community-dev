@@ -21,7 +21,6 @@ Feature: Filter product and product models
       | family           | Clothing                         |
       | Status           |                                  |
       | complete         | N/A                              |
-      | groups           |                                  |
     And the row "running-shoes-xxs-crimson-red" should contain:
       | column           | value                         |
       | ID               | running-shoes-xxs-crimson-red |
@@ -29,7 +28,6 @@ Feature: Filter product and product models
       | family           | Shoes                         |
       | Status           | Enabled                       |
       | complete         | 62%                           |
-      | groups           |                               |
 
   Scenario: View products and product models with the same ID in the grid
     Given there is no "product" in the catalog
