@@ -185,6 +185,11 @@ define(
                 this.render();
             },
 
+            /**
+             * Redirect to the product model with the modelId
+             *
+             * @param modelId
+             */
             redirectToModel: function(modelId) {
                 const params = {id: modelId};
                 const route = 'pim_enrich_product_model_edit';
