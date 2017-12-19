@@ -591,7 +591,7 @@ def queue(body, scale, edition, verboseOutputs, dotsPerLine) {
                     sh "gcloud.phar pubsub:topic:delete ${NODE_NAME}-results"
                     sh "gcloud.phar pubsub:subscription:delete ${NODE_NAME}-subscription"
                     sh "gcloud.phar pubsub:subscription:delete ${NODE_NAME}-results-subscription"
-                    sh "find junit/  | xargs sed -i \"s/ name=\\\"/ name=\\\"[${edition}] /\""
+                    sh "find ${env.WORKSPACE}/junit/ -name \"*.xml\" | xargs sed -i \"s/ name=\\\"/ name=\\\"[${edition}] /\""
 
                     junit allowEmptyResults: true, testResults: 'junit/**/*.xml'
                     archiveArtifacts allowEmptyArchive: true, artifacts: 'artifacts/**/*.png'
