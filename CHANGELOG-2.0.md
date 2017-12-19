@@ -5,6 +5,12 @@
 - PIM-6972: Fix drop zone on the asset creation modal
 - PIM-7005: Fix code validation on asset creation modal
 - PIM-6912: Fix missing translations on Enterprise Edition jobs
+- PIM-6947: Fix asset mass edit of categories
+
+## BC breaks
+
+- Adds an interface method `findRoot()` to `PimEnterprise\Component\ProductAsset\Repository\AssetCategoryRepositoryInterface`
+>>>>>>> [PIM-6947] Fix asset mass edit
 
 # 2.0.9 (2017-12-15)
 

@@ -1,0 +1,4 @@
+pimee_enrich_asset_category_rest_list:
+    path: /rest
+    defaults: { _controller: pimee_enrich.controller.rest.asset_category:listAction }
+    methods: [GET]
