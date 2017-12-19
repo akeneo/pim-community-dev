@@ -3,6 +3,7 @@
 ## Improvements
 
 - API-415: Update a list of options of a simple or multi select attribute
+- PIM-6652: Add a parent filter into the product and product model grid
 
 ## BC breaks
 

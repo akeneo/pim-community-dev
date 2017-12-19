@@ -79,16 +79,4 @@ class ParentFilterSpec extends ObjectBehavior
             )
         )->during('addFieldFilter', ['parent', Operators::IN_CHILDREN_LIST, null, null, null, []]);
     }
-
-    function it_throws_an_exception_if_the_parent_doesn_t_exist(
-        $productModelRepository,
-        SearchQueryBuilder $sqb
-    ) {
-        $this->setQueryBuilder($sqb);
-
-        $productModelRepository->findOneByIdentifier('jambon')->willReturn(null);
-
-        $this->shouldThrow(ObjectNotFoundException::class)
-            ->during('addFieldFilter', ['parent', Operators::IN_LIST, ['jambon'], null, null, []]);
-    }
 }
