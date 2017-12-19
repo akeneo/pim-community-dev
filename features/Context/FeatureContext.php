@@ -350,7 +350,7 @@ class FeatureContext extends PimContext implements KernelAwareContext
      */
     public function iOpenTheCompletenessDropdown()
     {
-        $dropdown = $this->spin(function() {
+        $dropdown = $this->spin(function () {
             return $this->getCurrentPage()->getCompletenessDropdownButton();
         }, 'Cannot find the completeness dropdown button');
 
@@ -362,7 +362,7 @@ class FeatureContext extends PimContext implements KernelAwareContext
      */
     public function iClickOnTheMissingRequiredAttributesOverviewLink()
     {
-        $link = $this->spin(function() {
+        $link = $this->spin(function () {
             return $this->getCurrentPage()->getMissingRequiredAttributesOverviewLink();
         }, 'Cannot find the missing required attributes link');
 

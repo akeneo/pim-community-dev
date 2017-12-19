@@ -183,7 +183,6 @@ class CompletenessContext extends PimContext
 
             return true;
         }, 'Completeness assertion failed');
-
     }
 
     /**

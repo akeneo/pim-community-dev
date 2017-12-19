@@ -56,7 +56,7 @@ class DropdownDecorator extends ElementDecorator
             ];
 
             $missingAttributes = $channelCompleteness->findAll('css', '.missing-attribute');
-            foreach($missingAttributes as $missingAttribute) {
+            foreach ($missingAttributes as $missingAttribute) {
                 $completeness['missing_required_attributes'][] = $missingAttribute->getText();
             }
 
