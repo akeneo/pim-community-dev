@@ -329,7 +329,7 @@ class FeatureContext extends PimContext implements KernelAwareContext
      *
      * @When /^I click on "(?P<message>(?:[^"]|\\")*)" footer message of the field "(?P<label>(?:[^"]|\\")*)"$/
      */
-    public function clickOnMessageOfField($message, $label)
+    public function clickOnFooterMessageOfField($message, $label)
     {
         $footerMessage = $this->getCurrentPage()->findFieldFooterMessageForField($label, $message);
 
