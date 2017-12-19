@@ -36,7 +36,8 @@ Feature: Update the product associations
     And I should see the text "0 product(s), 0 product model(s) and 0 group(s)"
 
   Scenario: Successfully add a product model as association
-    Given I press the "Add associations" button and wait for modal
+    Given I should see the text "There are no associated products"
+    And I press the "Add associations" button and wait for modal
     And I should see the text "Add Cross sell associations"
     And I should see the text "Belt"
     And I search "juno"
@@ -47,7 +48,8 @@ Feature: Update the product associations
     And I should see the text "0 product(s), 1 product model(s) and 0 group(s)"
 
   Scenario: Successfully delete a product model as association
-    Given I press the "Add associations" button and wait for modal
+    Given I should see the text "There are no associated products"
+    And I press the "Add associations" button and wait for modal
     And I should see the text "Add Cross sell associations"
     And I should see the text "Belt"
     And I search "juno"
