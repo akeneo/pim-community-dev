@@ -30,7 +30,7 @@ class DownloadAssetVariationFileIntegration extends AbstractAssetTestCase
         });
         $client->request(
             'GET',
-            'api/rest/v1/assets/non_localizable_asset/variation-files/ecommerce/no_locale/download'
+            'api/rest/v1/assets/non_localizable_asset/variation-files/ecommerce/no-locale/download'
         );
         ob_end_clean();
 
@@ -106,7 +106,7 @@ JSON;
 
         $client->request(
             'GET',
-            'api/rest/v1/assets/non_localizable_asset_without_references/variation-files/ecommerce/no_locale/download'
+            'api/rest/v1/assets/non_localizable_asset_without_references/variation-files/ecommerce/no-locale/download'
         );
         $response = $client->getResponse();
 
@@ -128,7 +128,7 @@ JSON;
     {
         $client = $this->createAuthenticatedClient();
 
-        $client->request('GET', 'api/rest/v1/assets/ham_and_jam/variation-files/ecommerce/no_locale/download');
+        $client->request('GET', 'api/rest/v1/assets/ham_and_jam/variation-files/ecommerce/no-locale/download');
         $response = $client->getResponse();
 
         $expectedContent = <<<JSON
@@ -199,14 +199,14 @@ JSON;
 
         $client->request(
             'GET',
-            'api/rest/v1/assets/localizable_asset_without_references/variation-files/ecommerce/no_locale/download'
+            'api/rest/v1/assets/localizable_asset_without_references/variation-files/ecommerce/no-locale/download'
         );
         $response = $client->getResponse();
 
         $expectedContent = <<<JSON
 {
     "code": 422,
-    "message": "The asset \"localizable_asset_without_references\" is localizable, you must provide an existing locale code. \"no_locale\" is only allowed when the asset is not localizable."
+    "message": "The asset \"localizable_asset_without_references\" is localizable, you must provide an existing locale code. \"no-locale\" is only allowed when the asset is not localizable."
 }
 JSON;
 
@@ -230,7 +230,7 @@ JSON;
         $expectedContent = <<<JSON
 {
     "code": 422,
-    "message": "The asset \"non_localizable_asset_without_references\" is not localizable, you must provide the string \"no_locale\" as a locale."
+    "message": "The asset \"non_localizable_asset_without_references\" is not localizable, you must provide the string \"no-locale\" as a locale."
 }
 JSON;
 

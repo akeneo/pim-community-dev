@@ -48,7 +48,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class AssetReferenceController
 {
-    public const NON_LOCALIZABLE_REFERENCE = 'no_locale';
+    public const NON_LOCALIZABLE_REFERENCE = 'no-locale';
 
     /** @var IdentifiableObjectRepositoryInterface */
     protected $assetRepository;
@@ -295,14 +295,14 @@ class AssetReferenceController
 
         if ($asset->isLocalizable() && null === $locale) {
             throw new UnprocessableEntityHttpException(sprintf(
-                'The asset "%s" is localizable, you must provide an existing locale code. "no_locale" is only allowed when the asset is not localizable.',
+                'The asset "%s" is localizable, you must provide an existing locale code. "no-locale" is only allowed when the asset is not localizable.',
                 $code
             ));
         }
 
         if (!$asset->isLocalizable() && null !== $locale) {
             throw new UnprocessableEntityHttpException(sprintf(
-                'The asset "%s" is not localizable, you must provide the string "no_locale" as a locale.',
+                'The asset "%s" is not localizable, you must provide the string "no-locale" as a locale.',
                 $asset->getCode()
             ));
         }

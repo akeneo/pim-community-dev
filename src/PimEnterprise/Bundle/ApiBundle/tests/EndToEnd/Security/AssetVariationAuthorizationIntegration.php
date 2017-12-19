@@ -43,7 +43,7 @@ JSON;
 
         $client = $this->createAuthenticatedClient();
 
-        $client->request('GET', '/api/rest/v1/assets/an_asset/variation-files/ecommerce/no_locale');
+        $client->request('GET', '/api/rest/v1/assets/an_asset/variation-files/ecommerce/no-locale');
 
         $response = $client->getResponse();
         $this->assertSame(Response::HTTP_OK, $response->getStatusCode());
@@ -65,7 +65,7 @@ JSON;
 
             return '';
         });
-        $client->request('GET', '/api/rest/v1/assets/an_asset/variation-files/ecommerce/no_locale/download');
+        $client->request('GET', '/api/rest/v1/assets/an_asset/variation-files/ecommerce/no-locale/download');
         ob_end_clean();
 
         $response = $client->getResponse();
@@ -85,7 +85,7 @@ JSON;
 
         $file = new UploadedFile($filePath, 'akeneo.jpg');
 
-        $client->request('PATCH', '/api/rest/v1/assets/an_asset/variation-files/ecommerce/no_locale', [], ['file' => $file]);
+        $client->request('PATCH', '/api/rest/v1/assets/an_asset/variation-files/ecommerce/no-locale', [], ['file' => $file]);
 
         $response = $client->getResponse();
         $this->assertSame(Response::HTTP_NO_CONTENT, $response->getStatusCode());
@@ -160,7 +160,7 @@ JSON;
 
         $file = new UploadedFile($filePath, 'akeneo.jpg');
 
-        $client->request('PATCH', '/api/rest/v1/assets/an_asset/variation-files/ecommerce/no_locale', [], ['file' => $file]);
+        $client->request('PATCH', '/api/rest/v1/assets/an_asset/variation-files/ecommerce/no-locale', [], ['file' => $file]);
 
         $response = $client->getResponse();
         $this->assertSame(Response::HTTP_FORBIDDEN, $response->getStatusCode());

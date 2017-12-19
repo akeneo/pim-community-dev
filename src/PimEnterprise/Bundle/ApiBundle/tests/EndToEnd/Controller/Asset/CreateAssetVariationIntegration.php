@@ -71,7 +71,7 @@ class CreateAssetVariationIntegration extends AbstractAssetTestCase
             'image/png',
             'non_localizable_asset',
             'ecommerce',
-            'no_locale',
+            'no-locale',
             204
         );
     }
@@ -103,7 +103,7 @@ class CreateAssetVariationIntegration extends AbstractAssetTestCase
             'image/jpeg',
             'non_localizable_asset',
             'new_channel',
-            'no_locale',
+            'no-locale',
             201
         );
     }
@@ -175,9 +175,9 @@ class CreateAssetVariationIntegration extends AbstractAssetTestCase
     public function testErrorMessageWhenCreatingLocalizableVariationWithNoLocale()
     {
         $this->assertError(
-            'api/rest/v1/assets/localizable_asset/variation-files/ecommerce/no_locale',
+            'api/rest/v1/assets/localizable_asset/variation-files/ecommerce/no-locale',
             422,
-            'The asset \"localizable_asset\" is localizable, you must provide an existing locale code. \"no_locale\" is only allowed when the asset is not localizable.'
+            'The asset \"localizable_asset\" is localizable, you must provide an existing locale code. \"no-locale\" is only allowed when the asset is not localizable.'
         );
     }
 
@@ -189,7 +189,7 @@ class CreateAssetVariationIntegration extends AbstractAssetTestCase
         $this->assertError(
             'api/rest/v1/assets/non_localizable_asset/variation-files/ecommerce/en_US',
             422,
-            'The asset \"non_localizable_asset\" is not localizable, you must provide the string \"no_locale\" as a locale.'
+            'The asset \"non_localizable_asset\" is not localizable, you must provide the string \"no-locale\" as a locale.'
         );
     }
 

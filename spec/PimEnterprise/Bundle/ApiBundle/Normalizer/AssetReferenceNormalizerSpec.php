@@ -45,15 +45,15 @@ class AssetReferenceNormalizerSpec extends ObjectBehavior
             'pimee_api_asset_reference_download',
             [
                 'code' => 'the_reference_asset',
-                'localeCode' => 'no_locale',
+                'localeCode' => 'no-locale',
             ],
             UrlGeneratorInterface::ABSOLUTE_URL
-        )->willReturn('/assets/the_reference_asset/reference-files/no_locale/download');
+        )->willReturn('/assets/the_reference_asset/reference-files/no-locale/download');
 
         $this->normalize($reference, 'external_api', [])->shouldReturn([
             '_link' => [
                 'download' => [
-                    'href' => '/assets/the_reference_asset/reference-files/no_locale/download',
+                    'href' => '/assets/the_reference_asset/reference-files/no-locale/download',
                 ],
             ],
             'locale' => null,

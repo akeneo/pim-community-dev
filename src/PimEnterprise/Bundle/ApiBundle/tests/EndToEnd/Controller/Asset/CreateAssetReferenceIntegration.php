@@ -69,7 +69,7 @@ class CreateAssetReferenceIntegration extends AbstractAssetTestCase
             'ziggy.png',
             'image/png',
             'non_localizable_asset',
-            'no_locale',
+            'no-locale',
             204
         );
     }
@@ -116,9 +116,9 @@ class CreateAssetReferenceIntegration extends AbstractAssetTestCase
     public function testErrorMessageWhenCreatingLocalizableReferenceWithNoLocale()
     {
         $this->assertError(
-            'api/rest/v1/assets/localizable_asset/reference-files/no_locale',
+            'api/rest/v1/assets/localizable_asset/reference-files/no-locale',
             422,
-            'The asset \"localizable_asset\" is localizable, you must provide an existing locale code. \"no_locale\" is only allowed when the asset is not localizable.'
+            'The asset \"localizable_asset\" is localizable, you must provide an existing locale code. \"no-locale\" is only allowed when the asset is not localizable.'
         );
     }
 
@@ -130,7 +130,7 @@ class CreateAssetReferenceIntegration extends AbstractAssetTestCase
         $this->assertError(
             'api/rest/v1/assets/non_localizable_asset/reference-files/en_US',
             422,
-            'The asset \"non_localizable_asset\" is not localizable, you must provide the string \"no_locale\" as a locale.'
+            'The asset \"non_localizable_asset\" is not localizable, you must provide the string \"no-locale\" as a locale.'
         );
     }
 

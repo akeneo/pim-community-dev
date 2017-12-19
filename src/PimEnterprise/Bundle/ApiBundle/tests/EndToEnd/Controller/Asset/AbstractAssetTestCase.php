@@ -133,10 +133,10 @@ abstract class AbstractAssetTestCase extends ApiTestCase
     {
       "_link": {
         "download": {
-          "href": "http://localhost/api/rest/v1/assets/non_localizable_asset/variation-files/ecommerce/no_locale/download"
+          "href": "http://localhost/api/rest/v1/assets/non_localizable_asset/variation-files/ecommerce/no-locale/download"
         },
         "self": {
-          "href": "http://localhost/api/rest/v1/assets/non_localizable_asset/variation-files/ecommerce/no_locale"
+          "href": "http://localhost/api/rest/v1/assets/non_localizable_asset/variation-files/ecommerce/no-locale"
         }
       },
       "locale":null,
@@ -146,10 +146,10 @@ abstract class AbstractAssetTestCase extends ApiTestCase
     {
       "_link": {
         "download": {
-          "href": "http://localhost/api/rest/v1/assets/non_localizable_asset/variation-files/tablet/no_locale/download"
+          "href": "http://localhost/api/rest/v1/assets/non_localizable_asset/variation-files/tablet/no-locale/download"
         },
         "self": {
-          "href": "http://localhost/api/rest/v1/assets/non_localizable_asset/variation-files/tablet/no_locale"
+          "href": "http://localhost/api/rest/v1/assets/non_localizable_asset/variation-files/tablet/no-locale"
         }
       },
       "locale":null,
@@ -159,10 +159,10 @@ abstract class AbstractAssetTestCase extends ApiTestCase
     {
       "_link": {
         "download": {
-          "href": "http://localhost/api/rest/v1/assets/non_localizable_asset/variation-files/ecommerce_china/no_locale/download"
+          "href": "http://localhost/api/rest/v1/assets/non_localizable_asset/variation-files/ecommerce_china/no-locale/download"
         },
         "self": {
-          "href": "http://localhost/api/rest/v1/assets/non_localizable_asset/variation-files/ecommerce_china/no_locale"
+          "href": "http://localhost/api/rest/v1/assets/non_localizable_asset/variation-files/ecommerce_china/no-locale"
         }
       },
       "locale":null,
@@ -174,10 +174,10 @@ abstract class AbstractAssetTestCase extends ApiTestCase
     {
       "_link": {
         "download": {
-          "href": "http://localhost/api/rest/v1/assets/non_localizable_asset/reference-files/no_locale/download"
+          "href": "http://localhost/api/rest/v1/assets/non_localizable_asset/reference-files/no-locale/download"
         },
         "self": {
-          "href": "http://localhost/api/rest/v1/assets/non_localizable_asset/reference-files/no_locale"
+          "href": "http://localhost/api/rest/v1/assets/non_localizable_asset/reference-files/no-locale"
         }
       },
       "locale": null,
