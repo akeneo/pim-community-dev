@@ -17,6 +17,7 @@ use Akeneo\Component\StorageUtils\Exception\InvalidObjectException;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Doctrine\Common\Util\ClassUtils;
 use Pim\Component\Catalog\Factory\ValueCollectionFactoryInterface;
+use Pim\Component\Catalog\Model\EntityWithFamilyVariantInterface;
 use Pim\Component\Catalog\Model\EntityWithValuesInterface;
 use PimEnterprise\Component\Security\Attributes;
 use PimEnterprise\Component\Security\NotGrantedDataMergerInterface;
@@ -117,18 +118,22 @@ class NotGrantedValuesMerger implements NotGrantedDataMergerInterface
     /**
      * {@inheritdoc}
      */
-    public function merge($product): void
+    public function merge($filteredEntityWithValues, $fullEntityWithValues = null)
     {
-        if (!$product instanceof EntityWithValuesInterface) {
-            throw InvalidObjectException::objectExpected(ClassUtils::getClass($product), EntityWithValuesInterface::class);
+        if (!$filteredEntityWithValues instanceof EntityWithValuesInterface) {
+            throw InvalidObjectException::objectExpected(ClassUtils::getClass($filteredEntityWithValues), EntityWithValuesInterface::class);
         }
 
-        if (empty($product->getRawValues())) {
-            return;
+        if (null === $fullEntityWithValues) {
+            return $filteredEntityWithValues;
+        }
+
+        if (!$fullEntityWithValues instanceof EntityWithValuesInterface) {
+            throw InvalidObjectException::objectExpected(ClassUtils::getClass($fullEntityWithValues), EntityWithValuesInterface::class);
         }
 
         $rawValuesToMerge = [];
-        foreach ($product->getRawValues() as $attributeCode => $values) {
+        foreach ($fullEntityWithValues->getRawValues() as $attributeCode => $values) {
             $isGrantedAttribute = $this->isGrantedAttribute($attributeCode);
             if (null !== $isGrantedAttribute && false === $isGrantedAttribute) {
                 $rawValuesToMerge[$attributeCode] = $values;
@@ -141,11 +146,23 @@ class NotGrantedValuesMerger implements NotGrantedDataMergerInterface
             }
         }
 
-        $notGrantedValues = $this->valueCollectionFactory->createFromStorageFormat($rawValuesToMerge);
-
-        foreach ($notGrantedValues as $notGrantedValue) {
-            $product->addValue($notGrantedValue);
+        if ($filteredEntityWithValues instanceof EntityWithFamilyVariantInterface) {
+            $values = clone $filteredEntityWithValues->getValuesForVariation();
+        } else {
+            $values = clone $filteredEntityWithValues->getValues();
         }
+
+        $fullEntityWithValues->setValues($values);
+
+        if (!empty($rawValuesToMerge)) {
+            $notGrantedValues = $this->valueCollectionFactory->createFromStorageFormat($rawValuesToMerge);
+
+            foreach ($notGrantedValues as $notGrantedValue) {
+                $fullEntityWithValues->addValue($notGrantedValue);
+            }
+        }
+
+        return $fullEntityWithValues;
     }
 
     /**

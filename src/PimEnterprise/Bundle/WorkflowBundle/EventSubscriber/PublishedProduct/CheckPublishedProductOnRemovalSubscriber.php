@@ -20,6 +20,10 @@ use Pim\Component\Catalog\Model\CategoryInterface;
 use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Component\Catalog\Model\GroupInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Query\Filter\Operators;
+use Pim\Component\Catalog\Query\ProductQueryBuilderFactoryInterface;
+use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
+use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
 use PimEnterprise\Component\Workflow\Exception\PublishedProductConsistencyException;
 use PimEnterprise\Component\Workflow\Model\PublishedProductInterface;
 use PimEnterprise\Component\Workflow\Repository\PublishedProductRepositoryInterface;
@@ -36,12 +40,31 @@ class CheckPublishedProductOnRemovalSubscriber implements EventSubscriberInterfa
     /** @var PublishedProductRepositoryInterface */
     protected $publishedRepository;
 
+    /** @var ProductQueryBuilderFactoryInterface */
+    protected $queryBuilderFactory;
+
+    /** @var ChannelRepositoryInterface */
+    protected $channelRepository;
+
+    /** @var LocaleRepositoryInterface */
+    protected $localeRepository;
+
     /**
      * @param PublishedProductRepositoryInterface $publishedRepository
+     * @param ProductQueryBuilderFactoryInterface $queryBuilderFactory
+     * @param ChannelRepositoryInterface          $channelRepository
+     * @param LocaleRepositoryInterface           $localeRepository
      */
-    public function __construct(PublishedProductRepositoryInterface $publishedRepository)
-    {
+    public function __construct(
+        PublishedProductRepositoryInterface $publishedRepository,
+        ProductQueryBuilderFactoryInterface $queryBuilderFactory,
+        ChannelRepositoryInterface $channelRepository,
+        LocaleRepositoryInterface $localeRepository
+    ) {
         $this->publishedRepository = $publishedRepository;
+        $this->queryBuilderFactory = $queryBuilderFactory;
+        $this->channelRepository = $channelRepository;
+        $this->localeRepository = $localeRepository;
     }
 
     /**
@@ -98,11 +121,11 @@ class CheckPublishedProductOnRemovalSubscriber implements EventSubscriberInterfa
         }
 
         if ($subject instanceof FamilyInterface) {
-            return $this->publishedRepository->countPublishedProductsForFamily($subject) > 0;
+            return $this->countPublishedProductsForFamily($subject) > 0;
         }
 
         if ($subject instanceof GroupInterface) {
-            return $this->publishedRepository->countPublishedProductsForGroup($subject) > 0;
+            return $this->countPublishedProductsForGroup($subject) > 0;
         }
 
         if ($subject instanceof AssociationTypeInterface) {
@@ -110,15 +133,19 @@ class CheckPublishedProductOnRemovalSubscriber implements EventSubscriberInterfa
         }
 
         if ($subject instanceof CategoryInterface) {
-            return $this->publishedRepository->countPublishedProductsForCategory($subject) > 0;
+            return $this->countPublishedProductsForCategory($subject) > 0;
         }
 
         if ($subject instanceof AttributeInterface) {
-            return $this->publishedRepository->countPublishedProductsForAttribute($subject) > 0;
+            if (!$subject->isLocalizable()) {
+                return $this->countPublishedProductsForNonLocalizableAttribute($subject) > 0;
+            } else {
+                return $this->countPublishedProductsForLocalizableAttribute($subject) > 0;
+            }
         }
 
         if ($subject instanceof AttributeOptionInterface) {
-            return $this->publishedRepository->countPublishedProductsForAttributeOption($subject) > 0;
+            return $this->countPublishedProductsForAttributeOption($subject) > 0;
         }
 
         if ($subject instanceof ProductInterface) {
@@ -126,5 +153,162 @@ class CheckPublishedProductOnRemovalSubscriber implements EventSubscriberInterfa
         }
 
         return false;
+    }
+
+    /**
+     * Count published products for a specific family
+     *
+     * @param FamilyInterface $family
+     *
+     * @return int
+     */
+    private function countPublishedProductsForFamily(FamilyInterface $family): int
+    {
+        $productQb = $this->queryBuilderFactory->create();
+        $productQb->addFilter('family', Operators::IN_LIST, [$family->getCode()]);
+
+        return $productQb->execute()->count();
+    }
+
+    /**
+     * Count published products for a specific category
+     *
+     * @param CategoryInterface $category
+     *
+     * @return int
+     */
+    private function countPublishedProductsForCategory(CategoryInterface $category): int
+    {
+        $productQb = $this->queryBuilderFactory->create();
+        $productQb->addFilter('categories', Operators::IN_CHILDREN_LIST, [$category->getCode()]);
+
+        return $productQb->execute()->count();
+    }
+
+    /**
+     * Count published products for a specific attribute
+     *
+     * @param GroupInterface $group
+     *
+     * @return int
+     */
+    private function countPublishedProductsForGroup(GroupInterface $group): int
+    {
+        $productQb = $this->queryBuilderFactory->create();
+        $productQb->addFilter('groups', Operators::IN_LIST, [$group->getCode()]);
+
+        return $productQb->execute()->count();
+    }
+
+    /**
+     * Count published products for a specific attribute option
+     *
+     * @param AttributeOptionInterface $option
+     *
+     * @return int
+     */
+    private function countPublishedProductsForAttributeOption(AttributeOptionInterface $option): int
+    {
+        $count = 0;
+        $channelCodes = $option->getAttribute()->isScopable()
+            ? $this->channelRepository->getChannelCodes()
+            : [null] ;
+        $localeCodes = $option->getAttribute()->isLocalizable()
+            ? $this->localeRepository->getActivatedLocaleCodes()
+            : [null] ;
+
+        foreach ($channelCodes as $channelCode) {
+            foreach ($localeCodes as $localeCode) {
+                $productQb = $this->queryBuilderFactory->create();
+                $productQb->addFilter(
+                    $option->getAttribute()->getCode(),
+                    Operators::IN_LIST,
+                    [$option->getCode()],
+                    [
+                        'scope' => $channelCode,
+                        'locale' => $localeCode,
+                    ]
+                );
+
+                $count += $productQb->execute()->count();
+            }
+        }
+
+        return $count;
+    }
+
+    /**
+     * @param AttributeInterface $attribute
+     *
+     * @return int
+     */
+    private function countPublishedProductsForNonLocalizableAttribute(AttributeInterface $attribute): int
+    {
+        if ($attribute->isScopable()) {
+            $count = 0;
+            $channelCodes = $this->channelRepository->getChannelCodes();
+
+            foreach ($channelCodes as $channelCode) {
+                $productQb = $this->queryBuilderFactory->create();
+                $productQb->addFilter($attribute->getCode(), Operators::IS_NOT_EMPTY, '', ['scope'  => $channelCode]);
+
+                $count += $productQb->execute()->count();
+            }
+        } else {
+            $productQb = $this->queryBuilderFactory->create();
+            $productQb->addFilter($attribute->getCode(), Operators::IS_NOT_EMPTY, '');
+
+            $count = $productQb->execute()->count();
+        }
+
+        return $count;
+    }
+
+    /**
+     * @param AttributeInterface $attribute
+     *
+     * @return int
+     */
+    private function countPublishedProductsForLocalizableAttribute(AttributeInterface $attribute): int
+    {
+        $count = 0;
+
+        if ($attribute->isLocaleSpecific()) {
+            $localeCodes = $attribute->getAvailableLocaleCodes();
+        } else {
+            $localeCodes = $this->localeRepository->getActivatedLocaleCodes();
+        }
+
+        if (!$attribute->isScopable()) {
+            foreach ($localeCodes as $localeCode) {
+                $productQb = $this->queryBuilderFactory->create();
+                $productQb->addFilter($attribute->getCode(), Operators::IS_NOT_EMPTY, '', ['locale'  => $localeCode]);
+
+                $count += $productQb->execute()->count();
+            }
+        } else {
+            $channels = $this->channelRepository->findAll();
+
+            foreach ($channels as $channel) {
+                foreach ($channel->getLocaleCodes() as $localeCode) {
+                    if (in_array($localeCode, $localeCodes)) {
+                        $productQb = $this->queryBuilderFactory->create();
+                        $productQb->addFilter(
+                            $attribute->getCode(),
+                            Operators::IS_NOT_EMPTY,
+                            '',
+                            [
+                                'locale' => $localeCode,
+                                'scope'  => $channel->getCode(),
+                            ]
+                        );
+
+                        $count += $productQb->execute()->count();
+                    }
+                }
+            }
+        }
+
+        return $count;
     }
 }

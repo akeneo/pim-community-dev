@@ -16,6 +16,7 @@ use PHPUnit\Framework\Assert;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
 use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
+use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
 use PimEnterprise\Bundle\ProductAssetBundle\Command\GenerateMissingVariationFilesCommand;
 use PimEnterprise\Bundle\SecurityBundle\Manager\AttributeGroupAccessManager;
 use PimEnterprise\Bundle\SecurityBundle\Manager\CategoryAccessManager;
@@ -281,7 +282,7 @@ class EnterpriseFixturesContext extends BaseFixturesContext
      *
      * @throws \InvalidArgumentException
      *
-     * @return \PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductInterface
+     * @return PublishedProductInterface
      */
     public function getPublishedProduct($sku)
     {
@@ -291,8 +292,6 @@ class EnterpriseFixturesContext extends BaseFixturesContext
             throw new \InvalidArgumentException(sprintf('Could not find a published product with sku "%s"', $sku));
         }
 
-        $this->refresh($published);
-
         return $published;
     }
 
@@ -301,7 +300,7 @@ class EnterpriseFixturesContext extends BaseFixturesContext
      *
      * @throws \InvalidArgumentException
      *
-     * @return \PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductInterface
+     * @return PublishedProductInterface
      */
     public function getPublishedByOriginal($sku)
     {
@@ -311,8 +310,6 @@ class EnterpriseFixturesContext extends BaseFixturesContext
         if (!$published) {
             throw new \InvalidArgumentException(sprintf('Could not find a published product with sku "%s"', $sku));
         }
-
-        $this->refresh($published);
 
         return $published;
     }
@@ -1193,5 +1190,13 @@ class EnterpriseFixturesContext extends BaseFixturesContext
     protected function getProposalRepository()
     {
         return $this->getContainer()->get('pimee_workflow.repository.product_draft');
+    }
+
+    /**
+     * @return ProductRepositoryInterface
+     */
+    protected function getProductRepository()
+    {
+        return $this->getContainer()->get('pim_catalog.repository.product_without_permission');
     }
 }

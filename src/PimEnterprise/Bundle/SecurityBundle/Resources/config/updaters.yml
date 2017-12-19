@@ -4,7 +4,6 @@ parameters:
     pimee_security.updater.product_category_access.class: PimEnterprise\Component\Security\Updater\ProductCategoryAccessUpdater
     pimee_security.updater.attribute_group_access.class:  PimEnterprise\Component\Security\Updater\AttributeGroupAccessUpdater
     pimee_security.updater.job_profile_access.class:      PimEnterprise\Component\Security\Updater\JobProfileAccessUpdater
-    pimee_security.updater.attribute_group.class:         PimEnterprise\Component\Security\Updater\AttributeGroupUpdater
 
 services:
     pimee_security.updater.locale_access:

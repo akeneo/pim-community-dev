@@ -57,7 +57,9 @@ class NotGrantedCategoryFilterSpec extends ObjectBehavior
         $authorizationChecker->isGranted(Attributes::VIEW_ITEMS, $categoryB)->willReturn(false);
         $categories->remove(2)->shouldBeCalled();
 
-        $this->filter($product)->shouldReturn($product);
+        $product->setCategories($categories)->shouldBeCalled();
+
+        $this->filter($product)->shouldReturnAnInstanceOf(ProductInterface::class);
     }
 
     function it_removes_not_granted_categories_from_a_product_model(
@@ -84,7 +86,9 @@ class NotGrantedCategoryFilterSpec extends ObjectBehavior
         $authorizationChecker->isGranted(Attributes::VIEW_ITEMS, $categoryB)->willReturn(false);
         $categories->remove(2)->shouldBeCalled();
 
-        $this->filter($productModel)->shouldReturn($productModel);
+        $productModel->setCategories($categories)->shouldBeCalled();
+
+        $this->filter($productModel)->shouldReturnAnInstanceOf(ProductModelInterface::class);
     }
 
     function it_throws_an_exception_if_all_categories_have_been_removed_and_make_product_not_viewable(
@@ -97,7 +101,7 @@ class NotGrantedCategoryFilterSpec extends ObjectBehavior
     ) {
         $product->getIdentifier()->willReturn('product_a');
         $product->getCategories()->willReturn($categories);
-        $categories->count()->willReturn(2, 2);
+        $categories->count()->willReturn(2, 0, 2);
 
         $categories->getIterator()->willReturn($iterator);
         $iterator->rewind()->shouldBeCalled();
@@ -107,7 +111,11 @@ class NotGrantedCategoryFilterSpec extends ObjectBehavior
         $iterator->next()->shouldBeCalled();
 
         $authorizationChecker->isGranted(Attributes::VIEW_ITEMS, $categoryB)->willReturn(false);
+        $categories->remove(1)->shouldBeCalled();
         $authorizationChecker->isGranted(Attributes::VIEW_ITEMS, $categoryA)->willReturn(false);
+        $categories->remove(2)->shouldBeCalled();
+
+        $product->setCategories($categories)->shouldNotBeCalled();
 
         $this->shouldThrow(
             new ResourceAccessDeniedException(
@@ -127,7 +135,7 @@ class NotGrantedCategoryFilterSpec extends ObjectBehavior
     ) {
         $productModel->getCode()->willReturn('product_model_a');
         $productModel->getCategories()->willReturn($categories);
-        $categories->count()->willReturn(2, 2);
+        $categories->count()->willReturn(2, 0, 2);
 
         $categories->getIterator()->willReturn($iterator);
         $iterator->rewind()->shouldBeCalled();
@@ -138,6 +146,8 @@ class NotGrantedCategoryFilterSpec extends ObjectBehavior
 
         $authorizationChecker->isGranted(Attributes::VIEW_ITEMS, $categoryB)->willReturn(false);
         $authorizationChecker->isGranted(Attributes::VIEW_ITEMS, $categoryA)->willReturn(false);
+        $categories->remove(1)->shouldBeCalled();
+        $categories->remove(2)->shouldBeCalled();
 
         $this->shouldThrow(
             new ResourceAccessDeniedException(
@@ -156,7 +166,7 @@ class NotGrantedCategoryFilterSpec extends ObjectBehavior
         CategoryInterface $categoryB
     ) {
         $categoryAwareEntity->getCategories()->willReturn($categories);
-        $categories->count()->willReturn(2, 2);
+        $categories->count()->willReturn(2, 0, 2);
 
         $categories->getIterator()->willReturn($iterator);
         $iterator->rewind()->shouldBeCalled();
@@ -167,6 +177,8 @@ class NotGrantedCategoryFilterSpec extends ObjectBehavior
 
         $authorizationChecker->isGranted(Attributes::VIEW_ITEMS, $categoryB)->willReturn(false);
         $authorizationChecker->isGranted(Attributes::VIEW_ITEMS, $categoryA)->willReturn(false);
+        $categories->remove(1)->shouldBeCalled();
+        $categories->remove(2)->shouldBeCalled();
 
         $this->shouldThrow(
             new ResourceAccessDeniedException(

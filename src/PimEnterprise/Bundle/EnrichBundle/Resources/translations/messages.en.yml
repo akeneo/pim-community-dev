@@ -144,8 +144,8 @@ add_product_value_with_permission_and_rules:
 update_product_value_with_permission_and_rules:
     steps.perform: Update product value
 edit_common_attributes_with_permission_and_rules:
-    steps.perform: Edit common attributes
-    steps.edit_common_attributes_processor.title: Edit common attributes
+    steps.perform: Edit attributes
+    steps.edit_common_attributes_processor.title: Edit attributes
 
 batch_jobs:
     yml_asset_channel_configuration_import:
@@ -164,8 +164,8 @@ batch_jobs:
         perform.label: Remove product value
         execute_rules.label: Rules execution
     edit_common_attributes_with_permission_and_rules:
-        label: Edit common attributes with permission check & rules application
-        perform.label: Edit common attributes
+        label: Edit attributes with permission check & rules application
+        perform.label: Edit attributes
         execute_rules.label: Rules execution
         cleaner.label: Clean temporary files
     csv_published_product_quick_export:
@@ -185,12 +185,12 @@ batch_jobs:
         perform:
             label: Xlsx published products grid context quick export
 
-edit_common_attributes_with_permission_and_rules.steps.edit_common_attributes_processor.title: Edit common attributes
+edit_common_attributes_with_permission_and_rules.steps.edit_common_attributes_processor.title: Edit attributes
 add_product_value_with_permission.steps.add_product_value_with_permission_processor.title: Add product value with permission
 update_product_value_with_permission.steps.update_product_value_with_permission_processor.title: Update product value with permission
 remove_product_value_with_permission.steps.update_product_value_with_permission_processor.title: Remove product value with permission
-edit_common_attributes_with_permission: Edit common attributes with permission
-edit_common_attributes_with_permission.steps.edit_common_attributes_processor.title: Edit common attributes with permission
+edit_common_attributes_with_permission: Edit attributes with permission
+edit_common_attributes_with_permission.steps.edit_common_attributes_processor.title: Edit attributes with permission
 
 job_execution.summary:
     mass_published: Product published
