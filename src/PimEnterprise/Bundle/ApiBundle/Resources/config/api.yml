@@ -7,6 +7,11 @@ pim_api:
                 content_types: ['multipart/form-data']
                 priority: 10
             -
+                path: '^/api/rest/v\d+/assets/.+/variation-files/.+$'
+                methods: ['PATCH']
+                content_types: ['multipart/form-data']
+                priority: 10
+            -
                 path: '^/api/rest/v\d+/(assets|asset-categories)$'
                 methods: ['PATCH']
                 content_types: ['application/vnd.akeneo.collection+json']

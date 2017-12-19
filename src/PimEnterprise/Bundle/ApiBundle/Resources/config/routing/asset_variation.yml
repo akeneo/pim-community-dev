@@ -7,3 +7,8 @@ pimee_api_asset_variation_get:
     path: /assets/{code}/variation-files/{channelCode}/{localeCode}
     defaults: { _controller: pimee_api.controller.asset_variation:getAction, _format: json }
     methods: [GET]
+
+pimee_api_asset_variation_partial_update:
+    path: /assets/{code}/variation-files/{channelCode}/{localeCode}
+    defaults: { _controller: pimee_api.controller.asset_variation:partialUpdateAction, _format: json }
+    methods: [PATCH]

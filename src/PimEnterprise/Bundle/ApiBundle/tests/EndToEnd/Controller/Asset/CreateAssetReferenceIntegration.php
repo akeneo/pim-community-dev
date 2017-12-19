@@ -50,25 +50,39 @@ class CreateAssetReferenceIntegration extends AbstractAssetTestCase
         $this->fileSystem = $mountManager->getFilesystem(FileStorage::ASSET_STORAGE_ALIAS);
     }
 
-    public function testCreateAReferenceFileOnLocalizableAsset()
+    public function testUpdateAReferenceFileOnLocalizableAsset()
     {
         $this->assertCorrectlyCreatedAssetReference(
             $this->files['ziggy'],
             'ziggy.png',
             'image/png',
             'localizable_asset',
-            'en_US'
+            'en_US',
+            204
         );
     }
 
-    public function testCreateAReferenceFileOnNotLocalizableAsset()
+    public function testUpdateAReferenceFileOnNotLocalizableAsset()
     {
         $this->assertCorrectlyCreatedAssetReference(
             $this->files['ziggy'],
             'ziggy.png',
             'image/png',
             'non_localizable_asset',
-            'no_locale'
+            'no_locale',
+            204
+        );
+    }
+
+    public function testCreateAReferenceFile()
+    {
+        $this->assertCorrectlyCreatedAssetReference(
+            $this->files['ziggy'],
+            'ziggy.png',
+            'image/png',
+            'localizable_asset_without_references',
+            'en_US',
+            201
         );
     }
 
@@ -87,12 +101,12 @@ class CreateAssetReferenceIntegration extends AbstractAssetTestCase
     /**
      * Should be an integration test.
      */
-    public function testErrorMessageWhenCreatingReferenceOnNonExsitingLocale()
+    public function testErrorMessageWhenCreatingReferenceOnNonExistingLocale()
     {
         $this->assertError(
             'api/rest/v1/assets/localizable_asset/reference-files/foo',
             404,
-            'Locale \"foo\" does not exist.'
+            'Locale \"foo\" does not exist or is not activated.'
         );
     }
 
@@ -127,7 +141,7 @@ class CreateAssetReferenceIntegration extends AbstractAssetTestCase
     {
         $client = $this->createAuthenticatedClient([], ['CONTENT_TYPE' => 'multipart/form-data']);
 
-        $client->request('POST', 'api/rest/v1/assets/localizable_asset/reference-files/en_US');
+        $client->request('PATCH', 'api/rest/v1/assets/localizable_asset/reference-files/en_US');
         $response = $client->getResponse();
 
         $expectedContent = <<<JSON
@@ -167,22 +181,24 @@ JSON;
      * @param string $mimeType
      * @param string $assetCode
      * @param string $localeCode
+     * @param int    $status
      */
     private function assertCorrectlyCreatedAssetReference(
         string $filePath,
         string $fileName,
         string $mimeType,
         string $assetCode,
-        string$localeCode
+        string$localeCode,
+        int $status
     ): void {
         $client = $this->createAuthenticatedClient([], ['CONTENT_TYPE' => 'multipart/form-data']);
 
         $file = new UploadedFile($filePath, $fileName);
 
-        $client->request('POST', sprintf('api/rest/v1/assets/%s/reference-files/%s', $assetCode, $localeCode), [], ['file' => $file]);
+        $client->request('PATCH', sprintf('api/rest/v1/assets/%s/reference-files/%s', $assetCode, $localeCode), [], ['file' => $file]);
         $response = $client->getResponse();
 
-        Assert::assertSame(Response::HTTP_CREATED, $response->getStatusCode());
+        Assert::assertSame($status, $response->getStatusCode());
         Assert::assertEmpty($response->getContent());
         Assert::assertArrayHasKey('location', $response->headers->all());
         Assert::assertSame(
@@ -225,7 +241,7 @@ JSON;
 
         $file = new UploadedFile($this->files['ziggy'], 'ziggy.png');
 
-        $client->request('POST', $url, [], ['file' => $file]);
+        $client->request('PATCH', $url, [], ['file' => $file]);
         $response = $client->getResponse();
 
         $expectedContent = <<<JSON

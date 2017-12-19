@@ -148,7 +148,7 @@ class AssetReferenceController
             $localizableMessage = self::NON_LOCALIZABLE_REFERENCE !== $localeCode ? sprintf(' and the locale "%s"', $localeCode) : '';
             $notFoundMessage = sprintf(
                 'Reference file for the asset "%s"%s does not exist.',
-                $localeCode,
+                $code,
                 $localizableMessage
             );
 
@@ -202,7 +202,7 @@ class AssetReferenceController
             $localizableMessage = self::NON_LOCALIZABLE_REFERENCE !== $localeCode ? sprintf(' and the locale "%s"', $localeCode) : '';
             $notFoundMessage = sprintf(
                 'Reference file for the asset "%s"%s does not exist.',
-                $localeCode,
+                $code,
                 $localizableMessage
             );
 

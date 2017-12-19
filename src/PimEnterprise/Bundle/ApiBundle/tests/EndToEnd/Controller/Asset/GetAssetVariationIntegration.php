@@ -135,7 +135,7 @@ JSON;
         $expectedContent = <<<JSON
 {
     "code": 404,
-    "message": "Locale \"ham\" does not exist."
+    "message": "Locale \"ham\" does not exist or is not activated."
 }
 JSON;
 
@@ -231,7 +231,7 @@ JSON;
         $expectedContent = <<<JSON
 {
     "code": 404,
-    "message": "There is no variation file for the locale \"fr_FR\" and the channel \"ecommerce\" as the locale \"fr_FR\" is not activated for the channel \"ecommerce\"."
+    "message": "You cannot have a variation file for the locale \"fr_FR\" and the channel \"ecommerce\" as the locale \"fr_FR\" is not activated for the channel \"ecommerce\"."
 }
 JSON;
 

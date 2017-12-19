@@ -143,7 +143,7 @@ JSON;
         $expectedContent = <<<JSON
 {
     "code": 404,
-    "message": "Locale \"ham\" does not exist."
+    "message": "Locale \"ham\" does not exist or is not activated."
 }
 JSON;
 
