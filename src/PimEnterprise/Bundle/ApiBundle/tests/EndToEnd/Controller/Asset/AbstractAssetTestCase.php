@@ -447,7 +447,7 @@ JSON;
      */
     protected function sanitizeNormalizedAsset(array $asset): array
     {
-        DateSanitizer::sanitize($asset['end_of_use']);
+        $asset['end_of_use'] = DateSanitizer::sanitize($asset['end_of_use']);
 
         ksort($asset);
 
@@ -461,7 +461,7 @@ JSON;
      *
      * @return TagInterface
      */
-    private function createTag(string $code): TagInterface
+    protected function createTag(string $code): TagInterface
     {
         $tag = $this->get('pimee_product_asset.factory.tag')->create();
         $this->get('pimee_product_asset.updater.tag')->update($tag, ['code' => $code]);

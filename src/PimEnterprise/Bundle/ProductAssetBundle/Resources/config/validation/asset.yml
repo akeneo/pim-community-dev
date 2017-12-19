@@ -1,13 +1,18 @@
 PimEnterprise\Component\ProductAsset\Model\Asset:
     constraints:
         - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity: code
+        - Pim\Component\Catalog\Validator\Constraints\Immutable:
+            properties:
+                - code
         - PimEnterprise\Bundle\ProductAssetBundle\Validator\Constraints\LocalizableAsset: ~
     properties:
         code:
             - NotBlank: ~
             - Regex:
                 pattern: /^[a-zA-Z0-9_]+$/
-                message: Attribute code may contain only letters, numbers and underscores.
+                message: Asset code may contain only letters, numbers and underscores
+            - Length:
+                max: 100
         references:
             - Valid: ~
         description:

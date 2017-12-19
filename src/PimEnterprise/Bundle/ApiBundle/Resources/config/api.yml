@@ -2,7 +2,7 @@ pim_api:
     content_type_negotiator:
         rules:
             -
-                path: '^/api/rest/v\d+/(asset-categories)$'
+                path: '^/api/rest/v\d+/(assets|asset-categories)$'
                 methods: ['PATCH']
                 content_types: ['application/vnd.akeneo.collection+json']
                 priority: 20

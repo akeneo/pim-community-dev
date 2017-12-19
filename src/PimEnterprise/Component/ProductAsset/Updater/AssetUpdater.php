@@ -13,8 +13,11 @@ namespace PimEnterprise\Component\ProductAsset\Updater;
 
 use Akeneo\Component\Classification\Repository\CategoryRepositoryInterface;
 use Akeneo\Component\Classification\Repository\TagRepositoryInterface;
+use Akeneo\Component\StorageUtils\Exception\ImmutablePropertyException;
 use Akeneo\Component\StorageUtils\Exception\InvalidObjectException;
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
+use Akeneo\Component\StorageUtils\Exception\UnknownPropertyException;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Doctrine\Common\Util\ClassUtils;
 use PimEnterprise\Component\ProductAsset\Factory\AssetFactory;
@@ -84,25 +87,37 @@ class AssetUpdater implements ObjectUpdaterInterface
      * @param mixed          $data
      *
      * @throws InvalidPropertyException
+     * @throws UnknownPropertyException
      */
     protected function setData(AssetInterface $asset, $field, $data)
     {
         switch ($field) {
             case 'tags':
+                $this->validateIsArrayOfScalar($field, $data);
                 $this->setTags($asset, $data);
                 break;
             case 'categories':
+                $this->validateIsArrayOfScalar($field, $data);
                 $this->setCategories($asset, $data);
                 break;
             case 'end_of_use':
-                $this->validateDateFormat($data);
+                $this->validateDateFormat($field, $data);
                 $asset->setEndOfUseAt(new \DateTime($data));
                 break;
             case 'localized':
+                $this->validateIsBoolean($field, $data);
                 $this->setLocalized($asset, $data);
                 break;
-            default:
+            case 'code':
+                $this->validateIsScalar($field, $data);
                 $this->accessor->setValue($asset, $field, $data);
+                break;
+            case 'description':
+                $this->validateIsScalar($field, $data);
+                $this->accessor->setValue($asset, $field, $data);
+                break;
+            default:
+                throw UnknownPropertyException::unknownProperty($field);
         }
     }
 
@@ -163,12 +178,15 @@ class AssetUpdater implements ObjectUpdaterInterface
     }
 
     /**
+     * @param string $field
      * @param string $data
      *
      * @throws InvalidPropertyException
      */
-    protected function validateDateFormat($data)
+    protected function validateDateFormat(string $field, $data)
     {
+        $this->validateIsScalar($field, $data);
+
         if (null === $data) {
             return;
         }
@@ -177,8 +195,8 @@ class AssetUpdater implements ObjectUpdaterInterface
             new \DateTime($data);
         } catch (\Exception $e) {
             throw InvalidPropertyException::dateExpected(
-                'end_of_use',
-                'yyyy-mm-dd',
+                $field,
+                \Datetime::ISO8601,
                 static::class,
                 $data
             );
@@ -186,8 +204,8 @@ class AssetUpdater implements ObjectUpdaterInterface
 
         if (!preg_match('/^\d{4}-\d{2}-\d{2}/', $data)) {
             throw InvalidPropertyException::dateExpected(
-                'end_of_use',
-                'yyyy-mm-dd',
+                $field,
+                \Datetime::ISO8601,
                 static::class,
                 $data
             );
@@ -271,9 +289,64 @@ class AssetUpdater implements ObjectUpdaterInterface
     /**
      * @param AssetInterface $asset
      * @param bool           $isLocalized
+     *
+     * @throws ImmutablePropertyException
      */
     protected function setLocalized(AssetInterface $asset, $isLocalized)
     {
+        if (null !== $asset->getId() && $asset->isLocalizable() !== $isLocalized) {
+            throw ImmutablePropertyException::immutableProperty('localized', $isLocalized, self::class);
+        }
         $this->assetFactory->createReferences($asset, $isLocalized);
+    }
+
+    /**
+     * @param string $field
+     * @param mixed  $data
+     *
+     * @throws InvalidPropertyTypeException
+     */
+    protected function validateIsArrayOfScalar(string $field, $data): void
+    {
+        if (!is_array($data)) {
+            throw InvalidPropertyTypeException::arrayExpected($field, static::class, $data);
+        }
+
+        foreach ($data as $key => $value) {
+            if (null !== $value && !is_scalar($value)) {
+                throw InvalidPropertyTypeException::validArrayStructureExpected(
+                    $field,
+                    sprintf('one of the "%s" values is not a scalar', $field),
+                    static::class,
+                    $data
+                );
+            }
+        }
+    }
+
+    /**
+     * @param string $field
+     * @param mixed  $data
+     *
+     * @throws InvalidPropertyTypeException
+     */
+    protected function validateIsScalar(string $field, $data): void
+    {
+        if (null !== $data && !is_scalar($data)) {
+            throw InvalidPropertyTypeException::scalarExpected($field, static::class, $data);
+        }
+    }
+
+    /**
+     * @param string $field
+     * @param mixed  $data
+     *
+     * @throws InvalidPropertyTypeException
+     */
+    protected function validateIsBoolean(string $field, $data): void
+    {
+        if (null !== $data && !is_bool($data)) {
+            throw InvalidPropertyTypeException::booleanExpected($field, static::class, $data);
+        }
     }
 }

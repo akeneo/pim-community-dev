@@ -1,0 +1,8 @@
+parameters:
+    pimee_api.updater.asset.class: PimEnterprise\Component\Api\Updater\AssetUpdater
+
+services:
+    pimee_api.updater.asset:
+        class: '%pimee_api.updater.asset.class%'
+        arguments:
+            - '@pimee_product_asset.updater.asset'
