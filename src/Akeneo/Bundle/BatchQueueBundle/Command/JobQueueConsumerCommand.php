@@ -35,10 +35,16 @@ use Symfony\Component\Process\ProcessBuilder;
  */
 class JobQueueConsumerCommand extends ContainerAwareCommand
 {
-    /** Interval in seconds before checking if the job is still running. */
+    /** Interval in seconds before updating health check if job is still running. */
     public const HEALTH_CHECK_INTERVAL = 5;
 
     public const COMMAND_NAME = 'akeneo:batch:job-queue-consumer-daemon';
+
+    /** Interval in seconds to wait after an exception occurred.*/
+    private const EXCEPTION_WAIT_INTERVAL = 5;
+
+    /** Interval in microseconds before checking if the process is still running. */
+    private const RUNNING_PROCESS_CHECK_INTERVAL = 200000;
 
     /**
      * {@inheritdoc}
@@ -77,13 +83,25 @@ class JobQueueConsumerCommand extends ContainerAwareCommand
 
                 $process->start();
 
-                do {
-                    $this->getJobExecutionManager()->updateHealthCheck($jobExecutionMessage);
-                    // TODO: standard and error output in a dedicated file for each job execution
+                $this->getJobExecutionManager()->updateHealthCheck($jobExecutionMessage);
+
+                $nbIterationBeforeUpdatingHealthCheck = self::HEALTH_CHECK_INTERVAL * 1000000 / self::RUNNING_PROCESS_CHECK_INTERVAL;
+                $iteration = 1;
+
+                while ($process->isRunning()) {
+                    if ($iteration < $nbIterationBeforeUpdatingHealthCheck) {
+                        $iteration++;
+                        usleep(self::RUNNING_PROCESS_CHECK_INTERVAL);
+
+                        continue;
+                    }
+
                     $output->write($process->getIncrementalOutput());
                     $errOutput->write($process->getIncrementalErrorOutput());
-                    sleep(self::HEALTH_CHECK_INTERVAL);
-                } while ($process->isRunning());
+
+                    $this->getJobExecutionManager()->updateHealthCheck($jobExecutionMessage);
+                    $iteration = 1;
+                }
 
                 // update status if the job execution failed due to an uncatchable error as a fatal error
                 $exitStatus = $this->getJobExecutionManager()->getExitStatus($jobExecutionMessage);
@@ -98,6 +116,8 @@ class JobQueueConsumerCommand extends ContainerAwareCommand
             } catch (\Throwable $t) {
                 $errOutput->writeln(sprintf('An error occurred: %s', $t->getMessage()));
                 $errOutput->writeln($t->getTraceAsString());
+
+                sleep(self::EXCEPTION_WAIT_INTERVAL);
             }
         } while (false === $input->getOption('run-once'));
     }
