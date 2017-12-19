@@ -91,6 +91,7 @@ extensions:
             childrenRoute: pim_enrich_categorytree_children
             icon: icon-folder_in
             illustration: categories
+            fetcher: category
 
     pim-mass-product-edit-configure-move-to-category:
         module: pim/mass-edit-form/product/category
@@ -108,6 +109,7 @@ extensions:
             childrenRoute: pim_enrich_categorytree_children
             icon: icon-folder_move
             illustration: categories
+            fetcher: category
 
     pim-mass-product-edit-configure-remove-from-category:
         module: pim/mass-edit-form/product/category
@@ -125,6 +127,7 @@ extensions:
             childrenRoute: pim_enrich_categorytree_children
             icon: icon-folder_out
             illustration: categories
+            fetcher: category
 
     pim-mass-product-edit-configure-add-to-existing-product-model:
         module: pim/mass-edit-form/product/add-to-existing-product-model
