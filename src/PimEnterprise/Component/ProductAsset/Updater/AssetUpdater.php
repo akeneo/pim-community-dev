@@ -345,7 +345,7 @@ class AssetUpdater implements ObjectUpdaterInterface
      */
     protected function validateIsBoolean(string $field, $data): void
     {
-        if (null !== $data && !is_scalar($data)) {
+        if (null !== $data && !is_bool($data)) {
             throw InvalidPropertyTypeException::booleanExpected($field, static::class, $data);
         }
     }

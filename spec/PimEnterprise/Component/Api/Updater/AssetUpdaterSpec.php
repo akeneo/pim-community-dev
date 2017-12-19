@@ -62,6 +62,32 @@ class AssetUpdaterSpec extends ObjectBehavior
             ->during('update', [$asset, $dataToUpdate, []]);
     }
 
+    function it_updates_as_not_localized_as_default_value_when_creating_asset($assetUpdater, AssetInterface $asset)
+    {
+        $dataToUpdate = ['code' => 'asset_code'];
+
+        $assetUpdater->update($asset, ['code' => 'asset_code', 'localized' => false], [])->shouldBeCalled();
+
+        $asset->getId()->willReturn(null);
+
+        $this
+            ->shouldNotThrow(\Exception::class)
+            ->during('update', [$asset, $dataToUpdate, []]);
+    }
+
+    function it_updates_without_default_localized_property_when_updating_asset($assetUpdater, AssetInterface $asset)
+    {
+        $dataToUpdate = ['code' => 'asset_code'];
+
+        $assetUpdater->update($asset, ['code' => 'asset_code'], [])->shouldBeCalled();
+
+        $asset->getId()->willReturn(1);
+
+        $this
+            ->shouldNotThrow(\Exception::class)
+            ->during('update', [$asset, $dataToUpdate, []]);
+    }
+
     function it_throws_an_exception_when_trying_to_update_anything_else_than_an_asset()
     {
         $this->shouldThrow(
