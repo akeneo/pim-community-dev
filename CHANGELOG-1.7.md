@@ -1,3 +1,13 @@
+# 1.7.x
+
+## Bug Fixes
+
+- PIM-7347: Fix the edit form of multi-select attributes with a lot of options
+
+## BC-break:
+
+- Remove class `Pim\Bundle\EnrichBundle\Form\Type\AttributeProperty\OptionsType` and service `pim_enrich.form.type.options`
+
 # 1.7.15 (2017-12-18) 
 
 - GITHUB-7202: Ensure commit batch size value is always an int, cheers @bghitulescu!
