@@ -19,9 +19,9 @@ Feature: Apply a mass action on all entities
     And I select rows super_boots
     And I select all entities
     And I press the "Bulk actions" button
-    And I choose the "Edit common attributes" operation
+    And I choose the "Edit attributes" operation
     And I move on to the choose step
-    And I choose the "Edit common attributes" operation
+    And I choose the "Edit attributes" operation
     And I display the Name attribute
     And I change the "Name" to "Same product"
     And I confirm mass edit

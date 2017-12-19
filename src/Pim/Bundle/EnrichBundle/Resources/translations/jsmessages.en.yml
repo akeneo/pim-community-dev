@@ -956,7 +956,7 @@ pim_enrich:
                 title: Global settings
     mass_edit_action:
         edit_common_attributes:
-            description: The selected product's attributes will be edited with the following data for the locale <span class="highlight">{{ locale }}</span> and the channel <span class="highlight">{{ channel }}</span>, chosen in the products grid.
+            description: Only the attributes belonging to the families of the selected products will be edited with the following data for the <span class="highlight">{{ locale }}</span> locale and the <span class="highlight">{{ channel }}</span> channel.
     index:
         association_type:
             title:      "] -Inf, 1] {{ count }} association type|] 1, Inf [{{ count }} association types"
@@ -1046,9 +1046,9 @@ pim_enrich:
                     description: The selected products will be enabled or disabled.
                     field: To enable
                 edit_common:
-                    label: Edit common attributes
-                    label_count: "{1}Edit common attributes of <span class=\"AknFullPage-title--highlight\">1 product</span>|] 1, Inf [Edit common attributes of <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span>"
-                    description: The selected product's attributes will be edited with the following data for the locale {{ locale }} and the channel {{ scope }}, chosen in the products grid.
+                    label: Edit attributes
+                    label_count: "{1}Edit attributes of <span class=\"AknFullPage-title--highlight\">1 product</span>|] 1, Inf [Edit attributes of <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span>"
+                    description: Only the attributes belonging to the families of the selected products will be edited with the following data for the {{ locale }} locale and the {{ scope }} channel.
                 change_family:
                     label: Change family
                     label_count: "{1}Change the family of <span class=\"AknFullPage-title--highlight\">1 product</span>|] 1, Inf [Change the family of <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span>"
@@ -1151,11 +1151,11 @@ batch_jobs:
         perform:
             label: Update product value
     edit_common_attributes:
-        label: Edit common attributes
+        label: Edit attributes
         perform:
-            label: Edit common attributes
+            label: Edit attributes
         cleaner:
-            label: Clean files for common attributes
+            label: Clean files for attributes
     add_to_existing_product_model:
         label: Add to an existing product model
         perform:

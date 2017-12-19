@@ -43,7 +43,7 @@ Feature: Validate editing common select attributes of multiple products
   Scenario: Successfully mass edit a multi select attribute
     Given I select rows boots and sneakers
     And I press the "Bulk actions" button
-    And I choose the "Edit common attributes" operation
+    And I choose the "Edit attributes" operation
     And I display the Weather conditions attribute
     And I change the "Weather conditions" to "Dry, Hot"
     And I confirm mass edit
@@ -55,7 +55,7 @@ Feature: Validate editing common select attributes of multiple products
     When I am on the products grid
     And I select rows boots, sandals and sneakers
     And I press the "Bulk actions" button
-    And I choose the "Edit common attributes" operation
+    And I choose the "Edit attributes" operation
     And I display the Weather conditions attribute
     And I confirm mass edit
     And I wait for the "edit_common_attributes" job to finish
@@ -66,7 +66,7 @@ Feature: Validate editing common select attributes of multiple products
   Scenario: Successfully mass edit a simple select attribute
     Given I select rows boots and sneakers
     And I press the "Bulk actions" button
-    And I choose the "Edit common attributes" operation
+    And I choose the "Edit attributes" operation
     And I display the Manufacturer attribute
     And I change the "Manufacturer" to "Converse"
     And I confirm mass edit
@@ -75,7 +75,7 @@ Feature: Validate editing common select attributes of multiple products
     When I am on the products grid
     And I select rows boots, sandals and sneakers
     And I press the "Bulk actions" button
-    And I choose the "Edit common attributes" operation
+    And I choose the "Edit attributes" operation
     And I display the Manufacturer attribute
     And I confirm mass edit
     And I wait for the "edit_common_attributes" job to finish

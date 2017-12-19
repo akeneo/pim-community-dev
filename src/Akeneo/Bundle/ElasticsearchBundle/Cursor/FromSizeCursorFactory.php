@@ -4,9 +4,7 @@ namespace Akeneo\Bundle\ElasticsearchBundle\Cursor;
 
 use Akeneo\Bundle\ElasticsearchBundle\Client;
 use Akeneo\Component\StorageUtils\Cursor\CursorFactoryInterface;
-use Akeneo\Component\StorageUtils\Exception\InvalidObjectException;
 use Akeneo\Component\StorageUtils\Repository\CursorableRepositoryInterface;
-use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
@@ -19,12 +17,6 @@ class FromSizeCursorFactory implements CursorFactoryInterface
     /** @var Client */
     protected $searchEngine;
 
-    /** @var ObjectManager */
-    protected $om;
-
-    /** @var string */
-    protected $entityClassName;
-
     /** @var string */
     protected $cursorClassName;
 
@@ -34,28 +26,28 @@ class FromSizeCursorFactory implements CursorFactoryInterface
     /** @var string */
     protected $indexType;
 
+    /** @var CursorableRepositoryInterface */
+    protected $cursorableRepository;
+
     /**
-     * @param Client        $searchEngine
-     * @param ObjectManager $om
-     * @param string        $entityClassName
-     * @param string        $cursorClassName
-     * @param int           $pageSize
-     * @param string        $indexType
+     * @param Client                        $searchEngine
+     * @param CursorableRepositoryInterface $cursorableRepository
+     * @param string                        $cursorClassName
+     * @param int                           $pageSize
+     * @param string                        $indexType
      */
     public function __construct(
         Client $searchEngine,
-        ObjectManager $om,
-        $entityClassName,
+        CursorableRepositoryInterface $cursorableRepository,
         $cursorClassName,
         $pageSize,
         $indexType
     ) {
         $this->searchEngine = $searchEngine;
-        $this->om = $om;
-        $this->entityClassName = $entityClassName;
         $this->cursorClassName = $cursorClassName;
         $this->pageSize = $pageSize;
         $this->indexType = $indexType;
+        $this->cursorableRepository = $cursorableRepository;
     }
 
     /**
@@ -65,14 +57,9 @@ class FromSizeCursorFactory implements CursorFactoryInterface
     {
         $options = $this->resolveOptions($options);
 
-        $repository = $this->om->getRepository($this->entityClassName);
-        if (!$repository instanceof CursorableRepositoryInterface) {
-            throw InvalidObjectException::objectExpected($this->entityClassName, CursorableRepositoryInterface::class);
-        }
-
         return new $this->cursorClassName(
             $this->searchEngine,
-            $repository,
+            $this->cursorableRepository,
             $queryBuilder,
             $this->indexType,
             $options['page_size'],

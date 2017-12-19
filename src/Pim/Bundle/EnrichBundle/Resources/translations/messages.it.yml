@@ -89,7 +89,6 @@ pim_enrich:
       description: Gli attributi del prodotto selezionato verranno modificati con i seguenti dati per le impostazioni di localizzazione selezionate.
       empty: Si prega di selezionare l'attributo/gli attributi che si desidera modificare
       success_flash: È in corso l'aggiornamento dello stato del prodotto/dei prodotti
-      launched_flash: L'azione di massa "modifica gli attributi comuni" è stata lanciata. Sarai avvisato quando finisce.
       message:
         warning: Non esiste un attributo in comune per i prodotti selezionati. Si prega di cambiare la selezione.
         invalid_attribute: L'attributo con codice "attribute_code" non è comune ai prodotti selezionati, attributo saltato.
@@ -635,7 +634,7 @@ pim_enrich.mass_edit_action:
     description: Gli articoli selezionati saranno attivati o disattivati.
     success_flash: Lo stato dell'articolo/degli articoli è stato modificato
   edit-common-attributes:
-    label: Modifica gli attributi comuni
+    label: Modificare gli attributi
     description: Gli attributi del prodotto selezionato verranno modificati con i seguenti dati per le impostazioni di localizzazione selezionate.
     empty: Si prega di selezionare l'attributo/gli attributi che si desidera modificare
     success_flash: L'attributo (/gli attributi) dell'articolo (/degli articoli) è stato caricato
@@ -755,11 +754,10 @@ job_execution.summary:
   skipped_attributes: Attributi saltati
   skipped_families: Famiglie saltate
 pim_mass_edit_execution_show: Esecuzione modifiche di massa | Dettagli
-edit_common_attributes.steps.edit_common_attributes_processor.title: Modifica gli attributi comuni
+edit_common_attributes.steps.edit_common_attributes_processor.title: Modificare gli attributi
 update_product_value.steps.update_product_value_processor.title: Aggiorna il valore di prodotto
 remove_product_value.steps.update_product_value_processor.title: Rimuovi il valore di prodotto
-edit_common_attributes: Modifica gli attributi comuni
-edit_common_attributes_clean: Pulisci i file per gli attributi comuni
+edit_common_attributes: Modificare gli attributi
 perform.steps.duplicated.title: Dimensione Duplicata
 perform.steps.excluded.title: Prodotto escluso
 batch_jobs:
@@ -772,11 +770,9 @@ batch_jobs:
     perform:
       label: Aggiorna il valore di prodotto
   edit_common_attributes:
-    label: Modifica gli attributi comuni
+    label: Modificare gli attributi
     perform:
-      label: Modifica gli attributi comuni
-    clean:
-      label: Pulisci i file per gli attributi comuni
+      label: Modificare gli attributi
   set_attribute_requirements:
     label: Imposta i requisiti degli attributi
     perform:

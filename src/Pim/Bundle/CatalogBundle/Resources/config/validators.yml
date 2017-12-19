@@ -121,7 +121,6 @@ services:
     pim_catalog.validator.constraint.immutable_variant_axis_values:
         class: '%pim_catalog.validator.constraint.immutable_variant_axis_values.class%'
         arguments:
-            - '@doctrine.orm.entity_manager'
             - '@pim_catalog.family_variant.provider.entity_with_family_variant_attributes'
             - '@pim_catalog.factory.value_collection'
         tags:

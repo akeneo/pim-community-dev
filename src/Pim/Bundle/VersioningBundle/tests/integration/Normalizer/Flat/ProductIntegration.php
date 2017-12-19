@@ -33,6 +33,8 @@ class ProductIntegration extends TestCase
             'X_SELL-products'                                    => 'bar',
             'UPSELL-groups'                                      => 'groupA',
             'UPSELL-products'                                    => '',
+            'SUBSTITUTION-groups'                                => '',
+            'SUBSTITUTION-products'                              => '',
             'PACK-groups'                                        => '',
             'PACK-products'                                      => 'bar,baz',
             'a_date'                                             => '2016-06-13',

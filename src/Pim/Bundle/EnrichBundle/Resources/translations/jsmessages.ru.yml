@@ -753,9 +753,6 @@ pim_enrich:
         title: Свойства
       global_settings:
         title: Глобальные настройки
-  mass_edit_action:
-    edit_common_attributes:
-      description: Атрибуты выбранного продукта будут редактироваться со следующими данными для локали <span class="highlight">{{ locale }}</span> и канала <span class="highlight">{{ channel }}</span>, выбранных в таблице продуктов.
   index:
     import_profiles:
       list: Выберите задание
@@ -797,7 +794,7 @@ pim_enrich:
           description: Выбранные продукты будут активированы или деактивированы.
           field: Включить
         edit_common:
-          label: Изменить общие атрибуты
+          label: Редактировать атрибуты
         change_family:
           description: Семейство для выбранных продуктов будет изменено на выбранное семейство
           field: Семейство
@@ -855,11 +852,9 @@ batch_jobs:
     perform:
       label: Обновить значение продукта
   edit_common_attributes:
-    label: Изменить общие атрибуты
+    label: Редактировать атрибуты
     perform:
-      label: Изменить общие атрибуты
-    cleaner:
-      label: Редактировать файлы общих атрибутов
+      label: Редактировать атрибуты
   csv_product_export:
     label: Экспорт продуктов в CSV
     export.label: Экспорт продуктов

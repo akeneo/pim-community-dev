@@ -64,15 +64,6 @@ interface ProductRepositoryInterface extends ObjectRepository
     public function hasAttributeInFamily($productId, $attributeCode);
 
     /**
-     * Get all associated products ids
-     *
-     * @param ProductInterface $product
-     *
-     * @return string[]
-     */
-    public function getAssociatedProductIds(ProductInterface $product);
-
-    /**
      * Get products after the one provided. Mainly used to iterate through
      * a large collecion.
      *

@@ -759,9 +759,6 @@ pim_enrich:
         title: Svojstva
       global_settings:
         title: Globalne postavke
-  mass_edit_action:
-    edit_common_attributes:
-      description: Atributi odabranih proizvoda u tabličnom prikazu proizvoda će se promijeniti s podacima za lokalizaciju <span class="highlight">{{ locale }}</span> i kanala <span class="highlight">{{ channel }}</span>.
   index:
     import_profiles:
       list: Odaberite posao
@@ -803,7 +800,7 @@ pim_enrich:
           description: Odabrani proizvodi će biti omogućeni ili onemogućeni.
           field: Da se omogući
         edit_common:
-          label: Uredi uobičajene atribute
+          label: Uredi atribute
         change_family:
           description: Obitelj odabranih proizvoda će se promijeniti u odabranu obitelj
           field: Obitelj
@@ -861,11 +858,9 @@ batch_jobs:
     perform:
       label: Ažuriraj vrijednosti proizvoda
   edit_common_attributes:
-    label: Uredi uobičajene atribute
+    label: Uredi atribute
     perform:
-      label: Uredi uobičajene atribute
-    cleaner:
-      label: Obriši datoteke za uobičajene atribute
+      label: Uredi atribute
   csv_product_export:
     label: Izvoz proizvoda u CSV
     export.label: Izvoz proizvoda
