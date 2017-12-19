@@ -7,6 +7,7 @@ use Oro\Bundle\DataGridBundle\Extension\Formatter\Configuration as FormatterConf
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\DataGridBundle\Datagrid\Configuration\Product\ConfigurationRegistry;
 use Pim\Bundle\DataGridBundle\Datagrid\Configuration\Product\ContextConfigurator;
+use Oro\Bundle\DataGridBundle\Extension\Formatter\Configuration;
 
 class ColumnsConfiguratorSpec extends ObjectBehavior
 {
@@ -49,6 +50,19 @@ class ColumnsConfiguratorSpec extends ObjectBehavior
         ];
         $path = sprintf('[source][%s]', ContextConfigurator::USEABLE_ATTRIBUTES_KEY);
         $configuration->offsetGetByPath($path)->willReturn($attributes);
+        $otherColumns = [
+            'parent' => [
+                'code'          => 'parent',
+                'label'         => 'parent',
+                'type'          => 'pim_catalog_text',
+                'sortOrder'     => 2,
+                'group'         => 'General',
+                'groupOrder'    => 1
+            ],
+        ];
+
+        $path = sprintf('[%s]', Configuration::OTHER_COLUMNS_KEY);
+        $configuration->offsetGetByPath($path)->willReturn($otherColumns);
 
         $displayColumnPath = sprintf(ContextConfigurator::SOURCE_PATH, ContextConfigurator::DISPLAYED_COLUMNS_KEY);
         $configuration->offsetGetByPath($displayColumnPath)->shouldBeCalled();
@@ -82,7 +96,7 @@ class ColumnsConfiguratorSpec extends ObjectBehavior
         $configuration->offsetSetByPath($columnConfPath, $displayedColumns)->shouldBeCalled();
 
         $availableColumnPath = sprintf(ContextConfigurator::SOURCE_PATH, ContextConfigurator::AVAILABLE_COLUMNS_KEY);
-        $configuration->offsetSetByPath($availableColumnPath, $availableColumns)->shouldBeCalled();
+        $configuration->offsetSetByPath($availableColumnPath, $availableColumns + $otherColumns)->shouldBeCalled();
 
         $this->configure($configuration);
     }

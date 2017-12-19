@@ -44,14 +44,19 @@ datagrid:
             updated:
                 label:         Updated At
                 type:          field
-            groups:
-                label:         Groups
-                data_name:     groups
-                type:          field
             complete_variant_products:
                 label:         Variant products
                 data_name:     complete_variant_product
                 frontend_type: complete-variant-product
+        other_columns:
+            groups:
+                label:         Groups
+                data_name:     groups
+                type:          field
+            parent:
+                label: Parent
+                data_name: parent
+                type: field
         properties:
             id:
                 type:          field
@@ -279,3 +284,12 @@ datagrid:
                     type: label_or_identifier
                     label: Label or identifier
                     data_name: label_or_identifier
+                parent:
+                    label:         Parent
+                    data_name:     parent
+                    type:          product_value_string
+                    ftype:         parent
+                    options:
+                        field_options:
+                            attr:
+                                choice_list: true

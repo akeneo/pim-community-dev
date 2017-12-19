@@ -5,9 +5,11 @@ namespace Pim\Bundle\DataGridBundle\Normalizer;
 use Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface;
 use Pim\Bundle\DataGridBundle\Normalizer\IdEncoder;
 use Pim\Bundle\EnrichBundle\Normalizer\ImageNormalizer;
+use Pim\Component\Catalog\Model\EntityWithFamilyInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ValueCollectionInterface;
 use Pim\Component\Catalog\Model\ValueInterface;
+use Pim\Component\Catalog\Model\VariantProductInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -70,6 +72,7 @@ class ProductNormalizer implements NormalizerInterface, NormalizerAwareInterface
         $data['search_id'] = IdEncoder::encode($data['document_type'], $data['technical_id']);
         $data['is_checked'] = false;
         $data['complete_variant_product'] = null;
+        $data['parent'] = $this->getParentCode($product);
 
         return $data;
     }
@@ -181,5 +184,19 @@ class ProductNormalizer implements NormalizerInterface, NormalizerAwareInterface
         $data = $this->normalizer->normalize($values, $format, $context);
 
         return $data;
+    }
+
+    /**
+     * @param EntityWithFamilyInterface $product
+     *
+     * @return null|string
+     */
+    private function getParentCode(EntityWithFamilyInterface $product): ?string
+    {
+        if ($product instanceof VariantProductInterface && null !== $product->getParent()) {
+            return $product->getParent()->getCode();
+        }
+
+        return null;
     }
 }
