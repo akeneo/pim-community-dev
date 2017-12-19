@@ -43,7 +43,7 @@ define(
                                 familyName: i18n.getLabel(family.labels, catalogLocal, family.code)
                             })
                         );
-                    })
+                    });
             }
         });
     }
