@@ -1,5 +1,9 @@
 # 2.1.x
 
+## Bug fixes
+
+- PIM-7055: No product version was added when associating it with a product model, it's now fixed
+
 ## Improvements
 
 - API-415: Update a list of options of a simple or multi select attribute
