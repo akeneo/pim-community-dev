@@ -85,9 +85,9 @@ Feature: Navigate among variant entities
   Scenario: If I can't edit an attribute that comes from a parent, I can click on a link to open the related entity
     When I am on the "1111111127" product page
     And I visit the "Marketing" group
-    Then I should see the text "This attribute can be updated on the attributes by Color"
-    When I click on "This attribute can be updated on the attributes by Color" footer message of the field "Variation Name"
+    Then I should see the text "This attribute can be updated in the attributes by Color"
+    When I click on "This attribute can be updated in the attributes by Color" footer message of the field "Variation Name"
     Then I should be on the product model "apollon_red" edit page
     When I visit the "ERP" group
-    And I click on "This attribute can be updated on the common attributes." footer message of the field "Supplier"
+    And I click on "This attribute can be updated in the common attributes." footer message of the field "Supplier"
     Then I should be on the product model "apollon" edit page

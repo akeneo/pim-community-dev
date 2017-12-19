@@ -28,7 +28,7 @@ Feature: Edit a variant product
     When I visit the "Product" group
     Then the field Composition should be read only
     And the field Material should be read only
-    And I should see the text "This attribute can be updated on the attributes by Color"
+    And I should see the text "This attribute can be updated in the attributes by Color"
     And I should see the text "Color (Variant axis)"
     And I should see the text "Size (Variant axis)"
 
@@ -38,7 +38,7 @@ Feature: Edit a variant product
     When I visit the "Ecommerce" group
     Then the field Meta title should be read only
     And the field Meta description should be read only
-    And I should see the text "This attribute can be updated on the common attributes."
+    And I should see the text "This attribute can be updated in the common attributes."
 
   Scenario: Axis attributes are read only
     Given I am logged in as "Mary"
