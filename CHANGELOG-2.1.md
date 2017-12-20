@@ -31,15 +31,9 @@
 - PIM-7046: Add ability to customise empty grid message and illustration
 - PIM-6917: Fix CSS glitches
 
-## Update jobs
+## Migrations
 
-IMPORTANT: In order to use the new mass edit, please execute
-
-```
-bin/console akeneo:batch:create-job internal add_to_category mass_edit add_to_category '{}' 'Mass add to categories' --env=prod
-bin/console akeneo:batch:create-job internal move_to_category mass_edit move_to_category '{}' 'Mass move to categories' --env=prod
-bin/console akeneo:batch:create-job internal remove_from_category mass_edit remove_from_category '{}' 'Mass remove from categories' --env=prod
-```
+Please run the doctrine migrations command in order to use the new mass edit: `bin/console doctrine:migrations:migrate --env=prod`
 
 ## BC breaks
 
