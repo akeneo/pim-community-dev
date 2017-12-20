@@ -204,6 +204,7 @@ pimee_enrich:
                     description: Tags will be added to the assets.
                     label_count: "{1}Add tags to <span class=\"AknFullPage-title--highlight\">1 asset</span>|] 1, Inf [Add tags to <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} assets</span>"
                     field: Tags
+                    empty_selection: Please choose tags
                 add_to_category:
                     label: Classify assets in categories
                     description: The assets will be positioned into following categories, the existing placement will be lost.

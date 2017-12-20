@@ -43,7 +43,8 @@ define(
                 this.$el.html(this.template({
                     readOnly: this.readOnly,
                     value: this.getValue().join(','),
-                    field: __(this.config.field)
+                    field: __(this.config.field),
+                    emptySelectionLabel: __('pimee_enrich.mass_edit.asset.operation.add_tag.empty_selection')
                 }));
 
                 var options = Select2Configurator.getConfig(this.getValue());
