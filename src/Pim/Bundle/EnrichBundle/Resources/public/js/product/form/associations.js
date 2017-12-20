@@ -26,7 +26,6 @@ define(
         'pim/datagrid/state',
         'require-context',
         'pim/form-builder',
-        'pim/media-url-generator',
         'pim/security-context'
     ],
     function (
@@ -47,7 +46,6 @@ define(
         DatagridState,
         requireContext,
         FormBuilder,
-        MediaUrlGenerator,
         securityContext
     ) {
         let state = {};
@@ -289,6 +287,8 @@ define(
                     const association = associations[assocType.code];
 
                     assocType.productCount = association && association.products ? association.products.length : 0;
+                    assocType.productModelCount = association && association.product_models ?
+                        association.product_models.length : 0;
                     assocType.groupCount = association && association.groups ? association.groups.length : 0;
                 });
             },
@@ -484,16 +484,23 @@ define(
              * @param {Object} datagrid
              */
             unselectModel: function (model, datagrid) {
-                const assocType           = this.getCurrentAssociationType();
-                const assocTarget         = this.getDatagridTarget(datagrid);
-                let currentAssociations = _.uniq(this.getCurrentAssociations(datagrid));
+                const assocType = this.getCurrentAssociationType();
+                const assocTarget = this.getDatagridTarget(datagrid);
 
-                const index = currentAssociations.indexOf(datagrid.getModelIdentifier(model));
-                if (-1 !== index) {
-                    currentAssociations.splice(index, 1);
+                let assocSubTarget = assocTarget;
+                if (assocTarget === 'products') {
+                    // We check from what association target we have to remove model (products or product_models)
+                    assocSubTarget = (model.attributes.document_type === 'product') ? 'products' : 'product_models';
                 }
 
-                this.updateFormDataAssociations(currentAssociations, assocType, assocTarget);
+                const associationsField = this.getFormData().associations;
+                let associations = associationsField[assocType][assocSubTarget];
+                const index = associations.indexOf(datagrid.getModelIdentifier(model));
+                if (-1 !== index) {
+                    associations.splice(index, 1);
+                }
+
+                this.updateFormDataAssociations(associations, assocType, assocSubTarget);
                 this.updateSelectedAssociations('unselect', datagrid, model.id);
             },
 
@@ -607,15 +614,33 @@ define(
              * Opens the panel to select new products to associate
              */
             addAssociations: function () {
-                this.manageProducts().then((productIdentifiers) => {
+                this.manageProducts().then((productAndProductModelIdentifiers) => {
+                    let productIds = [];
+                    let productModelIds = [];
+                    productAndProductModelIdentifiers.forEach((item) => {
+                        const matchProductModel = item.match(/^product_model_(.*)$/);
+                        if (matchProductModel) {
+                            productModelIds.push(matchProductModel[1]);
+                        } else {
+                            const matchProduct = item.match(/^product_(.*)$/);
+                            productIds.push(matchProduct[1]);
+                        }
+                    });
+
                     const assocType = this.getCurrentAssociationType();
-                    const assocTarget = this.getCurrentAssociationTarget();
-                    const previousIdentifiers = this.getFormData().associations[assocType][assocTarget];
+                    const previousProductIds = this.getFormData().associations[assocType].products;
+                    const previousProductModelIds = this.getFormData().associations[assocType].product_models;
 
                     this.updateFormDataAssociations(
-                        previousIdentifiers.concat(productIdentifiers),
+                        previousProductIds.concat(productIds),
                         assocType,
-                        assocTarget
+                        'products'
+                    );
+
+                    this.updateFormDataAssociations(
+                        previousProductModelIds.concat(productModelIds),
+                        assocType,
+                        'product_models'
                     );
 
                     this.getRoot().trigger('pim_enrich:form:update-association');
@@ -638,19 +663,6 @@ define(
                             form.setCustomTitle(__('pim_enrich.form.product.tab.associations.manage', {
                                 associationType: associationType.labels[UserContext.get('catalogLocale')]
                             }));
-
-                            form.setImagePathMethod(function (item) {
-                                let filePath = null;
-                                if (item.meta.image !== null) {
-                                    filePath = item.meta.image.filePath;
-                                }
-
-                                return MediaUrlGenerator.getMediaShowUrl(filePath, 'thumbnail_small');
-                            });
-
-                            form.setLabelMethod(function (item) {
-                                return item.meta.label[this.getLocale()];
-                            });
 
                             let modal = new Backbone.BootstrapModal({
                                 className: 'modal modal--fullPage modal--topButton',

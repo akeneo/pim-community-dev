@@ -4,6 +4,7 @@
 
 - API-415: Update a list of options of a simple or multi select attribute
 - PIM-6652: Add a parent filter into the product and product model grid
+- PIM-7033: Allow user to select product models as associations in UI
 
 ## BC breaks
 
@@ -47,7 +48,7 @@ Removed typehint of ProductInterface in the Pim\Component\Catalog\Updater\Setter
 ## Improvements
 
 - PIM-6480: Add gallery view and display selector to the product grid
-- PIM-6621: add search on label and code on products and product models
+- PIM-6621: Add search on label and code on products and product models
 - PIM-6966: Add tracker information for product model, product variant and family variant
 - PIM-6990: Add new screen for managing product associations
 

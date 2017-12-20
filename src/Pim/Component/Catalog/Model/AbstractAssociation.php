@@ -169,6 +169,14 @@ abstract class AbstractAssociation implements AssociationInterface
     /**
      * {@inheritdoc}
      */
+    public function setProductModels(array $productModels): void
+    {
+        $this->productModels = $productModels;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function setGroups($groups)
     {
         $this->groups = $groups;

@@ -192,6 +192,7 @@ config:
                         urls:
                             get: pim_enrich_product_model_rest_get
                             children: pim_enrich_product_model_rest_children_list
+                            list: pim_enrich_product_model_rest_index
                 product-model-by-code:
                     module: pim/base-fetcher
                     options:
@@ -715,6 +716,7 @@ config:
         pim/product-edit-form/start-copy:                        pimenrich/js/product/form/start-copy
         pim/product-edit-form/variant-navigation:                pimenrich/js/product/form/variant-navigation
         pim/product-edit-form/attributes/variant-axes:           pimenrich/js/product/form/attributes/variant-axes
+        pim/product-edit-form/product-and-product-model-picker:  pimenrich/js/product/form/product-and-product-model-picker
         pim/product-edit-form/attributes/read-only-parent-attributes: pimenrich/js/product/form/attributes/read-only-parent-attributes
 
         # Product model

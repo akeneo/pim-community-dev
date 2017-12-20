@@ -483,7 +483,7 @@ pim_enrich:
                         none_exist: No association types exist.
                         show_products: Display products
                         show_groups: Display groups
-                        number_of_associations: "{{ productCount }} product(s) and {{ groupCount }} group(s)"
+                        number_of_associations: "{{ productCount }} product(s), {{ productModelCount }} product model(s) and {{ groupCount }} group(s)"
                     association_type_selector: Association type
                     target: Target
                     manage: Add {{ associationType }} associations

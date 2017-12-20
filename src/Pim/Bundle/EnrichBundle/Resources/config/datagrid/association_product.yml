@@ -44,6 +44,10 @@ datagrid:
             completeness:
                 label:         Complete
                 frontend_type: completeness
+            complete_variant_products:
+                label:         Variant products
+                data_name:     complete_variant_product
+                frontend_type: complete-variant-product
             created:
                 label:         Created At
                 type:          field
@@ -52,6 +56,7 @@ datagrid:
                 type:          field
         properties:
             id: ~
+            document_type: ~
         filters:
             columns:
                 label_or_identifier:

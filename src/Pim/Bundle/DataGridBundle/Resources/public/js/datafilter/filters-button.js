@@ -12,6 +12,7 @@ define(
     ) {
         return BaseForm.extend({
             displayAsPanel: false,
+            className: 'Toto',
 
             /**
              * @inheritdoc

@@ -84,6 +84,13 @@ interface AssociationInterface extends ReferableInterface
     public function removeProductModel(ProductModelInterface $productModel): void;
 
     /**
+     * Set a product model collection.
+     *
+     * @param ProductModelInterface[] $productModels
+     */
+    public function setProductModels(array $productModels): void;
+
+    /**
      * Set groups
      *
      * @param GroupInterface[] $groups
