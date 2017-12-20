@@ -300,10 +300,10 @@ define(
              */
             changeAssociationType: function (event) {
                 event.preventDefault();
-                const associationType = event.currentTarget.dataset.associationtype;
+                const associationType = event.currentTarget.dataset.associationType;
                 this.setCurrentAssociationType(associationType);
 
-                this.$('.AknTitleContainer.association-type[data-association-type="' + associationType + '"]')
+                this.$(`.AknTitleContainer.association-type[data-association-type="${associationType}"]`)
                     .removeClass('AknTitleContainer--hidden')
                     .siblings('.AknTitleContainer.association-type:not(.AknTitleContainer--hidden)')
                     .addClass('AknTitleContainer--hidden');
@@ -653,7 +653,7 @@ define(
              * @return {Promise}
              */
             manageProducts: function () {
-                let deferred = $.Deferred();
+                const deferred = $.Deferred();
 
                 FormBuilder.build('pim-associations-product-picker-form').then((form) => {
                     FetcherRegistry

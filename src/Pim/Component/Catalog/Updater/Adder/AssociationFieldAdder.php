@@ -215,7 +215,7 @@ class AssociationFieldAdder extends AbstractFieldAdder
      */
     protected function checkAssociationData($field, array $data, $assocTypeCode, $items)
     {
-        if (!is_array($items) || !is_string($assocTypeCode) || !isset($items['products']) || !isset($items['groups'])) {
+        if (!is_array($items) || !is_string($assocTypeCode) || !isset($items['products']) || !isset($items['groups']) || !isset($items['product_models'])) {
             throw InvalidPropertyTypeException::validArrayStructureExpected(
                 $field,
                 sprintf('association format is not valid for the association type "%s".', $assocTypeCode),

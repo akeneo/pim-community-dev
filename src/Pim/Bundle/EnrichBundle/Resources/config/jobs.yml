@@ -9,6 +9,7 @@ parameters:
     pim_enrich.job.name.remove_product_value: 'remove_product_value'
     pim_enrich.job.name.move_to_category: 'move_to_category'
     pim_enrich.job.name.add_to_category: 'add_to_category'
+    pim_enrich.job.name.add_association: 'add_association'
     pim_enrich.job.name.remove_from_category: 'remove_from_category'
     pim_enrich.job.name.edit_common_attributes: 'edit_common_attributes'
     pim_enrich.job.name.add_to_existing_product_model: 'add_to_existing_product_model'
@@ -133,6 +134,17 @@ services:
             - '@akeneo_batch.job_repository'
             -
                 - '@pim_enrich.step.remove_from_category.mass_edit'
+        tags:
+            - { name: akeneo_batch.job, connector: '%pim_enrich.connector_name.mass_edit%', type: '%pim_enrich.job.mass_edit_type%' }
+
+    pim_enrich.job.add_association:
+        class: '%pim_connector.job.simple_job.class%'
+        arguments:
+            - '%pim_enrich.job.name.add_association%'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            -
+                - '@pim_enrich.step.add_association.mass_edit'
         tags:
             - { name: akeneo_batch.job, connector: '%pim_enrich.connector_name.mass_edit%', type: '%pim_enrich.job.mass_edit_type%' }
 

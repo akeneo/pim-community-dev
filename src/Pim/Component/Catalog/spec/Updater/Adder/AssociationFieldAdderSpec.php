@@ -115,7 +115,7 @@ class AssociationFieldAdderSpec extends ObjectBehavior
             )
         )->during(
             'addFieldData',
-            [$product, 'associations', ['assoc_type_code' => ['products' => 'string', 'groups' => []]]]
+            [$product, 'associations', ['assoc_type_code' => ['products' => 'string', 'groups' => [], 'product_models' => []]]]
         );
     }
 
@@ -201,7 +201,7 @@ class AssociationFieldAdderSpec extends ObjectBehavior
             [
                 $product,
                 'associations',
-                ['non valid association type code' => ['groups' => [], 'products' => []]]
+                ['non valid association type code' => ['groups' => [], 'products' => [], 'product_models' => []]]
             ]
         );
     }
@@ -231,7 +231,7 @@ class AssociationFieldAdderSpec extends ObjectBehavior
             [
                 $product,
                 'associations',
-                ['xsell' => ['groups' => [], 'products' => ['not existing product']]]
+                ['xsell' => ['groups' => [], 'products' => ['not existing product'], 'product_models' => []]]
             ]
         );
     }
@@ -261,7 +261,7 @@ class AssociationFieldAdderSpec extends ObjectBehavior
             [
                 $product,
                 'associations',
-                ['xsell' => ['groups' => ['not existing group'], 'products' => []]]
+                ['xsell' => ['groups' => ['not existing group'], 'products' => [], 'product_models' => []]]
             ]
         );
     }

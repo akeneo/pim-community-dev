@@ -33,7 +33,9 @@ define(
             template: _.template(template),
             currentStep: 'choose',
             events: {
-                'click .wizard-action': 'applyAction'
+                'click .wizard-action': function (event) {
+                    this.applyAction(event.target.dataset.actionTarget);
+                }
             },
 
             /**
@@ -43,6 +45,19 @@ define(
                 this.config = _.extend({}, meta.config);
 
                 BaseForm.prototype.initialize.apply(this, arguments);
+            },
+
+            /**
+             * {@inheritdoc}
+             */
+            configure: function () {
+                this.listenTo(
+                    this.getRoot(),
+                    'mass-edit:navigate:action',
+                    this.applyAction.bind(this)
+                );
+
+                return BaseForm.prototype.configure.apply(this, arguments);
             },
 
             /**
@@ -161,10 +176,10 @@ define(
             /**
              * Apply the action triggered by a dom event
              *
-             * @param {Event} event
+             * @param {String} action
              */
-            applyAction: function (event) {
-                switch (event.target.dataset.actionTarget) {
+            applyAction: function (action) {
+                switch (action) {
                     case 'grid':
                         router.redirectToRoute(this.config.backRoute);
                         break;

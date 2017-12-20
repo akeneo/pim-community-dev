@@ -3,6 +3,7 @@
 .AknGrid {
   @miniPadding: 2px;
   @fullImageHeight: 200px;
+  @smallImageHeight: 150px;
 
   font-size: @AknDefaultFontSize;
   width: 100%;
@@ -189,6 +190,15 @@
     margin-right: -20px;
   }
 
+  &--gallery &-body--small {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  }
+
+  &-fullImage--small {
+    height: @smallImageHeight;
+    min-height: @smallImageHeight;
+  }
+
   &--inner &-body {
     margin-left: -20px;
     margin-top: 0;
@@ -340,7 +350,6 @@
 
   &-bodyRow--thumbnail {
     border: 1px @AknBorderColor solid;
-    height: 280px;
     overflow: hidden;
     border-radius: 3px;
     display: block;

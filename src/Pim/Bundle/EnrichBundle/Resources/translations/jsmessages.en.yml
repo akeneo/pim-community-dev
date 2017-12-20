@@ -1062,11 +1062,11 @@ pim_enrich:
                 add_to_category:
                     label: Add to categories
                     label_count: "{1}Add <span class=\"AknFullPage-title--highlight\">1 product</span> to categories|] 1, Inf [Add <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span> to categories"
-                    description: The products will be positioned into following categories, the existing placement is kept.
+                    description: The products will be classified into following categories, the existing classification is kept.
                 move_to_category:
                     label: Move between categories
                     label_count: "{1}Move <span class=\"AknFullPage-title--highlight\">1 product</span> between categories|] 1, Inf [Move <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span> between categories"
-                    description: The products will be positioned into following categories, the existing placement is lost.
+                    description: The products will be classified into following categories, the existing classification is lost.
                 remove_from_category:
                     label: Remove from categories
                     label_count: "{1}Remove <span class=\"AknFullPage-title--highlight\">1 product</span> from categories|] 1, Inf [Remove <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span> from categories"
@@ -1075,6 +1075,11 @@ pim_enrich:
                     label: Add to an existing product model
                     label_count: "{1}Add <span class=\"AknFullPage-title--highlight\">1 product</span> to an existing product model|] 1, Inf [Add <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span> to an existing product model"
                     description: The product model selected will gather the products and allows the enrichment of their common properties.
+                associate_to_product_and_product_model:
+                    label: Associate to products
+                    label_count: "{1}Associate <span class=\"AknFullPage-title--highlight\">1 product</span> to existing products or product models|] 1, Inf [Associate <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span> to existing products or product models"
+                    description: The products will be associated to the selected products and product models
+                    confirm: You are about tho associate your selection to
         family:
             title: Families bulk action
             confirm: "{1}You are about to update a family with the following information, please confirm.|] 1, Inf [You are about to update {{ itemsCount }} families with the following information, please confirm."
@@ -1156,6 +1161,22 @@ batch_jobs:
             label: Edit attributes
         cleaner:
             label: Clean files for attributes
+    add_to_category:
+        label: Add to category
+        perform:
+            label: Add to category
+    move_to_category:
+        label: Move to category
+        perform:
+            label: Move to category
+    remove_from_category:
+        label: Remove from category
+        perform:
+            label: Remove from category
+    add_association:
+        label: Associate to products
+        perform:
+            label: Associate to products
     add_to_existing_product_model:
         label: Add to an existing product model
         perform:

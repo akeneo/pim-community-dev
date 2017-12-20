@@ -1,0 +1,22 @@
+<div class="AknDropdown AknButtonList-item association-type-selector">
+    <a class="AknActionButton AknActionButton--important AknActionButton--withoutBorder" data-toggle="dropdown">
+        <span class="AknActionButton-highlight"><%- i18n.getLabel(associationType.labels, locale, associationType.code) %></span>
+        <span class="AknActionButton-caret"></span>
+    </a>
+    <ul class="associations-list AknDropdown-menu">
+        <div class="AknDropdown-menuTitle"><%- label %></div>
+        <% _.each(associationTypes, function (associationTypeSwitch) { %>
+            <li data-association-type="<%- associationTypeSwitch.code %>">
+                <a class="AknDropdown-menuLink<% if (associationType === associationTypeSwitch) { %> AknDropdown-menuLink--active<% } %> label">
+                    <%- i18n.getLabel(associationTypeSwitch.labels, locale, associationTypeSwitch.code) %>
+                </a>
+            </li>
+        <% }) %>
+    </ul>
+</div>
+
+<div class="AknButtonList AknButtonList--right">
+    <div class="AknButton AknButton--action AknButtonList-item add-associations">
+        <%- addAssociationsLabel %>
+    </div>
+</div>
