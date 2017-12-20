@@ -1199,4 +1199,12 @@ class EnterpriseFixturesContext extends BaseFixturesContext
     {
         return $this->getContainer()->get('pim_catalog.repository.product_without_permission');
     }
+
+    /**
+     * @return \Pim\Component\Catalog\Repository\ProductModelRepositoryInterface
+     */
+    protected function getProductModelRepository()
+    {
+        return $this->getContainer()->get('pim_catalog.repository.product_model_without_permission');
+    }
 }

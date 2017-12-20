@@ -9,6 +9,7 @@ use Doctrine\Common\Util\ClassUtils;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\AssociationInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Model\ProductModelInterface;
 use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
 use PimEnterprise\Component\Security\Attributes;
 use PimEnterprise\Component\Security\NotGrantedDataFilterInterface;
@@ -38,12 +39,14 @@ class NotGrantedAssociatedProductFilterSpec extends ObjectBehavior
         ProductInterface $associatedProduct1,
         ProductInterface $associatedProduct2,
         ProductInterface $associatedProduct3,
+        ProductModelInterface $associatedProductModel1,
         AssociationInterface $associationXSELL,
         ArrayCollection $associations,
         Collection $associatedProducts,
+        Collection $associatedProductModels,
         \ArrayIterator $iterator,
         \ArrayIterator $iteratorProducts,
-        ArrayCollection $clonedAssociations
+        \ArrayIterator $iteratorProductModels
     ) {
         $product->getAssociations()->willReturn($associations);
         $associations->getIterator()->willReturn($iterator);
@@ -59,6 +62,13 @@ class NotGrantedAssociatedProductFilterSpec extends ObjectBehavior
         $iteratorProducts->current()->willReturn($associatedProduct1);
         $iteratorProducts->next()->shouldBeCalled();
 
+        $associationXSELL->getProductModels()->willReturn($associatedProductModels);
+        $associatedProductModels->getIterator()->willReturn($iteratorProductModels);
+        $iteratorProductModels->rewind()->shouldBeCalled();
+        $iteratorProductModels->valid()->willReturn(true, false);
+        $iteratorProductModels->current()->willReturn($associatedProductModel1);
+        $iteratorProductModels->next()->shouldBeCalled();
+
         $authorizationChecker->isGranted([Attributes::VIEW], $associatedProduct1)->willReturn(false);
         $associatedProducts->removeElement($associatedProduct1)->shouldBeCalled();
 
@@ -68,7 +78,11 @@ class NotGrantedAssociatedProductFilterSpec extends ObjectBehavior
         $authorizationChecker->isGranted([Attributes::VIEW], $associatedProduct3)->willReturn(true);
         $associatedProducts->removeElement($associatedProduct3)->shouldNotBeCalled();
 
+        $authorizationChecker->isGranted([Attributes::VIEW], $associatedProductModel1)->willReturn(true);
+        $associatedProductModels->removeElement($associatedProductModel1)->shouldNotBeCalled();
+
         $associationXSELL->setProducts($associatedProducts)->shouldBeCalled();
+        $associationXSELL->setProductModels($associatedProductModels)->shouldBeCalled();
         $product->setAssociations(Argument::type(ArrayCollection::class))->shouldBeCalled();
 
         $this->filter($product)->shouldReturnAnInstanceOf(ProductInterface::class);

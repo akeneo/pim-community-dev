@@ -3,7 +3,6 @@
 namespace spec\PimEnterprise\Component\Catalog\Security\Merger;
 
 use Akeneo\Component\StorageUtils\Exception\InvalidObjectException;
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Util\ClassUtils;
 use PhpSpec\ObjectBehavior;
@@ -11,7 +10,6 @@ use Pim\Component\Catalog\Model\AssociationInterface;
 use Pim\Component\Catalog\Model\AssociationTypeInterface;
 use Pim\Component\Catalog\Model\Product;
 use Pim\Component\Catalog\Model\ProductInterface;
-use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
 use Pim\Component\Catalog\Updater\Setter\FieldSetterInterface;
 use PimEnterprise\Component\Security\Attributes;
 use PimEnterprise\Component\Security\NotGrantedDataMergerInterface;
@@ -47,7 +45,9 @@ class NotGrantedAssociatedProductMergerSpec extends ObjectBehavior
         AssociationInterface $XSELLForFilteredProduct,
         AssociationTypeInterface $associationTypeXSELLForFilteredProduct,
         AssociationInterface $XSELLForFullProduct,
-        AssociationTypeInterface $associationTypeXSELLForFullProduct
+        AssociationTypeInterface $associationTypeXSELLForFullProduct,
+        Collection $productModels,
+        \Iterator $iteratorProductModels
     ) {
         $productB->getIdentifier()->willReturn('product_b');
         $productC->getIdentifier()->willReturn('product_c');
@@ -63,6 +63,10 @@ class NotGrantedAssociatedProductMergerSpec extends ObjectBehavior
         $filteredProduct->getAssociations()->willReturn([$XSELLForFilteredProduct]);
         $XSELLForFilteredProduct->getAssociationType()->willReturn($associationTypeXSELLForFilteredProduct);
         $XSELLForFilteredProduct->getProducts()->willReturn([$productC, $productD]);
+        $XSELLForFilteredProduct->getProductModels()->willReturn($productModels);
+        $productModels->getIterator()->willReturn($iteratorProductModels);
+        $iteratorProductModels->rewind()->shouldBeCalled();
+        $iteratorProductModels->valid()->willReturn(false);
         $XSELLForFilteredProduct->getGroups()->willReturn([]);
         $associationTypeXSELLForFilteredProduct->getCode()->willReturn('X_SELL');
 
@@ -84,7 +88,9 @@ class NotGrantedAssociatedProductMergerSpec extends ObjectBehavior
         AssociationInterface $UPSELLForFilteredProduct,
         AssociationTypeInterface $associationTypeUPSELLForFilteredProduct,
         AssociationInterface $XSELLForFullProduct,
-        AssociationTypeInterface $associationTypeXSELLForFullProduct
+        AssociationTypeInterface $associationTypeXSELLForFullProduct,
+        Collection $productModels,
+        \Iterator $iteratorProductModels
     ) {
         $productB->getIdentifier()->willReturn('product_b');
         $productC->getIdentifier()->willReturn('product_c');
@@ -99,6 +105,10 @@ class NotGrantedAssociatedProductMergerSpec extends ObjectBehavior
         $filteredProduct->getAssociations()->willReturn([$UPSELLForFilteredProduct]);
         $UPSELLForFilteredProduct->getAssociationType()->willReturn($associationTypeUPSELLForFilteredProduct);
         $UPSELLForFilteredProduct->getProducts()->willReturn([$productC, $productD]);
+        $UPSELLForFilteredProduct->getProductModels()->willReturn($productModels);
+        $productModels->getIterator()->willReturn($iteratorProductModels);
+        $iteratorProductModels->rewind()->shouldBeCalled();
+        $iteratorProductModels->valid()->willReturn(false);
         $UPSELLForFilteredProduct->getGroups()->willReturn([]);
         $associationTypeUPSELLForFilteredProduct->getCode()->willReturn('UPSELL');
 
@@ -121,7 +131,9 @@ class NotGrantedAssociatedProductMergerSpec extends ObjectBehavior
         AssociationInterface $XSELLForFilteredProduct,
         AssociationTypeInterface $associationTypeXSELLForFilteredProduct,
         AssociationInterface $XSELLForFullProduct,
-        AssociationTypeInterface $associationTypeXSELLForFullProduct
+        AssociationTypeInterface $associationTypeXSELLForFullProduct,
+        Collection $productModels,
+        \Iterator $iteratorProductModels
     ) {
         $productB->getIdentifier()->willReturn('product_b');
         $productC->getIdentifier()->willReturn('product_c');
@@ -137,6 +149,10 @@ class NotGrantedAssociatedProductMergerSpec extends ObjectBehavior
         $filteredProduct->getAssociations()->willReturn([$XSELLForFilteredProduct]);
         $XSELLForFilteredProduct->getAssociationType()->willReturn($associationTypeXSELLForFilteredProduct);
         $XSELLForFilteredProduct->getProducts()->willReturn([]);
+        $XSELLForFilteredProduct->getProductModels()->willReturn($productModels);
+        $productModels->getIterator()->willReturn($iteratorProductModels);
+        $iteratorProductModels->rewind()->shouldBeCalled();
+        $iteratorProductModels->valid()->willReturn(false);
         $XSELLForFilteredProduct->getGroups()->willReturn([]);
         $associationTypeXSELLForFilteredProduct->getCode()->willReturn('X_SELL');
 
