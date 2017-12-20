@@ -1,9 +1,8 @@
 <?php
 
-namespace PimEnterprise\Bundle\ApiBundle\tests\EndToEnd\Controller\AssetCategory;
+namespace PimEnterprise\Bundle\ApiBundle\tests\EndToEnd\Controller\Asset;
 
 use Akeneo\Test\Integration\Configuration;
-use PimEnterprise\Bundle\ApiBundle\tests\EndToEnd\Controller\Asset\AbstractAssetTestCase;
 use Symfony\Component\HttpFoundation\Response;
 
 class OffsetListAssetIntegration extends AbstractAssetTestCase

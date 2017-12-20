@@ -88,6 +88,7 @@ class AssetCategoryController
      * @param RouterInterface                $router
      * @param ParameterValidatorInterface    $parameterValidator
      * @param PaginatorInterface             $paginator
+     * @param StreamResourceResponse         $partialUpdateStreamResource
      * @param array                          $apiConfiguration
      */
     public function __construct(

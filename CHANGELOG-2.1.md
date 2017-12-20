@@ -1,3 +1,8 @@
+# 2.1.x
+- API-429: Create an asset with the API
+- API-430: Update partially an asset with the API
+- API-431: Update partially a list of assets with the API
+
 # 2.1.0-ALPHA2 (2017-12-15)
 
 ## Improvements

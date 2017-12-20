@@ -11,3 +11,7 @@ pim_api_asset_list:
     type: action
     label: pim_api.acl.asset.list
     group_name: pim_api.acl_group.asset
+pim_api_asset_edit:
+    type: action
+    label: pim_api.acl.asset.edit
+    group_name: pim_api.acl_group.asset

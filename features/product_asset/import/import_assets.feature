@@ -39,7 +39,7 @@ Feature: Import assets
     """
     code;categories;localized;description;tags;end_of_use
     paint;other;0;New description of my paint.;car,cities,vintage,awesome;2006-05-12
-    akene;images;1;Beautiful akene;cities,flowers,akeneo;
+    akene;images;0;Beautiful akene;cities,flowers,akeneo;
     """
     And the following job "csv_clothing_asset_import" configuration:
       | filePath | %file to import% |
@@ -114,7 +114,7 @@ Feature: Import assets
     When I am on the "csv_clothing_asset_import" import job page
     And I launch the import job
     And I wait for the "csv_clothing_asset_import" job to finish
-    Then I should see the text "Attribute code may contain only letters, numbers and underscores."
+    Then I should see the text "Asset code may contain only letters, numbers and underscores: invalid#$%"
 
   Scenario: Import asset with missing value for field localized
     Given the "clothing" catalog configuration
@@ -176,7 +176,7 @@ Feature: Import assets
     When I am on the "csv_clothing_asset_import" import job page
     And I launch the import job
     And I wait for the "csv_clothing_asset_import" job to finish
-    Then I should see the text "Property \"end_of_use\" expects a string with the format \"yyyy-mm-dd\" as data, \"2006/05/12\" given"
+    Then I should see the text "Property \"end_of_use\" expects a string with the format \"Y-m-d\TH:i:sO\" as data, \"2006/05/12\" given"
     And I should see the text "read lines 1"
     And I should see the text "Skipped 1"
 
