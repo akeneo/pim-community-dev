@@ -43,7 +43,7 @@ Feature: Validate editing common text attributes of multiple products
   Scenario: Successfully mass edit a textarea attribute
     Given I select rows boots and sneakers
     And I press the "Bulk actions" button
-    And I choose the "Edit common attributes" operation
+    And I choose the "Edit attributes" operation
     And I display the Info attribute
     And I change the "Info" to "Very useful information"
     And I confirm mass edit
@@ -53,7 +53,7 @@ Feature: Validate editing common text attributes of multiple products
     When I am on the products grid
     And I select rows boots, sandals and sneakers
     And I press the "Bulk actions" button
-    And I choose the "Edit common attributes" operation
+    And I choose the "Edit attributes" operation
     And I display the Info attribute
     And I confirm mass edit
     And I wait for the "edit_common_attributes" job to finish
@@ -63,7 +63,7 @@ Feature: Validate editing common text attributes of multiple products
     When I am on the products grid
     And I select rows boots, sandals and sneakers
     And I press the "Bulk actions" button
-    And I choose the "Edit common attributes" operation
+    And I choose the "Edit attributes" operation
     And I display the Info attribute
     And I change the "Info" to "Extremely useful information"
     And I move on to the next step
@@ -75,7 +75,7 @@ Feature: Validate editing common text attributes of multiple products
   Scenario: Successfully mass edit a text attribute
     Given I select rows boots and sneakers
     And I press the "Bulk actions" button
-    And I choose the "Edit common attributes" operation
+    And I choose the "Edit attributes" operation
     And I display the Comment attribute
     And I change the "Comment" to "Very nice comment"
     And I confirm mass edit
@@ -85,7 +85,7 @@ Feature: Validate editing common text attributes of multiple products
     When I am on the products grid
     And I select rows boots, sandals and sneakers
     And I press the "Bulk actions" button
-    And I choose the "Edit common attributes" operation
+    And I choose the "Edit attributes" operation
     And I display the Comment attribute
     And I confirm mass edit
     And I wait for the "edit_common_attributes" job to finish
@@ -95,7 +95,7 @@ Feature: Validate editing common text attributes of multiple products
     When I am on the products grid
     And I select rows boots, sandals and sneakers
     And I press the "Bulk actions" button
-    And I choose the "Edit common attributes" operation
+    And I choose the "Edit attributes" operation
     And I display the Comment attribute
     And I change the Comment to an invalid value
     And I move on to the next step

@@ -53,6 +53,19 @@ class FieldConverterSpec extends ObjectBehavior
             ->shouldBeLike(new ConvertedField('family_variant', 'family_variant'));
     }
 
+    function it_converts_the_value_of_the_other_fields_to_a_string($assocFieldResolver, $fieldSplitter)
+    {
+        $assocFieldResolver->resolveAssociationColumns()->willReturn([]);
+        $this->convert('family_variant', 123456)
+            ->shouldBeLike(new ConvertedField('family_variant', '123456'));
+
+        $this->convert('code', 123456)
+            ->shouldBeLike(new ConvertedField('code', '123456'));
+
+        $this->convert('parent', 123456)
+            ->shouldBeLike(new ConvertedField('parent', '123456'));
+    }
+
     function it_only_converts_a_specific_column($assocFieldResolver)
     {
         $assocFieldResolver->resolveAssociationColumns()->willReturn(['upsell']);

@@ -63,7 +63,7 @@ class ProductAssociationWriter implements ItemWriterInterface, StepExecutionAwar
     {
         foreach ($products as $product) {
             foreach ($product->getAssociations() as $association) {
-                $count = count($association->getProducts()) + count($association->getGroups());
+                $count = count($association->getProducts()) + count($association->getProductModels()) + count($association->getGroups());
 
                 $action = $association->getId() ? 'process' : 'create';
 

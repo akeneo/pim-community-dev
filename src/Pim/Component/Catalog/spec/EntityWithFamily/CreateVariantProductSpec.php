@@ -105,6 +105,7 @@ class CreateVariantProductSpec extends ObjectBehavior
         $product->getCreated()->willReturn($createdAt);
         $product->getUpdated()->willReturn($updatedAt);
         $product->getUniqueData()->willReturn($uniqueValues);
+        $product->getRawValues()->willReturn([]);
 
         $result = $this->from($product, $parent);
         $result->shouldReturnAnInstanceOf(VariantProductInterface::class);

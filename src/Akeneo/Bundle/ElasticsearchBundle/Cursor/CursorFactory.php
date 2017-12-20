@@ -4,9 +4,7 @@ namespace Akeneo\Bundle\ElasticsearchBundle\Cursor;
 
 use Akeneo\Bundle\ElasticsearchBundle\Client;
 use Akeneo\Component\StorageUtils\Cursor\CursorFactoryInterface;
-use Akeneo\Component\StorageUtils\Exception\InvalidObjectException;
 use Akeneo\Component\StorageUtils\Repository\CursorableRepositoryInterface;
-use Doctrine\Common\Persistence\ObjectManager;
 
 /**
  * Cursor factory to instantiate an elasticsearch cursor
@@ -20,12 +18,6 @@ class CursorFactory implements CursorFactoryInterface
     /** @var Client */
     protected $searchEngine;
 
-    /** @var ObjectManager */
-    protected $om;
-
-    /** @var string */
-    protected $entityClassName;
-
     /** @var string */
     protected $cursorClassName;
 
@@ -35,25 +27,25 @@ class CursorFactory implements CursorFactoryInterface
     /** @var string */
     protected $indexType;
 
+    /** @var CursorableRepositoryInterface */
+    protected $cursorableRepository;
+
     /**
-     * @param Client        $searchEngine
-     * @param ObjectManager $om
-     * @param string        $entityClassName
-     * @param string        $cursorClassName
-     * @param int           $pageSize
-     * @param string        $indexType
+     * @param Client                        $searchEngine
+     * @param CursorableRepositoryInterface $repository
+     * @param string                        $cursorClassName
+     * @param int                           $pageSize
+     * @param string                        $indexType
      */
     public function __construct(
         Client $searchEngine,
-        ObjectManager $om,
-        $entityClassName,
+        CursorableRepositoryInterface $repository,
         $cursorClassName,
         $pageSize,
         $indexType
     ) {
         $this->searchEngine = $searchEngine;
-        $this->om = $om;
-        $this->entityClassName = $entityClassName;
+        $this->cursorableRepository = $repository;
         $this->cursorClassName = $cursorClassName;
         $this->pageSize = $pageSize;
         $this->indexType = $indexType;
@@ -64,13 +56,14 @@ class CursorFactory implements CursorFactoryInterface
      */
     public function createCursor($queryBuilder, array $options = [])
     {
-        $repository = $this->om->getRepository($this->entityClassName);
-        if (!$repository instanceof CursorableRepositoryInterface) {
-            throw InvalidObjectException::objectExpected($this->entityClassName, CursorableRepositoryInterface::class);
-        }
-
         $pageSize = !isset($options['page_size']) ? $this->pageSize : $options['page_size'];
 
-        return new $this->cursorClassName($this->searchEngine, $repository, $queryBuilder, $this->indexType, $pageSize);
+        return new $this->cursorClassName(
+            $this->searchEngine,
+            $this->cursorableRepository,
+            $queryBuilder,
+            $this->indexType,
+            $pageSize
+        );
     }
 }

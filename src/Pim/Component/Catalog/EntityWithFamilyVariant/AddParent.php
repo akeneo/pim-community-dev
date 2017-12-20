@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Pim\Component\Connector\Processor\Denormalization\Product;
+namespace Pim\Component\Catalog\EntityWithFamilyVariant;
 
 use Pim\Component\Catalog\EntityWithFamily\CreateVariantProduct;
 use Pim\Component\Catalog\EntityWithFamily\Event\ParentHasBeenAddedToProduct;

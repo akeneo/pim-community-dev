@@ -89,7 +89,6 @@ pim_enrich:
       description: Les attributs sélectionnés du produit vont être modifiés avec les valeurs suivantes pour la locale choisie.
       empty: Veuillez sélectionner le ou les attribut(s) à modifier
       success_flash: La mise à jour du statut de produit(s) est en cours
-      launched_flash: L'action de masse "Modification des attributs communs" a été lancée. Vous serez notifié(e) lorsque la modification sera terminée.
       message:
         warning: Il n'y a pas d'attribut en commun pour les produits sélectionnés. Veuillez modifier votre sélection.
         invalid_attribute: L'attribut ayant pour code "attribute_code" n'est pas un attribut commun aux produits sélectionnés, attribut ignoré.
@@ -637,7 +636,7 @@ pim_enrich.mass_edit_action:
     description: Les produits sélectionnés vont être activés ou désactivés.
     success_flash: Le statut des produits ont été changés
   edit-common-attributes:
-    label: Modifier les attributs communs
+    label: Modifier des attributs
     description: Les attributs sélectionnés du produit vont être modifiés avec les valeurs suivantes pour la locale choisie.
     empty: Veuillez sélectionner le ou les attribut(s) à modifier
     success_flash: Le(s) attribut(s) ont été mis à jour
@@ -757,11 +756,10 @@ job_execution.summary:
   skipped_attributes: Attributs ignorés
   skipped_families: Familles ignorées
 pim_mass_edit_execution_show: Exécutions des éditions en masse | Détails
-edit_common_attributes.steps.edit_common_attributes_processor.title: Modifier les attributs communs
+edit_common_attributes.steps.edit_common_attributes_processor.title: Modifier des attributs
 update_product_value.steps.update_product_value_processor.title: Mise à jour de la valeur du produit
 remove_product_value.steps.update_product_value_processor.title: Suppression de la valeur du produit
-edit_common_attributes: Modifier les attributs communs
-edit_common_attributes_clean: Nettoyer les fichiers pour les attributs communs
+edit_common_attributes: Modifier des attributs
 perform.steps.duplicated.title: Axe dupliqué
 perform.steps.excluded.title: Produit exclu
 batch_jobs:
@@ -774,11 +772,9 @@ batch_jobs:
     perform:
       label: Mise à jour de la valeur du produit
   edit_common_attributes:
-    label: Modifier les attributs communs
+    label: Modifier des attributs
     perform:
-      label: Modifier les attributs communs
-    clean:
-      label: Nettoyer les fichiers pour les attributs communs
+      label: Modifier des attributs
   set_attribute_requirements:
     label: Configurer les exigences d'attributs
     perform:

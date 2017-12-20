@@ -50,6 +50,12 @@ final class EntityWithValue implements SaverInterface
 
         if ($entityWithValues instanceof EntityWithFamilyVariantInterface) {
             $values = $entityWithValues->getValuesForVariation();
+            if (null !== $entityWithValues->getParent()) {
+                // needed for EE to get the resource in the unit of work
+                $parent = $this->entityManager->getRepository(ClassUtils::getClass($entityWithValues))
+                    ->find($entityWithValues->getParent()->getId());
+                $entityWithValues->setParent($parent);
+            }
         } else {
             $values = $entityWithValues->getValues();
         }

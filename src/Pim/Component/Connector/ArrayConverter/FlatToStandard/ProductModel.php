@@ -14,7 +14,6 @@ use Pim\Component\Connector\Exception\DataArrayConversionException;
 use Pim\Component\Connector\Exception\StructureArrayConversionException;
 
 /**
- *
  * @author    Arnaud Langlade <arnaud.langlade@akeneo.com>
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
@@ -140,9 +139,9 @@ class ProductModel implements ArrayConverterInterface
         $stringFields = ['code', 'categories', 'family_variant', 'parent'];
 
         foreach ($mappedFlatProductModel as $field => $value) {
-            if (in_array($field, $stringFields) && !is_string($value)) {
+            if (in_array($field, $stringFields) && !is_scalar($value)) {
                 throw new DataArrayConversionException(
-                    sprintf('The field "%s" should contain a string, "%s" provided', $field, $value)
+                    sprintf('The field "%s" should contain a scalar, "%s" provided', $field, gettype($value))
                 );
             }
         }

@@ -876,9 +876,6 @@ pim_enrich:
         title: Eigenschaften
       global_settings:
         title: Globale Einstellungen
-  mass_edit_action:
-    edit_common_attributes:
-      description: Die ausgewählten Produktattribute werden für die folgenden Daten des Gebietsschemas <span class="bold-purple">{{ locale }}</span> und dem Ausgabekanal <span class="bold-purple">{{ channel }}</span>, welche in der Produktübersicht ausgewählt sind, bearbeitet.
   index:
     association_type:
       create_btn: Verbindungstyp anlegen
@@ -946,8 +943,7 @@ pim_enrich:
           description: Die ausgewählten Produkte werden aktiviert oder deaktiviert.
           field: Aktivieren
         edit_common:
-          label: Gemeinsame Attribute bearbeiten
-          description: Die ausgewählten Produktattribute, werden mit den folgenden Daten für das Gebietsschema {{ locale }} und den Ausgabekanal {{ scope }} welche in der Produktliste ausgewählt wurden, bearbeitet.
+          label: Attribute bearbeiten
         change_family:
           description: Die Produktfamilie der ausgewählten Produkte wird auf die gewählte Produktfamilie geändert
           field: Produktfamilie
@@ -1020,11 +1016,9 @@ batch_jobs:
     perform:
       label: Wert des Produkts aktualisieren
   edit_common_attributes:
-    label: Gemeinsame Attribute bearbeiten
+    label: Attribute bearbeiten
     perform:
-      label: Gemeinsame Attribute bearbeiten
-    cleaner:
-      label: Bereinige Dateien für gemeinsame Attribute
+      label: Attribute bearbeiten
   set_attribute_requirements:
     label: Benötigte Attribute auswählen
     perform:

@@ -12,11 +12,6 @@ use Akeneo\Test\IntegrationTestsBundle\Sanitizer\MediaSanitizer;
  */
 class ProductIntegration extends TestCase
 {
-    protected function getConfiguration()
-    {
-        return $this->catalog->useTechnicalSqlCatalog();
-    }
-
     public function testProduct()
     {
         $product = $this->get('pim_catalog.repository.product')->findOneByIdentifier('foo');
@@ -34,6 +29,9 @@ class ProductIntegration extends TestCase
             'UPSELL-groups' => 'groupA',
             'UPSELL-products' => '',
             'UPSELL-product_models' => '',
+            'SUBSTITUTION-groups' => '',
+            'SUBSTITUTION-products' => '',
+            'SUBSTITUTION-product_models' => '',
             'PACK-groups' => '',
             'PACK-products' => 'bar,baz',
             'PACK-product_models' => '',
@@ -80,6 +78,14 @@ class ProductIntegration extends TestCase
         $expected = $this->sanitizeMediaAttributeData($expected, $mediaAttributes);
 
         $this->assertSame($flatProduct, $expected);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getConfiguration()
+    {
+        return $this->catalog->useTechnicalSqlCatalog();
     }
 
     /**

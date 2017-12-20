@@ -6,7 +6,6 @@ use Akeneo\Component\StorageUtils\Indexer\IndexerInterface;
 use Akeneo\Component\StorageUtils\Remover\BulkRemoverInterface;
 use Oro\Bundle\DataGridBundle\Datagrid\DatagridInterface;
 use Oro\Bundle\DataGridBundle\Datasource\ResultRecord;
-use Oro\Bundle\DataGridBundle\Datasource\ResultRecordInterface;
 use Oro\Bundle\DataGridBundle\Extension\MassAction\Actions\MassActionInterface;
 use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionResponse;
 use Pim\Bundle\DataGridBundle\Datasource\ResultRecord\HydratorInterface;

@@ -323,7 +323,7 @@ class ProductSpec extends ObjectBehavior
         $fieldConverter->supportsColumn('sku')->willReturn(false);
         $fieldConverter->supportsColumn('enabled')->willReturn(true);
 
-        $fieldConverter->convert('enabled', '1')->willReturn($enable);
+        $fieldConverter->convert('enabled', true)->willReturn($enable);
         $enable->appendTo([])
             ->willReturn([
                 'enabled' => true
