@@ -2332,6 +2332,15 @@ class WebUser extends PimContext
     }
 
     /**
+     * @Given /^I validate mass edit$/
+     */
+    public function iValidateTheMassEdit()
+    {
+        $this->scrollContainerTo(900);
+        $this->getCurrentPage()->confirm();
+    }
+
+    /**
      * @Given /^I confirm mass edit$/
      */
     public function iConfirmTheMassEdit()

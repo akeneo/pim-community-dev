@@ -129,8 +129,8 @@ extensions:
     pim-mass-product-edit-configure-add-to-existing-product-model:
         module: pim/mass-edit-form/product/add-to-existing-product-model
         parent: pim-mass-product-edit
-        position: 190
         aclResourceId: pim_enrich_product_edit_attributes
+        position: 190
         config:
             title: pim_enrich.mass_edit.product.title
             label: pim_enrich.mass_edit.product.operation.add_to_existing_product_model.label
@@ -140,3 +140,18 @@ extensions:
             jobInstanceCode: add_to_existing_product_model
             icon: icon-model
             illustration: product-models
+
+    pim-mass-product-edit-configure-associate:
+        module: pim/mass-edit-form/product/associate
+        parent: pim-mass-product-edit
+        aclResourceId: pim_enrich_associations_edit
+        position: 200
+        config:
+            title: pim_enrich.mass_edit.product.title
+            label: pim_enrich.mass_edit.product.operation.associate_to_product_and_product_model.label
+            labelCount: pim_enrich.mass_edit.product.operation.associate_to_product_and_product_model.label_count
+            description: pim_enrich.mass_edit.product.operation.associate_to_product_and_product_model.description
+            code: associate_to_product_and_product_model
+            jobInstanceCode: add_association
+            icon: icon-association
+            illustration: association

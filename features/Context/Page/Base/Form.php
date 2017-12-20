@@ -12,6 +12,7 @@ use Context\Spin\TimeoutException;
 use Context\Traits\ClosestTrait;
 use Pim\Behat\Decorator\Common\AddSelect\AttributeAddSelectDecorator;
 use Pim\Behat\Decorator\Common\AddSelect\AttributeGroupAddSelectDecorator;
+use Pim\Behat\Decorator\Common\DropdownMenuDecorator;
 use Pim\Behat\Decorator\Field\Select2Decorator;
 
 /**
@@ -37,7 +38,10 @@ class Form extends Base
                 'Dialog'                          => ['css' => 'div.modal'],
                 'Associations list'               => ['css' => '.associations-list'],
                 'Group selector'                  => ['css' => '.group-selector'],
-                'Association type selector'       => ['css' => '.association-type-selector'],
+                'Association type selector'       => [
+                    'css'        => '.association-type-selector',
+                    'decorators' => [DropdownMenuDecorator::class]
+                ],
                 'Tree selector'                   => ['css' => '.tree-selector'],
                 'Target selector'                 => ['css' => '.target-selector'],
                 'Attribute filter selector'       => ['css' => '.attribute-filter'],

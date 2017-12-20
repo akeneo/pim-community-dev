@@ -9,7 +9,7 @@
                 <ul class="associations-list AknDropdown-menu">
                     <div class="AknDropdown-menuTitle"><%- label %></div>
                     <% _.each(associationTypes, function (associationTypeSwitch) { %>
-                        <li data-associationType="<%- associationTypeSwitch.code %>">
+                        <li data-association-type="<%- associationTypeSwitch.code %>">
                             <a class="AknDropdown-menuLink<% if (associationType === associationTypeSwitch) { %> AknDropdown-menuLink--active<% } %> label">
                                 <%- associationTypeSwitch.labels[locale] || '[' + associationTypeSwitch.code + ']'  %>
                             </a>

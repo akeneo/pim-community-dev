@@ -25,6 +25,7 @@ class Operation extends Wizard
         'Move between categories'          => 'Batch Classify',
         'Remove from categories'           => 'Batch Classify',
         'Add to an existing product model' => 'Batch AddToExistingProductModel',
+        'Associate to products'            => 'Batch AssociateToProduct'
     ];
 
     /**

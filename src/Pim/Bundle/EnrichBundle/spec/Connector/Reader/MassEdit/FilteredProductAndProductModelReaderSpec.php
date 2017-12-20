@@ -31,7 +31,6 @@ class FilteredProductAndProductModelReaderSpec extends ObjectBehavior
         ChannelRepositoryInterface $channelRepository,
         CompletenessManager $completenessManager,
         MetricConverter $metricConverter,
-        ObjectDetacherInterface $objectDetacher,
         StepExecution $stepExecution
     ) {
         $this->beConstructedWith(
@@ -39,8 +38,8 @@ class FilteredProductAndProductModelReaderSpec extends ObjectBehavior
             $channelRepository,
             $completenessManager,
             $metricConverter,
-            $objectDetacher,
-            true
+            true,
+            false
         );
 
         $this->setStepExecution($stepExecution);
