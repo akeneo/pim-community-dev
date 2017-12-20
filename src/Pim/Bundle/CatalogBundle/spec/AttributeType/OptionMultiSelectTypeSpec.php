@@ -33,7 +33,7 @@ class OptionMultiSelectTypeSpec extends ObjectBehavior
         $color->getId()->willReturn(42);
         $color->setProperty(Argument::any(), Argument::any())->shouldBeCalled();
 
-        $this->buildAttributeFormTypes($factory, $color)->shouldHaveCount(7);
+        $this->buildAttributeFormTypes($factory, $color)->shouldHaveCount(6);
     }
 
     function it_has_a_name()
