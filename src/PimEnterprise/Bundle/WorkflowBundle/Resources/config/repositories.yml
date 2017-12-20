@@ -1,6 +1,7 @@
 parameters:
     pimee_workflow.repository.product_draft.class:       PimEnterprise\Bundle\WorkflowBundle\Doctrine\ORM\Repository\ProductDraftRepository
     pimee_workflow.repository.published_product.class: PimEnterprise\Bundle\WorkflowBundle\Doctrine\ORM\Repository\PublishedProductRepository
+    pimee_workflow.repository.published_product_with_permission.class: PimEnterprise\Bundle\WorkflowBundle\Doctrine\ORM\Repository\PublishedProductWithPermissionRepository
     pimee_workflow.repository.published_association.class: PimEnterprise\Bundle\WorkflowBundle\Doctrine\ORM\Repository\PublishedAssociationRepository
     pimee_workflow.repository.delegating_product.class: PimEnterprise\Bundle\WorkflowBundle\Doctrine\ORM\Repository\DelegatingProductRepository
 
@@ -13,12 +14,18 @@ services:
         class: '%pimee_workflow.repository.published_product.class%'
         factory: 'pim_catalog.object_manager.product:getRepository'
         arguments: ['%pimee_workflow.entity.published_product.class%']
-        calls:
-            - [setProductQueryBuilderFactory, ['@pimee_workflow.doctrine.query.published_product_query_builder_factory']]
-            - [setChannelRepository, ['@pim_catalog.repository.channel']]
-            - [setLocaleRepository, ['@pim_catalog.repository.locale']]
         tags:
             - { name: 'pim_repository' }
+
+    pimee_workflow.repository.published_product_with_permission:
+        class: '%pimee_workflow.repository.published_product_with_permission.class%'
+        decorates: pimee_workflow.repository.published_product
+        decoration_inner_name: pimee_workflow.repository.published_product_without_permission
+        arguments:
+            - '@pim_catalog.object_manager.product'
+            - '@pimee_workflow.repository.published_product_without_permission'
+            - '@pimee_catalog.security.factory.filtered_product'
+            - '%pimee_workflow.entity.published_product.class%'
 
     pimee_workflow.repository.published_product_category:
         class: '%pim_catalog.repository.product_category.class%'

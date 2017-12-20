@@ -32,7 +32,7 @@ services:
         class: '%pimee_workflow.publisher.product_association.class%'
         arguments:
             - '%pimee_workflow.entity.published_product_association.class%'
-            - '@pimee_workflow.repository.published_product'
+            - '@pimee_workflow.repository.published_product_without_permission'
         tags:
             - { name: pimee_workflow.publisher }
 

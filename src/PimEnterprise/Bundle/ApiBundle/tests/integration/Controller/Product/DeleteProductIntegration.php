@@ -128,7 +128,7 @@ JSON;
      */
     private function assertProductNotDeleted(string $productIdentifier): void
     {
-        $product = $this->get('pim_catalog.repository.product')->findOneByIdentifier($productIdentifier);
+        $product = $this->get('pim_catalog.repository.product_without_permission')->findOneByIdentifier($productIdentifier);
 
         $this->assertNotNull($product);
     }

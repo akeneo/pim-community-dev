@@ -11,9 +11,12 @@
 
 namespace PimEnterprise\Component\Catalog\Security\Updater\Setter;
 
+use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Pim\Component\Catalog\Updater\Setter\AbstractFieldSetter;
 use Pim\Component\Catalog\Updater\Setter\FieldSetterInterface;
+use PimEnterprise\Component\Security\Attributes;
 use PimEnterprise\Component\Security\Exception\ResourceAccessDeniedException;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 /**
  * Check if product associated is at least "viewable" to be associated to a product
@@ -25,15 +28,27 @@ class GrantedAssociationFieldSetter extends AbstractFieldSetter implements Field
     /** @var FieldSetterInterface */
     private $associationFieldSetter;
 
+    /** @var AuthorizationCheckerInterface */
+    private $authorizationChecker;
+
+    /** @var IdentifiableObjectRepositoryInterface */
+    private $productRepository;
+
     /**
-     * @param FieldSetterInterface $categoryFieldSetter
-     * @param array                $supportedFields
+     * @param FieldSetterInterface                  $categoryFieldSetter
+     * @param AuthorizationCheckerInterface         $authorizationChecker
+     * @param IdentifiableObjectRepositoryInterface $productRepository
+     * @param array                                 $supportedFields
      */
     public function __construct(
         FieldSetterInterface $categoryFieldSetter,
+        AuthorizationCheckerInterface $authorizationChecker,
+        IdentifiableObjectRepositoryInterface $productRepository,
         array $supportedFields
     ) {
         $this->associationFieldSetter = $categoryFieldSetter;
+        $this->authorizationChecker = $authorizationChecker;
+        $this->productRepository = $productRepository;
         $this->supportedFields = $supportedFields;
     }
 
@@ -42,14 +57,22 @@ class GrantedAssociationFieldSetter extends AbstractFieldSetter implements Field
      */
     public function setFieldData($product, $field, $data, array $options = [])
     {
-        try {
-            $this->associationFieldSetter->setFieldData($product, $field, $data, $options);
-        } catch (ResourceAccessDeniedException $e) {
-            throw new ResourceAccessDeniedException(
-                $e->getResource(),
-                'You cannot associate a product on which you have not a view permission.',
-                $e
-            );
+        $this->associationFieldSetter->setFieldData($product, $field, $data, $options);
+
+        foreach ($data as $associations) {
+            if (!isset($associations['products'])) {
+                continue;
+            }
+
+            foreach ($associations['products'] as $associatedProductIdentifier) {
+                $associatedProduct = $this->productRepository->findOneByIdentifier($associatedProductIdentifier);
+                if (!$this->authorizationChecker->isGranted([Attributes::VIEW], $associatedProduct)) {
+                    throw new ResourceAccessDeniedException(
+                        $associatedProduct,
+                        'You cannot associate a product on which you have not a view permission.'
+                    );
+                }
+            }
         }
     }
 }

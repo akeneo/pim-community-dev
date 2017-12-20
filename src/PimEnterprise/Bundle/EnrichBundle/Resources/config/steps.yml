@@ -118,7 +118,7 @@ services:
             - 'execute_rules'
             - '@event_dispatcher'
             - '@akeneo_batch.job_repository'
-            - '@pim_enrich.reader.database.filtered_product_and_product_model'
+            - '@pimee_enrich.reader.database.filtered_product_and_product_model'
             - '@pimee_catalog_rule.processor.product_loader'
             - '@pimee_catalog_rule.executor.rules'
             - 100

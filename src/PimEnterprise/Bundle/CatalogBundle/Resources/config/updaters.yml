@@ -11,3 +11,10 @@ services:
         arguments:
             - '@pim_catalog.updater.attribute.base'
             - '%pimee_catalog.updater.attribute.properties%'
+
+    pim_catalog.updater.group:
+        class: '%pim_catalog.updater.group.class%'
+        arguments:
+            - '@pim_catalog.repository.group_type'
+            - '@pim_catalog.repository.attribute'
+            - '@pim_catalog.query.product_query_builder_factory_without_permission'

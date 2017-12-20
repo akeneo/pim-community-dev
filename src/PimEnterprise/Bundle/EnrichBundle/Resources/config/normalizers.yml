@@ -37,7 +37,7 @@ services:
             - '@pimee_security.repository.category_access'
             - '@security.token_storage'
             - '@security.authorization_checker'
-            - '@pim_enrich.converter.standard_to_enrich.product_value'
+            - '@pim_catalog.repository.product'
         tags:
             - { name: pim_internal_api_serializer.normalizer, priority: 120 }
 

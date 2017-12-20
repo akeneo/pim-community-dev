@@ -4,6 +4,8 @@ parameters:
 services:
     pimee_workflow.factory.product_draft:
         class: '%pimee_workflow.factory.product_draft.class%'
+        arguments:
+            - '@pim_catalog.repository.product_without_permission'
 
     pimee_workflow.factory.published_product_unique_data:
         class: '%pim_catalog.factory.product_unique_data.class%'

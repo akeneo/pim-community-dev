@@ -12,6 +12,7 @@
 namespace PimEnterprise\Component\Workflow\Factory;
 
 use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
 use PimEnterprise\Component\Workflow\Model\ProductDraft;
 use PimEnterprise\Component\Workflow\Model\ProductDraftInterface;
 
@@ -22,6 +23,17 @@ use PimEnterprise\Component\Workflow\Model\ProductDraftInterface;
  */
 class ProductDraftFactory
 {
+    /** @var ProductRepositoryInterface */
+    private $productRepository;
+
+    /**
+     * @param ProductRepositoryInterface $productRepository
+     */
+    public function __construct(ProductRepositoryInterface $productRepository)
+    {
+        $this->productRepository = $productRepository;
+    }
+
     /**
      * Create and configure a ProductDraft instance
      *
@@ -32,9 +44,11 @@ class ProductDraftFactory
      */
     public function createProductDraft(ProductInterface $product, $username)
     {
+        $fullProduct = $this->productRepository->find($product->getId());
+
         $productDraft = new ProductDraft();
         $productDraft
-            ->setProduct($product)
+            ->setProduct($fullProduct)
             ->setAuthor($username)
             ->setCreatedAt(new \DateTime());
 
