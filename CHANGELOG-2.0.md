@@ -1,5 +1,9 @@
 # 2.0.x
 
+## Bug fixes
+
+- PIM-7032: Fix close button when clicking on "Compare/Translate" option on the product edit form
+
 # 2.0.9 (2017-12-15)
 
 ## Bug fixes
