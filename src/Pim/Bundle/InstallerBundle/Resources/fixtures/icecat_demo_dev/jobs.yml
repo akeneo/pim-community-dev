@@ -212,6 +212,16 @@ jobs:
         alias:     move_to_category
         label:     Mass move to categories
         type:      mass_edit
+    add_association:
+        connector: Akeneo Mass Edit Connector
+        alias:     add_association
+        label:     Mass associate products
+        type:      mass_edit
+    add_association:
+        connector: Akeneo Mass Edit Connector
+        alias:     add_association
+        label:     Mass associate products
+        type:      mass_edit
     add_to_category:
         connector: Akeneo Mass Edit Connector
         alias:     add_to_category

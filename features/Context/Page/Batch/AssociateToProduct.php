@@ -1,0 +1,18 @@
+<?php
+
+namespace Context\Page\Batch;
+
+use Behat\Mink\Element\Element;
+use Context\Page\Base\Wizard;
+use Context\Spin\TimeoutException;
+
+/**
+ * Associate to product
+ *
+ * @author    Julien Sanchez <julien@akeneo.com>
+ * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
+class AssociateToProduct extends Wizard
+{
+}

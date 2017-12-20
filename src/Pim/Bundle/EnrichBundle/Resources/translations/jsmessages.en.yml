@@ -1077,9 +1077,9 @@ pim_enrich:
                     description: The product model selected will gather the products and allows the enrichment of their common properties.
                 associate_to_product_and_product_model:
                     label: Associate to products
-                    label_count: "{1}Associate <span class=\"AknFullPage-title--highlight\">1 product</span> to existing products or product models|] 1, Inf [Associate <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span> to existing products or product models"
-                    description: The products will be associated to the selected products and product models
-                    confirm: You are about tho associate your selection to
+                    label_count: "{1}Associate <span class=\"AknFullPage-title--highlight\">1 product</span> to products or product models|] 1, Inf [Associate <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span> to products or product models"
+                    description: The products selected in the grid will be associated to the selected products and product models for the chosen association type
+                    validate: Please add association before going to the next step
         family:
             title: Families bulk action
             confirm: "{1}You are about to update a family with the following information, please confirm.|] 1, Inf [You are about to update {{ itemsCount }} families with the following information, please confirm."

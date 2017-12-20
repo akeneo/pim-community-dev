@@ -209,12 +209,14 @@ class FilteredProductAndProductModelReader implements
                 if ($this->stepExecution) {
                     $this->stepExecution->incrementSummaryInfo('skip');
 
-                    $warning = 'This bulk action doesn\'t support Product models entities yet.';
-                    $this->stepExecution->addWarning(
-                        $warning,
-                        [],
-                        new DataInvalidItem(['code' => $entity->getCode()])
-                    );
+                    if (!$this->readChildren) {
+                        $warning = 'This bulk action doesn\'t support Product models entities yet.';
+                        $this->stepExecution->addWarning(
+                            $warning,
+                            [],
+                            new DataInvalidItem(['code' => $entity->getCode()])
+                        );
+                    }
                 }
 
                 $entity = null;

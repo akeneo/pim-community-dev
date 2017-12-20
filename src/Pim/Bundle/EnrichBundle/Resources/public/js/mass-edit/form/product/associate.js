@@ -20,6 +20,7 @@ define(
         'pim/i18n',
         'pim/media-url-generator',
         'oro/loading-mask',
+        'oro/messenger',
         'pim/template/mass-edit/product/associate/pick',
         'pim/template/mass-edit/product/associate/confirm'
     ],
@@ -36,6 +37,7 @@ define(
         i18n,
         MediaUrlGenerator,
         LoadingMask,
+        messenger,
         pickTemplate,
         confirmTemplate
     ) {
@@ -271,6 +273,28 @@ define(
                 });
 
                 return deferred.promise();
+            },
+
+            /**
+             * Validate the model before confirmation
+             *
+             * @return {Promise}
+             */
+            validate: function () {
+                const deferred = $.Deferred();
+
+                if (_.isEmpty(this.getValue())) {
+                    messenger.notify(
+                        'error',
+                        __('pim_enrich.mass_edit.product.operation.associate_to_product_and_product_model.validate')
+                    );
+
+                    deferred.resolve(false);
+                } else {
+                    deferred.resolve(true);
+                }
+
+                return deferred;
             }
         });
     }
