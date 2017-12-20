@@ -50,4 +50,13 @@ interface AssetFinderInterface
      * @return VariationInterface
      */
     public function retrieveVariation(ReferenceInterface $reference, ChannelInterface $channel);
+
+    /**
+     * Retrieve all variations that are not generated for a given reference.
+     *
+     * @param ReferenceInterface $reference
+     *
+     * @return VariationInterface[]
+     */
+    public function retrieveVariationsNotGeneratedForAReference(ReferenceInterface $reference): array;
 }

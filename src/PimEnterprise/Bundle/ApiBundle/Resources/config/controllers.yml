@@ -113,6 +113,15 @@ services:
             - '@akeneo_file_storage.file_storage.filesystem_provider'
             - '@akeneo_file_storage.file_storage.file.streamed_file_fetcher'
             - '@pim_serializer'
+            - '@validator'
+            - '@akeneo_file_storage.saver.file'
+            - '@akeneo_file_storage.file_storage.file.file_storer'
+            - '@pimee_product_asset.factory.reference'
+            - '@router'
+            - '@pimee_product_asset.updater.files'
+            - '@pimee_product_asset.saver.asset'
+            - '@pimee_product_asset.variations_collection_files_generator'
+            - '@pimee_product_asset.finder.asset'
 
     pimee_api.controller.asset_variation:
         class: '%pimee_api.controller.asset_variation.class%'
@@ -123,6 +132,13 @@ services:
             - '@akeneo_file_storage.file_storage.filesystem_provider'
             - '@akeneo_file_storage.file_storage.file.streamed_file_fetcher'
             - '@pim_serializer'
+            - '@validator'
+            - '@akeneo_file_storage.saver.file'
+            - '@akeneo_file_storage.file_storage.file.file_storer'
+            - '@pimee_product_asset.factory.reference'
+            - '@router'
+            - '@pimee_product_asset.saver.asset'
+            - '@pimee_product_asset.factory.variation'
 
     pimee_api.controller.asset:
         class : '%pimee_api.controller.asset.class%'

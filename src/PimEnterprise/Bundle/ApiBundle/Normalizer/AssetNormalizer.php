@@ -85,10 +85,10 @@ class AssetNormalizer implements NormalizerInterface
      *     [
      *         '_link' => [
      *             'download' => [
-     *                 'href' => '{uriRoot}/assets/asset_viewable_by_everybody/variation-files/print/no_locale/download'
+     *                 'href' => '{uriRoot}/assets/asset_viewable_by_everybody/variation-files/print/no-locale/download'
      *             ],
      *             'self' => [
-     *                 'href' => '{uriRoot}/assets/asset_viewable_by_everybody/variation-files/print/no_locale'
+     *                 'href' => '{uriRoot}/assets/asset_viewable_by_everybody/variation-files/print/no-locale'
      *             ]
      *         ],
      *         'locale' =>null,
@@ -140,10 +140,10 @@ class AssetNormalizer implements NormalizerInterface
      *     [
      *         '_link' => [
      *             'download' => [
-     *                 'href' => '{uriRoot}/assets/asset_viewable_by_everybody/reference-files/no_locale/download'
+     *                 'href' => '{uriRoot}/assets/asset_viewable_by_everybody/reference-files/no-locale/download'
      *             ],
      *             'self' => [
-     *                 'href' => '{uriRoot}/assets/asset_viewable_by_everybody/reference-files/no_locale'
+     *                 'href' => '{uriRoot}/assets/asset_viewable_by_everybody/reference-files/no-locale'
      *             ]
      *         ],
      *         'locale' => null,
