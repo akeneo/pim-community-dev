@@ -78,12 +78,15 @@ define(
              */
             getMissingRequiredAttributesCount: function (scope, locale) {
                 const scopeCompleteness =  _.findWhere(this.getFormData().meta.completenesses, {channel: scope});
-
                 if (undefined === scopeCompleteness) {
                     return 0;
                 }
 
                 const localeCompleteness = scopeCompleteness.locales[locale];
+                if (undefined === localeCompleteness) {
+                    return 0;
+                }
+
                 const product = this.getFormData();
 
                 if ('product' === product.meta.model_type) {
