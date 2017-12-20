@@ -427,7 +427,7 @@ JSON;
         }
     },
     "code": "dog",
-    "localized": false,
+    "localizable": false,
     "description": null,
     "end_of_use": null,
     "tags": [],
