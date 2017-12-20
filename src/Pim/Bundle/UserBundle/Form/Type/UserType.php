@@ -134,6 +134,7 @@ class UserType extends AbstractType
             ->add('productGridFilters', 'pim_enrich_product_grid_filter_choice', [
                 'label'    => 'user.product_grid_filters',
                 'multiple' => true,
+                'required' => false,
             ]);
     }
 
