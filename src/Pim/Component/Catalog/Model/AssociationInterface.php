@@ -88,7 +88,7 @@ interface AssociationInterface extends ReferableInterface
      *
      * @param ProductModelInterface[] $productModels
      */
-    public function setProductModels(array $productModels): void;
+    public function setProductModels($productModels): void;
 
     /**
      * Set groups
