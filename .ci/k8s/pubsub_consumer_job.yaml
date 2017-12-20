@@ -10,12 +10,12 @@ spec:
       containers:
         - name: pim
           image: PIM_IMAGE
-        env:
-        - name: STARTUP_SCRIPT
-          value: |
-            #! /bin/bash
-            ln -sf pim /home/jenkins
-            echo "done"
+          env:
+            - name: STARTUP_SCRIPT
+              value: |
+                #! /bin/bash
+                ln -sf pim /home/jenkins
+                echo "done"
           volumeMounts:
             - { mountPath: /home/jenkins, name: pim }
         - name: mysql
