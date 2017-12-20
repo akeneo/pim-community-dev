@@ -221,8 +221,14 @@ class ProductNormalizer implements NormalizerInterface, SerializerAwareInterface
                 $products[] = $product->getIdentifier();
             }
 
+            $productModels = [];
+            foreach ($association->getProductModels() as $productModel) {
+                $productModels[] = $productModel->getCode();
+            }
+
             $results[$columnPrefix . '-groups'] = implode(',', $groups);
             $results[$columnPrefix . '-products'] = implode(',', $products);
+            $results[$columnPrefix . '-product_models'] = implode(',', $productModels);
         }
 
         return $results;
