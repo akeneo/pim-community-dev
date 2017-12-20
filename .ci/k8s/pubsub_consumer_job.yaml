@@ -7,14 +7,17 @@ spec:
   parallelism: JOB_SCALE
   template:
     spec:
-      initContainers:
+      containers:
         - name: pim
           image: PIM_IMAGE
-          command: ['sh', '-c', 'cp -Rp /pim /home/jenkins']
-          imagePullPolicy: Always
+        env:
+        - name: STARTUP_SCRIPT
+          value: |
+            #! /bin/bash
+            ln -sf pim /home/jenkins
+            echo "done"
           volumeMounts:
             - { mountPath: /home/jenkins, name: pim }
-      containers:
         - name: mysql
           image: eu.gcr.io/akeneo-ci/mysql:5.7-5
           volumeMounts:
@@ -133,3 +136,4 @@ spec:
         - { name: artifacts, emptyDir: {medium: Memory}}
         - { name: mysql, emptyDir: {medium: Memory}}
       restartPolicy: Never
+
