@@ -194,11 +194,6 @@
     grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
   }
 
-  &-fullImage--small {
-    height: @smallImageHeight;
-    min-height: @smallImageHeight;
-  }
-
   &--inner &-body {
     margin-left: -20px;
     margin-top: 0;
@@ -303,6 +298,11 @@
       opacity: 0;
       transition: opacity 0.4s ease-in;
     }
+  }
+
+  &-fullImage--small {
+    height: @smallImageHeight;
+    min-height: @smallImageHeight;
   }
 
   &-title {

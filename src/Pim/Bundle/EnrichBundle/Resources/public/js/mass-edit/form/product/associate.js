@@ -77,7 +77,7 @@ define(
                             associationTypes,
                             associationType: associationTypes
                                 .find(associationType => associationType.code === this.getCurrentAssociationType()),
-                            locale: UserContext.get('UiLocale'),
+                            locale: UserContext.get('uiLocale'),
                             i18n,
                             label: __('pim_enrich.form.product.tab.associations.association_type_selector'),
                             addAssociationsLabel: __('pim_enrich.form.product.tab.associations.add_associations')
