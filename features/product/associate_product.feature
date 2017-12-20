@@ -26,7 +26,7 @@ Feature: Associate a product
     And I press the "Add associations" button
     And I check the row "shoelaces"
     And I press the "Confirm" button in the popin
-    Then I should see the text "1 product(s) and 0 group(s)"
+    Then I should see the text "1 product(s), 0 product model(s) and 0 group(s)"
     Then I should see product "shoelaces"
 
   @jira https://akeneo.atlassian.net/browse/PIM-4788
@@ -40,7 +40,7 @@ Feature: Associate a product
     And I edit the "charcoal-boots" product
     And I visit the "Associations" column tab
     And I visit the "Upsell" association type
-    Then I should see the text "0 product(s) and 1 group(s)"
+    Then I should see the text "0 product(s), 0 product model(s) and 1 group(s)"
     And the row "caterpillar_boots" should be checked
 
   @jira https://akeneo.atlassian.net/browse/PIM-4788
@@ -66,13 +66,13 @@ Feature: Associate a product
     And I check the rows "shoelaces, gray-boots, brown-boots and green-boots"
     When I press the "Confirm" button in the popin
     Then I should not see the text "There are unsaved changes."
-    And I should see the text "4 product(s) and 1 group(s)"
+    And I should see the text "4 product(s), 0 product model(s) and 1 group(s)"
     And I visit the "Upsell" association type
-    Then I should see the text "1 product(s) and 1 group(s)"
+    Then I should see the text "1 product(s), 0 product model(s) and 1 group(s)"
     And I visit the "Substitution" association type
-    Then I should see the text "1 product(s) and 0 group(s)"
+    Then I should see the text "1 product(s), 0 product model(s) and 0 group(s)"
     And I visit the "Pack" association type
-    Then I should see the text "0 product(s) and 0 group(s)"
+    Then I should see the text "0 product(s), 0 product model(s) and 0 group(s)"
 
   @jira https://akeneo.atlassian.net/browse/PIM-4668
   Scenario: Detect unsaved changes when modifying associations
@@ -128,7 +128,7 @@ Feature: Associate a product
     And I save the product
     And I should not see the text "There are unsaved changes."
     When I visit the "Substitution" association type
-    Then I should see the text "0 product(s) and 0 group(s)"
+    Then I should see the text "0 product(s), 0 product model(s) and 0 group(s)"
     And the row "caterpillar_boots" should not be checked
 
   @jira https://akeneo.atlassian.net/browse/PIM-6960
@@ -145,7 +145,7 @@ Feature: Associate a product
     And I press the "Add associations" button
     And I check the row "shoelaces"
     And I press the "Confirm" button in the popin
-    Then I should see the text "1 product(s) and 0 group(s)"
+    Then I should see the text "1 product(s), 0 product model(s) and 0 group(s)"
     When I am on the association types page
     Then I should see association type social_sell
     When I click on the "Delete" action of the row which contains "social_sell"

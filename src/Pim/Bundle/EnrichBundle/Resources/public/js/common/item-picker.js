@@ -308,23 +308,31 @@ define(
             },
 
             /**
-             * Render the basket to update its content
+             * Fetches the new items and render the basket
              */
             updateBasket: function () {
                 FetcherRegistry.getFetcher(this.config.fetcher).fetchByIdentifiers(this.getItems())
                     .then(function (items) {
-                        this.$('.basket').html(this.basketTemplate({
-                            items: items,
-                            title: __('pim_enrich.form.basket.title'),
-                            emptyLabel: __('pim_enrich.form.basket.empty_basket'),
-                            imagePathMethod: this.imagePathMethod.bind(this),
-                            columnName: this.config.columnName,
-                            identifierName: this.config.columnName,
-                            labelMethod: this.labelMethod.bind(this)
-                        }));
-
+                        this.renderBasket(items);
                         this.delegateEvents();
                     }.bind(this));
+            },
+
+            /**
+             * Renders the basket to update its content
+             * @param items
+             */
+            renderBasket: function (items) {
+                this.$('.basket').html(this.basketTemplate({
+                    items: items,
+                    title: __('pim_enrich.form.basket.title'),
+                    emptyLabel: __('pim_enrich.form.basket.empty_basket'),
+                    imagePathMethod: this.imagePathMethod.bind(this),
+                    columnName: this.config.columnName,
+                    identifierName: this.config.columnName,
+                    labelMethod: this.labelMethod.bind(this),
+                    itemCodeMethod: this.itemCodeMethod.bind(this)
+                }));
             },
 
             /**
@@ -352,6 +360,16 @@ define(
              */
             setCustomTitle: function (title) {
                 this.title = title;
+            },
+
+            /**
+             * Returns the method to display unique codes for basket deletion
+             *
+             * @param {Object} item
+             * @returns {string}
+             */
+            itemCodeMethod: function (item) {
+                return item[this.config.columnName];
             },
 
             /**
