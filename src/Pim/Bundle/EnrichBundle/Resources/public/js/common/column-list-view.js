@@ -91,7 +91,7 @@ define([
             var systemColumn = this.collection.where({group: __('system_filter_group')});
 
             var groups = 0 !== systemColumn.length ?
-                [{ position: 0, name: _.__('system_filter_group'), itemCount: 0 }] :
+                [{ position: 0, name: __('system_filter_group'), itemCount: 0 }] :
                 [];
 
             _.each(this.collection.toJSON(), function (column) {
