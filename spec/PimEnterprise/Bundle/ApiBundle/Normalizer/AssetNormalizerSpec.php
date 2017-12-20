@@ -74,7 +74,7 @@ class AssetNormalizerSpec extends ObjectBehavior
                 ],
             ],
             'locale' => null,
-            'channel' => 'ecommerce',
+            'scope' => 'ecommerce',
             'code' => 'relative/path/to/the/reference_image_variation.jpg',
         ]);
 
@@ -139,7 +139,7 @@ class AssetNormalizerSpec extends ObjectBehavior
                             ],
                         ],
                         'locale' => null,
-                        'channel' => 'ecommerce',
+                        'scope' => 'ecommerce',
                         'code' => 'relative/path/to/the/reference_image_variation.jpg',
                     ],
                 ],
@@ -198,7 +198,7 @@ class AssetNormalizerSpec extends ObjectBehavior
                 ],
             ],
             'locale' => 'en_US',
-            'channel' => 'ecommerce',
+            'scope' => 'ecommerce',
             'code' => 'relative/path/to/the/reference_image_variation.jpg',
         ]);
 
@@ -263,7 +263,7 @@ class AssetNormalizerSpec extends ObjectBehavior
                             ],
                         ],
                         'locale' => 'en_US',
-                        'channel' => 'ecommerce',
+                        'scope' => 'ecommerce',
                         'code' => 'relative/path/to/the/reference_image_variation.jpg',
                     ],
                 ],
@@ -323,7 +323,7 @@ class AssetNormalizerSpec extends ObjectBehavior
                 ],
             ],
             'locale' => 'en_US',
-            'channel' => 'ecommerce',
+            'scope' => 'ecommerce',
             'code' => 'relative/path/to/the/reference_image_variation.jpg',
         ]);
 
@@ -334,7 +334,7 @@ class AssetNormalizerSpec extends ObjectBehavior
                 ],
             ],
             'locale' => 'en_US',
-            'channel' => 'tablet',
+            'scope' => 'tablet',
             'code' => null,
         ]);
 
@@ -399,7 +399,7 @@ class AssetNormalizerSpec extends ObjectBehavior
                             ],
                         ],
                         'locale' => 'en_US',
-                        'channel' => 'ecommerce',
+                        'scope' => 'ecommerce',
                         'code' => 'relative/path/to/the/reference_image_variation.jpg',
                     ],
                 ],
@@ -459,7 +459,7 @@ class AssetNormalizerSpec extends ObjectBehavior
                 ],
             ],
             'locale' => 'en_US',
-            'channel' => 'ecommerce',
+            'scope' => 'ecommerce',
             'code' => null,
         ]);
 
@@ -571,7 +571,7 @@ class AssetNormalizerSpec extends ObjectBehavior
                 ],
             ],
             'locale' => null,
-            'channel' => 'ecommerce',
+            'scope' => 'ecommerce',
             'code' => null,
         ]);
 

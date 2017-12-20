@@ -45,7 +45,7 @@ class AssetVariationNormalizerSpec extends ObjectBehavior
 
         $this->normalize($variation, 'external_api', [])->shouldReturn([
             'locale' => 'en_US',
-            'channel' => 'ecommerce',
+            'scope' => 'ecommerce',
             'code' => 'path/to/variation_file.jpg',
         ]);
     }

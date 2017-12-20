@@ -140,7 +140,7 @@ abstract class AbstractAssetTestCase extends ApiTestCase
         }
       },
       "locale":null,
-      "channel": "ecommerce",
+      "scope": "ecommerce",
       "code": "$nonLocalizableVariationEcommerce"
     },
     {
@@ -153,7 +153,7 @@ abstract class AbstractAssetTestCase extends ApiTestCase
         }
       },
       "locale":null,
-      "channel": "tablet",
+      "scope": "tablet",
       "code": "$nonLocalizableVariationTablet"
     },
     {
@@ -166,7 +166,7 @@ abstract class AbstractAssetTestCase extends ApiTestCase
         }
       },
       "locale":null,
-      "channel": "ecommerce_china",
+      "scope": "ecommerce_china",
       "code": "$nonLocalizableVariationEcommerceChina"
     }
   ],
@@ -243,7 +243,7 @@ JSON;
         }
       },
       "locale": "de_DE",
-      "channel": "tablet",
+      "scope": "tablet",
       "code": "$localizableVariationTabletGerman"
     },
     {
@@ -256,7 +256,7 @@ JSON;
         }
       },
       "locale": "en_US",
-      "channel": "ecommerce",
+      "scope": "ecommerce",
       "code": "$localizableVariationEcommerceEnglish"
     },
     {
@@ -269,7 +269,7 @@ JSON;
         }
       },
       "locale": "en_US",
-      "channel": "tablet",
+      "scope": "tablet",
       "code": "$localizableVariationTabletEnglish"
     },
     {
@@ -282,7 +282,7 @@ JSON;
         }
       },
       "locale": "en_US",
-      "channel": "ecommerce_china",
+      "scope": "ecommerce_china",
       "code": "$localizableVariationEcommerceChinaEnglish"
     },
     {
@@ -295,7 +295,7 @@ JSON;
         }
       },
       "locale": "fr_FR",
-      "channel": "tablet",
+      "scope": "tablet",
       "code": "$localizableVariationTabletFrench"
     },
     {
@@ -308,7 +308,7 @@ JSON;
         }
       },
       "locale": "zh_CN",
-      "channel": "ecommerce_china",
+      "scope": "ecommerce_china",
       "code": "$localizableVariationEcommerceChinaChinese"
     }
   ],
@@ -427,7 +427,7 @@ JSON;
         }
     },
     "code": "dog",
-    "localizable": false,
+    "localized": false,
     "description": null,
     "end_of_use": null,
     "tags": [],

@@ -52,7 +52,7 @@ class AssetVariationNormalizer implements NormalizerInterface
             'pimee_api_asset_variation_download',
             [
                 'code' => $variation->getAsset()->getCode(),
-                'channelCode' => $normalizedVariation['channel'],
+                'channelCode' => $normalizedVariation['scope'],
                 'localeCode' => $normalizedVariation['locale'] ?: AssetVariationController::NON_LOCALIZABLE_VARIATION,
             ],
             UrlGeneratorInterface::ABSOLUTE_URL

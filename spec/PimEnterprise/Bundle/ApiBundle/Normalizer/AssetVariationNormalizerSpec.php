@@ -42,7 +42,7 @@ class AssetVariationNormalizerSpec extends ObjectBehavior
     ) {
         $componentNormalizer->normalize($variation, 'external_api', [])->willReturn([
             'locale' => null,
-            'channel' => 'ecommerce',
+            'scope' => 'ecommerce',
             'code' => 'path/to/variation_file.jpg',
         ]);
 
@@ -66,7 +66,7 @@ class AssetVariationNormalizerSpec extends ObjectBehavior
                 ],
             ],
             'locale' => null,
-            'channel' => 'ecommerce',
+            'scope' => 'ecommerce',
             'code' => 'path/to/variation_file.jpg',
         ]);
     }
@@ -79,7 +79,7 @@ class AssetVariationNormalizerSpec extends ObjectBehavior
     ) {
         $componentNormalizer->normalize($variation, 'external_api', [])->willReturn([
             'locale' => 'en_US',
-            'channel' => 'ecommerce',
+            'scope' => 'ecommerce',
             'code' => 'path/to/variation_file.jpg',
         ]);
 
@@ -103,7 +103,7 @@ class AssetVariationNormalizerSpec extends ObjectBehavior
                 ],
             ],
             'locale' => 'en_US',
-            'channel' => 'ecommerce',
+            'scope' => 'ecommerce',
             'code' => 'path/to/variation_file.jpg',
         ]);
     }

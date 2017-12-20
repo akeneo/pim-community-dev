@@ -92,7 +92,7 @@ class AssetNormalizer implements NormalizerInterface
      *             ]
      *         ],
      *         'locale' =>null,
-     *         'channel' => 'print',
+     *         'scope' => 'print',
      *         'code' => 'f/4/d/1/f4d12...cc23535_imageA_variationB.jpg'
      *     ]
      * ]
@@ -117,7 +117,7 @@ class AssetNormalizer implements NormalizerInterface
                     'pimee_api_asset_variation_get',
                     [
                         'code' => $variation->getAsset()->getCode(),
-                        'channelCode' => $normalizedVariation['channel'],
+                        'channelCode' => $normalizedVariation['scope'],
                         'localeCode' => $normalizedVariation['locale']
                             ?: AssetVariationController::NON_LOCALIZABLE_VARIATION,
                     ],

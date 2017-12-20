@@ -41,7 +41,7 @@ class AssetVariationNormalizer implements NormalizerInterface
 
         $normalizedVariation = [
             'locale' => $standardNormalizedVariation['locale'],
-            'channel' => $standardNormalizedVariation['channel'],
+            'scope' => $standardNormalizedVariation['channel'],
             'code' => $standardNormalizedVariation['code'],
         ];
 

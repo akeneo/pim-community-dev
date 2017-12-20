@@ -35,7 +35,7 @@ class CreateAssetIntegration extends AbstractAssetTestCase
                 "variation_files": [
                     {
                         "locale": null,
-                        "channel": "ecommerce",
+                        "scope": "ecommerce",
                         "code": "my/code"
                     }
                 ],
