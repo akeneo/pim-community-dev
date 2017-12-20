@@ -206,7 +206,7 @@ pimee_enrich:
                     field: Tags
                 add_to_category:
                     label: Classify assets in categories
-                    description: The assets will be positioned into following categories, the existing placement is kept.
+                    description: The assets will be positioned into following categories, the existing placement will be lost.
                     label_count: "{1}Classify <span class=\"AknFullPage-title--highlight\">1 asset</span> to categories|] 1, Inf [Classify <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} assets</span> to categories"
                     field: Categories
 
