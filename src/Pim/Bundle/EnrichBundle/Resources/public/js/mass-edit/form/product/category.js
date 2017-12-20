@@ -34,6 +34,7 @@ define(
             selectedCategories: [],
             treePromise: null,
             view: null,
+            trees: [],
             events: {
                 'click .nav-tabs .tree-selector': 'changeTree',
                 'change #hidden-tree-input': 'updateModel'
@@ -60,33 +61,46 @@ define(
                         .getFetcher(this.config.fetcher)
                         .fetchAll()
                         .then(function (trees) {
-                        if (null === this.currentTree) {
-                            this.currentTree = _.first(trees).code;
-                        }
+                        this.trees = trees;
 
-                        this.$el.html(this.template({
-                            i18n: i18n,
-                            locale: UserContext.get('uiLocale'),
-                            trees: trees,
-                            currentTree: _.findWhere(trees, {code: this.currentTree}),
-                            selectedCategories: this.selectedCategories
-                        }));
-
-                        this.delegateEvents();
-
-                        return {
-                            treeAssociate: new TreeAssociate('#trees', '#hidden-tree-input', {
-                                list_categories: this.config.listRoute,
-                                children:        this.config.childrenRoute
-                            }),
-                            trees: trees
-                        };
+                        return this.renderTrees();
                     }.bind(this));
+                } else {
+                    return this.renderTrees();
                 }
 
                 this.delegateEvents();
 
                 return this;
+            },
+
+            /**
+             * Renders the current trees
+             *
+             * @returns {Object}
+             */
+            renderTrees() {
+                if (null === this.currentTree) {
+                    this.currentTree = _.first(this.trees).code;
+                }
+
+                this.$el.html(this.template({
+                    i18n: i18n,
+                    locale: UserContext.get('uiLocale'),
+                    trees: this.trees,
+                    currentTree: _.findWhere(this.trees, {code: this.currentTree}),
+                    selectedCategories: this.selectedCategories,
+                    readOnly: this.readOnly
+                }));
+                this.delegateEvents();
+
+                return {
+                    treeAssociate: new TreeAssociate('#trees', '#hidden-tree-input', {
+                        list_categories: this.config.listRoute,
+                        children:        this.config.childrenRoute
+                    }),
+                    trees: this.trees
+                };
             },
 
             /**
