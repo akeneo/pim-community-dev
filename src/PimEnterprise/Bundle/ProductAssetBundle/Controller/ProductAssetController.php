@@ -457,9 +457,6 @@ class ProductAssetController extends Controller
 
         try {
             $this->assetFilesUpdater->resetAllVariationsFiles($reference, true);
-            foreach ($asset->getReferences() as $reference) {
-                $reference->getVariations();
-            };
             $this->assetSaver->save($asset);
             $event = $this->eventDispatcher->dispatch(
                 AssetEvent::POST_UPLOAD_FILES,

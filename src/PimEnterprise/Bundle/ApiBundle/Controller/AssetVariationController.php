@@ -247,7 +247,6 @@ class AssetVariationController
             $locale = $this->getLocale($localeCode);
             $reference = $this->referenceFactory->create($locale);
             $reference->setAsset($asset);
-
             $variation = $this->getVariation($code, $channelCode, $localeCode);
         } elseif (null === $variation && null !== $reference) {
             $channel = $this->getChannel($channelCode);
@@ -335,15 +334,17 @@ class AssetVariationController
 
         if ($asset->isLocalizable() && null === $locale) {
             throw new UnprocessableEntityHttpException(sprintf(
-                'The asset "%s" is localizable, you must provide an existing locale code. "no-locale" is only allowed when the asset is not localizable.',
-                $code
+                'The asset "%s" is localizable, you must provide an existing locale code. "%s" is only allowed when the asset is not localizable.',
+                $code,
+                self::NON_LOCALIZABLE_VARIATION
             ));
         }
 
         if (!$asset->isLocalizable() && null !== $locale) {
             throw new UnprocessableEntityHttpException(sprintf(
-                'The asset "%s" is not localizable, you must provide the string "no-locale" as a locale.',
-                $asset->getCode()
+                'The asset "%s" is not localizable, you must provide the string "%s" as a locale.',
+                $asset->getCode(),
+                self::NON_LOCALIZABLE_VARIATION
             ));
         }
 
@@ -424,7 +425,7 @@ class AssetVariationController
      * @throws NotFoundHttpException
      * @throws UnprocessableEntityHttpException
      *
-     * @return ReferenceInterface
+     * @return null|ReferenceInterface
      */
     protected function getReference(string $code, string $localeCode): ?ReferenceInterface
     {
@@ -434,15 +435,17 @@ class AssetVariationController
 
         if ($asset->isLocalizable() && null === $locale) {
             throw new UnprocessableEntityHttpException(sprintf(
-                'The asset "%s" is localizable, you must provide an existing locale code. "no-locale" is only allowed when the asset is not localizable.',
-                $code
+                'The asset "%s" is localizable, you must provide an existing locale code. "%s" is only allowed when the asset is not localizable.',
+                $code,
+                self::NON_LOCALIZABLE_VARIATION
             ));
         }
 
         if (!$asset->isLocalizable() && null !== $locale) {
             throw new UnprocessableEntityHttpException(sprintf(
-                'The asset "%s" is not localizable, you must provide the string "no-locale" as a locale.',
-                $asset->getCode()
+                'The asset "%s" is not localizable, you must provide the string "%s" as a locale.',
+                $asset->getCode(),
+                self::NON_LOCALIZABLE_VARIATION
             ));
         }
 

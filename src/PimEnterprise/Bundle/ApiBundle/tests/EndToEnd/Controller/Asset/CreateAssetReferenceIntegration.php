@@ -270,7 +270,7 @@ JSON;
         Assert::assertSame($status, $response->getStatusCode());
         '' === $expectedBody ?
             Assert::assertSame($expectedBody, $response->getContent()):
-            Assert::assertJsonStringEqualsJsonString($this->sanitize($expectedBody), $this->sanitize($response->getContent()));
+            Assert::assertJsonStringEqualsJsonString($this->sanitizeFilePaths($expectedBody), $this->sanitizeFilePaths($response->getContent()));
 
         Assert::assertArrayHasKey('location', $response->headers->all());
         Assert::assertSame(
@@ -347,7 +347,12 @@ JSON;
         $this->assertJsonStringEqualsJsonString($expectedContent, $response->getContent());
     }
 
-    private function sanitize(string $data): string
+    /**
+     * @param string $data
+     *
+     * @return string
+     */
+    private function sanitizeFilePaths(string $data): string
     {
         $data = preg_replace('#u0022#', '"', $data);
 
