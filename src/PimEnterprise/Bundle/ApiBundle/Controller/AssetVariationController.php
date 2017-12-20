@@ -237,12 +237,11 @@ class AssetVariationController
      *
      * @AclAncestor("pim_api_asset_edit")
      */
-    public function partialUpdateAction(Request $request, string $code, string $channelCode, string $localeCode): Response
+    public function createAction(Request $request, string $code, string $channelCode, string $localeCode): Response
     {
         $variation = $this->getVariation($code, $channelCode, $localeCode);
         $reference = $this->getReference($code, $localeCode);
         $asset = $this->getAsset($code);
-        $isCreation = null === $variation || null === $variation->getFileInfo();
 
         if (null === $variation && null === $reference) {
             $locale = $this->getLocale($localeCode);
@@ -250,7 +249,7 @@ class AssetVariationController
             $reference->setAsset($asset);
 
             $variation = $this->getVariation($code, $channelCode, $localeCode);
-        } else if (null === $variation && null !== $reference) {
+        } elseif (null === $variation && null !== $reference) {
             $channel = $this->getChannel($channelCode);
             $variation = $this->variationFactory->create($channel);
             $variation->setReference($reference);
@@ -264,8 +263,7 @@ class AssetVariationController
         $this->validateAsset($asset);
         $this->assetSaver->save($asset);
 
-        $status = $isCreation ? Response::HTTP_CREATED : Response::HTTP_NO_CONTENT;
-        $response = new Response(null, $status);
+        $response = new Response(null, Response::HTTP_CREATED);
         $route = $this->router->generate(
             'pimee_api_asset_variation_get',
             ['code' => $code, 'channelCode' => $channelCode, 'localeCode' => $localeCode],

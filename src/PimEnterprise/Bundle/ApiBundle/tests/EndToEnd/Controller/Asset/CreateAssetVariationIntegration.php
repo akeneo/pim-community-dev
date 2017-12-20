@@ -59,7 +59,7 @@ class CreateAssetVariationIntegration extends AbstractAssetTestCase
             'localizable_asset',
             'ecommerce',
             'en_US',
-            204
+            201
         );
     }
 
@@ -72,7 +72,7 @@ class CreateAssetVariationIntegration extends AbstractAssetTestCase
             'non_localizable_asset',
             'ecommerce',
             'no-locale',
-            204
+            201
         );
     }
 
@@ -212,7 +212,7 @@ class CreateAssetVariationIntegration extends AbstractAssetTestCase
     {
         $client = $this->createAuthenticatedClient([], ['CONTENT_TYPE' => 'multipart/form-data']);
 
-        $client->request('PATCH', 'api/rest/v1/assets/localizable_asset/variation-files/ecommerce/en_US');
+        $client->request('POST', 'api/rest/v1/assets/localizable_asset/variation-files/ecommerce/en_US');
         $response = $client->getResponse();
 
         $expectedContent = <<<JSON
@@ -268,7 +268,7 @@ JSON;
 
         $file = new UploadedFile($filePath, $fileName);
 
-        $client->request('PATCH', sprintf('api/rest/v1/assets/%s/variation-files/%s/%s', $assetCode, $channelCode, $localeCode), [], ['file' => $file]);
+        $client->request('POST', sprintf('api/rest/v1/assets/%s/variation-files/%s/%s', $assetCode, $channelCode, $localeCode), [], ['file' => $file]);
         $response = $client->getResponse();
 
         Assert::assertSame($status, $response->getStatusCode());
@@ -308,7 +308,7 @@ JSON;
 
         $file = new UploadedFile($this->files['ziggy'], 'ziggy.png');
 
-        $client->request('PATCH', $url, [], ['file' => $file]);
+        $client->request('POST', $url, [], ['file' => $file]);
         $response = $client->getResponse();
 
         $expectedContent = <<<JSON

@@ -8,7 +8,7 @@ pimee_api_asset_reference_get:
     defaults: { _controller: pimee_api.controller.asset_reference:getAction, _format: json }
     methods: [GET]
 
-pimee_api_asset_reference_partial_update:
+pimee_api_asset_reference_create:
     path: /assets/{code}/reference-files/{localeCode}
-    defaults: { _controller: pimee_api.controller.asset_reference:partialUpdateAction, _format: json }
-    methods: [PATCH]
+    defaults: { _controller: pimee_api.controller.asset_reference:createAction, _format: json }
+    methods: [POST]

@@ -1,7 +1,16 @@
 # 2.1.x
+
+## Improvements
+
 - API-429: Create an asset with the API
 - API-430: Update partially an asset with the API
 - API-431: Update partially a list of assets with the API
+- API-487: Upload a reference file with the API
+- API-493: Upload a variation file with the API
+
+## BC breaks
+
+- Add method `retrieveVariationsNotGeneratedForAReference` to the interface `PimEnterprise\Component\ProductAsset\Finder\AssetFinderInterface`
 
 # 2.1.0-ALPHA2 (2017-12-15)
 

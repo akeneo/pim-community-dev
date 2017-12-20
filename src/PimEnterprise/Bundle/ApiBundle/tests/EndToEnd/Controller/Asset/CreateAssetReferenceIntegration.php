@@ -17,7 +17,6 @@ use League\Flysystem\FilesystemInterface;
 use PHPUnit\Framework\Assert;
 use PimEnterprise\Component\ProductAsset\FileStorage;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
-use Symfony\Component\HttpFoundation\Response;
 
 /**
  * @author Alexandre Hocquard <alexandre.hocquard@akeneo.com>
@@ -52,38 +51,106 @@ class CreateAssetReferenceIntegration extends AbstractAssetTestCase
 
     public function testUpdateAReferenceFileOnLocalizableAsset()
     {
-        $this->assertCorrectlyCreatedAssetReference(
+        $this->assertCorrectlyUpsertAssetReference(
             $this->files['ziggy'],
-            'ziggy.png',
+            'new_ziggy.png',
             'image/png',
             'localizable_asset',
             'en_US',
-            204
+            201
         );
+
+        $this->assertGenerateVariations('localizable_asset', 'en_US', 'image/png', 3);
     }
 
     public function testUpdateAReferenceFileOnNotLocalizableAsset()
     {
-        $this->assertCorrectlyCreatedAssetReference(
+        $this->assertCorrectlyUpsertAssetReference(
             $this->files['ziggy'],
-            'ziggy.png',
+            'new_ziggy.png',
             'image/png',
             'non_localizable_asset',
             'no-locale',
-            204
+            201
         );
+
+        $this->assertGenerateVariations('non_localizable_asset', 'no-locale', 'image/png', 3);
     }
 
-    public function testCreateAReferenceFile()
+    /**
+     * Should be an integration test.
+     */
+    public function testCreateAReferenceFileWithFailingVariations()
     {
-        $this->assertCorrectlyCreatedAssetReference(
-            $this->files['ziggy'],
-            'ziggy.png',
-            'image/png',
+        $expectedContent = <<<JSON
+{
+	"message": "Some variation files were not generated properly.",
+	"errors": [
+	    {
+		    "message": "Impossible to \"scale\" the image \"/tmp/pim/file_storage/7/a/1/b/akeneo-en_US-ecommerce.png\" with a width bigger than the original.",
+		    "scope": "ecommerce",
+		    "locale": "en_US"
+	    },
+	    {
+		    "message": "Impossible to \"scale\" the image \"/tmp/pim/file_storage/7/a/1/b/akeneo-en_US-ecommerce_china.png\" with a width bigger than the original.",
+		    "scope": "ecommerce_china",
+		    "locale": "en_US"
+	    }
+    ]
+}
+JSON;
+
+        $this->assertCorrectlyUpsertAssetReference(
+            $this->files['akeneo'],
+            'akeneo.jpg',
+            'image/jpeg',
             'localizable_asset_without_references',
+            'en_US',
+            201,
+            $expectedContent
+        );
+
+        $ecommerce = $this->get('pim_api.repository.channel')->findOneByIdentifier('ecommerce');
+        $ecommerceChina = $this->get('pim_api.repository.channel')->findOneByIdentifier('ecommerce_china');
+        $tablet = $this->get('pim_api.repository.channel')->findOneByIdentifier('tablet');
+
+        $locale = $this->get('pim_api.repository.locale')->findOneByIdentifier('en_US');
+        $asset = $this->get('pimee_api.repository.asset')->findOneByIdentifier('localizable_asset_without_references');
+        $reference = $asset->getReference($locale);
+
+        Assert::assertNull($reference->getVariation($ecommerce)->getFileInfo());
+        Assert::assertNull($reference->getVariation($ecommerceChina)->getFileInfo());
+        Assert::assertNotNull($reference->getVariation($tablet)->getFileInfo());
+    }
+
+    /**
+     * Should be an integration test.
+     */
+    public function testItDoesNotGenerateLockedVariations()
+    {
+        $asset = $this->get('pimee_api.repository.asset')->findOneByIdentifier('localizable_asset');
+        $ecommerce = $this->get('pim_api.repository.channel')->findOneByIdentifier('ecommerce');
+        $locale = $this->get('pim_api.repository.locale')->findOneByIdentifier('en_US');
+
+        $variation = $asset->getReference($locale)->getVariation($ecommerce);
+        $variation->setLocked(true);
+        $key = $variation->getFileInfo()->getKey();
+
+        Assert::assertCount(0, $this->get('validator')->validate($asset));
+        $this->get('pimee_product_asset.saver.asset')->save($asset);
+
+        $this->assertCorrectlyUpsertAssetReference(
+            $this->files['ziggy'],
+            'new_ziggy.png',
+            'image/png',
+            'localizable_asset',
             'en_US',
             201
         );
+
+        $this->get('doctrine.orm.default_entity_manager')->clear();
+
+        Assert::assertSame($key, $asset->getReference($locale)->getVariation($ecommerce)->getFileInfo()->getKey());
     }
 
     /**
@@ -141,7 +208,7 @@ class CreateAssetReferenceIntegration extends AbstractAssetTestCase
     {
         $client = $this->createAuthenticatedClient([], ['CONTENT_TYPE' => 'multipart/form-data']);
 
-        $client->request('PATCH', 'api/rest/v1/assets/localizable_asset/reference-files/en_US');
+        $client->request('POST', 'api/rest/v1/assets/localizable_asset/reference-files/en_US');
         $response = $client->getResponse();
 
         $expectedContent = <<<JSON
@@ -182,24 +249,29 @@ JSON;
      * @param string $assetCode
      * @param string $localeCode
      * @param int    $status
+     * @param string $expectedBody
      */
-    private function assertCorrectlyCreatedAssetReference(
+    private function assertCorrectlyUpsertAssetReference(
         string $filePath,
         string $fileName,
         string $mimeType,
         string $assetCode,
-        string$localeCode,
-        int $status
+        string $localeCode,
+        int $status,
+        string $expectedBody = ''
     ): void {
         $client = $this->createAuthenticatedClient([], ['CONTENT_TYPE' => 'multipart/form-data']);
 
         $file = new UploadedFile($filePath, $fileName);
 
-        $client->request('PATCH', sprintf('api/rest/v1/assets/%s/reference-files/%s', $assetCode, $localeCode), [], ['file' => $file]);
+        $client->request('POST', sprintf('api/rest/v1/assets/%s/reference-files/%s', $assetCode, $localeCode), [], ['file' => $file]);
         $response = $client->getResponse();
 
         Assert::assertSame($status, $response->getStatusCode());
-        Assert::assertEmpty($response->getContent());
+        '' === $expectedBody ?
+            Assert::assertSame($expectedBody, $response->getContent()):
+            Assert::assertJsonStringEqualsJsonString($this->sanitize($expectedBody), $this->sanitize($response->getContent()));
+
         Assert::assertArrayHasKey('location', $response->headers->all());
         Assert::assertSame(
             sprintf('http://localhost/api/rest/v1/assets/%s/reference-files/%s', $assetCode, $localeCode),
@@ -211,23 +283,43 @@ JSON;
         $locale = $this->get('pim_api.repository.locale')->findOneByIdentifier($localeCode);
         $asset = $this->get('pimee_api.repository.asset')->findOneByIdentifier($assetCode);
         $reference = $asset->getReference($locale);
-        $fileInfo = $reference->getFileInfo();
+        $referenceFileInfo = $reference->getFileInfo();
 
-        Assert::assertNotNull($fileInfo);
-        Assert::assertSame($fileName, $fileInfo->getOriginalFilename());
-        Assert::assertSame($mimeType, $fileInfo->getMimeType());
-        Assert::assertSame('assetStorage', $fileInfo->getStorage());
-        Assert::assertTrue($this->doesFileExist($fileInfo->getKey()));
+        Assert::assertNotNull($referenceFileInfo);
+        Assert::assertSame($fileName, $referenceFileInfo->getOriginalFilename());
+        Assert::assertSame($mimeType, $referenceFileInfo->getMimeType());
+        Assert::assertSame('assetStorage', $referenceFileInfo->getStorage());
+        Assert::assertTrue($this->doesFileExist($referenceFileInfo->getKey()));
+    }
+
+    /**
+     * @param string $assetCode
+     * @param string $localeCode
+     * @param string $mimeType
+     * @param int    $expectedNumberVariations
+     */
+    private function assertGenerateVariations(
+        string $assetCode,
+        string $localeCode,
+        string $mimeType,
+        int $expectedNumberVariations
+    ):void {
+        $locale = $this->get('pim_api.repository.locale')->findOneByIdentifier($localeCode);
+        $asset = $this->get('pimee_api.repository.asset')->findOneByIdentifier($assetCode);
+        $reference = $asset->getReference($locale);
+        $referenceFileInfo = $reference->getFileInfo();
 
         $variations = $reference->getVariations();
-        Assert::assertCount(3, $variations);
+        Assert::assertCount($expectedNumberVariations, $variations);
 
         foreach ($variations as $variation) {
             $variationFileInfo = $variation->getFileInfo();
-            Assert::assertNull($variationFileInfo);
+            $variationSourceFileInfo = $variation->getSourceFileInfo();
+            Assert::assertNotNull($variationFileInfo);
+            Assert::assertNotNull($variationFileInfo->getKey());
+            Assert::assertSame($referenceFileInfo->getOriginalFilename(), $variationSourceFileInfo->getOriginalFileName());
+            Assert::assertSame($mimeType, $variationFileInfo->getMimeType());
         }
-
-        $this->unlinkFile($fileInfo->getKey());
     }
 
     /**
@@ -235,13 +327,13 @@ JSON;
      * @param int    $errorCode
      * @param string $message
      */
-    private function assertError(string $url, int $errorCode, string $message)
+    private function assertError(string $url, int $errorCode, string $message): void
     {
         $client = $this->createAuthenticatedClient([], ['CONTENT_TYPE' => 'multipart/form-data']);
 
         $file = new UploadedFile($this->files['ziggy'], 'ziggy.png');
 
-        $client->request('PATCH', $url, [], ['file' => $file]);
+        $client->request('POST', $url, [], ['file' => $file]);
         $response = $client->getResponse();
 
         $expectedContent = <<<JSON
@@ -253,5 +345,12 @@ JSON;
 
         $this->assertSame($errorCode, $response->getStatusCode());
         $this->assertJsonStringEqualsJsonString($expectedContent, $response->getContent());
+    }
+
+    private function sanitize(string $data): string
+    {
+        $data = preg_replace('#u0022#', '"', $data);
+
+        return preg_replace('#"\\\\?/.*?"#', '"foo\\"', $data);
     }
 }

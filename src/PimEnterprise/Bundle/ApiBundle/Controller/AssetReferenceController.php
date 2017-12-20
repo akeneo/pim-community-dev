@@ -26,8 +26,11 @@ use Pim\Component\Api\Exception\ViolationHttpException;
 use Pim\Component\Catalog\Model\LocaleInterface;
 use PimEnterprise\Component\ProductAsset\Factory\ReferenceFactory;
 use PimEnterprise\Component\ProductAsset\FileStorage;
+use PimEnterprise\Component\ProductAsset\Finder\AssetFinderInterface;
 use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
 use PimEnterprise\Component\ProductAsset\Model\ReferenceInterface;
+use PimEnterprise\Component\ProductAsset\ProcessedItem;
+use PimEnterprise\Component\ProductAsset\ProcessedItemList;
 use PimEnterprise\Component\ProductAsset\Updater\FilesUpdaterInterface;
 use PimEnterprise\Component\ProductAsset\VariationsCollectionFilesGeneratorInterface;
 use Symfony\Component\HttpFoundation\File\Exception\FileNotFoundException;
@@ -86,6 +89,12 @@ class AssetReferenceController
     /** @var SaverInterface */
     protected $assetSaver;
 
+    /** @var VariationsCollectionFilesGeneratorInterface */
+    protected $variationFilesGenerator;
+
+    /** @var AssetFinderInterface */
+    protected $assetFinder;
+
     /**
      * @param IdentifiableObjectRepositoryInterface       $assetRepository
      * @param IdentifiableObjectRepositoryInterface       $localeRepository
@@ -99,6 +108,8 @@ class AssetReferenceController
      * @param RouterInterface                             $router
      * @param FilesUpdaterInterface                       $assetFilesUpdater
      * @param SaverInterface                              $assetSaver
+     * @param VariationsCollectionFilesGeneratorInterface $variationFilesGenerator
+     * @param AssetFinderInterface                        $assetFinder
      */
     public function __construct(
         IdentifiableObjectRepositoryInterface $assetRepository,
@@ -112,7 +123,9 @@ class AssetReferenceController
         ReferenceFactory $referenceFactory,
         RouterInterface $router,
         FilesUpdaterInterface $assetFilesUpdater,
-        SaverInterface $assetSaver
+        SaverInterface $assetSaver,
+        VariationsCollectionFilesGeneratorInterface $variationFilesGenerator,
+        AssetFinderInterface $assetFinder
     ) {
         $this->assetRepository = $assetRepository;
         $this->localeRepository = $localeRepository;
@@ -126,6 +139,8 @@ class AssetReferenceController
         $this->router = $router;
         $this->assetFilesUpdater = $assetFilesUpdater;
         $this->assetSaver = $assetSaver;
+        $this->variationFilesGenerator = $variationFilesGenerator;
+        $this->assetFinder = $assetFinder;
     }
 
     /**
@@ -226,11 +241,10 @@ class AssetReferenceController
      *
      * @AclAncestor("pim_api_asset_edit")
      */
-    public function partialUpdateAction(Request $request, string $code, string $localeCode): Response
+    public function createAction(Request $request, string $code, string $localeCode): Response
     {
         $asset = $this->getAsset($code);
         $reference = $this->getReference($code, $localeCode);
-        $isCreation = null === $reference || null === $reference->getFileInfo();
 
         if (null === $reference) {
             $locale = $this->getLocale($localeCode);
@@ -240,12 +254,14 @@ class AssetReferenceController
 
         $fileInfo = $this->storeFile($request->files);
         $reference->setFileInfo($fileInfo);
-        $this->assetFilesUpdater->resetAllVariationsFiles($reference);
+        $this->assetFilesUpdater->resetAllVariationsFiles($reference, false);
         $this->validateAsset($asset);
         $this->assetSaver->save($asset);
 
-        $status = $isCreation ? Response::HTTP_CREATED : Response::HTTP_NO_CONTENT;
-        $response = new Response(null, $status);
+        $variations = $this->assetFinder->retrieveVariationsNotGeneratedForAReference($reference);
+        $variationItems = $this->variationFilesGenerator->generate($variations, false);
+
+        $response = $this->createResponseWithErrors($variationItems);
         $route = $this->router->generate(
             'pimee_api_asset_reference_get',
             ['code' => $code, 'localeCode' => $localeCode],
@@ -367,5 +383,43 @@ class AssetReferenceController
         if (0 !== $violations->count()) {
             throw new ViolationHttpException($violations);
         }
+    }
+
+    /**
+     * If a variation generation problem occurred, errors are sent into the message body.
+     *
+     * As the asset has been well created, it returns HTTP code 201, even if errors occurred
+     * during the variation generation.
+     * In this case, errors are sent into the body.
+     *
+     * @param ProcessedItemList $variationItems
+     *
+     * @return Response
+     */
+    protected function createResponseWithErrors(ProcessedItemList $variationItems): Response
+    {
+        if (!$variationItems->hasItemInState(ProcessedItem::STATE_ERROR)) {
+            return new Response(null, Response::HTTP_CREATED);
+        }
+
+        $body = [
+            'message' => 'Some variation files were not generated properly.',
+            'errors' => []
+        ];
+
+        foreach ($variationItems as $variationItem) {
+            if (ProcessedItem::STATE_ERROR === $variationItem->getState()) {
+                $locale = $variationItem->getItem()->getLocale();
+                $error = [
+                    'message' => $variationItem->getException()->getMessage(),
+                    'scope' => $variationItem->getItem()->getChannel()->getCode(),
+                    'locale' => null !== $locale ? $locale->getCode() : null
+                ];
+
+                $body['errors'][] = $error;
+            }
+        }
+
+        return new JsonResponse($body, Response::HTTP_CREATED);
     }
 }

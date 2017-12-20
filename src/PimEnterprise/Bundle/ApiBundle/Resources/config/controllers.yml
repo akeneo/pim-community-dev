@@ -120,6 +120,8 @@ services:
             - '@router'
             - '@pimee_product_asset.updater.files'
             - '@pimee_product_asset.saver.asset'
+            - '@pimee_product_asset.variations_collection_files_generator'
+            - '@pimee_product_asset.finder.asset'
 
     pimee_api.controller.asset_variation:
         class: '%pimee_api.controller.asset_variation.class%'
