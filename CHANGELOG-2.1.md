@@ -12,6 +12,7 @@
 - PIM-6924: Add links on the PEF to navigate to missing required attribute if attribute is on a parent
 - PIM-6924: Add links on the PEF completeness dropdown to go to missing required attribute, even if it's on a parent
 - PIM-6924: Display the total missing required attributes on the PEF for products and product models
+- PIM-7012: Add mass association on product and product model
 
 ## BC breaks
 

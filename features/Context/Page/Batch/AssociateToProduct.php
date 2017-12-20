@@ -4,7 +4,6 @@ namespace Context\Page\Batch;
 
 use Behat\Mink\Element\Element;
 use Context\Page\Base\Wizard;
-use Context\Spin\TimeoutException;
 
 /**
  * Associate to product

@@ -900,7 +900,7 @@ batch_jobs:
         clean:
             label: Clean files for attributes
         cleaner:
-            label: Clean files for common attributes
+            label: Clean files for attributes
     add_to_category:
         label: Add to category
         perform:

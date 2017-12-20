@@ -1,6 +1,6 @@
 'use strict';
 /**
- * Edit common attributes operation
+ * Mass associate product
  *
  * @author    Julien Sanchez <julien@akeneo.com>
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
@@ -65,18 +65,23 @@ define(
             render: function () {
                 if (!this.readOnly) {
                     this.loadAssociationTypes().then((associationTypes) => {
-                        const currentAssociationType = associationTypes.length ? _.first(associationTypes).code : null;
+                        const currentAssociationTypeCode = associationTypes.length ?
+                            _.first(associationTypes).code :
+                            null;
 
-                        if (null === this.getCurrentAssociationType() ||
-                            _.isUndefined(_.findWhere(associationTypes, {code: this.getCurrentAssociationType()}))
+                        if (null === this.getCurrentAssociationTypeCode() ||
+                            undefined === associationTypes.find(
+                                associationType => associationType.code === this.getCurrentAssociationTypeCode()
+                            )
                         ) {
-                            this.setCurrentAssociationType(currentAssociationType);
+                            this.setCurrentAssociationType(currentAssociationTypeCode);
                         }
 
                         this.$el.html(this.pickTemplate({
                             associationTypes,
-                            associationType: associationTypes
-                                .find(associationType => associationType.code === this.getCurrentAssociationType()),
+                            associationType: associationTypes.find(
+                                associationType => associationType.code === this.getCurrentAssociationTypeCode()
+                            ),
                             locale: UserContext.get('uiLocale'),
                             i18n,
                             label: __('pim_enrich.form.product.tab.associations.association_type_selector'),
@@ -89,10 +94,10 @@ define(
                     this.$el.empty().append(loadingMask.render().$el.show());
                     $.when(
                         FetcherRegistry.getFetcher('product-model').fetchByIdentifiers(
-                            this.getValue()[this.getCurrentAssociationType()].product_models
+                            this.getValue()[this.getCurrentAssociationTypeCode()].product_models
                         ),
                         FetcherRegistry.getFetcher('product').fetchByIdentifiers(
-                            this.getValue()[this.getCurrentAssociationType()].products
+                            this.getValue()[this.getCurrentAssociationTypeCode()].products
                         )
                     ).then((productModels, products) => {
                         const items = products.concat(productModels);
@@ -183,7 +188,7 @@ define(
             /**
              * @returns {string}
              */
-            getCurrentAssociationType: function () {
+            getCurrentAssociationTypeCode: function () {
                 return sessionStorage.getItem('current_association_type');
             },
 
@@ -213,7 +218,7 @@ define(
                         }
                     });
 
-                    const assocType = this.getCurrentAssociationType();
+                    const assocType = this.getCurrentAssociationTypeCode();
 
                     const associations = {};
                     associations[assocType] = {
@@ -238,7 +243,7 @@ define(
                 FormBuilder.build('pim-associations-product-picker-form').then((form) => {
                     FetcherRegistry
                         .getFetcher('association-type')
-                        .fetch(this.getCurrentAssociationType())
+                        .fetch(this.getCurrentAssociationTypeCode())
                         .then((associationType) => {
                             form.setCustomTitle(__('pim_enrich.form.product.tab.associations.manage', {
                                 associationType: associationType.labels[UserContext.get('catalogLocale')]
