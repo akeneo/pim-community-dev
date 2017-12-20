@@ -48,7 +48,7 @@ class VersionBuilderSpec extends ObjectBehavior
         $pending->setSnapshot(['foo' => 'bar'])->willReturn($pending);
         $pending->getChangeset()->willReturn(['foo' => 'bar']);
 
-        $pending->setChangeset(['foo' => ['old' => '', 'new' => 'bar']])->willReturn($pending);
+        $pending->setChangeset(['foo' => ['old' => '', 'new' => 'bar']])->shouldBeCalled()->willReturn($pending);
 
         $this->buildPendingVersion($pending);
     }
