@@ -47,6 +47,7 @@ Feature: Update the product associations
     Then I should see product "juno"
     And I should see the text "0 product(s), 1 product model(s) and 0 group(s)"
 
+  @ce
   Scenario: Successfully delete a product model as association
     Given I should see the text "There are no associated products"
     And I press the "Add associations" button and wait for modal
