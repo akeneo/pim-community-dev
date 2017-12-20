@@ -18,3 +18,4 @@ services:
                 - 'product-group-grid'
                 - 'published-product-grid'
                 - 'association-product-picker-grid'
+                - 'proposal-grid'

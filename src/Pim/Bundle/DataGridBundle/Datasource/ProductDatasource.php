@@ -52,7 +52,7 @@ class ProductDatasource extends Datasource
         $context = [
             'locales'             => [$this->getConfiguration('locale_code')],
             'channels'            => [$this->getConfiguration('scope_code')],
-            'data_locale'         => $this->getParameters()['dataLocale'],
+            'data_locale'         => $this->getConfiguration('locale_code'),
             'association_type_id' => $this->getConfiguration('association_type_id', false),
             'current_group_id'    => $this->getConfiguration('current_group_id', false),
         ];
@@ -109,7 +109,7 @@ class ProductDatasource extends Datasource
     {
         $defaultNormalizedItem = [
             'id'               => $item->getId(),
-            'dataLocale'       => $this->getParameters()['dataLocale'],
+            'dataLocale'       => $this->getConfiguration('locale_code'),
             'family'           => null,
             'values'           => [],
             'created'          => null,
