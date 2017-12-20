@@ -36,7 +36,7 @@ abstract class AbstractAssetTestCase extends ApiTestCase
 
         $this->createAsset([
             'code' => 'non_localizable_asset',
-            'localized' => false,
+            'localizable' => false,
             'description' => 'A very useful description.',
             'end_of_use' => '2041-01-01T00:00:00',
             'categories' => [
@@ -49,7 +49,7 @@ abstract class AbstractAssetTestCase extends ApiTestCase
 
         $this->createAsset([
             'code' => 'localizable_asset',
-            'localized' => true,
+            'localizable' => true,
             'description' => 'Another useful description.',
             'end_of_use' => '2041-01-01T00:00:00',
             'categories' => [
@@ -62,7 +62,7 @@ abstract class AbstractAssetTestCase extends ApiTestCase
 
         $this->createAssetWithoutReferences([
             'code' => 'localizable_asset_without_references',
-            'localized' => true,
+            'localizable' => true,
             'description' => 'Another useful description.',
             'end_of_use' => '2041-01-01T00:00:00',
             'categories' => [
@@ -75,7 +75,7 @@ abstract class AbstractAssetTestCase extends ApiTestCase
 
         $this->createAssetWithoutReferences([
             'code' => 'non_localizable_asset_without_references',
-            'localized' => false,
+            'localizable' => false,
             'description' => 'Another useful description.',
             'end_of_use' => '2041-01-01T00:00:00',
             'categories' => [
@@ -126,7 +126,7 @@ abstract class AbstractAssetTestCase extends ApiTestCase
   "code": "non_localizable_asset",
   "categories": ["asset_main_catalog"],
   "description": "A very useful description.",
-  "localized": false,
+  "localizable": false,
   "tags": ["akeneo"],
   "end_of_use": "2041-01-01T00:00:00+01:00",
   "variation_files": [
@@ -229,7 +229,7 @@ JSON;
   "code": "localizable_asset",
   "categories": ["asset_main_catalog"],
   "description": "Another useful description.",
-  "localized": true,
+  "localizable": true,
   "tags": ["akeneo"],
   "end_of_use": "2041-01-01T00:00:00+01:00",
   "variation_files": [
@@ -373,7 +373,7 @@ JSON;
         }
     },
     "code": "localizable_asset_without_references",
-    "localized": true,
+    "localizable": true,
     "description": "Another useful description.",
     "end_of_use": "2041-01-01T00:00:00+01:00",
     "tags": ["akeneo"],
@@ -391,7 +391,7 @@ JSON;
         }
     },
     "code": "non_localizable_asset_without_references",
-    "localized": false,
+    "localizable": false,
     "description": "Another useful description.",
     "end_of_use": "2041-01-01T00:00:00+01:00",
     "tags": ["akeneo"],
@@ -409,7 +409,7 @@ JSON;
         }
     },
     "code": "cat",
-    "localized": true,
+    "localizable": true,
     "description": null,
     "end_of_use": "2041-04-02T00:00:00+01:00",
     "tags": ["animal"],
@@ -427,7 +427,7 @@ JSON;
         }
     },
     "code": "dog",
-    "localized": false,
+    "localizable": false,
     "description": null,
     "end_of_use": null,
     "tags": [],

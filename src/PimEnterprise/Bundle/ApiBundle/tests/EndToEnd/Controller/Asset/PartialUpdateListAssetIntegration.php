@@ -33,7 +33,7 @@ JSON;
         $expectedAssets = [
             'cat' => [
                 'code' => 'cat',
-                'localized' => true,
+                'localizable' => true,
                 'description' => 'foo',
                 'end_of_use' => '2041-04-02T00:00:00+01:00',
                 'tags' => ['animal'],
@@ -41,7 +41,7 @@ JSON;
             ],
             'new_asset' => [
                 'code' => 'new_asset',
-                'localized' => false,
+                'localizable' => false,
                 'description' => null,
                 'end_of_use' => null,
                 'tags' => [],

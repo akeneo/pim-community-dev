@@ -51,7 +51,7 @@ class AssetNormalizerSpec extends ObjectBehavior
         $standardAssetNormalizer->normalize($asset, 'standard', [])->willReturn(
             [
                 'code' => 'ham',
-                'localized' => false,
+                'localizable' => false,
                 'description' => 'Ham is better with jam!',
                 'end_of_use' => '2041-01-01T00:00:00+0200',
                 'categories' => [
@@ -119,7 +119,7 @@ class AssetNormalizerSpec extends ObjectBehavior
         $this->normalize($asset, 'external_api', [])->shouldReturn(
             [
                 'code' => 'ham',
-                'localized' => false,
+                'localizable' => false,
                 'description' => 'Ham is better with jam!',
                 'end_of_use' => '2041-01-01T00:00:00+0200',
                 'categories' => [
@@ -175,7 +175,7 @@ class AssetNormalizerSpec extends ObjectBehavior
         $standardAssetNormalizer->normalize($asset, 'standard', [])->willReturn(
             [
                 'code' => 'ham',
-                'localized' => true,
+                'localizable' => true,
                 'description' => 'Ham is better with jam!',
                 'end_of_use' => '2041-01-01T00:00:00+0200',
                 'categories' => [
@@ -243,7 +243,7 @@ class AssetNormalizerSpec extends ObjectBehavior
         $this->normalize($asset, 'external_api', [])->shouldReturn(
             [
                 'code' => 'ham',
-                'localized' => true,
+                'localizable' => true,
                 'description' => 'Ham is better with jam!',
                 'end_of_use' => '2041-01-01T00:00:00+0200',
                 'categories' => [
@@ -300,7 +300,7 @@ class AssetNormalizerSpec extends ObjectBehavior
         $standardAssetNormalizer->normalize($asset, 'standard', [])->willReturn(
             [
                 'code' => 'ham',
-                'localized' => true,
+                'localizable' => true,
                 'description' => 'Ham is better with jam!',
                 'end_of_use' => '2041-01-01T00:00:00+0200',
                 'categories' => [
@@ -379,7 +379,7 @@ class AssetNormalizerSpec extends ObjectBehavior
         $this->normalize($asset, 'external_api', [])->shouldReturn(
             [
                 'code' => 'ham',
-                'localized' => true,
+                'localizable' => true,
                 'description' => 'Ham is better with jam!',
                 'end_of_use' => '2041-01-01T00:00:00+0200',
                 'categories' => [
@@ -436,7 +436,7 @@ class AssetNormalizerSpec extends ObjectBehavior
         $standardAssetNormalizer->normalize($asset, 'standard', [])->willReturn(
             [
                 'code' => 'ham',
-                'localized' => true,
+                'localizable' => true,
                 'description' => 'Ham is better with jam!',
                 'end_of_use' => '2041-01-01T00:00:00+0200',
                 'categories' => [
@@ -506,7 +506,7 @@ class AssetNormalizerSpec extends ObjectBehavior
         $this->normalize($asset, 'external_api', [])->shouldReturn(
             [
                 'code' => 'ham',
-                'localized' => true,
+                'localizable' => true,
                 'description' => 'Ham is better with jam!',
                 'end_of_use' => '2041-01-01T00:00:00+0200',
                 'categories' => [
@@ -548,7 +548,7 @@ class AssetNormalizerSpec extends ObjectBehavior
         $standardAssetNormalizer->normalize($asset, 'standard', [])->willReturn(
             [
                 'code' => 'ham',
-                'localized' => false,
+                'localizable' => false,
                 'description' => 'Ham is better with jam!',
                 'end_of_use' => '2041-01-01T00:00:00+0200',
                 'categories' => [
@@ -596,7 +596,7 @@ class AssetNormalizerSpec extends ObjectBehavior
         $this->normalize($asset, 'external_api', [])->shouldReturn(
             [
                 'code' => 'ham',
-                'localized' => false,
+                'localizable' => false,
                 'description' => 'Ham is better with jam!',
                 'end_of_use' => '2041-01-01T00:00:00+0200',
                 'categories' => [

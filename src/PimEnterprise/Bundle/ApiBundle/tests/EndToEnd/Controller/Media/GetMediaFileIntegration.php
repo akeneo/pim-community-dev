@@ -26,7 +26,7 @@ class GetMediaFileIntegration extends ApiTestCase
 {
     public function testCannotGetAnAssetFromMediaFileUrl()
     {
-        $this->createAsset(['code' => 'an_asset', 'localized' => false]);
+        $this->createAsset(['code' => 'an_asset', 'localizable' => false]);
 
         $referenceFile = $this->get('pim_api.repository.media_file')->findOneBy(['originalFilename' => 'ziggy.png']);
         $referenceFileKey = $referenceFile->getKey();

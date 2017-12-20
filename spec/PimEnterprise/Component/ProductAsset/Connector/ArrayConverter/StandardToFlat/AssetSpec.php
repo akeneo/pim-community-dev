@@ -19,7 +19,7 @@ class AssetSpec extends ObjectBehavior
 
         $item = [
             'code'        => 'mycode',
-            'localized'   => false,
+            'localizable' => false,
             'description' => 'My awesome description',
             'categories'  => [
                 'myCat1',

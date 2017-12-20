@@ -104,7 +104,7 @@ class AssetUpdater implements ObjectUpdaterInterface
                 $this->validateDateFormat($field, $data);
                 $asset->setEndOfUseAt(new \DateTime($data));
                 break;
-            case 'localized':
+            case 'localizable':
                 $this->validateIsBoolean($field, $data);
                 $this->setLocalized($asset, $data);
                 break;
@@ -295,7 +295,7 @@ class AssetUpdater implements ObjectUpdaterInterface
     protected function setLocalized(AssetInterface $asset, $isLocalized)
     {
         if (null !== $asset->getId() && $asset->isLocalizable() !== $isLocalized) {
-            throw ImmutablePropertyException::immutableProperty('localized', $isLocalized, self::class);
+            throw ImmutablePropertyException::immutableProperty('localizable', $isLocalized, self::class);
         }
         $this->assetFactory->createReferences($asset, $isLocalized);
     }
