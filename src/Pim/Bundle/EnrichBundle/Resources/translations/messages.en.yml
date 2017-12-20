@@ -897,8 +897,28 @@ batch_jobs:
         label: Edit common attributes
         perform:
             label: Edit common attributes
-        clean:
+        cleaner:
             label: Clean files for common attributes
+    add_to_category:
+        label: Add to category
+        perform:
+            label: Add to category
+    move_to_category:
+        label: Move to category
+        perform:
+            label: Move to category
+    remove_from_category:
+        label: Remove from category
+        perform:
+            label: Remove from category
+    add_association:
+        label: Associate to products
+        perform:
+            label: Associate to products
+    add_to_existing_product_model:
+        label: Add to an existing product model
+        perform:
+            label: Add to an existing product model
     set_attribute_requirements:
         label: Set attributes requirements
         perform:

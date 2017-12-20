@@ -7,8 +7,8 @@ define(
             return FormRegistry.getFormMeta(formName).then((formMeta) => {
                 if (undefined === formMeta) {
                     throw new Error(`
-                        The extension "${formName}" was not found. Are you sure you registered it properly?
-                        Check your form_extension files and be sure to clear your prod cache before proceeding
+The extension "${formName}" was not found. Are you sure you registered it properly?
+Check your form_extension files and be sure to clear your prod cache before proceeding
                     `);
                 }
 
@@ -20,9 +20,18 @@ define(
             return FormRegistry.getFormExtensions(formMeta).then((extensionsMeta) => {
                 const FormClass = requireContext(formMeta.module);
 
+                if (undefined === FormClass) {
+                    throw new Error(`
+The module "${formMeta.module}" is undefined.
+Most of the time it's because it's not well registered in your requirejs.yml file.
+Here is the documentation to fix this problem
+https://docs.akeneo.com/latest/design_pim/overview.html#register-it`
+                    );
+                }
+
                 if (typeof FormClass !== 'function') {
                     throw new Error(`
-                        The extension "${formMeta.module}" must return a function.
+                        The module "${formMeta.module}" must return a function.
                         It returns: ${typeof FormClass}`
                     );
                 }
@@ -62,7 +71,18 @@ define(
                 return getFormMeta(formName)
                     .then(buildForm)
                     .then(function (form) {
-                        return form.configure().then(function () {
+                        const promise = form.configure();
+
+                        if (undefined === promise || typeof promise.then !== 'function') {
+                            throw new Error(`
+The method configure for the module "${form.code}" must return a promise.
+If you get this error, it often means that you forgot to return:
+BaseForm.prototype.configure.apply(this, arguments)
+(See details here: https://docs.akeneo.com/latest/design_pim/overview.html#useful-methods)
+                            `);
+                        }
+
+                        return promise.then(function () {
                             return form;
                         });
                     });
