@@ -14,7 +14,7 @@ spec:
             - name: STARTUP_SCRIPT
               value: |
                 #! /bin/bash
-                ln -sf pim /home/jenkins
+                ln -sf /pim /home/jenkins/pim
                 echo "done"
           volumeMounts:
             - { mountPath: /home/jenkins, name: pim }
