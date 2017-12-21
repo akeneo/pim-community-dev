@@ -6,6 +6,8 @@ String[] editions = ["ce"]
 String[] features = ["features"]
 String launchUnitTests = "yes"
 String launchBehatTests = "yes"
+String verboseOutputs = "yes"
+String dotsPerLine = "50"
 
 stage("Build") {
     milestone 1
@@ -14,6 +16,8 @@ stage("Build") {
             userInput = input(message: 'Launch tests?', parameters: [
                 choice(choices: 'yes\nno', description: 'Run unit tests and code style checks', name: 'launchUnitTests'),
                 choice(choices: 'yes\nno', description: 'Run behat tests', name: 'launchBehatTests'),
+                choice(choices: 'no\nyes', description: 'Enable Verbose mode', name: 'verboseOutputs'),
+                string(defaultValue: '50', description: 'Number of dots per line', name: 'dotsperline'),
                 string(defaultValue: 'ee,ce,ceodm,eeodm', description: 'PIM edition the behat tests should run on (comma separated values)', name: 'editions'),
                 string(defaultValue: 'features,vendor/akeneo/pim-community-dev/features', description: 'Behat scenarios to build', name: 'features'),
             ])
@@ -22,6 +26,8 @@ stage("Build") {
             features = userInput['features'].tokenize(',')
             launchUnitTests = userInput['launchUnitTests']
             launchBehatTests = userInput['launchBehatTests']
+            verboseOutputs = userInput['verboseOutputs']
+            dotsPerLine = userInput['dotsperline']
         }
     }
     milestone 2
@@ -58,8 +64,8 @@ stage("Build") {
             if (editions.contains("ee")) {
                 withBuildNode({
                     checkout([$class: 'GitSCM',
-                      branches: [[name: '1.6']],
-                      userRemoteConfigs: [[credentialsId: 'github-credentials', url: 'https://github.com/akeneo/pim-enterprise-dev.git']]
+                        branches: [[name: '1.6']],
+                        userRemoteConfigs: [[credentialsId: 'github-credentials', url: 'https://github.com/akeneo/pim-enterprise-dev.git']]
                     ])
                     // Required to avoid permission error when "composer update"
                     sh "mkdir -m 777 vendor"
@@ -143,36 +149,36 @@ stage("Build") {
                     ])
                     sh "mkdir -m 777 vendor"
                     container("php") {
-                       sh "composer require --dev --no-update phpspec/phpspec:~3.4.2"
-                       sh "composer require --dev --no-update phpunit/phpunit:~5.7.22"
-                       sh "composer require --dev --no-update sebastian/exporter:~2.0.0"
-                       sh "composer require --dev --no-update liuggio/fastest:~1.4.4"
-                       sh "php -d memory_limit=-1 /usr/local/bin/composer update --optimize-autoloader --no-interaction --no-progress --prefer-dist --ansi"
-                       sh "chmod 777 -R vendor/akeneo"
-                       dir('vendor/akeneo/pim-community-dev') {
-                           deleteDir()
-                           checkout scm
-                       }
-                       sh "app/console oro:requirejs:generate-config"
-                       sh "app/console assets:install"
+                        sh "composer require --dev --no-update phpspec/phpspec:~3.4.2"
+                        sh "composer require --dev --no-update phpunit/phpunit:~5.7.22"
+                        sh "composer require --dev --no-update sebastian/exporter:~2.0.0"
+                        sh "composer require --dev --no-update liuggio/fastest:~1.4.4"
+                        sh "php -d memory_limit=-1 /usr/local/bin/composer update --optimize-autoloader --no-interaction --no-progress --prefer-dist --ansi"
+                        sh "chmod 777 -R vendor/akeneo"
+                        dir('vendor/akeneo/pim-community-dev') {
+                            deleteDir()
+                            checkout scm
+                        }
+                        sh "app/console oro:requirejs:generate-config"
+                        sh "app/console assets:install"
                     }
                     container("node") {
                         sh "npm install --color=always"
                     }
                     container("docker") {
-                      sh "cp vendor/akeneo/pim-community-dev/.ci/behat.enterprise.yml behat.yml"
-                      sh "cp vendor/akeneo/pim-community-dev/Dockerfile ."
-                      sh "cp -R vendor/akeneo/pim-community-dev/.ci ."
-                      sh "mkdir -m 777 -p app/build/logs/behat app/build/logs/consumer "
-                      sh "cp app/config/parameters.yml.dist app/config/parameters_test.yml"
-                      sh "sed -i \"s#database_host: .*#database_host: 127.0.0.1#g\" app/config/parameters_test.yml"
-                      sh "sed \"\$a    installer_data: 'PimEnterpriseInstallerBundle:minimal'\n\" app/config/parameters_test.yml"
-                      sh "sed -i \"s@// new Doctrine@new Doctrine@g\" app/AppKernel.php"
-                      sh "sed -i \"s@# mongodb_database: .*@mongodb_database: akeneo_pim@g\" app/config/pim_parameters.yml"
-                      sh "sed -i \"s@# mongodb_server: .*@mongodb_server: 'mongodb://127.0.0.1:27017'@g\" app/config/pim_parameters.yml"
-                      sh "printf \"    pim_catalog_product_storage_driver: doctrine/mongodb-odm\n\" >> app/config/parameters_test.yml"
-                      sh "docker build -t eu.gcr.io/akeneo-ci/pim-community-dev:pull-request-${env.CHANGE_ID}-build-${env.BUILD_NUMBER}-eeodm ."
-                      sh "gcloud docker -- push eu.gcr.io/akeneo-ci/pim-community-dev:pull-request-${env.CHANGE_ID}-build-${env.BUILD_NUMBER}-eeodm"
+                        sh "cp vendor/akeneo/pim-community-dev/.ci/behat.enterprise.yml behat.yml"
+                        sh "cp vendor/akeneo/pim-community-dev/Dockerfile ."
+                        sh "cp -R vendor/akeneo/pim-community-dev/.ci ."
+                        sh "mkdir -m 777 -p app/build/logs/behat app/build/logs/consumer "
+                        sh "cp app/config/parameters.yml.dist app/config/parameters_test.yml"
+                        sh "sed -i \"s#database_host: .*#database_host: 127.0.0.1#g\" app/config/parameters_test.yml"
+                        sh "sed \"\$a    installer_data: 'PimEnterpriseInstallerBundle:minimal'\n\" app/config/parameters_test.yml"
+                        sh "sed -i \"s@// new Doctrine@new Doctrine@g\" app/AppKernel.php"
+                        sh "sed -i \"s@# mongodb_database: .*@mongodb_database: akeneo_pim@g\" app/config/pim_parameters.yml"
+                        sh "sed -i \"s@# mongodb_server: .*@mongodb_server: 'mongodb://127.0.0.1:27017'@g\" app/config/pim_parameters.yml"
+                        sh "printf \"    pim_catalog_product_storage_driver: doctrine/mongodb-odm\n\" >> app/config/parameters_test.yml"
+                        sh "docker build -t eu.gcr.io/akeneo-ci/pim-community-dev:pull-request-${env.CHANGE_ID}-build-${env.BUILD_NUMBER}-eeodm ."
+                        sh "gcloud docker -- push eu.gcr.io/akeneo-ci/pim-community-dev:pull-request-${env.CHANGE_ID}-build-${env.BUILD_NUMBER}-eeodm"
                     }
                 })
             } else {
@@ -216,7 +222,7 @@ stage("Test") {
                 if (editions.contains("ce") && launchUnitTests.equals("yes")) {
                     withPhp({
                         try {
-                             sh "cd /home/jenkins/pim && ./bin/php-cs-fixer fix --diff --dry-run --config=.php_cs.php --format=junit > ${env.WORKSPACE}/junit_output.xml"
+                            sh "cd /home/jenkins/pim && ./bin/php-cs-fixer fix --diff --dry-run --config=.php_cs.php --format=junit > ${env.WORKSPACE}/junit_output.xml"
                         } finally {
                             junit "junit_output.xml"
                         }
@@ -245,7 +251,7 @@ stage("Test") {
                         def messagesCE = new net.sf.json.JSONArray()
 
                         for (scenarioCE in scenariosCE) {
-                            messagesCE.add([
+                            def commands = [
                                 [container: "php", script: "cp .ci/akeneo-behat.conf /etc/apache2/sites-available/000-default.conf"],
                                 [container: "php", script: "rm -rf /tmp/behat/screenshots/*"],
                                 [container: "php", script: "sed -i '2 a umask(0000);' bin/behat"],
@@ -266,11 +272,15 @@ stage("Test") {
                                     artifacts: [in: "/tmp/behat/screenshots", name: "*.png"],
                                     script: "su docker -c 'php ./bin/behat --strict -vv " + scenarioCE+"'"
                                 ]
-                            ])
+                            ]
+                            def message = new net.sf.json.JSONObject()
+                            message.put("name",scenarioCE)
+                            message.put("commands",commands)
+                            messagesCE.add(message)
                         }
 
                         return messagesCE
-                    }, 100, "ce")
+                    }, 100, "ce", verboseOutputs, dotsPerLine)
                 } else {
                     echo "Skipping behat test"
                 }
@@ -286,8 +296,7 @@ stage("Test") {
                         def messagesEE = new net.sf.json.JSONArray()
 
                         for (scenarioEE in scenariosEE) {
-
-                            messagesEE.add([
+                            def commands = [
                                 [container: "php", script: "cp .ci/akeneo-behat.conf /etc/apache2/sites-available/000-default.conf"],
                                 [container: "php", script: "rm -rf /tmp/behat/screenshots/*"],
                                 [container: "php", script: "sed -i '2 a umask(0000);' bin/behat"],
@@ -306,10 +315,14 @@ stage("Test") {
                                     artifacts: [in: "/tmp/behat/screenshots", name: "*.png"],
                                     script: "su docker -c 'php ./bin/behat --tags=\"~skip&&~skip-pef&&~doc&&~unstable&&~unstable-app&&~deprecated&&~@unstable-app&&~ce\"  --strict -vv " + scenarioEE + "'"
                                 ]
-                            ])
+                            ]
+                            def message = new net.sf.json.JSONObject()
+                            message.put("name",scenarioEE)
+                            message.put("commands",commands)
+                            messagesEE.add(message)
                         }
                         return messagesEE
-                    }, 150, "ee")
+                    }, 150, "ee", verboseOutputs, dotsPerLine)
                 } else {
                     echo "Skipping behat test"
                 }
@@ -324,8 +337,7 @@ stage("Test") {
                         scenariosCE = scenariosCE.unique()            
                         def messagesCE = new net.sf.json.JSONArray()
                         for (scenarioCE in scenariosCE) {
-
-                            messagesCE.add([
+                            def commands = [
                                 [container: "php", script: "cp .ci/akeneo-behat.conf /etc/apache2/sites-available/000-default.conf"],
                                 [container: "php", script: "rm -rf /tmp/behat/screenshots/*"],
                                 [container: "php", script: "sed -i '2 a umask(0000);' bin/behat"],
@@ -347,15 +359,19 @@ stage("Test") {
                                     artifacts: [in: "/tmp/behat/screenshots", name: "*.png"],
                                     script: "php ./bin/behat --strict -vv " + scenarioCE
                                 ]
-                            ])
+                            ]
+                            def message = new net.sf.json.JSONObject()
+                            message.put("name",scenarioCE)
+                            message.put("commands",commands)
+                            messagesCE.add(message)
                         }
 
                         return messagesCE
-                    }, 100, "ceodm")
+                    }, 100, "ceodm", verboseOutputs, dotsPerLine)
                 } else {
                     echo "Skipping behat test"
                 }
-	          },
+	        },
             "behat-ee-odm": {
                 if (launchBehatTests.equals("yes") && editions.contains("eeodm")) {
                     queue({
@@ -366,7 +382,7 @@ stage("Test") {
                         scenariosEE = scenariosEE.unique()   
                         def messagesEE = new net.sf.json.JSONArray()
                         for (scenarioEE in scenariosEE) {
-                            messagesEE.add([
+                            def commands = [
                                 [container: "php", script: "cp .ci/akeneo-behat.conf /etc/apache2/sites-available/000-default.conf"],
                                 [container: "php", script: "rm -rf /tmp/behat/screenshots/*"],
                                 [container: "php", script: "sed -i '2 a umask(0000);' bin/behat"],
@@ -384,11 +400,14 @@ stage("Test") {
                                     junit: [in: "/home/jenkins/pim/app/build/logs/behat/", name: "*.xml"],
                                     script: "php ./bin/behat --tags=\"~skip&&~skip-pef&&~doc&&~unstable&&~unstable-app&&~deprecated&&~@unstable-app&&~ce\"  --strict -vv " + scenarioEE
                                 ]
-                            ])
+                            ]
+                            def message = new net.sf.json.JSONObject()
+                            message.put("name",scenarioEE)
+                            message.put("commands",commands)
+                            messagesEE.add(message)
                         }
-
                         return messagesEE
-                    }, 150, "eeodm")
+                    }, 150, "eeodm", verboseOutputs, dotsPerLine)
                 } else {
                     echo "Skipping behat test"
                 }
@@ -474,12 +493,14 @@ def withGrunt(body) {
     }
 }
 
-def queue(body, scale, edition) {
+def queue(body, scale, edition, verboseOutputs, dotsPerLine) {
+    def verbosity = (verboseOutputs == "yes") ? "-v" : ""
+    def linesize = (dotsPerLine.isNumber())? dotsPerLine :"50"
     clearTemplateNames()
     def uuid = UUID.randomUUID().toString()
     podTemplate(label: "pubsub-" + uuid, containers: [
         containerTemplate(name: "php", ttyEnabled: true, command: 'cat', image: "akeneo/apache-php:php-5.6", resourceRequestCpu: '100m', alwaysPullImage: true, resourceRequestMemory: '200Mi'),
-        containerTemplate(name: "gcloud", ttyEnabled: true, command: 'cat', image: "eu.gcr.io/akeneo-ci/gcloud:1.0.17", resourceRequestCpu: '100m', resourceRequestMemory: '200Mi', envVars: [envVar(key: "PUBSUB_PROJECT_ID", value: "akeneo-ci")])
+        containerTemplate(name: "gcloud", ttyEnabled: true, command: 'cat', image: "eu.gcr.io/akeneo-ci/gcloud:1.0", alwaysPullImage: true, resourceRequestCpu: '100m', resourceRequestMemory: '200Mi', envVars: [envVar(key: "PUBSUB_PROJECT_ID", value: "akeneo-ci")])
     ], annotations: [
         podAnnotation(key: "pod.beta.kubernetes.io/init-containers", value: "[{\"name\": \"pim\", \"imagePullPolicy\": \"Always\", \"image\": \"eu.gcr.io/akeneo-ci/pim-community-dev:pull-request-${env.CHANGE_ID}-build-${env.BUILD_NUMBER}-${edition}\", \"command\": [\"sh\", \"-c\", \"cp -Rp /pim /home/jenkins\"], \"volumeMounts\":[{\"name\":\"workspace-volume\",\"mountPath\":\"/home/jenkins\"}]}]")
     ], volumes: [
@@ -514,14 +535,13 @@ def queue(body, scale, edition) {
 
                 try {
                     sh "kubectl apply -f /home/jenkins/pim/.ci/k8s/"
-                    sh "gcloud.phar job:wait ${NODE_NAME}-results-subscription ${size} ${env.WORKSPACE} --ansi"
+                    sh "gcloud.phar ${verbosity} job:wait --dotsperline ${linesize} ${NODE_NAME}-results-subscription ${size} ${env.WORKSPACE} --ansi"
                 } finally {
                     sh "kubectl delete job ${NODE_NAME} --namespace=jenkins-prod"
                     sh "gcloud.phar pubsub:topic:delete ${NODE_NAME}"
                     sh "gcloud.phar pubsub:topic:delete ${NODE_NAME}-results"
                     sh "gcloud.phar pubsub:subscription:delete ${NODE_NAME}-subscription"
                     sh "gcloud.phar pubsub:subscription:delete ${NODE_NAME}-results-subscription"
-                    sh "find junit/ -name \"*.xml\" | xargs sed -i \"s/ name=\\\"/ name=\\\"[${edition}] /\""
 
                     junit allowEmptyResults: true, testResults: 'junit/**/*.xml'
                     archiveArtifacts allowEmptyArchive: true, artifacts: 'artifacts/**/*.png'
