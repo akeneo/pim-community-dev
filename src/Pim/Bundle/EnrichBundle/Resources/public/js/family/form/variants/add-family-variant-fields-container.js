@@ -148,10 +148,10 @@ define(
                             const entities = _.map(attributeResults, (attribute) => {
                                 const label = this.getEntityLabel(attribute, catalogLocale);
 
-                            return {
+                                return {
                                     id: attribute.code,
                                     text: label
-                                }
+                                };
                             });
 
                             const sortedEntities = _.sortBy(entities, 'text');
@@ -202,10 +202,10 @@ define(
                         const data = _.map(arguments, (attribute) => {
                             const label = this.getEntityLabel(attribute, catalogLocale);
 
-return {
+                            return {
                                 id: attribute.code,
                                 text: label
-                            }
+                            };
                         });
 
                         callback(data);
@@ -282,7 +282,7 @@ return {
                     return '[' + entity.code + ']';
                 }
 
-                return entity.labels[locale]
+                return entity.labels[locale];
             }
         });
     }
