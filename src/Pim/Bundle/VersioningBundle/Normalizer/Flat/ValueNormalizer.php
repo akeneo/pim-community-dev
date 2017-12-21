@@ -176,7 +176,9 @@ class ValueNormalizer implements NormalizerInterface, SerializerAwareInterface
         usort(
             $options,
             function ($first, $second) {
-                return $first->getSortOrder() - $second->getSortOrder();
+                $sort = $first->getSortOrder() - $second->getSortOrder();
+
+                return $sort !== 0 ?? $first->getCode() - $second->getCode();
             }
         );
         $sortedCollection = new ArrayCollection($options);
