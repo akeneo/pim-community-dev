@@ -15,6 +15,13 @@
             </div>
         {% endif %}
     </div>
+    <script>
+        require(['pimee/productasset/media-field'], function (mediaField) {
+            $(function() {
+                mediaField.initialize();
+            });
+        });
+    </script>
 {% endmacro %}
 
 {% macro renderGenerateFromReferenceZone(variationId) %}

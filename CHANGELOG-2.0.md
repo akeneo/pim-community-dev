@@ -1,3 +1,11 @@
+# 2.0.x
+
+## Bug fixes
+
+- PIM-6972: Fix drop zone on the asset creation modal
+- PIM-7005: Fix code validation on asset creation modal
+- PIM-6912: Fix missing translations on Enterprise Edition jobs
+
 # 2.0.9 (2017-12-15)
 
 ## Bug fixes
