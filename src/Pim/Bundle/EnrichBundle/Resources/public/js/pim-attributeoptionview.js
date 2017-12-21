@@ -156,6 +156,8 @@ define(
                             this.stopEditItem();
                             if (!this.parent.sortable) {
                                 this.parent.render();
+                            } else {
+                                this.parent.updateSorting();
                             }
                         }.bind(this),
                         error: this.showValidationErrors.bind(this)
