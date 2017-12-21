@@ -338,19 +338,18 @@ class AttributeGroupController
 
         if ('other' === $attributeGroup->getCode()) {
             return new JsonResponse(
-                array(
+                [
                     'message' => 'Attribute group "other" cannot be removed.'
-                ),
+                ],
                 Response::HTTP_UNPROCESSABLE_ENTITY
             );
         }
 
         if (0 < $attributeGroup->getAttributes()->count()) {
             return new JsonResponse(
-                array(
-                    'message' => 'Attribute group containing attributes cannot be removed. 
-                    Please remove its attributes prior to delete it.'
-                ),
+                [
+                    'message' => 'Attribute group containing attributes cannot be removed. Please remove its attributes prior to delete it.'
+                ],
                 Response::HTTP_UNPROCESSABLE_ENTITY
             );
         }
