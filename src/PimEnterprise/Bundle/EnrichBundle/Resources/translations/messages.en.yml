@@ -147,44 +147,6 @@ edit_common_attributes_with_permission_and_rules:
     steps.perform: Edit attributes
     steps.edit_common_attributes_processor.title: Edit attributes
 
-batch_jobs:
-    yml_asset_channel_configuration_import:
-        import:
-            label: Asset channel configuration import
-    add_product_value_with_permission_and_rules:
-        label: Add product value with permission check & rules application
-        perform.label: Add product value
-        execute_rules.label: Rules execution
-    update_product_value_with_permission_and_rules:
-        label: Update product value with permission check & rules application
-        perform.label: Update product value
-        execute_rules.label: Rules execution
-    remove_product_value_with_permission_and_rules:
-        label: Remove product value with permission check & rules application
-        perform.label: Remove product value
-        execute_rules.label: Rules execution
-    edit_common_attributes_with_permission_and_rules:
-        label: Edit attributes with permission check & rules application
-        perform.label: Edit attributes
-        execute_rules.label: Rules execution
-        cleaner.label: Clean temporary files
-    csv_published_product_quick_export:
-        export.label: Csv published products quick export
-        perform:
-            label: Csv published products quick export
-    csv_published_product_grid_context_quick_export:
-        export.label: Csv published products grid context quick export
-        perform:
-            label: Csv published products grid context quick export
-    xlsx_published_product_quick_export:
-        export.label: Xlsx published products quick export
-        perform:
-            label: Xlsx published products quick export
-    xlsx_published_product_grid_context_quick_export:
-        export.label: Xlsx published products grid context quick export
-        perform:
-            label: Xlsx published products grid context quick export
-
 edit_common_attributes_with_permission_and_rules.steps.edit_common_attributes_processor.title: Edit attributes
 add_product_value_with_permission.steps.add_product_value_with_permission_processor.title: Add product value with permission
 update_product_value_with_permission.steps.update_product_value_with_permission_processor.title: Update product value with permission
