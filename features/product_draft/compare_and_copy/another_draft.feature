@@ -24,7 +24,8 @@ Feature: Copy value from a draft to an other
     Then the Name comparison value should be "That's not my tee anymore"
     And the Description comparison value should be "JA !"
     And I switch the scope to "tablet"
-    When I select all translations
+    When I collapse the column
+    And I select all translations
     And I copy selected translations
     And the product Description for scope "tablet" should be "JA !"
     And I switch the comparison source to "working_copy"
