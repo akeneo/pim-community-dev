@@ -1,6 +1,6 @@
 # 2.1.x
 
-## Improvements
+## Web API
 
 - API-429: Create an asset with the API
 - API-430: Update partially an asset with the API
@@ -14,7 +14,7 @@
 
 # 2.1.0-ALPHA2 (2017-12-15)
 
-## Improvements
+## Web API
 
 - API-529: Get an asset tag
 - API-530: Get a list of asset tags
@@ -24,11 +24,16 @@
 - API-442: Update partially a list of asset categories with the API
 - API-488: Get an asset reference file with the API
 - API-496: Get an asset variation file with the API
+- API-514: Download an asset reference file with the API
+- API-513: Download an asset variation file with the API
 - API-427: Get an asset with the API
 - API-428: Get a list of assets with the API
 - API-443: Prevent getting asset via media file url with the API
+
+## Have a better UX/UI
+
 - PIM-7029: Add a search by code on assets grid
-- PIM-7024: Add search on label and code on published products
+- PIM-7024: Add search on label and identifier on published products
 
 ## Bug fixes
 
@@ -36,9 +41,12 @@
 
 # 2.1.0-ALPHA1
 
-## Improvements
+## Web API
 
-- PIM-6946: Allow assets to be image as attribute for families
 - API-438: Get an asset category with the API
 - API-439: Get a list of asset categories with the API
+
+## Have a better UX/UI
+
+- PIM-6946: Allow assets to be attribute as main picture for families
 - PIM-6481: Add gallery view and display selector to assets grid
