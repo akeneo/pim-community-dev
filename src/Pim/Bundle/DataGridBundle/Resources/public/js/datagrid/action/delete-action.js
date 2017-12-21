@@ -57,8 +57,13 @@ define([
                 this.model.destroy({
                     url: this.getLink(),
                     wait: true,
-                    error: function() {
-                        this.getErrorDialog().open();
+                    error: function(element, response) {
+                        let message = '';
+                        const decodedResponse = JSON.parse(response.responseText);
+                        if (undefined !== decodedResponse.message) {
+                            message = decodedResponse.message
+                        }
+                        this.getErrorDialog(message).open();
                     }.bind(this),
                     success: function() {
                         var messageText = __('flash.' + this.getEntityCode() + '.removed');
@@ -93,11 +98,11 @@ define([
              *
              * @return {oro.Modal}
              */
-            getErrorDialog: function() {
+            getErrorDialog: function(message) {
                 if (!this.errorModal) {
                     this.errorModal = new Modal({
                         title: __('Delete Error'),
-                        content: __('error.removing.' + this.getEntityHint()),
+                        content: '' === message ? __('error.removing.' + this.getEntityHint()) : message,
                         cancelText: false
                     });
                 }
