@@ -4,7 +4,7 @@
 
 - PIM-7032: Fix close button when clicking on "Compare/Translate" option on the product edit form
 - PIM-7063: Add validation for AttributeGroup - cannot remove AttributeGroup containing attributes and cannot remove AttributGroup "other"
-- PIM-7062: Allow to delete attributes contains in a family variant
+- PIM-7062: Allow to delete attributes contained in a family variant
 
 # 2.0.9 (2017-12-15)
 
