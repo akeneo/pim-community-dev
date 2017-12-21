@@ -4,6 +4,11 @@ pim_user_user_rest_get_current:
     requirements:
         method: GET
 
+pim_user_user_rest_index:
+    path: /search
+    defaults: { _controller: pim_user.controller.user_rest:indexAction }
+    methods: [GET]
+
 pim_user_user_rest_get:
     path: /{identifier}
     defaults: { _controller: pim_user.controller.user_rest:getAction }

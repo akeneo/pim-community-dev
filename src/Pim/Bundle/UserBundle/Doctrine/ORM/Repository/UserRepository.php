@@ -3,6 +3,8 @@
 namespace Pim\Bundle\UserBundle\Doctrine\ORM\Repository;
 
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\QueryBuilder;
+use Pim\Bundle\UserBundle\Entity\UserInterface;
 use Pim\Bundle\UserBundle\Repository\UserRepositoryInterface;
 
 /**
@@ -46,6 +48,42 @@ class UserRepository extends EntityRepository implements UserRepositoryInterface
         $qb = $this->createQueryBuilder('u');
         $qb->leftJoin('u.groups', 'g');
         $qb->where($qb->expr()->in('g.id', $groupIds));
+
+        return $qb->getQuery()->getResult();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function countAll()
+    {
+        $qb = $this->createQueryBuilder('u');
+
+        return $qb
+            ->select('count(u.id)')
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * @return UserInterface[]
+     */
+    public function findBySearch($search = null, array $options = [])
+    {
+        $qb = $this->createQueryBuilder('u');
+
+        if (null !== $search && '' !== $search) {
+            $qb->where('u.firstName like :search')->setParameter('search', '%' . $search . '%');
+        }
+
+        if (isset($options['limit'])) {
+            $qb->setMaxResults((int) $options['limit']);
+            if (isset($options['page'])) {
+                $qb->setFirstResult((int) $options['limit'] * ((int) $options['page'] - 1));
+            }
+        }
 
         return $qb->getQuery()->getResult();
     }
