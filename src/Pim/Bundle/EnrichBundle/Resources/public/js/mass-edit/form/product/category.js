@@ -43,6 +43,15 @@ define(
             /**
              * {@inheritdoc}
              */
+            initialize: function () {
+                this.trees = [];
+
+                BaseOperation.prototype.initialize.apply(this, arguments);
+            },
+
+            /**
+             * {@inheritdoc}
+             */
             reset: function () {
                 this.setValue([]);
 
@@ -63,13 +72,28 @@ define(
                         .then(function (trees) {
                         this.trees = trees;
 
-                        return this.renderTrees();
+                        this.renderTrees(this.trees);
+
+                        new TreeAssociate('#trees', '#hidden-tree-input', {
+                            list_categories: this.config.listRoute,
+                            children:        this.config.childrenRoute
+                        });
+
+                        this.delegateEvents();
+
+                        return {
+                            treeAssociate: new TreeAssociate('#trees', '#hidden-tree-input', {
+                                list_categories: this.config.listRoute,
+                                children:        this.config.childrenRoute
+                            }),
+                            trees: trees
+                        };
                     }.bind(this));
                 } else {
-                    return this.renderTrees();
-                }
+                    this.renderTrees(this.trees);
 
-                this.delegateEvents();
+                    this.delegateEvents();
+                }
 
                 return this;
             },
@@ -77,30 +101,21 @@ define(
             /**
              * Renders the current trees
              *
-             * @returns {Object}
+             * @param {Array} trees
              */
-            renderTrees() {
+            renderTrees(trees) {
                 if (null === this.currentTree) {
-                    this.currentTree = _.first(this.trees).code;
+                    this.currentTree = _.first(trees).code;
                 }
 
                 this.$el.html(this.template({
                     i18n: i18n,
                     locale: UserContext.get('uiLocale'),
-                    trees: this.trees,
-                    currentTree: _.findWhere(this.trees, {code: this.currentTree}),
+                    trees: trees,
+                    currentTree: _.findWhere(trees, {code: this.currentTree}),
                     selectedCategories: this.selectedCategories,
                     readOnly: this.readOnly
                 }));
-                this.delegateEvents();
-
-                return {
-                    treeAssociate: new TreeAssociate('#trees', '#hidden-tree-input', {
-                        list_categories: this.config.listRoute,
-                        children:        this.config.childrenRoute
-                    }),
-                    trees: this.trees
-                };
             },
 
             /**
@@ -151,7 +166,7 @@ define(
                 this.treePromise.then(function (elements) {
                     const tree = _.findWhere(elements.trees, {code: this.currentTree});
 
-                    elements.treeAssociate.switchTree(tree.id);
+                    elements.treeAssociate.switchTree(tree.code);
 
                     this.delegateEvents();
                 }.bind(this));

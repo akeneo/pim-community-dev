@@ -4,8 +4,8 @@
             <div class="AknButtonList catalog-switcher">
                 <ul class="AknHorizontalNavtab-list nav nav-tabs" id="trees-list">
                 <% _.each(trees, function (tree) { %>
-                <li class="AknHorizontalNavtab-item tree-selector <% if (tree.code === currentTree.code) { %> active<% } %>" data-tree="<%- tree.code %>" data-tree-id="<%- tree.id %>">
-                    <div class="AknHorizontalNavtab-link" id="tree-link-<%- tree.id %>">
+                <li class="AknHorizontalNavtab-item tree-selector <% if (tree.code === currentTree.code) { %> active<% } %>" data-tree="<%- tree.code %>" data-tree-id="<%- tree.code %>">
+                    <div class="AknHorizontalNavtab-link" id="tree-link-<%- tree.code %>">
                         <span class="tree-label label"><%- i18n.getLabel(tree.labels, locale, tree.code) %></span>
                         <div class="AknAcl">
                             <i class="icon-ok <%- tree.associated ? 'green AknAcl-icon--granted' : 'gray' %>"></i>
@@ -22,10 +22,10 @@
         <div class="AknTabContainer-contentCache"></div>
         <% } %>
         <div class="tab-pane active">
-            <div id="trees" data-datalocale="<%- locale %>" data-selected-tree="<%- currentTree.id %>">
+            <div id="trees" data-datalocale="<%- locale %>" data-selected-tree="<%- currentTree.code %>">
                 <% _.each(trees, function (tree) { %>
-                    <div class="tree root-unselectable" data-tree-id="<%- tree.id %>">
-                        <div id="tree-<%- tree.id %>" class="buffer-small-left"></div>
+                    <div class="tree root-unselectable" data-tree-id="<%- tree.code %>">
+                        <div id="tree-<%- tree.code %>" class="buffer-small-left"></div>
                     </div>
                 <% }); %>
             </div>
