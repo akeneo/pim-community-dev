@@ -11,7 +11,7 @@ Feature: Create a draft with a simple reference data fields
     And the following "top_color" attribute reference data: Red, Green, Light green, Blue, Yellow, Cyan
     And the following product:
       | sku           | categories |
-      | akeneo_tshirt | tshirts    |
+      | akeneo_tshirt | tops       |
 
   Scenario: Successfully add a draft without add attribute in product
     Given I should get the following product drafts after apply the following updater to it:

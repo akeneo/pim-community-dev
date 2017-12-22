@@ -6,7 +6,7 @@ services:
     pimee_workflow.manager.published_product:
         class: '%pimee_workflow.manager.published_product.class%'
         arguments:
-            - '@pim_catalog.repository.product'
+            - '@pim_catalog.repository.product_without_permission'
             - '@pimee_workflow.repository.published_product'
             - '@pim_catalog.repository.attribute'
             - '@event_dispatcher'
@@ -16,6 +16,7 @@ services:
             - '@pimee_workflow.saver.published_product'
             - '@pimee_workflow.remover.published_product'
             - '@pimee_workflow.remover.published_product'
+            - '@pimee_workflow.repository.published_product_without_permission'
 
     pimee_workflow.manager.product_draft:
         class: '%pimee_workflow.manager.product_draft.class%'

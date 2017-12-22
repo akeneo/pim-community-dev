@@ -4,7 +4,7 @@ services:
         decorates: pim_enrich.query.product_and_product_model_query_builder_factory
         decoration_inner_name: pim_enrich.query.product_and_product_model_query_builder_factory.without_permission
         arguments:
-            - '%pim_enrich.query.product_and_product_model_query_builder.class%'
+            - '%pim_enrich.query.mass_edit_product_and_product_model_query_builder.class%'
             - '@pimee_enrich.query.product_and_product_model_query_builder_factory.with_permissions_and_product_and_product_model_cursor'
 
     pimee_enrich.query.product_and_product_model_query_builder_factory.with_permissions_and_product_and_product_model_cursor:

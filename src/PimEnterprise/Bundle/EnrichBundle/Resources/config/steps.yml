@@ -76,6 +76,16 @@ services:
             - '@pimee_enrich.mass_edit.remove_product_value.processor'
             - '@pim_enrich.writer.database.product_and_product_model_writer'
 
+    pim_enrich.step.add_association.mass_edit:
+        class: '%pim_connector.step.item_step.class%'
+        arguments:
+            - 'perform'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@pim_enrich.reader.database.add_association'
+            - '@pim_enrich.connector.processor.mass_edit.product.add_value'
+            - '@pim_enrich.writer.database.product_and_product_model_writer'
+
     pimee_enrich.step.edit_common_attributes_with_permission.perform:
         class: '%pim_connector.step.item_step.class%'
         arguments:
@@ -118,7 +128,7 @@ services:
             - 'execute_rules'
             - '@event_dispatcher'
             - '@akeneo_batch.job_repository'
-            - '@pim_enrich.reader.database.filtered_product_and_product_model'
+            - '@pimee_enrich.reader.database.filtered_product_and_product_model'
             - '@pimee_catalog_rule.processor.product_loader'
             - '@pimee_catalog_rule.executor.rules'
             - 100

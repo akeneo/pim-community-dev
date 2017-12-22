@@ -70,7 +70,7 @@ class AssetNormalizerSpec extends ObjectBehavior
         $variationNormalizer->normalize($variation, 'external_api', [])->willReturn([
             '_link' => [
                 'download' => [
-                    'href' => 'http://akeneo.ham.com/rest/v1/assets/ham/variation-files/ecommerce/no_locale/download',
+                    'href' => 'http://akeneo.ham.com/rest/v1/assets/ham/variation-files/ecommerce/no-locale/download',
                 ],
             ],
             'locale' => null,
@@ -87,7 +87,7 @@ class AssetNormalizerSpec extends ObjectBehavior
         $referenceNormalizer->normalize($reference, 'external_api', [])->willReturn([
             '_link' => [
                 'download' => [
-                    'href' => 'http://akeneo.ham.com/rest/v1/assets/ham/reference-files/no_locale/download',
+                    'href' => 'http://akeneo.ham.com/rest/v1/assets/ham/reference-files/no-locale/download',
                 ],
             ],
             'locale' => null,
@@ -102,19 +102,19 @@ class AssetNormalizerSpec extends ObjectBehavior
             [
                 'code' => 'ham',
                 'channelCode' => 'ecommerce',
-                'localeCode' => 'no_locale',
+                'localeCode' => 'no-locale',
             ],
             UrlGeneratorInterface::ABSOLUTE_URL
-        )->willReturn('http://akeneo.ham.com/rest/v1/assets/ham/variation-files/ecommerce/no_locale');
+        )->willReturn('http://akeneo.ham.com/rest/v1/assets/ham/variation-files/ecommerce/no-locale');
 
         $router->generate(
             'pimee_api_asset_reference_get',
             [
                 'code' => 'ham',
-                'localeCode' => 'no_locale',
+                'localeCode' => 'no-locale',
             ],
             UrlGeneratorInterface::ABSOLUTE_URL
-        )->willReturn('http://akeneo.ham.com/rest/v1/assets/ham/reference-files/no_locale');
+        )->willReturn('http://akeneo.ham.com/rest/v1/assets/ham/reference-files/no-locale');
 
         $this->normalize($asset, 'external_api', [])->shouldReturn(
             [
@@ -132,10 +132,10 @@ class AssetNormalizerSpec extends ObjectBehavior
                     [
                         '_link' => [
                             'download' => [
-                                'href' => 'http://akeneo.ham.com/rest/v1/assets/ham/variation-files/ecommerce/no_locale/download',
+                                'href' => 'http://akeneo.ham.com/rest/v1/assets/ham/variation-files/ecommerce/no-locale/download',
                             ],
                             'self' => [
-                                'href' => 'http://akeneo.ham.com/rest/v1/assets/ham/variation-files/ecommerce/no_locale',
+                                'href' => 'http://akeneo.ham.com/rest/v1/assets/ham/variation-files/ecommerce/no-locale',
                             ],
                         ],
                         'locale' => null,
@@ -147,10 +147,10 @@ class AssetNormalizerSpec extends ObjectBehavior
                     [
                         '_link' => [
                             'download' => [
-                                'href' => 'http://akeneo.ham.com/rest/v1/assets/ham/reference-files/no_locale/download',
+                                'href' => 'http://akeneo.ham.com/rest/v1/assets/ham/reference-files/no-locale/download',
                             ],
                             'self' => [
-                                'href' => 'http://akeneo.ham.com/rest/v1/assets/ham/reference-files/no_locale',
+                                'href' => 'http://akeneo.ham.com/rest/v1/assets/ham/reference-files/no-locale',
                             ],
                         ],
                         'locale' => null,
@@ -567,7 +567,7 @@ class AssetNormalizerSpec extends ObjectBehavior
         $variationNormalizer->normalize($variation, 'external_api', [])->willReturn([
             '_link' => [
                 'download' => [
-                    'href' => 'http://akeneo.ham.com/rest/v1/assets/ham/variation-files/ecommerce/no_locale/download',
+                    'href' => 'http://akeneo.ham.com/rest/v1/assets/ham/variation-files/ecommerce/no-locale/download',
                 ],
             ],
             'locale' => null,
@@ -584,7 +584,7 @@ class AssetNormalizerSpec extends ObjectBehavior
         $referenceNormalizer->normalize($reference, 'external_api', [])->willReturn([
             '_link' => [
                 'download' => [
-                    'href' => 'http://akeneo.ham.com/rest/v1/assets/ham/reference-files/no_locale/download',
+                    'href' => 'http://akeneo.ham.com/rest/v1/assets/ham/reference-files/no-locale/download',
                 ],
             ],
             'locale' => null,

@@ -2,7 +2,17 @@ pim_api:
     content_type_negotiator:
         rules:
             -
-                path: '^/api/rest/v\d+/(asset-categories)$'
+                path: '^/api/rest/v\d+/assets/.+/reference-files/.+$'
+                methods: ['POST']
+                content_types: ['multipart/form-data']
+                priority: 10
+            -
+                path: '^/api/rest/v\d+/assets/.+/variation-files/.+$'
+                methods: ['POST']
+                content_types: ['multipart/form-data']
+                priority: 10
+            -
+                path: '^/api/rest/v\d+/(assets|asset-categories)$'
                 methods: ['PATCH']
                 content_types: ['application/vnd.akeneo.collection+json']
                 priority: 20

@@ -3,13 +3,18 @@
 namespace spec\PimEnterprise\Component\Catalog\Security\Updater\Setter;
 
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
+use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Common\Util\ClassUtils;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\UserBundle\Entity\UserInterface;
 use Pim\Component\Catalog\Model\CategoryInterface;
+use Pim\Component\Catalog\Model\Product;
 use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
 use Pim\Component\Catalog\Updater\Setter\FieldSetterInterface;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;
 use PimEnterprise\Component\Security\Attributes;
+use Prophecy\Argument;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
@@ -21,13 +26,15 @@ class GrantedCategoryFieldSetterSpec extends ObjectBehavior
         FieldSetterInterface $categoryFieldSetter,
         AuthorizationCheckerInterface $authorizationChecker,
         TokenStorageInterface $tokenStorage,
-        CategoryAccessRepository $categoryAccessRepository
+        CategoryAccessRepository $categoryAccessRepository,
+        ObjectManager $entityManager
     ) {
         $this->beConstructedWith(
             $categoryFieldSetter,
             $authorizationChecker,
             $categoryAccessRepository,
             $tokenStorage,
+            $entityManager,
             ['categories']
         );
     }
@@ -87,9 +94,12 @@ class GrantedCategoryFieldSetterSpec extends ObjectBehavior
         $authorizationChecker,
         $tokenStorage,
         $categoryAccessRepository,
+        $entityManager,
         TokenInterface $token,
         UserInterface $user,
-        ProductInterface $product
+        ProductInterface $product,
+        ProductInterface $fullProduct,
+        ProductRepositoryInterface $productRepository
     ) {
         $data = ['categoryA', 'categoryB'];
         $tokenStorage->getToken()->willReturn($token);
@@ -98,6 +108,10 @@ class GrantedCategoryFieldSetterSpec extends ObjectBehavior
         $categoryAccessRepository
             ->areAllCategoryCodesGranted($user, Attributes::VIEW_ITEMS, ['categoryA', 'categoryB', 'categoryC'])
             ->willReturn(false);
+
+        $entityManager->getRepository(Argument::any())->willReturn($productRepository);
+        $productRepository->find(1)->willReturn($fullProduct);
+        $fullProduct->getCategoryCodes()->willReturn(['categoryA', 'categoryB', 'categoryC']);
 
         $product->getId()->willReturn(1);
         $product->getCategories()->willReturn([]);
@@ -111,21 +125,30 @@ class GrantedCategoryFieldSetterSpec extends ObjectBehavior
     function it_throws_an_exception_if_a_category_is_not_granted(
         $authorizationChecker,
         $tokenStorage,
+        $entityManager,
         $categoryAccessRepository,
         TokenInterface $token,
         UserInterface $user,
         ProductInterface $product,
         CategoryInterface $categoryA,
-        CategoryInterface $categoryB
+        CategoryInterface $categoryB,
+        ProductInterface $fullProduct,
+        ProductRepositoryInterface $productRepository
     ) {
         $data = ['categoryA', 'categoryB'];
         $tokenStorage->getToken()->willReturn($token);
         $token->getUser()->willReturn($user);
         $product->getCategoryCodes()->willReturn([]);
-        $categoryAccessRepository->areAllCategoryCodesGranted($user, Attributes::VIEW_ITEMS, [])->willReturn(true);
+        $categoryAccessRepository->areAllCategoryCodesGranted($user, Attributes::VIEW_ITEMS, ['categoryA', 'categoryB', 'categoryC'])
+            ->willReturn(true);
 
         $categoryB->getCode()->willReturn('categoryB');
+        $fullProduct->getCategoryCodes()->willReturn(['categoryA', 'categoryB', 'categoryC']);
 
+        $entityManager->getRepository(Argument::any())->willReturn($productRepository);
+        $productRepository->find(1)->willReturn($fullProduct);
+
+        $product->getId()->willReturn(1);
         $product->getCategories()->willReturn([$categoryA, $categoryB]);
         $authorizationChecker->isGranted([Attributes::OWN], $product)->willReturn(true);
         $authorizationChecker->isGranted([Attributes::VIEW_ITEMS], $categoryA)->willReturn(true);
@@ -146,12 +169,15 @@ class GrantedCategoryFieldSetterSpec extends ObjectBehavior
     function it_throws_an_exception_if_user_loses_the_ownership_on_a_product(
         $authorizationChecker,
         $tokenStorage,
+        $entityManager,
         $categoryAccessRepository,
         TokenInterface $token,
         UserInterface $user,
         ProductInterface $product,
+        ProductInterface $fullProduct,
         CategoryInterface $categoryA,
-        CategoryInterface $categoryB
+        CategoryInterface $categoryB,
+        ProductRepositoryInterface $productRepository
     ) {
         $data = ['categoryA', 'categoryB'];
         $tokenStorage->getToken()->willReturn($token);
@@ -162,6 +188,9 @@ class GrantedCategoryFieldSetterSpec extends ObjectBehavior
             ->willReturn(true);
 
         $categoryB->getCode()->willReturn('categoryB');
+
+        $entityManager->getRepository(Argument::any())->willReturn($productRepository);
+        $productRepository->find(1)->willReturn($fullProduct);
 
         $product->getId()->willReturn(1);
         $product->getCategories()->willReturn([$categoryA, $categoryB]);

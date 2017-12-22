@@ -85,42 +85,6 @@ interface PublishedProductRepositoryInterface extends ProductRepositoryInterface
     public function getProductIdsMapping(array $originalIds = []);
 
     /**
-     * Count published products for a specific family
-     *
-     * @param FamilyInterface $family
-     *
-     * @return int
-     */
-    public function countPublishedProductsForFamily(FamilyInterface $family);
-
-    /**
-     * Count published products for a specific category
-     *
-     * @param CategoryInterface $category
-     *
-     * @return int
-     */
-    public function countPublishedProductsForCategory(CategoryInterface $category);
-
-    /**
-     * Count published products for a specific attribute
-     *
-     * @param AttributeInterface $attribute
-     *
-     * @return int
-     */
-    public function countPublishedProductsForAttribute(AttributeInterface $attribute);
-
-    /**
-     * Count published products for a specific group
-     *
-     * @param GroupInterface $group
-     *
-     * @return int
-     */
-    public function countPublishedProductsForGroup(GroupInterface $group);
-
-    /**
      * Count published products for a specific association type
      *
      * @param AssociationTypeInterface $associationType
@@ -128,13 +92,4 @@ interface PublishedProductRepositoryInterface extends ProductRepositoryInterface
      * @return int
      */
     public function countPublishedProductsForAssociationType(AssociationTypeInterface $associationType);
-
-    /**
-     * Count published products for a specific attribute option
-     *
-     * @param AttributeOptionInterface $option
-     *
-     * @return int
-     */
-    public function countPublishedProductsForAttributeOption(AttributeOptionInterface $option);
 }

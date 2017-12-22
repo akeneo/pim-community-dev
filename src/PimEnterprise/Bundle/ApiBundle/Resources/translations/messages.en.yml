@@ -4,6 +4,7 @@ pim_api:
             edit: Create and update asset categories
             list: List asset categories
         asset:
+            edit: Edit assets, and upload their reference and variation files
             list: List assets, and list and download their reference and variation files
     acl_group:
         asset_category: Asset categories

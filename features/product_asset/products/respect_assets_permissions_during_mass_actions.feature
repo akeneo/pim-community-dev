@@ -19,7 +19,7 @@ Feature: Apply permissions for an assets collection attribute during mass action
     Given I am on the products grid
     And I select rows leather jacket and wool jacket
     And I press the "Bulk actions" button
-    And I choose the "Edit common attributes" operation
+    And I choose the "Edit attributes" operation
     When I display the Front view attribute
     And I start to manage assets for "Front view"
     Then I should see entities paint and dog

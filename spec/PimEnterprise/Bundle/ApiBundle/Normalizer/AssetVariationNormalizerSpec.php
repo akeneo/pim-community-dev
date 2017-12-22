@@ -54,15 +54,15 @@ class AssetVariationNormalizerSpec extends ObjectBehavior
             [
                 'code' => 'an_asset',
                 'channelCode' => 'ecommerce',
-                'localeCode' => 'no_locale',
+                'localeCode' => 'no-locale',
             ],
             UrlGeneratorInterface::ABSOLUTE_URL
-        )->willReturn('/assets/an_asset/variation-files/ecommerce/no_locale/download');
+        )->willReturn('/assets/an_asset/variation-files/ecommerce/no-locale/download');
 
         $this->normalize($variation, 'external_api', [])->shouldReturn([
             '_link' => [
                 'download' => [
-                    'href' => '/assets/an_asset/variation-files/ecommerce/no_locale/download',
+                    'href' => '/assets/an_asset/variation-files/ecommerce/no-locale/download',
                 ],
             ],
             'locale' => null,

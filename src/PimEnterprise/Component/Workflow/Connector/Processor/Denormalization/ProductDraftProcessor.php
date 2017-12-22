@@ -88,7 +88,7 @@ class ProductDraftProcessor extends AbstractProcessor implements
         $identifier = $this->getIdentifier($item);
 
         $product = $this->findProduct($identifier);
-        if (!$product) {
+        if (null === $product) {
             $this->skipItemWithMessage($item, sprintf('Product "%s" does not exist', $identifier));
         }
 
