@@ -137,7 +137,7 @@ class AttributeOption implements AttributeOptionInterface
      */
     public function setCode($code)
     {
-        $this->code = $code;
+        $this->code = (string) $code;
 
         return $this;
     }

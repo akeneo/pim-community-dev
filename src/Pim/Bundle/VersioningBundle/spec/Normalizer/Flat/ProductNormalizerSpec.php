@@ -2,6 +2,7 @@
 
 namespace spec\Pim\Bundle\VersioningBundle\Normalizer\Flat;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface;
@@ -12,6 +13,8 @@ use Pim\Component\Catalog\Model\AttributeOptionInterface;
 use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Component\Catalog\Model\GroupInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Model\ProductModel;
+use Pim\Component\Catalog\Model\ProductModelInterface;
 use Pim\Component\Catalog\Model\ProductPriceInterface;
 use Pim\Component\Catalog\Model\ValueCollectionInterface;
 use Pim\Component\Catalog\Model\ValueInterface;
@@ -136,6 +139,8 @@ class ProductNormalizerSpec extends ObjectBehavior
         GroupInterface $associatedGroup2,
         ProductInterface $associatedProduct1,
         ProductInterface $associatedProduct2,
+        ProductModelInterface $associatedProductModel1,
+        ProductModelInterface $associatedProductModel2,
         ValueInterface $skuAssocProduct1,
         ValueInterface $skuAssocProduct2,
         ValueCollectionInterface $values,
@@ -154,6 +159,7 @@ class ProductNormalizerSpec extends ObjectBehavior
         $myCrossSell->getAssociationType()->willReturn($crossSell);
         $myCrossSell->getGroups()->willReturn([]);
         $myCrossSell->getProducts()->willReturn([]);
+        $myCrossSell->getProductModels()->willReturn(new ArrayCollection());
         $upSell->getCode()->willReturn('up_sell');
         $myUpSell->getAssociationType()->willReturn($upSell);
         $associatedGroup1->getCode()->willReturn('associated_group1');
@@ -166,6 +172,17 @@ class ProductNormalizerSpec extends ObjectBehavior
         $associatedProduct1->getIdentifier()->willReturn($skuAssocProduct1);
         $associatedProduct2->getIdentifier()->willReturn($skuAssocProduct2);
         $myUpSell->getProducts()->willReturn([$associatedProduct1, $associatedProduct2]);
+
+        $obi = new ProductModel();
+        $obi->setCode('obi');
+        $wan = new ProductModel();
+        $wan->setCode('wan');
+        $myUpSell->getProductModels()->willReturn(
+            new ArrayCollection([
+                $obi,
+                $wan
+            ])
+        );
 
         $product->getIdentifier()->willReturn($sku);
         $product->getFamily()->willReturn($family);
@@ -180,15 +197,17 @@ class ProductNormalizerSpec extends ObjectBehavior
 
         $this->normalize($product, 'flat', [])->shouldReturn(
             [
-                'family'              => 'shoes',
-                'groups'              => 'group1,group2,group_3',
-                'categories'          => 'nice shoes,converse',
-                'cross_sell-groups'   => '',
+                'family' => 'shoes',
+                'groups' => 'group1,group2,group_3',
+                'categories' => 'nice shoes,converse',
+                'cross_sell-groups' => '',
                 'cross_sell-products' => '',
-                'up_sell-groups'      => 'associated_group1,associated_group2',
-                'up_sell-products'    => 'sku_assoc_product1,sku_assoc_product2',
-                'sku'                 => 'sku-001',
-                'enabled'             => 1,
+                'cross_sell-product_models' => '',
+                'up_sell-groups' => 'associated_group1,associated_group2',
+                'up_sell-products' => 'sku_assoc_product1,sku_assoc_product2',
+                'up_sell-product_models' => 'obi,wan',
+                'sku' => 'sku-001',
+                'enabled' => 1,
             ]
         );
     }

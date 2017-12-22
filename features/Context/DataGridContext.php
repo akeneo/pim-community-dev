@@ -860,7 +860,7 @@ class DataGridContext extends PimContext implements PageObjectAware
                 $gridRow  = $this->getDatagrid()->getRow($row);
                 $checkbox = $gridRow->find('css', 'td.boolean-cell input[type="checkbox"]:not(:disabled)');
 
-                if (null !== $checkbox) {
+                if (null !== $checkbox && $checkbox->isVisible()) {
                     $checkbox->check();
 
                     if ($checkbox->isChecked()) {
@@ -917,7 +917,7 @@ class DataGridContext extends PimContext implements PageObjectAware
             $this->spin(function () use ($row) {
                 $gridRow  = $this->getDatagrid()->getRow($row);
                 $gridRow->mouseOver();
-                $removeButton = $gridRow->find('css', '.AknGrid-bodyRow-remove');
+                $removeButton = $gridRow->find('css', '.AknGrid-bodyRowRemove');
                 $removeButton->click();
                 return true;
             }, sprintf('Unable to remove the row "%s"', $row));

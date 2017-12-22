@@ -20,7 +20,7 @@
 --
 
 /*!40000 ALTER TABLE `pim_catalog_association` DISABLE KEYS */;
-INSERT INTO `pim_catalog_association` VALUES (9,865,49),(8,866,49),(7,868,49);
+INSERT INTO `pim_catalog_association` VALUES (9,865,49),(8,866,49),(7,868,49),(6,867,49);
 /*!40000 ALTER TABLE `pim_catalog_association` ENABLE KEYS */;
 
 --

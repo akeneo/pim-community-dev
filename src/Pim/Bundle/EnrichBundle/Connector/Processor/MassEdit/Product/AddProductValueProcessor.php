@@ -68,7 +68,7 @@ class AddProductValueProcessor extends AbstractProcessor
      * Add data from $actions to the given $product
      *
      * @param ProductInterface|ProductModelInterface $product
-     * @param array            $actions
+     * @param array                                  $actions
      */
     protected function addData($product, array $actions)
     {

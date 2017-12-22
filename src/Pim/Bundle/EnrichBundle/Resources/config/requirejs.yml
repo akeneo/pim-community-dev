@@ -192,6 +192,7 @@ config:
                         urls:
                             get: pim_enrich_product_model_rest_get
                             children: pim_enrich_product_model_rest_children_list
+                            list: pim_enrich_product_model_rest_index
                 product-model-by-code:
                     module: pim/base-fetcher
                     options:
@@ -682,6 +683,7 @@ config:
         # Product
         pim/product-edit-form/product-label:                     pimenrich/js/product/form/product-label
         pim/product-edit-form/product-completeness:              pimenrich/js/product/form/product-completeness
+        pim/product-edit-form/total-missing-required-attributes: pimenrich/js/product/form/total-missing-required-attributes
         pim/product-edit-form/attribute-filter:                  pimenrich/js/product/form/attribute-filter
         pim/product-edit-form/attribute-filter-all:              pimenrich/js/product/form/attribute-filter-all
         pim/product-edit-form/attribute-filter-missing-required: pimenrich/js/product/form/attribute-filter-missing-required
@@ -715,6 +717,7 @@ config:
         pim/product-edit-form/start-copy:                        pimenrich/js/product/form/start-copy
         pim/product-edit-form/variant-navigation:                pimenrich/js/product/form/variant-navigation
         pim/product-edit-form/attributes/variant-axes:           pimenrich/js/product/form/attributes/variant-axes
+        pim/product-edit-form/product-and-product-model-picker:  pimenrich/js/product/form/product-and-product-model-picker
         pim/product-edit-form/attributes/read-only-parent-attributes: pimenrich/js/product/form/attributes/read-only-parent-attributes
 
         # Product model
@@ -795,6 +798,7 @@ config:
         pim/mass-edit-form/form:                                      pimenrich/js/mass-edit/form/form
         pim/mass-edit-form/choose:                                    pimenrich/js/mass-edit/form/choose
         pim/mass-edit-form/product/operation:                         pimenrich/js/mass-edit/form/product/operation
+        pim/mass-edit-form/product/associate:                         pimenrich/js/mass-edit/form/product/associate
         pim/mass-edit-form/product/change-status:                     pimenrich/js/mass-edit/form/product/change-status
         pim/mass-edit-form/product/edit-common-attributes:            pimenrich/js/mass-edit/form/product/edit-common-attributes
         pim/mass-edit-form/product/add-to-existing-product-model:     pimenrich/js/mass-edit/form/product/add-to-existing-product-model
@@ -1109,6 +1113,7 @@ config:
         pim/template/product/create-modal-content:           pimenrich/templates/product/create-modal-content.html
         pim/template/product/add-select/attribute/line:      pimenrich/templates/product/form/add-select/attribute/line.html
         pim/template/product/form/product-completeness:      pimenrich/templates/product/form/product-completeness.html
+        pim/template/product/form/total-missing-required-attributes: pimenrich/templates/product/form/total-missing-required-attributes.html
         pim/template/product/form/variant-navigation/navigation: pimenrich/templates/product/form/variant-navigation/navigation.html
         pim/template/product/form/variant-navigation/product-item: pimenrich/templates/product/form/variant-navigation/product-item.html
         pim/template/product/form/variant-navigation/product-model-item: pimenrich/templates/product/form/variant-navigation/product-model-item.html
@@ -1125,6 +1130,8 @@ config:
 
         pim/template/mass-edit/form:                                        pimenrich/templates/mass-edit/form.html
         pim/template/mass-edit/choose:                                      pimenrich/templates/mass-edit/choose.html
+        pim/template/mass-edit/product/associate/pick:                      pimenrich/templates/mass-edit/product/associate/pick.html
+        pim/template/mass-edit/product/associate/confirm:                   pimenrich/templates/mass-edit/product/associate/confirm.html
         pim/template/mass-edit/product/change-status:                       pimenrich/templates/mass-edit/product/change-status.html
         pim/template/mass-edit/product/edit-common-attributes:              pimenrich/templates/mass-edit/product/edit-common-attributes.html
         pim/template/mass-edit/product/add-to-existing-product-model:       pimenrich/templates/mass-edit/product/add-to-existing-product-model.html

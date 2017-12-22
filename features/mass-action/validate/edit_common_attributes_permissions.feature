@@ -16,7 +16,7 @@ Feature: Edit common attributes with permissions
     And I am on the products grid
     And I select row boots
     And I press the "Bulk actions" button
-    When I choose the "Edit common attributes" operation
+    When I choose the "Edit attributes" operation
     Then I should see the text "Select attributes"
     And I display the Name attribute
     And I change the "Name" to "boots"

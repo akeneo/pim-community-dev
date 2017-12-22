@@ -1,6 +1,7 @@
 'use strict';
 
-define([
+define(
+    [
         'underscore',
         'pim/form',
         'oro/mediator',

@@ -60,8 +60,6 @@ class ProductModelContext extends PimContext
             return $this->productModelRepository->findOneByIdentifier($code);
         }, sprintf('Could not find a product model with code "%s"', $code));
 
-        $this->entityManager->refresh($productModel);
-
         return $productModel;
     }
 }

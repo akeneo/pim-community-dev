@@ -48,6 +48,7 @@ css:
         - bundles/pimui/less/components/grid/MassActions.less
 
         - bundles/pimui/less/components/product-edit-form/AssetCollectionField.less
+        - bundles/pimui/less/components/product-edit-form/AttributeActions.less
         - bundles/pimui/less/components/product-edit-form/ChoicesField.less
         - bundles/pimui/less/components/product-edit-form/CommentPanel.less
         - bundles/pimui/less/components/product-edit-form/CompletenessPanel.less

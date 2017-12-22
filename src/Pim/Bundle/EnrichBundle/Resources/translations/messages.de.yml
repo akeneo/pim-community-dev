@@ -89,7 +89,6 @@ pim_enrich:
       description: Die ausgewählten Produktattribute werden mit den folgenden Daten für das ausgewählte Gebietsschema bearbeitet.
       empty: Bitte wählen Sie die Attribute aus, welche Sie bearbeiten möchten
       success_flash: Die Statusaktualisierung der Produkte wird derzeit ausgeführt
-      launched_flash: Die Massenbearbeitung "gemeinsame Attribute bearbeiten" wurde gestartet. Sie werden benachrichtigt, sobald diese erledigt ist.
       message:
         warning: Für die ausgewählten Produkte gibt es keine gemeinsamen Attribute. Bitte passen Sie Ihre Auswahl an.
         invalid_attribute: Das Attribut mit dem Code "attribute_code" ist kein gemeinsames Attribut der ausgewählten Produkte. Attribut übersprungen.
@@ -630,7 +629,7 @@ pim_enrich.mass_edit_action:
     description: Die ausgewählten Produkte werden aktiviert oder deaktiviert.
     success_flash: Der Produktstatus wurde geändert
   edit-common-attributes:
-    label: Gemeinsame Attribute bearbeiten
+    label: Attribute bearbeiten
     description: Die ausgewählten Produktattribute werden mit den folgenden Daten für das ausgewählte Gebietsschema bearbeitet.
     empty: Bitte wählen Sie die Attribute aus, welche Sie bearbeiten möchten
     success_flash: Die Produkt-Attribute wurden aktualisiert
@@ -748,11 +747,10 @@ job_execution.summary:
   skipped_attributes: Übersprungene Attribute
   skipped_families: Übersprungene Produktfamilien
 pim_mass_edit_execution_show: Ausgeführte Massenbearbeitung | Details
-edit_common_attributes.steps.edit_common_attributes_processor.title: Gemeinsame Attribute bearbeiten
+edit_common_attributes.steps.edit_common_attributes_processor.title: Attribute bearbeiten
 update_product_value.steps.update_product_value_processor.title: Wert des Produkts aktualisieren
 remove_product_value.steps.update_product_value_processor.title: Produktwert entfernen
-edit_common_attributes: Gemeinsame Attribute bearbeiten
-edit_common_attributes_clean: Bereinige Dateien für gemeinsame Attribute
+edit_common_attributes: Attribute bearbeiten
 perform.steps.duplicated.title: Doppelte Achse
 perform.steps.excluded.title: Ausgeschlossene Produkte
 batch_jobs:
@@ -765,11 +763,9 @@ batch_jobs:
     perform:
       label: Wert des Produkts aktualisieren
   edit_common_attributes:
-    label: Gemeinsame Attribute bearbeiten
+    label: Attribute bearbeiten
     perform:
-      label: Gemeinsame Attribute bearbeiten
-    clean:
-      label: Bereinige Dateien für gemeinsame Attribute
+      label: Attribute bearbeiten
   set_attribute_requirements:
     label: Benötigte Attribute auswählen
     perform:

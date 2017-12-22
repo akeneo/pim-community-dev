@@ -1,6 +1,19 @@
-# 2.1.x
+# 2.1.0 (2017-12-21)
 
-## Improvements
+## Better manage products with variants
+
+- PIM-7012: Add mass association on products 
+- PIM-7033: Allow user to select product models as associations in UI
+- PIM-6652: Add a parent filter and column into the product grid
+- PIM-6924: Display the total missing required attributes on the PEF for products and product models
+- PIM-6924: Add links on the PEF to navigate to missing required attribute if attribute is on a parent
+- PIM-6924: Add links on the PEF completeness dropdown to go to missing required attribute, even if it's on a parent
+- PIM-7055: No product version was added when associating it with a product model, it's now fixed
+- PIM-6361: Manage the add categories bulk action for product models
+- PIM-6982: Manage the remove categories bulk action for product models
+- PIM-6983: Manage the move categories bulk action for product models
+
+## Web API
 
 - API-415: Update a list of options of a simple or multi select attribute
 
@@ -12,25 +25,26 @@
 
 # 2.1.0-ALPHA2 (2017-12-15)
 
-## Improvements
+## Better manage products with variants
 
 - PIM-6996: Associate products to product models during import using the `<assocType>-product_models` pattern in an new column
-- API-443: Prevent getting asset via media file url of the API
-- PIM-6996: Associate products to product models during import using the `<assocType>-product_models` pattern in an new column
-- PIM-6342: Display and remove associations gallery view
+- PIM-6998: Export association from products to product models using the `<assocType>-product_models` pattern in an new column
+
+## Have a better UX/UI
+
+- PIM-6342: Display and remove associations in a gallery view
 - PIM-7051: Add images to associated products that have asset collection as main image
-- PIM-7046: Add ability to customise empty grid message and illustration
+- PIM-7046: Add ability to customise empty grid message and illustration for associations
+- PIM-7028: Use the search in the association picker 
 - PIM-6917: Fix CSS glitches
 
-## Update jobs
+## Web API
 
-IMPORTANT: In order to use the new mass edit, please execute
+- API-443: Prevent getting asset via media file url of the API
 
-```
-bin/console akeneo:batch:create-job internal add_to_category mass_edit add_to_category '{}' 'Mass add to categories' --env=prod
-bin/console akeneo:batch:create-job internal move_to_category mass_edit move_to_category '{}' 'Mass move to categories' --env=prod
-bin/console akeneo:batch:create-job internal remove_from_category mass_edit remove_from_category '{}' 'Mass remove from categories' --env=prod
-```
+## Migrations
+
+Please run the doctrine migrations command in order to use the new mass edit: `bin/console doctrine:migrations:migrate --env=prod`
 
 ## BC breaks
 
@@ -43,12 +57,14 @@ Removed typehint of ProductInterface in the Pim\Component\Catalog\Updater\Setter
 
 # 2.1.0-ALPHA1
 
-## Improvements
+## Have a better UX/UI
 
 - PIM-6480: Add gallery view and display selector to the product grid
-- PIM-6621: add search on label and code on products and product models
-- PIM-6966: Add tracker information for product model, product variant and family variant
+- PIM-6621: Add search on label and identifier on products and product models in the product grid
 - PIM-6990: Add new screen for managing product associations
+
+## Better manage products with variants
+- PIM-6966: Add tracker information for product model, product variant and family variant
 
 ## BC breaks
 

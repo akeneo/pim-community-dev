@@ -2,7 +2,6 @@
 
 namespace tests\integration\Pim\Component\Catalog\Normalizer\Standard;
 
-use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\IntegrationTestsBundle\Sanitizer\DateSanitizer;
 use Akeneo\Test\IntegrationTestsBundle\Sanitizer\MediaSanitizer;
 use Akeneo\Test\Integration\TestCase;
@@ -253,6 +252,7 @@ class ProductStandardIntegration extends TestCase
                 'updated'       => '2016-06-14T13:12:50+02:00',
                 'associations'  => [
                     'PACK'   => ['groups' => [], 'products' => ['bar', 'baz'], 'product_models' => []],
+                    'SUBSTITUTION' => ['groups' => [], 'products' => [], 'product_models' => []],
                     'UPSELL' => ['groups' => ['groupA'], 'products' => [], 'product_models' => []],
                     'X_SELL' => ['groups' => ['groupB'], 'products' => ['bar'], 'product_models' => []],
                 ],

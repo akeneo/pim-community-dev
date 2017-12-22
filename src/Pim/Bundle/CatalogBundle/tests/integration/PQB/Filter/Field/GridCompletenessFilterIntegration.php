@@ -115,7 +115,9 @@ class GridCompletenessFilterIntegration extends AbstractProductQueryBuilderTestC
      */
     protected function executeFilter(array $filters)
     {
-        $pqb = $this->get('pim_enrich.query.product_and_product_model_query_builder_factory')->create();
+        $pqb = $this->get('pim_enrich.query.product_and_product_model_query_builder_from_size_factory')->create(
+            ['limit' => 100]
+        );
 
         foreach ($filters as $filter) {
             $context = isset($filter[3]) ? $filter[3] : [];

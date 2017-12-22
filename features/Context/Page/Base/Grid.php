@@ -136,6 +136,10 @@ class Grid extends Index
         ],
         'label_or_identifier' => [
             'Pim\Behat\Decorator\Grid\Filter\SearchDecorator',
+        ],
+        'parent' => [
+            'Pim\Behat\Decorator\Grid\Filter\BaseDecorator',
+            'Pim\Behat\Decorator\Grid\Filter\StringDecorator',
         ]
     ];
 
@@ -182,26 +186,31 @@ class Grid extends Index
      */
     public function getGrid()
     {
+        return $this->spin(function () {
+            $container = $this->getContainer();
+            $grids = $container->findAll('css', $this->elements['Grid']['css']);
+
+            foreach ($grids as $grid) {
+                if ($grid->isVisible()) {
+                    return $grid;
+                }
+            }
+        }, 'No visible grid found');
+    }
+
+    /**
+     * @return NodeElement
+     */
+    protected function getContainer()
+    {
         $body = $this->getElement('Body');
-        $container = $this->getElement('Container');
+        $modal = $body->find('css', $this->elements['Dialog']['css']);
 
-        return $this->spin(
-            function () use ($body, $container) {
-                $modal = $body->find('css', $this->elements['Dialog']['css']);
-                if (null !== $modal && $modal->isVisible()) {
-                    return $modal->find('css', $this->elements['Grid']['css']);
-                }
+        if (null === $modal || !$modal->isVisible()) {
+            return $this->getElement('Container');
+        }
 
-                $grids = $container->findAll('css', $this->elements['Grid']['css']);
-
-                foreach ($grids as $grid) {
-                    if ($grid->isVisible()) {
-                        return $grid;
-                    }
-                }
-            },
-            'No visible grid found'
-        );
+        return $modal;
     }
 
     /**
@@ -333,13 +342,14 @@ class Grid extends Index
     public function search($value)
     {
         $this->spin(function () use ($value) {
-            $input = $this->getElement('Search filter');
+            $input = $this ->getContainer()->find('css', $this->elements['Search filter']['css']);
             if (null !== $input) {
+                $input = $this->decorate($input, $this->elements['Search filter']['decorators']);
                 $input->search($value);
 
                 return true;
             }
-        }, 'Unable to find the search filter');
+        }, sprintf('Unable to search "%s"', $value));
     }
 
     /**

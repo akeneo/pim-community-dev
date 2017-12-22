@@ -33,6 +33,13 @@ define(
             },
 
             /**
+             * {@inheritdoc}
+             */
+            getIdentifierField: function () {
+                return $.Deferred().resolve('code');
+            },
+
+            /**
              * Fetch all children of the given parent.
              *
              * @return {Promise}

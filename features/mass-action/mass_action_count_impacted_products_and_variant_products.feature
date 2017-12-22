@@ -13,7 +13,7 @@ Feature: Count products during a mass edit
   Scenario: Correctly counts the number of products impacted by the mass edit action when a user selects two product models and two products.
     Given I select rows apollon, aphrodite, Hat, Scarf
     And I press the "Bulk actions" button
-    And I choose the "Edit common attributes" operation
+    And I choose the "Edit attributes" operation
     Then I should see the text "20 products"
 
   Scenario: Correctly counts the number of products impacted by the mass edit action when a user selects all products except one product and model and one product
@@ -21,5 +21,5 @@ Feature: Count products during a mass edit
     And I select all entities
     And I unselect rows Bag, aphrodite
     And I press the "Bulk actions" button
-    And I choose the "Edit common attributes" operation
+    And I choose the "Edit attributes" operation
     Then I should see the text "236 products"

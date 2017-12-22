@@ -73,7 +73,7 @@ define(
             render() {
                 const catalogLocale = UserContext.get('catalogLocale');
                 const familyVariant = _.defaults(this.getFormData(), this.getNewFamilyVariant());
-                const label = familyVariant.labels[catalogLocale];
+                const label = this.getEntityLabel(familyVariant, catalogLocale);
                 const axes1 = familyVariant.variant_attribute_sets[0].axes.join(',');
                 const axes2 = familyVariant.variant_attribute_sets[1]
                     ? familyVariant.variant_attribute_sets[1].axes.join(',')
@@ -146,10 +146,12 @@ define(
                             const catalogLocale = UserContext.get('catalogLocale');
                             const attributeResults = this.searchOnResults(options.term, attributes);
                             const entities = _.map(attributeResults, (attribute) => {
+                                const label = this.getEntityLabel(attribute, catalogLocale);
+
                                 return {
                                     id: attribute.code,
-                                    text: attribute.labels[catalogLocale]
-                                }
+                                    text: label
+                                };
                             });
 
                             const sortedEntities = _.sortBy(entities, 'text');
@@ -174,7 +176,7 @@ define(
                 term = term.toLowerCase();
 
                 return attributes.filter((entity) => {
-                    const label = entity.labels[catalogLocale].toLowerCase();
+                    const label = this.getEntityLabel(entity, catalogLocale).toLowerCase();
 
                     return -1 !== label.search(term);
                 });
@@ -198,14 +200,16 @@ define(
                 $.when.apply($, fetchAttributesPromises)
                     .then(function () {
                         const data = _.map(arguments, (attribute) => {
+                            const label = this.getEntityLabel(attribute, catalogLocale);
+
                             return {
                                 id: attribute.code,
-                                text: attribute.labels[catalogLocale]
-                            }
+                                text: label
+                            };
                         });
 
                         callback(data);
-                    });
+                    }.bind(this));
             },
 
             /**
@@ -264,6 +268,21 @@ define(
              */
             setValidationErrors(errors) {
                 this.validationErrors = errors;
+            },
+
+            /**
+             * Return the label/code of a serialized entity.
+             *
+             * @param {string} entity
+             * @param {string} locale
+             * @returns {string}
+             */
+            getEntityLabel(entity, locale) {
+                if (0 === entity.labels.length) {
+                    return '[' + entity.code + ']';
+                }
+
+                return entity.labels[locale];
             }
         });
     }

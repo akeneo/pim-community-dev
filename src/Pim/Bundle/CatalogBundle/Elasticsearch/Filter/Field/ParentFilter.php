@@ -88,11 +88,6 @@ class ParentFilter extends AbstractFieldFilter implements FieldFilterInterface
         FieldFilterHelper::checkArray($field, $values, static::class);
         foreach ($values as $value) {
             FieldFilterHelper::checkIdentifier($field, $value, static::class);
-            if (null === $this->productModelRepository->findOneByIdentifier($value)) {
-                throw new ObjectNotFoundException(
-                    sprintf('Object "product model" with code "%s" does not exist', $value)
-                );
-            }
         }
     }
 }
