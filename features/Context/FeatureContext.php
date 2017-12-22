@@ -9,6 +9,7 @@ use Behat\Mink\Exception\ExpectationException;
 use Behat\Symfony2Extension\Context\KernelAwareContext;
 use Behat\Testwork\Counter\Exception\TimerException;
 use Context\Spin\SpinCapableTrait;
+use Context\Spin\TimeoutException;
 use Pim\Behat\Context\AttributeValidationContext;
 use Pim\Behat\Context\Domain\Collect\ImportProfilesContext;
 use Pim\Behat\Context\Domain\Enrich\AttributeTabContext;
@@ -347,6 +348,8 @@ class FeatureContext extends PimContext implements KernelAwareContext
 
     /**
      * @When /^I open the completeness dropdown$/
+     *
+     * @throws TimeoutException
      */
     public function iOpenTheCompletenessDropdown()
     {
@@ -359,6 +362,8 @@ class FeatureContext extends PimContext implements KernelAwareContext
 
     /**
      * @When /^I click on the missing required attributes overview link$/
+     *
+     * @throws TimeoutException
      */
     public function iClickOnTheMissingRequiredAttributesOverviewLink()
     {
@@ -367,6 +372,49 @@ class FeatureContext extends PimContext implements KernelAwareContext
         }, 'Cannot find the missing required attributes link');
 
         $link->click();
+    }
+
+    /**
+     * @When /^I should not see any missing required attribute$/
+     *
+     * @throws ExpectationException
+     */
+    public function iShouldNotSeeAnyMissingRequiredAttribute()
+    {
+        $link = $this->getCurrentPage()->getMissingRequiredAttributesOverviewLink();
+
+        if ($link->isValid()) {
+            throw new ExpectationException(
+                'No missing required attribute should be seen, but some found',
+                $this->getSession()
+            );
+        }
+    }
+
+    /**
+     * @When /^I should see the text "(?P<text>(?:[^"]|\\")*)" in the total missing required attributes$/
+     *
+     * @throws TimeoutException
+     * @throws ExpectationException
+     */
+    public function iShouldSeeTheTextInTotalMissingRequiredAttributes($text)
+    {
+        $link = $this->spin(function () {
+            $link = $this->getCurrentPage()->getMissingRequiredAttributesOverviewLink();
+
+            return $link->isValid() ? $link : false;
+        }, 'Cannot find the missing required attributes link');
+
+        if ($link->getText() !== $text) {
+            throw new ExpectationException(
+                sprintf(
+                    'Cannot find text "%s" in the total missing required attributes, text "%s" found instead',
+                    $text,
+                    $link->getText()
+                ),
+                $this->getSession()
+            );
+        }
     }
 
     /**

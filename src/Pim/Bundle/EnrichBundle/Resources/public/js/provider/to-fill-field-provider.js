@@ -14,9 +14,41 @@ define(
         'pim/attribute-manager',
         'pim/fetcher-registry'
     ],
-    function ($, _, mediator, attributeManager, fetcherRegistry) {
+    function (
+        $,
+        _,
+        mediator,
+        attributeManager,
+        fetcherRegistry
+    ) {
         return {
             fieldsPromise: null,
+
+            /**
+             * Returns the missing required attributes of the current scope and locale for the given product
+             *
+             * @param product Object
+             * @param scope String
+             * @param locale String
+             *
+             * @return Array
+             */
+            getMissingRequiredFields: function (product, scope, locale) {
+                const scopeMissingAttributes =  _.findWhere(product.meta.required_missing_attributes, {channel: scope});
+                if (undefined === scopeMissingAttributes) {
+                    return [];
+                }
+
+                const localeMissingAttributes = scopeMissingAttributes.locales[locale];
+                if (undefined === localeMissingAttributes) {
+                    return [];
+                }
+
+                const missingAttributeCodes = localeMissingAttributes.missing.map(missing => missing.code);
+                const levelAttributeCodes = Object.keys(product.values);
+
+                return missingAttributeCodes.filter(missingAttribute => levelAttributeCodes.includes(missingAttribute));
+            },
 
             /**
              * Get list of fields that need to be filled to complete the product
@@ -28,8 +60,8 @@ define(
              */
             getFields: function (root, values) {
 
-                if (null == this.fieldsPromise) {
-                    var filterPromises = [];
+                if (null === this.fieldsPromise) {
+                    let filterPromises = [];
                     root.trigger(
                         'pim_enrich:form:field:to-fill-filter',
                         {'filters': filterPromises}
@@ -40,7 +72,7 @@ define(
                     }).then(function (filters) {
                         return fetcherRegistry.getFetcher('attribute').fetchByIdentifiers(Object.keys(values))
                             .then(function (attributesToFilter) {
-                                var filteredAttributes = _.reduce(filters, function (attributes, filter) {
+                                const filteredAttributes = _.reduce(filters, function (attributes, filter) {
                                     return filter(attributes);
                                 }, attributesToFilter);
 
@@ -51,7 +83,7 @@ define(
                     });
                 }
 
-                return this.fieldsPromise
+                return this.fieldsPromise;
             },
 
             /**

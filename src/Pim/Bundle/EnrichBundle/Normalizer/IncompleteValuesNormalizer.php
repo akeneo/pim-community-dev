@@ -8,9 +8,9 @@ use Pim\Component\Catalog\EntityWithFamily\IncompleteValueCollectionFactory;
 use Pim\Component\Catalog\EntityWithFamily\RequiredValueCollectionFactory;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ChannelInterface;
+use Pim\Component\Catalog\Model\EntityWithFamilyInterface;
 use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Component\Catalog\Model\LocaleInterface;
-use Pim\Component\Catalog\Model\ProductModelInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -20,7 +20,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-class ProductModelIncompleteValuesNormalizer implements NormalizerInterface
+class IncompleteValuesNormalizer implements NormalizerInterface
 {
     /** @var NormalizerInterface */
     private $normalizer;
@@ -49,9 +49,9 @@ class ProductModelIncompleteValuesNormalizer implements NormalizerInterface
     /**
      * {@inheritdoc}
      */
-    public function normalize($productModel, $format = null, array $context = []): array
+    public function normalize($entityWithFamily, $format = null, array $context = []): array
     {
-        $family = $productModel->getFamily();
+        $family = $entityWithFamily->getFamily();
         if (null === $family) {
             return [];
         }
@@ -73,7 +73,7 @@ class ProductModelIncompleteValuesNormalizer implements NormalizerInterface
                     $requiredValues,
                     $channel,
                     $locale,
-                    $productModel
+                    $entityWithFamily
                 );
 
                 $missingAttributes = [];
@@ -108,7 +108,7 @@ class ProductModelIncompleteValuesNormalizer implements NormalizerInterface
      */
     public function supportsNormalization($data, $format = null)
     {
-        return $data instanceof ProductModelInterface && 'internal_api' === $format;
+        return $data instanceof EntityWithFamilyInterface && 'internal_api' === $format;
     }
 
     /**

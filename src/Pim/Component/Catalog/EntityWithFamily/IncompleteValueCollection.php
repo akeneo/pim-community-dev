@@ -104,7 +104,7 @@ class IncompleteValueCollection implements \Countable, \IteratorAggregate
         $attribute = $value->getAttribute();
         $channelCode = null !== $value->getScope() ? $value->getScope() : ' < all_channels>';
         $localeCode = null !== $value->getLocale() ? $value->getLocale() : '<all_locales > ';
-        $key = sprintf(' % s -%s -%s', $attribute->getCode(), $channelCode, $localeCode);
+        $key = sprintf('%s-%s-%s', $attribute->getCode(), $channelCode, $localeCode);
 
         return $key;
     }
