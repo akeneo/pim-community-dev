@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\DataGridBundle\Extension\MassAction\Handler;
 
+use Akeneo\Component\StorageUtils\Cursor\CursorFactoryInterface;
 use Akeneo\Component\StorageUtils\Indexer\IndexerInterface;
 use Akeneo\Component\StorageUtils\Remover\BulkRemoverInterface;
 use Oro\Bundle\DataGridBundle\Datagrid\DatagridInterface;
@@ -26,18 +27,25 @@ use Symfony\Component\Translation\TranslatorInterface;
  */
 class DeleteProductsMassActionHandler extends DeleteMassActionHandler
 {
+    const MAX_LIMIT = 1000;
+
     /** @var IndexerInterface */
     private $indexRemover;
+
+    /** @var CursorFactoryInterface */
+    private $cursorFactory;
 
     public function __construct(
         HydratorInterface $hydrator,
         TranslatorInterface $translator,
         EventDispatcherInterface $eventDispatcher,
-        BulkRemoverInterface $indexRemover
+        BulkRemoverInterface $indexRemover,
+        CursorFactoryInterface $cursorFactory
     ) {
         parent::__construct($hydrator, $translator, $eventDispatcher);
 
         $this->indexRemover = $indexRemover;
+        $this->cursorFactory = $cursorFactory;
     }
 
     /**
@@ -47,20 +55,29 @@ class DeleteProductsMassActionHandler extends DeleteMassActionHandler
      */
     public function handle(DatagridInterface $datagrid, MassActionInterface $massAction)
     {
-        // dispatch pre handler event
         $massActionEvent = new MassActionEvent($datagrid, $massAction, []);
         $this->eventDispatcher->dispatch(MassActionEvents::MASS_DELETE_PRE_HANDLER, $massActionEvent);
 
         $datasource = $datagrid->getDatasource();
         $datasource->setHydrator($this->hydrator);
 
-        $resultRecords = $datasource->getResults();
-        $resultRecords = $this->filterProductRecords($resultRecords);
+        $pqb = $datasource->getProductQueryBuilder();
+        $cursor = $this->cursorFactory->createCursor($pqb->getQueryBuilder()->getQuery(), ['from' => 0]);
 
-        $objectIds = [];
-        foreach ($resultRecords['data'] as $resultRecord) {
-            /** @var ResultRecord $resultRecord */
-            $objectIds[] = $resultRecord->getValue('id');
+        $selectedItemsCount =  $cursor->count();
+        if ($this::MAX_LIMIT < $selectedItemsCount) {
+            return new MassActionResponse(false, $this->translator->trans(
+                'oro.grid.mass_action.delete.item_limit',
+                ['%count%' => $selectedItemsCount, '%limit%' => $this::MAX_LIMIT]
+            ));
+        }
+
+        while ($cursor->valid()) {
+            $objectIds = [];
+            foreach ($cursor as $productObject) {
+                $objectIds[] = $productObject->getId();
+            }
+            $cursor->next();
         }
 
         try {
