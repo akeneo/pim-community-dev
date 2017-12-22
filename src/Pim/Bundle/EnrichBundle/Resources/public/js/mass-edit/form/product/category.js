@@ -72,14 +72,21 @@ define(
                         .then(function (trees) {
                         this.trees = trees;
 
-                        this.renderTrees(this.trees);
+                        if (null === this.currentTree) {
+                            this.currentTree = _.first(trees).code;
+                        }
 
-                        new TreeAssociate('#trees', '#hidden-tree-input', {
-                            list_categories: this.config.listRoute,
-                            children:        this.config.childrenRoute
-                        });
+                        this.$el.html(this.template({
+                            i18n: i18n,
+                            locale: UserContext.get('uiLocale'),
+                            trees: trees,
+                            currentTree: _.findWhere(trees, {code: this.currentTree}),
+                            selectedCategories: this.selectedCategories
+                        }));
 
                         this.delegateEvents();
+
+                        this.toggleContentCache();
 
                         return {
                             treeAssociate: new TreeAssociate('#trees', '#hidden-tree-input', {
@@ -90,8 +97,8 @@ define(
                         };
                     }.bind(this));
                 } else {
-                    this.renderTrees(this.trees);
-
+                    this.toggleContentCache();
+                    
                     this.delegateEvents();
                 }
 
@@ -99,23 +106,15 @@ define(
             },
 
             /**
-             * Renders the current trees
-             *
-             * @param {Array} trees
-             */
-            renderTrees(trees) {
-                if (null === this.currentTree) {
-                    this.currentTree = _.first(trees).code;
+             * In this method, we don't re-render the trees because select elements on several trees is hell.
+             * We simply hide or show the cache to avoid clicking on new elements during the confirm.
+             **/
+            toggleContentCache: function () {
+                if (this.readOnly) {
+                    this.$el.find('.content-cache').removeClass('AknTabContainer-contentCache--hidden');
+                } else {
+                    this.$el.find('.content-cache').addClass('AknTabContainer-contentCache--hidden');
                 }
-
-                this.$el.html(this.template({
-                    i18n: i18n,
-                    locale: UserContext.get('uiLocale'),
-                    trees: trees,
-                    currentTree: _.findWhere(trees, {code: this.currentTree}),
-                    selectedCategories: this.selectedCategories,
-                    readOnly: this.readOnly
-                }));
             },
 
             /**
@@ -166,7 +165,7 @@ define(
                 this.treePromise.then(function (elements) {
                     const tree = _.findWhere(elements.trees, {code: this.currentTree});
 
-                    elements.treeAssociate.switchTree(tree.code);
+                    elements.treeAssociate.switchTree(tree.id);
 
                     this.delegateEvents();
                 }.bind(this));
