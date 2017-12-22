@@ -56,7 +56,7 @@ class CatalogConfigurationContext extends PimContext
     {
         $this->initializeReferenceRepository();
 
-        $this->loadCatalog($this->getConfigurationFiles($catalog));
+        $this->loadCatalog($this-getConfigurationFiles($catalog));
 
         $this->getMainContext()->getContainer()->get('pim_connector.doctrine.cache_clearer')->clear();
     }
