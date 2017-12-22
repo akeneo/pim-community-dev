@@ -1,9 +1,13 @@
-# 2.0.X
+# 2.0.x
 
 ## Bug fixes
 
 - PIM-7062: Allow to delete attributes contained in a family variant
 - PIM-6944: Fix delta export for variant products
+
+## Improvements
+
+- PIM-7079: Improve indexation performance of ValueCollection when deleting values
 
 # 2.0.10 (2017-12-22)
 
