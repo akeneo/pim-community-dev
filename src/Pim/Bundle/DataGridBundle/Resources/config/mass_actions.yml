@@ -79,6 +79,7 @@ services:
         class: '%pim_datagrid.extension.mass_action.handler.product_delete.class%'
         arguments:
             - '@pim_catalog.elasticsearch.indexer.product'
+            - '@pim_enrich.factory.product_and_product_model_cursor'
         parent: pim_datagrid.extension.mass_action.handler.delete
         tags:
             - { name: pim_datagrid.extension.mass_action.handler, alias: product_mass_delete }

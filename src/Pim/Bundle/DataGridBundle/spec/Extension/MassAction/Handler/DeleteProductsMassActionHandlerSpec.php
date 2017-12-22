@@ -2,6 +2,7 @@
 
 namespace spec\Pim\Bundle\DataGridBundle\Extension\MassAction\Handler;
 
+use Akeneo\Component\StorageUtils\Cursor\CursorFactoryInterface;
 use Akeneo\Component\StorageUtils\Remover\BulkRemoverInterface;
 use Oro\Bundle\DataGridBundle\Datagrid\DatagridInterface;
 use Oro\Bundle\DataGridBundle\Datasource\ResultRecord;
@@ -31,13 +32,16 @@ class DeleteProductsMassActionHandlerSpec extends ObjectBehavior
         DeleteMassAction $massAction,
         ActionConfiguration $options,
         ProductMassActionRepositoryInterface $massActionRepo,
-        BulkRemoverInterface $indexRemover
+        BulkRemoverInterface $indexRemover,
+        CursorFactoryInterface $cursorFactory
+
     ) {
         $this->beConstructedWith(
             $hydrator,
             $translator,
             $eventDispatcher,
-            $indexRemover
+            $indexRemover,
+            $cursorFactory
         );
 
         $translator->trans('qux')->willReturn('qux');
