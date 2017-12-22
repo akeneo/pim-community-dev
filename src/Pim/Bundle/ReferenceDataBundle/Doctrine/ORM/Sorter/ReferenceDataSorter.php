@@ -63,8 +63,9 @@ class ReferenceDataSorter implements AttributeSorterInterface
         );
 
         // join to reference data
-        $joinAliasOpt = $attribute->getCode();
-        $this->qb->leftJoin($joinAlias . '.' . $attribute->getReferenceDataName(), $joinAliasOpt);
+        $referenceDataName = $attribute->getReferenceDataName();
+        $joinAliasOpt = $this->getUniqueAlias('reference_data' . $referenceDataName);
+        $this->qb->leftJoin($joinAlias . '.' . $referenceDataName, $joinAliasOpt);
 
         $this->qb->addOrderBy($joinAliasOpt . '.code', $direction);
         $idField = current($this->qb->getRootAliases()) . '.id';
@@ -93,8 +94,6 @@ class ReferenceDataSorter implements AttributeSorterInterface
      * @param string             $locale    the locale
      * @param string             $scope     the scope
      *
-     * @throws \Pim\Component\Catalog\Exception\ProductQueryException
-     *
      * @return string
      */
     protected function prepareAttributeJoinCondition(
@@ -106,5 +105,17 @@ class ReferenceDataSorter implements AttributeSorterInterface
         $joinHelper = new ValueJoin($this->qb);
 
         return $joinHelper->prepareCondition($attribute, $joinAlias, $locale, $scope);
+    }
+
+    /**
+     * Get a unique alias
+     *
+     * @param string $alias
+     *
+     * @return string
+     */
+    protected function getUniqueAlias($alias)
+    {
+        return uniqid($alias);
     }
 }
