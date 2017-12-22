@@ -48,7 +48,7 @@ class AssetCategoryController
         $categories = $this->categoryRepository->findRoot();
         $normalizedCategories = [];
         foreach ($categories as $category) {
-            $normalizedCategories[] = $this->normalizer->normalize($category, 'standard');
+            $normalizedCategories[] = $this->normalizer->normalize($category, 'internal_api');
         }
 
         return new JsonResponse($normalizedCategories);

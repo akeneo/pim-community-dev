@@ -161,4 +161,4 @@ services:
         class: '%pimee_enrich.controller.rest.asset_category.class%'
         arguments:
             - '@pimee_product_asset.repository.asset_category'
-            - '@pim_serializer'
+            - '@pim_internal_api_serializer'
