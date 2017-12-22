@@ -13,6 +13,7 @@ config:
 
         pimee/productasset/variations:  pimenterpriseproductasset/js/form/variations
         pimee/productasset/uploader:    pimenterpriseproductasset/js/form/uploader
+        pimee/productasset/media-field: pimenterpriseproductasset/js/form/media-field
         pimee/productasset/mass-upload: pimenterpriseproductasset/js/mass-upload
 
     config:

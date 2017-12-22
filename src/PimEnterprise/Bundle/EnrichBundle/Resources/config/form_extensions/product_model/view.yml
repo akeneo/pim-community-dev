@@ -181,6 +181,18 @@ extensions:
         targetZone: self
         position: 110
 
+    pim-product-model-edit-form-read-only-locale:
+        module: pimee/product-edit-form/attributes/read-only-locale
+        parent: pim-product-model-edit-form-attributes
+        targetZone: self
+        position: 100
+
+    pim-product-model-edit-form-read-only-attribute-group:
+        module: pimee/product-edit-form/attributes/read-only-attribute-group
+        parent: pim-product-model-edit-form-attributes
+        targetZone: self
+        position: 100
+
     pimee-product-model-view-form-locale-specific:
         module: pim/product-edit-form/attributes/locale-specific
         parent: pimee-product-model-view-form-attributes

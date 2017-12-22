@@ -7,3 +7,18 @@ pimee_api_asset_get:
     path: /assets/{code}
     defaults: { _controller: pimee_api.controller.asset:getAction, _format: json }
     methods: [GET]
+
+pimee_api_asset_create:
+    path: /assets
+    defaults: { _controller: pimee_api.controller.asset:createAction, _format: json }
+    methods: [POST]
+
+pimee_api_asset_partial_update:
+    path: /assets/{code}
+    defaults: { _controller: pimee_api.controller.asset:partialUpdateAction, _format: json}
+    methods: [PATCH]
+
+pimee_api_asset_partial_update_list:
+    path: /assets
+    defaults: { _controller: pimee_api.controller.asset:partialUpdateListAction, _format: json}
+    methods: [PATCH]

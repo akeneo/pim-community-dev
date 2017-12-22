@@ -94,4 +94,20 @@ class AssetFinder implements AssetFinderInterface
 
         return $variation;
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function retrieveVariationsNotGeneratedForAReference(ReferenceInterface $reference): array
+    {
+        $missingVariations = [];
+
+        foreach ($reference->getVariations() as $variation) {
+            if (null === $variation->getFileInfo() && null !== $variation->getSourceFileInfo()) {
+                $missingVariations[] = $variation;
+            }
+        }
+
+        return $missingVariations;
+    }
 }

@@ -24,3 +24,4 @@ services:
             - '@pim_catalog.remover.product.community'
             - '@pim_catalog.remover.product.community'
             - '@security.authorization_checker'
+            - '@pim_catalog.repository.product_without_permission'

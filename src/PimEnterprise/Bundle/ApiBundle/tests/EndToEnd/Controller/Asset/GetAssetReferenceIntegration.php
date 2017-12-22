@@ -25,7 +25,7 @@ class GetAssetReferenceIntegration extends AbstractAssetTestCase
         $standardizedAssets = $this->getStandardizedAssets();
         $client = $this->createAuthenticatedClient();
 
-        $client->request('GET', 'api/rest/v1/assets/non_localizable_asset/reference-files/no_locale');
+        $client->request('GET', 'api/rest/v1/assets/non_localizable_asset/reference-files/no-locale');
         $response = $client->getResponse();
 
         $this->assertSame($response->getStatusCode(), 200);
@@ -80,7 +80,7 @@ JSON;
 
         $client->request(
             'GET',
-            'api/rest/v1/assets/non_localizable_asset_without_references/reference-files/no_locale'
+            'api/rest/v1/assets/non_localizable_asset_without_references/reference-files/no-locale'
         );
         $response = $client->getResponse();
 
@@ -102,7 +102,7 @@ JSON;
     {
         $client = $this->createAuthenticatedClient();
 
-        $client->request('GET', 'api/rest/v1/assets/ham_and_jam/reference-files/no_locale');
+        $client->request('GET', 'api/rest/v1/assets/ham_and_jam/reference-files/no-locale');
         $response = $client->getResponse();
 
         $expectedContent = <<<JSON
@@ -129,7 +129,7 @@ JSON;
         $expectedContent = <<<JSON
 {
     "code": 404,
-    "message": "Locale \"ham\" does not exist."
+    "message": "Locale \"ham\" does not exist or is not activated."
 }
 JSON;
 
@@ -146,14 +146,14 @@ JSON;
 
         $client->request(
             'GET',
-            'api/rest/v1/assets/localizable_asset_without_references/reference-files/no_locale'
+            'api/rest/v1/assets/localizable_asset_without_references/reference-files/no-locale'
         );
         $response = $client->getResponse();
 
         $expectedContent = <<<JSON
 {
     "code": 422,
-    "message": "The asset \"localizable_asset_without_references\" is localizable, you must provide an existing locale code. \"no_locale\" is only allowed when the asset is not localizable."
+    "message": "The asset \"localizable_asset_without_references\" is localizable, you must provide an existing locale code. \"no-locale\" is only allowed when the asset is not localizable."
 }
 JSON;
 
@@ -177,7 +177,7 @@ JSON;
         $expectedContent = <<<JSON
 {
     "code": 422,
-    "message": "The asset \"non_localizable_asset_without_references\" is not localizable, you must provide the string \"no_locale\" as a locale."
+    "message": "The asset \"non_localizable_asset_without_references\" is not localizable, you must provide the string \"no-locale\" as a locale."
 }
 JSON;
 

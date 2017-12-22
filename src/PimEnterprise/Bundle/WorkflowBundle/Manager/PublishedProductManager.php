@@ -40,7 +40,7 @@ class PublishedProductManager
     protected $attributeRepository;
 
     /** @var PublishedProductRepositoryInterface*/
-    protected $repository;
+    protected $publishedRepositoryWithPermission;
 
     /** @var EventDispatcherInterface */
     protected $eventDispatcher;
@@ -63,9 +63,12 @@ class PublishedProductManager
     /** @var BulkRemoverInterface */
     private $bulkRemover;
 
+    /** @var PublishedProductRepositoryInterface */
+    private $publishedRepositoryWithoutPermission;
+
     /**
      * @param ProductRepositoryInterface          $productRepository     the product repository
-     * @param PublishedProductRepositoryInterface $repository            the published repository
+     * @param PublishedProductRepositoryInterface $publishedRepositoryWithPermission
      * @param AttributeRepositoryInterface        $attributeRepository   the attribute repository
      * @param EventDispatcherInterface            $eventDispatcher       the event dispatcher
      * @param PublisherInterface                  $publisher             the product publisher
@@ -74,10 +77,11 @@ class PublishedProductManager
      * @param SaverInterface                      $publishedProductSaver the object saver
      * @param RemoverInterface                    $remover
      * @param BulkRemoverInterface                $bulkRemover
+     * @param PublishedProductRepositoryInterface $publishedRepositoryWithoutPermission
      */
     public function __construct(
         ProductRepositoryInterface $productRepository,
-        PublishedProductRepositoryInterface $repository,
+        PublishedProductRepositoryInterface $publishedRepositoryWithPermission,
         AttributeRepositoryInterface $attributeRepository,
         EventDispatcherInterface $eventDispatcher,
         PublisherInterface $publisher,
@@ -85,10 +89,11 @@ class PublishedProductManager
         ObjectManager $objectManager,
         SaverInterface $publishedProductSaver,
         RemoverInterface $remover,
-        BulkRemoverInterface $bulkRemover
+        BulkRemoverInterface $bulkRemover,
+        PublishedProductRepositoryInterface $publishedRepositoryWithoutPermission
     ) {
         $this->productRepository = $productRepository;
-        $this->repository = $repository;
+        $this->publishedRepositoryWithPermission = $publishedRepositoryWithPermission;
         $this->attributeRepository = $attributeRepository;
         $this->eventDispatcher = $eventDispatcher;
         $this->publisher = $publisher;
@@ -97,6 +102,7 @@ class PublishedProductManager
         $this->publishedProductSaver = $publishedProductSaver;
         $this->remover = $remover;
         $this->bulkRemover = $bulkRemover;
+        $this->publishedRepositoryWithoutPermission = $publishedRepositoryWithoutPermission;
     }
 
 
@@ -109,7 +115,7 @@ class PublishedProductManager
      */
     public function findPublishedProductById($publishedId)
     {
-        return $this->repository->find($publishedId);
+        return $this->publishedRepositoryWithPermission->find($publishedId);
     }
 
     /**
@@ -121,7 +127,7 @@ class PublishedProductManager
      */
     public function findPublishedProductByOriginalId($productId)
     {
-        return $this->repository->findOneByOriginalProductId($productId);
+        return $this->publishedRepositoryWithPermission->findOneByOriginalProductId($productId);
     }
 
     /**
@@ -133,7 +139,7 @@ class PublishedProductManager
      */
     public function findPublishedProductByOriginal(ProductInterface $product)
     {
-        return $this->repository->findOneByOriginalProduct($product);
+        return $this->publishedRepositoryWithPermission->findOneByOriginalProductId($product);
     }
 
     /**
@@ -157,7 +163,7 @@ class PublishedProductManager
      */
     public function findByIdentifier($identifier)
     {
-        return $this->repository->findOneByIdentifier($identifier);
+        return $this->publishedRepositoryWithPermission->findOneByIdentifier($identifier);
     }
 
     /**
@@ -170,21 +176,22 @@ class PublishedProductManager
      */
     public function publish(ProductInterface $product, array $publishOptions = [])
     {
-        $this->dispatchEvent(PublishedProductEvents::PRE_PUBLISH, $product);
+        $originalProduct = $this->findOriginalProduct($product->getId());
+        $this->dispatchEvent(PublishedProductEvents::PRE_PUBLISH, $originalProduct);
 
-        $published = $this->findPublishedProductByOriginal($product);
+        $published = $this->publishedRepositoryWithoutPermission->findOneByOriginalProduct($product);
         if ($published) {
             $this->unpublisher->unpublish($published);
             $this->remover->remove($published);
         }
 
-        $published = $this->publisher->publish($product, $publishOptions);
+        $published = $this->publisher->publish($originalProduct, $publishOptions);
 
         $publishOptions = array_merge(['flush' => true], $publishOptions);
 
         if (true === $publishOptions['flush']) {
             $this->publishedProductSaver->save($published);
-            $this->dispatchEvent(PublishedProductEvents::POST_PUBLISH, $product, $published);
+            $this->dispatchEvent(PublishedProductEvents::POST_PUBLISH, $originalProduct, $published);
         }
 
         return $published;
@@ -197,10 +204,11 @@ class PublishedProductManager
      */
     public function unpublish(PublishedProductInterface $published)
     {
-        $product = $published->getOriginalProduct();
-        $this->dispatchEvent(PublishedProductEvents::PRE_UNPUBLISH, $product, $published);
-        $this->unpublisher->unpublish($published);
-        $this->remover->remove($published);
+        $originalPublished = $this->publishedRepositoryWithoutPermission->find($published->getId());
+        $product = $originalPublished->getOriginalProduct();
+        $this->dispatchEvent(PublishedProductEvents::PRE_UNPUBLISH, $product, $originalPublished);
+        $this->unpublisher->unpublish($originalPublished);
+        $this->remover->remove($originalPublished);
 
         $this->dispatchEvent(PublishedProductEvents::POST_UNPUBLISH, $product);
     }
@@ -238,13 +246,18 @@ class PublishedProductManager
      */
     public function unpublishAll(array $publishedProducts)
     {
+        $publishedProductsWithoutPermission = [];
         foreach ($publishedProducts as $published) {
-            $product = $published->getOriginalProduct();
-            $this->dispatchEvent(PublishedProductEvents::PRE_UNPUBLISH, $product, $published);
-            $this->unpublisher->unpublish($published);
+            $publishedProductWithoutPermission = $this->publishedRepositoryWithoutPermission->find($published->getId());
+            $product = $publishedProductWithoutPermission->getOriginalProduct();
+
+            $this->dispatchEvent(PublishedProductEvents::PRE_UNPUBLISH, $product, $publishedProductWithoutPermission);
+            $this->unpublisher->unpublish($publishedProductWithoutPermission);
+
+            $publishedProductsWithoutPermission[] = $publishedProductWithoutPermission;
         }
 
-        $this->bulkRemover->removeAll($publishedProducts);
+        $this->bulkRemover->removeAll($publishedProductsWithoutPermission);
     }
 
     /**
@@ -264,7 +277,7 @@ class PublishedProductManager
         $publishedProducts = [];
 
         foreach ($products as $product) {
-            $published = $this->findPublishedProductByOriginal($product);
+            $published = $this->publishedRepositoryWithoutPermission->findOneByOriginalProduct($product);
             foreach ($product->getAssociations() as $association) {
                 $copiedAssociation = $this->publisher->publish($association, ['published' => $published]);
                 $published->addAssociation($copiedAssociation);

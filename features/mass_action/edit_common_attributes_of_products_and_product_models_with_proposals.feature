@@ -44,7 +44,7 @@ Feature: Apply permissions for an attribute group when mass edit common attribut
     And I am on the products grid
     When I select rows product_viewable, product_editable, product_owned, product_model_viewable, product_model_editable and product_model_owned
     And I press the "Bulk actions" button
-    And I choose the "Edit common attributes" operation
+    And I choose the "Edit attributes" operation
     And I should see available attributes Name, Manufacturer and Description in group "Product information"
     And I display the Name attribute
     And I change the "Name" to "My awesome name"

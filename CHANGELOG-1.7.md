@@ -1,3 +1,14 @@
+# 1.7.x
+
+# 1.7.15 (2017-12-18)
+
+## Bug fixes
+
+- PIM-7054: Optimize completeness generator
+- PIM-7056: Fix a bug that prevents to delete options on localizable multi and simple select attributes
+
+# 1.7.14 (2017-11-21)
+
 # 1.7.13 (2017-11-09)
 
 ## Bug fixes

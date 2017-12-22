@@ -2,6 +2,7 @@
 
 namespace PimEnterprise\Bundle\ApiBundle\tests\EndToEnd\Security;
 
+use Pim\Bundle\ApiBundle\Stream\StreamResourceResponse;
 use Pim\Bundle\ApiBundle\tests\integration\ApiTestCase;
 use PimEnterprise\Component\ProductAsset\FileStorage;
 use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
@@ -95,6 +96,118 @@ JSON;
 {
     "code": 403,
     "message": "Access forbidden. You are not allowed to list assets."
+}
+JSON;
+
+        $response = $client->getResponse();
+        $this->assertSame(Response::HTTP_FORBIDDEN, $response->getStatusCode());
+        $this->assertJsonStringEqualsJsonString($expectedResponse, $response->getContent());
+    }
+
+    public function testAccessGrantedForCreatingAnAsset()
+    {
+        $client = $this->createAuthenticatedClient();
+
+        $data = <<<JSON
+{
+    "code": "new_asset"
+}
+JSON;
+
+        $client->request('POST', '/api/rest/v1/assets', [], [], [], $data);
+
+        $response = $client->getResponse();
+        $this->assertSame(Response::HTTP_CREATED, $response->getStatusCode());
+    }
+
+    public function testAccessDeniedForCreatingAnAsset()
+    {
+        $client = $this->createAuthenticatedClient([], [], null, null, 'julia', 'julia');
+
+        $data = <<<JSON
+{
+    "code": "super_new_asset"
+}
+JSON;
+
+        $client->request('POST', '/api/rest/v1/assets', [], [], [], $data);
+
+        $expectedResponse = <<<JSON
+{
+    "code": 403,
+    "message": "Access forbidden. You are not allowed to create or update assets."
+}
+JSON;
+
+        $response = $client->getResponse();
+        $this->assertSame(Response::HTTP_FORBIDDEN, $response->getStatusCode());
+        $this->assertJsonStringEqualsJsonString($expectedResponse, $response->getContent());
+    }
+
+    public function testAccessGrantedForPartialUpdatingAnAsset()
+    {
+        $client = $this->createAuthenticatedClient();
+
+        $data = '{}';
+
+        $client->request('PATCH', '/api/rest/v1/assets/cat', [], [], [], $data);
+
+        $response = $client->getResponse();
+        $this->assertSame(Response::HTTP_NO_CONTENT, $response->getStatusCode());
+    }
+
+    public function testAccessDeniedForPartialUpdatingAnAsset()
+    {
+        $client = $this->createAuthenticatedClient([], [], null, null, 'julia', 'julia');
+
+        $data = '{}';
+
+        $client->request('PATCH', '/api/rest/v1/assets/cat', [], [], [], $data);
+
+        $expectedResponse = <<<JSON
+{
+    "code": 403,
+    "message": "Access forbidden. You are not allowed to create or update assets."
+}
+JSON;
+
+        $response = $client->getResponse();
+        $this->assertSame(Response::HTTP_FORBIDDEN, $response->getStatusCode());
+        $this->assertJsonStringEqualsJsonString($expectedResponse, $response->getContent());
+    }
+
+    public function testAccessGrantedForPartialUpdatingAListOfAssets()
+    {
+        $client = $this->createAuthenticatedClient();
+        $client->setServerParameter('CONTENT_TYPE', StreamResourceResponse::CONTENT_TYPE);
+
+        $data = <<<JSON
+{"code": "an_asset"}
+JSON;
+
+        ob_start(function() { return ''; });
+        $client->request('PATCH', '/api/rest/v1/assets', [], [], [], $data);
+        ob_end_flush();
+
+        $response = $client->getResponse();
+        $this->assertSame(Response::HTTP_OK, $response->getStatusCode());
+    }
+
+    public function testAccessDeniedForPartialUpdatingAListOfAssets()
+    {
+        $client = $this->createAuthenticatedClient([], [], null, null, 'julia', 'julia');
+        $client->setServerParameter('CONTENT_TYPE', StreamResourceResponse::CONTENT_TYPE);
+
+        $data = <<<JSON
+{"code": "an_asset"}
+JSON;
+
+        $client->request('PATCH', '/api/rest/v1/assets', [], [], [], $data);
+
+        $expectedResponse = <<<JSON
+{
+    "code": 403,
+    "message": "Access forbidden. You are not allowed to create or update assets."
 }
 JSON;
 

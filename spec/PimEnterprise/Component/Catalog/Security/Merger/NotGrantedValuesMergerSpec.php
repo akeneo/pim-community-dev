@@ -9,7 +9,9 @@ use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Factory\ValueCollectionFactoryInterface;
 use Pim\Component\Catalog\Model\EntityWithValuesInterface;
 use Pim\Component\Catalog\Model\LocaleInterface;
+use Pim\Component\Catalog\Model\Product;
 use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Model\ValueCollectionInterface;
 use Pim\Component\Catalog\Model\ValueInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use PimEnterprise\Component\Security\Attributes;
@@ -38,24 +40,20 @@ class NotGrantedValuesMergerSpec extends ObjectBehavior
         $this->shouldHaveType('PimEnterprise\Component\Catalog\Security\Merger\NotGrantedValuesMerger');
     }
 
-    function it_does_not_merge_values_if_there_were_no_value_in_product(ProductInterface $product)
-    {
-        $product->getRawValues()->willReturn([]);
-        $this->merge($product, [])->shouldReturn(null);
-    }
-
     function it_merges_values_in_product(
         $valueCollectionFactory,
         $attributeRepository,
         $localeRepository,
         $authorizationChecker,
-        ProductInterface $product,
+        ProductInterface $filteredProduct,
+        ProductInterface $fullProduct,
         ValueInterface $textValue,
         ValueInterface $colorValue,
         AttributeRepositoryInterface $textAttribute,
         AttributeRepositoryInterface $colorAttribute,
         LocaleInterface $frLocale,
-        LocaleInterface $enLocale
+        LocaleInterface $enLocale,
+        ValueCollectionInterface $values
     ) {
         $allValues = [
             'text' => [
@@ -70,7 +68,7 @@ class NotGrantedValuesMergerSpec extends ObjectBehavior
                 ],
             ],
         ];
-        $product->getRawValues()->willReturn($allValues);
+        $fullProduct->getRawValues()->willReturn($allValues);
 
         $notGrantedValues = [
             'text' => [
@@ -96,15 +94,25 @@ class NotGrantedValuesMergerSpec extends ObjectBehavior
         $authorizationChecker->isGranted(Attributes::VIEW_ITEMS, $enLocale)->willReturn(false);
 
         $valueCollectionFactory->createFromStorageFormat($notGrantedValues)->willReturn([$textValue, $colorValue]);
-        $product->addValue($textValue)->shouldBeCalled();
-        $product->addValue($colorValue)->shouldBeCalled();
 
-        $this->merge($product, [])->shouldReturn(null);
+        $filteredProduct->getValues()->willReturn($values);
+        $fullProduct->setValues($values)->shouldBeCalled();
+
+        $fullProduct->addValue($textValue)->shouldBeCalled();
+        $fullProduct->addValue($colorValue)->shouldBeCalled();
+
+        $this->merge($filteredProduct, $fullProduct)->shouldReturn($fullProduct);
     }
 
-    function it_throws_an_exception_if_subject_is_not_an_entity_with_values()
+    function it_throws_an_exception_if_filtered_subject_is_not_an_entity_with_values()
     {
         $this->shouldThrow(InvalidObjectException::objectExpected(ClassUtils::getClass(new \stdClass()), EntityWithValuesInterface::class))
-            ->during('merge', [new \stdClass()]);
+            ->during('merge', [new \stdClass(), new Product()]);
+    }
+
+    function it_throws_an_exception_if_full_subject_is_not_an_entity_with_values()
+    {
+        $this->shouldThrow(InvalidObjectException::objectExpected(ClassUtils::getClass(new \stdClass()), EntityWithValuesInterface::class))
+            ->during('merge', [new Product(), new \stdClass()]);
     }
 }

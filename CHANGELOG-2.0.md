@@ -2,8 +2,18 @@
 
 ## Bug fixes
 
-- PIM-7022: Grey read-only fields on product-model edit form too
+- PIM-6972: Fix drop zone on the asset creation modal
+- PIM-7005: Fix code validation on asset creation modal
+- PIM-6912: Fix missing translations on Enterprise Edition jobs
 
+# 2.0.9 (2017-12-15)
+
+## Bug fixes
+
+- PIM-7022: Grey read-only fields on product-model edit form too
+- PIM-7059: Fix variant product mass deletion
+- API-352: rework the way permissions on products are applied
+- PIM-7053: Remove the warning for the non-execution of rules for product model
 
 # 2.0.8 (2017-12-07)
 
@@ -15,6 +25,16 @@
 
 - PIM-6364: Rename service `pimee_security.voter.product` to `pimee_security.voter.product_and_product_model`
 - PIM-6364: Rename class `PimEnterprise\Bundle\SecurityBundle\Voter\ProductVoter` to `PimEnterprise\Bundle\SecurityBundle\Voter\ProductAndProductModelVoter`
+- Remove `PimEnterprise\Bundle\CatalogBundle\EventSubscriber\FilterNotGrantedProductDataSubscriber`
+- Remove `PimEnterprise\Bundle\CatalogBundle\EventSubscriber\MergeNotGrantedProductDataSubscriber`
+- Remove `PimEnterprise\Bundle\CatalogBundle\EventSubscriber\RefreshProductDataSubscriber`
+- Change the constructor of `PimEnterprise\Bundle\WorkflowBundle\Doctrine\Common\Saver\DelegatingProductSaver` to add `Pim\Component\Catalog\Repository\ProductRepositoryInterface` and `PimEnterprise\Component\Security\NotGrantedDataMergerInterface`
+- Change the constructor of `PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\CheckPublishedProductOnRemovalSubscriber` to add `Pim\Component\Catalog\Query\ProductQueryBuilderFactoryInterface`, `Pim\Component\Catalog\Repository\ChannelRepositoryInterface` and `Pim\Component\Catalog\Repository\LocaleRepositoryInterface`
+- Change the constructor of `PimEnterprise\Bundle\WorkflowBundle\Manager\PublishedProductManager` to add `PimEnterprise\Component\Workflow\Repository\PublishedProductRepositoryInterface`
+- Change the constructor of `PimEnterprise\Component\Security\Remover\ProductRemover` to add `Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface`
+- Change the constructor of `PimEnterprise\Component\Workflow\Factory\ProductDraftFactory` to add `Pim\Component\Catalog\Repository\ProductRepositoryInterface`
+- Remove `PimEnterprise\Component\Catalog\Security\Factory\ValueCollectionFactory`
+- Remove methods `countPublishedProductsForFamily`, `countPublishedProductsForCategory`, `countPublishedProductsForAttribute`, `countPublishedProductsForGroup` and `countPublishedProductsForAttributeOption` in `PimEnterprise\Component\Workflow\Repository\PublishedProductRepositoryInterface`
 
 # 2.0.7 (2017-11-23)
 

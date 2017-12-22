@@ -133,10 +133,10 @@ abstract class AbstractAssetTestCase extends ApiTestCase
     {
       "_link": {
         "download": {
-          "href": "http://localhost/api/rest/v1/assets/non_localizable_asset/variation-files/ecommerce/no_locale/download"
+          "href": "http://localhost/api/rest/v1/assets/non_localizable_asset/variation-files/ecommerce/no-locale/download"
         },
         "self": {
-          "href": "http://localhost/api/rest/v1/assets/non_localizable_asset/variation-files/ecommerce/no_locale"
+          "href": "http://localhost/api/rest/v1/assets/non_localizable_asset/variation-files/ecommerce/no-locale"
         }
       },
       "locale":null,
@@ -146,10 +146,10 @@ abstract class AbstractAssetTestCase extends ApiTestCase
     {
       "_link": {
         "download": {
-          "href": "http://localhost/api/rest/v1/assets/non_localizable_asset/variation-files/tablet/no_locale/download"
+          "href": "http://localhost/api/rest/v1/assets/non_localizable_asset/variation-files/tablet/no-locale/download"
         },
         "self": {
-          "href": "http://localhost/api/rest/v1/assets/non_localizable_asset/variation-files/tablet/no_locale"
+          "href": "http://localhost/api/rest/v1/assets/non_localizable_asset/variation-files/tablet/no-locale"
         }
       },
       "locale":null,
@@ -159,10 +159,10 @@ abstract class AbstractAssetTestCase extends ApiTestCase
     {
       "_link": {
         "download": {
-          "href": "http://localhost/api/rest/v1/assets/non_localizable_asset/variation-files/ecommerce_china/no_locale/download"
+          "href": "http://localhost/api/rest/v1/assets/non_localizable_asset/variation-files/ecommerce_china/no-locale/download"
         },
         "self": {
-          "href": "http://localhost/api/rest/v1/assets/non_localizable_asset/variation-files/ecommerce_china/no_locale"
+          "href": "http://localhost/api/rest/v1/assets/non_localizable_asset/variation-files/ecommerce_china/no-locale"
         }
       },
       "locale":null,
@@ -174,10 +174,10 @@ abstract class AbstractAssetTestCase extends ApiTestCase
     {
       "_link": {
         "download": {
-          "href": "http://localhost/api/rest/v1/assets/non_localizable_asset/reference-files/no_locale/download"
+          "href": "http://localhost/api/rest/v1/assets/non_localizable_asset/reference-files/no-locale/download"
         },
         "self": {
-          "href": "http://localhost/api/rest/v1/assets/non_localizable_asset/reference-files/no_locale"
+          "href": "http://localhost/api/rest/v1/assets/non_localizable_asset/reference-files/no-locale"
         }
       },
       "locale": null,
@@ -447,7 +447,7 @@ JSON;
      */
     protected function sanitizeNormalizedAsset(array $asset): array
     {
-        DateSanitizer::sanitize($asset['end_of_use']);
+        $asset['end_of_use'] = DateSanitizer::sanitize($asset['end_of_use']);
 
         ksort($asset);
 
@@ -461,7 +461,7 @@ JSON;
      *
      * @return TagInterface
      */
-    private function createTag(string $code): TagInterface
+    protected function createTag(string $code): TagInterface
     {
         $tag = $this->get('pimee_product_asset.factory.tag')->create();
         $this->get('pimee_product_asset.updater.tag')->update($tag, ['code' => $code]);
