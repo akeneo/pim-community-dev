@@ -892,11 +892,11 @@ JSON;
             'created'       => '2016-06-14T13:12:50+02:00',
             'updated'       => '2016-06-14T13:12:50+02:00',
             'associations'  => [
-                'PACK'         => ['groups'   => [], 'products' => [], 'product_models' => []],
-                'SUBSTITUTION' => ['groups'   => [], 'products' => [], 'product_models' => []],
-                'UPSELL'       => ['groups'   => [], 'products' => [], 'product_models' => []],
-                'X_SELL'       => ['groups'   => [], 'products' => [], 'product_models' => []],
-           ],
+                'PACK'         => ['groups' => [], 'products' => [], 'product_models' => []],
+                'SUBSTITUTION' => ['groups' => [], 'products' => [], 'product_models' => []],
+                'UPSELL'       => ['groups' => [], 'products' => [], 'product_models' => []],
+                'X_SELL'       => ['groups' => [], 'products' => [], 'product_models' => []],
+            ],
         ];
 
         $response = $client->getResponse();
@@ -988,10 +988,10 @@ JSON;
             'created'       => '2016-06-14T13:12:50+02:00',
             'updated'       => '2016-06-14T13:12:50+02:00',
             'associations'  => [
-                'PACK'         => ['groups'   => [], 'products' => [], 'product_models' => []],
-                'SUBSTITUTION' => ['groups'   => [], 'products' => [], 'product_models' => []],
-                'UPSELL'       => ['groups'   => [], 'products' => [], 'product_models' => []],
-                'X_SELL'       => ['groups'   => [], 'products' => [], 'product_models' => []],
+                'PACK'         => ['groups' => [], 'products' => [], 'product_models' => []],
+                'SUBSTITUTION' => ['groups' => [], 'products' => [], 'product_models' => []],
+                'UPSELL'       => ['groups' => [], 'products' => [], 'product_models' => []],
+                'X_SELL'       => ['groups' => [], 'products' => [], 'product_models' => []],
             ],
         ];
 

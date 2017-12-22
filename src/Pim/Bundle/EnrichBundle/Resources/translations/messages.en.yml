@@ -106,7 +106,7 @@ pim_enrich:
             description:   The selected product's attributes will be edited with the following data for the chosen locale.
             empty:         Please select the attribute(s) you want to edit
             success_flash: The job updating product(s) status is currently running
-            launched_flash: The bulk action "edit common attributes" has been launched. You will be notified when it is done.
+            launched_flash: The bulk action "edit attributes" has been launched. You will be notified when it is done.
             message:
                 warning: There is no attribute in common for the selected products. Please change your selection.
                 invalid_attribute: Attribute with code "attribute_code" is not common to selected products, attribute skipped.
@@ -730,7 +730,7 @@ pim_enrich.mass_edit_action:
         success_flash: Product(s) status have been changed
 
     edit-common-attributes:
-        label:         Edit common attributes
+        label:         Edit attributes
         description:   The selected product's attributes will be edited with the following data for the chosen locale.
         empty:         Please select the attribute(s) you want to edit
         success_flash: Product(s) attribute(s) have been updated
@@ -875,11 +875,11 @@ job_execution.summary:
 
 pim_mass_edit_execution_show:  Mass edit executions | Details
 
-edit_common_attributes.steps.edit_common_attributes_processor.title: Edit common attributes
+edit_common_attributes.steps.edit_common_attributes_processor.title: Edit attributes
 update_product_value.steps.update_product_value_processor.title: Update product value
 remove_product_value.steps.update_product_value_processor.title: Remove product value
-edit_common_attributes: Edit common attributes
-edit_common_attributes_clean: Clean files for common attributes
+edit_common_attributes: Edit attributes
+edit_common_attributes_clean: Clean files for attributes
 perform.steps.duplicated.title: Duplicated Axis
 perform.steps.excluded.title: Excluded product
 
@@ -894,11 +894,33 @@ batch_jobs:
         perform:
             label: Update product value
     edit_common_attributes:
-        label: Edit common attributes
+        label: Edit attributes
         perform:
-            label: Edit common attributes
+            label: Edit attributes
         clean:
-            label: Clean files for common attributes
+            label: Clean files for attributes
+        cleaner:
+            label: Clean files for attributes
+    add_to_category:
+        label: Add to category
+        perform:
+            label: Add to category
+    move_to_category:
+        label: Move to category
+        perform:
+            label: Move to category
+    remove_from_category:
+        label: Remove from category
+        perform:
+            label: Remove from category
+    add_association:
+        label: Associate to products
+        perform:
+            label: Associate to products
+    add_to_existing_product_model:
+        label: Add to an existing product model
+        perform:
+            label: Add to an existing product model
     set_attribute_requirements:
         label: Set attributes requirements
         perform:

@@ -9,7 +9,7 @@ pim_api:
       list: Lisää attribuuttien vaihtoehdot
     attribute_group:
       edit: Luo ja päivitä attribuuttiryhmiä
-      list: Listaa määriteryhmät
+      list: Listaa attribuuttiryhmät
     category:
       edit: Luo ja päivitä kategorioita
       list: Listaa kategoriat
@@ -22,8 +22,8 @@ pim_api:
     channel:
       edit: Luo ja päivitä kanavia
       list: Listaa kanavat
-    locale.list: Lista lokaatioista
-    currency.list: Lista valuutoista
+    locale.list: Listaa lokaatiot
+    currency.list: Listaa valuutat
     association_type:
       edit: Luo ja päivitä assosiaatiotyyppejä
       list: Listaa määritetyypit

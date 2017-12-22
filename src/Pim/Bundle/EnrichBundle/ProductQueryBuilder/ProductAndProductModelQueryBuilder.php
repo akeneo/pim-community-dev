@@ -6,7 +6,14 @@ use Pim\Component\Catalog\Query\Filter\Operators;
 use Pim\Component\Catalog\Query\ProductQueryBuilderInterface;
 
 /**
- * Provides a way to search simply and efficiently product and product models.
+ * Provides a way to search product and product models.
+ * The results are gathered by the most top level product model matching the search criteria.
+ *
+ * The most simple use case is that we look for documents without any parent
+ * (cf method shouldSearchDocumentsWithoutParent).
+ *
+ * Otherwise, we have to smartly look for products and product models depending on the values
+ * they contain (we add the filter "attributes_for_this_level" in this case).
  *
  * @author    Julien Janvier <j.janvier@gmail.com>
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
@@ -70,7 +77,7 @@ class ProductAndProductModelQueryBuilder implements ProductQueryBuilderInterface
      */
     public function execute()
     {
-        if ($this->isSearchGroupedByProductModels()) {
+        if ($this->shouldSearchDocumentsWithoutParent()) {
             $this->addFilter('parent', Operators::IS_EMPTY, null);
         }
 
@@ -101,15 +108,12 @@ class ProductAndProductModelQueryBuilder implements ProductQueryBuilderInterface
     }
 
     /**
-     * If there are no filter on the following fields, the request should not try to group the result by product models.
-     * - field Id or identifier
-     * - on any attributes
-     * - on the parent field
-     * - on the ancestor field
+     * If there no "particular" filter, that means we want to look for documents that do not have any parent.
+     * This happens for instance with the default grid view.
      *
      * @return bool
      */
-    private function isSearchGroupedByProductModels(): bool
+    private function shouldSearchDocumentsWithoutParent(): bool
     {
         $hasAttributeFilters = $this->hasRawFilter('type', 'attribute');
         $hasParentFilter = $this->hasRawFilter('field', 'parent');

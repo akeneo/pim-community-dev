@@ -4,6 +4,7 @@ namespace spec\Pim\Bundle\CatalogBundle\Entity;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
+use Pim\Bundle\CatalogBundle\Entity\AttributeOptionValue;
 use Pim\Component\Catalog\Model\AttributeOptionValueInterface;
 use Prophecy\Argument;
 
@@ -19,6 +20,12 @@ class AttributeOptionSpec extends ObjectBehavior
         $this->getOptionValue()->shouldReturn(null);
     }
 
+    function its_code_is_a_string()
+    {
+        $this->setCode(1234);
+        $this->getCode()->shouldReturn('1234');
+    }
+
     function it_returns_the_expected_translation(AttributeOptionValueInterface $en, AttributeOptionValueInterface $fr)
     {
         $en->getLocale()->willReturn('en');
@@ -32,5 +39,17 @@ class AttributeOptionSpec extends ObjectBehavior
         $this->setLocale('fr');
 
         $this->getOptionValue()->shouldReturn($fr);
+    }
+
+    function it_display_an_attribute_option()
+    {
+        $value = new AttributeOptionValue();
+        $value->setLabel(100);
+        $value->setLocale('en_US');
+
+        $this->setLocale('en_US');
+        $this->addOptionValue($value);
+
+        $this->__toString()->shouldReturn('100');
     }
 }

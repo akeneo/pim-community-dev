@@ -46,6 +46,9 @@ class FilteredProductAndProductModelReader implements
     /** @var bool */
     private $generateCompleteness;
 
+    /** @var bool */
+    private $readChildren;
+
     /** @var StepExecution */
     private $stepExecution;
 
@@ -58,19 +61,22 @@ class FilteredProductAndProductModelReader implements
      * @param CompletenessManager                 $completenessManager
      * @param MetricConverter                     $metricConverter
      * @param bool                                $generateCompleteness
+     * @param bool                                $readChildren
      */
     public function __construct(
         ProductQueryBuilderFactoryInterface $pqbFactory,
         ChannelRepositoryInterface $channelRepository,
         CompletenessManager $completenessManager,
         MetricConverter $metricConverter,
-        $generateCompleteness
+        bool $generateCompleteness,
+        bool $readChildren
     ) {
         $this->pqbFactory = $pqbFactory;
         $this->channelRepository = $channelRepository;
         $this->completenessManager = $completenessManager;
         $this->metricConverter = $metricConverter;
-        $this->generateCompleteness = (bool) $generateCompleteness;
+        $this->generateCompleteness = $generateCompleteness;
+        $this->readChildren = $readChildren;
     }
 
     /**
@@ -151,6 +157,16 @@ class FilteredProductAndProductModelReader implements
             $filters = $filters['data'];
         }
 
+        if ($this->readChildren) {
+            $filters = array_map(function ($filter) {
+                if ('id' === $filter['field']) {
+                    $filter['field'] = 'self_and_ancestor.id';
+                }
+
+                return $filter;
+            }, $filters);
+        }
+
         return array_filter($filters, function ($filter) {
             return count($filter) > 0;
         });
@@ -193,12 +209,14 @@ class FilteredProductAndProductModelReader implements
                 if ($this->stepExecution) {
                     $this->stepExecution->incrementSummaryInfo('skip');
 
-                    $warning = 'This bulk action doesn\'t support Product models entities yet.';
-                    $this->stepExecution->addWarning(
-                        $warning,
-                        [],
-                        new DataInvalidItem(['code' => $entity->getCode()])
-                    );
+                    if (!$this->readChildren) {
+                        $warning = 'This bulk action doesn\'t support Product models entities yet.';
+                        $this->stepExecution->addWarning(
+                            $warning,
+                            [],
+                            new DataInvalidItem(['code' => $entity->getCode()])
+                        );
+                    }
                 }
 
                 $entity = null;

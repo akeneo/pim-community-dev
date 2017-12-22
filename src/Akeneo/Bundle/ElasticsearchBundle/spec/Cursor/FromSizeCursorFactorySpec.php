@@ -18,12 +18,11 @@ class FromSizeCursorFactorySpec extends ObjectBehavior
 {
     const DEFAULT_BATCH_SIZE = 100;
 
-    function let(Client $searchEngine, ObjectManager $om)
+    function let(Client $searchEngine, CursorableRepositoryInterface $cursorableRepository)
     {
         $this->beConstructedWith(
             $searchEngine,
-            $om,
-            ProductInterface::class,
+            $cursorableRepository,
                 FromSizeCursor::class,
             self::DEFAULT_BATCH_SIZE,
             'pim_catalog_product'
@@ -36,9 +35,8 @@ class FromSizeCursorFactorySpec extends ObjectBehavior
         $this->shouldImplement(CursorFactoryInterface::class);
     }
 
-    function it_creates_a_cursor($om, $searchEngine, CursorableRepositoryInterface $cursorableRepository)
+    function it_creates_a_cursor($searchEngine)
     {
-        $om->getRepository(ProductInterface::class)->willReturn($cursorableRepository);
         $searchEngine->search('pim_catalog_product', ['size' => 100, 'sort' => ['_uid' => 'asc'], 'from' => 10])->willReturn([
             'hits' => [
                 'total' => 0,
@@ -48,14 +46,5 @@ class FromSizeCursorFactorySpec extends ObjectBehavior
 
         $this->createCursor([], ['page_size' => 100, 'limit' => 150, 'from' => 10])
             ->shouldBeAnInstanceOf(CursorInterface::class);
-    }
-
-    function it_throws_an_exception_if_repository_is_not_cursorable($om)
-    {
-        $om->getRepository(ProductInterface::class)->willReturn(Argument::any());
-
-        $this->shouldThrow(
-            InvalidObjectException::objectExpected(ProductInterface::class, CursorableRepositoryInterface::class)
-        )->during('createCursor', [[], ['limit' => 150, 'from' => 0]]);
     }
 }

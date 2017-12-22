@@ -63,6 +63,7 @@ class SearchDecorator extends ElementDecorator
 
     /**
      * Search a value in the search filter
+     * It dispatch a fake keydown event to run the search.
      *
      * @param string $value
      */

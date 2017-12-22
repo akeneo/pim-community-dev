@@ -812,9 +812,6 @@ pim_enrich:
         title: Propiedades
       global_settings:
         title: Configuración global
-  mass_edit_action:
-    edit_common_attributes:
-      description: Los atributos seleccionados serán editados con la siguiente información para el local <span class="highlight">{{ locale }}</span> y el canal <span class="highlight">{{ channel }}</span> elegidos en la grilla de productos.
   index:
     import_profiles:
       list: Seleccionar un trabajo
@@ -856,7 +853,7 @@ pim_enrich:
           description: Los productos seleccionados serán habilitados o inhabilitados.
           field: Para habilitar
         edit_common:
-          label: Editar atributos comunes
+          label: Editar atributos
         change_family:
           description: La familia de los productos seleccionados se cambiará a la familia elegida
           field: Familia
@@ -914,11 +911,9 @@ batch_jobs:
     perform:
       label: Actualizar el valor del producto
   edit_common_attributes:
-    label: Editar atributos comunes
+    label: Editar atributos
     perform:
-      label: Editar atributos comunes
-    cleaner:
-      label: Limpiar archivos para los atributos comunes
+      label: Editar atributos
   csv_product_export:
     label: Exportar productos a CSV
     export.label: Exportar productos

@@ -23,7 +23,7 @@ Feature: Edit common attributes of many products at once
     And I switch the locale to "fr_FR"
     When I select rows boots and sandals
     And I press the "Bulk actions" button
-    And I choose the "Edit common attributes" operation
+    And I choose the "Edit attributes" operation
     And I display the Nom and Taille attributes
     Then I should see the text "[info]"
     And I should see the text "Nom"

@@ -109,6 +109,16 @@ services:
             - '@pim_enrich.connector.processor.mass_edit.product.remove_value'
             - '@pim_enrich.writer.database.product_and_product_model_writer'
 
+    pim_enrich.step.add_association.mass_edit:
+        class: '%pim_connector.step.item_step.class%'
+        arguments:
+            - 'perform'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@pim_enrich.reader.database.add_association'
+            - '@pim_enrich.connector.processor.mass_edit.product.add_value'
+            - '@pim_enrich.writer.database.product_and_product_model_writer'
+
     pim_enrich.step.edit_common_attributes.mass_edit:
         class: '%pim_connector.step.item_step.class%'
         arguments:

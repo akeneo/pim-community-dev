@@ -3,6 +3,7 @@
 namespace Pim\Behat\Context\Domain\Enrich;
 
 use Behat\Gherkin\Node\TableNode;
+use Behat\Mink\Element\NodeElement;
 use Behat\Mink\Exception\ExpectationException;
 use Context\Spin\SpinCapableTrait;
 use Context\Spin\SpinException;
@@ -41,6 +42,30 @@ class CompletenessContext extends PimContext
                 )
             );
         }, sprintf("Can't find missing '%s' value link for %s/%s", $attribute, $locale, $channel));
+
+        $link->click();
+    }
+
+    /**
+     * @param string $attribute
+     * @param string $locale
+     *
+     * @Then /^I click on the missing "([^"]*)" value for "([^"]*)" locale/
+     */
+    public function iClickOnTheMissingValueForLocale($attribute, $locale)
+    {
+        $completenessElement = $this->getElementOnCurrentPage('Completeness dropdown');
+
+        $link = $this->spin(function () use ($attribute, $locale, $completenessElement) {
+            return $completenessElement->find(
+                'css',
+                sprintf(
+                    '.missing-attribute[data-attribute="%s"][data-locale="%s"]',
+                    $attribute,
+                    $locale
+                )
+            );
+        }, sprintf("Can't find missing '%s' value link for %s", $attribute, $locale));
 
         $link->click();
     }
@@ -91,7 +116,7 @@ class CompletenessContext extends PimContext
      *
      * @throws ExpectationException
      */
-    public function iShouldSeeTheCompleteness(TableNode $table)
+    public function iShouldSeeTheCompletenessInThePanel(TableNode $table)
     {
         $table = $table->getHash();
 
@@ -103,6 +128,47 @@ class CompletenessContext extends PimContext
             foreach ($table as $index => $expected) {
                 // This allows to omit columns in the table
                 $expected = array_merge($completenessData[$index], $expected);
+
+                if ($completenessData[$index] !== $expected ||
+                    $completenessData[$index]['missing_values'] !== $expected['missing_values']
+                ) {
+                    throw new SpinException(sprintf(
+                        'Expected completeness %s does not match %s',
+                        var_export($expected, true),
+                        var_export($completenessData[$index], true)
+                    ));
+                }
+            }
+
+            return true;
+        }, 'Completeness assertion failed');
+    }
+
+    /**
+     * @param TableNode $table
+     *
+     * @Then /^I should see the completeness in the dropdown:$/
+     *
+     * @throws ExpectationException
+     */
+    public function iShouldSeeTheCompletenessInTheDropdown(TableNode $table)
+    {
+        $table = $table->getHash();
+        $completeness = $this->getElementOnCurrentPage('Completeness dropdown');
+
+        $this->spin(function () use ($table, $completeness) {
+            $completenessData = $completeness->getCompletenessData();
+
+            foreach ($table as $index => $expected) {
+                // This allows to omit columns in the table
+                $expected = array_merge($completenessData[$index], $expected);
+
+                if (isset($expected['missing_required_attributes'])) {
+                    $expected['missing_required_attributes'] = array_map(
+                        'trim',
+                        explode(',', $expected['missing_required_attributes'])
+                    );
+                }
 
                 if ($completenessData[$index] !== $expected ||
                     $completenessData[$index]['missing_values'] !== $expected['missing_values']

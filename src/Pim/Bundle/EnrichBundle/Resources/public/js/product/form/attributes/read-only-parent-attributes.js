@@ -8,15 +8,19 @@
  */
 define(
     [
+        'jquery',
         'underscore',
         'oro/translator',
         'pim/user-context',
+        'pim/router',
         'pim/form'
     ],
     function (
+        $,
         _,
         __,
         UserContext,
+        router,
         BaseForm
     ) {
         return BaseForm.extend({
@@ -57,7 +61,9 @@ define(
             updateFieldElements: function (field) {
                 const entity = this.getFormData();
                 const isProduct = ('product' === entity.meta.model_type);
+
                 let message = __('pim_enrich.entity.product_model.read_only_parent_attribute_from_common');
+                let modelId = entity.meta.variant_navigation[0].selected.id;
 
                 if (isProduct) {
                     const uiLocale = UserContext.get('uiLocale');
@@ -66,16 +72,29 @@ define(
 
                     if (comesFromParent && hasTwoLevelsOfVariation) {
                         const parentAxesLabels = entity.meta.variant_navigation[1].axes[uiLocale];
+
                         message = __(
                             'pim_enrich.entity.product_model.read_only_parent_attribute_from_model',
                             {axes: parentAxesLabels}
                         );
+                        modelId = entity.meta.variant_navigation[1].selected.id;
                     }
                 }
 
-                const element = '<span class="AknFieldContainer-unavailable">' + message + '</span>';
+                const $element = $('<span class="AknFieldContainer-clickable">' + message + '</span>');
 
-                field.addElement('footer', 'read_only_parent_attribute', element);
+                $element.on('click', () => {
+                    this.redirectToModel(modelId);
+                });
+
+                field.addElement('footer', 'read_only_parent_attribute', $element);
+            },
+
+            redirectToModel: function(modelId) {
+                const params = {id: modelId};
+                const route = 'pim_enrich_product_model_edit';
+
+                router.redirectToRoute(route, params);
             }
         });
     }

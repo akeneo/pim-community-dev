@@ -9,7 +9,7 @@
     </header>
     <div class="AknCompletenessPanel-content content">
         <% _.each(completenesses.locales, function(completeness, locale) { %>
-            <div class="AknCompletenessPanel-channel">
+            <div class="AknCompletenessPanel-channel" data-locale="<%- locale %>">
                 <div class="AknCompletenessPanel-progressContainer">
                     <span class="AknCompletenessPanel-channelTitle"><%- completeness.label %></span>
                     <span class="AknCompletenessPanel-progressRatio literal-progress"><%- completeness.completeness.ratio %>%</span>
@@ -19,7 +19,7 @@
                 </div>
                 <% if (0 < completeness.missing.length) { %>
                     <div class="AknCompletenessPanel-missing">
-                        <%- __(missingValues, {count: completeness.missing.length}, completeness.missing.length) %>:
+                        <span class="missing"><%- __(missingValues, {count: completeness.missing.length}, completeness.missing.length) %></span>:
                         <% _.each(completeness.missing, function (attribute, i) { %>
                             <% if (0 !== i) { %> | <% } %>
                             <span class="AknCompletenessPanel-highlight missing-attribute" data-attribute="<%- attribute.code %>" data-locale="<%- locale %>">

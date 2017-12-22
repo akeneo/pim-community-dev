@@ -89,7 +89,6 @@ pim_enrich:
       description: Els atributs del producte seleccionat s'editaran amb les següents dades pels paràmetres regionals triats.
       empty: Si us plau seleccioneu l'atribut o atributs que voleu editar
       success_flash: La tasca d'actualització del(s) producte(s) està en marxa
-      launched_flash: L'acció en massa "editar atributs comuns" ja s'ha engegat. Se li notificarà una cop acabi.
       message:
         warning: No hi ha cap atribut en comú per als productes seleccionats. Canvieu la vostra selecció, si us plau.
         invalid_attribute: L'atribut amb codi "attribute_code" no és comú per als productes seleccionats, atribut omès.
@@ -621,7 +620,7 @@ pim_enrich.mass_edit_action:
     description: Els productes seleccionats seran activats o desactivats.
     success_flash: S'ha canviat l'estat del(s) producte(s)
   edit-common-attributes:
-    label: Editar atributs comuns
+    label: Editar atributs
     description: Els atributs del producte seleccionat s'editaran amb les següents dades pels paràmetres regionals triats.
     empty: Si us plau seleccioneu l'atribut o atributs que voleu editar
     success_flash: S'han actualitzat els atributs de producte
@@ -737,11 +736,10 @@ job_execution.summary:
   skipped_products: Productes omesos
   skipped_attributes: Atributs omesos
 pim_mass_edit_execution_show: Execucions edicions en massa | Detalls
-edit_common_attributes.steps.edit_common_attributes_processor.title: Editar atributs comuns
+edit_common_attributes.steps.edit_common_attributes_processor.title: Editar atributs
 update_product_value.steps.update_product_value_processor.title: Actualitzar el valor del producte
 remove_product_value.steps.update_product_value_processor.title: Treure el valor del producte
-edit_common_attributes: Editar atributs comuns
-edit_common_attributes_clean: Netejar arxius per atributs comuns
+edit_common_attributes: Editar atributs
 perform.steps.duplicated.title: Eix duplicat
 perform.steps.excluded.title: Producte exclòs
 batch_jobs:
@@ -754,11 +752,9 @@ batch_jobs:
     perform:
       label: Actualitzar el valor del producte
   edit_common_attributes:
-    label: Editar atributs comuns
+    label: Editar atributs
     perform:
-      label: Editar atributs comuns
-    clean:
-      label: Netejar arxius per atributs comuns
+      label: Editar atributs
   csv_product_quick_export:
     quick_export.label: Exportació ràpida de producte en CSV
     perform:

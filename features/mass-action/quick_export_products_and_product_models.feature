@@ -20,9 +20,9 @@ Feature: Export products and product models
     Then I should see the text "COMPLETED"
     Then first exported file of "csv_product_grid_context_quick_export" should contain:
       """
-      sku;enabled;family;groups;image
-      tshirt-unique-size-crimson-red;1;clothing;;
-      running-shoes-m-crimson-red;1;shoes;;
+      sku;enabled;family;image
+      tshirt-unique-size-crimson-red;1;clothing;files/tshirt-unique-size-crimson-red/image/unique-size.jpg
+      running-shoes-m-crimson-red;1;shoes;
       """
 
   Scenario: Successfully export 2 files on quick export

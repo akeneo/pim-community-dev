@@ -21,7 +21,6 @@ Feature: Filter product and product models
       | family           | Clothing                         |
       | Status           |                                  |
       | complete         | N/A                              |
-      | groups           |                                  |
     And the row "running-shoes-xxs-crimson-red" should contain:
       | column           | value                         |
       | ID               | running-shoes-xxs-crimson-red |
@@ -29,7 +28,6 @@ Feature: Filter product and product models
       | family           | Shoes                         |
       | Status           | Enabled                       |
       | complete         | 62%                           |
-      | groups           |                               |
 
   Scenario: View products and product models with the same ID in the grid
     Given there is no "product" in the catalog
@@ -43,3 +41,15 @@ Feature: Filter product and product models
     When I am on the products page
     Then I should see products tshirt-unique-color
     And I should see the product models tshirt-kurt-cobain-s
+
+  Scenario: Successfully filters on the parent field with codes
+    Given I am on the products grid
+    When I filter by "parent" with operator "in list" and value "model-braided-hat,diana"
+    Then I should see products braided-hat-m, braided-hat-xxxl, diana_pink, diana_red
+
+  Scenario: Successfully filters on the parent field with empty operator
+    Given I am on the products grid
+    And I show the filter "weight"
+    And I filter by "weight" with operator "is not empty" and value ""
+    When I filter by "parent" with operator "is empty" and value ""
+    Then I should see products Scarf, Sunglasses, Bag, Belt, Hat

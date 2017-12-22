@@ -40,7 +40,7 @@ Feature: Edit a product model
     And the field Model description should be read only
     When I visit the "Medias" group
     Then the field Notice should be read only
-    And I should see the text "This attribute can be updated on the common attributes."
+    And I should see the text "This attribute can be updated in the common attributes."
 
   Scenario: Variant axes attributes are read only
     Given I am logged in as "Mary"

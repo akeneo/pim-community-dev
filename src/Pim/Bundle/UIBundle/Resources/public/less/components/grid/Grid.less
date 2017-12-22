@@ -3,6 +3,7 @@
 .AknGrid {
   @miniPadding: 2px;
   @fullImageHeight: 200px;
+  @smallImageHeight: 150px;
 
   font-size: @AknDefaultFontSize;
   width: 100%;
@@ -189,6 +190,10 @@
     margin-right: -20px;
   }
 
+  &--gallery &-body--small {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  }
+
   &--inner &-body {
     margin-left: -20px;
     margin-top: 0;
@@ -295,6 +300,11 @@
     }
   }
 
+  &-fullImage--small {
+    height: @smallImageHeight;
+    min-height: @smallImageHeight;
+  }
+
   &-title {
     z-index: 2;
     text-overflow: ellipsis;
@@ -304,8 +314,8 @@
     font-size: @AknDefaultFontSize;
     padding-left: 20px;
     padding-right: 20px;
-    display: flex;
-    justify-content: center;
+    max-width: 100%;
+    display: block;
   }
 
   &-subTitle,
@@ -313,8 +323,8 @@
     font-size: @AknDefaultFontSize;
     color: @AknGrey;
     padding-top: 6px;
-    display: flex;
-    justify-content: center;
+    max-width: 100%;
+    display: block;
   }
 
   &-bodyRow--withLayer {
@@ -340,7 +350,6 @@
 
   &-bodyRow--thumbnail {
     border: 1px @AknBorderColor solid;
-    height: 280px;
     overflow: hidden;
     border-radius: 3px;
     display: block;
@@ -376,8 +385,9 @@
     }
   }
 
-  &-bodyRow-remove {
+  &-bodyRowRemove {
     display: none;
+    z-index: 3;
   }
 
   &-bodyRow--thumbnail:hover {
@@ -403,7 +413,7 @@
     opacity: 0.7;
   }
 
-  &-bodyRow--thumbnail:hover &-bodyRow-remove {
+  &-bodyRow--thumbnail:hover &-bodyRowRemove {
     display: block;
   }
 

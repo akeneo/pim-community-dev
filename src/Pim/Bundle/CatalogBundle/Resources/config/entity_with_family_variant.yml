@@ -1,6 +1,7 @@
 parameters:
     pim_catalog.entity_with_family_variant.keep_only_values_for_variation.class: Pim\Component\Catalog\EntityWithFamilyVariant\KeepOnlyValuesForVariation
     pim_catalog.entity_with_family_variant.check_attribute_editable.class: Pim\Component\Catalog\EntityWithFamilyVariant\CheckAttributeEditable
+    pim_catalog.entity_with_family_variant.add_parent_to_product.class: Pim\Component\Catalog\EntityWithFamilyVariant\AddParent
 
 services:
     pim_catalog.entity_with_family_variant.keep_only_values_for_variation:
@@ -8,3 +9,10 @@ services:
 
     pim_catalog.entity_with_family_variant.check_attribute_editable:
         class: '%pim_catalog.entity_with_family_variant.check_attribute_editable.class%'
+    
+    pim_catalog.entity_with_family_variant.add_parent_to_product:
+        class: '%pim_catalog.entity_with_family_variant.add_parent_to_product.class%'
+        arguments:
+            - '@pim_catalog.repository.product_model'
+            - '@pim_catalog.entity_with_family.create_variant_product_from_product'
+            - '@event_dispatcher'

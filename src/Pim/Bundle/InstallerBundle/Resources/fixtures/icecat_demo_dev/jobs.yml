@@ -222,10 +222,15 @@ jobs:
         alias:     remove_from_category
         label:     Mass remove from categories
         type:      mass_edit
+    add_association:
+        connector: Akeneo Mass Edit Connector
+        alias:     add_association
+        label:     Mass associate products
+        type:      mass_edit
     edit_common_attributes:
         connector: Akeneo Mass Edit Connector
         alias:     edit_common_attributes
-        label:     Mass edit common product attributes
+        label:     Mass edit product attributes
         type:      mass_edit
     add_to_existing_product_model:
         connector: Akeneo Mass Edit Connector

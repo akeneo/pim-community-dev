@@ -13,6 +13,7 @@ class Configuration implements ConfigurationInterface
 
     const TYPE_KEY = 'type';
     const COLUMNS_KEY = 'columns';
+    const OTHER_COLUMNS_KEY = 'other_columns';
     const PROPERTIES_KEY = 'properties';
 
     /** @var array */

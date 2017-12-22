@@ -21,6 +21,7 @@ define(
         UserContext
     ) {
         return BaseForm.extend({
+            className: 'AknButtonList-item',
             template: _.template(template),
 
             /**

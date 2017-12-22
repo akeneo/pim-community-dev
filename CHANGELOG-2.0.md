@@ -1,5 +1,19 @@
 # 2.0.x
 
+## Bug fixes
+
+- PIM-7032: Fix close button when clicking on "Compare/Translate" option on the product edit form
+
+# 2.0.9 (2017-12-15)
+
+## Bug fixes
+
+- PIM-7037: Allows code to be an integer on product model import
+- PIM-7011: XLSX Options Import - Simple select attribute option cannot be updated for options with numeric codes
+- PIM-7039: Association grid, scopable attributes used as labels do not appear
+- PIM-6980: Missing labels for attribute prevent you from creating a variant family
+- PIM-7030: Not allow empty Metric value as axis for variant products
+
 ## Better manage products with variants!
 
 - PIM-6341: Allow cascade deletion of product models via the grid and PEF
@@ -29,7 +43,12 @@ IMPORTANT: In order to use the new mass edit, please execute `bin/console akeneo
 
 ## BC breaks
 
-Changes the constructor of `Pim\Bundle\EnrichBundle\Controller\Rest\ProductModelController` to add `Pim\Component\Catalog\Repository\FamilyVariantRepositoryInterface` 
+- Changes the constructor of `Pim\Bundle\EnrichBundle\Controller\Rest\ProductModelController` to add `Pim\Component\Catalog\Repository\FamilyVariantRepositoryInterface` 
+- Changes the constructor of `Akeneo\Bundle\ElasticsearchBundle\Cursor\CursorFactory` to add `Akeneo\Component\StorageUtils\Repository\CursorableRepositoryInterface` and remove `Doctrine\Common\Persistence\ObjectManager` and string `$entityClassName` 
+- Changes the constructor of `Akeneo\Bundle\ElasticsearchBundle\Cursor\FromSizeCursorFactory` to add `Akeneo\Component\StorageUtils\Repository\CursorableRepositoryInterface` and remove `Doctrine\Common\Persistence\ObjectManager` and string `$entityClassName` 
+- Changes the constructor of `Akeneo\Bundle\ElasticsearchBundle\Cursor\SearchAfterSizeCursorFactory` to add `Akeneo\Component\StorageUtils\Repository\CursorableRepositoryInterface` and remove `Doctrine\Common\Persistence\ObjectManager` and string `$entityClassName` 
+- Deletes `Pim\Component\Catalog\Repository\ProductRepositoryInterface::getAssociatedProductIds()`
+- Changes the constructor of `Pim\Component\Catalog\Validator\Constraints\ImmutableVariantAxesValuesValidator` to remove `Doctrine\ORM\EntityManagerInterface`
 
 
 # 2.0.7 (2017-11-23)

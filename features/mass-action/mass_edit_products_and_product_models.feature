@@ -31,7 +31,7 @@ Feature: Apply a mass action on products only (and not product models)
     And I filter by "color" with operator "in list" and value "Crimson red"
     And I select rows model-tshirt-divided-crimson-red, running-shoes-m-crimson-red and tshirt-unique-size-crimson-red
     And I press the "Bulk actions" button
-    And I choose the "Edit common attributes" operation
+    And I choose the "Edit attributes" operation
     And I display the Composition attribute
     And I change the "Composition" to "my composition"
     When I move to the confirm page

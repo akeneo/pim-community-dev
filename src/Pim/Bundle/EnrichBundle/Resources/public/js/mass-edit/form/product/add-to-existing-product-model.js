@@ -52,7 +52,7 @@ define(
              * @param {Object} formData
              */
             updateModel: function (formData) {
-                if (formData.jobInstanceCode === 'add_to_existing_product_model') {
+                if (this.getParent().getCurrentOperation() === this.getCode()) {
                     formData.actions = [{
                         field: 'productModelCode',
                         value: formData.product_model

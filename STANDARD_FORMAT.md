@@ -1468,7 +1468,7 @@ Regarding the array `variant_attribute_sets`, an attribute present in the `axes`
 
         array:6 => [
           'code'        => "my_asset"
-          'localized'   => false
+          'localizable' => false
           'description' => "description"
           'end_of_use'  => "2016-09-01T00:00:00+0200"
           'tags'        => array:1 [
@@ -1482,7 +1482,7 @@ Regarding the array `variant_attribute_sets`, an attribute present in the `axes`
 | type        | data structure | data example                 | notes                                                                                                            |
 | ----------- | -------------- | ---------------------------- | ---------------------------------------------------------------------------------------------------------------- |
 | code        | string         | `"my_asset"`                 | it's the identifier of the asset.                                                                                |
-| localized   | boolean        | `true`                       |                                                                                                                  |
+| localizable | boolean        | `true`                       |                                                                                                                  |
 | description | string         | `"desc"`                     |                                                                                                                  |
 | end_of_use  | string         | `"2016-09-01T00:00:00+0200"` | formatted to ISO-8601 (see above)                                                                                |
 | tags        | string[]       | `[]`                         | each element of the array represents the *code* of the *PimEnterprise\Component\ProductAsset\Model\TagInterface* |

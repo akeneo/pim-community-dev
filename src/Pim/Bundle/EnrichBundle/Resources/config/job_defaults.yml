@@ -14,6 +14,7 @@ services:
                 - 'move_to_category'
                 - 'add_to_category'
                 - 'remove_from_category'
+                - 'add_association'
                 - 'edit_common_attributes'
                 - 'add_to_existing_product_model'
         tags:

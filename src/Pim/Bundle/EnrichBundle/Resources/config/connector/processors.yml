@@ -48,7 +48,7 @@ services:
     pim_enrich.connector.processor.mass_edit.product.add_to_existing_product_model:
         class: '%pim_enrich.connector.processor.mass_edit.product.add_to_existing_product_model.class%'
         arguments:
-            - '@pim_connector.processor.denormalization.add_parent_to_product'
+            - '@pim_catalog.entity_with_family_variant.add_parent_to_product'
             - '@validator'
 
     pim_enrich.connector.processor.mass_edit.family.set_requirements:
