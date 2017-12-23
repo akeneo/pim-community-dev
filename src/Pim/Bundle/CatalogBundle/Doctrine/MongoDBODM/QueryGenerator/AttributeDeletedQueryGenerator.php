@@ -23,7 +23,10 @@ class AttributeDeletedQueryGenerator extends AbstractQueryGenerator
             $queries[] = [
                 [$attributeNormField => [ '$exists'          => true ]],
                 ['$unset'            => [$attributeNormField => '']],
-                ['multiple'          => true]
+                [
+                    'multiple' => true,
+                    'w' => 0, // not acknowledged
+                ]
             ];
         }
 

@@ -51,6 +51,9 @@ class ProductValuesDenormalizer implements DenormalizerInterface
 
         foreach ($data as $attributeCode => $valuesData) {
             $attribute = $this->attributeRepository->findOneByIdentifier($attributeCode);
+            if (!$attribute) {
+                continue;
+            }
 
             foreach ($valuesData as $valueData) {
                 $value = $this->denormalizer->denormalize(
