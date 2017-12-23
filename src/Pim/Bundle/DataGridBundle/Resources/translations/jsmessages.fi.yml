@@ -47,10 +47,12 @@ oro_datagrid.select.visible: "Kaikki näkyvillä olevat"
 oro_datagrid.select.none: "Ei yhtään"
 oro_datagrid.select.select: "Valitse"
 pim.grid.ajax_choice_filter.label_empty: on tyhjä
+pim.grid.ajax_choice_filter.label_not_empty: ei ole tyhjä
 pim:
   grid:
     choice_filter:
       label_empty: on tyhjä
+      label_not_empty: ei ole tyhjä
       label_in_list: '-luettelosta'
       operator: Operaattori
     price_filter:
@@ -103,5 +105,10 @@ grid.view_selector:
 grid.view_selector.flash.updated: Datagrid-näkymä päivitetty
 grid.display_selector:
   label: Näytä
+  gallery: Galleria
+  list: Lista
 Client ID: Asiakastunnus
 Secret: Asiakassalaisuus
+grid.empty_results:
+  associated_product:
+    hint: Tuotteen assosiaatioita ei ole

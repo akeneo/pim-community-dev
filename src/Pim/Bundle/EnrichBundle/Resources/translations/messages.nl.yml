@@ -78,6 +78,7 @@ pim_enrich:
       description: De attributen van het geselecteerde product zullen worden bewerkt met de volgende gegevens voor de gekozen lokalisatie.
       empty: Selecteer de attributen die u wilt bewerken
       success_flash: De taak "update status van producten" is momenteel aan het lopen
+      launched_flash: De massa actie "wijzig gemeenschappelijke attributen" is gestart. U wordt op de hoogte gebracht wanneer dit is voltooid.
       message:
         warning: Er is geen gemeenschappelijke attribuut voor de geselecteerde producten. Gelieve uw selectie te wijzigen.
         no_valid_attribute: Geen van de geselecteerde attributen kan worden toegepast op dit product.
@@ -576,7 +577,6 @@ pim_enrich.mass_edit_action:
     description: De geselecteerde producten zullen worden ingeschakeld of uitgeschakeld.
     success_flash: De status van één of meerdere producten is gewijzigd
   edit-common-attributes:
-    label: Bewerk attributen
     description: De attributen van het geselecteerde product zullen worden bewerkt met de volgende gegevens voor de gekozen lokalisatie.
     empty: Selecteer de attributen die u wilt bewerken
     success_flash: Productattributen zijn bijgewerkt
@@ -679,19 +679,13 @@ job_execution.summary:
   skip: Overgeslagen
   skipped_products: Overgeslagen producten
   skipped_attributes: Overgeslagen attributen
-edit_common_attributes.steps.edit_common_attributes_processor.title: Bewerk attributen
 update_product_value.steps.update_product_value_processor.title: Update productwaarde
 remove_product_value.steps.update_product_value_processor.title: Verwijder productwaarde
-edit_common_attributes: Bewerk attributen
 batch_jobs:
   update_product_value:
     label: Update productwaarde
     perform:
       label: Update productwaarde
-  edit_common_attributes:
-    label: Bewerk attributen
-    perform:
-      label: Bewerk attributen
 pim_enrich_attribute_form:
   code: Code
   unique: Unieke waarde

@@ -89,6 +89,7 @@ pim_enrich:
       description: 使用被选择的本地化语言对应的数据来编缉所选定的产品属性。
       empty: 请选择你要编辑的属性
       success_flash: 更新产品状态的作业正在运行
+      launched_flash: 批量操作"编辑共同属性"已经启动。完成后会通知您。
       message:
         warning: 所选定的产品中没有共同的产品属性。请更改您的选择。
         invalid_attribute: 具有代码"attribute_code"属性在选定的产品中并不共用，该属性略过。
@@ -620,7 +621,7 @@ pim_enrich.mass_edit_action:
     description: 将启用或禁用选定的产品。
     success_flash: 产品状态已更改
   edit-common-attributes:
-    label: 编辑属性
+    label: 编辑共同属性
     description: 使用被选择的本地化语言对应的数据来编缉所选定的产品属性。
     empty: 请选择你要编辑的属性
     success_flash: 产品属性已更新
@@ -736,10 +737,11 @@ job_execution.summary:
   skipped_products: 跳过的产品
   skipped_attributes: 跳过的属性
 pim_mass_edit_execution_show: 批量编辑执行 |详细信息
-edit_common_attributes.steps.edit_common_attributes_processor.title: 编辑属性
+edit_common_attributes.steps.edit_common_attributes_processor.title: 编辑共同属性
 update_product_value.steps.update_product_value_processor.title: 更新商品值
 remove_product_value.steps.update_product_value_processor.title: 移除商品值
-edit_common_attributes: 编辑属性
+edit_common_attributes: 编辑共同属性
+edit_common_attributes_clean: 为共同的属性清理文件
 perform.steps.duplicated.title: 重复的轴
 perform.steps.excluded.title: 被排除在外的产品
 batch_jobs:
@@ -752,9 +754,11 @@ batch_jobs:
     perform:
       label: 更新商品值
   edit_common_attributes:
-    label: 编辑属性
+    label: 编辑共同属性
     perform:
-      label: 编辑属性
+      label: 编辑共同属性
+    clean:
+      label: 为共同的属性清理文件
   csv_product_quick_export:
     quick_export.label: Csv 产品快速导出
     perform:
