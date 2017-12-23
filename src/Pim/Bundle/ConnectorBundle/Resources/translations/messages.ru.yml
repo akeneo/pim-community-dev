@@ -52,6 +52,9 @@ batch_jobs:
   csv_attribute_export:
     label: Экспорт атрибутов в CSV
     export.label: Экспорт атрибутов
+  csv_attribute_option_export:
+    label: Экспорт элементов списочных атрибутов в CSV
+    export.label: Экспорт элементов списочных атрибутов
   csv_association_type_export:
     label: Экспорт типов ассоциаций в CSV
     export.label: Экспорт типов ассоциаций
@@ -78,8 +81,9 @@ batch_jobs:
     validation.label: Проверка файла
     import.label: Импорт атрибутов
   csv_attribute_option_import:
-    label: Импорт выборов атрибутов из CSV
+    label: Импорт элементов списочных атрибутов из CSV
     validation.label: Проверка файла
+    import.label: Импорт элементов списочных атрибутов
   csv_association_type_import:
     label: Импорт типов ассоциаций из CSV
     validation.label: Проверка файла
@@ -121,6 +125,7 @@ batch_jobs:
   xlsx_attribute_option_import:
     label: Импорт элементов списочных атрибутов из XLSX
     validation.label: Проверка файла
+    import.label: Импорт элементов списочных атрибутов
   xlsx_family_import:
     label: Импорт семейств из XLSX
     validation.label: Проверка файла

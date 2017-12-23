@@ -171,7 +171,7 @@ batch_jobs:
     export.label: Esportazione gruppi
   xlsx_variant_group_export:
     label: Esportazione in XLSX dei gruppi di varianti
-    export.label: Esportazione gruppo varianti
+    export.label: Esportazione gruppi varianti
   xlsx_group_import:
     label: Importazione gruppi in XLSX
     validation.label: Validazione del file
