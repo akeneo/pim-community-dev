@@ -861,10 +861,6 @@ pim_enrich:
           label: Agregar a grupos
           description: Seleccione los grupos en los cuales agregará los productos seleccionados
           field: Grupos
-        add_to_category:
-          description: Los productos se colocará en las siguientes categorías, la posición actual se mantendrá.
-        move_to_category:
-          description: Los productos se colocarán en las siguientes categorías, la posición actual se perderá.
         remove_from_category:
           description: Se eliminarán los productos de las siguientes categorías.
     family:

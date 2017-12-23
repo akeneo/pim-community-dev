@@ -808,10 +808,6 @@ pim_enrich:
           label: Afegir a grups
           description: Seleccioneu els grups on volgueu afegir els productes seleccionats
           field: Grups
-        add_to_category:
-          description: Els productes es posicionaran a les següents categories, tot mantenint l'emplaçament actual.
-        move_to_category:
-          description: Els productes es posicionaran a les següents categories, tot mantenint l'emplaçament actual.
         remove_from_category:
           description: Els productes s'eliminaran de les següents categories.
     family:

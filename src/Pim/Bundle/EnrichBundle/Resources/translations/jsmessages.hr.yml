@@ -808,10 +808,6 @@ pim_enrich:
           label: Dodaj u grupe
           description: Odaberi grupe u koju se dodaju odabrani proizvodi
           field: Grupe
-        add_to_category:
-          description: Proizvodi će biti postavljeni u sljedeće kategorije, postojeći položaj je zadržan.
-        move_to_category:
-          description: Proizvodi će biti postavljeni u sljedeće kategorije, postojeći položaj je zadržan.
         remove_from_category:
           description: Proizvodi će biti uklonjeni iz sljedećih kategorija.
     family:
