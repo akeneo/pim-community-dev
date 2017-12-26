@@ -72,12 +72,9 @@ class DeleteProductsMassActionHandler extends DeleteMassActionHandler
             ));
         }
 
-        while ($cursor->valid()) {
-            $objectIds = [];
-            foreach ($cursor as $productObject) {
-                $objectIds[] = $productObject->getId();
-            }
-            $cursor->next();
+        $objectIds = [];
+        foreach ($cursor as $productObject) {
+            $objectIds[] = $productObject->getId();
         }
 
         try {
@@ -99,28 +96,5 @@ class DeleteProductsMassActionHandler extends DeleteMassActionHandler
         $this->eventDispatcher->dispatch(MassActionEvents::MASS_DELETE_POST_HANDLER, $massActionEvent);
 
         return $this->getResponse($massAction, $countRemoved);
-    }
-
-    /**
-     * Only returns the product records within a list of product and product models records.
-     *
-     * TODO: PIM-6357 - Scenario should be removed once mass edits work for product models
-     *
-     * @param array $resultRecords
-     *
-     * @return array
-     */
-    private function filterProductRecords(array $resultRecords): array
-    {
-        $productRecords = [];
-        foreach ($resultRecords['data'] as $resultRecord) {
-            /** @var ResultRecord $resultRecord */
-            if ($resultRecord->getValue('document_type') === IdEncoder::PRODUCT_TYPE) {
-                $productRecords[] = $resultRecord;
-            }
-        }
-        $resultRecords['data'] = $productRecords;
-
-        return $resultRecords;
     }
 }
