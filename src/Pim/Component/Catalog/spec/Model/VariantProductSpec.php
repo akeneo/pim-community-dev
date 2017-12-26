@@ -12,12 +12,9 @@ use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\CategoryInterface;
 use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Component\Catalog\Model\FamilyVariantInterface;
-use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
 use Pim\Component\Catalog\Model\ValueCollectionInterface;
 use Pim\Component\Catalog\Model\ValueInterface;
-use Pim\Component\Catalog\Model\VariantProductInterface;
-use Prophecy\Argument;
 
 class VariantProductSpec extends ObjectBehavior
 {
@@ -218,5 +215,28 @@ class VariantProductSpec extends ObjectBehavior
             'value-<all_channels>-<all_locales>' => $value,
             'otherValue-<all_channels>-<all_locales>' => $otherValue
         ]);
+    }
+
+    function it_returns_the_youngest_updated_at_between_variant_products_and_ancestors(
+        ProductModelInterface $subProductModel,
+        ProductModelInterface $rootProductModel
+    ) {
+        $now = new \DateTime('now', new \DateTimeZone('UTC'));
+
+        $date1 = new \DateTime('now', new \DateTimeZone('UTC'));
+        $date1->modify('-1 day');
+
+        $date2 = new \DateTime('now', new \DateTimeZone('UTC'));
+        $date2->modify('-2 day');
+
+        $this->setUpdated($date2);
+        $subProductModel->getUpdated()->willReturn($date1);
+        $rootProductModel->getUpdated()->willReturn($now);
+
+        $this->setParent($subProductModel);
+        $subProductModel->getParent()->willReturn($rootProductModel);
+        $rootProductModel->getParent()->willReturn(null);
+
+        $this->getUpdated()->shouldReturn($now);
     }
 }

@@ -181,4 +181,21 @@ class VariantProduct extends AbstractProduct implements VariantProductInterface
 
         return false;
     }
+
+    /**
+     * Returns the youngest updated at date between the variant product and all of its parents.
+     *
+     * {@inheritdoc}
+     */
+    public function getUpdated()
+    {
+        $dates = [$this->updated];
+        $parent = $this->getParent();
+        while (null !== $parent) {
+            $dates[] = $parent->getUpdated();
+            $parent = $parent->getParent();
+        }
+
+        return max($dates);
+    }
 }

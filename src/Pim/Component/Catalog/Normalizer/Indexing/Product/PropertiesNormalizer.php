@@ -43,7 +43,7 @@ class PropertiesNormalizer implements NormalizerInterface, SerializerAwareInterf
             $format
         );
         $data[StandardPropertiesNormalizer::FIELD_UPDATED] = $this->serializer->normalize(
-            $this->getUpdatedAt($product),
+            $product->getUpdated(),
             $format
         );
         $data[StandardPropertiesNormalizer::FIELD_FAMILY] = $this->serializer->normalize(
@@ -83,27 +83,5 @@ class PropertiesNormalizer implements NormalizerInterface, SerializerAwareInterf
     public function supportsNormalization($data, $format = null)
     {
         return $data instanceof ProductInterface && ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX === $format;
-    }
-
-    /**
-     * @param ProductInterface $product
-     *
-     * @return \Datetime
-     */
-    private function getUpdatedAt(ProductInterface $product): \Datetime
-    {
-        $date = $product->getUpdated();
-        if ($product instanceof VariantProductInterface) {
-            $dates = [$date];
-            $parent = $product->getParent();
-            while (null !== $parent) {
-                $dates[] = $parent->getUpdated();
-                $parent = $parent->getParent();
-            }
-
-            $date = max($dates);
-        }
-
-        return $date;
     }
 }
