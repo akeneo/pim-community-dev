@@ -5,7 +5,6 @@ namespace Pim\Bundle\ApiBundle\tests\integration\Controller\Product;
 use Pim\Bundle\ApiBundle\tests\integration\ApiTestCase;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
-use Pim\Component\Catalog\Model\VariantProductInterface;
 use Pim\Component\Catalog\tests\integration\Normalizer\NormalizedProductCleaner;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -48,10 +47,10 @@ abstract class AbstractProductTestCase extends ApiTestCase
      * @param string $identifier
      * @param array  $data
      *
-     * @return VariantProductInterface
+     * @return ProductInterface
      * @throws \Exception
      */
-    protected function createVariantProduct($identifier, array $data = []) : VariantProductInterface
+    protected function createVariantProduct($identifier, array $data = []) : ProductInterface
     {
         $product = $this->get('pim_catalog.builder.variant_product')->createProduct($identifier);
         $this->get('pim_catalog.updater.product')->update($product, $data);

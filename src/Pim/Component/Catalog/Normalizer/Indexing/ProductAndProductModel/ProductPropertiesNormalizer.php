@@ -7,7 +7,6 @@ namespace Pim\Component\Catalog\Normalizer\Indexing\ProductAndProductModel;
 use Pim\Component\Catalog\Model\EntityWithFamilyVariantInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
-use Pim\Component\Catalog\Model\VariantProductInterface;
 use Pim\Component\Catalog\Normalizer\Standard\Product\PropertiesNormalizer as StandardPropertiesNormalizer;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\SerializerAwareInterface;
@@ -133,7 +132,7 @@ class ProductPropertiesNormalizer implements NormalizerInterface, SerializerAwar
      */
     public function supportsNormalization($data, $format = null)
     {
-        return ($data instanceof ProductInterface || $data instanceof VariantProductInterface)
+        return $data instanceof ProductInterface
             && ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX === $format;
     }
 

@@ -3,8 +3,8 @@
 namespace Pim\Bundle\EnrichBundle\Normalizer;
 
 use Pim\Component\Catalog\Model\EntityWithFamilyVariantInterface;
+use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
-use Pim\Component\Catalog\Model\VariantProductInterface;
 use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
@@ -43,11 +43,11 @@ class VariantNavigationNormalizer implements NormalizerInterface
      */
     public function normalize($entity, $format = null, array $context = [])
     {
-        if (!$entity instanceof ProductModelInterface && !$entity instanceof VariantProductInterface) {
+        if (!$entity instanceof ProductModelInterface && !$entity instanceof ProductInterface) {
             throw new \InvalidArgumentException(sprintf(
                 '"%s" or "%s" expected, "%s" received',
                 ProductModelInterface::class,
-                VariantProductInterface::class,
+                ProductInterface::class,
                 get_class($entity)
             ));
         }
