@@ -3,6 +3,7 @@
 namespace Pim\Component\Catalog\Repository;
 
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
+use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectsRepositoryInterface;
 use Doctrine\Common\Persistence\ObjectRepository;
 use Doctrine\ORM\QueryBuilder;
 use Pim\Component\Catalog\Model\AttributeGroupInterface;
@@ -18,7 +19,8 @@ use Pim\Component\Catalog\Model\FamilyInterface;
  */
 interface AttributeRepositoryInterface extends
     IdentifiableObjectRepositoryInterface,
-    ObjectRepository
+    ObjectRepository,
+    IdentifiableObjectsRepositoryInterface
 {
     /**
      * Find all attributes that belongs to the default group

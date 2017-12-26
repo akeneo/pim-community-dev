@@ -14,15 +14,20 @@ class BaseCachedObjectRepository implements CachedObjectRepositoryInterface
     /** @var IdentifiableObjectRepositoryInterface*/
     protected $repository;
 
+    /** @var IdentifiableObjectsRepositoryInterface */
+    protected $repository2;
+
     /** @var array */
     protected $objectsCache;
 
     /**
      * @param IdentifiableObjectRepositoryInterface $repository
+     * @param IdentifiableObjectsRepositoryInterface $repository2
      */
-    public function __construct(IdentifiableObjectRepositoryInterface $repository)
+    public function __construct(IdentifiableObjectRepositoryInterface $repository, IdentifiableObjectsRepositoryInterface $repository2 = null)
     {
         $this->repository = $repository;
+        $this->repository2 = $repository2;
         $this->objectsCache = [];
     }
 
@@ -36,6 +41,28 @@ class BaseCachedObjectRepository implements CachedObjectRepositoryInterface
         }
 
         return $this->objectsCache[$identifier];
+    }
+
+    public function findSeveralByIdentifiers(array $identifiers)
+    {
+        $identifiersNotCached = [];
+        $objects = [];
+
+        foreach ($identifiers as $identifier) {
+            if (!array_key_exists($identifier, $this->objectsCache)) {
+                $identifiersNotCached[] = $identifier;
+            } else {
+                $objects[$identifier] = $this->objectsCache[$identifier];
+            }
+        }
+
+        $objectsNotCached = $this->repository2->findSeveralByIdentifiers($identifiersNotCached);
+        foreach ($objectsNotCached as $object) {
+            $objects[$object->getCode()] = $object;
+            $this->objectsCache[$object->getCode()] = $object;
+        }
+
+        return $objects;
     }
 
     /**

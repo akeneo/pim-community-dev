@@ -4,8 +4,11 @@ namespace Pim\Component\Catalog\Factory;
 
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Component\StorageUtils\Repository\CachedObjectRepositoryInterface;
+use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectsRepositoryInterface;
+use Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\AttributeRepository;
 use Pim\Component\Catalog\Exception\InvalidAttributeException;
 use Pim\Component\Catalog\Exception\InvalidOptionException;
+use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ValueCollection;
 use Pim\Component\Catalog\Model\ValueCollectionInterface;
 use Psr\Log\LoggerInterface;
@@ -28,19 +31,25 @@ class ValueCollectionFactory implements ValueCollectionFactoryInterface
     /** @var LoggerInterface */
     private $logger;
 
+    /** @var IdentifiableObjectsRepositoryInterface */
+    private $attributeRepository2;
+
     /**
-     * @param ValueFactory                    $valueFactory
-     * @param CachedObjectRepositoryInterface $attributeRepository
-     * @param LoggerInterface                 $logger
+     * @param ValueFactory                           $valueFactory
+     * @param CachedObjectRepositoryInterface        $attributeRepository
+     * @param LoggerInterface                        $logger
+     * @param IdentifiableObjectsRepositoryInterface $attributeRepository2
      */
     public function __construct(
         ValueFactory $valueFactory,
         CachedObjectRepositoryInterface $attributeRepository,
-        LoggerInterface $logger
+        LoggerInterface $logger,
+        IdentifiableObjectsRepositoryInterface $attributeRepository2
     ) {
         $this->valueFactory = $valueFactory;
         $this->attributeRepository = $attributeRepository;
         $this->logger = $logger;
+        $this->attributeRepository2 = $attributeRepository2;
     }
 
     /**
@@ -58,11 +67,10 @@ class ValueCollectionFactory implements ValueCollectionFactoryInterface
     public function createFromStorageFormat(array $rawValues)
     {
         $values = [];
+        $attributes = $this->getAttributes($rawValues);
 
         foreach ($rawValues as $attributeCode => $channelRawValue) {
-            $attribute = $this->attributeRepository->findOneByIdentifier($attributeCode);
-
-            if (null !== $attribute) {
+            if (isset($attributes[$attributeCode])) {
                 foreach ($channelRawValue as $channelCode => $localeRawValue) {
                     if ('<all_channels>' === $channelCode) {
                         $channelCode = null;
@@ -74,7 +82,7 @@ class ValueCollectionFactory implements ValueCollectionFactoryInterface
                         }
 
                         try {
-                            $values[] = $this->valueFactory->create($attribute, $channelCode, $localeCode, $data);
+                            $values[] = $this->valueFactory->create($attributes[$attributeCode], $channelCode, $localeCode, $data);
                         } catch (InvalidOptionException $e) {
                             $this->logger->warning(
                                 sprintf(
@@ -111,5 +119,18 @@ class ValueCollectionFactory implements ValueCollectionFactoryInterface
         }
 
         return new ValueCollection($values);
+    }
+
+    /**
+     * @param array $rawValues
+     *
+     * @return AttributeInterface
+     */
+    private function getAttributes(array $rawValues)
+    {
+        $attributeCodes = array_keys($rawValues);
+        $attributes = $this->attributeRepository2->findSeveralByIdentifiers($attributeCodes);
+
+        return $attributes;
     }
 }

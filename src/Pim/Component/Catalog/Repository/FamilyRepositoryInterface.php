@@ -3,6 +3,7 @@
 namespace Pim\Component\Catalog\Repository;
 
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
+use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectsRepositoryInterface;
 use Doctrine\Common\Persistence\ObjectRepository;
 use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\FamilyInterface;
@@ -16,7 +17,8 @@ use Pim\Component\Catalog\Model\FamilyInterface;
  */
 interface FamilyRepositoryInterface extends
     IdentifiableObjectRepositoryInterface,
-    ObjectRepository
+    ObjectRepository,
+    IdentifiableObjectsRepositoryInterface
 {
     /**
      * Returns a querybuilder to get full requirements
