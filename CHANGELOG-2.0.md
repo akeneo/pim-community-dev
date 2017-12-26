@@ -19,9 +19,10 @@
 
 ## BC breaks
 
-- Change the constructor of  `Pim\Component\Catalog\ProductModel\Filter\ProductModelAttributeFilter` add `Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface` 
-- Change the constructor of `Pim\Bundle\EnrichBundle\Controller\Rest\AttributeController` add `Doctrine\ORM\EntityManagerInterface` and `Symfony\Component\Translation\TranslatorInterface`
+- Changes the constructor of  `Pim\Component\Catalog\ProductModel\Filter\ProductModelAttributeFilter` add `Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface` 
+- Changes the constructor of `Pim\Bundle\EnrichBundle\Controller\Rest\AttributeController` add `Doctrine\ORM\EntityManagerInterface` and `Symfony\Component\Translation\TranslatorInterface`
 - Changes the constructor of `Pim\Bundle\CatalogBundle\EventSubscriber\SaveFamilyVariantOnFamilyUpdateSubscriber` add `Akeneo\Component\StorageUtils\Detacher\BulkObjectDetacherInterface`
+- Changes the constructor of `Pim/Bundle/DataGridBundle/Extension/MassAction/Handler/DeleteProductsMassActionHandler` to add `Akeneo\Component\StorageUtils\Cursor\CursorFactoryInterface`
 
 # 2.0.10 (2017-12-22)
 

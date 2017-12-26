@@ -3,16 +3,17 @@
 namespace Pim\Bundle\DataGridBundle\Extension\MassAction\Handler;
 
 use Akeneo\Component\StorageUtils\Cursor\CursorFactoryInterface;
+use Akeneo\Component\StorageUtils\Cursor\CursorInterface;
 use Akeneo\Component\StorageUtils\Indexer\IndexerInterface;
 use Akeneo\Component\StorageUtils\Remover\BulkRemoverInterface;
 use Oro\Bundle\DataGridBundle\Datagrid\DatagridInterface;
-use Oro\Bundle\DataGridBundle\Datasource\ResultRecord;
 use Oro\Bundle\DataGridBundle\Extension\MassAction\Actions\MassActionInterface;
 use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionResponse;
 use Pim\Bundle\DataGridBundle\Datasource\ResultRecord\HydratorInterface;
 use Pim\Bundle\DataGridBundle\Extension\MassAction\Event\MassActionEvent;
 use Pim\Bundle\DataGridBundle\Extension\MassAction\Event\MassActionEvents;
-use Pim\Bundle\DataGridBundle\Normalizer\IdEncoder;
+use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Model\ProductModelInterface;
 use Pim\Component\Catalog\ProductEvents;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
@@ -27,7 +28,7 @@ use Symfony\Component\Translation\TranslatorInterface;
  */
 class DeleteProductsMassActionHandler extends DeleteMassActionHandler
 {
-    const MAX_LIMIT = 1000;
+    private const MAX_LIMIT = 1000;
 
     /** @var IndexerInterface */
     private $indexRemover;
@@ -62,20 +63,17 @@ class DeleteProductsMassActionHandler extends DeleteMassActionHandler
         $datasource->setHydrator($this->hydrator);
 
         $pqb = $datasource->getProductQueryBuilder();
-        $cursor = $this->cursorFactory->createCursor($pqb->getQueryBuilder()->getQuery(), ['from' => 0]);
+        $cursor = $this->cursorFactory->createCursor($pqb->getQueryBuilder()->getQuery());
 
         $selectedItemsCount =  $cursor->count();
-        if ($this::MAX_LIMIT < $selectedItemsCount) {
+        if (static::MAX_LIMIT < $selectedItemsCount) {
             return new MassActionResponse(false, $this->translator->trans(
                 'oro.grid.mass_action.delete.item_limit',
                 ['%count%' => $selectedItemsCount, '%limit%' => $this::MAX_LIMIT]
             ));
         }
 
-        $objectIds = [];
-        foreach ($cursor as $productObject) {
-            $objectIds[] = $productObject->getId();
-        }
+        $objectIds = $this->filterProducts($cursor);
 
         try {
             $this->eventDispatcher->dispatch(ProductEvents::PRE_MASS_REMOVE, new GenericEvent($objectIds));
@@ -96,5 +94,26 @@ class DeleteProductsMassActionHandler extends DeleteMassActionHandler
         $this->eventDispatcher->dispatch(MassActionEvents::MASS_DELETE_POST_HANDLER, $massActionEvent);
 
         return $this->getResponse($massAction, $countRemoved);
+    }
+
+    /**
+     * Only returns the product id's within a list of product and product models records.
+     *
+     * TODO: PIM-6357 - Scenario should be removed once mass edits work for product models
+     *
+     * @param CursorInterface $cursor
+     *
+     * @return array
+     */
+    private function filterProducts(CursorInterface $cursor): array
+    {
+        $objectIds = [];
+        foreach ($cursor as $productObject) {
+            if ($productObject instanceof ProductInterface) {
+                $objectIds[] = $productObject->getId();
+            }
+        }
+
+        return $objectIds;
     }
 }

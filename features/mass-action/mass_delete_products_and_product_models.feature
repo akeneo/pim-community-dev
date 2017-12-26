@@ -19,3 +19,12 @@ Feature: Delete many products but not the product models
     And I refresh current page
     Then I should not see products tshirt-unique-size-crimson-red and running-shoes-m-crimson-red
     And I should see the product models model-tshirt-divided-crimson-red
+
+  @jira https://akeneo.atlassian.net/browse/PIM-6968
+  Scenario: Successfully mass delete products when selected all
+    Given I select rows 1111111171
+    And I select all entities
+    And I press the "Delete" button and wait for modal
+    When I confirm the removal
+    Then I should not see products 1111111171 and 1111111172
+    Then I should see the product models athena and aurora

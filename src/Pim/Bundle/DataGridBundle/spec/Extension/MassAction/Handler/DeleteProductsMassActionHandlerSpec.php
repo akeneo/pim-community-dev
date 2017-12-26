@@ -15,8 +15,6 @@ use Pim\Bundle\DataGridBundle\Datasource\ProductDatasource;
 use Pim\Bundle\DataGridBundle\Datasource\ResultRecord\HydratorInterface;
 use Pim\Bundle\DataGridBundle\Extension\MassAction\Actions\Ajax\DeleteMassAction;
 use Pim\Bundle\DataGridBundle\Extension\MassAction\Event\MassActionEvents;
-use Pim\Bundle\DataGridBundle\Normalizer\IdEncoder;
-use Pim\Component\Catalog\Model\Product;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\ProductEvents;
 use Pim\Component\Catalog\Query\ProductQueryBuilderInterface;
@@ -51,12 +49,11 @@ class DeleteProductsMassActionHandlerSpec extends ObjectBehavior
         $datasource->getProductQueryBuilder()->willReturn($pqb);
         $pqb->getQueryBuilder()->willReturn($qb);
         $qb->getQuery()->willReturn([]);
-        //$translator->trans('qux')->willReturn('qux');
 
         $datagrid->getDatasource()->willReturn($datasource);
         $datasource->setHydrator($hydrator)->shouldBeCalled();
 
-        $cursorFactory->createCursor([], ['from' => 0])->willReturn($productCursor);
+        $cursorFactory->createCursor([])->willReturn($productCursor);
 
         $eventDispatcher->dispatch(
             MassActionEvents::MASS_DELETE_PRE_HANDLER,
@@ -114,7 +111,7 @@ class DeleteProductsMassActionHandlerSpec extends ObjectBehavior
         $this->handle($datagrid, $massAction);
     }
 
-    function it_dont_run_if_max_limit_selected(
+    function it_does_not_run_if_max_limit_is_exceeded(
         $datagrid,
         $translator,
         $productCursor,
