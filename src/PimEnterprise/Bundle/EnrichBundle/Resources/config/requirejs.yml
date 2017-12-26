@@ -24,6 +24,11 @@ config:
                         warmup: false
                         urls:
                             list: pimee_security_permissions_rest
+                asset-category:
+                    module: pim/base-fetcher
+                    options:
+                        urls:
+                            list: pimee_enrich_asset_category_rest_list
         pim/controller-registry:
             defaultController:
                 module: pim/controller/template
