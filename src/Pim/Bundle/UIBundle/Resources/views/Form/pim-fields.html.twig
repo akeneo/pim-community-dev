@@ -424,8 +424,7 @@
         {% set class = class ~ ' AknTextField--file' %}
     {% endif %}
     {% set attr = attr|merge({'class': class }) %}
-    {# This override is needed until this twig PR is not merged: https://github.com/twigphp/Twig/pull/2433 #}
-    <input type="{{ type }}" {{ block('widget_attributes') }} {% if value == '\\' or value is not empty %}value="{{ value }}" {% endif %}/>
+    <input type="{{ type }}" {{ block('widget_attributes') }} {% if value is not empty %}value="{{ value }}" {% endif %}/>
 {%- endblock form_widget_simple -%}
 
 {%- block textarea_widget -%}
