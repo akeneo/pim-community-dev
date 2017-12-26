@@ -60,6 +60,7 @@ class CreateVariantProductSpec extends ObjectBehavior
         ValueCollectionInterface $productModelValues,
         FamilyInterface $family,
         \Datetime $createdAt,
+        \Datetime $updatedAt,
         ValueCollectionInterface $values,
         ValueInterface $valueSku,
         AttributeInterface $sku,
@@ -69,10 +70,6 @@ class CreateVariantProductSpec extends ObjectBehavior
         ArrayCollection $attributes,
         VariantAttributeSetInterface $variantAttributeSet
     ) {
-        $updatedAtParent = new \DateTime('now', new \DateTimeZone('UTC'));
-        $updatedAtVariantProduct = new \DateTime('now', new \DateTimeZone('UTC'));
-        $updatedAtVariantProduct->modify('-1 day');
-
         $parent->getFamily()->willReturn($family);
         $parent->getValues()->willReturn($parentValues);
         $parent->getValuesForVariation()->willReturn($productModelValues);
@@ -84,7 +81,6 @@ class CreateVariantProductSpec extends ObjectBehavior
         $parent->getParent()->willreturn(null);
         $parent->getCategories()->willreturn($productModelCategories);
         $productModelCategories->getIterator()->willReturn($iterator);
-        $parent->getUpdated()->willReturn($updatedAtParent);
 
         $categories->toArray()->willReturn([]);
         $values->toArray()->willReturn([]);
@@ -107,7 +103,7 @@ class CreateVariantProductSpec extends ObjectBehavior
         $product->getCategories()->willReturn($categories);
         $product->getValues()->willReturn($values);
         $product->getCreated()->willReturn($createdAt);
-        $product->getUpdated()->willReturn($updatedAtVariantProduct);
+        $product->getUpdated()->willReturn($updatedAt);
         $product->getUniqueData()->willReturn($uniqueValues);
         $product->getRawValues()->willReturn([]);
 
@@ -118,7 +114,7 @@ class CreateVariantProductSpec extends ObjectBehavior
         $result->isEnabled()->shouldReturn(true);
         $result->getFamily()->shouldReturn($family);
         $result->getCreated()->shouldReturn($createdAt);
-        $result->getUpdated()->shouldReturn($updatedAtParent);
+        $result->getUpdated()->shouldReturn($updatedAt);
         $result->getGroups()->shouldReturnAnInstanceOf(Collection::class);
         $result->getAssociations()->shouldReturnAnInstanceOf(Collection::class);
         $result->getCompletenesses()->shouldReturnAnInstanceOf(Collection::class);
