@@ -2,17 +2,12 @@
 
 namespace spec\Pim\Bundle\CatalogBundle\Elasticsearch\Filter\Field;
 
-use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Elasticsearch\Filter\Field\AbstractFieldFilter;
 use Pim\Bundle\CatalogBundle\Elasticsearch\Filter\Field\LabelOrIdentifierFilter;
 use Pim\Bundle\CatalogBundle\Elasticsearch\SearchQueryBuilder;
-use Pim\Component\Catalog\Exception\InvalidOperatorException;
-use Pim\Component\Catalog\Exception\ObjectNotFoundException;
-use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Component\Catalog\Query\Filter\FieldFilterInterface;
 use Pim\Component\Catalog\Query\Filter\Operators;
-use Pim\Component\Catalog\Repository\FamilyRepositoryInterface;
 
 /**
  * Label or identifier filter spec for an Elasticsearch query
@@ -60,10 +55,17 @@ class LabelOrIdentifierFilterSpec extends ObjectBehavior
     function it_adds_a_filter_with_operator_without_locale_and_scope(
         SearchQueryBuilder $sqb
     ) {
-        $sqb->addShould([
-            ['wildcard' => ['identifier' => '*book*']],
-            ['wildcard' => ['label.<all_channels>.<all_locales>' => '*book*']]
-        ])->shouldBeCalled();
+        $sqb->addFilter(
+            [
+                'bool' => [
+                    'should' => [
+                        ['wildcard' => ['identifier' => '*book*']],
+                        ['wildcard' => ['label.<all_channels>.<all_locales>' => '*book*']],
+                    ],
+                    'minimum_should_match' => 1,
+                ],
+            ]
+        )->shouldBeCalled();
 
         $this->setQueryBuilder($sqb);
         $this->addFieldFilter('label_or_identifier', Operators::CONTAINS, 'book', null, null, []);
@@ -72,11 +74,18 @@ class LabelOrIdentifierFilterSpec extends ObjectBehavior
     function it_adds_a_filter_with_operator_without_locale_but_with_scope(
         SearchQueryBuilder $sqb
     ) {
-        $sqb->addShould([
-            ['wildcard' => ['identifier' => '*book*']],
-            ['wildcard' => ['label.ecommerce.<all_locales>' => '*book*']],
-            ['wildcard' => ['label.<all_channels>.<all_locales>' => '*book*']]
-        ])->shouldBeCalled();
+        $sqb->addFilter(
+            [
+                'bool' => [
+                    'should' => [
+                        ['wildcard' => ['identifier' => '*book*']],
+                        ['wildcard' => ['label.ecommerce.<all_locales>' => '*book*']],
+                        ['wildcard' => ['label.<all_channels>.<all_locales>' => '*book*']]
+                    ],
+                    'minimum_should_match' => 1,
+                ],
+            ]
+        )->shouldBeCalled();
 
         $this->setQueryBuilder($sqb);
         $this->addFieldFilter('label_or_identifier', Operators::CONTAINS, 'book', null, 'ecommerce', []);
@@ -85,11 +94,18 @@ class LabelOrIdentifierFilterSpec extends ObjectBehavior
     function it_adds_a_filter_with_operator_without_scope_but_with_locale(
         SearchQueryBuilder $sqb
     ) {
-        $sqb->addShould([
-            ['wildcard' => ['identifier' => '*book*']],
-            ['wildcard' => ['label.<all_channels>.en_US' => '*book*']],
-            ['wildcard' => ['label.<all_channels>.<all_locales>' => '*book*']]
-        ])->shouldBeCalled();
+        $sqb->addFilter(
+            [
+                'bool' => [
+                    'should' => [
+                        ['wildcard' => ['identifier' => '*book*']],
+                        ['wildcard' => ['label.<all_channels>.en_US' => '*book*']],
+                        ['wildcard' => ['label.<all_channels>.<all_locales>' => '*book*']]
+                    ],
+                    'minimum_should_match' => 1,
+                ],
+            ]
+        )->shouldBeCalled();
 
         $this->setQueryBuilder($sqb);
         $this->addFieldFilter('label_or_identifier', Operators::CONTAINS, 'book', 'en_US', null, []);
@@ -98,13 +114,20 @@ class LabelOrIdentifierFilterSpec extends ObjectBehavior
     function it_adds_a_filter_with_operator_with_scope_and_locale(
         SearchQueryBuilder $sqb
     ) {
-        $sqb->addShould([
-            ['wildcard' => ['identifier' => '*book*']],
-            ['wildcard' => ['label.ecommerce.en_US' => '*book*']],
-            ['wildcard' => ['label.ecommerce.<all_locales>' => '*book*']],
-            ['wildcard' => ['label.<all_channels>.en_US' => '*book*']],
-            ['wildcard' => ['label.<all_channels>.<all_locales>' => '*book*']]
-        ])->shouldBeCalled();
+        $sqb->addFilter(
+            [
+                'bool' => [
+                    'should' => [
+                        ['wildcard' => ['identifier' => '*book*']],
+                        ['wildcard' => ['label.ecommerce.en_US' => '*book*']],
+                        ['wildcard' => ['label.ecommerce.<all_locales>' => '*book*']],
+                        ['wildcard' => ['label.<all_channels>.en_US' => '*book*']],
+                        ['wildcard' => ['label.<all_channels>.<all_locales>' => '*book*']]
+                    ],
+                    'minimum_should_match' => 1,
+                ],
+            ]
+        )->shouldBeCalled();
 
         $this->setQueryBuilder($sqb);
         $this->addFieldFilter('label_or_identifier', Operators::CONTAINS, 'book', 'en_US', 'ecommerce', []);

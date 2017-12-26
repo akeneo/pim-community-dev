@@ -83,9 +83,7 @@ class LabelOrIdentifierFilter extends AbstractFieldFilter
         $this->searchQueryBuilder->addFilter(
             [
                 'bool' => [
-                    'should' => [
-                        $clauses
-                    ],
+                    'should' => $clauses,
                     'minimum_should_match' => 1,
                 ],
             ]
