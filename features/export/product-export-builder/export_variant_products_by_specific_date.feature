@@ -4,7 +4,7 @@ Feature: Export updated variant products according to a date
   As a product manager
   I need to be able to export the variant products according to a date
 
-  Scenario: Export only the variant products which parent has been updated by the UI since the last export
+  Scenario: Export only the variant products which parent has been updated since the last export
     Given a "catalog_modeling" catalog configuration
     And the following job "csv_catalog_modeling_product_export" configuration:
       | filePath | %tmp%/product_export/product_export.csv                                                                                                                          |

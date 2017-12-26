@@ -90,7 +90,7 @@ class PropertiesNormalizer implements NormalizerInterface, SerializerAwareInterf
      *
      * @return \Datetime
      */
-    private function getUpdatedAt($product): \Datetime
+    private function getUpdatedAt(ProductInterface $product): \Datetime
     {
         $date = $product->getUpdated();
         if ($product instanceof VariantProductInterface) {
