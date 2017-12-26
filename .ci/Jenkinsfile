@@ -420,7 +420,7 @@ def queue(body, scale, edition, verboseOutputs, dotsPerLine) {
                     sh "kubectl apply -f /home/jenkins/pim/.ci/k8s/"
                     sh "gcloud.phar ${verbosity} job:wait --dotsperline ${linesize} ${NODE_NAME}-results-subscription ${size} ${env.WORKSPACE} --ansi"
                 } finally {
-                    sh "kubectl delete job ${NODE_NAME} --namespace=jenkins-prod"
+                    sh "kubectl delete job ${NODE_NAME}"
                     sh "gcloud.phar pubsub:topic:delete ${NODE_NAME}"
                     sh "gcloud.phar pubsub:topic:delete ${NODE_NAME}-results"
                     sh "gcloud.phar pubsub:subscription:delete ${NODE_NAME}-subscription"
