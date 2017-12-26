@@ -270,4 +270,9 @@ interface ProductInterface extends
      * @param $data Collection
      */
     public function setUniqueData(Collection $data): void;
+
+    /**
+     * @return bool
+     */
+    public function isVariant(): bool;
 }

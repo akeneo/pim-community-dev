@@ -383,4 +383,9 @@ class ProductSpec extends ObjectBehavior
 
         $this->getImage()->shouldReturn(null);
     }
+
+    function it_is_not_a_variant_product()
+    {
+        $this->isVariant()->shouldReturn(false);
+    }
 }

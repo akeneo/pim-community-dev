@@ -49,6 +49,7 @@ class ParentFieldSetterSpec extends ObjectBehavior
         $productModelRepository->findOneByIdentifier('parent_code')->willReturn($productModel);
         $productModel->getFamilyVariant()->willReturn($familyVariant);
 
+        $product->isVariant()->willReturn(true);
         $product->getParent()->willReturn(null);
         $product->setParent($productModel)->shouldBeCalled();
         $product->setFamilyVariant($familyVariant)->shouldBeCalled();
@@ -68,6 +69,7 @@ class ParentFieldSetterSpec extends ObjectBehavior
         $productModel->getFamilyVariant()->willReturn($familyVariant);
         $familyVariant->getFamily()->willReturn($family);
 
+        $product->isVariant()->willReturn(true);
         $product->getParent()->willReturn(null);
         $product->setParent($productModel)->shouldBeCalled();
         $product->setFamilyVariant($familyVariant)->shouldBeCalled();
@@ -85,10 +87,12 @@ class ParentFieldSetterSpec extends ObjectBehavior
         );
     }
 
-    function it_throws_exception_if_the_parent_code_does_not_an_existing_product_model_code(
+    function it_throws_exception_if_the_parent_code_does_not_match_an_existing_product_model_code(
         $productModelRepository,
         VariantProductInterface $variantProduct
     ) {
+        $variantProduct->isVariant()->willReturn(true);
+        $variantProduct->getParent()->willReturn(null);
         $productModelRepository->findOneByIdentifier('parent_code')->willReturn(null);
 
         $this->shouldThrow(InvalidPropertyException::class)->during(
@@ -101,6 +105,7 @@ class ParentFieldSetterSpec extends ObjectBehavior
         VariantProductInterface $variantProduct,
         ProductModelInterface $parent
     ) {
+        $variantProduct->isVariant()->willReturn(true);
         $variantProduct->getParent()->willReturn($parent);
         $parent->getCode()->willReturn('parent_code');
 
@@ -112,6 +117,9 @@ class ParentFieldSetterSpec extends ObjectBehavior
 
     function it_throws_exception_if_a_parent_is_set_to_a_regular_product(ProductInterface $product)
     {
+        $product->isVariant()->willReturn(false);
+        $product->getIdentifier()->willReturn('foo');
+
         $this->shouldThrow(InvalidPropertyException::class)->during(
             'setFieldData',
             [$product, 'parent', Argument::any()]

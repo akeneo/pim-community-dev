@@ -219,4 +219,9 @@ class VariantProductSpec extends ObjectBehavior
             'otherValue-<all_channels>-<all_locales>' => $otherValue
         ]);
     }
+
+    function it_is_a_variant_product()
+    {
+        $this->isVariant()->shouldReturn(true);
+    }
 }

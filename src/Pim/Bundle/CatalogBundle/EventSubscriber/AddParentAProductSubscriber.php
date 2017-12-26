@@ -8,7 +8,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Pim\Bundle\CatalogBundle\Doctrine\ORM\Query;
 use Pim\Component\Catalog\EntityWithFamily\Event\ParentHasBeenAddedToProduct;
-use Pim\Component\Catalog\Model\VariantProductInterface;
+use Pim\Component\Catalog\Model\ProductInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
@@ -98,7 +98,7 @@ final class AddParentAProductSubscriber implements EventSubscriberInterface
     public function preUpdate(LifecycleEventArgs $args)
     {
         $entity = $args->getObject();
-        if (!$entity instanceof VariantProductInterface) {
+        if (!$entity instanceof ProductInterface || !$entity->isVariant()) {
             return;
         }
 

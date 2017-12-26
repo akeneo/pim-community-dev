@@ -320,7 +320,7 @@ class ProductNormalizer implements NormalizerInterface
             'level'                     => null,
         ];
 
-        if (!$product instanceof VariantProductInterface) {
+        if (!$product instanceof ProductInterface || !$product->isVariant()) {
             return $meta;
         }
 

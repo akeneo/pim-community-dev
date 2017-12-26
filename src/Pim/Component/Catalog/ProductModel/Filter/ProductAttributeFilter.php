@@ -74,7 +74,7 @@ class ProductAttributeFilter implements AttributeFilterInterface
         }
 
         $product = $this->productRepository->findOneByIdentifier($standardProduct['identifier']);
-        if (null !== $product && $product instanceof VariantProductInterface && null !== $product->getParent()
+        if (null !== $product && $product->isVariant() && null !== $product->getParent()
             && !array_key_exists('parent', $standardProduct)) {
             $standardProduct['parent'] = $product->getParent()->getCode();
         }

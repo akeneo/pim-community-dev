@@ -76,14 +76,14 @@ class ProductPropertiesNormalizer implements NormalizerInterface, SerializerAwar
 
 
         $familyVariantCode = null;
-        if ($product instanceof VariantProductInterface) {
+        if ($product->isVariant()) {
             $familyVariant = $product->getFamilyVariant();
             $familyVariantCode = null !== $familyVariant ? $familyVariant->getCode() : null;
         }
         $data[self::FIELD_FAMILY_VARIANT] = $familyVariantCode;
 
         $parentCode = null;
-        if ($product instanceof VariantProductInterface && null !== $product->getParent()) {
+        if ($product->isVariant() && null !== $product->getParent()) {
             $parentCode = $product->getParent()->getCode();
         }
         $data[self::FIELD_PARENT] = $parentCode;
@@ -164,15 +164,15 @@ class ProductPropertiesNormalizer implements NormalizerInterface, SerializerAwar
     }
 
     /**
-     * @param $product
+     * @param ProductInterface $product
      *
      * @return array
      */
-    private function getAncestors($product): array
+    private function getAncestors(ProductInterface $product): array
     {
         $ancestorsIds = [];
         $ancestorsCodes = [];
-        if ($product instanceof EntityWithFamilyVariantInterface) {
+        if ($product->isVariant()) {
             $ancestorsIds = $this->getAncestorsIds($product);
             $ancestorsCodes = $this->getAncestorsCodes($product);
         }

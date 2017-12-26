@@ -193,7 +193,7 @@ class ProductNormalizer implements NormalizerInterface, NormalizerAwareInterface
      */
     private function getParentCode(EntityWithFamilyInterface $product): ?string
     {
-        if ($product instanceof VariantProductInterface && null !== $product->getParent()) {
+        if ($product instanceof ProductInterface && $product->isVariant() && null !== $product->getParent()) {
             return $product->getParent()->getCode();
         }
 

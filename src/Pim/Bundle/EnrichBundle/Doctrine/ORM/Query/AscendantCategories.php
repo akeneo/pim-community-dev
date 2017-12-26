@@ -4,8 +4,8 @@ declare(strict_types=1);
 namespace Pim\Bundle\EnrichBundle\Doctrine\ORM\Query;
 
 use Doctrine\ORM\EntityManagerInterface;
-use Pim\Component\Catalog\Model\CategoryInterface;
 use Pim\Component\Catalog\Model\EntityWithFamilyVariantInterface;
+use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
 use Pim\Component\Catalog\Model\VariantProductInterface;
 use Pim\Component\Enrich\Query\AscendantCategoriesInterface;
@@ -50,7 +50,7 @@ class AscendantCategories implements AscendantCategoriesInterface
             $result = array_map(function ($id) {
                 return intval($id['id']);
             }, $queryBuilder->getQuery()->getResult());
-        } elseif ($entity instanceof VariantProductInterface) {
+        } elseif ($entity instanceof ProductInterface && $entity->isVariant()) {
             $queryBuilder
                 ->select('category.id AS id, parent_category.id AS parent_id')
                 ->from(VariantProductInterface::class, 'variant_product')

@@ -65,6 +65,7 @@ class ProductNormalizerSpec extends ObjectBehavior
         $sku->getAttribute()->willReturn($skuAttribute);
         $sku->getData()->willReturn('sku-001');
 
+        $product->isVariant()->willReturn(true);
         $product->getIdentifier()->willReturn($sku);
         $product->getFamily()->willReturn($family);
         $product->isEnabled()->willReturn(true);
@@ -104,6 +105,7 @@ class ProductNormalizerSpec extends ObjectBehavior
         $sku->getAttribute()->willReturn($skuAttribute);
         $sku->getData()->willReturn('sku-001');
 
+        $product->isVariant()->willReturn(false);
         $product->getIdentifier()->willReturn($sku);
         $product->getFamily()->willReturn($family);
         $product->isEnabled()->willReturn(true);
@@ -184,6 +186,7 @@ class ProductNormalizerSpec extends ObjectBehavior
             ])
         );
 
+        $product->isVariant()->willReturn(false);
         $product->getIdentifier()->willReturn($sku);
         $product->getFamily()->willReturn($family);
         $product->isEnabled()->willReturn(true);
@@ -239,6 +242,7 @@ class ProductNormalizerSpec extends ObjectBehavior
         $colors->getAttribute()->willReturn($colorsAttribute);
         $colors->getData()->willReturn([$red, $blue]);
 
+        $product->isVariant()->willReturn(false);
         $product->getIdentifier()->willReturn($sku);
         $product->getFamily()->willReturn($family);
         $product->isEnabled()->willReturn(true);
@@ -292,6 +296,7 @@ class ProductNormalizerSpec extends ObjectBehavior
 
         $price->getData()->willReturn($prices);
 
+        $product->isVariant()->willReturn(false);
         $product->getIdentifier()->willReturn($price);
         $product->getFamily()->willReturn($family);
         $product->isEnabled()->willReturn(true);

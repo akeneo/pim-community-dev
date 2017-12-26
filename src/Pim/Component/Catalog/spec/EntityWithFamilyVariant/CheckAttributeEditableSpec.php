@@ -45,6 +45,7 @@ class CheckAttributeEditableSpec extends ObjectBehavior
         FamilyInterface $family,
         AttributeInterface $attribute
     ) {
+        $product->isVariant()->willReturn(false);
         $product->getFamily()->willReturn($family);
         $family->hasAttribute($attribute)->willReturn(true);
         $this->isEditable($product, $attribute)->shouldReturn(true);
@@ -112,6 +113,7 @@ class CheckAttributeEditableSpec extends ObjectBehavior
         VariantAttributeSetInterface $attributeSet
     ) {
         $family->hasAttribute($attribute)->willReturn(true);
+        $product->isVariant()->willReturn(true);
         $product->getFamily()->willReturn($family);
         $product->getVariationLevel()->willReturn(1);
         $product->getFamilyVariant()->willReturn($familyVariant);
@@ -130,6 +132,7 @@ class CheckAttributeEditableSpec extends ObjectBehavior
         VariantAttributeSetInterface $attributeSet
     ) {
         $family->hasAttribute($attribute)->willReturn(true);
+        $product->isVariant()->willReturn(true);
         $product->getFamily()->willReturn($family);
         $product->getVariationLevel()->willReturn(1);
         $product->getFamilyVariant()->willReturn($familyVariant);

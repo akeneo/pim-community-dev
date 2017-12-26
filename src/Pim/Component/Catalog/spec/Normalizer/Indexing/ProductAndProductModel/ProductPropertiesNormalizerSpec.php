@@ -56,6 +56,7 @@ class ProductPropertiesNormalizerSpec extends ObjectBehavior
         $now = new \DateTime('now', new \DateTimeZone('UTC'));
         $family = null;
 
+        $product->isVariant()->willReturn(false);
         $product->getIdentifier()->willReturn('sku-001');
         $product->getFamily()->willReturn($family);
         $serializer->normalize($family, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)
@@ -119,6 +120,7 @@ class ProductPropertiesNormalizerSpec extends ObjectBehavior
     ) {
         $now = new \DateTime('now', new \DateTimeZone('UTC'));
 
+        $product->isVariant()->willReturn(false);
         $product->getId()->willReturn(67);
         $product->getIdentifier()->willReturn('sku-001');
 
@@ -242,6 +244,7 @@ class ProductPropertiesNormalizerSpec extends ObjectBehavior
     ) {
         $now = new \DateTime('now', new \DateTimeZone('UTC'));
 
+        $variantProduct->isVariant()->willReturn(true);
         $variantProduct->getId()->willReturn(67);
         $variantProduct->getIdentifier()->willReturn('sku-001');
 
@@ -375,6 +378,7 @@ class ProductPropertiesNormalizerSpec extends ObjectBehavior
     ) {
         $now = new \DateTime('now', new \DateTimeZone('UTC'));
 
+        $variantProduct->isVariant()->willReturn(true);
         $variantProduct->getId()->willReturn(67);
         $variantProduct->getIdentifier()->willReturn('sku-001');
         $variantProduct->getFamily()->willReturn($family);
@@ -467,6 +471,7 @@ class ProductPropertiesNormalizerSpec extends ObjectBehavior
     ) {
         $now = new \DateTime('now', new \DateTimeZone('UTC'));
 
+        $variantProduct->isVariant()->willReturn(true);
         $variantProduct->getId()->willReturn(67);
         $variantProduct->getIdentifier()->willReturn('sku-001');
         $variantProduct->getFamily()->willReturn($family);

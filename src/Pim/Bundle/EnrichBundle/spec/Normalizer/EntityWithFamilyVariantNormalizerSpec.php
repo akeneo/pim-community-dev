@@ -71,6 +71,7 @@ class EntityWithFamilyVariantNormalizerSpec extends ObjectBehavior
         ];
         $localeRepository->getActivatedLocaleCodes()->willReturn(['fr_FR', 'en_US']);
 
+        $variantProduct->isVariant()->willReturn(true);
         $variantProduct->getLabel('fr_FR')->willReturn('Tshirt Blanc S');
         $variantProduct->getLabel('en_US')->willReturn('Tshirt White S');
         $variantProduct->getId()->willReturn(42);

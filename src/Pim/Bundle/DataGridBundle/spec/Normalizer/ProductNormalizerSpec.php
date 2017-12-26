@@ -73,6 +73,7 @@ class ProductNormalizerSpec extends ObjectBehavior
             'data_locale'  => 'en_US',
         ];
 
+        $product->isVariant()->willReturn(false);
         $product->getId()->willReturn(78);
         $filter->filterCollection($values, 'pim.transform.product_value.structured', $context)
             ->willReturn($values);
@@ -176,6 +177,7 @@ class ProductNormalizerSpec extends ObjectBehavior
             'data_locale'  => 'en_US',
         ];
 
+        $product->isVariant()->willReturn(false);
         $product->getId()->willReturn(78);
         $filter->filterCollection($productValues, 'pim.transform.product_value.structured', $context)
             ->willReturn($productValues);
@@ -283,6 +285,7 @@ class ProductNormalizerSpec extends ObjectBehavior
         $productModel->getCode()->willReturn('parent_code');
         $product->getParent()->willReturn($productModel);
 
+        $product->isVariant()->willReturn(true);
         $product->getId()->willReturn(78);
         $filter->filterCollection($productValues, 'pim.transform.product_value.structured', $context)
             ->willReturn($productValues);

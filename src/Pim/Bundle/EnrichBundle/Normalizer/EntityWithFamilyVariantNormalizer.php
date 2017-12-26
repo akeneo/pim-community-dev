@@ -8,6 +8,7 @@ use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Completeness\CompletenessCalculatorInterface;
 use Pim\Component\Catalog\FamilyVariant\EntityWithFamilyVariantAttributesProvider;
 use Pim\Component\Catalog\Model\EntityWithFamilyVariantInterface;
+use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
 use Pim\Component\Catalog\Model\ValueInterface;
 use Pim\Component\Catalog\Model\VariantProductInterface;
@@ -209,7 +210,7 @@ class EntityWithFamilyVariantNormalizer implements NormalizerInterface
             return $this->variantProductRatioQuery->findComplete($entity)->values();
         }
 
-        if ($entity instanceof VariantProductInterface) {
+        if ($entity instanceof ProductInterface && $entity->isVariant()) {
             $completenessCollection = $entity->getCompletenesses();
             if ($completenessCollection->isEmpty()) {
                 $newCompletenesses = $this->completenessCalculator->calculate($entity);

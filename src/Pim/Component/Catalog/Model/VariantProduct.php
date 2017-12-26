@@ -181,4 +181,12 @@ class VariantProduct extends AbstractProduct implements VariantProductInterface
 
         return false;
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isVariant(): bool
+    {
+        return true;
+    }
 }

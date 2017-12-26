@@ -34,6 +34,8 @@ class AddToExistingProductModelProcessorSpec extends ObjectBehavior
         JobParameters $jobParameters,
         ConstraintViolationListInterface $violations
     ) {
+        $product->isVariant()->willReturn(false);
+
         $this->setStepExecution($stepExecution);
         $stepExecution->getJobParameters()->willReturn($jobParameters);
         $jobParameters->get('actions')->willReturn([['value' => '42']]);
@@ -50,9 +52,10 @@ class AddToExistingProductModelProcessorSpec extends ObjectBehavior
         $addParent,
         ProductInterface $product,
         StepExecution $stepExecution,
-        JobParameters $jobParameters,
-        InvalidArgumentException $exception
+        JobParameters $jobParameters
     ) {
+        $product->isVariant()->willReturn(false);
+
         $this->setStepExecution($stepExecution);
         $stepExecution->getJobParameters()->willReturn($jobParameters);
         $jobParameters->get('actions')->willReturn([['value' => '42']]);
@@ -67,6 +70,8 @@ class AddToExistingProductModelProcessorSpec extends ObjectBehavior
         StepExecution $stepExecution,
         JobParameters $jobParameters
     ) {
+        $product->isVariant()->willReturn(true);
+
         $this->setStepExecution($stepExecution);
         $stepExecution->getJobParameters()->willReturn($jobParameters);
         $jobParameters->get('actions')->willReturn([['value' => '42']]);

@@ -52,6 +52,7 @@ class PropertiesNormalizerSpec extends ObjectBehavior
         $values->getIterator()->willReturn($iterator);
 
         $family->getCode()->willReturn('my_family');
+        $product->isVariant()->willReturn(false);
         $product->getFamily()->willReturn($family);
         $product->getGroupCodes()->willReturn([]);
         $product->getCategoryCodes()->willReturn([]);
@@ -110,6 +111,7 @@ class PropertiesNormalizerSpec extends ObjectBehavior
         $values->getIterator()->willReturn($iterator);
 
         $family->getCode()->willReturn('my_family');
+        $product->isVariant()->willReturn(true);
         $product->getFamily()->willReturn($family);
         $product->getGroupCodes()->willReturn([]);
         $product->getCategoryCodes()->willReturn([]);

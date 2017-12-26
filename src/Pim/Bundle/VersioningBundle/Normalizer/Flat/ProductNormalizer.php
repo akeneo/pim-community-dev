@@ -117,7 +117,7 @@ class ProductNormalizer implements NormalizerInterface, SerializerAwareInterface
      */
     protected function getFilteredValues(ProductInterface $product, array $context = [])
     {
-        if ($product instanceof VariantProductInterface) {
+        if ($product->isVariant()) {
             $values = $product->getValuesForVariation();
         } else {
             $values = $product->getValues();

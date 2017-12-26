@@ -5,8 +5,8 @@ namespace Pim\Bundle\CatalogBundle\EventSubscriber;
 
 use Akeneo\Component\StorageUtils\Indexer\IndexerInterface;
 use Akeneo\Component\StorageUtils\StorageEvents;
+use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
-use Pim\Component\Catalog\Model\VariantProductInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
@@ -49,12 +49,12 @@ class IndexProductModelCompleteDataSubscriber implements EventSubscriberInterfac
      */
     public function computeNumberOfCompleteVariantProduct(GenericEvent $event): void
     {
-        $variantProduct = $event->getSubject();
-        if (!$variantProduct instanceof VariantProductInterface) {
+        $product = $event->getSubject();
+        if (!$product instanceof ProductInterface || !$product->isVariant()) {
             return;
         }
 
-        if (null === $productModel = $variantProduct->getParent()) {
+        if (null === $productModel = $product->getParent()) {
             return;
         }
 

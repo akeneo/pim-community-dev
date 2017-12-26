@@ -122,6 +122,7 @@ class AddParentAProductSubscriberSpec extends ObjectBehavior
     ) {
         $event->convertedProduct()->willReturn($variantProduct);
 
+        $variantProduct->isVariant()->willReturn(true);
         $variantProduct->getId()->willReturn(64);
         $variantProduct->getValuesForVariation()->willReturn($valueCollection);
         $variantProduct->getParent()->willReturn($productModel);

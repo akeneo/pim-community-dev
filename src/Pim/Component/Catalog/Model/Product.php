@@ -11,4 +11,11 @@ namespace Pim\Component\Catalog\Model;
  */
 class Product extends AbstractProduct implements ProductInterface
 {
+    /**
+     * {@inheritdoc}
+     */
+    public function isVariant(): bool
+    {
+        return false;
+    }
 }

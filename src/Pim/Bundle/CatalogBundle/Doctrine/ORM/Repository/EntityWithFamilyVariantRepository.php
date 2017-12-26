@@ -3,8 +3,8 @@
 namespace Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository;
 
 use Pim\Component\Catalog\Model\EntityWithFamilyVariantInterface;
+use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
-use Pim\Component\Catalog\Model\VariantProductInterface;
 use Pim\Component\Catalog\Repository\EntityWithFamilyVariantRepositoryInterface;
 use Pim\Component\Catalog\Repository\ProductModelRepositoryInterface;
 use Pim\Component\Catalog\Repository\VariantProductRepositoryInterface;
@@ -45,7 +45,7 @@ class EntityWithFamilyVariantRepository implements EntityWithFamilyVariantReposi
             return [];
         }
 
-        if ($entity instanceof VariantProductInterface) {
+        if ($entity instanceof ProductInterface && $entity->isVariant()) {
             return $this->productRepository->findSiblingsProducts($entity);
         }
 

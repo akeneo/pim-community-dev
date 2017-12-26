@@ -44,7 +44,7 @@ class ParentFieldSetter extends AbstractFieldSetter
             );
         }
 
-        if (!$product instanceof VariantProductInterface) {
+        if (!$product->isVariant()) {
             if (null === $data) {
                 return;
             }

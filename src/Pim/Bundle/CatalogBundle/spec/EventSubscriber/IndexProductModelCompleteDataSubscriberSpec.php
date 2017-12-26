@@ -47,6 +47,7 @@ class IndexProductModelCompleteDataSubscriberSpec extends ObjectBehavior
         $this->computeNumberOfCompleteVariantProduct($event);
 
         $event->getSubject()->willReturn($product);
+        $product->isVariant()->willReturn(true);
         $product->getParent()->willReturn(null);
         $productModelIndexer->index(Argument::any())->shouldNotBeCalled();
         $this->computeNumberOfCompleteVariantProduct($event);
@@ -59,6 +60,7 @@ class IndexProductModelCompleteDataSubscriberSpec extends ObjectBehavior
         ProductModelInterface $rootProductModel
     ) {
         $event->getSubject()->willReturn($product);
+        $product->isVariant()->willReturn(true);
         $product->getParent()->willReturn($rootProductModel);
         $rootProductModel->getParent()->willReturn(null);
 
@@ -74,6 +76,7 @@ class IndexProductModelCompleteDataSubscriberSpec extends ObjectBehavior
         ProductModelInterface $subProductModel
     ) {
         $event->getSubject()->willReturn($product);
+        $product->isVariant()->willReturn(true);
         $product->getParent()->willReturn($subProductModel);
         $subProductModel->getParent()->willReturn(null);
         $product->getParent()->willReturn($rootProductModel);
