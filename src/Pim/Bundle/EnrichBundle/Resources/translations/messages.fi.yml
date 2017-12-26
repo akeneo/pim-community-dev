@@ -89,6 +89,7 @@ pim_enrich:
       description: Valitun tuotteen attribuutit muokataan seuraavalla valitun lokaation datalla.
       empty: Ole hyvä ja valitse attribuutit joita haluat muokata
       success_flash: Työ "Tuotteiden tilan päivitys" on tällä hetkellä käynnissä
+      launched_flash: Massatoiminto "Muokkaa yleisiä attribuutteja" on käynnistetty. Sinulle ilmoitetaan, kun se on valmis.
       message:
         warning: Valituille tuotteille ei ole yhteistä attribuuttia. Vaihda valintaasi.
         invalid_attribute: Attribuutti koodilla "attribute_code" ei yhdistä valittuja tuotteita, attributti ohitettu.
@@ -133,18 +134,20 @@ pim_enrich:
       next: Siirry "%product%" tallentamatta.
   acl:
     locale:
-      index: Listaa lokaatiot
+      index: Lista lokaatioista
     currency:
-      index: Listaa valuutat
+      index: Lista valuutoista
       toggle: Vaihda valuuttaa
     product:
       index: Lista tuotteista
       create: Luo tuote
       edit_attributes: Muokkaa tuotteen ominaisuuksia
       remove: Poista tuote
-      add_attribute: Lisää attribuutti tuotteeseen
-      remove_attribute: Poista attribuutti tuotteesta
+      add_attribute: Lisää määrite tuotteeseen
+      remove_attribute: Poista määrite tuotteesta
       categories_view: Katso tuotteen kategorioita
+      associations_view: Näytä tuotteen assosiaatiot
+      associations_edit: Lisää tuotteelle assosiaatioita
       change_family: Vaihda tuoteryhmää
       change_state: Muuta tuotteen tilaa
       add_to_groups: Lisää tuote ryhmiin
@@ -157,6 +160,7 @@ pim_enrich:
       edit_attributes: Muokkaa tuotemallin ominaisuuksia
       categories_view: Tarkastele tuotemallin ryhmiä
       history: Näyte tuotemallin muutoshistoria
+      remove: Poista tuotemalli
     category:
       list: Listaa kategoriat
       create: Luo kategoria
@@ -178,13 +182,13 @@ pim_enrich:
       edit_properties: Muokkaa tuoteperheen ominaisuuksia
       edit_attributes: Muokkaa tuoteperheen määritteitä
       remove: Poista tuoteperhe
-      history: Näytä tuoteperheen historia
+      history: Tarkastele tuoteperheen historiaa
     attribute_group:
-      index: Listaa attribuuttiryhmät
-      create: Luo attribuuttiryhmä
+      index: Listaa määriteryhmät
+      create: Luo määriteryhmä
       edit: Muokkaa attribuuttiryhmää
-      remove: Poista attribuuttiryhmä
-      sort: Järjestä attribuuttiryhmiä
+      remove: Poista määriteryhmä
+      sort: Lajittele attribuuttiryhmiä
       add_attribute: Lisää attribuutti ryhmään
       remove_attribute: Poista attribuutti ryhmästä
       history: Näytä attribuuttiryhmien historia
@@ -193,7 +197,7 @@ pim_enrich:
       create: Luo attribuutti
       edit: Muokkaa attribuuttia
       remove: Poista attribuutti
-      sort: Järjestä attribuutit attribuuttiryhmän sisällä
+      sort: Lajittele attribuutit attribuuttiryhmän sisällä
       history: Näytä attribuuttien historia
     group:
       index: Listaa ryhmät
@@ -212,6 +216,8 @@ pim_enrich:
       edit: Muokkaa määritetyyppiä
       remove: Poista määritetyyppi
       history: Näytä määritetyypin historia
+    association:
+      remove: Poista tuotteen assosiaatiot
     job_tracker:
       index: Näytä prosessien seuraaja
     api_connection:
@@ -372,7 +378,7 @@ flash:
   family:
     updated: Tuoteperhe päivitetty
     removed: Tuoteperhe poistettu
-    identifier not removable: Tunniste-attribuuttia ei voi poistaa tuoteperheestä
+    identifier not removable: Tunnus-määritettä ei voi poistaa tuoteperheestä
     label attribute not removable: Attribuuttia ei voi poistaa koska sitä käytetään tuoteperheen nimikkeenä
     attribute not found: Attribuutti ei kuulu tähän tuoteperheeseen
     attributes added: Attribuutit lisätty tuoteperheeseen
@@ -454,8 +460,8 @@ Required: Vaadittu
 Unique: Ainutlaatuinen
 Not required: Ei vaadittu
 Translatable: Käännettävissä
-Scopable: Kanavakohtainen
-Localizable: Kielikohtainen
+Scopable: Scopable
+Localizable: Lokalisoitavissa
 Unique value: Yksilöllinen arvo
 Attribute group: Attribuuttiryhmä
 Other: Muu
@@ -480,7 +486,7 @@ Useable as grid column: Käytettävissä ruudukko-sarakkeena
 Useable as grid filter: Käytettävissä ruudukossa
 Family: Perhe
 Available locales: Saatavilla olevat alueet
-Locale specific: Aluekohtainen arvo
+Locale specific: Aluespesifi
 default: Oletusarvo
 Axis: Akseli
 Add attributes: Lisää attribuutteja
@@ -635,7 +641,7 @@ pim_enrich.mass_edit_action:
     description: Valitut tuotteet otetaan käyttöön tai pois käytöstä.
     success_flash: Tuotteiden tila on muutettu
   edit-common-attributes:
-    label: Muokkaa attribuutteja
+    label: Muokkaa yleisiä attribuutteja
     description: Valitun tuotteen attribuutit muokataan seuraavalla valitun lokaation datalla.
     empty: Ole hyvä ja valitse attribuutit joita haluat muokata
     success_flash: Tuotteen attribuutit on päivitetty
@@ -755,21 +761,28 @@ job_execution.summary:
   skipped_attributes: Ohitetut attribuutit
   skipped_families: Ohitetut perheet
 pim_mass_edit_execution_show: Massamuokkaa suoritteita | Tiedot
-edit_common_attributes.steps.edit_common_attributes_processor.title: Muokkaa attribuutteja
+edit_common_attributes.steps.edit_common_attributes_processor.title: Muokkaa yleisiä attribuutteja
 update_product_value.steps.update_product_value_processor.title: Päivitä tuotteen arvo
 remove_product_value.steps.update_product_value_processor.title: Poista tuotteen arvo
-edit_common_attributes: Muokkaa attribuutteja
+edit_common_attributes: Muokkaa yleisiä attribuutteja
+edit_common_attributes_clean: Puhdista tiedostot yleisille attribuuteille
 perform.steps.duplicated.title: Päällekkäät akselit
 perform.steps.excluded.title: Poissuljetut tuotteet
 batch_jobs:
+  add_product_value:
+    label: Lisää tuotteen arvo
+    perform:
+      label: Lisää tuotteen arvo
   update_product_value:
     label: Päivitä tuotteen arvo
     perform:
       label: Päivitä tuotteen arvo
   edit_common_attributes:
-    label: Muokkaa attribuutteja
+    label: Muokkaa yleisiä attribuutteja
     perform:
-      label: Muokkaa attribuutteja
+      label: Muokkaa yleisiä attribuutteja
+    clean:
+      label: Puhdista tiedostot yleisille attribuuteille
   set_attribute_requirements:
     label: Aseta vaaditut attribuutit
     perform:
@@ -805,6 +818,6 @@ pim_enrich_attribute_form:
   localizable: Kielikohtainen arvo
   unique: Yksilöllinen arvo
   availableLocales: Saatavilla olevat alueet
-  locale_specific: Aluekohtainen arvo
+  locale_specific: Aluespesifi
   group: Attribuuttiryhmä
   useableAsGridFilter: Käytettävissä ruudukossa

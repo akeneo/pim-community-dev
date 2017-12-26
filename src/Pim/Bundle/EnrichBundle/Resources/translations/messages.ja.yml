@@ -89,6 +89,7 @@ pim_enrich:
       description: 選択した商品の属性は以下の選択したロケールのデータで編集されます。
       empty: 編集する属性を選択してください
       success_flash: 製品を更新する状態が現在実行されています。
+      launched_flash: 共通の属性を編集する一括操作が開始されています。終了後に通知されます。
       message:
         warning: 選択した製品に共通する属性はありません。他の製品を選択してください。
         invalid_attribute: 選択された製品とスキップされた属性に対し、コード"attribute_code"を持つ属性は共通ではない。
@@ -635,7 +636,7 @@ pim_enrich.mass_edit_action:
     description: 選択した製品は有効または無効になります。
     success_flash: 製品の状態を変更しました
   edit-common-attributes:
-    label: 属性を編集
+    label: 共通の属性を編集
     description: 選択した商品の属性は以下の選択したロケールのデータで編集されます。
     empty: 編集する属性を選択してください
     success_flash: 製品属性が更新されました
@@ -755,10 +756,11 @@ job_execution.summary:
   skipped_attributes: スキップされた属性
   skipped_families: スキップされたファミリー
 pim_mass_edit_execution_show: 一括編集の実行 |詳細
-edit_common_attributes.steps.edit_common_attributes_processor.title: 属性を編集
+edit_common_attributes.steps.edit_common_attributes_processor.title: 共通の属性を編集
 update_product_value.steps.update_product_value_processor.title: 製品の値を更新
 remove_product_value.steps.update_product_value_processor.title: 製品の値を削除
-edit_common_attributes: 属性を編集
+edit_common_attributes: 共通の属性を編集
+edit_common_attributes_clean: 共通の属性を持つファイルを削除
 perform.steps.duplicated.title: 重複した軸
 perform.steps.excluded.title: 除外製品
 batch_jobs:
@@ -771,9 +773,11 @@ batch_jobs:
     perform:
       label: 製品の値を更新
   edit_common_attributes:
-    label: 属性を編集
+    label: 共通の属性を編集
     perform:
-      label: 属性を編集
+      label: 共通の属性を編集
+    clean:
+      label: 共通の属性を持つファイルを削除
   set_attribute_requirements:
     label: 属性の要件を設定
     perform:

@@ -147,6 +147,7 @@ pim_enrich:
       remove_attribute: Fjerne en attribut fra et produkt
       categories_view: Konsultere kategorierne af et produkt
       associations_view: Se sammenhængstyper for et produkt
+      associations_edit: Ret sammenhængstyper for et produkt
       change_family: Ændre produktfamilie
       change_state: Ændre tilstand af produktet
       add_to_groups: Tilføj produkt til grupper
@@ -159,6 +160,7 @@ pim_enrich:
       edit_attributes: Rediger attributterne for en produktmodel
       categories_view: Konsultere kategorierne af en produktmodel
       history: Se produkt model historik
+      remove: Fjern en produktmodel
     category:
       list: Kategoriliste
       create: Opret en kategori
@@ -214,6 +216,8 @@ pim_enrich:
       edit: Redigere en sammenhængstype
       remove: Fjern en sammenhængstype
       history: Se sammenhængs type historik
+    association:
+      remove: Ret sammenhængstyper for et produkt
     job_tracker:
       index: Se process overvågning
     api_connection:

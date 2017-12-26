@@ -7,6 +7,7 @@ confirmation:
     attribute_group: Er du sikker på du vil slette denne attributgruppe?
     family: Er du sikker på at du vil slette denne familie?
     product: Er du sikker på du vil slette dette produkt?
+    product_model: Er du sikker på du vil slette denne produktmodel? Alle underliggende produkter, produktmodeller og variant produkter, slettes også.
     channel: Er du sikker på du vil slette denne kanal?
     group: Er du sikker på du vil slette denne gruppe?
     group_type: Er du sikker på du vil slette denne gruppe type?
@@ -47,6 +48,8 @@ flash:
     removed: Familien fjernet
   product:
     removed: Produktet blev fjernet
+  product_model:
+    removed: Produktmodellen fjernet
   channel:
     removed: Kanalen blev fjernet
   group:
@@ -243,11 +246,13 @@ pim_enrich:
       info:
         create_successful: Produktmodellen opdateret.
         update_successful: Produktmodellen opdateret. Fuldstændigheden af dens variant produkter vil blive genberegnet.
+        deletion_successful: Produktmodellen slettet.
         update_failed: Produktmodellen kunne ikke opdateres.
         field_not_ready: 'Produktmodellen kan ikke gemmes lige nu. Følgende felter er ikke klar: {{ fields }}'
       read_only_parent_attribute_from_common: Denne attribut kan blive opdateret på de fælles attributter.
       read_only_parent_attribute_from_model: "Denne attribut kan opdateres på attributterne af {{ axes }}"
       variant_axis: Variant akse
+      title: Produktmodeller
       add_child:
         create: Tilføj ny
         cancel: Annuller
@@ -1384,6 +1389,7 @@ pim_menu:
     group_type: Gruppetyper
     locale: Landestandarder
     product: Produkter
+    product_model: Produktmodeller
     published_product: Offentliggjorte produkter
     export_history: Eksport historik
     export_profile: Eksport profiler

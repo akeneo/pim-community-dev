@@ -7,6 +7,7 @@ confirmation:
     attribute_group: Êtes-vous sûr(e) de vouloir supprimer ce groupe d'attributs ?
     family: Êtes-vous sûr(e) de que vouloir supprimer cette famille ?
     product: Êtes-vous sûr(e) de que vouloir supprimer ce produit ?
+    product_model: Êtes-vous sûr de que vouloir supprimer ce modèle de produit ? Tous ses enfants, modèles de produit et de variantes de produits seront également supprimés.
     channel: Êtes-vous sûr(e) de que vouloir supprimer ce canal ?
     group: Êtes-vous sûr(e) de vouloir supprimer ce groupe ?
     group_type: Êtes-vous sûr(e) de vouloir supprimer ce type de groupe ?
@@ -47,6 +48,8 @@ flash:
     removed: Famille supprimée avec succès
   product:
     removed: Produit supprimé avec succès
+  product_model:
+    removed: Le modèle de produit a bien été supprimé
   channel:
     removed: Canal supprimé avec succès
   group:
@@ -243,11 +246,13 @@ pim_enrich:
       info:
         create_successful: Le modèle de produit a bien été créé
         update_successful: Le modèle de produit a été mis à jour. La complétude de ses produits variants va être recalculée.
+        deletion_successful: Le modèle de produit a bien été supprimé.
         update_failed: Le modèle de produit n'a pas pu être mis à jour.
         field_not_ready: 'Le modèle de produit ne peut être sauvé dès maintenant. Les champs suivants ne sont pas prêts : {{ fields }}'
       read_only_parent_attribute_from_common: Cet attribut peut être mis à jour sur les attributs communs.
       read_only_parent_attribute_from_model: "Cet attribut peut être mis à jour sur les attributs par {{ axes }}"
       variant_axis: Axe de variante
+      title: modèles de produits
       add_child:
         create: Créer
         cancel: Annuler
@@ -1384,6 +1389,7 @@ pim_menu:
     group_type: Types de groupe
     locale: Locales
     product: Produits
+    product_model: Modèles de produits
     published_product: Produits publiés
     export_history: Historique des exports
     export_profile: Profils d'export

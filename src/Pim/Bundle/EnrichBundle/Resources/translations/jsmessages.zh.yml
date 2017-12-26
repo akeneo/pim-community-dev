@@ -753,6 +753,9 @@ pim_enrich:
         title: 属性
       global_settings:
         title: 全局设置
+  mass_edit_action:
+    edit_common_attributes:
+      description: 使用产品网格中的本地化语言 <span class="highlight">{{ locale }}</span> 和通道 <span class="highlight">{{ channel }}</span>对应的数据，对所选的产品属性进行编辑
   index:
     import_profiles:
       list: 选择一份作业
@@ -794,7 +797,7 @@ pim_enrich:
           description: 将启用或禁用选定的产品。
           field: 启用
         edit_common:
-          label: 编辑属性
+          label: 编辑共同属性
         change_family:
           description: 选定产品的品类将更改为被选定的品类
           field: 产品族
@@ -852,9 +855,11 @@ batch_jobs:
     perform:
       label: 更新商品值
   edit_common_attributes:
-    label: 编辑属性
+    label: 编辑共同属性
     perform:
-      label: 编辑属性
+      label: 编辑共同属性
+    cleaner:
+      label: 为共同的属性清理文件
   csv_product_export:
     label: 产品导出到CSV
     export.label: 产品导出

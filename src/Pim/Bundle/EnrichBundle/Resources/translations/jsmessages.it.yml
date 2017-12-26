@@ -899,6 +899,9 @@ pim_enrich:
         title: Proprietà
       global_settings:
         title: Impostazioni Globali
+  mass_edit_action:
+    edit_common_attributes:
+      description: Gli attributi dei prodotto selezionati nella griglia verranno modificati con i dati seguenti per le impostazioni internazionali <span class="highlight">{{ locale }}</span> e per il canale <span class="highlight">{{ channel }}</span>.
   index:
     association_type:
       title: "] -Inf, 1] {{ count }} tipo di associazione|] 1, Inf [{{ count }} tipi di associazione"
@@ -988,7 +991,9 @@ pim_enrich:
           description: Gli articoli selezionati saranno attivati o disattivati.
           field: Per attivare
         edit_common:
-          label: Modificare gli attributi
+          label: Modifica gli attributi comuni
+          label_count: "{1}Modifica gli attributi comuni di <span class=\"AknFullPage-title--highlight\">1 prodotto</span>|] 1, Inf [Modifica gli attributi comuni di <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} prodotti</span>"
+          description: Gli attributi del prodotto selezionato verranno modificati con i seguenti dati per le impostazioni locali {{ locale }} e per il canale {{ scope }}, selezionati nella griglia prodotti.
         change_family:
           label: Cambia famiglia
           label_count: "{1}Modifica la famiglia di <span class=\"AknFullPage-title--highlight\">1 prodotto</span>|] 1, Inf [Modifica la famiglia di <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} prodotti</span>"
@@ -1082,9 +1087,11 @@ batch_jobs:
     perform:
       label: Aggiorna il valore di prodotto
   edit_common_attributes:
-    label: Modificare gli attributi
+    label: Modifica gli attributi comuni
     perform:
-      label: Modificare gli attributi
+      label: Modifica gli attributi comuni
+    cleaner:
+      label: Pulisci i file per gli attributi comuni
   set_attribute_requirements:
     label: Imposta i requisiti degli attributi
     perform:
