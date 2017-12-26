@@ -3,18 +3,23 @@
 namespace spec\Pim\Bundle\DataGridBundle\Extension\MassAction\Handler;
 
 use Akeneo\Component\StorageUtils\Cursor\CursorFactoryInterface;
+use Akeneo\Component\StorageUtils\Cursor\CursorInterface;
 use Akeneo\Component\StorageUtils\Remover\BulkRemoverInterface;
 use Oro\Bundle\DataGridBundle\Datagrid\DatagridInterface;
-use Oro\Bundle\DataGridBundle\Datasource\ResultRecord;
 use Oro\Bundle\DataGridBundle\Extension\Action\ActionConfiguration;
+use Oro\Bundle\DataGridBundle\Extension\MassAction\Actions\MassActionInterface;
+use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionResponse;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\DataGridBundle\Datasource\DatasourceInterface;
+use Pim\Bundle\CatalogBundle\Elasticsearch\SearchQueryBuilder;
+use Pim\Bundle\DataGridBundle\Datasource\ProductDatasource;
 use Pim\Bundle\DataGridBundle\Datasource\ResultRecord\HydratorInterface;
 use Pim\Bundle\DataGridBundle\Extension\MassAction\Actions\Ajax\DeleteMassAction;
 use Pim\Bundle\DataGridBundle\Extension\MassAction\Event\MassActionEvents;
-use Pim\Bundle\DataGridBundle\Extension\MassAction\Handler\DeleteProductsMassActionHandler;
 use Pim\Bundle\DataGridBundle\Normalizer\IdEncoder;
+use Pim\Component\Catalog\Model\Product;
+use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\ProductEvents;
+use Pim\Component\Catalog\Query\ProductQueryBuilderInterface;
 use Pim\Component\Catalog\Repository\ProductMassActionRepositoryInterface;
 use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -28,13 +33,12 @@ class DeleteProductsMassActionHandlerSpec extends ObjectBehavior
         TranslatorInterface $translator,
         EventDispatcherInterface $eventDispatcher,
         DatagridInterface $datagrid,
-        DatasourceInterface $datasource,
-        DeleteMassAction $massAction,
-        ActionConfiguration $options,
-        ProductMassActionRepositoryInterface $massActionRepo,
+        ProductDatasource $datasource,
         BulkRemoverInterface $indexRemover,
-        CursorFactoryInterface $cursorFactory
-
+        CursorFactoryInterface $cursorFactory,
+        ProductQueryBuilderInterface $pqb,
+        SearchQueryBuilder $qb,
+        CursorInterface $productCursor
     ) {
         $this->beConstructedWith(
             $hydrator,
@@ -44,61 +48,55 @@ class DeleteProductsMassActionHandlerSpec extends ObjectBehavior
             $cursorFactory
         );
 
-        $translator->trans('qux')->willReturn('qux');
+        $datasource->getProductQueryBuilder()->willReturn($pqb);
+        $pqb->getQueryBuilder()->willReturn($qb);
+        $qb->getQuery()->willReturn([]);
+        //$translator->trans('qux')->willReturn('qux');
 
         $datagrid->getDatasource()->willReturn($datasource);
         $datasource->setHydrator($hydrator)->shouldBeCalled();
-        $datasource->getMassActionRepository()->willReturn($massActionRepo);
 
-        // prepare mass action response
-        $massAction->getOptions()->willReturn($options);
-        $options->offsetGetByPath(Argument::cetera())->willReturn('qux');
-    }
-
-    function it_dispatches_events_to_remove_products_only(
-        $eventDispatcher,
-        $datasource,
-        $massActionRepo,
-        $datagrid,
-        $massAction,
-        $indexRemover,
-        ResultRecord $resultRecord1,
-        ResultRecord $resultRecord2,
-        ResultRecord $resultRecord3,
-        ResultRecord $resultRecord4,
-        ResultRecord $resultRecord5
-    ) {
-        $resultRecord1->getValue('id')->willReturn('product_model_1');
-        $resultRecord1->getValue('document_type')->willReturn(IdEncoder::PRODUCT_MODEL_TYPE);
-
-        $resultRecord2->getValue('id')->willReturn('product_1');
-        $resultRecord2->getValue('document_type')->willReturn(IdEncoder::PRODUCT_TYPE);
-
-        $resultRecord3->getValue('id')->willReturn('product_model_2');
-        $resultRecord3->getValue('document_type')->willReturn(IdEncoder::PRODUCT_MODEL_TYPE);
-
-        $resultRecord4->getValue('id')->willReturn('product_2');
-        $resultRecord4->getValue('document_type')->willReturn(IdEncoder::PRODUCT_TYPE);
-
-        $resultRecord5->getValue('id')->willReturn('product_model_3');
-        $resultRecord5->getValue('document_type')->willReturn(IdEncoder::PRODUCT_MODEL_TYPE);
-
-        $objectIds = ['product_1', 'product_2'];
-        $datasource->getResults()->willReturn([
-            'data' => [
-                $resultRecord1,
-                $resultRecord2,
-                $resultRecord3,
-                $resultRecord4,
-                $resultRecord5,
-            ],
-        ]);
-        $massActionRepo->deleteFromIds($objectIds)->willReturn(1);
+        $cursorFactory->createCursor([], ['from' => 0])->willReturn($productCursor);
 
         $eventDispatcher->dispatch(
             MassActionEvents::MASS_DELETE_PRE_HANDLER,
             Argument::type('Pim\Bundle\DataGridBundle\Extension\MassAction\Event\MassActionEvent')
         )->shouldBeCalled();
+    }
+
+    function it_dispatches_events_to_remove_products_only(
+        $eventDispatcher,
+        $datasource,
+        $datagrid,
+        $indexRemover,
+        $productCursor,
+        ActionConfiguration $options,
+        DeleteMassAction $massAction,
+        ProductMassActionRepositoryInterface $massActionRepo,
+        ProductInterface $product1,
+        ProductInterface $product2,
+        ProductInterface $product3
+    ) {
+        $datasource->getMassActionRepository()->willReturn($massActionRepo);
+        // prepare mass action response
+        $massAction->getOptions()->willReturn($options);
+        $options->offsetGetByPath(Argument::cetera())->willReturn('qux');
+
+        $product1->getId()->willReturn(42);
+        $product2->getId()->willReturn(56);
+        $product3->getId()->willReturn(91);
+
+        $productCursor->count()->willReturn(3);
+        $productCursor->rewind()->shouldBeCalled();
+        $productCursor->valid()->shouldBeCalled()->willReturn(true, true, true, false);
+        $productCursor->next()->shouldBeCalled();
+        $productCursor->current()->willReturn($product1, $product2, $product3);
+
+        $objectIds = [42,56,91];
+
+        $massActionRepo->deleteFromIds($objectIds)->shouldBeCalled()->willReturn(3);
+        $indexRemover->removeAll($objectIds)->shouldBeCalled();
+
         $eventDispatcher->dispatch(
             MassActionEvents::MASS_DELETE_POST_HANDLER,
             Argument::type('Pim\Bundle\DataGridBundle\Extension\MassAction\Event\MassActionEvent')
@@ -112,8 +110,24 @@ class DeleteProductsMassActionHandlerSpec extends ObjectBehavior
             new GenericEvent($objectIds)
         )->shouldBeCalled();
 
-        $indexRemover->removeAll(['product_1', 'product_2'])->shouldBeCalled();
 
         $this->handle($datagrid, $massAction);
+    }
+
+    function it_dont_run_if_max_limit_selected(
+        $datagrid,
+        $translator,
+        $productCursor,
+        MassActionInterface $massAction
+
+    ) {
+        $productCursor->count()->willReturn(1001);
+
+        $massResponse = $this->handle($datagrid, $massAction);
+
+        $translator->trans("oro.grid.mass_action.delete.item_limit", ["%count%" => 1001, "%limit%" => 1000])
+            ->willReturn('You cannot mass delete more than 1000 products (1001 selected)');
+
+        $massResponse->shouldHaveType(MassActionResponse::class);
     }
 }

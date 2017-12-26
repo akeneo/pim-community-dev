@@ -72,12 +72,9 @@ class DeleteProductsMassActionHandler extends DeleteMassActionHandler
             ));
         }
 
-        while ($cursor->valid()) {
-            $objectIds = [];
-            foreach ($cursor as $productObject) {
-                $objectIds[] = $productObject->getId();
-            }
-            $cursor->next();
+        $objectIds = [];
+        foreach ($cursor as $productObject) {
+            $objectIds[] = $productObject->getId();
         }
 
         try {
