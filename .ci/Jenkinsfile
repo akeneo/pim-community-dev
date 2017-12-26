@@ -392,6 +392,5 @@ def queue(body, scale, storage, verboseOutputs, dotsPerLine) {
 @NonCPS
 def clearTemplateNames() {
     // see https://issues.jenkins-ci.org/browse/JENKINS-42184
-    def action = currentBuild.rawBuild.getAction(PodTemplateAction.class);
-    if(action) { action.names.clear() }
+    currentBuild.rawBuild.getAction( PodTemplateAction.class )?.stack?.clear()
 }
