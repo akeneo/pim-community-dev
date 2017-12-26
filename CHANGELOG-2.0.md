@@ -9,8 +9,8 @@
 
 ## BC breaks
 
-- Adds an interface method `findRoot()` to `PimEnterprise\Component\ProductAsset\Repository\AssetCategoryRepositoryInterface`
->>>>>>> [PIM-6947] Fix asset mass edit
+- PIM-6947: Adds an interface method `findRoot()` to `PimEnterprise\Component\ProductAsset\Repository\AssetCategoryRepositoryInterface`
+
 
 # 2.0.9 (2017-12-15)
 
