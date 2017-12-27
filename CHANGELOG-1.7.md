@@ -3,6 +3,7 @@
 ## Bug Fixes
 
 - PIM-7347: Fix the edit form of multi-select attributes with a lot of options
+- PIM-7031: Removes 'required' label for product grid filters on user creation
 
 ## BC-break:
 
