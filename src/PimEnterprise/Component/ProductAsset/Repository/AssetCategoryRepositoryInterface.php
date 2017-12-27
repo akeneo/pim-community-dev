@@ -29,4 +29,11 @@ interface AssetCategoryRepositoryInterface
      * @return array
      */
     public function getItemCountByGrantedTree(AssetInterface $asset, UserInterface $user);
+
+    /**
+     * Get the root elements of the tree
+     *
+     * @return
+     */
+    public function findRoot();
 }
