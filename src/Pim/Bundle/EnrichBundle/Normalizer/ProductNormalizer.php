@@ -211,10 +211,8 @@ class ProductNormalizer implements NormalizerInterface
             'image'             => $this->normalizeImage($product->getImage(), $context),
         ] + $this->getLabels($product, $scopeCode) + $this->getAssociationMeta($product);
 
-        $normalizedProduct['meta']['ascendant_category_ids'] =
-            ($product instanceof EntityWithFamilyVariantInterface)
-            ? $this->ascendantCategoriesQuery->getCategoryIds($product)
-            : [];
+        $normalizedProduct['meta']['ascendant_category_ids'] = $product->isVariant() ?
+            $this->ascendantCategoriesQuery->getCategoryIds($product) : [];
 
         $normalizedProduct['meta'] += $this->getMetaForVariantProduct($product, $format, $context);
 

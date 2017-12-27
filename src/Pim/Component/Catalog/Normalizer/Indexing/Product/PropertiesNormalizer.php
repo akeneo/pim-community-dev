@@ -124,7 +124,7 @@ class PropertiesNormalizer implements NormalizerInterface, SerializerAwareInterf
     private function getUpdatedAt(ProductInterface $product): \Datetime
     {
         $date = $product->getUpdated();
-        if ($product instanceof VariantProductInterface) {
+        if ($product->isVariant()) {
             $dates = [$date];
             $parent = $product->getParent();
             while (null !== $parent) {
@@ -140,15 +140,15 @@ class PropertiesNormalizer implements NormalizerInterface, SerializerAwareInterf
 
 
     /**
-     * @param $product
+     * @param ProductInterface $product
      *
      * @return array
      */
-    private function getAncestors($product): array
+    private function getAncestors(ProductInterface $product): array
     {
         $ancestorsIds = [];
         $ancestorsCodes = [];
-        if ($product instanceof EntityWithFamilyVariantInterface) {
+        if ($product->isVariant()) {
             $ancestorsIds = $this->getAncestorsIds($product);
             $ancestorsCodes = $this->getAncestorsCodes($product);
         }

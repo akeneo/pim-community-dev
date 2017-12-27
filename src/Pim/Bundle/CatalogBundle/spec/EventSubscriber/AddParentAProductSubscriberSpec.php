@@ -13,7 +13,7 @@ use Pim\Component\Catalog\EntityWithFamily\Event\ParentHasBeenAddedToProduct;
 use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
 use Pim\Component\Catalog\Model\ValueCollectionInterface;
-use Pim\Component\Catalog\Model\VariantProductInterface;
+use Pim\Component\Catalog\Model\ProductInterface;
 use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
@@ -47,7 +47,7 @@ class AddParentAProductSubscriberSpec extends ObjectBehavior
         $entityManager,
         UnitOfWork $unitOfWork,
         ParentHasBeenAddedToProduct $event,
-        VariantProductInterface $variantProduct,
+        ProductInterface $variantProduct,
         ValueCollectionInterface $valueCollection,
         ProductModelInterface $productModel,
         Collection $groups,
@@ -108,7 +108,7 @@ class AddParentAProductSubscriberSpec extends ObjectBehavior
         UnitOfWork $unitOfWork,
         LifecycleEventArgs $args,
         ParentHasBeenAddedToProduct $event,
-        VariantProductInterface $variantProduct,
+        ProductInterface $variantProduct,
         ValueCollectionInterface $valueCollection,
         ProductModelInterface $productModel,
         Collection $groups,

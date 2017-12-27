@@ -114,15 +114,4 @@ class ParentFieldSetterSpec extends ObjectBehavior
             [$variantProduct, 'parent', 'new_parent_code']
         );
     }
-
-    function it_throws_exception_if_a_parent_is_set_to_a_regular_product(ProductInterface $product)
-    {
-        $product->isVariant()->willReturn(false);
-        $product->getIdentifier()->willReturn('foo');
-
-        $this->shouldThrow(InvalidPropertyException::class)->during(
-            'setFieldData',
-            [$product, 'parent', Argument::any()]
-        );
-    }
 }

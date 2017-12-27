@@ -8,6 +8,7 @@ use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use Doctrine\Common\Util\ClassUtils;
 use Pim\Component\Catalog\Model\EntityWithFamilyVariantInterface;
+use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
 use Pim\Component\Catalog\Model\VariantProductInterface;
 
@@ -147,10 +148,10 @@ class EntityWithVariantVersionIntegration extends TestCase
     }
 
     /**
-     * @param VariantProductInterface $variantProduct
-     * @param array                   $data
+     * @param ProductInterface $variantProduct
+     * @param array            $data
      */
-    private function updateVariantProduct(VariantProductInterface $variantProduct, array $data): void
+    private function updateVariantProduct(ProductInterface $variantProduct, array $data): void
     {
         $this->get('pim_catalog.updater.product')->update($variantProduct, $data);
 

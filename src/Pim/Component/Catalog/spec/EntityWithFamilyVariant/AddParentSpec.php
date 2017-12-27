@@ -33,7 +33,7 @@ class AddParentSpec extends ObjectBehavior
         $createVariantProduct,
         $eventDispatcher,
         ProductInterface $product,
-        VariantProductInterface $variantProduct,
+        ProductInterface $variantProduct,
         ProductModelInterface $productModel
     ) {
         $product->getId()->willReturn(40);

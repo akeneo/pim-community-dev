@@ -434,14 +434,6 @@ class ProductAndProductModelQueryBuilderIntegration extends AbstractProductAndPr
             'biker-jacket-polyester-xxxl',
         ];
 
-        // make the variant products really variants
-        $dbal = $this->get('doctrine.dbal.default_connection');
-        $dbal->executeUpdate(
-            'UPDATE pim_catalog_product SET product_type = ? WHERE identifier IN (?)',
-            ['variant_product', $variantProductIdentifiers],
-            [\PDO::PARAM_STR, \Doctrine\DBAL\Connection::PARAM_STR_ARRAY]
-        );
-
         $productRepository = $this->get('pim_catalog.repository.product');
         $productSaver = $this->get('pim_catalog.saver.product');
         $productModelRepository = $this->get('pim_catalog.repository.product_model');

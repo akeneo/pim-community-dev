@@ -7,7 +7,6 @@ use Doctrine\ORM\EntityManagerInterface;
 use Pim\Component\Catalog\Model\EntityWithFamilyVariantInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
-use Pim\Component\Catalog\Model\VariantProductInterface;
 use Pim\Component\Enrich\Query\AscendantCategoriesInterface;
 
 /**
@@ -53,7 +52,7 @@ class AscendantCategories implements AscendantCategoriesInterface
         } elseif ($entity instanceof ProductInterface && $entity->isVariant()) {
             $queryBuilder
                 ->select('category.id AS id, parent_category.id AS parent_id')
-                ->from(VariantProductInterface::class, 'variant_product')
+                ->from(ProductInterface::class, 'variant_product')
                 ->innerJoin('variant_product.parent', 'product_model')
                 ->leftJoin('product_model.parent', 'parent_product_model')
                 ->leftJoin('product_model.categories', 'category')

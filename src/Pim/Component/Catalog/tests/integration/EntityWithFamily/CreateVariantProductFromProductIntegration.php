@@ -5,7 +5,6 @@ namespace Pim\Component\Catalog\tests\integration\EntityWithFamily;
 use Akeneo\Test\Integration\TestCase;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
-use Pim\Component\Catalog\Model\VariantProductInterface;
 use Akeneo\Test\IntegrationTestsBundle\Assertion;
 use Doctrine\Common\Collections\ArrayCollection;
 
@@ -84,7 +83,6 @@ final class CreateVariantProductFromProductIntegration extends TestCase
 
     public function test_that_the_variant_product_have_the_same_properties_than_the_product()
     {
-        /** @var VariantProductInterface $variantProduct */
         $variantProduct = $this->get('pim_catalog.entity_with_family.create_variant_product_from_product')
             ->from($this->product, $this->productModel);
 
@@ -106,7 +104,6 @@ final class CreateVariantProductFromProductIntegration extends TestCase
 
     public function test_that_the_variant_product_have_product_values_without_product_model_values()
     {
-        /** @var VariantProductInterface $variantProduct */
         $variantProduct = $this->get('pim_catalog.entity_with_family.create_variant_product_from_product')
             ->from($this->product, $this->productModel);
 

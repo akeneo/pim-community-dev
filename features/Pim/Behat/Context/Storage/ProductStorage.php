@@ -8,7 +8,6 @@ use Doctrine\Common\Util\ClassUtils;
 use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\Assert;
 use Pim\Component\Catalog\Model\ProductInterface;
-use Pim\Component\Catalog\Model\VariantProductInterface;
 use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
 use Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\AttributeColumnInfoExtractor;
 
@@ -72,8 +71,6 @@ class ProductStorage implements Context
     public function productHaveParent(string $productIdentifier, string $parentCode)
     {
         $this->entityManager->clear();
-
-        /** @var VariantProductInterface $product */
         $product = $this->productRepository->findOneByIdentifier($productIdentifier);
 
         Assert::assertEquals($product->getParent()->getCode(), $parentCode);
@@ -90,8 +87,6 @@ class ProductStorage implements Context
     public function theVariantProductShouldNotHaveTheFollowingValues(string $identifier, TableNode $table)
     {
         $this->entityManager->clear();
-
-        /** @var VariantProductInterface $product */
         $product = $this->productRepository->findOneByIdentifier($identifier);
 
         foreach ($table->getRowsHash() as $rawCode => $value) {

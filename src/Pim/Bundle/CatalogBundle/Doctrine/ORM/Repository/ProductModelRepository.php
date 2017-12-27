@@ -124,7 +124,7 @@ class ProductModelRepository extends EntityRepository implements ProductModelRep
             ->_em
             ->createQueryBuilder()
             ->select('p')
-            ->from(VariantProduct::class, 'p')
+            ->from(Product::class, 'p')
             ->where('p.parent = :parent')
             ->setParameter('parent', $productModel);
 

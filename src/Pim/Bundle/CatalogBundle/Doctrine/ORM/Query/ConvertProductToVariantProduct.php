@@ -6,8 +6,8 @@ namespace Pim\Bundle\CatalogBundle\Doctrine\ORM\Query;
 
 use Akeneo\Component\Versioning\Model\Version;
 use Doctrine\ORM\EntityManagerInterface;
-use Pim\Component\Catalog\Model\VariantProduct;
-use Pim\Component\Catalog\Model\VariantProductInterface;
+use Pim\Component\Catalog\Model\Product;
+use Pim\Component\Catalog\Model\ProductInterface;
 
 /**
  * Query that converts a product to a variant product
@@ -34,7 +34,7 @@ class ConvertProductToVariantProduct
     /**
      * {@inheritdoc}
      */
-    public function execute(VariantProductInterface $variantProduct): void
+    public function execute(ProductInterface $variantProduct): void
     {
         $sql = <<<SQL
 UPDATE pim_catalog_product AS variant_product
@@ -51,7 +51,7 @@ SQL;
         $query = $queryBuilder->update(Version::class, 'version')
             ->set(
                 'version.resourceName',
-                    $queryBuilder->expr()->literal(VariantProduct::class)
+                    $queryBuilder->expr()->literal(Product::class)
             )
             ->where('version.resourceId = :resource_id')
             ->setParameter('resource_id', $variantProduct->getId())

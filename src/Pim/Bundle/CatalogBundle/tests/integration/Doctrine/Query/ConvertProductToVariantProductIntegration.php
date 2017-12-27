@@ -3,10 +3,9 @@
 namespace tests\integration\Pim\Bundle\CatalogBundle\Doctrine\Query;
 
 use Akeneo\Test\Integration\TestCase;
+use Pim\Component\Catalog\Model\Product;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
-use Pim\Component\Catalog\Model\VariantProduct;
-use Pim\Component\Catalog\Model\VariantProductInterface;
 
 /**
  * Test the query function: Pim\Bundle\CatalogBundle\Doctrine\ORM\Query\ConvertProductToVariantProduct
@@ -70,7 +69,6 @@ final class ConvertProductToVariantProductIntegration extends TestCase
      */
     public function test_query_that_converts_product_to_variant_product_in_database()
     {
-        /** @var VariantProductInterface $inMemoryVariantProduct */
         $inMemoryVariantProduct = $this->getFromTestContainer('pim_catalog.entity_with_family.create_variant_product_from_product')
             ->from($this->product, $this->productModel);
 
@@ -85,7 +83,7 @@ AND resource_name = :resource_name
 SQL;
         $numberOfVersion = (int) $this->getFromTestContainer('doctrine.dbal.default_connection')->fetchColumn($sql, [
             'resource_id' => $this->product->getId(),
-            'resource_name' => VariantProduct::class
+            'resource_name' => Product::class
         ]);
 
         $this->assertSame(
@@ -101,7 +99,7 @@ WHERE id = :resource_id
 SQL;
         $productType = $this->getFromTestContainer('doctrine.dbal.default_connection')->fetchColumn($sql, [
             'resource_id' => $this->product->getId(),
-            'resource_name' => str_replace('\\', '\\', VariantProduct::class)
+            'resource_name' => str_replace('\\', '\\', Product::class)
         ]);
 
         $this->assertSame(

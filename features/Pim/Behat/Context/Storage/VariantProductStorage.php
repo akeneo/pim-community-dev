@@ -6,7 +6,6 @@ namespace Pim\Behat\Context\Storage;
 
 use Behat\Behat\Context\Context;
 use Doctrine\Common\Util\ClassUtils;
-use Pim\Component\Catalog\Model\VariantProductInterface;
 use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
 
 final class VariantProductStorage implements Context
@@ -60,14 +59,13 @@ final class VariantProductStorage implements Context
      */
     public function theFamilyVariantOfShouldBe(string $variantProductIdentifier, string $familyVariantCode): void
     {
-        /** @var VariantProductInterface $variantProduct */
         $variantProduct = $this->productRepository->findOneByIdentifier($variantProductIdentifier);
 
         if (null === $variantProduct) {
             throw new \Exception(sprintf('The variant product "%s" does not exist', $variantProductIdentifier));
         }
 
-        if (!$variantProduct instanceof VariantProductInterface) {
+        if (!$variantProduct->isVariant()) {
             throw new \Exception(
                 sprintf('The given object must be a variant product, %s given', ClassUtils::getClass($variantProduct))
             );
@@ -95,7 +93,6 @@ final class VariantProductStorage implements Context
      */
     public function theVariantProductShouldNotHaveValue(string $variantProductIdentifier, string $valueCodes): void
     {
-        /** @var VariantProductInterface $variantProduct */
         $variantProduct = $this->productRepository->findOneByIdentifier($variantProductIdentifier);
 
         if (null === $variantProduct) {

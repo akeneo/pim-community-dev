@@ -67,6 +67,7 @@ class PropertiesNormalizerSpec extends ObjectBehavior
         $product->getCategoryCodes()->willReturn([]);
         $valueCollection->isEmpty()->willReturn(true);
 
+        $product->isVariant()->willReturn(false);
         $product->getCompletenesses()->willReturn($completenesses);
         $completenesses->isEmpty()->willReturn(true);
 
@@ -124,6 +125,7 @@ class PropertiesNormalizerSpec extends ObjectBehavior
         $product->getCategoryCodes()->willReturn([]);
         $valueCollection->isEmpty()->willReturn(true);
 
+        $product->isVariant()->willReturn(false);
         $product->getCompletenesses()->willReturn($completenesses);
         $completenesses->isEmpty()->willReturn(false);
 
@@ -206,6 +208,7 @@ class PropertiesNormalizerSpec extends ObjectBehavior
             ]
         );
 
+        $product->isVariant()->willReturn(false);
         $product->getValues()
             ->shouldBeCalledTimes(2)
             ->willReturn($valueCollection);
@@ -264,7 +267,7 @@ class PropertiesNormalizerSpec extends ObjectBehavior
 
     function it_normalizes_variant_product_updated_at_with_youngest_date_in_ancestors(
         $serializer,
-        VariantProductInterface $product,
+        ProductInterface $product,
         ProductModelInterface $subProductModel,
         ProductModelInterface $rootProductModel,
         FamilyInterface $family,
@@ -280,6 +283,7 @@ class PropertiesNormalizerSpec extends ObjectBehavior
         $date2 = new \DateTime('now', new \DateTimeZone('UTC'));
         $date2->modify('-2 day');
 
+        $product->isVariant()->willReturn(true);
         $product->getUpdated()->willReturn($date2);
         $subProductModel->getUpdated()->willReturn($date1);
         $rootProductModel->getUpdated()->willReturn($now);
@@ -325,6 +329,7 @@ class PropertiesNormalizerSpec extends ObjectBehavior
         $product->getCategoryCodes()->willReturn([]);
 
         $completenesses->isEmpty()->willReturn(true);
+        $product->isVariant()->willReturn(true);
         $product->getCompletenesses()->willReturn($completenesses);
         $valueCollection->isEmpty()->willReturn(true);
         $product->getValues()->willReturn($valueCollection);
