@@ -47,6 +47,25 @@ Feature: Mass edit assets to change their categories
     And I should be on the assets page
     When I wait for the "classify_assets" job to finish
     And I am on the assets grid
-    And I should see the text "Images (0)"
+    Then I should see the text "Images (0)"
     And I should see the text "Audio (15)"
     And I should see the text "Client documents (15)"
+
+  @jira https://akeneo.atlassian.net/browse/PIM-6947
+  Scenario: Do not display the product categories on asset mass edit
+    Given I am logged in as "Pamela"
+    And I am on the assets grid
+    And I select rows paint
+    And I press the "Mass edit assets" button
+    When I choose the "Classify assets in categories" operation
+    Then I should not see the text "2014 collection"
+
+  @jira https://akeneo.atlassian.net/browse/PIM-6947
+  Scenario: Successfully display all the messages related to mass edit
+    Given I am logged in as "Pamela"
+    And I am on the assets grid
+    And I select rows paint
+    And I press the "Mass edit assets" button
+    When I choose the "Classify assets in categories" operation
+    Then I should see the text "Assets bulk action"
+    And I should see the text "Classify 1 asset to categories"

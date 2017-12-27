@@ -12,3 +12,7 @@ pimee_channel_transformation:
 pimee_rule_relation:
     resource: '@PimEnterpriseEnrichBundle/Resources/config/routing/pimee_rule_relation.yml'
     prefix: /rest/rule_relation/
+
+pimee_asset_category:
+    resource: '@PimEnterpriseEnrichBundle/Resources/config/routing/pimee_asset_category.yml'
+    prefix: /rest/asset-category/

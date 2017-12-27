@@ -5,7 +5,7 @@ extensions:
             backRoute: pimee_product_asset_index
             launchedLabel: pim_enrich.mass_edit.product.step.launched.label
             launchErrorLabel: pim_enrich.mass_edit.product.step.launch_error.label
-            title: pimee_enrich.mass_edit.asset.title
+            confirm: pimee_enrich.mass_edit.asset.confirm
 
     pim-mass-asset-edit-choose:
         module: pim/mass-edit-form/choose
@@ -21,19 +21,24 @@ extensions:
         parent: pim-mass-asset-edit
         position: 110
         config:
+            title: pimee_enrich.mass_edit.asset.title
             label: pimee_enrich.mass_edit.asset.operation.add_tag.label
+            labelCount: pimee_enrich.mass_edit.asset.operation.add_tag.label_count
             description: pimee_enrich.mass_edit.asset.operation.add_tag.description
             code: add_tag
             jobInstanceCode: add_tags_to_assets
             field: pimee_enrich.mass_edit.asset.operation.add_tag.field
             icon: icon-card
+            illustration: assets
 
     pim-mass-asset-edit-configure-add-to-category:
         module: pim/mass-edit-form/product/category
         parent: pim-mass-asset-edit
         position: 120
         config:
+            title: pimee_enrich.mass_edit.asset.title
             label: pimee_enrich.mass_edit.asset.operation.add_to_category.label
+            labelCount: pimee_enrich.mass_edit.asset.operation.add_to_category.label_count
             description: pimee_enrich.mass_edit.asset.operation.add_to_category.description
             code: add_to_category
             jobInstanceCode: classify_assets
@@ -41,3 +46,5 @@ extensions:
             childrenRoute: pimee_asset_categorytree_children
             field: pimee_enrich.mass_edit.asset.operation.add_to_category.field
             icon: icon-folders
+            illustration: assets
+            fetcher: asset-category

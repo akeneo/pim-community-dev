@@ -12,6 +12,7 @@ namespace PimEnterprise\Component\ProductAsset\Repository;
 
 use PimEnterprise\Bundle\UserBundle\Entity\UserInterface;
 use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
+use PimEnterprise\Component\ProductAsset\Model\CategoryInterface;
 
 /**
  * Asset category repository interface
@@ -29,4 +30,11 @@ interface AssetCategoryRepositoryInterface
      * @return array
      */
     public function getItemCountByGrantedTree(AssetInterface $asset, UserInterface $user);
+
+    /**
+     * Get the root elements of the tree
+     *
+     * @return CategoryInterface[]
+     */
+    public function findRoot();
 }
