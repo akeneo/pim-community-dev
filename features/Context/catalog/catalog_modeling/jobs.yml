@@ -224,6 +224,16 @@ jobs:
                     scope: ecommerce
                     locales:
                         - en_US
+    csv_catalog_modeling_product_export:
+        connector: Akeneo CSV Connector
+        alias:     csv_product_export
+        label:     CSV catalog modeling product export
+        type:      export
+        configuration:
+            delimiter:  ;
+            enclosure:  '"'
+            withHeader: true
+            filePath: /tmp/products.csv
     xlsx_summer_2016_shoes_products_export:
         connector: Akeneo XLSX Connector
         alias:     xlsx_product_export

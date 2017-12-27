@@ -3,6 +3,7 @@
 namespace Pim\Component\Catalog\Normalizer\Indexing\Product;
 
 use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Model\VariantProductInterface;
 use Pim\Component\Catalog\Normalizer\Standard\Product\PropertiesNormalizer as StandardPropertiesNormalizer;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\SerializerAwareInterface;
@@ -42,7 +43,7 @@ class PropertiesNormalizer implements NormalizerInterface, SerializerAwareInterf
             $format
         );
         $data[StandardPropertiesNormalizer::FIELD_UPDATED] = $this->serializer->normalize(
-            $product->getUpdated(),
+            $this->getUpdatedAt($product),
             $format
         );
         $data[StandardPropertiesNormalizer::FIELD_FAMILY] = $this->serializer->normalize(
@@ -109,5 +110,27 @@ class PropertiesNormalizer implements NormalizerInterface, SerializerAwareInterf
     public function supportsNormalization($data, $format = null)
     {
         return $data instanceof ProductInterface && ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX === $format;
+    }
+
+    /**
+     * @param ProductInterface $product
+     *
+     * @return \Datetime
+     */
+    private function getUpdatedAt(ProductInterface $product): \Datetime
+    {
+        $date = $product->getUpdated();
+        if ($product instanceof VariantProductInterface) {
+            $dates = [$date];
+            $parent = $product->getParent();
+            while (null !== $parent) {
+                $dates[] = $parent->getUpdated();
+                $parent = $parent->getParent();
+            }
+
+            $date = max($dates);
+        }
+
+        return $date;
     }
 }

@@ -27,8 +27,9 @@ class DateTimeNormalizerSpec extends ObjectBehavior
         $this->supportsNormalization($date, 'storage')->shouldReturn(true);
     }
 
-    function it_normalizes_product_assocations($stdNormalizer, \Datetime $date)
+    function it_normalizes_product_assocations($stdNormalizer)
     {
+        $date = new \DateTime('now', new \DateTimeZone('UTC'));
         $stdNormalizer->normalize($date, 'storage', ['context'])->willReturn('date');
 
         $this->normalize($date, 'storage', ['context'])->shouldReturn('date');
