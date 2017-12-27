@@ -68,7 +68,7 @@ Feature: Sort attribute options
       | Code    | shoes_variant     |
       | Family  | Clothing          |
       | Variant | Clothing by color |
-    And I press the "Save" button
+    And I press the "Save" button in the popin
     And I am on the "amor" product model page
     When I open the variant navigation children selector for level 1
     And I press the "Add new" button and wait for modal

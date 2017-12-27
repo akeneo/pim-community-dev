@@ -65,6 +65,12 @@ class Creation extends Form
 
     public function createOption()
     {
+        $this->spin(function () {
+            $loadingWrapper = $this->find('css', '.loading-mask');
+
+            return (null === $loadingWrapper || !$loadingWrapper->isVisible());
+        }, 'Loading mask is still visible');
+
         $table = $this->getElement('attribute_option_table');
 
         $this->spin(function () use ($table) {
