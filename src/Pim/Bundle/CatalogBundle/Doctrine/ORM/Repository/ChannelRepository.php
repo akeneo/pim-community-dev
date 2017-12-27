@@ -16,6 +16,11 @@ use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
  */
 class ChannelRepository extends EntityRepository implements ChannelRepositoryInterface
 {
+    public function findSeveralByIdentifiers(array $identifiers)
+    {
+        // TODO: Implement findSeveralByIdentifiers() method.
+    }
+
     /**
      * {@inheritdoc}
      */

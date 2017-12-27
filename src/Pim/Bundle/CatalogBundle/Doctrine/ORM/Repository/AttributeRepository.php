@@ -27,6 +27,11 @@ class AttributeRepository extends EntityRepository implements
     /** @var string $identifierCode */
     protected $identifierCode;
 
+    public function findSeveralByIdentifiers(array $codes)
+    {
+        return $this->findBy(['code' => $codes]);
+    }
+
     /**
      * {@inheritdoc}
      */

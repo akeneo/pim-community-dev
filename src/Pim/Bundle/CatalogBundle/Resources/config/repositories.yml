@@ -135,35 +135,42 @@ services:
         class: '%akeneo_storage_utils.repository.base_cached_object.class%'
         arguments:
             - '@pim_catalog.repository.attribute'
+            - '@pim_catalog.repository.attribute'
 
     pim_catalog.repository.cached_attribute_option:
         class: '%akeneo_storage_utils.repository.base_cached_object.class%'
         arguments:
+            - '@pim_catalog.repository.attribute_option'
             - '@pim_catalog.repository.attribute_option'
 
     pim_catalog.repository.cached_family:
         class: '%akeneo_storage_utils.repository.base_cached_object.class%'
         arguments:
             - '@pim_catalog.repository.family'
+            - '@pim_catalog.repository.family'
 
     pim_catalog.repository.cached_category:
         class: '%akeneo_storage_utils.repository.base_cached_object.class%'
         arguments:
+            - '@pim_catalog.repository.category'
             - '@pim_catalog.repository.category'
 
     pim_catalog.repository.cached_channel:
         class: '%akeneo_storage_utils.repository.base_cached_object.class%'
         arguments:
             - '@pim_catalog.repository.channel'
+            - '@pim_catalog.repository.channel'
 
     pim_catalog.repository.cached_locale:
         class: '%akeneo_storage_utils.repository.base_cached_object.class%'
         arguments:
             - '@pim_catalog.repository.locale'
+            - '@pim_catalog.repository.locale'
 
     pim_catalog.repository.cached_currency:
         class: '%akeneo_storage_utils.repository.base_cached_object.class%'
         arguments:
+            - '@pim_catalog.repository.currency'
             - '@pim_catalog.repository.currency'
 
     pim_catalog.repository.product:

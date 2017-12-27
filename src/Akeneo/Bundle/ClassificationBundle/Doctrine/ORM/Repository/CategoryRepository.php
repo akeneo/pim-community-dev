@@ -22,6 +22,11 @@ class CategoryRepository extends NestedTreeRepository implements
     IdentifiableObjectRepositoryInterface,
     CategoryRepositoryInterface
 {
+    public function findSeveralByIdentifiers(array $identifiers)
+    {
+        // TODO: Implement findSeveralByIdentifiers() method.
+    }
+
     /**
      * {@inheritdoc}
      */

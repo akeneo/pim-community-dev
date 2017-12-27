@@ -130,6 +130,7 @@ services:
             - '@pim_catalog.factory.value'
             - '@pim_catalog.repository.cached_attribute'
             - '@logger'
+            - '@pim_catalog.repository.cached_attribute'
 
     pim_catalog.factory.value:
         class: '%pim_catalog.factory.value.class%'

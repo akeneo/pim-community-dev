@@ -15,6 +15,11 @@ use Pim\Component\Catalog\Repository\AttributeOptionRepositoryInterface;
 class AttributeOptionRepository extends EntityRepository implements
     AttributeOptionRepositoryInterface
 {
+    public function findSeveralByIdentifiers(array $identifiers)
+    {
+        // TODO: Implement findSeveralByIdentifiers() method.
+    }
+
     /**
      * {@inheritdoc}
      */

@@ -16,6 +16,11 @@ use Pim\Component\Catalog\Repository\FamilyRepositoryInterface;
  */
 class FamilyRepository extends EntityRepository implements FamilyRepositoryInterface
 {
+    public function findSeveralByIdentifiers(array $identifiers)
+    {
+        // TODO: Implement findSeveralByIdentifiers() method.
+    }
+
     /**
      * {@inheritdoc}
      */

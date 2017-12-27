@@ -17,6 +17,11 @@ use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
  */
 class LocaleRepository extends EntityRepository implements LocaleRepositoryInterface
 {
+    public function findSeveralByIdentifiers(array $identifiers)
+    {
+        // TODO: Implement findSeveralByIdentifiers() method.
+    }
+
     /**
      * {@inheritdoc}
      */

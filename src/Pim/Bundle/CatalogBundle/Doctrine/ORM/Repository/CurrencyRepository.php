@@ -14,6 +14,11 @@ use Pim\Component\Catalog\Repository\CurrencyRepositoryInterface;
  */
 class CurrencyRepository extends EntityRepository implements CurrencyRepositoryInterface
 {
+    public function findSeveralByIdentifiers(array $identifiers)
+    {
+        // TODO: Implement findSeveralByIdentifiers() method.
+    }
+
     /**
      * {@inheritdoc}
      */
