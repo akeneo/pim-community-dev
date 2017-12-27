@@ -12,6 +12,7 @@ namespace PimEnterprise\Component\ProductAsset\Repository;
 
 use PimEnterprise\Bundle\UserBundle\Entity\UserInterface;
 use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
+use PimEnterprise\Component\ProductAsset\Model\CategoryInterface;
 
 /**
  * Asset category repository interface
@@ -33,7 +34,7 @@ interface AssetCategoryRepositoryInterface
     /**
      * Get the root elements of the tree
      *
-     * @return
+     * @return CategoryInterface[]
      */
     public function findRoot();
 }
