@@ -28,7 +28,6 @@ use Pim\Component\Catalog\Model\GroupInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
 use Pim\Component\Catalog\Model\ValueInterface;
-use Pim\Component\Catalog\Model\VariantProductInterface;
 use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
 use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
 use Pim\Component\Catalog\ValuesFiller\EntityWithFamilyValuesFillerInterface;
@@ -257,7 +256,7 @@ class ProductNormalizerSpec extends ObjectBehavior
         $attributesProvider,
         $ascendantCategories,
         $incompleteValuesNormalizer,
-        VariantProductInterface $mug,
+        ProductInterface $mug,
         AssociationInterface $upsell,
         AssociationTypeInterface $groupType,
         GroupInterface $group,

@@ -18,7 +18,6 @@ use Pim\Component\Catalog\Model\ProductModelInterface;
 use Pim\Component\Catalog\Model\ProductPriceInterface;
 use Pim\Component\Catalog\Model\ValueCollectionInterface;
 use Pim\Component\Catalog\Model\ValueInterface;
-use Pim\Component\Catalog\Model\VariantProductInterface;
 use Prophecy\Argument;
 use Symfony\Component\Serializer\SerializerInterface;
 
@@ -50,7 +49,7 @@ class ProductNormalizerSpec extends ObjectBehavior
 
     function it_normalizes_variant_product(
         $filter,
-        VariantProductInterface $product,
+        ProductInterface $product,
         AttributeInterface $skuAttribute,
         ValueInterface $sku,
         ValueCollectionInterface $values,

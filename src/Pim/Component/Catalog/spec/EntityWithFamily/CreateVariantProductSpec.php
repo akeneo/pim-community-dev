@@ -15,7 +15,6 @@ use Pim\Component\Catalog\Model\ValueCollectionInterface;
 use Pim\Component\Catalog\Model\ValueInterface;
 use Pim\Component\Catalog\Model\VariantAttributeSetInterface;
 use Pim\Component\Catalog\Model\VariantProduct;
-use Pim\Component\Catalog\Model\VariantProductInterface;
 use Prophecy\Argument;
 
 class CreateVariantProductSpec extends ObjectBehavior
@@ -108,7 +107,7 @@ class CreateVariantProductSpec extends ObjectBehavior
         $product->getRawValues()->willReturn([]);
 
         $result = $this->from($product, $parent);
-        $result->shouldReturnAnInstanceOf(VariantProductInterface::class);
+        $result->shouldReturnAnInstanceOf(ProductInterface::class);
         $result->getId()->shouldReturn(42);
         $result->getIdentifier()->shouldReturn('foo');
         $result->isEnabled()->shouldReturn(true);

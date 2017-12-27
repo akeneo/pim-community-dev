@@ -4,7 +4,6 @@ namespace spec\Pim\Component\Catalog\Normalizer\Indexing\ProductAndProductModel;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\ProductInterface;
-use Pim\Component\Catalog\Model\VariantProductInterface;
 use Pim\Component\Catalog\Normalizer\Indexing\ProductAndProductModel\ProductModelNormalizer;
 use Pim\Component\Catalog\Normalizer\Indexing\ProductAndProductModel\ProductNormalizer;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -28,7 +27,7 @@ class ProductNormalizerSpec extends ObjectBehavior
 
     function it_supports_products_and_variant_products(
         ProductInterface $product,
-        VariantProductInterface $variantProduct
+        ProductInterface $variantProduct
     ) {
         $this->supportsNormalization($product, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)
             ->shouldReturn(true);
@@ -71,7 +70,7 @@ class ProductNormalizerSpec extends ObjectBehavior
 
     function it_normalizes_a_variant_product_in_product_and_product_model_format(
         $propertiesNormalizer,
-        VariantProductInterface $variantProduct
+        ProductInterface $variantProduct
     ) {
         $variantProduct->getVariationLevel()->willReturn(0);
         $variantProduct->getRawValues()

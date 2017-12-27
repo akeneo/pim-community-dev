@@ -7,7 +7,7 @@ use Akeneo\Component\StorageUtils\StorageEvents;
 use Pim\Bundle\CatalogBundle\EventSubscriber\IndexProductModelCompleteDataSubscriber;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\ProductModelInterface;
-use Pim\Component\Catalog\Model\VariantProductInterface;
+use Pim\Component\Catalog\Model\ProductInterface;
 use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
@@ -40,7 +40,7 @@ class IndexProductModelCompleteDataSubscriberSpec extends ObjectBehavior
         $productModelIndexer,
         GenericEvent $event,
         ProductModelInterface $productModel,
-        VariantProductInterface $product
+        ProductInterface $product
     ) {
         $event->getSubject()->willReturn($productModel);
         $productModelIndexer->index(Argument::any())->shouldNotBeCalled();
@@ -56,7 +56,7 @@ class IndexProductModelCompleteDataSubscriberSpec extends ObjectBehavior
     function it_computes_number_of_complete_variant_product_with_one_level(
         $productModelIndexer,
         GenericEvent $event,
-        VariantProductInterface $product,
+        ProductInterface $product,
         ProductModelInterface $rootProductModel
     ) {
         $event->getSubject()->willReturn($product);
@@ -71,7 +71,7 @@ class IndexProductModelCompleteDataSubscriberSpec extends ObjectBehavior
     function it_computes_number_of_complete_variant_product_with_two_level(
         $productModelIndexer,
         GenericEvent $event,
-        VariantProductInterface $product,
+        ProductInterface $product,
         ProductModelInterface $rootProductModel,
         ProductModelInterface $subProductModel
     ) {

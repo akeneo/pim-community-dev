@@ -17,7 +17,6 @@ use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
 use Pim\Component\Catalog\Model\ValueCollectionInterface;
 use Pim\Component\Catalog\Model\ValueInterface;
-use Pim\Component\Catalog\Model\VariantProductInterface;
 use Prophecy\Argument;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -263,7 +262,7 @@ class ProductNormalizerSpec extends ObjectBehavior
         $normalizer,
         $filter,
         $imageNormalizer,
-        VariantProductInterface $product,
+        ProductInterface $product,
         ProductModelInterface $productModel,
         GroupInterface $promotion,
         GroupTranslationInterface $promotionEN,

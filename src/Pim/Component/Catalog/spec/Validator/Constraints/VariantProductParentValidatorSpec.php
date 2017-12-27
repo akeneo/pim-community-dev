@@ -7,7 +7,6 @@ use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\FamilyVariantInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
-use Pim\Component\Catalog\Model\VariantProductInterface;
 use Pim\Component\Catalog\Validator\Constraints\VariantProductParent;
 use Pim\Component\Catalog\Validator\Constraints\VariantProductParentValidator;
 use Pim\Component\Catalog\Validator\Constraints\ProductModelPositionInTheVariantTree;
@@ -47,7 +46,7 @@ class VariantProductParentValidatorSpec extends ObjectBehavior
     }
 
     function it_throws_an_exception_if_variant_product_is_not_validated_against_the_right_constraint(
-        VariantProductInterface $product,
+        ProductInterface $product,
         ProductModelPositionInTheVariantTree $constraint
     ) {
         $this->shouldThrow(UnexpectedTypeException::class)->during('validate', [
@@ -58,7 +57,7 @@ class VariantProductParentValidatorSpec extends ObjectBehavior
 
     function it_builds_violation_if_variant_product_has_no_parent(
         $context,
-        VariantProductInterface $variantProduct,
+        ProductInterface $variantProduct,
         FamilyVariantInterface $familyVariant,
         ProductModelInterface $productModel,
         ConstraintViolationBuilderInterface $constraintViolationBuilder,
@@ -83,7 +82,7 @@ class VariantProductParentValidatorSpec extends ObjectBehavior
 
     function it_builds_violation_if_variant_product_parent_is_not_at_the_correct_tree_position(
         $context,
-        VariantProductInterface $variantProduct,
+        ProductInterface $variantProduct,
         FamilyVariantInterface $familyVariant,
         ProductModelInterface $productModel,
         Collection $productModels,
@@ -123,7 +122,7 @@ class VariantProductParentValidatorSpec extends ObjectBehavior
 
     function it_does_not_build_violation_if_variant_product_parent_is_at_the_correct_tree_position(
         $context,
-        VariantProductInterface $variantProduct,
+        ProductInterface $variantProduct,
         FamilyVariantInterface $familyVariant,
         ProductModelInterface $productModel,
         Collection $productModels,

@@ -12,7 +12,6 @@ use Pim\Component\Catalog\Model\FamilyVariantInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
 use Pim\Component\Catalog\Model\VariantAttributeSetInterface;
-use Pim\Component\Catalog\Model\VariantProductInterface;
 use Prophecy\Argument;
 
 class CheckAttributeEditableSpec extends ObjectBehavior
@@ -52,7 +51,7 @@ class CheckAttributeEditableSpec extends ObjectBehavior
     }
 
     function it_throws_an_exception_if_the_variant_product_has_no_family_variant(
-        VariantProductInterface $product,
+        ProductInterface $product,
         FamilyInterface $family,
         AttributeInterface $attribute
     ) {
@@ -76,7 +75,7 @@ class CheckAttributeEditableSpec extends ObjectBehavior
     }
 
     function it_throws_an_exception_if_the_family_variant_of_the_product_has_not_the_expected_variant_set(
-        VariantProductInterface $product,
+        ProductInterface $product,
         FamilyInterface $family,
         FamilyVariantInterface $familyVariant,
         AttributeInterface $attribute
@@ -106,7 +105,7 @@ class CheckAttributeEditableSpec extends ObjectBehavior
     }
 
     function it_is_editable_if_it_is_a_variant_product_and_the_attribute_is_part_of_the_variant_set(
-        VariantProductInterface $product,
+        ProductInterface $product,
         FamilyInterface $family,
         FamilyVariantInterface $familyVariant,
         AttributeInterface $attribute,
@@ -125,7 +124,7 @@ class CheckAttributeEditableSpec extends ObjectBehavior
     }
 
     function it_is_not_editable_if_it_is_a_variant_product_and_the_attribute_is_not_part_of_the_variant_set(
-        VariantProductInterface $product,
+        ProductInterface $product,
         FamilyInterface $family,
         FamilyVariantInterface $familyVariant,
         AttributeInterface $attribute,

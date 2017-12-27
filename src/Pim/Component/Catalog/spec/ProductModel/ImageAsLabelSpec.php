@@ -10,7 +10,7 @@ use Pim\Component\Catalog\Model\FamilyVariantInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
 use Pim\Component\Catalog\Model\ValueInterface;
 use Pim\Component\Catalog\Model\VariantAttributeSetInterface;
-use Pim\Component\Catalog\Model\VariantProductInterface;
+use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Repository\ProductModelRepositoryInterface;
 use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
 
@@ -157,7 +157,7 @@ class ImageAsLabelSpec extends ObjectBehavior
         $productModelRepository,
         $productRepository,
         ProductModelInterface $productModel,
-        VariantProductInterface $variantProduct,
+        ProductInterface $variantProduct,
         FamilyInterface $family,
         FamilyVariantInterface $familyVariant,
         AttributeInterface $attributeAsImage,

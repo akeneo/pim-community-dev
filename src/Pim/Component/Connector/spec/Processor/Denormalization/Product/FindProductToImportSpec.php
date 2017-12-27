@@ -6,7 +6,6 @@ use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterfa
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Builder\ProductBuilderInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
-use Pim\Component\Catalog\Model\VariantProductInterface;
 use Pim\Component\Connector\Processor\Denormalization\Product\FindProductToImport;
 use Prophecy\Argument;
 
@@ -40,7 +39,7 @@ class FindProductToImportSpec extends ObjectBehavior
 
     function it_finds_variant_product_from_flat_data_given_by_the_reader(
         $productRepository,
-        VariantProductInterface $variantProduct
+        ProductInterface $variantProduct
     ) {
         $productRepository->findOneByIdentifier('product_identifier')->willReturn($variantProduct);
 
@@ -61,7 +60,7 @@ class FindProductToImportSpec extends ObjectBehavior
     function it_creates_variant_product_from_flat_data_given_by_the_reader(
         $productRepository,
         $variantProductBuilder,
-        VariantProductInterface $variantProduct
+        ProductInterface $variantProduct
     ) {
         $productRepository->findOneByIdentifier('product_identifier')->willReturn(null);
         $variantProductBuilder->createProduct('product_identifier', 'family')->willReturn($variantProduct);
