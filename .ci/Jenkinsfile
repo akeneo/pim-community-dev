@@ -97,7 +97,7 @@ stage("Build") {
             } else {
                 echo "Skipping ODM matrix"
             }
-         }
+        }
     )
 }
 
@@ -144,7 +144,8 @@ stage("Test") {
                     queue({
                         def files = sh (returnStdout: true, script: 'find /home/jenkins/pim/src -name "*Integration.php" -exec sh -c "grep -Ho \'function test\' {} | uniq -c"  \\; | sed "s/:function test//"').tokenize('\n')
                         def messages = new net.sf.json.JSONArray()
-                        for (file in files) {
+                        for (line in files) {
+                            def file = line.tokenize(' ') 
                             def commands = [
                                 [container: "php", script: "./app/console --env=test pim:install --force"],
                                 [container: "php", script: "mkdir -p app/cache app/logs app/archive /tmp/pim app/file_storage app/uploads"],
@@ -338,7 +339,7 @@ def queue(body, scale, storage, verboseOutputs, dotsPerLine) {
     def uuid = UUID.randomUUID().toString()
     podTemplate(label: "pubsub-" + uuid, containers: [
         containerTemplate(name: "php", ttyEnabled: true, command: 'cat', image: "akeneo/apache-php:php-5.6", resourceRequestCpu: '100m', alwaysPullImage: true, resourceRequestMemory: '200Mi'),
-        containerTemplate(name: "gcloud", ttyEnabled: true, command: 'cat', image: "eu.gcr.io/akeneo-ci/gcloud:1.0.19", resourceRequestCpu: '100m', resourceRequestMemory: '200Mi', envVars: [envVar(key: "PUBSUB_PROJECT_ID", value: "akeneo-ci")])
+        containerTemplate(name: "gcloud", ttyEnabled: true, command: 'cat', image: "eu.gcr.io/akeneo-ci/gcloud:1.0", alwaysPullImage: true, resourceRequestCpu: '100m', resourceRequestMemory: '200Mi', envVars: [envVar(key: "PUBSUB_PROJECT_ID", value: "akeneo-ci")])
     ], annotations: [
         podAnnotation(key: "pod.beta.kubernetes.io/init-containers", value: "[{\"name\": \"pim\", \"imagePullPolicy\": \"Always\", \"image\": \"eu.gcr.io/akeneo-ci/pim-enterprise-dev:pull-request-${env.CHANGE_ID}-build-${env.BUILD_NUMBER}-${storage}\", \"command\": [\"sh\", \"-c\", \"cp -Rp /pim /home/jenkins\"], \"volumeMounts\":[{\"name\":\"workspace-volume\",\"mountPath\":\"/home/jenkins\"}]}]")
     ], volumes: [
@@ -379,7 +380,7 @@ def queue(body, scale, storage, verboseOutputs, dotsPerLine) {
                     sh "gcloud.phar pubsub:topic:delete ${NODE_NAME}-results"
                     sh "gcloud.phar pubsub:subscription:delete ${NODE_NAME}-subscription"
                     sh "gcloud.phar pubsub:subscription:delete ${NODE_NAME}-results-subscription"
-                    sh "find junit/ -name \"*.xml\" | xargs sed -i \"s/ name=\\\"/ name=\\\"[${storage}] /\""
+                    sh "find ${env.WORKSPACE}/junit/ -name \"*.xml\" | xargs sed -i \"s/ name=\\\"/ name=\\\"[${storage}] /\""
 
                     junit allowEmptyResults: true, testResults: 'junit/**/*.xml'
                     archiveArtifacts allowEmptyArchive: true, artifacts: 'artifacts/**/*.png'
