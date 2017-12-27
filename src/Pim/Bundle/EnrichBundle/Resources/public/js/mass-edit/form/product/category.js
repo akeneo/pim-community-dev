@@ -98,7 +98,7 @@ define(
                     }.bind(this));
                 } else {
                     this.toggleContentCache();
-                    
+
                     this.delegateEvents();
                 }
 
