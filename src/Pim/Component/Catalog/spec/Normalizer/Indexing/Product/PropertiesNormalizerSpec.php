@@ -40,8 +40,7 @@ class PropertiesNormalizerSpec extends ObjectBehavior
         $serializer,
         ProductInterface $product,
         ValueCollectionInterface $valueCollection,
-        Collection $completenesses,
-        AttributeInterface $sku
+        Collection $completenesses
     ) {
         $product->getId()->willReturn(67);
         $family = null;
@@ -267,7 +266,8 @@ class PropertiesNormalizerSpec extends ObjectBehavior
         ProductModelInterface $rootProductModel,
         FamilyInterface $family,
         ValueCollectionInterface $valueCollection,
-        Collection $completenesses
+        Collection $completenesses,
+        AttributeInterface $sku
     ) {
         $now = new \DateTime('now', new \DateTimeZone('UTC'));
 
@@ -301,6 +301,10 @@ class PropertiesNormalizerSpec extends ObjectBehavior
 
 
         $product->getFamily()->willReturn($family);
+        $product->getFamily()->willReturn($family);
+        $family->getAttributeAsLabel()->willReturn($sku);
+        $sku->getCode()->willReturn('sku');
+
         $serializer
             ->normalize($family, ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX)
             ->willReturn([
@@ -321,22 +325,23 @@ class PropertiesNormalizerSpec extends ObjectBehavior
 
         $this->normalize($product, ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX)->shouldReturn(
             [
-                'id'            => '67',
-                'identifier'    => 'sku-001',
-                'created'       => $now->format('c'),
-                'updated'       => $now->format('c'),
-                'family' => [
+                'id'           => '67',
+                'identifier'   => 'sku-001',
+                'created'      => $now->format('c'),
+                'updated'      => $now->format('c'),
+                'family'       => [
                     'code'   => 'family',
                     'labels' => [
                         'fr_FR' => 'Une famille',
                         'en_US' => 'A family',
                     ],
                 ],
-                'enabled'       => true,
-                'categories'    => [],
-                'groups'        => [],
-                'completeness'  => [],
-                'values'        => [],
+                'enabled'      => true,
+                'categories'   => [],
+                'groups'       => [],
+                'completeness' => [],
+                'values'       => [],
+                'label'        => [],
             ]
         );
     }
