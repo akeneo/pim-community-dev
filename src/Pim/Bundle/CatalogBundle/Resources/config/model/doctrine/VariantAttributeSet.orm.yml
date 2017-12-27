@@ -24,6 +24,7 @@ Pim\Component\Catalog\Model\VariantAttributeSet:
                 inverseJoinColumns:
                     attributes_id:
                         referencedColumnName: id
+                        onDelete: CASCADE
         axes:
             targetEntity: Pim\Component\Catalog\Model\AttributeInterface
             joinTable:

@@ -1,6 +1,6 @@
 'use strict';
 /**
- * Change status operation
+ * Mass change category
  *
  * @author    Julien Sanchez <julien@akeneo.com>
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
@@ -34,9 +34,19 @@ define(
             selectedCategories: [],
             treePromise: null,
             view: null,
+            trees: [],
             events: {
                 'click .nav-tabs .tree-selector': 'changeTree',
                 'change #hidden-tree-input': 'updateModel'
+            },
+
+            /**
+             * {@inheritdoc}
+             */
+            initialize: function () {
+                this.trees = [];
+
+                BaseOperation.prototype.initialize.apply(this, arguments);
             },
 
             /**
@@ -55,8 +65,13 @@ define(
              */
             render: function () {
                 if (null === this.treePromise) {
-                    FetcherRegistry.getFetcher('category').clear();
-                    this.treePromise = FetcherRegistry.getFetcher('category').fetchAll().then(function (trees) {
+                    FetcherRegistry.getFetcher(this.config.fetcher).clear();
+                    this.treePromise = FetcherRegistry
+                        .getFetcher(this.config.fetcher)
+                        .fetchAll()
+                        .then(function (trees) {
+                        this.trees = trees;
+
                         if (null === this.currentTree) {
                             this.currentTree = _.first(trees).code;
                         }
@@ -71,6 +86,8 @@ define(
 
                         this.delegateEvents();
 
+                        this.toggleContentCache();
+
                         return {
                             treeAssociate: new TreeAssociate('#trees', '#hidden-tree-input', {
                                 list_categories: this.config.listRoute,
@@ -79,11 +96,25 @@ define(
                             trees: trees
                         };
                     }.bind(this));
+                } else {
+                    this.toggleContentCache();
+
+                    this.delegateEvents();
                 }
 
-                this.delegateEvents();
-
                 return this;
+            },
+
+            /**
+             * In this method, we don't re-render the trees because select elements on several trees is hell.
+             * We simply hide or show the cache to avoid clicking on new elements during the confirm.
+             **/
+            toggleContentCache: function () {
+                if (this.readOnly) {
+                    this.$el.find('.content-cache').removeClass('AknTabContainer-contentCache--hidden');
+                } else {
+                    this.$el.find('.content-cache').addClass('AknTabContainer-contentCache--hidden');
+                }
             },
 
             /**
@@ -99,10 +130,10 @@ define(
             /**
              * Update the model after dom event triggered
              *
-             * @param {string} group
+             * @param {string} categories
              */
             setValue: function (categories) {
-                var data = this.getFormData();
+                let data = this.getFormData();
 
                 data.actions = [{
                     field: 'categories',
@@ -118,7 +149,7 @@ define(
              * @return {string}
              */
             getValue: function () {
-                var action = _.findWhere(this.getFormData().actions, {field: 'categories'});
+                const action = _.findWhere(this.getFormData().actions, {field: 'categories'});
 
                 return action ? action.value : null;
             },
@@ -132,7 +163,7 @@ define(
                 this.currentTree = event.currentTarget.dataset.tree;
 
                 this.treePromise.then(function (elements) {
-                    var tree = _.findWhere(elements.trees, {code: this.currentTree});
+                    const tree = _.findWhere(elements.trees, {code: this.currentTree});
 
                     elements.treeAssociate.switchTree(tree.id);
 
@@ -149,8 +180,8 @@ define(
              */
             getCategoryCode: function (id) {
                 if (!this.categoryCache[id]) {
-                    var $categoryElement = this.$('#node_' + id);
-                    var $rootElement     = $categoryElement.closest('.root-unselectable');
+                    const $categoryElement = this.$('#node_' + id);
+                    const $rootElement     = $categoryElement.closest('.root-unselectable');
                     this.categoryCache[id] = {
                         code: String($categoryElement.data('code')),
                         rootId: $rootElement.data('tree-id')

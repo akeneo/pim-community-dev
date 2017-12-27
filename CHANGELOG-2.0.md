@@ -1,8 +1,16 @@
-# 2.0.x
+# 2.0.X
+
+## Bug fixes
+
+- PIM-7062: Allow to delete attributes contained in a family variant
+- PIM-6944: Fix delta export for variant products
+
+# 2.0.10 (2017-12-22)
 
 ## Bug fixes
 
 - PIM-7032: Fix close button when clicking on "Compare/Translate" option on the product edit form
+- PIM-7063: Add validation for AttributeGroup
 
 # 2.0.9 (2017-12-15)
 
@@ -22,7 +30,6 @@
 ## BC breaks
 
 - MySQL table constraints and elasticsearch indexes have changed. Please execute the pending migrations using the `doctrine:migrations:migrate` console command.
-
 
 # 2.0.8 (2017-12-07)
 
