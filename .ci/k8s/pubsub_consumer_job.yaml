@@ -95,7 +95,7 @@ spec:
               trap "touch /tmp/pod/main-terminated" EXIT
               gcloud.phar pubsub:message:consume SUBSCRIPTION_NAME RESULT_TOPIC
           env:
-            - { name: REDIS_URI, value: "tcp://redis.jenkins-prod:6379" }
+            - { name: REDIS_URI, value: "tcp://redis.jenkins:6379" }
             - { name: POD_NAME, valueFrom: { fieldRef: { fieldPath: metadata.name } } }
             - { name: NAMESPACE, valueFrom: { fieldRef: { fieldPath: metadata.namespace } } }
           volumeMounts:

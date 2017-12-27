@@ -494,10 +494,9 @@ def withBuildNode(body) {
     withCredentials([string(credentialsId: 'composer-token', variable: 'token')]) {
         podTemplate(label: "build-" + uuid, containers: [
             containerTemplate(name: "docker", image: "paulwoelfel/docker-gcloud", ttyEnabled: true, command: 'cat', envVars: [envVar(key: "DOCKER_API_VERSION", value: "1.23")], resourceRequestCpu: '100m', resourceRequestMemory: '200Mi'),
-            containerTemplate(name: "php", ttyEnabled: true, command: 'cat', image: "eu.gcr.io/akeneo-ci/httpd-php:5.6", envVars: [envVar(key: "COMPOSER_HOME", value: "/shared/.composer"), envVar(key: "COMPOSER_AUTH", value: "{\"github-oauth\":{\"github.com\": \"$token\"}}")], resourceRequestCpu: '750m', resourceRequestMemory: '2000Mi'),
+            containerTemplate(name: "php", ttyEnabled: true, command: 'cat', image: "eu.gcr.io/akeneo-ci/httpd-php:5.6", envVars: [envVar(key: "COMPOSER_AUTH", value: "{\"github-oauth\":{\"github.com\": \"$token\"}}")], resourceRequestCpu: '750m', resourceRequestMemory: '2000Mi'),
             containerTemplate(name: "node", ttyEnabled: true, command: 'cat', image: "node:8", resourceRequestCpu: '750m', resourceRequestMemory: '2000Mi')
         ], volumes: [
-            nfsVolume(mountPath: '/shared', serverAddress: "${env.NFS_IP}", serverPath: '/exports', readOnly: false),
             hostPathVolume(hostPath: "/var/run/docker.sock", mountPath: "/var/run/docker.sock")
         ]) {
             node("build-" + uuid) {
@@ -586,7 +585,7 @@ def queue(body, scale, edition, verboseOutputs, dotsPerLine) {
                     sh "kubectl apply -f /home/jenkins/pim/.ci/k8s/"
                     sh "gcloud.phar ${verbosity} job:wait --dotsperline ${linesize} ${NODE_NAME}-results-subscription ${size} ${env.WORKSPACE} --ansi"
                 } finally {
-                    sh "kubectl delete job ${NODE_NAME} --namespace=jenkins-prod"
+                    sh "kubectl delete job ${NODE_NAME}"
                     sh "gcloud.phar pubsub:topic:delete ${NODE_NAME}"
                     sh "gcloud.phar pubsub:topic:delete ${NODE_NAME}-results"
                     sh "gcloud.phar pubsub:subscription:delete ${NODE_NAME}-subscription"
@@ -604,6 +603,5 @@ def queue(body, scale, edition, verboseOutputs, dotsPerLine) {
 @NonCPS
 def clearTemplateNames() {
     // see https://issues.jenkins-ci.org/browse/JENKINS-42184
-    def action = currentBuild.rawBuild.getAction(PodTemplateAction.class);
-    if(action) { action.names.clear() }
+    currentBuild.rawBuild.getAction( PodTemplateAction.class )?.stack?.clear()
 }

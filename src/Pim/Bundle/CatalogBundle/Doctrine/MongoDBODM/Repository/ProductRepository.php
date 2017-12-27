@@ -250,7 +250,7 @@ class ProductRepository extends DocumentRepository implements
             ->multiple(true)
             ->field('values.attribute')->equals($id)
             ->field('values')->pull(['attribute' => $id])
-            ->getQuery()
+            ->getQuery(['w' => 0]) // do not wait, but no guarantee
             ->execute();
     }
 
