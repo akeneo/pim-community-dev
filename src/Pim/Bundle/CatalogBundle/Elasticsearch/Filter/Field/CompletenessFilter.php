@@ -50,20 +50,30 @@ class CompletenessFilter extends AbstractFieldFilter implements FieldFilterInter
         switch ($operator) {
             case Operators::AT_LEAST_COMPLETE:
                 $productModelFilterField = sprintf('at_least_complete.%s.%s', $channel, $locale);
-                $this->searchQueryBuilder->addShould(
+                $this->searchQueryBuilder->addFilter(
                     [
-                        ['term' => [$productFilterField => 100]],
-                        ['term' => [$productModelFilterField => 1]],
+                        'bool' => [
+                            'should' => [
+                                ['term' => [$productFilterField => 100]],
+                                ['term' => [$productModelFilterField => 1]],
+                            ],
+                            'minimum_should_match' => 1,
+                        ],
                     ]
                 );
                 break;
 
             case Operators::AT_LEAST_INCOMPLETE:
                 $productModelFilterField = sprintf('at_least_incomplete.%s.%s', $channel, $locale);
-                $this->searchQueryBuilder->addShould(
+                $this->searchQueryBuilder->addFilter(
                     [
-                        ['range' => [$productFilterField => ['lt' => 100]]],
-                        ['term' => [$productModelFilterField => 1]],
+                        'bool' => [
+                            'should' => [
+                                ['range' => [$productFilterField => ['lt' => 100]]],
+                                ['term' => [$productModelFilterField => 1]],
+                            ],
+                            'minimum_should_match' => 1,
+                        ],
                     ]
                 );
                 break;

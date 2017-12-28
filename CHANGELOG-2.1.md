@@ -16,6 +16,7 @@
 ## Web API
 
 - API-415: Update a list of options of a simple or multi select attribute
+- PIM-7074: Fix label and completeness filters for search
 
 ## BC breaks
 
