@@ -4,6 +4,7 @@
 
 - PIM-7062: Allow to delete attributes contained in a family variant
 - PIM-6944: Fix delta export for variant products
+- PIM-7070: Fix sequential edit when selecting multiple product models
 
 # 2.0.10 (2017-12-22)
 

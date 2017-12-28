@@ -120,14 +120,16 @@ define(
 
                 var promises = [];
                 if (previous) {
-                    promises.push(FetcherRegistry.getFetcher(previous.type).fetch(previous.id).then(function (product) {
-                        previousObject = getObjectViewParams(product);
-                    }));
+                    promises.push(FetcherRegistry.getFetcher(previous.type.replace('_', '-'))
+                        .fetch(previous.id).then(function (product) {
+                            previousObject = getObjectViewParams(product);
+                        }));
                 }
                 if (next) {
-                    promises.push(FetcherRegistry.getFetcher(next.type).fetch(next.id).then(function (product) {
-                        nextObject = getObjectViewParams(product);
-                    }));
+                    promises.push(FetcherRegistry.getFetcher(next.type.replace('_', '-'))
+                        .fetch(next.id).then(function (product) {
+                            nextObject = getObjectViewParams(product);
+                        }));
                 }
 
                 return $.when.apply($, promises).then(function () {
