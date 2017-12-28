@@ -14,6 +14,7 @@ use Pim\Bundle\CatalogBundle\Elasticsearch\SearchQueryBuilder;
 use Pim\Bundle\DataGridBundle\Datasource\ProductDatasource;
 use Pim\Bundle\DataGridBundle\Datasource\ResultRecord\HydratorInterface;
 use Pim\Bundle\DataGridBundle\Extension\MassAction\Actions\Ajax\DeleteMassAction;
+use Pim\Bundle\DataGridBundle\Extension\MassAction\Event\MassActionEvent;
 use Pim\Bundle\DataGridBundle\Extension\MassAction\Event\MassActionEvents;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\ProductEvents;
@@ -57,7 +58,7 @@ class DeleteProductsMassActionHandlerSpec extends ObjectBehavior
 
         $eventDispatcher->dispatch(
             MassActionEvents::MASS_DELETE_PRE_HANDLER,
-            Argument::type('Pim\Bundle\DataGridBundle\Extension\MassAction\Event\MassActionEvent')
+            Argument::type(MassActionEvent::class)
         )->shouldBeCalled();
     }
 
@@ -96,7 +97,7 @@ class DeleteProductsMassActionHandlerSpec extends ObjectBehavior
 
         $eventDispatcher->dispatch(
             MassActionEvents::MASS_DELETE_POST_HANDLER,
-            Argument::type('Pim\Bundle\DataGridBundle\Extension\MassAction\Event\MassActionEvent')
+            Argument::type(MassActionEvent::class)
         )->shouldBeCalled();
         $eventDispatcher->dispatch(
             ProductEvents::PRE_MASS_REMOVE,
