@@ -24,6 +24,8 @@ pim_enrich:
             history.title:   History
     # Family
     family:
+        info:
+            cant_remove_attribute_used_as_axis: Cannot remove this attribute used as a variant axis in a family variant
         tab:
             property.title:  Properties
             attribute.title: Attributes

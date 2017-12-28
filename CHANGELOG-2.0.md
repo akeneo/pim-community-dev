@@ -5,13 +5,18 @@
 - PIM-7062: Allow to delete attributes contained in a family variant
 - PIM-6944: Fix delta export for variant products
 - PIM-7070: Fix sequential edit when selecting multiple product models
+- PIM-6812: Change the message when delete an attribute as variant axis
+
+## BC breaks
+
+- Change the constructor of `Pim\Bundle\EnrichBundle\Controller\Rest\AttributeController` add `Doctrine\ORM\EntityManagerInterface` and `Symfony\Component\Translation\TranslatorInterface`
 
 # 2.0.10 (2017-12-22)
 
 ## Bug fixes
 
 - PIM-7032: Fix close button when clicking on "Compare/Translate" option on the product edit form
-- PIM-7063: Add validation for AttributeGroup
+- PIM-7063: Add validation for AttributeGroup - cannot remove AttributeGroup containing attributes and cannot remove AttributGroup "other"
 
 # 2.0.9 (2017-12-15)
 
