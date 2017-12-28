@@ -110,7 +110,7 @@ class ProductProcessor implements ItemProcessorInterface, StepExecutionAwareInte
             );
         }
 
-        $this->detacher->detach($product);
+        $this->detacher->cleanEntityManager($product);
 
         return $productStandard;
     }

@@ -42,13 +42,17 @@ class ObjectDetacher implements ObjectDetacherInterface, BulkObjectDetacherInter
     {
         $objectManager = $this->getObjectManager($object);
         $visited = [];
+        $objectManager->detach($object);
+        $this->doDetachScheduled($object, $visited);
+    }
 
-        if ($objectManager instanceof DocumentManager) {
-            $this->doDetach($object, $visited);
-        } else {
-            $objectManager->detach($object);
-            $this->doDetachScheduled($object, $visited);
-        }
+    /**
+     * {@inheritdoc}
+     */
+    public function cleanEntityManager($object): void
+    {
+        $objectManager = $this->getObjectManager($object);
+        $objectManager->clear();
     }
 
     /**
@@ -158,34 +162,5 @@ class ObjectDetacher implements ObjectDetacherInterface, BulkObjectDetacherInter
     protected function getObjectManager($object)
     {
         return $this->objectManager;
-    }
-
-    /**
-     * Do detach objects on DocumentManager
-     *
-     * @param mixed $document
-     * @param array $visited  Prevent infinite recursion
-     */
-    protected function doDetach($document, array &$visited)
-    {
-        $oid = spl_object_hash($document);
-        if (isset($visited[$oid])) {
-            return;
-        }
-
-        $documentManager = $this->getObjectManager($document);
-
-        $visited[$oid] = $document;
-
-        $documentManager->detach($document);
-
-        if ($document instanceof ProductInterface) {
-            foreach ($document->getValues() as $value) {
-                if (null !== $value->getMedia()) {
-                    $mediaManager = $this->getObjectManager($value->getMedia());
-                    $mediaManager->detach($value->getMedia());
-                }
-            }
-        }
     }
 }
