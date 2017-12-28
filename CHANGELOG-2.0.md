@@ -1,4 +1,4 @@
-# 2.0.X
+# 2.0.x
 
 ## Bug fixes
 
@@ -10,6 +10,10 @@
 ## BC breaks
 
 - Change the constructor of `Pim\Bundle\EnrichBundle\Controller\Rest\AttributeController` add `Doctrine\ORM\EntityManagerInterface` and `Symfony\Component\Translation\TranslatorInterface`
+
+## Improvements
+
+- PIM-7079: Improve indexation performance of ValueCollection when deleting values
 
 # 2.0.10 (2017-12-22)
 

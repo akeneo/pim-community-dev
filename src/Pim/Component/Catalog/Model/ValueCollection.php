@@ -30,6 +30,9 @@ class ValueCollection implements ValueCollectionInterface
     /** @var AttributeInterface[] */
     private $attributes;
 
+    /** @var int[] */
+    private $valuesNumberPerAttribute;
+
     /**
      * @param ValueInterface[] $values
      */
@@ -38,6 +41,7 @@ class ValueCollection implements ValueCollectionInterface
         $this->values = [];
         $this->uniqueValues = [];
         $this->attributes = [];
+        $this->valuesNumberPerAttribute = [];
 
         foreach ($values as $value) {
             $this->add($value);
@@ -112,10 +116,15 @@ class ValueCollection implements ValueCollectionInterface
         }
 
         $removed = $this->values[$key];
+        $attributeCode = $removed->getAttribute()->getCode();
         unset($this->values[$key]);
         unset($this->uniqueValues[$key]);
 
-        $this->reIndexAllAttributes();
+        $this->valuesNumberPerAttribute[$attributeCode]--;
+        if (0 === $this->valuesNumberPerAttribute[$attributeCode]) {
+            unset($this->attributes[$attributeCode]);
+            unset($this->valuesNumberPerAttribute[$attributeCode]);
+        }
 
         return $removed;
     }
@@ -131,10 +140,7 @@ class ValueCollection implements ValueCollectionInterface
             return false;
         }
 
-        unset($this->values[$key]);
-        unset($this->uniqueValues[$key]);
-
-        $this->reIndexAllAttributes();
+        $this->removeKey($key);
 
         return true;
     }
@@ -231,14 +237,14 @@ class ValueCollection implements ValueCollectionInterface
      */
     public function add(ValueInterface $value)
     {
-        if (false !== array_search($value, $this->values, true)) {
-            return false;
-        }
-
         $attribute = $value->getAttribute();
         $channelCode = null !== $value->getScope() ? $value->getScope() : '<all_channels>';
         $localeCode = null !== $value->getLocale() ? $value->getLocale() : '<all_locales>';
         $key = sprintf('%s-%s-%s', $attribute->getCode(), $channelCode, $localeCode);
+
+        if (isset($this->values[$key])) {
+            return false;
+        }
 
         $this->values[$key] = $value;
 
@@ -246,7 +252,10 @@ class ValueCollection implements ValueCollectionInterface
             $this->uniqueValues[$key] = $value;
         }
 
-        $this->indexAttribute($attribute);
+        $this->attributes[$attribute->getCode()] = $attribute;
+
+        $valuesNumber = $this->valuesNumberPerAttribute[$attribute->getCode()] ?? 0;
+        $this->valuesNumberPerAttribute[$attribute->getCode()] = $valuesNumber + 1;
 
         return true;
     }
@@ -309,35 +318,5 @@ class ValueCollection implements ValueCollectionInterface
         $filteredValues = array_filter($this->values, $filterBy);
 
         return new self($filteredValues);
-    }
-
-    /**
-     * Index an attribute
-     *
-     * @param AttributeInterface $attribute
-     */
-    private function indexAttribute(AttributeInterface $attribute)
-    {
-        if (!array_key_exists($attribute->getCode(), $this->attributes)) {
-            $this->attributes[$attribute->getCode()] = $attribute;
-        }
-    }
-
-    /**
-     * Re index all the attributes by parsing the values collection.
-     * Useful in case of value removal for instance.
-     */
-    private function reIndexAllAttributes()
-    {
-        $this->attributes = [];
-
-        foreach ($this->values as $value) {
-            $attribute = $value->getAttribute();
-            $attributeCode = $attribute->getCode();
-
-            if (!array_key_exists($attributeCode, $this->attributes)) {
-                $this->attributes[$attributeCode] = $attribute;
-            }
-        }
     }
 }
