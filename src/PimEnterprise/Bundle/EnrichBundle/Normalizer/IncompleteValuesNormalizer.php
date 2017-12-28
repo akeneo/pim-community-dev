@@ -15,6 +15,11 @@ use PimEnterprise\Component\Security\Attributes;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
+/**
+ * This class is almost a copy past for the Pim\Bundle\EnrichBundle\Normalizer\IncompleteValuesNormalizer
+ * in the CE, except that we need to handle permission of what the current user is able to see
+ * regarding its permissions.
+ */
 class IncompleteValuesNormalizer implements NormalizerInterface
 {
     /** @var NormalizerInterface */
