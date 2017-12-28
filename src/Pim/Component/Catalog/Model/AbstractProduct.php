@@ -87,6 +87,7 @@ abstract class AbstractProduct implements ProductInterface
 
     /** @var FamilyVariantInterface */
     protected $familyVariant;
+
     /**
      * Constructor
      */

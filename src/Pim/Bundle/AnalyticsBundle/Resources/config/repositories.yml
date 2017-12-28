@@ -36,7 +36,7 @@ services:
         class: '%pim_analytics.repository.entity_countable.class%'
         arguments:
             - '@doctrine.orm.entity_manager'
-            - '%pim_catalog.entity.variant_product.class%'
+            - '%pim_catalog.entity.product.class%'
 
     pim_analytics.repository.family_variant:
         class: '%pim_analytics.repository.entity_countable.class%'

@@ -4,8 +4,8 @@ namespace Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository;
 
 use Doctrine\ORM\EntityRepository;
 use Pim\Component\Catalog\Model\FamilyVariantInterface;
+use Pim\Component\Catalog\Model\Product;
 use Pim\Component\Catalog\Model\ProductModelInterface;
-use Pim\Component\Catalog\Model\VariantProduct;
 use Pim\Component\Catalog\Repository\ProductModelRepositoryInterface;
 
 /**
@@ -98,7 +98,7 @@ class ProductModelRepository extends EntityRepository implements ProductModelRep
             ->_em
             ->createQueryBuilder()
             ->select('p.identifier')
-            ->from(VariantProduct::class, 'p')
+            ->from(Product::class, 'p')
             ->innerJoin('p.parent', 'pm', 'WITH', 'p.parent = pm.id')
             ->where('p.parent = :parent')
             ->orWhere('pm.parent = :parent')
