@@ -301,7 +301,6 @@ class PropertiesNormalizerSpec extends ObjectBehavior
 
 
         $product->getFamily()->willReturn($family);
-        $product->getFamily()->willReturn($family);
         $family->getAttributeAsLabel()->willReturn($sku);
         $sku->getCode()->willReturn('sku');
 
