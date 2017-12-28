@@ -112,20 +112,13 @@ class IncompleteValuesNormalizerSpec extends ObjectBehavior
                     ],
                     'locales' => [
                         'en_US' => [
-                            'completeness' => [
-                                'required' => 1,
-                                'missing'  => 1,
-                                'ratio'    => null,
-                                'locale'   => 'en_US',
-                                'channel'  => 'ecommerce',
-                            ],
-                            'missing'      => [
+                            'missing' => [
                                 [
-                                    'code'   => 'description',
+                                    'code' => 'description',
                                     'labels' => ['en_US' => 'Description'],
                                 ],
                             ],
-                            'label'        => 'English (United States)',
+                            'label' => 'English (United States)',
                         ],
                     ],
                 ]

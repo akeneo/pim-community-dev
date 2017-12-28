@@ -85,13 +85,6 @@ class IncompleteValuesNormalizer implements NormalizerInterface
                 }
 
                 $kindOfCompleteness['locales'][$locale->getCode()] = [
-                    'completeness' => [
-                        'required' => $requiredValues->count(),
-                        'missing' => $incompleteValues->count(),
-                        'ratio' => null,
-                        'locale' => $locale->getCode(),
-                        'channel' => $channel->getCode(),
-                    ],
                     'missing' => $missingAttributes,
                     'label' => $locale->getName(),
                 ];
