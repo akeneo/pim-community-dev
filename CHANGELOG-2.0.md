@@ -18,7 +18,6 @@
 
 - Change the constructor of `Pim\Bundle\EnrichBundle\Controller\Rest\AttributeController` add `Doctrine\ORM\EntityManagerInterface` and `Symfony\Component\Translation\TranslatorInterface`
 - Changes the constructor of `Pim\Bundle\CatalogBundle\EventSubscriber\SaveFamilyVariantOnFamilyUpdateSubscriber` add `Akeneo\Component\StorageUtils\Detacher\BulkObjectDetacherInterface`
-- Adds a method `cleanEntityManager($object)` to the interface `Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface`
 
 # 2.0.10 (2017-12-22)
 

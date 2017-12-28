@@ -15,11 +15,4 @@ interface ObjectDetacherInterface
      * @param object $object
      */
     public function detach($object);
-
-    /**
-     * Clean the object using the entity manager.
-     *
-     * @param $object
-     */
-    public function cleanEntityManager($object): void;
 }

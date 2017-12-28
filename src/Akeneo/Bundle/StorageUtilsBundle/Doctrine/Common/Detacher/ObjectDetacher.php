@@ -40,19 +40,9 @@ class ObjectDetacher implements ObjectDetacherInterface, BulkObjectDetacherInter
      */
     public function detach($object)
     {
-        $objectManager = $this->getObjectManager($object);
         $visited = [];
-        $objectManager->detach($object);
+        $this->objectManager->detach($object);
         $this->doDetachScheduled($object, $visited);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function cleanEntityManager($object): void
-    {
-        $objectManager = $this->getObjectManager($object);
-        $objectManager->clear();
     }
 
     /**
@@ -78,7 +68,7 @@ class ObjectDetacher implements ObjectDetacherInterface, BulkObjectDetacherInter
             return;
         }
 
-        $objectManager = $this->getObjectManager($entity);
+        $objectManager = $this->objectManager;
         $uow = $objectManager->getUnitOfWork();
         $class = $objectManager->getClassMetadata(ClassUtils::getClass($entity));
         $rootClassName = $class->rootEntityName;
@@ -104,9 +94,7 @@ class ObjectDetacher implements ObjectDetacherInterface, BulkObjectDetacherInter
      */
     protected function cascadeDetachScheduled($entity, array &$visited)
     {
-        $objectManager = $this->getObjectManager($entity);
-
-        $class = $objectManager->getClassMetadata(ClassUtils::getClass($entity));
+        $class = $this->objectManager->getClassMetadata(ClassUtils::getClass($entity));
 
         $associationMappings = array_filter(
             $class->associationMappings,
@@ -152,15 +140,5 @@ class ObjectDetacher implements ObjectDetacherInterface, BulkObjectDetacherInter
         }, null, $uow);
 
         return $closure($uow);
-    }
-
-    /**
-     * @param object $object
-     *
-     * @return ObjectManager
-     */
-    protected function getObjectManager($object)
-    {
-        return $this->objectManager;
     }
 }
