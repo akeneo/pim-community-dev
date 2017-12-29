@@ -68,10 +68,17 @@ define(
                         };
                         this.getRoot().trigger('pim_enrich:form:locale_switcher:pre_render', params);
 
+
+
+                        let currentLocale = _.findWhere(locales, {code: params.localeCode});
+                        if (undefined === currentLocale) {
+                            currentLocale = _.first(locales);
+                        }
+
                         this.$el.html(
                             this.template({
                                 locales: locales,
-                                currentLocale: _.findWhere(locales, {code: params.localeCode}),
+                                currentLocale,
                                 i18n: i18n,
                                 displayInline: this.displayInline,
                                 displayLabel: this.displayLabel,
