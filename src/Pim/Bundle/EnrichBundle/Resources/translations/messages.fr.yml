@@ -643,11 +643,11 @@ pim_title.group_type:
   index: "Types de groupe"
   edit: "Type de groupe %group type.label% | Modifier"
 pim_title.mass_edit_product_action:
-  choose: "Édition de masse | Choisir"
-  configure: "Édition de masse | Configurer"
+  choose: "Édition en masse | Choisir"
+  configure: "Édition en masse | Configurer"
 pim_title.mass_edit_family_action:
-  choose: "Édition de masse | Choisir"
-  configure: "Édition de masse | Configurer"
+  choose: "Édition en masse | Choisir"
+  configure: "Édition en masse | Configurer"
 pim_title.job_tracker:
   index: Traqueur de processus
   show: "Traqueur de processus | Voir la tâche"
