@@ -8,15 +8,16 @@
 - PIM-6812: Change the message when delete an attribute as variant axis
 - PIM-7048: Fix cascade persist issue during import of families with variant
 - PIM-7049: Fix random order of attribute options 
+- PIM-7080: Fix memory leak on product export
+
+## Improvements
+
+- PIM-7079: Improve indexation performance of ValueCollection when deleting values
 
 ## BC breaks
 
 - Change the constructor of `Pim\Bundle\EnrichBundle\Controller\Rest\AttributeController` add `Doctrine\ORM\EntityManagerInterface` and `Symfony\Component\Translation\TranslatorInterface`
 - Changes the constructor of `Pim\Bundle\CatalogBundle\EventSubscriber\SaveFamilyVariantOnFamilyUpdateSubscriber` add `Akeneo\Component\StorageUtils\Detacher\BulkObjectDetacherInterface`
-
-## Improvements
-
-- PIM-7079: Improve indexation performance of ValueCollection when deleting values
 
 # 2.0.10 (2017-12-22)
 
