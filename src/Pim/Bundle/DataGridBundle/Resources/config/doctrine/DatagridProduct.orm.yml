@@ -1,0 +1,93 @@
+Pim\Bundle\DataGridBundle\Entity\DataGridProduct:
+    type: entity
+#Pim\Bundle\DataGridBundle\Entity\DataGridProduct:
+#    type: entity
+#    table: pim_catalog_product
+##    inheritanceType: SINGLE_TABLE
+##    discriminatorColumn:
+##        name: product_type
+##        type: string
+##    discriminatorMap:
+##        product: Product
+##        variant_product: VariantProduct
+#    changeTrackingPolicy: DEFERRED_EXPLICIT
+#    repositoryClass: Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\ProductRepository
+#    fields:
+#        id:
+#            type: integer
+#            id: true
+#            generator:
+#                strategy: AUTO
+#        enabled:
+#            type: boolean
+#            column: is_enabled
+#        identifier:
+#            type: string
+#            length: 255
+#            unique: true
+#            nullable: false
+#        rawValues:
+#            type: native_json
+#            column: raw_values
+#        created:
+#            type: datetime
+#        updated:
+#            type: datetime
+#    manyToOne:
+#        family:
+#            targetEntity: Pim\Component\Catalog\Model\FamilyInterface
+#            joinColumns:
+#                family_id:
+#                    referencedColumnName: id
+#                    onDelete: 'SET NULL'
+#    manyToMany:
+#        groups:
+#            targetEntity: Pim\Component\Catalog\Model\GroupInterface
+#            inversedBy: products
+#            joinTable:
+#                name: pim_catalog_group_product
+#                joinColumns:
+#                    product_id:
+#                        referencedColumnName: id
+#                        onDelete: CASCADE
+#                inverseJoinColumns:
+#                    group_id:
+#                        referencedColumnName: id
+#                        onDelete: CASCADE
+#        categories:
+#            targetEntity: Pim\Component\Catalog\Model\CategoryInterface
+#            inversedBy: products
+#            joinTable:
+#                name: pim_catalog_category_product
+#                joinColumns:
+#                    product_id:
+#                        referencedColumnName: id
+#                        onDelete: CASCADE
+#                inverseJoinColumns:
+#                    category_id:
+#                        referencedColumnName: id
+#                        onDelete: CASCADE
+#    oneToMany:
+#        associations:
+#            targetEntity: Pim\Component\Catalog\Model\AssociationInterface
+#            mappedBy: owner
+#            cascade:
+#                - persist
+#                - refresh
+#                - detach
+#        completenesses:
+#            targetEntity: Pim\Component\Catalog\Model\CompletenessInterface
+#            mappedBy: product
+#            cascade:
+#                - remove
+#                - persist
+#                - refresh
+#                - detach
+#        uniqueData:
+#            targetEntity: Pim\Component\Catalog\Model\ProductUniqueDataInterface
+#            mappedBy: product
+#            cascade:
+#                - remove
+#                - persist
+#                - refresh
+#                - detach

@@ -8,6 +8,7 @@ Pim\Component\Catalog\Model\AbstractProduct:
     discriminatorMap:
         product: Product
         variant_product: VariantProduct
+        datagrid_product: \Pim\Bundle\DataGridBundle\Entity\DataGridProduct
     changeTrackingPolicy: DEFERRED_EXPLICIT
     repositoryClass: Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\ProductRepository
     fields:

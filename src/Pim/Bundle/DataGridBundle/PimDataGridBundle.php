@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\DataGridBundle;
 
+use Doctrine\Bundle\DoctrineBundle\DependencyInjection\Compiler\DoctrineOrmMappingsPass;
 use Pim\Bundle\DataGridBundle\DependencyInjection\Compiler;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
@@ -27,5 +28,17 @@ class PimDataGridBundle extends Bundle
             ->addCompilerPass(new Compiler\AddSortersPass())
             ->addCompilerPass(new Compiler\AddMassActionHandlersPass())
             ->addCompilerPass(new Compiler\ConfigurationPass());
+
+        $productMappings = [
+            realpath(__DIR__ . '/Resources/config/doctrine') => 'Pim\Bundle\DataGridBundle\Entity'
+        ];
+
+        $container->addCompilerPass(
+            DoctrineOrmMappingsPass::createYamlMappingDriver(
+                $productMappings,
+                ['doctrine.orm.entity_manager'],
+                false
+            )
+        );
     }
 }
