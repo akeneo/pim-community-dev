@@ -82,30 +82,56 @@ class ProductModelUpdater implements ObjectUpdaterInterface
         }
 
         foreach ($data as $code => $value) {
-            if ('values' !== $code) {
-                if (in_array($code, ['code', 'family_variant', 'parent'])) {
-                    if (null !== $value && !is_scalar($value)) {
-                        throw InvalidPropertyTypeException::scalarExpected($code, static::class, $value);
-                    }
-                } elseif ('categories' === $code) {
-                    $this->validateScalarArray($code, $value);
-                } elseif (!in_array($code, $this->ignoredFields)) {
-                    throw UnknownPropertyException::unknownProperty($code);
-                }
-            }
-
-            if ('values' === $code) {
-                $this->valuesUpdater->update($productModel, $value, $options);
-            } elseif ('code' === $code) {
-                $productModel->setCode($value);
-            } elseif ('family_variant' === $code) {
-                $this->updateFamilyVariant($productModel, $value);
-            } elseif (in_array($code, $this->supportedFields)) {
-                $this->propertySetter->setData($productModel, $code, $value);
-            }
+            $this->setData($productModel, $code, $value, $options);
         }
 
         return $this;
+    }
+
+    /**
+     * @param ProductModelInterface $productModel
+     * @param                       $field
+     * @param                       $data
+     * @param array                 $options
+     */
+    protected function setData(ProductModelInterface $productModel, $field, $data, $options = [])
+    {
+        switch ($field) {
+            case 'values':
+                $this->valuesUpdater->update($productModel, $data, $options);
+                break;
+            case 'code':
+                $this->validateScalar($field, $data);
+                $productModel->setCode($data);
+                break;
+            case 'family_variant':
+                $this->validateScalar($field, $data);
+                $this->updateFamilyVariant($productModel, $data);
+                break;
+            case 'categories':
+                $this->validateScalarArray($field, $data);
+                $this->propertySetter->setData($productModel, $field, $data);
+                break;
+            default:
+                if (!in_array($field, $this->ignoredFields)) {
+                    throw UnknownPropertyException::unknownProperty($field);
+                }
+        }
+    }
+
+    /**
+     * Validate that it is a scalar value.
+     *
+     * @param $field
+     * @param $data
+     *
+     * @throws InvalidPropertyTypeException
+     */
+    private function validateScalar($field, $data)
+    {
+        if (null !== $data && !is_scalar($data)) {
+            throw InvalidPropertyTypeException::scalarExpected($field, static::class, $data);
+        }
     }
 
     /**

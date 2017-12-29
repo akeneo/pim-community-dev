@@ -162,7 +162,7 @@ class ProductModelAttributeFilterSpec extends ObjectBehavior
         ]);
     }
 
-    function it_throws_an_exception_when_attribute_does_not_exists()
+    function it_throws_an_exception_when_attribute_does_not_exist()
     {
         $data = [
             'code' => 'code',

@@ -399,7 +399,10 @@ class ProductModelController
     protected function updateProductModel(ProductModelInterface $productModel, array $data, string $anchor): void
     {
         try {
-            $data = $this->productModelAttributeFilter->filter($data);
+            if (array_key_exists('values', $data)) {
+                $data = $this->productModelAttributeFilter->filter($data);
+            }
+
             $this->updater->update($productModel, $data);
         } catch (PropertyException $exception) {
             throw new DocumentedHttpException(

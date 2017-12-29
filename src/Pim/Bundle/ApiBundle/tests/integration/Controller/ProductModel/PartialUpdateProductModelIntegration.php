@@ -2,7 +2,6 @@
 
 namespace Pim\Bundle\ApiBundle\tests\integration\Controller\ProductModel;
 
-use Akeneo\Test\Integration\Configuration;
 use Pim\Component\Catalog\tests\integration\Normalizer\NormalizedProductCleaner;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -52,21 +51,21 @@ class PartialUpdateProductModelIntegration extends AbstractProductModelTestCase
         $client = $this->createAuthenticatedClient();
 
         $data =
-<<<JSON
-    {
-        "code": "sub_sweat",
-        "family_variant": "familyVariantA1",
-        "parent": "sweat",
-        "values": {
-          "a_text": [
+            <<<JSON
+{
+    "code": "sub_sweat",
+    "family_variant": "familyVariantA1",
+    "parent": "sweat",
+    "values": {
+        "a_text": [
             {
-              "locale": null,
-              "scope": null,
-              "data": "My awesome text"
+                "locale": null,
+                "scope": null,
+                "data": "My awesome text"
             }
-          ]
-        }
+        ]
     }
+}
 JSON;
 
         $client->request('PATCH', 'api/rest/v1/product-models/sub_sweat', [], [], [], $data);
@@ -86,25 +85,59 @@ JSON;
         $this->assertSame($standardizedProduct['values']['a_text'][0]['data'], 'My awesome text');
     }
 
+    public function testUpdateSubProductModelWithNonExistingProperty()
+    {
+        $client = $this->createAuthenticatedClient();
+
+        $data =
+            <<<JSON
+{
+    "code": "sub_sweat",
+    "michel": "field"
+}
+JSON;
+
+        $client->request('PATCH', 'api/rest/v1/product-models/sub_sweat', [], [], [], $data);
+
+        $expectedContent =
+            <<<JSON
+{
+    "code": 422,
+    "message": "Property \"michel\" does not exist. Check the expected format on the API documentation.",
+    "_links": {
+        "documentation": {
+          "href": "http://api.akeneo.com/api-reference.html#patch_product_models__code_"
+        }
+    }
+}
+JSON;
+
+        $response = $client->getResponse();
+
+        $this->assertJsonStringEqualsJsonString($expectedContent, $response->getContent());
+        $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
+
+    }
+
     public function testUpdateSubProductModelWithNoCode()
     {
         $client = $this->createAuthenticatedClient();
 
         $data =
-<<<JSON
-    {
-        "family_variant": "familyVariantA1",
-        "parent": "sweat",
-        "values": {
-          "a_text": [
+            <<<JSON
+{
+    "family_variant": "familyVariantA1",
+    "parent": "sweat",
+    "values": {
+        "a_text": [
             {
-              "locale": null,
-              "scope": null,
-              "data": "My awesome text"
+                "locale": null,
+                "scope": null,
+                "data": "My awesome text"
             }
-          ]
-        }
+        ]
     }
+}
 JSON;
 
         $client->request('PATCH', 'api/rest/v1/product-models/sub_sweat', [], [], [], $data);
@@ -129,20 +162,20 @@ JSON;
         $client = $this->createAuthenticatedClient();
 
         $data =
-<<<JSON
-    {
-        "family_variant": "familyVariantA1",
-        "parent": "sub_sweat",
-        "values": {
-          "a_text": [
+            <<<JSON
+{
+    "family_variant": "familyVariantA1",
+    "parent": "sub_sweat",
+    "values": {
+        "a_text": [
             {
-              "locale": null,
-              "scope": null,
-              "data": "My awesome text"
+                "locale": null,
+                "scope": null,
+                "data": "My awesome text"
             }
-          ]
-        }
+        ]
     }
+}
 JSON;
 
         $client->request('PATCH', 'api/rest/v1/product-models/new_sub_sweat', [], [], [], $data);
@@ -150,14 +183,14 @@ JSON;
         $expectedContent =
             <<<JSON
 {
-  "code": 422,
-  "message": "Validation failed.",
-  "errors": [
-    {
-      "property": "parent",
-      "message": "The product model \"new_sub_sweat\" cannot have the product model \"sub_sweat\" as parent"
-    }
-  ]
+    "code": 422,
+    "message": "Validation failed.",
+    "errors": [
+        {
+          "property": "parent",
+          "message": "The product model \"new_sub_sweat\" cannot have the product model \"sub_sweat\" as parent"
+        }
+    ]
 }
 JSON;
 
@@ -172,21 +205,21 @@ JSON;
         $client = $this->createAuthenticatedClient();
 
         $data =
-<<<JSON
-    {
-        "code": "sub_sweat",
-        "family_variant": "familyVariantA1",
-        "parent": "sweat",
-        "values": {
-          "a_simple_select": [
+            <<<JSON
+{
+    "code": "sub_sweat",
+    "family_variant": "familyVariantA1",
+    "parent": "sweat",
+    "values": {
+        "a_simple_select": [
             {
-              "locale": null,
-              "scope": null,
-              "data": "optionA"
+            "locale": null,
+            "scope": null,
+            "data": "optionA"
             }
-          ]
-        }
+        ]
     }
+}
 JSON;
 
         $client->request('PATCH', 'api/rest/v1/product-models/sub_sweat', [], [], [], $data);
@@ -194,14 +227,14 @@ JSON;
         $expectedContent =
             <<<JSON
 {
-  "code": 422,
-  "message": "Validation failed.",
-  "errors": [
-    {
-      "property": "attribute",
-      "message": "Variant axis \"a_simple_select\" cannot be modified, \"Option A\" given"
-    }
-  ]
+    "code": 422,
+    "message": "Validation failed.",
+    "errors": [
+        {
+          "property": "attribute",
+          "message": "Variant axis \"a_simple_select\" cannot be modified, \"Option A\" given"
+        }
+    ]
 }
 JSON;
 
@@ -216,20 +249,20 @@ JSON;
         $client = $this->createAuthenticatedClient();
 
         $data =
-<<<JSON
-    {
-        "code": "sub_sweat",
-        "family_variant": "familyVariantA1",
-        "values": {
-          "a_text": [
+            <<<JSON
+{
+    "code": "sub_sweat",
+    "family_variant": "familyVariantA1",
+    "values": {
+        "a_text": [
             {
               "locale": null,
               "scope": null,
               "data": "My awesome text"
             }
-          ]
-        }
+        ]
     }
+}
 JSON;
 
         $client->request('PATCH', 'api/rest/v1/product-models/sub_sweat', [], [], [], $data);
@@ -250,19 +283,19 @@ JSON;
         $client = $this->createAuthenticatedClient();
 
         $data =
-<<<JSON
-    {
-        "code": "sub_sweat",
-        "values": {
-          "a_text": [
+            <<<JSON
+{
+    "code": "sub_sweat",
+    "values": {
+        "a_text": [
             {
-              "locale": null,
-              "scope": null,
-              "data": "My awesome text"
+            "locale": null,
+            "scope": null,
+            "data": "My awesome text"
             }
-          ]
-        }
+        ]
     }
+}
 JSON;
 
         $client->request('PATCH', 'api/rest/v1/product-models/sub_sweat', [], [], [], $data);
@@ -283,21 +316,21 @@ JSON;
         $client = $this->createAuthenticatedClient();
 
         $data =
-<<<JSON
-    {
-        "code": "sub_sweat",
-        "family_variant": "familyVariantA2",
-        "parent": "sweat",
-        "values": {
-          "a_text": [
+            <<<JSON
+{
+    "code": "sub_sweat",
+    "family_variant": "familyVariantA2",
+    "parent": "sweat",
+    "values": {
+        "a_text": [
             {
-              "locale": null,
-              "scope": null,
-              "data": "My awesome text"
+            "locale": null,
+            "scope": null,
+            "data": "My awesome text"
             }
-          ]
-        }
+        ]
     }
+}
 JSON;
 
         $client->request('PATCH', 'api/rest/v1/product-models/sub_sweat', [], [], [], $data);
@@ -305,13 +338,13 @@ JSON;
         $expectedContent =
             <<<JSON
 {
-  "code": 422,
-  "message": "Property \"family_variant\" cannot be modified, \"familyVariantA2\" given. Check the expected format on the API documentation.",
-  "_links": {
-    "documentation": {
-      "href": "http://api.akeneo.com/api-reference.html#patch_product_models__code_"
+    "code": 422,
+    "message": "Property \"family_variant\" cannot be modified, \"familyVariantA2\" given. Check the expected format on the API documentation.",
+    "_links": {
+        "documentation": {
+          "href": "http://api.akeneo.com/api-reference.html#patch_product_models__code_"
+        }
     }
-  }
 }
 JSON;
 
@@ -326,20 +359,20 @@ JSON;
         $client = $this->createAuthenticatedClient();
 
         $data =
-<<<JSON
-    {
-        "code": "sub_sweat",
-        "parent": "shoes",
-        "values": {
-          "a_text": [
+            <<<JSON
+{
+    "code": "sub_sweat",
+    "parent": "shoes",
+    "values": {
+        "a_text": [
             {
-              "locale": null,
-              "scope": null,
-              "data": "My awesome text"
+                "locale": null,
+                "scope": null,
+                "data": "My awesome text"
             }
-          ]
-        }
+        ]
     }
+}
 JSON;
 
         $client->request('PATCH', 'api/rest/v1/product-models/sub_sweat', [], [], [], $data);
@@ -347,13 +380,13 @@ JSON;
         $expectedContent =
             <<<JSON
 {
-  "code": 422,
-  "message": "Property \"parent\" cannot be modified, \"shoes\" given. Check the expected format on the API documentation.",
-  "_links": {
-    "documentation": {
-      "href": "http://api.akeneo.com/api-reference.html#patch_product_models__code_"
+    "code": 422,
+    "message": "Property \"parent\" cannot be modified, \"shoes\" given. Check the expected format on the API documentation.",
+    "_links": {
+        "documentation": {
+          "href": "http://api.akeneo.com/api-reference.html#patch_product_models__code_"
+        }
     }
-  }
 }
 JSON;
 
@@ -368,20 +401,20 @@ JSON;
         $client = $this->createAuthenticatedClient();
 
         $data =
-<<<JSON
-    {
-        "code": "sweat",
-        "family_variant": "familyVariantA1",
-        "values": {
-            "a_number_float":[
-                {
-                    "locale":null,
-                    "scope":null,
-                    "data":"15.3"
-                }
-            ]
-        }
+            <<<JSON
+{
+    "code": "sweat",
+    "family_variant": "familyVariantA1",
+    "values": {
+        "a_number_float":[
+            {
+                "locale":null,
+                "scope":null,
+                "data":"15.3"
+            }
+        ]
     }
+}
 JSON;
 
         $client->request('PATCH', 'api/rest/v1/product-models/sweat', [], [], [], $data);
@@ -408,20 +441,20 @@ JSON;
 
         $data =
             <<<JSON
-    {
-        "code": "sub_product_model",
-        "family_variant": "familyVariantA1",
-        "parent": "sweat",
-        "values": {
-          "a_simple_select": [
+{
+    "code": "sub_product_model",
+    "family_variant": "familyVariantA1",
+    "parent": "sweat",
+    "values": {
+        "a_simple_select": [
             {
-              "locale": null,
-              "scope": null,
-              "data": "optionA"
+                "locale": null,
+                "scope": null,
+                "data": "optionA"
             }
-          ]
-        }
+        ]
     }
+}
 JSON;
 
         $client->request('PATCH', 'api/rest/v1/product-models/sub_product_model', [], [], [], $data);
@@ -480,19 +513,19 @@ JSON;
 
         $data =
             <<<JSON
-    {
-        "code": "root_product_model",
-        "family_variant": "familyVariantA1",
-        "values": {
-            "a_number_float":[
-                {
-                    "locale":null,
-                    "scope":null,
-                    "data":"12.5000"
-                }
-            ]
-        }
+{
+    "code": "root_product_model",
+    "family_variant": "familyVariantA1",
+    "values": {
+        "a_number_float":[
+            {
+                "locale":null,
+                "scope":null,
+                "data":"12.5000"
+            }
+        ]
     }
+}
 JSON;
 
         $client->request('PATCH', 'api/rest/v1/product-models/root_product_model', [], [], [], $data);
@@ -528,20 +561,20 @@ JSON;
 
         $data =
             <<<JSON
-    {
-        "code": "root_product_model",
-        "family_variant": "familyVariantA1",
-        "parent": null,
-        "values": {
-            "a_number_float":[
-                {
-                    "locale":null,
-                    "scope":null,
-                    "data":"12.5000"
-                }
-            ]
-        }
+{
+    "code": "root_product_model",
+    "family_variant": "familyVariantA1",
+    "parent": null,
+    "values": {
+        "a_number_float":[
+            {
+                "locale":null,
+                "scope":null,
+                "data":"12.5000"
+            }
+        ]
     }
+}
 JSON;
 
         $client->request('PATCH', 'api/rest/v1/product-models/root_product_model', [], [], [], $data);
@@ -577,20 +610,20 @@ JSON;
 
         $data =
             <<<JSON
-    {
-        "code": "sweat",
-        "family_variant": "familyVariantA1",
-        "parent": null,
-        "values": {
-            "a_number_float":[
-                {
-                    "locale":null,
-                    "scope":null,
-                    "data":"12.5000"
-                }
-            ]
-        }
+{
+    "code": "sweat",
+    "family_variant": "familyVariantA1",
+    "parent": null,
+    "values": {
+        "a_number_float":[
+            {
+                "locale":null,
+                "scope":null,
+                "data":"12.5000"
+            }
+        ]
     }
+}
 JSON;
 
         $client->request('PATCH', 'api/rest/v1/product-models/sweat', [], [], [], $data);
@@ -607,21 +640,21 @@ JSON;
 
         $data =
             <<<JSON
-    {
-        "code": "sub_sweat",
-        "parent": null,
-        "family_variant": "familyVariantA1",
-        "parent": null,
-        "values": {
-            "a_simple_select":[
-                {
-                    "locale":null,
-                    "scope":null,
-                    "data":"optionB"
-                }
-            ]
-        }
+{
+    "code": "sub_sweat",
+    "parent": null,
+    "family_variant": "familyVariantA1",
+    "parent": null,
+    "values": {
+        "a_simple_select":[
+            {
+                "locale":null,
+                "scope":null,
+                "data":"optionB"
+            }
+        ]
     }
+}
 JSON;
 
         $client->request('PATCH', 'api/rest/v1/product-models/sub_sweat', [], [], [], $data);
@@ -629,13 +662,13 @@ JSON;
         $expectedContent =
             <<<JSON
 {
-  "code": 422,
-  "message": "Property \"parent\" cannot be modified, \"NULL\" given. Check the expected format on the API documentation.",
-  "_links": {
-    "documentation": {
-      "href": "http://api.akeneo.com/api-reference.html#patch_product_models__code_"
+    "code": 422,
+    "message": "Property \"parent\" cannot be modified, \"NULL\" given. Check the expected format on the API documentation.",
+    "_links": {
+        "documentation": {
+          "href": "http://api.akeneo.com/api-reference.html#patch_product_models__code_"
+        }
     }
-  }
 }
 JSON;
 
@@ -651,19 +684,19 @@ JSON;
         $client = $this->createAuthenticatedClient();
 
         $data =
-<<<JSON
-    {
-        "code": "sweat",
-        "values": {
-            "a_number_float":[
-                {
-                    "locale":null,
-                    "scope":null,
-                    "data":"15.3"
-                }
-            ]
-        }
+            <<<JSON
+{
+    "code": "sweat",
+    "values": {
+        "a_number_float":[
+            {
+                "locale":null,
+                "scope":null,
+                "data":"15.3"
+            }
+        ]
     }
+}
 JSON;
 
         $client->request('PATCH', 'api/rest/v1/product-models/sweat', [], [], [], $data);
@@ -684,18 +717,18 @@ JSON;
         $client = $this->createAuthenticatedClient();
 
         $data =
-<<<JSON
-    {
-        "values": {
-            "a_description":[
-                {
-                    "locale":null,
-                    "scope":null,
-                    "data":"trololo le texte"
-                }
-            ]
-        }
+            <<<JSON
+{
+    "values": {
+        "non_existing_attribute":[
+            {
+                "locale":null,
+                "scope":null,
+                "data":"trololo le texte"
+            }
+        ]
     }
+}
 JSON;
 
         $client->request('PATCH', 'api/rest/v1/product-models/sub_sweat', [], [], [], $data);
@@ -703,15 +736,15 @@ JSON;
         $response = $client->getResponse();
 
         $expectedContent =
-<<<JSON
+            <<<JSON
 {
-  "code": 422,
-  "message": "Property \"a_description\" does not exist. Check the expected format on the API documentation.",
-  "_links": {
-    "documentation": {
-      "href": "http://api.akeneo.com/api-reference.html#patch_product_models__code_"
+    "code": 422,
+    "message": "Property \"non_existing_attribute\" does not exist. Check the expected format on the API documentation.",
+    "_links": {
+        "documentation": {
+          "href": "http://api.akeneo.com/api-reference.html#patch_product_models__code_"
+        }
     }
-  }
 }
 JSON;
 
@@ -726,34 +759,32 @@ JSON;
         $client = $this->createAuthenticatedClient();
 
         $data =
-<<<JSON
-    {
-        "values": {
-            "a_description":[
-                {
-                    "locale":null,
-                    "scope":null,
-                    "data":"trololo le texte"
-                }
-            ]
-        }
+            <<<JSON
+{
+    "values": {
+        "a_description":[
+            {
+                "locale":null,
+                "scope":null,
+                "data":"trololo le texte"
+            }
+        ]
     }
+}
 JSON;
 
         $client->request('PATCH', 'api/rest/v1/product-models/sweat', [], [], [], $data);
 
-        $response = $client->getResponse();
-
         $expectedContent =
             <<<JSON
 {
-  "code": 422,
-  "message": "Property \"a_description\" does not exist. Check the expected format on the API documentation.",
-  "_links": {
-    "documentation": {
-      "href": "http://api.akeneo.com/api-reference.html#patch_product_models__code_"
+    "code": 422,
+    "message": "Property \"a_description\" does not exist. Check the expected format on the API documentation.",
+    "_links": {
+        "documentation": {
+            "href": "http://api.akeneo.com/api-reference.html#patch_product_models__code_"
+        }
     }
-  }
 }
 JSON;
 
@@ -769,18 +800,18 @@ JSON;
 
         $data =
             <<<JSON
-    {
-        "family_variant": "familyVariantA1",
-        "values": {
-            "a_number_float":[
-                {
-                    "locale":null,
-                    "scope":null,
-                    "data":"12.5000"
-                }
-            ]
-        }
+{
+    "family_variant": "familyVariantA1",
+    "values": {
+        "a_number_float":[
+            {
+                "locale":null,
+                "scope":null,
+                "data":"12.5000"
+            }
+        ]
     }
+}
 JSON;
 
         $client->request('PATCH', 'api/rest/v1/product-models/sweat', [], [], [], $data);
@@ -796,20 +827,20 @@ JSON;
         $client = $this->createAuthenticatedClient();
 
         $data =
-<<<JSON
-    {
-        "code": "new_sub_sweat",
-        "parent": "sweat",
-        "values": {
-            "a_simple_select":[
-                {
-                    "locale":null,
-                    "scope":null,
-                    "data":"optionA"
-                }
-            ]
-        }
+            <<<JSON
+{
+    "code": "new_sub_sweat",
+    "parent": "sweat",
+    "values": {
+        "a_simple_select":[
+            {
+                "locale":null,
+                "scope":null,
+                "data":"optionA"
+            }
+        ]
     }
+}
 JSON;
 
         $client->request('PATCH', 'api/rest/v1/product-models/wrong_code', [], [], [], $data);
@@ -817,8 +848,8 @@ JSON;
         $expectedContent =
             <<<JSON
 {
-  "code": 422,
-  "message": "The code \"new_sub_sweat\" provided in the request body must match the code \"wrong_code\" provided in the url."
+    "code": 422,
+    "message": "The code \"new_sub_sweat\" provided in the request body must match the code \"wrong_code\" provided in the url."
 }
 JSON;
 
@@ -833,19 +864,19 @@ JSON;
         $client = $this->createAuthenticatedClient();
 
         $data =
-<<<JSON
-    {
-        "code": "new_root_sweat",
-        "values": {
-            "a_number_float":[
-                {
-                    "locale":null,
-                    "scope":null,
-                    "data":"15.3"
-                }
-            ]
-        }
+            <<<JSON
+{
+    "code": "new_root_sweat",
+    "values": {
+        "a_number_float":[
+            {
+                "locale":null,
+                "scope":null,
+                "data":"15.3"
+            }
+        ]
     }
+}
 JSON;
 
         $client->request('PATCH', 'api/rest/v1/product-models/wrong_code', [], [], [], $data);
@@ -853,8 +884,8 @@ JSON;
         $expectedContent =
             <<<JSON
 {
-  "code": 422,
-  "message": "The code \"new_root_sweat\" provided in the request body must match the code \"wrong_code\" provided in the url."
+    "code": 422,
+    "message": "The code \"new_root_sweat\" provided in the request body must match the code \"wrong_code\" provided in the url."
 }
 JSON;
 
@@ -869,20 +900,20 @@ JSON;
         $client = $this->createAuthenticatedClient();
 
         $data =
-<<<JSON
-    {
-        "code": "sub_sweat_bis",
-        "parent": "sweat",
-        "values": {
-            "a_simple_select":[
-                {
-                    "locale":null,
-                    "scope":null,
-                    "data":"optionB"
-                }
-            ]
-        }
+            <<<JSON
+{
+    "code": "sub_sweat_bis",
+    "parent": "sweat",
+    "values": {
+        "a_simple_select":[
+            {
+                "locale":null,
+                "scope":null,
+                "data":"optionB"
+            }
+        ]
     }
+}
 JSON;
 
         $client->request('PATCH', 'api/rest/v1/product-models/sub_sweat_bis', [], [], [], $data);
@@ -890,14 +921,14 @@ JSON;
         $expectedContent =
             <<<JSON
 {
-  "code": 422,
-  "message": "Validation failed.",
-  "errors": [
-    {
-      "property": "attribute",
-      "message": "Cannot set value \"Option B\" for the attribute axis \"a_simple_select\", as another sibling entity already has this value"
-    }
-  ]
+    "code": 422,
+    "message": "Validation failed.",
+    "errors": [
+        {
+            "property": "attribute",
+            "message": "Cannot set value \"Option B\" for the attribute axis \"a_simple_select\", as another sibling entity already has this value"
+        }
+    ]
 }
 JSON;
 
@@ -912,20 +943,20 @@ JSON;
         $client = $this->createAuthenticatedClient();
 
         $data =
-<<<JSON
-    {
-        "code": "sweat",
-        "parent": "hat",
-        "values": {
-            "a_number_float":[
-                {
-                    "locale":null,
-                    "scope":null,
-                    "data":"15.3"
-                }
-            ]
-        }
+            <<<JSON
+{
+    "code": "sweat",
+    "parent": "hat",
+    "values": {
+        "a_number_float":[
+            {
+                "locale":null,
+                "scope":null,
+                "data":"15.3"
+            }
+        ]
     }
+}
 JSON;
 
         $client->request('PATCH', 'api/rest/v1/product-models/sweat', [], [], [], $data);
@@ -933,13 +964,13 @@ JSON;
         $expectedContent =
             <<<JSON
 {
-  "code": 422,
-  "message": "Property \"parent\" cannot be modified, \"hat\" given. Check the expected format on the API documentation.",
-  "_links": {
-    "documentation": {
-      "href": "http://api.akeneo.com/api-reference.html#patch_product_models__code_"
+    "code": 422,
+    "message": "Property \"parent\" cannot be modified, \"hat\" given. Check the expected format on the API documentation.",
+    "_links": {
+        "documentation": {
+            "href": "http://api.akeneo.com/api-reference.html#patch_product_models__code_"
+        }
     }
-  }
 }
 JSON;
 
@@ -954,20 +985,20 @@ JSON;
         $client = $this->createAuthenticatedClient();
 
         $data =
-<<<JSON
-    {
-        "code": "sub_sweat",
-        "parent": "hat",
-        "values": {
-            "a_simple_select":[
-                {
-                    "locale":null,
-                    "scope":null,
-                    "data":"optionB"
-                }
-            ]
-        }
+            <<<JSON
+{
+    "code": "sub_sweat",
+    "parent": "hat",
+    "values": {
+        "a_simple_select":[
+            {
+                "locale":null,
+                "scope":null,
+                "data":"optionB"
+            }
+        ]
     }
+}
 JSON;
 
         $client->request('PATCH', 'api/rest/v1/product-models/sub_sweat', [], [], [], $data);
@@ -975,13 +1006,13 @@ JSON;
         $expectedContent =
             <<<JSON
 {
-  "code": 422,
-  "message": "Property \"parent\" cannot be modified, \"hat\" given. Check the expected format on the API documentation.",
-  "_links": {
-    "documentation": {
-      "href": "http://api.akeneo.com/api-reference.html#patch_product_models__code_"
+    "code": 422,
+    "message": "Property \"parent\" cannot be modified, \"hat\" given. Check the expected format on the API documentation.",
+    "_links": {
+        "documentation": {
+            "href": "http://api.akeneo.com/api-reference.html#patch_product_models__code_"
+        }
     }
-  }
 }
 JSON;
 
@@ -1006,20 +1037,20 @@ JSON;
         $client = $this->createAuthenticatedClient();
 
         $data =
-<<<JSON
-    {
-        "code": "sub_product",
-        "parent": "root_product_model",
-        "values": {
-            "a_simple_select":[
-                {
-                    "locale":null,
-                    "scope":null,
-                    "data":"optionB"
-                }
-            ]
-        }
+            <<<JSON
+{
+    "code": "sub_product",
+    "parent": "root_product_model",
+    "values": {
+        "a_simple_select":[
+            {
+                "locale":null,
+                "scope":null,
+                "data":"optionB"
+            }
+        ]
     }
+}
 JSON;
 
         $client->request('PATCH', 'api/rest/v1/product-models/sub_product', [], [], [], $data);
@@ -1027,14 +1058,14 @@ JSON;
         $expectedContent =
             <<<JSON
 {
-  "code": 422,
-  "message": "Validation failed.",
-  "errors": [
-    {
-      "property": "parent",
-      "message": "The product model \"sub_product\" cannot have a parent"
-    }
-  ]
+    "code": 422,
+    "message": "Validation failed.",
+    "errors": [
+        {
+            "property": "parent",
+            "message": "The product model \"sub_product\" cannot have a parent"
+        }
+    ]
 }
 JSON;
 
@@ -1049,20 +1080,20 @@ JSON;
         $client = $this->createAuthenticatedClient();
 
         $data =
-<<<JSON
-    {
-        "code": "sweat",
-        "family_variant": "familyVariantA2",
-        "values": {
-            "a_number_float":[
-                {
-                    "locale":null,
-                    "scope":null,
-                    "data":"15.3"
-                }
-            ]
-        }
+            <<<JSON
+{
+    "code": "sweat",
+    "family_variant": "familyVariantA2",
+    "values": {
+        "a_number_float":[
+            {
+                "locale":null,
+                "scope":null,
+                "data":"15.3"
+            }
+        ]
     }
+}
 JSON;
 
         $client->request('PATCH', 'api/rest/v1/product-models/sweat', [], [], [], $data);
@@ -1070,13 +1101,13 @@ JSON;
         $expectedContent =
             <<<JSON
 {
-  "code": 422,
-  "message": "Property \"family_variant\" cannot be modified, \"familyVariantA2\" given. Check the expected format on the API documentation.",
-  "_links": {
-    "documentation": {
-      "href": "http://api.akeneo.com/api-reference.html#patch_product_models__code_"
+    "code": 422,
+    "message": "Property \"family_variant\" cannot be modified, \"familyVariantA2\" given. Check the expected format on the API documentation.",
+    "_links": {
+        "documentation": {
+            "href": "http://api.akeneo.com/api-reference.html#patch_product_models__code_"
+        }
     }
-  }
 }
 JSON;
 
@@ -1092,19 +1123,19 @@ JSON;
 
         $data =
             <<<JSON
-    {
-        "code": "sub_sweat",
-        "parent": "sweat",
-        "family_variant": "familyVariantA1",
-        "values": {
-          "a_simple_select": [
-            {
-              "locale": null,
-              "data": "optionB"
-            }
-          ]
+{
+    "code": "sub_sweat",
+    "parent": "sweat",
+    "family_variant": "familyVariantA1",
+    "values": {
+      "a_simple_select": [
+        {
+          "locale": null,
+          "data": "optionB"
         }
+      ]
     }
+}
 JSON;
 
         $client->request('PATCH', 'api/rest/v1/product-models/sub_sweat', [], [], [], $data);
@@ -1112,13 +1143,13 @@ JSON;
         $expectedContent =
             <<<JSON
 {
-  "code": 422,
-  "message": "Property \"a_simple_select\" expects an array with the key \"scope\". Check the expected format on the API documentation.",
-  "_links": {
-    "documentation": {
-      "href": "http://api.akeneo.com/api-reference.html#patch_product_models__code_"
+    "code": 422,
+    "message": "Property \"a_simple_select\" expects an array with the key \"scope\". Check the expected format on the API documentation.",
+    "_links": {
+        "documentation": {
+            "href": "http://api.akeneo.com/api-reference.html#patch_product_models__code_"
+        }
     }
-  }
 }
 JSON;
 
@@ -1134,18 +1165,18 @@ JSON;
 
         $data =
             <<<JSON
-    {
-        "code": "sweat",
-        "family_variant": "familyVariantA1",
-        "values": {
-            "a_number_float":[
-                {
-                    "locale":null,
-                    "data":"15.3"
-                }
-            ]
-        }
+{
+    "code": "sweat",
+    "family_variant": "familyVariantA1",
+    "values": {
+        "a_number_float":[
+            {
+                "locale":null,
+                "data":"15.3"
+            }
+        ]
     }
+}
 JSON;
 
         $client->request('PATCH', 'api/rest/v1/product-models/sweat', [], [], [], $data);
@@ -1153,13 +1184,13 @@ JSON;
         $expectedContent =
             <<<JSON
 {
-  "code": 422,
-  "message": "Property \"a_number_float\" expects an array with the key \"scope\". Check the expected format on the API documentation.",
-  "_links": {
-    "documentation": {
-      "href": "http://api.akeneo.com/api-reference.html#patch_product_models__code_"
+    "code": 422,
+    "message": "Property \"a_number_float\" expects an array with the key \"scope\". Check the expected format on the API documentation.",
+    "_links": {
+        "documentation": {
+            "href": "http://api.akeneo.com/api-reference.html#patch_product_models__code_"
+        }
     }
-  }
 }
 JSON;
 
