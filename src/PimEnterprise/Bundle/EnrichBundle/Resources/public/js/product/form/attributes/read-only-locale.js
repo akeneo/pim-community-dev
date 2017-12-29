@@ -17,7 +17,6 @@ define(
              */
             configure: function () {
                 this.listenTo(this.getRoot(), 'pim_enrich:form:field:extension:add', this.addFieldExtension);
-                this.listenTo(this.getRoot(), 'pim_enrich:form:field:to-fill-filter', this.addFieldFilter);
 
                 return BaseForm.prototype.configure.apply(this, arguments);
             },
@@ -41,21 +40,6 @@ define(
                 );
 
                 return this;
-            },
-
-            /**
-             * Add filter on field if the user doesn't have the right to edit it.
-             *
-             * @param {object} event
-             */
-            addFieldFilter: function (event) {
-                event.filters.push(FetcherRegistry.getFetcher('permission').fetchAll().then(function (permissions) {
-                    return function (attributes) {
-                        return _.filter(attributes, function (attribute) {
-                            return this.isAttributeEditable(permissions, attribute, UserContext.get('catalogLocale'));
-                        }.bind(this));
-                    }.bind(this);
-                }.bind(this)));
             },
 
             /**

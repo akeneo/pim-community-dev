@@ -16,7 +16,6 @@ define(
             template: _.template(attributeTemplate),
             configure: function () {
                 this.listenTo(this.getRoot(), 'pim_enrich:form:field:extension:add', this.addFieldExtension);
-                this.listenTo(this.getRoot(), 'pim_enrich:form:field:to-fill-filter', this.addFieldFilter);
 
                 return BaseForm.prototype.configure.apply(this, arguments);
             },
@@ -29,21 +28,6 @@ define(
                 if (!this.isAttributeEditable(attribute)) {
                     event.field.setEditable(false);
                 }
-            },
-
-            /**
-             * Add filter on field if the user doesn't have the right to edit it.
-             *
-             * @param {object} event
-             */
-            addFieldFilter: function (event) {
-                event.filters.push($.Deferred().resolve(
-                    function (attributes) {
-                        return _.filter(attributes, function (attribute) {
-                            return this.isAttributeEditable(attribute);
-                        }.bind(this));
-                    }.bind(this)
-                ));
             },
 
             /**
