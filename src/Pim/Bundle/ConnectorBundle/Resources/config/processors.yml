@@ -331,6 +331,7 @@ services:
         arguments:
             - '@pim_catalog.repository.family_variant'
             - '@pim_catalog.repository.product_model'
+            - '@pim_catalog.repository.attribute'
 
     pim_connector.processor.attribute_filter.product:
         class: '%pim_connector.processor.attribute_filter.product.class%'

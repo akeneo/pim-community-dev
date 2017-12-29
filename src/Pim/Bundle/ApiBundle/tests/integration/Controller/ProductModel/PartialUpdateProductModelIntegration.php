@@ -679,7 +679,7 @@ JSON;
         $this->assertSame('', $response->getContent());
     }
 
-    public function testUpdateSubProductModelWithNoParentAndIgnoreAttribute()
+    public function testUpdateSubProductModelWithNonExistingAttribute()
     {
         $client = $this->createAuthenticatedClient();
 
@@ -702,16 +702,26 @@ JSON;
 
         $response = $client->getResponse();
 
-        $this->assertSame(Response::HTTP_NO_CONTENT, $response->getStatusCode());
-        $this->assertArrayHasKey('location', $response->headers->all());
-        $this->assertSame(
-            'http://localhost/api/rest/v1/product-models/sub_sweat',
-            $response->headers->get('location')
-        );
-        $this->assertSame('', $response->getContent());
+        $expectedContent =
+<<<JSON
+{
+  "code": 422,
+  "message": "Property \"a_description\" does not exist. Check the expected format on the API documentation.",
+  "_links": {
+    "documentation": {
+      "href": "http://api.akeneo.com/api-reference.html#patch_product_models__code_"
+    }
+  }
+}
+JSON;
+
+        $response = $client->getResponse();
+
+        $this->assertJsonStringEqualsJsonString($expectedContent, $response->getContent());
+        $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
     }
 
-    public function testUpdateRootProductModelWithNoParentAndIgnoreAttribute()
+    public function testUpdateRootProductModelWithNonExistingAttribute()
     {
         $client = $this->createAuthenticatedClient();
 
@@ -734,13 +744,23 @@ JSON;
 
         $response = $client->getResponse();
 
-        $this->assertSame(Response::HTTP_NO_CONTENT, $response->getStatusCode());
-        $this->assertArrayHasKey('location', $response->headers->all());
-        $this->assertSame(
-            'http://localhost/api/rest/v1/product-models/sweat',
-            $response->headers->get('location')
-        );
-        $this->assertSame('', $response->getContent());
+        $expectedContent =
+            <<<JSON
+{
+  "code": 422,
+  "message": "Property \"a_description\" does not exist. Check the expected format on the API documentation.",
+  "_links": {
+    "documentation": {
+      "href": "http://api.akeneo.com/api-reference.html#patch_product_models__code_"
+    }
+  }
+}
+JSON;
+
+        $response = $client->getResponse();
+
+        $this->assertJsonStringEqualsJsonString($expectedContent, $response->getContent());
+        $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
     }
 
     public function testUpdateRootProductModelWithNoCode()
@@ -769,39 +789,6 @@ JSON;
 
         $this->assertSame('', $response->getContent());
         $this->assertSame(Response::HTTP_NO_CONTENT, $response->getStatusCode());
-    }
-
-    public function testUpdateRootProductModelWithInvalidValue()
-    {
-        $client = $this->createAuthenticatedClient();
-
-        $data =
-<<<JSON
-    {
-        "code": "sweat",
-        "values": {
-            "invalid":[
-                {
-                    "locale":null,
-                    "scope":null,
-                    "data":"15.3"
-                }
-            ]
-        }
-    }
-JSON;
-
-        $client->request('PATCH', 'api/rest/v1/product-models/sweat', [], [], [], $data);
-
-        $response = $client->getResponse();
-
-        $this->assertSame(Response::HTTP_NO_CONTENT, $response->getStatusCode());
-        $this->assertArrayHasKey('location', $response->headers->all());
-        $this->assertSame(
-            'http://localhost/api/rest/v1/product-models/sweat',
-            $response->headers->get('location')
-        );
-        $this->assertSame('', $response->getContent());
     }
 
     public function testUpdateSubProductModelWithDifferentCodeInUrlThanInData()
