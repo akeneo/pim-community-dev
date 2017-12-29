@@ -70,7 +70,7 @@ define(
 
 
 
-                        let currentLocale = _.findWhere(locales, {code: params.localeCode});
+                        let currentLocale = locales.find(locale => locale.code === params.localeCode);
                         if (undefined === currentLocale) {
                             currentLocale = _.first(locales);
                         }
