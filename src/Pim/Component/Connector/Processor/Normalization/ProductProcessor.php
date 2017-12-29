@@ -119,7 +119,7 @@ class ProductProcessor implements ItemProcessorInterface, StepExecutionAwareInte
         if (null !== $this->cacheClearer) {
             $this->cacheClearer->clear();
         } else {
-            // TODO Remove $this->detacher, the upper condition and update the constructor on merge to 2.1
+            // TODO Remove $this->detacher, the upper condition and update the constructor on merge to master
             $this->detacher->detach($product);
         }
 
