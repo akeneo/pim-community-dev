@@ -7,6 +7,9 @@
 - API-567: Fix validation of product-models on API
 - PIM-7085: Fix translation missing
 - PIM-6965: Show short view|project name in the grid
+- PIM-7083: fix access to product edit form if no right to view default locale
+- PIM-7082: remove double user menu on product import edit form
+- PIM-7084: fix attribute suppression
 
 ## Improvements
 

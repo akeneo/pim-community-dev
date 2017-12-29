@@ -3,6 +3,7 @@
 namespace Pim\Component\Catalog\Factory;
 
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Akeneo\Component\StorageUtils\Repository\CachedObjectRepositoryInterface;
 use Pim\Component\Catalog\Exception\InvalidAttributeException;
 use Pim\Component\Catalog\Exception\InvalidOptionException;
@@ -97,6 +98,15 @@ class ValueCollectionFactory implements ValueCollectionFactoryInterface
                                     $e->getPropertyValue()
                                 )
                             );
+                        } catch (InvalidPropertyTypeException $e) {
+                            $this->logger->warning(
+                                sprintf(
+                                    'Tried to load a product value for attribute "%s" that does not have the ' .
+                                    'good type in database.',
+                                    $attribute->getCode()
+                                )
+                            );
+                            $values[] = $this->valueFactory->create($attribute, $channelCode, $localeCode, null);
                         }
                     }
                 }

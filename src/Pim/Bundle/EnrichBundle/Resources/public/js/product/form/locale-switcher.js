@@ -68,8 +68,6 @@ define(
                         };
                         this.getRoot().trigger('pim_enrich:form:locale_switcher:pre_render', params);
 
-
-
                         let currentLocale = locales.find(locale => locale.code === params.localeCode);
                         if (undefined === currentLocale) {
                             currentLocale = _.first(locales);
