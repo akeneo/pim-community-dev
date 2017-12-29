@@ -203,7 +203,6 @@ define(
                         ).then((attributeGroups) => {
                             const scope = UserContext.get('catalogScope');
                             const locale = UserContext.get('catalogLocale');
-
                             const fieldsToFill = toFillFieldProvider.getMissingRequiredFields(data, scope, locale);
 
                             const sections = _.values(

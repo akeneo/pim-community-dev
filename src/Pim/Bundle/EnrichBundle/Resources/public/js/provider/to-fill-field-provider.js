@@ -9,17 +9,11 @@
 define(
     [
         'jquery',
-        'underscore',
-        'oro/mediator',
-        'pim/attribute-manager',
-        'pim/fetcher-registry'
+        'underscore'
     ],
     function (
         $,
-        _,
-        mediator,
-        attributeManager,
-        fetcherRegistry
+        _
     ) {
         return {
             fieldsPromise: null,
@@ -48,42 +42,6 @@ define(
                 const levelAttributeCodes = Object.keys(product.values);
 
                 return missingAttributeCodes.filter(missingAttribute => levelAttributeCodes.includes(missingAttribute));
-            },
-
-            /**
-             * Get list of fields that need to be filled to complete the product
-             *
-             * @param {Object} root
-             * @param {Object} values
-             *
-             * @return {Promise}
-             */
-            getFields: function (root, values) {
-
-                if (null === this.fieldsPromise) {
-                    let filterPromises = [];
-                    root.trigger(
-                        'pim_enrich:form:field:to-fill-filter',
-                        {'filters': filterPromises}
-                    );
-
-                    this.fieldsPromise = $.when.apply($, filterPromises).then(function () {
-                        return arguments;
-                    }).then(function (filters) {
-                        return fetcherRegistry.getFetcher('attribute').fetchByIdentifiers(Object.keys(values))
-                            .then(function (attributesToFilter) {
-                                const filteredAttributes = _.reduce(filters, function (attributes, filter) {
-                                    return filter(attributes);
-                                }, attributesToFilter);
-
-                                return _.map(filteredAttributes, function (attribute) {
-                                    return attribute.code;
-                                });
-                            });
-                    });
-                }
-
-                return this.fieldsPromise;
             },
 
             /**

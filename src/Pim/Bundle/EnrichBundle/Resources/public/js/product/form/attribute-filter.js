@@ -1,4 +1,4 @@
- 'use strict';
+'use strict';
 /**
  * @author    Yohan Blain <yohan.blain@akeneo.com>
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
@@ -44,7 +44,7 @@ define(
 
                 this.$el.html(this.template({
                     filters: this.getFilters().map((filter) => {
-                        return { code: filter.getCode(), label: filter.getLabel() }
+                        return { code: filter.getCode(), label: filter.getLabel() };
                     }),
                     currentFilter: { code: currentFilter.getCode(), label: currentFilter.getLabel() },
                     __: __
