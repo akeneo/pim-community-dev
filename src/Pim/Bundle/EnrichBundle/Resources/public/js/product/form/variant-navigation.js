@@ -392,7 +392,17 @@ define(
                         .fetchChildren(parentId)
                         .then((children) => {
                             const childrenResults = this.searchOnResults(options.term, children);
-                            const sortedChildrenResults = _.sortBy(childrenResults, 'order_string');
+                            const sortedChildrenResults = childrenResults.sort((item1, item2) => {
+                                for (let i = 0; i < item1.order.length; i++) {
+                                    if (item1.order[i] > item2.order[i]) {
+                                        return 1;
+                                    } else if (item1.order[i] < item2.order[i]) {
+                                        return -1;
+                                    }
+                                }
+
+                                return 0;
+                            });
 
                             options.callback({
                                 results: sortedChildrenResults

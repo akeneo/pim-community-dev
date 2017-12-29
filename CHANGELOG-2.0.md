@@ -7,6 +7,7 @@
 - PIM-7070: Fix sequential edit when selecting multiple product models
 - PIM-6812: Change the message when delete an attribute as variant axis
 - PIM-7048: Fix cascade persist issue during import of families with variant
+- PIM-7049: Fix random order of attribute options 
 
 ## BC breaks
 

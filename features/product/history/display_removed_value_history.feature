@@ -22,7 +22,7 @@ Feature: Display the product history
     Then there should be 2 update
     And I should see history:
       | version | property           | value      |
-      | 2       | Weather conditions | cold,snowy |
+      | 2       | Weather conditions | snowy,cold |
     When I am on the "weather_conditions" attribute page
     And I visit the "Options" tab
     And I remove the "snowy" option
@@ -34,7 +34,7 @@ Feature: Display the product history
     Then there should be 2 updates
     And I should see history:
       | version | property           | value      |
-      | 2       | Weather conditions | cold,snowy |
+      | 2       | Weather conditions | snowy,cold |
 
   @skip @info https://akeneo.atlassian.net/browse/TIP-233
   Scenario: Update product history when a linked category is removed
@@ -155,7 +155,7 @@ Feature: Display the product history
     Then there should be 2 update
     And I should see history:
       | version | property           | value      |
-      | 2       | Weather conditions | cold,snowy |
+      | 2       | Weather conditions | snowy,cold |
       | 2       | Name en            | Nice boots |
     When I am on the "weather_conditions" attribute page
     And I press the secondary action "Delete"
@@ -169,5 +169,5 @@ Feature: Display the product history
     Then there should be 2 update
     And I should see history:
       | version | property           | value      |
-      | 2       | weather_conditions | cold,snowy |
+      | 2       | weather_conditions | snowy,cold |
       | 2       | name-en_US         | Nice boots |
