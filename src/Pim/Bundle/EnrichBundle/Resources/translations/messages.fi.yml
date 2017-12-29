@@ -89,6 +89,7 @@ pim_enrich:
       description: Valitun tuotteen attribuutit muokataan seuraavalla valitun lokaation datalla.
       empty: Ole hyvä ja valitse attribuutit joita haluat muokata
       success_flash: Työ "Tuotteiden tilan päivitys" on tällä hetkellä käynnissä
+      launched_flash: Massatoiminto "muokkaa attribuutteja" on käynnistetty. Sinulle ilmoitetaan, kun se on valmis.
       message:
         warning: Valituille tuotteille ei ole yhteistä attribuuttia. Vaihda valintaasi.
         invalid_attribute: Attribuutti koodilla "attribute_code" ei yhdistä valittuja tuotteita, attributti ohitettu.
@@ -158,6 +159,7 @@ pim_enrich:
       edit_attributes: Muokkaa tuotemallin ominaisuuksia
       categories_view: Tarkastele tuotemallin ryhmiä
       history: Näyte tuotemallin muutoshistoria
+      remove: Poista tuotemalli
     category:
       list: Listaa kategoriat
       create: Luo kategoria
@@ -763,6 +765,10 @@ edit_common_attributes: Muokkaa attribuutteja
 perform.steps.duplicated.title: Päällekkäät akselit
 perform.steps.excluded.title: Poissuljetut tuotteet
 batch_jobs:
+  add_product_value:
+    label: Lisää tuotteen arvo
+    perform:
+      label: Lisää tuotteen arvo
   update_product_value:
     label: Päivitä tuotteen arvo
     perform:

@@ -6,6 +6,7 @@ confirmation:
     attribute_group: Oletko varma, että haluat poistaa tämän attribuuttiryhmän?
     family: Oletko varma, että haluat poistaa tämän ryhmän?
     product: Oletko varma, että haluat poistaa tämän tuotteen?
+    product_model: Oletko varma, että haluat poistaa tämän tuotemallin? Kaikki lapset, tuotemallit ja variantit poistetaan myös.
     channel: Oletko varma, että haluat poistaa tämän kanavan?
     group: Oletko varma että haluat poistaa tämän ryhmän?
     group_type: Oletko varma, että haluat poistaa tämän ryhmätyypin?
@@ -46,6 +47,8 @@ flash:
     removed: Tuoteperhe poistettu
   product:
     removed: Tuote poistettu
+  product_model:
+    removed: Tuotemallin poistaminen onnistui
   channel:
     removed: Kanavan poistaminen onnistui
   group:
@@ -225,6 +228,7 @@ pim_enrich:
         title: Luo
         labels:
           family: Valitse perhe
+          family_variant: Valitse varianttiperhe
           save: Tallenna
           cancel: Peruuta
       message:
@@ -241,11 +245,13 @@ pim_enrich:
       info:
         create_successful: Tuotemallin luominen onnistui
         update_successful: Tuotemallin päivittäminen onnistui. Tuotevarianttien täyttöaste lasketaan uudelleen.
+        deletion_successful: Tuotemallin poisto onnistui.
         update_failed: Tuotemallia ei voitu päivittää.
         field_not_ready: 'Tuotemallia ei voida tallentaa. Seuraavat kentät eivät ole valmiita: {{ fields }}'
       read_only_parent_attribute_from_common: Tätä attribuuttia voidaan muokata yhteisissä attribuuteissa.
       read_only_parent_attribute_from_model: "Tätä attribuuttia voidaan muokata {{ axes }} attribuuteissa"
       variant_axis: Varianttiulottuvuus
+      title: tuotemallit
       add_child:
         create: Luo uusi
         cancel: Peruuta
@@ -319,6 +325,7 @@ pim_enrich:
         cant_remove_attribute_as_label: Otsikkona käytettyä attribuuttia ei voida poistaa
         cant_remove_attribute_as_image: Pääkuvana käytettyä attribuuttia ei voi poistaa
         attribute_edit_permission_is_not_granted: Sinulla ei ole oikeuksia muokata tuoteperheen attribuutteja
+        cant_remove_attribute_used_as_axis: Et voi poistaa tätä attribuuttia, koska sitä on käytössä varianttiperheessä
       meta:
         created: Luotu
         created_by: Luoja
@@ -331,12 +338,16 @@ pim_enrich:
       message:
         created: Tuoteperhe luotu
       variant:
+        common:
+          title: Yhteiset attribuutit
+          empty: Yhteisiä attribuutteja ei ole
         axis.label: Varianttiulottuvuus
         level_1.label: Variantin attribuutit tasolla 1
         level_2.label: Variantin attribuutit tasolla 2
         add_variant: Luo variantti
         create_label: Luo uusi varianttiperhe
         create_description: Varianttiperheelle voit määrittää tuoterakenteen varianteille. Valitse ylläpidettävien varianttitulottuvuuksien määrä, valitse varianttiulottuvuuksien eri tasoilla käytetyt määrittävät attribuutit ja valitse sitten miten attribuutit on jaettu eri tasoille.
+        update_description: Vedä ja pudota attribuutit valitulle tasolle, jotta niiden rikastaminen tapahtuu varianttien tasolla.
         create: Luo
         cancel: Peruuta
         code: Koodi
@@ -344,6 +355,12 @@ pim_enrich:
         levels: Varianttitasot
         axis_level: Varianttiulottuvuuden taso
         required: vaadittu
+        confirm_attribute_removal:
+          title: Vahvista attribuuttien poisto
+          message: Poistamalla nämä attribuutit, siirrät ne takaisin varianttiperheen yhteisiin attribuutteihin ja poistat arvot varianteilta
+    family_variant:
+      info:
+        update_successful: Varianttiperhe päivitetty onnistuneesti. Tuotteet ja variantit päivitetään tekemilläsi muutoksilla.
     attribute_option:
       code: Koodi
       label: Nimike
@@ -381,6 +398,7 @@ pim_enrich:
         update_failed: Attribuuttia ei voitu päivittää.
         create_successful: Attribuutin luominen onnistui.
         create_failed: Attribuuttia ei voitu luoda.
+        field_not_ready: 'Attribuuttia ei voida tallentaa. Seuraavat kentät eivät ole valmiita: {{ fields }}'
       scopable: Kanavakohtainen
       type:
         pim_catalog_identifier: Tunniste
@@ -433,6 +451,7 @@ pim_enrich:
   form:
     required: (vaadittu)
     product_model:
+      choose_product_model: Valitse tuotemalli
       choose_variant: Valitse variantti
       complete_variant_product: varianttituote
       complete_variant_products: varianttituotteet
@@ -913,6 +932,9 @@ pim_enrich:
         title: Ominaisuudet
       global_settings:
         title: Yleiset asetukset
+  mass_edit_action:
+    edit_common_attributes:
+      description: Vain attribuutit, jotka kuuluvat valittujen tuotteiden perheisiin muokataan seuraavilla tiedoilla (<span class="highlight">{{ locale }}</span> / <span class="highlight">{{ channel }}</span>).
   index:
     association_type:
       title: "] -Inf, 1] {{ count }} assosiaatiotyyppi|] 1, Inf [{{ count }} assosiaatiotyyppiä"
@@ -1003,6 +1025,8 @@ pim_enrich:
           field: Ottaa käyttöön
         edit_common:
           label: Muokkaa attribuutteja
+          label_count: "{1}Muokkaa <span class=\"AknFullPage-title--highlight\">1 tuotteen</span> attribuutteja|] 1, Inf [Muokkaa <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} tuotteen</span> attribuutteja"
+          description: Vain attribuutit, jotka kuuluvat valittujen tuotteiden perheisiin muokataan seuraavilla tiedoilla ({{ locale }} / {{ scope }}).
         change_family:
           label: Muuta perhe
           label_count: "{1}Muuta <span class=\"AknFullPage-title--highlight\">1 tuotteen perhe</span>|] 1, Inf [Muuta <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} tuotteen perhe</span>"
@@ -1025,6 +1049,10 @@ pim_enrich:
           label: Poista kategorioista
           label_count: "{1}Poista <span class=\"AknFullPage-title--highlight\">1 tuote</span> kategorioista|] 1, Inf [Poista <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} tuotetta</span> kategorioista"
           description: Tuotteet poistetaan seuraavista kategorioista.
+        add_to_existing_product_model:
+          label: Lisää olemassaolevaan tuotemalliin
+          label_count: "{1}Lisää <span class=\"AknFullPage-title--highlight\">1 tuote</span> olemassa olevaan tuotemalliin|] 1, Inf [Lisää <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} tuotetta</span> olemassa olevaan tuotemalliin"
+          description: Valittu tuotemalli kokoaa tuotteet ja mahdollistaa niiden yhteisten attribuuttien rikastamisen.
     family:
       title: Perheiden massamuokkaus
       confirm: "{1}Olet muokkaamassa perhettä seuraavilla tiedoilla, ole hyvä ja vahvista.|] 1, Inf [Olet muokkaamassa {{ itemsCount }} perhettä seuraavilla tiedoilla, ole hyvä ja vahvista."
@@ -1084,7 +1112,7 @@ page_title:
   pim_enrich_job_tracker_show: Prosessin tracker | Näytä työ
   pim_enrich_api_connection_index: API -yhteydet
   pim_enrich_api_connection_create: API -yhteydet| Luo
-  pim_enrich_mass_edit_action: Massaedit
+  pim_enrich_mass_edit_action: Massamuokkaus
   pim_analytics_system_info_index: Järjestelmätiedot
 batch_jobs:
   add_product_value:
@@ -1099,6 +1127,10 @@ batch_jobs:
     label: Muokkaa attribuutteja
     perform:
       label: Muokkaa attribuutteja
+  add_to_existing_product_model:
+    label: Lisää olemassaolevaan tuotemalliin
+    perform:
+      label: Lisää olemassaolevaan tuotemalliin
   set_attribute_requirements:
     label: Aseta vaaditut attribuutit
     perform:
@@ -1332,6 +1364,9 @@ pim_menu:
     exports: Viennit
     settings: Asetukset
     system: Järjestelmä
+    help:
+      title: Ohjeet
+      helper: Akeneo Help center
   item:
     association_type: Assosiaatiotyypit
     attribute: Attribuutit
@@ -1345,6 +1380,7 @@ pim_menu:
     group_type: Ryhmätyypit
     locale: Alueet
     product: Tuotteet
+    product_model: Tuotemallit
     published_product: Julkaistut tuotteet
     export_history: Vientihistoria
     export_profile: Vientiprofiili

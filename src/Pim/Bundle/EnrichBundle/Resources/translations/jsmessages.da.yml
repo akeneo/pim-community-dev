@@ -6,6 +6,7 @@ confirmation:
     attribute_group: Er du sikker på du vil slette denne attributgruppe?
     family: Er du sikker på at du vil slette denne familie?
     product: Er du sikker på du vil slette dette produkt?
+    product_model: Er du sikker på du vil slette denne produktmodel? Alle underliggende produkter, produktmodeller og variant produkter, slettes også.
     channel: Er du sikker på du vil slette denne kanal?
     group: Er du sikker på du vil slette denne gruppe?
     group_type: Er du sikker på du vil slette denne gruppe type?
@@ -46,6 +47,8 @@ flash:
     removed: Familien fjernet
   product:
     removed: Produktet blev fjernet
+  product_model:
+    removed: Produktmodellen fjernet
   channel:
     removed: Kanalen blev fjernet
   group:
@@ -242,11 +245,13 @@ pim_enrich:
       info:
         create_successful: Produktmodellen opdateret.
         update_successful: Produktmodellen opdateret. Fuldstændigheden af dens variant produkter vil blive genberegnet.
+        deletion_successful: Produktmodellen slettet.
         update_failed: Produktmodellen kunne ikke opdateres.
         field_not_ready: 'Produktmodellen kan ikke gemmes lige nu. Følgende felter er ikke klar: {{ fields }}'
       read_only_parent_attribute_from_common: Denne attribut kan blive opdateret på de fælles attributter.
       read_only_parent_attribute_from_model: "Denne attribut kan opdateres på attributterne af {{ axes }}"
       variant_axis: Variant akse
+      title: Produktmodeller
       add_child:
         create: Tilføj ny
         cancel: Annuller
@@ -927,6 +932,9 @@ pim_enrich:
         title: Egenskaber
       global_settings:
         title: Globale indstillinger
+  mass_edit_action:
+    edit_common_attributes:
+      description: Kun de attributter, der tilhører familierne til de valgte produkter vil blive redigeret med følgende data for <span class="highlight">{{ locale }}</span> locale og <span class="highlight">{{ channel }}</span> kanal.
   index:
     association_type:
       title: "] -Inf, 1] {{ count }} association type |] 1, Inf [{{ count }} association typer"
@@ -1017,6 +1025,8 @@ pim_enrich:
           field: At aktivere
         edit_common:
           label: Rediger attributter
+          label_count: "{1}Ret fælles attributter af <span class=\"AknFullPage-title--highlight\"> 1 produkt</span> |] 1, Inf [Rediger fælles attributter af <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} produkter</span>"
+          description: Kun de attributter, der tilhører familierne til de valgte produkter vil blive redigeret med følgende data for {{ locale }} locale og {{ scope }} kanal.
         change_family:
           label: Ændre familie
           label_count: "{1}Change familie af <span class=\"AknFullPage-title--highlight\"> 1 produkt</span> |] 1, Inf [Skift familie af <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} produkter</span>"
@@ -1117,6 +1127,8 @@ batch_jobs:
     label: Rediger attributter
     perform:
       label: Rediger attributter
+    cleaner:
+      label: Rens filer til fælles attributter
   add_to_existing_product_model:
     label: Føj til en eksisterende produktmodel
     perform:
@@ -1370,6 +1382,7 @@ pim_menu:
     group_type: Gruppetyper
     locale: Landestandarder
     product: Produkter
+    product_model: Produktmodeller
     published_product: Offentliggjorte produkter
     export_history: Eksport historik
     export_profile: Eksport profiler
