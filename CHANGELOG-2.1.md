@@ -1,3 +1,9 @@
+# 2.1.X
+
+# Bug fixes
+
+- PIM-7074: Fix label and completeness filters for search
+
 # 2.1.0 (2017-12-21)
 
 ## Better manage products with variants
@@ -16,7 +22,6 @@
 ## Web API
 
 - API-415: Update a list of options of a simple or multi select attribute
-- PIM-7074: Fix label and completeness filters for search
 
 ## BC breaks
 
