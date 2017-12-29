@@ -235,8 +235,6 @@ pim_enrich:
         update_successful: Modello di prodotto aggiornato correttamente. La completezza delle sue varianti sarà ricalcolata.
         update_failed: Il modello di prodotto non può essere aggiornato.
         field_not_ready: 'Il modello di prodotto non può essere salvato in questo momento. I campi seguenti non sono pronti: {{ fields }}'
-      read_only_parent_attribute_from_common: Questo attributo può essere aggiornato con gli attributi in comune.
-      read_only_parent_attribute_from_model: "Questo attributo può essere aggiornato con gli attributi per {{ axes }}"
       variant_axis: Asse di variante
       add_child:
         cancel: Annulla
@@ -432,7 +430,6 @@ pim_enrich:
             none_exist: Nessun tipo di associazione esistente.
             show_products: Visualizza i prodotti
             show_groups: Mostra gruppi
-            number_of_associations: "{{ productCount }} prodotto(i) e {{ groupCount }} gruppo(i)"
           association_type_selector: Tipi di associazione
           target: Target
         attributes:
@@ -448,7 +445,6 @@ pim_enrich:
             load_more: Carica ulteriori risultati...
           attribute_group_selector: Gruppo attributi
           attribute_group_all: Tutti
-          attribute_group.to_fill_count: "{1}1 attibuto obbligatorio vuoto|]1, Inf [{{ count }} attributi obbligatori vuoti"
           attribute_filter:
             display: Mostra
             all: Tutti gli attributi
@@ -1002,11 +998,9 @@ pim_enrich:
         add_to_category:
           label: Aggiungi alle categorie
           label_count: "{1}Aggiungi <span class=\"AknFullPage-title--highlight\">1 prodotto</span> to categories|] 1, Inf [Aggiungi <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} prodotti</span> to categories"
-          description: Gli articoli saranno posizionati nelle seguenti categorie, il posizionamento attuale è mantenuto.
         move_to_category:
           label: Sposta tra categorie
           label_count: "{1}Sposta <span class=\"AknFullPage-title--highlight\">1 prodotto</span> between categories|] 1, Inf [Sposta <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} prodotti</span> between categories"
-          description: I prodotti saranno posizionati nelle seguenti categorie; il posizionamento attuale viene perso.
         remove_from_category:
           label: Rimuovi dalle categorie
           label_count: "{1}Rimuovi <span class=\"AknFullPage-title--highlight\">1 prodotto</span> from categories|] 1, Inf [Rmuovi <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} prodotti</span> from categories"
