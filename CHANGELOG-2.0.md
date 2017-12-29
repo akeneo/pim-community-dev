@@ -10,6 +10,7 @@
 - PIM-7048: Fix cascade persist issue during import of families with variant
 - PIM-7049: Fix random order of attribute options 
 - PIM-7080: Fix memory leak on product export
+- PIM-6955: Fix delete user
 
 ## Improvements
 

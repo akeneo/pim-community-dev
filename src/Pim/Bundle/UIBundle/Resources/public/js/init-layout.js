@@ -1,8 +1,8 @@
 'use strict';
 
-define(['jquery', 'backbone', 'underscore', 'oro/translator', 'oro/app', 'oro/mediator', 'oro/layout',
+define(['jquery', 'backbone', 'underscore', 'pim/router', 'oro/translator', 'oro/app', 'oro/mediator', 'oro/layout',
         'pim/dialog', 'oro/messenger', 'bootstrap', 'jquery-setup'
-], function ($, Backbone, _, __, app, mediator, layout, Dialog, messenger) {
+], function ($, Backbone, _, router, __, app, mediator, layout, Dialog, messenger) {
 
 
     /* ============================================================
@@ -100,7 +100,6 @@ define(['jquery', 'backbone', 'underscore', 'oro/translator', 'oro/app', 'oro/me
          * from remove.confirm.js
          * ============================================================ */
 
-        /* global router */
         $(document).on('click', '.remove-button', function () {
             var el = $(this);
             var message = el.data('message');
@@ -121,7 +120,7 @@ define(['jquery', 'backbone', 'underscore', 'oro/translator', 'oro/app', 'oro/me
                         );
                         if (el.data('redirect')) {
                             $.isActive(true);
-                            Backbone.history.navigate(el.data('redirect'));
+                            Backbone.history.navigate('#' + el.data('redirect'));
                         } else {
                             router.hideLoadingMask();
                         }
