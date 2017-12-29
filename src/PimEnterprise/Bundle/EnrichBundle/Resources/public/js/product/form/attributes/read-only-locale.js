@@ -7,10 +7,16 @@ define(
         'backbone',
         'pim/form',
         'pim/field-manager',
-        'pim/fetcher-registry',
-        'pim/user-context'
+        'pim/fetcher-registry'
     ],
-    function ($, _, Backbone, BaseForm, FieldManager, FetcherRegistry, UserContext) {
+    function (
+        $,
+        _,
+        Backbone,
+        BaseForm,
+        FieldManager,
+        FetcherRegistry
+    ) {
         return BaseForm.extend({
             /**
              * {@inheritdoc}
