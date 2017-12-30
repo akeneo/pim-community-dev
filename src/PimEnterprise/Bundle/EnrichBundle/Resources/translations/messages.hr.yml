@@ -129,48 +129,12 @@ add_product_value_with_permission_and_rules:
 update_product_value_with_permission_and_rules:
   steps.perform: Ažuriraj vrijednosti proizvoda
 edit_common_attributes_with_permission_and_rules:
-  steps.perform: Uredi uobičajene atribute
-  steps.edit_common_attributes_processor.title: Uredi uobičajene atribute
-batch_jobs:
-  add_product_value_with_permission_and_rules:
-    label: Dodaj vrijednosti proizvoda sa provjerom dozvola i pravilima aplikacije
-    perform.label: Dodaj vrijednosti proizvoda
-    execute_rules.label: Izvođenje pravila
-  update_product_value_with_permission_and_rules:
-    label: Ažuriraj vrijednosti proizvoda sa provjerom dozvola i pravilima aplikacije
-    perform.label: Ažuriraj vrijednosti proizvoda
-    execute_rules.label: Izvođenje pravila
-  remove_product_value_with_permission_and_rules:
-    label: Ukloni vrijednosti proizvoda sa provjerom dozvola i pravilima aplikacije
-    perform.label: Uklanjanje vrijednosti proizvoda
-    execute_rules.label: Izvođenje pravila
-  edit_common_attributes_with_permission_and_rules:
-    label: Promijeni vrijednosti proizvoda sa provjerom dozvola i pravilima aplikacije
-    perform.label: Uredi uobičajene atribute
-    execute_rules.label: Izvođenje pravila
-    cleaner.label: Očisti privremene datoteke
-  csv_published_product_quick_export:
-    export.label: Brzi izvoz objavljenih proizvoda u Csv
-    perform:
-      label: Brzi izvoz objavljenih proizvoda u Csv
-  csv_published_product_grid_context_quick_export:
-    export.label: Brzi izvoz prikaza tablice objavljenih proizvoda u Csv
-    perform:
-      label: Brzi izvoz prikaza tablice objavljenih proizvoda u Csv
-  xlsx_published_product_quick_export:
-    export.label: Brzi izvoz objavljenih proizvoda u Xlsx
-    perform:
-      label: Brzi izvoz objavljenih proizvoda u Xlsx
-  xlsx_published_product_grid_context_quick_export:
-    export.label: Brzi izvoz prikaza tablice objavljenih proizvoda u Xlsx
-    perform:
-      label: Brzi izvoz prikaza tablice objavljenih proizvoda u Xlsx
-edit_common_attributes_with_permission_and_rules.steps.edit_common_attributes_processor.title: Uredi uobičajene atribute
+  steps.perform: Uredi atribute
+  steps.edit_common_attributes_processor.title: Uredi atribute
+edit_common_attributes_with_permission_and_rules.steps.edit_common_attributes_processor.title: Uredi atribute
 add_product_value_with_permission.steps.add_product_value_with_permission_processor.title: Dodaj vrijednost proizvoda sa dozvolom
 update_product_value_with_permission.steps.update_product_value_with_permission_processor.title: Ažuriraj vrijednost proizvoda sa dozvolom
 remove_product_value_with_permission.steps.update_product_value_with_permission_processor.title: Ukloni vrijednost proizvoda sa dozvolom
-edit_common_attributes_with_permission: Promijeni vrijednost proizvoda sa dozvolom
-edit_common_attributes_with_permission.steps.edit_common_attributes_processor.title: Promijeni vrijednost proizvoda sa dozvolom
 job_execution.summary:
   proposal_deleted: obrisano
 pim_enrich_attribute_form:

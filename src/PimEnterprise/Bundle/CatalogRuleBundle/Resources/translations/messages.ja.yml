@@ -87,26 +87,3 @@ btn:
 rule: ルールの設定
 mass_edit_rule: ルールの設定
 job_execution.summary.rule_calculated: ルールの数
-batch_jobs:
-  yml_rule_import:
-    label: ルールを、YAML形式でインポートする
-    import.label: ルールのインポート
-  yml_rule_export:
-    label: ルールを、YAML形式でエクスポートする
-    export.label: ルールのエクスポート
-  rule_impacted_product_count:
-    label: ルールの影響を受ける製品
-    perform.label: 影響を受けた製品をカウント
-    execute_rules.label: ルールの実行
-  csv_product_import_with_rules:
-    label: ルールのあるcsv 形式で製品のインポート
-    execute_rules.label: ルールの実行
-    validation.label: ファイルの検証
-    import.label: 製品のインポート
-    import_associations.label: 関連付けのインポート
-  xlsx_product_import_with_rules:
-    label: ルールのあるXLSX 形式で製品のインポート
-    execute_rules.label: ルールの実行
-    validation.label: ファイルの検証
-    import.label: 製品のインポート
-    import_associations.label: 関連付けのインポート

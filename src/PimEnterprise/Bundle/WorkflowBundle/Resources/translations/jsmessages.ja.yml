@@ -40,3 +40,22 @@ pimee_workflow:
         label: コメント (省略可能)
         error: エラーが発生しました、提案が部分的に拒否されています
         success: 変更が拒否されました
+batch_jobs:
+  csv_published_product_export:
+    label: 公開済み商品をCSVにエクスポート
+    export.label: 公開済み商品のエクスポート
+  csv_product_proposal_import:
+    label: 製品提案をCSV形式でインポート
+    import.label: 製品提案をインポート
+  approve_product_draft:
+    label: 提案を承諾する
+    perform.label: 提案を承諾する
+  refuse_product_draft:
+    label: 提案を拒否する
+    perform.label: 提案を拒否する
+  xlsx_published_product_export:
+    label: 公開済み商品をXLSX形式でエクスポート
+    export.label: 公開済み商品のエクスポート
+  xlsx_product_proposal_import:
+    label: 製品提案をXLSX形式でインポート
+    import.label: 製品提案をXLSX形式でインポート

@@ -40,3 +40,22 @@ pimee_workflow:
         label: Jätä kommentti (valinnainen)
         error: Virhe tapahtui. Ehdotusta ei hylätty osittain
         success: Muutokset hylätty onnistuneesti
+batch_jobs:
+  csv_published_product_export:
+    label: Julkaistun tuotteen vienti CSV-muodossa
+    export.label: Julkaistun tuotteen vienti
+  csv_product_proposal_import:
+    label: Tuote-ehdotuksen tuonti CSV-muodossa
+    import.label: Tuote-ehdotuksen tuonti
+  approve_product_draft:
+    label: Hyväksy ehdotus
+    perform.label: Hyväksy ehdotus
+  refuse_product_draft:
+    label: Hylkää ehdotus
+    perform.label: Hylkää ehdotus
+  xlsx_published_product_export:
+    label: Julkaistujen tuotteiden vienti XLSX-muodossa
+    export.label: Julkaistun tuotteen vienti
+  xlsx_product_proposal_import:
+    label: Tuote-ehdotusten tuonti XLSX-muodossa
+    import.label: Tuote-ehdotusten tuonti XLSX-muodossa

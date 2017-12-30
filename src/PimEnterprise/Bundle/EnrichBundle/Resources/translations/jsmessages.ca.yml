@@ -191,3 +191,36 @@ page_title:
   pimee_product_asset_index: Recursos
   pimee_asset_categorytree_index: Categories
   pimee_catalog_rule_rule_index: Regles
+batch_jobs:
+  add_product_value_with_permission_and_rules:
+    label: Afegir valor producte amb comprovació de permisos i aplicació de regles
+    perform.label: Afegir valor de producte
+    execute_rules.label: Execució de les regles
+  update_product_value_with_permission_and_rules:
+    label: Actualitzar el valor de producte amb comprovació de permisos i aplicació de regles
+    perform.label: Actualitzar el valor del producte
+    execute_rules.label: Execució de les regles
+  remove_product_value_with_permission_and_rules:
+    label: Eliminar el valor de producte amb comprovació de permisos i aplicació de regles
+    perform.label: Treure el valor del producte
+    execute_rules.label: Execució de les regles
+  edit_common_attributes_with_permission_and_rules:
+    perform.label: Editar atributs
+    execute_rules.label: Execució de les regles
+    cleaner.label: Netejar arxius temporals
+  csv_published_product_quick_export:
+    export.label: Exportació ràpida dels productes publicats en Csv
+    perform:
+      label: Exportació ràpida dels productes publicats en Csv
+  csv_published_product_grid_context_quick_export:
+    export.label: Exportació ràpida de la quadrícula de context de productes publicats en Csv
+    perform:
+      label: Exportació ràpida de la quadrícula de context de productes publicats en Csv
+  xlsx_published_product_quick_export:
+    export.label: Exportació ràpida dels productes publicats en Xlsx
+    perform:
+      label: Exportació ràpida dels productes publicats en Xlsx
+  xlsx_published_product_grid_context_quick_export:
+    export.label: Exportació ràpida de la quadrícula de context de productes publicats en Xlsx
+    perform:
+      label: Exportació ràpida de la quadrícula de context de productes publicats en Xlsx

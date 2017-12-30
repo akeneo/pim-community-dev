@@ -181,7 +181,6 @@ pimee_enrich:
           description: この製品は未公開予定
           warning: 選択した {{ itemsCount }} の製品を未公開予定です。
     asset:
-      title: アセット/一括編集 ({{ itemsCount }} アセット)
       step:
         select:
           label: アセットを選択する
@@ -199,7 +198,6 @@ pimee_enrich:
           field: タグ
         add_to_category:
           label: アセットをカテゴリに分類
-          description: アセットは以下のカテゴリに配置されます、既存の表示順が保持されます。
           field: カテゴリ
 pim_menu:
   tab:
@@ -219,3 +217,39 @@ page_title:
   pimee_asset_categorytree_index: カテゴリ
   pimee_asset_categorytree_edit: カテゴリ {{ category.label }} |編集
   pimee_catalog_rule_rule_index: ルール
+batch_jobs:
+  yml_asset_channel_configuration_import:
+    import:
+      label: アセットチャネル構成をインポート
+  add_product_value_with_permission_and_rules:
+    label: 許可チェック＆ルール適用による製品価値の追加
+    perform.label: 製品の値を追加
+    execute_rules.label: ルールの実行
+  update_product_value_with_permission_and_rules:
+    label: 許可チェック＆ルール適用による製品価値の更新
+    perform.label: 製品の値を更新
+    execute_rules.label: ルールの実行
+  remove_product_value_with_permission_and_rules:
+    label: 許可チェック＆ルール適用による製品価値の削除
+    perform.label: 製品の値を削除
+    execute_rules.label: ルールの実行
+  edit_common_attributes_with_permission_and_rules:
+    perform.label: 属性を編集
+    execute_rules.label: ルールの実行
+    cleaner.label: 一時ファイルを削除
+  csv_published_product_quick_export:
+    export.label: Csvの公開された製品のクイックエクスポート
+    perform:
+      label: Csvの公開された製品のクイックエクスポート
+  csv_published_product_grid_context_quick_export:
+    export.label: Csv の公開済み製品のグリッドコンテキストのクイックエクスポート
+    perform:
+      label: Csv の公開済み製品のグリッドコンテキストのクイックエクスポート
+  xlsx_published_product_quick_export:
+    export.label: Xlsxの公開済み製品のクイックエクスポート
+    perform:
+      label: Xlsxの公開済み製品のクイックエクスポート
+  xlsx_published_product_grid_context_quick_export:
+    export.label: Xlsxの公開済み製品のグリッドコンテキストのクイックエクスポート
+    perform:
+      label: Xlsxの公開済み製品のグリッドコンテキストのクイックエクスポート

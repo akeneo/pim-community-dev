@@ -134,48 +134,12 @@ add_product_value_with_permission_and_rules:
 update_product_value_with_permission_and_rules:
   steps.perform: Обновить значение продукта
 edit_common_attributes_with_permission_and_rules:
-  steps.perform: Изменить общие атрибуты
-  steps.edit_common_attributes_processor.title: Изменить общие атрибуты
-batch_jobs:
-  add_product_value_with_permission_and_rules:
-    label: Добавить значение продукта с проверкой прав доступа & применением правил
-    perform.label: Добавить значение продукта
-    execute_rules.label: Выполнение правил
-  update_product_value_with_permission_and_rules:
-    label: Обновить значение продукта с проверкой прав доступа & применением правил
-    perform.label: Обновить значение продукта
-    execute_rules.label: Выполнение правил
-  remove_product_value_with_permission_and_rules:
-    label: Удалить значение продукта с проверкой прав доступа & применением правил
-    perform.label: Удалить значение продукта
-    execute_rules.label: Выполнение правил
-  edit_common_attributes_with_permission_and_rules:
-    label: Редактировать общие атрибуты с проверкой прав доступа & применением правил
-    perform.label: Изменить общие атрибуты
-    execute_rules.label: Выполнение правил
-    cleaner.label: Очистить временные файлы
-  csv_published_product_quick_export:
-    export.label: Быстрый экспорт опубликованных товаров в CSV
-    perform:
-      label: Быстрый экспорт опубликованных товаров в CSV
-  csv_published_product_grid_context_quick_export:
-    export.label: Быстрый экспорт контекста сетки опубликованных товаров в CSV
-    perform:
-      label: Быстрый экспорт контекста сетки опубликованных товаров в CSV
-  xlsx_published_product_quick_export:
-    export.label: Быстрый экспорт опубликованных товаров в XLSX
-    perform:
-      label: Быстрый экспорт опубликованных товаров в XLSX
-  xlsx_published_product_grid_context_quick_export:
-    export.label: Быстрый экспорт контекста сетки опубликованных товаров в XLSX
-    perform:
-      label: Быстрый экспорт контекста сетки опубликованных товаров в XLSX
-edit_common_attributes_with_permission_and_rules.steps.edit_common_attributes_processor.title: Изменить общие атрибуты
+  steps.perform: Редактировать атрибуты
+  steps.edit_common_attributes_processor.title: Редактировать атрибуты
+edit_common_attributes_with_permission_and_rules.steps.edit_common_attributes_processor.title: Редактировать атрибуты
 add_product_value_with_permission.steps.add_product_value_with_permission_processor.title: Добавить значение продукта с правами доступа
 update_product_value_with_permission.steps.update_product_value_with_permission_processor.title: Обновить значение продукта с правами доступа
 remove_product_value_with_permission.steps.update_product_value_with_permission_processor.title: Удалить значение продукта с правами доступа
-edit_common_attributes_with_permission: Редактировать общие атрибуты с правами доступа
-edit_common_attributes_with_permission.steps.edit_common_attributes_processor.title: Редактировать общие атрибуты с правами доступа
 job_execution.summary:
   mass_published: Продукт опубликован
   mass_unpublished: Продукт снят с публикации

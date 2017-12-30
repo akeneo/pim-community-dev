@@ -179,7 +179,6 @@ pimee_enrich:
           description: Los productos serán despublicados
           warning: Los {{ itemsCount }} productos seleccionados serán quitados de la publicación.
     asset:
-      title: Activos / Edición en masa ({{ itemsCount }} activos)
       step:
         select:
           label: Elegir recurso
@@ -194,7 +193,6 @@ pimee_enrich:
           field: Etiquetas
         add_to_category:
           label: Clasificar los activos en categorías
-          description: Los activos serán colocados en las siguientes categorías, las categorías actuales serán conservadas.
           field: Categorías
 pim_menu:
   tab:
@@ -211,3 +209,39 @@ page_title:
   pimee_product_asset_index: Recursos
   pimee_asset_categorytree_index: Categorías
   pimee_catalog_rule_rule_index: Reglas
+batch_jobs:
+  yml_asset_channel_configuration_import:
+    import:
+      label: Importar configuración de recursos por canal
+  add_product_value_with_permission_and_rules:
+    label: Agregar el valor de producto con verificación de permisos y aplicación de reglas
+    perform.label: Agregar un valor de producto
+    execute_rules.label: Ejecución de las reglas
+  update_product_value_with_permission_and_rules:
+    label: Actualizar el valor de producto con verificación de permisos y aplicación de reglas
+    perform.label: Actualizar el valor del producto
+    execute_rules.label: Ejecución de las reglas
+  remove_product_value_with_permission_and_rules:
+    label: Quitar el valor del producto con verificación de permisos y aplicación de reglas
+    perform.label: Quitar el valor del producto
+    execute_rules.label: Ejecución de las reglas
+  edit_common_attributes_with_permission_and_rules:
+    perform.label: Editar atributos
+    execute_rules.label: Ejecución de las reglas
+    cleaner.label: Eliminar archivos temporales
+  csv_published_product_quick_export:
+    export.label: Exportación rápida en CSV de los productos publicados
+    perform:
+      label: Exportación rápida en CSV de los productos publicados
+  csv_published_product_grid_context_quick_export:
+    export.label: Exportación rápida de la grilla de productos publicados en CSV
+    perform:
+      label: Exportación rápida de la grilla de productos publicados en CSV
+  xlsx_published_product_quick_export:
+    export.label: Exportación rápida en XLSX de los productos publicados
+    perform:
+      label: Exportación rápida en XLSX de los productos publicados
+  xlsx_published_product_grid_context_quick_export:
+    export.label: Exportación rápida de la grilla de productos publicados en XLSX
+    perform:
+      label: Exportación rápida de la grilla de productos publicados en XLSX

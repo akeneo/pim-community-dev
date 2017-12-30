@@ -181,7 +181,6 @@ pimee_enrich:
           description: Produkterne vil blive afpubliseret
           warning: '{{ itemsCount }} udvalgte produkter vil blive afpubliseret.'
     asset:
-      title: Asset / masse redigere ({{ itemsCount }} aktiver)
       step:
         select:
           label: Vælg Aktiver
@@ -199,7 +198,6 @@ pimee_enrich:
           field: Tags
         add_to_category:
           label: Klassificere produkter i kategorier
-          description: Aktiver vil blive placeret i følgende kategorier, den nuværende placering er holdt.
           field: Kategorier
 pim_menu:
   tab:
@@ -219,3 +217,39 @@ page_title:
   pimee_asset_categorytree_index: Kategorier
   pimee_asset_categorytree_edit: Kategori {{ category.label }} | Rediger
   pimee_catalog_rule_rule_index: Regler
+batch_jobs:
+  yml_asset_channel_configuration_import:
+    import:
+      label: Aktiv kanal konfiguration import
+  add_product_value_with_permission_and_rules:
+    label: Tilføj produktværdi med tilladelse tjek & regler anvendelse
+    perform.label: Tilføj produktværdi
+    execute_rules.label: Regler udførelse
+  update_product_value_with_permission_and_rules:
+    label: Tilføj produktværdi med tilladelse tjek & regler anvendelse
+    perform.label: Opdatere produktets værdi
+    execute_rules.label: Regler udførelse
+  remove_product_value_with_permission_and_rules:
+    label: Tilføj produktværdi med tilladelse tjek & regler anvendelse
+    perform.label: Fjern produktværdi
+    execute_rules.label: Regler udførelse
+  edit_common_attributes_with_permission_and_rules:
+    perform.label: Rediger attributter
+    execute_rules.label: Regler udførelse
+    cleaner.label: Ryd midlertidige filer
+  csv_published_product_quick_export:
+    export.label: CSV offentliggjort produkter hurtig eksport
+    perform:
+      label: CSV offentliggjort produkter hurtig eksport
+  csv_published_product_grid_context_quick_export:
+    export.label: CSV offentliggjort produkter gitter sammenhæng hurtig eksport
+    perform:
+      label: CSV offentliggjort produkter gitter sammenhæng hurtig eksport
+  xlsx_published_product_quick_export:
+    export.label: CSV offentliggjort produkter hurtig eksport
+    perform:
+      label: CSV offentliggjort produkter hurtig eksport
+  xlsx_published_product_grid_context_quick_export:
+    export.label: CSV offentliggjort produkter gitter sammenhæng hurtig eksport
+    perform:
+      label: CSV offentliggjort produkter gitter sammenhæng hurtig eksport

@@ -166,3 +166,36 @@ page_title:
   pimee_product_asset_index: Imovine
   pimee_asset_categorytree_index: Kategorije
   pimee_catalog_rule_rule_index: Pravila
+batch_jobs:
+  add_product_value_with_permission_and_rules:
+    label: Dodaj vrijednosti proizvoda sa provjerom dozvola i pravilima aplikacije
+    perform.label: Dodaj vrijednosti proizvoda
+    execute_rules.label: Izvođenje pravila
+  update_product_value_with_permission_and_rules:
+    label: Ažuriraj vrijednosti proizvoda sa provjerom dozvola i pravilima aplikacije
+    perform.label: Ažuriraj vrijednosti proizvoda
+    execute_rules.label: Izvođenje pravila
+  remove_product_value_with_permission_and_rules:
+    label: Ukloni vrijednosti proizvoda sa provjerom dozvola i pravilima aplikacije
+    perform.label: Uklanjanje vrijednosti proizvoda
+    execute_rules.label: Izvođenje pravila
+  edit_common_attributes_with_permission_and_rules:
+    perform.label: Uredi atribute
+    execute_rules.label: Izvođenje pravila
+    cleaner.label: Očisti privremene datoteke
+  csv_published_product_quick_export:
+    export.label: Brzi izvoz objavljenih proizvoda u Csv
+    perform:
+      label: Brzi izvoz objavljenih proizvoda u Csv
+  csv_published_product_grid_context_quick_export:
+    export.label: Brzi izvoz prikaza tablice objavljenih proizvoda u Csv
+    perform:
+      label: Brzi izvoz prikaza tablice objavljenih proizvoda u Csv
+  xlsx_published_product_quick_export:
+    export.label: Brzi izvoz objavljenih proizvoda u Xlsx
+    perform:
+      label: Brzi izvoz objavljenih proizvoda u Xlsx
+  xlsx_published_product_grid_context_quick_export:
+    export.label: Brzi izvoz prikaza tablice objavljenih proizvoda u Xlsx
+    perform:
+      label: Brzi izvoz prikaza tablice objavljenih proizvoda u Xlsx

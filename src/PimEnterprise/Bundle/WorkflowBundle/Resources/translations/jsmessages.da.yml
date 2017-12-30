@@ -40,3 +40,22 @@ pimee_workflow:
         label: Tilføj en kommentar (valgfrit)
         error: Der opstod en fejl, forslag er ikke blevet delvist afvist
         success: Ændringerne er blevet afvist
+batch_jobs:
+  csv_published_product_export:
+    label: Offentliggjort produkt eksport i CSV
+    export.label: Offentliggjort produkt eksport
+  csv_product_proposal_import:
+    label: Produkt forslag import som CSV
+    import.label: Produkt forslag import
+  approve_product_draft:
+    label: Godkend forslag
+    perform.label: Godkend forslag
+  refuse_product_draft:
+    label: Afvis forslagerne
+    perform.label: Afvis forslagerne
+  xlsx_published_product_export:
+    label: Publiceret produkt eksport som XLSX
+    export.label: Offentliggjort produkt eksport
+  xlsx_product_proposal_import:
+    label: Produkt forslag import som CSV
+    import.label: Produkt forslag import som CSV

@@ -87,26 +87,3 @@ btn:
 rule: Impostazioni delle Regole
 mass_edit_rule: Impostazioni delle Regole
 job_execution.summary.rule_calculated: Numero di regole
-batch_jobs:
-  yml_rule_import:
-    label: Importazione regole in YAML
-    import.label: Importazione regole
-  yml_rule_export:
-    label: Esportazione regole in YAML
-    export.label: Esportazione regole
-  rule_impacted_product_count:
-    label: Prodotti interessati dalle regole
-    perform.label: Conta i prodotti interessati
-    execute_rules.label: Esecuzione regole
-  csv_product_import_with_rules:
-    label: Importazione prodotti in formato CSV con regole
-    execute_rules.label: Esecuzione regole
-    validation.label: Validazione file
-    import.label: Importazione prodotti
-    import_associations.label: Importazione associazioni
-  xlsx_product_import_with_rules:
-    label: Importazione prodotti in formato XLSX con regole
-    execute_rules.label: Esecuzione regole
-    validation.label: Validazione file
-    import.label: Importazione prodotti
-    import_associations.label: Importazione associazioni

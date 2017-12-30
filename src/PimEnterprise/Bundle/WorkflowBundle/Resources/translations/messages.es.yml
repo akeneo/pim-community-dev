@@ -73,8 +73,8 @@ pimee_workflow:
       page_title: Productos publicados
       page_subtitle: Edición en masa (1 producto publicado)|Edición en masa (%count% productos publicados)
       title: Elegir operación
-      subtitle: Selecciones la operación que desea realizar en el producto seleccionado|Seleccione la operación que desea realizar en los %count% productos seleccionados
-      confirm: Está a punto de actualizar un producto Publicado con la siguiente información, por favor confirme.|Está a punto de actualizar %count% productos Publicados con la siguiente información, por favor confirme.
+      subtitle: Seleccione la operación que desea ejecutar en el producto publicado que ha seleccionado|Seleccione la operación que desea ejecutar en los %count% productos publicados que ha seleccionado
+      confirm: Está a punto de actualizar un producto publicado con la siguiente información, por favor confirme.|Está a punto de actualizar %count% productos publicados con la siguiente información, por favor confirme.
       steps:
         first: Seleccione los productos publicados
         second: Elegir operación
@@ -133,25 +133,6 @@ job_execution.summary:
   proposal_created: propuesta creada
   proposal_skipped: propuesta omitida (sin diferencias)
 published products: Productos publicados
-batch_jobs:
-  csv_published_product_export:
-    label: Exportar productos publicados en CSV
-    export.label: Exportación de productos publicados
-  csv_product_proposal_import:
-    label: Importación de propuesta de producto en CSV
-    import.label: Importación de propuesta de producto
-  approve_product_draft:
-    label: Aprobar la propuesta
-    perform.label: Aprobar la propuesta
-  refuse_product_draft:
-    label: Rechazar propuesta
-    perform.label: Rechazar propuesta
-  xlsx_published_product_export:
-    label: Exportar productos publicados en XLSX
-    export.label: Exportación de productos publicados
-  xlsx_product_proposal_import:
-    label: Importar propuestas de productos en XLSX
-    import.label: Importar propuestas de productos en XLSX
 pim_analytics:
   info_type:
     nb_published_products: Número de productos publicados

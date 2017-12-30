@@ -137,25 +137,6 @@ job_execution.summary:
   proposal_created: oprettede forslag
   proposal_skipped: oversprunget forslag (ingen forskelle)
 published products: Offentliggjorte produkter
-batch_jobs:
-  csv_published_product_export:
-    label: Offentliggjort produkt eksport i CSV
-    export.label: Offentliggjort produkt eksport
-  csv_product_proposal_import:
-    label: Produkt forslag import som CSV
-    import.label: Produkt forslag import
-  approve_product_draft:
-    label: Godkend forslag
-    perform.label: Godkend forslag
-  refuse_product_draft:
-    label: Afvis forslagerne
-    perform.label: Afvis forslagerne
-  xlsx_published_product_export:
-    label: Publiceret produkt eksport som XLSX
-    export.label: Offentliggjort produkt eksport
-  xlsx_product_proposal_import:
-    label: Produkt forslag import som CSV
-    import.label: Produkt forslag import som CSV
 pim_analytics:
   info_type:
     nb_published_products: Antallet af offentliggjorte produkt

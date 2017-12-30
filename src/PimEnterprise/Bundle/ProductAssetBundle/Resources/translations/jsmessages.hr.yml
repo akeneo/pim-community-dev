@@ -12,6 +12,8 @@ pimee_product_asset:
           cancel: Poništi
           confirm: Potvrdi
         title: Upravljanje imovinom
+    asset:
+      not_empty: Kod je potreban. Ne može biti prazan.
   enrich_asset:
     grid:
       edit: Uredi svojstva imovine
@@ -76,3 +78,27 @@ pim_dashboard:
         mass_upload: Masovni prijenos
 page_title:
   pimee_product_asset_mass_upload: Prijenos imovine
+batch_jobs:
+  apply_assets_mass_upload:
+    label: Masovni prijenos imovine
+    perform.label: Masovni prijenos
+  yml_asset_channel_configuration_import:
+    validation.label: Provjera valjanosti datoteke
+  csv_asset_import:
+    validation.label: Provjera valjanosti datoteke
+  csv_tag_import:
+    validation.label: Provjera valjanosti datoteke
+  csv_asset_category_import:
+    validation.label: Provjera valjanosti datoteke
+  csv_asset_configuration_import:
+    validation.label: Provjera valjanosti datoteke
+  xlsx_tag_import:
+    validation.label: Provjera valjanosti datoteke
+  xlsx_asset_import:
+    validation.label: Provjera valjanosti datoteke
+  xlsx_asset_category_import:
+    validation.label: Provjera valjanosti datoteke
+  classify_assets:
+    perform.label: Premjesti imovinu u kategorije
+  add_tags_to_assets:
+    perform.label: Dodaj oznake u imovine

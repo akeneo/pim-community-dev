@@ -178,69 +178,6 @@ assets_mass_upload.steps:
   asset_mass_upload.title: Masse indlæs aktiver
 import_asset.steps.channel_configuration_processor.title: Håndter kanel konfigurationer
 mass_upload: Masse indlæs aktiver
-batch_jobs:
-  apply_assets_mass_upload:
-    label: Masse indlæs aktiver
-    perform.label: Masse upload
-  yml_asset_channel_configuration_import:
-    label: Aktiv kanal konfiguration import i Yaml
-    validation.label: Filvalidering
-    import_asset.label: Aktiv kanal konfiguration import i Yaml
-  yml_asset_channel_configuration_export:
-    label: Aktiv kanal konfiguration import i Yaml
-    export.label: Aktiv kanal konfiguration import i Yaml
-  csv_asset_import:
-    label: Aktiv import i CSV-
-    validation.label: Filvalidering
-    import_tags.label: Tag import i CSV-
-    import_asset.label: Aktiv import i CSV-
-  csv_asset_export:
-    label: Aktiver eksport i CSV-
-    export.label: Aktiver eksport i CSV-
-  csv_asset_variation_export:
-    label: Aktiv variationer eksportere i CSV
-    export.label: Aktiv variationer eksportere i CSV
-  csv_tag_import:
-    label: Tag import i CSV-
-    validation.label: Filvalidering
-    import.label: Tag import i CSV-
-  csv_asset_category_import:
-    label: Aktiver kategori import i CSV-
-    validation.label: Filvalidering
-    import_asset_category.label: Aktiver kategori import i CSV-
-  csv_asset_configuration_import:
-    label: Aktiver kanal konfiguration import i Yaml
-    validation.label: Filvalidering
-    import_asset.label: Aktiver kanal konfiguration import i Yaml
-  csv_asset_category_export:
-    label: Aktiver kategori import i CSV-
-    export.label: Aktiver kategori import i CSV-
-  xlsx_tag_import:
-    label: Tag import i XLSX
-    validation.label: Filvalidering
-    import.label: Tag import i XLSX
-  xlsx_asset_import:
-    label: Aktiver import i XLSX
-    validation.label: Filvalidering
-    import_tags.label: Tag import i XLSX
-    import_asset.label: Aktiver import i XLSX
-  xlsx_asset_category_import:
-    label: Aktiver kategori import i XLSX
-    validation.label: Filvalidering
-    import_asset_category.label: Aktiver kategori import i XLSX
-  xlsx_asset_export:
-    label: Aktiver import i XLSX
-    export.label: Aktiver import i XLSX
-  xlsx_asset_category_export:
-    label: Aktiver kategori import i XLSX
-    export.label: Aktiver kategori import i XLSX
-  xlsx_asset_variation_export:
-    label: Aktiver kategori import i XLSX
-    export.label: Aktiver kategori import i XLSX
-  classify_assets:
-    perform.label: Flytte aktiver til kategorier
-  add_tags_to_assets:
-    perform.label: Tilføje tags til aktiver
 pim_analytics:
   info_type:
     nb_assets: Antallet af aktiver

@@ -59,3 +59,26 @@ flash:
     impacted_product_count: S'ha engegat l'acció massiva per calcular els productes afectats per la regla. Se li notificarà quan finalitzi.
     executed: S'ha engegat la execució de la regla. Se li notificarà quan finalitzi.
 pim_dashboard.widget.last_operations.job_type.mass_edit_rule: Configuració de les regles
+batch_jobs:
+  yml_rule_import:
+    label: Importació de regla en YAML
+    import.label: Importació de la regla
+  yml_rule_export:
+    label: Exportació de la regla en YAML
+    export.label: Exportació de la regla
+  rule_impacted_product_count:
+    label: Productes afectats per les regles
+    perform.label: Comptar productes afectats
+    execute_rules.label: Execució de les regles
+  csv_product_import_with_rules:
+    label: Importació de productes amb regles a CSV
+    execute_rules.label: Execució de les regles
+    validation.label: Validar arxius
+    import.label: Importar productes
+    import_associations.label: Importar associacions
+  xlsx_product_import_with_rules:
+    label: Importació de productes amb regles a XLSX
+    execute_rules.label: Execució de les regles
+    validation.label: Validar arxius
+    import.label: Importar productes
+    import_associations.label: Importar associacions

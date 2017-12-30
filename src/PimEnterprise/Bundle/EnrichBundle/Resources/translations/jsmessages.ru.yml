@@ -191,3 +191,36 @@ page_title:
   pimee_product_asset_index: Медиафайлы
   pimee_asset_categorytree_index: Категории
   pimee_catalog_rule_rule_index: Правила
+batch_jobs:
+  add_product_value_with_permission_and_rules:
+    label: Добавить значение продукта с проверкой прав доступа & применением правил
+    perform.label: Добавить значение продукта
+    execute_rules.label: Выполнение правил
+  update_product_value_with_permission_and_rules:
+    label: Обновить значение продукта с проверкой прав доступа & применением правил
+    perform.label: Обновить значение продукта
+    execute_rules.label: Выполнение правил
+  remove_product_value_with_permission_and_rules:
+    label: Удалить значение продукта с проверкой прав доступа & применением правил
+    perform.label: Удалить значение продукта
+    execute_rules.label: Выполнение правил
+  edit_common_attributes_with_permission_and_rules:
+    perform.label: Редактировать атрибуты
+    execute_rules.label: Выполнение правил
+    cleaner.label: Очистить временные файлы
+  csv_published_product_quick_export:
+    export.label: Быстрый экспорт опубликованных товаров в CSV
+    perform:
+      label: Быстрый экспорт опубликованных товаров в CSV
+  csv_published_product_grid_context_quick_export:
+    export.label: Быстрый экспорт контекста сетки опубликованных товаров в CSV
+    perform:
+      label: Быстрый экспорт контекста сетки опубликованных товаров в CSV
+  xlsx_published_product_quick_export:
+    export.label: Быстрый экспорт опубликованных товаров в XLSX
+    perform:
+      label: Быстрый экспорт опубликованных товаров в XLSX
+  xlsx_published_product_grid_context_quick_export:
+    export.label: Быстрый экспорт контекста сетки опубликованных товаров в XLSX
+    perform:
+      label: Быстрый экспорт контекста сетки опубликованных товаров в XLSX

@@ -23,6 +23,7 @@ teamwork_assistant:
     description: Kuvaus
     due_date: Määräpäivä
     due_date_past: Et voi valita päivää menneisyydestä.
+    leaving_scope: Olet poistumassa projektilta.
   edit_project_modal:
     saved: Projekti tallennettu.
     title: Muokkaa projektia
