@@ -175,13 +175,19 @@ job_execution.summary:
   skipped_assets: 被略过的资产
 assets_mass_upload.steps:
   asset_mass_upload.title: 资产大批上传
+import_asset.steps.channel_configuration_processor.title: 处理渠道配置
 mass_upload: 批量上传资产
 batch_jobs:
   apply_assets_mass_upload:
     label: 资产大批上传
     perform.label: 批量上传
   yml_asset_channel_configuration_import:
+    label: 用 Yaml 导入资产通道配置
     validation.label: 文件验证
+    import_asset.label: 用 Yaml 导入资产通道配置
+  yml_asset_channel_configuration_export:
+    label: 用 Yaml 导出资产通道配置
+    export.label: 用 Yaml 导出资产通道配置
   csv_asset_import:
     label: 从CSV文件中导入产品
     validation.label: 文件验证

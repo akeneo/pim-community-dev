@@ -53,10 +53,12 @@ batch_jobs:
     label: Sääntöjen vienti YAML-muodossa
     export.label: Sääntöjen vienti
   csv_product_import_with_rules:
+    label: Tuotteiden ja sääntöjen tuonti CSV-muodossa
     validation.label: Tiedostojen tarkistaminen
     import.label: Tuotteiden tuonti
     import_associations.label: Liitännäisten tuonti
   xlsx_product_import_with_rules:
+    label: Tuotteiden ja sääntöjen tuonti XLSX-muodossa
     validation.label: Tiedostojen tarkistaminen
     import.label: Tuotteiden tuonti
     import_associations.label: Liitännäisten tuonti

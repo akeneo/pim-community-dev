@@ -174,13 +174,19 @@ job_execution.summary:
   skipped_assets: Пропущенные медиафайлы
 assets_mass_upload.steps:
   asset_mass_upload.title: Масс загрузка медиафайлов
+import_asset.steps.channel_configuration_processor.title: Обработать конфигурацию каналов
 mass_upload: Масс загрузка медиафайлов
 batch_jobs:
   apply_assets_mass_upload:
     label: Масс загрузка медиафайлов
     perform.label: Массовая загрузка
   yml_asset_channel_configuration_import:
+    label: Импорт конфигурации каналов медиафайлов из Yaml
     validation.label: Проверка файла
+    import_asset.label: Импорт конфигурации каналов медиафайлов из Yaml
+  yml_asset_channel_configuration_export:
+    label: Экспорт конфигурации каналов медиафайлов в Yaml
+    export.label: Экспорт конфигурации каналов медиафайлов в Yaml
   csv_asset_import:
     label: Импорт медиафайлов из CSV
     validation.label: Проверка файла

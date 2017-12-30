@@ -6,7 +6,7 @@ pimee_product_asset:
         panel:
           basket:
             title: Panier
-            empty_basket: Panier est vide
+            empty_basket: Le panier est vide
         manage_asset:
           title: Gérer les ressources
           cancel: Annuler
