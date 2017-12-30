@@ -66,3 +66,27 @@ flash:
     impacted_product_count: Massatoiminto tuotteille, joihin tämä sääntö vaikuttaa on käynnistetty. Sinulle ilmoitetaan, kun se on valmis.
     executed: Säännön suoritus käynnistetty. Sinulle ilmoitetaan, kun se on valmis.
 pim_dashboard.widget.last_operations.job_type.mass_edit_rule: Sääntöjen asetukset
+batch_jobs:
+  yml_rule_import:
+    label: Sääntöjen tuonti YAML-muodossa
+    import.label: Sääntöjen tuonti
+    execute_rules.label: Sääntöjen suorittaminen
+  yml_rule_export:
+    label: Sääntöjen vienti YAML-muodossa
+    export.label: Sääntöjen vienti
+  rule_impacted_product_count:
+    label: Päivitettävät tuotteet säännölle
+    perform.label: Laske päivitetyt tuotteet
+    execute_rules.label: Sääntöjen suorittaminen
+  csv_product_import_with_rules:
+    label: Tuotteiden ja sääntöjen tuonti CSV-muodossa
+    execute_rules.label: Sääntöjen suorittaminen
+    validation.label: Tiedostojen tarkistaminen
+    import.label: Tuotteiden tuonti
+    import_associations.label: Liitännäisten tuonti
+  xlsx_product_import_with_rules:
+    label: Tuotteiden ja sääntöjen tuonti XLSX-muodossa
+    execute_rules.label: Sääntöjen suorittaminen
+    validation.label: Tiedostojen tarkistaminen
+    import.label: Tuotteiden tuonti
+    import_associations.label: Liitännäisten tuonti

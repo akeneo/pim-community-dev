@@ -129,40 +129,16 @@ pimee_enrich:
       options:
         width: '%value%px leveys'
         height: '%value%px korkeus'
+add_product_value_with_permission_and_rules:
+  steps.perform: Lisää tuotteen arvo
 update_product_value_with_permission_and_rules:
   steps.perform: Päivitä tuotteen arvo
 edit_common_attributes_with_permission_and_rules:
-  steps.perform: Muokkaa yleisiä attribuutteja
-  steps.edit_common_attributes_processor.title: Muokkaa yleisiä attribuutteja
-batch_jobs:
-  yml_asset_channel_configuration_import:
-    import:
-      label: Assettien kanava-asetusten tuonti
-  add_product_value_with_permission_and_rules:
-    execute_rules.label: Sääntöjen suorittaminen
-  update_product_value_with_permission_and_rules:
-    perform.label: Päivitä tuotteen arvo
-    execute_rules.label: Sääntöjen suorittaminen
-  remove_product_value_with_permission_and_rules:
-    perform.label: Poista tuotteen arvo
-    execute_rules.label: Sääntöjen suorittaminen
-  edit_common_attributes_with_permission_and_rules:
-    perform.label: Muokkaa yleisiä attribuutteja
-    execute_rules.label: Sääntöjen suorittaminen
-    cleaner.label: Poista väliaikaiset tiedostot
-  csv_published_product_quick_export:
-    export.label: Julkaistujen tuotteiden nopea vienti CSV-muodossa
-    perform:
-      label: Julkaistujen tuotteiden nopea vienti CSV-muodossa
-  xlsx_published_product_quick_export:
-    export.label: Julkaistujen tuotteiden nopea vienti XSLX-muodossa
-    perform:
-      label: Julkaistujen tuotteiden nopea vienti XSLX-muodossa
-edit_common_attributes_with_permission_and_rules.steps.edit_common_attributes_processor.title: Muokkaa yleisiä attribuutteja
+  steps.perform: Muokkaa attribuutteja
+  steps.edit_common_attributes_processor.title: Muokkaa attribuutteja
+edit_common_attributes_with_permission_and_rules.steps.edit_common_attributes_processor.title: Muokkaa attribuutteja
 add_product_value_with_permission.steps.add_product_value_with_permission_processor.title: Lisää käyttöoikeudellinen tuotearvo
 update_product_value_with_permission.steps.update_product_value_with_permission_processor.title: Päivitä käyttöoikeudellinen tuotearvo
-edit_common_attributes_with_permission: Muokkaa yleisiä luvanvaraisia attribuutteja
-edit_common_attributes_with_permission.steps.edit_common_attributes_processor.title: Muokkaa yleisiä luvanvaraisia attribuutteja
 job_execution.summary:
   mass_published: Tuote julkaistu
   mass_unpublished: Tuote julkaisematon

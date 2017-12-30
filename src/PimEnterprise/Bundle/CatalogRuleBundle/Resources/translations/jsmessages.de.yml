@@ -62,3 +62,26 @@ flash:
     impacted_product_count: Die Berechnung der von dieser Regel betroffenen Produkte wurde gestartet. Sie werden benachrichtigt, sobald der Vorgang abgeschlossen ist.
     executed: Die Anwendung der Regel wurde gestartet. Sie werden benachrichtigt, sobald der Vorgang abgeschlossen ist.
 pim_dashboard.widget.last_operations.job_type.mass_edit_rule: Regeleinstellungen
+batch_jobs:
+  yml_rule_import:
+    label: Regel-Import in YAML
+    import.label: Regel-Import
+  yml_rule_export:
+    label: Regel-Export in YAML
+    export.label: Regelexport
+  rule_impacted_product_count:
+    label: Von dieser Regel betroffene Produkte
+    perform.label: Anzahl der betroffenen Produkte
+    execute_rules.label: Regel-Ausführung
+  csv_product_import_with_rules:
+    label: Produktimport in CSV mit Regeln
+    execute_rules.label: Regel-Ausführung
+    validation.label: Dateivalidierung
+    import.label: Produkt import
+    import_associations.label: Produktverbindungen-Import
+  xlsx_product_import_with_rules:
+    label: Produktimport in XLSX mit Regeln
+    execute_rules.label: Regel-Ausführung
+    validation.label: Dateivalidierung
+    import.label: Produkt import
+    import_associations.label: Produktverbindungen-Import

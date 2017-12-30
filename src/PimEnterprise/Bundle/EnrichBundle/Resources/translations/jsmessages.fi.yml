@@ -19,7 +19,7 @@ pim_enrich:
       pim_assets_collection: Assettikokoelma
     attribute:
       type:
-        pim_assets_collection: Asettikokoelma
+        pim_assets_collection: Assettikokoelma
   form:
     attribute:
       tab:
@@ -36,8 +36,10 @@ pimee_enrich:
       tab:
         permission:
           title: Käyttöoikeudet
+          added: Käyttäjäryhmä {{ group }} on oikeutettu {{ permission }} työprofiilia
           execute.label: Työprofiilin suorittaminen sallittu
           edit.label: Työprofiilin muokkaaminen sallittu
+          removed: Käyttäjäryhmä {{ group }} ei ole oikeutettu {{ permission }} työprofiilia
     channel:
       tab:
         asset-transformation:
@@ -48,6 +50,8 @@ pimee_enrich:
           title: Käyttöoikeudet
           view.label: Attribuuttien katselu sallittu
           edit.label: Attribuuttien muokkaaminen sallittu
+          removed: Käyttäjäryhmä {{ group }} ei ole oikeutettu {{ permission }} attribuuttiryhmää
+          added: Käyttäjäryhmä {{ group }} on oikeutettu {{ permission }} attribuuttiryhmää
   entity:
     product:
       index_title: "] -Inf, 1] {{ count }} tulos|] 1, Inf [{{ count }} tulosta"
@@ -177,7 +181,6 @@ pimee_enrich:
           description: Tuotteen julkaisu perutaan
           warning: '{{ itemsCount }} valitun tuotteen julkaisu perutaan.'
     asset:
-      title: Assetti / Massamuokkaus ({{ itemsCount }} assettia)
       step:
         select:
           label: Valitse assetit
@@ -195,7 +198,6 @@ pimee_enrich:
           field: Tunnisteet
         add_to_category:
           label: Luokittele assetit kategorioihin
-          description: Assetit liitetään seuraaviin kategorioihin. Olemassa olevat liitokset säilytetään.
           field: Kategoriat
 pim_menu:
   tab:
@@ -215,3 +217,28 @@ page_title:
   pimee_asset_categorytree_index: Kategoriat
   pimee_asset_categorytree_edit: Kategoria {{ category.label }} | Muokkaus
   pimee_catalog_rule_rule_index: Säännöt
+batch_jobs:
+  yml_asset_channel_configuration_import:
+    import:
+      label: Assettien kanava-asetusten tuonti
+  add_product_value_with_permission_and_rules:
+    perform.label: Lisää tuotteen arvo
+    execute_rules.label: Sääntöjen suorittaminen
+  update_product_value_with_permission_and_rules:
+    perform.label: Päivitä tuotteen arvo
+    execute_rules.label: Sääntöjen suorittaminen
+  remove_product_value_with_permission_and_rules:
+    perform.label: Poista tuotteen arvo
+    execute_rules.label: Sääntöjen suorittaminen
+  edit_common_attributes_with_permission_and_rules:
+    perform.label: Muokkaa attribuutteja
+    execute_rules.label: Sääntöjen suorittaminen
+    cleaner.label: Poista väliaikaiset tiedostot
+  csv_published_product_quick_export:
+    export.label: Julkaistujen tuotteiden nopea vienti CSV-muodossa
+    perform:
+      label: Julkaistujen tuotteiden nopea vienti CSV-muodossa
+  xlsx_published_product_quick_export:
+    export.label: Julkaistujen tuotteiden nopea vienti XSLX-muodossa
+    perform:
+      label: Julkaistujen tuotteiden nopea vienti XSLX-muodossa

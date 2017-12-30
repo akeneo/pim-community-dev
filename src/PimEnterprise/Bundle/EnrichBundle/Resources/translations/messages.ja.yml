@@ -134,51 +134,12 @@ add_product_value_with_permission_and_rules:
 update_product_value_with_permission_and_rules:
   steps.perform: 製品の値を更新
 edit_common_attributes_with_permission_and_rules:
-  steps.perform: 共通の属性を編集
-  steps.edit_common_attributes_processor.title: 共通の属性を編集
-batch_jobs:
-  yml_asset_channel_configuration_import:
-    import:
-      label: アセットチャネル構成をインポート
-  add_product_value_with_permission_and_rules:
-    label: 許可チェック＆ルール適用による製品価値の追加
-    perform.label: 製品の値を追加
-    execute_rules.label: ルールの実行
-  update_product_value_with_permission_and_rules:
-    label: 許可チェック＆ルール適用による製品価値の更新
-    perform.label: 製品の値を更新
-    execute_rules.label: ルールの実行
-  remove_product_value_with_permission_and_rules:
-    label: 許可チェック＆ルール適用による製品価値の削除
-    perform.label: 製品の値を削除
-    execute_rules.label: ルールの実行
-  edit_common_attributes_with_permission_and_rules:
-    label: 許可チェック＆ルール適用による共通の属性の編集
-    perform.label: 共通の属性を編集
-    execute_rules.label: ルールの実行
-    cleaner.label: 一時ファイルを削除
-  csv_published_product_quick_export:
-    export.label: Csvの公開された製品のクイックエクスポート
-    perform:
-      label: Csvの公開された製品のクイックエクスポート
-  csv_published_product_grid_context_quick_export:
-    export.label: Csv の公開済み製品のグリッドコンテキストのクイックエクスポート
-    perform:
-      label: Csv の公開済み製品のグリッドコンテキストのクイックエクスポート
-  xlsx_published_product_quick_export:
-    export.label: Xlsxの公開済み製品のクイックエクスポート
-    perform:
-      label: Xlsxの公開済み製品のクイックエクスポート
-  xlsx_published_product_grid_context_quick_export:
-    export.label: Xlsxの公開済み製品のグリッドコンテキストのクイックエクスポート
-    perform:
-      label: Xlsxの公開済み製品のグリッドコンテキストのクイックエクスポート
-edit_common_attributes_with_permission_and_rules.steps.edit_common_attributes_processor.title: 共通の属性を編集
+  steps.perform: 属性を編集
+  steps.edit_common_attributes_processor.title: 属性を編集
+edit_common_attributes_with_permission_and_rules.steps.edit_common_attributes_processor.title: 属性を編集
 add_product_value_with_permission.steps.add_product_value_with_permission_processor.title: 許可を得て製品の値を追加
 update_product_value_with_permission.steps.update_product_value_with_permission_processor.title: 許可を得て製品の値を更新
 remove_product_value_with_permission.steps.update_product_value_with_permission_processor.title: 許可を得て製品の値を削除
-edit_common_attributes_with_permission: 許可を得て共通の属性を編集
-edit_common_attributes_with_permission.steps.edit_common_attributes_processor.title: 許可を得て共通の属性を編集
 job_execution.summary:
   mass_published: 公開済み製品
   mass_unpublished: 非公開製品

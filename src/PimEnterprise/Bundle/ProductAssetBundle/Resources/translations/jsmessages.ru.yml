@@ -12,6 +12,8 @@ pimee_product_asset:
           cancel: Отмена
           confirm: Подтверждение
         title: Управление активами
+    asset:
+      not_empty: Код требуется. Он не может быть пустым.
   enrich_asset:
     grid:
       edit: Редактирование свойств актива
@@ -76,3 +78,63 @@ pim_dashboard:
         mass_upload: Массовая загрузка
 page_title:
   pimee_product_asset_mass_upload: Загрузить медиафайлы
+batch_jobs:
+  apply_assets_mass_upload:
+    label: Масс загрузка медиафайлов
+    perform.label: Массовая загрузка
+  yml_asset_channel_configuration_import:
+    label: Импорт конфигурации каналов медиафайлов из Yaml
+    validation.label: Проверка файла
+    import_asset.label: Импорт конфигурации каналов медиафайлов из Yaml
+  yml_asset_channel_configuration_export:
+    label: Экспорт конфигурации каналов медиафайлов в Yaml
+    export.label: Экспорт конфигурации каналов медиафайлов в Yaml
+  csv_asset_import:
+    label: Импорт медиафайлов из CSV
+    validation.label: Проверка файла
+    import_tags.label: Импорт тегов из CSV
+    import_asset.label: Импорт медиафайлов из CSV
+  csv_asset_export:
+    label: Экспорт медиафайлов в CSV
+    export.label: Экспорт медиафайлов в CSV
+  csv_asset_variation_export:
+    label: Экспорт вариаций медиафайлов в CSV
+    export.label: Экспорт вариаций медиафайлов в CSV
+  csv_tag_import:
+    label: Импорт тегов из CSV
+    validation.label: Проверка файла
+    import.label: Импорт тегов из CSV
+  csv_asset_category_import:
+    label: Импорт категорий медиафайлов из CSV
+    validation.label: Проверка файла
+    import_asset_category.label: Импорт категорий медиафайлов из CSV
+  csv_asset_configuration_import:
+    label: Импорт конфигурации каналов медиафайлов из CSV
+    validation.label: Проверка файла
+    import_asset.label: Импорт конфигурации каналов медиафайлов из CSV
+  csv_asset_category_export:
+    label: Экспорт категорий медиафайлов в CSV
+    export.label: Экспорт категорий медиафайлов в CSV
+  xlsx_tag_import:
+    label: Импорт тегов из XLSX
+    validation.label: Проверка файла
+    import.label: Импорт тегов из XLSX
+  xlsx_asset_import:
+    label: Импорт медиафайлов из XLSX
+    validation.label: Проверка файла
+    import_tags.label: Импорт тегов из XLSX
+    import_asset.label: Импорт медиафайлов из XLSX
+  xlsx_asset_category_import:
+    label: Импорт категорий медиафайлов из XLSX
+    validation.label: Проверка файла
+    import_asset_category.label: Импорт категорий медиафайлов из XLSX
+  xlsx_asset_export:
+    label: Экспорт медиафайлов в XLSX
+    export.label: Экспорт медиафайлов в XLSX
+  xlsx_asset_category_export:
+    label: Экспорт категорий медиафайлов в XLSX
+    export.label: Экспорт категорий медиафайлов в XLSX
+  classify_assets:
+    perform.label: Переместить медиафайлы в категории
+  add_tags_to_assets:
+    perform.label: Добавление тегов к медиафайлам

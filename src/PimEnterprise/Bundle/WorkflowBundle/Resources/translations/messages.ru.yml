@@ -20,6 +20,7 @@ pimee_workflow:
       can_be_partially_reviewed: Вы можете просмотреть это предложение только частично потому, что некоторые изменения применяются на значения, которые Вы не можете менять. Обратитесь к администратору для изменения ваших прав.
       can_not_be_approved: Вы не можете просмотреть это предложение потому, что некоторые изменения применяются на значения, которые Вы не можете менять. Обратитесь к администратору для изменения ваших прав.
       can_not_be_deleted: Вы не можете удалить это предложение потому, что некоторые изменения применяются на значения, которые Вы не можете менять. Обратитесь к администратору для изменения ваших прав.
+      in_progress: Это предложение в ходе выполнения и еще не был представлено.
     action:
       approve: Утвердить все
       refuse: Отклонить все
@@ -31,6 +32,8 @@ pimee_workflow:
       partial_approve_number: '%owner% принял значения %attributes_count% атрибутов для продукта %product%'
       partial_reject: '%owner% отклонил значения для %attributes% продукта %product%'
       partial_reject_number: '%owner% отклонил значения %attributes_count% атрибутов для продукта %product%'
+      partial_remove: '%owner% удалил значения для %attributes% продукта %product%'
+      partial_remove_number: '%owner% удалил значения %attributes_count% атрибутов для продукта %product%'
       approve: '%owner% принял Ваше предложение %product%'
       refuse: '%owner% отклонил Ваше предложение %product%'
       remove: '%owner% удалил Ваше предложение %product%'
@@ -68,8 +71,12 @@ pimee_workflow:
   mass_edit_action:
     published:
       page_title: Опубликованные продукты
+      page_subtitle: Массовое редактирование (1 опубликованный продукт)|Массовое редактирование (%count% опубликованных продуктов)
       title: Выберите операцию
+      subtitle: Выберите операцию, которую вы хотите выполнить над выбранным опубликованным продуктом|Выберите операцию, которую вы хотите выполнить над %count% выбранными опубликованными продуктами
+      confirm: Вы собираетесь обновить опубликованный продукт со следующей информацией, пожалуйста, подтвердите.|Вы собираетесь обновить %count% опубликованных продуктов со следующей информацией, пожалуйста, подтвердите.
       steps:
+        first: Выбор опубликованных продуктов
         second: Выберите операцию
         third: Настройка
         fourth: Подтверждение
@@ -79,6 +86,7 @@ btn.publish: Опубликовать
 btn.unpublish: Снять с публикации
 pimee_workflow_product_draft_notification_partial_approve: Частичное одобрение предложения
 pimee_workflow_product_draft_notification_partial_reject: Предложение частично одобрено
+pimee_workflow_product_draft_notification_partial_remove: Предложение частично удалено
 pimee_workflow_product_draft_notification_approve: Предложение одобрено
 pimee_workflow_product_draft_notification_refuse: Предложение отклонено
 pimee_workflow_product_draft_notification_remove: Предложение удаленo
@@ -125,22 +133,3 @@ job_execution.summary:
   proposal_created: созданных предложений
   proposal_skipped: пропущенных предложений (без изменений)
 published products: Опубликованные продукты
-batch_jobs:
-  csv_published_product_export:
-    label: Экспорт размещенных товаров в CSV
-    export.label: Экспорт опубликованных товаров
-  csv_product_proposal_import:
-    label: Импорт предложений в CSV
-    import.label: Импорт предложений
-  approve_product_draft:
-    label: Принять предложение
-    perform.label: Принять предложение
-  refuse_product_draft:
-    label: Отклонить предложения
-    perform.label: Отклонить предложения
-  xlsx_published_product_export:
-    label: Экспорт опубликованных товаров в XLSX
-    export.label: Экспорт опубликованных товаров
-  xlsx_product_proposal_import:
-    label: Импорт предложений из XLSX
-    import.label: Импорт предложений из XLSX

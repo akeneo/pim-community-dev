@@ -134,51 +134,14 @@ add_product_value_with_permission_and_rules:
 update_product_value_with_permission_and_rules:
   steps.perform: Opdatere produktets værdi
 edit_common_attributes_with_permission_and_rules:
-  steps.perform: Rediger fælles attributter
-  steps.edit_common_attributes_processor.title: Rediger fælles attributter
-batch_jobs:
-  yml_asset_channel_configuration_import:
-    import:
-      label: Aktiv kanal konfiguration import
-  add_product_value_with_permission_and_rules:
-    label: Tilføj produktværdi med tilladelse tjek & regler anvendelse
-    perform.label: Tilføj produktværdi
-    execute_rules.label: Regler udførelse
-  update_product_value_with_permission_and_rules:
-    label: Tilføj produktværdi med tilladelse tjek & regler anvendelse
-    perform.label: Opdatere produktets værdi
-    execute_rules.label: Regler udførelse
-  remove_product_value_with_permission_and_rules:
-    label: Tilføj produktværdi med tilladelse tjek & regler anvendelse
-    perform.label: Fjern produktværdi
-    execute_rules.label: Regler udførelse
-  edit_common_attributes_with_permission_and_rules:
-    label: Rediger fælles attributter med tilladelse kontrollere & regler anvendelse
-    perform.label: Rediger fælles attributter
-    execute_rules.label: Regler udførelse
-    cleaner.label: Ryd midlertidige filer
-  csv_published_product_quick_export:
-    export.label: CSV offentliggjort produkter hurtig eksport
-    perform:
-      label: CSV offentliggjort produkter hurtig eksport
-  csv_published_product_grid_context_quick_export:
-    export.label: CSV offentliggjort produkter gitter sammenhæng hurtig eksport
-    perform:
-      label: CSV offentliggjort produkter gitter sammenhæng hurtig eksport
-  xlsx_published_product_quick_export:
-    export.label: CSV offentliggjort produkter hurtig eksport
-    perform:
-      label: CSV offentliggjort produkter hurtig eksport
-  xlsx_published_product_grid_context_quick_export:
-    export.label: CSV offentliggjort produkter gitter sammenhæng hurtig eksport
-    perform:
-      label: CSV offentliggjort produkter gitter sammenhæng hurtig eksport
-edit_common_attributes_with_permission_and_rules.steps.edit_common_attributes_processor.title: Rediger fælles attributter
+  steps.perform: Rediger attributter
+  steps.edit_common_attributes_processor.title: Rediger attributter
+edit_common_attributes_with_permission_and_rules.steps.edit_common_attributes_processor.title: Rediger attributter
 add_product_value_with_permission.steps.add_product_value_with_permission_processor.title: Tilføj produktværdi med tilladelse
 update_product_value_with_permission.steps.update_product_value_with_permission_processor.title: Opdatere produktets værdi med tilladelse
 remove_product_value_with_permission.steps.update_product_value_with_permission_processor.title: Fjerne produktværdi med tilladelse
-edit_common_attributes_with_permission: Redigere fælles attributter med tilladelse
-edit_common_attributes_with_permission.steps.edit_common_attributes_processor.title: Redigere fælles attributter med tilladelse
+edit_common_attributes_with_permission: Redigere attributter med tilladelse
+edit_common_attributes_with_permission.steps.edit_common_attributes_processor.title: Redigere attributter med tilladelse
 job_execution.summary:
   mass_published: Produkt publiceret
   mass_unpublished: Produkt afpubliceret

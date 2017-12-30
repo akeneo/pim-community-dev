@@ -1,6 +1,11 @@
-pimee_enrich.acl.locale.edit_permissions: Hallinnoi lokaalien käyttöoikeuksia
+pimee_enrich.acl.locale.edit_permissions: Hallinnoi lokaatioiden käyttöoikeuksia
 pimee_enrich.acl.category.edit_permissions: Hallinnoi kategorioiden käyttöoikeuksia
 pimee_enrich.acl.attribute_group.edit_permissions: Hallinnoi attribuuttiryhmien käyttöoikeuksia
 pimee_importexport.acl.export_profile.edit_permissions: Hallinnoi vientiprofiilin käyttöoikeuksia
 pimee_importexport.acl.import_profile.edit_permissions: Hallinnoi tuontiprofiilin käyttöoikeuksia
 pimee_enrich.groups.label: Omistajaryhmät
+pim_analytics:
+  info_type:
+    nb_custom_locale_accesses: Käyttöoikeudeltaan mukautettujen lokaalien määrä
+    nb_custom_category_accesses: Käyttöoikeudeltaan mukautettujen kategorioiden määrä
+    nb_custom_attribute_group_accesses: Käyttöoikeudeltaan mukautettujen attribuuttiryhmien määrä
