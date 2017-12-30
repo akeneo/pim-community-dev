@@ -38,3 +38,22 @@ pimee_workflow:
         label: 留下你的评论 (可选)
         error: 出现了一个错误，这项提案尚未被部分拒绝
         success: 所做的更改已被拒绝
+batch_jobs:
+  csv_published_product_export:
+    label: 用CSV格式导出已发布的产品
+    export.label: 导出已发布的产品
+  csv_product_proposal_import:
+    label: 在 CSV 导入产品的建议
+    import.label: 导入产品的建议
+  approve_product_draft:
+    label: 同意提案
+    perform.label: 同意提案
+  refuse_product_draft:
+    label: 拒绝建议
+    perform.label: 拒绝建议
+  xlsx_published_product_export:
+    label: 导出已发布的产品至XLSX文件
+    export.label: 导出已发布的产品
+  xlsx_product_proposal_import:
+    label: 从 XLSX导入产品提案
+    import.label: 从 XLSX导入产品提案

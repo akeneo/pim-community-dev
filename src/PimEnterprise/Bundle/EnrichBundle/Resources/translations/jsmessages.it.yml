@@ -217,3 +217,39 @@ page_title:
   pimee_asset_categorytree_index: Categorie
   pimee_asset_categorytree_edit: Categoria {{ category.label }} | Modifica
   pimee_catalog_rule_rule_index: Regole
+batch_jobs:
+  yml_asset_channel_configuration_import:
+    import:
+      label: Importazione della configurazione del canale asset
+  add_product_value_with_permission_and_rules:
+    label: Aggiungi il valore del prodotto con controllo dei permessi & con l'applicazione delle regole
+    perform.label: Aggiungi un valore di prodotto
+    execute_rules.label: Esecuzione regole
+  update_product_value_with_permission_and_rules:
+    label: Aggiorna il valore del prodotto con controllo dei permessi & con l'applicazione delle regole
+    perform.label: Aggiorna il valore di prodotto
+    execute_rules.label: Esecuzione regole
+  remove_product_value_with_permission_and_rules:
+    label: Rimuovi il valore del prodotto con controllo del permesso & con l'applicazione delle regole
+    perform.label: Rimuovi il valore di prodotto
+    execute_rules.label: Esecuzione regole
+  edit_common_attributes_with_permission_and_rules:
+    perform.label: Modificare gli attributi
+    execute_rules.label: Esecuzione regole
+    cleaner.label: Elimina file temporanei
+  csv_published_product_quick_export:
+    export.label: Esportazione rapida in CSV dei prodotti pubblicati
+    perform:
+      label: Esportazione rapida in CSV dei prodotti pubblicati
+  csv_published_product_grid_context_quick_export:
+    export.label: Esportazione rapida in Csv dei prodotti pubblicati presenti nel contesto griglia
+    perform:
+      label: Esportazione rapida in Csv dei prodotti pubblicati presenti nel contesto griglia
+  xlsx_published_product_quick_export:
+    export.label: Esportazione rapida in Xlsx dei prodotti pubblicati
+    perform:
+      label: Esportazione rapida in Xlsx dei prodotti pubblicati
+  xlsx_published_product_grid_context_quick_export:
+    export.label: Esportazione rapida in Xlsx dei prodotti pubblicati presenti nel contesto griglia
+    perform:
+      label: Esportazione rapida in Xlsx dei prodotti pubblicati presenti nel contesto griglia

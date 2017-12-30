@@ -40,3 +40,22 @@ pimee_workflow:
         label: Kommentar hinterlassen (optional)
         error: Es ist ein Fehler aufgetreten, der Vorschlag wurde nicht teilweise abgelehnt
         success: Die Änderungen wurden erfolgreich abgelehnt
+batch_jobs:
+  csv_published_product_export:
+    label: Export veröffentlichter Produkte als CSV
+    export.label: Export veröffentlichter Produkte
+  csv_product_proposal_import:
+    label: Produktvorschläge in CSV-Datei importieren
+    import.label: Produktvorschlag-Import
+  approve_product_draft:
+    label: Vorschlag freigeben
+    perform.label: Vorschlag freigeben
+  refuse_product_draft:
+    label: Vorschläge verweigern
+    perform.label: Vorschläge verweigern
+  xlsx_published_product_export:
+    label: Export veröffentlichter Produkte als XLSX
+    export.label: Export veröffentlichter Produkte
+  xlsx_product_proposal_import:
+    label: Produktvorschlag-Import aus XLSX
+    import.label: Produktvorschlag-Import aus XLSX

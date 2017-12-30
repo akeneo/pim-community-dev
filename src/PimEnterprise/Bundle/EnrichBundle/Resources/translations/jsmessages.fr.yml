@@ -219,3 +219,40 @@ page_title:
   pimee_asset_categorytree_index: Catégories
   pimee_asset_categorytree_edit: Catégorie {{ category.label }} | Modification
   pimee_catalog_rule_rule_index: Règles
+batch_jobs:
+  yml_asset_channel_configuration_import:
+    import:
+      label: Import des configurations des transformations pour les canaux
+  add_product_value_with_permission_and_rules:
+    label: Ajouter une valeur de produit avec vérification des permissions et application des règles
+    perform.label: Ajouter une valeur de produit
+    execute_rules.label: Exécution des règles
+  update_product_value_with_permission_and_rules:
+    label: Mettre à jour une valeur de produit avec vérification des permissions et application des règles
+    perform.label: Mise à jour de la valeur du produit
+    execute_rules.label: Exécution des règles
+  remove_product_value_with_permission_and_rules:
+    label: Supprime une valeur de produit avec vérification des permissions et application des règles
+    perform.label: Suppression de la valeur du produit
+    execute_rules.label: Exécution des règles
+  edit_common_attributes_with_permission_and_rules:
+    label: Mettre à jour les attributs avec vérification des permissions et application des règles
+    perform.label: Modifier des attributs
+    execute_rules.label: Exécution des règles
+    cleaner.label: Nettoyage des fichiers temporaires
+  csv_published_product_quick_export:
+    export.label: Export rapide CSV des produits publiés
+    perform:
+      label: Export rapide CSV des produits publiés
+  csv_published_product_grid_context_quick_export:
+    export.label: Export rapide CSV des produits publiés dans le contexte de grille
+    perform:
+      label: Export rapide CSV des produits publiés dans le contexte de grille
+  xlsx_published_product_quick_export:
+    export.label: Export rapide XLSX des produits publiés
+    perform:
+      label: Export rapide XLSX des produits publiés
+  xlsx_published_product_grid_context_quick_export:
+    export.label: Export rapide XLSX des produits publiés dans le contexte de grille
+    perform:
+      label: Export rapide XLSX des produits publiés dans le contexte de grille

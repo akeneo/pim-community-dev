@@ -14,7 +14,7 @@ pimee_workflow:
       in_progress: Toiminto käynnissä
       ready: Odottaa hyväksyntää
       can_be_partially_reviewed: Voidaan tarkistaa osittain
-      can_not_be_approved: Ei voi tarkistaa
+      can_not_be_approved: Ei voi tarkastella
       can_not_be_deleted: Ei voi poistaa
     status_message:
       can_be_partially_reviewed: Voit tarkistaa ehdotuksen vain osittain, koska osa muutoksista koskee arvoja, joita et voi muokata. Ole hyvä ja ota yhteyttä pääkäyttäjään muuttaaksesi käyttöoikeuksia.
@@ -25,7 +25,7 @@ pimee_workflow:
       approve: Hyväksy kaikki
       refuse: Hylkää kaikki
       remove: Poista
-      partial_approve: Hyväksy muutokset tuote-%product% %attribute% attribuuttiin
+      partial_approve: Hyväksy attribuutin %attribute% muutokset tuotteelle %product%
       partial_reject: Hylkää attribuutin "%attribute%" muutokset tuotteella "%product%"
     notification:
       partial_approve: '%owner% on hyväksynyt arvot attribuuteille "%attributes%" tuotteella "%product%"'
@@ -43,7 +43,7 @@ pimee_workflow:
       error:
         draft_not_ready: Tämä ehdotus ei ole valmis hyväksyttäväksi
         not_product_owner: Et omista tuotetta, joka liittyy tähän ehdotukseen
-        cannot_edit_attributes: Et voi muokata määritteitä, joita tämä ehdotus muokkaa
+        cannot_edit_attributes: Et voi muokata ehdotuksen attribuutteja
         invalid_draft: Tätä ehdotusta ei voi käyttää seuraavan virheen vuoksi. %error%
   proposal:
     to_review: '%author.firstname% %author.lastname% on lähettänyt ehdotuksen tarkistaa tuotteen %product.label%'
@@ -52,6 +52,7 @@ pimee_workflow:
     original_value: Alkuperäinen
     new_value: Uusi
     no_diff: Arvo "%value%" on sama ehdotuksessa, kuin työkopiossa.
+    draft_in_progress: Tämän tuotteen luonnos on työnalla käyttäjällä %author%.
   published_product:
     index: Julkaistut tuotteet
     title: Julkaistu tuote
@@ -136,25 +137,6 @@ job_execution.summary:
   proposal_created: ehdotus luotu
   proposal_skipped: ehdotus ohitettu (ei eroja)
 published products: Julkaistut tuotteet
-batch_jobs:
-  csv_published_product_export:
-    label: Julkaistun tuotteen vienti CSV-muodossa
-    export.label: Julkaistun tuotteen vienti
-  csv_product_proposal_import:
-    label: Tuote-ehdotuksen tuonti CSV-muodossa
-    import.label: Tuote-ehdotuksen tuonti
-  approve_product_draft:
-    label: Hyväksy ehdotus
-    perform.label: Hyväksy ehdotus
-  refuse_product_draft:
-    label: Hylkää ehdotus
-    perform.label: Hylkää ehdotus
-  xlsx_published_product_export:
-    label: Julkaistujen tuotteiden vienti XLSX-muodossa
-    export.label: Julkaistun tuotteen vienti
-  xlsx_product_proposal_import:
-    label: Tuote-ehdotusten tuonti XLSX-muodossa
-    import.label: Tuote-ehdotusten tuonti XLSX-muodossa
 pim_analytics:
   info_type:
     nb_published_products: Julkaistujen tuotteiden määrä

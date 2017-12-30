@@ -1,13 +1,13 @@
 pimee_product_asset:
   acl:
     asset:
-      index: Rikasta assetti
+      index: Rikasta assettia
       create: Luo assetti
       remove: Poista assetti
-      categories_view: Katso assetin kategoriaa
+      categories_view: Katso assetin kategorioita
       mass_upload: Assettien massatuonti
     category_asset_picker:
-      list: Listaa assettin kategoriat assettivalitsimessa
+      list: Listaa assetin kategoriat assettivalitsimessa
     category:
       create: Luo assettikategoria
       edit: Muokkaa assettikategoriaa
@@ -78,13 +78,13 @@ pimee_product_asset:
         success: Variaatiotiedosto on poistettu.
         error: Variaatiotiedostoa ei ole poistettu. Tapahtui virhe.
   popin.create:
-    title: Luo uusi assetti
+    title: Luo uusi resurssi
     is_localized: Lokalisoitavissa
-  menu: Assetit
+  menu: Resurssit
   page_tab:
     title:
-      view: Tuotteen assetti %asset.code% | Näkymä
-      edit: Tuotteen assettii %asset.code% | Muokkaa
+      view: Tuoteresurssi %asset.code% | Näkymä
+      edit: Tuotteen assetti %asset.code% | Muokkaa
       index: Tuotteen assetit
   code:
     label: Koodi
@@ -109,7 +109,7 @@ pimee_product_asset:
   validation:
     code:
       not_empty: Koodi vaaditaan. Se ei voi olla tyhjä.
-      unique: Koodin tulee olla uniikki.
+      unique: Koodin tulee olla yksilöllinen.
       new_generation: Loimme sinulle uuden koodin.
   notAvailable:
     label: ei saatavissa
@@ -126,7 +126,7 @@ pimee_product_asset:
     error:
       upload: Tuonnin yhteydessä tapahtui virhe
       code: Vääränmuotoinen koodi assetille
-      localizable: Assetti on olemassa, mutta se ei ole lokalisoitavissa
+      localizable: Aseeti on olemassa, mutta se ei ole lokalisoitavissa
       invalid_locale: Lokaalit asetukset ovat poistettu käytöstä tai ne ovat virheelliset
   category:
     menu: Assettikategoriat
@@ -140,7 +140,7 @@ pimee_product_asset:
       apply_on_children.help: Kopioi käyttöoikeusmuutokset kaikkiin alatason objekteihin, olemassaolevat käyttöoikeudet alatason objekteihin pysyvät muuttumattomina
   mass_edit_action:
     asset:
-      page_title: Assetit
+      page_title: Resurssit
       page_subtitle: Massamuokkaus (1 assetti)|Massamuokkaus (%count% assettia)
       confirm: Olet päivittämässä assetin seuraavilla tiedoilla. Ole hyvä ja vahvista.|Olet päivittämässä %count% assettia seuraavilla tiedoilla. Ole hyvä ja vahvista.
       steps:
@@ -178,70 +178,7 @@ assets_mass_upload.steps:
   asset_mass_upload.title: Assettien massatuonti
 import_asset.steps.channel_configuration_processor.title: Prosessikanavien konfiguraatiot
 mass_upload: Massatuo assetteja
-batch_jobs:
-  apply_assets_mass_upload:
-    label: Assettien massatuonti
-    perform.label: Massatuonti
-  yml_asset_channel_configuration_import:
-    label: Assettien kanava-asetusten tuonti Yaml muodossa
-    validation.label: Tiedostojen tarkistaminen
-    import_asset.label: Assettien kanava-asetusten tuonti Yaml muodossa
-  yml_asset_channel_configuration_export:
-    label: Assettien kanava-asetusten vienti Yaml -muodossa
-    export.label: Assettien kanava-asetusten vienti Yaml -muodossa
-  csv_asset_import:
-    label: Assettien tuonti CSV-muodossa
-    validation.label: Tiedostojen tarkistaminen
-    import_tags.label: Tunnisteiden tuonti CSV-muodossa
-    import_asset.label: Assettien tuonti CSV-muodossa
-  csv_asset_export:
-    label: Assettien vienti CSV-muodossa
-    export.label: Assettien vienti CSV-muodossa
-  csv_asset_variation_export:
-    label: Assettien variaatioiden vienti CSV-muodossa
-    export.label: Assettien variaatioiden vienti CSV-muodossa
-  csv_tag_import:
-    label: Tunnisteiden tuonti CSV-muodossa
-    validation.label: Tiedostojen tarkistaminen
-    import.label: Tunnisteiden tuonti CSV-muodossa
-  csv_asset_category_import:
-    label: Assettien kategorioiden tuonti CSV-muodossa
-    validation.label: Tiedostojen tarkistaminen
-    import_asset_category.label: Assettien kategorioiden tuonti CSV-muodossa
-  csv_asset_configuration_import:
-    label: Assettien kanava-asetusten tuonti CSV-muodossa
-    validation.label: Tiedostojen tarkistaminen
-    import_asset.label: Assettien kanava-asetusten tuonti CSV-muodossa
-  csv_asset_category_export:
-    label: Assettien kategorioiden vienti CSV-muodossa
-    export.label: Assettien kategorioiden vienti CSV-muodossa
-  xlsx_tag_import:
-    label: Tunnisteiden tuonti XLSX-muodossa
-    validation.label: Tiedostojen tarkistaminen
-    import.label: Tunnisteiden tuonti XLSX-muodossa
-  xlsx_asset_import:
-    label: Assettien tuonti XLSX-muodossa
-    validation.label: Tiedostojen tarkistaminen
-    import_tags.label: Tunnisteiden tuonti XLSX-muodossa
-    import_asset.label: Assettien tuonti XLSX-muodossa
-  xlsx_asset_category_import:
-    label: Assettien kategorioiden tuonti XLSX-muodossa
-    validation.label: Tiedostojen tarkistaminen
-    import_asset_category.label: Assettien kategorioiden tuonti XLSX-muodossa
-  xlsx_asset_export:
-    label: Assettien vienti XLSX-muodossa
-    export.label: Assettien vienti XLSX-muodossa
-  xlsx_asset_category_export:
-    label: Assettien kategorioiden vienti XLSX-muodossa
-    export.label: Assettien kategorioiden vienti XLSX-muodossa
-  xlsx_asset_variation_export:
-    label: Assettien kategorioiden vienti XLSX-muodossa
-    export.label: Assettien kategorioiden vienti XLSX-muodossa
-  classify_assets:
-    perform.label: Siirrä assetit kategorioihin
-  add_tags_to_assets:
-    perform.label: Lisää tunnisteita asseteille
 pim_analytics:
   info_type:
     nb_assets: Assettien lukumäärä
-pim_assets_collection: Assettien keruu
+pim_assets_collection: Resurssien keruu

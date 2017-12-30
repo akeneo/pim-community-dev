@@ -66,3 +66,26 @@ flash:
     impacted_product_count: Massehandling til at beregne de berørte produkter for reglerne, der er blevet igangsat. Du får besked, når det er gennemført.
     executed: Regeludførelsen er blevet igangsat. Du får besked, når det er gennemført.
 pim_dashboard.widget.last_operations.job_type.mass_edit_rule: Regel indstillinger
+batch_jobs:
+  yml_rule_import:
+    label: Regel import i YAML
+    import.label: Regel import
+  yml_rule_export:
+    label: Regel eksport i YAML
+    export.label: Regel eksport
+  rule_impacted_product_count:
+    label: De berørte produkter for reglerne, der
+    perform.label: Optæl berørte produkter
+    execute_rules.label: Regler udførelse
+  csv_product_import_with_rules:
+    label: Produkt import i CSV med regler
+    execute_rules.label: Regler udførelse
+    validation.label: Filvalidering
+    import.label: Produkt import
+    import_associations.label: Association import
+  xlsx_product_import_with_rules:
+    label: Produkt import i CSV med regler
+    execute_rules.label: Regler udførelse
+    validation.label: Filvalidering
+    import.label: Produkt import
+    import_associations.label: Association import

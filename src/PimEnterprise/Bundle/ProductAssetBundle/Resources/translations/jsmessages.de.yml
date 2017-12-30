@@ -9,6 +9,8 @@ pimee_product_asset:
           confirm: Bestätigen
         title: Assets verwalten
         description: Wählen Sie die Assets die dem Produkt zugeordnet werden sollen
+    asset:
+      not_empty: Code ist erforderlich. Feld darf nicht leer sein.
   enrich_asset:
     grid:
       edit: Eigenschaften des Assets bearbeiten
@@ -73,3 +75,63 @@ pim_dashboard:
         mass_upload: Massenupload
 page_title:
   pimee_product_asset_mass_upload: Assets hochladen
+batch_jobs:
+  apply_assets_mass_upload:
+    label: Massenupload von Assets
+    perform.label: Massenupload
+  yml_asset_channel_configuration_import:
+    label: Assets Channel-Konfiguration in Yaml importieren
+    validation.label: Dateivalidierung
+    import_asset.label: Assets Channel-Konfiguration in Yaml importieren
+  yml_asset_channel_configuration_export:
+    label: Assetausgabekanalkonfiguration-Export in Yaml
+    export.label: Assetausgabekanalkonfiguration-Export in Yaml
+  csv_asset_import:
+    label: Asset-Import aus CSV-Datei
+    validation.label: Dateivalidierung
+    import_tags.label: Stichworte-Import aus CSV-Datei
+    import_asset.label: Asset-Import aus CSV-Datei
+  csv_asset_export:
+    label: Asset-Export in CSV-Datei
+    export.label: Asset-Export in CSV-Datei
+  csv_asset_variation_export:
+    label: Assetvariationen-Export in CSV-Datei
+    export.label: Assetvariationen-Export in CSV-Datei
+  csv_tag_import:
+    label: Stichworte-Import aus CSV-Datei
+    validation.label: Dateivalidierung
+    import.label: Stichworte-Import aus CSV-Datei
+  csv_asset_category_import:
+    label: Assetkategorie-Import aus CSV-Datei
+    validation.label: Dateivalidierung
+    import_asset_category.label: Assetkategorie-Import aus CSV-Datei
+  csv_asset_configuration_import:
+    label: Asset-Ausgabekanal-Konfigurations-Import aus CSV-Datei
+    validation.label: Dateivalidierung
+    import_asset.label: Asset-Ausgabekanal-Konfigurations-Import aus CSV-Datei
+  csv_asset_category_export:
+    label: Assetkategorie-Export in CSV-Datei
+    export.label: Assetkategorie-Export in CSV-Datei
+  xlsx_tag_import:
+    label: Stichworte-Import aus XLSX-Datei
+    validation.label: Dateivalidierung
+    import.label: Stichworte-Import aus XLSX-Datei
+  xlsx_asset_import:
+    label: Asset-Import aus XLSX-Datei
+    validation.label: Dateivalidierung
+    import_tags.label: Stichworte-Import aus XLSX-Datei
+    import_asset.label: Asset-Import aus XLSX-Datei
+  xlsx_asset_category_import:
+    label: Assetkategorie-Import aus XLSX-Datei
+    validation.label: Dateivalidierung
+    import_asset_category.label: Assetkategorie-Import aus XLSX-Datei
+  xlsx_asset_export:
+    label: Asset-Export in XLSX-Datei
+    export.label: Asset-Export in XLSX-Datei
+  xlsx_asset_category_export:
+    label: Assetkategorie-Export in XLSX-Datei
+    export.label: Assetkategorie-Export in XLSX-Datei
+  classify_assets:
+    perform.label: Assets in Kategorien verschieben
+  add_tags_to_assets:
+    perform.label: Stichworte zu Assets hinzufügen

@@ -134,48 +134,12 @@ add_product_value_with_permission_and_rules:
 update_product_value_with_permission_and_rules:
   steps.perform: 更新商品值
 edit_common_attributes_with_permission_and_rules:
-  steps.perform: 编辑共同属性
-  steps.edit_common_attributes_processor.title: 编辑共同属性
-batch_jobs:
-  add_product_value_with_permission_and_rules:
-    label: 为产品添加权限检查与规则应用
-    perform.label: 添加商品值
-    execute_rules.label: 执行规则
-  update_product_value_with_permission_and_rules:
-    label: 为产品更新权限检查与规则应用
-    perform.label: 更新商品值
-    execute_rules.label: 执行规则
-  remove_product_value_with_permission_and_rules:
-    label: 为产品删除权限检查与规则应用
-    perform.label: 移除商品值
-    execute_rules.label: 执行规则
-  edit_common_attributes_with_permission_and_rules:
-    label: 为产品编辑权限检查与规则应用
-    perform.label: 编辑共同属性
-    execute_rules.label: 执行规则
-    cleaner.label: 清理临时文件
-  csv_published_product_quick_export:
-    export.label: 快速导出已发布的产品至Csv文件
-    perform:
-      label: 快速导出已发布的产品至Csv文件
-  csv_published_product_grid_context_quick_export:
-    export.label: 已发布的产品内容（网页界面）快速导出至Csv
-    perform:
-      label: 已发布的产品内容（网页界面）快速导出至Csv
-  xlsx_published_product_quick_export:
-    export.label: 快速导出已发布的产品至Xlsx文件
-    perform:
-      label: 快速导出已发布的产品至Xlsx文件
-  xlsx_published_product_grid_context_quick_export:
-    export.label: 已发布的产品内容（网页界面）快速导出至XLSX
-    perform:
-      label: 已发布的产品内容（网页界面）快速导出至XLSX
-edit_common_attributes_with_permission_and_rules.steps.edit_common_attributes_processor.title: 编辑共同属性
+  steps.perform: 编辑属性
+  steps.edit_common_attributes_processor.title: 编辑属性
+edit_common_attributes_with_permission_and_rules.steps.edit_common_attributes_processor.title: 编辑属性
 add_product_value_with_permission.steps.add_product_value_with_permission_processor.title: 为产品添加权限
 update_product_value_with_permission.steps.update_product_value_with_permission_processor.title: 为产品更新权限
 remove_product_value_with_permission.steps.update_product_value_with_permission_processor.title: 为产品移除权限
-edit_common_attributes_with_permission: 编辑公用属性
-edit_common_attributes_with_permission.steps.edit_common_attributes_processor.title: 编辑公用属性
 job_execution.summary:
   mass_published: 产品已发布
   mass_unpublished: 产品已撤回

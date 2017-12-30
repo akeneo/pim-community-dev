@@ -9,6 +9,8 @@ pimee_product_asset:
           confirm: 確認
         title: アセット管理
         description: 製品に添付するアセットを選択
+    asset:
+      not_empty: コードが必要です。それは空にできません。
   enrich_asset:
     grid:
       edit: アセットのプロパティを編集
@@ -74,3 +76,63 @@ pim_dashboard:
         mass_upload: 大量アップロード
 page_title:
   pimee_product_asset_mass_upload: アセットをアップロードする
+batch_jobs:
+  apply_assets_mass_upload:
+    label: アセットの大量アップロード
+    perform.label: 大量アップロード
+  yml_asset_channel_configuration_import:
+    label: Yaml においてアセットチャネル構成のインポート
+    validation.label: ファイルの検証
+    import_asset.label: Yaml においてアセットチャネル構成のインポート
+  yml_asset_channel_configuration_export:
+    label: Yaml においてアセットチャネル構成のエクスポート
+    export.label: Yaml においてアセットチャネル構成のエクスポート
+  csv_asset_import:
+    label: アセットを CSV 形式でインポート
+    validation.label: ファイルの検証
+    import_tags.label: タグを CSV 形式でインポート
+    import_asset.label: アセットを CSV 形式でインポート
+  csv_asset_export:
+    label: アセットを CSV 形式でエクスポート
+    export.label: アセットを CSV 形式でエクスポート
+  csv_asset_variation_export:
+    label: アセットバリエーションを CSV 形式でエクスポート
+    export.label: アセットバリエーションを CSV 形式でエクスポート
+  csv_tag_import:
+    label: タグを CSV 形式でインポート
+    validation.label: ファイルの検証
+    import.label: タグを CSV 形式でインポート
+  csv_asset_category_import:
+    label: アセットカテゴリを CSV 形式でインポート
+    validation.label: ファイルの検証
+    import_asset_category.label: アセットカテゴリを CSV 形式でインポート
+  csv_asset_configuration_import:
+    label: アセットチャネル構成を CSV 形式でインポート
+    validation.label: ファイルの検証
+    import_asset.label: アセットチャネル構成を CSV 形式でインポート
+  csv_asset_category_export:
+    label: アセットカテゴリを CSV 形式でエクスポート
+    export.label: アセットカテゴリを CSV 形式でエクスポート
+  xlsx_tag_import:
+    label: タグをXLSX形式でインポート
+    validation.label: ファイルの検証
+    import.label: タグをXLSX形式でインポート
+  xlsx_asset_import:
+    label: アセットをXLSX形式でインポート
+    validation.label: ファイルの検証
+    import_tags.label: タグをXLSX形式でインポート
+    import_asset.label: アセットをXLSX形式でインポート
+  xlsx_asset_category_import:
+    label: アセットカテゴリをXLSX形式でインポート
+    validation.label: ファイルの検証
+    import_asset_category.label: アセットカテゴリをXLSX形式でインポート
+  xlsx_asset_export:
+    label: アセットをXLSX形式でエクスポート
+    export.label: アセットをXLSX形式でエクスポート
+  xlsx_asset_category_export:
+    label: アセットカテゴリをXLSX形式でエクスポート
+    export.label: アセットカテゴリをXLSX形式でエクスポート
+  classify_assets:
+    perform.label: アセットをカテゴリに移動する
+  add_tags_to_assets:
+    perform.label: タグをアセットに追加
