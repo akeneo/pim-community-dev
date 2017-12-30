@@ -4,3 +4,4 @@ pim_api:
       list: Llistar categories de recursos
   acl_group:
     asset_category: Categories de recursos
+    asset: Recursos

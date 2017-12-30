@@ -179,7 +179,6 @@ pimee_enrich:
           description: Die Veröffentlichung der Produkte wird entzogen
           warning: '{{ itemsCount }} Produkten wird die Veröffentlichung entzogen.'
     asset:
-      title: Asset / Massenbearbeitung ({{ itemsCount }} Assets)
       step:
         select:
           label: Asset auswählen
@@ -196,7 +195,6 @@ pimee_enrich:
           field: Stichworte
         add_to_category:
           label: Zuordnung von Assets in Kategorien
-          description: Die Assets werden folgenden Kategorien zugeordnet, die bestehende Zuordnung bleibt erhalten.
           field: Kategorien
 pim_menu:
   tab:
@@ -213,3 +211,39 @@ page_title:
   pimee_product_asset_index: Assets
   pimee_asset_categorytree_index: Kategorien
   pimee_catalog_rule_rule_index: Regeln
+batch_jobs:
+  yml_asset_channel_configuration_import:
+    import:
+      label: Asset-Ausgabekanal-Konfiguration-Import
+  add_product_value_with_permission_and_rules:
+    label: Hinzufügen von Produktwerten mit Rechteprüfung und Regeln
+    perform.label: Produktwert hinzufügen
+    execute_rules.label: Regel-Ausführung
+  update_product_value_with_permission_and_rules:
+    label: Aktualisieren von Produktwerten mit Rechteprüfung und Regeln
+    perform.label: Wert des Produkts aktualisieren
+    execute_rules.label: Regel-Ausführung
+  remove_product_value_with_permission_and_rules:
+    label: Entfernen von Produktwerten mit Rechteprüfung und Regeln
+    perform.label: Produktwert entfernen
+    execute_rules.label: Regel-Ausführung
+  edit_common_attributes_with_permission_and_rules:
+    perform.label: Attribute bearbeiten
+    execute_rules.label: Regel-Ausführung
+    cleaner.label: Lösche temporäre Dateien
+  csv_published_product_quick_export:
+    export.label: Schnellexport veröffentlichter Produkte als CSV
+    perform:
+      label: Schnellexport veröffentlichter Produkte als CSV
+  csv_published_product_grid_context_quick_export:
+    export.label: Kontextbezogener Schnellexport veröffentlichter Produkte als CSV
+    perform:
+      label: Kontextbezogener Schnellexport veröffentlichter Produkte als CSV
+  xlsx_published_product_quick_export:
+    export.label: Schnellexport veröffentlichter Produkte als XLSX
+    perform:
+      label: Schnellexport veröffentlichter Produkte als XLSX
+  xlsx_published_product_grid_context_quick_export:
+    export.label: Kontextbezogener Schnellexport veröffentlichter Produkte als XLSX
+    perform:
+      label: Kontextbezogener Schnellexport veröffentlichter Produkte als XLSX

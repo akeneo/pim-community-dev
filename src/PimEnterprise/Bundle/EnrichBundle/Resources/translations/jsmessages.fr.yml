@@ -181,7 +181,8 @@ pimee_enrich:
           description: Les produits seront dépubliés
           warning: Les {{ itemsCount }} produits sélectionnés vont être dépubliés.
     asset:
-      title: Ressources / Edition de masse ({{ itemsCount }} ressources)
+      title: Action de masse sur les ressources
+      confirm: "{1}Vous êtes sur le point de mettre à jour une ressource avec les renseignements suivants, merci de confirmer.|] 1, Inf [Vous êtes sur le point de mettre à jour {{ itemsCount }} ressources avec les renseignements suivants, merci de confirmer."
       step:
         select:
           label: Choisir les ressources
@@ -196,10 +197,13 @@ pimee_enrich:
         add_tag:
           label: Ajouter des mots clés aux ressources
           description: Les mots clés seront ajoutés aux ressources.
+          label_count: "{1}Ajouter des mots clés à <span class=\"AknFullPage-title--highlight\">1 produit</span>|] 1, Inf [Ajouter des mots clés à <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} produits</span>"
           field: Mots clés
+          empty_selection: Choisissez des mots clés
         add_to_category:
           label: Classifier les ressources dans des catégories
-          description: Les ressources seront positionnées dans les catégories suivantes, le placement existant avant l'opération sera conservé.
+          description: Les ressources seront positionnées dans les catégories suivantes, le placement existant avant l'opération sera perdu.
+          label_count: "{1}Classer <span class=\"AknFullPage-title--highlight\">1 resources</span> dans des catégories|] 1, Inf [Classer <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} ressources</span> dans des categories"
           field: Catégories
 pim_menu:
   tab:
@@ -219,3 +223,40 @@ page_title:
   pimee_asset_categorytree_index: Catégories
   pimee_asset_categorytree_edit: Catégorie {{ category.label }} | Modification
   pimee_catalog_rule_rule_index: Règles
+batch_jobs:
+  yml_asset_channel_configuration_import:
+    import:
+      label: Import des configurations des transformations pour les canaux
+  add_product_value_with_permission_and_rules:
+    label: Ajouter une valeur de produit avec vérification des permissions et application des règles
+    perform.label: Ajouter une valeur de produit
+    execute_rules.label: Exécution des règles
+  update_product_value_with_permission_and_rules:
+    label: Mettre à jour une valeur de produit avec vérification des permissions et application des règles
+    perform.label: Mise à jour de la valeur du produit
+    execute_rules.label: Exécution des règles
+  remove_product_value_with_permission_and_rules:
+    label: Supprime une valeur de produit avec vérification des permissions et application des règles
+    perform.label: Suppression de la valeur du produit
+    execute_rules.label: Exécution des règles
+  edit_common_attributes_with_permission_and_rules:
+    label: Mettre à jour les attributs avec vérification des permissions et application des règles
+    perform.label: Modifier des attributs
+    execute_rules.label: Exécution des règles
+    cleaner.label: Nettoyage des fichiers temporaires
+  csv_published_product_quick_export:
+    export.label: Export rapide CSV des produits publiés
+    perform:
+      label: Export rapide CSV des produits publiés
+  csv_published_product_grid_context_quick_export:
+    export.label: Export rapide CSV des produits publiés dans le contexte de grille
+    perform:
+      label: Export rapide CSV des produits publiés dans le contexte de grille
+  xlsx_published_product_quick_export:
+    export.label: Export rapide XLSX des produits publiés
+    perform:
+      label: Export rapide XLSX des produits publiés
+  xlsx_published_product_grid_context_quick_export:
+    export.label: Export rapide XLSX des produits publiés dans le contexte de grille
+    perform:
+      label: Export rapide XLSX des produits publiés dans le contexte de grille

@@ -59,3 +59,26 @@ flash:
     impacted_product_count: Pokrenuta je masovna radnja izračuna zahvaćenih proizvoda za pravila. Biti ćete obaviješteni kad bude gotovo.
     executed: Izvođenje pravila je pokrenuto. Biti ćete obaviješteni kad bude gotovo.
 pim_dashboard.widget.last_operations.job_type.mass_edit_rule: Postavke pravila
+batch_jobs:
+  yml_rule_import:
+    label: Uvoz pravila u YAML
+    import.label: Uvoz pravila
+  yml_rule_export:
+    label: Izvoz pravila u YAML
+    export.label: Izvoz pravila
+  rule_impacted_product_count:
+    label: Zahvaćeni proizvodi za pravila
+    perform.label: Izračunaj zahvaćene proizvode
+    execute_rules.label: Izvođenje pravila
+  csv_product_import_with_rules:
+    label: Uvoz proizvoda u CSV s pravilima
+    execute_rules.label: Izvođenje pravila
+    validation.label: Provjera valjanosti datoteke
+    import.label: Uvoz proizvoda
+    import_associations.label: Uvoz pridruživanja
+  xlsx_product_import_with_rules:
+    label: Uvoz proizvoda u XLSX s pravilima
+    execute_rules.label: Izvođenje pravila
+    validation.label: Provjera valjanosti datoteke
+    import.label: Uvoz proizvoda
+    import_associations.label: Uvoz pridruživanja

@@ -87,26 +87,3 @@ btn:
 rule: Configuració de les regles
 mass_edit_rule: Configuració de les regles
 job_execution.summary.rule_calculated: Quantitat de regles
-batch_jobs:
-  yml_rule_import:
-    label: Importar regla en YAML
-    import.label: Importar regla
-  yml_rule_export:
-    label: Exportar regla en YAML
-    export.label: Exportar regla
-  rule_impacted_product_count:
-    label: Productes afectats per les regles
-    perform.label: Comptar productes afectats
-    execute_rules.label: Execució de les regles
-  csv_product_import_with_rules:
-    label: Importació de productes amb regles a CSV
-    execute_rules.label: Execució de les regles
-    validation.label: Validar arxius
-    import.label: Importar productes
-    import_associations.label: Importar associacions
-  xlsx_product_import_with_rules:
-    label: Importació de productes amb regles a XLSX
-    execute_rules.label: Execució de les regles
-    validation.label: Validar arxius
-    import.label: Importar productes
-    import_associations.label: Importar associacions

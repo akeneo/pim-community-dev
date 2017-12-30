@@ -32,8 +32,8 @@ pimee_workflow:
       partial_approve_number: '%owner% ha acceptat els valors pels atributs %attributes_count% pel producte %product%'
       partial_reject: '%owner% ha rebutjat el/s valor/s per a %attributes% pel producte %product%'
       partial_reject_number: '%owner% ha rebutjat els valors pels atributs %attributes_count% pel producte %product%'
-      partial_remove: '%owner% ha eliminat el/s valor/s per a %attributes% del producte %product%'
-      partial_remove_number: '%owner% ha suprimit els valors pels atributs %attributes_count% del producte %product%'
+      partial_remove: '%owner% ha eliminat el/s valor/s per a %attributes% pel producte %product%'
+      partial_remove_number: '%owner% ha suprimit valors pels atributs %attributes_count% pel producte %product%'
       approve: '%owner% ha acceptat la seva proposta pel producte %product%'
       refuse: '%owner% ha rebutjat la proposta pel producte %product%'
       remove: '%owner% ha rebutjat la proposta pel producte %product%'
@@ -73,7 +73,7 @@ pimee_workflow:
       page_title: Productes publicats
       page_subtitle: Edició en massa (1 producte publicat) | Edició en massa (%count% productes publicats)
       title: Trieu l'operació
-      subtitle: Trieu la operació que voleu realitzar sobre el producte seleccionat i publicat | Trieu la operació que voleu realitzar sobre els %count% productes seleccionats i publicats
+      subtitle: Trieu l'operació que voleu realitzar sobre el producte seleccionat i publicat | Trieu l'operació que voleu realitzar en els %count% productes seleccionats i publicats
       confirm: Esteu a punt d'actualitzar un producte publicat amb la informació següent, confirmeu. | Esteu a punt d'actualitzar %count% productes publicats amb la informació següent, confirmeu.
       steps:
         first: Triar productes publicats
@@ -133,22 +133,3 @@ job_execution.summary:
   proposal_created: proposta creada
   proposal_skipped: proposta omesa (no hi ha diferències)
 published products: Productes publicats
-batch_jobs:
-  csv_published_product_export:
-    label: Exportació en CSV del producte publicat
-    export.label: Exportació del producte publicat
-  csv_product_proposal_import:
-    label: Importació de proposta de producte en CSV
-    import.label: Importació de proposta de producte
-  approve_product_draft:
-    label: Aprovar la proposta
-    perform.label: Aprovar la proposta
-  refuse_product_draft:
-    label: Rebutjar les propostes
-    perform.label: Rebutjar les propostes
-  xlsx_published_product_export:
-    label: Exportació en XLSX del producte publicat
-    export.label: Exportació del producte publicat
-  xlsx_product_proposal_import:
-    label: Importació en XLSX del producte proposat
-    import.label: Importació en XLSX del producte proposat

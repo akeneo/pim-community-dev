@@ -4,3 +4,4 @@ pim_api:
       list: Izlistaj kategorije imovine
   acl_group:
     asset_category: Kategorije imovine
+    asset: Imovine

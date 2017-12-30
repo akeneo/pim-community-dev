@@ -4,3 +4,4 @@ pim_api:
       list: 列出资产目录
   acl_group:
     asset_category: 资产分类
+    asset: 资产

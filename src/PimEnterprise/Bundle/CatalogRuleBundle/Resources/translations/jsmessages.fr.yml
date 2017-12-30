@@ -66,3 +66,27 @@ flash:
     impacted_product_count: Le calcul du nombre de produits affectés par les règles est en cours, vous serez notifié(e) lorsque cela sera terminé.
     executed: L'exécution des règles est en cours, vous serez notifié(e) lorsque la modification sera terminée.
 pim_dashboard.widget.last_operations.job_type.mass_edit_rule: Paramètres des règles
+batch_jobs:
+  yml_rule_import:
+    label: Import des règles en YAML
+    import.label: Import des règles
+    execute_rules.label: Exécution de règle
+  yml_rule_export:
+    label: Export des règles en YAML
+    export.label: Export des règles
+  rule_impacted_product_count:
+    label: Produits affectés par les règles
+    perform.label: Calcul du nombre de produits affectés
+    execute_rules.label: Exécution des règles
+  csv_product_import_with_rules:
+    label: Import de produits en CSV avec exécution des règles
+    execute_rules.label: Exécution des règles
+    validation.label: Validation du fichier
+    import.label: Import des produits
+    import_associations.label: Import des associations de produits
+  xlsx_product_import_with_rules:
+    label: Import de produits en XLSX avec exécution des règles
+    execute_rules.label: Exécution des règles
+    validation.label: Validation du fichier
+    import.label: Import des produits
+    import_associations.label: Import des associations de produits

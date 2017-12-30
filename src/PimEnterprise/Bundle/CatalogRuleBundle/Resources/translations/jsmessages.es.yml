@@ -59,3 +59,26 @@ flash:
     impacted_product_count: La acción en bloque para ejecutar las reglas seleccionadas ha sido lanzada. Será notificado una vez finalizada.
     executed: La ejecución de la regla ha sido lanzada. Será notificado una vez finalizada.
 pim_dashboard.widget.last_operations.job_type.mass_edit_rule: Configuración de reglas
+batch_jobs:
+  yml_rule_import:
+    label: Importación de regla en YAML
+    import.label: Importación de regla
+  yml_rule_export:
+    label: Exportación de regla en YAML
+    export.label: Exportación de regla
+  rule_impacted_product_count:
+    label: Productos afectados por las reglas
+    perform.label: Cuenta de productos afectados
+    execute_rules.label: Ejecución de las reglas
+  csv_product_import_with_rules:
+    label: Importar productos en CSV con reglas
+    execute_rules.label: Ejecución de las reglas
+    validation.label: Validación de archivo
+    import.label: Importar productos
+    import_associations.label: Importar asociaciones
+  xlsx_product_import_with_rules:
+    label: Importar productos en XLSX con reglas
+    execute_rules.label: Ejecución de las reglas
+    validation.label: Validación de archivo
+    import.label: Importar productos
+    import_associations.label: Importar asociaciones

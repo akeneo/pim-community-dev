@@ -137,25 +137,6 @@ job_execution.summary:
   proposal_created: 作成された提案
   proposal_skipped: スキップされた提案 (変更なし)
 published products: 公開済み製品
-batch_jobs:
-  csv_published_product_export:
-    label: 公開済み商品をCSVにエクスポート
-    export.label: 公開済み商品のエクスポート
-  csv_product_proposal_import:
-    label: 製品提案をCSV形式でインポート
-    import.label: 製品提案をインポート
-  approve_product_draft:
-    label: 提案を承諾する
-    perform.label: 提案を承諾する
-  refuse_product_draft:
-    label: 提案を拒否する
-    perform.label: 提案を拒否する
-  xlsx_published_product_export:
-    label: 公開済み商品をXLSX形式でエクスポート
-    export.label: 公開済み商品のエクスポート
-  xlsx_product_proposal_import:
-    label: 製品提案をXLSX形式でインポート
-    import.label: 製品提案をXLSX形式でインポート
 pim_analytics:
   info_type:
     nb_published_products: 公開済み製品数
