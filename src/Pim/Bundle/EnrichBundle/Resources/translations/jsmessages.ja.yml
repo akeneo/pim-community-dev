@@ -244,8 +244,6 @@ pim_enrich:
         update_successful: 製品モデルが正常に更新されました。そのバリエーションの商品の完全性が再計算されます。
         update_failed: 製品モデルを更新できませんでした。
         field_not_ready: この製品モデルをすぐに保存できません。次のフィールドが準備ができていません：{{ fields }}
-      read_only_parent_attribute_from_common: この属性は、共通の属性を更新できます。
-      read_only_parent_attribute_from_model: "この属性は、{{ axes }} によって属性で更新できます。"
       variant_axis: バリアントの軸
       add_child:
         create: 新しく追加
@@ -461,7 +459,6 @@ pim_enrich:
             none_exist: 関連タイプがありません。
             show_products: ディスプレイ製品
             show_groups: ディスプレイグループ
-            number_of_associations: "{{ productCount }} 件の製品と{{ groupCount }} 件のグループ"
           association_type_selector: 関連タイプ
           target: ターゲット
         attributes:
@@ -477,7 +474,6 @@ pim_enrich:
             load_more: 他の結果を読み込み中です…
           attribute_group_selector: 属性グループ
           attribute_group_all: すべて
-          attribute_group.to_fill_count: "{1}1 空の必要な属性 |]1、Inf [{{ count }} 空の必要な属性"
           attribute_filter:
             display: 表示
             all: 全ての属性
@@ -928,9 +924,6 @@ pim_enrich:
         title: プロパティ
       global_settings:
         title: グローバル設定
-  mass_edit_action:
-    edit_common_attributes:
-      description: 選択した商品の属性は以下のロケール <span class="highlight">{{ locale }}</span> のデータとチャンネル <span class="highlight">{{ channel }}</span> で編集され、製品のグリット内で選ばれます。
   index:
     association_type:
       title: "] - Inf ファイル、1] {{ count }} 関連付けの種類 |] 1、Inf [{{ count }} 関連型"
@@ -1020,9 +1013,7 @@ pim_enrich:
           description: 選択した製品は有効または無効になります。
           field: 有効にするには
         edit_common:
-          label: 共通の属性を編集
-          label_count: "{1}共通の属性を編集<span class=\"AknFullPage-title--highlight\"> 1 製品</span> |]1、Inf [共通の属性を編集<span class=\"AknFullPage-title--highlight\">{{ itemsCount }} 製品</span>"
-          description: 選択された製品の属性は、製品グリッドで選択されたロケールとチャンネルのための次のデータで編集される。
+          label: 属性を編集
         change_family:
           label: ファミリーの変更
           label_count: "{1}ファミリーを変更<span class=\"AknFullPage-title--highlight\"> 1 製品</span> |]1、Inf [ ファミリーを変更 <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} 製品</span>"
@@ -1036,11 +1027,9 @@ pim_enrich:
         add_to_category:
           label: カテゴリーに追加
           label_count: "{1}追加 <span class=\"AknFullPage-title--highlight\"> 1 カテゴリに</span> |]1、Inf [ 追加 <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} カテゴリに</span>"
-          description: 製品は以下のカテゴリに配置されます、既存の表示順が保持されます。
         move_to_category:
           label: カテゴリ間を移動
           label_count: "{1}動かす <span class=\"AknFullPage-title--highlight\"> 1 カテゴリ間を</span> |]1、Inf [ 動かす <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} カテゴリを</span>"
-          description: 製品は以下のカテゴリに配置され、既存の表示順は削除されます。
         remove_from_category:
           label: カテゴリから削除
           label_count: "{1}取り除く <span class=\"AknFullPage-title--highlight\"> 1 製品</span> |]1、Inf [ 取り除く <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} 製品</span>"
@@ -1116,11 +1105,9 @@ batch_jobs:
     perform:
       label: 製品の値を更新
   edit_common_attributes:
-    label: 共通の属性を編集
+    label: 属性を編集
     perform:
-      label: 共通の属性を編集
-    cleaner:
-      label: 共通の属性を持つファイルを削除
+      label: 属性を編集
   set_attribute_requirements:
     label: 属性の要件を設定
     perform:

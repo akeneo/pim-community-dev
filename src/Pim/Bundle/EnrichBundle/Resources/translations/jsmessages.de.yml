@@ -230,8 +230,6 @@ pim_enrich:
         update_successful: Produktmodell erfolgreich aktualisiert. Die Vollständigkeit der Produktvarianten wird neu berechnet.
         update_failed: Das Produktmodell konnte nicht aktualisiert werden.
         field_not_ready: 'Das Produktmodel kann gerade nicht gespeichert werden. Folgende Felder sind unvollständig: {{ fields }}'
-      read_only_parent_attribute_from_common: Dieses Attribut muss als gemeinsames Attribut bearbeitet werden.
-      read_only_parent_attribute_from_model: "Dieses Attribut muss als Attribut von {{ axes }} bearbeitet werden"
       variant_axis: Variantenachse(n)
       add_child:
         cancel: Abbrechen
@@ -951,11 +949,8 @@ pim_enrich:
           label: Zu Gruppen hinzufügen
           description: Wählen Sie die Gruppen aus, in welche die ausgewählten Produkte hinzugefügt werden sollen
           field: Gruppen
-        add_to_category:
-          description: Die Produkte werden den folgenden Kategorien zugeordnet. Bestehende Zuordnungen bleiben erhalten.
         move_to_category:
           label: Zwischen Kategorien verschieben
-          description: Die Produkte werden folgenden Kategorien zugeordnet, die bestehende Zuordnung wird verworfen.
         remove_from_category:
           label: Aus Kategorien entfernen
           description: Die Produkte werden aus den folgenden Kategorien entfernt.

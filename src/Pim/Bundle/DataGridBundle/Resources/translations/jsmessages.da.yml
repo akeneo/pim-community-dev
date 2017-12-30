@@ -109,3 +109,7 @@ grid.display_selector:
   list: Liste
 Client ID: Klient ID
 Secret: Hemmelighed
+grid.empty_results:
+  associated_product:
+    hint: Der er ingen tilknyttede produkter
+    subHint: 'Klik på knappen "Tilføj foreninger" knytte dette produkt'
