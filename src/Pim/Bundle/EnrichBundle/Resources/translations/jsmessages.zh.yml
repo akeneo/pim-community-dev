@@ -802,10 +802,6 @@ pim_enrich:
           label: 加入到组
           description: 选择一个组，将所选定的产品加入其中
           field: 分组
-        add_to_category:
-          description: 产品将被放入以下目录，现存的位置也会保留。
-        move_to_category:
-          description: 产品将被放入以下目录，现存的位置不会保留。
         remove_from_category:
           description: 产品将从以下目录中删除。
     family:

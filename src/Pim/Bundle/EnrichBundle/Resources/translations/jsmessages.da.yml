@@ -7,6 +7,7 @@ confirmation:
     attribute_group: Er du sikker på du vil slette denne attributgruppe?
     family: Er du sikker på at du vil slette denne familie?
     product: Er du sikker på du vil slette dette produkt?
+    product_model: Er du sikker på du vil slette denne produktmodel? Alle underliggende produkter, produktmodeller og variant produkter, slettes også.
     channel: Er du sikker på du vil slette denne kanal?
     group: Er du sikker på du vil slette denne gruppe?
     group_type: Er du sikker på du vil slette denne gruppe type?
@@ -47,6 +48,8 @@ flash:
     removed: Familien fjernet
   product:
     removed: Produktet blev fjernet
+  product_model:
+    removed: Produktmodellen fjernet
   channel:
     removed: Kanalen blev fjernet
   group:
@@ -243,11 +246,11 @@ pim_enrich:
       info:
         create_successful: Produktmodellen opdateret.
         update_successful: Produktmodellen opdateret. Fuldstændigheden af dens variant produkter vil blive genberegnet.
+        deletion_successful: Produktmodellen slettet.
         update_failed: Produktmodellen kunne ikke opdateres.
         field_not_ready: 'Produktmodellen kan ikke gemmes lige nu. Følgende felter er ikke klar: {{ fields }}'
-      read_only_parent_attribute_from_common: Denne attribut kan blive opdateret på de fælles attributter.
-      read_only_parent_attribute_from_model: "Denne attribut kan opdateres på attributterne af {{ axes }}"
       variant_axis: Variant akse
+      title: Produktmodeller
       add_child:
         create: Tilføj ny
         cancel: Annuller
@@ -464,7 +467,6 @@ pim_enrich:
             none_exist: Der findes ingen sammenhængstype.
             show_products: Display-produkter
             show_groups: Visningsgrupper
-            number_of_associations: "{{ productCount }} produkter og {{ groupCount }} grupper"
           association_type_selector: Sammenhængstyper
           target: Mål
           manage: Tilføj {{ associationType }} foreninger
@@ -483,7 +485,6 @@ pim_enrich:
             load_more: Indlæs flere resultater...
           attribute_group_selector: Attributgruppe
           attribute_group_all: Alle
-          attribute_group.to_fill_count: "{1}1 tom kræved attribut |] 1, Inf [{{ count }} tomme krævede attributter"
           attribute_filter:
             display: Vis
             all: Alle attributter
@@ -936,7 +937,7 @@ pim_enrich:
         title: Globale indstillinger
   mass_edit_action:
     edit_common_attributes:
-      description: Den valgte produktattributter vil blive redigeret med følgende data for landestandard <span class="highlight">{{ locale }}</span> og den kanal <span class="highlight">{{ channel }}</span>, valgt i gitteret produkter.
+      description: Kun de attributter, der tilhører familierne til de valgte produkter vil blive redigeret med følgende data for <span class="highlight">{{ locale }}</span> locale og <span class="highlight">{{ channel }}</span> kanal.
   index:
     association_type:
       title: "] -Inf, 1] {{ count }} association type |] 1, Inf [{{ count }} association typer"
@@ -1026,9 +1027,9 @@ pim_enrich:
           description: De valgte produkter vil blive aktiveret eller deaktiveret.
           field: At aktivere
         edit_common:
-          label: Rediger fælles attributter
-          label_count: "{1}Edit fælles attributter af <span class=\"AknFullPage-title--highlight\"> 1 produkt</span> |] 1, Inf [Rediger fælles attributter af <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} produkter</span>"
-          description: Den valgte produktattributter vil blive redigeret med følgende data for landestandard {{ locale }} og kanal {{ scope }}, valgt i gitteret produkter.
+          label: Rediger attributter
+          label_count: "{1}Ret fælles attributter af <span class=\"AknFullPage-title--highlight\"> 1 produkt</span> |] 1, Inf [Rediger fælles attributter af <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} produkter</span>"
+          description: Kun de attributter, der tilhører familierne til de valgte produkter vil blive redigeret med følgende data for {{ locale }} locale og {{ scope }} kanal.
         change_family:
           label: Ændre familie
           label_count: "{1}Change familie af <span class=\"AknFullPage-title--highlight\"> 1 produkt</span> |] 1, Inf [Skift familie af <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} produkter</span>"
@@ -1042,11 +1043,9 @@ pim_enrich:
         add_to_category:
           label: Tilføje til kategorier
           label_count: "{1}Tilføj <span class=\"AknFullPage-title--highlight\"> 1 produkt</span> grupper |] 1, Inf [Tilføj <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} produkter</span> til grupper"
-          description: Produkterne vil blive placeret i følgende kategorier, den nuværende placering bibeholdes.
         move_to_category:
           label: Flyt mellem kategorier
           label_count: "{1}Flyt <span class=\"AknFullPage-title--highlight\"> 1 produkt</span> mellem kategorier |] 1, Inf [Flyt <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} produkter</span> mellem kategorier"
-          description: Produkterne vil blive placeret i følgende kategorier, den nuværende placering er bibeholdt.
         remove_from_category:
           label: Fjern fra kategorier
           label_count: "{1}Fjern <span class=\"AknFullPage-title--highlight\"> 1 produkt</span> fra kategorier |] 1, Inf [Fjern <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} produkter</span> fra kategorier"
@@ -1126,9 +1125,9 @@ batch_jobs:
     perform:
       label: Opdatere produktets værdi
   edit_common_attributes:
-    label: Rediger fælles attributter
+    label: Rediger attributter
     perform:
-      label: Rediger fælles attributter
+      label: Rediger attributter
     cleaner:
       label: Rens filer til fælles attributter
   add_to_existing_product_model:
@@ -1384,6 +1383,7 @@ pim_menu:
     group_type: Gruppetyper
     locale: Landestandarder
     product: Produkter
+    product_model: Produktmodeller
     published_product: Offentliggjorte produkter
     export_history: Eksport historik
     export_profile: Eksport profiler

@@ -7,6 +7,7 @@ confirmation:
     attribute_group: Êtes-vous sûr(e) de vouloir supprimer ce groupe d'attributs ?
     family: Êtes-vous sûr(e) de que vouloir supprimer cette famille ?
     product: Êtes-vous sûr(e) de que vouloir supprimer ce produit ?
+    product_model: Êtes-vous sûr de que vouloir supprimer ce modèle de produit ? Tous ses enfants, modèles de produit et de variantes de produits seront également supprimés.
     channel: Êtes-vous sûr(e) de que vouloir supprimer ce canal ?
     group: Êtes-vous sûr(e) de vouloir supprimer ce groupe ?
     group_type: Êtes-vous sûr(e) de vouloir supprimer ce type de groupe ?
@@ -47,6 +48,8 @@ flash:
     removed: Famille supprimée avec succès
   product:
     removed: Produit supprimé avec succès
+  product_model:
+    removed: Le modèle de produit a bien été supprimé
   channel:
     removed: Canal supprimé avec succès
   group:
@@ -243,11 +246,13 @@ pim_enrich:
       info:
         create_successful: Le modèle de produit a bien été créé
         update_successful: Le modèle de produit a été mis à jour. La complétude de ses produits variants va être recalculée.
+        deletion_successful: Le modèle de produit a bien été supprimé.
         update_failed: Le modèle de produit n'a pas pu être mis à jour.
         field_not_ready: 'Le modèle de produit ne peut être sauvé dès maintenant. Les champs suivants ne sont pas prêts : {{ fields }}'
-      read_only_parent_attribute_from_common: Cet attribut peut être mis à jour sur les attributs communs.
+      read_only_parent_attribute_from_common: Cet attribut peut être mis à jour dans les attributs communs.
       read_only_parent_attribute_from_model: "Cet attribut peut être mis à jour sur les attributs par {{ axes }}"
       variant_axis: Axe de variante
+      title: modèles de produits
       add_child:
         create: Créer
         cancel: Annuler
@@ -464,7 +469,7 @@ pim_enrich:
             none_exist: Aucun type d'association n'existe.
             show_products: Afficher les produits
             show_groups: Afficher les groupes
-            number_of_associations: "{{ productCount }} produit(s) et {{ groupCount }} groupe(s)"
+            number_of_associations: "{{ productCount }} produit(s), {{ productModelCount }} modèle(s) de produit et {{ groupCount }} groupe(s)"
           association_type_selector: Type d'association
           target: Destination
           manage: Ajouter des associations {{ associationType }}
@@ -483,7 +488,7 @@ pim_enrich:
             load_more: Chargement de plus de résultats...
           attribute_group_selector: Groupe d'attributs
           attribute_group_all: Tous
-          attribute_group.to_fill_count: "{1}1 attribute requis vide|]1, Inf [{{ count }} attributes requis vides"
+          attribute_group.to_fill_count: "{1}1 attribut requis manquant |] 1, Inf [{{ count }} attributs requis manquants"
           attribute_filter:
             display: Affichage
             all: Tous les attributs
@@ -936,7 +941,7 @@ pim_enrich:
         title: Paramètres généraux
   mass_edit_action:
     edit_common_attributes:
-      description: Les attributs des produits sélectionnés vont être édités avec les données suivantes pour la locale <span class="highlight">{{ locale }}</span> et le canal <span class="highlight">{{ channel }}</span>, choisis dans la grille des produits.
+      description: Seuls les attributs appartenant aux familles des produits sélectionnés seront édités avec les données suivantes pour la locale <span class="highlight">{{ locale }}</span> et le canal de <span class="highlight">{{ channel }}</span>.
   index:
     association_type:
       title: "] -Inf, 1] {{ count }} type d'association|] 1, Inf [{{ count }} types d'association"
@@ -1026,9 +1031,9 @@ pim_enrich:
           description: Les produits sélectionnés vont être activés ou désactivés.
           field: Pour activer
         edit_common:
-          label: Modifier les attributs communs
-          label_count: "{1}Editer les attributs communs d'<span class=\"AknFullPage-title--highlight\">1 product</span>|] 1, Inf [Editer les attributs communs de <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} produits</span>"
-          description: Les attributs des produits séléctionnés vont être éditées avec les données suivantes, pour la locale {{ locale }} et le canal {{ scope }}, choisis dans la grille de produits.
+          label: Modifier des attributs
+          label_count: "{1}Editer les attributs d'<span class=\"AknFullPage-title--highlight\">1 product</span>|] 1, Inf [Editer les attributs de <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} produits</span>"
+          description: Seuls les attributs appartenant aux familles des produits sélectionnés seront édités avec les données suivantes pour la locale {{ locale }} et le canal de {{ scope }}.
         change_family:
           label: Changer de famille
           label_count: "{1}Changer la famille d'<span class=\"AknFullPage-title--highlight\">1 produit</span>|] 1, Inf [Changer la famille de <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} produits</span>"
@@ -1042,11 +1047,11 @@ pim_enrich:
         add_to_category:
           label: Ajouter à des catégories
           label_count: "{1}Ajouter <span class=\"AknFullPage-title--highlight\">1 produit</span> à des catégories|] 1, Inf [Ajouter <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} produits</span> à des categories"
-          description: Les produits seront positionnés dans les catégories suivantes, le placement existant avant l'opération sera conservé.
+          description: Les produits seront classés dans les catégories suivantes, la classification actuelle sera maintenue.
         move_to_category:
           label: Déplacer vers d'autres catégories
           label_count: "{1}Déplacer <span class=\"AknFullPage-title--highlight\">1 produit</span> vers des catégories|] 1, Inf [Déplacer <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} produits</span> vers des categories"
-          description: Les produits seront positionnés dans les catégories suivantes, le placement existant avant l'opération sera perdu.
+          description: Les produits seront classés dans les catégories suivantes, la classification actuelle sera perdue.
         remove_from_category:
           label: Retirer des catégories
           label_count: "{1}Retirer <span class=\"AknFullPage-title--highlight\">1 produit</span> de catégories|] 1, Inf [Retirer <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} produits</span> de categories"
@@ -1055,6 +1060,11 @@ pim_enrich:
           label: Ajouter à un modèle de produit existant
           label_count: "{1}Ajouter <span class=\"AknFullPage-title--highlight\">1 produit</span> à un modèle de produit existant|] 1, Inf [Ajouter <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} produits</span> à un modèle de produit existant"
           description: Le modèle de produit sélectionné va rassembler des produits et améliorer l'enrichissement de leurs propriétés communes.
+        associate_to_product_and_product_model:
+          label: Associer aux produits
+          label_count: "{1}Associer <span class=\"AknFullPage-title--highlight\">1 produit</span> à des produits ou modèles de produits|] 1, Inf [Associer <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} produits</span> à des produits ou modèles de produits"
+          description: Les produits sélectionnés depuis la grille seront associés aux produits et modèles de produits sélectionnés, pour le type d'association sélectionné
+          validate: Veuillez ajouter une association avant de passer à l’étape suivante
     family:
       title: Action de masse sur les familles
       confirm: "{1}Vous êtes sur le point de mettre à jour une famille avec les renseignements suivants, merci de confirmer.|] 1, Inf [Vous êtes sur le point de mettre à jour {{ itemsCount }} familles avec les renseignements suivants, merci de confirmer."
@@ -1126,11 +1136,27 @@ batch_jobs:
     perform:
       label: Mise à jour de la valeur du produit
   edit_common_attributes:
-    label: Modifier les attributs communs
+    label: Modifier des attributs
     perform:
-      label: Modifier les attributs communs
+      label: Modifier des attributs
     cleaner:
-      label: Nettoyer les fichiers pour les attributs communs
+      label: Nettoyer les fichiers pour les attributs
+  add_to_category:
+    label: Ajouter à une catégorie
+    perform:
+      label: Ajouter à une catégorie
+  move_to_category:
+    label: Déplacer dans la catégorie
+    perform:
+      label: Déplacer dans la catégorie
+  remove_from_category:
+    label: Retirer de la catégorie
+    perform:
+      label: Retirer de la catégorie
+  add_association:
+    label: Associer aux produits
+    perform:
+      label: Associer aux produits
   add_to_existing_product_model:
     label: Ajouter à un modèle de produit existant
     perform:
@@ -1384,6 +1410,7 @@ pim_menu:
     group_type: Types de groupe
     locale: Locales
     product: Produits
+    product_model: Modèles de produits
     published_product: Produits publiés
     export_history: Historique des exports
     export_profile: Profils d'export

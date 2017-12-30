@@ -109,3 +109,7 @@ grid.display_selector:
   list: Liste
 Client ID: ID du client
 Secret: Secret 
+grid.empty_results:
+  associated_product:
+    hint: Il n’y a aucun produit associé
+    subHint: 'Cliquez sur le bouton « Ajouter des associations » pour associer ce produit'

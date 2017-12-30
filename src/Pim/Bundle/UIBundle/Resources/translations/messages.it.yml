@@ -41,7 +41,6 @@ required: (richiesto)
 pim_ui.system_config:
   form:
     loading_message_enabled.label: Abilita i messaggi di caricamento
-    loading_message_enabled.tooltip: Visualizza messaggi user friendly durante l'attesa per il caricamento di una pagina
     loading_messages.label: Messaggi di caricamento disponibili
     loading_messages.tooltip: Tutti i messagi disponibili di caricamento separati da interruzioni di riga
   group:
