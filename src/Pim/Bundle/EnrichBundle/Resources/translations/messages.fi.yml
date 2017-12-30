@@ -19,6 +19,8 @@ pim_enrich:
       attribute.title: Attribuutit
       history.title: Historia
   family:
+    info:
+      cant_remove_attribute_used_as_axis: Et voi poistaa tätä attribuuttia, koska sitä on käytössä varianttiperheessä
     tab:
       property.title: Ominaisuudet
       attribute.title: Attribuutit
@@ -89,6 +91,7 @@ pim_enrich:
       description: Valitun tuotteen attribuutit muokataan seuraavalla valitun lokaation datalla.
       empty: Ole hyvä ja valitse attribuutit joita haluat muokata
       success_flash: Työ "Tuotteiden tilan päivitys" on tällä hetkellä käynnissä
+      launched_flash: Massatoiminto "muokkaa attribuutteja" on käynnistetty. Sinulle ilmoitetaan, kun se on valmis.
       message:
         warning: Valituille tuotteille ei ole yhteistä attribuuttia. Vaihda valintaasi.
         invalid_attribute: Attribuutti koodilla "attribute_code" ei yhdistä valittuja tuotteita, attributti ohitettu.
@@ -122,8 +125,8 @@ pim_enrich:
     set-attribute-requirements:
       label: Aseta vaaditut attribuutit
       description: Seuraavat attribuuttivaatimukset otetaan käyttöön valituille perheille
-      success_flash: Määritteen vaatimuksia sovellettiin valittuihin ryhmiin
-      launched_flash: Bulkkitoiminto "Aseta määritteen vaatimukset" on käynnistetty. Saat ilmoituksen, kun se on valmis.
+      success_flash: Attribuuttivaatimukset otetaan käyttöön valituille perheille
+      launched_flash: Massatoiminto "aseta attribuuttivaatimukset" on käynnistetty. Sinulle ilmoitetaan, kun se on valmis.
     mass_action:
       quick_export:
         launched_flash: Tuotteiden vienti on parhaillaan käynnissä
@@ -143,7 +146,7 @@ pim_enrich:
       edit_attributes: Muokkaa tuotteen ominaisuuksia
       remove: Poista tuote
       add_attribute: Lisää attribuutti tuotteeseen
-      remove_attribute: Poista attribuutti tuotteesta
+      remove_attribute: Poista attribuutti tuotteelta
       categories_view: Katso tuotteen kategorioita
       associations_view: Tarkastele tuotteen assosiaatiotyyppejä
       change_family: Vaihda tuoteryhmää
@@ -158,6 +161,7 @@ pim_enrich:
       edit_attributes: Muokkaa tuotemallin ominaisuuksia
       categories_view: Tarkastele tuotemallin ryhmiä
       history: Näyte tuotemallin muutoshistoria
+      remove: Poista tuotemalli
     category:
       list: Listaa kategoriat
       create: Luo kategoria
@@ -177,7 +181,7 @@ pim_enrich:
       index: Listaa tuoteperheet
       create: Luo tuoteperhe
       edit_properties: Muokkaa tuoteperheen ominaisuuksia
-      edit_attributes: Muokkaa tuoteperheen määritteitä
+      edit_attributes: Muokkaa perheen attribuutteja
       remove: Poista tuoteperhe
       history: Näytä tuoteperheen historia
     attribute_group:
@@ -658,7 +662,7 @@ pim_enrich.mass_edit_action:
   set-attribute-requirements:
     label: Aseta vaaditut attribuutit
     description: Seuraavat attribuuttivaatimukset otetaan käyttöön valituille perheille
-    success_flash: Määritteen vaatimuksia sovellettiin valittuihin ryhmiin
+    success_flash: Attribuuttivaatimukset otetaan käyttöön valituille perheille
 To enable: Ottaa käyttöön
 Select attributes: Valitse attribuutit
 Select: Valitse
@@ -763,6 +767,10 @@ edit_common_attributes: Muokkaa attribuutteja
 perform.steps.duplicated.title: Päällekkäät akselit
 perform.steps.excluded.title: Poissuljetut tuotteet
 batch_jobs:
+  add_product_value:
+    label: Lisää tuotteen arvo
+    perform:
+      label: Lisää tuotteen arvo
   update_product_value:
     label: Päivitä tuotteen arvo
     perform:

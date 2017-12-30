@@ -19,6 +19,8 @@ pim_enrich:
       attribute.title: 属性
       history.title: 履歴
   family:
+    info:
+      cant_remove_attribute_used_as_axis: ファミリーバリアントで使われるバリアント軸である属性は削除できません
     tab:
       property.title: プロパティ
       attribute.title: 属性
