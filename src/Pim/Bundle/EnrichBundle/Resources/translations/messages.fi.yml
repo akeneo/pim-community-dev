@@ -3,7 +3,7 @@ pim_enrich:
     tab:
       attribute.title: Attribuutit
       category.title: Kategoriat
-      association.title: Määritteet
+      association.title: Assosiaatiot
       completeness.title: Valmistumisaste
       history.title: Historia
     no_comparison_locale_available: Muuta lokaatiota ei ole käytettävissä vertailuun
@@ -246,7 +246,7 @@ pim_enrich:
     job_tracker:
       index: Näytä prosessien seuraaja
   acl_group:
-    association_type: Määritetyypit
+    association_type: Assosiaatiotyypit
     attribute: Attribuutit
     attribute_group: Attribuuttiryhmät
     category: Kategoriat
@@ -637,7 +637,7 @@ pim_title.variant_group:
   index: "Tuotevariaatioryhmät"
   edit: "Tuotevariaatioryhmät %group.label% | Muokkaa"
 pim_title.association_type:
-  index: "Määritetyypit"
+  index: "Assosiaatiotyypit"
   edit: "Määritetyypit %association type.label% | Muokkaa"
 pim_title.group_type:
   index: "Ryhmätyypit"
@@ -741,7 +741,7 @@ pim_menu:
     settings: Asetukset
     spread: Levitä
   item:
-    association_type: Määritetyypit
+    association_type: Assosiaatiotyypit
     attribute: Attribuutit
     attribute_group: Attribuuttiryhmät
     category: Kategoriat

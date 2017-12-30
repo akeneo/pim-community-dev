@@ -14,3 +14,5 @@ pim_dashboard:
         quick_export: 快速导出
     completeness:
       load_more: '加载更多...'
+    header:
+      view_all: 显示所有
