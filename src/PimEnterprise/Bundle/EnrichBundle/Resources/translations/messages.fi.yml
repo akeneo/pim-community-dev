@@ -141,6 +141,8 @@ batch_jobs:
     perform.label: Poista tuotteen arvo
   edit_common_attributes_with_permission_and_rules:
     perform.label: Muokkaa yleisiä attribuutteja
+  add_to_variant_group_with_rules:
+    execute_rules.label: Sääntöjen suorittaminen
 add_to_variant_group_with_rules:
   steps.excluded.title: Poissuljetut tuotteet
   steps.duplicated.title: Päällekkäät akselit

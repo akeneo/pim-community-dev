@@ -94,6 +94,12 @@ rule: 规则设定
 mass_edit_rule: 规则设定
 job_execution.summary.rule_calculated: 规则的数量
 batch_jobs:
+  yml_rule_import:
+    label: 用YAML导入规则
+    import.label: 导入规则
+  yml_rule_export:
+    label: 用 YAML 导出规则
+    export.label: 规则导出
   rule_impacted_product_count:
     label: 受规则影响的产品
     perform.label: 计算所影响的产品

@@ -95,8 +95,11 @@ mass_edit_rule: Настройки правил
 job_execution.summary.rule_calculated: Количество привил
 batch_jobs:
   yml_rule_import:
-    label: Импорт правил в YAML
+    label: Импорт правил из YAML
     import.label: Импорт правил
+  yml_rule_export:
+    label: Экспорт правил в YAML
+    export.label: Экспорт правил
   rule_impacted_product_count:
     label: Затрагиваемые продукты для правил
     perform.label: Вычислить затрагиваемые продукты

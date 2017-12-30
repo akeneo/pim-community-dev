@@ -20,6 +20,7 @@ pimee_workflow:
       can_be_partially_reviewed: 你仅能审查部分提案，因为 一些改变应用到了您不能编辑的值上。请联系您的管理员联系以更改您的权限。
       can_not_be_approved: 你不能审查该提案，因为 一些改变应用到了您不能编辑的值上。请联系您的管理员联系以更改您的权限。
       can_not_be_deleted: 你不能删除该提案，因为 一些改变应用到了您不能编辑的值上。请联系您的管理员联系以更改您的权限。
+      in_progress: 这项提案正在走流程中，尚未提交。
     action:
       approve: 批准所有
       refuse: 拒绝所有
@@ -31,6 +32,8 @@ pimee_workflow:
       partial_approve_number: '%owner% 已接受产品 %product%属性%attributes_count%的值修改'
       partial_reject: '%owner% 已拒绝产品 %product%属性%attributes%的值修改'
       partial_reject_number: '%owner% 已拒绝产品 %product%属性%attributes_count%的值修改'
+      partial_remove: '%owner% 已删除产品 %product%属性%attributes%的值'
+      partial_remove_number: '%owner% 已删除产品 %product%属性%attributes_count%的值'
       approve: '%owner% 已接受你的建议对产品 %product%'
       refuse: '%owner% 拒绝了你的产品 %product% 的建议'
       remove: '%owner% 已删除您的产品 %product% 的建议'
@@ -68,8 +71,12 @@ pimee_workflow:
   mass_edit_action:
     published:
       page_title: 已发布的产品
+      page_subtitle: 批量编辑 （1个已发布的产品） |批量编辑 （%count% 已发布产品）
       title: 选择操作
+      subtitle: 请选择您希望在所选的已发布的产品上执行的操作 |请选择您希望在所选的 %count%个已发布的产品上执行的操作
+      confirm: 您将要更新该已发布产品的以下信息，请确认。 |您将要更新 %count%已发布产品的以下信息，请确认。
       steps:
+        first: 选择已发布的产品
         second: 选择操作
         third: 配置
         fourth: 确认
@@ -79,6 +86,7 @@ btn.publish: 发布
 btn.unpublish: 取消发布
 pimee_workflow_product_draft_notification_partial_approve: 建议部分批准
 pimee_workflow_product_draft_notification_partial_reject: 部分被拒绝的提案
+pimee_workflow_product_draft_notification_partial_remove: 部分被删除的提案
 pimee_workflow_product_draft_notification_approve: 建议批准
 pimee_workflow_product_draft_notification_refuse: 提案被拒绝
 pimee_workflow_product_draft_notification_remove: 提案被删除
