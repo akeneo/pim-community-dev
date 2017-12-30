@@ -4,3 +4,4 @@ pim_api:
       list: Elenca le categorie degli asset
   acl_group:
     asset_category: Categorie degli asset
+    asset: Asset

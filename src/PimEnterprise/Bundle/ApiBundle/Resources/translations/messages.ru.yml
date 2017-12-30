@@ -4,3 +4,4 @@ pim_api:
       list: Перечислить категории медиафайлов
   acl_group:
     asset_category: Категории медиафайлов
+    asset: Медиафайлы

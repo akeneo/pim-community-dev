@@ -38,3 +38,22 @@ pimee_workflow:
         label: Deixa un comentari (opcional)
         error: S'ha produït un error, la proposta no ha estat rebutjada parcialment
         success: Els canvis han estat rebutjats correctament
+batch_jobs:
+  csv_published_product_export:
+    label: Exportació en CSV del producte publicat
+    export.label: Exportació del producte publicat
+  csv_product_proposal_import:
+    label: Importació en CSV del producte proposat
+    import.label: Importació de la proposta de producte
+  approve_product_draft:
+    label: Aprovar la proposta
+    perform.label: Aprovar la proposta
+  refuse_product_draft:
+    label: Rebutjar les propostes
+    perform.label: Rebutjar les propostes
+  xlsx_published_product_export:
+    label: Exportació en XLSX del producte publicat
+    export.label: Exportació del producte publicat
+  xlsx_product_proposal_import:
+    label: Importació en XLSX del producte proposat
+    import.label: Importació en XLSX del producte proposat

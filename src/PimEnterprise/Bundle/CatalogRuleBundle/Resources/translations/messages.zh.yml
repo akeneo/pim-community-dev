@@ -87,20 +87,3 @@ btn:
 rule: 规则设定
 mass_edit_rule: 规则设定
 job_execution.summary.rule_calculated: 规则的数量
-batch_jobs:
-  rule_impacted_product_count:
-    label: 受规则影响的产品
-    perform.label: 计算所影响的产品
-    execute_rules.label: 执行规则
-  csv_product_import_with_rules:
-    label: 按规则用CSV导入产品
-    execute_rules.label: 执行规则
-    validation.label: 文件验证
-    import.label: 产品导入
-    import_associations.label: 相关导入
-  xlsx_product_import_with_rules:
-    label: 按规则用XLSX导入产品
-    execute_rules.label: 执行规则
-    validation.label: 文件验证
-    import.label: 产品导入
-    import_associations.label: 相关导入

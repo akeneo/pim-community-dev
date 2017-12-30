@@ -8,6 +8,8 @@ pimee_product_asset:
           cancel: Cancelar
           confirm: Confirmar
         title: Gestionar recursos
+    asset:
+      not_empty: Código requerido. No puede estar vacío.
   enrich_asset:
     grid:
       edit: Editar prodpiedades del recurso
@@ -72,3 +74,63 @@ pim_dashboard:
         mass_upload: Carga masiva
 page_title:
   pimee_product_asset_mass_upload: Cargar recursos
+batch_jobs:
+  apply_assets_mass_upload:
+    label: Carga masiva de recursos
+    perform.label: Carga masiva
+  yml_asset_channel_configuration_import:
+    label: Importar configuraciones de recursos por canal en Yaml
+    validation.label: Validación de archivo
+    import_asset.label: Importar configuraciones de recursos por canal en Yaml
+  yml_asset_channel_configuration_export:
+    label: Exportar configuraciones de recursos por canal en YAML
+    export.label: Exportar configuraciones de recursos por canal en YAML
+  csv_asset_import:
+    label: Importar recursos en CSV
+    validation.label: Validación de archivo
+    import_tags.label: Importar etiquetas en CSV
+    import_asset.label: Importar recursos en CSV
+  csv_asset_export:
+    label: Exportar recursos en CSV
+    export.label: Exportar recursos en CSV
+  csv_asset_variation_export:
+    label: Exportar variantes de recursos en CSV
+    export.label: Exportar variantes de recursos en CSV
+  csv_tag_import:
+    label: Importar etiquetas en CSV
+    validation.label: Validación de archivo
+    import.label: Importar etiquetas en CSV
+  csv_asset_category_import:
+    label: Importar categoría de recursos en CSV
+    validation.label: Validación de archivo
+    import_asset_category.label: Importar categoría de recursos en CSV
+  csv_asset_configuration_import:
+    label: Importar configuración de recursos por canal en CSV
+    validation.label: Validación de archivo
+    import_asset.label: Importar configuración de recursos por canal en CSV
+  csv_asset_category_export:
+    label: Exportar categorías de recursos en CSV
+    export.label: Exportar categorías de recursos en CSV
+  xlsx_tag_import:
+    label: Importar etiquetas en XLSX
+    validation.label: Validación de archivo
+    import.label: Importar etiquetas en XLSX
+  xlsx_asset_import:
+    label: Importar recursos en XLSX
+    validation.label: Validación de archivo
+    import_tags.label: Importar etiquetas en XLSX
+    import_asset.label: Importar recursos en XLSX
+  xlsx_asset_category_import:
+    label: Importar categoría de recursos en XLSX
+    validation.label: Validación de archivo
+    import_asset_category.label: Importar categoría de recursos en XLSX
+  xlsx_asset_export:
+    label: Exportar recursos en XLSX
+    export.label: Exportar recursos en XLSX
+  xlsx_asset_category_export:
+    label: Exportar categoría de recursos en XLSX
+    export.label: Exportar categoría de recursos en XLSX
+  classify_assets:
+    perform.label: Mover recursos a categorías
+  add_tags_to_assets:
+    perform.label: Añadir etiquetas a los recursos

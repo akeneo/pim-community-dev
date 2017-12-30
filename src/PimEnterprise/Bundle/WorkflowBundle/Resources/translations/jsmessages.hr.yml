@@ -1,0 +1,6 @@
+batch_jobs:
+  csv_published_product_export:
+    label: Izvoz objavljenih proizvoda u CSV
+    export.label: Izvoz objavljenih proizvoda
+  xlsx_published_product_export:
+    export.label: Izvoz objavljenih proizvoda

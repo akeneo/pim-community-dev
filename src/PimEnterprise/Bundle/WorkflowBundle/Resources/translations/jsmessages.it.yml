@@ -40,3 +40,22 @@ pimee_workflow:
         label: Lascia un commento (facoltativo)
         error: Si è verificato un errore, la proposta non è stata respinta parzialmente
         success: Le modifiche sono state respinte con successo
+batch_jobs:
+  csv_published_product_export:
+    label: Esportazione dei prodotti pubblicati in CSV
+    export.label: Esportazione del prodotto pubblicato
+  csv_product_proposal_import:
+    label: Importazione di proposte di prodotto in CSV
+    import.label: Importazione di proposte di prodotto
+  approve_product_draft:
+    label: Approva la proposta
+    perform.label: Approva la proposta
+  refuse_product_draft:
+    label: Rifiuta le proposte
+    perform.label: Rifiuta le proposte
+  xlsx_published_product_export:
+    label: Esportazione dei prodotti pubblicati in XLSX
+    export.label: Esportazione del prodotto pubblicato
+  xlsx_product_proposal_import:
+    label: Importazione di proposte di prodotto in XLSX
+    import.label: Importazione di proposte di prodotto in XLSX

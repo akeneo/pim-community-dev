@@ -59,3 +59,26 @@ flash:
     impacted_product_count: Вычисление количества продуктов затрагиваемых правилами начато. Вы будете уведомлены, когда это будет сделано.
     executed: Начато выполнение правила. Вы будете уведомлены, когда это будет сделано.
 pim_dashboard.widget.last_operations.job_type.mass_edit_rule: Настройки правил
+batch_jobs:
+  yml_rule_import:
+    label: Импорт правил из YAML
+    import.label: Импорт правил
+  yml_rule_export:
+    label: Экспорт правил в YAML
+    export.label: Экспорт правил
+  rule_impacted_product_count:
+    label: Затрагиваемые продукты для правил
+    perform.label: Вычислить затрагиваемые продукты
+    execute_rules.label: Выполнение правил
+  csv_product_import_with_rules:
+    label: Импорт продуктов из CSV с правилами
+    execute_rules.label: Выполнение правил
+    validation.label: Проверка файла
+    import.label: Импорт продуктов
+    import_associations.label: Импорт ассоциаций
+  xlsx_product_import_with_rules:
+    label: Импорт продуктов из XLSX с правилами
+    execute_rules.label: Выполнение правил
+    validation.label: Проверка файла
+    import.label: Импорт продуктов
+    import_associations.label: Импорт ассоциаций

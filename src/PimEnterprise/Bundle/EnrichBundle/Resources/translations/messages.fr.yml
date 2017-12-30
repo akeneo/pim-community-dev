@@ -134,51 +134,14 @@ add_product_value_with_permission_and_rules:
 update_product_value_with_permission_and_rules:
   steps.perform: Mise à jour de la valeur du produit
 edit_common_attributes_with_permission_and_rules:
-  steps.perform: Modifier les attributs communs
-  steps.edit_common_attributes_processor.title: Modifier les attributs communs
-batch_jobs:
-  yml_asset_channel_configuration_import:
-    import:
-      label: Import des configurations des transformations pour les canaux
-  add_product_value_with_permission_and_rules:
-    label: Ajouter une valeur de produit avec vérification des permissions et application des règles
-    perform.label: Ajouter une valeur de produit
-    execute_rules.label: Exécution des règles
-  update_product_value_with_permission_and_rules:
-    label: Mettre à jour une valeur de produit avec vérification des permissions et application des règles
-    perform.label: Mise à jour de la valeur du produit
-    execute_rules.label: Exécution des règles
-  remove_product_value_with_permission_and_rules:
-    label: Supprime une valeur de produit avec vérification des permissions et application des règles
-    perform.label: Suppression de la valeur du produit
-    execute_rules.label: Exécution des règles
-  edit_common_attributes_with_permission_and_rules:
-    label: Mettre à jour les attributs communs avec vérification des permissions et application des règles
-    perform.label: Modifier les attributs communs
-    execute_rules.label: Exécution des règles
-    cleaner.label: Nettoyage des fichiers temporaires
-  csv_published_product_quick_export:
-    export.label: Export rapide CSV des produits publiés
-    perform:
-      label: Export rapide CSV des produits publiés
-  csv_published_product_grid_context_quick_export:
-    export.label: Export rapide CSV des produits publiés dans le contexte de grille
-    perform:
-      label: Export rapide CSV des produits publiés dans le contexte de grille
-  xlsx_published_product_quick_export:
-    export.label: Export rapide XLSX des produits publiés
-    perform:
-      label: Export rapide XLSX des produits publiés
-  xlsx_published_product_grid_context_quick_export:
-    export.label: Export rapide XLSX des produits publiés dans le contexte de grille
-    perform:
-      label: Export rapide XLSX des produits publiés dans le contexte de grille
-edit_common_attributes_with_permission_and_rules.steps.edit_common_attributes_processor.title: Modifier les attributs communs
+  steps.perform: Modifier des attributs
+  steps.edit_common_attributes_processor.title: Modifier des attributs
+edit_common_attributes_with_permission_and_rules.steps.edit_common_attributes_processor.title: Modifier des attributs
 add_product_value_with_permission.steps.add_product_value_with_permission_processor.title: Ajouter la valeur du produit avec permission
 update_product_value_with_permission.steps.update_product_value_with_permission_processor.title: Mettre à jour la valeur du produit avec la permission
 remove_product_value_with_permission.steps.update_product_value_with_permission_processor.title: Mettre à jour la valeur du produit avec permissions
-edit_common_attributes_with_permission: Édition des attributs communs avec permission
-edit_common_attributes_with_permission.steps.edit_common_attributes_processor.title: Édition des attributs communs avec permission
+edit_common_attributes_with_permission: Édition des attributs avec permission
+edit_common_attributes_with_permission.steps.edit_common_attributes_processor.title: Édition des attributs avec permission
 job_execution.summary:
   mass_published: Produit(s) publié(s)
   mass_unpublished: Produit dépublié

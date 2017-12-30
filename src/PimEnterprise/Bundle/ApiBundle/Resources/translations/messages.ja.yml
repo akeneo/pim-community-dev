@@ -4,3 +4,4 @@ pim_api:
       list: アセットカテゴリーリスト
   acl_group:
     asset_category: アセットカテゴリー
+    asset: アセット
