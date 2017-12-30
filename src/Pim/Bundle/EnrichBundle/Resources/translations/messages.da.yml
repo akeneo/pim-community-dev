@@ -19,6 +19,8 @@ pim_enrich:
       attribute.title: Egenskaber
       history.title: Historik
   family:
+    info:
+      cant_remove_attribute_used_as_axis: Kan ikke fjerne denne attribut, bruges som en variant akse i en familie variant
     tab:
       property.title: Egenskaber
       attribute.title: Egenskaber
@@ -89,6 +91,7 @@ pim_enrich:
       description: De valgte produktattributter vil blive redigeret med følgende data for den valgte landestandard.
       empty: Vælg venligst den eller de attribut(ter), du vil redigere
       success_flash: Kørslen der opdaterer produkt(er) status kører i øjeblikket
+      launched_flash: Massehandling "Tilføj etiketter til aktiver" er blevet igangsat. Du får besked, når det er afsluttet.
       message:
         warning: Der er ingen fælles egenskaber for de valgte produkter. Ændre venligst dit valg.
         invalid_attribute: Attribut med koden "attribute_code" er ikke fælles for de valgte produkter, attributten springes over.
@@ -158,6 +161,7 @@ pim_enrich:
       edit_attributes: Rediger attributterne for en produktmodel
       categories_view: Konsultere kategorierne af en produktmodel
       history: Se produkt model historik
+      remove: Fjern en produktmodel
     category:
       list: Kategoriliste
       create: Opret en kategori
@@ -760,6 +764,7 @@ edit_common_attributes.steps.edit_common_attributes_processor.title: Rediger att
 update_product_value.steps.update_product_value_processor.title: Opdatere produktets værdi
 remove_product_value.steps.update_product_value_processor.title: Fjern produktværdi
 edit_common_attributes: Rediger attributter
+edit_common_attributes_clean: Rens filer til fælles attributter
 perform.steps.duplicated.title: Duplikeret akse
 perform.steps.excluded.title: Udelukkede produkt
 batch_jobs:
@@ -775,6 +780,8 @@ batch_jobs:
     label: Rediger attributter
     perform:
       label: Rediger attributter
+    clean:
+      label: Rens filer til fælles attributter
   set_attribute_requirements:
     label: Indstil attribut krav
     perform:
