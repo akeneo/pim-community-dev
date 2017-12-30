@@ -38,3 +38,22 @@ pimee_workflow:
         label: Оставить комментарий (необязательно)
         error: Произошла ошибка, это предложение не было частично отклонено
         success: Изменения были успешно отклонены
+batch_jobs:
+  csv_published_product_export:
+    label: Экспорт размещенных товаров в CSV
+    export.label: Экспорт опубликованных товаров
+  csv_product_proposal_import:
+    label: Импорт предложений из CSV
+    import.label: Импорт предложений
+  approve_product_draft:
+    label: Принять предложение
+    perform.label: Принять предложение
+  refuse_product_draft:
+    label: Отклонить предложения
+    perform.label: Отклонить предложения
+  xlsx_published_product_export:
+    label: Экспорт опубликованных товаров в XLSX
+    export.label: Экспорт опубликованных товаров
+  xlsx_product_proposal_import:
+    label: Импорт предложений из XLSX
+    import.label: Импорт предложений из XLSX

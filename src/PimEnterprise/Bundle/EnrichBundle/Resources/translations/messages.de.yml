@@ -134,51 +134,12 @@ add_product_value_with_permission_and_rules:
 update_product_value_with_permission_and_rules:
   steps.perform: Wert des Produkts aktualisieren
 edit_common_attributes_with_permission_and_rules:
-  steps.perform: Gemeinsame Attribute bearbeiten
-  steps.edit_common_attributes_processor.title: Gemeinsame Attribute bearbeiten
-batch_jobs:
-  yml_asset_channel_configuration_import:
-    import:
-      label: Asset-Ausgabekanal-Konfiguration-Import
-  add_product_value_with_permission_and_rules:
-    label: Hinzufügen von Produktwerten mit Rechteprüfung und Regeln
-    perform.label: Produktwert hinzufügen
-    execute_rules.label: Regel-Ausführung
-  update_product_value_with_permission_and_rules:
-    label: Aktualisieren von Produktwerten mit Rechteprüfung und Regeln
-    perform.label: Wert des Produkts aktualisieren
-    execute_rules.label: Regel-Ausführung
-  remove_product_value_with_permission_and_rules:
-    label: Entfernen von Produktwerten mit Rechteprüfung und Regeln
-    perform.label: Produktwert entfernen
-    execute_rules.label: Regel-Ausführung
-  edit_common_attributes_with_permission_and_rules:
-    label: Bearbeiten von gemeinsamen Attributen mit Rechteprüfung und Regeln
-    perform.label: Gemeinsame Attribute bearbeiten
-    execute_rules.label: Regel-Ausführung
-    cleaner.label: Lösche temporäre Dateien
-  csv_published_product_quick_export:
-    export.label: Schnellexport veröffentlichter Produkte als CSV
-    perform:
-      label: Schnellexport veröffentlichter Produkte als CSV
-  csv_published_product_grid_context_quick_export:
-    export.label: Kontextbezogener Schnellexport veröffentlichter Produkte als CSV
-    perform:
-      label: Kontextbezogener Schnellexport veröffentlichter Produkte als CSV
-  xlsx_published_product_quick_export:
-    export.label: Schnellexport veröffentlichter Produkte als XLSX
-    perform:
-      label: Schnellexport veröffentlichter Produkte als XLSX
-  xlsx_published_product_grid_context_quick_export:
-    export.label: Kontextbezogener Schnellexport veröffentlichter Produkte als XLSX
-    perform:
-      label: Kontextbezogener Schnellexport veröffentlichter Produkte als XLSX
-edit_common_attributes_with_permission_and_rules.steps.edit_common_attributes_processor.title: Gemeinsame Attribute bearbeiten
+  steps.perform: Attribute bearbeiten
+  steps.edit_common_attributes_processor.title: Attribute bearbeiten
+edit_common_attributes_with_permission_and_rules.steps.edit_common_attributes_processor.title: Attribute bearbeiten
 add_product_value_with_permission.steps.add_product_value_with_permission_processor.title: Produktwert mit Berechtigung hinzufügen
 update_product_value_with_permission.steps.update_product_value_with_permission_processor.title: Produktwert mit Berechtigung aktualisieren
 remove_product_value_with_permission.steps.update_product_value_with_permission_processor.title: Produktwert mit Berechtigung entfernen
-edit_common_attributes_with_permission: Gemeinsame Attribute mit Berechtigung bearbeiten
-edit_common_attributes_with_permission.steps.edit_common_attributes_processor.title: Gemeinsame Attribute mit Berechtigung bearbeiten
 job_execution.summary:
   mass_published: Produkt veröffentlicht
   mass_unpublished: Produktveröffentlichung entzogen

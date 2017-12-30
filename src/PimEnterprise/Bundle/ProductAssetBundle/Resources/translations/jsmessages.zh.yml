@@ -8,6 +8,8 @@ pimee_product_asset:
           cancel: 取消
           confirm: 确认
         title: 管理资产
+    asset:
+      not_empty: 代码是必需的。它不能为空。
   enrich_asset:
     grid:
       edit: 编辑资产的属性
@@ -72,3 +74,63 @@ pim_dashboard:
         mass_upload: 批量上传
 page_title:
   pimee_product_asset_mass_upload: 上传资产
+batch_jobs:
+  apply_assets_mass_upload:
+    label: 资产大批上传
+    perform.label: 批量上传
+  yml_asset_channel_configuration_import:
+    label: 用 Yaml 导入资产通道配置
+    validation.label: 文件验证
+    import_asset.label: 用 Yaml 导入资产通道配置
+  yml_asset_channel_configuration_export:
+    label: 用 Yaml 导出资产通道配置
+    export.label: 用 Yaml 导出资产通道配置
+  csv_asset_import:
+    label: 从CSV文件中导入产品
+    validation.label: 文件验证
+    import_tags.label: 从CSV导入标签
+    import_asset.label: 从CSV文件中导入产品
+  csv_asset_export:
+    label: 从CSV文件中导出资产
+    export.label: 从CSV文件中导出资产
+  csv_asset_variation_export:
+    label: 在 CSV 导出资产变化
+    export.label: 在 CSV 导出资产变化
+  csv_tag_import:
+    label: 从CSV导入标签
+    validation.label: 文件验证
+    import.label: 从CSV导入标签
+  csv_asset_category_import:
+    label: 从CSV导入资产分类
+    validation.label: 文件验证
+    import_asset_category.label: 从CSV导入资产分类
+  csv_asset_configuration_import:
+    label: 用CSV 导入资产通道配置
+    validation.label: 文件验证
+    import_asset.label: 用CSV 导入资产通道配置
+  csv_asset_category_export:
+    label: 导出资产分类至CSV文件
+    export.label: 导出资产分类至CSV文件
+  xlsx_tag_import:
+    label: 从XLSX文件中导入标签
+    validation.label: 文件验证
+    import.label: 从XLSX文件中导入标签
+  xlsx_asset_import:
+    label: 从XLSX文件中导入资产
+    validation.label: 文件验证
+    import_tags.label: 从XLSX文件中导入标签
+    import_asset.label: 从XLSX文件中导入资产
+  xlsx_asset_category_import:
+    label: 从XLSX文件中导入资产分类
+    validation.label: 文件验证
+    import_asset_category.label: 从XLSX文件中导入资产分类
+  xlsx_asset_export:
+    label: 从XLSX文件中导出资产
+    export.label: 从XLSX文件中导出资产
+  xlsx_asset_category_export:
+    label: 从XLSX文件中导出资产分类
+    export.label: 从XLSX文件中导出资产分类
+  classify_assets:
+    perform.label: 在目录中移动资源
+  add_tags_to_assets:
+    perform.label: 将标签添加到资源

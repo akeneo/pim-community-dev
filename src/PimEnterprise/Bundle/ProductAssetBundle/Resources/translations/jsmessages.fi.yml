@@ -9,6 +9,10 @@ pimee_product_asset:
           confirm: Vahvista
         title: Hallinnoi resursseja
         description: Valitse assetit, jotka haluat liittää tuotteelle
+    asset:
+      not_empty: Koodi vaaditaan. Se ei voi olla tyhjä.
+      alpha_numeric_plus_underscore: Koodi voi sisältää vain alfanumeerisia merkkejä tai alaviivoja.
+      unique: Koodin on oltava yksilöllinen. Sinulle generoitiin uusi koodi.
   enrich_asset:
     grid:
       edit: Muokkaa assetin ominaisuuksia
@@ -74,3 +78,36 @@ pim_dashboard:
         mass_upload: Massatuonti
 page_title:
   pimee_product_asset_mass_upload: Tuo assetteja
+batch_jobs:
+  apply_assets_mass_upload:
+    label: Assettien massatuonti
+    perform.label: Massatuonti
+  yml_asset_channel_configuration_import:
+    label: Assettikanavien konfiguraation tuonti Yaml muodossa
+    validation.label: Tiedostojen tarkistaminen
+    import_asset.label: Assettikanavien konfiguraation tuonti Yaml muodossa
+  yml_asset_channel_configuration_export:
+    label: Assettikanavien asetusten vienti Yaml -muodossa
+    export.label: Assettikanavien asetusten vienti Yaml -muodossa
+  csv_asset_import:
+    validation.label: Tiedostojen tarkistaminen
+    import_tags.label: Tunnisteiden tuonti CSV-muodossa
+  csv_tag_import:
+    label: Tunnisteiden tuonti CSV-muodossa
+    validation.label: Tiedostojen tarkistaminen
+    import.label: Tunnisteiden tuonti CSV-muodossa
+  csv_asset_category_import:
+    validation.label: Tiedostojen tarkistaminen
+  csv_asset_configuration_import:
+    validation.label: Tiedostojen tarkistaminen
+  xlsx_tag_import:
+    validation.label: Tiedostojen tarkistaminen
+  xlsx_asset_import:
+    validation.label: Tiedostojen tarkistaminen
+  xlsx_asset_category_import:
+    validation.label: Tiedostojen tarkistaminen
+  xlsx_asset_variation_export:
+    label: Assettien variaatioiden vienti CSV-muodossa
+    export.label: Assettien variaatioiden vienti CSV-muodossa
+  add_tags_to_assets:
+    perform.label: Lisää tunnisteita asseteille

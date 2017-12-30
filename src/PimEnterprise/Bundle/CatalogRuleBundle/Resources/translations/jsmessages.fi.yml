@@ -25,6 +25,7 @@ pimee_catalog_rule:
       set.label: on asetettu
       copy.label: on kopioitu
       add.label: on lisätty
+      remove.label: on poistettu
   datagrid:
     rule-grid:
       actions:
@@ -34,6 +35,7 @@ pimee_catalog_rule:
           confirm_ok: OK
       mass_edit_action:
         confirm_title: Vahvista laskenta
+        confirm_content: Oletko varma, että haluat päivittää tuotteet, joihin tämä sääntö vaikuttaa?
         confirm_ok: OK
       mass_action:
         execute:
@@ -61,5 +63,24 @@ confirmation:
 flash:
   rule:
     removed: Sääntö poistettu onnistuneesti
+    impacted_product_count: Massatoiminto tuotteille, joihin tämä sääntö vaikuttaa on käynnistetty. Sinulle ilmoitetaan, kun se on valmis.
     executed: Säännön suoritus käynnistetty. Sinulle ilmoitetaan, kun se on valmis.
 pim_dashboard.widget.last_operations.job_type.mass_edit_rule: Sääntöjen asetukset
+batch_jobs:
+  yml_rule_import:
+    label: Sääntöjen tuonti YAML-muodossa
+    import.label: Sääntöjen tuonti
+    execute_rules.label: Sääntöjen suorittaminen
+  yml_rule_export:
+    label: Sääntöjen vienti YAML-muodossa
+    export.label: Sääntöjen vienti
+  csv_product_import_with_rules:
+    label: Tuotteiden ja sääntöjen tuonti CSV-muodossa
+    validation.label: Tiedostojen tarkistaminen
+    import.label: Tuotteiden tuonti
+    import_associations.label: Liitännäisten tuonti
+  xlsx_product_import_with_rules:
+    label: Tuotteiden ja sääntöjen tuonti XLSX-muodossa
+    validation.label: Tiedostojen tarkistaminen
+    import.label: Tuotteiden tuonti
+    import_associations.label: Liitännäisten tuonti

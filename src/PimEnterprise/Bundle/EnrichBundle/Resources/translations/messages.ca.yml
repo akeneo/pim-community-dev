@@ -134,48 +134,12 @@ add_product_value_with_permission_and_rules:
 update_product_value_with_permission_and_rules:
   steps.perform: Actualitzar el valor del producte
 edit_common_attributes_with_permission_and_rules:
-  steps.perform: Editar atributs comuns
-  steps.edit_common_attributes_processor.title: Editar atributs comuns
-batch_jobs:
-  add_product_value_with_permission_and_rules:
-    label: Afegir valor producte amb comprovació de permisos i aplicació de regles
-    perform.label: Afegir valor de producte
-    execute_rules.label: Execució de les regles
-  update_product_value_with_permission_and_rules:
-    label: Actualitzar el valor de producte amb comprovació de permisos i aplicació de regles
-    perform.label: Actualitzar el valor del producte
-    execute_rules.label: Execució de les regles
-  remove_product_value_with_permission_and_rules:
-    label: Eliminar el valor de producte amb comprovació de permisos i aplicació de regles
-    perform.label: Treure el valor del producte
-    execute_rules.label: Execució de les regles
-  edit_common_attributes_with_permission_and_rules:
-    label: Editar els atributs comuns amb comprovació de permisos i aplicació de regles
-    perform.label: Editar atributs comuns
-    execute_rules.label: Execució de les regles
-    cleaner.label: Netejar arxius temporals
-  csv_published_product_quick_export:
-    export.label: Exportació ràpida dels productes publicats en Csv
-    perform:
-      label: Exportació ràpida dels productes publicats en Csv
-  csv_published_product_grid_context_quick_export:
-    export.label: Exportació ràpida de la quadrícula de context de productes publicats en Csv
-    perform:
-      label: Exportació ràpida de la quadrícula de context de productes publicats en Csv
-  xlsx_published_product_quick_export:
-    export.label: Exportació ràpida dels productes publicats en Xlsx
-    perform:
-      label: Exportació ràpida dels productes publicats en Xlsx
-  xlsx_published_product_grid_context_quick_export:
-    export.label: Exportació ràpida de la quadrícula de context de productes publicats en Xlsx
-    perform:
-      label: Exportació ràpida de la quadrícula de context de productes publicats en Xlsx
-edit_common_attributes_with_permission_and_rules.steps.edit_common_attributes_processor.title: Editar atributs comuns
+  steps.perform: Editar atributs
+  steps.edit_common_attributes_processor.title: Editar atributs
+edit_common_attributes_with_permission_and_rules.steps.edit_common_attributes_processor.title: Editar atributs
 add_product_value_with_permission.steps.add_product_value_with_permission_processor.title: Afegir valor producte amb permisos
 update_product_value_with_permission.steps.update_product_value_with_permission_processor.title: Actualitzar el valor de producte amb permissos
 remove_product_value_with_permission.steps.update_product_value_with_permission_processor.title: Treure el valor de producte amb permisos
-edit_common_attributes_with_permission: Editar els atributs comuns amb permisos
-edit_common_attributes_with_permission.steps.edit_common_attributes_processor.title: Editar els atributs comuns amb permisos
 job_execution.summary:
   mass_published: Producte publicat
   mass_unpublished: Producte despublicat

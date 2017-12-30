@@ -87,23 +87,3 @@ btn:
 rule: Настройки правил
 mass_edit_rule: Настройки правил
 job_execution.summary.rule_calculated: Количество привил
-batch_jobs:
-  yml_rule_import:
-    label: Импорт правил в YAML
-    import.label: Импорт правил
-  rule_impacted_product_count:
-    label: Затрагиваемые продукты для правил
-    perform.label: Вычислить затрагиваемые продукты
-    execute_rules.label: Выполнение правил
-  csv_product_import_with_rules:
-    label: Импорт продуктов из CSV с правилами
-    execute_rules.label: Выполнение правил
-    validation.label: Проверка файла
-    import.label: Импорт продуктов
-    import_associations.label: Импорт ассоциаций
-  xlsx_product_import_with_rules:
-    label: Импорт продуктов из XLSX с правилами
-    execute_rules.label: Выполнение правил
-    validation.label: Проверка файла
-    import.label: Импорт продуктов
-    import_associations.label: Импорт ассоциаций

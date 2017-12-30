@@ -160,29 +160,6 @@ pim_enrich:
 btn.create.asset: Kreiraj imovinu
 assets_mass_upload.steps:
   asset_mass_upload.title: Masovni prijenos imovine
+import_asset.steps.channel_configuration_processor.title: Konfiguracije obrade kanala
 mass_upload: Masovni prenesi imovine
-batch_jobs:
-  apply_assets_mass_upload:
-    label: Masovni prijenos imovine
-    perform.label: Masovni prijenos
-  yml_asset_channel_configuration_import:
-    validation.label: Provjera valjanosti datoteke
-  csv_asset_import:
-    validation.label: Provjera valjanosti datoteke
-  csv_tag_import:
-    validation.label: Provjera valjanosti datoteke
-  csv_asset_category_import:
-    validation.label: Provjera valjanosti datoteke
-  csv_asset_configuration_import:
-    validation.label: Provjera valjanosti datoteke
-  xlsx_tag_import:
-    validation.label: Provjera valjanosti datoteke
-  xlsx_asset_import:
-    validation.label: Provjera valjanosti datoteke
-  xlsx_asset_category_import:
-    validation.label: Provjera valjanosti datoteke
-  classify_assets:
-    perform.label: Premjesti imovinu u kategorije
-  add_tags_to_assets:
-    perform.label: Dodaj oznake u imovine
 pim_assets_collection: Popis imovine

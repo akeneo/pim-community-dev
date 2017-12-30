@@ -137,25 +137,6 @@ job_execution.summary:
   proposal_created: proposition(s) créée(s)
   proposal_skipped: proposition(s) ignorée(s) (aucune différence)
 published products: Produits publiés
-batch_jobs:
-  csv_published_product_export:
-    label: Export CSV des produits publiés
-    export.label: Export des produits publiés
-  csv_product_proposal_import:
-    label: Import des propositions de produit en CSV
-    import.label: Import des propositions de produit
-  approve_product_draft:
-    label: Approuver la proposition
-    perform.label: Approuver la proposition
-  refuse_product_draft:
-    label: Rejeter les propositions
-    perform.label: Rejeter les propositions
-  xlsx_published_product_export:
-    label: Export des produits publiés en XLSX
-    export.label: Export des produits publiés
-  xlsx_product_proposal_import:
-    label: Import des propositions en XLSX
-    import.label: Import des propositions en XLSX
 pim_analytics:
   info_type:
     nb_published_products: Nombre de produits publiés

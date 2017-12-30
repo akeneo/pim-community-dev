@@ -1,6 +1,10 @@
 pim_api:
   acl:
     asset_category:
+      edit: Opret og Opdater kategorier
       list: Oplist aktiver-kategorier
+    asset:
+      list: Liste over aktiver, og en liste over og hente deres reference og variation filer
   acl_group:
     asset_category: Aktiver kategorier
+    asset: Aktiver

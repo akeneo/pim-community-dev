@@ -20,6 +20,12 @@ pim_enrich:
     attribute:
       type:
         pim_assets_collection: Resurssien keruu
+  form:
+    attribute:
+      tab:
+        properties:
+          label:
+            is_read_only: Vain luku
 pim:
   grid:
     mass_action:
@@ -30,8 +36,10 @@ pimee_enrich:
       tab:
         permission:
           title: Käyttöoikeudet
+          added: Käyttäjäryhmä {{ group }} on oikeutettu {{ permission }} työprofiilia
           execute.label: Työprofiilin suorittaminen sallittu
           edit.label: Työprofiilin muokkaaminen sallittu
+          removed: Käyttäjäryhmä {{ group }} ei ole oikeutettu {{ permission }} työprofiilia
     channel:
       tab:
         asset-transformation:
@@ -42,6 +50,8 @@ pimee_enrich:
           title: Käyttöoikeudet
           view.label: Attribuuttien katselu sallittu
           edit.label: Attribuuttien muokkaaminen sallittu
+          removed: Käyttäjäryhmä {{ group }} ei ole oikeutettu {{ permission }} attribuuttiryhmää
+          added: Käyttäjäryhmä {{ group }} on oikeutettu {{ permission }} attribuuttiryhmää
   entity:
     product:
       index_title: "] -Inf, 1] {{ count }} tulos|] 1, Inf [{{ count }} tulosta"
@@ -184,7 +194,7 @@ pimee_enrich:
           label: Vahvista
       operation:
         add_tag:
-          label: Lisää tunnisteita assetille
+          label: Lisää tunnisteita asseteille
           description: Tunnisteita lisätään assetille.
           field: Tunnisteet
         add_to_category:
@@ -209,3 +219,10 @@ page_title:
   pimee_asset_categorytree_index: Kategoriat
   pimee_asset_categorytree_edit: Kategoria {{ category.label }} | Muokkaus
   pimee_catalog_rule_rule_index: Säännöt
+batch_jobs:
+  update_product_value_with_permission_and_rules:
+    perform.label: Päivitä tuotteen arvo
+  remove_product_value_with_permission_and_rules:
+    perform.label: Poista tuotteen arvo
+  edit_common_attributes_with_permission_and_rules:
+    perform.label: Muokkaa attribuutteja
