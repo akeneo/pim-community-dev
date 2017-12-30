@@ -769,9 +769,6 @@ pim_enrich:
         title: Eigenschappen
       global_settings:
         title: Algemene instellingen
-  mass_edit_action:
-    edit_common_attributes:
-      description: Het attribuut van het geselecteerde product zal worden gewijzigd met de volgende data voor de landinstelling <span class="highlight">{{ locale }}</span> en het kanaal <span class="highlight">{{ channel }}</span> gekozen in het product raster.
   index:
     import_profiles:
       list: Selecteer een taak
@@ -804,6 +801,8 @@ pim_enrich:
           label: Status wijzigen
           description: De geselecteerde producten zullen worden ingeschakeld of uitgeschakeld.
           field: Om in te schakelen
+        edit_common:
+          label: Bewerk attributen
         change_family:
           description: De familie van de geselecteerde producten zal worden gewijzigd in de gekozen familie
           field: Familie
@@ -811,10 +810,6 @@ pim_enrich:
           label: Toevoegen aan groepen
           description: Selecteer de groepen waarin u de geselecteerde producten wilt toevoegen
           field: Groepen
-        add_to_category:
-          description: De producten zullen worden geplaatst in de volgende categorieën. De bestaande plaatsing wordt behouden.
-        move_to_category:
-          description: De producten zullen worden geplaatst in de volgende categorieën. De bestaande plaatsing gaat verloren.
         remove_from_category:
           description: De producten zullen worden verwijderd uit de volgende categorieën.
 pim_enrich.error:
@@ -846,6 +841,10 @@ batch_jobs:
     label: Update productwaarde
     perform:
       label: Update productwaarde
+  edit_common_attributes:
+    label: Bewerk attributen
+    perform:
+      label: Bewerk attributen
   csv_product_export:
     label: Productexport in CSV
     export.label: Productexport

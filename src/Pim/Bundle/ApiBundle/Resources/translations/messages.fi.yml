@@ -22,11 +22,11 @@ pim_api:
     channel:
       edit: Luo ja päivitä kanavia
       list: Listaa kanavat
-    locale.list: Listaa lokaatiot
-    currency.list: Listaa valuutat
+    locale.list: Lista lokaatioista
+    currency.list: Lista valuutoista
     association_type:
       edit: Luo ja päivitä assosiaatiotyyppejä
-      list: Listaa määritetyypit
+      list: Listaa assosiaatiotyypit
   acl_group:
     overall_access: Yleiset Web API-käyttöoikeudet
     attribute: Attribuutit
@@ -38,5 +38,5 @@ pim_api:
     channel: Kanavat
     locale: Alueet
     currency: Valuutat
-    association_type: Määritetyypit
+    association_type: Assosiaatiotyypit
 rights.api: Web API-käyttöoikeudet

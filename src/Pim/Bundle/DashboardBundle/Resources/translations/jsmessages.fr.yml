@@ -14,6 +14,8 @@ pim_dashboard:
         mass_edit: Edition en masse
         quick_export: Export rapide
         compute_product_models_descendants: Mise à jour des descendants des modèles de produit
+        compute_family_variant_structure_changes: Calcul des changements de structure des familles variantes
+        compute_completeness_of_products_family: Calcul de la complétude des familles variantes
     completeness:
       load_more: 'Voir plus...'
     header:

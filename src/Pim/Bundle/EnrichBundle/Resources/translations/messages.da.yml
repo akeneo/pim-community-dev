@@ -89,7 +89,7 @@ pim_enrich:
       description: De valgte produktattributter vil blive redigeret med følgende data for den valgte landestandard.
       empty: Vælg venligst den eller de attribut(ter), du vil redigere
       success_flash: Kørslen der opdaterer produkt(er) status kører i øjeblikket
-      launched_flash: Handlingen bulk "redigere fælles attributter" er blevet startet. Du får besked, når det er afsluttet.
+      launched_flash: Massehandling "Tilføj etiketter til aktiver" er blevet igangsat. Du får besked, når det er afsluttet.
       message:
         warning: Der er ingen fælles egenskaber for de valgte produkter. Ændre venligst dit valg.
         invalid_attribute: Attribut med koden "attribute_code" er ikke fælles for de valgte produkter, attributten springes over.
@@ -147,6 +147,7 @@ pim_enrich:
       remove_attribute: Fjerne en attribut fra et produkt
       categories_view: Konsultere kategorierne af et produkt
       associations_view: Se sammenhængstyper for et produkt
+      associations_edit: Ret sammenhængstyper for et produkt
       change_family: Ændre produktfamilie
       change_state: Ændre tilstand af produktet
       add_to_groups: Tilføj produkt til grupper
@@ -159,6 +160,7 @@ pim_enrich:
       edit_attributes: Rediger attributterne for en produktmodel
       categories_view: Konsultere kategorierne af en produktmodel
       history: Se produkt model historik
+      remove: Fjern en produktmodel
     category:
       list: Kategoriliste
       create: Opret en kategori
@@ -214,6 +216,8 @@ pim_enrich:
       edit: Redigere en sammenhængstype
       remove: Fjern en sammenhængstype
       history: Se sammenhængs type historik
+    association:
+      remove: Ret sammenhængstyper for et produkt
     job_tracker:
       index: Se process overvågning
     api_connection:
@@ -637,7 +641,7 @@ pim_enrich.mass_edit_action:
     description: De valgte produkter vil blive aktiveret eller deaktiveret.
     success_flash: Produkt(er) status er blevet ændret
   edit-common-attributes:
-    label: Rediger fælles attributter
+    label: Rediger attributter
     description: De valgte produktattributter vil blive redigeret med følgende data for den valgte landestandard.
     empty: Vælg venligst den eller de attribut(ter), du vil redigere
     success_flash: Produkt(er) attribut(ter) er blevet opdateret
@@ -757,10 +761,10 @@ job_execution.summary:
   skipped_attributes: Attributter sprunget over
   skipped_families: Familier sprunget over
 pim_mass_edit_execution_show: Masse redigere udførsler | Detaljer
-edit_common_attributes.steps.edit_common_attributes_processor.title: Rediger fælles attributter
+edit_common_attributes.steps.edit_common_attributes_processor.title: Rediger attributter
 update_product_value.steps.update_product_value_processor.title: Opdatere produktets værdi
 remove_product_value.steps.update_product_value_processor.title: Fjern produktværdi
-edit_common_attributes: Rediger fælles attributter
+edit_common_attributes: Rediger attributter
 edit_common_attributes_clean: Rens filer til fælles attributter
 perform.steps.duplicated.title: Duplikeret akse
 perform.steps.excluded.title: Udelukkede produkt
@@ -774,11 +778,17 @@ batch_jobs:
     perform:
       label: Opdatere produktets værdi
   edit_common_attributes:
-    label: Rediger fælles attributter
+    label: Rediger attributter
     perform:
-      label: Rediger fælles attributter
+      label: Rediger attributter
     clean:
       label: Rens filer til fælles attributter
+    cleaner:
+      label: Rens filer til fælles attributter
+  add_to_existing_product_model:
+    label: Føj til en eksisterende produktmodel
+    perform:
+      label: Føj til en eksisterende produktmodel
   set_attribute_requirements:
     label: Indstil attribut krav
     perform:
