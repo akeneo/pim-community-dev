@@ -3,7 +3,7 @@ pim_enrich:
     tab:
       attribute.title: Attribuutit
       category.title: Kategoriat
-      association.title: Määritteet
+      association.title: Assosiaatiot
       completeness.title: Valmistumisaste
       history.title: Historia
     no_comparison_locale_available: Muuta lokaatiota ei ole käytettävissä vertailuun
@@ -752,7 +752,7 @@ pim_menu:
     settings: Asetukset
     spread: Levitä
   item:
-    association_type: Määritetyypit
+    association_type: Assosiaatiotyypit
     attribute: Attribuutit
     attribute_group: Attribuuttiryhmät
     category: Kategoriat
