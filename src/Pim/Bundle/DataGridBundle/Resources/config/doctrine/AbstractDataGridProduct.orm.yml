@@ -1,4 +1,4 @@
-Pim\Component\Catalog\Model\AbstractProduct:
+Pim\Bundle\DataGridBundle\Entity\AbstractDataGridProduct:
     type: entity
     table: pim_catalog_product
     inheritanceType: SINGLE_TABLE
@@ -6,8 +6,8 @@ Pim\Component\Catalog\Model\AbstractProduct:
         name: product_type
         type: string
     discriminatorMap:
-        product: Product
-        variant_product: VariantProduct
+        product: \Pim\Bundle\DataGridBundle\Entity\DataGridProduct
+        variant_product: \Pim\Bundle\DataGridBundle\Entity\DataGridVariantProduct
     changeTrackingPolicy: DEFERRED_EXPLICIT
     repositoryClass: Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\ProductRepository
     fields:
