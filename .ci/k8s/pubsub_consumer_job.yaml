@@ -92,22 +92,25 @@ spec:
             - { name: tmp-pod, mountPath: /tmp/pod, readOnly: true }
           resources:
             requests: {cpu: "100m", memory: "200Mi"}
-        - name: selenium
-          image: selenium/standalone-firefox:2.53.1-beryllium
+        - name: chrome
+          image: justinribeiro/chrome-headless
           command: ["/bin/bash", "-c"]
           args:
             - |
-              /opt/bin/entry_point.sh &
+              google-chrome-stable --headless --disable-gpu --remote-debugging-address=0.0.0.0 --remote-debugging-port=9222 &
               CHILD_PID=$!
               (while true; do if [[ -f "/tmp/pod/main-terminated" ]]; then kill $CHILD_PID; fi; sleep 1; done) &
               wait $CHILD_PID
               if [[ -f "/tmp/pod/main-terminated" ]]; then exit 0; fi
           volumeMounts:
-            - { name: pim, mountPath: /home/jenkins }
             - { name: artifacts, mountPath: /tmp/behat/screenshots }
             - { name: tmp-pod, mountPath: /tmp/pod, readOnly: true }
           env:
             - { name: JAVA_OPTS, value: "-Xms1g -Xmx1g " }
+          securityContext:
+            capabilities:
+              add:
+                - SYS_ADMIN
           resources:
             requests: {cpu: "300m", memory: "1500Mi"}
         - name: pubsub
