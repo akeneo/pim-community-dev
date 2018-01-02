@@ -56,6 +56,10 @@ class IncompleteValuesNormalizer implements NormalizerInterface
             return [];
         }
 
+        if (!$this->isEntityGranted($entityWithFamily)) {
+            return [];
+        }
+
         $kindOfCompletenesses = [];
 
         foreach ($this->getChannelsFromRequirements($family) as $channel) {
@@ -78,6 +82,14 @@ class IncompleteValuesNormalizer implements NormalizerInterface
 
                 $missingAttributes = [];
                 foreach ($incompleteValues->attributes() as $attribute) {
+                    if (!$this->isAttributeGranted($attribute)) {
+                        continue;
+                    }
+
+                    if ($attribute->isLocalizable() && !$this->isLocaleGranted($locale)) {
+                        continue;
+                    }
+
                     $missingAttributes[] = [
                         'code' => $attribute->getCode(),
                         'labels' => $this->normalizeAttributeLabels($attribute, $channel->getLocales()->toArray())
@@ -102,6 +114,36 @@ class IncompleteValuesNormalizer implements NormalizerInterface
     public function supportsNormalization($data, $format = null)
     {
         return $data instanceof EntityWithFamilyInterface && 'internal_api' === $format;
+    }
+
+    /**
+     * @param EntityWithFamilyInterface $entityWithFamily
+     *
+     * @return bool
+     */
+    protected function isEntityGranted(EntityWithFamilyInterface $entityWithFamily)
+    {
+        return true;
+    }
+
+    /**
+     * @param AttributeInterface $attribute
+     *
+     * @return bool
+     */
+    protected function isAttributeGranted(AttributeInterface $attribute)
+    {
+        return true;
+    }
+
+    /**
+     * @param LocaleInterface $locale
+     *
+     * @return bool
+     */
+    protected function isLocaleGranted(LocaleInterface $locale)
+    {
+        return true;
     }
 
     /**

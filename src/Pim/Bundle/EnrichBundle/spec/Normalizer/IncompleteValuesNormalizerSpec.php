@@ -88,6 +88,7 @@ class IncompleteValuesNormalizerSpec extends ObjectBehavior
         $attributes->getIterator()->willReturn($attributesIterator);
         $attribute->getCode()->willReturn('description');
         $attribute->getTranslation('en_US')->willReturn($attributeTranslation);
+        $attribute->isLocalizable()->willReturn(false);
 
         $requiredValueCollectionFactory->forChannel($family, $channel)->willReturn($requiredValues);
         $requiredValues->filterByChannelAndLocale($channel, $locale)->willReturn($requiredValues);
