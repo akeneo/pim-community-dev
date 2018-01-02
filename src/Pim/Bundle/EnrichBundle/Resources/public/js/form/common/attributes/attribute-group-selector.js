@@ -102,10 +102,13 @@ define(
              */
             render: function () {
                 $.when(
-                    toFillFieldProvider.getFields(this.getRoot(), this.getFormData().values),
                     AttributeGroupManager.getAttributeGroupsForObject(this.getFormData())
-                ).then(function (attributes, attributeGroups) {
-                    var toFillAttributeGroups = _.uniq(_.map(attributes, function (attribute) {
+                ).then(function (attributeGroups) {
+                    const scope = UserContext.get('catalogScope');
+                    const locale = UserContext.get('catalogLocale');
+                    const attributes = toFillFieldProvider.getMissingRequiredFields(this.getFormData(), scope, locale);
+
+                    const toFillAttributeGroups = _.uniq(_.map(attributes, function (attribute) {
                         return AttributeGroupManager.getAttributeGroupForAttribute(
                             attributeGroups,
                             attribute

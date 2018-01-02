@@ -60,7 +60,8 @@ class ProductNormalizerSpec extends ObjectBehavior
         EntityWithFamilyValuesFillerInterface $productValuesFiller,
         EntityWithFamilyVariantAttributesProvider $attributesProvider,
         VariantNavigationNormalizer $navigationNormalizer,
-        AscendantCategoriesInterface $ascendantCategories
+        AscendantCategoriesInterface $ascendantCategories,
+        NormalizerInterface $incompleteValuesNormalizer
     ) {
         $this->beConstructedWith(
             $normalizer,
@@ -83,7 +84,8 @@ class ProductNormalizerSpec extends ObjectBehavior
             $productValuesFiller,
             $attributesProvider,
             $navigationNormalizer,
-            $ascendantCategories
+            $ascendantCategories,
+            $incompleteValuesNormalizer
         );
     }
 
@@ -107,6 +109,7 @@ class ProductNormalizerSpec extends ObjectBehavior
         $collectionFilter,
         $productBuilder,
         $productValuesFiller,
+        $incompleteValuesNormalizer,
         ProductInterface $mug,
         AssociationInterface $upsell,
         AssociationTypeInterface $groupType,
@@ -194,6 +197,8 @@ class ProductNormalizerSpec extends ObjectBehavior
         $productBuilder->addMissingAssociations($mug)->shouldBeCalled();
         $productValuesFiller->fillMissingValues($mug)->shouldBeCalled();
 
+        $incompleteValuesNormalizer->normalize($mug)->willReturn('INCOMPLETE VALUES');
+
         $this->normalize($mug, 'internal_api', $options)->shouldReturn(
             [
                 'enabled'    => true,
@@ -208,6 +213,7 @@ class ProductNormalizerSpec extends ObjectBehavior
                     'model_type'        => 'product',
                     'structure_version' => 12,
                     'completenesses'    => null,
+                    'required_missing_attributes' => 'INCOMPLETE VALUES',
                     'image'             => [
                         'filePath'         => '/p/i/m/4/all.png',
                         'originalFileName' => 'all.png',
@@ -249,6 +255,7 @@ class ProductNormalizerSpec extends ObjectBehavior
         $navigationNormalizer,
         $attributesProvider,
         $ascendantCategories,
+        $incompleteValuesNormalizer,
         VariantProductInterface $mug,
         AssociationInterface $upsell,
         AssociationTypeInterface $groupType,
@@ -363,6 +370,7 @@ class ProductNormalizerSpec extends ObjectBehavior
         $description->getCode()->willReturn('description');
 
         $ascendantCategories->getCategoryIds($mug)->willReturn([42]);
+        $incompleteValuesNormalizer->normalize($mug)->willReturn('INCOMPLETE VALUES');
 
         $this->normalize($mug, 'internal_api', $options)->shouldReturn(
             [
@@ -378,6 +386,7 @@ class ProductNormalizerSpec extends ObjectBehavior
                     'model_type'        => 'product',
                     'structure_version' => 12,
                     'completenesses'    => null,
+                    'required_missing_attributes' => 'INCOMPLETE VALUES',
                     'image'             => [
                         'filePath'         => '/p/i/m/4/all.png',
                         'originalFileName' => 'all.png',
