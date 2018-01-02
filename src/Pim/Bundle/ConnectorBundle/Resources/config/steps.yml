@@ -114,7 +114,7 @@ services:
             - 'import_product_model_descendants'
             - '@event_dispatcher'
             - '@akeneo_batch.job_repository'
-            - '@pim_connector.reader.file.csv_product_model'
+            - '@pim_connector.reader.file.csv_root_product_model'
             - '@pim_connector.processor.denormalization.product_model_loader'
             - '@pim_connector.writer.database.product_model_descendants'
             - '%pim_connector.step.product_model.import.bulk_size%'
