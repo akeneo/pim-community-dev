@@ -75,6 +75,10 @@ class ProductModelDescendantsSaver implements SaverInterface
      */
     public function save($productModel, array $options = []): void
     {
+        $handle = fopen('/tmp/descendant_lists.txt', 'a+');
+        fwrite($handle, $productModel->getCode() . '/');
+        fclose($handle);
+
         $this->validateProductModel($productModel);
 
         $identifiers = $this->productModelRepository->findDescendantProductIdentifiers($productModel);
