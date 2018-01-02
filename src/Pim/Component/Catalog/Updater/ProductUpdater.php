@@ -3,6 +3,7 @@
 namespace Pim\Component\Catalog\Updater;
 
 use Akeneo\Component\StorageUtils\Exception\InvalidObjectException;
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Akeneo\Component\StorageUtils\Exception\UnknownPropertyException;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Akeneo\Component\StorageUtils\Updater\PropertySetterInterface;
@@ -126,18 +127,111 @@ class ProductUpdater implements ObjectUpdaterInterface
             );
         }
 
-        foreach ($data as $code => $values) {
-            if (in_array($code, $this->supportedFields)) {
-                $this->updateProductFields($product, $code, $values);
-            } elseif ('values' === $code) {
-                $this->valuesUpdater->update($product, $values, $options);
-                $this->addEmptyValues($product, $values);
-            } elseif (!in_array($code, $this->ignoredFields)) {
-                throw UnknownPropertyException::unknownProperty($code);
-            }
+        foreach ($data as $code => $value) {
+            $this->setData($product, $code, $value, $options);
         }
 
         return $this;
+    }
+
+    /**
+     * @param ProductInterface $product
+     * @param                  $field
+     * @param                  $data
+     * @param array            $options
+     */
+    protected function setData(ProductInterface $product, $field, $data, array $options = [])
+    {
+        switch ($field) {
+            case 'enabled':
+            case 'family':
+            case 'parent':
+                $this->validateScalar($field, $data);
+                $this->updateProductFields($product, $field, $data);
+                break;
+            case 'categories':
+            case 'groups':
+                $this->validateScalarArray($field, $data);
+                $this->updateProductFields($product, $field, $data);
+                break;
+            case 'associations':
+                $this->validateAssociations($data);
+                $this->updateProductFields($product, $field, $data);
+                break;
+            case 'values':
+                $this->valuesUpdater->update($product, $data, $options);
+                $this->addEmptyValues($product, $data);
+                break;
+            default:
+                if (!in_array($field, $this->ignoredFields)) {
+                    throw UnknownPropertyException::unknownProperty($field);
+                }
+        }
+    }
+
+    /**
+     * Validate association data
+     *
+     * @param $data
+     */
+    protected function validateAssociations($data)
+    {
+        foreach ($data as $associationTypeCode => $associationTypeValues) {
+            $this->validateScalar('associations', $associationTypeCode);
+            if (!is_array($associationTypeValues)) {
+                throw InvalidPropertyTypeException::arrayExpected(
+                    'associations',
+                    static::class,
+                    $associationTypeValues
+                );
+            }
+
+            foreach ($associationTypeValues as $property => $value) {
+                $this->validateScalar('associations', $property);
+                $this->validateScalarArray('associations', $value);
+            }
+        }
+    }
+
+    /**
+     * Validate that it is a scalar value.
+     *
+     * @param $field
+     * @param $data
+     *
+     * @throws InvalidPropertyTypeException
+     */
+    protected function validateScalar($field, $data)
+    {
+        if (null !== $data && !is_scalar($data)) {
+            throw InvalidPropertyTypeException::scalarExpected($field, static::class, $data);
+        }
+    }
+
+    /**
+     * Validate that it is an array with scalar values.
+     *
+     * @param string $field
+     * @param mixed  $data
+     *
+     * @throws InvalidPropertyTypeException
+     */
+    protected function validateScalarArray($field, $data)
+    {
+        if (!is_array($data)) {
+            throw InvalidPropertyTypeException::arrayExpected($field, static::class, $data);
+        }
+
+        foreach ($data as $value) {
+            if (null !== $value && !is_scalar($value)) {
+                throw InvalidPropertyTypeException::validArrayStructureExpected(
+                    $field,
+                    sprintf('one of the %s is not a scalar', $field),
+                    static::class,
+                    $data
+                );
+            }
+        }
     }
 
     /**
