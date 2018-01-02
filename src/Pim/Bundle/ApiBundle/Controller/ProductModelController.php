@@ -184,12 +184,7 @@ class ProductModelController
     public function createAction(Request $request): Response
     {
         $data = $this->getDecodedContent($request->getContent());
-        $data = $this->productModelAttributeFilter->filter($data);
         $productModel = $this->factory->create();
-
-        if (!isset($data['code'])) {
-            $data['code'] = '';
-        }
 
         $this->updateProductModel($productModel, $data, 'post_product_model');
         $this->validateProductModel($productModel);
@@ -212,7 +207,6 @@ class ProductModelController
     {
         $data = $this->getDecodedContent($request->getContent());
         $data['code'] = array_key_exists('code', $data) ? $data['code'] : $code;
-        $data = $this->productModelAttributeFilter->filter($data);
 
         $productModel = $this->productModelRepository->findOneByIdentifier($code);
         $isCreation = null === $productModel;
@@ -236,6 +230,7 @@ class ProductModelController
      * @param Request $request
      *
      * @throws UnprocessableEntityHttpException
+     * @throws ServerErrorResponseException
      *
      * @return JsonResponse
      */
@@ -404,6 +399,10 @@ class ProductModelController
     protected function updateProductModel(ProductModelInterface $productModel, array $data, string $anchor): void
     {
         try {
+            if (array_key_exists('values', $data)) {
+                $data = $this->productModelAttributeFilter->filter($data);
+            }
+
             $this->updater->update($productModel, $data);
         } catch (PropertyException $exception) {
             throw new DocumentedHttpException(
