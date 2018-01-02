@@ -28,17 +28,5 @@ class PimDataGridBundle extends Bundle
             ->addCompilerPass(new Compiler\AddSortersPass())
             ->addCompilerPass(new Compiler\AddMassActionHandlersPass())
             ->addCompilerPass(new Compiler\ConfigurationPass());
-
-        $productMappings = [
-            realpath(__DIR__ . '/Resources/config/doctrine') => 'Pim\Bundle\DataGridBundle\Entity'
-        ];
-
-        $container->addCompilerPass(
-            DoctrineOrmMappingsPass::createYamlMappingDriver(
-                $productMappings,
-                ['doctrine.orm.entity_manager'],
-                false
-            )
-        );
     }
 }

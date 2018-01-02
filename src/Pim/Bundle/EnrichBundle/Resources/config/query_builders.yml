@@ -52,7 +52,7 @@ services:
         class: '%pim_enrich.elasticsearch.from_size_cursor_factory.class%'
         arguments:
             - '@akeneo_elasticsearch.client.product_and_product_model'
-            - '@pim_datagrid.repository.product'
+            - '@pim_catalog.repository.product'
             - '@pim_catalog.repository.product_model'
             - '%pim_catalog.factory.product_cursor.page_size%'
             - 'pim_catalog_product'

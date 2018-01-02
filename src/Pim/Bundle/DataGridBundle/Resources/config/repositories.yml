@@ -1,20 +1,11 @@
 parameters:
     pim_datagrid.repository.datagrid_view.class: Pim\Bundle\DataGridBundle\Repository\DatagridViewRepository
-    pim_datagrid.repository.product.class: Pim\Bundle\DataGridBundle\Doctrine\ORM\Repository\ProductRepository
     pim_datagrid.entity.datagrid_view.class: Pim\Bundle\DataGridBundle\Entity\DatagridView
-    pim_datagrid.entity.datagrid_product.class: Pim\Bundle\DataGridBundle\Entity\DataGridProduct
 
 services:
     pim_datagrid.repository.datagrid_view:
         class: '%pim_datagrid.repository.datagrid_view.class%'
         factory: 'doctrine.orm.entity_manager:getRepository'
         arguments: ['%pim_datagrid.entity.datagrid_view.class%']
-        tags:
-            - { name: 'pim_repository' }
-
-    pim_datagrid.repository.product:
-        class: '%pim_datagrid.repository.product.class%'
-        factory: 'doctrine.orm.entity_manager:getRepository'
-        arguments: ['%pim_datagrid.entity.datagrid_product.class%']
         tags:
             - { name: 'pim_repository' }

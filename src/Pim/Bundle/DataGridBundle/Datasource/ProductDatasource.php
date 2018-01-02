@@ -5,6 +5,7 @@ namespace Pim\Bundle\DataGridBundle\Datasource;
 use Doctrine\Common\Persistence\ObjectManager;
 use Oro\Bundle\DataGridBundle\Datasource\ResultRecord;
 use Pim\Bundle\DataGridBundle\EventSubscriber\FilterEntityWithValuesSubscriber;
+use Pim\Bundle\DataGridBundle\EventSubscriber\FilterEntityWithValuesSubscriberConfiguration;
 use Pim\Bundle\DataGridBundle\Extension\Pager\PagerExtension;
 use Pim\Component\Catalog\Model\EntityWithValuesInterface;
 use Pim\Component\Catalog\Query\ProductQueryBuilderFactoryInterface;
@@ -58,7 +59,7 @@ class ProductDatasource extends Datasource
         $attributeIdsToDisplay = $this->configuration['displayed_attribute_ids'] ?? [];
         $attributes = $this->configuration['attributes_configuration'] ?? [];
         $attributeCodesToFilter = $this->getAttributeCodesToFilter($attributeIdsToDisplay, $attributes);
-        $this->filterEntityWithValuesSubscriber->configureAttributeCodesToFilter($attributeCodesToFilter);
+        $this->filterEntityWithValuesSubscriber->configure(FilterEntityWithValuesSubscriberConfiguration::filterEntityValues($attributeCodesToFilter));
 
         $entitiesWithValues = $this->pqb->execute();
         $context = [

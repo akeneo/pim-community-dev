@@ -82,7 +82,7 @@ services:
         arguments:
             - '@service_container'
         tags:
-            - { name: doctrine.event_subscriber, priority: 100 }
+            - { name: doctrine.event_subscriber, priority: 50 }
 
     pim_catalog.event_subscriber.index_products:
         class: '%pim_catalog.event_subscriber.index_products.class%'

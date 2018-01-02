@@ -7,12 +7,16 @@ use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
 use Doctrine\ORM\Events;
 use Pim\Bundle\DataGridBundle\Entity\EntityWithFilteredValuesInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
+use Pim\Component\Catalog\Model\EntityWithFamilyInterface;
+use Pim\Component\Catalog\Model\EntityWithValuesInterface;
 
 /**
  * Filter values object from the $rawValues field (ie: values in JSON) when a product is loaded by Doctrine.
- * It is done for performance purpose, in order to not hydrate all the values as objects.
+ * This subscriber have to be executed before Pim\Bundle\CatalogBundle\EventSubscriber\LoadEntityWithValuesSubscriber,
+ * in order to not hydrate all the values as object.
  *
- * This listener have to be executed before Pim\Bundle\CatalogBundle\EventSubscriber\LoadEntityWithValuesSubscriber
+ * It is done for performance purpose for the datagrid. Therefore, entities are partially loaded.
+ * It should only be used for read purpose, as it can lead to a loss of data if the entity is saved.
  *
  * @author    Alexandre Hocquard <alexandre.hocquard@akeneo.com>
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
@@ -22,8 +26,13 @@ use Pim\Component\Catalog\Model\AttributeInterface;
  */
 class FilterEntityWithValuesSubscriber implements EventSubscriber
 {
-    /** @var AttributeInterface[] */
-    protected $attributeCodesToFilter = [];
+    /** @var FilterEntityWithValuesSubscriberConfiguration */
+    protected $configuration;
+
+    public function __construct()
+    {
+        $this->configuration = FilterEntityWithValuesSubscriberConfiguration::doNotFilterEntityValues();
+    }
 
     /**
      * {@inheritdoc}
@@ -37,20 +46,33 @@ class FilterEntityWithValuesSubscriber implements EventSubscriber
 
     /**
      * Filter directly the real object values from the raw values field.
+     * Should only be used in the datagrid context.
      *
      * @param LifecycleEventArgs $event
      */
     public function postLoad(LifecycleEventArgs $event)
     {
         $entity = $event->getObject();
-        if (!$entity instanceof EntityWithFilteredValuesInterface) {
+        if (!$entity instanceof EntityWithValuesInterface || !$this->configuration->shouldFilterEntityValues()
+        ) {
             return;
+        }
+
+        $attributeCodes = $this->configuration->attributeCodesToFilterEntityValues();
+        if ($entity instanceof EntityWithFamilyInterface && null !== $entity->getFamily()) {
+            $family = $entity->getFamily();
+            if (null !== $family->getAttributeAsLabel()) {
+                $attributeCodes[] = $family->getAttributeAsLabel()->getCode();
+            }
+            if (null !== $family->getAttributeAsImage()) {
+                $attributeCodes[] = $family->getAttributeAsImage()->getCode();
+            }
         }
 
         $rawValues = $entity->getRawValues();
 
         $filteredRawValues = [];
-        foreach ($this->attributeCodesToFilter as $attributeCode) {
+        foreach ($attributeCodes as $attributeCode) {
             if (isset($rawValues[$attributeCode])) {
                 $filteredRawValues[$attributeCode] = $rawValues[$attributeCode];
             }
@@ -62,13 +84,12 @@ class FilterEntityWithValuesSubscriber implements EventSubscriber
      * Configure attributes to keep in the raw values.
      * This method make the event subscriber stateful, which is not a good thing.
      *
-     * As it is a doctrine event, there is no way to pass a context (containing the attributes to filter),
-     * so it's the only solution for now.
+     * As it is a doctrine event, there is no way to pass a context (containing the attributes to filter).
      *
-     * @param AttributeInterface[] $attributeCodes
+     * @param FilterEntityWithValuesSubscriberConfiguration $configuration
      */
-    public function configureAttributeCodesToFilter(array $attributeCodes)
+    public function configure(FilterEntityWithValuesSubscriberConfiguration $configuration)
     {
-        $this->attributeCodesToFilter = $attributeCodes;
+        $this->configuration = $configuration;
     }
 }
