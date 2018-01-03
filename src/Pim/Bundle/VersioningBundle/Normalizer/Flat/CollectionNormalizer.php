@@ -47,7 +47,7 @@ class CollectionNormalizer implements NormalizerInterface, SerializerAwareInterf
                         // for prices and metric
                         $result[$key] = $result[$key] . ',' . $value;
                     } else {
-                        $result = array_merge($result, $normalizedItem);
+                        $result = array_replace($result, $normalizedItem);
                     }
                 }
             } else {
