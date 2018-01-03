@@ -11,6 +11,8 @@
 - PIM-7049: Fix random order of attribute options 
 - PIM-7080: Fix memory leak on product export
 - PIM-6955: Fix delete user
+- PIM-7065: Fix versioning when attribute codes are numerics.
+- PIM-7087: Fix completeness normalization when channel code is numeric.
 - PIM-6968: Fix mass delete product
 
 ## Improvements

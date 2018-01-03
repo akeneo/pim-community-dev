@@ -147,7 +147,7 @@ class VersionBuilder
             $oldSnapshot
         );
 
-        $mergedSnapshot = array_merge_recursive($localNewSnapshot, $localOldSnapshot);
+        $mergedSnapshot = array_replace_recursive($localNewSnapshot, $localOldSnapshot);
 
         return array_map(
             function ($mergedItem) {
