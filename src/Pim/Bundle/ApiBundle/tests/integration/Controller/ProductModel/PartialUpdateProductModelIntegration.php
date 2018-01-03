@@ -733,8 +733,6 @@ JSON;
 
         $client->request('PATCH', 'api/rest/v1/product-models/sub_sweat', [], [], [], $data);
 
-        $response = $client->getResponse();
-
         $expectedContent =
             <<<JSON
 {
@@ -973,6 +971,55 @@ JSON;
     }
 }
 JSON;
+
+        $response = $client->getResponse();
+
+        $this->assertJsonStringEqualsJsonString($expectedContent, $response->getContent());
+        $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
+    }
+
+    public function testUpdateRootProductModelWithErrorOnFileExtension()
+    {
+        $client = $this->createAuthenticatedClient();
+
+        $pdfPath = $this->getFixturePath('akeneo.jpg');
+
+        $data =
+            <<<JSON
+    {
+        "code": "new_root_sweat",
+        "family_variant": "familyVariantA1",
+        "values": {
+            "a_file":[
+                {
+                    "locale":null,
+                    "scope":null,
+                    "data": "$pdfPath"
+                }
+            ]
+        }
+    }
+JSON;
+
+        $expectedContent =
+            <<<JSON
+    {
+        "code": 422,
+        "message": "Validation failed.",
+        "errors": [
+            {
+                "property": "values",
+                "message": "The file extension is not allowed (allowed extensions: pdf, doc, docx, txt).",
+                "attribute": "a_file",
+                "locale": null,
+                "scope": null
+            }
+        ]
+    }
+JSON;
+
+
+        $client->request('PATCH', 'api/rest/v1/product-models/new_root_sweat', [], [], [], $data);
 
         $response = $client->getResponse();
 
