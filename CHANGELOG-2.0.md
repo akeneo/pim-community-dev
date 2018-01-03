@@ -11,6 +11,8 @@
 - PIM-7049: Fix random order of attribute options 
 - PIM-7080: Fix memory leak on product export
 - PIM-6955: Fix delete user
+- PIM-7065: Fix versioning when attribute codes are numerics.
+- PIM-7087: Fix completeness normalization when channel code is numeric.
 
 ## Improvements
 
@@ -28,7 +30,6 @@
 
 - PIM-7032: Fix close button when clicking on "Compare/Translate" option on the product edit form
 - PIM-7063: Add validation for AttributeGroup - cannot remove AttributeGroup containing attributes and cannot remove AttributGroup "other"
-- PIM-7065: Fix versioning when attribute codes are numerics.
 
 # 2.0.9 (2017-12-15)
 
