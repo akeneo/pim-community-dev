@@ -283,7 +283,7 @@ function(_, Backbone, BackbonePageableCollection, app) {
             var links = this.links;
             var totalRecords = state.totalRecords;
             var pageSize = state.pageSize;
-            var currentPage = state.currentPage;
+            var currentPage = (state.currentPage < 0) ? 1 : state.currentPage;
             var firstPage = state.firstPage;
             var totalPages = state.totalPages;
 
@@ -306,6 +306,7 @@ function(_, Backbone, BackbonePageableCollection, app) {
                 }
 
                 state.lastPage = firstPage === 0 ? totalPages - 1 : totalPages;
+                state.lastPage = state.lastPage < 0 ? 1 : state.lastPage;
 
                 // page out of range
                 if (currentPage > state.lastPage && state.pageSize > 0) {

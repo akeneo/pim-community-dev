@@ -489,7 +489,7 @@ class WebUser extends PimContext
     public function iConfirmThe()
     {
         $this->getCurrentPage()->confirmDialog();
-
+        
         $this->wait();
     }
 
