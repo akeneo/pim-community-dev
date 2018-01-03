@@ -339,3 +339,4 @@ services:
             - '@pim_catalog.repository.product_model'
             - '@pim_catalog.repository.family'
             - '@pim_catalog.repository.product'
+            - '@pim_catalog.repository.attribute'
