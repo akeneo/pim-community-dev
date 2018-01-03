@@ -80,11 +80,13 @@ class ConfigManager
      */
     public function save($newSettings)
     {
-        $repository = $this->om->getRepository('OroConfigBundle:ConfigValue');
+        $entity = $this->getScopedEntityName();
+        $entityId = $this->getScopeId();
+
         /** @var Config $config */
         $config = $this->om
             ->getRepository('OroConfigBundle:Config')
-            ->getByEntity($this->getScopedEntityName(), $this->getScopeId());
+            ->getByEntity($entity, $entityId);
 
         list($updated, $removed) = $this->getChanged($newSettings);
 
@@ -97,6 +99,9 @@ class ConfigManager
             $value->setValue($newItemValue);
 
             $config->getValues()->add($value);
+            if (isset($this->storedSettings[$entity][$entityId][$newItemKey[0]][$newItemKey[1]])) {
+                $this->storedSettings[$entity][$entityId][$newItemKey[0]][$newItemKey[1]] = $newItemValue;
+            }
         }
 
         $this->om->persist($config);
