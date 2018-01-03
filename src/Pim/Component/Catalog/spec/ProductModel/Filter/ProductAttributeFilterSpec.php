@@ -233,7 +233,7 @@ class ProductAttributeFilterSpec extends ObjectBehavior
         )->shouldReturn($expected);
     }
 
-    function it_keep_attributes_and_axes_coming_from_family_variant(
+    function it_keeps_attributes_and_axes_coming_from_family_variant(
         $productRepository,
         $productModelRepository,
         $attributeRepository,

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Pim\Component\Catalog\Updater;
 
 use Akeneo\Component\StorageUtils\Exception\InvalidObjectException;
@@ -118,7 +120,7 @@ class ProductUpdater implements ObjectUpdaterInterface
      *      }
      * }
      */
-    public function update($product, array $data, array $options = [])
+    public function update($product, array $data, array $options = []): ProductUpdater
     {
         if (!$product instanceof ProductInterface) {
             throw InvalidObjectException::objectExpected(
@@ -140,7 +142,7 @@ class ProductUpdater implements ObjectUpdaterInterface
      * @param                  $data
      * @param array            $options
      */
-    protected function setData(ProductInterface $product, $field, $data, array $options = [])
+    protected function setData(ProductInterface $product, $field, $data, array $options = []): void
     {
         switch ($field) {
             case 'enabled':
@@ -155,7 +157,7 @@ class ProductUpdater implements ObjectUpdaterInterface
                 $this->updateProductFields($product, $field, $data);
                 break;
             case 'associations':
-                $this->validateAssociations($data);
+                $this->validateAssociationsDataType($data);
                 $this->updateProductFields($product, $field, $data);
                 break;
             case 'values':
@@ -173,9 +175,19 @@ class ProductUpdater implements ObjectUpdaterInterface
      * Validate association data
      *
      * @param $data
+     *
+     * @throws InvalidPropertyTypeException
      */
-    protected function validateAssociations($data)
+    protected function validateAssociationsDataType($data): void
     {
+        if (!is_array($data)) {
+            throw InvalidPropertyTypeException::arrayExpected(
+                'associations',
+                static::class,
+                $data
+            );
+        }
+
         foreach ($data as $associationTypeCode => $associationTypeValues) {
             $this->validateScalar('associations', $associationTypeCode);
             if (!is_array($associationTypeValues)) {
@@ -201,7 +213,7 @@ class ProductUpdater implements ObjectUpdaterInterface
      *
      * @throws InvalidPropertyTypeException
      */
-    protected function validateScalar($field, $data)
+    protected function validateScalar($field, $data): void
     {
         if (null !== $data && !is_scalar($data)) {
             throw InvalidPropertyTypeException::scalarExpected($field, static::class, $data);
@@ -216,7 +228,7 @@ class ProductUpdater implements ObjectUpdaterInterface
      *
      * @throws InvalidPropertyTypeException
      */
-    protected function validateScalarArray($field, $data)
+    protected function validateScalarArray($field, $data): void
     {
         if (!is_array($data)) {
             throw InvalidPropertyTypeException::arrayExpected($field, static::class, $data);
@@ -241,7 +253,7 @@ class ProductUpdater implements ObjectUpdaterInterface
      * @param string           $field
      * @param mixed            $value
      */
-    protected function updateProductFields(ProductInterface $product, $field, $value)
+    protected function updateProductFields(ProductInterface $product, $field, $value): void
     {
         $this->propertySetter->setData($product, $field, $value);
     }
@@ -254,7 +266,7 @@ class ProductUpdater implements ObjectUpdaterInterface
      * @param ProductInterface $product
      * @param array            $values
      */
-    private function addEmptyValues(ProductInterface $product, array $values)
+    private function addEmptyValues(ProductInterface $product, array $values): void
     {
         $family = $product->getFamily();
         $authorizedCodes = (null !== $family) ? $family->getAttributeCodes() : [];

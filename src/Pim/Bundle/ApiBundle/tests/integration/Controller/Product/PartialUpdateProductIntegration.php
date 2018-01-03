@@ -1362,7 +1362,7 @@ JSON;
 
         $expectedContent = [
             'code'    => 422,
-            'message' => 'Property "family" expects a string as data, "array" given. Check the expected format on the API documentation.',
+            'message' => 'Property "family" expects a scalar as data, "array" given. Check the expected format on the API documentation.',
             '_links'  => [
                 'documentation' => [
                     'href' => "http://api.akeneo.com/api-reference.html#patch_products__code_"

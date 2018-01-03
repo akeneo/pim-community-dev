@@ -156,6 +156,14 @@ class ProductUpdaterSpec extends ObjectBehavior
         )->during('update', [$product, ['groups' => [[]]]]);
     }
 
+    function it_throws_an_exception_when_giving_not_an_array_of_associations(
+        ProductInterface $product
+    ) {
+        $this->shouldThrow(
+            InvalidPropertyTypeException::class
+        )->during('update', [$product, ['associations' => 'assoc']]);
+    }
+
     function it_throws_an_exception_when_giving_an_array_of_associations_with_non_scalar_values(
         ProductInterface $product
     ) {

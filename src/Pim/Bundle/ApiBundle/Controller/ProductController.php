@@ -397,7 +397,7 @@ class ProductController
         }
 
         try {
-            if (isset($data['parent']) || $product instanceof VariantProductInterface){
+            if (isset($data['parent']) || $product instanceof VariantProductInterface) {
                 $data = $this->productAttributeFilter->filter($data);
             }
 
