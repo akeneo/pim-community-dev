@@ -52,7 +52,7 @@ class OnlyExpectedAttributesValidator extends ConstraintValidator
                     OnlyExpectedAttributes::ATTRIBUTE_DOES_NOT_BELONG_TO_FAMILY, [
                     '%attribute%' => $modelAttribute->getCode(),
                     '%family%' => $family->getCode()
-                ])->addViolation();
+                ])->atPath('attribute')->addViolation();
 
                 continue;
             }
@@ -61,7 +61,7 @@ class OnlyExpectedAttributesValidator extends ConstraintValidator
                 $this->context->buildViolation(
                     OnlyExpectedAttributes::ATTRIBUTE_UNEXPECTED, [
                     '%attribute%' => $modelAttribute->getCode()
-                ])->addViolation();
+                ])->atPath('attribute')->addViolation();
             }
         }
     }
