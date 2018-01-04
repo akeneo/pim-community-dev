@@ -2,6 +2,7 @@
 
 ## Bug fixes
 
+- API-568: Forbid the use of an non existing attribute in product creation and update
 - API-544: Forbid the use of an non existing attribute in product models creation and update
 - PIM-7062: Allow to delete attributes contained in a family variant
 - PIM-6944: Fix delta export for variant products
@@ -22,6 +23,7 @@
 
 ## BC breaks
 
+- Changes the constructor of  `Pim\Component\Catalog\ProductModel\Filter\ProductAttributeFilter` add `Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface`
 - Changes the constructor of  `Pim\Component\Catalog\ProductModel\Filter\ProductModelAttributeFilter` add `Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface` 
 - Changes the constructor of `Pim\Bundle\EnrichBundle\Controller\Rest\AttributeController` add `Doctrine\ORM\EntityManagerInterface` and `Symfony\Component\Translation\TranslatorInterface`
 - Changes the constructor of `Pim\Bundle\CatalogBundle\EventSubscriber\SaveFamilyVariantOnFamilyUpdateSubscriber` add `Akeneo\Component\StorageUtils\Detacher\BulkObjectDetacherInterface`

@@ -2,7 +2,6 @@
 
 namespace Pim\Bundle\ApiBundle\tests\integration\Controller\Product;
 
-use Akeneo\Test\Integration\Configuration;
 use Pim\Component\Catalog\tests\integration\Normalizer\NormalizedProductCleaner;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -26,16 +25,6 @@ class PartialUpdateProductIntegration extends AbstractProductTestCase
         $this->createProduct('product_categories', [
             'categories' => ['master'],
         ]);
-
-        // TODO PIM-6733: Variant group to be null or to be an alias for parent?
-        // $this->createProduct('product_variant_group', [
-        //     'variant_group' => 'variantA',
-        //     'values'        => [
-        //         'a_simple_select'                    => [
-        //             ['locale' => null, 'scope' => null, 'data' => 'optionB'],
-        //         ],
-        //     ],
-        // ]);
 
         $this->createProduct('product_associations', [
             'associations'  => [
@@ -566,108 +555,6 @@ JSON;
     }
 
     /**
-     * TODO PIM-6733: Variant group to be null or to be an alias for parent?
-    public function testProductPartialUpdateWithTheVariantGroupUpdated()
-    {
-        $client = $this->createAuthenticatedClient();
-
-        $data =
-<<<JSON
-    {
-        "identifier": "product_variant_group",
-        "variant_group": "variantB",
-        "values": {
-            "a_simple_select": [{
-                "locale": null,
-                "scope": null,
-                "data": "optionA"
-            }]
-        }
-    }
-JSON;
-
-        $client->request('PATCH', 'api/rest/v1/products/product_variant_group', [], [], [], $data);
-
-        $expectedProduct = [
-            'identifier'    => 'product_variant_group',
-            'family'        => null,
-            'parent'        => null,
-            'groups'        => [],
-            'variant_group' => "variantB",
-            'categories'    => [],
-            'enabled'       => true,
-            'values'        => [
-                'sku' => [
-                    ['locale' => null, 'scope' => null, 'data' => 'product_variant_group'],
-                ],
-                'a_simple_select'                    => [
-                    ['locale' => null, 'scope' => null, 'data' => 'optionA'],
-                ],
-                'a_text'   => [
-                    ['locale' => null, 'scope' => null, 'data' => 'Variant group B'],
-                ],
-
-            ],
-            'created'       => '2016-06-14T13:12:50+02:00',
-            'updated'       => '2016-06-14T13:12:50+02:00',
-            'associations'  => [],
-        ];
-
-        $response = $client->getResponse();
-
-        $this->assertSame('', $response->getContent());
-        $this->assertSame(Response::HTTP_NO_CONTENT, $response->getStatusCode());
-        $this->assertSameProducts($expectedProduct, 'product_variant_group');
-    }
-
-    public function testProductPartialUpdateWithTheVariantGroupDeleted()
-    {
-        $client = $this->createAuthenticatedClient();
-
-        $data =
-<<<JSON
-    {
-        "identifier": "product_variant_group",
-        "variant_group": null
-    }
-JSON;
-
-        $client->request('PATCH', 'api/rest/v1/products/product_variant_group', [], [], [], $data);
-
-        $expectedProduct = [
-            'identifier'    => 'product_variant_group',
-            'family'        => null,
-            'parent'        => null,
-            'groups'        => [],
-
-            'categories'    => [],
-            'enabled'       => true,
-            'values'        => [
-                'sku' => [
-                    ['locale' => null, 'scope' => null, 'data' => 'product_variant_group'],
-                ],
-                'a_simple_select'                    => [
-                    ['locale' => null, 'scope' => null, 'data' => 'optionB'],
-                ],
-                'a_text'   => [
-                    ['locale' => null, 'scope' => null, 'data' => 'A name'],
-                ],
-
-            ],
-            'created'       => '2016-06-14T13:12:50+02:00',
-            'updated'       => '2016-06-14T13:12:50+02:00',
-            'associations'  => [],
-        ];
-
-        $response = $client->getResponse();
-
-        $this->assertSame('', $response->getContent());
-        $this->assertSame(Response::HTTP_NO_CONTENT, $response->getStatusCode());
-        $this->assertSameProducts($expectedProduct, 'product_variant_group');
-    }
-     */
-
-    /**
      * @group ce
      */
     public function testProductPartialUpdateWithTheAssociationsUpdated()
@@ -1106,7 +993,6 @@ JSON;
             'family'        => 'familyA2',
             'parent'        => null,
             'groups'        => ['groupA', 'groupB'],
-
             'categories'    => ['categoryA', 'master'],
             'enabled'       => true,
             'values'        => [
@@ -1122,10 +1008,6 @@ JSON;
                 'a_simple_select'                    => [
                     ['locale' => null, 'scope' => null, 'data' => 'optionA'],
                 ],
-                // TODO PIM-6733: This value was at the variant group level before.
-                // 'a_text'                             => [
-                //     ['locale' => null, 'scope'  => null, 'data'   => 'Variant group B'],
-                // ],
                 'a_price'                            => [
                     [
                         'locale' => null,
@@ -1480,7 +1362,7 @@ JSON;
 
         $expectedContent = [
             'code'    => 422,
-            'message' => 'Property "family" expects a string as data, "array" given. Check the expected format on the API documentation.',
+            'message' => 'Property "family" expects a scalar as data, "array" given. Check the expected format on the API documentation.',
             '_links'  => [
                 'documentation' => [
                     'href' => "http://api.akeneo.com/api-reference.html#patch_products__code_"

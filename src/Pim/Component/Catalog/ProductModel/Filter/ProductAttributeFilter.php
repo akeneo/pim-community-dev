@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Pim\Component\Catalog\ProductModel\Filter;
 
+use Akeneo\Component\StorageUtils\Exception\UnknownPropertyException;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -34,19 +35,25 @@ class ProductAttributeFilter implements AttributeFilterInterface
     /** @var IdentifiableObjectRepositoryInterface */
     private $productRepository;
 
+    /** @var IdentifiableObjectRepositoryInterface */
+    private $attributeRepository;
+
     /**
      * @param IdentifiableObjectRepositoryInterface $productModelRepository
      * @param IdentifiableObjectRepositoryInterface $familyRepository
      * @param IdentifiableObjectRepositoryInterface $productRepository
+     * @param IdentifiableObjectRepositoryInterface $attributeRepository
      */
     public function __construct(
         IdentifiableObjectRepositoryInterface $productModelRepository,
         IdentifiableObjectRepositoryInterface $familyRepository,
-        IdentifiableObjectRepositoryInterface $productRepository
+        IdentifiableObjectRepositoryInterface $productRepository,
+        IdentifiableObjectRepositoryInterface $attributeRepository
     ) {
         $this->productModelRepository = $productModelRepository;
         $this->familyRepository = $familyRepository;
         $this->productRepository = $productRepository;
+        $this->attributeRepository = $attributeRepository;
     }
 
     /**
@@ -58,8 +65,17 @@ class ProductAttributeFilter implements AttributeFilterInterface
             throw new MissingOptionsException('The "identifier" key is missing');
         }
 
+        if (array_key_exists('values', $standardProduct) && is_array($standardProduct['values'])) {
+            foreach ($standardProduct['values'] as $code => $value) {
+                if (null === $this->attributeRepository->findOneByIdentifier($code)) {
+                    throw UnknownPropertyException::unknownProperty($code);
+                }
+            }
+        }
+
         $product = $this->productRepository->findOneByIdentifier($standardProduct['identifier']);
-        if (null !== $product && $product instanceof VariantProductInterface && null !== $product->getParent() && !array_key_exists('parent', $standardProduct)) {
+        if (null !== $product && $product instanceof VariantProductInterface && null !== $product->getParent()
+            && !array_key_exists('parent', $standardProduct)) {
             $standardProduct['parent'] = $product->getParent()->getCode();
         }
 
