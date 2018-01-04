@@ -700,8 +700,12 @@
         const maxHeight = bodyHeight * 0.7;
         const parentOffset = $parent.offset().top;
         const boundedHeight = Math.min(outerHeight, maxHeight);
+        const isScrollable = outerHeight > maxHeight;
         const listIsLongerThanPage = (boundedHeight + parentOffset + gap) > bodyHeight;
-        $parent.toggleClass('top', listIsLongerThanPage);
+
+        if (false === isScrollable && listIsLongerThanPage) {
+          $parent.toggleClass('top', listIsLongerThanPage);
+        }
 
         if (outerWidth + $parent.offset().left + gap > $('body').width()) {
             $parent.addClass('left');
