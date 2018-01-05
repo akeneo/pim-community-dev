@@ -32,9 +32,9 @@ class DatePresenterSpec extends ObjectBehavior
         $localeResolver,
         RendererInterface $renderer,
         ValueInterface $value,
-        AttributeInterface $attribute,
-        \DateTime $date
+        AttributeInterface $attribute
     ) {
+        $date = new \DateTime('2012-04-25');
         $localeResolver->getCurrentLocale()->willReturn('en_US');
         $datePresenter->present($date, ['locale' => 'en_US'])->willReturn('01/20/2012');
         $datePresenter->present('2012-04-25', ['locale' => 'en_US'])->willReturn('04/25/2012');
@@ -73,9 +73,9 @@ class DatePresenterSpec extends ObjectBehavior
         $localeResolver,
         RendererInterface $renderer,
         ValueInterface $value,
-        AttributeInterface $attribute,
-        \DateTime $date
+        AttributeInterface $attribute
     ) {
+        $date = new \DateTime('2012-01-20');
         $localeResolver->getCurrentLocale()->willReturn('en_US');
         $datePresenter->present($date, ['locale' => 'en_US'])->willReturn('2012/20/01');
         $datePresenter->present(null, ['locale' => 'en_US'])->willReturn('');
