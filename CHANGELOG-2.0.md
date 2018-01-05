@@ -1,3 +1,9 @@
+# 2.0.x
+
+## Bug fixes
+
+- PIM-7086: Fix enable loading message in system configuration
+
 # 2.0.11 (2018-01-05)
 
 ## Bug fixes
