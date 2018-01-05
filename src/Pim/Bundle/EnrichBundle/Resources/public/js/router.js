@@ -31,9 +31,10 @@ define(
         var Router = Backbone.Router.extend({
             DEFAULT_ROUTE: 'oro_default',
             routes: {
-                '': 'dashboard',
+                '': 'index',
                 '*path': 'defaultRoute'
             },
+            indexRoute: null,
             loadingMask: null,
             currentController: null,
 
@@ -45,16 +46,18 @@ define(
                 this.loadingMask.render().$el.appendTo($('.hash-loading-mask'));
                 _.bindAll(this, 'showLoadingMask', 'hideLoadingMask');
 
+                this.indexRoute = __moduleConfig.indexRoute;
+
                 this.listenTo(mediator, 'route_complete', this._processLinks);
             },
 
             /**
-             * Go to the homepage of the app
+             * Go to the index of the app
              *
              * @return {String}
              */
-            dashboard: function () {
-                return this.defaultRoute(this.generate('pim_dashboard_index'));
+            index: function () {
+                return this.defaultRoute(this.generate(this.indexRoute));
             },
 
             /**
@@ -76,7 +79,7 @@ define(
                     return this.notFound();
                 }
                 if (this.DEFAULT_ROUTE === route.name) {
-                    return this.dashboard();
+                    return this.index();
                 }
 
                 this.showLoadingMask();
