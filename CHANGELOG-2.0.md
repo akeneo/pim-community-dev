@@ -15,7 +15,7 @@
 - PIM-7065: Fix versioning when attribute codes are numerics.
 - PIM-7087: Fix completeness normalization when channel code is numeric.
 - PIM-6968: Fix mass delete product
-- PIM-6965: Show short view|project name in the grid
+- PIM-7085: Fix translation missing
 
 ## Improvements
 
