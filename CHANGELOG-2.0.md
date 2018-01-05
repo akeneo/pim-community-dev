@@ -2,6 +2,7 @@
 
 ## Bug fixes
 
+- PIM-6874: Fix select attribute groups from PEF when there are more than 25
 - PIM-7086: Fix enable loading message in system configuration
 
 # 2.0.11 (2018-01-05)
@@ -21,7 +22,6 @@
 - PIM-7065: Fix versioning when attribute codes are numerics.
 - PIM-7087: Fix completeness normalization when channel code is numeric.
 - PIM-6968: Fix mass delete product
-- PIM-6874: Fix select attribute groups from PEF when there are more than 25
 
 ## Improvements
 
