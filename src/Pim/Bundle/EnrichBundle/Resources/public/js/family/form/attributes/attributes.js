@@ -128,9 +128,9 @@ define([
                         groupedAttributes: groupedAttributes,
                         attributeRequirements: data.attribute_requirements,
                         channels: this.channels,
-                        attributeGroups: _.map(attributeGroups, function(group) {
+                        attributeGroups: _.map(attributeGroups, function (group) {
                             var panel = $('tbody[data-group="' + group.code + '"]');
-                            group.collapsed = $(panel).hasClass(this.collapsedClass)
+                            group.collapsed = $(panel).hasClass(this.collapsedClass);
 
                             return group;
                         }.bind(this)),
