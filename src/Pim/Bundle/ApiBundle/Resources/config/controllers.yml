@@ -163,6 +163,7 @@ services:
             - '@pim_catalog.query.product_query_builder_from_size_factory'
             - '@pim_catalog.builder.variant_product'
             - '@pim_connector.processor.attribute_filter.product'
+            - '@pim_catalog.entity_with_family_variant.add_parent_to_product'
             - '%pim_api.configuration%'
 
     pim_api.controller.product_model:

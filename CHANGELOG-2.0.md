@@ -6,6 +6,14 @@
 - PIM-7086: Fix enable loading message in system configuration
 - API-567: Fix validation of product-models on API
 
+## BC Breaks
+
+- Changes the constructor of `Pim\Bundle\ApiBundle\Controller\ProductController` to add `Pim\Component\Catalog\EntityWithFamilyVariant\AddParent`
+
+## Better manage products with variants!
+
+- API-516: be able to add a parent to a product via API
+
 # 2.0.11 (2018-01-05)
 
 ## Bug fixes

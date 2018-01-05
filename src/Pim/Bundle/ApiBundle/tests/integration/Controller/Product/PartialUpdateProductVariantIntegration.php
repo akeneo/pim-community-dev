@@ -6,7 +6,6 @@ namespace Pim\Bundle\ApiBundle\tests\integration\Controller\Product;
 
 use Akeneo\Test\Integration\Configuration;
 use Doctrine\Common\Collections\Collection;
-use Pim\Component\Catalog\tests\integration\Normalizer\NormalizedProductCleaner;
 use Symfony\Component\HttpFoundation\Response;
 
 class PartialUpdateProductVariantIntegration extends AbstractProductTestCase
@@ -1779,21 +1778,6 @@ JSON;
             $response->headers->get('location')
         );
         $this->assertSame('', $response->getContent());
-    }
-
-    /**
-     * @param array  $expectedProduct normalized data of the product that should be created
-     * @param string $identifier identifier of the product that should be created
-     */
-    protected function assertSameProducts(array $expectedProduct, string $identifier): void
-    {
-        $product = $this->get('pim_catalog.repository.product')->findOneByIdentifier($identifier);
-        $standardizedProduct = $this->get('pim_serializer')->normalize($product, 'standard');
-
-        NormalizedProductCleaner::clean($expectedProduct);
-        NormalizedProductCleaner::clean($standardizedProduct);
-
-        $this->assertSame($expectedProduct, $standardizedProduct);
     }
 
     /**
