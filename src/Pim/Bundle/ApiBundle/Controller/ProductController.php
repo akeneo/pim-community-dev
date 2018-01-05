@@ -139,6 +139,7 @@ class ProductController
      * @param PrimaryKeyEncrypter                   $primaryKeyEncrypter
      * @param ProductQueryBuilderFactoryInterface   $fromSizePqbFactory
      * @param ProductBuilderInterface               $variantProductBuilder
+     * @param AttributeFilterInterface              $productAttributeFilter
      * @param array                                 $apiConfiguration
      */
     public function __construct(

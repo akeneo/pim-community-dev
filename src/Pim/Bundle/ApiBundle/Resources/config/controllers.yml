@@ -180,7 +180,7 @@ services:
             - '@pim_catalog.factory.product_model'
             - '@pim_catalog.saver.product_model'
             - '@router'
-            - '@validator'
+            - '@pim_catalog.validator.product_model'
             - '@pim_connector.processor.attribute_filter.product_model'
             - '@pim_catalog.repository.product_model'
             - '@pim_api.stream.product_model_partial_update_stream'
