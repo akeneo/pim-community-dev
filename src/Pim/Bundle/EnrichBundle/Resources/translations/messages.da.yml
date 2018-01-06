@@ -785,6 +785,22 @@ batch_jobs:
       label: Rens filer til fælles attributter
     cleaner:
       label: Rens filer til fælles attributter
+  add_to_category:
+    label: Tilføje til kategorier
+    perform:
+      label: Tilføje til kategorier
+  move_to_category:
+    label: Flyt til kategori
+    perform:
+      label: Flyt til kategori
+  remove_from_category:
+    label: Fjern fra kategori
+    perform:
+      label: Fjern fra kategori
+  add_association:
+    label: Associeret produkter
+    perform:
+      label: Associeret produkter
   add_to_existing_product_model:
     label: Føj til en eksisterende produktmodel
     perform:
