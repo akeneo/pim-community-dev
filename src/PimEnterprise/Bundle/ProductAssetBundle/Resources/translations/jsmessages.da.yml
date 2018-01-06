@@ -11,6 +11,8 @@ pimee_product_asset:
         description: Vælge de aktiver, du vil vedhæfte til dit produkt
     asset:
       not_empty: Koden er påkrævet. Det kan ikke være tom.
+      alpha_numeric_plus_underscore: Koden skal kun være alfanumeriske eller understreg.
+      unique: Koden skal være entydig. Vi har skabt en ny for dig.
   enrich_asset:
     grid:
       edit: Redigere egenskaberne for aktiverne
@@ -132,6 +134,9 @@ batch_jobs:
   xlsx_asset_category_export:
     label: Aktiver kategori import i XLSX
     export.label: Aktiver kategori import i XLSX
+  xlsx_asset_variation_export:
+    label: Aktiver kategori eksport i XLSX
+    export.label: Aktiver kategori eksport i XLSX
   classify_assets:
     perform.label: Flytte aktiver til kategorier
   add_tags_to_assets:
