@@ -181,6 +181,8 @@ pimee_enrich:
           description: Produkterne vil blive afpubliseret
           warning: '{{ itemsCount }} udvalgte produkter vil blive afpubliseret.'
     asset:
+      title: Aktiver bulk handling
+      confirm: "{1} Du er ved at opdatere et aktiv med følgende oplysninger, bekræft venligst. .|] 1, Inf [Du er ved at opdatere {{ itemsCount }} aktiver med følgende oplysninger, bekræft venligst."
       step:
         select:
           label: Vælg Aktiver
@@ -195,9 +197,13 @@ pimee_enrich:
         add_tag:
           label: Tilføj etiketter til aktiver
           description: Tags vil blive tilføjet til aktiverne.
+          label_count: "{1}Tilføj mærkater til <span class=\"AknFullPage-title--highlight\"> 1 aktiv</span> |] 1, Inf [Tilføj mærkater til <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} aktiver</span>"
           field: Tags
+          empty_selection: Vælg venligst mærkat
         add_to_category:
           label: Klassificere produkter i kategorier
+          description: Produkterne vil blive placeret i følgende kategorier, den nuværende placering er bibeholdt.
+          label_count: "{1}Klassificer <span class=\"AknFullPage-title--highlight\"> 1 aktiv</span> på kategorier |] 1, Inf [klassificere <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} aktiver</span> på kategorier"
           field: Kategorier
 pim_menu:
   tab:
@@ -234,6 +240,7 @@ batch_jobs:
     perform.label: Fjern produktværdi
     execute_rules.label: Regler udførelse
   edit_common_attributes_with_permission_and_rules:
+    label: Rediger fælles attributter med tilladelse kontrol & regel anvendelse
     perform.label: Rediger attributter
     execute_rules.label: Regler udførelse
     cleaner.label: Ryd midlertidige filer
