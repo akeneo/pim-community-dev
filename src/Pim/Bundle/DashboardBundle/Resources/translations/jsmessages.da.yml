@@ -14,6 +14,8 @@ pim_dashboard:
         mass_edit: Masse Rediger
         quick_export: Hurtig eksport
         compute_product_models_descendants: Beregne underliggende produkt modeller
+        compute_family_variant_structure_changes: Beregner familie variant struktur ændringer
+        compute_completeness_of_products_family: Beregner fuldstændigheden af produkter familie
     completeness:
       load_more: 'Indlæs mere...'
     header:
