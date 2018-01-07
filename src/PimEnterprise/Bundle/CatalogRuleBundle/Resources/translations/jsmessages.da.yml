@@ -70,6 +70,7 @@ batch_jobs:
   yml_rule_import:
     label: Regel import i YAML
     import.label: Regel import
+    execute_rules.label: Regeludførelsen
   yml_rule_export:
     label: Regel eksport i YAML
     export.label: Regel eksport

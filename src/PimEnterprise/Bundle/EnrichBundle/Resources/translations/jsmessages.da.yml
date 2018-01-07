@@ -236,6 +236,7 @@ batch_jobs:
     perform.label: Fjern produktværdi
     execute_rules.label: Regler udførelse
   edit_common_attributes_with_permission_and_rules:
+    label: Rediger fælles attributter med tilladelse kontrol & regel anvendelse
     perform.label: Rediger attributter
     execute_rules.label: Regler udførelse
     cleaner.label: Ryd midlertidige filer
