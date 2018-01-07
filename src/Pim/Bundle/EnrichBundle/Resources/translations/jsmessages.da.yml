@@ -249,6 +249,8 @@ pim_enrich:
         deletion_successful: Produktmodellen slettet.
         update_failed: Produktmodellen kunne ikke opdateres.
         field_not_ready: 'Produktmodellen kan ikke gemmes lige nu. Følgende felter er ikke klar: {{ fields }}'
+      read_only_parent_attribute_from_common: Denne attribut kan opdateres på de fælles attributter.
+      read_only_parent_attribute_from_model: "Denne attribut kan opdateres på attributterne af {{ axes }}"
       variant_axis: Variant akse
       title: Produktmodeller
       add_child:
@@ -467,6 +469,7 @@ pim_enrich:
             none_exist: Der findes ingen sammenhængstype.
             show_products: Display-produkter
             show_groups: Visningsgrupper
+            number_of_associations: "{{ productCount }} produkt(er), {{ productModelCount }} produkt model(er) og {{ groupCount }} gruppe(r)"
           association_type_selector: Sammenhængstyper
           target: Mål
           manage: Tilføj {{ associationType }} foreninger
@@ -485,6 +488,7 @@ pim_enrich:
             load_more: Indlæs flere resultater...
           attribute_group_selector: Attributgruppe
           attribute_group_all: Alle
+          attribute_group.to_fill_count: "{1}1 tom kræved attribut |] 1, Inf [{{ count }} tomme krævede attributter"
           attribute_filter:
             display: Vis
             all: Alle attributter
@@ -1043,9 +1047,11 @@ pim_enrich:
         add_to_category:
           label: Tilføje til kategorier
           label_count: "{1}Tilføj <span class=\"AknFullPage-title--highlight\"> 1 produkt</span> grupper |] 1, Inf [Tilføj <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} produkter</span> til grupper"
+          description: Produkterne vil blive klassificeret i følgende kategorier, den nuværende klassificering bibeholdes.
         move_to_category:
           label: Flyt mellem kategorier
           label_count: "{1}Flyt <span class=\"AknFullPage-title--highlight\"> 1 produkt</span> mellem kategorier |] 1, Inf [Flyt <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} produkter</span> mellem kategorier"
+          description: Produkterne vil blive klassificeret i følgende kategorier, den nuværende klassificering bibeholdes.
         remove_from_category:
           label: Fjern fra kategorier
           label_count: "{1}Fjern <span class=\"AknFullPage-title--highlight\"> 1 produkt</span> fra kategorier |] 1, Inf [Fjern <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} produkter</span> fra kategorier"
@@ -1054,6 +1060,11 @@ pim_enrich:
           label: Føj til en eksisterende produktmodel
           label_count: "{1}Add <span class=\"AknFullPage-title--highlight\"> 1 produkt</span> til en eksisterende produktmodel |] 1, Inf [Tilføj <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} produkter</span> til en eksisterende produktmodel"
           description: Den valgte produktmodel vil samle produkterne og giver mulighed for berigelse af deres fælles egenskaber.
+        associate_to_product_and_product_model:
+          label: Associeret produkter
+          label_count: "{1}Associer <span class=\"AknFullPage-title--highlight\"> 1 produkt</span> til produkter eller produkt modeller |] 1, Inf [Associer <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} produkter</span> til produkter eller produkt modeller"
+          description: De valgte produkter i listen vil blive associeret til de udvalgte produkter og produkt modeller for den valgte associetingstype
+          validate: Vælg venligst associering før du fortsætter til næste trin
     family:
       title: Familier massehandling
       confirm: "{1} Du er ved at opdatere et produkt med følgende oplysninger, bekræft venligst. |Du er ved at opdatere {{ itemsCount }} produkter med følgende oplysninger, bekræft venligst."
@@ -1130,6 +1141,22 @@ batch_jobs:
       label: Rediger attributter
     cleaner:
       label: Rens filer til fælles attributter
+  add_to_category:
+    label: Tilføje til kategorier
+    perform:
+      label: Tilføje til kategorier
+  move_to_category:
+    label: Flyt til kategori
+    perform:
+      label: Flyt til kategori
+  remove_from_category:
+    label: Fjern fra kategori
+    perform:
+      label: Fjern fra kategori
+  add_association:
+    label: Associeret produkter
+    perform:
+      label: Associeret produkter
   add_to_existing_product_model:
     label: Føj til en eksisterende produktmodel
     perform:
