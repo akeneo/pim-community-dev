@@ -57,11 +57,8 @@ define(
                 $(e.currentTarget).parent().addClass('active');
                 var parentDiv = $(e.currentTarget).parent().parent().parent();
 
-                if ($(e.currentTarget).attr('data-value') === 'empty') {
-                    this._disableInput();
-                } else {
-                    this._enableInput();
-                }
+                this._setInputVisibility($(e.currentTarget).attr('data-value') === 'empty');
+
                 parentDiv.find('button').html($(e.currentTarget).html() + '<span class="caret"></span>');
                 e.preventDefault();
             },
@@ -116,9 +113,18 @@ define(
                 return config;
             },
 
+            _setInputVisibility(hideInput) {
+                if (hideInput) {
+                    this._disableInput();
+                } else {
+                    this._enableInput();
+                }
+            },
+
             _writeDOMValue: function(value) {
                 this.$('li .operator_choice[data-value="' + value.type + '"]').trigger('click');
                 var operator = this.$('li.active .operator_choice').data('value');
+
                 if ('empty' === operator) {
                     this._setInputValue(this.criteriaValueSelectors.value, []);
                 } else {
@@ -153,17 +159,26 @@ define(
                 );
 
                 initSelect2.init(this.$(this.criteriaValueSelectors.value), this._getSelect2Config());
+
+                this._updateDOMValue();
+                this._updateCriteriaHint();
             },
 
             _onClickCriteriaSelector: function(e) {
                 e.stopPropagation();
                 $('body').trigger('click');
+
+                var isEmpty =  'empty' === this.getValue().type;
+
                 if (!this.popupCriteriaShowed) {
                     this._showCriteria();
+                    this._setInputVisibility(isEmpty);
 
-                    initSelect2.init(this.$(this.criteriaValueSelectors.value), this._getSelect2Config())
-                        .select2('data', this._getCachedResults(this.getValue().value))
-                        .select2('open');
+                    if (false === isEmpty) {
+                        initSelect2.init(this.$(this.criteriaValueSelectors.value), this._getSelect2Config())
+                            .select2('data', this._getCachedResults(this.getValue().value))
+                            .select2('open');
+                    }
                 } else {
                     this._hideCriteria();
                 }
