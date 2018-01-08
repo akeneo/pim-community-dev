@@ -57,6 +57,7 @@ services:
             - '@pim_enrich.normalizer.product_violation'
             - '@pim_catalog.builder.variant_product'
 
+
     pimee_enrich.controller.rule_relation:
         class: '%pimee_enrich.controller.rule_relation.class%'
         arguments:
@@ -134,6 +135,8 @@ services:
             - '@pim_user.context.user'
             - '@pim_catalog.localization.localizer.number'
             - '@pim_enrich.normalizer.attribute'
+            - '@translator'
+            - '@pim_catalog.doctrine.query.attribute_is_an_family_variant_axis'
 
     pim_enrich.controller.rest.job_instance:
         class: '%pim_enrich.controller.rest.job_instance.class%'

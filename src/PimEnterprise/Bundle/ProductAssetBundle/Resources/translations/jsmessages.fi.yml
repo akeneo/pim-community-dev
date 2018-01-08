@@ -43,7 +43,7 @@ pimee_product_asset:
       import: Tuonnin yhteydessä tapahtui virhe
       filename: Assetin tiedostonimi ei ole pätevä
       code: Vääränmuotoinen koodi assetille
-      locale: Aseeti on olemassa, mutta se ei ole lokalisoitavissa
+      locale: Assetti on olemassa, mutta se ei ole kielikohtainen
       invalid_locale: Lokaalit asetukset ovat poistettu käytöstä tai ne ovat virheelliset
       exists: Samanniminen tiedosto on jo tuotu
       conflicts: Tiedostonimissä on konflikti
