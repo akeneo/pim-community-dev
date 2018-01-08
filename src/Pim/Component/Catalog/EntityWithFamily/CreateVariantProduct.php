@@ -85,16 +85,16 @@ class CreateVariantProduct
 
         $variantProduct->setId($product->getId());
         $variantProduct->setIdentifier($identifierValue);
-        $variantProduct->setGroups($product->getGroups());
         $variantProduct->setAssociations($product->getAssociations());
         $variantProduct->setEnabled($product->isEnabled());
         $variantProduct->setCompletenesses($product->getCompletenesses());
         $variantProduct->setFamily($product->getFamily());
-        $variantProduct->setCategories($product->getCategories());
         $variantProduct->setCreated($product->getCreated());
         $variantProduct->setUpdated($product->getUpdated());
         $variantProduct->setUniqueData($product->getUniqueData());
         $variantProduct->setRawValues($product->getRawValues());
+        // IMPORTANT: we're not assigning categories and groups, because doing so would delete the association!
+        // @see AddParentAProductSubscriber and PIM-7088
 
         return $variantProduct;
     }
