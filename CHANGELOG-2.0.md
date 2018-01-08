@@ -1,5 +1,7 @@
 # 2.0.11 (2018-01-05)
 
+- PIM-7067: Fix error when trying to delete a product model
+
 # 2.0.10 (2017-12-22)
 
 ## Bug fixes
