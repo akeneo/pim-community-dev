@@ -118,63 +118,6 @@ JSON;
         $this->assertSameProducts($expectedProduct, 'product_creation_groups');
     }
 
-    /**
-     * TODO PIM-6733: Variant group to be null or to be an alias for parent?
-    public function testProductCreationWithVariantGroup()
-    {
-        $client = $this->createAuthenticatedClient();
-
-        $data =
-<<<JSON
-    {
-        "identifier": "product_creation_variant_group",
-        "variant_group": "variantA",
-        "values": {
-           "a_simple_select": [{
-                "locale": null,
-                "scope": null,
-                "data": "optionB"
-           }]
-        }
-    }
-JSON;
-
-        $client->request('POST', 'api/rest/v1/products', [], [], [], $data);
-
-        $expectedProduct = [
-            'identifier'    => 'product_creation_variant_group',
-            'family'        => null,
-            'parent'        => null,
-            'groups'        => [],
-            'variant_group' => "variantA",
-            'categories'    => [],
-            'enabled'       => true,
-            'values'        => [
-                'sku'             => [[
-                    'locale' => null,
-                    'scope'  => null,
-                    'data'   => 'product_creation_variant_group',
-                ]],
-                'a_simple_select' => [
-                    ['locale' => null, 'scope' => null, 'data' => 'optionB'],
-                ],
-                'a_text'          => [
-                    ['locale' => null, 'scope' => null, 'data' => 'A name'],
-                ],
-            ],
-            'created'       => '2016-06-14T13:12:50+02:00',
-            'updated'       => '2016-06-14T13:12:50+02:00',
-            'associations'  => [],
-        ];
-
-        $response = $client->getResponse();
-
-        $this->assertSame('', $response->getContent());
-        $this->assertSame(Response::HTTP_CREATED, $response->getStatusCode());
-        $this->assertSameProducts($expectedProduct, 'product_creation_variant_group');
-    }
-     */
-
     public function testProductCreationWithCategories()
     {
         $client = $this->createAuthenticatedClient();

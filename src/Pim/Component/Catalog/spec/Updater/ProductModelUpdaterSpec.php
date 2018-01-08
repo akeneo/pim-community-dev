@@ -5,6 +5,8 @@ namespace spec\Pim\Component\Catalog\Updater;
 use Akeneo\Component\StorageUtils\Exception\ImmutablePropertyException;
 use Akeneo\Component\StorageUtils\Exception\InvalidObjectException;
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
+use Akeneo\Component\StorageUtils\Exception\UnknownPropertyException;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Akeneo\Component\StorageUtils\Updater\PropertySetterInterface;
@@ -177,5 +179,45 @@ class ProductModelUpdaterSpec extends ObjectBehavior
     function it_only_works_with_product_model(ProductInterface $product)
     {
         $this->shouldThrow(InvalidObjectException::class)->during('update', [$product, [], []]);
+    }
+
+    function it_throws_an_exception_when_giving_a_non_scalar_code(
+        ProductModelInterface $productModel
+    ) {
+        $this->shouldThrow(
+            InvalidPropertyTypeException::class
+        )->during('update', [$productModel, ['code' => []]]);
+    }
+
+    function it_throws_an_exception_when_giving_a_non_scalar_family_variant(
+        ProductModelInterface $productModel
+    ) {
+        $this->shouldThrow(
+            InvalidPropertyTypeException::class
+        )->during('update', [$productModel, ['family_variant' => []]]);
+    }
+
+    function it_throws_an_exception_when_giving_non_scalar_categories(
+        ProductModelInterface $productModel
+    ) {
+        $this->shouldThrow(
+            InvalidPropertyTypeException::class
+        )->during('update', [$productModel, ['categories' => '']]);
+    }
+
+    function it_throws_an_exception_when_giving_an_array_of_categories_with_non_scalar_values(
+        ProductModelInterface $productModel
+    ) {
+        $this->shouldThrow(
+            InvalidPropertyTypeException::class
+        )->during('update', [$productModel, ['categories' => [[]]]]);
+    }
+
+    function it_throws_an_exception_when_giving_an_unknown_property(
+        ProductModelInterface $productModel
+    ) {
+        $this->shouldThrow(
+            UnknownPropertyException::class
+        )->during('update', [$productModel, ['michel' => [[]]]]);
     }
 }

@@ -178,7 +178,7 @@ class ProductModelNormalizer implements NormalizerInterface
                 'image'                     => $this->normalizeImage($closestImage, $context),
                 'variant_navigation'        => $this->navigationNormalizer->normalize($productModel, $format, $context),
                 'ascendant_category_ids'    => $this->ascendantCategoriesQuery->getCategoryIds($productModel),
-                'completenesses'            => $this->incompleteValuesNormalizer->normalize($productModel, $format, $context),
+                'required_missing_attributes' => $this->incompleteValuesNormalizer->normalize($productModel, $format, $context),
                 'level'                     => $productModel->getVariationLevel(),
             ] + $this->getLabels($productModel, $scopeCode);
 

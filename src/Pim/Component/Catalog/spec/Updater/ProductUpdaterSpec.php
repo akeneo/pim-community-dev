@@ -3,6 +3,7 @@
 namespace spec\Pim\Component\Catalog\Updater;
 
 use Akeneo\Component\StorageUtils\Exception\InvalidObjectException;
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Akeneo\Component\StorageUtils\Exception\UnknownPropertyException;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Akeneo\Component\StorageUtils\Updater\PropertySetterInterface;
@@ -113,5 +114,61 @@ class ProductUpdaterSpec extends ObjectBehavior
         $this
             ->shouldThrow(UnknownPropertyException::unknownProperty('unknown_property'))
             ->during('update', [$product, $updates, []]);
+    }
+
+    function it_throws_an_exception_when_giving_a_non_scalar_enabled(
+        ProductInterface $product
+    ) {
+        $this->shouldThrow(
+            InvalidPropertyTypeException::class
+        )->during('update', [$product, ['enabled' => []]]);
+    }
+
+    function it_throws_an_exception_when_giving_a_non_scalar_family(
+        ProductInterface $product
+    ) {
+        $this->shouldThrow(
+            InvalidPropertyTypeException::class
+        )->during('update', [$product, ['family' => []]]);
+    }
+
+    function it_throws_an_exception_when_giving_a_non_scalar_parent(
+        ProductInterface $product
+    ) {
+        $this->shouldThrow(
+            InvalidPropertyTypeException::class
+        )->during('update', [$product, ['parent' => []]]);
+    }
+
+    function it_throws_an_exception_when_giving_an_array_of_categories_with_non_scalar_values(
+        ProductInterface $product
+    ) {
+        $this->shouldThrow(
+            InvalidPropertyTypeException::class
+        )->during('update', [$product, ['categories' => [[]]]]);
+    }
+
+    function it_throws_an_exception_when_giving_an_array_of_groups_with_non_scalar_values(
+        ProductInterface $product
+    ) {
+        $this->shouldThrow(
+            InvalidPropertyTypeException::class
+        )->during('update', [$product, ['groups' => [[]]]]);
+    }
+
+    function it_throws_an_exception_when_giving_not_an_array_of_associations(
+        ProductInterface $product
+    ) {
+        $this->shouldThrow(
+            InvalidPropertyTypeException::class
+        )->during('update', [$product, ['associations' => 'assoc']]);
+    }
+
+    function it_throws_an_exception_when_giving_an_array_of_associations_with_non_scalar_values(
+        ProductInterface $product
+    ) {
+        $this->shouldThrow(
+            InvalidPropertyTypeException::class
+        )->during('update', [$product, ['associations' => ['assoc' => 'not_an_array']]]);
     }
 }

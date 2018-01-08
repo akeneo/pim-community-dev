@@ -166,5 +166,6 @@ services:
         arguments:
             - '@validator'
             - '@pim_catalog.saver.family_variant'
+            - '@akeneo_storage_utils.doctrine.object_detacher'
         tags:
             - { name: kernel.event_subscriber }

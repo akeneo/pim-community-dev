@@ -1,3 +1,19 @@
+# 2.1.X
+
+## Bug fixes
+
+- PIM-7074: Fix label and completeness filters for search
+
+## BC breaks
+
+### Services
+
+- Rename the service `pim_enrich.normalizer.product_model_incomplete_values` to `pim_enrich.normalizer.incomplete_values` because it works not only for product models
+
+### Constructors
+
+- Change the constructor of `Pim\Bundle\EnrichBundle\Normalizer\ProductNormalizer` to add a `Pim\Bundle\EnrichBundle\Normalizer\IncompleteValuesNormalizer` as last argument
+
 # 2.1.0 (2017-12-21)
 
 ## Better manage products with variants

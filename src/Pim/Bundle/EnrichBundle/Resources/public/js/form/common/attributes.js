@@ -199,9 +199,12 @@ define(
                     .then((fields) => {
                         this.rendering = false;
                         $.when(
-                            AttributeGroupManager.getAttributeGroupsForObject(data),
-                            toFillFieldProvider.getFields(this.getRoot(), data.values)
-                        ).then((attributeGroups, fieldsToFill) => {
+                            AttributeGroupManager.getAttributeGroupsForObject(data)
+                        ).then((attributeGroups) => {
+                            const scope = UserContext.get('catalogScope');
+                            const locale = UserContext.get('catalogLocale');
+                            const fieldsToFill = toFillFieldProvider.getMissingRequiredFields(data, scope, locale);
+
                             const sections = _.values(
                                 fields.reduce(groupFieldsBySection(attributeGroups, fieldsToFill), {})
                             ).sort((firstSection, secondSection) =>

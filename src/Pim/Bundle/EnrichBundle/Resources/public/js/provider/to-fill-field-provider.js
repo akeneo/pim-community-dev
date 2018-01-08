@@ -9,49 +9,39 @@
 define(
     [
         'jquery',
-        'underscore',
-        'oro/mediator',
-        'pim/attribute-manager',
-        'pim/fetcher-registry'
+        'underscore'
     ],
-    function ($, _, mediator, attributeManager, fetcherRegistry) {
+    function (
+        $,
+        _
+    ) {
         return {
             fieldsPromise: null,
 
             /**
-             * Get list of fields that need to be filled to complete the product
+             * Returns the missing required attributes of the current scope and locale for the given product
              *
-             * @param {Object} root
-             * @param {Object} values
+             * @param product Object
+             * @param scope String
+             * @param locale String
              *
-             * @return {Promise}
+             * @return Array
              */
-            getFields: function (root, values) {
-
-                if (null == this.fieldsPromise) {
-                    var filterPromises = [];
-                    root.trigger(
-                        'pim_enrich:form:field:to-fill-filter',
-                        {'filters': filterPromises}
-                    );
-
-                    this.fieldsPromise = $.when.apply($, filterPromises).then(function () {
-                        return arguments;
-                    }).then(function (filters) {
-                        return fetcherRegistry.getFetcher('attribute').fetchByIdentifiers(Object.keys(values))
-                            .then(function (attributesToFilter) {
-                                var filteredAttributes = _.reduce(filters, function (attributes, filter) {
-                                    return filter(attributes);
-                                }, attributesToFilter);
-
-                                return _.map(filteredAttributes, function (attribute) {
-                                    return attribute.code;
-                                });
-                            });
-                    });
+            getMissingRequiredFields: function (product, scope, locale) {
+                const scopeMissingAttributes =  _.findWhere(product.meta.required_missing_attributes, {channel: scope});
+                if (undefined === scopeMissingAttributes) {
+                    return [];
                 }
 
-                return this.fieldsPromise
+                const localeMissingAttributes = scopeMissingAttributes.locales[locale];
+                if (undefined === localeMissingAttributes) {
+                    return [];
+                }
+
+                const missingAttributeCodes = localeMissingAttributes.missing.map(missing => missing.code);
+                const levelAttributeCodes = Object.keys(product.values);
+
+                return missingAttributeCodes.filter(missingAttribute => levelAttributeCodes.includes(missingAttribute));
             },
 
             /**

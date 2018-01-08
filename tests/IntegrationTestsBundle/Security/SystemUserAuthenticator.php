@@ -3,7 +3,6 @@
 namespace Akeneo\Test\IntegrationTestsBundle\Security;
 
 use Psr\Container\ContainerInterface;
-use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
 /**

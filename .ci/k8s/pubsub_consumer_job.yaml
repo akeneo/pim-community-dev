@@ -111,7 +111,8 @@ spec:
           resources:
             requests: {cpu: "300m", memory: "1500Mi"}
         - name: pubsub
-          image: eu.gcr.io/akeneo-ci/gcloud:1.0.19
+          image: eu.gcr.io/akeneo-ci/gcloud:1.0
+          imagePullPolicy: Always
           command: ["/bin/sh", "-c"]
           args:
             - |

@@ -241,6 +241,7 @@ services:
             - '@akeneo_storage_utils.doctrine.object_detacher'
             - '@pim_connector.processor.bulk_media_fetcher'
             - '@pim_catalog.values_filler.product'
+            - '@pim_connector.doctrine.cache_clearer'
 
     pim_connector.processor.normalization.product_model:
         class: '%pim_connector.processor.normalization.product_model.class%'
@@ -330,6 +331,7 @@ services:
         arguments:
             - '@pim_catalog.repository.family_variant'
             - '@pim_catalog.repository.product_model'
+            - '@pim_catalog.repository.attribute'
 
     pim_connector.processor.attribute_filter.product:
         class: '%pim_connector.processor.attribute_filter.product.class%'
@@ -337,3 +339,4 @@ services:
             - '@pim_catalog.repository.product_model'
             - '@pim_catalog.repository.family'
             - '@pim_catalog.repository.product'
+            - '@pim_catalog.repository.attribute'

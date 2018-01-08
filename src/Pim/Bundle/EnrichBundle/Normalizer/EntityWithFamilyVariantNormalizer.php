@@ -116,7 +116,7 @@ class EntityWithFamilyVariantNormalizer implements NormalizerInterface
             'identifier'         => $identifier,
             'axes_values_labels' => $this->getAxesValuesLabelsForLocales($entity, $localeCodes),
             'labels'             => $labels,
-            'order_string'       => $this->getOrderString($entity),
+            'order'              => $this->getOrder($entity),
             'image'              => $this->normalizeImage($image, $context),
             'model_type'         => $entity instanceof ProductModelInterface ? 'product_model' : 'product',
             'completeness'       => $this->getCompletenessDependingOnEntity($entity)
@@ -225,32 +225,33 @@ class EntityWithFamilyVariantNormalizer implements NormalizerInterface
     }
 
     /**
-     * Generate a string for the given $entity to represent its order among all its axes values.
+     * Generate an array for the given $entity to represent its order among all its axes values.
      *
      * For example, if its axes values are "Blue, 10 CENTIMETER" and Blue is an option with a sort order equals to 4,
-     * it will return "4, 10 CENTIMETER".
+     * it will return [4, blue, 10 CENTIMETER].
      *
-     * It allows to sort on this string to respect sort orders of attribute options.
+     * It allows to sort on front-end to respect sort orders of attribute options.
      *
      * @param EntityWithFamilyVariantInterface $entity
      *
-     * @return string
+     * @return array
      */
-    private function getOrderString(EntityWithFamilyVariantInterface $entity): string
+    private function getOrder(EntityWithFamilyVariantInterface $entity): array
     {
-        $orderStringArray = [];
+        $orderArray = [];
 
         foreach ($this->attributesProvider->getAxes($entity) as $axisAttribute) {
             $value = $entity->getValue($axisAttribute->getCode());
 
             if (AttributeTypes::OPTION_SIMPLE_SELECT === $axisAttribute->getType()) {
                 $option = $value->getData();
-                $orderStringArray[] = $option->getSortOrder();
+                $orderArray[] = $option->getSortOrder();
+                $orderArray[] = $option->getCode();
             } else {
-                $orderStringArray[] = (string) $value;
+                $orderArray[] = (string) $value;
             }
         }
 
-        return implode(', ', $orderStringArray);
+        return $orderArray;
     }
 }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Pim\Bundle\EnrichBundle\Controller\Rest;
 
 use Akeneo\Component\Localization\Localizer\LocalizerInterface;
@@ -8,6 +10,7 @@ use Akeneo\Component\StorageUtils\Repository\SearchableRepositoryInterface;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
+use Pim\Bundle\CatalogBundle\Doctrine\ORM\Query\AttributeIsAFamilyVariantAxis;
 use Pim\Bundle\CatalogBundle\Filter\ObjectFilterInterface;
 use Pim\Bundle\UserBundle\Context\UserContext;
 use Pim\Component\Catalog\Factory\AttributeFactory;
@@ -19,6 +22,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
+use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\Validator\ConstraintViolationList;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -70,6 +74,12 @@ class AttributeController
     /** @var NormalizerInterface */
     private $lightAttributeNormalizer;
 
+    /** @var TranslatorInterface */
+    private $translator;
+
+    /** @var AttributeIsAFamilyVariantAxis */
+    private $attributeIsAFamilyVariantAxisQuery;
+
     /**
      * @param AttributeRepositoryInterface  $attributeRepository
      * @param NormalizerInterface           $normalizer
@@ -84,6 +94,8 @@ class AttributeController
      * @param UserContext                   $userContext
      * @param LocalizerInterface            $numberLocalizer
      * @param NormalizerInterface           $lightAttributeNormalizer
+     * @param TranslatorInterface           $translator
+     * @param AttributeIsAFamilyVariantAxis $attributeIsAFamilyVariantAxisQuery
      */
     public function __construct(
         AttributeRepositoryInterface $attributeRepository,
@@ -98,7 +110,9 @@ class AttributeController
         AttributeFactory $factory,
         UserContext $userContext,
         LocalizerInterface $numberLocalizer,
-        NormalizerInterface $lightAttributeNormalizer
+        NormalizerInterface $lightAttributeNormalizer,
+        TranslatorInterface $translator,
+        AttributeIsAFamilyVariantAxis $attributeIsAFamilyVariantAxisQuery
     ) {
         $this->attributeRepository = $attributeRepository;
         $this->normalizer = $normalizer;
@@ -113,6 +127,8 @@ class AttributeController
         $this->userContext = $userContext;
         $this->numberLocalizer = $numberLocalizer;
         $this->lightAttributeNormalizer = $lightAttributeNormalizer;
+        $this->translator = $translator;
+        $this->attributeIsAFamilyVariantAxisQuery = $attributeIsAFamilyVariantAxisQuery;
     }
 
     /**
@@ -236,7 +252,7 @@ class AttributeController
 
     /**
      * @param Request $request
-     * @param string $identifier
+     * @param string  $identifier
      *
      * @return JsonResponse
      *
@@ -281,10 +297,23 @@ class AttributeController
      *
      * @AclAncestor("pim_enrich_attribute_remove")
      */
-    public function removeAction($code)
+    public function removeAction(string $code): JsonResponse
     {
-        $attribute = $this->getAttributeOr404($code);
+        $isAnFamilyVariantAxis = $this->attributeIsAFamilyVariantAxisQuery->execute($code);
 
+        if ($isAnFamilyVariantAxis) {
+            $message = $this->translator->trans('pim_enrich.family.info.cant_remove_attribute_used_as_axis');
+
+            return new JsonResponse(
+                [
+                    'message' => $message,
+                    'global' => true,
+                ],
+                Response::HTTP_BAD_REQUEST
+            );
+        }
+
+        $attribute = $this->getAttributeOr404($code);
         $this->remover->remove($attribute);
 
         return new JsonResponse(null, Response::HTTP_NO_CONTENT);

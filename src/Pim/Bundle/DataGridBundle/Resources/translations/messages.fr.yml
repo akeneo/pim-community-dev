@@ -11,6 +11,7 @@ oro.grid.mass_action.error_content: Action de masse impossible
 oro.grid.mass_action.delete.label: Supprimer
 oro.grid.mass_action.delete.confirm_title: Confirmation de la suppression massive
 oro.grid.mass_action.delete.confirm_content: Êtes-vous sûr(e) de que vouloir supprimer les éléments sélectionnés ?
+oro.grid.mass_action.delete.item_limit: Vous ne peut pas supprimer en masse plus de %limit% produits (%count% sélectionnés)
 oro.grid.datagrid.page_size.all: Tous
 oro.grid.mass_action.delete.success_message: "{0} Aucune entité n'a été supprimée|{1} Une entité a été supprimée|]1, Inf [ %count% entités ont été supprimées"
 datagrid_view:

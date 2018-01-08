@@ -8,9 +8,9 @@ use Pim\Component\Catalog\EntityWithFamily\IncompleteValueCollectionFactory;
 use Pim\Component\Catalog\EntityWithFamily\RequiredValueCollectionFactory;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ChannelInterface;
+use Pim\Component\Catalog\Model\EntityWithFamilyInterface;
 use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Component\Catalog\Model\LocaleInterface;
-use Pim\Component\Catalog\Model\ProductModelInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -20,7 +20,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-class ProductModelIncompleteValuesNormalizer implements NormalizerInterface
+class IncompleteValuesNormalizer implements NormalizerInterface
 {
     /** @var NormalizerInterface */
     private $normalizer;
@@ -49,10 +49,14 @@ class ProductModelIncompleteValuesNormalizer implements NormalizerInterface
     /**
      * {@inheritdoc}
      */
-    public function normalize($productModel, $format = null, array $context = []): array
+    public function normalize($entityWithFamily, $format = null, array $context = []): array
     {
-        $family = $productModel->getFamily();
+        $family = $entityWithFamily->getFamily();
         if (null === $family) {
+            return [];
+        }
+
+        if (!$this->isEntityGranted($entityWithFamily)) {
             return [];
         }
 
@@ -73,11 +77,19 @@ class ProductModelIncompleteValuesNormalizer implements NormalizerInterface
                     $requiredValues,
                     $channel,
                     $locale,
-                    $productModel
+                    $entityWithFamily
                 );
 
                 $missingAttributes = [];
                 foreach ($incompleteValues->attributes() as $attribute) {
+                    if (!$this->isAttributeGranted($attribute)) {
+                        continue;
+                    }
+
+                    if ($attribute->isLocalizable() && !$this->isLocaleGranted($locale)) {
+                        continue;
+                    }
+
                     $missingAttributes[] = [
                         'code' => $attribute->getCode(),
                         'labels' => $this->normalizeAttributeLabels($attribute, $channel->getLocales()->toArray())
@@ -85,13 +97,6 @@ class ProductModelIncompleteValuesNormalizer implements NormalizerInterface
                 }
 
                 $kindOfCompleteness['locales'][$locale->getCode()] = [
-                    'completeness' => [
-                        'required' => $requiredValues->count(),
-                        'missing' => $incompleteValues->count(),
-                        'ratio' => null,
-                        'locale' => $locale->getCode(),
-                        'channel' => $channel->getCode(),
-                    ],
                     'missing' => $missingAttributes,
                     'label' => $locale->getName(),
                 ];
@@ -108,7 +113,37 @@ class ProductModelIncompleteValuesNormalizer implements NormalizerInterface
      */
     public function supportsNormalization($data, $format = null)
     {
-        return $data instanceof ProductModelInterface && 'internal_api' === $format;
+        return $data instanceof EntityWithFamilyInterface && 'internal_api' === $format;
+    }
+
+    /**
+     * @param EntityWithFamilyInterface $entityWithFamily
+     *
+     * @return bool
+     */
+    protected function isEntityGranted(EntityWithFamilyInterface $entityWithFamily)
+    {
+        return true;
+    }
+
+    /**
+     * @param AttributeInterface $attribute
+     *
+     * @return bool
+     */
+    protected function isAttributeGranted(AttributeInterface $attribute)
+    {
+        return true;
+    }
+
+    /**
+     * @param LocaleInterface $locale
+     *
+     * @return bool
+     */
+    protected function isLocaleGranted(LocaleInterface $locale)
+    {
+        return true;
     }
 
     /**

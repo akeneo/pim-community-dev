@@ -141,7 +141,7 @@ datagrid:
                 messages:
                     confirm_title: pim_datagrid.mass_action.delete.confirm_title
                     confirm_content: pim_datagrid.mass_action.delete.confirm_content
-                    confirm_ok: pim_datagrid.mass_action.delete.label
+                    confirm_ok: pim_datagrid.mass_action.delete.confirm_ok
                     success: pim_datagrid.mass_action.delete.success
                     error: pim_datagrid.mass_action.delete.error
                     empty_selection: pim_datagrid.mass_action.delete.empty_selection

@@ -140,6 +140,7 @@ Pim\Bundle\CatalogBundle\Entity\Attribute:
                 - detach
             orderBy:
                 sortOrder: ASC
+                code: ASC
         translations:
             targetEntity: Pim\Component\Catalog\Model\AttributeTranslationInterface
             mappedBy: foreignKey

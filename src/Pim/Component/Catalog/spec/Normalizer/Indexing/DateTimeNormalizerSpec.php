@@ -20,8 +20,9 @@ class DateTimeNormalizerSpec extends ObjectBehavior
         $this->shouldHaveType(DateTimeNormalizer::class);
     }
 
-    function it_support_dates(\Datetime $date)
+    function it_support_dates()
     {
+        $date = new \DateTime('now', new \DateTimeZone('UTC'));
         $this->supportsNormalization(new \stdClass(), 'whatever')->shouldReturn(false);
         $this->supportsNormalization(new \stdClass(), ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX)
             ->shouldReturn(false);
@@ -34,11 +35,11 @@ class DateTimeNormalizerSpec extends ObjectBehavior
             ->shouldReturn(true);
     }
 
-    function it_normalizes_product_assocations($standardNormalizer, \Datetime $date)
+    function it_normalizes_product_assocations($standardNormalizer)
     {
+        $date = new \DateTime('now', new \DateTimeZone('UTC'));
         $standardNormalizer->normalize($date, ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX, ['context'])
             ->willReturn('date');
-
         $this->normalize($date, ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX, ['context'])
             ->shouldReturn('date');
     }
