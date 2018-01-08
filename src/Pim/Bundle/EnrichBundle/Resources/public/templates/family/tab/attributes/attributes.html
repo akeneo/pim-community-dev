@@ -14,7 +14,7 @@
         <% var collapsed = (true === attributeGroup.collapsed) %>
 
         <tbody class="AknGrid-bodyContainer <%- collapsed ? 'AknGrid-bodyContainer--collapsed': '' %>"  data-group="<%- group %>">
-            <tr class="AknGrid-bodyRow AknGrid-bodyRow--highlight group">
+            <tr class="AknGrid-bodyRow AknGrid-bodyRow--highlight AknGrid-headerToggle group">
                 <td class="AknGrid-bodyCell" colspan="<%- colspan %>">
                     <i class="<%- collapsed ? 'icon-expand-alt' : 'icon-collapse-alt' %>"></i>
                     <%-
