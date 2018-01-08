@@ -2,6 +2,7 @@
 
 namespace spec\Pim\Bundle\CatalogBundle\EventSubscriber;
 
+use Akeneo\Component\StorageUtils\Detacher\BulkObjectDetacherInterface;
 use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
 use Akeneo\Component\StorageUtils\StorageEvents;
 use Doctrine\Common\Collections\Collection;
@@ -16,9 +17,13 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class SaveFamilyVariantOnFamilyUpdateSubscriberSpec extends ObjectBehavior
 {
-    function let(ValidatorInterface $validator, BulkSaverInterface $familyVariantSaver)
+    function let(
+        ValidatorInterface $validator,
+        BulkSaverInterface $familyVariantSaver,
+        BulkObjectDetacherInterface $objectDetacher
+    )
     {
-        $this->beConstructedWith($validator, $familyVariantSaver);
+        $this->beConstructedWith($validator, $familyVariantSaver, $objectDetacher);
     }
 
     function it_is_initializable()
@@ -49,6 +54,7 @@ class SaveFamilyVariantOnFamilyUpdateSubscriberSpec extends ObjectBehavior
     function it_validates_and_saves_family_variants_on_family_update(
         $validator,
         $familyVariantSaver,
+        $objectDetacher,
         GenericEvent $event,
         FamilyInterface $family,
         Collection $familyVariants,
@@ -71,6 +77,7 @@ class SaveFamilyVariantOnFamilyUpdateSubscriberSpec extends ObjectBehavior
         $constraintViolationList->count()->willReturn(0);
 
         $familyVariantSaver->saveAll([$familyVariants1, $familyVariants2])->shouldBeCalled();
+        $objectDetacher->detachAll([$familyVariants1, $familyVariants2])->shouldBeCalled();
 
         $event->getSubject()->willReturn($family);
         $this->validateAndSaveFamilyVariants($event);

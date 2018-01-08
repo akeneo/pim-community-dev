@@ -139,6 +139,7 @@ class ProductController
      * @param PrimaryKeyEncrypter                   $primaryKeyEncrypter
      * @param ProductQueryBuilderFactoryInterface   $fromSizePqbFactory
      * @param ProductBuilderInterface               $variantProductBuilder
+     * @param AttributeFilterInterface              $productAttributeFilter
      * @param array                                 $apiConfiguration
      */
     public function __construct(
@@ -285,7 +286,6 @@ class ProductController
         $data = $this->orderData($data);
 
         if (isset($data['parent'])) {
-            $data = $this->productAttributeFilter->filter($data);
             $product = $this->variantProductBuilder->createProduct($data['identifier']);
         } else {
             $product = $this->productBuilder->createProduct();
@@ -330,10 +330,6 @@ class ProductController
 
         if (!$isCreation) {
             $data = $this->filterEmptyValues($product, $data);
-        }
-
-        if ($product instanceof VariantProductInterface) {
-            $data = $this->productAttributeFilter->filter($data);
         }
 
         $data = $this->orderData($data);
@@ -402,6 +398,10 @@ class ProductController
         }
 
         try {
+            if (isset($data['parent']) || $product instanceof VariantProductInterface) {
+                $data = $this->productAttributeFilter->filter($data);
+            }
+
             $this->updater->update($product, $data);
         } catch (PropertyException $exception) {
             throw new DocumentedHttpException(

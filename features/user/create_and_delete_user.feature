@@ -47,7 +47,7 @@ Feature: Create a user
     When I save the user
     Then I should see a validation tooltip "This value is not a valid email address."
 
-  Scenario: Successfully delete a user
+  Scenario: Successfully delete a user from grid
     Given I am on the users page
     When I click on the "Delete" action of the row which contains "Julia"
     Then I should see a confirm dialog with the following content:
@@ -55,3 +55,14 @@ Feature: Create a user
       | content | Are you sure you want to delete this user? |
     When I confirm the deletion
     Then I should not see "Julia"
+
+  Scenario: Successfully delete a user from user page
+    Given I am on the users page
+    When I click on the "View" action of the row which contains "Julien"
+    And I should see the text "Julien Février"
+    Then I press the secondary action "Delete"
+    Then I should see a confirm dialog with the following content:
+      | title   | Delete Confirmation                        |
+      | content | Are you sure you want to delete this user? |
+    When I confirm the deletion
+    Then I should not see "Julien"

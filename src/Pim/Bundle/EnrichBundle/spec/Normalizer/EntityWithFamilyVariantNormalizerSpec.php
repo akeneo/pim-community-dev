@@ -93,6 +93,7 @@ class EntityWithFamilyVariantNormalizerSpec extends ObjectBehavior
         $colorAttributeOption->setLocale('fr_FR')->shouldBeCalled();
         $colorAttributeOption->setLocale('en_US')->shouldBeCalled();
         $colorAttributeOption->getSortOrder()->willReturn(2);
+        $colorAttributeOption->getCode()->willReturn('white');
         $colorAttributeOption->getTranslation()->willReturn($colorAttributeOptionValue);
         $colorAttributeOptionValue->getLabel()->willReturn('Blanc', 'White');
         $sizeValue->__toString()->willReturn('S');
@@ -118,7 +119,7 @@ class EntityWithFamilyVariantNormalizerSpec extends ObjectBehavior
                 'fr_FR' => 'Tshirt Blanc S',
                 'en_US' => 'Tshirt White S',
             ],
-            'order_string'       => '2, S',
+            'order'              => [2, 'white', 'S'],
             'image'              => null,
             'model_type'         => 'product',
             'completeness'       => ['NORMALIZED_COMPLETENESS']
@@ -157,6 +158,7 @@ class EntityWithFamilyVariantNormalizerSpec extends ObjectBehavior
         $colorAttributeOption->setLocale('fr_FR')->shouldBeCalled();
         $colorAttributeOption->setLocale('en_US')->shouldBeCalled();
         $colorAttributeOption->getSortOrder()->willReturn(2);
+        $colorAttributeOption->getCode()->willReturn('white');
         $colorAttributeOption->getTranslation()->willReturn($colorAttributeOptionValue);
         $colorAttributeOptionValue->getLabel()->willReturn('Blanc', 'White');
 
@@ -174,7 +176,7 @@ class EntityWithFamilyVariantNormalizerSpec extends ObjectBehavior
                 'fr_FR' => 'Tshirt Blanc',
                 'en_US' => 'Tshirt White',
             ],
-            'order_string'       => '2',
+            'order'              => [2, 'white'],
             'image'              => null,
             'model_type'         => 'product_model',
             'completeness'       => ['NORMALIZED COMPLETENESS']

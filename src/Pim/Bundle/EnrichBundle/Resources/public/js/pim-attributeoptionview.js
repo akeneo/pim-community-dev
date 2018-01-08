@@ -156,6 +156,8 @@ define(
                             this.stopEditItem();
                             if (!this.parent.sortable) {
                                 this.parent.render();
+                            } else {
+                                this.parent.updateSorting();
                             }
                         }.bind(this),
                         error: this.showValidationErrors.bind(this)
@@ -460,7 +462,6 @@ define(
                 }
             },
             updateSorting: function () {
-                this.inLoading(true);
                 var sorting = [];
 
                 var rows = this.$el.find('tbody tr');
@@ -472,9 +473,7 @@ define(
                     url: this.sortingUrl,
                     type: 'PUT',
                     data: JSON.stringify(sorting)
-                }).done(function () {
-                    this.inLoading(false);
-                }.bind(this));
+                });
             },
             inLoading: function (loading) {
                 if (loading) {

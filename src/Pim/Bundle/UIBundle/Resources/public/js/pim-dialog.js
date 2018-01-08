@@ -107,7 +107,7 @@ define(
                     type: __(subTitle || ''),
                     title: __(title),
                     content: __(content),
-                    okText: buttonText || __('OK'),
+                    okText: __(buttonText) || __('OK'),
                     cancelText: __('Cancel'),
                     buttonClass: buttonClass || 'AknButton--action',
                     template: this.template,

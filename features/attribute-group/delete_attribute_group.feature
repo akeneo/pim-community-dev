@@ -21,9 +21,14 @@ Feature: Attribute group creation
     And I confirm the deletion
     Then I should see the flash message "Attribute group successfully removed"
 
-  @javascript @skip
   Scenario: Fail to delete an attribute group that contains attributes
     Given I am on the "colors" attribute group page
-    When I press the "Delete" button and wait for modal
+    When I press the secondary action "Delete"
     And I confirm the deletion
-    Then I should see the flash message "Attribute group can't be removed as it contains attributes"
+    Then I should see the flash message "Attribute group containing attributes cannot be removed. Please remove its attributes prior to delete it."
+
+  Scenario: Fail to delete the attribute "other"
+    Given I am on the "other" attribute group page
+    When I press the secondary action "Delete"
+    And I confirm the deletion
+    Then I should see the flash message "Attribute group \"other\" cannot be removed."

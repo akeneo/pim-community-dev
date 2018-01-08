@@ -21,6 +21,7 @@ use Pim\Component\Api\Pagination\ParameterValidatorInterface;
 use Pim\Component\Api\Repository\ApiResourceRepositoryInterface;
 use Pim\Component\Catalog\FileStorage;
 use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Model\ProductModelInterface;
 use Symfony\Component\HttpFoundation\File\Exception\FileNotFoundException;
 use Symfony\Component\HttpFoundation\FileBag;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -63,11 +64,20 @@ class MediaFileController
     /** @var IdentifiableObjectRepositoryInterface */
     protected $productRepository;
 
+    /** @var IdentifiableObjectRepositoryInterface */
+    protected $productModelRepository;
+
     /** @var ObjectUpdaterInterface */
     protected $productUpdater;
 
     /** @var SaverInterface */
     protected $productSaver;
+
+    /** @var ObjectUpdaterInterface */
+    protected $productModelUpdater;
+
+    /** @var SaverInterface */
+    protected $productModelSaver;
 
     /** @var ValidatorInterface */
     protected $validator;
@@ -102,6 +112,9 @@ class MediaFileController
      * @param FileStorerInterface                   $fileStorer
      * @param RemoverInterface                      $remover
      * @param RouterInterface                       $router
+     * @param IdentifiableObjectRepositoryInterface $productModelRepository
+     * @param ObjectUpdaterInterface                $productModelUpdater
+     * @param SaverInterface                        $productModelSaver
      * @param array                                 $apiConfiguration
      */
     public function __construct(
@@ -119,6 +132,9 @@ class MediaFileController
         FileStorerInterface $fileStorer,
         RemoverInterface $remover,
         RouterInterface $router,
+        IdentifiableObjectRepositoryInterface $productModelRepository,
+        ObjectUpdaterInterface $productModelUpdater,
+        SaverInterface $productModelSaver,
         array $apiConfiguration
     ) {
         $this->mediaRepository = $mediaRepository;
@@ -136,6 +152,9 @@ class MediaFileController
         $this->remover = $remover;
         $this->router = $router;
         $this->apiConfiguration = $apiConfiguration;
+        $this->productModelRepository = $productModelRepository;
+        $this->productModelUpdater = $productModelUpdater;
+        $this->productModelSaver = $productModelSaver;
     }
 
     /**
@@ -248,11 +267,63 @@ class MediaFileController
      */
     public function createAction(Request $request)
     {
-        if (!$request->request->has('product')) {
-            throw new UnprocessableEntityHttpException('Property "product" is required.');
+        if ($request->request->has('product') && $request->request->has('product_model')) {
+            throw new UnprocessableEntityHttpException('You should give either a "product" or a "product_model" key.');
         }
 
-        $productInfos = $this->getDecodedContent($request->request->get('product'));
+        if ($request->request->has('product')) {
+            return $this->createProductMedia($request);
+        }
+
+        if ($request->request->has('product_model')) {
+            return $this->createProductModelMedia($request);
+        }
+
+        throw new UnprocessableEntityHttpException(
+            'You should at least give one of the following properties: "product" or "product_model".'
+        );
+    }
+
+    /**
+     * @param Request $request
+     *
+     * @return Response
+     */
+    protected function createProductModelMedia(Request $request): Response
+    {
+        $productModelInfos = $this->getProductModelDecodedContent($request->request->get('product_model'));
+        $productModel = $this->productModelRepository->findOneByIdentifier($productModelInfos['code']);
+        if (null === $productModel) {
+            throw new UnprocessableEntityHttpException(
+                sprintf('Product model "%s" does not exist.', $productModelInfos['code'])
+            );
+        }
+
+        $fileInfo = $this->storeFile($request->files);
+        $this->linkFileToProductModel($fileInfo, $productModel, $productModelInfos);
+
+        $response = new Response(null, Response::HTTP_CREATED);
+        $route = $this->router->generate(
+            'pim_api_media_file_get',
+            ['code' => $fileInfo->getKey()],
+            Router::ABSOLUTE_URL
+        );
+
+        $response->headers->set('Location', $route);
+
+        return $response;
+    }
+
+    /**
+     * @param Request $request
+     *
+     * @throws HttpException
+     *
+     * @return Response
+     */
+    protected function createProductMedia(Request $request)
+    {
+        $productInfos = $this->getProductDecodedContent($request->request->get('product'));
         $product = $this->productRepository->findOneByIdentifier($productInfos['identifier']);
         if (null === $product) {
             throw new UnprocessableEntityHttpException(
@@ -284,8 +355,11 @@ class MediaFileController
      *
      * @return ProductInterface
      */
-    protected function linkFileToProduct(FileInfoInterface $fileInfo, ProductInterface $product, array $productInfos)
-    {
+    protected function linkFileToProduct(
+        FileInfoInterface $fileInfo,
+        ProductInterface $product,
+        array $productInfos
+    ): ProductInterface {
         $productValues = ['values' => [
             $productInfos['attribute'] => [
                 [
@@ -314,6 +388,50 @@ class MediaFileController
         $this->productSaver->save($product);
 
         return $product;
+    }
+
+    /**
+     * @param FileInfoInterface     $fileInfo
+     * @param ProductModelInterface $productModel
+     * @param array                 $productModelInfos
+     *
+     * @throws HttpException
+     *
+     * @return ProductModelInterface
+     */
+    protected function linkFileToProductModel(
+        FileInfoInterface $fileInfo,
+        ProductModelInterface $productModel,
+        array $productModelInfos
+    ): ProductModelInterface {
+        $productModelValues = ['values' => [
+            $productModelInfos['attribute'] => [
+                [
+                    'locale' => $productModelInfos['locale'],
+                    'scope'  => $productModelInfos['scope'],
+                    'data'   => $fileInfo->getKey()
+                ]
+            ]
+        ]];
+
+        try {
+            $this->productModelUpdater->update($productModel, $productModelValues);
+        } catch (PropertyException $e) {
+            $this->remover->remove($fileInfo);
+
+            throw new UnprocessableEntityHttpException($e->getMessage(), $e);
+        }
+
+        $violations = $this->validator->validate($productModel);
+        if ($violations->count() > 0) {
+            $this->remover->remove($fileInfo);
+
+            throw new ViolationHttpException($violations);
+        }
+
+        $this->productModelSaver->save($productModel);
+
+        return $productModel;
     }
 
     /**
@@ -354,7 +472,7 @@ class MediaFileController
      *
      * @return array
      */
-    protected function getDecodedContent($content)
+    protected function getProductDecodedContent($content): array
     {
         $decodedContent = json_decode($content, true);
         if (null === $decodedContent) {
@@ -365,6 +483,30 @@ class MediaFileController
             !array_key_exists('locale', $decodedContent) || !array_key_exists('scope', $decodedContent)) {
             throw new UnprocessableEntityHttpException(
                 'Product property must contain "identifier", "attribute", "locale" and "scope" properties.'
+            );
+        }
+
+        return $decodedContent;
+    }
+
+    /**
+     * @param string $content
+     *
+     * @throws HttpException
+     *
+     * @return array
+     */
+    protected function getProductModelDecodedContent($content): array
+    {
+        $decodedContent = json_decode($content, true);
+        if (null === $decodedContent) {
+            throw new BadRequestHttpException('Invalid json message received');
+        }
+
+        if (!isset($decodedContent['code']) || !isset($decodedContent['attribute']) ||
+            !array_key_exists('locale', $decodedContent) || !array_key_exists('scope', $decodedContent)) {
+            throw new UnprocessableEntityHttpException(
+                'Product model property must contain "code", "attribute", "locale" and "scope" properties.'
             );
         }
 

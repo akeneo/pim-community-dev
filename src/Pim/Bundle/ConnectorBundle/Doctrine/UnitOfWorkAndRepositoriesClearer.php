@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\ConnectorBundle\Doctrine;
 
-use Akeneo\Component\StorageUtils\Cache\CacheClearerInterface;
+use Akeneo\Component\StorageUtils\Cache\EntityManagerClearerInterface;
 use Akeneo\Component\StorageUtils\Repository\CachedObjectRepositoryInterface;
 use Doctrine\ORM\EntityManagerInterface;
 
@@ -16,7 +16,7 @@ use Doctrine\ORM\EntityManagerInterface;
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class UnitOfWorkAndRepositoriesClearer implements CacheClearerInterface
+class UnitOfWorkAndRepositoriesClearer implements EntityManagerClearerInterface
 {
     /** @var CachedObjectRepositoryInterface[] */
     protected $cachedRepositoriesToClear;

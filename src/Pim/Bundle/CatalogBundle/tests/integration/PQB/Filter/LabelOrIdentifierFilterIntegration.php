@@ -32,4 +32,13 @@ class LabelOrIdentifierFilterIntegration extends AbstractProductAndProductModelQ
         $result = $this->executeFilter([['label_or_identifier', Operators::CONTAINS, 'ha', ['locale' => 'en_US', 'scope' => 'ecommerce']]]);
         $this->assert($result, ['model-braided-hat', 'hades', '1111111240']);
     }
+
+    public function testSearchOnLabelAndCompleteness()
+    {
+        $result = $this->executeFilter([
+            ['label_or_identifier', Operators::CONTAINS, 'hat', ['locale' => 'en_US', 'scope' => 'ecommerce']],
+            ['completeness', Operators::AT_LEAST_COMPLETE, null, ['locale' => 'en_US', 'scope' => 'ecommerce']]
+        ]);
+        $this->assert($result, ['model-braided-hat']);
+    }
 }

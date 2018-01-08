@@ -2,7 +2,6 @@
 
 namespace Pim\Bundle\CatalogBundle\Elasticsearch\Filter\Field;
 
-use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Pim\Component\Catalog\Exception\InvalidOperatorException;
 use Pim\Component\Catalog\Query\Filter\FieldFilterHelper;
 use Pim\Component\Catalog\Query\Filter\Operators;
@@ -45,14 +44,14 @@ class LabelOrIdentifierFilter extends AbstractFieldFilter
 
         $this->checkValue($operator, $value);
 
-        $clause[] = [
+        $clauses[] = [
             'wildcard' => [
                 'identifier' => sprintf('*%s*', $this->escapeValue($value)),
             ]
         ];
 
         if (null !== $channel && null !== $locale) {
-            $clause[] = [
+            $clauses[] = [
                 'wildcard' => [
                     sprintf('label.%s.%s', $channel, $locale) => sprintf('*%s*', $this->escapeValue($value)),
                 ]
@@ -60,7 +59,7 @@ class LabelOrIdentifierFilter extends AbstractFieldFilter
         }
 
         if (null !== $channel) {
-            $clause[] = [
+            $clauses[] = [
                 'wildcard' => [
                     sprintf('label.%s.<all_locales>', $channel) => sprintf('*%s*', $this->escapeValue($value)),
                 ]
@@ -68,20 +67,27 @@ class LabelOrIdentifierFilter extends AbstractFieldFilter
         }
 
         if (null !== $locale) {
-            $clause[] = [
+            $clauses[] = [
                 'wildcard' => [
                     sprintf('label.<all_channels>.%s', $locale) => sprintf('*%s*', $this->escapeValue($value)),
                 ]
             ];
         }
 
-        $clause[] = [
+        $clauses[] = [
             'wildcard' => [
                 'label.<all_channels>.<all_locales>' => sprintf('*%s*', $this->escapeValue($value)),
             ]
         ];
 
-        $this->searchQueryBuilder->addShould($clause);
+        $this->searchQueryBuilder->addFilter(
+            [
+                'bool' => [
+                    'should' => $clauses,
+                    'minimum_should_match' => 1,
+                ],
+            ]
+        );
 
         return $this;
     }

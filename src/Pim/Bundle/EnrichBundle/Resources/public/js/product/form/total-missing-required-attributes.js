@@ -13,6 +13,7 @@ define(
         'pim/router',
         'pim/form',
         'pim/user-context',
+        'pim/provider/to-fill-field-provider',
         'pim/template/product/form/total-missing-required-attributes'
     ],
     function (
@@ -21,6 +22,7 @@ define(
         router,
         BaseForm,
         UserContext,
+        toFillFieldProvider,
         template
     ) {
         return BaseForm.extend({
@@ -45,15 +47,17 @@ define(
              */
             render: function () {
                 this.$el.empty();
-                const missingAttributesCount = this.getMissingRequiredAttributesCount(
-                    UserContext.get('catalogScope'),
-                    UserContext.get('catalogLocale')
-                );
 
-                if (missingAttributesCount > 0) {
+                const product = this.getFormData();
+                const scope = UserContext.get('catalogScope');
+                const locale = UserContext.get('catalogLocale');
+
+                const missingAttributes = toFillFieldProvider.getMissingRequiredFields(product, scope, locale);
+
+                if (missingAttributes.length > 0) {
                     this.$el.append(this.template({
                         __: __,
-                        missingRequiredAttributesCount: missingAttributesCount,
+                        missingRequiredAttributesCount: missingAttributes.length,
                         missingValues: 'pim_enrich.form.product.panel.completeness.missing_values'
                     }));
                 }
@@ -66,41 +70,6 @@ define(
              */
             filterRequiredAttributes: function () {
                 this.getRoot().trigger('pim_enrich:form:switch_values_filter', 'missing_required');
-            },
-
-            /**
-             * Returns the missing required attributes count of the current scope and locale
-             *
-             * @param scope String
-             * @param locale String
-             *
-             * @return Object
-             */
-            getMissingRequiredAttributesCount: function (scope, locale) {
-                const scopeCompleteness =  _.findWhere(this.getFormData().meta.completenesses, {channel: scope});
-                if (undefined === scopeCompleteness) {
-                    return 0;
-                }
-
-                const localeCompleteness = scopeCompleteness.locales[locale];
-                if (undefined === localeCompleteness) {
-                    return 0;
-                }
-
-                const product = this.getFormData();
-
-                if ('product' === product.meta.model_type) {
-                    return localeCompleteness.completeness.missing;
-                }
-
-                const missingAttributeCodes = localeCompleteness.missing.map(missing => missing.code);
-                const levelAttributeCodes = Object.keys(product.values);
-
-                const missingLevelAttributes = missingAttributeCodes.filter(missingAttribute =>
-                    levelAttributeCodes.includes(missingAttribute)
-                );
-
-                return missingLevelAttributes.length;
             }
         });
     }

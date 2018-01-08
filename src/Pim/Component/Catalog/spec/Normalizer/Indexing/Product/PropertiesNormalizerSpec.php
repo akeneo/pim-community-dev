@@ -4,11 +4,12 @@ namespace spec\Pim\Component\Catalog\Normalizer\Indexing\Product;
 
 use Doctrine\Common\Collections\Collection;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Entity\Group;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Model\ProductModelInterface;
 use Pim\Component\Catalog\Model\ValueCollectionInterface;
+use Pim\Component\Catalog\Model\VariantProductInterface;
 use Pim\Component\Catalog\Normalizer\Indexing\Product\ProductNormalizer;
 use Pim\Component\Catalog\Normalizer\Indexing\Product\PropertiesNormalizer;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -39,8 +40,7 @@ class PropertiesNormalizerSpec extends ObjectBehavior
         $serializer,
         ProductInterface $product,
         ValueCollectionInterface $valueCollection,
-        Collection $completenesses,
-        AttributeInterface $sku
+        Collection $completenesses
     ) {
         $product->getId()->willReturn(67);
         $family = null;
@@ -255,6 +255,92 @@ class PropertiesNormalizerSpec extends ObjectBehavior
                     ],
                 ],
                 'label'         => [],
+            ]
+        );
+    }
+
+    function it_normalizes_variant_product_updated_at_with_youngest_date_in_ancestors(
+        $serializer,
+        VariantProductInterface $product,
+        ProductModelInterface $subProductModel,
+        ProductModelInterface $rootProductModel,
+        FamilyInterface $family,
+        ValueCollectionInterface $valueCollection,
+        Collection $completenesses,
+        AttributeInterface $sku
+    ) {
+        $now = new \DateTime('now', new \DateTimeZone('UTC'));
+
+        $date1 = new \DateTime('now', new \DateTimeZone('UTC'));
+        $date1->modify('-1 day');
+
+        $date2 = new \DateTime('now', new \DateTimeZone('UTC'));
+        $date2->modify('-2 day');
+
+        $product->getUpdated()->willReturn($date2);
+        $subProductModel->getUpdated()->willReturn($date1);
+        $rootProductModel->getUpdated()->willReturn($now);
+
+        $product->getParent()->willReturn($subProductModel);
+        $subProductModel->getParent()->willReturn($rootProductModel);
+        $rootProductModel->getParent()->willReturn(null);
+
+        $serializer->normalize(
+            $now,
+            ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX
+        )->willReturn($now->format('c'));
+
+        $product->getId()->willReturn(67);
+        $product->getIdentifier()->willReturn('sku-001');
+
+        $product->getCreated()->willReturn($now);
+        $serializer->normalize(
+            $product->getWrappedObject()->getCreated(),
+            ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX
+        )->willReturn($now->format('c'));
+
+
+        $product->getFamily()->willReturn($family);
+        $family->getAttributeAsLabel()->willReturn($sku);
+        $sku->getCode()->willReturn('sku');
+
+        $serializer
+            ->normalize($family, ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX)
+            ->willReturn([
+                'code'   => 'family',
+                'labels' => [
+                    'fr_FR' => 'Une famille',
+                    'en_US' => 'A family',
+                ],
+            ]);
+        $product->isEnabled()->willReturn(true);
+        $product->getGroupCodes()->willReturn([]);
+        $product->getCategoryCodes()->willReturn([]);
+
+        $completenesses->isEmpty()->willReturn(true);
+        $product->getCompletenesses()->willReturn($completenesses);
+        $valueCollection->isEmpty()->willReturn(true);
+        $product->getValues()->willReturn($valueCollection);
+
+        $this->normalize($product, ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX)->shouldReturn(
+            [
+                'id'           => '67',
+                'identifier'   => 'sku-001',
+                'created'      => $now->format('c'),
+                'updated'      => $now->format('c'),
+                'family'       => [
+                    'code'   => 'family',
+                    'labels' => [
+                        'fr_FR' => 'Une famille',
+                        'en_US' => 'A family',
+                    ],
+                ],
+                'enabled'      => true,
+                'categories'   => [],
+                'groups'       => [],
+                'completeness' => [],
+                'values'       => [],
+                'label'        => [],
             ]
         );
     }

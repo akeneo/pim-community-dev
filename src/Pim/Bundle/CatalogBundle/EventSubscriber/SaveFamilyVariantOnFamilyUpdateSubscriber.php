@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Pim\Bundle\CatalogBundle\EventSubscriber;
 
+use Akeneo\Component\StorageUtils\Detacher\BulkObjectDetacherInterface;
 use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
 use Akeneo\Component\StorageUtils\StorageEvents;
 use Pim\Component\Catalog\Model\FamilyInterface;
@@ -26,14 +27,22 @@ class SaveFamilyVariantOnFamilyUpdateSubscriber implements EventSubscriberInterf
     /** @var BulkSaverInterface */
     private $familyVariantSaver;
 
+    /** @var BulkObjectDetacherInterface */
+    private $objectDetacher;
+
     /**
-     * @param ValidatorInterface $validator
-     * @param BulkSaverInterface $familyVariantSaver
+     * @param ValidatorInterface          $validator
+     * @param BulkSaverInterface          $familyVariantSaver
+     * @param BulkObjectDetacherInterface $objectDetacher
      */
-    public function __construct(ValidatorInterface $validator, BulkSaverInterface $familyVariantSaver)
-    {
+    public function __construct(
+        ValidatorInterface $validator,
+        BulkSaverInterface $familyVariantSaver,
+        BulkObjectDetacherInterface $objectDetacher
+    ) {
         $this->validator = $validator;
         $this->familyVariantSaver = $familyVariantSaver;
+        $this->objectDetacher = $objectDetacher;
     }
 
     /**
@@ -74,6 +83,7 @@ class SaveFamilyVariantOnFamilyUpdateSubscriber implements EventSubscriberInterf
         }
 
         $this->familyVariantSaver->saveAll($validFamilyVariants);
+        $this->objectDetacher->detachAll($validFamilyVariants);
 
         if (!empty($allViolations)) {
             $errorMessage = $this->getErrorMessage($allViolations);

@@ -6,7 +6,7 @@ namespace Pim\Component\Connector\Writer\Database;
 use Akeneo\Component\Batch\Item\ItemWriterInterface;
 use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\Batch\Step\StepExecutionAwareInterface;
-use Akeneo\Component\StorageUtils\Cache\CacheClearerInterface;
+use Akeneo\Component\StorageUtils\Cache\EntityManagerClearerInterface;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 
 /**
@@ -24,16 +24,16 @@ class ProductModelDescendantsWriter implements ItemWriterInterface, StepExecutio
     /** @var SaverInterface */
     protected $descendantsSaver;
 
-    /** @var CacheClearerInterface */
+    /** @var EntityManagerClearerInterface */
     protected $cacheClearer;
 
     /**
-     * @param SaverInterface        $descendantsSaver
-     * @param CacheClearerInterface $cacheClearer
+     * @param SaverInterface                $descendantsSaver
+     * @param EntityManagerClearerInterface $cacheClearer
      */
     public function __construct(
         SaverInterface $descendantsSaver,
-        CacheClearerInterface $cacheClearer = null
+        EntityManagerClearerInterface $cacheClearer = null
     ) {
         $this->descendantsSaver = $descendantsSaver;
         $this->cacheClearer = $cacheClearer;

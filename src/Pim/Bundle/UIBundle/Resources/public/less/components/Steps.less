@@ -7,36 +7,15 @@
   display: flex;
   justify-content: center;
   margin-top: 40px;
-  margin-bottom: -@circleSize;
 
   &-step {
     width: @width;
     text-align: center;
     text-transform: uppercase;
-    white-space: nowrap;
     font-size: @AknFontSizeSmall;
-
-    &:after {
-      display: block;
-      content: ' ';
-      border: 1px solid @AknBorderColor;
-      border-radius: 100px;
-      height: @circleSize;
-      width: @circleSize;
-      position: relative;
-      top: -60px;
-      left: (@width - @circleSize) / 2;
-      background: white;
-      color: @AknGrey;
-    }
 
     &--checked {
       color: @AknDefaultFontColor;
-
-      &:after {
-        border-color: @AknGreen;
-        background: @AknGreen url("../../images/icon-checkwhite.svg") no-repeat 50%;
-      }
     }
 
     &--undefined {
@@ -44,6 +23,26 @@
         display: none;
       }
     }
+  }
+
+  &-stepCircle {
+    display: block;
+    content: ' ';
+    border: 1px solid @AknBorderColor;
+    border-radius: 100px;
+    height: @circleSize;
+    width: @circleSize;
+    position: relative;
+    top: -38px;
+    left: (@width - @circleSize) / 2;
+    background: white;
+    color: @AknGrey;
+    margin-bottom: -@circleSize;
+  }
+
+  &-step--checked &-stepCircle {
+    border-color: @AknGreen;
+    background: @AknGreen url("../../images/icon-checkwhite.svg") no-repeat 50%;
   }
 
   &-step + &-step {

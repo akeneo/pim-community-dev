@@ -8,8 +8,8 @@ use Akeneo\Component\Batch\Job\JobInterface;
 use Akeneo\Component\Batch\Job\JobParameters;
 use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\Batch\Step\StepExecutionAwareInterface;
+use Akeneo\Component\StorageUtils\Cache\EntityManagerClearerInterface;
 use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
-use Pim\Component\Catalog\Builder\ProductBuilderInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
@@ -47,6 +47,9 @@ class ProductProcessor implements ItemProcessorInterface, StepExecutionAwareInte
     /** @var EntityWithFamilyValuesFillerInterface */
     protected $productValuesFiller;
 
+    /** @var EntityManagerClearerInterface */
+    protected $cacheClearer;
+
     /**
      * @param NormalizerInterface                   $normalizer
      * @param ChannelRepositoryInterface            $channelRepository
@@ -54,6 +57,7 @@ class ProductProcessor implements ItemProcessorInterface, StepExecutionAwareInte
      * @param ObjectDetacherInterface               $detacher
      * @param BulkMediaFetcher                      $mediaFetcher
      * @param EntityWithFamilyValuesFillerInterface $productValuesFiller
+     * @param EntityManagerClearerInterface         $cacheClearer
      */
     public function __construct(
         NormalizerInterface $normalizer,
@@ -61,7 +65,8 @@ class ProductProcessor implements ItemProcessorInterface, StepExecutionAwareInte
         AttributeRepositoryInterface $attributeRepository,
         ObjectDetacherInterface $detacher,
         BulkMediaFetcher $mediaFetcher,
-        EntityWithFamilyValuesFillerInterface $productValuesFiller
+        EntityWithFamilyValuesFillerInterface $productValuesFiller,
+        EntityManagerClearerInterface $cacheClearer = null
     ) {
         $this->normalizer = $normalizer;
         $this->detacher = $detacher;
@@ -69,6 +74,7 @@ class ProductProcessor implements ItemProcessorInterface, StepExecutionAwareInte
         $this->attributeRepository = $attributeRepository;
         $this->mediaFetcher = $mediaFetcher;
         $this->productValuesFiller = $productValuesFiller;
+        $this->cacheClearer = $cacheClearer;
     }
 
     /**
@@ -110,7 +116,12 @@ class ProductProcessor implements ItemProcessorInterface, StepExecutionAwareInte
             );
         }
 
-        $this->detacher->detach($product);
+        if (null !== $this->cacheClearer) {
+            $this->cacheClearer->clear();
+        } else {
+            // TODO Remove $this->detacher, the upper condition and update the constructor on merge to master
+            $this->detacher->detach($product);
+        }
 
         return $productStandard;
     }

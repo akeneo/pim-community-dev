@@ -210,7 +210,7 @@ class ProductModelNormalizerSpec extends ObjectBehavior
                     'image'          => $fileNormalized,
                     'variant_navigation' => ['NAVIGATION NORMALIZED'],
                     'ascendant_category_ids' => [42],
-                    'completenesses' => ['kind of completenesses data normalized here'],
+                    'required_missing_attributes' => ['kind of completenesses data normalized here'],
                     'level'          => 0,
                     'label'          => [
                         'en_US' => 'Tshirt blue',
@@ -351,7 +351,7 @@ class ProductModelNormalizerSpec extends ObjectBehavior
                     'image'          => null,
                     'variant_navigation' => ['NAVIGATION NORMALIZED'],
                     'ascendant_category_ids' => [42],
-                    'completenesses' => ['kind of completenesses data normalized here'],
+                    'required_missing_attributes' => ['kind of completenesses data normalized here'],
                     'level'          => 0,
                     'label'          => [
                         'en_US' => 'Tshirt blue',
@@ -505,7 +505,7 @@ class ProductModelNormalizerSpec extends ObjectBehavior
                     'image'          => $fileNormalized,
                     'variant_navigation' => ['NAVIGATION NORMALIZED'],
                     'ascendant_category_ids' => [42],
-                    'completenesses' => ['kind of completenesses data normalized here'],
+                    'required_missing_attributes' => ['kind of completenesses data normalized here'],
                     'level'          => 0,
                     'label'          => [
                         'en_US' => 'Tshirt blue',

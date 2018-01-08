@@ -31,15 +31,25 @@ class PimCatalogCompletenessIntegration extends AbstractPimCatalogTestCase
     {
         $query = [
             'query' => [
-                'bool' => [
-                    'should' => [
-                        ['term' => ['completeness.ecommerce.en_US' => 100]],
-                        ['term' => ['at_least_complete.ecommerce.en_US' => 1]],
-                    ],
-                ],
+                'constant_score' => [
+                    'filter' => [
+                        'bool' => [
+                            'filter' => [
+                                [
+                                    'bool' => [
+                                        'should' => [
+                                            ['term' => ['completeness.ecommerce.en_US' => 100]],
+                                            ['term' => ['at_least_complete.ecommerce.en_US' => 1]],
+                                        ],
+                                        'minimum_should_match' => 1,
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ]
+                ]
             ],
         ];
-
 
         $result = $this->getSearchQueryResults($query);
 
@@ -50,15 +60,25 @@ class PimCatalogCompletenessIntegration extends AbstractPimCatalogTestCase
     {
         $query = [
             'query' => [
-                'bool' => [
-                    'should' => [
-                        ['range' => ['completeness.ecommerce.fr_FR' => ['lt' => 100]]],
-                        ['term' => ['at_least_incomplete.ecommerce.fr_FR' => 1]],
-                    ],
-                ],
+                'constant_score' => [
+                    'filter' => [
+                        'bool' => [
+                            'filter' => [
+                                [
+                                    'bool' => [
+                                        'should' => [
+                                            ['range' => ['completeness.ecommerce.fr_FR' => ['lt' => 100]]],
+                                            ['term' => ['at_least_incomplete.ecommerce.fr_FR' => 1]],
+                                        ],
+                                        'minimum_should_match' => 1,
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ]
+                ]
             ],
         ];
-
 
         $result = $this->getSearchQueryResults($query);
 

@@ -52,7 +52,7 @@ Feature: Edit a user groups and roles
   Scenario: Assign a group to a user from the group page
     Given I edit the "Redactor" user group
     And I visit the "Users" tab
-    When I click on the "Peter" row
+    When I check the rows "Peter"
     And I save the group
     And I visit the "Users" tab
     Then the row "Peter" should be checked
@@ -60,7 +60,7 @@ Feature: Edit a user groups and roles
   Scenario: Assign a role to a user from the role page
     Given I edit the "Catalog manager" role
     And I visit the "Users" tab
-    When I click on the "Peter" row
+    When I check the rows "Peter"
     And I save the role
     Then the row "Peter" should be checked
 

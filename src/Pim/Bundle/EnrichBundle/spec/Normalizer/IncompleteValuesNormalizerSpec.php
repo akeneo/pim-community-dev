@@ -3,8 +3,8 @@
 namespace spec\Pim\Bundle\EnrichBundle\Normalizer;
 
 use Doctrine\Common\Collections\Collection;
-use Pim\Bundle\EnrichBundle\Normalizer\ProductModelIncompleteValuesNormalizer;
 use PhpSpec\ObjectBehavior;
+use Pim\Bundle\EnrichBundle\Normalizer\IncompleteValuesNormalizer;
 use Pim\Component\Catalog\EntityWithFamily\IncompleteValueCollection;
 use Pim\Component\Catalog\EntityWithFamily\IncompleteValueCollectionFactory;
 use Pim\Component\Catalog\EntityWithFamily\RequiredValueCollection;
@@ -12,15 +12,15 @@ use Pim\Component\Catalog\EntityWithFamily\RequiredValueCollectionFactory;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\AttributeRequirementInterface;
 use Pim\Component\Catalog\Model\AttributeTranslationInterface;
+use Pim\Component\Catalog\Model\CategoryInterface;
 use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\ChannelTranslationInterface;
+use Pim\Component\Catalog\Model\EntityWithFamilyInterface;
 use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Component\Catalog\Model\LocaleInterface;
-use Pim\Component\Catalog\Model\ProductInterface;
-use Pim\Component\Catalog\Model\ProductModelInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
-class ProductModelIncompleteValuesNormalizerSpec extends ObjectBehavior
+class IncompleteValuesNormalizerSpec extends ObjectBehavior
 {
     function let(
         NormalizerInterface $normalizer,
@@ -32,20 +32,20 @@ class ProductModelIncompleteValuesNormalizerSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType(ProductModelIncompleteValuesNormalizer::class);
+        $this->shouldHaveType(IncompleteValuesNormalizer::class);
     }
 
-    function it_supports_product_model(ProductModelInterface $productModel, ProductInterface $product)
+    function it_supports_entity_with_family(EntityWithFamilyInterface $entityWithFamily, CategoryInterface $category)
     {
-        $this->supportsNormalization($productModel, 'internal_api')->shouldReturn(true);
-        $this->supportsNormalization($productModel, 'unsupported')->shouldReturn(false);
-        $this->supportsNormalization($product, 'internal_api')->shouldReturn(false);
+        $this->supportsNormalization($entityWithFamily, 'internal_api')->shouldReturn(true);
+        $this->supportsNormalization($entityWithFamily, 'unsupported')->shouldReturn(false);
+        $this->supportsNormalization($category, 'internal_api')->shouldReturn(false);
     }
 
-    function it_normalizes_the_incomplete_values_of_a_product_model(
+    function it_normalizes_the_incomplete_values_of_an_entity_with_family(
         $requiredValueCollectionFactory,
         $incompleteValueCollectionFactory,
-        ProductModelInterface $productModel,
+        EntityWithFamilyInterface $entityWithFamily,
         AttributeRequirementInterface $attributeRequirement,
         FamilyInterface $family,
         ChannelInterface $channel,
@@ -61,7 +61,7 @@ class ProductModelIncompleteValuesNormalizerSpec extends ObjectBehavior
         AttributeTranslationInterface $attributeTranslation
     ) {
 
-        $productModel->getFamily()->willReturn($family);
+        $entityWithFamily->getFamily()->willReturn($family);
         $family->getAttributeRequirements()->willReturn([$attributeRequirement]);
         $attributeRequirement->getChannel()->willReturn($channel);
         $attributeRequirement->isRequired()->willReturn(true);
@@ -88,6 +88,7 @@ class ProductModelIncompleteValuesNormalizerSpec extends ObjectBehavior
         $attributes->getIterator()->willReturn($attributesIterator);
         $attribute->getCode()->willReturn('description');
         $attribute->getTranslation('en_US')->willReturn($attributeTranslation);
+        $attribute->isLocalizable()->willReturn(false);
 
         $requiredValueCollectionFactory->forChannel($family, $channel)->willReturn($requiredValues);
         $requiredValues->filterByChannelAndLocale($channel, $locale)->willReturn($requiredValues);
@@ -97,13 +98,13 @@ class ProductModelIncompleteValuesNormalizerSpec extends ObjectBehavior
             $requiredValues,
             $channel,
             $locale,
-            $productModel
+            $entityWithFamily
         )->willReturn($incompleteValues);
 
         $incompleteValues->attributes()->willReturn($attributes);
         $incompleteValues->count()->willReturn(1);
 
-        $this->normalize($productModel, 'internal_api')->shouldReturn(
+        $this->normalize($entityWithFamily, 'internal_api')->shouldReturn(
             [
                 [
                     'channel' => 'ecommerce',
@@ -112,20 +113,13 @@ class ProductModelIncompleteValuesNormalizerSpec extends ObjectBehavior
                     ],
                     'locales' => [
                         'en_US' => [
-                            'completeness' => [
-                                'required' => 1,
-                                'missing'  => 1,
-                                'ratio'    => null,
-                                'locale'   => 'en_US',
-                                'channel'  => 'ecommerce',
-                            ],
-                            'missing'      => [
+                            'missing' => [
                                 [
-                                    'code'   => 'description',
+                                    'code' => 'description',
                                     'labels' => ['en_US' => 'Description'],
                                 ],
                             ],
-                            'label'        => 'English (United States)',
+                            'label' => 'English (United States)',
                         ],
                     ],
                 ]
@@ -133,10 +127,10 @@ class ProductModelIncompleteValuesNormalizerSpec extends ObjectBehavior
         );
     }
 
-    function it_returns_an_empty_array_when_the_product_model_has_no_family(ProductModelInterface $productModel)
+    function it_returns_an_empty_array_when_the_entity_with_family_has_no_family(EntityWithFamilyInterface $entityWithFamily)
     {
-        $productModel->getFamily()->willReturn(null);
+        $entityWithFamily->getFamily()->willReturn(null);
 
-        $this->normalize($productModel, 'internal_api')->shouldReturn([]);
+        $this->normalize($entityWithFamily, 'internal_api')->shouldReturn([]);
     }
 }

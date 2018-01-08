@@ -181,7 +181,7 @@ services:
             - '@pim_catalog.factory.product_model'
             - '@pim_catalog.saver.product_model'
             - '@router'
-            - '@validator'
+            - '@pim_catalog.validator.product_model'
             - '@pim_connector.processor.attribute_filter.product_model'
             - '@pim_catalog.repository.product_model'
             - '@pim_api.stream.product_model_partial_update_stream'
@@ -209,6 +209,9 @@ services:
             - '@akeneo_file_storage.file_storage.file.file_storer'
             - '@akeneo_file_storage.remover.file'
             - '@router'
+            - '@pim_catalog.repository.product_model'
+            - '@pim_api.updater.product_model'
+            - '@pim_catalog.saver.product_model'
             - '%pim_api.configuration%'
 
     pim_api.controller.currency:

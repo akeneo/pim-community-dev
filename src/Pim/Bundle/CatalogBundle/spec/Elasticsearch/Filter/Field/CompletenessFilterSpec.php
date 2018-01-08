@@ -52,10 +52,15 @@ class CompletenessFilterSpec extends ObjectBehavior
 
     function it_adds_a_complete_filter($sqb)
     {
-        $sqb->addShould(
+        $sqb->addFilter(
             [
-                ['term' => ['completeness.ecommerce.en_US' => 100]],
-                ['term' => ['at_least_complete.ecommerce.en_US' => 1]],
+                'bool' => [
+                    'should' => [
+                        ['term' => ['completeness.ecommerce.en_US' => 100]],
+                        ['term' => ['at_least_complete.ecommerce.en_US' => 1]],
+                    ],
+                    'minimum_should_match' => 1,
+                ],
             ]
         )->shouldBeCalled();
 
@@ -65,10 +70,15 @@ class CompletenessFilterSpec extends ObjectBehavior
 
     function it_adds_a_incomplete_filter($sqb)
     {
-        $sqb->addShould(
+        $sqb->addFilter(
             [
-                ['range' => ['completeness.ecommerce.fr_FR' => ['lt' => 100]]],
-                ['term' => ['at_least_incomplete.ecommerce.fr_FR' => 1]],
+                'bool' => [
+                    'should' => [
+                        ['range' => ['completeness.ecommerce.fr_FR' => ['lt' => 100]]],
+                        ['term' => ['at_least_incomplete.ecommerce.fr_FR' => 1]],
+                    ],
+                    'minimum_should_match' => 1,
+                ],
             ]
         )->shouldBeCalled();
 
