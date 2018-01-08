@@ -197,11 +197,7 @@ class ProductNormalizer implements NormalizerInterface
 
         $scopeCode = $context['channel'] ?? null;
 
-        $incompleteValues = [];
-        // TODO: remove this check on master
-        if (null !== $this->incompleteValuesNormalizer) {
-            $incompleteValues = $this->incompleteValuesNormalizer->normalize($product);
-        }
+        $incompleteValues = $this->incompleteValuesNormalizer->normalize($product);
 
         $normalizedProduct['meta'] = [
             'form'              => $this->formProvider->getForm($product),
