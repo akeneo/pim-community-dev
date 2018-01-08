@@ -6,6 +6,7 @@
 - PIM-7086: Fix enable loading message in system configuration
 - API-567: Fix validation of product-models on API
 - PIM-7085: Fix translation missing
+- PIM-6965: Show short view|project name in the grid
 
 # 2.0.11 (2018-01-05)
 
