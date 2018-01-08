@@ -27,13 +27,13 @@ Feature: Sort products
   @jira https://akeneo.atlassian.net/browse/PIM-7041
   Scenario: Sort a simple-select reference data attribute with the same name than its reference data
     Given the "default" catalog configuration
-    And the following attribute:
-      | code  | label | type                        | reference_data_name | useable_as_grid_filter |
-      | color | Color | reference_data_simpleselect | color               | yes                    |
+    And the following attributes:
+      | code  |  label-en_US  | type                            | reference_data_name | useable_as_grid_filter | group |
+      | color |  Color        | pim_reference_data_simpleselect | color               | yes                    | other |
     And the following "color" attribute reference data: Red, Blue and Green
     And the following family:
       | code     | requirements-mobile | requirements-ecommerce |
-      | whatever | sku, color          | sku, color             |
+      | whatever | sku                 | sku                    |
     And the following products:
       | sku      | family   |
       | productA | whatever |
