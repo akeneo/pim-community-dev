@@ -1,10 +1,18 @@
-# 2.0.x
+# 2.0.11 (2018-01-05)
+
+# 2.0.10 (2017-12-22)
 
 ## Bug fixes
 
 - PIM-6972: Fix drop zone on the asset creation modal
 - PIM-7005: Fix code validation on asset creation modal
 - PIM-6912: Fix missing translations on Enterprise Edition jobs
+- PIM-6947: Fix asset mass edit of categories
+
+## BC breaks
+
+- PIM-6947: Adds an interface method `findRoot()` to `PimEnterprise\Component\ProductAsset\Repository\AssetCategoryRepositoryInterface`
+
 
 # 2.0.9 (2017-12-15)
 

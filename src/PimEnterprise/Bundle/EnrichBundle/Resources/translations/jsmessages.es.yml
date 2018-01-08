@@ -178,7 +178,6 @@ pimee_enrich:
           description: Los productos serán despublicados
           warning: Los {{ itemsCount }} productos seleccionados serán quitados de la publicación.
     asset:
-      title: Activos / Edición en masa ({{ itemsCount }} activos)
       step:
         select:
           label: Elegir recurso
@@ -193,7 +192,6 @@ pimee_enrich:
           field: Etiquetas
         add_to_category:
           label: Clasificar los activos en categorías
-          description: Los activos serán colocados en las siguientes categorías, las categorías actuales serán conservadas.
           field: Categorías
 pim_menu:
   tab:

@@ -181,7 +181,6 @@ pimee_enrich:
           description: Tuotteen julkaisu perutaan
           warning: '{{ itemsCount }} valitun tuotteen julkaisu perutaan.'
     asset:
-      title: Assetti / Massamuokkaus ({{ itemsCount }} assettia)
       step:
         select:
           label: Valitse assetit
@@ -199,7 +198,6 @@ pimee_enrich:
           field: Tunnisteet
         add_to_category:
           label: Luokittele assetit kategorioihin
-          description: Assetit liitetään seuraaviin kategorioihin. Olemassa olevat liitokset säilytetään.
           field: Kategoriat
 pim_menu:
   tab:

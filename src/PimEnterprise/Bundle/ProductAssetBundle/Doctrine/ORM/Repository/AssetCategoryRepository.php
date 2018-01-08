@@ -81,4 +81,20 @@ class AssetCategoryRepository extends AbstractItemCategoryRepository implements
 
         return $qb->getQuery()->getOneOrNullResult();
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function findRoot()
+    {
+        $fakeItem = new $this->entityName();
+        $mapping = $this->getMappingConfig($fakeItem);
+
+        $qb = $this->em->createQueryBuilder()
+            ->select('c')
+            ->from($mapping['categoryClass'], 'c', 'c.id')
+            ->where('c.parent IS NULL');
+
+        return $qb->getQuery()->getResult();
+    }
 }

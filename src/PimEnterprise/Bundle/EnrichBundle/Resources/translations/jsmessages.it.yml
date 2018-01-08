@@ -179,7 +179,6 @@ pimee_enrich:
           description: I prodotti saranno ritirati
           warning: I {{ itemsCount }} prodotti selezionati saranno ritirati.
     asset:
-      title: Asset / Modifica di Massa ({{ itemsCount }} asset)
       step:
         select:
           label: Scegli gli asset
@@ -197,7 +196,6 @@ pimee_enrich:
           field: Tag
         add_to_category:
           label: Classificare gli asset in categorie
-          description: Gli asset saranno posizionati nelle seguenti categorie, il posizionamento attuale sarà mantenuto.
           field: Categorie
 pim_menu:
   tab:

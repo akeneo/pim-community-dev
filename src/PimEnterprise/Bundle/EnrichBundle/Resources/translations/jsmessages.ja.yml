@@ -181,7 +181,6 @@ pimee_enrich:
           description: この製品は未公開予定
           warning: 選択した {{ itemsCount }} の製品を未公開予定です。
     asset:
-      title: アセット/一括編集 ({{ itemsCount }} アセット)
       step:
         select:
           label: アセットを選択する
@@ -199,7 +198,6 @@ pimee_enrich:
           field: タグ
         add_to_category:
           label: アセットをカテゴリに分類
-          description: アセットは以下のカテゴリに配置されます、既存の表示順が保持されます。
           field: カテゴリ
 pim_menu:
   tab:
