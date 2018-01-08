@@ -1,3 +1,9 @@
+# 2.1.x
+
+## Bug fixes
+
+- PIM-7066: Fix permissions problems on required missing attributes
+
 # 2.1.0 (2017-12-21)
 
 ## Web API

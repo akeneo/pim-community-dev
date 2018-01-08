@@ -29,6 +29,7 @@ xlsx_catalog_modeling_product_model_import;All;All;
 csv_catalog_modeling_product_import;All;All;
 xlsx_catalog_modeling_product_import;All;All;
 csv_summer_2016_shoes_products_export;All;All;
+csv_catalog_modeling_product_export;All;All;
 xlsx_summer_2016_shoes_products_export;All;All;
 compute_product_models_descendants;All;All;
 compute_completeness_of_products_family;All;All;

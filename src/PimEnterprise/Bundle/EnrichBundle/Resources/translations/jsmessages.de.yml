@@ -179,7 +179,6 @@ pimee_enrich:
           description: Die Veröffentlichung der Produkte wird entzogen
           warning: '{{ itemsCount }} Produkten wird die Veröffentlichung entzogen.'
     asset:
-      title: Asset / Massenbearbeitung ({{ itemsCount }} Assets)
       step:
         select:
           label: Asset auswählen
@@ -196,7 +195,6 @@ pimee_enrich:
           field: Stichworte
         add_to_category:
           label: Zuordnung von Assets in Kategorien
-          description: Die Assets werden folgenden Kategorien zugeordnet, die bestehende Zuordnung bleibt erhalten.
           field: Kategorien
 pim_menu:
   tab:

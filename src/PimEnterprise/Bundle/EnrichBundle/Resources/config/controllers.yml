@@ -3,6 +3,7 @@ parameters:
     pim_enrich.controller.product.class:                    PimEnterprise\Bundle\EnrichBundle\Controller\ProductController
     pim_enrich.controller.product_model.class:              PimEnterprise\Bundle\EnrichBundle\Controller\ProductModelController
     pim_enrich.controller.locale.class:                     PimEnterprise\Bundle\EnrichBundle\Controller\LocaleController
+    pimee_enrich.controller.rest.asset_category.class:      PimEnterprise\Bundle\EnrichBundle\Controller\Rest\AssetCategoryController
     pimee_enrich.controller.rule_relation.class:            PimEnterprise\Bundle\EnrichBundle\Controller\RuleRelationController
     pimee_enrich.controller.channel.class:                  PimEnterprise\Bundle\EnrichBundle\Controller\Rest\ChannelController
 
@@ -55,6 +56,7 @@ services:
             - '@pim_enrich.converter.enrich_to_standard.product_value'
             - '@pim_enrich.normalizer.product_violation'
             - '@pim_catalog.builder.variant_product'
+
 
     pimee_enrich.controller.rule_relation:
         class: '%pimee_enrich.controller.rule_relation.class%'
@@ -133,6 +135,8 @@ services:
             - '@pim_user.context.user'
             - '@pim_catalog.localization.localizer.number'
             - '@pim_enrich.normalizer.attribute'
+            - '@translator'
+            - '@pim_catalog.doctrine.query.attribute_is_an_family_variant_axis'
 
     pim_enrich.controller.rest.job_instance:
         class: '%pim_enrich.controller.rest.job_instance.class%'
@@ -156,3 +160,9 @@ services:
             - '@event_dispatcher'
             - '@pim_catalog.filter.chained'
             - '%upload_tmp_dir%'
+
+    pimee_enrich.controller.rest.asset_category:
+        class: '%pimee_enrich.controller.rest.asset_category.class%'
+        arguments:
+            - '@pimee_product_asset.repository.asset_category'
+            - '@pim_internal_api_serializer'
