@@ -130,6 +130,7 @@ class OnlyExpectedAttributesValidatorSpec extends ObjectBehavior
             )
             ->willReturn($violation);
 
+        $violation->atPath('attribute')->willReturn($violation)->shouldBeCalledTimes(2);
         $violation->addViolation()->shouldBeCalledTimes(2);
 
         $this->validate($entity, $constraint);

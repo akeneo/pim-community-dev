@@ -59,7 +59,7 @@ class CollectionNormalizerSpec extends ObjectBehavior
         $this->normalize($collection, null, ['field_name' => 'even'])->shouldReturn(['even' => 'Four,Eight,Fifteen']);
     }
 
-    function it_concatenate_normalized_elements_using_the_same_key(
+    function it_concatenates_normalized_elements_using_the_same_key(
         $serializer,
         Collection $collection
     ) {
@@ -71,7 +71,7 @@ class CollectionNormalizerSpec extends ObjectBehavior
         $this->normalize($collection, null, ['field_name' => 'even'])->shouldReturn(['even' => 'Four,Eight,Fifteen']);
     }
 
-    function its_normalize_method_throw_exception_when_required_field_name_key_is_not_passed(
+    function it_normalizes_method_throw_exception_when_required_field_name_key_is_not_passed(
         $serializer,
         Collection $collection
     ) {
@@ -83,5 +83,21 @@ class CollectionNormalizerSpec extends ObjectBehavior
         $this
             ->shouldThrow(new InvalidArgumentException('Missing required "field_name" context value, got "foo"'))
             ->duringNormalize($collection, null, ['foo' => 'bar']);
+    }
+
+    function it_normalizes_attribute_with_numeric_code(
+        $serializer,
+        Collection $collection
+    ) {
+        $collection->getIterator()->willReturn(new \ArrayIterator([4, 8, 15]));
+        $serializer->normalize(4, null, ['field_name' => 98796])->willReturn([98796 => 'Four']);
+        $serializer->normalize(8, null, ['field_name' => 98796])->willReturn([12345 => 'Eight']);
+        $serializer->normalize(15, null, ['field_name' => 98796])->willReturn([78901 => 'Fifteen']);
+
+        $this->normalize($collection, null, ['field_name' => 98796])->shouldReturn([
+            98796 => 'Four',
+            12345 => 'Eight',
+            78901 => 'Fifteen',
+        ]);
     }
 }

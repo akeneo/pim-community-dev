@@ -694,11 +694,19 @@
         const gap = 30;
         const outerWidth = $parent.find('.AknDropdown-menu').outerWidth();
         const outerHeight = $parent.find('.AknDropdown-menuLink').length * 26 + 44;
-        if (outerHeight + $parent.offset().top + gap > $('body').height()) {
-            $parent.addClass('top');
-        } else {
-            $parent.removeClass('top');
+        const bodyHeight = $('body').height();
+
+        // Lists have a max height of 70vh
+        const maxHeight = bodyHeight * 0.7;
+        const parentOffset = $parent.offset().top;
+        const boundedHeight = Math.min(outerHeight, maxHeight);
+        const isScrollable = outerHeight > maxHeight;
+        const listIsLongerThanPage = (boundedHeight + parentOffset + gap) > bodyHeight;
+
+        if (false === isScrollable && listIsLongerThanPage) {
+          $parent.toggleClass('top', listIsLongerThanPage);
         }
+
         if (outerWidth + $parent.offset().left + gap > $('body').width()) {
             $parent.addClass('left');
         } else {

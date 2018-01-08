@@ -11,6 +11,7 @@ oro.grid.mass_action.error_content: Cannot perform mass action
 oro.grid.mass_action.delete.label: Delete
 oro.grid.mass_action.delete.confirm_title: Mass Delete Confirmation
 oro.grid.mass_action.delete.confirm_content: Are you sure you want to do delete selected items?
+oro.grid.mass_action.delete.item_limit: You cannot mass delete more than %limit% products (%count% selected)
 oro.grid.datagrid.page_size.all: All
 oro.grid.mass_action.delete.success_message: "{0} No entities were removed|{1} One entity was removed|]1,Inf[ %count% entities were removed"
 

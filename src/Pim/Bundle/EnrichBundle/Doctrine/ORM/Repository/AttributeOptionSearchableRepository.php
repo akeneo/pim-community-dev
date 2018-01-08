@@ -69,7 +69,7 @@ class AttributeOptionSearchableRepository implements SearchableRepositoryInterfa
         } else {
             $qb
                 ->leftJoin('o.optionValues', 'v')
-                ->orderBy('o.sortOrder');
+                ->orderBy('o.sortOrder, o.code');
         }
 
         if ($search) {

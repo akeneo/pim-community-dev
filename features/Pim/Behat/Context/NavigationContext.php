@@ -162,8 +162,8 @@ class NavigationContext extends PimContext implements PageObjectAware
     {
         $page = $this->getPageMapping()[$pageName];
 
+        $this->openPage($page, $options);
         $this->spin(function () use ($page, $options) {
-            $this->openPage($page, $options);
             $expectedFullUrl = $this->getCurrentPage()->getUrl();
             $actualFullUrl = $this->getSession()->getCurrentUrl();
             $expectedUrl = $this->sanitizeUrl($expectedFullUrl);

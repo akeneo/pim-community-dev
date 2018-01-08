@@ -759,6 +759,55 @@ JSON;
         $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
     }
 
+    public function testCreateRootProductModelWithErrorOnFileExtension()
+    {
+        $client = $this->createAuthenticatedClient();
+
+        $pdfPath = $this->getFixturePath('akeneo.jpg');
+
+        $data =
+<<<JSON
+    {
+        "code": "root_product_model",
+        "family_variant": "familyVariantA1",
+        "values": {
+            "a_file":[
+                {
+                    "locale":null,
+                    "scope":null,
+                    "data": "$pdfPath"
+                }
+            ]
+        }
+    }
+JSON;
+
+        $expectedContent =
+<<<JSON
+    {
+        "code": 422,
+        "message": "Validation failed.",
+        "errors": [
+            {
+                "property": "values",
+                "message": "The file extension is not allowed (allowed extensions: pdf, doc, docx, txt).",
+                "attribute": "a_file",
+                "locale": null,
+                "scope": null
+            }
+        ]
+    }
+JSON;
+
+
+        $client->request('POST', 'api/rest/v1/product-models', [], [], [], $data);
+
+        $response = $client->getResponse();
+
+        $this->assertJsonStringEqualsJsonString($expectedContent, $response->getContent());
+        $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
+    }
+
     /**
      * @param array  $expectedProductModel normalized data of the product model that should be created
      * @param string $identifier           identifier of the product that should be created

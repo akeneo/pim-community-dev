@@ -46,7 +46,7 @@ class AttributeOptionRepository extends EntityRepository implements
             ->leftJoin('o.optionValues', 'v', 'WITH', 'v.locale=:locale')
             ->leftJoin('o.attribute', 'a')
             ->where('o.attribute=:attribute')
-            ->orderBy('o.sortOrder')
+            ->orderBy('o.sortOrder, o.code')
             ->setParameter('locale', $dataLocale)
             ->setParameter('attribute', $collectionId);
         if ($search) {
