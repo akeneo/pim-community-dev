@@ -19,6 +19,7 @@ class SecondaryActionsContext extends PimContext
         $this->spin(function () use ($actionName) {
             $module = $this->getElementOnCurrentPage('Secondary actions');
             $module->open();
+            sleep(1);
 
             return $module->getMenuItem($actionName);
         }, sprintf('Could not find the secondary action "%s"', $actionName))->click();

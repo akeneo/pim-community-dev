@@ -5,6 +5,7 @@ namespace spec\Pim\Component\Api\Normalizer\Exception;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Api\Exception\ViolationHttpException;
 use Pim\Component\Catalog\Model\AttributeInterface;
+use Pim\Component\Catalog\Model\EntityWithValuesInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ValueCollectionInterface;
 use Pim\Component\Catalog\Model\ValueInterface;
@@ -37,7 +38,7 @@ class ViolationNormalizerSpec extends ObjectBehavior
         ViolationHttpException $exception,
         ConstraintViolationList $constraintViolations,
         ConstraintViolation $violation,
-        ProductInterface $product,
+        EntityWithValuesInterface $product,
         \ArrayIterator $iterator,
         ValueCollectionInterface $values,
         ValueInterface $identifier,
@@ -84,7 +85,7 @@ class ViolationNormalizerSpec extends ObjectBehavior
         ViolationHttpException $exception,
         ConstraintViolationList $constraintViolations,
         ConstraintViolation $violationProductValue,
-        ProductInterface $product,
+        EntityWithValuesInterface $product,
         \ArrayIterator $iterator,
         ValueCollectionInterface $productValues,
         ValueInterface $sku,
@@ -140,7 +141,7 @@ class ViolationNormalizerSpec extends ObjectBehavior
         ConstraintViolationList $constraintViolations,
         ConstraintViolation $violationIdentifier,
         ConstraintViolation $violationProductValue,
-        ProductInterface $product,
+        EntityWithValuesInterface $product,
         \ArrayIterator $iterator,
         ValueCollectionInterface $productValues,
         ValueInterface $sku,
@@ -201,7 +202,7 @@ class ViolationNormalizerSpec extends ObjectBehavior
         ViolationHttpException $exception,
         ConstraintViolationList $constraintViolations,
         ConstraintViolation $violation,
-        ProductInterface $product,
+        EntityWithValuesInterface $product,
         \ArrayIterator $iterator,
         ValueCollectionInterface $productValues,
         ValueInterface $description,

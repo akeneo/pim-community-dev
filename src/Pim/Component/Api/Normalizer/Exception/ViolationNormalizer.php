@@ -6,7 +6,7 @@ use Doctrine\Common\Inflector\Inflector;
 use Pim\Component\Api\Exception\ViolationHttpException;
 use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Model\ChannelInterface;
-use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Model\EntityWithValuesInterface;
 use Pim\Component\Catalog\Validator\Constraints\UniqueValue;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Validator\ConstraintViolationInterface;
@@ -78,7 +78,7 @@ class ViolationNormalizer implements NormalizerInterface
             $propertyPath = $violation->getPropertyPath();
             $violationMessage = $violation->getMessageTemplate();
 
-            if ($violation->getRoot() instanceof ProductInterface &&
+            if ($violation->getRoot() instanceof EntityWithValuesInterface &&
                 1 === preg_match(
                     '|^values\[(?P<attribute>[a-z0-9-_\<\>]+)|i',
                     $violation->getPropertyPath(),

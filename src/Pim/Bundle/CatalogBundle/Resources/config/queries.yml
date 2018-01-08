@@ -2,6 +2,7 @@ parameters:
     pim_catalog.doctrine.query.find_variant_product_completeness.class: 'Pim\Bundle\CatalogBundle\Doctrine\ORM\Query\VariantProductRatio'
     pim_catalog.doctrine.query.complete_filter.class: 'Pim\Bundle\CatalogBundle\Doctrine\ORM\Query\CompleteFilter'
     pim_catalog.doctrine.query.convert_product_to_variant_product.class: 'Pim\Bundle\CatalogBundle\Doctrine\ORM\Query\ConvertProductToVariantProduct'
+    pim_catalog.doctrine.query.attribute_is_an_family_variant_axis.class: 'Pim\Bundle\CatalogBundle\Doctrine\ORM\Query\AttributeIsAFamilyVariantAxis'
 
 services:
     pim_catalog.doctrine.query.find_variant_product_completeness:
@@ -16,5 +17,10 @@ services:
 
     pim_catalog.doctrine.query.convert_product_to_variant_product:
         class: '%pim_catalog.doctrine.query.convert_product_to_variant_product.class%'
+        arguments:
+            - '@doctrine.orm.entity_manager'
+
+    pim_catalog.doctrine.query.attribute_is_an_family_variant_axis:
+        class: '%pim_catalog.doctrine.query.attribute_is_an_family_variant_axis.class%'
         arguments:
             - '@doctrine.orm.entity_manager'

@@ -5,6 +5,8 @@ pim_connector:
     entity_reader.title: Kohteen poisto
     csv_reader:
       title: CSV-lukija
+    file_reader:
+      invalid_item_columns_count: 'Odotettiin %totalColumnsCount% saraketta, mutta havaittiin %itemColumnsCount% tiedostossa %filePath%:%lineno%'
     csv_product_reader.title: CSV-tuotteen lukija
     csv_category_reader.title: CSV-kategorian lukija
     dummy_processor.title: Malliprosessori
@@ -60,8 +62,8 @@ batch_jobs:
     label: Attribuutin vaihtoehtojen vienti CSV-muodossa
     export.label: Attribuutin vaihtoehtojen vienti
   csv_association_type_export:
-    label: Liitännäistyyppien vienti CSV-muodossa
-    export.label: Liitännäistyyppien vienti
+    label: Assosiaatiotyyppien vienti CSV-muodossa
+    export.label: Assosiaatiotyyppien vienti
   csv_group_export:
     label: Ryhmän vienti CSV-muodossa
     export.label: Ryhmän vienti
@@ -75,7 +77,7 @@ batch_jobs:
     label: Tuotteiden tuonti CSV-muodossa
     validation.label: Tiedostojen tarkistaminen
     import.label: Tuotteiden tuonti
-    import_associations.label: Liitännäisten tuonti
+    import_associations.label: Assosiaatioiden tuonti
   csv_product_model_import:
     label: Tuotemallien tuonti CSV-muodossa
     validation.label: Tiedostojen tarkistaminen
@@ -95,9 +97,9 @@ batch_jobs:
     validation.label: Tiedostojen tarkistaminen
     import.label: Attribuuttien vaihtoehtojen tuonti
   csv_association_type_import:
-    label: Liitännäistyyppien tuonti CSV-muodossa
+    label: Assosiaatiotyyppien tuonti CSV-muodossa
     validation.label: Tiedostojen tarkistaminen
-    import.label: Liitännäistyyppien tuonti
+    import.label: Assosiaatiotyyppien tuonti
   csv_family_import:
     label: Ryhmän tuonti CSV-tiedostona
     validation.label: Tiedostojen tarkistaminen
@@ -150,9 +152,9 @@ batch_jobs:
     validation.label: Tiedostojen tarkistaminen
     import.label: Kategorioiden tuonti
   xlsx_association_type_import:
-    label: Liitännäistyyppien tuonti CSV-muodossa
+    label: Assosiaatiotyyppien tuonti XLSX-muodossa
     validation.label: Tiedostojen tarkistaminen
-    import.label: Liitännäistyyppien tuonti
+    import.label: Assosiaatiotyyppien tuonti
   xlsx_attribute_import:
     label: Attribuuttien tuonti XLSX-muodossa
     validation.label: Tiedostojen tarkistaminen
@@ -179,7 +181,7 @@ batch_jobs:
     label: Tuotteiden tuonti XLSX-muodossa
     validation.label: Tiedostojen tarkistaminen
     import.label: Tuotteiden tuonti
-    import_associations.label: Liitännäisten tuonti
+    import_associations.label: Assosiaatioiden tuonti
   xlsx_product_model_import:
     label: Tuotemallien tuonti XLSX-muodossa
     validation.label: Tiedostojen tarkistaminen
@@ -207,10 +209,10 @@ batch_jobs:
     export.label: Attribuuttivienti XLSX-muodossa
   xlsx_attribute_option_export:
     label: Attribuuttien vaihtoehtojen vienti XLSX-muodossa
-    export.label: Attribuuttien vaihtoehtojen vienti XLSX-muodossa
+    export.label: Attribuuttien määritteiden vienti XLSX-muodossa
   xlsx_association_type_export:
-    label: Liitännäistyyppien vienti XLSX-muodossa
-    export.label: Liitännäistyyppien vienti XLSX-muodossa
+    label: Assosiaatiotyyppien vienti XLSX-muodossa
+    export.label: Assosiaatiotyyppien vienti XLSX-muodossa
   xlsx_channel_export:
     label: Kanavavienti XLSX-muodossa
     export.label: Kanavavienti

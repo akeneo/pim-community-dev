@@ -638,16 +638,11 @@ pim_enrich:
             available_locales: Locales disponibles
             code: Código
             date_max: Fecha máx
-            date_min: Fecha min
             default_metric_unit: Unidad métrica predeterminada
             group: Grupo de atributos
             is_locale_specific: Local específico
             localizable: Valor por local
-            max_characters: Caracteres Max
-            max_file_size: Tamaño máximo de archivo (MB)
             metric_family: Familia métrica
-            number_max: Número máx
-            number_min: Número min
             scopable: Valor por canal
             type: Tipo
             unique: Valor único
@@ -686,7 +681,6 @@ pim_enrich:
       filter:
         channel:
           title: Canal
-          help: El canal define el objetivo de los valores del producto, los locales utilizados para seleccionar los datos, y el árbol usado para seleccionar los productos.
         locales:
           title: Locales
           help: 'Los locales definen los valores de producto traducidos a exportar. Ej.: sólo obtener información de producto en inglés.'
@@ -704,7 +698,6 @@ pim_enrich:
           attributes: "Buscar en {{ itemsCount }} atributos"
           selected: "Atributos seleccionados"
           clear: Restablecer
-          all_group: Todos los grupos
           empty_selection: Se exportarán todos los atributos
           title: Atributos
         family:
@@ -785,7 +778,6 @@ pim_enrich:
             DOES NOT CONTAIN: No contiene
             "=": Es igual que
             STARTS WITH: Comienza por
-            ENDS WITH: Termina por
             EMPTY: Está vacía
             NOT EMPTY: No está vacío
         date:
@@ -1072,7 +1064,6 @@ batch_jobs:
     import.label: Importar canales
   xlsx_locale_import:
     label: Importar locales en XLSX
-    validation.label: Validación de archivo
     import.label: Importar locales
   xlsx_attribute_group_import:
     label: Importar grupo de atributos en XLSX

@@ -1,7 +1,7 @@
 pim_enrich:
   product:
     tab:
-      attribute.title: Attributter
+      attribute.title: Egenskaber
       category.title: Kategorier
       association.title: Associationer
       completeness.title: Fuldstændighed
@@ -16,12 +16,14 @@ pim_enrich:
   attribute_group:
     tab:
       property.title: Egenskaber
-      attribute.title: Attributter
+      attribute.title: Egenskaber
       history.title: Historik
   family:
+    info:
+      cant_remove_attribute_used_as_axis: Kan ikke fjerne denne attribut, bruges som en variant akse i en familie variant
     tab:
       property.title: Egenskaber
-      attribute.title: Attributter
+      attribute.title: Egenskaber
       history.title: Historik
   association_type:
     tab:
@@ -147,7 +149,6 @@ pim_enrich:
       remove_attribute: Fjerne en attribut fra et produkt
       categories_view: Konsultere kategorierne af et produkt
       associations_view: Se sammenhængstyper for et produkt
-      associations_edit: Ret sammenhængstyper for et produkt
       change_family: Ændre produktfamilie
       change_state: Ændre tilstand af produktet
       add_to_groups: Tilføj produkt til grupper
@@ -169,7 +170,7 @@ pim_enrich:
       move: Flyt kategori
       children: Se underliggende kategorier
       products: Se produkter i denne kategori
-      history: Se kategori historik
+      history: Se kategori historie
     channel:
       index: Liste over kanaler
       create: Opret en kanal
@@ -216,15 +217,13 @@ pim_enrich:
       edit: Redigere en sammenhængstype
       remove: Fjern en sammenhængstype
       history: Se sammenhængs type historik
-    association:
-      remove: Ret sammenhængstyper for et produkt
     job_tracker:
       index: Se process overvågning
     api_connection:
       manage: Administrere API-forbindelser
   acl_group:
     association_type: Sammenhængstyper
-    attribute: Attributter
+    attribute: Egenskaber
     attribute_group: Attributgrupper
     category: Kategorier
     channel: Kanaler
@@ -390,7 +389,7 @@ flash:
     invalid: Kontrollér din indtastning og prøv igen
     attributes added: Attributter føjet til produktet
     attribute removed: Attributten er nu fjernet fra produktet
-    attribute not removable: Attributten kan ikke fjernes fra dette produkt
+    attribute not removable: Attributtet kan ikke fjernes fra dette produkt
     enabled: Produktet er blevet aktiveret
     disabled: Produktet er blevet deaktiveret
   group:
@@ -518,7 +517,7 @@ Global: Global
 Channel: Kanal
 Expand all channels: Udvid alle kanaler
 Collapse all channels: Skjul alle kanaler
-Always override: Altid tilsidesæt
+Always override: Altid tilsidesætte
 Ask: Spørg
 General Properties: Generelle egenskaber
 Group values: Gruppeværdier
@@ -545,7 +544,7 @@ URL: URL
 Regular expression: Regulære udtryk
 Minimum input length: Minimum inputlængde
 Default: Standard
-Attributes: Attributter
+Attributes: Egenskaber
 Title: Titel
 pim_title.attribute_group:
   index: "Attributgrupper"
@@ -758,7 +757,7 @@ job_execution.summary:
   mass_edited: Masse redigeret
   skip: Sprunget over
   skipped_products: produkter sprunget over
-  skipped_attributes: Attributter sprunget over
+  skipped_attributes: Egneskaber sprunget over
   skipped_families: Familier sprunget over
 pim_mass_edit_execution_show: Masse redigere udførsler | Detaljer
 edit_common_attributes.steps.edit_common_attributes_processor.title: Rediger attributter
@@ -783,28 +782,6 @@ batch_jobs:
       label: Rediger attributter
     clean:
       label: Rens filer til fælles attributter
-    cleaner:
-      label: Rens filer til fælles attributter
-  add_to_category:
-    label: Tilføje til kategorier
-    perform:
-      label: Tilføje til kategorier
-  move_to_category:
-    label: Flyt til kategori
-    perform:
-      label: Flyt til kategori
-  remove_from_category:
-    label: Fjern fra kategori
-    perform:
-      label: Fjern fra kategori
-  add_association:
-    label: Associeret produkter
-    perform:
-      label: Associeret produkter
-  add_to_existing_product_model:
-    label: Føj til en eksisterende produktmodel
-    perform:
-      label: Føj til en eksisterende produktmodel
   set_attribute_requirements:
     label: Indstil attribut krav
     perform:
@@ -834,7 +811,7 @@ job_tracker:
     started_at: Startede på
 pim_enrich_attribute_form:
   code: Kode
-  type: Attribute Type
+  type: Egenskabstype
   reference_data_name: Referencenavn data
   scopable: Værdi pr. kanal
   localizable: Værdi pr. landestandard

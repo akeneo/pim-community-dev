@@ -19,6 +19,8 @@ pim_enrich:
       attribute.title: Attribuutit
       history.title: Historia
   family:
+    info:
+      cant_remove_attribute_used_as_axis: Et voi poistaa tätä attribuuttia, koska sitä on käytössä varianttiperheessä
     tab:
       property.title: Ominaisuudet
       attribute.title: Attribuutit

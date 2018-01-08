@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Pim\Component\Catalog\ProductModel\Filter;
 
+use Akeneo\Component\StorageUtils\Exception\UnknownPropertyException;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Doctrine\Common\Collections\Collection;
 use Pim\Component\Catalog\Model\AttributeInterface;
@@ -29,16 +30,22 @@ class ProductModelAttributeFilter implements AttributeFilterInterface
     /** @var ProductModelRepositoryInterface */
     private $productModelRepository;
 
+    /** @var IdentifiableObjectRepositoryInterface */
+    private $attributeRepository;
+
     /**
      * @param IdentifiableObjectRepositoryInterface $familyVariantRepository
      * @param IdentifiableObjectRepositoryInterface $productModelRepository
+     * @param IdentifiableObjectRepositoryInterface $attributeRepository
      */
     public function __construct(
         IdentifiableObjectRepositoryInterface $familyVariantRepository,
-        IdentifiableObjectRepositoryInterface $productModelRepository
+        IdentifiableObjectRepositoryInterface $productModelRepository,
+        IdentifiableObjectRepositoryInterface $attributeRepository
     ) {
         $this->familyVariantRepository = $familyVariantRepository;
         $this->productModelRepository = $productModelRepository;
+        $this->attributeRepository = $attributeRepository;
     }
 
     /**
@@ -46,6 +53,14 @@ class ProductModelAttributeFilter implements AttributeFilterInterface
      */
     public function filter(array $standardProductModel): array
     {
+        if (array_key_exists('values', $standardProductModel) && is_array($standardProductModel['values'])) {
+            foreach ($standardProductModel['values'] as $code => $value) {
+                if (null === $this->attributeRepository->findOneByIdentifier($code)) {
+                    throw UnknownPropertyException::unknownProperty($code);
+                }
+            }
+        }
+
         if (!array_key_exists('code', $standardProductModel)) {
             return $standardProductModel;
         }

@@ -2,9 +2,11 @@
 
 namespace spec\Pim\Component\Catalog\ProductModel\Filter;
 
+use Akeneo\Component\StorageUtils\Exception\UnknownPropertyException;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Doctrine\Common\Collections\Collection;
 use PhpSpec\ObjectBehavior;
+use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\CommonAttributeCollection;
 use Pim\Component\Catalog\Model\FamilyVariantInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
@@ -17,9 +19,10 @@ class ProductModelAttributeFilterSpec extends ObjectBehavior
 {
     function let(
         IdentifiableObjectRepositoryInterface $familyVariantRepository,
-        IdentifiableObjectRepositoryInterface $productModelRepository
+        IdentifiableObjectRepositoryInterface $productModelRepository,
+        IdentifiableObjectRepositoryInterface $attributeRepository
     ) {
-        $this->beConstructedWith($familyVariantRepository, $productModelRepository, ['code', 'parent', 'family_variant']);
+        $this->beConstructedWith($familyVariantRepository, $productModelRepository, $attributeRepository, ['code', 'parent', 'family_variant']);
     }
 
     function it_is_initializable()
@@ -34,9 +37,14 @@ class ProductModelAttributeFilterSpec extends ObjectBehavior
 
     function it_filters_the_attributes_for_a_root_product_model(
         $familyVariantRepository,
+        $attributeRepository,
         FamilyVariantInterface $familyVariant,
-        CommonAttributeCollection $commonAttributeCollection
+        CommonAttributeCollection $commonAttributeCollection,
+        AttributeInterface $attribute
     ) {
+        $attributeRepository->findOneByIdentifier('name')->willReturn($attribute);
+        $attributeRepository->findOneByIdentifier('description')->willReturn($attribute);
+
         $familyVariantRepository->findOneByIdentifier('family_variant')->willreturn($familyVariant);
         $familyVariant->getCommonAttributes()->willReturn($commonAttributeCollection);
         $commonAttributeCollection->exists(Argument::any())->willReturn(true, false);
@@ -46,15 +54,27 @@ class ProductModelAttributeFilterSpec extends ObjectBehavior
             'parent' => '',
             'family_variant' => 'family_variant',
             'values' => [
-                'name-en_US' => 'name',
-                'description-en_US-ecommerce' => 'description',
+                'name' => [
+                    'locale' => 'en_US',
+                    'scope' => null,
+                    'data' => 'name'
+                ],
+                'description' => [
+                    'locale' => 'en_US',
+                    'scope' => 'ecommerce',
+                    'data' => 'description'
+                ],
             ]
         ])->shouldReturn([
             'code' => 'code',
             'parent' => '',
             'family_variant' => 'family_variant',
             'values' => [
-                'name-en_US' => 'name',
+                'name' => [
+                    'locale' => 'en_US',
+                    'scope' => null,
+                    'data' => 'name'
+                ],
             ]
         ]);
     }
@@ -62,11 +82,16 @@ class ProductModelAttributeFilterSpec extends ObjectBehavior
     function it_filters_the_attributes_for_a_sub_product_model(
         $familyVariantRepository,
         $productModelRepository,
+        $attributeRepository,
         FamilyVariantInterface $familyVariant,
         ProductModelInterface $productModel,
         VariantAttributeSetInterface $variantAttributeSet,
-        Collection $familyVariantAttribute
+        Collection $familyVariantAttribute,
+        AttributeInterface $attribute
     ) {
+        $attributeRepository->findOneByIdentifier('name')->willReturn($attribute);
+        $attributeRepository->findOneByIdentifier('description')->willReturn($attribute);
+
         $familyVariantRepository->findOneByIdentifier('family_variant')->willreturn($familyVariant);
         $productModelRepository->findOneByIdentifier('code')->willreturn($productModel);
         $productModel->getParent()->willReturn(null);
@@ -81,15 +106,27 @@ class ProductModelAttributeFilterSpec extends ObjectBehavior
             'parent' => 'parent',
             'family_variant' => 'family_variant',
             'values' => [
-                'name-en_US' => 'name',
-                'description-en_US-ecommerce' => 'description',
+                'name' => [
+                    'locale' => 'en_US',
+                    'scope' => null,
+                    'data' => 'name'
+                ],
+                'description' => [
+                    'locale' => 'en_US',
+                    'scope' => 'ecommerce',
+                    'data' => 'description'
+                ],
             ]
         ])->shouldReturn([
             'code' => 'code',
             'parent' => 'parent',
             'family_variant' => 'family_variant',
             'values' => [
-                'description-en_US-ecommerce' => 'description',
+                'description' => [
+                    'locale' => 'en_US',
+                    'scope' => 'ecommerce',
+                    'data' => 'description'
+                ],
             ]
         ]);
     }
@@ -123,5 +160,25 @@ class ProductModelAttributeFilterSpec extends ObjectBehavior
             'family_variant' => 'family_variant',
             'values' => [],
         ]);
+    }
+
+    function it_throws_an_exception_when_attribute_does_not_exist()
+    {
+        $data = [
+            'code' => 'code',
+            'parent' => 'parent',
+            'family_variant' => 'family_variant',
+            'values' => [
+                'description' => [
+                    'locale' => 'en_US',
+                    'scope' => 'ecommerce',
+                    'data' => 'description'
+                ],
+            ],
+        ];
+
+        $this->shouldThrow(
+            UnknownPropertyException::unknownProperty('description')
+        )->during('filter', [$data]);
     }
 }

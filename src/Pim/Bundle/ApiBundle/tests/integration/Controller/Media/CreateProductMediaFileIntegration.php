@@ -3,7 +3,6 @@
 namespace Pim\Bundle\ApiBundle\tests\integration\Controller\Media;
 
 use Akeneo\Component\FileStorage\Model\FileInfoInterface;
-use Akeneo\Test\Integration\Configuration;
 use League\Flysystem\FilesystemInterface;
 use Pim\Bundle\ApiBundle\tests\integration\ApiTestCase;
 use Pim\Component\Api\Repository\ApiResourceRepositoryInterface;
@@ -12,7 +11,7 @@ use Pim\Component\Catalog\FileStorage;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Response;
 
-class CreateMediaFileIntegration extends ApiTestCase
+class CreateProductMediaFileIntegration extends ApiTestCase
 {
     /** @var array */
     private $files = [];
@@ -193,7 +192,7 @@ JSON;
         $expected = <<<JSON
 {
     "code": 422,
-    "message": "Property \"product\" is required."
+    "message": "You should at least give one of the following properties: \"product\" or \"product_model\"."
 }
 JSON;
         $this->assertJsonStringEqualsJsonString($expected, $response->getContent());
