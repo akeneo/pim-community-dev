@@ -1,5 +1,6 @@
 parameters:
     pimee_security.remover.product.class: PimEnterprise\Component\Security\Remover\ProductRemover
+    pimee_security.remover.product_model.class: PimEnterprise\Component\Security\Remover\ProductModelRemover
 
 services:
     pimee_security.remover.product_category_access:
@@ -25,3 +26,13 @@ services:
             - '@pim_catalog.remover.product.community'
             - '@security.authorization_checker'
             - '@pim_catalog.repository.product_without_permission'
+
+    pimee_security.remover.product_model:
+        class: '%pimee_security.remover.product_model.class%'
+        decorates: pim_catalog.remover.product_model
+        decoration_inner_name: pim_catalog.remover.product_model.community
+        arguments:
+            - '@pim_catalog.remover.product_model.community'
+            - '@pim_catalog.remover.product_model.community'
+            - '@security.authorization_checker'
+            - '@pim_catalog.repository.product_model_without_permission'

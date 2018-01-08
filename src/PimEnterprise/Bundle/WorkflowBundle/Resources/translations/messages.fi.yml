@@ -80,8 +80,8 @@ pimee_workflow:
         second: Valitse toiminto
         third: Konfiguroi
         fourth: Vahvista
-pimee_workflow_product_draft_notification_new_proposal: Uusi ehdotus
-pimee_workflow_import_notification_new_proposals: Uusia ehdotuksia tuontiin
+pimee_workflow_product_draft_notification_new_proposal: Uusi muutosehdotus
+pimee_workflow_import_notification_new_proposals: Uusia muutosehdotuksia tuonnista
 btn.publish: Julkaise
 btn.unpublish: Peruuta julkaisu
 pimee_workflow_product_draft_notification_partial_approve: Osittain hyväksytty ehdotus
