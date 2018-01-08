@@ -8,7 +8,7 @@ use Akeneo\Component\Batch\Job\JobInterface;
 use Akeneo\Component\Batch\Job\JobParameters;
 use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\Batch\Step\StepExecutionAwareInterface;
-use Akeneo\Component\StorageUtils\Cache\CacheClearerInterface;
+use Akeneo\Component\StorageUtils\Cache\EntityManagerClearerInterface;
 use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
@@ -47,7 +47,7 @@ class ProductProcessor implements ItemProcessorInterface, StepExecutionAwareInte
     /** @var EntityWithFamilyValuesFillerInterface */
     protected $productValuesFiller;
 
-    /** @var CacheClearerInterface */
+    /** @var EntityManagerClearerInterface */
     protected $cacheClearer;
 
     /**
@@ -57,7 +57,7 @@ class ProductProcessor implements ItemProcessorInterface, StepExecutionAwareInte
      * @param ObjectDetacherInterface               $detacher
      * @param BulkMediaFetcher                      $mediaFetcher
      * @param EntityWithFamilyValuesFillerInterface $productValuesFiller
-     * @param CacheClearerInterface                 $cacheClearer
+     * @param EntityManagerClearerInterface         $cacheClearer
      */
     public function __construct(
         NormalizerInterface $normalizer,
@@ -66,7 +66,7 @@ class ProductProcessor implements ItemProcessorInterface, StepExecutionAwareInte
         ObjectDetacherInterface $detacher,
         BulkMediaFetcher $mediaFetcher,
         EntityWithFamilyValuesFillerInterface $productValuesFiller,
-        CacheClearerInterface $cacheClearer = null
+        EntityManagerClearerInterface $cacheClearer = null
     ) {
         $this->normalizer = $normalizer;
         $this->detacher = $detacher;
