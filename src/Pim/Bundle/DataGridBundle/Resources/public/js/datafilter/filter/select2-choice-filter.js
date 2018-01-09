@@ -57,7 +57,11 @@ define(
                 $(e.currentTarget).parent().addClass('active');
                 var parentDiv = $(e.currentTarget).parent().parent().parent();
 
-                this._setInputVisibility($(e.currentTarget).attr('data-value') === 'empty');
+                if ($(e.currentTarget).attr('data-value') === 'empty') {
+                    this._disableInput();
+                } else {
+                    this._enableInput();
+                }
 
                 parentDiv.find('button').html($(e.currentTarget).html() + '<span class="caret"></span>');
                 e.preventDefault();
@@ -113,14 +117,6 @@ define(
                 return config;
             },
 
-            _setInputVisibility(hideInput) {
-                if (hideInput) {
-                    this._disableInput();
-                } else {
-                    this._enableInput();
-                }
-            },
-
             _writeDOMValue: function(value) {
                 this.$('li .operator_choice[data-value="' + value.type + '"]').trigger('click');
                 var operator = this.$('li.active .operator_choice').data('value');
@@ -160,7 +156,6 @@ define(
 
                 initSelect2.init(this.$(this.criteriaValueSelectors.value), this._getSelect2Config());
 
-                this._updateDOMValue();
                 this._updateCriteriaHint();
             },
 
@@ -172,13 +167,10 @@ define(
 
                 if (!this.popupCriteriaShowed) {
                     this._showCriteria();
-                    this._setInputVisibility(isEmpty);
 
-                    if (false === isEmpty) {
-                        initSelect2.init(this.$(this.criteriaValueSelectors.value), this._getSelect2Config())
-                            .select2('data', this._getCachedResults(this.getValue().value))
-                            .select2('open');
-                    }
+                    initSelect2.init(this.$(this.criteriaValueSelectors.value), this._getSelect2Config())
+                        .select2('data', this._getCachedResults(this.getValue().value))
+                        .select2('open');
                 } else {
                     this._hideCriteria();
                 }
@@ -277,8 +269,10 @@ define(
 
             _getCriteriaHint: function() {
                 var operator = this.$('li.active .operator_choice').data('value');
-                if ('empty' === operator) {
-                    return this.operatorChoices[operator];
+                var type = this.getValue().type;
+
+                if ('empty' === operator || 'empty' === type) {
+                    return this.operatorChoices['empty'];
                 }
 
                 var value = (arguments.length > 0) ? this._getDisplayValue(arguments[0]) : this._getDisplayValue();
