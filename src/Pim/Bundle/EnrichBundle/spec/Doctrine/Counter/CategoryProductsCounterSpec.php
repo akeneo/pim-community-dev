@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace spec\Pim\Bundle\EnrichBundle\Doctrine\Counter;
 
 use Akeneo\Component\Classification\Repository\CategoryRepositoryInterface;

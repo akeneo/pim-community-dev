@@ -10,6 +10,7 @@
 - PIM-7083: fix access to product edit form if no right to view default locale
 - PIM-7082: remove double user menu on product import edit form
 - PIM-7084: fix attribute suppression
+- PIM-6355: Fix the count by categories on the product grid
 
 ## Improvements
 
@@ -22,6 +23,7 @@
 ## BC Breaks
 
 - Changes the constructor of `Pim\Bundle\ApiBundle\Controller\ProductController` to add `Pim\Component\Catalog\EntityWithFamilyVariant\AddParent`
+- Changes the service `pim_enrich.doctrine.counter.category_product` first argument to a `@pim_catalog.query.product_query_builder_factory`
 
 # 2.0.11 (2018-01-05)
 
@@ -40,7 +42,6 @@
 - PIM-7065: Fix versioning when attribute codes are numerics.
 - PIM-7087: Fix completeness normalization when channel code is numeric.
 - PIM-6968: Fix mass delete product
-- PIM-6355: Fix the count by categories on the product grid
 
 ## Improvements
 
@@ -56,7 +57,6 @@
 - Changes the constructor of `Pim\Bundle\ApiBundle\Controller\MediaFileController` to add `Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface`
 - Changes the constructor of `Pim\Bundle\ApiBundle\Controller\MediaFileController` to add `Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface`
 - Changes the constructor of `Pim\Bundle\ApiBundle\Controller\MediaFileController` to add `Akeneo\Component\StorageUtils\Saver\SaverInterface`
-- Changes the service `pim_enrich.doctrine.counter.category_product` first argument to a `@pim_catalog.query.product_query_builder_factory`
 
 ## Better manage products with variants!
 
