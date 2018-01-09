@@ -7,13 +7,6 @@ spec:
   parallelism: JOB_SCALE
   template:
     spec:
-      initContainers:
-        - name: pim
-          image: PIM_IMAGE
-          command: ['sh', '-c', 'cp -Rp /pim /home/jenkins']
-          imagePullPolicy: Always
-          volumeMounts:
-            - { mountPath: /home/jenkins, name: pim }
       containers:
         - name: mysql
           image: eu.gcr.io/akeneo-ci/mysql:5.7-5
@@ -129,7 +122,7 @@ spec:
           resources:
             requests: {cpu: "100m", memory: "100Mi"}
       volumes:
-        - { name: pim, emptyDir: {medium: Memory}}
+        - { name: pim, persistentVolumeClaim: {claimName: JOB_NAME}}
         - { name: tmp-pod, emptyDir: {medium: Memory}}
         - { name: artifacts, emptyDir: {medium: Memory}}
         - { name: mysql, emptyDir: {medium: Memory}}
