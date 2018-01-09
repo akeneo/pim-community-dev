@@ -1,0 +1,14 @@
+Pim\Bundle\DataGridBundle\Entity\DataGridVariantProduct:
+    type: entity
+    manyToOne:
+        parent:
+            targetEntity: Pim\Component\Catalog\Model\ProductModelInterface
+            joinColumns:
+                product_model_id:
+                    referencedColumnName: id
+                    onDelete: CASCADE
+        familyVariant:
+            targetEntity: Pim\Component\Catalog\Model\FamilyVariantInterface
+            joinColumn:
+                name: family_variant_id
+                referencedColumnName: id

@@ -1,0 +1,2 @@
+Pim\Bundle\DataGridBundle\Entity\DataGridProduct:
+    type: entity

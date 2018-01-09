@@ -4,6 +4,7 @@ namespace Pim\Bundle\DataGridBundle\Datasource;
 
 use Doctrine\Common\Persistence\ObjectManager;
 use Oro\Bundle\DataGridBundle\Datasource\ResultRecord;
+use Pim\Bundle\DataGridBundle\EventSubscriber\FilterEntityWithValuesSubscriber;
 use Pim\Bundle\DataGridBundle\Extension\Pager\PagerExtension;
 use Pim\Component\Catalog\Model\EntityWithValuesInterface;
 use Pim\Component\Catalog\Query\ProductQueryBuilderFactoryInterface;
@@ -28,19 +29,25 @@ class ProductDatasource extends Datasource
     /** @var NormalizerInterface */
     protected $normalizer;
 
+    /** @var FilterEntityWithValuesSubscriber */
+    protected $filterEntityWithValuesSubscriber;
+
     /**
      * @param ObjectManager                       $om
      * @param ProductQueryBuilderFactoryInterface $factory
      * @param NormalizerInterface                 $serializer
+     * @param FilterEntityWithValuesSubscriber    $filterEntityWithValuesSubscriber
      */
     public function __construct(
         ObjectManager $om,
         ProductQueryBuilderFactoryInterface $factory,
-        NormalizerInterface $serializer
+        NormalizerInterface $serializer,
+        FilterEntityWithValuesSubscriber $filterEntityWithValuesSubscriber
     ) {
         $this->om = $om;
         $this->factory = $factory;
         $this->normalizer = $serializer;
+        $this->filterEntityWithValuesSubscriber = $filterEntityWithValuesSubscriber;
     }
 
     /**
@@ -48,6 +55,11 @@ class ProductDatasource extends Datasource
      */
     public function getResults()
     {
+        $attributeIdsToDisplay = $this->configuration['displayed_attribute_ids'] ?? [];
+        $attributes = $this->configuration['attributes_configuration'] ?? [];
+        $attributeCodesToFilter = $this->getAttributeCodesToFilter($attributeIdsToDisplay, $attributes);
+        $this->filterEntityWithValuesSubscriber->configureAttributeCodesToFilter($attributeCodesToFilter);
+
         $entitiesWithValues = $this->pqb->execute();
         $context = [
             'locales'             => [$this->getConfiguration('locale_code')],
@@ -129,5 +141,23 @@ class ProductDatasource extends Datasource
         );
 
         return $normalizedItem;
+    }
+
+    /**
+     * @param array $attributeIdsToDisplay
+     * @param array $attributes
+     *
+     * @return array array of attribute codes
+     */
+    private function getAttributeCodesToFilter(array $attributeIdsToDisplay, array $attributes)
+    {
+        $attributeCodes = [];
+        foreach ($attributes as $attribute) {
+            if (in_array($attribute['id'], $attributeIdsToDisplay)) {
+                $attributeCodes[] = $attribute['code'];
+            }
+        }
+
+        return $attributeCodes;
     }
 }

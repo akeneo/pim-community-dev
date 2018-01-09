@@ -1,5 +1,6 @@
 parameters:
     pim_datagrid.event_subscriber.default_view.class: Pim\Bundle\DataGridBundle\EventSubscriber\DefaultViewSubscriber
+    pim_datagrid.event_subscriber.filter_entity_with_raw_values_subscriber.class: Pim\Bundle\DataGridBundle\EventSubscriber\FilterEntityWithValuesSubscriber
 
 services:
     pim_datagrid.event_subscriber.default_view:
@@ -8,3 +9,8 @@ services:
             - '@pim_datagrid.repository.datagrid_view'
         tags:
             - { name: kernel.event_subscriber }
+
+    pim_datagrid.event_subscriber.filter_entity_with_raw_values_subscriber:
+        class: '%pim_datagrid.event_subscriber.filter_entity_with_raw_values_subscriber.class%'
+        tags:
+            - { name: doctrine.event_subscriber, priority: 50 }
