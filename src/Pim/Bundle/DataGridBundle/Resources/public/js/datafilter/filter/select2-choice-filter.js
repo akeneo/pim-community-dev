@@ -62,7 +62,6 @@ define(
                 } else {
                     this._enableInput();
                 }
-
                 parentDiv.find('button').html($(e.currentTarget).html() + '<span class="caret"></span>');
                 e.preventDefault();
             },
@@ -120,7 +119,6 @@ define(
             _writeDOMValue: function(value) {
                 this.$('li .operator_choice[data-value="' + value.type + '"]').trigger('click');
                 var operator = this.$('li.active .operator_choice').data('value');
-
                 if ('empty' === operator) {
                     this._setInputValue(this.criteriaValueSelectors.value, []);
                 } else {
@@ -162,8 +160,6 @@ define(
             _onClickCriteriaSelector: function(e) {
                 e.stopPropagation();
                 $('body').trigger('click');
-
-                var isEmpty =  'empty' === this.getValue().type;
 
                 if (!this.popupCriteriaShowed) {
                     this._showCriteria();
