@@ -11,6 +11,8 @@
 - Remove `PimEnterprise\Bundle\SecurityBundle\EventSubscriber\Enrich\AddCategoryPermissionsSubscriber` 
 - Remove `PimEnterprise\Bundle\SecurityBundle\EventSubscriber\Enrich\AddDefaultUserGroupSubscriber`
 - Remove `PimEnterprise\Bundle\SecurityBundle\EventSubscriber\ImportExport\AddCategoryPermissionsSubscriber`
+- Changes the service `pimee_enrich.doctrine.counter.category_product` first argument to a `@pim_catalog.query.product_query_builder_factory`
+- Changes the service `pimee_product_asset.doctrine.counter.category_published_product` first argument to a `@pimee_workflow.doctrine.query.published_product_query_builder_factory`
 
 # 2.0.11 (2018-01-05)
 
