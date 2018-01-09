@@ -1,9 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Pim\Bundle\ApiBundle\tests\integration\Controller\Product;
 
 use Akeneo\Test\Integration\Configuration;
-use Pim\Component\Catalog\tests\integration\Normalizer\NormalizedProductCleaner;
 use Symfony\Component\HttpFoundation\Response;
 
 class CreateVariantProductIntegration extends AbstractProductTestCase
@@ -1130,24 +1131,9 @@ JSON;
     }
 
     /**
-     * @param array  $expectedProduct normalized data of the product that should be created
-     * @param string $identifier identifier of the product that should be created
-     */
-    protected function assertSameProducts(array $expectedProduct, $identifier)
-    {
-        $product = $this->get('pim_catalog.repository.product')->findOneByIdentifier($identifier);
-        $standardizedProduct = $this->get('pim_serializer')->normalize($product, 'standard');
-
-        NormalizedProductCleaner::clean($standardizedProduct);
-        NormalizedProductCleaner::clean($expectedProduct);
-
-        $this->assertSame($expectedProduct, $standardizedProduct);
-    }
-
-    /**
      * {@inheritdoc}
      */
-    protected function getConfiguration()
+    protected function getConfiguration(): Configuration
     {
         return $this->catalog->useTechnicalCatalog();
     }

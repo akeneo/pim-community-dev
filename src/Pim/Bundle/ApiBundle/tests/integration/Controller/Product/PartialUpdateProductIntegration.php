@@ -1,8 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Pim\Bundle\ApiBundle\tests\integration\Controller\Product;
 
-use Pim\Component\Catalog\tests\integration\Normalizer\NormalizedProductCleaner;
+use Akeneo\Test\Integration\Configuration;
 use Symfony\Component\HttpFoundation\Response;
 
 class PartialUpdateProductIntegration extends AbstractProductTestCase
@@ -592,7 +594,7 @@ JSON;
             'created'       => '2016-06-14T13:12:50+02:00',
             'updated'       => '2016-06-14T13:12:50+02:00',
             'associations'  => [
-                'PACK'         => ['groups'   => ['groupA'], 'products' => ['product_categories', 'product_family']],
+                'PACK'         => ['groups'   => ['groupA'], 'products' => ['product_family', 'product_categories']],
                 'SUBSTITUTION' => ['groups'   => [], 'products' => []],
                 'UPSELL'       => ['groups'   => [], 'products' => []],
                 'X_SELL'       => ['groups'   => ['groupA'], 'products' => ['product_categories']],
@@ -1411,24 +1413,9 @@ JSON;
     }
 
     /**
-     * @param array  $expectedProduct normalized data of the product that should be created
-     * @param string $identifier identifier of the product that should be created
-     */
-    protected function assertSameProducts(array $expectedProduct, $identifier)
-    {
-        $product = $this->get('pim_catalog.repository.product')->findOneByIdentifier($identifier);
-        $standardizedProduct = $this->get('pim_serializer')->normalize($product, 'standard');
-
-        NormalizedProductCleaner::clean($expectedProduct);
-        NormalizedProductCleaner::clean($standardizedProduct);
-
-        $this->assertSame($expectedProduct, $standardizedProduct);
-    }
-
-    /**
      * {@inheritdoc}
      */
-    protected function getConfiguration()
+    protected function getConfiguration(): Configuration
     {
         return $this->catalog->useTechnicalCatalog();
     }
