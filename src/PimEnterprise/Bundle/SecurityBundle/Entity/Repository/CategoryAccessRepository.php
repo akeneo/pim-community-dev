@@ -134,26 +134,32 @@ class CategoryAccessRepository extends EntityRepository implements IdentifiableO
      */
     public function getGrantedChildrenIds(CategoryInterface $category, UserInterface $user, $accessLevel)
     {
-        $qb = $this->createQueryBuilder('ca');
-        $qb
-            ->select('DISTINCT c.id')
-            ->innerJoin('ca.category', 'c', 'c.id')
-            ->andWhere($qb->expr()->in('ca.userGroup', ':groups'))
-            ->andWhere($qb->expr()->eq('ca.'.$this->getAccessField($accessLevel), true))
-            ->andWhere(
-                $qb->expr()->orX(
-                    $qb->expr()->andX(
-                        $qb->expr()->lt('c.right', $category->getRight()),
-                        $qb->expr()->gt('c.left', $category->getLeft()),
-                        $qb->expr()->eq('c.root', $category->getRoot())
-                    ),
-                    $qb->expr()->eq('c.id', $category->getId())
-                )
-            );
-
-        $qb->setParameter('groups', $user->getGroups()->toArray());
+        $qb = $this->getGrantedChildrenQB($category, $user, $accessLevel);
 
         return $this->hydrateAsIds($qb);
+    }
+
+    /**
+     * Get granted categories codes from the provided category
+     *
+     * @param CategoryInterface $category
+     * @param UserInterface     $user
+     * @param string            $accessLevel
+     *
+     * @return array
+     */
+    public function getGrantedChildrenCodes(CategoryInterface $category, UserInterface $user, $accessLevel)
+    {
+        $qb = $this->getGrantedChildrenQB($category, $user, $accessLevel)
+            ->resetDQLParts(['select'])
+            ->select('c.code');
+
+        return array_map(
+            function ($row) {
+                return $row['code'];
+            },
+            $qb->getQuery()->getArrayResult()
+        );
     }
 
     /**
@@ -512,4 +518,38 @@ class CategoryAccessRepository extends EntityRepository implements IdentifiableO
 
         return $qb->getQuery()->getOneOrNullResult();
     }
+
+    /**
+     * Get granted children categories query builder
+     *
+     * @param CategoryInterface $category
+     * @param UserInterface     $user
+     * @param string            $accessLevel
+     *
+     * @return \Doctrine\ORM\QueryBuilder
+     */
+    protected function getGrantedChildrenQB(CategoryInterface $category, UserInterface $user, $accessLevel)
+    {
+        $qb = $this->createQueryBuilder('ca');
+        $qb
+            ->select('DISTINCT c.id')
+            ->innerJoin('ca.category', 'c', 'c.id')
+            ->andWhere($qb->expr()->in('ca.userGroup', ':groups'))
+            ->andWhere($qb->expr()->eq('ca.'.$this->getAccessField($accessLevel), true))
+            ->andWhere(
+                $qb->expr()->orX(
+                    $qb->expr()->andX(
+                        $qb->expr()->lt('c.right', $category->getRight()),
+                        $qb->expr()->gt('c.left', $category->getLeft()),
+                        $qb->expr()->eq('c.root', $category->getRoot())
+                    ),
+                    $qb->expr()->eq('c.id', $category->getId())
+                )
+            );
+
+        $qb->setParameter('groups', $user->getGroups()->toArray());
+
+        return $qb;
+    }
+
 }
