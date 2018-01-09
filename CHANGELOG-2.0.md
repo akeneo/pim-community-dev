@@ -56,7 +56,7 @@
 - Changes the constructor of `Pim\Bundle\ApiBundle\Controller\MediaFileController` to add `Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface`
 - Changes the constructor of `Pim\Bundle\ApiBundle\Controller\MediaFileController` to add `Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface`
 - Changes the constructor of `Pim\Bundle\ApiBundle\Controller\MediaFileController` to add `Akeneo\Component\StorageUtils\Saver\SaverInterface`
-- Changes the service `pim_enrich.doctrine.counter.category_product` class to `pim_enrich.doctrine.counter.category_product.class` and change first argument to `@pim_catalog.query.product_query_builder_factory`
+- Changes the service `pim_enrich.doctrine.counter.category_product` first argument to a `@pim_catalog.query.product_query_builder_factory`
 
 ## Better manage products with variants!
 
