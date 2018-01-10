@@ -24,6 +24,7 @@ parameters:
     pim_enrich.controller.rest.measures.class:                Pim\Bundle\EnrichBundle\Controller\Rest\MeasuresController
     pim_enrich.controller.rest.media.class:                   Pim\Bundle\EnrichBundle\Controller\Rest\MediaController
     pim_enrich.controller.rest.product.class:                 Pim\Bundle\EnrichBundle\Controller\Rest\ProductController
+    pim_enrich.controller.rest.product_grid.class:            Pim\Bundle\EnrichBundle\Controller\Rest\ProductGridController
     pim_enrich.controller.rest.product_model.class:           Pim\Bundle\EnrichBundle\Controller\Rest\ProductModelController
     pim_enrich.controller.rest.product_category.class:        Pim\Bundle\EnrichBundle\Controller\Rest\ProductCategoryController
     pim_enrich.controller.rest.product_model_category.class:  Pim\Bundle\EnrichBundle\Controller\Rest\ProductModelCategoryController
@@ -358,6 +359,12 @@ services:
             - '@pim_enrich.converter.enrich_to_standard.product_value'
             - '@pim_enrich.normalizer.product_violation'
             - '@pim_catalog.builder.product'
+
+    pim_enrich.controller.rest.product_grid:
+        class: '%pim_enrich.controller.rest.product_grid.class%'
+        arguments:
+            - '@pim_enrich.query.product_query_builder_from_size_factory.with_product_and_product_model_from_size_cursor'
+            - '@pim_catalog.repository.family'
 
     pim_enrich.controller.rest.product_model:
         class: '%pim_enrich.controller.rest.product_model.class%'

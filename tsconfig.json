@@ -5,6 +5,7 @@
     "lib": ["es2017", "es6", "es7", "dom"],
     "sourceMap": true,
     "allowJs": true,
+    "jsx": "react",
     "moduleResolution": "node",
     "rootDir": "web/bundles",
     "baseUrl": ".",

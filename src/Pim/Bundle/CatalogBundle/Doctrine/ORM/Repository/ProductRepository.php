@@ -39,6 +39,29 @@ class ProductRepository extends EntityRepository implements
     /**
      * {@inheritdoc}
      */
+    public function getRawItemsFromIdentifiers(array $identifiers): array
+    {
+        if (0 === count($identifiers)) {
+            return [];
+        }
+
+        $paramNames = array_map(function ($index) {
+            return '?' . $index;
+        }, range(0, count($identifiers) - 1));
+        $qb = $this->createQueryBuilder('p')
+            ->where('p.identifier IN (' . implode(',', $paramNames) . ')');
+
+        $query = $qb->getQuery();
+        $em = $this->getEntityManager();
+        $stmt = $em->getConnection()->prepare($query->getSQL());
+        $stmt->execute($identifiers);
+
+        return $stmt->fetchAll();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getIdentifierProperties()
     {
         return ['identifier'];

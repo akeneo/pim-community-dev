@@ -5,6 +5,7 @@ namespace Pim\Bundle\EnrichBundle\Elasticsearch;
 use Akeneo\Bundle\ElasticsearchBundle\Client;
 use Akeneo\Component\StorageUtils\Cursor\CursorFactoryInterface;
 use Akeneo\Component\StorageUtils\Repository\CursorableRepositoryInterface;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
@@ -23,29 +24,23 @@ class FromSizeCursorFactory implements CursorFactoryInterface
     /** @var string */
     private $indexType;
 
-    /** @var CursorableRepositoryInterface */
-    private $productRepository;
-
-    /** @var CursorableRepositoryInterface */
-    private $productModelRepository;
+    /** @var EntityManagerInterface */
+    private $entityManager;
 
     /**
      * @param Client                        $searchEngine
-     * @param CursorableRepositoryInterface $productRepository
-     * @param CursorableRepositoryInterface $productModelRepository
+     * @param EntityManagerInterface        $entityManager
      * @param int                           $pageSize
      * @param string                        $indexType
      */
     public function __construct(
         Client $searchEngine,
-        CursorableRepositoryInterface $productRepository,
-        CursorableRepositoryInterface $productModelRepository,
+        EntityManagerInterface $entityManager,
         $pageSize,
         $indexType
     ) {
         $this->searchEngine = $searchEngine;
-        $this->productRepository = $productRepository;
-        $this->productModelRepository = $productModelRepository;
+        $this->entityManager = $entityManager;
         $this->pageSize = $pageSize;
         $this->indexType = $indexType;
     }
@@ -61,8 +56,7 @@ class FromSizeCursorFactory implements CursorFactoryInterface
 
         return new FromSizeCursor(
             $this->searchEngine,
-            $this->productRepository,
-            $this->productModelRepository,
+            $this->entityManager,
             $queryBuilder,
             $this->indexType,
             $options['page_size'],

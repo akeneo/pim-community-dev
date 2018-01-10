@@ -33,6 +33,11 @@ pim_enrich_product_rest_index:
     defaults: { _controller: pim_enrich.controller.rest.product:indexAction }
     methods: [GET]
 
+pim_enrich_product_grid_rest_index:
+    path: /rest/grid/
+    defaults: { _controller: pim_enrich.controller.rest.product_grid:indexAction }
+    methods: [POST]
+
 pim_enrich_product_rest_create:
     path: /rest
     defaults: { _controller: pim_enrich.controller.rest.product:createAction }
