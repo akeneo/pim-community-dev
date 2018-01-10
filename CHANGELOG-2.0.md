@@ -20,6 +20,7 @@
 ## Better manage products with variants!
 
 - API-516: be able to add a parent to a product via API
+- API-566: "updated" filter works on product variant if its product models were updated
 
 ## BC Breaks
 
