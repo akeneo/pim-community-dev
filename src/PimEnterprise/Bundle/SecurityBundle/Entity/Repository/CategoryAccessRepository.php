@@ -551,5 +551,4 @@ class CategoryAccessRepository extends EntityRepository implements IdentifiableO
 
         return $qb;
     }
-
 }
