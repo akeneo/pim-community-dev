@@ -8,13 +8,17 @@
 - PIM-7085: Fix translation missing
 - PIM-6965: Show short view|project name in the grid
 
-## BC Breaks
+## Improvements
 
-- Changes the constructor of `Pim\Bundle\ApiBundle\Controller\ProductController` to add `Pim\Component\Catalog\EntityWithFamilyVariant\AddParent`
+- PIM-7103: Improve product datagrid performance
 
 ## Better manage products with variants!
 
 - API-516: be able to add a parent to a product via API
+
+## BC Breaks
+
+- Changes the constructor of `Pim\Bundle\ApiBundle\Controller\ProductController` to add `Pim\Component\Catalog\EntityWithFamilyVariant\AddParent`
 
 # 2.0.11 (2018-01-05)
 

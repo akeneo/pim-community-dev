@@ -10,8 +10,8 @@ use Pim\Component\Catalog\Model\EntityWithValuesInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
- * Load real product values object from the $rawValues field (ie: values in JSON)
- * when a product is loaded by Doctrine.
+ * Load real entity values object from the $rawValues field (ie: values in JSON)
+ * when an entity with values is loaded by Doctrine.
  *
  * @author    Julien Janvier <j.janvier@gmail.com>
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
@@ -56,8 +56,9 @@ class LoadEntityWithValuesSubscriber implements EventSubscriber
 
     /**
      * Here we load the real object values from the raw values field.
-     * We also add the identifier as a regular value so that it can be used in the product
-     * edit form transparently.
+     *
+     * For products, we also add the identifier as a regular value
+     * so that it can be used in the product edit form transparently.
      *
      * @param LifecycleEventArgs $event
      */
