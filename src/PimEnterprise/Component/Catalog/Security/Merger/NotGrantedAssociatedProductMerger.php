@@ -98,11 +98,17 @@ class NotGrantedAssociatedProductMerger implements NotGrantedDataMergerInterface
 
         foreach ($fullProduct->getAssociations() as $association) {
             $associationCodes[$association->getAssociationType()->getCode()]['products'] = [];
+            $associationCodes[$association->getAssociationType()->getCode()]['product_models'] = [];
             $hasAssociations = true;
 
             foreach ($association->getProducts() as $associatedProduct) {
                 if (!$this->authorizationChecker->isGranted([Attributes::VIEW], $associatedProduct)) {
                     $associationCodes[$association->getAssociationType()->getCode()]['products'][] = $associatedProduct->getIdentifier();
+                }
+            }
+            foreach ($association->getProductModels() as $associatedProductModel) {
+                if (!$this->authorizationChecker->isGranted([Attributes::VIEW], $associatedProductModel)) {
+                    $associationCodes[$association->getAssociationType()->getCode()]['product_models'][] = $associatedProductModel->getIdentifier();
                 }
             }
         }
