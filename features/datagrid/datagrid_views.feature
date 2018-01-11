@@ -252,3 +252,19 @@ Feature: Datagrid views
     And I am on the products grid
     And I should see the text "Default view"
     But I should not see the text "Boots only"
+
+  @ce
+  Scenario: Don't display view type switcher if there is only one view type
+    Given I am on the products page
+    Then I should not see the text "Views"
+
+  Scenario: Successfully display filter values when refreshing a saved view
+    Given I am on the products page
+    And I filter by "family" with operator "is empty" and value ""
+    And I create the view:
+      | new-view-label | Empty family |
+    Then I should be on the products page
+    And I should see the flash message "Datagrid view successfully created"
+    And I refresh current page
+    Then I should see the text "Family: is empty"
+    And I should see the text "Empty family"
