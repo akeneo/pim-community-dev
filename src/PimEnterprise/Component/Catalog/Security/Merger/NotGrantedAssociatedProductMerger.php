@@ -108,7 +108,7 @@ class NotGrantedAssociatedProductMerger implements NotGrantedDataMergerInterface
             }
             foreach ($association->getProductModels() as $associatedProductModel) {
                 if (!$this->authorizationChecker->isGranted([Attributes::VIEW], $associatedProductModel)) {
-                    $associationCodes[$association->getAssociationType()->getCode()]['product_models'][] = $associatedProductModel->getIdentifier();
+                    $associationCodes[$association->getAssociationType()->getCode()]['product_models'][] = $associatedProductModel->getCode();
                 }
             }
         }

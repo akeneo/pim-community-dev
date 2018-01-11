@@ -1,5 +1,9 @@
 # 2.1.x
 
+## Bug fixes
+
+- PIM-7088: Fix remove association with a product model
+
 ## Web API
 
 - API-557: Ensure assets can be used as attribute as main picture in families
