@@ -158,6 +158,7 @@ class UserType extends AbstractType
             ->add('productGridFilters', $this->productGridFilterTypeClassName, [
                 'label'    => 'user.product_grid_filters',
                 'multiple' => true,
+                'required' => false,
             ]);
     }
 
