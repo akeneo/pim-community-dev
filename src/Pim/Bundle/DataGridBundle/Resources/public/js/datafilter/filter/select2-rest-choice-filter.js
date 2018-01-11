@@ -138,6 +138,8 @@ define(
                 );
 
                 initSelect2.init(this.$(this.criteriaValueSelectors.value), this._getSelect2Config());
+
+                this._updateCriteriaHint();
             },
 
             _onClickCriteriaSelector: function(e) {
@@ -225,8 +227,14 @@ define(
 
             _getCriteriaHint: function() {
                 var operator = this.$('li.active .operator_choice').data('value');
+                var type = this.getValue().type;
+
                 if (_.contains(['empty', 'not empty'], operator)) {
                     return this.operatorChoices[operator];
+                }
+
+                if (_.contains(['empty', 'not empty'], type)) {
+                    return this.operatorChoices[type];
                 }
 
                 var value = (arguments.length > 0) ? this._getDisplayValue(arguments[0]) : this._getDisplayValue();
