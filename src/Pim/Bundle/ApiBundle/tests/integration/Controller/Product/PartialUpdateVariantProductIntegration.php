@@ -9,7 +9,7 @@ use Doctrine\Common\Collections\Collection;
 use Pim\Component\Catalog\tests\integration\Normalizer\NormalizedProductCleaner;
 use Symfony\Component\HttpFoundation\Response;
 
-class PartialUpdateProductVariantIntegration extends AbstractProductTestCase
+class PartialUpdateVariantProductIntegration extends AbstractProductTestCase
 {
     /** @var Collection */
     private $products;
@@ -739,6 +739,9 @@ JSON;
             "PACK": {
                 "groups": ["groupA"],
                 "products": ["apollon_optionb_false"]
+            },
+            "SUBSTITUTION": {
+                "product_models": ["amor"]
             }
         }
     }
@@ -796,11 +799,27 @@ JSON;
             ],
             'created'       => '2016-06-14T13:12:50+02:00',
             'updated'       => '2016-06-14T13:12:50+02:00',
-            'associations'  => [
-                'PACK'         => ['groups'   => ['groupA'], 'products' => ['apollon_optionb_false'], 'product_models' => []],
-                'SUBSTITUTION' => ['groups'   => [], 'products' => [], 'product_models' => []],
-                'UPSELL'       => ['groups'   => [], 'products' => [], 'product_models' => []],
-                'X_SELL'       => ['groups'   => [], 'products' => [], 'product_models' => []],
+            'associations' => [
+                'PACK' => [
+                    'groups' => ['groupA'],
+                    'products' => ['apollon_optionb_false'],
+                    'product_models' => [],
+                ],
+                'SUBSTITUTION' => [
+                    'groups' => [],
+                    'products' => [],
+                    'product_models' => ['amor'],
+                ],
+                'UPSELL' => [
+                    'groups' => [],
+                    'products' => [],
+                    'product_models' => [],
+                ],
+                'X_SELL' => [
+                    'groups' => [],
+                    'products' => [],
+                    'product_models' => [],
+                ],
             ],
         ];
 
