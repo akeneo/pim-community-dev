@@ -66,6 +66,18 @@ class Cursor extends AbstractCursor implements CursorInterface
 
     /**
      * {@inheritdoc}
+     */
+    public function count()
+    {
+        if (null === $this->items) {
+            $this->getNextIdentifiers($this->esQuery);
+        }
+
+        return $this->count;
+    }
+
+    /**
+     * {@inheritdoc}
      *
      * @see https://www.elastic.co/guide/en/elasticsearch/reference/5.x/search-request-search-after.html
      */
