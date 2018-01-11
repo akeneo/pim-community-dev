@@ -152,7 +152,7 @@ class CategoryAccessRepository extends EntityRepository implements IdentifiableO
     {
         $qb = $this->getGrantedChildrenQB($category, $user, $accessLevel)
             ->resetDQLParts(['select'])
-            ->select('c.code');
+            ->select('DISTINCT c.code');
 
         return array_map(
             function ($row) {
