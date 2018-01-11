@@ -2,7 +2,6 @@
 
 namespace Pim\Bundle\ApiBundle\tests\integration\Controller\Product;
 
-use Akeneo\Test\Integration\Configuration;
 use Pim\Component\Catalog\tests\integration\Normalizer\NormalizedProductCleaner;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -158,20 +157,27 @@ JSON;
 
     public function testProductCreationWithAssociations()
     {
+        $this->createProductModel([
+            'code' => 'a_product_model',
+            'family_variant' => 'familyVariantA1',
+            'values'  => [],
+        ]);
+
         $client = $this->createAuthenticatedClient();
 
-        $data =
-<<<JSON
-    {
-        "identifier": "product_creation_associations",
-        "associations": {
-            "X_SELL": {
-                "groups": ["groupA"],
-                "products": ["simple"],
-                "product_models": []
-            }
+        $data = <<<JSON
+{
+    "identifier": "product_creation_associations",
+    "associations": {
+        "UPSELL": {
+            "product_models": ["a_product_model"]
+        },
+        "X_SELL": {
+            "groups": ["groupA"],
+            "products": ["simple"]
         }
     }
+}
 JSON;
 
         $client->request('POST', 'api/rest/v1/products', [], [], [], $data);
@@ -204,7 +210,7 @@ JSON;
                 "UPSELL"       => [
                     "groups"   => [],
                     "products" => [],
-                    "product_models" => [],
+                    "product_models" => ["a_product_model"],
                 ],
                 "X_SELL"       => [
                     "groups"   => ["groupA"],
@@ -928,6 +934,41 @@ JSON;
 
         $this->assertSame('15'. chr(31) . 'm', $product->getValue('a_text')->getData());
         $this->assertSame('15'. chr(31) . 'm', $product->getRawValues()['a_text']['<all_channels>']['<all_locales>']);
+    }
+
+    public function testResponseWhenAssociatingToNonExistingProductModel()
+    {
+        $client = $this->createAuthenticatedClient();
+
+        $data = <<<JSON
+{
+    "identifier": "a_product",
+    "associations": {
+        "X_SELL": {
+            "product_models": ["a_non_exiting_product_model"]
+        }
+    }
+}
+JSON;
+
+        $expected = <<<JSON
+{
+    "code": 422,
+    "message": "Property \"associations\" expects a valid Product model identifier. The product model does not exist, \"a_non_exiting_product_model\" given. Check the expected format on the API documentation.",
+    "_links": {
+        "documentation": {
+            "href": "http:\/\/api.akeneo.com\/api-reference.html#post_products"
+        }
+    }
+}
+JSON;
+
+        $client->request('POST', 'api/rest/v1/products', [], [], [], $data);
+
+        $response = $client->getResponse();
+
+        $this->assertJsonStringEqualsJsonString($expected, $response->getContent());
+        $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
     }
 
     /**

@@ -581,27 +581,29 @@ JSON;
     {
         $client = $this->createAuthenticatedClient();
 
-        $data =
-<<<JSON
-    {
-        "identifier": "product_variant_creation_associations",
-        "parent": "amor",
-        "values": {
-          "a_yes_no": [
+        $data = <<<JSON
+{
+    "identifier": "product_variant_creation_associations",
+    "parent": "amor",
+    "values": {
+        "a_yes_no": [
             {
-              "locale": null,
-              "scope": null,
-              "data": true
+                "locale": null,
+                "scope": null,
+                "data": true
             }
-          ]
+        ]
+    },
+    "associations": {
+        "UPSELL": {
+            "product_models": ["amor"]
         },
-        "associations": {
-            "X_SELL": {
-                "groups": ["groupA"],
-                "products": ["simple"]
-            }
+        "X_SELL": {
+            "groups": ["groupA"],
+            "products": ["simple"]
         }
     }
+}
 JSON;
 
         $client->request('POST', 'api/rest/v1/products', [], [], [], $data);
@@ -670,7 +672,7 @@ JSON;
                 "UPSELL"       => [
                     "groups"   => [],
                     "products" => [],
-                    "product_models" => [],
+                    "product_models" => ["amor"],
                 ],
                 "X_SELL"       => [
                     "groups"   => ["groupA"],
