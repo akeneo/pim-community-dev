@@ -105,7 +105,7 @@ class ProductStorage implements Context
     /**
      * @Then :productIdentifier should be a product
      */
-    public function productShouldNotHaveAParent(string $productIdentifier): void
+    public function shouldBeProduct(string $productIdentifier): void
     {
         $product = $this->productRepository->findOneByIdentifier($productIdentifier);
 
@@ -113,10 +113,20 @@ class ProductStorage implements Context
             throw new \Exception(sprintf('The product "%s" does not exist', $productIdentifier));
         }
 
-        if (!$product instanceof ProductInterface || $productIdentifier instanceof VariantProductInterface) {
-            throw new \Exception(
-                sprintf('The given object must be a variant product, %s given', ClassUtils::getClass($product))
-            );
+        Assert::isFalse($product->isVariant());
+    }
+
+    /**
+     * @Then :productIdentifier should be a variant product
+     */
+    public function shouldBeVariantProduct(string $productIdentifier): void
+    {
+        $product = $this->productRepository->findOneByIdentifier($productIdentifier);
+
+        if (null === $product) {
+            throw new \Exception(sprintf('The product "%s" does not exist', $productIdentifier));
         }
+
+        Assert::isTrue($product->isVariant());
     }
 }
