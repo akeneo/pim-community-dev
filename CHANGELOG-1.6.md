@@ -1,3 +1,9 @@
+# 1.6.21 (2018-01-11)
+
+## Bug fixes
+
+- PIM-7076: Fix sort order in product view form
+
 # 1.6.20 (2017-10-25)
 
 # 1.6.19 (2017-09-05)

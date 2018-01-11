@@ -38,7 +38,7 @@ define(
     ) {
         return BaseForm.extend({
             template: _.template(formTemplate),
-            className: 'tabbable tabs-left product-attributes',
+            className: 'tabbable tabs-left object-attributes',
             rendering: false,
             configure: function () {
                 this.trigger('tab:register', {
@@ -89,11 +89,15 @@ define(
 
                         return $.when.apply($, fieldPromises);
                     }.bind(this)).then(function () {
+                        return _.sortBy(arguments, function (field) {
+                            return field.attribute.sort_order;
+                        });
+                    }).then(function (fields) {
                         var $productValuesPanel = this.$('.object-values');
                         $productValuesPanel.empty();
 
                         FieldManager.clearVisibleFields();
-                        _.each(arguments, function (field) {
+                        _.each(fields, function (field) {
                             if (field.canBeSeen()) {
                                 field.render();
                                 FieldManager.addVisibleField(field.attribute.code);
@@ -128,7 +132,9 @@ define(
 
                 promises.push(AttributeGroupManager.getAttributeGroupsForObject(product)
                     .then(function (attributeGroups) {
-                        this.getExtension('attribute-group-selector').setElements(attributeGroups);
+                        this.getExtension('attribute-group-selector').setElements(
+                            _.indexBy(_.sortBy(attributeGroups, 'sort_order'), 'code')
+                        );
                     }.bind(this))
                 );
 
