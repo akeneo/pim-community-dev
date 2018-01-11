@@ -1,11 +1,12 @@
 parameters:
     pimee_enrich.doctrine.counter.granted_category_items.class: PimEnterprise\Bundle\EnrichBundle\Doctrine\Counter\GrantedCategoryItemsCounter
+    pimee_enrich.doctrine.counter.granted_category_products.class: PimEnterprise\Bundle\EnrichBundle\Doctrine\Counter\GrantedCategoryProductsCounter
 
 services:
     pimee_enrich.doctrine.counter.category_product:
-        class: '%pimee_enrich.doctrine.counter.granted_category_items.class%'
+        class: '%pimee_enrich.doctrine.counter.granted_category_products.class%'
         arguments:
-            - '@pim_catalog.repository.product_category'
+            - '@pim_catalog.query.product_query_builder_factory'
             - '@pim_catalog.repository.category'
             - '@pimee_security.repository.category_access'
             - '@security.authorization_checker'
