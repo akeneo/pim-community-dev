@@ -271,9 +271,9 @@ Feature: Datagrid views
     Given I am on the products page
     And I filter by "family" with operator "is empty" and value ""
     And I create the view:
-      | label | Empty family |
+      | new-view-label | Empty family |
     Then I should be on the products page
     And I should see the flash message "Datagrid view successfully created"
     And I refresh current page
     Then I should see the text "Family: is empty"
-    And I should see the text "Views Empty family
+    And I should see the text "Empty family"
