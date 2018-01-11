@@ -266,5 +266,6 @@ Feature: Datagrid views
     Then I should be on the products page
     And I should see the flash message "Datagrid view successfully created"
     And I refresh current page
-    Then I should see the text "Family: is empty"
+    And I apply the "Empty family" view
+    Then I should see the text "Family is empty"
     And I should see the text "Empty family"
