@@ -1,3 +1,9 @@
+# 2.0.x
+
+## Bug fixes
+
+- PIM-7109: Fix export profiles are missing permissions tab
+
 # 2.0.11 (2018-01-05)
 
 - PIM-7067: Fix error when trying to delete a product model
