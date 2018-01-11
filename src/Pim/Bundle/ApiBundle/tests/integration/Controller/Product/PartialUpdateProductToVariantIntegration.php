@@ -6,6 +6,7 @@ namespace Pim\Bundle\ApiBundle\tests\integration\Controller\Product;
 
 use Akeneo\Test\Integration\Configuration;
 use Symfony\Component\HttpFoundation\Response;
+use Pim\Component\Catalog\tests\integration\Normalizer\NormalizedProductCleaner;
 
 class PartialUpdateProductToVariantIntegration extends AbstractProductTestCase
 {
@@ -26,7 +27,6 @@ JSON;
             'family' => 'familyA',
             'parent' => 'amor',
             'groups' => [],
-            'categories' => ['master'],
             'enabled' => true,
             'values' => [
                 'a_localized_and_scopable_text_area' => [['locale' => 'en_US', 'scope' => 'ecommerce', 'data' => 'my pink tshirt']],
@@ -45,7 +45,14 @@ JSON;
 
         $this->assertSame('', $response->getContent());
         $this->assertSame(Response::HTTP_CREATED, $response->getStatusCode());
-        $this->assertSameProducts($expectedProduct, 'product_family_variant');
+
+        $product = $this->getFromTestContainer('pim_catalog.repository.product')->findOneByIdentifier('product_family_variant');
+        $standardizedProduct = $this->getFromTestContainer('pim_serializer')->normalize($product, 'standard');
+        unset($standardizedProduct['categories']);
+        NormalizedProductCleaner::clean($expectedProduct);
+        NormalizedProductCleaner::clean($standardizedProduct);
+        $this->assertEquals($standardizedProduct, $expectedProduct);
+
         $this->assertArrayHasKey('location', $response->headers->all());
         $this->assertSame(
             'http://localhost/api/rest/v1/products/product_family_variant',
