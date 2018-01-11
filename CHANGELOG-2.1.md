@@ -1,3 +1,9 @@
+# 2.1.x
+
+## Web API
+
+- API-557: Ensure assets can be used as attribute as main picture in families
+
 # 2.1.1 (2018-01-10)
 
 ## Bug fixes
