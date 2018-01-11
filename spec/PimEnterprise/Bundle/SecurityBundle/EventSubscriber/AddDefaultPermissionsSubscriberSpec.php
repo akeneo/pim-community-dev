@@ -9,9 +9,12 @@ use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Entity\Attribute;
 use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
 use Pim\Bundle\UserBundle\Doctrine\ORM\Repository\GroupRepository;
-use Pim\Component\Catalog\Model\AttributeGroupInterface;
+use Pim\Component\Catalog\Model\CategoryInterface;
 use PimEnterprise\Bundle\SecurityBundle\Manager\AttributeGroupAccessManager;
+use PimEnterprise\Bundle\SecurityBundle\Manager\CategoryAccessManager;
 use PimEnterprise\Bundle\SecurityBundle\Manager\JobProfileAccessManager;
+use PimEnterprise\Component\ProductAsset\Model\CategoryInterface as ProductAssetCategoryInterface;
+use PimEnterprise\Component\Security\Attributes;
 use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
@@ -20,9 +23,17 @@ class AddDefaultPermissionsSubscriberSpec extends ObjectBehavior
     function let(
         GroupRepository $groupRepository,
         AttributeGroupAccessManager $attributeGroupAccessManager,
-        JobProfileAccessManager $jobInstanceAccessManager
+        JobProfileAccessManager $jobInstanceAccessManager,
+        CategoryAccessManager $productCategoryAccessManager,
+        CategoryAccessManager $assetCategoryAccessManager
     ) {
-        $this->beConstructedWith($groupRepository, $attributeGroupAccessManager, $jobInstanceAccessManager);
+        $this->beConstructedWith(
+            $groupRepository,
+            $attributeGroupAccessManager,
+            $jobInstanceAccessManager,
+            $productCategoryAccessManager,
+            $assetCategoryAccessManager
+        );
     }
 
     function it_subscribes_to_events()
@@ -78,5 +89,75 @@ class AddDefaultPermissionsSubscriberSpec extends ObjectBehavior
         $jobInstanceAccessManager->setAccess(Argument::cetera())->shouldNotBeCalled();
 
         $this->setDefaultPermissions(new GenericEvent($attributeGroup, ['is_new' => false]));
+    }
+
+    function it_set_default_permissions_on_root_product_category(
+        $groupRepository,
+        $productCategoryAccessManager,
+        Group $defaultGroup,
+        CategoryInterface $category,
+        GenericEvent $event
+    ) {
+        $event->hasArgument('is_new')->willReturn(true);
+        $event->getArgument('is_new')->willReturn(true);
+
+        $event->getSubject()->willReturn($category);
+        $category->isRoot()->willReturn(true);
+
+        $groupRepository->getDefaultUserGroup()->willReturn($defaultGroup);
+
+        $productCategoryAccessManager->grantAccess(
+            $category,
+            $defaultGroup,
+            Attributes::OWN_PRODUCTS
+        )->shouldBeCalled();
+
+        $this->setDefaultPermissions($event);
+    }
+
+    function it_set_default_permissions_on_product_category(
+        $groupRepository,
+        $productCategoryAccessManager,
+        Group $defaultGroup,
+        CategoryInterface $category,
+        GenericEvent $event
+    ) {
+        $event->hasArgument('is_new')->willReturn(true);
+        $event->getArgument('is_new')->willReturn(true);
+
+        $event->getSubject()->willReturn($category);
+        $category->isRoot()->willReturn(false);
+
+        $groupRepository->getDefaultUserGroup()->willReturn($defaultGroup);
+
+        $productCategoryAccessManager->setAccessLikeParent(
+            $category,
+            ['owner' => true]
+        )->shouldBeCalled();
+
+        $this->setDefaultPermissions($event);
+    }
+
+    function it_set_default_permissions_on_product_asset_category(
+        $groupRepository,
+        $assetCategoryAccessManager,
+        Group $defaultGroup,
+        ProductAssetCategoryInterface $category,
+        GenericEvent $event
+    ) {
+        $event->hasArgument('is_new')->willReturn(true);
+        $event->getArgument('is_new')->willReturn(true);
+
+        $event->getSubject()->willReturn($category);
+        $category->isRoot()->willReturn(false);
+
+        $groupRepository->getDefaultUserGroup()->willReturn($defaultGroup);
+
+        $assetCategoryAccessManager->setAccessLikeParent(
+            $category,
+            ['owner' => false]
+        )->shouldBeCalled();
+
+        $this->setDefaultPermissions($event);
     }
 }

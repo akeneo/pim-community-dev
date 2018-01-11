@@ -3,6 +3,14 @@
 ## Bug fixes
 
 - PIM-7109: Fix export profiles are missing permissions tab
+- API-392: Add default permissions when create a category through the API 
+
+## BC breaks
+
+- Change the constructor of `PimEnterprise\Bundle\SecurityBundle\EventSubscriber\AddDefaultPermissionsSubscriber` to add `PimEnterprise\Bundle\SecurityBundle\Manager\CategoryAccessManager` and `PimEnterprise\Bundle\SecurityBundle\Manager\CategoryAccessManager` 
+- Remove `PimEnterprise\Bundle\SecurityBundle\EventSubscriber\Enrich\AddCategoryPermissionsSubscriber` 
+- Remove `PimEnterprise\Bundle\SecurityBundle\EventSubscriber\Enrich\AddDefaultUserGroupSubscriber`
+- Remove `PimEnterprise\Bundle\SecurityBundle\EventSubscriber\ImportExport\AddCategoryPermissionsSubscriber`
 
 # 2.0.11 (2018-01-05)
 
