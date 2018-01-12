@@ -559,6 +559,12 @@ JSON;
      */
     public function testProductPartialUpdateWithTheAssociationsUpdated()
     {
+        $this->createProductModel([
+            'code' => 'a_product_model',
+            'family_variant' => 'familyVariantA1',
+            'values'  => [],
+        ]);
+
         $client = $this->createAuthenticatedClient();
 
         $data =
@@ -569,6 +575,9 @@ JSON;
             "PACK": {
                 "groups": ["groupA"],
                 "products": ["product_categories", "product_family"]
+            },
+            "SUBSTITUTION": {
+                "product_models": ["a_product_model"]
             }
         }
     }
@@ -591,11 +600,27 @@ JSON;
             ],
             'created'       => '2016-06-14T13:12:50+02:00',
             'updated'       => '2016-06-14T13:12:50+02:00',
-            'associations'  => [
-                'PACK'         => ['groups'   => ['groupA'], 'products' => ['product_categories', 'product_family'], 'product_models' => []],
-                'SUBSTITUTION' => ['groups'   => [], 'products' => [], 'product_models' => []],
-                'UPSELL'       => ['groups'   => [], 'products' => [], 'product_models' => []],
-                'X_SELL'       => ['groups'   => ['groupA'], 'products' => ['product_categories'], 'product_models' => []],
+            'associations' => [
+                'PACK' => [
+                    'groups' => ['groupA'],
+                    'products' => ['product_categories', 'product_family'],
+                    'product_models' => [],
+                ],
+                'SUBSTITUTION' => [
+                    'groups' => [],
+                    'products' => [],
+                    'product_models' => ['a_product_model']
+                ],
+                'UPSELL' => [
+                    'groups' => [],
+                    'products' => [],
+                    'product_models' => [],
+                ],
+                'X_SELL' => [
+                    'groups' => ['groupA'],
+                    'products' => ['product_categories'],
+                    'product_models' => [],
+                ],
             ],
         ];
 
@@ -1407,6 +1432,41 @@ JSON;
 
         $response = $client->getResponse();
         $this->assertSame($expectedContent, json_decode($response->getContent(), true));
+        $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
+    }
+
+    public function testResponseWhenAssociatingToNonExistingProductModel()
+    {
+        $client = $this->createAuthenticatedClient();
+
+        $data = <<<JSON
+{
+    "identifier": "big_boot",
+    "associations": {
+        "X_SELL": {
+            "product_models": ["a_non_exiting_product_model"]
+        }
+    }
+}
+JSON;
+
+        $expected = <<<JSON
+{
+    "code": 422,
+    "message": "Property \"associations\" expects a valid Product model identifier. The product model does not exist, \"a_non_exiting_product_model\" given. Check the expected format on the API documentation.",
+    "_links": {
+        "documentation": {
+            "href": "http:\/\/api.akeneo.com\/api-reference.html#post_products"
+        }
+    }
+}
+JSON;
+
+        $client->request('POST', 'api/rest/v1/products', [], [], [], $data);
+
+        $response = $client->getResponse();
+
+        $this->assertJsonStringEqualsJsonString($expected, $response->getContent());
         $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
     }
 

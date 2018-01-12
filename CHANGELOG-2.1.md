@@ -1,3 +1,10 @@
+# 2.1.x
+
+## Web API
+
+- API-445: Update product association to product model
+- API-565: Create a product and associate it to product model
+
 # 2.1.1 (2018-01-10)
 
 ## Bug fixes
