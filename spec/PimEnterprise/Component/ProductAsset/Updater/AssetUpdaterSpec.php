@@ -310,11 +310,11 @@ class AssetUpdaterSpec extends ObjectBehavior
     }
 
     function it_throws_an_exception_if_localized_is_not_a_scalar(AssetInterface $asset) {
-        $values = ['localized'  => 'foo'];
+        $values = ['localizable'  => 'foo'];
 
         $this
             ->shouldThrow(
-                InvalidPropertyTypeException::booleanExpected('localized', AssetUpdater::class, 'foo')
+                InvalidPropertyTypeException::booleanExpected('localizable', AssetUpdater::class, 'foo')
             )
             ->during('update', [$asset, $values, []]);
     }
@@ -330,27 +330,27 @@ class AssetUpdaterSpec extends ObjectBehavior
     }
 
     function it_throws_an_exception_when_updating_an_existing_unlocalizable_asset_as_localizable(AssetInterface $asset) {
-        $values = ['localized'  => true];
+        $values = ['localizable'  => true];
 
         $asset->getId()->willReturn(1);
         $asset->isLocalizable()->willReturn(false);
 
         $this
             ->shouldThrow(
-                ImmutablePropertyException::immutableProperty('localized', true, AssetUpdater::class)
+                ImmutablePropertyException::immutableProperty('localizable', true, AssetUpdater::class)
             )
             ->during('update', [$asset, $values, []]);
     }
 
     function it_throws_an_exception_when_updating_an_existing_localizable_asset_as_unlocalizable(AssetInterface $asset) {
-        $values = ['localized'  => false];
+        $values = ['localizable'  => false];
 
         $asset->getId()->willReturn(1);
         $asset->isLocalizable()->willReturn(true);
 
         $this
             ->shouldThrow(
-                ImmutablePropertyException::immutableProperty('localized', false, AssetUpdater::class)
+                ImmutablePropertyException::immutableProperty('localizable', false, AssetUpdater::class)
             )
             ->during('update', [$asset, $values, []]);
     }

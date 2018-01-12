@@ -3,6 +3,7 @@
 ## Bug fixes
 
 - PIM-7088: Fix remove association with a product model
+- API-582: fix "localizable" and "scope" field of the asset format in the API
 
 ## Web API
 

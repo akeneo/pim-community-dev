@@ -30,7 +30,7 @@ class AssetUpdaterSpec extends ObjectBehavior
         $dataToUpdate = [
             'code' => 'asset_code',
             'categories' => ['category_1'],
-            'localized' => true,
+            'localizable' => true,
             'tags' => ['tag_1'],
             'description' => 'desc',
             'end_of_use' => '2016-09-01T00:00:00+0800',
@@ -50,7 +50,7 @@ class AssetUpdaterSpec extends ObjectBehavior
         $assetUpdater->update($asset, [
             'code' => 'asset_code',
             'categories' => ['category_1'],
-            'localized' => true,
+            'localizable' => true,
             'tags' => ['tag_1'],
             'description' => 'desc',
             'end_of_use' => '2016-09-01T00:00:00+0800',
@@ -62,11 +62,11 @@ class AssetUpdaterSpec extends ObjectBehavior
             ->during('update', [$asset, $dataToUpdate, []]);
     }
 
-    function it_updates_as_not_localized_as_default_value_when_creating_asset($assetUpdater, AssetInterface $asset)
+    function it_updates_as_not_localizable_as_default_value_when_creating_asset($assetUpdater, AssetInterface $asset)
     {
         $dataToUpdate = ['code' => 'asset_code'];
 
-        $assetUpdater->update($asset, ['code' => 'asset_code', 'localized' => false], [])->shouldBeCalled();
+        $assetUpdater->update($asset, ['code' => 'asset_code', 'localizable' => false], [])->shouldBeCalled();
 
         $asset->getId()->willReturn(null);
 
@@ -75,7 +75,7 @@ class AssetUpdaterSpec extends ObjectBehavior
             ->during('update', [$asset, $dataToUpdate, []]);
     }
 
-    function it_updates_without_default_localized_property_when_updating_asset($assetUpdater, AssetInterface $asset)
+    function it_updates_without_default_localizable_property_when_updating_asset($assetUpdater, AssetInterface $asset)
     {
         $dataToUpdate = ['code' => 'asset_code'];
 

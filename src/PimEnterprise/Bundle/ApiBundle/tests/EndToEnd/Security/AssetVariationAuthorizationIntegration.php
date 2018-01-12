@@ -39,7 +39,7 @@ JSON;
      */
     public function testAccessGrantedForGettingAnAssetVariation()
     {
-        $this->createAsset(['code' => 'an_asset', 'localized' => false]);
+        $this->createAsset(['code' => 'an_asset', 'localizable' => false]);
 
         $client = $this->createAuthenticatedClient();
 
@@ -54,7 +54,7 @@ JSON;
      */
     public function testAccessGrantedForDownloadingAnAssetVariationFile()
     {
-        $this->createAsset(['code' => 'an_asset', 'localized' => false]);
+        $this->createAsset(['code' => 'an_asset', 'localizable' => false]);
 
         $client = $this->createAuthenticatedClient();
 
@@ -77,7 +77,7 @@ JSON;
      */
     public function testAccessGrantedForCreatingAnAssetVariation()
     {
-        $this->createAsset(['code' => 'an_asset', 'localized' => false]);
+        $this->createAsset(['code' => 'an_asset', 'localizable' => false]);
         $filePath = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'akeneo.jpg';
         copy($this->getFixturePath('akeneo.jpg'), $filePath);
 
@@ -138,7 +138,7 @@ JSON;
      */
     public function testAccessDeniedForCreatingAnAssetVariation()
     {
-        $this->createAsset(['code' => 'an_asset', 'localized' => false]);
+        $this->createAsset(['code' => 'an_asset', 'localizable' => false]);
         $filePath = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'akeneo.jpg';
         copy($this->getFixturePath('akeneo.jpg'), $filePath);
 

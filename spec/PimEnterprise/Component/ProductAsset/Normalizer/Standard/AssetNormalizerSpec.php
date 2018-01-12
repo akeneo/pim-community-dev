@@ -43,7 +43,7 @@ class AssetNormalizerSpec extends ObjectBehavior
 
         $this->normalize($asset)->shouldReturn([
             'code'        => 'code',
-            'localized'   => false,
+            'localizable' => false,
             'description' => null,
             'end_of_use'  => null,
             'tags'        => [],
@@ -65,7 +65,7 @@ class AssetNormalizerSpec extends ObjectBehavior
 
         $this->normalize($asset)->shouldReturn([
             'code'        => 'code',
-            'localized'   => true,
+            'localizable' => true,
             'description' => 'my description',
             'end_of_use'  => '2016-08-22T15:54:22+01:00',
             'tags'        => ['cats', 'dogs'],

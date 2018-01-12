@@ -39,7 +39,7 @@ JSON;
      */
     public function testAccessGrantedForGettingAnAsset()
     {
-        $this->createAsset(['code' => 'an_asset', 'localized' => false]);
+        $this->createAsset(['code' => 'an_asset', 'localizable' => false]);
 
         $client = $this->createAuthenticatedClient();
 
