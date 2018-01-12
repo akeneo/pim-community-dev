@@ -68,7 +68,7 @@ Pim\Component\Catalog\Model\ProductModel:
     manyToOne:
         parent:
             targetEntity: Pim\Component\Catalog\Model\ProductModelInterface
-            inversedBy: children
+            inversedBy: productModels
             joinColumns:
                 parent_id:
                     referencedColumnName: id
