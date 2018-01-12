@@ -34,7 +34,7 @@ class ProductMassActionRepositoryIntegration extends TestCase
             [$variantProductId]
         );
         $this->assertSame(1, $deletedVariantProductsCount);
-        $this->assertNull($this->get('pim_catalog.repository.variant_product')->findOneById($variantProductId));
+        $this->assertNull($this->get('pim_catalog.repository.product')->findOneById($variantProductId));
     }
 
     /**

@@ -13,12 +13,13 @@ use Pim\Component\Catalog\Model\VariantAttributeSetInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Repository\ProductModelRepositoryInterface;
 use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
+use Pim\Component\Catalog\Repository\VariantProductRepositoryInterface;
 
 class ImageAsLabelSpec extends ObjectBehavior
 {
     function let(
         ProductModelRepositoryInterface $productModelRepository,
-        ProductRepositoryInterface $productRepository
+        VariantProductRepositoryInterface $productRepository
     ) {
         $this->beConstructedWith($productModelRepository, $productRepository);
     }
@@ -61,9 +62,6 @@ class ImageAsLabelSpec extends ObjectBehavior
     }
 
     function it_gets_the_attribute_as_image_value_of_a_product_model_coming_from_a_parent(
-        $productModelRepository,
-        $productRepository,
-        ProductModelInterface $rootProductModel,
         ProductModelInterface $productModel,
         FamilyInterface $family,
         FamilyVariantInterface $familyVariant,
@@ -142,11 +140,7 @@ class ImageAsLabelSpec extends ObjectBehavior
             1
         )->willReturn([$subProductModel]);
 
-        $productRepository->findBy(
-            ['parent' => $productModel],
-            ['created' => 'ASC', 'identifier' => 'ASC'],
-            1
-        )->willReturn([]);
+        $productRepository->findLastCreatedByParent($productModel)->willReturn(null);
 
         $subProductModel->getImage()->willReturn($imageValue);
 
@@ -195,11 +189,7 @@ class ImageAsLabelSpec extends ObjectBehavior
             1
         )->willReturn([]);
 
-        $productRepository->findBy(
-            ['parent' => $productModel],
-            ['created' => 'ASC', 'identifier' => 'ASC'],
-            1
-        )->willReturn([$variantProduct]);
+        $productRepository->findLastCreatedByParent($productModel)->willReturn($variantProduct);
 
         $variantProduct->getImage()->willReturn($imageValue);
 
@@ -218,8 +208,7 @@ class ImageAsLabelSpec extends ObjectBehavior
         VariantAttributeSetInterface $attributeSetOne,
         VariantAttributeSetInterface $attributeSetTwo,
         Collection $attributeCollectionOne,
-        Collection $attributeCollectionTwo,
-        ValueInterface $imageValue
+        Collection $attributeCollectionTwo
     ) {
         $attributeSets->getIterator()->willReturn($attributeSetsIterator);
         $attributeSetsIterator->rewind()->shouldBeCalled();
@@ -247,11 +236,7 @@ class ImageAsLabelSpec extends ObjectBehavior
             1
         )->willReturn([]);
 
-        $productRepository->findBy(
-            ['parent' => $productModel],
-            ['created' => 'ASC', 'identifier' => 'ASC'],
-            1
-        )->willReturn([]);
+        $productRepository->findLastCreatedByParent($productModel)->willReturn(null);
 
         $this->value($productModel)->shouldReturn(null);
     }

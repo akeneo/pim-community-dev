@@ -59,7 +59,7 @@ class EntityWithVariantVersionIntegration extends TestCase
             ],
         ]);
 
-        $apollonBlueXXL = $this->get('pim_catalog.repository.variant_product')->findOneByIdentifier('1111111119');
+        $apollonBlueXXL = $this->get('pim_catalog.repository.product')->findOneByIdentifier('1111111119');
         $oldEAN = null === $apollonBlueXXL->getValue('ean')
             ? ''
             : $apollonBlueXXL->getValue('ean')->getData();
