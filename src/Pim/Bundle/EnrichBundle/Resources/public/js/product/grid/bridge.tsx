@@ -3,36 +3,11 @@ import * as React from 'react';
 import { applyMiddleware, createStore } from 'redux';
 import thunkMiddleware from 'redux-thunk';
 import { Provider, connect } from 'react-redux';
-const fetcherRegistry = require('pim/fetcher-registry');
 const router = require('pim/router');
 const __ = require('oro/translator');
-import i18n from 'pim/i18n';
+import { ProductInterface } from 'pimfront/js/product/domain/model/product';
 const userContext = require('pim/user-context');
-
-interface ProductInterface {
-  meta: {
-    image: string;
-    id: string;
-    label: {
-      [locale: string]: string;
-    };
-  };
-  family: string;
-  identifier: string;
-}
-
-const updateGridAction = () => (dispatch: any): Promise<ProductInterface[]> => {
-  return fetcherRegistry.getFetcher('product-grid').search({
-      limit: 25,
-      'default_locale': userContext.get('catalogLocale'),
-      'default_scope': userContext.get('catalogScope')
-    })
-    .then((products: ProductInterface[]) => {
-      dispatch({type: 'DATA_RECEIVED', data: {items: products}});
-
-      return products;
-    });
-}
+import { updateGridAction } from 'pimfront/js/grid/domain/action/search';
 
 const redirectToProduct = (product: ProductInterface) => {
   return {type: 'REDIRECT_TO_ROUTE', route: 'pim_enrich_product_edit', params: {id: product.meta.id}}
@@ -85,7 +60,7 @@ const GridView = ({items, redirectToProduct}: GridState & GridDispatch) => {
       <td className="AknGrid-bodyCell string-cell">
         <img className="AknGrid-image" src="/media/show/{item.meta.image}/thumbnail_small" title="" />
       </td>
-      <td className="AknGrid-bodyCell AknGrid-bodyCell--highlight" data-column="label">{i18n.getLabel(item.meta.label, userContext.get('catalogLocale'), item.identifier)}</td>
+      <td className="AknGrid-bodyCell AknGrid-bodyCell--highlight" data-column="label">{item.getLabel('ecommerce', 'en_US')}</td>
       <td className="AknGrid-bodyCell string-cell" data-column="family">{item.family}</td>
       <td className="AknGrid-bodyCell string-cell">
         <div className="AknBadge AknBadge--medium AknBadge--disabled status-disabled"><i className="AknBadge-icon icon-status-disabled icon-circle"></i>Disabled</div>
@@ -159,7 +134,7 @@ const Grid = connect(
 )(GridView);
 
 const render = (Component: any) => (DOMElement: HTMLElement) => {
-  store.dispatch(updateGridAction());
+  store.dispatch(updateGridAction(userContext.get('catalogLocale'), userContext.get('catalogScope')));
 
   return ReactDOM.render(
     <Provider store={store}>

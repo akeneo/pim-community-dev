@@ -302,7 +302,7 @@ class ProductNormalizer implements NormalizerInterface
      */
     protected function normalizeImage(?ValueInterface $value, array $context = []): ?array
     {
-        return $this->imageNormalizer->normalize($value, $context['locale']);
+        return $this->imageNormalizer->normalize($value);
     }
 
     /**

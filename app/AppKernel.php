@@ -96,6 +96,7 @@ class AppKernel extends Kernel
             new Pim\Bundle\UIBundle\PimUIBundle(),
             new Pim\Bundle\VersioningBundle\PimVersioningBundle(),
             new Pim\Bundle\CatalogVolumeMonitoringBundle\PimCatalogVolumeMonitoringBundle(),
+            new Pim\Bundle\FrontBundle\PimFrontBundle(),
         ];
     }
 

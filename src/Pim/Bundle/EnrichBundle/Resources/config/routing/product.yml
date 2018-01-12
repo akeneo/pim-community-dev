@@ -36,7 +36,7 @@ pim_enrich_product_rest_index:
 pim_enrich_product_grid_rest_index:
     path: /rest/grid/
     defaults: { _controller: pim_enrich.controller.rest.product_grid:indexAction }
-    methods: [POST]
+    methods: [GET]
 
 pim_enrich_product_rest_create:
     path: /rest

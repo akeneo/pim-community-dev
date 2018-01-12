@@ -6,36 +6,44 @@ use Pim\Component\Catalog\Query\ProductQueryBuilderFactoryInterface;
 use Pim\Component\Catalog\Repository\FamilyRepositoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class ProductGridController {
     public function __construct(
         ProductQueryBuilderFactoryInterface $pqbFactory,
-        FamilyRepositoryInterface $familyRepository
+        FamilyRepositoryInterface $familyRepository,
+        NormalizerInterface $normalizer
     ) {
-        $this->pqbFactory = $pqbFactory;
+        $this->pqbFactory       = $pqbFactory;
         $this->familyRepository = $familyRepository;
+        $this->normalizer       = $normalizer;
     }
 
     public function indexAction(Request $request): JsonResponse
     {
-        $searchOptions = json_decode($request->getContent(), true);
+        $searchOptions = $request->query->all();
+        $searchOptions['limit'] = (int) $searchOptions['limit'];
+
         $pqb = $this->pqbFactory->create($searchOptions);
         $cursor = $pqb->execute();
 
         $products = [];
         while ($cursor->valid()) {
             $product = $cursor->current();
-            $family = $this->familyRepository->findOneBy(['id' => $product['family_id']]);
-            $product['values'] = json_decode($product['raw_values'], true);
-            $products[] = $product;
+
+            $normalizedProduct = $this->normalizer->normalize(
+                $product,
+                'internal_api',
+                [
+                    'locales' => ['en_US'],
+                    'channels' => ['ecommerce'],
+                    'data_locale' => 'en_US'
+                ]
+            );
+            $products[] = $normalizedProduct;
             $cursor->next();
         }
 
         return new JsonResponse($products);
-    }
-
-    protected function getLabels(array $values, FamilyInterface $family): array
-    {
-
     }
 }

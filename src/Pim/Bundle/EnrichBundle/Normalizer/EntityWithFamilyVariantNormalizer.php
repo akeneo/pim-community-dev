@@ -139,7 +139,7 @@ class EntityWithFamilyVariantNormalizer implements NormalizerInterface
      */
     private function normalizeImage(?ValueInterface $data, array $context = []): ?array
     {
-        return $this->imageNormalizer->normalize($data, $context['locale']);
+        return $this->imageNormalizer->normalize($data);
     }
 
     /**

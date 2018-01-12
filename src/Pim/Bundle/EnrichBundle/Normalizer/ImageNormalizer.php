@@ -28,11 +28,10 @@ class ImageNormalizer
      * Normalizes an value interface to display an image
      *
      * @param ValueInterface|null $value
-     * @param string|null         $localeCode
      *
      * @return array|null
      */
-    public function normalize(?ValueInterface $value, ?string $localeCode = null): ?array
+    public function normalize(?ValueInterface $value): ?array
     {
         if (null === $value || null === $value->getData()) {
             return null;
