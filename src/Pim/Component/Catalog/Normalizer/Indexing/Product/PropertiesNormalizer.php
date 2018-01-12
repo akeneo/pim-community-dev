@@ -121,7 +121,7 @@ class PropertiesNormalizer implements NormalizerInterface, SerializerAwareInterf
     {
         $ancestorsIds = [];
         $ancestorsCodes = [];
-        if ($product instanceof VariantProductInterface) {
+        if ($product instanceof EntityWithFamilyVariantInterface) {
             $ancestorsIds = $this->getAncestorsIds($product);
             $ancestorsCodes = $this->getAncestorsCodes($product);
         }
@@ -155,7 +155,7 @@ class PropertiesNormalizer implements NormalizerInterface, SerializerAwareInterf
      *
      * @return array
      */
-    private function getAncestorsCodes(EntityWithFamilyVariantInterface $entityWithFamilyVariant)
+    private function getAncestorsCodes(EntityWithFamilyVariantInterface $entityWithFamilyVariant): array
     {
         $ancestorsCodes = [];
         while (null !== $parent = $entityWithFamilyVariant->getParent()) {
