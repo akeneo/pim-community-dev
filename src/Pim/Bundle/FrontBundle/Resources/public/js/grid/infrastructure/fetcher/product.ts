@@ -39,6 +39,10 @@ class ProductGridFetcher {
         });
     });
   }
+
+  clear () {
+
+  }
 };
 
 export default ProductGridFetcher;

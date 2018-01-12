@@ -134,7 +134,9 @@ const Grid = connect(
 )(GridView);
 
 const render = (Component: any) => (DOMElement: HTMLElement) => {
-  store.dispatch(updateGridAction(userContext.get('catalogLocale'), userContext.get('catalogScope')));
+  // store.dispatch(updateLocale(userContext.get('catalogLocale')));
+  // store.dispatch(updateChannel(userContext.get('catalogScope')));
+  store.dispatch(updateGridAction(userContext.get('catalogLocale'), userContext.get('catalogScope'), 25));
 
   return ReactDOM.render(
     <Provider store={store}>
