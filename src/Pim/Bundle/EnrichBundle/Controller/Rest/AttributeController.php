@@ -68,8 +68,10 @@ class AttributeController
      */
     public function indexAction(Request $request)
     {
-        $options = [];
+        $options = $request->request->get('options', []);
         $context = ['include_group' => true];
+
+        $options['apply_filters']= $request->request->getBoolean('apply_filters', true);
 
         if ($request->request->has('identifiers')) {
             $options['identifiers'] = explode(',', $request->request->get('identifiers'));

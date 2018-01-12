@@ -267,18 +267,17 @@ define([
              * @param {Object} event
              */
             onAddAttributes: function (event) {
-                var options = {
-                    options: {
-                        identifiers: event.codes,
-                        limit: event.codes.length
-                    }
-                };
                 var loadingMask = new LoadingMask();
                 loadingMask.render().$el.appendTo(this.getRoot().$el).show();
 
                 $.when(
                     FetcherRegistry.getFetcher('attribute')
-                        .search(options)
+                        .fetchByIdentifiers(event.codes, {
+                            options: {
+                                limit: event.codes.length
+                            },
+                            apply_filters: false
+                        })
                 ).then(function (attributes) {
                     _.each(attributes, function (attribute) {
                         this.addAttribute(attribute);
@@ -315,17 +314,18 @@ define([
                         [],
                         _.pluck(attributeGroups, 'attributes')
                     );
+
                     var attributesToAdd = _.filter(groupsAttributes, function (attribute) {
                         return !_.contains(existingAttributes, attribute) &&
                             attribute !== identifier.code;
                     });
 
                     return FetcherRegistry.getFetcher('attribute')
-                        .search({
+                        .fetchByIdentifiers(attributesToAdd, {
                             options: {
-                                identifiers: attributesToAdd,
                                 limit: attributesToAdd.length
-                            }
+                            },
+                            apply_filters: false
                         });
                 }.bind(this)).then(function (attributes) {
                     _.each(attributes, function (attribute) {
