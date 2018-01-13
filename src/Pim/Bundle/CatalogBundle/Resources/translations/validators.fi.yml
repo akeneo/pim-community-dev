@@ -5,7 +5,7 @@ This attribute type can't be used as a grid filter: Tätä attribuuttietyyppiä 
 This code is not available: Tämä koodi ei ole käytettävissä
 This attribute type must be required: Tämän attribuuttityypin on oltava pakollinen
 This attribute type can't be required: Tämä attribuuttityyppi ei voi olla pakollinen
-This attribute type can't have unique value: Tällä määritetyypillä ei voi olla yksilöllistä arvoa
+This attribute type can't have unique value: Tällä attribuuttityypillä ei voi olla yksilöllistä arvoa
 No default value may be specified for this attribute type: Tälle attribuuttityypille ei saa määrittää oletusarvoa
 This value should be Yes or No: Tämän arvon on oltava kyllä tai ei
 This value should not be blank: Tämä arvo ei saa olla tyhjä

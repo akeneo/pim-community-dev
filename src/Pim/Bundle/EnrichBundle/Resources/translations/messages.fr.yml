@@ -148,7 +148,8 @@ pim_enrich:
       add_attribute: Ajouter un attribut à un produit
       remove_attribute: Supprimer un attribut d'un produit
       categories_view: Consulter les catégories d'un produit
-      associations_view: Afficher les types d'association d'un produit
+      associations_view: Afficher les associations d'un produit
+      associations_edit: Ajouter des associations à un produit
       change_family: Changer la famille du produit
       change_state: Changer l'état du produit
       add_to_groups: Ajouter le produit à des groupes
@@ -217,6 +218,8 @@ pim_enrich:
       edit: Modifier un type d'association
       remove: Supprimer un type d'association
       history: Afficher l'historique du type d'association
+    association:
+      remove: Supprimer les associations d'un produit
     job_tracker:
       index: Voir les processus exécutés
     api_connection:
@@ -580,7 +583,7 @@ pim_title.association_type:
   edit: "Types d'association %association type.label% | Modifier"
 pim_title.group_type:
   index: "Types de groupe"
-  edit: "Types de groupe %group type.label% | Modifier"
+  edit: "Type de groupe %group type.label% | Modifier"
 pim_title.mass_edit_product_action:
   choose: "Édition en masse | Choisir"
   configure: "Édition en masse | Configurer"
@@ -782,6 +785,28 @@ batch_jobs:
       label: Modifier des attributs
     clean:
       label: Nettoyer les fichiers pour les attributs
+    cleaner:
+      label: Nettoyer les fichiers pour les attributs
+  add_to_category:
+    label: Ajouter à une catégorie
+    perform:
+      label: Ajouter à une catégorie
+  move_to_category:
+    label: Déplacer dans la catégorie
+    perform:
+      label: Déplacer dans la catégorie
+  remove_from_category:
+    label: Retirer de la catégorie
+    perform:
+      label: Retirer de la catégorie
+  add_association:
+    label: Associer aux produits
+    perform:
+      label: Associer aux produits
+  add_to_existing_product_model:
+    label: Ajouter à un modèle de produit existant
+    perform:
+      label: Ajouter à un modèle de produit existant
   set_attribute_requirements:
     label: Configurer les exigences d'attributs
     perform:
