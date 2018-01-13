@@ -980,7 +980,7 @@ batch_jobs:
 pim_menu:
   tab:
     products: 商品
-    settings: 设置
+    settings: 设置 
     system: 系统
   item:
     association_type: 关联类型
