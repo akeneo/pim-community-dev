@@ -19,6 +19,8 @@ pim_enrich:
       attribute.title: Attributs
       history.title: Historique
   family:
+    info:
+      cant_remove_attribute_used_as_axis: Impossible d'enlever cet attribut car il est utilisé comme axe de variation de la variante de famille
     tab:
       property.title: Propriétés
       attribute.title: Attributs
