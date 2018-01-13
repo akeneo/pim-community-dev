@@ -3,14 +3,14 @@ user:
     notifications: Sähköposti-ilmoitukset
   proposals:
     notifications:
-      to_review: Kun uusi muutosehdotus on hyväksyttävissä
-      state: Kun uusi muutosehdotus on hyväksytty tai hylätty
+      to_review: Milloin uusi ehdotus on käytävissä läpi
+      state: Kun uusi ehdotus on hyväksytty tai hylätty
       "yes": true
       "no": false
-  asset_delay_reminder: Assetin viivästyksen muistutus (päivissä)
+  asset_delay_reminder: Omaisuuden viivästyksen muistutus (päivissä)
   default_published_product_grid_view:
     label: Oletusarvoinen julkaistujen tuotteiden ruudukkonäkymä
-Default asset tree: Asettien oletuskategorisointi
+Default asset tree: Omaisuuden oletuspuu
 pimee_user:
   user:
     tab:
