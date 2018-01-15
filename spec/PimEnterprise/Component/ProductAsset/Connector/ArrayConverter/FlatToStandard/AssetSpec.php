@@ -37,7 +37,7 @@ class AssetSpec extends ObjectBehavior
             'tags'        => ['dog', 'flowers'],
             'categories'  => ['cat1', 'cat2', 'cat3'],
             'code'        => 'mycode',
-            'localized'   => false,
+            'localizable' => false,
             'description' => 'My awesome description',
             'end_of_use'  => '2018-02-01T00:00:00+01:00',
         ]);
@@ -51,7 +51,7 @@ class AssetSpec extends ObjectBehavior
         );
     }
 
-    function it_throws_an_exception_if_required_field_localized_is_not_in_array()
+    function it_throws_an_exception_if_required_field_localizable_is_not_in_array()
     {
         $this->shouldThrow(new \LogicException('Field "localized" is expected, provided fields are "code, optional"'))
             ->during('convert', [['code' => 'mycode', 'optional' => 'value']]);
@@ -65,7 +65,7 @@ class AssetSpec extends ObjectBehavior
         );
     }
 
-    function it_throws_an_exception_if_required_field_localized_does_not_contain_valid_value()
+    function it_throws_an_exception_if_required_field_localizable_does_not_contain_valid_value()
     {
         $fields = [
             'code'        => 'mycode',

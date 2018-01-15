@@ -17,6 +17,7 @@ services:
             - '@pim_catalog.object_manager.product'
             - '@pimee_workflow.doctrine.query.published_product_query_builder_from_size_factory'
             - '@pim_datagrid.normalizer.product'
+            - '@pim_datagrid.event_subscriber.filter_entity_with_values_subscriber'
         calls:
             - [ setMassActionRepository, ['@pimee_workflow.repository.published_product_mass_action' ]]
         tags:

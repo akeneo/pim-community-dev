@@ -11,6 +11,12 @@ Feature: Display available field options
       | my-jacket | jackets |
     And I am logged in as "Julia"
 
+  @jira https://akeneo.atlassian.net/browse/PIM-7109
+  Scenario: Successfully display permissions tab for csv export
+    Given I am on the "csv_clothing_attribute_export" export job edit page
+    And I visit the "Permissions" tab
+    Then I should see the text "Allowed to execute job profile"
+
   Scenario: Successfully export attribute with read only parameter
     And the following attributes:
       | code      | label-en_US | type                 | allowed_extensions | date_min   | max_characters | group | wysiwyg_enabled |

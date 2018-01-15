@@ -51,7 +51,7 @@ class AssetNormalizerSpec extends ObjectBehavior
         $standardAssetNormalizer->normalize($asset, 'standard', [])->willReturn(
             [
                 'code' => 'ham',
-                'localized' => false,
+                'localizable' => false,
                 'description' => 'Ham is better with jam!',
                 'end_of_use' => '2041-01-01T00:00:00+0200',
                 'categories' => [
@@ -74,7 +74,7 @@ class AssetNormalizerSpec extends ObjectBehavior
                 ],
             ],
             'locale' => null,
-            'channel' => 'ecommerce',
+            'scope' => 'ecommerce',
             'code' => 'relative/path/to/the/reference_image_variation.jpg',
         ]);
 
@@ -119,7 +119,7 @@ class AssetNormalizerSpec extends ObjectBehavior
         $this->normalize($asset, 'external_api', [])->shouldReturn(
             [
                 'code' => 'ham',
-                'localized' => false,
+                'localizable' => false,
                 'description' => 'Ham is better with jam!',
                 'end_of_use' => '2041-01-01T00:00:00+0200',
                 'categories' => [
@@ -139,7 +139,7 @@ class AssetNormalizerSpec extends ObjectBehavior
                             ],
                         ],
                         'locale' => null,
-                        'channel' => 'ecommerce',
+                        'scope' => 'ecommerce',
                         'code' => 'relative/path/to/the/reference_image_variation.jpg',
                     ],
                 ],
@@ -175,7 +175,7 @@ class AssetNormalizerSpec extends ObjectBehavior
         $standardAssetNormalizer->normalize($asset, 'standard', [])->willReturn(
             [
                 'code' => 'ham',
-                'localized' => true,
+                'localizable' => true,
                 'description' => 'Ham is better with jam!',
                 'end_of_use' => '2041-01-01T00:00:00+0200',
                 'categories' => [
@@ -198,7 +198,7 @@ class AssetNormalizerSpec extends ObjectBehavior
                 ],
             ],
             'locale' => 'en_US',
-            'channel' => 'ecommerce',
+            'scope' => 'ecommerce',
             'code' => 'relative/path/to/the/reference_image_variation.jpg',
         ]);
 
@@ -243,7 +243,7 @@ class AssetNormalizerSpec extends ObjectBehavior
         $this->normalize($asset, 'external_api', [])->shouldReturn(
             [
                 'code' => 'ham',
-                'localized' => true,
+                'localizable' => true,
                 'description' => 'Ham is better with jam!',
                 'end_of_use' => '2041-01-01T00:00:00+0200',
                 'categories' => [
@@ -263,7 +263,7 @@ class AssetNormalizerSpec extends ObjectBehavior
                             ],
                         ],
                         'locale' => 'en_US',
-                        'channel' => 'ecommerce',
+                        'scope' => 'ecommerce',
                         'code' => 'relative/path/to/the/reference_image_variation.jpg',
                     ],
                 ],
@@ -300,7 +300,7 @@ class AssetNormalizerSpec extends ObjectBehavior
         $standardAssetNormalizer->normalize($asset, 'standard', [])->willReturn(
             [
                 'code' => 'ham',
-                'localized' => true,
+                'localizable' => true,
                 'description' => 'Ham is better with jam!',
                 'end_of_use' => '2041-01-01T00:00:00+0200',
                 'categories' => [
@@ -323,7 +323,7 @@ class AssetNormalizerSpec extends ObjectBehavior
                 ],
             ],
             'locale' => 'en_US',
-            'channel' => 'ecommerce',
+            'scope' => 'ecommerce',
             'code' => 'relative/path/to/the/reference_image_variation.jpg',
         ]);
 
@@ -334,7 +334,7 @@ class AssetNormalizerSpec extends ObjectBehavior
                 ],
             ],
             'locale' => 'en_US',
-            'channel' => 'tablet',
+            'scope' => 'tablet',
             'code' => null,
         ]);
 
@@ -379,7 +379,7 @@ class AssetNormalizerSpec extends ObjectBehavior
         $this->normalize($asset, 'external_api', [])->shouldReturn(
             [
                 'code' => 'ham',
-                'localized' => true,
+                'localizable' => true,
                 'description' => 'Ham is better with jam!',
                 'end_of_use' => '2041-01-01T00:00:00+0200',
                 'categories' => [
@@ -399,7 +399,7 @@ class AssetNormalizerSpec extends ObjectBehavior
                             ],
                         ],
                         'locale' => 'en_US',
-                        'channel' => 'ecommerce',
+                        'scope' => 'ecommerce',
                         'code' => 'relative/path/to/the/reference_image_variation.jpg',
                     ],
                 ],
@@ -436,7 +436,7 @@ class AssetNormalizerSpec extends ObjectBehavior
         $standardAssetNormalizer->normalize($asset, 'standard', [])->willReturn(
             [
                 'code' => 'ham',
-                'localized' => true,
+                'localizable' => true,
                 'description' => 'Ham is better with jam!',
                 'end_of_use' => '2041-01-01T00:00:00+0200',
                 'categories' => [
@@ -459,7 +459,7 @@ class AssetNormalizerSpec extends ObjectBehavior
                 ],
             ],
             'locale' => 'en_US',
-            'channel' => 'ecommerce',
+            'scope' => 'ecommerce',
             'code' => null,
         ]);
 
@@ -506,7 +506,7 @@ class AssetNormalizerSpec extends ObjectBehavior
         $this->normalize($asset, 'external_api', [])->shouldReturn(
             [
                 'code' => 'ham',
-                'localized' => true,
+                'localizable' => true,
                 'description' => 'Ham is better with jam!',
                 'end_of_use' => '2041-01-01T00:00:00+0200',
                 'categories' => [
@@ -548,7 +548,7 @@ class AssetNormalizerSpec extends ObjectBehavior
         $standardAssetNormalizer->normalize($asset, 'standard', [])->willReturn(
             [
                 'code' => 'ham',
-                'localized' => false,
+                'localizable' => false,
                 'description' => 'Ham is better with jam!',
                 'end_of_use' => '2041-01-01T00:00:00+0200',
                 'categories' => [
@@ -571,7 +571,7 @@ class AssetNormalizerSpec extends ObjectBehavior
                 ],
             ],
             'locale' => null,
-            'channel' => 'ecommerce',
+            'scope' => 'ecommerce',
             'code' => null,
         ]);
 
@@ -596,7 +596,7 @@ class AssetNormalizerSpec extends ObjectBehavior
         $this->normalize($asset, 'external_api', [])->shouldReturn(
             [
                 'code' => 'ham',
-                'localized' => false,
+                'localizable' => false,
                 'description' => 'Ham is better with jam!',
                 'end_of_use' => '2041-01-01T00:00:00+0200',
                 'categories' => [

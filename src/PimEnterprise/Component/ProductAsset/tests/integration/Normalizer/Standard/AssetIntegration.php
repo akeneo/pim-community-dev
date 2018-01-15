@@ -10,7 +10,7 @@ class AssetIntegration extends AbstractStandardNormalizerTestCase
     {
         $expected = [
             'code'        => 'cat',
-            'localized'   => true,
+            'localizable' => true,
             'description' => null,
             'end_of_use'  => '2041-04-02T00:00:00+01:00',
             'tags'        => ['animal'],
