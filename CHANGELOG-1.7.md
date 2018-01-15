@@ -3,12 +3,14 @@
 ## Bug Fixes
 
 - PIM-7347: Fix the edit form of multi-select attributes with a lot of options
+- PIM-7031: Removes 'required' label for product grid filters on user creation
+- PIM-7064: Keep family attribute panel state on edit
 
 ## BC-break:
 
 - Remove class `Pim\Bundle\EnrichBundle\Form\Type\AttributeProperty\OptionsType` and service `pim_enrich.form.type.options`
 
-# 1.7.15 (2017-12-18) 
+# 1.7.15 (2017-12-18)
 
 - GITHUB-7202: Ensure commit batch size value is always an int, cheers @bghitulescu!
 - PIM-7017: Permission on "Add attribute to a product" is not properly applied
