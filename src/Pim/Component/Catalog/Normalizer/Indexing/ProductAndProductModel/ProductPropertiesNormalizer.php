@@ -172,7 +172,7 @@ class ProductPropertiesNormalizer implements NormalizerInterface, SerializerAwar
     {
         $ancestorsIds = [];
         $ancestorsCodes = [];
-        if ($product instanceof VariantProductInterface) {
+        if ($product instanceof EntityWithFamilyVariantInterface) {
             $ancestorsIds = $this->getAncestorsIds($product);
             $ancestorsCodes = $this->getAncestorsCodes($product);
         }

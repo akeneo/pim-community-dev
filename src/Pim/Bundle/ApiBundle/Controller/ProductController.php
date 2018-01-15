@@ -24,6 +24,7 @@ use Pim\Component\Api\Repository\AttributeRepositoryInterface;
 use Pim\Component\Api\Security\PrimaryKeyEncrypter;
 use Pim\Component\Catalog\Builder\ProductBuilderInterface;
 use Pim\Component\Catalog\Comparator\Filter\FilterInterface;
+use Pim\Component\Catalog\EntityWithFamilyVariant\AddParent;
 use Pim\Component\Catalog\Exception\InvalidOperatorException;
 use Pim\Component\Catalog\Exception\ObjectNotFoundException;
 use Pim\Component\Catalog\Exception\UnsupportedFilterException;
@@ -118,6 +119,9 @@ class ProductController
     /** @var ProductBuilderInterface */
     protected $variantProductBuilder;
 
+    /** @var AddParent */
+    protected $addParent;
+
     /**
      * @param ProductQueryBuilderFactoryInterface   $searchAfterPqbFactory
      * @param NormalizerInterface                   $normalizer
@@ -140,6 +144,7 @@ class ProductController
      * @param ProductQueryBuilderFactoryInterface   $fromSizePqbFactory
      * @param ProductBuilderInterface               $variantProductBuilder
      * @param AttributeFilterInterface              $productAttributeFilter
+     * @param AddParent                             $addParent
      * @param array                                 $apiConfiguration
      */
     public function __construct(
@@ -164,6 +169,7 @@ class ProductController
         ProductQueryBuilderFactoryInterface $fromSizePqbFactory,
         ProductBuilderInterface $variantProductBuilder,
         AttributeFilterInterface $productAttributeFilter,
+        AddParent $addParent,
         array $apiConfiguration
     ) {
         $this->searchAfterPqbFactory = $searchAfterPqbFactory;
@@ -188,6 +194,7 @@ class ProductController
         $this->variantProductBuilder = $variantProductBuilder;
         $this->apiConfiguration = $apiConfiguration;
         $this->productAttributeFilter = $productAttributeFilter;
+        $this->addParent = $addParent;
     }
 
     /**
@@ -330,6 +337,14 @@ class ProductController
 
         if (!$isCreation) {
             $data = $this->filterEmptyValues($product, $data);
+        }
+        if ($this->needUpdateFromProductToVariant($product, $data, $isCreation)) {
+            try {
+                $product = $this->addParent->to($product, (string) $data['parent']);
+            } catch (\InvalidArgumentException $exception) {
+                throw new UnprocessableEntityHttpException($exception->getMessage());
+            }
+            $isCreation = true;
         }
 
         $data = $this->orderData($data);
@@ -797,5 +812,21 @@ class ProductController
         }
 
         return ['parent' => $data['parent']] + $data;
+    }
+
+    /**
+     * Is it an update from a product to a variant product ?
+     * That's the case if we are updating (and not creating) a product (not a variant) and 'parent' index is in $data.
+     *
+     * @param ProductInterface $product
+     * @param array            $data
+     * @param bool             $isCreation
+     *
+     * @return bool
+     */
+    protected function needUpdateFromProductToVariant(ProductInterface $product, array $data, bool $isCreation): bool
+    {
+        return !$isCreation && !$product instanceof VariantProductInterface &&
+            isset($data['parent']) && '' !== $data['parent'];
     }
 }
