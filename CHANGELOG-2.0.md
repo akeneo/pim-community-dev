@@ -12,6 +12,7 @@
 - PIM-7082: remove double user menu on product import edit form
 - PIM-7084: fix attribute suppression
 - PIM-6355: Fix the count by categories on the product grid
+- PIM-7105: Fix un-index variant product on deletion
 
 ## Improvements
 

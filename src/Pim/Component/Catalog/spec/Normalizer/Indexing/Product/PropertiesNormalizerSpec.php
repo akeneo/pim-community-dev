@@ -80,6 +80,7 @@ class PropertiesNormalizerSpec extends ObjectBehavior
                 'groups'        => [],
                 'completeness'  => [],
                 'values'        => [],
+                'ancestors'     => ['ids' => [], 'codes' => []],
             ]
         );
     }
@@ -135,6 +136,7 @@ class PropertiesNormalizerSpec extends ObjectBehavior
                 'groups'        => [],
                 'completeness'  => ['the completenesses'],
                 'values'        => [],
+                'ancestors'     => ['ids' => [], 'codes' => []],
             ]
         );
     }
@@ -244,6 +246,7 @@ class PropertiesNormalizerSpec extends ObjectBehavior
                         ],
                     ],
                 ],
+                'ancestors'     => ['ids' => [], 'codes' => []],
             ]
         );
     }
@@ -272,6 +275,10 @@ class PropertiesNormalizerSpec extends ObjectBehavior
         $product->getParent()->willReturn($subProductModel);
         $subProductModel->getParent()->willReturn($rootProductModel);
         $rootProductModel->getParent()->willReturn(null);
+        $subProductModel->getId()->willReturn(2);
+        $rootProductModel->getId()->willReturn(1);
+        $subProductModel->getCode()->willReturn('sub_pm_2');
+        $rootProductModel->getCode()->willReturn('root_pm_1');
 
         $serializer->normalize(
             $now,
@@ -325,6 +332,7 @@ class PropertiesNormalizerSpec extends ObjectBehavior
                 'groups'        => [],
                 'completeness'  => [],
                 'values'        => [],
+                'ancestors'     => ['ids' => ['product_model_2', 'product_model_1'], 'codes' => ['sub_pm_2', 'root_pm_1']],
             ]
         );
     }

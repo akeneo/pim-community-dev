@@ -39,6 +39,7 @@ class ProductIndexingIntegration extends TestCase
             'groups'        => [],
             'completeness'  => [],
             'values'        => [],
+            'ancestors'     => ['ids' => [], 'codes' => []],
         ];
 
         $this->assertIndexingFormat('bar', $expected);
@@ -63,6 +64,7 @@ class ProductIndexingIntegration extends TestCase
             'groups'        => [],
             'completeness'  => [],
             'values'        => [],
+            'ancestors'     => ['ids' => [], 'codes' => []],
         ];
 
         $this->assertIndexingFormat('baz', $expected);
@@ -299,6 +301,7 @@ class ProductIndexingIntegration extends TestCase
                     ],
                 ],
             ],
+            'ancestors'     => ['ids' => [], 'codes' => []],
         ];
 
         $this->assertIndexingFormat('foo', $expected);
