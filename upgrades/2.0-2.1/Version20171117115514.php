@@ -8,7 +8,7 @@ use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Input\ArrayInput;
 
 /**
- * Auto-generated Migration: Please modify to your needs!
+ * Add cascade delete of product models and products on product model deletion.
  */
 class Version20171117115514 extends AbstractMigration
 {
@@ -17,7 +17,6 @@ class Version20171117115514 extends AbstractMigration
      */
     public function up(Schema $schema)
     {
-        // this up() migration is auto-generated, please modify it to your needs
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
 
         $this->addSql('ALTER TABLE pim_catalog_product_model DROP FOREIGN KEY FK_5943911E727ACA70');
