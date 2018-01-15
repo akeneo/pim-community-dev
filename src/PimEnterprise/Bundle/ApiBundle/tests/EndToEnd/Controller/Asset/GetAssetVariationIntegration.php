@@ -266,13 +266,13 @@ JSON;
         $expected = $this->sanitizeNormalizedAsset($expected);
 
         foreach ($expected['variation_files'] as $normalizedVariation) {
-            if (null === $locale && $channel === $normalizedVariation['channel']) {
+            if (null === $locale && $channel === $normalizedVariation['scope']) {
                 unset($normalizedVariation['_link']['self']);
 
                 return $normalizedVariation;
             }
 
-            if ($locale === $normalizedVariation['locale'] && $channel === $normalizedVariation['channel']) {
+            if ($locale === $normalizedVariation['locale'] && $channel === $normalizedVariation['scope']) {
                 unset($normalizedVariation['_link']['self']);
 
                 return $normalizedVariation;

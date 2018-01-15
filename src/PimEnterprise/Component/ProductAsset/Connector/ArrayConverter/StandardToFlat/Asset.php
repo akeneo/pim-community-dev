@@ -20,7 +20,7 @@ use Pim\Component\Connector\ArrayConverter\StandardToFlat\AbstractSimpleArrayCon
  * Before:
  * [
  *      'code'        => 'mycode',
- *      'localized'   => false,
+ *      'localizable' => false,
  *      'description' => 'My awesome description',
  *      'categories'  => [
  *          'myCat1',
@@ -47,6 +47,8 @@ use Pim\Component\Connector\ArrayConverter\StandardToFlat\AbstractSimpleArrayCon
  *      'end_of_use'    => '2018-02-01',
  * ]
  *
+ * TODO: change naming "localized" in "localizable" in major version 3.0 (BC break)
+ *
  * @author Adrien Pétremann <adrien.petremann@akeneo.com>
  */
 class Asset extends AbstractSimpleArrayConverter implements ArrayConverterInterface
@@ -66,8 +68,8 @@ class Asset extends AbstractSimpleArrayConverter implements ArrayConverterInterf
                 $convertedItem[$field] = false !== $datetime ? $datetime->format('Y-m-d') : (string) $data;
 
                 break;
-            case 'localized':
-                $convertedItem[$field] = (true === $data) ? '1' : '0';
+            case 'localizable':
+                $convertedItem['localized'] = (true === $data) ? '1' : '0';
                 break;
             case 'tags':
             case 'categories':

@@ -2,6 +2,17 @@
 
 ## Bug fixes
 
+- PIM-7088: Fix remove association with a product model
+- API-582: fix "localizable" and "scope" field of the asset format in the API
+
+## Web API
+
+- API-557: Ensure assets can be used as attribute as main picture in families
+
+# 2.1.1 (2018-01-10)
+
+## Bug fixes
+
 - PIM-7066: Fix permissions problems on required missing attributes
 
 # 2.1.0 (2017-12-21)

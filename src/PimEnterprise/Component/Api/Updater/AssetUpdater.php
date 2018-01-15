@@ -46,8 +46,8 @@ class AssetUpdater implements ObjectUpdaterInterface
             );
         }
 
-        if (null === $asset->getId() && !array_key_exists('localized', $data)) {
-            $data['localized'] = false;
+        if (null === $asset->getId() && !array_key_exists('localizable', $data)) {
+            $data['localizable'] = false;
         }
 
         unset($data['variation_files']);

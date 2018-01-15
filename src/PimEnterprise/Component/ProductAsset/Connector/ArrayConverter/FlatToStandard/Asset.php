@@ -39,7 +39,7 @@ class Asset implements ArrayConverterInterface
      * After:
      * [
      *      'code'        => 'mycode',
-     *      'localized'   => false,
+     *      'localizable' => false,
      *      'description' => 'My awesome description',
      *      'categories'  => [
      *          'myCat1',
@@ -55,6 +55,9 @@ class Asset implements ArrayConverterInterface
      *      ],
      *      'end_of_use'  => '2018-02-01',
      * ]
+     *
+     * TODO: change naming "localized" in "localizable" in major version 3.0 (BC break)
+     *
      */
     public function convert(array $item, array $options = [])
     {
@@ -88,7 +91,7 @@ class Asset implements ArrayConverterInterface
                 $convertedItem[$field] = $this->convertDate($data);
                 break;
             case 'localized':
-                $convertedItem[$field] = (bool) $data;
+                $convertedItem['localizable'] = (bool) $data;
                 break;
             case 'tags':
                 $convertedItem['tags'] = array_unique(explode(',', $data));

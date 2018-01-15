@@ -29,13 +29,13 @@ class PartialUpdateAssetIntegration extends AbstractAssetTestCase
                 "code": "new_asset",
                 "categories": ["asset_main_catalog"],
                 "description": "This is a nice description.",
-                "localized": true,
+                "localizable": true,
                 "tags": ["akeneo"],
                 "end_of_use": "2016-09-01T00:00:00+0800",
                 "variation_files": [
                     {
                         "locale": null,
-                        "channel": "ecommerce",
+                        "scope": "ecommerce",
                         "code": "my/code"
                     }
                 ],
@@ -53,7 +53,7 @@ JSON;
         $asset = $this->get('pimee_api.repository.asset')->findOneByIdentifier('new_asset');
         $normalizedAsset = [
             'code'        => 'new_asset',
-            'localized'   => true,
+            'localizable' => true,
             'description' => 'This is a nice description.',
             'end_of_use'  => '2016-08-31T16:00:00+00:00',
             'tags'        => ['akeneo'],
@@ -80,13 +80,13 @@ JSON;
                 "code": "non_localizable_asset",
                 "categories": [],
                 "description": "This is a nice description.",
-                "localized": false,
+                "localizable": false,
                 "tags": ["ziggy"],
                 "end_of_use": "2016-09-04T00:00:00+0800",
                 "variation_files": [
                     {
                         "locale": null,
-                        "channel": "ecommerce",
+                        "scope": "ecommerce",
                         "code": "my/code"
                     }
                 ],
@@ -104,7 +104,7 @@ JSON;
         $asset = $this->get('pimee_api.repository.asset')->findOneByIdentifier('non_localizable_asset');
         $normalizedAsset = [
             'code'        => 'non_localizable_asset',
-            'localized'   => false,
+            'localizable' => false,
             'description' => 'This is a nice description.',
             'end_of_use'  => '2016-09-03T16:00:00+00:00',
             'tags'        => ['ziggy'],
@@ -154,7 +154,7 @@ JSON;
                 "code": "new_code",
                 "categories": ["asset_main_catalog"],
                 "description": "This is a nice description.",
-                "localized": false,
+                "localizable": false,
                 "tags": ["akeneo"],
                 "end_of_use": "2016-09-01T00:00:00+0300"
             }
@@ -192,7 +192,7 @@ JSON;
                 "code": "non_localizable_asset",
                 "categories": ["unknown_category"],
                 "description": "This is a nice description.",
-                "localized": true,
+                "localizable": true,
                 "tags": ["akeneo"],
                 "end_of_use": "2016-09-01T00:00:00+0300"
             }
