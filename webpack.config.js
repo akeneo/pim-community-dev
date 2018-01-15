@@ -59,11 +59,7 @@ module.exports = {
         symlinks: false,
         alias: _.mapKeys(aliases, (path, key) => `${key}$`),
         modules: [path.resolve('./web/bundles'), path.resolve('./node_modules')],
-<<<<<<< HEAD
         extensions: ['.js', '.json', '.ts', '.tsx']
-=======
-        extensions: ['.js', '.json', '.ts']
->>>>>>> 819da0836d... add tests and ddd folders
     },
     module: {
         rules: [

@@ -10,6 +10,6 @@ export const toArray = <Element>(elements: any): Element[] => {
   return Object.keys(elements).map((key: string): Element => elements[key]);
 };
 
-export default (hidrator: any) => (elements: any) => {
+export default <Element>(hidrator: any) => (elements: any): Element[] => {
   return toArray(elements).map(hidrate(hidrator));
 };

@@ -13,6 +13,9 @@
       "*": [
         "*",
         "web/bundles/*"
+      ],
+      "pimfront": [
+        "web/bundles/pimfront/*"
       ]
     },
     "skipLibCheck": true,

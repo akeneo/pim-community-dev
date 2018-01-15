@@ -1,6 +1,6 @@
 const routing = require('routing');
 import * as jQuery from 'jquery';
-import { RawProductInterface } from 'pimfront/js/product/domain/model/product';
+import { RawProductInterface } from 'pimfront/product/domain/model/product';
 
 interface Filter {
   field: string;

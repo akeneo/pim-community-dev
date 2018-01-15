@@ -39,6 +39,17 @@
     &-expanded {
       min-width: 400px;
     }
+
+    &--open {
+      display: block;
+      transform: scale(1);
+      opacity:1;
+      animation-name: fadeIn;
+      animation-duration: 0.2s;
+      transition-timing-function: ease-in;
+      cursor: default;
+      z-index: 804;
+    }
   }
 
   &-menuTitle {
@@ -59,7 +70,7 @@
     text-align: left;
     font-size: @AknDefaultFontSize;
     width: 100%;
-    line-height: 1px;
+    line-height: 26px;
     transition: line-height @animationDuration @transitionTimingFunction;
   }
 

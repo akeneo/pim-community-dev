@@ -1,5 +1,5 @@
 import { SearchOptions } from '../product';
-import { RawProductInterface } from 'pimfront/js/product/domain/model/product';
+import { RawProductInterface } from 'pimfront/product/domain/model/product';
 
 class ProductGridFetcher {
   search (searchOptions: SearchOptions): Promise<RawProductInterface[]> {
