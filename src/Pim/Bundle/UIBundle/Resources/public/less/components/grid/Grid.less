@@ -73,6 +73,10 @@
     background: lighten(@AknBlue, 32%);
   }
 
+  &-bodyContainer--collapsed &-bodyRow:not(&-headerToggle) {
+    display: none;
+  }
+
   &-bodyCell {
     cursor: pointer;
 

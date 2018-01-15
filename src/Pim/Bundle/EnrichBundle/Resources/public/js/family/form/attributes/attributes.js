@@ -39,6 +39,7 @@ define([
             className: 'tabsection-content tab-content',
             attributeRequiredIconClass: 'AknAcl-icon AknAcl-icon--granted icon-ok required',
             attributeNotRequiredIconClass: 'AknAcl-icon icon-circle non-required',
+            collapsedClass: 'AknGrid-bodyContainer--collapsed',
             requiredLabel: __('pim_enrich.form.family.tab.attributes.required_label'),
             notRequiredLabel: __('pim_enrich.form.family.tab.attributes.not_required_label'),
             identifierAttributeType: 'pim_catalog_identifier',
@@ -133,7 +134,12 @@ define([
                         groupedAttributes: groupedAttributes,
                         attributeRequirements: data.attribute_requirements,
                         channels: this.channels,
-                        attributeGroups: attributeGroups,
+                        attributeGroups: _.map(attributeGroups, function (group) {
+                            var panel = $('tbody[data-group="' + group.code + '"]');
+                            group.collapsed = $(panel).hasClass(this.collapsedClass);
+
+                            return group;
+                        }.bind(this)),
                         colspan: (this.channels.length + 2),
                         i18n: i18n,
                         identifierAttributeType: this.identifierAttributeType,
@@ -155,9 +161,8 @@ define([
              */
             toggleGroup: function (event) {
                 var target = event.currentTarget;
-
-                $(target).parent().find('tr:not(.group)').toggle();
                 $(target).find('i').toggleClass('icon-expand-alt icon-collapse-alt');
+                $(target).parent().toggleClass(this.collapsedClass);
 
                 return this;
             },

@@ -11,7 +11,8 @@ use Pim\Component\Catalog\Repository\ProductModelRepositoryInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
- * During an import you can add a parent to a product, that means that you transform it into a variant product.
+ * During an import, a mass action, or an update via the API you can add a parent to a product, that means that you
+ * transform it into a variant product.
  *
  * @author    Arnaud Langlade <arnaud.langlade@akeneo.com>
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
@@ -44,7 +45,7 @@ class AddParent
     }
 
     /**
-     * Add a parent to a product during a import.
+     * Add a parent to a product during an import, a mass action or an update from API.
      *
      * @param ProductInterface $product
      * @param string           $parentProductModelCode

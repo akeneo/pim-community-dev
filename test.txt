@@ -1,0 +1,52 @@
+(
+    'identifier' => 'product_associations'
+    'family' => null
+    'parent' => null
+    'groups' => Array &1 ()
+    'categories' => Array &2 ()
+    'enabled' => true
+    'values' => Array &3 (
+        'sku' => Array &4 (
+            0 => Array &5 (
+                'locale' => null
+                'scope' => null
+                'data' => 'product_associations'
+            )
+        )
+    )
+    'created' => 'this is a date formatted to ISO-8601'
+    'updated' => 'this is a date formatted to ISO-8601'
+    'associations' => Array &6 (
+        'PACK' => Array &7 (
+            'groups' => Array &8 (
+                0 => 'groupA'
+            )
+            'products' => Array &9 (
+                0 => 'product_family'
+                1 => 'product_categories'
+            )
+            'product_models' => Array &10 ()
+        )
+        'SUBSTITUTION' => Array &11 (
+            'groups' => Array &12 ()
+            'products' => Array &13 ()
+            'product_models' => Array &14 (
+                0 => 'a_product_model'
+            )
+        )
+        'UPSELL' => Array &15 (
+            'groups' => Array &16 ()
+            'products' => Array &17 ()
+            'product_models' => Array &18 ()
+        )
+        'X_SELL' => Array &19 (
+            'groups' => Array &20 (
+                0 => 'groupA'
+            )
+            'products' => Array &21 (
+                0 => 'product_categories'
+            )
+            'product_models' => Array &22 ()
+        )
+    )
+)

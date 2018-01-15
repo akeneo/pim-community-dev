@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Pim\Bundle\ApiBundle\tests\integration\Controller\Product;
 
 use Akeneo\Test\Integration\Configuration;
@@ -241,7 +243,7 @@ class GetProductIntegration extends AbstractProductTestCase
     /**
      * {@inheritdoc}
      */
-    protected function getConfiguration()
+    protected function getConfiguration(): Configuration
     {
         return $this->catalog->useTechnicalSqlCatalog();
     }
