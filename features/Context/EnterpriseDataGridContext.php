@@ -86,6 +86,21 @@ class EnterpriseDataGridContext extends BaseDataGridContext
     }
 
     /**
+     * @Then /^the cell "([^"]+)" in row "([^"]+)" should contain the thumbnail for asset "([^"]+)" with channel "([^"]+)" and locale "([^"]+)"?$/
+     *
+     * @param string      $column
+     * @param string      $row
+     * @param string      $asset
+     * @param string      $channelCode
+     * @param string|null $localeCode
+     */
+    public function theCellInRowShouldContainThumbnailForAsset($column, $row, $asset, $channelCode, $localeCode = null)
+    {
+        $image = $this->getDatagrid()->getCellImage($column, $row);
+        $this->checkCellThumbnail($image, $asset, $channelCode, $localeCode);
+    }
+
+    /**
      * Expects table as :
      * | product  | author | attribute  | locale | scope | original | new         |
      * | my-hoody | Mary   | Lace color | en_US  | print |          | Black,White |
