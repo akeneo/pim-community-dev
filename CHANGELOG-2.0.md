@@ -1,4 +1,22 @@
+# 2.0.12 (2018-01-12)
+
+## Bug fixes
+
+- PIM-7109: Fix export profiles are missing permissions tab
+- API-392: Add default permissions when create a category through the API 
+
+## BC breaks
+
+- Change the constructor of `PimEnterprise\Bundle\SecurityBundle\EventSubscriber\AddDefaultPermissionsSubscriber` to add `PimEnterprise\Bundle\SecurityBundle\Manager\CategoryAccessManager` and `PimEnterprise\Bundle\SecurityBundle\Manager\CategoryAccessManager` 
+- Remove `PimEnterprise\Bundle\SecurityBundle\EventSubscriber\Enrich\AddCategoryPermissionsSubscriber` 
+- Remove `PimEnterprise\Bundle\SecurityBundle\EventSubscriber\Enrich\AddDefaultUserGroupSubscriber`
+- Remove `PimEnterprise\Bundle\SecurityBundle\EventSubscriber\ImportExport\AddCategoryPermissionsSubscriber`
+- Changes the service `pimee_enrich.doctrine.counter.category_product` first argument to a `@pim_catalog.query.product_query_builder_factory`
+- Changes the service `pimee_product_asset.doctrine.counter.category_published_product` first argument to a `@pimee_workflow.doctrine.query.published_product_query_builder_factory`
+
 # 2.0.11 (2018-01-05)
+
+- PIM-7067: Fix error when trying to delete a product model
 
 # 2.0.10 (2017-12-22)
 
