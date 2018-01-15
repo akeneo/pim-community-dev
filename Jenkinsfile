@@ -40,7 +40,7 @@ stage("Checkout") {
 
         if (editions.contains('ee') && ('yes' == launchBehatTests || 'yes' == launchIntegrationTests)) {
             checkout([$class: 'GitSCM',
-              branches: [[name: '2.1']],
+              branches: [[name: 'master']],
               userRemoteConfigs: [[credentialsId: 'github-credentials', url: 'https://github.com/akeneo/pim-enterprise-dev.git']]
             ])
 
