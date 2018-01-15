@@ -446,7 +446,7 @@ def clearTemplateNames() {
     currentBuild.rawBuild.getAction( PodTemplateAction.class )?.stack?.clear()
 }
 
-def notifySlack(String buildStatus) {
+def notifySlack(String buildStatus="") {
     // Build status of null means success.
     buildStatus = buildStatus ?: currentBuild.result
 
