@@ -1,3 +1,9 @@
+# 2.0.x
+
+## Bug fixes
+
+- PIM-7111: Fix display bug on variant axis completeness
+
 # 2.0.12 (2018-01-12)
 
 ## Bug fixes
