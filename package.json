@@ -25,7 +25,9 @@
     "url": "https://github.com/akeneo/pim-community-dev/issues"
   },
   "devDependencies": {
+    "@types/enzyme": "^3.1.6",
     "@types/jest": "^22.0.1",
+    "@types/redux-logger": "^3.0.5",
     "colors": "1.1.2",
     "cucumber": "4.0.0",
     "cucumber-html-reporter": "4.0.1",
@@ -35,10 +37,12 @@
     "html-webpack-plugin": "2.30.1",
     "prettier": "^1.11.1",
     "puppeteer": "1.1.1",
+    "enzyme": "^3.3.0",
     "jest": "^22.0.5",
+    "read-pkg": "2.0.0",
+    "redux-logger": "^3.0.6",
     "ts-jest": "^22.0.1",
-    "typescript-babel-jest": "^1.0.5",
-    "read-pkg": "2.0.0"
+    "typescript-babel-jest": "^1.0.5"
   },
   "dependencies": {
     "@types/jquery": "^3.2.17",
@@ -87,6 +91,7 @@
     "yamljs": "0.3.0"
   },
   "jest": {
+    "setupFiles": ["./jest_config.js"],
     "transform": {
       "^.+\\.tsx?$": "ts-jest"
     },

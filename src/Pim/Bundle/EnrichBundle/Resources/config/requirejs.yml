@@ -628,7 +628,7 @@ config:
         pim/saver/job-instance-import: pimenrich/js/saver/job-instance-import-saver
 
         # Generator
-        pim/media-url-generator:  pimenrich/js/generator/media-url-generator
+        pim/media-url-generator:  pimfront/tools/media-url-generator.ts
 
         # Form
         pim/form-builder:         pimenrich/js/form/builder

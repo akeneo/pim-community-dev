@@ -8,7 +8,7 @@ const hidrator = (locale: any): LocaleInterface => {
 };
 
 export const updateLocales = () => (dispatch: any): void => {
-  return fetcherRegistry.getFetcher('locale').fetchAll()
+  return fetcherRegistry.getFetcher('locale').fetchActivated()
     .then((locales: LocaleInterface[]) => {
       dispatch(localesUpdated(hidrateAll<LocaleInterface>(hidrator)(locales)));
     });

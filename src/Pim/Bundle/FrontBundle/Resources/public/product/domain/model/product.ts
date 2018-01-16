@@ -1,9 +1,23 @@
 export interface MetaInterface {
-  image: string;
+  image: ImageInterface|null;
   id: number;
+  completenesses: any;
   label: {
     [locale: string]: string;
   }
+}
+
+export interface ImageInterface {
+  filePath: string;
+  originalFilename: string;
+}
+
+export interface Completeness {
+  channel: string;
+  locale: string;
+  missing: number;
+  ratio: number;
+  required: number;
 }
 
 export interface RawProductInterface {
@@ -14,6 +28,8 @@ export interface RawProductInterface {
 
 export interface ProductInterface extends RawProductInterface {
   getLabel(channel: string, locale: string): string;
+  getCompleteness(channel: string, locale: string): Completeness;
+  getImagePath (): string;
 }
 
 export default class Product implements ProductInterface {
@@ -33,5 +49,16 @@ export default class Product implements ProductInterface {
 
   public getLabel(channel: string, locale: string): string {
     return this.meta.label[locale] ? this.meta.label[locale] : this.identifier;
+  }
+
+  public getCompleteness(channel: string, locale: string): Completeness {
+    const completeness = this.meta.completenesses
+      .find((completeness: any) => completeness.channel === channel)
+
+    return completeness ? completeness.locales[locale].completeness : {};
+  }
+
+  public getImagePath (): string {
+    return null !== this.meta.image ? encodeURIComponent(this.meta.image.filePath) : 'undefined';
   }
 }

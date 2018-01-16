@@ -4,7 +4,7 @@ import Flag from 'pimfront/app/application/component/flag';
 const __ = require('oro/translator');
 
 export default class LocaleSwitcher extends React.Component<
-  {locale: string, locales: Locale[]},
+  {locale: string, locales: Locale[], onLocaleChange: (locale: Locale) => void},
   {open: boolean, locale: string}
 > {
   constructor (props: any) {
@@ -18,6 +18,15 @@ export default class LocaleSwitcher extends React.Component<
 
   open () {
     this.setState({open: true});
+  }
+
+  switchLocale (locale: Locale) {
+    if (locale.code !== this.state.locale) {
+      this.setState({locale: locale.code});
+      this.props.onLocaleChange(locale);
+    }
+
+    this.close();
   }
 
   close () {
@@ -36,9 +45,9 @@ export default class LocaleSwitcher extends React.Component<
           ? `AknDropdown-menuLink--active`: ''}`;
 
       return (
-        <div key={locale.code} className={menuLinkClass} data-locale="en_US">
+        <div key={locale.code} className={menuLinkClass} data-locale="en_US" onClick={() => this.switchLocale(locale)}>
           <span className="label">
-            <Flag locale={locale.code} displayLanguage/>
+            <Flag locale={locale} displayLanguage/>
           </span>
         </div>
       );
@@ -49,11 +58,11 @@ export default class LocaleSwitcher extends React.Component<
         <div onClick={this.open.bind(this)}>
           <div className="AknColumn-subtitle">{__('Locale')}</div>
           <div className="AknColumn-value value">
-            <Flag locale={selectedLocale.code} displayLanguage/>
+            <Flag locale={selectedLocale} displayLanguage/>
           </div>
         </div>
         <div className={'AknDropdown-menu ' + openClass}>
-          <div className="AknDropdown-menuTitle">__('Locale')</div>
+          <div className="AknDropdown-menuTitle">{__('Locale')}</div>
           {locales}
         </div>
       </div>

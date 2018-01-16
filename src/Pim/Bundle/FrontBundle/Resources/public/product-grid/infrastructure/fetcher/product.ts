@@ -17,6 +17,14 @@ export interface SearchOptions {
   from: number;
 }
 
+const queryToParameters = (query: any) => {
+  return {
+    default_locale: query.locale,
+    default_scope: query.channel,
+    limit: query.limit
+  }
+}
+
 class ProductGridFetcher {
   private options: {
     urls: {
@@ -28,9 +36,9 @@ class ProductGridFetcher {
     this.options = options;
   }
 
-  search (searchOptions: SearchOptions): Promise<RawProductInterface[]> {
+  search (query: SearchOptions): Promise<RawProductInterface[]> {
     return new Promise((resolve, reject) => {
-      jQuery.ajax({url: routing.generate(this.options.urls.list), data: searchOptions})
+      jQuery.ajax({url: routing.generate(this.options.urls.list), data: queryToParameters(query)})
         .then((products: RawProductInterface[]) => {
             resolve(products);
         })
