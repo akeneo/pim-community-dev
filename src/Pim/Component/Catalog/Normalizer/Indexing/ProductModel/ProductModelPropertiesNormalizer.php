@@ -25,6 +25,7 @@ class ProductModelPropertiesNormalizer implements NormalizerInterface, Serialize
     private const FIELD_FAMILY_VARIANT = 'family_variant';
     private const FIELD_ID = 'id';
     private const FIELD_PARENT = 'parent';
+    private const FIELD_ANCESTORS = 'ancestors';
 
     /**
      * {@inheritdoc}
@@ -78,6 +79,8 @@ class ProductModelPropertiesNormalizer implements NormalizerInterface, Serialize
             $productModel
         );
 
+        $data[self::FIELD_ANCESTORS] = $this->getAncestors($productModel);
+
         return $data;
     }
 
@@ -110,5 +113,55 @@ class ProductModelPropertiesNormalizer implements NormalizerInterface, Serialize
     {
         return $data instanceof ProductModelInterface
             && ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_MODEL_INDEX === $format;
+    }
+
+    /**
+     * @param ProductModelInterface $productModel
+     *
+     * @return array
+     */
+    private function getAncestors(ProductModelInterface $productModel): array
+    {
+        $ancestorsIds = $this->getAncestorsIds($productModel);
+        $ancestorsCodes = $this->getAncestorsCodes($productModel);
+
+        $ancestors = [
+            'ids'   => $ancestorsIds,
+            'codes' => $ancestorsCodes,
+        ];
+
+        return $ancestors;
+    }
+
+    /**
+     * @param ProductModelInterface $productModel
+     *
+     * @return array
+     */
+    private function getAncestorsIds(ProductModelInterface $productModel): array
+    {
+        $ancestorsIds = [];
+        while (null !== $parent = $productModel->getParent()) {
+            $ancestorsIds[] = 'product_model_' . $parent->getId();
+            $productModel = $parent;
+        }
+
+        return $ancestorsIds;
+    }
+
+    /**
+     * @param ProductModelInterface $productModel
+     *
+     * @return array
+     */
+    private function getAncestorsCodes(ProductModelInterface $productModel): array
+    {
+        $ancestorsCodes = [];
+        while (null !== $parent = $productModel->getParent()) {
+            $ancestorsCodes[] = $parent->getCode();
+            $productModel = $parent;
+        }
+
+        return $ancestorsCodes;
     }
 }

@@ -6,10 +6,9 @@ namespace Pim\Bundle\ApiBundle\tests\integration\Controller\Product;
 
 use Akeneo\Test\Integration\Configuration;
 use Doctrine\Common\Collections\Collection;
-use Pim\Component\Catalog\tests\integration\Normalizer\NormalizedProductCleaner;
 use Symfony\Component\HttpFoundation\Response;
 
-class PartialUpdateProductVariantIntegration extends AbstractProductTestCase
+class PartialUpdateVariantProductIntegration extends AbstractProductTestCase
 {
     /** @var Collection */
     private $products;
@@ -739,6 +738,9 @@ JSON;
             "PACK": {
                 "groups": ["groupA"],
                 "products": ["apollon_optionb_false"]
+            },
+            "SUBSTITUTION": {
+                "product_models": ["amor"]
             }
         }
     }
@@ -796,11 +798,27 @@ JSON;
             ],
             'created'       => '2016-06-14T13:12:50+02:00',
             'updated'       => '2016-06-14T13:12:50+02:00',
-            'associations'  => [
-                'PACK'         => ['groups'   => ['groupA'], 'products' => ['apollon_optionb_false'], 'product_models' => []],
-                'SUBSTITUTION' => ['groups'   => [], 'products' => [], 'product_models' => []],
-                'UPSELL'       => ['groups'   => [], 'products' => [], 'product_models' => []],
-                'X_SELL'       => ['groups'   => [], 'products' => [], 'product_models' => []],
+            'associations' => [
+                'PACK' => [
+                    'groups' => ['groupA'],
+                    'products' => ['apollon_optionb_false'],
+                    'product_models' => [],
+                ],
+                'SUBSTITUTION' => [
+                    'groups' => [],
+                    'products' => [],
+                    'product_models' => ['amor'],
+                ],
+                'UPSELL' => [
+                    'groups' => [],
+                    'products' => [],
+                    'product_models' => [],
+                ],
+                'X_SELL' => [
+                    'groups' => [],
+                    'products' => [],
+                    'product_models' => [],
+                ],
             ],
         ];
 
@@ -1779,21 +1797,6 @@ JSON;
             $response->headers->get('location')
         );
         $this->assertSame('', $response->getContent());
-    }
-
-    /**
-     * @param array  $expectedProduct normalized data of the product that should be created
-     * @param string $identifier identifier of the product that should be created
-     */
-    protected function assertSameProducts(array $expectedProduct, string $identifier): void
-    {
-        $product = $this->get('pim_catalog.repository.product')->findOneByIdentifier($identifier);
-        $standardizedProduct = $this->get('pim_serializer')->normalize($product, 'standard');
-
-        NormalizedProductCleaner::clean($expectedProduct);
-        NormalizedProductCleaner::clean($standardizedProduct);
-
-        $this->assertSame($expectedProduct, $standardizedProduct);
     }
 
     /**

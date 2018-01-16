@@ -11,7 +11,7 @@ extensions:
 
     pim-job-instance-xlsx-product-model-import-edit-user-navigation:
         module: pim/menu/user-navigation
-        parent: pim-job-instance-xlsx-product-import-edit
+        parent: pim-job-instance-xlsx-product-model-import-edit
         targetZone: user-menu
         config:
             userAccount: pim_menu.user.user_account

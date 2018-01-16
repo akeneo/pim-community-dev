@@ -33,7 +33,7 @@ class ProductModelDescendantsWriter implements ItemWriterInterface, StepExecutio
      */
     public function __construct(
         SaverInterface $descendantsSaver,
-        EntityManagerClearerInterface $cacheClearer = null
+        EntityManagerClearerInterface $cacheClearer
     ) {
         $this->descendantsSaver = $descendantsSaver;
         $this->cacheClearer = $cacheClearer;
@@ -51,9 +51,7 @@ class ProductModelDescendantsWriter implements ItemWriterInterface, StepExecutio
             }
         }
 
-        if (null !== $this->cacheClearer) {
-            $this->cacheClearer->clear();
-        }
+        $this->cacheClearer->clear();
     }
 
     /**

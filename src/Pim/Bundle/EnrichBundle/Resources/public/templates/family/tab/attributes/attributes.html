@@ -10,11 +10,13 @@
             <th class="AknGrid-headerCell">&nbsp;</th>
         </thead>
         <% _.each(_.keys(groupedAttributes), function (group) { %>
-        <tbody>
-            <tr class="AknGrid-bodyRow AknGrid-bodyRow--highlight group">
+        <% var attributeGroup = _.findWhere(attributeGroups, {code: group}) %>
+        <% var collapsed = (true === attributeGroup.collapsed) %>
+
+        <tbody class="AknGrid-bodyContainer <%- collapsed ? 'AknGrid-bodyContainer--collapsed': '' %>"  data-group="<%- group %>">
+            <tr class="AknGrid-bodyRow AknGrid-bodyRow--highlight AknGrid-headerToggle group">
                 <td class="AknGrid-bodyCell" colspan="<%- colspan %>">
-                    <i class="icon-collapse-alt"></i>
-                    <% var attributeGroup = _.findWhere(attributeGroups, {code: group}) %>
+                    <i class="<%- collapsed ? 'icon-expand-alt' : 'icon-collapse-alt' %>"></i>
                     <%-
                         i18n.getLabel(
                             attributeGroup.labels,

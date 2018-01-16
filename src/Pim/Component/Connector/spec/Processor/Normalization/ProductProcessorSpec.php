@@ -9,10 +9,9 @@ use Akeneo\Component\Batch\Job\JobParameters;
 use Akeneo\Component\Batch\Model\JobExecution;
 use Akeneo\Component\Batch\Model\JobInstance;
 use Akeneo\Component\Batch\Model\StepExecution;
-use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
+use Akeneo\Component\StorageUtils\Cache\EntityManagerClearerInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Builder\ProductBuilderInterface;
 use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\LocaleInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
@@ -30,18 +29,18 @@ class ProductProcessorSpec extends ObjectBehavior
         NormalizerInterface $normalizer,
         ChannelRepositoryInterface $channelRepository,
         AttributeRepositoryInterface $attributeRepository,
-        ObjectDetacherInterface $detacher,
         BulkMediaFetcher $mediaFetcher,
         StepExecution $stepExecution,
-        EntityWithFamilyValuesFillerInterface $productValuesFiller
+        EntityWithFamilyValuesFillerInterface $productValuesFiller,
+        EntityManagerClearerInterface $clearer
     ) {
         $this->beConstructedWith(
             $normalizer,
             $channelRepository,
             $attributeRepository,
-            $detacher,
             $mediaFetcher,
-            $productValuesFiller
+            $productValuesFiller,
+            $clearer
         );
 
         $this->setStepExecution($stepExecution);
@@ -58,13 +57,13 @@ class ProductProcessorSpec extends ObjectBehavior
     }
 
     function it_processes_product_without_media(
-        $detacher,
         $normalizer,
         $channelRepository,
         $stepExecution,
         $mediaFetcher,
         $productValuesFiller,
         $attributeRepository,
+        $clearer,
         ChannelInterface $channel,
         LocaleInterface $locale,
         ProductInterface $product,
@@ -114,7 +113,7 @@ class ProductProcessorSpec extends ObjectBehavior
         $mediaFetcher->fetchAll(Argument::cetera())->shouldNotBeCalled();
         $mediaFetcher->getErrors()->shouldNotBeCalled();
 
-        $detacher->detach($product)->shouldBeCalled();
+        $clearer->clear()->shouldBeCalled();
 
         $this->process($product)->shouldReturn([
             'enabled'    => true,
@@ -132,12 +131,12 @@ class ProductProcessorSpec extends ObjectBehavior
     }
 
     function it_processes_a_product_with_several_media(
-        $detacher,
         $normalizer,
         $channelRepository,
         $stepExecution,
         $mediaFetcher,
         $productValuesFiller,
+        $clearer,
         ChannelInterface $channel,
         LocaleInterface $locale,
         ProductInterface $product,
@@ -197,16 +196,16 @@ class ProductProcessorSpec extends ObjectBehavior
 
         $this->process($product)->shouldReturn($productStandard);
 
-        $detacher->detach($product)->shouldBeCalled();
+        $clearer->clear()->shouldBeCalled();
     }
 
     function it_throws_an_exception_if_media_of_product_is_not_found(
-        $detacher,
         $normalizer,
         $channelRepository,
         $stepExecution,
         $mediaFetcher,
         $productValuesFiller,
+        $clearer,
         ChannelInterface $channel,
         LocaleInterface $locale,
         ProductInterface $product,
@@ -274,6 +273,6 @@ class ProductProcessorSpec extends ObjectBehavior
 
         $this->process($product)->shouldReturn($productStandard);
 
-        $detacher->detach($product)->shouldBeCalled();
+        $clearer->clear()->shouldBeCalled();
     }
 }

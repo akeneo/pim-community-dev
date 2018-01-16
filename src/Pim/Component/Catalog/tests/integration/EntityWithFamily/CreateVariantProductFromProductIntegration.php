@@ -7,6 +7,7 @@ use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
 use Pim\Component\Catalog\Model\VariantProductInterface;
 use Akeneo\Test\IntegrationTestsBundle\Assertion;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * Test the variant product creation Pim\Component\Catalog\EntityWithFamily\CreateVariantProduct
@@ -89,7 +90,6 @@ final class CreateVariantProductFromProductIntegration extends TestCase
 
         $this->assertSame($this->productModel, $variantProduct->getParent());
         $this->assertSame('clothing_color_size', $variantProduct->getFamilyVariant()->getCode());
-        $this->assertSame($this->product->getGroups(), $variantProduct->getGroups());
         $this->assertSame($this->product->getCompletenesses(), $variantProduct->getCompletenesses());
         $this->assertSame($this->product->getAssociations(), $variantProduct->getAssociations());
         $this->assertSame($this->product->getCreated(), $variantProduct->getCreated());
@@ -98,8 +98,10 @@ final class CreateVariantProductFromProductIntegration extends TestCase
         $this->assertSame($this->product->getIdentifier(), $variantProduct->getIdentifier());
         $this->assertSame($this->productModel->getFamilyVariant(), $variantProduct->getFamilyVariant());
 
-        $assertCollection = new Assertion\Collection($this->product->getCategories(), $variantProduct->getCategories());
-        $assertCollection->containsEntities();
+        // IMPORTANT: we're not assigning categories and groups, because doing so would delete the association!
+        // @see AddParentAProductSubscriber and PIM-7088
+        $this->assertEquals($variantProduct->getGroups(), new ArrayCollection());
+        $this->assertEquals($variantProduct->getCategoriesForVariation(), new ArrayCollection());
     }
 
     public function test_that_the_variant_product_have_product_values_without_product_model_values()
