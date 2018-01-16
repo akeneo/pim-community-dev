@@ -8,7 +8,7 @@ use Doctrine\DBAL\Schema\Schema;
 /**
  * Migrations adding new job instances as well as permissions.
  */
-class Version_2_0_171220162357 extends AbstractMigration
+class Version_2_1_20180115172321_batch_jobs extends AbstractMigration
 {
     /**
      * @param Schema $schema
