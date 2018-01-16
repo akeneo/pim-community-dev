@@ -124,7 +124,7 @@ class ReferenceDataCollectionValueFactory implements ValueFactoryInterface
 
         foreach ($referenceDataCodes as $referenceDataCode) {
             $referenceData = $this->getReferenceData($attribute, $repository, $referenceDataCode);
-            if (!in_array($referenceData, $collection, true)) {
+            if (!in_array($referenceData, $collection)) {
                 $collection[] = $referenceData;
             }
         }

@@ -8,7 +8,8 @@ use Akeneo\Component\Batch\Job\JobInterface;
 use Akeneo\Component\Batch\Job\JobParameters;
 use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\Batch\Step\StepExecutionAwareInterface;
-use Akeneo\Component\StorageUtils\Cache\EntityManagerClearerInterface;
+use Akeneo\Component\StorageUtils\Cache\CacheClearerInterface;
+use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
@@ -34,6 +35,9 @@ class ProductProcessor implements ItemProcessorInterface, StepExecutionAwareInte
     /** @var AttributeRepositoryInterface */
     protected $attributeRepository;
 
+    /** @var ObjectDetacherInterface */
+    protected $detacher;
+
     /** @var StepExecution */
     protected $stepExecution;
 
@@ -43,26 +47,29 @@ class ProductProcessor implements ItemProcessorInterface, StepExecutionAwareInte
     /** @var EntityWithFamilyValuesFillerInterface */
     protected $productValuesFiller;
 
-    /** @var EntityManagerClearerInterface */
+    /** @var CacheClearerInterface */
     protected $cacheClearer;
 
     /**
      * @param NormalizerInterface                   $normalizer
      * @param ChannelRepositoryInterface            $channelRepository
      * @param AttributeRepositoryInterface          $attributeRepository
+     * @param ObjectDetacherInterface               $detacher
      * @param BulkMediaFetcher                      $mediaFetcher
      * @param EntityWithFamilyValuesFillerInterface $productValuesFiller
-     * @param EntityManagerClearerInterface         $cacheClearer
+     * @param CacheClearerInterface                 $cacheClearer
      */
     public function __construct(
         NormalizerInterface $normalizer,
         ChannelRepositoryInterface $channelRepository,
         AttributeRepositoryInterface $attributeRepository,
+        ObjectDetacherInterface $detacher,
         BulkMediaFetcher $mediaFetcher,
         EntityWithFamilyValuesFillerInterface $productValuesFiller,
-        EntityManagerClearerInterface $cacheClearer
+        CacheClearerInterface $cacheClearer = null
     ) {
         $this->normalizer = $normalizer;
+        $this->detacher = $detacher;
         $this->channelRepository = $channelRepository;
         $this->attributeRepository = $attributeRepository;
         $this->mediaFetcher = $mediaFetcher;
@@ -109,7 +116,12 @@ class ProductProcessor implements ItemProcessorInterface, StepExecutionAwareInte
             );
         }
 
-        $this->cacheClearer->clear();
+        if (null !== $this->cacheClearer) {
+            $this->cacheClearer->clear();
+        } else {
+            // TODO Remove $this->detacher, the upper condition and update the constructor on merge to master
+            $this->detacher->detach($product);
+        }
 
         return $productStandard;
     }
