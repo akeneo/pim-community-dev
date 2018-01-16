@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace PimEnterprise\Bundle\EnrichBundle\Connector\Writer\MassEdit;
 
-use Akeneo\Component\StorageUtils\Cache\EntityManagerClearerInterface;
+use Akeneo\Component\StorageUtils\Cache\CacheClearerInterface;
 use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
 use Pim\Bundle\EnrichBundle\Connector\Writer\MassEdit\ProductAndProductModelWriter as BaseWriter;
 use Pim\Bundle\VersioningBundle\Manager\VersionManager;
@@ -37,14 +37,14 @@ class ProductAndProductModelWriter extends BaseWriter
      * @param BulkSaverInterface            $productSaver
      * @param BulkSaverInterface            $productModelSaver
      * @param VersionManager                $versionManager
-     * @param EntityManagerClearerInterface $cacheClearer
+     * @param CacheClearerInterface         $cacheClearer
      * @param AuthorizationCheckerInterface $authorizationChecker
      */
     public function __construct(
         BulkSaverInterface $productSaver,
         BulkSaverInterface $productModelSaver,
         VersionManager $versionManager,
-        EntityManagerClearerInterface $cacheClearer,
+        CacheClearerInterface $cacheClearer,
         AuthorizationCheckerInterface $authorizationChecker
     ) {
         parent::__construct(
