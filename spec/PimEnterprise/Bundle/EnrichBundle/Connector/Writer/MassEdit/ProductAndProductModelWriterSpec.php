@@ -6,13 +6,13 @@ use Akeneo\Component\Batch\Item\ItemWriterInterface;
 use Akeneo\Component\Batch\Job\JobParameters;
 use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\Batch\Step\StepExecutionAwareInterface;
-use Akeneo\Component\StorageUtils\Cache\EntityManagerClearerInterface;
+use Akeneo\Component\StorageUtils\Cache\CacheClearerInterface;
 use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
-use PhpSpec\ObjectBehavior;
 use Pim\Bundle\VersioningBundle\Manager\VersionManager;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
 use PimEnterprise\Bundle\EnrichBundle\Connector\Writer\MassEdit\ProductAndProductModelWriter;
+use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
@@ -23,7 +23,7 @@ class ProductAndProductModelWriterSpec extends ObjectBehavior
         VersionManager $versionManager,
         BulkSaverInterface $productSaver,
         BulkSaverInterface $productModelSaver,
-        EntityManagerClearerInterface $cacheClearer,
+        CacheClearerInterface $cacheClearer,
         AuthorizationCheckerInterface $authorizationChecker,
         StepExecution $stepExecution
     ) {
