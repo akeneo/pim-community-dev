@@ -3,6 +3,7 @@
 ## Bug fixes
 
 - PIM-7111: Fix display bug on variant axis completeness
+- PIM-6908: Fix cancel button on unsaved changes dialog
 
 # 2.0.12 (2018-01-12)
 
