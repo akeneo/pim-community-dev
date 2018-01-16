@@ -2,6 +2,7 @@
 
 namespace Pim\Component\Catalog\Normalizer\Indexing\Product;
 
+use Pim\Component\Catalog\Model\EntityWithFamilyVariantInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\VariantProductInterface;
 use Pim\Component\Catalog\Normalizer\Standard\Product\PropertiesNormalizer as StandardPropertiesNormalizer;
@@ -24,6 +25,7 @@ class PropertiesNormalizer implements NormalizerInterface, SerializerAwareInterf
     const FIELD_COMPLETENESS = 'completeness';
     const FIELD_IN_GROUP = 'in_group';
     const FIELD_ID = 'id';
+    private const FIELD_ANCESTORS = 'ancestors';
 
     /**
      * {@inheritdoc}
@@ -79,6 +81,8 @@ class PropertiesNormalizer implements NormalizerInterface, SerializerAwareInterf
             $product
         );
 
+        $data[self::FIELD_ANCESTORS] = $this->getAncestors($product);
+
         return $data;
     }
 
@@ -132,5 +136,60 @@ class PropertiesNormalizer implements NormalizerInterface, SerializerAwareInterf
         }
 
         return $date;
+    }
+
+
+    /**
+     * @param $product
+     *
+     * @return array
+     */
+    private function getAncestors($product): array
+    {
+        $ancestorsIds = [];
+        $ancestorsCodes = [];
+        if ($product instanceof EntityWithFamilyVariantInterface) {
+            $ancestorsIds = $this->getAncestorsIds($product);
+            $ancestorsCodes = $this->getAncestorsCodes($product);
+        }
+
+        $ancestors = [
+            'ids'   => $ancestorsIds,
+            'codes' => $ancestorsCodes,
+        ];
+
+        return $ancestors;
+    }
+
+    /**
+     * @param EntityWithFamilyVariantInterface $entityWithFamilyVariant
+     *
+     * @return array
+     */
+    private function getAncestorsIds(EntityWithFamilyVariantInterface $entityWithFamilyVariant): array
+    {
+        $ancestorsIds = [];
+        while (null !== $parent = $entityWithFamilyVariant->getParent()) {
+            $ancestorsIds[] = 'product_model_' . $parent->getId();
+            $entityWithFamilyVariant = $parent;
+        }
+
+        return $ancestorsIds;
+    }
+
+    /**
+     * @param EntityWithFamilyVariantInterface $entityWithFamilyVariant
+     *
+     * @return array
+     */
+    private function getAncestorsCodes(EntityWithFamilyVariantInterface $entityWithFamilyVariant): array
+    {
+        $ancestorsCodes = [];
+        while (null !== $parent = $entityWithFamilyVariant->getParent()) {
+            $ancestorsCodes[] = $parent->getCode();
+            $entityWithFamilyVariant = $parent;
+        }
+
+        return $ancestorsCodes;
     }
 }

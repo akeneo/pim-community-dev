@@ -124,4 +124,20 @@ abstract class AbstractProductTestCase extends ApiTestCase
 
         $this->assertEquals($expected, $result);
     }
+
+    /**
+     * @param array  $expectedProduct normalized data of the product that should be created
+     * @param string $identifier identifier of the product that should be created
+     */
+    protected function assertSameProducts(array $expectedProduct, $identifier)
+    {
+        $product = $this->getFromTestContainer('pim_catalog.repository.product')->findOneByIdentifier($identifier);
+
+        $standardizedProduct = $this->getFromTestContainer('pim_serializer')->normalize($product, 'standard');
+
+        NormalizedProductCleaner::clean($expectedProduct);
+        NormalizedProductCleaner::clean($standardizedProduct);
+
+        $this->assertSame($expectedProduct, $standardizedProduct);
+    }
 }

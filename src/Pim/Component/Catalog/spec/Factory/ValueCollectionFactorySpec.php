@@ -3,6 +3,7 @@
 namespace spec\Pim\Component\Catalog\Factory;
 
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Akeneo\Component\StorageUtils\Repository\CachedObjectRepositoryInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Exception\InvalidAttributeException;
@@ -128,9 +129,6 @@ class ValueCollectionFactorySpec extends ObjectBehavior
         $logger,
         AttributeInterface $color
     ) {
-        $color->getCode()->willReturn('color');
-        $color->isUnique()->willReturn(false);
-
         $attributeRepository->findOneByIdentifier('color')->willReturn($color);
         $valueFactory->create($color, null, null, 'red')->willThrow(
             InvalidOptionException::validEntityCodeExpected(
@@ -162,10 +160,6 @@ class ValueCollectionFactorySpec extends ObjectBehavior
         $logger,
         AttributeInterface $color
     ) {
-        $color->getCode()->willReturn('color');
-        $color->isUnique()->willReturn(false);
-        $color->isLocalizable()->willReturn(true);
-
         $attributeRepository->findOneByIdentifier('color')->willReturn($color);
         $valueFactory->create($color, null, null, 'red')->willThrow(
             new InvalidAttributeException('attribute', 'color', static::class)
@@ -191,10 +185,6 @@ class ValueCollectionFactorySpec extends ObjectBehavior
         $logger,
         AttributeInterface $referenceData
     ) {
-        $referenceData->getCode()->willReturn('image');
-        $referenceData->isUnique()->willReturn(false);
-        $referenceData->isLocalizable()->willReturn(true);
-
         $attributeRepository->findOneByIdentifier('image')->willReturn($referenceData);
         $valueFactory->create($referenceData, null, null, 'my_image')->willThrow(
             new InvalidPropertyException('attribute', 'image', static::class)
@@ -214,5 +204,41 @@ class ValueCollectionFactorySpec extends ObjectBehavior
 
         $actualValues->shouldReturnAnInstanceOf(ValueCollection::class);
         $actualValues->shouldHaveCount(0);
+    }
+
+    function it_create_empty_value_is_wrong_format_when_creating_a_values_collection_from_the_storage_format(
+        $valueFactory,
+        $attributeRepository,
+        $logger,
+        AttributeInterface $image,
+        ValueInterface $value1,
+        AttributeInterface $referenceData
+    ) {
+        $image->getCode()->willReturn('image');
+        $image->isUnique()->willReturn(false);
+        $value1->getLocale()->willReturn(null);
+        $value1->getScope()->willReturn(null);
+        $value1->getAttribute()->willReturn($image);
+
+        $attributeRepository->findOneByIdentifier('image')->willReturn($referenceData);
+        $valueFactory->create($referenceData, null, null, 'my_image')->willThrow(
+            new InvalidPropertyTypeException('attribute', 'image', static::class)
+        );
+        $valueFactory->create($referenceData, null, null, 'empty_image')->willReturn($value1);
+
+        $logger->warning(
+            Argument::containingString('Tried to load a product value for attribute "image" that does not have the good type.')
+        );
+
+        $actualValues = $this->createFromStorageFormat([
+            'image' => [
+                '<all_channels>' => [
+                    '<all_locales>' => 'empty_image'
+                ],
+            ],
+        ]);
+
+        $actualValues->shouldReturnAnInstanceOf(ValueCollection::class);
+        $actualValues->shouldHaveCount(1);
     }
 }

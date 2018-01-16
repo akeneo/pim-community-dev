@@ -2,11 +2,36 @@
 
 ## Bug fixes
 
+- PIM-7111: Fix display bug on variant axis completeness
+
+# 2.0.12 (2018-01-12)
+
+## Bug fixes
+
+- PIM-7102: Fix product categories and groups being lost when attaching a product to a product model
 - PIM-6874: Fix select attribute groups from PEF when there are more than 25
 - PIM-7086: Fix enable loading message in system configuration
 - API-567: Fix validation of product-models on API
 - PIM-7085: Fix translation missing
 - PIM-6965: Show short view|project name in the grid
+- PIM-7083: fix access to product edit form if no right to view default locale
+- PIM-7082: remove double user menu on product import edit form
+- PIM-7084: fix attribute suppression
+- PIM-6355: Fix the count by categories on the product grid
+- PIM-7105: Fix un-index variant product on deletion
+
+## Improvements
+
+- PIM-7103: Improve product datagrid performance
+
+## Better manage products with variants!
+
+- API-516: be able to add a parent to a product via API
+
+## BC Breaks
+
+- Changes the constructor of `Pim\Bundle\ApiBundle\Controller\ProductController` to add `Pim\Component\Catalog\EntityWithFamilyVariant\AddParent`
+- Changes the service `pim_enrich.doctrine.counter.category_product` first argument to a `@pim_catalog.query.product_query_builder_factory`
 
 # 2.0.11 (2018-01-05)
 

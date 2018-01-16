@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Pim\Bundle\ApiBundle\tests\integration\Controller\Product;
 
 use Akeneo\Test\Integration\Configuration;
@@ -27,7 +29,7 @@ class SuccessLargeAndOrderedListProductIntegration extends AbstractProductTestCa
 
         $identifiers = [];
         for ($i = 0; $i < $this->getListSize(); $i++) {
-            $identifiers[] = 'sku-' . str_pad($i, 4, '0', STR_PAD_LEFT);
+            $identifiers[] = 'sku-' . str_pad((string) $i, 4, '0', STR_PAD_LEFT);
         }
 
         foreach ($identifiers as $identifier) {
@@ -72,7 +74,7 @@ JSON;
     /**
      * {@inheritdoc}
      */
-    protected function getConfiguration()
+    protected function getConfiguration(): Configuration
     {
         return $this->catalog->useTechnicalSqlCatalog();
     }
@@ -82,7 +84,7 @@ JSON;
      *
      * @return string
      */
-    private function getStandardizedProduct($identifier)
+    private function getStandardizedProduct($identifier): string
     {
         $standardized = <<<JSON
 
@@ -113,7 +115,7 @@ JSON;
      *
      * @return string
      */
-    private function getEncryptedId(ProductInterface $product)
+    private function getEncryptedId(ProductInterface $product): string
     {
         $encrypter = $this->get('pim_api.security.primary_key_encrypter');
 
@@ -126,7 +128,7 @@ JSON;
      *
      * @return int
      */
-    private function getListSize()
+    private function getListSize(): int
     {
         $cursorPageSize = (int)$this->getParameter('pim_catalog.factory.product_cursor.page_size');
 

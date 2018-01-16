@@ -1,6 +1,14 @@
-# 1.6.20 (2017-10-25) 
+# 1.6.21 (2018-01-11)
 
 ## Bug fixes
+
+- PIM-7041: Fix a bug that prevents to sort on a reference data attribute on product grid
+- PIM-7058: Restore correct simple select filter label when loading views
+
+# 1.6.20 (2017-10-25)
+
+## Bug fixes
+
 - GITHUB-6984: Fix wrong path when generating js routes, cheers @amansilla!
 
 # 1.6.19 (2017-09-05)

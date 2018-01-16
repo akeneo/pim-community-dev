@@ -50,6 +50,7 @@ class ProductModelPropertiesNormalizerSpec extends ObjectBehavior
 
         $productModel->getParent()->willReturn(null);
 
+        $productModel->getId()->willReturn('67');
         $productModel->getCode()->willReturn('sku-001');
         $productModel->getFamily()->willReturn(null);
         $productModel->getCreated()->willReturn($now);
@@ -92,6 +93,7 @@ class ProductModelPropertiesNormalizerSpec extends ObjectBehavior
                 'parent'         => null,
                 'values'         => [],
                 'label'          => [],
+                'ancestors'     => ['ids' => [], 'codes' => []],
             ]
         );
     }
@@ -180,6 +182,7 @@ class ProductModelPropertiesNormalizerSpec extends ObjectBehavior
                     ],
                 ],
                 'label'          => [],
+                'ancestors'     => ['ids' => [], 'codes' => []],
             ]
         );
     }
@@ -200,7 +203,9 @@ class ProductModelPropertiesNormalizerSpec extends ObjectBehavior
         $productModel->getFamily()->willReturn(null);
 
         $productModel->getParent()->willReturn($parent);
+        $parent->getId()->willReturn(1);
         $parent->getCode()->willReturn('parent_A');
+        $parent->getParent()->willReturn(null);
 
         $productModel->getCreated()->willReturn($now);
         $serializer->normalize(
@@ -289,6 +294,7 @@ class ProductModelPropertiesNormalizerSpec extends ObjectBehavior
                     ],
                 ],
                 'label'          => [],
+                'ancestors'     => ['ids' => ['product_model_1'], 'codes' => ['parent_A']],
             ]
         );
     }
