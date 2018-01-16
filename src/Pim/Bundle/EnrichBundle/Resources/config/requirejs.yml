@@ -13,6 +13,8 @@ config:
             exports: Translator
 
     config:
+        pim/router:
+            indexRoute: pim_dashboard_index
         # Forwarded events from mediator
         pim/form/common/edit-form:
             forwarded-events:
@@ -513,7 +515,6 @@ config:
         translator: pimenrich/js/translator
         routing: pimenrich/js/fos-routing-wrapper
         pim/datagrid-view-fetcher: pimdatagrid/js/fetcher/datagrid-view-fetcher
-        pim-router: pimenrich/js/router
         jquery-setup: pimui/js/jquery-setup.js
 
         # Controllers

@@ -148,7 +148,7 @@ class ProductNormalizer implements NormalizerInterface
         EntityWithFamilyVariantAttributesProvider $attributesProvider,
         VariantNavigationNormalizer $navigationNormalizer,
         AscendantCategoriesInterface $ascendantCategoriesQuery,
-        NormalizerInterface $incompleteValuesNormalizer = null
+        NormalizerInterface $incompleteValuesNormalizer
     ) {
         $this->normalizer                       = $normalizer;
         $this->versionNormalizer                = $versionNormalizer;
@@ -197,11 +197,7 @@ class ProductNormalizer implements NormalizerInterface
 
         $scopeCode = $context['channel'] ?? null;
 
-        $incompleteValues = [];
-        // TODO: remove this check on master
-        if (null !== $this->incompleteValuesNormalizer) {
-            $incompleteValues = $this->incompleteValuesNormalizer->normalize($product);
-        }
+        $incompleteValues = $this->incompleteValuesNormalizer->normalize($product);
 
         $normalizedProduct['meta'] = [
             'form'              => $this->formProvider->getForm($product),

@@ -38,7 +38,7 @@ class SaveFamilyVariantOnFamilyUpdateSubscriber implements EventSubscriberInterf
     public function __construct(
         ValidatorInterface $validator,
         BulkSaverInterface $familyVariantSaver,
-        BulkObjectDetacherInterface $objectDetacher = null
+        BulkObjectDetacherInterface $objectDetacher
     ) {
         $this->validator = $validator;
         $this->familyVariantSaver = $familyVariantSaver;
@@ -83,10 +83,7 @@ class SaveFamilyVariantOnFamilyUpdateSubscriber implements EventSubscriberInterf
         }
 
         $this->familyVariantSaver->saveAll($validFamilyVariants);
-
-        if (null !== $this->objectDetacher) {
-            $this->objectDetacher->detachAll($validFamilyVariants);
-        }
+        $this->objectDetacher->detachAll($validFamilyVariants);
 
         if (!empty($allViolations)) {
             $errorMessage = $this->getErrorMessage($allViolations);
