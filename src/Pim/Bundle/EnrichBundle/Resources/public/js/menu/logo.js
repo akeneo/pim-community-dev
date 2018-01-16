@@ -40,11 +40,7 @@ define(
              * Redirect the user to app's home
              */
             backHome: function () {
-                if (_.isUndefined(this.options.config.to)) {
-                    router.redirectToRoute('oro_default');
-                } else {
-                    router.redirectToRoute(this.options.config.to);
-                }
+                router.redirectToRoute('oro_default');
             }
         });
     });

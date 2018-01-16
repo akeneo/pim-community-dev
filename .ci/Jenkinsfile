@@ -66,7 +66,7 @@ stage("Build") {
             if (editions.contains("ee")) {
                 withBuildNode({
                     checkout([$class: 'GitSCM',
-                        branches: [[name: 'master']],
+                        branches: [[name: '2.1']],
                         userRemoteConfigs: [[credentialsId: 'github-credentials', url: 'https://github.com/akeneo/pim-enterprise-dev.git']]
                     ])
                     // Required to avoid permission error when "composer update"
