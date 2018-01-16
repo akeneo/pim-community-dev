@@ -255,31 +255,29 @@ class PermissionFixturesLoader
      * +-------------------------------------------------------+
      * | No view  | sweat_no_view                              |
      * |          | colored_sweat_no_view                      |
+     * |          | shoes_no_view                              |
+     * |          | jacket_no_view                             |
      * +-------------------------------------------------------+
      * | View     | shoes_view                                 |
      * |          | tshirt_view                                |
      * |          | sweat_edit                                 |
-     * |          | shoes_edit                                 |
-     * |          | sweat_own                                  |
      * |          | shoes_own                                  |
      * |          | trousers                                   |
      * |          | colored_shoes_view                         |
      * |          | colored_tshirt_view                        |
      * |          | colored_sweat_edit                         |
      * |          | colored_shoes_edit                         |
-     * |          | colored_sweat_own                          |
+     * |          | colored_jacket_own                         |
      * |          | colored_shoes_own                          |
      * |          | colored_trousers                           |
      * +-------------------------------------------------------+
      * | Edit     | sweat_edit                                 |
-     * |          | shoes_edit                                 |
      * |          | colored_sweat_edit                         |
      * |          | colored_shoes_edit                         |
      * +-------------------------------------------------------+
-     * | Own      | sweat_own                                  |
-     * |          | shoes_own                                  |
+     * | Own      | shoes_own                                  |
      * |          | trousers                                   |
-     * |          | colored_sweat_own                          |
+     * |          | colored_jacket_own                         |
      * |          | colored_shoes_own                          |
      * |          | colored_trousers                           |
      * +-------------------------------------------------------+
@@ -325,11 +323,11 @@ class PermissionFixturesLoader
 
         $rootProductModels = [
             ['code' => 'sweat_no_view', 'categories' => ['category_without_right']],
+            ['code' => 'jacket_no_view', 'categories' => ['category_without_right']],
             ['code' => 'shoes_view', 'categories' => ['view_category']],
             ['code' => 'tshirt_view', 'categories' => ['view_category']],
             ['code' => 'sweat_edit', 'categories' => ['edit_category']],
-            ['code' => 'shoes_edit', 'categories' => ['category_without_right']],
-            ['code' => 'sweat_own', 'categories' => ['category_without_right']],
+            ['code' => 'shoes_no_view', 'categories' => ['category_without_right']],
             ['code' => 'shoes_own', 'categories' => ['own_category']],
             ['code' => 'trousers', 'categories' => []]
         ];
@@ -339,8 +337,8 @@ class PermissionFixturesLoader
             ['code' => 'colored_shoes_view', 'categories' => ['category_without_right'], 'parent' => 'shoes_view'],
             ['code' => 'colored_tshirt_view', 'categories' => ['view_category'], 'parent' => 'tshirt_view'],
             ['code' => 'colored_sweat_edit', 'categories' => ['category_without_right'], 'parent' => 'sweat_edit'],
-            ['code' => 'colored_shoes_edit', 'categories' => ['edit_category'], 'parent' => 'shoes_edit'],
-            ['code' => 'colored_sweat_own', 'categories' => ['own_category'], 'parent' => 'sweat_own'],
+            ['code' => 'colored_shoes_edit', 'categories' => ['edit_category'], 'parent' => 'shoes_no_view'],
+            ['code' => 'colored_jacket_own', 'categories' => ['own_category'], 'parent' => 'jacket_no_view'],
             ['code' => 'colored_shoes_own', 'categories' => ['category_without_right'], 'parent' => 'shoes_own'],
             ['code' => 'colored_trousers', 'parent' => 'trousers']
         ];
@@ -351,7 +349,7 @@ class PermissionFixturesLoader
             'colored_sized_tshirt_view' => ['categories' => ['view_category'], 'parent' => 'colored_tshirt_view'],
             'colored_sized_sweat_edit' => ['categories' => ['category_without_right'], 'parent' => 'colored_sweat_edit'],
             'colored_sized_shoes_edit' => ['categories' => ['edit_category'], 'parent' => 'colored_shoes_edit'],
-            'colored_sized_sweat_own' => ['categories' => ['category_without_right'], 'parent' => 'colored_sweat_own'],
+            'colored_sized_sweat_own' => ['categories' => ['category_without_right'], 'parent' => 'colored_jacket_own'],
             'colored_sized_shoes_own' => ['categories' => ['own_category'], 'parent' => 'colored_shoes_own'],
             'colored_sized_trousers' => ['parent' => 'colored_trousers'],
         ];
