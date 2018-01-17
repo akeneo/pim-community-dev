@@ -9,6 +9,7 @@ services:
               - '@pimee_catalog.security.filter.not_granted_associated_product'
               - '@pimee_catalog.security.filter.not_granted_category'
               - '@pimee_catalog.security.filter.not_granted_values'
+              - '@pimee_catalog.security.filter.not_granted_parent'
 
     pimee_catalog.security.factory.filtered_product_model:
         class: '%pimee_catalog.security.factory.filtered_entity.class%'
@@ -16,3 +17,4 @@ services:
             -
               - '@pimee_catalog.security.filter.not_granted_category'
               - '@pimee_catalog.security.filter.not_granted_values'
+              - '@pimee_catalog.security.filter.not_granted_parent'

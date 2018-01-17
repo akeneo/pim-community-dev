@@ -43,9 +43,6 @@ class GetVariantProductWithPermissionIntegration extends ApiTestCase
         $this->assertAuthorized('colored_sized_trousers');
     }
 
-    /**
-     * @fail
-     */
     public function testGetViewableAttributesAndLocaleOnVariantProduct()
     {
         $this->loader->loadProductModelsFixturesForAttributeAndLocalePermissions();
@@ -101,9 +98,6 @@ JSON;
         $this->assertResponse($response, $expected);
     }
 
-    /**
-     * @fail
-     */
     public function testGetViewableAssociationsOnVariantProduct()
     {
         $this->loader->loadProductModelsForAssociationPermissions();
@@ -118,32 +112,7 @@ JSON;
             "parent":"sub_product_model",
             "categories":["own_category"],
             "enabled":true,
-            "values":{
-                "root_product_model_edit_attribute":[
-                    {"locale":"en_US","scope":null,"data":true},
-                    {"locale":"fr_FR","scope":null,"data":true}
-                ],
-                "root_product_model_view_attribute":[
-                    {"locale":"en_US","scope":null,"data":true},
-                    {"locale":"fr_FR","scope":null,"data":true}
-                ],
-                "sub_product_model_edit_attribute":[
-                    {"locale":"en_US", "scope":null, "data":true},
-                    {"locale":"fr_FR", "scope":null, "data":true}
-                ],
-                "sub_product_model_view_attribute":[
-                    {"locale":"en_US", "scope":null, "data":true},
-                    {"locale":"fr_FR", "scope":null, "data":true}
-                ],
-                "variant_product_edit_attribute":[
-                    {"locale":"en_US","scope":null,"data":true},
-                    {"locale":"fr_FR","scope":null,"data":true}
-                ],
-                "variant_product_view_attribute":[
-                    {"locale":"en_US","scope":null,"data":true},
-                    {"locale":"fr_FR","scope":null,"data":true}
-                ]
-            },
+            "values":{},
             "created": "2016-06-14T13:12:50+02:00",
             "updated": "2016-06-14T13:12:50+02:00",
             "identifier": "variant_product",

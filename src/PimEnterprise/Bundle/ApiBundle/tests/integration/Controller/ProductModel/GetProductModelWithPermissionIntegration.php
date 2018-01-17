@@ -83,9 +83,6 @@ JSON;
         $this->assertResponse($response, $expected);
     }
 
-    /**
-     * @fail
-     */
     public function testGetViewableAttributesAndLocaleOnSubProductModel()
     {
         $this->loader->loadProductModelsFixturesForAttributeAndLocalePermissions();
@@ -102,14 +99,6 @@ JSON;
             "parent":"root_product_model",
             "categories":["own_category"],
             "values":{
-                "sub_product_model_view_attribute":[
-                    {"locale":"en_US", "scope":null, "data":true},
-                    {"locale":"fr_FR", "scope":null, "data":true}
-                ],
-                "sub_product_model_edit_attribute":[
-                    {"locale":"en_US", "scope":null, "data":true},
-                    {"locale":"fr_FR", "scope":null, "data":true}
-                ],
                 "root_product_model_edit_attribute":[
                     {"locale":"en_US","scope":null,"data":true},
                     {"locale":"fr_FR","scope":null,"data":true}
@@ -117,6 +106,14 @@ JSON;
                 "root_product_model_view_attribute":[
                     {"locale":"en_US","scope":null,"data":true},
                     {"locale":"fr_FR","scope":null,"data":true}
+                ],
+                "sub_product_model_edit_attribute":[
+                    {"locale":"en_US", "scope":null, "data":true},
+                    {"locale":"fr_FR", "scope":null, "data":true}
+                ],
+                "sub_product_model_view_attribute":[
+                    {"locale":"en_US", "scope":null, "data":true},
+                    {"locale":"fr_FR", "scope":null, "data":true}
                 ]
             },
             "created": "2016-06-14T13:12:50+02:00",
@@ -156,7 +153,7 @@ JSON;
         $client->request('GET', 'api/rest/v1/product-models/' . $code);
         $response = $client->getResponse();
 
-        Assert::assertSame(Response::HTTP_OK, $response->getStatusCode());
+        Assert::assertSame(Response::HTTP_OK, $response->getStatusCode(), sprintf('Error with "%s".', $code));
     }
 
     /**

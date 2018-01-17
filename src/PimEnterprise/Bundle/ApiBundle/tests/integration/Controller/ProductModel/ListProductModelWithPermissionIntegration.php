@@ -56,9 +56,6 @@ class ListProductModelWithPermissionIntegration extends ApiTestCase
         Assert::assertSame($expectedCodes, $codes);
     }
 
-    /**
-     * @fail
-     */
     public function testGetListOfViewableAttributesAndLocaleValues()
     {
         $this->loader->loadProductModelsFixturesForAttributeAndLocalePermissions();
