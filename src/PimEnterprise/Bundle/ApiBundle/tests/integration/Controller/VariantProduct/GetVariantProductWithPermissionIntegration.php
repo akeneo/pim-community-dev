@@ -9,7 +9,7 @@ use PimEnterprise\Bundle\ApiBundle\tests\integration\Controller\PermissionFixtur
 use PHPUnit\Framework\Assert;
 use Symfony\Component\HttpFoundation\Response;
 
-class GetProductModelWithPermissionIntegration extends ApiTestCase
+class GetVariantProductWithPermissionIntegration extends ApiTestCase
 {
     /** @var PermissionFixturesLoader */
     private $loader;
@@ -21,49 +21,46 @@ class GetProductModelWithPermissionIntegration extends ApiTestCase
         $this->loader = new PermissionFixturesLoader($this->testKernel->getContainer());
     }
 
-    public function testGetNotViewableProductModel()
+    public function testGetNotViewableVariantProduct()
     {
         $this->loader->loadProductModelsFixturesForCategoryPermissions();
 
-        $message = 'Product model "%s" does not exist.';
-        $this->assertUnauthorized('sweat_no_view', sprintf($message, 'sweat_no_view'));
-        $this->assertUnauthorized('colored_sweat_no_view', sprintf($message, 'colored_sweat_no_view'));
-        $this->assertUnauthorized('shoes_no_view', sprintf($message, 'shoes_no_view'));
-        $this->assertUnauthorized('jacket_no_view', sprintf($message, 'jacket_no_view'));
+        $message = 'Product "%s" does not exist.';
+        $this->assertUnauthorized('colored_sized_sweat_no_view', sprintf($message, 'colored_sized_sweat_no_view'));
     }
 
-    public function testGetViewableProductModel()
+    public function testGetViewableVariantProduct()
     {
         $this->loader->loadProductModelsFixturesForCategoryPermissions();
 
-        $this->assertAuthorized('shoes_view');
-        $this->assertAuthorized('tshirt_view');
-        $this->assertAuthorized('sweat_edit');
-        $this->assertAuthorized('shoes_own');
-        $this->assertAuthorized('trousers');
-        $this->assertAuthorized('colored_shoes_view');
-        $this->assertAuthorized('colored_tshirt_view');
-        $this->assertAuthorized('colored_sweat_edit');
-        $this->assertAuthorized('colored_shoes_edit');
-        $this->assertAuthorized('colored_shoes_own');
-        $this->assertAuthorized('colored_trousers');
+        $this->assertAuthorized('colored_sized_shoes_view');
+        $this->assertAuthorized('colored_sized_tshirt_view');
+        $this->assertAuthorized('colored_sized_tshirt_view');
+        $this->assertAuthorized('colored_sized_sweat_edit');
+        $this->assertAuthorized('colored_sized_shoes_edit');
+        $this->assertAuthorized('colored_sized_sweat_own');
+        $this->assertAuthorized('colored_sized_shoes_own');
+        $this->assertAuthorized('colored_sized_trousers');
     }
 
-    public function testGetViewableAttributesAndLocaleOnRootProductModel()
+    /**
+     * @fail
+     */
+    public function testGetViewableAttributesAndLocaleOnVariantProduct()
     {
         $this->loader->loadProductModelsFixturesForAttributeAndLocalePermissions();
 
-        $data = '{"categories": ["own_category"]}';
-
         $client = $this->createAuthenticatedClient([], [], null, null, 'mary', 'mary');
-        $client->request('GET', 'api/rest/v1/product-models/root_product_model', [], [], [], $data);
+
+        $client->request('GET', 'api/rest/v1/products/variant_product');
 
         $expected = <<<JSON
         {
-            "code":"root_product_model",
-            "family_variant":"family_variant_permission",
-            "parent":null,
+            "identifier":"variant_product",
+            "family": "family_permission",
+            "parent":"sub_product_model",
             "categories":["own_category"],
+            "enabled":true,
             "values":{
                 "root_product_model_edit_attribute":[
                     {"locale":"en_US","scope":null,"data":true},
@@ -72,12 +69,33 @@ class GetProductModelWithPermissionIntegration extends ApiTestCase
                 "root_product_model_view_attribute":[
                     {"locale":"en_US","scope":null,"data":true},
                     {"locale":"fr_FR","scope":null,"data":true}
+                ],
+                "sub_product_model_edit_attribute":[
+                    {"locale":"en_US", "scope":null, "data":true},
+                    {"locale":"fr_FR", "scope":null, "data":true}
+                ],
+                "sub_product_model_view_attribute":[
+                    {"locale":"en_US", "scope":null, "data":true},
+                    {"locale":"fr_FR", "scope":null, "data":true}
+                ],
+                "variant_product_edit_attribute":[
+                    {"locale":"en_US","scope":null,"data":true},
+                    {"locale":"fr_FR","scope":null,"data":true}
+                ],
+                "variant_product_view_attribute":[
+                    {"locale":"en_US","scope":null,"data":true},
+                    {"locale":"fr_FR","scope":null,"data":true}
                 ]
             },
             "created": "2016-06-14T13:12:50+02:00",
-            "updated": "2016-06-14T13:12:50+02:00"
+            "updated": "2016-06-14T13:12:50+02:00",
+            "identifier": "variant_product",
+            "groups": [],
+            "associations": [],
+            "metadata": {"workflow_status":"working_copy"}
         }
 JSON;
+
         $response = $client->getResponse();
         $this->assertSame(Response::HTTP_OK, $response->getStatusCode());
         $this->assertResponse($response, $expected);
@@ -86,30 +104,21 @@ JSON;
     /**
      * @fail
      */
-    public function testGetViewableAttributesAndLocaleOnSubProductModel()
+    public function testGetViewableAssociationsOnVariantProduct()
     {
-        $this->loader->loadProductModelsFixturesForAttributeAndLocalePermissions();
-
-        $data = '{"categories": ["own_category"]}';
-
+        $this->loader->loadProductModelsForAssociationPermissions();
         $client = $this->createAuthenticatedClient([], [], null, null, 'mary', 'mary');
-        $client->request('GET', 'api/rest/v1/product-models/sub_product_model', [], [], [], $data);
+
+        $client->request('GET', 'api/rest/v1/products/variant_product');
 
         $expected = <<<JSON
         {
-            "code":"sub_product_model",
-            "family_variant":"family_variant_permission",
-            "parent":"root_product_model",
+            "identifier":"variant_product",
+            "family": "family_permission",
+            "parent":"sub_product_model",
             "categories":["own_category"],
+            "enabled":true,
             "values":{
-                "sub_product_model_view_attribute":[
-                    {"locale":"en_US", "scope":null, "data":true},
-                    {"locale":"fr_FR", "scope":null, "data":true}
-                ],
-                "sub_product_model_edit_attribute":[
-                    {"locale":"en_US", "scope":null, "data":true},
-                    {"locale":"fr_FR", "scope":null, "data":true}
-                ],
                 "root_product_model_edit_attribute":[
                     {"locale":"en_US","scope":null,"data":true},
                     {"locale":"fr_FR","scope":null,"data":true}
@@ -117,15 +126,52 @@ JSON;
                 "root_product_model_view_attribute":[
                     {"locale":"en_US","scope":null,"data":true},
                     {"locale":"fr_FR","scope":null,"data":true}
+                ],
+                "sub_product_model_edit_attribute":[
+                    {"locale":"en_US", "scope":null, "data":true},
+                    {"locale":"fr_FR", "scope":null, "data":true}
+                ],
+                "sub_product_model_view_attribute":[
+                    {"locale":"en_US", "scope":null, "data":true},
+                    {"locale":"fr_FR", "scope":null, "data":true}
+                ],
+                "variant_product_edit_attribute":[
+                    {"locale":"en_US","scope":null,"data":true},
+                    {"locale":"fr_FR","scope":null,"data":true}
+                ],
+                "variant_product_view_attribute":[
+                    {"locale":"en_US","scope":null,"data":true},
+                    {"locale":"fr_FR","scope":null,"data":true}
                 ]
             },
             "created": "2016-06-14T13:12:50+02:00",
-            "updated": "2016-06-14T13:12:50+02:00"
+            "updated": "2016-06-14T13:12:50+02:00",
+            "identifier": "variant_product",
+            "groups": [],
+            "associations": {
+                "PACK":{
+                    "groups":[],
+                    "products":[]
+                },
+                "SUBSTITUTION":{
+                    "groups":[],
+                    "products":[]
+                },
+                "UPSELL":{
+                    "groups":[],
+                    "products":[]
+                },
+                "X_SELL":{
+                    "groups":[],
+                    "products":["product_view"]
+                }
+            },
+            "metadata": {"workflow_status":"working_copy"}
         }
 JSON;
+
         $response = $client->getResponse();
         $this->assertSame(Response::HTTP_OK, $response->getStatusCode());
-
         $this->assertResponse($response, $expected);
     }
 
@@ -137,7 +183,7 @@ JSON;
     {
         $client = $this->createAuthenticatedClient([], [], null, null, 'mary', 'mary');
 
-        $client->request('GET', 'api/rest/v1/product-models/' . $code);
+        $client->request('GET', 'api/rest/v1/products/' . $code);
         $response = $client->getResponse();
 
         $expected = sprintf('{"code":%d,"message":"%s"}', Response::HTTP_NOT_FOUND, addslashes($message));
@@ -153,7 +199,7 @@ JSON;
     {
         $client = $this->createAuthenticatedClient([], [], null, null, 'mary', 'mary');
 
-        $client->request('GET', 'api/rest/v1/product-models/' . $code);
+        $client->request('GET', 'api/rest/v1/products/' . $code);
         $response = $client->getResponse();
 
         Assert::assertSame(Response::HTTP_OK, $response->getStatusCode());
@@ -170,7 +216,6 @@ JSON;
 
         NormalizedProductCleaner::clean($expected);
         NormalizedProductCleaner::clean($result);
-
         $this->assertEquals($expected, $result);
     }
 
