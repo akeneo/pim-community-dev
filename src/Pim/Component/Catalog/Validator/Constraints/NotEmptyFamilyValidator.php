@@ -32,6 +32,10 @@ class NotEmptyFamilyValidator extends ConstraintValidator
             throw new UnexpectedTypeException($constraint, NotEmptyFamily::class);
         }
 
+        if (!$product->isVariant()) {
+            return;
+        }
+
         if (null === $product->getFamily()) {
             $this->context->buildViolation(NotEmptyFamily::MESSAGE, [
                    '%sku%' => $product->getIdentifier()

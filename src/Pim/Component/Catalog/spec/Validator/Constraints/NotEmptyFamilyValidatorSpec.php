@@ -46,6 +46,7 @@ class NotEmptyFamilyValidatorSpec extends ObjectBehavior
         NotEmptyFamily $constraint
     ) {
         $entity->getFamily()->willReturn($family);
+        $entity->isVariant()->willReturn(true);
 
         $context->buildViolation(Argument::cetera())->shouldNotBeCalled();
 
@@ -55,12 +56,12 @@ class NotEmptyFamilyValidatorSpec extends ObjectBehavior
     function it_raises_a_violation_if_the_family_is_null(
         $context,
         ProductInterface $entity,
-        FamilyInterface $family,
         NotEmptyFamily $constraint,
         ConstraintViolationBuilderInterface $violation
     ) {
         $entity->getFamily()->willReturn(null);
         $entity->getIdentifier()->willReturn('product_sku');
+        $entity->isVariant()->willReturn(true);
 
         $context
             ->buildViolation(
