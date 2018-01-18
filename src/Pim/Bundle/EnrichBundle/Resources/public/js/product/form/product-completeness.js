@@ -35,18 +35,27 @@ define(
             configure: function () {
                 this.listenTo(this.getRoot(), 'pim_enrich:form:scope_switcher:change', function (scopeEvent) {
                     if ('base_product' === scopeEvent.context) {
-                        this.render({ scope: scopeEvent.scopeCode });
+                        this.renderCompleteness({ scope: scopeEvent.scopeCode });
                     }
                 }.bind(this));
                 this.listenTo(this.getRoot(), 'pim_enrich:form:locale_switcher:change', function (localeEvent) {
                     if ('base_product' === localeEvent.context) {
-                        this.render({ locale: localeEvent.localeCode});
+                        this.renderCompleteness({ locale: localeEvent.localeCode});
                     }
                 }.bind(this));
 
-                this.listenTo(this.getRoot(), 'pim_enrich:form:entity:post_fetch', this.render.bind(this));
+                this.listenTo(this.getRoot(), 'pim_enrich:form:entity:post_fetch', this.renderCompleteness.bind(this));
 
                 return BaseForm.prototype.configure.apply(this, arguments);
+            },
+
+            /**
+             * {@inheritDoc}
+             */
+            render: function() {
+                this.renderCompleteness();
+
+                return BaseForm.prototype.render.apply(this, arguments);
             },
 
             /**
@@ -56,11 +65,12 @@ define(
              * @param options.locale String
              * @param options.scope  String
              */
-            render: function () {
-                const options = {
+            renderCompleteness: function (event) {
+                const options = Object.assign({}, {
                     locale: UserContext.get('catalogLocale'),
                     scope: UserContext.get('catalogScope')
-                };
+                }, event);
+
                 this.$el.empty();
 
                 const ratio = this.getCurrentRatio(options);
@@ -159,7 +169,7 @@ define(
                         scope: UserContext.get('catalogScope')
                     }
                 );
-                this.render();
+                this.renderCompleteness();
             }
         });
     }
