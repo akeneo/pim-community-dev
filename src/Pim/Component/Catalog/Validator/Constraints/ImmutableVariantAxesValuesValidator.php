@@ -68,7 +68,7 @@ class ImmutableVariantAxesValuesValidator extends ConstraintValidator
         foreach ($axisCodes as $code) {
             $originalValue = $originalValues->getByCodes($code);
             $newValue = $entity->getValue($code);
-            if (null !== $originalValue && !$originalValue->isEqual($newValue)) {
+            if (null !== $newValue && null !== $originalValue && !$originalValue->isEqual($newValue)) {
                 if (is_bool($newValue->getData())) {
                     $newValue = $newValue ? 'true' : 'false';
                 }
