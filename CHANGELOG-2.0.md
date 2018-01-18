@@ -3,6 +3,11 @@
 ## Bug fixes
 
 - PIM-7110: Fix asset collection thumbnail broken on grid
+- PIM-7075: Fix delete action on product models in grid
+
+## BC breaks
+
+- Change the constructor of `PimEnterprise\Bundle\DataGridBundle\Datagrid\Configuration\Product\RowActionsConfigurator` to add `Pim\Component\Catalog\Repository\ProductModelRepositoryInterface`
 
 # 2.0.12 (2018-01-12)
 
