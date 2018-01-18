@@ -9,12 +9,12 @@ use Pim\Component\Catalog\EntityWithFamily\CreateVariantProduct;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Component\Catalog\Model\FamilyVariantInterface;
+use Pim\Component\Catalog\Model\Product;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
 use Pim\Component\Catalog\Model\ValueCollectionInterface;
 use Pim\Component\Catalog\Model\ValueInterface;
 use Pim\Component\Catalog\Model\VariantAttributeSetInterface;
-use Pim\Component\Catalog\Model\VariantProduct;
 use Prophecy\Argument;
 
 class CreateVariantProductSpec extends ObjectBehavior
@@ -29,7 +29,7 @@ class CreateVariantProductSpec extends ObjectBehavior
         $familyVariant->getCommonAttributes()->willReturn([$description]);
         $familyVariant->getAxes()->willReturn([$color]);
 
-        $this->beConstructedWith(VariantProduct::class);
+        $this->beConstructedWith(Product::class);
     }
 
     function it_is_initializable()

@@ -8,7 +8,6 @@ use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
 use Pim\Component\Catalog\Model\ValueInterface;
-use Pim\Component\Catalog\Model\VariantProductInterface;
 
 /**
  * Create a variant product from a product.
@@ -37,11 +36,11 @@ class CreateVariantProduct
      * @param ProductInterface      $product
      * @param ProductModelInterface $parent
      *
-     * @return VariantProductInterface
+     * @return ProductInterface
      *
      * @throws \InvalidArgumentException
      */
-    public function from(ProductInterface $product, ProductModelInterface $parent): VariantProductInterface
+    public function from(ProductInterface $product, ProductModelInterface $parent): ProductInterface
     {
         if ($product->getFamily() !== $parent->getFamily()) {
             throw new \InvalidArgumentException('Product and product model families should be the same.');
@@ -70,11 +69,11 @@ class CreateVariantProduct
      *
      * @param ProductInterface $product
      *
-     * @return VariantProductInterface
+     * @return ProductInterface
      */
-    private function createVariantProduct(ProductInterface $product): VariantProductInterface
+    private function createVariantProduct(ProductInterface $product): ProductInterface
     {
-        /** @var VariantProductInterface $variantProduct */
+        /** @var ProductInterface $variantProduct */
         $variantProduct = new $this->variantProductClassName();
 
         $identifierValue = $product->getValues()->filter(
