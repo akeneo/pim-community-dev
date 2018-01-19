@@ -6,7 +6,6 @@ use Pim\Component\Catalog\EntityWithFamily\CreateVariantProduct;
 use Pim\Component\Catalog\EntityWithFamily\Event\ParentHasBeenAddedToProduct;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
-use Pim\Component\Catalog\Model\VariantProductInterface;
 use Pim\Component\Catalog\Repository\ProductModelRepositoryInterface;
 use Pim\Component\Catalog\EntityWithFamilyVariant\AddParent;
 use PhpSpec\ObjectBehavior;

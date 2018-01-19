@@ -8,7 +8,6 @@ use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterfa
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Pim\Component\Catalog\Model\AttributeInterface;
-use Pim\Component\Catalog\Model\VariantProductInterface;
 use Symfony\Component\OptionsResolver\Exception\MissingOptionsException;
 
 /**
