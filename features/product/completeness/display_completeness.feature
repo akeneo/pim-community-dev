@@ -118,7 +118,7 @@ Feature: Display the completeness of a product
     When I change the family of the product to "Sneakers"
     Then I should not see the text "No family defined. Please define a family to calculate the completeness of this product."
     When I change the family of the product to "Boots"
-    Then the completeness badge label should show "You just changed the family of the product. Please save it first to calculate the completeness for the new family."
+    Then I should see the text "You just changed the family of the product. Please save it first to calculate the completeness for the new family."
 
   @jira https://akeneo.atlassian.net/browse/PIM-4489
   Scenario: Don't display the completeness if the family is not defined on product creation
