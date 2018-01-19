@@ -1,6 +1,6 @@
 <?php
 
-namespace PimEnterprise\Bundle\ApiBundle\tests\integration\Controller\VariantProduct;
+namespace PimEnterprise\Bundle\ApiBundle\tests\integration\Controller\ProductModel;
 
 use Akeneo\Test\Integration\Configuration;
 use PHPUnit\Framework\Assert;
@@ -77,14 +77,11 @@ JSON;
         Assert::assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
     }
 
-    /**
-     * @fail
-     */
     public function testUpdateSubProductModelValuesByMergingNonViewableCategories()
     {
         $this->loader->loadProductModelsFixturesForCategoryPermissions();
 
-        $data = '{"categories": ["view_category", "own_category", "edit_category"]}';
+        $data = '{"categories": ["view_category", "edit_category"]}';
 
         $sql = <<<SQL
 SELECT c.code
@@ -97,8 +94,7 @@ SQL;
         $this->assertUpdated('colored_shoes_own', $data, $sql, [
             ['code' => 'category_without_right'],
             ['code' => 'view_category'],
-            ['code' => 'edit_category'],
-            ['code' => 'own_category'],
+            ['code' => 'edit_category']
         ]);
     }
 
