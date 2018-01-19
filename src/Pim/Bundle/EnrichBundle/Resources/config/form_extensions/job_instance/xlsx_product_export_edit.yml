@@ -75,9 +75,9 @@ extensions:
             label: pim_enrich.form.job_instance.tab.properties.file_path.title
             tooltip: pim_enrich.form.job_instance.tab.properties.file_path.help
 
-    pim-job-instance-csv-product-export-edit-properties-decimal-separator:
+    pim-job-instance-xlsx-product-export-edit-properties-decimal-separator:
         module: pim/job/common/edit/field/decimal-separator
-        parent: pim-job-instance-csv-product-export-edit-properties
+        parent: pim-job-instance-xlsx-product-export-edit-properties
         position: 130
         targetZone: global-settings
         config:
