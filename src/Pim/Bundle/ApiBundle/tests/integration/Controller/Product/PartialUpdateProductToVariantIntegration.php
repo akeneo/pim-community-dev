@@ -101,15 +101,15 @@ JSON;
                 'message' => 'Validation failed.',
                 'errors' => [
                     [
+                        'property' => 'attribute',
+                        'message' => 'Attribute "a_simple_select" cannot be empty, as it is defined as an ' .
+                            'axis for this entity'
+                    ],
+                    [
                         'property' => 'parent',
                         'message' => 'The variant product "product_family_variant" cannot have product model ' .
                             '"test" as parent, (this product model can only have other product models as children)'
                     ],
-                    [
-                        'property' => 'attribute',
-                        'message' => 'Attribute "a_simple_select" cannot be empty, as it is defined as an ' .
-                            'axis for this entity'
-                    ]
                 ]
             ],
             json_decode($response->getContent(), true)
