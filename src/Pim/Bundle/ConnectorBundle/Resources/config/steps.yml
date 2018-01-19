@@ -72,10 +72,10 @@ services:
             - '@pim_connector.reader.file.csv_family'
             - '@pim_catalog.entity_with_family_variant.keep_only_values_for_variation'
             - '@validator'
-            - '@pim_catalog.saver.family_variant'
             - '@pim_catalog.saver.product_model'
             - '@pim_catalog.saver.product'
             - '@pim_connector.doctrine.cache_clearer'
+            - '@akeneo_batch.job_repository'
 
     pim_connector.step.csv_family_variant.import:
         class: '%pim_connector.step.item_step.class%'
@@ -413,10 +413,10 @@ services:
             - '@pim_connector.reader.file.xlsx_family'
             - '@pim_catalog.entity_with_family_variant.keep_only_values_for_variation'
             - '@validator'
-            - '@pim_catalog.saver.family_variant'
             - '@pim_catalog.saver.product_model'
             - '@pim_catalog.saver.product'
             - '@pim_connector.doctrine.cache_clearer'
+            - '@akeneo_batch.job_repository'
 
     pim_connector.step.xlsx_family_variant.import:
         class: '%pim_connector.step.item_step.class%'

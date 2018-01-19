@@ -6,6 +6,7 @@ namespace spec\Pim\Component\Connector\Job;
 
 use Akeneo\Component\Batch\Item\InvalidItemException;
 use Akeneo\Component\Batch\Item\ItemReaderInterface;
+use Akeneo\Component\Batch\Job\JobRepositoryInterface;
 use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\StorageUtils\Cache\CacheClearerInterface;
 use Akeneo\Component\StorageUtils\Cursor\CursorInterface;
@@ -35,10 +36,10 @@ class ComputeDataRelatedToFamilyVariantsTaskletSpec extends ObjectBehavior
         ItemReaderInterface $familyReader,
         KeepOnlyValuesForVariation $keepOnlyValuesForVariation,
         ValidatorInterface $validator,
-        BulkSaverInterface $familyVariantSaver,
         BulkSaverInterface $productModelSaver,
         BulkSaverInterface $productSaver,
-        CacheClearerInterface $cacheClearer
+        CacheClearerInterface $cacheClearer,
+        JobRepositoryInterface $jobRepository
     ) {
         $this->beConstructedWith(
             $familyRepository,
@@ -46,10 +47,10 @@ class ComputeDataRelatedToFamilyVariantsTaskletSpec extends ObjectBehavior
             $familyReader,
             $keepOnlyValuesForVariation,
             $validator,
-            $familyVariantSaver,
             $productModelSaver,
             $productSaver,
-            $cacheClearer
+            $cacheClearer,
+            $jobRepository
         );
     }
 
