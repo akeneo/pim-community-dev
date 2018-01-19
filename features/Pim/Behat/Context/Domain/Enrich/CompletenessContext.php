@@ -189,4 +189,19 @@ class CompletenessContext extends PimContext
 
         return $flatCompleteness;
     }
+
+    /**
+     * @param string $completenessAmount
+     *
+     * @Then /^the completeness badge label should show "([^"]*)"$/
+     */
+    public function theCompletenessBadgeLabelShouldShow($completenessAmount)
+    {
+        $this->spin(function () use ($completenessAmount) {
+            $badge = $this->getCurrentPage()->find('css', '.AknCompletenessBadge');
+            $badgeAmount = $badge->getText();
+
+            return strtolower($badgeAmount) === strtolower($completenessAmount);
+        }, sprintf('The completeness badge does not show the amount "%s".', $completenessAmount));
+    }
 }

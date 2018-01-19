@@ -118,7 +118,7 @@ Feature: Display the completeness of a product
     When I change the family of the product to "Sneakers"
     Then I should not see the text "No family defined. Please define a family to calculate the completeness of this product."
     When I change the family of the product to "Boots"
-    Then I should see the text "You just changed the family of the product. Please save it first to calculate the completeness for the new family."
+    Then the completeness badge label should show "You just changed the family of the product. Please save it first to calculate the completeness for the new family."
 
   @jira https://akeneo.atlassian.net/browse/PIM-4489
   Scenario: Don't display the completeness if the family is not defined on product creation
@@ -147,3 +147,15 @@ Feature: Display the completeness of a product
     And I switch the locale to "fr_FR"
     And I visit the "Completeness" column tab
     Then The label for the "tablet" channel should be "[tablet]"
+
+  Scenario: Display the completeness badge for the scope and locale
+    Given I am on the "sneakers" product page
+    When I visit the "Completeness" column tab
+    And I switch the scope to "Tablet"
+    Then the completeness badge label should show "Complete: 88%"
+    When I switch the locale to "fr_FR"
+    Then the completeness badge label should show "Complete: 77%"
+    When I switch the scope to "Mobile"
+    Then the completeness badge label should show "Complete: 100%"
+    When I switch the locale to "en_US"
+    Then the completeness badge label should show "Complete: 100%"
