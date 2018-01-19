@@ -300,7 +300,6 @@ class PermissionFixturesLoader
      * +----------+--------------------------------------------+
      * | View     | colored_sized_shoes_view                   |
      * |          | colored_sized_tshirt_view                  |
-     * |          | colored_sized_tshirt_view                  |
      * |          | colored_sized_sweat_edit                   |
      * |          | colored_sized_shoes_edit                   |
      * |          | colored_sized_sweat_own                    |
