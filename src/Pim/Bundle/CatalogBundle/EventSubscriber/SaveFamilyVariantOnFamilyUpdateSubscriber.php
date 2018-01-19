@@ -6,8 +6,10 @@ namespace Pim\Bundle\CatalogBundle\EventSubscriber;
 
 use Akeneo\Component\StorageUtils\Detacher\BulkObjectDetacherInterface;
 use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
+use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Component\StorageUtils\StorageEvents;
 use Pim\Component\Catalog\Model\FamilyInterface;
+use Pim\Component\Catalog\Model\FamilyVariantInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -30,19 +32,25 @@ class SaveFamilyVariantOnFamilyUpdateSubscriber implements EventSubscriberInterf
     /** @var BulkObjectDetacherInterface */
     private $objectDetacher;
 
+    /** @var BulkSaverInterface */
+    private $bulkfamilyVariantSaver;
+
     /**
      * @param ValidatorInterface          $validator
-     * @param BulkSaverInterface          $familyVariantSaver
+     * @param SaverInterface              $familyVariantSaver
+     * @param BulkSaverInterface          $bulkFamilyVariantSaver
      * @param BulkObjectDetacherInterface $objectDetacher
      */
     public function __construct(
         ValidatorInterface $validator,
-        BulkSaverInterface $familyVariantSaver,
+        SaverInterface $familyVariantSaver,
+        BulkSaverInterface $bulkFamilyVariantSaver = null,
         BulkObjectDetacherInterface $objectDetacher = null
     ) {
         $this->validator = $validator;
         $this->familyVariantSaver = $familyVariantSaver;
         $this->objectDetacher = $objectDetacher;
+        $this->bulkfamilyVariantSaver = $bulkFamilyVariantSaver;
     }
 
     /**
@@ -51,39 +59,81 @@ class SaveFamilyVariantOnFamilyUpdateSubscriber implements EventSubscriberInterf
     public static function getSubscribedEvents(): array
     {
         return [
-            StorageEvents::POST_SAVE => 'validateAndSaveFamilyVariants',
+            StorageEvents::POST_SAVE => 'onUnitarySave',
+            StorageEvents::POST_SAVE_ALL => 'onBulkSave',
         ];
     }
 
     /**
      * Validates and saves the family variants belonging to a family whenever it is updated.
      *
+     * By explicitly calling the `FamilyVariantSaver::save` function we ensure that the:
+     * 1. `compute_family_variant_structure_changes` job will run
+     * 2. `compute_product_model_descendants` job will run.
+     *
+     * hence, updating the catalog asynchronously.
+     *
      * @param GenericEvent $event
      *
      * @throws \LogicException
      */
-    public function validateAndSaveFamilyVariants(GenericEvent $event): void
+    public function onUnitarySave(GenericEvent $event): void
     {
         $subject = $event->getSubject();
         if (!$subject instanceof FamilyInterface) {
             return;
         }
 
-        $validFamilyVariants = [];
-        $allViolations = [];
-
-        foreach ($subject->getFamilyVariants() as $familyVariant) {
-            $violations = $this->validator->validate($familyVariant);
-
-            if (0 === $violations->count()) {
-                $validFamilyVariants[] = $familyVariant;
-            } else {
-                $allViolations[$familyVariant->getCode()] = $violations;
-            }
+        if (!$event->hasArgument('unitary') || false === $event->getArgument('unitary')) {
+            return;
         }
 
-        $this->familyVariantSaver->saveAll($validFamilyVariants);
+        $validationResponse = $this->validateFamilyVariants($subject);
+        $validFamilyVariants = $validationResponse['valid_family_variants'];
+        $allViolations = $validationResponse['violations'];
 
+        foreach ($validFamilyVariants as $familyVariant) {
+            $this->familyVariantSaver->save($familyVariant);
+        }
+        if (null !== $this->objectDetacher) {
+            $this->objectDetacher->detachAll($validFamilyVariants);
+        }
+
+        if (!empty($allViolations)) {
+            $errorMessage = $this->getErrorMessage($allViolations);
+            throw new \LogicException($errorMessage);
+        }
+    }
+
+    /**
+     * Validates and saves the family variants belonging to a family whenever it is updated.
+     *
+     * By explicitly calling the `FamilyVariantSaver::saveAll` function we ensure there will be no background job run to
+     * update the variant product and product model related to the family variant (for scalability reasons).
+     *
+     * The update of the product models and variant products should be done in a dedicated component such as an import
+     * step.
+     *
+     * @param GenericEvent $event
+     */
+    public function onBulkSave(GenericEvent $event): void
+    {
+        $subject = $event->getSubject();
+        if (!$subject instanceof FamilyInterface) {
+            return;
+        }
+
+        if (!$event->hasArgument('unitary') || true === $event->getArgument('unitary')) {
+            return;
+        }
+
+        $validationResponse = $this->validateFamilyVariants($subject);
+        $validFamilyVariants = $validationResponse['valid_family_variants'];
+        $allViolations = $validationResponse['violations'];
+
+        if (null !== $this->bulkfamilyVariantSaver) {
+            $this->bulkfamilyVariantSaver->saveAll($validFamilyVariants);
+        }
         if (null !== $this->objectDetacher) {
             $this->objectDetacher->detachAll($validFamilyVariants);
         }
@@ -112,5 +162,28 @@ class SaveFamilyVariantOnFamilyUpdateSubscriber implements EventSubscriberInterf
         }
 
         return $errorMessage;
+    }
+
+    /**
+     * @param FamilyInterface $family
+     *
+     * @return FamilyVariantInterface[]
+     */
+    private function validateFamilyVariants(FamilyInterface $family): array
+    {
+        $validFamilyVariants = [];
+        $allViolations = [];
+
+        foreach ($family->getFamilyVariants() as $familyVariant) {
+            $violations = $this->validator->validate($familyVariant);
+
+            if (0 === $violations->count()) {
+                $validFamilyVariants[] = $familyVariant;
+            } else {
+                $allViolations[$familyVariant->getCode()] = $violations;
+            }
+        }
+
+        return ['valid_family_variants' => $validFamilyVariants, 'violations' => $allViolations];
     }
 }
