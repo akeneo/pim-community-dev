@@ -6,6 +6,7 @@ parameters:
     akeneo_integration_tests.security.system_user_authenticator.class: Akeneo\Test\IntegrationTestsBundle\Security\SystemUserAuthenticator
     akeneo_integration_tests.configuration.catalog.class: Akeneo\Test\IntegrationTestsBundle\Configuration\Catalog
     akeneo_integration_tests.launcher.job_launcher.class: Akeneo\Test\IntegrationTestsBundle\Launcher\JobLauncher
+    akeneo_integration_tests.launcher.job_execution_observer.class: Akeneo\Test\IntegrationTestsBundle\Jobs\JobExecutionObserver
 
 services:
     akeneo_integration_tests.loader.reference_data_loader:
@@ -55,16 +56,16 @@ services:
         arguments:
             - '@kernel'
 
+    akeneo_integration_tests.launcher.job_execution_observer:
+        class: '%akeneo_integration_tests.launcher.job_execution_observer.class%'
+        arguments:
+            - '@kernel'
+
     akeneo_integration_tests.configuration.catalog:
         class: '%akeneo_integration_tests.configuration.catalog.class%'
 
     akeneo_integration_tests.catalog.configuration:
         synthetic: true
-
-    akeneo_integration_tests.launcher.job_launcher:
-        class: '%akeneo_integration_tests.launcher.job_launcher.class%'
-        arguments:
-            - '@kernel'
 
     akeneo_integration_tests.catalog.factory.product:
         class: 'Akeneo\Test\IntegrationTestsBundle\Fixture\Factory\Product'
