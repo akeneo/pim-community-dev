@@ -59,7 +59,10 @@ services:
     akeneo_integration_tests.launcher.job_execution_observer:
         class: '%akeneo_integration_tests.launcher.job_execution_observer.class%'
         arguments:
-            - '@kernel'
+            - '@pim_enrich.repository.job_instance'
+            - '@pim_enrich.repository.job_execution'
+            - '@akeneo_batch.saver.job_instance'
+            - '@doctrine.orm.default_entity_manager'
 
     akeneo_integration_tests.configuration.catalog:
         class: '%akeneo_integration_tests.configuration.catalog.class%'

@@ -167,7 +167,7 @@ class ComputeDataRelatedToFamilyVariantsTasklet implements TaskletInterface, Ini
      *
      * @param array $entitiesWithFamilyVariant
      */
-    private function updateProductModelAndDescendants(array $entitiesWithFamilyVariant)
+    private function updateProductModelAndDescendants(array $entitiesWithFamilyVariant): void
     {
         foreach ($entitiesWithFamilyVariant as $entityWithFamilyVariant) {
             if ($entityWithFamilyVariant instanceof ProductModelInterface) {
@@ -222,10 +222,8 @@ class ComputeDataRelatedToFamilyVariantsTasklet implements TaskletInterface, Ini
 
     /**
      * Update the step execution to make sure the progress is shown in the UI.
-     *
-     * @return StepExecution
      */
-    private function updateStepExecution()
+    private function updateStepExecution(): void
     {
         $this->jobRepository->updateStepExecution($this->stepExecution);
     }

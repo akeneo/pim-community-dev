@@ -36,6 +36,8 @@ class SaveFamilyVariantOnFamilyUpdateSubscriber implements EventSubscriberInterf
     private $bulkfamilyVariantSaver;
 
     /**
+     * TODO: @migration 2.2 : remove $bulkFamilyVariantSaver and $objectDetacher
+     *
      * @param ValidatorInterface          $validator
      * @param SaverInterface              $familyVariantSaver
      * @param BulkSaverInterface          $bulkFamilyVariantSaver

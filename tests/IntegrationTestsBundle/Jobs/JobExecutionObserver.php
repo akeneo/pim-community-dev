@@ -4,8 +4,11 @@ declare(strict_types=1);
 
 namespace Akeneo\Test\IntegrationTestsBundle\Jobs;
 
-use Akeneo\Bundle\BatchBundle\Job\JobInstanceRepository;
-use Symfony\Component\HttpKernel\KernelInterface;
+use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
+use Akeneo\Component\StorageUtils\Saver\SaverInterface;
+use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\EntityRepository;
 
 /**
  * Utility class used to get observe the job executions.
@@ -16,25 +19,34 @@ use Symfony\Component\HttpKernel\KernelInterface;
  */
 class JobExecutionObserver
 {
+    /** @var SaverInterface */
     private $jobSaver;
 
+    /** @var EntityManager */
     private $entityManager;
 
-    /** @var JobInstanceRepository */
+    /** @var EntityRepository */
     private $jobInstanceRepository;
 
-    /** EntityRepository */
+    /** @var EntityRepository */
     private $jobExecutionsRepository;
 
     /**
-     * @param KernelInterface $kernel
+     * @param IdentifiableObjectRepositoryInterface $jobInstanceRepository
+     * @param IdentifiableObjectRepositoryInterface $jobExecutionRepository
+     * @param SaverInterface                        $jobSaver
+     * @param EntityManagerInterface                $entityManager
      */
-    public function __construct(KernelInterface $kernel)
-    {
-        $this->jobInstanceRepository = $kernel->getContainer()->get('pim_enrich.repository.job_instance');
-        $this->jobExecutionsRepository = $kernel->getContainer()->get('pim_enrich.repository.job_execution');
-        $this->jobSaver = $kernel->getContainer()->get('akeneo_batch.saver.job_instance');
-        $this->entityManager = $kernel->getContainer()->get('doctrine.orm.default_entity_manager');
+    public function __construct(
+        EntityRepository $jobInstanceRepository,
+        EntityRepository $jobExecutionRepository,
+        SaverInterface $jobSaver,
+        EntityManagerInterface $entityManager
+    ) {
+        $this->jobInstanceRepository = $jobInstanceRepository;
+        $this->jobExecutionsRepository = $jobExecutionRepository;
+        $this->jobSaver = $jobSaver;
+        $this->entityManager = $entityManager;
     }
 
     public function jobExecutions(): array

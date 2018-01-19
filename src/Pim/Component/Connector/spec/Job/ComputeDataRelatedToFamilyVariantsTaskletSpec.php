@@ -67,6 +67,7 @@ class ComputeDataRelatedToFamilyVariantsTaskletSpec extends ObjectBehavior
         $productModelSaver,
         $productSaver,
         $productModelQueryBuilderFactory,
+        $jobRepository,
         FamilyInterface $family,
         ProductModelInterface $rootProductModel,
         ProductModelInterface $subProductModel,
@@ -124,6 +125,8 @@ class ComputeDataRelatedToFamilyVariantsTaskletSpec extends ObjectBehavior
         $stepExecution->incrementSummaryInfo('process')->shouldBeCalledTimes(3);
         $stepExecution->incrementSummaryInfo('skip')->shouldNotBeCalled();
 
+        $jobRepository->updateStepExecution($stepExecution)->shouldBeCalled();
+
         $this->setStepExecution($stepExecution);
         $this->execute();
     }
@@ -136,6 +139,7 @@ class ComputeDataRelatedToFamilyVariantsTaskletSpec extends ObjectBehavior
         $productModelSaver,
         $productSaver,
         $productModelQueryBuilderFactory,
+        $jobRepository,
         FamilyInterface $family1,
         FamilyInterface $family2,
         ProductModelInterface $rootProductModel1,
@@ -228,6 +232,9 @@ class ComputeDataRelatedToFamilyVariantsTaskletSpec extends ObjectBehavior
         $productSaver->saveAll([$product2])->shouldBeCalled();
 
         $stepExecution->incrementSummaryInfo('process')->shouldBeCalledTimes(5);
+
+        $jobRepository->updateStepExecution($stepExecution)->shouldBeCalled();
+
         $this->setStepExecution($stepExecution);
         $this->execute();
     }
@@ -237,6 +244,7 @@ class ComputeDataRelatedToFamilyVariantsTaskletSpec extends ObjectBehavior
         $familyRepository,
         $productModelQueryBuilderFactory,
         $productModelSaver,
+        $jobRepository,
         StepExecution $stepExecution
     ) {
         $familyReader->read()->willReturn(['code' => 'unkown_family'], null);
@@ -247,6 +255,8 @@ class ComputeDataRelatedToFamilyVariantsTaskletSpec extends ObjectBehavior
         $productModelQueryBuilderFactory->create()->shouldNotBeCalled();
         $productModelSaver->saveAll(Argument::any())->shouldNotBeCalled();
 
+        $jobRepository->updateStepExecution($stepExecution)->shouldNotBeCalled();
+
         $this->setStepExecution($stepExecution);
         $this->execute();
     }
@@ -256,6 +266,7 @@ class ComputeDataRelatedToFamilyVariantsTaskletSpec extends ObjectBehavior
         $familyRepository,
         $productModelQueryBuilderFactory,
         $productModelSaver,
+        $jobRepository,
         StepExecution $stepExecution
     ) {
         $familyReader->read()->willThrow(InvalidItemException::class);
@@ -264,6 +275,8 @@ class ComputeDataRelatedToFamilyVariantsTaskletSpec extends ObjectBehavior
         $familyRepository->findOneByIdentifier(Argument::any())->shouldNotBeCalled();
         $productModelQueryBuilderFactory->create()->shouldNotBeCalled();
         $productModelSaver->saveAll(Argument::any())->shouldNotBeCalled();
+
+        $jobRepository->updateStepExecution($stepExecution)->shouldNotBeCalled();
 
         $this->setStepExecution($stepExecution);
         $this->execute();
