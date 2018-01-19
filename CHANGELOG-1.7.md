@@ -1,3 +1,9 @@
+# 1.7.x
+
+## Bug fixes
+
+- Fix XLSX product export to allow decimal separator configuration (Thanks [wa-daniel-fahl](https://github.com/wa-daniel-fahl)!
+
 # 1.7.16 (2018-01-11)
 
 ## Bug Fixes
