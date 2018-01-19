@@ -1,4 +1,4 @@
-import fetcherRegistry from 'pimenrich/js/fetcher/fetcher-registry';
+const fetcherRegistry = require('pim/fetcher-registry');
 import Product, { ProductInterface, RawProductInterface } from 'pimfront/product/domain/model/product';
 import hidrateAll from 'pimfront/app/application/hidrator/hidrator';
 import { dataReceived } from 'pimfront/product-grid/domain/action/search';

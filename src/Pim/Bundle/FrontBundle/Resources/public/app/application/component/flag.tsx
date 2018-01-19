@@ -11,7 +11,7 @@ export default ({locale, displayLanguage}: {locale: Locale, displayLanguage: boo
   return (
     <span>
       <i className={iconClass}></i>
-      {displayLanguage ? <span className="language">{locale.language ? locale.language : language}</span> : ''}
+      &nbsp;{displayLanguage ? <span className="language">{locale.language ? locale.language : language}</span> : ''}
     </span>
   );
 };

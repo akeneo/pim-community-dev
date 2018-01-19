@@ -15,6 +15,7 @@ import { gridLocaleChanged } from 'pimfront/product-grid/application/action/loca
 import Locale from 'pimfront/app/domain/model/locale';
 import LocaleSwitcher from 'pimfront/app/application/component/locale-switcher';
 import { getImageShowUrl } from 'pimfront/tools/media-url-generator';
+import IdentifierFilter from 'pimfront/product-grid/application/component/filter/identifier';
 
 const redirectToProduct = (product: Product) => {
   return {type: 'REDIRECT_TO_ROUTE', route: 'pim_enrich_product_edit', params: {id: product.meta.id}}
@@ -65,6 +66,9 @@ const GridView = ({items, context, structure, onRedirectToProduct, onCatalogLoca
               <div className="AknColumn-block">
                 <LocaleSwitcher locale={context.locale} locales={structure.locales} onLocaleChange={onCatalogLocaleChanged}/>
               </div>
+            </div>
+            <div className="AknFilterBox-list">
+              <IdentifierFilter />
             </div>
           </div>
         </div>
