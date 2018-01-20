@@ -5,8 +5,8 @@ user:
     notifications:
       to_review: Quan hi hagi una nova proposta per revisar
       state: Quan la proposta sigui acceptada o rebutjada
-      "yes": true
-      "no": false
+      yes: true
+      no: false
   asset_delay_reminder: Recordatori de retard de recurs (en dies)
   default_published_product_grid_view:
     label: Vista de graella de productes publicats per defecte
