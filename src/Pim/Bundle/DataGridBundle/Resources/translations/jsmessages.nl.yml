@@ -30,8 +30,8 @@ View per page: Bekijk per pagina
 Enabled: Ingeschakeld
 Disabled: Uitgeschakeld
 not_available: Niet beschikbaar
-"Yes": true
-"No": false
+Yes: true
+No: false
 oro.datagrid.entityHint: Entiteit
 oro.datagrid.noentities: Geen records gevonden
 oro.datagrid.nocolumns: Geen kolommen geconfigureerd voor dit raster
