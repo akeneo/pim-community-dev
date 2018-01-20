@@ -5,8 +5,8 @@ user:
     notifications:
       to_review: Lors d'une nouvelle proposition à examiner
       state: Lorsqu'une proposition est acceptée ou rejetée
-      "yes": true
-      "no": false
+      yes: true
+      no: false
   asset_delay_reminder: Rappel de la date d'utilisation limite des ressources (en jours)
   default_published_product_grid_view:
     label: Vue par défaut de la grille des produits publiés
