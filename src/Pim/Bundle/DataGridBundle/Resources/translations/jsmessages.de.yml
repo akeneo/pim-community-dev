@@ -30,8 +30,8 @@ View per page: Pro Seite
 Enabled: Aktiviert
 Disabled: Deaktiviert
 not_available: N/A
-"Yes": true
-"No": false
+Yes: true
+No: false
 oro.datagrid.entityHint: Entität
 oro.datagrid.noentities: Keine Einträge gefunden
 oro.datagrid.noresults: "Für Ihre Suche wurden leider keine passenden Treffer gefunden."
