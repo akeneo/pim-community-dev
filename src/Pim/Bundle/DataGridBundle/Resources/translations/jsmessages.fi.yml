@@ -30,8 +30,8 @@ View per page: Sivunäkymä
 Enabled: Käytössä
 Disabled: Poistettu käytöstä
 not_available: Ei mitään
-"Yes": true
-"No": false
+Yes: true
+No: false
 oro.datagrid.entityHint: Entiteetti
 oro.datagrid.noentities: Tuloksia ei löytynyt
 oro.datagrid.noresults: "Valitettavasti tuloksia ei löytynyt."

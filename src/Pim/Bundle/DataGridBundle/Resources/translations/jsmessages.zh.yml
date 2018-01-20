@@ -30,8 +30,8 @@ View per page: 查看每页
 Enabled: 已启用
 Disabled: 已禁用
 not_available: 不适用
-"Yes": true
-"No": false
+Yes: true
+No: false
 oro.datagrid.entityHint: 实体
 oro.datagrid.noentities: 没有找到记录
 oro.datagrid.nocolumns: 没有配置此网格的列

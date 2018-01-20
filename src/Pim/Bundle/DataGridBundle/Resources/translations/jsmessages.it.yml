@@ -30,8 +30,8 @@ View per page: Mostra per pagina
 Enabled: Attivato
 Disabled: Disabilitato
 not_available: N/A
-"Yes": true
-"No": false
+Yes: true
+No: false
 oro.datagrid.entityHint: Entità
 oro.datagrid.noentities: Nessun record trovato
 oro.datagrid.noresults: "Non ci sono risultati per la tua ricerca."

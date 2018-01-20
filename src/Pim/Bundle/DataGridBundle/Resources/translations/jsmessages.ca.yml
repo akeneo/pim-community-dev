@@ -30,8 +30,8 @@ View per page: Vista per pàgina
 Enabled: Habilitat
 Disabled: Deshabilitat
 not_available: N/D
-"Yes": true
-"No": false
+Yes: true
+No: false
 oro.datagrid.entityHint: Entitat
 oro.datagrid.noentities: No s'han trobat registres
 oro.datagrid.nocolumns: Sense columnes configurades per aquesta graella
