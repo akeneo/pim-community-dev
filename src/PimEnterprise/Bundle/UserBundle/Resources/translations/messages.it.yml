@@ -5,8 +5,8 @@ user:
     notifications:
       to_review: Quando una nuova proposta è da revisionare
       state: Quando una proposta è accettata o rifiutata
-      "yes": true
-      "no": false
+      yes: true
+      no: false
   asset_delay_reminder: Promemoria di ritardo dell'asset (in giorni)
   default_published_product_grid_view:
     label: Visualizzazione predefinita griglia dei prodotti pubblicati
