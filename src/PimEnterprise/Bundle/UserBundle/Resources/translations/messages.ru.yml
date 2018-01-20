@@ -5,8 +5,8 @@ user:
     notifications:
       to_review: При появлении нового предложения для рассмотра
       state: При принятии или отклонении предложения
-      "yes": true
-      "no": false
+      yes: true
+      no: false
   asset_delay_reminder: Напоминание о медиафайлах (в днях)
   default_published_product_grid_view:
     label: Представление сетки публикованных товаров по умолчанию
