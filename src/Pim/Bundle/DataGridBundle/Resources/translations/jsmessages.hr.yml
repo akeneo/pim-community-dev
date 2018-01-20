@@ -30,8 +30,8 @@ View per page: Pregled po stranici
 Enabled: Omogućeno
 Disabled: Onemogućeno
 not_available: N/A
-"Yes": true
-"No": false
+Yes: true
+No: false
 oro.datagrid.entityHint: Entitet
 oro.datagrid.noentities: Nisu pronađeni rezultati
 oro.datagrid.nocolumns: Stupci za prikaz tablice nisu konfigurirani

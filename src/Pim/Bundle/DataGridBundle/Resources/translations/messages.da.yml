@@ -11,6 +11,7 @@ oro.grid.mass_action.error_content: Kan ikke udføre masse handlingen
 oro.grid.mass_action.delete.label: Slet
 oro.grid.mass_action.delete.confirm_title: Masse slet bekræftelse
 oro.grid.mass_action.delete.confirm_content: Er du sikker på at du vil sletter de valgte elementer?
+oro.grid.mass_action.delete.item_limit: Du kan ikke masse slette mere end %limit% af produkterne (%count% valgte)
 oro.grid.datagrid.page_size.all: Alle
 oro.grid.mass_action.delete.success_message: "{0} ingen enheder blev fjernet|{1} én enhed blev fjernet|]1, Inf [%count% enheder blev fjernet"
 datagrid_view:
