@@ -30,8 +30,8 @@ View per page: 1ページあたりの表示
 Enabled: 有効
 Disabled: 無効
 not_available: N/A
-"Yes": true
-"No": false
+Yes: true
+No: false
 oro.datagrid.entityHint: エンティティ
 oro.datagrid.noentities: レコードが見つかりません
 oro.datagrid.noresults: "検索結果はありません。"
