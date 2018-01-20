@@ -5,8 +5,8 @@ user:
     notifications:
       to_review: 当有新的提案待审查
       state: 当提案被接受或拒绝
-      "yes": true
-      "no": false
+      yes: true
+      no: false
   asset_delay_reminder: 资源延迟提醒 （以天计）
   default_published_product_grid_view:
     label: 默认的已发布产品网格视图
