@@ -5,8 +5,8 @@ user:
     notifications:
       to_review: Si hay nuevas propuestas a revisar
       state: Cuando una nueva propuesta es aceptada o rachazada
-      "yes": true
-      "no": false
+      yes: true
+      no: false
   asset_delay_reminder: Recordatorio de fecha límite de uso de recursos (en días)
   default_published_product_grid_view:
     label: Vista por defecto de grilla de productos publicados
