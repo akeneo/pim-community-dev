@@ -5,8 +5,8 @@ user:
     notifications:
       to_review: Når nye forslag til revision
       state: Når forslaget er accepteret eller afvist
-      "yes": true
-      "no": false
+      yes: true
+      no: false
   asset_delay_reminder: Aktiver forsinkelses rykker (i dage)
   default_published_product_grid_view:
     label: Standard offentliggjorte produkter grid view
