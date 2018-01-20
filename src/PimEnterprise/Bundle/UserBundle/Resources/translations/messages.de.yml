@@ -5,8 +5,8 @@ user:
     notifications:
       to_review: Wenn ein neuer Vorschlag zu überprüfen ist
       state: Wenn der Vorschlag angenommen oder abgelehnt wird
-      "yes": true
-      "no": false
+      yes: true
+      no: false
   asset_delay_reminder: Wiedervorlage (Tage)
   default_published_product_grid_view:
     label: Standardansicht Übersicht veröffentlichter Produkte
