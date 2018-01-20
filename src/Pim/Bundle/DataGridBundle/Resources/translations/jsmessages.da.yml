@@ -30,8 +30,8 @@ View per page: Se pr. side
 Enabled: Aktiveret
 Disabled: Deaktiveret
 not_available: Ikke tilgængelig
-"Yes": true
-"No": false
+Yes: true
+No: false
 oro.datagrid.entityHint: Enhed
 oro.datagrid.noentities: Ingen poster fundet
 oro.datagrid.noresults: "Desværre, er der ingen resultater for din søgning."
