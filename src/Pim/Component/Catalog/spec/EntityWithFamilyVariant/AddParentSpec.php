@@ -2,7 +2,6 @@
 
 namespace spec\Pim\Component\Catalog\EntityWithFamilyVariant;
 
-use Pim\Component\Catalog\EntityWithFamily\CreateVariantProduct;
 use Pim\Component\Catalog\EntityWithFamily\Event\ParentHasBeenAddedToProduct;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
@@ -16,10 +15,9 @@ class AddParentSpec extends ObjectBehavior
 {
     function let(
         ProductModelRepositoryInterface $productModelRepository,
-        CreateVariantProduct $createVariantProduct,
         EventDispatcherInterface $eventDispatcher
     ) {
-        $this->beConstructedWith($productModelRepository, $createVariantProduct, $eventDispatcher);
+        $this->beConstructedWith($productModelRepository, $eventDispatcher);
     }
 
     function it_is_initializable()
@@ -29,33 +27,30 @@ class AddParentSpec extends ObjectBehavior
 
     function it_adds_a_parent_to_a_product_only_when_we_update_product(
         $productModelRepository,
-        $createVariantProduct,
         $eventDispatcher,
         ProductInterface $product,
-        ProductInterface $variantProduct,
         ProductModelInterface $productModel
     ) {
         $product->getId()->willReturn(40);
 
         $productModelRepository->findOneByIdentifier('parent')->willReturn()->willReturn($productModel);
 
-        $createVariantProduct->from($product, $productModel)->willReturn($variantProduct);
+        $product->setParent($productModel)->shouldBeCalled();
         $eventDispatcher->dispatch(ParentHasBeenAddedToProduct::EVENT_NAME, Argument::type(ParentHasBeenAddedToProduct::class))
             ->shouldBeCalled();
 
-        $this->to($product, 'parent')->shouldReturn($variantProduct);
+        $this->to($product, 'parent')->shouldReturn($product);
     }
 
     function it_does_not_add_any_parent_to_a_product_when_we_create_a_product(
         $productModelRepository,
-        $createVariantProduct,
         $eventDispatcher,
         ProductInterface $product
     ) {
         $product->getId()->willReturn(null);
 
         $productModelRepository->findOneByIdentifier(Argument::any())->shouldNotBeCalled();
-        $createVariantProduct->from(Argument::cetera())->shouldNotBeCalled();
+        $product->setParent(Argument::cetera())->shouldNotBeCalled();
         $eventDispatcher->dispatch(ParentHasBeenAddedToProduct::EVENT_NAME, Argument::type(ParentHasBeenAddedToProduct::class))
             ->shouldNotBeCalled();
 

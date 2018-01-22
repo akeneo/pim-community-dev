@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Pim\Component\Catalog\EntityWithFamilyVariant;
 
-use Pim\Component\Catalog\EntityWithFamily\CreateVariantProduct;
 use Pim\Component\Catalog\EntityWithFamily\Event\ParentHasBeenAddedToProduct;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Repository\ProductModelRepositoryInterface;
@@ -23,24 +22,18 @@ class AddParent
     /** @var ProductModelRepositoryInterface */
     private $productModelRepository;
 
-    /** @var CreateVariantProduct */
-    private $createVariantProduct;
-
     /** @var EventDispatcherInterface */
     private $eventDispatcher;
 
     /**
      * @param ProductModelRepositoryInterface $productModelRepository
-     * @param CreateVariantProduct            $createVariantProduct
      * @param EventDispatcherInterface        $eventDispatcher
      */
     public function __construct(
         ProductModelRepositoryInterface $productModelRepository,
-        CreateVariantProduct $createVariantProduct,
         EventDispatcherInterface $eventDispatcher
     ) {
         $this->productModelRepository = $productModelRepository;
-        $this->createVariantProduct = $createVariantProduct;
         $this->eventDispatcher = $eventDispatcher;
     }
 
@@ -65,13 +58,13 @@ class AddParent
             );
         }
 
-        $variantProduct = $this->createVariantProduct->from($product, $productModel);
+        $product->setParent($productModel);
 
         $this->eventDispatcher->dispatch(
             ParentHasBeenAddedToProduct::EVENT_NAME,
-            new ParentHasBeenAddedToProduct($variantProduct, $parentProductModelCode)
+            new ParentHasBeenAddedToProduct($product, $parentProductModelCode)
         );
 
-        return $variantProduct;
+        return $product;
     }
 }
