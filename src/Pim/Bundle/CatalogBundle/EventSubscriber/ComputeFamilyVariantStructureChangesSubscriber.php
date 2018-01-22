@@ -101,6 +101,10 @@ class ComputeFamilyVariantStructureChangesSubscriber implements EventSubscriberI
             return;
         }
 
+        if (!$event->hasArgument('unitary') || false === $event->getArgument('unitary')) {
+            return;
+        }
+
         $user = $this->tokenStorage->getToken()->getUser();
         $jobInstance = $this->jobInstanceRepository->findOneByIdentifier($this->jobName);
 

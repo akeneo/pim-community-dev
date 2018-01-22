@@ -109,7 +109,15 @@ jobs:
             groupsColumn:       groups
             realTimeVersioning: true
             decimalSeparator:   .
-
+    csv_catalog_modeling_family_import:
+        connector: Akeneo CSV Connector
+        alias:     csv_family_import
+        label:     CSV catalog modeling family import
+        type:      import
+        configuration:
+            uploadAllowed: true
+            delimiter:     ;
+            enclosure:     '"'
     csv_catalog_modeling_family_variant_import:
         connector: Akeneo CSV Connector
         alias:     csv_family_variant_import
@@ -126,7 +134,13 @@ jobs:
         type:      import
         configuration:
             uploadAllowed: true
-
+    xlsx_catalog_modeling_family_import:
+        connector: Akeneo XLSX Connector
+        alias:     xlsx_family_import
+        label:     XLSX catalog modeling family import
+        type:      import
+        configuration:
+            uploadAllowed: true
     csv_catalog_modeling_family_variant_export:
         connector: Akeneo CSV Connector
         alias:     csv_family_variant_export
