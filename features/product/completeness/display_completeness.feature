@@ -147,3 +147,15 @@ Feature: Display the completeness of a product
     And I switch the locale to "fr_FR"
     And I visit the "Completeness" column tab
     Then The label for the "tablet" channel should be "[tablet]"
+
+  Scenario: Display the completeness badge for the scope and locale
+    Given I am on the "sneakers" product page
+    When I visit the "Completeness" column tab
+    And I switch the scope to "Tablet"
+    Then the completeness badge label should show "Complete: 88%"
+    When I switch the locale to "fr_FR"
+    Then the completeness badge label should show "Complete: 77%"
+    When I switch the scope to "Mobile"
+    Then the completeness badge label should show "Complete: 100%"
+    When I switch the locale to "en_US"
+    Then the completeness badge label should show "Complete: 100%"
