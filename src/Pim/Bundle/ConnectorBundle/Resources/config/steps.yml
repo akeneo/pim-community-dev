@@ -74,6 +74,7 @@ services:
             - '@validator'
             - '@pim_catalog.saver.product_model'
             - '@pim_catalog.saver.product'
+            - '@akeneo_storage_utils.doctrine.object_detacher'
             - '@pim_connector.doctrine.cache_clearer'
             - '@akeneo_batch.job_repository'
 
@@ -415,6 +416,7 @@ services:
             - '@validator'
             - '@pim_catalog.saver.product_model'
             - '@pim_catalog.saver.product'
+            - '@akeneo_storage_utils.doctrine.object_detacher'
             - '@pim_connector.doctrine.cache_clearer'
             - '@akeneo_batch.job_repository'
 

@@ -11,6 +11,7 @@ use Akeneo\Component\Batch\Job\JobRepositoryInterface;
 use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\StorageUtils\Cache\CacheClearerInterface;
 use Akeneo\Component\StorageUtils\Cursor\CursorInterface;
+use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
 use Pim\Component\Catalog\EntityWithFamilyVariant\KeepOnlyValuesForVariation;
 use Pim\Component\Catalog\Model\EntityWithFamilyVariantInterface;
@@ -54,7 +55,7 @@ class ComputeDataRelatedToFamilyVariantsTasklet implements TaskletInterface, Ini
     private $cacheClearer;
 
     /** @var ProductQueryBuilderFactoryInterface */
-    private $productQueryBuilderFactory;
+    private $productModelQueryBuilderFactory;
 
     /** @var KeepOnlyValuesForVariation */
     private $keepOnlyValuesForVariation;
@@ -64,6 +65,9 @@ class ComputeDataRelatedToFamilyVariantsTasklet implements TaskletInterface, Ini
 
     /** @var JobRepositoryInterface */
     private $jobRepository;
+
+    /** @var ObjectDetacherInterface */
+    private $objectDetacher;
 
     /**
      * @param FamilyRepositoryInterface           $familyRepository
@@ -85,18 +89,20 @@ class ComputeDataRelatedToFamilyVariantsTasklet implements TaskletInterface, Ini
         ValidatorInterface $validator,
         BulkSaverInterface $productModelSaver,
         BulkSaverInterface $productSaver,
+        ObjectDetacherInterface $objectDetacher,
         CacheClearerInterface $cacheClearer,
         JobRepositoryInterface $jobRepository
     ) {
         $this->familyReader = $familyReader;
         $this->familyRepository = $familyRepository;
-        $this->productQueryBuilderFactory = $productQueryBuilderFactory;
+        $this->productModelQueryBuilderFactory = $productQueryBuilderFactory;
         $this->productModelSaver = $productModelSaver;
         $this->productSaver = $productSaver;
         $this->cacheClearer = $cacheClearer;
         $this->keepOnlyValuesForVariation = $keepOnlyValuesForVariation;
         $this->validator = $validator;
         $this->jobRepository = $jobRepository;
+        $this->objectDetacher = $objectDetacher;
     }
 
     /**
@@ -130,8 +136,10 @@ class ComputeDataRelatedToFamilyVariantsTasklet implements TaskletInterface, Ini
                 continue;
             }
 
-            foreach ($this->getRootProductModelsForFamily($family) as $rootProductModel) {
+            $rootProductModels = $this->getRootProductModelsForFamily($family);
+            foreach ($rootProductModels as $rootProductModel) {
                 $this->updateProductModelAndDescendants([$rootProductModel]);
+                $this->detachProductModelAndDescendants([$rootProductModel]);
             }
         }
     }
@@ -151,7 +159,7 @@ class ComputeDataRelatedToFamilyVariantsTasklet implements TaskletInterface, Ini
      */
     private function getRootProductModelsForFamily(FamilyInterface $family): CursorInterface
     {
-        $pqb = $this->productQueryBuilderFactory->create();
+        $pqb = $this->productModelQueryBuilderFactory->create();
         $pqb->addFilter('family', Operators::IN_LIST, [$family->getCode()]);
         $pqb->addFilter('parent', Operators::IS_EMPTY, null);
 
@@ -165,34 +173,33 @@ class ComputeDataRelatedToFamilyVariantsTasklet implements TaskletInterface, Ini
      * product model otherwise we may loose information when moving attribute from the attribute sets in the
      * family variant.
      *
-     * @param array $entitiesWithFamilyVariant
+     * @param array $entities
      */
-    private function updateProductModelAndDescendants(array $entitiesWithFamilyVariant): void
+    private function updateProductModelAndDescendants(array $entities): void
     {
-        foreach ($entitiesWithFamilyVariant as $entityWithFamilyVariant) {
-            if ($entityWithFamilyVariant instanceof ProductModelInterface) {
-                if ($entityWithFamilyVariant->hasProductModels()) {
+        foreach ($entities as $entity) {
+            if ($entity instanceof ProductModelInterface) {
+                if ($entity->hasProductModels()) {
                     $this->updateProductModelAndDescendants(
-                        $entityWithFamilyVariant->getProductModels()->toArray()
+                        $entity->getProductModels()->toArray()
                     );
-                } elseif (!$entityWithFamilyVariant->getProducts()->isEmpty()) {
+                } elseif (!$entity->getProducts()->isEmpty()) {
                     $this->updateProductModelAndDescendants(
-                        $entityWithFamilyVariant->getProducts()->toArray()
+                        $entity->getProducts()->toArray()
                     );
                 }
             }
 
-            $this->keepOnlyValuesForVariation->updateEntitiesWithFamilyVariant($entitiesWithFamilyVariant);
+            $this->keepOnlyValuesForVariation->updateEntitiesWithFamilyVariant([$entity]);
 
-            if (!$this->isValid($entityWithFamilyVariant)) {
+            if (!$this->isValid($entity)) {
                 $this->stepExecution->incrementSummaryInfo('skip');
                 continue;
             }
 
-            $this->saveEntity($entityWithFamilyVariant);
+            $this->saveEntity($entity);
             $this->stepExecution->incrementSummaryInfo('process');
         }
-
         $this->updateStepExecution();
     }
 
@@ -226,5 +233,27 @@ class ComputeDataRelatedToFamilyVariantsTasklet implements TaskletInterface, Ini
     private function updateStepExecution(): void
     {
         $this->jobRepository->updateStepExecution($this->stepExecution);
+    }
+
+    /**
+     * @param EntityWithFamilyVariantInterface[] $entities
+     */
+    private function detachProductModelAndDescendants(array $entities): void
+    {
+        foreach ($entities as $entity) {
+            if ($entity instanceof ProductModelInterface) {
+                if ($entity->hasProductModels()) {
+                    $this->detachProductModelAndDescendants(
+                        $entity->getProductModels()->toArray()
+                    );
+                } elseif (!$entity->getProducts()->isEmpty()) {
+                    $this->detachProductModelAndDescendants(
+                        $entity->getProducts()->toArray()
+                    );
+                }
+            }
+
+            $this->objectDetacher->detach($entity);
+        }
     }
 }

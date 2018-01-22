@@ -10,14 +10,13 @@ use Akeneo\Component\Batch\Job\JobRepositoryInterface;
 use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\StorageUtils\Cache\CacheClearerInterface;
 use Akeneo\Component\StorageUtils\Cursor\CursorInterface;
+use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
-use Box\Spout\Reader\IteratorInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\EnrichBundle\ProductQueryBuilder\ProductAndProductModelQueryBuilder;
 use Pim\Component\Catalog\EntityWithFamilyVariant\KeepOnlyValuesForVariation;
 use Pim\Component\Catalog\Model\FamilyInterface;
-use Pim\Component\Catalog\Model\FamilyVariantInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
 use Pim\Component\Catalog\Model\VariantProductInterface;
 use Pim\Component\Catalog\Query\Filter\Operators;
@@ -38,6 +37,7 @@ class ComputeDataRelatedToFamilyVariantsTaskletSpec extends ObjectBehavior
         ValidatorInterface $validator,
         BulkSaverInterface $productModelSaver,
         BulkSaverInterface $productSaver,
+        ObjectDetacherInterface $objectDetacher,
         CacheClearerInterface $cacheClearer,
         JobRepositoryInterface $jobRepository
     ) {
@@ -49,6 +49,7 @@ class ComputeDataRelatedToFamilyVariantsTaskletSpec extends ObjectBehavior
             $validator,
             $productModelSaver,
             $productSaver,
+            $objectDetacher,
             $cacheClearer,
             $jobRepository
         );
@@ -68,6 +69,7 @@ class ComputeDataRelatedToFamilyVariantsTaskletSpec extends ObjectBehavior
         $productSaver,
         $productModelQueryBuilderFactory,
         $jobRepository,
+        $objectDetacher,
         FamilyInterface $family,
         ProductModelInterface $rootProductModel,
         ProductModelInterface $subProductModel,
@@ -122,6 +124,10 @@ class ComputeDataRelatedToFamilyVariantsTaskletSpec extends ObjectBehavior
         $productModelSaver->saveAll([$subProductModel])->shouldBeCalled();
         $productSaver->saveAll([$product])->shouldBeCalled();
 
+        $objectDetacher->detach($rootProductModel)->shouldBeCalled();
+        $objectDetacher->detach($subProductModel)->shouldBeCalled();
+        $objectDetacher->detach($product)->shouldBeCalled();
+
         $stepExecution->incrementSummaryInfo('process')->shouldBeCalledTimes(3);
         $stepExecution->incrementSummaryInfo('skip')->shouldNotBeCalled();
 
@@ -140,6 +146,7 @@ class ComputeDataRelatedToFamilyVariantsTaskletSpec extends ObjectBehavior
         $productSaver,
         $productModelQueryBuilderFactory,
         $jobRepository,
+        $objectDetacher,
         FamilyInterface $family1,
         FamilyInterface $family2,
         ProductModelInterface $rootProductModel1,
@@ -234,6 +241,12 @@ class ComputeDataRelatedToFamilyVariantsTaskletSpec extends ObjectBehavior
         $stepExecution->incrementSummaryInfo('process')->shouldBeCalledTimes(5);
 
         $jobRepository->updateStepExecution($stepExecution)->shouldBeCalled();
+
+        $objectDetacher->detach($rootProductModel1)->shouldBeCalled();
+        $objectDetacher->detach($subProductModel1)->shouldBeCalled();
+        $objectDetacher->detach($product1)->shouldBeCalled();
+        $objectDetacher->detach($rootProductModel2)->shouldBeCalled();
+        $objectDetacher->detach($product2)->shouldBeCalled();
 
         $this->setStepExecution($stepExecution);
         $this->execute();
