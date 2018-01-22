@@ -622,7 +622,7 @@ class PermissionFixturesLoader
      * @param bool   $localizable
      * @param string $right
      */
-    private function createAttribute(string $code,  string $right, bool $localizable = true): void
+    private function createAttribute(string $code, string $right, bool $localizable = true): void
     {
         switch ($right) {
             case 'view':
