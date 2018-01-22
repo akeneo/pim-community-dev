@@ -11,12 +11,12 @@
 
 namespace PimEnterprise\Bundle\DataGridBundle\Datagrid\Configuration\Product;
 
+use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use Oro\Bundle\DataGridBundle\Datasource\ResultRecordInterface;
 use Pim\Bundle\DataGridBundle\Datagrid\Configuration\ConfiguratorInterface;
 use Pim\Bundle\DataGridBundle\Datagrid\Configuration\Product\ConfigurationRegistry;
 use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
-use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
 use PimEnterprise\Component\Security\Attributes;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
@@ -38,28 +38,34 @@ class RowActionsConfigurator implements ConfiguratorInterface
     /** @var AuthorizationCheckerInterface */
     protected $authorizationChecker;
 
-    /** @var ProductRepositoryInterface */
+    /** @var IdentifiableObjectRepositoryInterface */
     protected $productRepository;
 
     /** @var LocaleRepositoryInterface */
     protected $localeRepository;
 
+    /** @var IdentifiableObjectRepositoryInterface */
+    protected $productModelRepository;
+
     /**
-     * @param ConfigurationRegistry         $registry
-     * @param AuthorizationCheckerInterface $authorizationChecker
-     * @param ProductRepositoryInterface    $productRepository
-     * @param LocaleRepositoryInterface     $localeRepository
+     * @param ConfigurationRegistry                 $registry
+     * @param AuthorizationCheckerInterface         $authorizationChecker
+     * @param IdentifiableObjectRepositoryInterface $productRepository
+     * @param LocaleRepositoryInterface             $localeRepository
+     * @param IdentifiableObjectRepositoryInterface       $productModelRepository
      */
     public function __construct(
         ConfigurationRegistry $registry,
         AuthorizationCheckerInterface $authorizationChecker,
-        ProductRepositoryInterface $productRepository,
-        LocaleRepositoryInterface $localeRepository
+        IdentifiableObjectRepositoryInterface $productRepository,
+        LocaleRepositoryInterface $localeRepository,
+        IdentifiableObjectRepositoryInterface $productModelRepository = null
     ) {
         $this->registry = $registry;
         $this->authorizationChecker = $authorizationChecker;
         $this->productRepository = $productRepository;
         $this->localeRepository = $localeRepository;
+        $this->productModelRepository = $productModelRepository;
     }
 
     /**
@@ -80,21 +86,36 @@ class RowActionsConfigurator implements ConfiguratorInterface
     public function getActionConfigurationClosure()
     {
         return function (ResultRecordInterface $record) {
-            $product = $this->productRepository->findOneByIdentifier($record->getValue('identifier'));
-            $productType = $record->getValue('document_type');
-
+            $product = $this->getProductRepository($record)->findOneByIdentifier($record->getValue('identifier'));
             $editGranted = $this->authorizationChecker->isGranted(Attributes::EDIT, $product);
             $ownershipGranted = $editGranted && $this->authorizationChecker->isGranted(Attributes::OWN, $product);
-            $canEditCategories = (self::PRODUCT_MODEL_TYPE === $productType) ? true : $ownershipGranted;
 
             return [
                 'show'            => !$editGranted,
                 'edit'            => $editGranted,
-                'edit_categories' => $canEditCategories,
+                'edit_categories' => $ownershipGranted,
                 'delete'          => $ownershipGranted,
                 'toggle_status'   => $ownershipGranted
             ];
         };
+    }
+
+    /**
+     * Returns the repository for a product or product model
+     *
+     * @param ResultRecordInterface $record
+     *
+     * @return IdentifiableObjectRepositoryInterface
+     */
+    private function getProductRepository(ResultRecordInterface $record): IdentifiableObjectRepositoryInterface
+    {
+        $productType = $record->getValue('document_type');
+
+        if (self::PRODUCT_MODEL_TYPE === $productType) {
+            return $this->productModelRepository;
+        }
+
+        return $this->productRepository;
     }
 
     /**
