@@ -45,6 +45,6 @@ class ProductDraftFilterUtility extends BaseFilterUtility
      */
     public function applyFilter(FilterDatasourceAdapterInterface $ds, $field, $operator, $value)
     {
-        $this->repository->applyFilter($ds->getQueryBuilder(), $field, $operator, $value);
+        $ds->getProductQueryBuilder()->addFilter($field, $operator, $value);
     }
 }

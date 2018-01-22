@@ -1,7 +1,8 @@
 parameters:
     pimee_filter.product_draft_attribute_choice_filter.class: PimEnterprise\Bundle\FilterBundle\Filter\ProductDraft\AttributeChoiceFilter
     pimee_filter.product_draft_choice_filter.class:           PimEnterprise\Bundle\FilterBundle\Filter\ProductDraft\ChoiceFilter
-    pimee_filter.product_draft_date_filter.class:             Pim\Bundle\FilterBundle\Filter\ProductValue\DateRangeFilter
+    pimee_filter.product_draft_author_filter.class:           PimEnterprise\Bundle\FilterBundle\Filter\ProductDraft\AuthorFilter
+    pimee_filter.product_draft_date_filter.class:             Pim\Bundle\FilterBundle\Filter\ProductValue\DateTimeRangeFilter
     pimee_filter.product_permission_filter.class:             PimEnterprise\Bundle\FilterBundle\Filter\Product\PermissionFilter
 
 services:
@@ -12,6 +13,15 @@ services:
             - '@pimee_filter.product_draft_utility'
         tags:
             - { name: oro_filter.extension.orm_filter.filter, type: product_draft_choice }
+
+    pimee_filter.product_draft_author_filter:
+        class: '%pimee_filter.product_draft_author_filter.class%'
+        arguments:
+            - '@form.factory'
+            - '@pimee_filter.product_draft_utility'
+            - '@pimee_workflow.query.elasticsearch.filter.author'
+        tags:
+            - { name: oro_filter.extension.orm_filter.filter, type: product_draft_author }
 
     pimee_filter.product_draft_attribute_choice_filter:
         class: '%pimee_filter.product_draft_attribute_choice_filter.class%'
