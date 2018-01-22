@@ -198,7 +198,7 @@ class CompletenessContext extends PimContext
     public function theCompletenessBadgeLabelShouldShow($completenessAmount)
     {
         $this->spin(function () use ($completenessAmount) {
-            $badge = $this->getCurrentPage()->find('css', '.AknCompletenessBadge');
+            $badge = $this->getCurrentPage()->find('css', '.completeness-badge');
             $badgeAmount = $badge->getText();
 
             return strtolower($badgeAmount) === strtolower($completenessAmount);
