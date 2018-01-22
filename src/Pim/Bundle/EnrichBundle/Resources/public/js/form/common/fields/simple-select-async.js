@@ -110,7 +110,7 @@ define(
                     options: {
                         limit: this.resultsPerPage,
                         page: page,
-                        catalogLocale: UserContext.get('catalogLocale')
+                        locale: UserContext.get('catalogLocale')
                     }
                 };
             },
