@@ -5,6 +5,11 @@
 - PIM-7111: Fix display bug on variant axis completeness
 - PIM-6908: Fix cancel button on unsaved changes dialog
 - PIM-6913: Fix incorrect product completeness percentage
+- PIM-7057: Fix import families by adding a dedicated step regarding the computing of product models data
+
+## BC Breaks
+
+- Changes the constructor of `\Pim\Bundle\CatalogBundle\EventSubscriber\SaveFamilyVariantOnFamilyUpdateSubscriber` to add `Akeneo\Component\StorageUtils\Detacher\BulkObjectDetacherInterface`
 
 # 2.0.12 (2018-01-12)
 
