@@ -1,3 +1,8 @@
+parameters:
+  pimee_workflow.query.elasticsearch.filter.author.class: PimEnterprise\Bundle\WorkflowBundle\Elasticsearch\Filter\Field\AuthorFilter
+  pimee_workflow.query.elasticsearch.filter.label_or_identifier.class: PimEnterprise\Bundle\WorkflowBundle\Elasticsearch\Filter\Field\LabelOrIdentifierFilter
+  pimee_workflow.query.elasticsearch.filter.identifier.class: PimEnterprise\Bundle\WorkflowBundle\Elasticsearch\Filter\Field\IdentifierFilter
+
 services:
     pimee_workflow.doctrine.query.published_product_query_builder_factory:
         class: '%pim_catalog.query.elasticsearch.product_query_builder_factory.class%'
@@ -55,3 +60,109 @@ services:
             - '@pimee_workflow.doctrine.query.published_product_query_builder_search_after_size_factory.without_permission'
             - '@security.token_storage'
             - '@pimee_security.repository.category_access'
+
+    pimee_workflow.query.product_proposal_query_builder_factory:
+        class: '%pim_catalog.query.elasticsearch.product_query_builder_factory.class%'
+        arguments:
+            - '%pim_catalog.query.product_query_builder.class%'
+            - '@pim_catalog.repository.attribute'
+            - '@pimee_workflow.query.filter.product_proposal_registry'
+            - '@pim_catalog.query.sorter.registry'
+            - '@pimee_workflow.factory.product_proposal_cursor'
+            - '@pim_catalog.query.product_query_builder_resolver'
+
+    pimee_workflow.doctrine.query.proposal_product_query_builder_from_size_factory:
+        class: '%pim_catalog.query.elasticsearch.product_query_builder_factory.class%'
+        arguments:
+            - '%pim_catalog.query.product_query_builder.class%'
+            - '@pim_catalog.repository.attribute'
+            - '@pimee_workflow.query.filter.product_proposal_registry'
+            - '@pim_catalog.query.sorter.registry'
+            - '@pimee_workflow.factory.product_proposal_from_size_cursor'
+            - '@pim_catalog.elasticsearch.product_query_builder_from_size_resolver'
+
+    pimee_workflow.doctrine.query.proposal_product_query_builder_from_size_factory_with_permissions:
+        class: '%pimee_catalog.query.elasticsearch.product_query_builder_factory.class%'
+        decorates: pimee_workflow.doctrine.query.proposal_product_query_builder_from_size_factory
+        decoration_inner_name: pimee_workflow.doctrine.query.proposal_product_query_builder_from_size_factory.without_permission
+        arguments:
+            - '@pimee_workflow.doctrine.query.proposal_product_query_builder_from_size_factory.without_permission'
+            - '@security.token_storage'
+            - '@pimee_security.repository.category_access'
+
+    #Filters
+    pimee_workflow.query.filter.product_proposal_registry:
+        class: '%pim_catalog.query.filter.registry.class%'
+        arguments:
+            - '@pim_catalog.repository.attribute'
+
+    pimee_workflow.query.elasticsearch.filter.category:
+        class: '%pim_catalog.query.elasticsearch.filter.category.class%'
+        arguments:
+            - '@pim_catalog.repository.category'
+            - ['categories']
+            - ['IN', 'NOT IN', 'UNCLASSIFIED', 'IN OR UNCLASSIFIED', 'IN CHILDREN', 'NOT IN CHILDREN']
+        tags:
+            - { name: 'pimee_workflow.elasticsearch.query.product_proposal_filter', priority: 30 }
+
+    pimee_workflow.query.elasticsearch.filter.author:
+        class: '%pimee_workflow.query.elasticsearch.filter.author.class%'
+        arguments:
+            - ['author']
+            - ['CONTAINS']
+        tags:
+            - { name: 'pimee_workflow.elasticsearch.query.product_proposal_filter', priority: 30 }
+
+    pimee_workflow.query.elasticsearch.filter.datetime:
+        class: '%pim_catalog.query.elasticsearch.filter.datetime.class%'
+        arguments:
+            - '@akeneo_batch.job.job_instance_repository'
+            - '@akeneo_batch.job_repository'
+            - ['created']
+            -
+                - '='
+                - '<'
+                - '>'
+                - 'BETWEEN'
+                - 'NOT BETWEEN'
+                - 'EMPTY'
+                - 'NOT EMPTY'
+                - '!='
+                - 'SINCE LAST N DAYS'
+                - 'SINCE LAST JOB'
+        tags:
+            - { name: 'pimee_workflow.elasticsearch.query.product_proposal_filter', priority: 30 }
+
+    pimee_workflow.query.elasticsearch.filter.identifier:
+        class: '%pimee_workflow.query.elasticsearch.filter.identifier.class%'
+        arguments:
+            - ['product_identifier']
+            - ['pim_catalog_identifier']
+            - ['STARTS WITH', 'CONTAINS', 'DOES NOT CONTAIN', '=', '!=', 'IN', 'NOT IN']
+        tags:
+            - { name: 'pimee_workflow.elasticsearch.query.product_proposal_filter', priority: 30 }
+
+    pimee_workflow.query.elasticsearch.filter.label_or_identifier:
+        class: '%pimee_workflow.query.elasticsearch.filter.label_or_identifier.class%'
+        arguments:
+            - ['label_or_identifier']
+            - ['CONTAINS']
+        tags:
+            - { name: 'pimee_workflow.elasticsearch.query.product_proposal_filter', priority: 30 }
+
+    pimee_workflow.query.elasticsearch.filter.text_area:
+        class: '%pim_catalog.query.elasticsearch.filter.text_area.class%'
+        arguments:
+            - '@pim_catalog.validator.helper.attribute'
+            - ['pim_catalog_textarea']
+            - ['STARTS WITH', 'CONTAINS', 'DOES NOT CONTAIN', '=', 'EMPTY', 'NOT EMPTY', '!=']
+        tags:
+            - { name: 'pimee_workflow.elasticsearch.query.product_proposal_filter', priority: 30 }
+
+    #Sorters
+    pimee_workflow.query.elasticsearch.sorter.author:
+        class: '%pim_catalog.query.elasticsearch.sorter.base_field.class%'
+        arguments:
+            - ['author']
+        tags:
+            - { name: 'pim_catalog.elasticsearch.query.sorter', priority: 30 }

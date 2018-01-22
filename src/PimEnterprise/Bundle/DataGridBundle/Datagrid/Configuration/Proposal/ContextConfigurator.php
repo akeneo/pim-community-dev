@@ -13,7 +13,10 @@ namespace PimEnterprise\Bundle\DataGridBundle\Datagrid\Configuration\Proposal;
 
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use Oro\Bundle\DataGridBundle\Datagrid\RequestParameters;
+use Oro\Bundle\DataGridBundle\Extension\Toolbar\ToolbarExtension;
 use Pim\Bundle\DataGridBundle\Datagrid\Configuration\ConfiguratorInterface;
+use Pim\Bundle\DataGridBundle\Extension\Pager\PagerExtension;
+use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use PimEnterprise\Bundle\UserBundle\Context\UserContext;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -25,34 +28,37 @@ use Symfony\Component\HttpFoundation\RequestStack;
  */
 class ContextConfigurator implements ConfiguratorInterface
 {
-    /** @var DatagridConfiguration */
-    protected $configuration;
-
     /** @var RequestParameters */
     protected $requestParams;
 
     /** @var UserContext */
     protected $userContext;
 
-    /** @var Request */
-    protected $request;
-
     /** @var RequestStack */
     protected $requestStack;
 
+    /** @var AttributeRepositoryInterface */
+    protected $attributeRepository;
+
+    /** @var DatagridConfiguration */
+    protected $configuration;
+
     /**
-     * @param RequestParameters $requestParams
-     * @param UserContext       $userContext
-     * @param RequestStack      $requestStack
+     * @param RequestParameters            $requestParams
+     * @param UserContext                  $userContext
+     * @param RequestStack                 $requestStack
+     * @param AttributeRepositoryInterface $attributeRepository
      */
     public function __construct(
         RequestParameters $requestParams,
         UserContext $userContext,
-        RequestStack $requestStack
+        RequestStack $requestStack,
+        AttributeRepositoryInterface $attributeRepository
     ) {
         $this->requestParams = $requestParams;
         $this->userContext = $userContext;
         $this->requestStack = $requestStack;
+        $this->attributeRepository = $attributeRepository;
     }
 
     /**
@@ -76,6 +82,128 @@ class ContextConfigurator implements ConfiguratorInterface
             }
             $this->configuration->offsetSetByPath($path, $params);
         }
+
+        $this->addLocaleCode();
+        $this->addScopeCode();
+        $this->addAttributesConfig();
+        $this->addPaginationConfig();
+        $this->addRepositoryParameters();
+    }
+
+    /**
+     * @param string $key the configuration key
+     *
+     * @return string
+     */
+    protected function getSourcePath($key): string
+    {
+        return sprintf(self::SOURCE_PATH, $key);
+    }
+
+    /**
+     * Return usable attribute ids
+     *
+     * @param string[]|null $attributeCodes
+     *
+     * @return integer[]
+     */
+    protected function getAttributeIdsUseableInGrid($attributeCodes = null): array
+    {
+        return $this->attributeRepository->getAttributeIdsUseableInGrid($attributeCodes);
+    }
+
+    /**
+     * Inject current locale code in the datagrid configuration
+     */
+    protected function addLocaleCode(): void
+    {
+        $localeCode = $this->getCurrentLocaleCode();
+        $path = $this->getSourcePath(self::DISPLAYED_LOCALE_KEY);
+        $this->configuration->offsetSetByPath($path, $localeCode);
+    }
+
+    /**
+     * Inject current scope code in the datagrid configuration
+     */
+    protected function addScopeCode(): void
+    {
+        $scopeCode = $this->getCurrentScopeCode();
+        $path = $this->getSourcePath(self::DISPLAYED_SCOPE_KEY);
+        $this->configuration->offsetSetByPath($path, $scopeCode);
+    }
+
+    /**
+     * Inject attributes configurations in the datagrid configuration
+     */
+    protected function addAttributesConfig(): void
+    {
+        $attributes = $this->getAttributesConfig();
+        $path = $this->getSourcePath(self::USEABLE_ATTRIBUTES_KEY);
+        $this->configuration->offsetSetByPath($path, $attributes);
+    }
+
+    /**
+     * Get current locale from datagrid parameters, then request parameters, then user config
+     *
+     * @return string
+     */
+    protected function getCurrentLocaleCode(): string
+    {
+        $dataLocale = $this->requestParams->get('dataLocale', null);
+        if (!$dataLocale) {
+            $dataLocale = $this->getRequest()->get('dataLocale', null);
+        }
+        if (!$dataLocale && $locale = $this->userContext->getUser()->getCatalogLocale()) {
+            $dataLocale = $locale->getCode();
+        }
+
+        return $dataLocale;
+    }
+
+    /**
+     * Get current scope from datagrid parameters, then user config
+     *
+     * @return string
+     */
+    protected function getCurrentScopeCode(): string
+    {
+        $filterValues = $this->requestParams->get('_filter');
+        $currentScopeCode = null;
+
+        if (isset($filterValues['scope']['value'])) {
+            $currentScopeCode = $filterValues['scope']['value'];
+        }
+
+        if (null === $currentScopeCode) {
+            $requestFilters = $this->getRequest()->get('filters');
+            if (isset($requestFilters['scope']['value'])) {
+                $currentScopeCode = $requestFilters['scope']['value'];
+            }
+        }
+
+        if (null === $currentScopeCode) {
+            $channel = $this->userContext->getUser()->getCatalogScope();
+            $currentScopeCode = $channel->getCode();
+        }
+
+        return $currentScopeCode;
+    }
+
+    /**
+     * Get attributes configuration for attribute that can be used in grid (as column or filter)
+     *
+     * @return array
+     */
+    protected function getAttributesConfig(): array
+    {
+        $attributeIds = $this->getAttributeIdsUseableInGrid();
+        if (empty($attributeIds)) {
+            return [];
+        }
+
+        $currentLocale = $this->getCurrentLocaleCode();
+
+        return $this->attributeRepository->getAttributesAsArray(true, $currentLocale, $attributeIds);
     }
 
     /**
@@ -84,5 +212,42 @@ class ContextConfigurator implements ConfiguratorInterface
     protected function getRequest(): ?Request
     {
         return $this->requestStack->getCurrentRequest();
+    }
+
+    /**
+     * Inject requested _per_page parameters in the datagrid configuration
+     */
+    protected function addPaginationConfig()
+    {
+        $pager = $this->requestParams->get(PagerExtension::PAGER_ROOT_PARAM);
+
+        $defaultPerPage = $this->configuration->offsetGetByPath(
+            ToolbarExtension::PAGER_DEFAULT_PER_PAGE_OPTION_PATH,
+            25
+        );
+        $itemsPerPage = isset($pager[PagerExtension::PER_PAGE_PARAM]) ? (int)$pager[PagerExtension::PER_PAGE_PARAM] : $defaultPerPage;
+
+        $this->configuration->offsetSetByPath($this->getSourcePath(PagerExtension::PER_PAGE_PARAM), $itemsPerPage);
+
+        $currentPage = isset($pager[PagerExtension::PAGE_PARAM]) ? (int)$pager[PagerExtension::PAGE_PARAM] : 1;
+        $from = ($currentPage - 1) * $itemsPerPage;
+        $this->configuration->offsetSetByPath($this->getSourcePath('from'), $from);
+    }
+
+    /**
+     * Inject requested repository parameters in the datagrid configuration
+     */
+    protected function addRepositoryParameters()
+    {
+        $path = $this->getSourcePath(self::REPOSITORY_PARAMETERS_KEY);
+        $repositoryParams = $this->configuration->offsetGetByPath($path, null);
+
+        if ($repositoryParams) {
+            $params = [];
+            foreach ($repositoryParams as $paramName) {
+                $params[$paramName] = $this->requestParams->get($paramName, $this->getRequest()->get($paramName, null));
+            }
+            $this->configuration->offsetSetByPath($path, $params);
+        }
     }
 }

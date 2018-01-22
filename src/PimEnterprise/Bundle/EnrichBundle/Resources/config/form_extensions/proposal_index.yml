@@ -28,15 +28,41 @@ extensions:
         config:
             title: pimee_workflow.proposal.overview
 
+    pim-proposal-index-left-column:
+        module: pim/form/common/column
+        parent: pim-proposal-index
+        targetZone: column
+        config:
+          stateCode: proposal_index
+          navigationTitle: pim_enrich.entity.proposal.navigation
+
+    pim-proposal-index-column-inner:
+        module: pim/common/simple-view
+        parent: pim-proposal-index-left-column
+        targetZone: navigation
+        config:
+          template: pim/template/product/grid/column-inner
+
+    pim-proposal-index-locale-switcher:
+        module: pim/grid/locale-switcher
+        parent: pim-proposal-index-column-inner
+        targetZone: column-context-switcher
+        position: 10
+        config:
+            routeName: pimee_workflow_proposal_index
+            localeParamName: dataLocale
+
     pim-proposal-index-filters-manage:
         module: oro/datafilter/filters-button
-        parent: pim-proposal-index-grid-container
-        targetZone: filters
+        parent: pim-proposal-index-column-inner
+        targetZone: manage-filters-button
 
-    pim-proposal-index-grid-filters-list:
+    pim-proposal-index-filters-list:
         module: oro/datafilter/filters-list
-        parent: pim-proposal-index-grid-container
+        parent: pim-proposal-index-column-inner
         targetZone: filters
+        config:
+            displayedAsColumn: true
 
     pim-proposal-index-mass-actions:
         module: pim/grid/mass-actions

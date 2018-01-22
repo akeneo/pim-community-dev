@@ -11,6 +11,7 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\Doctrine\ORM\Repository;
 
+use Akeneo\Component\StorageUtils\Repository\CursorableRepositoryInterface;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
 use Pim\Component\Catalog\Model\ProductInterface;
@@ -26,7 +27,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
  *
  * @author Gildas Quemener <gildas@akeneo.com>
  */
-class ProductDraftRepository extends EntityRepository implements ProductDraftRepositoryInterface
+class ProductDraftRepository extends EntityRepository implements ProductDraftRepositoryInterface, CursorableRepositoryInterface
 {
     /**
      * {@inheritdoc}
@@ -434,5 +435,20 @@ class ProductDraftRepository extends EntityRepository implements ProductDraftRep
         }
 
         return $data instanceof \DateTime ? $data->format('Y-m-d H:i:s') : $data;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getItemsFromIdentifiers(array $identifiers)
+    {
+        $qb = $this->createQueryBuilder('p')
+            ->where('p.id IN (:ids)')
+            ->setParameter('ids', $identifiers);
+
+        $query = $qb->getQuery();
+        $query->useQueryCache(false);
+
+        return $query->execute();
     }
 }
