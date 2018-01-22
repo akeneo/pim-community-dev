@@ -2,6 +2,7 @@
 
 namespace spec\PimEnterprise\Bundle\DataGridBundle\Datagrid\Configuration\Product;
 
+use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use Oro\Bundle\DataGridBundle\Datasource\ResultRecordInterface;
 use PhpSpec\ObjectBehavior;
@@ -9,8 +10,8 @@ use Pim\Bundle\DataGridBundle\Datagrid\Configuration\Product\ConfigurationRegist
 use Pim\Bundle\UserBundle\Entity\UserInterface;
 use Pim\Component\Catalog\Model\LocaleInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Model\ProductModelInterface;
 use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
-use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
 use PimEnterprise\Component\Security\Attributes;
 use Prophecy\Argument;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
@@ -23,12 +24,14 @@ class RowActionsConfiguratorSpec extends ObjectBehavior
         DatagridConfiguration $datagridConfiguration,
         ConfigurationRegistry $registry,
         AuthorizationCheckerInterface $authorizationChecker,
-        ProductRepositoryInterface $productRepository,
+        IdentifiableObjectRepositoryInterface $productRepository,
+        IdentifiableObjectRepositoryInterface $productModelRepository,
         LocaleRepositoryInterface $localeRepository,
         TokenInterface $token,
         UserInterface $user,
         ResultRecordInterface $record,
         ProductInterface $product,
+        ProductModelInterface $productModel,
         LocaleInterface $locale,
         TokenStorageInterface $tokenStorage
     ) {
@@ -40,8 +43,9 @@ class RowActionsConfiguratorSpec extends ObjectBehavior
         $record->getValue('document_type')->willReturn('product');
         $localeRepository->findOneBy(['code' => 'en_US'])->willReturn($locale);
         $productRepository->findOneByIdentifier('foo')->willReturn($product);
+        $productModelRepository->findOneByIdentifier('foo')->willReturn($productModel);
 
-        $this->beConstructedWith($registry, $authorizationChecker, $productRepository, $localeRepository);
+        $this->beConstructedWith($registry, $authorizationChecker, $productRepository, $localeRepository, $productModelRepository);
     }
 
     function it_is_initializable()
@@ -138,13 +142,35 @@ class RowActionsConfiguratorSpec extends ObjectBehavior
 
     function it_shows_the_edit_categories_for_product_models (
         $record,
-        $product,
+        $productModel,
         $authorizationChecker
     ) {
         $record->getValue('document_type')->willReturn('product_model');
 
-        $authorizationChecker->isGranted(Attributes::EDIT, $product)->willReturn(true);
-        $authorizationChecker->isGranted(Attributes::OWN, $product)->willReturn(false);
+        $authorizationChecker->isGranted(Attributes::EDIT, $productModel)->willReturn(true);
+        $authorizationChecker->isGranted(Attributes::OWN, $productModel)->willReturn(false);
+
+        $closure = $this->getActionConfigurationClosure();
+        $closure($record)->shouldReturn(
+            [
+                'show' => false,
+                'edit' => true,
+                'edit_categories' => false,
+                'delete' => false,
+                'toggle_status' => false
+            ]
+        );
+    }
+
+    function it_shows_the_delete_action_for_product_models (
+        $record,
+        $productModel,
+        $authorizationChecker
+    ) {
+        $record->getValue('document_type')->willReturn('product_model');
+
+        $authorizationChecker->isGranted(Attributes::EDIT, $productModel)->willReturn(true);
+        $authorizationChecker->isGranted(Attributes::OWN, $productModel)->willReturn(true);
 
         $closure = $this->getActionConfigurationClosure();
         $closure($record)->shouldReturn(
@@ -152,8 +178,8 @@ class RowActionsConfiguratorSpec extends ObjectBehavior
                 'show' => false,
                 'edit' => true,
                 'edit_categories' => true,
-                'delete' => false,
-                'toggle_status' => false
+                'delete' => true,
+                'toggle_status' => true
             ]
         );
     }
