@@ -53,9 +53,9 @@ export default class Product implements ProductInterface {
 
   public getCompleteness(channel: string, locale: string): Completeness {
     const completeness = this.meta.completenesses
-      .find((completeness: any) => completeness.channel === channel)
+      .find((completeness: any) => completeness.channel === channel && completeness.locale === locale)
 
-    return completeness ? completeness.locales[locale].completeness : {};
+    return undefined !== completeness ? completeness : {};
   }
 
   public getImagePath (): string {

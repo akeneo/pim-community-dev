@@ -5,6 +5,7 @@ export default <Element>(
   state: GridState<Element>|undefined,
   action: {
     type: string,
+    append: boolean,
     data: {
       items: Element[],
       columns: Column[]
@@ -16,7 +17,21 @@ export default <Element>(
 
   switch (action.type) {
     case 'DATA_RECEIVED':
-      state = {...state, items: action.data.items}
+      state = action.append ?
+        {...state, items: [...state.items, ...action.data.items]} :
+        {...state, items: action.data.items};
+    break;
+    case 'START_LOADING_RESULTS':
+      state = {...state, isFetching: true};
+    break;
+    case 'STOP_LOADING_RESULTS':
+      state = {...state, isFetching: false};
+    break;
+    case 'GO_NEXT_PAGE':
+      state = {...state, query: {...state.query, page: state.query.page + 1}};
+    break;
+    case 'GO_FIRST_PAGE':
+      state = {...state, query: {...state.query, page: 0}};
     break;
     case 'COLUMNS_UPDATED':
       state = {...state, query: {...state.query, columns: action.data.columns}}

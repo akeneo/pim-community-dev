@@ -21,7 +21,8 @@ const queryToParameters = (query: any) => {
   return {
     default_locale: query.locale,
     default_scope: query.channel,
-    limit: query.limit
+    limit: query.limit,
+    from: query.page * query.limit
   }
 }
 

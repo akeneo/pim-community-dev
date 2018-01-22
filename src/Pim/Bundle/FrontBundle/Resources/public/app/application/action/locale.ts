@@ -7,9 +7,8 @@ const hidrator = (locale: any): LocaleInterface => {
   return createLocale(locale);
 };
 
-export const updateLocales = () => (dispatch: any): void => {
-  return fetcherRegistry.getFetcher('locale').fetchActivated()
-    .then((locales: LocaleInterface[]) => {
-      dispatch(localesUpdated(hidrateAll<LocaleInterface>(hidrator)(locales)));
-    });
+export const updateLocales = () => async (dispatch: any): Promise<void> => {
+  const locales = await fetcherRegistry.getFetcher('locale').fetchActivated()
+
+  dispatch(localesUpdated(hidrateAll<LocaleInterface>(hidrator)(locales)));
 };

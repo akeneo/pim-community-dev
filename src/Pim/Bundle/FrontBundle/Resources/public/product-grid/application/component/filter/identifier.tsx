@@ -12,10 +12,6 @@ const operators = [
     label: 'does not contain'
   },
   {
-    identifier: 'DOES_NOT_CONTAIN',
-    label: 'does not contain'
-  },
-  {
     identifier: 'EQUALS',
     label: 'is equal to'
   },
@@ -34,52 +30,27 @@ const operators = [
 ];
 
 export default () => {
+  const field = 'sku';
+  const value = 'all';
+
   return (
     <div>
-      <div className="AknFilterBox-filterContainer filter-item oro-drop" data-name="sku" data-type="string">
+      <div className="AknFilterBox-filterContainer filter-item" data-name="{field}" data-type="string">
         <div className="AknFilterBox-filter filter-criteria-selector oro-drop-opener">
-          <span className="AknFilterBox-filterLabel">SKU</span>
-          <span className="AknFilterBox-filterCriteria filter-criteria-hint">All</span>
+          <span className="AknFilterBox-filterLabel">{field}</span>
+          <span className="AknFilterBox-filterCriteria filter-criteria-hint">{value}</span>
           <span className="AknFilterBox-filterCaret" />
         </div>
-        <div className="filter-criteria dropdown-menu">
+        <div className="filter-criteria">
           <div className="AknFilterChoice choicefilter">
             <div className="AknFilterChoice-header">
-              <div className="AknFilterChoice-title">SKU</div>
+              <div className="AknFilterChoice-title">{field}</div>
               <Dropdown
                 elements={operators}
                 label={trans.get('pim.grid.choice_filter.operator')}
                 selectedElement="CONTAINS"
                 onSelectionChange={() => {}}
               />
-
-              // <div className="AknDropdown operator">
-              //   <div className="AknActionButton AknActionButton--withoutBorder" data-toggle="dropdown">
-              //     <span className="AknActionButton-highlight">contains</span>
-              //     <span className="AknActionButton-caret" />
-              //   </div>
-              //   <div className="AknDropdown-menu">
-              //     <div className="AknDropdown-menuTitle">Operator</div>
-              //     <div className="AknDropdown-menuLink AknDropdown-menuLink--active active">
-              //       <span className="label operator_choice" data-value="1">contains</span>
-              //     </div>
-              //     <div className="AknDropdown-menuLink">
-              //         <span className="label operator_choice" data-value="2">does not contain</span>
-              //     </div>
-              //     <div className="AknDropdown-menuLink">
-              //         <span className="label operator_choice" data-value="3">is equal to</span>
-              //     </div>
-              //     <div className="AknDropdown-menuLink">
-              //         <span className="label operator_choice" data-value="4">starts with</span>
-              //     </div>
-              //     <div className="AknDropdown-menuLink">
-              //         <span className="label operator_choice" data-value="empty">is empty</span>
-              //     </div>
-              //     <div className="AknDropdown-menuLink">
-              //         <span className="label operator_choice" data-value="in">in list</span>
-              //     </div>
-              //   </div>
-              // </div>
             </div>
           </div>
         </div>
@@ -87,7 +58,7 @@ export default () => {
           <input type="text" name="value" className="AknTextField select-field" />
         </div>
         <div className="AknFilterChoice-button">
-          <button type="button" className="AknButton AknButton--apply filter-update">Update</button>
+          <button type="button" className="AknButton AknButton--apply filter-update">{trans.get('Update')}</button>
         </div>
       </div>
       <div className="AknFilterBox-disableFilter AknIconButton AknIconButton--small AknIconButton--remove disable-filter"></div>

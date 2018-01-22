@@ -23,6 +23,7 @@ class ProductGridController {
     {
         $searchOptions = $request->query->all();
         $searchOptions['limit'] = (int) $searchOptions['limit'];
+        $searchOptions['from'] = (int) $searchOptions['from'];
 
         $pqb = $this->pqbFactory->create($searchOptions);
         $cursor = $pqb->execute();

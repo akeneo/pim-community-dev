@@ -3,6 +3,7 @@ parameters:
     pim_enrich.normalizer.attribute_option.class:                  Pim\Bundle\EnrichBundle\Normalizer\AttributeOptionNormalizer
     pim_enrich.normalizer.attribute_option_value.class:            Pim\Bundle\EnrichBundle\Normalizer\AttributeOptionValueNormalizer
     pim_enrich.normalizer.product.class:                           Pim\Bundle\EnrichBundle\Normalizer\ProductNormalizer
+    pim_enrich.normalizer.product_grid.class:                      Pim\Bundle\EnrichBundle\Normalizer\ProductGridNormalizer
     pim_enrich.normalizer.product_model.class:                     Pim\Bundle\EnrichBundle\Normalizer\ProductModelNormalizer
     pim_enrich.normalizer.incomplete_values.class:                 Pim\Bundle\EnrichBundle\Normalizer\IncompleteValuesNormalizer
     pim_enrich.normalizer.completeness.class:                      Pim\Bundle\EnrichBundle\Normalizer\CompletenessNormalizer
@@ -51,6 +52,34 @@ services:
 
     pim_enrich.normalizer.product:
         class: '%pim_enrich.normalizer.product.class%'
+        arguments:
+            - '@pim_serializer'
+            - '@pim_enrich.normalizer.version'
+            - '@pim_versioning.manager.version'
+            - '@pim_enrich.normalizer.image'
+            - '@pim_catalog.repository.locale'
+            - '@pim_enrich.provider.structure_version.product'
+            - '@pim_enrich.provider.form.chained'
+            - '@pim_catalog.localization.localizer.converter'
+            - '@pim_enrich.converter.standard_to_enrich.product_value'
+            - '@pim_catalog.object_manager.product'
+            - '@pim_catalog.manager.completeness'
+            - '@pim_catalog.repository.channel'
+            - '@pim_catalog.filter.chained'
+            - '@pim_enrich.normalizer.completeness_collection'
+            - '@pim_user.context.user'
+            - '@pim_catalog.completeness.calculator'
+            - '@pim_catalog.builder.product'
+            - '@pim_catalog.values_filler.product'
+            - '@pim_catalog.family_variant.provider.entity_with_family_variant_attributes'
+            - '@pim_enrich.normalizer.variant_navigation'
+            - '@pim_enrich.doctrine.query.ascendant_categories'
+            - '@pim_enrich.normalizer.incomplete_values'
+        tags:
+            - { name: pim_internal_api_serializer.normalizer }
+
+    pim_enrich.normalizer.product_grid:
+        class: '%pim_enrich.normalizer.product_grid.class%'
         arguments:
             - '@pim_serializer'
             - '@pim_enrich.normalizer.version'

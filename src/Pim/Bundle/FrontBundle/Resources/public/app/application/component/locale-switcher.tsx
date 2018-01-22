@@ -1,71 +1,58 @@
 import * as React from 'react';
 import Locale from 'pimfront/app/domain/model/locale';
 import Flag from 'pimfront/app/application/component/flag';
-const __ = require('oro/translator');
+import Dropdown, { DropdownElement } from 'pimfront/app/application/component/dropdown';
+import * as trans from 'pimenrich/lib/translator';
 
-export default class LocaleSwitcher extends React.Component<
-  {locale: string, locales: Locale[], onLocaleChange: (locale: Locale) => void},
-  {open: boolean, locale: string}
-> {
-  constructor (props: any) {
-    super(props);
+const LocaleItemView = (
+  {element, isActive, onClick}:
+  {element: DropdownElement, isActive: boolean, onClick: (element: DropdownElement) => void}
+): JSX.Element => {
+  const menuLinkClass = `AknDropdown-menuLink ${isActive ? `AknDropdown-menuLink--active`: ''}`;
 
-    this.state = {
-      open: false,
-      locale: props.locale
-    };
-  }
-
-  open () {
-    this.setState({open: true});
-  }
-
-  switchLocale (locale: Locale) {
-    if (locale.code !== this.state.locale) {
-      this.setState({locale: locale.code});
-      this.props.onLocaleChange(locale);
-    }
-
-    this.close();
-  }
-
-  close () {
-    this.setState({open: false});
-  }
-
-  render () {
-    const openClass = this.state.open ? 'AknDropdown-menu--open' : '';
-    const selectedLocale: Locale|undefined = this.props.locales.find((locale: Locale) => locale.code === this.state.locale);
-    if (undefined === selectedLocale) {
-      return null;
-    }
-
-    const locales = this.props.locales.map((locale: Locale) => {
-      const menuLinkClass = `AknDropdown-menuLink ${locale.code === selectedLocale.code
-          ? `AknDropdown-menuLink--active`: ''}`;
-
-      return (
-        <div key={locale.code} className={menuLinkClass} data-locale="en_US" onClick={() => this.switchLocale(locale)}>
-          <span className="label">
-            <Flag locale={locale} displayLanguage/>
-          </span>
-        </div>
-      );
-    });
-
-    return (
-      <div className="AknDropdown">
-        <div onClick={this.open.bind(this)}>
-          <div className="AknColumn-subtitle">{__('Locale')}</div>
-          <div className="AknColumn-value value">
-            <Flag locale={selectedLocale} displayLanguage/>
-          </div>
-        </div>
-        <div className={'AknDropdown-menu ' + openClass}>
-          <div className="AknDropdown-menuTitle">{__('Locale')}</div>
-          {locales}
-        </div>
-      </div>
-    );
-  }
+  return (
+    <div className={menuLinkClass} data-locale={element.identifier} onClick={() => onClick(element)}>
+      <span className="label">
+        <Flag locale={element.original} displayLanguage/>
+      </span>
+    </div>
+  );
 }
+
+const LocaleButtonView = (
+  {label, selectedElement, onClick}:
+  {label: string, selectedElement: DropdownElement, onClick: () => void}
+) => (
+  <div className="AknActionButton AknActionButton--withoutBorder" onClick={onClick}>
+    <div className="AknColumn-subtitle">{trans.get('Locale')}</div>
+    <div className="AknColumn-value value">
+      <Flag locale={selectedElement.original} displayLanguage/>
+    </div>
+  </div>
+);
+
+export default ({
+  localeCode, locales, onLocaleChange}:
+  {localeCode: string, locales: Locale[], onLocaleChange: (locale: Locale) => void}
+) => {
+  return <Dropdown
+    elements={locales.map((locale: Locale) => {
+      return {
+        identifier: locale.code,
+        label: locale.label,
+        original: locale
+      };
+    })}
+    label={trans.get('Locale')}
+    selectedElement={localeCode}
+    ItemView={LocaleItemView}
+    ButtonView={LocaleButtonView}
+    onSelectionChange={(selection: string) => {
+      const locale = locales.find((locale: Locale) => locale.code === selection);
+
+      if (undefined !== locale) {
+        onLocaleChange(locale);
+      }
+    }}
+  />
+};

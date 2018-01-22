@@ -91,7 +91,9 @@
     "yamljs": "0.3.0"
   },
   "jest": {
-    "setupFiles": ["./jest_config.js"],
+    "setupFiles": [
+      "./jest_config.js"
+    ],
     "transform": {
       "^.+\\.tsx?$": "ts-jest"
     },

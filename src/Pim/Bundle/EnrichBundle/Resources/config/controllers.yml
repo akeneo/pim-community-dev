@@ -365,7 +365,7 @@ services:
         arguments:
             - '@pim_enrich.query.product_query_builder_from_size_factory.with_product_and_product_model_from_size_cursor'
             - '@pim_catalog.repository.family'
-            - '@pim_enrich.normalizer.product'
+            - '@pim_enrich.normalizer.product_grid'
 
     pim_enrich.controller.rest.product_model:
         class: '%pim_enrich.controller.rest.product_model.class%'

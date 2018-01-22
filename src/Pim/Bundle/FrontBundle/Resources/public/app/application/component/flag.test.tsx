@@ -8,7 +8,7 @@ describe('>>>COMPONENT --- flag', () => {
     const locale = createLocale({code: 'en_US'});
     const flag = shallow(<Flag locale={locale} displayLanguage/>);
 
-    expect(flag.text()).toEqual('en');
+    expect(flag.text().trim()).toEqual('en');
     expect(flag.find('.flag').length).toBe(1);
   });
 
@@ -16,7 +16,7 @@ describe('>>>COMPONENT --- flag', () => {
     const locale = createLocale({code: 'en_US'});
     const flag = shallow(<Flag locale={locale} displayLanguage={false}/>);
 
-    expect(flag.text()).toEqual('');
+    expect(flag.text().trim()).toBe('');
     expect(flag.find('.flag').length).toBe(1);
   });
 });
