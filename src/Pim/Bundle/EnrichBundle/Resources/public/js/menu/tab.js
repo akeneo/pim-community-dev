@@ -87,6 +87,7 @@ define(
             redirect: function (event) {
                 if (!_.has(event, 'extension')) {
                     event.stopPropagation();
+                    event.preventDefault();
                 }
 
                 if (!(event.metaKey || event.ctrlKey) &&

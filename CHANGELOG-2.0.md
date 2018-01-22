@@ -3,6 +3,8 @@
 ## Bug fixes
 
 - PIM-7111: Fix display bug on variant axis completeness
+- PIM-6908: Fix cancel button on unsaved changes dialog
+- PIM-6913: Fix incorrect product completeness percentage
 
 # 2.0.12 (2018-01-12)
 
@@ -27,6 +29,7 @@
 ## Better manage products with variants!
 
 - API-516: be able to add a parent to a product via API
+- API-566: "updated" filter works on product variant if its product models were updated
 
 ## BC Breaks
 
