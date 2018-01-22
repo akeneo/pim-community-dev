@@ -7,6 +7,9 @@ use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\IntegrationTestsBundle\Launcher\JobLauncher;
 use Symfony\Component\HttpFoundation\Response;
 
+/**
+ * @group ce
+ */
 class SuccessListVariantProductDeltaIntegration extends AbstractProductTestCase
 {
     public function testListVariantProductDeltaWhenUpdatingProductModel()
