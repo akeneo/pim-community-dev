@@ -137,3 +137,19 @@ Feature: Assign assets to a product
     And I check the row "video_9"
     And I check the row "video_10"
     Then the item picker basket should contain video_9, video_10
+
+  @jira https://akeneo.atlassian.net/browse/PIM-7110
+  Scenario: Successfully display asset collection first thumbnail on product grid
+    Given I am logged in as "Julia"
+    And I am on the "shirt" product page
+    And I visit the "Media" group
+    And I start to manage assets for "Front view"
+    When I check the row "paint"
+    And I check the row "chicagoskyline"
+    Then the item picker basket should contain chicagoskyline, paint
+    When I confirm the asset modification
+    Then the "Front view" asset gallery should contain chicagoskyline, paint
+    And I save the product
+    When I am on the products grid
+    And I display in the products grid the columns sku, name, front view
+    Then the cell "Front view" in row "shirt" should contain the thumbnail for asset "chicagoskyline" with channel "tablet" and locale "en_US"

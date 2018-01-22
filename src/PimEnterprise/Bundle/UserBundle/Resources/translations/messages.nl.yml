@@ -5,8 +5,8 @@ user:
     notifications:
       to_review: Wanneer nieuw voorstel tot nakijken
       state: Wanneer voorstel is goedgekeurd of geweigerd
-      "yes": true
-      "no": false
+      yes: true
+      no: false
   default_published_product_grid_view:
     label: Standaard gepubliceerde product rasterweergave
 pimee_user:
