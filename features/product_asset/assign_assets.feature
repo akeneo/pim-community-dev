@@ -146,7 +146,7 @@ Feature: Assign assets to a product
     And I start to manage assets for "Front view"
     When I check the row "paint"
     And I check the row "chicagoskyline"
-    Then the asset basket should contain chicagoskyline, paint
+    Then the item picker basket should contain chicagoskyline, paint
     When I confirm the asset modification
     Then the "Front view" asset gallery should contain chicagoskyline, paint
     And I save the product
