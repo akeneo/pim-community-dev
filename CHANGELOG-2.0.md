@@ -1,14 +1,25 @@
+# 2.0.x
+
+## Bug fixes
+
+- PIM-7110: Fix asset collection thumbnail broken on grid
+- PIM-7075: Fix delete action on product models in grid
+
+## BC breaks
+
+- Change the constructor of `PimEnterprise\Bundle\DataGridBundle\Datagrid\Configuration\Product\RowActionsConfigurator` to add `Pim\Component\Catalog\Repository\ProductModelRepositoryInterface`
+
 # 2.0.12 (2018-01-12)
 
 ## Bug fixes
 
 - PIM-7109: Fix export profiles are missing permissions tab
-- API-392: Add default permissions when create a category through the API 
+- API-392: Add default permissions when create a category through the API
 
 ## BC breaks
 
-- Change the constructor of `PimEnterprise\Bundle\SecurityBundle\EventSubscriber\AddDefaultPermissionsSubscriber` to add `PimEnterprise\Bundle\SecurityBundle\Manager\CategoryAccessManager` and `PimEnterprise\Bundle\SecurityBundle\Manager\CategoryAccessManager` 
-- Remove `PimEnterprise\Bundle\SecurityBundle\EventSubscriber\Enrich\AddCategoryPermissionsSubscriber` 
+- Change the constructor of `PimEnterprise\Bundle\SecurityBundle\EventSubscriber\AddDefaultPermissionsSubscriber` to add `PimEnterprise\Bundle\SecurityBundle\Manager\CategoryAccessManager` and `PimEnterprise\Bundle\SecurityBundle\Manager\CategoryAccessManager`
+- Remove `PimEnterprise\Bundle\SecurityBundle\EventSubscriber\Enrich\AddCategoryPermissionsSubscriber`
 - Remove `PimEnterprise\Bundle\SecurityBundle\EventSubscriber\Enrich\AddDefaultUserGroupSubscriber`
 - Remove `PimEnterprise\Bundle\SecurityBundle\EventSubscriber\ImportExport\AddCategoryPermissionsSubscriber`
 - Changes the service `pimee_enrich.doctrine.counter.category_product` first argument to a `@pim_catalog.query.product_query_builder_factory`

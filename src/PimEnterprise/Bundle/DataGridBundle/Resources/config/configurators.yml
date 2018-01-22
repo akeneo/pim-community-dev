@@ -39,3 +39,4 @@ services:
             - '@security.authorization_checker'
             - '@pim_catalog.repository.product'
             - '@pim_catalog.repository.locale'
+            - '@pim_catalog.repository.product_model'
