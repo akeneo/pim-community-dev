@@ -11,7 +11,11 @@
 
 namespace PimEnterprise\Component\Workflow\Model;
 
+use Pim\Component\Catalog\Model\AttributeInterface;
+use Pim\Component\Catalog\Model\EntityWithValuesInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Model\ValueCollectionInterface;
+use Pim\Component\Catalog\Model\ValueInterface;
 
 /**
  * Product draft
@@ -31,6 +35,12 @@ class ProductDraft implements ProductDraftInterface
 
     /** @var \DateTime */
     protected $createdAt;
+
+    /** @var ValueCollectionInterface */
+    protected $values;
+
+    /** @var array */
+    protected $rawValues;
 
     /** @var array */
     protected $changes = [];
@@ -58,6 +68,11 @@ class ProductDraft implements ProductDraftInterface
     public function getId()
     {
         return $this->id;
+    }
+
+    public function getIdentifier()
+    {
+        return (string) $this->getId();
     }
 
     /**
@@ -112,6 +127,24 @@ class ProductDraft implements ProductDraftInterface
     public function getCreatedAt()
     {
         return $this->createdAt;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setRawValues(array $rawValues)
+    {
+        $this->rawValues = $rawValues;
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getRawValues()
+    {
+        return $this->rawValues;
     }
 
     /**
@@ -403,5 +436,75 @@ class ProductDraft implements ProductDraftInterface
     public function getDataLocale()
     {
         return $this->dataLocale;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getAttributes()
+    {
+        return $this->getValues()->getAttributes();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getValues()
+    {
+        return $this->values;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setValues(ValueCollectionInterface $values)
+    {
+        $this->values = $values;
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function addValue(ValueInterface $value)
+    {
+        $this->values->add($value);
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function removeValue(ValueInterface $value)
+    {
+        $this->values->remove($value);
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getUsedAttributeCodes()
+    {
+        return $this->values->getAttributesKeys();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getValue($attributeCode, $localeCode = null, $scopeCode = null)
+    {
+        return $this->getValues()->getByCodes($attributeCode, $scopeCode, $localeCode);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function hasAttribute(AttributeInterface $attribute)
+    {
+        return in_array($attribute, $this->getValues()->getAttributes(), true);
     }
 }

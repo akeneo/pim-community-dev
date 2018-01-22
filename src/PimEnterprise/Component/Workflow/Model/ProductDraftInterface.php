@@ -11,6 +11,7 @@
 
 namespace PimEnterprise\Component\Workflow\Model;
 
+use Pim\Component\Catalog\Model\EntityWithValuesInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 
 /**
@@ -18,7 +19,7 @@ use Pim\Component\Catalog\Model\ProductInterface;
  *
  * @author Marie Bochu <marie.bochu@akeneo.com>
  */
-interface ProductDraftInterface
+interface ProductDraftInterface extends EntityWithValuesInterface
 {
     const IN_PROGRESS = 0;
     const READY = 1;

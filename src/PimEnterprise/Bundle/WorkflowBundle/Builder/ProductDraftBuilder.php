@@ -15,6 +15,7 @@ use Pim\Component\Catalog\Comparator\ComparatorRegistry;
 use Pim\Component\Catalog\Factory\ValueCollectionFactoryInterface;
 use Pim\Component\Catalog\Factory\ValueFactory;
 use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Model\ValueCollection;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use PimEnterprise\Component\Workflow\Builder\ProductDraftBuilderInterface;
 use PimEnterprise\Component\Workflow\Factory\ProductDraftFactory;
@@ -86,13 +87,13 @@ class ProductDraftBuilder implements ProductDraftBuilderInterface
         $originalValues = $this->getOriginalValues($product);
         $attributeTypes = $this->attributeRepository->getAttributeTypeByCodes(array_keys($newValues));
 
-        $diff = [];
-        foreach ($newValues as $code => $new) {
+        $values = [];
+        foreach ($newValues as $code => $newValue) {
             if (!isset($attributeTypes[$code])) {
                 throw new \LogicException(sprintf('Cannot find attribute with code "%s".', $code));
             }
 
-            foreach ($new as $index => $changes) {
+            foreach ($newValue as $index => $changes) {
                 $comparator = $this->comparatorRegistry->getAttributeComparator($attributeTypes[$code]);
                 $diffAttribute = $comparator->compare(
                     $changes,
@@ -101,12 +102,21 @@ class ProductDraftBuilder implements ProductDraftBuilderInterface
 
                 if (null !== $diffAttribute) {
                     $diff['values'][$code][] = $diffAttribute;
+
+                    $attribute = $this->attributeRepository->findOneByIdentifier($code);
+                    $values[] = $this->valueFactory->create(
+                        $attribute,
+                        $changes['scope'],
+                        $changes['locale'],
+                        $changes['data']
+                    );
                 }
             }
         }
 
         if (!empty($diff)) {
             $productDraft = $this->getProductDraft($product, $username);
+            $productDraft->setValues(new ValueCollection($values));
             $productDraft->setChanges($diff);
             $productDraft->setAllReviewStatuses(ProductDraftInterface::CHANGE_DRAFT);
 
