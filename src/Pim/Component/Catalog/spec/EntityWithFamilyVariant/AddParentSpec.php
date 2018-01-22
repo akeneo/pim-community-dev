@@ -2,9 +2,13 @@
 
 namespace spec\Pim\Component\Catalog\EntityWithFamilyVariant;
 
+use Doctrine\Common\Collections\Collection;
 use Pim\Component\Catalog\EntityWithFamily\Event\ParentHasBeenAddedToProduct;
+use Pim\Component\Catalog\Model\FamilyVariantInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
+use Pim\Component\Catalog\Model\ValueCollectionInterface;
+use Pim\Component\Catalog\Model\VariantAttributeSetInterface;
 use Pim\Component\Catalog\Repository\ProductModelRepositoryInterface;
 use Pim\Component\Catalog\EntityWithFamilyVariant\AddParent;
 use PhpSpec\ObjectBehavior;
@@ -29,13 +33,27 @@ class AddParentSpec extends ObjectBehavior
         $productModelRepository,
         $eventDispatcher,
         ProductInterface $product,
-        ProductModelInterface $productModel
+        ProductModelInterface $productModel,
+        FamilyVariantInterface $familyVariant,
+        ValueCollectionInterface $values,
+        ValueCollectionInterface $filteredValues,
+        VariantAttributeSetInterface $attributeSet,
+        Collection $attributes
     ) {
         $product->getId()->willReturn(40);
-
+        $product->getFamilyVariant()->willReturn($familyVariant);
+        $product->getValues()->willReturn($values);
+        $values->filter(Argument::any())->willReturn($filteredValues);
+        $familyVariant->getVariantAttributeSet(2)->willReturn($attributeSet);
+        $familyVariant->getNumberOfLevel()->willReturn(2);
+        $attributeSet->getAttributes()->willReturn($attributes);
+        $productModel->getFamilyVariant()->willReturn($familyVariant);
         $productModelRepository->findOneByIdentifier('parent')->willReturn()->willReturn($productModel);
 
         $product->setParent($productModel)->shouldBeCalled();
+        $product->setFamilyVariant($familyVariant)->shouldBeCalled();
+        $product->setValues($filteredValues)->shouldBeCalled();
+
         $eventDispatcher->dispatch(ParentHasBeenAddedToProduct::EVENT_NAME, Argument::type(ParentHasBeenAddedToProduct::class))
             ->shouldBeCalled();
 
@@ -51,6 +69,7 @@ class AddParentSpec extends ObjectBehavior
 
         $productModelRepository->findOneByIdentifier(Argument::any())->shouldNotBeCalled();
         $product->setParent(Argument::cetera())->shouldNotBeCalled();
+        $product->setValues(Argument::cetera())->shouldNotBeCalled();
         $eventDispatcher->dispatch(ParentHasBeenAddedToProduct::EVENT_NAME, Argument::type(ParentHasBeenAddedToProduct::class))
             ->shouldNotBeCalled();
 

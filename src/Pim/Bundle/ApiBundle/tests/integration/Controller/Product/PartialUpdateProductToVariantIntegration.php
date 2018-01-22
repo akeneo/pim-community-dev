@@ -140,7 +140,13 @@ JSON;
         $this->assertSame(
             [
                 'code' => 422,
-                'message' => 'Product and product model families should be the same.'
+                'message' => 'Validation failed.',
+                'errors' => [
+                    [
+                        'property' => 'family',
+                        'message' => 'The variant product family must be the same than its parent'
+                    ]
+                ],
             ],
             json_decode($response->getContent(), true)
         );

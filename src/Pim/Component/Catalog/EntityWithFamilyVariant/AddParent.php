@@ -6,6 +6,9 @@ namespace Pim\Component\Catalog\EntityWithFamilyVariant;
 
 use Pim\Component\Catalog\EntityWithFamily\Event\ParentHasBeenAddedToProduct;
 use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Model\ProductModelInterface;
+use Pim\Component\Catalog\Model\ValueCollectionInterface;
+use Pim\Component\Catalog\Model\ValueInterface;
 use Pim\Component\Catalog\Repository\ProductModelRepositoryInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
@@ -59,6 +62,8 @@ class AddParent
         }
 
         $product->setParent($productModel);
+        $product->setFamilyVariant($productModel->getFamilyVariant());
+        $product->setValues($this->filterNonVariantValues($productModel, $product));
 
         $this->eventDispatcher->dispatch(
             ParentHasBeenAddedToProduct::EVENT_NAME,
@@ -66,5 +71,23 @@ class AddParent
         );
 
         return $product;
+    }
+
+    private function filterNonVariantValues(
+        ProductModelInterface $productModel,
+        ProductInterface $product
+    ): ValueCollectionInterface {
+        $familyVariant = $productModel->getFamilyVariant();
+        $variantAttributes = $familyVariant->getVariantAttributeSet(
+            $familyVariant->getNumberOfLevel()
+        )->getAttributes();
+
+        $filteredValues = $product->getValues()->filter(
+            function (ValueInterface $value) use ($variantAttributes) {
+                return $variantAttributes->contains($value->getAttribute());
+            }
+        );
+
+        return $filteredValues;
     }
 }

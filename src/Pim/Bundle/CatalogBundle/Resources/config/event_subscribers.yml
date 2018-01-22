@@ -130,15 +130,6 @@ services:
         tags:
             - { name: kernel.event_subscriber }
 
-    pim_catalog.event_subscriber.add_parent_to_product:
-        class: '%pim_catalog.event_subscriber.add_parent_to_product.class%'
-        arguments:
-            - '@pim_catalog.doctrine.query.convert_product_to_variant_product'
-            - '@doctrine.orm.entity_manager'
-        tags:
-            - { name: kernel.event_subscriber }
-            - { name: doctrine.event_listener, event: preUpdate, connection: default }
-
     pim_catalog.event_subscriber.index_product_model_completedata:
         class: '%pim_catalog.event_subscriber.index_product_model_complete.class%'
         arguments:
