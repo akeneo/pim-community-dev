@@ -1,6 +1,7 @@
 parameters:
     pimee_workflow.normalizer.product_draft.class:     PimEnterprise\Bundle\WorkflowBundle\Normalizer\ProductDraftNormalizer
     pimee_workflow.normalizer.published_product.class: PimEnterprise\Bundle\WorkflowBundle\Normalizer\PublishedProductNormalizer
+    pimee_workflow.normalizer.proposal_product.class: PimEnterprise\Bundle\WorkflowBundle\Datagrid\Normalizer\ProductProposalNormalizer
 
 services:
     pimee_workflow.normalizer.product_draft:
@@ -14,3 +15,8 @@ services:
             - '@pimee_enrich.normalizer.product'
         tags:
             - { name: pim_internal_api_serializer.normalizer, priority: 130 }
+
+    pimee_workflow.normalizer.proposal_product:
+        class: '%pimee_workflow.normalizer.proposal_product.class%'
+        tags:
+            - { name: pim_serializer.normalizer }
