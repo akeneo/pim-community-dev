@@ -172,9 +172,6 @@ JSON;
         $this->assertSameProduct($expectedProduct, 'variant_product');
     }
 
-    /**
-     * @fail
-     */
     public function testUpdateVariantProductValuesByMergingNonViewableCategories()
     {
         $this->loader->loadProductModelsFixturesForCategoryPermissions();
@@ -189,12 +186,28 @@ JSON;
             WHERE identifier = "colored_sized_sweat_own"
 SQL;
 
+
         $this->assertUpdated('colored_sized_sweat_own', $data, $sql, [
-            ['code' => 'category_without_right'],
             ['code' => 'view_category'],
-            ['code' => 'own_category'],
             ['code' => 'edit_category'],
         ]);
+
+        $this->getFromTestContainer('doctrine')->getManager()->clear();
+        $product = $this
+            ->getFromTestContainer('pim_catalog.repository.product')
+            ->findOneByIdentifier('colored_sized_sweat_own');
+
+        $categories = $product->getCategories();
+        $categoryCodes = [];
+        foreach ($categories as $category) {
+            $categoryCodes[] = $category->getCode();
+        }
+
+        Assert::assertEquals(
+            ['view_category', 'edit_category', 'own_category', 'category_without_right'],
+            $categoryCodes
+        );
+
     }
 
     public function testUpdateVariantProductAssociationWithNotViewableProduct()
@@ -240,6 +253,9 @@ JSON;
 
     /**
      * @fail
+     * @po
+     *
+     * attribute should no exist
      */
     public function testUpdateNotViewableAttribute()
     {
@@ -259,6 +275,8 @@ JSON;
 
     /**
      * @fail
+     *
+     * should ignore
      */
     public function testUpdateByModifyingViewableAttribute()
     {
@@ -276,7 +294,7 @@ JSON;
         $this->assertUnauthorized('variant_product', $data, sprintf($message, 'variant_product_view_attribute'));
     }
 
-    public function testUpdateWithoutModifyingViewableAttribute()
+    public function testUpdateWithoutModifyingProductValueOnNotViewableLocale()
     {
         $this->loader->loadProductModelsFixturesForAttributeAndLocalePermissions();
 
@@ -293,8 +311,11 @@ JSON;
 
     /**
      * @fail
+     * @po
+     *
+     * locale should no exist
      */
-    public function testUpdateByModifyingNotViewableLocale()
+    public function testUpdateByModifyingProductValueOnNotViewableLocale()
     {
         $this->loader->loadProductModelsFixturesForAttributeAndLocalePermissions();
 
@@ -312,24 +333,30 @@ JSON;
 
     /**
      * @fail
+     * When modifying a product value from the parent, we ignore the whole modification, whether we modify it ot not.
+     * On parents, we only validate attribute and locale visibility.
      */
-    public function testUpdateByModifyingViewableLocale()
+    public function testUpdateByModifyingProductValueOnViewableLocale()
     {
         $this->loader->loadProductModelsFixturesForAttributeAndLocalePermissions();
 
         $message = 'You only have a view permission on the locale "fr_FR".';
 
         $data = '{"values": {"root_product_model_edit_attribute": [{"locale": "fr_FR", "scope":null, "data":false}]}}';
-        $this->assertUnauthorized('variant_product', $data, sprintf($message, 'root_product_model_view_attribute'));
+        $this->assertUpdated('variant_product', $data);
 
         $data = '{"values": {"sub_product_model_edit_attribute": [{"locale": "fr_FR", "scope":null, "data":false}]}}';
-        $this->assertUnauthorized('variant_product', $data, sprintf($message, 'sub_product_model_view_attribute'));
+        $this->assertUpdated('variant_product', $data);
 
         $data = '{"values": {"variant_product_edit_attribute": [{"locale": "fr_FR", "scope":null, "data":false}]}}';
         $this->assertUnauthorized('variant_product', $data, sprintf($message, 'variant_product_view_attribute'));
     }
 
-    public function testUpdateWithoutModifyingViewableLocale()
+    /**
+     * When modifying a product value from the parent, we ignore the whole modification, whether we modify it ot not.
+     * On parents, we only validate attribute and locale visibility.
+     */
+    public function testUpdateWithoutModifyingParentProductValueOnViewableLocale()
     {
         $this->loader->loadProductModelsFixturesForAttributeAndLocalePermissions();
 
