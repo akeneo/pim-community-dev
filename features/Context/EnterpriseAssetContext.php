@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Context;
 
 use Behat\Gherkin\Node\TableNode;
@@ -8,6 +10,7 @@ use Context\Page\Asset\Edit;
 use Context\Spin\SpinCapableTrait;
 use Pim\Behat\Context\PimContext;
 use PimEnterprise\Bundle\ProductAssetBundle\Doctrine\Common\Saver\AssetVariationSaver;
+use PimEnterprise\Bundle\ProductAssetBundle\Doctrine\ORM\Repository\AssetRepository;
 use PimEnterprise\Component\ProductAsset\Updater\FilesUpdaterInterface;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
 
@@ -20,6 +23,9 @@ use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
 class EnterpriseAssetContext extends PimContext
 {
     use SpinCapableTrait;
+
+    /** @var int */
+    private $assetUpdatedAtTimestamp;
 
     /**
      * @Then /^I delete the reference file$/
@@ -365,6 +371,35 @@ class EnterpriseAssetContext extends PimContext
     }
 
     /**
+     * @param string $assetCode
+     *
+     * @Given /^the "([^"]*)" asset already has an update date$/
+     */
+    public function theAssetAlreadyHasAnUpdateDate(string $assetCode): void
+    {
+        $asset = $this->getAssetRepository()->findOneByIdentifier($assetCode);
+
+        assertNotNull($asset->getUpdatedAt());
+        $this->assetUpdatedAtTimestamp = $asset->getUpdatedAt()->getTimestamp();
+    }
+
+    /**
+     * This method is to be always used with EnterpriseAssetContext::theAssetAlreadyHasAnUpdateDate
+     *
+     * @param string $assetCode
+     *
+     * @Given /^the new update date of the asset "([^"]*)" should be more recent than the previous one$/
+     */
+    public function theNewUpdateDateOfTheAssetShouldBeMoreRecentThanThePreviousOne(string $assetCode): void
+    {
+        $asset = $this->getAssetRepository()->findOneByIdentifier($assetCode);
+        $this->getMainContext()->getContainer()->get('doctrine')->getManager()->refresh($asset);
+        $newUpdatedAtTimestamp = $asset->getUpdatedAt()->getTimestamp();
+
+        assertGreaterThan($this->assetUpdatedAtTimestamp, $newUpdatedAtTimestamp);
+    }
+
+    /**
      * @return EnterpriseFixturesContext
      */
     protected function getFixturesContext()
@@ -375,7 +410,7 @@ class EnterpriseAssetContext extends PimContext
     /**
      * @return FilesUpdaterInterface
      */
-    protected function getAssetFileUpdater()
+    private function getAssetFileUpdater()
     {
         $container = $this->getMainContext()->getContainer();
 
@@ -385,10 +420,20 @@ class EnterpriseAssetContext extends PimContext
     /**
      * @return AssetVariationSaver
      */
-    protected function getVariationSaver()
+    private function getVariationSaver()
     {
         $container = $this->getMainContext()->getContainer();
 
         return $container->get('pimee_product_asset.saver.variation');
+    }
+
+    /**
+     * @return AssetRepository
+     */
+    private function getAssetRepository(): AssetRepository
+    {
+        $container = $this->getMainContext()->getContainer();
+
+        return $container->get('pimee_product_asset.repository.asset');
     }
 }
