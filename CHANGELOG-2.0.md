@@ -1,3 +1,9 @@
+# 2.0.x
+
+## Bug fixes
+
+- PIM-7108: Fix a bug preventing the change of an asset last update date when uploading a new reference file
+
 # 2.0.13 (2018-01-23)
 
 ## Bug fixes
