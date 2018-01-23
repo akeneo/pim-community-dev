@@ -44,7 +44,7 @@ config:
                 - jquery
 
     paths:
-        jquery-ui:                     pimui/lib/jquery-ui/jquery-ui-1.11.4.custom.min
+        jquery-ui:                     pimui/lib/jquery-ui/jquery-ui-1.12.1.custom.min
         jquery.numeric:                pimui/lib/jquery-numeric/jquery.numeric
         jquery.select2:                pimui/lib/select2/select2
         jquery.jstree:                 pimui/lib/jstree/jquery.jstree
