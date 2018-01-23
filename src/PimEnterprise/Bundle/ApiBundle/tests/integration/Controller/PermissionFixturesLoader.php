@@ -649,7 +649,7 @@ class PermissionFixturesLoader
      * @param bool   $localizable
      * @param string $right
      */
-    private function createAttribute(string $code, string $right, bool $localizable = true): void
+    public function createAttribute(string $code,  string $right, bool $localizable = true, $type = AttributeTypes::BOOLEAN): void
     {
         switch ($right) {
             case 'view':
@@ -664,7 +664,7 @@ class PermissionFixturesLoader
 
         $data = [
             'code' => $code,
-            'type' => AttributeTypes::BOOLEAN,
+            'type' => $type,
             'localizable' => $localizable,
             'scopable' => false,
             'group' => $attributeGroup
