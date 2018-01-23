@@ -108,7 +108,7 @@ stage("Build") {
                             sh "sed -i \"/paths/a\\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ -\\ ${feature}\" behat.yml"
                         }
 
-                        sh "gcloud_buildsgcloud container builds submit -t eu.gcr.io/akeneo-ci/pim-community-dev:pull-request-${env.CHANGE_ID}-build-${env.BUILD_NUMBER}-ee ."
+                        sh "gcloud container builds submit -t eu.gcr.io/akeneo-ci/pim-community-dev:pull-request-${env.CHANGE_ID}-build-${env.BUILD_NUMBER}-ee ."
                     }
                 })
             } else {
