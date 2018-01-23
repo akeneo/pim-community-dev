@@ -2,11 +2,9 @@
 
 namespace Pim\Component\Connector\Reader\File\Xlsx;
 
-use Akeneo\Component\Batch\Item\FlushableInterface;
-use Akeneo\Component\Batch\Item\ItemReaderInterface;
-use Akeneo\Component\Batch\Step\StepExecutionAwareInterface;
 use Pim\Component\Connector\ArrayConverter\ArrayConverterInterface;
 use Pim\Component\Connector\Reader\File\FileIteratorFactory;
+use Pim\Component\Connector\Reader\File\FileReaderInterface;
 use Pim\Component\Connector\Reader\File\MediaPathTransformer;
 
 /**
@@ -16,10 +14,7 @@ use Pim\Component\Connector\Reader\File\MediaPathTransformer;
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductModelReader extends Reader implements
-    ItemReaderInterface,
-    StepExecutionAwareInterface,
-    FlushableInterface
+class ProductModelReader extends Reader implements FileReaderInterface
 {
     /** @var MediaPathTransformer */
     private $mediaPathTransformer;
