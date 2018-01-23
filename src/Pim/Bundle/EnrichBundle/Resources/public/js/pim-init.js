@@ -113,7 +113,7 @@ define(
                 var secret = '38384040373937396665';
                 var input = '';
                 var timer;
-                $(document).keyup(function (e) {
+                $(document).on('keyup', function (e) {
                     input += e.which;
                     clearTimeout(timer);
                     timer = setTimeout(function () {

@@ -168,7 +168,7 @@ function($, _, Backbone, app) {
          * {@inheritdoc}
          */
         render() {
-            $('.column-inner').scroll(this._updateCriteriaSelectorPosition.bind(this));
+            $('.column-inner').on('scroll', this._updateCriteriaSelectorPosition.bind(this));
         },
 
         /**

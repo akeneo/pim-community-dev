@@ -125,7 +125,7 @@ define(
                 $('#tree-link-' + treeId).trigger('shown');
 
                 // If empty, load the associated jstree
-                if ($tree.children('ul').size() === 0) {
+                if ($tree.children('ul').length === 0) {
                     self.initTree(treeId);
                 }
             };
