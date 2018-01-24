@@ -25,11 +25,6 @@ config:
                 - jquery
                 - underscore
             exports: Backbone
-        backbone/bootstrap-modal:
-            deps:
-                - jquery
-                - underscore
-                - backbone
         jquery.slimbox:
             deps:
                 - jquery
@@ -50,7 +45,6 @@ config:
         jquery.jstree:                 pimui/lib/jstree/jquery.jstree
         jstree/jquery.hotkeys:         pimui/lib/jstree/jquery.hotkeys
         bootstrap:                     pimui/lib/bootstrap/js/bootstrap
-        backbone/bootstrap-modal:      pimui/lib/backbone.bootstrap-modal
         oro/app:                       pimui/js/app
         oro/error:                     pimui/js/error
         oro/init-layout:               pimui/js/init-layout
