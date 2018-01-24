@@ -19,7 +19,6 @@ use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterfa
 use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionParametersParser;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use PimEnterprise\Bundle\DataGridBundle\Adapter\OroToPimGridFilterAdapter;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;

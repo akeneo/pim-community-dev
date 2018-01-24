@@ -1,6 +1,15 @@
 # 2.2.x
 
+## Improve Julia's experience
+
+- PIM-6367: Apply rules on products models values
+
 ## BC breaks
+
+### Constructors
+
+- PIM-6367: Change the constructor of `PimEnterprise\Component\CatalogRule\Engine\ProductRuleApplier\ProductsSaver` to add `Akeneo\Component\StorageUtils\Saver\BulkSaverInterface`
+- PIM-6367: Change the constructor of `PimEnterprise\Component\CatalogRule\ActionApplier\SetterActionApplier` to add `Pim\Component\Catalog\Repository\AttributeRepositoryInterface`
 
 ### Services and parameters
 

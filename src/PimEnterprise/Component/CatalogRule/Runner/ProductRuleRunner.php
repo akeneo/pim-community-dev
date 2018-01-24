@@ -100,8 +100,9 @@ class ProductRuleRunner implements DryRunnerInterface
     protected function resolveOptions(array $options): array
     {
         $resolver = new OptionsResolver();
-        $resolver->setDefaults(['selected_products' => [], 'username' => null]);
+        $resolver->setDefaults(['selected_products' => [], 'selected_product_models' => [], 'username' => null]);
         $resolver->setAllowedTypes('selected_products', 'array');
+        $resolver->setAllowedTypes('selected_product_models', 'array');
         $resolver->setAllowedTypes('username', ['string', 'null']);
         $options = $resolver->resolve($options);
 
@@ -117,12 +118,24 @@ class ProductRuleRunner implements DryRunnerInterface
     protected function loadRule(RuleDefinitionInterface $definition, array $options): RuleInterface
     {
         $definition = $this->builder->build($definition);
+
         if (!empty($options['selected_products'])) {
             $condition = new $this->productCondClass(
                 [
                     'field'    => 'id',
                     'operator' => 'IN',
                     'value'    => $options['selected_products'],
+                ]
+            );
+            $definition->addCondition($condition);
+        }
+
+        if (!empty($options['selected_product_models'])) {
+            $condition = new $this->productCondClass(
+                [
+                    'field'    => 'id',
+                    'operator' => 'IN',
+                    'value'    => $options['selected_product_models'],
                 ]
             );
             $definition->addCondition($condition);
