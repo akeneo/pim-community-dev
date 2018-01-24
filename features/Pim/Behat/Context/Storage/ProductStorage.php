@@ -9,6 +9,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\Assert;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\VariantProductInterface;
+use Pim\Component\Catalog\Repository\ProductModelRepositoryInterface;
 use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
 use Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\AttributeColumnInfoExtractor;
 
@@ -20,21 +21,27 @@ class ProductStorage implements Context
     /** @var ProductRepositoryInterface */
     private $productRepository;
 
+    /** @var ProductModelRepositoryInterface */
+    private $productModelRepository;
+
     /** @var EntityManagerInterface */
     private $entityManager;
 
     /**
-     * @param AttributeColumnInfoExtractor $attributeColumnInfoExtractor
-     * @param ProductRepositoryInterface   $productRepository
-     * @param EntityManagerInterface       $entityManager
+     * @param AttributeColumnInfoExtractor    $attributeColumnInfoExtractor
+     * @param ProductRepositoryInterface      $productRepository
+     * @param ProductModelRepositoryInterface $productModelRepository
+     * @param EntityManagerInterface          $entityManager
      */
     public function __construct(
         AttributeColumnInfoExtractor $attributeColumnInfoExtractor,
         ProductRepositoryInterface $productRepository,
+        ProductModelRepositoryInterface $productModelRepository,
         EntityManagerInterface $entityManager
     ) {
         $this->attributeColumnInfoExtractor = $attributeColumnInfoExtractor;
         $this->productRepository = $productRepository;
+        $this->productModelRepository = $productModelRepository;
         $this->entityManager = $entityManager;
     }
 
@@ -48,16 +55,16 @@ class ProductStorage implements Context
      */
     public function theProductShouldNotHaveTheFollowingValues($identifier, TableNode $table)
     {
-        /** @var ProductInterface $product */
         $product = $this->productRepository->findOneByIdentifier($identifier);
 
-        foreach ($table->getRowsHash() as $rawCode => $value) {
-            $infos = $this->attributeColumnInfoExtractor->extractColumnInfo($rawCode);
+        $rows = $table->getRowsHash();
+        foreach (array_keys($rows) as $rawCode) {
+            $info = $this->attributeColumnInfoExtractor->extractColumnInfo($rawCode);
 
-            $attribute     = $infos['attribute'];
+            $attribute     = $info['attribute'];
             $attributeCode = $attribute->getCode();
-            $localeCode    = $infos['locale_code'];
-            $scopeCode     = $infos['scope_code'];
+            $localeCode    = $info['locale_code'];
+            $scopeCode     = $info['scope_code'];
             $productValue  = $product->getValue($attributeCode, $localeCode, $scopeCode);
 
             if (null !== $productValue) {
@@ -67,6 +74,9 @@ class ProductStorage implements Context
     }
 
     /**
+     * @param string $productIdentifier
+     * @param string $parentCode
+     *
      * @Given the parent of the product :productIdentifier should be :parentCode
      */
     public function productHaveParent(string $productIdentifier, string $parentCode)
@@ -94,24 +104,33 @@ class ProductStorage implements Context
         /** @var VariantProductInterface $product */
         $product = $this->productRepository->findOneByIdentifier($identifier);
 
-        foreach ($table->getRowsHash() as $rawCode => $value) {
+        $rows = $table->getRowsHash();
+        foreach (array_keys($rows) as $rawCode) {
             $infos = $this->attributeColumnInfoExtractor->extractColumnInfo($rawCode);
 
             $attribute = $infos['attribute'];
             $attributeCode = $attribute->getCode();
-            $productValue = $product->getValuesForVariation()->getByCodes($attributeCode, $infos['locale_code'], $infos['scope_code']);
+            $productValue = $product
+                ->getValuesForVariation()
+                ->getByCodes($attributeCode, $infos['locale_code'], $infos['scope_code']);
 
             if (null !== $productValue) {
-                throw new \Exception(sprintf('Product value for product "%s" exists', $identifier));
+                throw new \Exception(sprintf('Product value for variant product "%s" exists', $identifier));
             }
         }
     }
 
     /**
+     * @param string $productIdentifier
+     *
+     * @throws \Exception
+     *
      * @Then :productIdentifier should be a product
      */
     public function productShouldNotHaveAParent(string $productIdentifier): void
     {
+        $this->entityManager->clear();
+
         $product = $this->productRepository->findOneByIdentifier($productIdentifier);
 
         if (null === $product) {
@@ -122,6 +141,35 @@ class ProductStorage implements Context
             throw new \Exception(
                 sprintf('The given object must be a variant product, %s given', ClassUtils::getClass($product))
             );
+        }
+    }
+
+    /**
+     * @param string    $identifier
+     * @param TableNode $table
+     *
+     * @throws \Exception
+     *
+     * @Given /^the product model "([^"]*)" should not have the following values?:$/
+     */
+    public function theProductModelShouldNotHaveTheFollowingValues(string $identifier, TableNode $table)
+    {
+        $productModel = $this->productModelRepository->findOneByIdentifier($identifier);
+
+        $rows = $table->getRowsHash();
+        foreach (array_keys($rows) as $rawCode) {
+            $infos = $this->attributeColumnInfoExtractor->extractColumnInfo($rawCode);
+
+            $attribute = $infos['attribute'];
+            $attributeCode = $attribute->getCode();
+            $localeCode = $infos['locale_code'];
+            $scopeCode = $infos['scope_code'];
+
+            $productValue = $productModel->getValues()->getByCodes($attributeCode, $localeCode, $scopeCode);
+
+            if (null !== $productValue) {
+                throw new \Exception(sprintf('Product value for product model "%s" exists', $identifier));
+            }
         }
     }
 }

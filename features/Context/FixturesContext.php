@@ -1321,6 +1321,8 @@ class FixturesContext extends BaseFixturesContext
      * @param string    $identifier
      * @param TableNode $table
      *
+     * @throws Spin\TimeoutException
+     *
      * @Given /^the product "([^"]*)" should have the following values?:$/
      */
     public function theProductShouldHaveTheFollowingValues($identifier, TableNode $table)
@@ -1367,6 +1369,60 @@ class FixturesContext extends BaseFixturesContext
 
             return true;
         }, sprintf('Cannot get the values of the product %s', $identifier));
+    }
+
+    /**
+     * @param string    $code
+     * @param TableNode $table
+     *
+     * @throws Spin\TimeoutException
+     *
+     * @Given /^the product model "([^"]*)" should have the following values?:$/
+     */
+    public function theProductModelShouldHaveTheFollowingValues(string $code, TableNode $table): void
+    {
+        $this->spin(function () use ($code, $table) {
+            $productModel = $this->getProductModel($code);
+
+            foreach ($table->getRowsHash() as $rawCode => $value) {
+                $info = $this->getFieldExtractor()->extractColumnInfo($rawCode);
+
+                $attribute     = $info['attribute'];
+                $attributeCode = $attribute->getCode();
+                $localeCode    = $info['locale_code'];
+                $scopeCode     = $info['scope_code'];
+                $priceCurrency = isset($info['price_currency']) ? $info['price_currency'] : null;
+                $value  = $productModel->getValue($attributeCode, $localeCode, $scopeCode);
+
+                if ('' === $value) {
+                    Assert::assertEmpty((string) $value);
+                } elseif ('media' === $attribute->getBackendType()) {
+                    // media filename is auto generated during media handling and cannot be guessed
+                    // (it contains a timestamp)
+                    if ('**empty**' === $value) {
+                        Assert::assertEmpty((string) $value);
+                    } else {
+                        Assert::assertTrue(
+                            null !== $value->getData() &&
+                            false !== strpos($value->getData()->getOriginalFilename(), $value)
+                        );
+                    }
+                } elseif ('prices' === $attribute->getBackendType() && null !== $priceCurrency) {
+                    // $priceCurrency can be null if we want to test all the currencies at the same time
+                    // in this case, it's a simple string comparison
+                    // example: 180.00 EUR, 220.00 USD
+
+                    $price = $value->getPrice($priceCurrency);
+                    Assert::assertEquals($value, $price->getData());
+                } elseif ('date' === $attribute->getBackendType()) {
+                    Assert::assertEquals($value, $value->getData()->format('Y-m-d'));
+                } else {
+                    Assert::assertEquals($value, (string) $value);
+                }
+            }
+
+            return true;
+        }, sprintf('Cannot get the values of the product %s', $code));
     }
 
     /**
