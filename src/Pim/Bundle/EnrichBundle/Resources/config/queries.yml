@@ -11,5 +11,5 @@ services:
     pim_enrich.doctrine.query.count_impacted_products:
         class: '%pim_enrich.doctrine.query.count_impacted_products.class%'
         arguments:
-            - '@pim_enrich.query.product_and_product_model_query_builder_factory'
+            - '@pim_catalog.query.product_and_product_model_query_builder_factory'
             - '@pim_catalog.query.product_query_builder_factory'

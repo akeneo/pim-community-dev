@@ -1,9 +1,6 @@
 <?php
 
-namespace Pim\Bundle\EnrichBundle\ProductQueryBuilder;
-
-use Pim\Component\Catalog\Query\Filter\Operators;
-use Pim\Component\Catalog\Query\ProductQueryBuilderInterface;
+namespace Pim\Component\Catalog\Query;
 
 /**
  * Provides a way to search simply and efficiently product and product models.
@@ -12,7 +9,7 @@ use Pim\Component\Catalog\Query\ProductQueryBuilderInterface;
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class MassEditProductAndProductModelQueryBuilder implements ProductQueryBuilderInterface
+class ProductAndProductModelQueryBuilder implements ProductQueryBuilderInterface
 {
     /** @var ProductQueryBuilderInterface */
     private $pqb;
