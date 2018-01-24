@@ -13,7 +13,7 @@ services:
             - '@oro_user.manager'
             - '@security.token_storage'
             - '@security.authorization_checker'
-            - '@pim_enrich.query.product_and_product_model_query_builder_factory'
+            - '@pim_catalog.query.product_and_product_model_query_builder_factory'
 
     pim_enrich.mass_edit_tasklet.unpublish_product:
         class: '%pimee_enrich.mass_edit_tasklet.unpublish_product.class%'
