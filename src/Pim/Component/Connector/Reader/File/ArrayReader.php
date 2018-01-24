@@ -2,10 +2,7 @@
 
 namespace Pim\Component\Connector\Reader\File;
 
-use Akeneo\Component\Batch\Item\FlushableInterface;
-use Akeneo\Component\Batch\Item\ItemReaderInterface;
 use Akeneo\Component\Batch\Model\StepExecution;
-use Akeneo\Component\Batch\Step\StepExecutionAwareInterface;
 use Pim\Component\Connector\ArrayConverter\ArrayConverterInterface;
 
 /**
@@ -26,9 +23,9 @@ use Pim\Component\Connector\ArrayConverter\ArrayConverterInterface;
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ArrayReader implements ItemReaderInterface, StepExecutionAwareInterface, FlushableInterface
+class ArrayReader implements FileReaderInterface
 {
-    /** @var ItemReaderInterface */
+    /** @var FileReaderInterface */
     protected $reader;
 
     /** @var ArrayConverterInterface */
@@ -38,11 +35,11 @@ class ArrayReader implements ItemReaderInterface, StepExecutionAwareInterface, F
     protected $remainingItems;
 
     /**
-     * @param ItemReaderInterface     $reader
+     * @param FileReaderInterface     $reader
      * @param ArrayConverterInterface $converter
      */
     public function __construct(
-        ItemReaderInterface $reader,
+        FileReaderInterface $reader,
         ArrayConverterInterface $converter
     ) {
         $this->reader = $reader;
@@ -77,9 +74,7 @@ class ArrayReader implements ItemReaderInterface, StepExecutionAwareInterface, F
      */
     public function setStepExecution(StepExecution $stepExecution)
     {
-        if ($this->reader instanceof StepExecutionAwareInterface) {
-            $this->reader->setStepExecution($stepExecution);
-        }
+        $this->reader->setStepExecution($stepExecution);
     }
 
     /**
@@ -87,8 +82,6 @@ class ArrayReader implements ItemReaderInterface, StepExecutionAwareInterface, F
      */
     public function flush()
     {
-        if ($this->reader instanceof FlushableInterface) {
-            $this->reader->flush();
-        }
+        $this->reader->flush();
     }
 }
