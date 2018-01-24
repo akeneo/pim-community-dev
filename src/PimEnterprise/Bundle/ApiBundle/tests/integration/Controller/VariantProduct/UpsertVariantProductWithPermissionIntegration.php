@@ -252,12 +252,10 @@ JSON;
     }
 
     /**
-     * @fail
-     * @po
-     *
-     * attribute should no exist
+     * On product values inherited the parents, we only validate attribute and locale visibility.
+     * We ignore any modification of the data on product values of the parents.
      */
-    public function testUpdateNotViewableAttribute()
+    public function testUpdateByModifyingProductValueOnNotViewableAttribute()
     {
         $this->loader->loadProductModelsFixturesForAttributeAndLocalePermissions();
 
@@ -267,53 +265,35 @@ JSON;
         $this->assertUnprocessableEntity('variant_product', $data, sprintf($message, 'root_product_model_no_view_attribute'));
 
         $data = '{"values": {"sub_product_model_no_view_attribute": [{"locale": null, "scope":null, "data":false}]}}';
-        $this->assertUnprocessableEntity('variant_product', $data, sprintf($message, 'root_product_model_no_view_attribute'));
+        $this->assertUnprocessableEntity('variant_product', $data, sprintf($message, 'sub_product_model_no_view_attribute'));
 
         $data = '{"values": {"variant_product_no_view_attribute": [{"locale": null, "scope":null, "data":false}]}}';
         $this->assertUnprocessableEntity('variant_product', $data, sprintf($message, 'variant_product_no_view_attribute'));
     }
 
     /**
-     * @fail
-     *
-     * should ignore
+     * On product values inherited the parents, we only validate attribute and locale visibility.
+     * We ignore any modification of the data on product values of the parents.
      */
-    public function testUpdateByModifyingViewableAttribute()
+    public function testUpdateByyModifyingProductValueOnViewableAttribute()
     {
         $this->loader->loadProductModelsFixturesForAttributeAndLocalePermissions();
 
-        $message = 'Attribute "%s" belongs to the attribute group "attributeGroupB" on which you only have view permission.';
 
         $data = '{"values": {"root_product_model_view_attribute": [{"locale": "fr_FR", "scope":null, "data":false}]}}';
-        $this->assertUnauthorized('variant_product', $data, sprintf($message, 'root_product_model_view_attribute'));
+        $this->assertUpdated('variant_product', $data);
 
         $data = '{"values": {"sub_product_model_view_attribute": [{"locale": "fr_FR", "scope":null, "data":false}]}}';
-        $this->assertUnauthorized('variant_product', $data, sprintf($message, 'sub_product_model_view_attribute'));
+        $this->assertUpdated('variant_product', $data);
 
+        $message = 'Attribute "%s" belongs to the attribute group "attributeGroupB" on which you only have view permission.';
         $data = '{"values": {"variant_product_view_attribute": [{"locale": "fr_FR", "scope":null, "data":false}]}}';
         $this->assertUnauthorized('variant_product', $data, sprintf($message, 'variant_product_view_attribute'));
     }
 
-    public function testUpdateWithoutModifyingProductValueOnNotViewableLocale()
-    {
-        $this->loader->loadProductModelsFixturesForAttributeAndLocalePermissions();
-
-        $data = '{"values": {"root_product_model_view_attribute": [{"locale": "fr_FR", "scope":null, "data":false}]}}';
-        $this->assertUpdated('variant_product', $data);
-
-        $data = '{"values": {"sub_product_model_view_attribute": [{"locale": "fr_FR", "scope":null, "data":false}]}}';
-        $this->assertUpdated('variant_product', $data);
-
-
-        $data = '{"values": {"variant_product_view_attribute": [{"locale": "fr_FR", "scope":null, "data":true}]}}';
-        $this->assertUpdated('variant_product', $data);
-    }
-
     /**
-     * @fail
-     * @po
-     *
-     * locale should no exist
+     * On product values inherited the parents, we only validate attribute and locale visibility.
+     * We ignore any modification of the data on product values of the parents.
      */
     public function testUpdateByModifyingProductValueOnNotViewableLocale()
     {
@@ -322,19 +302,18 @@ JSON;
         $message = 'Attribute "%s" expects an existing and activated locale, "de_DE" given. Check the expected format on the API documentation.';
 
         $data = '{"values": {"root_product_model_edit_attribute": [{"locale": "de_DE", "scope":null, "data":false}]}}';
-        $this->assertUnauthorized('variant_product', $data, sprintf($message, 'root_product_model_edit_attribute'));
+        $this->assertUnprocessableEntity('variant_product', $data, sprintf($message, 'root_product_model_edit_attribute'));
 
         $data = '{"values": {"sub_product_model_edit_attribute": [{"locale": "de_DE", "scope":null, "data":false}]}}';
-        $this->assertUnauthorized('variant_product', $data, sprintf($message, 'sub_product_model_edit_attribute'));
+        $this->assertUnprocessableEntity('variant_product', $data, sprintf($message, 'sub_product_model_edit_attribute'));
 
         $data = '{"values": {"variant_product_edit_attribute": [{"locale": "de_DE", "scope":null, "data":false}]}}';
         $this->assertUnprocessableEntity('variant_product', $data, sprintf($message, 'variant_product_edit_attribute'));
     }
 
     /**
-     * @fail
-     * When modifying a product value from the parent, we ignore the whole modification, whether we modify it ot not.
-     * On parents, we only validate attribute and locale visibility.
+     * On product values inherited the parents, we only validate attribute and locale visibility.
+     * We ignore any modification of the data on product values of the parents.
      */
     public function testUpdateByModifyingProductValueOnViewableLocale()
     {
@@ -352,43 +331,17 @@ JSON;
         $this->assertUnauthorized('variant_product', $data, sprintf($message, 'variant_product_view_attribute'));
     }
 
-    /**
-     * When modifying a product value from the parent, we ignore the whole modification, whether we modify it ot not.
-     * On parents, we only validate attribute and locale visibility.
-     */
-    public function testUpdateWithoutModifyingParentProductValueOnViewableLocale()
-    {
-        $this->loader->loadProductModelsFixturesForAttributeAndLocalePermissions();
-
-        $data = '{"values": {"root_product_model_edit_attribute": [{"locale": "fr_FR", "scope":null, "data":true}]}}';
-        $this->assertUpdated('variant_product', $data);
-
-        $data = '{"values": {"sub_product_model_edit_attribute": [{"locale": "fr_FR", "scope":null, "data":true}]}}';
-        $this->assertUpdated('variant_product', $data);
-
-        $data = '{"values": {"variant_product_edit_attribute": [{"locale": "fr_FR", "scope":null, "data":true}]}}';
-        $this->assertUpdated('variant_product', $data);
-    }
-
-    public function testUpdateOwnOrEditVariantProductWithNotViewableCategory()
+    public function testUpdateEditVariantProductWithNotViewableCategory()
     {
         $this->loader->loadProductModelsFixturesForCategoryPermissions();
 
-        $message = 'Property "categories" expects a valid category code. The category does not exist, "category_without_right" given. Check the expected format on the API documentation.';
-
-        $data = '{"categories": ["own_category", "category_without_right"]}';
-        $this->assertUnprocessableEntity('colored_sized_trousers', $data, $message);
-        $this->assertUnprocessableEntity('colored_sized_shoes_own', $data, $message);
-        $this->assertUnprocessableEntity('colored_sized_sweat_own', $data, $message);
+        $message = 'You cannot update the field "categories". You should at least own this product to do it.';
 
         $data = '{"categories": ["edit_category", "category_without_right"]}';
-        $this->assertUnprocessableEntity('colored_sized_sweat_edit', $data, $message);
-        $this->assertUnprocessableEntity('colored_sized_shoes_edit', $data, $message);
+        $this->assertUnauthorized('colored_sized_sweat_edit', $data, $message);
+        $this->assertUnauthorized('colored_sized_shoes_edit', $data, $message);
     }
 
-    /**
-     * @fail
-     */
     public function testUpdateOwnVariantProductWithViewableCategory()
     {
         $this->loader->loadProductModelsFixturesForCategoryPermissions();
@@ -399,9 +352,6 @@ JSON;
         $this->assertUpdated('colored_sized_trousers', $data);
     }
 
-    /**
-     * @fail
-     */
     public function testUpdateVariantProductByLosingOwnRight()
     {
         $this->loader->loadProductModelsFixturesForCategoryPermissions();
@@ -409,25 +359,23 @@ JSON;
         $message = 'You should at least keep your product in one category on which you have an own permission.';
         $data = '{"categories": ["edit_category"]}';
         $this->assertUnauthorized('colored_sized_trousers', $data, $message);
-
-        $data = '{"categories": ["view_category"]}';
-        $this->assertUnauthorized('colored_sized_shoes_own', $data, $message);
-
-        $data = '{"categories": ["edit_category"]}';
-        $this->assertUnauthorized('colored_sized_trousers', $data, $message);
     }
 
     /**
-     * @fail
+     * If parent category has own right, product is considered as owned.
+     * Therefore, it is successfully updated.
      */
     public function testUpdateCategorizedVariantProductByKeepingOwnRight()
     {
         $this->loader->loadProductModelsFixturesForCategoryPermissions();
 
         $data = '{"categories": ["own_category"]}';
+        $this->assertUpdated('colored_sized_trousers', $data);
+
+        $data = '{"categories": ["view_category"]}';
         $this->assertUpdated('colored_sized_sweat_own', $data);
         $this->assertUpdated('colored_sized_shoes_own', $data);
-        $this->assertUpdated('colored_sized_trousers', $data);
+
     }
 
     /**
