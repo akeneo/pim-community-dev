@@ -133,6 +133,7 @@ class AssociationFieldSetter extends AbstractFieldSetter
     protected function setProductsAndGroupsToAssociations(ProductInterface $product, $data)
     {
         foreach ($data as $typeCode => $items) {
+            $typeCode = (string) $typeCode;
             $association = $product->getAssociationForTypeCode($typeCode);
             if (null === $association) {
                 throw InvalidPropertyException::validEntityCodeExpected(
@@ -217,6 +218,7 @@ class AssociationFieldSetter extends AbstractFieldSetter
         }
 
         foreach ($data as $assocTypeCode => $items) {
+            $assocTypeCode = (string) $assocTypeCode;
             $this->checkAssociationData($field, $data, $assocTypeCode, $items);
         }
     }
