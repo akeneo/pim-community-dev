@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\EnrichBundle\Elasticsearch;
+namespace Pim\Bundle\CatalogBundle\Elasticsearch;
 
 use Akeneo\Bundle\ElasticsearchBundle\Client;
 use Akeneo\Component\StorageUtils\Cursor\CursorFactoryInterface;

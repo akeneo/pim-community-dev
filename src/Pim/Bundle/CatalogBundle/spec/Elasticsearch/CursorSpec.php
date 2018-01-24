@@ -1,12 +1,12 @@
 <?php
 
-namespace spec\Pim\Bundle\EnrichBundle\Elasticsearch;
+namespace spec\Pim\Bundle\CatalogBundle\Elasticsearch;
 
 use Akeneo\Bundle\ElasticsearchBundle\Client;
 use Akeneo\Component\StorageUtils\Cursor\CursorInterface;
 use Akeneo\Component\StorageUtils\Repository\CursorableRepositoryInterface;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\EnrichBundle\Elasticsearch\Cursor;
+use Pim\Bundle\CatalogBundle\Elasticsearch\Cursor;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
 

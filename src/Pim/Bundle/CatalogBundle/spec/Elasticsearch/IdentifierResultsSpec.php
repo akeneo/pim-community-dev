@@ -1,15 +1,14 @@
 <?php
 
-namespace spec\Pim\Bundle\EnrichBundle\Elasticsearch;
+namespace spec\Pim\Bundle\CatalogBundle\Elasticsearch;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\EnrichBundle\Elasticsearch\IdentifierResult;
+use Pim\Bundle\CatalogBundle\Elasticsearch\IdentifierResult;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
 
 class IdentifierResultsSpec extends ObjectBehavior
 {
-
     function it_adds_a_result_identifier()
     {
         $this->add('foo', ProductInterface::class);

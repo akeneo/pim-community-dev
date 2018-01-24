@@ -1,13 +1,13 @@
 <?php
 
-namespace spec\Pim\Bundle\EnrichBundle\Elasticsearch;
+namespace spec\Pim\Bundle\CatalogBundle\Elasticsearch;
 
 use Akeneo\Bundle\ElasticsearchBundle\Client;
 use Akeneo\Component\StorageUtils\Cursor\CursorFactoryInterface;
 use Akeneo\Component\StorageUtils\Cursor\CursorInterface;
 use Akeneo\Component\StorageUtils\Repository\CursorableRepositoryInterface;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\EnrichBundle\Elasticsearch\CursorFactory;
+use Pim\Bundle\CatalogBundle\Elasticsearch\CursorFactory;
 
 class CursorFactorySpec extends ObjectBehavior
 {

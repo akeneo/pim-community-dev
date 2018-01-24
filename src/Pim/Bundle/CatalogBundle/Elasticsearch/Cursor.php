@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Pim\Bundle\EnrichBundle\Elasticsearch;
+namespace Pim\Bundle\CatalogBundle\Elasticsearch;
 
 use Akeneo\Bundle\ElasticsearchBundle\Client;
 use Akeneo\Component\StorageUtils\Cursor\CursorInterface;
@@ -13,8 +13,7 @@ use Akeneo\Component\StorageUtils\Repository\CursorableRepositoryInterface;
  * Internally, this is implemented with the search after pagination.
  * {@see https://www.elastic.co/guide/en/elasticsearch/reference/5.x/search-request-search-after.html}
  *
- * This cursor is dedicated to the search in the datagrid where we need to have 2 types of objects:
- * products and product models.
+ * This cursor is dedicated to the search of both products and product models.
  *
  * @author    Julien Janvier <jjanvier@akeneo.com>
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Pim\Bundle\EnrichBundle\Elasticsearch;
+namespace Pim\Bundle\CatalogBundle\Elasticsearch;
 
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;

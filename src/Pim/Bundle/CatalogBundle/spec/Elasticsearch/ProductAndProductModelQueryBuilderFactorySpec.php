@@ -1,10 +1,10 @@
 <?php
 
-namespace spec\Pim\Bundle\EnrichBundle\Elasticsearch;
+namespace spec\Pim\Bundle\CatalogBundle\Elasticsearch;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Elasticsearch\ProductQueryBuilderFactory;
-use Pim\Bundle\EnrichBundle\ProductQueryBuilder\ProductAndProductModelQueryBuilder;
+use Pim\Component\Catalog\Query\ProductAndProductModelQueryBuilder;
 use Pim\Component\Catalog\Query\ProductQueryBuilderFactoryInterface;
 use Pim\Component\Catalog\Query\ProductQueryBuilderInterface;
 
