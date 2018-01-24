@@ -1,3 +1,9 @@
+# 2.0.x
+
+## Update tests
+
+- API-446: Add tests get Product / VariantProduct with association on ProductModel
+
 # 2.0.13 (2018-01-23)
 
 ## Bug fixes
