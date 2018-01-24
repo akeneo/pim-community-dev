@@ -250,7 +250,7 @@ define(
 
             var options = this.$(this.filterSelector).find(optionsSelectors.join(','));
             if (options.length) {
-                options.removeAttr('selected');
+                options.prop('selected', false);
             }
 
             if (this.displayManageFilters() && optionsSelectors.length) {

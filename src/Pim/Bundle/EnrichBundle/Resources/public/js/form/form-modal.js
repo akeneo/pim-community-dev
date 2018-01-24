@@ -127,6 +127,8 @@ define(
                         form.setData(this.initialFormData, {silent: true});
                         form.setElement(this.modal.$('.modal-body')).render();
 
+                        this.modal.$el.addClass(this.modalParameters.modalClass);
+
                         mediator.on('pim_enrich:form:modal:ok_button:disable', function () {
                             this.disableOkBtn();
                         }.bind(this));

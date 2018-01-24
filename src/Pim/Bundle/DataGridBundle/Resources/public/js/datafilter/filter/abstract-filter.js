@@ -364,7 +364,7 @@ function($, _, Backbone, app) {
                             $input.attr('checked', true);
                             $input.click();
                         } else {
-                            $(this).removeAttr('checked');
+                            $(this).prop('checked', false);
                         }
                     });
                     break;

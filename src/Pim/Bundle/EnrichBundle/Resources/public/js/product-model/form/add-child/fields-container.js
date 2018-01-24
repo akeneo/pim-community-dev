@@ -36,6 +36,7 @@ define(
         return BaseForm.extend({
             template: _.template(template),
             globalErrors: [],
+            errors: [],
 
             /**
              * {@inheritdoc}
@@ -43,6 +44,7 @@ define(
             initialize(meta) {
                 this.config = _.defaults(meta.config, {fieldModules: {}, codeFieldModule: null});
                 this.globalErrors = [];
+                this.errors = [];
 
                 BaseForm.prototype.initialize.apply(this, arguments);
             },
@@ -55,6 +57,7 @@ define(
                     this.getRoot(),
                     'pim_enrich:form:entity:validation_error',
                     (errors) => {
+                        this.errors = errors;
                         this.globalErrors = errors.filter((error) => undefined === error.attribute);
                         this.render();
                     }
@@ -123,11 +126,23 @@ define(
                                             return field.configure();
                                         })).then(() => {
                                             this.renderExtensions();
+                                            this.showErrors();
                                         });
                                     });
                             });
                     });
             },
+
+            /**
+             * Render validation errors for fields after field extensions are loaded
+             * @return {[type]} [description]
+             */
+            showErrors() {
+                this.getRoot().trigger('pim_enrich:form:entity:bad_request',
+                    { sentData: this.getFormData(), response: this.errors }
+                );
+            },
+
 
             /**
              * Looks for the attributes set corresponding to the specified level of the family variant
