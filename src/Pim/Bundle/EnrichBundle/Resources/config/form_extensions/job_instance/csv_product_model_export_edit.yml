@@ -55,6 +55,16 @@ extensions:
             tabTitle: pim_enrich.export.product.global_settings.title
             tabCode: pim-job-instance-global
 
+    pim-job-instance-csv-product-model-export-edit-content:
+        module: pim/job/product/edit/content
+        parent: pim-job-instance-csv-product-model-export-edit-tabs
+        aclResourceId: pim_importexport_export_profile_content_edit
+        targetZone: container
+        position: 130
+        config:
+            tabTitle: pim_enrich.form.job_instance.tab.content.title
+            tabCode: pim-job-instance-content
+
     pim-job-instance-csv-product-model-export-edit-history:
         module: pim/common/tab/history
         parent: pim-job-instance-csv-product-model-export-edit-tabs
@@ -163,6 +173,12 @@ extensions:
             label: pim_enrich.form.job_instance.tab.properties.with_media.title
             tooltip: pim_enrich.form.job_instance.tab.properties.with_media.help
 
+    pim-job-instance-csv-product-model-export-edit-content-structure:
+        module: pim/job/product/edit/content/structure
+        parent: pim-job-instance-csv-product-model-export-edit-content
+        targetZone: structure-filters
+        position: 100
+
     pim-job-instance-csv-product-model-export-edit-label:
         module: pim/job/common/edit/label
         parent: pim-job-instance-csv-product-model-export-edit
@@ -221,3 +237,57 @@ extensions:
     pim-job-instance-csv-product-model-export-edit-validation:
         module: pim/job/common/edit/validation
         parent: pim-job-instance-csv-product-model-export-edit
+
+    pim-job-instance-csv-product-model-export-edit-content-structure-scope:
+        module: pim/job/product/edit/content/structure/scope
+        parent: pim-job-instance-csv-product-model-export-edit-content-structure
+        targetZone: filters
+        position: 90
+
+    pim-job-instance-csv-product-model-export-edit-content-structure-locales:
+        module: pim/job/product/edit/content/structure/locales
+        parent: pim-job-instance-csv-product-model-export-edit-content-structure
+        targetZone: filters
+        position: 100
+
+    pim-job-instance-csv-product-model-export-edit-content-structure-attributes:
+        module: pim/job/product/edit/content/structure/attributes
+        parent: pim-job-instance-csv-product-model-export-edit-content-structure
+        targetZone: filters
+        position: 110
+
+    pim-job-instance-csv-product-model-export-edit-content-data:
+        module: pim/job/product/edit/content/data
+        parent: pim-job-instance-csv-product-model-export-edit-content
+        targetZone: data-filters
+        config:
+            filters:
+                -
+                    field: family
+                    view: akeneo-product-family-filter
+                -
+                    field: updated
+                    view: akeneo-product-updated-filter
+                -
+                    field: categories
+                    view: akeneo-product-category-filter
+
+    pim-job-instance-csv-product-model-export-edit-content-default-attribute-filters:
+        module: pim/job/product/edit/content/data/default-attribute-filters
+        parent: pim-job-instance-csv-product-model-export-edit-content-data
+        config:
+            types: [pim_catalog_identifier]
+
+    pim-job-instance-csv-product-model-export-edit-content-data-help:
+        module: pim/job/common/edit/content/data/help
+        parent: pim-job-instance-csv-product-model-export-edit-content-data
+
+    pim-job-instance-csv-product-model-export-edit-validation:
+        module: pim/job/common/edit/validation
+        parent: pim-job-instance-csv-product-model-export-edit
+
+    pim-job-instance-csv-product-model-export-edit-content-data-add-filter:
+        module: pim/job/product/edit/content/data/add-select/attribute
+        parent: pim-job-instance-csv-product-model-export-edit-content-data
+        targetZone: headings
+        position: 90

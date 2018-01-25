@@ -72,6 +72,22 @@ jobs:
             enclosure:  '"'
             withHeader: true
             with_media: true
+            filters:
+                data:
+                    -
+                        field: enabled
+                        operator: '='
+                        value: true
+                    -
+                        field: categories
+                        operator: 'IN CHILDREN'
+                        value: ['master']
+                structure:
+                    scope: mobile
+                    locales:
+                        - fr_FR
+                        - en_US
+                        - de_DE
     csv_category_import:
         connector: Akeneo CSV Connector
         alias:     csv_category_import

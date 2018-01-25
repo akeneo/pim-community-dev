@@ -21,20 +21,32 @@ use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
 class ProductModelCsvExport implements DefaultValuesProviderInterface
 {
     /** @var DefaultValuesProviderInterface */
-    private $simpleProvider;
+    protected $simpleProvider;
 
     /** @var array */
-    private $supportedJobNames;
+    protected $supportedJobNames;
+
+    /** @var ChannelRepositoryInterface */
+    protected $channelRepository;
+
+    /** @var LocaleRepositoryInterface */
+    protected $localeRepository;
 
     /**
      * @param DefaultValuesProviderInterface $simpleProvider
+     * @param ChannelRepositoryInterface     $channelRepository
+     * @param LocaleRepositoryInterface      $localeRepository
      * @param array                          $supportedJobNames
      */
     public function __construct(
         DefaultValuesProviderInterface $simpleProvider,
+        ChannelRepositoryInterface $channelRepository,
+        LocaleRepositoryInterface $localeRepository,
         array $supportedJobNames
     ) {
-        $this->simpleProvider = $simpleProvider;
+        $this->simpleProvider    = $simpleProvider;
+        $this->channelRepository = $channelRepository;
+        $this->localeRepository  = $localeRepository;
         $this->supportedJobNames = $supportedJobNames;
     }
 
@@ -48,6 +60,37 @@ class ProductModelCsvExport implements DefaultValuesProviderInterface
         $parameters['dateFormat'] = LocalizerInterface::DEFAULT_DATE_FORMAT;
         $parameters['with_media'] = true;
 
+        $channels = $this->channelRepository->getFullChannels();
+        $defaultChannelCode = (0 !== count($channels)) ? $channels[0]->getCode() : null;
+
+        $localesCodes = $this->localeRepository->getActivatedLocaleCodes();
+        $defaultLocaleCode = (0 !== count($localesCodes)) ? $localesCodes[0] : null;
+
+        $parameters['filters'] = [
+            'data'      => [
+                // [
+                //     'field'    => 'enabled',
+                //     'operator' => Operators::EQUALS,
+                //     'value'    => true,
+                // ],
+                // [
+                //     'field'    => 'completeness',
+                //     'operator' => Operators::GREATER_OR_EQUAL_THAN,
+                //     'value'    => 100,
+                // ],
+                [
+                    'field'    => 'categories',
+                    'operator' => Operators::IN_CHILDREN_LIST,
+                    'value'    => []
+                ]
+            ],
+            'structure' => [
+                'scope'   => $defaultChannelCode,
+                'locales' => [$defaultLocaleCode],
+            ],
+        ];
+
+        return $parameters;
         return $parameters;
     }
 

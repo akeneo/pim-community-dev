@@ -81,6 +81,8 @@ services:
         class: '%pim_connector.job.job_parameters.default_values_provider.product_model_csv_export.class%'
         arguments:
             - '@pim_connector.job.job_parameters.default_values_provider.simple_csv_export'
+            - '@pim_catalog.repository.channel'
+            - '@pim_catalog.repository.locale'
             -
                 - 'csv_product_model_export'
         tags:
@@ -90,6 +92,8 @@ services:
         class: '%pim_connector.job.job_parameters.default_values_provider.product_model_xlsx_export.class%'
         arguments:
             - '@pim_connector.job.job_parameters.default_values_provider.simple_xlsx_export'
+            - '@pim_catalog.repository.channel'
+            - '@pim_catalog.repository.locale'
             -
                 - 'xlsx_product_model_export'
         tags:

@@ -42,9 +42,9 @@ class ProductCsvExport implements DefaultValuesProviderInterface
         LocaleRepositoryInterface $localeRepository,
         array $supportedJobNames
     ) {
-        $this->simpleProvider = $simpleProvider;
+        $this->simpleProvider    = $simpleProvider;
         $this->channelRepository = $channelRepository;
-        $this->localeRepository = $localeRepository;
+        $this->localeRepository  = $localeRepository;
         $this->supportedJobNames = $supportedJobNames;
     }
 

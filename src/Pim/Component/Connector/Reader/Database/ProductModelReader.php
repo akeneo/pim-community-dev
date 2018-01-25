@@ -39,7 +39,8 @@ class ProductModelReader implements ItemReaderInterface, InitializableInterface,
      */
     public function initialize()
     {
-        $this->productModels = $this->getProductModelsCursor();
+        $filters = $this->getConfiguredFilters();
+        $this->productModels = $this->getProductModelsCursor($filters);
     }
 
     /**
@@ -65,14 +66,36 @@ class ProductModelReader implements ItemReaderInterface, InitializableInterface,
     {
         $this->stepExecution = $stepExecution;
     }
-
     /**
+     * @param array $filters
+     *
      * @return CursorInterface
      */
-    private function getProductModelsCursor()
+    protected function getProductModelsCursor(array $filters)
     {
-        $productQueryBuilder = $this->pqbFactory->create([]);
+        $options = ['filters' => $filters];
+
+        $productQueryBuilder = $this->pqbFactory->create($options);
 
         return $productQueryBuilder->execute();
+    }
+
+    /**
+     * Returns the filters from the configuration.
+     * The parameters can be in the 'filters' root node, or in filters data node (e.g. for export).
+     *
+     * @return array
+     */
+    protected function getConfiguredFilters()
+    {
+        $filters = $this->stepExecution->getJobParameters()->get('filters');
+
+        if (array_key_exists('data', $filters)) {
+            $filters = $filters['data'];
+        }
+
+        return array_filter($filters, function ($filter) {
+            return count($filter) > 0;
+        });
     }
 }
