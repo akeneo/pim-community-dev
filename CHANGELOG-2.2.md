@@ -3,6 +3,7 @@
 ## Enhancements
 
 - GITHUB-6943: Update the Docker compose template to run Elasticsearch container in development mode (Thanks [aaa2000](https://github.com/aaa2000)!)
+- GITHUB-7538: Add symfony/thanks Composer plugin
 
 ## Bug fixes
 

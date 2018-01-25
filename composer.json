@@ -63,6 +63,7 @@
         "symfony/swiftmailer-bundle": "3.0.3",
         "symfony/security-acl": "3.0.0",
         "symfony/symfony": "3.4.2",
+        "symfony/thanks": "^1.0",
         "symfony/polyfill-apcu": "1.4.0",
         "twig/extensions": "1.2.0",
         "box/spout": "2.7.2"
