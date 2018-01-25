@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\EnrichBundle\Controller\Rest;
 
+use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Query\ProductQueryBuilderFactoryInterface;
 use Pim\Component\Catalog\Repository\FamilyRepositoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -12,11 +13,13 @@ class ProductGridController {
     public function __construct(
         ProductQueryBuilderFactoryInterface $pqbFactory,
         FamilyRepositoryInterface $familyRepository,
-        NormalizerInterface $normalizer
+        NormalizerInterface $productNormalizer,
+        NormalizerInterface $productModelNormalizer
     ) {
-        $this->pqbFactory       = $pqbFactory;
-        $this->familyRepository = $familyRepository;
-        $this->normalizer       = $normalizer;
+        $this->pqbFactory             = $pqbFactory;
+        $this->familyRepository       = $familyRepository;
+        $this->productNormalizer      = $productNormalizer;
+        $this->productModelNormalizer = $productModelNormalizer;
     }
 
     public function indexAction(Request $request): JsonResponse
@@ -32,7 +35,10 @@ class ProductGridController {
         while ($cursor->valid()) {
             $product = $cursor->current();
 
-            $normalizedProduct = $this->normalizer->normalize(
+            $normalizer = $product instanceof ProductInterface ?
+                $this->productNormalizer :
+                $this->productModelNormalizer;
+            $normalizedProduct = $normalizer->normalize(
                 $product,
                 'internal_api',
                 [

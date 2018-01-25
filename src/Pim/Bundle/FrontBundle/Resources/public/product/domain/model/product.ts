@@ -1,7 +1,13 @@
+export enum ModelType {
+  Product = 'product',
+  ProductModel = 'product_model'
+};
+
 export interface MetaInterface {
   image: ImageInterface|null;
   id: number;
   completenesses: any;
+  model_type: ModelType,
   label: {
     [locale: string]: string;
   }
@@ -23,32 +29,38 @@ export interface Completeness {
 export interface RawProductInterface {
   meta: MetaInterface;
   family: string;
-  identifier: string;
+  identifier?: string;
+  code?: string;
 }
 
-export interface ProductInterface extends RawProductInterface {
+export default interface ProductInterface extends RawProductInterface {
   getLabel(channel: string, locale: string): string;
   getCompleteness(channel: string, locale: string): Completeness;
   getImagePath (): string;
+  getIdentifier (): string;
 }
 
-export default class Product implements ProductInterface {
+export class Product implements ProductInterface {
   readonly meta: MetaInterface;
   readonly family: string;
   readonly identifier: string;
 
   private constructor ({meta, family, identifier}: RawProductInterface) {
-    this.meta = meta;
-    this.family = family;
+    if (undefined === identifier) {
+      throw new Error('Property identifier needs to be defined to create a product');
+    }
+
+    this.meta       = meta;
+    this.family     = family;
     this.identifier = identifier;
   }
 
-  public static clone(product: RawProductInterface) {
-    return new Product(product)
+  public static create(product: RawProductInterface): ProductInterface {
+    return new Product(product);
   }
 
   public getLabel(channel: string, locale: string): string {
-    return this.meta.label[locale] ? this.meta.label[locale] : this.identifier;
+    return this.meta.label[locale] ? this.meta.label[locale] : this.getIdentifier();
   }
 
   public getCompleteness(channel: string, locale: string): Completeness {
@@ -60,5 +72,51 @@ export default class Product implements ProductInterface {
 
   public getImagePath (): string {
     return null !== this.meta.image ? encodeURIComponent(this.meta.image.filePath) : 'undefined';
+  }
+
+  public getIdentifier (): string {
+    return this.identifier;
+  }
+}
+
+export class ProductModel implements ProductInterface {
+  readonly meta: MetaInterface;
+  readonly family: string;
+  readonly code: string;
+
+  private constructor ({meta, family, code}: RawProductInterface) {
+    if (undefined === code) {
+      throw new Error('Property code needs to be defined to create a product model');
+    }
+
+    this.meta   = meta;
+    this.family = family;
+    this.code   = code;
+  }
+
+  public static create(product: RawProductInterface): ProductInterface {
+    return new ProductModel(product);
+  }
+
+  public getLabel(channel: string, locale: string): string {
+    return this.meta.label[locale] ? this.meta.label[locale] : this.getIdentifier();
+  }
+
+  public getCompleteness(channel: string, locale: string): Completeness {
+    return {
+      channel: '',
+      locale: '',
+      missing: 0,
+      ratio: 0,
+      required: 0
+    };
+  }
+
+  public getImagePath (): string {
+    return null !== this.meta.image ? encodeURIComponent(this.meta.image.filePath) : 'undefined';
+  }
+
+  public getIdentifier (): string {
+    return this.code;
   }
 }

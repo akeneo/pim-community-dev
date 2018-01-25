@@ -1,10 +1,13 @@
-async/await [DONE]
-test dropdown [DONE]
-loading item
-optimize product fetch [DONE]
-switch row/mosaic
-number of result
-filter
-sort
-column (basic)/drag and drop
-
+- async/await [DONE]
+- test dropdown [DONE]
+- optimize product fetch [DONE]
+- switch row/mosaic [DONE]
+- expand product models
+    - product interface for both [DONE]
+    - different implementation [DONE]
+    - make the grid statefull
+- loading item
+- number of result
+- filter
+- sort
+- column (basic)/drag and drop

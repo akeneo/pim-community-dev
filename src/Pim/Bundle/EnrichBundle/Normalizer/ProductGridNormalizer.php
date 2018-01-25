@@ -179,7 +179,7 @@ class ProductGridNormalizer implements NormalizerInterface
      */
     public function normalize($product, $format = null, array $context = [])
     {
-        $this->productValuesFiller->fillMissingValues($product);
+        // $this->productValuesFiller->fillMissingValues($product);
         $normalizedProduct = $this->normalizer->normalize($product, 'standard', $context);
         $normalizedProduct['values'] = $this->localizedConverter->convertToLocalizedFormats(
             $normalizedProduct['values'],

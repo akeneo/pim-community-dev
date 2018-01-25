@@ -20,7 +20,13 @@ class ConcreteGridState<Element> implements GridState<Element> {
 
 export const createState = <Element>(rawState: any): GridState<Element> => {
   return new ConcreteGridState(
-    rawState.query ? rawState.query : createQuery({}),
+    rawState.query ? rawState.query : createQuery({filters: [
+      {
+        field: 'family',
+        operator: 'IN',
+        value: ['clothing']
+      }
+    ]}),
     rawState.items,
     rawState.isFetching
   );
