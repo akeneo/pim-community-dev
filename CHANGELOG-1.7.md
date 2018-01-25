@@ -1,3 +1,9 @@
+# 1.7.X (2018-01-11)
+
+## Bug Fixes
+
+- PIM-7130: Fix product update when association type code is an integer
+
 # 1.7.16 (2018-01-11)
 
 ## Bug Fixes
