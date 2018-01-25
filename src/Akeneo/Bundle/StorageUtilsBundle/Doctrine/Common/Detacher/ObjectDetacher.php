@@ -4,6 +4,7 @@ namespace Akeneo\Bundle\StorageUtilsBundle\Doctrine\Common\Detacher;
 
 use Akeneo\Component\StorageUtils\Detacher\BulkObjectDetacherInterface;
 use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
+use Akeneo\Component\Versioning\Model\VersionInterface;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -47,7 +48,7 @@ class ObjectDetacher implements ObjectDetacherInterface, BulkObjectDetacherInter
 
         if ($objectManager instanceof DocumentManager) {
             $this->doDetach($object);
-            if ($object instanceof ProductInterface) {
+            if ($object instanceof ProductInterface || $object instanceof VersionInterface) {
                 $this->hardcoreDetachForOdmUoW($object);
             }
         } else {
