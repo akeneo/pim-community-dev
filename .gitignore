@@ -33,7 +33,6 @@ composer.phar
 !/bin/docker/pim-dependencies.sh
 !/bin/docker/pim-front.sh
 !/bin/docker/pim-initialize.sh
-!/bin/merge-coverage
 !/bin/console
 behat.yml
 /phpspec.yml
