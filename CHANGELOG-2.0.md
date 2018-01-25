@@ -3,6 +3,7 @@
 ## Bug fixes
 
 - PIM-7108: Fix a bug preventing the change of an asset last update date when uploading a new reference file
+- PIM-7128: Fix drag & drop for the mass upload of assets
 
 # 2.0.13 (2018-01-23)
 
