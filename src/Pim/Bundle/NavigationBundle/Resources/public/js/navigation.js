@@ -689,6 +689,8 @@ define(function (require) {
                     mediator.trigger('hash_navigation_request:form-start', $form.get(0), formStartSettings);
                     if (formStartSettings.form_validate) {
                         var data = $form.serialize();
+                        var submit = $(document.activeElement,$form);
+                        data += '&'+submit.attr('name')+'=1';
                         if (this.method === 'get') {
                             if (data) {
                                 url += '?' + data;
@@ -697,8 +699,10 @@ define(function (require) {
                             $form.removeData('sent');
                         } else {
                             this.beforeRequest();
+                            var additionalData = this.headerObject;
+                            additionalData[submit.attr('name')] = true;
                             $form.ajaxSubmit({
-                                data: this.headerObject,
+                                data: additionalData,
                                 headers: this.headerObject,
                                 complete: function(){
                                     $form.removeData('sent');
