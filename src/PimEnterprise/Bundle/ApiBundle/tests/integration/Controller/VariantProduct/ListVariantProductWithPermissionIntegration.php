@@ -51,9 +51,6 @@ class ListVariantProductWithPermissionIntegration extends ApiTestCase
         Assert::assertSame($expectedIdentifiers, $identifiers);
     }
 
-    /**
-     * @fail
-     */
     public function testGetListOfViewableAttributesAndLocaleValues()
     {
         $this->loader->loadProductModelsFixturesForAttributeAndLocalePermissions();
@@ -126,9 +123,6 @@ JSON;
         $this->assertListResponse($client->getResponse(), $expected);
     }
 
-    /**
-     * @fail
-     */
     public function testGetViewableAssociationsOnVariantProduct()
     {
         $this->loader->loadProductModelsForAssociationPermissions();

@@ -63,27 +63,6 @@ class NotGrantedCategoryFilter implements NotGrantedDataFilterInterface
             }
         }
 
-        if (0 === $categories->count() && 0 !== $objectWithCategories->getCategories()->count()) {
-            if ($objectWithCategories instanceof ProductModelInterface) {
-                throw new ResourceAccessDeniedException($objectWithCategories, sprintf(
-                    'You can neither view, nor update, nor delete the product model "%s", as it is only categorized in categories on which you do not have a view permission.',
-                    $objectWithCategories->getCode()
-                ));
-            }
-
-            if ($objectWithCategories instanceof ProductInterface) {
-                throw new ResourceAccessDeniedException($objectWithCategories, sprintf(
-                    'You can neither view, nor update, nor delete the product "%s", as it is only categorized in categories on which you do not have a view permission.',
-                    $objectWithCategories->getIdentifier()
-                ));
-            }
-
-            throw new ResourceAccessDeniedException(
-                $objectWithCategories,
-                'You can neither view, nor update, nor delete this entity, as it is only categorized in categories on which you do not have a view permission.'
-            );
-        }
-
         $filteredObjectWithCategories->setCategories($categories);
 
         return $filteredObjectWithCategories;
