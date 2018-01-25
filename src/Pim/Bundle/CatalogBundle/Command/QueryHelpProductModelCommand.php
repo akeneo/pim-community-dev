@@ -13,7 +13,7 @@ use Symfony\Component\Console\Output\OutputInterface;
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class QueryHelpProductCommand extends ContainerAwareCommand
+class QueryHelpProductModelCommand extends ContainerAwareCommand
 {
     /**
      * {@inheritdoc}
@@ -21,8 +21,8 @@ class QueryHelpProductCommand extends ContainerAwareCommand
     protected function configure()
     {
         $this
-            ->setName('pim:product:query-help')
-            ->setDescription('Display useable product query filters');
+            ->setName('pim:product-model:query-help')
+            ->setDescription('Display useable product model query filters');
     }
 
     /**
@@ -39,7 +39,7 @@ class QueryHelpProductCommand extends ContainerAwareCommand
      */
     protected function getFieldFilterDumper()
     {
-        return $this->getContainer()->get('pim_catalog.query.filter.product.field_dumper');
+        return $this->getContainer()->get('pim_catalog.query.filter.product_model.field_dumper');
     }
 
     /**
@@ -47,6 +47,6 @@ class QueryHelpProductCommand extends ContainerAwareCommand
      */
     protected function getAttributeFilterDumper()
     {
-        return $this->getContainer()->get('pim_catalog.query.filter.product.attribute_dumper');
+        return $this->getContainer()->get('pim_catalog.query.filter.product_model.attribute_dumper');
     }
 }
