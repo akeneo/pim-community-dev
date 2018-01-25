@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Pim\Bundle\ApiBundle\tests\integration\Controller\Product;
 
 use Akeneo\Test\Integration\Configuration;
+use PHPUnit\Framework\Assert;
 use Pim\Component\Catalog\tests\integration\Normalizer\NormalizedProductCleaner;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -18,8 +19,19 @@ class GetProductIntegration extends AbstractProductTestCase
         $products = $this->get('pim_catalog.repository.product')->findAll();
         $this->get('pim_catalog.elasticsearch.indexer.product')->indexAll($products);
 
-        $client = $this->createAuthenticatedClient();
+        $product = $this->get('pim_catalog.repository.product')->findoneByIdentifier('foo');
 
+        $association = $product->getAssociationForTypeCode('X_SELL');
+        $association->addProductModel(
+            $this->get('pim_catalog.repository.product_model')->findoneByIdentifier('bar')
+        );
+        $errors = $this->get('pim_catalog.validator.product')->validate($product);
+
+        Assert::assertCount(0, $errors);
+
+        $this->get('pim_catalog.saver.product')->save($product);
+
+        $client = $this->createAuthenticatedClient();
         $client->request('GET', 'api/rest/v1/products/foo');
 
         $standardProduct = [
@@ -217,7 +229,7 @@ class GetProductIntegration extends AbstractProductTestCase
                 'PACK'   => ['groups' => [], 'products' => ['bar', 'baz'], 'product_models' => []],
                 'SUBSTITUTION' => ['groups' => [], 'products' => [], 'product_models' => []],
                 'UPSELL' => ['groups' => ['groupA'], 'products' => [], 'product_models' => []],
-                'X_SELL' => ['groups' => ['groupB'], 'products' => ['bar'], 'product_models' => []],
+                'X_SELL' => ['groups' => ['groupB'], 'products' => ['bar'], 'product_models' => ['bar']],
             ]
         ];
 
