@@ -128,7 +128,8 @@ services:
         class: '%pim_catalog.factory.value_collection.class%'
         arguments:
             - '@pim_catalog.factory.value'
-            - '@pim_catalog.repository.cached_attribute'
+            - '@pim_catalog.repository.attribute'
+            - '@pim_catalog.repository.cached_attribute_option'
             - '@logger'
 
     pim_catalog.factory.value:

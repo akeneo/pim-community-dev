@@ -140,6 +140,33 @@ class AttributeOptionRepository extends EntityRepository implements
     /**
      * {@inheritdoc}
      */
+    public function findManyByIdentifier(array $codes)
+    {
+        $attributeCodes = array_map(function($code) {
+            [$attributeCode, $optionCode] = explode('.', $code);
+
+            return $attributeCode;
+        }, $codes);
+
+        $optionCodes = array_map(function($code) {
+            [$attributeCode, $optionCode] = explode('.', $code);
+
+            return $optionCode;
+        }, $codes);
+
+        return $this->createQueryBuilder('o')
+            ->innerJoin('o.attribute', 'a')
+            ->where('a.code IN (:attribute_codes)')
+            ->andWhere('o.code IN (:option_codes)')
+            ->setParameter('attribute_codes', $attributeCodes)
+            ->setParameter('option_codes', $optionCodes)
+            ->getQuery()
+            ->getResult();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function findCodesByIdentifiers($code, array $optionCodes)
     {
         return $this->createQueryBuilder('o')

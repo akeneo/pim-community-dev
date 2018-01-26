@@ -5,10 +5,14 @@ namespace Pim\Component\Catalog\Factory;
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Akeneo\Component\StorageUtils\Repository\CachedObjectRepositoryInterface;
+use Akeneo\Component\StorageUtils\Repository\IdentifiableManyObjectsRepositoryInterface;
+use Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\AttributeRepository;
+use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Exception\InvalidAttributeException;
 use Pim\Component\Catalog\Exception\InvalidOptionException;
 use Pim\Component\Catalog\Model\ValueCollection;
 use Pim\Component\Catalog\Model\ValueCollectionInterface;
+use Pim\Component\Catalog\Repository\AttributeOptionRepositoryInterface;
 use Psr\Log\LoggerInterface;
 
 /**
@@ -23,25 +27,30 @@ class ValueCollectionFactory implements ValueCollectionFactoryInterface
     /** @var ValueFactory */
     private $valueFactory;
 
-    /** @var CachedObjectRepositoryInterface */
+    /** @var AttributeRepository */
     private $attributeRepository;
+
+    /** @var IdentifiableManyObjectsRepositoryInterface */
+    private $attributeOptionRepository;
 
     /** @var LoggerInterface */
     private $logger;
 
     /**
      * @param ValueFactory                    $valueFactory
-     * @param CachedObjectRepositoryInterface $attributeRepository
+     * @param AttributeRepository $attributeRepository
      * @param LoggerInterface                 $logger
      */
     public function __construct(
         ValueFactory $valueFactory,
-        CachedObjectRepositoryInterface $attributeRepository,
+        AttributeRepository $attributeRepository,
+        IdentifiableManyObjectsRepositoryInterface $attributeOptionRepository,
         LoggerInterface $logger
     ) {
         $this->valueFactory = $valueFactory;
         $this->attributeRepository = $attributeRepository;
         $this->logger = $logger;
+        $this->attributeOptionRepository = $attributeOptionRepository;
     }
 
     /**
@@ -60,8 +69,43 @@ class ValueCollectionFactory implements ValueCollectionFactoryInterface
     {
         $values = [];
 
+        $attributes = $this->attributeRepository->findManyByIdentifier(array_keys($rawValues));
+        $indexedAttributes = [];
+        foreach ($attributes as $attribute) {
+            $indexedAttributes[$attribute->getCode()] = $attribute;
+        }
+
+        $attributeOptionsCodes = [];
         foreach ($rawValues as $attributeCode => $channelRawValue) {
-            $attribute = $this->attributeRepository->findOneByIdentifier($attributeCode);
+            $attribute = $indexedAttributes[$attributeCode] ?? null;
+
+            if (null === $attribute) {
+                continue;
+            }
+
+            if ($attribute->getType() === AttributeTypes::OPTION_SIMPLE_SELECT) {
+                foreach ($channelRawValue as $channelCode => $localeRawValue) {
+                    foreach ($localeRawValue as $localeCode => $optionCode) {
+                        $attributeOptionsCodes[] = $attribute->getCode() . '.' . $optionCode;
+                    }
+                }
+            }
+
+            if ($attribute->getType() === AttributeTypes::OPTION_MULTI_SELECT) {
+                foreach ($channelRawValue as $channelCode => $localeRawValue) {
+                    foreach ($localeRawValue as $localeCode => $data) {
+                        foreach ($data as $optionCode) {
+                            $attributeOptionsCodes[] = $attribute->getCode() . '.' . $optionCode;
+                        }
+                    }
+                }
+            }
+        }
+
+        $this->attributeOptionRepository->findManyByIdentifier($attributeOptionsCodes);
+
+        foreach ($rawValues as $attributeCode => $channelRawValue) {
+            $attribute = $indexedAttributes[$attributeCode] ?? null;
 
             if (null !== $attribute) {
                 foreach ($channelRawValue as $channelCode => $localeRawValue) {

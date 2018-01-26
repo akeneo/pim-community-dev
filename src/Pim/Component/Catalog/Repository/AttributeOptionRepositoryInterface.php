@@ -3,6 +3,7 @@
 namespace Pim\Component\Catalog\Repository;
 
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
+use Akeneo\Component\StorageUtils\Repository\IdentifiableManyObjectsRepositoryInterface;
 use Doctrine\Common\Persistence\ObjectRepository;
 
 /**
@@ -14,6 +15,7 @@ use Doctrine\Common\Persistence\ObjectRepository;
  */
 interface AttributeOptionRepositoryInterface extends
     IdentifiableObjectRepositoryInterface,
+    IdentifiableManyObjectsRepositoryInterface,
     ObjectRepository
 {
     /**

@@ -2,6 +2,7 @@ parameters:
     pim_catalog.repository.association_type.class:      Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\AssociationTypeRepository
     pim_catalog.repository.attribute_group.class:       Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\AttributeGroupRepository
     pim_catalog.repository.attribute_option.class:      Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\AttributeOptionRepository
+    pim_catalog.repository.cached_attribute_option.class:      Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\CachedAttributeOptionRepository
     pim_catalog.repository.attribute.class:             Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\AttributeRepository
     pim_catalog.repository.attribute_requirement.class: Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\AttributeRequirementRepository
     pim_catalog.repository.category.class:              Akeneo\Bundle\ClassificationBundle\Doctrine\ORM\Repository\CategoryRepository
@@ -137,7 +138,7 @@ services:
             - '@pim_catalog.repository.attribute'
 
     pim_catalog.repository.cached_attribute_option:
-        class: '%akeneo_storage_utils.repository.base_cached_object.class%'
+        class: '%pim_catalog.repository.cached_attribute_option.class%'
         arguments:
             - '@pim_catalog.repository.attribute_option'
 
