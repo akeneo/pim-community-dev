@@ -1,9 +1,10 @@
 import GridState from 'pimfront/grid/domain/model/state';
-import { UserState } from 'pimfront/app/domain/reducer/user';
-import { StructureState } from 'pimfront/app/domain/reducer/structure';
+import user, { UserState } from 'pimfront/app/domain/reducer/user';
+import structure, { StructureState } from 'pimfront/app/domain/reducer/structure';
 import productGrid, { ProductGridState } from 'pimfront/product-grid/domain/reducer/grid';
-import mainReducer from 'pimfront/grid/application/reducer/reducer';
 import ProductInterface, { ProductModel } from 'pimfront/product/domain/model/product';
+import { combineReducers } from 'redux';
+import grid from 'pimfront/grid/domain/reducer/grid';
 
 export interface State<GridElement> {
   user: UserState;
@@ -12,7 +13,7 @@ export interface State<GridElement> {
   structure: StructureState;
 };
 
-const customGridReducer = (
+const productMainGrid = (
   state: GridState<ProductInterface>,
   action: {
     type: string,
@@ -42,10 +43,14 @@ const customGridReducer = (
 };
 
 export default (state: State<ProductInterface>, action: any): State<ProductInterface> => {
-  const newState = mainReducer(state, action) as State<ProductInterface>;
+  return combineReducers({
+    user,
+    grid: (state: GridState<ProductInterface>, action: any) => {
+      const gridState = <GridState<ProductInterface>>grid(state, action);
 
-  newState.grid = customGridReducer(newState.grid, action);
-  newState.productGrid = productGrid(newState.productGrid, action);
-
-  return newState;
+      return productMainGrid(gridState, action)
+    },
+    productGrid,
+    structure
+  })(state, action) as State<ProductInterface>;
 };

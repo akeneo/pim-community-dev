@@ -60,20 +60,20 @@ export const needMoreResultsAction = () => (dispatch: any, getState: any) => {
   }
 };
 
-export const loadChildrenAction = (identifier: string) => async (dispatch: any, getState: any): Promise<ProductInterface[]> => {
+export const loadChildrenAction = (product: ProductInterface) => async (dispatch: any, getState: any): Promise<ProductInterface[]> => {
   const state = getState();
-  state.query.filters = [
-    ...state.query.filters.filter((filter: Filter) => 'parent' !== filter.field),
+  state.grid.query.filters = [
+    ...state.grid.query.filters.filter((filter: Filter) => 'parent' !== filter.field),
     {
       field: 'parent',
       operator: 'IN',
-      value: [identifier]
+      value: [product.getIdentifier()]
     }
   ];
 
   const children = await fetchResults(state);
 
-  dispatch(childrenReceived(identifier, children));
+  dispatch(childrenReceived(product.getIdentifier(), children));
 
   return children;
 };

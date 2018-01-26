@@ -1,18 +1,20 @@
 import * as React from 'react';
 import Sidebar from 'pimfront/product-grid/application/component/sidebar';
-import ProductInterface, { ProductModel } from 'pimfront/product/domain/model/product';
+import ProductInterface from 'pimfront/product/domain/model/product';
 import { connect } from 'react-redux';
 import { GlobalState } from 'pimfront/product-grid/application/store/main';
 const __ = require('oro/translator');
 import { redirectToProduct } from 'pimfront/product-grid/application/action/router';
-import { needMoreResultsAction } from 'pimfront/product-grid/application/action/search';
-import { getImageShowUrl } from 'pimfront/tools/media-url-generator';
+import { needMoreResultsAction, loadChildrenAction } from 'pimfront/product-grid/application/action/search';
 import { Display } from 'pimfront/product-grid/domain/event/display';
 import DisplaySwitcher from 'pimfront/product-grid/application/component/header/display-switcher';
 import { changeGridDisplay } from 'pimfront/product-grid/domain/event/display';
+import RowView from 'pimfront/product-grid/application/component/item/row';
+import GalleryView from 'pimfront/product-grid/application/component/item/gallery';
 
 interface GridDispatch {
   onRedirectToProduct: (product: ProductInterface) => void;
+  onLoadChildren: (product: ProductInterface) => void;
   onNeedMoreResults: () => void;
   onchangeGridDisplay: (display: Display) => void;
 }
@@ -24,72 +26,6 @@ interface GridViewState {
   };
   items: ProductInterface[];
   displayType: Display;
-};
-
-const RowView = (
-  {product, locale, channel, onRedirectToProduct}:
-  {product: ProductInterface, channel: string, locale: string} & {onRedirectToProduct: (product: ProductInterface) => void;}
-) => {
-  const imageClass = 'AknGrid-image' + (product instanceof ProductModel ?
-    ' AknGrid-image--withLayer' :
-    '');
-  const cellClass = (product instanceof ProductModel ?
-    'AknGrid-imageLayer' :
-    '');
-
-  return (
-    <tr className="AknGrid-bodyRow row-click-action" onClick={() => onRedirectToProduct(product)}>
-      <td className="AknGrid-bodyCell AknGrid-bodyCell--tight AknGrid-bodyCell--checkbox select-row-cell"></td>
-      <td className="AknGrid-bodyCell string-cell" data-column="identifier">{product.getIdentifier()}</td>
-      <td className="AknGrid-bodyCell string-cell">
-        {product instanceof ProductModel ? <div className="AknGrid-imageLayer" /> : ''}
-        <img className={imageClass} src={getImageShowUrl(product.meta.image, 'thumbnail_small')} title="" />
-      </td>
-      <td className="AknGrid-bodyCell AknGrid-bodyCell--highlight" data-column="label">{product.getLabel(channel, locale)}</td>
-      <td className="AknGrid-bodyCell string-cell" data-column="family">{product.family}</td>
-      <td className="AknGrid-bodyCell string-cell">
-        <div className="AknBadge AknBadge--medium AknBadge--disabled status-disabled"><i className="AknBadge-icon icon-status-disabled icon-circle"></i>Disabled</div>
-      </td>
-      <td className="AknGrid-bodyCell string-cell">
-        <span className="AknBadge AknBadge--medium AknBadge--warning">{product.getCompleteness(channel, locale).ratio}%</span>
-      </td>
-      <td className="AknGrid-bodyCell string-cell" data-column="created">01/05/2018</td>
-      <td className="AknGrid-bodyCell string-cell" data-column="updated">01/09/2018</td>
-      <td className="AknGrid-bodyCell string-cell">N/A</td>
-      <td className="AknGrid-bodyCell AknGrid-bodyCell--actions action-cell">
-        <div className="AknButtonList AknButtonList--right"></div>
-      </td>
-    </tr>
-  )
-};
-
-const MosaicView = (
-  {product, locale, channel, onRedirectToProduct}:
-  {product: ProductInterface, channel: string, locale: string} & {onRedirectToProduct: (product: ProductInterface) => void;}
-) => {
-  const rowClass = 'AknGrid-bodyRow AknGrid-bodyRow--thumbnail AknGrid-bodyRow--withoutTopBorder' +
-    (product instanceof ProductModel ?
-    ' AknGrid-bodyRow--withLayer' :
-    '');
-
-  return (
-    <tr
-      title="{product.getLabel(channel, locale)}"
-      className={rowClass}
-      onClick={() => onRedirectToProduct(product)}
-    >
-      <td className="AknGrid-fullImage" style={{backgroundImage: `url("${getImageShowUrl(product.meta.image, 'thumbnail')}")`, display: 'block'}}></td>
-      <td style={{display: 'block'}} className="AknGrid-title">{product.getLabel(channel, locale)}</td>
-      <td style={{display: 'block'}} className="AknGrid-subTitle">{product.getIdentifier()}</td>
-      <td className="AknGrid-bodyCell AknGrid-bodyCell--tight AknGrid-bodyCell--checkbox select-row-cell"></td>
-      <td className="AknGrid-bodyCell string-cell AknBadge--topRight">
-        <span className="AknBadge AknBadge--medium AknBadge--warning">{product.getCompleteness(channel, locale).ratio}%</span>
-      </td>
-      <td className="AknGrid-bodyCell AknGrid-bodyCell--actions action-cell">
-        <div className="AknButtonList AknButtonList--right"></div>
-      </td>
-    </tr>
-  )
 };
 
 export class GridView extends React.Component<
@@ -109,7 +45,7 @@ export class GridView extends React.Component<
 
   render () {
     const isGallery = this.props.displayType === Display.Gallery;
-    const ItemView = isGallery ? MosaicView : RowView;
+    const ItemView = isGallery ? GalleryView : RowView;
 
     return (
       <div className="AknDefault-contentWithColumn">
@@ -144,11 +80,12 @@ export class GridView extends React.Component<
                     <tbody className="AknGrid-body">
                       {this.props.items.map((product: ProductInterface) => (
                         <ItemView
-                          key={product.identifier}
+                          key={product.getIdentifier()}
                           product={product}
                           channel={this.props.context.channel}
                           locale={this.props.context.locale}
                           onRedirectToProduct={this.props.onRedirectToProduct}
+                          onLoadChildren={this.props.onLoadChildren}
                         />
                       ))}
                     </tbody>
@@ -183,6 +120,9 @@ export const gridConnector = connect(
       onRedirectToProduct: (product: ProductInterface) => {
         dispatch(redirectToProduct(product));
       },
+      onLoadChildren: (product: ProductInterface) => {
+        dispatch(loadChildrenAction(product));
+      },
       onNeedMoreResults: () => {
         dispatch(needMoreResultsAction());
       },
@@ -192,5 +132,7 @@ export const gridConnector = connect(
     };
   }
 );
+
+console.log(process);
 
 export default gridConnector(GridView);

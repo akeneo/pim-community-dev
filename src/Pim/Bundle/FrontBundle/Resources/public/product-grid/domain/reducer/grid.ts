@@ -12,7 +12,7 @@ export default (
   }): ProductGridState => {
   if (undefined === state) {
     state = {
-      display: Display.Gallery
+      display: Display.List
     };
   }
 
