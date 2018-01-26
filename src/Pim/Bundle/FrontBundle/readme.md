@@ -5,8 +5,9 @@
 - expand product models
     - product interface for both [DONE]
     - different implementation [DONE]
-    - make the grid statefull
+    - make the grid statefull [NOT FOR NOW]
 - import on grid
+- advance bar on mass edit
 - loading item
 - number of result
 - filter
