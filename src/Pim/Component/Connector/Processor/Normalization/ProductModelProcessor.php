@@ -10,6 +10,7 @@ use Akeneo\Component\Batch\Job\JobInterface;
 use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\Batch\Step\StepExecutionAwareInterface;
 use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
+use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Pim\Component\Catalog\ValuesFiller\EntityWithFamilyValuesFillerInterface;
@@ -28,6 +29,9 @@ class ProductModelProcessor implements ItemProcessorInterface, StepExecutionAwar
     /** @var NormalizerInterface */
     protected $normalizer;
 
+    /** @var IdentifiableObjectRepositoryInterface */
+    protected $channelRepository;
+
     /** @var AttributeRepositoryInterface */
     protected $attributeRepository;
 
@@ -45,6 +49,7 @@ class ProductModelProcessor implements ItemProcessorInterface, StepExecutionAwar
 
     /**
      * @param NormalizerInterface                   $normalizer
+     * @param IdentifiableObjectRepositoryInterface            $channelRepository
      * @param AttributeRepositoryInterface          $attributeRepository
      * @param ObjectDetacherInterface               $detacher
      * @param BulkMediaFetcher                      $mediaFetcher
@@ -52,12 +57,14 @@ class ProductModelProcessor implements ItemProcessorInterface, StepExecutionAwar
      */
     public function __construct(
         NormalizerInterface $normalizer,
+        IdentifiableObjectRepositoryInterface $channelRepository,
         AttributeRepositoryInterface $attributeRepository,
         ObjectDetacherInterface $detacher,
         BulkMediaFetcher $mediaFetcher,
         EntityWithFamilyValuesFillerInterface $productModelValuesFiller
     ) {
         $this->normalizer = $normalizer;
+        $this->channelRepository   = $channelRepository;
         $this->detacher = $detacher;
         $this->attributeRepository = $attributeRepository;
         $this->mediaFetcher = $mediaFetcher;
@@ -70,8 +77,20 @@ class ProductModelProcessor implements ItemProcessorInterface, StepExecutionAwar
     public function process($productModel)
     {
         $parameters = $this->stepExecution->getJobParameters();
+        $structure = $parameters->get('filters')['structure'];
+        $channel = $this->channelRepository->findOneByIdentifier($structure['scope']);
         $this->productModelValuesFiller->fillMissingValues($productModel);
-        $productModelStandard = $this->normalizer->normalize($productModel, 'standard');
+        $productModelStandard = $this->normalizer->normalize(
+            $productModel,
+            'standard',
+            [
+                'channels' => [$channel->getCode()],
+                'locales'  => array_intersect(
+                    $channel->getLocaleCodes(),
+                    $parameters->get('filters')['structure']['locales']
+                ),
+            ]
+        );
 
         if ($parameters->has('with_media') && $parameters->get('with_media')) {
             $directory = $this->stepExecution->getJobExecution()->getExecutionContext()
@@ -116,5 +135,57 @@ class ProductModelProcessor implements ItemProcessorInterface, StepExecutionAwar
         foreach ($this->mediaFetcher->getErrors() as $error) {
             $this->stepExecution->addWarning($error['message'], [], new DataInvalidItem($error['media']));
         }
+    }
+
+    /**
+     * Filters the attributes that have to be exported based on a product and a list of attributes
+     *
+     * @param array $values
+     * @param array $attributesToFilter
+     *
+     * @return array
+     */
+    private function filterValues(array $values, array $attributesToFilter)
+    {
+        $valuesToExport = [];
+        $attributesToFilter = array_flip($attributesToFilter);
+        foreach ($values as $code => $value) {
+            if (isset($attributesToFilter[$code])) {
+                $valuesToExport[$code] = $value;
+            }
+        }
+
+        return $valuesToExport;
+    }
+
+    /**
+     * Return a list of attributes to export
+     *
+     * @param JobParameters $parameters
+     *
+     * @return array
+     */
+    private function getAttributesToFilter(JobParameters $parameters)
+    {
+        $attributes = $parameters->get('filters')['structure']['attributes'];
+        $identifierCode = $this->attributeRepository->getIdentifierCode();
+        if (!in_array($identifierCode, $attributes)) {
+            $attributes[] = $identifierCode;
+        }
+
+        return $attributes;
+    }
+
+    /**
+     * Are there attributes to filters ?
+     *
+     * @param JobParameters $parameters
+     *
+     * @return bool
+     */
+    private function areAttributesToFilter(JobParameters $parameters)
+    {
+        return isset($parameters->get('filters')['structure']['attributes'])
+            && !empty($parameters->get('filters')['structure']['attributes']);
     }
 }

@@ -246,6 +246,7 @@ services:
         class: '%pim_connector.processor.normalization.product_model.class%'
         arguments:
             - '@pim_catalog.normalizer.standard.product_model'
+            - '@pim_catalog.repository.channel'
             - '@pim_catalog.repository.attribute'
             - '@akeneo_storage_utils.doctrine.object_detacher'
             - '@pim_connector.processor.bulk_media_fetcher'
