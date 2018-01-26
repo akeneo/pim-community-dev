@@ -310,7 +310,7 @@ stage("Test") {
     } finally {
         clearTemplateNames()
         podTemplate(label: "cleanup", containers: [
-            containerTemplate(name: "docker", ttyEnabled: true, command: 'cat', image: "eu.gcr.io/akeneo-ci/gcloud:1.0", alwaysPullImage: true, resourceRequestCpu: '100m', resourceRequestMemory: '200Mi', envVars: [envVar(key: "PUBSUB_PROJECT_ID", value: "akeneo-ci")])
+            containerTemplate(name: "docker", image: "paulwoelfel/docker-gcloud:1.13", ttyEnabled: true, command: 'cat', envVars: [envVar(key: "DOCKER_API_VERSION", value: "1.23")], resourceRequestCpu: '100m', resourceRequestMemory: '200Mi')
         ]) {
             node("cleanup") {
                 container("docker") {
@@ -330,7 +330,7 @@ def withBuildNode(body) {
 
     withCredentials([string(credentialsId: 'composer-token', variable: 'token')]) {
         podTemplate(label: "build-" + uuid, containers: [
-            containerTemplate(name: "docker", ttyEnabled: true, command: 'cat', image: "eu.gcr.io/akeneo-ci/gcloud:1.0", alwaysPullImage: true, resourceRequestCpu: '100m', resourceRequestMemory: '200Mi', envVars: [envVar(key: "PUBSUB_PROJECT_ID", value: "akeneo-ci")]),
+            containerTemplate(name: "docker", image: "paulwoelfel/docker-gcloud:1.13", ttyEnabled: true, command: 'cat', envVars: [envVar(key: "DOCKER_API_VERSION", value: "1.23")], resourceRequestCpu: '100m', resourceRequestMemory: '200Mi'),
             containerTemplate(name: "php", ttyEnabled: true, command: 'cat', image: "eu.gcr.io/akeneo-ci/php:7.1-fpm", envVars: [envVar(key: "COMPOSER_AUTH", value: "{\"github-oauth\":{\"github.com\": \"$token\"}}")], resourceRequestCpu: '750m', resourceRequestMemory: '2000Mi'),
             containerTemplate(name: "node", ttyEnabled: true, command: 'cat', image: "node:8", resourceRequestCpu: '750m', resourceRequestMemory: '2000Mi')
         ], volumes: [
