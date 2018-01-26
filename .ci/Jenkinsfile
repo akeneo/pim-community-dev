@@ -222,10 +222,11 @@ stage("Test") {
         )
     } finally {
         clearTemplateNames()
-        podTemplate(label: "cleanup", containers: [
-            containerTemplate(name: "docker", image: "paulwoelfel/docker-gcloud", ttyEnabled: true, command: 'cat')
+        def uuid = UUID.randomUUID().toString()
+        podTemplate(label: "cleanup-" + uuid, containers: [
+            containerTemplate(name: "docker", image: "paulwoelfel/docker-gcloud:v1.13", ttyEnabled: true, command: 'cat', envVars: [envVar(key: "DOCKER_API_VERSION", value: "1.23")], resourceRequestCpu: '100m', resourceRequestMemory: '200Mi')
         ]) {
-            node("cleanup") {
+            node("cleanup-" + uuid) {
                 container("docker") {
                     sh "gcloud -q container images delete eu.gcr.io/akeneo-ci/pim-enterprise-dev:pull-request-${env.CHANGE_ID}-build-${env.BUILD_NUMBER}-orm"
                     if (storages.contains("odm")) {
@@ -242,7 +243,7 @@ def withBuildNode(body) {
     def uuid = UUID.randomUUID().toString()
     withCredentials([string(credentialsId: 'composer-token', variable: 'token')]) {
         podTemplate(label: "build-" + uuid, containers: [
-            containerTemplate(name: "docker", image: "paulwoelfel/docker-gcloud", ttyEnabled: true, command: 'cat', envVars: [envVar(key: "DOCKER_API_VERSION", value: "1.23")], resourceRequestCpu: '100m', resourceRequestMemory: '200Mi'),
+            containerTemplate(name: "docker", image: "paulwoelfel/docker-gcloud:v1.13", ttyEnabled: true, command: 'cat', envVars: [envVar(key: "DOCKER_API_VERSION", value: "1.23")], resourceRequestCpu: '100m', resourceRequestMemory: '200Mi'),
             containerTemplate(name: "php", ttyEnabled: true, command: 'cat', image: "eu.gcr.io/akeneo-ci/httpd-php:5.6", envVars: [envVar(key: "COMPOSER_AUTH", value: "{\"github-oauth\":{\"github.com\": \"$token\"}}")], resourceRequestCpu: '750m', resourceRequestMemory: '2000Mi'),
             containerTemplate(name: "node", ttyEnabled: true, command: 'cat', image: "node:8", resourceRequestCpu: '750m', resourceRequestMemory: '2000Mi')
         ], volumes: [
