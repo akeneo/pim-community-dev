@@ -31,13 +31,14 @@ export interface RawProductInterface {
   family: string;
   identifier?: string;
   code?: string;
+  children?: ProductInterface[];
 }
 
 export default interface ProductInterface extends RawProductInterface {
   getLabel(channel: string, locale: string): string;
   getCompleteness(channel: string, locale: string): Completeness;
-  getImagePath (): string;
-  getIdentifier (): string;
+  getImagePath(): string;
+  getIdentifier(): string;
 }
 
 export class Product implements ProductInterface {
@@ -83,15 +84,17 @@ export class ProductModel implements ProductInterface {
   readonly meta: MetaInterface;
   readonly family: string;
   readonly code: string;
+  readonly children: ProductInterface[];
 
-  private constructor ({meta, family, code}: RawProductInterface) {
+  private constructor ({meta, family, code, children}: RawProductInterface) {
     if (undefined === code) {
       throw new Error('Property code needs to be defined to create a product model');
     }
 
-    this.meta   = meta;
-    this.family = family;
-    this.code   = code;
+    this.meta     = meta;
+    this.family   = family;
+    this.code     = code;
+    this.children = undefined !== children ? children : [];
   }
 
   public static create(product: RawProductInterface): ProductInterface {

@@ -6,8 +6,8 @@ import ProductInterface, {
   ModelType
 } from 'pimfront/product/domain/model/product';
 import hidrateAll from 'pimfront/app/application/hidrator/hidrator';
-import { dataReceived } from 'pimfront/product-grid/domain/event/search';
-import { State } from 'pimfront/grid/application/reducer/reducer';
+import { dataReceived, childrenReceived } from 'pimfront/product-grid/domain/event/search';
+import { State } from 'pimfront/product-grid/application/reducer/main';
 import { Filter } from 'pimfront/grid/domain/model/query';
 import { startLoading, stopLoading, goNextPage, goFirstPage } from 'pimfront/grid/application/event/search';
 
@@ -60,7 +60,7 @@ export const needMoreResultsAction = () => (dispatch: any, getState: any) => {
   }
 };
 
-export const loadChildrenAction = (identifier: string) => (dispatch: any, getState: any) => {
+export const loadChildrenAction = (identifier: string) => async (dispatch: any, getState: any): Promise<ProductInterface[]> => {
   const state = getState();
   state.query.filters = [
     ...state.query.filters.filter((filter: Filter) => 'parent' !== filter.field),
@@ -71,5 +71,9 @@ export const loadChildrenAction = (identifier: string) => (dispatch: any, getSta
     }
   ];
 
-  const children = await fetchResults();
+  const children = await fetchResults(state);
+
+  dispatch(childrenReceived(identifier, children));
+
+  return children;
 };

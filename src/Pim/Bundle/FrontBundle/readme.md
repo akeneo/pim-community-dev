@@ -6,6 +6,7 @@
     - product interface for both [DONE]
     - different implementation [DONE]
     - make the grid statefull
+- import on grid
 - loading item
 - number of result
 - filter
