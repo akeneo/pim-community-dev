@@ -71,9 +71,15 @@ class GetVariantProductWithPermissionIntegration extends ApiTestCase
                     {"locale":"en_US", "scope":null, "data":true},
                     {"locale":"fr_FR", "scope":null, "data":true}
                 ],
+                "sub_product_model_axis_attribute":[
+                    {"locale":null, "scope":null, "data":true}
+                ],
                 "sub_product_model_view_attribute":[
                     {"locale":"en_US", "scope":null, "data":true},
                     {"locale":"fr_FR", "scope":null, "data":true}
+                ],
+                "variant_product_axis_attribute":[
+                    {"locale":null, "scope":null, "data":true}
                 ],
                 "variant_product_edit_attribute":[
                     {"locale":"en_US","scope":null,"data":true},
@@ -112,7 +118,14 @@ JSON;
             "parent":"sub_product_model",
             "categories":["own_category"],
             "enabled":true,
-            "values":{},
+            "values":{
+               "variant_product_axis_attribute":[
+                    {"locale":null, "scope":null, "data":true}
+                ], 
+                "sub_product_model_axis_attribute":[
+                    {"locale":null, "scope":null, "data":true}
+                ]
+            },
             "created": "2016-06-14T13:12:50+02:00",
             "updated": "2016-06-14T13:12:50+02:00",
             "identifier": "variant_product",

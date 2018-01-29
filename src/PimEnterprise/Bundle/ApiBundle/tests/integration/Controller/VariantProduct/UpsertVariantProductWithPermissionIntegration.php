@@ -46,15 +46,15 @@ JSON;
             'enabled'      => true,
             'values'       => [
                 'root_product_model_no_view_attribute' => [
-                    ['locale' => null, 'scope' => null, 'data' => true],
+                    ['locale' => 'fr_FR', 'scope' => null, 'data' => true],
                 ],
-                'sub_product_model_no_view_attribute'  => [
+                'sub_product_model_axis_attribute'  => [
                     ['locale' => null, 'scope' => null, 'data' => true],
                 ],
                 'sku'                                  => [
                     ['locale' => null, 'scope' => null, 'data' => 'variant_product'],
                 ],
-                'variant_product_no_view_attribute'    => [
+                'variant_product_axis_attribute'    => [
                     ['locale' => null, 'scope' => null, 'data' => true],
                 ],
             ],
@@ -109,7 +109,9 @@ JSON;
             'enabled'       => true,
             'values'        => [
                 'root_product_model_no_view_attribute' => [
-                    ['locale' => null, 'scope' => null, 'data' => true],
+                    ['locale' => 'en_US', 'scope' => null, 'data' => true],
+                    ['locale' => 'fr_FR', 'scope' => null, 'data' => true],
+                    ['locale' => 'de_DE', 'scope' => null, 'data' => true],
                 ],
                 'root_product_model_view_attribute' => [
                     ['locale' => 'en_US', 'scope' => null, 'data' => true],
@@ -121,24 +123,13 @@ JSON;
                     ['locale' => 'fr_FR', 'scope' => null, 'data' => true],
                     ['locale' => 'de_DE', 'scope' => null, 'data' => true],
                 ],
-                'sub_product_model_no_view_attribute' => [
+                'sub_product_model_axis_attribute' => [
                     ['locale' => null, 'scope' => null, 'data' => true],
                 ],
-                'sub_product_model_view_attribute' => [
+                'sub_product_model_no_view_attribute' => [
                     ['locale' => 'en_US', 'scope' => null, 'data' => true],
                     ['locale' => 'fr_FR', 'scope' => null, 'data' => true],
                     ['locale' => 'de_DE', 'scope' => null, 'data' => true],
-                ],
-                'sku'                              => [
-                    ['locale' => null, 'scope'  => null, 'data'   => 'variant_product'],
-                ],
-                'sub_product_model_edit_attribute' => [
-                    ['locale' => 'en_US', 'scope' => null, 'data' => true],
-                    ['locale' => 'fr_FR', 'scope' => null, 'data' => true],
-                    ['locale' => 'de_DE', 'scope' => null, 'data' => true],
-                ],
-                'sub_product_model_no_view_attribute' => [
-                    ['locale' => null, 'scope' => null, 'data' => true],
                 ],
                 'sub_product_model_view_attribute' => [
                     ['locale' => 'en_US', 'scope' => null, 'data' => true],
@@ -149,9 +140,14 @@ JSON;
                     ['locale' => 'en_US', 'scope' => null, 'data' => true],
                     ['locale' => 'fr_FR', 'scope' => null, 'data' => true],
                     ['locale' => 'de_DE', 'scope' => null, 'data' => true],
+                ],
+                'variant_product_axis_attribute' => [
+                    ['locale' => null, 'scope' => null, 'data' => true],
                 ],
                 'variant_product_no_view_attribute' => [
-                    ['locale' => null, 'scope' => null, 'data' => true],
+                    ['locale' => 'en_US', 'scope' => null, 'data' => true],
+                    ['locale' => 'fr_FR', 'scope' => null, 'data' => true],
+                    ['locale' => 'de_DE', 'scope' => null, 'data' => true],
                 ],
                 'variant_product_view_attribute' => [
                     ['locale' => 'en_US', 'scope' => null, 'data' => true],
@@ -162,6 +158,9 @@ JSON;
                     ['locale' => 'en_US', 'scope' => null, 'data' => false],
                     ['locale' => 'fr_FR', 'scope' => null, 'data' => true],
                     ['locale' => 'de_DE', 'scope' => null, 'data' => true],
+                ],
+                'sku'                              => [
+                    ['locale' => null, 'scope'  => null, 'data'   => 'variant_product'],
                 ],
             ],
             'created'       => '2016-06-14T13:12:50+02:00',

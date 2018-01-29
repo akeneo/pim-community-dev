@@ -24,14 +24,13 @@ class CreateVariantProductWithPermissionIntegration extends ApiTestCase
     public function testCreateVariantProductWithAssociation()
     {
         $this->loader->loadProductModelsForAssociationPermissions();
-        $this->makeAttributeAxesEditable('variant_product_no_view_attribute');
 
         $data = <<<JSON
             {
                 "identifier": "variant_product_creation",
                 "parent": "sub_product_model",
                 "values": {
-                    "variant_product_no_view_attribute": [
+                    "variant_product_axis_attribute": [
                         {"locale": null, "scope": null, "data": false }
                     ]
                 },
@@ -54,15 +53,15 @@ JSON;
             'enabled'      => true,
             'values'       => [
                 'root_product_model_no_view_attribute' => [
-                    ['locale' => null, 'scope' => null, 'data' => true],
+                    ['locale' => 'fr_FR', 'scope' => null, 'data' => true],
                 ],
-                'sub_product_model_no_view_attribute'  => [
+                'sub_product_model_axis_attribute'  => [
                     ['locale' => null, 'scope' => null, 'data' => true],
                 ],
                 'sku'                                  => [
                     ['locale' => null, 'scope' => null, 'data' => 'variant_product_creation'],
                 ],
-                'variant_product_no_view_attribute'    => [
+                'variant_product_axis_attribute'    => [
                     ['locale' => null, 'scope' => null, 'data' => false],
                 ],
             ],
@@ -95,6 +94,7 @@ JSON;
     public function testCreateVariantProductWithNotVisibleAxisAttribute()
     {
         $this->loader->loadProductModelsForAssociationPermissions();
+        $this->makeAttributeAxesNotViewable('variant_product_axis_attribute');
 
         $data = <<<JSON
             {
@@ -103,20 +103,19 @@ JSON;
             }
 JSON;
 
-        $this->assertValidationFailed($data, "attribute", 'Attribute "variant_product_no_view_attribute" cannot be empty, as it is defined as an axis for this entity');
+        $this->assertValidationFailed($data, "attribute", 'Attribute "variant_product_axis_attribute" cannot be empty, as it is defined as an axis for this entity');
     }
 
     public function testCreateVariantProductAssociationWithNotViewableProduct()
     {
         $this->loader->loadProductModelsForAssociationPermissions();
-        $this->makeAttributeAxesEditable('variant_product_no_view_attribute');
 
         $data = <<<JSON
             {
                 "identifier": "variant_product_creation",
                 "parent": "sub_product_model",
                 "values": {
-                    "variant_product_no_view_attribute": [
+                    "variant_product_axis_attribute": [
                         {"locale": null, "scope": null, "data": false }
                     ]
                 },
@@ -138,7 +137,6 @@ JSON;
     public function testCreateWithParentProductValueOnNotViewableAttribute()
     {
         $this->loader->loadProductModelsFixturesForAttributeAndLocalePermissions();
-        $this->makeAttributeAxesEditable('variant_product_no_view_attribute');
 
         $message = 'Property "sub_product_model_no_view_attribute" does not exist. Check the expected format on the API documentation.';
 
@@ -154,7 +152,7 @@ JSON;
                             "data": true 
                         }
                     ],
-                    "variant_product_no_view_attribute": [
+                    "variant_product_axis_attribute": [
                         {
                             "locale": null,
                             "scope": null,
@@ -174,7 +172,6 @@ JSON;
     public function testCreateWithParentProductValueOnViewableAttribute()
     {
         $this->loader->loadProductModelsFixturesForAttributeAndLocalePermissions();
-        $this->makeAttributeAxesEditable('variant_product_no_view_attribute');
 
         $data = <<<JSON
             {
@@ -188,7 +185,7 @@ JSON;
                             "data": true 
                         }
                     ],
-                    "variant_product_no_view_attribute": [
+                    "variant_product_axis_attribute": [
                         {
                             "locale": null,
                             "scope": null,
@@ -204,7 +201,6 @@ JSON;
     public function testCreateWithVariantProductValueOnNotViewableLocale()
     {
         $this->loader->loadProductModelsFixturesForAttributeAndLocalePermissions();
-        $this->makeAttributeAxesEditable('variant_product_no_view_attribute');
 
         $message = 'Attribute "variant_product_edit_attribute" expects an existing and activated locale, "de_DE" given. Check the expected format on the API documentation.';
 
@@ -213,7 +209,7 @@ JSON;
                 "identifier": "variant_product_creation",
                 "parent": "sub_product_model",
                 "values": {
-                    "variant_product_no_view_attribute": [
+                    "variant_product_axis_attribute": [
                         {
                             "locale": null,
                             "scope": null,
@@ -235,12 +231,12 @@ JSON;
     }
 
     /**
-     * @fail
+     * Ignore attributes and locales from product models, without paying attention
+     * if it's editable or viewable, or if it has been modified.
      */
     public function testCreateWithParentProductValueOnNotViewableLocale()
     {
         $this->loader->loadProductModelsFixturesForAttributeAndLocalePermissions();
-        $this->makeAttributeAxesEditable('variant_product_no_view_attribute');
 
         $message = 'Attribute "sub_product_model_edit_attribute" expects an existing and activated locale, "de_DE" given. Check the expected format on the API documentation.';
 
@@ -249,7 +245,7 @@ JSON;
                 "identifier": "variant_product_creation",
                 "parent": "sub_product_model",
                 "values": {
-                    "variant_product_no_view_attribute": [
+                    "variant_product_axis_attribute": [
                         {
                             "locale": null,
                             "scope": null,
@@ -277,14 +273,13 @@ JSON;
     public function testCreateWithParentProductValueOnViewableLocale()
     {
         $this->loader->loadProductModelsFixturesForAttributeAndLocalePermissions();
-        $this->makeAttributeAxesEditable('variant_product_no_view_attribute');
 
         $data = <<<JSON
             {
                 "identifier": "variant_product_creation",
                 "parent": "sub_product_model",
                 "values": {
-                    "variant_product_no_view_attribute": [
+                    "variant_product_axis_attribute": [
                         {
                             "locale": null,
                             "scope": null,
@@ -308,7 +303,6 @@ JSON;
     public function testCreateVariantProductWithOwnableCategoryFromParent()
     {
         $this->loader->loadProductModelsFixturesForAttributeAndLocalePermissions();
-        $this->makeAttributeAxesEditable('variant_product_no_view_attribute');
 
         $data = <<<JSON
             {
@@ -316,7 +310,7 @@ JSON;
                 "parent": "sub_product_model",
                 "categories": ["view_category"],
                 "values": {
-                    "variant_product_no_view_attribute": [
+                    "variant_product_axis_attribute": [
                         {
                             "locale": null,
                             "scope": null,
@@ -448,11 +442,11 @@ JSON;
      *
      * @param string $code
      */
-    private function makeAttributeAxesEditable(string $code): void
+    private function makeAttributeAxesNotViewable(string $code): void
     {
         $data = [
             'code' => $code,
-            'group' => 'attributeGroupA'
+            'group' => 'attributeGroupC'
         ];
 
         $attribute = $this->getFromTestContainer('pim_catalog.repository.attribute')->findOneByIdentifier($code);

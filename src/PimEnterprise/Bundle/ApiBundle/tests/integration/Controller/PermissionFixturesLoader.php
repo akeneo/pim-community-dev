@@ -82,7 +82,7 @@ class PermissionFixturesLoader
             'categories' => ['own_category'],
             'values' => [
                 'root_product_model_no_view_attribute' => [
-                    ['locale' => null, 'scope' => null, 'data' => true],
+                    ['locale' => 'fr_FR', 'scope' => null, 'data' => true],
                 ],
             ]
         ];
@@ -91,7 +91,7 @@ class PermissionFixturesLoader
             'code' => 'sub_product_model',
             'parent' => 'root_product_model',
             'values' => [
-                'sub_product_model_no_view_attribute' => [
+                'sub_product_model_axis_attribute' => [
                     ['locale' => null, 'scope' => null, 'data' => true],
                 ],
             ]
@@ -100,7 +100,7 @@ class PermissionFixturesLoader
         $variantProduct = [
             'parent' => 'sub_product_model',
             'values' => [
-                'variant_product_no_view_attribute' => [
+                'variant_product_axis_attribute' => [
                     ['locale' => null, 'scope' => null, 'data' => true],
                 ],
             ],
@@ -187,8 +187,9 @@ class PermissionFixturesLoader
             'categories' => ['own_category'],
             'values' => [
                 'root_product_model_no_view_attribute' => [
-                    ['locale' => null, 'scope' => null, 'data' => true],
-                ],
+                    ['locale' => 'en_US', 'scope' => null, 'data' => true],
+                    ['locale' => 'fr_FR', 'scope' => null, 'data' => true],
+                    ['locale' => 'de_DE', 'scope' => null, 'data' => true],                ],
                 'root_product_model_view_attribute' => [
                     ['locale' => 'en_US', 'scope' => null, 'data' => true],
                     ['locale' => 'fr_FR', 'scope' => null, 'data' => true],
@@ -206,8 +207,13 @@ class PermissionFixturesLoader
             'code' => 'sub_product_model',
             'parent' => 'root_product_model',
             'values' => [
-                'sub_product_model_no_view_attribute' => [
+                'sub_product_model_axis_attribute' => [
                     ['locale' => null, 'scope' => null, 'data' => true],
+                ],
+                'sub_product_model_no_view_attribute' => [
+                    ['locale' => 'en_US', 'scope' => null, 'data' => true],
+                    ['locale' => 'fr_FR', 'scope' => null, 'data' => true],
+                    ['locale' => 'de_DE', 'scope' => null, 'data' => true],
                 ],
                 'sub_product_model_view_attribute' => [
                     ['locale' => 'en_US', 'scope' => null, 'data' => true],
@@ -225,8 +231,13 @@ class PermissionFixturesLoader
         $variantProduct = [
             'parent' => 'sub_product_model',
             'values' => [
-                'variant_product_no_view_attribute' => [
+                'variant_product_axis_attribute' => [
                     ['locale' => null, 'scope' => null, 'data' => true],
+                ],
+                'variant_product_no_view_attribute' => [
+                    ['locale' => 'en_US', 'scope' => null, 'data' => true],
+                    ['locale' => 'fr_FR', 'scope' => null, 'data' => true],
+                    ['locale' => 'de_DE', 'scope' => null, 'data' => true],
                 ],
                 'variant_product_view_attribute' => [
                     ['locale' => 'en_US', 'scope' => null, 'data' => true],
@@ -426,13 +437,15 @@ class PermissionFixturesLoader
 
     private function createAttributeFixtures(): void
     {
-        $this->createAttribute('root_product_model_no_view_attribute', 'none', false);
+        $this->createAttribute('root_product_model_no_view_attribute', 'none');
         $this->createAttribute('root_product_model_view_attribute', 'view');
         $this->createAttribute('root_product_model_edit_attribute', 'edit');
-        $this->createAttribute('sub_product_model_no_view_attribute', 'none', false);
+        $this->createAttribute('sub_product_model_axis_attribute', 'edit', false);
+        $this->createAttribute('sub_product_model_no_view_attribute', 'none');
         $this->createAttribute('sub_product_model_view_attribute', 'view');
         $this->createAttribute('sub_product_model_edit_attribute', 'edit');
-        $this->createAttribute('variant_product_no_view_attribute', 'none', false);
+        $this->createAttribute('variant_product_axis_attribute', 'edit', false);
+        $this->createAttribute('variant_product_no_view_attribute', 'none');
         $this->createAttribute('variant_product_view_attribute', 'view');
         $this->createAttribute('variant_product_edit_attribute', 'edit');
     }
@@ -447,9 +460,11 @@ class PermissionFixturesLoader
                 'root_product_model_no_view_attribute',
                 'root_product_model_view_attribute',
                 'root_product_model_edit_attribute',
+                'sub_product_model_axis_attribute',
                 'sub_product_model_no_view_attribute',
                 'sub_product_model_view_attribute',
                 'sub_product_model_edit_attribute',
+                'variant_product_axis_attribute',
                 'variant_product_no_view_attribute',
                 'variant_product_view_attribute',
                 'variant_product_edit_attribute',
@@ -460,9 +475,11 @@ class PermissionFixturesLoader
                     'root_product_model_no_view_attribute',
                     'root_product_model_view_attribute',
                     'root_product_model_edit_attribute',
+                    'sub_product_model_axis_attribute',
                     'sub_product_model_no_view_attribute',
                     'sub_product_model_view_attribute',
                     'sub_product_model_edit_attribute',
+                    'variant_product_axis_attribute',
                     'variant_product_no_view_attribute',
                     'variant_product_view_attribute',
                     'variant_product_edit_attribute',
@@ -483,13 +500,24 @@ class PermissionFixturesLoader
             ],
             'variant_attribute_sets' => [
                 [
-                    'axes' => ['sub_product_model_no_view_attribute'],
-                    'attributes' => ['sub_product_model_view_attribute', 'sub_product_model_edit_attribute', 'sub_product_model_no_view_attribute'],
+                    'axes' => ['sub_product_model_axis_attribute'],
+                    'attributes' => [
+                        'sub_product_model_axis_attribute',
+                        'sub_product_model_view_attribute',
+                        'sub_product_model_edit_attribute',
+                        'sub_product_model_no_view_attribute'
+                    ],
                     'level'=> 1,
                 ],
                 [
-                    'axes' => ['variant_product_no_view_attribute'],
-                    'attributes' => ['sku', 'variant_product_view_attribute', 'variant_product_edit_attribute', 'variant_product_no_view_attribute'],
+                    'axes' => ['variant_product_axis_attribute'],
+                    'attributes' => [
+                        'variant_product_axis_attribute',
+                        'sku',
+                        'variant_product_view_attribute',
+                        'variant_product_edit_attribute',
+                        'variant_product_no_view_attribute'
+                    ],
                     'level'=> 2,
                 ]
             ],
