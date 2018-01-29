@@ -180,6 +180,43 @@ class AssociationFieldAdderSpec extends ObjectBehavior
         );
     }
 
+    function it_adds_association_field_even_when_the_association_type_code_is_a_string_representing_an_integer(
+        $productRepository,
+        $groupRepository,
+        $productBuilder,
+        ProductInterface $product,
+        AssociationInterface $assoc666,
+        ProductInterface $assocProductOne,
+        ProductInterface $assocProductTwo,
+        GroupInterface $assocGroupOne,
+        GroupInterface $assocGroupTwo
+    ) {
+        $productBuilder->addMissingAssociations($product)->shouldBeCalled();
+        $product->getAssociationForTypeCode('666')->willReturn($assoc666);
+
+        $productRepository->findOneByIdentifier('assocProductOne')->willReturn($assocProductOne);
+        $productRepository->findOneByIdentifier('assocProductTwo')->willReturn($assocProductTwo);
+
+        $groupRepository->findOneByIdentifier('assocGroupOne')->willReturn($assocGroupOne);
+        $groupRepository->findOneByIdentifier('assocGroupTwo')->willReturn($assocGroupTwo);
+
+        $assoc666->addProduct($assocProductOne)->shouldBeCalled();
+        $assoc666->addProduct($assocProductTwo)->shouldBeCalled();
+        $assoc666->addGroup($assocGroupOne)->shouldBeCalled();
+
+        $this->addFieldData(
+            $product,
+            'associations',
+            [
+                '666' => [
+                    'products' => ['assocProductOne', 'assocProductTwo'],
+                    'groups' => ['assocGroupOne'],
+                    'product_models' => [],
+                ],
+            ]
+        );
+    }
+
     function it_fails_if_one_of_the_association_type_code_does_not_exist(
         $productBuilder,
         ProductInterface $product
