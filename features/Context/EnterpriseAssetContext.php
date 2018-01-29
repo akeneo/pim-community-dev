@@ -380,7 +380,7 @@ class EnterpriseAssetContext extends PimContext
     {
         $asset = $this->getAssetRepository()->findOneByIdentifier($assetCode);
 
-        assertNotNull($asset->getUpdatedAt());
+        Assert::assertNotNull($asset->getUpdatedAt());
         $this->assetUpdatedAtTimestamp = $asset->getUpdatedAt()->getTimestamp();
     }
 
@@ -397,7 +397,7 @@ class EnterpriseAssetContext extends PimContext
         $this->getMainContext()->getContainer()->get('doctrine')->getManager()->refresh($asset);
         $newUpdatedAtTimestamp = $asset->getUpdatedAt()->getTimestamp();
 
-        assertGreaterThan($this->assetUpdatedAtTimestamp, $newUpdatedAtTimestamp);
+        Assert::assertGreaterThan($this->assetUpdatedAtTimestamp, $newUpdatedAtTimestamp);
     }
 
     /**
