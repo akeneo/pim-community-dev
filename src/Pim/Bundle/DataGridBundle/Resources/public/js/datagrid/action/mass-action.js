@@ -55,7 +55,6 @@ function(_, messenger, __, Modal, AbstractAction) {
             }, this);
             var params = {
                 inset: selectionState.inset ? 1 : 0,
-                values: idValues.join(',')
             };
 
             if (selectionState.inset) {
@@ -79,6 +78,15 @@ function(_, messenger, __, Modal, AbstractAction) {
             }
 
             return params;
+        },
+
+        getSelectedRows: function() {
+            var selectionState = this.datagrid.getSelectionState();
+            var itemIds = _.map(selectionState.selectedModels, function(model) {
+                return model.get(this.identifierFieldName);
+            }, this);
+
+            return itemIds;
         },
 
         /**
@@ -151,6 +159,10 @@ function(_, messenger, __, Modal, AbstractAction) {
                 content: this.messages.confirm_content,
                 okText: this.messages.confirm_ok
             }).on('ok', callback);
+        },
+
+        saveItemIds: function() {
+            localStorage.setItem('mass_action.'+ this.name +'.itemIds', JSON.stringify(this.getSelectedRows()));
         }
     });
 });
