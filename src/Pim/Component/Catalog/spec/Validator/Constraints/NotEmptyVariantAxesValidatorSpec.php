@@ -75,14 +75,13 @@ class NotEmptyVariantAxesValidatorSpec extends ObjectBehavior
     function it_raises_no_violation_if_the_entity_has_a_value_for_all_its_axes(
         $axesProvider,
         $context,
-        IdentifiableEntityWithFamilyVariantInterface $entity,
+        EntityWithFamilyVariantInterface $entity,
         FamilyVariantInterface $familyVariant,
         NotEmptyVariantAxes $constraint,
         AttributeInterface $color,
         ValueInterface $red
     ) {
         $entity->getFamilyVariant()->willReturn($familyVariant);
-        $entity->getId()->willReturn(null);
         $axesProvider->getAxes($entity)->willReturn([$color]);
         $color->getCode()->willReturn('color');
         $entity->getValue('color')->willReturn($red);
@@ -93,17 +92,16 @@ class NotEmptyVariantAxesValidatorSpec extends ObjectBehavior
         $this->validate($entity, $constraint);
     }
 
-    function it_raises_a_violation_if_the_entity_has_no_value_for_an_axis_during_creation(
+    function it_raises_a_violation_if_the_entity_has_no_value_for_an_axis(
         $axesProvider,
         $context,
-        IdentifiableEntityWithFamilyVariantInterface $entity,
+        EntityWithFamilyVariantInterface $entity,
         FamilyVariantInterface $familyVariant,
         NotEmptyVariantAxes $constraint,
         AttributeInterface $color,
         ConstraintViolationBuilderInterface $violation
     ) {
         $entity->getFamilyVariant()->willReturn($familyVariant);
-        $entity->getId()->willReturn(null);
         $axesProvider->getAxes($entity)->willReturn([$color]);
         $color->getCode()->willReturn('color');
         $entity->getValue('color')->willReturn(null);
@@ -121,59 +119,10 @@ class NotEmptyVariantAxesValidatorSpec extends ObjectBehavior
         $this->validate($entity, $constraint);
     }
 
-    function it_raises_a_violation_if_the_entity_has_an_empty_value_for_an_axis_during_update(
+    function it_raises_a_violation_if_the_entity_has_no_value_for_an_metric_axis(
         $axesProvider,
         $context,
-        IdentifiableEntityWithFamilyVariantInterface $entity,
-        FamilyVariantInterface $familyVariant,
-        NotEmptyVariantAxes $constraint,
-        AttributeInterface $color,
-        ConstraintViolationBuilderInterface $violation,
-        ValueInterface $value
-    ) {
-        $entity->getFamilyVariant()->willReturn($familyVariant);
-        $entity->getId()->willReturn(1);
-        $axesProvider->getAxes($entity)->willReturn([$color]);
-        $color->getCode()->willReturn('color');
-        $entity->getValue('color')->willReturn($value);
-        $value->getData()->willReturn(null);
-
-        $context
-            ->buildViolation(
-                NotEmptyVariantAxes::EMPTY_AXIS_VALUE, [
-                    '%attribute%' => 'color'
-                ]
-            )
-            ->willReturn($violation);
-        $violation->atPath('attribute')->willReturn($violation);
-        $violation->addViolation()->shouldBeCalled();
-
-        $this->validate($entity, $constraint);
-    }
-
-    function it_does_not_raise_a_violation_if_the_entity_has_no_value_for_an_axis_during_update(
-        $axesProvider,
-        $context,
-        IdentifiableEntityWithFamilyVariantInterface $entity,
-        FamilyVariantInterface $familyVariant,
-        NotEmptyVariantAxes $constraint,
-        AttributeInterface $color
-    ) {
-        $entity->getFamilyVariant()->willReturn($familyVariant);
-        $entity->getId()->willReturn(1);
-        $axesProvider->getAxes($entity)->willReturn([$color]);
-        $color->getCode()->willReturn('color');
-        $entity->getValue('color')->willReturn(null);
-
-        $context->buildViolation(Argument::cetera())->shouldNotBeCalled();
-
-        $this->validate($entity, $constraint);
-    }
-
-    function it_raises_a_violation_if_the_entity_has_no_value_for_a_metric_axis(
-        $axesProvider,
-        $context,
-        IdentifiableEntityWithFamilyVariantInterface $entity,
+        EntityWithFamilyVariantInterface $entity,
         FamilyVariantInterface $familyVariant,
         NotEmptyVariantAxes $constraint,
         AttributeInterface $attribute,
@@ -182,9 +131,8 @@ class NotEmptyVariantAxesValidatorSpec extends ObjectBehavior
         ConstraintViolationBuilderInterface $violation
     ) {
         $entity->getFamilyVariant()->willReturn($familyVariant);
-        $entity->getId()->willReturn(null);
         $axesProvider->getAxes($entity)->willReturn([$attribute]);
-        
+
         $value->getData()->willReturn($metric);
         $metric->getData()->willReturn(null);
         $attribute->getCode()->willReturn('display_diagonal');
@@ -202,9 +150,4 @@ class NotEmptyVariantAxesValidatorSpec extends ObjectBehavior
 
         $this->validate($entity, $constraint);
     }
-}
-
-interface IdentifiableEntityWithFamilyVariantInterface extends EntityWithFamilyVariantInterface
-{
-    public function getId();
 }
