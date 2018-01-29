@@ -48,6 +48,8 @@ class ComputeFamilyVariantStructureChangesSubscriberSpec extends ObjectBehavior
         UserInterface $user,
         JobInstance $jobInstance
     ) {
+        $event->hasArgument('unitary')->willReturn(true);
+        $event->getArgument('unitary')->willReturn(true);
         $event->getSubject()->willReturn($familyVariant);
         $familyVariant->getId()->willReturn(12);
 
@@ -61,6 +63,33 @@ class ComputeFamilyVariantStructureChangesSubscriberSpec extends ObjectBehavior
         $jobLauncher->launch($jobInstance, $user, [
             'family_variant_codes' => ['family_variant_one']
         ])->shouldBeCalled();
+
+        $this->checkIsFamilyVariantNew($event);
+        $this->computeVariantStructureChanges($event);
+    }
+
+    function it_does_not_comute_variant_structure_for_non_unitary_save(
+        $tokenStorage,
+        $jobLauncher,
+        $jobInstanceRepository,
+        GenericEvent $event,
+        FamilyVariantInterface $familyVariant,
+        TokenInterface $token,
+        UserInterface $user,
+        JobInstance $jobInstance
+    ) {
+        $familyVariant->getId()->willReturn(150);
+        $familyVariant->getCode()->willReturn('my_family_variant');
+        $event->getSubject()->willReturn($familyVariant);
+
+        $event->hasArgument('unitary')->willReturn(true);
+        $event->getArgument('unitary')->willReturn(false);
+
+        $tokenStorage->getToken()->willReturn($token);
+        $token->getUser()->willReturn($user);
+        $jobInstanceRepository->findOneByIdentifier('compute_family_variant_structure_changes')
+            ->willReturn($jobInstance);
+        $jobLauncher->launch(Argument::cetera())->shouldNotBeCalled();
 
         $this->checkIsFamilyVariantNew($event);
         $this->computeVariantStructureChanges($event);
