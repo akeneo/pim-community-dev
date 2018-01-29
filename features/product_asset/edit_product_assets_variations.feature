@@ -84,3 +84,12 @@ Feature: Edit product assets variations
     And I save the asset
     And I should see the flash message "Variation files have been generated successfully."
     And I should see the text "KB"
+
+  @jira https://akeneo.atlassian.net/browse/PIM-7108
+  Scenario: The asset last update should change when a new reference file is uploaded
+    Given I am on the "dog" asset page
+    And the "dog" asset already has an update date
+    When I upload the reference file akene.jpg
+    And I save the asset
+    Then I should not see the text "There are unsaved changes."
+    And the new update date of the asset "dog" should be more recent than the previous one
