@@ -191,6 +191,11 @@ function($, _, Backbone, routing, Navigation, __, mediator, messenger, error, Mo
             }
             var url = action.getLinkWithParameters(),
                 navigation = Navigation.getInstance();
+
+            /** @PIM-7132: Save the selected items in the localstorage instead of passing them through a URL parameter
+             * to avoid a "URL too long" error. **/
+            action.saveItemIds();
+
             if (navigation) {
                 navigation.processRedirect({
                     fullRedirect: false,
@@ -289,6 +294,8 @@ function($, _, Backbone, routing, Navigation, __, mediator, messenger, error, Mo
                 content: this.messages.confirm_content,
                 okText: this.messages.confirm_ok
             }).on('ok', callback);
-        }
+        },
+
+        saveItemIds: function() {}
     });
 });

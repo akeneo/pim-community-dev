@@ -144,7 +144,7 @@ class MassActionDispatcher
     {
         $parameters = $this->parametersParser->parse($request);
         $inset = $this->prepareInsetParameter($parameters);
-        $values = $this->prepareValuesParameter($parameters);
+        $values = $this->getValues($request);
         $filters = $this->prepareFiltersParameter($parameters);
 
         $actionName = $request->get('actionName');
@@ -288,5 +288,46 @@ class MassActionDispatcher
         $datagrid = $this->manager->getDatagrid($datagridName);
 
         return $this->getMassActionByName($actionName, $datagrid);
+    }
+
+    /**
+     * @PIM-7132
+     *
+     * Depending on the context:
+     * - the values might be in the request form data (mass edit context)
+     * - The values might be in a URL parameter (quick export)
+     *
+     * @param Request $request
+     *
+     * @return array
+     */
+    private function getValues(Request $request)
+    {
+        $values = $this->getValuesFromRequest($request);
+        if (empty($values)) {
+            $values = $this->prepareValuesParameter($this->parametersParser->parse($request));
+        }
+
+        return $values;
+    }
+
+    /**
+     * @PIM-7132
+     *
+     * We get the values (which are the selected row ids) from the request because the selected ids are passed through
+     * the form data (POST) via a field called 'itemIds' which is hidden and is not part of any form type.
+     *
+     * Prior to this fix, the ids would be passed through query parameters. On submit the form would not be processed
+     * because the URI would be too long.
+     *
+     * @param Request $request
+     *
+     * @return array
+     */
+    private function getValuesFromRequest(Request $request)
+    {
+        $all = $request->request->all();
+
+        return isset($all['itemIds']) ? explode(',', $all['itemIds']) : [];
     }
 }

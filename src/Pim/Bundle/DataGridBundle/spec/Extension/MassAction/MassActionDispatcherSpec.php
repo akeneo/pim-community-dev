@@ -76,6 +76,87 @@ class MassActionDispatcherSpec extends ObjectBehavior
         $this->dispatch($request)->shouldReturnAnInstanceOf('\Pim\Bundle\DataGridBundle\Extension\MassAction\Handler\MassActionHandlerInterface');
     }
 
+    function it_gets_the_values_from_the_request_form_data(
+        $handlerRegistry,
+        $parametersParser,
+        DatagridInterface $grid,
+        Acceptor $acceptor,
+        MassActionExtension $massActionExtension,
+        MassActionInterface $massActionInterface,
+        QueryBuilder $queryBuilder,
+        DatasourceInterface $datasource,
+        ProductMassActionRepositoryInterface $massActionRepository,
+        MassActionHandlerInterface $massActionHandler
+    ) {
+        $request = new Request(
+            [
+                'inset'      => 'inset',
+                'values'     => [],
+                'gridName'   => 'grid',
+                'massAction' => $massActionInterface,
+                'actionName' => 'mass_edit_action',
+            ],
+            [
+                'productIds' => 'id_1,id_2',
+            ]
+        );
+
+        $parametersParser->parse($request)->willReturn(['inset' => 'inset', 'values' => []]);
+        $datasource->getMassActionRepository()->willReturn($massActionRepository);
+        $massActionRepository->applyMassActionParameters($queryBuilder, 'inset', ['id_1', 'id_2'])->willReturn(null);
+        $massActionExtension->getMassAction('mass_edit_action', $grid)->willReturn($massActionInterface);
+        $acceptor->getExtensions()->willReturn([$massActionExtension]);
+
+        $alias = 'mass_action_alias';
+        $options = new ArrayCollection();
+        $options->offsetSet('handler', $alias);
+        $massActionInterface->getOptions()->willReturn($options);
+        $handlerRegistry->getHandler($alias)->willReturn($massActionHandler);
+        $massActionHandler->handle($grid, $massActionInterface)->willReturn($massActionHandler);
+
+        $this->dispatch($request)->shouldReturnAnInstanceOf('\Pim\Bundle\DataGridBundle\Extension\MassAction\Handler\MassActionHandlerInterface');
+    }
+
+    function it_gets_the_values_from_the_url_parameter_when_the_values_in_the_form_data_are_empty(
+        $handlerRegistry,
+        $parametersParser,
+        DatagridInterface $grid,
+        Acceptor $acceptor,
+        MassActionExtension $massActionExtension,
+        MassActionInterface $massActionInterface,
+        QueryBuilder $queryBuilder,
+        DatasourceInterface $datasource,
+        ProductMassActionRepositoryInterface $massActionRepository,
+        MassActionHandlerInterface $massActionHandler
+    ) {
+        $postParameters = [];
+        $request = new Request(
+            [
+                'inset'      => 'inset',
+                'values'     => 1,
+                'gridName'   => 'grid',
+                'massAction' => $massActionInterface,
+                'actionName' => 'mass_edit_action',
+            ],
+            $postParameters
+        );
+
+        $parametersParser->parse($request)->willReturn(['inset' => 'inset', 'values' => 1]);
+        $datasource->getMassActionRepository()->willReturn($massActionRepository);
+        $massActionRepository->applyMassActionParameters($queryBuilder, 'inset', 1)->willReturn(null);
+        $massActionExtension->getMassAction('mass_edit_action', $grid)->willReturn($massActionInterface);
+        $acceptor->getExtensions()->willReturn([$massActionExtension]);
+
+        $alias = 'mass_action_alias';
+        $options = new ArrayCollection();
+        $options->offsetSet('handler', $alias);
+        $massActionInterface->getOptions()->willReturn($options);
+        $handlerRegistry->getHandler($alias)->willReturn($massActionHandler);
+        $massActionHandler->handle($grid, $massActionInterface)->willReturn($massActionHandler);
+
+        $this->dispatch($request)->shouldReturnAnInstanceOf('\Pim\Bundle\DataGridBundle\Extension\MassAction\Handler\MassActionHandlerInterface');
+    }
+
     function it_throws_an_exception_without_extension($parametersParser, Acceptor $acceptor)
     {
         $request = new Request([

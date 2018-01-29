@@ -232,7 +232,6 @@ abstract class AbstractMassEditController
         $params = array_merge($params, [
             'gridName'       => $request->get('gridName'),
             'actionName'     => $request->get('actionName'),
-            'values'         => implode(',', $params['values']),
             'filters'        => json_encode($params['filters']),
             'dataLocale'     => $request->get('dataLocale', null),
             'itemsCount'     => $request->get('itemsCount'),

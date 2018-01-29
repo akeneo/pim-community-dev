@@ -36,15 +36,17 @@
             </div>
         </div>
 
-        <div class="row span12 offset1 buffer-top configuration">
-            {{ elements.link('btn.back', path(backButtonRoute, queryParams), {'class': 'btn-cancel', 'icon': 'chevron-left'}) }}
-            {{ elements.link('btn.next', null, {'class': ['next btn-next', 'btn-primary'], 'icon': 'chevron-right'}) }}
-        </div>
+    <input type="hidden" name="itemIds" value="" class="pim-hidden-form-input" />
 
-        <div class="row offset1 buffer-top confirmation hide">
-            {{ elements.link('btn.cancel', null, {'class': 'cancel btn-cancel', 'icon': 'chevron-left'}) }}
-            {{ elements.submitBtn('btn.confirm', 'ok') }}
-        </div>
+    <div class="row span12 offset1 buffer-top configuration">
+        {{ elements.link('btn.back', path(backButtonRoute, queryParams), {'class': 'btn-cancel', 'icon': 'chevron-left'}) }}
+        {{ elements.link('btn.next', null, {'class': ['next btn-next', 'btn-primary'], 'icon': 'chevron-right'}) }}
+    </div>
+
+    <div class="row offset1 buffer-top confirmation hide">
+        {{ elements.link('btn.cancel', null, {'class': 'cancel btn-cancel', 'icon': 'chevron-left'}) }}
+        {{ elements.submitBtn('btn.confirm', 'ok') }}
+    </div>
 
     {{ form_end(form) }}
 {% endblock %}
@@ -139,6 +141,9 @@
                         $('.configuration').removeClass('hide');
                         $('.confirmation').addClass('hide');
                     });
+
+                    var itemIds = JSON.parse(localStorage.getItem('mass_action.mass_edit.itemIds')).join(',');
+                    $('input.pim-hidden-form-input[name="itemIds"]').val(itemIds)
                 });
             }
         );
