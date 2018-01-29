@@ -3,6 +3,7 @@
 namespace Pim\Bundle\CatalogBundle\tests\integration\EntityWithFamilyVariant;
 
 use Akeneo\Test\Integration\TestCase;
+use Akeneo\Test\IntegrationTestsBundle\Jobs\JobExecutionObserver;
 use Akeneo\Test\IntegrationTestsBundle\Launcher\JobLauncher;
 use Pim\Component\Catalog\Model\AttributeOptionInterface;
 use Pim\Component\Catalog\Model\ValueInterface;
@@ -14,40 +15,43 @@ use Pim\Component\Catalog\Model\ValueInterface;
  */
 class ChangeVariantFamilyStructureIntegration extends TestCase
 {
+    /** @var JobExecutionObserver */
+    private $jobExecutionObserver;
+
     /** @var JobLauncher */
     private $jobLauncher;
 
     public function testMoveAttributeUpRemovesValuesOnOneLevel()
     {
-        $product = $this->get('pim_catalog.repository.variant_product')
-            ->findOneByIdentifier('1111111287');
+        $product = $this->get('pim_catalog.repository.variant_product')->findOneByIdentifier('1111111287');
+        $this->assertInstanceOf(ValueInterface::class, $product->getValuesForVariation()->getByCodes('weight'));
 
-        $this->assertInstanceOf(
-            ValueInterface::class,
-            $product->getValuesForVariation()->getByCodes('weight')
-        );
-
-        $familyVariant = $this->get('pim_catalog.repository.family_variant')
-            ->findOneByIdentifier('shoes_size');
+        $familyVariant = $this->get('pim_catalog.repository.family_variant')->findOneByIdentifier('shoes_size');
 
         // Put weight in common attributes
-        $this->get('pim_catalog.updater.family_variant')
-            ->update($familyVariant, [
+        $this->get('pim_catalog.updater.family_variant')->update(
+            $familyVariant,
+            [
                 'variant_attribute_sets' => [
                     [
-                        'level' => 1,
+                        'level'      => 1,
                         'attributes' => [
-                            'size'
+                            'size',
                         ],
-                        'axes' => [
-                            'eu_shoes_size'
+                        'axes'       => [
+                            'eu_shoes_size',
                         ],
                     ],
                 ],
-            ]);
+            ]
+        );
 
-        $this->get('pim_catalog.saver.family_variant')
-            ->save($familyVariant);
+        $violationList = $this->get('validator')->validate($familyVariant);
+        if (0 !== $violationList->count()) {
+            throw new \LogicException('The family is not valid');
+        }
+
+        $this->get('pim_catalog.saver.family_variant')->save($familyVariant);
 
         while ($this->jobLauncher->hasJobInQueue()) {
             $this->jobLauncher->launchConsumerOnce();
@@ -59,6 +63,15 @@ class ChangeVariantFamilyStructureIntegration extends TestCase
             ->findOneByIdentifier('1111111287');
 
         $this->assertNull($product->getValuesForVariation()->getByCodes('weight'));
+
+        $this->assertCount(
+            1,
+            $this->jobExecutionObserver->jobExecutionsWithJobName('compute_family_variant_structure_changes')
+        );
+        $this->assertCount(
+            14,
+            $this->jobExecutionObserver->jobExecutionsWithJobName('compute_product_models_descendants')
+        );
     }
 
     public function testMoveAttributeDownKeepsValuesOnOneLevel()
@@ -89,6 +102,11 @@ class ChangeVariantFamilyStructureIntegration extends TestCase
                 ],
             ]);
 
+        $violationList = $this->get('validator')->validate($familyVariant);
+        if (0 !== $violationList->count()) {
+            throw new \LogicException('The family is not valid');
+        }
+
         $this->get('pim_catalog.saver.family_variant')
             ->save($familyVariant);
 
@@ -105,6 +123,15 @@ class ChangeVariantFamilyStructureIntegration extends TestCase
 
         $this->assertInstanceOf(ValueInterface::class, $value);
         $this->assertSame('Brooks blue', $value->getData());
+
+        $this->assertCount(
+            1,
+            $this->jobExecutionObserver->jobExecutionsWithJobName('compute_family_variant_structure_changes')
+        );
+        $this->assertCount(
+            14,
+            $this->jobExecutionObserver->jobExecutionsWithJobName('compute_product_models_descendants')
+        );
     }
 
     public function testMoveAttributeUpRemovesValuesOnTwoLevels()
@@ -162,6 +189,11 @@ class ChangeVariantFamilyStructureIntegration extends TestCase
                 ],
             ]);
 
+        $violationList = $this->get('validator')->validate($familyVariant);
+        if (0 !== $violationList->count()) {
+            throw new \LogicException('The family is not valid');
+        }
+
         $this->get('pim_catalog.saver.family_variant')
             ->save($familyVariant);
 
@@ -175,6 +207,15 @@ class ChangeVariantFamilyStructureIntegration extends TestCase
             ->findOneByIdentifier('running-shoes-m-antique-white');
 
         $this->assertNull($product->getValuesForVariation()->getByCodes('composition'));
+
+        $this->assertCount(
+            1,
+            $this->jobExecutionObserver->jobExecutionsWithJobName('compute_family_variant_structure_changes')
+        );
+        $this->assertCount(
+            4,
+            $this->jobExecutionObserver->jobExecutionsWithJobName('compute_product_models_descendants')
+        );
     }
 
     public function testMoveAttributeDownKeepsValuesOnTwoLevels()
@@ -221,6 +262,11 @@ class ChangeVariantFamilyStructureIntegration extends TestCase
                 ],
             ]);
 
+        $violationList = $this->get('validator')->validate($familyVariant);
+        if (0 !== $violationList->count()) {
+            throw new \LogicException('The family is not valid');
+        }
+
         $this->get('pim_catalog.saver.family_variant')
             ->save($familyVariant);
 
@@ -238,6 +284,82 @@ class ChangeVariantFamilyStructureIntegration extends TestCase
         $this->assertInstanceOf(ValueInterface::class, $value);
         $this->assertInstanceOf(AttributeOptionInterface::class, $value->getData());
         $this->assertSame('[leather]', $value->getData()->__toString());
+
+        $this->assertCount(
+            1,
+            $this->jobExecutionObserver->jobExecutionsWithJobName('compute_family_variant_structure_changes')
+        );
+        $this->assertCount(
+            4,
+            $this->jobExecutionObserver->jobExecutionsWithJobName('compute_product_models_descendants')
+        );
+    }
+
+    public function testItDoesNotRunBackgroundJobWhenAFamilyVariantHasNotChanged()
+    {
+        $familyVariant = $this->get('pim_catalog.repository.family_variant')->findOneByIdentifier('shoes_size_color');
+        $this->get('pim_catalog.saver.family_variant')->save($familyVariant);
+        $this->assertCount(
+            1,
+            $this->jobExecutionObserver->jobExecutionsWithJobName('compute_family_variant_structure_changes')
+        );
+        $this->assertCount(
+            0,
+            $this->jobExecutionObserver->jobExecutionsWithJobName('compute_product_models_descendants')
+        );
+    }
+
+    public function testBulkMoveAnAttributeFromItsLevelDoesNotRunBackgroundJobs()
+    {
+        $product = $this->get('pim_catalog.repository.variant_product')->findOneByIdentifier('1111111287');
+        $this->assertInstanceOf(ValueInterface::class, $product->getValuesForVariation()->getByCodes('weight'));
+
+        $familyVariant = $this->get('pim_catalog.repository.family_variant')->findOneByIdentifier('shoes_size');
+
+        // Put weight in common attributes
+        $this->get('pim_catalog.updater.family_variant')->update(
+            $familyVariant,
+            [
+                'variant_attribute_sets' => [
+                    [
+                        'level'      => 1,
+                        'attributes' => [
+                            'size',
+                        ],
+                        'axes'       => [
+                            'eu_shoes_size',
+                        ],
+                    ],
+                ],
+            ]
+        );
+
+        $violationList = $this->get('validator')->validate($familyVariant);
+        if (0 !== $violationList->count()) {
+            throw new \LogicException('The family is not valid');
+        }
+
+        $this->get('pim_catalog.saver.family_variant')->saveAll([$familyVariant]);
+
+        while ($this->jobLauncher->hasJobInQueue()) {
+            $this->jobLauncher->launchConsumerOnce();
+        }
+
+        $this->get('doctrine.orm.default_entity_manager')->clear();
+
+        $product = $this->get('pim_catalog.repository.variant_product')
+            ->findOneByIdentifier('1111111287');
+
+        $this->assertNotNull($product->getValuesForVariation()->getByCodes('weight'));
+
+        $this->assertCount(
+            0,
+            $this->jobExecutionObserver->jobExecutionsWithJobName('compute_family_variant_structure_changes')
+        );
+        $this->assertCount(
+            0,
+            $this->jobExecutionObserver->jobExecutionsWithJobName('compute_product_models_descendants')
+        );
     }
 
     protected function setUp()
@@ -246,6 +368,11 @@ class ChangeVariantFamilyStructureIntegration extends TestCase
 
         $this->purgeJobExecutions('compute_family_variant_structure_changes');
         $this->jobLauncher = $this->getFromTestContainer('akeneo_integration_tests.launcher.job_launcher');
+        $this->jobExecutionObserver = $this->getFromTestContainer(
+            'akeneo_integration_tests.launcher.job_execution_observer'
+        );
+        $this->jobExecutionObserver->purge('compute_family_variant_structure_changes');
+        $this->jobExecutionObserver->purge('compute_product_models_descendants');
     }
 
     /**

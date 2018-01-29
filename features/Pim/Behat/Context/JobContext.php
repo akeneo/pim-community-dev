@@ -166,6 +166,31 @@ class JobContext extends PimContext
     }
 
     /**
+     * @Given /^there should only be the following job instance executed:$/
+     *
+     * @throws \LogicException
+     */
+    public function thereShouldBeTheFollowingJobInstanceExecuted(TableNode $jobExecutionsTable)
+    {
+        $jobInstances = $this->getService('pim_enrich.repository.job_instance')->findAll();
+        foreach ($jobInstances as $jobInstance) {
+            $this->getFixturesContext()->refresh($jobInstance);
+            $jobExecutionCount = $jobInstance->getJobExecutions()->count();
+            $expectedJobExecutionCount = $this->getExpectedJobExecutionCount($jobInstance, $jobExecutionsTable);
+            if ($jobExecutionCount !== $expectedJobExecutionCount) {
+                throw new \LogicException(
+                    sprintf(
+                        'Expected job "%s" to run %d times, %d given',
+                        $jobInstance->getCode(),
+                        $jobExecutionCount,
+                        $expectedJobExecutionCount
+                    )
+                );
+            }
+        }
+    }
+
+    /**
      * @param string   $code
      * @param int|null $number
      *
@@ -282,5 +307,22 @@ class JobContext extends PimContext
         }
 
         return $currentFilters;
+    }
+
+    /**
+     * @param JobInstance $jobInstance
+     * @param TableNode   $jobExecutionTable
+     *
+     * @return int
+     */
+    private function getExpectedJobExecutionCount(JobInstance $jobInstance, TableNode $jobExecutionTable): int
+    {
+        foreach ($jobExecutionTable->getHash() as $jobExecutionRow) {
+            if ($jobExecutionRow['job_instance'] === $jobInstance->getCode()) {
+                return (int) $jobExecutionRow['times'];
+            }
+        }
+
+        return 0;
     }
 }
