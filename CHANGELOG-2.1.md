@@ -1,5 +1,11 @@
 # 2.1.x
 
+## Update tests
+
+- API-446: Add tests get Product / VariantProduct with association on ProductModel
+
+# 2.1.2 (2018-01-23)
+
 ## Web API
 
 - API-445: Update product association to product model
