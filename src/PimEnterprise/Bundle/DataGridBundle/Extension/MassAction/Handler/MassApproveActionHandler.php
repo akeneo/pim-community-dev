@@ -14,7 +14,6 @@ namespace PimEnterprise\Bundle\DataGridBundle\Extension\MassAction\Handler;
 use Akeneo\Component\StorageUtils\Cursor\CursorFactoryInterface;
 use Oro\Bundle\DataGridBundle\Datagrid\DatagridInterface;
 use Oro\Bundle\DataGridBundle\Extension\MassAction\Actions\MassActionInterface;
-use Pim\Bundle\DataGridBundle\Datasource\ResultRecord\HydratorInterface;
 use Pim\Bundle\DataGridBundle\Extension\MassAction\Event\MassActionEvent;
 use Pim\Bundle\DataGridBundle\Extension\MassAction\Handler\MassActionHandlerInterface;
 use PimEnterprise\Bundle\DataGridBundle\Extension\MassAction\Event\MassActionEvents;
@@ -28,9 +27,6 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
  */
 class MassApproveActionHandler implements MassActionHandlerInterface
 {
-    /** @var HydratorInterface */
-    protected $hydrator;
-
     /** @var EventDispatcherInterface */
     protected $eventDispatcher;
 
@@ -38,16 +34,13 @@ class MassApproveActionHandler implements MassActionHandlerInterface
     protected $cursorFactory;
 
     /**
-     * @param HydratorInterface        $hydrator
      * @param EventDispatcherInterface $eventDispatcher
      * @param CursorFactoryInterface   $cursorFactory
      */
     public function __construct(
-        HydratorInterface $hydrator,
         EventDispatcherInterface $eventDispatcher,
         CursorFactoryInterface $cursorFactory
     ) {
-        $this->hydrator = $hydrator;
         $this->eventDispatcher = $eventDispatcher;
         $this->cursorFactory = $cursorFactory;
     }

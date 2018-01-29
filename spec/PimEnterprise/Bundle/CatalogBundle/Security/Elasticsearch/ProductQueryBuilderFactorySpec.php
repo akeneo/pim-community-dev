@@ -20,7 +20,7 @@ class ProductQueryBuilderFactorySpec extends ObjectBehavior
         TokenStorageInterface $tokenStorage,
         CategoryAccessRepository $categoryAccessRepository
     ) {
-        $this->beConstructedWith($pqbFactory, $tokenStorage, $categoryAccessRepository);
+        $this->beConstructedWith($pqbFactory, $tokenStorage, $categoryAccessRepository, 'VIEW_ITEMS');
     }
 
     function it_implements_a_product_query_builder_factory_interface()

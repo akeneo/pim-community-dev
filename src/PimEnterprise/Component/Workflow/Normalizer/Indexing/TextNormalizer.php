@@ -41,4 +41,3 @@ class TextNormalizer extends AbstractProductValueNormalizer implements Normalize
         return $value->getData();
     }
 }
-

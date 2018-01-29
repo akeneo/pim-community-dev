@@ -16,7 +16,7 @@ use Pim\Component\Catalog\Exception\InvalidDirectionException;
 use Pim\Component\Catalog\Query\Sorter\Directions;
 
 /**
- * @author    Philippe Mossière <philippe.mossiere@akeneo.com>
+ * @author Philippe Mossière <philippe.mossiere@akeneo.com>
  */
 class AuthorSorter extends BaseFieldSorter
 {
@@ -54,6 +54,5 @@ class AuthorSorter extends BaseFieldSorter
             default:
                 throw InvalidDirectionException::notSupported($direction, static::class);
         }
-
     }
 }
