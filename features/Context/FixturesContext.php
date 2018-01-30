@@ -134,7 +134,7 @@ class FixturesContext extends BaseFixturesContext
 
         $this->buildProductHistory($product);
 
-        $this->getElasticsearchProductClient()->refreshIndex();
+        $this->refreshEsIndexes();
 
         return $product;
     }
@@ -254,7 +254,7 @@ class FixturesContext extends BaseFixturesContext
             $uniqueAxesCombinationSet->reset();
 
             $this->refresh($productModel);
-            $this->getContainer()->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
+            $this->refreshEsIndexes();
         }
     }
 
@@ -298,7 +298,7 @@ class FixturesContext extends BaseFixturesContext
             $uniqueAxesCombinationSet->reset();
 
             $this->refresh($productModel);
-            $this->getContainer()->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
+            $this->refreshEsIndexes();
         }
     }
 
@@ -2369,10 +2369,13 @@ class FixturesContext extends BaseFixturesContext
     }
 
     /**
-     * @return Client
+     * Refresh all the elasticsearch indexes.
      */
-    protected function getElasticsearchProductClient()
+    protected function refreshEsIndexes()
     {
-        return $this->getContainer()->get('akeneo_elasticsearch.client.product');
+        $clients = $this->getMainContext()->getContainer()->get('akeneo_elasticsearch.registry.clients')->getClients();
+        foreach ($clients as $client) {
+            $client->refreshIndex();
+        }
     }
 }
