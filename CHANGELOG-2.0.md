@@ -1,3 +1,7 @@
+# 2.0.X
+
+- PIM-7144: Fix translated label of attribute groups in the product edit form
+
 # 2.0.13 (2018-01-23)
 
 ## Bug fixes
