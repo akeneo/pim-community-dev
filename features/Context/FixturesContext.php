@@ -37,6 +37,7 @@ use Pim\Component\Catalog\Model\LocaleInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
 use Pim\Component\Catalog\Model\ValueInterface;
+use Pim\Component\Catalog\Model\VariantProductInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Pim\Component\Catalog\Repository\FamilyVariantRepositoryInterface;
 use Pim\Component\Catalog\Value\OptionValueInterface;
@@ -1320,6 +1321,8 @@ class FixturesContext extends BaseFixturesContext
     /**
      * @param string    $identifier
      * @param TableNode $table
+     *
+     * @throws Spin\TimeoutException
      *
      * @Given /^the product "([^"]*)" should have the following values?:$/
      */
