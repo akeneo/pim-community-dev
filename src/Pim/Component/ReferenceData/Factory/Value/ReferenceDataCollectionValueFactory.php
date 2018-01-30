@@ -97,10 +97,10 @@ class ReferenceDataCollectionValueFactory implements ValueFactoryInterface
         }
 
         foreach ($data as $key => $value) {
-            if (!is_string($value)) {
+            if (!is_scalar($value)) {
                 throw InvalidPropertyTypeException::validArrayStructureExpected(
                     $attribute->getCode(),
-                    sprintf('array key "%s" expects a string as value, "%s" given', $key, gettype($value)),
+                    sprintf('array key "%s" expects a scalar as value, "%s" given', $key, gettype($value)),
                     static::class,
                     $data
                 );

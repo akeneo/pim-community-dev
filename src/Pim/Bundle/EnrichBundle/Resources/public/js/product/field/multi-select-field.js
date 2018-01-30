@@ -143,12 +143,12 @@ define(
                                 }
 
                                 var choices = _.map($(element).val().split(','), function (choice) {
-                                    var option = _.findWhere(results, {code: choice});
+                                    var option = _.find(results, (elem) => elem.code == choice);
                                     if (option) {
                                         return this.convertBackendItem(option);
                                     }
 
-                                    return _.findWhere(results, {id: choice});
+                                    return _.find(results, (elem) => elem.id == choice);
                                 }.bind(this));
                                 callback(_.compact(choices));
                             }.bind(this));

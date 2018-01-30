@@ -95,7 +95,7 @@ class ReferenceDataValueFactorySpec extends ObjectBehavior
         $productValue->shouldBeEmpty();
     }
 
-    function it_creates_a_simple_select_reference_data_product_value(
+    function it_creates_a_simple_select_reference_data_product_value_with_a_string_data(
         $repositoryResolver,
         AttributeInterface $attribute,
         Color $color,
@@ -117,6 +117,37 @@ class ReferenceDataValueFactorySpec extends ObjectBehavior
             null,
             null,
             'blue'
+        );
+
+        $productValue->shouldReturnAnInstanceOf(ReferenceDataValue::class);
+        $productValue->shouldHaveAttribute('reference_data_simple_select_attribute');
+        $productValue->shouldNotBeLocalizable();
+        $productValue->shouldNotBeScopable();
+        $productValue->shouldHaveReferenceData($color);
+    }
+
+    function it_creates_a_simple_select_reference_data_product_value_with_an_int_data(
+        $repositoryResolver,
+        AttributeInterface $attribute,
+        Color $color,
+        ReferenceDataRepositoryInterface $referenceDataRepository
+    ) {
+        $attribute->isScopable()->willReturn(false);
+        $attribute->isLocalizable()->willReturn(false);
+        $attribute->getCode()->willReturn('reference_data_simple_select_attribute');
+        $attribute->getType()->willReturn('pim_reference_data_catalog_simpleselect');
+        $attribute->getBackendType()->willReturn('reference_data_option');
+        $attribute->isBackendTypeReferenceData()->willReturn(true);
+        $attribute->getReferenceDataName()->willReturn('color');
+
+        $repositoryResolver->resolve('color')->willReturn($referenceDataRepository);
+        $referenceDataRepository->findOneBy(['code' => 172])->willReturn($color);
+
+        $productValue = $this->create(
+            $attribute,
+            null,
+            null,
+            172
         );
 
         $productValue->shouldReturnAnInstanceOf(ReferenceDataValue::class);
@@ -169,7 +200,7 @@ class ReferenceDataValueFactorySpec extends ObjectBehavior
         $attribute->isBackendTypeReferenceData()->willReturn(true);
         $attribute->getReferenceDataName()->willReturn('color');
 
-        $exception = InvalidPropertyTypeException::stringExpected(
+        $exception = InvalidPropertyTypeException::scalarExpected(
             'reference_data_simple_select_attribute',
             ReferenceDataValueFactory::class,
             []

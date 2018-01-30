@@ -99,7 +99,7 @@ class ReferenceDataCollectionValueFactorySpec extends ObjectBehavior
         $productValue->shouldBeEmpty();
     }
 
-    function it_creates_a_reference_data_multi_select_product_value(
+    function it_creates_a_reference_data_multi_select_product_value_with_collection_of_string_as_data(
         $repositoryResolver,
         AttributeInterface $attribute,
         Fabric $silk,
@@ -123,6 +123,39 @@ class ReferenceDataCollectionValueFactorySpec extends ObjectBehavior
             null,
             null,
             ['silk', 'cotton']
+        );
+
+        $productValue->shouldReturnAnInstanceOf(ReferenceDataCollectionValue::class);
+        $productValue->shouldHaveAttribute('reference_data_multi_select_attribute');
+        $productValue->shouldNotBeLocalizable();
+        $productValue->shouldNotBeScopable();
+        $productValue->shouldHaveReferenceData([$silk, $cotton]);
+    }
+
+    function it_creates_a_reference_data_multi_select_product_value_with_collection_of_integers_as_data(
+        $repositoryResolver,
+        AttributeInterface $attribute,
+        Fabric $silk,
+        Fabric $cotton,
+        ReferenceDataRepositoryInterface $referenceDataRepository
+    ) {
+        $attribute->isScopable()->willReturn(false);
+        $attribute->isLocalizable()->willReturn(false);
+        $attribute->getCode()->willReturn('reference_data_multi_select_attribute');
+        $attribute->getType()->willReturn('pim_reference_data_catalog_multiselect');
+        $attribute->getBackendType()->willReturn('reference_data_options');
+        $attribute->isBackendTypeReferenceData()->willReturn(true);
+        $attribute->getReferenceDataName()->willReturn('fabrics');
+
+        $repositoryResolver->resolve('fabrics')->willReturn($referenceDataRepository);
+        $referenceDataRepository->findOneBy(['code' => 151])->willReturn($silk);
+        $referenceDataRepository->findOneBy(['code' => 63])->willReturn($cotton);
+
+        $productValue = $this->create(
+            $attribute,
+            null,
+            null,
+            [151, 63]
         );
 
         $productValue->shouldReturnAnInstanceOf(ReferenceDataCollectionValue::class);
@@ -198,7 +231,7 @@ class ReferenceDataCollectionValueFactorySpec extends ObjectBehavior
 
         $exception = InvalidPropertyTypeException::validArrayStructureExpected(
             'reference_data_multi_select_attribute',
-            'array key "foo" expects a string as value, "array" given',
+            'array key "foo" expects a scalar as value, "array" given',
             ReferenceDataCollectionValueFactory::class,
             ['foo' => ['bar']]
         );
