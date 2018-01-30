@@ -4,6 +4,7 @@ namespace spec\PimEnterprise\Bundle\FilterBundle\Filter;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
+use Pim\Bundle\FilterBundle\Datasource\FilterProductDatasourceAdapterInterface;
 use Pim\Component\Catalog\Query\ProductQueryBuilderInterface;
 use PimEnterprise\Component\Workflow\Repository\ProductDraftRepositoryInterface;
 
@@ -15,7 +16,7 @@ class ProductDraftFilterUtilitySpec extends ObjectBehavior
     }
 
     function it_applies_a_filter_on_field(
-        SpecFilterDatasourceAdapterInterface $ds,
+        FilterProductDatasourceAdapterInterface $ds,
         ProductQueryBuilderInterface $qb
     ) {
         $ds->getProductQueryBuilder()->willReturn($qb);
@@ -23,9 +24,4 @@ class ProductDraftFilterUtilitySpec extends ObjectBehavior
 
         $this->applyFilter($ds, 'foo', 'bar', 'baz');
     }
-}
-
-interface SpecFilterDatasourceAdapterInterface extends FilterDatasourceAdapterInterface
-{
-    public function getProductQueryBuilder();
 }

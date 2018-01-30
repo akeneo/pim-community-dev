@@ -14,6 +14,8 @@ namespace PimEnterprise\Bundle\DataGridBundle\Datasource\ResultRecord\ORM;
 use Oro\Bundle\DataGridBundle\Datasource\ResultRecord;
 use Pim\Bundle\DataGridBundle\Datagrid\Request\RequestParametersExtractorInterface;
 use Pim\Bundle\DataGridBundle\Datasource\ResultRecord\HydratorInterface;
+use Pim\Component\Catalog\Model\EntityWithValuesInterface;
+use PimEnterprise\Bundle\WorkflowBundle\Datagrid\Normalizer\ProductProposalNormalizer;
 
 /**
  * Hydrator for product draft (ORM support)
@@ -25,12 +27,19 @@ class ProductDraftHydrator implements HydratorInterface
     /** @var RequestParametersExtractorInterface */
     protected $extractor;
 
+    /** @var ProductProposalNormalizer */
+    protected $normalizer;
+
     /**
      * @param RequestParametersExtractorInterface $extractor
+     * @param ProductProposalNormalizer           $normalizer
      */
-    public function __construct(RequestParametersExtractorInterface $extractor)
-    {
+    public function __construct(
+        RequestParametersExtractorInterface $extractor,
+        ProductProposalNormalizer $normalizer
+    ) {
         $this->extractor = $extractor;
+        $this->normalizer = $normalizer;
     }
 
     /**
@@ -44,11 +53,39 @@ class ProductDraftHydrator implements HydratorInterface
             $result = current($result);
             if ($result->hasChanges()) {
                 $result->setDataLocale($locale);
-                $record = new ResultRecord($result);
+                $normalizedItem = $this->normalizeEntityWithValues($result);
+                $record = new ResultRecord($normalizedItem);
                 $records[] = $record;
             }
         }
 
         return $records;
+    }
+
+    /**
+     * @param EntityWithValuesInterface $item
+     *
+     * @return array
+     */
+    private function normalizeEntityWithValues(EntityWithValuesInterface $item): array
+    {
+        $defaultNormalizedItem = [
+            'id'            => $item->getId(),
+            'dataLocale'    => $this->extractor->getParameter('dataLocale'),
+            'categories'    => null,
+            'values'        => [],
+            'created'       => null,
+            'updated'       => null,
+            'label'         => null,
+            'changes'       => null,
+            'document_type' => null,
+        ];
+
+        $normalizedItem = array_merge(
+            $defaultNormalizedItem,
+            $this->normalizer->normalize($item, 'datagrid')
+        );
+
+        return $normalizedItem;
     }
 }

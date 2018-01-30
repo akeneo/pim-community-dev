@@ -13,6 +13,7 @@ namespace PimEnterprise\Bundle\FilterBundle\Filter;
 
 use Oro\Bundle\FilterBundle\Filter\FilterUtility as BaseFilterUtility;
 use Pim\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
+use Pim\Bundle\FilterBundle\Datasource\FilterProductDatasourceAdapterInterface;
 use PimEnterprise\Component\Workflow\Repository\ProductDraftRepositoryInterface;
 
 /**
@@ -45,6 +46,10 @@ class ProductDraftFilterUtility extends BaseFilterUtility
      */
     public function applyFilter(FilterDatasourceAdapterInterface $ds, $field, $operator, $value)
     {
-        $ds->getProductQueryBuilder()->addFilter($field, $operator, $value);
+        if ($ds instanceof FilterProductDatasourceAdapterInterface) {
+            $ds->getProductQueryBuilder()->addFilter($field, $operator, $value);
+        } else {
+            $this->repository->applyFilter($ds->getQueryBuilder(), $field, $operator, $value);
+        }
     }
 }
