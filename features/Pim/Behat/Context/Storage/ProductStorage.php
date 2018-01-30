@@ -129,8 +129,6 @@ class ProductStorage implements Context
      */
     public function productShouldNotHaveAParent(string $productIdentifier): void
     {
-        $this->entityManager->clear();
-
         $product = $this->productRepository->findOneByIdentifier($productIdentifier);
 
         if (null === $product) {
@@ -141,35 +139,6 @@ class ProductStorage implements Context
             throw new \Exception(
                 sprintf('The given object must be a variant product, %s given', ClassUtils::getClass($product))
             );
-        }
-    }
-
-    /**
-     * @param string    $identifier
-     * @param TableNode $table
-     *
-     * @throws \Exception
-     *
-     * @Given /^the product model "([^"]*)" should not have the following values?:$/
-     */
-    public function theProductModelShouldNotHaveTheFollowingValues(string $identifier, TableNode $table)
-    {
-        $productModel = $this->productModelRepository->findOneByIdentifier($identifier);
-
-        $rows = $table->getRowsHash();
-        foreach (array_keys($rows) as $rawCode) {
-            $infos = $this->attributeColumnInfoExtractor->extractColumnInfo($rawCode);
-
-            $attribute = $infos['attribute'];
-            $attributeCode = $attribute->getCode();
-            $localeCode = $infos['locale_code'];
-            $scopeCode = $infos['scope_code'];
-
-            $productValue = $productModel->getValues()->getByCodes($attributeCode, $localeCode, $scopeCode);
-
-            if (null !== $productValue) {
-                throw new \Exception(sprintf('Product value for product model "%s" exists', $identifier));
-            }
         }
     }
 }
