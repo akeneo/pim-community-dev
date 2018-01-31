@@ -5,6 +5,7 @@ namespace Pim\Component\User\Updater;
 use Akeneo\Component\Classification\Model\CategoryInterface;
 use Akeneo\Component\StorageUtils\Exception\InvalidObjectException;
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
+use Akeneo\Component\StorageUtils\Exception\UnknownPropertyException;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Doctrine\Common\Util\ClassUtils;
@@ -168,6 +169,11 @@ class UserUpdater implements ObjectUpdaterInterface
             case 'phone':
                 $user->setPhone($data);
                 break;
+            case 'enabled':
+                $user->setEnabled($data);
+                break;
+            default:
+                throw UnknownPropertyException::unknownProperty($field);
         }
     }
 
