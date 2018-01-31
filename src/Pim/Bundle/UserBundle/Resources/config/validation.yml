@@ -8,3 +8,9 @@ Pim\Bundle\UserBundle\Entity\User:
         catalogLocale:
             - NotBlank: ~
             - Pim\Component\Catalog\Validator\Constraints\ActivatedLocale: ~
+        phone:
+            - Regex:
+                pattern: '/^\+[0-9]+$/'
+                message: "The phone has to respect the international format (eg: +33755667788)."
+            - Length:
+                max: 20

@@ -140,6 +140,9 @@ class User implements UserInterface
     /** @var array */
     protected $productGridFilters = [];
 
+    /** @var string */
+    protected $phone;
+
     public function __construct()
     {
         $this->salt = base_convert(sha1(uniqid(mt_rand(), true)), 16, 36);
@@ -1020,6 +1023,24 @@ class User implements UserInterface
         if (null !== $defaultGridView) {
             $this->defaultGridViews->set($alias, $defaultGridView);
         }
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getPhone(): ?string
+    {
+        return $this->phone;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setPhone(?string $phone): UserInterface
+    {
+        $this->phone = $phone;
 
         return $this;
     }

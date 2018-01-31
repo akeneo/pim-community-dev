@@ -80,6 +80,7 @@
                         entity.middleName ? UI.attibuteRow('Middle name'|trans, entity.middleName),
                         UI.attibuteRow('Last name'|trans, entity.lastName|default('N/A')),
                         entity.nameSuffix ? UI.attibuteRow('Name suffix'|trans, entity.nameSuffix),
+                        entity.phone ? UI.attibuteRow('Phone'|trans, entity.phone),
                         UI.attibuteRow('Birthday'|trans, entity.birthday ? entity.birthday|date_presenter : 'N/A')
                     ]
                 },

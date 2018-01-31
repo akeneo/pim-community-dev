@@ -11,11 +11,13 @@ Feature: Edit a user
   Scenario: Successfully edit a user
     Given I edit the "admin" user
     When I fill in the following information:
-      | First name | John  |
-      | Last name  | Smith |
+      | First name | John       |
+      | Last name  | Smith      |
+      | Phone      | 0755337788 |
     And I save the user
     Then I should see the flash message "User saved"
     And I should see the text "John Smith"
+    And I should see the text "0755337788"
 
   Scenario: Successfully edit and apply user preferences
     When I edit the "Peter" user

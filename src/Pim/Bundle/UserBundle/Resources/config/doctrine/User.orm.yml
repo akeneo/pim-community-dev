@@ -95,6 +95,10 @@ Pim\Bundle\UserBundle\Entity\User:
             type: boolean
             options:
                 default: false
+        phone:
+            type: string
+            nullable: true
+            length: 20
     manyToMany:
         roles:
             targetEntity: Oro\Bundle\UserBundle\Entity\Role
