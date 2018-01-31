@@ -2,3 +2,9 @@ Pim\Bundle\UserBundle\Entity\User:
     constraints:
         - Pim\Bundle\UserBundle\Validator\Constraints\UserPreferences:
             groups: [User]
+    properties:
+        uiLocale:
+            - NotBlank: ~
+        catalogLocale:
+            - NotBlank: ~
+            - Pim\Component\Catalog\Validator\Constraints\ActivatedLocale: ~
