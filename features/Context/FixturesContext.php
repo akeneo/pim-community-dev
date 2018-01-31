@@ -139,6 +139,18 @@ class FixturesContext extends BaseFixturesContext
     }
 
     /**
+     * @param int $numberOfProducts
+     *
+     * @Given /^([0-9]+) empty products$/
+     */
+    public function createEmptyProducts(int $numberOfProducts)
+    {
+        for (;$numberOfProducts > 0; $numberOfProducts--) {
+            $this->createProduct(sprintf('product_%s', $numberOfProducts));
+        }
+    }
+
+    /**
      * @param TableNode $table
      *
      * @Given /^the following products?:$/

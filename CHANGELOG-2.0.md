@@ -1,5 +1,8 @@
-# 2.0.X
+# 2.0.x
 
+## Bug fixes
+
+- PIM-7131: Fix mass add product values when number of products selected is greater than batch size
 - PIM-7144: Fix translated label of attribute groups in the product edit form
 
 # 2.0.13 (2018-01-23)
