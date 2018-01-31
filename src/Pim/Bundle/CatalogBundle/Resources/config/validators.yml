@@ -54,6 +54,7 @@ parameters:
     pim_catalog.validator.constraint.immutable_variant_axis_values.class:  Pim\Component\Catalog\Validator\Constraints\ImmutableVariantAxesValuesValidator
     pim_catalog.validator.constraint.family_attribute_used_as_axis.class:  Pim\Component\Catalog\Validator\Constraints\FamilyAttributeUsedAsAxisValidator
     pim_catalog.validator.constraint.unique_product.class:                 Pim\Component\Catalog\Validator\Constraints\UniqueEntityValidator
+    pim_catalog.validator.constraint.activated_locale.class:               Pim\Component\Catalog\Validator\Constraints\ActivatedLocaleValidator
 
 services:
     # Helpers
@@ -417,3 +418,10 @@ services:
             - '@doctrine.orm.entity_manager'
         tags:
             - { name: validator.constraint_validator, alias: pim_unique_product_validator }
+
+    pim_catalog.validator.constraint.activated_locale:
+        class: '%pim_catalog.validator.constraint.activated_locale.class%'
+        arguments:
+            - '@pim_catalog.repository.cached_locale'
+        tags:
+            - { name: validator.constraint_validator, alias: pim_activated_locale_validator }
