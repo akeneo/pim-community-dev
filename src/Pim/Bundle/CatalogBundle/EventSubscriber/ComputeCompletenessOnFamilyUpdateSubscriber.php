@@ -91,6 +91,10 @@ class ComputeCompletenessOnFamilyUpdateSubscriber implements EventSubscriberInte
             return;
         }
 
+        if (!$event->hasArgument('unitary') || false === $event->getArgument('unitary')) {
+            return;
+        }
+
         if (null === $subject->getId()) {
             $this->areAttributeRequirementsUpdatedForFamilies = false;
 
@@ -114,6 +118,10 @@ class ComputeCompletenessOnFamilyUpdateSubscriber implements EventSubscriberInte
         $subject = $event->getSubject();
 
         if (!$subject instanceof FamilyInterface) {
+            return;
+        }
+
+        if (!$event->hasArgument('unitary') || false === $event->getArgument('unitary')) {
             return;
         }
 

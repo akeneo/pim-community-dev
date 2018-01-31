@@ -9,6 +9,7 @@ use Akeneo\Test\IntegrationTestsBundle\Sanitizer\MediaSanitizer;
  * Cleans a normalized product (aka, an array of data) so that it can be compared with the expected result
  * of the normalization. This cleaner:
  *      - sorts recursively the values by keys,
+ *      - sorts the associations by keys and values alphabetically,
  *      - takes care of the inconsistent "created_at" and "updated_at" fields.
  *
  * @author    Julien Janvier <jjanvier@akeneo.com>
@@ -25,6 +26,7 @@ class NormalizedProductCleaner
         self::sanitizeDateFields($productNormalized);
         self::sanitizeMediaAttributeData($productNormalized);
         self::sortValues($productNormalized['values']);
+        self::sortAssociations($productNormalized['associations']);
     }
 
     /**
@@ -35,6 +37,24 @@ class NormalizedProductCleaner
     public static function cleanOnlyValues(array &$values)
     {
         self::sortValues($values);
+    }
+
+    /**
+     * Sorts the associations by keys and then 'groups' and 'products' values alphabetically.
+     *
+     * @param array $associations
+     */
+    private static function sortAssociations(&$associations)
+    {
+        if (!is_array($associations) || empty($associations)) {
+            return;
+        }
+
+        ksort($associations);
+        foreach ($associations as &$association) {
+            sort($association['groups']);
+            sort($association['products']);
+        }
     }
 
     /**
