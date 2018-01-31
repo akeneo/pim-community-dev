@@ -51,6 +51,9 @@ class AttributeSaver implements SaverInterface, BulkSaverInterface
 
         $this->objectManager->persist($attribute);
 
+        $uow = $this->objectManager->getUnitOfWork();
+        $options['isScheduledForInsert'] = $uow->isScheduledForInsert($attribute);
+
         $this->objectManager->flush();
 
         $this->eventDispatcher->dispatch(StorageEvents::POST_SAVE, new GenericEvent($attribute, $options));

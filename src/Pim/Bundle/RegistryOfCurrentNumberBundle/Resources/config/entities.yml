@@ -1,0 +1,2 @@
+parameters:
+    pim_registry_current_number.entity.registry_current_number.class:                       Pim\Bundle\RegistryOfCurrentNumberBundle\Entity\RegistryOfCurrentNumber

@@ -357,4 +357,16 @@ class AttributeRepository extends EntityRepository implements
 
         return $qb->getQuery()->getResult();
     }
+
+    /**
+     * @return mixed
+     * @throws \Doctrine\ORM\NoResultException
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
+    public function countAll()
+    {
+        $qb = $this->createQueryBuilder('a');
+        $qb->select('COUNT(a)');
+        return $qb->getQuery()->getSingleScalarResult();
+    }
 }
