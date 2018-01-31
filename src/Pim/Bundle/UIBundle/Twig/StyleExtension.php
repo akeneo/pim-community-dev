@@ -32,12 +32,4 @@ class StyleExtension extends \Twig_Extension
     {
         return sprintf('<span class="AknRule-attribute">%s</span>', $content);
     }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getName()
-    {
-        return 'pim_ui_style_extension';
-    }
 }

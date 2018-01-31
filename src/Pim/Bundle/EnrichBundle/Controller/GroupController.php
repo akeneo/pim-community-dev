@@ -10,8 +10,8 @@ use Pim\Component\Catalog\Factory\GroupFactory;
 use Pim\Component\Catalog\Repository\GroupTypeRepositoryInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\Form\FormInterface;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Templating\EngineInterface;
@@ -27,8 +27,8 @@ class GroupController
 {
     const MAX_PRODUCTS = 5;
 
-    /** @var Request */
-    protected $request;
+    /** @var RequestStack */
+    protected $requestStack;
 
     /** @var EngineInterface */
     protected $templating;
@@ -49,7 +49,7 @@ class GroupController
     protected $groupFactory;
 
     /**
-     * @param Request                      $request
+     * @param RequestStack                 $requestStack
      * @param EngineInterface              $templating
      * @param RouterInterface              $router
      * @param GroupTypeRepositoryInterface $groupTypeRepository
@@ -58,7 +58,7 @@ class GroupController
      * @param GroupFactory                 $groupFactory
      */
     public function __construct(
-        Request $request,
+        RequestStack $requestStack,
         EngineInterface $templating,
         RouterInterface $router,
         GroupTypeRepositoryInterface $groupTypeRepository,
@@ -66,30 +66,13 @@ class GroupController
         FormInterface $groupForm,
         GroupFactory $groupFactory
     ) {
-        $this->request = $request;
+        $this->requestStack = $requestStack;
         $this->templating = $templating;
         $this->router = $router;
         $this->groupTypeRepository = $groupTypeRepository;
         $this->groupHandler = $groupHandler;
         $this->groupForm = $groupForm;
         $this->groupFactory = $groupFactory;
-    }
-
-    /**
-     * List groups
-     *
-     * @Template
-     * @AclAncestor("pim_enrich_group_index")
-     *
-     * @return Response
-     */
-    public function indexAction()
-    {
-        $groupTypes = $this->groupTypeRepository->findTypeIds(false);
-
-        return [
-            'groupTypes' => $groupTypes
-        ];
     }
 
     /**
@@ -100,18 +83,19 @@ class GroupController
      * @Template
      * @AclAncestor("pim_enrich_group_create")
      *
-     * @return Response|RedirectResponse
+     * @return Response
      */
     public function createAction(Request $request)
     {
-        if (!$request->isXmlHttpRequest()) {
-            return new RedirectResponse($this->router->generate('pim_enrich_group_index'));
-        }
-
         $group = $this->groupFactory->createGroup();
 
         if ($this->groupHandler->process($group)) {
-            $this->request->getSession()->getFlashBag()->add('success', new Message('flash.group.created'));
+            $this
+                ->requestStack
+                ->getCurrentRequest()
+                ->getSession()
+                ->getFlashBag()
+                ->add('success', new Message('flash.group.created'));
 
             $url = $this->router->generate(
                 'pim_enrich_group_edit',
@@ -125,39 +109,5 @@ class GroupController
         return [
             'form' => $this->groupForm->createView()
         ];
-    }
-
-    /**
-     * {@inheritdoc}
-     *
-     * @AclAncestor("pim_enrich_group_edit")
-     * @Template
-     */
-    public function editAction($code)
-    {
-        return [
-            'code' => $code
-        ];
-    }
-
-    /**
-     * History of a group
-     *
-     * TODO : find a way to use param converter with interfaces
-     *
-     * @param Group $group
-     *
-     * @AclAncestor("pim_enrich_group_history")
-     *
-     * @return Response
-     */
-    public function historyAction(Group $group)
-    {
-        return $this->templating->renderResponse(
-            'PimEnrichBundle:Group:Tab/_history.html.twig',
-            [
-                'group' => $group
-            ]
-        );
     }
 }

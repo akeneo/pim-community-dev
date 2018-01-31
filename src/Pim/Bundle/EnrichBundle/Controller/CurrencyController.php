@@ -7,9 +7,8 @@ use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Pim\Bundle\CatalogBundle\Entity\Currency;
 use Pim\Bundle\EnrichBundle\Flash\Message;
 use Pim\Component\Catalog\Exception\LinkedChannelException;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Routing\RouterInterface;
 
 /**
@@ -21,8 +20,8 @@ use Symfony\Component\Routing\RouterInterface;
  */
 class CurrencyController
 {
-    /** @var Request */
-    protected $request;
+    /** @var RequestStack */
+    protected $requestStack;
 
     /** @var RouterInterface */
     protected $router;
@@ -31,28 +30,15 @@ class CurrencyController
     protected $currencySaver;
 
     /**
-     * @param Request         $request
+     * @param RequestStack    $requestStack
      * @param RouterInterface $router
      * @param SaverInterface  $currencySaver
      */
-    public function __construct(Request $request, RouterInterface $router, SaverInterface $currencySaver)
+    public function __construct(RequestStack $requestStack, RouterInterface $router, SaverInterface $currencySaver)
     {
-        $this->request = $request;
+        $this->requestStack = $requestStack;
         $this->router = $router;
         $this->currencySaver = $currencySaver;
-    }
-
-    /**
-     * List currencies
-     *
-     * @Template
-     * @AclAncestor("pim_enrich_currency_index")
-     *
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
-    public function indexAction()
-    {
-        return [];
     }
 
     /**
@@ -62,22 +48,32 @@ class CurrencyController
      *
      * @AclAncestor("pim_enrich_currency_toggle")
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @return JsonResponse
      */
     public function toggleAction(Currency $currency)
     {
+        $request = $this->requestStack->getCurrentRequest();
+
         try {
             $currency->toggleActivation();
             $this->currencySaver->save($currency);
 
-            $this->request->getSession()->getFlashBag()->add('success', new Message('flash.currency.updated'));
+            $request
+                ->getSession()
+                ->getFlashBag()
+                ->add('success', new Message('flash.currency.updated'));
         } catch (LinkedChannelException $e) {
-            $this->request->getSession()->getFlashBag()
+            $request
+                ->getSession()
+                ->getFlashBag()
                 ->add('error', new Message('flash.currency.error.linked_to_channel'));
         } catch (\Exception $e) {
-            $this->request->getSession()->getFlashBag()->add('error', new Message('flash.error ocurred'));
+            $request
+                ->getSession()
+                ->getFlashBag()
+                ->add('error', new Message('flash.error ocurred'));
         }
 
-        return new RedirectResponse($this->router->generate('pim_enrich_currency_index'));
+        return new JsonResponse(['route' => 'pim_enrich_currency_index']);
     }
 }

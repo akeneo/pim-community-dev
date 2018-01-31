@@ -1,3 +1,4 @@
+@javascript
 Feature: Edit an attribute group
   In order to manage existing attribute groups in the catalog
   As a product manager
@@ -7,7 +8,6 @@ Feature: Edit an attribute group
     Given a "footwear" catalog configuration
     And I am logged in as "Julia"
 
-  @javascript
   Scenario: Successfully edit an attribute group
     Given I am on the "sizes" attribute group page
     Then I should see the Code field
@@ -15,26 +15,24 @@ Feature: Edit an attribute group
     When I fill in the following information:
       | English (United States) | My sizes |
     And I press the "Save" button
-    Then I should see "My sizes"
+    Then I should see the text "My sizes"
 
-  @javascript
+  @skip-nav
   Scenario: Successfully display a dialog when we quit a page with unsaved changes
     Given I am on the "media" attribute group page
     When I fill in the following information:
       | English (United States) | My media |
     And I click on the Akeneo logo
-    Then I should see a confirm dialog with the following content:
-      | title   | Are you sure you want to leave this page?                            |
-      | content | You will lose changes to the attribute group if you leave this page. |
+    Then I should see "You will lose changes to the attribute group if you leave this page." in popup
 
   @skip
   Scenario: Successfully display a message when there are unsaved changes
     Given I am on the "media" attribute group page
     When I fill in the following information:
       | English (United States) | My media |
-    Then I should see "There are unsaved changes."
+    Then I should see the text "There are unsaved changes."
 
-  @javascript @jira https://akeneo.atlassian.net/browse/PIM-6434
+  @skip-pef @javascript @jira https://akeneo.atlassian.net/browse/PIM-6434
   Scenario: Successfully display attribute groups in the right order
     Given the following CSV file to import:
       """
@@ -48,13 +46,12 @@ Feature: Edit an attribute group
     And I am on the "csv_footwear_attribute_group_import" import job page
     And I launch the import job
     And I wait for the "csv_footwear_attribute_group_import" job to finish
-    And I am on the products page
-    And I create a new product
+    And I am on the products grid
+    And I create a product
     And I fill in the following information in the popin:
       | SKU    | a_boot |
-      | family | Boots  |
+      | Family | Boots  |
     And I press the "Save" button in the popin
     And I wait to be on the "a_boot" product page
     When I add available attributes Sole fabric, Length, Weight
     Then I should see the text "[Z] [X] [Y]"
-

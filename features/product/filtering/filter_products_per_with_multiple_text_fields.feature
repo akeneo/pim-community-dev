@@ -6,14 +6,14 @@ Feature: Filter products with multiples text fields filters
 
   Background:
     Given the "default" catalog configuration
-    And the following family:
-      | code      |
-      | furniture |
-      | library   |
     And the following attributes:
       | code        | label-en_US | type             | useable_as_grid_filter | group |
       | name        | Name        | pim_catalog_text | 1                      | other |
       | description | Description | pim_catalog_text | 1                      | other |
+    And the following family:
+      | code      | attributes       |
+      | furniture | name,description |
+      | library   | name,description |
     And the following products:
       | sku    | family    | description    | name   |
       | BOOK   | library   |                |        |
@@ -26,24 +26,22 @@ Feature: Filter products with multiples text fields filters
       | POST-2 | furniture | red color      |        |
       | POST-3 | furniture | black color    | indigo |
     And I am logged in as "Mary"
-    And I am on the products page
+    And I am on the products grid
     And I show the filter "description"
     And I show the filter "name"
 
   Scenario: Successfully filter products with the sames attributes
     Given I filter by "description" with operator "contains" and value "Red"
     And I should be able to use the following filters:
-      | filter | operator         | value | result                                 |
-      | name   | is empty         |       | POST-1 and POST-2                      |
-      | name   | is not empty     |       | MUG-2, MUG-3 and MUG-4                 |
-      | name   | contains         | in    | MUG-2, MUG-3 and MUG-4                 |
-      | name   | starts with      | in    | MUG-2 and MUG-3                        |
-      | name   | ends with        | nk    | MUG-4                                  |
-      | name   | ends with        | NK    | MUG-4                                  |
-      | name   | does not contain | in    | POST-1, POST-2                         |
-      | name   | does not contain | green | MUG-2, MUG-3, MUG-4, POST-1 and POST-2 |
-      | name   | is equal to      | in    |                                        |
-      | name   | is equal to      | pink  | MUG-4                                  |
+      | filter | operator         | value | result                 |
+      | name   | is empty         |       | POST-1 and POST-2      |
+      | name   | is not empty     |       | MUG-2, MUG-3 and MUG-4 |
+      | name   | contains         | in    | MUG-2, MUG-3 and MUG-4 |
+      | name   | starts with      | in    | MUG-2 and MUG-3        |
+      | name   | does not contain | in    |                        |
+      | name   | does not contain | green | MUG-2, MUG-3 and MUG-4 |
+      | name   | is equal to      | in    |                        |
+      | name   | is equal to      | pink  | MUG-4                  |
     And I hide the filter "description"
     And I hide the filter "name"
 
@@ -57,9 +55,7 @@ Feature: Filter products with multiples text fields filters
       | description | contains         | red        | MUG-2 and MUG-3                |
       | description | starts with      | color      |                                |
       | description | starts with      | b          | POST-3                         |
-      | description | ends with        | or         | POST-3                         |
-      | description | ends with        | OR         | POST-3                         |
-      | description | does not contain | bl         | MUG-2, MUG-5 and MUG-3         |
+      | description | does not contain | bl         | MUG-2 and MUG-3                |
       | description | is equal to      | red        |                                |
       | description | is equal to      | red handle | MUG-2 and MUG-3                |
     And I hide the filter "description"

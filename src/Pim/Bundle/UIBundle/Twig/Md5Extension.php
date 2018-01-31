@@ -3,19 +3,17 @@
 namespace Pim\Bundle\UIBundle\Twig;
 
 use JMS\Serializer\Exception\RuntimeException;
-use JMS\Serializer\Serializer;
+use Symfony\Component\Serializer\SerializerInterface;
 
 class Md5Extension extends \Twig_Extension
 {
-    /**
-     * @var Serializer
-     */
+    /** @var SerializerInterface */
     protected $serializer = null;
 
     /**
-     * @param Serializer $serializer
+     * @param SerializerInterface $serializer
      */
-    public function __construct(Serializer $serializer)
+    public function __construct(SerializerInterface $serializer)
     {
         $this->serializer = $serializer;
     }
@@ -26,8 +24,8 @@ class Md5Extension extends \Twig_Extension
     public function getFilters()
     {
         return [
-            'md5'       => new \Twig_Filter_Method($this, 'md5'),
-            'objectMd5' => new \Twig_Filter_Method($this, 'objectMd5'),
+            new \Twig_SimpleFilter('md5', [$this, 'md5']),
+            new \Twig_SimpleFilter('objectMd5', [$this, 'objectMd5']),
         ];
     }
 
@@ -62,13 +60,5 @@ class Md5Extension extends \Twig_Extension
         }
 
         return $hash;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getName()
-    {
-        return 'oro_md5';
     }
 }

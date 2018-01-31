@@ -28,52 +28,39 @@ class ContextSwitcherDecorator extends ElementDecorator
                 return false;
             }
 
-            $toggle = $dropdown->find('css', '.dropdown-toggle');
-
-            if (null === $toggle) {
-                $toggle = $dropdown->find('css', '*[data-toggle="dropdown"]');
-            }
-
+            $toggle = $dropdown->find('css', '.dropdown-toggle, *[data-toggle="dropdown"]');
             if (null === $toggle) {
                 return false;
             }
             $toggle->click();
 
-            $option = $dropdown->find('css', sprintf('a[data-locale="%s"]', $localeCode));
-
-            if (null === $option) {
-                $option = $dropdown->find('css', sprintf('a[href*="%s"]', $localeCode));
-            }
-
+            $option = $dropdown->find(
+                'css',
+                sprintf('*[data-locale="%s"], a[href*="%s"]', $localeCode, $localeCode)
+            );
             if (null === $option) {
                 return false;
             }
             $option->click();
 
-            return true;
-        }, 'Could not find locale switcher');
+            return $this->getSelectedLocale() === $localeCode;
+        }, sprintf('Could not switch locale to "%s"', $localeCode));
     }
 
     /**
-     * @param string $localeCode
-     *
-     * @return bool
+     * @return string
      */
-    public function hasSelectedLocale($localeCode)
+    public function getSelectedLocale()
     {
         $dropdown = $this->spin(function () {
             return $this->find('css', $this->selectors['Locales dropdown']);
         }, 'Could not find locale switcher');
 
-        $this->spin(function () use ($dropdown, $localeCode) {
-            return $dropdown->find('css', sprintf('.AknDropdown-menuLink--active[href*="%s"]', $localeCode));
-        }, sprintf(
-            'Locale is expected to be "%s", actually is "%s".',
-            $localeCode,
-            $dropdown->find('css', sprintf('.AknDropdown-menuLink--active'))->getAttribute('title')
-        ));
+        $active = $this->spin(function () use ($dropdown) {
+            return $dropdown->find('css', '.AknDropdown-menuLink--active');
+        }, 'Cannot find active locale');
 
-        return true;
+        return $active->getAttribute('data-locale');
     }
 
     /**
@@ -96,7 +83,12 @@ class ContextSwitcherDecorator extends ElementDecorator
             }
             $toggle->click();
 
-            $option = $dropdown->find('css', sprintf('a[data-scope="%s"], a[href*="%s"]', $scopeCode, $scopeCode));
+            $option = $dropdown->find('css', sprintf(
+                'a[data-scope="%s"], a[href*="%s"], *[data-value="%s"]',
+                $scopeCode,
+                $scopeCode,
+                $scopeCode
+            ));
             if (null === $option) {
                 return false;
             }

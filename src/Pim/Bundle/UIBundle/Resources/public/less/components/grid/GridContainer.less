@@ -1,4 +1,75 @@
+@import '../../base/variables';
+
 .AknGridContainer {
   position: relative;
   padding: 10px 20px;
+
+  &--withCheckbox {
+    margin-left: -40px;
+  }
+
+  &-noData {
+    min-height: ~"calc(100vh - 300px)";
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    line-height: 32px;
+    overflow: hidden;
+  }
+
+  &-noDataImage {
+    background: url("../../../images/illustration-attribute.svg") no-repeat center center;
+    height: 200px;
+    width: 200px;
+    margin-bottom: 30px;
+
+    &--associations {
+       background: url("../../../images/illustrations/Association-types.svg") no-repeat center center;
+    }
+  }
+
+  &-noDataTitle {
+    font-size: @AknAltTitleFontSize;
+    color: @AknDarkBlue;
+    text-align: center;
+    margin-bottom: 20px;
+  }
+
+  &-noDataSubtitle {
+    max-width: 600px;
+    color: @AknSlateGrey;
+    font-size: @AknFontSizeBigger;
+    line-height: 24px;
+    text-align: center;
+  }
+
+  &--withoutNoDataPanel &-noData {
+    display: none;
+  }
+
+  &-noData--small {
+    min-height: auto;
+  }
+
+  &-noData--small &-noDataImage {
+    height: 115px;
+    background-size: 150px 150px;
+  }
+
+  &-noData--small &-noDataTitle {
+    font-size: @AknTitleFontSize;
+  }
+
+  &--expanded {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+}
+
+@-moz-document url-prefix() {
+  // On Firefox, there is a bug with the padding of the main page.
+  .AknGridContainer {
+    margin-bottom: 40px;
+  }
 }

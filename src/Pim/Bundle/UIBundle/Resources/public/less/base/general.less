@@ -40,10 +40,10 @@ body {
   background-color: white;
   line-height: 20px;
   min-width: 980px;
-  min-height: 600px;
   margin: 0;
   padding: 0;
   overflow: hidden;
+  height: 100%;
 
   &.konami:hover {
     cursor: url("/bundles/pimui/images/unicorn-akeneo_43.png"), pointer !important;
@@ -61,6 +61,8 @@ input[type="checkbox"] {
   line-height: normal;
   vertical-align: middle;
   margin: -2px 0 0 0;
+  height: 16px;
+  width: 16px;
 }
 
 input,
@@ -106,6 +108,38 @@ select {
 p {
   margin-top: 0;
   margin-bottom: 0;
+}
+
+input[type=checkbox] {
+  margin: -6px 5px 0px 0;
+
+  &:before {
+    content: '';
+    width: @AknCheckboxSize;
+    height: @AknCheckboxSize;
+    display: inline-block;
+    background-color: @AknLightGray;
+    background-position: 0 -@AknCheckboxSize;
+    border: 1px solid @AknBorderColor;
+    border-radius: 3px;
+    cursor: pointer;
+    transition:
+      background-color 0.1s ease-in,
+      background-position 0.2s ease-in;
+  }
+
+  &:checked:before {
+    border-color: @AknBlue;
+    background-color: @AknBlue;
+    background-image: url("../../images/icon-checkwhite.svg");
+    background-repeat: no-repeat;
+    background-position: 0 0;
+    background-size: @AknCheckboxSize - 1px;
+  }
+
+  &:focus {
+    outline: none !important;
+  }
 }
 
 // https://developer.mozilla.org/en-US/docs/Web/HTML/Element/button#Notes

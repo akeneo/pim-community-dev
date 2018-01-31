@@ -1,17 +1,12 @@
-/* jshint devel:true */
-/* global define */
-define(['module', 'underscore', 'translator', 'json'],
+define(['module', 'underscore', 'translator-lib', 'json'],
 function (module, _, Translator) {
     'use strict';
 
-    var messages = module.config().messages || '{}';
     var dict = {};
     var debug = false;
     var add = Translator.add;
     var get = Translator.get;
     var fromJSON = Translator.fromJSON;
-
-    Translator.fromJSON(JSON.parse(messages));
 
     Translator.placeHolderPrefix = '{{ ';
     Translator.placeHolderSuffix = ' }}';
@@ -36,6 +31,7 @@ function (module, _, Translator) {
      */
     Translator.get = function (id) {
         checkTranslation(id);
+
         return get.apply(Translator, arguments);
     };
 
@@ -51,6 +47,7 @@ function (module, _, Translator) {
             data = JSON.parse(data);
         }
         debug = data.debug || false;
+
         return fromJSON.call(Translator, data);
     };
 

@@ -17,7 +17,6 @@ define(
         Attributes
     ) {
         return Attributes.extend({
-
             /**
              * {@inheritdoc}
              */
@@ -26,7 +25,7 @@ define(
                     this.config.removeAttributeRoute,
                     {
                         id: this.getFormData().meta.id,
-                        attributeId: attribute.id
+                        attributeId: attribute.meta.id
                     }
                 );
             }

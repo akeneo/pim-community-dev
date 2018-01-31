@@ -71,6 +71,7 @@ class AttributeNormalizer implements NormalizerInterface
             'localizable'            => (bool) $attribute->isLocalizable(),
             'scopable'               => (bool) $attribute->isScopable(),
             'labels'                 => $this->translationNormalizer->normalize($attribute, $format, $context),
+            'auto_option_sorting'    => $attribute->getProperty('auto_option_sorting'),
         ];
     }
 

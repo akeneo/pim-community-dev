@@ -79,7 +79,9 @@ class DisableFieldSubscriber implements EventSubscriberInterface
     {
         $options = [
             'disabled'  => true,
-            'read_only' => true,
+            'attr' => [
+                'read_only' => true,
+            ],
         ];
 
         if ($help = $config->getOption('help')) {

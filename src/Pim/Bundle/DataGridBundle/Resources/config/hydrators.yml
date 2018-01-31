@@ -2,16 +2,12 @@ parameters:
     pim_datagrid.datasource.result_record.hydrator.default.class:       Pim\Bundle\DataGridBundle\Datasource\ResultRecord\Orm\ResultRecordHydrator
     pim_datagrid.datasource.result_record.hydrator.orm.object.class:    Pim\Bundle\DataGridBundle\Datasource\ResultRecord\Orm\ObjectHydrator
     pim_datagrid.datasource.result_record.hydrator.orm.object_id.class: Pim\Bundle\DataGridBundle\Datasource\ResultRecord\Orm\ObjectIdHydrator
+    pim_datagrid.datasource.result_record.hydrator.product.class:            Pim\Bundle\DataGridBundle\Datasource\ResultRecord\Orm\ProductHydrator
+    pim_datagrid.datasource.result_record.hydrator.associated_product.class: Pim\Bundle\DataGridBundle\Datasource\ResultRecord\Orm\ProductHydrator
+    pim_datagrid.datasource.result_record.hydrator.object_id.class:          Pim\Bundle\DataGridBundle\Datasource\ResultRecord\Orm\ObjectIdHydrator
+    pim_datagrid.datasource.result_record.hydrator.object.class:             Pim\Bundle\DataGridBundle\Datasource\ResultRecord\Orm\ObjectHydrator
 
 services:
-    pim_datagrid.datasource.result_record.hydrator.product:
-        class: '%pim_datagrid.datasource.result_record.hydrator.product.class%'
-
-    pim_datagrid.datasource.result_record.hydrator.associated_product:
-        class: '%pim_datagrid.datasource.result_record.hydrator.associated_product.class%'
-        arguments:
-            - '%pim_catalog.entity.product.class%'
-
     pim_datagrid.datasource.result_record.hydrator.object_id:
         class: '%pim_datagrid.datasource.result_record.hydrator.object_id.class%'
 

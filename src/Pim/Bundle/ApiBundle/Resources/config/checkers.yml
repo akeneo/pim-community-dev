@@ -1,0 +1,11 @@
+parameters:
+    pim_api.checker.query_parameters.class: Pim\Bundle\ApiBundle\Checker\QueryParametersChecker
+
+services:
+    pim_api.checker.query_parameters:
+        class: '%pim_api.checker.query_parameters.class%'
+        arguments:
+            - '@pim_catalog.repository.locale'
+            - '@pim_catalog.repository.attribute'
+            - '@pim_catalog.repository.category'
+            - ['family', 'enabled', 'groups', 'categories', 'completeness', 'identifier', 'created', 'updated']

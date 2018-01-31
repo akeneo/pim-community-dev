@@ -3,7 +3,11 @@
 namespace spec\Pim\Bundle\EnrichBundle\Form\Type;
 
 use PhpSpec\ObjectBehavior;
+use Pim\Bundle\CatalogBundle\Entity\AssociationType;
+use Pim\Bundle\CatalogBundle\Entity\AssociationTypeTranslation;
 use Pim\Bundle\EnrichBundle\Form\Subscriber\DisableFieldSubscriber;
+use Pim\Bundle\EnrichBundle\Form\Type\TranslatableFieldType;
+use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -11,17 +15,17 @@ class AssociationTypeTypeSpec extends ObjectBehavior
 {
     function let()
     {
-        $this->beConstructedWith('Pim\Bundle\CatalogBundle\Entity\AssociationType');
+        $this->beConstructedWith(AssociationType::class);
     }
 
     function it_is_a_form_type()
     {
-        $this->shouldBeAnInstanceOf('Symfony\Component\Form\AbstractType');
+        $this->shouldBeAnInstanceOf(AbstractType::class);
     }
 
-    function it_has_a_name()
+    function it_has_a_block_prefix()
     {
-        $this->getName()->shouldReturn('pim_enrich_associationtype');
+        $this->getBlockPrefix()->shouldReturn('pim_enrich_associationtype');
     }
 
     function it_builds_form(FormBuilderInterface $builder)
@@ -31,11 +35,11 @@ class AssociationTypeTypeSpec extends ObjectBehavior
 
         $builder->add(
             'label',
-            'pim_translatable_field',
+            TranslatableFieldType::class,
             [
                 'field'             => 'label',
-                'translation_class' => 'Pim\\Bundle\\CatalogBundle\\Entity\\AssociationTypeTranslation',
-                'entity_class'      => 'Pim\\Bundle\\CatalogBundle\\Entity\\AssociationType',
+                'translation_class' => AssociationTypeTranslation::class,
+                'entity_class'      => AssociationType::class,
                 'property_path'     => 'translations'
             ]
         )->shouldBeCalled();
@@ -45,11 +49,11 @@ class AssociationTypeTypeSpec extends ObjectBehavior
 
     function it_sets_default_options(OptionsResolver $resolver)
     {
-        $this->setDefaultOptions($resolver, []);
+        $this->configureOptions($resolver);
 
         $resolver->setDefaults(
             [
-                'data_class' => 'Pim\Bundle\CatalogBundle\Entity\AssociationType',
+                'data_class' => AssociationType::class,
             ]
         )->shouldHaveBeenCalled();
     }

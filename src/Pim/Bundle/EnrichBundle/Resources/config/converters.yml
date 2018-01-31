@@ -1,15 +1,25 @@
 parameters:
-    pim_enrich.converter.standard_to_enrich.product_value.class: Pim\Component\Enrich\Converter\StandardToEnrich\ProductValueConverter
-    pim_enrich.converter.enrich_to_standard.product_value.class: Pim\Component\Enrich\Converter\EnrichToStandard\ProductValueConverter
+    pim_enrich.converter.standard_to_enrich.value.class: Pim\Component\Enrich\Converter\StandardToEnrich\ValueConverter
+    pim_enrich.converter.enrich_to_standard.value.class: Pim\Component\Enrich\Converter\EnrichToStandard\ValueConverter
+    pim_enrich.converter.mass_operation.class: Pim\Component\Enrich\Converter\MassOperationConverter
 
 services:
     pim_enrich.converter.standard_to_enrich.product_value:
-        class: '%pim_enrich.converter.standard_to_enrich.product_value.class%'
+        class: '%pim_enrich.converter.standard_to_enrich.value.class%'
         arguments:
             - '@pim_catalog.repository.attribute'
             - '@akeneo_file_storage.repository.file_info'
 
     pim_enrich.converter.enrich_to_standard.product_value:
-        class: '%pim_enrich.converter.enrich_to_standard.product_value.class%'
+        class: '%pim_enrich.converter.enrich_to_standard.value.class%'
         arguments:
             - '@pim_catalog.repository.attribute'
+
+    pim_enrich.converter.mass_operation:
+        class: '%pim_enrich.converter.mass_operation.class%'
+        arguments:
+            - '@pim_user.context.user'
+            - '@pim_enrich.converter.enrich_to_standard.product_value'
+            - '@pim_catalog.localization.localizer.converter'
+            - '@pim_enrich.filter.product_values_edit_data'
+            - '@oro_security.security_facade'

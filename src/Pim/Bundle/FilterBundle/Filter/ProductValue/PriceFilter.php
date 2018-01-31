@@ -24,7 +24,7 @@ class PriceFilter extends OroNumberFilter
      */
     protected function getFormType()
     {
-        return PriceFilterType::NAME;
+        return PriceFilterType::class;
     }
 
     /**

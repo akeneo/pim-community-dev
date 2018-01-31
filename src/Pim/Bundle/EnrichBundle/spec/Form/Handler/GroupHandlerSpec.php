@@ -11,17 +11,18 @@ use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 class GroupHandlerSpec extends ObjectBehavior
 {
     function let(
         FormInterface $form,
-        Request $request,
+        RequestStack $requestStack,
         SaverInterface $saver,
         ProductRepositoryInterface $repository,
         AttributeConverterInterface $localizedConverter
     ) {
-        $this->beConstructedWith($form, $request, $saver, $repository, $localizedConverter);
+        $this->beConstructedWith($form, $requestStack, $saver, $repository, $localizedConverter);
     }
 
     function it_is_a_handler()
@@ -31,19 +32,20 @@ class GroupHandlerSpec extends ObjectBehavior
 
     function it_saves_a_group_with_a_new_product_when_form_is_valid(
         $form,
-        $request,
+        $requestStack,
         $saver,
+        Request $request,
         GroupInterface $group,
         GroupTypeInterface $groupType,
         ProductInterface $product
     ) {
+        $requestStack->getCurrentRequest()->willReturn($request);
         $form->setData($group)->shouldBeCalled();
         $request->isMethod('POST')->willReturn(true);
         $group->getProducts()->willReturn([$product]);
         $group->getType()->willReturn($groupType);
-        $groupType->isVariant()->willReturn(false);
 
-        $form->submit($request)->shouldBeCalled();
+        $form->handleRequest($request)->shouldBeCalled();
         $form->isValid()->willReturn(true);
 
         $saver->save($group, ['copy_values_to_products' => true])->shouldBeCalled();
@@ -51,56 +53,36 @@ class GroupHandlerSpec extends ObjectBehavior
         $this->process($group)->shouldReturn(true);
     }
 
-    function it_saves_a_variant_group_and_update_products_values_when_form_is_valid(
+    function it_doesnt_save_a_group_when_form_is_not_valid(
         $form,
-        $request,
+        $requestStack,
         $saver,
+        Request $request,
         GroupInterface $group,
         GroupTypeInterface $groupType,
         ProductInterface $product
     ) {
-        $form->setData($group)->shouldBeCalled();
-        $request->isMethod('POST')->willReturn(true);
-        $group->getProducts()->willReturn([$product]);
-        $group->getType()->willReturn($groupType);
-        $group->getProductTemplate()->willReturn(null);
-        $groupType->isVariant()->willReturn(true);
-
-        $form->submit($request)->shouldBeCalled();
-        $form->isValid()->willReturn(true);
-
-        $saver->save(
-            $group,
-            ['copy_values_to_products' => true]
-        )->shouldBeCalled();
-
-        $this->process($group)->shouldReturn(true);
-    }
-
-    function it_doesnt_save_a_group_when_form_is_not_valid(
-        $form,
-        $request,
-        $saver,
-        GroupInterface $group,
-        ProductInterface $product,
-        GroupTypeInterface $groupType
-    ) {
+        $requestStack->getCurrentRequest()->willReturn($request);
         $form->setData($group)->shouldBeCalled();
         $request->isMethod('POST')->willReturn(true);
 
         $group->getProducts()->willReturn([$product]);
-        $form->submit($request)->shouldBeCalled();
+        $form->handleRequest($request)->shouldBeCalled();
 
         $form->isValid()->willReturn(false);
-        $groupType->isVariant()->willReturn(false);
 
         $group->getType()->willReturn($groupType);
         $saver->save($group)->shouldNotBeCalled();
         $this->process($group)->shouldReturn(false);
     }
 
-    function it_doesnt_save_a_group_when_request_is_not_posted($form, $request, $saver, GroupInterface $group)
-    {
+    function it_doesnt_save_a_group_when_request_is_not_posted(
+        $form,
+        $requestStack,
+        Request $request,
+        GroupInterface $group
+    ) {
+        $requestStack->getCurrentRequest()->willReturn($request);
         $form->setData($group)->shouldBeCalled();
         $request->isMethod('POST')->willReturn(false);
 

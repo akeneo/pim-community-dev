@@ -9,8 +9,8 @@ use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Akeneo\Component\StorageUtils\Exception\UnknownPropertyException;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Entity\FamilyTranslation;
-use Pim\Component\Catalog\Factory\AttributeRequirementFactory;
 use Pim\Component\Catalog\AttributeTypes;
+use Pim\Component\Catalog\Factory\AttributeRequirementFactory;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\AttributeRequirementInterface;
 use Pim\Component\Catalog\Model\ChannelInterface;
@@ -70,13 +70,12 @@ class FamilyUpdaterSpec extends ObjectBehavior
         $channelRepository,
         $attributeRequirementRepo,
         $translatableUpdater,
-        FamilyTranslation $translation,
         FamilyInterface $family,
         AttributeRepositoryInterface $attributeRepository,
         AttributeInterface $skuAttribute,
         AttributeInterface $nameAttribute,
         AttributeInterface $descAttribute,
-        AttributeInterface $priceAttribute,
+        AttributeInterface $pictureAttribute,
         AttributeRequirementInterface $skuMobileRqrmt,
         AttributeRequirementInterface $nameMobileRqrmt,
         AttributeRequirementInterface $skuPrintRqrmt,
@@ -87,8 +86,9 @@ class FamilyUpdaterSpec extends ObjectBehavior
     ) {
         $values = [
             'code'                   => 'mycode',
-            'attributes'             => ['sku', 'name', 'description', 'price'],
+            'attributes'             => ['sku', 'name', 'description', 'picture'],
             'attribute_as_label'     => 'name',
+            'attribute_as_image'     => 'picture',
             'attribute_requirements' => [
                 'mobile' => ['sku', 'name'],
                 'print'  => ['name', 'description'],
@@ -100,16 +100,16 @@ class FamilyUpdaterSpec extends ObjectBehavior
         ];
 
         $family->getAttributeRequirements()->willReturn([$skuMobileRqrmt, $skuPrintRqrmt]);
-        $family->getAttributes()->willReturn([$skuAttribute, $nameAttribute, $descAttribute, $priceAttribute]);
+        $family->getAttributes()->willReturn([$skuAttribute, $nameAttribute, $descAttribute, $pictureAttribute]);
         $family->removeAttribute($nameAttribute)->shouldBeCalled();
-        $family->removeAttribute($priceAttribute)->shouldBeCalled();
+        $family->removeAttribute($pictureAttribute)->shouldBeCalled();
         $family->removeAttribute($descAttribute)->shouldBeCalled();
         $family->getId()->willReturn(42);
 
         $skuAttribute->getId()->willReturn(1);
         $nameAttribute->getId()->willReturn(2);
         $descAttribute->getId()->willReturn(3);
-        $priceAttribute->getId()->willReturn(4);
+        $pictureAttribute->getId()->willReturn(4);
 
         $skuMobileRqrmt->getAttribute()->willReturn($skuAttribute);
         $skuMobileRqrmt->getChannelCode()->willReturn('mobile');
@@ -155,11 +155,11 @@ class FamilyUpdaterSpec extends ObjectBehavior
         $family->addAttributeRequirement($namePrintRqrmt)->shouldBeCalled();
 
         $attributeRepository->findOneByIdentifier('sku')->willReturn($skuAttribute);
-        $attributeRepository->findOneByIdentifier('price')->willReturn($priceAttribute);
+        $attributeRepository->findOneByIdentifier('picture')->willReturn($pictureAttribute);
 
         $nameAttribute->getType()->willReturn(AttributeTypes::TEXT);
         $descAttribute->getType()->willReturn(AttributeTypes::TEXTAREA);
-        $priceAttribute->getType()->willReturn(AttributeTypes::PRICE_COLLECTION);
+        $pictureAttribute->getType()->willReturn(AttributeTypes::IMAGE);
 
         $family->setCode('mycode')->shouldBeCalled();
 
@@ -174,9 +174,10 @@ class FamilyUpdaterSpec extends ObjectBehavior
         $family->addAttribute($skuAttribute)->shouldBeCalled();
         $family->addAttribute($nameAttribute)->shouldBeCalled();
         $family->addAttribute($descAttribute)->shouldBeCalled();
-        $family->addAttribute($priceAttribute)->shouldBeCalled();
+        $family->addAttribute($pictureAttribute)->shouldBeCalled();
 
         $family->setAttributeAsLabel($nameAttribute)->shouldBeCalled();
+        $family->setAttributeAsImage($pictureAttribute)->shouldBeCalled();
 
         $this->update($family, $values, []);
     }

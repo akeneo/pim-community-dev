@@ -27,7 +27,7 @@ class CategoryFilterType extends NumberFilterType
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return self::NAME;
     }
@@ -37,7 +37,7 @@ class CategoryFilterType extends NumberFilterType
      */
     public function getParent()
     {
-        return NumberFilterType::NAME;
+        return NumberFilterType::class;
     }
 
     /**
@@ -52,9 +52,9 @@ class CategoryFilterType extends NumberFilterType
 
         $resolver->setDefaults(
             [
-                'field_type'        => CategoryType::NAME,
+                'field_type'        => CategoryType::class,
                 'operator_choices'  => $choices,
-                'empty_value'       => self::EXCLUDE_SUB,
+                'placeholder'       => self::EXCLUDE_SUB,
                 'data_type'         => self::DATA_INTEGER,
                 'formatter_options' => []
             ]

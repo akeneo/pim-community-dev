@@ -7,6 +7,7 @@ use Oro\Bundle\DataGridBundle\Datagrid\RequestParameters;
 use Pim\Component\Catalog\Model\GroupInterface;
 use Pim\Component\Catalog\Repository\GroupRepositoryInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 /**
  * Columns configurator for products grid (used to associate products to groups)
@@ -20,34 +21,28 @@ class GroupColumnsConfigurator extends ColumnsConfigurator
     /** @var GroupRepositoryInterface */
     protected $groupRepository;
 
-    /**
-     * @param array
-     */
-    protected $axisColumns;
+    /** @var RequestStack */
+    protected $requestStack;
 
-    /**
-     * @var Request
-     */
-    protected $request;
-
-    /**
-     * @var RequestParameters
-     */
+    /** @var RequestParameters */
     protected $requestParams;
 
     /**
      * @param ConfigurationRegistry    $registry
      * @param RequestParameters        $requestParams
      * @param GroupRepositoryInterface $groupRepository
+     * @param RequestStack             $requestStack
      */
     public function __construct(
         ConfigurationRegistry $registry,
         RequestParameters $requestParams,
-        GroupRepositoryInterface $groupRepository
+        GroupRepositoryInterface $groupRepository,
+        RequestStack $requestStack
     ) {
         parent::__construct($registry);
         $this->requestParams = $requestParams;
         $this->groupRepository = $groupRepository;
+        $this->requestStack = $requestStack;
     }
 
     /**
@@ -58,17 +53,16 @@ class GroupColumnsConfigurator extends ColumnsConfigurator
         $this->configuration = $configuration;
         $this->preparePropertiesColumns();
         $this->prepareAttributesColumns();
-        $this->prepareAxisColumns();
         $this->sortColumns();
         $this->addColumns();
     }
 
     /**
-     * @param Request $request
+     * @return null|Request
      */
-    public function setRequest(Request $request = null)
+    protected function getRequest(): ?Request
     {
-        $this->request = $request;
+        return $this->requestStack->getCurrentRequest();
     }
 
     /**
@@ -76,7 +70,7 @@ class GroupColumnsConfigurator extends ColumnsConfigurator
      */
     protected function getGroup()
     {
-        $groupId = $this->request->get('id', null);
+        $groupId = $this->getRequest()->get('id', null);
         if (!$groupId) {
             $groupId = $this->requestParams->get('currentGroup', null);
         }
@@ -87,42 +81,17 @@ class GroupColumnsConfigurator extends ColumnsConfigurator
     }
 
     /**
-     * {@inheritdoc}
-     */
-    protected function prepareAxisColumns()
-    {
-        $path = sprintf(self::SOURCE_PATH, self::USEABLE_ATTRIBUTES_KEY);
-        $attributes = $this->configuration->offsetGetByPath($path);
-        $axisCodes = array_map(
-            function ($attribute) {
-                return $attribute->getCode();
-            },
-            $this->getGroup()->getAxisAttributes()->toArray()
-        );
-        $this->axisColumns = [];
-
-        foreach ($attributes as $attributeCode => $attribute) {
-            $attributeType = $attribute['type'];
-            $attributeTypeConf = $this->registry->getConfiguration($attributeType);
-
-            if ($attributeTypeConf && $attributeTypeConf['column']) {
-                if (in_array($attributeCode, $axisCodes)) {
-                    $columnConfig = $attributeTypeConf['column'];
-                    $columnConfig = $columnConfig + [
-                        'label' => $attribute['label'],
-                    ];
-                    $this->axisColumns[$attributeCode] = $columnConfig;
-                }
-            }
-        }
-    }
-
-    /**
      * Sort the columns
      */
     protected function sortColumns()
     {
-        $this->displayedColumns = $this->editableColumns + $this->primaryColumns + $this->identifierColumn
-            + $this->axisColumns + $this->propertiesColumns;
+        $inGroupColumn = [];
+        if (isset($this->propertiesColumns['in_group'])) {
+            $inGroupColumn['in_group'] = $this->propertiesColumns['in_group'];
+            unset($this->propertiesColumns['in_group']);
+        }
+
+        $this->displayedColumns = $this->editableColumns + $inGroupColumn + $this->primaryColumns
+            + $this->propertiesColumns;
     }
 }

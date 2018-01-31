@@ -7,7 +7,7 @@ use Pim\Component\Catalog\Localization\Localizer\AttributeConverterInterface;
 use Pim\Component\Catalog\Model\GroupInterface;
 use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
 use Symfony\Component\Form\FormInterface;
-use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 /**
  * Form handler for group
@@ -21,8 +21,8 @@ class GroupHandler implements HandlerInterface
     /** @var FormInterface */
     protected $form;
 
-    /** @var Request */
-    protected $request;
+    /** @var RequestStack */
+    protected $requestStack;
 
     /** @var SaverInterface */
     protected $groupSaver;
@@ -37,20 +37,20 @@ class GroupHandler implements HandlerInterface
      * Constructor for handler
      *
      * @param FormInterface               $form
-     * @param Request                     $request
+     * @param RequestStack                $requestStack
      * @param SaverInterface              $groupSaver
      * @param ProductRepositoryInterface  $productRepository
      * @param AttributeConverterInterface $localizedConverter
      */
     public function __construct(
         FormInterface $form,
-        Request $request,
+        RequestStack $requestStack,
         SaverInterface $groupSaver,
         ProductRepositoryInterface $productRepository,
         AttributeConverterInterface $localizedConverter
     ) {
         $this->form               = $form;
-        $this->request            = $request;
+        $this->requestStack        = $requestStack;
         $this->groupSaver         = $groupSaver;
         $this->productRepository  = $productRepository;
         $this->localizedConverter = $localizedConverter;
@@ -63,8 +63,8 @@ class GroupHandler implements HandlerInterface
     {
         $this->form->setData($group);
 
-        if ($this->request->isMethod('POST')) {
-            $this->form->submit($this->request);
+        if ($this->requestStack->getCurrentRequest()->isMethod('POST')) {
+            $this->form->handleRequest($this->requestStack->getCurrentRequest());
             if ($this->form->isValid()) {
                 $this->onSuccess($group);
 

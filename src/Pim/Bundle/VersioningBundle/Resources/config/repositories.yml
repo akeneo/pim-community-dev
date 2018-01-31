@@ -1,0 +1,23 @@
+parameters:
+    pim_versioning.repository.version.class:                  Pim\Bundle\VersioningBundle\Doctrine\ORM\VersionRepository
+    pim_versioning.doctrine.query.cursor.class:               Akeneo\Bundle\StorageUtilsBundle\Doctrine\ORM\Cursor\Cursor
+    pim_versioning.doctrine.cursor_factory.version.class:     Akeneo\Bundle\StorageUtilsBundle\Doctrine\ORM\Cursor\CursorFactory
+    pim_versioning.factory.version_cursor.page_size:          1000
+
+services:
+    pim_versioning.repository.version:
+        class: '%pim_versioning.repository.version.class%'
+        factory: 'doctrine.orm.entity_manager:getRepository'
+        arguments: ['%pim_versioning.entity.version.class%']
+        tags:
+            - { name: 'pim_repository' }
+
+    pim_versioning.object_manager.version:
+        alias: doctrine.orm.entity_manager
+
+    pim_versioning.factory.version_cursor:
+        class: '%pim_versioning.doctrine.cursor_factory.version.class%'
+        arguments:
+            - '%pim_versioning.doctrine.query.cursor.class%'
+            - '@pim_versioning.object_manager.version'
+            - '%pim_versioning.factory.version_cursor.page_size%'

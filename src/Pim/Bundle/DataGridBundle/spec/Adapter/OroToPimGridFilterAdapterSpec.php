@@ -3,9 +3,8 @@
 namespace spec\Pim\Bundle\DataGridBundle\Adapter;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Bundle\DataGridBundle\Extension\MassAction\MassActionDispatcher;
-use Symfony\Component\HttpFoundation\Request;
+use Pim\Component\Catalog\Model\FamilyInterface;
 
 class OroToPimGridFilterAdapterSpec extends ObjectBehavior
 {
@@ -14,31 +13,29 @@ class OroToPimGridFilterAdapterSpec extends ObjectBehavior
         $this->beConstructedWith($massActionDispatcher);
     }
 
-    function it_returns_raw_filters($massActionDispatcher, Request $request)
+    function it_returns_raw_filters($massActionDispatcher)
     {
-        $request->get('gridName')->willReturn('product-grid');
-
-        $massActionDispatcher->getRawFilters($request)->willReturn([
+        $massActionDispatcher->getRawFilters(['gridName' => 'product-grid'])->willReturn([
             [
                 'field'    => 'sku',
                 'operator' => 'CONTAINS',
                 'value'    => 'DP',
             ],
             [
-                'field'    => 'categories.id',
+                'field'    => 'categories',
                 'operator' => 'IN',
                 'value'    => [12, 13, 14],
             ]
         ]);
 
-        $this->adapt($request)->shouldReturn([
+        $this->adapt(['gridName' => 'product-grid'])->shouldReturn([
             [
                 'field'    => 'sku',
                 'operator' => 'CONTAINS',
                 'value'    => 'DP',
             ],
             [
-                'field'    => 'categories.id',
+                'field'    => 'categories',
                 'operator' => 'IN',
                 'value'    => [12, 13, 14],
             ]
@@ -47,19 +44,16 @@ class OroToPimGridFilterAdapterSpec extends ObjectBehavior
 
     function it_returns_filters_on_family_grid(
         $massActionDispatcher,
-        Request $request,
         FamilyInterface $family1,
         FamilyInterface $family2
     ) {
-        $request->get('gridName')->willReturn('family-grid');
-
-        $massActionDispatcher->dispatch($request)->willReturn([$family1, $family2]);
+        $massActionDispatcher->dispatch(['gridName' => 'family-grid'])->willReturn([$family1, $family2]);
         $family1->getId()->willReturn(45);
         $family2->getId()->willReturn(70);
 
-        $massActionDispatcher->getRawFilters($request)->shouldNotBeCalled();
+        $massActionDispatcher->getRawFilters(['gridName' => 'family-grid'])->shouldNotBeCalled();
 
-        $this->adapt($request)->shouldReturn([[
+        $this->adapt(['gridName' => 'family-grid'])->shouldReturn([[
             'field'    => 'id',
             'operator' => 'IN',
             'value'    => [45, 70],

@@ -2,13 +2,14 @@
 
 namespace Context;
 
-use Behat\Behat\Context\Step\Then;
+use Behat\ChainedStepsExtension\Step\Then;
 use Behat\Gherkin\Node\TableNode;
 use Behat\Mink\Driver\Selenium2Driver;
 use Behat\Mink\Exception\ElementNotFoundException;
 use Behat\Mink\Exception\ExpectationException;
-use Behat\MinkExtension\Context\RawMinkContext;
 use Context\Spin\SpinCapableTrait;
+use PHPUnit\Framework\Assert;
+use Pim\Behat\Context\PimContext;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
 
 /**
@@ -18,7 +19,7 @@ use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class AssertionContext extends RawMinkContext
+class AssertionContext extends PimContext
 {
     use SpinCapableTrait;
 
@@ -93,7 +94,7 @@ class AssertionContext extends RawMinkContext
         if (!$this->getCurrentPage()->findValidationTooltip($error)) {
             $this->getMainContext()->wait();
             $errors = $this->getCurrentPage()->getValidationErrors();
-            assertTrue(in_array($error, $errors), sprintf('Expecting to see validation error "%s", not found', $error));
+            Assert::assertTrue(in_array($error, $errors), sprintf('Expecting to see validation error "%s", not found', $error));
         }
     }
 
@@ -121,7 +122,7 @@ class AssertionContext extends RawMinkContext
         if ($this->getSession()->getDriver() instanceof Selenium2Driver) {
             $script = 'return $(\'.validation-tooltip[data-original-title="%s"]\').length > 0';
             $found  = $this->getSession()->evaluateScript(sprintf($script, $error));
-            assertFalse($found, sprintf('Expecting to not see validation error, "%s" found', $error));
+            Assert::assertFalse($found, sprintf('Expecting to not see validation error, "%s" found', $error));
         }
     }
 
@@ -144,7 +145,7 @@ class AssertionContext extends RawMinkContext
 
         foreach ($links as $link) {
             if ($link->getText() == $tab) {
-                assertEquals(
+                Assert::assertEquals(
                     $link->getAttribute('class'),
                     'error',
                     sprintf('Expecting tab %s to have class "error", not found.', $tab)
@@ -328,161 +329,93 @@ class AssertionContext extends RawMinkContext
      */
     public function iShouldSeeHistory(TableNode $table)
     {
-        if ($this->getCurrentPage()->find('css', '.panel-container')) {
-            $this->iShouldSeeHistoryInPanel($table);
-
-            return;
-        }
-
-        $updates = [];
-        $rows    = $this->getCurrentPage()->getHistoryRows();
-        foreach ($rows as $row) {
-            $version = (int) $row->find('css', 'td.number-cell')->getHtml();
-            $author  = $row->findAll('css', 'td.string-cell');
-            if (count($author) > 4) {
-                $author = $row->findAll('css', 'td.string-cell')[1]->getHtml();
-            } else {
-                $author = $row->findAll('css', 'td.string-cell')[0]->getHtml();
-            }
-            $data = $row->findAll('css', 'td>ul');
-            $data = end($data);
-            $data = preg_replace('/\s+|\n+|\r+/m', ' ', $data->getHtml());
-
-            $updates[] = [
-                'version' => $version,
-                'data'    => $data,
-                'author'  => $author,
-            ];
-        }
-
-        $valuePattern = '/(.)*<strong>%s:<\/strong>\s*%s\s*(.)*/';
-
-        $expectedUpdates = $table->getHash();
-        foreach ($expectedUpdates as $data) {
-            if (!array_key_exists('author', $data)) {
-                $data['author'] = '';
-            }
-            $expectedPattern = sprintf(
-                $valuePattern,
-                $data['property'],
-                $data['value'],
-                $data['author']
-            );
-
-            $found = false;
-            foreach ($updates as $update) {
-                if ('' === $data['author']) {
-                    $update['author'] = '';
-                }
-                if ((int) $data['version'] === $update['version']) {
-                    if (preg_match($expectedPattern, $update['data'])
-                        && $data['author'] === $update['author']) {
-                        $found = true;
-                        break;
-                    }
-                }
-            }
-
-            if (!$found) {
-                throw $this->createExpectationException(
-                    sprintf(
-                        'Expecting to see history update %d - %s - %s - %s, not found',
-                        $data['version'],
-                        $data['author'],
-                        $data['property'],
-                        $data['value']
-                    )
-                );
-            }
-        }
-    }
-
-    /**
-     * @param TableNode $table
-     *
-     * @Then /^I should see history in panel:$/
-     *
-     * @throws ExpectationException
-     */
-    public function iShouldSeeHistoryInPanel(TableNode $table)
-    {
         $block = $this->spin(function () {
-            return $this->getCurrentPage()->find('css', '.history-block');
+            return $this->getCurrentPage()->find('css', '.history-block, .grid');
         }, 'Could not find the history block');
 
         foreach ($table->getHash() as $data) {
-            $row = $this->spin(function () use ($block, $data) {
-                return $block->find('css', 'tr[data-version="' . $data['version'] . '"]');
-            }, sprintf('Cannot find the row %s', $data['version']));
-
-            if (!$row) {
-                throw $this->createExpectationException(
-                    sprintf('Expecting to see history row for version %s, not found', $data['version'])
-                );
+            $unknownColumns = array_diff(array_keys($data), ['author', 'version', 'property', 'value', 'before']);
+            if (0 !== count($unknownColumns)) {
+                throw new \InvalidArgumentException(sprintf(
+                    'Unrecognized columns "%s"',
+                    json_encode($unknownColumns)
+                ));
             }
-            if (isset($data['author'])) {
-                $author = $row->find('css', 'td.author')->getText();
-                assertEquals(
-                    $data['author'],
+
+            $expectedVersion = $data['version'];
+            $expectedProperty = $data['property'];
+
+            $row = $this->spin(function () use ($block, $expectedVersion) {
+                return $block->find('css', sprintf('.entity-version[data-version="%d"]', $expectedVersion));
+            }, sprintf('Cannot find the version "%s"', $expectedVersion));
+
+            if (array_key_exists('author', $data)) {
+                $expectedAuthor = $data['author'];
+                $author = $row->find('css', '[data-column="author"]')->getText();
+                Assert::assertEquals(
+                    $expectedAuthor,
                     $author,
                     sprintf(
-                        'Expecting the author of version %s to be %s, got %s',
-                        $data['version'],
-                        $data['author'],
+                        'Expecting the author of version "%s" to be "%s", got "%s"',
+                        $expectedVersion,
+                        $expectedAuthor,
                         $author
                     )
                 );
             }
-            if (!$row->hasClass('expanded')) {
-                $row->find('css', '.version-expander')->click();
+
+            if (!$row->hasClass('AknGrid-bodyRow--expanded')) {
+                $this->spin(function () use ($row) {
+                    return $row->find('css', '.version-expander');
+                }, sprintf('Can not find the expand button of version "%s"', json_encode($data)))->click();
             }
 
-            $changesetRows = $this->spin(function () use ($row) {
-                return $row->getParent()->findAll('css', '.changeset:not(.hide) tbody tr');
+            $changesetRow = $this->spin(function () use ($block, $expectedVersion) {
+                return $block->find('css', sprintf('.changeset:not(.hide)[data-version="%d"]', $expectedVersion));
             }, sprintf('No changeset found for version %s', $data['version']));
+            // Each change contains 3 cells: property, before and after cells.
+            $changes = array_chunk($changesetRow->findAll('css', 'tbody .AknGrid-bodyCell'), 3);
 
-            $matchingRow = null;
-            $parsedTexts = [];
-            foreach ($changesetRows as $row) {
-                $innerHtml = $row->find('css', 'td:first-of-type')->getHtml();
-
-                $parsedText = trim(preg_replace('/(<[^>]+>)+/', ' ', $innerHtml));
-                $parsedText = preg_replace('/\s+/', ' ', $parsedText);
-                $parsedTexts[] = $parsedText;
-
-                if ($parsedText === $data['property']) {
-                    $matchingRow = $row;
-                    break;
+            $matchingChange = $this->spin(function () use ($changes, $expectedProperty) {
+                foreach ($changes as $change) {
+                    $propertyCell = $change[0];
+                    if ($propertyCell->getText() === $expectedProperty) {
+                        return $change;
+                    }
                 }
-            }
 
-            if (!$matchingRow) {
-                throw $this->createExpectationException(
-                    sprintf('No row found for property %s, found %s', $data['property'], implode(', ', $parsedTexts))
-                );
-            }
+                return null;
+            }, sprintf('Can not find change of the property "%s"', $expectedProperty));
 
-            $newValue = isset($data['value']) ? $data['value'] : $data['after'];
-            $oldValue = isset($data['before']) ? $data['before'] : null;
-
-            if ($matchingRow->find('css', 'td:nth-of-type(2)')->getText() !== $oldValue && $oldValue) {
-                throw $this->createExpectationException(
-                    sprintf('Wrong old value in row %s, expected %s', $data['property'], $newValue)
-                );
-            }
-
-            if (!preg_match(
-                sprintf('/^%s$/', str_replace(['/', '$', '^'], ['\/', '\$', '\^'], $newValue)),
-                $actual = $matchingRow->find('css', 'td:last-of-type')->getText()
-            )) {
-                throw $this->createExpectationException(
+            if (array_key_exists('before', $data)) {
+                $expectedBefore = $data['before'];
+                $before = $matchingChange[1]->find('css', '.old-values')->getText();
+                Assert::assertEquals(
+                    $expectedBefore,
+                    $before,
                     sprintf(
-                        'Wrong new value in row %s, expected %s, got %s',
-                        $data['property'],
-                        $newValue,
-                        $actual
+                        'Expecting the old value of version "%s" to be "%s", got "%s"',
+                        $expectedVersion,
+                        $expectedBefore,
+                        $before
                     )
                 );
+            }
+
+            if (array_key_exists('value', $data)) {
+                $expectedAfter = $data['value'];
+                $after = $matchingChange[2]->find('css', '.new-values')->getText();
+                if (!preg_match(
+                    sprintf('/^%s$/', str_replace(['/', '$', '^'], ['\/', '\$', '\^'], $expectedAfter)),
+                    $after
+                )) {
+                    throw $this->createExpectationException(sprintf(
+                        'Expecting the new value of version "%s" to be "%s", got "%s"',
+                        $expectedVersion,
+                        $expectedAfter,
+                        $after
+                    ));
+                }
             }
         }
     }
@@ -539,7 +472,7 @@ class AssertionContext extends RawMinkContext
         }
         fclose($file);
 
-        assertEquals($rows, $rowCount, sprintf('Expecting file to contain %d rows, found %d.', $rows, $rowCount));
+        Assert::assertEquals($rows, $rowCount, sprintf('Expecting file to contain %d rows, found %d.', $rows, $rowCount));
     }
 
     /**
@@ -570,12 +503,24 @@ class AssertionContext extends RawMinkContext
      */
     public function iShouldHaveNewNotification($count)
     {
-        $actualCount = (int) $this->getCurrentPage()->find('css', '.AknBell-countContainer')->getText();
+        $this->spin(function () use ($count) {
+            $countContainer = $this->getCurrentPage()->find('css', '.AknNotificationMenu-countContainer');
 
-        assertEquals(
-            $actualCount,
-            $count,
-            sprintf('Expecting to see %d new notifications, saw %d', $count, $actualCount)
+            if (!$countContainer) {
+                return false;
+            }
+            $actualCount = (int) $countContainer->getText();
+
+            Assert::assertEquals(
+                $actualCount,
+                $count,
+                sprintf('Expecting to see %d new notifications, saw %d', $count, $actualCount)
+            );
+
+            return true;
+        }, sprintf(
+            'Expecting to see %d new notifications',
+            $count)
         );
     }
 
@@ -585,14 +530,22 @@ class AssertionContext extends RawMinkContext
     public function iOpenTheNotificationPanel()
     {
         $notificationWidget = $this->spin(function () {
-            return $this->getCurrentPage()->find('css', '#header-notification-widget');
-        }, 'Cannot find "#header-notification-widget" notification panel');
+            return $this->getCurrentPage()->find('css', '.notification');
+        }, 'Cannot find the link to the notification widget');
 
         if ($notificationWidget->hasClass('open')) {
             return;
         }
 
-        $notificationWidget->find('css', '.dropdown-toggle')->click();
+        $this->spin(function () use ($notificationWidget) {
+            $toggle = $notificationWidget->find('css', '.notification-link');
+
+            if (null !== $toggle && $toggle->isVisible()) {
+                $toggle->click();
+
+                return true;
+            }
+        }, 'Can not find the dropdown notification toggle');
 
         // Wait for the footer of the notification panel dropdown to be loaded
         $this->spin(function () {
@@ -631,8 +584,8 @@ class AssertionContext extends RawMinkContext
         $this->iOpenTheNotificationPanel();
 
         $notificationWidget = $this->spin(function () {
-            return $this->getCurrentPage()->find('css', '#header-notification-widget');
-        }, 'Cannot find "#header-notification-widget" notification widget');
+            return $this->getCurrentPage()->find('css', '.notification');
+        }, 'Cannot find the link to the notification widget');
 
         $icons = [
             'success' => 'icon-ok',
@@ -719,7 +672,11 @@ class AssertionContext extends RawMinkContext
      */
     public function iShouldNotSeeDefaultAvatar()
     {
-        $this->assertSession()->elementAttributeNotContains('css', '.AknTitleContainer-avatar', 'src', 'user-info.png');
+        $this->spin(function () {
+            $image = $this->getCurrentPage()->find('css', '.AknTitleContainer-image');
+
+            return null !== $image && false === strpos($image->getAttribute('src'), 'user-info.png');
+        }, 'Avatar image not found or not default one');
     }
 
     /**
@@ -745,8 +702,22 @@ class AssertionContext extends RawMinkContext
      *
      * @return string
      */
-    protected function replacePlaceholders($value)
+    public function replacePlaceholders($value)
     {
         return $this->getMainContext()->getSubcontext('fixtures')->replacePlaceholders($value);
+    }
+
+    /**
+     * @When /^(?:|I )should see "([^"]*)" in popup$/
+     *
+     * @param string $message The message.
+     *
+     * @return bool
+     */
+    public function assertPopupMessage($message)
+    {
+        return $this->spin(function () use ($message) {
+            return $message == $this->getSession()->getDriver()->getWebDriverSession()->getAlert_text();
+        }, sprintf('Cannot assert that the modal contains %s', $message));
     }
 }

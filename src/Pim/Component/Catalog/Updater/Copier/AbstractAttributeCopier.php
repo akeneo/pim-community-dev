@@ -3,7 +3,7 @@
 namespace Pim\Component\Catalog\Updater\Copier;
 
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
-use Pim\Component\Catalog\Builder\ProductBuilderInterface;
+use Pim\Component\Catalog\Builder\EntityWithValuesBuilderInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Validator\AttributeValidatorHelper;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -23,8 +23,8 @@ abstract class AbstractAttributeCopier implements AttributeCopierInterface
     /** @var array */
     protected $supportedToTypes = [];
 
-    /** @var ProductBuilderInterface */
-    protected $productBuilder;
+    /** @var EntityWithValuesBuilderInterface */
+    protected $entityWithValuesBuilder;
 
     /** @var AttributeValidatorHelper */
     protected $attrValidatorHelper;
@@ -33,15 +33,15 @@ abstract class AbstractAttributeCopier implements AttributeCopierInterface
     protected $resolver;
 
     /**
-     * @param ProductBuilderInterface  $productBuilder
-     * @param AttributeValidatorHelper $attrValidatorHelper
+     * @param EntityWithValuesBuilderInterface $entityWithValuesBuilder
+     * @param AttributeValidatorHelper         $attrValidatorHelper
      */
     public function __construct(
-        ProductBuilderInterface $productBuilder,
+        EntityWithValuesBuilderInterface $entityWithValuesBuilder,
         AttributeValidatorHelper $attrValidatorHelper
     ) {
-        $this->productBuilder = $productBuilder;
-        $this->attrValidatorHelper = $attrValidatorHelper;
+        $this->entityWithValuesBuilder = $entityWithValuesBuilder;
+        $this->attrValidatorHelper     = $attrValidatorHelper;
 
         $this->resolver = new OptionsResolver();
         $this->configureOptions($this->resolver);
@@ -55,7 +55,9 @@ abstract class AbstractAttributeCopier implements AttributeCopierInterface
         $supportsFrom = in_array($fromAttribute->getType(), $this->supportedFromTypes);
         $supportsTo = in_array($toAttribute->getType(), $this->supportedToTypes);
 
-        return $supportsFrom && $supportsTo;
+        $sameType = $fromAttribute->getType() === $toAttribute->getType();
+
+        return $supportsFrom && $supportsTo && $sameType;
     }
 
     /**

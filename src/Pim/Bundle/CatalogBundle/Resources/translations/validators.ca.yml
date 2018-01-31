@@ -21,3 +21,26 @@ file.extensions.message: 'Aquesta extensió d''arxiu no està permesa (extension
 "This type of value expects the use of comma (,) to separate decimals.": Aquest tipus de valor espera l'ús d'una coma (,) per separar els decimals.
 "This type of value expects the use of arabic decimal separator (٫) to separate decimals.": Aquest tipus de valor espera l'ús d'un separador decimal àrab (٫) per separar els decimals.
 "This type of value expects the use of the format {{ date_format }} for dates.": 'Aquest tipus de valor espera l''ús d''aquest format per dates: {{ date_format }}.'
+pim_catalog:
+  constraint:
+    product_identifier: Aquests identificadors "%s" no existeixen.
+    0: S'ha produït un error inesperat.
+    100: Valor inesperat
+    101: Aquest camp espera un valor booleà.
+    102: Aquest camp espera un valor float.
+    103: Aquest camp s'espera un nombre enter.
+    104: Aquest camp s'espera un nombre.
+    105: Aquest àmbit es preveu un valor de text.
+    106: Aquest camp preveu un valor de matriu.
+    107: Aquest camp preveu un valor de matriu de matrius.
+    200: S'ha produït un error intern
+    201: S'ha produït un error intern
+    202: Aquest camp s'espera un nombre.
+    203: Aquest àmbit es preveu un valor de text.
+    204: Aquest àmbit es preveu un valor de text.
+    205: S'ha produït un error intern
+    300: Aquest camp espera un codi d'entitat vàlid.
+    301: Aquest camp s'espera un àmbit i una configuració regional vàlids.
+    302: Aquest camp espera un àmbit vàlid.
+    303: Aquest camp espera un format vàlid d'associació.
+

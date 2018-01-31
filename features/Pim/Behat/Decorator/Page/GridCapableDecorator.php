@@ -20,13 +20,14 @@ class GridCapableDecorator extends ElementDecorator
 
     /** @var array Selectors to ease find */
     protected $selectors = [
-        'Dialog grid'        => '.modal',
-        'Grid'               => 'table.grid',
-        'View selector'      => '.grid-view-selector .select2-container',
-        'View type switcher' => '.grid-view-selector .view-selector-type-switcher',
-        'Create view button' => '.grid-view-selector .create-button .create',
-        'Save view button'   => '.grid-view-selector .save-button .save',
-        'Remove view button' => '.grid-view-selector .remove-button .remove',
+        'Dialog grid'                  => '.modal',
+        'Grid'                         => 'table.grid',
+        'View selector'                => '.grid-view-selector .select2-container',
+        'View type switcher'           => '.grid-view-selector .view-selector-type-switcher',
+        'Create view button'           => '.grid-view-selector .create-button .create',
+        'Save view button'             => '.grid-view-selector .save-button .save',
+        'Remove view button'           => '.grid-view-selector .remove-button .remove',
+        'Grid view secondary actions'  => '.grid-view-selector .secondary-actions',
     ];
 
     /** @var array */
@@ -80,6 +81,7 @@ class GridCapableDecorator extends ElementDecorator
 
     public function clickOnCreateViewButton()
     {
+        $this->openSecondaryActions();
         $selector = $this->selectors['Create view button'];
 
         $button = $this->spin(function () use ($selector) {
@@ -87,13 +89,12 @@ class GridCapableDecorator extends ElementDecorator
         }, sprintf('Create view button not found (%s).', $selector));
 
         $this->spin(function () use ($button) {
+            if (null !== $this->find('css', '.modal-body')) {
+                return true;
+            }
             $button->click();
-            $modalHeader = $this->find(
-                'css',
-                '.modal-header:contains("Choose a label for the view")'
-            );
 
-            return null !== $modalHeader;
+            return false;
         }, 'Impossible to open the create view popin');
     }
 
@@ -112,6 +113,7 @@ class GridCapableDecorator extends ElementDecorator
      */
     public function saveView()
     {
+        $this->openSecondaryActions();
         $selector = $this->selectors['Save view button'];
 
         $button = $this->spin(function () use ($selector) {
@@ -126,6 +128,7 @@ class GridCapableDecorator extends ElementDecorator
      */
     public function removeView()
     {
+        $this->openSecondaryActions();
         $selector = $this->selectors['Remove view button'];
 
         $button = $this->spin(function () use ($selector) {
@@ -140,6 +143,7 @@ class GridCapableDecorator extends ElementDecorator
      */
     public function isViewDeletable()
     {
+        $this->openSecondaryActions();
         $selector = $this->selectors['Remove view button'];
 
         try {
@@ -158,6 +162,7 @@ class GridCapableDecorator extends ElementDecorator
      */
     public function isViewCanBeSaved()
     {
+        $this->openSecondaryActions();
         $selector = $this->selectors['Save view button'];
 
         try {
@@ -200,19 +205,31 @@ class GridCapableDecorator extends ElementDecorator
      */
     public function switchViewType($type)
     {
-        $selector = $this->selectors['View type switcher'];
+        $selector = $this->spin(function () {
+            $selector = $this->find('css', $this->selectors['View type switcher']);
+            if (null !== $selector) {
+                if ($selector->getParent()->hasClass('open')) {
+                    return $selector;
+                }
+                $selector->click();
+            }
 
-        $viewTypeSwitcher = $this->spin(function () use ($selector) {
-            return $this->find('css', $selector);
-        }, 'Cannot find the View Type Switcher.');
+            return false;
+        }, 'Cannot open view type switcher');
 
-        $viewTypeSwitcher->click();
+        $this->spin(function () use ($selector, $type) {
+            $currentViewType = $selector->find('css', '.current-view-type');
+            if (null !== $currentViewType && strtolower($currentViewType->getText()) === strtolower($type)) {
+                return true;
+            }
 
-        $viewType = $this->spin(function () use ($type) {
-            return $this->find('css', sprintf('.view-type-item[title="%s"]', $type));
-        }, sprintf('Cannot find element in the View Type Switcher dropdown with name "%s".', $type));
+            $viewType = $this->find('css', sprintf('.view-type-item[title="%s"]', $type));
+            if (null !== $viewType) {
+                $viewType->click();
+            }
 
-        $viewType->click();
+            return false;
+        }, sprintf('Cannot click element in the View Type Switcher dropdown with name "%s".', $type));
     }
 
     /**
@@ -229,5 +246,24 @@ class GridCapableDecorator extends ElementDecorator
         }, 'Cannot find the View Type Switcher in the View Selector.');
 
         return $viewTypeSwitcher->getText();
+    }
+
+    /**
+     * Opens the secondary actions dropdown
+     */
+    protected function openSecondaryActions()
+    {
+        $this->spin(function () {
+            $element = $this->find('css', $this->selectors['Grid view secondary actions']);
+            if ($element !== null) {
+                if ($element->hasClass('open')) {
+                    return true;
+                } else {
+                    $element->click();
+                }
+            }
+
+            return false;
+        }, 'Can not open the grid view selector secondary actions');
     }
 }

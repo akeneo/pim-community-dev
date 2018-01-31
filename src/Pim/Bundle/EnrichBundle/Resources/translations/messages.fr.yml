@@ -19,6 +19,8 @@ pim_enrich:
       attribute.title: Attributs
       history.title: Historique
   family:
+    info:
+      cant_remove_attribute_used_as_axis: Impossible d'enlever cet attribut car il est utilisé comme axe de variation de la variante de famille
     tab:
       property.title: Propriétés
       attribute.title: Attributs
@@ -49,20 +51,6 @@ pim_enrich:
       product.title: Produits
       property.title: Propriétés
       history.title: Historique
-  variant_group:
-    type:
-      VARIANT: Variante
-      X_SELL: Vente croisée
-      ADDITIONAL: Supplémentaire
-      RELATED: Associés
-    tab:
-      product.title: Produits
-      property.title: Propriétés
-      history.title: Historique
-      attribute.title: Attributs
-    info:
-      no_attributes: Ce groupe de variantes n'a pas encore d'attributs
-      no_attributes_in_selected_locale: Ce groupe de variante n'a pas d'attributs dans cette locale
   completeness:
     progress_bar.title: '%ratio%% complet (1 valeur requise)|%ratio%% complet (%count% valeurs requises)'
     subtitle: '{0} Complet|{1} 1 valeur manquante|]1,Inf] %count% valeurs manquantes'
@@ -94,7 +82,7 @@ pim_enrich:
         third: Configurer
         fourth: Confirmer
     change-status:
-      label: Changer de statut (activé / désactivé)
+      label: Changer le statut
       description: Les produits sélectionnés vont être activés ou désactivés.
       success_flash: Le statut des produits ont été changés
       launched_flash: L'action de masse "changement de statut" a été lancée. Vous serez notifié(e) lorsque la modification sera terminée.
@@ -103,28 +91,28 @@ pim_enrich:
       description: Les attributs sélectionnés du produit vont être modifiés avec les valeurs suivantes pour la locale choisie.
       empty: Veuillez sélectionner le ou les attribut(s) à modifier
       success_flash: La mise à jour du statut de produit(s) est en cours
-      launched_flash: L'action de masse "Modification des attributs communs" a été lancée. Vous serez notifié(e) lorsque la modification sera terminée.
+      launched_flash: L'action de masse "Modification des attributs" a été lancée. Vous serez notifié(e) lorsque la modification sera terminée.
       message:
         warning: Il n'y a pas d'attribut en commun pour les produits sélectionnés. Veuillez modifier votre sélection.
         invalid_attribute: L'attribut ayant pour code "attribute_code" n'est pas un attribut commun aux produits sélectionnés, attribut ignoré.
         no_valid_attribute: Aucun des attributs sélectionnés ne peut être appliqué à ce produit.
     classify-add:
-      label: Classifier les produits dans des catégories
+      label: Ajouter à des catégories
       description: Les produits seront positionnés dans les catégories suivantes, le placement existant avant l'opération sera conservé.
       success_flash: Le(s) produit(s) ont été classifiés dans les catégories sélectionnées
       launched_flash: L'action de masse "ajout aux catégories" a été lancée. Vous serez notifié(e) lorsque la modification sera terminée.
     classify-move:
-      label: Déplacer des produits vers des catégories
+      label: Déplacer vers d'autres catégories
       description: Les produits seront positionnés dans les catégories suivantes, le placement existant avant l'opération sera perdu.
       success_flash: Le(s) produit(s) ont été déplacés dans les catégories sélectionnées
       launched_flash: L'action de masse "déplacement dans les catégories" a été lancée. Vous serez notifié(e) lorsque la modification sera terminée.
     classify-remove:
-      label: Retirer des produits des catégories
+      label: Retirer des catégories
       description: Les produits seront retirés des catégories suivantes.
       success_flash: Le(s) produit(s) ont été supprimés des catégories sélectionnées
       launched_flash: L'action de masse "suppression des catégories" a été lancée. Vous serez notifié(e) lorsque la modification sera terminée.
     change-family:
-      label: Changer la famille des produits
+      label: Changer de famille
       description: La famille des produits sélectionnés sera remplacée par la famille choisie
       success_flash: La famille de(s) produit(s) sélectionné(s) a été modifiée avec succès
       launched_flash: L'action de masse "changement de famille" a été lancée. Vous serez notifié(e) lorsque la modification sera terminée.
@@ -134,18 +122,8 @@ pim_enrich:
       success_flash: Les produits ont été ajoutés aux groupes sélectionnés
       launched_flash: L'action de masse "ajout aux groupes" a été lancée. Vous serez notifié(e) lorsque la modification sera terminée.
       no_group: Aucun groupe pour l'instant. Veuillez commencer par créer un groupe.
-    add-to-variant-group:
-      label: Ajouter à un groupe de variantes
-      description: Choisissez le groupe de variantes auquel associer les produits sélectionnés
-      success_flash: Les produits ont bien été associés au groupe de variantes sélectionné
-      already_in_variant_group_or_not_valid: Vous ne pouvez pas grouper les produits suivants, car ils font déjà partie d'un groupe de variantes ou ne possèdent pas l'axe de variation du groupe.
-      no_variant_group: Aucun groupe de variantes pour l'instant. Veuillez commencer par créer un groupe de variantes.
-      no_valid_variant_group: Aucun groupe de variantes ne partage des attributs avec les produits sélectionnés.
-      some_variant_groups_are_skipped:
-        The following variant groups have been skipped because they don't share attributes with selected products: '%groups%'
-      launched_flash: L'action de masse "ajout au groupe de variantes" a été lancée. Vous serez notifié(e) lorsque la modification sera terminée.
     set-attribute-requirements:
-      label: Choisir les attributs requis
+      label: Configurer les exigences d'attributs
       description: Les exigences d'attributs suivants s'appliqueront aux familles sélectionnées
       success_flash: Les exigences d'attributs ont été appliquées aux familles sélectionnées
       launched_flash: L'action de masse "définition des attributs requis" a été lancée. Vous serez notifié(e) lorsque la modification sera terminée.
@@ -170,15 +148,21 @@ pim_enrich:
       add_attribute: Ajouter un attribut à un produit
       remove_attribute: Supprimer un attribut d'un produit
       categories_view: Consulter les catégories d'un produit
-      associations_view: Afficher les types d'association d'un produit
+      associations_view: Afficher les associations d'un produit
+      associations_edit: Ajouter des associations à un produit
       change_family: Changer la famille du produit
       change_state: Changer l'état du produit
       add_to_groups: Ajouter le produit à des groupes
-      add_to_variant_group: Ajouter le produit à un groupe de variantes
       mass_edit: Actions d'édition en masse des produits
       comment: Commenter les produits
       download: Télécharger le produit en PDF
       history: Afficher l'historique du produit
+    product_model:
+      create: Créer un modèle de produit
+      edit_attributes: Modifier les attributs du modèle de produit
+      categories_view: Afficher les catégories d'un modèle de produit
+      history: Afficher l'historique d'un modèle de produit
+      remove: Supprimer un modèle de produit
     category:
       list: Liste des catégories
       create: Créer une catégorie
@@ -223,15 +207,6 @@ pim_enrich:
       edit: Modifier un groupe
       remove: Supprimer un groupe
       history: Afficher l'historique du groupe
-    variant_group:
-      index: Liste des groupes de variantes
-      create: Créer un groupe de variantes
-      edit: Modifier un groupe de variantes
-      remove: Supprimer un groupe de variantes
-      history: Afficher l'historique du groupe de variantes
-      edit_attributes: Modifier les attributs du groupe de variantes
-      add_attributes: Ajouter des attributs aux groupe de variantes
-      remove_attribute: Supprimer les attributs du groupe de variantes
     group_type:
       index: Liste des types de groupe
       create: Créer un type de groupe
@@ -243,8 +218,12 @@ pim_enrich:
       edit: Modifier un type d'association
       remove: Supprimer un type d'association
       history: Afficher l'historique du type d'association
+    association:
+      remove: Supprimer les associations d'un produit
     job_tracker:
       index: Voir les processus exécutés
+    api_connection:
+      manage: Gérer les connexions API
   acl_group:
     association_type: Types d'association
     attribute: Attributs
@@ -254,24 +233,18 @@ pim_enrich:
     currency: Devises
     family: Familles
     group: Groupes
-    variant_group: Groupes de variantes
     group_type: Types de groupe
     locale: Locales
     product: Produits
-  product_value:
-    tooltip:
-      from_variant:
-        title: Mis à jour par un groupe de variantes
-        content: Ce champ est mis à jour par le groupe de variantes suivant
+    product_model: Modèles de produits
   reference_data:
     empty_value:
       reference_data_type:
         label: Choisir un type de données référentielles
 attribute:
   title: attribut
-  overview: Liste des attributs
-  create: Créer un attribut
   edit: Modifier un attribut
+  create: Créer un attribut
 attribute group:
   title: groupe d'attributs
   overview: Liste des groupes d'attributs
@@ -282,7 +255,7 @@ attribute group:
   create new: Créer un nouveau groupe d'attributs
 category:
   title: catégorie
-  overview: Liste des catégories
+  overview: Catégories
   create: Créer une catégorie
   edit: modifier une catégorie
   suggest selection: Veuillez sélectionner une catégorie à gauche
@@ -299,17 +272,13 @@ channel:
   edit: modifier un canal
 currency:
   title: devise
-  overview: Liste des devises
   create: Créer une monnaie
   edit: modifier une monnaie
 family:
   title: famille
-  overview: Liste des familles
-  create: Créer une famille
   edit: modifier une famille
 locale:
   title: locale
-  overview: Liste des locales
   create: Créer une locale
   edit: Modifier une locale
 product:
@@ -319,22 +288,12 @@ product:
   edit: Modifier un produit
 group:
   title: groupe
-  overview: Liste des groupes
-  create: Créer un groupe
   edit: modifier un groupe
 group type:
   title: type de groupe
-  overview: Liste des types de groupe
-  create: Créer le type de groupe
   edit: modifier le type de groupe
-variant group:
-  title: groupe de variantes
-  overview: Liste des groupes de variantes
-  create: Créer un groupe de variantes
-  edit: Modifier un groupe de variantes
 association type:
   title: type d'association
-  overview: Liste des types d'association
   create: Créer un type d'association
   edit: Modifier le type d'association
 products: Produits
@@ -350,13 +309,11 @@ btn:
     locale: Créer une locale
     product: Créer un produit
     group: Créer un groupe
-    variant group: Créer un groupe de variantes
     association type: Créer un type d'association
     group type: Créer le type de groupe
     drag_or_upload: Glissez et déposez un fichier pour le télécharger ou cliquez ici
   edit: Modifier
   save: Enregistrer
-  save and back: Enregistrer et revenir à la grille
   save and create: Sauver et créer un nouveau
   save and next: Enregistrer et passer au suivant
   save and finish: Enregistrer et terminer
@@ -372,7 +329,7 @@ btn:
   download: télécharger
 confirmation:
   confirm: Confirmation
-  delete: Confirmation de la suppression
+  delete: Supprimer l'élément
   leave: Êtes-vous sûr(e) de vouloir quitter cette page ?
   discard changes: Vous perdrez toutes les modifications apportées à l'objet %entity% si vous quittez cette page.
   remove:
@@ -383,7 +340,6 @@ confirmation:
     family: Êtes-vous sûr(e) de vouloir supprimer la famille %name% ?
     product: Êtes-vous sûr(e) de vouloir supprimer le produit %name% ?
     group: Êtes-vous sûr(e) de vouloir supprimer le groupe %name% ?
-    variant group: Êtes-vous sûr(e) de vouloir supprimer le groupe de variantes %name% ?
     group type: Êtes-vous sûr(e) de vouloir supprimer le groupe %name% ?
     user: Êtes vous sûr(e) de vouloir supprimer l'utilisateur %name% ?
   attribute group:
@@ -392,8 +348,6 @@ confirmation:
     remove attribute: Êtes vous sûr(e) de vouloir retirer l'attribut %name% de cette famille ?
   product:
     remove attribute: Êtes vous sûr(e) de vouloir retirer l'attribut %name% de ce produit ?
-  variant_group:
-    remove_attribute: Êtes vous sûr(e) de vouloir retirer l'attribut %name% de ce groupe de variantes ?
 flash:
   entity:
     removed: L'entité a été supprimée
@@ -402,7 +356,6 @@ flash:
     updated: Attribut mis à jour avec succès
     removed: Attribut supprimé avec succès
     identifier not removable: Un attribut de type identifiant ne peut pas être supprimé
-    used by groups: Cet attribut ne peut pas être supprimé car il est utilisé par %count% groupes de variantes
   attribute group:
     created: Groupe d'attributs créé avec succès
     updated: Groupe d'attributs mis à jour avec succès
@@ -425,7 +378,6 @@ flash:
     updated: Devise mise à jour avec succès
     error.linked_to_channel: Vous ne pouvez pas désactiver une devise liée à un canal.
   family:
-    created: Famille créée avec succès
     updated: Famille mise à jour avec succès
     removed: Famille supprimée avec succès
     identifier not removable: Un attribut de type identifiant ne peut pas être retiré d'une famille
@@ -444,20 +396,12 @@ flash:
     enabled: Produit activé
     disabled: Produit désactivé
   group:
-    created: Groupe créé avec succès
     updated: Groupe mis à jour avec succès
     removed: Groupe supprimé avec succès
-  variant group:
-    created: Le groupe de variantes a bien été créé
-    updated: Le groupe de variantes a bien été mis à jour
-    removed: Le groupe de variantes a bien été supprimé
-    attributes_added: Attributs ajoutés avec succès au groupe de variantes
-    attribute_removed: Attribut supprimé avec succès du groupe de variantes
   group type:
     created: Le type de groupe a bien été créé
     updated: Le type de groupe a bien été mis à jour
     removed: Le type de groupe a bien été supprimé
-    cant remove variant: Le type variant ne peut pas être supprimé
     cant remove used: Ce type de groupe est utilisé par certains groupes et ne peut pas être supprimé
   association type:
     created: Le type d'association est créé avec succès
@@ -513,7 +457,7 @@ Manage groups: Gérer les groupes
 Code: Code
 Name: Nom
 Type: Type
-Scope: Portée
+Scope: Canal
 Required: Obligatoire
 Unique: Unique
 Not required: Non requis
@@ -571,6 +515,7 @@ No matches found: Aucune correspondance trouvée
 Category tree: Arborescence
 Completeness: Complétude
 Attribute used as label: Attribut utilisé comme étiquette
+Credentials: Certificats
 Global: Général
 Channel: Canal
 Expand all channels: Afficher tous les canaux
@@ -618,7 +563,7 @@ pim_title.attribute:
   edit: "Attributs %attribute.label% | Modifier"
 pim_title.product:
   index: "Produits"
-  edit: "Produit %product.sku% | Modifier"
+  edit: "Produits %product.label% | Modification"
 pim_title.family:
   index: "Familles"
   edit: "Famille %family.label% | Modifier"
@@ -633,9 +578,6 @@ pim_title.locale:
 pim_title.group:
   index: "Groupes"
   edit: "Groupes %group.label% | Modifier"
-pim_title.variant_group:
-  index: "Groupes de variantes"
-  edit: "Groupe de variantes %group.label% | Modifier"
 pim_title.association_type:
   index: "Types d'association"
   edit: "Types d'association %association type.label% | Modifier"
@@ -697,23 +639,22 @@ pim_enrich.mass_edit_action:
       third: Configurer
       fourth: Confirmer
   change-status:
-    label: Changer de statut (activé / désactivé)
+    label: Changer le statut
     description: Les produits sélectionnés vont être activés ou désactivés.
     success_flash: Le statut des produits ont été changés
   edit-common-attributes:
-    label: Modifier les attributs communs
+    label: Modifier des attributs
     description: Les attributs sélectionnés du produit vont être modifiés avec les valeurs suivantes pour la locale choisie.
     empty: Veuillez sélectionner le ou les attribut(s) à modifier
     success_flash: Le(s) attribut(s) ont été mis à jour
     message.warning: Il n'y a pas d'attribut en commun pour les produits sélectionnés. Veuillez modifier votre sélection.
     no_attribute.warning: Il n'y a pas d'attribut en commun pour les produits sélectionnés. Veuillez modifier votre sélection.
-    truncated_by_variant_attribute.warning: 'Certains attributs des produits sélectionnés sont liés à un groupe de variantes. Ils ne sont pas disponibles pour l''édition en masse : %attributes%.'
   classify:
-    label: Classifier les produits dans des catégories
+    label: Ajouter à des catégories
     description: Les produits seront positionnés dans les catégories suivantes, le placement existant avant l'opération sera conservé.
     success_flash: Le(s) produit(s) ont été classifiés dans les catégories sélectionnées
   change-family:
-    label: Changer la famille des produits
+    label: Changer de famille
     description: La famille des produits sélectionnés sera remplacée par la famille choisie
     success_flash: La famille de(s) produit(s) sélectionné(s) a été modifiée avec succès
     no_family: Aucune famille
@@ -722,7 +663,7 @@ pim_enrich.mass_edit_action:
     description: Sélectionnez les groupes dans lesquels ajouter les produits sélectionnés
     success_flash: Les produits ont été ajoutés aux groupes sélectionnés
   set-attribute-requirements:
-    label: Choisir les attributs requis
+    label: Configurer les exigences d'attributs
     description: Les exigences d'attributs suivants s'appliqueront aux familles sélectionnées
     success_flash: Les exigences d'attributs ont été appliquées aux familles sélectionnées
 To enable: Pour activer
@@ -734,25 +675,6 @@ Current tab: Onglet actif
 Group: Groupe
 View group: Afficher le groupe
 Products: Produits
-pim_menu:
-  tab:
-    collect: Collecter
-    enrich: Enrichir
-    settings: Paramètres
-    spread: Diffuser
-  item:
-    association_type: Types d'association
-    attribute: Attributs
-    attribute_group: Groupes d'attributs
-    category: Catégories
-    channel: Canaux
-    currency: Devises
-    family: Familles
-    group: Groupes
-    group_type: Types de groupe
-    locale: Locales
-    product: Produits
-    variant_group: Groupes de variantes
 Properties: Propriétés
 History: Historique
 pane.accordion:
@@ -767,11 +689,8 @@ pane.accordion:
   group_values: Valeurs du groupe
 popin.create:
   association_type.title: Créer un nouveau type d'association
-  family.title: Créer une nouvelle famille
   group.title: Créer un nouveau groupe
-  group_type.title: Créer un nouveau type de groupe
   product.title: Créer un nouveau produit
-  variant_group.title: Créer un nouveau groupe de variants
   option.title: Créer une nouvelle option
 In group: Dans le groupe
 Attribute as label: Attribut en tant que libellé
@@ -844,16 +763,11 @@ job_execution.summary:
   skipped_attributes: Attributs ignorés
   skipped_families: Familles ignorées
 pim_mass_edit_execution_show: Exécutions des éditions en masse | Détails
-edit_common_attributes.steps.edit_common_attributes_processor.title: Modifier les attributs communs
+edit_common_attributes.steps.edit_common_attributes_processor.title: Modifier des attributs
 update_product_value.steps.update_product_value_processor.title: Mise à jour de la valeur du produit
 remove_product_value.steps.update_product_value_processor.title: Suppression de la valeur du produit
-add_to_variant_group_clean.steps.excluded.title: Produit exclu
-add_to_variant_group_clean.steps.duplicated.title: Axe dupliqué
-add_to_variant_group.steps.excluded.title: Produit exclu
-add_to_variant_group.steps.duplicated.title: Axe dupliqué
-add_to_variant_group.steps.cleaner.warning.description: 'Le produit ne peut pas être affecté au groupe de variantes : duplication de la valeur de l''axe de variation avec un autre produit de la sélection'
-edit_common_attributes: Modifier les attributs communs
-edit_common_attributes_clean: Nettoyer les fichiers pour les attributs communs
+edit_common_attributes: Modifier des attributs
+edit_common_attributes_clean: Nettoyer les fichiers pour les attributs
 perform.steps.duplicated.title: Axe dupliqué
 perform.steps.excluded.title: Produit exclu
 batch_jobs:
@@ -866,15 +780,37 @@ batch_jobs:
     perform:
       label: Mise à jour de la valeur du produit
   edit_common_attributes:
-    label: Modifier les attributs communs
+    label: Modifier des attributs
     perform:
-      label: Modifier les attributs communs
+      label: Modifier des attributs
     clean:
-      label: Nettoyer les fichiers pour les attributs communs
-  set_attribute_requirements:
-    label: Choisir les attributs requis
+      label: Nettoyer les fichiers pour les attributs
+    cleaner:
+      label: Nettoyer les fichiers pour les attributs
+  add_to_category:
+    label: Ajouter à une catégorie
     perform:
-      label: Choisir les attributs requis
+      label: Ajouter à une catégorie
+  move_to_category:
+    label: Déplacer dans la catégorie
+    perform:
+      label: Déplacer dans la catégorie
+  remove_from_category:
+    label: Retirer de la catégorie
+    perform:
+      label: Retirer de la catégorie
+  add_association:
+    label: Associer aux produits
+    perform:
+      label: Associer aux produits
+  add_to_existing_product_model:
+    label: Ajouter à un modèle de produit existant
+    perform:
+      label: Ajouter à un modèle de produit existant
+  set_attribute_requirements:
+    label: Configurer les exigences d'attributs
+    perform:
+      label: Configurer les exigences d'attributs
   csv_product_quick_export:
     quick_export.label: Export rapide de produits en CSV
     perform:
@@ -891,10 +827,6 @@ batch_jobs:
     quick_export.label: Export rapide de la grille de produits en XLSX
     perform:
       label: Export rapide de la grille de produits en XLSX
-  add_to_variant_group:
-    label: Ajouter au groupe de variantes
-    perform:
-      label: Ajouter au groupe de variantes
 mass_edit report:
   overview: Rapports des éditions en masse
 job_tracker:

@@ -8,6 +8,10 @@ pim_user:
       business_unit.title: 部署
       email_synchronization.title: メール同期設定
       interfaces.title: インタフェース
+  group:
+    tab:
+      general.title: 全般
+      users.title: ユーザー
 oro.user.controller:
   group.message.saved: "グループが保存されました"
   role.message.saved: "ロールを保存しました"

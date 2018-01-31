@@ -2,7 +2,6 @@
 
 namespace Pim\Bundle\CatalogBundle\Command;
 
-use Symfony\Component\Console\Helper\HelperSet;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
@@ -18,7 +17,6 @@ interface DumperInterface
      * Dump data
      *
      * @param OutputInterface $output
-     * @param HelperSet       $helperSet
      */
-    public function dump(OutputInterface $output, HelperSet $helperSet);
+    public function dump(OutputInterface $output);
 }

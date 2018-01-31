@@ -3,40 +3,30 @@
 .AknTabContainer {
   padding: 10px 20px;
 
-  &-content {
-    border-left: 1px solid @AknBorderColor;
-    border-right: 1px solid @AknBorderColor;
-    border-bottom: 1px solid @AknBorderColor;
-    border-bottom-left-radius: 2px;
-    border-bottom-right-radius: 2px;
-
-    &--fullWidth {
-      width: 100%;
-    }
-  }
-
   &-contentThreeColumns {
     display: flex;
     align-items: stretch;
+    width: 100%;
+    overflow-x: auto;
+    overflow-y: hidden;
   }
 
-  &-panels {
-    flex-basis: 450px;
-    flex-grow: 0.1;
+  &-withPadding {
+    padding: 20px 0 0 40px;
+  }
 
-    &--closed {
+  &-content {
+    position: relative;
+  }
+
+  &-contentCache {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: rgba(255,255,255,0.5);
+
+    &--hidden {
       display: none;
     }
-  }
-
-  &-notPanels { }
-
-  &-contentThreeColumns--fullPanel &-notPanels {
-    display: none;
-  }
-
-  &-contentThreeColumns--fullPanel &-panels {
-    border-left: 1px solid @AknBorderColor;
-    flex-basis: 100%;
   }
 }

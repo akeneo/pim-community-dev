@@ -8,6 +8,10 @@ pim_user:
       business_unit.title: Jednostki biznesowe
       email_synchronization.title: Ustawienia synchronizacji poczty e-mail
       interfaces.title: Interfejsy
+  group:
+    tab:
+      general.title: Ogólne
+      users.title: Użytkownicy
 oro.user.controller:
   group.message.saved: "Grupa zapisana"
   role.message.saved: "Rola zapisana"

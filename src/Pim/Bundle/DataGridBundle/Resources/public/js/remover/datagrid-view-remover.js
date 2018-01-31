@@ -2,11 +2,9 @@
 
 define([
         'jquery',
-        'module',
         'routing'
     ], function (
         $,
-        module,
         Routing
     ) {
         return {
@@ -19,7 +17,7 @@ define([
              * @returns {Promise}
              */
             remove: function (datagridView) {
-                var removeRoute = Routing.generate(module.config().url, {identifier: datagridView.id});
+                var removeRoute = Routing.generate(__moduleConfig.url, {identifier: datagridView.id});
 
                 return $.ajax({url: removeRoute, type: 'DELETE'});
             }

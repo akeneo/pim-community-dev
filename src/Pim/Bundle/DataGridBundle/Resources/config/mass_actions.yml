@@ -1,8 +1,8 @@
 parameters:
     pim_datagrid.extension.mass_action.type.export.class:                 Pim\Bundle\DataGridBundle\Extension\MassAction\Actions\Export\ExportMassAction
     pim_datagrid.extension.mass_action.type.delete.class:                 Pim\Bundle\DataGridBundle\Extension\MassAction\Actions\Ajax\DeleteMassAction
-    pim_datagrid.extension.mass_action.handler.edit.class:                Pim\Bundle\DataGridBundle\Extension\MassAction\Handler\EditMassActionHandler
     pim_datagrid.extension.mass_action.handler.export.class:              Pim\Bundle\DataGridBundle\Extension\MassAction\Handler\ExportMassActionHandler
+    pim_datagrid.extension.mass_action.handler.edit.class:     Pim\Bundle\DataGridBundle\Extension\MassAction\Handler\EditMassActionHandler
     pim_datagrid.extension.mass_action.handler.sequential_edit.class:     Pim\Bundle\DataGridBundle\Extension\MassAction\Handler\SequentialEditActionHandler
     pim_datagrid.extension.mass_action.handler.delete.class:              Pim\Bundle\DataGridBundle\Extension\MassAction\Handler\DeleteMassActionHandler
     pim_datagrid.extension.mass_action.handler.product_delete.class:      Pim\Bundle\DataGridBundle\Extension\MassAction\Handler\DeleteProductsMassActionHandler
@@ -19,8 +19,17 @@ services:
             - '@oro_datagrid.datagrid.manager'
             - '@oro_datagrid.datagrid.request_params'
             - '@oro_datagrid.mass_action.parameters_parser'
+            - ['product-grid']
 
     # Handlers
+    pim_datagrid.extension.mass_action.handler.edit:
+        class: '%pim_datagrid.extension.mass_action.handler.edit.class%'
+        arguments:
+            - '@pim_datagrid.datasource.result_record.hydrator.orm.object'
+            - '@event_dispatcher'
+        tags:
+            - { name: pim_datagrid.extension.mass_action.handler, alias: mass_edit }
+
     pim_datagrid.extension.mass_action.handler.export:
         class: '%pim_datagrid.extension.mass_action.handler.export.class%'
         arguments:
@@ -45,21 +54,17 @@ services:
         tags:
             - { name: pim_datagrid.extension.mass_action.handler, alias: sequential_edit }
 
-    pim_datagrid.extension.mass_action.handler.edit:
-        class: '%pim_datagrid.extension.mass_action.handler.edit.class%'
-        arguments:
-            - '@pim_datagrid.datasource.result_record.hydrator.orm.object'
-            - '@event_dispatcher'
+    pim_datagrid.extension.mass_action.type.edit:
+        class: Pim\Bundle\DataGridBundle\Extension\MassAction\Actions\Redirect\EditMassAction
+        shared: false
         tags:
-            - { name: pim_datagrid.extension.mass_action.handler, alias: mass_edit }
+            - { name: oro_datagrid.extension.mass_action.type, type: edit }
 
-    pim_datagrid.extension.mass_action.handler.product_edit:
-        class: '%pim_datagrid.extension.mass_action.handler.edit.class%'
-        arguments:
-            - '@pim_datagrid.datasource.result_record.hydrator.object'
-            - '@event_dispatcher'
+    pim_datagrid.extension.mass_action.type.sequential_edit:
+        class: Pim\Bundle\DataGridBundle\Extension\MassAction\Actions\Redirect\SequentialEditMassAction
+        shared: false
         tags:
-            - { name: pim_datagrid.extension.mass_action.handler, alias: product_mass_edit }
+            - { name: oro_datagrid.extension.mass_action.type, type: sequential_edit }
 
     pim_datagrid.extension.mass_action.handler.delete:
         class: '%pim_datagrid.extension.mass_action.handler.delete.class%'
@@ -72,6 +77,9 @@ services:
 
     pim_datagrid.extension.mass_action.handler.product_delete:
         class: '%pim_datagrid.extension.mass_action.handler.product_delete.class%'
+        arguments:
+            - '@pim_catalog.elasticsearch.indexer.product'
+            - '@pim_enrich.factory.product_and_product_model_cursor'
         parent: pim_datagrid.extension.mass_action.handler.delete
         tags:
             - { name: pim_datagrid.extension.mass_action.handler, alias: product_mass_delete }
@@ -79,19 +87,13 @@ services:
     # Mass actions
     pim_datagrid.extension.mass_action.type.export:
         class: '%pim_datagrid.extension.mass_action.type.export.class%'
-        scope: prototype
+        shared: false
         tags:
             - { name: oro_datagrid.extension.mass_action.type, type: export }
 
-    pim_datagrid.extension.mass_action.type.edit:
-        class: Pim\Bundle\DataGridBundle\Extension\MassAction\Actions\Redirect\EditMassAction
-        scope: prototype
-        tags:
-            - { name: oro_datagrid.extension.mass_action.type, type: edit }
-
     pim_datagrid.extension.mass_action.type.delete:
         class: '%pim_datagrid.extension.mass_action.type.delete.class%'
-        scope: prototype
+        shared: false
         tags:
             - { name: oro_datagrid.extension.mass_action.type, type: delete }
 

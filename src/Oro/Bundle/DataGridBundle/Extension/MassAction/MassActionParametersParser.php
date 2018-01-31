@@ -14,7 +14,7 @@ class MassActionParametersParser
     public function parse(Request $request)
     {
         $inset = $request->get('inset', true);
-        $inset = !empty($inset);
+        $inset = !empty($inset) && 'false' !== $inset;
 
         $values = $request->get('values', '');
         if (!is_array($values)) {
@@ -29,10 +29,22 @@ class MassActionParametersParser
             $filters = [];
         }
 
+        $actionName = $request->get('actionName');
+        $gridName = $request->get('gridName');
+        $dataLocale = $request->query->get('dataLocale');
+        $dataScope = isset($filters['scope']) ? $filters['scope'] : null;
+        $gridParams = $request->query->get($request->get('gridName'));
+        $sort = isset($gridParams['_sort_by']) ? $gridParams['_sort_by'] : null;
+
         return [
-            'inset'   => $inset,
-            'values'  => $values,
-            'filters' => $filters,
+            'inset'      => $inset,
+            'values'     => $values,
+            'filters'    => $filters,
+            'actionName' => $actionName,
+            'gridName'   => $gridName,
+            'dataLocale' => $dataLocale,
+            'dataScope'  => $dataScope,
+            'sort'       => $sort
         ];
     }
 }

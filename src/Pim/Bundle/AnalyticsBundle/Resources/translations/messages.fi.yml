@@ -5,8 +5,8 @@ pim_analytics:
       notification.title: Ilmoitukset
       version_update.title: Versiopäivitykset
     form:
-      version_update.label: Versiopäivitykset
-      version_update.tooltip: Lähetä pyyntö etäpalvelimelle saadaksesi tietoa uusien päivityksien julkaisuista
+      version_update.label: Uuden version päivitykset
+      version_update.tooltip: Lähetä pyyntö etäpalvelimelle hakemaan tietoa uusien päivityksien julkaisuista
   system_info:
     title: Järjestelmätiedot
     download: TXT
@@ -19,7 +19,13 @@ pim_analytics:
     registered_bundles: Rekisteröidyt ohjelmapaketit
     nb_channels: Kanavien määrä
     nb_products: Tuotteiden määrä
+    nb_product_models: Tuotemallien määrä
+    nb_variant_products: Varianttien määrä
+    nb_family_variants: Varianttiperheiden määrä
     nb_attributes: Attribuuttien määrä
+    nb_scopable_attributes: Kanavakohtaisten attribuuttien määrä
+    nb_localizable_attributes: Kielikohtaisten attribuuttien määrä
+    nb_scopable_localizable_attributes: Kielikohtaisten ja kanavakohtaisten attribuuttien määrä
     nb_locales: Lokaatioiden määrä
     nb_families: Perheiden määrä
     nb_users: Käyttäjien määrä

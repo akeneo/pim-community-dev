@@ -5,10 +5,12 @@ doctrine:
     orm:
         entity_managers:
             default:
-                metadata_cache_driver: apc
-                result_cache_driver:   apc
-                query_cache_driver:    apc
-
+                metadata_cache_driver:
+                    cache_provider: pim
+                result_cache_driver:
+                    cache_provider: pim
+                query_cache_driver:
+                    cache_provider: pim
 monolog:
     handlers:
         main:
@@ -17,7 +19,7 @@ monolog:
             handler:      nested
         nested:
             type: stream
-            path: %kernel.logs_dir%/%kernel.environment%.log
+            path: '%kernel.logs_dir%/%kernel.environment%.log'
             level: info
         console:
             type:  console

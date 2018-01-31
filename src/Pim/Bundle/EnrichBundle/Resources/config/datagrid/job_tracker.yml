@@ -1,20 +1,21 @@
 datagrid:
     job-tracker-grid:
+        options:
+            manageFilters: false
         source:
             type: pim_datasource_job_tracker
         columns:
-            type:
-                label: Type
-                type:  job_type
             job:
                 label: Job
                 data_name: jobLabel
-            user:
-                label: User
+                frontend_type: label
+            type:
+                label: Type
+                type:  job_type
             started_at:
                 label: job_tracker.filter.started_at
                 data_name: startTime
-                type: product_value_datetime
+                type: datetime
                 frontend_type: datetime
             status:
                 label:         Status
@@ -29,19 +30,18 @@ datagrid:
                 frontend_type: html
         actions:
             view:
+                launcherOptions:
+                    className: AknIconButton AknIconButton--small AknIconButton--view
                 type:      navigate
                 label:     pim.grid.action.show.title
-                icon:      list-alt
                 link:      show_link
                 rowAction: true
         sorters:
             columns:
-                type:
-                    data_name: type
                 job:
                     data_name: jobLabel
-                user:
-                    data_name: user
+                type:
+                    data_name: type
                 started_at:
                     data_name: startTime
                 status:
@@ -52,34 +52,21 @@ datagrid:
                 started_at: '%oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC'
         filters:
             columns:
+                job:
+                    type: search
+                    label: Job
+                    data_name: j.label
                 type:
                     type:      string
                     label:     Type
                     data_name: j.type
-                job:
-                    type: string
-                    label: Job
-                    data_name: j.label
-                user:
-                    type:      string
-                    label:     User
-                    data_name: e.user
-                started_at:
-                    type:             datetime
-                    data_name:        startTime
-                    filter_by_having: true
                 status:
                     type:             choice
                     data_name:        status
-                    filter_by_having: true
                     options:
                         field_options:
                             multiple: true
                             choices: '%akeneo_batch.job.batch_status.class%::getAllLabels()'
-                warning:
-                    type:             number
-                    data_name:        warningCount
-                    filter_by_having: true
         properties:
             id: ~
             show_link:

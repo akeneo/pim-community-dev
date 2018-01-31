@@ -5,9 +5,9 @@ namespace spec\Pim\Bundle\VersioningBundle\UpdateGuesser;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\UnitOfWork;
 use PhpSpec\ObjectBehavior;
+use Pim\Bundle\VersioningBundle\UpdateGuesser\UpdateGuesserInterface;
 use Pim\Component\Catalog\Model\AttributeGroupInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
-use Pim\Bundle\VersioningBundle\UpdateGuesser\UpdateGuesserInterface;
 
 class AttributeGroupUpdateGuesserSpec extends ObjectBehavior
 {

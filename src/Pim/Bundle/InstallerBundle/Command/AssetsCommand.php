@@ -69,14 +69,13 @@ class AssetsCommand extends ContainerAwareCommand
         }
 
         $this->commandExecutor
-            ->runCommand('oro:navigation:init')
             ->runCommand('fos:js-routing:dump', ['--target' => $webDir.'js/routes.js'])
-            ->runCommand('oro:requirejs:generate-config')
             ->runCommand('assets:install')
             ->runCommand('assetic:dump')
-            ->runCommand('oro:assetic:dump');
+            ->runCommand('oro:assetic:dump')
+            ->runCommand('pim:installer:dump-require-paths');
         $defaultLocales = ['en', 'fr', 'nl', 'de', 'ru', 'ja', 'pt', 'it'];
-        $this->commandExecutor->runCommand('oro:translation:dump', ['locale' => $defaultLocales]);
+        $this->commandExecutor->runCommand('oro:translation:dump', ['locale' => implode(', ', $defaultLocales)]);
 
         if (true === $input->getOption('symlink')) {
             $this->commandExecutor->runCommand('assets:install', ['--relative' => true, '--symlink' => true]);

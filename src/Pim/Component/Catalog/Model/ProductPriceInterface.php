@@ -3,7 +3,7 @@
 namespace Pim\Component\Catalog\Model;
 
 /**
- * Abstract price backend type entity
+ * Price interface (backend type entity)
  *
  * @author    Julien Janvier <julien.janvier@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
@@ -12,73 +12,30 @@ namespace Pim\Component\Catalog\Model;
 interface ProductPriceInterface
 {
     /**
-     * Get value
-     *
-     * @return ProductValueInterface
-     */
-    public function getValue();
-
-    /**
-     * To string
-     *
      * @return string
      */
     public function __toString();
 
     /**
-     * Get id
-     *
-     * @return int|string
-     */
-    public function getId();
-
-    /**
-     * Set id
-     *
-     * @param int|string $id
-     *
-     * @return ProductPriceInterface
-     */
-    public function setId($id);
-
-    /**
-     * Get data
+     * Gets the price amount.
      *
      * @return float
      */
     public function getData();
 
     /**
-     * Set value
-     *
-     * @param ProductValueInterface $value
-     *
-     * @return ProductPriceInterface
-     */
-    public function setValue(ProductValueInterface $value);
-
-    /**
-     * Set used currency
-     *
-     * @param string $currency
-     *
-     * @return ProductPriceInterface
-     */
-    public function setCurrency($currency);
-
-    /**
-     * Set data
-     *
-     * @param float $data
-     *
-     * @return ProductPriceInterface
-     */
-    public function setData($data);
-
-    /**
-     * Get used currency
+     * Gets the used currency.
      *
      * @return string $currency
      */
     public function getCurrency();
+
+    /**
+     * Checks if the price is equal to another one.
+     *
+     * @param ProductPriceInterface $price
+     *
+     * @return bool
+     */
+    public function isEqual(ProductPriceInterface $price);
 }

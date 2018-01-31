@@ -33,7 +33,7 @@ class DateRangeFilterType extends AbstractType
     /**
      * {@inheritDoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return self::NAME;
     }
@@ -43,7 +43,7 @@ class DateRangeFilterType extends AbstractType
      */
     public function getParent()
     {
-        return FilterType::NAME;
+        return FilterType::class;
     }
 
     /**
@@ -67,7 +67,7 @@ class DateRangeFilterType extends AbstractType
 
         $resolver->setDefaults(
             [
-                'field_type'       => DateRangeType::NAME,
+                'field_type'       => DateRangeType::class,
                 'operator_choices' => $operatorChoices,
                 'widget_options'   => [],
                 'type_values'      => $typeValues

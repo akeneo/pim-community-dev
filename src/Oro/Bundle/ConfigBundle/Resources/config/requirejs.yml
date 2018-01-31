@@ -12,15 +12,12 @@ config:
 
     paths:
         # Forms
-        oro/form/system/config:                    oroconfig/js/form/system/config
-        oro/form/system/config/system:             oroconfig/js/form/system/tab/system
-        oro/form/system/config/group/localization: oroconfig/js/form/system/group/localization
-        oro/form/system/config/group/notification: oroconfig/js/form/system/group/notification
-        oro/form/system/config/save:               oroconfig/js/form/system/save
+        oro/form/system/config/tab/localization: oroconfig/js/form/system/tab/localization
+        oro/form/system/config/tab/notification: oroconfig/js/form/system/tab/notification
+        oro/form/system/config/save:             oroconfig/js/form/system/save
+        oro/form/system/config:                  oroconfig/js/form/system/config
 
 
         # Templates
-        oro/template/system/config:             oroconfig/js/templates/system/config.html
-        oro/template/system/tab/system:         oroconfig/js/templates/system/tab/system.html
-        oro/template/system/group/localization: oroconfig/js/templates/system/group/localization.html
-        oro/template/system/group/notification: oroconfig/js/templates/system/group/notification.html
+        oro/template/system/tab/localization: oroconfig/js/templates/system/tab/localization.html
+        oro/template/system/tab/notification: oroconfig/js/templates/system/tab/notification.html

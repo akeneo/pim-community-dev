@@ -1,50 +1,37 @@
 version: '2'
 
 services:
-  akeneo:
-    image: akeneo/apache-php:php-5.6
+  fpm:
+    image: akeneo/fpm:php-7.1
     environment:
-      COMPOSER_HOME: '/home/docker/.composer'
-      PHP_IDE_CONFIG: 'serverName=pim-ce'
+      BEHAT_TMPDIR: /srv/pim/var/cache/tmp
+      COMPOSER_HOME: /home/docker/.composer
+      PHP_IDE_CONFIG: 'serverName=pim-ce-cli'
       PHP_XDEBUG_ENABLED: 0
       PHP_XDEBUG_IDE_KEY: XDEBUG_IDE_KEY
       PHP_XDEBUG_REMOTE_HOST: xxx.xxx.xxx.xxx
       XDEBUG_CONFIG: 'remote_host=xxx.xxx.xxx.xxx'
-    ports:
-      - '8080:80'
     user: docker
     volumes:
       - ./:/srv/pim
-      - ./docker/akeneo.conf:/etc/apache2/sites-available/000-default.conf:ro
-      - ~/.composer:/home/docker/.composer
-    working_dir: /srv/pim
-    networks:
-      - akeneo
-
-  akeneo-behat:
-    image: akeneo/apache-php:php-5.6
-    depends_on:
-      - mysql-behat
-      - mongodb-behat
-      - selenium
-    environment:
-      BEHAT_TMPDIR: '/srv/pim/app/cache/tmp'
-      COMPOSER_HOME: '/home/docker/.composer'
-      PHP_IDE_CONFIG: 'serverName=pim-ce-behat'
-      PHP_XDEBUG_ENABLED: 0
-      PHP_XDEBUG_IDE_KEY: XDEBUG_IDE_KEY
-      PHP_XDEBUG_REMOTE_HOST: xxx.xxx.xxx.xxx
-      XDEBUG_CONFIG: 'remote_host=xxx.xxx.xxx.xxx'
-    ports:
-      - '8081:80'
-    user: docker
-    volumes:
-      - ./:/srv/pim
-      - ./docker/akeneo-behat.conf:/etc/apache2/sites-available/000-default.conf:ro
       - ~/.composer:/home/docker/.composer
       - /tmp/behat/screenshots:/tmp/behat/screenshots
     working_dir: /srv/pim
     networks:
+      - akeneo
+      - behat
+
+  node:
+    image: node:8
+    environment:
+      YARN_CACHE_FOLDER: '/home/node/.yarn-cache'
+    user: node
+    volumes:
+      - ./:/srv/pim
+      - ~/.cache/yarn:/home/node/.yarn-cache
+    working_dir: /srv/pim
+    networks:
+      - akeneo
       - behat
 
   selenium:
@@ -52,12 +39,42 @@ services:
     ports:
       - '5900:5900'
     volumes:
-      - .:/srv/pim
+      - ./:/srv/pim
+    networks:
+      - behat
+
+  httpd:
+    image: httpd:2.4
+    depends_on:
+      - fpm
+    environment:
+      PHP_IDE_CONFIG: 'serverName=pim-ce'
+    ports:
+      - '8080:80'
+    volumes:
+      - ./:/srv/pim:ro
+      - ./docker/httpd.conf:/usr/local/apache2/conf/httpd.conf
+      - ./docker/akeneo.conf:/usr/local/apache2/conf/vhost.conf
+    networks:
+      - akeneo
+
+  httpd-behat:
+    image: httpd:2.4
+    depends_on:
+      - fpm
+    environment:
+      PHP_IDE_CONFIG: 'serverName=pim-ce-behat'
+    ports:
+      - '8081:80'
+    volumes:
+      - ./:/srv/pim:ro
+      - ./docker/httpd.conf:/usr/local/apache2/conf/httpd.conf
+      - ./docker/akeneo-behat.conf:/usr/local/apache2/conf/vhost.conf
     networks:
       - behat
 
   mysql:
-    image: mysql:5.5
+    image: mysql:5.7
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_USER: akeneo_pim
@@ -69,7 +86,7 @@ services:
       - akeneo
 
   mysql-behat:
-    image: mysql:5.5
+    image: mysql:5.7
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_USER: akeneo_pim
@@ -80,18 +97,14 @@ services:
     networks:
       - behat
 
-  mongodb:
-    image: mongo:2.4
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:5.5.3
+    environment:
+      ES_JAVA_OPTS: '-Xms512m -Xmx512m'
     ports:
-      - '21017:21017'
+      - '9200:9200'
     networks:
       - akeneo
-
-  mongodb-behat:
-    image: mongo:2.4
-    ports:
-      - '21018:21017'
-    networks:
       - behat
 
 networks:

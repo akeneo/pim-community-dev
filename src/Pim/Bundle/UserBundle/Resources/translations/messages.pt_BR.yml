@@ -8,6 +8,10 @@ pim_user:
       business_unit.title: Unidades de Negócios
       email_synchronization.title: Configurações de sincronização de E-Mail
       interfaces.title: Interfaces
+  group:
+    tab:
+      general.title: Geral
+      users.title: Usuários
 oro.user.controller:
   group.message.saved: "Grupo salvo"
   role.message.saved: "Função salva"

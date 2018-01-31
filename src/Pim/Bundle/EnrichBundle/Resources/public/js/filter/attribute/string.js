@@ -8,7 +8,7 @@ define([
     'pim/fetcher-registry',
     'pim/user-context',
     'pim/i18n',
-    'text!pim/template/filter/attribute/string',
+    'pim/template/filter/attribute/string',
     'jquery.select2'
 ], function (
     $,

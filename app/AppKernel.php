@@ -37,6 +37,7 @@ class AppKernel extends Kernel
             $bundles[] = new Sensio\Bundle\GeneratorBundle\SensioGeneratorBundle();
             $bundles[] = new Symfony\Bundle\DebugBundle\DebugBundle();
             $bundles[] = new Symfony\Bundle\WebProfilerBundle\WebProfilerBundle();
+            $bundles[] = new Symfony\Bundle\WebServerBundle\WebServerBundle();
         }
 
         $bundles = array_merge(
@@ -56,14 +57,10 @@ class AppKernel extends Kernel
      */
     public function registerContainerConfiguration(LoaderInterface $loader)
     {
-        $loader->load(__DIR__.'/config/config_'.$this->getEnvironment().'.yml');
+        $loader->load($this->getRootDir() . '/config/config_' . $this->getEnvironment() . '.yml');
 
-        if (is_file($file = __DIR__.'/config/config_'.$this->getEnvironment().'_local.yml')) {
+        if (is_file($file = $this->getRootDir() . '/config/config_' . $this->getEnvironment() . '_local.yml')) {
             $loader->load($file);
-        }
-
-        if (isset($this->bundleMap['DoctrineMongoDBBundle'])) {
-            $loader->load(__DIR__ .'/config/config_mongodb.yml');
         }
     }
 
@@ -77,7 +74,6 @@ class AppKernel extends Kernel
         return [
             // BAP overriden bundles
             new Pim\Bundle\FilterBundle\PimFilterBundle(),
-            new Pim\Bundle\JsFormValidationBundle\PimJsFormValidationBundle(),
             new Pim\Bundle\NavigationBundle\PimNavigationBundle(),
             new Pim\Bundle\UserBundle\PimUserBundle(),
 
@@ -110,12 +106,13 @@ class AppKernel extends Kernel
     protected function getPimDependenciesBundles()
     {
         return [
+            new Akeneo\Bundle\ElasticsearchBundle\AkeneoElasticsearchBundle(),
             new Akeneo\Bundle\BatchBundle\AkeneoBatchBundle(),
+            new Akeneo\Bundle\BatchQueueBundle\AkeneoBatchQueueBundle(),
             new Akeneo\Bundle\BufferBundle\AkeneoBufferBundle(),
             new Akeneo\Bundle\FileStorageBundle\AkeneoFileStorageBundle(),
             new Akeneo\Bundle\MeasureBundle\AkeneoMeasureBundle(),
             new Akeneo\Bundle\StorageUtilsBundle\AkeneoStorageUtilsBundle(),
-            new APY\JsFormValidationBundle\APYJsFormValidationBundle(),
             new Doctrine\Bundle\MigrationsBundle\DoctrineMigrationsBundle(),
             new FOS\OAuthServerBundle\FOSOAuthServerBundle(),
             new Oneup\FlysystemBundle\OneupFlysystemBundle(),
@@ -131,8 +128,7 @@ class AppKernel extends Kernel
     {
         return [
             new Doctrine\Bundle\DoctrineBundle\DoctrineBundle(),
-            // Uncomment the following line to use MongoDB implementation
-            // new Doctrine\Bundle\MongoDBBundle\DoctrineMongoDBBundle(),
+            new Doctrine\Bundle\DoctrineCacheBundle\DoctrineCacheBundle(),
             new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
             new Symfony\Bundle\AsseticBundle\AsseticBundle(),
             new Symfony\Bundle\FrameworkBundle\FrameworkBundle(),
@@ -173,11 +169,39 @@ class AppKernel extends Kernel
             new Oro\Bundle\ConfigBundle\OroConfigBundle(),
             new Oro\Bundle\DataGridBundle\OroDataGridBundle(),
             new Oro\Bundle\FilterBundle\OroFilterBundle(),
-            new Oro\Bundle\NavigationBundle\OroNavigationBundle(),
-            new Oro\Bundle\RequireJSBundle\OroRequireJSBundle(),
             new Oro\Bundle\SecurityBundle\OroSecurityBundle(),
             new Oro\Bundle\TranslationBundle\OroTranslationBundle(),
             new Oro\Bundle\UserBundle\OroUserBundle(),
         ];
+    }
+
+    /**
+     * @return string
+     */
+    public function getRootDir(): string
+    {
+        return __DIR__;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCacheDir(): string
+    {
+        return dirname(__DIR__)
+            . DIRECTORY_SEPARATOR
+            . 'var'
+            . DIRECTORY_SEPARATOR
+            . 'cache'
+            . DIRECTORY_SEPARATOR
+            . $this->getEnvironment();
+    }
+
+    /**
+     * @return string
+     */
+    public function getLogDir(): string
+    {
+        return dirname(__DIR__) . DIRECTORY_SEPARATOR . 'var' . DIRECTORY_SEPARATOR . 'logs';
     }
 }

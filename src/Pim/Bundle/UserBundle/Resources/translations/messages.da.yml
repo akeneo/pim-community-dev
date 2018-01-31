@@ -8,6 +8,10 @@ pim_user:
       business_unit.title: Afdelinger
       email_synchronization.title: Email synkroniseringsindstillinger
       interfaces.title: Grænseflader
+  group:
+    tab:
+      general.title: Generelt
+      users.title: Brugere
 oro.user.controller:
   group.message.saved: "Gruppe gemt"
   role.message.saved: "Rolle gemt"
@@ -53,8 +57,8 @@ Date of birth: Fødselsdato
 Avatar: Avatar
 Additional emails: Yderligere e-mails
 Add another email: Tilføje en anden e-mail
-Catalog locale: Katalog landestandard
-Catalog scope: Katalog anvendelsesområde
+Catalog locale: Catalog locale
+Catalog scope: Catalog scope
 Default tree: Standardtræ
 Business Units: Afdelinger
 Email synchronization settings: Email synkroniseringsindstillinger

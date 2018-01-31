@@ -10,7 +10,7 @@ define(
     [
         'underscore',
         'oro/translator',
-        'text!pim/template/export/product/edit/content/structure',
+        'pim/template/export/product/edit/content/structure',
         'pim/form',
         'pim/common/property'
     ],

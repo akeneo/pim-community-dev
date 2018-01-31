@@ -27,8 +27,9 @@ Feature: Edit a user
       | Product grid filters | SKU, Name, Family |
     And I save the user
     Then I should see the flash message "User saved"
-    When I am on the products page
-    Then I should see the text "Products de"
+    When I am on the products grid
+    And I open the category tree
+    Then I should see the text "Kollektion"
     And I should see the text "Drucken"
     And I should see the text "2015 Männer-Kollektion"
     And I should see the text "2015 Damenkollektion"

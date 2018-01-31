@@ -1,14 +1,45 @@
 define(
-    ['jquery', 'backbone', 'oro/translator', 'oro/mediator', 'oro/navigation', 'oro/messenger', 'pim/dialog',
-     'pim/saveformstate', 'pim/asynctab', 'pim/ui', 'oro/loading-mask'],
-    function ($, Backbone, __, mediator, Navigation, messenger, Dialog, saveformstate, loadTab, UI, LoadingMask) {
+    [
+    'jquery',
+    'underscore',
+    'backbone',
+    'oro/mediator',
+    'oro/messenger',
+    'pim/dialog',
+    'pim/saveformstate',
+    'pim/asynctab',
+    'pim/ui',
+    'oro/loading-mask',
+    'pim/router',
+    'require-polyfill'
+],
+    function (
+        $,
+        _,
+        Backbone,
+        mediator,
+        messenger,
+        Dialog,
+        saveformstate,
+        loadTab,
+        UI,
+        LoadingMask,
+        router
+    ) {
         'use strict';
         var initialized = false;
+
         return function () {
+
             if (initialized) {
                 return;
             }
             initialized = true;
+            var setFullHeight = function ($target) {
+                if (!$target) {
+                    $target = $('body');
+                }
+            };
             var pageInit = function ($target) {
                 if (!$target) {
                     $target = $('body');
@@ -28,7 +59,7 @@ define(
                 var $localizableIcon = $('<i>', {
                     'class': 'icon-globe',
                     'attr': {
-                        'data-original-title': __('Localized value'),
+                        'data-original-title': _.__('Localized value'),
                         'data-toggle': 'tooltip',
                         'data-placement': 'right'
                     }
@@ -50,11 +81,33 @@ define(
                 $target.find('a[data-toggle="tab"]').on('show.bs.tab', function () {
                     loadTab(this);
                 });
+
+                //Flash messages:
+                if (window.flashMessages) {
+                    _.each(window.flashMessages, function (messages, type) {
+                        _.each(messages, function (message) {
+                            messenger.notify(
+                                type,
+                                message
+                            );
+                        });
+                    });
+                }
+                window.flashMessages = [];
+
+                setFullHeight($target);
             };
 
             $(function () {
                 $(document).on('tab.loaded', 'form.form-horizontal, [data-saveformstate]', function (e, tab) {
                     pageInit($(tab));
+                });
+
+                $(document).on('shown', 'a[data-toggle="tab"]', function () {
+                    var target = $(this).attr('href');
+                    if (target && target !== '#' && target.indexOf('javascript') !== 0) {
+                        setFullHeight($(target).parent());
+                    }
                 });
 
                 var secret = '38384040373937396665';
@@ -73,11 +126,14 @@ define(
 
                 // DELETE request for delete buttons
                 $(document).on('click', '[data-dialog]', function () {
-                    var $el      = $(this);
-                    var message  = $el.data('message');
-                    var title    = $el.data('title');
-                    var doAction = function () {
-                        var loadingMask = new LoadingMask();
+                    const $el      = $(this);
+                    const message  = $el.data('message');
+                    const title    = $el.data('title');
+                    const subTitle = $el.data('subtitle');
+                    const buttonLabel = $el.data('buttonlabel');
+
+                    const doAction = function () {
+                        const loadingMask = new LoadingMask();
                         loadingMask.render().$el.appendTo($(document.body)).css(
                             {
                                 'position': 'absolute',
@@ -96,16 +152,13 @@ define(
                             data: { _method: $el.data('method') },
                             success: function () {
                                 loadingMask.hide().$el.remove();
-                                var navigation = Navigation.getInstance();
-                                var targetUrl = '#url=' + $el.attr('data-redirect-url');
-                                // If already on the desired page, make sure it is refreshed
-                                Backbone.history.fragment = new Date().getTime();
-                                navigation.navigate(targetUrl, { trigger: true });
-                                navigation.addFlashMessage('success', $el.attr('data-success-message'));
+                                const targetUrl = $el.attr('data-redirect-url');
+                                router.redirect(targetUrl, {trigger: true});
+                                messenger.notify('success', $el.attr('data-success-message'));
                             },
                             error: function (xhr) {
                                 loadingMask.hide().$el.remove();
-                                messenger.notificationFlashMessage(
+                                messenger.notify(
                                     'error',
                                     (xhr.responseJSON && xhr.responseJSON.message) ?
                                         xhr.responseJSON.message :
@@ -114,10 +167,13 @@ define(
                         });
                     };
                     $el.off('click');
+
                     if ($el.data('dialog') === 'confirm') {
-                        Dialog.confirm(message, title, doAction);
+                        Dialog.confirm(message, title, doAction, subTitle, '', buttonLabel);
+                    } else if ($el.data('dialog') === 'delete') {
+                        Dialog.confirmDelete(message, title, doAction, subTitle);
                     } else {
-                        Dialog.alert(message, title);
+                        Dialog.alert(message, title, subTitle);
                     }
 
                     return false;
@@ -125,7 +181,7 @@ define(
 
                 pageInit();
             });
-            mediator.bind('hash_navigation_request:complete pim:reinit', function () {
+            mediator.on('route_complete pim:reinit', function () {
                 pageInit();
             });
         };

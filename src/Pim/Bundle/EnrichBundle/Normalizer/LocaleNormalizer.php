@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\EnrichBundle\Normalizer;
 
-use Pim\Bundle\CatalogBundle\Helper\LocaleHelper;
+use Pim\Bundle\UserBundle\Context\UserContext;
 use Pim\Component\Catalog\Model\LocaleInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
@@ -19,11 +19,11 @@ class LocaleNormalizer implements NormalizerInterface
     protected $supportedFormats = ['internal_api'];
 
     /**
-     * @param LocaleHelper $localeHelper
+     * @param UserContext $userContext
      */
-    public function __construct(LocaleHelper $localeHelper)
+    public function __construct(UserContext $userContext)
     {
-        $this->localeHelper = $localeHelper;
+        $this->userContext = $userContext;
     }
 
     /**
@@ -33,9 +33,9 @@ class LocaleNormalizer implements NormalizerInterface
     {
         return [
             'code'     => $locale->getCode(),
-            'label'    => $this->localeHelper->getLocaleLabel($locale->getCode()),
-            'region'   => $this->localeHelper->getDisplayRegion($locale->getCode()),
-            'language' => $this->localeHelper->getDisplayLanguage($locale->getCode()),
+            'label'    => $this->getLocaleLabel($locale->getCode()),
+            'region'   => \Locale::getDisplayRegion($locale->getCode()),
+            'language' => \Locale::getDisplayLanguage($locale->getCode()),
         ];
     }
 
@@ -45,5 +45,20 @@ class LocaleNormalizer implements NormalizerInterface
     public function supportsNormalization($data, $format = null)
     {
         return $data instanceof LocaleInterface && in_array($format, $this->supportedFormats);
+    }
+
+    /**
+     * Returns the label of a locale in the specified language
+     *
+     * @param string $code        the code of the locale to translate
+     * @param string $translateIn the locale in which the label should be translated (if null, user locale will be used)
+     *
+     * @return string
+     */
+    private function getLocaleLabel($code, $translateIn = null)
+    {
+        $translateIn = $translateIn ?: $this->userContext->getCurrentLocaleCode();
+
+        return \Locale::getDisplayName($code, $translateIn);
     }
 }

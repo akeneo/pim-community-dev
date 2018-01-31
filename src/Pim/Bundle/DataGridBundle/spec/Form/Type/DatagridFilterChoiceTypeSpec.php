@@ -8,6 +8,8 @@ use Oro\Bundle\DataGridBundle\Datagrid\Manager;
 use Oro\Bundle\DataGridBundle\Extension\Acceptor;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\DataGridBundle\Datagrid\Configuration\Product\FiltersConfigurator;
+use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class DatagridFilterChoiceTypeSpec extends ObjectBehavior
@@ -19,17 +21,17 @@ class DatagridFilterChoiceTypeSpec extends ObjectBehavior
 
     function it_is_a_form_type()
     {
-        $this->shouldBeAnInstanceOf('Symfony\Component\Form\AbstractType');
+        $this->shouldBeAnInstanceOf(AbstractType::class);
     }
 
     function it_is_a_parent_of_choice()
     {
-        $this->getParent()->shouldReturn('choice');
+        $this->getParent()->shouldReturn(ChoiceType::class);
     }
 
-    function it_have_a_name()
+    function it_have_a_block_prefix()
     {
-        $this->getName()->shouldReturn('pim_datagrid_product_filter_choice');
+        $this->getBlockPrefix()->shouldReturn('pim_datagrid_product_filter_choice');
     }
 
     function it_configure_choices_and_skip_disallowed(

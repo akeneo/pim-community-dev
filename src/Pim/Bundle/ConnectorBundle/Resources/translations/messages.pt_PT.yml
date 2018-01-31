@@ -64,14 +64,13 @@ batch_jobs:
   csv_variant_group_export:
     label: Exportar variante do grupo para o CSV
     export.label: Exportar variante do grupo
-  csv_family_export:
-    label: Exportação de famílias em CSV
-    export.label: Exportação de famílias
   csv_product_import:
     label: Importar produto para o CSV
     validation.label: Validação do ficheiro
     import.label: Importar produto
     import_associations.label: Importar associação
+  csv_product_model_import:
+    validation.label: Validação do ficheiro
   csv_category_import:
     label: Importar categoria para o CSV
     validation.label: Validação do ficheiro
@@ -89,9 +88,9 @@ batch_jobs:
     validation.label: Validação do ficheiro
     import.label: Importar tipo de associação
   csv_family_import:
-    label: Importação de famílias por CSV
     validation.label: Validação do ficheiro
-    import.label: Importação de famílias
+  csv_family_variant_import:
+    validation.label: Validação do ficheiro
   csv_group_import:
     label: Importar grupo para o CSV
     validation.label: Validação do ficheiro
@@ -129,7 +128,8 @@ batch_jobs:
   xlsx_family_import:
     label: Importação de famílias por XLSX
     validation.label: Validação do ficheiro
-    import.label: Importação de famílias
+  xlsx_family_variant_import:
+    validation.label: Validação do ficheiro
   xlsx_product_export:
     label: Exportação de produtos em XLSX
     export.label: Exportar produto
@@ -138,6 +138,8 @@ batch_jobs:
     validation.label: Validação do ficheiro
     import.label: Importar produto
     import_associations.label: Importar associação
+  xlsx_product_model_import:
+    validation.label: Validação do ficheiro
   xlsx_group_export:
     label: Exportação de grupos em XLSX
     export.label: Exportar grupo
@@ -154,7 +156,6 @@ batch_jobs:
     import.label: Importação de grupos variantes
   xlsx_family_export:
     label: Exportação de famílias em XLSX
-    export.label: Exportação de famílias
   xlsx_category_export:
     label: Exportação de categorias em XLSX
     export.label: Exportar categoria

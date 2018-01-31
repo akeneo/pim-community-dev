@@ -1,6 +1,5 @@
 <% if ((primaryButton) && !(secondaryButtons && secondaryButtons.length)) { %>
-    <button class="AknButton AknButton--apply AknButton--withIcon <%- primaryButton.className || '' %>">
-        <i class="AknButton-icon icon-ok"></i>
+    <button class="AknButton AknButton--apply <%- primaryButton.className || '' %>">
         <%- primaryButton.label %>
     </button>
 <% } else { %>
@@ -9,7 +8,7 @@
             <%- primaryButton.label %>
         </button>
         <button class="AknSeveralActionsButton-caretContainer" data-toggle="dropdown">
-            <span class="AknCaret AknCaret--inverse"></span>
+            <img src="/bundles/pimui/images/icon-down-white.svg" class="AknSeveralActionsButton-caret"/>
         </button>
         <ul class="AknSeveralActionsButton-menu AknDropdown-menu AknDropdown-menu--right">
             <% _.each(secondaryButtons, function (btn) { %>

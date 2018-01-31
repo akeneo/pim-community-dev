@@ -4,6 +4,7 @@ namespace Pim\Bundle\CatalogBundle\Entity;
 
 use Akeneo\Component\Localization\Model\TranslationInterface;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\AttributeRequirementInterface;
@@ -18,19 +19,13 @@ use Pim\Component\Catalog\Model\FamilyInterface;
  */
 class Family implements FamilyInterface
 {
-    /**
-     * @var int
-     */
+    /** @var int */
     protected $id;
 
-    /**
-     * @var string
-     */
+    /** @var string */
     protected $code;
 
-    /**
-     * @var \Doctrine\Common\Collections\ArrayCollection
-     */
+    /** @var Collection */
     protected $attributes;
 
     /**
@@ -41,30 +36,26 @@ class Family implements FamilyInterface
      */
     protected $locale;
 
-    /**
-     * @var \Doctrine\Common\Collections\ArrayCollection
-     */
+    /** @var Collection */
     protected $translations;
 
-    /**
-     * @var AttributeInterface
-     */
+    /** @var AttributeInterface */
     protected $attributeAsLabel;
 
-    /**
-     * @var \Doctrine\Common\Collections\ArrayCollection
-     */
+    /** @var AttributeInterface */
+    protected $attributeAsImage;
+
+    /** @var Collection */
     protected $requirements;
 
-    /**
-     * @var \DateTime
-     */
+    /** @var \DateTime */
     protected $created;
 
-    /**
-     * @var \DateTime
-     */
+    /** @var \DateTime */
     protected $updated;
+
+    /** @var Collection */
+    protected $familyVariants;
 
     /**
      * Constructor
@@ -74,6 +65,7 @@ class Family implements FamilyInterface
         $this->attributes = new ArrayCollection();
         $this->translations = new ArrayCollection();
         $this->requirements = new ArrayCollection();
+        $this->familyVariants = new ArrayCollection();
     }
 
     /**
@@ -174,6 +166,8 @@ class Family implements FamilyInterface
 
     /**
      * {@inheritdoc}
+     *
+     * @throws \InvalidArgumentException
      */
     public function removeAttribute(AttributeInterface $attribute)
     {
@@ -252,6 +246,24 @@ class Family implements FamilyInterface
     public function getAttributeAsLabel()
     {
         return $this->attributeAsLabel;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setAttributeAsImage(?AttributeInterface $attributeAsImage): FamilyInterface
+    {
+        $this->attributeAsImage = $attributeAsImage;
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getAttributeAsImage(): ?AttributeInterface
+    {
+        return $this->attributeAsImage;
     }
 
     /**
@@ -435,5 +447,21 @@ class Family implements FamilyInterface
     public function getReference()
     {
         return $this->code;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getFamilyVariants(): Collection
+    {
+        return $this->familyVariants;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setFamilyVariants(Collection $familyVariants): void
+    {
+        $this->familyVariants = $familyVariants;
     }
 }

@@ -1,8 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Pim\Bundle\ApiBundle\Controller;
 
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
+use Pim\Bundle\ApiBundle\Checker\QueryParametersCheckerInterface;
 use Pim\Component\Api\Exception\PaginationParametersException;
 use Pim\Component\Api\Pagination\PaginatorInterface;
 use Pim\Component\Api\Pagination\ParameterValidatorInterface;
@@ -40,24 +43,30 @@ class LocaleController
     /** @var string[] */
     protected $authorizedFieldFilters = ['enabled'];
 
+    /** @var QueryParametersCheckerInterface */
+    protected $queryParametersChecker;
+
     /**
-     * @param ApiResourceRepositoryInterface $repository
-     * @param NormalizerInterface            $normalizer
-     * @param PaginatorInterface             $paginator
-     * @param ParameterValidatorInterface    $parameterValidator
-     * @param array                          $apiConfiguration
+     * @param ApiResourceRepositoryInterface  $repository
+     * @param NormalizerInterface             $normalizer
+     * @param PaginatorInterface              $paginator
+     * @param ParameterValidatorInterface     $parameterValidator
+     * @param QueryParametersCheckerInterface $queryParametersChecker
+     * @param array                           $apiConfiguration
      */
     public function __construct(
         ApiResourceRepositoryInterface $repository,
         NormalizerInterface $normalizer,
         PaginatorInterface $paginator,
         ParameterValidatorInterface $parameterValidator,
+        QueryParametersCheckerInterface $queryParametersChecker,
         array $apiConfiguration
     ) {
         $this->repository = $repository;
         $this->normalizer = $normalizer;
         $this->paginator = $paginator;
         $this->parameterValidator = $parameterValidator;
+        $this->queryParametersChecker = $queryParametersChecker;
         $this->apiConfiguration = $apiConfiguration;
     }
 
@@ -71,7 +80,7 @@ class LocaleController
      *
      * @AclAncestor("pim_api_locale_list")
      */
-    public function getAction(Request $request, $code)
+    public function getAction(Request $request, $code): JsonResponse
     {
         $locale = $this->repository->findOneByIdentifier($code);
         if (null === $locale) {
@@ -87,11 +96,12 @@ class LocaleController
      * @param Request $request
      *
      * @throws UnprocessableEntityHttpException
+     *
      * @return JsonResponse
      *
      * @AclAncestor("pim_api_locale_list")
      */
-    public function listAction(Request $request)
+    public function listAction(Request $request): JsonResponse
     {
         $searchCriterias = $this->validateSearchCriterias($request);
         $criterias = $this->prepareSearchCriterias($searchCriterias);
@@ -143,48 +153,20 @@ class LocaleController
      *
      * @throws UnprocessableEntityHttpException
      * @throws BadRequestHttpException
+     *
      * @return array
      */
-    protected function validateSearchCriterias(Request $request)
+    protected function validateSearchCriterias(Request $request): array
     {
         if (!$request->query->has('search')) {
             return [];
         }
 
         $searchString = $request->query->get('search', '');
-        $searchParameters = json_decode($searchString, true);
+        $searchParameters = $this->queryParametersChecker->checkCriterionParameters($searchString);
 
-        if (null === $searchParameters) {
-            throw new BadRequestHttpException('Search query parameter should be valid JSON.');
-        }
-        if (!is_array($searchParameters)) {
-            throw new UnprocessableEntityHttpException(
-                sprintf('Search query parameter has to be an array, "%s" given.', gettype($searchParameters))
-            );
-        }
         foreach ($searchParameters as $searchKey => $searchParameter) {
-            if (!is_array($searchParameters) || !isset($searchParameter[0])) {
-                throw new UnprocessableEntityHttpException(
-                    sprintf(
-                        'Structure of filter "%s" should respect this structure: %s.',
-                        $searchKey,
-                        sprintf('{"%s":[{"operator": "my_operator", "value": "my_value"}]}', $searchKey)
-                    )
-                );
-            }
-
             foreach ($searchParameter as $searchOperator) {
-                if (!isset($searchOperator['operator'])) {
-                    throw new UnprocessableEntityHttpException(
-                        sprintf('Operator is missing for the property "%s".', $searchKey)
-                    );
-                }
-                if (!isset($searchOperator['value'])) {
-                    throw new UnprocessableEntityHttpException(
-                        sprintf('Value is missing for the property "%s".', $searchKey)
-                    );
-                }
-
                 if (!in_array($searchKey, $this->authorizedFieldFilters)
                     || Operators::EQUALS !== $searchOperator['operator']) {
                     throw new UnprocessableEntityHttpException(
@@ -195,6 +177,13 @@ class LocaleController
                         )
                     );
                 }
+
+                if (!isset($searchOperator['value'])) {
+                    throw new UnprocessableEntityHttpException(
+                        sprintf('Value is missing for the property "%s".', $searchKey)
+                    );
+                }
+
                 if (!is_bool($searchOperator['value'])) {
                     throw new UnprocessableEntityHttpException(
                         sprintf(
@@ -219,7 +208,7 @@ class LocaleController
      *
      * @return array
      */
-    protected function prepareSearchCriterias(array $searchParameters)
+    protected function prepareSearchCriterias(array $searchParameters): array
     {
         if (empty($searchParameters)) {
             return [];

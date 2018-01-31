@@ -38,7 +38,7 @@ class AssociationTypeRepository extends EntityRepository implements DatagridRepo
         );
 
         $qb
-            ->addSelect($rootAlias)
+            ->select($rootAlias)
             ->addSelect(sprintf("%s AS label", $labelExpr))
             ->addSelect('translation.label');
 

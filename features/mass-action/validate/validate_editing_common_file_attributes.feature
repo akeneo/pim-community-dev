@@ -38,28 +38,29 @@ Feature: Validate editing common file attributes of multiple products
       | sneakers | master_family |
       | sandals  | master_family |
     And I am logged in as "Julia"
-    And I am on the products page
+    And I am on the products grid
 
   Scenario: Successfully mass edit a file attribute
     Given I select rows boots and sneakers
-    And I press "Change product information" on the "Bulk Actions" dropdown button
-    And I choose the "Edit common attributes" operation
+    And I press the "Bulk actions" button
+    And I choose the "Edit attributes" operation
     And I display the File attribute
     And I attach file "bic-core-148.txt" to "File"
-    And I move on to the next step
+    And I confirm mass edit
+    And I wait for the "edit_common_attributes" job to finish
     Then the file "file" of products boots and sneakers should be "bic-core-148.txt"
-    When I am on the products page
+    When I am on the products grid
     And I select rows boots, sandals and sneakers
-    And I press "Change product information" on the "Bulk Actions" dropdown button
-    And I choose the "Edit common attributes" operation
+    And I press the "Bulk actions" button
+    And I choose the "Edit attributes" operation
     And I display the File attribute
-    And I move on to the next step
-    And I wait for the "edit-common-attributes" mass-edit job to finish
+    And I confirm mass edit
+    And I wait for the "edit_common_attributes" job to finish
     Then the file "file" of products boots, sandals and sneakers should be ""
-    When I am on the products page
+    When I am on the products grid
     And I select rows boots, sandals and sneakers
-    And I press "Change product information" on the "Bulk Actions" dropdown button
-    And I choose the "Edit common attributes" operation
+    And I press the "Bulk actions" button
+    And I choose the "Edit attributes" operation
     And I display the File attribute
     And I attach file "bic-core-148.gif" to "File"
     And I move on to the next step

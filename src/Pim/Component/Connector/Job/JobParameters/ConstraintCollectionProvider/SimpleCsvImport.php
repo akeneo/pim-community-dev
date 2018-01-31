@@ -75,6 +75,8 @@ class SimpleCsvImport implements ConstraintCollectionProviderInterface
                         new IsTrue(['groups' => 'UploadExecution']),
                     ],
                     'invalid_items_file_format' => new NotBlank(),
+                    'user_to_notify' => new Type('string'),
+                    'is_user_authenticated' => new Type('bool'),
                 ]
             ]
         );

@@ -22,6 +22,15 @@ pim_api_attribute_option_edit:
     label: pim_api.acl.attribute_option.edit
     group_name: pim_api.acl_group.attribute_option
 
+pim_api_attribute_group_list:
+    type: action
+    label: pim_api.acl.attribute_group.list
+    group_name: pim_api.acl_group.attribute_group
+pim_api_attribute_group_edit:
+    type: action
+    label: pim_api.acl.attribute_group.edit
+    group_name: pim_api.acl_group.attribute_group
+
 pim_api_category_list:
     type: action
     label: pim_api.acl.category.list
@@ -34,6 +43,10 @@ pim_api_category_edit:
 pim_api_channel_list:
     type: action
     label: pim_api.acl.channel.list
+    group_name: pim_api.acl_group.channel
+pim_api_channel_edit:
+    type: action
+    label: pim_api.acl.channel.edit
     group_name: pim_api.acl_group.channel
 
 pim_api_locale_list:
@@ -49,3 +62,26 @@ pim_api_family_edit:
     type: action
     label: pim_api.acl.family.edit
     group_name: pim_api.acl_group.family
+
+pim_api_family_variant_list:
+    type: action
+    label: pim_api.acl.family_variant.list
+    group_name: pim_api.acl_group.family_variant
+pim_api_family_variant_edit:
+    type: action
+    label: pim_api.acl.family_variant.edit
+    group_name: pim_api.acl_group.family_variant
+
+pim_api_currency_list:
+    type: action
+    label: pim_api.acl.currency.list
+    group_name: pim_api.acl_group.currency
+
+pim_api_association_type_list:
+    type: action
+    label: pim_api.acl.association_type.list
+    group_name: pim_api.acl_group.association_type
+pim_api_association_type_edit:
+    type: action
+    label: pim_api.acl.association_type.edit
+    group_name: pim_api.acl_group.association_type

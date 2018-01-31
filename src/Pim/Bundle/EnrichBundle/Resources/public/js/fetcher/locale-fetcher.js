@@ -24,9 +24,7 @@ define(
             },
 
             /**
-             * Fetch an element based on its identifier
-             *
-             * @param {string} identifier
+             * Fetch all activated locales.
              *
              * @return {Promise}
              */
@@ -43,6 +41,15 @@ define(
                 }
 
                 return this.entityActivatedListPromise;
+            },
+
+            /**
+             * {inheritdoc}
+             */
+            clear: function () {
+                this.entityActivatedListPromise = null;
+
+                BaseFetcher.prototype.clear.apply(this, arguments);
             }
         });
     }

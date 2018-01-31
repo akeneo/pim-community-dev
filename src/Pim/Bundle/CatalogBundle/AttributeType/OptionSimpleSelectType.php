@@ -3,7 +3,6 @@
 namespace Pim\Bundle\CatalogBundle\AttributeType;
 
 use Pim\Component\Catalog\AttributeTypes;
-use Pim\Component\Catalog\Model\AttributeInterface;
 
 /**
  * Simple options (select) attribute type
@@ -14,31 +13,6 @@ use Pim\Component\Catalog\Model\AttributeInterface;
  */
 class OptionSimpleSelectType extends AbstractAttributeType
 {
-    /**
-     * {@inheritdoc}
-     */
-    protected function defineCustomAttributeProperties(AttributeInterface $attribute)
-    {
-        return parent::defineCustomAttributeProperties($attribute) + [
-            'minimumInputLength' => [
-                'name'      => 'minimumInputLength',
-                'fieldType' => 'pim_number'
-            ],
-            'autoOptionSorting' => [
-                'name'      => 'autoOptionSorting',
-                'fieldType' => 'switch',
-                'options'   => [
-                    'label'         => 'Automatic option sorting',
-                    'property_path' => 'properties[autoOptionSorting]',
-                    'help'          => 'info.attribute.auto option sorting',
-                    'attr'          => [
-                        'class' => 'hide automatic-option-sorting',
-                    ]
-                ]
-            ]
-        ];
-    }
-
     /**
      * {@inheritdoc}
      */

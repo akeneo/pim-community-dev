@@ -14,5 +14,5 @@ use Context\Page\Base\Form;
 class Show extends Form
 {
     /** @var string */
-    protected $path = '/user/view/{id}';
+    protected $path = '#/user/view/{id}';
 }

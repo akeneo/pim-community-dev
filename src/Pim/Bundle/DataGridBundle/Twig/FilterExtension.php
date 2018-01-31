@@ -6,7 +6,7 @@ use Oro\Bundle\DataGridBundle\Datagrid\Manager;
 use Pim\Bundle\DataGridBundle\Datagrid\Configuration\Product\FiltersConfigurator;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Twig_Extension;
-use Twig_Function_Method;
+use Twig_SimpleFunction;
 
 /**
  * Add some functions about datagrid filters
@@ -31,7 +31,7 @@ class FilterExtension extends Twig_Extension
     public function getFunctions()
     {
         return [
-            'filter_label' => new Twig_Function_Method($this, 'filterLabel'),
+            new Twig_SimpleFunction('filter_label', [$this, 'filterLabel']),
         ];
     }
 
@@ -54,14 +54,6 @@ class FilterExtension extends Twig_Extension
         $label = $this->container->get('translator')->trans($label);
 
         return $label;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getName()
-    {
-        return 'pim_datagrid_filter_extension';
     }
 
     /**

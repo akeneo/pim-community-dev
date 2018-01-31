@@ -2,7 +2,6 @@
 
 namespace Pim\Upgrade;
 
-use Doctrine\ODM\MongoDB\DocumentManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -24,16 +23,12 @@ class SchemaHelper
     /** @var ContainerInterface */
     protected $container;
 
-    /** @var UpgradeHelper */
-    protected $upgradeHelper;
-
     /**
      * @param ContainerInterface $container
      */
     public function __construct(ContainerInterface $container)
     {
         $this->container        = $container;
-        $this->upgradeHelper    = new UpgradeHelper($container);
         $this->classMapping     = [
             'attribute'        => 'pim_catalog.entity.attribute.class',
             'attribute_option' => 'pim_catalog.entity.attribute_option.class',
@@ -42,7 +37,9 @@ class SchemaHelper
             'product_media'    => 'pim_catalog.entity.product_media.class',
             'product_value'    => 'pim_catalog.entity.product_value.class',
             'product_template' => 'pim_catalog.entity.product_template.class',
-            'version'          => 'pim_versioning.entity.version.class'
+            'version'          => 'pim_versioning.entity.version.class',
+            'client'           => 'fos_oauth_server.model.client.class',
+            'job_instance'     => 'akeneo_batch.entity.job_instance.class',
         ];
         $this->productResources = [
             'product',
@@ -67,23 +64,7 @@ class SchemaHelper
                 $resource, implode(', ', array_keys($this->classMapping))));
         }
 
-        if ($this->upgradeHelper->areProductsStoredInMongo() && in_array($resource, $this->productResources)) {
-            return $this->getTableOrCollectionForMongo($resource);
-        }
-
         return $this->getTableOrCollectionForOrm($resource);
-    }
-
-    /**
-     * @param string $resource
-     *
-     * @return string
-     */
-    private function getTableOrCollectionForMongo($resource)
-    {
-        $class = $this->container->getParameter($this->classMapping[$resource]);
-
-        return $this->getDocumentManager()->getClassMetadata($class)->getCollection();
     }
 
     /**
@@ -104,13 +85,5 @@ class SchemaHelper
     private function getEntityManager()
     {
         return $this->container->get('doctrine.orm.entity_manager');
-    }
-
-    /**
-     * @return DocumentManager
-     */
-    private function getDocumentManager()
-    {
-        return $this->container->get('doctrine.odm.mongodb.document_manager');
     }
 }

@@ -1,0 +1,33 @@
+@import '../base/variables';
+
+.AknSubsection {
+  &-title {
+    color: @AknSlateGrey;
+    font-size: @AknFontSizeBig;
+    text-transform: uppercase;
+    border-bottom: 2px solid @AknSlateGrey;
+    font-weight: bold;
+    line-height: @AknBigButtonSize;
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+
+  &-comment {
+    margin-left: 5px;
+    font-size: @AknDefaultFontSize;
+    line-height: 36px;
+    text-transform: none;
+    font-weight: normal;
+
+    &--clickable {
+      color: @AknLightPurple;
+      transition: color 0.1s ease-in;
+      cursor: pointer;
+
+      &:hover {
+        color: @AknPurple;
+      }
+    }
+  }
+}

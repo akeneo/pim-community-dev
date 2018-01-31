@@ -4,7 +4,7 @@ namespace Context\Page\Batch;
 
 use Behat\Mink\Session;
 use Context\Page\Base\ProductEditForm;
-use SensioLabs\Behat\PageObjectExtension\Context\PageFactoryInterface;
+use SensioLabs\Behat\PageObjectExtension\PageObject\Factory;
 
 /**
  * Edit common attributes page
@@ -18,9 +18,9 @@ class EditCommonAttributes extends ProductEditForm
     protected $currentStep;
 
     /**
-     * @param Session              $session
-     * @param PageFactoryInterface $pageFactory
-     * @param array                $parameters
+     * @param Session $session
+     * @param Factory $pageFactory
+     * @param array   $parameters
      */
     public function __construct($session, $pageFactory, $parameters = [])
     {
@@ -29,8 +29,11 @@ class EditCommonAttributes extends ProductEditForm
         $this->elements = array_merge(
             $this->elements,
             [
-                'Next'                      => ['css' => '.configuration .AknButton--apply'],
-                'Confirm'                   => ['css' => '.confirmation .AknButton--apply'],
+                'Cancel'                    => ['css' => '.wizard-action[data-action-target="grid"]'],
+                'Choose'                    => ['css' => '.wizard-action[data-action-target="choose"]'],
+                'Configure'                 => ['css' => '.wizard-action[data-action-target="configure"]'],
+                'Confirm'                   => ['css' => '.wizard-action[data-action-target="confirm"]'],
+                'Validate'                  => ['css' => '.wizard-action[data-action-target="validate"]'],
                 'Available attributes form' => [
                     'css' => '#pim_enrich_mass_edit_choose_action_operation_displayedAttributes',
                 ],
@@ -45,13 +48,65 @@ class EditCommonAttributes extends ProductEditForm
     }
 
     /**
+     * Go to the grid
+     *
+     * @return string
+     */
+    public function cancel()
+    {
+        $this->spin(function () {
+            $this->getElement('Cancel')->click();
+
+            return true;
+        }, 'Cannot got to the grid');
+
+        return $this->currentStep;
+    }
+
+    /**
+     * Go to the choose step
+     *
+     * @return string
+     */
+    public function select()
+    {
+        $this->spin(function () {
+            $this->getElement('Choose')->click();
+
+            return true;
+        }, 'Cannot got to the choose step');
+
+        return $this->currentStep;
+    }
+
+    /**
+     * Go to the configuration step
+     *
+     * @return string
+     */
+    public function choose()
+    {
+        $this->spin(function () {
+            $this->getElement('Configure')->click();
+
+            return true;
+        }, 'Cannot got to the configuration step');
+
+        return $this->currentStep;
+    }
+
+    /**
      * Go to the next step
      *
      * @return string
      */
-    public function next()
+    public function configure()
     {
-        $this->getElement('Next')->click();
+        $this->spin(function () {
+            $this->getElement('Confirm')->click();
+
+            return true;
+        }, 'Cannot got to the confirm step');
 
         return $this->currentStep;
     }
@@ -63,7 +118,11 @@ class EditCommonAttributes extends ProductEditForm
      */
     public function confirm()
     {
-        $this->getElement('Confirm')->click();
+        $this->spin(function () {
+            $this->getElement('Validate')->click();
+
+            return true;
+        }, 'Cannot confirm the wizard');
 
         return $this->currentStep;
     }

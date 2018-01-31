@@ -22,7 +22,7 @@ class DatagridViewRepository extends EntityRepository implements DatagridViewRep
     {
         return $this->createQueryBuilder('v')
             ->select('v.datagridAlias')
-            ->groupBy('v.datagridAlias')
+            ->distinct(true)
             ->getQuery()
             ->execute();
     }

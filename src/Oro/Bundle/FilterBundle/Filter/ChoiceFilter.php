@@ -8,7 +8,7 @@ use Oro\Bundle\FilterBundle\Form\Type\Filter\ChoiceFilterType;
 use Oro\Bundle\FilterBundle\Form\Type\Filter\FilterType;
 use Pim\Component\Catalog\Query\Filter\Operators;
 use Symfony\Component\Form\ChoiceList\View\ChoiceGroupView;
-use Symfony\Component\Form\Extension\Core\View\ChoiceView;
+use Symfony\Component\Form\ChoiceList\View\ChoiceView;
 
 class ChoiceFilter extends AbstractFilter
 {
@@ -17,7 +17,7 @@ class ChoiceFilter extends AbstractFilter
      */
     protected function getFormType()
     {
-        return ChoiceFilterType::NAME;
+        return ChoiceFilterType::class;
     }
 
     /**

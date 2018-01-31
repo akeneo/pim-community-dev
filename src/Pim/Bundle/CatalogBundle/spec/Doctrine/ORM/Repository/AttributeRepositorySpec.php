@@ -4,14 +4,14 @@ namespace spec\Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository;
 
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Driver\Statement;
+use Doctrine\ORM\AbstractQuery;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\ORM\Query\Expr;
+use Doctrine\ORM\QueryBuilder;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\AttributeTypes;
 use Prophecy\Argument;
-use Doctrine\ORM\AbstractQuery;
-use Doctrine\ORM\QueryBuilder;
 
 class AttributeRepositorySpec extends ObjectBehavior
 {
@@ -33,19 +33,6 @@ class AttributeRepositorySpec extends ObjectBehavior
         $this->shouldImplement('Pim\Component\Catalog\Repository\AttributeRepositoryInterface');
     }
 
-    function it_count_all_attributes($em, QueryBuilder $queryBuilder, AbstractQuery $query)
-    {
-        $em->createQueryBuilder()->willReturn($queryBuilder);
-        $queryBuilder->select('a')->willReturn($queryBuilder);
-        $queryBuilder->from('attribute', 'a')->willReturn($queryBuilder);
-        $queryBuilder->select('COUNT(a.id)')->willReturn($queryBuilder);
-
-        $queryBuilder->getQuery()->willReturn($query);
-        $query->getSingleScalarResult()->shouldBeCalled();
-
-        $this->countAll();
-    }
-
     function it_finds_the_axis_attribute(
         $em,
         QueryBuilder $queryBuilder,
@@ -65,7 +52,8 @@ class AttributeRepositorySpec extends ObjectBehavior
         $queryBuilder->select('a')->willReturn($queryBuilder);
         $queryBuilder->select('a.id')->willReturn($queryBuilder);
         $queryBuilder->addSelect('COALESCE(NULLIF(t.label, \'\'), CONCAT(\'[\', a.code, \']\')) as label')->willReturn($queryBuilder);
-        $queryBuilder->from('attribute', 'a')->willReturn($queryBuilder);
+        $queryBuilder->addSelect('a.code')->willReturn($queryBuilder);
+        $queryBuilder->from('attribute', 'a', null)->willReturn($queryBuilder);
         $queryBuilder->leftJoin('a.translations', 't')->willReturn($queryBuilder);
         $queryBuilder->andWhere($in)->willReturn($queryBuilder);
         $queryBuilder->andWhere($notScopable)->willReturn($queryBuilder);
@@ -81,9 +69,9 @@ class AttributeRepositorySpec extends ObjectBehavior
         ]);
 
         $this->findAvailableAxes('en_US')->shouldReturn([
-            11 => 'a',
-            12 => 'b',
-            10 => 's',
+            'a' => 11,
+            'b' => 12,
+            's' => 10,
         ]);
     }
 }

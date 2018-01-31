@@ -36,29 +36,17 @@ pim_import_export:
       history.title: Histórico
       job_content.title: Contenido
 pim_title.export_profile.index: Gestión de perfiles de exportación
-pim_title.export_profile.edit: Perfiles de exportación %job.label% | Editar
-pim_title.export_profile.show: Perfiles de exportación %job.label% | Mostrar
 pim_title.export_execution.index: Historial de ejecuciones de exportación
 pim_title.export_execution.show: Ejecuciones de importación | Detalles
 pim_title.import_profile.index: Gestión de perfiles de exportación
-pim_title.import_profile.edit: Perfiles de importación %job.label% | Editar
-pim_title.import_profile.show: Perfiles de importación %job.label% | Mostrar
 pim_title.import_execution.index: Historia de las ejecuciones de importación
 pim_title.import_execution.show: Ejecuciones de importación | Detalles
 export profile:
   title: Perfil de exportación
-  overview: Resumen del perfil de exportación
-  create: crear perfil exportador
   edit: Editar perfil exportador
-export report:
-  overview: informes de exportaciones
 import profile:
   title: Perfil de importación
-  overview: resumen del perfil de importación
-  create: crear perfil de importación
   edit: editar perfil de importación
-import report:
-  overview: informes de importación
 pim_importexport:
   acl:
     export_profile:
@@ -116,12 +104,6 @@ flash:
     removed: La importación se ha eliminado
     updated: La importación se ha actualizado exitosamente
     running: La importación se está ejecutando
-pim_menu:
-  item:
-    export_history: Histórico de exportaciones
-    export_profile: Perfiles de exportación
-    import_history: Histórico de importaciones
-    import_profile: Perfiles de importación
 General properties: Propiedades generales
 History: Histórico
 pane.accordion:
@@ -156,7 +138,6 @@ Warnings: Advertencias
 Summary: Resumen
 Start: Iniciar
 End: Finalizar
-set_attribute_requirements: Configurar requerimientos del atributo
 COMPLETED: Finalizado
 STARTING: Iniciando
 STARTED: Iniciado

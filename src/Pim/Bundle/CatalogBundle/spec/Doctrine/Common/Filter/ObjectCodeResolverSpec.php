@@ -2,7 +2,6 @@
 
 namespace spec\Pim\Bundle\CatalogBundle\Doctrine\Common\Filter;
 
-use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Persistence\ObjectRepository;
 use PhpSpec\ObjectBehavior;
@@ -12,23 +11,21 @@ use Pim\Component\Catalog\Model\FamilyInterface;
 
 class ObjectCodeResolverSpec extends ObjectBehavior
 {
-    function let(ManagerRegistry $managerRegistry)
+    function let(ObjectManager $objectManager)
     {
-        $this->beConstructedWith($managerRegistry);
+        $this->beConstructedWith($objectManager);
         $this->addFieldMapping('family', 'familyClass');
         $this->addFieldMapping('option', 'optionClass');
     }
 
     function it_gets_codes_from_ids(
-        $managerRegistry,
-        ObjectManager $manager,
+        $objectManager,
         ObjectRepository $repository,
         FamilyInterface $camcorders,
         FamilyInterface $shirt,
         FamilyInterface $men
     ) {
-        $managerRegistry->getManagerForClass('familyClass')->willReturn($manager);
-        $manager->getRepository('familyClass')->willReturn($repository);
+        $objectManager->getRepository('familyClass')->willReturn($repository);
 
         $repository->findOneBy(['id' => 12])->willReturn($camcorders);
         $repository->findOneBy(['id' => 56])->willReturn($shirt);
@@ -42,14 +39,12 @@ class ObjectCodeResolverSpec extends ObjectBehavior
     }
 
     function it_gets_codes_from_ids_with_attribute(
-        $managerRegistry,
-        ObjectManager $manager,
+        $objectManager,
         ObjectRepository $repository,
         AttributeOptionInterface $purple,
         AttributeInterface $attribute
     ) {
-        $managerRegistry->getManagerForClass('optionClass')->willReturn($manager);
-        $manager->getRepository('optionClass')->willReturn($repository);
+        $objectManager->getRepository('optionClass')->willReturn($repository);
         $attribute->getCode()->willReturn('an_option');
 
         $repository->findOneBy(['id' => 12])->willReturn($purple);
@@ -64,13 +59,11 @@ class ObjectCodeResolverSpec extends ObjectBehavior
     }
 
     function it_throws_an_exception_if_one_of_the_elements_is_not_found(
-        $managerRegistry,
-        ObjectManager $manager,
+        $objectManager,
         ObjectRepository $repository,
         FamilyInterface $camcorders
     ) {
-        $managerRegistry->getManagerForClass('familyClass')->willReturn($manager);
-        $manager->getRepository('familyClass')->willReturn($repository);
+        $objectManager->getRepository('familyClass')->willReturn($repository);
 
         $repository->findOneBy(['id' => 23])->willReturn($camcorders);
         $repository->findOneBy(['id' => 56])->willReturn(null);

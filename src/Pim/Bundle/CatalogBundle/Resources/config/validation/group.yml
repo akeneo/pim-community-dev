@@ -1,14 +1,11 @@
 Pim\Bundle\CatalogBundle\Entity\Group:
     constraints:
         - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity: code
-        - Pim\Component\Catalog\Validator\Constraints\UniqueVariantAxis: ~
         - Pim\Component\Catalog\Validator\Constraints\Immutable:
             properties:
                 - code
                 - type
                 - attributes
-        - Pim\Component\Catalog\Validator\Constraints\VariantGroupValues: ~
-        - Pim\Component\Catalog\Validator\Constraints\VariantGroupAxis: ~
     properties:
         code:
             - NotBlank: ~
@@ -19,18 +16,9 @@ Pim\Bundle\CatalogBundle\Entity\Group:
                 max: 100
         translations:
             - Valid: ~
-        axisAttributes:
-            - Count:
-                min: 1
-                groups: [variant]
 
 Pim\Bundle\CatalogBundle\Entity\GroupTranslation:
     properties:
         label:
             - Length:
                 max: 100
-
-Pim\Bundle\CatalogBundle\Entity\ProductTemplate:
-    getters:
-        values:
-            - Symfony\Component\Validator\Constraints\Valid: ~

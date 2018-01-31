@@ -1,0 +1,134 @@
+{
+  "parser": "babel-eslint",
+  "env": {
+    "browser": true
+  },
+  "globals": {
+    "Translator": true,
+    "require": true,
+    "define": true,
+    "module": false,
+    "__dirname": true,
+    "__moduleConfig": true,
+    "__contextPlaceholder": true,
+    "__contextPaths": true
+  },
+  "rules": {
+    "space-infix-ops": 2,
+    "no-bitwise": 2,
+    "curly": 0,
+    "eqeqeq": 1,
+    "wrap-iife": [
+        2,
+        "any"
+    ],
+    "indent": [
+      1,
+      4,
+      {
+        "ArrayExpression": "first",
+      }
+    ],
+    "no-use-before-define": 0,
+    "newline-before-return": 2,
+    "new-cap": [
+      1,
+      {
+        "properties": false
+      }
+    ],
+    "quotes": [
+      2,
+      "single"
+    ],
+    "no-undef": 2,
+    "no-unused-vars": 2,
+    "max-len": [
+      2,
+      120
+    ],
+    "no-empty": [
+      2,
+      {
+        "allowEmptyCatch": true
+      }
+    ],
+    "array-bracket-spacing": [
+      2,
+      "never",
+      {}
+    ],
+    "space-in-parens": [
+      2,
+      "never"
+    ],
+    # "key-spacing": [
+    #   2,
+    #   {
+    #     "beforeColon": false,
+    #     "afterColon": true
+    #   }
+    # ],
+    "space-unary-ops": [
+      2,
+      {
+        "words": false,
+        "nonwords": false
+      }
+    ],
+    "space-before-function-paren": [
+      2,
+      {
+        "anonymous": "ignore",
+        "named": "never"
+      }
+    ],
+    "no-mixed-spaces-and-tabs": 2,
+    "no-trailing-spaces": 2,
+    "comma-dangle": [
+      2,
+      "never"
+    ],
+    "no-with": 2,
+    "brace-style": [
+      2,
+      "1tbs",
+      {
+        "allowSingleLine": false
+      }
+    ],
+    "no-multiple-empty-lines": 2,
+    "no-multi-str": 2,
+    "one-var": [
+      2,
+      "never"
+    ],
+    "space-before-blocks": [
+      2,
+      "always"
+    ],
+    "comma-style": [
+      2,
+      "last"
+    ],
+    'comma-spacing': ['error', {
+      'before': false,
+      'after': true
+    }],
+    'semi-spacing': ['error', {
+      'before': false,
+      'after': true
+    }],
+    "eol-last": 2,
+    "dot-notation": 2,
+    "keyword-spacing": [
+      2,
+      {}
+    ],
+    "linebreak-style": [
+      2,
+      "unix"
+    ],
+    "semi": 1
+  }
+}

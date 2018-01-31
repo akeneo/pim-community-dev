@@ -1,10 +1,15 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Pim\Bundle\ApiBundle\tests\integration\Controller\Product;
 
 use Akeneo\Test\Integration\Configuration;
 use Doctrine\Common\Collections\Collection;
 
+/**
+ * @group ce
+ */
 class ListProductWithCompletenessIntegration extends AbstractProductTestCase
 {
     /** @var Collection */
@@ -66,9 +71,10 @@ class ListProductWithCompletenessIntegration extends AbstractProductTestCase
     {
         $client = $this->createAuthenticatedClient();
 
+        $encryptedId = rawurlencode($this->getEncryptedId('product_complete_en_locale'));
         $search = '{"completeness":[{"operator":"=","value":100,"scope":"ecommerce"}]}';
         $client->request('GET', 'api/rest/v1/products?scope=ecommerce&locales=en_US&limit=2&search=' . $search);
-        $searchEncoded = urlencode($search);
+        $searchEncoded = rawurlencode($search);
         $expected = <<<JSON
 {
     "_links": {
@@ -87,8 +93,8 @@ class ListProductWithCompletenessIntegration extends AbstractProductTestCase
 		        },
 		        "identifier": "product_complete",
 		        "family": "familyA2",
+		        "parent": null,
 		        "groups": [],
-		        "variant_group": null,
 		        "categories": ["categoryA","categoryB","master"],
 		        "enabled": true,
 		        "values": {
@@ -109,8 +115,8 @@ class ListProductWithCompletenessIntegration extends AbstractProductTestCase
 		        },
 		        "identifier": "product_complete_en_locale",
 		        "family": "familyA1",
+                "parent": null,
 		        "groups": [],
-		        "variant_group": null,
 		        "categories": ["categoryA","master","master_china"],
 		        "enabled": true,
 		        "values": {
@@ -157,8 +163,22 @@ JSON;
     /**
      * {@inheritdoc}
      */
-    protected function getConfiguration()
+    protected function getConfiguration(): Configuration
     {
-        return new Configuration([Configuration::getTechnicalCatalogPath()]);
+        return $this->catalog->useTechnicalCatalog();
+    }
+
+
+    /**
+     * @param string $productIdentifier
+     */
+    private function getEncryptedId($productIdentifier)
+    {
+        $encrypter = $this->getFromTestContainer('pim_api.security.primary_key_encrypter');
+        $productRepository = $this->getFromTestContainer('pim_catalog.repository.product');
+
+        $product = $productRepository->findOneByIdentifier($productIdentifier);
+
+        return $encrypter->encrypt($product->getId());
     }
 }

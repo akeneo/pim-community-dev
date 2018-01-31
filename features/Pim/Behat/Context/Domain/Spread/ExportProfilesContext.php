@@ -2,11 +2,13 @@
 
 namespace Pim\Behat\Context\Domain\Spread;
 
-use Akeneo\Component\Batch\Model\JobInstance;
+use Behat\ChainedStepsExtension\Step\Then;
 use Behat\Gherkin\Node\PyStringNode;
 use Behat\Gherkin\Node\TableNode;
 use Behat\Mink\Exception\ExpectationException;
 use Context\Spin\SpinCapableTrait;
+use PHPUnit\Framework\Assert;
+use PHPUnit\Framework\AssertionFailedError;
 use Pim\Behat\Context\Domain\ImportExportContext;
 use Symfony\Component\Yaml\Yaml;
 
@@ -15,23 +17,35 @@ class ExportProfilesContext extends ImportExportContext
     use SpinCapableTrait;
 
     /**
+     * @param string       $number
      * @param string       $code
      * @param PyStringNode $csv
      *
-     * @Then /^exported file of "([^"]*)" should contain:$/
+     * @Then /^(first |second )?exported file of "([^"]*)" should contain:$/
      *
      * @throws ExpectationException
      * @throws \Exception
      */
-    public function exportedFileOfShouldContain($code, PyStringNode $csv)
+    public function exportedFileOfShouldContain($number, $code, PyStringNode $csv)
     {
-        $path = $this->getExportedFile($code);
-        $config =  $this->getCsvJobConfiguration($code);
+        $intNumber = null;
+        if ('' !== $number) {
+            $intNumber = 'first ' === $number ? 1 : 2;
+        }
 
-        $expectedLines = $this->getExpectedLines($csv, $config);
-        $actualLines = $this->getActualLines($path, 'csv', $config);
+        $lines = $this->spin(function () use ($code, $csv, $intNumber) {
+            $path = $this->getExportedFile($code, $intNumber);
 
-        $this->compareFile($expectedLines, $actualLines, $path);
+            $config = $this->getCsvJobConfiguration($code);
+
+            return [
+                'expectedLines' => $this->getExpectedLines($csv, $config),
+                'actualLines' => $this->getActualLines($path, 'csv', $config),
+                'path' => $path
+            ];
+        }, sprintf('Can not find lines of the file %s', $code));
+
+        $this->compareFile($lines['expectedLines'], $lines['actualLines'], $lines['path']);
     }
 
     /**
@@ -39,14 +53,17 @@ class ExportProfilesContext extends ImportExportContext
      *
      * @Then /^exported file of "([^"]*)" should be empty$/
      *
-     * @throws \PHPUnit_Framework_AssertionFailedError
+     * @throws AssertionFailedError
      */
     public function exportedFileOfShouldBeEmpty($code)
     {
-        $path = $this->getExportedFile($code);
-        $content = trim(file_get_contents($path));
+        $this->spin(function () use ($code) {
+            $path = $this->getExportedFile($code);
+            $content = trim(file_get_contents($path));
+            Assert::assertEmpty($content);
 
-        assertEmpty($content);
+            return true;
+        }, sprintf('Cannot validate that job %s is empty', $code));
     }
 
     /**
@@ -60,13 +77,17 @@ class ExportProfilesContext extends ImportExportContext
      */
     public function exportedFileOfShouldContainsTheFollowingHeaders($code, PyStringNode $csv)
     {
-        $path = $this->getExportedFile($code);
-        $config = $this->getCsvJobConfiguration($code);
+        $this->spin(function () use ($code, $csv) {
+            $path = $this->getExportedFile($code);
+            $config = $this->getCsvJobConfiguration($code);
 
-        $expectedLines = $this->getExpectedLines($csv, $config);
-        $actualLines = $this->getActualLines($path, 'csv', $config);
+            $expectedLines = $this->getExpectedLines($csv, $config);
+            $actualLines = $this->getActualLines($path, 'csv', $config);
 
-        $this->compareFileHeadersOrder(current($expectedLines), current($actualLines));
+            $this->compareFileHeadersOrder(current($expectedLines), current($actualLines));
+
+            return true;
+        }, sprintf('Cannot validate the header of %s', $code));
     }
 
     /**
@@ -79,41 +100,59 @@ class ExportProfilesContext extends ImportExportContext
      */
     public function exportedYamlFileOfShouldContain($code, PyStringNode $yaml)
     {
-        $path = $this->getExportedFile($code);
+        $this->spin(function () use ($code, $yaml) {
+            $path = $this->getExportedFile($code);
 
-        $actualLines = Yaml::parse(file_get_contents($path));
-        $expectedLines = Yaml::parse($yaml->getRaw());
+            $actualLines = Yaml::parse(file_get_contents($path));
+            $expectedLines = Yaml::parse($yaml->getRaw());
 
-        $isValidYamlFile = function ($expectedLines, $actualLines) use (&$isValidYamlFile) {
-            foreach ($expectedLines as $key => $line) {
-                $actualLine = $actualLines[$key];
-                if (is_array($line)) {
-                    $isValidYamlFile($line, $actualLine);
+            $isValidYamlFile = function ($expectedLines, $actualLines) use (&$isValidYamlFile) {
+                foreach ($expectedLines as $key => $line) {
+                    $actualLine = $actualLines[$key];
+                    if (is_array($line)) {
+                        $isValidYamlFile($line, $actualLine);
+                    }
+
+                    if ($line !== $actualLine) {
+                        throw new \Exception(
+                            sprintf('The exported file is not well formatted, expected %s, given %s', $line, $actualLine)
+                        );
+                    }
                 }
+            };
 
-                if ($line !== $actualLine) {
-                    throw new \Exception(
-                        sprintf('The exported file is not well formatted, expected %s, given %s', $line, $actualLine)
-                    );
-                }
-            }
-        };
+            $isValidYamlFile($expectedLines, $actualLines);
 
-        $isValidYamlFile($expectedLines, $actualLines);
+            return true;
+        }, sprintf('Cannot validate the yml file %s', $code));
     }
 
     /**
-     * @param JobInstance $job
+     * @When /^I launch the ("([^"]*)" import job)$/
      *
-     * @When /^I launch the ("([^"]*)" (import|export) job)$/
+     * @return Then
      */
-    public function iLaunchTheExportJob(JobInstance $job)
+    public function iLaunchTheImportJob()
     {
-        $exportButton = $this->spin(function () {
-            return $this->getCurrentPage()->find('css', '.AknButton.AknButton--apply');
-        }, 'Cannot find the export button');
+        $this->spin(function () {
+            return $this->getCurrentPage()->find('css', '.AknCenteredBox .AknButton--apply');
+        }, 'Cannot find the import button')->click();
 
-        $exportButton->click();
+        return new Then('I should see the text "Execution details"');
+    }
+
+    /**
+     * @When /^I launch the ("([^"]*)" export job)$/
+     *
+     * @return Then
+     */
+    public function iLaunchTheExportJob()
+    {
+        $this->spin(function () {
+            return $this->getCurrentPage()->find('css', '.AknTitleContainer-meta .AknButton--apply');
+        }, 'Cannot find the export button')->click();
+
+        return new Then('I should see the text "Execution details"');
     }
 
     /**
@@ -121,6 +160,8 @@ class ExportProfilesContext extends ImportExportContext
      * @param string $path
      *
      * @Then /^the name of the exported file of "([^"]+)" should be "([^"]+)"$/
+     *
+     * @throws ExpectationException
      */
     public function theNameOfTheExportedFileOfShouldBe($code, $path)
     {
@@ -130,6 +171,30 @@ class ExportProfilesContext extends ImportExportContext
             throw $this->getMainContext()->createExpectationException(
                 sprintf('Expected file name "%s" got "%s"', $path, $executionPath)
             );
+        }
+    }
+
+    /**
+     * @param string $code
+     * @param string $paths
+     *
+     * @Then /^the names of the exported files of "([^"]+)" should be "([^"]+)"$/
+     *
+     * @throws ExpectationException
+     */
+    public function theNamesOfTheExportedFilesOfShouldBe($code, $paths)
+    {
+        $executionPaths = $this->getMainContext()->getSubcontext('job')->getJobInstanceFilenames($code);
+        $expectedPaths = explode(',', $paths);
+        sort($executionPaths);
+        sort($expectedPaths);
+
+        if ($executionPaths !== $expectedPaths) {
+            throw $this->getMainContext()->createExpectationException(sprintf(
+                'Expected file names "%s" got "%s"',
+                join(',', $expectedPaths),
+                join(',', $executionPaths)
+            ));
         }
     }
 
@@ -187,6 +252,8 @@ class ExportProfilesContext extends ImportExportContext
      * @param bool      $shouldBeInDirectory true if the files should be in the directory, false otherwise
      * @param TableNode $table               Files to check
      * @param string    $path                Path of item on filesystem
+     *
+     * @throws ExpectationException
      */
     protected function checkExportDirectoryFiles($shouldBeInDirectory, TableNode $table, $path)
     {
@@ -214,15 +281,16 @@ class ExportProfilesContext extends ImportExportContext
     }
 
     /**
-     * @param string $code
+     * @param string       $code
+     * @param integer|null $number
      *
      * @throws ExpectationException
      * @return string
      *
      */
-    protected function getExportedFile($code)
+    protected function getExportedFile($code, $number = null)
     {
-        $filePath = $this->getMainContext()->getSubcontext('job')->getJobInstancePath($code);
+        $filePath = $this->getMainContext()->getSubcontext('job')->getJobInstancePath($code, $number);
         if (!is_file($filePath)) {
             throw $this->getMainContext()->createExpectationException(
                 sprintf('File "%s" doesn\'t exist', $filePath)

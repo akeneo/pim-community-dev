@@ -5,9 +5,9 @@ namespace spec\Pim\Bundle\DataGridBundle\Updater;
 use Akeneo\Component\StorageUtils\Exception\InvalidObjectException;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
+use PhpSpec\ObjectBehavior;
 use Pim\Bundle\DataGridBundle\Entity\DatagridView;
 use Pim\Bundle\DataGridBundle\Updater\DatagridViewUpdater;
-use PhpSpec\ObjectBehavior;
 use Pim\Bundle\UserBundle\Entity\UserInterface;
 
 class DatagridViewUpdaterSpec extends ObjectBehavior

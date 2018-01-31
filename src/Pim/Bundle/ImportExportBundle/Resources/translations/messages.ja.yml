@@ -47,18 +47,10 @@ pim_title.import_execution.index: インポート実行履歴
 pim_title.import_execution.show: インポートの実行 |詳細
 export profile:
   title: エクスポートプロファイル
-  overview: エクスポート プロファイルの概要
-  create: エクスポート プロファイルを作成
   edit: エクスポート プロファイルを編集
-export report:
-  overview: レポートのエクスポート
 import profile:
   title: インポートプロファイル
-  overview: インポート プロファイルの概要
-  create: インポート プロファイルを作成
   edit: インポート プロファイルを編集
-import report:
-  overview: レポートのインポート
 pim_importexport:
   acl:
     export_profile:
@@ -116,12 +108,6 @@ flash:
     removed: インポートを削除しました
     updated: インポートが正常に更新されました
     running: エクスポートを実行しています。
-pim_menu:
-  item:
-    export_history: エクスポート履歴
-    export_profile: エクスポートプロファイル
-    import_history: インポート履歴
-    import_profile: インポートプロファイル
 General properties: 全般プロパティ
 History: 履歴
 pane.accordion:

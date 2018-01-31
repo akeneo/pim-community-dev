@@ -2,49 +2,27 @@
 
 .AknAttributeActions {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  flex-wrap: wrap;
 
-  &-editActions {
-    @verticalPadding: ((@AknTabHeight - @AknDefaultButtonSize - 1px) / 2); // To have the same size than tab
-
-    padding: @verticalPadding 10px @verticalPadding 0;
-    display: flex;
-    justify-content: space-between;
-    flex-grow: 1;
-    align-items: center;
-    margin-right: 10px;
+  &-close {
+    width: 20px;
+    height: 20px;
   }
 
   &-copyActions {
-    order: 10;
+    flex-basis: 100%;
     display: flex;
     justify-content: space-between;
-    flex-wrap: wrap;
+    margin-top: 16px;
+    padding-left: @AknMaxFormWidth;
   }
 
-  &-otherActions {
-    display: flex;
-    align-items: center;
+  &-editActions {
+    flex-basis: 100%;
   }
 
   &-contextSelectors {
-    display: flex;
-  }
-
-  &--comparisonMode &-editActions {
-    border-right: 1px solid @AknBorderColor;
-    flex-basis: @AknMaxFormWidth + 20px;
-    flex-grow: 0;
-  }
-
-  &--comparisonMode &-copyActions {
-    flex-grow: 1;
-  }
-
-  &-help {
-    color: @AknLightFontColor;
-    padding: 0 10px;
-    text-align: right;
+    border-left: 1px solid @AknBorderColor;
+    padding-left: 10px;
   }
 }

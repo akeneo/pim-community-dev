@@ -11,6 +11,7 @@ define(
     [
         'jquery',
         'underscore',
+        'oro/translator',
         'backbone',
         'oro/mediator',
         'routing',
@@ -21,7 +22,10 @@ define(
         'pim/attribute-group-manager',
         'pim/user-context',
         'pim/security-context',
-        'text!pim/template/form/tab/attributes',
+        'pim/template/form/tab/attributes',
+        'pim/template/form/tab/attribute/attribute-group',
+        'pim/template/common/no-data',
+        'pim/provider/to-fill-field-provider',
         'pim/dialog',
         'oro/messenger',
         'pim/i18n'
@@ -29,6 +33,7 @@ define(
     function (
         $,
         _,
+        __,
         Backbone,
         mediator,
         Routing,
@@ -40,15 +45,80 @@ define(
         UserContext,
         SecurityContext,
         formTemplate,
+        attributeGroupTemplate,
+        noDataTemplate,
+        toFillFieldProvider,
         Dialog,
         messenger,
         i18n
     ) {
+        /**
+         * Group field views by sections (attribute groups)
+         *
+         * @param {Array} attributeGroups
+         * @param {Array} fieldsToFill
+         *
+         * @return {Object}
+         */
+        const groupFieldsBySection = (attributeGroups, fieldsToFill) => (fieldCollection, field) => {
+            const newFieldCollection = Object.assign({}, fieldCollection);
+
+            if (undefined === newFieldCollection[field.attribute.group]) {
+                newFieldCollection[field.attribute.group] = {
+                    attributeGroup: attributeGroups[field.attribute.group],
+                    fields: [],
+                    toFill: 0
+                };
+            }
+
+            newFieldCollection[field.attribute.group].fields.push(field);
+            if (-1 !== fieldsToFill.indexOf(field.attribute.code)) {
+                newFieldCollection[field.attribute.group].toFill++;
+            }
+
+            return newFieldCollection;
+        };
+
+        /**
+         * Generate a section view for the given fields
+         *
+         * @param {Object}   fieldCollection
+         * @param {function} template
+         * @param {String}   label
+         *
+         * @return {view}
+         */
+        const createSectionView = (fieldCollection, template, label) => {
+            const view = document.createElement('div');
+            view.className = 'AknSubsection';
+            view.innerHTML = template({
+                label,
+                fieldCollection,
+                __
+            });
+
+            const container = fieldCollection.fields.sort(
+                (firstField, secondField) => firstField.attribute.sort_order - secondField.attribute.sort_order
+            ).reduce((container, field) => {
+                _.defer(field.render.bind(field));
+                container.appendChild(field.el);
+
+                return container;
+            }, document.createElement('div'));
+
+            view.appendChild(container);
+
+            return view;
+        };
+
         return BaseForm.extend({
             template: _.template(formTemplate),
-            className: 'tabbable tabs-left object-attributes',
+            attributeGroupTemplate: _.template(attributeGroupTemplate),
+            noDataTemplate: _.template(noDataTemplate),
+            className: 'tabbable object-attributes',
             events: {
-                'click .remove-attribute': 'removeAttribute'
+                'click .remove-attribute': 'removeAttribute',
+                'click .required-attribute-indicator': 'filterRequiredAttributes'
             },
             rendering: false,
 
@@ -67,33 +137,40 @@ define(
             configure: function () {
                 this.trigger('tab:register', {
                     code: this.code,
-                    label: _.__(this.config.tabTitle)
+                    label: __(this.config.tabTitle)
                 });
 
                 UserContext.off('change:catalogLocale change:catalogScope', this.render);
                 this.listenTo(UserContext, 'change:catalogLocale change:catalogScope', this.render);
                 this.listenTo(this.getRoot(), 'pim_enrich:form:entity:validation_error', this.render);
-                this.listenTo(this.getRoot(), 'pim_enrich:form:change-family:after', this.render);
                 this.listenTo(this.getRoot(), 'pim_enrich:form:entity:post_fetch', this.render);
+                this.listenTo(this.getRoot(), 'pim_enrich:form:entity:post_update', this.clearFillFieldProvider);
                 this.listenTo(this.getRoot(), 'pim_enrich:form:add-attribute:after', this.render);
                 this.listenTo(this.getRoot(), 'pim_enrich:form:show_attribute', this.showAttribute);
+                this.listenTo(this.getRoot(), 'pim_enrich:form:scope_switcher:pre_render', this.initScope.bind(this));
+                this.listenTo(this.getRoot(), 'pim_enrich:form:scope_switcher:change', (scopeEvent) => {
+                    if ('base_product' === scopeEvent.context) {
+                        this.setScope(scopeEvent.scopeCode, {silent: true});
+                        this.clearFillFieldProvider();
+                        this.setScope(scopeEvent.scopeCode);
+                    }
+                });
+                this.listenTo(this.getRoot(), 'pim_enrich:form:locale_switcher:pre_render', this.initLocale.bind(this));
+                this.listenTo(this.getRoot(), 'pim_enrich:form:locale_switcher:change', (localeEvent) => {
+                    if ('base_product' === localeEvent.context) {
+                        this.setLocale(localeEvent.localeCode, {silent: true});
+                        this.clearFillFieldProvider();
+                    }
+                });
 
                 FieldManager.clearFields();
 
                 this.onExtensions('comparison:change', this.comparisonChange.bind(this));
-                this.onExtensions('group:change', this.render.bind(this));
-                this.onExtensions('add-attribute:add', this.addAttributes.bind(this));
                 this.onExtensions('copy:copy-fields:after', this.render.bind(this));
                 this.onExtensions('copy:select:after', this.render.bind(this));
                 this.onExtensions('copy:context:change', this.render.bind(this));
-                this.onExtensions('pim_enrich:form:scope_switcher:pre_render', this.initScope.bind(this));
-                this.onExtensions('pim_enrich:form:locale_switcher:pre_render', this.initLocale.bind(this));
-                this.onExtensions('pim_enrich:form:scope_switcher:change', function (event) {
-                    this.setScope(event.scopeCode);
-                }.bind(this));
-                this.onExtensions('pim_enrich:form:locale_switcher:change', function (event) {
-                    this.setLocale(event.localeCode);
-                }.bind(this));
+                this.onExtensions('group:change', this.render.bind(this));
+                this.onExtensions('attribute_filter:change', this.render.bind(this));
 
                 return BaseForm.prototype.configure.apply(this, arguments);
             },
@@ -108,55 +185,66 @@ define(
 
                 this.rendering = true;
                 this.$el.html(this.template({}));
-                this.getConfig().then(function () {
-                    var object = this.getFormData();
-                    AttributeManager.getValues(object)
-                        .then(function (values) {
-                            var attributeGroupValues = AttributeGroupManager.getAttributeGroupValues(
-                                values,
-                                this.getExtension('attribute-group-selector').getCurrentElement()
+
+                var data = this.getFormData();
+                AttributeGroupManager.getAttributeGroupsForObject(data)
+                    .then((attributeGroups) => {
+                        this.getExtension('attribute-group-selector').setElements(
+                            _.indexBy(attributeGroups, 'code')
+                        );
+                        FieldManager.clearVisibleFields();
+                    })
+                    .then(() => this.filterValues(data.values))
+                    .then((values) => this.createFields(data, values))
+                    .then((fields) => {
+                        this.rendering = false;
+                        $.when(
+                            AttributeGroupManager.getAttributeGroupsForObject(data)
+                        ).then((attributeGroups) => {
+                            const scope = UserContext.get('catalogScope');
+                            const locale = UserContext.get('catalogLocale');
+                            const fieldsToFill = toFillFieldProvider.getMissingRequiredFields(data, scope, locale);
+
+                            const sections = _.values(
+                                fields.reduce(groupFieldsBySection(attributeGroups, fieldsToFill), {})
+                            ).sort((firstSection, secondSection) =>
+                                firstSection.attributeGroup.sort_order - secondSection.attributeGroup.sort_order
                             );
+                            const fieldsView = document.createElement('div');
 
-                            var fieldPromises = [];
-                            _.each(attributeGroupValues, function (value, attributeCode) {
-                                fieldPromises.push(this.renderField(object, attributeCode, value));
-                            }.bind(this));
+                            for (const section of sections) {
+                                fieldsView.appendChild(createSectionView(
+                                    section,
+                                    this.attributeGroupTemplate,
+                                    i18n.getLabel(
+                                        section.attributeGroup.labels,
+                                        UserContext.get('uiLocale'),
+                                        section.attributeGroup.code
+                                    )
+                                ));
+                            }
 
-                            this.rendering = false;
+                            const objectValuesDom = this.$('.object-values').empty();
+                            if (_.isEmpty(fields)) {
+                                objectValuesDom.append(this.noDataTemplate({
+                                    hint: __('oro.datagrid.noresults'),
+                                    subHint: __('oro.datagrid.noresults_subTitle'),
+                                    imageClass: ''
+                                }));
+                            } else {
+                                objectValuesDom.append(fieldsView);
+                            }
+                            this.renderExtensions();
+                            this.delegateEvents();
+                        });
+                    });
 
-                            return $.when.apply($, fieldPromises);
-                        }.bind(this)).then(function () {
-                            return _.sortBy(arguments, function (field) {
-                                return field.attribute.sort_order;
-                            });
-                        }).then(function (fields) {
-                            var $valuesPanel = this.$('.object-values');
-                            $valuesPanel.empty();
-
-                            FieldManager.clearVisibleFields();
-                            _.each(fields, this.appendField.bind(this, $valuesPanel));
-                        }.bind(this));
-                    this.delegateEvents();
-
-                    this.renderExtensions();
-                }.bind(this));
+                if (null !== sessionStorage.getItem('filter_missing_required_attributes')) {
+                    sessionStorage.removeItem('filter_missing_required_attributes');
+                    this.filterRequiredAttributes();
+                }
 
                 return this;
-            },
-
-            /**
-             * Append a field to the panel
-             *
-             * @param {jQueryElement} panel
-             * @param {Object} field
-             *
-             */
-            appendField: function (panel, field) {
-                if (field.canBeSeen()) {
-                    field.render();
-                    FieldManager.addVisibleField(field.attribute.code);
-                    panel.append(field.$el);
-                }
             },
 
             /**
@@ -168,7 +256,7 @@ define(
              *
              * @return {Promise}
              */
-            renderField: function (object, attributeCode, values) {
+            createAttributeField: function (object, attributeCode, values) {
                 return FieldManager.getField(attributeCode).then(function (field) {
                     return $.when(
                         (new $.Deferred().resolve(field)),
@@ -177,78 +265,21 @@ define(
                     );
                 }).then(function (field, channels, isOptional) {
                     var scope = _.findWhere(channels, { code: UserContext.get('catalogScope') });
-                    var catalogLocale = UserContext.get('catalogLocale');
+                    var locale = UserContext.get('catalogLocale');
 
                     field.setContext({
-                        locale: catalogLocale,
+                        locale,
                         scope: scope.code,
-                        scopeLabel: i18n.getLabel(scope.labels, catalogLocale, scope.code),
-                        uiLocale: catalogLocale,
+                        scopeLabel: i18n.getLabel(scope.labels, locale, scope.code),
+                        uiLocale: UserContext.get('catalogLocale'),
                         optional: isOptional,
                         removable: SecurityContext.isGranted(this.config.removeAttributeACL)
                     });
 
                     field.setValues(values);
+                    FieldManager.addVisibleField(field.attribute.code);
 
                     return field;
-                }.bind(this));
-            },
-
-            /**
-             * Get the configuration needed to load the attribute tab
-             *
-             * @return {Promise}
-             */
-            getConfig: function () {
-                var promises = [];
-                var object = this.getFormData();
-
-                promises.push(AttributeGroupManager.getAttributeGroupsForObject(object)
-                    .then(function (attributeGroups) {
-                        this.getExtension('attribute-group-selector').setElements(
-                            _.indexBy(_.sortBy(attributeGroups, 'sort_order'), 'code')
-                        );
-                    }.bind(this))
-                );
-
-                return $.when.apply($, promises).promise();
-            },
-
-            /**
-             * Add an attribute to the current attribute list
-             *
-             * @param {Event} event
-             */
-            addAttributes: function (event) {
-                var attributeCodes = event.codes;
-
-                $.when(
-                    FetcherRegistry.getFetcher('attribute').fetchByIdentifiers(attributeCodes),
-                    FetcherRegistry.getFetcher('locale').fetchActivated(),
-                    FetcherRegistry.getFetcher('channel').fetchAll(),
-                    FetcherRegistry.getFetcher('currency').fetchAll()
-                ).then(function (attributes, locales, channels, currencies) {
-                    var formData = this.getFormData();
-
-                    _.each(attributes, function (attribute) {
-                        if (!formData.values[attribute.code]) {
-                            formData.values[attribute.code] = AttributeManager.generateMissingValues(
-                                [],
-                                attribute,
-                                locales,
-                                channels,
-                                currencies
-                            );
-                        }
-                    });
-
-                    this.getExtension('attribute-group-selector').setCurrent(
-                        _.first(attributes).group_code
-                    );
-
-                    this.setData(formData);
-
-                    this.getRoot().trigger('pim_enrich:form:add-attribute:after');
                 }.bind(this));
             },
 
@@ -256,6 +287,8 @@ define(
              * Remove an attribute from the collection
              *
              * @param {Event} event
+             *
+             * // TODO: Move this to product/form/mass-edit/attributes when the variant groups will be dropped.
              */
             removeAttribute: function (event) {
                 if (!SecurityContext.isGranted(this.config.removeAttributeACL)) {
@@ -266,8 +299,8 @@ define(
                 var fields = FieldManager.getFields();
 
                 Dialog.confirm(
-                    _.__('pim_enrich.confirmation.delete.attribute'),
-                    _.__('pim_enrich.confirmation.delete_item'),
+                    __('pim_enrich.confirmation.delete.attribute'),
+                    __('pim_enrich.confirmation.delete_item'),
                     function () {
                         FetcherRegistry.getFetcher('attribute').fetch(attributeCode).then(function (attribute) {
                             $.ajax({
@@ -286,9 +319,9 @@ define(
 
                                 this.render();
                             }.bind(this)).fail(function () {
-                                messenger.notificationFlashMessage(
+                                messenger.notify(
                                     'error',
-                                    _.__(this.config.deletionFailed)
+                                    __(this.config.deletionFailed)
                                 );
                             });
                         }.bind(this));
@@ -306,7 +339,7 @@ define(
                     this.config.removeAttributeRoute,
                     {
                         code: this.getFormData().code,
-                        attributeId: attribute.id
+                        attributeId: attribute.meta.id
                     }
                 );
             },
@@ -314,13 +347,17 @@ define(
             /**
              * Initialize  the scope if there is none, or modify it by reference if there is already one
              *
-             * @param {Object} event
+             * @param {Object} scopeEvent
+             * @param {String} scopeEvent.context
+             * @param {String} scopeEvent.scopeCode
              */
-            initScope: function (event) {
-                if (undefined === this.getScope()) {
-                    this.setScope(event.scopeCode, {silent: true});
-                } else {
-                    event.scopeCode = this.getScope();
+            initScope: function (scopeEvent) {
+                if ('base_product' === scopeEvent.context) {
+                    if (undefined === this.getScope()) {
+                        this.setScope(scopeEvent.scopeCode, {silent: true});
+                    } else {
+                        scopeEvent.scopeCode = this.getScope();
+                    }
                 }
             },
 
@@ -344,13 +381,17 @@ define(
             /**
              * Initialize  the locale if there is none, or modify it by reference if there is already one
              *
-             * @param {Object} event
+             * @param {Object} eventLocale
+             * @param {String} eventLocale.context
+             * @param {String} eventLocale.localeCode
              */
-            initLocale: function (event) {
-                if (undefined === this.getLocale()) {
-                    this.setLocale(event.localeCode, {silent: true});
-                } else {
-                    event.localeCode = this.getLocale();
+            initLocale: function (eventLocale) {
+                if ('base_product' === eventLocale.context) {
+                    if (undefined === this.getLocale()) {
+                        this.setLocale(eventLocale.localeCode, {silent: true});
+                    } else {
+                        eventLocale.localeCode = this.getLocale();
+                    }
                 }
             },
 
@@ -375,7 +416,7 @@ define(
              * Post save actions
              */
             postSave: function () {
-                FieldManager.fields = {};
+                FieldManager.clearFields();
                 this.render();
             },
 
@@ -385,45 +426,29 @@ define(
              * @param {Event} event
              */
             showAttribute: function (event) {
-                AttributeGroupManager.getAttributeGroupsForObject(this.getFormData())
-                    .then(function (attributeGroups) {
-                        this.getRoot().trigger('pim_enrich:form:form-tabs:change', this.code);
+                this.getRoot().trigger('pim_enrich:form:form-tabs:change', this.code);
 
-                        var attributeGroup = AttributeGroupManager.getAttributeGroupForAttribute(
-                            attributeGroups,
-                            event.attribute
-                        );
-                        var needRendering = false;
+                var needRendering = false;
+                if (event.scope) {
+                    this.setScope(event.scope, {silent: true});
+                    needRendering = true;
+                }
+                if (event.locale) {
+                    this.setLocale(event.locale, {silent: true});
+                    needRendering = true;
+                }
 
-                        if (!attributeGroup) {
-                            return;
-                        }
+                if (needRendering) {
+                    this.render();
+                }
 
-                        if (event.scope) {
-                            this.setScope(event.scope, {silent: true});
-                            needRendering = true;
-                        }
-                        if (event.locale) {
-                            this.setLocale(event.locale, {silent: true});
-                            needRendering = true;
-                        }
+                var displayedAttributes = FieldManager.getFields();
 
-                        var attributeGroupSelector = this.getExtension('attribute-group-selector');
-                        if (attributeGroup !== attributeGroupSelector.getCurrent()) {
-                            attributeGroupSelector.setCurrent(attributeGroup);
-                            needRendering = true;
-                        }
-
-                        if (needRendering) {
-                            this.render();
-                        }
-
-                        var displayedAttributes = FieldManager.getFields();
-
-                        if (_.has(displayedAttributes, event.attribute)) {
-                            displayedAttributes[event.attribute].setFocus();
-                        }
-                    }.bind(this));
+                if (_.has(displayedAttributes, event.attribute)) {
+                    const field = displayedAttributes[event.attribute];
+                    // TODO: the manager shouldn't be stateful, access the field by another way
+                    _.defer(field.setFocus.bind(field));
+                }
             },
 
             /**
@@ -436,6 +461,72 @@ define(
                 this.$el.find('.AknAttributeActions')[open ? 'addClass' : 'removeClass'](
                     'AknAttributeActions--comparisonMode'
                 );
+            },
+
+            /**
+             * Filter values
+             *
+             * @param {Object} values
+             *
+             * @return {Promise}
+             */
+            filterValues: function (values) {
+                if (!this.getExtension('attribute-group-selector').isAll()) {
+                    const filteredValues = {};
+                    const attributeGroup = this.getExtension('attribute-group-selector').getCurrentElement();
+                    attributeGroup.attributes.forEach((attributeCode) => {
+                        if (undefined !== values[attributeCode]) {
+                            filteredValues[attributeCode] = values[attributeCode];
+                        }
+                    });
+                    values = filteredValues;
+                }
+
+                if (undefined === this.getExtension('attribute-filter')) {
+                    return $.Deferred().resolve(values);
+                }
+
+                return this.getExtension('attribute-filter').filterValues(values);
+            },
+
+            /**
+             * Render all fields and return a collection of promises
+             *
+             * This method is pretty optimization oriented: We fetch the attributes as a collection
+             * to avoid individual fetching afterward. We also don't use fat arrow functions because
+             * we cannot get the 'arguments' object out of it
+             *
+             * @param {Object} data
+             * @param {Object} values
+             *
+             * @return {Promise}
+             */
+            createFields: function (data, values) {
+                return FetcherRegistry.getFetcher('attribute')
+                    .fetchByIdentifiers(Object.keys(values))
+                    .then((attributes) => {
+                        return $.when.apply($, attributes.map((attribute) => {
+                            return this.createAttributeField(data, attribute.code, values[attribute.code]);
+                        }));
+                    }).then(function () {
+                        return _.values(arguments);
+                    });
+            },
+
+            /**
+             * Filter the required attributes and attribute group
+             */
+            filterRequiredAttributes: function () {
+                this.getRoot().trigger('pim_enrich:form:switch_values_filter', 'missing_required');
+            },
+
+            /**
+             * Clear the fill field provider on product fetch
+             */
+            clearFillFieldProvider: function () {
+                toFillFieldProvider.clear();
+
+                this.getRoot().trigger('pim_enrich:form:to-fill:cleared')
             }
         });
     }

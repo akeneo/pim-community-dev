@@ -2,32 +2,47 @@
 
 namespace Pim\Bundle\CatalogBundle\Filter;
 
-use Pim\Component\Catalog\Model\ProductValueInterface;
+use Pim\Component\Catalog\Model\ValueCollectionInterface;
+use Pim\Component\Catalog\Model\ValueInterface;
 
 /**
- * Filter the product values according to channel codes provided in options.
+ * Filter the values according to channel codes provided in options.
  *
  * @author    Julien Sanchez <julien@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductValueChannelFilter extends AbstractFilter implements CollectionFilterInterface, ObjectFilterInterface
+class ProductValueChannelFilter implements CollectionFilterInterface, ObjectFilterInterface
 {
     /**
      * {@inheritdoc}
      */
-    public function filterObject($productValue, $type, array $options = [])
+    public function filterObject($value, $type, array $options = [])
     {
-        if (!$productValue instanceof ProductValueInterface) {
-            throw new \LogicException('This filter only handles objects of type "ProductValueInterface"');
+        if (!$value instanceof ValueInterface) {
+            throw new \LogicException('This filter only handles objects of type "ValueInterface"');
         }
 
         $channelCodes = isset($options['channels']) ? $options['channels'] : [];
-        $attribute = $productValue->getAttribute();
+        $attribute = $value->getAttribute();
 
         return !empty($channelCodes) &&
             $attribute->isScopable() &&
-            !in_array($productValue->getScope(), $channelCodes);
+            !in_array($value->getScope(), $channelCodes);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function filterCollection($objects, $type, array $options = [])
+    {
+        foreach ($objects as $key => $object) {
+            if ($this->filterObject($object, $type, $options)) {
+                $objects->removeKey($key);
+            }
+        }
+
+        return $objects;
     }
 
     /**
@@ -35,6 +50,14 @@ class ProductValueChannelFilter extends AbstractFilter implements CollectionFilt
      */
     public function supportsObject($object, $type, array $options = [])
     {
-        return $object instanceof ProductValueInterface;
+        return $object instanceof ValueInterface;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function supportsCollection($collection, $type, array $options = [])
+    {
+        return $collection instanceof ValueCollectionInterface;
     }
 }

@@ -11,7 +11,22 @@ Feature: View attributes
 
   @ce
   Scenario: Successfully view attributes
-    Then the grid should contain 26 elements
-    And I should see the columns Code, Label, Type, Scopable, Localizable and Group
-    And I should see attributes sku, name, manufacturer, volume, weather_conditions, description, price, rating, side_view, top_view, size, color, lace_color, length, number_in_stock, heel_color, sole_color, sole_fabric, lace_fabric, cap_color, rate_sale, weight and 123
-    And the rows should be sorted ascending by Code
+    Then the grid should contain 25 elements
+    And I should see the columns Label, Type, Group, Scopable, Localizable
+    And I should see attributes SKU, Name, Manufacturer, Volume, Description, Price, Rating, Side view, Top view, Size, Color, Lace color, Length, Number in stock, Heel color, Sole color, Sole fabric, Lace fabric, Cap color, Rate of sale, Rear view and Attribute 123
+    And the rows should be sorted ascending by Label
+
+  @jira https://akeneo.atlassian.net/browse/PIM-6923
+  Scenario: Successfully search attributes and empty field
+    Then the grid should contain 25 elements
+    When I search "me"
+    Then I should see attributes Name, Comment and Volume
+    And the grid should contain 3 elements
+    When I click on the "Name" row
+    And I should see the text "Label translations"
+    And I am on the attributes page
+    Then the grid should contain 3 elements
+    And I should see attributes Name, Comment and Volume
+    When I search ""
+    Then the grid should contain 25 elements
+    And I should see attributes SKU, Name, Manufacturer, Volume, Description, Price, Rating, Side view, Top view, Size, Color, Lace color, Length, Number in stock, Heel color, Sole color, Sole fabric, Lace fabric, Cap color, Rate of sale, Rear view and Attribute 123

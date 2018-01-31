@@ -110,14 +110,14 @@ class BatchStatusSpec extends ObjectBehavior
     {
         $this::getAllLabels()->shouldReturn(
             [
-                BatchStatus::COMPLETED => 'COMPLETED',
-                BatchStatus::STARTING  => 'STARTING',
-                BatchStatus::STARTED   => 'STARTED',
-                BatchStatus::STOPPING  => 'STOPPING',
-                BatchStatus::STOPPED   => 'STOPPED',
-                BatchStatus::FAILED    => 'FAILED',
-                BatchStatus::ABANDONED => 'ABANDONED',
-                BatchStatus::UNKNOWN   => 'UNKNOWN'
+                'COMPLETED' => BatchStatus::COMPLETED,
+                'STARTING' => BatchStatus::STARTING,
+                'STARTED' => BatchStatus::STARTED,
+                'STOPPING' => BatchStatus::STOPPING,
+                'STOPPED' => BatchStatus::STOPPED,
+                'FAILED' => BatchStatus::FAILED,
+                'ABANDONED' => BatchStatus::ABANDONED,
+                'UNKNOWN' => BatchStatus::UNKNOWN
             ]
         );
     }

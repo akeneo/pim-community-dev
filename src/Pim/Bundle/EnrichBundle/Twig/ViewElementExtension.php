@@ -143,12 +143,4 @@ class ViewElementExtension extends \Twig_Extension
 
         return $result;
     }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getName()
-    {
-        return 'pim_view_element_extension';
-    }
 }

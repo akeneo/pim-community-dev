@@ -49,20 +49,6 @@ pim_enrich:
       product.title: 商品
       property.title: 属性
       history.title: 历史
-  variant_group:
-    type:
-      VARIANT: 变量
-      X_SELL: X-Sell
-      ADDITIONAL: 附加
-      RELATED: 相关的
-    tab:
-      product.title: 商品
-      property.title: 属性
-      history.title: 历史
-      attribute.title: 属性
-    info:
-      no_attributes: 这个款式组还没有属性
-      no_attributes_in_selected_locale: 这个款式组在该本地化语言中还没有属性
   completeness:
     progress_bar.title: '完成 %ratio%%（1 所需的值） | 完成 %ratio%%（所需的%count% 值）'
     subtitle: '{0} 完成 |{1} 1 缺少值 |]1，Inf] %count% 缺失值'
@@ -94,7 +80,7 @@ pim_enrich:
         third: 配置
         fourth: 确认
     change-status:
-      label: 更改状态 （启用 / 禁用）
+      label: 更改状态
       description: 将启用或禁用选定的产品。
       success_flash: 产品状态已更改
       launched_flash: 批量操作"更改状态"已经启动。完成后会通知您。
@@ -103,28 +89,23 @@ pim_enrich:
       description: 使用被选择的本地化语言对应的数据来编缉所选定的产品属性。
       empty: 请选择你要编辑的属性
       success_flash: 更新产品状态的作业正在运行
-      launched_flash: 批量操作"编辑共同属性"已经启动。完成后会通知您。
       message:
         warning: 所选定的产品中没有共同的产品属性。请更改您的选择。
         invalid_attribute: 具有代码"attribute_code"属性在选定的产品中并不共用，该属性略过。
         no_valid_attribute: 没有选定的属性可以应用于这种产品。
     classify-add:
-      label: 在目录中为产品分类
       description: 产品将被放入以下目录，现存的位置也会保留。
       success_flash: 产品已经被分类到所选的目录中了。
       launched_flash: 批量操作"加入到目录"已经启动。完成后会通知您。
     classify-move:
-      label: 在目录中移动产品
       description: 产品将被放入以下目录，现存的位置不会保留。
       success_flash: 产品已经被移动到所选的目录中了。
       launched_flash: 批量操作"移动到目录"已经启动。完成后会通知您。
     classify-remove:
-      label: 在目录中移除产品
       description: 产品将从以下目录中删除。
       success_flash: 产品已经从所选的目录中移除了。
       launched_flash: 批量操作"从目录中移除"已经启动。完成后会通知您。
     change-family:
-      label: 更改产品品类
       description: 选定产品的品类将更改为被选定的品类
       success_flash: 所选产品的品被已经被成功更改。
       launched_flash: 批量操作"更改品类"已经启动。完成后会通知您。
@@ -134,18 +115,7 @@ pim_enrich:
       success_flash: 产品已成功添加到所选的组
       launched_flash: 批量操作"加入到组"已经启动。完成后会通知您。
       no_group: 现在没有组。请首先创建一个组。
-    add-to-variant-group:
-      label: 添加到款式组
-      description: 选择一个款式组，将所选定的产品加入其中
-      success_flash: 产品已成功添加到所选的款式组
-      already_in_variant_group_or_not_valid: 你不能将以下产品加入组，因为它已经在一个款式组或没有组轴。
-      no_variant_group: 现在没有款式组。请从创款式组开始。
-      no_valid_variant_group: 没有款式组与所选产品共享属性。
-      some_variant_groups_are_skipped:
-        The following variant groups have been skipped because they don't share attributes with selected products: '%groups%'
-      launched_flash: 批量操作"加入到款式组"已经启动。完成后会通知您。
     set-attribute-requirements:
-      label: 设置属性要求
       description: 下列属性要求将应用于所选的品类中
       success_flash: 属性要求将应用于所选的品类中
       launched_flash: 批量操作"设置属性要求"已经启动。当完成时，我们会通知您。
@@ -170,11 +140,9 @@ pim_enrich:
       add_attribute: 将属性添加到产品
       remove_attribute: 从产品中删除属性
       categories_view: 咨询产品的类别
-      associations_view: 查看产品的关联类型
       change_family: 更改产品品类
       change_state: 更改产品状态
       add_to_groups: 将商品添加到组
-      add_to_variant_group: 将产品添加到款式组
       mass_edit: 产品批量编辑操作
       comment: 评论产品
       download: 下载PDF格式的产品
@@ -223,15 +191,6 @@ pim_enrich:
       edit: 编辑组
       remove: 移除分组
       history: 查看组历史记录
-    variant_group:
-      index: 列出款式组
-      create: 创建款式组
-      edit: 编辑款式组
-      remove: 移除款式组
-      history: 查看款式组历史记录
-      edit_attributes: 编辑款式组的属性
-      add_attributes: 将属性添加到款式组
-      remove_attribute: 从款式组中删除属性
     group_type:
       index: 列出组类型
       create: 创建组类型
@@ -254,24 +213,17 @@ pim_enrich:
     currency: 货币
     family: 品类
     group: 分组
-    variant_group: 款式组
     group_type: 分组类型
     locale: 本地化语言
     product: 商品
-  product_value:
-    tooltip:
-      from_variant:
-        title: 用款式组进行更新
-        content: 以下款式组对该字段进行了更新
   reference_data:
     empty_value:
       reference_data_type:
         label: 选择引用的数据类型
 attribute:
   title: 属性
-  overview: 属性概述
-  create: 创建属性
   edit: 编辑属性
+  create: 创建属性
 attribute group:
   title: 属性组
   overview: 属性组概述
@@ -282,7 +234,7 @@ attribute group:
   create new: 创建新的属性组
 category:
   title: 类别
-  overview: 类别概述
+  overview: 分类
   create: 创建类别
   edit: 编辑类别
   suggest selection: 请选择左边的类别
@@ -299,17 +251,13 @@ channel:
   edit: 编辑频道
 currency:
   title: 货币
-  overview: 货币概述
   create: 创建货币
   edit: 编辑货币
 family:
   title: 分类
-  overview: 分类概述
-  create: 创建分类
   edit: 编辑分类
 locale:
   title: 区域
-  overview: 区域概述
   create: 创建区域
   edit: 编辑区域
 product:
@@ -319,22 +267,12 @@ product:
   edit: 编辑产品
 group:
   title: 分组
-  overview: 分组概述
-  create: 创建分组
   edit: 编辑分组
 group type:
   title: 分组类型
-  overview: 分组类型概述
-  create: 创建分组类型
   edit: 编辑分组类型
-variant group:
-  title: 属性组
-  overview: 款式组概述
-  create: 创建款式组
-  edit: 编辑属性组
 association type:
   title: 关联类型
-  overview: 关联类型概述
   create: 创建关联类型
   edit: 编辑关联类型
 products: 产品
@@ -350,13 +288,11 @@ btn:
     locale: 创建区域
     product: 创建产品
     group: 创建分组
-    variant group: 创建款式组
     association type: 创建关联类型
     group type: 创建分组类型
     drag_or_upload: 拖放式操作可上传或点击这里
   edit: 编辑
   save: 保存
-  save and back: 保存并返回到列表
   save and create: 保存并创建新的
   save and next: 保存和下一步
   save and finish: 保存并完成
@@ -372,7 +308,7 @@ btn:
   download: 下载
 confirmation:
   confirm: 确认
-  delete: 删除确认
+  delete: 确定删除
   leave: 你确定你要离开此页面？
   discard changes: 如果你离开页面，你将丢失%entity%的更改。
   remove:
@@ -383,7 +319,6 @@ confirmation:
     family: 确定要删除产品族%name%吗？
     product: 确定要删除产品%name%吗？
     group: 确定要删除分组%name%吗？
-    variant group: 确定要删除属性组%name%吗？
     group type: 确定要删除分组类型%name%吗？
     user: 确定要删除用户%name%吗？
   attribute group:
@@ -392,8 +327,6 @@ confirmation:
     remove attribute: 确定要从这个产品族删除属性%name%吗？
   product:
     remove attribute: 定要要从这个产品删除属性%name%吗？
-  variant_group:
-    remove_attribute: 确定要从这个款式组中删除属性%name%吗？
 flash:
   entity:
     removed: 项目已被删除
@@ -402,7 +335,6 @@ flash:
     updated: 属性已更新
     removed: 属性已删除
     identifier not removable: 标识属性不能被删除
-    used by groups: 此属性不能删除，因为 %count%个款式组正在使用它
   attribute group:
     created: 属性组已创建
     updated: 属性组已更新
@@ -425,7 +357,6 @@ flash:
     updated: 货币已更新
     error.linked_to_channel: 您不能禁用一种货币挂钩的渠道。
   family:
-    created: 产品族已创建
     updated: 产品族已更新
     removed: 产品族已删除
     identifier not removable: 产品族内的标识属性不能被删除
@@ -444,20 +375,12 @@ flash:
     enabled: 产品已被启用
     disabled: 产品已被禁用
   group:
-    created: 分组已创建
     updated: 分组已更新
     removed: 分组已删除
-  variant group:
-    created: 属性组已创建
-    updated: 属性组已更新
-    removed: 属性组已删除
-    attributes_added: 属性已成功添加到款式组
-    attribute_removed: 属性已从成功的从款式组删除
   group type:
     created: 分组类型已创建
     updated: 分组类型已更新
     removed: 分组类型已删除
-    cant remove variant: 分组类型变量不能删除
     cant remove used: 分组类型正在被一些组使用，不能删除
   association type:
     created: 关联类型已创建
@@ -513,7 +436,7 @@ Manage groups: 管理分组
 Code: 代码
 Name: 名称
 Type: 类型
-Scope: 范围
+Scope: 通道
 Required: 必填
 Unique: 唯一的
 Not required: 不需要
@@ -618,7 +541,6 @@ pim_title.attribute:
   edit: "属性%attribute.label%|编辑"
 pim_title.product:
   index: "商品"
-  edit: "产品%product.sku%|编辑"
 pim_title.family:
   index: "品类"
   edit: "产品族%family.label%|编辑"
@@ -633,9 +555,6 @@ pim_title.locale:
 pim_title.group:
   index: "分组"
   edit: "分组%group.label%|编辑"
-pim_title.variant_group:
-  index: "款式组"
-  edit: "属性组%group.label%|编辑"
 pim_title.association_type:
   index: "关联类型"
   edit: "关联类型%association type.label%|编辑"
@@ -697,23 +616,20 @@ pim_enrich.mass_edit_action:
       third: 配置
       fourth: 确认
   change-status:
-    label: 更改状态 （启用 / 禁用）
+    label: 更改状态
     description: 将启用或禁用选定的产品。
     success_flash: 产品状态已更改
   edit-common-attributes:
-    label: 编辑共同属性
+    label: 编辑属性
     description: 使用被选择的本地化语言对应的数据来编缉所选定的产品属性。
     empty: 请选择你要编辑的属性
     success_flash: 产品属性已更新
     message.warning: 所选定的产品中没有共同的产品属性。请更改您的选择。
     no_attribute.warning: 所选定的产品中没有共同的产品属性。请更改您的选择。
-    truncated_by_variant_attribute.warning: 选定的产品中一些常见的属性从来自款式组。他们并不可用于批量编辑︰ %attributes%。
   classify:
-    label: 在目录中为产品分类
     description: 产品将被放入以下目录，现存的位置也会保留。
     success_flash: 产品已经被分类到所选的目录中了。
   change-family:
-    label: 更改产品品类
     description: 选定产品的品类将更改为被选定的品类
     success_flash: 所选产品的品被已经被成功更改。
     no_family: 没有品类
@@ -722,7 +638,6 @@ pim_enrich.mass_edit_action:
     description: 选择一个组，将所选定的产品加入其中
     success_flash: 产品已成功添加到所选的组
   set-attribute-requirements:
-    label: 设置属性要求
     description: 下列属性要求将应用于所选的品类中
     success_flash: 属性要求将应用于所选的品类中
 To enable: 启用
@@ -734,25 +649,6 @@ Current tab: 当前选项卡
 Group: 分组
 View group: 查看组
 Products: 商品
-pim_menu:
-  tab:
-    collect: 收集
-    enrich: 添加
-    settings: 设置 
-    spread: 传播
-  item:
-    association_type: 关联类型
-    attribute: 属性
-    attribute_group: 属性组
-    category: 分类
-    channel: 渠道
-    currency: 货币
-    family: 品类
-    group: 分组
-    group_type: 分组类型
-    locale: 本地化语言
-    product: 商品
-    variant_group: 款式组
 Properties: 属性
 History: 历史
 pane.accordion:
@@ -767,11 +663,8 @@ pane.accordion:
   group_values: 分组值
 popin.create:
   association_type.title: 创建关联类型
-  family.title: 创建一个新品类
   group.title: 创建新组
-  group_type.title: 创建组类型
   product.title: 创建新商品
-  variant_group.title: 创建一个新的款式组
   option.title: 创建一个新的选项
 In group: 在组中
 Attribute as label: 属性作为标签
@@ -843,16 +736,10 @@ job_execution.summary:
   skipped_products: 跳过的产品
   skipped_attributes: 跳过的属性
 pim_mass_edit_execution_show: 批量编辑执行 |详细信息
-edit_common_attributes.steps.edit_common_attributes_processor.title: 编辑共同属性
+edit_common_attributes.steps.edit_common_attributes_processor.title: 编辑属性
 update_product_value.steps.update_product_value_processor.title: 更新商品值
 remove_product_value.steps.update_product_value_processor.title: 移除商品值
-add_to_variant_group_clean.steps.excluded.title: 被排除在外的产品
-add_to_variant_group_clean.steps.duplicated.title: 重复的轴
-add_to_variant_group.steps.excluded.title: 被排除在外的产品
-add_to_variant_group.steps.duplicated.title: 重复的轴
-add_to_variant_group.steps.cleaner.warning.description: 产品不能进入所选的款式组︰ 与其它产品有重复的差异轴值。
-edit_common_attributes: 编辑共同属性
-edit_common_attributes_clean: 为共同的属性清理文件
+edit_common_attributes: 编辑属性
 perform.steps.duplicated.title: 重复的轴
 perform.steps.excluded.title: 被排除在外的产品
 batch_jobs:
@@ -865,15 +752,9 @@ batch_jobs:
     perform:
       label: 更新商品值
   edit_common_attributes:
-    label: 编辑共同属性
+    label: 编辑属性
     perform:
-      label: 编辑共同属性
-    clean:
-      label: 为共同的属性清理文件
-  set_attribute_requirements:
-    label: 设置属性要求
-    perform:
-      label: 设置属性要求
+      label: 编辑属性
   csv_product_quick_export:
     quick_export.label: Csv 产品快速导出
     perform:
@@ -890,10 +771,6 @@ batch_jobs:
     quick_export.label: XLSX产品界面内容下快速导出
     perform:
       label: XLSX产品界面内容下快速导出
-  add_to_variant_group:
-    label: 添加到款式组
-    perform:
-      label: 添加到款式组
 mass_edit report:
   overview: 批量编辑报告
 job_tracker:

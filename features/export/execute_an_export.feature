@@ -32,6 +32,6 @@ Feature: Execute a job
     And I am on the "csv_footwear_product_export" export job page
     When I launch the "csv_footwear_product_export" export job
     And I wait for the "csv_footwear_product_export" job to finish
-    Then I should see "Execution details"
+    Then I should see the text "Execution details"
     And file "%tmp%/product_export/product_export.csv" should exist
     And an email to "Julia@example.com" should have been sent

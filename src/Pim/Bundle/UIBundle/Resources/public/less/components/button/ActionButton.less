@@ -1,24 +1,31 @@
 @import '../../base/variables';
 
 .AknActionButton {
-  height: @AknLittleButtonSize;
-  min-width: @AknLittleButtonSize;
-  line-height: @AknLittleButtonSize;
+  height: @AknMicroButtonSize;
+  min-width: @AknMicroButtonSize;
+  line-height: @AknMicroButtonSize - 2;
   font-size: @AknDefaultFontSize;
   border: 1px solid @AknBorderColor;
   color: @AknDefaultFontColor;
   background-color: white;
-  border-radius: 2px;
+  border-radius: 100px;
   font-weight: normal;
-  padding: 0 10px;
+  padding: 0 15px;
   vertical-align: middle;
   display: inline-block;
   cursor: pointer;
   white-space: nowrap;
   outline: none;
+  text-transform: uppercase;
+  transition: background 0.1s ease-in;
 
   &-caret {
-    margin-left: 5px;
+    display: inline-block;
+    width: 12px;
+    height: 6px;
+    background: url("../../../images/jstree/icon-down.svg") no-repeat 0 center;
+    background-size: 12px;
+    margin-left: 3px;
   }
 
   &:hover,
@@ -27,29 +34,13 @@
     background: @AknDefaultHoverBackground;
   }
 
-  &--noRightBorder {
-    border-right: none;
-    border-top-right-radius: 0;
-    border-bottom-right-radius: 0;
-  }
-
   &--noLeftBorder {
     border-left: none;
     border-top-left-radius: 0;
     border-bottom-left-radius: 0;
   }
 
-  &-selectButton {
-    color: @AknDefaultFontColor;
-    cursor: pointer;
-    background: none;
-    border: none;
-
-    &:hover, &:active, &:focus {
-      outline: none;
-    }
-  }
-
+  // Use Button instead
   &--big {
     height: @AknDefaultButtonSize;
     line-height: @AknDefaultButtonSize;
@@ -61,45 +52,34 @@
     padding: 0 !important;
   }
 
-  &--glued {
-    border-radius: 0;
-
-    &:first-child {
-      border-top-left-radius: 2px;
-      border-bottom-left-radius: 2px;
-    }
-
-    &:last-child {
-      border-top-right-radius: 2px;
-      border-bottom-right-radius: 2px;
-    }
-
-    & + & {
-      border-left: none;
-    }
-  }
-
   &--disabled {
-    color: @AknLightFontColor;
-    background: @AknDisabledInputColor;
+    opacity: 0.5;
     cursor: not-allowed;
   }
 
-  &--input {
-    cursor: inherit;
-    padding-left: 3px;
-    padding-right: 3px;
-    text-align: center;
-    
-    &:hover {
-      background: white;
-    }
+  &--unclickable {
+    opacity: 0.5;
+    cursor: default;
   }
 
-  &--square {
-    min-width: @AknLittleButtonSize;
-    padding-left: 0;
-    padding-right: 0;
-    text-align: center;
+  &--withoutBorder {
+    border: none;
+    padding: 0;
+    background-color: transparent;
+    text-transform: none;
+  }
+
+  &-highlight {
+    color: @AknLightPurple;
+  }
+
+  &--highlight {
+    color: @AknLightPurple;
+    border-color: @AknLightPurple;
+  }
+
+  &--important {
+    text-transform: uppercase;
+    font-size: @AknFontSizeBig;
   }
 }

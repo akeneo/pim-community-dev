@@ -14,7 +14,7 @@ define(
         'underscore',
         'oro/translator',
         'pim/form',
-        'text!pim/template/grid/view-selector/remove-view',
+        'pim/template/grid/view-selector/remove-view',
         'pim/dialog',
         'pim/user-context',
         'pim/remover/datagrid-view',
@@ -64,7 +64,9 @@ define(
             /**
              * Prompt the datagrid view deletion modal.
              */
-            promptDeletion: function () {
+            promptDeletion: function (event) {
+                event.stopPropagation();
+
                 Dialog.confirm(
                     __('grid.view_selector.confirmation.remove'),
                     __('grid.view_selector.confirmation.delete'),
@@ -85,7 +87,7 @@ define(
                         this.getRoot().trigger('grid:view-selector:view-removed');
                     }.bind(this))
                     .fail(function (response) {
-                        messenger.notificationFlashMessage('error', response.responseJSON);
+                        messenger.notify('error', response.responseJSON);
                     });
             }
         });

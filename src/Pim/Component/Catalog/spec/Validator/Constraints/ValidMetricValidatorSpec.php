@@ -5,7 +5,7 @@ namespace spec\Pim\Component\Catalog\Validator\Constraints;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\MetricInterface;
-use Pim\Component\Catalog\Model\ProductValueInterface;
+use Pim\Component\Catalog\Value\MetricValueInterface;
 use Pim\Component\Catalog\Validator\Constraints\ValidMetric;
 use Prophecy\Argument;
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
@@ -69,12 +69,12 @@ class ValidMetricValidatorSpec extends ObjectBehavior
         $accessor,
         $context,
         ValidMetric $constraint,
-        ProductValueInterface $value,
+        MetricValueInterface $value,
         MetricInterface $metric
     ) {
-        $value->getMetric()->willReturn($metric);
-        $metric->getUnit()->willReturn('cm');
-        $metric->getData()->willReturn(12);
+        $value->getData()->willReturn($metric);
+        $value->getUnit()->willReturn('cm');
+        $value->getAmount()->willReturn(12);
         $accessor->getValue($metric, 'family')
             ->shouldBeCalled()
             ->willReturn('Weight');

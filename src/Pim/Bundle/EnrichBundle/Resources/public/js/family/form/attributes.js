@@ -7,13 +7,13 @@
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-define([
+define(
+    [
         'underscore',
         'oro/translator',
         'pim/form',
         'pim/fetcher-registry',
-        'text!pim/template/family/tab/attributes',
-        'jquery.select2'
+        'pim/template/family/tab/attributes'
     ],
     function (
         _,
@@ -23,7 +23,7 @@ define([
         template
     ) {
         return BaseForm.extend({
-            className: 'AknTabContainer-content attributes',
+            className: 'attributes',
             template: _.template(template),
 
             /**
@@ -55,7 +55,7 @@ define([
                     return this;
                 }
 
-                this.$el.html(this.template({}));
+                this.$el.html(this.template());
 
                 this.renderExtensions();
             }

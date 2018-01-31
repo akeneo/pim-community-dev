@@ -5,20 +5,20 @@
         </span>
     </div>
 <% } else { %>
-    <div class="tabbable tabs-left">
-        <div class="sidebar">
-            <ul class="AknVerticalNavtab associations-list nav nav-tabs tab-groups">
-                <li class="AknVerticalNavtab-item AknVerticalNavtab-header header"></li>
-                <% _.each(associationTypes, function (associationType) { %>
-                    <li class="AknVerticalNavtab-item<% if (associationType.code === currentAssociationType) { %> AknVerticalNavtab-item--active active<% } %>" data-association-type="<%- associationType.code %>">
-                        <a class="AknVerticalNavtab-link" href="#"><%- associationType.labels[locale] || '[' + associationType.code + ']' %></a>
-                    </li>
-                <% }); %>
-            </ul>
-        </div>
-        <div class="AknTabContainer-content tab-content">
+    <div class="tabbable">
+        <div class="tab-content">
             <div class="association-product-grid<% if ('products' !== currentAssociationTarget) { %> hide<% } %>">
-                <div id="grid-association-product-grid" data-type="datagrid"></div>
+                <div class="AknGrid AknGrid--gallery AknGrid--inner">
+                    <div id="grid-association-product-grid" data-type="datagrid">
+                        <% if (addAssociationVisible) { %>
+                        <div class="AknButtonList AknButtonList--right">
+                            <div class="AknButton AknButton--action AknButtonList-item add-associations">
+                                <%- addAssociationsLabel %>
+                            </div>
+                        </div>
+                        <% } %>
+                    </div>
+                </div>
             </div>
 
             <div class="association-group-grid<% if ('groups' !== currentAssociationTarget) { %> hide<% } %>">

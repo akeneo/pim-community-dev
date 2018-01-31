@@ -24,46 +24,22 @@ Feature: Display the completeness of a product
 
   Scenario: Successfully update the completeness at product save
     Given I am on the "sneakers" product page
-    When I open the "Completeness" panel
+    When I visit the "Completeness" column tab
     Then I should see the completeness:
-      | channel | locale | state   | missing_values         | ratio |
-      | mobile  | en_US  | success |                        | 100%  |
-      | tablet  | en_US  | warning | Side view              | 89%   |
-      | mobile  | fr_FR  | success |                        | 100%  |
-      | tablet  | fr_FR  | warning | Description, Side view | 78%   |
-    When I visit the "Attributes" tab
+      | channel | locale | state   | missing_values | ratio |
+      | tablet  | en_US  | warning | 1              | 88%   |
+      | tablet  | fr_FR  | warning | 2              | 77%   |
+      | mobile  | en_US  | success | 0              | 100%  |
+      | mobile  | fr_FR  | success | 0              | 100%  |
+    When I visit the "Attributes" column tab
     And I visit the "Media" group
     And I attach file "SNKRS-1C-s.png" to "Side view"
     And I save the product
     Then I should be on the product "sneakers" edit page
-    When I open the "Completeness" panel
+    When I visit the "Completeness" column tab
     Then I should see the completeness:
       | channel | locale | state   | missing_values | ratio |
-      | mobile  | en_US  | success |                | 100%  |
-      | tablet  | en_US  | success |                | 100%  |
-      | mobile  | fr_FR  | success |                | 100%  |
-      | tablet  | fr_FR  | warning | Description    | 89%   |
-
-  Scenario: Update completeness when family requirements change
-    Given I am on the "sneakers" family page
-    And I visit the "Attributes" tab
-    And I switch the attribute "rating" requirement in channel "mobile"
-    And I save the family
-    And I should see "Family successfully updated"
-    And I should not see the text "There are unsaved changes."
-    And I am on the "sneakers" product page
-    When I open the "Completeness" panel
-    Then I should see the completeness:
-      | channel | locale | state   | missing_values         | ratio |
-      | mobile  | en_US  | success |                        | 100%  |
-      | tablet  | en_US  | warning | Side view              | 89%   |
-      | mobile  | fr_FR  | success |                        | 100%  |
-      | tablet  | fr_FR  | warning | Description, Side view | 78%   |
-    When I am on the "sandals" product page
-    And I open the "Completeness" panel
-    Then I should see the completeness:
-      | channel | locale | state   | missing_values                                    | ratio |
-      | mobile  | en_US  | warning | Name, Price, Size                                 | 40%   |
-      | tablet  | en_US  | warning | Name, Description, Price, Rating, Side view, Size | 25%   |
-      | mobile  | fr_FR  | warning | Price, Size                                       | 60%   |
-      | tablet  | fr_FR  | warning | Price, Rating, Side view, Size                    | 50%   |
+      | tablet  | en_US  | success | 0              | 100%  |
+      | tablet  | fr_FR  | warning | 1              | 88%   |
+      | mobile  | en_US  | success | 0              | 100%  |
+      | mobile  | fr_FR  | success | 0              | 100%  |

@@ -1,4 +1,0 @@
-parameters:
-    oro_navigation.history.forbidden_routes:
-        - 'oro_default'
-        - 'pim_enrich_product_edit'

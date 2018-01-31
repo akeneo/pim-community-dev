@@ -11,13 +11,14 @@ use Pim\Bundle\UserBundle\Entity\UserInterface;
 use Symfony\Component\Form\FormFactory;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 class AclRoleHandler
 {
     /**
-     * @var Request
+     * @var RequestStack
      */
-    protected $request;
+    protected $requestStack;
 
     /**
      * @var FormFactory
@@ -47,11 +48,13 @@ class AclRoleHandler
     /**
      * @param FormFactory $formFactory
      * @param array $privilegeConfig
+     * @param RequestStack $requestStack
      */
-    public function __construct(FormFactory $formFactory, array $privilegeConfig)
+    public function __construct(FormFactory $formFactory, array $privilegeConfig, RequestStack $requestStack)
     {
         $this->formFactory = $formFactory;
         $this->privilegeConfig = $privilegeConfig;
+        $this->requestStack = $requestStack;
     }
 
     /**
@@ -68,14 +71,6 @@ class AclRoleHandler
     public function setEntityManager(ObjectManager $manager)
     {
         $this->manager = $manager;
-    }
-
-    /**
-     * @param Request $request
-     */
-    public function setRequest(Request $request)
-    {
-        $this->request = $request;
     }
 
     /**
@@ -109,8 +104,8 @@ class AclRoleHandler
      */
     public function process(Role $role)
     {
-        if (in_array($this->request->getMethod(), ['POST', 'PUT'])) {
-            $this->form->submit($this->request);
+        if (in_array($this->getRequest()->getMethod(), ['POST', 'PUT'])) {
+            $this->form->handleRequest($this->getRequest());
 
             if ($this->form->isValid()) {
                 $appendUsers = $this->form->get('appendUsers')->getData();
@@ -137,6 +132,14 @@ class AclRoleHandler
     public function createView()
     {
         return $this->form->createView();
+    }
+
+    /**
+     * @return null|Request
+     */
+    protected function getRequest(): ?Request
+    {
+        return $this->requestStack->getCurrentRequest();
     }
 
     /**

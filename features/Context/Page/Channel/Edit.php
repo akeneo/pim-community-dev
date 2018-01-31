@@ -14,5 +14,5 @@ class Edit extends Creation
     /**
      * @var string
      */
-    protected $path = '/configuration/channel/{code}/edit';
+    protected $path = '#/configuration/channel/{code}/edit';
 }

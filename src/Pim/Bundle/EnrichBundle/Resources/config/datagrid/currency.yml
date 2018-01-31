@@ -2,6 +2,7 @@ datagrid:
     currency-grid:
         options:
             entityHint: currency
+            manageFilters: false
         source:
             acl_resource: pim_enrich_currency_index
             type: pim_datasource_currency
@@ -25,9 +26,10 @@ datagrid:
                     - id
         actions:
             toggle:
+                launcherOptions:
+                    className: AknIconButton AknIconButton--small AknIconButton--switch
                 type:         navigate
                 label:        Change status
-                icon:         random
                 link:         toggle_link
                 acl_resource: pim_enrich_currency_toggle
         sorters:
@@ -41,7 +43,7 @@ datagrid:
         filters:
             columns:
                 code:
-                    type:      string
+                    type:      search
                     label:     Code
                     data_name: c.code
                 activated:

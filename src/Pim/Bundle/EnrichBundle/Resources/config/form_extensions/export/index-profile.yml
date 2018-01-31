@@ -1,0 +1,72 @@
+extensions:
+    pim-export-profile-index:
+        module: pim/common/simple-view
+        config:
+            template: pim/template/common/default-template
+
+    pim-export-profile-index-grid-container:
+        module: pim/common/simple-view
+        parent: pim-export-profile-index
+        targetZone: content
+        config:
+            template: pim/template/form/index/index
+
+    pim-export-profile-index-user-navigation:
+        module: pim/menu/user-navigation
+        parent: pim-export-profile-index
+        targetZone: user-menu
+        config:
+            userAccount: pim_menu.user.user_account
+            logout: pim_menu.user.logout
+
+    pim-export-profile-index-grid-title:
+        module: pim/common/grid-title
+        parent: pim-export-profile-index
+        targetZone: title
+        config:
+            title: pim_enrich.index.export_profiles.title
+
+    pim-export-profile-index-breadcrumbs:
+        module: pim/common/breadcrumbs
+        parent: pim-export-profile-index
+        targetZone: breadcrumbs
+        config:
+            tab: pim-menu-exports
+
+    pim-export-profile-index-filters-list:
+        module: oro/datafilter/filters-list
+        parent: pim-export-profile-index-grid-container
+        targetZone: filters
+
+    pim-export-profile-index-filters-manage:
+        module: oro/datafilter/filters-button
+        parent: pim-export-profile-index-grid-container
+        targetZone: filters
+
+    pim-export-profile-index-pagination:
+        module: oro/datagrid/pagination-input
+        parent: pim-export-profile-index-grid-container
+        targetZone: toolbar
+        config:
+            gridName: export-profile-grid
+
+    pim-export-profile-index-grid:
+        module: pim/form/common/index/grid
+        parent: pim-export-profile-index
+        position: 1000
+        targetZone: content
+        config:
+            alias: export-profile-grid
+            metadata:
+                jobType: export
+
+    pim-export-profile-index-create-button:
+        module: pim/form/common/index/create-button
+        parent: pim-export-profile-index
+        targetZone: buttons
+        position: 100
+        aclResourceId: pim_importexport_export_profile_create
+        config:
+           iconName:  plus
+           title:     pim_enrich.index.export_profiles.create_btn
+           modalForm: pim-export-profile-create-modal

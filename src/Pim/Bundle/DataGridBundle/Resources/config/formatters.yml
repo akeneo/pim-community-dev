@@ -1,18 +1,12 @@
 parameters:
     pim_datagrid.extension.formatter.property.product_value.field_property.class:             Pim\Bundle\DataGridBundle\Extension\Formatter\Property\ProductValue\FieldProperty
-    pim_datagrid.extension.formatter.property.product_value.attribute_options_property.class: Pim\Bundle\DataGridBundle\Extension\Formatter\Property\ProductValue\AttributeOptionsProperty
-    pim_datagrid.extension.formatter.property.product_value.attribute_option_property.class:  Pim\Bundle\DataGridBundle\Extension\Formatter\Property\ProductValue\AttributeOptionProperty
-    pim_datagrid.extension.formatter.property.product_value.price_property.class:             Pim\Bundle\DataGridBundle\Extension\Formatter\Property\ProductValue\PriceProperty
-    pim_datagrid.extension.formatter.property.product_value.number_property.class:            Pim\Bundle\DataGridBundle\Extension\Formatter\Property\ProductValue\NumberProperty
-    pim_datagrid.extension.formatter.property.product_value.image_property.class:             Pim\Bundle\DataGridBundle\Extension\Formatter\Property\ProductValue\ImageProperty
     pim_datagrid.extension.formatter.property.product_value.file_property.class:              Pim\Bundle\DataGridBundle\Extension\Formatter\Property\ProductValue\FileProperty
-    pim_datagrid.extension.formatter.property.product_value.metric_property.class:            Pim\Bundle\DataGridBundle\Extension\Formatter\Property\ProductValue\MetricProperty
-    pim_datagrid.extension.formatter.property.product_value.boolean_property.class:           Pim\Bundle\DataGridBundle\Extension\Formatter\Property\ProductValue\BooleanProperty
     pim_datagrid.extension.formatter.property.product_value.date_property.class:              Pim\Bundle\DataGridBundle\Extension\Formatter\Property\ProductValue\DateProperty
     pim_datagrid.extension.formatter.property.product_value.twig_property.class:              Pim\Bundle\DataGridBundle\Extension\Formatter\Property\ProductValue\TwigProperty
-    pim_datagrid.extension.formatter.property.product.groups_property.class:                  Pim\Bundle\DataGridBundle\Extension\Formatter\Property\Product\GroupsProperty
     pim_datagrid.extension.formatter.property.job.name_property.class:                        Pim\Bundle\DataGridBundle\Extension\Formatter\Property\Job\NameProperty
     pim_datagrid.extension.formatter.property.job.type_property.class:                        Pim\Bundle\DataGridBundle\Extension\Formatter\Property\Job\TypeProperty
+    pim_datagrid.extension.formatter.property.datetime_property.class:                        Pim\Bundle\DataGridBundle\Extension\Formatter\Property\DateTimeProperty
+    pim_datagrid.extension.formatter.property.changeset.class:                                Pim\Bundle\DataGridBundle\Extension\Formatter\Property\ChangesetProperty
 
 services:
     pim_datagrid.extension.formatter.property.product_value.field_property:
@@ -22,65 +16,12 @@ services:
         tags:
             - { name: oro_datagrid.extension.formatter.property, type: product_value_field }
 
-    pim_datagrid.extension.formatter.property.product_value.attribute_options_property:
-        class: '%pim_datagrid.extension.formatter.property.product_value.attribute_options_property.class%'
-        arguments:
-            - '@translator'
-        tags:
-            - { name: oro_datagrid.extension.formatter.property, type: product_value_options }
-
-    pim_datagrid.extension.formatter.property.product_value.attribute_option_property:
-        class: '%pim_datagrid.extension.formatter.property.product_value.attribute_option_property.class%'
-        arguments:
-            - '@translator'
-        tags:
-            - { name: oro_datagrid.extension.formatter.property, type: product_value_option }
-
-    pim_datagrid.extension.formatter.property.product_value.price_property:
-        class: '%pim_datagrid.extension.formatter.property.product_value.price_property.class%'
-        arguments:
-            - '@translator'
-            - '@pim_catalog.localization.presenter.prices'
-        tags:
-            - { name: oro_datagrid.extension.formatter.property, type: product_value_price }
-
-    pim_datagrid.extension.formatter.property.product_value.number_property:
-        class: '%pim_datagrid.extension.formatter.property.product_value.number_property.class%'
-        arguments:
-            - '@translator'
-            - '@pim_catalog.localization.presenter.number'
-        tags:
-            - { name: oro_datagrid.extension.formatter.property, type: product_value_number }
-
-    pim_datagrid.extension.formatter.property.product_value.image_property:
-        class: '%pim_datagrid.extension.formatter.property.product_value.image_property.class%'
-        arguments:
-            - '@twig'
-        tags:
-            - { name: oro_datagrid.extension.formatter.property, type: product_value_image }
-
     pim_datagrid.extension.formatter.property.product_value.file_property:
         class: '%pim_datagrid.extension.formatter.property.product_value.file_property.class%'
         arguments:
             - '@translator'
         tags:
             - { name: oro_datagrid.extension.formatter.property, type: product_value_file }
-
-    pim_datagrid.extension.formatter.property.product_value.metric_property:
-        class: '%pim_datagrid.extension.formatter.property.product_value.metric_property.class%'
-        arguments:
-            - '@twig'
-            - '@translator'
-            - '@pim_catalog.localization.presenter.metric'
-        tags:
-            - { name: oro_datagrid.extension.formatter.property, type: product_value_metric }
-
-    pim_datagrid.extension.formatter.property.product_value.boolean_property:
-        class: '%pim_datagrid.extension.formatter.property.product_value.boolean_property.class%'
-        arguments:
-            - '@twig'
-        tags:
-            - { name: oro_datagrid.extension.formatter.property, type: product_value_boolean }
 
     pim_datagrid.extension.formatter.property.product_value.date_property:
         class: '%pim_datagrid.extension.formatter.property.product_value.date_property.class%'
@@ -98,19 +39,28 @@ services:
         tags:
             - { name: oro_datagrid.extension.formatter.property, type: product_value_datetime }
 
+    pim_datagrid.extension.formatter.property.changeset:
+        class: '%pim_datagrid.extension.formatter.property.changeset.class%'
+        arguments:
+            - '@translator'
+            - '@pim_catalog.localization.presenter.number'
+        tags:
+            - { name: oro_datagrid.extension.formatter.property, type: changeset }
+
+    pim_datagrid.extension.formatter.property.datetime_property:
+        class: '%pim_datagrid.extension.formatter.property.datetime_property.class%'
+        arguments:
+            - '@translator'
+            - '@pim_catalog.localization.presenter.datetime'
+        tags:
+            - { name: oro_datagrid.extension.formatter.property, type: datetime }
+
     pim_datagrid.extension.formatter.property.product_value.twig_property:
         class: '%pim_datagrid.extension.formatter.property.product_value.twig_property.class%'
         arguments:
             - '@twig'
         tags:
             - { name: oro_datagrid.extension.formatter.property, type: product_value_twig }
-
-    pim_datagrid.extension.formatter.property.product.groups_property:
-        class: '%pim_datagrid.extension.formatter.property.product.groups_property.class%'
-        arguments:
-            - '@translator'
-        tags:
-            - { name: oro_datagrid.extension.formatter.property, type: product_groups }
 
     pim_datagrid.extension.formatter.property.job.name_property:
         class: '%pim_datagrid.extension.formatter.property.job.name_property.class%'

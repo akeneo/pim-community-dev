@@ -1,0 +1,69 @@
+extensions:
+    pim-api-connection-index:
+        module: pim/common/simple-view
+        config:
+            template: pim/template/common/default-template
+
+    pim-api-connection-index-grid-container:
+        module: pim/common/simple-view
+        parent: pim-api-connection-index
+        targetZone: content
+        config:
+            template: pim/template/form/index/index
+
+    pim-api-connection-index-user-navigation:
+        module: pim/menu/user-navigation
+        parent: pim-api-connection-index
+        targetZone: user-menu
+        config:
+            userAccount: pim_menu.user.user_account
+            logout: pim_menu.user.logout
+
+    pim-api-connection-index-grid-title:
+        module: pim/common/grid-title
+        parent: pim-api-connection-index
+        targetZone: title
+        config:
+            title: pim_enrich.index.api_connection.title
+
+    pim-api-connection-index-breadcrumbs:
+        module: pim/common/breadcrumbs
+        parent: pim-api-connection-index
+        targetZone: breadcrumbs
+        config:
+            tab: pim-menu-system
+            item: pim-menu-system-api-connection
+
+    pim-api-connection-index-filters-list:
+        module: oro/datafilter/filters-list
+        parent: pim-api-connection-index-grid-container
+        targetZone: filters
+
+    pim-api-connection-index-filters-manage:
+        module: oro/datafilter/filters-button
+        parent: pim-api-connection-index-grid-container
+        targetZone: filters
+
+    pim-api-connection-index-pagination:
+        module: oro/datagrid/pagination-input
+        parent: pim-api-connection-index-grid-container
+        targetZone: toolbar
+        config:
+            gridName: api-connection-grid
+
+    pim-api-connection-index-grid:
+        module: pim/form/common/index/grid
+        parent: pim-api-connection-index-grid-container
+        position: 1000
+        config:
+            alias: api-connection-grid
+
+    pim-api-connection-index-create-button:
+        module: pim/form/common/index/create-button
+        parent: pim-api-connection-index
+        targetZone: buttons
+        position: 100
+        config:
+           iconName:  plus
+           title:     pim_enrich.index.api_connection.create_btn
+           modalForm: pim-api-connection-create-modal

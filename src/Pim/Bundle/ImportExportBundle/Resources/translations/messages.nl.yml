@@ -27,29 +27,17 @@ pim_import_export:
       history.title: Geschiedenis
       job_content.title: Inhoud
 pim_title.export_profile.index: Beheer van exportprofielen
-pim_title.export_profile.edit: Exportprofielen %job.label% | Bewerken
-pim_title.export_profile.show: Exportprofielen %job.label% | Tonen
 pim_title.export_execution.index: Exportverwerkingen geschiedenis
 pim_title.export_execution.show: Exportverwerkingen | Details
 pim_title.import_profile.index: Beheer van importprofielen
-pim_title.import_profile.edit: Importprofielen %job.label% | Bewerken
-pim_title.import_profile.show: Importprofielen %job.label% | Tonen
 pim_title.import_execution.index: Importverwerkingen geschiedenis
 pim_title.import_execution.show: Importverwerkingen | Details
 export profile:
   title: Profiel exporteren
-  overview: exportprofiel overzicht
-  create: exportprofiel toevoegen
   edit: exportprofiel bewerken
-export report:
-  overview: Exporteer rapporten
 import profile:
   title: Profiel importeren
-  overview: importprofiel overzicht
-  create: importprofiel toevoegen
   edit: importprofiel bewerken
-import report:
-  overview: Importeer rapporten
 pim_importexport:
   acl:
     export_profile:
@@ -107,12 +95,6 @@ flash:
     removed: De import is verwijderd
     updated: De import is succesvol bijgewerkt
     running: De import is bezig
-pim_menu:
-  item:
-    export_history: Exportgeschiedenis
-    export_profile: Exportprofielen
-    import_history: Importgeschiedenis
-    import_profile: Importprofielen
 General properties: Algemene eigenschappen
 History: Geschiedenis
 pane.accordion:

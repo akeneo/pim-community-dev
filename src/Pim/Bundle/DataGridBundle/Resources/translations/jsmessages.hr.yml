@@ -27,9 +27,13 @@ Action performed.: Akcija je izvršena.
 Action is not performed.: Akcija nije izvršena.
 Please, select item to perform action.: Molimo, odaberite stavku za izvođenje akcije.
 View per page: Pregled po stranici
+Enabled: Omogućeno
+Disabled: Onemogućeno
+not_available: N/A
+Yes: true
+No: false
 oro.datagrid.entityHint: Entitet
 oro.datagrid.noentities: Nisu pronađeni rezultati
-oro.datagrid.noresults: "Nisu pronađeni rezultati. Pokušajte promijeniti kriterije pretraživanja."
 oro.datagrid.nocolumns: Stupci za prikaz tablice nisu konfigurirani
 oro.datagrid.pagination.label: "Stranica"
 oro.datagrid.pagination.totalPages: "od {{ totalPages }}"
@@ -39,19 +43,25 @@ oro.datagrid.action.refresh: "Osvježi"
 oro_datagrid.select.all: "Sve"
 oro_datagrid.select.visible: "Sve vidljive"
 oro_datagrid.select.none: "Niti jedan"
+oro_datagrid.select.select: "Odaberi"
 pim.grid.ajax_choice_filter.label_empty: je prazan
 pim.grid.ajax_choice_filter.label_not_empty: nije prazan
-pim.grid.choice_filter:
-  label_empty: je prazan
-  label_not_empty: nije prazan
-  label_in_list: na popisu
+pim:
+  grid:
+    choice_filter:
+      label_empty: je prazan
+      label_not_empty: nije prazan
+      label_in_list: na popisu
+    price_filter:
+      label: Valuta
+    category_filter:
+      done: Gotovo
 Available Columns: Dostupni stupci
 Displayed Columns: Odabrani stupci
 datagrid_view.columns.min_message: Odaberi barem jedan stupac u prikazu tablice
 pim_datagrid:
   column_configurator:
     label: Stupci
-    title: Odabir stupca
     all_groups: Sve grupe
     search: Pretraživanje
     clear: Obriši
@@ -59,6 +69,7 @@ pim_datagrid:
     apply: Primijeni
     cancel: Poništi
     remove_column: Ukloni
+    attribute_groups: Grupe atributa
   mass_action:
     delete:
       confirm_title: Potvrdi brisanje
@@ -84,6 +95,5 @@ grid.view_selector:
   placeholder: Naziv novog prikaza
   choose_label: Odaberi oznaku za prikaz
   confirmation:
-    remove: Da li ste sigurni da želite izbrisati ovaj prikaz tablice?
     delete: Potvrdi brisanje
 grid.view_selector.flash.updated: Prikaz tablice je uspješno ažuriran

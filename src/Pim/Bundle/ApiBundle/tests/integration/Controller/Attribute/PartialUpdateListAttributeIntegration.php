@@ -7,6 +7,9 @@ use Pim\Bundle\ApiBundle\Stream\StreamResourceResponse;
 use Pim\Bundle\ApiBundle\tests\integration\ApiTestCase;
 use Symfony\Component\HttpFoundation\Response;
 
+/**
+ * @group ce
+ */
 class PartialUpdateListAttributeIntegration extends ApiTestCase
 {
     public function testCreateAndUpdateAListOfAttributes()
@@ -35,7 +38,7 @@ JSON;
             'an_image' => [
                 'code'                   => 'an_image',
                 'type'                   => 'pim_catalog_image',
-                'group'                  => 'attributeGroupB',
+                'group'                  => 'attributeGroupA',
                 'unique'                 => false,
                 'useable_as_grid_filter' => false,
                 'allowed_extensions'     => ['jpg', 'gif', 'png'],
@@ -53,12 +56,13 @@ JSON;
                 'negative_allowed'       => null,
                 'date_min'               => null,
                 'date_max'               => null,
-                'max_file_size'          => '800.00',
+                'max_file_size'          => '800',
                 'minimum_input_length'   => null,
                 'sort_order'             => 0,
                 'localizable'            => false,
                 'scopable'               => false,
-                'labels'                 => []
+                'labels'                 => [],
+                'auto_option_sorting'    => null,
             ],
             'picture' => [
                 'code'                   => 'picture',
@@ -86,7 +90,8 @@ JSON;
                 'sort_order'             => 0,
                 'localizable'            => false,
                 'scopable'               => false,
-                'labels'                 => []
+                'labels'                 => [],
+                'auto_option_sorting'    => null,
             ]
         ];
 
@@ -250,7 +255,7 @@ JSON;
 
         $expectedContent =
 <<<JSON
-{"line":1,"code":"foo","status_code":422,"message":"Property \"type\" expects a valid attribute type. The attribute type does not exist, \"bar\" given. Check the standard format documentation.","_links":{"documentation":{"href":"http:\/\/api.akeneo.com\/api-reference.html#patch_attributes__code_"}}}
+{"line":1,"code":"foo","status_code":422,"message":"Property \"type\" expects a valid attribute type. The attribute type does not exist, \"bar\" given. Check the expected format on the API documentation.","_links":{"documentation":{"href":"http:\/\/api.akeneo.com\/api-reference.html#patch_attributes__code_"}}}
 JSON;
 
         $response = $this->executeStreamRequest('PATCH', 'api/rest/v1/attributes', [], [], [], $data);
@@ -314,54 +319,6 @@ JSON;
     }
 
     /**
-     * Execute a request where the response is streamed by chunk.
-     *
-     * The whole content of the request and the whole content of the response
-     * are loaded in memory.
-     * Therefore, do not use this function on with an high input/output volumetry.
-     *
-     * @param string $method
-     * @param string $uri
-     * @param array  $parameters
-     * @param array  $files
-     * @param array  $server
-     * @param string $content
-     * @param bool   $changeHistory
-     *
-     * @return array
-     */
-    protected function executeStreamRequest(
-        $method,
-        $uri,
-        array $parameters = [],
-        array $files = [],
-        array $server = [],
-        $content = null,
-        $changeHistory = true
-    ) {
-        $streamedContent = '';
-
-        ob_start(function($buffer) use (&$streamedContent) {
-            $streamedContent .= $buffer;
-
-            return '';
-        });
-
-        $client = $this->createAuthenticatedClient();
-        $client->setServerParameter('CONTENT_TYPE', StreamResourceResponse::CONTENT_TYPE);
-        $client->request($method, $uri, $parameters, $files, $server, $content, $changeHistory);
-
-        ob_end_flush();
-
-        $response = [
-            'http_response' => $client->getResponse(),
-            'content'       => $streamedContent,
-        ];
-
-        return $response;
-    }
-
-    /**
      * @param array  $expectedAttribute normalized data of the attribute that should be created
      * @param string $code             code of the attribute that should be created
      */
@@ -379,6 +336,6 @@ JSON;
      */
     protected function getConfiguration()
     {
-        return new Configuration([Configuration::getTechnicalCatalogPath()]);
+        return $this->catalog->useTechnicalCatalog();
     }
 }

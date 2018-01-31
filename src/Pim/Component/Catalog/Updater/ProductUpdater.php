@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Pim\Component\Catalog\Updater;
 
 use Akeneo\Component\StorageUtils\Exception\InvalidObjectException;
@@ -22,8 +24,8 @@ class ProductUpdater implements ObjectUpdaterInterface
     /** @var PropertySetterInterface */
     protected $propertySetter;
 
-    /** @var ProductTemplateUpdaterInterface */
-    protected $templateUpdater;
+    /** @var ObjectUpdaterInterface */
+    protected $valuesUpdater;
 
     /** @var array */
     protected $supportedFields = [];
@@ -33,18 +35,18 @@ class ProductUpdater implements ObjectUpdaterInterface
 
     /**
      * @param PropertySetterInterface         $propertySetter
-     * @param ProductTemplateUpdaterInterface $templateUpdater
+     * @param ObjectUpdaterInterface          $valuesUpdater
      * @param array                           $supportedFields
      * @param array                           $ignoredFields
      */
     public function __construct(
         PropertySetterInterface $propertySetter,
-        ProductTemplateUpdaterInterface $templateUpdater,
+        ObjectUpdaterInterface $valuesUpdater,
         array $supportedFields,
         array $ignoredFields
     ) {
         $this->propertySetter = $propertySetter;
-        $this->templateUpdater = $templateUpdater;
+        $this->valuesUpdater = $valuesUpdater;
         $this->supportedFields = $supportedFields;
         $this->ignoredFields = $ignoredFields;
     }
@@ -118,7 +120,7 @@ class ProductUpdater implements ObjectUpdaterInterface
      *      }
      * }
      */
-    public function update($product, array $data, array $options = [])
+    public function update($product, array $data, array $options = []): ProductUpdater
     {
         if (!$product instanceof ProductInterface) {
             throw InvalidObjectException::objectExpected(
@@ -127,19 +129,121 @@ class ProductUpdater implements ObjectUpdaterInterface
             );
         }
 
-        foreach ($data as $code => $values) {
-            if (in_array($code, $this->supportedFields)) {
-                $this->updateProductFields($product, $code, $values);
-            } elseif ('values' === $code) {
-                $this->checkProductValuesData($values);
-                $this->updateProductValues($product, $values);
-            } elseif (!in_array($code, $this->ignoredFields)) {
-                throw UnknownPropertyException::unknownProperty($code);
-            }
+        foreach ($data as $code => $value) {
+            $this->setData($product, $code, $value, $options);
         }
-        $this->updateProductVariantValues($product, $data);
 
         return $this;
+    }
+
+    /**
+     * @param ProductInterface $product
+     * @param                  $field
+     * @param                  $data
+     * @param array            $options
+     */
+    protected function setData(ProductInterface $product, $field, $data, array $options = []): void
+    {
+        switch ($field) {
+            case 'enabled':
+            case 'family':
+            case 'parent':
+                $this->validateScalar($field, $data);
+                $this->updateProductFields($product, $field, $data);
+                break;
+            case 'categories':
+            case 'groups':
+                $this->validateScalarArray($field, $data);
+                $this->updateProductFields($product, $field, $data);
+                break;
+            case 'associations':
+                $this->validateAssociationsDataType($data);
+                $this->updateProductFields($product, $field, $data);
+                break;
+            case 'values':
+                $this->valuesUpdater->update($product, $data, $options);
+                $this->addEmptyValues($product, $data);
+                break;
+            default:
+                if (!in_array($field, $this->ignoredFields)) {
+                    throw UnknownPropertyException::unknownProperty($field);
+                }
+        }
+    }
+
+    /**
+     * Validate association data
+     *
+     * @param $data
+     *
+     * @throws InvalidPropertyTypeException
+     */
+    protected function validateAssociationsDataType($data): void
+    {
+        if (!is_array($data)) {
+            throw InvalidPropertyTypeException::arrayExpected(
+                'associations',
+                static::class,
+                $data
+            );
+        }
+
+        foreach ($data as $associationTypeCode => $associationTypeValues) {
+            $this->validateScalar('associations', $associationTypeCode);
+            if (!is_array($associationTypeValues)) {
+                throw InvalidPropertyTypeException::arrayExpected(
+                    'associations',
+                    static::class,
+                    $associationTypeValues
+                );
+            }
+
+            foreach ($associationTypeValues as $property => $value) {
+                $this->validateScalar('associations', $property);
+                $this->validateScalarArray('associations', $value);
+            }
+        }
+    }
+
+    /**
+     * Validate that it is a scalar value.
+     *
+     * @param $field
+     * @param $data
+     *
+     * @throws InvalidPropertyTypeException
+     */
+    protected function validateScalar($field, $data): void
+    {
+        if (null !== $data && !is_scalar($data)) {
+            throw InvalidPropertyTypeException::scalarExpected($field, static::class, $data);
+        }
+    }
+
+    /**
+     * Validate that it is an array with scalar values.
+     *
+     * @param string $field
+     * @param mixed  $data
+     *
+     * @throws InvalidPropertyTypeException
+     */
+    protected function validateScalarArray($field, $data): void
+    {
+        if (!is_array($data)) {
+            throw InvalidPropertyTypeException::arrayExpected($field, static::class, $data);
+        }
+
+        foreach ($data as $value) {
+            if (null !== $value && !is_scalar($value)) {
+                throw InvalidPropertyTypeException::validArrayStructureExpected(
+                    $field,
+                    sprintf('one of the %s is not a scalar', $field),
+                    static::class,
+                    $data
+                );
+            }
+        }
     }
 
     /**
@@ -149,21 +253,20 @@ class ProductUpdater implements ObjectUpdaterInterface
      * @param string           $field
      * @param mixed            $value
      */
-    protected function updateProductFields(ProductInterface $product, $field, $value)
+    protected function updateProductFields(ProductInterface $product, $field, $value): void
     {
         $this->propertySetter->setData($product, $field, $value);
     }
 
     /**
-     * Sets the product values,
-     *  - always set values related to family's attributes
-     *  - sets optional values (not related to family's attributes) when a data is provided
-     *  - sets optional values (not related to family's attributes) with empty data if value already exists
+     * Add empty values coming from the family of the $product
+     *
+     * TODO: TEMPORARY FIX, AS API-108 WILL HANDLE EMPTY VALUES
      *
      * @param ProductInterface $product
      * @param array            $values
      */
-    protected function updateProductValues(ProductInterface $product, array $values)
+    private function addEmptyValues(ProductInterface $product, array $values): void
     {
         $family = $product->getFamily();
         $authorizedCodes = (null !== $family) ? $family->getAttributeCodes() : [];
@@ -172,103 +275,11 @@ class ProductUpdater implements ObjectUpdaterInterface
             $isFamilyAttribute = in_array($code, $authorizedCodes);
 
             foreach ($value as $data) {
-                $hasValue = $product->getValue($code, $data['locale'], $data['scope']);
-                $providedData = ('' === $data['data'] || [] === $data['data'] || null === $data['data']) ? false : true;
+                $emptyData = ('' === $data['data'] || [] === $data['data'] || null === $data['data']);
 
-                if ($isFamilyAttribute || $providedData || $hasValue) {
+                if ($isFamilyAttribute && $emptyData) {
                     $options = ['locale' => $data['locale'], 'scope' => $data['scope']];
                     $this->propertySetter->setData($product, $code, $data['data'], $options);
-                }
-            }
-        }
-    }
-
-    /**
-     * Updates product with its variant group values to ensure that values coming from variant group are always
-     * applied after the product values (if a product value is updated and should come from variant group)
-     *
-     * @param ProductInterface $product
-     * @param array            $data
-     */
-    protected function updateProductVariantValues(ProductInterface $product, array $data)
-    {
-        $variantGroup = $product->getVariantGroup();
-        $shouldEraseData = false;
-        if (null !== $variantGroup && null !== $variantGroup->getProductTemplate()) {
-            $template = $variantGroup->getProductTemplate();
-            foreach (array_keys($data) as $field) {
-                if ($template->hasValueForAttributeCode($field) || null === $product->getValue($field)) {
-                    $shouldEraseData = true;
-                }
-            }
-            if ($shouldEraseData) {
-                $this->templateUpdater->update($template, [$product]);
-            }
-        }
-    }
-
-    /**
-     * Check the structure of the product values.
-     *
-     * @param mixed $values
-     *
-     * @throws InvalidPropertyTypeException
-     */
-    protected function checkProductValuesData($values)
-    {
-        if (!is_array($values)) {
-            throw InvalidPropertyTypeException::arrayExpected('values', static::class, $values);
-        }
-
-        foreach ($values as $code => $productValues) {
-            if (!is_array($productValues)) {
-                throw InvalidPropertyTypeException::arrayExpected($code, static::class, $productValues);
-            }
-
-            foreach ($productValues as $productValue) {
-                if (!is_array($productValue)) {
-                    throw InvalidPropertyTypeException::validArrayStructureExpected(
-                        $code,
-                        'one of the product values is not an array.',
-                        static::class,
-                        $productValues
-                    );
-                }
-
-                if (!array_key_exists('locale', $productValue)) {
-                    throw InvalidPropertyTypeException::arrayKeyExpected($code, 'locale', static::class, $productValue);
-                }
-
-                if (!array_key_exists('scope', $productValue)) {
-                    throw InvalidPropertyTypeException::arrayKeyExpected($code, 'scope', static::class, $productValue);
-                }
-
-                if (!array_key_exists('data', $productValue)) {
-                    throw InvalidPropertyTypeException::arrayKeyExpected($code, 'data', static::class, $productValue);
-                }
-
-                if (null !== $productValue['locale'] && !is_string($productValue['locale'])) {
-                    $message = 'Property "%s" expects a product value with a string as locale, "%s" given.';
-
-                    throw new InvalidPropertyTypeException(
-                        $code,
-                        $productValue['locale'],
-                        static::class,
-                        sprintf($message, $code, gettype($productValue['locale'])),
-                        InvalidPropertyTypeException::STRING_EXPECTED_CODE
-                    );
-                }
-
-                if (null !== $productValue['scope'] && !is_string($productValue['scope'])) {
-                    $message = 'Property "%s" expects a product value with a string as scope, "%s" given.';
-
-                    throw new InvalidPropertyTypeException(
-                        $code,
-                        $productValue['scope'],
-                        static::class,
-                        sprintf($message, $code, gettype($productValue['scope'])),
-                        InvalidPropertyTypeException::STRING_EXPECTED_CODE
-                    );
                 }
             }
         }

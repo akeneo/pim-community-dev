@@ -1,8 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Akeneo\Test\Integration;
 
+use Akeneo\Test\IntegrationTestsBundle\Configuration\CatalogInterface;
+use Akeneo\Test\IntegrationTestsBundle\Security\SystemUserAuthenticator;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
+use Symfony\Component\HttpKernel\KernelInterface;
 
 /**
  * @author    Marie Bochu <marie.bochu@akeneo.com>
@@ -11,6 +16,12 @@ use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
  */
 abstract class TestCase extends KernelTestCase
 {
+    /** @var KernelInterface */
+    protected $testKernel;
+
+    /** @var CatalogInterface */
+    protected $catalog;
+
     /**
      * @return Configuration
      */
@@ -22,10 +33,16 @@ abstract class TestCase extends KernelTestCase
     protected function setUp()
     {
         static::bootKernel(['debug' => false]);
+        $authenticator = new SystemUserAuthenticator(static::$kernel->getContainer());
+        $authenticator->createSystemUser();
 
-        $configuration = $this->getConfiguration();
-        $databaseSchemaHandler = $this->getDatabaseSchemaHandler();
-        $fixturesLoader = $this->getFixturesLoader($configuration, $databaseSchemaHandler);
+        $this->testKernel = new \AppKernelTest('test', false);
+        $this->testKernel->boot();
+
+        $this->catalog = $this->testKernel->getContainer()->get('akeneo_integration_tests.configuration.catalog');
+        $this->testKernel->getContainer()->set('akeneo_integration_tests.catalog.configuration', $this->getConfiguration());
+
+        $fixturesLoader = $this->testKernel->getContainer()->get('akeneo_integration_tests.loader.fixtures_loader');
         $fixturesLoader->load();
     }
 
@@ -34,7 +51,7 @@ abstract class TestCase extends KernelTestCase
      *
      * @return mixed
      */
-    protected function get($service)
+    protected function get(string $service)
     {
         return static::$kernel->getContainer()->get($service);
     }
@@ -44,9 +61,19 @@ abstract class TestCase extends KernelTestCase
      *
      * @return mixed
      */
-    protected function getParameter($service)
+    protected function getFromTestContainer(string $service)
     {
-        return static::$kernel->getContainer()->getParameter($service);
+        return $this->testKernel->getContainer()->get($service);
+    }
+
+    /**
+     * @param string $parameter
+     *
+     * @return mixed
+     */
+    protected function getParameter(string $parameter)
+    {
+        return static::$kernel->getContainer()->getParameter($parameter);
     }
 
     /**
@@ -54,37 +81,13 @@ abstract class TestCase extends KernelTestCase
      */
     protected function tearDown()
     {
-        $connectionCloser = $this->getConnectionCloser();
+        $connectionCloser = $this->testKernel->getContainer()->get('akeneo_integration_tests.doctrine.connection.connection_closer');
         $connectionCloser->closeConnections();
 
+        $this->esClient = null;
+        $this->esConfigurationLoader = null;
+
         parent::tearDown();
-    }
-
-    /**
-     * @return DatabaseSchemaHandler
-     */
-    protected function getDatabaseSchemaHandler()
-    {
-        return new DatabaseSchemaHandler(static::$kernel);
-    }
-
-    /**
-     * @param Configuration         $configuration
-     * @param DatabaseSchemaHandler $databaseSchemaHandler
-     *
-     * @return FixturesLoader
-     */
-    protected function getFixturesLoader(Configuration $configuration, DatabaseSchemaHandler $databaseSchemaHandler)
-    {
-        return new FixturesLoader(static::$kernel, $configuration, $databaseSchemaHandler);
-    }
-
-    /**
-     * @return ConnectionCloser
-     */
-    protected function getConnectionCloser()
-    {
-        return new ConnectionCloser(static::$kernel->getContainer());
     }
 
     /**
@@ -97,11 +100,11 @@ abstract class TestCase extends KernelTestCase
      *
      * @return string
      */
-    protected function getFixturePath($name)
+    protected function getFixturePath(string $name): string
     {
         $configuration = $this->getConfiguration();
         foreach ($configuration->getFixtureDirectories() as $fixtureDirectory) {
-            $path = $fixtureDirectory . $name;
+            $path = $fixtureDirectory . DIRECTORY_SEPARATOR . $name;
             if (is_file($path) && false !== realpath($path)) {
                 return realpath($path);
             }

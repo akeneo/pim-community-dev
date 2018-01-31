@@ -1,90 +1,152 @@
 @import '../base/variables';
 
 .AknHeader {
+  @transitionDelay: 0.1s;
+  @transitionKeyframe: ease-in;
+
   display: flex;
-  flex-direction: column;
+  height: 100%;
 
-  &-menus {
-    background: @AknPurple;
-    width: 100%;
+  &-menu {
     display: flex;
+    width: @AknMainMenuWidth;
+    flex-basis: @AknMainMenuWidth;
+    flex-direction: column;
     justify-content: space-between;
-    z-index: 900;
+    height: 100%;
+    border-right: 1px solid @AknBorderColor;
+    z-index: 803;
+    background: white;
+  }
+
+  &-menuBlock {
+    display: flex;
+    flex-direction: column;
+  }
+
+  &-menuItemContainer {
+    flex-grow: 1;
+    flex-basis: 70px;
     position: relative;
-    box-shadow: 0 1px 4px rgba(0,0,0,0.065);
   }
 
-  &-leftMenus {
+  &-menuItem {
+    position: absolute;
+    height: 100%;
     display: flex;
-  }
+    width: @AknMainMenuWidth;
+    border: 0 solid @AknLightPurple;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-size: 12px;
+    cursor: pointer;
+    padding-right: 0;
+    color: @AknDefaultFontColor;
+    text-align: center;
+    transition:
+      border-left-width @transitionDelay @transitionKeyframe,
+      padding-right @transitionDelay @transitionKeyframe,
+      color @transitionDelay @transitionKeyframe,
+      opacity @transitionDelay @transitionKeyframe;
 
-  &-logo {
-    margin: 0 30px 0 0;
-  }
-
-  &-logoImage {
-    height: @AknMainMenuHeight;
-    vertical-align: middle;
-  }
-
-  &-pinbar {
-    background: darken(@AknPurple, 10%);
-    z-index: 910;
-    display: flex;
-    justify-content: space-between;
-    padding: 2px 10px;
-  }
-
-  &-pinbarButton {
-    font-size: @AknLittleIconFontSize;
-    color: white;
-    order: 10;
-  }
-
-  &-pinbarLink {
-    color: @AknGrey;
-  }
-  
-  &-pinList {
-    display: flex;
-  }
-
-  &-pinClose {
-    color: @AknGrey;
-  }
-
-  &-pinLink {
-    color: @AknGrey;
-  }
-
-  &-userMenu {
-    display: flex;
-    height: @AknMainMenuHeight;
-    line-height: @AknMainMenuHeight;
-  }
-
-  &-userLink {
-    color: white;
-    padding: 20px;
-
-    &:hover,
-    &:focus {
-      color: white;
+    &:hover, &--active {
+      border-left-width: 4px;
+      padding-right: 4px;
+      color: @AknLightPurple;
     }
   }
 
-  &-helpLink {
-    height: @AknMainMenuHeight;
-    width: @AknMainMenuHeight;
-    text-align: center;
-    line-height: @AknMainMenuHeight;
-    color: white;
-    font-size: @AknLittleIconFontSize;
+  &-menuItemImage {
+    width: 24px;
+    height: 24px;
+    opacity: 0;
+    transition: opacity @transitionDelay @transitionKeyframe;
+    background-size: 22px;
+    background: no-repeat center;
     display: block;
 
-    &:hover,
-    &:focus {
-      color: white;
+    &:first-child {
+      position: absolute;
+      opacity: 1;
+    }
+  }
+
+  &-menuItem:hover &-menuItemImage:first-child,
+  &-menuItem--active &-menuItemImage:first-child {
+    opacity: 0;
+  }
+
+  &-menuItem:hover &-menuItemImage:not(:first-child),
+  &-menuItem--active &-menuItemImage:not(:first-child) {
+    opacity: 1;
+  }
+
+  &-menuItemImage {
+    &--iconCard {
+      background-image: url("../../images/icon-card-purple.svg");
+
+      &:first-child {
+        background-image: url("../../images/icon-card.svg");
+      }
+    }
+
+    &--iconUpload {
+      background-image: url("../../images/icon-upload-purple.svg");
+
+      &:first-child {
+        background-image: url("../../images/icon-upload.svg");
+      }
+    }
+
+    &--iconProduct {
+      background-image: url("../../images/icon-product-purple.svg");
+
+      &:first-child {
+        background-image: url("../../images/icon-product.svg");
+      }
+    }
+
+    &--iconDownload {
+      background-image: url("../../images/icon-download-purple.svg");
+
+      &:first-child {
+        background-image: url("../../images/icon-download.svg");
+      }
+    }
+
+    &--iconSettings {
+      background-image: url("../../images/icon-settings-purple.svg");
+
+      &:first-child {
+        background-image: url("../../images/icon-settings.svg");
+      }
+    }
+
+    &--iconSystem {
+      background-image: url("../../images/icon-system-purple.svg");
+
+      &:first-child {
+        background-image: url("../../images/icon-system.svg");
+      }
+    }
+
+    &--iconAsset {
+      background-image: url("../../images/icon-asset-purple.svg");
+
+      &:first-child {
+        background-image: url("../../images/icon-asset.svg");
+      }
+    }
+
+    &--iconHelp {
+      background-image: url("../../images/icon-help-purple.svg");
+      background-size: 100%;
+
+      &:first-child {
+        background-image: url("../../images/icon-help.svg");
+        background-size: 100%;
+      }
     }
   }
 }

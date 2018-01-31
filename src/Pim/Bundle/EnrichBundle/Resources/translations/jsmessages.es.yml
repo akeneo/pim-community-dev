@@ -1,4 +1,5 @@
 confirmation:
+  title: Confirmar
   remove:
     item: '¿Está seguro de que desea borrar este elemento?'
     association_type: '¿Está seguro que desea eliminar este tipo de asociación?'
@@ -7,10 +8,9 @@ confirmation:
     product: '¿Está seguro que desea eliminar este producto?'
     channel: '¿Está seguro que desea eliminar este canal?'
     group: '¿Está seguro que desea eliminar este grupo?'
-    variant group: '¿Está seguro que desea eliminar este grupo variante?'
-    group type: '¿Está seguro que desea eliminar este tipo de grupo?'
-    import profile: '¿Está seguro que desea eliminar este perfil de importación?'
-    export profile: '¿Está seguro que desea eliminar este perfil de exportación?'
+    group_type: '¿Está seguro que desea eliminar este tipo de grupo?'
+    import_profile: '¿Está seguro que desea eliminar este perfil de importación?'
+    export_profile: '¿Está seguro que desea eliminar este perfil de exportación?'
     user: '¿Seguro que desea eliminar este usuario?'
     role: '¿Está seguro que desea eliminar este rol?'
 pim_datagrid:
@@ -21,12 +21,13 @@ pim_datagrid:
       label: Exportación rápida
   mass_action:
     delete:
-      confirm_content: '¿Está seguro que desea eliminar los productos seleccionados?'
+      label: Eliminar
       success: Productos seleccionados eliminados exitosamente.
       error: Se ha producido un error al intentar eliminar los productos seleccionados, por favor inténtelo de nuevo.
   view_selector:
     view: Vistas
     create_view_modal:
+      create: Crear
       confirm: OK
       cancel: Cancelar
 flash:
@@ -36,6 +37,8 @@ flash:
     removed: Tipo de asociación eliminado correctamente
   attribute:
     removed: Atributo eliminado correctamente
+  attribute_group:
+    removed: Grupo de atributos eliminado correctamente
   family:
     removed: Familia eliminada correctamente
   product:
@@ -44,9 +47,7 @@ flash:
     removed: Canal eliminado correctamente
   group:
     removed: Grupo eliminado correctamente
-  variant group:
-    removed: Grupo Variante eliminado correctamente
-  group type:
+  group_type:
     removed: Tipo de Grupo eliminado correctamente
   import profile:
     removed: Perfil de importación eliminado correctamente
@@ -57,6 +58,7 @@ flash:
   role:
     removed: Rol eliminado correctamente
 error:
+  common: Ocurrió un error
   creating:
     product: Ningún atributo se ha configurado como identificador de producto o usted no posee derechos de edición.
   removing:
@@ -67,7 +69,6 @@ error:
     product: No se puede eliminar este producto
     channel: No se puede eliminar este canal
     group: No se puede eliminar este grupo
-    variant group: No se puede eliminar este grupo variante
     group type: No se puede eliminar este tipo de grupo
     import profile: No se puede eliminar este perfil de importación
     export profile: No se puede eliminar este perfil de exportación
@@ -106,11 +107,12 @@ pim:
         csv_grid_context: CSV (contexto de la grilla)
         xlsx_all: Excel (todos los atributos)
         xlsx_grid_context: Excel (contexto de la grilla)
-      delete: Eliminar productos
-      mass_edit: Cambiar información del producto
+      delete: Eliminar
+      mass_edit: Acciones en masa
       category_edit: Mover producto en categorías
-      sequential_edit: Editar productos secuencialmente
+      sequential_edit: Edición secuencial
 jstree.create: Crear
+jstree.done: Hecho
 switch_on: "SÍ"
 switch_off: "No"
 pim_enrich:
@@ -124,42 +126,51 @@ pim_enrich:
   navigation:
     link:
       back_to_grid: Regresar a la grilla
+    other_actions: Otras acciones
   entity:
     save:
       label: Guardar
     info:
       update_failed: Error al actualizar
       update_successful: Actualización exitosa
+    create_popin:
+      code: Código
+      label: Etiqueta
+      labels:
+        save: Guardar
+        cancel: Cancelar
     product:
+      navigation: Navegación de productos
+      infos: Información de producto
       title: producto
+      locale: Local
+      category: Categoría
+      create: Crear
+      subTitle: Crear un producto
+      filters: Filtros
+      common: Común
       btn:
-        enable: Habilitar
         enabled: Habilitado
-        disable: Inhabilitar
         disabled: Inhabilitado
         download_pdf: PDF
         compare_translate: Comparar / Traducir
         delete: Eliminar
         save: Guardar
-        save_and_back: Guardar y regresar a la grilla
       history:
         version: Versión
         author: Autor
         logged_at: Sesión iniciada el
-        more: Más
-        less: Menos
         from: De
         modified: Modificado
-        property: Propiedad
-        old_values: Valores anteriores
-        new_values: Nuevos valores
+        old_value: Valor anterior
+        new_value: Nuevo valor
         actions: Acciones
       info:
         deletion_successful: Producto eliminado con éxito.
         deletion_failed: El producto no puede ser eliminado.
         update_successful: Producto actualizado con éxito.
         update_failed: El producto no puede ser actualizado.
-        field_not_ready: 'El producto no puede ser guardado en el momento. Los siguientes campos no están listos: {{ fields }}'
+        field_not_ready: 'El producto no se puede guardar ahora. Los siguientes campos no están listos: {{ fields }}'
         already_in_upload: Un fichero ya está siendo cargado por este atributo en el local "{{ locale }}" y objetivo "{{ scope }}"
       error:
         upload: Ocurrió un error durante la carga del fichero
@@ -171,6 +182,9 @@ pim_enrich:
         family:
           title: Familia
           none: Ninguno
+        family_variant:
+          title: Variante
+          none: Ninguno
         groups:
           title: Grupos
           modal:
@@ -179,17 +193,15 @@ pim_enrich:
             group_label: Etiqueta
             more_products: '{{ count }} productos adiciones...'
             close: Cerrar
+        status: Estado
+        scope: Canal
+        locale: Local
       copy:
         select: Seleccione
         all: Todos
         all_visible: Todo lo visible
         none: Ninguno
         copy: Copiar
-      variant_group:
-        updated_by: Actualizado por grupo de variantes
-        switch:
-          "yes": "SÍ"
-          "no": "No"
       optional_attribute:
         remove: Quitar este atributo
       locale_specific_attribute:
@@ -199,20 +211,27 @@ pim_enrich:
       media:
         upload: Arrastrar y soltar para cargar o haga clic aquí
       create_popin:
-        title: Crear un nuevo producto
+        type: Producto
+        title: Crear
         labels:
           family: Elija una familia
           save: Guardar
           cancel: Cancelar
+      message:
+        created: Producto creado éxitosamente
+      completeness: Completo
+    product_model:
+      add_child:
+        cancel: Cancelar
+        confirm: Confirmar
+        fields:
+          code: Código
     association_type:
       info:
         deletion_successful: Tipo de asociación eliminado correctamente.
         deletion_failed: No se ha podido eliminar correctamente el tipo de asociación.
         update_successful: Tipo de asociación actualizado correctamente.
         update_failed: No se ha podido actualizar el tipo de asociación.
-        field_not_ready:
-          The association type cannot be saved right now. The following fields are not ready:
-            - campos
       meta:
         created: Creado
         created_by: Creado por
@@ -220,6 +239,24 @@ pim_enrich:
         updated_by: Actualizado por
       btn:
         save: Guardar
+      title: tipo de asociación
+      create_popin:
+        title: Crear
+      message:
+        created: Tipo de asociación se creó correctamente
+    group_type:
+      meta:
+        created: Creado
+        created_by: Creado por
+        updated: Actualizado
+        updated_by: Actualizado por
+      btn:
+        save: Guardar
+      title: tipo de grupo
+      create_popin:
+        title: Crear
+      message:
+        created: Tipo de grupo creado correctamente
     channel:
       title: canal
       info:
@@ -229,9 +266,6 @@ pim_enrich:
         update_failed: No se ha podido actualizar el canal.
         create_successful: Canal creado correctamente.
         create_failed: No se ha podido crear el canal.
-        field_not_ready:
-          The channel cannot be saved right now. The following fields are not ready:
-            - campos
       meta:
         created: Creado
         created_by: Creado por
@@ -241,12 +275,10 @@ pim_enrich:
         save: Guardar
     family:
       title: familia
+      selected: familias seleccionadas
       info:
-        update_successful: Familia actualizada con éxito.
         create_successful: Canal creado correctamente.
         update_failed: Ha ocurrido un error durante la actualización de la familia.
-        cant_remove_attribute_as_label: Imposible de eliminar un atributo utilizado como etiqueta
-        attribute_edit_permission_is_not_granted: No posee permisos para editar atributos de la familia
       meta:
         created: Creado
         created_by: Creado por
@@ -254,30 +286,19 @@ pim_enrich:
         updated_by: Actualizado por
       btn:
         save: Guardar
+      create_popin:
+        title: Crear
+      message:
+        created: Familia creada correctamente
+      variant:
+        create: Crear
+        cancel: Cancelar
+        code: Código
+        label: Etiqueta
     attribute_option:
       code: Código
       label: Etiqueta
       actions: Acciones
-    variant_group:
-      title: Grupo de variantes
-      info:
-        deletion_successful: Grupo Variante eliminado correctamente.
-        deletion_failed: No se ha podido eliminar el grupo de variantes.
-        update_successful: Grupo variantes actualizado correctamente.
-        update_failed: No se ha podido actualizar el grupo de variantes.
-        field_not_ready:
-          The variant group cannot be saved right now. The following fields are not ready:
-            - campos
-        already_in_upload: Un fichero ya está siendo cargado por este atributo en el local "{{ locale }}" y objetivo "{{ scope }}"
-        no_attributes: Este grupo de variantes no tiene aun atributos
-      btn:
-        save: Guardar
-      meta:
-        product_count: Productos
-        created: Creado
-        created_by: Creado por
-        updated: Actualizado
-        updated_by: Actualizado por
     group:
       title: Grupo
       info:
@@ -285,9 +306,6 @@ pim_enrich:
         deletion_failed: No se pudo eliminar el grupo.
         update_successful: El grupo se ha actualizado correctamente.
         update_failed: El grupo no puede ser actualizado.
-        field_not_ready:
-          The group cannot be saved right now. The following fields are not ready:
-            - campos
       btn:
         save: Guardar
       meta:
@@ -296,17 +314,53 @@ pim_enrich:
         created_by: Creado por
         updated: Actualizado
         updated_by: Actualizado por
+      create_popin:
+        title: Crear
+      message:
+        created: Grupo creado con éxito
     job_instance:
       title: Perfil de trabajo
       info:
         update_failed: No se ha podido actualizar el perfil de trabajo.
         update_successful: El perfil de trabajo ha sido actualizado exitosamente.
+    attribute:
+      info:
+        deletion_failed: No se ha podido eliminar el atributo.
+      scopable: Scopable
+      type:
+        pim_catalog_identifier: Identificador
+        pim_catalog_text: Texto
+        pim_catalog_textarea: Área de Texto
+        pim_catalog_number: Número
+        pim_catalog_price_collection: Precio
+        pim_catalog_multiselect: Selección multiple
+        pim_catalog_simpleselect: Selección simple
+        pim_catalog_file: Archivo
+        pim_catalog_image: Imagen
+        pim_catalog_boolean: "Si/No"
+        pim_catalog_date: Fecha
+        pim_catalog_metric: Métrica
+        pim_reference_data_simpleselect: Selección simple de datos de referencia
+        pim_reference_data_multiselect: Selección múltiple de datos de referencia
+      validation_rule:
+        email: Correo electrónico
+        regexp: Expresión regular
+        url: URL
+      title: atributo
+    attribute_group:
+      info:
+        update_successful: Grupo de atributos actualizado correctamente
+    api_connection:
+      create_popin:
+        title: Crear
   confirmation:
     leave: '¿Está seguro que desea salir de esta página?'
     discard_changes: Perderá los cambios realizados sobre {{ entity }} si abandona esta página.
     delete_item: Confirmar la eliminación
+    remove: Quitar
     delete:
       attribute: '¿Está usted seguro que desea eliminar el atributo de este producto?'
+      product_model: Confirmar la eliminación
   info:
     not_applicable: N / A
     entity:
@@ -314,19 +368,19 @@ pim_enrich:
   error:
     upload: Un error ha ocurrido durante la subida del fichero
   alert:
-    not_allowed: Usted no tiene permisos para acceder a esta página
     error_occured: Un error ha ocurrido durante la carga de esta página
   form:
     required: (obligatorio)
+    product_model:
+      family_variant: Variante
     product:
       tab:
         associations:
           title: Asociaciones
           info:
             none_exist: No existe ningún tipo de asociación.
-            show_products: Mostrar Productos
+            show_products: Mostrar productos
             show_groups: Mostrar grupos
-            number_of_associations: "{{ productCount }} productos y {{ groupCount }} grupos"
         attributes:
           title: Atributos
           btn:
@@ -335,9 +389,10 @@ pim_enrich:
           info:
             search_attributes: Buscar...
             no_available_attributes: No hay más atributos para agregar
-            attributes_selected: "{{ itemsCount }} atributo(s) seleccionado(s)"
             no_match: No se encuentran coincidencias
             load_more: Cargando más resultados...
+          attribute_group_selector: Grupo de atributos
+          attribute_group_all: Todos
         categories:
           title: Categorías
       panel:
@@ -346,7 +401,6 @@ pim_enrich:
           info:
             no_family: Ninguna familia definida. Por favor defina una familia para calcular la completitud de este producto.
             no_completeness: Usted cambió la familia del producto. Por favor guarde los cambios en primero para calcular la completitud para esta nueva familia.
-          missing_values: Valores faltantes
         history:
           title: Histórico
       switch:
@@ -381,6 +435,15 @@ pim_enrich:
           label_translations: Traducciones de etiqueta
         history:
           title: Histórico
+    group_type:
+      tab:
+        properties:
+          title: Propiedades
+          general: Propiedades generales
+          code: Código
+          label_translations: Traducciones de etiqueta
+        history:
+          title: Histórico
     channel:
       tab:
         history:
@@ -403,15 +466,14 @@ pim_enrich:
           general: General
           code: Código
           attribute_as_label: Atributo utilizado como etiqueta
+          empty_attribute_as_image: No Seleccionado
           label_translations: Traducciones de etiqueta
         attributes:
           title: Atributos
           label_label: Etiqueta
           toolbox:
-            select_attributes_by_groups: Agregar por grupos
             select_attributes: Agregar atributos
             add: Agregar
-            attributes_groups_selected: '{{ itemsCount }} grupo(s) seleccionado(s)'
           not_required_label: No requerido
           required_label: Requerido
         history:
@@ -428,21 +490,6 @@ pim_enrich:
       switch:
         "no": "No"
         "yes": "SÍ"
-    variant_group:
-      tab:
-        properties:
-          title: Propiedades
-          general: Propiedades generales
-          code: Código
-          type: Tipo
-          axis: Eje
-          label_translations: Traducciones de etiqueta
-        history:
-          title: Histórico
-        products:
-          title: Productos
-        attributes:
-          title: Atributos
     group:
       tab:
         properties:
@@ -455,6 +502,21 @@ pim_enrich:
           title: Histórico
         products:
           title: Productos
+    attribute_group:
+      tab:
+        properties:
+          title: Propiedades
+          general: Propiedades generales
+          code: Código
+          label_translations: Traducciones de etiqueta
+        attribute:
+          title: Atributos
+          table:
+            name: Nombre
+            type: Tipo
+            scopable: Scopable
+            localizable: Localizable
+        history.title: Histórico
     common:
       tab:
         attributes:
@@ -464,6 +526,23 @@ pim_enrich:
           info:
             search_attributes: Buscar...
             no_available_attributes: No hay más atributos para agregar
+    job_execution:
+      loading: Cargando...
+      refreshBtn.title: Actualizar
+      meta:
+        status.title: Estado
+      button:
+        show_profile.title: Ver perfil
+        download_log.title: Descargar registro de log
+      summary:
+        fetching: Colectando datos sobre la ejecución del trabajo...
+        warning: '¡Advertencia!'
+        header.step: Paso
+        header.status: Estado
+        header.warnings: Advertencias
+        header.summary: Resumen
+        header.start: Iniciar
+        header.end: Finalizar
     job_instance:
       fail:
         launch: Se ha producido un error al lanzar el perfil de trabajo. Asegúrese que sea válido y que usted posee los derechos para ejecutarlo.
@@ -476,14 +555,17 @@ pim_enrich:
         export.title: Exportar Ahora
         import.launch: Importar ahora
         import.upload: Subir e importar ahora
+        import.upload_file: Subir un fichero
       meta:
         job: Trabajo
         connector: Conector
+      subsection:
+        last_executions: Últimas ejecuciones
       tab:
         content:
           title: Contenido
         properties:
-          title: Propiedades generales
+          title: Propiedades
           code:
             title: Código
           label:
@@ -538,17 +620,61 @@ pim_enrich:
             help: Significa que el historial del producto es actualizada automáticamente, puede ser desactivada para mejorar el desempeño
         history:
           title: Histórico
+      file_path: Camino del fichero
+    attribute:
+      meta:
+        created: Creado
+        created_by: por
+        updated: Última actualización
+        updated_by: por
+      tab:
+        properties:
+          title: Propiedades
+          section:
+            common: Parámetros generales
+            validation: Parámetros de validación
+          label:
+            allowed_extensions: Extensiones permitidas
+            available_locales: Locales disponibles
+            code: Código
+            date_max: Fecha máx
+            date_min: Fecha min
+            default_metric_unit: Unidad métrica predeterminada
+            group: Grupo de atributos
+            is_locale_specific: Local específico
+            localizable: Valor por local
+            max_characters: Caracteres Max
+            max_file_size: Tamaño máximo de archivo (MB)
+            metric_family: Familia métrica
+            number_max: Número máx
+            number_min: Número min
+            scopable: Valor por canal
+            type: Tipo
+            unique: Valor único
+            useable_as_grid_filter: Se puede usar en la grilla
+            validation_regexp: Expresión regular
+            validation_rule: Regla de validación
+          default_label:
+            default_metric_unit: Elegir una unidad
+            group: Elija el grupo de atributos
+            metric_family: Elija una familia
+            reference_data_name: Seleccione el tipo de información de referencia
+        labels:
+          title: Traducciones de etiqueta
+        choices:
+          title: Opciones
+        history:
+          title: Histórico
     mass_edit:
       family:
         attributes:
           label_label: Etiqueta
           toolbox:
-            select_attributes_by_groups: Añadir por grupos
             select_attributes: Agregar atributos
             add: Agregar
-            attributes_groups_selected: '{{ itemsCount }} grupo(s) seleccionado(s)'
-  job:
-    upload: Arrastrar y soltar un fichero o haga clic aquí
+    basket:
+      title: Cesta
+      empty_basket: La cesta está vacía
   export:
     product:
       data:
@@ -567,7 +693,6 @@ pim_enrich:
         attributes:
           title: Atributos
           edit: Editar
-          label: "{0} Todos los atributos|{1} Un atributo seleccionado|]1,Inf[{{ count }} atributos seleccionadas"
           help: 'Seleccionar la información de producto a exportar. Ej.: solo atributos técnicos.'
           empty: Se exportarán todos los atributos
           modal:
@@ -581,6 +706,7 @@ pim_enrich:
           clear: Restablecer
           all_group: Todos los grupos
           empty_selection: Se exportarán todos los atributos
+          title: Atributos
         family:
           title: Familia
           help: 'Seleccionar los productos a exportar según su familia. Ej.: Exportar sólo los zapatos y vestidos.'
@@ -618,7 +744,6 @@ pim_enrich:
           help: Usar las categorías de producto en el árbol (definido por el canal anterior) para seleccionar los productos a exportar
         identifier:
           title: Identificador
-          help: Los identificadores de productos que desea exportar separados por comas, espacios o saltos de línea
         metric:
           operators:
             "=": Es igual que
@@ -687,8 +812,313 @@ pim_enrich:
         title: Propiedades
       global_settings:
         title: Configuración global
-  mass_edit_action:
-    edit_common_attributes:
-      description: Los atributos seleccionados serán editados con la siguiente información para el local <span class="highlight">{{ locale }}</span> y el canal <span class="highlight">{{ channel }}</span> elegidos en la grilla de productos.
+  index:
+    import_profiles:
+      list: Seleccionar un trabajo
+      create_popin:
+        title: Crear
+    group:
+      create_btn: Crear grupo
+    export_profiles:
+      create_popin:
+        title: Crear
+    user:
+      create_btn: Crear usuario
+    user_role:
+      create_btn: Crear rol
+    user_group:
+      create_btn: Crear grupo
+    attribute:
+      modal_title: Elija el tipo de atributo
+    attribute_group:
+      title: Grupos de atributos
+      create_btn: Crear
+    api_connection:
+      create_btn: Crear
+  mass_edit:
+    next: Siguiente
+    cancel: Cancelar
+    confirm: Confirmar
+    product:
+      step:
+        select:
+          label: Elegir productos
+        configure:
+          label: Configurar
+        confirm:
+          label: Confirmar
+      operation:
+        change_status:
+          label: Cambiar el estado
+          description: Los productos seleccionados serán habilitados o inhabilitados.
+          field: Para habilitar
+        edit_common:
+          label: Editar atributos
+        change_family:
+          description: La familia de los productos seleccionados se cambiará a la familia elegida
+          field: Familia
+        add_to_group:
+          label: Agregar a grupos
+          description: Seleccione los grupos en los cuales agregará los productos seleccionados
+          field: Grupos
+        remove_from_category:
+          description: Se eliminarán los productos de las siguientes categorías.
+    family:
+      step:
+        select:
+          label: Elija familias
+        configure:
+          label: Configurar
+        confirm:
+          label: Confirmar
 pim_enrich.error:
   exception.title: Oups! Un error {{ status_code }} ha ocurrido...
+page_title:
+  oro_default: Cartelera
+  pim_enrich_attributegroup_index: Grupos de atributos
+  pim_enrich_attributegroup_create: Grupos de Atributos | Crear
+  pim_enrich_categorytree_index: Árbol de categoría
+  pim_enrich_categorytree_create: Árboles de categoría | Crear
+  pim_enrich_categorytree_create_tree: Árboles de categoría | Crear
+  pim_enrich_attribute_index: Atributos
+  pim_enrich_attribute_create: Atributos | Crear
+  pim_enrich_product_index: Productos
+  pim_enrich_family_index: Familias
+  pim_enrich_channel_index: Canales
+  pim_enrich_channel_create: Canales | Crear
+  pim_enrich_currency_index: Monedas
+  pim_enrich_locale_index: Locales
+  pim_enrich_group_index: Grupos
+  pim_enrich_associationtype_index: Tipos de asociaciones
+  pim_enrich_grouptype_index: Tipos de grupo
+  pim_enrich_mass_edit_action_choose: Edición masiva | Seleccionar
+  pim_enrich_mass_edit_action_configure: Edición masiva | Configurar
+  pim_enrich_job_tracker_index: Seguimiento de procesos
+  pim_enrich_job_tracker_show: Seguimiento de procesos | Ver el trabajo
+  pim_enrich_mass_edit_action: Edición en masa
+  pim_analytics_system_info_index: Información del sistema
+batch_jobs:
+  add_product_value:
+    label: Agregar un valor de producto
+    perform:
+      label: Agregar un valor de producto
+  update_product_value:
+    label: Actualizar el valor del producto
+    perform:
+      label: Actualizar el valor del producto
+  edit_common_attributes:
+    label: Editar atributos
+    perform:
+      label: Editar atributos
+  csv_product_export:
+    label: Exportar productos a CSV
+    export.label: Exportar productos
+  csv_product_model_export:
+    export.label: Exportar productos
+  csv_category_export:
+    label: Exportar categorías a CSV
+    export.label: Exportar categorías
+  csv_attribute_export:
+    label: Exportar atributos a CSV
+    export.label: Exportar atributos
+  csv_attribute_option_export:
+    label: Exportar opciones de atributos a CSV
+    export.label: Exportar opciones de atributos
+  csv_association_type_export:
+    label: Exportar tipos de asociaciones a CSV
+    export.label: Exportar tipos de asociaciones
+  csv_group_export:
+    label: Exportar grupos a CSV
+    export.label: Exportar grupos
+  csv_family_export:
+    label: Exportar familias en CSV
+    export.label: Exportar familias
+  csv_product_import:
+    label: Importar productos desde CSV
+    validation.label: Validación de archivo
+    import.label: Importar productos
+    import_associations.label: Importar asociaciones
+  csv_category_import:
+    label: Importar categorías desde CSV
+    validation.label: Validación de archivo
+    import.label: Importar categorías
+  csv_attribute_import:
+    label: Importar atributos desde CSV
+    validation.label: Validación de archivo
+    import.label: Importar atributos
+  csv_attribute_option_import:
+    label: Importar opciones de atributos desde CSV
+    validation.label: Validación de archivo
+    import.label: Importar opciones de atributos
+  csv_association_type_import:
+    label: Importar tipos de asociaciones desde CSV
+    validation.label: Validación de archivo
+    import.label: Importar tipos de asociaciones
+  csv_family_import:
+    label: Importar familias en CSV
+    validation.label: Validación de archivo
+    import.label: Importe de familias
+  csv_family_variant_import:
+    validation.label: Validación de archivo
+  csv_group_import:
+    label: Importar grupos desde CSV
+    validation.label: Validación de archivo
+    import.label: Importar grupos
+  csv_channel_export:
+    label: Exportar canal en CSV
+    export.label: Exportar canal
+  csv_locale_export:
+    label: Exportar locales en CSV
+    export.label: Exportar locales
+  csv_attribute_group_export:
+    label: Exportar grupo de atributos en CSV
+    export.label: Exportar grupo de atributos
+  csv_currency_export:
+    label: Exportar monedas en CSV
+    export.label: Exportar monedas
+  csv_group_type_export:
+    label: Exportar tipo de grupos en CSV
+    export.label: Exportar tipo de grupos
+  csv_channel_import:
+    label: Importar canal en CSV
+    validation.label: Validación de archivo
+    import.label: Importar canales
+  csv_locale_import:
+    label: Importar locales en CSV
+    validation.label: Validación de archivo
+    import.label: Importar locales
+  csv_attribute_group_import:
+    label: Importar grupo de atributos en CSV
+    validation.label: Validación de archivo
+    import.label: Importar grupo de atributos
+  csv_currency_import:
+    label: Importar monedas en CSV
+    validation.label: Validación de archivo
+    import.label: Importar monedas
+  csv_group_type_import:
+    label: Importar tipo de grupos en CSV
+    validation.label: Validación de archivo
+    import.label: Importar tipo de grupos
+  xlsx_category_import:
+    label: Importar categorías en XLSX
+    validation.label: Validación de archivo
+    import.label: Importar categorías
+  xlsx_association_type_import:
+    label: Importar tipo de asociaciones en XLSX
+    validation.label: Validación de archivo
+    import.label: Importar tipos de asociaciones
+  xlsx_attribute_import:
+    label: Importar atributos en XLSX
+    validation.label: Validación de archivo
+    import.label: Importar atributos
+  xlsx_attribute_option_import:
+    label: Importar opciones de atributos en XLSX
+    validation.label: Validación de archivo
+    import.label: Importar opciones de atributos
+  xlsx_family_import:
+    label: Importar familias en XLSX
+    validation.label: Validación de archivo
+    import.label: Importe de familias
+  xlsx_family_variant_import:
+    validation.label: Validación de archivo
+  xlsx_product_export:
+    label: Exportar producto en XLSX
+    export.label: Exportar productos
+  xlsx_product_import:
+    label: Importar productos en XLSX
+    validation.label: Validación de archivo
+    import.label: Importar productos
+    import_associations.label: Importar asociaciones
+  xlsx_group_export:
+    label: Exportar grupos en XLSX
+    export.label: Exportar grupos
+  xlsx_group_import:
+    label: Importar grupos en XLSX
+    validation.label: Validación de archivo
+    import.label: Importar grupos
+  xlsx_family_export:
+    label: Exportar familias en XLSX
+    export.label: Exportar familias
+  xlsx_category_export:
+    label: Exportar categorías en XLSX
+    export.label: Exportar categorías
+  xlsx_attribute_export:
+    label: Exportar atributos en XLSX
+    export.label: Exportar atributos en XLSX
+  xlsx_attribute_option_export:
+    label: Exportar opciones de atributos en XLSX
+    export.label: Exportar opciones de atributos en XLSX
+  xlsx_association_type_export:
+    label: Exportar tipo de asociaciones en XLSX
+    export.label: Exportar tipo de asociaciones en XLSX
+  xlsx_channel_export:
+    label: Exportar canales en XLSX
+    export.label: Exportar canal
+  xlsx_locale_export:
+    label: Exportar locales en XLSX
+    export.label: Exportar locales
+  xlsx_attribute_group_export:
+    label: Exportar grupo de atributos en XLSX
+    export.label: Exportar grupo de atributos
+  xlsx_currency_export:
+    label: Exportar monedas en XLSX
+    export.label: Exportar monedas
+  xlsx_group_type_export:
+    label: Exportar tipo de grupos en XLSX
+    export.label: Exportar tipo de grupos
+  xlsx_channel_import:
+    label: Importar canales en XLSX
+    validation.label: Validación de archivo
+    import.label: Importar canales
+  xlsx_locale_import:
+    label: Importar locales en XLSX
+    validation.label: Validación de archivo
+    import.label: Importar locales
+  xlsx_attribute_group_import:
+    label: Importar grupo de atributos en XLSX
+    validation.label: Validación de archivo
+    import.label: Importar grupo de atributos
+  xlsx_currency_import:
+    label: Importar monedas en XLSX
+    validation.label: Validación de archivo
+    import.label: Importar monedas
+  xlsx_group_type_import:
+    label: Importar tipo de grupos en XLSX
+    validation.label: Validación de archivo
+    import.label: Importar tipo de grupos
+pim_menu:
+  tab:
+    products: Productos
+    settings: Configuración
+    system: Sistema
+  item:
+    association_type: Tipos de asociaciones
+    attribute: Atributos
+    attribute_group: Grupos de atributos
+    category: Categorías
+    channel: Canales
+    currency: Monedas
+    dashboard: Cartelera
+    family: Familias
+    group: Grupos
+    group_type: Tipos de grupo
+    locale: Locales
+    product: Productos
+    published_product: Productos publicados
+    export_history: Histórico de exportaciones
+    export_profile: Perfiles de exportación
+    import_history: Histórico de importaciones
+    import_profile: Perfiles de importación
+    configuration: Configuración
+    user_management: Gestión de Usuarios
+    user: Usuarios
+    user_group: Grupos
+    user_role: Roles
+    info: Información del sistema
+    job_tracker: Seguimiento de procesos
+  user:
+    logout: Salir
+    user_account: Mi cuenta
+pim_notification:
+  mark_all_as_read: Marcar todo como leído
+  loading: Cargando...

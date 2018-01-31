@@ -15,6 +15,8 @@ use Akeneo\Bundle\MeasureBundle\Exception\UnknownOperatorException;
  */
 class MeasureConverter
 {
+    const SCALE = 12;
+
     /**
      * @var array
      */
@@ -37,6 +39,7 @@ class MeasureConverter
 
     /**
      * Set a family for the converter
+     *
      * @param string $family
      *
      * @throws UnknownFamilyMeasureException
@@ -56,11 +59,12 @@ class MeasureConverter
 
     /**
      * Convert a value from a base measure to a final measure
+     *
      * @param string $baseUnit  Base unit for value
      * @param string $finalUnit Result unit for value
      * @param double $value     Value to convert
      *
-     * @return double
+     * @return string
      */
     public function convert($baseUnit, $finalUnit, $value)
     {
@@ -73,12 +77,13 @@ class MeasureConverter
 
     /**
      * Convert a value in a base unit to the standard unit
+     *
      * @param string $baseUnit Base unit for value
      * @param double $value    Value to convert
      *
      * @throws UnknownOperatorException
      * @throws UnknownMeasureException
-     * @return double
+     * @return string
      *
      */
     public function convertBaseToStandard($baseUnit, $value)
@@ -109,28 +114,29 @@ class MeasureConverter
      *
      * @param double $value    Value to convert
      * @param string $operator Operator to apply
-     * @param double $operand  Operand to use
+     * @param string $operand  Operand to use
      *
-     * @return double
+     * @throws UnknownOperatorException
+     * @return string
      */
     protected function applyOperation($value, $operator, $operand)
     {
-        $processedValue = $value;
+        $processedValue = (string) $value;
 
         switch ($operator) {
             case "div":
-                if ($operand !== 0) {
-                    $processedValue = $processedValue / $operand;
+                if ($operand !== '0') {
+                    $processedValue = bcdiv($processedValue, $operand, static::SCALE);
                 }
                 break;
             case "mul":
-                $processedValue = $processedValue * $operand;
+                $processedValue = bcmul($processedValue, $operand, static::SCALE);
                 break;
             case "add":
-                $processedValue = $processedValue + $operand;
+                $processedValue = bcadd($processedValue, $operand, static::SCALE);
                 break;
             case "sub":
-                $processedValue = $processedValue - $operand;
+                $processedValue = bcsub($processedValue, $operand, static::SCALE);
                 break;
             default:
                 throw new UnknownOperatorException();
@@ -141,12 +147,13 @@ class MeasureConverter
 
     /**
      * Convert a value in a standard unit to a final unit
+     *
      * @param string $finalUnit Final unit for value
      * @param double $value     Value to convert
      *
      * @throws UnknownOperatorException
      * @throws UnknownMeasureException
-     * @return double
+     * @return string
      *
      */
     public function convertStandardToResult($finalUnit, $value)
@@ -178,28 +185,29 @@ class MeasureConverter
      *
      * @param double $value    Value to convert
      * @param string $operator Operator to apply
-     * @param double $operand  Operand to use
+     * @param string $operand  Operand to use
      *
-     * @return double
+     * @throws UnknownOperatorException
+     * @return string
      */
     protected function applyReversedOperation($value, $operator, $operand)
     {
-        $processedValue = $value;
+        $processedValue = (string) $value;
 
         switch ($operator) {
             case "div":
-                $processedValue = $processedValue * $operand;
+                $processedValue = bcmul($processedValue, $operand, static::SCALE);
                 break;
             case "mul":
-                if ($operand !== 0) {
-                    $processedValue = $processedValue / $operand;
+                if ($operand !== '0') {
+                    $processedValue = bcdiv($processedValue, $operand, static::SCALE);
                 }
                 break;
             case "add":
-                $processedValue = $processedValue - $operand;
+                $processedValue = bcsub($processedValue, $operand, static::SCALE);
                 break;
             case "sub":
-                $processedValue = $processedValue + $operand;
+                $processedValue = bcadd($processedValue, $operand, static::SCALE);
                 break;
             default:
                 throw new UnknownOperatorException();

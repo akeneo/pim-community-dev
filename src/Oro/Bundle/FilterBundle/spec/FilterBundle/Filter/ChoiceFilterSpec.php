@@ -2,10 +2,11 @@
 
 namespace spec\Oro\Bundle\FilterBundle\Filter;
 
+use Oro\Bundle\FilterBundle\Filter\FilterInterface;
 use Oro\Bundle\FilterBundle\Filter\FilterUtility;
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\Form\ChoiceList\View\ChoiceGroupView;
-use Symfony\Component\Form\Extension\Core\View\ChoiceView;
+use Symfony\Component\Form\ChoiceList\View\ChoiceView;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
@@ -20,7 +21,7 @@ class ChoiceFilterSpec extends ObjectBehavior
 
     function it_is_a_filter()
     {
-        $this->shouldHaveType('Oro\Bundle\FilterBundle\Filter\FilterInterface');
+        $this->shouldHaveType(FilterInterface::class);
     }
 
     function it_gives_metadata($factory, $util, FormBuilderInterface $builder, FormInterface $form)

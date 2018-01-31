@@ -83,6 +83,16 @@ class ListCategoryIntegration extends ApiTestCase
             {
                 "_links": {
                     "self": {
+                        "href": "http://localhost/api/rest/v1/categories/categoryC"
+                    }
+                },
+                "code": "categoryC",
+                "parent": "master",
+                "labels": {}
+            },
+            {
+                "_links": {
+                    "self": {
                         "href": "http://localhost/api/rest/v1/categories/master_china"
                     }
                 },
@@ -117,7 +127,7 @@ JSON;
         }
     },
     "current_page": 1,
-    "items_count": 6,
+    "items_count": 7,
     "_embedded": {
         "items": [
             {
@@ -170,6 +180,16 @@ JSON;
                     }
                 },
                 "code": "categoryB",
+                "parent": "master",
+                "labels": {}
+            },
+            {
+                "_links": {
+                    "self": {
+                        "href": "http://localhost/api/rest/v1/categories/categoryC"
+                    }
+                },
+                "code": "categoryC",
                 "parent": "master",
                 "labels": {}
             },
@@ -229,6 +249,6 @@ JSON;
      */
     protected function getConfiguration()
     {
-        return new Configuration([Configuration::getTechnicalCatalogPath()]);
+        return $this->catalog->useTechnicalCatalog();
     }
 }

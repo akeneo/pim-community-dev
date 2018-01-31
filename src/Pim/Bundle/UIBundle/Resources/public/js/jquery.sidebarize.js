@@ -14,6 +14,7 @@
         if (typeof Storage !== 'undefined') {
             return sessionStorage[key] || null;
         }
+
         return null;
     }
 
@@ -29,6 +30,7 @@
         if ($('.sf-toolbar').length) {
             height -= $('.sf-toolbar').height() + 1;
         }
+
         return height;
     }
 

@@ -2,9 +2,11 @@
 
 namespace Pim\Component\Catalog\Normalizer\Standard\Product;
 
-use Doctrine\Common\Collections\Collection;
 use Pim\Component\Catalog\AttributeTypes;
-use Pim\Component\Catalog\Model\ProductValueInterface;
+use Pim\Component\Catalog\Model\ValueInterface;
+use Pim\Component\Catalog\Value\OptionsValueInterface;
+use Pim\Component\Catalog\Value\PriceCollectionValueInterface;
+use Pim\Component\ReferenceData\Value\ReferenceDataCollectionValueInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\SerializerAwareInterface;
 use Symfony\Component\Serializer\SerializerInterface;
@@ -36,7 +38,11 @@ class ProductValueNormalizer implements NormalizerInterface, SerializerAwareInte
      */
     public function normalize($entity, $format = null, array $context = [])
     {
-        $data = $entity->getData() instanceof Collection ?
+        $isCollection = $entity instanceof OptionsValueInterface
+            || $entity instanceof PriceCollectionValueInterface
+            || $entity instanceof ReferenceDataCollectionValueInterface;
+
+        $data = $isCollection ?
             $this->getCollectionValue($entity, $format, $context) : $this->getSimpleValue($entity, $format, $context);
 
         return [
@@ -51,30 +57,36 @@ class ProductValueNormalizer implements NormalizerInterface, SerializerAwareInte
      */
     public function supportsNormalization($data, $format = null)
     {
-        return $data instanceof ProductValueInterface && 'standard' === $format;
+        return $data instanceof ValueInterface && 'standard' === $format;
     }
 
     /**
-     * @param ProductValueInterface $productValue
-     * @param string|null           $format
-     * @param array                 $context
+     * @param ValueInterface $value
+     * @param string|null    $format
+     * @param array          $context
      *
      * @return array
      */
-    protected function getCollectionValue(ProductValueInterface $productValue, $format = null, array $context = [])
+    protected function getCollectionValue(ValueInterface $value, $format = null, array $context = [])
     {
-        $attributeType = $productValue->getAttribute()->getType();
-        $context['is_decimals_allowed'] = $productValue->getAttribute()->isDecimalsAllowed();
+        $attributeType = $value->getAttribute()->getType();
+        $context['is_decimals_allowed'] = $value->getAttribute()->isDecimalsAllowed();
 
         $data = [];
-        foreach ($productValue->getData() as $item) {
+        foreach ($value->getData() as $item) {
             if (AttributeTypes::OPTION_MULTI_SELECT === $attributeType ||
-                $productValue->getAttribute()->isBackendTypeReferenceData()) {
+                $value->getAttribute()->isBackendTypeReferenceData()) {
                 $data[] = $item->getCode();
             } else {
                 $data[] = $this->serializer->normalize($item, $format, $context);
             }
+        }
 
+        if (AttributeTypes::PRICE_COLLECTION === $attributeType) {
+            usort($data, function ($a, $b) {
+                return strnatcasecmp($a['currency'], $b['currency']);
+            });
+        } else {
             sort($data);
         }
 
@@ -82,40 +94,40 @@ class ProductValueNormalizer implements NormalizerInterface, SerializerAwareInte
     }
 
     /**
-     * @param ProductValueInterface $productValue
-     * @param null                  $format
-     * @param array                 $context
+     * @param ValueInterface $value
+     * @param null           $format
+     * @param array          $context
      *
      * @return mixed
      */
-    protected function getSimpleValue(ProductValueInterface $productValue, $format = null, array $context = [])
+    protected function getSimpleValue(ValueInterface $value, $format = null, array $context = [])
     {
-        if (null === $productValue->getData()) {
+        if (null === $value->getData()) {
             return null;
         }
 
-        $attributeType = $productValue->getAttribute()->getType();
-        $context['is_decimals_allowed'] = $productValue->getAttribute()->isDecimalsAllowed();
+        $attributeType = $value->getAttribute()->getType();
+        $context['is_decimals_allowed'] = $value->getAttribute()->isDecimalsAllowed();
 
         // if decimals_allowed is false, we return an integer
         // if true, we return a string to avoid to loose precision (http://floating-point-gui.de)
-        if (AttributeTypes::NUMBER === $attributeType && is_numeric($productValue->getData())) {
-            return $productValue->getAttribute()->isDecimalsAllowed()
-                ? number_format($productValue->getData(), static::DECIMAL_PRECISION, '.', '')
-                : (int) $productValue->getData();
+        if (AttributeTypes::NUMBER === $attributeType && is_numeric($value->getData())) {
+            return $value->getAttribute()->isDecimalsAllowed()
+                ? number_format($value->getData(), static::DECIMAL_PRECISION, '.', '')
+                : (int) $value->getData();
         }
 
         if (in_array($attributeType, [
             AttributeTypes::OPTION_SIMPLE_SELECT,
             AttributeTypes::REFERENCE_DATA_SIMPLE_SELECT
         ])) {
-            return $productValue->getData()->getCode();
+            return $value->getData()->getCode();
         }
 
         if (in_array($attributeType, [AttributeTypes::FILE, AttributeTypes::IMAGE])) {
-            return $productValue->getData()->getKey();
+            return $value->getData()->getKey();
         }
 
-        return $this->serializer->normalize($productValue->getData(), $format, $context);
+        return $this->serializer->normalize($value->getData(), $format, $context);
     }
 }

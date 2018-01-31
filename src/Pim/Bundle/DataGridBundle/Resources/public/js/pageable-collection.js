@@ -170,6 +170,20 @@ function(_, Backbone, BackbonePageableCollection, app) {
                 prefix = this.inputName + '[_filter]'
             }
 
+            if (this.inputName &&
+                !_.isUndefined(data[this.inputName]) &&
+                !_.isUndefined(data[this.inputName]._filter)
+            ) {
+                const scope = !_.isUndefined(data[this.inputName]._filter.scope) ?
+                    data[this.inputName]._filter.scope :
+                    null;
+
+                data[this.inputName]._filter = {};
+
+                if (null !== scope) {
+                    data[this.inputName]._filter.scope = scope
+                }
+            }
             if (state.filters) {
                 _.extend(
                     data,
@@ -234,7 +248,7 @@ function(_, Backbone, BackbonePageableCollection, app) {
          * @return {Object}
          */
         parse: function(resp, options) {
-            this.state.totalRecords = resp.options.totalRecords;
+            this.state.totalRecords = 'undefined' !== typeof(resp.totalRecords) ? resp.totalRecords : resp.options.totalRecords;
             this.state = this._checkState(this.state);
             return resp.data;
         },
@@ -269,7 +283,7 @@ function(_, Backbone, BackbonePageableCollection, app) {
             var links = this.links;
             var totalRecords = state.totalRecords;
             var pageSize = state.pageSize;
-            var currentPage = state.currentPage;
+            var currentPage = (state.currentPage < 0) ? 1 : state.currentPage;
             var firstPage = state.firstPage;
             var totalPages = state.totalPages;
 
@@ -292,6 +306,7 @@ function(_, Backbone, BackbonePageableCollection, app) {
                 }
 
                 state.lastPage = firstPage === 0 ? totalPages - 1 : totalPages;
+                state.lastPage = state.lastPage < 0 ? 1 : state.lastPage;
 
                 // page out of range
                 if (currentPage > state.lastPage && state.pageSize > 0) {

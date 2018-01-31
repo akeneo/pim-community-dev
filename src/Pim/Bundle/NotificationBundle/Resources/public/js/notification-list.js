@@ -4,10 +4,10 @@ define(
         'jquery',
         'underscore',
         'routing',
-        'oro/navigation',
-        'text!pim/template/notification/notification-list'
+        'pim/router',
+        'pim/template/notification/notification-list'
     ],
-    function (Backbone, $, _, Routing, Navigation, template) {
+    function (Backbone, $, _, Routing, router, template) {
         'use strict';
 
         var Notification = Backbone.Model.extend({
@@ -59,7 +59,7 @@ define(
             open: function (e) {
                 this.preventOpen(e);
                 if (this.model.get('url')) {
-                    Navigation.getInstance().setLocation(this.model.get('url'));
+                    router.redirect(this.model.get('url'));
                 }
                 this.$el.closest('.dropdown').removeClass('open');
             },

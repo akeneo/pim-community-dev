@@ -42,9 +42,8 @@ class GroupTypeRepositorySpec extends ObjectBehavior
         $queryBuilder->select('g')->willReturn($queryBuilder);
         $queryBuilder->select('g.id')->willReturn($queryBuilder);
         $queryBuilder->addSelect('COALESCE(NULLIF(t.label, \'\'), CONCAT(\'[\', g.code, \']\')) as label')->willReturn($queryBuilder);
-        $queryBuilder->from('group_type', 'g')->willReturn($queryBuilder);
+        $queryBuilder->from('group_type', 'g', null)->willReturn($queryBuilder);
         $queryBuilder->leftJoin('g.translations', 't', 'WITH', 't.locale = :locale')->willReturn($queryBuilder);
-        $queryBuilder->andWhere('g.variant = :is_variant')->willReturn($queryBuilder);
         $queryBuilder->orderBy('t.label')->willReturn($queryBuilder);
         $queryBuilder->setParameter('locale', 'en_US')->willReturn($queryBuilder);
         $queryBuilder->getQuery()->willReturn($query);
@@ -55,8 +54,9 @@ class GroupTypeRepositorySpec extends ObjectBehavior
         ]);
 
         $this->findTranslatedLabels()->shouldReturn([
-            10 => 'group en',
-            11 => '[group_other_code]',
+            'group fr' => 10,
+            'group en' => 10,
+            '[group_other_code]' => 11,
         ]);
     }
 }

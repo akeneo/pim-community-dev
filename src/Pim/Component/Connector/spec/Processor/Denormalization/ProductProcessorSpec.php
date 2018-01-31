@@ -9,9 +9,11 @@ use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Builder\ProductBuilderInterface;
+use Pim\Component\Catalog\Comparator\Filter\FilterInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
-use Pim\Component\Catalog\Comparator\Filter\ProductFilterInterface;
+use Pim\Component\Catalog\ProductModel\Filter\AttributeFilterInterface;
+use Pim\Component\Catalog\EntityWithFamilyVariant\AddParent;
+use Pim\Component\Connector\Processor\Denormalization\Product\FindProductToImport;
 use Prophecy\Argument;
 use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Component\Validator\ConstraintViolationList;
@@ -22,20 +24,24 @@ class ProductProcessorSpec extends ObjectBehavior
 {
     function let(
         IdentifiableObjectRepositoryInterface $productRepository,
-        ProductBuilderInterface $productBuilder,
+        FindProductToImport $productToImport,
+        AddParent $addParent,
         ObjectUpdaterInterface $productUpdater,
         ValidatorInterface $productValidator,
         StepExecution $stepExecution,
         ObjectDetacherInterface $productDetacher,
-        ProductFilterInterface $productFilter
+        FilterInterface $productFilter,
+        AttributeFilterInterface $productAttributeFilter
     ) {
         $this->beConstructedWith(
             $productRepository,
-            $productBuilder,
+            $productToImport,
+            $addParent,
             $productUpdater,
             $productValidator,
             $productDetacher,
-            $productFilter
+            $productFilter,
+            $productAttributeFilter
         );
         $this->setStepExecution($stepExecution);
     }
@@ -52,6 +58,9 @@ class ProductProcessorSpec extends ObjectBehavior
         $productValidator,
         $productFilter,
         $stepExecution,
+        $productAttributeFilter,
+        $productToImport,
+        $addParent,
         ProductInterface $product,
         ConstraintViolationListInterface $violationList,
         JobParameters $jobParameters
@@ -66,8 +75,10 @@ class ProductProcessorSpec extends ObjectBehavior
         $jobParameters->get('dateFormat')->willReturn('yyyy-MM-dd');
 
         $productRepository->getIdentifierProperties()->willReturn(['sku']);
-        $productRepository->findOneByIdentifier(Argument::any())->willReturn($product);
+        $productToImport->fromFlatData('tshirt', 'Summer Tshirt', '')->willReturn($product);
         $product->getId()->willReturn(42);
+
+        $addParent->to($product, '')->willReturn($product);
 
         $convertedData = [
             'identifier' => 'tshirt',
@@ -101,6 +112,8 @@ class ProductProcessorSpec extends ObjectBehavior
                 ]
             ]
         ];
+
+        $productAttributeFilter->filter(Argument::type('array'))->willReturn($convertedData);
 
         $filteredData = [
             'family' => 'Summer Tshirt',
@@ -144,10 +157,13 @@ class ProductProcessorSpec extends ObjectBehavior
 
     function it_updates_an_existing_product_with_filtered_values(
         $productRepository,
+        $productToImport,
         $productUpdater,
         $productValidator,
         $productFilter,
         $stepExecution,
+        $productAttributeFilter,
+        $addParent,
         ProductInterface $product,
         ConstraintViolationListInterface $violationList,
         JobParameters $jobParameters
@@ -162,8 +178,10 @@ class ProductProcessorSpec extends ObjectBehavior
         $jobParameters->get('dateFormat')->willReturn('yyyy-MM-dd');
 
         $productRepository->getIdentifierProperties()->willReturn(['sku']);
-        $productRepository->findOneByIdentifier(Argument::any())->willReturn($product);
+        $productToImport->fromFlatData('tshirt', 'Tshirt', '')->willReturn($product);
         $product->getId()->willReturn(42);
+
+        $addParent->to($product, '')->willReturn($product);
 
         $convertedData = [
             'identifier' => 'tshirt',
@@ -197,6 +215,8 @@ class ProductProcessorSpec extends ObjectBehavior
                 ]
             ]
         ];
+
+        $productAttributeFilter->filter(Argument::type('array'))->willReturn($convertedData);
 
         $preFilteredData = $filteredData = [
             'family' => 'Tshirt',
@@ -241,10 +261,13 @@ class ProductProcessorSpec extends ObjectBehavior
 
     function it_updates_an_existing_product_without_filtered_values(
         $productRepository,
+        $productToImport,
         $productUpdater,
         $productValidator,
         $productFilter,
         $stepExecution,
+        $productAttributeFilter,
+        $addParent,
         ProductInterface $product,
         ConstraintViolationListInterface $violationList,
         JobParameters $jobParameters
@@ -259,8 +282,10 @@ class ProductProcessorSpec extends ObjectBehavior
         $jobParameters->get('dateFormat')->willReturn('yyyy-MM-dd');
 
         $productRepository->getIdentifierProperties()->willReturn(['sku']);
-        $productRepository->findOneByIdentifier(Argument::any())->willReturn($product);
+        $productToImport->fromFlatData('tshirt', 'Tshirt', '')->willReturn($product);
         $product->getId()->willReturn(42);
+
+        $addParent->to($product, '')->willReturn($product);
 
         $convertedData = [
             'identifier' => 'tshirt',
@@ -295,6 +320,8 @@ class ProductProcessorSpec extends ObjectBehavior
             ]
         ];
 
+        $productAttributeFilter->filter(Argument::type('array'))->willReturn($convertedData);
+
         $filteredData = [
             'family' => 'Tshirt',
             'values' => [
@@ -321,106 +348,6 @@ class ProductProcessorSpec extends ObjectBehavior
         ];
 
         $productFilter->filter($product, [])->shouldNotBeCalled();
-
-        $productUpdater
-            ->update($product, $filteredData)
-            ->shouldBeCalled();
-
-        $productValidator
-            ->validate($product)
-            ->willReturn($violationList);
-
-        $this
-            ->process($convertedData)
-            ->shouldReturn($product);
-    }
-
-    function it_creates_a_product(
-        $productRepository,
-        $productBuilder,
-        $productUpdater,
-        $productValidator,
-        $productFilter,
-        $stepExecution,
-        ProductInterface $product,
-        ConstraintViolationListInterface $violationList,
-        JobParameters $jobParameters
-    ) {
-        $stepExecution->getJobParameters()->willReturn($jobParameters);
-        $jobParameters->get('enabledComparison')->willReturn(true);
-        $jobParameters->get('familyColumn')->willReturn('family');
-        $jobParameters->get('categoriesColumn')->willReturn('categories');
-        $jobParameters->get('groupsColumn')->willReturn('groups');
-        $jobParameters->get('enabled')->willReturn(true);
-        $jobParameters->get('decimalSeparator')->willReturn('.');
-        $jobParameters->get('dateFormat')->willReturn('yyyy-MM-dd');
-
-        $productRepository->getIdentifierProperties()->willReturn(['sku']);
-        $productRepository->findOneByIdentifier('tshirt')->willReturn(false);
-
-        $productBuilder->createProduct('tshirt', 'Tshirt')->willReturn($product);
-
-        $convertedData = [
-            'identifier' => 'tshirt',
-            'enabled' => true,
-            'family' => 'Tshirt',
-            'values' => [
-                'sku' => [
-                    [
-                        'locale' => null,
-                        'scope' =>  null,
-                        'data' => 'tshirt'
-                    ],
-                ],
-                'name' => [
-                    [
-                        'locale' => 'fr_FR',
-                        'scope' =>  null,
-                        'data' => 'T-shirt super beau'
-                    ],
-                    [
-                        'locale' => 'en_US',
-                        'scope' =>  null,
-                        'data' => 'My awesome T-shirt'
-                    ]
-                ],
-                'description' => [
-                    [
-                        'locale' => 'en_US',
-                        'scope' =>  'mobile',
-                        'data' => 'My description'
-                    ]
-                ],
-            ]
-        ];
-
-        $filteredData = [
-            'family' => 'Tshirt',
-            'values' => [
-                'name' => [
-                    [
-                        'locale' => 'fr_FR',
-                        'scope' =>  null,
-                        'data' => 'T-shirt super beau'
-                    ],
-                    [
-                        'locale' => 'en_US',
-                        'scope' =>  null,
-                        'data' => 'My awesome T-shirt'
-                    ]
-                ],
-                'description' => [
-                    [
-                        'locale' => 'en_US',
-                        'scope' =>  'mobile',
-                        'data' => 'My description'
-                    ]
-                ],
-            ],
-            'enabled' => true
-        ];
-
-        $productFilter->filter($product, $filteredData)->willReturn($filteredData);
 
         $productUpdater
             ->update($product, $filteredData)
@@ -473,11 +400,13 @@ class ProductProcessorSpec extends ObjectBehavior
 
     function it_skips_a_product_when_update_fails(
         $productRepository,
-        $productBuilder,
+        $productToImport,
         $productUpdater,
         $productDetacher,
         $productFilter,
         $stepExecution,
+        $productAttributeFilter,
+        $addParent,
         ProductInterface $product,
         JobParameters $jobParameters
     ) {
@@ -491,10 +420,10 @@ class ProductProcessorSpec extends ObjectBehavior
         $jobParameters->get('dateFormat')->willReturn('yyyy-MM-dd');
 
         $productRepository->getIdentifierProperties()->willReturn(['sku']);
-        $productRepository->findOneByIdentifier('tshirt')->willReturn(false);
+        $productToImport->fromFlatData('tshirt', 'Tshirt', '')->willReturn($product);
         $stepExecution->getSummaryInfo('item_position')->shouldBeCalled();
 
-        $productBuilder->createProduct('tshirt', 'Tshirt')->willReturn($product);
+        $addParent->to($product, '')->willReturn($product);
 
         $convertedData = [
             'identifier' => 'tshirt',
@@ -529,6 +458,8 @@ class ProductProcessorSpec extends ObjectBehavior
             ],
             'enabled' => true
         ];
+
+        $productAttributeFilter->filter(Argument::type('array'))->willReturn($convertedData);
 
         $filteredData = [
             'family' => 'Tshirt',
@@ -575,14 +506,15 @@ class ProductProcessorSpec extends ObjectBehavior
 
     function it_skips_a_product_when_object_is_invalid(
         $productRepository,
-        $productBuilder,
+        $productToImport,
         $productUpdater,
         $productValidator,
         $productDetacher,
         $productFilter,
         $stepExecution,
+        $productAttributeFilter,
+        $addParent,
         ProductInterface $product,
-        ConstraintViolationListInterface $violationList,
         JobParameters $jobParameters
     ) {
         $stepExecution->getJobParameters()->willReturn($jobParameters);
@@ -595,10 +527,10 @@ class ProductProcessorSpec extends ObjectBehavior
         $jobParameters->get('dateFormat')->willReturn('yyyy-MM-dd');
 
         $productRepository->getIdentifierProperties()->willReturn(['sku']);
-        $productRepository->findOneByIdentifier('tshirt')->willReturn(false);
+        $productToImport->fromFlatData('tshirt', 'Tshirt', '')->willReturn($product);
 
-        $productBuilder->createProduct('tshirt', 'Tshirt')->willReturn($product);
         $stepExecution->getSummaryInfo('item_position')->shouldBeCalled();
+        $addParent->to($product, '')->willReturn($product);
 
         $convertedData = [
             'identifier' => 'tshirt',
@@ -633,6 +565,8 @@ class ProductProcessorSpec extends ObjectBehavior
             ],
             'enabled' => true
         ];
+
+        $productAttributeFilter->filter(Argument::type('array'))->willReturn($convertedData);
 
         $filteredData = [
             'family' => 'Tshirt',
@@ -684,10 +618,13 @@ class ProductProcessorSpec extends ObjectBehavior
 
     function it_skips_a_product_when_there_is_nothing_to_update(
         $productRepository,
+        $productToImport,
         $productUpdater,
         $productDetacher,
         $productFilter,
         $stepExecution,
+        $productAttributeFilter,
+        $addParent,
         ProductInterface $product,
         JobParameters $jobParameters
     ) {
@@ -701,8 +638,9 @@ class ProductProcessorSpec extends ObjectBehavior
         $jobParameters->get('dateFormat')->willReturn('yyyy-MM-dd');
 
         $productRepository->getIdentifierProperties()->willReturn(['sku']);
-        $productRepository->findOneByIdentifier('tshirt')->willReturn($product);
+        $productToImport->fromFlatData('tshirt', 'Tshirt', '')->willReturn($product);
         $product->getId()->willReturn(1);
+        $addParent->to($product, '')->willReturn($product);
 
         $convertedData = [
             'identifier' => 'tshirt',
@@ -736,6 +674,8 @@ class ProductProcessorSpec extends ObjectBehavior
                 ]
             ]
         ];
+
+        $productAttributeFilter->filter(Argument::type('array'))->willReturn($convertedData);
 
         $filteredData = [
             'family' => 'Tshirt',
@@ -777,10 +717,13 @@ class ProductProcessorSpec extends ObjectBehavior
 
     function it_updates_an_existing_product_and_does_not_change_his_state(
         $productRepository,
+        $productToImport,
         $productUpdater,
         $productValidator,
         $productFilter,
         $stepExecution,
+        $productAttributeFilter,
+        $addParent,
         ProductInterface $product,
         ConstraintViolationListInterface $violationList,
         JobParameters $jobParameters
@@ -795,8 +738,10 @@ class ProductProcessorSpec extends ObjectBehavior
         $jobParameters->get('dateFormat')->willReturn('yyyy-MM-dd');
 
         $productRepository->getIdentifierProperties()->willReturn(['sku']);
-        $productRepository->findOneByIdentifier(Argument::any())->willReturn($product);
+        $productToImport->fromFlatData('tshirt', 'Summer Tshirt', '')->willReturn($product);
         $product->getId()->willReturn(42);
+
+        $addParent->to($product, '')->willReturn($product);
 
         $convertedData = [
             'identifier' => 'tshirt',
@@ -831,6 +776,8 @@ class ProductProcessorSpec extends ObjectBehavior
             ],
             'enabled' => false,
         ];
+
+        $productAttributeFilter->filter(Argument::type('array'))->willReturn($convertedData);
 
         $filteredData = [
             'family' => 'Summer Tshirt',
@@ -875,11 +822,13 @@ class ProductProcessorSpec extends ObjectBehavior
 
     function it_creates_a_product_with_sku_and_family_columns(
         $productRepository,
-        $productBuilder,
+        $productToImport,
         $productUpdater,
         $productValidator,
         $productFilter,
         $stepExecution,
+        $productAttributeFilter,
+        $addParent,
         ProductInterface $product,
         ConstraintViolationListInterface $violationList,
         JobParameters $jobParameters
@@ -894,9 +843,9 @@ class ProductProcessorSpec extends ObjectBehavior
         $jobParameters->get('dateFormat')->willReturn('yyyy-MM-dd');
 
         $productRepository->getIdentifierProperties()->willReturn(['sku']);
-        $productRepository->findOneByIdentifier('tshirt')->willReturn(false);
+        $productToImport->fromFlatData('tshirt', 'Tshirt', '')->willReturn($product);
 
-        $productBuilder->createProduct('tshirt', 'Tshirt')->willReturn($product);
+        $addParent->to($product, '')->willReturn($product);
 
         $convertedData = [
             'identifier' => 'tshirt',
@@ -912,6 +861,8 @@ class ProductProcessorSpec extends ObjectBehavior
             ],
             'enabled' => true
         ];
+
+        $productAttributeFilter->filter(Argument::type('array'))->willReturn($convertedData);
 
         $filteredData = [
             'family' => 'Tshirt',

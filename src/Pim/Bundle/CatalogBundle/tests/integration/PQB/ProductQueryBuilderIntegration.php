@@ -3,7 +3,6 @@
 namespace Pim\Bundle\CatalogBundle\tests\integration\PQB;
 
 use Akeneo\Test\Integration\Configuration;
-use Akeneo\Test\Integration\TestCase;
 use Pim\Component\Catalog\Query\Filter\Operators;
 use Pim\Component\Catalog\Query\ProductQueryBuilderInterface;
 
@@ -14,7 +13,7 @@ use Pim\Component\Catalog\Query\ProductQueryBuilderInterface;
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductQueryBuilderIntegration extends TestCase
+class ProductQueryBuilderIntegration extends AbstractProductQueryBuilderTestCase
 {
     /**
      * Combines several filters and operator to find the product
@@ -85,7 +84,7 @@ class ProductQueryBuilderIntegration extends TestCase
      */
     protected function getConfiguration()
     {
-        return new Configuration([Configuration::getTechnicalCatalogPath()]);
+        return $this->catalog->useTechnicalCatalog();
     }
 
     /**
@@ -103,10 +102,10 @@ class ProductQueryBuilderIntegration extends TestCase
     {
         parent::setUp();
 
-        $product = $this->get('pim_catalog.builder.product')->createProduct('complex_product_1', 'familyA');
-        $this->get('pim_catalog.updater.product')->update(
-            $product,
+        $this->createProduct(
+            'complex_product_1',
             [
+                'family' => 'familyA',
                 'values' => [
                     'a_file' => [
                         [
@@ -176,8 +175,6 @@ class ProductQueryBuilderIntegration extends TestCase
                 ],
             ]
         );
-
-        $this->get('pim_catalog.saver.product')->save($product);
     }
 
     /**
@@ -186,7 +183,7 @@ class ProductQueryBuilderIntegration extends TestCase
     protected function createPQBWithoutFamilyFilter()
     {
         $pqb = $this->get('pim_catalog.query.product_query_builder_factory')->create();
-        $pqb->addFilter('a_file', Operators::ENDS_WITH, '.txt');
+        $pqb->addFilter('a_file', Operators::STARTS_WITH, 'aken');
         $pqb->addFilter('a_localizable_image', Operators::CONTAINS, 'akeneo', ['locale' => 'en_US']);
         $pqb->addFilter('a_regexp', Operators::CONTAINS, '+', ['locale' => 'en_US']);
         $pqb->addFilter(
@@ -212,7 +209,7 @@ class ProductQueryBuilderIntegration extends TestCase
     {
         $pqb = $this->get('pim_catalog.query.product_query_builder_factory')->create();
         $pqb->addFilter('family', Operators::IN_LIST, ['familyA']);
-        $pqb->addFilter('a_file', Operators::ENDS_WITH, '.txt');
+        $pqb->addFilter('a_file', Operators::STARTS_WITH, 'aken');
         $pqb->addFilter('a_localizable_image', Operators::CONTAINS, 'akeneo', ['locale' => 'en_US']);
         $pqb->addFilter('a_regexp', Operators::CONTAINS, '+', ['locale' => 'en_US']);
         $pqb->addFilter(

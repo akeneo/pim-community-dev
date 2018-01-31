@@ -6,6 +6,7 @@ use Behat\Gherkin\Node\PyStringNode;
 use Box\Spout\Common\Type;
 use Box\Spout\Reader\CSV\Reader as CsvReader;
 use Box\Spout\Reader\ReaderFactory;
+use PHPUnit\Framework\Assert;
 use Pim\Behat\Context\PimContext;
 
 class ImportExportContext extends PimContext
@@ -21,7 +22,7 @@ class ImportExportContext extends PimContext
     {
         $expectedCount = count($expectedLines);
         $actualCount = count($actualLines);
-        assertSame(
+        Assert::assertSame(
             $expectedCount,
             $actualCount,
             sprintf('Expecting to see %d rows, found %d', $expectedCount, $actualCount)
@@ -93,7 +94,7 @@ class ImportExportContext extends PimContext
         $enclosure = isset($config['enclosure']) ? $config['enclosure'] : '';
 
         $expectedLines = [];
-        foreach ($behatData->getLines() as $line) {
+        foreach ($behatData->getStrings() as $line) {
             if (!empty($line)) {
                 $expectedLines[] = explode($delimiter, str_replace($enclosure, '', $line));
             }
@@ -159,7 +160,7 @@ class ImportExportContext extends PimContext
      */
     protected function compareFileHeadersOrder(array $expectedHeaders, array $actualHeaders)
     {
-        assertEquals(
+        Assert::assertEquals(
             $expectedHeaders,
             $actualHeaders,
             sprintf('Expecting to see headers order like %d , found %d', $expectedHeaders, $actualHeaders)

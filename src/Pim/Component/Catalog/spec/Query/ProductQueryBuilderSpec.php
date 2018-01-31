@@ -4,13 +4,14 @@ namespace spec\Pim\Component\Catalog\Query;
 
 use Akeneo\Component\StorageUtils\Cursor\CursorFactoryInterface;
 use Akeneo\Component\StorageUtils\Cursor\CursorInterface;
-use Doctrine\ORM\AbstractQuery;
-use Doctrine\ORM\QueryBuilder;
 use PhpSpec\ObjectBehavior;
+use Pim\Bundle\CatalogBundle\Elasticsearch\SearchQueryBuilder;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Query\Filter\AttributeFilterInterface;
 use Pim\Component\Catalog\Query\Filter\FieldFilterInterface;
 use Pim\Component\Catalog\Query\Filter\FilterRegistryInterface;
+use Pim\Component\Catalog\Query\ProductQueryBuilderInterface;
+use Pim\Component\Catalog\Query\ProductQueryBuilderOptionsResolverInterface;
 use Pim\Component\Catalog\Query\Sorter\AttributeSorterInterface;
 use Pim\Component\Catalog\Query\Sorter\FieldSorterInterface;
 use Pim\Component\Catalog\Query\Sorter\SorterRegistryInterface;
@@ -24,21 +25,25 @@ class ProductQueryBuilderSpec extends ObjectBehavior
         FilterRegistryInterface $filterRegistry,
         SorterRegistryInterface $sorterRegistry,
         CursorFactoryInterface $cursorFactory,
-        QueryBuilder $qb
+        SearchQueryBuilder $searchQb,
+        ProductQueryBuilderOptionsResolverInterface $optionsResolver
     ) {
+        $defaultContext = ['locale' => 'en_US', 'scope' => 'print'];
         $this->beConstructedWith(
             $repository,
             $filterRegistry,
             $sorterRegistry,
             $cursorFactory,
-            ['locale' => 'en_US', 'scope' => 'print']
+            $optionsResolver,
+            $defaultContext
         );
-        $this->setQueryBuilder($qb);
+        $optionsResolver->resolve($defaultContext)->willReturn($defaultContext);
+        $this->setQueryBuilder($searchQb);
     }
 
     function it_is_a_product_query_builder()
     {
-        $this->shouldImplement('Pim\Component\Catalog\Query\ProductQueryBuilderInterface');
+        $this->shouldImplement(ProductQueryBuilderInterface::class);
     }
 
     function it_adds_a_field_filter($repository, $filterRegistry, FieldFilterInterface $filter)
@@ -119,33 +124,148 @@ class ProductQueryBuilderSpec extends ObjectBehavior
         AttributeSorterInterface $sorter,
         AttributeInterface $attribute
     ) {
+        $attribute->isScopable()->willReturn(false);
+        $attribute->isLocalizable()->willReturn(false);
+        $attribute->isLocaleSpecific()->willReturn(false);
+
         $repository->findOneBy(['code' => 'sku'])->willReturn($attribute);
         $sorterRegistry->getAttributeSorter($attribute)->willReturn($sorter);
         $sorter->setQueryBuilder(Argument::any())->shouldBeCalled();
-        $sorter->addAttributeSorter($attribute, 'DESC', 'en_US', 'print')->shouldBeCalled();
+        $sorter->addAttributeSorter($attribute, 'DESC', null, null)->shouldBeCalled();
 
         $this->addSorter('sku', 'DESC', []);
     }
 
-    function it_provides_a_query_builder_once_configured($qb)
-    {
-        $this->getQueryBuilder()->shouldReturn($qb);
+    function it_adds_an_attribute_sorter_on_localizable_attribute(
+        $repository,
+        $sorterRegistry,
+        AttributeSorterInterface $sorter,
+        AttributeInterface $attribute
+    ) {
+        $attribute->isScopable()->willReturn(false);
+        $attribute->isLocalizable()->willReturn(true);
+        $attribute->isLocaleSpecific()->willReturn(false);
+
+        $repository->findOneBy(['code' => 'name'])->willReturn($attribute);
+        $sorterRegistry->getAttributeSorter($attribute)->willReturn($sorter);
+        $sorter->setQueryBuilder(Argument::any())->shouldBeCalled();
+        $sorter->addAttributeSorter($attribute, 'DESC', 'de_DE', null)->shouldBeCalled();
+
+        $this->addSorter('name', 'DESC', ['locale' => 'de_DE', 'scope' => 'ecommerce']);
     }
 
-    function it_configures_the_query_builder($qb)
+    function it_adds_an_attribute_sorter_on_local_specific_attribute(
+        $repository,
+        $sorterRegistry,
+        AttributeSorterInterface $sorter,
+        AttributeInterface $attribute
+    ) {
+        $attribute->isScopable()->willReturn(false);
+        $attribute->isLocalizable()->willReturn(false);
+        $attribute->isLocaleSpecific()->willReturn(true);
+
+        $repository->findOneBy(['code' => 'name'])->willReturn($attribute);
+        $sorterRegistry->getAttributeSorter($attribute)->willReturn($sorter);
+        $sorter->setQueryBuilder(Argument::any())->shouldBeCalled();
+        $sorter->addAttributeSorter($attribute, 'DESC', 'de_DE', null)->shouldBeCalled();
+
+        $this->addSorter('name', 'DESC', ['locale' => 'de_DE', 'scope' => 'ecommerce']);
+    }
+
+    function it_adds_an_attribute_sorter_on_scopable_attribute(
+        $repository,
+        $sorterRegistry,
+        AttributeSorterInterface $sorter,
+        AttributeInterface $attribute
+    ) {
+        $attribute->isScopable()->willReturn(true);
+        $attribute->isLocalizable()->willReturn(false);
+        $attribute->isLocaleSpecific()->willReturn(false);
+
+        $repository->findOneBy(['code' => 'name'])->willReturn($attribute);
+        $sorterRegistry->getAttributeSorter($attribute)->willReturn($sorter);
+        $sorter->setQueryBuilder(Argument::any())->shouldBeCalled();
+        $sorter->addAttributeSorter($attribute, 'DESC', null, 'ecommerce')->shouldBeCalled();
+
+        $this->addSorter('name', 'DESC', ['locale' => 'de_DE', 'scope' => 'ecommerce']);
+    }
+
+    function it_adds_an_attribute_sorter_on_scopable_and_localizable_attribute(
+        $repository,
+        $sorterRegistry,
+        AttributeSorterInterface $sorter,
+        AttributeInterface $attribute
+    ) {
+        $attribute->isScopable()->willReturn(true);
+        $attribute->isLocalizable()->willReturn(true);
+        $attribute->isLocaleSpecific()->willReturn(false);
+
+        $repository->findOneBy(['code' => 'name'])->willReturn($attribute);
+        $sorterRegistry->getAttributeSorter($attribute)->willReturn($sorter);
+        $sorter->setQueryBuilder(Argument::any())->shouldBeCalled();
+        $sorter->addAttributeSorter($attribute, 'DESC', 'de_DE', 'ecommerce')->shouldBeCalled();
+
+        $this->addSorter('name', 'DESC', ['locale' => 'de_DE', 'scope' => 'ecommerce']);
+    }
+
+    function it_provides_a_query_builder_once_configured($searchQb)
     {
-        $this->setQueryBuilder($qb)->shouldReturn($this);
+        $this->getQueryBuilder()->shouldReturn($searchQb);
+    }
+
+    function it_configures_the_query_builder($searchQb)
+    {
+        $this->setQueryBuilder($searchQb)->shouldReturn($this);
     }
 
     function it_executes_the_query(
-        $qb,
-        AbstractQuery $query,
+        $searchQb,
         CursorFactoryInterface $cursorFactory,
         CursorInterface $cursor
     ) {
-        $qb->getQuery()->willReturn($query);
-        $cursorFactory->createCursor(Argument::any())->shouldBeCalled()->willReturn($cursor);
+        $searchQb->getQuery()->willReturn([]);
+        $cursorFactory->createCursor(Argument::any(), [] )->shouldBeCalled()->willReturn($cursor);
 
         $this->execute()->shouldReturn($cursor);
     }
+
+    function it_provides_the_raw_filters(
+        $repository,
+        $filterRegistry,
+        FieldFilterInterface $filterField,
+        AttributeFilterInterface $filterAttribute,
+        AttributeInterface $attribute
+    ) {
+        $repository->findOneByIdentifier('id')->willReturn(null);
+        $filterRegistry->getFieldFilter('id', '=')->willReturn($filterField);
+
+        $attribute->getCode()->willReturn('bar');
+        $attribute->isScopable()->willReturn(true);
+        $attribute->isLocalizable()->willReturn(true);
+        $repository->findOneByIdentifier('bar')->willReturn($attribute);
+        $filterRegistry->getAttributeFilter($attribute, 'IN LIST')->willReturn($filterAttribute);
+
+        $this->addFilter('id', '=', '42', []);
+        $this->addFilter('bar', 'IN LIST', ['titi', 'tutu'], []);
+
+        $this->getRawFilters()->shouldReturn(
+            [
+                [
+                    'field'    => 'id',
+                    'operator' => '=',
+                    'value'    => '42',
+                    'context'  => ['locale' => 'en_US', 'scope' => 'print'],
+                    'type'     => 'field'
+                ],
+                [
+                    'field'    => 'bar',
+                    'operator' => 'IN LIST',
+                    'value'    => ['titi', 'tutu'],
+                    'context'  => ['locale' => 'en_US', 'scope' => 'print', 'field' => 'bar'],
+                    'type'     => 'attribute'
+                ],
+            ]
+        );
+    }
+
 }

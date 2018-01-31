@@ -12,7 +12,7 @@ define(
         'underscore',
         'oro/translator',
         'pim/form',
-        'text!pim/template/group/meta/product-count'
+        'pim/template/group/meta/product-count'
     ],
     function (_, __, BaseForm, formTemplate) {
         return BaseForm.extend({

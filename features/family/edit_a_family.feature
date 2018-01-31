@@ -15,10 +15,9 @@ Feature: Edit a family
     When I fill in the following information:
       | English (United States) | My family |
     And I save the family
-    Then I should see "Family successfully updated"
-    And I should see "My family"
+    Then I should see the text "Family successfully updated"
+    And I should see the text "My family"
 
-  @javascript
   Scenario: Successfully edit a family
     And the following attributes:
       | label-en_US | type             | useable_as_grid_filter | group | code   |
@@ -34,8 +33,8 @@ Feature: Edit a family
       | Attribute used as label | String |
     And I save the family
     And I should not see the text "There are unsaved changes."
-    When I am on the products page
-    And I should see "Elixir"
+    When I am on the products grid
+    And I should see the text "Elixir"
 
   Scenario: Successfully set the translations of the name
     Given I am on the "Boots" family page
@@ -43,27 +42,25 @@ Feature: Edit a family
       | English (United States) | NewBoots |
     And I save the family
     Then I should not see the text "There are unsaved changes."
-    Then I should see "NewBoots"
+    Then I should see the text "NewBoots"
 
+  @skip-nav
   Scenario: Successfully display a dialog when we quit a page with unsaved changes
     Given I am on the "Boots" family page
     And I fill in the following information:
       | English (United States) | NewBoots |
     When I click on the Akeneo logo
-    Then I should see a confirm dialog with the following content:
-      | title   | Are you sure you want to leave this page?                  |
-      | content | You will lose changes to the family if you leave the page. |
+    Then I should see "You will lose changes to the family if you leave the page." in popup
 
   Scenario: Successfully display a message when there are unsaved changes
     Given I am on the "Boots" family page
     And I fill in the following information:
       | English (United States) | NewBoots |
-    Then I should see "There are unsaved changes."
+    Then I should see the text "There are unsaved changes."
 
   Scenario: Disable property fields when the user can't edit a family
     Given I am on the "Administrator" role page
     And I visit the "Permissions" tab
-    And I visit the "Families" group
     And I revoke rights to resources Edit properties of a family
     And I save the role
     Then I should not see the text "There are unsaved changes."
@@ -75,7 +72,6 @@ Feature: Edit a family
   Scenario: Fail switching attribute requirements when the user can't edit a family attributes
     Given I am on the "Administrator" role page
     And I visit the "Permissions" tab
-    And I visit the "Families" group
     And I revoke rights to resource Edit attributes of a family
     And I save the role
     Then I should not see the text "There are unsaved changes."
@@ -88,7 +84,6 @@ Feature: Edit a family
   Scenario: Fail removing attributes when the user can't edit family attributes
     Given I am on the "Administrator" role page
     And I visit the "Permissions" tab
-    And I visit the "Families" group
     And I revoke rights to resource Edit attributes of a family
     And I save the role
     Then I should not see the text "There are unsaved changes."
@@ -101,7 +96,6 @@ Feature: Edit a family
   Scenario: Fail adding attributes when the user can't edit family attributes
     Given I am on the "Administrator" role page
     And I visit the "Permissions" tab
-    And I visit the "Families" group
     And I revoke rights to resource Edit attributes of a family
     And I save the role
     Then I should not see the text "There are unsaved changes."

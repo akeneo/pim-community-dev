@@ -41,8 +41,8 @@ required: (obligatorio)
 pim_ui.system_config:
   form:
     loading_message_enabled.label: Activar los mensajes de carga
-    loading_message_enabled.tooltip: Mostrar mensajes amistosos mientras se cargan las páginas
     loading_messages.label: Mensajes de carga disponibles
     loading_messages.tooltip: Mensajes de carga de página separados por salto de líneas
   group:
     loading_message.title: Cargando mensajes
+other_actions: Otras acciones

@@ -2,12 +2,10 @@
 
 define([
         'jquery',
-        'module',
         'oro/mediator',
         'routing'
     ], function (
         $,
-        module,
         mediator,
         Routing
     ) {
@@ -40,7 +38,7 @@ define([
              * @return {String}
              */
             getUrl: function (code) {
-                return Routing.generate(module.config().url, {code: code});
+                return Routing.generate(__moduleConfig.url, {code: code});
             }
         };
     }

@@ -61,23 +61,23 @@ JSON;
         $data =
 <<<JSON
     {
-        "code": "categoryC",
+        "code": "categoryD",
         "parent": "master",
         "labels": {
-            "en_US": "Category C",
-            "fr_FR": "Catégorie C"
+            "en_US": "Category D",
+            "fr_FR": "Catégorie D"
         }
     }
 JSON;
         $client->request('POST', 'api/rest/v1/categories', [], [], [], $data);
 
-        $category = $this->get('pim_catalog.repository.category')->findOneByIdentifier('categoryC');
+        $category = $this->get('pim_catalog.repository.category')->findOneByIdentifier('categoryD');
         $categoryStandard = [
-            'code'   => 'categoryC',
+            'code'   => 'categoryD',
             'parent' => 'master',
             'labels' => [
-                'en_US' => 'Category C',
-                'fr_FR' => 'Catégorie C',
+                'en_US' => 'Category D',
+                'fr_FR' => 'Catégorie D',
             ],
         ];
         $normalizer = $this->get('pim_catalog.normalizer.standard.category');
@@ -99,7 +99,7 @@ JSON;
         "labels": {
             "en_US": "US label",
             "fr_FR": null,
-            "de_DE": "" 
+            "de_DE": ""
         }
     }
 JSON;
@@ -226,7 +226,7 @@ JSON;
 
         $expectedContent = [
             'code'    => 422,
-            'message' => 'Property "extra_property" does not exist. Check the standard format documentation.',
+            'message' => 'Property "extra_property" does not exist. Check the expected format on the API documentation.',
             '_links'  => [
                 'documentation' => [
                     'href' => 'http://api.akeneo.com/api-reference.html#post_categories'
@@ -254,7 +254,7 @@ JSON;
 
         $expectedContent = [
             'code'    => 422,
-            'message' => 'Property "labels" expects an array as data, "NULL" given. Check the standard format documentation.',
+            'message' => 'Property "labels" expects an array as data, "NULL" given. Check the expected format on the API documentation.',
             '_links'  => [
                 'documentation' => [
                     'href' => 'http://api.akeneo.com/api-reference.html#post_categories'
@@ -338,6 +338,6 @@ JSON;
      */
     protected function getConfiguration()
     {
-        return new Configuration([Configuration::getTechnicalCatalogPath()]);
+        return $this->catalog->useTechnicalCatalog();
     }
 }

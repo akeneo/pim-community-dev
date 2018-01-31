@@ -4,6 +4,7 @@ namespace Pim\Bundle\DataGridBundle\Datagrid\Request;
 
 use Oro\Bundle\DataGridBundle\Datagrid\RequestParameters;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 /**
  * Extract request parameters from Oro RequestParameters and fallback on Request, idea is to wrap
@@ -18,23 +19,17 @@ class RequestParametersExtractor implements RequestParametersExtractorInterface
     /** @var RequestParameters */
     protected $requestParams;
 
-    /** @var Request */
-    protected $request;
+    /** @var RequestStack */
+    protected $requestStack;
 
     /**
      * @param RequestParameters $requestParams
+     * @param RequestStack $requestStack
      */
-    public function __construct(RequestParameters $requestParams)
+    public function __construct(RequestParameters $requestParams, RequestStack $requestStack)
     {
         $this->requestParams = $requestParams;
-    }
-
-    /**
-     * @param Request $request
-     */
-    public function setRequest(Request $request = null)
-    {
-        $this->request = $request;
+        $this->requestStack = $requestStack;
     }
 
     /**
@@ -44,7 +39,7 @@ class RequestParametersExtractor implements RequestParametersExtractorInterface
     {
         $param = $this->requestParams->get($key, null);
         if ($param === null) {
-            $param = $this->request->get($key, null);
+            $param = $this->getRequest()->get($key, null);
         }
         if ($param === null) {
             throw new \LogicException(sprintf('Parameter "%s" is expected', $key));
@@ -66,6 +61,14 @@ class RequestParametersExtractor implements RequestParametersExtractorInterface
      */
     public function getRequestParameter($key, $defaultValue = null)
     {
-        return $this->request->get($key, $defaultValue);
+        return $this->getRequest()->get($key, $defaultValue);
+    }
+
+    /**
+     * @return null|Request
+     */
+    protected function getRequest(): ?Request
+    {
+        return $this->requestStack->getCurrentRequest();
     }
 }

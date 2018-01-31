@@ -3,6 +3,9 @@
 namespace spec\Pim\Bundle\EnrichBundle\Form\Type;
 
 use PhpSpec\ObjectBehavior;
+use Pim\Bundle\CatalogBundle\Entity\Attribute;
+use Pim\Bundle\EnrichBundle\Form\Type\LightEntityType;
+use Pim\Component\Enrich\Model\AvailableAttributes;
 use Pim\Component\Enrich\Provider\TranslatedLabelsProviderInterface;
 use Prophecy\Argument;
 use Symfony\Component\Form\Test\FormBuilderInterface;
@@ -18,14 +21,14 @@ class AvailableAttributesTypeSpec extends ObjectBehavior
         $this->beConstructedWith(
             $attributeRepository,
             $translator,
-            'Pim\Bundle\CatalogBundle\Entity\Attribute',
-            'Pim\Component\Enrich\Model\AvailableAttributes'
+            Attribute::class,
+            AvailableAttributes::class
         );
     }
 
-    function it_has_a_name()
+    function it_has_a_block_prefix()
     {
-        $this->getName()->shouldReturn('pim_available_attributes');
+        $this->getBlockPrefix()->shouldReturn('pim_available_attributes');
     }
 
     function it_builds_the_form(FormBuilderInterface $builder, $attributeRepository)
@@ -33,7 +36,7 @@ class AvailableAttributesTypeSpec extends ObjectBehavior
         $this->buildForm($builder, ['excluded_attributes' => 'excluded attributes']);
         $builder->add(
             'attributes',
-            'light_entity',
+            LightEntityType::class,
             [
                 'repository'         => $attributeRepository,
                 'repository_options' => [
@@ -49,10 +52,10 @@ class AvailableAttributesTypeSpec extends ObjectBehavior
         $resolver->setNormalizer(Argument::any(), Argument::any())->shouldBeCalled();
         $resolver->setDefaults(
             [
-                'data_class'          => 'Pim\Component\Enrich\Model\AvailableAttributes',
+                'data_class'          => AvailableAttributes::class,
                 'excluded_attributes' => [],
             ]
         )->shouldBeCalled();
-        $this->setDefaultOptions($resolver);
+        $this->configureOptions($resolver);
     }
 }

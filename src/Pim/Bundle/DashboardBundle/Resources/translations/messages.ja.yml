@@ -25,3 +25,4 @@ pim_dashboard:
         export: エクスポート
         mass_edit: 一括編集
         quick_export: クイック エクスポート
+        compute_product_models_descendants: 製品モデルの子孫を計算します。

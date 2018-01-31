@@ -1,0 +1,70 @@
+extensions:
+    pim-association-type-index:
+        module: pim/common/simple-view
+        config:
+            template: pim/template/common/default-template
+
+    pim-association-type-index-grid-container:
+        module: pim/common/simple-view
+        parent: pim-association-type-index
+        targetZone: content
+        config:
+            template: pim/template/form/index/index
+
+    pim-association-type-index-user-navigation:
+        module: pim/menu/user-navigation
+        parent: pim-association-type-index
+        targetZone: user-menu
+        config:
+            userAccount: pim_menu.user.user_account
+            logout: pim_menu.user.logout
+
+    pim-association-type-index-grid-title:
+        module: pim/common/grid-title
+        parent: pim-association-type-index
+        targetZone: title
+        config:
+            title: pim_enrich.index.association_type.title
+
+    pim-association-type-index-breadcrumbs:
+        module: pim/common/breadcrumbs
+        parent: pim-association-type-index
+        targetZone: breadcrumbs
+        config:
+            tab: pim-menu-settings
+            item: pim-menu-settings-association-type
+
+    pim-association-type-index-grid-filters-list:
+        module: oro/datafilter/filters-list
+        parent: pim-association-type-index-grid-container
+        targetZone: filters
+
+    pim-association-type-index-grid-filters-manage:
+        module: oro/datafilter/filters-button
+        parent: pim-association-type-index-grid-container
+        targetZone: filters
+
+    pim-association-type-index-pagination:
+        module: oro/datagrid/pagination-input
+        parent: pim-association-type-index-grid-container
+        targetZone: toolbar
+        config:
+            gridName: association-type-grid
+
+    pim-association-type-index-grid:
+        module: pim/form/common/index/grid
+        parent: pim-association-type-index-grid-container
+        position: 1000
+        config:
+            alias: association-type-grid
+
+    pim-association-type-index-create-button:
+        module: pim/form/common/index/create-button
+        parent: pim-association-type-index
+        targetZone: buttons
+        position: 100
+        aclResourceId: pim_enrich_associationtype_create
+        config:
+           iconName:  plus
+           title:     pim_enrich.index.association_type.create_btn
+           modalForm: pim-association-type-create-modal

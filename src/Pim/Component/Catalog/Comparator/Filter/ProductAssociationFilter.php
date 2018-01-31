@@ -3,7 +3,7 @@
 namespace Pim\Component\Catalog\Comparator\Filter;
 
 use Pim\Component\Catalog\Comparator\ComparatorRegistry;
-use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Model\EntityWithValuesInterface;
 use Pim\Component\Catalog\Normalizer\Standard\ProductNormalizer;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
@@ -14,7 +14,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductAssociationFilter implements ProductFilterInterface
+class ProductAssociationFilter implements FilterInterface
 {
     /** @var NormalizerInterface */
     protected $normalizer;
@@ -35,7 +35,7 @@ class ProductAssociationFilter implements ProductFilterInterface
     /**
      * {@inheritdoc}
      */
-    public function filter(ProductInterface $product, array $newValues)
+    public function filter(EntityWithValuesInterface $product, array $newValues): array
     {
         $originalAssociations = $this->normalizer->normalize($product, 'standard');
         $hasAssociation = $this->hasNewAssociations($newValues);
@@ -65,14 +65,14 @@ class ProductAssociationFilter implements ProductFilterInterface
      *
      * @return bool
      */
-    protected function hasNewAssociations(array $convertedItem)
+    protected function hasNewAssociations(array $convertedItem): bool
     {
         if (!isset($convertedItem['associations'])) {
             return false;
         }
 
         foreach ($convertedItem['associations'] as $association) {
-            if (!empty($association['products']) || !empty($association['groups'])) {
+            if (!empty($association['products']) || !empty($association['groups']) || !empty($association['product_models'])) {
                 return true;
             }
         }
@@ -92,7 +92,7 @@ class ProductAssociationFilter implements ProductFilterInterface
      *
      * @return array|null
      */
-    protected function compareAssociation(array $originalAssociations, array $associations, $type, $key)
+    protected function compareAssociation(array $originalAssociations, array $associations, $type, $key): ?array
     {
         $comparator = $this->comparatorRegistry->getFieldComparator(ProductNormalizer::FIELD_ASSOCIATIONS);
         $diff = $comparator->compare($associations, $this->getOriginalAssociation($originalAssociations, $type, $key));
@@ -111,7 +111,7 @@ class ProductAssociationFilter implements ProductFilterInterface
      *
      * @return array
      */
-    protected function getOriginalAssociation(array $originalAssociations, $type, $key)
+    protected function getOriginalAssociation(array $originalAssociations, $type, $key): array
     {
         return !isset($originalAssociations[$type][$key]) ? [] : $originalAssociations[$type][$key];
     }

@@ -1,0 +1,277 @@
+mappings:
+    pim_catalog_product:
+        properties:
+            # "completeness" property is handled by the "completeness" dynamic template
+            categories:
+                type: 'keyword'
+            family.code:
+                type: 'keyword'
+            # family labels are handled by the "family" dynamic template
+            id:
+                type: 'keyword'
+            enabled:
+                type: 'boolean'
+            groups:
+                type: 'keyword'
+            created:
+                type: 'date'
+            updated:
+                type: 'date'
+            identifier:
+                type: 'keyword'
+                normalizer: 'identifier_normalizer'
+            document_type:
+                type: 'keyword'
+            attributes_for_this_level:
+                type: 'keyword'
+            parent:
+                type: 'keyword'
+            ancestors.codes:
+                type: 'keyword'
+            ancestors.ids:
+                type: 'keyword'
+        dynamic_templates:
+            -
+                label_scopable_localizable_structure:
+                    path_match: 'label.*'
+                    match_mapping_type: 'object'
+                    mapping:
+                        type: 'object'
+            -
+                label:
+                    path_match: 'label.*'
+                    mapping:
+                        type: 'keyword'
+                        normalizer: 'text_normalizer'
+            -
+                family:
+                    path_match: 'family.labels.*'
+                    mapping:
+                        type: 'keyword'
+                        normalizer: 'family_normalizer'
+            -
+                textarea_scopable_localizable_structure:
+                    path_match: 'values.*-textarea.*'
+                    match_mapping_type: 'object'
+                    mapping:
+                        type: 'object'
+            -
+                textarea:
+                    path_match: 'values.*-textarea.*'
+                    mapping:
+                        fields:
+                            preprocessed:
+                                type: 'keyword'
+                                normalizer: 'textarea_normalizer'
+                        type: 'text'
+                        analyzer: 'textarea_analyzer'
+            -
+                text_scopable_localizable_structure:
+                    path_match: 'values.*-text.*'
+                    match_mapping_type: 'object'
+                    mapping:
+                        type: 'object'
+            -
+                text:
+                    path_match: 'values.*-text.*'
+                    mapping:
+                        type: 'keyword'
+                        normalizer: 'text_normalizer'
+            -
+                completeness_scopable_localizable_structure:
+                    path_match: 'completeness.*'
+                    match_mapping_type: 'object'
+                    mapping:
+                         type: 'object'
+            -
+                completeness:
+                    path_match: 'completeness.*'
+                    mapping:
+                         type: 'integer'
+            -
+                decimal_scopable_localizable_structure:
+                    path_match: 'values.*-decimal.*'
+                    match_mapping_type: 'object'
+                    mapping:
+                        type: 'object'
+            -
+                decimal:
+                    path_match: 'values.*-decimal.*'
+                    mapping:
+                        type: 'double'
+            -
+                boolean_scopable_localizable_structure:
+                    path_match: 'values.*-boolean.*'
+                    match_mapping_type: 'object'
+                    mapping:
+                        type: 'object'
+            -
+                boolean:
+                    path_match: 'values.*-boolean.*'
+                    mapping:
+                        type: 'boolean'
+            -
+                date_scopable_localizable_structure:
+                    path_match: 'values.*-date.*'
+                    match_mapping_type: 'object'
+                    mapping:
+                        type: 'object'
+            -
+                date:
+                    path_match: 'values.*-date.*'
+                    mapping:
+                        type: 'date'
+            -
+                option_scopable_localizable_structure:
+                    path_match: 'values.*-option.*'
+                    match_mapping_type: 'object'
+                    mapping:
+                        type: 'object'
+            -
+                option:
+                    path_match: 'values.*-option.*'
+                    mapping:
+                        type: 'keyword'
+            -
+                options_scopable_localizable_structure:
+                    path_match: 'values.*-options.*'
+                    match_mapping_type: 'object'
+                    mapping:
+                        type: 'object'
+            -
+                options:
+                    path_match: 'values.*-options.*'
+                    mapping:
+                        type: 'keyword'
+            -
+                reference_data_option_scopable_localizable_structure:
+                    path_match: 'values.*-reference_data_option.*'
+                    match_mapping_type: 'object'
+                    mapping:
+                        type: 'object'
+            -
+                reference_data_option:
+                    path_match: 'values.*-reference_data_option.*'
+                    mapping:
+                        type: 'keyword'
+            -
+                reference_data_options_scopable_localizable_structure:
+                    path_match: 'values.*-reference_data_options.*'
+                    match_mapping_type: 'object'
+                    mapping:
+                        type: 'object'
+            -
+                reference_data_options:
+                    path_match: 'values.*-reference_data_options.*'
+                    mapping:
+                        type: 'keyword'
+            -
+                prices_data_options_scopable_localizable_structure:
+                    path_match: 'values.*-prices.*'
+                    match_mapping_type: 'object'
+                    mapping:
+                        type: 'object'
+            -
+                prices:
+                    path_match: 'values.*-prices.*'
+                    mapping:
+                        type: 'double'
+            -
+                metric_data:
+                    path_match: 'values.*-metric.*.data'
+                    mapping:
+                        index: 'no'
+            -
+                metric_base_data:
+                    path_match: 'values.*-metric.*.base_data'
+                    mapping:
+                        type: 'double'
+            -
+                metric_unit:
+                    path_match: 'values.*-metric.*.unit'
+                    mapping:
+                        index: 'no'
+            -
+                metric_base_unit:
+                    path_match: 'values.*-metric.*.base_unit'
+                    mapping:
+                        index: 'no'
+            -
+                media_extension:
+                    path_match: 'values.*-media.*.extension'
+                    mapping:
+                        index: 'no'
+            -
+                media_key:
+                    path_match: 'values.*-media.*.key'
+                    mapping:
+                        index: 'no'
+            -
+                media_hash:
+                    path_match: 'values.*-media.*.hash'
+                    mapping:
+                        index: 'no'
+            -
+                media_mime_type:
+                    path_match: 'values.*-media.*.mime_type'
+                    mapping:
+                        index: 'no'
+            -
+                media_original_filename:
+                    path_match: 'values.*-media.*.original_filename'
+                    mapping:
+                        type: 'keyword'
+            -
+                media_size:
+                    path_match: 'values.*-media.*.size'
+                    mapping:
+                        index: 'no'
+            -
+                media_storage:
+                    path_match: 'values.*-media.*.storage'
+                    mapping:
+                        index: 'no'
+            -
+                in_group_structure:
+                    path_match: 'in_group.*'
+                    match_mapping_type: 'object'
+                    mapping:
+                        type: 'object'
+            -
+                in_group:
+                    path_match: 'in_group.*'
+                    mapping:
+                        type: 'boolean'
+settings:
+    analysis:
+        normalizer:
+            textarea_normalizer:
+                # Value is htmlstripped and newline pattern processed prior to indexing (in the PIM)
+                # ES Normalizers is an experimental feature and they do not support
+                # html_strip and newlinepattern filters yet.
+                # see https://www.elastic.co/guide/en/elasticsearch/reference/5.2/analysis-normalizers.html#analysis-normalizers
+                filter: ['lowercase']
+                char_filter: []
+                type: 'custom'
+            text_normalizer:
+                filter: ['lowercase']
+            family_normalizer:
+                filter: ['lowercase']
+            identifier_normalizer:
+                filter: ['lowercase']
+        char_filter:
+            newline_pattern:
+                pattern: '\\n'
+                type: 'pattern_replace'
+                replacement: ''
+        analyzer:
+            textarea_analyzer:
+                filter: ['lowercase']
+                char_filter: ['html_strip', 'newline_pattern']
+                type: 'custom'
+                tokenizer: 'standard'
+    mapping:
+        # ES default value is 1000. This value can be too low for big catalogs.
+        # For more information see https://www.elastic.co/guide/en/elasticsearch/reference/current/mapping.html#mapping-limit-settings
+        total_fields:
+            limit: 10000

@@ -170,6 +170,6 @@ class CategoryFilter extends NumberFilter
      */
     protected function getFormType()
     {
-        return CategoryFilterType::NAME;
+        return CategoryFilterType::class;
     }
 }

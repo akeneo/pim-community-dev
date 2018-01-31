@@ -4,7 +4,6 @@ namespace Pim\Bundle\EnrichBundle\Form\Subscriber;
 
 use Akeneo\Component\Localization\Factory\TranslationFactory;
 use Doctrine\Common\Inflector\Inflector;
-use Pim\Bundle\CatalogBundle\Helper\LocaleHelper;
 use Pim\Bundle\EnrichBundle\Exception\MissingOptionException;
 use Pim\Bundle\UserBundle\Context\UserContext;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -44,11 +43,6 @@ class AddTranslatableFieldSubscriber implements EventSubscriberInterface
     protected $options;
 
     /**
-     * @var LocaleHelper
-     */
-    protected $localeHelper;
-
-    /**
      * @var UserContext
      */
     protected $userContext;
@@ -59,20 +53,17 @@ class AddTranslatableFieldSubscriber implements EventSubscriberInterface
      * @param FormFactoryInterface $formFactory
      * @param ValidatorInterface   $validator
      * @param UserContext          $userContext
-     * @param LocaleHelper         $localeHelper
      * @param array                $options
      */
     public function __construct(
         FormFactoryInterface $formFactory,
         ValidatorInterface $validator,
         UserContext $userContext,
-        LocaleHelper $localeHelper,
         array $options
     ) {
         $this->formFactory = $formFactory;
         $this->validator = $validator;
         $this->userContext = $userContext;
-        $this->localeHelper = $localeHelper;
         $this->options = $options;
 
         $this->translationFactory = new TranslationFactory(
@@ -118,7 +109,7 @@ class AddTranslatableFieldSubscriber implements EventSubscriberInterface
                     $this->getOption('widget'),
                     $content !== null ? $content : '',
                     [
-                        'label'           => $this->localeHelper->getLocaleLabel($binded['locale']),
+                        'label'           => $this->getLocaleLabel($binded['locale']),
                         'required'        => in_array($binded['locale'], $this->getOption('required_locale')),
                         'mapped'          => false,
                         'auto_initialize' => false
@@ -153,8 +144,7 @@ class AddTranslatableFieldSubscriber implements EventSubscriberInterface
             $translation->$method($content);
 
             $errors = $this->validator->validate(
-                $translation,
-                [$locale]
+                $translation
             );
 
             if (count($errors) > 0) {
@@ -259,5 +249,20 @@ class AddTranslatableFieldSubscriber implements EventSubscriberInterface
         }
 
         return $this->options[$name];
+    }
+
+    /**
+     * Returns the label of a locale in the specified language
+     *
+     * @param string $code        the code of the locale to translate
+     * @param string $translateIn the locale in which the label should be translated (if null, user locale will be used)
+     *
+     * @return string
+     */
+    private function getLocaleLabel($code, $translateIn = null)
+    {
+        $translateIn = $translateIn ?: $this->userContext->getCurrentLocaleCode();
+
+        return \Locale::getDisplayName($code, $translateIn);
     }
 }

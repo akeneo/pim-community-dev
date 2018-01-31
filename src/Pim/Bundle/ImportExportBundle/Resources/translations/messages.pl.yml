@@ -6,7 +6,6 @@ pim_import_export:
   status:
     - Gotowe
   download_archive:
-    archive: pobierz utworzone archiwum|pobierz utworzone archiwa
     output: pobierz utworzony plik|pobierz utworzone pliki
     input: pobierz wczytany plik|pobierz wczytane pliki
     invalid_xlsx: pobierz nieprawidłowe dane
@@ -37,18 +36,10 @@ pim_title.import_execution.index: Historia wykonanych importów
 pim_title.import_execution.show: Wykonane importy | Szczegóły
 export profile:
   title: eksportuj profil
-  overview: przegląd profili eksportu
-  create: utwórz profil eksportu
   edit: edytuj profil eksportu
-export report:
-  overview: raporty eksportu
 import profile:
   title: profil importu
-  overview: przegląd profili importu
-  create: utwórz profil importu
   edit: edytuj profil importu
-import report:
-  overview: raporty importów
 pim_importexport:
   acl:
     export_profile:
@@ -102,12 +93,6 @@ flash:
     removed: Import został usunięty
     updated: Import został pomyślnie zaktualizowany
     running: Import jest uruchomiony
-pim_menu:
-  item:
-    export_history: Historia eksportów
-    export_profile: Profile eksportu
-    import_history: Historia importów
-    import_profile: Profile importu
 General properties: Ustawienia ogólne
 History: Historia
 pane.accordion:

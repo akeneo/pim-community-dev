@@ -8,15 +8,13 @@
  */
 define(
     [
-        'module',
         'underscore',
         'oro/translator',
         'backbone',
-        'text!pim/template/export/product/edit/content',
+        'pim/template/export/product/edit/content',
         'pim/form'
     ],
     function (
-        module,
         _,
         __,
         Backbone,

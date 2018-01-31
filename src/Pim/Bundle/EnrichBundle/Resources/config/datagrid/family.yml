@@ -3,14 +3,14 @@ datagrid:
         options:
             entityHint: family
             locale_parameter: localeCode
+            manageFilters: false
         source:
             acl_resource: pim_enrich_family_index
             type: pim_datasource_family
         columns:
-            code:
-                label: Code
             label:
                 label: Label
+                frontend_type: label
             attributeAsLabel:
                 label: Attribute as label
         properties:
@@ -27,34 +27,30 @@ datagrid:
                     - code
         actions:
             edit:
+                launcherOptions:
+                    className: AknIconButton AknIconButton--small AknIconButton--edit
                 type:      navigate
                 label:     Edit
-                icon:      pencil
                 link:      edit_link
                 rowAction: true
             delete:
+                launcherOptions:
+                    className: AknIconButton AknIconButton--small AknIconButton--trash
                 type:  delete
                 label: Delete
-                icon:  trash
                 link:  delete_link
         sorters:
             columns:
-                code:
-                    data_name: f.code
                 label:
                     data_name: familyLabel
                 attributeAsLabel:
                     data_name: f.attributeAsLabel
             default:
-                code: '%oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC'
+                label: '%oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC'
         filters:
             columns:
-                code:
-                    type:      string
-                    label:     Code
-                    data_name: f.code
                 label:
-                    type: string
+                    type: search
                     label: Label
                     data_name: translation.label
                 attributeAsLabel:
@@ -66,10 +62,11 @@ datagrid:
                             multiple: true
                             choices:  '@pim_enrich.repository.attribute->findTranslatedLabels'
         mass_actions:
-            mass_edit:
+            family_edit:
                 type: edit
                 label: pim.grid.mass_action.mass_edit
-                route: pim_enrich_mass_edit_family_action_choose
+                route: pim_enrich_mass_edit_action
+                route_parameters:
+                    actionName: family-edit
                 acl_resource: pim_enrich_family_edit_attributes
-                icon: pencil
-                className: AknActionButton
+                className: 'AknButton AknButton--action AknButtonList-item'

@@ -5,8 +5,8 @@ namespace Pim\Component\Connector\Processor;
 use Akeneo\Component\FileStorage\Exception\FileTransferException;
 use Akeneo\Component\FileStorage\File\FileFetcherInterface;
 use Akeneo\Component\FileStorage\FilesystemProvider;
-use Doctrine\Common\Collections\ArrayCollection;
-use Pim\Component\Catalog\Model\ProductValueInterface;
+use Pim\Component\Catalog\Model\ValueCollectionInterface;
+use Pim\Component\Catalog\Value\MediaValueInterface;
 use Pim\Component\Connector\Writer\File\FileExporterPathGeneratorInterface;
 
 /**
@@ -28,50 +28,37 @@ class BulkMediaFetcher
     protected $filesystemProvider;
 
     /** @var array */
-    protected $mediaAttributeTypes;
-
-    /** @var array */
     protected $errors;
 
     /**
      * @param FileFetcherInterface               $mediaFetcher
      * @param FilesystemProvider                 $filesystemProvider
      * @param FileExporterPathGeneratorInterface $fileExporterPath
-     * @param array                              $mediaAttributeTypes
      */
     public function __construct(
         FileFetcherInterface $mediaFetcher,
         FilesystemProvider $filesystemProvider,
-        FileExporterPathGeneratorInterface $fileExporterPath,
-        array $mediaAttributeTypes
+        FileExporterPathGeneratorInterface $fileExporterPath
     ) {
         $this->errors = [];
         $this->mediaFetcher = $mediaFetcher;
         $this->fileExporterPath = $fileExporterPath;
-        $this->mediaAttributeTypes = $mediaAttributeTypes;
         $this->filesystemProvider = $filesystemProvider;
     }
 
     /**
      * Fetch the media of the items to the target
      *
-     * @param ArrayCollection $items
-     * @param string          $target
-     * @param string          $identifier
+     * @param ValueCollectionInterface $values
+     * @param string                   $target
+     * @param string                   $identifier
      */
-    public function fetchAll(ArrayCollection $items, $target, $identifier)
+    public function fetchAll(ValueCollectionInterface $values, $target, $identifier)
     {
         $target = DIRECTORY_SEPARATOR !== substr($target, -1) ? $target . DIRECTORY_SEPARATOR : $target;
 
-        foreach ($items as $value) {
-            if (!$value instanceof ProductValueInterface) {
-                throw new \InvalidArgumentException(
-                    sprintf('Value is not an instance of %s.', ProductValueInterface::class)
-                );
-            }
-
-            if (in_array($value->getAttribute()->getType(), $this->mediaAttributeTypes)
-                && null !== $media = $value->getMedia()) {
+        foreach ($values as $value) {
+            if ($value instanceof MediaValueInterface && null !== $media = $value->getData()) {
                 $exportPath = $this->fileExporterPath->generate(
                     [
                         'locale' => $value->getLocale(),

@@ -15,7 +15,7 @@ services:
         class: '%pim_api.repository.product.class%'
         arguments:
             - '@pim_catalog.object_manager.product'
-            - '%pim_catalog.entity.product.class%'
+            - '%pim_catalog.entity.abstract_product.class%'
             - '@pim_catalog.repository.product'
 
     pim_api.repository.attribute:
@@ -31,6 +31,13 @@ services:
             - '@doctrine.orm.entity_manager'
             - '%pim_catalog.entity.attribute_option.class%'
             - '@pim_catalog.repository.attribute_option'
+
+    pim_api.repository.attribute_group:
+        class: '%pim_api.repository.api_resource.class%'
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '%pim_catalog.entity.attribute_group.class%'
+            - '@pim_catalog.repository.attribute_group'
 
     pim_api.repository.category:
         class: '%pim_api.repository.api_resource.class%'
@@ -53,6 +60,13 @@ services:
             - '%pim_catalog.entity.family.class%'
             - '@pim_catalog.repository.family'
 
+    pim_api.repository.family_variant:
+        class: '%pim_api.repository.api_resource.class%'
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '%pim_catalog.entity.family_variant.class%'
+            - '@pim_catalog.repository.family_variant'
+
     pim_api.repository.locale:
         class: '%pim_api.repository.api_resource.class%'
         arguments:
@@ -66,3 +80,17 @@ services:
             - '@doctrine.orm.entity_manager'
             - '%akeneo_file_storage.model.file_info.class%'
             - '@akeneo_file_storage.repository.file_info'
+
+    pim_api.repository.currency:
+        class: '%pim_api.repository.api_resource.class%'
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '%pim_catalog.entity.currency.class%'
+            - '@pim_catalog.repository.currency'
+
+    pim_api.repository.association_type:
+        class: '%pim_api.repository.api_resource.class%'
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '%pim_catalog.entity.association_type.class%'
+            - '@pim_catalog.repository.association_type'

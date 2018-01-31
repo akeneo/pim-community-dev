@@ -2,12 +2,14 @@
 
 namespace spec\Pim\Bundle\EnrichBundle\Normalizer;
 
+use Akeneo\Component\Localization\Localizer\LocalizerInterface;
+use Akeneo\Component\Versioning\Model\Version;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\EnrichBundle\Provider\EmptyValue\EmptyValueProviderInterface;
 use Pim\Bundle\EnrichBundle\Provider\Field\FieldProviderInterface;
 use Pim\Bundle\EnrichBundle\Provider\Filter\FilterProviderInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
-use Pim\Component\Catalog\Model\GroupInterface;
+use Prophecy\Argument;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class AttributeNormalizerSpec extends ObjectBehavior
@@ -16,305 +18,187 @@ class AttributeNormalizerSpec extends ObjectBehavior
         NormalizerInterface $normalizer,
         FieldProviderInterface $fieldProvider,
         EmptyValueProviderInterface $emptyValueProvider,
-        FilterProviderInterface $filterProvider
+        FilterProviderInterface $filterProvider,
+        LocalizerInterface $numberLocalizer
     ) {
-        $this->beConstructedWith($normalizer, $fieldProvider, $emptyValueProvider, $filterProvider);
+        $this->beConstructedWith(
+            $normalizer,
+            $fieldProvider,
+            $emptyValueProvider,
+            $filterProvider,
+            $numberLocalizer
+        );
     }
 
-    function it_normalizes_attribute(
+    function it_normalizes_an_attribute(
         $normalizer,
         $fieldProvider,
         $emptyValueProvider,
         $filterProvider,
         AttributeInterface $price
     ) {
-        $normalizer->normalize($price, 'standard', [])->willReturn(['code' => 'price']);
-        $price->getId()->willReturn(12);
-        $price->isWysiwygEnabled()->willReturn(false);
-        $price->getType()->willReturn('pim_catalog_text');
-        $price->isLocaleSpecific()->willReturn(false);
-        $price->getAvailableLocaleCodes()->willReturn([]);
+        $normalizer->normalize($price, 'standard', Argument::any())->willReturn(
+            [
+                'code' => 'price',
+                'type'                   => 'pim_catalog_price_collection',
+                'group'                  => 'marketing',
+                'unique'                 => false,
+                'useable_as_grid_filter' => true,
+                'allowed_extensions'     => null,
+                'metric_family'          => null,
+                'default_metric_unit'    => null,
+                'reference_data_name'    => null,
+                'available_locales'      => [],
+                'max_characters'         => null,
+                'validation_rule'        => null,
+                'validation_regexp'      => null,
+                'wysiwyg_enabled'        => null,
+                'number_min'             => null,
+                'number_max'             => null,
+                'decimals_allowed'       => true,
+                'negative_allowed'       => null,
+                'date_min'               => null,
+                'date_max'               => null,
+                'max_file_size'          => null,
+                'minimum_input_length'   => null,
+                'sort_order'             => 0,
+                'localizable'            => false,
+                'scopable'               => false,
+                'labels'                 => [],
+                'auto_option_sorting'    => null,
+            ]
+        );
 
         $price->getDateMin()->willReturn(null);
         $price->getDateMax()->willReturn(null);
-        $price->getMaxCharacters()->willReturn('');
-        $price->getValidationRule()->willReturn('');
-        $price->getValidationRegexp()->willReturn('');
-        $price->getNumberMin()->willReturn('');
-        $price->getNumberMax()->willReturn('');
-        $price->isDecimalsAllowed()->willReturn(true);
-        $price->isNegativeAllowed()->willReturn(false);
-        $price->getMetricFamily()->willReturn('');
-        $price->getDefaultMetricUnit()->willReturn('');
-        $price->getMaxFileSize()->willReturn('');
-        $price->getSortOrder()->willReturn(2);
-        $price->getGroup()->willReturn(null);
-
+        $emptyValueProvider->getEmptyValue($price)->willReturn([]);
         $fieldProvider->getField($price)->willReturn('akeneo-text-field');
         $filterProvider->getFilters($price)->willReturn(['product-export-builder' => 'akeneo-attribute-string-filter']);
-        $emptyValueProvider->getEmptyValue($price)->willReturn([]);
+        $price->isLocaleSpecific()->willReturn(false);
+        $price->getId()->willReturn(12);
 
         $this->normalize($price, 'internal_api', [])->shouldReturn(
             [
-                'code'                => 'price',
-                'id'                  => 12,
-                'wysiwyg_enabled'     => false,
-                'empty_value'         => [],
-                'field_type'          => 'akeneo-text-field',
-                'filter_types'        => ['product-export-builder' => 'akeneo-attribute-string-filter'],
-                'is_locale_specific'  => 0,
-                'available_locales'   => [],
-                'max_characters'      => '',
-                'validation_rule'     => '',
-                'validation_regexp'   => '',
-                'number_min'          => '',
-                'number_max'          => '',
-                'decimals_allowed'    => true,
-                'negative_allowed'    => false,
-                'date_min'            => '',
-                'date_max'            => '',
-                'metric_family'       => '',
-                'default_metric_unit' => '',
-                'max_file_size'       => '',
-                'sort_order'          => 2,
-                'group_code'          => null,
-                'group'               => null,
+                'code'                   => 'price',
+                'type'                   => 'pim_catalog_price_collection',
+                'group'                  => 'marketing',
+                'unique'                 => false,
+                'useable_as_grid_filter' => true,
+                'allowed_extensions'     => null,
+                'metric_family'          => null,
+                'default_metric_unit'    => null,
+                'reference_data_name'    => null,
+                'available_locales'      => [],
+                'max_characters'         => null,
+                'validation_rule'        => null,
+                'validation_regexp'      => null,
+                'wysiwyg_enabled'        => null,
+                'number_min'             => null,
+                'number_max'             => null,
+                'decimals_allowed'       => true,
+                'negative_allowed'       => null,
+                'date_min'               => null,
+                'date_max'               => null,
+                'max_file_size'          => null,
+                'minimum_input_length'   => null,
+                'sort_order'             => 0,
+                'localizable'            => false,
+                'scopable'               => false,
+                'labels'                 => [],
+                'auto_option_sorting'    => null,
+                'empty_value'            => [],
+                'field_type'             => 'akeneo-text-field',
+                'filter_types'           => ['product-export-builder' => 'akeneo-attribute-string-filter'],
+                'is_locale_specific'     => false,
+                'meta'                   => ['id' => 12],
             ]
         );
     }
 
-    function it_adds_the_attribute_empty_value_to_the_normalized_attribute(
+    function it_normalizes_an_attribute_with_localized_data(
         $normalizer,
         $fieldProvider,
         $emptyValueProvider,
         $filterProvider,
-        AttributeInterface $attribute,
-        GroupInterface $group
+        $numberLocalizer,
+        AttributeInterface $price
     ) {
-        $normalizer->normalize($attribute, 'standard', [])->willReturn(['code' => 'text']);
-        $attribute->getId()->willReturn(12);
-        $attribute->isWysiwygEnabled()->willReturn(true);
-        $attribute->getType()->willReturn('pim_catalog_textarea');
-        $attribute->isLocaleSpecific()->willReturn(false);
-        $attribute->getAvailableLocaleCodes()->willReturn([]);
-
-        $attribute->getDateMin()->willReturn(null);
-        $attribute->getDateMax()->willReturn(null);
-        $attribute->getMaxCharacters()->willReturn('2048');
-        $attribute->getValidationRule()->willReturn('');
-        $attribute->getValidationRegexp()->willReturn('');
-        $attribute->getNumberMin()->willReturn('');
-        $attribute->getNumberMax()->willReturn('');
-        $attribute->isDecimalsAllowed()->willReturn('');
-        $attribute->isNegativeAllowed()->willReturn('');
-        $attribute->getMetricFamily()->willReturn('');
-        $attribute->getDefaultMetricUnit()->willReturn('');
-        $attribute->getMaxFileSize()->willReturn('');
-        $attribute->getSortOrder()->willReturn(2);
-        $attribute->getGroup()->willReturn(null);
-
-        $fieldProvider->getField($attribute)->willReturn('akeneo-text-field');
-        $filterProvider->getFilters($attribute)->willReturn(['product-export-builder' => 'akeneo-attribute-string-filter']);
-        $emptyValueProvider->getEmptyValue($attribute)->willReturn([]);
-
-        $this->normalize($attribute, 'internal_api', [])->shouldReturn(
+        $normalizer->normalize($price, 'standard', Argument::any())->willReturn(
             [
-                'code'                => 'text',
-                'id'                  => 12,
-                'wysiwyg_enabled'     => true,
-                'empty_value'         => [],
-                'field_type'          => 'akeneo-text-field',
-                'filter_types'        => ['product-export-builder' => 'akeneo-attribute-string-filter'],
-                'is_locale_specific'  => 0,
-                'available_locales'   => [],
-                'max_characters'      => '2048',
-                'validation_rule'     => '',
-                'validation_regexp'   => '',
-                'number_min'          => '',
-                'number_max'          => '',
-                'decimals_allowed'    => '',
-                'negative_allowed'    => '',
-                'date_min'            => '',
-                'date_max'            => '',
-                'metric_family'       => '',
-                'default_metric_unit' => '',
-                'max_file_size'       => '',
-                'sort_order'          => 2,
-                'group_code'          => null,
-                'group'               => null,
+                'code'                   => 'price',
+                'type'                   => 'pim_catalog_price_collection',
+                'group'                  => 'marketing',
+                'unique'                 => false,
+                'useable_as_grid_filter' => true,
+                'allowed_extensions'     => null,
+                'metric_family'          => null,
+                'default_metric_unit'    => null,
+                'reference_data_name'    => null,
+                'available_locales'      => [],
+                'max_characters'         => null,
+                'validation_rule'        => null,
+                'validation_regexp'      => null,
+                'wysiwyg_enabled'        => null,
+                'number_min'             => '20.5',
+                'number_max'             => '4000.8',
+                'decimals_allowed'       => true,
+                'negative_allowed'       => null,
+                'date_min'               => null,
+                'date_max'               => null,
+                'max_file_size'          => null,
+                'minimum_input_length'   => null,
+                'sort_order'             => 0,
+                'localizable'            => false,
+                'scopable'               => false,
+                'labels'                 => [],
+                'auto_option_sorting'    => null,
             ]
         );
 
-        $normalizer->normalize($attribute, 'standard', [])->willReturn(['code' => 'boolean']);
-        $attribute->getId()->willReturn(12);
-        $attribute->isWysiwygEnabled()->willReturn(true);
-        $attribute->getType()->willReturn('pim_catalog_boolean');
+        $price->getDateMin()->willReturn(null);
+        $price->getDateMax()->willReturn(null);
+        $emptyValueProvider->getEmptyValue($price)->willReturn([]);
+        $fieldProvider->getField($price)->willReturn('akeneo-text-field');
+        $filterProvider->getFilters($price)->willReturn(['product-export-builder' => 'akeneo-attribute-string-filter']);
+        $price->isLocaleSpecific()->willReturn(false);
+        $numberLocalizer->localize('20.5', ['locale' => 'fr_FR'])->willReturn('20,5');
+        $numberLocalizer->localize('4000.8', ['locale' => 'fr_FR'])->willReturn('4000,8');
+        $price->getId()->willReturn(12);
 
-        $this->normalize($attribute, 'internal_api', [])->shouldReturn(
+        $this->normalize($price, 'internal_api', ['locale' => 'fr_FR'])->shouldReturn(
             [
-                'code'                => 'boolean',
-                'id'                  => 12,
-                'wysiwyg_enabled'     => true,
-                'empty_value'         => [],
-                'field_type'          => 'akeneo-text-field',
-                'filter_types'        => ['product-export-builder' => 'akeneo-attribute-string-filter'],
-                'is_locale_specific'  => 0,
-                'available_locales'   => [],
-                'max_characters'      => '2048',
-                'validation_rule'     => '',
-                'validation_regexp'   => '',
-                'number_min'          => '',
-                'number_max'          => '',
-                'decimals_allowed'    => '',
-                'negative_allowed'    => '',
-                'date_min'            => '',
-                'date_max'            => '',
-                'metric_family'       => '',
-                'default_metric_unit' => '',
-                'max_file_size'       => '',
-                'sort_order'          => 2,
-                'group_code'          => null,
-                'group'               => null,
-            ]
-        );
-
-        $normalizer->normalize($attribute, 'standard', [])->willReturn(['code' => 'collection']);
-        $attribute->getId()->willReturn(12);
-        $attribute->isWysiwygEnabled()->willReturn(false);
-        $attribute->getType()->willReturn('pim_catalog_attribute_collection');
-
-        $this->normalize($attribute, 'internal_api', [])->shouldReturn(
-            [
-                'code'                => 'collection',
-                'id'                  => 12,
-                'wysiwyg_enabled'     => false,
-                'empty_value'         => [],
-                'field_type'          => 'akeneo-text-field',
-                'filter_types'        => ['product-export-builder' => 'akeneo-attribute-string-filter'],
-                'is_locale_specific'  => 0,
-                'available_locales'   => [],
-                'max_characters'      => '2048',
-                'validation_rule'     => '',
-                'validation_regexp'   => '',
-                'number_min'          => '',
-                'number_max'          => '',
-                'decimals_allowed'    => '',
-                'negative_allowed'    => '',
-                'date_min'            => '',
-                'date_max'            => '',
-                'metric_family'       => '',
-                'default_metric_unit' => '',
-                'max_file_size'       => '',
-                'sort_order'          => 2,
-                'group_code'          => null,
-                'group'               => null,
-            ]
-        );
-
-        $normalizer->normalize($attribute, 'standard', [])->willReturn(['code' => 'collection']);
-        $attribute->getId()->willReturn(12);
-        $attribute->isWysiwygEnabled()->willReturn(false);
-        $attribute->getType()->willReturn('pim_catalog_multiselect');
-
-        $this->normalize($attribute, 'internal_api', [])->shouldReturn(
-            [
-                'code'                => 'collection',
-                'id'                  => 12,
-                'wysiwyg_enabled'     => false,
-                'empty_value'         => [],
-                'field_type'          => 'akeneo-text-field',
-                'filter_types'        => ['product-export-builder' => 'akeneo-attribute-string-filter'],
-                'is_locale_specific'  => 0,
-                'available_locales'   => [],
-                'max_characters'      => '2048',
-                'validation_rule'     => '',
-                'validation_regexp'   => '',
-                'number_min'          => '',
-                'number_max'          => '',
-                'decimals_allowed'    => '',
-                'negative_allowed'    => '',
-                'date_min'            => '',
-                'date_max'            => '',
-                'metric_family'       => '',
-                'default_metric_unit' => '',
-                'max_file_size'       => '',
-                'sort_order'          => 2,
-                'group_code'          => null,
-                'group'               => null,
-            ]
-        );
-
-        $normalizer->normalize($attribute, 'standard', [])->willReturn(['code' => 'metric']);
-        $attribute->getId()->willReturn(12);
-        $attribute->isWysiwygEnabled()->willReturn(false);
-        $attribute->getType()->willReturn('pim_catalog_metric');
-        $attribute->getDefaultMetricUnit()->willReturn('kg');
-
-        $this->normalize($attribute, 'internal_api', [])->shouldReturn(
-            [
-                'code'                => 'metric',
-                'id'                  => 12,
-                'wysiwyg_enabled'     => false,
-                'empty_value'         => [],
-                'field_type'          => 'akeneo-text-field',
-                'filter_types'        => ['product-export-builder' => 'akeneo-attribute-string-filter'],
-                'is_locale_specific'  => 0,
-                'available_locales'   => [],
-                'max_characters'      => '2048',
-                'validation_rule'     => '',
-                'validation_regexp'   => '',
-                'number_min'          => '',
-                'number_max'          => '',
-                'decimals_allowed'    => '',
-                'negative_allowed'    => '',
-                'date_min'            => '',
-                'date_max'            => '',
-                'metric_family'       => '',
-                'default_metric_unit' => 'kg',
-                'max_file_size'       => '',
-                'sort_order'          => 2,
-                'group_code'          => null,
-                'group'               => null,
-            ]
-        );
-
-        $normalizer
-            ->normalize($attribute, 'standard', ['include_group' => true])
-            ->willReturn(['code' => 'default']);
-        $attribute->getId()->willReturn(12);
-        $attribute->isWysiwygEnabled()->willReturn(false);
-        $attribute->getType()->willReturn('unknown');
-        $attribute->getGroup()->willReturn($group);
-        $normalizer
-            ->normalize($group, 'standard', ['include_group' => true])
-            ->willReturn(['code' => 'the_group_is_normalized']);
-        $group->getCode()->willReturn('the_group_code');
-
-        $this->normalize($attribute, 'internal_api', ['include_group' => true])->shouldReturn(
-            [
-                'code'                => 'default',
-                'id'                  => 12,
-                'wysiwyg_enabled'     => false,
-                'empty_value'         => [],
-                'field_type'          => 'akeneo-text-field',
-                'filter_types'        => ['product-export-builder' => 'akeneo-attribute-string-filter'],
-                'is_locale_specific'  => 0,
-                'available_locales'   => [],
-                'max_characters'      => '2048',
-                'validation_rule'     => '',
-                'validation_regexp'   => '',
-                'number_min'          => '',
-                'number_max'          => '',
-                'decimals_allowed'    => '',
-                'negative_allowed'    => '',
-                'date_min'            => '',
-                'date_max'            => '',
-                'metric_family'       => '',
-                'default_metric_unit' => 'kg',
-                'max_file_size'       => '',
-                'sort_order'          => 2,
-                'group_code'          => 'the_group_code',
-                'group'               => ['code' => 'the_group_is_normalized'],
+                'code'                   => 'price',
+                'type'                   => 'pim_catalog_price_collection',
+                'group'                  => 'marketing',
+                'unique'                 => false,
+                'useable_as_grid_filter' => true,
+                'allowed_extensions'     => null,
+                'metric_family'          => null,
+                'default_metric_unit'    => null,
+                'reference_data_name'    => null,
+                'available_locales'      => [],
+                'max_characters'         => null,
+                'validation_rule'        => null,
+                'validation_regexp'      => null,
+                'wysiwyg_enabled'        => null,
+                'number_min'             => '20,5',
+                'number_max'             => '4000,8',
+                'decimals_allowed'       => true,
+                'negative_allowed'       => null,
+                'date_min'               => null,
+                'date_max'               => null,
+                'max_file_size'          => null,
+                'minimum_input_length'   => null,
+                'sort_order'             => 0,
+                'localizable'            => false,
+                'scopable'               => false,
+                'labels'                 => [],
+                'auto_option_sorting'    => null,
+                'empty_value'            => [],
+                'field_type'             => 'akeneo-text-field',
+                'filter_types'           => ['product-export-builder' => 'akeneo-attribute-string-filter'],
+                'is_locale_specific'     => false,
+                'meta'                   => ['id' => 12],
             ]
         );
     }

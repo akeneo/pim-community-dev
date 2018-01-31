@@ -17,12 +17,11 @@ define(
         'oro/translator',
         'backbone',
         'pim/form',
-        'text!pim/template/grid/view-selector',
+        'pim/template/grid/view-selector',
         'pim/initselect2',
         'pim/datagrid/state',
         'pim/fetcher-registry',
-        'pim/form-builder',
-        'module'
+        'pim/form-builder'
     ],
     function (
         $,
@@ -34,8 +33,7 @@ define(
         initSelect2,
         DatagridState,
         FetcherRegistry,
-        FormBuilder,
-        module
+        FormBuilder
     ) {
         return BaseForm.extend({
             template: _.template(template),
@@ -72,8 +70,8 @@ define(
             configure: function (gridAlias) {
                 this.gridAlias = gridAlias;
 
-                if (_.has(module.config(), 'forwarded-events')) {
-                    this.forwardMediatorEvents(module.config()['forwarded-events']);
+                if (_.has(__moduleConfig, 'forwarded-events')) {
+                    this.forwardMediatorEvents(__moduleConfig['forwarded-events']);
                 }
 
                 this.listenTo(this.getRoot(), 'grid:view-selector:view-created', this.onViewCreated.bind(this));
@@ -110,8 +108,8 @@ define(
                     this.$el.html(this.template({
                         __: __,
                         currentViewType: this.currentViewType,
-                        viewTypes: this.config.viewTypes,
-                        displayViewSwitcher: this.config.viewTypes.length > 1
+                        displaySwitcher: (this.config.viewTypes.length > 1),
+                        viewTypes: this.config.viewTypes
                     }));
 
                     this.initializeSelectWidget();
@@ -133,7 +131,7 @@ define(
                 var $select = this.$('input[type="hidden"]');
 
                 var options = {
-                    dropdownCssClass: 'select2--bigDrop grid-view-selector',
+                    dropdownCssClass: 'grid-view-selector',
                     closeOnSelect: false,
 
                     /**
@@ -152,15 +150,17 @@ define(
                      * Format current selection method of select2.
                      */
                     formatSelection: function (item, $container) {
-                        FormBuilder.buildForm('pim-grid-view-selector-current').then(function (form) {
-                            form.setParent(this);
-                            form.setView(item);
+                        FormBuilder.getFormMeta('pim-grid-view-selector-current')
+                            .then(FormBuilder.buildForm)
+                            .then(function (form) {
+                                form.setParent(this);
+                                form.setView(item);
 
-                            return form.configure().then(function () {
-                                $container.append(form.render().$el);
-                                this.onGridStateChange();
+                                return form.configure().then(function () {
+                                    $container.append(form.render().$el);
+                                    this.onGridStateChange();
+                                }.bind(this));
                             }.bind(this));
-                        }.bind(this));
                     }.bind(this),
 
                     query: function (options) {
@@ -219,9 +219,6 @@ define(
                     this.currentLoadingPage = null;
                     this.currentLoadingTerm = null;
                 }.bind(this));
-
-                var $search = this.$('.select2-search');
-                $search.prepend($('<i class="icon-search"></i>'));
             },
 
             /**

@@ -11,14 +11,17 @@ Feature: Import media with products
       | Front view  | pim_catalog_image | gif, jpg           | 1             | other | frontView  |
       | User manual | pim_catalog_file  | txt, pdf           | 1             | other | userManual |
       | Warranty    | pim_catalog_file  | txt, pdf           | 1             | other | warranty   |
+    And the following family:
+      | code         | attributes                         |
+      | media_family | frontView,name,userManual,warranty |
     And I am logged in as "Julia"
 
   Scenario: Successfully import media
     Given the following XLSX file to import:
       """
       sku;family;groups;frontView;name-en_US;userManual;categories
-      bic-core-148;sneakers;;bic-core-148.gif;"Bic Core 148";bic-core-148.txt;2014_collection
-      fanatic-freewave-76;sneakers;;fanatic-freewave-76.gif;"Fanatic Freewave 76";fanatic-freewave-76.txt;2014_collection
+      bic-core-148;media_family;;bic-core-148.gif;"Bic Core 148";bic-core-148.txt;2014_collection
+      fanatic-freewave-76;media_family;;fanatic-freewave-76.gif;"Fanatic Freewave 76";fanatic-freewave-76.txt;2014_collection
       """
     And the following job "xlsx_footwear_product_import" configuration:
       | filePath | %file to import% |
@@ -49,12 +52,12 @@ Feature: Import media with products
     And the family of "CAT-001" should be "boots"
     And the family of "CAT-002" should be "boots"
     And the family of "CAT-003" should be "boots"
-    And the category of "CAT-001" should be "winter_collection"
-    And the category of "CAT-002" should be "winter_collection"
-    And the category of "CAT-003" should be "winter_collection"
-    And the english name of "CAT-001" should be "Caterpillar 1"
-    And the english name of "CAT-002" should be "Caterpillar 2"
-    And the english name of "CAT-003" should be "Caterpillar 3"
+    And the category of the product "CAT-001" should be "winter_collection"
+    And the category of the product "CAT-002" should be "winter_collection"
+    And the category of the product "CAT-003" should be "winter_collection"
+    And the english localizable value name of "CAT-001" should be "Caterpillar 1"
+    And the english localizable value name of "CAT-002" should be "Caterpillar 2"
+    And the english localizable value name of "CAT-003" should be "Caterpillar 3"
     And the english mobile description of "CAT-001" should be "Model 1 boots"
     And the english mobile description of "CAT-002" should be "Model 2 boots"
     And the english mobile description of "CAT-003" should be "Model 3 boots"

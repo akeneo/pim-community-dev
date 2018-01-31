@@ -11,7 +11,7 @@ define([
         'jquery',
         'backbone',
         'underscore',
-        'text!pim/template/product/field/field',
+        'pim/template/product/field/field',
         'pim/attribute-manager',
         'pim/i18n',
         'oro/mediator'
@@ -128,6 +128,10 @@ define([
             renderCopyInput: function (value) {
                 return this.getTemplateContext()
                     .then(function (context) {
+                        if (undefined === value) {
+                            return null;
+                        }
+
                         var copyContext = $.extend(true, {}, context);
                         copyContext.value = value;
                         copyContext.context.locale = value.locale;
@@ -155,7 +159,9 @@ define([
                     attribute: this.attribute,
                     info: this.elements,
                     editMode: this.getEditMode(),
-                    i18n: i18n
+                    i18n: i18n,
+                    locale: this.attribute.localizable ? this.context.locale : null,
+                    scope: this.attribute.scopable ? this.context.scope : null
                 });
 
                 return deferred.promise();
@@ -175,7 +181,6 @@ define([
              */
             setValues: function (values) {
                 if (_.isUndefined(values) || values.length === 0) {
-                    /*global console: true */
                     console.error('Value array is empty');
                 }
 
@@ -214,6 +219,10 @@ define([
             removeElement: function (position, code) {
                 if (this.elements[position] && this.elements[position][code]) {
                     delete this.elements[position][code];
+
+                    if (_.isEmpty(this.elements[position])) {
+                        delete this.elements[position];
+                    }
                 }
             },
 
@@ -332,6 +341,10 @@ define([
             setCurrentValue: function (value) {
                 var productValue = this.getCurrentValue();
 
+                if (undefined === productValue) {
+                    return;
+                }
+
                 productValue.data = value;
                 mediator.trigger('pim_enrich:form:entity:update_state');
             },
@@ -342,9 +355,7 @@ define([
              * @returns {string}
              */
             getLabel: function () {
-                return this.attribute.labels[this.context.uiLocale] ?
-                    this.attribute.labels[this.context.uiLocale] :
-                    '[' + this.attribute.code + ']';
+                return i18n.getLabel(this.attribute.labels, this.context.uiLocale, this.attribute.code);
             }
         });
     }

@@ -17,23 +17,6 @@ use Pim\Component\Catalog\Repository\FamilyRepositoryInterface;
 class FamilyRepository extends EntityRepository implements FamilyRepositoryInterface
 {
     /**
-     * @param int $id
-     *
-     * @return \Doctrine\ORM\QueryBuilder
-     */
-    protected function buildOneWithAttributes($id)
-    {
-        return $this
-            ->createQueryBuilder('family')
-            ->where('family.id = '.intval($id))
-            ->addSelect('attribute')
-            ->leftJoin('family.attributes', 'attribute')
-            ->leftJoin('attribute.group', 'group')
-            ->addOrderBy('group.sortOrder', 'ASC')
-            ->addOrderBy('attribute.sortOrder', 'ASC');
-    }
-
-    /**
      * {@inheritdoc}
      */
     public function getFullRequirementsQB(FamilyInterface $family, $localeCode)
@@ -55,6 +38,37 @@ class FamilyRepository extends EntityRepository implements FamilyRepositoryInter
             ->setParameter('family', $family);
 
         return $qb;
+    }
+
+    /**
+     * Get families with family variants
+     *
+     * @param  string $search
+     * @param  array  $options
+     * @param  int    $limit
+     *
+     * @return array
+     */
+    public function getWithVariants($search = null, array $options = [], int $limit = null): array
+    {
+        $qb = $this->createQueryBuilder('f')->where('f.familyVariants IS NOT EMPTY');
+
+        if (null !== $search && '' !== $search) {
+            if (!isset($options['locale'])) {
+                $qb->andWhere('f.code like :search')->setParameter('search', '%' . $search . '%');
+            } else {
+                $qb->leftJoin('f.translations', 'ft');
+                $qb->andWhere('f.code like :search OR (ft.label like :search AND ft.locale = :locale)');
+                $qb->setParameter('search', '%' . $search . '%');
+                $qb->setParameter('locale', $options['locale']);
+            }
+        }
+
+        if ($limit) {
+            $qb->setMaxResults((int) $limit);
+        }
+
+        return $qb->getQuery()->getResult();
     }
 
     /**
@@ -82,26 +96,6 @@ class FamilyRepository extends EntityRepository implements FamilyRepositoryInter
         }
 
         return $qb->getQuery()->getResult();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function findAttributeIdsFromFamilies(array $familyIds)
-    {
-        $qb = $this->createQueryBuilder('f');
-        $qb
-            ->select('f.id AS f_id, a.id AS a_id')
-            ->leftJoin('f.attributes', 'a')
-            ->where($qb->expr()->in('f.id', $familyIds));
-
-        $results = $qb->getQuery()->getArrayResult();
-        $attrByFamilies = [];
-        foreach ($results as $result) {
-            $attrByFamilies[$result['f_id']][] = $result['a_id'];
-        }
-
-        return $attrByFamilies;
     }
 
     /**
@@ -139,31 +133,18 @@ class FamilyRepository extends EntityRepository implements FamilyRepositoryInter
     /**
      * {@inheritdoc}
      */
-    public function countAll()
-    {
-        $count = $this->createQueryBuilder('f')
-            ->select('COUNT(f.id)')
-            ->getQuery()
-            ->getSingleScalarResult();
-
-        return $count;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function hasAttribute($id, $attributeCode)
     {
         $queryBuilder = $this->createQueryBuilder('f')
-            ->leftJoin('f.attributes', 'a')
+            ->select(1)
+            ->innerJoin('f.attributes', 'a')
             ->where('f.id = :id')
             ->andWhere('a.code = :code')
             ->setMaxResults(1)
             ->setParameters([
                 'id'   => $id,
                 'code' => $attributeCode,
-            ])
-            ->addGroupBy('a.id');
+            ]);
 
         $result = $queryBuilder->getQuery()->getArrayResult();
 

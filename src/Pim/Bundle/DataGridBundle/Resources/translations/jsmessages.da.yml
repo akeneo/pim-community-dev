@@ -27,9 +27,15 @@ Action performed.: Handlingen er udført.
 Action is not performed.: Handling udføres ikke.
 Please, select item to perform action.: Vælg vare for at udføre handling.
 View per page: Se pr. side
+Enabled: Aktiveret
+Disabled: Deaktiveret
+not_available: Ikke tilgængelig
+Yes: true
+No: false
 oro.datagrid.entityHint: Enhed
 oro.datagrid.noentities: Ingen poster fundet
-oro.datagrid.noresults: "Ingen resultater fundet. Prøv at ændre dine søgekriterier."
+oro.datagrid.noresults: "Desværre, er der ingen resultater for din søgning."
+oro.datagrid.noresults_subTitle: "Prøv igen med nye søgekriterier."
 oro.datagrid.nocolumns: Ingen kolonner er konfigureret for dette gitter
 oro.datagrid.pagination.label: "Side"
 oro.datagrid.pagination.totalPages: "af {{ totalPages }}"
@@ -39,19 +45,27 @@ oro.datagrid.action.refresh: "Opdatér"
 oro_datagrid.select.all: "Alle"
 oro_datagrid.select.visible: "Alle synlige"
 oro_datagrid.select.none: "Ingen"
+oro_datagrid.select.select: "Vælg"
 pim.grid.ajax_choice_filter.label_empty: er tom
-pim.grid.ajax_choice_filter.label_not_empty: er ikke tom
-pim.grid.choice_filter:
-  label_empty: er tom
-  label_not_empty: er ikke tom
-  label_in_list: i listen
+pim.grid.ajax_choice_filter.label_not_empty: ikke er tom
+pim:
+  grid:
+    choice_filter:
+      label_empty: er tom
+      label_not_empty: ikke er tom
+      label_in_list: i listen
+      operator: Operatør
+    price_filter:
+      label: Valuta
+    category_filter:
+      done: Gjort
 Available Columns: Tilgængelige kolonner
 Displayed Columns: Valgte kolonner
 datagrid_view.columns.min_message: Du skal vælge mindst én datagrid kolonne der skal vises
 pim_datagrid:
   column_configurator:
     label: Kolonner
-    title: Kolonnevalg
+    title: Konfigurere kolonner
     all_groups: Alle grupper
     search: Søg
     clear: Nustil
@@ -59,6 +73,8 @@ pim_datagrid:
     apply: Anvend
     cancel: Annuller
     remove_column: Fjern
+    description: Vælg de oplysninger, du vil have vist som kolonne
+    attribute_groups: Attributgrupper
   mass_action:
     delete:
       confirm_title: Bekræft sletning
@@ -84,6 +100,16 @@ grid.view_selector:
   placeholder: Navn på ny visning
   choose_label: Vælge en etiket til visningen
   confirmation:
-    remove: Er du sikker på du vil slette denne datagrid visning?
+    remove: Er du sikker på du vil slette denne visning?
     delete: Bekræft sletning
 grid.view_selector.flash.updated: DataGrid visningen er opdateret
+grid.display_selector:
+  label: Vis
+  gallery: Galleri
+  list: Liste
+Client ID: Klient ID
+Secret: Hemmelighed
+grid.empty_results:
+  associated_product:
+    hint: Der er ingen tilknyttede produkter
+    subHint: 'Klik på knappen "Tilføj foreninger" knytte dette produkt'

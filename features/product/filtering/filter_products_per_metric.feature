@@ -6,13 +6,13 @@ Feature: Filter products per metric
 
   Background:
     Given the "default" catalog configuration
-    And the following family:
-      | code      |
-      | furniture |
-      | library   |
     And the following attributes:
       | label-en_US | scopable | type               | useable_as_grid_filter | metric_family | default_metric_unit | decimals_allowed | negative_allowed | group | code   |
       | Weight      | 1        | pim_catalog_metric | 1                      | Weight        | GRAM                | 1                | 0                | other | weight |
+    And the following family:
+      | code      | attributes |
+      | furniture | weight     |
+      | library   | weight     |
     And the following products:
       | sku    | family    | enabled | weight-ecommerce | weight-mobile |
       | postit | furniture | yes     | 120 GRAM         |               |
@@ -22,7 +22,7 @@ Feature: Filter products per metric
     And I am logged in as "Mary"
 
   Scenario: Successfully filter products by metric
-    Given I am on the products page
+    Given I am on the products grid
     Then I should not see the filter weight
     And the grid should contain 4 elements
     And I should see products postit and book
@@ -35,5 +35,5 @@ Feature: Filter products per metric
       | weight | <=           | 120 Gram      | postit          |
       | weight | <=           | 0.25 Kilogram | postit and book |
       | weight | >            | 4 Kilogram    |                 |
-      | weight | is empty     |               | mug and pen     |
+      | weight | is empty     |               | mug             |
       | weight | is not empty |               | postit and book |

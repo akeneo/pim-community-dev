@@ -1,0 +1,9 @@
+<div class="switch switch-small" data-on-label="<%- labels.on %>" data-off-label="<%- labels.off %>">
+    <input
+        id="pim_enrich_form_<%- fieldId %>"
+        type="checkbox"
+        name="<%- fieldName %>"
+        <% if (value) { %> checked<% } %>
+        <% if (readOnly) { %>readonly disabled<% } %>
+    >
+</div>

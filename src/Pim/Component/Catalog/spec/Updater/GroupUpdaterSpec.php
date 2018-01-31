@@ -4,6 +4,7 @@ namespace spec\Pim\Component\Catalog\Updater;
 
 use Akeneo\Component\StorageUtils\Exception\InvalidObjectException;
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
+use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Entity\GroupTranslation;
 use Pim\Component\Catalog\Model\AttributeInterface;
@@ -14,6 +15,7 @@ use Pim\Component\Catalog\Query\ProductQueryBuilderFactoryInterface;
 use Pim\Component\Catalog\Query\ProductQueryBuilderInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Pim\Component\Catalog\Repository\GroupTypeRepositoryInterface;
+use Pim\Component\Catalog\Updater\GroupUpdater;
 
 class GroupUpdaterSpec extends ObjectBehavior
 {
@@ -27,15 +29,15 @@ class GroupUpdaterSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('Pim\Component\Catalog\Updater\GroupUpdater');
+        $this->shouldHaveType(GroupUpdater::class);
     }
 
     function it_is_a_updater()
     {
-        $this->shouldImplement('Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface');
+        $this->shouldImplement(ObjectUpdaterInterface::class);
     }
 
-    function it_throws_an_exception_when_trying_to_update_anything_else_than_a_variant_group()
+    function it_throws_an_exception_when_trying_to_update_anything_else_than_a_group()
     {
         $this->shouldThrow(
             InvalidObjectException::objectExpected(
@@ -66,7 +68,7 @@ class GroupUpdaterSpec extends ObjectBehavior
         $attributeRepository->findOneByIdentifier('size')->willReturn($attributeSize);
 
         $pqbFactory->create()->willReturn($pqb);
-        $pqb->addFilter('id', 'IN', [2])->shouldBeCalled();
+        $pqb->addFilter('identifier', 'IN', ['foo'])->shouldBeCalled();
         $pqb->execute()->willReturn([$addedProduct]);
 
         $group->getTranslation()->willReturn($translatable);
@@ -74,7 +76,6 @@ class GroupUpdaterSpec extends ObjectBehavior
         $group->setCode('mycode')->shouldBeCalled();
         $group->setLocale('fr_FR')->shouldBeCalled();
         $group->setType($type)->shouldBeCalled();
-        $group->setAxisAttributes([$attributeColor, $attributeSize])->shouldBeCalled();
         $group->getId()->willReturn(null);
 
         $group->removeProduct($removedProduct)->shouldBeCalled();
@@ -87,8 +88,7 @@ class GroupUpdaterSpec extends ObjectBehavior
             'labels'   => [
                 'fr_FR' => 'T-shirt super beau',
             ],
-            'axis'     => ['color', 'size'],
-            'products' => [2]
+            'products' => ['foo']
         ];
 
         $this->update($group, $values, []);
@@ -111,50 +111,6 @@ class GroupUpdaterSpec extends ObjectBehavior
                 'The group type does not exist',
                 'Pim\Component\Catalog\Updater\GroupUpdater',
                 'UNKNOWN'
-            )
-        )->during('update', [$group, $values, []]);
-    }
-
-    function it_throws_an_error_if_it_is_a_variant_group_type($groupTypeRepository, GroupInterface $group, GroupTypeInterface $groupType)
-    {
-        $group->setCode('mycode')->shouldBeCalled();
-        $groupTypeRepository->findOneByIdentifier('variant')->willReturn($groupType);
-        $groupType->isVariant()->willReturn(true);
-        $group->getCode()->willReturn('mycode');
-
-        $values = [
-            'code' => 'mycode',
-            'type' => 'variant',
-        ];
-
-        $this->shouldThrow(
-            InvalidPropertyException::validGroupTypeExpected(
-                'type',
-                'Cannot process variant group, only groups are supported',
-                'Pim\Component\Catalog\Updater\GroupUpdater',
-                'mycode'
-            )
-        )->during('update', [$group, $values, []]);
-    }
-
-    function it_throws_an_exception_if_attribute_is_unknown($attributeRepository, GroupInterface $group)
-    {
-        $group->setCode('mycode')->shouldBeCalled();
-        $attributeRepository->findOneByIdentifier('foo')->willReturn(null);
-        $group->getId()->willReturn(null);
-
-        $values = [
-            'code' => 'mycode',
-            'axis' => ['foo']
-        ];
-
-        $this->shouldThrow(
-            InvalidPropertyException::validEntityCodeExpected(
-                'axis',
-                'attribute code',
-                'The attribute does not exist',
-                'Pim\Component\Catalog\Updater\GroupUpdater',
-                'foo'
             )
         )->during('update', [$group, $values, []]);
     }

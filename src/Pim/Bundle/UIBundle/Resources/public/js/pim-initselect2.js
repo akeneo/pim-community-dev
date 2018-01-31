@@ -3,6 +3,7 @@ define(
     ['jquery', 'underscore', 'pim/formatter/choices/base', 'pim/user-context', 'jquery.select2'],
     function ($, _, ChoicesFormatter, UserContext) {
         'use strict';
+
         return {
             resultsPerPage: 20,
             defaultOptions: {
@@ -13,7 +14,7 @@ define(
                 formatNoMatches: function () {
                     return _.__('pim_enrich.form.product.tab.attributes.info.no_match');
                 },
-                formatLoadMore: function (pageNumber) {
+                formatLoadMore: function () {
                     return _.__('pim_enrich.form.product.tab.attributes.info.load_more');
                 }
             },
@@ -120,13 +121,13 @@ define(
 
                 $select.select2(options);
             },
-            getSelectOptions: function (data, options) {
+            getSelectOptions: function (data) {
                 return data;
             },
-            getAjaxParameters: function ($select) {
+            getAjaxParameters: function () {
                 return {};
             },
-            hasCachableResults: function ($select) {
+            hasCachableResults: function () {
                 return true;
             },
             matchLocalResults: function (data, term) {

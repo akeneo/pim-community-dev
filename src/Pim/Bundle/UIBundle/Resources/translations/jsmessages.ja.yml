@@ -11,6 +11,8 @@ Selected Rows: 選択した行
 "Delete Confirmation": "削除の確認"
 "Edit": "編集"
 "Unexpected error occured. Please contact system administrator.": "予期しないエラーが発生しました。システム管理者に問い合わせてください。"
+"Yes, revoke": "削除する"
+"Revoke Confirmation": "削除の確認"
 Now: 今
 Prev: 前
 Next: 次
@@ -37,10 +39,10 @@ Action: アクション
 Unit: 単位
 Currency: 通貨
 jstree:
-  all: すべての製品
+  all: 全ての製品
   unclassified: 未分類の製品
   product:
-    all: すべての製品
+    all: 全ての製品
     unclassified: 未分類の製品
   no_tree: 利用できるツリーがありません
   include_sub: サブカテゴリを含む

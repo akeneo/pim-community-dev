@@ -53,7 +53,7 @@ define(
 
                 // Global errors with an empty property path
                 _.each(globalErrors, function (error) {
-                    messenger.notificationFlashMessage('error', error.message);
+                    messenger.notify('error', error.message);
                 });
 
                 this.getRoot().trigger('pim_enrich:form:entity:validation_error', event);

@@ -3,6 +3,7 @@
 namespace Pim\Bundle\FilterBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
@@ -22,7 +23,7 @@ class CategoryType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return self::NAME;
     }
@@ -35,14 +36,14 @@ class CategoryType extends AbstractType
         $builder
             ->add(
                 'categoryId',
-                'integer',
+                IntegerType::class,
                 [
                     'required' => false,
                 ]
             )
             ->add(
                 'treeId',
-                'integer',
+                IntegerType::class,
                 [
                     'required' => false,
                 ]

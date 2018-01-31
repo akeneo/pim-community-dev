@@ -1,3 +1,0 @@
-pim_datagrid_mass_action:
-    path: /{gridName}/massAction/{actionName}
-    defaults: { _controller: pim_datagrid.controller.mass_action:massActionAction }

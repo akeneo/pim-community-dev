@@ -1,0 +1,47 @@
+extensions:
+    pim-attribute-form-text:
+        module: pim/common/simple-view
+        config:
+            template: pim/template/common/drop-zone
+
+    pim-attribute-form-text-validation-params:
+        module: pim/common/simple-view
+        parent: pim-attribute-form-text
+        targetZone: content
+        position: 100
+        config:
+            template: pim/template/form/tab/section
+            templateParams:
+                sectionTitle: pim_enrich.form.attribute.tab.properties.section.validation
+                dropZone: content
+
+    pim-attribute-form-text-validation-params-max-characters:
+        module: pim/form/common/fields/text
+        parent: pim-attribute-form-text-validation-params
+        targetZone: content
+        position: 100
+        config:
+            fieldName: max_characters
+            label: pim_enrich.form.attribute.tab.properties.label.max_characters
+
+    pim-attribute-form-text-validation-params-validation-rule:
+        module: pim/form/common/fields/select
+        parent: pim-attribute-form-text-validation-params
+        targetZone: content
+        position: 110
+        config:
+            fieldName: validation_rule
+            label: pim_enrich.form.attribute.tab.properties.label.validation_rule
+            choices:
+                email: pim_enrich.entity.attribute.validation_rule.email
+                regexp: pim_enrich.entity.attribute.validation_rule.regexp
+                url: pim_enrich.entity.attribute.validation_rule.url
+
+    pim-attribute-form-text-validation-params-validation-regexp:
+        module: pim/attribute-edit-form/properties/validation-regexp
+        parent: pim-attribute-form-text-validation-params
+        targetZone: content
+        position: 120
+        config:
+            fieldName: validation_regexp
+            label: pim_enrich.form.attribute.tab.properties.label.validation_regexp

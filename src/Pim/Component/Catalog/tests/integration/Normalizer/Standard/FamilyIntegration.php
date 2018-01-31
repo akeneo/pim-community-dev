@@ -37,6 +37,7 @@ class FamilyIntegration extends AbstractStandardNormalizerTestCase
                 'sku'
             ],
             'attribute_as_label'     => 'sku',
+            'attribute_as_image'     => 'an_image',
             'attribute_requirements' => [
                 'ecommerce' => [
                     'a_date',
@@ -84,7 +85,10 @@ class FamilyIntegration extends AbstractStandardNormalizerTestCase
                     'sku'
                 ]
             ],
-            'labels'                 => []
+            'labels' => [
+                'fr_FR' => 'Une famille A',
+                'en_US' => 'A family A',
+            ]
         ];
 
         $repository = $this->get('pim_catalog.repository.family');

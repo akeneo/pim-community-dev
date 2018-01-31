@@ -4,7 +4,7 @@ namespace spec\Pim\Component\Catalog\Validator\Constraints;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\AttributeInterface;
-use Pim\Component\Catalog\Model\ProductValueInterface;
+use Pim\Component\Catalog\Model\ValueInterface;
 use Pim\Component\Catalog\Validator\Constraints\IsString;
 use Prophecy\Argument;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
@@ -67,32 +67,32 @@ class IsStringValidatorSpec extends ObjectBehavior
     function it_does_not_add_violation_when_validates_string_product_value(
         $context,
         IsString $stringConstraint,
-        ProductValueInterface $productValue,
+        ValueInterface $value,
         AttributeInterface $attribute
     ) {
-        $productValue->getAttribute()->willReturn($attribute);
+        $value->getAttribute()->willReturn($attribute);
         $attribute->getCode()->willReturn('foo');
-        $attribute->getBackendType()->willReturn('varchar');
-        $productValue->getVarchar()->willReturn('bar');
+        $attribute->getBackendType()->willReturn('text');
+        $value->getData()->willReturn('bar');
 
         $context
             ->buildViolation(Argument::cetera())
             ->shouldNotBeCalled();
 
-        $this->validate($productValue, $stringConstraint);
+        $this->validate($value, $stringConstraint);
     }
 
     function it_adds_violation_when_validates_non_string_product_value(
         $context,
         IsString $stringConstraint,
-        ProductValueInterface $productValue,
+        ValueInterface $value,
         AttributeInterface $attribute,
         ConstraintViolationBuilderInterface $violation
     ) {
-        $productValue->getAttribute()->willReturn($attribute);
+        $value->getAttribute()->willReturn($attribute);
         $attribute->getCode()->willReturn('foo');
         $attribute->getBackendType()->willReturn('integer');
-        $productValue->getInteger()->willReturn(666);
+        $value->getData()->willReturn(666);
 
         $context
             ->buildViolation(
@@ -103,6 +103,6 @@ class IsStringValidatorSpec extends ObjectBehavior
             ->willReturn($violation)
         ;
 
-        $this->validate($productValue, $stringConstraint);
+        $this->validate($value, $stringConstraint);
     }
 }

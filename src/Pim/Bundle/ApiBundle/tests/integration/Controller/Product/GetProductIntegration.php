@@ -1,23 +1,44 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Pim\Bundle\ApiBundle\tests\integration\Controller\Product;
 
 use Akeneo\Test\Integration\Configuration;
+use PHPUnit\Framework\Assert;
+use Pim\Component\Catalog\tests\integration\Normalizer\NormalizedProductCleaner;
 use Symfony\Component\HttpFoundation\Response;
 
+/**
+ * @group ce
+ */
 class GetProductIntegration extends AbstractProductTestCase
 {
     public function testGetACompleteProduct()
     {
-        $client = $this->createAuthenticatedClient();
+        $products = $this->get('pim_catalog.repository.product')->findAll();
+        $this->get('pim_catalog.elasticsearch.indexer.product')->indexAll($products);
 
+        $product = $this->get('pim_catalog.repository.product')->findoneByIdentifier('foo');
+
+        $association = $product->getAssociationForTypeCode('X_SELL');
+        $association->addProductModel(
+            $this->get('pim_catalog.repository.product_model')->findoneByIdentifier('bar')
+        );
+        $errors = $this->get('pim_catalog.validator.product')->validate($product);
+
+        Assert::assertCount(0, $errors);
+
+        $this->get('pim_catalog.saver.product')->save($product);
+
+        $client = $this->createAuthenticatedClient();
         $client->request('GET', 'api/rest/v1/products/foo');
 
         $standardProduct = [
             'identifier'    => 'foo',
             'family'        => 'familyA',
+            'parent'        => null,
             'groups'        => ['groupA', 'groupB'],
-            'variant_group' => 'variantA',
             'categories'    => ['categoryA1', 'categoryB'],
             'enabled'       => true,
             'values'        => [
@@ -96,8 +117,8 @@ class GetProductIntegration extends AbstractProductTestCase
                         'locale' => null,
                         'scope'  => null,
                         'data'   => [
+                            ['amount' => '56.53', 'currency' => 'EUR'],
                             ['amount' => '45.00', 'currency' => 'USD'],
-                            ['amount' => '56.53', 'currency' => 'EUR']
                         ],
                     ],
                 ],
@@ -106,8 +127,8 @@ class GetProductIntegration extends AbstractProductTestCase
                         'locale' => null,
                         'scope'  => null,
                         'data'   => [
+                            ['amount' => 56, 'currency' => 'EUR'],
                             ['amount' => -45, 'currency' => 'USD'],
-                            ['amount' => 56, 'currency' => 'EUR']
                         ],
                     ],
                 ],
@@ -125,6 +146,13 @@ class GetProductIntegration extends AbstractProductTestCase
                         'locale' => null,
                         'scope'  => null,
                         'data'   => 'this is a text',
+                    ],
+                ],
+                '123'                                => [
+                    [
+                        'locale' => null,
+                        'scope'  => null,
+                        'data'   => 'a text for an attribute with numerical code',
                     ],
                 ],
                 'a_text_area'                        => [
@@ -198,9 +226,10 @@ class GetProductIntegration extends AbstractProductTestCase
             'created'       => '2016-06-14T13:12:50+02:00',
             'updated'       => '2016-06-14T13:12:50+02:00',
             'associations'  => [
-                'PACK'   => ['groups' => [], 'products' => ['bar', 'baz']],
-                'UPSELL' => ['groups' => ['groupA'], 'products' => []],
-                'X_SELL' => ['groups' => ['groupB'], 'products' => ['bar']],
+                'PACK'   => ['groups' => [], 'products' => ['bar', 'baz'], 'product_models' => []],
+                'SUBSTITUTION' => ['groups' => [], 'products' => [], 'product_models' => []],
+                'UPSELL' => ['groups' => ['groupA'], 'products' => [], 'product_models' => []],
+                'X_SELL' => ['groups' => ['groupB'], 'products' => ['bar'], 'product_models' => ['bar']],
             ]
         ];
 
@@ -226,9 +255,9 @@ class GetProductIntegration extends AbstractProductTestCase
     /**
      * {@inheritdoc}
      */
-    protected function getConfiguration()
+    protected function getConfiguration(): Configuration
     {
-        return new Configuration([Configuration::getTechnicalSqlCatalogPath()]);
+        return $this->catalog->useTechnicalSqlCatalog();
     }
 
     /**
@@ -239,14 +268,8 @@ class GetProductIntegration extends AbstractProductTestCase
     {
         $result = json_decode($response->getContent(), true);
 
-        $result = $this->sanitizeDateFields($result);
-        $result = $this->sanitizeMediaAttributeData($result);
-
-        $expected = $this->sanitizeDateFields($expected);
-        $expected = $this->sanitizeMediaAttributeData($expected);
-
-        ksort($expected['values']);
-        ksort($result['values']);
+        NormalizedProductCleaner::clean($expected);
+        NormalizedProductCleaner::clean($result);
 
         $this->assertSame($expected, $result);
     }

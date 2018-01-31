@@ -3,54 +3,54 @@ datagrid:
         options:
             locale_parameter: localeCode
             entityHint: attribute
+            manageFilters: false
         source:
             type: pim_datasource_attribute
             acl_resource: pim_enrich_attribute_index
         columns:
-            code:
-                label: Code
             label:
                 label: Label
+                frontend_type: label
             type:
                 label: Type
                 type: translateable
-            scopable:
-                label:         Scopable
-                frontend_type: boolean
-            localizable:
-                label:         Localizable
-                frontend_type: boolean
             group:
                 label:     Group
                 data_name: groupLabel
+            scopable:
+                label:         Scopable
+                frontend_type: boolean-status
+            localizable:
+                label:         Localizable
+                frontend_type: boolean-status
         properties:
             id: ~
             edit_link:
                 type: url
                 route: pim_enrich_attribute_edit
                 params:
-                    - id
+                    - code
             delete_link:
                 type: url
-                route: pim_enrich_attribute_remove
+                route: pim_enrich_attribute_rest_remove
                 params:
-                    - id
+                    - code
         actions:
             edit:
+                launcherOptions:
+                    className: AknIconButton AknIconButton--small AknIconButton--edit
                 type:      navigate
                 label:     Edit
-                icon:      pencil
                 link:      edit_link
                 rowAction: true
             delete:
+                launcherOptions:
+                    className: AknIconButton AknIconButton--small AknIconButton--trash
                 type:  delete
                 label: Delete
-                icon:  trash
                 link:  delete_link
         sorters:
             columns:
-                code:
-                    data_name: a.code
                 scopable:
                     data_name: a.scopable
                 localizable:
@@ -59,14 +59,12 @@ datagrid:
                     data_name: groupLabel
                 label:
                     data_name: label
+            default:
+                label: '%oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC'
         filters:
             columns:
-                code:
-                    type:  string
-                    label: Code
-                    data_name: a.code
                 label:
-                    type: string
+                    type: search
                     label: Label
                     data_name: translation.label
                 type:
@@ -76,12 +74,6 @@ datagrid:
                         field_options:
                             multiple: true
                             choices:  '@pim_catalog.registry.attribute_type->getSortedAliases'
-                scopable:
-                    type:      boolean
-                    data_name: a.scopable
-                localizable:
-                    type:      boolean
-                    data_name: a.localizable
                 group:
                     type:      choice
                     data_name: attributeGroup.code
@@ -89,3 +81,9 @@ datagrid:
                         field_options:
                             multiple: true
                             choices:  '@pim_enrich.repository.attribute_group->findTranslatedLabels'
+                scopable:
+                    type:      boolean
+                    data_name: a.scopable
+                localizable:
+                    type:      boolean
+                    data_name: a.localizable

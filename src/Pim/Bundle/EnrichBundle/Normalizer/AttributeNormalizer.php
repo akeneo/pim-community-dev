@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\EnrichBundle\Normalizer;
 
+use Akeneo\Component\Localization\Localizer\LocalizerInterface;
 use Pim\Bundle\EnrichBundle\Provider\EmptyValue\EmptyValueProviderInterface;
 use Pim\Bundle\EnrichBundle\Provider\Field\FieldProviderInterface;
 use Pim\Bundle\EnrichBundle\Provider\Filter\FilterProviderInterface;
@@ -32,22 +33,28 @@ class AttributeNormalizer implements NormalizerInterface
     /** @var FilterProviderInterface */
     protected $filterProvider;
 
+    /** @var LocalizerInterface */
+    protected $numberLocalizer;
+
     /**
-     * @param NormalizerInterface         $normalizer
-     * @param FieldProviderInterface      $fieldProvider
-     * @param EmptyValueProviderInterface $emptyValueProvider
-     * @param FilterProviderInterface     $filterProvider
+     * @param NormalizerInterface               $normalizer
+     * @param FieldProviderInterface            $fieldProvider
+     * @param EmptyValueProviderInterface       $emptyValueProvider
+     * @param FilterProviderInterface           $filterProvider
+     * @param LocalizerInterface                $numberLocalizer
      */
     public function __construct(
         NormalizerInterface $normalizer,
         FieldProviderInterface $fieldProvider,
         EmptyValueProviderInterface $emptyValueProvider,
-        FilterProviderInterface $filterProvider
+        FilterProviderInterface $filterProvider,
+        LocalizerInterface $numberLocalizer
     ) {
         $this->normalizer = $normalizer;
         $this->fieldProvider = $fieldProvider;
         $this->emptyValueProvider = $emptyValueProvider;
         $this->filterProvider = $filterProvider;
+        $this->numberLocalizer = $numberLocalizer;
     }
 
     /**
@@ -55,41 +62,34 @@ class AttributeNormalizer implements NormalizerInterface
      */
     public function normalize($attribute, $format = null, array $context = [])
     {
-        $dateMin = (null === $attribute->getDateMin()) ? '' : $attribute->getDateMin()->format(\DateTime::ISO8601);
-        $dateMax = (null === $attribute->getDateMax()) ? '' : $attribute->getDateMax()->format(\DateTime::ISO8601);
-        $groupCode = (null === $attribute->getGroup()) ? null : $attribute->getGroup()->getCode();
+        $dateMin = null === $attribute->getDateMin() ? null : $attribute->getDateMin()->format('Y-m-d');
+        $dateMax = null === $attribute->getDateMax() ? null : $attribute->getDateMax()->format('Y-m-d');
 
-        $normalizedAttribute = $this->normalizer->normalize($attribute, 'standard', $context) + [
-            'id'                  => $attribute->getId(),
-            'wysiwyg_enabled'     => $attribute->isWysiwygEnabled(),
-            'empty_value'         => $this->emptyValueProvider->getEmptyValue($attribute),
-            'field_type'          => $this->fieldProvider->getField($attribute),
-            'filter_types'        => $this->filterProvider->getFilters($attribute),
-            'is_locale_specific'  => (int) $attribute->isLocaleSpecific(),
-            'available_locales'   => $attribute->getAvailableLocaleCodes(),
-            'max_characters'      => $attribute->getMaxCharacters(),
-            'validation_rule'     => $attribute->getValidationRule(),
-            'validation_regexp'   => $attribute->getValidationRegexp(),
-            'number_min'          => $attribute->getNumberMin(),
-            'number_max'          => $attribute->getNumberMax(),
-            'decimals_allowed'    => $attribute->isDecimalsAllowed(),
-            'negative_allowed'    => $attribute->isNegativeAllowed(),
-            'date_min'            => $dateMin,
-            'date_max'            => $dateMax,
-            'metric_family'       => $attribute->getMetricFamily(),
-            'default_metric_unit' => $attribute->getDefaultMetricUnit(),
-            'max_file_size'       => $attribute->getMaxFileSize(),
-            'sort_order'          => $attribute->getSortOrder(),
-            'group_code'          => $groupCode,
-        ];
+        $normalizedAttribute = array_merge(
+            $this->normalizer->normalize($attribute, 'standard', $context),
+            [
+                'empty_value'        => $this->emptyValueProvider->getEmptyValue($attribute),
+                'field_type'         => $this->fieldProvider->getField($attribute),
+                'filter_types'       => $this->filterProvider->getFilters($attribute),
+                'is_locale_specific' => $attribute->isLocaleSpecific(),
+                'date_min'           => $dateMin,
+                'date_max'           => $dateMax,
+            ]
+        );
 
-        // This normalizer is used in the PEF attributes loading and in the add_attributes widget. The attributes
-        // loading does not need complete group normalization. This has to be cleaned.
-        $normalizedAttribute['group'] = null;
+        if (isset($context['locale'])) {
+            $normalizedAttribute['number_min'] = $this->numberLocalizer->localize(
+                $normalizedAttribute['number_min'],
+                ['locale' => $context['locale']]
+            );
 
-        if (isset($context['include_group']) && $context['include_group'] && null !== $attribute->getGroup()) {
-            $normalizedAttribute['group'] = $this->normalizer->normalize($attribute->getGroup(), 'standard', $context);
+            $normalizedAttribute['number_max'] = $this->numberLocalizer->localize(
+                $normalizedAttribute['number_max'],
+                ['locale' => $context['locale']]
+            );
         }
+
+        $normalizedAttribute['meta']['id'] = $attribute->getId();
 
         return $normalizedAttribute;
     }

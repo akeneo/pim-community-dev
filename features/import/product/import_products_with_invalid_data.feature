@@ -30,7 +30,7 @@ Feature: Execute a job
     When I am on the "csv_footwear_product_import" import job page
     And I launch the import job
     And I wait for the "csv_footwear_product_import" job to finish
-    Then I should see "skipped 5"
+    Then I should see the text "skipped 5"
     And there should be 3 products
     And the product "SKU-001" should have the following value:
       | price | 100.00 EUR, 90.00 USD |
@@ -38,9 +38,9 @@ Feature: Execute a job
       | price | 50.00 EUR |
     And the product "SKU-008" should have the following value:
       | price |  |
-    And I should see "Please specify a valid currency: 12 invalid"
-    And I should see "This value should be a valid number.: gruik EUR"
-    And I should see "Please specify a valid currency: 90 gruik"
+    And I should see the text "price: Property \"currency\" expects a valid code. The currency does not exist, \"invalid\" given."
+    And I should see the text "This value should be a valid number.: gruik EUR"
+    And I should see the text "price: Property \"currency\" expects a valid code. The currency does not exist, \"gruik\" given."
 
   Scenario: Skip new products with invalid prices during an import
     Given the following CSV file to import:
@@ -54,9 +54,9 @@ Feature: Execute a job
     When I am on the "csv_footwear_product_import" import job page
     And I launch the import job
     And I wait for the "csv_footwear_product_import" job to finish
-    Then I should see "skipped 2"
-    And I should see "This value should be a valid number.: the mouette"
-    And I should see "Please specify a valid currency: the mouette"
+    Then I should see the text "skipped 2"
+    And I should see the text "This value should be a valid number.: EUR"
+    And I should see the text "price: Property \"currency\" expects a valid code. The currency does not exist, \"mouette\" given."
 
   @jira https://akeneo.atlassian.net/browse/PIM-3266
   Scenario: Skip existing products with invalid prices during an import
@@ -87,7 +87,7 @@ Feature: Execute a job
     When I am on the "csv_footwear_product_import" import job page
     And I launch the import job
     And I wait for the "csv_footwear_product_import" job to finish
-    Then I should see "skipped 5"
+    Then I should see the text "skipped 5"
     And there should be 8 products
     And the product "SKU-001" should have the following value:
       | price | 100.00 EUR, 90.00 USD |
@@ -105,9 +105,9 @@ Feature: Execute a job
       | price | 8.00 EUR |
     And the product "SKU-008" should have the following value:
       | price |  |
-    And I should see "Please specify a valid currency: 12 invalid"
-    And I should see "This value should be a valid number.: gruik EUR"
-    And I should see "Please specify a valid currency: 90 gruik"
+    And I should see the text "price: Property \"currency\" expects a valid code. The currency does not exist, \"invalid\" given."
+    And I should see the text "This value should be a valid number.: gruik EUR"
+    And I should see the text "price: Property \"currency\" expects a valid code. The currency does not exist, \"gruik\" given."
 
   @jira https://akeneo.atlassian.net/browse/PIM-3266
   Scenario: Skip new products with invalid metrics during an import
@@ -122,7 +122,7 @@ Feature: Execute a job
     When I am on the "csv_footwear_product_import" import job page
     And I launch the import job
     And I wait for the "csv_footwear_product_import" job to finish
-    Then I should see "skipped 1"
+    Then I should see the text "skipped 1"
     And there should be 1 products
     And the product "SKU-001" should have the following value:
       | length | 4000.0000 CENTIMETER |
@@ -144,7 +144,7 @@ Feature: Execute a job
     When I am on the "csv_footwear_product_import" import job page
     And I launch the import job
     And I wait for the "csv_footwear_product_import" job to finish
-    Then I should see "skipped 1"
+    Then I should see the text "skipped 1"
     And there should be 2 products
     And the product "SKU-001" should have the following value:
       | length | 4000.0000 CENTIMETER |
@@ -167,7 +167,7 @@ Feature: Execute a job
     When I am on the "csv_footwear_product_import" import job page
     And I launch the import job
     And I wait for the "csv_footwear_product_import" job to finish
-    Then I should see "skipped 1"
+    Then I should see the text "skipped 1"
     And there should be 1 product
     And the product "SKU-001" should have the following value:
       | number_in_stock | 2000.0000 |
@@ -189,7 +189,7 @@ Feature: Execute a job
     When I am on the "csv_footwear_product_import" import job page
     And I launch the import job
     And I wait for the "csv_footwear_product_import" job to finish
-    Then I should see "skipped 1"
+    Then I should see the text "skipped 1"
     And there should be 2 products
     And the product "SKU-001" should have the following value:
       | number_in_stock | 4000 |
@@ -202,11 +202,14 @@ Feature: Execute a job
       | label-en_US | type              | allowed_extensions | group | code       |
       | Front view  | pim_catalog_image | gif, jpg           | other | frontView  |
       | User manual | pim_catalog_file  | txt, pdf           | other | userManual |
+    And the following family:
+      | code         | attributes                |
+      | media_family | frontView,name,userManual |
     And the following CSV file to import:
       """
       sku;family;groups;frontView;name-en_US;userManual;categories
-      bic-core-148;sneakers;;invalid-front-view.gif;"Bic Core 148";invalid-user-manual.txt;2014_collection
-      fanatic-freewave-76;sneakers;;fanatic-freewave-76.gif;"Fanatic Freewave 76";fanatic-freewave-76.txt;2014_collection
+      bic-core-148;media_family;;invalid-front-view.gif;"Bic Core 148";invalid-user-manual.txt;2014_collection
+      fanatic-freewave-76;media_family;;fanatic-freewave-76.gif;"Fanatic Freewave 76";fanatic-freewave-76.txt;2014_collection
       """
     And the following job "csv_footwear_product_import" configuration:
       | filePath | %file to import% |
@@ -217,7 +220,7 @@ Feature: Execute a job
     And I launch the import job
     And I wait for the "csv_footwear_product_import" job to finish
     And there should be 1 product
-    And I should see "Property \"frontView\" expects a valid pathname as data"
+    And I should see the text "Property \"frontView\" expects a valid pathname as data"
     And the product "fanatic-freewave-76" should have the following values:
       | name-en_US | Fanatic Freewave 76     |
       | frontView  | fanatic-freewave-76.gif |
@@ -233,11 +236,14 @@ Feature: Execute a job
       | label-en_US | type              | allowed_extensions | group | code       |
       | Front view  | pim_catalog_image | gif, jpg           | other | frontView  |
       | User manual | pim_catalog_file  | txt, pdf           | other | userManual |
+    And the following family:
+      | code         | attributes                |
+      | media_family | frontView,name,userManual |
     And the following CSV file to import:
       """
       sku;family;groups;frontView;name-en_US;userManual;categories
-      bic-core-148;sneakers;;invalid-front-view.gif;"New Bic Core 148";invalid-user-manual.txt;2014_collection
-      fanatic-freewave-76;sneakers;;fanatic-freewave-76.gif;"New Fanatic Freewave 76";fanatic-freewave-76.txt;2014_collection
+      bic-core-148;media_family;;invalid-front-view.gif;"New Bic Core 148";invalid-user-manual.txt;2014_collection
+      fanatic-freewave-76;media_family;;fanatic-freewave-76.gif;"New Fanatic Freewave 76";fanatic-freewave-76.txt;2014_collection
       """
     And the following job "csv_footwear_product_import" configuration:
       | filePath | %file to import% |
@@ -247,9 +253,9 @@ Feature: Execute a job
     When I am on the "csv_footwear_product_import" import job page
     And I launch the import job
     And I wait for the "csv_footwear_product_import" job to finish
-    Then I should see "skipped 1"
+    Then I should see the text "skipped 1"
     And there should be 2 products
-    And I should see "Property \"frontView\" expects a valid pathname as data"
+    And I should see the text "Property \"frontView\" expects a valid pathname as data"
     And the product "fanatic-freewave-76" should have the following values:
       | frontView  | fanatic-freewave-76.gif |
       | userManual | fanatic-freewave-76.txt |
@@ -274,8 +280,8 @@ Feature: Execute a job
     When I am on the "csv_footwear_product_import" import job page
     And I launch the import job
     And I wait for the "csv_footwear_product_import" job to finish
-    And I should see "The identifier must be filled"
-    And I should see "skipped 3"
+    And I should see the text "The identifier must be filled"
+    And I should see the text "skipped 3"
     And there should be 1 product
 
   @jira https://akeneo.atlassian.net/browse/PIM-3311
@@ -292,7 +298,7 @@ Feature: Execute a job
     And I launch the import job
     And I wait for the "csv_footwear_product_import" job to finish
     Then there should be 1 product
-    And I should see "The value SKU-001 is already set on another product for the unique attribute sku"
+    And I should see the text "The value SKU-001 is already set on another product for the unique attribute sku"
     And the product "SKU-001" should have the following value:
       | name-en_US | high heels |
 
@@ -312,7 +318,7 @@ Feature: Execute a job
     When I am on the "csv_footwear_product_import" import job page
     And I launch the import job
     And I wait for the "csv_footwear_product_import" job to finish
-    Then I should see "skipped 2"
+    Then I should see the text "skipped 2"
     And there should be 4 products
     And the product "SKU-001" should have the following value:
       | handmade | 1 |
@@ -338,7 +344,7 @@ Feature: Execute a job
     When I am on the "csv_footwear_product_import" import job page
     And I launch the import job
     And I wait for the "csv_footwear_product_import" job to finish
-    Then I should see "skipped 2"
+    Then I should see the text "skipped 2"
     And there should be 3 products
     And the product "renault-kangoo" should have the following value:
       | length | 2500.0000 CENTIMETER |
@@ -361,7 +367,7 @@ Feature: Execute a job
     When I am on the "csv_footwear_product_import" import job page
     And I launch the import job
     And I wait for the "csv_footwear_product_import" job to finish
-    Then I should see "skipped 2"
+    Then I should see the text "skipped 2"
     And there should be 2 product
     And the product "renault-kangoo" should have the following value:
       | length | 2500.0000 CENTIMETER |
@@ -384,7 +390,7 @@ Feature: Execute a job
     When I am on the "csv_footwear_product_import" import job page
     And I launch the import job
     And I wait for the "csv_footwear_product_import" job to finish
-    Then I should see "skipped 2"
+    Then I should see the text "skipped 2"
     And there should be 1 products
     And the product "renault-kangoo" should have the following value:
       | publicPrice | 20000.00 EUR |
@@ -406,11 +412,11 @@ Feature: Execute a job
     When I am on the "csv_footwear_product_import" import job page
     And I launch the import job
     And I wait for the "csv_footwear_product_import" job to finish
-    Then I should see "skipped 3"
+    Then I should see the text "skipped 3"
     And there should be 1 products
     And the product "renault-kangoo" should have the following value:
       | publicPrice | 20000.00 EUR |
-    And I should see "This value should be a valid number.: gruik EUR"
+    And I should see the text "This value should be a valid number.: gruik EUR"
 
   @jira https://akeneo.atlassian.net/browse/PIM-4810
   Scenario: Correctly detach association reference when transformation fails (PIM-4810)
@@ -432,8 +438,8 @@ Feature: Execute a job
     When I am on the "csv_footwear_product_import" import job page
     And I launch the import job
     And I wait for the "csv_footwear_product_import" job to finish
-    Then I should see "skipped 1"
-    And I should see "Property \"associations\" expects a valid product identifier. The product does not exist, \"unknown\" given."
+    Then I should see the text "skipped 1"
+    And I should see the text "Property \"associations\" expects a valid product identifier. The product does not exist, \"unknown\" given."
 
   @jira https://akeneo.atlassian.net/browse/PIM-6152
   Scenario: Display the lines with wrong number of columns

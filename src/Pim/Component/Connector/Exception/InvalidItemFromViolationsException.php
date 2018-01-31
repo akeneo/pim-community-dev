@@ -52,9 +52,13 @@ class InvalidItemFromViolationsException extends BaseInvalidItemException
             } elseif (is_array($invalidValue)) {
                 $invalidValue = implode(', ', $invalidValue);
             }
+
+            $propertyPath = str_replace('-<all_channels>', '', $violation->getPropertyPath());
+            $propertyPath = str_replace('-<all_locales>', '', $propertyPath);
+
             $errors[] = sprintf(
                 "%s: %s: %s\n",
-                $violation->getPropertyPath(),
+                $propertyPath,
                 $violation->getMessage(),
                 $invalidValue
             );

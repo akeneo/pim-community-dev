@@ -1,0 +1,4 @@
+<span class="AknBreadcrumb-item AknBreadcrumb-item--routable breadcrumb-tab" data-code="<%- breadcrumbTab.code %>"><%- breadcrumbTab.label %></span>
+<% if (null !== breadcrumbItem) { %>
+    <span class="AknBreadcrumb-item <%- breadcrumbItem.active ? 'AknBreadcrumb-item--routable' : 'AknBreadcrumb-item--final' %> breadcrumb-item" data-code="<%- breadcrumbItem.code %>"><%- breadcrumbItem.label %></span>
+<% } %>

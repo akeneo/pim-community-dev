@@ -44,7 +44,7 @@ pim_api:
 oro_default:
     path:  /
     defaults:
-        template:    PimDashboardBundle:Dashboard:index.html.twig
+        template:    PimEnrichBundle::index.html.twig
         _controller: FrameworkBundle:Template:template
 
 oro_user:
@@ -56,9 +56,6 @@ oro_config:
 oro_datagrid:
     resource: "@OroDataGridBundle/Resources/config/oro/routing.yml"
 
-oro_navigation:
-    resource: "@OroNavigationBundle/Resources/config/oro/routing.yml"
-
 oro_translation:
     resource: "@OroTranslationBundle/Resources/config/oro/routing.yml"
 
@@ -68,6 +65,3 @@ fos_js_routing:
 
 _liip_imagine:
     resource: "@LiipImagineBundle/Resources/config/routing.xml"
-
-_apy_jsformvalidation:
-    resource: "@APYJsFormValidationBundle/Resources/config/routing/routing.yml"

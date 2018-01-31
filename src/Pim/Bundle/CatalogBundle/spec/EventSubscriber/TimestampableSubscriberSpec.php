@@ -2,10 +2,10 @@
 
 namespace spec\Pim\Bundle\CatalogBundle\EventSubscriber;
 
+use Akeneo\Component\Versioning\Model\VersionableInterface;
 use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\TimestampableInterface;
-use Akeneo\Component\Versioning\Model\VersionableInterface;
 use Prophecy\Argument;
 
 class TimestampableSubscriberSpec extends ObjectBehavior

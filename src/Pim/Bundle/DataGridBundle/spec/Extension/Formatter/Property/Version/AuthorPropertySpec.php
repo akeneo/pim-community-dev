@@ -3,9 +3,9 @@
 namespace spec\Pim\Bundle\DataGridBundle\Extension\Formatter\Property\Version;
 
 use Oro\Bundle\DataGridBundle\Datasource\ResultRecordInterface;
-use Pim\Bundle\UserBundle\Entity\User;
 use Oro\Bundle\UserBundle\Entity\UserManager;
 use PhpSpec\ObjectBehavior;
+use Pim\Bundle\UserBundle\Entity\User;
 use Prophecy\Argument;
 use Symfony\Component\Translation\TranslatorInterface;
 

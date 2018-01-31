@@ -14,5 +14,5 @@ use Context\Page\Base\Form;
 class Edit extends Form
 {
     /** @var string */
-    protected $path = '/user/group/update/{id}';
+    protected $path = '#/user/group/update/{id}';
 }

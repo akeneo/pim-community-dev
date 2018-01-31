@@ -4,10 +4,10 @@ namespace Pim\Component\Catalog\Updater\Setter;
 
 use Akeneo\Component\StorageUtils\Exception\PropertyException;
 use Pim\Component\Catalog\Model\AttributeInterface;
-use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Model\EntityWithValuesInterface;
 
 /**
- * Sets a value in a product
+ * Sets data in a product. Data must respect the PIM standard format.
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
@@ -18,15 +18,15 @@ interface AttributeSetterInterface extends SetterInterface
     /**
      * Set attribute data
      *
-     * @param ProductInterface   $product   The product to modify
-     * @param AttributeInterface $attribute The attribute of the product to modify
-     * @param mixed              $data      The data to set
-     * @param array              $options   Options passed to the setter
+     * @param EntityWithValuesInterface $entityWithValues
+     * @param AttributeInterface        $attribute The attribute of the product to modify
+     * @param mixed                     $data      The data to set
+     * @param array                     $options   Options passed to the setter
      *
      * @throws PropertyException
      */
     public function setAttributeData(
-        ProductInterface $product,
+        EntityWithValuesInterface $entityWithValues,
         AttributeInterface $attribute,
         $data,
         array $options = []

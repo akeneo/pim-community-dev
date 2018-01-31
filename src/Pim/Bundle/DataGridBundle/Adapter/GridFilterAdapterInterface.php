@@ -2,8 +2,6 @@
 
 namespace Pim\Bundle\DataGridBundle\Adapter;
 
-use Symfony\Component\HttpFoundation\Request;
-
 /**
  * Transform Oro filters into Akeneo PIM filters
  *
@@ -14,11 +12,11 @@ use Symfony\Component\HttpFoundation\Request;
 interface GridFilterAdapterInterface
 {
     /**
-     * @param Request $request
+     * @param array $parameters
      *
      * @return array
      *
      * Converter is also eligible
      */
-    public function adapt(Request $request);
+    public function adapt(array $parameters);
 }

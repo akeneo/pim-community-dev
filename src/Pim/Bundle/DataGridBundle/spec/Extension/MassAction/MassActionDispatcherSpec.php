@@ -31,7 +31,7 @@ class MassActionDispatcherSpec extends ObjectBehavior
         DatasourceInterface $datasource,
         QueryBuilder $queryBuilder
     ) {
-        $this->beConstructedWith($handlerRegistry, $manager, $requestParams, $parametersParser);
+        $this->beConstructedWith($handlerRegistry, $manager, $requestParams, $parametersParser, ['product-grid']);
 
         $acceptedDatasource->getQueryBuilder()->willReturn($queryBuilder);
         $grid->getAcceptor()->willReturn($acceptor);
@@ -54,13 +54,19 @@ class MassActionDispatcherSpec extends ObjectBehavior
     ) {
         $request = new Request([
             'inset'      => 'inset',
-            'values'     => 1,
+            'values'     => [1],
             'gridName'   => 'grid',
             'massAction' => $massActionInterface,
             'actionName' => 'mass_edit_action',
         ]);
 
-        $parametersParser->parse($request)->willReturn(['inset' => 'inset', 'values' => [1]]);
+        $parametersParser->parse($request)->willReturn([
+            'inset' => 'inset',
+            'values' => [1],
+            'gridName'   => 'grid',
+            'massAction' => $massActionInterface,
+            'actionName' => 'mass_edit_action',
+        ]);
         $datasource->getMassActionRepository()->willReturn($massActionRepository);
         $massActionRepository->applyMassActionParameters($queryBuilder, 'inset', [1])->willReturn(null);
         $massActionExtension->getMassAction('mass_edit_action', $grid)->willReturn($massActionInterface);
@@ -73,7 +79,13 @@ class MassActionDispatcherSpec extends ObjectBehavior
         $handlerRegistry->getHandler($alias)->willReturn($massActionHandler);
         $massActionHandler->handle($grid, $massActionInterface)->willReturn($massActionHandler);
 
-        $this->dispatch($request)->shouldReturnAnInstanceOf('\Pim\Bundle\DataGridBundle\Extension\MassAction\Handler\MassActionHandlerInterface');
+        $this->dispatch([
+            'inset' => 'inset',
+            'values' => [1],
+            'gridName'   => 'grid',
+            'massAction' => $massActionInterface,
+            'actionName' => 'mass_edit_action',
+        ])->shouldReturnAnInstanceOf('\Pim\Bundle\DataGridBundle\Extension\MassAction\Handler\MassActionHandlerInterface');
     }
 
     function it_throws_an_exception_without_extension($parametersParser, Acceptor $acceptor)
@@ -85,11 +97,20 @@ class MassActionDispatcherSpec extends ObjectBehavior
             'actionName' => 'mass_edit_action',
         ]);
 
-        $parametersParser->parse($request)->willReturn(['inset' => 'inset', 'values' => 1]);
+        $parametersParser->parse($request)->willReturn([
+            'inset'      => 'inset',
+            'values'     => 1,
+            'gridName'   => 'grid',
+            'actionName' => 'mass_edit_action']);
         $acceptor->getExtensions()->willReturn([]);
 
         $this->shouldThrow(new \LogicException("MassAction extension is not applied to datagrid."))
-            ->during('dispatch', [$request]);
+            ->during('dispatch', [[
+            'inset'      => 'inset',
+            'values'     => 1,
+            'gridName'   => 'grid',
+            'actionName' => 'mass_edit_action']
+        ]);
     }
 
     function it_throws_an_exception_with_not_found_mass_action(
@@ -108,12 +129,24 @@ class MassActionDispatcherSpec extends ObjectBehavior
             'actionName' => $massActionName,
         ]);
 
-        $parametersParser->parse($request)->willReturn(['inset' => 'inset', 'values' => 1]);
+        $parametersParser->parse($request)->willReturn([
+            'inset'      => 'inset',
+            'values'     => 1,
+            'gridName'   => 'grid',
+            'massAction' => $massActionInterface,
+            'actionName' => $massActionName
+        ]);
         $acceptor->getExtensions()->willReturn([$massActionExtension]);
         $massActionExtension->getMassAction($massActionName, $grid)->willReturn(false);
 
         $this->shouldThrow(new \LogicException(sprintf('Can\'t find mass action "%s"', $massActionName)))
-            ->during('dispatch', [$request]);
+            ->during('dispatch', [[
+            'inset'      => 'inset',
+            'values'     => 1,
+            'gridName'   => 'grid',
+            'massAction' => $massActionInterface,
+            'actionName' => $massActionName
+        ]]);
     }
 
     function it_throws_an_exception_without_values($parametersParser)
@@ -126,7 +159,7 @@ class MassActionDispatcherSpec extends ObjectBehavior
         $parametersParser->parse($request)->willReturn(['inset' => 'inset', 'values' => '']);
 
         $this->shouldThrow(new \LogicException(sprintf('There is nothing to do in mass action "%s"', $massActionName)))
-            ->during('dispatch', [$request]);
+            ->during('dispatch', [['inset' => 'inset', 'values' => '', 'actionName' => $massActionName]]);
     }
 
     function it_throws_an_exception_if_datasource_is_not_an_instance_of_productdatasource(
@@ -147,12 +180,24 @@ class MassActionDispatcherSpec extends ObjectBehavior
             'actionName' => $massActionName,
         ]);
 
-        $parametersParser->parse($request)->willReturn(['inset' => 'inset', 'values' => [1]]);
+        $parametersParser->parse($request)->willReturn([
+            'inset'      => 'inset',
+            'values'     => [1],
+            'gridName'   => 'grid',
+            'massAction' => $massActionInterface,
+            'actionName' => $massActionName
+        ]);
         $datasource->getMassActionRepository()->willReturn($massActionRepository);
         $massActionExtension->getMassAction($massActionName, $grid)->willReturn($massActionInterface);
         $acceptor->getExtensions()->willReturn([$massActionExtension]);
 
         $this->shouldThrow(new \LogicException('getRawFilters is only implemented for ProductDatasource'))
-            ->during('getRawFilters', [$request]);
+            ->during('getRawFilters', [[
+            'inset'      => 'inset',
+            'values'     => [1],
+            'gridName'   => 'grid',
+            'massAction' => $massActionInterface,
+            'actionName' => $massActionName
+        ]]);
     }
 }

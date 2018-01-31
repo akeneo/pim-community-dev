@@ -1,38 +1,40 @@
 @import '../../base/variables.less';
 
 .AknHorizontalNavtab {
-  border-bottom: 3px solid @AknPurple;
+  border-bottom: 1px solid @AknBorderColor;
   display: flex;
   justify-content: space-between;
   align-items:center;
+
+  &-item {
+    list-style-type: none;
+  }
 
   &-list {
     display: flex;
   }
 
   &-item:not(:last-child) {
-    margin-right: 5px;
+    margin-right: 10px;
   }
 
   &-link {
+    font-size: @AknFontSizeBig;
     height: @AknTabHeight;
     line-height: @AknTabHeight;
     color: @AknDefaultFontColor;
-    background: lighten(@AknGrey, 30%);
-    padding: 0 20px;
-    display: block;
-    border-top: 1px solid @AknBorderColor;
-    border-left: 1px solid @AknBorderColor;
-    border-right: 1px solid @AknBorderColor;
-    border-top-left-radius: 2px;
-    border-top-right-radius: 2px;
+    padding: 0 40px 0 0;
+    display: inline-block;
     cursor: pointer;
+    margin-bottom: -1px;
+    transition: color 0.1s ease-in, border-width 0.1s ease-in;
+    white-space: nowrap;
 
     &--errored {
       font-weight: bold;
       color: @AknRed;
 
-      & :before {
+      &:before {
         display: inline-block;
         margin-right: 5px;
         font-family: 'FontAwesome';
@@ -45,15 +47,15 @@
     }
   };
 
-  &-item:not(&-item--active) &-link:not(&-link--active):hover {
-    background: @AknDefaultHoverBackground;
+  &-item--active {
+    width: 100%;
   }
 
+  &-item:not(&-item--active) &-link:not(&-link--active):hover,
   &-item--active &-link,
   &-link--active {
-    background: @AknPurple;
-    border-color: @AknPurple;
-    color: white;
-    font-weight: bold;
+    background: none;
+    border-bottom: 3px solid @AknLightPurple;
+    color: @AknLightPurple;
   }
 }

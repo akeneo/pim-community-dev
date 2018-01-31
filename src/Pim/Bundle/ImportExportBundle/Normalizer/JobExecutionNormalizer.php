@@ -5,7 +5,8 @@ namespace Pim\Bundle\ImportExportBundle\Normalizer;
 use Akeneo\Component\Batch\Model\JobExecution;
 use Pim\Bundle\ImportExportBundle\JobLabel\TranslatedLabelProvider;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
-use Symfony\Component\Serializer\Normalizer\SerializerAwareNormalizer;
+use Symfony\Component\Serializer\SerializerAwareInterface;
+use Symfony\Component\Serializer\SerializerAwareTrait;
 use Symfony\Component\Translation\TranslatorInterface;
 
 /**
@@ -15,22 +16,29 @@ use Symfony\Component\Translation\TranslatorInterface;
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class JobExecutionNormalizer extends SerializerAwareNormalizer implements NormalizerInterface
+class JobExecutionNormalizer implements NormalizerInterface, SerializerAwareInterface
 {
+    use SerializerAwareTrait;
+
     /** @var TranslatorInterface */
     protected $translator;
 
     /** @var TranslatedLabelProvider */
     protected $labelProvider;
 
+    /** @var NormalizerInterface */
+    protected $jobInstanceNormalizer;
+
     /**
      * @param TranslatorInterface $translator
-     * @param TranslatedLabelProvider    $labelProvider
+     * @param TranslatedLabelProvider $labelProvider
+     * @param NormalizerInterface $jobInstanceNormalizer
      */
-    public function __construct(TranslatorInterface $translator, TranslatedLabelProvider $labelProvider)
+    public function __construct(TranslatorInterface $translator, TranslatedLabelProvider $labelProvider, NormalizerInterface $jobInstanceNormalizer)
     {
         $this->translator = $translator;
         $this->labelProvider = $labelProvider;
+        $this->jobInstanceNormalizer = $jobInstanceNormalizer;
     }
 
     /**
@@ -48,7 +56,6 @@ class JobExecutionNormalizer extends SerializerAwareNormalizer implements Normal
         }
 
         return [
-            'label'          => $this->labelProvider->getJobLabel($object->getJobInstance()->getJobName()),
             'failures'       => array_map(
                 function ($exception) {
                     return $this->translator->trans($exception['message'], $exception['messageParameters']);
@@ -59,7 +66,8 @@ class JobExecutionNormalizer extends SerializerAwareNormalizer implements Normal
             'isRunning'      => $object->isRunning(),
             'status'         => $this->translator->trans(
                 sprintf('pim_import_export.batch_status.%d', $object->getStatus()->getValue())
-            )
+            ),
+            'jobInstance'    => $this->jobInstanceNormalizer->normalize($object->getJobInstance(), 'standard', $context)
         ];
     }
 

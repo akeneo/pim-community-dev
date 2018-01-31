@@ -1,6 +1,9 @@
 parameters:
+    pim_catalog.entity.abstract_product.class:             Pim\Component\Catalog\Model\AbstractProduct
     pim_catalog.entity.product.class:                      Pim\Component\Catalog\Model\Product
-    pim_catalog.entity.product_value.class:                Pim\Component\Catalog\Model\ProductValue
+    pim_catalog.entity.variant_product.class:              Pim\Component\Catalog\Model\VariantProduct
+    pim_catalog.entity.product_model.class:                Pim\Component\Catalog\Model\ProductModel
+    pim_catalog.entity.product_unique_data.class:          Pim\Component\Catalog\Model\ProductUniqueData
     pim_catalog.entity.association.class:                  Pim\Component\Catalog\Model\Association
     pim_catalog.entity.completeness.class:                 Pim\Component\Catalog\Model\Completeness
     pim_catalog.entity.association_type.class:             Pim\Bundle\CatalogBundle\Entity\AssociationType
@@ -26,4 +29,6 @@ parameters:
     pim_catalog.entity.locale.class:                       Pim\Bundle\CatalogBundle\Entity\Locale
     pim_catalog.entity.metric.class:                       Pim\Component\Catalog\Model\Metric
     pim_catalog.entity.product_price.class:                Pim\Component\Catalog\Model\ProductPrice
-    pim_catalog.entity.product_template.class:             Pim\Bundle\CatalogBundle\Entity\ProductTemplate
+    pim_catalog.entity.family_variant.class:               Pim\Component\Catalog\Model\FamilyVariant
+    pim_catalog.entity.family_variant_translation.class:   Pim\Component\Catalog\Model\FamilyVariantTranslation
+    pim_catalog.entity.variant_attribute_set.class:        Pim\Component\Catalog\Model\VariantAttributeSet

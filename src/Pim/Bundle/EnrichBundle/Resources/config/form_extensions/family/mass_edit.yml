@@ -1,16 +1,16 @@
 extensions:
-    pim-family-mass-edit-form:
+    pim-mass-family-edit-form:
         module: pim/form/common/edit-form
 
-    pim-family-mass-edit-form-attributes-toolbar:
+    pim-mass-family-edit-form-attributes-toolbar:
         module: pim/family-edit-form/attributes/toolbar
-        parent: pim-family-mass-edit-form
+        parent: pim-mass-family-edit-form
         targetZone: content
         position: 160
 
-    pim-family-mass-edit-form-attributes-toolbar-add-attribute-by-group:
+    pim-mass-family-edit-form-attributes-toolbar-add-attribute-by-group:
         module: pim/family-edit-form/attributes/toolbar/add-select/attribute-group
-        parent: pim-family-mass-edit-form-attributes-toolbar
+        parent: pim-mass-family-edit-form-attributes-toolbar
         targetZone: attributes-toolbar
         position: 170
         config:
@@ -30,9 +30,9 @@ extensions:
                 disable: 'mass-edit:form:lock'
                 enable: 'mass-edit:form:unlock'
 
-    pim-family-mass-edit-form-attributes-toolbar-add-attribute:
+    pim-mass-family-edit-form-attributes-toolbar-add-attribute:
         module: pim/mass-family-edit-form/toolbar/add-select/attribute
-        parent: pim-family-mass-edit-form-attributes-toolbar
+        parent: pim-mass-family-edit-form-attributes-toolbar
         targetZone: attributes-toolbar
         position: 180
         config:
@@ -46,15 +46,15 @@ extensions:
                 disable: 'mass-edit:form:lock'
                 enable: 'mass-edit:form:unlock'
 
-    pim-family-mass-edit-form-attributes:
+    pim-mass-family-edit-form-attributes:
         module: pim/mass-family-edit-form/attributes
-        parent: pim-family-mass-edit-form
+        parent: pim-mass-family-edit-form
         targetZone: content
         position: 190
         config:
             label: pim_enrich.form.mass_edit.family.attributes.label_label
 
-    pim-family-mass-edit-form-hidden-field-updater:
-        module: pim/mass-family-edit-form/hidden-field-updater
-        parent: pim-family-mass-edit-form
+    pim-mass-family-edit-form-form-model-updater:
+        module: pim/mass-family-edit-form/form-model-updater
+        parent: pim-mass-family-edit-form
         position: 500

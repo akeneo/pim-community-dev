@@ -3,9 +3,14 @@
 namespace spec\Pim\Bundle\EnrichBundle\Form\Type;
 
 use PhpSpec\ObjectBehavior;
+use Pim\Bundle\CatalogBundle\Entity\Category;
+use Pim\Bundle\CatalogBundle\Entity\CategoryTranslation;
 use Pim\Bundle\EnrichBundle\Form\Subscriber\DisableFieldSubscriber;
+use Pim\Bundle\EnrichBundle\Form\Type\CategoryType;
+use Pim\Bundle\EnrichBundle\Form\Type\TranslatableFieldType;
 use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -17,24 +22,24 @@ class CategoryTypeSpec extends ObjectBehavior
         $builder->addEventSubscriber(Argument::any())->willReturn($builder);
 
         $this->beConstructedWith(
-            'Pim\Bundle\CatalogBundle\Entity\Category',
-            'Pim\Bundle\CatalogBundle\Entity\CategoryTranslation'
+            Category::class,
+            CategoryTranslation::class
         );
     }
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('Pim\Bundle\EnrichBundle\Form\Type\CategoryType');
+        $this->shouldHaveType(CategoryType::class);
     }
 
     function it_is_a_form_type()
     {
-        $this->shouldHaveType('Symfony\Component\Form\AbstractType');
+        $this->shouldHaveType(AbstractType::class);
     }
 
-    function it_has_a_name()
+    function it_has_a_block_prefix()
     {
-        $this->getName()->shouldReturn('pim_category');
+        $this->getBlockPrefix()->shouldReturn('pim_category');
     }
 
     function it_builds_the_category_form($builder)
@@ -42,7 +47,7 @@ class CategoryTypeSpec extends ObjectBehavior
         $builder->add('code')->shouldBeCalled();
         $builder->add(
             'label',
-            'pim_translatable_field',
+            TranslatableFieldType::class,
             Argument::type('array')
         )->shouldBeCalled();
 
@@ -61,11 +66,11 @@ class CategoryTypeSpec extends ObjectBehavior
     {
         $resolver->setDefaults(
             [
-                'data_class'  => 'Pim\Bundle\CatalogBundle\Entity\Category'
+                'data_class'  => Category::class
             ]
         )->shouldBeCalled();
 
-        $this->setDefaultOptions($resolver);
+        $this->configureOptions($resolver);
     }
 
     function it_adds_registered_event_subscribers($builder, EventSubscriberInterface $subscriber)

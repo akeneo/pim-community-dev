@@ -3,6 +3,9 @@
 namespace spec\Pim\Bundle\EnrichBundle\Form\Type;
 
 use PhpSpec\ObjectBehavior;
+use Pim\Bundle\CatalogBundle\Entity\AttributeOptionValue;
+use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -10,24 +13,24 @@ class AttributeOptionValueTypeSpec extends ObjectBehavior
 {
     function let()
     {
-        $this->beConstructedWith('Pim\Bundle\CatalogBundle\Entity\AttributeOptionValue');
+        $this->beConstructedWith(AttributeOptionValue::class);
     }
 
     function it_is_a_form_type()
     {
-        $this->shouldBeAnInstanceOf('Symfony\Component\Form\AbstractType');
+        $this->shouldBeAnInstanceOf(AbstractType::class);
     }
 
-    function it_has_a_name()
+    function it_has_a_block_prefix()
     {
-        $this->getName()->shouldReturn('pim_enrich_attribute_option_value');
+        $this->getBlockPrefix()->shouldReturn('pim_enrich_attribute_option_value');
     }
 
     function it_builds_form(FormBuilderInterface $builder)
     {
-        $builder->add('id', 'hidden')->shouldBeCalled();
+        $builder->add('id', HiddenType::class)->shouldBeCalled();
 
-        $builder->add('locale', 'hidden')->shouldBeCalled();
+        $builder->add('locale', HiddenType::class)->shouldBeCalled();
 
         $builder->add('value', null, ['required' => false])->shouldBeCalled();
 
@@ -36,11 +39,11 @@ class AttributeOptionValueTypeSpec extends ObjectBehavior
 
     function it_sets_default_option(OptionsResolver $resolver)
     {
-        $this->setDefaultOptions($resolver, []);
+        $this->configureOptions($resolver);
 
         $resolver->setDefaults(
             [
-                'data_class' => 'Pim\Bundle\CatalogBundle\Entity\AttributeOptionValue',
+                'data_class' => AttributeOptionValue::class,
             ]
         )->shouldHaveBeenCalled();
     }

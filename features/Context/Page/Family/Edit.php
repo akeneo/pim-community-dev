@@ -5,6 +5,7 @@ namespace Context\Page\Family;
 use Context\Page\Base\Form;
 use Context\Spin\SpinCapableTrait;
 use Pim\Behat\Decorator\Common\AddSelect\AttributeGroupAddSelectDecorator;
+use Pim\Behat\Decorator\Common\AttributeSelectorDecorator;
 
 /**
  * Family edit page
@@ -20,7 +21,7 @@ class Edit extends Form
     /**
      * @var string
      */
-    protected $path = '/configuration/family/{code}/edit';
+    protected $path = '#/configuration/family/{code}/edit';
 
     /**
      * {@inheritdoc}
@@ -32,19 +33,24 @@ class Edit extends Form
         $this->elements = array_merge(
             $this->elements,
             [
-                'Attributes'                        => ['css' => '.tab-pane.tab-attribute table'],
-                'Attribute as label choices'        => ['css' => '#pim_enrich_family_form_label_attribute_as_label'],
-                'Available attributes button'       => ['css' => '.add-attribute a.select2-choice'],
-                'Available attribute groups button' => ['css' => '.add-attribute-group a.select2-choice'],
-                'Available attributes list'         => ['css' => '.add-attribute .select2-results'],
-                'Available attribute groups list'   => ['css' => '.add-attribute-group .select2-results'],
-                'Available attributes search'       => ['css' => '.add-attribute .select2-search input[type="text"]'],
-                'Available attribute groups search' => ['css' => '.add-attribute-group .select2-search input[type="text"]'],
-                'Available groups'                  => [
+                'Attributes'                         => ['css' => '.tab-pane.tab-attribute table'],
+                'Attribute as label choices'         => ['css' => '#pim_enrich_family_form_label_attribute_as_label'],
+                'Available attributes button'        => ['css' => '.add-attribute a.select2-choice'],
+                'Available attribute groups button'  => ['css' => '.add-attribute-group a.select2-choice'],
+                'Available attributes list'          => ['css' => '.add-attribute .select2-results'],
+                'Available attribute groups list'    => ['css' => '.add-attribute-group .select2-results'],
+                'Available attributes search'        => ['css' => '.add-attribute .select2-search input[type="text"]'],
+                'Available attribute groups search'  => ['css' => '.add-attribute-group .select2-search input[type="text"]'],
+                'Available groups'                   => [
                     'css'        => '.add-attribute-group',
                     'decorators' => [AttributeGroupAddSelectDecorator::class],
                 ],
-                'Select2 dropmask'                  => ['css' => '.select2-drop-mask'],
+                'Select2 dropmask'                   => ['css' => '.select2-drop-mask'],
+                'Add family variant'                 => ['css' => '.add-variant'],
+                'edit family variant attribute sets' => [
+                    'css' => '.AknFamilyVariant.family-variant-levels',
+                    'decorators' => [AttributeSelectorDecorator::class],
+                ],
             ]
         );
     }
@@ -124,15 +130,16 @@ class Edit extends Form
      */
     public function getAttributeAsLabelOptions()
     {
-        $options = array_map(
+        $options = $this->spin(function () {
+            return $this->getElement('Attribute as label choices')->findAll('css', 'option');
+        }, 'Cannot find attribute as label choices.');
+
+        return array_map(
             function ($option) {
                 return trim($option->getText());
             },
-            $this->getElement('Attribute as label choices')->findAll('css', 'option')
+            $options
         );
-        $options[0] = $this->find('css', '#s2id_pim_enrich_family_form_label_attribute_as_label .select2-chosen')->getText();
-
-        return $options;
     }
 
     /**
@@ -224,5 +231,17 @@ class Edit extends Form
         }, 'Can not find add by group select');
 
         $addGroupElement->addOptions($groups);
+    }
+
+    /**
+     * Open the add family variant creation form
+     */
+    public function openFamilyVariantCreationForm()
+    {
+        $addFamilyVariantButton = $this->spin(function () {
+            return $this->getElement('Add family variant');
+        }, 'Can not find Add family variant button');
+
+        $addFamilyVariantButton->click();
     }
 }

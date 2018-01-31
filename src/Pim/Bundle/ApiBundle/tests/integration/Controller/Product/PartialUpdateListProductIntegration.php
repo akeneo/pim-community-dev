@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Pim\Bundle\ApiBundle\tests\integration\Controller\Product;
 
 use Akeneo\Test\Integration\Configuration;
@@ -34,7 +36,6 @@ JSON;
 {"line":2,"identifier":"my_identifier","status_code":201}
 JSON;
 
-
         $response = $this->executeStreamRequest('PATCH', 'api/rest/v1/products', [], [], [], $data);
         $httpResponse = $response['http_response'];
 
@@ -47,8 +48,8 @@ JSON;
             'product_family' => [
                 'identifier'    => 'product_family',
                 'family'        => 'familyA1',
+                'parent'        => null,
                 'groups'        => [],
-                'variant_group' => null,
                 'categories'    => [],
                 'enabled'       => true,
                 'values'        => [
@@ -63,8 +64,8 @@ JSON;
             'my_identifier'  => [
                 'identifier'    => 'my_identifier',
                 'family'        => 'familyA2',
+                'parent'        => null,
                 'groups'        => [],
-                'variant_group' => null,
                 'categories'    => [],
                 'enabled'       => true,
                 'values'        => [
@@ -234,12 +235,12 @@ JSON;
     {
         $data =
 <<<JSON
-    {"identifier": "foo", "variant_group":"bar"}
+    {"identifier": "foo", "group":"bar"}
 JSON;
 
         $expectedContent =
 <<<JSON
-{"line":1,"identifier":"foo","status_code":422,"message":"Property \"variant_group\" expects a valid variant group code. The variant group does not exist, \"bar\" given. Check the standard format documentation.","_links":{"documentation":{"href":"http:\/\/api.akeneo.com\/api-reference.html#patch_products__code_"}}}
+{"line":1,"identifier":"foo","status_code":422,"message":"Property \"group\" does not exist. Check the expected format on the API documentation.","_links":{"documentation":{"href":"http:\/\/api.akeneo.com\/api-reference.html#patch_products__code_"}}}
 JSON;
 
         $response = $this->executeStreamRequest('PATCH', 'api/rest/v1/products', [], [], [], $data);
@@ -304,77 +305,10 @@ JSON;
     }
 
     /**
-     * Execute a request where the response is streamed by chunk.
-     *
-     * The whole content of the request and the whole content of the response
-     * are loaded in memory.
-     * Therefore, do not use this function on with an high input/output volumetry.
-     *
-     * @param string $method
-     * @param string $uri
-     * @param array  $parameters
-     * @param array  $files
-     * @param array  $server
-     * @param string $content
-     * @param bool   $changeHistory
-     *
-     * @return array
-     */
-    protected function executeStreamRequest(
-        $method,
-        $uri,
-        array $parameters = [],
-        array $files = [],
-        array $server = [],
-        $content = null,
-        $changeHistory = true
-    ) {
-        $streamedContent = '';
-
-        ob_start(function($buffer) use (&$streamedContent) {
-            $streamedContent .= $buffer;
-
-            return '';
-        });
-
-        $client = $this->createAuthenticatedClient();
-        $client->setServerParameter('CONTENT_TYPE', StreamResourceResponse::CONTENT_TYPE);
-        $client->request($method, $uri, $parameters, $files, $server, $content, $changeHistory);
-
-        ob_end_flush();
-
-        $response = [
-            'http_response' => $client->getResponse(),
-            'content'       => $streamedContent,
-        ];
-
-        return $response;
-    }
-
-    /**
-     * @param array  $expectedProduct normalized data of the product that should be created
-     * @param string $identifier      identifier of the product that should be created
-     */
-    protected function assertSameProducts(array $expectedProduct, $identifier)
-    {
-        $product = $this->get('pim_catalog.repository.product')->findOneByIdentifier($identifier);
-        $normalizer = $this->get('pim_catalog.normalizer.standard.product');
-        $standardizedProduct = $normalizer->normalize($product);
-
-        $standardizedProduct = static::sanitizeDateFields($standardizedProduct);
-        $expectedProduct = static::sanitizeDateFields($expectedProduct);
-
-        $standardizedProduct = static::sanitizeMediaAttributeData($standardizedProduct);
-        $expectedProduct = static::sanitizeMediaAttributeData($expectedProduct);
-
-        $this->assertSame($expectedProduct, $standardizedProduct);
-    }
-
-    /**
      * {@inheritdoc}
      */
-    protected function getConfiguration()
+    protected function getConfiguration(): Configuration
     {
-        return new Configuration([Configuration::getTechnicalCatalogPath()]);
+        return $this->catalog->useTechnicalCatalog();
     }
 }

@@ -1,0 +1,86 @@
+@import '../../base/variables';
+
+.AknCompletenessPanel {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); // This means: create as many columns as needed with the same width, and width must be 300px minimum.
+  grid-column-gap: 20px;
+  grid-row-gap: 20px;
+  margin-top: 20px;
+
+  &-block {
+    padding: 8px 20px 20px 20px;
+    border: 1px solid @AknBorderColor;
+  }
+
+  &-header {
+    border-bottom: 1px solid @AknBorderColor;
+    height: @AknBigButtonSize;
+    line-height: @AknBigButtonSize;
+    display: flex;
+    color: @AknDarkBlue;
+    font-size: @AknFontSizeBig;
+  }
+
+  &-headerLocale {
+    text-transform: uppercase;
+    flex-grow: 1;
+  }
+
+  &-headerStats {
+  }
+
+  &-content {
+  }
+
+  &-channel {
+    margin-top: 10px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  &-channelTitle {
+    text-transform: capitalize;
+    font-size: @AknFontSizeBig;
+  }
+
+  &-missing {
+    color: @AknLightFontColor;
+    font-size: @AknFontSizeSmall;
+    padding-top: 6px;
+  }
+
+  &-progressContainer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 5px;
+    margin-bottom: 5px;
+  }
+
+  &-progress {
+    flex-basis: 85%;
+  }
+
+  &-progressRatio {
+    font-size: @AknFontSizeSmall;
+    margin-left: 10px;
+  }
+
+  &[data-closed="true"] &-content {
+    display: none;
+  }
+
+  &[data-closed="true"] &-arrow:before {
+    transform: rotate(90deg);
+  }
+
+  &-highlight {
+    cursor: pointer;
+    color: @AknLightPurple;
+    transition: color 0.1s ease-in;
+
+    &:hover {
+      color: @AknPurple;
+    }
+  }
+}

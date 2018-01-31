@@ -2,15 +2,16 @@
 
 namespace Pim\Component\Catalog\Manager;
 
-use Doctrine\Common\Collections\ArrayCollection;
-use Pim\Component\Catalog\Completeness\Checker\ProductValueCompleteCheckerInterface;
+use Pim\Component\Catalog\Completeness\Checker\ValueCompleteCheckerInterface;
 use Pim\Component\Catalog\Completeness\CompletenessGeneratorInterface;
+use Pim\Component\Catalog\Completeness\CompletenessRemoverInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\AttributeRequirementInterface;
 use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Component\Catalog\Model\LocaleInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Model\ValueCollectionInterface;
 use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
 use Pim\Component\Catalog\Repository\FamilyRepositoryInterface;
 use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
@@ -37,34 +38,34 @@ class CompletenessManager
     /** @var CompletenessGeneratorInterface */
     protected $generator;
 
-    /** @var ProductValueCompleteCheckerInterface */
+    /** @var CompletenessRemoverInterface */
+    protected $remover;
+
+    /** @var ValueCompleteCheckerInterface */
     protected $valueCompleteChecker;
 
-    /** @var string */
-    protected $class;
-
     /**
-     * @param FamilyRepositoryInterface            $familyRepository
-     * @param ChannelRepositoryInterface           $channelRepository
-     * @param LocaleRepositoryInterface            $localeRepository
-     * @param CompletenessGeneratorInterface       $generator
-     * @param ProductValueCompleteCheckerInterface $valueCompleteChecker
-     * @param string                               $class
+     * @param FamilyRepositoryInterface      $familyRepository
+     * @param ChannelRepositoryInterface     $channelRepository
+     * @param LocaleRepositoryInterface      $localeRepository
+     * @param CompletenessGeneratorInterface $generator
+     * @param CompletenessRemoverInterface   $remover
+     * @param ValueCompleteCheckerInterface  $valueCompleteChecker
      */
     public function __construct(
         FamilyRepositoryInterface $familyRepository,
         ChannelRepositoryInterface $channelRepository,
         LocaleRepositoryInterface $localeRepository,
         CompletenessGeneratorInterface $generator,
-        ProductValueCompleteCheckerInterface $valueCompleteChecker,
-        $class
+        CompletenessRemoverInterface $remover,
+        ValueCompleteCheckerInterface $valueCompleteChecker
     ) {
         $this->familyRepository = $familyRepository;
         $this->channelRepository = $channelRepository;
         $this->localeRepository = $localeRepository;
         $this->generator = $generator;
+        $this->remover = $remover;
         $this->valueCompleteChecker = $valueCompleteChecker;
-        $this->class = $class;
     }
 
     /**
@@ -103,7 +104,7 @@ class CompletenessManager
     public function schedule(ProductInterface $product)
     {
         if ($product->getId()) {
-            $this->generator->schedule($product);
+            $this->remover->removeForProduct($product);
         }
     }
 
@@ -116,7 +117,7 @@ class CompletenessManager
     public function scheduleForFamily(FamilyInterface $family)
     {
         if ($family->getId()) {
-            $this->generator->scheduleForFamily($family);
+            $this->remover->removeForFamily($family);
         }
     }
 
@@ -248,15 +249,15 @@ class CompletenessManager
     /**
      * Adds a requirement to the completenesses
      *
-     * @param array                         &$completenesses
+     * @param array                         $completenesses
      * @param AttributeRequirementInterface $requirement
-     * @param ArrayCollection               $productValues
+     * @param ValueCollectionInterface      $productValues
      * @param LocaleInterface[]             $locales
      */
     protected function addRequirementToCompleteness(
         array &$completenesses,
         AttributeRequirementInterface $requirement,
-        ArrayCollection $productValues,
+        ValueCollectionInterface $productValues,
         array $locales
     ) {
         $attribute = $requirement->getAttribute();

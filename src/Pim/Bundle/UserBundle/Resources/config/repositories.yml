@@ -6,24 +6,21 @@ parameters:
 services:
     pim_user.repository.role:
         class: '%pim_user.repository.role.class%'
-        factory_service: doctrine.orm.entity_manager
-        factory_method: getRepository
+        factory: 'doctrine.orm.entity_manager:getRepository'
         arguments: ['%pim_user.entity.role.class%']
         tags:
             - { name: pim_repository }
 
     pim_user.repository.group:
         class: '%pim_user.repository.group.class%'
-        factory_service: doctrine.orm.entity_manager
-        factory_method: getRepository
+        factory: 'doctrine.orm.entity_manager:getRepository'
         arguments: ['%pim_user.entity.group.class%']
         tags:
             - { name: pim_repository }
 
     pim_user.repository.user:
         class: '%pim_user.repository.user.class%'
-        factory_service: doctrine.orm.entity_manager
-        factory_method: getRepository
+        factory: 'doctrine.orm.entity_manager:getRepository'
         arguments: ['%pim_user.entity.user.class%']
         tags:
             - { name: pim_repository }

@@ -13,6 +13,7 @@ define(
                 if (storageEnabled && null !== sessionStorage.getItem(lastPatchKey)) {
                     var deferred = $.Deferred();
                     deferred.resolve(sessionStorage.getItem(lastPatchKey));
+
                     return deferred.promise();
 
                 } else {
@@ -31,6 +32,7 @@ define(
                             var patch = patchData.last_patch.name;
                             var cleanedPatch = patch.replace(/^v/g, '');
                             sessionStorage.setItem(lastPatchKey, cleanedPatch);
+
                             return cleanedPatch;
                         });
                     });

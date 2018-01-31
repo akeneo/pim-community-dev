@@ -13,13 +13,13 @@ Feature: Edit common attributes with permissions
   @jira https://akeneo.atlassian.net/browse/PIM-5727
   Scenario: Successfully select attribute when user have no "add attributes" permission
     Given I am logged in as "Mary"
-    And I am on the products page
+    And I am on the products grid
     And I select row boots
-    And I press "Change product information" on the "Bulk Actions" dropdown button
-    When I choose the "Edit common attributes" operation
+    And I press the "Bulk actions" button
+    When I choose the "Edit attributes" operation
     Then I should see the text "Select attributes"
     And I display the Name attribute
     And I change the "Name" to "boots"
-    And I move on to the next step
-    And I wait for the "edit-common-attributes" mass-edit job to finish
-    And the english name of "boots" should be "boots"
+    And I confirm mass edit
+    And I wait for the "edit_common_attributes" job to finish
+    And the english localizable value name of "boots" should be "boots"

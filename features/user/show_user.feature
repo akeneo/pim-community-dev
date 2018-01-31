@@ -11,11 +11,11 @@ Feature: Show a user
   Scenario: Successfully show user locale
     Given I show the "Mary" user
     And I visit the "Interfaces" tab
-    Then I should see "Ui locale"
-    And I should see "English (United States)"
+    Then I should see the text "Ui locale"
+    And I should see the text "English (United States)"
 
   Scenario: Successfully show my locale
     Given I am on the User profile show page
     And I visit the "Interfaces" tab
-    Then I should see "Ui locale"
-    And I should see "English (United States)"
+    Then I should see the text "Ui locale"
+    And I should see the text "English (United States)"

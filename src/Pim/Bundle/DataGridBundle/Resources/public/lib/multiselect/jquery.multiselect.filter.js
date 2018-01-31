@@ -1,4 +1,3 @@
-/* jshint forin:true, noarg:true, noempty:true, eqeqeq:true, boss:true, undef:true, curly:true, browser:true, jquery:true */
 /*
  * jQuery MultiSelect UI ImportExport Filtering Plugin 1.5pre
  * Copyright (c) 2012 Eric Hynds
@@ -13,7 +12,7 @@
  *   http://www.gnu.org/licenses/gpl.html
  *
  */
-(function($) {
+define(['jquery'], function ($) {
   var rEscape = /[\-\[\]{}()*+?.,\\\^$|#\s]/g;
 
   $.widget('ech.multiselectfilter', {
@@ -182,4 +181,4 @@
     }
   });
 
-})(jQuery);
+});

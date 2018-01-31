@@ -12,15 +12,25 @@
  */
 define(
     [
+        'jquery',
+        'underscore',
         'pim/field-manager',
         'pim/security-context',
         'pim/form/common/attributes',
+        'pim/fetcher-registry',
+        'pim/attribute-manager',
+        'pim/user-context',
         'oro/mediator'
     ],
     function (
+        $,
+        _,
         FieldManager,
         SecurityContext,
         BaseAttributes,
+        FetcherRegistry,
+        AttributeManager,
+        UserContext,
         mediator
     ) {
         return BaseAttributes.extend({
@@ -34,6 +44,7 @@ define(
             configure: function () {
                 mediator.on('mass-edit:form:lock', this.onLock.bind(this));
                 mediator.on('mass-edit:form:unlock', this.onUnlock.bind(this));
+                this.onExtensions('add-attribute:add', this.addAttributes.bind(this));
 
                 return BaseAttributes.prototype.configure.apply(this, arguments);
             },
@@ -47,9 +58,47 @@ define(
                 if (field.canBeSeen()) {
                     field.setLocked(this.locked);
                     field.render();
-                    FieldManager.addVisibleField(field.attribute.code);
                     panel.append(field.$el);
                 }
+            },
+
+            /**
+             * Add an attribute to the current attribute list
+             *
+             * @param {Event} event
+             */
+            addAttributes: function (event) {
+                var attributeCodes = event.codes;
+
+                $.when(
+                    FetcherRegistry.getFetcher('attribute').fetchByIdentifiers(attributeCodes),
+                    FetcherRegistry.getFetcher('locale').fetch(UserContext.get('catalogLocale')),
+                    FetcherRegistry.getFetcher('channel')
+                        .fetch(UserContext.get('catalogScope'), {force_list_method: true}),
+                    FetcherRegistry.getFetcher('currency').fetchAll()
+                ).then(function (attributes, locale, channel, currencies) {
+                    var formData = this.getFormData();
+
+                    _.each(attributes, function (attribute) {
+                        if (!formData.values[attribute.code]) {
+                            formData.values[attribute.code] = AttributeManager.generateMissingValues(
+                                [],
+                                attribute,
+                                [locale],
+                                [channel],
+                                currencies
+                            );
+                        }
+                    });
+
+                    this.getExtension('attribute-group-selector').setCurrent(
+                        _.first(attributes).group
+                    );
+
+                    this.setData(formData);
+
+                    this.getRoot().trigger('pim_enrich:form:add-attribute:after');
+                }.bind(this));
             },
 
             /**
@@ -85,6 +134,7 @@ define(
                 this.triggerExtensions('add-attribute:update:available-attributes');
 
                 delete product.values[attributeCode];
+                // TODO: the manager's internal state shouldn't be modified by reference
                 delete fields[attributeCode];
 
                 this.setData(product);

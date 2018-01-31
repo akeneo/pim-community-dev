@@ -13,16 +13,20 @@ define(
         'underscore',
         'oro/mediator',
         'pim/form',
-        'text!pim/template/product/meta/family',
+        'pim/template/product/meta/family',
         'pim/fetcher-registry',
         'pim/user-context',
         'pim/i18n'
     ],
     function ($, _, mediator, BaseForm, template, FetcherRegistry, UserContext, i18n) {
         return BaseForm.extend({
-            tagName: 'span',
-            className: 'AknTitleContainer-metaItem',
+            className: 'AknColumn-block',
+
             template: _.template(template),
+
+            /**
+             * {@inheritdoc}
+             */
             configure: function () {
                 this.listenTo(this.getRoot(), 'pim_enrich:form:entity:post_update', this.render);
                 UserContext.off('change:catalogLocale change:catalogScope', this.render);
@@ -30,6 +34,10 @@ define(
 
                 return BaseForm.prototype.configure.apply(this, arguments);
             },
+
+            /**
+             * {@inheritdoc}
+             */
             render: function () {
                 if (!this.configured) {
                     return this;

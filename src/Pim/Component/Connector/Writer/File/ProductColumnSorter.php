@@ -4,6 +4,7 @@ namespace Pim\Component\Connector\Writer\File;
 
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Pim\Component\Catalog\Repository\AssociationTypeRepositoryInterface;
+use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\FieldSplitter;
 
 /**
@@ -15,27 +16,27 @@ use Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\FieldSplitter;
  */
 class ProductColumnSorter extends DefaultColumnSorter implements ColumnSorterInterface
 {
-    /** @var IdentifiableObjectRepositoryInterface */
-    protected $productRepository;
+    /** @var  AttributeRepositoryInterface */
+    protected $attributeRepository;
 
     /** @var AssociationTypeRepositoryInterface */
     protected $associationTypeRepository;
 
     /**
      * @param FieldSplitter                         $fieldSplitter
-     * @param IdentifiableObjectRepositoryInterface $productRepository
+     * @param AttributeRepositoryInterface          $attributeRepository
      * @param AssociationTypeRepositoryInterface    $associationTypeRepository
      * @param array                                 $firstDefaultColumns
      */
     public function __construct(
         FieldSplitter $fieldSplitter,
-        IdentifiableObjectRepositoryInterface $productRepository,
+        AttributeRepositoryInterface $attributeRepository,
         AssociationTypeRepositoryInterface $associationTypeRepository,
         array $firstDefaultColumns
     ) {
         parent::__construct($fieldSplitter, $firstDefaultColumns);
 
-        $this->productRepository         = $productRepository;
+        $this->attributeRepository       = $attributeRepository;
         $this->associationTypeRepository = $associationTypeRepository;
     }
 
@@ -44,7 +45,7 @@ class ProductColumnSorter extends DefaultColumnSorter implements ColumnSorterInt
      */
     public function sort(array $columns, array $context = [])
     {
-        $identifier = $this->productRepository->getIdentifierProperties()[0];
+        $identifier = $this->attributeRepository->getIdentifierCode();
 
         if (isset($context['filters']['structure']['attributes']) &&
             !empty($context['filters']['structure']['attributes'])

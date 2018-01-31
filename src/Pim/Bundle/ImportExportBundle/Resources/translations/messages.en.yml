@@ -46,32 +46,24 @@ pim_import_export:
 
 # Page titles:
 pim_title.export_profile.index:   Export profiles management
-pim_title.export_profile.edit:    Export profiles %job.label% | Edit
-pim_title.export_profile.show:    Export profiles %job.label% | Show
+pim_title.export_profile.edit:    Export profile %job.label% | Edit
+pim_title.export_profile.show:    Export profile %job.label% | Show
 pim_title.export_execution.index: Export executions history
 pim_title.export_execution.show:  Export executions | Details
 
 pim_title.import_profile.index:   Import profiles management
-pim_title.import_profile.edit:    Import profiles %job.label% | Edit
-pim_title.import_profile.show:    Import profiles %job.label% | Show
+pim_title.import_profile.edit:    Import profile %job.label% | Edit
+pim_title.import_profile.show:    Import profile %job.label% | Show
 pim_title.import_execution.index: Import executions history
 pim_title.import_execution.show:  Import executions | Details
 
 # Entity and page header titles
 export profile:
     title:    export profile
-    overview: export profile overview
-    create:   create export profile
     edit:     edit export profile
-export report:
-    overview: export reports
 import profile:
     title:    import profile
-    overview: import profile overview
-    create:   create import profile
     edit:     edit import profile
-import report:
-    overview: import reports
 
 # ACLs
 pim_importexport:
@@ -139,14 +131,6 @@ flash:
         updated: The import has been successfully updated
         running: The import is running
 
-# Menu entries
-pim_menu:
-    item:
-        export_history: Exports history
-        export_profile: Export profiles
-        import_history: Imports history
-        import_profile: Import profiles
-
 # Tabs
 General properties: General properties
 History: History
@@ -190,7 +174,7 @@ Start:    Start
 End:      End
 
 # Process tracker
-set_attribute_requirements: Set attribute requirements
+set_attribute_requirements: Set attributes requirements
 COMPLETED: Completed
 STARTING: Starting
 STARTED: Started

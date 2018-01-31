@@ -3,26 +3,25 @@
 namespace spec\Pim\Component\Catalog\Updater\Copier;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Factory\MetricFactory;
-use Pim\Component\Catalog\Builder\ProductBuilderInterface;
+use Pim\Component\Catalog\Builder\EntityWithValuesBuilderInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
-use Pim\Component\Catalog\Model\MetricInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
-use Pim\Component\Catalog\Model\ProductValue;
+use Pim\Component\Catalog\Value\ScalarValue;
 use Pim\Component\Catalog\Validator\AttributeValidatorHelper;
 use Prophecy\Argument;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class MetricAttributeCopierSpec extends ObjectBehavior
 {
     function let(
-        ProductBuilderInterface $builder,
+        EntityWithValuesBuilderInterface $builder,
         AttributeValidatorHelper $attrValidatorHelper,
-        MetricFactory $metricFactory
+        NormalizerInterface $normalizer
     ) {
         $this->beConstructedWith(
             $builder,
             $attrValidatorHelper,
-            $metricFactory,
+            $normalizer,
             ['pim_catalog_metric'],
             ['pim_catalog_metric']
         );
@@ -54,18 +53,14 @@ class MetricAttributeCopierSpec extends ObjectBehavior
 
     function it_copies_a_metric_value_to_a_product_value(
         $builder,
-        $metricFactory,
         $attrValidatorHelper,
-        MetricInterface $metric,
+        $normalizer,
         AttributeInterface $fromAttribute,
         AttributeInterface $toAttribute,
         ProductInterface $product1,
         ProductInterface $product2,
-        ProductInterface $product3,
-        ProductInterface $product4,
-        ProductValue $fromProductValue,
-        ProductValue $toProductValue,
-        ProductValue $toProductValue2
+        ScalarValue $fromValue,
+        ScalarValue $toValue
     ) {
         $fromLocale = 'fr_FR';
         $toLocale = 'fr_FR';
@@ -79,39 +74,25 @@ class MetricAttributeCopierSpec extends ObjectBehavior
         $attrValidatorHelper->validateScope(Argument::cetera())->shouldBeCalled();
         $attrValidatorHelper->validateUnitFamilies(Argument::cetera())->shouldBeCalled();
 
-        $fromProductValue->getData()->willReturn($metric);
-        $toProductValue->setMetric($metric)->shouldBeCalledTimes(2);
-        $toProductValue->getData()->willReturn($metric);
-        $toProductValue->getMetric()->willReturn($metric);
+        $normalizer
+            ->normalize($fromValue, 'standard')
+            ->willReturn([
+                'locale' => 'fr_FR',
+                'scope'  => 'mobile',
+                'data'   => ['amount' => 123, 'unit' => 'GRAM'],
+            ]);
 
-        $toProductValue2->setMetric($metric)->shouldBeCalledTimes(1);
-        $toProductValue2->getData()->willReturn($metric);
-        $toProductValue2->getMetric()->willReturn(null);
-
-        $metric->getFamily()->shouldBeCalled()->willReturn('Weight');
-        $metric->getData()->shouldBeCalled()->willReturn(123);
-        $metric->getUnit()->shouldBeCalled()->willReturn('kg');
-
-        $metric->setData(123)->shouldBeCalled();
-        $metric->setUnit('kg')->shouldBeCalled();
-
-        $product1->getValue('fromAttributeCode', $fromLocale, $fromScope)->willReturn($fromProductValue);
-        $product1->getValue('toAttributeCode', $toLocale, $toScope)->willReturn($toProductValue);
+        $product1->getValue('fromAttributeCode', $fromLocale, $fromScope)->willReturn($fromValue);
+        $builder
+            ->addOrReplaceValue($product1, $toAttribute, $toLocale, $toScope, ['amount' => 123, 'unit' => 'GRAM'])
+            ->willReturn($toValue);
 
         $product2->getValue('fromAttributeCode', $fromLocale, $fromScope)->willReturn(null);
-        $product2->getValue('toAttributeCode', $toLocale, $toScope)->willReturn($toProductValue);
+        $builder
+            ->addOrReplaceValue($product2, $toAttribute, $toLocale, $toScope, null)
+            ->shouldNotBeCalled();
 
-        $product3->getValue('fromAttributeCode', $fromLocale, $fromScope)->willReturn($fromProductValue);
-        $product3->getValue('toAttributeCode', $toLocale, $toScope)->willReturn(null);
-
-        $product4->getValue('fromAttributeCode', $fromLocale, $fromScope)->willReturn($fromProductValue);
-        $product4->getValue('toAttributeCode', $toLocale, $toScope)->willReturn($toProductValue2);
-
-        $metricFactory->createMetric('Weight')->shouldBeCalledTimes(1)->willReturn($metric);
-
-        $builder->addOrReplaceProductValue($product3, $toAttribute, $toLocale, $toScope)->shouldBeCalledTimes(1)->willReturn($toProductValue);
-
-        $products = [$product1, $product2, $product3, $product4];
+        $products = [$product1, $product2];
         foreach ($products as $product) {
             $this->copyAttributeData(
                 $product,

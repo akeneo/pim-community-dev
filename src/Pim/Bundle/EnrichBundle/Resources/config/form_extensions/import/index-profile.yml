@@ -1,0 +1,71 @@
+extensions:
+    pim-import-profile-index:
+        module: pim/common/simple-view
+        config:
+            template: pim/template/common/default-template
+
+    pim-import-profile-index-grid-container:
+        module: pim/common/simple-view
+        parent: pim-import-profile-index
+        targetZone: content
+        config:
+            template: pim/template/form/index/index
+
+    pim-import-profile-index-user-navigation:
+        module: pim/menu/user-navigation
+        parent: pim-import-profile-index
+        targetZone: user-menu
+        config:
+            userAccount: pim_menu.user.user_account
+            logout: pim_menu.user.logout
+
+    pim-import-profile-index-grid-title:
+        module: pim/common/grid-title
+        parent: pim-import-profile-index
+        targetZone: title
+        config:
+            title: pim_enrich.index.import_profiles.title
+
+    pim-import-profile-index-breadcrumbs:
+        module: pim/common/breadcrumbs
+        parent: pim-import-profile-index
+        targetZone: breadcrumbs
+        config:
+            tab: pim-menu-imports
+
+    pim-import-profile-index-filters-list:
+        module: oro/datafilter/filters-list
+        parent: pim-import-profile-index-grid-container
+        targetZone: filters
+
+    pim-import-profile-index-filters-manage:
+        module: oro/datafilter/filters-button
+        parent: pim-import-profile-index-grid-container
+        targetZone: filters
+
+    pim-import-profile-index-pagination:
+        module: oro/datagrid/pagination-input
+        parent: pim-import-profile-index-grid-container
+        targetZone: toolbar
+        config:
+            gridName: import-profile-grid
+
+    pim-import-profile-index-grid:
+        module: pim/form/common/index/grid
+        parent: pim-import-profile-index-grid-container
+        position: 1000
+        config:
+            alias: import-profile-grid
+            metadata:
+                jobType: import
+
+    pim-import-profile-index-create-button:
+        module: pim/form/common/index/create-button
+        parent: pim-import-profile-index
+        targetZone: buttons
+        position: 100
+        aclResourceId: pim_importexport_import_profile_create
+        config:
+           iconName:  plus
+           title:     pim_enrich.index.import_profiles.create_btn
+           modalForm: pim-import-profile-create-modal

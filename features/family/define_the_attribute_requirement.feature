@@ -1,3 +1,4 @@
+@javascript
 Feature: Define the attribute requirement
   In order to ensure product completeness when exporting them
   As an administrator
@@ -8,7 +9,6 @@ Feature: Define the attribute requirement
     And I am logged in as "Peter"
     And I am on the "Boots" family page
 
-  @javascript
   Scenario: Successfully display the attribute requirements
     Given I visit the "Attributes" tab
     Then attribute "name" should be required in channels mobile and tablet
@@ -16,7 +16,6 @@ Feature: Define the attribute requirement
     And attribute "side_view" should be required in channel tablet
     And attribute "side_view" should not be required in channel mobile
 
-  @javascript
   Scenario: Successfully make an attribute required for a channel
     Given I visit the "Attributes" tab
     And I switch the attribute "rating" requirement in channel "mobile"
@@ -26,7 +25,6 @@ Feature: Define the attribute requirement
     And I visit the "Attributes" tab
     Then attribute "rating" should be required in channels mobile and tablet
 
-  @javascript
   Scenario: Successfully make an attribute optional for a channel
     Given I visit the "Attributes" tab
     And I switch the attribute "description" requirement in channel "tablet"
@@ -36,18 +34,17 @@ Feature: Define the attribute requirement
     And I visit the "Attributes" tab
     Then attribute "description" should not be required in channels mobile and tablet
 
-  @javascript
   Scenario: Ensure attribute requirement removal
     Given the following product:
       | sku      | family | name-en_US | price          | size | color |
       | BIGBOOTS | Boots  | Big boots  | 20 EUR, 20 USD | 35   | Black |
     And I launched the completeness calculator
     When I am on the "BIGBOOTS" product page
-    And I open the "Completeness" panel
+    And I visit the "Completeness" column tab
     Then I should see the completeness:
-      | channel | locale | state   | missing_values                                     | ratio |
-      | mobile  | en_US  | success |                                                    | 100%  |
-      | tablet  | en_US  | warning | Description, Weather conditions, Rating, Side view | 56%   |
+      | channel | locale | state   | missing_values | ratio |
+      | mobile  | en_US  | success | 0              | 100%  |
+      | tablet  | en_US  | warning | 4              | 55%   |
     And I am on the "Boots" family page
     And I visit the "Attributes" tab
     And I switch the attribute "rating" requirement in channel "mobile"
@@ -60,8 +57,8 @@ Feature: Define the attribute requirement
     Then I should not see the "rating" attribute
     When I launched the completeness calculator
     When I am on the "BIGBOOTS" product page
-    And I open the "Completeness" panel
+    And I visit the "Completeness" column tab
     Then I should see the completeness:
-      | channel | locale | state   | missing_values                             | ratio |
-      | mobile  | en_US  | success |                                            | 100%  |
-      | tablet  | en_US  | warning | Description, Weather conditions, Side view | 63%   |
+      | channel | locale | state   | missing_values | ratio |
+      | mobile  | en_US  | success | 0              | 100%  |
+      | tablet  | en_US  | warning | 3              | 62%   |

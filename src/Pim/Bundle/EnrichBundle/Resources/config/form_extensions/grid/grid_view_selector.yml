@@ -1,0 +1,36 @@
+extensions:
+    pim-grid-view-selector:
+        module: pim/grid/view-selector/selector
+        config:
+            viewTypes: ['view']
+            fetchers:
+                view: 'datagrid-view'
+
+    pim-grid-view-selector-secondary-actions:
+        module: pim/form/common/secondary-actions
+        parent: pim-grid-view-selector
+        targetZone: buttons
+
+    pim-grid-view-selector-line:
+        module: pim/grid/view-selector/line
+
+    pim-grid-view-selector-current:
+        module: pim/grid/view-selector/current
+
+    pim-grid-view-selector-create-view:
+        module: pim/grid/view-selector/create-view
+        parent: pim-grid-view-selector-secondary-actions
+        targetZone: secondary-actions
+        position: 110
+
+    pim-grid-view-selector-save-view:
+        module: pim/grid/view-selector/save-view
+        parent: pim-grid-view-selector-secondary-actions
+        targetZone: secondary-actions
+        position: 120
+
+    pim-grid-view-selector-remove-view:
+        module: pim/grid/view-selector/remove-view
+        parent: pim-grid-view-selector-secondary-actions
+        targetZone: secondary-actions
+        position: 130

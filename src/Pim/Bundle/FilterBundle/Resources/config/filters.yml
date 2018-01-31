@@ -4,23 +4,24 @@ parameters:
 
     pim_filter.ajax_choice_filter.class:  Pim\Bundle\FilterBundle\Filter\AjaxChoiceFilter
 
-    pim_filter.product_scope_filter.class:         Pim\Bundle\FilterBundle\Filter\Product\ScopeFilter
-    pim_filter.product_groups_filter.class:        Pim\Bundle\FilterBundle\Filter\Product\GroupsFilter
-    pim_filter.product_family_filter.class:        Pim\Bundle\FilterBundle\Filter\Product\FamilyFilter
-    pim_filter.product_completeness_filter.class:  Pim\Bundle\FilterBundle\Filter\Product\CompletenessFilter
-    pim_filter.product_date_filter.class:          Pim\Bundle\FilterBundle\Filter\ProductValue\DateTimeRangeFilter
-    pim_filter.category_filter.class:              Pim\Bundle\FilterBundle\Filter\CategoryFilter
-    pim_filter.product_enabled_filter.class:       Pim\Bundle\FilterBundle\Filter\Product\EnabledFilter
-    pim_filter.product_in_group_filter.class:      Pim\Bundle\FilterBundle\Filter\Product\InGroupFilter
-    pim_filter.product_is_associated_filter.class: Pim\Bundle\FilterBundle\Filter\Product\IsAssociatedFilter
-    pim_filter.product_value_string.class:         Pim\Bundle\FilterBundle\Filter\ProductValue\StringFilter
-    pim_filter.product_value_choice.class:         Pim\Bundle\FilterBundle\Filter\ProductValue\ChoiceFilter
-    pim_filter.product_value_number.class:         Pim\Bundle\FilterBundle\Filter\ProductValue\NumberFilter
-    pim_filter.product_value_date.class:           Pim\Bundle\FilterBundle\Filter\ProductValue\DateRangeFilter
-    pim_filter.product_value_datetime.class:       Pim\Bundle\FilterBundle\Filter\ProductValue\DateTimeRangeFilter
-    pim_filter.product_value_boolean.class:        Pim\Bundle\FilterBundle\Filter\ProductValue\BooleanFilter
-    pim_filter.product_value_metric.class:         Pim\Bundle\FilterBundle\Filter\ProductValue\MetricFilter
-    pim_filter.product_value_price.class:          Pim\Bundle\FilterBundle\Filter\ProductValue\PriceFilter
+    pim_filter.product_scope_filter.class:               Pim\Bundle\FilterBundle\Filter\Product\ScopeFilter
+    pim_filter.product_groups_filter.class:              Pim\Bundle\FilterBundle\Filter\Product\GroupsFilter
+    pim_filter.product_family_filter.class:              Pim\Bundle\FilterBundle\Filter\Product\FamilyFilter
+    pim_filter.product_completeness_filter.class:        Pim\Bundle\FilterBundle\Filter\CompletenessFilter
+    pim_filter.product_date_filter.class:                Pim\Bundle\FilterBundle\Filter\ProductValue\DateTimeRangeFilter
+    pim_filter.category_filter.class:                    Pim\Bundle\FilterBundle\Filter\CategoryFilter
+    pim_filter.product_enabled_filter.class:             Pim\Bundle\FilterBundle\Filter\Product\EnabledFilter
+    pim_filter.product_in_group_filter.class:            Pim\Bundle\FilterBundle\Filter\Product\InGroupFilter
+    pim_filter.product_is_associated_filter.class:       Pim\Bundle\FilterBundle\Filter\Product\IsAssociatedFilter
+    pim_filter.product_value_string.class:               Pim\Bundle\FilterBundle\Filter\ProductValue\StringFilter
+    pim_filter.product_value_choice.class:               Pim\Bundle\FilterBundle\Filter\ProductValue\ChoiceFilter
+    pim_filter.product_value_number.class:               Pim\Bundle\FilterBundle\Filter\ProductValue\NumberFilter
+    pim_filter.product_value_date.class:                 Pim\Bundle\FilterBundle\Filter\ProductValue\DateRangeFilter
+    pim_filter.product_value_datetime.class:             Pim\Bundle\FilterBundle\Filter\ProductValue\DateTimeRangeFilter
+    pim_filter.product_value_boolean.class:              Pim\Bundle\FilterBundle\Filter\ProductValue\BooleanFilter
+    pim_filter.product_value_metric.class:               Pim\Bundle\FilterBundle\Filter\ProductValue\MetricFilter
+    pim_filter.product_value_price.class:                Pim\Bundle\FilterBundle\Filter\ProductValue\PriceFilter
+    pim_filter.product_label_or_identifier_filter.class: Pim\Bundle\FilterBundle\Filter\Product\LabelOrIdentifierFilter
 
 services:
     pim_filter.ajax_choice_filter:
@@ -182,3 +183,11 @@ services:
             - '@pim_filter.product_utility'
         tags:
             - { name: oro_filter.extension.orm_filter.filter, type: product_value_price }
+
+    pim_filter.product_label_or_identifier_filter:
+        class: '%pim_filter.product_label_or_identifier_filter.class%'
+        arguments:
+            - '@form.factory'
+            - '@pim_filter.product_utility'
+        tags:
+            - { name: oro_filter.extension.orm_filter.filter, type: label_or_identifier }

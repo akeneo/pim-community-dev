@@ -16,11 +16,6 @@ class AclGroupsExtensionSpec extends ObjectBehavior
         $this->shouldBeAnInstanceOf('\Twig_Extension');
     }
 
-    function it_has_a_name()
-    {
-        $this->getName()->shouldReturn('pim_acl_groups_extension');
-    }
-
     function it_provides_an_acl_groups_twig_function()
     {
         $functions = $this->getFunctions();

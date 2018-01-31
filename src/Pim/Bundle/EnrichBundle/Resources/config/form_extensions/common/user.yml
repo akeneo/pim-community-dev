@@ -1,0 +1,6 @@
+extensions:
+    pim-menu-user-navigation:
+        module: pim/menu/user-navigation
+        config:
+            userAccount: pim_menu.user.user_account
+            logout: pim_menu.user.logout

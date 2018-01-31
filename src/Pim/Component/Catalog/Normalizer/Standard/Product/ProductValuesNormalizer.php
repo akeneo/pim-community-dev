@@ -2,10 +2,10 @@
 
 namespace Pim\Component\Catalog\Normalizer\Standard\Product;
 
-use Doctrine\Common\Collections\Collection;
-use Pim\Component\Catalog\Model\ProductValueInterface;
+use Pim\Component\Catalog\Model\ValueCollectionInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
-use Symfony\Component\Serializer\Normalizer\SerializerAwareNormalizer;
+use Symfony\Component\Serializer\SerializerAwareInterface;
+use Symfony\Component\Serializer\SerializerAwareTrait;
 
 /**
  * Normalizer for a collection of product values
@@ -14,8 +14,10 @@ use Symfony\Component\Serializer\Normalizer\SerializerAwareNormalizer;
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductValuesNormalizer extends SerializerAwareNormalizer implements NormalizerInterface
+class ProductValuesNormalizer implements NormalizerInterface, SerializerAwareInterface
 {
+    use SerializerAwareTrait;
+
     /**
      * {@inheritdoc}
      */
@@ -24,12 +26,8 @@ class ProductValuesNormalizer extends SerializerAwareNormalizer implements Norma
         $result = [];
 
         foreach ($data as $value) {
-            $normalizedValue = $this->serializer->normalize($value, 'standard', $context);
-            if ($value instanceof ProductValueInterface) {
-                $result[$value->getAttribute()->getCode()][] = $normalizedValue;
-            } else {
-                $result[] = $normalizedValue;
-            }
+            $normalizedValue = $this->serializer->normalize($value, $format, $context);
+            $result[$value->getAttribute()->getCode()][] = $normalizedValue;
         }
 
         return $result;
@@ -40,6 +38,6 @@ class ProductValuesNormalizer extends SerializerAwareNormalizer implements Norma
      */
     public function supportsNormalization($data, $format = null)
     {
-        return $data instanceof Collection && 'standard' === $format;
+        return 'standard' === $format && $data instanceof ValueCollectionInterface;
     }
 }

@@ -72,7 +72,7 @@ class MetricFilter extends OroNumberFilter
      */
     protected function getFormType()
     {
-        return MetricFilterType::NAME;
+        return MetricFilterType::class;
     }
 
     /**

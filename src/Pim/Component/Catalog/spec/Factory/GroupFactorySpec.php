@@ -11,9 +11,9 @@ class GroupFactorySpec extends ObjectBehavior
 {
     const GROUP_CLASS = 'Pim\Bundle\CatalogBundle\Entity\Group';
 
-    function let(GroupTypeRepositoryInterface $groupTypeRepository, SimpleFactoryInterface $productTemplateFactory)
+    function let(GroupTypeRepositoryInterface $groupTypeRepository)
     {
-        $this->beConstructedWith($groupTypeRepository, $productTemplateFactory, self::GROUP_CLASS);
+        $this->beConstructedWith($groupTypeRepository, self::GROUP_CLASS);
     }
 
     function it_creates_a_group()

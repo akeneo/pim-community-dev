@@ -29,7 +29,7 @@ define(
         ChoicesFormatter
     ) {
         return BaseAddSelect.extend({
-            className: 'add-attribute',
+            className: 'AknButtonList-item add-attribute',
             lineView: LineView,
             defaultConfig: {
                 select2: {
@@ -57,7 +57,46 @@ define(
              * {@inheritdoc}
              */
             getItemsToExclude: function () {
-                return AttributeManager.getAttributes(this.getFormData());
+                return $.Deferred().resolve(_.keys(this.getFormData().values));
+            },
+
+
+            /**
+             * This method is overridden to fetch attribute groups and set it inside attribute items.
+             *
+             * {@inheritdoc}
+             */
+            fetchItems: function () {
+                return BaseAddSelect.prototype.fetchItems.apply(this, arguments)
+                    .then(function (attributes) {
+                        var groupCodes = _.unique(_.pluck(attributes, 'group'));
+
+                        return FetcherRegistry.getFetcher('attribute-group').fetchByIdentifiers(groupCodes)
+                            .then(function (attributeGroups) {
+                                return this.populateGroupProperties(attributes, attributeGroups);
+                            }.bind(this));
+                    }.bind(this));
+            },
+
+            /**
+             * Transforms each attribute
+             *
+             * { code: 'name', group: 'marketing', ...  }
+             *
+             * into
+             *
+             * { code: 'name', group: { code: 'marketing', sort_order: 2, ... }, ...  }
+             *
+             * @param {Array} attributes
+             * @param {Array} attributeGroups
+             */
+            populateGroupProperties: function (attributes, attributeGroups) {
+                return _.map(attributes, function (attribute) {
+                    return _.extend(
+                        attribute,
+                        {group: _.findWhere(attributeGroups, {code: attribute.group})}
+                    );
+                });
             },
 
             /**
@@ -82,4 +121,3 @@ define(
         });
     }
 );
-

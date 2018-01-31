@@ -5,7 +5,9 @@ namespace Pim\Component\Api\Normalizer\Exception;
 use Doctrine\Common\Inflector\Inflector;
 use Pim\Component\Api\Exception\ViolationHttpException;
 use Pim\Component\Catalog\AttributeTypes;
-use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Model\ChannelInterface;
+use Pim\Component\Catalog\Model\EntityWithValuesInterface;
+use Pim\Component\Catalog\Validator\Constraints\UniqueValue;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Validator\ConstraintViolationInterface;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
@@ -44,6 +46,20 @@ class ViolationNormalizer implements NormalizerInterface
     }
 
     /**
+     * The product field "identifier" introduced during the single storage development (in addition to the "identifier"
+     * product value) added a new Length constraint on this property (see the product validation mapping)
+     * which is breaking the API.
+     *
+     * This method does not normalize the "identifier" property to normalize only the constraint regarding the product
+     * value (Because its Length max number is dynamic compared to the identifier property).
+     *
+     * Also, product field "identifier" has a unique entity constraint with the message
+     * "The same identifier is already set on another product". The same behavior is ensured thanks to the
+     * {@see Pim\Component\Catalog\Validator\Constraints\UniqueValue} constraint, but with a different message.
+     * Here we keep only the first violation.
+     *
+     * TODO: TIP-722 - to revert once the identifier product value is dropped.
+     *
      * @param ConstraintViolationListInterface $violations
      *
      * @return array
@@ -51,6 +67,7 @@ class ViolationNormalizer implements NormalizerInterface
     protected function normalizeViolations(ConstraintViolationListInterface $violations)
     {
         $errors = [];
+        $existingViolation = [];
 
         foreach ($violations as $violation) {
             $error = [
@@ -58,12 +75,43 @@ class ViolationNormalizer implements NormalizerInterface
                 'message'  => $violation->getMessage()
             ];
 
-            if ($violation->getRoot() instanceof ProductInterface &&
-                1 === preg_match('|^values\[(?P<attribute>[a-z0-9-_]+)|i', $violation->getPropertyPath(), $matches)) {
+            $propertyPath = $violation->getPropertyPath();
+            $violationMessage = $violation->getMessageTemplate();
+
+            if ($violation->getRoot() instanceof EntityWithValuesInterface &&
+                1 === preg_match(
+                    '|^values\[(?P<attribute>[a-z0-9-_\<\>]+)|i',
+                    $violation->getPropertyPath(),
+                    $matches
+                )
+            ) {
                 $error = $this->getProductValuesErrors($violation, $matches['attribute']);
+
+                $productValue = $violation->getRoot()->getValues()->getByKey($matches['attribute']);
+                $attributeType = $productValue->getAttribute()->getType();
+
+                if (AttributeTypes::IDENTIFIER === $attributeType) {
+                    $propertyPath = 'identifier';
+                    $uniqueValueConstraint = new UniqueValue();
+
+                    if ($uniqueValueConstraint->message === $violationMessage) {
+                        // this is the translation key used in
+                        // Pim/Bundle/CatalogBundle/Resources/config/validation/product.yml
+                        $violationMessage = 'The same identifier is already set on another product';
+                    }
+                }
             }
 
-            $errors[] = $error;
+            if ($violation->getRoot() instanceof ChannelInterface && 'category' === $violation->getPropertyPath()) {
+                $error['property'] = 'category_tree';
+            }
+
+            $key = $propertyPath.$violationMessage;
+            if (!array_key_exists($key, $existingViolation)) {
+                $errors[] = $error;
+            }
+
+            $existingViolation[$key] = true;
         }
 
         return $errors;
@@ -91,7 +139,9 @@ class ViolationNormalizer implements NormalizerInterface
 
     /**
      * Constraints for product values are not displayed correctly.
-     * For instance, an error for attribute "a_text" will be displayed like that: "values[a_text-fr_FR-ecommerce].varchar"
+     * For instance, an error for attribute "a_text" will be displayed like that:
+     *      "values[a_text-fr_FR-ecommerce].text"
+     *
      * In the API, the same error will be:
      * [
      *    "field": "values",
@@ -101,21 +151,24 @@ class ViolationNormalizer implements NormalizerInterface
      *    "message": "..."
      * ]
      *
-     * Exception for identifier attribute (which is displayed like "values[sku].varchar"), we will return information like that:
+     * Exception for identifier attribute (which is displayed like "values[sku].text"),
+     * we will return information like that:
      * [
      *    "field": "identifier",
      *    "message": "..."
      * ]
      *
+     * TODO: TIP-722 To remove once the "identifier" product value is removed from the product value collection.
+     *
      * @param ConstraintViolationInterface $violation
-     * @param string                       $attributeCode
+     * @param string                       $productValueKey
      *
      * @return array
      */
-    protected function getProductValuesErrors(ConstraintViolationInterface $violation, $attributeCode)
+    protected function getProductValuesErrors(ConstraintViolationInterface $violation, $productValueKey)
     {
-        $productValue = $violation->getRoot()->getValues()[$attributeCode];
-        $attributeType = $productValue->getAttribute()->getAttributeType();
+        $productValue = $violation->getRoot()->getValues()->getByKey($productValueKey);
+        $attributeType = $productValue->getAttribute()->getType();
 
         if (AttributeTypes::IDENTIFIER === $attributeType) {
             return [

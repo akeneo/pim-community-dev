@@ -6,6 +6,8 @@ namespace Pim\Bundle\CatalogBundle\tests\integration\Validation\Attribute;
  * @author    Yohan Blain <yohan.blain@akeneo.com>
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
+ *
+ * @group ce
  */
 class ReferenceDataSimpleSelectIntegration extends AbstractAttributeTestCase
 {
@@ -158,6 +160,28 @@ class ReferenceDataSimpleSelectIntegration extends AbstractAttributeTestCase
         $this->assertCount(1, $violations);
         $this->assertSame('Reference data "invalid" does not exist. Allowed values are: fabrics, color', $violations->get(0)->getMessage());
         $this->assertSame('reference_data_name', $violations->get(0)->getPropertyPath());
+    }
+
+    public function testReferenceDataMultiSelectShouldNotHaveAutoOptionSorting()
+    {
+        $attribute = $this->createAttribute();
+
+        $this->updateAttribute(
+            $attribute,
+            [
+                'code'                => 'new_ref_data',
+                'type'                => 'pim_reference_data_simpleselect',
+                'group'               => 'attributeGroupA',
+                'reference_data_name' => 'color',
+                'auto_option_sorting' => false,
+            ]
+        );
+
+        $violations = $this->validateAttribute($attribute);
+
+        $this->assertCount(1, $violations);
+        $this->assertSame('This attribute cannot have options.', $violations->get(0)->getMessage());
+        $this->assertSame('auto_option_sorting', $violations->get(0)->getPropertyPath());
     }
 
     public function testNumberShouldNotHaveMaxCharacters()

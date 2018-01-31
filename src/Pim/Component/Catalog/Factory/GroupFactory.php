@@ -7,7 +7,7 @@ use Pim\Component\Catalog\Model\GroupInterface;
 use Pim\Component\Catalog\Repository\GroupTypeRepositoryInterface;
 
 /**
- * Group factory
+ * Creates and configures a group instance.
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
@@ -18,25 +18,19 @@ class GroupFactory implements SimpleFactoryInterface
     /** @var string */
     protected $metricClass;
 
-    /** @var SimpleFactoryInterface */
-    protected $productTemplateFactory;
-
     /** @var GroupTypeRepositoryInterface */
     protected $groupTypeRepository;
 
     /**
      * @param GroupTypeRepositoryInterface $groupTypeRepository
-     * @param SimpleFactoryInterface       $productTemplateFactory
      * @param string                       $groupClass
      */
     public function __construct(
         GroupTypeRepositoryInterface $groupTypeRepository,
-        SimpleFactoryInterface $productTemplateFactory,
         $groupClass
     ) {
         $this->groupClass = $groupClass;
         $this->groupTypeRepository = $groupTypeRepository;
-        $this->productTemplateFactory = $productTemplateFactory;
     }
 
     /**
@@ -64,10 +58,6 @@ class GroupFactory implements SimpleFactoryInterface
                 throw new \InvalidArgumentException(sprintf('Group type with code "%s" was not found', $groupTypeCode));
             }
             $group->setType($groupType);
-
-            if ($group->getType()->isVariant()) {
-                $group->setProductTemplate($this->productTemplateFactory->create());
-            }
         }
 
         return $group;

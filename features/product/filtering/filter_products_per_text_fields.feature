@@ -19,19 +19,18 @@ Feature: Filter products by text field
       | 13378171 | Canon 5D + EF 24-105mm f/4L IS |
       | 13572541 | Canon 5D + EF 24-105 F5L IS    |
       | 135-2541 | Canon 5D + EF 25-15 FL         |
-    When I am on the products page
+    When I am on the products grid
+    And I collapse the column
     And I display the columns SKU, Name, Family, Complete, Created at and Updated at
     Then I should see products "HP LA2206xc + WF722A", "Canon 5D + EF 24-105 F4L IS", "Canon 5D + EF 24-105mm f/4L IS" and "Canon 5D + EF 24-105 F5L IS"
     And the grid should contain 5 elements
+    And I uncollapse the column
     And I should be able to use the following filters:
       | filter | operator         | value                | result                                                                                      |
       | name   | contains         | HP LA2206xc + WF     | HP LA2206xc + WF722A                                                                        |
       | name   | contains         | Canon 5D + EF 24-105 | Canon 5D + EF 24-105 F4L IS, Canon 5D + EF 24-105mm f/4L IS and Canon 5D + EF 24-105 F5L IS |
       | name   | starts with      | 5D + EF 24-105 F     |                                                                                             |
       | name   | starts with      | HP                   | HP LA2206xc + WF722A                                                                        |
-      | name   | ends with        | Canon                |                                                                                             |
-      | name   | ends with        | IS                   | Canon 5D + EF 24-105 F4L IS, Canon 5D + EF 24-105mm f/4L IS and Canon 5D + EF 24-105 F5L IS |
-      | name   | ends with        | is                   | Canon 5D + EF 24-105 F4L IS, Canon 5D + EF 24-105mm f/4L IS and Canon 5D + EF 24-105 F5L IS |
       | name   | does not contain | Canon                | HP LA2206xc + WF722A                                                                        |
       | name   | is equal to      | Canon 5D + EF 24-105 |                                                                                             |
       | name   | contains         | f/4L                 | Canon 5D + EF 24-105mm f/4L IS                                                              |
@@ -50,15 +49,15 @@ Feature: Filter products by text field
       | mug    |          | MyMugDescription |
     And the "postit" product has the "description" attribute
     And the "book" product has the "name" attribute
-    And I am on the products page
+    And I am on the products grid
     Then the grid should contain 3 elements
     And I should see products postit, book and mug
     And I should be able to use the following filters:
-      | filter      | operator     | value | result          |
-      | name        | is empty     |       | book and mug    |
-      | name        | is not empty |       | postit          |
-      | description | is empty     |       | postit and book |
-      | description | is not empty |       | mug             |
+      | filter      | operator     | value | result |
+      | name        | is empty     |       | book   |
+      | name        | is not empty |       | postit |
+      | description | is empty     |       | postit |
+      | description | is not empty |       | mug    |
 
   Scenario: Successfully filter products by empty value for localizable text attribute
     Given the following attributes:
@@ -69,13 +68,13 @@ Feature: Filter products by text field
       | postit | MyPostit   | MonPostit  |
       | book   |            | MonLivre   |
       | mug    |            |            |
-    And I am on the products page
+    And I am on the products grid
     Then the grid should contain 3 elements
     And I should see products postit, book and mug
     And I should be able to use the following filters:
-      | filter | operator     | value | result       |
-      | name   | is empty     |       | book and mug |
-      | name   | is not empty |       | postit       |
+      | filter | operator     | value | result |
+      | name   | is empty     |       | book   |
+      | name   | is not empty |       | postit |
 
   Scenario: Successfully filter products by empty value for scopable text attribute
     Given the following attributes:
@@ -86,13 +85,13 @@ Feature: Filter products by text field
       | postit | MyPostit       | MyPostit    |
       | book   |                | MyBook      |
       | mug    |                |             |
-    And I am on the products page
+    And I am on the products grid
     Then the grid should contain 3 elements
     And I should see products postit, book and mug
     And I should be able to use the following filters:
-      | filter | operator     | value | result       |
-      | name   | is empty     |       | book and mug |
-      | name   | is not empty |       | postit       |
+      | filter | operator     | value | result |
+      | name   | is empty     |       | book   |
+      | name   | is not empty |       | postit |
 
   Scenario: Successfully filter products by empty value for scopable and localizable text attribute
     Given I add the "english" locale to the "mobile" channel
@@ -104,10 +103,10 @@ Feature: Filter products by text field
       | postit | MyPostit             | MyPostit          | MonPostit            | MonPostit         |
       | book   |                      | MyBook            | MonLivre             | MonLivre          |
       | mug    |                      |                   |                      |                   |
-    And I am on the products page
+    And I am on the products grid
     Then the grid should contain 3 elements
     And I should see products postit, book and mug
     And I should be able to use the following filters:
-      | filter | operator     | value | result       |
-      | name   | is empty     |       | book and mug |
-      | name   | is not empty |       | postit       |
+      | filter | operator     | value | result |
+      | name   | is empty     |       | book   |
+      | name   | is not empty |       | postit |

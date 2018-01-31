@@ -1,49 +1,125 @@
 @import '../base/variables';
 
 .AknFlash {
-  border: 1px solid darken(@AknOrange, 10%);
-  background: lighten(@AknOrange, 30%);
-  color: darken(@AknOrange, 20%);
+  @iconSize: 24px;
+  @flashWidth: 340px;
+  @internalPadding: 16px;
+  @padding: 12px;
+  @slideTransition: 0.5s;
+  @crushTransition: 0.2s;
+
   border-radius: 2px;
-  padding: 2px 20px;
+  padding: @padding;
   display: flex;
-  align-items: flex-start;
-  margin-top: 4px;
+  margin-top: 10px;
+  font-size: @AknFontSizeBig;
+  line-height: 11px;
+  align-items: center;
+  width: @flashWidth;
+  min-height: @iconSize + 2 * @padding + 2px;
+  z-index: 15;
+  position: relative;
+  left: @flashWidth + @AknFlashMessagesPadding;
+  opacity: 0;
+  transition:
+    left @slideTransition ease-in-out,
+    opacity @slideTransition ease-in-out,
+    min-height @crushTransition ease-in-out,
+    height @crushTransition ease-in-out,
+    padding @crushTransition ease-in-out,
+    margin-top @crushTransition ease-in-out,
+    border-width @crushTransition ease-in-out;
+
+  &--visible {
+    left: 0;
+    opacity: 1;
+  }
+
+  &--crushed {
+    min-height: 0;
+    height: 0;
+    padding: 0;
+    margin-top: 0;
+    border-width: 0;
+    overflow: hidden;
+  }
+
+  // Default flash is info
+  border: 1px solid @AknBlue;
+  background: lighten(@AknBlue, 35%);
+  color: @AknBlue;
+
+  &-icon {
+    border-radius: 1000px;
+    padding: 2px;
+    height: @iconSize;
+    width: @iconSize;
+    background: @AknBlue;
+  }
+
+  &-messageTitle {
+    font-weight: bold;
+  }
+
+  &-message {
+    flex-grow: 1;
+    line-height: @AknFontSizeBig * 1.15;
+    margin: 0 @internalPadding;
+    overflow-wrap: break-word;
+    max-width: @flashWidth - (@padding * 2 + @iconSize * 2 + @internalPadding * 2);
+  }
 
   &-closeButton {
-    font-size: @AknFontSizeBig;
-    flex-basis: @AknFontSizeBig;
-    color: darken(@AknOrange, 20%);
-    margin: 0 -16px 0 10px;
-    background: none;
-    border: none;
-    order: 10;
     cursor: pointer;
+    padding: 4px;
+    width: @iconSize;
+    height: @iconSize;
+  }
+
+  &-timer {
+    width: @iconSize;
+    text-align: center;
+  }
+
+  &--withTimer &-closeButton {
+    display: none;
+  }
+
+  &--withTimer:hover &-closeButton {
+    display: block;
+  }
+
+  &--withTimer:hover &-timer {
+    display: none;
   }
 
   &--success {
-    border: 1px solid darken(@AknGreen, 10%);
+    border-color: darken(@AknGreen, 5%);
     background: lighten(@AknGreen, 30%);
-    color: darken(@AknGreen, 20%);
+    color: darken(@AknGreen, 5%);
   }
 
-  &--success &-closeButton {
-    color: darken(@AknGreen, 20%);
+  &--success &-icon {
+    background: darken(@AknGreen, 5%);
   }
 
-  &--danger,
   &--error {
-    border: 1px solid darken(@AknRed, 10%);
+    border-color: darken(@AknRed, 5%);
     background: lighten(@AknRed, 30%);
-    color: darken(@AknRed, 20%);
+    color: darken(@AknRed, 5%);
   }
 
-  &--danger &-closeButton,
-  &--error &-closeButton {
-    color: darken(@AknRed, 20%);
+  &--error &-icon {
+    background: darken(@AknRed, 5%);
   }
 
-  & + & {
-    margin-top: 8px;
+  &--warning {
+    border-color: @AknOrange;
+    background: lighten(@AknOrange, 30%);
+    color: darken(@AknOrange, 15%);
+  }
+
+  &--warning &-icon {
+    background: @AknOrange;
   }
 }

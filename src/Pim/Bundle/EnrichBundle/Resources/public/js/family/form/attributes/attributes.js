@@ -12,7 +12,7 @@ define([
         'oro/translator',
         'jquery',
         'pim/form',
-        'text!pim/template/family/tab/attributes/attributes',
+        'pim/template/family/tab/attributes/attributes',
         'pim/user-context',
         'pim/security-context',
         'pim/i18n',
@@ -32,7 +32,7 @@ define([
         i18n,
         FetcherRegistry,
         Dialog,
-        Messanger,
+        Messenger,
         LoadingMask
     ) {
         return BaseForm.extend({
@@ -42,17 +42,17 @@ define([
             collapsedClass: 'AknGrid-bodyContainer--collapsed',
             requiredLabel: __('pim_enrich.form.family.tab.attributes.required_label'),
             notRequiredLabel: __('pim_enrich.form.family.tab.attributes.not_required_label'),
-            identifierAttribute: 'pim_catalog_identifier',
+            identifierAttributeType: 'pim_catalog_identifier',
             template: _.template(template),
             errors: [],
             catalogLocale: UserContext.get('catalogLocale'),
             channels: null,
-            attributeGroups: null,
             events: {
                 'click .group': 'toggleGroup',
                 'click .attribute-requirement i': 'toggleAttribute',
                 'click .remove-attribute': 'onRemoveAttribute'
             },
+            readOnly: false,
 
             /**
              * {@inheritdoc}
@@ -70,6 +70,11 @@ define([
                     'pim_enrich:form:entity:post_fetch',
                     this.render
                 );
+                this.listenTo(this.getRoot(), 'pim_enrich:form:update_read_only', (readOnly) => {
+                    this.readOnly = readOnly;
+
+                    this.render();
+                });
 
                 this.listenTo(
                     this.getRoot(),
@@ -95,23 +100,24 @@ define([
                 }
 
                 var data = this.getFormData();
-                var attributeGroupsToFetch = _.unique(_.pluck(data.attributes, 'group_code'));
+                var attributeGroupsToFetch = _.unique(_.pluck(data.attributes, 'group'));
 
                 $.when(
                     FetcherRegistry.getFetcher('channel').fetchAll(),
                     FetcherRegistry.getFetcher('attribute-group').fetchByIdentifiers(
                         attributeGroupsToFetch,
-                        {'apply_filters': false}
+                        {
+                            'full_attributes': false,
+                            'apply_filters': false
+                        }
                     )
-                ).then(function (channels, attributeGroups) {
+                ).then((channels, attributeGroups) => {
                     this.channels = channels;
-                    var groupedAttributes = _.groupBy(data.attributes, function (attribute) {
-                        return attribute.group_code;
-                    });
+                    var groupedAttributes = _.groupBy(data.attributes, 'group');
 
-                    _.sortBy(groupedAttributes, function (attributes, group) {
+                    _.sortBy(groupedAttributes, (attributes, group) => {
                         return _.findWhere(attributeGroups, {code: group}).sort_order;
-                    }.bind(this));
+                    });
 
                     _.each(groupedAttributes, function (attributes, group) {
                         attributes = _.sortBy(attributes, function (attribute) {
@@ -136,15 +142,16 @@ define([
                         }.bind(this)),
                         colspan: (this.channels.length + 2),
                         i18n: i18n,
-                        identifierAttribute: this.identifierAttribute,
-                        catalogLocale: this.catalogLocale
+                        identifierAttributeType: this.identifierAttributeType,
+                        catalogLocale: this.catalogLocale,
+                        readOnly: this.readOnly
                     }));
 
                     $(this.$el).find('[data-original-title]').tooltip();
 
                     this.delegateEvents();
                     this.renderExtensions();
-                }.bind(this));
+                });
             },
 
             /**
@@ -153,7 +160,6 @@ define([
              * @param {Object} event
              */
             toggleGroup: function (event) {
-                event.preventDefault();
                 var target = event.currentTarget;
                 $(target).find('i').toggleClass('icon-expand-alt icon-collapse-alt');
                 $(target).parent().toggleClass(this.collapsedClass);
@@ -167,7 +173,6 @@ define([
              * @param {Object} event
              */
             toggleAttribute: function (event) {
-                event.preventDefault();
                 var target = event.currentTarget;
 
                 if (!SecurityContext.isGranted('pim_enrich_family_edit_attributes')) {
@@ -175,6 +180,10 @@ define([
                 }
 
                 if (!this.isAttributeEditable(target.dataset.type)) {
+                    return this;
+                }
+
+                if (this.readOnly) {
                     return this;
                 }
 
@@ -198,7 +207,7 @@ define([
              * @returns {boolean}
              */
             isAttributeEditable: function (type) {
-                return this.identifierAttribute !== type;
+                return this.identifierAttributeType !== type;
             },
 
             /**
@@ -232,33 +241,52 @@ define([
             },
 
             /**
-             * Removes attribute from family
+             * Removes attribute from family upon user confirmation
              *
              * Checks if user has rights to remove attributes
              * Checks if attribute is not used as label
+             * Checks if attribute is not used as image
+             * Checks if attribute is not used as axis in a family variant
              *
              * @param {Object} event
              */
             onRemoveAttribute: function (event) {
                 event.preventDefault();
-                var attributeAsLabel = this.getFormData().attribute_as_label;
+                const attributeAsLabel = this.getFormData().attribute_as_label;
+                const attributeAsImage = this.getFormData().attribute_as_image;
+                const attributesUsedAsAxis = this.getFormData().meta.attributes_used_as_axis;
 
                 if (!SecurityContext.isGranted('pim_enrich_family_edit_attributes')) {
                     return false;
                 }
 
-                var attributeToRemove = event.currentTarget.dataset.attribute;
+                const attributeToRemove = event.currentTarget.dataset.attribute;
 
                 if (attributeAsLabel === attributeToRemove) {
-                    Messanger.notificationFlashMessage(
+                    Messenger.notify(
                         'error',
                         __('pim_enrich.entity.family.info.cant_remove_attribute_as_label')
                     );
 
                     return false;
+
+                } else if (attributeAsImage === attributeToRemove) {
+                    Messenger.notify(
+                        'error',
+                        __('pim_enrich.entity.family.info.cant_remove_attribute_as_image')
+                    );
+
+                    return false;
+                } else if (_.contains(attributesUsedAsAxis, attributeToRemove)) {
+                    Messenger.notify(
+                        'error',
+                        __('pim_enrich.entity.family.info.cant_remove_attribute_used_as_axis')
+                    );
+
+                    return false;
                 }
 
-                return this.removeAttribute(attributeToRemove);
+                this.removeAttribute(attributeToRemove);
             },
 
             /**
@@ -279,13 +307,13 @@ define([
                 $.when(
                     FetcherRegistry.getFetcher('attribute')
                         .search(options)
-                ).then(function (attributes) {
-                    _.each(attributes, function (attribute) {
+                ).then((attributes) => {
+                    _.each(attributes, (attribute) => {
                         this.addAttribute(attribute);
-                    }.bind(this));
+                    });
 
                     this.render();
-                }.bind(this)).always(function () {
+                }).always(function () {
                     loadingMask.hide().$el.remove();
                 });
             },
@@ -305,11 +333,10 @@ define([
                             options: {
                                 identifiers: event.codes,
                                 limit: event.codes.length
-                            },
-                            apply_filters: false
+                            }
                         }),
                     FetcherRegistry.getFetcher('attribute').getIdentifierAttribute()
-                ).then(function (attributeGroups, identifier) {
+                ).then((attributeGroups, identifier) => {
                     var existingAttributes = _.pluck(this.getFormData().attributes, 'code');
                     var groupsAttributes = [].concat.apply(
                         [],
@@ -327,13 +354,13 @@ define([
                                 limit: attributesToAdd.length
                             }
                         });
-                }.bind(this)).then(function (attributes) {
-                    _.each(attributes, function (attribute) {
+                }).then((attributes) => {
+                    _.each(attributes, (attribute) => {
                         this.addAttribute(attribute);
-                    }.bind(this));
+                    });
 
                     this.render();
-                }.bind(this)).always(function () {
+                }).always(function () {
                     loadingMask.hide().$el.remove();
                 });
             },

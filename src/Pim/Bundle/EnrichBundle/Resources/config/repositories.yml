@@ -1,5 +1,4 @@
 parameters:
-    pim_enrich.repository.sequential_edit.class:         Pim\Bundle\EnrichBundle\Entity\Repository\SequentialEditRepository
     ## Searchable repositories
     pim_enrich.repository.family.search.class:           Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository\FamilySearchableRepository
     pim_enrich.repository.attribute.search.class:        Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository\AttributeSearchableRepository
@@ -12,6 +11,7 @@ parameters:
     pim_enrich.repository.association_type.class:        Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository\AssociationTypeRepository
     pim_enrich.repository.attribute.class:               Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository\AttributeRepository
     pim_enrich.repository.family.class:                  Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository\FamilyRepository
+    pim_enrich.repository.family_variant.class:          Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository\FamilyVariantRepository
     pim_enrich.repository.locale.class:                  Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository\LocaleRepository
     pim_enrich.repository.channel.class:                 Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository\ChannelRepository
     pim_enrich.repository.currency.class:                Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository\CurrencyRepository
@@ -20,16 +20,9 @@ parameters:
     pim_enrich.repository.job_instance.class:            Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository\JobInstanceRepository
     pim_enrich.repository.job_execution.class:           Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository\JobExecutionRepository
     pim_enrich.repository.job_tracker.class:             Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository\JobTrackerRepository
+    pim_enrich.repository.client.class:                  Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository\ClientRepository
 
 services:
-    pim_enrich.repository.sequential_edit:
-        class: '%pim_enrich.repository.sequential_edit.class%'
-        factory_service: doctrine.orm.entity_manager
-        factory_method: getRepository
-        arguments: ['%pim_enrich.entity.sequential_edit.class%']
-        tags:
-            - { name: 'pim_repository' }
-
     ## Searchable repositories
     pim_enrich.repository.family.search:
         class: '%pim_enrich.repository.family.search.class%'
@@ -84,6 +77,12 @@ services:
             - '@pim_user.context.user'
             - '@doctrine.orm.entity_manager'
             - '%pim_catalog.entity.family.class%'
+
+    pim_enrich.repository.family_variant:
+        class: '%pim_enrich.repository.family_variant.class%'
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '%pim_catalog.entity.family_variant.class%'
 
     pim_enrich.repository.locale:
         class: '%pim_enrich.repository.locale.class%'
@@ -140,3 +139,9 @@ services:
             - '@doctrine.orm.entity_manager'
             - '%pim_catalog.entity.attribute_option.class%'
             - '@pim_catalog.repository.attribute'
+
+    pim_enrich.repository.client:
+        class: '%pim_enrich.repository.client.class%'
+        arguments:
+            - '@fos_oauth_server.entity_manager'
+            - '%fos_oauth_server.model.client.class%'

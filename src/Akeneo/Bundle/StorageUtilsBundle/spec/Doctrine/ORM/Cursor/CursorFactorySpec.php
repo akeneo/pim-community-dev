@@ -2,6 +2,9 @@
 
 namespace spec\Akeneo\Bundle\StorageUtilsBundle\Doctrine\ORM\Cursor;
 
+use Akeneo\Bundle\StorageUtilsBundle\Doctrine\ORM\Cursor\Cursor;
+use Akeneo\Bundle\StorageUtilsBundle\Doctrine\ORM\Cursor\CursorFactory;
+use Akeneo\Component\StorageUtils\Cursor\CursorFactoryInterface;
 use Doctrine\ORM\AbstractQuery;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Query\Expr\From;
@@ -16,7 +19,7 @@ class CursorFactorySpec extends ObjectBehavior
     function let(EntityManager $entityManager)
     {
         $this->beConstructedWith(
-            'Akeneo\Bundle\StorageUtilsBundle\Doctrine\ORM\Cursor\Cursor',
+            Cursor::class,
             $entityManager,
             self::DEFAULT_BATCH_SIZE
         );
@@ -24,24 +27,25 @@ class CursorFactorySpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('Akeneo\Bundle\StorageUtilsBundle\Doctrine\ORM\Cursor\CursorFactory');
-        $this->shouldImplement('Akeneo\Component\StorageUtils\Cursor\CursorFactoryInterface');
+        $this->shouldHaveType(CursorFactory::class);
+        $this->shouldImplement(CursorFactoryInterface::class);
     }
 
-    function it_creates_a_cursor(QueryBuilder $queryBuilder, QueryWithCache $query, From $from)
+    function it_creates_a_cursor($entityManager, QueryBuilder $queryBuilder, QueryWithCache $query, From $from)
     {
         $queryBuilder->getRootAliases()->willReturn(['a']);
         $queryBuilder->getDQLPart('from')->willReturn([$from]);
         $queryBuilder->select('a.id')->willReturn($queryBuilder);
         $queryBuilder->resetDQLPart('from')->willReturn($queryBuilder);
         $queryBuilder->from(Argument::any(), Argument::any(), 'a.id')->willReturn($queryBuilder);
-        $queryBuilder->groupBy('a.id')->willReturn($queryBuilder);
+        $queryBuilder->distinct(true)->willReturn($queryBuilder);
         $queryBuilder->getQuery()->willReturn($query);
         $query->useQueryCache(false)->shouldBeCalled();
         $query->getArrayResult()->willReturn([]);
 
-        $cursor = $this->createCursor($queryBuilder);
-        $cursor->shouldBeAnInstanceOf('Akeneo\Component\StorageUtils\Cursor\CursorInterface');
+        $this->createCursor($queryBuilder)->shouldBeLike(
+            new Cursor($queryBuilder->getWrappedObject(), $entityManager->getWrappedObject(), 100)
+        );
     }
 }
 

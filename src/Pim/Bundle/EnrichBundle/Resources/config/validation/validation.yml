@@ -5,10 +5,3 @@ Pim\Bundle\EnrichBundle\MassEditAction\Operation\AddToGroups:
                 min: 1
             - Valid:
                 traverse: true
-
-Pim\Bundle\EnrichBundle\MassEditAction\Operation\AddToVariantGroup:
-    properties:
-        group:
-            - Valid:
-                traverse: true
-            - NotNull: ~

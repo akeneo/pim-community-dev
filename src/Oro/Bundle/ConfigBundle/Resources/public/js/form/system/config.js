@@ -1,16 +1,16 @@
 "use strict";
 
 define([
+        'oro/translator',
         'backbone',
-        'module',
         'oro/mediator',
         'pim/form',
         'pim/fetcher-registry',
-        'text!oro/template/system/config'
+        'pim/template/common/default-template'
     ],
     function(
+        __,
         Backbone,
-        module,
         mediator,
         BaseForm,
         FetcherRegistry,
@@ -34,8 +34,8 @@ define([
             configure: function () {
                 Backbone.Router.prototype.once('route', this.unbindEvents);
 
-                if (_.has(module.config(), 'forwarded-events')) {
-                    this.forwardMediatorEvents(module.config()['forwarded-events']);
+                if (_.has(__moduleConfig, 'forwarded-events')) {
+                    this.forwardMediatorEvents(__moduleConfig['forwarded-events']);
                 }
 
                 return BaseForm.prototype.configure.apply(this, arguments);
@@ -51,7 +51,7 @@ define([
 
                 this.getRoot().trigger('oro_config:form:render:before');
 
-                this.$el.html(this.template({}));
+                this.$el.html(this.template());
 
                 this.renderExtensions();
 

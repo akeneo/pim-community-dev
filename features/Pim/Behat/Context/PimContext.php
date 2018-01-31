@@ -2,11 +2,13 @@
 
 namespace Pim\Behat\Context;
 
+use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Behat\MinkExtension\Context\RawMinkContext;
-use Behat\Symfony2Extension\Context\KernelAwareInterface;
+use Behat\Symfony2Extension\Context\KernelAwareContext;
+use Context\FeatureContext;
 use Symfony\Component\HttpKernel\KernelInterface;
 
-class PimContext extends RawMinkContext implements KernelAwareInterface
+class PimContext extends RawMinkContext implements KernelAwareContext
 {
     /** @var array */
     protected static $placeholderValues = [];
@@ -15,7 +17,18 @@ class PimContext extends RawMinkContext implements KernelAwareInterface
     private $kernel;
 
     /** @var string */
+    protected $mainContextClass;
+
+    /** @var FeatureContext */
+    protected $mainContext;
+
+    /** @var string */
     private static $kernelRootDir;
+
+    public function __construct(string $mainContextClass)
+    {
+        $this->mainContextClass = $mainContextClass;
+    }
 
     public static function resetPlaceholderValues()
     {
@@ -44,6 +57,17 @@ class PimContext extends RawMinkContext implements KernelAwareInterface
     public function replacePlaceholders($value)
     {
         return strtr($value, self::$placeholderValues);
+    }
+
+    /**
+     * @BeforeScenario
+     *
+     * @param BeforeScenarioScope $scope
+     */
+    public function gatherContexts(BeforeScenarioScope $scope)
+    {
+        $environment = $scope->getEnvironment();
+        $this->mainContext = $environment->getContext($this->mainContextClass);
     }
 
     /**
@@ -103,6 +127,18 @@ class PimContext extends RawMinkContext implements KernelAwareInterface
     }
 
     /**
+     * @return FeatureContext
+     */
+    public function getMainContext(): FeatureContext
+    {
+        if (null === $this->mainContext) {
+            return $this;
+        }
+
+        return $this->mainContext;
+    }
+
+    /**
      * @return \SensioLabs\Behat\PageObjectExtension\PageObject\Page
      */
     protected function getCurrentPage()
@@ -126,5 +162,17 @@ class PimContext extends RawMinkContext implements KernelAwareInterface
     protected function wait($condition = null)
     {
         $this->getMainContext()->wait($condition);
+    }
+
+    /**
+     * @param string $element
+     *
+     * @return mixed
+     */
+    protected function getElementOnCurrentPage(string $element)
+    {
+        return $this->spin(function () use ($element) {
+            return $this->getCurrentPage()->getElement($element);
+        }, sprintf('%s is not present on the page', $element));
     }
 }

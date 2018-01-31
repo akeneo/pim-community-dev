@@ -20,7 +20,6 @@ Feature: Edit an identifier attribute
       | Code            | mySecondId |
       | Attribute group | Other      |
     And I press the "Save" button
-    And I visit the "Parameters" tab
     Then I should see the text "An identifier attribute already exists."
 
   Scenario: Successfully edit an identifier attribute
@@ -34,22 +33,13 @@ Feature: Edit an identifier attribute
       | version | property       | value |
       | 2       | max_characters | 199   |
 
-  Scenario: Fail to edit an identifier when the group is missing
-    Given I am on the "SKU" attribute page
-    And I fill in the following information:
-      | Attribute group |  |
-    And I save the attribute
-    Then I should see validation tooltip "This value should not be blank."
-
+  @skip-nav
   Scenario: Successfully display a dialog when we quit a page with unsaved changes
     Given I am on the "SKU" attribute page
     And I change the "Validation rule" to "Regular expression"
     And I click on the Akeneo logo
-    Then I should see a confirm dialog with the following content:
-      | title   | Are you sure you want to leave this page?                      |
-      | content | You will lose changes to the attribute if you leave this page. |
+    Then I should see "You will lose changes to the attribute if you leave this page." in popup
 
-  @skip
   Scenario: Successfully display a message when there are unsaved changes
     Given I am on the "SKU" attribute page
     And I change the "Validation rule" to "Regular expression"

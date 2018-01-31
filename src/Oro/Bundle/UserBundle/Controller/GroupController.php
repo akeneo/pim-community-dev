@@ -9,7 +9,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 
 class GroupController extends Controller
@@ -36,15 +35,6 @@ class GroupController extends Controller
     {
         $this->dispatchGroupEvent(OroUserEvents::PRE_UPDATE_GROUP, $entity);
         return $this->update($entity);
-    }
-
-    /**
-     * @AclAncestor("pim_user_group_index")
-     * @Template
-     */
-    public function indexAction(Request $request)
-    {
-        return [];
     }
 
     /**
@@ -80,13 +70,16 @@ class GroupController extends Controller
                 $this->get('translator')->trans('oro.user.controller.group.message.saved')
             );
 
-            return new RedirectResponse(
-                $this->get('router')->generate('oro_user_group_update', ['id' => $entity->getId()])
+            return new JsonResponse(
+                [
+                    'route' => 'oro_user_group_update',
+                    'params' => ['id' => $entity->getId()]
+                ]
             );
         }
 
         return [
-            'form'     => $this->get('oro_user.form.group')->createView(),
+            'form' => $this->get('oro_user.form.group')->createView(),
         ];
     }
 

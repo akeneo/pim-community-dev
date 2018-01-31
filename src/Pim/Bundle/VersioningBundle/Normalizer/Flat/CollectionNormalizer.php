@@ -5,7 +5,8 @@ namespace Pim\Bundle\VersioningBundle\Normalizer\Flat;
 use Doctrine\Common\Collections\Collection;
 use Symfony\Component\Serializer\Exception\InvalidArgumentException;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
-use Symfony\Component\Serializer\Normalizer\SerializerAwareNormalizer;
+use Symfony\Component\Serializer\SerializerAwareInterface;
+use Symfony\Component\Serializer\SerializerAwareTrait;
 
 /**
  * Normalize a doctrine collection
@@ -16,8 +17,10 @@ use Symfony\Component\Serializer\Normalizer\SerializerAwareNormalizer;
  *
  * @see       Pim\Bundle\TransformBundle\Normalizer\Flat\ProductNormalizer
  */
-class CollectionNormalizer extends SerializerAwareNormalizer implements NormalizerInterface
+class CollectionNormalizer implements NormalizerInterface, SerializerAwareInterface
 {
+    use SerializerAwareTrait;
+
     /** @var string[] */
     protected $supportedFormats = ['flat'];
 
@@ -44,7 +47,7 @@ class CollectionNormalizer extends SerializerAwareNormalizer implements Normaliz
                         // for prices and metric
                         $result[$key] = $result[$key] . ',' . $value;
                     } else {
-                        $result = array_merge($result, $normalizedItem);
+                        $result = array_replace($result, $normalizedItem);
                     }
                 }
             } else {

@@ -19,7 +19,7 @@ class RegisterCompleteCheckerPass implements CompilerPassInterface
     const DEFAULT_PRIORITY = 100;
 
     /** @staticvar string */
-    const CHAINED = 'pim_catalog.completeness.checker.chained';
+    const CHECKER = 'pim_catalog.completeness.checker';
 
     /** @staticvar string */
     const SERVICE_TAG = 'pim_catalog.completeness.checker.product_value';
@@ -29,11 +29,11 @@ class RegisterCompleteCheckerPass implements CompilerPassInterface
      */
     public function process(ContainerBuilder $container)
     {
-        if (!$container->hasDefinition(self::CHAINED)) {
+        if (!$container->hasDefinition(self::CHECKER)) {
             return;
         }
 
-        $service = $container->getDefinition(self::CHAINED);
+        $service = $container->getDefinition(self::CHECKER);
 
         $taggedServices = $container->findTaggedServiceIds(self::SERVICE_TAG);
 

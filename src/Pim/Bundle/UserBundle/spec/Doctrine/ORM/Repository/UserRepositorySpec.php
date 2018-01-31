@@ -51,7 +51,7 @@ class UserRepositorySpec extends ObjectBehavior
 
         $em->createQueryBuilder()->willReturn($qb);
         $qb->select('u')->willReturn($qb);
-        $qb->from('user', 'u')->willReturn($qb);
+        $qb->from('user', 'u', null)->willReturn($qb);
 
         $qb->where('u.username = :identifier OR u.email = :identifier')->willReturn($qb);
         $qb->setParameter(':identifier', $identifier)->willReturn($qb);
@@ -68,7 +68,7 @@ class UserRepositorySpec extends ObjectBehavior
 
         $em->createQueryBuilder()->willReturn($qb);
         $qb->select('u')->willReturn($qb);
-        $qb->from('user', 'u')->willReturn($qb);
+        $qb->from('user', 'u', null)->willReturn($qb);
 
         $qb->expr()->willReturn($ex);
         $ex->in('g.id', $groupIds)->willReturn('IN 32, 50');
@@ -79,19 +79,5 @@ class UserRepositorySpec extends ObjectBehavior
         $query->getResult()->shouldBeCalled();
 
         $this->findByGroupIds($groupIds);
-    }
-
-    function it_counts_all_users($em, QueryBuilder $qb, AbstractQuery $query)
-    {
-        $em->createQueryBuilder()->willReturn($qb);
-        $qb->select('u')->willReturn($qb);
-        $qb->from('user', 'u')->willReturn($qb);
-
-        $qb->select('count(u.id)')->willReturn($qb);
-
-        $qb->getQuery()->willReturn($query);
-        $query->getSingleScalarResult()->shouldBeCalled();
-
-        $this->countAll();
     }
 }

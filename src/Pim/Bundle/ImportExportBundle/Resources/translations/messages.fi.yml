@@ -4,7 +4,7 @@ pim_import_export:
   job: Työ
   connector: Liitin
   status:
-    - Valmiina
+    - Valmis
   batch_status:
     1: Valmis
     2: Alkaa
@@ -16,10 +16,10 @@ pim_import_export:
     8: Tuntematon
   download_archive:
     archive: lataa luotu arkisto|lataa luodut arkistot
-    output: lataa luotu tiedosto|lataa luodut tiedostot
-    input: lataa lähdetiedosto|lataa lähdetiedostot
-    invalid_xlsx: lataa virheelliset tiedot
-    invalid_csv: lataa virheelliset tiedot
+    output: lataus loi tiedoston|latauksien luomat tiedostot
+    input: lataus lukema tiedosto|latauksien lukemat tiedostot
+    invalid_xlsx: lataa virheellisiä tietoja
+    invalid_csv: lataa virheellisiä tietoja
   notification:
     export:
       error: Vienti <strong>%label%</strong> epäonnistui
@@ -35,30 +35,22 @@ pim_import_export:
       property.title: Yleiset ominaisuudet
       history.title: Historia
       job_content.title: Sisältö
-pim_title.export_profile.index: Vientiprofiilien hallinta
+pim_title.export_profile.index: Profiilien viennin hallinta
 pim_title.export_profile.edit: Vientiprofiili %job.label% | Muokkaa
 pim_title.export_profile.show: Vientiprofiili %job.label% | Näytä
-pim_title.export_execution.index: Vientihistoria
+pim_title.export_execution.index: Vientien historia
 pim_title.export_execution.show: Vientisuoritukset | Yksityiskohdat
-pim_title.import_profile.index: Tuontiprofiilien hallinta
+pim_title.import_profile.index: Profiilien tuonnin hallinta
 pim_title.import_profile.edit: Tuontiprofiili %job.label% | Muokkaa
 pim_title.import_profile.show: Tuontiprofiili %job.label% | Näytä
 pim_title.import_execution.index: Tuontihistoria
 pim_title.import_execution.show: Tuontisuoritukset | Yksityiskohdat
 export profile:
-  title: vientiprofiili
-  overview: vientiprofiilin esittely
-  create: luo vientiprofiili
-  edit: muokkaa vientiprofiilia
-export report:
-  overview: vientiraportit
+  title: tuontiprofiili
+  edit: muokkaa tuontiprofiilia
 import profile:
   title: tuontiprofiili
-  overview: tuontiprofiilin esittely
-  create: luo tuontiprofiili
   edit: muokkaa tuontiprofiilia
-import report:
-  overview: tuontiraportit
 pim_importexport:
   acl:
     export_profile:
@@ -89,14 +81,14 @@ pim_importexport:
     import_execution:
       index: Näytä vientiraporttien lista
       show: Näytä vientiraportin yksityiskohdat
-      dl_log: Lataa tuontiraporttilogi
+      dl_log: Lataa vientiraporttilogi
       dl_files: Lataa tuodut tiedostot
   acl_group:
     export: Vientiprofiili
     import: Tuontiprofiilit
 btn:
   create:
-    export profile: luo vientiprofiili
+    export profile: luo tuontiprofiili
     import profile: luo tuontiprofiili
 Upload and import now: Lataa ja tuo nyt
 import now: Tuo nyt
@@ -116,12 +108,6 @@ flash:
     removed: Tuonti poistettu
     updated: Tuonti päivitetty
     running: Tuonti on käynnissä
-pim_menu:
-  item:
-    export_history: Vientihistoria
-    export_profile: Vientiprofiili
-    import_history: Tuontihistoria
-    import_profile: Tuontiprofiilit
 General properties: Yleiset ominaisuudet
 History: Historia
 pane.accordion:
@@ -135,11 +121,11 @@ popin.create:
 'Hide item': Piilota kohde
 'Collecting data about job execution...': Kerää tietoja työsuorituksesta...
 'You must select a file to upload': Valitse ladattava tiedosto
-Download log: Lataa loki
+Download log: Latauslogi
 Show profile: Näytä profiili
 execution details: suorittamisen yksityiskohdat
 job_execution.summary:
-  read: luettu
+  read: lue
   write: kirjoitettu
   skip: ohitettu
   create: luotu
@@ -152,11 +138,11 @@ job_execution.summary:
     skipped: ohitetaan, laajennus valkolistattu
 Step: Vaihe
 Status: Status
-Warnings: Varoitukset
+Warnings: Varoitus
 Summary: Yhteenveto
 Start: Aloitus
 End: Loppu
-set_attribute_requirements: Aseta attribuuttivaatimukset
+set_attribute_requirements: Aseta vaaditut attribuutit
 COMPLETED: Valmis
 STARTING: Alkaa
 STARTED: Aloitettu

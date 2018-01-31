@@ -16,7 +16,6 @@ Feature: Create a category
     Then I should not see the text "There are unsaved changes."
     And I should be on the category "shoe" edit page
     And The tree "[shoe]" should be open
-    And I should see "Tree successfully created"
 
   Scenario: Create a category node
     Given the following category:
@@ -27,7 +26,6 @@ Feature: Create a category
       | Code | flipflap |
     And I save the category
     Then I should be on the category "flipflap" edit page
-    And I should see "Category successfully created"
 
   @skip
   Scenario: Go to category creation page from the category tree right click menu

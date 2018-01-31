@@ -3,18 +3,16 @@
 namespace spec\Pim\Bundle\EnrichBundle\Twig;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Helper\LocaleHelper;
+use Pim\Bundle\UserBundle\Context\UserContext;
+use Pim\Component\Catalog\Model\LocaleInterface;
 
 class LocaleExtensionSpec extends ObjectBehavior
 {
-    function let(LocaleHelper $helper)
+    function let(UserContext $userContext, LocaleInterface $en, LocaleInterface $fr)
     {
-        $this->beConstructedWith($helper);
-    }
-
-    function it_has_a_name()
-    {
-        $this->getName()->shouldReturn('pim_locale_extension');
+        $this->beConstructedWith($userContext);
+        $en->getCode()->willReturn('en_US');
+        $fr->getCode()->willReturn('fr_FR');
     }
 
     function it_registers_locale_functions()
@@ -36,32 +34,33 @@ class LocaleExtensionSpec extends ObjectBehavior
         $functions->shouldHaveTwigFilter('flag', 'flag', ['html'], true);
     }
 
-    function it_provides_current_locale_code($helper)
+    function it_provides_current_locale_code($userContext, $en)
     {
-        $helper->getCurrentLocaleCode()->willReturn('en_US');
-
+        $userContext->getCurrentLocale()->willReturn($en);
         $this->currentLocaleCode()->shouldReturn('en_US');
     }
 
-    function it_provides_a_locale_label_translated_in_the_specified_locale($helper)
+    function it_provides_a_locale_label_translated_in_the_specified_locale($userContext, $fr)
     {
-        $helper->getLocaleLabel('fr', 'en_US')->willReturn('French');
+        $userContext->getCurrentLocale()->willReturn($fr);
 
         $this->localeLabel('fr', 'en_US')->shouldReturn('French');
     }
 
-    function it_provides_a_currency_symbol_translated_in_the_specified_locale($helper)
+    function it_provides_a_currency_symbol_translated_in_the_specified_locale($userContext, $en)
     {
-        $helper->getCurrencySymbol('fr', 'en_US')->willReturn('EUR');
+        $userContext->getCurrentLocale()->willReturn($en);
+        $this->currencySymbol('USD')->shouldReturn('$');
+        $this->currencySymbol('USD', 'fr_FR')->shouldReturn('$US');
 
-        $this->currencySymbol('fr', 'en_US')->shouldReturn('EUR');
     }
 
-    function it_provides_a_currency_label_translated_in_the_specified_locale($helper)
+    function it_provides_a_currency_label_translated_in_the_specified_locale($userContext, $en)
     {
-        $helper->getCurrencyLabel('fr', 'en_US')->willReturn('Euro');
+        $userContext->getCurrentLocale()->willReturn($en);
+        $this->currencyLabel('USD')->shouldReturn('US Dollar');
+        $this->currencyLabel('USD', 'fr_FR')->shouldReturn('dollar des États-Unis');
 
-        $this->currencyLabel('fr', 'en_US')->shouldReturn('Euro');
     }
 
     function getMatchers()

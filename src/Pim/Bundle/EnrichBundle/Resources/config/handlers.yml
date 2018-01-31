@@ -1,64 +1,34 @@
 parameters:
-    pim_enrich.form.handler.base.class:             Pim\Bundle\EnrichBundle\Form\Handler\BaseHandler
-    pim_enrich.form.handler.group.class:            Pim\Bundle\EnrichBundle\Form\Handler\GroupHandler
+    pim_enrich.form.handler.base.class:  Pim\Bundle\EnrichBundle\Form\Handler\BaseHandler
+    pim_enrich.form.handler.group.class: Pim\Bundle\EnrichBundle\Form\Handler\GroupHandler
 
 services:
-    pim_enrich.form.handler.attribute:
-        class: '%pim_enrich.form.handler.base.class%'
-        scope: request
-        arguments:
-            - '@pim_enrich.form.attribute'
-            - '@request'
-            - '@pim_catalog.saver.attribute'
-
-    pim_enrich.form.handler.attribute_group:
-        class: '%pim_enrich.form.handler.base.class%'
-        scope: request
-        arguments:
-            - '@pim_enrich.form.attribute_group'
-            - '@request'
-            - '@pim_catalog.saver.attribute_group'
-
     pim_enrich.form.handler.group:
         class: '%pim_enrich.form.handler.group.class%'
-        scope: request
         arguments:
             - '@pim_enrich.form.group'
-            - '@request'
-            - '@pim_catalog.saver.group'
-            - '@pim_catalog.repository.product'
-            - '@pim_catalog.localization.localizer.converter'
-
-    pim_enrich.form.handler.variant_group:
-        class: '%pim_enrich.form.handler.group.class%'
-        scope: request
-        arguments:
-            - '@pim_enrich.form.variant_group'
-            - '@request'
+            - '@request_stack'
             - '@pim_catalog.saver.group'
             - '@pim_catalog.repository.product'
             - '@pim_catalog.localization.localizer.converter'
 
     pim_enrich.form.handler.group_type:
         class: '%pim_enrich.form.handler.base.class%'
-        scope: request
         arguments:
             - '@pim_enrich.form.group_type'
-            - '@request'
+            - '@request_stack'
             - '@pim_catalog.saver.group_type'
 
     pim_enrich.form.handler.association_type:
         class: '%pim_enrich.form.handler.base.class%'
-        scope: request
         arguments:
             - '@pim_enrich.form.association_type'
-            - '@request'
+            - '@request_stack'
             - '@pim_catalog.saver.association_type'
 
     pim_enrich.form.handler.family:
         class: '%pim_enrich.form.handler.base.class%'
-        scope: request
         arguments:
             - '@pim_enrich.form.family'
-            - '@request'
+            - '@request_stack'
             - '@pim_catalog.saver.family'

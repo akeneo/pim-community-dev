@@ -2,10 +2,10 @@
 
 namespace spec\Pim\Component\Catalog\Validator\Constraints;
 
+use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Validator\Constraints\IsIdentifierUsableAsGridFilter;
 use Pim\Component\Catalog\Validator\Constraints\IsIdentifierUsableAsGridFilterValidator;
-use PhpSpec\ObjectBehavior;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 use Symfony\Component\Validator\Violation\ConstraintViolationBuilderInterface;
 

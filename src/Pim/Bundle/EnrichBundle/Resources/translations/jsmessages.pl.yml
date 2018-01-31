@@ -8,7 +8,7 @@ confirmation:
     channel: Czy na pewno chcesz usunąć ten kanał?
     group: Czy na pewno chcesz usunąć tę grupę?
     variant group: Czy na pewno chcesz usunąć tę grupę wariantów?
-    group type: Czy na pewno chcesz usunąć ten typ grupy?
+    group_type: Czy na pewno chcesz usunąć ten typ grupy?
     import profile: Czy na pewno chcesz usunąć ten profil importu?
     export profile: Czy na pewno chcesz usunąć ten profil eksportu?
     user: Czy na pewno chcesz usunąć tego użytkownika?
@@ -34,6 +34,8 @@ flash:
     removed: Typ powiązania został pomyślnie usunięty
   attribute:
     removed: Atrybut został pomyślnie usunięty
+  attribute_group:
+    removed: Grupa atrybutów została pomyślnie usunięta
   family:
     removed: Rodzina produktów została usunięta pomyślnie
   product:
@@ -44,7 +46,7 @@ flash:
     removed: Grupa została pomyślnie usunięta
   variant group:
     removed: Grupa wariantów została pomyślnie usunięta
-  group type:
+  group_type:
     removed: Typ grupy został pomyślnie usunięty
   import profile:
     removed: Profil importu usunięty pomyślnie
@@ -129,13 +131,10 @@ pim_enrich:
         compare_translate: Porównaj / Tłumacz
         delete: Usuń
         save: Zapisz
-        save_and_back: Zapisz i wróć do listy
       history:
         version: Wersja
         author: Autor
         logged_at: Zalogowano jako
-        more: Więcej
-        less: Mniej
         from: Od
         modified: Zmodyfikowany
         property: Właściwości
@@ -187,21 +186,21 @@ pim_enrich:
           save: Zapisz
           cancel: Anuluj
     association_type:
-      info:
-        field_not_ready:
-          The association type cannot be saved right now. The following fields are not ready:
-            - pola
       meta:
         created: Utworzono
         updated: Zaktualizowano
       btn:
         save: Zapisz
+      title: typ powiązania
+    group_type:
+      meta:
+        created: Utworzono
+        updated: Zaktualizowano
+      btn:
+        save: Zapisz
+      title: typ grupy
     channel:
       title: kanał
-      info:
-        field_not_ready:
-          The channel cannot be saved right now. The following fields are not ready:
-            - pola
       meta:
         created: Utworzono
         updated: Zaktualizowano
@@ -220,9 +219,6 @@ pim_enrich:
       actions: Działania
     variant_group:
       info:
-        field_not_ready:
-          The variant group cannot be saved right now. The following fields are not ready:
-            - pola
         no_attributes: Ta grupa wariantów nie posiada jeszcze żadnych atrybutów
       btn:
         save: Zapisz
@@ -232,16 +228,36 @@ pim_enrich:
         updated: Zaktualizowano
     group:
       title: Grupa
-      info:
-        field_not_ready:
-          The group cannot be saved right now. The following fields are not ready:
-            - pola
       btn:
         save: Zapisz
       meta:
         product_count: Produkty
         created: Utworzono
         updated: Zaktualizowano
+    attribute:
+      scopable: Określaj zasięg
+      type:
+        pim_catalog_identifier: Identyfikator
+        pim_catalog_text: Tekst
+        pim_catalog_textarea: Pole tekstowe
+        pim_catalog_number: Liczba
+        pim_catalog_price_collection: Cena
+        pim_catalog_multiselect: Wielokrotny wybór
+        pim_catalog_simpleselect: Pojedynczy wybór
+        pim_catalog_file: Plik
+        pim_catalog_image: Obrazek
+        pim_catalog_boolean: "Tak/Nie"
+        pim_catalog_date: Data
+        pim_catalog_metric: Miara
+        pim_reference_data_simpleselect: Referencja pojedynczy wybór
+        pim_reference_data_multiselect: Referencja wielokrotny wybór
+      validation_rule:
+        email: E-mail
+        regexp: Wyrażenie regularne
+        url: URL
+    attribute_group:
+      info:
+        update_successful: Grupa atrybutów została pomyślnie zaktualizowana
   confirmation:
     leave: Czy na pewno chcesz opuścić tę stronę?
     discard_changes: Utracisz wszystkie zmiany w {{ entity }}, jeśli opuścisz tę stronę.
@@ -255,7 +271,6 @@ pim_enrich:
   error:
     upload: Wystąpił błąd podczas przekazywania pliku
   alert:
-    not_allowed: Nie masz uprawnień do przeglądania tej strony
     error_occured: Wystąpił błąd podczas ładowania strony
   form:
     product:
@@ -277,6 +292,7 @@ pim_enrich:
             no_available_attributes: Nie ma więcej atrybutów do dodania
             no_match: Nie znaleziono dopasowań
             load_more: Ładowanie więcej wyników...
+          attribute_group_selector: Grupa atrybutów
         categories:
           title: Kategorie
       panel:
@@ -312,6 +328,15 @@ pim_enrich:
         select_attributes: Wybierz atrybuty
         select: Wybierz
     association_type:
+      tab:
+        properties:
+          title: Właściwości
+          general: Ustawienia ogólne
+          code: Kod
+          label_translations: Tłumaczenia etykiety
+        history:
+          title: Historia
+    group_type:
       tab:
         properties:
           title: Właściwości
@@ -366,6 +391,7 @@ pim_enrich:
         "no": "Nie"
         "yes": "Tak"
     variant_group:
+      axis.help: 'Oś wskazuje atrybuty, które powinny odróżniać produkty w grupie. Osie są atrybutami z ustawieniami, bez tłumaczenie i zasięgu. Nie mogą one zostać zmienione po utworzeniu grypy wariantów.'
       tab:
         properties:
           title: Właściwości
@@ -392,6 +418,21 @@ pim_enrich:
           title: Historia
         products:
           title: Produkty
+    attribute_group:
+      tab:
+        properties:
+          title: Właściwości
+          general: Ustawienia ogólne
+          code: Kod
+          label_translations: Tłumaczenia etykiety
+        attribute:
+          title: Atrybuty
+          table:
+            name: Nazwa
+            type: Typ
+            scope: Zasięg
+            localizable: Określaj ustawienia regionalne
+        history.title: Historia
     common:
       tab:
         attributes:
@@ -401,6 +442,21 @@ pim_enrich:
           info:
             search_attributes: Szukaj...
             no_available_attributes: Nie ma więcej atrybutów do dodania
+    job_execution:
+      loading: Ładuję...
+      refreshBtn.title: Odśwież
+      meta:
+        status.title: Status
+      button:
+        show_profile.title: Pokaż profil
+        download_log.title: Pobierz dziennik
+      summary:
+        fetching: Zbieranie danych o wykonywaniu zadania...
+        header.step: Krok
+        header.status: Status
+        header.summary: Podsumowanie
+        header.start: Start
+        header.end: Koniec
     job_instance:
       button:
         edit.title: Edytuj
@@ -459,6 +515,45 @@ pim_enrich:
           real_time_versioning:
             title: Aktualizacja historii w czasie rzeczywistym
             help: Oznacza że historia dla produktu będzie aktualizowana automatycznie, wyłącz w celu poprawy wydajności
+        history:
+          title: Historia
+      file_path: Ścieżka do pliku
+    attribute:
+      meta:
+        created: Utworzono
+        updated: Ostatnia aktualizacja
+      tab:
+        properties:
+          title: Właściwości
+          section:
+            common: Parametry ogólne
+          label:
+            allowed_extensions: Dozwolone rozszerzenia
+            available_locales: Dostępne ustawienia regionalne
+            code: Kod
+            date_max: Data końcowa
+            date_min: Data początkowa
+            default_metric_unit: Domyślna jednostka metryczna
+            group: Grupa atrybutów
+            max_characters: Maksymalna liczba znaków
+            max_file_size: Maksymalny rozmiar pliku (MB)
+            metric_family: Zestaw metryk
+            number_max: Maksymalna liczba
+            number_min: Minimalna liczba
+            type: Typ
+            unique: Unikatowa wartość
+            useable_as_grid_filter: Używane w tabeli
+            validation_regexp: Wyrażenie regularne
+            validation_rule: Reguła sprawdzania poprawności
+          default_label:
+            default_metric_unit: Wybierz jednostkę
+            group: Wybierz grupę atrybutów
+            metric_family: Wybierz rodzinę
+            reference_data_name: Wybierz typ danych referencyjnych
+        labels:
+          title: Tłumaczenia etykiety
+        choices:
+          title: Ustawienia
         history:
           title: Historia
     mass_edit:
@@ -532,5 +627,95 @@ pim_enrich:
   mass_edit_action:
     edit_common_attributes:
       description: Atrybuty wybranych produktów będą edytowane z następującymi danymi dla ustawienia regionalnego <span class = "highlight"> {{ locale }} </span> oraz kanału <span class = "highlight"> {{ channel }} </span>, wybrane z listy produktów.
+  index:
+    group:
+      create_btn: Utwórz grupę
+    user:
+      title: Użytkownik
+      create_btn: Utwórz użytkownika
+    user_role:
+      title: Rola
+      create_btn: Utwórz rolę
+    user_group:
+      title: Grupy
+      create_btn: Utwórz grupę
+    process_tracker:
+      title: Śledzenie procesu
+    attribute:
+      modal_title: Wybierz typ atrybutu
+    attribute_group:
+      create_btn: Utwórz
 pim_enrich.error:
   exception.title: O rany! Wystąpił błąd {{ status_code }}...
+page_title:
+  oro_default: Kokpit
+  pim_enrich_attributegroup_index: Grupy Atrybutów
+  pim_enrich_attributegroup_create: Grupy atrybutów | Utwórz
+  pim_enrich_categorytree_index: Drzewo kategorii
+  pim_enrich_categorytree_create: Drzewa kategorii | Utwórz
+  pim_enrich_categorytree_create_tree: Drzewa kategorii | Utwórz
+  pim_enrich_attribute_index: Atrybuty
+  pim_enrich_attribute_create: Atrybuty | Utwórz
+  pim_enrich_product_index: Produkty
+  pim_enrich_family_index: Rodziny
+  pim_enrich_channel_index: Kanały
+  pim_enrich_channel_create: Kanały | Utwórz
+  pim_enrich_currency_index: Waluty
+  pim_enrich_locale_index: Ustawienia regionalne
+  pim_enrich_group_index: Grupy
+  pim_enrich_variant_group_index: Grupy wariantów
+  pim_enrich_associationtype_index: Typy powiązań
+  pim_enrich_grouptype_index: Typy grup
+  pim_enrich_mass_edit_action_choose: Edycja Masowa | Wybierz
+  pim_enrich_mass_edit_action_configure: Edycja Masowa | Konfiguruj
+  pim_enrich_job_tracker_index: Śledzenie procesu
+  pim_enrich_job_tracker_show: Śledzenie procesu | Pokaż zadanie
+batch_jobs:
+  update_product_value:
+    label: Aktualizacja wartości produktu
+    perform:
+      label: Aktualizacja wartości produktu
+  edit_common_attributes:
+    label: Edytuj wspólne atrybuty
+    perform:
+      label: Edytuj wspólne atrybuty
+  set_attribute_requirements:
+    label: Określ wymagania atrybutów
+    perform:
+      label: Określ wymagania atrybutów
+pim_menu:
+  tab:
+    dashboard: Kokpit
+    products: Produkty
+    settings: Ustawienia
+    system: System
+  item:
+    association_type: Typy powiązań
+    attribute: Atrybuty
+    attribute_group: Grupy Atrybutów
+    category: Kategorie
+    channel: Kanały
+    currency: Waluty
+    family: Rodziny
+    group: Grupy
+    group_type: Typy grup
+    locale: Ustawienia regionalne
+    product: Produkty
+    variant_group: Grupy wariantów
+    export_history: Historia eksportów
+    export_profile: Profile eksportu
+    import_history: Historia importów
+    import_profile: Profile importu
+    configuration: Konfiguracja
+    user_management: Zarządzanie użytkownikami
+    user: Użytkownicy
+    user_group: Grupy
+    user_role: Role
+    info: Informacje o systemie
+    job_tracker: Śledzenie procesu
+  user:
+    logout: Wyloguj się
+    user_account: Moje konto
+pim_notification:
+  mark_all_as_read: Oznacz wszystkie jako przeczytane
+  loading: Ładuję...

@@ -14,11 +14,12 @@ define(
         'backbone',
         'oro/mediator',
         'pim/form',
-        'text!pim/template/product/sequential-edit',
+        'pim/template/product/sequential-edit',
         'routing',
-        'oro/navigation',
+        'pim/router',
         'pim/fetcher-registry',
         'pim/user-context',
+        'pim/provider/sequential-edit-provider',
         'bootstrap'
     ],
     function (
@@ -29,13 +30,29 @@ define(
         BaseForm,
         template,
         Routing,
-        Navigation,
+        router,
         FetcherRegistry,
-        UserContext
+        UserContext,
+        sequentialEditProvider
     ) {
+        const findObjectIndex = (objects, id, type) => {
+            return objects.findIndex(item => item.id === id && item.type === type);
+        }
+
+        const getObjectViewParams = (object) => {
+            const label = object.meta.label[UserContext.get('catalogLocale')];
+
+            return {
+                id:         object.meta.id,
+                type:       object.meta.model_type,
+                label:      label,
+                shortLabel: label.length > 25 ? label.slice(0, 22) + '...' : label
+            }
+        }
+
         return BaseForm.extend({
             id: 'sequentialEdit',
-            className: 'AknSequentialEdit',
+            className: 'AknSequentialEdit AknDefault-bottomPanel',
             template: _.template(template),
             events: {
                 'click .next, .previous': 'followLink'
@@ -46,29 +63,25 @@ define(
                 BaseForm.prototype.initialize.apply(this, arguments);
             },
             configure: function () {
-                FetcherRegistry.clear('sequential-edit');
+                this.model.set({objectSet: sequentialEditProvider.get()});
 
-                return $.when(
-                    FetcherRegistry.getFetcher('sequential-edit')
-                        .fetchAll()
-                        .then(
-                            function (sequentialEdit) {
-                                this.model.set(sequentialEdit);
-                            }.bind(this)
-                        ),
-                    BaseForm.prototype.configure.apply(this, arguments)
-                );
+                return BaseForm.prototype.configure.apply(this, arguments);
             },
             addSaveButton: function () {
                 var objectSet    = this.model.get('objectSet');
-                var currentIndex = objectSet.indexOf(this.getFormData().meta.id);
-                var nextObject   = objectSet[currentIndex + 1];
+                var currentIndex = findObjectIndex(
+                    objectSet,
+                    this.getFormData().meta.id,
+                    this.getFormData().meta.model_type
+                );
+                var nextObject = objectSet[currentIndex + 1];
 
                 this.trigger('save-buttons:register-button', {
                     className: 'save-and-continue',
                     priority: 250,
                     label: _.__(
-                        'pim_enrich.form.product.sequential_edit.btn.save_and_' + (nextObject ? 'next' : 'finish')
+                        'pim_enrich.form.product.sequential_edit.btn.save_and_' +
+                            (undefined !== nextObject ? 'next' : 'finish')
                     ),
                     events: {
                         'click .save-and-continue': this.saveAndContinue.bind(this)
@@ -76,8 +89,12 @@ define(
                 });
             },
             render: function () {
-                if (!this.configured || !this.model.get('objectSet')) {
+                if (!this.configured || !this.model.get('objectSet') || 0 === this.model.get('objectSet').length) {
+                    this.$el.addClass('AknDefault-bottomPanel--hidden');
+
                     return this;
+                } else {
+                    this.$el.removeClass('AknDefault-bottomPanel--hidden');
                 }
 
                 this.addSaveButton();
@@ -92,35 +109,27 @@ define(
                 return this;
             },
             getTemplateParameters: function () {
-                var objectSet     = this.model.get('objectSet');
-                var currentObject = this.getFormData().meta.id;
-                var index         = objectSet.indexOf(currentObject);
-                var previous      = objectSet[index - 1];
-                var next          = objectSet[index + 1];
+                const objectSet     = this.model.get('objectSet');
+                const currentMeta = this.getFormData().meta;
+                const index         = findObjectIndex(objectSet, currentMeta.id, currentMeta.model_type);
+                const previous      = objectSet[index - 1];
+                const next          = objectSet[index + 1];
 
                 var previousObject = null;
                 var nextObject = null;
 
                 var promises = [];
                 if (previous) {
-                    promises.push(FetcherRegistry.getFetcher('product').fetch(previous).then(function (product) {
-                        var label = product.meta.label[UserContext.get('catalogLocale')];
-                        previousObject = {
-                            id:         product.meta.id,
-                            label:      label,
-                            shortLabel: label.length > 25 ? label.slice(0, 22) + '...' : label
-                        };
-                    }));
+                    promises.push(FetcherRegistry.getFetcher(previous.type.replace('_', '-'))
+                        .fetch(previous.id).then(function (product) {
+                            previousObject = getObjectViewParams(product);
+                        }));
                 }
                 if (next) {
-                    promises.push(FetcherRegistry.getFetcher('product').fetch(next).then(function (product) {
-                        var label = product.meta.label[UserContext.get('catalogLocale')];
-                        nextObject = {
-                            id:         product.meta.id,
-                            label:      label,
-                            shortLabel: label.length > 25 ? label.slice(0, 22) + '...' : label
-                        };
-                    }));
+                    promises.push(FetcherRegistry.getFetcher(next.type.replace('_', '-'))
+                        .fetch(next.id).then(function (product) {
+                            nextObject = getObjectViewParams(product);
+                        }));
                 }
 
                 return $.when.apply($, promises).then(function () {
@@ -135,7 +144,11 @@ define(
             },
             preloadNext: function () {
                 var objectSet = this.model.get('objectSet');
-                var currentIndex = objectSet.indexOf(this.getFormData().meta.id);
+                var currentIndex = findObjectIndex(
+                    objectSet,
+                    this.getFormData().meta.id,
+                    this.getFormData().meta.model_type
+                );
                 var pending = objectSet[currentIndex + 2];
                 if (pending) {
                     setTimeout(function () {
@@ -146,10 +159,14 @@ define(
             saveAndContinue: function () {
                 this.parent.getExtension('save').save({ silent: true }).done(function () {
                     var objectSet = this.model.get('objectSet');
-                    var currentIndex = objectSet.indexOf(this.getFormData().meta.id);
+                    var currentIndex = findObjectIndex(
+                        objectSet,
+                        this.getFormData().meta.id,
+                        this.getFormData().meta.model_type
+                    );
                     var nextObject = objectSet[currentIndex + 1];
                     if (nextObject) {
-                        this.goToProduct(nextObject);
+                        this.goToProduct(nextObject.type, nextObject.id);
                     } else {
                         this.finish();
                     }
@@ -158,20 +175,18 @@ define(
             followLink: function (event) {
                 this.getRoot().trigger('pim_enrich:form:state:confirm', {
                     action: function () {
-                        this.goToProduct(event.currentTarget.dataset.id);
+                        this.goToProduct(event.currentTarget.dataset.type, event.currentTarget.dataset.id);
                     }.bind(this)
                 });
             },
-            goToProduct: function (id) {
-                Navigation.getInstance().setLocation(
-                    Routing.generate(
-                        'pim_enrich_product_edit',
-                        { id: id }
-                    )
+            goToProduct: function (type, id) {
+                router.redirectToRoute(
+                    'pim_enrich_' + type + '_edit',
+                    { id: id }
                 );
             },
             finish: function () {
-                Navigation.getInstance().setLocation(Routing.generate('pim_enrich_product_index'));
+                router.redirectToRoute('pim_enrich_product_index');
             }
         });
     }

@@ -6,7 +6,7 @@ use Akeneo\Bundle\BatchBundle\Launcher\SimpleJobLauncher;
 use Akeneo\Component\Batch\Model\JobInstance;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\EnrichBundle\MassEditAction\Operation\AbstractMassEditOperation;
+use Pim\Bundle\EnrichBundle\MassEditAction\Operation\BatchableOperationInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -28,13 +28,12 @@ class OperationJobLauncherSpec extends ObjectBehavior
         $tokenStorage,
         TokenInterface $token,
         UserInterface $user,
-        AbstractMassEditOperation $operation,
+        BatchableOperationInterface $operation,
         JobInstance $jobInstance
     ) {
         $operation->getJobInstanceCode()->willReturn('mass_classify');
         $jobInstanceRepo->findOneByIdentifier('mass_classify')->willReturn($jobInstance);
 
-        $operation->finalize()->shouldBeCalled();
         $operation->getBatchConfig()->willReturn([
             'foo'  => 'bar',
             'pomf' => 'thud'
@@ -42,13 +41,15 @@ class OperationJobLauncherSpec extends ObjectBehavior
 
         $tokenStorage->getToken()->willReturn($token);
         $token->getUser()->willReturn($user);
+        $user->getUsername()->willReturn('julia');
 
         $jobLauncher->launch(
             $jobInstance,
             $user,
             [
                 'foo'  => 'bar',
-                'pomf' => 'thud'
+                'pomf' => 'thud',
+                'user_to_notify' => 'julia'
             ]
         );
 
@@ -57,7 +58,7 @@ class OperationJobLauncherSpec extends ObjectBehavior
 
     function it_throws_an_exception_if_no_job_instance_is_found(
         $jobInstanceRepo,
-        AbstractMassEditOperation $operation
+        BatchableOperationInterface $operation
     ) {
         $operation->getJobInstanceCode()->willReturn('mass_colorize');
         $jobInstanceRepo->findOneByIdentifier('mass_colorize')->willReturn(null);

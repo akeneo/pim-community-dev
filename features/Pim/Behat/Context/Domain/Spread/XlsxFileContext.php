@@ -7,6 +7,7 @@ use Behat\Mink\Exception\ExpectationException;
 use Box\Spout\Common\Exception\UnsupportedTypeException;
 use Box\Spout\Common\Type;
 use Box\Spout\Reader\ReaderFactory;
+use PHPUnit\Framework\Assert;
 use Pim\Behat\Context\PimContext;
 
 class XlsxFileContext extends PimContext
@@ -61,9 +62,11 @@ class XlsxFileContext extends PimContext
             $reader->close();
         }
 
-        assertEmpty(
+        $lines = false === current($expectedLines) ? [] : current($expectedLines);
+
+        Assert::assertEmpty(
             $expectedLines,
-            sprintf('Could not find an expected line: %s', implode(' | ', current($expectedLines)))
+            sprintf('Could not find an expected line: %s', implode(' | ', $lines))
         );
     }
 
@@ -109,7 +112,7 @@ class XlsxFileContext extends PimContext
 
         $rowCount = count($actualLines);
 
-        assertEquals($rows, $rowCount, sprintf('Expecting file to contain %d rows, found %d.', $rows, $rowCount));
+        Assert::assertEquals($rows, $rowCount, sprintf('Expecting file to contain %d rows, found %d.', $rows, $rowCount));
     }
 
     /**
@@ -150,7 +153,7 @@ class XlsxFileContext extends PimContext
 
         foreach ($actualLines as $row) {
             $category = array_shift($categories);
-            assertSame($category, $row[0], sprintf('Expecting category "%s", saw "%s"', $category, $row[0]));
+            Assert::assertSame($category, $row[0], sprintf('Expecting category "%s", saw "%s"', $category, $row[0]));
         }
     }
 
@@ -166,7 +169,7 @@ class XlsxFileContext extends PimContext
     {
         $expectedCount = count($expectedLines);
         $actualCount = count($actualLines);
-        assertSame(
+        Assert::assertSame(
             $expectedCount,
             $actualCount,
             sprintf('Expecting to see %d rows, found %d', $expectedCount, $actualCount)
@@ -207,7 +210,7 @@ class XlsxFileContext extends PimContext
      */
     protected function compareXlsxFileHeadersOrder(array $expectedHeaders, array $actualHeaders)
     {
-        assertEquals(
+        Assert::assertEquals(
             $expectedHeaders[0],
             $actualHeaders[0],
             sprintf('Expecting to see headers order like %d , found %d', $expectedHeaders[0], $actualHeaders[0])

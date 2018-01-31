@@ -19,7 +19,13 @@ pim_analytics:
     registered_bundles: Registrerede bundter
     nb_channels: Antal af kanaler
     nb_products: Antal produkter
+    nb_product_models: Antallet af produktmodeller
+    nb_variant_products: Antallet af variant produkter
+    nb_family_variants: Antallet af familien varianter
     nb_attributes: Antallet af attributter
+    nb_scopable_attributes: Antallet af afgrænsbare attributter
+    nb_localizable_attributes: Antallet af oversætbare attributter
+    nb_scopable_localizable_attributes: Antallet af oversætbare og afgrænsbare attributter
     nb_locales: Antallet af landestandarder
     nb_families: Antallet af familier
     nb_users: Antallet af brugere

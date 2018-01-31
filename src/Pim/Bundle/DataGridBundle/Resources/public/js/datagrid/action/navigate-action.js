@@ -1,6 +1,6 @@
 /* global define */
-define(['underscore', 'oro/mediator', 'oro/datagrid/model-action'],
-function(_, mediator, ModelAction) {
+define(['underscore', 'oro/mediator', 'oro/datagrid/model-action', 'pim/router'],
+function(_, mediator, ModelAction, router) {
     'use strict';
 
     /**
@@ -47,7 +47,7 @@ function(_, mediator, ModelAction) {
          * Execute redirect
          */
         execute: function() {
-            window.location.href = this.getLink();
+            router.redirect(this.getLink());
         },
 
         /**

@@ -169,6 +169,16 @@ PIM-6901: Fix ACL with a new role when we want to edit users
 - PIM-6309: Enlarge the attribute type selection panel
 - PIM-6271: Fix locking fields in mass edit product form
 
+## BC breaks
+
+### Classes
+
+- Remove class `Pim\Bundle\EnrichBundle\Form\Type\AttributeRequirementType` 
+
+### Constructors
+
+- Change the constructor of `Pim\Bundle\EnrichBundle\MassEditAction\Operation\SetAttributeRequirements` to remove `Pim\Component\Catalog\Repository\AttributeRepositoryInterface` and remove `Pim\Component\Catalog\Factory\AttributeRequirementFactory`
+
 # 1.7.1 (2017-03-23)
 
 ## Bug Fixes

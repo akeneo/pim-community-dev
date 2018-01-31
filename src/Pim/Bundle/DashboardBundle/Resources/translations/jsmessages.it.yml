@@ -1,7 +1,7 @@
 pim_dashboard:
   widget:
     last_operations:
-      empty: Nessuna operazione trovata
+      empty: Non ci sono operazioni
       status: Stato
       date: Data
       type: Tipo
@@ -13,7 +13,10 @@ pim_dashboard:
         export: Esporta
         mass_edit: Modifica di massa
         quick_export: Esportazione rapida
+        compute_product_models_descendants: Calcola modelli di prodotto discendenti
     completeness:
       load_more: 'Carica ancora...'
     header:
       view_all: Mostra tutti
+page_title:
+  pim_dashboard_index: Dashboard

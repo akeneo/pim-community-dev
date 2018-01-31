@@ -12,7 +12,7 @@ define([
         'oro/translator',
         'pim/form',
         'pim/fetcher-registry',
-        'text!pim/template/group/tab/properties/general',
+        'pim/template/group/tab/properties/general',
         'jquery.select2'
     ],
     function (

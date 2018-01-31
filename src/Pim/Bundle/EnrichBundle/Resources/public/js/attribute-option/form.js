@@ -5,7 +5,7 @@ define(
         'underscore',
         'backbone',
         'pim/form',
-        'text!pim/template/attribute-option/form',
+        'pim/template/attribute-option/form',
         'pim/user-context',
         'pim/i18n'
     ],

@@ -44,9 +44,9 @@ class CursorFactory implements CursorFactoryInterface
     /**
      * {@inheritdoc}
      */
-    public function createCursor($queryBuilder, $pageSize = null)
+    public function createCursor($queryBuilder, array $options = [])
     {
-        if ($pageSize == null) {
+        if (!isset($options['page_size'])) {
             $pageSize = $this->pageSize;
         }
 

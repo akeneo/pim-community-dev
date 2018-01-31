@@ -3,6 +3,7 @@
 namespace spec\Pim\Component\Catalog\Model;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Model\Association;
@@ -10,9 +11,8 @@ use Pim\Component\Catalog\Model\AssociationTypeInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\CategoryInterface;
 use Pim\Component\Catalog\Model\FamilyInterface;
-use Pim\Component\Catalog\Model\GroupInterface;
-use Pim\Component\Catalog\Model\GroupTypeInterface;
-use Pim\Component\Catalog\Model\ProductTemplateInterface;
+use Pim\Component\Catalog\Model\ValueCollectionInterface;
+use Pim\Component\Catalog\Model\ValueInterface;
 
 class ProductSpec extends ObjectBehavior
 {
@@ -36,12 +36,19 @@ class ProductSpec extends ObjectBehavior
         Association $assoc1,
         Association $assoc2,
         AssociationTypeInterface $assocType1,
-        AssociationTypeInterface $assocType2
+        AssociationTypeInterface $assocType2,
+        Collection $associations,
+        \Iterator $associationsIterator
     ) {
+        $associations->getIterator()->willReturn($associationsIterator);
+        $associationsIterator->current()->willReturn($assoc1, $assoc2);
+        $associationsIterator->rewind()->shouldBeCalled();
+        $associationsIterator->valid()->willReturn(true, true, false);
+
         $assoc1->getAssociationType()->willReturn($assocType1);
         $assoc2->getAssociationType()->willReturn($assocType2);
 
-        $this->setAssociations([$assoc1, $assoc2]);
+        $this->setAssociations($associations);
         $this->getAssociationForType($assocType1)->shouldReturn($assoc1);
     }
 
@@ -49,21 +56,33 @@ class ProductSpec extends ObjectBehavior
         Association $assoc1,
         Association $assoc2,
         AssociationTypeInterface $assocType1,
-        AssociationTypeInterface $assocType2
+        AssociationTypeInterface $assocType2,
+        Collection $associations,
+        \Iterator $associationsIterator
     ) {
+        $associations->getIterator()->willReturn($associationsIterator);
+        $associationsIterator->current()->willReturn($assoc1, $assoc2);
+        $associationsIterator->next()->shouldBeCalled();
+        $associationsIterator->rewind()->shouldBeCalled();
+        $associationsIterator->valid()->willReturn(true, true, false);
+
         $assocType1->getCode()->willReturn('ASSOC_TYPE_1');
         $assocType2->getCode()->willReturn('ASSOC_TYPE_2');
         $assoc1->getAssociationType()->willReturn($assocType1);
         $assoc2->getAssociationType()->willReturn($assocType2);
 
-        $this->setAssociations([$assoc1, $assoc2]);
+        $this->setAssociations($associations);
         $this->getAssociationForTypeCode('ASSOC_TYPE_2')->shouldReturn($assoc2);
     }
 
     function it_returns_null_when_i_try_to_get_an_association_with_an_empty_collection(
-        AssociationTypeInterface $assocType1
+        AssociationTypeInterface $assocType1,
+        Collection $associations,
+        \Iterator $associationsIterator
     ) {
-        $this->setAssociations([]);
+        $associations->getIterator()->willReturn($associationsIterator);
+
+        $this->setAssociations($associations);
         $this->getAssociationForType($assocType1)->shouldReturn(null);
     }
 
@@ -90,61 +109,8 @@ class ProductSpec extends ObjectBehavior
         $this->hasAttributeInfamily($attribute)->shouldReturn(true);
     }
 
-    function it_has_not_attribute_in_group_without_groups(AttributeInterface $attribute)
-    {
-        $this->hasAttributeInVariantGroup($attribute)->shouldReturn(false);
-    }
-
-    function it_has_not_attribute_in_a_non_variant_group(AttributeInterface $attribute, GroupInterface $group, GroupTypeInterface $groupType)
-    {
-        $groupType->isVariant()->willReturn(false);
-        $group->addProduct($this)->willReturn($this);
-        $group->getType()->willReturn($groupType);
-
-        $this->addGroup($group);
-        $this->hasAttributeInVariantGroup($attribute)->shouldReturn(false);
-    }
-
-    function it_has_attribute_in_a_variant_group(AttributeInterface $attribute, GroupInterface $group, GroupTypeInterface $groupType, ArrayCollection $groupAttributes)
-    {
-        $groupType->isVariant()->willReturn(true);
-        $groupAttributes->contains($attribute)->willReturn(true);
-        $group->getType()->willReturn($groupType);
-        $group->getAxisAttributes()->willReturn($groupAttributes);
-        $group->addProduct($this)->willReturn($this);
-
-        $this->addGroup($group);
-        $this->hasAttributeInVariantGroup($attribute)->shouldReturn(true);
-    }
-
-    function it_has_attribute_in_a_variant_group_template(AttributeInterface $attribute, GroupInterface $group, GroupTypeInterface $groupType, ArrayCollection $groupAttributes, ProductTemplateInterface $template)
-    {
-        $groupType->isVariant()->willReturn(true);
-        $groupAttributes->contains($attribute)->willReturn(false);
-        $template->hasValueForAttribute($attribute)->shouldBeCalled()->willReturn(true);
-        $group->getType()->willReturn($groupType);
-        $group->getProductTemplate()->willReturn($template);
-        $group->getAxisAttributes()->willReturn($groupAttributes);
-        $group->addProduct($this)->willReturn($this);
-
-        $this->addGroup($group);
-        $this->hasAttributeInVariantGroup($attribute)->shouldReturn(true);
-    }
-
     function it_is_not_attribute_editable_without_family(AttributeInterface $attribute)
     {
-        $this->isAttributeEditable($attribute)->shouldReturn(false);
-    }
-
-    function it_is_not_attribute_editable_with_group_containing_attribute(AttributeInterface $attribute, GroupInterface $group, GroupTypeInterface $groupType, ArrayCollection $groupAttributes)
-    {
-        $groupType->isVariant()->willReturn(true);
-        $groupAttributes->contains($attribute)->willReturn(true);
-        $group->getType()->willReturn($groupType);
-        $group->getAxisAttributes()->willReturn($groupAttributes);
-        $group->addProduct($this)->willReturn($this);
-
-        $this->addGroup($group);
         $this->isAttributeEditable($attribute)->shouldReturn(false);
     }
 
@@ -175,20 +141,246 @@ class ProductSpec extends ObjectBehavior
         $this->isAttributeRemovable($attribute)->shouldReturn(false);
     }
 
-    function it_is_not_attribute_removable_with_group_containing_attribute(AttributeInterface $attribute, GroupInterface $group, GroupTypeInterface $groupType, ArrayCollection $groupAttributes)
-    {
-        $groupType->isVariant()->willReturn(true);
-        $groupAttributes->contains($attribute)->willReturn(true);
-        $group->getType()->willReturn($groupType);
-        $group->getAxisAttributes()->willReturn($groupAttributes);
-        $group->addProduct($this)->willReturn($this);
-
-        $this->addGroup($group);
-        $this->isAttributeRemovable($attribute)->shouldReturn(false);
-    }
-
     function it_is_attribute_removable(AttributeInterface $attribute)
     {
         $this->isAttributeRemovable($attribute)->shouldReturn(true);
+    }
+
+    function it_gets_the_label_of_the_product_without_specified_scope(
+        FamilyInterface $family,
+        AttributeInterface $attributeAsLabel,
+        ValueCollectionInterface $values,
+        ValueInterface $nameValue,
+        ValueInterface $identifier
+    ) {
+        $identifier->getData()->willReturn('shovel');
+        $identifier->getAttribute()->willReturn($attributeAsLabel);
+
+        $family->getAttributeAsLabel()->willReturn($attributeAsLabel);
+        $family->getId()->willReturn(42);
+        $attributeAsLabel->getCode()->willReturn('name');
+        $attributeAsLabel->isLocalizable()->willReturn(true);
+        $attributeAsLabel->isScopable()->willReturn(true);
+
+        $values->getByCodes('name', null, 'fr_FR')->willReturn($nameValue);
+        $values->removeByAttribute($attributeAsLabel)->shouldBeCalled();
+        $values->add($identifier)->shouldBeCalled();
+
+        $nameValue->getData()->willReturn('Petit outil agricole authentique');
+
+        $this->setFamily($family);
+        $this->setValues($values);
+        $this->setIdentifier($identifier);
+
+        $this->getLabel('fr_FR')->shouldReturn('Petit outil agricole authentique');
+    }
+
+    function it_gets_the_label_regardless_of_the_specified_scope_if_the_attribute_as_label_is_not_scopable(
+        FamilyInterface $family,
+        AttributeInterface $attributeAsLabel,
+        ValueCollectionInterface $values,
+        ValueInterface $nameValue,
+        ValueInterface $identifier
+    ) {
+        $identifier->getData()->willReturn('shovel');
+        $identifier->getAttribute()->willReturn($attributeAsLabel);
+
+        $family->getAttributeAsLabel()->willReturn($attributeAsLabel);
+        $family->getId()->willReturn(42);
+        $attributeAsLabel->getCode()->willReturn('name');
+        $attributeAsLabel->isLocalizable()->willReturn(true);
+        $attributeAsLabel->isScopable()->willReturn(false);
+
+        $values->getByCodes('name', null, 'fr_FR')->willReturn($nameValue);
+        $values->removeByAttribute($attributeAsLabel)->shouldBeCalled();
+        $values->add($identifier)->shouldBeCalled();
+
+        $nameValue->getData()->willReturn('Petit outil agricole authentique');
+
+        $this->setFamily($family);
+        $this->setValues($values);
+        $this->setIdentifier($identifier);
+
+        $this->getLabel('fr_FR', 'mobile')->shouldReturn('Petit outil agricole authentique');
+    }
+
+    function it_gets_the_label_if_the_scope_is_specified_and_the_attribute_as_label_is_scopable(
+        FamilyInterface $family,
+        AttributeInterface $attributeAsLabel,
+        ValueCollectionInterface $values,
+        ValueInterface $nameValue,
+        ValueInterface $identifier
+    ) {
+        $identifier->getData()->willReturn('shovel');
+        $identifier->getAttribute()->willReturn($attributeAsLabel);
+
+        $family->getAttributeAsLabel()->willReturn($attributeAsLabel);
+        $family->getId()->willReturn(42);
+        $attributeAsLabel->getCode()->willReturn('name');
+        $attributeAsLabel->isLocalizable()->willReturn(true);
+        $attributeAsLabel->isScopable()->willReturn(true);
+
+        $values->getByCodes('name', 'mobile', 'fr_FR')->willReturn($nameValue);
+        $values->removeByAttribute($attributeAsLabel)->shouldBeCalled();
+        $values->add($identifier)->shouldBeCalled();
+
+        $nameValue->getData()->willReturn('Petite pelle');
+
+        $this->setFamily($family);
+        $this->setValues($values);
+        $this->setIdentifier($identifier);
+        $this->setScope('mobile');
+
+        $this->getLabel('fr_FR', 'mobile')->shouldReturn('Petite pelle');
+    }
+
+    function it_gets_the_identifier_as_label_if_there_is_no_family(
+        AttributeInterface $attributeAsLabel,
+        ValueCollectionInterface $values,
+        ValueInterface $identifier
+    ) {
+        $identifier->getData()->willReturn('shovel');
+        $identifier->getAttribute()->willReturn($attributeAsLabel);
+
+        $values->removeByAttribute($attributeAsLabel)->shouldBeCalled();
+        $values->add($identifier)->shouldBeCalled();
+
+        $this->setFamily(null);
+        $this->setValues($values);
+        $this->setIdentifier($identifier);
+
+        $this->getLabel('fr_FR')->shouldReturn('shovel');
+    }
+
+    function it_gets_the_identifier_as_label_if_there_is_no_attribute_as_label(
+        FamilyInterface $family,
+        AttributeInterface $attributeAsLabel,
+        ValueCollectionInterface $values,
+        ValueInterface $identifier
+    ) {
+        $family->getAttributeAsLabel()->willReturn(null);
+        $family->getId()->willReturn(42);
+
+        $identifier->getData()->willReturn('shovel');
+        $identifier->getAttribute()->willReturn($attributeAsLabel);
+
+        $values->removeByAttribute($attributeAsLabel)->shouldBeCalled();
+        $values->add($identifier)->shouldBeCalled();
+
+        $this->setFamily($family);
+        $this->setValues($values);
+        $this->setIdentifier($identifier);
+
+        $this->getLabel('fr_FR')->shouldReturn('shovel');
+    }
+
+    function it_gets_the_identifier_as_label_if_the_label_value_is_null(
+        FamilyInterface $family,
+        AttributeInterface $attributeAsLabel,
+        ValueCollectionInterface $values,
+        ValueInterface $nameValue,
+        ValueInterface $identifier
+    ) {
+        $identifier->getData()->willReturn('shovel');
+        $identifier->getAttribute()->willReturn($attributeAsLabel);
+
+        $family->getAttributeAsLabel()->willReturn($attributeAsLabel);
+        $family->getId()->willReturn(42);
+        $attributeAsLabel->getCode()->willReturn('name');
+        $attributeAsLabel->isLocalizable()->willReturn(true);
+        $attributeAsLabel->isScopable()->willReturn(false);
+
+        $values->removeByAttribute($attributeAsLabel)->shouldBeCalled();
+        $values->add($identifier)->shouldBeCalled();
+        $values->getByCodes('name', null, 'fr_FR')->willReturn(null);
+
+        $this->setFamily($family);
+        $this->setValues($values);
+        $this->setIdentifier($identifier);
+
+        $this->getLabel('fr_FR')->shouldReturn('shovel');
+    }
+
+    function it_gets_the_identifier_as_label_if_the_label_value_data_is_empty(
+        FamilyInterface $family,
+        AttributeInterface $attributeAsLabel,
+        ValueCollectionInterface $values,
+        ValueInterface $nameValue,
+        ValueInterface $identifier
+    ) {
+        $identifier->getData()->willReturn('shovel');
+        $identifier->getAttribute()->willReturn($attributeAsLabel);
+
+        $family->getAttributeAsLabel()->willReturn($attributeAsLabel);
+        $family->getId()->willReturn(42);
+        $attributeAsLabel->getCode()->willReturn('name');
+        $attributeAsLabel->isLocalizable()->willReturn(true);
+        $attributeAsLabel->isScopable()->willReturn(false);
+
+        $values->getByCodes('name', null, 'fr_FR')->willReturn($nameValue);
+        $values->removeByAttribute($attributeAsLabel)->shouldBeCalled();
+        $values->add($identifier)->shouldBeCalled();
+
+        $nameValue->getData()->willReturn(null);
+
+        $this->setFamily($family);
+        $this->setValues($values);
+        $this->setIdentifier($identifier);
+
+        $this->getLabel('fr_FR')->shouldReturn('shovel');
+    }
+
+    function it_gets_the_image_of_the_product(
+        FamilyInterface $family,
+        AttributeInterface $attributeAsImage,
+        ValueCollectionInterface $values,
+        ValueInterface $pictureValue
+    ) {
+        $attributeAsImage->getCode()->willReturn('picture');
+
+        $family->getAttributeAsImage()->willReturn($attributeAsImage);
+        $family->getId()->willReturn(42);
+
+        $values->getByCodes('picture', null, null)->willReturn($pictureValue);
+
+        $this->setFamily($family);
+        $this->setValues($values);
+
+        $this->getImage()->shouldReturn($pictureValue);
+    }
+
+    function it_gets_no_image_if_there_is_no_family()
+    {
+        $this->setFamily(null);
+        $this->getImage()->shouldReturn(null);
+    }
+
+    function it_gets_no_image_if_there_is_no_attribute_as_image(
+        FamilyInterface $family
+    ) {
+        $family->getAttributeAsImage()->willReturn(null);
+        $family->getId()->willReturn(42);
+
+        $this->setFamily($family);
+
+        $this->getImage()->shouldReturn(null);
+    }
+
+    function it_gets_no_image_if_the_value_of_image_is_empty(
+        FamilyInterface $family,
+        AttributeInterface $attributeAsImage,
+        ValueCollectionInterface $values
+    ) {
+        $attributeAsImage->getCode()->willReturn('picture');
+
+        $family->getAttributeAsImage()->willReturn($attributeAsImage);
+        $family->getId()->willReturn(42);
+
+        $values->getByCodes('picture', null, null)->willReturn(null);
+
+        $this->setFamily($family);
+        $this->setValues($values);
+
+        $this->getImage()->shouldReturn(null);
     }
 }

@@ -3,7 +3,6 @@
 namespace Pim\Bundle\CatalogBundle\AttributeType;
 
 use Pim\Component\Catalog\AttributeTypes;
-use Pim\Component\Catalog\Model\AttributeInterface;
 
 /**
  * Number attribute type
@@ -14,42 +13,6 @@ use Pim\Component\Catalog\Model\AttributeInterface;
  */
 class NumberType extends AbstractAttributeType
 {
-    /**
-     * {@inheritdoc}
-     */
-    protected function defineCustomAttributeProperties(AttributeInterface $attribute)
-    {
-        $properties = parent::defineCustomAttributeProperties($attribute) + [
-            'numberMin' => [
-                'name'      => 'numberMin',
-                'fieldType' => 'pim_number'
-            ],
-            'numberMax' => [
-                'name'      => 'numberMax',
-                'fieldType' => 'pim_number'
-            ],
-            'decimalsAllowed' => [
-                'name'      => 'decimalsAllowed',
-                'fieldType' => 'switch',
-                'options'   => [
-                    'attr' => $attribute->getId() ? [] : ['checked' => 'checked']
-                ]
-            ],
-            'negativeAllowed' => [
-                'name'      => 'negativeAllowed',
-                'fieldType' => 'switch',
-                'options'   => [
-                    'attr' => $attribute->getId() ? [] : ['checked' => 'checked']
-                ]
-            ]
-        ];
-
-        $properties['unique']['options']['disabled'] = (bool) $attribute->getId();
-        $properties['unique']['options']['read_only'] = (bool) $attribute->getId();
-
-        return $properties;
-    }
-
     /**
      * {@inheritdoc}
      */

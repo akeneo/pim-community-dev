@@ -5,16 +5,14 @@ namespace spec\Pim\Bundle\DataGridBundle\Datasource;
 use Doctrine\Common\Persistence\ObjectManager;
 use Oro\Bundle\DataGridBundle\Datagrid\DatagridInterface;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\ProductRepository;
-use Pim\Component\Catalog\Query\ProductQueryBuilderFactoryInterface;
 use Pim\Bundle\DataGridBundle\Datasource\ResultRecord\HydratorInterface;
-use Pim\Component\Catalog\Repository\ProductMassActionRepositoryInterface;
+use Pim\Component\Catalog\Repository\GroupRepositoryInterface;
 
 class DatasourceSpec extends ObjectBehavior
 {
-    function let(ObjectManager $manager, HydratorInterface $hydrator, ProductMassActionRepositoryInterface $massActionRepo, ProductQueryBuilderFactoryInterface $factory)
+    function let(ObjectManager $manager, HydratorInterface $hydrator)
     {
-        $this->beConstructedWith($manager, $hydrator, $massActionRepo, $factory);
+        $this->beConstructedWith($manager, $hydrator);
     }
 
     function it_is_a_datasource()
@@ -25,14 +23,14 @@ class DatasourceSpec extends ObjectBehavior
     function it_processes_a_datasource_with_repository_configuration(
         $manager,
         DatagridInterface $grid,
-        ProductRepository $repository
+        GroupRepositoryInterface $repository
     ) {
         $config = [
-            'repository_method' => 'createDatagridQueryBuilder',
-            'entity'            => 'Product'
+            'repository_method' => 'createAssociationDatagridQueryBuilder',
+            'entity'            => 'Group'
         ];
-        $manager->getRepository('Product')->willReturn($repository);
-        $repository->createDatagridQueryBuilder([])->shouldBeCalled();
+        $manager->getRepository('Group')->willReturn($repository);
+        $repository->createAssociationDatagridQueryBuilder([])->shouldBeCalled();
         $grid->setDatasource($this)->shouldBeCalled();
         $this->process($grid, $config);
     }
@@ -40,40 +38,23 @@ class DatasourceSpec extends ObjectBehavior
     function it_processes_a_datasource_with_repository_configuration_and_parameters(
         $manager,
         DatagridInterface $grid,
-        ProductRepository $repository
+        GroupRepositoryInterface $repository
     ) {
         $config = [
-            'repository_method'     => 'createDatagridQueryBuilder',
+            'repository_method'     => 'createAssociationDatagridQueryBuilder',
             'repository_parameters' => ['locale' => 'fr_FR'],
-            'entity'                => 'Product'
+            'entity'                => 'Group'
         ];
-        $manager->getRepository('Product')->willReturn($repository);
-        $repository->createDatagridQueryBuilder(['locale' => 'fr_FR'])->shouldBeCalled();
+        $manager->getRepository('Group')->willReturn($repository);
+        $repository->createAssociationDatagridQueryBuilder(['locale' => 'fr_FR'])->shouldBeCalled();
         $grid->setDatasource($this)->shouldBeCalled();
         $this->process($grid, $config);
     }
 
-    function it_processes_a_datasource_with_default_query_builder(
-        $manager,
-        DatagridInterface $grid,
-        ProductRepository $repository
-    ) {
+    function it_throws_exception_when_process_with_missing_configuration(DatagridInterface $grid)
+    {
         $config = [
-            'entity' => 'Product'
-        ];
-        $manager->getRepository('Product')->willReturn($repository);
-        $repository->createQueryBuilder([])->shouldBeCalled();
-        $grid->setDatasource($this)->shouldBeCalled();
-        $this->process($grid, $config);
-    }
-
-    function it_throws_exception_when_process_with_missing_configuration(
-        $manager,
-        DatagridInterface $grid,
-        ProductRepository $repository
-    ) {
-        $config = [
-            'repository_method' => 'createDatagridQueryBuilder',
+            'repository_method' => 'createAssociationDatagridQueryBuilder',
         ];
 
         $this

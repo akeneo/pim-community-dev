@@ -14,12 +14,10 @@ define(
         'oro/translator',
         'pim/form/common/save',
         'oro/messenger',
-        'pim/product-manager',
         'pim/saver/product',
         'pim/field-manager',
         'pim/i18n',
-        'pim/user-context',
-        'pim/fetcher-registry'
+        'pim/user-context'
     ],
     function (
         $,
@@ -27,16 +25,21 @@ define(
         __,
         BaseSave,
         messenger,
-        ProductManager,
         ProductSaver,
         FieldManager,
         i18n,
-        UserContext,
-        FetcherRegistry
+        UserContext
     ) {
         return BaseSave.extend({
             updateSuccessMessage: __('pim_enrich.entity.product.info.update_successful'),
             updateFailureMessage: __('pim_enrich.entity.product.info.update_failed'),
+
+            configure: function () {
+                this.listenTo(this.getRoot(), 'pim_enrich:form:change-family:after', this.save);
+                this.listenTo(this.getRoot(), 'pim_enrich:form:update-association', this.save);
+
+                return BaseSave.prototype.configure.apply(this, arguments);
+            },
 
             /**
              * {@inheritdoc}
@@ -45,7 +48,6 @@ define(
                 var product = $.extend(true, {}, this.getFormData());
                 var productId = product.meta.id;
 
-                delete product.variant_group;
                 delete product.meta;
 
                 var notReadyFields = FieldManager.getNotReadyFields();
@@ -59,7 +61,7 @@ define(
                         );
                     });
 
-                    messenger.notificationFlashMessage(
+                    messenger.notify(
                         'error',
                         __('pim_enrich.entity.product.info.field_not_ready', {'fields': fieldLabels.join(', ')})
                     );
@@ -72,13 +74,11 @@ define(
 
                 return ProductSaver
                     .save(productId, product)
-                    .then(ProductManager.generateMissing.bind(ProductManager))
                     .then(function (data) {
                         this.postSave();
 
                         this.setData(data, options);
 
-                        FetcherRegistry.getFetcher('product-completeness').clear(this.getFormData().meta.id);
                         this.getRoot().trigger('pim_enrich:form:entity:post_fetch', data);
                     }.bind(this))
                     .fail(this.fail.bind(this))

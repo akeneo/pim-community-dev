@@ -14,7 +14,9 @@ function ($) {
         if ($.type(flag) !== 'undefined') {
             this.active = flag;
         }
+
         return $.active || this.active;
     }, {active: false});
+
     return $;
 });

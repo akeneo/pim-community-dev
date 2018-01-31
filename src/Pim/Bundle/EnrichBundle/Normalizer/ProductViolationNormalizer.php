@@ -2,58 +2,98 @@
 
 namespace Pim\Bundle\EnrichBundle\Normalizer;
 
-use Pim\Component\Catalog\Model\ProductInterface;
-use Pim\Component\Catalog\Model\ProductTemplateInterface;
+use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
+use Pim\Component\Catalog\Validator\Constraints\UniqueValue;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Validator\ConstraintViolationInterface;
 
 /**
+ * TODO: This normalizer should be reworked and splitted in smaller normalizers
+ *       with more restrictive support constraints.
+ *
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 class ProductViolationNormalizer implements NormalizerInterface
 {
-    /** @var array */
+    /** @var string[] */
     protected $supportedFormats = ['internal_api'];
+
+    /** @var AttributeRepositoryInterface */
+    protected $attributeRepository;
+
+    /**
+     * @param AttributeRepositoryInterface $attributeRepository
+     */
+    public function __construct(AttributeRepositoryInterface $attributeRepository)
+    {
+        $this->attributeRepository = $attributeRepository;
+    }
 
     /**
      * {@inheritdoc}
      */
     public function normalize($violation, $format = null, array $context = [])
     {
-        $path = $violation->getPropertyPath();
+        $propertyPath = $violation->getPropertyPath();
 
-        if (0 === strpos($path, 'values')) {
-            if (!isset($context['product'])) {
-                throw new \InvalidArgumentException('Expects a product context');
-            }
-
-            $product = $context['product'];
-
-            if (!$product instanceof ProductInterface && !$product instanceof ProductTemplateInterface) {
-                throw new \InvalidArgumentException('Expects a product or a product template as context');
-            }
-
-            $codeStart = strpos($path, '[') + 1;
-            $codeLength = strpos($path, ']') - $codeStart;
-            $attributePath = substr($path, $codeStart, $codeLength);
-            $productValue = $product->getValues()[$attributePath];
-
-            $normalizedViolation = [
-                'attribute' => $productValue->getAttribute()->getCode(),
-                'locale'    => $productValue->getLocale(),
-                'scope'     => $productValue->getScope(),
-                'message'   => $violation->getMessage()
-            ];
-        } else {
-            $normalizedViolation = [
-                'global'  => true,
-                'message' => $violation->getMessage()
+        if ('identifier' === $propertyPath) {
+            return [
+                'attribute' => $this->attributeRepository->getIdentifierCode(),
+                'locale'    => null,
+                'scope'     => null,
+                'message'   => $violation->getMessage(),
             ];
         }
 
-        return $normalizedViolation;
+        if (1 === preg_match('|^values\[(?P<attribute>[a-z0-9-_\<\>]+)|i', $propertyPath, $matches)) {
+            if (!isset($context['product']) && !isset($context['productModel'])) {
+                throw new \InvalidArgumentException('Expects a product or product model context');
+            }
+
+            $attribute = explode('-', $matches['attribute']);
+            $attributeCode = $attribute[0];
+
+            // TODO: TIP-722 - to revert once the identifier product value is dropped.
+            if ($attributeCode === $this->attributeRepository->getIdentifierCode() &&
+                $violation->getConstraint() instanceof UniqueValue
+            ) {
+                return [];
+            }
+
+            $channel = $attribute[1] ?? null;
+            $locale = $attribute[2] ?? null;
+
+            return [
+                'attribute' => $attributeCode,
+                'locale'    => '<all_locales>' === $locale ? null : $locale,
+                'scope'     => '<all_channels>' === $channel ? null : $channel,
+                'message'   => $violation->getMessage(),
+            ];
+        }
+
+        if (0 === strpos($propertyPath, 'values[')) {
+            if (!isset($context['product']) && !isset($context['productModel'])) {
+                throw new \InvalidArgumentException('Expects a product or product model context');
+            }
+
+            $codeStart = strpos($propertyPath, '[') + 1;
+            $codeLength = strpos($propertyPath, ']') - $codeStart;
+            $attribute = json_decode(substr($propertyPath, $codeStart, $codeLength), true);
+
+            return [
+                'attribute' => $attribute['code'],
+                'locale'    => $attribute['locale'],
+                'scope'     => $attribute['scope'],
+                'message'   => $violation->getMessage(),
+            ];
+        }
+
+        return [
+            'global'  => true,
+            'message' => $violation->getMessage(),
+        ];
     }
 
     /**
@@ -61,6 +101,6 @@ class ProductViolationNormalizer implements NormalizerInterface
      */
     public function supportsNormalization($data, $format = null)
     {
-        return $data instanceof ConstraintViolationInterface && in_array($format, $this->supportedFormats);
+        return in_array($format, $this->supportedFormats) && $data instanceof ConstraintViolationInterface;
     }
 }

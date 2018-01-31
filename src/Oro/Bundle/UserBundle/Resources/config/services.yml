@@ -5,7 +5,6 @@ parameters:
     oro_user.role.entity.class:       Oro\Bundle\UserBundle\Entity\Role
     oro_user.security.provider.class: Oro\Bundle\UserBundle\Security\UserProvider
     oro_user.security.login.class:    Oro\Bundle\UserBundle\EventListener\LoginSubscriber
-    oro_user.user_menu.builder.class: Oro\Bundle\UserBundle\Menu\UserMenuBuilder
     oro_user.role.listener.class:     Oro\Bundle\UserBundle\EventListener\RoleListener
     oro_user.entity_with_image.subscriber.class: Oro\Bundle\UserBundle\Entity\EventListener\UploadedImageSubscriber
     oro_user.change_password.subscriber.class:   Oro\Bundle\UserBundle\Form\EventListener\ChangePasswordSubscriber
@@ -25,11 +24,6 @@ services:
         arguments:                    ["@oro_user.manager"]
         tags:
             - { name: kernel.event_listener, event: security.interactive_login, method: onLogin }
-
-    oro_user.user_menu:
-        class:                        '%oro_user.user_menu.builder.class%'
-        tags:
-            - { name: oro_menu.builder, alias: usermenu }
 
     oro_user.role.listener:
         class:                        '%oro_user.role.listener.class%'

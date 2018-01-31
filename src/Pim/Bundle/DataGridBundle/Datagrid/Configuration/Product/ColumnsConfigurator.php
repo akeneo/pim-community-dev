@@ -5,7 +5,6 @@ namespace Pim\Bundle\DataGridBundle\Datagrid\Configuration\Product;
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use Oro\Bundle\DataGridBundle\Extension\Formatter\Configuration as FormatterConfiguration;
 use Pim\Bundle\DataGridBundle\Datagrid\Configuration\ConfiguratorInterface;
-use Pim\Component\Catalog\AttributeTypes;
 
 /**
  * Columns configurator for product grid, first column is identifier, then properties then ordered attributes
@@ -30,9 +29,6 @@ class ColumnsConfigurator implements ConfiguratorInterface
 
     /** @var array */
     protected $primaryColumns;
-
-    /** @var array */
-    protected $identifierColumn;
 
     /** @var array */
     protected $attributesColumns;
@@ -61,6 +57,7 @@ class ColumnsConfigurator implements ConfiguratorInterface
         $this->configuration = $configuration;
         $this->preparePropertiesColumns();
         $this->prepareAttributesColumns();
+        $this->prepareOtherColumns();
         $this->sortColumns();
         $this->addColumns();
     }
@@ -95,7 +92,6 @@ class ColumnsConfigurator implements ConfiguratorInterface
         $path = sprintf(self::SOURCE_PATH, self::USEABLE_ATTRIBUTES_KEY);
         $attributes = $this->configuration->offsetGetByPath($path);
         $attributes = ($attributes === null) ? [] : $attributes;
-        $this->identifierColumn = [];
         $this->attributesColumns = [];
 
         foreach ($attributes as $attributeCode => $attribute) {
@@ -121,11 +117,7 @@ class ColumnsConfigurator implements ConfiguratorInterface
                     'groupOrder' => $attribute['groupOrder']
                 ];
 
-                if (AttributeTypes::IDENTIFIER === $attributeType) {
-                    $this->identifierColumn[$attributeCode] = $columnConfig;
-                } else {
-                    $this->attributesColumns[$attributeCode] = $columnConfig;
-                }
+                $this->attributesColumns[$attributeCode] = $columnConfig;
             }
         }
 
@@ -146,8 +138,8 @@ class ColumnsConfigurator implements ConfiguratorInterface
             sprintf(self::SOURCE_PATH, self::DISPLAYED_COLUMNS_KEY)
         );
 
-        $this->availableColumns = $this->editableColumns + $this->primaryColumns + $this->identifierColumn
-            + $this->propertiesColumns + $this->attributesColumns;
+        $this->availableColumns = $this->editableColumns + $this->primaryColumns + $this->propertiesColumns +
+            $this->attributesColumns;
 
         if (!empty($userColumns)) {
             $this->displayedColumns = $this->editableColumns  + $this->primaryColumns;
@@ -158,8 +150,7 @@ class ColumnsConfigurator implements ConfiguratorInterface
                 }
             }
         } else {
-            $this->displayedColumns = $this->editableColumns + $this->primaryColumns + $this->identifierColumn
-                + $this->propertiesColumns;
+            $this->displayedColumns = $this->editableColumns + $this->primaryColumns + $this->propertiesColumns;
         }
     }
 
@@ -177,5 +168,20 @@ class ColumnsConfigurator implements ConfiguratorInterface
             sprintf(self::SOURCE_PATH, self::AVAILABLE_COLUMNS_KEY),
             $this->availableColumns
         );
+    }
+
+    private function prepareOtherColumns()
+    {
+        $otherColumns = $this->configuration->offsetGetByPath(
+            sprintf('[%s]', FormatterConfiguration::OTHER_COLUMNS_KEY)
+        );
+
+        if (null === $otherColumns) {
+            return;
+        }
+
+        foreach ($otherColumns as $columnCode => $columnData) {
+            $this->attributesColumns[$columnCode] = $columnData;
+        }
     }
 }

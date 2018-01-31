@@ -3,6 +3,7 @@
 namespace Oro\Bundle\DataGridBundle\Datagrid;
 
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 class RequestParameters
 {
@@ -12,8 +13,16 @@ class RequestParameters
     /** @var string */
     protected $rootParam;
 
-    /** @var Request */
-    protected $request;
+    /** @var RequestStack */
+    protected $requestStack;
+
+    /**
+     * @param RequestStack $requestStack
+     */
+    public function __construct(RequestStack $requestStack)
+    {
+        $this->requestStack = $requestStack;
+    }
 
     /**
      * Get parameter value from parameters container
@@ -79,20 +88,10 @@ class RequestParameters
     }
 
     /**
-     * @return Request
+     * @return null|Request
      */
-    protected function getRequest()
+    protected function getRequest(): ?Request
     {
-        return $this->request;
-    }
-
-    /**
-     * @param Request $request
-     */
-    public function setRequest(Request $request = null)
-    {
-        if ($request instanceof Request) {
-            $this->request = clone $request;
-        }
+        return $this->requestStack->getCurrentRequest();
     }
 }

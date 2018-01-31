@@ -1,5 +1,0 @@
-oro_titles:
-    oro_user_index: pim_title.user.index
-    oro_user_role_index: pim_title.user_role.index
-    oro_user_group_index: pim_title.user_group.index
-    oro_config_configuration_system: pim_title.system_configuration.index

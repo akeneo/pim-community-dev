@@ -1,21 +1,14 @@
 {
   "name": "pim-community-dev",
-  "version": "1.6.0",
+  "version": "2.0.0",
   "description": "Akeneo PIM Application",
   "homepage": "http://www.akeneo.com",
-  "devDependencies": {
-    "grunt": "~0.4.5",
-    "grunt-contrib-jshint": "~0.11.1",
-    "grunt-contrib-jasmine": "~1.0.0",
-    "grunt-template-jasmine-requirejs": "~0.2.3",
-    "time-grunt": "~1.1.0",
-    "jshint-stylish": "~1.0.1",
-    "grunt-jscs": "~1.6.0",
-    "jscs-stylish": "~0.3.1",
-    "grunt-recess": "~1.0.1"
-  },
   "scripts": {
-    "test": "grunt test"
+    "webpack": "webpack --config webpack.config.js --env=prod",
+    "webpack-dev": "webpack --config webpack.config.js",
+    "webpack-watch": "webpack --progress --config webpack.config.js --watch",
+    "lint": "node ./node_modules/eslint/bin/eslint 'src/**/*.js' --ignore-path .eslintignore --quiet",
+    "lint-fix": "node ./node_modules/eslint/bin/eslint 'src/**/*.js' --ignore-path .eslintignore --quiet --fix"
   },
   "repository": {
     "type": "git",
@@ -24,5 +17,43 @@
   "license": "OSL-3.0",
   "bugs": {
     "url": "https://github.com/akeneo/pim-community-dev/issues"
+  },
+  "devDependencies": {
+    "colors": "1.1.2",
+    "dep-diff": "1.0.1",
+    "read-pkg": "2.0.0"
+  },
+  "dependencies": {
+    "JSON2": "0.1.0",
+    "babel-cli": "6.26.0",
+    "babel-core": "6.26.0",
+    "babel-eslint": "7.2.3",
+    "babel-loader": "7.1.2",
+    "babel-minify": "0.2.0",
+    "babel-polyfill": "6.26.0",
+    "babel-preset-env": "1.6.0",
+    "backbone": "0.9.10",
+    "bundle-loader": "0.5.5",
+    "deepmerge": "1.5.1",
+    "eslint": "4.5.0",
+    "exports-loader": "0.6.4",
+    "expose-loader": "0.7.3",
+    "html-loader": "0.5.1",
+    "imports-loader": "0.7.1",
+    "jquery": "1.11.0",
+    "loader-utils": "1.1.0",
+    "lodash": "4.17.4",
+    "merge-objects": "1.0.5",
+    "raw-loader": "0.5.1",
+    "regexp-replace-loader": "1.0.0",
+    "summernote": "0.6.5",
+    "text-loader": "0.0.1",
+    "underscore": "1.8.3",
+    "webpack": "3.5.5",
+    "webpack-cleanup-plugin": "0.5.1",
+    "webpack-dev-server": "2.7.1",
+    "webpack-livereload-plugin": "0.11.0",
+    "write-file-webpack-plugin": "4.1.0",
+    "yamljs": "0.3.0"
   }
 }

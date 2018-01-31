@@ -29,13 +29,8 @@ class PimVersioningExtension extends Extension
         $loader->load('managers.yml');
         $loader->load('purgers.yml');
         $loader->load('removers.yml');
+        $loader->load('repositories.yml');
         $loader->load('savers.yml');
-
-        $storageDriver = $container->getParameter('pim_catalog_product_storage_driver');
-        $storageConfig = sprintf('storage_driver/%s.yml', $storageDriver);
-        if (file_exists(__DIR__ . '/../Resources/config/' . $storageConfig)) {
-            $loader->load($storageConfig);
-        }
 
         $file = __DIR__.'/../Resources/config/pim_versioning_entities.yml';
         $entities = Yaml::parse(file_get_contents(realpath($file)));

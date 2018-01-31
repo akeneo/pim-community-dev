@@ -2,9 +2,9 @@
 
 namespace spec\Pim\Component\Catalog\Normalizer\Standard;
 
+use Akeneo\Component\Localization\Model\TranslatableInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Entity\AttributeTranslation;
-use Akeneo\Component\Localization\Model\TranslatableInterface;
 
 class TranslationNormalizerSpec extends ObjectBehavior
 {

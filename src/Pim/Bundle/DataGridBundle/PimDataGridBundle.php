@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\DataGridBundle;
 
+use Doctrine\Bundle\DoctrineBundle\DependencyInjection\Compiler\DoctrineOrmMappingsPass;
 use Pim\Bundle\DataGridBundle\DependencyInjection\Compiler;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
@@ -26,7 +27,6 @@ class PimDataGridBundle extends Bundle
             ->addCompilerPass(new Compiler\AddSelectorsPass())
             ->addCompilerPass(new Compiler\AddSortersPass())
             ->addCompilerPass(new Compiler\AddMassActionHandlersPass())
-            ->addCompilerPass(new Compiler\ResolverPass())
             ->addCompilerPass(new Compiler\ConfigurationPass());
     }
 }

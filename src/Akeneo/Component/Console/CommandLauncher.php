@@ -21,14 +21,19 @@ class CommandLauncher
     /** @var string Application execution environment */
     protected $environment;
 
+    /** @var string */
+    protected $logsDir;
+
     /**
      * @param string $rootDir
      * @param string $environment
+     * @param string $logsDir
      */
-    public function __construct($rootDir, $environment)
+    public function __construct(string $rootDir, string $environment, string $logsDir)
     {
         $this->rootDir = $rootDir;
         $this->environment = $environment;
+        $this->logsDir = $logsDir;
     }
 
     /**
@@ -49,9 +54,10 @@ class CommandLauncher
     protected function buildCommandString($command)
     {
         return sprintf(
-            '%s %s/console --env=%s %s',
+            '%s %s%sconsole --env=%s %s',
             $this->getPhp(),
-            $this->rootDir,
+            sprintf('%s%s..%sbin', $this->rootDir, DIRECTORY_SEPARATOR, DIRECTORY_SEPARATOR),
+            DIRECTORY_SEPARATOR,
             $this->environment,
             $command
         );
@@ -69,7 +75,7 @@ class CommandLauncher
     {
         $cmd = $this->buildCommandString($command);
         if (null === $logfile) {
-            $logfile = sprintf('%s/logs/command_execute.log', $this->rootDir);
+            $logfile = sprintf('%s%scommand_execute.log', $this->logsDir, DIRECTORY_SEPARATOR);
         }
         $cmd = escapeshellcmd($cmd);
         $cmd .= sprintf(' >> %s 2>&1 &', $logfile);

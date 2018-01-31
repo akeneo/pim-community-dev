@@ -12,3 +12,5 @@ pim_dashboard:
         export: Eksport
         mass_edit: Masowa edycja
         quick_export: Szybki eksport
+page_title:
+  pim_dashboard_index: Kokpit

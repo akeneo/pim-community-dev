@@ -47,10 +47,11 @@ class FamilyNormalizerSpec extends ObjectBehavior
         $filter,
         FamilyInterface $family,
         AttributeInterface $name,
+        AttributeInterface $image,
         AttributeInterface $description,
         AttributeInterface $price
     ) {
-        $attributeRepository->findAttributesByFamily($family)->willReturn([$name, $description, $price]);
+        $attributeRepository->findAttributesByFamily($family)->willReturn([$name, $image, $description, $price]);
         $requirementsRepository->findRequiredAttributesCodesByFamily($family)->willReturn([
             ['attribute' => 'name', 'channel' => 'ecommerce'],
             ['attribute' => 'price', 'channel' => 'ecommerce'],
@@ -58,20 +59,23 @@ class FamilyNormalizerSpec extends ObjectBehavior
             ['attribute' => 'price', 'channel' => 'mobile']
         ]);
 
-        $filter->filterCollection([$name, $description, $price], 'pim.internal_api.attribute.view')
-            ->willReturn([$price, $name]);
+        $filter->filterCollection([$name, $image, $description, $price], 'pim.internal_api.attribute.view')
+            ->willReturn([$price, $name, $image]);
 
         $normalizer->normalize(Argument::cetera())->willReturn([]);
         $family->getCode()->willReturn('mugs');
         $family->getAttributeAsLabel()->willReturn($name);
+        $family->getAttributeAsImage()->willReturn($image);
         $name->getCode()->willReturn('name');
+        $image->getCode()->willReturn('image');
         $price->getCode()->willReturn('price');
 
         $this->normalize($family)->shouldReturn(
             [
                 'code'                   => 'mugs',
-                'attributes'             => ['name', 'price'],
+                'attributes'             => ['image', 'name', 'price'],
                 'attribute_as_label'     => 'name',
+                'attribute_as_image'     => 'image',
                 'attribute_requirements' => ['ecommerce' => ['name', 'price'], 'mobile' => ['name', 'price']],
                 'labels' => []
             ]

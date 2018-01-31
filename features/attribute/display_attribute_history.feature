@@ -1,3 +1,4 @@
+@javascript
 Feature: Display the attribute history
   In order to know who, when and what changes has been made to an attribute
   As a product manager
@@ -7,17 +8,14 @@ Feature: Display the attribute history
     Given the "default" catalog configuration
     And I am logged in as "Julia"
 
-  @javascript
   Scenario: Successfully edit a attribute and see the history
     Given I am on the attributes page
     And I create a "Simple select" attribute
-    And I scroll down
-    Given I fill in the following information:
-      | Code            | packaging |
-      | Attribute group | Other     |
+    And I change the "Code" to "packaging"
+    And I change the "Attribute group" to "Other"
     And I save the attribute
     Then I should not see the text "There are unsaved change"
-    And I visit the "Values" tab
+    And I visit the "Options" tab
     And I create the following attribute options:
       | Code        |
       | classic_box |
@@ -28,7 +26,7 @@ Feature: Display the attribute history
     And I should see history:
       | version | property | value     |
       | 1       | code     | packaging |
-    And I visit the "Values" tab
+    And I visit the "Options" tab
     And I create the following attribute options:
       | Code      |
       | collector |

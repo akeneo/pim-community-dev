@@ -8,6 +8,10 @@ pim_user:
       business_unit.title: Unitats de negoci
       email_synchronization.title: Configuració de sincronització de correu electrònic
       interfaces.title: Interfícies
+  group:
+    tab:
+      general.title: General
+      users.title: Usuaris
 oro.user.controller:
   group.message.saved: "Grup desat"
   role.message.saved: "Rol desat"

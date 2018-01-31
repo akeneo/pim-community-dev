@@ -6,6 +6,9 @@ use Akeneo\Test\Integration\Configuration;
 use Pim\Bundle\ApiBundle\tests\integration\ApiTestCase;
 use Symfony\Component\HttpFoundation\Response;
 
+/**
+ * @group ce
+ */
 class PartialUpdateAttributeIntegration extends ApiTestCase
 {
     public function testHttpHeadersInResponseWhenAnAttributeIsUpdated()
@@ -13,8 +16,8 @@ class PartialUpdateAttributeIntegration extends ApiTestCase
         $client = $this->createAuthenticatedClient();
 
         $data =
-<<<JSON
-    {
+            <<<JSON
+                {
         "code": "a_text"
     }
 JSON;
@@ -33,8 +36,8 @@ JSON;
         $client = $this->createAuthenticatedClient();
 
         $data =
-<<<JSON
-    {
+            <<<JSON
+                {
         "code": "a_new_text",
         "type": "pim_catalog_text",
         "group":"attributeGroupA"
@@ -55,8 +58,8 @@ JSON;
         $client = $this->createAuthenticatedClient();
 
         $data =
-<<<JSON
-    {
+            <<<JSON
+                {
         "code": "an_incomplete_text",
         "type": "pim_catalog_text",
         "group":"attributeGroupA"
@@ -93,6 +96,7 @@ JSON;
             'localizable'            => false,
             'scopable'               => false,
             'labels'                 => [],
+            'auto_option_sorting'    => null,
         ];
         $normalizer = $this->get('pim_catalog.normalizer.standard.attribute');
 
@@ -134,8 +138,8 @@ JSON;
         $client = $this->createAuthenticatedClient();
 
         $data =
-<<<JSON
-    {
+            <<<JSON
+                {
         "code": "a_new_text_with_code",
         "type": "pim_catalog_text",
         "group":"attributeGroupA"
@@ -171,6 +175,7 @@ JSON;
             'localizable'            => false,
             'scopable'               => false,
             'labels'                 => [],
+            'auto_option_sorting'    => null,
         ];
         $normalizer = $this->get('pim_catalog.normalizer.standard.attribute');
 
@@ -184,8 +189,8 @@ JSON;
         $client = $this->createAuthenticatedClient();
 
         $data =
-<<<JSON
-    {
+            <<<JSON
+                {
         "type": "pim_catalog_text",
         "group":"attributeGroupA"
     }
@@ -220,6 +225,7 @@ JSON;
             'localizable'            => false,
             'scopable'               => false,
             'labels'                 => [],
+            'auto_option_sorting'    => null,
         ];
         $normalizer = $this->get('pim_catalog.normalizer.standard.attribute');
 
@@ -264,6 +270,7 @@ JSON;
             'localizable'            => false,
             'scopable'               => false,
             'labels'                 => [],
+            'auto_option_sorting'    => null,
         ];
         $normalizer = $this->get('pim_catalog.normalizer.standard.attribute');
 
@@ -277,8 +284,8 @@ JSON;
         $client = $this->createAuthenticatedClient();
 
         $data =
-<<<JSON
-    {
+            <<<JSON
+                {
         "code":"a_metric",
         "type":"pim_catalog_metric",
         "group":"attributeGroupA",
@@ -316,6 +323,7 @@ JSON;
             'localizable'            => false,
             'scopable'               => false,
             'labels'                 => [],
+            'auto_option_sorting'    => null,
         ];
         $normalizer = $this->get('pim_catalog.normalizer.standard.attribute');
 
@@ -329,8 +337,8 @@ JSON;
         $client = $this->createAuthenticatedClient();
 
         $data =
-<<<JSON
-    {
+            <<<JSON
+                {
         "type":"pim_catalog_metric",
         "group":"attributeGroupA",
         "default_metric_unit":"WATT" 
@@ -367,6 +375,7 @@ JSON;
             'localizable'            => false,
             'scopable'               => false,
             'labels'                 => [],
+            'auto_option_sorting'    => null,
         ];
         $normalizer = $this->get('pim_catalog.normalizer.standard.attribute');
 
@@ -428,6 +437,7 @@ JSON;
             'labels'                 => [
                 'de_DE' => 'Family A2 DE',
             ],
+            'auto_option_sorting'    => null,
         ];
 
         $client = $this->createAuthenticatedClient();
@@ -481,8 +491,8 @@ JSON;
         $client = $this->createAuthenticatedClient();
 
         $data =
-<<<JSON
-    {
+            <<<JSON
+                {
         "code": "new_code"
     }
 JSON;
@@ -510,15 +520,15 @@ JSON;
         $client = $this->createAuthenticatedClient();
 
         $data =
-<<<JSON
-    {
+            <<<JSON
+                {
         "extra_property": ""
     }
 JSON;
 
         $expectedContent = [
             'code'    => 422,
-            'message' => 'Property "extra_property" does not exist. Check the standard format documentation.',
+            'message' => 'Property "extra_property" does not exist. Check the expected format on the API documentation.',
             '_links'  => [
                 'documentation' => [
                     'href' => 'http://api.akeneo.com/api-reference.html#patch_attributes__code_'
@@ -538,15 +548,15 @@ JSON;
         $client = $this->createAuthenticatedClient();
 
         $data =
-<<<JSON
-    {
+            <<<JSON
+                {
         "labels": null
     }
 JSON;
 
         $expectedContent = [
             'code'    => 422,
-            'message' => 'Property "labels" expects an array as data, "NULL" given. Check the standard format documentation.',
+            'message' => 'Property "labels" expects an array as data, "NULL" given. Check the expected format on the API documentation.',
             '_links'  => [
                 'documentation' => [
                     'href' => 'http://api.akeneo.com/api-reference.html#patch_attributes__code_'
@@ -566,8 +576,8 @@ JSON;
         $client = $this->createAuthenticatedClient();
 
         $data =
-<<<JSON
-    {
+            <<<JSON
+                {
         "code": "inconsistent_code2"
     }
 JSON;
@@ -589,6 +599,6 @@ JSON;
      */
     protected function getConfiguration()
     {
-        return new Configuration([Configuration::getTechnicalCatalogPath()]);
+        return $this->catalog->useTechnicalCatalog();
     }
 }

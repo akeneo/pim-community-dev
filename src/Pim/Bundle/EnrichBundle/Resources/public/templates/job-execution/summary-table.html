@@ -1,0 +1,105 @@
+<div class="AknGridContainer grid-container">
+    <table class="AknGrid AknGrid--unclickable grid job-execution" id="job-execution">
+        <thead>
+        <th class="AknGrid-headerCell"><%- transAndUpperCase('pim_enrich.form.job_execution.summary.header.step')%></th>
+        <th class="AknGrid-headerCell"><%- transAndUpperCase('pim_enrich.form.job_execution.summary.header.status')%></th>
+        <th class="AknGrid-headerCell"><%- transAndUpperCase('pim_enrich.form.job_execution.summary.header.summary')%></th>
+        <th class="AknGrid-headerCell"><%- transAndUpperCase('pim_enrich.form.job_execution.summary.header.start')%></th>
+        <th class="AknGrid-headerCell"><%- transAndUpperCase('pim_enrich.form.job_execution.summary.header.end')%></th>
+        </thead>
+        <tbody>
+        <% if (!stepExecutions) { %>
+        <tr class="AknGrid-bodyRow">
+            <td class="AknGrid-bodyCell AknGrid-bodyCell--full" colspan="5">
+                <%- __('pim_enrich.form.job_execution.summary.fetching')%>
+            </td>
+        </tr>
+        <% } else { %>
+            <% _.each(stepExecutions, function (stepExecution, stepIndex) { %>
+                <tr class="AknGrid-bodyRow">
+                    <td class="AknGrid-bodyCell AknGrid-bodyCell--highlight"><%- __(stepExecution.label) %></td>
+                    <td class="AknGrid-bodyCell"><%- stepExecution.status %></td>
+                    <td class="AknGrid-bodyCell">
+                        <% if (_.size(stepExecution.summary) > 0) { %>
+                        <table class="AknGrid AknGrid--condensed">
+                            <% _.each(stepExecution.summary, function (value, key) { %>
+                            <tr class="AknGrid-bodyRow">
+                                <td class="AknGrid-bodyCell"><%- key %></td>
+                                <td class="AknGrid-bodyCell"><%- value %></td>
+                            </tr>
+                            <% }); %>
+                        </table>
+                        <% } %>
+                    </td>
+                    <td class="AknGrid-bodyCell"><%- stepExecution.startedAt %></td>
+                    <td class="AknGrid-bodyCell"><%- stepExecution.endedAt %></td>
+                </tr>
+
+                <!-- Step execution warnings -->
+                <% _.each(stepExecution.warnings, function (warning, warningIndex) { %>
+                <tr class="AknGrid-bodyRow warning">
+                    <td class="AknGrid-bodyCell AknGrid-bodyCell--full" colspan="5">
+                        <div class="AknMessageBox AknMessageBox--warning">
+                            <span class="AknMessageBox-title title"><%- __('pim_enrich.form.job_execution.summary.warning')%></span>
+                            <ul class="AknMessageBox-list">
+                                <% _.each(warning.reason.split("\n"), function(warningItem) { %>
+                                    <% if (warningItem) { %>
+                                        <li><%- warningItem %></li>
+                                    <% } %>
+                                <% }) %>
+                            </ul>
+                            <a class="data" data-step-index="<%- stepIndex %>" data-warning-index="<%- warningIndex %>">
+                                <%- warning.expanded ? __('job_execution.summary.hide_item') : __('job_execution.summary.display_item')%>
+                            </a>
+                            <table class="AknGrid AknGrid--condensed AknGrid--unclickable <%- warning.expanded ? '' : 'hide'%>">
+                                <% _.each(warning.item, function (value, key) { %>
+                                <tr class="AknGrid-bodyRow">
+                                    <td class="AknGrid-bodyCell"><%- key %></td>
+                                    <td class="AknGrid-bodyCell">
+                                        <% if (typeof value === 'object') { %>
+                                            <%- JSON.stringify(value) %>
+                                        <% } else { %>
+                                            <%- value %>
+                                        <% } %>
+                                    </td>
+                                </tr>
+                                <% }); %>
+                            </table>
+                        </div>
+                    </td>
+                </tr>
+                <% }); %>
+
+                <!-- Step execution failures -->
+                <% _.each(stepExecution.failures, function (failure) { %>
+                <tr class="AknGrid-bodyRow error">
+                    <td class="AknGrid-bodyCell AknGrid-bodyCell--full" colspan="5">
+                        <div class="AknMessageBox AknMessageBox--error">
+                            <% if (failure.label) { %>
+                                <span class="AknMessageBox-title title"><%- failure.label.toUpperCase() %></span>
+                                <%- failure %>
+                            <% } else { %>
+                                <%- failure.toUpperCase() %>
+                            <% } %>
+                        </div>
+                    </td>
+                </tr>
+                <% }); %>
+            <% }); %>
+
+            <!-- Job execution failures -->
+            <% _.each(failures, function (failure) { %>
+            <tr class="AknGrid-bodyRow error">
+                <td class="AknGrid-bodyCell AknGrid-bodyCell--full" colspan="5">
+                    <div class="AknMessageBox AknMessageBox--error">
+                        <span class="AknMessageBox-title title"><%- status.toUpperCase() %></span>
+                        <%- failure %>
+                    </div>
+                </td>
+            </tr>
+            <% }); %>
+
+        <% } %>
+        </tbody>
+    </table>
+</div>

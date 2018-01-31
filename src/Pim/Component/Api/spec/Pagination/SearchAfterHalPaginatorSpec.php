@@ -52,8 +52,6 @@ class SearchAfterHalPaginatorSpec extends ObjectBehavior
             )
             ->willReturn('http://akeneo.com/api/rest/v1/attributes/a_multi_select/options?pagination_type=search_after&limit=2&search_after=another_text');
 
-
-
         // embedded
         $router
             ->generate('attribute_option_item_route', ['attributeCode' => 'a_multi_select', 'code' => 'optionA', 'search_after' => null], UrlGeneratorInterface::ABSOLUTE_URL)

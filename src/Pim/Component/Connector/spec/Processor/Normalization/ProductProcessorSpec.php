@@ -16,9 +16,10 @@ use Pim\Component\Catalog\Builder\ProductBuilderInterface;
 use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\LocaleInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
-use Pim\Component\Catalog\Model\ProductValueInterface;
+use Pim\Component\Catalog\Model\ValueCollectionInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
+use Pim\Component\Catalog\ValuesFiller\EntityWithFamilyValuesFillerInterface;
 use Pim\Component\Connector\Processor\BulkMediaFetcher;
 use Prophecy\Argument;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -29,18 +30,18 @@ class ProductProcessorSpec extends ObjectBehavior
         NormalizerInterface $normalizer,
         ChannelRepositoryInterface $channelRepository,
         AttributeRepositoryInterface $attributeRepository,
-        ProductBuilderInterface $productBuilder,
         ObjectDetacherInterface $detacher,
         BulkMediaFetcher $mediaFetcher,
-        StepExecution $stepExecution
+        StepExecution $stepExecution,
+        EntityWithFamilyValuesFillerInterface $productValuesFiller
     ) {
         $this->beConstructedWith(
             $normalizer,
             $channelRepository,
             $attributeRepository,
-            $productBuilder,
             $detacher,
-            $mediaFetcher
+            $mediaFetcher,
+            $productValuesFiller
         );
 
         $this->setStepExecution($stepExecution);
@@ -62,7 +63,7 @@ class ProductProcessorSpec extends ObjectBehavior
         $channelRepository,
         $stepExecution,
         $mediaFetcher,
-        $productBuilder,
+        $productValuesFiller,
         $attributeRepository,
         ChannelInterface $channel,
         LocaleInterface $locale,
@@ -86,7 +87,7 @@ class ProductProcessorSpec extends ObjectBehavior
         $channel->getCode()->willReturn('foobar');
         $channel->getLocaleCodes()->willReturn(['en_US', 'de_DE']);
 
-        $productBuilder->addMissingProductValues($product, [$channel], [$locale])->shouldBeCalled();
+        $productValuesFiller->fillMissingValues($product)->shouldBeCalled();
 
         $normalizer->normalize($product, 'standard', ['channels' => ['foobar'], 'locales' => ['en_US']])
             ->willReturn([
@@ -136,15 +137,14 @@ class ProductProcessorSpec extends ObjectBehavior
         $channelRepository,
         $stepExecution,
         $mediaFetcher,
-        $productBuilder,
+        $productValuesFiller,
         ChannelInterface $channel,
         LocaleInterface $locale,
         ProductInterface $product,
         JobParameters $jobParameters,
         JobExecution $jobExecution,
         JobInstance $jobInstance,
-        ProductValueInterface $identifier,
-        ArrayCollection $valuesCollection,
+        ValueCollectionInterface $valuesCollection,
         ExecutionContext $executionContext
     ) {
         $stepExecution->getJobParameters()->willReturn($jobParameters);
@@ -162,10 +162,9 @@ class ProductProcessorSpec extends ObjectBehavior
         $channel->getCode()->willReturn('foobar');
         $channel->getLocaleCodes()->willReturn(['en_US', 'de_DE']);
 
-        $productBuilder->addMissingProductValues($product, [$channel], [$locale])->shouldBeCalled();
-        $product->getIdentifier()->willReturn($identifier);
+        $productValuesFiller->fillMissingValues($product)->shouldBeCalled();
+        $product->getIdentifier()->willReturn('AKIS_XS');
         $product->getValues()->willReturn($valuesCollection);
-        $identifier->getData()->willReturn('AKIS_XS');
 
         $stepExecution->getJobExecution()->willReturn($jobExecution);
         $jobExecution->getJobInstance()->willReturn($jobInstance);
@@ -207,15 +206,14 @@ class ProductProcessorSpec extends ObjectBehavior
         $channelRepository,
         $stepExecution,
         $mediaFetcher,
-        $productBuilder,
+        $productValuesFiller,
         ChannelInterface $channel,
         LocaleInterface $locale,
         ProductInterface $product,
         JobParameters $jobParameters,
         JobExecution $jobExecution,
         JobInstance $jobInstance,
-        ProductValueInterface $identifier,
-        ArrayCollection $valuesCollection,
+        ValueCollectionInterface $valuesCollection,
         ExecutionContext $executionContext
     ) {
         $stepExecution->getJobParameters()->willReturn($jobParameters);
@@ -233,10 +231,9 @@ class ProductProcessorSpec extends ObjectBehavior
         $channel->getCode()->willReturn('foobar');
         $channel->getLocaleCodes()->willReturn(['en_US', 'de_DE']);
 
-        $productBuilder->addMissingProductValues($product, [$channel], [$locale])->shouldBeCalled();
-        $product->getIdentifier()->willReturn($identifier);
+        $productValuesFiller->fillMissingValues($product)->shouldBeCalled();
+        $product->getIdentifier()->willReturn('AKIS_XS');
         $product->getValues()->willReturn($valuesCollection);
-        $identifier->getData()->willReturn('AKIS_XS');
 
         $stepExecution->getJobExecution()->willReturn($jobExecution);
         $jobExecution->getJobInstance()->willReturn($jobInstance);

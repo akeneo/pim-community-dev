@@ -4,6 +4,7 @@ namespace Pim\Bundle\EnrichBundle\Controller\Rest;
 
 use Akeneo\Component\Classification\Repository\CategoryRepositoryInterface;
 use Doctrine\Common\Collections\ArrayCollection;
+use Pim\Bundle\CatalogBundle\Filter\ObjectFilterInterface;
 use Pim\Bundle\EnrichBundle\Twig\CategoryExtension;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -25,19 +26,25 @@ class CategoryController
     /** @var NormalizerInterface */
     protected $normalizer;
 
+    /** @var ObjectFilterInterface */
+    protected $objectFilter;
+
     /**
      * @param CategoryRepositoryInterface $repository
      * @param CategoryExtension           $twigExtension
      * @param NormalizerInterface         $normalizer
+     * @param ObjectFilterInterface       $objectFilter
      */
     public function __construct(
         CategoryRepositoryInterface $repository,
         CategoryExtension $twigExtension,
-        NormalizerInterface $normalizer
+        NormalizerInterface $normalizer,
+        ObjectFilterInterface $objectFilter
     ) {
         $this->repository = $repository;
         $this->twigExtension = $twigExtension;
         $this->normalizer = $normalizer;
+        $this->objectFilter = $objectFilter;
     }
 
     /**
@@ -89,6 +96,8 @@ class CategoryController
                 'parent' => null,
             ]
         );
+
+        $categories = $this->objectFilter->filterCollection($categories, 'pim.internal_api.product_category.view');
 
         return new JsonResponse(
             $this->normalizer->normalize($categories, 'internal_api')

@@ -14,10 +14,11 @@ Feature: Sort products per attributes
       | yellow_shirt | tshirts |
       | orange_shirt | tshirts |
     And I am logged in as "Mary"
-    And I am on the products page
+    And I am on the products grid
     And the grid should contain 5 elements
-    And I should be able to sort the rows by SKU
+    And I should be able to sort the rows by ID
 
+  @skip
   Scenario: Successfully sort products by boolean value for boolean attributes
     Given the "apparel" catalog configuration
     And the following products:
@@ -29,18 +30,18 @@ Feature: Sort products per attributes
       | orange_shirt | tshirts |
     And I am logged in as "Mary"
     And I am on the "blue_shirt" product page
-    And I visit the "Additional" group
+    And I visit the "Additional information" group
     When I check the "Handmade" switch
     And I press the "Save" button
     Then I should not see the text "There are unsaved changes."
     When I am on the "orange_shirt" product page
-    And I visit the "Additional" group
+    And I visit the "Additional information" group
     When I check the "Handmade" switch
     And I press the "Save" button
     Then I should not see the text "There are unsaved changes."
-    When I am on the products page
+    When I am on the products grid
     Then the grid should contain 5 elements
-    When I display the columns SKU, Label, Family, Status, Complete, Created at, Updated at, Groups and Handmade
+    When I display the columns ID, Label, Family, Status, Complete, Created at, Updated at, Groups and Handmade
     Then I should be able to sort the rows by Handmade
 
   Scenario: Successfully sort products by simple select attribute options
@@ -53,6 +54,7 @@ Feature: Sort products per attributes
       | red_shirt   | tshirts | red   |
       | blue_shirt  | tshirts | blue  |
     And I am logged in as "Mary"
-    And I am on the products page
-    And I display the columns SKU, Label, Color, Family, Size, Status, Complete
+    And I am on the products grid
+    And I collapse the column
+    And I display the columns ID, Label, Color, Family, Size, Status, Complete
     Then I should be able to sort the rows by Color

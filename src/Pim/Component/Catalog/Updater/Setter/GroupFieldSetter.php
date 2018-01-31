@@ -2,14 +2,14 @@
 
 namespace Pim\Component\Catalog\Updater\Setter;
 
+use Akeneo\Component\StorageUtils\Exception\InvalidObjectException;
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 
 /**
- * Sets the group field, for now, it handles groups and variant group, in the future, we'll separate them, we can
- * already use the VariantGroupFieldSetter
+ * Sets the group field, for now, it handles groups
  *
  * @author    Julien Sanchez <julien@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
@@ -37,8 +37,12 @@ class GroupFieldSetter extends AbstractFieldSetter
      *
      * Expected data input format : ["group_code"]
      */
-    public function setFieldData(ProductInterface $product, $field, $data, array $options = [])
+    public function setFieldData($product, $field, $data, array $options = [])
     {
+        if (!$product instanceof ProductInterface) {
+            throw InvalidObjectException::objectExpected($product, ProductInterface::class);
+        }
+
         $this->checkData($field, $data);
 
         $groups = [];

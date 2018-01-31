@@ -15,6 +15,8 @@ use Pim\Bundle\DataGridBundle\Doctrine\ORM\Repository\MassActionRepositoryInterf
  */
 class RepositoryDatasource implements DatasourceInterface, ParameterizableInterface
 {
+    const DEFAULT_QUERY_PARAMS_KEY = 'default_query_params';
+
     /** @var DatagridRepositoryInterface */
     protected $repository;
 
@@ -43,6 +45,11 @@ class RepositoryDatasource implements DatasourceInterface, ParameterizableInterf
     public function process(DatagridInterface $grid, array $config)
     {
         $this->qb = $this->repository->createDatagridQueryBuilder();
+
+        if (array_key_exists(static::DEFAULT_QUERY_PARAMS_KEY, $config)) {
+            $this->parameters += $config[static::DEFAULT_QUERY_PARAMS_KEY];
+        }
+
         $grid->setDatasource(clone $this);
     }
 
@@ -60,7 +67,6 @@ class RepositoryDatasource implements DatasourceInterface, ParameterizableInterf
     public function setParameters($parameters)
     {
         $this->parameters += $parameters;
-
         if ($this->qb instanceof QueryBuilder) {
             $this->qb->setParameters($this->parameters);
         }

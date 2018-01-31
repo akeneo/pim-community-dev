@@ -11,6 +11,8 @@ Selected Rows: Righe selezionate
 "Delete Confirmation": "Conferma cancellazione"
 "Edit": "Modifica"
 "Unexpected error occured. Please contact system administrator.": "Si è verificato un errore imprevisto. Contattare l'amministratore di sistema."
+"Yes, revoke": "Si, revoca"
+"Revoke Confirmation": "Revoca conferma"
 Now: Ora
 Prev: Precedente
 Next: Successivo
@@ -88,7 +90,7 @@ datetimepicker:
     Feb: Feb
     Mar: Mar
     Apr: Apr
-    May: Mag
+    May: Maggio
     Jun: Giu
     Jul: Lug
     Aug: Ago

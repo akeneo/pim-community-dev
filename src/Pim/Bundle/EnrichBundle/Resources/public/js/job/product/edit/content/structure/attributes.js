@@ -12,7 +12,7 @@ define(
         'underscore',
         'oro/translator',
         'backbone',
-        'text!pim/template/export/product/edit/content/structure/attributes',
+        'pim/template/export/product/edit/content/structure/attributes',
         'pim/form',
         'oro/loading-mask',
         'pim/fetcher-registry',
@@ -94,14 +94,14 @@ define(
             openSelector: function (e) {
                 e.preventDefault();
                 var loadingMask = new LoadingMask();
-                loadingMask.render().$el.appendTo($('#container'));
+                loadingMask.render().$el.appendTo(this.getRoot().$el);
                 loadingMask.show();
                 var selectedAttributes = this.getFilters().structure.attributes || [];
                 var attributeSelector = new AttributeSelector();
                 attributeSelector.setSelected(selectedAttributes);
 
                 var modal = new Backbone.BootstrapModal({
-                    className: 'modal modal-large column-configurator-modal',
+                    className: 'modal modal--fullPage modal--topButton column-configurator-modal',
                     modalOptions: {
                         backdrop: 'static',
                         keyboard: false
@@ -111,7 +111,8 @@ define(
                     cancelText: _.__('pim_enrich.export.product.filter.attributes.modal.cancel'),
                     title: _.__('pim_enrich.export.product.filter.attributes.modal.title'),
                     content: '<div class="AknColumnConfigurator attribute-selector"></div>',
-                    okText: _.__('pim_enrich.export.product.filter.attributes.modal.apply')
+                    okText: _.__('pim_enrich.export.product.filter.attributes.modal.apply'),
+                    attributeCount: 0
                 });
 
                 loadingMask.hide();

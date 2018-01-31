@@ -36,6 +36,15 @@ define(
              */
             addItems: function () {
                 this.getRoot().trigger(this.addEvent, { codes: this.selection });
+            },
+
+            /**
+             * {@inheritdoc}
+             */
+            getSelectSearchParameters: function () {
+                return _.extend({}, AddAttributeSelect.prototype.getSelectSearchParameters.apply(this, arguments), {
+                    rights: 0
+                });
             }
         });
     }

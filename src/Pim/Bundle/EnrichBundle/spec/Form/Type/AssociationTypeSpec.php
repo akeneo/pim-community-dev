@@ -4,9 +4,15 @@ namespace spec\Pim\Bundle\EnrichBundle\Form\Type;
 
 use Doctrine\ORM\EntityManager;
 use PhpSpec\ObjectBehavior;
+use Pim\Bundle\CatalogBundle\Entity\AssociationType;
+use Pim\Bundle\CatalogBundle\Entity\Group;
+use Pim\Bundle\EnrichBundle\Form\Type\ObjectIdentifierType;
+use Pim\Component\Catalog\Model\AssociationInterface;
+use Pim\Component\Catalog\Model\Product;
 use Pim\Component\Catalog\Repository\AssociationRepositoryInterface;
 use Pim\Component\Catalog\Repository\GroupRepositoryInterface;
 use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
+use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -17,21 +23,21 @@ class AssociationTypeSpec extends ObjectBehavior
         $this->beConstructedWith(
             $productRepository,
             $entityManager,
-            'Pim\Component\Catalog\Model\Product',
-            'Pim\Bundle\CatalogBundle\Entity\AssociationType',
-            'Pim\Bundle\CatalogBundle\Entity\Group',
-            'Pim\Component\Catalog\Model\AssociationInterface'
+            Product::class,
+            AssociationType::class,
+            Group::class,
+            AssociationInterface::class
         );
     }
 
     function it_is_a_form_type()
     {
-        $this->shouldBeAnInstanceOf('Symfony\Component\Form\AbstractType');
+        $this->shouldBeAnInstanceOf(AbstractType::class);
     }
 
-    function it_has_a_name()
+    function it_has_a_block_prefix()
     {
-        $this->getName()->shouldReturn('pim_enrich_association');
+        $this->getBlockPrefix()->shouldReturn('pim_enrich_association');
     }
 
     function it_builds_form(
@@ -41,15 +47,15 @@ class AssociationTypeSpec extends ObjectBehavior
         GroupRepositoryInterface $groupRepository,
         AssociationRepositoryInterface $associationRepository
     ) {
-        $entityManager->getRepository('Pim\Bundle\CatalogBundle\Entity\Group')->willReturn($groupRepository);
-        $entityManager->getRepository('Pim\Bundle\CatalogBundle\Entity\AssociationType')->willReturn(
+        $entityManager->getRepository(Group::class)->willReturn($groupRepository);
+        $entityManager->getRepository(AssociationType::class)->willReturn(
             $associationRepository
         );
 
         $builder
         ->add(
             'associationType',
-            'pim_object_identifier',
+            ObjectIdentifierType::class,
             [
                 'repository' => $associationRepository,
                 'multiple'   => false
@@ -58,7 +64,7 @@ class AssociationTypeSpec extends ObjectBehavior
 
         $builder->add(
             'appendProducts',
-            'pim_object_identifier',
+            ObjectIdentifierType::class,
             [
                 'repository' => $productRepository,
                 'mapped'     => false,
@@ -69,7 +75,7 @@ class AssociationTypeSpec extends ObjectBehavior
 
         $builder->add(
             'removeProducts',
-            'pim_object_identifier',
+            ObjectIdentifierType::class,
             [
                 'repository' => $productRepository,
                 'mapped'     => false,
@@ -80,7 +86,7 @@ class AssociationTypeSpec extends ObjectBehavior
 
         $builder->add(
             'appendGroups',
-            'pim_object_identifier',
+            ObjectIdentifierType::class,
             [
                 'repository' => $groupRepository,
                 'mapped'     => false,
@@ -91,7 +97,7 @@ class AssociationTypeSpec extends ObjectBehavior
 
         $builder->add(
             'removeGroups',
-            'pim_object_identifier',
+            ObjectIdentifierType::class,
             [
                 'repository' => $groupRepository,
                 'mapped'     => false,
@@ -105,11 +111,11 @@ class AssociationTypeSpec extends ObjectBehavior
 
     function it_sets_default_options(OptionsResolver $resolver)
     {
-        $this->setDefaultOptions($resolver, []);
+        $this->configureOptions($resolver);
 
         $resolver->setDefaults(
             [
-                'data_class' => 'Pim\Component\Catalog\Model\AssociationInterface',
+                'data_class' => AssociationInterface::class,
             ]
         )->shouldHaveBeenCalled();
     }

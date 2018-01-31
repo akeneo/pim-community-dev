@@ -14,6 +14,7 @@ Option code may contain only letters (at least one), numbers and underscores: El
 This value should not be a decimal.: Este valor no debe ser un decimal.
 'The file extension is not allowed (allowed extensions: %extensions%).': 'La extensión del fichero no está permitida (las extensiones permitidas son: %extensions%).'
 "The value %value% is already set on another product for the unique attribute %attribute%": El valor %value% ya es usado en otro producto por el atributo único %attribute%
+The same identifier is already set on another product: El mismo identificador se encuentra ya en otro producto
 regex.comma_or_semicolon.message: Este campo no debería contener comas o punto y comas.
 file.extensions.message: 'La extensión del fichero no está permitida (las extensiones permitidas son: %extensions%).'
 "This type of value expects the use of {{ decimal_separator }} to separate decimals.": Se espera el uso de {{ decimal_separator }} para separar los decimales.
@@ -21,3 +22,38 @@ file.extensions.message: 'La extensión del fichero no está permitida (las exte
 "This type of value expects the use of comma (,) to separate decimals.": Este valor debería usar una coma (,) como separación de decimales.
 "This type of value expects the use of arabic decimal separator (٫) to separate decimals.": Este valor debería usar un separador decimal arábigo (٫) como separación de decimales.
 "This type of value expects the use of the format {{ date_format }} for dates.": Se espera el uso del formato {{ date_format }} para las fechas.
+"The category \"%category%\" has to be a root category.": La categoría "%category%" tiene que ser una categoría raiz.
+"The attribute \"%attributeCode%\" does not exist.": No existe el atributo "%attributeCode%".
+"The attribute \"%attributeCode%\" is not a metric attribute.": El atributo "%attributeCode%" no es un atributo métrico.
+"The unit \"%unitCode%\" does not exist or does not belong to the default metric family of the given attribute \"%attributeCode%\".": La unidad "%unitCode%" no existe o no pertenece a la familia métrica por defecto del atributo dado "%attributeCode%".
+"The currency \"%currency%\" has to be activated.": La moneda "%currency%" tiene que ser activada.
+product_model.code.not_blank.message: El código de modelo del producto no debe estar vacío.
+product_model.code.unique.message: El mismo código se encuentra ya en otro modelo de producto.
+product_model.family_variant.not_blank.message: La variante de familia del modelo del producto no debe estar vacío.
+pim_catalog:
+  constraint:
+    can_have_family_variant_empty_axis_value: 'El atributo "%attribute%" no debe estar vacío, debido a que se define como eje para esta entidad'
+    can_have_family_variant_duplicate_axis_value: 'No puede establecer "%values%" para el eje de atributos "%attributes%", debido a que otra entidad hermanada ya tiene este valor'
+    product_identifier: Estos identificadores "%s" no existen.
+    0: Se ha producido un error inesperado.
+    100: Valor no previsto
+    101: Este campo debe contener un valor booleano.
+    102: Este campo debe contener un valor de coma flotante.
+    103: Este campo debe contener un número entero.
+    104: Este campo debe contener un valor numérico.
+    105: Este campo debe contener un valor string.
+    106: Este campo debe contener un valor array.
+    107: Este campo debe contener un valor array de arrays.
+    200: Se ha producido un error interno
+    201: Se ha producido un error interno
+    202: Este campo debe contener un valor numérico.
+    203: Este campo debe contener un valor string.
+    204: Este campo debe contener un valor string.
+    205: Se ha producido un error interno
+    300: Este campo debe contener un código de entidad válido.
+    301: Este campo debe contener un objetivo y local válidos.
+    302: Este campo debe contener un objetivo válido.
+    303: Este campo debe contener un formato de asociación válido.
+    pim_immutable_product_validator: El mismo identificador se encuentra ya en otro producto
+    pim_immutable_product_model_validator: El mismo código se encuentra ya en otro modelo de producto.
+

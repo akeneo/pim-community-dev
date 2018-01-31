@@ -3,15 +3,13 @@
 define([
         'underscore',
         'jquery',
-        'module',
         'routing',
         'pim/form/common/save',
-        'text!pim/template/form/save'
+        'pim/template/form/save'
     ],
     function(
         _,
         $,
-        module,
         Routing,
         SaveForm,
         template
@@ -53,7 +51,7 @@ define([
              * {@inheritdoc}
              */
             getSaveUrl: function () {
-                return Routing.generate(module.config().route);
+                return Routing.generate(__moduleConfig.route);
             },
 
             /**

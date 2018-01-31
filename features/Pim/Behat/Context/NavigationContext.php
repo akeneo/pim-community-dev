@@ -2,15 +2,14 @@
 
 namespace Pim\Behat\Context;
 
-use Behat\Behat\Context\Step;
-use Behat\Behat\Context\Step\Then;
-use Behat\Mink\Exception\DriverException;
-use Context\Page\Base\Base;
+use Behat\ChainedStepsExtension\Step;
+use Behat\ChainedStepsExtension\Step\Then;
 use Context\Spin\SpinCapableTrait;
-use SensioLabs\Behat\PageObjectExtension\Context\PageFactory;
-use SensioLabs\Behat\PageObjectExtension\Context\PageObjectAwareInterface;
+use PHPUnit\Framework\Assert;
+use SensioLabs\Behat\PageObjectExtension\Context\PageObjectAware;
+use SensioLabs\Behat\PageObjectExtension\PageObject\Factory as PageObjectFactory;
 
-class NavigationContext extends PimContext implements PageObjectAwareInterface
+class NavigationContext extends PimContext implements PageObjectAware
 {
     use SpinCapableTrait;
 
@@ -23,7 +22,7 @@ class NavigationContext extends PimContext implements PageObjectAwareInterface
     /** @var string */
     protected $password;
 
-    /** @var PageFactory */
+    /** @var PageObjectFactory */
     protected $pageFactory;
 
     /** @var string */
@@ -52,13 +51,13 @@ class NavigationContext extends PimContext implements PageObjectAwareInterface
         'user groups'              => 'UserGroup index',
         'user groups creation'     => 'UserGroup creation',
         'user groups edit'         => 'UserGroup edit',
-        'variant groups'           => 'VariantGroup index',
         'attribute groups'         => 'AttributeGroup index',
         'attribute group creation' => 'AttributeGroup creation',
         'dashboard'                => 'Dashboard index',
         'search'                   => 'Search index',
         'job tracker'              => 'JobTracker index',
         'my account'               => 'User profile',
+        'clients'                  => 'Client index',
     ];
 
     /** @var array */
@@ -67,22 +66,23 @@ class NavigationContext extends PimContext implements PageObjectAwareInterface
     ];
 
     protected $elements = [
-        'Dot menu'        => ['css' => '.pin-bar .pin-menus i.icon-ellipsis-horizontal'],
         'Loading message' => ['css' => '#progressbar h3'],
     ];
 
     /**
+     * @param string $mainContextClass
      * @param string $baseUrl
      */
-    public function __construct($baseUrl)
+    public function __construct(string $mainContextClass, string $baseUrl)
     {
+        parent::__construct($mainContextClass);
         $this->baseUrl = $baseUrl;
     }
 
     /**
-     * @param PageFactory $pageFactory
+     * {@inheritdoc}
      */
-    public function setPageFactory(PageFactory $pageFactory)
+    public function setPageObjectFactory(PageObjectFactory $pageFactory)
     {
         $this->pageFactory = $pageFactory;
     }
@@ -96,11 +96,12 @@ class NavigationContext extends PimContext implements PageObjectAwareInterface
     }
 
     /**
-     * @param string $username
+     * @param string      $username
+     * @param string|null $password
      *
-     * @Given /^I am logged in as "([^"]*)"$/
+     * @Given /^I am logged in as "([^"]*)"( with password (?P<password>[^"]*))?$/
      */
-    public function iAmLoggedInAs($username)
+    public function iAmLoggedInAs($username, ?string $password = null)
     {
         $this->getMainContext()->getSubcontext('fixtures')->setUsername($username);
 
@@ -110,14 +111,15 @@ class NavigationContext extends PimContext implements PageObjectAwareInterface
             return $this->getSession()->getPage()->find('css', '.AknLogin-title');
         }, 'Cannot open the login page');
 
+        $password = null !== $password ? $password : $username;
         $this->getSession()->getPage()->fillField('_username', $username);
-        $this->getSession()->getPage()->fillField('_password', $username);
+        $this->getSession()->getPage()->fillField('_password', $password);
 
         $this->getSession()->getPage()->find('css', '.form-signin button')->press();
 
         $this->spin(function () {
-            return $this->getSession()->getPage()->find('css', '.AknDashboardButtons');
-        }, sprintf('Can not reach Dashboard after login with %s', $username));
+            return $this->getSession()->getPage()->find('css', '.AknWidget');
+        }, sprintf('Cannot reach Dashboard after login with %s', $username));
     }
 
     /**
@@ -130,49 +132,67 @@ class NavigationContext extends PimContext implements PageObjectAwareInterface
 
     /**
      * @param string $page
+     * @param array $options
      *
      * @Given /^I am on the ([^"]*) page$/
      * @Given /^I go to the ([^"]*) page$/
      */
-    public function iAmOnThePage($page)
+    public function iAmOnThePage($page, array $options = [])
     {
         $page = isset($this->getPageMapping()[$page]) ? $this->getPageMapping()[$page] : $page;
-        $this->openPage($page);
+
+        $this->spin(function () use ($page, $options) {
+            $this->openPage($page, $options);
+            $expectedFullUrl = $this->getCurrentPage()->getUrl($options);
+            $actualFullUrl = $this->getSession()->getCurrentUrl();
+            $expectedUrl = $this->sanitizeUrl($expectedFullUrl);
+            $actualUrl = $this->sanitizeUrl($actualFullUrl);
+
+            return $expectedUrl === $actualUrl;
+        }, sprintf('You are not on the %s page', $page));
     }
 
     /**
-     * @param string $path
-     * @param string $referrer
+     * @param array $options
      *
-     * @Given /^I am on the relative path ([^"]+) from ([^"]+)$/
+     * @Given /^I am on the ([^"]*) grid$/
+     * @Given /^I go to the ([^"]*) grid$/
      */
-    public function iAmOnTheRelativePath($path, $referrer)
+    public function iAmOnTheGrid($pageName, array $options = [])
     {
-        $basePath = parse_url($this->baseUrl)['path'];
-        $uri = sprintf('%s%s/#url=%s%s', $this->baseUrl, $referrer, $basePath, $path);
+        $page = $this->getPageMapping()[$pageName];
 
-        $this->getSession()->visit($uri);
+        $this->openPage($page, $options);
+        $this->spin(function () use ($page, $options) {
+            $expectedFullUrl = $this->getCurrentPage()->getUrl();
+            $actualFullUrl = $this->getSession()->getCurrentUrl();
+            $expectedUrl = $this->sanitizeUrl($expectedFullUrl);
+            $actualUrl = $this->sanitizeUrl($actualFullUrl);
+
+            $result = $expectedUrl === $actualUrl;
+            Assert::assertTrue($result, sprintf('Expecting to be on the grid %s, not %s', $expectedUrl, $actualUrl));
+
+            return $this->getCurrentPage()->find('css', '.AknGridContainer');
+        }, sprintf('You are not on the %s grid', $pageName));
+
+        $this->wait();
     }
 
     /**
      * @param string $not
      * @param string $page
      *
-     * @return null|Step\Then
      * @Given /^I should( not)? be able to access the ([^"]*) page$/
      */
     public function iShouldNotBeAbleToAccessThePage($not, $page)
     {
+        $this->iAmOnThePage($page);
+
         if (!$not) {
-            return $this->iAmOnThePage($page);
+            $this->getMainContext()->getSubcontext('assertions')->assertPageNotContainsText('Forbidden');
+        } else {
+            $this->getMainContext()->getSubcontext('assertions')->assertPageContainsText('Forbidden');
         }
-
-        $page = isset($this->getPageMapping()[$page]) ? $this->getPageMapping()[$page] : $page;
-
-        $this->currentPage = $page;
-        $this->getCurrentPage()->open();
-
-        return new Step\Then('I should see "403 Forbidden"');
     }
 
     /**
@@ -213,7 +233,7 @@ class NavigationContext extends PimContext implements PageObjectAwareInterface
         $this->currentPage = sprintf('%s %s', $page, $action);
         $this->getCurrentPage()->open(['id' => $entity->getId()]);
 
-        return new Step\Then('I should see "403 Forbidden"');
+        return new Step\Then('I should see "Forbidden"');
     }
 
     /**
@@ -221,14 +241,25 @@ class NavigationContext extends PimContext implements PageObjectAwareInterface
      * @param string $page
      *
      * @Given /^I edit the "([^"]*)" (\w+)$/
-     * @Given /^I am on the "([^"]*)" ((?!channel)(?!family)\w+) page$/
+     * @Given /^I am on the "([^"]*)" ((?!channel)(?!family)(?!attribute)\w+) page$/
      */
     public function iAmOnTheEntityEditPage($identifier, $page)
     {
-        $page   = ucfirst($page);
-        $getter = sprintf('get%s', $page);
-        $entity = $this->getFixturesContext()->$getter($identifier);
-        $this->openPage(sprintf('%s edit', $page), ['id' => $entity->getId()]);
+        $this->spin(function () use ($identifier, $page) {
+            $page   = ucfirst($page);
+            $getter = sprintf('get%s', $page);
+            $entity = $this->getFixturesContext()->$getter($identifier);
+            $this->openPage(sprintf('%s edit', $page), ['id' => $entity->getId()]);
+
+            $expectedFullUrl = $this->getPage(sprintf('%s edit', $page))->getUrl(['id' => $entity->getId()]);
+
+            $actualFullUrl = $this->getSession()->getCurrentUrl();
+            $actualUrl     = $this->sanitizeUrl($actualFullUrl);
+            $expectedUrl   = $this->sanitizeUrl($expectedFullUrl);
+            $result        = $expectedUrl === $actualUrl;
+
+            return true === $result;
+        }, sprintf('Cannot got to the %s edit page', $page));
     }
 
     /**
@@ -306,50 +337,23 @@ class NavigationContext extends PimContext implements PageObjectAwareInterface
     }
 
     /**
+     * @param string $code
+     *
+     * @Then /^I should be redirected on the (export|import) page of "([^"]*)"$/
+     */
+    public function iShouldBeRedirectedOnThePageOf($page, $code)
+    {
+        $page = str_replace('{code}', $code, $this->getPage(sprintf('%s show', ucfirst($page)))->getUrl());
+        $this->assertAddress($page);
+    }
+
+    /**
      * @Given /^I refresh current page$/
      */
     public function iRefreshCurrentPage()
     {
-        $this->getMainContext()->reload();
+        $this->getMainContext()->getSession()->reload();
         $this->wait();
-    }
-
-    /**
-     * @When /^I pin the current page$/
-     */
-    public function iPinTheCurrentPage()
-    {
-        $pinButton = $this->spin(function () {
-            return $this->getCurrentPage()->find('css', '.minimize-button');
-        }, 'Cannot find ".minimize-button" to pin current page');
-
-        $pinButton->click();
-    }
-
-    /**
-     * @When /^I click on the pinned item "([^"]+)"$/
-     *
-     * @param string $label
-     */
-    public function iClickOnThePinnedItem($label)
-    {
-        $pinnedItem = $this->spin(function () use ($label) {
-            return $this->getCurrentPage()->find('css', sprintf('.pin-bar a[title="%s"]', $label));
-        }, sprintf('Cannot find "%s" pin item', $label));
-
-        $pinnedItem->click();
-    }
-
-    /**
-     * @When /^I click on the pin bar dot menu$/
-     */
-    public function iClickOnThePinBarDotMenu()
-    {
-        $pinDotMenu = $this->spin(function () {
-            return $this->getCurrentPage()->find('css', $this->elements['Dot menu']['css']);
-        }, 'Unable to click on the pin bar dot menu');
-
-        $pinDotMenu->click();
     }
 
     /**
@@ -365,7 +369,7 @@ class NavigationContext extends PimContext implements PageObjectAwareInterface
 
         $message = trim($messageNode->getHtml());
 
-        assertNotEquals('Loading ...', $message, 'The loading message should not equals the default value');
+        Assert::assertNotEquals('Loading ...', $message, 'The loading message should not equals the default value');
     }
 
     /**
@@ -373,33 +377,27 @@ class NavigationContext extends PimContext implements PageObjectAwareInterface
      */
     public function iShouldNotSeeANiceLoadingMessage()
     {
-        $messageNode = $this->spin(function () {
-            return $this->getSession()
+        $messageNodeIsNull = $this->spin(function () {
+            $node = $this->getSession()
                 ->getPage()
                 ->find('css', $this->elements['Loading message']['css']);
-        }, 'Unable to find any loading message');
+            return ($node === null);
+        }, 'Found the loading message');
 
-        $message = trim($messageNode->getHtml());
-
-        assertEquals('Loading ...', $message, 'The loading message should equals the default value');
+        Assert::assertEquals($messageNodeIsNull, true, 'The loading message should not be found');
     }
 
     /**
      * @param string  $pageName
      * @param array   $options
-     * @param boolean $wait     should the script wait for the page to load
      *
      * @return \SensioLabs\Behat\PageObjectExtension\PageObject\Page
      */
-    public function openPage($pageName, array $options = [], $wait = true)
+    public function openPage($pageName, array $options = [])
     {
         $this->currentPage = $pageName;
 
         $page = $this->getCurrentPage()->open($options);
-
-        if ($wait) {
-            $this->wait();
-        }
 
         return $page;
     }
@@ -432,18 +430,20 @@ class NavigationContext extends PimContext implements PageObjectAwareInterface
     }
 
     /**
-     * @param string $expected
+     * @param string $expectedFullUrl
      */
-    public function assertAddress($expected)
+    public function assertAddress(string $expectedFullUrl)
     {
-        $this->spin(function () use ($expected) {
+        $this->spin(function () use ($expectedFullUrl) {
             $actualFullUrl = $this->getSession()->getCurrentUrl();
             $actualUrl     = $this->sanitizeUrl($actualFullUrl);
-            $result        = parse_url($expected, PHP_URL_PATH) === $actualUrl;
-            assertTrue($result, sprintf('Expecting to be on page "%s", not "%s"', $expected, $actualUrl));
+            $expectedUrl   = $this->sanitizeUrl($expectedFullUrl);
+            $result        = $expectedUrl === $actualUrl;
+
+            Assert::assertTrue($result, sprintf('Expecting to be on page "%s", not "%s"', $expectedUrl, $actualUrl));
 
             return true;
-        }, 'Spining to assert address');
+        }, 'Spinning to assert address');
     }
 
     /**
@@ -458,7 +458,7 @@ class NavigationContext extends PimContext implements PageObjectAwareInterface
         $parsedUrl = parse_url($fullUrl);
 
         if (isset($parsedUrl['fragment'])) {
-            $filteredUrl = preg_split('/url=/', $parsedUrl['fragment'])[1];
+            $filteredUrl = $parsedUrl['fragment'];
         } else {
             $filteredUrl = $parsedUrl['path'];
         }

@@ -3,11 +3,14 @@
 namespace Pim\Bundle\UserBundle\Form\Subscriber;
 
 use Akeneo\Component\Localization\Provider\LocaleProviderInterface;
+use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Doctrine\ORM\EntityRepository;
 use Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\LocaleRepository;
-use Pim\Bundle\CatalogBundle\Entity\Locale;
+use Pim\Bundle\EnrichBundle\Form\Type\LightEntityType;
+use Pim\Bundle\UserBundle\Context\UserContext;
 use Pim\Bundle\UserBundle\Entity\UserInterface;
 use Pim\Component\Enrich\Provider\TranslatedLabelsProviderInterface;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
@@ -28,16 +31,22 @@ class UserPreferencesSubscriber implements EventSubscriberInterface
     /** @var TranslatedLabelsProviderInterface */
     protected $categoryRepository;
 
+    /** @var IdentifiableObjectRepositoryInterface */
+    private $localeRepository;
+
     /**
-     * @param LocaleProviderInterface  $localeProvider
-     * @param TranslatedLabelsProviderInterface $categoryRepository
+     * @param LocaleProviderInterface               $localeProvider
+     * @param TranslatedLabelsProviderInterface     $categoryRepository
+     * @param IdentifiableObjectRepositoryInterface $localeRepository
      */
     public function __construct(
         LocaleProviderInterface $localeProvider,
-        TranslatedLabelsProviderInterface $categoryRepository
+        TranslatedLabelsProviderInterface $categoryRepository,
+        IdentifiableObjectRepositoryInterface $localeRepository
     ) {
         $this->localeProvider = $localeProvider;
         $this->categoryRepository = $categoryRepository;
+        $this->localeRepository = $localeRepository;
     }
 
     /**
@@ -67,7 +76,7 @@ class UserPreferencesSubscriber implements EventSubscriberInterface
         $this->updateCatalogLocale($form);
         $this->updateCatalogScope($form);
         $this->updateDefaultTree($form);
-        $this->updateUiLocale($form);
+        $this->updateUiLocale($form, $user);
     }
 
     /**
@@ -77,14 +86,14 @@ class UserPreferencesSubscriber implements EventSubscriberInterface
     {
         $form->add(
             'catalogLocale',
-            'entity',
+            EntityType::class,
             [
                 'class'         => 'PimCatalogBundle:Locale',
-                'property'      => 'code',
+                'choice_label'  => 'code',
                 'select2'       => true,
                 'query_builder' => function (EntityRepository $repository) {
                     return $repository->getActivatedLocalesQB();
-                }
+                },
             ]
         );
     }
@@ -96,11 +105,11 @@ class UserPreferencesSubscriber implements EventSubscriberInterface
     {
         $form->add(
             'catalogScope',
-            'entity',
+            EntityType::class,
             [
-                'class'    => 'PimCatalogBundle:Channel',
-                'property' => 'label',
-                'select2'  => true
+                'class'        => 'PimCatalogBundle:Channel',
+                'choice_label' => 'label',
+                'select2'      => true
             ]
         );
     }
@@ -112,7 +121,7 @@ class UserPreferencesSubscriber implements EventSubscriberInterface
     {
         $form->add(
             'defaultTree',
-            'light_entity',
+            LightEntityType::class,
             [
                 'select2'    => true,
                 'repository' => $this->categoryRepository,
@@ -122,24 +131,31 @@ class UserPreferencesSubscriber implements EventSubscriberInterface
 
     /**
      * @param FormInterface $form
+     * @param UserInterface $user
      */
-    protected function updateUiLocale(FormInterface $form)
+    protected function updateUiLocale(FormInterface $form, UserInterface $user)
     {
+        $uiLocale = $user->getUiLocale();
+        if (null === $uiLocale) {
+            $uiLocale = $this->localeRepository->findOneByIdentifier('en_US');
+        }
+
         $localeProvider = $this->localeProvider;
         $form->add(
             'uiLocale',
-            'entity',
+            EntityType::class,
             [
                 'class'         => 'PimCatalogBundle:Locale',
-                'property'      => 'getName',
+                'choice_label'  => 'getName',
                 'select2'       => true,
+                'data'          => $uiLocale,
                 'query_builder' => function (LocaleRepository $repository) use ($localeProvider) {
                     $locales = $localeProvider->getLocales();
 
                     return $repository->createQueryBuilder('l')
                         ->where('l.code IN (:locales)')
                         ->setParameter('locales', array_keys($locales));
-                }
+                },
             ]
         );
     }

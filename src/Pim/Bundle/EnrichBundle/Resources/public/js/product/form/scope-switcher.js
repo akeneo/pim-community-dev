@@ -10,13 +10,22 @@
 define(
     [
         'underscore',
+        'oro/translator',
         'pim/form',
-        'text!pim/template/product/scope-switcher',
+        'pim/template/product/scope-switcher',
         'pim/fetcher-registry',
         'pim/user-context',
         'pim/i18n'
     ],
-    function (_, BaseForm, template, FetcherRegistry, UserContext, i18n) {
+    function (
+        _,
+        __,
+        BaseForm,
+        template,
+        FetcherRegistry,
+        UserContext,
+        i18n
+    ) {
         return BaseForm.extend({
             template: _.template(template),
             className: 'AknDropdown AknButtonList-item scope-switcher',
@@ -24,6 +33,33 @@ define(
                 'click li a': 'changeScope'
             },
             displayInline: false,
+            displayLabel: true,
+            config: {},
+
+            /**
+             * {@inheritdoc}
+             */
+            initialize: function (config) {
+                if (undefined !== config) {
+                    this.config = config.config;
+                }
+
+                BaseForm.prototype.initialize.apply(this, arguments);
+            },
+
+            /**
+             * {@inheritdoc}
+             */
+            configure: function () {
+                this.listenTo(this.getRoot(), 'pim_enrich:form:locale_switcher:change', function (localeEvent) {
+                    if ('base_product' === localeEvent.context) {
+                        UserContext.set('catalogLocale', localeEvent.localeCode);
+                        this.render();
+                    }
+                }.bind(this));
+
+                return BaseForm.prototype.configure.apply(this, arguments);
+            },
 
             /**
              * {@inheritdoc}
@@ -32,8 +68,11 @@ define(
                 FetcherRegistry.getFetcher('channel')
                     .fetchAll()
                     .then(function (channels) {
-                        var params = { scopeCode: channels[0].code };
-                        this.trigger('pim_enrich:form:scope_switcher:pre_render', params);
+                        const params = {
+                            scopeCode: channels[0].code,
+                            context: this.config.context
+                        };
+                        this.getRoot().trigger('pim_enrich:form:scope_switcher:pre_render', params);
 
                         var scope = _.findWhere(channels, { code: params.scopeCode });
 
@@ -47,13 +86,14 @@ define(
                                 ),
                                 catalogLocale: UserContext.get('catalogLocale'),
                                 i18n: i18n,
-                                displayInline: this.displayInline
+                                displayInline: this.displayInline,
+                                displayLabel: this.displayLabel,
+                                label: __('pim_enrich.entity.product.meta.scope')
                             })
                         );
 
                         this.delegateEvents();
-                    }.bind(this)
-                );
+                    }.bind(this));
 
                 return this;
             },
@@ -64,8 +104,9 @@ define(
              * @param {Event} event
              */
             changeScope: function (event) {
-                this.trigger('pim_enrich:form:scope_switcher:change', {
-                    scopeCode: event.currentTarget.dataset.scope
+                this.getRoot().trigger('pim_enrich:form:scope_switcher:change', {
+                    scopeCode: event.currentTarget.dataset.scope,
+                    context: this.config.context
                 });
 
                 this.render();
@@ -78,6 +119,15 @@ define(
              */
             setDisplayInline: function (value) {
                 this.displayInline = value;
+            },
+
+            /**
+             * Updates the display label value
+             *
+             * @param {Boolean} value
+             */
+            setDisplayLabel: function (value) {
+                this.displayLabel = value;
             }
         });
     }

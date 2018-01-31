@@ -2,9 +2,8 @@
 
 namespace Pim\Component\Catalog\Updater\Adder;
 
-use Akeneo\Component\StorageUtils\Exception\PropertyException;
 use Pim\Component\Catalog\Model\AttributeInterface;
-use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Model\EntityWithValuesInterface;
 
 /**
  * Adds a data into a product's attribute
@@ -18,15 +17,16 @@ interface AttributeAdderInterface extends AdderInterface
     /**
      * Add attribute data
      *
-     * @param ProductInterface   $product   The product to update
-     * @param AttributeInterface $attribute The attribute of the product to update
-     * @param mixed              $data      The data to add
-     * @param array              $options   Options passed to the adder
+     * @param EntityWithValuesInterface $entityWithValues
+     * @param AttributeInterface        $attribute The attribute of the product to update
+     * @param mixed                     $data      The data to add
+     * @param array                     $options   Options passed to the adder
      *
-     * @throws PropertyException
+     * @return
+     * @internal param ProductInterface $product The product to update
      */
     public function addAttributeData(
-        ProductInterface $product,
+        EntityWithValuesInterface $entityWithValues,
         AttributeInterface $attribute,
         $data,
         array $options = []

@@ -3,6 +3,7 @@ datagrid:
         extended_entity_name: '%oro_user.entity.class%'
         options:
             entityHint: user
+            manageFilters: false
         source:
             acl_resource: pim_user_user_index
             type: orm
@@ -21,20 +22,11 @@ datagrid:
         columns:
             username:
                 label: oro.user.grid.users.columns.username
-            email:
-                label: oro.user.grid.users.columns.email
+                frontend_type: label
             firstName:
                 label: oro.user.grid.users.columns.firstName
             lastName:
                 label: oro.user.grid.users.columns.lastName
-            createdAt:
-                label: oro.user.grid.users.columns.createdAt
-                type: product_value_datetime
-                frontend_type: datetime
-            updatedAt:
-                label: oro.user.grid.users.columns.updatedAt
-                type: product_value_datetime
-                frontend_type: datetime
             enabled:
                 label: oro.user.grid.users.columns.enabled
                 frontend_type: select
@@ -63,16 +55,10 @@ datagrid:
             columns:
                 username:
                     data_name: u.username
-                email:
-                    data_name: u.email
                 firstName:
                     data_name: u.firstName
                 lastName:
                     data_name: u.lastName
-                createdAt:
-                    data_name: u.createdAt
-                updatedAt:
-                    data_name: u.updatedAt
                 enabled:
                     data_name: u.enabled
             default:
@@ -81,23 +67,14 @@ datagrid:
         filters:
             columns:
                 username:
-                    type: string
+                    type: search
                     data_name: u.username
-                email:
-                    type: string
-                    data_name: u.email
                 firstName:
                     type: string
                     data_name: u.firstName
                 lastName:
                     type: string
                     data_name: u.lastName
-                createdAt:
-                    type: datetime
-                    data_name: u.createdAt
-                updatedAt:
-                    type: datetime
-                    data_name: u.updatedAt
                 enabled:
                     type: choice
                     data_name: u.enabled
@@ -109,21 +86,24 @@ datagrid:
 
         actions:
             view:
+                launcherOptions:
+                    className: AknIconButton AknIconButton--small AknIconButton--view
                 type:          navigate
                 label:         View
                 link:          view_link
-                icon:          user
                 acl_resource:  pim_user_user_index
                 rowAction:     true
             update:
+                launcherOptions:
+                    className: AknIconButton AknIconButton--small AknIconButton--edit
                 type:          navigate
                 label:         Update
                 link:          update_link
-                icon:          pencil
                 acl_resource:  pim_user_user_edit
             delete:
+                launcherOptions:
+                    className: AknIconButton AknIconButton--small AknIconButton--trash
                 type:          delete
                 label:         Delete
                 link:          delete_link
-                icon:          trash
                 acl_resource:  pim_user_user_remove

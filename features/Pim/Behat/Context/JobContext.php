@@ -6,9 +6,10 @@ use Akeneo\Component\Batch\Job\JobParametersFactory;
 use Akeneo\Component\Batch\Job\JobParametersValidator;
 use Akeneo\Component\Batch\Job\JobRegistry;
 use Akeneo\Component\Batch\Model\JobInstance;
-use Behat\Behat\Context\Step;
+use Behat\ChainedStepsExtension\Step\Then;
 use Behat\Gherkin\Node\TableNode;
 use Context\Spin\SpinCapableTrait;
+use PHPUnit\Framework\Assert;
 use Symfony\Component\Validator\ConstraintViolationInterface;
 
 class JobContext extends PimContext
@@ -107,7 +108,7 @@ class JobContext extends PimContext
      * @param string      $action
      * @param JobInstance $job
      *
-     * @return Step\Then
+     * @return Then
      *
      * @When /^I should not be able to (launch|edit) the ("([^"]*)" (export|import) job)$/
      */
@@ -120,7 +121,7 @@ class JobContext extends PimContext
              'Failed to launch the job profile. Make sure it is valid and that you have right to launch it.' :
              'Failed to save the job profile. Make sure that you have right to edit it.';
 
-        return new Step\Then(sprintf('I should see the text "%s"', $message));
+        return new Then(sprintf('I should see the text "%s"', $message));
     }
 
     /**
@@ -146,7 +147,7 @@ class JobContext extends PimContext
             return $page->find('css', sprintf('[data-name="%s"] .select2-default', $label));
         }, sprintf('Field "%s" not found.', $label));
 
-        assertEquals($field->getValue(), $message);
+        Assert::assertEquals($field->getValue(), $message);
     }
 
     /**
@@ -162,6 +163,31 @@ class JobContext extends PimContext
 
             return $expectedOrderedFilters === $currentOrderedFilters;
         }, 'Filters not ordered.');
+    }
+
+    /**
+     * @Given /^there should only be the following job instance executed:$/
+     *
+     * @throws \LogicException
+     */
+    public function thereShouldBeTheFollowingJobInstanceExecuted(TableNode $jobExecutionsTable)
+    {
+        $jobInstances = $this->getService('pim_enrich.repository.job_instance')->findAll();
+        foreach ($jobInstances as $jobInstance) {
+            $this->getFixturesContext()->refresh($jobInstance);
+            $jobExecutionCount = $jobInstance->getJobExecutions()->count();
+            $expectedJobExecutionCount = $this->getExpectedJobExecutionCount($jobInstance, $jobExecutionsTable);
+            if ($jobExecutionCount !== $expectedJobExecutionCount) {
+                throw new \LogicException(
+                    sprintf(
+                        'Expected job "%s" to run %d times, %d given',
+                        $jobInstance->getCode(),
+                        $jobExecutionCount,
+                        $expectedJobExecutionCount
+                    )
+                );
+            }
+        }
     }
 
     /**
@@ -187,7 +213,15 @@ class JobContext extends PimContext
             }
 
             if (null === $filePath) {
-                throw new \Exception(sprintf('There is no file number %d in generated archive', $number));
+                $filePath = array_values($archives)[$number - 1];
+            }
+
+            if (null === $filePath) {
+                throw new \Exception(sprintf(
+                    'There is no file number %d in generated archive (found %s)',
+                    $number,
+                    join(', ', array_keys($archives))
+                ));
             }
         }
 
@@ -199,14 +233,24 @@ class JobContext extends PimContext
     /**
      * @param string $code
      *
-     * @return string
+     * @return string[]
      */
-    public function getJobInstanceFilename($code)
+    public function getJobInstanceFilenames(string $code): array
     {
         $archives = $this->getJobInstanceArchives($code);
-        $filename = key($archives);
+        $filenames = array_keys($archives);
 
-        return $filename;
+        return $filenames;
+    }
+
+    /**
+     * @param string $code
+     *
+     * @return string
+     */
+    public function getJobInstanceFilename(string $code): string
+    {
+        return $this->getJobInstanceFilenames($code)[0];
     }
 
     /**
@@ -263,5 +307,22 @@ class JobContext extends PimContext
         }
 
         return $currentFilters;
+    }
+
+    /**
+     * @param JobInstance $jobInstance
+     * @param TableNode   $jobExecutionTable
+     *
+     * @return int
+     */
+    private function getExpectedJobExecutionCount(JobInstance $jobInstance, TableNode $jobExecutionTable): int
+    {
+        foreach ($jobExecutionTable->getHash() as $jobExecutionRow) {
+            if ($jobExecutionRow['job_instance'] === $jobInstance->getCode()) {
+                return (int) $jobExecutionRow['times'];
+            }
+        }
+
+        return 0;
     }
 }

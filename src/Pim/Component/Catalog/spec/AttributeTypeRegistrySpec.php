@@ -3,7 +3,7 @@
 namespace spec\Pim\Component\Catalog;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypeInterface;
+use Pim\Component\Catalog\AttributeTypeInterface;
 
 class AttributeTypeRegistrySpec extends ObjectBehavior
 {

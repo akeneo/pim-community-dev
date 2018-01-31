@@ -9,6 +9,7 @@ use Pim\Bundle\UserBundle\Context\UserContext;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Pim\Component\Catalog\Repository\GroupRepositoryInterface;
 use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 class ContextConfiguratorSpec extends ObjectBehavior
 {
@@ -18,7 +19,8 @@ class ContextConfiguratorSpec extends ObjectBehavior
         RequestParameters $requestParams,
         UserContext $userContext,
         ObjectManager $objectManager,
-        GroupRepositoryInterface $productGroupRepository
+        GroupRepositoryInterface $productGroupRepository,
+        RequestStack $requestStack
     ) {
         $this->beConstructedWith(
             $repository,
@@ -26,7 +28,8 @@ class ContextConfiguratorSpec extends ObjectBehavior
             $requestParams,
             $userContext,
             $objectManager,
-            $productGroupRepository
+            $productGroupRepository,
+            $requestStack
         );
     }
 

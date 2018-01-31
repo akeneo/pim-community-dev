@@ -2,12 +2,10 @@
 
 namespace Pim\Component\Catalog\Updater\Remover;
 
-use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
-use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
+use Pim\Component\Catalog\Builder\EntityWithValuesBuilderInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
-use Pim\Component\Catalog\Model\AttributeOptionInterface;
-use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Model\EntityWithValuesInterface;
 use Pim\Component\Catalog\Validator\AttributeValidatorHelper;
 
 /**
@@ -19,77 +17,71 @@ use Pim\Component\Catalog\Validator\AttributeValidatorHelper;
  */
 class MultiSelectAttributeRemover extends AbstractAttributeRemover
 {
-    /** @var IdentifiableObjectRepositoryInterface */
-    protected $attrOptionRepository;
+    /** @var EntityWithValuesBuilderInterface */
+    protected $entityWithValuesBuilder;
 
     /**
-     * @param AttributeValidatorHelper              $attrValidatorHelper
-     * @param IdentifiableObjectRepositoryInterface $attrOptionRepository
-     * @param string[]                              $supportedTypes
+     * @param AttributeValidatorHelper         $attrValidatorHelper
+     * @param EntityWithValuesBuilderInterface $entityWithValuesBuilder
+     * @param string[]                         $supportedTypes
      */
     public function __construct(
         AttributeValidatorHelper $attrValidatorHelper,
-        IdentifiableObjectRepositoryInterface $attrOptionRepository,
+        EntityWithValuesBuilderInterface $entityWithValuesBuilder,
         array $supportedTypes
     ) {
         parent::__construct($attrValidatorHelper);
 
-        $this->attrOptionRepository = $attrOptionRepository;
-        $this->supportedTypes = $supportedTypes;
+        $this->entityWithValuesBuilder = $entityWithValuesBuilder;
+        $this->supportedTypes          = $supportedTypes;
     }
 
     /**
      * {@inheritdoc}
      */
     public function removeAttributeData(
-        ProductInterface $product,
+        EntityWithValuesInterface $entityWithValues,
         AttributeInterface $attribute,
         $data,
         array $options = []
     ) {
         $options = $this->resolver->resolve($options);
-        $this->checkLocaleAndScope($attribute, $options['locale'], $options['scope']);
         $this->checkData($attribute, $data);
 
-        $attributeOptions = [];
-        foreach ($data as $optionCode) {
-            $option = $this->getOption($attribute, $optionCode);
-            if (null === $option) {
-                throw InvalidPropertyException::validEntityCodeExpected(
-                    $attribute->getCode(),
-                    'option code',
-                    'The option does not exist',
-                    static::class,
-                    $optionCode
-                );
-            }
-
-            $attributeOptions[] = $option;
-        }
-
-        $this->removeOptions($product, $attribute, $attributeOptions, $options['locale'], $options['scope']);
+        $this->removeOptions($entityWithValues, $attribute, $data, $options['locale'], $options['scope']);
     }
 
     /**
-     * @param ProductInterface   $product
-     * @param AttributeInterface $attribute
-     * @param array              $attributeOptions
-     * @param string|null        $locale
-     * @param string|null        $scope
+     * @param EntityWithValuesInterface $entityWithValues
+     * @param AttributeInterface        $attribute
+     * @param string[]                  $optionCodes
+     * @param string|null               $locale
+     * @param string|null               $scope
      */
     protected function removeOptions(
-        ProductInterface $product,
+        EntityWithValuesInterface $entityWithValues,
         AttributeInterface $attribute,
-        $attributeOptions,
+        $optionCodes,
         $locale,
         $scope
     ) {
-        $productValue = $product->getValue($attribute->getCode(), $locale, $scope);
+        $value = $entityWithValues->getValue($attribute->getCode(), $locale, $scope);
 
-        if (null !== $productValue) {
-            foreach ($attributeOptions as $attributeOption) {
-                $productValue->removeOption($attributeOption);
+        if (null !== $value) {
+            $newOptionCodes = [];
+            foreach ($value->getData() as $originalOption) {
+                if (!in_array($originalOption->getCode(), $optionCodes)) {
+                    $newOptionCodes[] = $originalOption->getCode();
+                }
             }
+
+            $this->entityWithValuesBuilder->addOrReplaceValue(
+                $entityWithValues,
+                $attribute,
+                $locale,
+                $scope,
+                $newOptionCodes
+            );
         }
     }
 
@@ -121,19 +113,5 @@ class MultiSelectAttributeRemover extends AbstractAttributeRemover
                 );
             }
         }
-    }
-
-    /**
-     * @param AttributeInterface $attribute
-     * @param string             $optionCode
-     *
-     * @return AttributeOptionInterface|null
-     */
-    protected function getOption(AttributeInterface $attribute, $optionCode)
-    {
-        $identifier = $attribute->getCode() . '.' . $optionCode;
-        $option = $this->attrOptionRepository->findOneByIdentifier($identifier);
-
-        return $option;
     }
 }

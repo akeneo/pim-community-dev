@@ -6,6 +6,7 @@ use Akeneo\Component\StorageUtils\Cursor\CursorInterface;
 use Pim\Component\Catalog\Query\ProductQueryBuilderInterface;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Helper\HelperInterface;
+use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -80,7 +81,7 @@ class QueryProductCommand extends ContainerAwareCommand
         $products = $productQueryBuilder->execute();
 
         if (!$input->getOption('json-output')) {
-            $table = $this->buildTable($products, $pageSize);
+            $table = $this->buildTable($products, $pageSize, $output);
             $table->render($output);
 
             $nbProducts = count($products);
@@ -103,7 +104,7 @@ class QueryProductCommand extends ContainerAwareCommand
         } else {
             $result = [];
             foreach ($products as $product) {
-                $result[] = $product->getIdentifier()->getData();
+                $result[] = $product->getIdentifier();
             }
 
             $output->write(json_encode($result));
@@ -113,12 +114,12 @@ class QueryProductCommand extends ContainerAwareCommand
     /**
      * @param CursorInterface $products
      * @param int             $maxRows
+     * @param OutputInterface $output
      *
      * @return HelperInterface
      */
-    protected function buildTable(CursorInterface $products, $maxRows)
+    protected function buildTable(CursorInterface $products, $maxRows, OutputInterface $output)
     {
-        $helperSet = $this->getHelperSet();
         $rows = [];
         $ind = 0;
         foreach ($products as $product) {
@@ -130,7 +131,7 @@ class QueryProductCommand extends ContainerAwareCommand
             }
         }
         $headers = ['id', 'identifier'];
-        $table = $helperSet->get('table');
+        $table = new Table($output);
         $table->setHeaders($headers)->setRows($rows);
 
         return $table;

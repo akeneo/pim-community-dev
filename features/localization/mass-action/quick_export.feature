@@ -6,16 +6,29 @@ Feature: Quick export many products with localized attributes from datagrid
 
   Background:
     Given a "footwear" catalog configuration
+    And I am logged in as "Julien"
+    And I am on the "boots" family page
+    And I visit the "Attributs" tab
+    And I add available attribute Date de déstockage and Taux de vente and Poids
+    And I save the family
+    And I am on the "sneakers" family page
+    And I visit the "Attributs" tab
+    And I add available attribute Date de déstockage and Taux de vente and Poids
+    And I save the family
+    And I am on the "sandals" family page
+    And I visit the "Attributs" tab
+    And I add available attribute Date de déstockage and Taux de vente and Poids
+    And I save the family
     And the following products:
       | sku      | family   | categories        | name-en_US    | price                | size | color | weight      | rate_sale | destocking_date |
       | boots    | boots    | winter_collection | Amazing boots | 20.80 EUR, 25.35 USD | 40   | black | 250 GRAM    | 75.5      | 1999-12-28      |
       | sneakers | sneakers | summer_collection | Sneakers      | 50.00 EUR, 60.00 USD | 42   | white | 125.50 GRAM | 75.00     |                 |
       | sandals  | sandals  | summer_collection | Sandals       | 5 EUR, 5 USD         | 40   | red   | 0.5 GRAM    | 75        |                 |
       | pump     |          | summer_collection | Pump          | 15 EUR, 20 USD       | 41   | blue  |             |           |                 |
-    And I am logged in as "Julien"
 
   Scenario: Successfully quick export CSV products with localized attributes
-    Given I am on the products page
+    Given I am on the products grid
+    And I switch the locale to "en_US"
     When I select rows boots, sneakers, sandals and pump
     And I press "CSV (tous les attributs)" on the "Export rapide" dropdown button
     And I wait for the "csv_product_quick_export" quick export to finish
@@ -25,9 +38,9 @@ Feature: Quick export many products with localized attributes from datagrid
       | type    | message                                              |
       | success | L'export rapide CSV product quick export est terminé |
     When I go on the last executed job resume of "csv_product_quick_export"
-    Then I should see "TERMINÉ"
-    And the name of the exported file of "csv_product_quick_export" should be "products_export_en_US_mobile.csv"
-    And exported file of "csv_product_quick_export" should contain:
+    Then I should see the text "TERMINÉ"
+    And the names of the exported files of "csv_product_quick_export" should be "1_products_export_en_US_mobile.csv,2_product_models_export_en_US_mobile.csv"
+    And first exported file of "csv_product_quick_export" should contain:
     """
     sku;categories;color;description-en_US-mobile;destocking_date;enabled;family;groups;lace_color;manufacturer;name-en_US;price-EUR;price-USD;rate_sale;rating;side_view;size;top_view;weather_conditions;weight;weight-unit
     boots;winter_collection;black;;28/12/1999;1;boots;;;;"Amazing boots";20,80;25,35;75,50;;;40;;;250;GRAM
@@ -37,7 +50,8 @@ Feature: Quick export many products with localized attributes from datagrid
     """
 
   Scenario: Successfully quick export XLSX products with localized attributes
-    Given I am on the products page
+    Given I am on the products grid
+    And I switch the locale to "en_US"
     When I select rows boots, sneakers, sandals and pump
     And I press "Excel (tous les attributs)" on the "Export rapide" dropdown button
     And I wait for the "xlsx_product_quick_export" quick export to finish
@@ -47,9 +61,9 @@ Feature: Quick export many products with localized attributes from datagrid
       | type    | message                                               |
       | success | L'export rapide XLSX product quick export est terminé |
     When I go on the last executed job resume of "xlsx_product_quick_export"
-    Then I should see "TERMINÉ"
-    And the name of the exported file of "xlsx_product_quick_export" should be "products_export_en_US_mobile.xlsx"
-    And exported xlsx file of "xlsx_product_quick_export" should contain:
+    Then I should see the text "TERMINÉ"
+    And the names of the exported files of "xlsx_product_quick_export" should be "1_products_export_en_US_mobile.xlsx,2_product_models_export_en_US_mobile.xlsx"
+    And exported xlsx file 1 of "xlsx_product_quick_export" should contain:
       | sku      | categories        | color | description-en_US-mobile | destocking_date | enabled | family   | groups | lace_color | manufacturer | name-en_US    | price-EUR | price-USD | rate_sale | rating | side_view | size | top_view | weather_conditions | weight | weight-unit |
       | boots    | winter_collection | black |                          | 28/12/1999      | 1       | boots    |        |            |              | Amazing boots | 20,80     | 25,35     | 75,50     |        |           | 40   |          |                    | 250    | GRAM        |
       | sneakers | summer_collection | white |                          |                 | 1       | sneakers |        |            |              | Sneakers      | 50        | 60        | 75        |        |           | 42   |          |                    | 125,50 | GRAM        |

@@ -42,9 +42,7 @@ class CleanProductValueDuplicationsCommand extends ContainerAwareCommand
      */
     public function isEnabled()
     {
-        $storageDriver = $this->getContainer()->getParameter('pim_catalog_product_storage_driver');
-
-        return AkeneoStorageUtilsExtension::DOCTRINE_ORM === $storageDriver;
+        return true;
     }
 
     /**

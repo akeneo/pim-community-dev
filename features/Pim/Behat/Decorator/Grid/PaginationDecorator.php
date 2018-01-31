@@ -42,9 +42,13 @@ class PaginationDecorator extends ElementDecorator
      */
     public function setPageNumber($num)
     {
-        $pagination = $this->getPaginationField();
-        $pagination->setValue($num);
-        $pagination->blur();
+        $this->spin(function () use ($num) {
+            $pagination = $this->getPaginationField();
+            $pagination->setValue($num);
+            $pagination->blur();
+
+            return true;
+        }, 'Can not set page number!');
     }
 
     /**

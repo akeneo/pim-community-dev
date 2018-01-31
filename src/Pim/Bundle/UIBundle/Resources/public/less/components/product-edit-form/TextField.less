@@ -3,11 +3,31 @@
 .AknTextField {
   height: @AknFormHeight;
   line-height: @AknFormHeight;
-  color: @AknDefaultFontColor;
+  color: @AknDarkBlue;
   border: 1px solid @AknBorderColor;
   width: 100%;
   border-radius: 2px;
   padding: 0 8px;
+  z-index: 1;
+
+  &-layer {
+    border: 1px solid @AknBorderColor;
+    position: absolute;
+    width: ~"calc(100% - 4px)";
+    height: 100%;
+    background: white;
+    border-radius: 2px;
+
+    &--first {
+      top: @AknLocalizableGap * 2;
+      left: @AknLocalizableGap * 2;
+    }
+
+    &--second {
+      top: @AknLocalizableGap;
+      left: @AknLocalizableGap;
+    }
+  }
 
   &--noRightRadius {
     border-top-right-radius: 0;
@@ -16,9 +36,9 @@
   }
 
   &--noLeftRadius {
+    margin-left: -1px;
     border-top-left-radius: 0;
     border-bottom-left-radius: 0;
-    border-left: none;
   }
 
   &--noRadius {
@@ -48,6 +68,8 @@
 
   &--file {
     color: transparent; // To remove the generated label near the text
+    height: 140px;
+    margin-top: -30px;
   }
 
   &--disabled,
@@ -56,10 +78,15 @@
     background: @AknDisabledInputColor;
     background-image: url("../../../images/icon-lock.svg");
     background-repeat: no-repeat;
-    background-position: ~"calc(100% - 10px)" 10px;
+    background-position: ~"calc(100% - 12px)" center;
     padding-right: @AknFormHeight - 4px;
     color: @AknLightFontColor;
     cursor: not-allowed;
+  }
+
+  &--localizable {
+    width: ~"calc(100% - 4px)";
+    position: relative;
   }
 }
 

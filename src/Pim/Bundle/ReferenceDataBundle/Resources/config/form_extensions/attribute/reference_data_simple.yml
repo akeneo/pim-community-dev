@@ -1,0 +1,26 @@
+extensions:
+    pim-attribute-form-ref-data-simple:
+        module: pim/common/simple-view
+        config:
+            template: pim/template/common/drop-zone
+
+    pim-attribute-form-ref-data-simple-type-specific-params:
+        module: pim/common/simple-view
+        parent: pim-attribute-form-ref-data-simple
+        targetZone: content
+        position: 100
+        config:
+            template: pim/template/form/tab/section
+            templateParams:
+                sectionTitle: pim_enrich.form.attribute.tab.properties.section.type_specific
+                dropZone: content
+
+    pim-attribute-form-ref-data-simple-type-specific-params-ref-data-name:
+        module: pim/attribute-edit-form/properties/ref-data-name
+        parent: pim-attribute-form-ref-data-simple-type-specific-params
+        targetZone: content
+        position: 100
+        config:
+            fieldName: reference_data_name
+            label: pim_enrich.form.attribute.tab.properties.label.reference_data_name
+            refDataType: simple

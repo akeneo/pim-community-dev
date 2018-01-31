@@ -7,125 +7,60 @@ datagrid:
             columnListener:
                 dataField: id
                 columnName: is_checked
+            rowView: pim/product-edit-form/associated-product-row
+            manageFilters: false
+            emptyGridOptions:
+                hint: grid.empty_results.associated_product.hint
+                subHint: grid.empty_results.associated_product.subHint
+                imageClass: AknGridContainer-noDataImage--associations
         source:
             type:              pim_datasource_associated_product
             entity:            '%pim_catalog.entity.product.class%'
-            repository_method: createAssociationDatagridQueryBuilder
             user_config_alias: product-grid
-            repository_parameters:
-                - product
         columns:
+            identifier:
+                label:     ID
+                data_name: identifier
+                type:      field
             is_checked:
                 frontend_type: boolean
-                data_name:     is_checked
                 editable:      true
             is_associated:
                 label:         Is associated
-                data_name:     is_associated
-                type:          twig
-                template:      PimDataGridBundle:Property:boolean.html.twig
-                frontend_type: html
-                primary:       true
+                frontend_type: boolean-label
+            image:
+                label:         Image
+                data_name:     image
+                frontend_type: image
             label:
                 label:         Label
-                data_name:     productLabel
-                selector:      product_label
+                type:          field
             family:
                 label:         Family
-                data_name:     familyLabel
-                selector:      product_family
+                type:          field
             enabled:
                 label:         Status
-                type:          twig
-                template:      PimDataGridBundle:Property:enabled.html.twig
-                frontend_type: html
+                frontend_type: enabled
             completeness:
                 label:         Complete
-                type:          twig
-                data_name:     ratio
-                template:      PimDataGridBundle:Property:completeness.html.twig
-                frontend_type: html
-                selector:      product_completeness
+                frontend_type: completeness
+            complete_variant_products:
+                label:         Variant products
+                data_name:     complete_variant_product
+                frontend_type: complete-variant-product
             created:
-                label:         Created
-                type:          product_value_date
-                frontend_type: date
+                label:         Created At
+                type:          field
             updated:
-                label:         Updated
-                type:          product_value_date
-                frontend_type: date
+                label:         Updated At
+                type:          field
         properties:
             id: ~
-        sorters:
-            columns:
-                is_associated:
-                    data_name: is_associated
-                    sorter:    product_is_associated
-                family:
-                    data_name: familyLabel
-                    sorter:    product_family
-                enabled:
-                    data_name: enabled
-                    sorter:    product_field
-                completeness:
-                    data_name: ratio
-                    sorter:    product_completeness
-                created:
-                    data_name: created
-                    sorter:    product_field
-                updated:
-                    data_name: updated
-                    sorter:    product_field
-            default:
-                is_associated: '%oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC'
+            document_type: ~
         filters:
             columns:
-                is_associated:
-                    type:      product_is_associated
-                    ftype:     boolean
-                    label:     Is associated
-                    data_name: is_associated
-                family:
-                    type:      product_family
-                    label:     Family
-                    data_name: family
-                    options:
-                        field_options:
-                            multiple: true
-                            attr:
-                                empty_choice: true
-                enabled:
-                    type:      product_enabled
-                    ftype:     choice
-                    label:     Status
-                    data_name: enabled
-                    options:
-                        field_options:
-                            choices:
-                                1: Enabled
-                                0: Disabled
-                completeness:
-                    type:      product_completeness
-                    label:     Complete
-                    data_name: ratio
-                created:
-                    type:      product_date
-                    ftype:     date
-                    data_name: created
-                    label:     Created At
-                updated:
-                    type:      product_date
-                    ftype:     date
-                    data_name: updated
-                    label:     Updated At
-                scope:
-                    type:      product_scope
-                    label:     Scope
-                    data_name: values.scope
-                    options:
-                        field_options:
-                            choices: '@pim_catalog.repository.channel->getLabelsIndexedByCode(@pim_user.context.user->getCurrentLocaleCode())'
-                category:
-                    type:      product_category
-                    label:     Category
-                    data_name: category
+                label_or_identifier:
+                    type: label_or_identifier
+                    label: Label or identifier
+                    data_name: label_or_identifier
+

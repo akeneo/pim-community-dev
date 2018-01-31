@@ -4,7 +4,7 @@ namespace spec\Pim\Component\Catalog\Validator\Constraints;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\AttributeInterface;
-use Pim\Component\Catalog\Model\ProductValueInterface;
+use Pim\Component\Catalog\Model\ValueInterface;
 use Pim\Component\Catalog\Validator\Constraints\Boolean;
 use Prophecy\Argument;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
@@ -102,50 +102,50 @@ class BooleanValidatorSpec extends ObjectBehavior
     function it_does_not_add_violation_when_validates_boolean_product_value(
         $context,
         Boolean $constraint,
-        ProductValueInterface $productValue,
+        ValueInterface $value,
         AttributeInterface $attribute
     ) {
-        $productValue->getAttribute()->willReturn($attribute);
+        $value->getAttribute()->willReturn($attribute);
         $attribute->getCode()->willReturn('foo');
         $attribute->getBackendType()->willReturn('boolean');
-        $productValue->getBoolean()->willReturn(true);
+        $value->getData()->willReturn(true);
 
         $context
             ->buildViolation(Argument::cetera())
             ->shouldNotBeCalled();
 
-        $this->validate($productValue, $constraint);
+        $this->validate($value, $constraint);
     }
 
     function it_adds_violation_when_validates_null_product_value(
         $context,
         Boolean $constraint,
-        ProductValueInterface $productValue,
+        ValueInterface $value,
         AttributeInterface $attribute
     ) {
-        $productValue->getAttribute()->willReturn($attribute);
+        $value->getAttribute()->willReturn($attribute);
         $attribute->getCode()->willReturn('foo');
         $attribute->getBackendType()->willReturn('integer');
-        $productValue->getInteger()->willReturn(null);
+        $value->getData()->willReturn(null);
 
         $context
             ->buildViolation(Argument::cetera())
             ->shouldNotBeCalled();
 
-        $this->validate($productValue, $constraint);
+        $this->validate($value, $constraint);
     }
 
     function it_adds_violation_when_validates_non_boolean_product_value(
         $context,
         Boolean $constraint,
-        ProductValueInterface $productValue,
+        ValueInterface $value,
         AttributeInterface $attribute,
         ConstraintViolationBuilderInterface $violation
     ) {
-        $productValue->getAttribute()->willReturn($attribute);
+        $value->getAttribute()->willReturn($attribute);
         $attribute->getCode()->willReturn('foo');
         $attribute->getBackendType()->willReturn('integer');
-        $productValue->getInteger()->willReturn(666);
+        $value->getData()->willReturn(666);
 
         $context
             ->buildViolation(
@@ -155,6 +155,6 @@ class BooleanValidatorSpec extends ObjectBehavior
             ->shouldBeCalled()
             ->willReturn($violation);
 
-        $this->validate($productValue, $constraint);
+        $this->validate($value, $constraint);
     }
 }

@@ -14,17 +14,7 @@ class BooleanFilter extends ChoiceFilter
      */
     protected function getFormType()
     {
-        return BooleanFilterType::NAME;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function init($name, array $params)
-    {
-        // static option for metadata
-        $params['contextSearch'] = false;
-        parent::init($name, $params);
+        return BooleanFilterType::class;
     }
 
     /**

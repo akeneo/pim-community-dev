@@ -7,10 +7,8 @@ pim_connector:
       title: Считыватель из CSV
     csv_product_reader.title: Считыватель продуктов из CSV
     csv_category_reader.title: Считыватель категорий из CSV
-    csv_variant_group .title: Считыватель групп вариантов из CSV
     dummy_processor.title: Заглушка
     product_processor.title: Создание продукта
-    variant_group_processor.title: Создание / обновление групп вариантов
     category_processor.title: Создание категорий
     association_processor.title: Создание ассоциаций
     product_association_processor.title: Создание ассоциаций
@@ -24,7 +22,6 @@ pim_connector:
     file_writer.title: Вывод в файл
     product_writer.title: Хранилище продуктов
     category_writer.title: Хранилище категорий
-    variant_group_writer.title: Хранилище групп вариантов
     writer.title: Хранилище объектов
     csv_writer.title: Записыватель CSV
 job_execution.summary:
@@ -61,9 +58,6 @@ batch_jobs:
   csv_group_export:
     label: Экспорт групп в CSV
     export.label: Экспорт групп
-  csv_variant_group_export:
-    label: Экспорт групп вариантов в CSV
-    export.label: Экспорт групп вариантов
   csv_family_export:
     label: Экспорт семейств в CSV
     export.label: Экспорт семейств
@@ -72,6 +66,8 @@ batch_jobs:
     validation.label: Проверка файла
     import.label: Импорт продуктов
     import_associations.label: Импорт ассоциаций
+  csv_product_model_import:
+    validation.label: Проверка файла
   csv_category_import:
     label: Импорт категорий из CSV
     validation.label: Проверка файла
@@ -92,14 +88,12 @@ batch_jobs:
     label: Импорт семейств из CSV
     validation.label: Проверка файла
     import.label: Импорт семейств
+  csv_family_variant_import:
+    validation.label: Проверка файла
   csv_group_import:
     label: Импорт группы из CSV
     validation.label: Проверка файла
     import.label: Импорт группы
-  csv_variant_group_import:
-    label: Импорт группы вариантов в CSV
-    validation.label: Проверка файла
-    import.label: Импорт групп вариантов
   csv_channel_import:
     validation.label: Проверка файла
   csv_locale_import:
@@ -130,6 +124,8 @@ batch_jobs:
     label: Импорт семейств из XLSX
     validation.label: Проверка файла
     import.label: Импорт семейств
+  xlsx_family_variant_import:
+    validation.label: Проверка файла
   xlsx_product_export:
     label: Экспорт продуктов в XLSX
     export.label: Экспорт продуктов
@@ -138,20 +134,15 @@ batch_jobs:
     validation.label: Проверка файла
     import.label: Импорт продуктов
     import_associations.label: Импорт ассоциаций
+  xlsx_product_model_import:
+    validation.label: Проверка файла
   xlsx_group_export:
     label: Экспорт групп в XLSX
     export.label: Экспорт групп
-  xlsx_variant_group_export:
-    label: Экспорт групп вариантов в XLSX
-    export.label: Экспорт групп вариантов
   xlsx_group_import:
     label: Импорт групп из XLSX
     validation.label: Проверка файла
     import.label: Импорт группы
-  xlsx_variant_group_import:
-    label: Импорт групп вариантов из XLSX
-    validation.label: Проверка файла
-    import.label: Импорт групп вариантов
   xlsx_family_export:
     label: Экспорт семейств в XLSX
     export.label: Экспорт семейств

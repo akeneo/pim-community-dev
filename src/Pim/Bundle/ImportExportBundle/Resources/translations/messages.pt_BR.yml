@@ -15,7 +15,6 @@ pim_import_export:
     7: Abandonado
     8: Desconhecido
   download_archive:
-    archive: transferir ficheiro gerado | transferir ficheiros gerados
     output: baixar arquivo gerado | baixar arquivos gerados
     input: baixar arquivo de leitura|baixar arquivos de leitura
     invalid_xlsx: baixar dados inválidos
@@ -47,18 +46,10 @@ pim_title.import_execution.index: Histórico de execuções de importação
 pim_title.import_execution.show: Execuções de importação | Detalhes
 export profile:
   title: perfil de exportação
-  overview: visão geral do perfil de exportação
-  create: criar perfil de exportação
   edit: editar perfil de exportação
-export report:
-  overview: relatórios de exportação
 import profile:
   title: perfil de importação
-  overview: visão geral do perfil de importação
-  create: criar perfil de importação
   edit: editar perfil de importação
-import report:
-  overview: relatórios de importação
 pim_importexport:
   acl:
     export_profile:
@@ -106,18 +97,12 @@ flash:
     created: A exportação foi criada com sucesso
     removed: A exportação foi removida
     updated: A exportação foi atualizada com sucesso
-    running: A exportação está sendo executado
+    running: A exportação está a ser executada
   import:
     created: A importação foi criada com sucesso
     removed: A importação foi removida
     updated: A importação foi atualizada com sucesso
-    running: A importação está em execução
-pim_menu:
-  item:
-    export_history: Histórico de exportações
-    export_profile: Perfis de exportação
-    import_history: Histórico de importações
-    import_profile: Perfis de importação
+    running: A importação está a ser executada
 General properties: Propriedades gerais
 History: Histórico
 pane.accordion:
@@ -152,7 +137,6 @@ Warnings: Avisos
 Summary: Resumo
 Start: Iniciar
 End: Fim
-set_attribute_requirements: Estabelecer requisitos do atributo
 COMPLETED: Concluído
 STARTING: Iniciando
 STARTED: Iniciado

@@ -16,7 +16,7 @@ class Creation extends Form
     /**
      * @var string
      */
-    protected $path = '/user/create';
+    protected $path = '#/user/create';
 
     /**
      * {@inheritdoc}

@@ -14,7 +14,7 @@ use Context\Page\Base\Form;
 class Creation extends Form
 {
     /** @var string */
-    protected $path = '/user/role/create';
+    protected $path = '#/user/role/create';
 
     /**
      * {@inheritdoc}

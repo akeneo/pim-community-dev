@@ -2,18 +2,16 @@
 
 namespace Pim\Bundle\EnrichBundle\Controller;
 
-use Akeneo\Bundle\BatchBundle\Manager\JobExecutionManager;
+use Akeneo\Bundle\BatchQueueBundle\Manager\JobExecutionManager;
 use Akeneo\Component\Batch\Model\JobExecution;
 use Akeneo\Component\FileStorage\StreamedFileResponse;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Pim\Bundle\ConnectorBundle\EventListener\JobExecutionArchivist;
 use Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository\JobExecutionRepository;
 use Pim\Bundle\ImportExportBundle\Event\JobExecutionEvents;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -55,7 +53,7 @@ class JobTrackerController extends Controller
     /** @var SerializerInterface */
     protected $serializer;
 
-    /** @var EventSubscriberInterface */
+    /** @var JobExecutionManager */
     protected $jobExecutionManager;
 
     /** @var SecurityFacade */
@@ -65,8 +63,6 @@ class JobTrackerController extends Controller
     protected $jobSecurityMapping;
 
     /**
-     * TODO To be refactored into Master to change the constructor 'null' parameters
-     *
      * @param EngineInterface          $templating
      * @param TranslatorInterface      $translator
      * @param EventDispatcherInterface $eventDispatcher
@@ -75,7 +71,7 @@ class JobTrackerController extends Controller
      * @param SerializerInterface      $serializer
      * @param JobExecutionManager      $jobExecutionManager
      * @param SecurityFacade           $securityFacade
-     * @param string                   $jobSecurityMapping
+     * @param array                    $jobSecurityMapping
      */
     public function __construct(
         EngineInterface $templating,
@@ -85,8 +81,8 @@ class JobTrackerController extends Controller
         JobExecutionArchivist $archivist,
         SerializerInterface $serializer,
         JobExecutionManager $jobExecutionManager,
-        SecurityFacade $securityFacade = null,
-        $jobSecurityMapping = null
+        SecurityFacade $securityFacade,
+        $jobSecurityMapping
     ) {
         $this->templating = $templating;
         $this->translator = $translator;
@@ -97,16 +93,6 @@ class JobTrackerController extends Controller
         $this->jobExecutionManager = $jobExecutionManager;
         $this->securityFacade = $securityFacade;
         $this->jobSecurityMapping = $jobSecurityMapping;
-    }
-
-    /**
-     * List jobs execution
-     *
-     * @Template
-     */
-    public function indexAction()
-    {
-        return [];
     }
 
     /**
@@ -144,9 +130,7 @@ class JobTrackerController extends Controller
                 ];
             }
 
-            if (!$this->jobExecutionManager->checkRunningStatus($jobExecution)) {
-                $this->jobExecutionManager->markAsFailed($jobExecution);
-            }
+            $jobExecution = $this->jobExecutionManager->resolveJobExecutionStatus($jobExecution);
 
             // limit the number of step execution returned to avoid memory overflow
             $context = [
@@ -164,8 +148,8 @@ class JobTrackerController extends Controller
         }
 
         return $this->render(
-            'PimEnrichBundle:JobTracker:show.html.twig',
-            ['execution' => $jobExecution]
+            'PimEnrichBundle:JobExecution:show.html.twig',
+            ['id' => $id]
         );
     }
 
@@ -241,21 +225,18 @@ class JobTrackerController extends Controller
     /**
      * Returns if a user has read permission on an import or export
      *
-     * @param JobExecution $jobExecution
+     * @param JobExecution  $jobExecution
+     * @param mixed $object The object
      *
      * @return bool
      */
-    protected function isJobGranted($jobExecution)
+    protected function isJobGranted($jobExecution, $object = null)
     {
-        if ((null === $this->securityFacade) || (null === $this->jobSecurityMapping)) {
-            return true;
-        }
-
         $jobExecutionType = $jobExecution->getJobInstance()->getType();
         if (!array_key_exists($jobExecutionType, $this->jobSecurityMapping)) {
             return true;
         }
 
-        return $this->securityFacade->isGranted($this->jobSecurityMapping[$jobExecutionType]);
+        return $this->securityFacade->isGranted($this->jobSecurityMapping[$jobExecutionType], $object);
     }
 }

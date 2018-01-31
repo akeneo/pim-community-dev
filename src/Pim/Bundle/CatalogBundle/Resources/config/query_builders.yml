@@ -1,28 +1,134 @@
 parameters:
-    pim_catalog.query.product_query_builder_factory.class:      Pim\Component\Catalog\Query\ProductQueryBuilderFactory
-    pim_catalog.query.product_query_builder.class:              Pim\Component\Catalog\Query\ProductQueryBuilder
-    pim_catalog.query.filter.registry.class:                    Pim\Component\Catalog\Query\Filter\FilterRegistry
-    pim_catalog.query.sorter.registry.class:                    Pim\Component\Catalog\Query\Sorter\SorterRegistry
-    pim_catalog.query.filter.field_dumper.class:                Pim\Bundle\CatalogBundle\Command\ProductQueryHelp\FieldFilterDumper
-    pim_catalog.query.filter.attribute_dumper.class:            Pim\Bundle\CatalogBundle\Command\ProductQueryHelp\AttributeFilterDumper
-    pim_catalog.doctrine.query.filter.category.class:           Pim\Bundle\CatalogBundle\Doctrine\Common\Filter\CategoryFilter
-    pim_catalog.doctrine.query.filter.object_id_resolver.class: Pim\Bundle\CatalogBundle\Doctrine\Common\Filter\ObjectIdResolver
+    pim_catalog.query.elasticsearch.product_query_builder_factory.class: Pim\Bundle\CatalogBundle\Elasticsearch\ProductQueryBuilderFactory
+    pim_catalog.query.product_query_builder.class: Pim\Component\Catalog\Query\ProductQueryBuilder
+
+    # resolvers
+    pim_catalog.elasticsearch.product_query_builder_search_after_resolver.class: Pim\Bundle\CatalogBundle\Elasticsearch\ProductQueryBuilderSearchAfterOptionsResolver
+    pim_catalog.elasticsearch.product_query_builder_from_size_resolver.class: Pim\Bundle\CatalogBundle\Elasticsearch\ProductQueryBuilderFromSizeOptionsResolver
+    pim_catalog.query.product_query_builder_resolver.class:  Pim\Component\Catalog\Query\ProductQueryBuilderOptionsResolver
+
+    pim_catalog.query.filter.registry.class:                      Pim\Component\Catalog\Query\Filter\FilterRegistry
+    pim_catalog.query.sorter.registry.class:                      Pim\Component\Catalog\Query\Sorter\SorterRegistry
+    pim_catalog.query.filter.field_dumper.class:                  Pim\Bundle\CatalogBundle\Command\ProductQueryHelp\FieldFilterDumper
+    pim_catalog.query.filter.attribute_dumper.class:              Pim\Bundle\CatalogBundle\Command\ProductQueryHelp\AttributeFilterDumper
+    pim_catalog.doctrine.query.filter.object_id_resolver.class:   Pim\Bundle\CatalogBundle\Doctrine\Common\Filter\ObjectIdResolver
     pim_catalog.doctrine.query.filter.object_code_resolver.class: Pim\Bundle\CatalogBundle\Doctrine\Common\Filter\ObjectCodeResolver
-    pim_catalog.doctrine.query.filter.dummy.class:              Pim\Bundle\CatalogBundle\Doctrine\Common\Filter\DummyFilter
+
+    pim_catalog.query.elasticsearch.filter.label_or_identifier.class: Pim\Bundle\CatalogBundle\Elasticsearch\Filter\Field\LabelOrIdentifierFilter
+    pim_catalog.query.elasticsearch.filter.identifier.class: Pim\Bundle\CatalogBundle\Elasticsearch\Filter\IdentifierFilter
+    pim_catalog.query.elasticsearch.filter.id.class: Pim\Bundle\CatalogBundle\Elasticsearch\Filter\Field\IdFilter
+    pim_catalog.query.elasticsearch.filter.family.class: Pim\Bundle\CatalogBundle\Elasticsearch\Filter\Field\FamilyFilter
+    pim_catalog.query.elasticsearch.filter.category.class: Pim\Bundle\CatalogBundle\Elasticsearch\Filter\Field\CategoryFilter
+    pim_catalog.query.elasticsearch.filter.group.class: Pim\Bundle\CatalogBundle\Elasticsearch\Filter\Field\GroupFilter
+    pim_catalog.query.elasticsearch.filter.status.class: Pim\Bundle\CatalogBundle\Elasticsearch\Filter\Field\StatusFilter
+    pim_catalog.query.elasticsearch.filter.datetime.class: Pim\Bundle\CatalogBundle\Elasticsearch\Filter\Field\DateTimeFilter
+    pim_catalog.query.elasticsearch.filter.product.completeness.class: Pim\Bundle\CatalogBundle\Elasticsearch\Filter\Field\Product\CompletenessFilter
+    pim_catalog.query.elasticsearch.filter.completeness.class: Pim\Bundle\CatalogBundle\Elasticsearch\Filter\Field\CompletenessFilter
+    pim_catalog.query.elasticsearch.filter.with_attributes.class: Pim\Bundle\CatalogBundle\Elasticsearch\Filter\Field\WithAttributesFilter
+    pim_catalog.query.elasticsearch.filter.parent.class: Pim\Bundle\CatalogBundle\Elasticsearch\Filter\Field\ParentFilter
+    pim_catalog.query.elasticsearch.filter.entity_type.class: Pim\Bundle\CatalogBundle\Elasticsearch\Filter\Field\EntityTypeFilter
+    pim_catalog.query.elasticsearch.filter.date.class: Pim\Bundle\CatalogBundle\Elasticsearch\Filter\Attribute\DateFilter
+    pim_catalog.query.elasticsearch.filter.number.class: Pim\Bundle\CatalogBundle\Elasticsearch\Filter\Attribute\NumberFilter
+    pim_catalog.query.elasticsearch.filter.text.class: Pim\Bundle\CatalogBundle\Elasticsearch\Filter\Attribute\TextFilter
+    pim_catalog.query.elasticsearch.filter.text_area.class: Pim\Bundle\CatalogBundle\Elasticsearch\Filter\Attribute\TextAreaFilter
+    pim_catalog.query.elasticsearch.filter.option.class: Pim\Bundle\CatalogBundle\Elasticsearch\Filter\Attribute\OptionFilter
+    pim_catalog.query.elasticsearch.filter.price.class: Pim\Bundle\CatalogBundle\Elasticsearch\Filter\Attribute\PriceFilter
+    pim_catalog.query.elasticsearch.filter.metric.class: Pim\Bundle\CatalogBundle\Elasticsearch\Filter\Attribute\MetricFilter
+    pim_catalog.query.elasticsearch.filter.media.class: Pim\Bundle\CatalogBundle\Elasticsearch\Filter\Attribute\MediaFilter
+    pim_catalog.query.elasticsearch.filter.boolean.class: Pim\Bundle\CatalogBundle\Elasticsearch\Filter\Attribute\BooleanFilter
+    pim_catalog.query.elasticsearch.filter.ancestor.class: Pim\Bundle\CatalogBundle\Elasticsearch\Filter\Field\AncestorFilter
+    pim_catalog.query.elasticsearch.filter.self_and_ancestor.class: Pim\Bundle\CatalogBundle\Elasticsearch\Filter\Field\SelfAndAncestorFilter
+
+    pim_catalog.query.elasticsearch.sorter.base_field.class: Pim\Bundle\CatalogBundle\Elasticsearch\Sorter\Field\BaseFieldSorter
+    pim_catalog.query.elasticsearch.sorter.family.class: Pim\Bundle\CatalogBundle\Elasticsearch\Sorter\Field\FamilySorter
+    pim_catalog.query.elasticsearch.sorter.identifier.class: Pim\Bundle\CatalogBundle\Elasticsearch\Sorter\IdentifierSorter
+    pim_catalog.query.elasticsearch.sorter.completeness.class: Pim\Bundle\CatalogBundle\Elasticsearch\Sorter\Field\CompletenessSorter
+    pim_catalog.query.elasticsearch.sorter.attribute.base.class: Pim\Bundle\CatalogBundle\Elasticsearch\Sorter\Attribute\BaseAttributeSorter
+    pim_catalog.query.elasticsearch.sorter.attribute.metric.class: Pim\Bundle\CatalogBundle\Elasticsearch\Sorter\Attribute\MetricSorter
+    pim_catalog.query.elasticsearch.sorter.attribute.text_area.class: Pim\Bundle\CatalogBundle\Elasticsearch\Sorter\Attribute\TextAreaSorter
 
 services:
+
     pim_catalog.query.product_query_builder_factory:
-        class: '%pim_catalog.query.product_query_builder_factory.class%'
+        class: '%pim_catalog.query.elasticsearch.product_query_builder_factory.class%'
         arguments:
             - '%pim_catalog.query.product_query_builder.class%'
-            - '@pim_catalog.object_manager.product'
-            - '%pim_catalog.entity.product.class%'
             - '@pim_catalog.repository.attribute'
-            - '@pim_catalog.query.filter.registry'
+            - '@pim_catalog.query.filter.product_registry'
             - '@pim_catalog.query.sorter.registry'
             - '@pim_catalog.factory.product_cursor'
+            - '@pim_catalog.query.product_query_builder_resolver'
 
-    pim_catalog.query.filter.registry:
+    pim_catalog.query.product_query_builder_search_after_size_factory:
+        class: '%pim_catalog.query.elasticsearch.product_query_builder_factory.class%'
+        arguments:
+            - '%pim_catalog.query.product_query_builder.class%'
+            - '@pim_catalog.repository.attribute'
+            - '@pim_catalog.query.filter.product_registry'
+            - '@pim_catalog.query.sorter.registry'
+            - '@pim_catalog.factory.product_search_after_size_cursor'
+            - '@pim_catalog.elasticsearch.product_query_builder_search_after_resolver'
+
+    pim_catalog.query.product_query_builder_from_size_factory:
+        class: '%pim_catalog.query.elasticsearch.product_query_builder_factory.class%'
+        arguments:
+            - '%pim_catalog.query.product_query_builder.class%'
+            - '@pim_catalog.repository.attribute'
+            - '@pim_catalog.query.filter.product_registry'
+            - '@pim_catalog.query.sorter.registry'
+            - '@pim_catalog.factory.product_from_size_cursor'
+            - '@pim_catalog.elasticsearch.product_query_builder_from_size_resolver'
+
+    pim_catalog.query.product_model_query_builder_factory:
+        class: '%pim_catalog.query.elasticsearch.product_query_builder_factory.class%'
+        arguments:
+            - '%pim_catalog.query.product_query_builder.class%'
+            - '@pim_catalog.repository.attribute'
+            - '@pim_catalog.query.filter.product_model_registry'
+            - '@pim_catalog.query.sorter.registry'
+            - '@pim_catalog.factory.product_model_cursor'
+            - '@pim_catalog.query.product_query_builder_resolver'
+
+    pim_catalog.query.product_model_query_builder_from_size_factory:
+        class: '%pim_catalog.query.elasticsearch.product_query_builder_factory.class%'
+        arguments:
+            - '%pim_catalog.query.product_query_builder.class%'
+            - '@pim_catalog.repository.attribute'
+            - '@pim_catalog.query.filter.product_registry'
+            - '@pim_catalog.query.sorter.registry'
+            - '@pim_catalog.factory.product_model_from_size_cursor'
+            - '@pim_catalog.elasticsearch.product_query_builder_from_size_resolver'
+
+    pim_catalog.query.product_model_query_builder_search_after_size_factory:
+        class: '%pim_catalog.query.elasticsearch.product_query_builder_factory.class%'
+        arguments:
+            - '%pim_catalog.query.product_query_builder.class%'
+            - '@pim_catalog.repository.attribute'
+            - '@pim_catalog.query.filter.product_registry'
+            - '@pim_catalog.query.sorter.registry'
+            - '@pim_catalog.factory.product_model_search_after_size_cursor'
+            - '@pim_catalog.elasticsearch.product_query_builder_search_after_resolver'
+
+    pim_catalog.query.product_query_builder_resolver:
+        class: '%pim_catalog.query.product_query_builder_resolver.class%'
+
+    pim_catalog.elasticsearch.product_query_builder_search_after_resolver:
+        class: '%pim_catalog.elasticsearch.product_query_builder_search_after_resolver.class%'
+
+    pim_catalog.elasticsearch.product_query_builder_from_size_resolver:
+        class: '%pim_catalog.elasticsearch.product_query_builder_from_size_resolver.class%'
+
+    pim_catalog.query.filter.product_registry:
+        class: '%pim_catalog.query.filter.registry.class%'
+        arguments:
+            - '@pim_catalog.repository.attribute'
+
+    pim_catalog.query.filter.product_model_registry:
+        class: '%pim_catalog.query.filter.registry.class%'
+        arguments:
+            - '@pim_catalog.repository.attribute'
+
+    pim_catalog.query.filter.product_and_product_model_registry:
         class: '%pim_catalog.query.filter.registry.class%'
         arguments:
             - '@pim_catalog.repository.attribute'
@@ -33,19 +139,19 @@ services:
     pim_catalog.query.filter.field_dumper:
         class: '%pim_catalog.query.filter.field_dumper.class%'
         arguments:
-            - '@pim_catalog.query.filter.registry'
+            - '@pim_catalog.query.filter.product_registry'
 
     pim_catalog.query.filter.attribute_dumper:
         class: '%pim_catalog.query.filter.attribute_dumper.class%'
         arguments:
-            - '@pim_catalog.query.filter.registry'
+            - '@pim_catalog.query.filter.product_registry'
             - '@pim_catalog.repository.attribute'
 
     # PQB common utils
     pim_catalog.doctrine.query.filter.object_id_resolver:
         class: '%pim_catalog.doctrine.query.filter.object_id_resolver.class%'
         arguments:
-            - '@akeneo_storage_utils.doctrine.smart_manager_registry'
+            - '@doctrine.orm.default_entity_manager'
         calls:
             - [ addFieldMapping, ['family', '%pim_catalog.entity.family.class%']]
             - [ addFieldMapping, ['option', '%pim_catalog.entity.attribute_option.class%']]
@@ -55,94 +161,100 @@ services:
     pim_catalog.doctrine.query.filter.object_code_resolver:
         class: '%pim_catalog.doctrine.query.filter.object_code_resolver.class%'
         arguments:
-            - '@akeneo_storage_utils.doctrine.smart_manager_registry'
+            - '@doctrine.orm.default_entity_manager'
         calls:
             - [ addFieldMapping, ['family', '%pim_catalog.entity.family.class%']]
             - [ addFieldMapping, ['option', '%pim_catalog.entity.attribute_option.class%']]
             - [ addFieldMapping, ['category', '%pim_catalog.entity.category.class%']]
             - [ addFieldMapping, ['group', '%pim_catalog.entity.group.class%']]
 
-    # PQB common filter
-    pim_catalog.doctrine.query.filter.category:
-        class: '%pim_catalog.doctrine.query.filter.category.class%'
+    # Fields filters
+    pim_catalog.query.elasticsearch.filter.identifier:
+        class: '%pim_catalog.query.elasticsearch.filter.identifier.class%'
+        arguments:
+            - ['identifier']
+            - ['pim_catalog_identifier']
+            - ['STARTS WITH', 'CONTAINS', 'DOES NOT CONTAIN', '=', '!=', 'IN', 'NOT IN']
+        tags:
+            - { name: 'pim_catalog.elasticsearch.query.product_filter', priority: 30 }
+            - { name: 'pim_catalog.elasticsearch.query.product_model_filter', priority: 30 }
+            - { name: 'pim_catalog.elasticsearch.query.product_and_product_model_filter', priority: 30 }
+
+    pim_catalog.query.elasticsearch.filter.label_or_identifier:
+        class: '%pim_catalog.query.elasticsearch.filter.label_or_identifier.class%'
+        arguments:
+            - ['label_or_identifier']
+            - ['CONTAINS']
+        tags:
+            - { name: 'pim_catalog.elasticsearch.query.product_filter', priority: 30 }
+            - { name: 'pim_catalog.elasticsearch.query.product_model_filter', priority: 30 }
+            - { name: 'pim_catalog.elasticsearch.query.product_and_product_model_filter', priority: 30 }
+
+
+    pim_catalog.query.elasticsearch.filter.id:
+        class: '%pim_catalog.query.elasticsearch.filter.id.class%'
+        arguments:
+            - ['id']
+            - ['IN', 'NOT IN', '=', '!=']
+        tags:
+            - { name: 'pim_catalog.elasticsearch.query.product_filter', priority: 30 }
+            - { name: 'pim_catalog.elasticsearch.query.product_model_filter', priority: 30 }
+            - { name: 'pim_catalog.elasticsearch.query.product_and_product_model_filter', priority: 30 }
+
+    pim_catalog.query.elasticsearch.filter.family:
+        class: '%pim_catalog.query.elasticsearch.filter.family.class%'
+        arguments:
+            - '@pim_catalog.repository.family'
+            - ['family']
+            - ['IN', 'NOT IN', 'EMPTY', 'NOT EMPTY']
+        tags:
+            - { name: 'pim_catalog.elasticsearch.query.product_filter', priority: 30 }
+            - { name: 'pim_catalog.elasticsearch.query.product_model_filter', priority: 30 }
+            - { name: 'pim_catalog.elasticsearch.query.product_and_product_model_filter', priority: 30 }
+
+    pim_catalog.query.elasticsearch.filter.group:
+        class: '%pim_catalog.query.elasticsearch.filter.group.class%'
+        arguments:
+            - '@pim_catalog.repository.group'
+            - ['groups']
+            - ['IN', 'NOT IN', 'EMPTY', 'NOT EMPTY']
+        tags:
+            - { name: 'pim_catalog.elasticsearch.query.product_filter', priority: 30 }
+            - { name: 'pim_catalog.elasticsearch.query.product_and_product_model_filter', priority: 30 }
+
+    pim_catalog.query.elasticsearch.filter.category:
+        class: '%pim_catalog.query.elasticsearch.filter.category.class%'
         arguments:
             - '@pim_catalog.repository.category'
-            - '@pim_catalog.repository.product_category'
-            - '@pim_catalog.doctrine.query.filter.object_id_resolver'
-            - ['categories', 'categories.id', 'categories.code']
+            - ['categories']
             - ['IN', 'NOT IN', 'UNCLASSIFIED', 'IN OR UNCLASSIFIED', 'IN CHILDREN', 'NOT IN CHILDREN']
         tags:
-            - { name: 'pim_catalog.doctrine.query.filter', priority: 30 }
+            - { name: 'pim_catalog.elasticsearch.query.product_filter', priority: 30 }
+            - { name: 'pim_catalog.elasticsearch.query.product_model_filter', priority: 30 }
+            - { name: 'pim_catalog.elasticsearch.query.product_and_product_model_filter', priority: 30 }
 
-    pim_catalog.doctrine.query.filter.dummy:
-        class: '%pim_catalog.doctrine.query.filter.dummy.class%'
+    pim_catalog.query.elasticsearch.filter.status:
+        class: '%pim_catalog.query.elasticsearch.filter.status.class%'
         arguments:
-            - []
-            - ['enabled', 'completeness']
-            - ['ALL']
-        tags:
-            - { name: 'pim_catalog.doctrine.query.filter', priority: 30 }
-
-    # PQB common filter definitions (implement either in ORM or MongoDB ODM)
-    pim_catalog.doctrine.query.filter.boolean:
-        class: '%pim_catalog.doctrine.query.filter.boolean.class%'
-        arguments:
-            - '@pim_catalog.validator.helper.attribute'
-            - ['pim_catalog_boolean']
             - ['enabled']
             - ['=', '!=']
         tags:
-            - { name: 'pim_catalog.doctrine.query.filter', priority: 30 }
+            - { name: 'pim_catalog.elasticsearch.query.product_filter', priority: 30 }
+            - { name: 'pim_catalog.elasticsearch.query.product_and_product_model_filter', priority: 30 }
 
-    pim_catalog.doctrine.query.filter.family:
-        class: '%pim_catalog.doctrine.query.filter.family.class%'
-        arguments:
-            - '@pim_catalog.doctrine.query.filter.object_id_resolver'
-            - ['family', 'family.id', 'family.code']
-            - ['IN', 'NOT IN' ,'EMPTY', 'NOT EMPTY']
-        tags:
-            - { name: 'pim_catalog.doctrine.query.filter', priority: 30 }
-
-    pim_catalog.doctrine.query.filter.groups:
-        class: '%pim_catalog.doctrine.query.filter.groups.class%'
-        arguments:
-            - '@pim_catalog.doctrine.query.filter.object_id_resolver'
-            - ['groups', 'groups.id', 'groups.code']
-            - ['IN', 'NOT IN', 'EMPTY', 'NOT EMPTY']
-        tags:
-            - { name: 'pim_catalog.doctrine.query.filter', priority: 30 }
-
-    pim_catalog.doctrine.query.filter.option:
-        class: '%pim_catalog.doctrine.query.filter.option.class%'
+    pim_catalog.query.elasticsearch.filter.boolean:
+        class: '%pim_catalog.query.elasticsearch.filter.boolean.class%'
         arguments:
             - '@pim_catalog.validator.helper.attribute'
-            - '@pim_catalog.doctrine.query.filter.object_id_resolver'
-            - ['pim_catalog_simpleselect']
-            - ['IN', 'EMPTY', 'NOT EMPTY', 'NOT IN']
+            - ['pim_catalog_boolean']
+            - ['=', '!=', 'NOT EMPTY']
         tags:
-            - { name: 'pim_catalog.doctrine.query.filter', priority: 30 }
+            - { name: 'pim_catalog.elasticsearch.query.product_filter', priority: 30 }
+            - { name: 'pim_catalog.elasticsearch.query.product_model_filter', priority: 30 }
+            - { name: 'pim_catalog.elasticsearch.query.product_and_product_model_filter', priority: 30 }
 
-    pim_catalog.doctrine.query.filter.options:
-        class: '%pim_catalog.doctrine.query.filter.options.class%'
-        arguments:
-            - '@pim_catalog.validator.helper.attribute'
-            - '@pim_catalog.doctrine.query.filter.object_id_resolver'
-            - ['pim_catalog_multiselect']
-            - ['IN', 'EMPTY', 'NOT EMPTY', 'NOT IN']
-        tags:
-            - { name: 'pim_catalog.doctrine.query.filter', priority: 30 }
-
-    pim_catalog.doctrine.query.filter.date:
-        class: '%pim_catalog.doctrine.query.filter.date.class%'
-        arguments:
-            - '@pim_catalog.validator.helper.attribute'
-            - ['pim_catalog_date']
-            - ['=', '<', '>', 'BETWEEN', 'NOT BETWEEN', 'EMPTY', 'NOT EMPTY', '!=']
-        tags:
-            - { name: 'pim_catalog.doctrine.query.filter', priority: 30 }
-
-    pim_catalog.doctrine.query.filter.datetime:
-        class: '%pim_catalog.doctrine.query.filter.datetime.class%'
+    pim_catalog.doctrine.elasticsearch.filter.datetime:
+        class: '%pim_catalog.query.elasticsearch.filter.datetime.class%'
         arguments:
             - '@akeneo_batch.job.job_instance_repository'
             - '@akeneo_batch.job_repository'
@@ -159,90 +271,287 @@ services:
                 - 'SINCE LAST N DAYS'
                 - 'SINCE LAST JOB'
         tags:
-            - { name: 'pim_catalog.doctrine.query.filter', priority: 30 }
+            - { name: 'pim_catalog.elasticsearch.query.product_filter', priority: 30 }
+            - { name: 'pim_catalog.elasticsearch.query.product_model_filter', priority: 30 }
+            - { name: 'pim_catalog.elasticsearch.query.product_and_product_model_filter', priority: 30 }
 
-    pim_catalog.doctrine.query.filter.metric:
-        class: '%pim_catalog.doctrine.query.filter.metric.class%'
+    pim_catalog.query.elasticsearch.filter.product.completeness:
+        class: '%pim_catalog.query.elasticsearch.filter.product.completeness.class%'
+        arguments:
+            - '@pim_catalog.repository.cached_channel'
+            - ['completeness']
+            -
+                - 'NOT EQUALS ON AT LEAST ONE LOCALE'
+                - 'EQUALS ON AT LEAST ONE LOCALE'
+                - 'GREATER THAN ON AT LEAST ONE LOCALE'
+                - 'GREATER OR EQUALS THAN ON AT LEAST ONE LOCALE'
+                - 'LOWER OR EQUALS THAN ON AT LEAST ONE LOCALE'
+                - 'LOWER THAN ON AT LEAST ONE LOCALE'
+                - 'GREATER THAN ON ALL LOCALES'
+                - 'GREATER OR EQUALS THAN ON ALL LOCALES'
+                - 'LOWER OR EQUALS THAN ON ALL LOCALES'
+                - 'LOWER THAN ON ALL LOCALES'
+                - '!='
+                - '='
+                - '>'
+                - '>='
+                - '<='
+                - '<'
+                - 'EMPTY'
+        tags:
+            - { name: 'pim_catalog.elasticsearch.query.product_filter', priority: 30 }
+
+    pim_catalog.query.elasticsearch.filter.completeness:
+        class: '%pim_catalog.query.elasticsearch.filter.completeness.class%'
+        arguments:
+            - ['completeness']
+            -
+                - 'AT_LEAST_COMPLETE'
+                - 'AT_LEAST_INCOMPLETE'
+        tags:
+            - { name: 'pim_catalog.elasticsearch.query.product_and_product_model_filter', priority: 30 }
+
+    pim_catalog.query.elasticsearch.filter.with_attributes:
+        class: '%pim_catalog.query.elasticsearch.filter.with_attributes.class%'
+        arguments:
+            - '@pim_catalog.repository.attribute'
+            - ['attributes_for_this_level']
+            - ['IN', 'NOT IN']
+        tags:
+            - { name: 'pim_catalog.elasticsearch.query.product_filter', priority: 30 }
+            - { name: 'pim_catalog.elasticsearch.query.product_model_filter', priority: 30 }
+            - { name: 'pim_catalog.elasticsearch.query.product_and_product_model_filter', priority: 30 }
+
+    pim_catalog.query.elasticsearch.filter.parent:
+        class: '%pim_catalog.query.elasticsearch.filter.parent.class%'
+        arguments:
+            - '@pim_catalog.repository.product_model'
+            - ['parent']
+            - ['IN', 'EMPTY']
+        tags:
+            - { name: 'pim_catalog.elasticsearch.query.product_filter', priority: 30 }
+            - { name: 'pim_catalog.elasticsearch.query.product_model_filter', priority: 30 }
+            - { name: 'pim_catalog.elasticsearch.query.product_and_product_model_filter', priority: 30 }
+
+    pim_catalog.query.elasticsearch.filter.document_type:
+        class: '%pim_catalog.query.elasticsearch.filter.entity_type.class%'
+        arguments:
+            - ['entity_type']
+            - ['=']
+        tags:
+            - { name: 'pim_catalog.elasticsearch.query.product_and_product_model_filter', priority: 30 }
+
+    pim_catalog.query.elasticsearch.filter.ancestor:
+        class: '%pim_catalog.query.elasticsearch.filter.ancestor.class%'
+        arguments:
+            - '@pim_catalog.repository.product_model'
+            - ['ancestor.id']
+            - ['IN', 'NOT IN']
+        tags:
+            - { name: 'pim_catalog.elasticsearch.query.product_and_product_model_filter', priority: 30 }
+
+    pim_catalog.query.elasticsearch.filter.self_and_ancestor:
+        class: '%pim_catalog.query.elasticsearch.filter.self_and_ancestor.class%'
+        arguments:
+            - '@pim_catalog.repository.product_model'
+            - '@pim_catalog.repository.product'
+            - ['self_and_ancestor.id']
+            - ['IN', 'NOT IN']
+        tags:
+            - { name: 'pim_catalog.elasticsearch.query.product_and_product_model_filter', priority: 30 }
+
+    # Attributes filters
+    pim_catalog.query.elasticsearch.filter.number:
+        class: '%pim_catalog.query.elasticsearch.filter.number.class%'
+        arguments:
+            - '@pim_catalog.validator.helper.attribute'
+            - ['pim_catalog_number']
+            - ['<', '<=', '=', '!=', '>=', '>', 'EMPTY', 'NOT EMPTY']
+        tags:
+            - { name: 'pim_catalog.elasticsearch.query.product_filter', priority: 30 }
+            - { name: 'pim_catalog.elasticsearch.query.product_model_filter', priority: 30 }
+            - { name: 'pim_catalog.elasticsearch.query.product_and_product_model_filter', priority: 30 }
+
+    pim_catalog.doctrine.query.filter.date:
+        class: '%pim_catalog.query.elasticsearch.filter.date.class%'
+        arguments:
+            - '@pim_catalog.validator.helper.attribute'
+            - ['pim_catalog_date']
+            - ['=', '<', '>', 'BETWEEN', 'NOT BETWEEN', 'EMPTY', 'NOT EMPTY', '!=']
+        tags:
+            - { name: 'pim_catalog.elasticsearch.query.product_filter', priority: 30 }
+            - { name: 'pim_catalog.elasticsearch.query.product_model_filter', priority: 30 }
+            - { name: 'pim_catalog.elasticsearch.query.product_and_product_model_filter', priority: 30 }
+
+    pim_catalog.query.elasticsearch.filter.text:
+        class: '%pim_catalog.query.elasticsearch.filter.text.class%'
+        arguments:
+            - '@pim_catalog.validator.helper.attribute'
+            - ['pim_catalog_text']
+            - ['STARTS WITH', 'CONTAINS', 'DOES NOT CONTAIN', '=', 'EMPTY', 'NOT EMPTY', '!=']
+        tags:
+            - { name: 'pim_catalog.elasticsearch.query.product_filter', priority: 30 }
+            - { name: 'pim_catalog.elasticsearch.query.product_model_filter', priority: 30 }
+            - { name: 'pim_catalog.elasticsearch.query.product_and_product_model_filter', priority: 30 }
+
+    pim_catalog.query.elasticsearch.filter.text_area:
+        class: '%pim_catalog.query.elasticsearch.filter.text_area.class%'
+        arguments:
+            - '@pim_catalog.validator.helper.attribute'
+            - ['pim_catalog_textarea']
+            - ['STARTS WITH', 'CONTAINS', 'DOES NOT CONTAIN', '=', 'EMPTY', 'NOT EMPTY', '!=']
+        tags:
+            - { name: 'pim_catalog.elasticsearch.query.product_filter', priority: 30 }
+            - { name: 'pim_catalog.elasticsearch.query.product_model_filter', priority: 30 }
+            - { name: 'pim_catalog.elasticsearch.query.product_and_product_model_filter', priority: 30 }
+
+    pim_catalog.query.elasticsearch.filter.option:
+        class: '%pim_catalog.query.elasticsearch.filter.option.class%'
+        arguments:
+            - '@pim_catalog.validator.helper.attribute'
+            - '@pim_catalog.repository.attribute_option'
+            - ['pim_catalog_simpleselect', 'pim_catalog_multiselect']
+            - ['IN', 'EMPTY', 'NOT EMPTY', 'NOT IN']
+        tags:
+            - { name: 'pim_catalog.elasticsearch.query.product_filter', priority: 30 }
+            - { name: 'pim_catalog.elasticsearch.query.product_model_filter', priority: 30 }
+            - { name: 'pim_catalog.elasticsearch.query.product_and_product_model_filter', priority: 30 }
+
+    pim_catalog.query.elasticsearch.filter.price:
+        class: '%pim_catalog.query.elasticsearch.filter.price.class%'
+        arguments:
+            - '@pim_catalog.validator.helper.attribute'
+            - '@pim_catalog.repository.currency'
+            - ['pim_catalog_price_collection']
+            - ['<', '<=', '=', '!=', '>=', '>', 'EMPTY', 'EMPTY FOR CURRENCY', 'EMPTY ON ALL CURRENCIES', 'NOT EMPTY', 'NOT EMPTY ON AT LEAST ONE CURRENCY', 'NOT EMPTY FOR CURRENCY']
+        tags:
+            - { name: 'pim_catalog.elasticsearch.query.product_filter', priority: 30 }
+            - { name: 'pim_catalog.elasticsearch.query.product_model_filter', priority: 30 }
+            - { name: 'pim_catalog.elasticsearch.query.product_and_product_model_filter', priority: 30 }
+
+    pim_catalog.query.elasticsearch.filter.metric:
+        class: '%pim_catalog.query.elasticsearch.filter.metric.class%'
         arguments:
             - '@pim_catalog.validator.helper.attribute'
             - '@akeneo_measure.manager'
             - '@akeneo_measure.measure_converter'
             - ['pim_catalog_metric']
-            - ['<', '<=', '=', '>=', '>', 'EMPTY', 'NOT EMPTY', '!=']
+            - ['<', '<=', '=', '!=', '>=', '>', 'EMPTY', 'EMPTY FOR CURRENCY', 'EMPTY ON ALL CURRENCIES', 'NOT EMPTY', 'NOT EMPTY ON AT LEAST ONE CURRENCY', 'NOT EMPTY FOR CURRENCY']
         tags:
-            - { name: 'pim_catalog.doctrine.query.filter', priority: 30 }
+            - { name: 'pim_catalog.elasticsearch.query.product_filter', priority: 30 }
+            - { name: 'pim_catalog.elasticsearch.query.product_model_filter', priority: 30 }
+            - { name: 'pim_catalog.elasticsearch.query.product_and_product_model_filter', priority: 30 }
 
-    pim_catalog.doctrine.query.filter.number:
-        class: '%pim_catalog.doctrine.query.filter.number.class%'
+    pim_catalog.query.elasticsearch.filter.media:
+        class: '%pim_catalog.query.elasticsearch.filter.media.class%'
+        arguments:
+            - '@pim_catalog.validator.helper.attribute'
+            - ['pim_catalog_file', 'pim_catalog_image']
+            - ['STARTS WITH', 'CONTAINS', 'DOES NOT CONTAIN', '=', '!=', 'EMPTY', 'NOT EMPTY']
+        tags:
+            - { name: 'pim_catalog.elasticsearch.query.product_filter', priority: 30 }
+            - { name: 'pim_catalog.elasticsearch.query.product_model_filter', priority: 30 }
+            - { name: 'pim_catalog.elasticsearch.query.product_and_product_model_filter', priority: 30 }
+
+    # Fields sorters
+    pim_catalog.query.elasticsearch.sorter.datetime:
+        class: '%pim_catalog.query.elasticsearch.sorter.base_field.class%'
+        arguments:
+            - ['updated', 'created']
+        tags:
+            - { name: 'pim_catalog.elasticsearch.query.sorter', priority: 30 }
+
+    pim_catalog.query.elasticsearch.sorter.family:
+        class: '%pim_catalog.query.elasticsearch.sorter.family.class%'
+        arguments:
+            - '@pim_catalog.repository.locale'
+            - ['family']
+        tags:
+            - { name: 'pim_catalog.elasticsearch.query.sorter', priority: 30 }
+
+    pim_catalog.query.elasticsearch.sorter.identifier:
+        class: '%pim_catalog.query.elasticsearch.sorter.identifier.class%'
+        arguments:
+            - ['identifier']
+            - ['pim_catalog_identifier']
+        tags:
+            - { name: 'pim_catalog.elasticsearch.query.sorter', priority: 30 }
+
+    pim_catalog.query.elasticsearch.sorter.completeness:
+        class: '%pim_catalog.query.elasticsearch.sorter.completeness.class%'
+        arguments:
+            - ['completeness']
+        tags:
+            - { name: 'pim_catalog.elasticsearch.query.sorter', priority: 30 }
+
+    pim_catalog.query.elasticsearch.sorter.status:
+        class: '%pim_catalog.query.elasticsearch.sorter.base_field.class%'
+        arguments:
+            - ['enabled']
+        tags:
+            - { name: 'pim_catalog.elasticsearch.query.sorter', priority: 30 }
+
+    pim_catalog.query.elasticsearch.sorter.id:
+        class: '%pim_catalog.query.elasticsearch.sorter.base_field.class%'
+        arguments:
+            - ['id']
+        tags:
+            - { name: 'pim_catalog.elasticsearch.query.sorter', priority: 30 }
+
+    # Attributes sorters
+    pim_catalog.query.elasticsearch.sorter.metric:
+        class: '%pim_catalog.query.elasticsearch.sorter.attribute.metric.class%'
+        arguments:
+            - '@pim_catalog.validator.helper.attribute'
+            - ['pim_catalog_metric']
+        tags:
+            - { name: 'pim_catalog.elasticsearch.query.sorter', priority: 30 }
+
+    pim_catalog.query.elasticsearch.sorter.boolean:
+        class: '%pim_catalog.query.elasticsearch.sorter.attribute.base.class%'
+        arguments:
+            - '@pim_catalog.validator.helper.attribute'
+            - ['pim_catalog_boolean']
+        tags:
+            - { name: 'pim_catalog.elasticsearch.query.sorter', priority: 30 }
+
+    pim_catalog.query.elasticsearch.sorter.text:
+        class: '%pim_catalog.query.elasticsearch.sorter.attribute.base.class%'
+        arguments:
+            - '@pim_catalog.validator.helper.attribute'
+            - ['pim_catalog_text']
+        tags:
+            - { name: 'pim_catalog.elasticsearch.query.sorter', priority: 30 }
+
+    pim_catalog.query.elasticsearch.sorter.text_area:
+        class: '%pim_catalog.query.elasticsearch.sorter.attribute.text_area.class%'
+        arguments:
+            - '@pim_catalog.validator.helper.attribute'
+            - ['pim_catalog_textarea']
+        tags:
+            - { name: 'pim_catalog.elasticsearch.query.sorter', priority: 30 }
+
+    pim_catalog.query.elasticsearch.sorter.number:
+        class: '%pim_catalog.query.elasticsearch.sorter.attribute.base.class%'
         arguments:
             - '@pim_catalog.validator.helper.attribute'
             - ['pim_catalog_number']
-            - ['<', '<=', '=', '>=', '>', 'EMPTY', 'NOT EMPTY', '!=']
         tags:
-            - { name: 'pim_catalog.doctrine.query.filter', priority: 30 }
+            - { name: 'pim_catalog.elasticsearch.query.sorter', priority: 30 }
 
-    pim_catalog.doctrine.query.filter.price:
-        class: '%pim_catalog.doctrine.query.filter.price.class%'
+    pim_catalog.query.elasticsearch.sorter.option:
+        class: '%pim_catalog.query.elasticsearch.sorter.attribute.base.class%'
         arguments:
             - '@pim_catalog.validator.helper.attribute'
-            - '@pim_catalog.repository.currency'
-            - ['pim_catalog_price_collection']
-            - ['<', '<=', '=', '>=', '>', 'EMPTY', 'NOT EMPTY', '!=']
+            - ['pim_catalog_simpleselect']
         tags:
-            - { name: 'pim_catalog.doctrine.query.filter', priority: 30 }
+            - { name: 'pim_catalog.elasticsearch.query.sorter', priority: 30 }
 
-    pim_catalog.doctrine.query.filter.product_id:
-        class: '%pim_catalog.doctrine.query.filter.product_id.class%'
-        arguments:
-            - ['id']
-            - ['=', 'IN', 'NOT IN', '!=']
-        tags:
-            - { name: 'pim_catalog.doctrine.query.filter', priority: 30 }
-
-    pim_catalog.doctrine.query.filter.string:
-        class: '%pim_catalog.doctrine.query.filter.string.class%'
+    pim_catalog.query.elasticsearch.sorter.date:
+        class: '%pim_catalog.query.elasticsearch.sorter.attribute.base.class%'
         arguments:
             - '@pim_catalog.validator.helper.attribute'
-            - ['pim_catalog_text', 'pim_catalog_textarea']
-            - ['STARTS WITH', 'ENDS WITH', 'CONTAINS', 'DOES NOT CONTAIN', '=', 'EMPTY', 'NOT EMPTY', '!=']
+            - ['pim_catalog_date']
         tags:
-            - { name: 'pim_catalog.doctrine.query.filter', priority: 30 }
+            - { name: 'pim_catalog.elasticsearch.query.sorter', priority: 30 }
 
-    pim_catalog.doctrine.query.filter.identifier:
-        class: '%pim_catalog.doctrine.query.filter.string.class%'
-        arguments:
-            - '@pim_catalog.validator.helper.attribute'
-            - ['pim_catalog_identifier']
-            - ['STARTS WITH', 'ENDS WITH', 'CONTAINS', 'DOES NOT CONTAIN', '=', 'IN', '!=']
-        tags:
-            - { name: 'pim_catalog.doctrine.query.filter', priority: 30 }
-
-    pim_catalog.doctrine.query.filter.media:
-        class: '%pim_catalog.doctrine.query.filter.media.class%'
-        arguments:
-            - '@pim_catalog.validator.helper.attribute'
-            - ['pim_catalog_image', 'pim_catalog_file']
-            - ['STARTS WITH', 'ENDS WITH', 'CONTAINS', 'DOES NOT CONTAIN', '=', 'EMPTY', 'NOT EMPTY', '!=']
-        tags:
-            - { name: 'pim_catalog.doctrine.query.filter', priority: 30 }
-
-    # PQB common sorter definitions (implement either in ORM or MongoDB ODM)
-    pim_catalog.doctrine.query.sorter.base:
-        class: '%pim_catalog.doctrine.query.sorter.base.class%'
-        tags:
-            - { name: 'pim_catalog.doctrine.query.sorter', priority: 20 }
-
-    pim_catalog.doctrine.query.sorter.completeness:
-        class: '%pim_catalog.doctrine.query.sorter.completeness.class%'
-        tags:
-            - { name: 'pim_catalog.doctrine.query.sorter', priority: 30 }
-
-    pim_catalog.doctrine.query.sorter.family:
-        class: '%pim_catalog.doctrine.query.sorter.family.class%'
-        tags:
-            - { name: 'pim_catalog.doctrine.query.sorter', priority: 30 }
-
-    pim_catalog.doctrine.query.sorter.in_group:
-        class: '%pim_catalog.doctrine.query.sorter.in_group.class%'
-        tags:
-            - { name: 'pim_catalog.doctrine.query.sorter', priority: 30 }

@@ -1,3 +1,4 @@
+@javascript
 Feature: Ensure versioning on attribute
   In order to see old version of an existing attribute
   As a product manager
@@ -7,12 +8,11 @@ Feature: Ensure versioning on attribute
     Given a "footwear" catalog configuration
     And I am logged in as "Julia"
 
-  @javascript
   Scenario: Successfully version an attribute
     Given I am on the "comment" attribute page
     And I visit the "History" tab
     Then there should be 1 update
-    Then I visit the "Values" tab
+    Then I visit the "Label translations" tab
     When I fill in the following information:
       | English (United States) | My comment |
     And I press the "Save" button

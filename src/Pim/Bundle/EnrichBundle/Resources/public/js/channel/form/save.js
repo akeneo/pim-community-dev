@@ -19,8 +19,7 @@ define(
         'pim/i18n',
         'pim/user-context',
         'routing',
-        'module',
-        'oro/navigation'
+        'pim/router'
     ],
     function (
         $,
@@ -33,8 +32,7 @@ define(
         i18n,
         UserContext,
         Routing,
-        module,
-        Navigation
+        router
     ) {
         return BaseSave.extend({
             updateSuccessMessage: __('pim_enrich.entity.channel.info.update_successful'),
@@ -49,16 +47,16 @@ define(
                 this.getRoot().trigger('pim_enrich:form:entity:post_save');
                 var code = this.getFormData().code;
                 if (!isUpdate) {
-                    messenger.notificationFlashMessage(
+                    messenger.notify(
                         'success',
                         this.createSuccessMessage
                     );
-                    var navigation = Navigation.getInstance();
-                    navigation.setLocation(Routing.generate(this.config.redirectUrl, {'code': code}));
+                    router.redirectToRoute(this.config.redirectUrl, {'code': code});
+
                     return;
                 }
 
-                messenger.notificationFlashMessage(
+                messenger.notify(
                     'success',
                     this.updateSuccessMessage
                 );
@@ -87,10 +85,10 @@ define(
                 return ChannelSaver
                     .save(code, channel, method)
                     .then(function (data) {
-                        this.postSave(isUpdate);
 
                         this.setData(data);
                         this.getRoot().trigger('pim_enrich:form:entity:post_fetch', data);
+                        this.postSave(isUpdate);
                     }.bind(this))
                     .fail(this.fail.bind(this))
                     .always(this.hideLoadingMask.bind(this));

@@ -276,6 +276,10 @@ class LoggerSubscriber implements EventSubscriberInterface
             return $data ? 'true' : 'false';
         }
 
+        if ($data instanceof \DateTime) {
+            return $data->format('Y-m-d');
+        }
+
         return (string) $data;
     }
 }

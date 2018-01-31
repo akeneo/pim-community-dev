@@ -17,6 +17,9 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  * @author    Olivier Soulet <olivier.soulet@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ *
+ * @deprecated will be removed in 2.1, please use instead
+ *             Pim\Bundle\EnrichBundle\Connector\Processor\MassEdit\Product\EditAttributesProcessor
  */
 class EditCommonAttributesProcessor extends AbstractProcessor
 {
@@ -67,7 +70,7 @@ class EditCommonAttributesProcessor extends AbstractProcessor
             return null;
         }
 
-        $product = $this->updateProduct($product, $actions);
+        $product = $this->updateProduct($product, $actions[0]);
         if (null !== $product && !$this->isProductValid($product)) {
             $this->stepExecution->incrementSummaryInfo('skipped_products');
             $this->productDetacher->detach($product);
@@ -112,7 +115,7 @@ class EditCommonAttributesProcessor extends AbstractProcessor
      */
     protected function updateProduct(ProductInterface $product, array $actions)
     {
-        $normalizedValues = json_decode($actions['normalized_values'], true);
+        $normalizedValues = $actions['normalized_values'];
         $filteredValues = [];
 
         foreach ($normalizedValues as $attributeCode => $values) {
@@ -147,10 +150,6 @@ class EditCommonAttributesProcessor extends AbstractProcessor
     protected function isAttributeEditable(ProductInterface $product, $attributeCode)
     {
         if (!$this->productRepository->hasAttributeInFamily($product->getId(), $attributeCode)) {
-            return false;
-        }
-
-        if ($this->productRepository->hasAttributeInVariantGroup($product->getId(), $attributeCode)) {
             return false;
         }
 
@@ -198,7 +197,7 @@ class EditCommonAttributesProcessor extends AbstractProcessor
                 [
                     'class'  => ClassUtils::getClass($product),
                     'id'     => $product->getId(),
-                    'string' => $product->getIdentifier()->getData(),
+                    'string' => $product->getIdentifier(),
                 ]
             )
         );

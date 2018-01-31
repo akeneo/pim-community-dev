@@ -42,8 +42,10 @@ required: (required)
 pim_ui.system_config:
     form:
         loading_message_enabled.label: Enable loading messages
-        loading_message_enabled.tooltip: Display user friendly messages while waiting for a page to poad
+        loading_message_enabled.tooltip: Display user friendly messages while waiting for a page to load
         loading_messages.label: Available loading messages
         loading_messages.tooltip: All available loading messages separated by line breaks
     group:
         loading_message.title: Loading messages
+
+other_actions: Other actions

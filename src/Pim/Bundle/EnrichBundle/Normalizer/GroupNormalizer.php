@@ -4,9 +4,7 @@ namespace Pim\Bundle\EnrichBundle\Normalizer;
 
 use Pim\Bundle\EnrichBundle\Provider\StructureVersion\StructureVersionProviderInterface;
 use Pim\Bundle\VersioningBundle\Manager\VersionManager;
-use Pim\Component\Catalog\Localization\Localizer\AttributeConverterInterface;
 use Pim\Component\Catalog\Model\GroupInterface;
-use Pim\Component\Enrich\Converter\ConverterInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -33,34 +31,22 @@ class GroupNormalizer implements NormalizerInterface
     /** @var NormalizerInterface */
     protected $versionNormalizer;
 
-    /** @var AttributeConverterInterface */
-    protected $localizedConverter;
-
-    /** @var ConverterInterface */
-    protected $productValueConverter;
-
     /**
      * @param NormalizerInterface               $groupNormalizer
      * @param StructureVersionProviderInterface $structureVersionProvider
      * @param VersionManager                    $versionManager
      * @param NormalizerInterface               $versionNormalizer
-     * @param AttributeConverterInterface       $localizedConverter
-     * @param ConverterInterface                $productValueConverter
      */
     public function __construct(
         NormalizerInterface $groupNormalizer,
         StructureVersionProviderInterface $structureVersionProvider,
         VersionManager $versionManager,
-        NormalizerInterface $versionNormalizer,
-        AttributeConverterInterface $localizedConverter,
-        ConverterInterface $productValueConverter
+        NormalizerInterface $versionNormalizer
     ) {
         $this->groupNormalizer = $groupNormalizer;
         $this->structureVersionProvider = $structureVersionProvider;
         $this->versionManager = $versionManager;
         $this->versionNormalizer = $versionNormalizer;
-        $this->localizedConverter = $localizedConverter;
-        $this->productValueConverter = $productValueConverter;
     }
 
     /**
@@ -69,18 +55,10 @@ class GroupNormalizer implements NormalizerInterface
     public function normalize($group, $format = null, array $context = [])
     {
         $normalizedGroup = $this->groupNormalizer->normalize($group, 'standard', $context);
-        if (isset($normalizedGroup['values'])) {
-            $normalizedGroup['values'] = $this->localizedConverter->convertToLocalizedFormats(
-                $normalizedGroup['values'],
-                $context
-            );
-
-            $normalizedGroup['values'] = $this->productValueConverter->convert($normalizedGroup['values']);
-        }
 
         $normalizedGroup['products'] = [];
         foreach ($group->getProducts() as $product) {
-            $normalizedGroup['products'][] = $product->getId();
+            $normalizedGroup['products'][] = $product->getIdentifier();
         }
 
         $firstVersion = $this->versionManager->getOldestLogEntry($group);
@@ -93,14 +71,11 @@ class GroupNormalizer implements NormalizerInterface
             $this->versionNormalizer->normalize($lastVersion, 'internal_api') :
             null;
 
-        $form = $group->getType()->isVariant() ? 'pim-variant-group-edit-form' : 'pim-group-edit-form';
-        $modelType = $group->getType()->isVariant() ? 'variant_group' : 'group';
-
         $normalizedGroup['meta'] = [
             'id'                => $group->getId(),
-            'form'              => $form,
+            'form'              => 'pim-group-edit-form',
             'structure_version' => $this->structureVersionProvider->getStructureVersion(),
-            'model_type'        => $modelType,
+            'model_type'        => 'group',
             'created'           => $firstVersion,
             'updated'           => $lastVersion,
         ];

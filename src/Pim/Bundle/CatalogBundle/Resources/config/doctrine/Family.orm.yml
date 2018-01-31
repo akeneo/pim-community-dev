@@ -38,6 +38,9 @@ Pim\Bundle\CatalogBundle\Entity\Family:
                         referencedColumnName: id
                         onDelete: CASCADE
     oneToMany:
+        familyVariants:
+            targetEntity: Pim\Component\Catalog\Model\FamilyVariantInterface
+            mappedBy: family
         translations:
             targetEntity: Pim\Component\Catalog\Model\FamilyTranslationInterface
             mappedBy: foreignKey
@@ -60,5 +63,11 @@ Pim\Bundle\CatalogBundle\Entity\Family:
             targetEntity: Pim\Component\Catalog\Model\AttributeInterface
             joinColumns:
                 label_attribute_id:
+                    referencedColumnName: id
+                    onDelete: 'SET NULL'
+        attributeAsImage:
+            targetEntity: Pim\Component\Catalog\Model\AttributeInterface
+            joinColumns:
+                image_attribute_id:
                     referencedColumnName: id
                     onDelete: 'SET NULL'

@@ -2,11 +2,11 @@
 
 namespace Pim\Component\Catalog\Updater\Copier;
 
-use Pim\Component\Catalog\Builder\ProductBuilderInterface;
-use Pim\Component\Catalog\Factory\MetricFactory;
+use Pim\Component\Catalog\Builder\EntityWithValuesBuilderInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
-use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Model\EntityWithValuesInterface;
 use Pim\Component\Catalog\Validator\AttributeValidatorHelper;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
  * Copy a metric value attribute in other metric value attribute
@@ -17,25 +17,26 @@ use Pim\Component\Catalog\Validator\AttributeValidatorHelper;
  */
 class MetricAttributeCopier extends AbstractAttributeCopier
 {
-    /** @var MetricFactory */
-    protected $metricFactory;
+    /** @var NormalizerInterface */
+    protected $normalizer;
 
     /**
-     * @param ProductBuilderInterface  $productBuilder
-     * @param AttributeValidatorHelper $attrValidatorHelper
-     * @param MetricFactory            $metricFactory
-     * @param array                    $supportedFromTypes
-     * @param array                    $supportedToTypes
+     * @param EntityWithValuesBuilderInterface $entityWithValuesBuilder
+     * @param AttributeValidatorHelper         $attrValidatorHelper
+     * @param NormalizerInterface              $normalizer
+     * @param array                            $supportedFromTypes
+     * @param array                            $supportedToTypes
      */
     public function __construct(
-        ProductBuilderInterface $productBuilder,
+        EntityWithValuesBuilderInterface $entityWithValuesBuilder,
         AttributeValidatorHelper $attrValidatorHelper,
-        MetricFactory $metricFactory,
+        NormalizerInterface $normalizer,
         array $supportedFromTypes,
         array $supportedToTypes
     ) {
-        parent::__construct($productBuilder, $attrValidatorHelper);
-        $this->metricFactory = $metricFactory;
+        parent::__construct($entityWithValuesBuilder, $attrValidatorHelper);
+
+        $this->normalizer = $normalizer;
         $this->supportedFromTypes = $supportedFromTypes;
         $this->supportedToTypes = $supportedToTypes;
     }
@@ -44,8 +45,8 @@ class MetricAttributeCopier extends AbstractAttributeCopier
      * {@inheritdoc}
      */
     public function copyAttributeData(
-        ProductInterface $fromProduct,
-        ProductInterface $toProduct,
+        EntityWithValuesInterface $fromEntityWithValues,
+        EntityWithValuesInterface $toEntityWithValues,
         AttributeInterface $fromAttribute,
         AttributeInterface $toAttribute,
         array $options = []
@@ -61,8 +62,8 @@ class MetricAttributeCopier extends AbstractAttributeCopier
         $this->attrValidatorHelper->validateUnitFamilies($fromAttribute, $toAttribute);
 
         $this->copySingleValue(
-            $fromProduct,
-            $toProduct,
+            $fromEntityWithValues,
+            $toEntityWithValues,
             $fromAttribute,
             $toAttribute,
             $fromLocale,
@@ -73,18 +74,20 @@ class MetricAttributeCopier extends AbstractAttributeCopier
     }
 
     /**
-     * @param ProductInterface   $fromProduct
-     * @param ProductInterface   $toProduct
-     * @param AttributeInterface $fromAttribute
-     * @param AttributeInterface $toAttribute
-     * @param string             $fromLocale
-     * @param string             $toLocale
-     * @param string             $fromScope
-     * @param string             $toScope
+     * Copy single value
+     *
+     * @param EntityWithValuesInterface $fromEntityWithValues
+     * @param EntityWithValuesInterface $toEntityWithValues
+     * @param AttributeInterface        $fromAttribute
+     * @param AttributeInterface        $toAttribute
+     * @param string                    $fromLocale
+     * @param string                    $toLocale
+     * @param string                    $fromScope
+     * @param string                    $toScope
      */
     protected function copySingleValue(
-        ProductInterface $fromProduct,
-        ProductInterface $toProduct,
+        EntityWithValuesInterface $fromEntityWithValues,
+        EntityWithValuesInterface $toEntityWithValues,
         AttributeInterface $fromAttribute,
         AttributeInterface $toAttribute,
         $fromLocale,
@@ -92,22 +95,16 @@ class MetricAttributeCopier extends AbstractAttributeCopier
         $fromScope,
         $toScope
     ) {
-        $fromValue = $fromProduct->getValue($fromAttribute->getCode(), $fromLocale, $fromScope);
+        $fromValue = $fromEntityWithValues->getValue($fromAttribute->getCode(), $fromLocale, $fromScope);
         if (null !== $fromValue) {
-            $fromData = $fromValue->getData();
-            $toValue = $toProduct->getValue($toAttribute->getCode(), $toLocale, $toScope);
-            if (null === $toValue) {
-                $toValue = $this->productBuilder->addOrReplaceProductValue($toProduct, $toAttribute, $toLocale, $toScope);
-            }
-
-            if (null === $metric = $toValue->getMetric()) {
-                $metric = $this->metricFactory->createMetric($fromData->getFamily());
-            }
-
-            $metric->setUnit($fromData->getUnit());
-            $metric->setData($fromData->getData());
-
-            $toValue->setMetric($metric);
+            $standardData = $this->normalizer->normalize($fromValue, 'standard');
+            $this->entityWithValuesBuilder->addOrReplaceValue(
+                $toEntityWithValues,
+                $toAttribute,
+                $toLocale,
+                $toScope,
+                $standardData['data']
+            );
         }
     }
 }

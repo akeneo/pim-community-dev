@@ -3,7 +3,6 @@
 namespace Pim\Component\Api\Repository;
 
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
-use Pim\Component\Catalog\Query\ProductQueryBuilderInterface;
 
 /**
  * Repository interface for product resources
@@ -14,34 +13,4 @@ use Pim\Component\Catalog\Query\ProductQueryBuilderInterface;
  */
 interface ProductRepositoryInterface extends IdentifiableObjectRepositoryInterface
 {
-    /**
-     * Find products with offset > $offset
-     *
-     * @param ProductQueryBuilderInterface $pqb
-     * @param int                          $limit
-     * @param int                          $offset
-     *
-     * @return array
-     */
-    public function searchAfterOffset(ProductQueryBuilderInterface $pqb, $limit, $offset);
-
-    /**
-     * Find products with the database identifier (the primary key) > $searchAfterIdentifier.
-     *
-     * @param ProductQueryBuilderInterface $pqb
-     * @param int                          $limit
-     * @param string                       $searchAfterIdentifier
-     *
-     * @return array
-     */
-    public function searchAfterIdentifier(ProductQueryBuilderInterface $pqb, $limit, $searchAfterIdentifier);
-
-    /**
-     * Return the count of products filtered by PQB
-     *
-     * @param ProductQueryBuilderInterface $pqb
-     *
-     * @return int
-     */
-    public function count(ProductQueryBuilderInterface $pqb);
 }

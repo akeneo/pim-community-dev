@@ -6,8 +6,8 @@ define(
         var Indicator = Backbone.Model.extend({
             defaults: {
                 value: null,
-                className: 'AknBell-count',
-                emptyClass: 'AknBell-count--hidden',
+                className: 'AknNotificationMenu-count',
+                emptyClass: 'AknNotificationMenu-count--hidden',
                 nonEmptyClass: ''
             }
         });
@@ -39,6 +39,7 @@ define(
             var indicatorView = new IndicatorView({el: el, model: indicator});
             indicator.setElement = function () {
                 indicatorView.setElement.apply(indicatorView, arguments);
+
                 return indicatorView.render();
             };
 

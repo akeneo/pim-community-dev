@@ -1,4 +1,5 @@
 confirmation:
+  title: Potvrdi
   remove:
     item: Jeste li sigurni da želite izbrisati ovu stavku?
     association_type: Jeste li sigurni da želite izbrisati ovaj tip pridruživanja?
@@ -7,10 +8,9 @@ confirmation:
     product: Jeste li sigurni da želite izbrisati ovaj proizvod?
     channel: Jeste li sigurni da želite izbrisati ovaj kanal?
     group: Jeste li sigurni da želite izbrisati ovu grupu?
-    variant group: Jeste li sigurni da želite izbrisati ovu varijantu grupe?
-    group type: Jeste li sigurni da želite izbrisati ovaj tip grupe?
-    import profile: Jeste li sigurni da želite izbrisati ovaj profil uvoza?
-    export profile: Jeste li sigurni da želite izbrisati ovaj profil izvoza?
+    group_type: Jeste li sigurni da želite izbrisati ovaj tip grupe?
+    import_profile: Jeste li sigurni da želite izbrisati ovaj profil uvoza?
+    export_profile: Jeste li sigurni da želite izbrisati ovaj profil izvoza?
     user: Jeste li sigurni da želite izbrisati ovog korisnika?
     role: Jeste li sigurni da želite izbrisati ovu rolu?
 pim_datagrid:
@@ -21,12 +21,13 @@ pim_datagrid:
       label: Brzi izvoz
   mass_action:
     delete:
-      confirm_content: Jeste li sigurni da želite izbrisati odabrane proizvode?
+      label: Obriši
       success: Odabrani proizvodi su uspješno izbrisani.
       error: Dogodila se pogreška prilikom pokušaja brisanja odabranih proizvoda, molimo pokušajte ponovo.
   view_selector:
     view: Pregledi
     create_view_modal:
+      create: Kreiraj
       confirm: OK
       cancel: Poništi
 flash:
@@ -36,6 +37,8 @@ flash:
     removed: Tip pridruživanja je uspješno uklonjen
   attribute:
     removed: Atribut je uspješno uklonjen
+  attribute_group:
+    removed: Atribut grupe je uspješno uklonjen
   family:
     removed: Obitelj je uspješno uklonjena
   product:
@@ -44,9 +47,7 @@ flash:
     removed: Kanal je uspješno uklonjen
   group:
     removed: Grupa je uspješno uklonjena
-  variant group:
-    removed: Varijanta grupe je uspješno uklonjena
-  group type:
+  group_type:
     removed: Tip grupe je uspješno uklonjen
   import profile:
     removed: Profil uvoza je uspješno uklonjen
@@ -65,7 +66,6 @@ error:
     product: Ne možete izbrisati ovaj proizvod
     channel: Ne možete izbrisati ovaj kanal
     group: Ne možete izbrisati ovu grupu
-    variant group: Ne možete izbrisati ovu varijantu grupe
     group type: Ne možete izbrisati ovaj tip grupe
     import profile: Ne možete izbrisati ovaj profil uvoza
     export profile: Ne možete izbrisati ovaj profil izvoza
@@ -104,11 +104,10 @@ pim:
         csv_grid_context: CSV (Grid kontekst)
         xlsx_all: Excel (Svi atributi)
         xlsx_grid_context: Excel (Grid kontekst)
-      delete: Brisanje proizvoda
-      mass_edit: Promijeni informacije o proizvodu
+      delete: Obriši
       category_edit: Premjesti proizvode u kategorije
-      sequential_edit: Sekvencijalno uređivanje proizvoda
 jstree.create: Kreiraj
+jstree.done: Gotovo
 switch_on: "Da"
 switch_off: "Ne"
 pim_enrich:
@@ -128,29 +127,31 @@ pim_enrich:
     info:
       update_failed: Ažuriranje nije uspjelo
       update_successful: Uspješno ažurirano
+    create_popin:
+      code: Kod
+      label: Oznaka
+      labels:
+        save: Spremi
+        cancel: Poništi
     product:
       title: proizvod
+      locale: Postavke jezika i regije
+      category: Kategorija
+      create: Kreiraj
+      filters: Filteri
       btn:
-        enable: Omogući
         enabled: Omogućeno
-        disable: Onemogući
         disabled: Onemogućeno
         download_pdf: PDF
         compare_translate: Usporedi / prevedi
         delete: Obriši
         save: Spremi
-        save_and_back: Spremi i nazad na tablični prikaz
       history:
         version: Verzija
         author: Autor
         logged_at: Prijavljen u
-        more: Više
-        less: Manje
         from: Od
         modified: Promjenjeno
-        property: Svojstvo
-        old_values: Stare vrijednosti
-        new_values: Nove vrijednosti
         actions: Akcije
       info:
         deletion_successful: Proizvod je uspješno izbrisan.
@@ -168,6 +169,9 @@ pim_enrich:
         family:
           title: Obitelj
           none: Niti jedan
+        family_variant:
+          title: Varijanta
+          none: Niti jedan
         groups:
           title: Grupe
           modal:
@@ -176,17 +180,15 @@ pim_enrich:
             group_label: Oznaka
             more_products: '{{ count }} više proizvoda...'
             close: Zatvori
+        status: Status
+        scope: Kanal
+        locale: Postavke jezika i regije
       copy:
         select: Odaberi
         all: Sve
         all_visible: Sve vidljive
         none: Niti jedan
         copy: Kopiraj
-      variant_group:
-        updated_by: Ažurirano sa varijantom grupe
-        switch:
-          "yes": "Da"
-          "no": "Ne"
       optional_attribute:
         remove: Ukloni ovaj atribut
       locale_specific_attribute:
@@ -196,16 +198,22 @@ pim_enrich:
       media:
         upload: Povucite i ispustite za upload ili kliknite ovdje
       create_popin:
-        title: Kreiraj novi proizvod
+        type: Proizvod
+        title: Kreiraj
         labels:
           family: Odaberi obitelj
           save: Spremi
           cancel: Poništi
+      message:
+        created: Proizvod je uspješno kreiran
+      completeness: Kompletan
+    product_model:
+      add_child:
+        cancel: Poništi
+        confirm: Potvrdi
+        fields:
+          code: Kod
     association_type:
-      info:
-        field_not_ready:
-          The association type cannot be saved right now. The following fields are not ready:
-            - polja
       meta:
         created: Kreirano
         created_by: Kreirao korisnik
@@ -213,12 +221,26 @@ pim_enrich:
         updated_by: Ažurirao korisnik
       btn:
         save: Spremi
+      title: tip pridruživanja
+      create_popin:
+        title: Kreiraj
+      message:
+        created: Tip pridruživanja je uspješno kreiran
+    group_type:
+      meta:
+        created: Kreirano
+        created_by: Kreirao korisnik
+        updated: Ažurirano
+        updated_by: Ažurirao korisnik
+      btn:
+        save: Spremi
+      title: tip grupe
+      create_popin:
+        title: Kreiraj
+      message:
+        created: Tip grupe je uspješno kreiran
     channel:
       title: kanal
-      info:
-        field_not_ready:
-          The channel cannot be saved right now. The following fields are not ready:
-            - polja
       meta:
         created: Kreirano
         created_by: Kreirao korisnik
@@ -235,30 +257,19 @@ pim_enrich:
         updated_by: Ažurirao korisnik
       btn:
         save: Spremi
+      create_popin:
+        title: Kreiraj
+      message:
+        created: Obitelj je uspješno kreirana
+      variant:
+        create: Kreiraj
+        cancel: Poništi
+        code: Kod
+        label: Oznaka
     attribute_option:
       code: Kod
       label: Oznaka
       actions: Akcije
-    variant_group:
-      title: Varijanta grupa
-      info:
-        deletion_successful: Varijanta grupe je uspješno obrisana.
-        deletion_failed: Varijantu grupe nije moguće izbrisati.
-        update_successful: Varijanta grupe je uspješno ažurirana.
-        update_failed: Varijantu grupe nije moguće ažurirati.
-        field_not_ready:
-          The variant group cannot be saved right now. The following fields are not ready:
-            - polja
-        already_in_upload: Datoteka je već procesu prijenosa za ovaj atribut u lokalizaciji "{{ locale }}" i opsegu "{{ scope }}"
-        no_attributes: Ova varijanta grupe još nema atribute
-      btn:
-        save: Spremi
-      meta:
-        product_count: Proizvodi
-        created: Kreirano
-        created_by: Kreirao korisnik
-        updated: Ažurirano
-        updated_by: Ažurirao korisnik
     group:
       title: Grupa
       info:
@@ -266,9 +277,6 @@ pim_enrich:
         deletion_failed: Nije moguće izbrisati grupu.
         update_successful: Grupa je uspješno ažurirana.
         update_failed: Grupa se ne može ažurirati.
-        field_not_ready:
-          The group cannot be saved right now. The following fields are not ready:
-            - polja
       btn:
         save: Spremi
       meta:
@@ -277,12 +285,46 @@ pim_enrich:
         created_by: Kreirao korisnik
         updated: Ažurirano
         updated_by: Ažurirao korisnik
+      create_popin:
+        title: Kreiraj
+      message:
+        created: Grupa je uspješno kreirana
+    attribute:
+      scopable: Moguće je odrediti djelokrug
+      type:
+        pim_catalog_identifier: Identifikator
+        pim_catalog_text: Tekst
+        pim_catalog_textarea: Područje teksta
+        pim_catalog_number: Broj
+        pim_catalog_price_collection: Cijena
+        pim_catalog_multiselect: Višestruki odabir
+        pim_catalog_simpleselect: Jednostavan odabir
+        pim_catalog_file: Datoteka
+        pim_catalog_image: Slika
+        pim_catalog_boolean: "Da/Ne"
+        pim_catalog_date: Datum
+        pim_catalog_metric: Metrika
+        pim_reference_data_simpleselect: Referentni podatak jednostavnog odabira
+        pim_reference_data_multiselect: Referentni podaci višestrukog odabira
+      validation_rule:
+        email: Adresa e-pošte
+        regexp: Regularni izraz
+        url: URL
+      title: atribut
+    attribute_group:
+      info:
+        update_successful: Atribut grupe je uspješno ažuriran
+    api_connection:
+      create_popin:
+        title: Kreiraj
   confirmation:
     leave: Jeste li sigurni da želite napustiti ovu stranicu?
     discard_changes: Promjene u {{ entity }} će se izgubiti ako napustite ovu stranicu.
     delete_item: Potvrdi brisanje
+    remove: Ukloni
     delete:
       attribute: Jeste li sigurni da želite izbrisati ovaj atribut proizvoda?
+      product_model: Potvrdi brisanje
   info:
     not_applicable: N/A
     entity:
@@ -290,19 +332,17 @@ pim_enrich:
   error:
     upload: Došlo je do pogreške tijekom prijenosa datoteke
   alert:
-    not_allowed: Ne možete pristupiti ovoj stranici
     error_occured: Došlo je do pogreške tijekom učitavanja stranice
   form:
     required: (obavezno)
+    product_model:
+      family_variant: Varijanta
     product:
       tab:
         associations:
           title: Povezanost
           info:
             none_exist: Ne postoji tip pridruživanja.
-            show_products: Prikaži proizvode
-            show_groups: Prikaži grupe
-            number_of_associations: "{{ productCount }} proizvoda i {{ groupCount }} grupe"
         attributes:
           title: Atributi
           btn:
@@ -313,6 +353,8 @@ pim_enrich:
             no_available_attributes: Nema više atributa koje se može dodati
             no_match: Nisu pronađeni rezultati
             load_more: Učitavanje više rezultata...
+          attribute_group_selector: Grupa atributa
+          attribute_group_all: Sve
         categories:
           title: Kategorije
       panel:
@@ -321,7 +363,6 @@ pim_enrich:
           info:
             no_family: Nijedna obitelj nije definirana. Definirajte obitelj kako bi se izračunala potpunost ovog proizvoda.
             no_completeness: Promijenili ste obitelj proizvoda. Prvo sačuvajte promjene da se izračuna potpunost za novu obitelj.
-          missing_values: Vrijednosti koje nedostaju
         history:
           title: Povijest
       switch:
@@ -356,6 +397,15 @@ pim_enrich:
           label_translations: Prijevodi oznaka
         history:
           title: Povijest
+    group_type:
+      tab:
+        properties:
+          title: Svojstva
+          general: Opća svojstva
+          code: Kod
+          label_translations: Prijevodi oznaka
+        history:
+          title: Povijest
     channel:
       tab:
         history:
@@ -378,6 +428,7 @@ pim_enrich:
           general: Općenito
           code: Kod
           attribute_as_label: Atribut se koristi kao oznaka
+          empty_attribute_as_image: Nije odabrano
           label_translations: Prijevodi oznaka
         attributes:
           title: Atributi
@@ -401,21 +452,6 @@ pim_enrich:
       switch:
         "no": "Ne"
         "yes": "Da"
-    variant_group:
-      tab:
-        properties:
-          title: Svojstva
-          general: Opća svojstva
-          code: Kod
-          type: Tip
-          axis: Osi
-          label_translations: Prijevodi oznaka
-        history:
-          title: Povijest
-        products:
-          title: Proizvodi
-        attributes:
-          title: Atributi
     group:
       tab:
         properties:
@@ -428,6 +464,21 @@ pim_enrich:
           title: Povijest
         products:
           title: Proizvodi
+    attribute_group:
+      tab:
+        properties:
+          title: Svojstva
+          general: Opća svojstva
+          code: Kod
+          label_translations: Prijevodi oznaka
+        attribute:
+          title: Atributi
+          table:
+            name: Ime
+            type: Tip
+            scopable: Moguće je odrediti djelokrug
+            localizable: Moguće je lokalizirati
+        history.title: Povijest
     common:
       tab:
         attributes:
@@ -437,6 +488,22 @@ pim_enrich:
           info:
             search_attributes: Pretraži...
             no_available_attributes: Nema više atributa koje se može dodati
+    job_execution:
+      loading: Učitavanje...
+      refreshBtn.title: Osvježi
+      meta:
+        status.title: Status
+      button:
+        show_profile.title: Prikaži profil
+        download_log.title: Preuzmi log
+      summary:
+        fetching: Prikupljanje podataka o izvršenju posla...
+        warning: Upozorenje
+        header.step: Korak
+        header.status: Status
+        header.summary: Sažetak
+        header.start: Početak
+        header.end: Kraj
     job_instance:
       button:
         edit.title: Uredi
@@ -450,7 +517,7 @@ pim_enrich:
         content:
           title: Sadržaj
         properties:
-          title: Opća svojstva
+          title: Svojstva
           code:
             title: Kod
           label:
@@ -505,6 +572,47 @@ pim_enrich:
             help: Znači da će se povijest proizvoda automatski ažurirati, može se isključiti za poboljšanje performansi
         history:
           title: Povijest
+      file_path: Put datoteke
+    attribute:
+      meta:
+        created: Kreirano
+        updated: Posljednje Ažuriranje
+      tab:
+        properties:
+          title: Svojstva
+          section:
+            common: Opći parametri
+            validation: Provjera valjanosti parametara
+          label:
+            allowed_extensions: Dopuštene ekstenzije
+            available_locales: Dostupni lokalni parametri
+            code: Kod
+            date_max: Max datum
+            date_min: Min datum
+            default_metric_unit: Zadane metričke jedinice
+            group: Grupa atributa
+            is_locale_specific: Specifične regionalne postavke
+            max_characters: Max znakova
+            max_file_size: Max veličina datoteke (MB)
+            metric_family: Metrička obitelj
+            number_max: Max broj
+            number_min: Min broj
+            type: Tip
+            unique: Jedinstvena vrijednost
+            useable_as_grid_filter: Može se koristiti u prikazu
+            validation_regexp: Regularni izraz
+            validation_rule: Pravilo provjere valjanosti
+          default_label:
+            default_metric_unit: Odaberi jedinicu
+            group: Odaberi grupu atributa
+            metric_family: Odaberi obitelj
+            reference_data_name: Odaberi tip reference podataka
+        labels:
+          title: Prijevodi oznaka
+        choices:
+          title: Opcije
+        history:
+          title: Povijest
     mass_edit:
       family:
         attributes:
@@ -512,6 +620,9 @@ pim_enrich:
           toolbox:
             select_attributes: Dodaj atribute
             add: Dodaj
+    basket:
+      title: Košarica
+      empty_basket: Košarica je prazna
   export:
     product:
       data:
@@ -530,7 +641,6 @@ pim_enrich:
         attributes:
           title: Atributi
           edit: Uredi
-          label: "{0} svi atributi |{1} jedan atribut odabran |] 1, Inf [{{ count }} atributa odabrano"
           help: 'Odaberite informacije o proizvodima za izvoz. Npr: samo tehnički atributi.'
           empty: Svi atributi će se izvesti
           modal:
@@ -543,6 +653,7 @@ pim_enrich:
           clear: Obriši
           all_group: Sve grupe
           empty_selection: Svi atributi će se izvesti
+          title: Atributi
         family:
           title: Obitelj
           help: 'Odaberite proizvode za izvoz u odnosu na njihovu obitelji. Ex: Izvoz samo za cipele i haljine.'
@@ -580,7 +691,6 @@ pim_enrich:
           help: Koristite kategorije proizvoda u stablu (definiran za kanal prikazan gore) za odabir proizvoda za izvoz
         identifier:
           title: Identifikator
-          help: Identifikatori proizvoda za izvoz odvojeni su zarezima, razmakom ili prijelomom
         metric:
           operators:
             "=": Je jednako
@@ -649,8 +759,312 @@ pim_enrich:
         title: Svojstva
       global_settings:
         title: Globalne postavke
-  mass_edit_action:
-    edit_common_attributes:
-      description: Atributi odabranih proizvoda u tabličnom prikazu proizvoda će se promijeniti s podacima za lokalizaciju <span class="highlight">{{ locale }}</span> i kanala <span class="highlight">{{ channel }}</span>.
+  index:
+    import_profiles:
+      list: Odaberite posao
+      create_popin:
+        title: Kreiraj
+    group:
+      create_btn: Kreiraj grupu
+    export_profiles:
+      create_popin:
+        title: Kreiraj
+    user:
+      create_btn: Kreiraj korisnika
+    user_role:
+      create_btn: Kreiraj rolu
+    user_group:
+      create_btn: Kreiraj grupu
+    attribute:
+      modal_title: Odaberi tip atributa
+    attribute_group:
+      title: Grupe atributa
+      create_btn: Kreiraj
+    api_connection:
+      create_btn: Kreiraj
+  mass_edit:
+    next: Sljedeća
+    cancel: Poništi
+    confirm: Potvrdi
+    product:
+      step:
+        select:
+          label: Odaberi proizvode
+        configure:
+          label: Konfiguriraj
+        confirm:
+          label: Potvrdi
+      operation:
+        change_status:
+          label: Promjena statusa
+          description: Odabrani proizvodi će biti omogućeni ili onemogućeni.
+          field: Da se omogući
+        edit_common:
+          label: Uredi atribute
+        change_family:
+          description: Obitelj odabranih proizvoda će se promijeniti u odabranu obitelj
+          field: Obitelj
+        add_to_group:
+          label: Dodaj u grupe
+          description: Odaberi grupe u koju se dodaju odabrani proizvodi
+          field: Grupe
+        remove_from_category:
+          description: Proizvodi će biti uklonjeni iz sljedećih kategorija.
+    family:
+      step:
+        select:
+          label: Odaberi obitelji
+        configure:
+          label: Konfiguriraj
+        confirm:
+          label: Potvrdi
 pim_enrich.error:
   exception.title: Ups! Pojavila se pogreška u {{ status_code }}...
+page_title:
+  oro_default: Nadzorna ploča
+  pim_enrich_attributegroup_index: Grupe atributa
+  pim_enrich_attributegroup_create: Atribut grupe | Kreiraj
+  pim_enrich_categorytree_index: Kategorija stabala
+  pim_enrich_categorytree_create: Kategorija stabala | Kreiraj
+  pim_enrich_categorytree_create_tree: Kategorija stabala | Kreiraj
+  pim_enrich_attribute_index: Atributi
+  pim_enrich_attribute_create: Atributi | Kreiraj
+  pim_enrich_product_index: Proizvodi
+  pim_enrich_family_index: Obitelji
+  pim_enrich_channel_index: Kanali
+  pim_enrich_channel_create: Kanali | Kreiraj
+  pim_enrich_currency_index: Valute
+  pim_enrich_locale_index: Lokalizacija
+  pim_enrich_group_index: Grupe
+  pim_enrich_associationtype_index: Tipovi pridruživanja
+  pim_enrich_grouptype_index: Tipovi grupa
+  pim_enrich_mass_edit_action_choose: Masovno uredi | Odaberi
+  pim_enrich_mass_edit_action_configure: Masovno uredi | Konfiguriraj
+  pim_enrich_job_tracker_index: Proces praćenja
+  pim_enrich_job_tracker_show: Proces praćenja | Pokaži posao
+  pim_enrich_mass_edit_action: Masovno uređivanje
+  pim_analytics_system_info_index: Informacije o sustavu
+batch_jobs:
+  add_product_value:
+    label: Dodaj vrijednosti proizvoda
+    perform:
+      label: Dodaj vrijednosti proizvoda
+  update_product_value:
+    label: Ažuriraj vrijednosti proizvoda
+    perform:
+      label: Ažuriraj vrijednosti proizvoda
+  edit_common_attributes:
+    label: Uredi atribute
+    perform:
+      label: Uredi atribute
+  csv_product_export:
+    label: Izvoz proizvoda u CSV
+    export.label: Izvoz proizvoda
+  csv_product_model_export:
+    export.label: Izvoz proizvoda
+  csv_category_export:
+    label: Izvoz kategorije u CSV
+    export.label: Izvoz kategorije
+  csv_attribute_export:
+    label: Izvoz atributa u CSV
+    export.label: Izvoz atributa
+  csv_attribute_option_export:
+    label: Izvoz opcija atributa u CSV
+    export.label: Izvoz opcija atributa
+  csv_association_type_export:
+    label: Izvoz tipa pridruživanja u CSV
+    export.label: Izvoz tipa pridruživanja
+  csv_group_export:
+    label: Izvoz grupe u CSV
+    export.label: Izvoz grupe
+  csv_family_export:
+    label: Izvoz porodice u CSV
+    export.label: Izvoz porodice
+  csv_product_import:
+    label: Uvoz proizvoda iz CSV
+    validation.label: Provjera valjanosti datoteke
+    import.label: Uvoz proizvoda
+    import_associations.label: Uvoz pridruživanja
+  csv_category_import:
+    label: Uvoz kategorije iz CSV
+    validation.label: Provjera valjanosti datoteke
+    import.label: Uvoz kategorije
+  csv_attribute_import:
+    label: Uvoz atributa iz CSV
+    validation.label: Provjera valjanosti datoteke
+    import.label: Uvoz atributa
+  csv_attribute_option_import:
+    label: Uvoz opcija atributa iz CSV
+    validation.label: Provjera valjanosti datoteke
+    import.label: Uvoz opcija atributa
+  csv_association_type_import:
+    label: Uvoz tipa pridruživanja iz CSV
+    validation.label: Provjera valjanosti datoteke
+    import.label: Uvoz tipa pridruživanja
+  csv_family_import:
+    label: Izvoz porodice u CSV
+    validation.label: Provjera valjanosti datoteke
+    import.label: Uvoz porodice
+  csv_family_variant_import:
+    validation.label: Provjera valjanosti datoteke
+  csv_group_import:
+    label: Uvoz grupa iz CSV
+    validation.label: Provjera valjanosti datoteke
+    import.label: Uvoz grupa
+  csv_channel_export:
+    label: Izvoz kanala u CSV
+    export.label: Izvoz kanala
+  csv_locale_export:
+    label: Izvoz lokala u CSV
+    export.label: Izvoz lokala
+  csv_attribute_group_export:
+    label: Izvoz grupe atributa u CSV
+    export.label: Izvoz grupe atributa
+  csv_currency_export:
+    label: Izvoz valute u CSV
+    export.label: Izvoz valute
+  csv_group_type_export:
+    label: Izvoz tipa grupe u CSV
+    export.label: Izvoz tipa grupe
+  csv_channel_import:
+    label: Uvoz kanala iz CSV
+    validation.label: Provjera valjanosti datoteke
+    import.label: Uvoz kanala
+  csv_locale_import:
+    label: Uvoz lokala iz CSV
+    validation.label: Provjera valjanosti datoteke
+    import.label: Uvoz lokala
+  csv_attribute_group_import:
+    label: Uvoz grupe atributa iz CSV
+    validation.label: Provjera valjanosti datoteke
+    import.label: Uvoz grupe atributa
+  csv_currency_import:
+    label: Uvoz valute iz CSV
+    validation.label: Provjera valjanosti datoteke
+    import.label: Uvoz valute
+  csv_group_type_import:
+    label: Uvoz tipa grupe iz CSV
+    validation.label: Provjera valjanosti datoteke
+    import.label: Uvoz tipa grupe
+  xlsx_category_import:
+    label: Uvoz kategorije iz XLSX
+    validation.label: Provjera valjanosti datoteke
+    import.label: Uvoz kategorije
+  xlsx_association_type_import:
+    label: Uvoz tipa pridruživanja iz XLSX
+    validation.label: Provjera valjanosti datoteke
+    import.label: Uvoz tipa pridruživanja
+  xlsx_attribute_import:
+    label: Uvoz atributa iz XLSX
+    validation.label: Provjera valjanosti datoteke
+    import.label: Uvoz atributa
+  xlsx_attribute_option_import:
+    label: Uvoz opcija atributa iz XLSX
+    validation.label: Provjera valjanosti datoteke
+    import.label: Uvoz opcija atributa
+  xlsx_family_import:
+    label: Uvoz obitelji iz XLSX
+    validation.label: Provjera valjanosti datoteke
+    import.label: Uvoz porodice
+  xlsx_family_variant_import:
+    validation.label: Provjera valjanosti datoteke
+  xlsx_product_export:
+    label: Izvoz proizvoda u XLSX
+    export.label: Izvoz proizvoda
+  xlsx_product_import:
+    label: Uvoz proizvoda iz XLSX
+    validation.label: Provjera valjanosti datoteke
+    import.label: Uvoz proizvoda
+    import_associations.label: Uvoz pridruživanja
+  xlsx_group_export:
+    label: Izvoz grupe u XLSX
+    export.label: Izvoz grupe
+  xlsx_group_import:
+    label: Uvoz grupe iz XLSX
+    validation.label: Provjera valjanosti datoteke
+    import.label: Uvoz grupa
+  xlsx_family_export:
+    label: Izvoz obitelji u XLSX
+    export.label: Izvoz porodice
+  xlsx_category_export:
+    label: Izvoz kategorije u XLSX
+    export.label: Izvoz kategorije
+  xlsx_attribute_export:
+    label: Izvoz atributa u XLSX
+    export.label: Izvoz atributa u XLSX
+  xlsx_attribute_option_export:
+    label: Izvoz opcija atributa u XLSX
+    export.label: Izvoz opcija atributa u XLSX
+  xlsx_association_type_export:
+    label: Izvoz tipa pridruživanja u XLSX
+    export.label: Izvoz tipa pridruživanja u XLSX
+  xlsx_channel_export:
+    label: Izvoz kanala u XLSX
+    export.label: Izvoz kanala
+  xlsx_locale_export:
+    label: Izvoz lokala u XLSX
+    export.label: Izvoz lokala
+  xlsx_attribute_group_export:
+    label: Izvoz grupe atributa u XLSX
+    export.label: Izvoz grupe atributa
+  xlsx_currency_export:
+    label: Izvoz valute u XLSX
+    export.label: Izvoz valute
+  xlsx_group_type_export:
+    label: Izvoz tipa grupe u XLSX
+    export.label: Izvoz tipa grupe
+  xlsx_channel_import:
+    label: Uvoz kanala iz XLSX
+    validation.label: Provjera valjanosti datoteke
+    import.label: Uvoz kanala
+  xlsx_locale_import:
+    label: Uvoz lokala iz XLSX
+    validation.label: Provjera valjanosti datoteke
+    import.label: Uvoz lokala
+  xlsx_attribute_group_import:
+    label: Uvoz grupe atributa iz XLSX
+    validation.label: Provjera valjanosti datoteke
+    import.label: Uvoz grupe atributa
+  xlsx_currency_import:
+    label: Uvoz valute iz XLSX
+    validation.label: Provjera valjanosti datoteke
+    import.label: Uvoz valute
+  xlsx_group_type_import:
+    label: Uvoz tipa grupe iz XLSX
+    validation.label: Provjera valjanosti datoteke
+    import.label: Uvoz tipa grupe
+pim_menu:
+  tab:
+    products: Proizvodi
+    settings: Postavke
+    system: Sustav
+  item:
+    association_type: Tipovi pridruživanja
+    attribute: Atributi
+    attribute_group: Grupe atributa
+    category: Kategorije
+    channel: Kanali
+    currency: Valute
+    dashboard: Nadzorna ploča
+    family: Obitelji
+    group: Grupe
+    group_type: Tipovi grupa
+    locale: Lokalizacija
+    product: Proizvodi
+    export_history: Povijest izvoza
+    export_profile: Izvoz profila
+    import_history: Povijest izvoza
+    import_profile: Uvoz profila
+    configuration: Konfiguracija
+    user_management: Upravljanje korisnicima
+    user: Korisnici
+    user_group: Grupe
+    user_role: Role
+    info: Informacije o sustavu
+    job_tracker: Proces praćenja
+  user:
+    logout: Odjava
+    user_account: Moj korisnički račun
+pim_notification:
+  mark_all_as_read: Označi sve kao pročitano
+  loading: Učitavanje...

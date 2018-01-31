@@ -6,6 +6,7 @@ use Akeneo\Component\Versioning\Model\Version;
 use Doctrine\Common\EventSubscriber;
 use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
 use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\ORM\EntityManagerInterface;
 
 /**
  * Updates the updated date of versioned objects
@@ -16,15 +17,15 @@ use Doctrine\Common\Persistence\ManagerRegistry;
  */
 class TimestampableSubscriber implements EventSubscriber
 {
-    /** @var ManagerRegistry */
-    protected $registry;
+    /** @var EntityManagerInterface */
+    protected $em;
 
     /**
-     * @param ManagerRegistry $registry
+     * @param EntityManagerInterface $em
      */
-    public function __construct(ManagerRegistry $registry)
+    public function __construct(EntityManagerInterface $em)
     {
-        $this->registry = $registry;
+        $this->em = $em;
     }
 
     /**
@@ -48,8 +49,7 @@ class TimestampableSubscriber implements EventSubscriber
             return;
         }
 
-        $relatedManager = $this->registry->getManagerForClass($version->getResourceName());
-        $metadata = $relatedManager->getClassMetadata($version->getResourceName());
+        $metadata = $this->em->getClassMetadata($version->getResourceName());
         $haveToBeUpdated = $metadata->getReflectionClass()
             ->implementsInterface('Pim\Component\Catalog\Model\TimestampableInterface');
 
@@ -57,13 +57,13 @@ class TimestampableSubscriber implements EventSubscriber
             return;
         }
 
-        $related = $relatedManager->find($version->getResourceName(), $version->getResourceId());
+        $related = $this->em->find($version->getResourceName(), $version->getResourceId());
 
         if (null === $related) {
             return;
         }
 
         $related->setUpdated($version->getLoggedAt());
-        $relatedManager->getUnitOfWork()->computeChangeSet($metadata, $related);
+        $this->em->getUnitOfWork()->computeChangeSet($metadata, $related);
     }
 }

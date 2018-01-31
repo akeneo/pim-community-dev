@@ -39,7 +39,5 @@ Most Viewed: Mais vistos
 "No": "Não"
 required: (Obrigatório)
 pim_ui.system_config:
-  form:
-    loading_message_enabled.label: Permitir mensagens de carregamento
   group:
     loading_message.title: Carregando mensagens

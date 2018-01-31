@@ -5,7 +5,6 @@ namespace Pim\Bundle\PdfGeneratorBundle\Renderer;
 use Liip\ImagineBundle\Imagine\Cache\CacheManager;
 use Liip\ImagineBundle\Imagine\Data\DataManager;
 use Liip\ImagineBundle\Imagine\Filter\FilterManager;
-use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
 use Pim\Bundle\PdfGeneratorBundle\Builder\PdfBuilderInterface;
 use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Model\AttributeInterface;
@@ -22,9 +21,10 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class ProductPdfRenderer implements RendererInterface
 {
+    /** @var string */
     const PDF_FORMAT = 'pdf';
 
-    const THUMBNAIL_FILTER = 'thumbnail';
+    const THUMBNAIL_FILTER = 'pdf_thumbnail';
 
     /** @var EngineInterface */
     protected $templating;
@@ -135,7 +135,7 @@ class ProductPdfRenderer implements RendererInterface
      * @param ProductInterface $product
      * @param string           $locale
      *
-     * @return AttributeGroup[]
+     * @return AttributeInterface[]
      */
     protected function getGroupedAttributes(ProductInterface $product, $locale)
     {
@@ -160,7 +160,7 @@ class ProductPdfRenderer implements RendererInterface
      * @param string           $locale
      * @param string           $scope
      *
-     * @return AttributeInterface[]
+     * @return string[]
      */
     protected function getImagePaths(ProductInterface $product, $locale, $scope)
     {
@@ -168,10 +168,17 @@ class ProductPdfRenderer implements RendererInterface
 
         foreach ($this->getAttributes($product, $locale) as $attribute) {
             if (AttributeTypes::IMAGE === $attribute->getType()) {
-                $media = $product->getValue($attribute->getCode(), $locale, $scope)->getMedia();
+                $mediaValue = $product->getValue(
+                    $attribute->getCode(),
+                    $attribute->isLocalizable() ? $locale : null,
+                    $attribute->isScopable() ? $scope : null
+                );
 
-                if (null !== $media && null !== $media->getKey()) {
-                    $imagePaths[] = $media->getKey();
+                if (null !== $mediaValue) {
+                    $media = $mediaValue->getData();
+                    if (null !== $media && null !== $media->getKey()) {
+                        $imagePaths[] = $media->getKey();
+                    }
                 }
             }
         }

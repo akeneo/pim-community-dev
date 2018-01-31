@@ -61,7 +61,7 @@ class AttributeRepository extends EntityRepository implements
 
         $choices = [];
         foreach ($queryBuilder->getQuery()->getArrayResult() as $attribute) {
-            $choices[$attribute['group_label']][$attribute['code']] = $attribute['attribute_label'];
+            $choices[$attribute['group_label']][$attribute['attribute_label']] = $attribute['code'];
         }
 
         return $choices;
@@ -82,7 +82,7 @@ class AttributeRepository extends EntityRepository implements
         $groupExpr = '(CASE WHEN gt.label IS NULL THEN attributeGroup.code ELSE gt.label END)';
 
         $qb
-            ->addSelect($rootAlias)
+            ->select($rootAlias)
             ->addSelect(sprintf("%s AS label", $labelExpr))
             ->addSelect(sprintf("%s AS groupLabel", $groupExpr))
             ->addSelect('translation.label')

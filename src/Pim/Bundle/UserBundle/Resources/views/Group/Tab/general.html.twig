@@ -1,0 +1,5 @@
+<div class="tab-pane buffer-top{{ viewElement.loop.first ? ' active' : '' }}" id="{{ viewElement.alias|replace({' ': '-', '.': '-'})|lower }}">
+    <div class="AknFormContainer AknFormContainer--withPadding">
+        {{ form_row(form.name) }}
+    </div>
+</div>

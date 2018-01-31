@@ -1,0 +1,19 @@
+<div class="AknMetricField metric-container">
+    <input id="<%- fieldId %>"
+           class="AknTextField AknTextField--noRightRadius amount"
+           value="<%- value.amount %>"
+           <% if (readOnly) { %>readonly disabled<% } %>
+    >
+
+    <select class="AknMetricField-unit unit select-field"
+            <% if (readOnly) { %>readonly disabled<% } %>
+    >
+        <% _.each(_.keys(unitChoices), function(unit) { %>
+            <option value="<%- unit %>"
+                    <% if ((null === value.unit && defaultUnit === unit) || value.unit === unit) { %> selected<% } %>
+            >
+                    <%- __(unit) %>
+            </option>
+        <% }); %>
+    </select>
+</div>

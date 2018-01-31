@@ -2,6 +2,7 @@
 
 namespace spec\Akeneo\Component\Classification\Updater;
 
+use Akeneo\Component\Classification\Model\CategoryInterface;
 use Akeneo\Component\StorageUtils\Exception\InvalidObjectException;
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
@@ -9,7 +10,6 @@ use Akeneo\Component\StorageUtils\Exception\UnknownPropertyException;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Entity\CategoryTranslation;
-use Akeneo\Component\Classification\Model\CategoryInterface;
 use Symfony\Component\PropertyAccess\Exception\NoSuchPropertyException;
 
 class CategoryUpdaterSpec extends ObjectBehavior

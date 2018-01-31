@@ -1,11 +1,13 @@
-<a class="AknActionButton<% if (displayInline) { %> AknActionButton--big AknActionButton--noLeftBorder<% } %>" data-toggle="dropdown" href="#">
-    <%- currentScope %>
-    <span class="AknActionButton-caret AknCaret"></span>
+<a class="AknActionButton <% if (displayInline) { %>AknActionButton--big AknActionButton--noLeftBorder<% } else { %>AknActionButton--withoutBorder<% } %>" data-toggle="dropdown" href="#">
+    <% if (!displayInline && displayLabel) { %><%- label %>: <% } %>
+    <span class="AknActionButton-highlight"><%- currentScope %></span>
+    <span class="AknActionButton-caret"></span>
 </a>
 <ul class="AknDropdown-menu">
+    <div class="AknDropdown-menuTitle"><%- label %></div>
     <% _.each(channels, function (scope) { %>
         <li>
-            <a class="AknDropdown-menuLink"
+            <a class="AknDropdown-menuLink <% if (i18n.getLabel(scope.labels, catalogLocale, scope.code) === currentScope) { %> AknDropdown-menuLink--active<% } %>"
                data-scope="<%- scope.code %>"
                data-label="<%- i18n.getLabel(scope.labels, catalogLocale, scope.code) %>">
                 <%- i18n.getLabel(scope.labels, catalogLocale, scope.code) %>

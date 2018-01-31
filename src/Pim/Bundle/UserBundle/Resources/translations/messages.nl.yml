@@ -7,6 +7,10 @@ pim_user:
       password.title: Wachtwoord
       business_unit.title: Bedrijfsdivisies
       email_synchronization.title: Synchronisatie-instellingen voor e-mail
+  group:
+    tab:
+      general.title: Algemeen
+      users.title: Gebruikers
 oro.user.controller:
   group.message.saved: "Groep opgeslagen"
   role.message.saved: "Rol opgeslagen"

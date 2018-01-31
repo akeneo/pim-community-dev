@@ -5,7 +5,7 @@ define([
     'underscore',
     'oro/translator',
     'backbone',
-    'text!pim/template/datagrid/configure-columns-action'
+    'pim/template/datagrid/configure-columns-action'
 ], function (
     $,
     _,
@@ -91,7 +91,7 @@ define([
             var systemColumn = this.collection.where({group: __('system_filter_group')});
 
             var groups = 0 !== systemColumn.length ?
-                [{ position: 0, name: _.__('system_filter_group'), itemCount: 0 }] :
+                [{ position: 0, name: __('system_filter_group'), itemCount: 0 }] :
                 [];
 
             _.each(this.collection.toJSON(), function (column) {
@@ -119,6 +119,9 @@ define([
 
             this.$el.html(
                 this.template({
+                    title: __('pim_datagrid.column_configurator.title'),
+                    description: __('pim_datagrid.column_configurator.description'),
+                    attributeGroupsLabel: __('pim_datagrid.column_configurator.attribute_groups'),
                     groups:  groups,
                     columns: this.collection.toJSON()
                 })

@@ -2,10 +2,11 @@
 define([
     'jquery',
     'underscore',
+    'oro/translator',
     'backbone',
-    'text!pim/template/datagrid/action-launcher-button',
-    'text!pim/template/datagrid/action-launcher-list-item'
-], function($, _, Backbone, buttonTemplate, listItemTemplate) {
+    'pim/template/datagrid/action-launcher-button',
+    'pim/template/datagrid/action-launcher-list-item'
+], function($, _, __, Backbone, buttonTemplate, listItemTemplate) {
     'use strict';
 
     /**
@@ -118,6 +119,10 @@ define([
                 this.onClickReturnValue = options.onClickReturnValue;
             }
 
+            if (_.has(options, 'enabled')) {
+                this.enabled = options.enabled;
+            }
+
             this.action = options.action;
             Backbone.View.prototype.initialize.apply(this, arguments);
         },
@@ -130,8 +135,10 @@ define([
         render: function () {
             this.$el.empty();
 
-            var $el = $(this.buttonTemplate({
-                label: _.__(this.label || this.action.label),
+            const labelKey = this.label || this.action.label;
+
+            const $el = $(this.buttonTemplate({
+                label: labelKey ? __(labelKey) : '',
                 icon: this.icon,
                 className: this.className ? this.className : '',
                 iconClassName: this.iconClassName,
@@ -155,8 +162,10 @@ define([
         renderAsListItem: function () {
             this.$el.empty();
 
-            var $el = $(this.listItemTemplate({
-                label: _.__(this.label || this.action.label),
+            const labelKey = this.label || this.action.label;
+
+            const $el = $(this.listItemTemplate({
+                label: labelKey ? __(labelKey) : '',
                 className: 'AknDropdown-menuLink' + (this.className ? ' ' + this.className : ''),
                 link: this.link,
                 action: this.action,

@@ -12,7 +12,7 @@ services:
     pim_enrich.twig.locale_extension:
         class: '%pim_enrich.twig.locale_extension.class%'
         arguments:
-            - '@pim_catalog.helper.locale'
+            - '@pim_user.context.user'
         tags:
             - { name: twig.extension }
 
@@ -36,7 +36,6 @@ services:
     pim_enrich.twig.attribute_extension:
         class: '%pim_enrich.twig.attribute_extension.class%'
         arguments:
-            - '%pim_enrich.attribute_icons%'
             - '@pim_catalog.repository.attribute'
         tags:
             - { name: twig.extension }

@@ -1,3 +1,4 @@
+@javascript
 Feature: List attribute groups
   In order to see attribute groups in my catalog
   As a product manager
@@ -7,11 +8,9 @@ Feature: List attribute groups
     Given the "footwear" catalog configuration
     And I am logged in as "Julia"
     When I am on the attribute groups page
-    Then I should see "Product information"
-    Then I should see "Marketing"
-    And I should see "Please select an attribute group on the left or Create a new attribute group"
+    Then I should see the text "Product information"
+    Then I should see the text "Marketing"
 
-  @javascript
   Scenario: Order attribute group choices on the attribute creation page
     Given the "footwear" catalog configuration
     And I am logged in as "Julia"
@@ -43,7 +42,7 @@ Feature: List attribute groups
       Sizes,Marketing,Product information,Colors,Other,Media
       """
 
-  @javascript @jira https://akeneo.atlassian.net/browse/PIM-6436
+  @jira https://akeneo.atlassian.net/browse/PIM-6436
   Scenario: Sucessfully display the attribute groups in the PEF without limit
     Given the "footwear" catalog configuration
     And I am logged in as "Julia"
@@ -52,7 +51,7 @@ Feature: List attribute groups
       code;attributes;sort_order
       attribute_group_1;sku;101
       attribute_group_2;name;102
-      attribute_group_3;manufacturer;103
+      attribute_group_3;manufacturer;124
       attribute_group_4;weather_conditions;104
       attribute_group_5;description;105
       attribute_group_6;comment;106
@@ -62,14 +61,14 @@ Feature: List attribute groups
       attribute_group_10;top_view;110
       attribute_group_11;size;111
       attribute_group_12;color;112
-      attribute_group_13;lace_color;113
+      attribute_group_13;lace_color;200
       attribute_group_14;length;114
       attribute_group_15;volume;115
       attribute_group_16;number_in_stock;116
       attribute_group_17;destocking_date;117
       attribute_group_18;handmade;118
       attribute_group_19;heel_color;119
-      attribute_group_20;sole_color;120
+      attribute_group_20;sole_color;125
       attribute_group_21;cap_color;121
       attribute_group_22;sole_fabric;122
       """
@@ -78,7 +77,7 @@ Feature: List attribute groups
     And I am on the "csv_footwear_attribute_group_import" import job page
     And I launch the import job
     And I wait for the "csv_footwear_attribute_group_import" job to finish
-    And I am on the families page
+    And I am on the families grid
     And I create a new family
     And I fill in the following information in the popin:
       | Code | big_family |
@@ -94,12 +93,13 @@ Feature: List attribute groups
     And I should see the text "There are unsaved changes"
     And I save the family
     And I should not see the text "There are unsaved changes"
-    And I am on the products page
-    And I create a new product
+    And I am on the products grid
+    And I create a product
     And I fill in the following information in the popin:
       | SKU    | a_boot       |
-      | family | [big_family] |
+      | Family | [big_family] |
     And I press the "Save" button in the popin
     And I wait to be on the "a_boot" product page
     Then I should see the text "[attribute_group_1]"
     And I should see the text "[attribute_group_22]"
+    And the order of groups should be "[attribute_group_1], [attribute_group_2], [attribute_group_4], [attribute_group_5], [attribute_group_6], [attribute_group_7], [attribute_group_8], [attribute_group_9], [attribute_group_10], [attribute_group_11], [attribute_group_12], [attribute_group_14], [attribute_group_15], [attribute_group_16], [attribute_group_17], [attribute_group_18], [attribute_group_19], [attribute_group_21], [attribute_group_22], [attribute_group_3], [attribute_group_20], [attribute_group_13]"

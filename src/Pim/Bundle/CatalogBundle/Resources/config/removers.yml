@@ -2,6 +2,7 @@ parameters:
     pim_catalog.remover.base.class:                  Akeneo\Bundle\StorageUtilsBundle\Doctrine\Common\Remover\BaseRemover
     pim_catalog.remover.base_options_resolver.class: Akeneo\Bundle\StorageUtilsBundle\Doctrine\Common\Remover\BaseRemovingOptionsResolver
     pim_catalog.remover.channel.class:               Pim\Bundle\CatalogBundle\Doctrine\Common\Remover\ChannelRemover
+    pim_catalog.remover.completeness.class: Pim\Bundle\CatalogBundle\Doctrine\ORM\CompletenessRemover
 
 services:
     pim_catalog.remover.group_type:
@@ -25,7 +26,14 @@ services:
         arguments:
             - '@pim_catalog.object_manager.product'
             - '@event_dispatcher'
-            - '%pim_catalog.entity.product.class%'
+            - '%pim_catalog.model.product.interface%'
+
+    pim_catalog.remover.product_model:
+        class: '%pim_catalog.remover.base.class%'
+        arguments:
+            - '@pim_catalog.object_manager.product'
+            - '@event_dispatcher'
+            - '%pim_catalog.model.product_model.interface%'
 
     pim_catalog.remover.association_type:
         class: '%pim_catalog.remover.base.class%'
@@ -75,6 +83,14 @@ services:
             - '@doctrine.orm.entity_manager'
             - '@event_dispatcher'
             - '%pim_catalog.entity.group.class%'
+
+    pim_catalog.remover.completeness:
+        class: '%pim_catalog.remover.completeness.class%'
+        arguments:
+            - '@pim_catalog.query.product_query_builder_factory'
+            - '@pim_catalog.object_manager.product'
+            - '@pim_catalog.elasticsearch.indexer.product'
+            - 'pim_catalog_completeness'
 
     pim_catalog.remover.base_options_resolver:
         class: '%pim_catalog.remover.base_options_resolver.class%'

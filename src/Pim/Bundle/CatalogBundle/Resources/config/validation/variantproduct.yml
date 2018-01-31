@@ -1,0 +1,29 @@
+Pim\Component\Catalog\Model\VariantProduct:
+    group_sequence:
+        - VariantProduct
+        - UniqueAxis
+        - api
+    constraints:
+        - Pim\Component\Catalog\Validator\Constraints\VariantProductParent: ~
+        - Pim\Component\Catalog\Validator\Constraints\NotEmptyFamily:
+            groups:
+              - api
+        - Pim\Component\Catalog\Validator\Constraints\SameFamilyThanParent: ~
+        - Pim\Component\Catalog\Validator\Constraints\NotEmptyVariantAxes: ~
+        - Pim\Component\Catalog\Validator\Constraints\UniqueVariantAxis:
+            groups: [UniqueAxis]
+        - Pim\Component\Catalog\Validator\Constraints\ImmutableVariantAxesValues: ~
+        - Pim\Component\Catalog\Validator\Constraints\UniqueEntity:
+            entityClass: Pim\Component\Catalog\Model\VariantProductInterface
+    properties:
+        identifier:
+            - NotBlank: ~
+            - Regex:
+                pattern: '/^[^,;]+$/'
+                message: 'regex.comma_or_semicolon.message'
+            - Length:
+                max: 255
+    getters:
+        values:
+            - Symfony\Component\Validator\Constraints\Valid:
+                traverse: true

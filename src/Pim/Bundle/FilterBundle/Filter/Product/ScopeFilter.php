@@ -93,7 +93,7 @@ class ScopeFilter extends ChoiceFilter
      */
     protected function getFormType()
     {
-        return ScopeFilterType::NAME;
+        return ScopeFilterType::class;
     }
 
     /**

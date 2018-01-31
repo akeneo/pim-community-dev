@@ -35,10 +35,9 @@ class LengthGuesserSpec extends ObjectBehavior
         $this->supportAttribute($image)->shouldReturn(false);
     }
 
-    function it_enforces_database_length_constraints($text, $identifier, $textarea)
+    function it_enforces_database_length_constraints($text, $textarea)
     {
         $text->getMaxCharacters()->willReturn(null);
-        $identifier->getMaxCharacters()->willReturn(null);
         $textarea->getMaxCharacters()->willReturn(null);
 
         $textConstraints = $this->guessConstraints($text);
@@ -47,12 +46,6 @@ class LengthGuesserSpec extends ObjectBehavior
         $textConstraints[0]->shouldBeAnInstanceOf('Symfony\Component\Validator\Constraints\Length');
         $textConstraints[0]->max->shouldBe(255);
 
-        $identifierConstraints = $this->guessConstraints($identifier);
-
-        $identifierConstraints->shouldHaveCount(1);
-        $identifierConstraints[0]->shouldBeAnInstanceOf('Symfony\Component\Validator\Constraints\Length');
-        $identifierConstraints[0]->max->shouldBe(255);
-
         $textareaConstraints = $this->guessConstraints($textarea);
 
         $textareaConstraints->shouldHaveCount(1);
@@ -60,10 +53,9 @@ class LengthGuesserSpec extends ObjectBehavior
         $textareaConstraints[0]->max->shouldBe(65535);
     }
 
-    function it_enforces_the_max_characters_constraint($text, $identifier, $textarea)
+    function it_enforces_the_max_characters_constraint($text, $textarea)
     {
         $text->getMaxCharacters()->willReturn(100);
-        $identifier->getMaxCharacters()->willReturn(200);
         $textarea->getMaxCharacters()->willReturn(500);
 
         $textConstraints = $this->guessConstraints($text);
@@ -72,13 +64,6 @@ class LengthGuesserSpec extends ObjectBehavior
         $textConstraint = $textConstraints[0];
         $textConstraint->shouldBeAnInstanceOf('Symfony\Component\Validator\Constraints\Length');
         $textConstraint->max->shouldBe(100);
-
-        $identifierConstraints = $this->guessConstraints($identifier);
-
-        $identifierConstraints->shouldHaveCount(1);
-        $identifierConstraint = $identifierConstraints[0];
-        $identifierConstraint->shouldBeAnInstanceOf('Symfony\Component\Validator\Constraints\Length');
-        $identifierConstraint->max->shouldBe(200);
 
         $textareaConstraints = $this->guessConstraints($textarea);
 

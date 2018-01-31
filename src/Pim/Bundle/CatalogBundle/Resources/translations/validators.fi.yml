@@ -1,19 +1,20 @@
-An identifier attribute already exists.: Määritteen tunnus on jo olemassa.
+An identifier attribute already exists.: Tunnisteattribuutti on jo olemassa.
 Attribute code may contain only letters, numbers and underscore: Attribuutin koodi voi sisältää vain kirjaimia, numeroita ja alaviivoja
 Attribute code may contain only letters (at least one), numbers and underscores: Attribuutin koodi voi sisältää vain kirjaimia (ainakin yksi), numeroita ja alaviivoja
-This attribute type can't be used as a grid filter: Tätä määritetyyppiä ei voi käyttää ruudukkosuodattimena
+This attribute type can't be used as a grid filter: Tätä attribuuttietyyppiä ei voi käyttää ruudukkosuodattimena
 This code is not available: Tämä koodi ei ole käytettävissä
-This attribute type must be required: Tämän määritetyypin on oltava pakollinen
-This attribute type can't be required: Tämä määritetyyppi ei voi olla pakollinen
-This attribute type can't have unique value: Tällä määritetyypillä ei voi olla uniikkia arvoa
-No default value may be specified for this attribute type: Tälle määritetyypille ei saa määrittää oletusarvoa
+This attribute type must be required: Tämän attribuuttityypin on oltava pakollinen
+This attribute type can't be required: Tämä attribuuttityyppi ei voi olla pakollinen
+This attribute type can't have unique value: Tällä attribuuttityypillä ei voi olla yksilöllistä arvoa
+No default value may be specified for this attribute type: Tälle attribuuttityypille ei saa määrittää oletusarvoa
 This value should be Yes or No: Tämän arvon on oltava kyllä tai ei
 This value should not be blank: Tämä arvo ei saa olla tyhjä
 Option code may contain only letters, numbers and underscores: Vaihtoehtokoodi voi sisältää vain kirjaimia, numeroita ja alaviivoja
 Option code may contain only letters (at least one), numbers and underscores: Vaihtoehto koodi voi sisältää vain kirjaimia (ainakin yksi), numeroita ja alaviivoja
 This value should not be a decimal.: Tämän arvon pitäisi olla desimaalimuodossa.
 'The file extension is not allowed (allowed extensions: %extensions%).': 'Tiedostotunnistetta ei sallita (sallitut: %extensions%).'
-"The value %value% is already set on another product for the unique attribute %attribute%": Arvo %value% on jo määritetty toiseen tuotteeseen ominaisuutena %attribute%
+"The value %value% is already set on another product for the unique attribute %attribute%": Arvo %value% on jo määritetty toisen tuotteen yksilöivälle attribuutille %attribute%
+The same identifier is already set on another product: Sama tunnus on jo toisen tuotteen käytössä
 regex.comma_or_semicolon.message: Tässä kentässä ei saa olla pilkkuja tai puolipisteitä.
 file.extensions.message: 'Tiedostotunnistetta ei sallita (sallitut: %extensions%).'
 "This type of value expects the use of {{ decimal_separator }} to separate decimals.": Tämäntyyppinen arvo vaatii merkin {{ decimal_separator }} käyttämistä desimaalien erottelussa.
@@ -21,3 +22,56 @@ file.extensions.message: 'Tiedostotunnistetta ei sallita (sallitut: %extensions%
 "This type of value expects the use of comma (,) to separate decimals.": Tämäntyyppinen arvo vaatii pilkun (,) käyttöä desimaalien erottelussa.
 "This type of value expects the use of arabic decimal separator (٫) to separate decimals.": Tämäntyyppinen arvo vaatii arabialaisen desimaalierottimen (٫) käyttöä desimaalien erottelussa.
 "This type of value expects the use of the format {{ date_format }} for dates.": Tämäntyyppinen arvo vaatii muodon {{ date_format }} käyttöä päivämäärille.
+"The category \"%category%\" has to be a root category.": Kategorian "%category%" täytyy olla juuritason luokka.
+"The attribute \"%attributeCode%\" does not exist.": Attribuutti "%attributeCode%" ei ole olemassa.
+"The attribute \"%attributeCode%\" is not a metric attribute.": Attribuutti ”%attributeCode%” ei ole metrinen attribuutti.
+"The unit \"%unitCode%\" does not exist or does not belong to the default metric family of the given attribute \"%attributeCode%\".": Yksikköä "%unitCode%" ei ole tai se ei kuulu attribuutin "%attributeCode%" oletusarvoiseen metriseen perheeseen.
+"The currency \"%currency%\" has to be activated.": Valuutta "%currency%" on aktivoitava.
+product_model.code.not_blank.message: Tuotemallin koodi ei saa olla tyhjä.
+product_model.code.unique.message: Sama tunnus on jo toisen tuotemallin käytössä.
+product_model.family_variant.not_blank.message: Tuotemallin varianttiperhe ei voi saa olla tyhjä.
+pim_catalog:
+  constraint:
+    can_have_family_variant_empty_axis_value: 'Attribuutti "%attribute%" ei voi olla tyhjä, koska se on määritetty tämän entiteetin varianttiulottuvuudeksi'
+    can_have_family_variant_duplicate_axis_value: 'Arvoa "%values%" ei voida asettaa attribuutin "%attributes%" varianttiulottuvuudeksi, koska se on jo käytössä rinnakkaisella entiteetillä'
+    cannot_have_product_model_as_parent: 'Tuotemallilla "%product_model%" ei voi olla tuotemalli "%parent_product_model%" ylätason tuotemallina'
+    cannot_have_parent: 'Tuotemallilla "%product_model%" ei voi olla ylätason tuotemallia'
+    attribute_does_not_belong_to_family: 'Attribuutti "%attribute%" ei kuulu perheeseen "%family%"'
+    variant_product_invalid_family: 'Variantin perhe on oltava sama kuin ylätason tuotteella'
+    not_null_family: Perhe ei voi olla "null", koska tuote, jonka tunnus on "%sku%", on variantti.
+    variant_product_has_parent: 'Variantilla "%variant_product%" on oltava ylätason tuote'
+    invalid_variant_product_parent: 'Variantilla "%variant_product%" ei voi olla tuotemallia "%product_model%" ylätason tuotteena, (tähän tuotemalliin voi kuulua vain toisia tuotemalleja)'
+    modified_variant_axis_value: 'Varianttiulottuvuutta "%variant_axis%" ei voi muokata arvolla "%provided_value%"'
+    family_variant_axes_immutable: 'Varianttiulottuvuuksia ei voi muokata tasolla "%level%"'
+    family_variant_axes_attribute_type_unique: Varianttiulottuvuus "%axis%" ei voi olla arvoltaan yksilöllinen tai tunniste
+    family_variant_axes_attribute_type: Varianttiulottuvuuden "%axis%" on oltava tyypiltään kyllä/ei, yksinkertainen valinta, yksinkertainen valinta (viitetiedot) tai metrinen
+    family_variant_axes_wrong_type: Variantin ulottuvuus ”%axis%” ei voi olla aluekohtainen, kanavakohtainen eikä kielikohtainen
+    family_variant_no_axis: Vähintään yksi attribuutti on määritettävä varianttiulottuvuudeksi tasolla "%level%"
+    family_variant_has_family_attribute: 'Attribuuttia "%attribute%" ei voi lisätä varianttiperheeseen "%family_variant%", koska se ei ole perheen "%family%" attribuutti'
+    family_variant_level_do_not_exist: Tasolla "%level%" ei ole määritetty varianttiattribuuttia
+    family_variant_no_level: Vähintään yksi taso on määritettävä varianttiperheelle
+    family_variant_maximum_number_of_level: Varianttiperheellä ei voi olla enemmän kuin "%level%" taso
+    family_variant_unique_attributes_in_last_level: Yksilöllinen attribuutti "%attribute%" on asetettava tuotetasolle
+    product_identifier: Nämä tunnisteet "%s" eivät ole olemassa.
+    0: Odottamaton virhe tapahtui.
+    100: Odottamaton arvo
+    101: Tämä kenttä vaatii totuusarvon.
+    102: Tämä kenttä vaatii liukulukuarvon.
+    103: Tämä kenttä vaatii kokonaislukuarvon.
+    104: Tämä kenttä vaatii numeerisen arvon.
+    105: Tämä kenttä vaatii merkkijonoarvon.
+    106: Tämä kenttä vaatii taulukkoarvon.
+    107: Tämä kenttä vaatii arvon sisäkkäisinä taulukkoina.
+    200: Tapahtui sisäinen virhe
+    201: Tapahtui sisäinen virhe
+    202: Tämä kenttä vaatii numeerisen arvon.
+    203: Tämä kenttä vaatii merkkijonoarvon.
+    204: Tämä kenttä vaatii merkkijonoarvon.
+    205: Tapahtui sisäinen virhe
+    300: Tämä kenttä vaatii kelvollisen entiteettikoodin.
+    301: Tämä kenttä vaatii kelvollisen laajuuden ja lokaation.
+    302: Tämä kenttä vaatii kelvollisen laajuuden.
+    303: Tämä kenttä vaatii kelvollisen assosiaatiomuodon.
+    pim_immutable_product_validator: Sama tunnus on jo toisen tuotteen käytössä
+    pim_immutable_product_model_validator: Sama tunnus on jo toisen tuotemallin käytössä.
+

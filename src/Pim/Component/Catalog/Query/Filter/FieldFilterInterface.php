@@ -20,14 +20,14 @@ interface FieldFilterInterface extends FilterInterface
      * @param string       $operator the used operator
      * @param string|array $value    the value(s) to filter
      * @param string       $locale   the locale
-     * @param string       $scope    the scope
+     * @param string       $channel  the channel
      * @param array        $options  the filter options
      *
      * @throws PropertyException
      *
      * @return FieldFilterInterface
      */
-    public function addFieldFilter($field, $operator, $value, $locale = null, $scope = null, $options = []);
+    public function addFieldFilter($field, $operator, $value, $locale = null, $channel = null, $options = []);
 
     /**
      * This filter supports the field

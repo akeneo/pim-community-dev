@@ -1,11 +1,8 @@
 parameters:
-    pim_enrich.form.type.attribute.class:        Pim\Bundle\EnrichBundle\Form\Type\AttributeType
     pim_enrich.form.type.group.class:            Pim\Bundle\EnrichBundle\Form\Type\GroupType
-    pim_enrich.form.type.variant_group.class:    Pim\Bundle\EnrichBundle\Form\Type\VariantGroupType
     pim_enrich.form.type.family.class:           Pim\Bundle\EnrichBundle\Form\Type\FamilyType
     pim_enrich.form.type.category.class:         Pim\Bundle\EnrichBundle\Form\Type\CategoryType
     pim_enrich.form.type.group_type.class:       Pim\Bundle\EnrichBundle\Form\Type\GroupTypeType
-    pim_enrich.form.type.attribute_group.class:  Pim\Bundle\EnrichBundle\Form\Type\AttributeGroupType
     pim_enrich.form.type.association.class:      Pim\Bundle\EnrichBundle\Form\Type\AssociationType
     pim_enrich.form.type.association_type.class: Pim\Bundle\EnrichBundle\Form\Type\AssociationTypeType
     pim_enrich.form.type.media.class:            Pim\Bundle\EnrichBundle\Form\Type\MediaType
@@ -16,39 +13,17 @@ parameters:
     pim_enrich.form.type.attribute_option_create.class:             Pim\Bundle\EnrichBundle\Form\Type\AttributeOptionCreateType
     pim_enrich.form.type.attribute_option_value.class:              Pim\Bundle\EnrichBundle\Form\Type\AttributeOptionValueType
     pim_enrich.form.type.available_attributes.class:                Pim\Bundle\EnrichBundle\Form\Type\AvailableAttributesType
-    pim_enrich.form.type.attribute_property_available_locale.class: Pim\Bundle\EnrichBundle\Form\Type\AttributeProperty\AvailableLocalesType
-    pim_enrich.form.type.attribute_property_options.class:          Pim\Bundle\EnrichBundle\Form\Type\AttributeProperty\OptionsType
-    pim_enrich.form.type.attribute_requirement.class:               Pim\Bundle\EnrichBundle\Form\Type\AttributeRequirementType
     pim_enrich.form.type.localized_collection.class:                Pim\Bundle\EnrichBundle\Form\Type\LocalizedCollectionType
 
     pim_enrich.form.type.light_entity.class: Pim\Bundle\EnrichBundle\Form\Type\LightEntityType
 
     pim_enrich.form.type.object_identifier.class: Pim\Bundle\EnrichBundle\Form\Type\ObjectIdentifierType
 
-    pim_enrich.form.type.choose_action.class:              Pim\Bundle\EnrichBundle\Form\Type\MassEditChooseActionType
-    pim_enrich.form.type.edit_common_attributes.class:     Pim\Bundle\EnrichBundle\Form\Type\MassEditAction\EditCommonAttributesType
-    pim_enrich.form.type.add_to_groups.class:              Pim\Bundle\EnrichBundle\Form\Type\MassEditAction\AddToGroupsType
-    pim_enrich.form.type.add_to_variant_group.class:       Pim\Bundle\EnrichBundle\Form\Type\MassEditAction\AddToVariantGroupType
-    pim_enrich.form.type.change_family.class:              Pim\Bundle\EnrichBundle\Form\Type\MassEditAction\ChangeFamilyType
-    pim_enrich.form.type.change_status.class:              Pim\Bundle\EnrichBundle\Form\Type\MassEditAction\ChangeStatusType
-    pim_enrich.form.type.classify.class:                   Pim\Bundle\EnrichBundle\Form\Type\MassEditAction\ClassifyType
-    pim_enrich.form.type.set_attribute_requirements.class: Pim\Bundle\EnrichBundle\Form\Type\MassEditAction\SetAttributeRequirementsType
     pim_enrich.form.type.translatable_field.class:         Pim\Bundle\EnrichBundle\Form\Type\TranslatableFieldType
 
     pim_enrich.type.entity_identifier.class: Pim\Bundle\EnrichBundle\Form\Type\EntityIdentifierType
 
 services:
-    pim_enrich.form.type.attribute:
-        class: '%pim_enrich.form.type.attribute.class%'
-        tags:
-            - { name: form.type, alias: pim_enrich_attribute }
-        arguments:
-            - '@pim_catalog.registry.attribute_type'
-            - '@pim_enrich.form.subscriber.attribute'
-            - '%pim_catalog.entity.attribute_translation.class%'
-            - '%pim_catalog.entity.attribute.class%'
-            - '%pim_catalog.entity.attribute_group.class%'
-
     pim_enrich.form.type.product_grid_filter_choice:
         class: '%pim_enrich.form.type.product_grid_filter_choice.class%'
         arguments:
@@ -80,29 +55,12 @@ services:
         tags:
             - { name: form.type, alias: pim_attribute_option_create }
 
-    pim_enrich.form.type.attribute_group:
-        class: '%pim_enrich.form.type.attribute_group.class%'
-        arguments:
-            - '%pim_catalog.entity.attribute_group.class%'
-        tags:
-            - { name: form.type, alias: pim_enrich_attributegroup }
-        calls:
-            - [addEventSubscriber, ['@pim_enrich.form.subscriber.set_attribute_group_sort_order']]
-
     pim_enrich.form.type.family:
         class: '%pim_enrich.form.type.family.class%'
         arguments:
             - '%pim_catalog.entity.family.class%'
         tags:
             - { name: form.type, alias: pim_enrich_family }
-
-    # @deprecated Will be removed in 1.8, is not used anymore
-    pim_enrich.form.type.attribute_requirement:
-        class: '%pim_enrich.form.type.attribute_requirement.class%'
-        arguments:
-            - '%pim_catalog.entity.attribute_requirement.class%'
-        tags:
-            - { name: form.type, alias: pim_enrich_attribute_requirement }
 
     pim_enrich.form.type.category:
         class: '%pim_enrich.form.type.category.class%'
@@ -124,16 +82,6 @@ services:
             - '%pim_catalog.entity.group.class%'
         tags:
             - { name: form.type, alias: pim_enrich_group }
-
-    pim_enrich.form.type.variant_group:
-        class: '%pim_enrich.form.type.variant_group.class%'
-        arguments:
-            - '%pim_catalog.entity.attribute.class%'
-            - '%pim_catalog.entity.group.class%'
-        calls:
-            - [addEventSubscriber, ['@pim_enrich.form.subscriber.add_variant_group_axes']]
-        tags:
-            - { name: form.type, alias: pim_enrich_variant_group }
 
     pim_enrich.form.type.group_type:
         class: '%pim_enrich.form.type.group_type.class%'
@@ -188,79 +136,11 @@ services:
         tags:
             - { name: form.type, alias: pim_object_identifier }
 
-    # Attribute property types
-    pim_enrich.form.type.available_locales:
-        class: '%pim_enrich.form.type.attribute_property_available_locale.class%'
-        tags:
-            - { name: form.type, alias: pim_enrich_available_locales }
-
-    # Mass edit form types
-    pim_enrich.form.type.choose_action:
-        class: '%pim_enrich.form.type.choose_action.class%'
-
-    pim_enrich.form.type.edit_common_attributes:
-        class: '%pim_enrich.form.type.edit_common_attributes.class%'
-        arguments:
-            - '%pim_enrich.mass_edit_action.edit_common_attributes.class%'
-        tags:
-            - { name: form.type, alias: pim_enrich_mass_edit_common_attributes }
-
-    pim_enrich.form.type.add_to_groups:
-        class: %pim_enrich.form.type.add_to_groups.class%
-        arguments:
-            - '@pim_catalog.repository.group'
-            - '%pim_catalog.entity.group.class%'
-            - '%pim_enrich.mass_edit_action.add_to_groups.class%'
-        tags:
-            - { name: form.type, alias: pim_enrich_mass_add_to_groups }
-
-    pim_enrich.form.type.add_to_variant_group:
-        class: '%pim_enrich.form.type.add_to_variant_group.class%'
-        arguments:
-            - '@pim_catalog.repository.product_mass_action'
-            - '@pim_catalog.repository.group'
-            - '%pim_catalog.entity.group.class%'
-            - '%pim_enrich.mass_edit_action.add_to_variant_group.class%'
-        tags:
-            - { name: form.type, alias: pim_enrich_mass_add_to_variant_group }
-
-    pim_enrich.form.type.change_family:
-        class: '%pim_enrich.form.type.change_family.class%'
-        arguments:
-            - '%pim_enrich.mass_edit_action.change_family.class%'
-            - '@pim_catalog.repository.family'
-        tags:
-            - { name: form.type, alias: pim_enrich_mass_change_family }
-
-    pim_enrich.form.type.change_status:
-        class: '%pim_enrich.form.type.change_status.class%'
-        arguments:
-            - '%pim_enrich.mass_edit_action.change_status.class%'
-        tags:
-            - { name: form.type, alias: pim_enrich_mass_change_status }
-
-    pim_enrich.form.type.classify:
-        class: '%pim_enrich.form.type.classify.class%'
-        arguments:
-            - '@pim_catalog.repository.category'
-            - '%pim_enrich.mass_edit_action.classify.class%'
-            - 'pim_enrich_mass_classify'
-        tags:
-            - { name: form.type, alias: pim_enrich_mass_classify }
-
-    pim_enrich.form.type.set_attribute_requirements:
-        class: '%pim_enrich.form.type.set_attribute_requirements.class%'
-        arguments:
-            - '%pim_enrich.mass_edit_action.set_attribute_requirements.class%'
-        tags:
-            - { name: form.type, alias: pim_enrich_mass_set_attribute_requirements }
-
     pim_enrich.form.type.translatable_field:
         class: '%pim_enrich.form.type.translatable_field.class%'
         arguments:
             - '@validator'
             - '@pim_user.context.user'
-            - '@pim_catalog.helper.locale'
         tags:
             - { name: form.type, alias: pim_translatable_field }
 

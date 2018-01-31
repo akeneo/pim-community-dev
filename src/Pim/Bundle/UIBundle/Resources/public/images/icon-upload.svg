@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <defs></defs>
+    <g id="24x24" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="icon-upload" fill="#67768A">
+            <path d="M11.5,5.91421356 L7.05025253,10.363961 L6.34314575,9.65685425 L12,4 L17.6568542,9.65685425 L16.9497475,10.363961 L12.5,5.91421356 L12.5,17 L11.5,17 L11.5,5.91421356 Z M5,19 L19,19 L19,16 L20,16 L20,20 L19.5,20 L4.5,20 L4,20 L4,16 L5,16 L5,19 Z M14,15 L20,15 L20,16 L14,16 L14,15 Z M4,15 L10,15 L10,16 L4,16 L4,15 Z" id="Combined-Shape"></path>
+        </g>
+    </g>
+</svg>

@@ -36,29 +36,17 @@ pim_import_export:
       history.title: Historie
       job_content.title: Inhalt
 pim_title.export_profile.index: Verwaltung der Export-Profile
-pim_title.export_profile.edit: Export-Profile %job.label% | Bearbeiten
-pim_title.export_profile.show: Export-Profile %job.label% | Anzeigen
 pim_title.export_execution.index: Historie der ausgeführten Exporte
 pim_title.export_execution.show: Ausgeführte Exporte | Details
 pim_title.import_profile.index: Verwaltung der Import-Profile
-pim_title.import_profile.edit: Import-Profile %job.label% | Bearbeiten
-pim_title.import_profile.show: Import-Profile %job.label% | Anzeigen
 pim_title.import_execution.index: Historie der ausgeführten Importe
 pim_title.import_execution.show: Ausgeführte Importe | Details
 export profile:
   title: Profil exportieren
-  overview: Export-Profilübersicht
-  create: Exportprofil anlegen
   edit: Exportprofil bearbeiten
-export report:
-  overview: Export-Berichte
 import profile:
   title: Profil importieren
-  overview: Import-Profilübersicht
-  create: Importprofil anlegen
   edit: Importprofil bearbeiten
-import report:
-  overview: Import-Berichte
 pim_importexport:
   acl:
     export_profile:
@@ -82,7 +70,7 @@ pim_importexport:
       launch: Ein Importprofil ausführen
       history: Import-Profil Historie ansehen
     export_execution:
-      index: Auflistung der Export-Reports
+      index: Auflistung der Exportprofile
       show: Export-Reportdetails anzeigen
       dl_log: Export-Report Logdatei herunterladen
       dl_files: Exportierte Dateien herunterladen
@@ -116,12 +104,6 @@ flash:
     removed: Der Import wurde entfernt
     updated: Der Import wurde erfolgreich aktualisiert
     running: Der Import läuft
-pim_menu:
-  item:
-    export_history: Export-Historie
-    export_profile: Export-Profile
-    import_history: Import-Historie
-    import_profile: Import-Profile
 General properties: Allgemeine Eigenschaften
 History: Historie
 pane.accordion:

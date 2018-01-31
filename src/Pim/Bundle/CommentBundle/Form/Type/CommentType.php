@@ -3,7 +3,10 @@
 namespace Pim\Bundle\CommentBundle\Form\Type;
 
 use Pim\Bundle\CommentBundle\Repository\CommentRepositoryInterface;
+use Pim\Bundle\EnrichBundle\Form\Type\ObjectIdentifierType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Translation\TranslatorInterface;
@@ -50,14 +53,21 @@ class CommentType extends AbstractType
         $builder
             ->add(
                 'body',
-                'textarea',
+                TextareaType::class,
                 ['label' => false, 'attr' => ['placeholder' => $placeholder, 'class' => 'exclude']]
             )
-            ->add('resourceName', 'hidden')
-            ->add('resourceId', 'hidden');
+            ->add('resourceName', HiddenType::class)
+            ->add('resourceId', HiddenType::class);
 
         if (true === $options['is_reply']) {
-            $builder->add('parent', 'pim_object_identifier', ['multiple' => false, 'repository' => $this->repository]);
+            $builder->add(
+                'parent',
+                ObjectIdentifierType::class,
+                [
+                    'multiple' => false,
+                    'repository' => $this->repository
+                ]
+            );
         }
     }
 
@@ -77,7 +87,7 @@ class CommentType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'pim_comment_comment';
     }

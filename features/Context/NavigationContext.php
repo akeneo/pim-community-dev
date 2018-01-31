@@ -3,15 +3,17 @@
 namespace Context;
 
 use Akeneo\Component\Batch\Model\JobInstance;
-use Behat\Behat\Context\Step;
 use Oro\Bundle\UserBundle\Entity\Role;
+use PHPUnit\Framework\Assert;
 use Pim\Behat\Context\NavigationContext as BaseNavigationContext;
 use Pim\Bundle\CatalogBundle\Entity\Category;
-use Pim\Bundle\CatalogBundle\Entity\Family;
 use Pim\Component\Catalog\Model\AssociationTypeInterface;
 use Pim\Component\Catalog\Model\AttributeGroupInterface;
 use Pim\Component\Catalog\Model\GroupTypeInterface;
 use Pim\Component\Catalog\Model\Product;
+use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Model\ProductModel;
+use Pim\Component\Catalog\Model\ProductModelInterface;
 
 /**
  * Context for navigating the website
@@ -29,13 +31,15 @@ class NavigationContext extends BaseNavigationContext
      */
     public function iGoOnTheLastExecutedJobResume($code)
     {
-        $this->wait();
-        $jobInstance   = $this->getFixturesContext()->getJobInstance($code);
-        $jobExecutions = $jobInstance->getJobExecutions();
+        $jobExecution = $this->spin(function () use ($code) {
+            $jobInstance = $this->getFixturesContext()->getJobInstance($code);
+            $this->getFixturesContext()->refresh($jobInstance);
 
-        $url = $this->getPage('MassEditJob show')->getUrl(['id' => $jobExecutions->last()->getId()]);
-        $this->getSession()->visit($this->locatePath($url));
-        $this->wait();
+            return $jobInstance->getJobExecutions()->last();
+        }, 'Cannot find the last job execution');
+        $url = $this->getPage('MassEditJob show')->getUrl(['id' => $jobExecution->getId()]);
+
+        $this->getSession()->visit($url);
     }
 
     /**
@@ -92,8 +96,9 @@ class NavigationContext extends BaseNavigationContext
 
         $this->spin(function () use ($url) {
             $actualFullUrl = $this->getSession()->getCurrentUrl();
-            $result = (bool) strpos($actualFullUrl, $url);
-            assertTrue($result, sprintf('Expecting to be on page "%s", not "%s"', $url, $actualFullUrl));
+            $result = $actualFullUrl === $url;
+
+            Assert::assertTrue($result, sprintf('Expecting to be on page "%s", not "%s"', $url, $actualFullUrl));
 
             return true;
         }, "Expected to be redirected to channel '%s'", $url);
@@ -153,7 +158,7 @@ class NavigationContext extends BaseNavigationContext
         $page   = 'GroupType';
         $getter = sprintf('get%s', $page);
         $entity = $this->getFixturesContext()->$getter($identifier);
-        $this->openPage(sprintf('%s edit', $page), ['id' => $entity->getId()]);
+        $this->openPage(sprintf('%s edit', $page), ['code' => $entity->getCode()]);
     }
 
     /**
@@ -163,10 +168,17 @@ class NavigationContext extends BaseNavigationContext
      */
     public function iAmOnTheAttributeGroupEditPage($identifier)
     {
-        $page   = 'AttributeGroup';
-        $getter = sprintf('get%s', $page);
-        $entity = $this->getFixturesContext()->$getter($identifier);
-        $this->openPage(sprintf('%s edit', $page), ['id' => $entity->getId()]);
+        $this->openPage('AttributeGroup edit', ['identifier' => $identifier]);
+    }
+
+    /**
+     * @param string $identifier
+     *
+     * @Given /^I am on the "([^"]*)" attribute page$/
+     */
+    public function iAmOnTheAttributeEditPage($identifier)
+    {
+        $this->openPage('Attribute edit', ['identifier' => $identifier]);
     }
 
     /**
@@ -211,7 +223,7 @@ class NavigationContext extends BaseNavigationContext
      */
     public function iShouldBeOnTheGroupTypePage(GroupTypeInterface $groupType)
     {
-        $expectedAddress = $this->getPage('GroupType edit')->getUrl(['id' => $groupType->getId()]);
+        $expectedAddress = $this->getPage('GroupType edit')->getUrl(['code' => $groupType->getCode()]);
         $this->assertAddress($expectedAddress);
     }
 
@@ -311,15 +323,14 @@ class NavigationContext extends BaseNavigationContext
     {
         $expectedAddress = $this->getPage('Product index')->getUrl();
         $this->assertAddress($expectedAddress);
-        $this->wait();
     }
 
     /**
-     * @param Product $product
+     * @param ProductInterface $product
      *
      * @Given /^I should be on the (product "([^"]*)") edit page$/
      */
-    public function iShouldBeOnTheProductEditPage(Product $product)
+    public function iShouldBeOnTheProductEditPage(ProductInterface $product)
     {
         $this->spin(function () use ($product) {
             $expectedAddress = $this->getPage('Product edit')->getUrl(['id' => $product->getId()]);
@@ -331,6 +342,29 @@ class NavigationContext extends BaseNavigationContext
         $this->getMainContext()->spin(function () {
             return $this->getCurrentPage()->find('css', '.AknTitleContainer-title');
         }, 'Can not find any product label');
+
+        $this->currentPage = 'Product edit';
+    }
+
+    /**
+     * @param ProductModel $productModel
+     *
+     * @Given /^I should be on the (product model "([^"]*)") edit page$/
+     */
+    public function iShouldBeOnTheProductModelEditPage(ProductModel $productModel)
+    {
+        $this->spin(function () use ($productModel) {
+            $expectedAddress = $this->getPage('ProductModel edit')->getUrl(['id' => $productModel->getId()]);
+            $this->assertAddress($expectedAddress);
+
+            return true;
+        }, sprintf('Cannot find product model "%s"', $productModel->getId()));
+
+        $this->getMainContext()->spin(function () {
+            return $this->getCurrentPage()->find('css', '.AknTitleContainer-title');
+        }, 'Can not find any product model label');
+
+        $this->currentPage = 'ProductModel edit';
     }
 
     /**

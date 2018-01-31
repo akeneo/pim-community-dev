@@ -1,2 +1,0 @@
-parameters:
-    pim_api.repository.product.class: Pim\Bundle\ApiBundle\Doctrine\ORM\Repository\ProductRepository

@@ -6,6 +6,7 @@ use Oro\Bundle\DataGridBundle\Datagrid\RequestParameters;
 use Pim\Bundle\CatalogBundle\Context\CatalogContext;
 use Pim\Bundle\UserBundle\Context\UserContext;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 /**
  * Get parameters from request and bind then to query builder
@@ -16,20 +17,14 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class AddParametersToProductGridListener extends AddParametersToGridListener
 {
-    /**
-     * @var UserContext
-     */
+    /** @var UserContext */
     protected $userContext;
 
-    /**
-     * @var CatalogContext
-     */
+    /** @var CatalogContext */
     protected $catalogContext;
 
-    /**
-     * @var Request
-     */
-    protected $request;
+    /** @var RequestStack */
+    protected $requestStack;
 
     /**
      * @param array             $paramNames     Parameter name that should be binded to query
@@ -37,26 +32,29 @@ class AddParametersToProductGridListener extends AddParametersToGridListener
      * @param CatalogContext    $catalogContext The catalog context
      * @param UserContext       $userContext    User context
      * @param bool              $isEditMode     Whether or not to add data_in, data_not_in params to query
+     * @param RequestStack      $requestStack   Request
      */
     public function __construct(
         $paramNames,
         RequestParameters $requestParams,
         CatalogContext $catalogContext,
         UserContext $userContext,
-        $isEditMode = false
+        $isEditMode = false,
+        RequestStack $requestStack
     ) {
         parent::__construct($paramNames, $requestParams, $isEditMode);
 
         $this->catalogContext = $catalogContext;
         $this->userContext = $userContext;
+        $this->requestStack = $requestStack;
     }
 
     /**
-     * @param Request $request
+     * @return null|Request
      */
-    public function setRequest(Request $request = null)
+    protected function getRequest(): ?Request
     {
-        $this->request = $request;
+        return $this->requestStack->getCurrentRequest();
     }
 
     /**
@@ -91,7 +89,7 @@ class AddParametersToProductGridListener extends AddParametersToGridListener
             $dataLocale = $queryParameters['dataLocale'];
         }
         if (null === $dataLocale) {
-            $dataLocale = $this->request->get('dataLocale', null);
+            $dataLocale = $this->getRequest()->get('dataLocale', null);
         }
         if (null === $dataLocale) {
             $dataLocale = $this->userContext->getCurrentLocaleCode();
@@ -109,7 +107,7 @@ class AddParametersToProductGridListener extends AddParametersToGridListener
     {
         $filterValues = $this->requestParams->get('_filter');
         if (empty($filterValues)) {
-            $filterValues = $this->request->get('filters');
+            $filterValues = $this->getRequest()->get('filters');
             if (is_string($filterValues)) {
                 $filterValues = json_decode($filterValues, true);
             }

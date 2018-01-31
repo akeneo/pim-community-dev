@@ -1,23 +1,19 @@
 imports:
     - { resource: '@PimEnrichBundle/Resources/config/bundles/akeneo_batch.yml' }
-    - { resource: '@PimEnrichBundle/Resources/config/bundles/apy_js_form_validation.yml' }
     - { resource: '@PimEnrichBundle/Resources/config/bundles/assetic.yml' }
     - { resource: '@PimEnrichBundle/Resources/config/bundles/doctrine.yml' }
     - { resource: '@PimEnrichBundle/Resources/config/bundles/escape_wsse_authentication.yml' }
+    - { resource: '@PimEnrichBundle/Resources/config/bundles/fos_auth_server.yml' }
     - { resource: '@PimEnrichBundle/Resources/config/bundles/fos_js_routing.yml' }
     - { resource: '@PimEnrichBundle/Resources/config/bundles/fos_rest.yml' }
     - { resource: '@PimEnrichBundle/Resources/config/bundles/gedmo_doctrine_extensions.yml' }
     - { resource: '@PimEnrichBundle/Resources/config/bundles/liip_imagine.yml' }
     - { resource: '@PimEnrichBundle/Resources/config/bundles/oneup_flysystem.yml' }
     - { resource: '@PimEnrichBundle/Resources/config/bundles/oro_filter.yml' }
-    - { resource: '@PimEnrichBundle/Resources/config/bundles/oro_require_js.yml' }
     - { resource: '@PimEnrichBundle/Resources/config/bundles/oro_translation.yml' }
     - { resource: '@PimEnrichBundle/Resources/config/bundles/oro_user.yml' }
     - { resource: '@PimEnrichBundle/Resources/config/bundles/twig.yml' }
     - { resource: '@PimApiBundle/Resources/config/api.yml' }
-
-akeneo_storage_utils:
-    storage_driver: '%pim_catalog_product_storage_driver%'
 
 services:
     oro.cache.abstract:
@@ -29,9 +25,9 @@ services:
          tags:
              - { name: twig.extension }
     doctrine.dbal.default.wrapped_connection:
-        factory_service:      doctrine.dbal.session_connection
-        factory_method:       getWrappedConnection
-        class:                PDO
+        class: PDO
+        factory: 'doctrine.dbal.session_connection:getWrappedConnection'
+
     session.handler.pdo:
         class:     Symfony\Component\HttpFoundation\Session\Storage\Handler\PdoSessionHandler
         arguments:
@@ -54,3 +50,22 @@ pim_catalog:
             - { value: 'MM/dd/yyyy', label: 'mm/dd/yyyy' }
             - { value: 'dd/MM/yyyy', label: 'dd/mm/yyyy' }
             - { value: 'dd.MM.yyyy', label: 'dd.mm.yyyy' }
+
+akeneo_storage_utils:
+    mapping_overrides: ~
+
+akeneo_elasticsearch:
+    hosts: "%index_hosts%"
+    indexes:
+        -
+            service_name: "akeneo_elasticsearch.client.product"
+            index_name: "%product_index_name%"
+            configuration_files: "%elasticsearch_index_configuration_files%"
+        -
+            service_name: "akeneo_elasticsearch.client.product_model"
+            index_name: "%product_model_index_name%"
+            configuration_files: "%elasticsearch_index_configuration_files%"
+        -
+            service_name: "akeneo_elasticsearch.client.product_and_product_model"
+            index_name: "%product_and_product_model_index_name%"
+            configuration_files: "%elasticsearch_index_configuration_files%"

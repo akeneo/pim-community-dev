@@ -1,0 +1,21 @@
+<div class="AknFamilyVariant-header">
+    <div class="AknFamilyVariant-leftHeader AknButtonList">
+        <span class="AknButtonList-item AknFullPage-cancel cancel"></span>
+    </div>
+    <div class="AknFamilyVariant-centerHeader">
+        <div class="AknFamilyVariant-title AknFullPage-title">
+            <%- i18n.getLabel(familyVariant.labels, userContext.get('uiLocale'), familyVariant.code) %>
+        </div>
+        <div class="AknFamilyVariant-subTitle AknFullPage-description">
+            <%- familyVariant.code %>
+        </div>
+        <div class="AknFamilyVariant-description" ><%- __('pim_enrich.entity.family.variant.update_description') %></div>
+    </div>
+    <div class="AknFamilyVariant-rightHeader">
+        <div class="AknButtonList" data-drop-zone="buttons"></div>
+        <div class="AknButtonList" data-drop-zone="state">
+
+        </div>
+    </div>
+</div>
+<div data-drop-zone="content"></div>

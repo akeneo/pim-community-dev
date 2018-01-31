@@ -1,0 +1,51 @@
+parameters:
+    pim_analytics.repository.entity_countable.class:      Pim\Bundle\AnalyticsBundle\Repository\EntityCountableRepository
+
+services:
+    pim_analytics.repository.channel:
+        class: '%pim_analytics.repository.entity_countable.class%'
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '%pim_catalog.entity.channel.class%'
+
+    pim_analytics.repository.product:
+        class: '%pim_analytics.repository.entity_countable.class%'
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '%pim_catalog.entity.product.class%'
+
+    pim_analytics.repository.family:
+        class: '%pim_analytics.repository.entity_countable.class%'
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '%pim_catalog.entity.family.class%'
+
+    pim_analytics.repository.user:
+        class: '%pim_analytics.repository.entity_countable.class%'
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '%pim_user.entity.user.class%'
+
+    pim_analytics.repository.product_model:
+        class: '%pim_analytics.repository.entity_countable.class%'
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '%pim_catalog.entity.product_model.class%'
+
+    pim_analytics.repository.variant_product:
+        class: '%pim_analytics.repository.entity_countable.class%'
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '%pim_catalog.entity.variant_product.class%'
+
+    pim_analytics.repository.family_variant:
+        class: '%pim_analytics.repository.entity_countable.class%'
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '%pim_catalog.entity.family_variant.class%'
+
+    pim_analytics.repository.attribute:
+        class: '%pim_analytics.repository.entity_countable.class%'
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '%pim_catalog.entity.attribute.class%'

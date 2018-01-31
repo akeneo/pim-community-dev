@@ -1,18 +1,50 @@
-{% extends 'PimEnrichBundle::layout.html.twig' %}
+{% block content %}
+    <div id="category-form" style="flex-grow:1" class="AknDefault-mainContent">
+        {% include 'PimEnrichBundle:CategoryTree:form.html.twig' with {'form': form} %}
+    </div>
 
-{% oro_title_set({ params: { "%category.label%": form.vars.value.label } }) %}
-
-{% block head_script %}
-    {{ parent() }}
     {% include "PimEnrichBundle:CategoryTree:_scripts.html.twig" %}
 {% endblock %}
 
-{% block content %}
-    <div id="category-tree-container" class="row-fluid">
-        <div id="tree" {% if form.vars.value.id %} data-node-id="{{ form.vars.value.id }}"{% elseif form.vars.value.parent %} data-node-id="{{ form.vars.value.parent.id }}"{% endif %}{% if resource_granted(acl ~ '_category_edit') %} data-editable="true"{% endif %}{% if resource_granted(acl ~ '_category_create') %} data-creatable="true"{% endif %}></div>
+<script type="text/javascript">
+    window.flashMessages = JSON.parse('{{ app.session.flashbag.all|json_encode()|raw }}');
+</script>
 
-        <div id="category-form">
-            {% include 'PimEnrichBundle:CategoryTree:form.html.twig' with {'form': form} %}
-        </div>
-    </div>
-{% endblock %}
+<script>
+    require(
+        [
+            'pim/common/breadcrumbs',
+            'pim/fetcher-registry',
+            'pim/form-builder',
+            'pim/page-title'
+        ],
+        function(
+            Breadcrumbs,
+            FetcherRegistry,
+            FormBuilder,
+            PageTitle
+        ) {
+            $(function() {
+                var breadcrumbs = new Breadcrumbs({
+                    config: {
+                        tab: 'pim-menu-settings',
+                        item: 'pim-menu-settings-product-category'
+                    }
+                });
+                breadcrumbs.configure().then(function () {
+                    breadcrumbs.render();
+                    $('*[data-drop-zone="breadcrumbs"]').append(breadcrumbs.$el);
+                });
+
+                PageTitle.set({ 'category.label': '{{ form.vars.value.label }}' });
+
+                FetcherRegistry.initialize().done(function () {
+                    FormBuilder.build('pim-menu-user-navigation').then(function (form) {
+                        $('.user-menu').append(form.el);
+                        form.render();
+                    }.bind(this));
+                });
+            });
+        }
+    );
+</script>

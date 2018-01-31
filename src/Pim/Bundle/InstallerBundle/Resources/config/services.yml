@@ -1,15 +1,15 @@
 parameters:
-    pim_installer.yaml_persister.class:       Pim\Bundle\InstallerBundle\Persister\YamlPersister
-    pim_installer.directories_registry.class: Pim\Bundle\InstallerBundle\PimDirectoriesRegistry
+    pim_installer.install_status_manager.class:       Pim\Bundle\InstallerBundle\InstallStatusManager\InstallStatusManager
+    pim_installer.directories_registry.class:         Pim\Bundle\InstallerBundle\PimDirectoriesRegistry
 
 services:
-    pim_installer.yaml_persister:
-        class: '%pim_installer.yaml_persister.class%'
-        arguments:
-            - '%kernel.root_dir%/config'
-            - '%kernel.environment%'
+    pim_installer.install_status_manager:
+            class: '%pim_installer.install_status_manager.class%'
+            arguments:
+                - '@doctrine'
+                - '%database_name%'
 
     pim_installer.directories_registry:
         class: '%pim_installer.directories_registry.class%'
         arguments:
-            - ['%catalog_storage_dir%', '%tmp_storage_dir%', '%archive_dir%', '%upload_dir%']
+            - ['%catalog_storage_dir%', '%tmp_storage_dir%', '%archive_dir%', '%upload_dir%', '%logs_dir%', '%upload_tmp_dir%']

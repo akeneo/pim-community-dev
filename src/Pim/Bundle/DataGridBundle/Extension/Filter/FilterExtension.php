@@ -150,8 +150,7 @@ class FilterExtension extends AbstractExtension
         }
 
         $data->offsetAddToArray('state', ['filters' => $filtersState])
-            ->offsetAddToArray('filters', $filtersMetaData)
-            ->offsetAddToArray(MetadataObject::REQUIRED_MODULES_KEY, ['oro/datafilter-builder']);
+            ->offsetAddToArray('filters', $filtersMetaData);
     }
 
     /**
@@ -221,6 +220,10 @@ class FilterExtension extends AbstractExtension
     {
         $gridConfigs = [
             'product-grid' => [
+                'type'      => 'product_category',
+                'data_name' => 'category'
+            ],
+            'association-product-picker-grid' => [
                 'type'      => 'product_category',
                 'data_name' => 'category'
             ]

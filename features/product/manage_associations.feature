@@ -26,7 +26,7 @@ Feature: Manage associations
     And I wait for the "csv_footwear_product_import" job to finish
     And I should see the text "Association import COMPLETED"
     And I edit the "deletable_product" product
-    And I press the "Delete" button
+    And I press the secondary action "Delete"
     And I confirm the deletion
     And I am on the "csv_footwear_product_import" import job page
     When I launch the import job
@@ -52,12 +52,12 @@ Feature: Manage associations
     And I wait for the "csv_footwear_product_import" job to finish
     And I should see the text "Association import COMPLETED"
     And I edit the "deletable_product" product
-    And I press the "Delete" button
+    And I press the secondary action "Delete"
     And I confirm the deletion
     When I edit the "<product_sku>" product
-    And I visit the "Associations" tab
-    And I visit the "<group_name>" group
-    Then the rows "<checked_rows>" should be checked
+    And I visit the "Associations" column tab
+    And I visit the "<group_name>" association type
+    Then I should see the text "<checked_rows>"
 
   Examples:
     | product_sku                           | group_name | checked_rows                 |

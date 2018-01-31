@@ -1,6 +1,18 @@
 /* global define */
-define(['jquery', 'underscore', 'oro/translator', 'oro/datafilter/abstract-filter'],
-function($, _, __, AbstractFilter) {
+define(
+    [
+        'jquery',
+        'underscore',
+        'oro/translator',
+        'oro/datafilter/abstract-filter',
+        'pim/template/datagrid/filter/text-filter'
+    ], function(
+        $,
+        _,
+        __,
+        AbstractFilter,
+        criteriaTemplate
+    ) {
     'use strict';
 
     /**
@@ -15,15 +27,19 @@ function($, _, __, AbstractFilter) {
      * @extends oro.datafilter.AbstractFilter
      */
     return AbstractFilter.extend({
+        outsideEventListener: null,
+
         /** @property */
         template: _.template(
-            '<button type="button" class="AknActionButton filter-criteria-selector oro-drop-opener oro-dropdown-toggle">' +
-                '<% if (showLabel) { %><%= label %>: <% } %>' +
-                '<span class="filter-criteria-hint"><%= criteriaHint %></span>' +
-                '<span class="AknActionButton-caret AknCaret"></span>' +
-            '</button>' +
-            '<% if (canDisable) { %><a href="<%= nullLink %>" class="AknFilterBox-disableFilter disable-filter"><i class="icon-remove hide-text"><%- _.__("Close") %></i></a><% } %>' +
-            '<div class="filter-criteria dropdown-menu" />'
+            '<div class="AknFilterBox-filter filter-criteria-selector oro-drop-opener">' +
+                '<% if (showLabel) { %>' +
+                    '<span class="AknFilterBox-filterLabel"><%= label %></span>' +
+                '<% } %>' +
+                '<span class="AknFilterBox-filterCriteria filter-criteria-hint"><%= criteriaHint %></span>' +
+                '<span class="AknFilterBox-filterCaret"></span>' +
+            '</div>' +
+            '<div class="filter-criteria dropdown-menu" />' +
+            '<% if (canDisable) { %><div class="AknFilterBox-disableFilter AknIconButton AknIconButton--small AknIconButton--remove disable-filter"></div><% } %>'
         ),
 
         /**
@@ -31,18 +47,7 @@ function($, _, __, AbstractFilter) {
          *
          * @property
          */
-        popupCriteriaTemplate: _.template(
-            '<div>' +
-                '<div>' +
-                    '<input type="text" name="value" value=""/>' +
-                '</div>' +
-                '<div class="oro-action">' +
-                    '<div class="btn-group">' +
-                        '<button type="button" class="btn btn-primary filter-update"><%- _.__("Update") %></button>' +
-                    '</div>' +
-                '</div>' +
-            '</div>'
-        ),
+        popupCriteriaTemplate: _.template(criteriaTemplate),
 
         /**
          * @property {Boolean}
@@ -74,6 +79,8 @@ function($, _, __, AbstractFilter) {
                 end: 'input'
             }
         },
+
+        operatorChoices: [],
 
         /**
          * View events
@@ -176,27 +183,13 @@ function($, _, __, AbstractFilter) {
         },
 
         /**
-         * Handle click outside of criteria popup to hide it
-         *
-         * @param {Event} e
-         * @protected
-         */
-        _onClickOutsideCriteria: function(e) {
-            var elem = this.$(this.criteriaSelector);
-
-            if (elem.get(0) !== e.target && !elem.has(e.target).length) {
-                this._hideCriteria();
-                this.setValue(this._formatRawValue(this._readDOMValue()));
-                e.stopPropagation();
-            }
-        },
-
-        /**
          * Render filter view
          *
          * @return {*}
          */
         render: function () {
+            AbstractFilter.prototype.render.apply(this, arguments);
+
             this.$el.empty();
             this.$el.append(
                 this.template({
@@ -208,12 +201,6 @@ function($, _, __, AbstractFilter) {
                 })
             );
             this._renderCriteria(this.$(this.criteriaSelector));
-            this._clickOutsideCriteriaCallback = _.bind(function(e) {
-                if (this.popupCriteriaShowed) {
-                    this._onClickOutsideCriteria(e);
-                }
-            }, this);
-            $('body').on('click', this._clickOutsideCriteriaCallback);
 
             return this;
         },
@@ -226,8 +213,27 @@ function($, _, __, AbstractFilter) {
          * @return {*}
          */
         _renderCriteria: function(el) {
-            $(el).append(this.popupCriteriaTemplate());
+            $(el).append(
+                this.popupCriteriaTemplate({
+                    label: this.label,
+                    operatorChoices: this._getOperatorChoices(),
+                    selectedOperator: this.emptyValue.type,
+                    emptyChoice: this.emptyChoice,
+                    selectedOperatorLabel: this._getOperatorChoices()[this.emptyValue.type],
+                    operatorLabel: __('pim.grid.choice_filter.operator'),
+                    updateLabel: __('Update')
+                })
+            );
             return this;
+        },
+
+        /**
+         * Returns a list of operator { key: label }
+         *
+         * @returns {Object}
+         */
+        _getOperatorChoices() {
+            return this.operatorChoices;
         },
 
         /**
@@ -248,11 +254,39 @@ function($, _, __, AbstractFilter) {
          */
         _showCriteria: function() {
             this.$(this.criteriaSelector).show();
+            this._updateCriteriaSelectorPosition();
             this._focusCriteria();
             this._setButtonPressed(this.$(this.criteriaSelector), true);
             setTimeout(_.bind(function() {
                 this.popupCriteriaShowed = true;
             }, this), 100);
+
+            this.outsideEventListener = this.outsideClickListener.bind(this)
+            document.addEventListener('click', this.outsideEventListener);
+        },
+
+        /**
+         * Closes the criteria if the user clicks on the rest of the document.
+         *
+         * The condition is a combination of:
+         * - The click is outside of the criteria Selector,
+         * - The click is in the app (this is due to select2 it removes its full position layer, leading to a
+         *   event.target == body),
+         * - The popup is open.
+         *
+         * @param {Event} event
+         */
+        outsideClickListener(event) {
+            if (!$(event.target).closest(this.criteriaSelector).length &&
+                (
+                    $(event.target).closest('.app').length ||
+                    $(event.target).closest('.modal--fullPage').length
+                ) && this.popupCriteriaShowed) {
+                this._hideCriteria();
+                this.setValue(this._formatRawValue(this._readDOMValue()));
+
+                document.removeEventListener('mousedown', this.outsideEventListener);
+            }
         },
 
         /**
@@ -322,6 +356,24 @@ function($, _, __, AbstractFilter) {
         _getCriteriaHint: function() {
             var value = (arguments.length > 0) ? this._getDisplayValue(arguments[0]) : this._getDisplayValue();
             return value.value ? '"' + value.value + '"': this.placeholder;
+        },
+
+        /**
+         * Enables text input
+         *
+         * @protected
+         */
+        _enableInput: function() {
+            this.$(this.criteriaValueSelectors.value).show();
+        },
+
+        /**
+         * Disables text input
+         *
+         * @protected
+         */
+        _disableInput: function() {
+            this.$(this.criteriaValueSelectors.value).hide();
         }
     });
 });

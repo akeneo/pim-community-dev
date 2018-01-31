@@ -1,96 +1,223 @@
 @import '../base/variables';
 
 .jstree.jstree-default {
-  padding-bottom: 50px;
+  padding: 0;
 
-  a {
-    color: @AknDefaultFontColor !important;
+  & > ul {
+    padding: 20px 0 50px 0;
+    margin-left: -20px;
+    overflow: auto;
+    max-height: ~"calc(100vh - 223px)";
+
+    .jstree-icon(@url) {
+      background: url(@url) 50% 50% no-repeat;
+      height: 22px;
+      width: 22px;
+      margin: 0 5px 0 0;
+    }
+
+    a {
+      height: 35px;
+      line-height: 26px;
+      font-size: @AknFontSizeBig;
+      padding: 0;
+      align-items: center;
+      color: @AknDarkBlue !important;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      max-width: ~"calc(100% - 32px)";
+      overflow: hidden;
+    }
+
+    ins.jstree-checkbox {
+      height: @AknCheckboxSize + 2px;
+      width: @AknCheckboxSize + 2px;
+      background-image: none;
+      background: @AknLightGray;
+      border: 1px solid @AknBorderColor;
+      border-radius: 4px;
+      margin: 0 10px 0 0;
+    }
+
+    li {
+      margin-left: 20px;
+      line-height: 0;
+      min-height: 0;
+    }
+
+    & > li {
+      margin-left: 20px;
+    }
+
+    li.jstree-leaf > ins.jstree-icon {
+      margin-right: 9px;
+      margin-top: 0;
+      height: 0;
+    }
+
+    li.jstree-checked {
+      & > a > .jstree-checkbox {
+        background-color: @AknBlue;
+        background-image: url("../../images/icon-checkwhite.svg");
+        background-position: 0 0;
+        background-size: @AknCheckboxSize @AknCheckboxSize;
+        background-repeat: no-repeat;
+        margin-bottom: 0;
+      }
+    }
+
+    li.jstree-closed > .jstree-icon,
+    li.jstree-open > .jstree-icon {
+      line-height: 62px;
+      cursor: pointer;
+      opacity: 0.5;
+    }
+
+    .jstree-hovered,
+    .jstree-clicked {
+      background: none;
+      border: none;
+      padding-left: 0;
+    }
+
+    a.jstree-loading .jstree-icon {
+      height: 22px;
+      width: 22px;
+      margin: 0 10px 0 0;
+    }
+
+    li.jstree-closed > .jstree-icon {
+      .jstree-icon("../../images/jstree/icon-right.svg");
+      background-size: 20px;
+    }
+
+    li.jstree-open > .jstree-icon {
+      .jstree-icon("../../images/jstree/icon-down.svg");
+      background-size: 20px;
+    }
+
+    li.jstree-leaf.jstree-checked > a:not(.jstree-loading):not(.jstree-clicked) .jstree-icon,
+    li.jstree-leaf:not(.jstree-checked) > a:not(.jstree-loading):not(.jstree-clicked) .jstree-icon {
+      .jstree-icon("../../images/jstree/icon-folder.svg")
+    }
+
+    li.jstree-leaf.jstree-checked > input ~ a:not(.jstree-loading):not(.jstree-clicked),
+    li.jstree-leaf.jstree-checked > input ~ a:not(.jstree-loading).jstree-clicked,
+    li.jstree-leaf.jstree-checked > a:not(.jstree-loading).jstree-clicked,
+    li.jstree-leaf:not(.jstree-checked) > a:not(.jstree-loading).jstree-clicked {
+      font-weight: bold;
+      color: @AknBlue !important;
+    }
+
+    li.jstree-leaf.jstree-checked > input ~ a:not(.jstree-loading):not(.jstree-clicked) .jstree-icon,
+    li.jstree-leaf.jstree-checked > input ~ a:not(.jstree-loading).jstree-clicked .jstree-icon,
+    li.jstree-leaf.jstree-checked > a:not(.jstree-loading).jstree-clicked .jstree-icon,
+    li.jstree-leaf:not(.jstree-checked) > a:not(.jstree-loading).jstree-clicked .jstree-icon {
+      .jstree-icon("../../images/jstree/icon-folderfull.svg")
+    }
+
+    li:not(.jstree-leaf):not(.jstree-checked) > a:not(.jstree-loading):not(.jstree-clicked) .jstree-icon,
+    li:not(.jstree-leaf).jstree-checked > a:not(.jstree-loading):not(.jstree-clicked) .jstree-icon {
+      .jstree-icon("../../images/jstree/icon-folders.svg")
+    }
+
+    li:not(.jstree-leaf).jstree-checked > input ~ a:not(.jstree-loading):not(.jstree-clicked) .jstree-icon,
+    li:not(.jstree-leaf).jstree-checked > a:not(.jstree-loading).jstree-clicked .jstree-icon,
+    li:not(.jstree-leaf).jstree-checked > input ~ a:not(.jstree-loading).jstree-clicked .jstree-icon,
+    li:not(.jstree-leaf):not(.jstree-checked) > a:not(.jstree-loading).jstree-clicked .jstree-icon {
+      .jstree-icon("../../images/jstree/icon-foldersfull.svg")
+    }
+
+    li:not(.jstree-leaf).jstree-checked > input ~ a:not(.jstree-clicked),
+    li:not(.jstree-leaf).jstree-checked > a.jstree-clicked,
+    li:not(.jstree-leaf).jstree-checked > input ~ a.jstree-clicked,
+    li:not(.jstree-leaf):not(.jstree-checked) > a.jstree-clicked {
+      font-weight: bold;
+      color: @AknBlue !important;
+    }
   }
 
   .jstree-tree-toolbar {
-    padding: 6.5px;
-    margin-bottom: 10px;
-    background: lighten(@AknGrey, 25%);
-  }
+    .select2-container {
+      .select2-choice {
+        border-left: none;
+        border-right: none;
+        border-top: none;
+        border-bottom: 1px solid @AknLightPurple;
+        color: @AknLightPurple;
+        padding: 0;
+        margin-top: -10px;
+        font-size: @AknFontSizeBig;
 
-  .jstree-hovered {
-    background: inherit !important;
-    border: inherit !important;
-    padding: 0 2px !important;
-  }
+        .select2-arrow {
+          border-left: none;
+          background: url("../../images/icon-down.svg") no-repeat 100% center;
+          background-size: 20px;
 
-  .jstree-clicked {
-    color: @AknPurple !important;
-    background: inherit !important;
-    border: inherit !important;
-    padding: 0 !important;
-    font-weight: bold;
-  }
-
-  li.jstree-open {
-    > a:not(.jstree-loading) .jstree-icon {
-      background: url("../../images/jstree/folder_standard_opened.png") 0 0 no-repeat;
-    }
-
-    > a.jstree-clicked {
-      .jstree-icon {
-        background: url("../../images/jstree/folder_selected_opened.png") 0 0 no-repeat;
-      }
-    }
-  }
-
-  li.jstree-closed {
-    > a:not(.jstree-loading) .jstree-icon {
-      background: url("../../images/jstree/folder_standard_closed.png") 0 0 no-repeat;
-    }
-
-    > a.jstree-clicked {
-      .jstree-icon {
-        background: url("../../images/jstree/folder_selected_closed.png") 0 0 no-repeat;
-      }
-    }
-  }
-
-  li.jstree-leaf {
-    > a:not(.jstree-loading) .jstree-icon {
-      background: url("../../images/jstree/folder_leaf.png") 0 0 no-repeat;
-    }
-
-    > a.jstree-clicked {
-      .jstree-icon {
-        background: url("../../images/jstree/folder_selected_leaf.png") 0 0 no-repeat;
-      }
-    }
-  }
-
-  li.jstree-unclassified {
-    > a:not(.jstree-loading) .jstree-icon {
-      background: url("../../images/jstree/folder_unclassified.png") 0 0 no-repeat;
-    }
-
-    > a.jstree-clicked {
-      .jstree-icon {
-        background: url("../../images/jstree/folder_selected_closed.png") 0 0 no-repeat;
+          b {
+            display: none;
+          }
+        }
       }
     }
   }
 
   .jstree-footer {
-    background: lighten(@AknGrey, 25%);;
-    border-top: 1px solid @AknBorderColor;
     position: absolute;
+    width: ~"calc(100% - 40px)";
+    border-top: 1px solid @AknBorderColor;
     bottom: 0;
     display: block;
-    width: 100%;
     line-height: 32px;
     overflow: hidden;
+    padding: 10px 0 20px 0;
 
-    label {
-      padding: 0 10px;
+    .control-label {
+      display: block;
+      line-height: 20px;
     }
+
+    .pull-left, .pull-right {
+      float: none;
+    }
+  }
+
+  .jstree-lockeditem {
+    height: 35px;
+    display: inline-block;
+    font-size: 14px;
+    padding: 0;
+    color: @AknDarkBlue !important;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    max-width: ~"calc(100% - 32px)";
+    overflow: hidden;
+    cursor: not-allowed;
+    font-weight: bold;
+  }
+
+  .jstree-lockedicon {
+    background: url("../../images/jstree/icon-folderfull.svg") no-repeat center 0;
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    margin: 0 4px 0 8px;
   }
 }
 
 .root-unselectable .jstree-root > a > .jstree-checkbox {
   display: none;
+}
+
+.AknColumnConfigurator-column .jstree.jstree-default {
+  margin-top: 16px;
+
+  & > ul {
+    overflow: hidden;
+    max-height: none;
+  }
+
+  .jstree-footer {
+    position: inherit;
+  }
 }

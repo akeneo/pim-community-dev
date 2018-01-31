@@ -2,16 +2,34 @@ extensions:
     oro-system-config-form:
         module: oro/form/system/config
 
+    oro-system-config-form-breadcrumbs:
+        module: pim/common/breadcrumbs
+        parent: oro-system-config-form
+        targetZone: breadcrumbs
+        config:
+            tab: pim-menu-system
+            item: pim-menu-system-configuration
+
+    oro-system-config-form-title:
+        module: pim/common/grid-title
+        parent: oro-system-config-form
+        targetZone: title
+        config:
+            title: oro_config.form.config.title
+            countable: false
+
+    oro-system-config-form-user-navigation:
+        module: pim/menu/user-navigation
+        parent: oro-system-config-form
+        targetZone: user-menu
+        config:
+            userAccount: pim_menu.user.user_account
+            logout: pim_menu.user.logout
+
     oro-system-config-tabs:
         module: pim/form/common/form-tabs
         parent: oro-system-config-form
         targetZone: content
-        position: 100
-
-    oro-system-config-system:
-        module: oro/form/system/config/system
-        parent: oro-system-config-tabs
-        targetZone: container
         position: 100
 
     oro-system-config-save:
@@ -20,22 +38,16 @@ extensions:
         targetZone: buttons
         position: 100
 
-    oro-system-config-group-selector:
-        module: pim/form/common/group-selector
-        parent: oro-system-config-system
-        targetZone: sidebar
+    oro-system-config-tab-localization:
+        module: oro/form/system/config/tab/localization
+        parent: oro-system-config-tabs
+        targetZone: container
         position: 100
 
-    oro-system-config-group-localization:
-        module: oro/form/system/config/group/localization
-        parent: oro-system-config-system
-        targetZone: content
-        position: 100
-
-    oro-system-config-group-notification:
-        module: oro/form/system/config/group/notification
-        parent: oro-system-config-system
-        targetZone: content
+    oro-system-config-tab-notification:
+        module: oro/form/system/config/tab/notification
+        parent: oro-system-config-tabs
+        targetZone: container
         position: 110
 
     oro-system-config-form-state:

@@ -6,6 +6,7 @@ use Akeneo\Component\StorageUtils\Remover\RemoverInterface;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
+use Pim\Bundle\CatalogBundle\Entity\AssociationType;
 use Pim\Bundle\UserBundle\Context\UserContext;
 use Pim\Component\Catalog\Model\AssociationTypeInterface;
 use Pim\Component\Catalog\Repository\AssociationTypeRepositoryInterface;
@@ -47,6 +48,9 @@ class AssociationTypeController
     /** @var UserContext */
     protected $userContext;
 
+    /** @var NormalizerInterface */
+    protected $constraintViolationNormalizer;
+
     /**
      * @param AssociationTypeRepositoryInterface $associationTypeRepo
      * @param NormalizerInterface                $normalizer
@@ -55,6 +59,7 @@ class AssociationTypeController
      * @param SaverInterface                     $saver
      * @param ValidatorInterface                 $validator
      * @param UserContext                        $userContext
+     * @param NormalizerInterface          $constraintViolationNormalizer
      */
     public function __construct(
         AssociationTypeRepositoryInterface $associationTypeRepo,
@@ -63,7 +68,8 @@ class AssociationTypeController
         ObjectUpdaterInterface $updater,
         SaverInterface $saver,
         ValidatorInterface $validator,
-        UserContext $userContext
+        UserContext $userContext,
+        NormalizerInterface $constraintViolationNormalizer
     ) {
         $this->associationTypeRepo = $associationTypeRepo;
         $this->normalizer = $normalizer;
@@ -72,6 +78,7 @@ class AssociationTypeController
         $this->saver = $saver;
         $this->validator = $validator;
         $this->userContext = $userContext;
+        $this->constraintViolationNormalizer = $constraintViolationNormalizer;
     }
 
     /**
@@ -109,9 +116,9 @@ class AssociationTypeController
      *
      * @AclAncestor("pim_enrich_associationtype_edit")
      */
-    public function postAction(Request $request, $code)
+    public function postAction(Request $request, $identifier)
     {
-        $associationType = $this->getAssociationTypeOr404($code);
+        $associationType = $this->getAssociationTypeOr404($identifier);
 
         $data = json_decode($request->getContent(), true);
         $this->updater->update($associationType, $data);
@@ -165,11 +172,9 @@ class AssociationTypeController
      *
      * @return AssociationTypeInterface
      */
-    private function getAssociationTypeOr404($code)
+    protected function getAssociationTypeOr404($code)
     {
-        $associationType = $this->associationTypeRepo->findOneBy(
-            ['code' => $code]
-        );
+        $associationType = $this->associationTypeRepo->findOneByIdentifier($code);
         if (null === $associationType) {
             throw new NotFoundHttpException(
                 sprintf('Association type with code "%s" not found', $code)
@@ -177,5 +182,39 @@ class AssociationTypeController
         }
 
         return $associationType;
+    }
+
+    /**
+     * Creates association type
+     *
+     * @param Request $request
+     *
+     * @return JsonResponse
+     */
+    public function createAction(Request $request)
+    {
+        $associationType = new AssociationType();
+        $this->updater->update($associationType, json_decode($request->getContent(), true));
+        $violations = $this->validator->validate($associationType);
+
+        $normalizedViolations = [];
+        foreach ($violations as $violation) {
+            $normalizedViolations[] = $this->constraintViolationNormalizer->normalize(
+                $violation,
+                'internal_api',
+                ['associationType' => $associationType]
+            );
+        }
+
+        if (count($normalizedViolations) > 0) {
+            return new JsonResponse(['values' => $normalizedViolations], 400);
+        }
+
+        $this->saver->save($associationType);
+
+        return new JsonResponse($this->normalizer->normalize(
+            $associationType,
+            'internal_api'
+        ));
     }
 }

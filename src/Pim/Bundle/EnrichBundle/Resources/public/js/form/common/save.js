@@ -9,18 +9,14 @@
  */
 define(
     [
-        'jquery',
         'oro/translator',
-        'module',
         'pim/form',
         'oro/mediator',
         'oro/loading-mask',
         'oro/messenger'
     ],
     function (
-        $,
         __,
-        module,
         BaseForm,
         mediator,
         LoadingMask,
@@ -85,7 +81,7 @@ define(
             postSave: function () {
                 this.getRoot().trigger('pim_enrich:form:entity:post_save');
 
-                messenger.notificationFlashMessage(
+                messenger.notify(
                     'success',
                     this.updateSuccessMessage
                 );
@@ -99,20 +95,22 @@ define(
             fail: function (response) {
                 switch (response.status) {
                     case 400:
-                        mediator.trigger(
+                        this.getRoot().trigger(
                             'pim_enrich:form:entity:bad_request',
                             {'sentData': this.getFormData(), 'response': response.responseJSON}
                         );
                         break;
                     case 500:
                         /* global console */
-                        console.error('Errors:', response.responseJSON);
-                        this.getRoot().trigger('pim_enrich:form:entity:error:save', response.responseJSON);
+                        var message = response.responseJSON ? response.responseJSON : response;
+
+                        console.error('Errors:', message);
+                        this.getRoot().trigger('pim_enrich:form:entity:error:save', message);
                         break;
                     default:
                 }
 
-                messenger.notificationFlashMessage(
+                messenger.notify(
                     'error',
                     this.updateFailureMessage
                 );

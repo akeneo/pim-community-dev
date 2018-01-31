@@ -3,6 +3,7 @@
 namespace Pim\Component\Catalog\Query;
 
 use Akeneo\Component\StorageUtils\Cursor\CursorInterface;
+use Pim\Bundle\CatalogBundle\Elasticsearch\SearchQueryBuilder;
 
 /**
  * Aims to customize a query builder to add useful shortcuts which allow to easily select, filter or sort a product
@@ -19,7 +20,7 @@ interface ProductQueryBuilderInterface
      *
      * @param string $field    the field
      * @param string $operator the used operator
-     * @param string $value    the value to filter
+     * @param mixed  $value    the value to filter
      * @param array  $context  the filter context, used for locale and scope
      *
      * @throws \LogicException
@@ -53,14 +54,14 @@ interface ProductQueryBuilderInterface
      *
      * @throws \LogicException in case the query builder has not been configured
      *
-     * @return \Doctrine\ORM\QueryBuilder|\Doctrine\ODM\MongoDB\Query\Builder
+     * @return SearchQueryBuilder
      */
     public function getQueryBuilder();
 
     /**
      * Set query builder
      *
-     * @param \Doctrine\ORM\QueryBuilder|\Doctrine\ODM\MongoDB\Query\Builder $queryBuilder
+     * @param SearchQueryBuilder
      *
      * @return ProductQueryBuilderInterface
      */

@@ -11,13 +11,22 @@
   }
 
   &-label {
-    color: @AknDarkBlue;
+    color: @AknSlateGrey;
     flex-grow: 1;
     font-size: @AknFontSizeBig;
   }
 
   &-unavailable {
     color: @AknLightFontColor;
+  }
+
+  &-clickable {
+    color: @AknLightFontColor;
+    cursor: pointer;
+
+    &:hover {
+      text-decoration: underline;
+    }
   }
 
   &-footer {
@@ -28,11 +37,19 @@
   &-inputContainer {
     display: flex;
     justify-content: space-between;
+    position: relative;
+  }
+
+  &-subContainer {
+    position: relative;
+    flex-grow: 10000;
   }
 
   &-iconsContainer {
-    margin-left: 5px;
     min-width: @AknIconSize + 4px;
+    padding-top: 4px;
+    position: absolute;
+    right: -40px;
   }
 
   &-contextContainer {
@@ -54,5 +71,9 @@
 
   &--withoutMargin {
     margin-bottom: 0;
+  }
+
+  &--hidden {
+    display: none;
   }
 }

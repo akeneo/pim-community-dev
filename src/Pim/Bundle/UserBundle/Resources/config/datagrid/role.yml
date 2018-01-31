@@ -2,6 +2,7 @@ datagrid:
     pim-role-grid:
         options:
             entityHint: role
+            manageFilters: false
         source:
             acl_resource: pim_user_role_index
             type: orm
@@ -18,6 +19,7 @@ datagrid:
         columns:
             label:
                 label: oro.user.grid.roles.columns.label
+                frontend_type: label
 
         properties:
             id: ~
@@ -35,17 +37,19 @@ datagrid:
 
         actions:
             update:
+                launcherOptions:
+                    className: AknIconButton AknIconButton--small AknIconButton--edit
                 type:          navigate
                 label:         Update
                 link:          update_link
-                icon:          pencil
                 acl_resource:  pim_user_role_edit
                 rowAction:     true
             delete:
+                launcherOptions:
+                    className: AknIconButton AknIconButton--small AknIconButton--trash
                 type:          delete
                 label:         Delete
                 link:          delete_link
-                icon:          trash
                 acl_resource:  pim_user_role_remove
 
         sorters:
@@ -58,5 +62,5 @@ datagrid:
         filters:
             columns:
                 label:
-                    type: string
+                    type: search
                     data_name: r.label

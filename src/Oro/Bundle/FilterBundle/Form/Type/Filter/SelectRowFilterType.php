@@ -2,6 +2,8 @@
 
 namespace Oro\Bundle\FilterBundle\Form\Type\Filter;
 
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -24,14 +26,14 @@ class SelectRowFilterType extends AbstractChoiceType
             return null;
         };
 
-        $builder->add('in', 'hidden', ['empty_data' => $emptyData]);
-        $builder->add('out', 'hidden', ['empty_data' => $emptyData]);
+        $builder->add('in', HiddenType::class, ['empty_data' => $emptyData]);
+        $builder->add('out', HiddenType::class, ['empty_data' => $emptyData]);
     }
 
     /**
      * {@inheritDoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return self::NAME;
     }
@@ -41,7 +43,7 @@ class SelectRowFilterType extends AbstractChoiceType
      */
     public function getParent()
     {
-        return ChoiceFilterType::NAME;
+        return ChoiceFilterType::class;
     }
 
     /**
@@ -51,11 +53,11 @@ class SelectRowFilterType extends AbstractChoiceType
     {
         $resolver->setDefaults(
             [
-                'field_type'    => 'choice',
+                'field_type'    => ChoiceType::class,
                 'field_options' => [
                     'choices' => [
-                        self::NOT_SELECTED_VALUE => $this->translator->trans('oro.filter.form.label_not_selected'),
-                        self::SELECTED_VALUE     => $this->translator->trans('oro.filter.form.label_selected')
+                        $this->translator->trans('oro.filter.form.label_not_selected') => self::NOT_SELECTED_VALUE,
+                        $this->translator->trans('oro.filter.form.label_selected') => self::SELECTED_VALUE
                     ]
                 ],
             ]

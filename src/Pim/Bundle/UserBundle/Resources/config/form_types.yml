@@ -1,6 +1,7 @@
 parameters:
     pim_user.form.type.user.class:                      Pim\Bundle\UserBundle\Form\Type\UserType
     pim_user.form.type.acl_collection.class:            Pim\Bundle\UserBundle\Form\Type\PrivilegeCollectionType
+    pim_user.form.type.acl_role.class:                  Pim\Bundle\UserBundle\Form\Type\AclRoleType
     oro_user.form.handler.user.class:                   Pim\Bundle\UserBundle\Form\Handler\UserHandler
     oro_user.form.handler.acl_role.class:               Pim\Bundle\UserBundle\Form\Handler\AclRoleHandler
     pim_user.form.subscriber.user_preferences.class:    Pim\Bundle\UserBundle\Form\Subscriber\UserPreferencesSubscriber
@@ -18,21 +19,28 @@ services:
             - { name: form.type, alias: pim_acl_access_level_selector }
 
     pim_user.form.type.user:
-        scope: request
         class: '%pim_user.form.type.user.class%'
         arguments:
             - '@security.token_storage'
-            - '@request'
+            - '@request_stack'
             - '@pim_user.form.subscriber.user_preferences'
             - '@pim_user.repository.role'
             - '@pim_user.repository.group'
             - '@event_dispatcher'
+            - '%pim_enrich.form.type.product_grid_filter_choice.class%'
         tags:
             - { name: form.type, alias: pim_user_user }
+
+    pim_user.form.type.acl_role:
+        class: '%pim_user.form.type.acl_role.class%'
+        arguments:
+            - []
+        tags:
+            - { name: form.type, alias: pim_user_acl_role }
 
     pim_user.form.subscriber.user_preferences:
         class: '%pim_user.form.subscriber.user_preferences.class%'
         arguments:
             - '@pim_localization.provider.ui_locale'
             - '@pim_enrich.repository.category'
-            - '%pim_catalog.entity.category.class%'
+            - '@pim_catalog.repository.cached_locale'

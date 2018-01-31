@@ -1,0 +1,162 @@
+@import '../base/variables';
+
+.AknFamilyVariant {
+    display: flex;
+    padding: 0 0 0 @AknFullPagePadding;
+    margin-top: 50px;
+    margin-bottom: @AknFullPagePadding;
+
+    &-header {
+        display: flex;
+    }
+
+    &-centerHeader {
+        flex: 1;
+    }
+
+    &-rightHeader, &-leftHeader {
+        width: 200px;
+        margin: 20px;
+        align-items: flex-start;
+    }
+
+    &-rightHeader {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+    }
+
+    &-title, &-subTitle {
+        text-align: center;
+        left: 50px;
+    }
+
+    &-description {
+        margin: 0 auto;
+        width: 600px;
+        font-size: 16px;
+        text-align: center;
+    }
+
+    &-level {
+        flex-basis: 30%;
+        flex-grow: 1;
+        margin-right: @AknFullPagePadding;
+
+        &:nth-child(3) {
+            margin-top: 65px;
+        }
+
+        &:first-child {
+            background-color: @AknLightGray;
+        }
+    }
+
+    &-column {
+        border: 1px solid @AknBorderColor;
+        padding: 5px 20px;
+        overflow-y: auto;
+        color: @AknDarkBlue;
+        min-height: 300px;
+
+        &--common {
+            max-height: ~"calc(100vh - 170px)";
+        }
+    }
+
+    &-axes {
+        color: @AknLightPurple;
+        background-color: @AknLightGray;
+        font-size: @AknFontSizeBig;
+    }
+
+    &-column--level2 {
+        max-height: ~"calc(100vh - (170px + 2 * 65px))";
+    }
+
+    &-column--level1 {
+        max-height: ~"calc(100vh - (170px + 65px))";
+    }
+
+    &-columTitle {
+        text-transform: uppercase;
+        border-bottom: 1px solid @AknSlateGrey;
+        font-size: @AknFontSizeBig;
+        color: @AknGrey;
+        margin: 0;
+    }
+
+    &-columnList {
+        font-size: @AknDefaultFontSize;
+        margin-bottom: 20px;
+    }
+
+    &-levelPathLabel {
+        background-color: darken(@AknBlue, 10%);
+        border-color: darken(@AknBlue, 20%);
+        color: white;
+        height: @AknDefaultButtonSize;
+        line-height: @AknDefaultButtonSize - 2px;
+        font-size: @AknFontSizeBig;
+        min-width: @AknDefaultButtonSize;
+        display: inline-block;
+        padding: 0 @AknDefaultButtonSize/2;
+        border-radius: 100px;
+        white-space: nowrap;
+        position: relative;
+        text-transform: uppercase;
+    }
+
+    &-levelPath {
+        display: flex;
+        position: relative;
+        left: -32px;
+        margin: 5px 0 0 0;
+
+        &:before {
+            content: '';
+            width: 60px;
+            height: 32px;
+            background-image: url("../../images/connector-start.svg");
+            display: inline-block;
+        }
+
+        &:after {
+            content: '';
+            width: 60px;
+            height: 60px;
+            background-image: url("../../images/connector-end.svg");
+            display: inline-block;
+        }
+    }
+
+    &-attribute {
+        background-color: white;
+        margin: 0;
+
+        &--common {
+            background-color: @AknLightGray;
+        }
+    }
+
+    &-attribute, &-columTitle {
+        &--movable {
+            background: url("../../images/icon-dragcolumns.svg") no-repeat 0 center;
+            background-size: 13px;
+            padding-left: 20px;
+            cursor: move;
+        }
+    }
+
+    &-attributeGroup {
+        background-color: white;
+
+        &--common {
+            background-color: @AknLightGray;
+        }
+
+        &--empty {
+            min-height: 250px;
+        }
+    }
+}

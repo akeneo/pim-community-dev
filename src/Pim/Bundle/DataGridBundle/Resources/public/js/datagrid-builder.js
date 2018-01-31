@@ -1,17 +1,16 @@
-/*jslint vars: true, nomen: true, browser: true*/
-/*jshint browser: true*/
-/*global define*/
-define(function (require) {
-    'use strict';
+'use strict';
 
-    var $ = require('jquery');
-    var _ = require('underscore');
-    var tools = require('oro/tools');
-    var mediator = require('oro/mediator');
-    var PageableCollection = require('oro/pageable-collection');
-    var Grid = require('oro/datagrid/grid');
-    var GridRouter = require('oro/datagrid/router');
-    var GridViewsView = require('oro/datagrid/grid-views/view');
+define([
+        'jquery',
+        'underscore',
+        'oro/tools',
+        'oro/mediator',
+        'oro/pageable-collection',
+        'oro/datagrid/grid',
+        'oro/datagrid/grid-views/view',
+        'require-context'
+    ],
+    function ($, _, tools, mediator, PageableCollection, Grid, GridViewsView, requireContext) {
 
     var gridSelector = '[data-type="datagrid"]:not([data-rendered])',
         gridGridViewsSelector = '.page-title > .AknTitleContainer .span10:last',
@@ -110,11 +109,6 @@ define(function (require) {
                 this.grid = grid;
                 this.$el.append(grid.render().$el);
 
-                if (options.routerEnabled !== false) {
-                    // register router
-                    new GridRouter({collection: collection});
-                }
-
                 // create grid view
                 options = methods.combineGridViewsOptions.call(this);
                 $(gridGridViewsSelector).append((new GridViewsView(_.extend({collection: collection}, options))).render().$el);
@@ -183,6 +177,7 @@ define(function (require) {
                     massActions[action] = modules[helpers.actionType(optionType)].extend(options);
                 });
 
+
                 return {
                     name: metadata.options.gridName,
                     columns: columns,
@@ -192,7 +187,10 @@ define(function (require) {
                     toolbarOptions: metadata.options.toolbarOptions || {},
                     multipleSorting: metadata.options.multipleSorting || false,
                     entityHint: metadata.options.entityHint,
-                    routerEnabled: _.isUndefined(metadata.options.routerEnabled) ? true : metadata.options.routerEnabled
+                    row: metadata.options.rowView ? requireContext(metadata.options.rowView) : null,
+                    displayTypes: metadata.options.displayTypes,
+                    manageColumns: metadata.options.manageColumns,
+                    emptyGridOptions: metadata.options.emptyGridOptions
                 };
             },
 
@@ -221,6 +219,11 @@ define(function (require) {
                 return;
             }
             $el.attr('data-rendered', true);
+
+            if (!_.isArray(builders)) {
+                builders = [builders];
+            }
+
             methods.initBuilder.call({ $el: $el }, function () {
                 _.each(builders, function (builder) {
                     if (!_.has(builder, 'init') || !$.isFunction(builder.init)) {

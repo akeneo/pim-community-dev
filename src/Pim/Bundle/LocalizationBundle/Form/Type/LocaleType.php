@@ -4,6 +4,7 @@ namespace Pim\Bundle\LocalizationBundle\Form\Type;
 
 use Akeneo\Component\Localization\Provider\LocaleProviderInterface;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\LocaleType as SymfonyLocaleType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class LocaleType extends AbstractType
@@ -33,13 +34,13 @@ class LocaleType extends AbstractType
      */
     public function getParent()
     {
-        return 'locale';
+        return SymfonyLocaleType::class;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'pim_locale';
     }

@@ -1,120 +1,112 @@
-/* global define */
-define(['jquery', 'underscore'],
-function ($, _) {
-    'use strict';
+'use strict';
 
-    var defaults = {
-        container: '',
-        delay: false,
-        template: $.noop
-    };
-    var queue = [];
-    var storageKey = 'flash';
+define(
+    [
+        'jquery',
+        'underscore',
+        'pim/template/flash-message'
+    ],
+    function ($, _, flashMessageTemplate) {
+        return {
+            queue: [],
+            defaults: {
+                container: '#flash-messages .flash-messages-holder',
+                delay: false,
+                template: _.template(flashMessageTemplate),
+                flash: true
+            },
 
-    /**
-     * Same arguments as for Oro.NotificationMessage
-     */
-    var showMessage = function (type, message, options) {
-        var opt = _.extend({}, defaults, options || {});
-        var $el = $(opt.template({type: type, message: message})).appendTo(opt.container);
-        var delay = opt.delay || (opt.flash && 5000);
-        var actions = {close: _.bind($el.alert, $el, 'close')};
-        if (delay) {
-            _.delay(actions.close, delay);
-        }
-        return actions;
-    };
+            /**
+             * Shows notification message
+             *
+             * @param {(string|boolean)} type 'error'|'success'|'warning'|false
+             * @param {string} message text of message
+             * @param {Object} options
+             *
+             * @param {(string|jQuery)} options.container selector of jQuery with container element
+             * @param {(number|boolean)} options.delay time in ms to auto close message
+             *      or false - means to not close automatically
+             * @param {Function} options.template template function
+             * @param {boolean} options.flash flag to turn on default delay close call, it's 5s
+             */
+            notify: function (type, message, options) {
+                this.showMessage(type, message, options);
+            },
 
-    /**
-     * Get flash messages from localStorage or cookie
-     */
-    var getStoredMessages = function () {
-        var messages;
-        if (localStorage) {
-            messages = JSON.parse(localStorage.getItem(storageKey));
-        } else if ($.cookie) {
-            messages = JSON.parse($.cookie(storageKey));
-        }
-        return messages || [];
-    };
+            enqueueMessage: function () {
+                this.queue.push(arguments);
+            },
 
-    /**
-     * Set stored messages to cookie or localStorage
-     */
-    var setStoredMessages = function (flashMessages) {
-        var messages = JSON.stringify(flashMessages);
-        if (localStorage) {
-            localStorage.setItem(storageKey, messages);
-        } else if ($.cookie) {
-            $.cookie(storageKey, messages);
-        }
-        return true;
-    };
+            showQueuedMessages: function () {
+                while (this.queue.length) {
+                    var args = this.queue.shift();
+                    this.showMessage.apply(this, args);
+                }
+            },
 
-    /**
-     * @export oro/messenger
-     * @name   oro.messenger
-     */
-    return {
-        /**
-         * Shows notification message
-         *
-         * @param {(string|boolean)} type 'error'|'success'|false
-         * @param {string} message text of message
-         * @param {Object=} options
-         *
-         * @param {(string|jQuery)} options.container selector of jQuery with container element
-         * @param {(number|boolean)} options.delay time in ms to auto close message
-         *      or false - means to not close automatically
-         * @param {Function} options.template template function
-         * @param {boolean} options.flash flag to turn on default delay close call, it's 5s
-         *
-         * @return {Object} collection of methods - actions over message element,
-         *      at the moment there's only one method 'close', allows to close the message
-         */
-        notificationMessage: function (type, message, options) {
-            var container = (options || {}).container || defaults.container;
-            var args = Array.prototype.slice.call(arguments);
-            var actions = {close: $.noop};
-            if (container && $(container).length) {
-                actions = showMessage.apply(null, args);
-            } else {
-                // if container is not ready then save message for later
-                queue.push([args, actions]);
+            showMessage: function (type, message, options) {
+                var opt = _.extend({}, this.defaults, options || {});
+                var delay = opt.delay || (opt.flash && 5000);
+                var $el = $(opt.template({
+                    type: type,
+                    message: message,
+                    messageTitle: '',
+                    delay: delay,
+                    icon: this.getIcon(type),
+                    closeIcon: this.getCloseIcon(type)
+                })).appendTo(opt.container);
+
+                // Used to force the browser to visually render the element's styles to be able to use CSS transitions
+                $el.offset();
+                $el.addClass('AknFlash--visible');
+
+                if (delay) {
+                    var timeLeft = delay;
+                    var interval = setInterval(function () {
+                        $el.find('.flash-timer:first').html(Math.max(Math.floor(timeLeft / 1000), 0));
+                        timeLeft -= 500;
+
+                        if (timeLeft <= 0) {
+                            $el.removeClass('AknFlash--visible');
+                        }
+
+                        if (timeLeft <= -500) {
+                            $el.addClass('AknFlash--crushed');
+                        }
+
+                        if (timeLeft <= -1500) {
+                            $el.remove();
+                            clearInterval(interval);
+                        }
+                    }, 500);
+                }
+            },
+
+            getIcon: function(type) {
+                return _.result(
+                    {
+                        'info': 'icon-infos.svg',
+                        'success': 'icon-check.svg',
+                        'error': 'icon-warning-redlight.svg',
+                        'warning': 'icon-warning-orangelight.svg'
+                    },
+                    type,
+                    'icon-infos.svg'
+                );
+            },
+
+            getCloseIcon: function(type) {
+                return _.result(
+                    {
+                        'info': 'icon-delete-bluedark.svg',
+                        'success': 'icon-delete-greendark.svg',
+                        'error': 'icon-delete-reddark.svg',
+                        'warning': 'icon-delete-orangedark.svg'
+                    },
+                    type,
+                    'icon-delete-bluedark.svg'
+                );
             }
-            return actions;
-        },
-
-        notificationFlashMessage: function (type, message, options) {
-            return this.notificationMessage(type, message, _.extend({flash: true}, options));
-        },
-
-        setup: function (options) {
-            _.extend(defaults, options);
-
-            var flashMessages = getStoredMessages();
-            $.each(flashMessages, function (index, message) {
-                queue.push(message);
-            });
-            setStoredMessages([]);
-
-            while (queue.length) {
-                var args = queue.shift();
-                _.extend(args[1], showMessage.apply(null, args[0]));
-            }
-        },
-
-        addMessage: function (type, message, options) {
-            var args = [type, message, _.extend({flash: true}, options)];
-            var actions = {close: $.noop};
-
-            if (options.hashNavEnabled) {
-                queue.push([args, actions]);
-            } else { // add message to localStorage or cookie
-                var flashMessages = getStoredMessages();
-                flashMessages.push([args, actions]);
-                setStoredMessages(flashMessages);
-            }
-        }
-    };
-});
+        };
+    }
+);

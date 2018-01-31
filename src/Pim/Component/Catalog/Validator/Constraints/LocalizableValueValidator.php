@@ -3,7 +3,7 @@
 namespace Pim\Component\Catalog\Validator\Constraints;
 
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
-use Pim\Component\Catalog\Model\ProductValueInterface;
+use Pim\Component\Catalog\Model\ValueInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 
@@ -33,8 +33,8 @@ class LocalizableValueValidator extends ConstraintValidator
      */
     public function validate($productValue, Constraint $constraint)
     {
-        /** @var ProductValueInterface */
-        if ($productValue instanceof ProductValueInterface) {
+        /** @var ValueInterface */
+        if ($productValue instanceof ValueInterface) {
             $isLocalizable = $productValue->getAttribute()->isLocalizable();
             $localeCode = $productValue->getLocale();
 
@@ -61,10 +61,10 @@ class LocalizableValueValidator extends ConstraintValidator
     }
 
     /**
-     * @param LocalizableValue      $constraint
-     * @param ProductValueInterface $value
+     * @param LocalizableValue $constraint
+     * @param ValueInterface   $value
      */
-    protected function addExpectedLocaleViolation(LocalizableValue $constraint, ProductValueInterface $value)
+    protected function addExpectedLocaleViolation(LocalizableValue $constraint, ValueInterface $value)
     {
         $this->context->buildViolation(
             $constraint->expectedLocaleMessage,
@@ -75,13 +75,13 @@ class LocalizableValueValidator extends ConstraintValidator
     }
 
     /**
-     * @param LocalizableValue      $constraint
-     * @param ProductValueInterface $value
-     * @param string                $localeCode
+     * @param LocalizableValue $constraint
+     * @param ValueInterface   $value
+     * @param string           $localeCode
      */
     protected function addUnexistingLocaleViolation(
         LocalizableValue $constraint,
-        ProductValueInterface $value,
+        ValueInterface $value,
         $localeCode
     ) {
         $this->context->buildViolation(
@@ -94,10 +94,10 @@ class LocalizableValueValidator extends ConstraintValidator
     }
 
     /**
-     * @param LocalizableValue      $constraint
-     * @param ProductValueInterface $value
+     * @param LocalizableValue $constraint
+     * @param ValueInterface   $value
      */
-    protected function addUnexpectedLocaleViolation(LocalizableValue $constraint, ProductValueInterface $value)
+    protected function addUnexpectedLocaleViolation(LocalizableValue $constraint, ValueInterface $value)
     {
         $this->context->buildViolation(
             $constraint->unexpectedLocaleMessage,

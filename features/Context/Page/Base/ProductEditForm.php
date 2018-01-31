@@ -6,6 +6,8 @@ use Behat\Mink\Element\Element;
 use Behat\Mink\Element\NodeElement;
 use Behat\Mink\Exception\ElementNotFoundException;
 use Behat\Mink\Exception\ExpectationException;
+use Pim\Behat\Decorator\Completeness\DropdownDecorator;
+use Pim\Behat\Decorator\VariantNavigationDecorator;
 
 /**
  * Product Edit Form
@@ -26,14 +28,28 @@ class ProductEditForm extends Form
         $this->elements = array_merge(
             $this->elements,
             [
-                'Locales dropdown'                => ['css' => '.attribute-edit-actions .locale-switcher'],
-                'Channel dropdown'                => ['css' => '.attribute-edit-actions .scope-switcher'],
+                'Locales dropdown'                => ['css' => '.AknTitleContainer .locale-switcher'],
+                'Channel dropdown'                => ['css' => '.AknTitleContainer .scope-switcher'],
                 // Note: It erases parent add-attributes selector values because of the new JS module,
                 // once refactoring done everywhere, it should be set in parent like before
                 'Available attributes button'     => ['css' => '.add-attribute a.select2-choice'],
                 'Available attributes list'       => ['css' => '.add-attribute .select2-results'],
                 'Available attributes search'     => ['css' => '.add-attribute .select2-search input[type="text"]'],
                 'Select2 dropmask'                => ['css' => '.select2-drop-mask'],
+                'Completeness dropdown'            => [
+                    'css'        => '.AknCompletenessPanel-block',
+                    'decorators' => [
+                        DropdownDecorator::class
+                    ]
+                ],
+                'Completeness dropdown button' => ['css' => '.AknTitleContainer-meta .AknDropdown'],
+                'Variant navigation' => [
+                    'css'        => '.AknVariantNavigation',
+                    'decorators' => [
+                        VariantNavigationDecorator::class
+                    ]
+                ],
+                'Missing required attributes overview' => ['css' => '.AknTitleContainer-meta .AknSubsection-comment--clickable']
             ]
         );
     }
@@ -102,7 +118,15 @@ class ProductEditForm extends Form
         }
 
         $labelNode = $this->spin(function () use ($label) {
-            return $this->find('css', sprintf('.AknComparableFields .AknFieldContainer-label:contains("%s")', $label));
+            $labels = $this->findAll('css', '.AknComparableFields .AknFieldContainer-label');
+
+            foreach ($labels as $labelContainer) {
+                if ($labelContainer->getText() === $label) {
+                    return $labelContainer;
+                }
+            }
+
+            return false;
         }, 'Cannot find the field label');
 
         $container = $this->getClosest($labelNode, 'AknComparableFields');
@@ -157,12 +181,15 @@ class ProductEditForm extends Form
             $field = $fieldContainer->find('css', 'div.field-input > textarea');
 
             if (!$field || !$field->isVisible()) {
-                $id = $fieldContainer->find('css', 'textarea')->getAttribute('id');
-                $this->getSession()->executeScript(
-                    sprintf('$(\'#%s\').parent().find(".note-editable").html(\'%s\').trigger(\'change\');', $id, $value)
-                );
+                $textarea = $fieldContainer->find('css', 'textarea');
+                if (null !== $textarea) {
+                    $id = $textarea->getAttribute('id');
+                    $this->getSession()->executeScript(
+                        sprintf('$(\'#%s\').parent().find(".note-editable").html(\'%s\').trigger(\'change\');', $id, $value)
+                    );
 
-                return true;
+                    return true;
+                }
             }
 
             $field->setValue($value);
@@ -430,7 +457,7 @@ class ProductEditForm extends Form
      *
      * @return null|Element
      */
-    public function findValidationTooltip($text)
+    public function findValidationTooltip(string $text)
     {
         return $this->spin(function () use ($text) {
             return $this->find(
@@ -663,6 +690,49 @@ class ProductEditForm extends Form
                 $field,
                 $field
             ));
-        }, sprintf('Spining to get remove link on product edit form for field "%s"', $field));
+        }, sprintf('Spinning to get remove link on product edit form for field "%s"', $field));
+    }
+
+
+    /**
+     * @return NodeElement
+     */
+    public function getVariantNavigation()
+    {
+        return $this->getElement('Variant navigation');
+    }
+
+    /**
+     * @return NodeElement|null
+     */
+    public function findFieldFooterMessageForField($fieldLabel, $message)
+    {
+        $fieldContainer = $this->findFieldContainer($fieldLabel);
+
+        $clickableMessage = $this->spin(function () use ($fieldContainer) {
+            return $fieldContainer->find('css', '.AknFieldContainer-clickable');
+        }, sprintf('Cannot find any clickable message for field "%s"', $fieldLabel));
+
+        if ($message === $clickableMessage->getText()) {
+            return $clickableMessage;
+        }
+
+        return null;
+    }
+
+    /**
+     * @return NodeElement
+     */
+    public function getCompletenessDropdownButton()
+    {
+        return $this->getElement('Completeness dropdown button');
+    }
+
+    /**
+     * @return NodeElement
+     */
+    public function getMissingRequiredAttributesOverviewLink()
+    {
+        return $this->getElement('Missing required attributes overview');
     }
 }

@@ -7,6 +7,7 @@ use Pim\Bundle\UserBundle\Entity\UserInterface;
 use Pim\Component\User\Model\GroupInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 class GroupHandler
 {
@@ -16,9 +17,9 @@ class GroupHandler
     protected $form;
 
     /**
-     * @var Request
+     * @var RequestStack
      */
-    protected $request;
+    protected $requestStack;
 
     /**
      * @var ObjectManager
@@ -27,13 +28,13 @@ class GroupHandler
 
     /**
      * @param FormInterface $form
-     * @param Request       $request
+     * @param RequestStack  $requestStack
      * @param ObjectManager $manager
      */
-    public function __construct(FormInterface $form, Request $request, ObjectManager $manager)
+    public function __construct(FormInterface $form, RequestStack $requestStack, ObjectManager $manager)
     {
         $this->form = $form;
-        $this->request = $request;
+        $this->requestStack = $requestStack;
         $this->manager = $manager;
     }
 
@@ -47,8 +48,8 @@ class GroupHandler
     {
         $this->form->setData($entity);
 
-        if (in_array($this->request->getMethod(), ['POST', 'PUT'])) {
-            $this->form->submit($this->request);
+        if (in_array($this->getRequest()->getMethod(), ['POST', 'PUT'])) {
+            $this->form->handleRequest($this->getRequest());
 
             if ($this->form->isValid()) {
                 $appendUsers = $this->form->get('appendUsers')->getData();
@@ -105,5 +106,15 @@ class GroupHandler
             $user->removeGroup($group);
             $this->manager->persist($user);
         }
+    }
+
+    /**
+     * Get Request
+     *
+     * @return null|Request
+     */
+    protected function getRequest(): ?Request
+    {
+        return $this->requestStack->getCurrentRequest();
     }
 }

@@ -13,7 +13,7 @@ define([
         __
     ) {
         return BaseForm.extend({
-            className: 'AknTabContainer-content tabbable tabs-left history',
+            className: 'tabbable history',
             historyGrid: null,
 
             /**
@@ -22,6 +22,8 @@ define([
             initialize: function (meta) {
                 this.config = _.extend({}, meta.config);
                 this.config.modelDependent = false;
+
+                return BaseForm.prototype.initialize.call(this, arguments);
             },
 
             /**

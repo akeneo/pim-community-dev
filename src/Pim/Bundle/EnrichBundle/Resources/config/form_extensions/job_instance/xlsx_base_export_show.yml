@@ -2,106 +2,45 @@ extensions:
     pim-job-instance-xlsx-base-export-show:
         module: pim/form/common/edit-form
 
-    pim-job-instance-xlsx-base-export-show-tabs:
-        module: pim/form/common/form-tabs
+    pim-job-instance-xlsx-base-export-show-main-image:
+        module: pim/form/common/main-image
         parent: pim-job-instance-xlsx-base-export-show
-        targetZone: content
-        position: 100
-
-    pim-job-instance-xlsx-base-export-show-properties:
-        module: pim/job/common/edit/properties
-        parent: pim-job-instance-xlsx-base-export-show-tabs
-        aclResourceId: pim_importexport_export_profile_property_edit
-        targetZone: container
-        position: 100
+        targetZone: main-image
         config:
-            tabTitle: pim_enrich.form.job_instance.tab.properties.title
-            tabCode: pim-job-instance-properties
+            path: bundles/pimui/images/illustration-export-xlsx.svg
 
-    pim-job-instance-xlsx-base-export-show-history:
-        module: pim/common/tab/history
-        parent: pim-job-instance-xlsx-base-export-show-tabs
-        targetZone: container
-        aclResourceId: pim_importexport_export_profile_history
-        position: 120
+    pim-job-instance-xlsx-base-export-show-user-navigation:
+        module: pim/menu/user-navigation
+        parent: pim-job-instance-xlsx-base-export-show
+        targetZone: user-menu
         config:
-            class: Akeneo\Component\Batch\Model\JobInstance
-            title: pim_enrich.form.job_instance.tab.history.title
-            tabCode: pim-job-instance-history
+            userAccount: pim_menu.user.user_account
+            logout: pim_menu.user.logout
 
-    pim-job-instance-xlsx-base-export-show-properties-code:
-        module: pim/job/common/edit/field/text
-        parent: pim-job-instance-xlsx-base-export-show-properties
-        position: 100
-        targetZone: properties
+    pim-job-instance-xlsx-base-export-show-breadcrumbs:
+        module: pim/common/breadcrumbs
+        parent: pim-job-instance-xlsx-base-export-show
+        targetZone: breadcrumbs
         config:
-            fieldCode: code
-            label: pim_enrich.form.job_instance.tab.properties.code.title
-            readOnly: true
+            tab: pim-menu-exports
 
-    pim-job-instance-xlsx-base-export-show-properties-label:
-        module: pim/job/common/edit/field/text
-        parent: pim-job-instance-xlsx-base-export-show-properties
+    pim-job-instance-xlsx-base-export-show-launch:
+        module: pim/job/common/edit/launch
+        parent: pim-job-instance-xlsx-base-export-show
+        targetZone: meta
         position: 110
-        targetZone: properties
         config:
-            fieldCode: label
-            label: pim_enrich.form.job_instance.tab.properties.label.title
-            readOnly: true
-
-    pim-job-instance-xlsx-base-export-show-properties-file-path:
-        module: pim/job/common/edit/field/text
-        parent: pim-job-instance-xlsx-base-export-show-properties
-        position: 120
-        targetZone: global-settings
-        config:
-            fieldCode: configuration.filePath
-            readOnly: true
-            label: pim_enrich.form.job_instance.tab.properties.file_path.title
-            tooltip: pim_enrich.form.job_instance.tab.properties.file_path.help
-
-    pim-job-instance-xlsx-base-export-show-properties-lines-per-file:
-        module: pim/job/common/edit/field/text
-        parent: pim-job-instance-xlsx-product-export-show-form-properties
-        position: 130
-        targetZone: global-settings
-        config:
-            fieldCode: configuration.linesPerFile
-            readOnly: true
-            label: pim_enrich.form.job_instance.tab.properties.lines_per_file.title
-            tooltip: pim_enrich.form.job_instance.tab.properties.lines_per_file.help
-
-    pim-job-instance-xlsx-base-export-show-properties-with-header:
-        module: pim/job/common/edit/field/switch
-        parent: pim-job-instance-xlsx-base-export-show-properties
-        position: 140
-        targetZone: global-settings
-        config:
-            fieldCode: configuration.withHeader
-            readOnly: true
-            label: pim_enrich.form.job_instance.tab.properties.with_header.title
-            tooltip: pim_enrich.form.job_instance.tab.properties.with_header.help
+            label: pim_enrich.form.job_instance.button.export.title
+            route: pim_enrich_job_instance_rest_export_launch
+            identifier:
+                path: code
+                name: code
 
     pim-job-instance-xlsx-base-export-show-label:
         module: pim/job/common/edit/label
         parent: pim-job-instance-xlsx-base-export-show
         targetZone: title
         position: 100
-
-    pim-job-instance-xlsx-base-export-show-meta:
-        module: pim/job/common/edit/meta
-        parent: pim-job-instance-xlsx-base-export-show
-        targetZone: meta
-        position: 100
-
-    pim-job-instance-xlsx-base-export-show-back-to-grid:
-        module: pim/form/common/back-to-grid
-        parent: pim-job-instance-xlsx-base-export-show
-        targetZone: back
-        aclResourceId: pim_importexport_export_profile_index
-        position: 80
-        config:
-            backUrl: pim_importexport_export_profile_index
 
     pim-job-instance-xlsx-base-export-show-edit:
         module: pim/common/redirect
@@ -111,18 +50,24 @@ extensions:
         config:
             label: pim_enrich.form.job_instance.button.edit.title
             route: pim_importexport_export_profile_edit
+            buttonClass: AknButton AknButton--action
             identifier:
                 path: code
                 name: code
 
-    pim-job-instance-xlsx-base-export-show-launch:
-        module: pim/job/common/edit/launch
+    pim-job-instance-xlsx-base-export-show-subsection:
+        module: pim/form/common/subsection
         parent: pim-job-instance-xlsx-base-export-show
-        targetZone: buttons
-        position: 110
+        targetZone: content
         config:
-            label: pim_enrich.form.job_instance.button.export.title
-            route: pim_enrich_job_instance_rest_export_launch
-            identifier:
-                path: code
-                name: code
+            title: pim_enrich.form.job_instance.subsection.last_executions
+
+    pim-job-instance-xlsx-base-export-show-grid:
+        module: pim/job/common/grid
+        parent: pim-job-instance-xlsx-base-export-show-subsection
+        position: 1000
+        targetZone: content
+        config:
+            alias: last-export-executions-grid
+            metadata:
+                jobType: export

@@ -21,108 +21,83 @@ services:
     pim_catalog.attributetype.identifier:
         class: '%pim_catalog.attribute_type.identifier.class%'
         arguments:
-            - varchar
-            - text
-            - '@pim_catalog.validator.constraint_guesser.chained_attribute'
+            - 'text'
         tags:
             - { name: pim_catalog.attribute_type, alias: pim_catalog_identifier, entity: '%pim_catalog.entity.product.class%' }
 
     pim_catalog.attributetype.text:
         class: '%pim_catalog.attribute_type.text.class%'
         arguments:
-            - varchar
-            - text
-            - '@pim_catalog.validator.constraint_guesser.chained_attribute'
+            - 'text'
         tags:
             - { name: pim_catalog.attribute_type, alias: pim_catalog_text, entity: '%pim_catalog.entity.product.class%' }
 
     pim_catalog.attributetype.textarea:
         class: '%pim_catalog.attribute_type.textarea.class%'
         arguments:
-            - text
-            - textarea
-            - '@pim_catalog.validator.constraint_guesser.chained_attribute'
+            - 'textarea'
         tags:
             - { name: pim_catalog.attribute_type, alias: pim_catalog_textarea, entity: '%pim_catalog.entity.product.class%' }
 
     pim_catalog.attributetype.multiselect:
         class: '%pim_catalog.attribute_type.multiselect.class%'
         arguments:
-            - options
-            - pim_ajax_entity
-            - '@pim_catalog.validator.constraint_guesser.chained_attribute'
+            - 'options'
         tags:
             - { name: pim_catalog.attribute_type, alias: pim_catalog_multiselect, entity: '%pim_catalog.entity.product.class%' }
 
     pim_catalog.attributetype.simpleselect:
         class: '%pim_catalog.attribute_type.simpleselect.class%'
         arguments:
-            - option
-            - pim_ajax_entity
-            - '@pim_catalog.validator.constraint_guesser.chained_attribute'
+            - 'option'
         tags:
             - { name: pim_catalog.attribute_type, alias: pim_catalog_simpleselect, entity: '%pim_catalog.entity.product.class%' }
 
     pim_catalog.attributetype.pricecollection:
         class: '%pim_catalog.attribute_type.price_collection.class%'
         arguments:
-            - prices
-            - pim_enrich_price_collection
-            - '@pim_catalog.validator.constraint_guesser.chained_attribute'
-            - '@pim_catalog.repository.currency'
+            - 'prices'
         tags:
             - { name: pim_catalog.attribute_type, alias: pim_catalog_price_collection, entity: '%pim_catalog.entity.product.class%' }
 
     pim_catalog.attributetype.number:
         class: '%pim_catalog.attribute_type.number.class%'
         arguments:
-            - decimal
-            - pim_number
-            - '@pim_catalog.validator.constraint_guesser.chained_attribute'
+            - 'decimal'
         tags:
             - { name: pim_catalog.attribute_type, alias: pim_catalog_number, entity: '%pim_catalog.entity.product.class%' }
 
     pim_catalog.attributetype.boolean:
         class: '%pim_catalog.attribute_type.boolean.class%'
         arguments:
-            - boolean
-            - switch
-            - '@pim_catalog.validator.constraint_guesser.chained_attribute'
+            - 'boolean'
         tags:
             - { name: pim_catalog.attribute_type, alias: pim_catalog_boolean, entity: '%pim_catalog.entity.product.class%' }
 
     pim_catalog.attributetype.date:
         class: '%pim_catalog.attribute_type.date.class%'
         arguments:
-            - date
-            - pim_date
-            - '@pim_catalog.validator.constraint_guesser.chained_attribute'
+            - 'date'
         tags:
             - { name: pim_catalog.attribute_type, alias: pim_catalog_date, entity: '%pim_catalog.entity.product.class%' }
 
     pim_catalog.attributetype.file:
         class: '%pim_catalog.attribute_type.file.class%'
         arguments:
-            - media
-            - pim_enrich_media
-            - '@pim_catalog.validator.constraint_guesser.chained_attribute'
+            - 'media'
         tags:
             - { name: pim_catalog.attribute_type, alias: pim_catalog_file, entity: '%pim_catalog.entity.product.class%' }
 
     pim_catalog.attributetype.image:
         class: '%pim_catalog.attribute_type.image.class%'
         arguments:
-            - media
-            - pim_enrich_image
-            - '@pim_catalog.validator.constraint_guesser.chained_attribute'
+            - 'media'
         tags:
             - { name: pim_catalog.attribute_type, alias: pim_catalog_image, entity: '%pim_catalog.entity.product.class%' }
 
     pim_catalog.attributetype.metric:
         class: '%pim_catalog.attribute_type.metric.class%'
         arguments:
-            - metric
-            - pim_enrich_metric
-            - '@pim_catalog.validator.constraint_guesser.chained_attribute'
+            - 'metric'
         tags:
             - { name: pim_catalog.attribute_type, alias: pim_catalog_metric, entity: '%pim_catalog.entity.product.class%' }

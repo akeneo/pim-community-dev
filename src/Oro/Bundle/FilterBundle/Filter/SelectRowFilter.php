@@ -12,7 +12,7 @@ class SelectRowFilter extends ChoiceFilter
      */
     protected function getFormType()
     {
-        return SelectRowFilterType::NAME;
+        return SelectRowFilterType::class;
     }
 
     /**

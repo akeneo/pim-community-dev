@@ -24,6 +24,8 @@ use Symfony\Component\Security\Core\User\AdvancedUserInterface;
  */
 interface UserInterface extends AdvancedUserInterface, \Serializable, EntityUploadedImageInterface
 {
+    public const SYSTEM_USER_NAME = 'system';
+
     /**
      * Get entity class name.
      *

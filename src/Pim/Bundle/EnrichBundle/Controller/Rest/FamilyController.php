@@ -7,7 +7,11 @@ use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository\FamilySearchableRepository;
+use Pim\Component\Catalog\AttributeTypes;
+use Pim\Component\Catalog\Factory\FamilyFactory;
+use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\FamilyInterface;
+use Pim\Component\Catalog\Model\FamilyVariant;
 use Pim\Component\Catalog\Repository\FamilyRepositoryInterface;
 use Pim\Component\Catalog\Updater\FamilyUpdater;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -29,6 +33,8 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class FamilyController
 {
+    const FAMILY_VARIANTS_LIMIT = 20;
+
     /** @var FamilyRepositoryInterface */
     protected $familyRepository;
 
@@ -37,6 +43,9 @@ class FamilyController
 
     /** @var FamilySearchableRepository */
     protected $familySearchableRepo;
+
+    /** @var FamilyFactory */
+    protected $familyFactory;
 
     /** @var FamilyUpdater */
     protected $updater;
@@ -61,8 +70,12 @@ class FamilyController
     protected $propertiesFields = [
         'code',
         'attribute_as_label',
+        'attribute_as_image',
         'labels',
     ];
+
+    /** @var NormalizerInterface */
+    protected $constraintViolationNormalizer;
 
     /**
      * @param FamilyRepositoryInterface  $familyRepository
@@ -73,6 +86,8 @@ class FamilyController
      * @param RemoverInterface           $remover
      * @param ValidatorInterface         $validator
      * @param SecurityFacade             $securityFacade
+     * @param FamilyFactory              $familyFactory
+     * @param NormalizerInterface          $constraintViolationNormalizer
      */
     public function __construct(
         FamilyRepositoryInterface $familyRepository,
@@ -82,7 +97,9 @@ class FamilyController
         SaverInterface $saver,
         RemoverInterface $remover,
         ValidatorInterface $validator,
-        SecurityFacade $securityFacade
+        SecurityFacade $securityFacade,
+        FamilyFactory $familyFactory,
+        NormalizerInterface $constraintViolationNormalizer
     ) {
         $this->familyRepository = $familyRepository;
         $this->normalizer = $normalizer;
@@ -92,6 +109,8 @@ class FamilyController
         $this->remover = $remover;
         $this->validator = $validator;
         $this->securityFacade = $securityFacade;
+        $this->familyFactory = $familyFactory;
+        $this->constraintViolationNormalizer = $constraintViolationNormalizer;
     }
 
     /**
@@ -131,12 +150,8 @@ class FamilyController
      */
     public function getAction(Request $request, $identifier)
     {
-        $family = $this->familyRepository->findOneByIdentifier($identifier);
+        $family = $this->getFamily($identifier);
         $applyFilters = $request->query->getBoolean('apply_filters', true);
-
-        if (null === $family) {
-            throw new NotFoundHttpException(sprintf('Family with code "%s" not found', $identifier));
-        }
 
         return new JsonResponse(
             $this->normalizer->normalize(
@@ -184,6 +199,28 @@ class FamilyController
         $this->remover->remove($family);
 
         return new JsonResponse(null, Response::HTTP_NO_CONTENT);
+    }
+
+    /**
+     * @param string  $code
+     *
+     * @return JsonResponse
+     */
+    public function getAvailableAxesAction(string $code): JsonResponse
+    {
+        $family = $this->getFamily($code);
+        $allowedTypes = FamilyVariant::getAvailableAxesAttributeTypes();
+
+        $availableAxes = $family->getAttributes()->filter(function (AttributeInterface $attribute) use ($allowedTypes) {
+            return in_array($attribute->getType(), $allowedTypes);
+        });
+
+        $normalizedAvailableAttributes = [];
+        foreach ($availableAxes as $availableAxis) {
+            $normalizedAvailableAttributes[] = $this->normalizer->normalize($availableAxis, 'internal_api');
+        }
+
+        return new JsonResponse($normalizedAvailableAttributes);
     }
 
     /**
@@ -255,5 +292,61 @@ class FamilyController
                 'internal_api'
             )
         );
+    }
+
+    /**
+     * Creates family
+     *
+     * @param Request $request
+     *
+     * @return JsonResponse
+     */
+    public function createAction(Request $request)
+    {
+        $family = $this->familyFactory->create();
+        $this->updater->update($family, json_decode($request->getContent(), true));
+        $violations = $this->validator->validate($family);
+
+        $normalizedViolations = [];
+        foreach ($violations as $violation) {
+            $normalizedViolations[] = $this->constraintViolationNormalizer->normalize(
+                $violation,
+                'internal_api',
+                ['family' => $family]
+            );
+        }
+
+        if (count($normalizedViolations) > 0) {
+            return new JsonResponse(['values' => $normalizedViolations], 400);
+        }
+
+        $this->saver->save($family);
+
+        return new JsonResponse($this->normalizer->normalize(
+            $family,
+            'internal_api'
+        ));
+    }
+
+    /**
+     * Gets families with familyVariants
+     *
+     * @param Request $request
+     *
+     * @return JsonResponse
+     */
+    public function getWithVariantsAction(Request $request): JsonResponse
+    {
+        $search = $request->query->get('search');
+        $options = $request->query->get('options');
+
+        $families = $this->familyRepository->getWithVariants($search, $options, self::FAMILY_VARIANTS_LIMIT);
+
+        $normalizedFamilies = [];
+        foreach ($families as $family) {
+            $normalizedFamilies[$family->getCode()] = $this->normalizer->normalize($family, 'internal_api');
+        }
+
+        return new JsonResponse($normalizedFamilies);
     }
 }

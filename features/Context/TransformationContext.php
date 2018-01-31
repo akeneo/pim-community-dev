@@ -2,7 +2,9 @@
 
 namespace Context;
 
-use Behat\MinkExtension\Context\RawMinkContext;
+use Pim\Behat\Context\PimContext;
+use Pim\Component\Catalog\Model\GroupInterface;
+use Pim\Component\Catalog\Model\ProductModel;
 
 /**
  * Context for data transformations
@@ -11,7 +13,7 @@ use Behat\MinkExtension\Context\RawMinkContext;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class TransformationContext extends RawMinkContext
+class TransformationContext extends PimContext
 {
     /**
      * @param string $sku
@@ -23,6 +25,18 @@ class TransformationContext extends RawMinkContext
     public function castProductSkuToProduct($sku)
     {
         return $this->getFixturesContext()->getProduct($sku);
+    }
+
+    /**
+     * @param string $code
+     *
+     * @Transform /^product model "([^"]*)"$/
+     *
+     * @return ProductModel
+     */
+    public function castProductModelCodeToProductModel($code)
+    {
+        return $this->getFixturesContext()->getProductModel($code);
     }
 
     /**
@@ -77,7 +91,6 @@ class TransformationContext extends RawMinkContext
      * @param string $code
      *
      * @Transform /^"([^"]*)" product group$/
-     * @Transform /^"([^"]*)" variant group$/
      *
      * @return GroupInterface
      */

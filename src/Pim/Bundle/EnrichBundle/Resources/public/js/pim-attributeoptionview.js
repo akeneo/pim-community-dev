@@ -8,9 +8,9 @@ define(
         'oro/mediator',
         'oro/loading-mask',
         'pim/dialog',
-        'text!pim/template/attribute-option/index',
-        'text!pim/template/attribute-option/edit',
-        'text!pim/template/attribute-option/show',
+        'pim/template/attribute-option/index',
+        'pim/template/attribute-option/edit',
+        'pim/template/attribute-option/show',
         'jquery-ui'
     ],
     function (
@@ -131,12 +131,13 @@ define(
             deleteItem: function () {
                 var itemCode = this.el.firstChild.innerText;
 
-                Dialog.confirm(
+                Dialog.confirmDelete(
                     __('pim_enrich.item.delete.confirm.content', {'itemName': itemCode}),
                     __('pim_enrich.item.delete.confirm.title', {'itemName': itemCode}),
                     function () {
                         this.parent.deleteItem(this);
-                    }.bind(this)
+                    }.bind(this),
+                    __('pim_menu.item.attribute')
                 );
             },
             updateItem: function () {
@@ -155,6 +156,8 @@ define(
                             this.stopEditItem();
                             if (!this.parent.sortable) {
                                 this.parent.render();
+                            } else {
+                                this.parent.updateSorting();
                             }
                         }.bind(this),
                         error: this.showValidationErrors.bind(this)
@@ -278,6 +281,12 @@ define(
                     this.rendered = true;
                 }
 
+                this.setSortable();
+                this.updateSortableStatus(this.sortable);
+
+                return this;
+            },
+            setSortable: function() {
                 this.$el.sortable({
                     items: 'tbody tr',
                     axis: 'y',
@@ -296,10 +305,6 @@ define(
                         this.updateSorting();
                     }.bind(this)
                 });
-
-                this.updateSortableStatus(this.sortable);
-
-                return this;
             },
             load: function () {
                 this.itemViews = [];
@@ -364,8 +369,7 @@ define(
                     }
                 }
 
-                if (attributeOptionRow.model.id)
-                {
+                if (attributeOptionRow.model.id) {
                     this.currentlyEditedItemView = attributeOptionRow;
                 }
 
@@ -430,7 +434,6 @@ define(
                 }
             },
             updateSorting: function () {
-                this.inLoading(true);
                 var sorting = [];
 
                 var rows = this.$el.find('tbody tr');
@@ -442,9 +445,7 @@ define(
                     url: this.sortingUrl,
                     type: 'PUT',
                     data: JSON.stringify(sorting)
-                }).done(function () {
-                    this.inLoading(false);
-                }.bind(this));
+                });
             },
             inLoading: function (loading) {
                 if (loading) {
@@ -474,6 +475,7 @@ define(
             });
 
             mediator.on('attribute:auto_option_sorting:changed', function (autoSorting) {
+                itemCollectionView.setSortable();
                 itemCollectionView.updateSortableStatus(!autoSorting);
                 itemCollectionView.render();
             }.bind(this));

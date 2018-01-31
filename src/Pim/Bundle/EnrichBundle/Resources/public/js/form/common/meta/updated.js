@@ -13,7 +13,7 @@ define(
         'oro/translator',
         'pim/form',
         'oro/mediator',
-        'text!pim/template/form/meta/updated'
+        'pim/template/form/meta/updated'
     ],
     function (_, __, BaseForm, mediator, formTemplate) {
         return BaseForm.extend({

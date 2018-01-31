@@ -1,0 +1,10 @@
+datagrid:
+    last-export-executions-grid:
+        extend: last-executions-grid
+        source:
+            acl_resource: pim_importexport_export_execution_index
+        options:
+            entityHint: export report
+        properties:
+            show_link:
+                route: pim_importexport_export_execution_show

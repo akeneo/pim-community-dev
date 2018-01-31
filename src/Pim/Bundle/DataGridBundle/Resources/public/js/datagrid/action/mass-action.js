@@ -1,6 +1,6 @@
 /* global define */
-define(['underscore', 'oro/messenger', 'oro/translator', 'oro/modal', 'oro/datagrid/abstract-action'],
-function(_, messenger, __, Modal, AbstractAction) {
+define(['underscore', 'oro/messenger', 'oro/translator', 'pim/dialog', 'oro/datagrid/abstract-action'],
+function(_, messenger, __, Dialog, AbstractAction) {
     'use strict';
 
     /**
@@ -34,7 +34,7 @@ function(_, messenger, __, Modal, AbstractAction) {
         execute: function() {
             var selectionState = this.datagrid.getSelectionState();
             if (_.isEmpty(selectionState.selectedModels) && selectionState.inset) {
-                messenger.notificationFlashMessage('warning', this.messages.empty_selection);
+                messenger.notify('warning', this.messages.empty_selection);
             } else {
                 AbstractAction.prototype.execute.call(this);
             }
@@ -68,10 +68,11 @@ function(_, messenger, __, Modal, AbstractAction) {
 
             params = collection.processFiltersParams(params, null, 'filters');
 
-            var locale = decodeURIComponent(this.datagrid.collection.url).split('dataLocale]=').pop();
+            var locale = this.getLocaleFromUrl('dataLocale');
 
             if ('family-grid' === this.datagrid.name) {
-                locale = decodeURIComponent(this.datagrid.collection.url).split('localeCode]=').pop();
+                locale = this.getLocaleFromUrl('localeCode');
+                delete params['filters[label][value]'];
             }
 
             if (locale) {
@@ -79,6 +80,19 @@ function(_, messenger, __, Modal, AbstractAction) {
             }
 
             return params;
+        },
+
+        /**
+         * Get the locale from the datagrid collection url with a given key
+         * @param  {String} localeKey For example dataLocale or localeCode
+         * @return {String} locale.   The returned locale e.g. en_US
+         */
+        getLocaleFromUrl: function(localeKey) {
+            const url = this.datagrid.collection.url.split('?')[1];
+            const urlParams = this.datagrid.collection.decodeStateData(url);
+            const datagridParams = urlParams[this.datagrid.name] || {};
+
+            return urlParams[localeKey] || datagridParams[localeKey];
         },
 
         /**
@@ -146,11 +160,15 @@ function(_, messenger, __, Modal, AbstractAction) {
          * @return {oro.Modal}
          */
         getConfirmDialog: function(callback) {
-            return new Modal({
-                title: this.messages.confirm_title,
-                content: this.messages.confirm_content,
-                okText: this.messages.confirm_ok
-            }).on('ok', callback);
+            return Dialog.confirm(
+              this.messages.confirm_content,
+              this.messages.confirm_title,
+              callback,
+              this.getEntityHint(true),
+              `${this.className} ok`,
+              this.messages.confirm_ok,
+              this.type
+            );
         }
     });
 });

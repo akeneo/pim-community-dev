@@ -6,6 +6,28 @@ function($, _, Backbone, app) {
     /**
      * Basic grid filter
      *
+     * Inheritance schema:
+     *
+     * - abstract-filter (abstract)
+     *   - none-filter (unused?)
+     *   - search-filter (Displays a search box)
+     *   - select-filter (Displays a list of choices with a search box. "Status", only boolean)
+     *     - multiselect-filter (Displays a multiselect with checkboxes (no ajax). "Job type"...
+     *       - ajax-choice-filter (unused?)
+     *     - product_completeness-filter (Displays the completeness like a select)
+     *     - product_scope-filter (Displays the scope like a select)
+     *     - select-row-filter (unused?)
+     *   - text-filter (Displays a choice contains/does not contains... Only on process tracker "Type", "User")
+     *     - choice-filter (Displays a choice contains/does not contains/equals... and 1 text field. "SKU", all text fields)
+     *       - date-filter (Displays a choice between/not between/more/less and 2 datepickers. "Created at", "Release date")
+     *         - datetime-filter (unused?)
+     *       - number-filter (Displays choice =/>/</empty... and 1 text field. "Optical zoom", all number fields)
+     *         - metric-filter (Displays choice =/</empty..., a text field and a unit. All metric fields)
+     *         - price-filter (Displays choice =/>..., a text field and a currency field. All prices fields)
+     *         - product_category-filter (For category filter, special one)
+     *     - select2-choice-filter (Displays a multiple select2. "Group", "Brand"...)
+     *     - select2-rest-choice-filter (multiple select2 with ajax calls. Only "Family")
+     *
      * @export  oro/datafilter/abstract-filter
      * @class   oro.datafilter.AbstractFilter
      * @extends Backbone.View
@@ -23,7 +45,7 @@ function($, _, Backbone, app) {
          *
          * @property {String}
          */
-        className: 'AknDropdown AknFilterBox-filter btn-group filter-item oro-drop',
+        className: 'AknFilterBox-filterContainer filter-item oro-drop',
 
         /**
          * Is filter can be disabled
@@ -143,6 +165,13 @@ function($, _, Backbone, app) {
         },
 
         /**
+         * {@inheritdoc}
+         */
+        render() {
+            $('.column-inner').scroll(this._updateCriteriaSelectorPosition.bind(this));
+        },
+
+        /**
          * Disable filter
          *
          * @return {*}
@@ -163,7 +192,7 @@ function($, _, Backbone, app) {
          * @return {*}
          */
         show: function() {
-            this.$el.css('display', 'inline-block');
+            this.$el.css('display', 'block');
             return this;
         },
 
@@ -417,14 +446,6 @@ function($, _, Backbone, app) {
             } else {
                 element.parent().removeClass(this.buttonActiveClass);
             }
-
-            if (rightOffset < 0) {
-                $element.addClass('AknDropdown-menu--right');
-                $element.removeClass('AknDropdown-menu--alignLeft');
-            } else {
-                $element.addClass('AknDropdown-menu--alignLeft');
-                $element.removeClass('AknDropdown-menu--right');
-            }
         },
 
         /**
@@ -438,6 +459,67 @@ function($, _, Backbone, app) {
                 e.preventDefault();
                 e.stopPropagation();
             }
+        },
+
+        /**
+         * There is a well known bug on browsers, forced us to not use the overflow-x and overflow-y with different
+         * values. With the design in columns, the criteria popups are not displayed correctly with the dropdown or
+         * multiselect libraries. So we sadly have to change the position of the popup to "fixed" and set manually
+         * their position.
+         *
+         * This next function will find the best position to display then (aligned with the current filter).
+         */
+        _updateCriteriaSelectorPosition() {
+            const body = $('body');
+
+            const criteria = this.getCriteria();
+            if (criteria.is(':visible')) {
+                criteria.css({ position: 'fixed' });
+
+                let expectedLeft = this.$el.offset().left;
+                if ((expectedLeft + criteria.outerWidth() > body.width()) &&
+                    expectedLeft + this.$el.width() - criteria.outerWidth() > 0) {
+                    criteria.css({ left: expectedLeft + this.$el.width() - criteria.outerWidth() });
+                } else {
+                    criteria.css({ left: expectedLeft });
+                }
+
+                let expectedTop = this.$el.offset().top;
+                if ((expectedTop + criteria.outerHeight() > body.height()) &&
+                    expectedTop + this.$el.height() - criteria.outerHeight() > 0) {
+                    criteria.css({ top: expectedTop + this.$el.height() - criteria.outerHeight() });
+                } else {
+                    criteria.css({ top: expectedTop });
+                }
+            }
+        },
+
+        /**
+         * Returns the DOM element of the criteria
+         *
+         * @returns {*}
+         */
+        getCriteria() {
+            return this.$(this.criteriaSelector);
+        },
+
+        /**
+         * Highlights the current dropdown
+         *
+         * @param {String} value
+         * @param {String} selector (ex: '.operator')
+         */
+        _highlightDropdown(value, selector) {
+            this.$el.find(selector + ' .AknDropdown-menuLink')
+                .removeClass('AknDropdown-menuLink--active')
+                .removeClass('active');
+
+            const currentChoice = this.$el.find(selector + ' *[data-value="' + value + '"]');
+            currentChoice.parent()
+                .addClass('AknDropdown-menuLink--active')
+                .addClass('active');
+
+            this.$el.find(selector + ' .AknActionButton-highlight').html(currentChoice.text());
         }
     });
 });

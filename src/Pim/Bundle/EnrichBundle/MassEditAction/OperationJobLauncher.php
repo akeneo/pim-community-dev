@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\EnrichBundle\MassEditAction;
 
-use Akeneo\Bundle\BatchBundle\Launcher\SimpleJobLauncher;
+use Akeneo\Bundle\BatchBundle\Launcher\JobLauncherInterface;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Pim\Bundle\EnrichBundle\MassEditAction\Operation\BatchableOperationInterface;
 use Pim\Bundle\EnrichBundle\MassEditAction\Operation\ConfigurableOperationInterface;
@@ -19,7 +19,7 @@ use Symfony\Component\Translation\Exception\NotFoundResourceException;
  */
 class OperationJobLauncher
 {
-    /** @var SimpleJobLauncher */
+    /** @var JobLauncherInterface */
     protected $jobLauncher;
 
     /** @var IdentifiableObjectRepositoryInterface */
@@ -29,12 +29,12 @@ class OperationJobLauncher
     protected $tokenStorage;
 
     /**
-     * @param SimpleJobLauncher                     $jobLauncher
+     * @param JobLauncherInterface                  $jobLauncher
      * @param IdentifiableObjectRepositoryInterface $jobInstanceRepo
      * @param TokenStorageInterface                 $tokenStorage
      */
     public function __construct(
-        SimpleJobLauncher $jobLauncher,
+        JobLauncherInterface $jobLauncher,
         IdentifiableObjectRepositoryInterface $jobInstanceRepo,
         TokenStorageInterface $tokenStorage
     ) {
@@ -59,15 +59,11 @@ class OperationJobLauncher
             throw new NotFoundResourceException(sprintf('No JobInstance found with code "%s"', $jobInstanceCode));
         }
 
-        if ($operation instanceof ConfigurableOperationInterface) {
-            $operation->finalize();
-        }
+        $user = $this->tokenStorage->getToken()->getUser();
 
         $configuration = $operation->getBatchConfig();
-        $this->jobLauncher->launch(
-            $jobInstance,
-            $this->tokenStorage->getToken()->getUser(),
-            $configuration
-        );
+        $configuration['user_to_notify'] = $user->getUsername();
+
+        $this->jobLauncher->launch($jobInstance, $user, $configuration);
     }
 }

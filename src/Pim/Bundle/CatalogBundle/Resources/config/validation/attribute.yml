@@ -45,6 +45,23 @@ Pim\Bundle\CatalogBundle\Entity\Attribute:
                 - pim_catalog_boolean
                 - pim_catalog_date
                 - pim_catalog_metric
+        - Pim\Component\Catalog\Validator\Constraints\NullProperties:
+            message: This attribute cannot have options.
+            properties:
+                - auto_option_sorting
+            groups:
+                - pim_catalog_identifier
+                - pim_catalog_text
+                - pim_catalog_textarea
+                - pim_catalog_number
+                - pim_catalog_price_collection
+                - pim_catalog_file
+                - pim_catalog_image
+                - pim_catalog_boolean
+                - pim_catalog_date
+                - pim_catalog_metric
+                - pim_reference_data_multiselect
+                - pim_reference_data_simpleselect
     properties:
         type:
             - Type: string
@@ -58,7 +75,7 @@ Pim\Bundle\CatalogBundle\Entity\Attribute:
             - Length:
                 max: 255
             - Regex:
-                pattern: /^(?!(id|associationTypes|categories|categoryId|completeness|enabled|family|groups|associations|products|scope|treeId|values|category|(.)*_(products|groups))$)/
+                pattern: /^(?!(id|associationTypes|categories|categoryId|completeness|enabled|family|groups|associations|products|scope|treeId|values|category|parent|(.)*_(products|groups))$)/
                 message: This code is not available
         localizable:
             - Type: bool

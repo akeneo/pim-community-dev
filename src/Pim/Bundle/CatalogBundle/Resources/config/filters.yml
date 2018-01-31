@@ -2,8 +2,9 @@ parameters:
     pim_catalog.filter.chained.class:                        Pim\Bundle\CatalogBundle\Filter\ChainedFilter
     pim_enrich.filter.product_value.locale.class:            Pim\Bundle\CatalogBundle\Filter\ProductValueLocaleFilter
     pim_enrich.filter.product_value.channel.class:           Pim\Bundle\CatalogBundle\Filter\ProductValueChannelFilter
-    pim_catalog.comparator.filter.product.class:             Pim\Component\Catalog\Comparator\Filter\ProductFilter
+    pim_catalog.comparator.filter.entity_with_value.class:   Pim\Component\Catalog\Comparator\Filter\EntityWithValuesFilter
     pim_catalog.comparator.filter.product_association.class: Pim\Component\Catalog\Comparator\Filter\ProductAssociationFilter
+    pim_catalog.comparator.filter.entity_with_values_field.class: Pim\Component\Catalog\Comparator\Filter\EntityWithValuesFieldFilter
 
 services:
     pim_catalog.filter.chained:
@@ -24,15 +25,39 @@ services:
             - { name: pim_catalog.filter.collection, type: pim.external_api.product.view }
 
     pim_catalog.comparator.filter.product:
-        class: '%pim_catalog.comparator.filter.product.class%'
+        class: '%pim_catalog.comparator.filter.entity_with_value.class%'
         arguments:
             - '@pim_catalog.normalizer.standard.product.properties'
             - '@pim_catalog.comparator.registry'
             - '@pim_catalog.repository.attribute'
-            - ['family', 'enabled', 'groups', 'variant_group', 'categories']
+            - '@pim_catalog.comparator.filter.product_field'
+            - ['family', 'enabled', 'groups', 'categories', 'parent']
+
+    pim_catalog.comparator.filter.product_model:
+        class: '%pim_catalog.comparator.filter.entity_with_value.class%'
+        arguments:
+            - '@pim_catalog.normalizer.standard.product_model'
+            - '@pim_catalog.comparator.registry'
+            - '@pim_catalog.repository.attribute'
+            - '@pim_catalog.comparator.filter.product_model_field'
+            - ['family_variant', 'categories', 'parent']
 
     pim_catalog.comparator.filter.product_association:
         class: '%pim_catalog.comparator.filter.product_association.class%'
         arguments:
             - '@pim_catalog.normalizer.standard.product.associations'
             - '@pim_catalog.comparator.registry'
+
+    pim_catalog.comparator.filter.product_field:
+        class: '%pim_catalog.comparator.filter.entity_with_values_field.class%'
+        arguments:
+            - '@pim_catalog.normalizer.standard.product.properties'
+            - '@pim_catalog.comparator.registry'
+            - ['family', 'enabled', 'groups', 'categories', 'associations', 'parent']
+
+    pim_catalog.comparator.filter.product_model_field:
+        class: '%pim_catalog.comparator.filter.entity_with_values_field.class%'
+        arguments:
+            - '@pim_catalog.normalizer.standard.product_model'
+            - '@pim_catalog.comparator.registry'
+            - ['family_variant', 'categories', 'parent']

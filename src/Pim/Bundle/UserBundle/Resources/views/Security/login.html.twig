@@ -1,17 +1,13 @@
 {% extends 'PimUserBundle::layout.html.twig' %}
 
-{% block head %}
-    {{ parent() }}
-    <script type="text/javascript">
-        if (sessionStorage) {
-            sessionStorage.clear()
-        }
-    </script>
-{% endblock %}
-
 {% block bodyClass %}AknLogin{% endblock %}
 
 {% block content %}
+<script type="text/javascript">
+    sessionStorage.clear();
+    document.title = '{{ 'Login'|trans }}';
+</script>
+
 <div class="AknLogin-mainContainer container">
     <div class="AknLogin-title">
         {% embed 'PimUIBundle::logo.html.twig' %}{% endembed %}
@@ -24,33 +20,29 @@
     {% endif %}
 
     <form action="{{ path('oro_user_security_check') }}" method="post" class="form-signin form-inline">
-        <fieldset>
-            <div class="AknLogin-form">
-                <input class="AknLogin-formInput" type="text" id="prependedInput" autofocus="autofocus" name="_username" value="{{ last_username }}" required="required" placeholder="{{ 'Username or Email'|trans }}" size="1"/>
-                <input class="AknLogin-formInput" type="password" id="prependedInput2" name="_password" required="required" placeholder="{{ 'Password'|trans }}" autocomplete="off" size="1"/>
-                <button class="AknButton AknButton--apply AknButton--big AknButton--uppercase" type="submit" id="_submit" name="_submit">{{ 'Log in'|trans }}</button>
+        <div class="AknLogin-form">
+            <div class="AknLogin-formCell">
+                <input class="AknTextField" type="text" id="prependedInput" autofocus="autofocus" name="_username" value="{{ last_username }}" required="required" placeholder="{{ 'Username or Email'|trans }}" size="1"/>
             </div>
-            <div class="AknLogin-form">
+            <div class="AknLogin-formCell">
+                <input class="AknTextField" type="password" id="prependedInput2" name="_password" required="required" placeholder="{{ 'Password'|trans }}" autocomplete="off" size="1"/>
+            </div>
+        </div>
+        <div class="AknLogin-form">
+            <div class="AknLogin-formCell">
                 <label class="checkbox remember-me">
                     <input type="checkbox" id="remember_me" name="_remember_me" value="on" /> {{ 'Remember me on this computer'|trans }}
                 </label>
+            </div>
+            <div class="AknLogin-formCell AknLogin-formCell--small">
                 <div class="signin-help">
                     <a class="AknLogin-link" href="{{ path('oro_user_reset_request') }}">{{ 'Forgot your password?'|trans }}</a>
                 </div>
+                <button class="AknButton AknButton--apply AknButton--big" type="submit" id="_submit" name="_submit">{{ 'Log in'|trans }}</button>
             </div>
-        </fieldset>
+        </div>
         <input type="hidden" name="_target_path" value="" />
         <input type="hidden" name="_csrf_token" value="{{ csrf_token }}" />
     </form>
 </div>
-
-<script type="text/javascript">
-    require(['oro/layout'], function (layout) {
-        $(function () {
-            layout.hideProgressBar();
-            layout.init();
-            document.title = '{{ 'Login'|trans }}';
-        });
-    });
-</script>
 {% endblock content %}

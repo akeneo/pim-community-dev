@@ -2,8 +2,8 @@
 
 namespace spec\Pim\Bundle\EnrichBundle\Provider\StructureVersion;
 
-use PhpSpec\ObjectBehavior;
 use Akeneo\Component\Versioning\Model\Version;
+use PhpSpec\ObjectBehavior;
 use Pim\Bundle\VersioningBundle\Repository\VersionRepositoryInterface;
 
 class StructureVersionProviderSpec extends ObjectBehavior

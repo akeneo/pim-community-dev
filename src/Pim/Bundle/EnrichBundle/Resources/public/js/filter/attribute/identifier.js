@@ -7,7 +7,7 @@ define([
     'pim/filter/filter',
     'pim/fetcher-registry',
     'pim/user-context',
-    'text!pim/template/filter/product/identifier'
+    'pim/template/filter/product/identifier'
 ], function (
     $,
     _,

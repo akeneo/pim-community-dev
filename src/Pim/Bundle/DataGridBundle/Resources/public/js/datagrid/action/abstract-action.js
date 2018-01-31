@@ -1,7 +1,7 @@
  /* global define */
-define(['jquery', 'underscore', 'backbone', 'routing', 'oro/navigation', 'oro/translator', 'oro/mediator',
-    'oro/messenger', 'oro/error', 'oro/modal', 'oro/datagrid/action-launcher'],
-function($, _, Backbone, routing, Navigation, __, mediator, messenger, error, Modal, ActionLauncher) {
+define(['jquery', 'underscore', 'backbone', 'routing', 'pim/router', 'oro/translator', 'oro/mediator',
+    'oro/messenger', 'oro/error', 'pim/dialog', 'oro/datagrid/action-launcher', 'require-context'],
+function($, _, Backbone, routing, router, __, mediator, messenger, error, Dialog, ActionLauncher, requireContext) {
     'use strict';
 
     /**
@@ -75,7 +75,7 @@ function($, _, Backbone, routing, Navigation, __, mediator, messenger, error, Mo
             this.datagrid = options.datagrid;
 
             _.each(this.messages, _.bind(function (message, key) {
-                this.messages[key] = __(message);
+                this.messages[key] = message;
             }, this));
 
             _.defaults(this.messages, this.defaultMessages);
@@ -156,7 +156,7 @@ function($, _, Backbone, routing, Navigation, __, mediator, messenger, error, Mo
 
         _confirmationExecutor: function(callback) {
             if (this.confirmation) {
-                this.getConfirmDialog(callback).open();
+                this.getConfirmDialog(callback);
             } else {
                 callback();
             }
@@ -166,13 +166,11 @@ function($, _, Backbone, routing, Navigation, __, mediator, messenger, error, Mo
             if (action.dispatched) {
                 return;
             }
-            require(
-                ['oro/' + action.frontend_type + '-widget'],
-                function(ExportAction) {
-                    var exportAction = new ExportAction(action);
-                    exportAction.run();
-                }
-            );
+
+            var ExportAction = requireContext('oro/' + action.frontend_type + '-widget')
+
+            var exportAction = new ExportAction(action)
+            exportAction.run();
         },
 
         _handleWidget: function(action) {
@@ -181,27 +179,19 @@ function($, _, Backbone, routing, Navigation, __, mediator, messenger, error, Mo
             }
             action.frontend_options.url = action.frontend_options.url || this.getLinkWithParameters();
             action.frontend_options.title = action.frontend_options.title || this.label;
-            require(['oro/' + action.frontend_type + '-widget'],
-            function(WidgetType) {
-                var widget = new WidgetType(action.frontend_options);
-                widget.render();
-            });
+
+            var WidgetType = requireContext('oro/' + action.frontend_type + '-widget')
+
+            var widget = new WidgetType(action.frontend_options);
+            widget.render();
         },
 
         _handleRedirect: function(action) {
             if (action.dispatched) {
                 return;
             }
-            var url = action.getLinkWithParameters(),
-                navigation = Navigation.getInstance();
-            if (navigation) {
-                navigation.processRedirect({
-                    fullRedirect: false,
-                    location: url
-                });
-            } else {
-                location.href = url;
-            }
+            var url = action.getLinkWithParameters();
+            router.redirect(url);
         },
 
         _handleAjax: function(action) {
@@ -236,7 +226,7 @@ function($, _, Backbone, routing, Navigation, __, mediator, messenger, error, Mo
             var defaultMessage = data.successful ? this.messages.success : this.messages.error,
                 message = __(data.message) || defaultMessage;
             if (message) {
-                messenger.notificationFlashMessage(data.successful ? 'success' : 'error', message);
+                messenger.notify(data.successful ? 'success' : 'error', message);
             }
         },
 
@@ -287,11 +277,53 @@ function($, _, Backbone, routing, Navigation, __, mediator, messenger, error, Mo
          * @return {oro.Modal}
          */
         getConfirmDialog: function(callback) {
-            return new Modal({
-                title: this.messages.confirm_title,
-                content: this.messages.confirm_content,
-                okText: this.messages.confirm_ok
-            }).on('ok', callback);
+            return Dialog.confirm(
+              this.messages.confirm_content,
+              this.messages.confirm_title,
+              callback,
+              this.getEntityHint(true)
+            );
+        },
+
+        /**
+         * Get the entity type from datagrid metadata
+         *
+         * @param {Boolean} plural Pluralize the entity code
+         */
+        getEntityHint: function(plural) {
+            const datagrid = this.datagrid || {};
+            const entityHint = datagrid.entityHint || 'item';
+
+            if (plural) {
+                return this.getEntityPlural(entityHint);
+            }
+
+            return entityHint;
+        },
+
+        /**
+         * Get the entity hint separated by dashes
+         */
+        getEntityCode: function() {
+            const entityHint = this.getEntityHint();
+            return entityHint.toLowerCase().split(' ').join('_');
+        },
+
+        /**
+         * Very basic pluralize method for entity types
+         *
+         * Example:
+         *      Product -> products
+         *      Family -> families
+         *
+         * @return {String}
+         */
+        getEntityPlural: function(entityHint) {
+            if (entityHint.endsWith('y')) {
+                return entityHint.replace(/y$/, 'ies');
+            }
+
+            return `${entityHint}s`;
         }
     });
 });

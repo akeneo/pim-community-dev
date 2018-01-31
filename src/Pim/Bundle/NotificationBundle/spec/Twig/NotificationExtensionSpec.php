@@ -34,9 +34,4 @@ class NotificationExtensionSpec extends ObjectBehavior
 
         $this->countNotifications()->shouldReturn(0);
     }
-
-    function it_has_a_name()
-    {
-        $this->getName()->shouldBe('pim_notification_extension');
-    }
 }

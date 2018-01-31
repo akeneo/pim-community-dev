@@ -1,26 +1,3 @@
 No products to remove: No products to remove
 "dot (.)":   dot (.)
 "comma (,)": comma (,)
-
-pim_catalog:
-    constraint:
-        product_identifier: These identifiers "%s" don't exist.
-        0: An unexpected error occurred.
-        100: Non-expected value
-        101: This field expects a boolean value.
-        102: This field expects a float value.
-        103: This field expects an integer value.
-        104: This field expects a numeric value.
-        105: This field expects a string value.
-        106: This field expects an array value.
-        107: This field expects an array of arrays as value.
-        200: An internal error occurred
-        201: An internal error occurred
-        202: This field expects a numeric value.
-        203: This field expects a string value.
-        204: This field expects a string value.
-        205: An internal error occurred
-        300: This field expects a valid entity code.
-        301: This field expects a valid scope and locale.
-        302: This field expects a valid scope.
-        303: This field expects a valid association format.

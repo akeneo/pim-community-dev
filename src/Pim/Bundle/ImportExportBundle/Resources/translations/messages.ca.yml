@@ -6,7 +6,7 @@ pim_import_export:
   status:
     - A punt
   download_archive:
-    archive: descarregar l'arxiu generat | descarregar els arxius generats
+    archive: descarregar l' arxiu generat | descarregar arxius generats
     output: descarregar fitxer generat|descarregar fitxers generats
     input: descarregar fitxer llegit|descarregar fitxers llegits
     invalid_xlsx: descarregar dades no vàlides
@@ -27,29 +27,17 @@ pim_import_export:
       history.title: Històric
       job_content.title: Contingut
 pim_title.export_profile.index: Gestió de perfils d'exportació
-pim_title.export_profile.edit: Exportar perfils de %job.label% | Editar
-pim_title.export_profile.show: Exportar perfils de %job.label% | Mostrar
 pim_title.export_execution.index: Exportar històric d'execucions
 pim_title.export_execution.show: Exportar execucions | Detalls
 pim_title.import_profile.index: Gestió de perfils d'importació
-pim_title.import_profile.edit: Importar perfils %job.label% | Editar
-pim_title.import_profile.show: Importar perfils %job.label% | Mostrar
 pim_title.import_execution.index: Importar històric d'execucions
 pim_title.import_execution.show: Importar execucions | Detalls
 export profile:
   title: exportar perfil
-  overview: resum d'exportació de perfil
-  create: crear perfil d'exportació
   edit: editar perfil d'exportació
-export report:
-  overview: exportar informes
 import profile:
   title: importar perfil
-  overview: resum de perfil d'importació
-  create: crear perfil d'importació
   edit: editar perfil d'importació
-import report:
-  overview: importar informes
 pim_importexport:
   acl:
     export_profile:
@@ -107,12 +95,6 @@ flash:
     removed: S'ha eliminat la importació
     updated: La importació s'ha actualitzat correctament
     running: La importació s'està executant
-pim_menu:
-  item:
-    export_history: Històric d'exportacions
-    export_profile: Perfils d'exportació
-    import_history: Històric d'importacions
-    import_profile: Perfils d'importació
 General properties: Propietats generals
 History: Històric
 pane.accordion:
@@ -146,5 +128,4 @@ Status: Estat
 Summary: Sumari
 Start: Començar
 End: Fi
-set_attribute_requirements: Establir els requeriments d'atribut
 warning.label: Avís

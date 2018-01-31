@@ -40,7 +40,7 @@ class CategoryRepository extends NestedTreeRepository implements TranslatedLabel
 
         $choices = [];
         foreach ($query->getArrayResult() as $code) {
-            $choices[$code['code']] = $code['label'];
+            $choices[$code['label']] = $code['code'];
         }
 
         return $choices;

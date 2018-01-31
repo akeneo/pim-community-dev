@@ -1,0 +1,4 @@
+pim_enrich_job_execution_rest_get:
+    path: /rest/{identifier}
+    defaults: { _controller: pim_enrich.controller.rest.job_execution:getAction }
+    methods: [GET]

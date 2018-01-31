@@ -22,11 +22,11 @@ class ProductValueKeyGenerator
      * Get the internal key that is used to index
      * a product value in a collection of values
      *
-     * @param ProductValueInterface $value
+     * @param ValueInterface $value
      *
      * @return string
      */
-    public static function getKey(ProductValueInterface $value, $separator = '-')
+    public static function getKey(ValueInterface $value, $separator = '-')
     {
         $attribute = $value->getAttribute();
         $key = $attribute->getCode();

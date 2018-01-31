@@ -1,9 +1,13 @@
-<a class="AknActionButton<% if (displayInline) { %> AknActionButton--big AknActionButton--noLeftBorder<% } %>" data-toggle="dropdown" href="#">
-    <%= i18n.getFlag(currentLocale.code, false) %> <%- currentLocale.language %>
-    <span class="AknActionButton-caret AknCaret"></span>
+<a class="AknActionButton <% if (displayInline) { %> AknActionButton--big AknActionButton--noLeftBorder<% } else { %>AknActionButton--withoutBorder<% } %>" data-toggle="dropdown" href="#">
+    <% if (!displayInline && displayLabel) { %><%- label %>: <% } %>
+    <span class="AknActionButton-highlight"><%= i18n.getFlag(currentLocale.code, false) %> <%- currentLocale.language %></span>
+    <span class="AknActionButton-caret"></span>
 </a>
 <ul class="AknDropdown-menu">
+    <div class="AknDropdown-menuTitle"><%- label %></div>
     <% _.each(locales, function (locale) { %>
-        <li><a class="AknDropdown-menuLink" data-locale="<%- locale.code %>"><%= i18n.getFlag(locale.code, false) %> <%- locale.language %></a></li>
+        <li>
+            <a class="AknDropdown-menuLink<% if (currentLocale.code === locale.code) { %> AknDropdown-menuLink--active<% } %>" data-locale="<%- locale.code %>"><%= i18n.getFlag(locale.code, false) %> <%- locale.language %></a>
+        </li>
     <% }); %>
 </ul>

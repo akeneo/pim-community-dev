@@ -41,7 +41,7 @@ class DisableFieldSubscriberSpec extends ObjectBehavior
         $channel->getId()->willReturn(1);
         $form->add('name', null, [
             'disabled'  => true,
-            'read_only' => true,
+            'attr' => ['read_only' => true]
         ])->shouldBeCalled();
         $this->postSetData($event);
     }

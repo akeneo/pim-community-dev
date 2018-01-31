@@ -27,9 +27,15 @@ Action performed.: Acción realizada.
 Action is not performed.: Acción no realizada.
 Please, select item to perform action.: Por favor, seleccione elemento para realizar la acción.
 View per page: Vista por página
+Enabled: Habilitado
+Disabled: Inhabilitado
+not_available: N / A
+Yes: true
+No: false
 oro.datagrid.entityHint: Entidad
 oro.datagrid.noentities: No se encontraron registros
-oro.datagrid.noresults: "No se encontraron resultados. Intente cambiar el criterio de búsqueda."
+oro.datagrid.noresults: "No hay ningún resultado para su búsqueda."
+oro.datagrid.noresults_subTitle: "Pruebe con nuevos criterios de búsqueda."
 oro.datagrid.nocolumns: Sin columnas configuradas para esta grilla
 oro.datagrid.pagination.label: "Página"
 oro.datagrid.pagination.totalPages: "de {{ totalPages }}"
@@ -39,19 +45,27 @@ oro.datagrid.action.refresh: "Actualizar"
 oro_datagrid.select.all: "Todos"
 oro_datagrid.select.visible: "Todo lo visible"
 oro_datagrid.select.none: "Ninguno"
+oro_datagrid.select.select: "Seleccione"
 pim.grid.ajax_choice_filter.label_empty: está vacía
 pim.grid.ajax_choice_filter.label_not_empty: no está vacío
-pim.grid.choice_filter:
-  label_empty: está vacía
-  label_not_empty: no está vacío
-  label_in_list: en la lista
+pim:
+  grid:
+    choice_filter:
+      label_empty: está vacía
+      label_not_empty: no está vacío
+      label_in_list: en la lista
+      operator: Operador
+    price_filter:
+      label: Moneda
+    category_filter:
+      done: Hecho
 Available Columns: Columnas disponibles
 Displayed Columns: Columnas seleccionadas
 datagrid_view.columns.min_message: Debe seleccionar al menos una columna de datagrid para mostrar
 pim_datagrid:
   column_configurator:
     label: Columnas
-    title: Selección de columna
+    title: Configurar columnas
     all_groups: Todos los grupos
     search: Buscar
     clear: Restablecer
@@ -59,9 +73,11 @@ pim_datagrid:
     apply: Aplicar
     cancel: Cancelar
     remove_column: Quitar
+    description: Seleccione la información que desea mostrar como columna
+    attribute_groups: Grupos de atributos
   mass_action:
     delete:
-      confirm_title: Confirmación de borrado
+      confirm_title: Confirmar la eliminación
       confirm_ok: OK
       empty_selection: Ningún producto seleccionado
 pim.grid.mass_action.quick_export.title: Exportación rápida
@@ -84,6 +100,8 @@ grid.view_selector:
   placeholder: Nombre de la nueva vista
   choose_label: Elija una etiqueta para la vista
   confirmation:
-    remove: '¿Está seguro que desea eliminar este punto de vista del datagrid?'
-    delete: Confirmación de borrado
+    remove: '¿Está seguro que desea eliminar esta vista?'
+    delete: Confirmar la eliminación
 grid.view_selector.flash.updated: Vista de grilla de datos actualizada correctamente
+Client ID: Client ID
+Secret: Secreto

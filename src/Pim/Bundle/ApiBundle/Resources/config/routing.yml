@@ -10,6 +10,10 @@ attribute:
     resource: '@PimApiBundle/Resources/config/routing/attribute.yml'
     prefix: /rest/v1
 
+attribute_group:
+    resource: '@PimApiBundle/Resources/config/routing/attribute_group.yml'
+    prefix: /rest/v1
+
 channel:
     resource: '@PimApiBundle/Resources/config/routing/channel.yml'
     prefix: /rest/v1
@@ -22,8 +26,20 @@ product:
     resource: '@PimApiBundle/Resources/config/routing/product.yml'
     prefix: /rest/v1
 
+product_model:
+    resource: '@PimApiBundle/Resources/config/routing/product_model.yml'
+    prefix: /rest/v1
+
 media:
     resource: '@PimApiBundle/Resources/config/routing/media.yml'
+    prefix: /rest/v1
+
+currency:
+    resource: '@PimApiBundle/Resources/config/routing/currency.yml'
+    prefix: /rest/v1
+
+association_type:
+    resource: '@PimApiBundle/Resources/config/routing/association_type.yml'
     prefix: /rest/v1
 
 fos_oauth_server_token:
@@ -34,3 +50,7 @@ fos_oauth_server_token:
 endpoint:
     resource: '@PimApiBundle/Resources/config/routing/endpoint.yml'
     prefix: /rest
+
+measure_family:
+    resource: '@PimApiBundle/Resources/config/routing/measure_family.yml'
+    prefix: /rest/v1

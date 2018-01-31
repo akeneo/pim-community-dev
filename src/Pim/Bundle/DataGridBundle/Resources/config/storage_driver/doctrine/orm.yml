@@ -1,5 +1,0 @@
-parameters:
-    pim_datagrid.datasource.result_record.hydrator.product.class:            Pim\Bundle\DataGridBundle\Datasource\ResultRecord\Orm\ProductHydrator
-    pim_datagrid.datasource.result_record.hydrator.associated_product.class: Pim\Bundle\DataGridBundle\Datasource\ResultRecord\Orm\ProductHydrator
-    pim_datagrid.datasource.result_record.hydrator.object_id.class:          Pim\Bundle\DataGridBundle\Datasource\ResultRecord\Orm\ObjectIdHydrator
-    pim_datagrid.datasource.result_record.hydrator.object.class:             Pim\Bundle\DataGridBundle\Datasource\ResultRecord\Orm\ObjectHydrator

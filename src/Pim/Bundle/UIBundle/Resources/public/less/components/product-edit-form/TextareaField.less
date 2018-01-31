@@ -5,8 +5,27 @@
   border: 1px solid @AknBorderColor;
   width: 100%;
   border-radius: 2px;
-  padding: 8px;
+  padding: 12px;
   height: 150px;
+
+  &-layer {
+    border: 1px solid @AknBorderColor;
+    position: absolute;
+    width: ~"calc(100% - 4px)";
+    height: 100%;
+    background: white;
+    border-radius: 2px;
+
+    &--first {
+      top: @AknLocalizableGap * 2;
+      left: @AknLocalizableGap * 2;
+    }
+
+    &--second {
+      top: @AknLocalizableGap;
+      left: @AknLocalizableGap;
+    }
+  }
 
   &[readonly],
   &[disabled] {
@@ -16,5 +35,19 @@
 
   &--small {
     height: @AknFormHeight;
+    overflow: hidden;
+  }
+
+  &--localizable {
+    margin-right: @AknLocalizableGap * 2;
+    z-index: 1;
+  }
+}
+
+@-moz-document url-prefix() {
+  .AknTextareaField {
+    &-layer {
+      height: ~"calc(100% - 1px)";
+    }
   }
 }

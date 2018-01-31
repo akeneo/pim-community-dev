@@ -3,6 +3,8 @@
 namespace Pim\Bundle\EnrichBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -32,12 +34,12 @@ class AttributeOptionCreateType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('code', 'text', ['required' => true])
+            ->add('code', TextType::class, ['required' => true])
             ->add(
                 'optionValues',
-                'collection',
+                CollectionType::class,
                 [
-                    'type'         => 'pim_enrich_attribute_option_value',
+                    'type'         => AttributeOptionValueType::class,
                     'allow_add'    => true,
                     'allow_delete' => true,
                     'by_reference' => false
@@ -60,7 +62,7 @@ class AttributeOptionCreateType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'pim_attribute_option_create';
     }

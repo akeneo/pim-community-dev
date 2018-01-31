@@ -19,7 +19,11 @@ class ViewSelectorContext extends PimContext
      */
     public function iOpenTheViewSelector()
     {
-        $this->getCurrentPage()->getViewSelector()->click();
+        $this->spin(function () {
+            $this->getCurrentPage()->getViewSelector()->open();
+
+            return true;
+        }, 'Cannot open the view selector.');
     }
 
     /**

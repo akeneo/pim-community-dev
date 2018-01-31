@@ -27,9 +27,15 @@ Action performed.: Action exécutée.
 Action is not performed.: L'action n'a pas été exécutée.
 Please, select item to perform action.: Veuillez sélectionner des éléments afin d'effectuer l'action.
 View per page: Par page
+Enabled: Activé
+Disabled: Désactivé
+not_available: N/A
+Yes: true
+No: false
 oro.datagrid.entityHint: Entité
 oro.datagrid.noentities: Aucun enregistrement trouvé
-oro.datagrid.noresults: "Aucun résultat trouvé. Essayez de modifier vos critères de recherche."
+oro.datagrid.noresults: "Désolé, il n’y a aucun résultat pour votre recherche."
+oro.datagrid.noresults_subTitle: "Essayez à nouveau avec d'autres critères de recherche."
 oro.datagrid.nocolumns: Aucune colonne configurée pour cette grille
 oro.datagrid.pagination.label: "Page"
 oro.datagrid.pagination.totalPages: "de {{ totalPages }}"
@@ -39,19 +45,27 @@ oro.datagrid.action.refresh: "Mettre à jour"
 oro_datagrid.select.all: "Tous"
 oro_datagrid.select.visible: "Tous les éléments visibles"
 oro_datagrid.select.none: "Aucun"
+oro_datagrid.select.select: "Sélectionner"
 pim.grid.ajax_choice_filter.label_empty: est vide
 pim.grid.ajax_choice_filter.label_not_empty: n'est pas vide
-pim.grid.choice_filter:
-  label_empty: est vide
-  label_not_empty: n'est pas vide
-  label_in_list: dans la liste
+pim:
+  grid:
+    choice_filter:
+      label_empty: est vide
+      label_not_empty: n'est pas vide
+      label_in_list: dans la liste
+      operator: Opérateur
+    price_filter:
+      label: Devise
+    category_filter:
+      done: Fait
 Available Columns: Colonnes disponibles
 Displayed Columns: Colonnes sélectionnées
 datagrid_view.columns.min_message: Vous devez sélectionner au moins une colonne à afficher
 pim_datagrid:
   column_configurator:
     label: Colonnes
-    title: Sélection de colonnes
+    title: Configurer les colonnes
     all_groups: Tous les groupes
     search: Recherche
     clear: Réinitialiser
@@ -59,9 +73,11 @@ pim_datagrid:
     apply: Appliquer
     cancel: Annuler
     remove_column: Supprimer
+    description: Sélectionnez les informations que vous souhaitez afficher dans vos colonnes
+    attribute_groups: Groupes d'attributs
   mass_action:
     delete:
-      confirm_title: Confirmation de la suppression
+      confirm_title: Supprimer l'élément
       confirm_ok: OK
       empty_selection: Aucun produit sélectionné
 pim.grid.mass_action.quick_export.title: Export rapide
@@ -84,6 +100,16 @@ grid.view_selector:
   placeholder: Nom de la nouvelle vue
   choose_label: Choisissez un titre pour la vue
   confirmation:
-    remove: Êtes-vous sûr(e) de que vouloir supprimer cette vue ?
-    delete: Confirmation de la suppression
+    remove: Êtes-vous sûr(e) de vouloir supprimer cette vue ?
+    delete: Supprimer l'élément
 grid.view_selector.flash.updated: Vue de grille mise à jour avec succès
+grid.display_selector:
+  label: Affichage
+  gallery: Galerie
+  list: Liste
+Client ID: ID du client
+Secret: Secret 
+grid.empty_results:
+  associated_product:
+    hint: Il n’y a aucun produit associé
+    subHint: 'Cliquez sur le bouton « Ajouter des associations » pour associer ce produit'

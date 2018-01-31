@@ -21,3 +21,26 @@ file.extensions.message: 不允许的文件扩展名 (允许扩展︰ %extension
 "This type of value expects the use of comma (,) to separate decimals.": 这种类型的值可以使用逗号（，）来分隔十进制数字。
 "This type of value expects the use of arabic decimal separator (٫) to separate decimals.": 这种类型的值可以使用阿拉伯语十进制分隔符（,）来分隔十进制数字。
 "This type of value expects the use of the format {{ date_format }} for dates.": 这种类型的值可以使用这种格式 {{ date_format }} 来分隔十进制数字。
+pim_catalog:
+  constraint:
+    product_identifier: 这些标识符"%s"并不存在。
+    0: 发生意外错误。
+    100: 非预期的值
+    101: 此空需要填入一个布尔值。
+    102: 此空需要填入一个浮点值。
+    103: 此空需要填入一个整数值。
+    104: 此空需要填入一个整数值。
+    105: 此空需要填入一个字符串。
+    106: 此空需要填入一个数组
+    107: 此空需要填入一个数组的数组。
+    200: 发生了内部错误.
+    201: 发生了内部错误.
+    202: 此空需要填入一个整数值。
+    203: 此空需要填入一个字符串。
+    204: 此空需要填入一个字符串。
+    205: 发生了内部错误.
+    300: 此空需要填入一个有效的实体代号
+    301: 此空需要填入一个有效的范围和本地语言
+    302: 此空需要填入一个有效的范围
+    303: 此空需要填入一个有效的关联格式
+

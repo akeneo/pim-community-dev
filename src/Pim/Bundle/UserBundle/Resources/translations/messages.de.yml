@@ -4,10 +4,14 @@ pim_user:
       general.title: Allgemein
       additional.title: Ergänzend
       group_and_role.title: Gruppen und Rollen
-      password.title: Passwort
+      password.title: Kennwort
       business_unit.title: Geschäftsbereich
       email_synchronization.title: Einstellungen für E-Mail Synchronisierung
-      interfaces.title: Benutzeroberfläche
+      interfaces.title: Interfaces
+  group:
+    tab:
+      general.title: Allgemein
+      users.title: Benutzer
 oro.user.controller:
   group.message.saved: "Gruppe gespeichert"
   role.message.saved: "Rolle gespeichert"
@@ -42,8 +46,8 @@ New user: Neuer Benutzer
 Additional: Ergänzend
 Groups and Roles: Gruppen und Rollen
 Username: Benutzername
-Password: Passwort
-Re-enter password: Passwort erneut eingeben
+Password: Kennwort
+Re-enter password: Kennwort erneut eingeben
 Name prefix: Namenspräfix
 First name: Vorname
 Middle name: Zweiter Vorname
@@ -54,8 +58,8 @@ Avatar: Benutzerbild
 Additional emails: Zusätzliche E-Mail Adressen
 Add another email: Weitere E-Mail Adresse hinzufügen
 Catalog locale: Katalog-Gebietsschema
-Catalog scope: Standard-Gültigkeitsbereich
-Default tree: Standardkategoriebaum Produkte
+Catalog scope: Katalog-Gültigkeit
+Default tree: Standardstruktur
 Business Units: Geschäftsbereich
 Email synchronization settings: Einstellungen für E-Mail Synchronisierung
 Host: Host
@@ -64,7 +68,7 @@ Ssl: SSL
 Last logged in: Zuletzt eingeloggt
 Login count: Anzahl der Anmeldungen
 Additional Information: Zusätzliche Informationen
-Interfaces: Benutzeroberfläche
+Interfaces: Interfaces
 Basic Information: Basisinformationen
 Contact Information: Kontaktinformationen
 User name: Benutzername
@@ -80,9 +84,9 @@ Generate key: Schlüssel erzeugen
 Primary: Primär
 Removed user: Benutzer gelöscht
 user:
-  product_grid_filters: Filter Produktliste
+  product_grid_filters: Produktübersichtsfilter
   default_product_grid_view:
-    label: Standardansicht Produktliste
+    label: Standardansicht Produktübersicht
   default_grid_view:
     none: Keine
 Role: Rolle

@@ -9,6 +9,33 @@ The standard format is consistent in term of:
 
 The standard format always returns the complete structure, even if data is null.
 
+## Table of content
+
+- [General points](#general-points)
+- [Values](#values)
+- [Product](#product)
+- [Product model](#product-model)
+- Other entities
+    - [Attribute](#attribute)
+    - [Attribute option](#attribute-option)
+    - [Association type](#association-type)
+    - [Attribute group](#attribute-group)
+    - [Category](#category)
+    - [Channel](#channel)
+    - [Currency](#currency)
+    - [Family](#family)
+    - [Family variant](#family-variant)
+    - [Group](#group)
+    - [Group type](#group-type)
+    - [Locale](#locale)
+    - [File info](#file-info)
+- Other entities only available on Enterprise Edition
+    - [Asset](#asset-enterprise-edition)
+    - [Asset variation](#asset-variation-enterprise-edition)
+    - [Channel configuration](#channel-configuration-enterprise-edition)
+    - [Rule](#rule-enterprise-edition)
+    
+
 ## General points
 
 Keys of the array are snake cased.
@@ -48,21 +75,338 @@ Linked entities are represented only by their identifier as strings. For instanc
           "bar" => "the_bar_identifier"
         ]
 
+Empty data are rendered as null or empty array depending on their type:
+
+        array:1 [
+          "an_empty_boolean" => null,
+          "an_empty_integer" => null,
+          "an_empty_decimal" => null,
+          "an_empty_datetime" => null,
+          "an_empty_date" => null,
+          "no_linked_entity" => null,
+          "an_empty_array" => [],
+        ]
+
+## Values
+
+A value is a data holder linked to an [attribute](#attribute). Depending on its attribute type, the value will be either a number, a string or even a more complex data type like a price collection or a metric for instance.
+
+Values are typically used in products and product models. They are accessible via the key *values*.
+
+Those values can be localizable and/or scopable:
+
+* *localizable* means its value depends on the locale
+* *scopable* means its value depends on the scope (also called channel)
+* *localizable and scopable* means its value depends on the locale and the scope (also called channel)
+
+That's why a value always respect the following structure:
+
+        array:3 [
+          "locale" => "a locale code"
+          "scope" => "a scope code"
+          "data" => "the data for the given locale and scope"
+        ]
+
+And that's why, for the same attribute, it's possible to have multiple values:
+
+        "a_localizable_attribute" => array:2 [
+          0 => array:3 [
+            "locale" => "en_US"
+            "scope" => null
+            "data" => "the data in English"
+          ]
+          1 => array:3 [
+            "locale" => "fr_FR"
+            "scope" => null
+            "data" => "la donnée en français"
+          ]
+        ]
+
+All types of attributes (except the *identifier* and *asset*) can be localizable and/or scopable. For instance, in the examples you'll discover later:
+ 
+* there is a localizable image: *a_localizable_image*
+* there is a scopable price: *a_scopable_price_with_decimal*
+* there is a scopable and localizable text area: *a_localized_and_scopable_text_area*
+
+Depending on the type of the value, the *data* key can have different structures:
+
+| attribute type               	| data structure | data example                                                                                       | notes                                                                                                               |
+| -----------------------------	| -------------- | -------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------- |
+| identifier                   	| string         | `"foo"`                                                                                            |                                                                                                                     |
+| file                         	| string         | `"f/2/e/6/f2e6674e076ad6fafa12012e8fd026acdc70f814_fileA.txt"`                                     | it represents the *key* of the object *Akeneo\Component\FileStorage\Model\FileInfoInterface*                        |
+| image                        	| string         | `"f/4/d/1/f4d12ffbdbe628ba8e0b932c27f425130cc23535_imageA.jpg"`                                    | it represents the *key* of the object *Akeneo\Component\FileStorage\Model\FileInfoInterface*                        |
+| date                         	| string         | `"2016-06-13T00:00:00+02:00"`                                                                      | formatted to ISO-8601 (see above)                                                                                   |
+| multi select                 	| string[]       | `[0 => "optionA", 1 => "optionB"]`                                                                 | each element of the array represents the *code* of the *Pim\Component\Catalog\Model\AttributeOptionInterface*       |
+| number                       	| string         | `"-99.8732"`                                                                                       | formatted as a string to avoid the floating point precision problem of PHP (see above)                              |
+| reference data multi select  	| string[]       | `[0 => "fabricA",1 => "fabricB"]`                                                                  | each element of the array represents the *code* of the *Pim\Component\ReferenceData\Model\ReferenceDataInterface*   |
+| simple select                	| string         | `"optionB"`                                                                                        | it represents the *code* of the *Pim\Component\Catalog\Model\AttributeOptionInterface*                              |
+| reference data simple select 	| string         | `"colorB"`                                                                                         | it represents the *code* of the *Pim\Component\ReferenceData\Model\ReferenceDataInterface*                          |
+| text                         	| string         | `"this is a text"`                                                                                 |                                                                                                                     |
+| text area                    	| string         | `"this is a very very very very very long text"`                                                   |                                                                                                                     |
+| yes/no                       	| boolean        | `true`                                                                                             |                                                                                                                     |
+| metric                       	| array          | `["amount" => "987654321987.123456789123","unit" => "KILOWATT"]`                                   | *amount* and *unit* keys are expected *unit* should be a known unit depending on the metric family of the attribute |
+| price collection             	| array          | `[0 => ["amount" => "45.00","currency" => "USD"], 1 => ["amount" => "56.53","currency" => "EUR"] ]`| *amount* and *currency* keys are expected for each price *currency* should be a known currency                      |
+
+
+The following values data, that represents decimal values are represented with strings (when the `decimal_allowed` attribute property is set to false) in the standard format:
+
+* metric (class *Pim\Component\Catalog\Model\MetricInterface*)
+* price (class *Pim\Component\Catalog\Model\ProductPriceInterface*)
+* number (class *Pim\Component\Catalog\Model\ValueInterface*)
+
+When the `decimal_allowed` attribute property is set to true, they are represented with integers in the standard format.
+
+Let's now consider a catalog with all attribute types possible and a *foo* entity, that contains an identifier and all the attributes of the catalog.
+
+Its standard format would be the following:
+
+        array:10 [
+          "identifier" => "foo"
+          "values" => array:19 [
+            "sku" => array:1 [
+              0 => array:3 [
+                "locale" => null
+                "scope" => null
+                "data" => "foo"
+              ]
+            ]
+            "a_file" => array:1 [
+              0 => array:3 [
+                "locale" => null
+                "scope" => null
+                "data" => "f/2/e/6/f2e6674e076ad6fafa12012e8fd026acdc70f814_fileA.txt"
+              ]
+            ]
+            "an_image" => array:1 [
+              0 => array:3 [
+                "locale" => null
+                "scope" => null
+                "data" => "f/4/d/1/f4d12ffbdbe628ba8e0b932c27f425130cc23535_imageA.jpg"
+              ]
+            ]
+            "a_date" => array:1 [
+              0 => array:3 [
+                "locale" => null
+                "scope" => null
+                "data" => "2016-06-13T00:00:00+02:00"
+              ]
+            ]
+            "a_multi_select" => array:1 [
+              0 => array:3 [
+                "locale" => null
+                "scope" => null
+                "data" => array:2 [
+                  0 => "optionA"
+                  1 => "optionB"
+                ]
+              ]
+            ]
+            "a_number_float" => array:1 [
+              0 => array:3 [
+                "locale" => null
+                "scope" => null
+                "data" => "12.5678"
+              ]
+            ]
+            "a_number_float_negative" => array:1 [
+              0 => array:3 [
+                "locale" => null
+                "scope" => null
+                "data" => "-99.8732"
+              ]
+            ]
+            "a_number_integer" => array:1 [
+              0 => array:3 [
+                "locale" => null
+                "scope" => null
+                "data" => 42
+              ]
+            ]
+            "a_number_integer_negative" => array:1 [
+              0 => array:3 [
+                "locale" => null
+                "scope" => null
+                "data" => -5
+              ]
+            ]
+            "a_ref_data_multi_select" => array:1 [
+              0 => array:3 [
+                "locale" => null
+                "scope" => null
+                "data" => array:2 [
+                  0 => "fabricA"
+                  1 => "fabricB"
+                ]
+              ]
+            ]
+            "a_ref_data_simple_select" => array:1 [
+              0 => array:3 [
+                "locale" => null
+                "scope" => null
+                "data" => "colorB"
+              ]
+            ]
+            "a_simple_select" => array:1 [
+              0 => array:3 [
+                "locale" => null
+                "scope" => null
+                "data" => "optionB"
+              ]
+            ]
+            "a_text" => array:1 [
+              0 => array:3 [
+                "locale" => null
+                "scope" => null
+                "data" => "this is a text"
+              ]
+            ]
+            "a_text_area" => array:1 [
+              0 => array:3 [
+                "locale" => null
+                "scope" => null
+                "data" => "this is a very very very very very long text"
+              ]
+            ]
+            "a_yes_no" => array:1 [
+              0 => array:3 [
+                "locale" => null
+                "scope" => null
+                "data" => true
+              ]
+            ]
+            "a_localizable_image" => array:2 [
+              0 => array:3 [
+                "locale" => "en_US"
+                "scope" => null
+                "data" => "2/b/6/b/2b6b451334ee1a9aa83b5755590dae72ba254d8b_imageB_en_US.jpg"
+              ]
+              1 => array:3 [
+                "locale" => "fr_FR"
+                "scope" => null
+                "data" => "d/e/3/f/de3f2a0af94d8b10ccc2c37bf4f945fd262d568e_imageB_fr_FR.jpg"
+              ]
+            ]
+            "a_localized_and_scopable_text_area" => array:3 [
+              0 => array:3 [
+                "locale" => "en_US"
+                "scope" => "ecommerce"
+                "data" => "a text area for ecommerce in English"
+              ]
+              1 => array:3 [
+                "locale" => "en_US"
+                "scope" => "tablet"
+                "data" => "a text area for tablets in English"
+              ]
+              2 => array:3 [
+                "locale" => "fr_FR"
+                "scope" => "tablet"
+                "data" => "une zone de texte pour les tablettes en français"
+              ]
+            ]
+            "a_metric" => array:1 [
+              0 => array:3 [
+                "locale" => null
+                "scope" => null
+                "data" => array:2 [
+                  "amount" => "987654321987.123456789123"
+                  "unit" => "KILOWATT"
+                ]
+              ]
+            ]
+            "a_metric_without_decimal" => array:1 [
+              0 => array:3 [
+                "locale" => null
+                "scope" => null
+                "data" => array:2 [
+                  "amount" => 200
+                  "unit" => "GRAM"
+                ]
+              ]
+            ]
+            "a_metric_negative" => array:1 [
+              0 => array:3 [
+                "locale" => null
+                "scope" => null
+                "data" => array:2 [
+                  "amount" => "-20.000000000000"
+                  "unit" => "CELSIUS"
+                ]
+              ]
+            ]
+            "a_metric_negative_without_decimal" => array:1 [
+              0 => array:3 [
+                "locale" => null
+                "scope" => null
+                "data" => array:2 [
+                  "amount" => -100
+                  "unit" => "CELSIUS"
+                ]
+              ]
+            ]
+            "a_price" => array:1 [
+              0 => array:3 [
+                "locale" => null
+                "scope" => null
+                "data" => array:2 [
+                  0 => array:2 [
+                    "amount" => "45.00"
+                    "currency" => "USD"
+                  ]
+                  1 => array:2 [
+                    "amount" => "-56.53"
+                    "currency" => "EUR"
+                  ]
+                ]
+              ]
+            ]
+            "a_scopable_price_without_decimal" => array:2 [
+              0 => array:3 [
+                "locale" => null
+                "scope" => "ecommerce"
+                "data" => array:2 [
+                  0 => array:2 [
+                    "amount" => 15
+                    "currency" => "EUR"
+                  ]
+                  1 => array:2 [
+                    "amount" => -20
+                    "currency" => "USD"
+                  ]
+                ]
+              ]
+              1 => array:3 [
+                "locale" => null
+                "scope" => "tablet"
+                "data" => array:2 [
+                  0 => array:2 [
+                    "amount" => 17
+                    "currency" => "EUR"
+                  ]
+                  1 => array:2 [
+                    "amount" => 24
+                    "currency" => "USD"
+                  ]
+                ]
+              ]
+            ]
+          ]
+        ]
+
+
 ## Product
 
 ### Common structure
 
-The products contains inner fields and product values that are linked to attributes.
-All products have the same fields (identifier, label, family, groups, variant groups, categories, associations, status, dates of creation and update) while product values are flexible among products.
+The products contain inner fields as well as values that are linked to attributes.
+All products have the same fields (identifier, label, family, groups, categories, associations, status, dates of creation and update, parent, family variant) while values are flexible among products. Their values are provided via the key *values*.
 
-Let's consider a *bar* product, without any product value, except its identifier *sku*. This product also contains:
+Let's consider a *bar* product, without any product value, except an identifier *sku*. This product also contains:
 
 * an identifier
 * a family
 * several groups
-* a variant group
 * several categories
-* several associations related to groups and/or other products
+* several associations related to groups, product models and/or other products
 
 Its standard format would be the following:
         
@@ -73,7 +417,6 @@ Its standard format would be the following:
             0 => "groupA"
             1 => "groupB"
           ]
-          "variant_group" => "variantA"
           "categories" => array:2 [
             0 => "categoryA"
             1 => "categoryB"
@@ -93,6 +436,7 @@ Its standard format would be the following:
           "associations" => array:3 [
             "PACK" => array:1 [
               "groups" => []
+              "product_models" => []
               "products" => array:2 [
                 0 => "foo"
                 1 => "baz"
@@ -102,12 +446,14 @@ Its standard format would be the following:
               "groups" => array:1 [
                 0 => "groupA"
               ]
+              "product_models" => []
               "products" => []
             ]
             "X_SELL" => array:2 [
               "groups" => array:1 [
                 0 => "groupB"
               ]
+              "product_models" => []
               "products" => array:1 [
                 0 => "foo"
               ]
@@ -119,17 +465,17 @@ Its standard format would be the following:
 | ------------- | -------------- | ------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------ |
 | identifier    | string         | `"bar"`                                                                   | it's the identifier of the product                                                               |
 | family        | string         | `"familyA"`                                                               | it represents the *code* of the *Pim\Component\Catalog\Model\FamilyInterface*                    |
-| groups        | array          | `[0 => "groupA", 1 => "groupB"]`                                          | it represents the *code* of the *Pim\Component\Catalog\Model\GroupInterface*                     |
-| variant_group | string         | `"variantA"`                                                              | it represents the *code* of the *Pim\Component\Catalog\Model\GroupInterface*                     |
-| categories    | array          | `[0 => "categoryA", 1 => "categoryB"]`                                    | it represents the *code* of the object *Akeneo\Component\Classification\Model\CategoryInterface* |
+| groups        | array          | `[0 => "groupA", 1 => "groupB"]`                                          | it represents the *code* of the objects *Pim\Component\Catalog\Model\GroupInterface*             |
+| categories    | array          | `[0 => "categoryA", 1 => "categoryB"]`                                    | it represents the *code* of the objects *Akeneo\Component\Classification\Model\CategoryInterface* |
 | enabled       | boolean        | `true`                                                                    |                                                                                                  |
 | values        | array          |                                                                           | see below                                                                                        |
 | created       | string         | `"2016-06-13T00:00:00+02:00"`                                             | formatted to ISO-8601 (see above)                                                                |
-| updated  	    | array          | `"2016-06-13T00:00:00+02:00"`                                             | formatted to ISO-8601 (see above)                                                                |
-| associations  | array          | `["X_SELL" => ["groups" => [0 => "groupA"], "products" => [0 => "foo"]]]` | see below                                                                                        |
+| updated  	    | string         | `"2016-06-13T00:00:00+02:00"`                                             | formatted to ISO-8601 (see above)                                                                |
+| associations  | array          | `["X_SELL" => ["groups" => [0 => "groupA"], "product_models" => [], "products" => [0 => "foo"]]]` | see below                                                                                        |
+Fields *family_variant* and *parent* are detailed in the [variant product](#variant-product) section.
 
 
-### Associations
+### Product associations
 
 The structure of the array is composed as below:
 
@@ -138,6 +484,7 @@ The structure of the array is composed as below:
             "groups" => array:1 [
               0 => "groupB"
             ]
+            "product_models" => []
             "products" => array:1 [
               0 => "foo"
             ]
@@ -150,7 +497,7 @@ Each element in the array "groups" represents the *code* of the *Pim\Component\C
 
 Each element in the array "products" represents the *identifier* of the *Pim\Component\Catalog\Model\ProductInterface*
 
-If an association type does not contain neither element in groups, nor element in products, it is not returned.
+If an association type does not contain neither element in groups, nor element in products, it will not appear.
 
 
 ### Product values
@@ -161,9 +508,8 @@ Let's now consider a catalog with all attribute types possible and a *foo* produ
 * an identifier
 * a family
 * several groups
-* a variant group
 * several categories
-* several associations related to groups and/or other products
+* several associations related to groups, product models and/or other products
 
 Its standard format would be the following:
 
@@ -174,7 +520,6 @@ Its standard format would be the following:
             0 => "groupA"
             1 => "groupB"
           ]
-          "variant_group" => "variantA"
           "categories" => array:2 [
             0 => "categoryA1"
             1 => "categoryB"
@@ -413,6 +758,7 @@ Its standard format would be the following:
           "associations" => array:3 [
             "PACK" => array:1 [
               "groups" => []
+              "product_models" => []
               "products" => array:2 [
                 0 => "bar"
                 1 => "baz"
@@ -422,12 +768,14 @@ Its standard format would be the following:
               "groups" => array:1 [
                 0 => "groupA"
               ]
+              "product_models" => []
               "products" => []
             ]
             "X_SELL" => array:2 [
               "groups" => array:1 [
                 0 => "groupB"
               ]
+              "product_models" => []
               "products" => array:1 [
                 0 => "bar"
               ]
@@ -435,70 +783,331 @@ Its standard format would be the following:
           ]
         ]
 
-The product values are provided via the key *values*.
+### Variant product
 
-Product values can be localizable and/or scopable:
+A product is considered as variant if it has a product model as *parent*. Therefore, the family variant becomes available in the standard format.
 
-* *localizable* means its value depends on the locale
-* *scopable* means its value depends on the scope (also called channel)
-* *localizable and scopable* means its value depends on the locale and the scope (also called channel)
+Let's consider a *baz* product, without any product value, except an identifier *sku*. This product also contains:
 
-That's why product values always respect the following structure:
+* an identifier
+* a family
+* a parent product model
 
-        array:3 [
-          "locale" => "a locale code"
-          "scope" => "a scope code"
-          "data" => "the value for the given locale and scope"
+Its standard format would be the following:
+        
+        array:10 [
+          "identifier" => "baz"
+          "family" => "familyA"
+          "parent" => "fooProductModel"
+          "groups" => array:0 []
+          "categories" => array:0 []
+          "enabled" => false
+          "values" => array:1 [
+            "sku" => array:1 [
+              0 => array:3 [
+                "locale" => null
+                "scope" => null
+                "data" => "baz"
+              ]
+            ]
+          ]
+          "created" => "2016-06-23T11:24:44+02:00"
+          "updated" => "2016-06-23T11:24:44+02:00"
+          "associations" => array:0 []
         ]
 
-And that's why, for the same attribute, you can have multiple product values:
+| type          | data structure | data example           | notes                                                                                            |
+| ------------- | -------------- | ---------------------- | ------------------------------------------------------------------------------------------------ |
+| family_variant| string         | `"familyVariantA"`     | it represents the *code* of the *Pim\Component\Catalog\Model\FamilyVariantInterface*             |
+| parent        | string         | `"fooProductModel"`    | it represents the *code* of the *Pim\Component\Catalog\Model\ProductModelInterface*              |
 
-        "a_localizable_attribute" => array:2 [
-          0 => array:3 [
-            "locale" => "en_US"
-            "scope" => null
-            "data" => "the data in English"
+## Product model
+
+### Common structure
+
+The product models contains inner fields and values that are linked to attributes.
+All product models have the same fields (code, label, family, groups, categories, associations, status, dates of creation and update, parent, family variant) while values are flexible among product models. Their values are provided via the key *values*.
+
+Let's consider a *bar* product model, without any product model value. This product model also contains:
+
+* a code
+* a family variant (therefore, the family becomes available in the standard format)
+* a parent product model
+* several groups
+* several categories
+
+Its standard format would be the following:
+        
+        array:10 [
+          "code" => "bar"
+          "family_variant" => "familyVariantA1"
+          "parent" => "fooProductModel"
+          "categories" => array:2 [
+            0 => "categoryA"
+            1 => "categoryB"
           ]
-          1 => array:3 [
-            "locale" => "fr_FR"
-            "scope" => null
-            "data" => "la donnée en français"
-          ]
+          "values" => array:0 []
+          "created" => "2016-06-23T11:24:44+02:00"
+          "updated" => "2016-06-23T11:24:44+02:00"
         ]
 
-All types of attributes (except the *identifier* and *asset*) can be localizable and/or scopable. In the example above:
- 
-* there is a localizable image: *a_localizable_image*
-* there is a scopable price: *a_scopable_price_with_decimal*
-* there is a scopable and localizable text area: *a_localized_and_scopable_text_area*
+| type          | data structure | data example                                                              | notes                                                                                            |
+| ------------- | -------------- | ------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------ |
+| code          | string         | `"bar"`                                                                   | it's the identifier of the product model                                                         |
+| family        | string         | `"familyA"`                                                               | it represents the *code* of the *Pim\Component\Catalog\Model\FamilyInterface*                    |
+| family_variant| string         | `"familyVariantA1"`                                                       | it represents the *code* of the *Pim\Component\Catalog\Model\FamilyVariantInterface*             |
+| parent        | string         | `"fooProductModel"`                                                       | it represents the *code* of the *Pim\Component\Catalog\Model\ProductModelInterface*              |
+| groups        | array          | `[0 => "groupA", 1 => "groupB"]`                                          | it represents the *code* of the *Pim\Component\Catalog\Model\GroupInterface*                     |
+| categories    | array          | `[0 => "categoryA", 1 => "categoryB"]`                                    | it represents the *code* of the object *Akeneo\Component\Classification\Model\CategoryInterface* |
+| values        | array          |                                                                           | see below                                                                                        |
+| created       | string         | `"2016-06-13T00:00:00+02:00"`                                             | formatted to ISO-8601 (see above)                                                                |
+| updated  	    | string         | `"2016-06-13T00:00:00+02:00"`                                             | formatted to ISO-8601 (see above)                                                                |
 
-Depending on the type of the product value, the *data* key can have different structure:
+### Product model values
 
-| attribute type               	| data structure | data example                                                                                       | notes                                                                                                               |
-| -----------------------------	| -------------- | -------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------- |
-| identifier                   	| string         | `"foo"`                                                                                            |                                                                                                                     |
-| file                         	| string         | `"f/2/e/6/f2e6674e076ad6fafa12012e8fd026acdc70f814_fileA.txt"`                                     | it represents the *key* of the object *Akeneo\Component\FileStorage\Model\FileInfoInterface*                        |
-| image                        	| string         | `"f/4/d/1/f4d12ffbdbe628ba8e0b932c27f425130cc23535_imageA.jpg"`                                    | it represents the *key* of the object *Akeneo\Component\FileStorage\Model\FileInfoInterface*                        |
-| date                         	| string         | `"2016-06-13T00:00:00+02:00"`                                                                      | formatted to ISO-8601 (see above)                                                                                   |
-| multi select                 	| string[]       | `[0 => "optionA", 1 => "optionB"]`                                                                 | each element of the array represents the *code* of the *Pim\Component\Catalog\Model\AttributeOptionInterface*       |
-| number                       	| string         | `"-99.8732"`                                                                                       | formatted as a string to avoid the floating point precision problem of PHP (see above)                              |
-| reference data multi select  	| string[]       | `[0 => "fabricA",1 => "fabricB"]`                                                                  | each element of the array represents the *code* of the *Pim\Component\ReferenceData\Model\ReferenceDataInterface*   |
-| simple select                	| string         | `"optionB"`                                                                                        | it represents the *code* of the *Pim\Component\Catalog\Model\AttributeOptionInterface*                              |
-| reference data simple select 	| string         | `"colorB"`                                                                                         | it represents the *code* of the *Pim\Component\ReferenceData\Model\ReferenceDataInterface*                          |
-| text                         	| string         | `"this is a text"`                                                                                 |                                                                                                                     |
-| text area                    	| string         | `"this is a very very very very very long text"`                                                   |                                                                                                                     |
-| yes/no                       	| boolean        | `true`                                                                                             |                                                                                                                     |
-| metric                       	| array          | `["amount" => "987654321987.123456789123","unit" => "KILOWATT"]`                                   | *amount* and *unit* keys are expected *unit* should be a known unit depending of the metric family of the attribute |
-| price collection             	| array          | `[0 => ["amount" => "45.00","currency" => "USD"], 1 => ["amount" => "56.53","currency" => "EUR"] ]`| *amount* and *currency* keys are expected for each price *currency* should be a known currency                      |
+Let's now consider a catalog with all attribute types possible and a *foo* product model, that contains:
 
+* all the attributes of the catalog
+* a code
+* a family variant
+* several groups
+* several categories
 
-The following product values data, that represents decimal values are represented with strings (when the `decimal_allowed` attribute property is set to false) in the standard format:
+Its standard format would be the following:
 
-* metric (class *Pim\Component\Catalog\Model\Metric*)
-* price (class *Pim\Component\Catalog\Model\ProductPriceInterface*)
-* number (class *Pim\Component\Catalog\Model\ProductValueInterface*, property *getDecimal*)
-
-When the `decimal_allowed` attribute property is set to true, they are represented with integers in the standard format.
+        array:10 [
+          "code" => "foo"
+          "family_variant" => "familyVariantA1"
+          "parent" => null
+          "categories" => array:2 [
+            0 => "categoryA1"
+            1 => "categoryB"
+          ]
+          "enabled" => true
+          "values" => array:19 [
+            "a_file" => array:1 [
+              0 => array:3 [
+                "locale" => null
+                "scope" => null
+                "data" => "f/2/e/6/f2e6674e076ad6fafa12012e8fd026acdc70f814_fileA.txt"
+              ]
+            ]
+            "an_image" => array:1 [
+              0 => array:3 [
+                "locale" => null
+                "scope" => null
+                "data" => "f/4/d/1/f4d12ffbdbe628ba8e0b932c27f425130cc23535_imageA.jpg"
+              ]
+            ]
+            "a_date" => array:1 [
+              0 => array:3 [
+                "locale" => null
+                "scope" => null
+                "data" => "2016-06-13T00:00:00+02:00"
+              ]
+            ]
+            "a_multi_select" => array:1 [
+              0 => array:3 [
+                "locale" => null
+                "scope" => null
+                "data" => array:2 [
+                  0 => "optionA"
+                  1 => "optionB"
+                ]
+              ]
+            ]
+            "a_number_float" => array:1 [
+              0 => array:3 [
+                "locale" => null
+                "scope" => null
+                "data" => "12.5678"
+              ]
+            ]
+            "a_number_float_negative" => array:1 [
+              0 => array:3 [
+                "locale" => null
+                "scope" => null
+                "data" => "-99.8732"
+              ]
+            ]
+            "a_number_integer" => array:1 [
+              0 => array:3 [
+                "locale" => null
+                "scope" => null
+                "data" => 42
+              ]
+            ]
+            "a_number_integer_negative" => array:1 [
+              0 => array:3 [
+                "locale" => null
+                "scope" => null
+                "data" => -5
+              ]
+            ]
+            "a_ref_data_multi_select" => array:1 [
+              0 => array:3 [
+                "locale" => null
+                "scope" => null
+                "data" => array:2 [
+                  0 => "fabricA"
+                  1 => "fabricB"
+                ]
+              ]
+            ]
+            "a_ref_data_simple_select" => array:1 [
+              0 => array:3 [
+                "locale" => null
+                "scope" => null
+                "data" => "colorB"
+              ]
+            ]
+            "a_simple_select" => array:1 [
+              0 => array:3 [
+                "locale" => null
+                "scope" => null
+                "data" => "optionB"
+              ]
+            ]
+            "a_text" => array:1 [
+              0 => array:3 [
+                "locale" => null
+                "scope" => null
+                "data" => "this is a text"
+              ]
+            ]
+            "a_text_area" => array:1 [
+              0 => array:3 [
+                "locale" => null
+                "scope" => null
+                "data" => "this is a very very very very very long text"
+              ]
+            ]
+            "a_yes_no" => array:1 [
+              0 => array:3 [
+                "locale" => null
+                "scope" => null
+                "data" => true
+              ]
+            ]
+            "a_localizable_image" => array:2 [
+              0 => array:3 [
+                "locale" => "en_US"
+                "scope" => null
+                "data" => "2/b/6/b/2b6b451334ee1a9aa83b5755590dae72ba254d8b_imageB_en_US.jpg"
+              ]
+              1 => array:3 [
+                "locale" => "fr_FR"
+                "scope" => null
+                "data" => "d/e/3/f/de3f2a0af94d8b10ccc2c37bf4f945fd262d568e_imageB_fr_FR.jpg"
+              ]
+            ]
+            "a_localized_and_scopable_text_area" => array:3 [
+              0 => array:3 [
+                "locale" => "en_US"
+                "scope" => "ecommerce"
+                "data" => "a text area for ecommerce in English"
+              ]
+              1 => array:3 [
+                "locale" => "en_US"
+                "scope" => "tablet"
+                "data" => "a text area for tablets in English"
+              ]
+              2 => array:3 [
+                "locale" => "fr_FR"
+                "scope" => "tablet"
+                "data" => "une zone de texte pour les tablettes en français"
+              ]
+            ]
+            "a_metric" => array:1 [
+              0 => array:3 [
+                "locale" => null
+                "scope" => null
+                "data" => array:2 [
+                  "amount" => "987654321987.123456789123"
+                  "unit" => "KILOWATT"
+                ]
+              ]
+            ]
+            "a_metric_without_decimal" => array:1 [
+              0 => array:3 [
+                "locale" => null
+                "scope" => null
+                "data" => array:2 [
+                  "amount" => 200
+                  "unit" => "GRAM"
+                ]
+              ]
+            ]
+            "a_metric_negative" => array:1 [
+              0 => array:3 [
+                "locale" => null
+                "scope" => null
+                "data" => array:2 [
+                  "amount" => "-20.000000000000"
+                  "unit" => "CELSIUS"
+                ]
+              ]
+            ]
+            "a_metric_negative_without_decimal" => array:1 [
+              0 => array:3 [
+                "locale" => null
+                "scope" => null
+                "data" => array:2 [
+                  "amount" => -100
+                  "unit" => "CELSIUS"
+                ]
+              ]
+            ]
+            "a_price" => array:1 [
+              0 => array:3 [
+                "locale" => null
+                "scope" => null
+                "data" => array:2 [
+                  0 => array:2 [
+                    "amount" => "45.00"
+                    "currency" => "USD"
+                  ]
+                  1 => array:2 [
+                    "amount" => "-56.53"
+                    "currency" => "EUR"
+                  ]
+                ]
+              ]
+            ]
+            "a_scopable_price_without_decimal" => array:2 [
+              0 => array:3 [
+                "locale" => null
+                "scope" => "ecommerce"
+                "data" => array:2 [
+                  0 => array:2 [
+                    "amount" => 15
+                    "currency" => "EUR"
+                  ]
+                  1 => array:2 [
+                    "amount" => -20
+                    "currency" => "USD"
+                  ]
+                ]
+              ]
+              1 => array:3 [
+                "locale" => null
+                "scope" => "tablet"
+                "data" => array:2 [
+                  0 => array:2 [
+                    "amount" => 17
+                    "currency" => "EUR"
+                  ]
+                  1 => array:2 [
+                    "amount" => 24
+                    "currency" => "USD"
+                  ]
+                ]
+              ]
+            ]
+          ]
+          "created" => "2016-06-23T11:24:44+02:00"
+          "updated" => "2016-06-23T11:24:44+02:00"
+        ]
 
 
 ## Other entities
@@ -508,7 +1117,7 @@ When the `decimal_allowed` attribute property is set to true, they are represent
         array:26 [
           "code" => "a_date"
           "type" => "pim_catalog_date"
-          "labels" => array:1 [
+          "labels" => array:2 [
             "en_US" => "A date"
             "fr_FR" => "Une date"
           ]
@@ -662,7 +1271,7 @@ labels     | string[]       | `["en_US" => "A option"]` | each key of the array 
         array:3 [
           "code" => "winter"
           "parent" => "master"
-          "labels" => array:1 [
+          "labels" => array:2 [
             "en_US" => "Winter",
             "fr_FR" => "Hiver"
           ]
@@ -727,27 +1336,68 @@ labels     | string[]       | `["en_US" => "A option"]` | each key of the array 
           "labels" => array:1 [
             "en_US" => "My family"
           ]
-          "attributes" => array:3 [
+          "attributes" => array:4 [
             0 => "a_number_float"
             1 => "a_price"
             2 => "sku"
+            3 => "image"
           ]
           "attribute_as_label" => "sku"
+          "attribute_as_image" => "image"
           "attribute_requirements" => array:1 [
             "ecommerce" => array:2 [
               0 => "a_price"
               1 => "sku"
             ]
           ]
+          "family_variants" => array:2 [
+            0 => "a_family_variant",
+            1 => "another_family_variant"
+          ]
         ]
         
-| type                   | data structure | data example                                                             | notes                                                                                                   |
-| ---------------------- | -------------- | ------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------- |
-| code                   | string         | `"my_family"`                                                            | it's the identifier of the family                                                                       |
-| labels                 | string[]       | `["en_US" => "My family"]`                                               | each key of the array represents the *code* of the *Pim\Component\Catalog\Model\LocaleInterface*        |
-| attributes             | string[]       | `[0 => "sku"]`                                                           | each element of the array represents the *code* of the *Pim\Component\Catalog\Model\AttributeInterface* |
-| attribute_as_label     | string         | `"sku"`                                                                  | it represents the *code* of the object *Pim\Component\Catalog\Model\AttributeInterface*                 |
-| attribute_requirements | array          | `["ecommerce" => [0 => "sku", "a_text_area"], "tablet" => [0 => "sku"]]` | each element of the array represents the *code* of the *Pim\Component\Catalog\Model\AttributeInterface* |
+| type                   | data structure | data example                                                             | notes                                                                                                              |
+| ---------------------- | -------------- | ------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------ |
+| code                   | string         | `"my_family"`                                                            | it's the identifier of the family                                                                                  |
+| labels                 | string[]       | `["en_US" => "My family"]`                                               | each key of the array represents the *code* of the *Pim\Component\Catalog\Model\LocaleInterface*                   |
+| attributes             | string[]       | `[0 => "sku"]`                                                           | each element of the array represents the *code* of the *Pim\Component\Catalog\Model\AttributeInterface*            |
+| attribute_as_label     | string         | `"sku"`                                                                  | it represents the *code* of the object *Pim\Component\Catalog\Model\AttributeInterface* used as label              |
+| attribute_as_image     | string         | `"image"`                                                                | it represents the *code* of the object *Pim\Component\Catalog\Model\AttributeInterface* used as image. Can be null |
+| attribute_requirements | array          | `["ecommerce" => [0 => "sku", "a_text_area"], "tablet" => [0 => "sku"]]` | each element of the array represents the *code* of the *Pim\Component\Catalog\Model\AttributeInterface*            |
+| family_variants        | array          | `[0 => "a_family_variant", 1 => "another_family_variant"]`               | each element of the array represents the *code* of the *Pim\Component\Catalog\Model\FamilyVariantInterface*            |
+
+
+### Family variant
+
+        array:4 [
+          "code" => "my_family_variant"
+          "family" => "family"
+          "labels" => array:2 [
+            "en_US" => "My family variant"
+            "fr_FR" => "Ma variation de famille"
+          ]
+          "variant_attribute_sets" => array:1 [
+            0 => array:3 [
+              "level" => 1
+              "axes" => array:1 [
+                0 => "a_simple_select"
+              ]
+              "attributes" => array:2 [
+                0 => "an_attribute"
+                1 => "an_other_attribute"
+              ]
+            ]
+          ]
+        ]
+
+| type                   | data structure | data example                                                                                               | notes                                                                                                   |
+| ---------------------- | -------------- | ---------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------- |
+| code                   | string         | `"my_family_variant"`                                                                                      | it's the identifier of the family variant                                                                |
+| family                 | string         | `"family"`                                                                                                 | it represents the *code* of the *Pim\Component\Catalog\Model\FamilyInterface* the family variant belongs to |
+| labels                 | array          | `["en_US" => "My family variant", "fr_FR" => "Ma variation de famille"]`                                   | each key of the array represents the *code* of the *Pim\Component\Catalog\Model\LocaleInterface*        |
+| variant_attribute_sets | array          | `[["level" => 1, "axes" => ["a_simple_select_attribute"], "attributes" => ["a_simple_select_attribute", "an_attribute", "an_other_attribute"]]]`, | an array containing the 3 following keys: `level` which is an integer always stricly higher than 0, `axes` and `attributes` which are arrays where each element represents the *code* of the *Pim\Component\Catalog\Model\AttributeInterface* |
+
+Regarding the array `variant_attribute_sets`, an attribute present in the `axes` field will also be present in the `attributes` field.
 
 
 ### Group
@@ -770,18 +1420,16 @@ labels     | string[]       | `["en_US" => "A option"]` | each key of the array 
 ### Group Type
         
         array:3 [
-          "code" => "VARIANT"
-          "is_variant" => true
+          "code" => "my_group_type"
           "labels" => array:1 [
-            "en_US" => "Variant type"
+            "en_US" => "My beautiful group type"
           ]
         ]
         
 | type       | data structure | data example                  | notes                                                                                            |
 | ---------- | -------------- | ----------------------------- | ------------------------------------------------------------------------------------------------ |
-| code       | string         | `"VARIANT"`                   | it's the identifier of the group type                                                            |
-| is_variant | boolean        | `false`                       |                                                                                                  |
-| labels     | array          | `["en_US" => "Variant type"]` | each key of the array represents the *code* of the *Pim\Component\Catalog\Model\LocaleInterface* |
+| code       | string         | `"my_group_type"`             | it's the identifier of the group type                                                            |
+| labels     | array          | `["en_US" => "My beautiful group type"]` | each key of the array represents the *code* of the *Pim\Component\Catalog\Model\LocaleInterface* |
 
     
 ### Locale
@@ -795,38 +1443,6 @@ labels     | string[]       | `["en_US" => "A option"]` | each key of the array 
 | ------- | --------------- | ------------ | --------------------------------- |
 | code    | string          | `"fr_FR"`    | it's the identifier of the locale |
 | enabled | boolean         | `false`      |                                   |
-
-
-### Variant group
-
-        array:5 [
-          "code" => "my_variant_group"
-          "type" => "VARIANT"
-          "axes" => array:1 [
-            0 => "a_simple_select"
-          ]
-          "labels" => array:1 [
-            "en_US" => "My variant group"
-            "fr_FR" => "Mon groupe de variante"
-          ]
-          "values" => array:1 [
-            "a_text" => array:1 [
-              0 => array:3 [
-                "locale" => null
-                "scope" => null
-                "data" => "the text"
-              ]
-            ]
-          ]
-        ]
-  
-| type   | data structure | data example                                                           | notes                                                                                                   |
-| ------ | -------------- | ---------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------- |
-| code   | string         | `"my_variant_group"`                                                   | it's the identifier of the variant group                                                                |
-| type   | string         | `"VARIANT"`                                                            |                                                                                                         |
-| axes   | string[]       | `[0 => "a_simple_select", 1 => "a_multi_select"]`                      | each element of the array represents the *code* of the *Pim\Component\Catalog\Model\AttributeInterface* |
-| labels | string[]       | `["en_US" => "My variant group", "fr_FR" => "Mon groupe de variante"]` | each key of the array represents the *code* of the *Pim\Component\Catalog\Model\LocaleInterface*        |
-| values | array          |                                                                        | has the same structure as product values (see above)                                                    |
 
 
 ### File info
@@ -852,7 +1468,7 @@ labels     | string[]       | `["en_US" => "A option"]` | each key of the array 
 
         array:6 => [
           'code'        => "my_asset"
-          'localized'   => false
+          'localizable' => false
           'description' => "description"
           'end_of_use'  => "2016-09-01T00:00:00+0200"
           'tags'        => array:1 [
@@ -866,7 +1482,7 @@ labels     | string[]       | `["en_US" => "A option"]` | each key of the array 
 | type        | data structure | data example                 | notes                                                                                                            |
 | ----------- | -------------- | ---------------------------- | ---------------------------------------------------------------------------------------------------------------- |
 | code        | string         | `"my_asset"`                 | it's the identifier of the asset.                                                                                |
-| localized   | boolean        | `true`                       |                                                                                                                  |
+| localizable | boolean        | `true`                       |                                                                                                                  |
 | description | string         | `"desc"`                     |                                                                                                                  |
 | end_of_use  | string         | `"2016-09-01T00:00:00+0200"` | formatted to ISO-8601 (see above)                                                                                |
 | tags        | string[]       | `[]`                         | each element of the array represents the *code* of the *PimEnterprise\Component\ProductAsset\Model\TagInterface* |
@@ -947,19 +1563,15 @@ The standard format is used to:
 * export data
 * update objects in memory (imports, PEF for products, Mass Edit)
 * define the data expected in the `Pim\Component\Catalog\Query\ProductQueryBuilderInterface` filters
-* store variant groups values
 * store draft changes (EE)
 
 
-## Next version ?
+## Next version?
 
 ### Add more information in product format
 
-Currently, we have no information about the product values (attribute_type, etc). 
-If we want information, we have to request the database which is quite consuming. 
-We could add them, but we have to be careful as these data have not to be updated during a POST for instance.
+Currently, we have not enough information about the product values in the standard format. For instance, we don't know their attribute types. If we want this information, we have to request the database which can be quite consuming. We could add them, but we have to be careful as these data must not be updated during a POST for instance.
 
 ### Attribute format
 
-Currently, all options for an attribute are returned in the standard format. For instance, keys `date_min` & `date_max` are returned for a number attribute which is not relevant.
-Specific options could be return in a key `parameters` for example.
+Currently, all options of an attribute are returned in the standard format. For instance, keys `date_min` & `date_max` are returned for a number attribute even if it's not relevant. Specific options could be return in a key `parameters` for example.

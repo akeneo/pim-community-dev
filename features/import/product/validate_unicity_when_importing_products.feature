@@ -25,8 +25,8 @@ Feature: Validate values for unique attributes when importing products
       | filePath | %file to import% |
     When I am on the "csv_footwear_product_import" import job page
     And I launch the import job
-    And I wait for the "product_import" job to finish
-    Then I should see "The value 2014-01-01 is already set on another product for the unique attribute date"
+    And I wait for the "csv_footwear_product_import" job to finish
+    Then I should see the text "The value 2014-01-01 is already set on another product for the unique attribute date"
     And there should be 1 product
 
   Scenario: Successfully ignore duplicate unique number values
@@ -40,8 +40,8 @@ Feature: Validate values for unique attributes when importing products
       | filePath | %file to import% |
     When I am on the "csv_footwear_product_import" import job page
     And I launch the import job
-    And I wait for the "product_import" job to finish
-    Then I should see "The value 123 is already set on another product for the unique attribute number"
+    And I wait for the "csv_footwear_product_import" job to finish
+    Then I should see the text "The value 123 is already set on another product for the unique attribute number"
     And there should be 1 product
 
   Scenario: Successfully ignore duplicate unique text values
@@ -55,8 +55,8 @@ Feature: Validate values for unique attributes when importing products
       | filePath | %file to import% |
     When I am on the "csv_footwear_product_import" import job page
     And I launch the import job
-    And I wait for the "product_import" job to finish
-    Then I should see "The value foo is already set on another product for the unique attribute text"
+    And I wait for the "csv_footwear_product_import" job to finish
+    Then I should see the text "The value foo is already set on another product for the unique attribute text"
     And there should be 1 product
 
   @jira https://akeneo.atlassian.net/browse/PIM-3309
@@ -78,8 +78,8 @@ Feature: Validate values for unique attributes when importing products
     When I am on the "csv_footwear_product_import" import job page
     And I launch the import job
     And I wait for the "csv_footwear_product_import" job to finish
-    Then I should see "The value 1200000011a is already set on another product for the unique attribute test_unique_attribute"
-    And I am on the products page
+    Then I should see the text "The value 1200000011a is already set on another product for the unique attribute test_unique_attribute"
+    And I am on the products grid
     When I show the filter "test_unique_attribute"
     And I filter by "test_unique_attribute" with operator "is equal to" and value "1200000011a"
     And I should see products "AKNTS_BPXL"
@@ -104,7 +104,7 @@ Feature: Validate values for unique attributes when importing products
     When I am on the "csv_footwear_product_import" import job page
     And I launch the import job
     And I wait for the "csv_footwear_product_import" job to finish
-    And I am on the products page
+    And I am on the products grid
     And I filter by "sku" with operator "is equal to" and value "17727158"
     And I should see products 17727158
     And the grid should contain 1 elements

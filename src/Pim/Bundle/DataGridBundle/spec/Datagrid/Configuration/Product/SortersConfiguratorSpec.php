@@ -31,7 +31,7 @@ class SortersConfiguratorSpec extends ObjectBehavior
 
         $configuration
             ->offsetGetByPath(sprintf('[%s]', FormatterConfiguration::COLUMNS_KEY))
-            ->willReturn(['family' => ['family_config'], 'sku' => [], 'name' => []]);
+            ->willReturn(['family' => ['family_config'], 'identifier' => [], 'name' => []]);
 
         $registry
             ->getConfiguration('pim_catalog_identifier')
@@ -51,7 +51,7 @@ class SortersConfiguratorSpec extends ObjectBehavior
             ->getConfiguration('pim_catalog_text')
             ->willReturn(['column' => ['text_config'], 'sorter' => 'flexible_field']);
 
-        $columnConfPath = sprintf('%s[%s]', OrmSorterConfiguration::COLUMNS_PATH, 'sku');
+        $columnConfPath = sprintf('%s[%s]', OrmSorterConfiguration::COLUMNS_PATH, 'identifier');
         $configuration->offsetSetByPath($columnConfPath, Argument::any())->shouldBeCalled();
 
         $columnConfPath = sprintf('%s[%s]', OrmSorterConfiguration::COLUMNS_PATH, 'name');
@@ -67,7 +67,7 @@ class SortersConfiguratorSpec extends ObjectBehavior
     {
         $registry->getConfiguration('pim_catalog_text')->willReturn([]);
 
-        $columnConfPath = sprintf('%s[%s]', OrmSorterConfiguration::COLUMNS_PATH, 'sku');
+        $columnConfPath = sprintf('%s[%s]', OrmSorterConfiguration::COLUMNS_PATH, 'identifier');
         $configuration->offsetSetByPath($columnConfPath, Argument::any())->shouldBeCalled();
 
         $this->shouldThrow('\LogicException')->duringConfigure($configuration);

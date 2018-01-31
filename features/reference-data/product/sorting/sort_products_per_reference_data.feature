@@ -42,7 +42,7 @@ Feature: Sort products
       | product  | attribute | value |
       | productA | color     | Red   |
     And I am logged in as "Mary"
-    When I am on the products page
+    When I am on the products grid
     And I display the columns SKU and color
     Then I should see the text "Red"
     When I sort by "Color" value ascending

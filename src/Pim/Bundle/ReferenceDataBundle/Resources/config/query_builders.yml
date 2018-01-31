@@ -1,0 +1,24 @@
+parameters:
+    pim_reference_data.query.elasticsearch.filter.reference_data.class: Pim\Bundle\ReferenceDataBundle\Elasticsearch\Filter\Attribute\ReferenceDataFilter
+
+services:
+    pim.reference_data.query.filter.reference_data:
+        class: '%pim_reference_data.query.elasticsearch.filter.reference_data.class%'
+        arguments:
+            - '@pim_catalog.validator.helper.attribute'
+            - '@pim_reference_data.repository_resolver'
+            - '@pim_reference_data.registry'
+            - ['pim_reference_data_simpleselect', 'pim_reference_data_multiselect']
+            - ['IN', 'EMPTY', 'NOT EMPTY', 'NOT IN']
+        tags:
+            - { name: 'pim_catalog.elasticsearch.query.product_filter', priority: 30 }
+            - { name: 'pim_catalog.elasticsearch.query.product_model_filter', priority: 30 }
+            - { name: 'pim_catalog.elasticsearch.query.product_and_product_model_filter', priority: 30 }
+
+    pim.reference_data.query.sorter.attribute.reference_data:
+        class: '%pim_catalog.query.elasticsearch.sorter.attribute.base.class%'
+        arguments:
+            - '@pim_catalog.validator.helper.attribute'
+            - ['pim_reference_data_simpleselect']
+        tags:
+            - { name: 'pim_catalog.elasticsearch.query.sorter', priority: 30 }

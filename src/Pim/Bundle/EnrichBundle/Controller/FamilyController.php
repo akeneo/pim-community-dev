@@ -8,8 +8,7 @@ use Pim\Bundle\EnrichBundle\Form\Handler\HandlerInterface;
 use Pim\Component\Catalog\Factory\FamilyFactory;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\Form\Form;
-use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\RouterInterface;
 
@@ -22,8 +21,8 @@ use Symfony\Component\Routing\RouterInterface;
  */
 class FamilyController
 {
-    /** @var Request */
-    protected $request;
+    /** @var RequestStack */
+    protected $requestStack;
 
     /** @var RouterInterface */
     protected $router;
@@ -38,36 +37,23 @@ class FamilyController
     protected $familyForm;
 
     /**
-     * @param Request                      $request
-     * @param RouterInterface              $router
-     * @param FamilyFactory                $familyFactory
-     * @param HandlerInterface             $familyHandler
+     * @param RequestStack     $requestStack
+     * @param RouterInterface  $router
+     * @param FamilyFactory    $familyFactory
+     * @param HandlerInterface $familyHandler
      */
     public function __construct(
-        Request $request,
+        RequestStack $requestStack,
         RouterInterface $router,
         FamilyFactory $familyFactory,
         HandlerInterface $familyHandler,
         Form $familyForm
     ) {
-        $this->request = $request;
+        $this->requestStack = $requestStack;
         $this->router = $router;
         $this->familyFactory = $familyFactory;
         $this->familyHandler = $familyHandler;
         $this->familyForm = $familyForm;
-    }
-
-    /**
-     * List families
-     *
-     * @Template
-     * @AclAncestor("pim_enrich_family_index")
-     *
-     * @return Response
-     */
-    public function indexAction()
-    {
-        return [];
     }
 
     /**
@@ -80,14 +66,15 @@ class FamilyController
      */
     public function createAction()
     {
-        if (!$this->request->isXmlHttpRequest()) {
-            return new RedirectResponse($this->router->generate('pim_enrich_family_index'));
-        }
-
         $family = $this->familyFactory->create();
 
         if ($this->familyHandler->process($family)) {
-            $this->request->getSession()->getFlashBag()->add('success', new Message('flash.family.created'));
+            $this
+                ->requestStack
+                ->getCurrentRequest()
+                ->getSession()
+                ->getFlashBag()
+                ->add('success', new Message('flash.family.created'));
 
             $response = [
                 'status' => 1,
@@ -102,23 +89,6 @@ class FamilyController
 
         return [
             'form' => $this->familyForm->createView()
-        ];
-    }
-
-    /**
-     * Edit a family
-     *
-     * @param int $code
-     *
-     * @Template
-     * @AclAncestor("pim_enrich_family_index")
-     *
-     * @return array|Response
-     */
-    public function editAction($code)
-    {
-        return [
-            'code' => $code,
         ];
     }
 }

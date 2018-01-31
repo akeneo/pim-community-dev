@@ -1,4 +1,7 @@
 ## Rename this file in phpspec.yml to customize the phpspec configuration
+extensions:
+    Akeneo\SkipExampleExtension: ~
+
 suites:
     ## Akeneo Components
     Analytics:
@@ -11,6 +14,11 @@ suites:
         psr4_prefix: Akeneo\Component\Batch
         spec_path: src/Akeneo/Component/Batch
         src_path: src/Akeneo/Component/Batch
+    BatchQueue:
+        namespace: Akeneo\Component\BatchQueue
+        psr4_prefix: Akeneo\Component\BatchQueue
+        spec_path: src/Akeneo/Component/BatchQueue
+        src_path: src/Akeneo/Component/BatchQueue
     Buffer:
         namespace: Akeneo\Component\Buffer
         psr4_prefix: Akeneo\Component\Buffer
@@ -53,11 +61,21 @@ suites:
         psr4_prefix: Akeneo\Bundle\BatchBundle
         spec_path: src/Akeneo/Bundle/BatchBundle
         src_path: src/Akeneo/Bundle/BatchBundle
+    BatchQueueBundle:
+        namespace: Akeneo\Bundle\BatchQueueBundle
+        psr4_prefix: Akeneo\Bundle\BatchQueueBundle
+        spec_path: src/Akeneo/Bundle/BatchQueueBundle
+        src_path: src/Akeneo/Bundle/BatchQueueBundle
     ClassificationBundle:
         namespace: Akeneo\Bundle\ClassificationBundle
         psr4_prefix: Akeneo\Bundle\ClassificationBundle
         spec_path: src/Akeneo/Bundle/ClassificationBundle
         src_path: src/Akeneo/Bundle/ClassificationBundle
+    ElasticsearchBundle:
+        namespace: Akeneo\Bundle\ElasticsearchBundle
+        psr4_prefix: Akeneo\Bundle\ElasticsearchBundle
+        spec_path: src/Akeneo/Bundle/ElasticsearchBundle
+        src_path: src/Akeneo/Bundle/ElasticsearchBundle
     StorageUtilsBundle:
         namespace: Akeneo\Bundle\StorageUtilsBundle
         psr4_prefix: Akeneo\Bundle\StorageUtilsBundle
@@ -68,6 +86,11 @@ suites:
         psr4_prefix: Akeneo\Bundle\MeasureBundle
         spec_path: src/Akeneo/Bundle/MeasureBundle
         src_path: src/Akeneo/Bundle/MeasureBundle
+    StorageUtilsBundle:
+        namespace: Akeneo\Bundle\StorageUtilsBundle
+        psr4_prefix: Akeneo\Bundle\StorageUtilsBundle
+        spec_path: src/Akeneo/Bundle/StorageUtilsBundle
+        src_path: src/Akeneo/Bundle/StorageUtilsBundle
 
     ## Pim Components
     Api:
@@ -187,11 +210,6 @@ suites:
         psr4_prefix: Pim\Bundle\VersioningBundle
         spec_path: src/Pim/Bundle/VersioningBundle
         src_path: src/Pim/Bundle/VersioningBundle
-    WebServiceBundle:
-        namespace: Pim\Bundle\WebServiceBundle
-        psr4_prefix: Pim\Bundle\WebServiceBundle
-        spec_path: src/Pim/Bundle/WebServiceBundle
-        src_path: src/Pim/Bundle/WebServiceBundle
 
     ## Oro bundles
     OroFilterBundle:

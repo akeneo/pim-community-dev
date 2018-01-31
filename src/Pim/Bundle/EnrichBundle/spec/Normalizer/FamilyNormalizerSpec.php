@@ -2,21 +2,21 @@
 
 namespace spec\Pim\Bundle\EnrichBundle\Normalizer;
 
+use Doctrine\Common\Collections\Collection;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface;
 use Pim\Bundle\VersioningBundle\Manager\VersionManager;
-use Pim\Component\Catalog\Model\AttributeGroupInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\FamilyInterface;
+use Pim\Component\Catalog\Model\FamilyVariantInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
-use Prophecy\Argument;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class FamilyNormalizerSpec extends ObjectBehavior
 {
     function let(
         NormalizerInterface $familyNormalizer,
-        NormalizerInterface $translationNormalizer,
+        NormalizerInterface $attributeNormalizer,
         CollectionFilterInterface $collectionFilter,
         AttributeRepositoryInterface $attributeRepository,
         VersionManager $versionManager,
@@ -24,7 +24,7 @@ class FamilyNormalizerSpec extends ObjectBehavior
     ) {
         $this->beConstructedWith(
             $familyNormalizer,
-            $translationNormalizer,
+            $attributeNormalizer,
             $collectionFilter,
             $attributeRepository,
             $versionManager,
@@ -49,105 +49,280 @@ class FamilyNormalizerSpec extends ObjectBehavior
             ->shouldReturn(false);
     }
 
-    function it_normalizes_family(
+    function it_normalizes_family_without_attributes_used_as_axis(
+        $familyNormalizer,
+        $attributeNormalizer,
+        $collectionFilter,
         AttributeRepositoryInterface $attributeRepository,
-        AttributeGroupInterface $marketingAttributeGroup,
         FamilyInterface $family,
-        NormalizerInterface $translationNormalizer,
-        NormalizerInterface $familyNormalizer,
+        Collection $emptyCollection,
+        \ArrayIterator $emptyCollectionIterator,
         VersionManager $versionManager,
         AttributeInterface $name,
+        AttributeInterface $description,
         AttributeInterface $price
     ) {
         $family->getId()->willReturn(1);
+        $family->getFamilyVariants()->willReturn($emptyCollection);
+        $emptyCollection->getIterator()->willReturn($emptyCollectionIterator);
+        $emptyCollectionIterator->valid()->willReturn(false);
+        $emptyCollectionIterator->rewind()->shouldBeCalled();
 
         $normalizedFamily = [
-            'code'                   => 'tshirts',
-            'attributes'             => [
+            'code'       => 'tshirts',
+            'attributes' => [
                 'name',
+                'description',
+                'price',
             ],
             'attribute_as_label'     => 'name',
             'attribute_requirements' => [
-                'ecommerce' => [
-                    'name',
-                    'price',
-                ],
-                'mobile' => [
-                    'name',
-                    'price',
-                ]
+                'ecommerce' => ['name', 'price'],
+                'mobile'    => ['name', 'price'],
             ],
             'labels' => [],
-            'meta' => [
-                'id' => 1,
-                'form' => 'pim-family-edit-form',
+            'meta'   => [
+                'id'      => 1,
+                'form'    => 'pim-family-edit-form',
                 'created' => null,
                 'updated' => null,
             ]
         ];
 
-        $familyNormalizer->normalize($family, 'standard', ['apply_filters' => false])->willReturn($normalizedFamily);
-
-        $familyNormalizer->normalize($family, 'standard', ['apply_filters' => false])->shouldBeCalled();
+        $familyNormalizer->normalize($family, 'standard', [])
+            ->shouldBeCalled()
+            ->willReturn($normalizedFamily);
 
         $attributeRepository->findAttributesByFamily($family)->willReturn([$name, $price]);
-        $attributeRepository->findBy(['code' => ['name', 'price']])->willReturn([$name, $price]);
+        $collectionFilter->filterCollection([$name, $description, $price], 'pim.internal_api.attribute.view')
+            ->willReturn([$name, $price]);
 
-        $translationNormalizer->normalize(Argument::cetera())->willReturn([]);
-        $family->getCode()->willReturn('tshirts');
-        $family->getAttributeAsLabel()->willReturn($name);
-
-        $marketingAttributeGroup->getCode()->willReturn('marketing');
+        $attributeRepository->findBy(['code' => ['name', 'price']])
+            ->willReturn([$name, $price]);
+        $collectionFilter->filterCollection([$name, $price], 'pim.internal_api.attribute.view')
+            ->willReturn([$name, $price]);
 
         $name->getCode()->willReturn('name');
-        $name->getType()->willReturn('pim_catalog_text');
-        $name->getGroup()->willReturn($marketingAttributeGroup);
-        $name->getSortOrder()->willReturn(1);
-
         $price->getCode()->willReturn('price');
-        $price->getType()->willReturn('pim_catalog_price_collection');
-        $price->getGroup()->willReturn($marketingAttributeGroup);
-        $price->getSortOrder()->willReturn(3);
+
+        $attributeNormalizer->normalize($name, 'internal_api', [])->willReturn(
+            [
+                'code'       => 'name',
+                'type'       => 'pim_catalog_text',
+                'group'      => 'marketing',
+                'labels'     => [],
+                'sort_order' => 1,
+            ]
+        );
+
+        $attributeNormalizer->normalize($price, 'internal_api', [])->willReturn(
+            [
+                'code'       => 'price',
+                'type'       => 'pim_catalog_price_collection',
+                'group'      => 'marketing',
+                'labels'     => [],
+                'sort_order' => 3,
+            ]
+        );
+
+        $family->getCode()->willReturn('tshirts');
+        $family->getAttributeAsLabel()->willReturn($name);
 
         $versionManager->getOldestLogEntry($family)->shouldBeCalled();
         $versionManager->getNewestLogEntry($family)->shouldBeCalled();
 
-        $this->normalize($family, null, ['apply_filters' => false])->shouldReturn(
+        $this->normalize($family)->shouldReturn(
             [
-                'code'                   => 'tshirts',
-                'attributes'             => [
+                'code'       => 'tshirts',
+                'attributes' => [
                     [
-                        'code' => 'name',
-                        'type' => 'pim_catalog_text',
-                        'group_code' => 'marketing',
-                        'labels' => [],
+                        'code'       => 'name',
+                        'type'       => 'pim_catalog_text',
+                        'group'      => 'marketing',
+                        'labels'     => [],
                         'sort_order' => 1,
                     ],
                     [
-                        'code' => 'price',
-                        'type' => 'pim_catalog_price_collection',
-                        'group_code' => 'marketing',
-                        'labels' => [],
+                        'code'       => 'price',
+                        'type'       => 'pim_catalog_price_collection',
+                        'group'      => 'marketing',
+                        'labels'     => [],
                         'sort_order' => 3,
                     ]
                 ],
                 'attribute_as_label'     => 'name',
                 'attribute_requirements' => [
-                    'ecommerce' => [
-                        'name',
-                        'price',
-                    ],
-                    'mobile' => [
-                        'name',
-                        'price',
-                    ]
+                    'ecommerce' => ['name', 'price'],
+                    'mobile'    => ['name', 'price'],
                 ],
                 'labels' => [],
                 'meta' => [
-                    'id' => 1,
-                    'form' => 'pim-family-edit-form',
+                    'id'      => 1,
+                    'form'    => 'pim-family-edit-form',
                     'created' => null,
                     'updated' => null,
+                    'attributes_used_as_axis' => []
+                ]
+            ]
+        );
+    }
+
+    function it_normalizes_family_with_attributes_used_as_axis_from_multiple_family_variants(
+        $familyNormalizer,
+        $attributeNormalizer,
+        $collectionFilter,
+        AttributeRepositoryInterface $attributeRepository,
+        FamilyInterface $family,
+        Collection $emptyCollection,
+        \ArrayIterator $emptyCollectionIterator,
+        FamilyVariantInterface $familyVariant1,
+        Collection $familyVariantAxes1,
+        FamilyVariantInterface $familyVariant2,
+        Collection $familyVariantAxes2,
+        VersionManager $versionManager,
+        AttributeInterface $name,
+        AttributeInterface $description,
+        AttributeInterface $price,
+        AttributeInterface $attributeUsedInTwoFamilyVariantsAsAxis,
+        AttributeInterface $axis1,
+        AttributeInterface $axis2,
+        AttributeInterface $axis3,
+        AttributeInterface $axis4
+    ) {
+        $family->getId()->willReturn(1);
+        $family->getFamilyVariants()->willReturn($emptyCollection);
+        $emptyCollection->getIterator()->willReturn($emptyCollectionIterator);
+        $emptyCollectionIterator->current()->willReturn($familyVariant1, $familyVariant2);
+        $emptyCollectionIterator->valid()->willReturn(true, true, false);
+        $emptyCollectionIterator->next()->shouldBeCalled();
+        $emptyCollectionIterator->rewind()->shouldBeCalled();
+
+        $familyVariant1->getAxes()->willReturn($familyVariantAxes1);
+        $familyVariantAxes1->toArray()->willReturn(
+            [
+                $attributeUsedInTwoFamilyVariantsAsAxis,
+                $axis1,
+                $axis3
+            ]
+        );
+
+        $familyVariant2->getAxes()->willReturn($familyVariantAxes2);
+        $familyVariantAxes2->toArray()->willReturn(
+            [
+                $attributeUsedInTwoFamilyVariantsAsAxis,
+                $axis2,
+                $axis4,
+            ]
+        );
+
+        $attributeUsedInTwoFamilyVariantsAsAxis->getCode()->willReturn(
+            'attribute_used_in_two_family_variants'
+        );
+        $axis1->getCode()->willReturn('axis1');
+        $axis2->getCode()->willReturn('axis2');
+        $axis3->getCode()->willReturn('axis3');
+        $axis4->getCode()->willReturn('axis4');
+
+        $normalizedFamily = [
+            'code'       => 'tshirts',
+            'attributes' => [
+                'name',
+                'description',
+                'price',
+            ],
+            'attribute_as_label'     => 'name',
+            'attribute_requirements' => [
+                'ecommerce' => ['name', 'price'],
+                'mobile'    => ['name', 'price'],
+            ],
+            'labels' => [],
+            'meta'   => [
+                'id'      => 1,
+                'form'    => 'pim-family-edit-form',
+                'created' => null,
+                'updated' => null,
+            ]
+        ];
+
+        $familyNormalizer->normalize($family, 'standard', [])
+            ->shouldBeCalled()
+            ->willReturn($normalizedFamily);
+
+        $attributeRepository->findAttributesByFamily($family)->willReturn([$name, $price]);
+        $collectionFilter->filterCollection([$name, $description, $price], 'pim.internal_api.attribute.view')
+            ->willReturn([$name, $price]);
+
+        $attributeRepository->findBy(['code' => ['name', 'price']])
+            ->willReturn([$name, $price]);
+        $collectionFilter->filterCollection([$name, $price], 'pim.internal_api.attribute.view')
+            ->willReturn([$name, $price]);
+
+        $name->getCode()->willReturn('name');
+        $price->getCode()->willReturn('price');
+
+        $attributeNormalizer->normalize($name, 'internal_api', [])->willReturn(
+            [
+                'code'       => 'name',
+                'type'       => 'pim_catalog_text',
+                'group'      => 'marketing',
+                'labels'     => [],
+                'sort_order' => 1,
+            ]
+        );
+
+        $attributeNormalizer->normalize($price, 'internal_api', [])->willReturn(
+            [
+                'code'       => 'price',
+                'type'       => 'pim_catalog_price_collection',
+                'group'      => 'marketing',
+                'labels'     => [],
+                'sort_order' => 3,
+            ]
+        );
+
+        $family->getCode()->willReturn('tshirts');
+        $family->getAttributeAsLabel()->willReturn($name);
+
+        $versionManager->getOldestLogEntry($family)->shouldBeCalled();
+        $versionManager->getNewestLogEntry($family)->shouldBeCalled();
+
+        $this->normalize($family)->shouldReturn(
+            [
+                'code'       => 'tshirts',
+                'attributes' => [
+                    [
+                        'code'       => 'name',
+                        'type'       => 'pim_catalog_text',
+                        'group'      => 'marketing',
+                        'labels'     => [],
+                        'sort_order' => 1,
+                    ],
+                    [
+                        'code'       => 'price',
+                        'type'       => 'pim_catalog_price_collection',
+                        'group'      => 'marketing',
+                        'labels'     => [],
+                        'sort_order' => 3,
+                    ]
+                ],
+                'attribute_as_label'     => 'name',
+                'attribute_requirements' => [
+                    'ecommerce' => ['name', 'price'],
+                    'mobile'    => ['name', 'price'],
+                ],
+                'labels' => [],
+                'meta' => [
+                    'id'      => 1,
+                    'form'    => 'pim-family-edit-form',
+                    'created' => null,
+                    'updated' => null,
+                    'attributes_used_as_axis' => [
+                        'attribute_used_in_two_family_variants',
+                        'axis1',
+                        'axis3',
+                        'axis2',
+                        'axis4',
+                    ]
                 ]
             ]
         );

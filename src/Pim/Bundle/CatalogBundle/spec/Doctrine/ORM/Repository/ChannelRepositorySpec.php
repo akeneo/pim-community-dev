@@ -4,12 +4,12 @@ namespace spec\Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository;
 
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Driver\Statement;
+use Doctrine\ORM\AbstractQuery;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Mapping\ClassMetadata;
+use Doctrine\ORM\QueryBuilder;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
-use Doctrine\ORM\AbstractQuery;
-use Doctrine\ORM\QueryBuilder;
 
 class ChannelRepositorySpec extends ObjectBehavior
 {
@@ -35,8 +35,8 @@ class ChannelRepositorySpec extends ObjectBehavior
     {
         $em->createQueryBuilder()->willReturn($queryBuilder);
         $queryBuilder->select('c')->willReturn($queryBuilder);
-        $queryBuilder->from('channel', 'c')->willReturn($queryBuilder);
-        $queryBuilder->select('count(c.id)')->willReturn($queryBuilder);
+        $queryBuilder->from('channel', 'c', null)->willReturn($queryBuilder);
+        $queryBuilder->select('COUNT(c.id)')->willReturn($queryBuilder);
 
         $queryBuilder->getQuery()->willReturn($query);
         $query->getSingleScalarResult()->shouldBeCalled();

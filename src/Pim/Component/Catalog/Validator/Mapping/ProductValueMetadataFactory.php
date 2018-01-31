@@ -4,7 +4,7 @@ namespace Pim\Component\Catalog\Validator\Mapping;
 
 use Doctrine\Common\Util\ClassUtils;
 use Pim\Component\Catalog\Model\AttributeInterface;
-use Pim\Component\Catalog\Model\ProductValueInterface;
+use Pim\Component\Catalog\Model\ValueInterface;
 use Pim\Component\Catalog\Validator\ConstraintGuesserInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Exception\NoSuchMetadataException;
@@ -12,7 +12,7 @@ use Symfony\Component\Validator\Mapping\ClassMetadata;
 use Symfony\Component\Validator\Mapping\Factory\MetadataFactoryInterface;
 
 /**
- * Create a ClassMetadata instance for an ProductValueInterface instance
+ * Create a ClassMetadata instance for an ValueInterface instance
  * Constraints are guessed from the value's attribute
  *
  * @author    Gildas Quemener <gildas@akeneo.com>
@@ -48,7 +48,7 @@ class ProductValueMetadataFactory implements MetadataFactoryInterface
      */
     public function getMetadataFor($value)
     {
-        if (!$value instanceof ProductValueInterface) {
+        if (!$value instanceof ValueInterface) {
             throw new NoSuchMetadataException();
         }
 
@@ -62,7 +62,7 @@ class ProductValueMetadataFactory implements MetadataFactoryInterface
      */
     public function hasMetadataFor($value)
     {
-        if ($value instanceof ProductValueInterface) {
+        if ($value instanceof ValueInterface) {
             return true;
         }
 
@@ -70,11 +70,11 @@ class ProductValueMetadataFactory implements MetadataFactoryInterface
     }
 
     /**
-     * @param ProductValueInterface $value
+     * @param ValueInterface $value
      *
      * @return ClassMetadata
      */
-    protected function createMetadata(ProductValueInterface $value)
+    protected function createMetadata(ValueInterface $value)
     {
         $class = ClassUtils::getClass($value);
         $attribute = $value->getAttribute();
@@ -101,7 +101,7 @@ class ProductValueMetadataFactory implements MetadataFactoryInterface
         if (is_array($target)) {
             throw new \LogicException('No support provided for constraint on many targets');
         } elseif (Constraint::PROPERTY_CONSTRAINT === $target) {
-            $metadata->addPropertyConstraint($attribute->getBackendType(), $constraint);
+            $metadata->addPropertyConstraint('data', $constraint);
         } elseif (Constraint::CLASS_CONSTRAINT === $target) {
             $metadata->addConstraint($constraint);
         }

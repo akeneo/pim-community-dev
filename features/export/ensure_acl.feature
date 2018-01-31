@@ -30,10 +30,12 @@ Feature: Ensures acl are respected on the export profile tabs
     And I grant rights to resources Edit an export profile content
     And I save the role
     When I am on the "csv_footwear_product_export" export job edit page
+    And I visit the "Content" tab
     Then I should not see the text "General properties"
     When I filter by "family" with operator "" and value "Boots"
     And I press the "Save" button
     Then I should not see the text "There are unsaved changes"
+    And I press the "Edit" button
     Then I should see the text "Boots"
 
   Scenario: Disable edit general property and show content tab read rights

@@ -4,8 +4,6 @@ namespace spec\Pim\Bundle\DataGridBundle\Extension\Pager;
 
 use Oro\Bundle\DataGridBundle\Extension\Pager\PagerInterface;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\DataGridBundle\Datasource\DatasourceSupportResolver;
-use Prophecy\Argument;
 
 class PagerResolverSpec extends ObjectBehavior
 {
@@ -14,28 +12,19 @@ class PagerResolverSpec extends ObjectBehavior
         $this->shouldHaveType('Pim\Bundle\DataGridBundle\Extension\Pager\PagerResolver');
     }
 
-    function let(DatasourceSupportResolver $supportResolver, PagerInterface $orm)
+    function let(PagerInterface $orm, PagerInterface $dummy)
     {
-        $supportResolver
-            ->getSupport(Argument::any())
-            ->willReturn(DatasourceSupportResolver::DATASOURCE_SUPPORT_MONGODB);
-        $this->beConstructedWith($supportResolver, $orm);
+        $this->beConstructedWith($orm, $dummy, ['foo', 'bar']);
     }
 
-    function it_returns_an_orm_pager_when_orm_support_is_enabled($supportResolver, $orm)
+    function it_returns_an_orm_pager_for_non_product_grids($orm)
     {
-        $supportResolver->getSupport('orm')->willReturn(DatasourceSupportResolver::DATASOURCE_SUPPORT_ORM);
-        $this->getPager('orm')->shouldReturn($orm);
+        $this->getPager('baz')->shouldReturn($orm);
     }
 
-    function it_throws_an_exception_when_mongo_support_is_enabled_and_mongo_pager_is_not_registered()
+    function it_returns_a_dummy_pager_for_product_grids($dummy)
     {
-        $this->shouldThrow()->during('getPager', [Argument::any()]);
-    }
-
-    function it_returns_an_odm_pager_for_a_smart_or_a_product_datasource(PagerInterface $mongo)
-    {
-        $this->setMongodbPager($mongo);
-        $this->getPager('pim_datasource_product')->shouldReturn($mongo);
+        $this->getPager('foo')->shouldReturn($dummy);
+        $this->getPager('bar')->shouldReturn($dummy);
     }
 }

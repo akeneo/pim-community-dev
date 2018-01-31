@@ -1,9 +1,9 @@
-{% extends 'PimEnrichBundle::layout.html.twig' %}
+{% import 'PimUIBundle:Default:page_elements.html.twig' as elements %}
 {% import 'PimDataGridBundle::macros.html.twig' as dataGrid %}
 
 {% block content %}
 
-    {{ elements.page_header(title) }}
+    {{ elements.page_header({ title: title }) }}
 
     {{ dataGrid.renderGrid(gridName, { jobType: jobType }) }}
 

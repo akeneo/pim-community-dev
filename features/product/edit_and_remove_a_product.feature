@@ -10,29 +10,30 @@ Feature: Edit and remove a product
       | code  | attributes                                                       |
       | shoes | sku,name,description,price,rating,size,color,manufacturer,length |
     And I am logged in as "Julia"
-    And I am on the products page
-    And I create a new product
+    And I am on the products grid
+    And I create a product
     And I fill in the following information in the popin:
-      | SKU             | boots |
-      | Choose a family | shoes |
+      | SKU    | boots |
+      | Family | Boots |
     And I press the "Save" button in the popin
     And I wait to be on the "boots" product page
+    And I visit the "Sizes" group
     And I fill in the following information:
-      | Length | 5.0000 Centimeter |
+      | Size | 36 |
     And I press the "Save" button
     Then I should not see the text "There are unsaved changes."
 
   Scenario: Successfully edit and then delete a product from the grid
-    Given I am on the products page
+    Given I am on the products grid
     Then I should see product boots
     When I click on the "Delete the product" action of the row which contains "boots"
-    Then I should see "Delete confirmation"
+    Then I should see the text "Confirm deletion"
     When I confirm the removal
     Then I should be on the products page
     And I should not see product boots
 
   Scenario: Successfully delete a product from the edit form
-    Given I press the "Delete" button
-    Then I should see "Confirm deletion"
+    Given I press the secondary action "Delete"
+    Then I should see the text "Confirm deletion"
     When I confirm the removal
     Then I should not see product boots

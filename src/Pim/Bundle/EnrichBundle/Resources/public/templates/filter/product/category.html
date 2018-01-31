@@ -1,8 +1,8 @@
 <div class="AknTextField <%- isEditable ? 'AknTextField--withRightButton' : 'AknTextField--disabled' %>">
     <%- labelInfo %>
     <% if (isEditable) { %>
-    <button type="button" class="AknButton AknButton--action AknButton--withIcon AknButton--small edit" title="<%- titleEdit %>">
-        <i class="AknButton-icon icon-pencil"></i><%- labelEdit %>
+    <button type="button" class="AknButton AknButton--action AknButton--small edit" title="<%- titleEdit %>">
+        <%- labelEdit %>
     </button>
     <% } %>
 </div>

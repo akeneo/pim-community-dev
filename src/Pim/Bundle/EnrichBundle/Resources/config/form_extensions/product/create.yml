@@ -1,0 +1,29 @@
+extensions:
+    pim-product-create-modal:
+       module: pim/form/common/creation/modal
+       config:
+           labels:
+               title: pim_enrich.entity.product.create_popin.title
+               subTitle: pim_menu.tab.products
+           picture: illustrations/Product.svg
+           successMessage: pim_enrich.entity.product.message.created
+           editRoute: pim_enrich_product_edit
+           postUrl: pim_enrich_product_rest_create
+
+    pim-product-create-sku:
+        module: pim/product-edit-form/creation/identifier
+        parent: pim-product-create-modal
+        targetZone: fields
+        position: 10
+        config:
+            identifier: identifier
+
+    pim-product-create-family:
+        module: pim/form/common/fields/simple-select-async
+        parent: pim-product-create-modal
+        targetZone: fields
+        position: 20
+        config:
+            fieldName: family
+            label: pim_enrich.entity.product.meta.family.title
+            choiceRoute: pim_enrich_family_rest_index

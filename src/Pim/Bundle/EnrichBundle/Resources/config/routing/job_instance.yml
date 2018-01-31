@@ -1,39 +1,54 @@
 pim_enrich_job_instance_rest_import_get:
     path: /rest/import/{identifier}
-    defaults: { _controller: pim_enrich.controller.rest.job_instance:getImportAction, _format: json }
+    defaults: { _controller: pim_enrich.controller.rest.job_instance:getImportAction }
     methods: [GET]
+
+pim_enrich_job_instance_rest_import_create:
+    path: /rest/import
+    defaults: { _controller: pim_enrich.controller.rest.job_instance:createImportAction }
+    methods: [POST]
+
+pim_enrich_job_instance_rest_export_create:
+    path: /rest/export
+    defaults: { _controller: pim_enrich.controller.rest.job_instance:createExportAction }
+    methods: [POST]
 
 pim_enrich_job_instance_rest_import_put:
     path: /rest/import/{identifier}
-    defaults: { _controller: pim_enrich.controller.rest.job_instance:putImportAction, _format: json }
+    defaults: { _controller: pim_enrich.controller.rest.job_instance:putImportAction }
     methods: [PUT, POST]
 
 pim_enrich_job_instance_rest_import_delete:
     path: /rest/import/{code}
-    defaults: { _controller: pim_enrich.controller.rest.job_instance:deleteImportAction, _format: json }
+    defaults: { _controller: pim_enrich.controller.rest.job_instance:deleteImportAction }
     methods: [DELETE]
 
 pim_enrich_job_instance_rest_import_launch:
     path: /rest/import/{code}/launch
-    defaults: { _controller: pim_enrich.controller.rest.job_instance:launchImportAction, _format: json }
+    defaults: { _controller: pim_enrich.controller.rest.job_instance:launchImportAction }
     methods: [POST, GET]
 
 pim_enrich_job_instance_rest_export_get:
     path: /rest/export/{identifier}
-    defaults: { _controller: pim_enrich.controller.rest.job_instance:getExportAction, _format: json }
+    defaults: { _controller: pim_enrich.controller.rest.job_instance:getExportAction }
     methods: [GET]
 
 pim_enrich_job_instance_rest_export_put:
     path: /rest/export/{identifier}
-    defaults: { _controller: pim_enrich.controller.rest.job_instance:putExportAction, _format: json }
+    defaults: { _controller: pim_enrich.controller.rest.job_instance:putExportAction }
     methods: [PUT, POST]
 
 pim_enrich_job_instance_rest_export_delete:
     path: /rest/export/{code}
-    defaults: { _controller: pim_enrich.controller.rest.job_instance:deleteExportAction, _format: json }
+    defaults: { _controller: pim_enrich.controller.rest.job_instance:deleteExportAction }
     methods: [DELETE]
 
 pim_enrich_job_instance_rest_export_launch:
     path: /rest/export/{code}/launch
-    defaults: { _controller: pim_enrich.controller.rest.job_instance:launchExportAction, _format: json }
+    defaults: { _controller: pim_enrich.controller.rest.job_instance:launchExportAction }
     methods: [POST, GET]
+
+pim_enrich_job_instance_rest_jobs_get:
+    path: /rest/jobs
+    defaults: { _controller: pim_enrich.controller.rest.job_instance:getJobNamesAction }
+    methods: [GET]

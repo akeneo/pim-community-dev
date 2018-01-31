@@ -39,6 +39,11 @@ class TextareaIntegration extends AbstractAttributeTestCase
         $this->assertDoesNotHaveAReferenceDataName('pim_catalog_textarea');
     }
 
+    public function testTextareaShouldNotHaveAutoOptionSorting()
+    {
+        $this->assertDoesNotHaveAutoOptionSorting('pim_catalog_textarea');
+    }
+
     public function testTextareaMaxCharactersIsNotGreaterThan()
     {
         $this->assertMaxCharactersIsNotGreaterThan('pim_catalog_textarea', 65535);

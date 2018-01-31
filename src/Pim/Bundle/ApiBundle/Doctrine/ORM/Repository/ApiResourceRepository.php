@@ -63,7 +63,6 @@ class ApiResourceRepository extends EntityRepository implements ApiResourceRepos
         }
 
         return $qb->setMaxResults($limit)
-            ->groupBy('r.id')
             ->getQuery()
             ->execute();
     }

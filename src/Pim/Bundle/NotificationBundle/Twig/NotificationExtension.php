@@ -57,12 +57,4 @@ class NotificationExtension extends \Twig_Extension
 
         return $this->repository->countUnreadForUser($user);
     }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getName()
-    {
-        return 'pim_notification_extension';
-    }
 }

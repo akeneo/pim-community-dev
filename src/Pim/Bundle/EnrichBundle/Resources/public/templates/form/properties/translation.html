@@ -1,33 +1,26 @@
-<div class="tabsection-title">
-    <%- _.__(label) %>
-</div>
-<div class="tabsection-content">
-    <div class="AknFormContainer AknFormContainer--withPadding">
-        <% _.each(locales, function (locale) { %>
-            <div class="AknFieldContainer">
-                <div class="AknFieldContainer-header">
-                    <label class="AknFieldContainer-label" for="<%- fieldBaseId %><%- locale.code %>">
-                        <%= locale.label %>
-                    </label>
-                </div>
-                <div class="AknFieldContainer-inputContainer field-input">
-                    <input id="<%- fieldBaseId %><%- locale.code %>"
-                           class="AknTextField label-field"
-                           type="text"
-                           data-locale="<%- locale.code %>"
-                           value="<%- model.labels[locale.code] %>"
-                           <%- isReadOnly ? 'readonly disabled' : '' %>
-                    >
-                </div>
-                <% if (errors[locale.code]) { %>
-                    <div class="AknFieldContainer-footer">
-                        <span class="validation-error">
-                            <i class="icon-warning-sign"></i>
-                            <span class="error-message"><%- errors[locale.code].message %></span>
-                        </span>
-                    </div>
-                <% } %>
+<% _.each(locales, function (locale) { %>
+    <div class="AknFieldContainer">
+        <div class="AknFieldContainer-header">
+            <label class="AknFieldContainer-label" for="<%- fieldBaseId %><%- locale.code %>">
+                <%= locale.label %>
+            </label>
+        </div>
+        <div class="AknFieldContainer-inputContainer field-input">
+            <input id="<%- fieldBaseId %><%- locale.code %>"
+                   class="AknTextField label-field"
+                   type="text"
+                   data-locale="<%- locale.code %>"
+                   value="<%- model.labels[locale.code] %>"
+                   <%- isReadOnly ? 'readonly disabled' : '' %>
+            >
+        </div>
+        <% if (errors[locale.code]) { %>
+            <div class="AknFieldContainer-footer">
+                <span class="validation-error">
+                    <i class="icon-warning-sign"></i>
+                    <span class="error-message"><%- errors[locale.code].message %></span>
+                </span>
             </div>
-        <% }) %>
+        <% } %>
     </div>
-</div>
+<% }) %>

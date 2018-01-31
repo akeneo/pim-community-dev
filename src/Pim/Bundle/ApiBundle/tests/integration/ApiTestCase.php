@@ -3,14 +3,15 @@
 namespace Pim\Bundle\ApiBundle\tests\integration;
 
 use Akeneo\Test\Integration\Configuration;
-use Akeneo\Test\Integration\ConnectionCloser;
-use Akeneo\Test\Integration\DatabaseSchemaHandler;
-use Akeneo\Test\Integration\FixturesLoader;
+use Akeneo\Test\IntegrationTestsBundle\Configuration\CatalogInterface;
+use Akeneo\Test\IntegrationTestsBundle\Security\SystemUserAuthenticator;
+use Pim\Bundle\ApiBundle\Stream\StreamResourceResponse;
 use Symfony\Bundle\FrameworkBundle\Client;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\BufferedOutput;
+use Symfony\Component\HttpKernel\KernelInterface;
 
 /**
  * Test case dedicated to PIM API interaction including authentication handling.
@@ -24,6 +25,12 @@ abstract class ApiTestCase extends WebTestCase
     const USERNAME = 'admin';
     const PASSWORD = 'admin';
 
+    /** @var KernelInterface */
+    protected $testKernel;
+
+    /** @var CatalogInterface */
+    protected $catalog;
+
     /**
      * @return Configuration
      */
@@ -35,10 +42,16 @@ abstract class ApiTestCase extends WebTestCase
     protected function setUp()
     {
         static::bootKernel(['debug' => false]);
+        $authenticator = new SystemUserAuthenticator(static::$kernel->getContainer());
+        $authenticator->createSystemUser();
 
-        $configuration = $this->getConfiguration();
-        $databaseSchemaHandler = $this->getDatabaseSchemaHandler();
-        $fixturesLoader = $this->getFixturesLoader($configuration, $databaseSchemaHandler);
+        $this->testKernel = new \AppKernelTest('test', false);
+        $this->testKernel->boot();
+
+        $this->catalog = $this->testKernel->getContainer()->get('akeneo_integration_tests.configuration.catalog');
+        $this->testKernel->getContainer()->set('akeneo_integration_tests.catalog.configuration', $this->getConfiguration());
+
+        $fixturesLoader = $this->testKernel->getContainer()->get('akeneo_integration_tests.loader.fixtures_loader');
         $fixturesLoader->load();
     }
 
@@ -77,6 +90,9 @@ abstract class ApiTestCase extends WebTestCase
         $client = static::createClient($options, $server);
         $client->setServerParameter('HTTP_AUTHORIZATION', 'Bearer '.$accessToken);
 
+        $aclManager = $this->get('oro_security.acl.manager');
+        $aclManager->clearCache();
+
         if (!isset($server['CONTENT_TYPE'])) {
             $client->setServerParameter('CONTENT_TYPE', 'application/json');
         }
@@ -87,20 +103,25 @@ abstract class ApiTestCase extends WebTestCase
     /**
      * Creates a new OAuth client and returns its client id and secret.
      *
+     * @param string|null $label
+     *
      * @return string[]
      */
-    protected function createOAuthClient()
+    protected function createOAuthClient(?string $label = null): array
     {
         $consoleApp = new Application(static::$kernel);
         $consoleApp->setAutoExit(false);
 
-        $input  = new ArrayInput(['command' => 'pim:oauth-server:create-client']);
+        $input  = new ArrayInput([
+            'command' => 'pim:oauth-server:create-client',
+            'label'   => null !== $label ? $label : 'Api test case client',
+        ]);
         $output = new BufferedOutput();
 
         $consoleApp->run($input, $output);
 
         $content = $output->fetch();
-        preg_match('/client_id: (.+)\nsecret: (.+)$/', $content, $matches);
+        preg_match('/client_id: (.+)\nsecret: (.+)\nlabel: (.+)$/', $content, $matches);
 
         return [$matches[1], $matches[2]];
     }
@@ -156,6 +177,16 @@ abstract class ApiTestCase extends WebTestCase
      *
      * @return mixed
      */
+    protected function getFromTestContainer(string $service)
+    {
+        return $this->testKernel->getContainer()->get($service);
+    }
+
+    /**
+     * @param string $service
+     *
+     * @return mixed
+     */
     protected function getParameter($service)
     {
         return static::$kernel->getContainer()->getParameter($service);
@@ -166,37 +197,10 @@ abstract class ApiTestCase extends WebTestCase
      */
     protected function tearDown()
     {
-        $connectionCloser = $this->getConnectionCloser();
+        $connectionCloser = $this->testKernel->getContainer()->get('akeneo_integration_tests.doctrine.connection.connection_closer');
         $connectionCloser->closeConnections();
 
         parent::tearDown();
-    }
-
-    /**
-     * @return DatabaseSchemaHandler
-     */
-    protected function getDatabaseSchemaHandler()
-    {
-        return new DatabaseSchemaHandler(static::$kernel);
-    }
-
-    /**
-     * @param Configuration         $configuration
-     * @param DatabaseSchemaHandler $databaseSchemaHandler
-     *
-     * @return FixturesLoader
-     */
-    protected function getFixturesLoader(Configuration $configuration, DatabaseSchemaHandler $databaseSchemaHandler)
-    {
-        return new FixturesLoader(static::$kernel, $configuration, $databaseSchemaHandler);
-    }
-
-    /**
-     * @return ConnectionCloser
-     */
-    protected function getConnectionCloser()
-    {
-        return new ConnectionCloser(static::$kernel->getContainer());
     }
 
     /**
@@ -213,12 +217,64 @@ abstract class ApiTestCase extends WebTestCase
     {
         $configuration = $this->getConfiguration();
         foreach ($configuration->getFixtureDirectories() as $fixtureDirectory) {
-            $path = $fixtureDirectory . $name;
+            $path = $fixtureDirectory . DIRECTORY_SEPARATOR . $name;
             if (is_file($path) && false !== realpath($path)) {
                 return realpath($path);
             }
         }
 
         throw new \Exception(sprintf('The fixture "%s" does not exist.', $name));
+    }
+
+    /**
+     * Execute a request where the response is streamed by chunk.
+     *
+     * The whole content of the request and the whole content of the response
+     * are loaded in memory.
+     * Therefore, do not use this function with an high input/output volumetry.
+     *
+     * @param string $method
+     * @param string $uri
+     * @param array  $parameters
+     * @param array  $files
+     * @param array  $server
+     * @param string $content
+     * @param bool   $changeHistory
+     * @param string $username
+     * @param string $password
+     *
+     * @return array
+     */
+    protected function executeStreamRequest(
+        $method,
+        $uri,
+        array $parameters = [],
+        array $files = [],
+        array $server = [],
+        $content = null,
+        $changeHistory = true,
+        $username = self::USERNAME,
+        $password = self::PASSWORD
+    ) {
+        $streamedContent = '';
+
+        ob_start(function ($buffer) use (&$streamedContent) {
+            $streamedContent .= $buffer;
+
+            return '';
+        });
+
+        $client = $this->createAuthenticatedClient([], [], null, null, $username, $password);
+        $client->setServerParameter('CONTENT_TYPE', StreamResourceResponse::CONTENT_TYPE);
+        $client->request($method, $uri, $parameters, $files, $server, $content, $changeHistory);
+
+        ob_end_flush();
+
+        $response = [
+            'http_response' => $client->getResponse(),
+            'content'       => $streamedContent,
+        ];
+
+        return $response;
     }
 }

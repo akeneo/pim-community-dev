@@ -12,10 +12,17 @@ define(
         'underscore',
         'oro/translator',
         'pim/job/common/edit/launch',
-        'oro/navigation',
+        'pim/router',
         'oro/messenger'
     ],
-    function ($, _, __, BaseLaunch, Navigation, messenger) {
+    function (
+        $,
+        _,
+        __,
+        BaseLaunch,
+        router,
+        messenger
+    ) {
         return BaseLaunch.extend({
             /**
              * {@inherit}
@@ -27,23 +34,14 @@ define(
             },
 
             /**
-             * {@inheritdoc}
-             */
-            render: function () {
-                this.$el.html(this.template({
-                    label: __(this.getFormData().file ? this.config.upload : this.config.launch)
-                }));
-
-                return this;
-            },
-
-            /**
-             * Launch the job
+             * {@inherit}
              */
             launch: function () {
                 if (this.getFormData().file) {
                     var formData = new FormData();
                     formData.append('file', this.getFormData().file);
+
+                    router.showLoadingMask();
 
                     $.ajax({
                         url: this.getUrl(),
@@ -53,33 +51,21 @@ define(
                         cache: false,
                         processData: false
                     })
-                    .then(function (response) {
-                        Navigation.getInstance().setLocation(response.redirectUrl);
-                    }.bind(this))
-                    .fail(this.handleErrors);
-                } else {
-                    $.post(this.getUrl(), {method: 'POST'}).
-                        then(function (response) {
-                            Navigation.getInstance().setLocation(response.redirectUrl);
-                        })
-                        .fail(this.handleErrors);
+                    .then((response) => {
+                        router.redirect(response.redirectUrl);
+                    })
+                    .fail(() => {
+                        messenger.notify('error', __('pim_enrich.form.job_instance.fail.launch'));
+                    })
+                    .always(router.hideLoadingMask());
                 }
             },
 
             /**
-             * Displays error messages in case of failed launch.
-             *
-             * @param {Object} response
+             * {@inherit}
              */
-            handleErrors: function (response) {
-                // Warning: this method changed on master
-                messenger.notificationFlashMessage('error', __('pim_enrich.form.job_instance.fail.launch'));
-
-                if (_.has(response.responseJSON, 'configuration')) {
-                    _.each(response.responseJSON.configuration, function (message) {
-                        messenger.notificationFlashMessage('error', message);
-                    });
-                }
+            isVisible: function () {
+                return $.Deferred().resolve(this.getFormData().file).promise();
             }
         });
     }

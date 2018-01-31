@@ -44,7 +44,7 @@ class AttributeGroup implements ArrayConverterInterface
      *     'code'       => 'sizes',
      *     'sort_order' => 1,
      *     'attributes' => ['size', 'main_color'],
-     *     'label'      => [
+     *     'labels'     => [
      *         'en_US' => 'Sizes',
      *         'fr_FR' => 'Tailles'
      *     ]
@@ -75,10 +75,10 @@ class AttributeGroup implements ArrayConverterInterface
         if ('attributes' === $field) {
             $convertedItem[$field] = empty($data) ? [] : explode(',', $data);
         } elseif (preg_match('/^label-(?P<locale>[\w_]+)$/', $field, $matches)) {
-            if (!isset($convertedItem['label'])) {
-                $convertedItem['label'] = [];
+            if (!isset($convertedItem['labels'])) {
+                $convertedItem['labels'] = [];
             }
-            $convertedItem['label'][$matches['locale']] = $data;
+            $convertedItem['labels'][$matches['locale']] = $data;
         } else {
             $convertedItem[$field] = $data;
         }

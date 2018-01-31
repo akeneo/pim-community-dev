@@ -5,29 +5,31 @@ namespace spec\Pim\Component\Catalog\Validator\Constraints;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
-use Pim\Component\Catalog\Model\ProductValueInterface;
+use Pim\Component\Catalog\Model\ValueInterface;
 use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
+use Pim\Component\Catalog\Repository\ProductUniqueDataRepositoryInterface;
 use Pim\Component\Catalog\Validator\Constraints\UniqueValue;
 use Pim\Component\Catalog\Validator\UniqueValuesSet;
 use Prophecy\Argument;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Validator\Constraint;
+use Symfony\Component\Validator\ConstraintValidatorInterface;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 use Symfony\Component\Validator\Violation\ConstraintViolationBuilderInterface;
 
 class UniqueValueValidatorSpec extends ObjectBehavior
 {
-    const PROPERTY_PATH='children[values].children[unique_attribute].children[varchar].data';
+    const PROPERTY_PATH='children[values].children[unique_attribute].children[text].data';
 
     function let(
-        ProductRepositoryInterface $productRepository,
+        ProductUniqueDataRepositoryInterface $uniqueDataRepository,
         UniqueValuesSet $uniqueValuesSet,
         ExecutionContextInterface $context,
         Form $form,
         ProductInterface $product,
-        ProductValueInterface $value
+        ValueInterface $value
     ) {
-        $this->beConstructedWith($productRepository, $uniqueValuesSet);
+        $this->beConstructedWith($uniqueDataRepository, $uniqueValuesSet);
 
         $product->getValue('unique_attribute')->willReturn($value);
 
@@ -39,116 +41,129 @@ class UniqueValueValidatorSpec extends ObjectBehavior
         $this->initialize($context);
     }
 
-    function it_validates_unique_value_from_form_data(
-        $uniqueValuesSet,
-        ProductRepositoryInterface $productRepository,
-        ProductValueInterface $uniqueValue,
-        AttributeInterface $uniqueAttribute,
-        ExecutionContextInterface $context,
-        UniqueValue $constraint,
-        Form $form,
-        ProductInterface $product
-    ) {
-        $context->getRoot()->willReturn($form);
-        $form->getData()->willReturn($product);
-        $product->getValue('unique_attribute')->willReturn($uniqueValue);
-
-        $uniqueValue->getAttribute()->willReturn($uniqueAttribute);
-        $uniqueAttribute->isUnique()->willReturn(true);
-        $uniqueValue->getProduct()->willReturn($product);
-
-        $productRepository->valueExists($uniqueValue)->willReturn(false);
-        $uniqueValuesSet->addValue($uniqueValue)->willReturn(true);
-
-        $this->validate("my_value", $constraint)->shouldReturn(null);
-        $context->buildViolation(Argument::any())->shouldNotBeCalled();
+    function it_is_a_validator()
+    {
+        $this->shouldImplement(ConstraintValidatorInterface::class);
     }
 
-    function it_adds_violation_with_non_unique_value_from_form_data_and_value_comes_from_database(
-        $uniqueValuesSet,
-        ProductRepositoryInterface $productRepository,
-        ProductValueInterface $uniqueValue,
-        AttributeInterface $uniqueAttribute,
-        ExecutionContextInterface $context,
+    function it_builds_a_violation_if_the_value_is_already_in_database_for_another_product(
+        ValueInterface $value,
         UniqueValue $constraint,
+        AttributeInterface $releaseDate,
         ProductInterface $product,
-        Form $form,
-        ConstraintViolationBuilderInterface $violation
+        ConstraintViolationBuilderInterface $constraintViolationBuilder,
+        $context,
+        $uniqueDataRepository
     ) {
-        $context->getRoot()->willReturn($form);
-        $form->getData()->willReturn($product);
-        $product->getValue('unique_attribute')->willReturn($uniqueValue);
+        $context->getRoot()->willReturn($product);
+        $releaseDate->isUnique()->willReturn(true);
+        $releaseDate->getCode()->willReturn('release_date');
 
-        $uniqueValue->getAttribute()->willReturn($uniqueAttribute);
-        $uniqueValue->getProduct()->willReturn($product);
-        $uniqueAttribute->isUnique()->willReturn(true);
-        $uniqueValue->getData()->willReturn('a content');
-        $uniqueAttribute->getCode()->willReturn('unique_attribute');
+        $value->getAttribute()->willReturn($releaseDate);
+        $value->__toString()->willReturn('2015-16-03');
 
-        $productRepository->valueExists($uniqueValue)->willReturn(true);
-        $uniqueValuesSet->addValue($uniqueValue)->willReturn(true);
+        $uniqueDataRepository->uniqueDataExistsInAnotherProduct($value, $product)->willReturn(true);
 
-        $context->buildViolation($constraint->message, Argument::any())
-            ->shouldBeCalled()
-            ->willReturn($violation);
+        $context->buildViolation(Argument::cetera())->willReturn($constraintViolationBuilder);
+        $constraintViolationBuilder->addViolation()->shouldBeCalled();
 
-        $this->validate("my_value", $constraint)->shouldReturn(null);
+        $this->validate($value, $constraint);
     }
 
-    function it_adds_violation_with_non_unique_value_from_form_data_and_value_comes_from_memory(
-        $uniqueValuesSet,
-        ProductRepositoryInterface $productRepository,
-        ProductValueInterface $uniqueValue,
-        AttributeInterface $uniqueAttribute,
-        ExecutionContextInterface $context,
+    function it_builds_a_violation_if_the_value_has_already_been_validated_in_a_bulk(
+        ValueInterface $value,
         UniqueValue $constraint,
+        AttributeInterface $releaseDate,
         ProductInterface $product,
-        Form $form,
-        ConstraintViolationBuilderInterface $violation
+        ConstraintViolationBuilderInterface $constraintViolationBuilder,
+        $context,
+        $uniqueValuesSet
     ) {
-        $context->getRoot()->willReturn($form);
-        $form->getData()->willReturn($product);
-        $product->getValue('unique_attribute')->willReturn($uniqueValue);
+        $context->getRoot()->willReturn($product);
+        $releaseDate->isUnique()->willReturn(true);
+        $releaseDate->getCode()->willReturn('release_date');
 
-        $uniqueValue->getAttribute()->willReturn($uniqueAttribute);
-        $uniqueValue->getProduct()->willReturn($product);
-        $uniqueAttribute->isUnique()->willReturn(true);
-        $uniqueValue->getData()->willReturn('a content');
-        $uniqueAttribute->getCode()->willReturn('unique_attribute');
+        $value->getAttribute()->willReturn($releaseDate);
+        $value->__toString()->willReturn('2015-16-03');
 
-        $productRepository->valueExists($uniqueValue)->willReturn(false);
-        $uniqueValuesSet->addValue($uniqueValue)->willReturn(false);
+        $uniqueValuesSet->addValue($value, $product)->willReturn(false);
 
-        $context->buildViolation($constraint->message, Argument::any())
-            ->shouldBeCalled()
-            ->willReturn($violation);
+        $context->buildViolation(Argument::cetera())->willReturn($constraintViolationBuilder);
+        $constraintViolationBuilder->addViolation()->shouldBeCalled();
 
-        $this->validate("my_value", $constraint)->shouldReturn(null);
+        $this->validate($value, $constraint);
     }
 
-    function it_does_not_validate_with_non_context(
-        ProductRepositoryInterface $productRepository,
-        ProductValueInterface $value,
-        ExecutionContextInterface $emptyContext,
-        Constraint $constraint
+    function it_skips_empty_objects(
+        UniqueValue $constraint,
+        $context,
+        $uniqueDataRepository,
+        $uniqueValuesSet
     ) {
-        $this->initialize($emptyContext);
-        $emptyContext->getRoot()->willReturn(null);
-        $productRepository->valueExists($value)->shouldNotBeCalled();
-        $emptyContext->buildViolation(Argument::any())->shouldNotBeCalled();
+        $uniqueValuesSet->addValue(Argument::any())->shouldNotBeCalled();
+        $uniqueDataRepository->uniqueDataExistsInAnotherProduct(Argument::cetera())->shouldNotBeCalled();
 
-        $this->validate("my_value", $constraint)->shouldReturn(null);
+        $context->buildViolation(Argument::cetera())->shouldNotBeCalled();
+
+        $this->validate(null, $constraint);
     }
 
-    function it_does_not_validate_with_empty_value(
-        ProductRepositoryInterface $productRepository,
-        ProductValueInterface $value,
-        ExecutionContextInterface $context,
-        Constraint $constraint
+    function it_skips_non_values_objects(
+        \StdClass $object,
+        UniqueValue $constraint,
+        $context,
+        $uniqueDataRepository,
+        $uniqueValuesSet
     ) {
-        $productRepository->valueExists($value)->shouldNotBeCalled();
-        $context->buildViolation(Argument::any())->shouldNotBeCalled();
+        $uniqueValuesSet->addValue(Argument::any())->shouldNotBeCalled();
+        $uniqueDataRepository->uniqueDataExistsInAnotherProduct(Argument::cetera())->shouldNotBeCalled();
 
-        $this->validate("", $constraint)->shouldReturn(null);
+        $context->buildViolation(Argument::cetera())->shouldNotBeCalled();
+
+        $this->validate($object, $constraint);
+    }
+
+    function it_skips_non_unique_values(
+        ValueInterface $value,
+        UniqueValue $constraint,
+        AttributeInterface $releaseDate,
+        $context,
+        $uniqueDataRepository,
+        $uniqueValuesSet
+    ) {
+        $releaseDate->isUnique()->willReturn(false);
+
+        $value->getAttribute()->willReturn($releaseDate);
+
+        $uniqueValuesSet->addValue(Argument::any())->shouldNotBeCalled();
+        $uniqueDataRepository->uniqueDataExistsInAnotherProduct(Argument::cetera())->shouldNotBeCalled();
+
+        $context->buildViolation(Argument::cetera())->shouldNotBeCalled();
+
+        $this->validate($value, $constraint);
+    }
+
+    function it_does_not_add_a_violation_for_valid_values(
+        ValueInterface $value,
+        UniqueValue $constraint,
+        AttributeInterface $releaseDate,
+        ProductInterface $product,
+        $context,
+        $uniqueDataRepository,
+        $uniqueValuesSet
+    ) {
+        $context->getRoot()->willReturn($product);
+        $releaseDate->isUnique()->willReturn(true);
+        $releaseDate->getCode()->willReturn('release_date');
+
+        $value->getAttribute()->willReturn($releaseDate);
+        $value->__toString()->willReturn('2015-16-03');
+
+        $uniqueValuesSet->addValue($value, $product)->willReturn(true);
+        $uniqueDataRepository->uniqueDataExistsInAnotherProduct($value, $product)->willReturn(false);
+
+        $context->buildViolation(Argument::cetera())->shouldNotBeCalled();
+
+        $this->validate($value, $constraint);
     }
 }

@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\DataGridBundle\Extension\Formatter\Property\ProductValue;
 
+use Oro\Bundle\DataGridBundle\Datasource\ResultRecordInterface;
 use Oro\Bundle\DataGridBundle\Extension\Formatter\Property\FieldProperty as OroFieldProperty;
 
 /**
@@ -18,28 +19,21 @@ class FieldProperty extends OroFieldProperty
      */
     protected function convertValue($value)
     {
-        $result = $this->getBackendData($value);
-
-        return parent::convertValue($result);
+        return $value['data'];
     }
 
     /**
-     * Retrieve the relevant backend data from attribute configuration
-     *
-     * @param array $value
-     *
-     * @return array
+     * {@inheritdoc}
      */
-    protected function getBackendData($value)
+    protected function getRawValue(ResultRecordInterface $record)
     {
-        $backend = $value['attribute']['backendType'];
-
-        if (isset($value[$backend])) {
-            $value = $value[$backend];
-        } else {
-            $value = null;
+        try {
+            $productValuePath = sprintf('[values][%s]', $this->get(self::NAME_KEY));
+            $value = $record->getValue($productValuePath);
+        } catch (\LogicException $e) {
+            return null;
         }
 
-        return $value;
+        return is_array($value) ? current($value) : $value;
     }
 }

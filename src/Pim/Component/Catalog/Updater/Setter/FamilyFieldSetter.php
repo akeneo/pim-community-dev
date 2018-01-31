@@ -2,11 +2,14 @@
 
 namespace Pim\Component\Catalog\Updater\Setter;
 
+use Akeneo\Component\StorageUtils\Exception\InvalidObjectException;
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
+use Doctrine\Common\Util\ClassUtils;
 use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Model\ProductModelInterface;
 
 /**
  * Sets the family field
@@ -37,8 +40,15 @@ class FamilyFieldSetter extends AbstractFieldSetter
      *
      * Expected data input format : "family_code"
      */
-    public function setFieldData(ProductInterface $product, $field, $data, array $options = [])
+    public function setFieldData($product, $field, $data, array $options = [])
     {
+        if (!$product instanceof ProductInterface) {
+            throw InvalidObjectException::objectExpected(
+                ClassUtils::getClass($product),
+                ProductInterface::class
+            );
+        }
+
         $this->checkData($field, $data);
 
         if (null !== $data && '' !== $data) {

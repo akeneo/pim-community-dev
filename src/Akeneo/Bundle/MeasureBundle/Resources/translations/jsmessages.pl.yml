@@ -24,8 +24,6 @@ KILOBYTE: Kilobajt
 MEGABYTE: Megabajt
 GIGABYTE: Gigabajt
 TERABYTE: Terabajt
-Decibel: Decybel
-DECIBEL: Decybel
 Frequency: Częstotliwość
 GIGAHERTZ: Gigaherc
 KILOHERTZ: Kiloherc
@@ -57,7 +55,6 @@ MILLISECOND: Milisekunda
 SECOND: Sekunda
 MINUTE: Minuta
 HOUR: Godzina
-DAY: Dzień
 WEEK: Tydzień
 MONTH: Miesiąc
 YEAR: Rok

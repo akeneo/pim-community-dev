@@ -28,11 +28,4 @@ interface CurrencyRepositoryInterface extends IdentifiableObjectRepositoryInterf
      * @return array
      */
     public function getActivatedCurrencyCodes();
-
-    /**
-     * Return a query builder for activated currencies
-     *
-     * @return mixed
-     */
-    public function getActivatedCurrenciesQB();
 }

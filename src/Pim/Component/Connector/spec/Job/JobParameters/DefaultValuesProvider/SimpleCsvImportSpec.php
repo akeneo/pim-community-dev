@@ -28,6 +28,8 @@ class SimpleCsvImportSpec extends ObjectBehavior
                 'withHeader'                => true,
                 'uploadAllowed'             => true,
                 'invalid_items_file_format' => 'csv',
+                'user_to_notify'            => null,
+                'is_user_authenticated'     => false,
             ]
         );
     }

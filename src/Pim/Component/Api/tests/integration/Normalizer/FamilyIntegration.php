@@ -32,11 +32,12 @@ class FamilyIntegration extends AbstractNormalizerTestCase
                 'a_text_area',
                 'a_yes_no',
                 'an_image',
-                'sku'
+                'sku',
             ],
             'attribute_as_label'     => 'sku',
+            'attribute_as_image'     => 'an_image',
             'attribute_requirements' => [
-                'ecommerce' => [
+                'ecommerce'       => [
                     'a_date',
                     'a_file',
                     'a_localizable_image',
@@ -55,12 +56,12 @@ class FamilyIntegration extends AbstractNormalizerTestCase
                     'a_text_area',
                     'a_yes_no',
                     'an_image',
-                    'sku'
+                    'sku',
                 ],
                 'ecommerce_china' => [
-                    'sku'
+                    'sku',
                 ],
-                'tablet' => [
+                'tablet'          => [
                     'a_date',
                     'a_file',
                     'a_localizable_image',
@@ -79,10 +80,13 @@ class FamilyIntegration extends AbstractNormalizerTestCase
                     'a_text_area',
                     'a_yes_no',
                     'an_image',
-                    'sku'
-                ]
+                    'sku',
+                ],
             ],
-            'labels'                 => new \StdClass()
+            'labels'                 => [
+                'fr_FR' => 'Une famille A',
+                'en_US' => 'A family A',
+            ],
         ];
 
         $repository = $this->get('pim_catalog.repository.family');

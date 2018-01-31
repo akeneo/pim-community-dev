@@ -23,7 +23,7 @@ class Classify extends Wizard
         $this->elements = array_merge(
             $this->elements,
             [
-                'Trees list'    => ['css' => '#trees-list'],
+                'Trees list'    => ['css' => '.nav.nav-tabs'],
                 'Category tree' => [
                     'css'        => '#trees',
                     'decorators' => [
@@ -42,7 +42,7 @@ class Classify extends Wizard
     public function selectTree($category)
     {
         $link = $this->getElement('Trees list')
-            ->find('css', sprintf('#trees-list li a:contains("%s")', $category));
+            ->find('css', sprintf('li span:contains("%s")', $category));
         if (!$link) {
             throw new \InvalidArgumentException(sprintf('Tree "%s" not found', $category));
         }

@@ -2,11 +2,11 @@
 
 namespace tests\integration\Pim\Component\Catalog\Normalizer\Standard;
 
-use Akeneo\Test\Integration\Configuration;
-use Akeneo\Test\Integration\DateSanitizer;
-use Akeneo\Test\Integration\MediaSanitizer;
+use Akeneo\Test\IntegrationTestsBundle\Sanitizer\DateSanitizer;
+use Akeneo\Test\IntegrationTestsBundle\Sanitizer\MediaSanitizer;
 use Akeneo\Test\Integration\TestCase;
 use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\tests\integration\Normalizer\NormalizedProductCleaner;
 
 /**
  * Integration tests to verify data from database are well formatted in the standard format
@@ -18,7 +18,7 @@ class ProductStandardIntegration extends TestCase
      */
     protected function getConfiguration()
     {
-        return new Configuration([Configuration::getTechnicalSqlCatalogPath()]);
+        return $this->catalog->useTechnicalSqlCatalog();
     }
 
     public function testEmptyDisabledProduct()
@@ -26,8 +26,8 @@ class ProductStandardIntegration extends TestCase
         $expected = [
             'identifier'    => 'bar',
             'family'        => null,
+            'parent'        => null,
             'groups'        => [],
-            'variant_group' => null,
             'categories'    => [],
             'enabled'       => false,
             'values'        => [
@@ -52,8 +52,8 @@ class ProductStandardIntegration extends TestCase
         $expected = [
             'identifier'    => 'baz',
             'family'        => null,
+            'parent'        => null,
             'groups'        => [],
-            'variant_group' => null,
             'categories'    => [],
             'enabled'       => true,
             'values'        => [
@@ -79,8 +79,8 @@ class ProductStandardIntegration extends TestCase
             [
                 'identifier'    => 'foo',
                 'family'        => 'familyA',
+                'parent'        => null,
                 'groups'        => ['groupA', 'groupB'],
-                'variant_group' => 'variantA',
                 'categories'    => ['categoryA1', 'categoryB'],
                 'enabled'       => true,
                 'values'        => [
@@ -152,8 +152,8 @@ class ProductStandardIntegration extends TestCase
                             'locale' => null,
                             'scope'  => null,
                             'data'   => [
+                                ['amount' => '56.53', 'currency' => 'EUR'],
                                 ['amount' => '45.00', 'currency' => 'USD'],
-                                ['amount' => '56.53', 'currency' => 'EUR']
                             ],
                         ],
                     ],
@@ -162,8 +162,8 @@ class ProductStandardIntegration extends TestCase
                             'locale' => null,
                             'scope'  => null,
                             'data'   => [
+                                ['amount' => 56, 'currency' => 'EUR'],
                                 ['amount' => -45, 'currency' => 'USD'],
-                                ['amount' => 56, 'currency' => 'EUR']
                             ],
                         ],
                     ],
@@ -181,6 +181,13 @@ class ProductStandardIntegration extends TestCase
                             'locale' => null,
                             'scope'  => null,
                             'data'   => 'this is a text',
+                        ],
+                    ],
+                    '123'                                => [
+                        [
+                            'locale' => null,
+                            'scope'  => null,
+                            'data'   => 'a text for an attribute with numerical code',
                         ],
                     ],
                     'a_text_area'                        => [
@@ -244,9 +251,10 @@ class ProductStandardIntegration extends TestCase
                 'created'       => '2016-06-14T13:12:50+02:00',
                 'updated'       => '2016-06-14T13:12:50+02:00',
                 'associations'  => [
-                    'PACK'   => ['groups' => [], 'products' => ['bar', 'baz']],
-                    'UPSELL' => ['groups' => ['groupA'], 'products' => []],
-                    'X_SELL' => ['groups' => ['groupB'], 'products' => ['bar']],
+                    'PACK'   => ['groups' => [], 'products' => ['bar', 'baz'], 'product_models' => []],
+                    'SUBSTITUTION' => ['groups' => [], 'products' => [], 'product_models' => []],
+                    'UPSELL' => ['groups' => ['groupA'], 'products' => [], 'product_models' => []],
+                    'X_SELL' => ['groups' => ['groupB'], 'products' => ['bar'], 'product_models' => []],
                 ],
             ];
 
@@ -263,14 +271,15 @@ class ProductStandardIntegration extends TestCase
         $product = $repository->findOneByIdentifier($identifier);
 
         $result = $this->normalizeProductToStandardFormat($product);
-        $result = $this->sanitizeDateFields($result);
+
+        //TODO: why do we need that?
         $result = $this->sanitizeMediaAttributeData($result);
 
-        $expected = $this->sanitizeDateFields($expected);
+        //TODO: why do we need that?
         $expected = $this->sanitizeMediaAttributeData($expected);
 
-        ksort($expected['values']);
-        ksort($result['values']);
+        NormalizedProductCleaner::clean($expected);
+        NormalizedProductCleaner::clean($result);
 
         $this->assertSame($expected, $result);
     }

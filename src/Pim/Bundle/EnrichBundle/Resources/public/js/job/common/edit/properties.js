@@ -8,15 +8,13 @@
  */
 define(
     [
-        'module',
         'underscore',
         'oro/translator',
-        'text!pim/template/export/common/edit/properties',
+        'pim/template/export/common/edit/properties',
         'pim/form',
         'pim/common/property'
     ],
     function (
-        module,
         _,
         __,
         template,

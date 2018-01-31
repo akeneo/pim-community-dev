@@ -7,9 +7,12 @@ use Pim\Component\Catalog\Model\AssociationInterface;
 use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Component\Catalog\Model\GroupInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
-use Pim\Component\Catalog\Model\ProductValueInterface;
+use Pim\Component\Catalog\Model\ValueCollectionInterface;
+use Pim\Component\Catalog\Model\ValueInterface;
+use Pim\Component\Catalog\Model\VariantProductInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
-use Symfony\Component\Serializer\Normalizer\SerializerAwareNormalizer;
+use Symfony\Component\Serializer\SerializerAwareInterface;
+use Symfony\Component\Serializer\SerializerAwareTrait;
 
 /**
  * A normalizer to transform a product entity into a flat array
@@ -18,8 +21,10 @@ use Symfony\Component\Serializer\Normalizer\SerializerAwareNormalizer;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductNormalizer extends SerializerAwareNormalizer implements NormalizerInterface
+class ProductNormalizer implements NormalizerInterface, SerializerAwareInterface
 {
+    use SerializerAwareTrait;
+
     /** @staticvar string */
     const FIELD_FAMILY = 'family';
 
@@ -58,8 +63,7 @@ class ProductNormalizer extends SerializerAwareNormalizer implements NormalizerI
     {
         $context = $this->resolveContext($context);
 
-        $results = $this->serializer->normalize($object->getIdentifier(), $format, $context);
-
+        $results = [];
         $results[self::FIELD_FAMILY] = $this->normalizeFamily($object->getFamily());
         $results[self::FIELD_GROUPS] = $this->normalizeGroups($object->getGroupCodes());
         $results[self::FIELD_CATEGORY] = $this->normalizeCategories($object->getCategoryCodes());
@@ -109,15 +113,20 @@ class ProductNormalizer extends SerializerAwareNormalizer implements NormalizerI
      * @param ProductInterface $product
      * @param array            $context
      *
-     * @return ProductValueInterface[]
+     * @return ValueCollectionInterface|ValueInterface[]
      */
     protected function getFilteredValues(ProductInterface $product, array $context = [])
     {
-        if (null === $this->filter) {
-            return $product->getValues();
+        if ($product instanceof VariantProductInterface) {
+            $values = $product->getValuesForVariation();
+        } else {
+            $values = $product->getValues();
         }
 
-        $values = $product->getValues();
+        if (null === $this->filter) {
+            return $values;
+        }
+
         foreach ($context['filter_types'] as $filterType) {
             $values = $this->filter->filterCollection(
                 $values,
@@ -135,7 +144,7 @@ class ProductNormalizer extends SerializerAwareNormalizer implements NormalizerI
     /**
      * Normalize the field name for values
      *
-     * @param ProductValueInterface $value
+     * @param ValueInterface $value
      *
      * @return string
      */
@@ -212,8 +221,14 @@ class ProductNormalizer extends SerializerAwareNormalizer implements NormalizerI
                 $products[] = $product->getIdentifier();
             }
 
+            $productModels = [];
+            foreach ($association->getProductModels() as $productModel) {
+                $productModels[] = $productModel->getCode();
+            }
+
             $results[$columnPrefix . '-groups'] = implode(',', $groups);
             $results[$columnPrefix . '-products'] = implode(',', $products);
+            $results[$columnPrefix . '-product_models'] = implode(',', $productModels);
         }
 
         return $results;

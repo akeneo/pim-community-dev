@@ -3,23 +3,32 @@ parameters:
     pim_enrich.normalizer.attribute_option.class:                  Pim\Bundle\EnrichBundle\Normalizer\AttributeOptionNormalizer
     pim_enrich.normalizer.attribute_option_value.class:            Pim\Bundle\EnrichBundle\Normalizer\AttributeOptionValueNormalizer
     pim_enrich.normalizer.product.class:                           Pim\Bundle\EnrichBundle\Normalizer\ProductNormalizer
+    pim_enrich.normalizer.product_model.class:                     Pim\Bundle\EnrichBundle\Normalizer\ProductModelNormalizer
+    pim_enrich.normalizer.incomplete_values.class:                 Pim\Bundle\EnrichBundle\Normalizer\IncompleteValuesNormalizer
     pim_enrich.normalizer.completeness.class:                      Pim\Bundle\EnrichBundle\Normalizer\CompletenessNormalizer
     pim_enrich.normalizer.completeness_collection.class:           Pim\Bundle\EnrichBundle\Normalizer\CompletenessCollectionNormalizer
     pim_enrich.normalizer.version.class:                           Pim\Bundle\EnrichBundle\Normalizer\VersionNormalizer
     pim_enrich.normalizer.collection.class:                        Pim\Bundle\EnrichBundle\Normalizer\CollectionNormalizer
     pim_enrich.normalizer.association_type.class:                  Pim\Bundle\EnrichBundle\Normalizer\AssociationTypeNormalizer
+    pim_enrich.normalizer.group_type.class:                        Pim\Bundle\EnrichBundle\Normalizer\GroupTypeNormalizer
     pim_enrich.normalizer.family.class:                            Pim\Bundle\EnrichBundle\Normalizer\FamilyNormalizer
+    pim_enrich.normalizer.family_variant.class:                    Pim\Bundle\EnrichBundle\Normalizer\FamilyVariantNormalizer
     pim_enrich.normalizer.attribute.class:                         Pim\Bundle\EnrichBundle\Normalizer\AttributeNormalizer
+    pim_enrich.normalizer.attribute.versioned.class:               Pim\Bundle\EnrichBundle\Normalizer\VersionedAttributeNormalizer
     pim_enrich.normalizer.locale.class:                            Pim\Bundle\EnrichBundle\Normalizer\LocaleNormalizer
     pim_enrich.normalizer.channel.class:                           Pim\Bundle\EnrichBundle\Normalizer\ChannelNormalizer
-    pim_enrich.normalizer.sequential_edit.class:                   Pim\Bundle\EnrichBundle\Normalizer\SequentialEditNormalizer
     pim_enrich.normalizer.group.class:                             Pim\Bundle\EnrichBundle\Normalizer\GroupNormalizer
     pim_enrich.normalizer.file.class:                              Pim\Bundle\EnrichBundle\Normalizer\FileNormalizer
     pim_enrich.normalizer.product_violation.class:                 Pim\Bundle\EnrichBundle\Normalizer\ProductViolationNormalizer
-    pim_enrich.normalizer.variant_group_violation.class:           Pim\Bundle\EnrichBundle\Normalizer\VariantGroupViolationNormalizer
+    pim_enrich.normalizer.group_violation.class:                   Pim\Bundle\EnrichBundle\Normalizer\GroupViolationNormalizer
+    pim_enrich.normalizer.violation.class:                         Pim\Bundle\EnrichBundle\Normalizer\ViolationNormalizer
     pim_enrich.normalizer.datagrid_view.class:                     Pim\Bundle\EnrichBundle\Normalizer\DatagridViewNormalizer
     pim_enrich.normalizer.category.class:                          Pim\Bundle\EnrichBundle\Normalizer\CategoryNormalizer
+    pim_enrich.normalizer.attribute_group.class:                   Pim\Bundle\EnrichBundle\Normalizer\AttributeGroupNormalizer
     pim_enrich.normalizer.structured.attribute_option.class:       Pim\Bundle\EnrichBundle\Normalizer\StructuredAttributeOptionNormalizer
+    pim_enrich.normalizer.entity_with_family_variant.class:        Pim\Bundle\EnrichBundle\Normalizer\EntityWithFamilyVariantNormalizer
+    pim_enrich.normalizer.variant_navigation.class:                Pim\Bundle\EnrichBundle\Normalizer\VariantNavigationNormalizer
+    pim_enrich.normalizer.image.class:                             Pim\Bundle\EnrichBundle\Normalizer\ImageNormalizer
 
 services:
     pim_enrich.normalizer.attribute_option_value_collection:
@@ -46,11 +55,55 @@ services:
             - '@pim_serializer'
             - '@pim_enrich.normalizer.version'
             - '@pim_versioning.manager.version'
+            - '@pim_enrich.normalizer.image'
             - '@pim_catalog.repository.locale'
             - '@pim_enrich.provider.structure_version.product'
             - '@pim_enrich.provider.form.chained'
             - '@pim_catalog.localization.localizer.converter'
             - '@pim_enrich.converter.standard_to_enrich.product_value'
+            - '@pim_catalog.object_manager.product'
+            - '@pim_catalog.manager.completeness'
+            - '@pim_catalog.repository.channel'
+            - '@pim_catalog.filter.chained'
+            - '@pim_enrich.normalizer.completeness_collection'
+            - '@pim_user.context.user'
+            - '@pim_catalog.completeness.calculator'
+            - '@pim_catalog.builder.product'
+            - '@pim_catalog.values_filler.product'
+            - '@pim_catalog.family_variant.provider.entity_with_family_variant_attributes'
+            - '@pim_enrich.normalizer.variant_navigation'
+            - '@pim_enrich.doctrine.query.ascendant_categories'
+            - '@pim_enrich.normalizer.incomplete_values'
+        tags:
+            - { name: pim_internal_api_serializer.normalizer }
+
+    pim_enrich.normalizer.product_model:
+        class: '%pim_enrich.normalizer.product_model.class%'
+        arguments:
+            - '@pim_serializer'
+            - '@pim_enrich.normalizer.version'
+            - '@pim_versioning.manager.version'
+            - '@pim_enrich.normalizer.image'
+            - '@pim_catalog.localization.localizer.converter'
+            - '@pim_enrich.converter.standard_to_enrich.product_value'
+            - '@pim_enrich.provider.form.chained'
+            - '@pim_catalog.repository.locale'
+            - '@pim_catalog.values_filler.entity_with_family_variant'
+            - '@pim_catalog.family_variant.provider.entity_with_family_variant_attributes'
+            - '@pim_enrich.normalizer.variant_navigation'
+            - '@pim_catalog.doctrine.query.find_variant_product_completeness'
+            - '@pim_catalog.product_models.image_as_label'
+            - '@pim_enrich.doctrine.query.ascendant_categories'
+            - '@pim_enrich.normalizer.incomplete_values'
+        tags:
+            - { name: pim_internal_api_serializer.normalizer }
+
+    pim_enrich.normalizer.incomplete_values:
+        class: '%pim_enrich.normalizer.incomplete_values.class%'
+        arguments:
+            - '@pim_serializer'
+            - '@pim_catalog.entity_with_family.required_value_collection_factory'
+            - '@pim_catalog.entity_with_family.incomplete_value_collection_factory'
         tags:
             - { name: pim_internal_api_serializer.normalizer }
 
@@ -62,7 +115,7 @@ services:
     pim_enrich.normalizer.completeness_collection:
         class: '%pim_enrich.normalizer.completeness_collection.class%'
         arguments:
-            - '@pim_internal_api_serializer'
+            - '@pim_enrich.normalizer.completeness'
 
     pim_enrich.normalizer.version:
         class: '%pim_enrich.normalizer.version.class%'
@@ -79,16 +132,23 @@ services:
         tags:
             - { name: pim_internal_api_serializer.normalizer }
 
-
     pim_enrich.normalizer.family:
         class: '%pim_enrich.normalizer.family.class%'
         arguments:
             - '@pim_catalog.normalizer.standard.family'
-            - '@pim_catalog.normalizer.standard.translation'
+            - '@pim_enrich.normalizer.attribute'
             - '@pim_catalog.filter.chained'
             - '@pim_catalog.repository.attribute'
             - '@pim_versioning.manager.version'
             - '@pim_enrich.normalizer.version'
+        tags:
+            - { name: pim_internal_api_serializer.normalizer }
+
+    pim_enrich.normalizer.family_variant:
+        class: '%pim_enrich.normalizer.family_variant.class%'
+        arguments:
+            - '@pim_serializer'
+            - '@pim_enrich.provider.structure_version.family_variant'
         tags:
             - { name: pim_internal_api_serializer.normalizer }
 
@@ -101,10 +161,18 @@ services:
         tags:
             - { name: pim_internal_api_serializer.normalizer }
 
+    pim_enrich.normalizer.group_type:
+        class: '%pim_enrich.normalizer.group_type.class%'
+        arguments:
+            - '@pim_serializer'
+            - '@pim_enrich.provider.structure_version.group_type'
+        tags:
+            - { name: pim_internal_api_serializer.normalizer }
+
     pim_enrich.normalizer.locale:
         class: '%pim_enrich.normalizer.locale.class%'
         arguments:
-            - '@pim_catalog.helper.locale'
+            - '@pim_user.context.user'
         tags:
             - { name: pim_internal_api_serializer.normalizer }
 
@@ -126,25 +194,42 @@ services:
             - '@pim_enrich.provider.field.chained'
             - '@pim_enrich.provider.empty_value.chained'
             - '@pim_enrich.provider.filter.chained'
-        tags:
-            - { name: pim_internal_api_serializer.normalizer }
+            - '@pim_catalog.localization.localizer.number'
 
-    pim_enrich.normalizer.sequential_edit:
-        class: '%pim_enrich.normalizer.sequential_edit.class%'
+    pim_enrich.normalizer.entity_with_family_variant:
+        class: '%pim_enrich.normalizer.entity_with_family_variant.class%'
         arguments:
-            - '@pim_serializer'
+            - '@pim_enrich.normalizer.image'
+            - '@pim_catalog.repository.locale'
+            - '@pim_catalog.family_variant.provider.entity_with_family_variant_attributes'
+            - '@pim_enrich.normalizer.completeness_collection'
+            - '@pim_catalog.completeness.calculator'
+            - '@pim_catalog.doctrine.query.find_variant_product_completeness'
+            - '@pim_catalog.product_models.image_as_label'
+
+    pim_enrich.normalizer.variant_navigation:
+        class: '%pim_enrich.normalizer.variant_navigation.class%'
+        arguments:
+            - '@pim_catalog.repository.locale'
+            - '@pim_enrich.normalizer.entity_with_family_variant'
+
+    pim_enrich.normalizer.attribute.versioned:
+        class: '%pim_enrich.normalizer.attribute.versioned.class%'
+        arguments:
+            - '@pim_enrich.normalizer.attribute'
+            - '@pim_versioning.manager.version'
+            - '@pim_enrich.normalizer.version'
+            - '@pim_enrich.provider.structure_version.attribute'
         tags:
             - { name: pim_internal_api_serializer.normalizer }
 
     pim_enrich.normalizer.group:
         class: '%pim_enrich.normalizer.group.class%'
         arguments:
-            - '@pim_catalog.normalizer.standard.proxy_group'
-            - '@pim_enrich.provider.structure_version.variant_group'
+            - '@pim_catalog.normalizer.standard.group'
+            - '@pim_enrich.provider.structure_version.group'
             - '@pim_versioning.manager.version'
             - '@pim_enrich.normalizer.version'
-            - '@pim_catalog.localization.localizer.converter'
-            - '@pim_enrich.converter.standard_to_enrich.product_value'
         tags:
             - { name: pim_internal_api_serializer.normalizer }
 
@@ -155,16 +240,16 @@ services:
 
     pim_enrich.normalizer.product_violation:
         class: '%pim_enrich.normalizer.product_violation.class%'
-        tags:
-            - { name: pim_internal_api_serializer.normalizer }
-
-    pim_enrich.normalizer.variant_group_violation:
-        class: '%pim_enrich.normalizer.variant_group_violation.class%'
         arguments:
-            - '@pim_internal_api_serializer'
+            - '@pim_catalog.repository.attribute'
+
+    pim_enrich.normalizer.violation:
+        class: '%pim_enrich.normalizer.violation.class%'
+        tags:
+            - { name: pim_internal_api_serializer.normalizer, priority: 100 }
 
     pim_enrich.normalizer.group_violation:
-        class: %pim_enrich.normalizer.variant_group_violation.class%
+        class: '%pim_enrich.normalizer.group_violation.class%'
         arguments:
             - '@pim_internal_api_serializer'
 
@@ -180,6 +265,14 @@ services:
         tags:
             - { name: pim_internal_api_serializer.normalizer }
 
+    pim_enrich.normalizer.attribute_group:
+        class: '%pim_enrich.normalizer.attribute_group.class%'
+        arguments:
+            - '@pim_serializer'
+            - '@pim_catalog.repository.attribute'
+        tags:
+            - { name: pim_internal_api_serializer.normalizer }
+
     pim_enrich.normalizer.structured.attribute_option:
         class: '%pim_enrich.normalizer.structured.attribute_option.class%'
         arguments:
@@ -188,3 +281,8 @@ services:
             - '@pim_catalog.filter.chained'
         tags:
             - { name: pim_internal_api_serializer.normalizer}
+
+    pim_enrich.normalizer.image:
+        class: '%pim_enrich.normalizer.image.class%'
+        arguments:
+            - '@pim_enrich.normalizer.file'

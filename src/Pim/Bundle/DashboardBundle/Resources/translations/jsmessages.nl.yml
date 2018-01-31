@@ -11,9 +11,11 @@ pim_dashboard:
       job_type:
         import: Import
         export: Export
-        mass_edit: Massabewerking
+        mass_edit: Massa bewerken
         quick_export: Snelle export
     completeness:
       load_more: 'Laad meer...'
     header:
       view_all: Alles weergeven
+page_title:
+  pim_dashboard_index: Dashboard

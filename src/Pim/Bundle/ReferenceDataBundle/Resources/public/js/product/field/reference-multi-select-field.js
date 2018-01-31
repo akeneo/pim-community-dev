@@ -26,7 +26,7 @@ define(
                             {
                                 'class': config[this.attribute.reference_data_name].class,
                                 'dataLocale': this.context.locale,
-                                'collectionId': this.attribute.id,
+                                'collectionId': this.attribute.meta.id,
                                 'options': {'type': 'code'}
                             }
                         );

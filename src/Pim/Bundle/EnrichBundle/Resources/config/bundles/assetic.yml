@@ -1,7 +1,6 @@
 assetic:
     bundles:
         - OroAsseticBundle
-        - OroNavigationBundle
         - PimUserBundle
         - PimUIBundle
         - PimCatalogBundle

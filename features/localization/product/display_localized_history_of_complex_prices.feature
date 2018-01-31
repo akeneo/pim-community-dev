@@ -11,15 +11,19 @@ Feature: Display the localized product history for complex prices
       | localized_price | localized_price | localized_price | pim_catalog_price_collection | 1                | other | fr_FR,en_US       | 1           | 0        |
       | scoped_price    | scoped_price    | scoped_price    | pim_catalog_price_collection | 1                | other |                   | 0           | 1        |
       | complex_price   | complex_price   | complex_price   | pim_catalog_price_collection | 1                | other | fr_FR,en_US       | 1           | 1        |
+    And the following family:
+      | code          | attributes                                 |
+      | super_sandals | localized_price,scoped_price,complex_price |
     And I am logged in as "admin"
-    And I am on the products page
-    And I create a new product
+    And I am on the products grid
+    And I create a product
     And I fill in the following information in the popin:
-      | SKU | sandal |
+      | SKU    | sandal          |
+      | Family | [super_sandals] |
     And I press the "Save" button in the popin
     And I should be on the product "sandal" edit page
     And I edit the "sandal" product
-    And I add available attributes localized_price, scoped_price and complex_price
+    And I visit the "Other" group
     And I change the "localized_price" to "0.12 EUR"
     And I change the "localized_price" to "3.45 USD"
     And I change the "scoped_price" to "2.34 EUR"
@@ -44,7 +48,7 @@ Feature: Display the localized product history for complex prices
   Scenario: Display french-format product history prices
     Given I am logged in as "Julien"
     And I edit the "sandal" product
-    When I open the history
+    When I visit the "Historique" column tab
     Then there should be 2 update
     And I should see history:
       | version | property                       | value    |

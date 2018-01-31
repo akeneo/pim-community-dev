@@ -20,7 +20,7 @@ Feature: Handle import of invalid data
     When I am on the "csv_footwear_product_import" import job page
     And I launch the import job
     And I wait for the "csv_footwear_product_import" job to finish
-    And I follow "Display item"
+    And I press the "Display item" button
     Then I should see the text "Warning"
     And I should see the text "Property \"family\" expects a valid family code. The family does not exist, \"NO_FAMILY\" given."
     And I should see the text "{\"sku\":[{\"locale\":null,\"scope\":null,\"data\":\"SKU-001\"}],\"handmade\":[{\"locale\":null,\"scope\":null,\"data\":true}]}"

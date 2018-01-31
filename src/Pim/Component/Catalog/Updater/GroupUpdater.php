@@ -7,6 +7,7 @@ use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Doctrine\Common\Util\ClassUtils;
 use Pim\Component\Catalog\Model\GroupInterface;
+use Pim\Component\Catalog\Query\Filter\Operators;
 use Pim\Component\Catalog\Query\ProductQueryBuilderFactoryInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Pim\Component\Catalog\Repository\GroupTypeRepositoryInterface;
@@ -62,7 +63,7 @@ class GroupUpdater implements ObjectUpdaterInterface
         if (!$group instanceof GroupInterface) {
             throw InvalidObjectException::objectExpected(
                 ClassUtils::getClass($group),
-                'Pim\Component\Catalog\Model\GroupInterface'
+                GroupInterface::class
             );
         }
 
@@ -91,9 +92,6 @@ class GroupUpdater implements ObjectUpdaterInterface
                 break;
             case 'labels':
                 $this->setLabels($group, $data);
-                break;
-            case 'axis':
-                $this->setAxis($group, $data);
                 break;
             case 'products':
                 $this->setProducts($group, $data);
@@ -130,15 +128,6 @@ class GroupUpdater implements ObjectUpdaterInterface
             );
         }
 
-        if ($groupType->isVariant()) {
-            throw InvalidPropertyException::validGroupTypeExpected(
-                'type',
-                'Cannot process variant group, only groups are supported',
-                static::class,
-                $group->getCode()
-            );
-        }
-
         $group->setType($groupType);
     }
 
@@ -157,45 +146,20 @@ class GroupUpdater implements ObjectUpdaterInterface
 
     /**
      * @param GroupInterface $group
-     * @param string[]       $attributeCodes
-     *
-     * @throws InvalidPropertyException
+     * @param array          $productIdentifiers
      */
-    protected function setAxis(GroupInterface $group, array $attributeCodes)
-    {
-        $attributes = [];
-        foreach ($attributeCodes as $attributeCode) {
-            $attribute = $this->attributeRepository->findOneByIdentifier($attributeCode);
-            if (null === $attribute) {
-                throw InvalidPropertyException::validEntityCodeExpected(
-                    'axis',
-                    'attribute code',
-                    'The attribute does not exist',
-                    static::class,
-                    $attributeCode
-                );
-            }
-            $attributes[] = $attribute;
-        }
-        $group->setAxisAttributes($attributes);
-    }
-
-    /**
-     * @param GroupInterface $group
-     * @param array          $productIds
-     */
-    protected function setProducts(GroupInterface $group, array $productIds)
+    protected function setProducts(GroupInterface $group, array $productIdentifiers)
     {
         foreach ($group->getProducts() as $product) {
             $group->removeProduct($product);
         }
 
-        if (empty($productIds)) {
+        if (empty($productIdentifiers)) {
             return;
         }
 
         $pqb = $this->productQueryBuilderFactory->create();
-        $pqb->addFilter('id', 'IN', $productIds);
+        $pqb->addFilter('identifier', Operators::IN_LIST, $productIdentifiers);
 
         $products = $pqb->execute();
 

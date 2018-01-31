@@ -13,7 +13,7 @@ define([
     'oro/translator',
     'pim/form',
     'pim/common/property',
-    'text!pim/template/export/common/edit/field/field'
+    'pim/template/export/common/edit/field/field'
 ], function (
     _,
     __,

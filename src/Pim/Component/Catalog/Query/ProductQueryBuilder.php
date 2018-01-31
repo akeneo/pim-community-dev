@@ -13,7 +13,6 @@ use Pim\Component\Catalog\Query\Sorter\AttributeSorterInterface;
 use Pim\Component\Catalog\Query\Sorter\FieldSorterInterface;
 use Pim\Component\Catalog\Query\Sorter\SorterRegistryInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
-use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * Product query builder provides shortcuts to ease the appliance of filters and sorters on fields or attributes
@@ -42,33 +41,35 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
     /** CursorFactoryInterface */
     protected $cursorFactory;
 
+    /** @var ProductQueryBuilderOptionsResolverInterface */
+    protected $optionResolver;
+
     /** @var array */
     protected $rawFilters = [];
 
     /**
-     * Constructor
-     *
-     * @param AttributeRepositoryInterface $attributeRepository
-     * @param FilterRegistryInterface      $filterRegistry
-     * @param SorterRegistryInterface      $sorterRegistry
-     * @param CursorFactoryInterface       $cursorFactory
-     * @param array                        $defaultContext
+     * @param AttributeRepositoryInterface                $attributeRepository
+     * @param FilterRegistryInterface                     $filterRegistry
+     * @param SorterRegistryInterface                     $sorterRegistry
+     * @param CursorFactoryInterface                      $cursorFactory
+     * @param ProductQueryBuilderOptionsResolverInterface $optionResolver
+     * @param array                                       $defaultContext
      */
     public function __construct(
         AttributeRepositoryInterface $attributeRepository,
         FilterRegistryInterface $filterRegistry,
         SorterRegistryInterface $sorterRegistry,
         CursorFactoryInterface $cursorFactory,
+        ProductQueryBuilderOptionsResolverInterface $optionResolver,
         array $defaultContext
     ) {
         $this->attributeRepository = $attributeRepository;
         $this->filterRegistry = $filterRegistry;
         $this->sorterRegistry = $sorterRegistry;
         $this->cursorFactory = $cursorFactory;
+        $this->optionResolver = $optionResolver;
 
-        $resolver = new OptionsResolver();
-        $this->configureOptions($resolver);
-        $this->defaultContext = $resolver->resolve($defaultContext);
+        $this->defaultContext = $this->optionResolver->resolve($defaultContext);
     }
 
     /**
@@ -76,7 +77,16 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
      */
     public function execute()
     {
-        return $this->cursorFactory->createCursor($this->getQueryBuilder());
+        $allowedCursorOptions = ['page_size', 'search_after', 'search_after_unique_key', 'limit', 'from'];
+        $cursorOptions = array_filter(
+            $this->defaultContext,
+            function ($key) use ($allowedCursorOptions) {
+                return in_array($key, $allowedCursorOptions);
+            },
+            ARRAY_FILTER_USE_KEY
+        );
+
+        return $this->cursorFactory->createCursor($this->getQueryBuilder()->getQuery(), $cursorOptions);
     }
 
     /**
@@ -94,7 +104,7 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
      */
     public function getQueryBuilder()
     {
-        if (!$this->qb) {
+        if (null === $this->qb) {
             throw new \LogicException('Query builder must be configured');
         }
 
@@ -117,8 +127,10 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
         }
 
         if (null !== $attribute) {
+            $filterType = 'attribute';
             $filter = $this->filterRegistry->getAttributeFilter($attribute, $operator);
         } else {
+            $filterType = 'field';
             $filter = $this->filterRegistry->getFieldFilter($field, $operator);
         }
 
@@ -141,7 +153,8 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
             'field'    => $field,
             'operator' => $operator,
             'value'    => $value,
-            'context'  => $context
+            'context'  => $context,
+            'type'     => $filterType
         ];
 
         return $this;
@@ -265,7 +278,11 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
         array $context
     ) {
         $sorter->setQueryBuilder($this->getQueryBuilder());
-        $sorter->addAttributeSorter($attribute, $direction, $context['locale'], $context['scope']);
+
+        $localeCode = !$attribute->isLocalizable() && !$attribute->isLocaleSpecific() ? null : $context['locale'];
+        $scopeCode = !$attribute->isScopable() ? null : $context['scope'];
+
+        $sorter->addAttributeSorter($attribute, $direction, $localeCode, $scopeCode);
 
         return $this;
     }
@@ -280,18 +297,5 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
     protected function getFinalContext(array $context)
     {
         return array_merge($this->defaultContext, $context);
-    }
-
-    /**
-     * @param OptionsResolver $resolver
-     */
-    protected function configureOptions(OptionsResolver $resolver)
-    {
-        $resolver->setRequired(
-            [
-                'locale',
-                'scope'
-            ]
-        );
     }
 }

@@ -4,29 +4,20 @@ define(
     [
         'jquery',
         'backbone',
-        'module',
+        'pim/base-fetcher',
         'routing',
         'oro/mediator',
-        'pim/cache-invalidator',
-        'pim/product-manager'
+        'pim/cache-invalidator'
     ],
     function (
         $,
         Backbone,
-        module,
+        BaseFetcher,
         Routing,
         mediator,
-        CacheInvalidator,
-        ProductManager
+        CacheInvalidator
     ) {
-        return Backbone.Model.extend({
-            /**
-             * @param {Object} options
-             */
-            initialize: function (options) {
-                this.options = options || {};
-            },
-
+        return BaseFetcher.extend({
             /**
              * Fetch an element based on its identifier
              *
@@ -37,17 +28,21 @@ define(
             fetch: function (identifier) {
                 return $.getJSON(Routing.generate(this.options.urls.get, { id: identifier }))
                     .then(function (product) {
-                        var cacheInvalidator = new CacheInvalidator();
+                        const cacheInvalidator = new CacheInvalidator();
                         cacheInvalidator.checkStructureVersion(product);
 
-                        return ProductManager.generateMissing(product);
-                    }.bind(this))
-                    .then(function (product) {
                         mediator.trigger('pim_enrich:form:product:post_fetch', product);
 
                         return product;
                     })
                     .promise();
+            },
+
+            /**
+             * {@inheritdoc}
+             */
+            getIdentifierField: function () {
+                return $.Deferred().resolve('identifier');
             }
         });
     }

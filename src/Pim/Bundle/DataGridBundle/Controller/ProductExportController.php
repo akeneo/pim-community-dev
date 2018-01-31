@@ -5,10 +5,12 @@ namespace Pim\Bundle\DataGridBundle\Controller;
 use Akeneo\Bundle\BatchBundle\Launcher\JobLauncherInterface;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Oro\Bundle\DataGridBundle\Datagrid\Manager as DataGridManager;
+use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionParametersParser;
 use Pim\Bundle\DataGridBundle\Adapter\GridFilterAdapterInterface;
 use Pim\Bundle\DataGridBundle\Datasource\ProductDatasource;
 use Pim\Bundle\DataGridBundle\Extension\MassAction\MassActionDispatcher;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -23,9 +25,10 @@ use Symfony\Component\Security\Core\User\UserInterface;
 class ProductExportController
 {
     const DATETIME_FORMAT = 'Y-m-d_H:i:s';
+    private const FILE_PATH_KEYS = ['filePath', 'filePathProduct', 'filePathProductModel'];
 
-    /** @var Request */
-    protected $request;
+    /** @var RequestStack */
+    protected $requestStack;
 
     /** @var MassActionDispatcher */
     protected $massActionDispatcher;
@@ -45,58 +48,72 @@ class ProductExportController
     /** @var DataGridManager */
     protected $datagridManager;
 
+    /** @var MassActionParametersParser */
+    protected $parameterParser;
+
     /**
-     * @param Request                               $request
+     * @param RequestStack                          $requestStack
      * @param MassActionDispatcher                  $massActionDispatcher
      * @param GridFilterAdapterInterface            $gridFilterAdapter
      * @param IdentifiableObjectRepositoryInterface $jobInstanceRepo
      * @param TokenStorageInterface                 $tokenStorage
      * @param JobLauncherInterface                  $jobLauncher
      * @param DataGridManager                       $datagridManager
+     * @param MassActionParametersParser            $parameterParser
      */
     public function __construct(
-        Request $request,
+        RequestStack $requestStack,
         MassActionDispatcher $massActionDispatcher,
         GridFilterAdapterInterface $gridFilterAdapter,
         IdentifiableObjectRepositoryInterface $jobInstanceRepo,
         TokenStorageInterface $tokenStorage,
         JobLauncherInterface $jobLauncher,
-        DataGridManager $datagridManager
+        DataGridManager $datagridManager,
+        MassActionParametersParser $parameterParser
     ) {
-        $this->request = $request;
+        $this->requestStack = $requestStack;
         $this->massActionDispatcher = $massActionDispatcher;
         $this->gridFilterAdapter = $gridFilterAdapter;
         $this->jobInstanceRepo = $jobInstanceRepo;
         $this->tokenStorage = $tokenStorage;
         $this->jobLauncher = $jobLauncher;
         $this->datagridManager = $datagridManager;
+        $this->parameterParser = $parameterParser;
     }
 
     /**
      * Launch the quick export
      *
+     * @param Request $request
+     *
      * @return Response
      */
-    public function indexAction()
+    public function indexAction(Request $request)
     {
-        $displayedColumnsOnly = (bool) $this->request->get('_displayedColumnsOnly');
-        $jobCode = $this->request->get('_jobCode');
+        $displayedColumnsOnly = (bool) $request->get('_displayedColumnsOnly');
+        $jobCode = $request->get('_jobCode');
         $jobInstance = $this->jobInstanceRepo->findOneByIdentifier(['code' => $jobCode]);
 
         if (null === $jobInstance) {
             throw new \RuntimeException(sprintf('Jobinstance "%s" is not well configured', $jobCode));
         }
 
-        $filters = $this->gridFilterAdapter->adapt($this->request);
+        $parameters = $this->parameterParser->parse($request);
+        $filters = $this->gridFilterAdapter->adapt($parameters);
         $rawParameters = $jobInstance->getRawParameters();
-        $contextParameters = $this->getContextParameters();
-        $rawParameters['filePath'] = $this->buildFilePath($rawParameters['filePath'], $contextParameters);
+        $contextParameters = $this->getContextParameters($request);
         $dynamicConfiguration = $contextParameters + ['filters' => $filters];
 
+        foreach (self::FILE_PATH_KEYS as $filePathKey) {
+            if (isset($rawParameters[$filePathKey])) {
+                $rawParameters[$filePathKey] = $this->buildFilePath($rawParameters[$filePathKey], $contextParameters);
+            }
+        }
+
         if ($displayedColumnsOnly) {
-            $gridName = (null !== $this->request->get('gridName')) ? $this->request->get('gridName') : 'product-grid';
-            if (isset($this->request->get($gridName)['_parameters'])) {
-                $columns = explode(',', $this->request->get($gridName)['_parameters']['view']['columns']);
+            $gridName = $request->get('gridName') ?? 'product_grid';
+            if (isset($request->get($gridName)['_parameters'])) {
+                $columns = explode(',', $request->get($gridName)['_parameters']['view']['columns']);
             } else {
                 $columns = array_keys($this->datagridManager->getConfigurationForGrid($gridName)['columns']);
             }
@@ -110,6 +127,7 @@ class ProductExportController
         }
 
         $configuration = array_merge($rawParameters, $dynamicConfiguration);
+        $configuration['user_to_notify'] = $this->getUser()->getUsername();
 
         $this->jobLauncher->launch($jobInstance, $this->getUser(), $configuration);
 
@@ -136,13 +154,14 @@ class ProductExportController
     /**
      * Get the context (locale and scope) from the datagrid
      *
+     * @param Request $request
      * @throws \LogicException If datasource is not a ProductDatasource
      *
      * @return string[] Returns [] || ['locale' => 'en_US', 'scope' => 'mobile']
      */
-    protected function getContextParameters()
+    protected function getContextParameters(Request $request)
     {
-        $datagridName = $this->request->get('gridName');
+        $datagridName = $request->get('gridName');
         $datagrid = $this->datagridManager->getDatagrid($datagridName);
         $dataSource = $datagrid->getDatasource();
 
@@ -157,7 +176,9 @@ class ProductExportController
             $contextParams = [
                 'locale'    => $dataSourceParams['dataLocale'],
                 'scope'     => $dataSourceParams['scopeCode'],
-                'ui_locale' => null !== $user ? $user->getUiLocale()->getCode() : $this->request->getDefaultLocale()
+                'ui_locale' => null !== $user ?
+                    $user->getUiLocale()->getCode() :
+                    $this->requestStack->getCurrentRequest()->getDefaultLocale()
             ];
         }
 
@@ -180,5 +201,13 @@ class ProductExportController
         }
 
         return strtr($filePath, $data);
+    }
+
+    /**
+     * @return Request
+     */
+    protected function getRequest(): ?Request
+    {
+        return $this->requestStack->getCurrentRequest();
     }
 }

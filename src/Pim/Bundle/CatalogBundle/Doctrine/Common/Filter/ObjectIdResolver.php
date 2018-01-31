@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Doctrine\Common\Filter;
 
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Common\Persistence\ObjectManager;
 use Pim\Component\Catalog\Exception\ObjectNotFoundException;
 use Pim\Component\Catalog\Model\AttributeInterface;
 
@@ -18,18 +18,18 @@ use Pim\Component\Catalog\Model\AttributeInterface;
  */
 class ObjectIdResolver implements ObjectIdResolverInterface
 {
-    /** @var ManagerRegistry */
-    protected $managerRegistry;
+    /** @var ObjectManager */
+    protected $objectManager;
 
     /** @var array */
     protected $fieldMapping = [];
 
     /**
-     * @param ManagerRegistry $managerRegistry
+     * @param ObjectManager $objectManager
      */
-    public function __construct(ManagerRegistry $managerRegistry)
+    public function __construct(ObjectManager $objectManager)
     {
-        $this->managerRegistry = $managerRegistry;
+        $this->objectManager = $objectManager;
     }
 
     /**
@@ -41,9 +41,7 @@ class ObjectIdResolver implements ObjectIdResolverInterface
             throw new \InvalidArgumentException(sprintf('The class %s cannot be found', $entityName));
         }
 
-        $repository = $this->managerRegistry
-            ->getManagerForClass($this->fieldMapping[$entityName])
-            ->getRepository($this->fieldMapping[$entityName]);
+        $repository = $this->objectManager->getRepository($this->fieldMapping[$entityName]);
 
         $ids = [];
         foreach ($codes as $code) {

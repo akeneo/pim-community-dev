@@ -70,6 +70,10 @@ define(
                 extension.targetZone = zone;
                 extension.position   = position;
 
+                if ((undefined === this.extensions) || (null === this.extensions)) {
+                    throw 'this.extensions have to be defined. Please ensure you called initialize() method.';
+                }
+
                 this.extensions[code] = extension;
             },
 
@@ -114,9 +118,7 @@ define(
              * @return {Object}
              */
             getRoot: function () {
-                /* jscs:disable safeContextKeyword */
                 var rootView = this;
-                /* jscs:enable safeContextKeyword */
                 var parent = this.getParent();
                 while (parent) {
                     rootView = parent;
@@ -133,7 +135,7 @@ define(
              * @param {Object} options If silent is set to true, don't fire events
              *                         pim_enrich:form:entity:pre_update and pim_enrich:form:entity:post_update
              */
-            setData: function (data, options) {
+            setData: function (data, options = {}) {
                 options = options || {};
 
                 if (!options.silent) {
@@ -168,6 +170,28 @@ define(
             },
 
             /**
+             * Called before removing the form from the view
+             */
+            shutdown: function () {
+                this.doShutdown();
+
+                _.each(this.extensions, (extension) => {
+                    extension.shutdown();
+                });
+            },
+
+            /**
+             * The actual shutdown method called on all extensions
+             */
+            doShutdown: function () {
+                this.stopListening();
+                this.undelegateEvents();
+                this.$el.removeData().unbind();
+                this.remove();
+                Backbone.View.prototype.remove.call(this);
+            },
+
+            /**
              * {@inheritdoc}
              */
             render: function () {
@@ -184,6 +208,11 @@ define(
              * @return {Object}
              */
             renderExtensions: function () {
+                // If the view is no longer attached to the DOM, don't render the extensions
+                if (undefined === this.el) {
+                    return this;
+                }
+
                 this.initializeDropZones();
 
                 _.each(this.extensions, function (extension) {
@@ -199,7 +228,14 @@ define(
              * @param {Object} extension
              */
             renderExtension: function (extension) {
-                this.getZone(extension.targetZone).appendChild(extension.el);
+                var zone = this.getZone(extension.targetZone);
+
+                if (null === zone) {
+                    throw new Error('Can not render extension "' + extension.code + '" in "' + this.code + '": ' +
+                        'zone "' + extension.targetZone + '" does not exist');
+                }
+
+                zone.appendChild(extension.el);
 
                 extension.render();
             },
@@ -218,7 +254,7 @@ define(
             /**
              * Get the drop zone for the given code
              *
-             * @param {string} code
+             * @param {string|null} code
              *
              * @return {jQueryElement}
              */
@@ -228,7 +264,7 @@ define(
                 }
 
                 if (!this.zones[code]) {
-                    throw new Error('Zone "' + code + '" does not exist');
+                    return null;
                 }
 
                 return this.zones[code];
@@ -275,9 +311,9 @@ define(
              *                [ {'mediator:event:name': 'this:event:name'}, {...} ]
              */
             forwardMediatorEvents: function (events) {
-                _.map(events, function (localEvent, mediatorEvent) {
-                    this.listenTo(mediator, mediatorEvent, function (data) {
-                        this.trigger(localEvent, data);
+                _.each(events, function (localEvent, mediatorEvent) {
+                    this.listenTo(mediator, mediatorEvent, function (...args) {
+                        this.trigger(localEvent, ...args);
                     });
                 }.bind(this));
             }

@@ -77,14 +77,17 @@ class ConfigManager
 
     /**
      * Save settings with fallback to global scope (default)
+     * and change storedSettings with the new settings
      */
     public function save($newSettings)
     {
-        $repository = $this->om->getRepository('OroConfigBundle:ConfigValue');
+        $entityName = $this->getScopedEntityName();
+        $entityId   = $this->getScopeId();
+
         /** @var Config $config */
         $config = $this->om
             ->getRepository('OroConfigBundle:Config')
-            ->getByEntity($this->getScopedEntityName(), $this->getScopeId());
+            ->getByEntity($entityName, $entityId);
 
         list($updated, $removed) = $this->getChanged($newSettings);
 
@@ -97,6 +100,8 @@ class ConfigManager
             $value->setValue($newItemValue);
 
             $config->getValues()->add($value);
+            
+            $this->storedSettings[$entityName][$entityId][$newItemKey[0]][$newItemKey[1]] = $newItemValue;
         }
 
         $this->om->persist($config);

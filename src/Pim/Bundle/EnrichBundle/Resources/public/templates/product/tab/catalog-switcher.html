@@ -1,0 +1,15 @@
+<ul class="AknHorizontalNavtab-list nav nav-tabs tree-selector" id="trees-list">
+    <% _.each(trees, function (tree) { %>
+        <li class="AknHorizontalNavtab-item<% if (tree.code === state.currentTree) { %> AknHorizontalNavtab-item--active active<% } %>" data-tree="<%- tree.code %>" data-tree-id="<%- tree.id %>">
+            <div class="
+                AknHorizontalNavtab-link
+                <%- _.result(categoriesCount, tree.code, 0) > 0 ? 'tree-has-item' : '' %>
+                " id="<%- treeLinkSelector + tree.id %>">
+                <span class="tree-label label"><%- tree.label %></span>
+                <span class="AknBadge AknBadge--medium <%- _.result(categoriesCount, tree.code, 0) > 0 ? 'AknBadge--enabled' : '' %>" data-tree-id="<%- tree.code %>">
+                    <%- _.result(categoriesCount, tree.code, 0) %>
+                </span>
+            </div>
+        </li>
+    <% }); %>
+</ul>

@@ -1,8 +1,21 @@
-<input id="<%- fieldId %>" type="hidden" class="select-field" value="<%- value.data %>" data-min-input-length="0" data-locale="<%- value.locale %>" data-scope="<%- value.scope %>" <%- editMode === 'view' ? 'disabled' : '' %>/>
+<div class="AknFieldContainer-subContainer">
+    <% if (attribute.localizable) { %>
+        <div class="AknTextField-layer AknTextField-layer--first"></div>
+        <div class="AknTextField-layer AknTextField-layer--second"></div>
+    <% } %>
+    <input
+        id="<%- fieldId %>"
+        type="hidden"
+        class="select-field<% if (attribute.localizable) { %> AknTextField--localizable<% } %>"
+        value="<%- value ? value.data : null %>"
+        data-min-input-length="0"
+        data-locale="<%- locale %>"
+        data-scope="<%- scope %>"
+        <%- editMode === 'view' ? 'disabled' : '' %>
+    />
+</div>
 <% if (userCanAddOption) { %>
     <div class="AknFieldContainer-iconsContainer">
-        <span class="AknIconButton AknIconButton--dark add-attribute-option" data-toggle="tooltip" data-placement="top" data-original-title="<%- _.__('label.attribute_option.add_option') %>">
-            <i class="icon-plus"></i>
-        </span>
+        <span class="AknIconButton AknIconButton--plus add-attribute-option" data-toggle="tooltip" data-placement="top" data-original-title="<%- _.__('label.attribute_option.add_option') %>"></span>
     </div>
 <% } %>

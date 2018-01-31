@@ -1,17 +1,18 @@
 parameters:
-    oro_datagrid.datagrid.base.class:                Oro\Bundle\DataGridBundle\Datagrid\Datagrid
-    oro_datagrid.extension.acceptor.class:           Oro\Bundle\DataGridBundle\Extension\Acceptor
+    oro_datagrid.datagrid.base.class:                    Oro\Bundle\DataGridBundle\Datagrid\Datagrid
+    oro_datagrid.extension.acceptor.class:               Oro\Bundle\DataGridBundle\Extension\Acceptor
 
-    oro_datagrid.datagrid.manager.class:             Oro\Bundle\DataGridBundle\Datagrid\Manager
-    oro_datagrid.datagrid.builder.class:             Oro\Bundle\DataGridBundle\Datagrid\Builder
-    oro_datagrid.datagrid.request_params.class:      Oro\Bundle\DataGridBundle\Datagrid\RequestParameters
+    oro_datagrid.datagrid.manager.class:                 Oro\Bundle\DataGridBundle\Datagrid\Manager
+    oro_datagrid.datagrid.builder.class:                 Oro\Bundle\DataGridBundle\Datagrid\Builder
+    oro_datagrid.datagrid.request_params.class:          Oro\Bundle\DataGridBundle\Datagrid\RequestParameters
 
-    oro_datagrid.provider.resolver.class:            Oro\Bundle\DataGridBundle\Provider\SystemAwareResolver
+    oro_datagrid.provider.resolver.class:                Oro\Bundle\DataGridBundle\Provider\SystemAwareResolver
 
-    oro_datagrid.twig.metadata.class:                Oro\Bundle\DataGridBundle\Twig\MetadataExtension
+    oro_datagrid.datagrid.metadata_parser.class:         Oro\Bundle\DataGridBundle\Datagrid\MetadataParser
+    oro_datagrid.twig.metadata.class:                    Oro\Bundle\DataGridBundle\Twig\MetadataExtension
     oro_datagrid.event_listener.base_orm_relation.class: Oro\Bundle\DataGridBundle\EventListener\BaseOrmRelationDatagridListener
-    oro_datagrid.configuration.provider.class:       Oro\Bundle\DataGridBundle\Provider\ConfigurationProvider
-    oro_datagrid.configuration.provider.chain.class: Oro\Bundle\DataGridBundle\Provider\ChainConfigurationProvider
+    oro_datagrid.configuration.provider.class:           Oro\Bundle\DataGridBundle\Provider\ConfigurationProvider
+    oro_datagrid.configuration.provider.chain.class:     Oro\Bundle\DataGridBundle\Provider\ChainConfigurationProvider
 
 services:
     oro_datagrid.datagrid.manager:
@@ -29,8 +30,8 @@ services:
 
     oro_datagrid.datagrid.request_params:
         class: '%oro_datagrid.datagrid.request_params.class%'
-        calls:
-            - [setRequest, ['@?request=']]
+        arguments:
+            - '@request_stack'
 
     oro_datagrid.provider.resolver:
         class: '%oro_datagrid.provider.resolver.class%'
@@ -48,9 +49,17 @@ services:
     oro_datagrid.configuration.provider.chain:
         class: '%oro_datagrid.configuration.provider.chain.class%'
 
+    oro_datagrid.datagrid.metadata_parser:
+        class: '%oro_datagrid.datagrid.metadata_parser.class%'
+        arguments:
+            - '@service_container'
+            - '@oro_datagrid.datagrid.manager'
+            - '@oro_datagrid.datagrid.request_params'
+            - '@router'
+
     oro_datagrid.twig.metadata:
         class: '%oro_datagrid.twig.metadata.class%'
         arguments:
-            - '@service_container'
+            - '@oro_datagrid.datagrid.metadata_parser'
         tags:
             - { name: twig.extension }

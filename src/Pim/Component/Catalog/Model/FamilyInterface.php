@@ -4,6 +4,8 @@ namespace Pim\Component\Catalog\Model;
 
 use Akeneo\Component\Localization\Model\TranslatableInterface;
 use Akeneo\Component\Versioning\Model\VersionableInterface;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 
 /**
  * Family interface
@@ -58,7 +60,7 @@ interface FamilyInterface extends TranslatableInterface, ReferableInterface, Ver
     /**
      * Get attributes
      *
-     * @return AttributeInterface[]|ArrayCollection
+     * @return AttributeInterface[]|Collection
      */
     public function getAttributes();
 
@@ -91,9 +93,21 @@ interface FamilyInterface extends TranslatableInterface, ReferableInterface, Ver
     public function setAttributeAsLabel(AttributeInterface $attributeAsLabel);
 
     /**
-     * @return AttributeInterface
+     * @return AttributeInterface|null
      */
     public function getAttributeAsLabel();
+
+    /**
+     * @param AttributeInterface|null $attributeAsImage
+     *
+     * @return FamilyInterface
+     */
+    public function setAttributeAsImage(?AttributeInterface $attributeAsImage): FamilyInterface;
+
+    /**
+     * @return AttributeInterface
+     */
+    public function getAttributeAsImage(): ?AttributeInterface;
 
     /**
      * Add attribute requirement
@@ -114,9 +128,9 @@ interface FamilyInterface extends TranslatableInterface, ReferableInterface, Ver
     public function removeAttributeRequirement(AttributeRequirementInterface $requirement);
 
     /**
-     * Set attribute requirements
+     * Set attributes requirements
      *
-     * @param array $requirements
+     * @param AttributeRequirementInterface[] $requirements
      *
      * @return FamilyInterface
      */
@@ -125,7 +139,7 @@ interface FamilyInterface extends TranslatableInterface, ReferableInterface, Ver
     /**
      * Get attribute requirements
      *
-     * @return array
+     * @return AttributeRequirementInterface[]
      */
     public function getAttributeRequirements();
 
@@ -165,4 +179,14 @@ interface FamilyInterface extends TranslatableInterface, ReferableInterface, Ver
      * @return array
      */
     public function getAttributeAsLabelChoices();
+
+    /**
+     * @return Collection
+     */
+    public function getFamilyVariants(): Collection;
+
+    /**
+     * @param Collection $familyVariants
+     */
+    public function setFamilyVariants(Collection $familyVariants): void;
 }

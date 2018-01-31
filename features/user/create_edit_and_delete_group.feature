@@ -16,7 +16,7 @@ Feature: Create a group
     Then there should be a "DummyGroup1" user group
     When I am on the user groups page
     Then the grid should contain 4 elements
-    And I should see "DummyGroup1"
+    And I should see the text "DummyGroup1"
     When I edit the "DummyGroup1" user group
     And I fill in the following information:
       | Name | DummyGroup |
@@ -24,7 +24,7 @@ Feature: Create a group
     Then there should be a "DummyGroup" user group
     When I am on the user groups page
     Then the grid should contain 4 elements
-    And I should see "DummyGroup"
+    And I should see the text "DummyGroup"
     But I should not see "DummyGroup1"
     When I click on the "Delete" action of the row which contains "DummyGroup"
     Then I should see a confirm dialog with the following content:

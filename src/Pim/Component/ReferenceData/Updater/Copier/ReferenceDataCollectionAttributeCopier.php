@@ -2,13 +2,12 @@
 
 namespace Pim\Component\ReferenceData\Updater\Copier;
 
-use Pim\Component\Catalog\Builder\ProductBuilderInterface;
+use Pim\Component\Catalog\Builder\EntityWithValuesBuilderInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
-use Pim\Component\Catalog\Model\ProductInterface;
-use Pim\Component\Catalog\Model\ProductValueInterface;
+use Pim\Component\Catalog\Model\EntityWithValuesInterface;
+use Pim\Component\Catalog\Model\ValueInterface;
 use Pim\Component\Catalog\Updater\Copier\AbstractAttributeCopier;
 use Pim\Component\Catalog\Validator\AttributeValidatorHelper;
-use Pim\Component\ReferenceData\MethodNameGuesser;
 
 /**
  * Copy a reference data collection value attribute in other reference data collection value attribute
@@ -20,18 +19,18 @@ use Pim\Component\ReferenceData\MethodNameGuesser;
 class ReferenceDataCollectionAttributeCopier extends AbstractAttributeCopier
 {
     /**
-     * @param ProductBuilderInterface  $productBuilder
-     * @param AttributeValidatorHelper $attrValidatorHelper
-     * @param array                    $supportedFromTypes
-     * @param array                    $supportedToTypes
+     * @param EntityWithValuesBuilderInterface $entityWithValuesBuilder
+     * @param AttributeValidatorHelper         $attrValidatorHelper
+     * @param array                            $supportedFromTypes
+     * @param array                            $supportedToTypes
      */
     public function __construct(
-        ProductBuilderInterface $productBuilder,
+        EntityWithValuesBuilderInterface $entityWithValuesBuilder,
         AttributeValidatorHelper $attrValidatorHelper,
         array $supportedFromTypes,
         array $supportedToTypes
     ) {
-        parent::__construct($productBuilder, $attrValidatorHelper);
+        parent::__construct($entityWithValuesBuilder, $attrValidatorHelper);
 
         $this->supportedFromTypes = $supportedFromTypes;
         $this->supportedToTypes = $supportedToTypes;
@@ -41,8 +40,8 @@ class ReferenceDataCollectionAttributeCopier extends AbstractAttributeCopier
      * {@inheritdoc}
      */
     public function copyAttributeData(
-        ProductInterface $fromProduct,
-        ProductInterface $toProduct,
+        EntityWithValuesInterface $fromEntityWithValues,
+        EntityWithValuesInterface $toEntityWithValues,
         AttributeInterface $fromAttribute,
         AttributeInterface $toAttribute,
         array $options = []
@@ -57,8 +56,8 @@ class ReferenceDataCollectionAttributeCopier extends AbstractAttributeCopier
         $this->checkLocaleAndScope($toAttribute, $toLocale, $toScope);
 
         $this->copySingleValue(
-            $fromProduct,
-            $toProduct,
+            $fromEntityWithValues,
+            $toEntityWithValues,
             $fromAttribute,
             $toAttribute,
             $fromLocale,
@@ -83,18 +82,18 @@ class ReferenceDataCollectionAttributeCopier extends AbstractAttributeCopier
     /**
      * Copy single value
      *
-     * @param ProductInterface   $fromProduct
-     * @param ProductInterface   $toProduct
-     * @param AttributeInterface $fromAttribute
-     * @param AttributeInterface $toAttribute
-     * @param string             $fromLocale
-     * @param string             $toLocale
-     * @param string             $fromScope
-     * @param string             $toScope
+     * @param EntityWithValuesInterface $fromEntityWithValues
+     * @param EntityWithValuesInterface $toEntityWithValues
+     * @param AttributeInterface        $fromAttribute
+     * @param AttributeInterface        $toAttribute
+     * @param string                    $fromLocale
+     * @param string                    $toLocale
+     * @param string                    $fromScope
+     * @param string                    $toScope
      */
     protected function copySingleValue(
-        ProductInterface $fromProduct,
-        ProductInterface $toProduct,
+        EntityWithValuesInterface $fromEntityWithValues,
+        EntityWithValuesInterface $toEntityWithValues,
         AttributeInterface $fromAttribute,
         AttributeInterface $toAttribute,
         $fromLocale,
@@ -102,78 +101,32 @@ class ReferenceDataCollectionAttributeCopier extends AbstractAttributeCopier
         $fromScope,
         $toScope
     ) {
-        $fromValue = $fromProduct->getValue($fromAttribute->getCode(), $fromLocale, $fromScope);
+        $fromValue = $fromEntityWithValues->getValue($fromAttribute->getCode(), $fromLocale, $fromScope);
         if (null !== $fromValue) {
-            $toValue = $toProduct->getValue($toAttribute->getCode(), $toLocale, $toScope);
-            if (null === $toValue) {
-                $toValue = $this->productBuilder->addOrReplaceProductValue($toProduct, $toAttribute, $toLocale, $toScope);
-            }
-
-            $this->removeReferenceDataCollection($toValue, $toAttribute);
-            $this->copyReferenceDataCollection($fromValue, $toValue, $fromAttribute, $toAttribute);
-        }
-    }
-
-    /**
-     * Remove reference data collection from attribute
-     *
-     * @param ProductValueInterface $toValue
-     * @param AttributeInterface    $toAttribute
-     */
-    protected function removeReferenceDataCollection(ProductValueInterface $toValue, AttributeInterface $toAttribute)
-    {
-        $toDataGetter = $this->getValueMethodName($toValue, $toAttribute, 'get');
-        $toDataRemover = $this->getValueMethodName($toValue, $toAttribute, 'remove', true);
-
-        foreach ($toValue->$toDataGetter() as $attributeOption) {
-            $toValue->$toDataRemover($attributeOption);
-        }
-    }
-
-    /**
-     * Copy attribute reference data collection into a reference data collection attribute
-     *
-     * @param ProductValueInterface $fromValue
-     * @param ProductValueInterface $toValue
-     * @param AttributeInterface    $fromAttribute
-     * @param AttributeInterface    $toAttribute
-     */
-    protected function copyReferenceDataCollection(
-        ProductValueInterface $fromValue,
-        ProductValueInterface $toValue,
-        AttributeInterface $fromAttribute,
-        AttributeInterface $toAttribute
-    ) {
-        $fromDataGetter = $this->getValueMethodName($fromValue, $fromAttribute, 'get');
-        $toDataAdder = $this->getValueMethodName($toValue, $toAttribute, 'add', true);
-
-        foreach ($fromValue->$fromDataGetter() as $attributeOption) {
-            $toValue->$toDataAdder($attributeOption);
-        }
-    }
-
-    /**
-     * @param ProductValueInterface $value
-     * @param AttributeInterface    $attribute
-     * @param string                $type
-     * @param bool                  $singularify
-     *
-     * @return string
-     */
-    private function getValueMethodName(
-        ProductValueInterface $value,
-        AttributeInterface $attribute,
-        $type,
-        $singularify = false
-    ) {
-        $method = MethodNameGuesser::guess($type, $attribute->getReferenceDataName(), $singularify);
-
-        if (!method_exists($value, $method)) {
-            throw new \LogicException(
-                sprintf('ProductValue method "%s" is not implemented', $method)
+            $this->entityWithValuesBuilder->addOrReplaceValue(
+                $toEntityWithValues,
+                $toAttribute,
+                $toLocale,
+                $toScope,
+                $this->getReferenceDataCodes($fromValue)
             );
         }
+    }
 
-        return $method;
+    /**
+     * Gets the list of reference data codes contained in a product value collection.
+     *
+     * @param ValueInterface $fromValue
+     *
+     * @return string[]
+     */
+    protected function getReferenceDataCodes(ValueInterface $fromValue)
+    {
+        $referenceDataCodes = [];
+        foreach ($fromValue->getData() as $referenceData) {
+            $referenceDataCodes[] = $referenceData->getCode();
+        }
+
+        return $referenceDataCodes;
     }
 }

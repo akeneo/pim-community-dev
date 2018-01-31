@@ -20,8 +20,11 @@ pim_analytics:
     nb_channels: チャンネル数
     nb_products: 商品数
     nb_attributes: 属性の数
+    nb_scopable_attributes: Scopable 属性の数
+    nb_localizable_attributes: Localizable 属性の数
+    nb_scopable_localizable_attributes: Localizable 属性とScopable 属性の数
     nb_locales: ロケールの数
-    nb_families: 家族の数
+    nb_families: ファミリーの数
     nb_users: ユーザ数
     pim_storage_version: ストレージ バージョン
     os_version: OSバージョン

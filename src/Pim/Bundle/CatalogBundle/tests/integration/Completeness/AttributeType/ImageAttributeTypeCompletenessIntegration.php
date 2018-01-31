@@ -2,7 +2,6 @@
 
 namespace Pim\Bundle\CatalogBundle\tests\integration\Completeness\AttributeType;
 
-use Pim\Bundle\CatalogBundle\tests\integration\Completeness\AbstractCompletenessPerAttributeTypeIntegration;
 use Pim\Component\Catalog\AttributeTypes;
 
 /**
@@ -12,7 +11,7 @@ use Pim\Component\Catalog\AttributeTypes;
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-class ImageAttributeTypeCompletenessIntegration extends AbstractCompletenessPerAttributeTypeIntegration
+class ImageAttributeTypeCompletenessIntegration extends AbstractCompletenessPerAttributeTypeTestCase
 {
     public function testCompleteImage()
     {
@@ -67,8 +66,10 @@ class ImageAttributeTypeCompletenessIntegration extends AbstractCompletenessPerA
             ]
         );
         $this->assertNotComplete($productDataNull);
+        $this->assertMissingAttributeForProduct($productDataNull, ['an_image']);
 
         $productWithoutValues = $this->createProductWithStandardValues($family, 'product_without_values');
         $this->assertNotComplete($productWithoutValues);
+        $this->assertMissingAttributeForProduct($productWithoutValues, ['an_image']);
     }
 }

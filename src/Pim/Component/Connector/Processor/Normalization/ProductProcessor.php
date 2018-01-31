@@ -8,11 +8,12 @@ use Akeneo\Component\Batch\Job\JobInterface;
 use Akeneo\Component\Batch\Job\JobParameters;
 use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\Batch\Step\StepExecutionAwareInterface;
+use Akeneo\Component\StorageUtils\Cache\CacheClearerInterface;
 use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
-use Pim\Component\Catalog\Builder\ProductBuilderInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
+use Pim\Component\Catalog\ValuesFiller\EntityWithFamilyValuesFillerInterface;
 use Pim\Component\Connector\Processor\BulkMediaFetcher;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
@@ -34,9 +35,6 @@ class ProductProcessor implements ItemProcessorInterface, StepExecutionAwareInte
     /** @var AttributeRepositoryInterface */
     protected $attributeRepository;
 
-    /** @var ProductBuilderInterface */
-    protected $productBuilder;
-
     /** @var ObjectDetacherInterface */
     protected $detacher;
 
@@ -46,28 +44,37 @@ class ProductProcessor implements ItemProcessorInterface, StepExecutionAwareInte
     /** @var BulkMediaFetcher */
     protected $mediaFetcher;
 
+    /** @var EntityWithFamilyValuesFillerInterface */
+    protected $productValuesFiller;
+
+    /** @var CacheClearerInterface */
+    protected $cacheClearer;
+
     /**
-     * @param NormalizerInterface          $normalizer
-     * @param ChannelRepositoryInterface   $channelRepository
-     * @param AttributeRepositoryInterface $attributeRepository
-     * @param ProductBuilderInterface      $productBuilder
-     * @param ObjectDetacherInterface      $detacher
-     * @param BulkMediaFetcher             $mediaFetcher
+     * @param NormalizerInterface                   $normalizer
+     * @param ChannelRepositoryInterface            $channelRepository
+     * @param AttributeRepositoryInterface          $attributeRepository
+     * @param ObjectDetacherInterface               $detacher
+     * @param BulkMediaFetcher                      $mediaFetcher
+     * @param EntityWithFamilyValuesFillerInterface $productValuesFiller
+     * @param CacheClearerInterface                 $cacheClearer
      */
     public function __construct(
         NormalizerInterface $normalizer,
         ChannelRepositoryInterface $channelRepository,
         AttributeRepositoryInterface $attributeRepository,
-        ProductBuilderInterface $productBuilder,
         ObjectDetacherInterface $detacher,
-        BulkMediaFetcher $mediaFetcher
+        BulkMediaFetcher $mediaFetcher,
+        EntityWithFamilyValuesFillerInterface $productValuesFiller,
+        CacheClearerInterface $cacheClearer = null
     ) {
         $this->normalizer = $normalizer;
         $this->detacher = $detacher;
         $this->channelRepository = $channelRepository;
         $this->attributeRepository = $attributeRepository;
-        $this->productBuilder = $productBuilder;
         $this->mediaFetcher = $mediaFetcher;
+        $this->productValuesFiller = $productValuesFiller;
+        $this->cacheClearer = $cacheClearer;
     }
 
     /**
@@ -78,7 +85,7 @@ class ProductProcessor implements ItemProcessorInterface, StepExecutionAwareInte
         $parameters = $this->stepExecution->getJobParameters();
         $structure = $parameters->get('filters')['structure'];
         $channel = $this->channelRepository->findOneByIdentifier($structure['scope']);
-        $this->productBuilder->addMissingProductValues($product, [$channel], $channel->getLocales()->toArray());
+        $this->productValuesFiller->fillMissingValues($product);
 
         $productStandard = $this->normalizer->normalize($product, 'standard', [
             'channels' => [$channel->getCode()],
@@ -109,7 +116,12 @@ class ProductProcessor implements ItemProcessorInterface, StepExecutionAwareInte
             );
         }
 
-        $this->detacher->detach($product);
+        if (null !== $this->cacheClearer) {
+            $this->cacheClearer->clear();
+        } else {
+            // TODO Remove $this->detacher, the upper condition and update the constructor on merge to master
+            $this->detacher->detach($product);
+        }
 
         return $productStandard;
     }
@@ -130,7 +142,7 @@ class ProductProcessor implements ItemProcessorInterface, StepExecutionAwareInte
      */
     protected function fetchMedia(ProductInterface $product, $directory)
     {
-        $identifier = $product->getIdentifier()->getData();
+        $identifier = $product->getIdentifier();
         $this->mediaFetcher->fetchAll($product->getValues(), $directory, $identifier);
 
         foreach ($this->mediaFetcher->getErrors() as $error) {

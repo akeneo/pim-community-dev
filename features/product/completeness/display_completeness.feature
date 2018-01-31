@@ -9,9 +9,10 @@ Feature: Display the completeness of a product
     And I add the "french" locale to the "tablet" channel
     And I add the "french" locale to the "mobile" channel
     And the following products:
-      | sku      | family   | manufacturer | weather_conditions | color | name-en_US | name-fr_FR  | price          | rating | size | lace_color  |
-      | sneakers | sneakers | Converse     | hot                | blue  | Sneakers   | Espadrilles | 69 EUR, 99 USD | 4      | 43   | laces_white |
-      | sandals  | sandals  |              |                    | white |            | Sandales    |                |        |      |             |
+      | sku              | family   | manufacturer | weather_conditions | color | name-en_US | name-fr_FR  | price          | rating | size | lace_color  |
+      | sneakers         | sneakers | Converse     | hot                | blue  | Sneakers   | Espadrilles | 69 EUR, 99 USD | 4      | 43   | laces_white |
+      | sandals          | sandals  |              |                    | white |            | Sandales    |                |        |      |             |
+      | my_nice_sneakers |          |              |                    |       |            |             |                |        |      |             |
     And the following product values:
       | product  | attribute   | value                 | locale | scope  |
       | sneakers | description | Great sneakers        | en_US  | mobile |
@@ -24,171 +25,137 @@ Feature: Display the completeness of a product
 
   Scenario: Successfully display the completeness of the products
     Given I am on the "sneakers" product page
-    When I open the "Completeness" panel
-    Then I should see the "en_US" completeness in position 1
-    And The completeness "fr_FR" should be closed
-    And The completeness "en_US" should be opened
+    When I visit the "Completeness" column tab
+    Then I should see the "tablet" completeness in position 1
     And I should see the completeness:
-      | channel | locale | state   | missing_values         | ratio |
-      | mobile  | en_US  | success |                        | 100%  |
-      | tablet  | en_US  | warning | Side view              | 89%   |
-      | mobile  | fr_FR  | success |                        | 100%  |
-      | tablet  | fr_FR  | warning | Description, Side view | 78%   |
-    When I am on the products page
+      | channel | locale | state   | missing_values | ratio |
+      | tablet  | en_US  | warning | 1              | 88%   |
+      | tablet  | fr_FR  | warning | 2              | 77%   |
+      | mobile  | en_US  | success | 0              | 100%  |
+      | mobile  | fr_FR  | success | 0              | 100%  |
+    When I am on the products grid
     Then I am on the "sandals" product page
-    And the Name field should be highlighted
-    And the Description field should be highlighted
-    And the Manufacturer field should not be highlighted
-    And the SKU field should not be highlighted
-    And the Product information group should be highlighted
-    And the Marketing group should be highlighted
-    And the Sizes group should be highlighted
+    And I visit the "Attributes" column tab
+    And the Name, Description fields should be highlighted
+    And the Manufacturer, SKU fields should not be highlighted
+    And the Product information, Marketing, Sizes, Media groups should be highlighted
     And the Colors group should not be highlighted
-    And the Media group should be highlighted
-    And I open the "Completeness" panel
-    Then I should see the "en_US" completeness in position 1
-    And The completeness "fr_FR" should be closed
-    And The completeness "en_US" should be opened
+    And I visit the "Completeness" column tab
+    And I visit the "Attributes" column tab
     When I switch the locale to "fr_FR"
-    Then I should see the "fr_FR" completeness in position 1
-    And The completeness "en_US" should be closed
-    And The completeness "fr_FR" should be opened
+    And I visit the "Completeness" column tab
     And I should see the completeness:
-      | channel | locale | state   | missing_values                                                | ratio |
-      | mobile  | fr_FR  | warning | [price], [size]                                               | 60%   |
-      | tablet  | fr_FR  | warning | [price], [rating], [side_view], [size]                        | 50%   |
-      | mobile  | en_US  | warning | [name], [price], [size]                                       | 40%   |
-      | tablet  | en_US  | warning | [name], [description], [price], [rating], [side_view], [size] | 25%   |
-
-  @jira https://akeneo.atlassian.net/browse/PIM-5190
-  Scenario: Successfully display the completeness of the products with medias after a save
-    Given I am on the "sneakers" product page
-    And I save the product
-    When I open the "Completeness" panel
-    Then I should see the "en_US" completeness in position 1
-    And The completeness "fr_FR" should be closed
-    And The completeness "en_US" should be opened
-    And I should see the completeness:
-      | channel | locale | state   | missing_values         | ratio |
-      | mobile  | en_US  | success |                        | 100%  |
-      | tablet  | en_US  | warning | Side view              | 89%   |
-      | mobile  | fr_FR  | success |                        | 100%  |
-      | tablet  | fr_FR  | warning | Description, Side view | 78%   |
-    When I am on the "sandals" product page
-    And I save the product
-    And I open the "Completeness" panel
-    Then I should see the "en_US" completeness in position 1
-    And The completeness "fr_FR" should be closed
-    And The completeness "en_US" should be opened
-    And I should see the completeness:
-      | channel | locale | state   | missing_values                                    | ratio |
-      | mobile  | en_US  | warning | Name, Price, Size                                 | 40%   |
-      | tablet  | en_US  | warning | Name, Description, Price, Rating, Side view, Size | 25%   |
-      | mobile  | fr_FR  | warning | Price, Size                                       | 60%   |
-      | tablet  | fr_FR  | warning | Price, Rating, Side view, Size                    | 50%   |
+      | channel | locale | state   | missing_values | ratio |
+      | tablet  | en_US  | warning | 6              | 25%   |
+      | tablet  | fr_FR  | warning | 4              | 50%   |
+      | mobile  | en_US  | warning | 3              | 40%   |
+      | mobile  | fr_FR  | warning | 2              | 60%   |
 
   Scenario: Successfully display the completeness of the products in the grid
-    Given I am on the products page
-    And I switch the locale to "en_US"
-    And I filter by "scope" with operator "equals" and value "Mobile"
+    Given I am on the products grid
+    When I switch the locale to "en_US"
+    And I switch the scope to "Mobile"
     Then the row "sneakers" should contain:
      | column   | value |
      | complete | 100%  |
-    Then the row "sandals" should contain:
+    And the row "sandals" should contain:
      | column   | value |
      | complete | 40%   |
-    And I filter by "scope" with operator "equals" and value "Tablet"
+    When I switch the scope to "Tablet"
     Then the row "sneakers" should contain:
      | column   | value |
-     | complete | 89%   |
-    Then the row "sandals" should contain:
+     | complete | 88%   |
+    And the row "sandals" should contain:
      | column   | value |
      | complete | 25%   |
-    And I switch the locale to "fr_FR"
-    And I filter by "scope" with operator "equals" and value "Mobile"
+    When I switch the locale to "fr_FR"
+    And I switch the scope to "Mobile"
     Then the row "sneakers" should contain:
      | column   | value |
      | complete | 100%  |
-    Then the row "sandals" should contain:
+    And the row "sandals" should contain:
      | column   | value |
      | complete | 60%   |
-    And I filter by "scope" with operator "equals" and value "Tablet"
+    When I switch the scope to "Tablet"
     Then the row "sneakers" should contain:
      | column   | value |
-     | complete | 78%   |
-    Then the row "sandals" should contain:
+     | complete | 77%   |
+    And the row "sandals" should contain:
      | column   | value |
      | complete | 50%   |
 
   Scenario: Successfully display the completeness of the product in the grid after product save (PIM-2916)
     Given I am on the "sneakers" product page
-    And I visit the "Attributes" tab
+    And I visit the "Attributes" column tab
     And I visit the "Media" group
     And I attach file "SNKRS-1C-s.png" to "Side view"
     And I save the product
-    And I am on the products page
+    And I am on the products grid
     And I switch the locale to "en_US"
-    When I filter by "scope" with operator "equals" and value "Mobile"
+    When I switch the scope to "Mobile"
     Then the row "sneakers" should contain:
      | column   | value |
      | complete | 100%  |
-    When I filter by "scope" with operator "equals" and value "Tablet"
+    When I switch the scope to "Tablet"
     Then the row "sneakers" should contain:
      | column   | value |
      | complete | 100%  |
     And I switch the locale to "fr_FR"
-    When I filter by "scope" with operator "equals" and value "Mobile"
+    When I switch the scope to "Mobile"
     Then the row "sneakers" should contain:
      | column   | value |
      | complete | 100%  |
-    When I filter by "scope" with operator "equals" and value "Tablet"
+    When I switch the scope to "Tablet"
     Then the row "sneakers" should contain:
      | column   | value |
-     | complete | 89%   |
+     | complete | 88%   |
 
   Scenario: Don't display the completeness if the family is not defined
     Given I am on the "sneakers" product page
-    When I open the "Completeness" panel
+    When I visit the "Completeness" column tab
     Then I change the family of the product to ""
     And I should see the text "No family defined. Please define a family to calculate the completeness of this product."
-    Then I change the family of the product to "Sneakers"
-    And I should not see the text "No family defined. Please define a family to calculate the completeness of this product."
-    Then I change the family of the product to "Boots"
-    And I should see the text "You just changed the family of the product. Please save it first to calculate the completeness for the new family."
+    When I change the family of the product to "Sneakers"
+    Then I should not see the text "No family defined. Please define a family to calculate the completeness of this product."
+    When I change the family of the product to "Boots"
+    Then I should see the text "You just changed the family of the product. Please save it first to calculate the completeness for the new family."
 
   @jira https://akeneo.atlassian.net/browse/PIM-4489
   Scenario: Don't display the completeness if the family is not defined on product creation
-    Given the following products:
-      | sku              |
-      | my_nice_sneakers |
-    And I am on the "my_nice_sneakers" product page
-    When I open the "Completeness" panel
+    Given I am on the "my_nice_sneakers" product page
+    When I visit the "Completeness" column tab
+    Given I am on the "my_nice_sneakers" product page
+    When I visit the "Completeness" column tab
     Then I should see the text "No family defined. Please define a family to calculate the completeness of this product."
-    Then I change the family of the product to "Sneakers"
-    Then I should see the text "You just changed the family of the product. Please save it first to calculate the completeness for the new family."
-    Then I should not see "No family defined. Please define a family to calculate the completeness of this product."
-    And I save the product
-
-  Scenario: Quickly jump to a field from completeness panel
-    Given I am on the "sneakers" product page
-    When I open the "Completeness" panel
-    And I click on the missing "side_view" value for "en_US" locale and "tablet" channel
-    Then I should be on the "Media" attribute group
+    And I change the family of the product to "Sneakers"
+    And I should not see the text "No family defined. Please define a family to calculate the completeness of this product."
 
   @jira https://akeneo.atlassian.net/browse/PIM-6277
   Scenario: Display the channel code in the completeness panel
     Given I am on the "sneakers" product page
-    When I open the "Completeness" panel
     And I switch the locale to "fr_FR"
-    Then I should see the "fr_FR" completeness in position 1
-    And The completeness "en_US" should be closed
-    Then The label for the "tablet" channel for "fr_FR" locale should be "Tablette"
+    When I visit the "Completeness" column tab
+    Then I should see the "tablet" completeness in position 1
+    Then The label for the "tablet" channel should be "Tablette"
     When I am on the "tablet" channel page
     Then I fill in the following information:
       | French (France) |  |
     And I press the "Save" button
     Then I should not see the text "There are unsaved changes"
     When I am on the "sneakers" product page
-    And I open the "Completeness" panel
+    When I visit the "Attributes" column tab
     And I switch the locale to "fr_FR"
-    Then The label for the "tablet" channel for "fr_FR" locale should be "[tablet]"
+    And I visit the "Completeness" column tab
+    Then The label for the "tablet" channel should be "[tablet]"
+
+  Scenario: Display the completeness badge for the scope and locale
+    Given I am on the "sneakers" product page
+    When I visit the "Completeness" column tab
+    And I switch the scope to "Tablet"
+    Then the completeness badge label should show "Complete: 88%"
+    When I switch the locale to "fr_FR"
+    Then the completeness badge label should show "Complete: 77%"
+    When I switch the scope to "Mobile"
+    Then the completeness badge label should show "Complete: 100%"
+    When I switch the locale to "en_US"
+    Then the completeness badge label should show "Complete: 100%"

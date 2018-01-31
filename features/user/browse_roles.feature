@@ -10,8 +10,8 @@ Feature: Browse roles
 
   Scenario: Successfully display roles
     Given I am on the role index page
-    Then I should see "Administrator"
-    And I should see "Catalog manager"
-    And I should see "User"
+    Then I should see the text "Administrator"
+    And I should see the text "Catalog manager"
+    And I should see the text "User"
     When I click on the "Update" action of the row which contains "User"
-    Then I should see "User"
+    Then I should see the text "User"

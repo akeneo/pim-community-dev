@@ -27,29 +27,17 @@ pim_import_export:
       history.title: Povijest
       job_content.title: Sadržaj
 pim_title.export_profile.index: Upravljanje profilima izvoza
-pim_title.export_profile.edit: Izvoz profila %job.label% | Uredi
-pim_title.export_profile.show: Izvoz profila %job.label% | Prikaži
 pim_title.export_execution.index: Povijest izvođenja izvoza
 pim_title.export_execution.show: Izvoz izvođenja | Detalji
 pim_title.import_profile.index: Upravljanje profilima uvoza
-pim_title.import_profile.edit: Uvoz profila %job.label% | Uredi
-pim_title.import_profile.show: Uvoz profila %job.label% | Prikaži
 pim_title.import_execution.index: Povijest izvođenja uvoza
 pim_title.import_execution.show: Uvoz izvođenja | Detalji
 export profile:
   title: izvoz profila
-  overview: pregled izvoza profila
-  create: kreiraj profil izvoza
   edit: uredi profil izvoza
-export report:
-  overview: izvoz izvješća
 import profile:
   title: uvoz profila
-  overview: pregled profila uvoza
-  create: kreiraj profil uvoza
   edit: uredi profil uvoza
-import report:
-  overview: uvoz izvješća
 pim_importexport:
   acl:
     export_profile:
@@ -107,12 +95,6 @@ flash:
     removed: Uvoz je uklonjen
     updated: Uvoz je uspješno ažuriran
     running: Uvoz se izvodi
-pim_menu:
-  item:
-    export_history: Povijest izvoza
-    export_profile: Izvoz profila
-    import_history: Povijest izvoza
-    import_profile: Uvoz profila
 General properties: Opća svojstva
 History: Povijest
 pane.accordion:
@@ -146,5 +128,4 @@ Status: Status
 Summary: Sažetak
 Start: Početak
 End: Kraj
-set_attribute_requirements: Postavi zahtjeve za atribute
 warning.label: Upozorenje

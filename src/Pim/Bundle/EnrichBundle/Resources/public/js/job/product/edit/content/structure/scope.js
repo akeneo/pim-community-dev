@@ -11,7 +11,7 @@ define(
         'jquery',
         'underscore',
         'oro/translator',
-        'text!pim/template/export/product/edit/content/structure/scope',
+        'pim/template/export/product/edit/content/structure/scope',
         'pim/form',
         'pim/fetcher-registry',
         'pim/user-context',

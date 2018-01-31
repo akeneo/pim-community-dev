@@ -1,20 +1,19 @@
 'use strict';
 
 define([
-        'module',
         'underscore',
         'pim/form',
         'oro/mediator',
         'pim/fetcher-registry'
     ],
-    function (module, _, BaseForm, mediator, FetcherRegistry) {
+    function (_, BaseForm, mediator, FetcherRegistry) {
         return BaseForm.extend({
             /**
              * {@inheritdoc}
              */
             configure: function () {
-                _.each(module.config().events, function (event) {
-                    this.listenTo(mediator, event, this.checkStructureVersion);
+                _.each(__moduleConfig.events, function (event) {
+                    this.listenTo(this.getRoot(), event, this.checkStructureVersion);
                 }.bind(this));
 
                 this.listenTo(this.getRoot(), 'pim_enrich:form:cache:clear', this.clearCache);

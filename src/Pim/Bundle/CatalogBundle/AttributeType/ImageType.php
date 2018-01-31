@@ -3,7 +3,6 @@
 namespace Pim\Bundle\CatalogBundle\AttributeType;
 
 use Pim\Component\Catalog\AttributeTypes;
-use Pim\Component\Catalog\Model\AttributeInterface;
 
 /**
  * Image attribute type
@@ -14,31 +13,6 @@ use Pim\Component\Catalog\Model\AttributeInterface;
  */
 class ImageType extends AbstractAttributeType
 {
-    /**
-     * {@inheritdoc}
-     */
-    protected function defineCustomAttributeProperties(AttributeInterface $attribute)
-    {
-        return parent::defineCustomAttributeProperties($attribute) + [
-            'maxFileSize' => [
-                'name'      => 'maxFileSize',
-                'fieldType' => 'pim_number',
-            ],
-            'allowedExtensions' => [
-                'name'    => 'allowedExtensions',
-                'data'    => implode(',', $attribute->getAllowedExtensions()),
-                'options' => [
-                    'by_reference' => false,
-                    'select2'      => true,
-                    'attr'         => [
-                        'class'     => 'AknTextField--select2',
-                        'data-tags' => 'tif,tiff,gif,jpeg,jpg,jif,jfif,png,pdf,psd'
-                    ]
-                ]
-            ]
-        ];
-    }
-
     /**
      * {@inheritdoc}
      */

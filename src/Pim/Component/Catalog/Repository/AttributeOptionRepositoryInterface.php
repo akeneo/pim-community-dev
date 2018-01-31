@@ -16,4 +16,13 @@ interface AttributeOptionRepositoryInterface extends
     IdentifiableObjectRepositoryInterface,
     ObjectRepository
 {
+    /**
+     * Return an array of attribute option codes
+     *
+     * @param string $code
+     * @param array  $optionCodes
+     *
+     * @return array
+     */
+    public function findCodesByIdentifiers($code, array $optionCodes);
 }

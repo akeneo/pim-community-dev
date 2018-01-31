@@ -44,3 +44,10 @@ services:
         class: '%pim_versioning.event_subscriber.purge_progress_bar_advancer.class%'
         tags:
             - { name: kernel.event_subscriber, priority: 0 }
+
+    pim_versioning.event_subscriber.timestampable:
+        class: '%pim_versioning.event_subscriber.timestampable.class%'
+        arguments:
+            - '@doctrine.orm.default_entity_manager'
+        tags:
+            - { name: doctrine.event_subscriber }

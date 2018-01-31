@@ -39,7 +39,7 @@ class RegisterSerializerPassSpec extends ObjectBehavior
             ->duringProcess($container);
     }
 
-    function it_sets_arguments_of_pim_serializer_with_tagged_normalizers_and_denormalizers_by_default(
+    function it_sets_arguments_of_pim_serializer_with_tagged_normalizers_and_encoders_by_default(
         $container,
         $bag,
         Definition $definition

@@ -59,7 +59,7 @@ class DateRangeFilterTypeTest extends AbstractTypeTestCase
         return [
             [
                 'defaultOptions' => [
-                    'field_type'       => DateRangeType::NAME,
+                    'field_type'       => DateRangeType::class,
                     'operator_choices' => [
                         DateRangeFilterType::TYPE_BETWEEN     => 'oro.filter.form.label_date_type_between',
                         DateRangeFilterType::TYPE_NOT_BETWEEN => 'oro.filter.form.label_date_type_not_between',

@@ -67,7 +67,7 @@ class AssociationType extends AbstractType
         $builder
             ->add(
                 'associationType',
-                'pim_object_identifier',
+                ObjectIdentifierType::class,
                 [
                     'repository' => $this->assocTypeRepository,
                     'multiple'   => false
@@ -75,7 +75,7 @@ class AssociationType extends AbstractType
             )
             ->add(
                 'appendProducts',
-                'pim_object_identifier',
+                ObjectIdentifierType::class,
                 [
                     'repository' => $this->productRepository,
                     'mapped'     => false,
@@ -85,7 +85,7 @@ class AssociationType extends AbstractType
             )
             ->add(
                 'removeProducts',
-                'pim_object_identifier',
+                ObjectIdentifierType::class,
                 [
                     'repository' => $this->productRepository,
                     'mapped'     => false,
@@ -95,7 +95,7 @@ class AssociationType extends AbstractType
             )
             ->add(
                 'appendGroups',
-                'pim_object_identifier',
+                ObjectIdentifierType::class,
                 [
                     'repository' => $this->groupRepository,
                     'mapped'     => false,
@@ -105,7 +105,7 @@ class AssociationType extends AbstractType
             )
             ->add(
                 'removeGroups',
-                'pim_object_identifier',
+                ObjectIdentifierType::class,
                 [
                     'repository' => $this->groupRepository,
                     'mapped'     => false,
@@ -130,7 +130,7 @@ class AssociationType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'pim_enrich_association';
     }

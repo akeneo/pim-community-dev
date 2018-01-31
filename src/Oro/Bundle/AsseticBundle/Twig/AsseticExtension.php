@@ -66,12 +66,4 @@ class AsseticExtension extends \Twig_Extension
             new AsseticNodeVisitor($this->templateNameParser, $this->enabledBundles),
         ];
     }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getName()
-    {
-        return 'oro_assetic';
-    }
 }

@@ -10,3 +10,10 @@ pim_connector:
           cancel: Anuluj
           confirm: Potwierdź
         edit: Edytuj
+page_title:
+  pim_importexport_export_profile_index: Zarządzanie profilami eksportu
+  pim_importexport_export_execution_index: Historia wykonanych eksportów
+  pim_importexport_export_execution_show: Wykonane eksporty | Szczegóły
+  pim_importexport_import_profile_index: Zarządzanie profilami importu
+  pim_importexport_import_execution_index: Historia wykonanych importów
+  pim_importexport_import_execution_show: Wykonane importy | Szczegóły

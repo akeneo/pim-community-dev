@@ -380,7 +380,7 @@ class DateRangeFilterSpec extends ObjectBehavior
 
     function it_provides_date_range_form($factory, Form $form)
     {
-        $factory->create(DateRangeFilterType::NAME, [], ['csrf_protection' => false])->willReturn($form);
+        $factory->create(DateRangeFilterType::class, [], ['csrf_protection' => false])->willReturn($form);
 
         $this->getForm()->shouldReturn($form);
     }

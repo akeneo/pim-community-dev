@@ -16,7 +16,10 @@ class ChannelNormalizerIntegration extends AbstractNormalizerTestCase
             'currencies'       => ['USD', 'EUR'],
             'locales'          => ['en_US'],
             'category_tree'    => 'master',
-            'conversion_units' => new \StdClass(),
+            'conversion_units' => [
+                'a_metric_without_decimal' => 'METER',
+                'a_metric'                 => 'KILOWATT',
+            ],
             'labels'           => [
                 'en_US' => 'Ecommerce',
                 'fr_FR' => 'Ecommerce',

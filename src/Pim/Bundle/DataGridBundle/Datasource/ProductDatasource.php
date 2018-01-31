@@ -3,13 +3,17 @@
 namespace Pim\Bundle\DataGridBundle\Datasource;
 
 use Doctrine\Common\Persistence\ObjectManager;
-use Pim\Bundle\CatalogBundle\Doctrine\ORM\QueryBuilderUtility;
-use Pim\Bundle\DataGridBundle\Datasource\ResultRecord\HydratorInterface;
+use Oro\Bundle\DataGridBundle\Datasource\ResultRecord;
+use Pim\Bundle\DataGridBundle\EventSubscriber\FilterEntityWithValuesSubscriber;
+use Pim\Bundle\DataGridBundle\EventSubscriber\FilterEntityWithValuesSubscriberConfiguration;
+use Pim\Bundle\DataGridBundle\Extension\Pager\PagerExtension;
+use Pim\Component\Catalog\Model\EntityWithValuesInterface;
 use Pim\Component\Catalog\Query\ProductQueryBuilderFactoryInterface;
 use Pim\Component\Catalog\Query\ProductQueryBuilderInterface;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
- * Product datasource, allows to prepare query builder from repository
+ * Product datasource, executes elasticsearch query
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
@@ -20,19 +24,31 @@ class ProductDatasource extends Datasource
     /** @var ProductQueryBuilderInterface */
     protected $pqb;
 
+    /** @var ProductQueryBuilderFactoryInterface */
+    protected $factory;
+
+    /** @var NormalizerInterface */
+    protected $normalizer;
+
+    /** @var FilterEntityWithValuesSubscriber */
+    protected $filterEntityWithValuesSubscriber;
+
     /**
      * @param ObjectManager                       $om
-     * @param HydratorInterface                   $hydrator
      * @param ProductQueryBuilderFactoryInterface $factory
+     * @param NormalizerInterface                 $serializer
+     * @param FilterEntityWithValuesSubscriber    $filterEntityWithValuesSubscriber
      */
     public function __construct(
         ObjectManager $om,
-        HydratorInterface $hydrator,
-        ProductQueryBuilderFactoryInterface $factory
+        ProductQueryBuilderFactoryInterface $factory,
+        NormalizerInterface $serializer,
+        FilterEntityWithValuesSubscriber $filterEntityWithValuesSubscriber = null
     ) {
         $this->om = $om;
-        $this->hydrator = $hydrator;
         $this->factory = $factory;
+        $this->normalizer = $serializer;
+        $this->filterEntityWithValuesSubscriber = $filterEntityWithValuesSubscriber;
     }
 
     /**
@@ -40,20 +56,31 @@ class ProductDatasource extends Datasource
      */
     public function getResults()
     {
-        $options = [
-            'locale_code'              => $this->getConfiguration('locale_code'),
-            'scope_code'               => $this->getConfiguration('scope_code'),
-            'attributes_configuration' => $this->getConfiguration('attributes_configuration'),
-            'current_group_id'         => $this->getConfiguration('current_group_id', false),
-            'association_type_id'      => $this->getConfiguration('association_type_id', false),
-            'current_product'          => $this->getConfiguration('current_product', false)
-        ];
-
-        if (method_exists($this->qb, 'setParameters')) {
-            QueryBuilderUtility::removeExtraParameters($this->qb);
+        // TODO: remove null condition on master
+        if (null !== $this->filterEntityWithValuesSubscriber) {
+            $attributeIdsToDisplay = $this->getConfiguration('displayed_attribute_ids');
+            $attributes = $this->getConfiguration('attributes_configuration');
+            $attributeCodesToFilter = $this->getAttributeCodesToFilter($attributeIdsToDisplay, $attributes);
+            $this->filterEntityWithValuesSubscriber->configure(
+                FilterEntityWithValuesSubscriberConfiguration::filterEntityValues($attributeCodesToFilter)
+            );
         }
 
-        $rows = $this->hydrator->hydrate($this->qb, $options);
+        $entitiesWithValues = $this->pqb->execute();
+        $context = [
+            'locales'             => [$this->getConfiguration('locale_code')],
+            'channels'            => [$this->getConfiguration('scope_code')],
+            'data_locale'         => $this->getParameters()['dataLocale'],
+            'association_type_id' => $this->getConfiguration('association_type_id', false),
+            'current_group_id'    => $this->getConfiguration('current_group_id', false),
+        ];
+        $rows = ['data' => []];
+
+        foreach ($entitiesWithValues as $entityWithValue) {
+            $normalizedItem = $this->normalizeEntityWithValues($entityWithValue, $context);
+            $rows['data'][] = new ResultRecord($normalizedItem);
+        }
+        $rows['totalRecords'] = $entitiesWithValues->count();
 
         return $rows;
     }
@@ -78,10 +105,65 @@ class ProductDatasource extends Datasource
         $factoryConfig['repository_method'] = $method;
         $factoryConfig['default_locale'] = $this->getConfiguration('locale_code');
         $factoryConfig['default_scope'] = $this->getConfiguration('scope_code');
+        $factoryConfig['limit'] = (int) $this->getConfiguration(PagerExtension::PER_PAGE_PARAM);
+        $factoryConfig['from'] = null !== $this->getConfiguration('from', false) ?
+            (int) $this->getConfiguration('from', false) : 0;
 
         $this->pqb = $this->factory->create($factoryConfig);
         $this->qb = $this->pqb->getQueryBuilder();
 
         return $this;
+    }
+
+    /**
+     * Normalizes an entity with values with the complete set of fields required to show it.
+     *
+     * @param EntityWithValuesInterface $item
+     * @param array                     $context
+     *
+     * @return array
+     */
+    private function normalizeEntityWithValues(EntityWithValuesInterface $item, array $context): array
+    {
+        $defaultNormalizedItem = [
+            'id'               => $item->getId(),
+            'dataLocale'       => $this->getParameters()['dataLocale'],
+            'family'           => null,
+            'values'           => [],
+            'created'          => null,
+            'updated'          => null,
+            'label'            => null,
+            'image'            => null,
+            'groups'           => null,
+            'enabled'          => null,
+            'completeness'     => null,
+            'variant_products' => null,
+            'document_type'    => null,
+        ];
+
+        $normalizedItem = array_merge(
+            $defaultNormalizedItem,
+            $this->normalizer->normalize($item, 'datagrid', $context)
+        );
+
+        return $normalizedItem;
+    }
+
+    /**
+     * @param array $attributeIdsToDisplay
+     * @param array $attributes
+     *
+     * @return array array of attribute codes
+     */
+    private function getAttributeCodesToFilter(array $attributeIdsToDisplay, array $attributes): array
+    {
+        $attributeCodes = [];
+        foreach ($attributes as $attribute) {
+            if (in_array($attribute['id'], $attributeIdsToDisplay)) {
+                $attributeCodes[] = $attribute['code'];
+            }
+        }
+
+        return $attributeCodes;
     }
 }

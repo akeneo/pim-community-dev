@@ -8,6 +8,10 @@ pim_user:
       business_unit.title: Entités commerciales
       email_synchronization.title: Paramètres de synchronisation de messagerie
       interfaces.title: Interfaces
+  group:
+    tab:
+      general.title: Général
+      users.title: Utilisateurs
 oro.user.controller:
   group.message.saved: "Groupe enregistré"
   role.message.saved: "Rôle enregistré"

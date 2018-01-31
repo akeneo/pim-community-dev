@@ -24,7 +24,7 @@ class ZipFilesystemFactory
     public function createZip($absolutePath)
     {
         if (!is_dir(dirname($absolutePath))) {
-            throw new \InvalidArgumentException(sprintf('The provided path "%s" is not a valid directory'));
+            throw new \InvalidArgumentException(sprintf('The provided path "%s" is not a valid directory', $absolutePath));
         }
 
         return new Filesystem(new ZipArchiveAdapter($absolutePath));

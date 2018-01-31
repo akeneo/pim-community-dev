@@ -2,11 +2,8 @@
 
 namespace Pim\Component\Connector\ArrayConverter\FlatToStandard\Product;
 
+use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
-use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
-use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
-use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
-use Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\AssociationColumnsResolver;
 
 /**
  * Extracts attribute field information
@@ -21,13 +18,13 @@ class AttributeColumnInfoExtractor
     const FIELD_SEPARATOR = '-';
     const UNIT_SEPARATOR = ' ';
 
-    /** @var AttributeRepositoryInterface */
+    /** @var IdentifiableObjectRepositoryInterface */
     protected $attributeRepository;
 
-    /** @var ChannelRepositoryInterface */
+    /** @var IdentifiableObjectRepositoryInterface */
     protected $channelRepository;
 
-    /** @var LocaleRepositoryInterface */
+    /** @var IdentifiableObjectRepositoryInterface */
     protected $localeRepository;
 
     /** @var AssociationColumnsResolver */
@@ -40,15 +37,15 @@ class AttributeColumnInfoExtractor
     protected $excludedFieldNames;
 
     /**
-     * @param AttributeRepositoryInterface $attributeRepository
-     * @param ChannelRepositoryInterface   $channelRepository
-     * @param LocaleRepositoryInterface    $localeRepository
-     * @param AssociationColumnsResolver   $assoColumnResolver
+     * @param IdentifiableObjectRepositoryInterface $attributeRepository
+     * @param IdentifiableObjectRepositoryInterface $channelRepository
+     * @param IdentifiableObjectRepositoryInterface $localeRepository
+     * @param AssociationColumnsResolver            $assoColumnResolver
      */
     public function __construct(
-        AttributeRepositoryInterface $attributeRepository,
-        ChannelRepositoryInterface $channelRepository,
-        LocaleRepositoryInterface $localeRepository,
+        IdentifiableObjectRepositoryInterface $attributeRepository,
+        IdentifiableObjectRepositoryInterface $channelRepository,
+        IdentifiableObjectRepositoryInterface $localeRepository,
         AssociationColumnsResolver $assoColumnResolver = null
     ) {
         $this->attributeRepository = $attributeRepository;
@@ -88,7 +85,6 @@ class AttributeColumnInfoExtractor
         if (!isset($this->fieldNameInfoCache[$fieldName]) && !in_array($fieldName, $this->excludedFieldNames)) {
             $explodedFieldName = explode(self::FIELD_SEPARATOR, $fieldName);
             $attributeCode = $explodedFieldName[0];
-            // TODO: We re-fetch attribute here but we did a findAll in another service (╯°□°)╯︵ ┻━┻
             $attribute = $this->attributeRepository->findOneByIdentifier($attributeCode);
 
             if (null !== $attribute) {

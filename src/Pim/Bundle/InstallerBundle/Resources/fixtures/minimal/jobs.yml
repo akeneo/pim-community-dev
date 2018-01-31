@@ -14,20 +14,35 @@ jobs:
         alias:     remove_product_value
         label:     Mass remove products values
         type:      mass_edit
+    move_to_category:
+        connector: Akeneo Mass Edit Connector
+        alias:     move_to_category
+        label:     Mass move to categories
+        type:      mass_edit
+    add_association:
+        connector: Akeneo Mass Edit Connector
+        alias:     add_association
+        label:     Mass associate products
+        type:      mass_edit
+    add_to_category:
+        connector: Akeneo Mass Edit Connector
+        alias:     add_to_category
+        label:     Mass add to categories
+        type:      mass_edit
+    remove_from_category:
+        connector: Akeneo Mass Edit Connector
+        alias:     remove_from_category
+        label:     Mass remove from categories
+        type:      mass_edit
     edit_common_attributes:
         connector: Akeneo Mass Edit Connector
         alias:     edit_common_attributes
-        label:     Mass edit common product attributes
+        label:     Mass edit product attributes
         type:      mass_edit
     set_attribute_requirements:
         connector: Akeneo Mass Edit Connector
         alias:     set_attribute_requirements
         label:     Set family attribute requirements
-        type:      mass_edit
-    add_to_variant_group:
-        connector: Akeneo Mass Edit Connector
-        alias:     add_to_variant_group
-        label:     Mass add products to variant group
         type:      mass_edit
     csv_product_quick_export:
         connector: Akeneo CSV Connector
@@ -38,7 +53,8 @@ jobs:
             delimiter:  ;
             enclosure:  '"'
             withHeader: true
-            filePath:   /tmp/products_export_%locale%_%scope%_%datetime%.csv
+            filePathProduct:      /tmp/1_products_export_%locale%_%scope%_%datetime%.csv
+            filePathProductModel: /tmp/2_product_models_export_%locale%_%scope%_%datetime%.csv
             with_media: true
     csv_product_grid_context_quick_export:
         connector: Akeneo CSV Connector
@@ -49,7 +65,8 @@ jobs:
             delimiter:  ;
             enclosure:  '"'
             withHeader: true
-            filePath:   /tmp/products_export_grid_context_%locale%_%scope%_%datetime%.csv
+            filePathProduct:      /tmp/1_products_export_grid_context_%locale%_%scope%_%datetime%.csv
+            filePathProductModel: /tmp/2_product_models_export_grid_context_%locale%_%scope%_%datetime%.csv
             with_media: true
     xlsx_product_quick_export:
         connector: Akeneo XLSX Connector
@@ -59,7 +76,8 @@ jobs:
         configuration:
             withHeader: true
             linesPerFile: 10000
-            filePath:   /tmp/products_export_%locale%_%scope%_%datetime%.xlsx
+            filePathProduct:      /tmp/1_products_export_%locale%_%scope%_%datetime%.xlsx
+            filePathProductModel: /tmp/2_product_models_export_%locale%_%scope%_%datetime%.xlsx
             with_media: true
     xlsx_product_grid_context_quick_export:
         connector: Akeneo XLSX Connector
@@ -68,6 +86,22 @@ jobs:
         type: quick_export
         configuration:
             withHeader:   true
-            filePath:     /tmp/products_export_grid_context_%locale%_%scope%_%datetime%.xlsx
+            filePathProduct:      /tmp/1_products_export_grid_context_%locale%_%scope%_%datetime%.xlsx
+            filePathProductModel: /tmp/2_product_models_export_grid_context_%locale%_%scope%_%datetime%.xlsx
             linesPerFile: 10000
             with_media:   true
+    compute_product_models_descendants:
+        connector: internal
+        alias:     compute_product_models_descendants
+        label:     Compute product models descendants
+        type:      compute_product_models_descendants
+    compute_completeness_of_products_family:
+        connector: internal
+        alias:     compute_completeness_of_products_family
+        label:     compute completeness of products family
+        type:      compute_completeness_of_products_family
+    compute_family_variant_structure_changes:
+        connector: internal
+        alias:     compute_family_variant_structure_changes
+        label:     Compute variant structure changes
+        type:      compute_family_variant_structure_changes

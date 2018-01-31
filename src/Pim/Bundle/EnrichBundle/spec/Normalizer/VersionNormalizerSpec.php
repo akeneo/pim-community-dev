@@ -2,11 +2,11 @@
 
 namespace spec\Pim\Bundle\EnrichBundle\Normalizer;
 
-use Pim\Bundle\UserBundle\Entity\User;
-use Oro\Bundle\UserBundle\Entity\UserManager;
 use Akeneo\Component\Localization\Presenter\PresenterInterface;
-use PhpSpec\ObjectBehavior;
 use Akeneo\Component\Versioning\Model\Version;
+use Oro\Bundle\UserBundle\Entity\UserManager;
+use PhpSpec\ObjectBehavior;
+use Pim\Bundle\UserBundle\Entity\User;
 use Pim\Component\Catalog\Localization\Presenter\PresenterRegistryInterface;
 use Prophecy\Argument;
 use Symfony\Component\Translation\TranslatorInterface;
@@ -61,7 +61,6 @@ class VersionNormalizerSpec extends ObjectBehavior
         $userManager->findUserByUsername('steve')->willReturn($steve);
         $steve->getFirstName()->willReturn('Steve');
         $steve->getLastName()->willReturn('Jobs');
-        $steve->getEmail()->willReturn('steve@pear.com');
 
         $changeset = [
             'maximum_frame_rate' => ['old' => '', 'new' => '200,7890'],
@@ -89,7 +88,7 @@ class VersionNormalizerSpec extends ObjectBehavior
 
         $this->normalize($version, 'internal_api')->shouldReturn([
             'id'          => 12,
-            'author'      => 'Steve Jobs - steve@pear.com',
+            'author'      => 'Steve Jobs',
             'resource_id' => '112',
             'snapshot'    => 'a nice snapshot',
             'changeset'   => $changeset,

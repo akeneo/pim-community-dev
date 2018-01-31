@@ -2,27 +2,23 @@
 
 namespace Pim\Bundle\EnrichBundle\Controller\Rest;
 
-use Akeneo\Bundle\StorageUtilsBundle\DependencyInjection\AkeneoStorageUtilsExtension;
 use Akeneo\Component\StorageUtils\Remover\RemoverInterface;
+use Akeneo\Component\StorageUtils\Repository\CursorableRepositoryInterface;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
-use Doctrine\Common\Persistence\ObjectManager;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface;
 use Pim\Bundle\CatalogBundle\Filter\ObjectFilterInterface;
 use Pim\Bundle\UserBundle\Context\UserContext;
 use Pim\Component\Catalog\Builder\ProductBuilderInterface;
-use Pim\Component\Catalog\Comparator\Filter\ProductFilterInterface;
+use Pim\Component\Catalog\Comparator\Filter\FilterInterface;
 use Pim\Component\Catalog\Exception\ObjectNotFoundException;
 use Pim\Component\Catalog\Localization\Localizer\AttributeConverterInterface;
-use Pim\Component\Catalog\Manager\CompletenessManager;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
-use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
 use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
 use Pim\Component\Enrich\Converter\ConverterInterface;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
@@ -42,6 +38,9 @@ class ProductController
 {
     /** @var ProductRepositoryInterface */
     protected $productRepository;
+
+    /** @var CursorableRepositoryInterface */
+    protected $cursorableRepository;
 
     /** @var AttributeRepositoryInterface */
     protected $attributeRepository;
@@ -76,54 +75,40 @@ class ProductController
     /** @var AttributeConverterInterface */
     protected $localizedConverter;
 
-    /** @var ProductFilterInterface */
+    /** @var FilterInterface */
     protected $emptyValuesFilter;
 
     /** @var ConverterInterface */
     protected $productValueConverter;
 
-    /** @var CompletenessManager */
-    protected $completenessManager;
-
-    /** @var ObjectManager */
-    protected $productManager;
-
-    /** @var ChannelRepositoryInterface */
-    protected $channelRepository;
-
-    /** @var CollectionFilterInterface */
-    protected $collectionFilter;
-
     /** @var NormalizerInterface */
-    protected $completenessCollectionNormalizer;
+    protected $constraintViolationNormalizer;
 
-    /** @var string */
-    protected $storageDriver;
+    /** @var ProductBuilderInterface */
+    protected $variantProductBuilder;
 
     /**
-     * @param ProductRepositoryInterface   $productRepository
-     * @param AttributeRepositoryInterface $attributeRepository
-     * @param ObjectUpdaterInterface       $productUpdater
-     * @param SaverInterface               $productSaver
-     * @param NormalizerInterface          $normalizer
-     * @param ValidatorInterface           $validator
-     * @param UserContext                  $userContext
-     * @param ObjectFilterInterface        $objectFilter
-     * @param CollectionFilterInterface    $productEditDataFilter
-     * @param RemoverInterface             $productRemover
-     * @param ProductBuilderInterface      $productBuilder
-     * @param AttributeConverterInterface  $localizedConverter
-     * @param ProductFilterInterface       $emptyValuesFilter
-     * @param ConverterInterface           $productValueConverter
-     * @param CompletenessManager          $completenessManager
-     * @param ObjectManager                $productManager
-     * @param ChannelRepositoryInterface   $channelRepository
-     * @param CollectionFilterInterface    $collectionFilter
-     * @param NormalizerInterface          $completenessCollectionNormalizer
-     * @param string                       $storageDriver
+     * @param ProductRepositoryInterface    $productRepository
+     * @param CursorableRepositoryInterface $cursorableRepository
+     * @param AttributeRepositoryInterface  $attributeRepository
+     * @param ObjectUpdaterInterface        $productUpdater
+     * @param SaverInterface                $productSaver
+     * @param NormalizerInterface           $normalizer
+     * @param ValidatorInterface            $validator
+     * @param UserContext                   $userContext
+     * @param ObjectFilterInterface         $objectFilter
+     * @param CollectionFilterInterface     $productEditDataFilter
+     * @param RemoverInterface              $productRemover
+     * @param ProductBuilderInterface       $productBuilder
+     * @param AttributeConverterInterface   $localizedConverter
+     * @param FilterInterface               $emptyValuesFilter
+     * @param ConverterInterface            $productValueConverter
+     * @param NormalizerInterface           $constraintViolationNormalizer
+     * @param ProductBuilderInterface       $variantProductBuilder
      */
     public function __construct(
         ProductRepositoryInterface $productRepository,
+        CursorableRepositoryInterface $cursorableRepository,
         AttributeRepositoryInterface $attributeRepository,
         ObjectUpdaterInterface $productUpdater,
         SaverInterface $productSaver,
@@ -135,16 +120,13 @@ class ProductController
         RemoverInterface $productRemover,
         ProductBuilderInterface $productBuilder,
         AttributeConverterInterface $localizedConverter,
-        ProductFilterInterface $emptyValuesFilter,
+        FilterInterface $emptyValuesFilter,
         ConverterInterface $productValueConverter,
-        CompletenessManager $completenessManager,
-        ObjectManager $productManager,
-        ChannelRepositoryInterface $channelRepository,
-        CollectionFilterInterface $collectionFilter,
-        NormalizerInterface $completenessCollectionNormalizer,
-        $storageDriver
+        NormalizerInterface $constraintViolationNormalizer,
+        ProductBuilderInterface $variantProductBuilder
     ) {
         $this->productRepository = $productRepository;
+        $this->cursorableRepository = $cursorableRepository;
         $this->attributeRepository = $attributeRepository;
         $this->productUpdater = $productUpdater;
         $this->productSaver = $productSaver;
@@ -158,29 +140,29 @@ class ProductController
         $this->localizedConverter = $localizedConverter;
         $this->emptyValuesFilter = $emptyValuesFilter;
         $this->productValueConverter = $productValueConverter;
-        $this->completenessManager = $completenessManager;
-        $this->productManager = $productManager;
-        $this->channelRepository = $channelRepository;
-        $this->collectionFilter = $collectionFilter;
-        $this->completenessCollectionNormalizer = $completenessCollectionNormalizer;
-        $this->storageDriver = $storageDriver;
+        $this->constraintViolationNormalizer = $constraintViolationNormalizer;
+        $this->variantProductBuilder = $variantProductBuilder;
     }
 
     /**
-     * Edit product
+     * Returns a set of products from identifiers parameter
      *
-     * @param int $id
+     * @param Request $request
      *
-     * @Template("PimEnrichBundle:Product:edit.html.twig")
-     * @AclAncestor("pim_enrich_product_index")
-     *
-     * @return array
+     * @return JsonResponse
      */
-    public function editAction($id)
+    public function indexAction(Request $request): JsonResponse
     {
-        return [
-            'productId' => $id
-        ];
+        $productIdentifiers = explode(',', $request->get('identifiers'));
+        $products = $this->cursorableRepository->getItemsFromIdentifiers($productIdentifiers);
+
+        $normalizedProducts = $this->normalizer->normalize(
+            $products,
+            'internal_api',
+            $this->getNormalizationContext()
+        );
+
+        return new JsonResponse($normalizedProducts);
     }
 
     /**
@@ -193,19 +175,12 @@ class ProductController
     public function getAction($id)
     {
         $product = $this->findProductOr404($id);
-        $this->productBuilder->addMissingAssociations($product);
-
-        $normalizationContext = $this->userContext->toArray() + [
-            'filter_types'               => ['pim.internal_api.product_value.view'],
-            'disable_grouping_separator' => true
-        ];
 
         $normalizedProduct = $this->normalizer->normalize(
             $product,
             'internal_api',
-            $normalizationContext
+            $this->getNormalizationContext()
         );
-        $normalizedProduct['meta']['completenesses'] = $this->getNormalizedCompletenesses($product);
 
         return new JsonResponse($normalizedProduct);
     }
@@ -217,32 +192,46 @@ class ProductController
      */
     public function createAction(Request $request)
     {
-        $product = $this->productBuilder->createProduct(
-            $request->request->get('identifier'),
-            $request->request->get('family', null)
-        );
+        $data = json_decode($request->getContent(), true);
+
+        if (isset($data['parent'])) {
+            $product = $this->variantProductBuilder->createProduct(
+                $data['identifier'] ?? null,
+                $data['family'] ?? null
+            );
+
+            if (isset($data['values'])) {
+                $this->updateProduct($product, $data);
+            }
+        } else {
+            $product = $this->productBuilder->createProduct(
+                $data['identifier'] ?? null,
+                $data['family'] ?? null
+            );
+        }
 
         $violations = $this->validator->validate($product);
+
         if (0 === $violations->count()) {
             $this->productSaver->save($product);
-
-            $normalizationContext = $this->userContext->toArray() + [
-                'filter_types'               => ['pim.internal_api.product_value.view'],
-                'disable_grouping_separator' => true
-            ];
 
             return new JsonResponse($this->normalizer->normalize(
                 $product,
                 'internal_api',
-                $normalizationContext
+                $this->getNormalizationContext()
             ));
         }
 
-        $errors = [
-            'values' => $this->normalizer->normalize($violations, 'internal_api', ['product' => $product])
-        ];
+        $normalizedViolations = [];
+        foreach ($violations as $violation) {
+            $normalizedViolations[] = $this->constraintViolationNormalizer->normalize(
+                $violation,
+                'internal_api',
+                ['product' => $product]
+            );
+        }
 
-        return new JsonResponse($errors, 400);
+        return new JsonResponse(['values' => $normalizedViolations], 400);
     }
 
     /**
@@ -260,14 +249,12 @@ class ProductController
         if ($this->objectFilter->filterObject($product, 'pim.internal_api.product.edit')) {
             throw new AccessDeniedHttpException();
         }
-
         $data = json_decode($request->getContent(), true);
         try {
             $data = $this->productEditDataFilter->filterCollection($data, null, ['product' => $product]);
         } catch (ObjectNotFoundException $e) {
             throw new BadRequestHttpException();
         }
-
         $this->updateProduct($product, $data);
 
         $violations = $this->validator->validate($product);
@@ -276,26 +263,25 @@ class ProductController
         if (0 === $violations->count()) {
             $this->productSaver->save($product);
 
-            $normalizationContext = $this->userContext->toArray() + [
-                'filter_types'               => ['pim.internal_api.product_value.view'],
-                'disable_grouping_separator' => true
-            ];
-
             $normalizedProduct = $this->normalizer->normalize(
                 $product,
                 'internal_api',
-                $normalizationContext
+                $this->getNormalizationContext()
             );
-            $normalizedProduct['meta']['completenesses'] = $this->getNormalizedCompletenesses($product);
 
             return new JsonResponse($normalizedProduct);
         }
 
-        $errors = [
-            'values' => $this->normalizer->normalize($violations, 'internal_api', ['product' => $product])
-        ];
+        $normalizedViolations = [];
+        foreach ($violations as $violation) {
+            $normalizedViolations[] = $this->constraintViolationNormalizer->normalize(
+                $violation,
+                'internal_api',
+                ['product' => $product]
+            );
+        }
 
-        return new JsonResponse($errors, 400);
+        return new JsonResponse(['values' => $normalizedViolations], 400);
     }
 
     /**
@@ -363,7 +349,7 @@ class ProductController
      */
     protected function findProductOr404($id)
     {
-        $product = $this->productRepository->findOneByWithValues($id);
+        $product = $this->productRepository->find($id);
         $product = $this->objectFilter->filterObject($product, 'pim.internal_api.product.view') ? null : $product;
 
         if (!$product) {
@@ -419,32 +405,19 @@ class ProductController
             $data['values'] = [];
         }
 
-
         $this->productUpdater->update($product, $data);
     }
 
     /**
-     * Get Product Completeness and normalize it
-     *
-     * @param ProductInterface $product
+     * Get the context used for product normalization
      *
      * @return array
      */
-    protected function getNormalizedCompletenesses(ProductInterface $product)
+    protected function getNormalizationContext(): array
     {
-        $this->completenessManager->generateMissingForProduct($product);
-        // Product have to be refreshed to have the completeness values generated by generateMissingForProduct()
-        // (on ORM, completeness is not calculated the same way and product doesn't need to be refreshed)
-        if (AkeneoStorageUtilsExtension::DOCTRINE_MONGODB_ODM === $this->storageDriver) {
-            $this->productManager->refresh($product);
-        }
-
-        $channels = $this->channelRepository->getFullChannels();
-        $locales = $this->userContext->getUserLocales();
-
-        $filteredLocales = $this->collectionFilter->filterCollection($locales, 'pim.internal_api.locale.view');
-        $completenesses = $this->completenessManager->getProductCompleteness($product, $channels, $filteredLocales);
-
-        return $this->completenessCollectionNormalizer->normalize($completenesses, 'internal_api');
+        return $this->userContext->toArray() + [
+            'filter_types'               => ['pim.internal_api.product_value.view'],
+            'disable_grouping_separator' => true
+        ];
     }
 }

@@ -25,6 +25,9 @@ class AttributeConverter implements AttributeConverterInterface
     /** @var ConstraintViolationListInterface */
     protected $violations;
 
+    /** @var array[] */
+    protected $attributeTypeByCodes;
+
     /**
      * @param LocalizerRegistryInterface   $localizerRegistry
      * @param AttributeRepositoryInterface $attributeRepository
@@ -35,6 +38,7 @@ class AttributeConverter implements AttributeConverterInterface
     ) {
         $this->localizerRegistry = $localizerRegistry;
         $this->attributeRepository = $attributeRepository;
+        $this->attributeTypeByCodes = [];
     }
 
     /**
@@ -43,11 +47,11 @@ class AttributeConverter implements AttributeConverterInterface
     public function convertToDefaultFormats(array $items, array $options = [])
     {
         $this->violations = new ConstraintViolationList();
-        $attributeTypes = $this->attributeRepository->getAttributeTypeByCodes(array_keys($items));
+        $this->cacheAttributeTypeByCodes(array_keys($items));
 
         foreach ($items as $code => $item) {
-            if (isset($attributeTypes[$code])) {
-                $localizer = $this->localizerRegistry->getLocalizer($attributeTypes[$code]);
+            if (isset($this->attributeTypeByCodes[$code])) {
+                $localizer = $this->localizerRegistry->getLocalizer($this->attributeTypeByCodes[$code]);
 
                 if (null !== $localizer) {
                     foreach ($item as $index => $data) {
@@ -128,11 +132,11 @@ class AttributeConverter implements AttributeConverterInterface
      */
     public function convertToLocalizedFormats(array $items, array $options = [])
     {
-        $attributeTypes = $this->attributeRepository->getAttributeTypeByCodes(array_keys($items));
+        $this->cacheAttributeTypeByCodes(array_keys($items));
 
         foreach ($items as $code => $item) {
-            if (isset($attributeTypes[$code])) {
-                $localizer = $this->localizerRegistry->getLocalizer($attributeTypes[$code]);
+            if (isset($this->attributeTypeByCodes[$code])) {
+                $localizer = $this->localizerRegistry->getLocalizer($this->attributeTypeByCodes[$code]);
 
                 if (null !== $localizer) {
                     foreach ($item as $index => $data) {
@@ -178,14 +182,26 @@ class AttributeConverter implements AttributeConverterInterface
     protected function buildPropertyPath(array $data, $code)
     {
         $path = $code;
-        if (isset($data['locale']) && '' !== $data['locale']) {
-            $path.= sprintf('-%s', $data['locale']);
-        }
 
         if (isset($data['scope']) && '' !== $data['scope']) {
-            $path.= sprintf('-%s', $data['scope']);
+            $path .= sprintf('-%s', $data['scope']);
+        }
+
+        if (isset($data['locale']) && '' !== $data['locale']) {
+            $path .= sprintf('-%s', $data['locale']);
         }
 
         return sprintf('values[%s]', $path);
+    }
+
+    /**
+     * @param array $codes
+     */
+    private function cacheAttributeTypeByCodes(array $codes)
+    {
+        $codesToFetch = array_diff($codes, array_keys($this->attributeTypeByCodes));
+
+        // we can have numeric keys here, we can't use array_merge :(
+        $this->attributeTypeByCodes += $this->attributeRepository->getAttributeTypeByCodes($codesToFetch);
     }
 }

@@ -16,7 +16,7 @@ class JsTreeDecorator extends ElementDecorator
     /**
      * @param string $nodeName
      *
-     * @return NodeElement
+     * @return ElementDecorator
      */
     public function findNodeInTree($nodeName)
     {

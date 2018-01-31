@@ -25,23 +25,6 @@ class CategoryRepository extends NestedTreeRepository implements
     /**
      * {@inheritdoc}
      */
-    public function countChildren(CategoryInterface $category, $onlyDirect = false)
-    {
-        $qb = ($onlyDirect) ?
-            $this->getNodeQueryBuilder($category) :
-            $this->getAllChildrenQueryBuilder($category, false);
-
-        $rootAlias = $qb->getRootAliases();
-        $firstRootAlias = $rootAlias[0];
-
-        $qb->select($qb->expr()->count($firstRootAlias));
-
-        return $qb->getQuery()->getSingleScalarResult();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getCategoriesByIds(array $categoriesIds = [])
     {
         if (empty($categoriesIds)) {
@@ -359,20 +342,6 @@ class CategoryRepository extends NestedTreeRepository implements
     /**
      * {@inheritdoc}
      */
-    public function search($treeRootId, $criterias)
-    {
-        $queryBuilder = $this->createQueryBuilder('c');
-        foreach ($criterias as $key => $value) {
-            $queryBuilder->andWhere('c.'. $key .' LIKE :'. $key)->setParameter($key, '%'. $value .'%');
-        }
-        $queryBuilder->andWhere('c.root = :rootId')->setParameter('rootId', $treeRootId);
-
-        return $queryBuilder->getQuery()->getResult();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getTrees()
     {
         return $this->getChildren(null, true, 'created', 'DESC');
@@ -418,19 +387,23 @@ class CategoryRepository extends NestedTreeRepository implements
     }
 
     /**
-     * Create a query builder with just a link to the category passed in parameter
-     *
-     * @param CategoryInterface $category
-     *
-     * @return QueryBuilder
+     * {@inheritdoc}
      */
-    protected function getNodeQueryBuilder(CategoryInterface $category)
+    public function getCodesIfExist(array $codes = []): array
     {
-        $qb = $this->createQueryBuilder('ps');
-        $qb->where('ps.id = :nodeId')
-            ->setParameter('nodeId', $category->getId());
+        $categoryCodes = $this->createQueryBuilder('c')
+            ->select('c.code')
+            ->where('c.code IN (:codes)')
+            ->setParameter('codes', $codes)
+            ->getQuery()
+            ->getScalarResult();
 
-        return $qb;
+        $result = [];
+        foreach ($categoryCodes as $categoryCode) {
+            $result[] = $categoryCode['code'];
+        }
+
+        return $result;
     }
 
     /**

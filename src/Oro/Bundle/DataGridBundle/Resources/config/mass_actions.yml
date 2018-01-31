@@ -27,30 +27,30 @@ services:
 
     oro_datagrid.extension.mass_action.type.ajax:
         class: '%oro_datagrid.extension.mass_action.type.ajax.class%'
-        scope: prototype
+        shared: false
         tags:
             - { name:  oro_datagrid.extension.mass_action.type, type: ajax }
 
     oro_datagrid.extension.mass_action.type.delete:
         class: '%oro_datagrid.extension.mass_action.type.delete.class%'
-        scope: prototype
+        shared: false
         tags:
             - { name:  oro_datagrid.extension.mass_action.type, type: delete }
 
     oro_datagrid.extension.mass_action.type.redirect:
         class: '%oro_datagrid.extension.mass_action.type.redirect.class%'
-        scope: prototype
+        shared: false
         tags:
             - { name:  oro_datagrid.extension.mass_action.type, type: redirect }
 
     oro_datagrid.extension.mass_action.type.widget:
         class: '%oro_datagrid.extension.mass_action.type.widget.class%'
-        scope: prototype
+        shared: false
         tags:
             - { name:  oro_datagrid.extension.mass_action.type, type: widget }
 
     oro_datagrid.extension.mass_action.type.window:
         class: '%oro_datagrid.extension.mass_action.type.window.class%'
-        scope: prototype
+        shared: false
         tags:
             - { name:  oro_datagrid.extension.mass_action.type, type: window }

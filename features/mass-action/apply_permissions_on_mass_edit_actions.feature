@@ -20,21 +20,19 @@ Feature: Apply ACL permissions on mass edit actions
     And I revoke rights to resource Change product family and Change state of product
     And I save the Role
     Then I should not see the text "There are unsaved changes."
-    When I am on the products page
+    When I am on the products grid
     And I select rows kickers and hiking_shoes
-    And I press "Change product information" on the "Bulk Actions" dropdown button
-    Then I should see the text "Edit common attributes"
+    And I press the "Bulk actions" button
+    Then I should see the text "Edit attributes"
     And I should see the text "Add to groups"
-    And I should see the text "Add to a variant group"
-    And I should not see "Change the family of products"
-    And I should not see "Change status (enable / disable)"
+    And I should not see "Change family"
+    And I should not see "Change status"
 
   Scenario: View all mass edit operations
-    Given I am on the products page
+    Given I am on the products grid
     When I select rows kickers and hiking_shoes
-    And I press "Change product information" on the "Bulk Actions" dropdown button
-    Then I should see the text "Change status (enable / disable)"
-    And I should see the text "Edit common attributes"
-    And I should see the text "Change the family of products"
+    And I press the "Bulk actions" button
+    Then I should see the text "Change status"
+    And I should see the text "Edit attributes"
+    And I should see the text "Change family"
     And I should see the text "Add to groups"
-    And I should see the text "Add to a variant group"

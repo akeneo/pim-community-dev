@@ -3,7 +3,7 @@
 namespace Pim\Component\Connector\Validator\Constraints;
 
 use Akeneo\Component\StorageUtils\Exception\PropertyException;
-use Pim\Component\Catalog\Query\ProductQueryBuilderFactory;
+use Pim\Component\Catalog\Query\ProductQueryBuilderFactoryInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
@@ -21,18 +21,18 @@ use Symfony\Component\Validator\ConstraintValidator;
  */
 class FilterDataValidator extends ConstraintValidator
 {
-    /** @var ProductQueryBuilderFactory */
+    /** @var ProductQueryBuilderFactoryInterface */
     protected $pqbFactory;
 
     /** @var TranslatorInterface */
     protected $translator;
 
     /**
-     * @param ProductQueryBuilderFactory $pqbFactory
-     * @param TranslatorInterface        $translator
+     * @param ProductQueryBuilderFactoryInterface $pqbFactory
+     * @param TranslatorInterface                 $translator
      */
     public function __construct(
-        ProductQueryBuilderFactory $pqbFactory,
+        ProductQueryBuilderFactoryInterface $pqbFactory,
         TranslatorInterface $translator
     ) {
         $this->pqbFactory = $pqbFactory;

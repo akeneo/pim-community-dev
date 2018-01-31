@@ -4,6 +4,7 @@ namespace Pim\Bundle\ApiBundle\Security;
 
 use Symfony\Component\Security\Acl\Domain\ObjectIdentity;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
+use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 
 /**
@@ -29,7 +30,7 @@ use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-class ActionAclVoter implements VoterInterface
+class ActionAclVoter extends Voter implements VoterInterface
 {
     const OID_IDENTIFIER = 'action';
 
@@ -52,17 +53,9 @@ class ActionAclVoter implements VoterInterface
     /**
      * {@inheritdoc}
      */
-    public function supportsAttribute($attribute)
+    public function supports($attribute, $subject)
     {
         return $this->oidType === $attribute;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function supportsClass($class)
-    {
-        return true;
     }
 
     /**
@@ -71,15 +64,23 @@ class ActionAclVoter implements VoterInterface
     public function vote(TokenInterface $token, $object, array $attributes)
     {
         foreach ($attributes as $attribute) {
-            if (!$this->supportsAttribute($attribute)) {
+            if (!$this->supports($attribute, $object)) {
                 continue;
             }
 
-            $oid = new ObjectIdentity(static::OID_IDENTIFIER, $attribute);
-
-            return $this->baseAclVoter->vote($token, $oid, ['EXECUTE']);
+            return $this->voteOnAttribute($attribute, $object, $token);
         }
 
         return self::ACCESS_ABSTAIN;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function voteOnAttribute($attribute, $subject, TokenInterface $token)
+    {
+        $oid = new ObjectIdentity(static::OID_IDENTIFIER, $attribute);
+
+        return $this->baseAclVoter->vote($token, $oid, ['EXECUTE']);
     }
 }

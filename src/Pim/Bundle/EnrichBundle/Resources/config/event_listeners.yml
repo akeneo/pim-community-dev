@@ -1,11 +1,19 @@
 parameters:
+    pim_enrich.event_listener.close_session.class:              Pim\Bundle\EnrichBundle\EventListener\CloseSessionListener
     pim_enrich.event_listener.user_context.class:               Pim\Bundle\EnrichBundle\EventListener\UserContextListener
     pim_enrich.event_listener.request.class:                    Pim\Bundle\EnrichBundle\EventListener\RequestListener
     pim_enrich.event_subscriber.translate_flash_messages.class: Pim\Bundle\EnrichBundle\EventListener\TranslateFlashMessagesSubscriber
     pim_enrich.event_subscriber.storage.channel_locale.class:   Pim\Bundle\EnrichBundle\EventListener\Storage\ChannelLocaleSubscriber
     pim_enrich.event_listener.add_locale.class:                 Pim\Bundle\EnrichBundle\EventListener\AddLocaleListener
 
+    security.exception_listener.class: Pim\Bundle\EnrichBundle\Security\Firewall\ExceptionListener
+
 services:
+    pim_enrich.event_listener.close_session:
+        class: %pim_enrich.event_listener.close_session.class%
+        tags:
+            - { name: kernel.event_subscriber }
+
     # User context listener
     stof_doctrine_extensions.event_listener.locale:
         class: '%pim_enrich.event_listener.user_context.class%'
@@ -35,7 +43,7 @@ services:
         arguments:
             - '@pim_catalog.repository.locale'
             - '@pim_catalog.saver.locale'
-            - '@pim_catalog.doctrine.completeness_generator'
+            - '@pim_catalog.remover.completeness'
         tags:
             - { name: kernel.event_subscriber }
 

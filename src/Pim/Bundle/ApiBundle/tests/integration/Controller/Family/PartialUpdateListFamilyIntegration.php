@@ -37,6 +37,7 @@ JSON;
                 'code'                   => 'familyA1',
                 'attributes'             => ['a_date', 'a_file', 'a_localizable_image', 'sku'],
                 'attribute_as_label'     => 'sku',
+                'attribute_as_image'     => null,
                 'attribute_requirements' => [
                     'ecommerce'       => ['a_date', 'a_file', 'sku'],
                     'ecommerce_china' => ['sku'],
@@ -50,6 +51,7 @@ JSON;
                 'code'                   => 'familyC',
                 'attributes'             => ['a_yes_no', 'sku'],
                 'attribute_as_label'     => 'sku',
+                'attribute_as_image'     => null,
                 'attribute_requirements' => [
                     'ecommerce'       => ['sku'],
                     'ecommerce_china' => ['sku'],
@@ -220,7 +222,7 @@ JSON;
 
         $expectedContent =
 <<<JSON
-{"line":1,"code":"foo","status_code":422,"message":"Property \"attributes\" expects an array as data, \"string\" given. Check the standard format documentation.","_links":{"documentation":{"href":"http:\/\/api.akeneo.com\/api-reference.html#patch_families__code_"}}}
+{"line":1,"code":"foo","status_code":422,"message":"Property \"attributes\" expects an array as data, \"string\" given. Check the expected format on the API documentation.","_links":{"documentation":{"href":"http:\/\/api.akeneo.com\/api-reference.html#patch_families__code_"}}}
 JSON;
 
         $response = $this->executeStreamRequest('PATCH', 'api/rest/v1/families', [], [], [], $data);
@@ -284,54 +286,6 @@ JSON;
     }
 
     /**
-     * Execute a request where the response is streamed by chunk.
-     *
-     * The whole content of the request and the whole content of the response
-     * are loaded in memory.
-     * Therefore, do not use this function on with an high input/output volumetry.
-     *
-     * @param string $method
-     * @param string $uri
-     * @param array  $parameters
-     * @param array  $files
-     * @param array  $server
-     * @param string $content
-     * @param bool   $changeHistory
-     *
-     * @return array
-     */
-    protected function executeStreamRequest(
-        $method,
-        $uri,
-        array $parameters = [],
-        array $files = [],
-        array $server = [],
-        $content = null,
-        $changeHistory = true
-    ) {
-        $streamedContent = '';
-
-        ob_start(function($buffer) use (&$streamedContent) {
-            $streamedContent .= $buffer;
-
-            return '';
-        });
-
-        $client = $this->createAuthenticatedClient();
-        $client->setServerParameter('CONTENT_TYPE', StreamResourceResponse::CONTENT_TYPE);
-        $client->request($method, $uri, $parameters, $files, $server, $content, $changeHistory);
-
-        ob_end_flush();
-
-        $response = [
-            'http_response' => $client->getResponse(),
-            'content'       => $streamedContent,
-        ];
-
-        return $response;
-    }
-
-    /**
      * @param array  $expectedFamily normalized data of the family that should be created
      * @param string $code           code of the family that should be created
      */
@@ -349,6 +303,6 @@ JSON;
      */
     protected function getConfiguration()
     {
-        return new Configuration([Configuration::getTechnicalCatalogPath()]);
+        return $this->catalog->useTechnicalCatalog();
     }
 }

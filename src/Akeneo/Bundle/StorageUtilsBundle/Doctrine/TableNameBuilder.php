@@ -2,7 +2,7 @@
 
 namespace Akeneo\Bundle\StorageUtilsBundle\Doctrine;
 
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -18,19 +18,19 @@ class TableNameBuilder
     /** @var ContainerInterface */
     protected $container;
 
-    /** @var ManagerRegistry */
-    protected $managerRegistry;
+    /** @var ObjectManager */
+    protected $objectManager;
 
     /**
      * Construct
      *
      * @param ContainerInterface $container
-     * @param ManagerRegistry    $managerRegistry
+     * @param ObjectManager      $objectManager
      */
-    public function __construct(ContainerInterface $container, ManagerRegistry $managerRegistry)
+    public function __construct(ContainerInterface $container, ObjectManager $objectManager)
     {
         $this->container = $container;
-        $this->managerRegistry = $managerRegistry;
+        $this->objectManager = $objectManager;
     }
 
     /**
@@ -64,8 +64,7 @@ class TableNameBuilder
     protected function getClassMetadata($entityParameter)
     {
         $entityClassName = $this->container->getParameter($entityParameter);
-        $manager = $this->managerRegistry->getManagerForClass($entityClassName);
-        $classMetadata = $manager->getClassMetadata($entityClassName);
+        $classMetadata = $this->objectManager->getClassMetadata($entityClassName);
 
         return $classMetadata;
     }

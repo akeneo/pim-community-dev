@@ -38,6 +38,7 @@ class GetFamilyIntegration extends ApiTestCase
         "sku"
     ],
     "attribute_as_label": "sku",
+    "attribute_as_image": "an_image",
     "attribute_requirements": {
         "ecommerce" : [
             "a_date",
@@ -83,7 +84,10 @@ class GetFamilyIntegration extends ApiTestCase
             "sku"
         ]
     },
-    "labels": {}
+    "labels": {
+        "fr_FR" : "Une famille A",
+        "en_US" : "A family A"
+    }
 }
 JSON;
         $response = $client->getResponse();
@@ -110,6 +114,6 @@ JSON;
      */
     protected function getConfiguration()
     {
-        return new Configuration([Configuration::getTechnicalCatalogPath()]);
+        return $this->catalog->useTechnicalCatalog();
     }
 }

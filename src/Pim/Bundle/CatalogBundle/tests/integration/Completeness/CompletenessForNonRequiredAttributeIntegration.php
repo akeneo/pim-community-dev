@@ -13,7 +13,7 @@ use Pim\Component\Catalog\Model\ProductInterface;
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class CompletenessForNonRequiredAttributeIntegration extends AbstractCompletenessIntegration
+class CompletenessForNonRequiredAttributeIntegration extends AbstractCompletenessTestCase
 {
     public function testAttributeNotRequiredByFamily()
     {
@@ -86,11 +86,9 @@ class CompletenessForNonRequiredAttributeIntegration extends AbstractCompletenes
      */
     private function assertComplete(ProductInterface $product, $requiredCount)
     {
-        $completenesses = $product->getCompletenesses()->toArray();
-        $this->assertNotNull($completenesses);
-        $this->assertCount(1, $completenesses);
+        $this->assertCompletenessesCount($product, 1);
 
-        $completeness = current($completenesses);
+        $completeness = $this->getCurrentCompleteness($product);
 
         $this->assertNotNull($completeness->getLocale());
         $this->assertEquals('en_US', $completeness->getLocale()->getCode());
@@ -99,6 +97,7 @@ class CompletenessForNonRequiredAttributeIntegration extends AbstractCompletenes
         $this->assertEquals(100, $completeness->getRatio());
         $this->assertEquals($requiredCount, $completeness->getRequiredCount());
         $this->assertEquals(0, $completeness->getMissingCount());
+        $this->assertEquals(0, $completeness->getMissingAttributes()->count());
     }
 
     /**
@@ -106,6 +105,6 @@ class CompletenessForNonRequiredAttributeIntegration extends AbstractCompletenes
      */
     protected function getConfiguration()
     {
-        return new Configuration([Configuration::getMinimalCatalogPath()]);
+        return $this->catalog->useMinimalCatalog();
     }
 }

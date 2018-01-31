@@ -2,6 +2,8 @@ datagrid:
     job-execution-grid:
         source:
             type: pim_datasource_job_execution
+        options:
+            manageFilters: false
         columns:
             code:
                 label:     Code
@@ -16,7 +18,7 @@ datagrid:
             date:
                 label:         Date
                 data_name:     date
-                type: product_value_datetime
+                type:          datetime
                 frontend_type: datetime
             status:
                 label:         Status
@@ -38,9 +40,10 @@ datagrid:
                     - id
         actions:
             show:
+                launcherOptions:
+                    className: AknIconButton AknIconButton--small AknIconButton--view
                 type:      navigate
                 label:     pim.grid.action.show.title
-                icon:      list-alt
                 link:      show_link
                 rowAction: true
         sorters:
@@ -65,7 +68,7 @@ datagrid:
                     type:      string
                     data_name: j.code
                 label:
-                    type:      string
+                    type:      search
                     data_name: j.label
                 job_name:
                     type:      choice
@@ -75,12 +78,10 @@ datagrid:
                             multiple: true
                 date:
                     type:             datetime
-                    data_name:        date
-                    filter_by_having: true
+                    data_name:        e.startTime
                 status:
                     type:             choice
-                    data_name:        status
-                    filter_by_having: true
+                    data_name:        e.status
                     options:
                         field_options:
                             multiple: true

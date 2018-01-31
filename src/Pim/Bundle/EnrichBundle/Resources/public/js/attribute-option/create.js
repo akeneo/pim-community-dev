@@ -8,7 +8,7 @@ define(
         'routing',
         'pim/form-builder',
         'oro/messenger',
-        'text!pim/template/attribute-option/validation-error'
+        'pim/template/attribute-option/validation-error'
     ],
     function (
         $,
@@ -52,12 +52,12 @@ define(
                             method: 'POST',
                             url: Routing.generate(
                                 'pim_enrich_attributeoption_create',
-                                { attributeId: this.attribute.id }
+                                { attributeId: this.attribute.meta.id }
                             ),
                             data: JSON.stringify(form.getFormData())
                         }).done(function (option) {
                             modal.close();
-                            messenger.notificationFlashMessage(
+                            messenger.notify(
                                 'success',
                                 _.__('pim_enrich.form.attribute_option.flash.option_created')
                             );
@@ -72,7 +72,7 @@ define(
                                     })
                                 );
                             } else {
-                                messenger.notificationFlashMessage(
+                                messenger.notify(
                                     'error',
                                     _.__('pim_enrich.form.attribute_option.flash.error_creating_option')
                                 );

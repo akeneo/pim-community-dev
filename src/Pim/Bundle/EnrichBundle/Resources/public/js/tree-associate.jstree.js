@@ -48,6 +48,7 @@ define(
                             if ((!node || (node === -1)) && treeHasItem) {
                                 // First load of the tree: get the checked categories
                                 var selected = this.parseHiddenCategories();
+
                                 return Routing.generate(
                                     routes.list_categories,
                                     {
@@ -133,6 +134,10 @@ define(
                 var $tree = $('#tree-' + treeId);
                 $tree.jstree(self.config);
 
+                $tree.bind('loaded.jstree', function () {
+                    mediator.trigger('jstree:loaded');
+                });
+
                 $tree.bind('check_node.jstree', function (e, d) {
                     if (d.inst.get_checked() && $(d.rslt.obj[0]).hasClass('jstree-root') === false) {
                         var selected = this.parseHiddenCategories();
@@ -201,6 +206,7 @@ define(
              */
             this.parseHiddenCategories = function () {
                 var hiddenValue = $(hiddenCategoryId).val();
+
                 return hiddenValue.length > 0 ? hiddenValue.split(',') : [];
             };
 

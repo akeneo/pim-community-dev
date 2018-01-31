@@ -31,9 +31,11 @@ class ProductMassEdit implements DefaultValuesProviderInterface
     public function getDefaultValues()
     {
         return [
-            'filters'            => [],
-            'actions'            => [],
-            'realTimeVersioning' => true,
+            'filters'               => [],
+            'actions'               => [],
+            'realTimeVersioning'    => true,
+            'user_to_notify'        => null,
+            'is_user_authenticated' => false
         ];
     }
 

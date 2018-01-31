@@ -25,21 +25,19 @@ class PanelDecorator extends ElementDecorator
     /**
      * Return Completeness Panel as an array
      * [
-     *      'en_US' => [
-     *          'opened'   => true,
+     *      'ecommerce' => [
+     *          'label'    => 'Ecommerce'
      *          'position' => 1,
      *          'data'     => [
-     *              'mobile' => [
-     *                  'ratio'          => '90%',
-     *                  'state'          => 'warning',
-     *                  'missing_values' => [
-     *                      'price' => 'Price'
-     *                  ]
+     *              'en_US' => [
+     *                  'ratio' => '90%',
+     *                  'state' => 'warning',
+     *                  'label' => 'German (Germany)'
      *              ]
      *          ]
      *      ], ...
      * ]
-
+     *
      * @return array
      */
     public function getCompletenessData()
@@ -48,19 +46,18 @@ class PanelDecorator extends ElementDecorator
 
         $completenessBlocks = $this->findAll('css', $this->selectors['Completeness blocks']['css']);
         foreach ($completenessBlocks as $position => $block) {
-            $locale = $block->find('css', '.locale')->getAttribute('data-locale');
-            $opened = 'false' === $block->getAttribute('data-closed');
+            $channelCode = $block->find('css', '.channel')->getAttribute('data-channel');
 
-            $completenesses[$locale] = [
-                'opened'   => $opened,
+            $completenesses[$channelCode] = [
                 'position' => $position + 1,
                 'data'     => [],
+                'label'    => $block->find('css', '.channel')->getText(),
             ];
 
-            $scopeBlocks = $block->findAll('css', '.content > div');
-            foreach ($scopeBlocks as $scopeBlock) {
-                $scope = $scopeBlock->find('css', '.channel')->getAttribute('data-channel');
-                $completenesses[$locale]['data'][$scope] = $this->getScopeData($scopeBlock);
+            $localeBlocks = $block->findAll('css', '.content > div');
+            foreach ($localeBlocks as $localeBlock) {
+                $locale = $localeBlock->find('css', '.locale')->getAttribute('data-locale');
+                $completenesses[$channelCode]['data'][$locale] = $this->getLocaleData($localeBlock);
             }
         }
 
@@ -68,32 +65,22 @@ class PanelDecorator extends ElementDecorator
     }
 
     /**
-     * @param NodeElement $scopeBlock
+     * @param NodeElement $localeBlock
      *
      * @return array
      */
-    protected function getScopeData(NodeElement $scopeBlock)
+    protected function getLocaleData(NodeElement $localeBlock)
     {
-        $ratio = $scopeBlock ? $scopeBlock->find('css', '.literal-progress')->getHtml() : '';
-        $state = $this->getState($scopeBlock);
-        $label = $scopeBlock->find('css', '.channel')->getText();
-
-        $missingValuesBlocks = $scopeBlock ? $scopeBlock->findAll('css', '.missing-attributes [data-attribute]') : [];
-
-        $missingValues = [];
-        if (!empty($missingValuesBlocks)) {
-            foreach ($missingValuesBlocks as $missingValuesBlock) {
-                $attributeCode  = $missingValuesBlock->getAttribute('data-attribute');
-                $attributeLabel = $missingValuesBlock->getHtml();
-                $missingValues[$attributeCode] = $attributeLabel;
-            }
-        }
+        $ratio = $localeBlock ? $localeBlock->find('css', '.literal-progress')->getHtml() : '';
+        $state = $this->getState($localeBlock);
+        $label = $localeBlock->find('css', '.locale')->getText();
+        $missing = $localeBlock->find('css', '.missing');
 
         return [
             'label'          => $label,
             'ratio'          => $ratio,
             'state'          => $state,
-            'missing_values' => $missingValues
+            'missing_values' => (string) ((null !== $missing) ? intval($missing->getText()) : 0)
         ];
     }
 

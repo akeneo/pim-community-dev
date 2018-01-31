@@ -1,0 +1,8 @@
+parameters:
+    pim_catalog.entity.value.scalar.class: Pim\Component\Catalog\Value\ScalarValue
+    pim_catalog.entity.value.media.class: Pim\Component\Catalog\Value\MediaValue
+    pim_catalog.entity.value.metric.class: Pim\Component\Catalog\Value\MetricValue
+    pim_catalog.entity.value.option.class: Pim\Component\Catalog\Value\OptionValue
+    pim_catalog.entity.value.options.class: Pim\Component\Catalog\Value\OptionsValue
+    pim_catalog.entity.value.date.class: Pim\Component\Catalog\Value\DateValue
+    pim_catalog.entity.value.price_collection.class: Pim\Component\Catalog\Value\PriceCollectionValue

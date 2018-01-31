@@ -4,7 +4,6 @@ namespace Pim\Bundle\DashboardBundle\Widget;
 
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Filter\ObjectFilterInterface;
-use Pim\Bundle\CatalogBundle\Helper\LocaleHelper;
 use Pim\Bundle\UserBundle\Context\UserContext;
 use Pim\Component\Catalog\Repository\CompletenessRepositoryInterface;
 
@@ -20,9 +19,6 @@ class CompletenessWidget implements WidgetInterface
     /** @var CompletenessRepositoryInterface */
     protected $completenessRepo;
 
-    /** @var LocaleHelper */
-    protected $localeHelper;
-
     /** @var UserContext */
     protected $userContext;
 
@@ -34,20 +30,17 @@ class CompletenessWidget implements WidgetInterface
 
     /**
      * @param CompletenessRepositoryInterface       $completenessRepo
-     * @param LocaleHelper                          $localeHelper
      * @param UserContext                           $userContext
      * @param ObjectFilterInterface                 $objectFilter
      * @param IdentifiableObjectRepositoryInterface $localeRepository
      */
     public function __construct(
         CompletenessRepositoryInterface $completenessRepo,
-        LocaleHelper $localeHelper,
         UserContext $userContext,
         ObjectFilterInterface $objectFilter,
         IdentifiableObjectRepositoryInterface $localeRepository
     ) {
         $this->completenessRepo = $completenessRepo;
-        $this->localeHelper     = $localeHelper;
         $this->userContext      = $userContext;
         $this->objectFilter     = $objectFilter;
         $this->localeRepository = $localeRepository;
@@ -96,7 +89,7 @@ class CompletenessWidget implements WidgetInterface
         foreach ($completeProducts as $completeProduct) {
             $locale = $this->localeRepository->findOneByIdentifier($completeProduct['locale']);
             if (!$this->objectFilter->filterObject($locale, 'pim.internal_api.locale.view')) {
-                $localeLabel = $this->localeHelper->getLocaleLabel($completeProduct['locale']);
+                $localeLabel = $this->getCurrentLocaleLabel($completeProduct['locale']);
                 $data[$completeProduct['label']]['locales'][$localeLabel] = (int) $completeProduct['total'];
                 $data[$completeProduct['label']]['complete'] += $completeProduct['total'];
             }
@@ -107,5 +100,20 @@ class CompletenessWidget implements WidgetInterface
         });
 
         return $data;
+    }
+
+    /**
+     * Returns the label of a locale in the specified language
+     *
+     * @param string $code        the code of the locale to translate
+     * @param string $translateIn the locale in which the label should be translated (if null, user locale will be used)
+     *
+     * @return string
+     */
+    private function getCurrentLocaleLabel($code, $translateIn = null)
+    {
+        $translateIn = $translateIn ?: $this->userContext->getCurrentLocaleCode();
+
+        return \Locale::getDisplayName($code, $translateIn);
     }
 }

@@ -1,2 +1,3 @@
 parameters:
+    oro_user.form.type.acl_role_type.class: Pim\Bundle\UserBundle\Form\Type\AclRoleType
     oro_user.form.handler.reset.class: Pim\Bundle\UserBundle\Form\Handler\ResetHandler

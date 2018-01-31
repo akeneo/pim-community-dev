@@ -1,16 +1,20 @@
-{% extends 'PimEnrichBundle::layout.html.twig' %}
+{% import 'PimUIBundle:Default:page_elements.html.twig' as elements %}
 
 {% block content %}
-    {% set buttons %}
-        <a href="{{ path('pim_analytics_system_info_download') }}" class="AknButton AknButton--withIcon AknButton--grey no-hash">
-            <i class="AknButton-icon icon-download-alt"></i>
-            {{ 'pim_analytics.system_info.download'|trans }}
-        </a>
-    {% endset %}
+    <div class="AknDefault-mainContent">
+        {% set buttons %}
+            <a href="{{ path('pim_analytics_system_info_download') }}" class="AknButton AknButton--grey no-hash">
+                {{ 'pim_analytics.system_info.download'|trans }}
+            </a>
+        {% endset %}
 
-    {{ elements.page_header('pim_analytics.system_info.title'|trans, buttons) }}
+        {{ elements.page_header(
+            {
+                title: 'pim_analytics.system_info.title'|trans,
+                buttons: buttons
+            }
+        ) }}
 
-    <div class="AknGridContainer row-fluid tab-content">
         <table class="AknGrid AknGrid--unclickable AknGrid--condensed table">
             {% for infoType,info in data %}
                 <tr class="AknGrid-bodyRow">
@@ -26,4 +30,39 @@
             {% endfor %}
         </table>
     </div>
+
+    <script>
+        require(
+            [
+                'pim/common/breadcrumbs',
+                'pim/fetcher-registry',
+                'pim/form-builder'
+            ],
+            function(
+                Breadcrumbs,
+                FetcherRegistry,
+                FormBuilder
+            ) {
+                $(function() {
+                    var breadcrumbs = new Breadcrumbs({
+                        config: {
+                            tab: 'pim-menu-system',
+                            item: 'pim-menu-system-info'
+                        }
+                    });
+                    breadcrumbs.configure().then(function () {
+                        breadcrumbs.render();
+                        $('*[data-drop-zone="breadcrumbs"]').append(breadcrumbs.$el);
+                    });
+
+                    FetcherRegistry.initialize().done(function () {
+                        FormBuilder.build('pim-menu-user-navigation').then(function (form) {
+                            $('.user-menu').append(form.el);
+                            form.render();
+                        }.bind(this));
+                    });
+                });
+            }
+        );
+    </script>
 {% endblock %}

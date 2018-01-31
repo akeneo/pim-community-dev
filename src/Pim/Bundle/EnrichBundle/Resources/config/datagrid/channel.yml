@@ -3,14 +3,14 @@ datagrid:
         options:
             entityHint: channel
             locale_parameter: localeCode
+            manageFilters: false
         source:
             acl_resource: pim_enrich_channel_index
             type: pim_datasource_channel
         columns:
-            code:
-                label: Code
             label:
                 label: Label
+                frontend_type: label
             category:
                 label:     Category tree
                 data_name: categoryLabel
@@ -28,34 +28,30 @@ datagrid:
                     - code
         actions:
             edit:
+                launcherOptions:
+                    className: AknIconButton AknIconButton--small AknIconButton--edit
                 type:      navigate
                 label:     Edit
-                icon:      pencil
                 link:      edit_link
                 rowAction: true
             delete:
+                launcherOptions:
+                    className: AknIconButton AknIconButton--small AknIconButton--trash
                 type:  delete
                 label: Delete
-                icon:  trash
                 link:  delete_link
         sorters:
             columns:
-                code:
-                    data_name: c.code
                 label:
                     data_name: channelLabel
                 category:
                     data_name: categoryLabel
             default:
-                code: '%oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC'
+                label: '%oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC'
         filters:
             columns:
-                code:
-                    type:      string
-                    label:     Code
-                    data_name: c.code
                 label:
-                    type:      string
+                    type:      search
                     label:     Label
                     data_name: translation.label
                 category:

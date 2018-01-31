@@ -2,29 +2,23 @@
 
 namespace spec\Pim\Bundle\VersioningBundle\EventSubscriber;
 
+use Akeneo\Component\Versioning\Model\Version;
 use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
 use Doctrine\Common\Persistence\ManagerRegistry;
-use Doctrine\ODM\MongoDB\Mapping\ClassMetadata as ODMClassMetadata;
-use Doctrine\ORM\Mapping\ClassMetadata as ORMClassMetadata;
-use Doctrine\Common\Persistence\ObjectManager;
-use Doctrine\ODM\MongoDB\DocumentManager;
 use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\Mapping\ClassMetadata as ORMClassMetadata;
+use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\ORM\UnitOfWork as ORMUnitOfWork;
-use Doctrine\ODM\MongoDB\UnitOfWork as ODMUnitOfWork;
+use Doctrine\ORM\UnitOfWork;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\TimestampableInterface;
-use Akeneo\Component\Versioning\Model\Version;
 
-/**
- * @require Doctrine\ODM\MongoDB\DocumentManager
- * @require Doctrine\ODM\MongoDB\Mapping\ClassMetadata
- * @require Doctrine\ODM\MongoDB\UnitOfWork
- */
 class TimestampableSubscriberSpec extends ObjectBehavior
 {
-    function let(ManagerRegistry $registry)
+    function let(EntityManagerInterface $em)
     {
-        $this->beConstructedWith($registry);
+        $this->beConstructedWith($em);
     }
 
     function it_is_a_doctrine_event_listener()
@@ -46,14 +40,12 @@ class TimestampableSubscriberSpec extends ObjectBehavior
     }
 
     function it_does_not_apply_on_non_timestampable_versioned_object(
-        $registry,
+        $em,
         LifecycleEventArgs $args,
-        ObjectManager $om,
         Version $version,
         ORMClassMetadata $metadata
     ) {
-        $registry->getManagerForClass('bar')->willReturn($om);
-        $om->getClassMetadata('bar')->willReturn($metadata);
+        $em->getClassMetadata('bar')->willReturn($metadata);
         $metadata->getReflectionClass()->willReturn(new \ReflectionClass('spec\Pim\Bundle\VersioningBundle\EventSubscriber\NonTimestampableInterface'));
 
         $version->getResourceId()->willReturn('foo');
@@ -61,22 +53,20 @@ class TimestampableSubscriberSpec extends ObjectBehavior
 
         $args->getObject()->willReturn($version);
 
-        $om->find()->shouldNotBeCalled();
+        $em->find()->shouldNotBeCalled();
 
         $this->prePersist($args);
     }
 
     function it_applies_on_timestampable_versioned_object_with_an_entity_manager(
-        $registry,
+        $em,
         LifecycleEventArgs $args,
-        EntityManager $om,
         ORMUnitOfWork $uow,
         Version $version,
         TimestampableInterface $object,
         ORMClassMetadata $metadata
     ) {
-        $registry->getManagerForClass('bar')->willReturn($om);
-        $om->getClassMetadata('bar')->willReturn($metadata);
+        $em->getClassMetadata('bar')->willReturn($metadata);
         $metadata->getReflectionClass()->willReturn(new \ReflectionClass('Pim\Component\Catalog\Model\TimestampableInterface'));
 
         $version->getResourceId()->willReturn('foo');
@@ -85,8 +75,8 @@ class TimestampableSubscriberSpec extends ObjectBehavior
 
         $args->getObject()->willReturn($version);
 
-        $om->getUnitOfWork()->willReturn($uow);
-        $om->find('bar', 'foo')->willReturn($object);
+        $em->getUnitOfWork()->willReturn($uow);
+        $em->find('bar', 'foo')->willReturn($object);
 
         $uow->computeChangeSet($metadata, $object)->shouldBeCalled();
 
@@ -96,16 +86,14 @@ class TimestampableSubscriberSpec extends ObjectBehavior
     }
 
     function it_applies_on_timestampable_versioned_object_with_a_document_manager(
-        $registry,
+        $em,
         LifecycleEventArgs $args,
-        DocumentManager $om,
-        ODMUnitOfWork $uow,
+        UnitOfWork $uow,
         Version $version,
         TimestampableInterface $object,
-        ODMClassMetadata $metadata
+        ClassMetadata $metadata
     ) {
-        $registry->getManagerForClass('bar')->willReturn($om);
-        $om->getClassMetadata('bar')->willReturn($metadata);
+        $em->getClassMetadata('bar')->willReturn($metadata);
         $metadata->getReflectionClass()->willReturn(new \ReflectionClass('Pim\Component\Catalog\Model\TimestampableInterface'));
 
         $version->getResourceId()->willReturn('foo');
@@ -114,8 +102,8 @@ class TimestampableSubscriberSpec extends ObjectBehavior
 
         $args->getObject()->willReturn($version);
 
-        $om->getUnitOfWork()->willReturn($uow);
-        $om->find('bar', 'foo')->willReturn($object);
+        $em->getUnitOfWork()->willReturn($uow);
+        $em->find('bar', 'foo')->willReturn($object);
 
         $uow->computeChangeSet($metadata, $object)->shouldBeCalled();
 

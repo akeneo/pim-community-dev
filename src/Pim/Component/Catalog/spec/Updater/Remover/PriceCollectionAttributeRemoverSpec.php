@@ -5,10 +5,12 @@ namespace spec\Pim\Component\Catalog\Updater\Remover;
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use PhpSpec\ObjectBehavior;
+use Pim\Component\Catalog\Builder\EntityWithValuesBuilderInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
-use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Model\PriceCollectionInterface;
 use Pim\Component\Catalog\Model\ProductPriceInterface;
-use Pim\Component\Catalog\Model\ProductValueInterface;
+use Pim\Component\Catalog\Model\ValueInterface;
+use Pim\Component\Catalog\Model\EntityWithValuesInterface;
 use Pim\Component\Catalog\Repository\CurrencyRepositoryInterface;
 use Pim\Component\Catalog\Validator\AttributeValidatorHelper;
 use Prophecy\Argument;
@@ -17,11 +19,13 @@ class PriceCollectionAttributeRemoverSpec extends ObjectBehavior
 {
     function let(
         CurrencyRepositoryInterface $currencyRepository,
+        EntityWithValuesBuilderInterface $entityWithValuesBuilder,
         AttributeValidatorHelper $attrValidatorHelper
     ) {
         $this->beConstructedWith(
             $attrValidatorHelper,
             $currencyRepository,
+            $entityWithValuesBuilder,
             ['pim_catalog_price_collection']
         );
     }
@@ -42,31 +46,17 @@ class PriceCollectionAttributeRemoverSpec extends ObjectBehavior
         $this->supportsAttribute($textareaAttribute)->shouldReturn(false);
     }
 
-    function it_checks_locale_and_scope_when_removing_an_attribute_data(
-        $attrValidatorHelper,
+    function it_removes_an_attribute_data_price_collection_value_from_an_entity_with_values(
         $currencyRepository,
+        $entityWithValuesBuilder,
         AttributeInterface $attribute,
-        ProductInterface $product
-    ) {
-        $attrValidatorHelper->validateLocale(Argument::cetera())->shouldBeCalled();
-        $attrValidatorHelper->validateScope(Argument::cetera())->shouldBeCalled();
-        $currencyRepository->getActivatedCurrencyCodes()->willReturn(['EUR', 'USD']);
-
-        $attribute->getCode()->willReturn('price');
-        $product->getValue('price', 'fr_FR', 'mobile')->willReturn(null);
-
-        $data = [['amount' => 123.2, 'currency' => 'EUR']];
-        $this->removeAttributeData($product, $attribute, $data, ['locale' => 'fr_FR', 'scope' => 'mobile']);
-    }
-
-    function it_removes_an_attribute_data_price_collection_value_to_a_product_value(
-        $currencyRepository,
-        AttributeInterface $attribute,
-        ProductInterface $penProduct,
-        ProductInterface $bookProduct,
-        ProductValueInterface $productValue,
+        EntityWithValuesInterface $pen,
+        EntityWithValuesInterface $book,
+        ValueInterface $priceValue,
+        PriceCollectionInterface $priceCollection,
         ProductPriceInterface $priceEUR,
-        ProductPriceInterface $priceUSD
+        ProductPriceInterface $priceUSD,
+        \ArrayIterator $pricesIterator
     ) {
         $locale = 'fr_FR';
         $scope = 'mobile';
@@ -76,22 +66,35 @@ class PriceCollectionAttributeRemoverSpec extends ObjectBehavior
 
         $attribute->getCode()->willReturn('attributeCode');
 
-        $penProduct->getValue('attributeCode', $locale, $scope)->willReturn($productValue);
-        $bookProduct->getValue('attributeCode', $locale, $scope)->willReturn(null);
+        $pen->getValue('attributeCode', $locale, $scope)->willReturn($priceValue);
+        $book->getValue('attributeCode', $locale, $scope)->willReturn(null);
 
-        $productValue->getPrice('EUR')->willReturn($priceEUR);
-        $productValue->getPrice('USD')->willReturn($priceUSD);
+        $priceValue->getData()->willReturn($priceCollection);
 
-        $productValue->removePrice($priceEUR)->shouldBeCalledTimes(1);
-        $productValue->removePrice($priceUSD)->shouldBeCalledTimes(1);
+        $priceCollection->getIterator()->willReturn($pricesIterator);
+        $pricesIterator->rewind()->shouldBeCalled();
+        $pricesIterator->valid()->willReturn(true, true, false);
+        $pricesIterator->current()->willReturn($priceEUR, $priceUSD);
+        $pricesIterator->next()->shouldBeCalled();
 
-        $this->removeAttributeData($penProduct, $attribute, $data, ['locale' => $locale, 'scope' => $scope]);
-        $this->removeAttributeData($bookProduct, $attribute, $data, ['locale' => $locale, 'scope' => $scope]);
+        $priceEUR->getData()->willReturn(123.2);
+        $priceEUR->getCurrency()->willReturn('EUR');
+        $priceUSD->getData()->willReturn(42);
+        $priceUSD->getCurrency()->willReturn('USD');
+
+        $entityWithValuesBuilder
+            ->addOrReplaceValue($pen, $attribute, $locale, $scope, [])
+            ->shouldBeCalled();
+
+        $entityWithValuesBuilder->addOrReplaceValue($book, Argument::cetera())->shouldNotBeCalled();
+
+        $this->removeAttributeData($pen, $attribute, $data, ['locale' => $locale, 'scope' => $scope]);
+        $this->removeAttributeData($book, $attribute, $data, ['locale' => $locale, 'scope' => $scope]);
     }
 
     function it_throws_an_error_if_data_is_not_an_array(
         AttributeInterface $attribute,
-        ProductInterface $product
+        EntityWithValuesInterface $entityWithValues
     ) {
         $attribute->getCode()->willReturn('attributeCode');
 
@@ -103,12 +106,12 @@ class PriceCollectionAttributeRemoverSpec extends ObjectBehavior
                 'Pim\Component\Catalog\Updater\Remover\PriceCollectionAttributeRemover',
                 $data
             )
-        )->during('removeAttributeData', [$product, $attribute, $data, ['locale' => 'fr_FR', 'scope' => 'mobile']]);
+        )->during('removeAttributeData', [$entityWithValues, $attribute, $data, ['locale' => 'fr_FR', 'scope' => 'mobile']]);
     }
 
     function it_throws_an_error_if_attribute_data_does_not_contain_an_array(
         AttributeInterface $attribute,
-        ProductInterface $product
+        EntityWithValuesInterface $entityWithValues
     ) {
         $attribute->getCode()->willReturn('attributeCode');
 
@@ -120,12 +123,12 @@ class PriceCollectionAttributeRemoverSpec extends ObjectBehavior
                 'Pim\Component\Catalog\Updater\Remover\PriceCollectionAttributeRemover',
                 $data
             )
-        )->during('removeAttributeData', [$product, $attribute, $data, ['locale' => 'fr_FR', 'scope' => 'mobile']]);
+        )->during('removeAttributeData', [$entityWithValues, $attribute, $data, ['locale' => 'fr_FR', 'scope' => 'mobile']]);
     }
 
     function it_throws_an_error_if_attribute_data_value_does_not_contain_amount_key(
         AttributeInterface $attribute,
-        ProductInterface $product
+        EntityWithValuesInterface $entityWithValues
     ) {
         $attribute->getCode()->willReturn('attributeCode');
 
@@ -138,12 +141,12 @@ class PriceCollectionAttributeRemoverSpec extends ObjectBehavior
                 'Pim\Component\Catalog\Updater\Remover\PriceCollectionAttributeRemover',
                 $data
             )
-        )->during('removeAttributeData', [$product, $attribute, $data, ['locale' => 'fr_FR', 'scope' => 'mobile']]);
+        )->during('removeAttributeData', [$entityWithValues, $attribute, $data, ['locale' => 'fr_FR', 'scope' => 'mobile']]);
     }
 
     function it_throws_an_error_if_attribute_data_value_does_not_contain_currency_key(
         AttributeInterface $attribute,
-        ProductInterface $product
+        EntityWithValuesInterface $entityWithValues
     ) {
         $attribute->getCode()->willReturn('attributeCode');
 
@@ -156,13 +159,13 @@ class PriceCollectionAttributeRemoverSpec extends ObjectBehavior
                 'Pim\Component\Catalog\Updater\Remover\PriceCollectionAttributeRemover',
                 $data
             )
-        )->during('removeAttributeData', [$product, $attribute, $data, ['locale' => 'fr_FR', 'scope' => 'mobile']]);
+        )->during('removeAttributeData', [$entityWithValues, $attribute, $data, ['locale' => 'fr_FR', 'scope' => 'mobile']]);
     }
 
     function it_throws_an_error_if_attribute_data_value_does_not_contain_valid_currency(
         $currencyRepository,
         AttributeInterface $attribute,
-        ProductInterface $product
+        EntityWithValuesInterface $entityWithValues
     ) {
         $attribute->getCode()->willReturn('attributeCode');
 
@@ -178,6 +181,6 @@ class PriceCollectionAttributeRemoverSpec extends ObjectBehavior
                 'Pim\Component\Catalog\Updater\Remover\PriceCollectionAttributeRemover',
                 'invalid currency'
             )
-        )->during('removeAttributeData', [$product, $attribute, $data, ['locale' => 'fr_FR', 'scope' => 'mobile']]);
+        )->during('removeAttributeData', [$entityWithValues, $attribute, $data, ['locale' => 'fr_FR', 'scope' => 'mobile']]);
     }
 }

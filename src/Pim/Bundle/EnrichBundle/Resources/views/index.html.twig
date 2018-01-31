@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Loading...</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="shortcut icon" href="favicon.ico" />
+
+        <link rel="stylesheet" href="{{asset('css/pim.css', 'frontend')}}"/>
+
+        <script type="text/javascript" src="{{asset('dist/manifest.min.js', 'frontend')}} "></script>
+        <script type="text/javascript" src="{{asset('dist/lib.min.js', 'frontend')}} "></script>
+        <script type="text/javascript" src="{{asset('dist/vendor.min.js', 'frontend')}} "></script>
+        <script type="text/javascript" src="{{asset('dist/main.min.js', 'frontend')}} "></script>
+    </head>
+    <body>
+        <div class="app">
+            <div class="AknDefault-progressContainer">
+                <h3>
+                    Loading ...
+                </h3>
+                <div class="AknProgress AknProgress--main progress">
+                    <div class="AknProgress-bar bar" style="width: 90%;"></div>
+                </div>
+            </div>
+        </div>
+        <div class="hash-loading-mask"></div>
+    </body>
+</html>

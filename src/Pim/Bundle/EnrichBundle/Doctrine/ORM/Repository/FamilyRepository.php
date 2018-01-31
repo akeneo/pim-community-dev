@@ -49,7 +49,7 @@ class FamilyRepository extends EntityRepository implements
 
         $choices = [];
         foreach ($query->getArrayResult() as $family) {
-            $choices[$family['id']] = $family['label'];
+            $choices[$family['label']] = $family['id'];
         }
 
         return $choices;
@@ -69,7 +69,7 @@ class FamilyRepository extends EntityRepository implements
         );
 
         $qb
-            ->addSelect($rootAlias)
+            ->select($rootAlias)
             ->addSelect(sprintf('%s AS familyLabel', $labelExpr))
             ->addSelect('translation.label');
 

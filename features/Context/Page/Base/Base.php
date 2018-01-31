@@ -7,7 +7,9 @@ use Behat\Mink\Exception\ElementNotFoundException;
 use Behat\Mink\Exception\UnsupportedDriverActionException;
 use Context\FeatureContext;
 use Context\Spin\SpinCapableTrait;
+use Context\Spin\TimeoutException;
 use Context\Traits\ClosestTrait;
+use Pim\Behat\Decorator\Common\DropdownMenuDecorator;
 use Pim\Behat\Decorator\ElementDecorator;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Element;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
@@ -25,19 +27,22 @@ class Base extends Page
     use ClosestTrait;
 
     protected $elements = [
-        'Body'             => ['css' => 'body'],
-        'Dialog'           => ['css' => 'div.modal'],
-        'Title'            => ['css' => '.AknTitleContainer-title'],
-        'Product title'    => ['css' => '.entity-title'],
-        'HeadTitle'        => ['css' => 'title'],
-        'Flash messages'   => ['css' => '.flash-messages-holder'],
-        'Navigation Bar'   => ['css' => '.AknHeader-menus'],
-        'Container'        => ['css' => '#container'],
-        'Locales dropdown' => ['css' => '#locale-switcher'],
-        'Tabs'             => ['css' => '#form-navbar'],
-        'Oro tabs'         => ['css' => '.navbar.scrollspy-nav, .AknHorizontalNavtab'],
-        'Form tabs'        => ['css' => '.nav-tabs.form-tabs'],
-        'Active tab'       => ['css' => '.form-horizontal .tab-pane.active'],
+        'Body'                   => ['css' => 'body'],
+        'Dialog'                 => ['css' => 'div.modal'],
+        'Title'                  => ['css' => '.AknTitleContainer-title'],
+        'Product title'          => ['css' => '.entity-title'],
+        'HeadTitle'              => ['css' => 'title'],
+        'Flash messages'         => ['css' => '.flash-messages-holder'],
+        'Navigation Bar'         => ['css' => '.AknHeader-menu'],
+        'Container'              => ['css' => '#container'],
+        'Locales dropdown'       => ['css' => '#locale-switcher'],
+        'Tabs'                   => ['css' => '#form-navbar'],
+        'Oro tabs'               => ['css' => '.navbar.scrollspy-nav, .AknHorizontalNavtab'],
+        'Form tabs'              => ['css' => '.nav-tabs.form-tabs'],
+        'Active tab'             => ['css' => '.form-horizontal .tab-pane.active'],
+        'Column navigation link' => ['css' => '.column-navigation-link'],
+        'Current column link'    => ['css' => '.AknColumn-navigationLink--active'],
+        'Secondary actions'      => ['css' => '.secondary-actions', 'decorators' => [DropdownMenuDecorator::class]],
     ];
 
     /**
@@ -45,7 +50,7 @@ class Base extends Page
      */
     public function getElement($name)
     {
-        $element = parent::getElement($name);
+        $element = $this->createElement($name);
 
         if (isset($this->elements[$name]['decorators'])) {
             $element = $this->decorate($element, $this->elements[$name]['decorators']);
@@ -133,12 +138,18 @@ class Base extends Page
     public function toggleSwitch($locator, $on = true)
     {
         $field = $this->findField($locator);
-        if ($field->isChecked() != $on) {
-            $switch = $this->spin(function () use ($field) {
-                return $field->getParent()->find('css', 'label');
-            }, sprintf('Switch label "%s" not found.', $locator));
-            $switch->click();
-        }
+
+        $this->spin(function () use ($field, $on) {
+            if ($on !== $field->isChecked()) {
+                $switch = $this->getClosest($field, 'switch');
+                if (null === $switch) {
+                    return false;
+                }
+                $switch->click();
+            }
+
+            return $on === $field->isChecked();
+        }, sprintf('Switch label "%s" not found.', $locator));
     }
 
     /**
@@ -162,7 +173,9 @@ class Base extends Page
             $url = str_replace(sprintf('{%s}', $parameter), $value, $url);
         }
 
-        return $url;
+        $baseUrl = rtrim($this->getParameter('base_url'), '/').'/';
+
+        return 0 !== strpos($url, 'http') ? $baseUrl.ltrim($url, '/') : $url;
     }
 
     /**
@@ -195,7 +208,7 @@ class Base extends Page
      */
     public function pressButton($locator, $forceVisible = false)
     {
-        $button = $this->spin(function () use ($locator, $forceVisible) {
+        $this->spin(function () use ($locator, $forceVisible) {
             $result = $forceVisible ? $this->getVisibleButton($locator) : $this->getButton($locator);
 
             if (null === $result) {
@@ -207,11 +220,12 @@ class Base extends Page
                     ]
                 );
             }
+            if (null !== $result) {
+                $result->click();
 
-            return $result;
+                return true;
+            }
         }, sprintf('Can not find any "%s" button', $locator));
-
-        $button->click();
     }
 
     /**
@@ -275,6 +289,14 @@ class Base extends Page
             );
         }
         if (null === $button) {
+            $button = $this->getFirstVisible(
+                $this->findAll(
+                    'xpath',
+                    sprintf("//*[contains(@class, 'AknButton')][normalize-space(text()) = '%s']", $locator)
+                )
+            );
+        }
+        if (null === $button) {
             $button =  $this->getFirstVisible(
                 $this->findAll('css', sprintf('a[title="%s"]', $locator))
             );
@@ -293,6 +315,12 @@ class Base extends Page
      */
     public function confirmDialog()
     {
+        $this->spin(function () {
+            $loading = $this->find('css', '.loading-mask');
+
+            return null === $loading || !$loading->isVisible();
+        }, 'Loading mask is still visible');
+
         $button = $this->spin(function () {
             return $this->getConfirmDialog()->find('css', '.ok');
         }, 'Could not find the confirmation button');
@@ -303,19 +331,13 @@ class Base extends Page
     /**
      * Get the confirm dialog element
      *
-     * @throws \Exception
-     *
-     * @return \SensioLabs\Behat\PageObjectExtension\PageObject\Element
+     * @return NodeElement
      */
     protected function getConfirmDialog()
     {
-        $element = $this->getElement('Dialog');
-
-        if (null === $element) {
-            throw new \Exception('Could not find dialog window');
-        }
-
-        return $element;
+        return $this->spin(function () {
+            return $this->getElement('Dialog');
+        }, 'Could not find dialog popin');
     }
 
     /**
@@ -368,7 +390,7 @@ class Base extends Page
      *
      * @return null|Element
      */
-    public function findValidationTooltip($text)
+    public function findValidationTooltip(string $text)
     {
         return $this->find('css', sprintf('.validation-tooltip[data-original-title="%s"]', $text));
     }
@@ -379,8 +401,29 @@ class Base extends Page
     public function clickOnAkeneoLogo()
     {
         $this->spin(function () {
-            return $this->getElement('Navigation Bar')->find('css', '.AknHeader-logo a');
-        }, 'Can not find Akeneo logo')->click();
+            return $this->getElement('Navigation Bar')->find('css', '.AknHeader-logoImage');
+        }, 'Cannot find Akeneo logo')->click();
+    }
+
+    /**
+     * Gets a dropdown button containing text
+     *
+     * @param string $text
+     *
+     * @return null|Element
+     */
+    public function getDropdownButton($text)
+    {
+        return $this->spin(function () use ($text) {
+            $toggle = $this->find('css', sprintf('*[data-toggle="dropdown"]:contains("%s")', $text));
+            if (null !== $toggle) {
+                if (!$toggle->getParent()->hasClass('open')) {
+                    $toggle->click();
+                };
+
+                return $toggle;
+            }
+        }, sprintf('Dropdown button "%s" not found', $text));
     }
 
     /**
@@ -391,16 +434,11 @@ class Base extends Page
      */
     public function getDropdownButtonItem($item, $button)
     {
-        $dropdownToggle = $this->spin(function () use ($button) {
-            return $this->find('css', sprintf('*[data-toggle="dropdown"]:contains("%s")', $button));
-        }, sprintf('Dropdown button "%s" not found', $button));
-
-        $dropdownToggle->click();
-
+        $dropdownToggle = $this->getDropdownButton($button);
         $dropdownMenu = $dropdownToggle->getParent()->find('css', '.dropdown-menu, .AknDropdown-menu');
 
         return $this->spin(function () use ($dropdownMenu, $item) {
-            return $dropdownMenu->find('css', sprintf('li:contains("%s") a', $item));
+            return $dropdownMenu->find('css', sprintf('.AknDropdown-menuLink:contains("%s")', $item));
         }, sprintf('Item "%s" of dropdown button "%s" not found', $item, $button));
     }
 
@@ -442,11 +480,23 @@ class Base extends Page
         $tabs = $this->getPageTabs();
 
         $tabDom = $this->spin(function () use ($tabs, $tab) {
-            return $tabs->findLink($tab);
+            $link = $tabs->findLink($tab);
+            if (null !== $link) {
+                return $link;
+            }
+
+            $matchingElements = array_filter(
+                $tabs->findAll('css', '.AknHorizontalNavtab-link'),
+                function (NodeElement $element) use ($tab) {
+                    return strpos($element->getText(), $tab) !== false;
+                }
+            );
+
+            return array_shift($matchingElements);
         }, sprintf('Could not find a tab named "%s"', $tab));
 
         $this->spin(function () {
-            $loading = $this->find('css', '#loading-wrapper');
+            $loading = $this->find('css', '.loading-mask');
 
             return null === $loading || !$loading->isVisible();
         }, sprintf('Could not visit tab %s because of loading wrapper', $tab));
@@ -454,27 +504,49 @@ class Base extends Page
         $this->spin(function () use ($tabDom) {
             $tabDom->click();
 
-            return $tabDom->getParent()->hasClass('active') || $tabDom->getParent()->hasClass('tab-scrollable');
+            return 0 < count(array_filter(
+                ['active', 'tab-scrollable', 'AknHorizontalNavtab-item--active'],
+                function ($class) use ($tabDom) {
+                    return $tabDom->getParent()->hasClass($class);
+                }
+            ));
         }, sprintf('Cannot switch to the tab %s', $tab));
     }
 
     /**
-     * Get the tabs in the current page
+     * @param string $tabName
      *
+     * @throws TimeoutException
+     */
+    public function visitColumnTab($tabName)
+    {
+        $this->spin(function () use ($tabName) {
+            foreach ($this->getColumnTabs() as $tab) {
+                if (trim($tab->getText()) === $tabName) {
+                    $tab->click();
+
+                    return true;
+                }
+            }
+
+            return null;
+        }, sprintf('Can not find any column tab named "%s"', $tabName));
+    }
+
+    /**
+     * @return NodeElement|null
+     */
+    public function getCurrentColumnTab()
+    {
+        return $this->find('css', $this->elements['Current column link']['css']);
+    }
+
+    /**
      * @return NodeElement[]
      */
-    public function getTabs()
+    public function getColumnTabs()
     {
-        $tabs = $this->spin(function () {
-            return $this->find('css', $this->elements['Tabs']['css']);
-        }, sprintf('Cannot find "%s" tab', $this->elements['Tabs']['css']));
-
-        // Is this dead code?
-        if (null === $tabs) {
-            $tabs = $this->getElement('Oro tabs');
-        }
-
-        return $tabs->findAll('css', 'a');
+        return $this->findAll('css', $this->elements['Column navigation link']['css']);
     }
 
     /**
@@ -497,16 +569,6 @@ class Base extends Page
         }
 
         return $node;
-    }
-
-    /**
-     * Get the specified tab
-     *
-     * @return NodeElement
-     */
-    public function getTab($tab)
-    {
-        return $this->find('css', sprintf('a:contains("%s")', $tab));
     }
 
     /**

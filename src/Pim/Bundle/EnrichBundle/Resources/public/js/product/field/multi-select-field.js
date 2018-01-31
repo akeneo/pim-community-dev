@@ -12,7 +12,7 @@ define(
         'jquery',
         'pim/field',
         'underscore',
-        'text!pim/template/product/field/multi-select',
+        'pim/template/product/field/multi-select',
         'routing',
         'pim/attribute-option/create',
         'pim/security-context',
@@ -50,6 +50,7 @@ define(
                 return Field.prototype.getTemplateContext.apply(this, arguments).then(function (templateContext) {
                     var isAllowed = SecurityContext.isGranted('pim_enrich_attribute_edit');
                     templateContext.userCanAddOption = this.editable && isAllowed;
+
                     return templateContext;
                 }.bind(this));
             },

@@ -52,7 +52,7 @@ class AttributeUpdater implements ObjectUpdaterInterface
         AttributeGroupRepositoryInterface $attrGroupRepo,
         LocaleRepositoryInterface $localeRepository,
         AttributeTypeRegistry $registry,
-        TranslatableUpdater $translatableUpdater = null
+        TranslatableUpdater $translatableUpdater
     ) {
         $this->attrGroupRepo = $attrGroupRepo;
         $this->localeRepository = $localeRepository;
@@ -134,6 +134,7 @@ class AttributeUpdater implements ObjectUpdaterInterface
                 'localizable',
                 'scopable',
                 'required',
+                'auto_option_sorting',
             ]
         )) {
             if (null !== $data && !is_scalar($data)) {
@@ -179,6 +180,9 @@ class AttributeUpdater implements ObjectUpdaterInterface
                 break;
             case 'allowed_extensions':
                 $attribute->setAllowedExtensions(implode(',', $data));
+                break;
+            case 'auto_option_sorting':
+                $attribute->setProperty('auto_option_sorting', $data);
                 break;
             default:
                 $this->setValue($attribute, $field, $data);

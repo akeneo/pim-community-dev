@@ -2,15 +2,24 @@ pim_api:
   acl:
     attribute:
       list: Llistar atributs
+    attribute_group:
+      list: Llistar grups d'atribut
     category:
       list: Llistar categories
     family:
       list: Llistar famílies
-    channel.list: Llistar canals
+    channel:
+      list: Llistar canals
     locale.list: Llistar configuracions regionals
+    currency.list: Llistar monedes
+    association_type:
+      list: Llistar tipus d'associació
   acl_group:
     attribute: Atributs
+    attribute_group: Grups d'atribut
     category: Categories
     family: Famílies
     channel: Canals
     locale: Configuracions regionals
+    currency: Monedes
+    association_type: Tipus d'associació

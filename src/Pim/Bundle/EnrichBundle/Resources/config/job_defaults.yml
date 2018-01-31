@@ -11,8 +11,12 @@ services:
                 - 'update_product_value'
                 - 'add_product_value'
                 - 'remove_product_value'
+                - 'move_to_category'
+                - 'add_to_category'
+                - 'remove_from_category'
+                - 'add_association'
                 - 'edit_common_attributes'
-                - 'add_to_variant_group'
+                - 'add_to_existing_product_model'
         tags:
             - { name: akeneo_batch.job.job_parameters.default_values_provider }
 

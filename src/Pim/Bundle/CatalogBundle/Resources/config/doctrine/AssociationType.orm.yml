@@ -30,3 +30,4 @@ Pim\Bundle\CatalogBundle\Entity\AssociationType:
             cascade:
                 - persist
                 - detach
+            orphanRemoval: true

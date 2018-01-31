@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository;
 
 use Doctrine\ORM\EntityManager;
@@ -46,9 +48,9 @@ class JobExecutionRepository extends EntityRepository implements DatagridReposit
         $qb->innerJoin('e.jobInstance', 'j');
         $qb->leftJoin('e.stepExecutions', 's');
         $qb->leftJoin('s.warnings', 'w');
-        $qb->groupBy('e.id');
-
         $qb->andWhere('j.type = :jobType');
+
+        $qb->groupBy('e.id');
 
         return $qb;
     }
@@ -56,13 +58,14 @@ class JobExecutionRepository extends EntityRepository implements DatagridReposit
     /**
      * Get data for the last operations widget
      *
-     * @param array $types Job types to show
+     * @param array       $types Job types to show
+     * @param string|null $user
      *
      * @return array
      */
-    public function getLastOperationsData(array $types)
+    public function getLastOperationsData(array $types, ?string $user = null)
     {
-        $qb = $this->getLastOperationsQB($types);
+        $qb = $this->getLastOperationsQB($types, $user);
 
         return $qb->getQuery()->getArrayResult();
     }
@@ -70,11 +73,12 @@ class JobExecutionRepository extends EntityRepository implements DatagridReposit
     /**
      * Get last operations query builder
      *
-     * @param array $types
+     * @param array       $types
+     * @param string|null $user
      *
      * @return \Doctrine\ORM\QueryBuilder
      */
-    protected function getLastOperationsQB(array $types)
+    protected function getLastOperationsQB(array $types, ?string $user = null)
     {
         $qb = $this->createQueryBuilder('e');
         $qb
@@ -83,11 +87,19 @@ class JobExecutionRepository extends EntityRepository implements DatagridReposit
             ->leftJoin('e.stepExecutions', 's')
             ->leftJoin('s.warnings', 'w')
             ->groupBy('e.id')
+            ->addGroupBy('date')
+            ->addGroupBy('j.type')
+            ->addGroupBy('j.label')
+            ->addGroupBy('e.status')
             ->orderBy('e.startTime', 'DESC')
             ->setMaxResults(10);
 
         if (!empty($types)) {
             $qb->andWhere($qb->expr()->in('j.type', $types));
+        }
+
+        if (null !== $user) {
+            $qb->andWhere($qb->expr()->eq('e.user', $qb->expr()->literal($user)));
         }
 
         return $qb;

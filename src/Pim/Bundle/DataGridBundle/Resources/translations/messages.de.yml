@@ -1,5 +1,5 @@
 "oro_datagrid.no_data_hint %entityHint%": '%entityHint% existiert nicht.'
-oro_datagrid.not_found_hint: Keine Ergebnisse gefunden. Versuchen Sie Ihre Suchparameter zu verändern.
+oro_datagrid.not_found_hint: Für Ihre Suche wurden leider keine passenden Treffer gefunden.
 oro_datagrid.label_add_filter: Filter verwalten
 oro_datagrid.label_loading_mask: Lädt . . .
 oro.grid.mass_action.selected_rows: Ausgewählte Zeilen
@@ -20,8 +20,8 @@ datagrid_view:
     unique_message: Die Bezeichnung muss eindeutig sein.
     not_blank_message: Die Bezeichnung darf nicht leer sein.
 grid.view_selector.flash:
-  created: Tabellenansicht erfolgreich erstellt
-  removed: Tabellenansicht erfolgreich entfernt
+  created: Tabellen-Ansicht erfolgreich erstellt
+  removed: Tabellen-Ansicht erfolgreich entfernt
   not_removable: Sie haben nicht die Rechte um diese Ansicht zu entfernen
 quick_export: Schnell-Export
 import: Import

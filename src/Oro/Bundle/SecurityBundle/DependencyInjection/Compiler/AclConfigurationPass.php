@@ -18,7 +18,6 @@ class AclConfigurationPass implements CompilerPassInterface
     const DEFAULT_ACL_VOTER = 'security.acl.voter.basic_permissions';
     const DEFAULT_ACL_VOTER_LINK = 'oro_security.acl.voter_link';
     const DEFAULT_ACL_PROVIDER = 'security.acl.dbal.provider';
-    const DEFAULT_ACL_DBAL_PROVIDER_CLASS = 'security.acl.dbal.provider.class';
     const DEFAULT_ACL_CACHE = 'security.acl.cache.doctrine';
 
     const ACL_EXTENSION_SELECTOR = 'oro_security.acl.extension_selector';
@@ -60,17 +59,12 @@ class AclConfigurationPass implements CompilerPassInterface
      */
     protected function configureDefaultAclProvider(ContainerBuilder $container)
     {
-        if ($container->hasParameter(self::DEFAULT_ACL_DBAL_PROVIDER_CLASS)) {
-            if ($container->hasParameter(self::NEW_ACL_DBAL_PROVIDER_CLASS)) {
-                // change implementation of ACL DBAL provider
-                $container->setParameter(
-                    self::DEFAULT_ACL_DBAL_PROVIDER_CLASS,
-                    $container->getParameter(self::NEW_ACL_DBAL_PROVIDER_CLASS)
-                );
-            }
-        }
         if ($container->hasDefinition(self::DEFAULT_ACL_PROVIDER)) {
             $providerDef = $container->getDefinition(self::DEFAULT_ACL_PROVIDER);
+
+            $dbalProviderClass = $container->getParameter(self::NEW_ACL_DBAL_PROVIDER_CLASS);
+
+            $providerDef->setClass($dbalProviderClass);
             // substitute the ACL Permission Granting Strategy
             if ($container->hasDefinition(self::NEW_ACL_PERMISSION_GRANTING_STRATEGY)) {
                 $providerDef->replaceArgument(1, new Reference(self::NEW_ACL_PERMISSION_GRANTING_STRATEGY));

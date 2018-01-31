@@ -1,10 +1,15 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Pim\Bundle\ApiBundle\tests\integration\Controller\Product;
 
 use Akeneo\Test\Integration\Configuration;
 use Doctrine\Common\Collections\Collection;
 
+/**
+ * @group ce
+ */
 class SuccessListProductIntegration extends AbstractProductTestCase
 {
     /** @var Collection */
@@ -13,7 +18,7 @@ class SuccessListProductIntegration extends AbstractProductTestCase
     /**
      * {@inheritdoc}
      */
-    public function setUp()
+    protected function setUp()
     {
         parent::setUp();
 
@@ -51,18 +56,18 @@ class SuccessListProductIntegration extends AbstractProductTestCase
                         'locale' => null,
                         'scope'  => 'ecommerce',
                         'data'   => [
+                            ['amount' => '78.77', 'currency' => 'CNY'],
                             ['amount' => '10.50', 'currency' => 'EUR'],
                             ['amount' => '11.50', 'currency' => 'USD'],
-                            ['amount' => '78.77', 'currency' => 'CNY']
                         ]
                     ],
                     [
                         'locale' => null,
                         'scope'  => 'tablet',
                         'data'   => [
+                            ['amount' => '78.77', 'currency' => 'CNY'],
                             ['amount' => '10.50', 'currency' => 'EUR'],
                             ['amount' => '11.50', 'currency' => 'USD'],
-                            ['amount' => '78.77', 'currency' => 'CNY']
                         ]
                     ]
                 ]
@@ -193,8 +198,6 @@ JSON;
      *    - scope = "ecommerce"
      *    - locale = "en_US" or null
      * Then only products in "master" tree are returned
-     *
-     * @group test
      */
     public function testOffsetPaginationListProductsWithEcommerceChannel()
     {
@@ -218,8 +221,8 @@ JSON;
                 },
                 "identifier"    : "localizable",
                 "family"        : null,
+                "parent"        : null,
                 "groups"        : [],
-                "variant_group" : null,
                 "categories"    : ["categoryB"],
                 "enabled"       : true,
                 "values"        : {
@@ -246,8 +249,8 @@ JSON;
                 },
                 "identifier"    : "scopable",
                 "family"        : null,
+                "parent"        : null,
                 "groups"        : [],
-                "variant_group" : null,
                 "categories"    : ["categoryA1", "categoryA2"],
                 "enabled"       : true,
                 "values"        : {
@@ -256,9 +259,9 @@ JSON;
                             "locale" : null,
                             "scope"  : "ecommerce",
                             "data"   : [
+                                {"amount" : "78.77", "currency" : "CNY"},
                                 {"amount" : "10.50", "currency" : "EUR"},
-                                {"amount" : "11.50", "currency" : "USD"},
-                                {"amount" : "78.77", "currency" : "CNY"}
+                                {"amount" : "11.50", "currency" : "USD"}
                             ]
                         }
                     ]
@@ -273,8 +276,8 @@ JSON;
                 },
                 "identifier"    : "localizable_and_scopable",
                 "family"        : null,
+                "parent"        : null,
                 "groups"        : [],
-                "variant_group" : null,
                 "categories"    : ["categoryA", "master_china"],
                 "enabled"       : true,
                 "values"        : {
@@ -323,8 +326,8 @@ JSON;
                 },
                 "identifier"    : "localizable",
                 "family"        : null,
+                "parent"        : null,
                 "groups"        : [],
-                "variant_group" : null,
                 "categories"    : ["categoryB"],
                 "enabled"       : true,
                 "values"        : {
@@ -361,8 +364,8 @@ JSON;
                 },
                 "identifier"    : "scopable",
                 "family"        : null,
+                "parent"        : null,
                 "groups"        : [],
-                "variant_group" : null,
                 "categories"    : ["categoryA1", "categoryA2"],
                 "enabled"       : true,
                 "values"        : {
@@ -371,9 +374,9 @@ JSON;
                             "locale" : null,
                             "scope"  : "tablet",
                             "data"   : [
+                                {"amount" : "78.77", "currency" : "CNY"},
                                 {"amount" : "10.50", "currency" : "EUR"},
-                                {"amount" : "11.50", "currency" : "USD"},
-                                {"amount" : "78.77", "currency" : "CNY"}
+                                {"amount" : "11.50", "currency" : "USD"}
                             ]
                         }
                     ]
@@ -388,8 +391,8 @@ JSON;
                 },
                 "identifier"    : "localizable_and_scopable",
                 "family"        : null,
+                "parent"        : null,
                 "groups"        : [],
-                "variant_group" : null,
                 "categories"    : ["categoryA", "master_china"],
                 "enabled"       : true,
                 "values"        : {
@@ -439,8 +442,8 @@ JSON;
                 },
                 "identifier"    : "localizable",
                 "family"        : null,
+                "parent"        : null,
                 "groups"        : [],
-                "variant_group" : null,
                 "categories"    : ["categoryB"],
                 "enabled"       : true,
                 "values"        : {
@@ -467,8 +470,8 @@ JSON;
                 },
                 "identifier"    : "scopable",
                 "family"        : null,
+                "parent"        : null,
                 "groups"        : [],
-                "variant_group" : null,
                 "categories"    : ["categoryA1", "categoryA2"],
                 "enabled"       : true,
                 "values"        : {
@@ -477,9 +480,9 @@ JSON;
                             "locale" : null,
                             "scope"  : "tablet",
                             "data"   : [
+                                {"amount" : "78.77", "currency" : "CNY"},
                                 {"amount" : "10.50", "currency" : "EUR"},
-                                {"amount" : "11.50", "currency" : "USD"},
-                                {"amount" : "78.77", "currency" : "CNY"}
+                                {"amount" : "11.50", "currency" : "USD"}
                             ]
                         }
                     ]
@@ -494,8 +497,8 @@ JSON;
                 },
                 "identifier"    : "localizable_and_scopable",
                 "family"        : null,
+                "parent"        : null,
                 "groups"        : [],
-                "variant_group" : null,
                 "categories"    : ["categoryA", "master_china"],
                 "enabled"       : true,
                 "values"        : {
@@ -542,8 +545,8 @@ JSON;
                 },
                 "identifier"    : "localizable_and_scopable",
                 "family"        : null,
+                "parent"        : null,
                 "groups"        : [],
-                "variant_group" : null,
                 "categories"    : ["categoryA", "master_china"],
                 "enabled"       : true,
                 "values"        : {
@@ -561,8 +564,8 @@ JSON;
                 },
                 "identifier"    : "product_china",
                 "family"        : null,
+                "parent"        : null,
                 "groups"        : [],
-                "variant_group" : null,
                 "categories"    : ["master_china"],
                 "enabled"       : true,
                 "values"        : {},
@@ -606,8 +609,8 @@ JSON;
                 },
                 "identifier"    : "localizable",
                 "family"        : null,
+                "parent"        : null,
                 "groups"        : [],
-                "variant_group" : null,
                 "categories"    : ["categoryB"],
                 "enabled"       : true,
                 "values"        : {
@@ -644,28 +647,28 @@ JSON;
                 },
                 "identifier"    : "scopable",
                 "family"        : null,
+                "parent"        : null,
                 "groups"        : [],
-                "variant_group" : null,
                 "categories"    : ["categoryA1", "categoryA2"],
                 "enabled"       : true,
                 "values"        : {
                     "a_scopable_price" : [
                         {
                             "locale" : null,
-                            "scope"  : "ecommerce",
+                            "scope"  : "tablet",
                             "data"   : [
+                                {"amount" : "78.77", "currency" : "CNY"},
                                 {"amount" : "10.50", "currency" : "EUR"},
-                                {"amount" : "11.50", "currency" : "USD"},
-                                {"amount" : "78.77", "currency" : "CNY"}
+                                {"amount" : "11.50", "currency" : "USD"}
                             ]
                         },
                         {
                             "locale" : null,
-                            "scope"  : "tablet",
+                            "scope"  : "ecommerce",
                             "data"   : [
+                                {"amount" : "78.77", "currency" : "CNY"},
                                 {"amount" : "10.50", "currency" : "EUR"},
-                                {"amount" : "11.50", "currency" : "USD"},
-                                {"amount" : "78.77", "currency" : "CNY"}
+                                {"amount" : "11.50", "currency" : "USD"}
                             ]
                         }
                     ]
@@ -680,14 +683,14 @@ JSON;
                 },
                 "identifier"    : "localizable_and_scopable",
                 "family"        : null,
+                "parent"        : null,
                 "groups"        : [],
-                "variant_group" : null,
                 "categories"    : ["categoryA", "master_china"],
                 "enabled"       : true,
                 "values"        : {
                     "a_localized_and_scopable_text_area" : [
-                        {"locale" : "en_US", "scope" : "ecommerce", "data" : "Big description"},
                         {"locale" : "en_US", "scope" : "tablet", "data" : "Medium description"},
+                        {"locale" : "en_US", "scope" : "ecommerce", "data" : "Big description"},
                         {"locale" : "zh_CN", "scope" : "ecommerce_china", "data" : "hum..."}
                     ]
                 },
@@ -725,8 +728,8 @@ JSON;
                 },
                 "identifier"    : "simple",
                 "family"        : null,
+                "parent"        : null,
                 "groups"        : [],
-                "variant_group" : null,
                 "categories"    : ["master"],
                 "enabled"       : true,
                 "values"        : {
@@ -748,8 +751,8 @@ JSON;
                 },
                 "identifier"    : "localizable",
                 "family"        : null,
+                "parent"        : null,
                 "groups"        : [],
-                "variant_group" : null,
                 "categories"    : ["categoryB"],
                 "enabled"       : true,
                 "values"        : {},
@@ -763,8 +766,8 @@ JSON;
                 },
                 "identifier"    : "scopable",
                 "family"        : null,
+                "parent"        : null,
                 "groups"        : [],
-                "variant_group" : null,
                 "categories"    : ["categoryA1", "categoryA2"],
                 "enabled"       : true,
                 "values"        : {},
@@ -778,8 +781,8 @@ JSON;
                 },
                 "identifier"    : "localizable_and_scopable",
                 "family"        : null,
+                "parent"        : null,
                 "groups"        : [],
-                "variant_group" : null,
                 "categories"    : ["categoryA", "master_china"],
                 "enabled"       : true,
                 "values"        : {},
@@ -793,8 +796,8 @@ JSON;
                 },
                 "identifier"    : "product_china",
                 "family"        : null,
+                "parent"        : null,
                 "groups"        : [],
-                "variant_group" : null,
                 "categories"    : ["master_china"],
                 "enabled"       : true,
                 "values"        : {},
@@ -808,8 +811,8 @@ JSON;
                 },
                 "identifier"    : "product_without_category",
                 "family"        : null,
+                "parent"        : null,
                 "groups"        : [],
-                "variant_group" : null,
                 "categories"    : [],
                 "enabled"       : true,
                 "values"        : [],
@@ -845,8 +848,8 @@ JSON;
                 },
                 "identifier"    : "simple",
                 "family"        : null,
+                "parent"        : null,
                 "groups"        : [],
-                "variant_group" : null,
                 "categories"    : ["master"],
                 "enabled"       : true,
                 "values"        : {
@@ -871,8 +874,8 @@ JSON;
                 },
                 "identifier"    : "localizable",
                 "family"        : null,
+                "parent"        : null,
                 "groups"        : [],
-                "variant_group" : null,
                 "categories"    : ["categoryB"],
                 "enabled"       : true,
                 "values"        : [],
@@ -886,8 +889,8 @@ JSON;
                 },
                 "identifier"    : "scopable",
                 "family"        : null,
+                "parent"        : null,
                 "groups"        : [],
-                "variant_group" : null,
                 "categories"    : ["categoryA1", "categoryA2"],
                 "enabled"       : true,
                 "values"        : {
@@ -896,9 +899,9 @@ JSON;
                             "locale" : null,
                             "scope"  : "tablet",
                             "data"   : [
+                                {"amount" : "78.77", "currency" : "CNY"},
                                 {"amount" : "10.50", "currency" : "EUR"},
-                                {"amount" : "11.50", "currency" : "USD"},
-                                {"amount" : "78.77", "currency" : "CNY"}
+                                {"amount" : "11.50", "currency" : "USD"}
                             ]
                         }
                     ]
@@ -913,8 +916,8 @@ JSON;
                 },
                 "identifier"    : "localizable_and_scopable",
                 "family"        : null,
+                "parent"        : null,
                 "groups"        : [],
-                "variant_group" : null,
                 "categories"    : ["categoryA", "master_china"],
                 "enabled"       : true,
                 "values"        : {
@@ -956,8 +959,8 @@ JSON;
                 },
                 "identifier"    : "scopable",
                 "family"        : null,
+                "parent"        : null,
                 "groups"        : [],
-                "variant_group" : null,
                 "categories"    : ["categoryA1", "categoryA2"],
                 "enabled"       : true,
                 "values"        : {},
@@ -971,8 +974,8 @@ JSON;
                 },
                 "identifier"    : "localizable_and_scopable",
                 "family"        : null,
+                "parent"        : null,
                 "groups"        : [],
-                "variant_group" : null,
                 "categories"    : ["categoryA", "master_china"],
                 "enabled"       : true,
                 "values"        : {},
@@ -1017,7 +1020,7 @@ JSON;
 
         $search = '{"a_metric":[{"operator":">","value":{"amount":"9","unit":"KILOWATT"}}]}';
         $client->request('GET', 'api/rest/v1/products?pagination_type=page&search=' . $search);
-        $searchEncoded = urlencode($search);
+        $searchEncoded = rawurlencode($search);
         $expected = <<<JSON
 {
     "_links"       : {
@@ -1033,8 +1036,8 @@ JSON;
                 },
                 "identifier"    : "simple",
                 "family"        : null,
+                "parent"        : null,
                 "groups"        : [],
-                "variant_group" : null,
                 "categories"    : ["master"],
                 "enabled"       : true,
                 "values"        : {
@@ -1074,7 +1077,7 @@ JSON;
 
         $search = '{"categories":[{"operator":"IN", "value":["categoryB"]}], "a_yes_no":[{"operator":"=","value":true}]}';
         $client->request('GET', 'api/rest/v1/products?pagination_type=page&search=' . $search);
-        $searchEncoded = urlencode($search);
+        $searchEncoded = rawurlencode($search);
         $expected = <<<JSON
 {
     "_links": {
@@ -1097,7 +1100,7 @@ JSON;
 
         $search = '{"completeness":[{"operator":"GREATER THAN ON ALL LOCALES","value":50,"locales":["fr_FR"],"scope":"ecommerce"}],"categories":[{"operator":"IN", "value":["categoryB"]}], "a_yes_no":[{"operator":"=","value":true}]}';
         $client->request('GET', 'api/rest/v1/products?search=' . $search);
-        $searchEncoded = urlencode($search);
+        $searchEncoded = rawurlencode($search);
         $expected = <<<JSON
 {
     "_links": {
@@ -1113,6 +1116,7 @@ JSON;
 
         $this->assertListResponse($client->getResponse(), $expected);
     }
+
     /**
      * Get all products, whatever locale, scope, category with a search after pagination
      */
@@ -1128,7 +1132,7 @@ JSON;
         "self"  : {"href": "http://localhost/api/rest/v1/products?pagination_type=search_after&limit=10"},
         "first" : {"href": "http://localhost/api/rest/v1/products?pagination_type=search_after&limit=10"}
     },
-    "_embedded"    : {
+    "_embedded" : {
         "items" : [
             {$standardizedProducts['simple']},
             {$standardizedProducts['localizable']},
@@ -1150,8 +1154,9 @@ JSON;
         $client = $this->createAuthenticatedClient();
 
         $id = [
-            'simple'                   => urlencode($this->getEncryptedId('simple')),
-            'localizable_and_scopable' => urlencode($this->getEncryptedId('localizable_and_scopable')),
+            'simple'                   => rawurlencode($this->getEncryptedId('simple')),
+            'localizable'              => rawurlencode($this->getEncryptedId('localizable')),
+            'localizable_and_scopable' => rawurlencode($this->getEncryptedId('localizable_and_scopable')),
         ];
 
         $client->request('GET', sprintf('api/rest/v1/products?pagination_type=search_after&limit=3&search_after=%s', $id['simple']));
@@ -1180,7 +1185,7 @@ JSON;
         $standardizedProducts = $this->getStandardizedProducts();
         $client = $this->createAuthenticatedClient();
 
-        $scopableEncryptedId = urlencode($this->getEncryptedId('scopable'));
+        $scopableEncryptedId = rawurlencode($this->getEncryptedId('scopable'));
 
         $client->request('GET', sprintf('api/rest/v1/products?pagination_type=search_after&limit=4&search_after=%s' , $scopableEncryptedId));
         $expected = <<<JSON
@@ -1204,8 +1209,10 @@ JSON;
 
     /**
      * @param string $productIdentifier
+     *
+     * @return string
      */
-    private function getEncryptedId($productIdentifier)
+    private function getEncryptedId(string $productIdentifier): string
     {
         $encrypter = $this->get('pim_api.security.primary_key_encrypter');
         $productRepository = $this->get('pim_catalog.repository.product');
@@ -1218,7 +1225,8 @@ JSON;
     /**
      * @return array
      */
-    private function getStandardizedProducts() {
+    private function getStandardizedProducts(): array
+    {
         $standardizedProducts['simple'] = <<<JSON
 {
     "_links": {
@@ -1228,8 +1236,8 @@ JSON;
     },
     "identifier": "simple",
     "family": null,
+    "parent": null,
     "groups": [],
-    "variant_group": null,
     "categories": ["master"],
     "enabled": true,
     "values": {
@@ -1262,8 +1270,8 @@ JSON;
     },
     "identifier": "localizable",
     "family": null,
+    "parent": null,
     "groups": [],
-    "variant_group": null,
     "categories": ["categoryB"],
     "enabled": true,
     "values": {
@@ -1311,36 +1319,36 @@ JSON;
     },
     "identifier": "scopable",
     "family": null,
+    "parent": null,
     "groups": [],
-    "variant_group": null,
     "categories": ["categoryA1", "categoryA2"],
     "enabled": true,
     "values": {
         "a_scopable_price": [{
             "locale": null,
-            "scope": "ecommerce",
+            "scope": "tablet",
             "data": [{
+                "amount": "78.77",
+                "currency": "CNY"
+            }, {
                 "amount": "10.50",
                 "currency": "EUR"
             }, {
                 "amount": "11.50",
                 "currency": "USD"
-            }, {
-                "amount": "78.77",
-                "currency": "CNY"
             }]
         }, {
             "locale": null,
-            "scope": "tablet",
+            "scope": "ecommerce",
             "data": [{
+                "amount": "78.77",
+                "currency": "CNY"
+            }, {
                 "amount": "10.50",
                 "currency": "EUR"
             }, {
                 "amount": "11.50",
                 "currency": "USD"
-            }, {
-                "amount": "78.77",
-                "currency": "CNY"
             }]
         }]
     },
@@ -1359,27 +1367,27 @@ JSON;
     },
     "identifier": "localizable_and_scopable",
     "family": null,
+    "parent": null,
     "groups": [],
-    "variant_group": null,
     "categories": ["categoryA", "master_china"],
     "enabled": true,
     "values": {
         "a_localized_and_scopable_text_area": [{
             "locale": "en_US",
-            "scope": "ecommerce",
-            "data": "Big description"
-        }, {
-            "locale": "en_US",
             "scope": "tablet",
             "data": "Medium description"
         }, {
             "locale": "fr_FR",
-            "scope": "ecommerce",
-            "data": "Grande description"
-        }, {
-            "locale": "fr_FR",
             "scope": "tablet",
             "data": "Description moyenne"
+        }, {
+            "locale": "en_US",
+            "scope": "ecommerce",
+            "data": "Big description"
+        }, {
+            "locale": "fr_FR",
+            "scope": "ecommerce",
+            "data": "Grande description"
         }, {
             "locale": "zh_CN",
             "scope": "ecommerce_china",
@@ -1401,8 +1409,8 @@ JSON;
    },
    "identifier": "product_china",
    "family": null,
+   "parent": null,
    "groups": [],
-   "variant_group": null,
    "categories": ["master_china"],
    "enabled": true,
    "values": {},
@@ -1421,8 +1429,8 @@ JSON;
     },
     "identifier": "product_without_category",
     "family": null,
+    "parent": null,
     "groups": [],
-    "variant_group": null,
     "categories": [],
     "enabled": true,
     "values": {
@@ -1440,11 +1448,12 @@ JSON;
 
         return $standardizedProducts;
     }
+
     /**
-     * {@inheritdoc}
+     * @return Configuration
      */
-    protected function getConfiguration()
+    protected function getConfiguration(): Configuration
     {
-        return new Configuration([Configuration::getTechnicalCatalogPath()]);
+        return $this->catalog->useTechnicalCatalog();
     }
 }

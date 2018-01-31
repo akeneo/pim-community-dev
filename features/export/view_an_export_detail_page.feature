@@ -9,8 +9,7 @@ Feature: View an export detail page
     And I am logged in as "Julia"
 
   Scenario: Successfully display the export information
-    Given I am on the exports page
-    And I change the page size to 50
-    When I click on the "csv_footwear_product_export" row
+    Given I am on the exports grid
+    When I click on the "CSV footwear product export" row
     Then I should be on the "csv_footwear_product_export" export job page
-    And I should see "Export profile - CSV footwear product export"
+    And I should see the text "Export profile - CSV footwear product export"

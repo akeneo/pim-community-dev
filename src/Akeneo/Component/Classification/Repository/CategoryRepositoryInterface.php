@@ -22,16 +22,6 @@ interface CategoryRepositoryInterface extends
     ObjectRepository
 {
     /**
-     * Count children for a given category.
-     *
-     * @param CategoryInterface $category   the requested node
-     * @param bool              $onlyDirect true to count only direct children
-     *
-     * @return int
-     */
-    public function countChildren(CategoryInterface $category, $onlyDirect = false);
-
-    /**
      * Get a collection of categories based on the array of id provided
      *
      * @param array $categoryIds
@@ -130,18 +120,6 @@ interface CategoryRepositoryInterface extends
     public function buildTreeNode(array $nodes);
 
     /**
-     * Search Segment entities from an array of criterias.
-     * Search is done on a "%value%" LIKE expression.
-     * Criterias are joined with a AND operator
-     *
-     * @param int   $treeRootId Tree segment root id
-     * @param array $criterias  Criterias to apply
-     *
-     * @return ArrayCollection
-     */
-    public function search($treeRootId, $criterias);
-
-    /**
      * Get the Tree path of Nodes by given $node
      *
      * @param object $node
@@ -192,4 +170,13 @@ interface CategoryRepositoryInterface extends
      * @return array Multi-dimensional array representing the tree
      */
     public function getFilledTree(CategoryInterface $root, Collection $categories);
+
+    /**
+     * Return only codes which exist in database
+     *
+     * @param array $codes
+     *
+     * @return array
+     */
+    public function getCodesIfExist(array $codes = []): array;
 }

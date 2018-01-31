@@ -4,10 +4,14 @@ namespace Pim\Behat\Context\Domain\Enrich;
 
 use Context\Spin\SpinCapableTrait;
 use Context\Spin\TimeoutException;
+use Context\Traits\ClosestTrait;
+use PHPUnit\Framework\Assert;
 use Pim\Behat\Context\PimContext;
 
 class AttributeTabContext extends PimContext
 {
+    use ClosestTrait;
+
     use SpinCapableTrait;
 
     /**
@@ -15,8 +19,7 @@ class AttributeTabContext extends PimContext
      */
     public function iStartTheCopy()
     {
-        $this->getCurrentPage()
-            ->getElement('Attribute tab')
+        $this->getElementOnCurrentPage('Attribute tab')
             ->startComparison();
     }
 
@@ -27,9 +30,9 @@ class AttributeTabContext extends PimContext
      */
     public function iSelectTranslationsFor($field)
     {
-        $this->getCurrentPage()
-            ->getElement('Attribute tab')
-            ->manualSelectComparedElement($field);
+        $attributeTabElement = $this->getElementOnCurrentPage('Attribute tab');
+
+        $attributeTabElement->manualSelectComparedElement($field);
     }
 
     /**
@@ -39,8 +42,7 @@ class AttributeTabContext extends PimContext
      */
     public function iSelectTranslations($mode)
     {
-        $this->getCurrentPage()
-            ->getElement('Comparison panel')
+        $this->getElementOnCurrentPage('Comparison panel')
             ->selectElements($mode);
     }
 
@@ -49,8 +51,7 @@ class AttributeTabContext extends PimContext
      */
     public function iCopySelectedTranslations()
     {
-        $this->getCurrentPage()
-            ->getElement('Comparison panel')
+        $this->getElementOnCurrentPage('Comparison panel')
             ->copySelectedElements();
     }
 
@@ -64,8 +65,7 @@ class AttributeTabContext extends PimContext
     {
         $method = 'switch' . ucfirst($type);
 
-        $this->getCurrentPage()
-            ->getElement('Comparison panel')
+        $this->getElementOnCurrentPage('Comparison panel')
             ->$method($selection);
     }
 
@@ -85,65 +85,64 @@ class AttributeTabContext extends PimContext
     }
 
     /**
-     * @param string $fieldName
+     * @param string $fieldNames
      * @param mixed  $not
      *
-     * @Then /^the ([^"]*) field should (not )?be highlighted$/
+     * @throws TimeoutException
+     *
+     * @Then /^the ([^"]*) fields? should (not )?be highlighted$/
      */
-    public function theFieldShouldBeHighlighted($fieldName, $not = null)
+    public function theFieldShouldBeHighlighted($fieldNames, $not = null)
     {
-        $field = $this->getCurrentPage()->findField($fieldName);
-        try {
-            $badge = $this->spin(function () use ($field) {
-                return $field->getParent()->getParent()->find('css', '.AknBadge--highlight:not(.AknBadge--hidden)');
-            }, 'Cannot find the badge element');
-        } catch (TimeoutException $e) {
-            if ('not ' !== $not) {
-                throw $e;
-            } else {
-                return true;
-            }
-        }
+        $fields = preg_split('/, */', $fieldNames);
 
-        if ('not ' === $not) {
-            throw $this->getMainContext()->createExpectationException(
-                sprintf(
-                    'Expected to not see the field "%s" not highlighted.',
-                    $fieldName
-                )
-            );
-        }
+        $this->spin(function () use ($fields, $not) {
+            foreach ($fields as $field) {
+                $fieldNode = $this->getCurrentPage()->findField($field);
+                if (null === $fieldNode) {
+                    return false;
+                }
+
+                $badge = $this
+                    ->getClosest($fieldNode, 'field-container')
+                    ->find('css', '.AknBadge--highlight:not(.AknBadge--hidden)');
+
+                if ((null === $not && null === $badge) || (null !== $not && null !== $badge)) {
+                    return false;
+                }
+            }
+
+            return true;
+        }, sprintf('Expected to see the groups "%s" %shighlited', $fieldNames, $not));
     }
 
     /**
-     * @param string $groupName
-     * @param mixed  $not
+     * @param string      $groupNames
+     * @param string|null $not
      *
-     * @Then /^the ([^"]*) group should (not )?be highlighted$/
+     * @throws TimeoutException
+     *
+     * @Then /^the ([^"]*) groups? should (not )?be highlighted$/
      */
-    public function theGroupShouldBeHighlighted($groupName, $not = null)
+    public function theGroupShouldBeHighlighted($groupNames, $not = null)
     {
-        $group = $this->getCurrentPage()->findGroup($groupName);
-        try {
-            $badge = $this->spin(function () use ($group) {
-                return $group->getParent()->find('css', '.AknBadge--highlight:not(.AknBadge--hidden)');
-            }, 'Cannot find the badge element');
-        } catch (TimeoutException $e) {
-            if ('not ' !== $not) {
-                throw $e;
-            } else {
-                return true;
-            }
-        }
+        $groups = preg_split('/, */', $groupNames);
 
-        if ('not ' === $not) {
-            throw $this->getMainContext()->createExpectationException(
-                sprintf(
-                    'Expected to see the group "%s" not highlighted.',
-                    $groupName
-                )
-            );
-        }
+        $this->spin(function () use ($groups, $not) {
+            foreach ($groups as $group) {
+                $groupNode = $this->getCurrentPage()->getGroup($group);
+                if (null === $groupNode) {
+                    return false;
+                }
+
+                $badge = $groupNode->find('css', '.AknBadge--highlight:not(.AknBadge--hidden)');
+                if ((null === $not && null === $badge) || (null !== $not && null !== $badge)) {
+                    return false;
+                }
+            }
+
+            return true;
+        }, sprintf('Expected to see the groups "%s" %shighlited', $groupNames, $not));
     }
 
     /**
@@ -151,11 +150,13 @@ class AttributeTabContext extends PimContext
      */
     public function iShouldSeeTheComparisonField($fieldLabel)
     {
-        $field = $this->getCurrentPage()
-            ->getElement('Attribute tab')
-            ->getComparisonFieldContainer($fieldLabel);
+        $attributeTab = $this->getElementOnCurrentPage('Attribute tab');
 
-        assertNotNull($field);
+        $field = $this->spin(function () use ($attributeTab, $fieldLabel) {
+            return $attributeTab->getLabelField($fieldLabel);
+        }, sprintf('Cannot find the %s on comparison field', $fieldLabel));
+
+        Assert::assertNotNull($field);
     }
 
     /**
@@ -165,9 +166,7 @@ class AttributeTabContext extends PimContext
     {
         $this->spin(function () use ($fieldLabel) {
             try {
-                $this->getCurrentPage()
-                    ->getElement('Attribute tab')
-                    ->getComparisonFieldContainer($fieldLabel);
+                $this->getElementOnCurrentPage('Attribute tab')->getLabelField($fieldLabel);
             } catch (TimeoutException $e) {
                 return true;
             }

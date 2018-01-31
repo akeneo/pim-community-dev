@@ -40,15 +40,6 @@ interface FamilyRepositoryInterface extends
     public function getFullFamilies(FamilyInterface $family = null, ChannelInterface $channel = null);
 
     /**
-     * Find attribute ids from family ids
-     *
-     * @param array $familyIds
-     *
-     * @return array '<f_id>' => array(<attribute ids>)
-     */
-    public function findAttributeIdsFromFamilies(array $familyIds);
-
-    /**
      * @param array $familyIds
      *
      * @throws \InvalidArgumentException array of id should not be empty
@@ -56,13 +47,6 @@ interface FamilyRepositoryInterface extends
      * @return array
      */
     public function findByIds(array $familyIds);
-
-    /**
-     * Return the number of existing families
-     *
-     * @return int
-     */
-    public function countAll();
 
     /**
      * Checks if a family has the attribute with specified code.

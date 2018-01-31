@@ -18,10 +18,10 @@ parameters:
 
     upload_dir:           '%kernel.root_dir%/uploads/product'
     archive_dir:          '%kernel.root_dir%/archive'
+    logs_dir:             '%kernel.logs_dir%'
     catalog_storage_dir:  '%kernel.root_dir%/file_storage/catalog'
-    tmp_storage_dir:      /tmp/pim/file_storage
-
-    installed:            ~
+    tmp_storage_dir:      '/tmp/pim/file_storage'
+    upload_tmp_dir:       '/tmp/pim/upload_tmp_dir'
 
     # You can use installer_data to install an outside catalog (like one from akeneo/catalogs)
     # installer_data: %kernel.root_dir%/../vendor/akeneo/catalogs/master/community/small/fixtures
@@ -32,19 +32,10 @@ parameters:
     uservoice_key:                 ~
     max_products_category_removal: 100
 
-    # Product storage driver can be doctrine/orm or doctrine/mongodb-odm
-    pim_catalog_product_storage_driver: doctrine/orm
-
-    ## Uncomment to configure mongodb
-    # mongodb_server: 'mongodb://localhost:27017'
-    # mongodb_database: akeneo_pim
-
     pim_catalog_image_allowed_extensions: [gif, jfif, jif, jpeg, jpg, pdf, png, psd, tif, tiff]
     pim_catalog_file_allowed_extensions: [csv, doc, docx, mp3, pdf, ppt, pptx, rtf, svg, txt, wav]
 
     doctrine_migrations_dir: '%kernel.root_dir%/../upgrades/schema'
-
-    security.exception_listener.class: Pim\Bundle\UserBundle\Security\FirewallExceptionListener
 
     pim_analytics_update_server_url: https://updates.akeneo.com
 
@@ -59,3 +50,7 @@ parameters:
 
     # Maximum number of resources when updating a list of resources
     api_input_max_resources_number: 100
+
+    # Files used as configuration for the Elasticsearch index
+    elasticsearch_index_configuration_files:
+        - '%kernel.root_dir%/../src/Pim/Bundle/CatalogBundle/Resources/elasticsearch/index_configuration.yml'

@@ -22,5 +22,5 @@ Feature: Remove products from a group
     Then the grid should contain 3 elements
     When I uncheck the row "sandal-white-37"
     And I press the "Save" button
-    Then I should see "Products: 2"
+    Then I should see the text "Products: 2"
     And the row "sandal-white-37" should not be checked

@@ -16,5 +16,5 @@ class Index extends Grid
     /**
      * @var string
      */
-    protected $path = '/configuration/association-type/';
+    protected $path = '#/configuration/association-type/';
 }

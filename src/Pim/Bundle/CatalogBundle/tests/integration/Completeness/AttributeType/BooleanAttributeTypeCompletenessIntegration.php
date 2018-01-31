@@ -2,7 +2,6 @@
 
 namespace Pim\Bundle\CatalogBundle\tests\integration\Completeness\AttributeType;
 
-use Pim\Bundle\CatalogBundle\tests\integration\Completeness\AbstractCompletenessPerAttributeTypeIntegration;
 use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Model\ProductInterface;
 
@@ -13,7 +12,7 @@ use Pim\Component\Catalog\Model\ProductInterface;
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-class BooleanAttributeTypeCompletenessIntegration extends AbstractCompletenessPerAttributeTypeIntegration
+class BooleanAttributeTypeCompletenessIntegration extends AbstractCompletenessPerAttributeTypeTestCase
 {
     public function testCompleteBoolean()
     {
@@ -84,6 +83,7 @@ class BooleanAttributeTypeCompletenessIntegration extends AbstractCompletenessPe
             ]
         );
         $this->assertNotComplete($productDataNull);
+        $this->assertMissingAttributeForProduct($productDataNull, ['a_boolean']);
 
         $productWithoutValues = $this->createProductWithStandardValues($family, 'product_without_values');
         // TODO: This is not as it should be, but inevitable because of PIM-6056

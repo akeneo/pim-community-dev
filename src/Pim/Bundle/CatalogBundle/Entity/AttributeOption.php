@@ -137,7 +137,7 @@ class AttributeOption implements AttributeOptionInterface
      */
     public function setCode($code)
     {
-        $this->code = $code;
+        $this->code = (string) $code;
 
         return $this;
     }
@@ -224,8 +224,11 @@ class AttributeOption implements AttributeOptionInterface
                 }
             }
         );
-        $value = $values->first();
 
-        return $value;
+        if ($values->isEmpty()) {
+            return null;
+        }
+
+        return $values->first();
     }
 }

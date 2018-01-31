@@ -4,128 +4,140 @@
   @darken: 10%;
   @lighten: 20%;
 
-  // Default button color is light gray
-  background: @AknLightGray;
+  background-color: white;
   color: @AknDefaultFontColor;
   height: @AknDefaultButtonSize;
-  line-height: @AknDefaultButtonSize;
+  line-height: @AknDefaultButtonSize - 2px;
   font-size: @AknFontSizeBig;
   min-width: @AknDefaultButtonSize;
   display: inline-block;
-  padding: 0 @AknButtonsPadding;
-  border-radius: 2px;
-  border: none;
+  padding: 0 @AknDefaultButtonSize/2;
+  border-radius: 100px;
+  border: 1px solid @AknBorderColor;
   cursor: pointer;
   text-align: left;
   white-space: nowrap;
-  transition: background 0.1s ease;
+  transition:
+    background 0.1s ease,
+    color 0.1s ease,
+    border-color 0.1s ease;
   position: relative;
-
-  &--withIcon {
-    padding-left: @AknButtonsPadding + @AknDefaultButtonSize;
-  }
+  text-transform: uppercase;
 
   &:hover,
   &--active {
-    background: darken(@AknLightGray, @darken);
+    background-color: darken(white, @darken);
     color: darken(@AknDefaultFontColor, @darken);
   }
 
   &-icon {
-    height: @AknDefaultButtonSize;
-    width: @AknDefaultButtonSize;
-    line-height: @AknDefaultButtonSize;
-    background: darken(@AknLightGray, @darken);
-    margin-right: @AknButtonsPadding;
-    position: absolute;
-    top: 0;
-    left: 0;
-    text-align: center;
-    margin-left: 0;
-    border-top-left-radius: 2px;
-    border-bottom-left-radius: 2px;
-    display: inline-block !important; // Used for preemption of .icon class
+    margin: -4px -4px -7px 0;
   }
 
-  &--disabled,
-  &--disabled &-icon {
-    background: lighten(@AknLightGray, @lighten);
+  &--disabled {
+    color: lighten(@AknDefaultFontColor, @lighten);
+    border-color: lighten(@AknBorderColor, @lighten);
     cursor: not-allowed;
   }
 
   // Apply color
   &--apply {
     background-color: @AknGreen;
+    border-color: @AknGreen;
     color: white;
   }
 
   &--apply:hover,
-  &--apply&--active,
-  &--apply &-icon {
-    background: darken(@AknGreen, @darken);
+  &--apply&--active {
+    background-color: darken(@AknGreen, @darken);
+    border-color: darken(@AknGreen, @darken);
     color: white;
   }
 
-  &--apply&--disabled,
-  &--apply&--disabled &-icon {
-    background: lighten(@AknGreen, @lighten);
+  &--apply&--disabled {
+    background-color: lighten(@AknGreen, @lighten);
+    border-color: lighten(@AknGreen, @lighten);
     cursor: not-allowed;
   }
 
   // Grey color
   &--grey {
     background-color: @AknGrey;
+    border-color: @AknGrey;
     color: white;
   }
 
   &--grey:hover,
-  &--grey&--active,
-  &--grey &-icon {
-    background: darken(@AknGrey, @darken);
+  &--grey&--active {
+    background-color: darken(@AknGrey, @darken);
+    border-color: darken(@AknGrey, @darken);
     color: white;
   }
 
-  &--grey&--disabled,
-  &--grey&--disabled &-icon {
-    background: lighten(@AknGrey, @lighten);
+  &--grey&--disabled {
+    background-color: lighten(@AknGrey, @lighten);
+    border-color: lighten(@AknGrey, @lighten);
+    cursor: not-allowed;
+  }
+
+  // GreyLight
+  &--greyLight {
+    background-color: white;
+    border-color: @AknGrey;
+    color: @AknGrey;
+  }
+
+  &--greyLight:hover,
+  &--greyLight&--active {
+    background-color: white;
+    border-color: darken(@AknGrey, 20%);
+    color: darken(@AknGrey, 20%);
+  }
+
+  &--greyLight&--disabled {
+    background-color: white;
+    border-color: lighten(@AknGrey, 20%);
+    color: lighten(@AknGrey, 20%);
     cursor: not-allowed;
   }
 
   // Important color
   &--important {
     background-color: @AknRed;
+    border-color: @AknRed;
     color: white;
   }
 
   &--important:hover,
-  &--important&--active,
-  &--important &-icon {
-    background: darken(@AknRed, @darken);
+  &--important&--active {
+    background-color: darken(@AknRed, @darken);
+    border-color: darken(@AknRed, @darken);
     color: white;
   }
 
-  &--important&--disabled,
-  &--important&--disabled &-icon {
-    background: lighten(@AknRed, @lighten);
+  &--important&--disabled {
+    background-color: lighten(@AknRed, @lighten);
+    border-color: lighten(@AknRed, @lighten);
     cursor: not-allowed;
   }
 
   // Action color
   &--action {
     background-color: @AknBlue;
+    border-color: @AknBlue;
     color: white;
   }
 
   &--action:hover,
-  &--action&--active,
-  &--action &-icon {
-    background: darken(@AknBlue, @darken);
+  &--action&--active {
+    background-color: darken(@AknBlue, @darken);
+    border-color: darken(@AknBlue, @darken);
     color: white;
   }
 
-  &--action&--disabled,
-  &--action&--disabled &-icon {
-    background: lighten(@AknBlue, @lighten);
+  &--action&--disabled {
+    background-color: lighten(@AknBlue, @lighten);
+    border-color: lighten(@AknBlue, @lighten);
     cursor: not-allowed;
   }
 
@@ -137,13 +149,6 @@
     font-size: @AknFontSizeBig;
   }
 
-  &--big &-icon {
-    height: @AknBigButtonSize;
-    width: @AknBigButtonSize;
-    line-height: @AknBigButtonSize;
-    font-size: @AknFontSizeBig;
-  }
-
   &--small {
     height: @AknLittleButtonSize;
     line-height: @AknLittleButtonSize;
@@ -151,32 +156,10 @@
     font-size: @AknDefaultFontSize;
   }
 
-  &--small &-icon {
-    height: @AknLittleButtonSize;
-    width: @AknLittleButtonSize;
-    line-height: @AknLittleButtonSize;
-    font-size: @AknDefaultFontSize;
-  }
-
-  &--small&--withIcon {
-    padding-left: @AknButtonsPadding + @AknLittleButtonSize;
-  }
-
   &--micro {
     height: @AknMicroButtonSize;
     line-height: @AknMicroButtonSize;
     min-width: @AknMicroButtonSize;
-    font-size: @AknDefaultFontSize;
-  }
-
-  &--micro&--withIcon {
-    padding-left: @AknButtonsPadding + @AknMicroButtonSize;
-  }
-
-  &--micro &-icon {
-    height: @AknMicroButtonSize;
-    width: @AknMicroButtonSize;
-    line-height: @AknMicroButtonSize;
     font-size: @AknDefaultFontSize;
   }
 
@@ -189,11 +172,106 @@
     display: none;
   }
 
-  &--uppercase {
-    text-transform: uppercase;
-  }
-
   &--disabled:focus {
     outline: -webkit-focus-ring-color auto 0;
+  }
+
+  &--glued {
+    &:not(:first-child) {
+      border-top-left-radius: 0;
+      border-bottom-left-radius: 0;
+      border-left: none;
+    }
+
+    &:not(:last-child) {
+      border-top-right-radius: 0;
+      border-bottom-right-radius: 0;
+    }
+  }
+
+  &--centered {
+    display: block;
+    margin: auto;
+  }
+
+  &--dropdown {
+    background-image: url("../../../images/icon-down-white.svg");
+    background-repeat: no-repeat;
+    background-position: 92% center;
+    background-size: 20px;
+    padding-right: 34px;
+  }
+
+  &-squareIcon {
+    width: 54px;
+    height: 54px;
+    display: flex;
+    background-size: 100%;
+    margin: 5px auto 10px;
+
+    &--id {
+      background-image: url("../../../images/attribute/icon-id.svg");
+    }
+
+    &--text {
+      background-image: url("../../../images/attribute/icon-text.svg");
+    }
+
+    &--textarea {
+      background-image: url("../../../images/attribute/icon-textarea.svg");
+    }
+
+    &--number {
+      background-image: url("../../../images/attribute/icon-number.svg");
+    }
+
+    &--price {
+      background-image: url("../../../images/attribute/icon-price.svg");
+    }
+
+    &--multiselect {
+      background-image: url("../../../images/attribute/icon-multiselect.svg");
+    }
+
+    &--select {
+      background-image: url("../../../images/attribute/icon-select.svg");
+    }
+
+    &--file {
+      background-image: url("../../../images/attribute/icon-file.svg");
+    }
+
+    &--asset {
+      background-image: url("../../../images/attribute/icon-asset.svg");
+    }
+
+    &--switch {
+      background-image: url("../../../images/attribute/icon-switch.svg");
+    }
+
+    &--date {
+      background-image: url("../../../images/attribute/icon-date.svg");
+    }
+
+    &--metric {
+      background-image: url("../../../images/attribute/icon-metric.svg");
+    }
+
+    &--assetCollection {
+      background-image: url("../../../images/attribute/icon-assetCollection.svg");
+    }
+
+    &--delete {
+      background-image: url("../../../images/icon-delete-white.svg")
+    }
+  }
+
+  &-squareIcon&--micro {
+    background-position: center;
+    background-size: 75%;
+    width: @AknMicroButtonSize;
+    height: @AknMicroButtonSize;
+    padding: 0;
+    background-repeat: no-repeat;
   }
 }

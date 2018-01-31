@@ -11,11 +11,6 @@ class LocaleExtensionSpec extends ObjectBehavior
         $this->shouldHaveType('Twig_Extension');
     }
 
-    function it_have_a_name()
-    {
-        $this->getName()->shouldReturn('pim_localization.twig.locale_extension');
-    }
-
     function it_have_filters()
     {
         $filters = $this->getFilters();

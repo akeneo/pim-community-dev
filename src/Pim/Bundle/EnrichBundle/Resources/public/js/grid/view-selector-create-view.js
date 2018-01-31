@@ -15,8 +15,9 @@ define(
         'oro/translator',
         'backbone',
         'pim/form',
-        'text!pim/template/grid/view-selector/create-view',
-        'text!pim/template/grid/view-selector/create-view-label-input',
+        'pim/template/grid/view-selector/create-view',
+        'pim/template/form/creation/modal',
+        'pim/template/grid/view-selector/create-view-label-input',
         'pim/datagrid/state',
         'pim/saver/datagrid-view',
         'oro/messenger'
@@ -28,6 +29,7 @@ define(
         Backbone,
         BaseForm,
         template,
+        templateModal,
         templateInput,
         DatagridState,
         DatagridViewSaver,
@@ -35,6 +37,7 @@ define(
     ) {
         return BaseForm.extend({
             template: _.template(template),
+            templateModal: _.template(templateModal),
             templateInput: _.template(templateInput),
             tagName: 'span',
             className: 'create-button',
@@ -67,15 +70,24 @@ define(
             promptCreateView: function () {
                 this.getRoot().trigger('grid:view-selector:close-selector');
 
-                var modal = new Backbone.BootstrapModal({
-                    title: __('grid.view_selector.choose_label'),
-                    content: this.templateInput({placeholder: __('grid.view_selector.placeholder')}),
-                    okText: __('pim_datagrid.view_selector.create_view_modal.confirm'),
-                    cancelText: __('pim_datagrid.view_selector.create_view_modal.cancel')
+                let modalContent = this.templateModal({
+                    subTitleLabel: __('pim_datagrid.view_selector.view'),
+                    titleLabel: __('pim_datagrid.view_selector.create_view_modal.create'),
+                    picture: 'illustrations/Views.svg',
+                    fields: this.templateInput({
+                        placeholder: __('grid.view_selector.placeholder'),
+                        label: __('grid.view_selector.choose_label')
+                    })
+                });
+
+                let modal = new Backbone.BootstrapModal({
+                    content: modalContent,
+                    okText: __('pim_enrich.entity.create_popin.labels.save')
                 });
                 modal.open();
+                modal.$el.addClass('modal--fullPage');
 
-                var $submitButton = modal.$el.find('.ok').hide();
+                const $submitButton = modal.$el.find('.ok').addClass('AknButton--disabled');
 
                 modal.on('ok', this.saveView.bind(this, modal));
                 modal.on('cancel', function () {
@@ -85,9 +97,9 @@ define(
                     var label = event.target.value;
 
                     if (!label.length) {
-                        $submitButton.hide();
+                        $submitButton.addClass('AknButton--disabled');
                     } else {
-                        $submitButton.show();
+                        $submitButton.removeClass('AknButton--disabled');
                     }
                 });
                 modal.$('input[name="new-view-label"]').on('keypress', function (event) {
@@ -117,7 +129,7 @@ define(
                     }.bind(this))
                     .fail(function (response) {
                         _.each(response.responseJSON, function (error) {
-                            messenger.notificationFlashMessage('error', error);
+                            messenger.notify('error', error);
                         });
                     });
             }

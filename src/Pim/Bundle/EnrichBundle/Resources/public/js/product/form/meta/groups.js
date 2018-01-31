@@ -11,23 +11,25 @@ define(
     [
         'jquery',
         'underscore',
+        'oro/translator',
         'oro/mediator',
         'backbone',
         'pim/form',
         'routing',
-        'text!pim/template/product/meta/groups',
-        'text!pim/template/product/meta/group-modal',
+        'pim/template/product/meta/groups',
+        'pim/template/product/meta/group-modal',
         'pim/user-context',
         'pim/fetcher-registry',
         'pim/group-manager',
-        'oro/navigation',
+        'pim/router',
         'pim/i18n',
         'oro/loading-mask',
-        'backbone/bootstrap-modal'
+        'bootstrap-modal'
     ],
     function (
         $,
         _,
+        __,
         mediator,
         Backbone,
         BaseForm,
@@ -37,23 +39,35 @@ define(
         UserContext,
         FetcherRegistry,
         GroupManager,
-        Navigation,
+        router,
         i18n,
         LoadingMask
     ) {
-        var FormView = BaseForm.extend({
+        return BaseForm.extend({
             tagName: 'span',
-            className: 'AknTitleContainer-metaItem product-groups',
+
+            className: 'AknColumn-block product-groups',
+
             template: _.template(formTemplate),
+
             modalTemplate: _.template(modalTemplate),
+
             events: {
                 'click a[data-group]': 'displayModal'
             },
+
+            /**
+             * {@inheritdoc}
+             */
             configure: function () {
                 this.listenTo(this.getRoot(), 'pim_enrich:form:entity:post_update', this.render);
 
                 return BaseForm.prototype.configure.apply(this, arguments);
             },
+
+            /**
+             * {@inheritdoc}
+             */
             render: function () {
                 if (!this.configured) {
                     return this;
@@ -65,7 +79,7 @@ define(
                     if (groups.length) {
                         this.$el.html(
                             this.template({
-                                label: _.__('pim_enrich.entity.product.meta.groups.title'),
+                                label: __('pim_enrich.entity.product.meta.groups.title'),
                                 groups: groups
                             })
                         );
@@ -116,7 +130,7 @@ define(
              */
             displayModal: function (event) {
                 var loadingMask = new LoadingMask();
-                loadingMask.render().$el.appendTo($('#container')).show();
+                loadingMask.render().$el.appendTo(this.getRoot().$el).show();
 
                 GroupManager.getProductGroups(this.getFormData()).done(function (groups) {
                     var group = _.findWhere(groups, { code: event.currentTarget.dataset.group });
@@ -128,9 +142,9 @@ define(
                         loadingMask.remove();
                         this.groupModal = new Backbone.BootstrapModal({
                             allowCancel: true,
-                            okText: _.__('pim_enrich.entity.product.meta.groups.modal.view_group'),
-                            cancelText: _.__('pim_enrich.entity.product.meta.groups.modal.close'),
-                            title: _.__(
+                            okText: __('pim_enrich.entity.product.meta.groups.modal.view_group'),
+                            cancelText: __('pim_enrich.entity.product.meta.groups.modal.close'),
+                            title: __(
                                 'pim_enrich.entity.product.meta.groups.modal.title',
                                 { group: i18n.getLabel(group.labels, UserContext.get('catalogLocale'), group.code) }
                             ),
@@ -144,29 +158,23 @@ define(
 
                         this.groupModal.on('ok', function visitGroup() {
                             this.groupModal.close();
-                            var route = 'VARIANT' === group.type ?
-                                'pim_enrich_variant_group_edit' :
-                                'pim_enrich_group_edit';
+                            var route = 'pim_enrich_group_edit';
                             var parameters = { code: group.code };
 
-                            Navigation.getInstance().setLocation(Routing.generate(route, parameters));
+                            router.redirectToRoute(route, parameters);
                         }.bind(this));
                         this.groupModal.open();
 
                         this.groupModal.$el.on('click', 'a[data-product-id]', function visitProduct(event) {
                             this.groupModal.close();
-                            Navigation.getInstance().setLocation(
-                                Routing.generate(
-                                    'pim_enrich_product_edit',
-                                    { id: event.currentTarget.dataset.productId }
-                                )
+                            router.redirectToRoute(
+                                'pim_enrich_product_edit',
+                                { id: event.currentTarget.dataset.productId }
                             );
                         }.bind(this));
                     }.bind(this));
                 }.bind(this));
             }
         });
-
-        return FormView;
     }
 );

@@ -9,8 +9,6 @@ namespace Pim\Component\Api\tests\integration\Normalizer;
  */
 class CategoryIntegration extends AbstractNormalizerTestCase
 {
-    protected $purgeDatabaseForEachTest = false;
-
     public function testCategoryRoot()
     {
         $expected = [

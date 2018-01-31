@@ -39,6 +39,11 @@ class BooleanIntegration extends AbstractAttributeTestCase
         $this->assertDoesNotHaveAReferenceDataName('pim_catalog_boolean');
     }
 
+    public function testBooleanShouldNotHaveAutoOptionSorting()
+    {
+        $this->assertDoesNotHaveAutoOptionSorting('pim_catalog_boolean');
+    }
+
     public function testBooleanShouldNotHaveMaxCharacters()
     {
         $this->assertDoesNotHaveMaxCharacters('pim_catalog_boolean');

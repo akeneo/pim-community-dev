@@ -1,30 +1,76 @@
 @import '../../base/variables';
 
 .AknGrid {
+  @miniPadding: 2px;
+  @fullImageHeight: 200px;
+  @smallImageHeight: 150px;
+
   font-size: @AknDefaultFontSize;
   width: 100%;
   border-collapse: collapse;
 
-  &-bodyRow + &-bodyRow {
+  &-bodyRow {
+    transition: background 0.2s ease-in;
+  }
+
+  &-bodyRow + &-bodyRow:not(&-bodyRow--withoutTopBorder) &-bodyCell {
     border-top: 1px solid @AknBorderColor;
+  }
+
+  &-bodyRow + &-bodyRow &-bodyCell:first-child&-bodyCell--checkbox {
+    border-top: none;
+  }
+
+  &-bodyRow + &-bodyRow &-bodyCell&-bodyCell--withoutTopBorder {
+    padding-top: @miniPadding;
+    border-top: none;
+    vertical-align: top;
+  }
+
+  &-bodyCell&-bodyCell--withoutBottomBorder {
+    padding-bottom: @miniPadding;
+    border-bottom: none;
   }
 
   &-bodyCell,
   &-headerCell {
     vertical-align: middle;
-    line-height: 16px;
-    padding: 12px 10px;
+    line-height: 20px;
+    padding: 12px 4px;
     transition: background 0.1s ease;
-    background: white;
+    max-width: 100vh;
 
     &--tight {
       width: 1px;
     }
+
+    &:first-child&--checkbox {
+      background: white;
+      text-align: center;
+      width: 40px;
+      max-width: 40px;
+    }
   }
 
-  &-bodyRow:hover &-bodyCell,
-  &-bodyRow--highlight &-bodyCell {
+  &-headerCell&-headerCell--checkbox {
+    border-bottom: none;
+    width: 40px;
+    max-width: 40px;
+    opacity: 0;
+    transform: scale(0);
+  }
+
+  &-bodyRow:hover,
+  &-bodyRow--highlight {
     background: @AknDefaultHoverBackground;
+  }
+
+  &-bodyRow--selected {
+    background: lighten(@AknBlue, 35%);
+  }
+
+  &-bodyRow--selected:hover {
+    background: lighten(@AknBlue, 32%);
   }
 
   &-bodyContainer--collapsed &-bodyRow:not(&-headerToggle) {
@@ -40,23 +86,49 @@
       cursor: default;
     }
 
-    &--actions {
+    &--actions,
+    &:first-child&--checkbox {
       opacity: 0;
+      transition: opacity 0.2s ease-in;
+    }
+
+    &--actions {
       width: 1px;
+    }
+
+    &--credentials {
+      line-height: 24px;
+    }
+
+    &--highlight {
+      color: @AknLightPurple;
+      font-style: italic;
+      font-size: @AknFontSizeBig;
+    }
+
+    &--highlightAlternative {
+      color: @AknDarkBlue;
+      font-size: @AknFontSizeBig;
+    }
+
+    &--noWrap {
+      white-space: nowrap;
     }
   }
 
-  &-bodyRow:hover &-bodyCell--actions {
+  &-bodyRow:hover &-bodyCell--actions,
+  &-bodyRow:hover &-bodyCell--checkbox,
+  &-bodyRow&-bodyRow--selected &-bodyCell--checkbox,
+  &-bodyRow &-bodyCell--checked {
     opacity: 1;
   }
 
   &-headerCell {
     color: @AknDefaultFontColor;
-    border-bottom: solid 2px @AknDarkBlue;
-    font-size: @AknFontSizeSmall;
-    font-weight: bold;
+    border-bottom: solid 1px @AknDarkBlue;
+    font-size: @AknFontSizeBig;
+    font-weight: normal;
     text-align: left;
-    text-transform: uppercase;
     white-space: nowrap;
 
     // TODO To remove when we will remove the global 'a' rule
@@ -103,7 +175,261 @@
     background: white;
   }
 
+  &--gallery & {
+    display: block !important;
+  }
+
+  &--gallery &-header {
+    display: none;
+  }
+
+  &--gallery &-body {
+    margin-left: 40px;
+    margin-top: 20px;
+    display: flex;
+    display: grid;
+    grid-gap: 20px;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    margin-left: 20px;
+    margin-right: -20px;
+  }
+
+  &--gallery &-body--small {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  }
+
+  &--inner &-body {
+    margin-left: -20px;
+    margin-top: 0;
+  }
+
+  & &-bodyRow:first-child &-bodyCell {
+    border-top: none;
+  }
+
   &--unclickable &-bodyRow &-bodyCell {
     cursor: default;
+  }
+
+  &-label {
+    font-weight: bold;
+    display: inline-block;
+    width: 60px;
+  }
+
+  &-truncatable {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+  }
+
+  &-expandable {
+    width: 100px;
+  }
+
+  &-expand {
+    width: 32px;
+    height: 32px;
+    background: url("../../../images/icon-right.svg") no-repeat 50%;
+    transition: transform 0.2s ease-in;
+
+    &--expanded {
+      transform: rotate(90deg);
+    }
+  }
+
+  &-imageLayer {
+    position: absolute;
+    border: 1px solid @AknBorderColor;
+    background: white;
+    height: 44px;
+    width: 44px;
+    transform: translate(4px, 0);
+    transition: border-color 0.2s ease-in;
+
+    &:after {
+      content: '';
+      position: absolute;
+      border: 1px solid @AknBorderColor;
+      background: white;
+      height: 42px;
+      width: 42px;
+      transform: translate(-3px, 1px);
+      transition: border-color 0.2s ease-in;
+    }
+  }
+
+  &-bodyRow:hover &-imageLayer,
+  &-bodyRow:hover &-image,
+  &-bodyRow:hover &-imageLayer:after {
+    border-color: darken(@AknBorderColor, 20%);
+  }
+
+  &-image {
+    background: white;
+    position: relative;
+    height: 44px;
+    width: 44px;
+    border: 1px solid @AknBorderColor;
+    transition: border-color 0.2s ease-in;
+    margin-top: 3px;
+    margin-bottom: -3px;
+
+    &--withLayer {
+      margin-top: 4px;
+      margin-bottom: -4px;
+      margin-right: 4px;
+    }
+  }
+
+  &-fullImage {
+    width: 100%;
+    height: @fullImageHeight;
+    min-height: @fullImageHeight;
+    background-size: cover;
+    background-position: 50%;
+    margin-bottom: 16px;
+    position:relative;
+
+    &:before {
+      content: '';
+      width: 100%;
+      height: @fullImageHeight;
+      background: @AknDarkBlue;
+      position: absolute;
+      top: 0;
+      left: 0;
+      opacity: 0;
+      transition: opacity 0.4s ease-in;
+    }
+  }
+
+  &-fullImage--small {
+    height: @smallImageHeight;
+    min-height: @smallImageHeight;
+  }
+
+  &-title {
+    z-index: 2;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    font-style: initial;
+    font-size: @AknDefaultFontSize;
+    padding-left: 20px;
+    padding-right: 20px;
+    max-width: 100%;
+    display: block;
+  }
+
+  &-subTitle,
+  &-description {
+    font-size: @AknDefaultFontSize;
+    color: @AknGrey;
+    padding-top: 6px;
+    max-width: 100%;
+    display: block;
+  }
+
+  &-bodyRow--withLayer {
+    &:before,
+    &:after {
+      content: '';
+      border: 1px @AknBorderColor solid;
+      border-radius: 3px;
+      transform: translate(1px, 1px);
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: -1;
+      border-color: inherit;
+    }
+
+    &:after {
+      transform: translate(3px, 3px);
+    }
+  }
+
+  &-bodyRow--thumbnail {
+    border: 1px @AknBorderColor solid;
+    overflow: hidden;
+    border-radius: 3px;
+    display: block;
+    position: relative;
+    cursor: pointer;
+    text-align: center;
+    background: white;
+    overflow: visible;
+    transition: background 0.4s ease-in;
+
+    .AknGrid-bodyCell {
+      padding: 0;
+    }
+
+    .AknGrid-bodyCell--checkbox {
+      align-self: start;
+      background: none !important;
+      z-index: 2;
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      opacity: 0;
+    }
+
+    .AknGrid-bodyCell--actions {
+      transition: none;
+      color: white;
+      z-index: 2;
+      max-width: 100%;
+      margin-top: 4px;
+      display: grid;
+      justify-content: center;
+    }
+  }
+
+  &-bodyRowRemove {
+    display: none;
+    z-index: 3;
+  }
+
+  &-bodyRow--thumbnail:hover {
+    border-color: @AknDarkBlue;
+    background: @AknDarkBlue;
+    color: white;
+  }
+
+  &-bodyRow--thumbnail:hover &-subTitle {
+    display: none;
+  }
+
+  &-bodyRow--thumbnail:hover &-description {
+    color: white;
+  }
+
+  &-bodyRow--thumbnail:hover &-bodyCell--actions {
+    width: 100%;
+    display: grid;
+  }
+
+  &-bodyRow--thumbnail:hover &-fullImage {
+    opacity: 0.7;
+  }
+
+  &-bodyRow--thumbnail:hover &-bodyRowRemove {
+    display: block;
+  }
+
+  &-bodyRow--selected {
+    border-color: @AknBlue;
+    background: white;
+    border-width: 2px;
+
+    &:after,
+    &:before {
+      width: ~"calc(100% + 1px)";
+      height: ~"calc(100% + 1px)";
+    }
   }
 }

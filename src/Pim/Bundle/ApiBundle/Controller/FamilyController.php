@@ -23,6 +23,7 @@ use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
+use Symfony\Component\Routing\Router;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -283,7 +284,7 @@ class FamilyController
         } catch (PropertyException $exception) {
             throw new DocumentedHttpException(
                 Documentation::URL . $anchor,
-                sprintf('%s Check the standard format documentation.', $exception->getMessage()),
+                sprintf('%s Check the expected format on the API documentation.', $exception->getMessage()),
                 $exception
             );
         }
@@ -316,7 +317,11 @@ class FamilyController
     protected function getResponse(FamilyInterface $family, $status)
     {
         $response = new Response(null, $status);
-        $route = $this->router->generate('pim_api_family_get', ['code' => $family->getCode()], true);
+        $route = $this->router->generate(
+            'pim_api_family_get',
+            ['code' => $family->getCode()],
+            Router::ABSOLUTE_URL
+        );
         $response->headers->set('Location', $route);
 
         return $response;

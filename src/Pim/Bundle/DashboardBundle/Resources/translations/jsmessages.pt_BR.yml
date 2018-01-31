@@ -17,3 +17,5 @@ pim_dashboard:
       load_more: 'Carregar mais...'
     header:
       view_all: Visualizar tudo
+page_title:
+  pim_dashboard_index: Painel de controle

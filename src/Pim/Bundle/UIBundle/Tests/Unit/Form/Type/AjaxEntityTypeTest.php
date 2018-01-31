@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\UIBundle\Tests\Unit\Form\Type;
 
+use PHPUnit\Framework\TestCase;
 use Pim\Bundle\UIBundle\Form\Type\AjaxEntityType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -12,7 +13,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class AjaxEntityTypeTest extends \PHPUnit_Framework_TestCase
+class AjaxEntityTypeTest extends TestCase
 {
     protected $router;
     protected $transformerFactory;
@@ -40,6 +41,9 @@ class AjaxEntityTypeTest extends \PHPUnit_Framework_TestCase
         'option2'               => 'option2'
     ];
 
+    /**
+     * @{@inheritdoc}
+     */
     protected function setUp()
     {
         $this->router = $this->createMock('Symfony\Component\Routing\RouterInterface');

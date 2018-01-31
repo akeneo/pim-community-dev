@@ -5,7 +5,10 @@ namespace spec\Pim\Bundle\EnrichBundle\Form\Type;
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use Oro\Bundle\DataGridBundle\Datagrid\Manager;
 use PhpSpec\ObjectBehavior;
+use Pim\Bundle\EnrichBundle\Form\Type\ProductGridFilterChoiceType;
 use Pim\Component\Enrich\Provider\TranslatedLabelsProviderInterface;
+use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ProductGridFilterChoiceTypeSpec extends ObjectBehavior
@@ -17,12 +20,12 @@ class ProductGridFilterChoiceTypeSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('Pim\Bundle\EnrichBundle\Form\Type\ProductGridFilterChoiceType');
+        $this->shouldHaveType(ProductGridFilterChoiceType::class);
     }
 
     function it_is_a_form()
     {
-        $this->shouldHaveType('Symfony\Component\Form\AbstractType');
+        $this->shouldHaveType(AbstractType::class);
     }
 
     function it_has_options(
@@ -40,28 +43,28 @@ class ProductGridFilterChoiceTypeSpec extends ObjectBehavior
                 'label' => 'Locale',
             ]
         ]);
-        
+
         $attributeProvider->findTranslatedLabels(['useable_as_grid_filter' => true])->willReturn([
-            'Other' => ['sku' => 'SKU'],
+            'Other' => ['SKU' => 'sku'],
         ]);
-        
+
         $resolver->setDefaults([
             'choices' => [
-                'System' => ['family' => 'My family'],
-                'Other' => ['sku' => 'SKU'],
+                'System' => ['My family' => 'family'],
+                'Other' => ['SKU' => 'sku'],
             ],
         ])->shouldBeCalled();
 
         $this->configureOptions($resolver);
     }
 
-    function it_has_a_name()
+    function it_has_a_block_prefix()
     {
-        $this->getName()->shouldReturn('pim_enrich_product_grid_filter_choice');
+        $this->getBlockPrefix()->shouldReturn('pim_enrich_product_grid_filter_choice');
     }
 
     function it_has_parent()
     {
-        $this->getParent()->shouldReturn('choice');
+        $this->getParent()->shouldReturn(ChoiceType::class);
     }
 }

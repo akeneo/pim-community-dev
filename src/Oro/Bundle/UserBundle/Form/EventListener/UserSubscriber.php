@@ -4,6 +4,7 @@ namespace Oro\Bundle\UserBundle\Form\EventListener;
 
 use Pim\Bundle\UserBundle\Entity\UserInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormFactoryInterface;
@@ -62,14 +63,14 @@ class UserSubscriber implements EventSubscriberInterface
         $form->add(
             $this->factory->createNamed(
                 'enabled',
-                'choice',
+                ChoiceType::class,
                 $entity->getId() ? $entity->isEnabled() : '',
                 [
                     'label'           => 'Status',
                     'required'        => true,
                     'disabled'        => $this->isCurrentUser($entity),
-                    'choices'         => ['Inactive', 'Active'],
-                    'empty_value'     => 'Please select',
+                    'choices'         => ['Inactive' => 0, 'Active' => 1],
+                    'placeholder'     => 'Please select',
                     'empty_data'      => '',
                     'auto_initialize' => false
                 ]

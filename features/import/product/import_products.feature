@@ -34,7 +34,7 @@ Feature: Execute a job
     Then there should be 10 products
     And the family of the product "SKU-006" should be "boots"
     And product "SKU-007" should be enabled
-    And the english tablet name of "SKU-001" should be "Donec"
+    And the english localizable value name of "SKU-001" should be "Donec"
     And the english tablet description of "SKU-002" should be "Pellentesque habitant morbi tristique senectus et netus et malesuada fames"
 
   Scenario: Successfully import a csv file of product with carriage return in product description
@@ -70,8 +70,22 @@ Feature: Execute a job
     And I launch the import job
     And I wait for the "csv_footwear_product_import" job to finish
     Then there should be 1 product
-    And the english tablet name of "SKU-001" should be "Donec"
+    And the english localizable value name of "SKU-001" should be "Donec"
     And the english tablet description of "SKU-001" should be "dictum magna. Ut tincidunt orci quis lectus. Nullam suscipit, est"
+
+  Scenario: Successfully import product by ignoring attributes that are not part of the family
+    Given the following CSV file to import:
+      """
+      sku;family;groups;categories;name-en_US;description-en_US-tablet;comment
+      SKU-001;boots;;winter_boots;Donec;dictum magna. Ut tincidunt orci quis lectus. Nullam suscipit, est;This comment should not be imported
+      """
+    And the following job "csv_footwear_product_import" configuration:
+      | filePath | %file to import% |
+    When I am on the "csv_footwear_product_import" import job page
+    And I launch the import job
+    And I wait for the "csv_footwear_product_import" job to finish
+    Then the product "SKU-001" should not have the following values:
+      | comment |
 
   Scenario: Successfully update an existing product
     Given the following product:
@@ -88,7 +102,7 @@ Feature: Execute a job
     And I launch the import job
     And I wait for the "csv_footwear_product_import" job to finish
     Then there should be 1 product
-    And the english tablet name of "SKU-001" should be "Donec"
+    And the english localizable value name of "SKU-001" should be "Donec"
     And the english tablet description of "SKU-001" should be "dictum magna. Ut tincidunt orci quis lectus. Nullam suscipit, est"
 
   Scenario: Successfully import products through file upload
@@ -194,14 +208,17 @@ Feature: Execute a job
     And I launch the import job
     And I wait for the "csv_footwear_product_import" job to finish
     Then there should be 1 product
-    And I should see "skipped product (no differences) 1"
+    And I should see the text "skipped product (no differences) 1"
 
   Scenario: Successfully import products with attributes with full numeric codes
+    And the following family:
+      | code      | attributes           |
+      | my_family | name,123,description |
     Given the following CSV file to import:
       """
       sku;123;family;groups;categories;name-en_US;description-en_US-tablet
-      SKU-001;aaa;boots;;winter_boots;Donec;dictum magna. Ut tincidunt orci quis lectus. Nullam suscipit, est
-      SKU-002;bbb;sneakers;;winter_boots;Donex;Pellentesque habitant morbi tristique senectus et netus et malesuada fames
+      SKU-001;aaa;my_family;;winter_boots;Donec;dictum magna. Ut tincidunt orci quis lectus. Nullam suscipit, est
+      SKU-002;bbb;my_family;;winter_boots;Donex;Pellentesque habitant morbi tristique senectus et netus et malesuada fames
       """
     And the following job "csv_footwear_product_import" configuration:
       | filePath | %file to import% |
@@ -315,17 +332,17 @@ Feature: Execute a job
     And I launch the import job
     And I wait for the "csv_footwear_product_import" job to finish
     And I am on the "SKU-001" product page
-    When I open the "Completeness" panel
+    When I visit the "Completeness" column tab
     And I should see the completeness:
-      | channel | locale | state   | missing_values                               | ratio |
-      | mobile  | en_US  | warning | Color                                        | 80%   |
-      | tablet  | en_US  | warning | Weather conditions, Rating, Side view, Color | 56%   |
+      | channel | locale | state   | missing_values | ratio |
+      | tablet  | en_US  | warning | 4              | 55%   |
+      | mobile  | en_US  | warning | 1              | 80%   |
     And I am on the "SKU-002" product page
-    When I open the "Completeness" panel
+    When I visit the "Completeness" column tab
     And I should see the completeness:
-      | channel | locale | state   | missing_values                        | ratio |
-      | mobile  | en_US  | success |                                       | 100%  |
-      | tablet  | en_US  | warning | Weather conditions, Rating, Side view | 67%   |
+      | channel | locale | state   | missing_values | ratio |
+      | tablet  | en_US  | warning | 3              | 66%   |
+      | mobile  | en_US  | success | 0              | 100%  |
 
   @jira https://akeneo.atlassian.net/browse/PIM-6085
   Scenario: Successfully import product associations with modified column name

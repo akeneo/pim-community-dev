@@ -17,7 +17,7 @@ use Context\Spin\TimeoutException;
 class Creation extends Form
 {
     /** @var string */
-    protected $path = '/enrich/product/create';
+    protected $path = '#/enrich/product/create';
 
     /**
      * {@inheritdoc}
@@ -26,18 +26,24 @@ class Creation extends Form
      */
     public function fillField($locator, $value, Element $modal = null)
     {
-        $selectContainer = $this->spin(function () use ($modal) {
+        $selectContainers = $this->spin(function () use ($modal) {
             if (null === $modal) {
                 return false;
             }
 
-            return $modal->find('css', '.select2-container');
+            return $modal->findAll('css', '.select2-container');
         }, 'Cannot find ".select2-container" in modal');
 
-        $placeholder = $selectContainer->find('css', sprintf('.select2-chosen:contains("%s")', $locator));
+        $matchingContainer = null;
 
-        if ($placeholder) {
-            $this->fillSelect2Field($selectContainer, $value);
+        foreach ($selectContainers as $container) {
+            if ($container->find('css', sprintf('.select2-chosen:contains("%s")', $locator))) {
+                $matchingContainer = $container;
+            }
+        }
+
+        if ($matchingContainer) {
+            $this->fillSelect2Field($matchingContainer, $value);
         } else {
             parent::fillField($locator, $value, $modal);
         }
@@ -50,7 +56,7 @@ class Creation extends Form
      *
      * @return null|Element
      */
-    public function findValidationTooltip($text)
+    public function findValidationTooltip(string $text)
     {
         return $this->spin(function () use ($text) {
             return $this->find(

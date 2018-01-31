@@ -68,20 +68,21 @@ class StreamResourceResponse
     }
 
     /**
-     * @param resource $resource resource containing the whole data to process
+     * @param resource $resource      resource containing the whole data to process
+     * @param array    $uriParameters default uri parameters to use when forwarding requests
      *
      * @throws HttpException
      *
      * @return StreamedResponse
      */
-    public function streamResponse($resource)
+    public function streamResponse($resource, array $uriParameters = [])
     {
         $response = new StreamedResponse();
         $response->headers->set('Content-Type', static::CONTENT_TYPE);
 
         $this->checkLineNumberInInput($resource);
 
-        $response->setCallback(function () use ($resource) {
+        $response->setCallback(function () use ($resource, $uriParameters) {
             rewind($resource);
             $this->ensureOutputBufferingIsStarted();
 
@@ -106,7 +107,8 @@ class StreamResourceResponse
                         $this->identifierKey => $data[$this->identifierKey],
                     ];
 
-                    $subResponse = $this->forward(['code' => $data[$this->identifierKey]], $line);
+                    $uriParameters['code']  = $data[$this->identifierKey];
+                    $subResponse = $this->forward($uriParameters, $line);
 
                     if ('' !== $subResponse->getContent()) {
                         $subResponse = json_decode($subResponse->getContent(), true);

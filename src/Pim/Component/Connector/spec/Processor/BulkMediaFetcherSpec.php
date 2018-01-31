@@ -6,13 +6,12 @@ use Akeneo\Component\FileStorage\Exception\FileTransferException;
 use Akeneo\Component\FileStorage\File\FileFetcherInterface;
 use Akeneo\Component\FileStorage\FilesystemProvider;
 use Akeneo\Component\FileStorage\Model\FileInfoInterface;
-use Doctrine\Common\Collections\ArrayCollection;
 use League\Flysystem\FilesystemInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\AttributeInterface;
-use Pim\Component\Catalog\Model\ProductValueInterface;
+use Pim\Component\Catalog\Model\ValueCollectionInterface;
+use Pim\Component\Catalog\Value\MediaValueInterface;
 use Pim\Component\Connector\Writer\File\FileExporterPathGeneratorInterface;
-use Prophecy\Promise\ReturnPromise;
 
 class BulkMediaFetcherSpec extends ObjectBehavior
 {
@@ -26,9 +25,7 @@ class BulkMediaFetcherSpec extends ObjectBehavior
     ) {
         $this->directory = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'spec' . DIRECTORY_SEPARATOR;
 
-        $this->beConstructedWith($mediaFetcher, $filesystemProvider, $fileExporterPath, [
-            'pim_catalog_file', 'pim_catalog_image'
-        ]);
+        $this->beConstructedWith($mediaFetcher, $filesystemProvider, $fileExporterPath);
     }
 
     function it_is_initializable()
@@ -40,9 +37,9 @@ class BulkMediaFetcherSpec extends ObjectBehavior
         $mediaFetcher,
         $filesystemProvider,
         FileInfoInterface $fileInfo,
-        ArrayCollection $productValuesCollection,
+        ValueCollectionInterface $valuesCollection,
         \ArrayIterator $valuesIterator,
-        ProductValueInterface $productValue,
+        MediaValueInterface $value,
         AttributeInterface $attribute,
         FilesystemInterface $filesystem
     ) {
@@ -50,23 +47,18 @@ class BulkMediaFetcherSpec extends ObjectBehavior
         $fileInfo->getKey()->willReturn('a/b/c/d/product.jpg');
         $fileInfo->getOriginalFilename()->willReturn('my product.jpg');
 
-        $productValue->getAttribute()->willReturn($attribute);
-        $productValue->getMedia()->willReturn($fileInfo);
-        $productValue->getLocale()->willReturn('en_US');
-        $productValue->getScope()->willReturn(null);
+        $value->getAttribute()->willReturn($attribute);
+        $value->getData()->willReturn($fileInfo);
+        $value->getLocale()->willReturn('en_US');
+        $value->getScope()->willReturn(null);
         $attribute->getType()->willReturn('pim_catalog_image');
         $attribute->getCode()->willReturn('my_picture');
 
-        $productValuesCollection->getIterator()->willReturn($valuesIterator);
+        $valuesCollection->getIterator()->willReturn($valuesIterator);
         $valuesIterator->rewind()->shouldBeCalled();
-        $valuesCount = 1;
-        $valuesIterator->valid()->will(
-            function () use (&$valuesCount) {
-                return $valuesCount-- > 0;
-            }
-        );
+        $valuesIterator->valid()->willReturn(true, false);
+        $valuesIterator->current()->willReturn($value);
         $valuesIterator->next()->shouldBeCalled();
-        $valuesIterator->current()->will(new ReturnPromise([$productValue]));
 
         $filesystemProvider->getFilesystem('storageAlias')->willReturn($filesystem);
 
@@ -75,7 +67,7 @@ class BulkMediaFetcherSpec extends ObjectBehavior
             'filename' => 'my product.jpg'
         ])->shouldBeCalled();
 
-        $this->fetchAll($productValuesCollection, $this->directory, 'the_sku');
+        $this->fetchAll($valuesCollection, $this->directory, 'the_sku');
         $this->getErrors()->shouldHaveCount(0);
     }
 
@@ -85,10 +77,10 @@ class BulkMediaFetcherSpec extends ObjectBehavior
         $fileExporterPath,
         FileInfoInterface $fileInfo,
         FileInfoInterface $fileInfo2,
-        ArrayCollection $productValuesCollection,
+        ValueCollectionInterface $valuesCollection,
         \ArrayIterator $valuesIterator,
-        ProductValueInterface $productValue,
-        ProductValueInterface $productValue2,
+        MediaValueInterface $value,
+        MediaValueInterface $value2,
         AttributeInterface $attribute,
         FilesystemInterface $filesystem
     ) {
@@ -100,29 +92,24 @@ class BulkMediaFetcherSpec extends ObjectBehavior
         $fileInfo2->getKey()->willReturn('wrong-path.jpg');
         $fileInfo2->getOriginalFilename()->willReturn('my-second-media.jpg');
 
-        $productValue->getAttribute()->willReturn($attribute);
-        $productValue->getMedia()->willReturn($fileInfo);
-        $productValue->getLocale()->willReturn('en_US');
-        $productValue->getScope()->willReturn(null);
+        $value->getAttribute()->willReturn($attribute);
+        $value->getData()->willReturn($fileInfo);
+        $value->getLocale()->willReturn('en_US');
+        $value->getScope()->willReturn(null);
 
-        $productValue2->getAttribute()->willReturn($attribute);
-        $productValue2->getMedia()->willReturn($fileInfo2);
-        $productValue2->getLocale()->willReturn('fr_FR');
-        $productValue2->getScope()->willReturn('ecommerce');
+        $value2->getAttribute()->willReturn($attribute);
+        $value2->getData()->willReturn($fileInfo2);
+        $value2->getLocale()->willReturn('fr_FR');
+        $value2->getScope()->willReturn('ecommerce');
 
         $attribute->getType()->willReturn('pim_catalog_image');
         $attribute->getCode()->willReturn('my_picture');
 
-        $productValuesCollection->getIterator()->willReturn($valuesIterator);
+        $valuesCollection->getIterator()->willReturn($valuesIterator);
         $valuesIterator->rewind()->shouldBeCalled();
-        $valuesCount = 2;
-        $valuesIterator->valid()->will(
-            function () use (&$valuesCount) {
-                return $valuesCount-- > 0;
-            }
-        );
+        $valuesIterator->valid()->willReturn(true, true, false);
+        $valuesIterator->current()->willReturn($value, $value2);
         $valuesIterator->next()->shouldBeCalled();
-        $valuesIterator->current()->will(new ReturnPromise([$productValue, $productValue2]));
 
         $filesystemProvider->getFilesystem('storageAlias')->willReturn($filesystem);
 
@@ -144,7 +131,7 @@ class BulkMediaFetcherSpec extends ObjectBehavior
             ['identifier' => 'the_sku', 'code' => 'my_picture']
         )->willReturn('files/the_sku/my_picture/fr_FR/ecommerce/');
 
-        $this->fetchAll($productValuesCollection, $this->directory, 'the_sku');
+        $this->fetchAll($valuesCollection, $this->directory, 'the_sku');
 
         $this->getErrors()->shouldBeEqualTo([
             [

@@ -32,19 +32,17 @@ class GroupType implements ArrayConverterInterface
      *
      * Before:
      * [
-     *     'code'        => 'VARIANT',
-     *     'is_variant'  => 1,
-     *     'label-en_US' => 'variant',
-     *     'label-fr_FR' => 'variantes',
+     *     'code'        => 'GROUP',
+     *     'label-en_US' => 'Group',
+     *     'label-fr_FR' => 'Groupe',
      * ]
      *
      * After:
      * [
-     *     'code'        => 'VARIANT',
-     *     'is_variant'  => true,
+     *     'code'        => 'GROUP',
      *     'label'       => [
-     *         'en_US' => 'variant',
-     *         'fr_FR' => 'variantes',
+     *         'en_US' => 'Group',
+     *         'fr_FR' => 'Groupe',
      *     ]
      * ]
      */
@@ -72,8 +70,6 @@ class GroupType implements ArrayConverterInterface
     {
         if ('code' === $field) {
             $convertedItem[$field] = $data;
-        } elseif ('is_variant' === $field) {
-            $convertedItem['is_variant'] = (bool) $data;
         } elseif (preg_match('/^label-(?P<locale>[\w_]+)$/', $field, $matches)) {
             if (!isset($convertedItem['label'])) {
                 $convertedItem['label'] = [];

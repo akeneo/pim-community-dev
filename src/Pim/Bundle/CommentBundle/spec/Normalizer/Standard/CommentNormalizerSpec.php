@@ -3,8 +3,8 @@
 namespace spec\Pim\Bundle\CommentBundle\Normalizer\Standard;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use Pim\Bundle\CommentBundle\Model\CommentInterface;
 use PhpSpec\ObjectBehavior;
+use Pim\Bundle\CommentBundle\Model\CommentInterface;
 use Pim\Bundle\UserBundle\Entity\UserInterface;
 use Symfony\Component\Serializer\SerializerInterface;
 
@@ -67,6 +67,7 @@ class CommentNormalizerSpec extends ObjectBehavior
         $author->getUsername()->willReturn('julia');
         $author->getFirstName()->willReturn('Julia');
         $author->getLastName()->willReturn('Doe');
+        $author->getImagePath()->willReturn('/path/to/image');
 
         $comment->getId()->willReturn(1);
         $comment->getResourceName()->willReturn('Product');
@@ -84,6 +85,7 @@ class CommentNormalizerSpec extends ObjectBehavior
             'author'       => [
                 'username' => 'julia',
                 'fullName' => 'Julia Doe',
+                'avatar'   => '/path/to/image',
             ],
             'body'         => 'Body of the comment',
             'created'      => '2015-05-23T15:55:50+01:00',

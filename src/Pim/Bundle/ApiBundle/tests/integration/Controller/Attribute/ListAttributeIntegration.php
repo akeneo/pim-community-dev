@@ -2,10 +2,12 @@
 
 namespace Pim\Bundle\ApiBundle\tests\integration\Controller\Attribute;
 
-use Akeneo\Test\Integration\Configuration;
 use Pim\Bundle\ApiBundle\tests\integration\ApiTestCase;
 use Symfony\Component\HttpFoundation\Response;
 
+/**
+ * @group ce
+ */
 class ListAttributeIntegration extends ApiTestCase
 {
     public function testAttributes()
@@ -22,11 +24,11 @@ class ListAttributeIntegration extends ApiTestCase
 		"self": {
 			"href": "http://localhost/api/rest/v1/attributes?page=1&limit=10&with_count=false"
 		},
-		"next": {
-			"href": "http://localhost/api/rest/v1/attributes?page=2&limit=10&with_count=false"
-		},
 		"first": {
 			"href": "http://localhost/api/rest/v1/attributes?page=1&limit=10&with_count=false"
+		},
+		"next": {
+			"href": "http://localhost/api/rest/v1/attributes?page=2&limit=10&with_count=false"
 		}
 	},
 	"current_page": 1,
@@ -121,7 +123,7 @@ JSON;
 		}
 	},
 	"current_page": 2,
-	"items_count": 27,
+	"items_count": 29,
     "_embedded" : {
         "items" : [
             {$standardizedAttributes['a_metric']},
@@ -240,11 +242,12 @@ JSON;
     "date_min"               : "2005-05-25T00:00:00+02:00",
     "date_max"               : "2050-12-31T00:00:00+01:00",
     "max_file_size"          : null,
-    "minimum_input_length"   : 0,
+    "minimum_input_length"   : null,
     "sort_order"             : 2,
     "localizable"            : false,
     "scopable"               : false,
-    "labels"                 : {}
+    "labels"                 : {},
+    "auto_option_sorting"    : null
 }
 JSON;
 
@@ -260,7 +263,7 @@ JSON;
     "group"                  : "attributeGroupA",
     "unique"                 : false,
     "useable_as_grid_filter" : false,
-    "allowed_extensions"     : ["pdf", "doc", "docx"],
+    "allowed_extensions"     : ["pdf", "doc", "docx", "txt"],
     "metric_family"          : null,
     "default_metric_unit"    : null,
     "reference_data_name"    : null,
@@ -280,7 +283,8 @@ JSON;
     "sort_order"             : 1,
     "localizable"            : false,
     "scopable"               : false,
-    "labels"                 : {}
+    "labels"                 : {},
+    "auto_option_sorting"    : null
 }
 JSON;
 
@@ -304,19 +308,20 @@ JSON;
     "max_characters"         : null,
     "validation_rule"        : null,
     "validation_regexp"      : null,
-    "wysiwyg_enabled"        : false,
+    "wysiwyg_enabled"        : null,
     "number_min"             : null,
     "number_max"             : null,
-    "decimals_allowed"       : false,
-    "negative_allowed"       : false,
+    "decimals_allowed"       : null,
+    "negative_allowed"       : null,
     "date_min"               : null,
     "date_max"               : null,
     "max_file_size"          : null,
-    "minimum_input_length"   : 0,
+    "minimum_input_length"   : null,
     "sort_order"             : 0,
     "localizable"            : true,
     "scopable"               : false,
-    "labels"                 : {}
+    "labels"                 : {},
+    "auto_option_sorting"    : null
 }
 JSON;
 
@@ -340,19 +345,20 @@ JSON;
     "max_characters"         : null,
     "validation_rule"        : null,
     "validation_regexp"      : null,
-    "wysiwyg_enabled"        : false,
+    "wysiwyg_enabled"        : null,
     "number_min"             : null,
     "number_max"             : null,
-    "decimals_allowed"       : false,
-    "negative_allowed"       : false,
+    "decimals_allowed"       : null,
+    "negative_allowed"       : null,
     "date_min"               : null,
     "date_max"               : null,
     "max_file_size"          : null,
-    "minimum_input_length"   : 0,
+    "minimum_input_length"   : null,
     "sort_order"             : 0,
     "localizable"            : true,
     "scopable"               : true,
-    "labels"                 : {}
+    "labels"                 : {},
+    "auto_option_sorting"    : null
 }
 JSON;
 
@@ -379,16 +385,17 @@ JSON;
     "wysiwyg_enabled"        : false,
     "number_min"             : null,
     "number_max"             : null,
-    "decimals_allowed"       : false,
-    "negative_allowed"       : false,
+    "decimals_allowed"       : null,
+    "negative_allowed"       : null,
     "date_min"               : null,
     "date_max"               : null,
     "max_file_size"          : null,
-    "minimum_input_length"   : 0,
+    "minimum_input_length"   : null,
     "sort_order"             : 10,
     "localizable"            : true,
     "scopable"               : true,
-    "labels"                 : {}
+    "labels"                 : {},
+    "auto_option_sorting"    : null
 }
 JSON;
 
@@ -420,11 +427,12 @@ JSON;
     "date_min"               : null,
     "date_max"               : null,
     "max_file_size"          : null,
-    "minimum_input_length"   : 0,
-    "sort_order"             : null,
+    "minimum_input_length"   : null,
+    "sort_order"             : 0,
     "localizable"            : false,
     "scopable"               : false,
-    "labels"                 : {}
+    "labels"                 : {},
+    "auto_option_sorting"    : null
 }
 JSON;
 
@@ -460,7 +468,8 @@ JSON;
     "sort_order"             : 0,
     "localizable"            : false,
     "scopable"               : false,
-    "labels"                 : {}
+    "labels"                 : {},
+    "auto_option_sorting"    : null
 }
 JSON;
 
@@ -496,7 +505,8 @@ JSON;
     "sort_order"             : 0,
     "localizable"            : false,
     "scopable"               : false,
-    "labels"                 : {}
+    "labels"                 : {},
+    "auto_option_sorting"    : null
 }
 JSON;
 
@@ -509,7 +519,7 @@ JSON;
     },
     "code"                   : "a_metric_without_decimal_negative",
     "type"                   : "pim_catalog_metric",
-    "group"                  : "attributeGroupB",
+    "group"                  : "attributeGroupC",
     "unique"                 : false,
     "useable_as_grid_filter" : false,
     "allowed_extensions"     : [],
@@ -532,7 +542,8 @@ JSON;
     "sort_order"             : 0,
     "localizable"            : false,
     "scopable"               : false,
-    "labels"                 : {}
+    "labels"                 : {},
+    "auto_option_sorting"    : null
 }
 JSON;
 
@@ -545,7 +556,7 @@ JSON;
     },
     "code"                   : "a_multi_select",
     "type"                   : "pim_catalog_multiselect",
-    "group"                  : "attributeGroupB",
+    "group"                  : "attributeGroupC",
     "unique"                 : false,
     "useable_as_grid_filter" : false,
     "allowed_extensions"     : [],
@@ -568,7 +579,8 @@ JSON;
     "sort_order"             : 0,
     "localizable"            : false,
     "scopable"               : false,
-    "labels"                 : {}
+    "labels"                 : {},
+    "auto_option_sorting"    : false
 }
 JSON;
 
@@ -580,6 +592,6 @@ JSON;
      */
     protected function getConfiguration()
     {
-        return new Configuration([Configuration::getTechnicalCatalogPath()]);
+        return $this->catalog->useTechnicalCatalog();
     }
 }

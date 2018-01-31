@@ -4,6 +4,7 @@ namespace Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository;
 
 use Doctrine\ORM\AbstractQuery;
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\QueryBuilder;
 use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
 use Pim\Component\Catalog\Repository\AttributeGroupRepositoryInterface;
 
@@ -16,18 +17,6 @@ use Pim\Component\Catalog\Repository\AttributeGroupRepositoryInterface;
  */
 class AttributeGroupRepository extends EntityRepository implements AttributeGroupRepositoryInterface
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function findAllWithTranslations()
-    {
-        $qb = $this->createQueryBuilder('attribute_group')
-            ->addSelect('translation')
-            ->leftJoin('attribute_group.translations', 'translation');
-
-        return $qb->getQuery()->getResult();
-    }
-
     /**
      * {@inheritdoc}
      */
@@ -53,37 +42,12 @@ class AttributeGroupRepository extends EntityRepository implements AttributeGrou
     /**
      * {@inheritdoc}
      */
-    public function getAttributeGroupsFromAttributeCodes(array $codes)
-    {
-        $qb = $this->createQueryBuilder('ga');
-
-        $query = $qb
-            ->innerJoin('ga.attributes', 'a')
-            ->where($qb->expr()->in('a.code', ':codes'))
-            ->setParameter(':codes', $codes)
-            ->getQuery();
-
-        return $query->getResult();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getMaxSortOrder()
     {
         return (int) $this->createQueryBuilder('ag')
             ->select('MAX(ag.sortOrder)')
             ->getQuery()
             ->execute([], AbstractQuery::HYDRATE_SINGLE_SCALAR);
-    }
-
-    /**
-     * @return \Doctrine\ORM\QueryBuilder
-     */
-    protected function buildAllOrderedBySortOrder()
-    {
-        return $this->createQueryBuilder('attribute_group')
-            ->orderBy('attribute_group.sortOrder');
     }
 
     /**
@@ -100,5 +64,14 @@ class AttributeGroupRepository extends EntityRepository implements AttributeGrou
     public function getIdentifierProperties()
     {
         return ['code'];
+    }
+
+    /**
+     * @return QueryBuilder
+     */
+    protected function buildAllOrderedBySortOrder()
+    {
+        return $this->createQueryBuilder('attribute_group')
+            ->orderBy('attribute_group.sortOrder');
     }
 }

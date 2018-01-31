@@ -1,6 +1,6 @@
 parameters:
     pim_catalog.builder.product.class:          Pim\Component\Catalog\Builder\ProductBuilder
-    pim_catalog.builder.product_template.class: Pim\Component\Catalog\Builder\ProductTemplateBuilder
+    pim_catalog.builder.entity_with_values.class: Pim\Component\Catalog\Builder\EntityWithValuesBuilder
     pim_catalog.builder.choices.class:          Pim\Bundle\CatalogBundle\Builder\ChoicesBuilder
 
 services:
@@ -9,21 +9,29 @@ services:
         arguments:
             - '@pim_catalog.repository.attribute'
             - '@pim_catalog.repository.family'
-            - '@pim_catalog.repository.currency'
             - '@pim_catalog.repository.association_type'
             - '@event_dispatcher'
             - '@pim_catalog.resolver.attribute_values'
-            - '@pim_catalog.factory.product_value'
-            - {'product': '%pim_catalog.entity.product.class%', 'product_price': '%pim_catalog.entity.product_price.class%', 'association': '%pim_catalog.entity.association.class%'}
+            - '@pim_catalog.builder.entity_with_values'
+            - {'product': '%pim_catalog.entity.product.class%', 'association': '%pim_catalog.entity.association.class%'}
 
-    pim_catalog.builder.product_template:
-        class: '%pim_catalog.builder.product_template.class%'
+    pim_catalog.builder.variant_product:
+        class: '%pim_catalog.builder.product.class%'
         arguments:
-            - '@pim_serializer'
-            - '@pim_serializer'
-            - '@pim_catalog.builder.product'
-            - '%pim_catalog.entity.product_template.class%'
-            - '%pim_catalog.entity.product.class%'
+            - '@pim_catalog.repository.attribute'
+            - '@pim_catalog.repository.family'
+            - '@pim_catalog.repository.association_type'
+            - '@event_dispatcher'
+            - '@pim_catalog.resolver.attribute_values'
+            - '@pim_catalog.builder.entity_with_values'
+            - {'product': '%pim_catalog.entity.variant_product.class%', 'association': '%pim_catalog.entity.association.class%'}
+
+    pim_catalog.builder.entity_with_values:
+        class: '%pim_catalog.builder.entity_with_values.class%'
+        arguments:
+            - '@pim_catalog.resolver.attribute_values'
+            - '@pim_catalog.factory.value'
+
 
     pim_catalog.builder.choices:
         class: '%pim_catalog.builder.choices.class%'

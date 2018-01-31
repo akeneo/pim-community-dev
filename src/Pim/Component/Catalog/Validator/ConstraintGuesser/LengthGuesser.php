@@ -17,10 +17,10 @@ use Symfony\Component\Validator\Constraints as Assert;
 class LengthGuesser implements ConstraintGuesserInterface
 {
     /** @staticvar int */
-    const TEXT_FIELD_LEMGTH = 255;
+    const TEXT_FIELD_LENGTH = 255;
 
     /** @staticvar int */
-    const TEXTAREA_FIELD_LEMGTH = 65535;
+    const TEXTAREA_FIELD_LENGTH = 65535;
 
     /**
      * {@inheritdoc}
@@ -32,7 +32,7 @@ class LengthGuesser implements ConstraintGuesserInterface
             [
                 AttributeTypes::TEXT,
                 AttributeTypes::TEXTAREA,
-                AttributeTypes::IDENTIFIER,
+                AttributeTypes::IDENTIFIER
             ]
         );
     }
@@ -45,8 +45,8 @@ class LengthGuesser implements ConstraintGuesserInterface
         $constraints = [];
 
         $characterLimit = AttributeTypes::TEXTAREA === $attribute->getType() ?
-            static::TEXTAREA_FIELD_LEMGTH :
-            static::TEXT_FIELD_LEMGTH;
+            static::TEXTAREA_FIELD_LENGTH :
+            static::TEXT_FIELD_LENGTH;
 
         if ($maxCharacters = $attribute->getMaxCharacters()) {
             $characterLimit = min($maxCharacters, $characterLimit);

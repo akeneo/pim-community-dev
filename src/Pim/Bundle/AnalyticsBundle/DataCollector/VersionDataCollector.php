@@ -4,6 +4,7 @@ namespace Pim\Bundle\AnalyticsBundle\DataCollector;
 
 use Akeneo\Component\Analytics\DataCollectorInterface;
 use Pim\Bundle\CatalogBundle\VersionProviderInterface;
+use Pim\Bundle\InstallerBundle\InstallStatusManager\InstallStatusManager;
 use Symfony\Component\HttpFoundation\RequestStack;
 
 /**
@@ -29,25 +30,25 @@ class VersionDataCollector implements DataCollectorInterface
     /** @var string */
     protected $environment;
 
-    /** @var string */
-    protected $installTime;
+    /** @var InstallStatusManager */
+    protected $installStatusManager;
 
     /**
      * @param RequestStack             $requestStack
      * @param VersionProviderInterface $versionProvider
+     * @param InstallStatusManager     $installStatusManager
      * @param string                   $environment
-     * @param string                   $installTime
      */
     public function __construct(
         RequestStack $requestStack,
         VersionProviderInterface $versionProvider,
-        $environment,
-        $installTime
+        InstallStatusManager $installStatusManager,
+        string $environment
     ) {
         $this->requestStack = $requestStack;
         $this->versionProvider = $versionProvider;
+        $this->installStatusManager = $installStatusManager;
         $this->environment = $environment;
-        $this->installTime = $installTime;
     }
 
     /**
@@ -59,7 +60,7 @@ class VersionDataCollector implements DataCollectorInterface
             'pim_edition'      => $this->versionProvider->getEdition(),
             'pim_version'      => $this->versionProvider->getPatch(),
             'pim_environment'  => $this->environment,
-            'pim_install_time' => $this->installTime,
+            'pim_install_time' => $this->installStatusManager->getPimInstallDateTime()->format(\DateTime::ISO8601),
             'server_version'   => $this->getServerVersion(),
         ];
     }

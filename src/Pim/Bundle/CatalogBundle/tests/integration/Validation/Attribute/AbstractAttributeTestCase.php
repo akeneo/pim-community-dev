@@ -140,6 +140,27 @@ abstract class AbstractAttributeTestCase extends TestCase
         $this->assertSame('reference_data_name', $violations->get(0)->getPropertyPath());
     }
 
+    public function assertDoesNotHaveAutoOptionSorting($type)
+    {
+        $attribute = $this->createAttribute();
+
+        $this->updateAttribute(
+            $attribute,
+            [
+                'code'                => 'new_attribute',
+                'type'                => $type,
+                'group'               => 'attributeGroupA',
+                'auto_option_sorting' => false,
+            ]
+        );
+
+        $violations = $this->validateAttribute($attribute);
+
+        $this->assertCount(1, $violations);
+        $this->assertSame('This attribute cannot have options.', $violations->get(0)->getMessage());
+        $this->assertSame('auto_option_sorting', $violations->get(0)->getPropertyPath());
+    }
+
     public function assertDoesNotHaveMaxCharacters($type)
     {
         $attribute = $this->createAttribute();
@@ -434,6 +455,6 @@ abstract class AbstractAttributeTestCase extends TestCase
      */
     protected function getConfiguration()
     {
-        return new Configuration([Configuration::getTechnicalCatalogPath()]);
+        return $this->catalog->useTechnicalCatalog();
     }
 }

@@ -3,6 +3,7 @@
 namespace Pim\Bundle\EnrichBundle\Controller\Rest;
 
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
+use Pim\Bundle\CatalogBundle\Filter\ObjectFilterInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Repository\ProductCategoryRepositoryInterface;
 use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
@@ -24,16 +25,22 @@ class ProductCategoryController
     /** @var ProductCategoryRepositoryInterface */
     protected $productCategoryRepository;
 
+    /** @var ObjectFilterInterface */
+    protected $objectFilter;
+
     /**
      * @param ProductRepositoryInterface         $productRepository
      * @param ProductCategoryRepositoryInterface $productCategoryRepository
+     * @param ObjectFilterInterface              $objectFilter
      */
     public function __construct(
         ProductRepositoryInterface $productRepository,
-        ProductCategoryRepositoryInterface $productCategoryRepository
+        ProductCategoryRepositoryInterface $productCategoryRepository,
+        ObjectFilterInterface $objectFilter
     ) {
-        $this->productRepository = $productRepository;
+        $this->productRepository         = $productRepository;
         $this->productCategoryRepository = $productCategoryRepository;
+        $this->objectFilter              = $objectFilter;
     }
 
     /**
@@ -67,7 +74,7 @@ class ProductCategoryController
      */
     protected function findProductOr404($id)
     {
-        $product = $this->productRepository->findOneByWithValues($id);
+        $product = $this->productRepository->find($id);
 
         if (!$product) {
             throw new NotFoundHttpException(
@@ -90,12 +97,14 @@ class ProductCategoryController
         foreach ($trees as $tree) {
             $category = $tree['tree'];
 
-            $result[] = [
-                'id'         => $category->getId(),
-                'code'       => $category->getCode(),
-                'label'      => $category->getLabel(),
-                'associated' => $tree['itemCount'] > 0
-            ];
+            if (!$this->objectFilter->filterObject($category, 'pim.internal_api.product_category.view')) {
+                $result[] = [
+                    'id'         => $category->getId(),
+                    'code'       => $category->getCode(),
+                    'label'      => $category->getLabel(),
+                    'associated' => $tree['itemCount'] > 0
+                ];
+            }
         }
 
         return $result;

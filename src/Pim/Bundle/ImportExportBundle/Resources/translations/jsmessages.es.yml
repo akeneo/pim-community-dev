@@ -16,3 +16,10 @@ pim_connector:
     locales:
       validation:
         not_blank: Un local debe ser seleccionado, por favor seleccione un local para exportar.
+page_title:
+  pim_importexport_export_profile_index: Gestión de perfiles de exportación
+  pim_importexport_export_execution_index: Historial de ejecuciones de exportación
+  pim_importexport_export_execution_show: Ejecuciones de importación | Detalles
+  pim_importexport_import_profile_index: Gestión de perfiles de exportación
+  pim_importexport_import_execution_index: Historia de las ejecuciones de importación
+  pim_importexport_import_execution_show: Ejecuciones de importación | Detalles

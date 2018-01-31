@@ -7,14 +7,13 @@ use Akeneo\Component\FileStorage\Model\FileInfoInterface;
 use Akeneo\Component\FileStorage\Repository\FileInfoRepositoryInterface;
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
-use Pim\Component\Catalog\Builder\ProductBuilderInterface;
+use Pim\Component\Catalog\Builder\EntityWithValuesBuilderInterface;
 use Pim\Component\Catalog\FileStorage;
 use Pim\Component\Catalog\Model\AttributeInterface;
-use Pim\Component\Catalog\Model\ProductInterface;
-use Pim\Component\Catalog\Validator\AttributeValidatorHelper;
+use Pim\Component\Catalog\Model\EntityWithValuesInterface;
 
 /**
- * Sets a media value in many products
+ * Sets a media data in a product.
  *
  * @author    Julien Janvier <julien.janvier@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
@@ -29,20 +28,18 @@ class MediaAttributeSetter extends AbstractAttributeSetter
     protected $repository;
 
     /**
-     * @param \Pim\Component\Catalog\Builder\ProductBuilderInterface  $productBuilder
-     * @param AttributeValidatorHelper $attrValidatorHelper
-     * @param FileStorerInterface   $storer
-     * @param FileInfoRepositoryInterface  $repository
-     * @param array                    $supportedTypes
+     * @param EntityWithValuesBuilderInterface $entityWithValuesBuilder
+     * @param FileStorerInterface              $storer
+     * @param FileInfoRepositoryInterface      $repository
+     * @param string[]                         $supportedTypes
      */
     public function __construct(
-        ProductBuilderInterface $productBuilder,
-        AttributeValidatorHelper $attrValidatorHelper,
+        EntityWithValuesBuilderInterface $entityWithValuesBuilder,
         FileStorerInterface $storer,
         FileInfoRepositoryInterface $repository,
         array $supportedTypes
     ) {
-        parent::__construct($productBuilder, $attrValidatorHelper);
+        parent::__construct($entityWithValuesBuilder);
 
         $this->storer = $storer;
         $this->repository = $repository;
@@ -55,13 +52,12 @@ class MediaAttributeSetter extends AbstractAttributeSetter
      * Expected data input format :  "/absolute/file/path/filename.extension"
      */
     public function setAttributeData(
-        ProductInterface $product,
+        EntityWithValuesInterface $entityWithValues,
         AttributeInterface $attribute,
         $data,
         array $options = []
     ) {
         $options = $this->resolver->resolve($options);
-        $this->checkLocaleAndScope($attribute, $options['locale'], $options['scope']);
         $this->checkData($attribute, $data);
 
         if (null === $data) {
@@ -70,31 +66,13 @@ class MediaAttributeSetter extends AbstractAttributeSetter
             $file = $this->storeFile($attribute, $data);
         }
 
-        $this->setMedia($product, $attribute, $file, $options['locale'], $options['scope']);
-    }
-
-    /**
-     * Set media in the product value
-     *
-     * @param ProductInterface       $product
-     * @param AttributeInterface     $attribute
-     * @param FileInfoInterface|null $fileInfo
-     * @param string|null            $locale
-     * @param string|null            $scope
-     */
-    protected function setMedia(
-        ProductInterface $product,
-        AttributeInterface $attribute,
-        FileInfoInterface $fileInfo = null,
-        $locale = null,
-        $scope = null
-    ) {
-        $value = $product->getValue($attribute->getCode(), $locale, $scope);
-        if (null === $value) {
-            $value = $this->productBuilder->addOrReplaceProductValue($product, $attribute, $locale, $scope);
-        }
-
-        $value->setMedia($fileInfo);
+        $this->entityWithValuesBuilder->addOrReplaceValue(
+            $entityWithValues,
+            $attribute,
+            $options['locale'],
+            $options['scope'],
+            null !== $file ? $file->getKey() : null
+        );
     }
 
     /**
@@ -111,13 +89,12 @@ class MediaAttributeSetter extends AbstractAttributeSetter
     }
 
     /**
-     * TODO: inform the user that this could take some time
+     * TODO: inform the user that this could take some time.
      *
      * @param AttributeInterface $attribute
      * @param mixed              $data
      *
      * @throws InvalidPropertyException If an invalid filePath is provided
-     *
      * @return FileInfoInterface|null
      */
     protected function storeFile(AttributeInterface $attribute, $data)

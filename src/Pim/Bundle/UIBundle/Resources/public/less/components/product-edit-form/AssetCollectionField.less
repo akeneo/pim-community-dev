@@ -11,6 +11,7 @@
     background: lighten(@AknGrey, 30%);
     border-bottom: 1px solid @AknBorderColor;
     padding: 10px;
+    margin: 0;
   }
 
   &-list {
@@ -34,6 +35,13 @@
     height: @itemHeight;
     background-size: 100% auto;
     background-position: center center;
+    background-repeat: no-repeat;
+
+    &--small {
+      width: 45px;
+      height: 45px;
+      background-size: cover;
+    }
   }
 
   &-icon {

@@ -27,6 +27,8 @@ Action performed.: Akcja została wykonana.
 Action is not performed.: Akcja nie została wykonana.
 Please, select item to perform action.: Proszę, zaznacz elementy do wykonania akcji.
 View per page: Wyników na stronie
+"Yes": true
+"No": false
 oro.datagrid.entityHint: Encja
 oro.datagrid.noentities: Nie znaleziono żadnych rekordów
 oro.datagrid.noresults: "Brak wyników. Spróbuj zmienić kryteria wyszukiwania."

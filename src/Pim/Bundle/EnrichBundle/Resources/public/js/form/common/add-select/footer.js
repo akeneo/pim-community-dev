@@ -12,7 +12,7 @@ define(
         'jquery',
         'underscore',
         'backbone',
-        'text!pim/template/form/add-select/footer'
+        'pim/template/form/add-select/footer'
     ],
     function (
         $,

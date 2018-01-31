@@ -1,4 +1,5 @@
 confirmation:
+  title: Confirmar
   remove:
     item: Esteu segur que voleu eliminar aquest element?
     association_type: Esteu segur que voleu suprimir aquest tipus d'associació?
@@ -7,10 +8,9 @@ confirmation:
     product: Esteu segur que voleu suprimir aquest producte?
     channel: Esteu segur que voleu suprimir aquest canal?
     group: Esteu segur que voleu suprimir aquest grup?
-    variant group: Esteu segur que voleu suprimir aquesta variant de grups?
-    group type: Esteu segur que voleu suprimir aquest tipus de grup?
-    import profile: Esteu segur que voleu suprimir aquest perfil d'importació?
-    export profile: Esteu segur que voleu eliminar aquest perfil d'exportació?
+    group_type: Esteu segur que voleu suprimir aquest tipus de grup?
+    import_profile: Esteu segur que voleu suprimir aquest perfil d'importació?
+    export_profile: Esteu segur que voleu eliminar aquest perfil d'exportació?
     user: Esteu segur que voleu eliminar aquest usuari?
     role: Estàs segur que vols suprimir aquest rol?
 pim_datagrid:
@@ -21,12 +21,13 @@ pim_datagrid:
       label: Exportació ràpida
   mass_action:
     delete:
-      confirm_content: Esteu segur que voleu suprimir els productes seleccionats?
+      label: Suprimir
       success: Els productes seleccionats s'han eliminat correctament.
       error: S'ha produït un error en intentar suprimir els productes seleccionats, intenteu-ho un altre cop.
   view_selector:
     view: Vistes
     create_view_modal:
+      create: Crear
       confirm: OK
       cancel: Cancelar
 flash:
@@ -36,6 +37,8 @@ flash:
     removed: Tipus d'associació suprimit correctament
   attribute:
     removed: Atribut suprimit correctament
+  attribute_group:
+    removed: Grup d'atributs suprimit correctament
   family:
     removed: Família eliminada correctament
   product:
@@ -44,9 +47,7 @@ flash:
     removed: Canal suprimit correctament
   group:
     removed: Grup suprimit correctament
-  variant group:
-    removed: Grup de variants suprimit correctament
-  group type:
+  group_type:
     removed: Tipus de grup suprimit correctament
   import profile:
     removed: Perfil d'importació eliminat correctament
@@ -65,7 +66,6 @@ error:
     product: No podeu eliminar aquest producte
     channel: No podeu eliminar aquest canal
     group: No podeu eliminar aquest grup
-    variant group: No podeu eliminar aquesta variant de grups
     group type: No podeu eliminar aquest tipus de grup
     import profile: No podeu eliminar aquest perfil d'importació
     export profile: No podeu eliminar aquest perfil d'exportació
@@ -104,11 +104,10 @@ pim:
         csv_grid_context: CSV (marc de quadrícula)
         xlsx_all: Excel (tots els atributs)
         xlsx_grid_context: Excel (marc de quadrícula)
-      delete: Eliminar productes
-      mass_edit: Canviar la informació del producte
+      delete: Suprimir
       category_edit: Moure els productes a les categories
-      sequential_edit: Editar els productes seqüencialment
 jstree.create: Crear
+jstree.done: Fet
 switch_on: "Sí"
 switch_off: "No"
 pim_enrich:
@@ -128,29 +127,31 @@ pim_enrich:
     info:
       update_failed: Actualització fallida
       update_successful: Actualització completada
+    create_popin:
+      code: Codi
+      label: Etiqueta
+      labels:
+        save: Desar
+        cancel: Cancelar
     product:
       title: producte
+      locale: Configuració Regional
+      category: Categoria
+      create: Crear
+      filters: Filtres
       btn:
-        enable: Habilitar
         enabled: Habilitat
-        disable: Deshabilitar
         disabled: Deshabilitat
         download_pdf: PDF
         compare_translate: Comparar / traduir
         delete: Suprimir
         save: Desar
-        save_and_back: Desar i tornar a la quadrícula
       history:
         version: Versió
         author: Autor/a
         logged_at: Connectat a
-        more: Més
-        less: Menys
         from: Des de
         modified: Modificat
-        property: Propietat
-        old_values: Valors antics
-        new_values: Valors nous
         actions: Accions
       info:
         deletion_successful: Producte suprimit correctament.
@@ -168,6 +169,9 @@ pim_enrich:
         family:
           title: Família
           none: Cap
+        family_variant:
+          title: Variant
+          none: Cap
         groups:
           title: Grups
           modal:
@@ -176,17 +180,15 @@ pim_enrich:
             group_label: Etiqueta
             more_products: '{{ count }} més productes...'
             close: Tancar
+        status: Estat
+        scope: Canal
+        locale: Configuració Regional
       copy:
         select: Seleccionar
         all: Tots
         all_visible: Tot visible
         none: Cap
         copy: Copiar
-      variant_group:
-        updated_by: Actualitzat per un grup de variants
-        switch:
-          "yes": "Sí"
-          "no": "No"
       optional_attribute:
         remove: Eliminar aquest atribut
       locale_specific_attribute:
@@ -196,16 +198,22 @@ pim_enrich:
       media:
         upload: Arrossegueu-lo aquí per carregar o feu-hi clic
       create_popin:
-        title: Crear un nou producte
+        type: Producte
+        title: Crear
         labels:
           family: Trieu una família
           save: Desar
           cancel: Cancelar
+      message:
+        created: Producte creat correctament
+      completeness: Complet
+    product_model:
+      add_child:
+        cancel: Cancelar
+        confirm: Confirmar
+        fields:
+          code: Codi
     association_type:
-      info:
-        field_not_ready:
-          The association type cannot be saved right now. The following fields are not ready:
-            - camps
       meta:
         created: Creat
         created_by: Creat per
@@ -213,12 +221,26 @@ pim_enrich:
         updated_by: Actualitzat per
       btn:
         save: Desar
+      title: tipus d'associació
+      create_popin:
+        title: Crear
+      message:
+        created: Tipus d'associació creat correctament
+    group_type:
+      meta:
+        created: Creat
+        created_by: Creat per
+        updated: Actualitzat
+        updated_by: Actualitzat per
+      btn:
+        save: Desar
+      title: tipus de grup
+      create_popin:
+        title: Crear
+      message:
+        created: Tipus de grup creat correctament
     channel:
       title: canal
-      info:
-        field_not_ready:
-          The channel cannot be saved right now. The following fields are not ready:
-            - camps
       meta:
         created: Creat
         created_by: Creat per
@@ -235,30 +257,19 @@ pim_enrich:
         updated_by: Actualitzat per
       btn:
         save: Desar
+      create_popin:
+        title: Crear
+      message:
+        created: Família creada correctament
+      variant:
+        create: Crear
+        cancel: Cancelar
+        code: Codi
+        label: Etiqueta
     attribute_option:
       code: Codi
       label: Etiqueta
       actions: Accions
-    variant_group:
-      title: Grups de variants
-      info:
-        deletion_successful: El grup variants s'ha suprimit correctament.
-        deletion_failed: El grup variants no s'ha pogut suprimir.
-        update_successful: El grup de variants s'ha actualitzat correctament.
-        update_failed: El grup variants no s'ha pogut actualitzar.
-        field_not_ready:
-          The variant group cannot be saved right now. The following fields are not ready:
-            - camps
-        already_in_upload: Ja s'ha carregat un arxiu per a aquest atribut en la configuració regional "{{ locale }}" i l'àmbit "{{ scope }}"
-        no_attributes: Aquest grup de variants encara no té cap atribut
-      btn:
-        save: Desar
-      meta:
-        product_count: Productes
-        created: Creat
-        created_by: Creat per
-        updated: Actualitzat
-        updated_by: Actualitzat per
     group:
       title: Grup
       info:
@@ -266,9 +277,6 @@ pim_enrich:
         deletion_failed: No s'ha pogut suprimir el grup.
         update_successful: Grup actualitzat correctament.
         update_failed: El grup no s'ha pogut actualitzar.
-        field_not_ready:
-          The group cannot be saved right now. The following fields are not ready:
-            - camps
       btn:
         save: Desar
       meta:
@@ -277,12 +285,46 @@ pim_enrich:
         created_by: Creat per
         updated: Actualitzat
         updated_by: Actualitzat per
+      create_popin:
+        title: Crear
+      message:
+        created: Grup creat correctament
+    attribute:
+      scopable: Abastable
+      type:
+        pim_catalog_identifier: Identificador
+        pim_catalog_text: Texte
+        pim_catalog_textarea: Àrea de Text
+        pim_catalog_number: Nombre
+        pim_catalog_price_collection: Preu
+        pim_catalog_multiselect: Selecció múltiple
+        pim_catalog_simpleselect: Selecció simple
+        pim_catalog_file: Arxiu
+        pim_catalog_image: Imatge
+        pim_catalog_boolean: "Sí/No"
+        pim_catalog_date: Data
+        pim_catalog_metric: Mètrica
+        pim_reference_data_simpleselect: Selecció simple de dades de referència
+        pim_reference_data_multiselect: Selecció múltiple de dades de referència
+      validation_rule:
+        email: Correu electrònic
+        regexp: Expressió regular
+        url: URL
+      title: atribut
+    attribute_group:
+      info:
+        update_successful: Grup d'atributs actualitzat correctament
+    api_connection:
+      create_popin:
+        title: Crear
   confirmation:
     leave: Esteu segur que voleu sortir d'aquesta pàgina?
     discard_changes: Perdreu els canvis a la {{ entity }} si sortiu de la pàgina.
     delete_item: Confirmar l'eliminació
+    remove: Eliminar
     delete:
       attribute: Esteu segur que voleu suprimir aquest atribut del producte?
+      product_model: Confirmar l'eliminació
   info:
     not_applicable: N/D
     entity:
@@ -290,19 +332,17 @@ pim_enrich:
   error:
     upload: S'ha produït un error carregant el fitxer
   alert:
-    not_allowed: No té permís per accedir a aquesta pàgina
     error_occured: S'ha produït un error durant la càrrega de la pàgina
   form:
     required: (obligatori)
+    product_model:
+      family_variant: Variant
     product:
       tab:
         associations:
           title: Associacions
           info:
             none_exist: No existeix cap tipus d'associació.
-            show_products: Mostrar productes
-            show_groups: Mostrar grups
-            number_of_associations: "productes {{ productCount }} i {{ groupCount }} grups"
         attributes:
           title: Atributs
           btn:
@@ -313,6 +353,8 @@ pim_enrich:
             no_available_attributes: No hi ha més atributs a afegir
             no_match: No s’han trobat coincidències
             load_more: Carregant més resultats...
+          attribute_group_selector: Grup d'atributs
+          attribute_group_all: Tots
         categories:
           title: Categories
       panel:
@@ -321,7 +363,6 @@ pim_enrich:
           info:
             no_family: No hi ha cap família definida. Si us plau, defineixi una família per calcular la integritat d'aquest producte.
             no_completeness: Tot just ha canviat la família del producte. Deseu-lo per calcular la integritat de la nova família.
-          missing_values: Valors perduts
         history:
           title: Històric
       switch:
@@ -356,6 +397,15 @@ pim_enrich:
           label_translations: Traduccions d'etiquetes
         history:
           title: Històric
+    group_type:
+      tab:
+        properties:
+          title: Propietats
+          general: Propietats generals
+          code: Codi
+          label_translations: Traduccions d'etiquetes
+        history:
+          title: Històric
     channel:
       tab:
         history:
@@ -378,6 +428,7 @@ pim_enrich:
           general: General
           code: Codi
           attribute_as_label: Atribut utilitzat com a etiqueta
+          empty_attribute_as_image: No seleccionat
           label_translations: Traduccions d'etiquetes
         attributes:
           title: Atributs
@@ -401,21 +452,6 @@ pim_enrich:
       switch:
         "no": "No"
         "yes": "Sí"
-    variant_group:
-      tab:
-        properties:
-          title: Propietats
-          general: Propietats generals
-          code: Codi
-          type: Tipus
-          axis: Eix
-          label_translations: Traduccions d'etiquetes
-        history:
-          title: Històric
-        products:
-          title: Productes
-        attributes:
-          title: Atributs
     group:
       tab:
         properties:
@@ -428,6 +464,21 @@ pim_enrich:
           title: Històric
         products:
           title: Productes
+    attribute_group:
+      tab:
+        properties:
+          title: Propietats
+          general: Propietats generals
+          code: Codi
+          label_translations: Traduccions d'etiquetes
+        attribute:
+          title: Atributs
+          table:
+            name: Nom
+            type: Tipus
+            scopable: Abastable
+            localizable: Configurable regionalment
+        history.title: Històric
     common:
       tab:
         attributes:
@@ -437,6 +488,22 @@ pim_enrich:
           info:
             search_attributes: Cercar...
             no_available_attributes: No hi ha més atributs a afegir
+    job_execution:
+      loading: Carregant...
+      refreshBtn.title: Actualitza
+      meta:
+        status.title: Estat
+      button:
+        show_profile.title: Mostrar perfil
+        download_log.title: Descarregar registre
+      summary:
+        fetching: Recollida de dades sobre l'execució del job...
+        warning: Avís
+        header.step: Pas
+        header.status: Estat
+        header.summary: Sumari
+        header.start: Començar
+        header.end: Fi
     job_instance:
       button:
         edit.title: Editar
@@ -450,7 +517,7 @@ pim_enrich:
         content:
           title: Contingut
         properties:
-          title: Propietats generals
+          title: Propietats
           code:
             title: Codi
           label:
@@ -505,6 +572,47 @@ pim_enrich:
             help: Significa que l'historial del producte s'actualitza automàticament, que es pot desactivar per millorar-ne el rendiment
         history:
           title: Històric
+      file_path: Ruta de l'arxiu
+    attribute:
+      meta:
+        created: Creat
+        updated: Darrera actualització
+      tab:
+        properties:
+          title: Propietats
+          section:
+            common: Paràmetres generals
+            validation: Paràmetres de validació
+          label:
+            allowed_extensions: Extensions permeses
+            available_locales: Configuracions regionals disponibles
+            code: Codi
+            date_max: Data màxima
+            date_min: Data mínima
+            default_metric_unit: Unitat mètrica per defecte
+            group: Grup d'atributs
+            is_locale_specific: Configuració regional específica
+            max_characters: Màxim de caràcters
+            max_file_size: Mida màxima de l'arxiu (MB)
+            metric_family: Família mètrica
+            number_max: Nombre màxim
+            number_min: Nombre mínim
+            type: Tipus
+            unique: Valor únic
+            useable_as_grid_filter: Utilitzable en quadrícula
+            validation_regexp: Expressió regular
+            validation_rule: Regla de validació
+          default_label:
+            default_metric_unit: Trieu una unitat
+            group: Trieu el grup de l'atribut
+            metric_family: Trieu una família
+            reference_data_name: Triar el tipus de dades de referència
+        labels:
+          title: Traduccions d'etiquetes
+        choices:
+          title: Opcions
+        history:
+          title: Històric
     mass_edit:
       family:
         attributes:
@@ -512,6 +620,9 @@ pim_enrich:
           toolbox:
             select_attributes: Afegir atributs
             add: Afegir
+    basket:
+      title: Cistella
+      empty_basket: La cistella és buida
   export:
     product:
       data:
@@ -530,7 +641,6 @@ pim_enrich:
         attributes:
           title: Atributs
           edit: Editar
-          label: "{0} Tots els atributs |{1} Un atribut seleccionat |] 1, Inf [{{ count }} atributs seleccionats"
           help: 'Seleccionar la informació del producte a exportar. Ex: només els atributs tècnics.'
           empty: S'exportaran tots els atributs
           modal:
@@ -543,6 +653,7 @@ pim_enrich:
           clear: Restablir
           all_group: Tots els grups
           empty_selection: S'exportaran tots els atributs
+          title: Atributs
         family:
           title: Família
           help: 'Seleccionar els productes per exportar de la seva família. Ex: Exportar només sabates i vestits.'
@@ -580,7 +691,6 @@ pim_enrich:
           help: Utilitzeu les categories de producte a l'arbre (definit al canal de dalt) per seleccionar els productes a exportar
         identifier:
           title: Identificador
-          help: Els identificadors de producte que voleu exportar separats per comes, espais o salts de línia
         metric:
           operators:
             "=": És igual a
@@ -649,8 +759,313 @@ pim_enrich:
         title: Propietats
       global_settings:
         title: Configuració global
-  mass_edit_action:
-    edit_common_attributes:
-      description: Els atributs del producte seleccionat s'editaran amb les següents dades per la configuració regional <span class="highlight">{{ locale }}</span> i el canal <span class="highlight">{{ channel }}</span>, seleccionats a la quadrícula de productes.
+  index:
+    import_profiles:
+      list: Seleccioneu un job
+      create_popin:
+        title: Crear
+    group:
+      create_btn: Crear grup
+    export_profiles:
+      create_popin:
+        title: Crear
+    user:
+      create_btn: Crear usuari
+    user_role:
+      create_btn: Crear rol
+    user_group:
+      create_btn: Crear grup
+    attribute:
+      modal_title: Trieu el tipus d'atribut
+    attribute_group:
+      title: Grups d'atribut
+      create_btn: Crear
+    api_connection:
+      create_btn: Crear
+  mass_edit:
+    next: Següent
+    cancel: Cancelar
+    confirm: Confirmar
+    product:
+      step:
+        select:
+          label: Triar productes
+        configure:
+          label: Configurar
+        confirm:
+          label: Confirmar
+      operation:
+        change_status:
+          label: Canviar l'estat
+          description: Els productes seleccionats seran activats o desactivats.
+          field: Per activar
+        edit_common:
+          label: Editar atributs
+        change_family:
+          description: La família dels productes seleccionats es canviarà per la família escollida
+          field: Família
+        add_to_group:
+          label: Afegir a grups
+          description: Seleccioneu els grups on volgueu afegir els productes seleccionats
+          field: Grups
+        remove_from_category:
+          description: Els productes s'eliminaran de les següents categories.
+    family:
+      step:
+        select:
+          label: Triar famílies
+        configure:
+          label: Configurar
+        confirm:
+          label: Confirmar
 pim_enrich.error:
   exception.title: Oh no! S'ha produït un error de {{ status_code }}...
+page_title:
+  oro_default: Panell de contol
+  pim_enrich_attributegroup_index: Grups d'atribut
+  pim_enrich_attributegroup_create: Grups d'atributs | Crear
+  pim_enrich_categorytree_index: Arbres de categories
+  pim_enrich_categorytree_create: Arbres de categories | Crear
+  pim_enrich_categorytree_create_tree: Arbres de categories | Crear
+  pim_enrich_attribute_index: Atributs
+  pim_enrich_attribute_create: Atributs | Crear
+  pim_enrich_product_index: Productes
+  pim_enrich_family_index: Famílies
+  pim_enrich_channel_index: Canals
+  pim_enrich_channel_create: Canals | Crear
+  pim_enrich_currency_index: Monedes
+  pim_enrich_locale_index: Configuracions regionals
+  pim_enrich_group_index: Grups
+  pim_enrich_associationtype_index: Tipus d'associació
+  pim_enrich_grouptype_index: Tipus de grup
+  pim_enrich_mass_edit_action_choose: Editar en massa | Triar
+  pim_enrich_mass_edit_action_configure: Editar en massa | Configurar
+  pim_enrich_job_tracker_index: Seguiment del procés
+  pim_enrich_job_tracker_show: Seguiment del procés | Mostrar tasca
+  pim_enrich_mass_edit_action: Edició massiva
+  pim_analytics_system_info_index: Informació del sistema
+batch_jobs:
+  add_product_value:
+    label: Afegir valor de producte
+    perform:
+      label: Afegir valor de producte
+  update_product_value:
+    label: Actualitzar el valor del producte
+    perform:
+      label: Actualitzar el valor del producte
+  edit_common_attributes:
+    label: Editar atributs
+    perform:
+      label: Editar atributs
+  csv_product_export:
+    label: Exportar productes a CSV
+    export.label: Exportar productes
+  csv_product_model_export:
+    export.label: Exportar productes
+  csv_category_export:
+    label: Exportar categories en CSV
+    export.label: Exportar categories
+  csv_attribute_export:
+    label: Exportar atributs a CSV
+    export.label: Exportar atributs
+  csv_attribute_option_export:
+    label: Exportar opcions d'atribut en CSV
+    export.label: Exportar opcions d'atribut
+  csv_association_type_export:
+    label: Exportar tipus d'associació en CSV
+    export.label: Exportar tipus d'associacions
+  csv_group_export:
+    label: Exportar grups en CSV
+    export.label: Exportar grups
+  csv_family_export:
+    label: Exportar famílies en CSV
+    export.label: Exportar família
+  csv_product_import:
+    label: Importar producte en CSV
+    validation.label: Validar arxius
+    import.label: Importar productes
+    import_associations.label: Importar associacions
+  csv_category_import:
+    label: Importar categories en CSV
+    validation.label: Validar arxius
+    import.label: Importar categories
+  csv_attribute_import:
+    label: Importar atributs en CSV
+    validation.label: Validar arxius
+    import.label: Importar atributs
+  csv_attribute_option_import:
+    label: Importar opcions d'atribut en CSV
+    validation.label: Validar arxius
+    import.label: Importar opcions d'atribut
+  csv_association_type_import:
+    label: Importar tipus d'associació en CSV
+    validation.label: Validar arxius
+    import.label: Importar tipus d'associació
+  csv_family_import:
+    label: Importar famílies en CSV
+    validation.label: Validar arxius
+    import.label: Importar família
+  csv_family_variant_import:
+    validation.label: Validar arxius
+  csv_group_import:
+    label: Importar grups en CSV
+    validation.label: Validar arxius
+    import.label: Importar grups
+  csv_channel_export:
+    label: Canal d'exportació en CSV
+    export.label: Canal d'exportació
+  csv_locale_export:
+    label: Exportació de configuració regional en CSV
+    export.label: Exportació de configuració regional
+  csv_attribute_group_export:
+    label: Exportació de grup d'atributs en CSV
+    export.label: Exportació de grup d'atributs
+  csv_currency_export:
+    label: Exportació de moneda en CSV
+    export.label: Exportació de moneda
+  csv_group_type_export:
+    label: Exportació de tipus de grup en CSV
+    export.label: Exportació de tipus de grup
+  csv_channel_import:
+    label: Importació de canal en CSV
+    validation.label: Validar arxius
+    import.label: Importació de canal
+  csv_locale_import:
+    label: Importació de configuració regional en CSV
+    validation.label: Validar arxius
+    import.label: Importació de configuració regional
+  csv_attribute_group_import:
+    label: Impoftació de grup d'atributs en CSV
+    validation.label: Validar arxius
+    import.label: Importació de grup d'atributs
+  csv_currency_import:
+    label: Importació de moneda en CSV
+    validation.label: Validar arxius
+    import.label: Importació de moneda
+  csv_group_type_import:
+    label: Importació de tipus de grup en CSV
+    validation.label: Validar arxius
+    import.label: Importació de tipus de grup
+  xlsx_category_import:
+    label: Importació de categoria en XLSX
+    validation.label: Validar arxius
+    import.label: Importar categories
+  xlsx_association_type_import:
+    label: Importar tipus d'associació en XLSX
+    validation.label: Validar arxius
+    import.label: Importar tipus d'associació
+  xlsx_attribute_import:
+    label: Atribut importació en XLSX
+    validation.label: Validar arxius
+    import.label: Importar atributs
+  xlsx_attribute_option_import:
+    label: Importació d'opcions d'atribut en XLSX
+    validation.label: Validar arxius
+    import.label: Importar opcions d'atribut
+  xlsx_family_import:
+    label: Importació de família en XLSX
+    validation.label: Validar arxius
+    import.label: Importar família
+  xlsx_family_variant_import:
+    validation.label: Validar arxius
+  xlsx_product_export:
+    label: Exportació de producte en XLSX
+    export.label: Exportar productes
+  xlsx_product_import:
+    label: Importació de producte en XLSX
+    validation.label: Validar arxius
+    import.label: Importar productes
+    import_associations.label: Importar associacions
+  xlsx_group_export:
+    label: Exportació de grup en XLSX
+    export.label: Exportar grups
+  xlsx_group_import:
+    label: Importació de grup en XLSX
+    validation.label: Validar arxius
+    import.label: Importar grups
+  xlsx_family_export:
+    label: Exportació de família en XLSX
+    export.label: Exportar família
+  xlsx_category_export:
+    label: Exportació de categoria en XLSX
+    export.label: Exportar categories
+  xlsx_attribute_export:
+    label: Importació d'atribut de XLSX
+    export.label: Importació d'atribut de XLSX
+  xlsx_attribute_option_export:
+    label: Exportació d'opcions d'atribut en XLSX
+    export.label: Exportació d'opcions d'atribut en XLSX
+  xlsx_association_type_export:
+    label: Exportació de tipus d'associació en CSV
+    export.label: Exportació de tipus d'associació en CSV
+  xlsx_channel_export:
+    label: Exportació de canal en XLSX
+    export.label: Canal d'exportació
+  xlsx_locale_export:
+    label: Exportació de configuració regional en XLSX
+    export.label: Exportació de configuració regional
+  xlsx_attribute_group_export:
+    label: Exportació de grup d'atributs en XLSX
+    export.label: Exportació de grup d'atributs
+  xlsx_currency_export:
+    label: Exportació de moneda en XLSX
+    export.label: Exportació de moneda
+  xlsx_group_type_export:
+    label: Exportació de tipus de grup en XLSX
+    export.label: Exportació de tipus de grup
+  xlsx_channel_import:
+    label: Importació de canal de XLSX
+    validation.label: Validar arxius
+    import.label: Importació de canal
+  xlsx_locale_import:
+    label: Importació de configuració regional en XLSX
+    validation.label: Validar arxius
+    import.label: Importació de configuració regional
+  xlsx_attribute_group_import:
+    label: Impoftació de grup d'atributs en XLSX
+    validation.label: Validar arxius
+    import.label: Importació de grup d'atributs
+  xlsx_currency_import:
+    label: Importació de moneda en XLSX
+    validation.label: Validar arxius
+    import.label: Importació de moneda
+  xlsx_group_type_import:
+    label: Importació de tipus de grup en XLSX
+    validation.label: Validar arxius
+    import.label: Importació de tipus de grup
+pim_menu:
+  tab:
+    products: Productes
+    settings: Preferències
+    system: Sistema
+  item:
+    association_type: Tipus d'associació
+    attribute: Atributs
+    attribute_group: Grups d'atribut
+    category: Categories
+    channel: Canals
+    currency: Monedes
+    dashboard: Panell de contol
+    family: Famílies
+    group: Grups
+    group_type: Tipus de grup
+    locale: Configuracions regionals
+    product: Productes
+    published_product: Productes publicats
+    export_history: Històric d'exportacions
+    export_profile: Perfils d'exportació
+    import_history: Històric d'importacions
+    import_profile: Perfils d'importació
+    configuration: Configuració
+    user_management: Gestió d'usuaris
+    user: Usuaris
+    user_group: Grups
+    user_role: Rols
+    info: Informació del sistema
+    job_tracker: Seguiment del procés
+  user:
+    logout: Tanca sessió
+    user_account: El meu compte
+pim_notification:
+  mark_all_as_read: Marcar tots com a llegits
+  loading: Carregant...

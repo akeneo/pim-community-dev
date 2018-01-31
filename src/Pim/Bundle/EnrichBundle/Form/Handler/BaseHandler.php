@@ -4,7 +4,7 @@ namespace Pim\Bundle\EnrichBundle\Form\Handler;
 
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Symfony\Component\Form\FormInterface;
-use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 /**
  * Base handler
@@ -18,8 +18,8 @@ class BaseHandler implements HandlerInterface
     /** @var FormInterface */
     protected $form;
 
-    /**  @var Request */
-    protected $request;
+    /**  @var RequestStack */
+    protected $requestStack;
 
     /** @var SaverInterface */
     protected $saver;
@@ -27,17 +27,17 @@ class BaseHandler implements HandlerInterface
     /**
      * Constructor for handler
      *
-     * @param FormInterface  $form    Form called
-     * @param Request        $request Web request
-     * @param SaverInterface $saver   Entity saver
+     * @param FormInterface  $form         Form called
+     * @param RequestStack   $requestStack Web request
+     * @param SaverInterface $saver        Entity saver
      */
     public function __construct(
         FormInterface $form,
-        Request $request,
+        RequestStack $requestStack,
         SaverInterface $saver
     ) {
         $this->form = $form;
-        $this->request = $request;
+        $this->requestStack = $requestStack;
         $this->saver = $saver;
     }
 
@@ -47,8 +47,8 @@ class BaseHandler implements HandlerInterface
     public function process($entity)
     {
         $this->form->setData($entity);
-        if ($this->request->isMethod('POST')) {
-            $this->form->submit($this->request);
+        if ($this->requestStack->getCurrentRequest()->isMethod('POST')) {
+            $this->form->handleRequest($this->requestStack->getCurrentRequest());
             if ($this->form->isValid()) {
                 $this->saver->save($entity);
 

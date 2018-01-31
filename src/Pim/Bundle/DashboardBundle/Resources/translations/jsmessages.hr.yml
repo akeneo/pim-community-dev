@@ -16,3 +16,5 @@ pim_dashboard:
       load_more: 'Učitaj više...'
     header:
       view_all: Pogledaj sve
+page_title:
+  pim_dashboard_index: Nadzorna ploča

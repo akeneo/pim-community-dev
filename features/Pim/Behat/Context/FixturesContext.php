@@ -2,12 +2,13 @@
 
 namespace Pim\Behat\Context;
 
-use Behat\Behat\Console\Processor\ProcessorInterface;
-use Behat\Behat\Context\Step;
 use Context\Spin\SpinCapableTrait;
 use Context\Spin\TimeoutException;
 use Doctrine\Common\Util\ClassUtils;
+use Doctrine\Common\Util\Debug;
 use Doctrine\Common\Util\Inflector;
+use PHPUnit\Framework\Assert;
+use Pim\Component\Catalog\Model\FamilyVariant;
 use Pim\Component\Catalog\Model\ProductInterface;
 
 /**
@@ -28,6 +29,7 @@ class FixturesContext extends PimContext
         'Channel'          => 'PimCatalogBundle:Channel',
         'Currency'         => 'PimCatalogBundle:Currency',
         'Family'           => 'PimCatalogBundle:Family',
+        'FamilyVariant'    => FamilyVariant::class,
         'Category'         => 'PimCatalogBundle:Category', // TODO: To remove
         'ProductCategory'  => 'PimCatalogBundle:Category',
         'AssociationType'  => 'PimCatalogBundle:AssociationType',
@@ -171,7 +173,7 @@ class FixturesContext extends PimContext
                 sprintf(
                     'Could not find "%s" with criteria %s',
                     $this->getEntities()[$entityName],
-                    print_r(\Doctrine\Common\Util\Debug::export($criteria, 2), true)
+                    print_r(Debug::export($criteria, 2), true)
                 )
             );
         }
@@ -187,18 +189,18 @@ class FixturesContext extends PimContext
     {
         switch ($value) {
             case 'true':
-                assertTrue($data);
+                Assert::assertTrue($data);
                 break;
 
             case 'false':
-                assertFalse($data);
+                Assert::assertFalse($data);
                 break;
 
             default:
                 if ($data instanceof \DateTime) {
                     $data = $data->format('Y-m-d');
                 }
-                assertEquals($value, $data);
+                Assert::assertEquals($value, $data);
         }
     }
 
@@ -209,8 +211,6 @@ class FixturesContext extends PimContext
      */
     protected function validate($object)
     {
-        // TODO: split UniqueVariantAxis + spec
-        // TODO: rework validation constraint to forbid to add products with same options in variant group in same time
         if ($object instanceof ProductInterface) {
             $validator = $this->getContainer()->get('pim_catalog.validator.product');
         } else {
@@ -253,21 +253,13 @@ class FixturesContext extends PimContext
     }
 
     /**
-     * @return \Doctrine\Common\Persistence\ManagerRegistry
-     */
-    protected function getSmartRegistry()
-    {
-        return $this->getMainContext()->getSmartRegistry();
-    }
-
-    /**
      * @param string $namespace
      *
      * @return \Doctrine\Common\Persistence\ObjectRepository
      */
     protected function getRepository($namespace)
     {
-        return $this->getSmartRegistry()->getManagerForClass($namespace)->getRepository($namespace);
+        return $this->getMainContext()->getEntityManager()->getRepository($namespace);
     }
 
     /**
@@ -276,7 +268,7 @@ class FixturesContext extends PimContext
     public function refresh($object)
     {
         if (is_object($object)) {
-            $this->getSmartRegistry()->getManagerForClass(get_class($object))->refresh($object);
+            $this->getMainContext()->getEntityManager()->refresh($object);
         }
     }
 }

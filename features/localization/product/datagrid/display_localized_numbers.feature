@@ -15,7 +15,7 @@ Feature: Localize numbers in the product grid
 
   Scenario: Successfully show English format numbers for English UI
     Given I am logged in as "Julia"
-    When I am on the products page
+    When I am on the products grid
     And I display the columns SKU, Big price, Rate of sale and Weight
     Then the row "sandals" should contain:
       | column       | value                |
@@ -27,7 +27,7 @@ Feature: Localize numbers in the product grid
   @skip
   Scenario: Successfully show French format numbers for French UI
     Given I am logged in as "Julien"
-    When I am on the products page
+    When I am on the products grid
     And I display the columns SKU, Big price, Rate of sale and Weight
     Then the row "sandals" should contain:
       | column       | value                    |
@@ -35,10 +35,11 @@ Feature: Localize numbers in the product grid
       | Rate of sale | 1 000,1234               |
       | Weight       | 1 000,3456 Kilogramme    |
 
+  @skip
   Scenario: Successfully show English format numbers for French catalog
     Given I am logged in as "Julia"
     And I add the "french" locale to the "mobile" channel
-    And I am on the products page
+    And I am on the products grid
     And I switch the locale to "fr_FR"
     When I display the columns [sku], Gros prix, Taux de vente and Poids
     Then the row "sandals" should contain:

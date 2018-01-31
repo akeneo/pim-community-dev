@@ -46,7 +46,7 @@ class AttributeOptionRepository extends EntityRepository implements
             ->leftJoin('o.optionValues', 'v', 'WITH', 'v.locale=:locale')
             ->leftJoin('o.attribute', 'a')
             ->where('o.attribute=:attribute')
-            ->orderBy('o.sortOrder')
+            ->orderBy('o.sortOrder, o.code')
             ->setParameter('locale', $dataLocale)
             ->setParameter('attribute', $collectionId);
         if ($search) {
@@ -73,8 +73,8 @@ class AttributeOptionRepository extends EntityRepository implements
         $autoSorting = null;
 
         foreach ($qb->getQuery()->getArrayResult() as $row) {
-            if (null === $autoSorting && isset($row['properties']['autoOptionSorting'])) {
-                $autoSorting = $row['properties']['autoOptionSorting'];
+            if (null === $autoSorting && isset($row['properties']['auto_option_sorting'])) {
+                $autoSorting = $row['properties']['auto_option_sorting'];
             }
 
             $isLabelBlank = (null === $row['label']) || ('' === $row['label']);
@@ -135,6 +135,22 @@ class AttributeOptionRepository extends EntityRepository implements
             ->setParameter('option_code', $optionCode)
             ->getQuery()
             ->getOneOrNullResult();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function findCodesByIdentifiers($code, array $optionCodes)
+    {
+        return $this->createQueryBuilder('o')
+            ->select('o.code')
+            ->innerJoin('o.attribute', 'a')
+            ->where('a.code=:attribute_code')
+            ->andWhere('o.code IN (:option_codes)')
+            ->setParameter('attribute_code', $code)
+            ->setParameter('option_codes', $optionCodes)
+            ->getQuery()
+            ->getResult();
     }
 
     /**

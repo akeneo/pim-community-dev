@@ -1,17 +1,11 @@
 parameters:
-    pim_enrich.factory.sequential_edit.class:        Pim\Bundle\EnrichBundle\Factory\SequentialEditFactory
     pim_enrich.factory.mass_edit_notification.class: Pim\Bundle\EnrichBundle\Factory\MassEditNotificationFactory
     pim_enrich.transformer.identifiable_model.class: Pim\Bundle\EnrichBundle\Form\DataTransformer\IdentifiableModelTransformer
 
 services:
-    pim_enrich.factory.sequential_edit:
-        class: '%pim_enrich.factory.sequential_edit.class%'
-        arguments:
-            - '%pim_enrich.entity.sequential_edit.class%'
-
     pim_enrich.factory.transformer.identifiable_model:
         class: Pim\Bundle\EnrichBundle\Form\Factory\IdentifiableModelTransformerFactory
-        private: true
+        public: false
         arguments:
             - '%pim_enrich.transformer.identifiable_model.class%'
 

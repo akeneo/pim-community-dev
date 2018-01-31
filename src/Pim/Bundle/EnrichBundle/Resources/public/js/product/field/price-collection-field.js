@@ -12,7 +12,7 @@ define([
         'pim/field',
         'underscore',
         'pim/fetcher-registry',
-        'text!pim/template/product/field/price-collection'
+        'pim/template/product/field/price-collection'
     ],
     function ($, Field, _, FetcherRegistry, fieldTemplate) {
     return Field.extend({
@@ -21,6 +21,10 @@ define([
             'change .field-input:first input[type="text"]': 'updateModel'
         },
         renderInput: function (context) {
+            if (undefined === context.value) {
+                return null;
+            }
+
             context.value.data = _.sortBy(context.value.data, 'currency');
 
             return this.fieldTemplate(context);

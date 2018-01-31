@@ -8,7 +8,7 @@ class ScalarComparatorSpec extends ObjectBehavior
 {
     function let()
     {
-        $this->beConstructedWith(['family', 'variant_group']);
+        $this->beConstructedWith(['family', 'group']);
     }
 
     function it_is_a_comparator()
@@ -19,7 +19,7 @@ class ScalarComparatorSpec extends ObjectBehavior
     function it_supports_comparison()
     {
         $this->supports('family')->shouldBe(true);
-        $this->supports('variant_group')->shouldBe(true);
+        $this->supports('group')->shouldBe(true);
         $this->supports('other')->shouldBe(false);
     }
 
@@ -41,6 +41,37 @@ class ScalarComparatorSpec extends ObjectBehavior
     {
         $changes = 'tshirt';
         $originals = 'tshirt';
+        $this->compare($changes, $originals)->shouldReturn(null);
+    }
+
+    function it_returns_value_when_value_is_array()
+    {
+        $changes = ['tshirt'];
+        $originals = 'tshirt';
+        $this->compare($changes, $originals)->shouldReturn($changes);
+    }
+
+    function it_returns_value_when_value_is_integer()
+    {
+        $changes = [2];
+        $originals = 'scalar';
+
+        $this->compare($changes, $originals)->shouldReturn($changes);
+    }
+
+    function it_returns_value_when_value_is_float()
+    {
+        $changes = [2.44];
+        $originals = 'scalar';
+
+        $this->compare($changes, $originals)->shouldReturn($changes);
+    }
+
+    function it_returns_null_value_when_values_are_null()
+    {
+        $changes = null;
+        $originals = 'scalar';
+
         $this->compare($changes, $originals)->shouldReturn(null);
     }
 }

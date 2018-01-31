@@ -53,7 +53,7 @@ class GroupTypeRepository extends EntityRepository implements
 
         $choices = [];
         foreach ($queryBuilder->getQuery()->getArrayResult() as $code) {
-            $choices[$code['id']] = $code['label'];
+            $choices[$code['label']] = $code['id'];
         }
 
         return $choices;
@@ -73,7 +73,7 @@ class GroupTypeRepository extends EntityRepository implements
         );
 
         $qb
-            ->addSelect($rootAlias)
+            ->select($rootAlias)
             ->addSelect(sprintf("%s AS label", $labelExpr));
 
         $qb

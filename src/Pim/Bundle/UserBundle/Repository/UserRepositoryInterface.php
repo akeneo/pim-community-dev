@@ -16,13 +16,6 @@ use Pim\Bundle\UserBundle\Entity\UserInterface;
 interface UserRepositoryInterface extends IdentifiableObjectRepositoryInterface, ObjectRepository
 {
     /**
-     * Return the number of existing users
-     *
-     * @return int
-     */
-    public function countAll();
-
-    /**
      * Return users who are AT LEAST in one of the given $groupIds
      *
      * @param array $groupIds

@@ -1,0 +1,82 @@
+datagrid:
+    association-product-picker-grid:
+        options:
+            entityHint: product
+            requireJSModules:
+                - pim/datagrid/column-form-listener
+            columnListener:
+                dataField: identifier
+                columnName: is_checked
+            routerEnabled: false
+        source:
+            acl_resource:      pim_enrich_product_index
+            type:              pim_datasource_product
+            entity:            '%pim_catalog.entity.product.class%'
+        columns:
+            is_checked:
+                frontend_type: boolean
+                data_name:     is_checked
+                editable:      true
+            identifier:
+                label: ID
+                data_name:     identifier
+                type:          field
+            image:
+                label:         Image
+                data_name:     image
+                frontend_type: product-and-product-model-image
+            label:
+                label:         Label
+                data_name:     label
+                type:          field
+                frontend_type: product-and-product-model-label
+            completeness:
+                label:         Complete
+                frontend_type: completeness
+            complete_variant_products:
+                label:         Variant products
+                data_name:     complete_variant_product
+                frontend_type: complete-variant-product
+        properties:
+            id: ~
+            technical_id: ~
+            document_type: ~
+        sorters:
+            columns:
+                identifier:
+                    data_name: identifier
+                    sorter: product_field
+                completeness:
+                    data_name: ratio
+                    sorter:    product_completeness
+            default:
+                updated: '%oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC'
+        filters:
+            columns:
+                family:
+                    type:      product_family
+                    label:     Family
+                    data_name: family
+                    options:
+                        field_options:
+                            multiple: true
+                            attr:
+                                empty_choice: true
+                enabled:
+                    type:      product_enabled
+                    ftype:     choice
+                    label:     Status
+                    data_name: enabled
+                    options:
+                        field_options:
+                            choices:
+                                Enabled: 1
+                                Disabled: 0
+                completeness:
+                    type:      product_completeness
+                    label:     Complete
+                    data_name: ratio
+                label_or_identifier:
+                    type: label_or_identifier
+                    label: Label or identifier
+                    data_name: label_or_identifier

@@ -1,0 +1,10 @@
+parameters:
+    akeneo_elasticsearch.client_builder.class: 'Elasticsearch\ClientBuilder'
+    akeneo_elasticsearch.registry.clients.class: Akeneo\Bundle\ElasticsearchBundle\ClientRegistry
+
+services:
+    akeneo_elasticsearch.registry.clients:
+        class: '%akeneo_elasticsearch.registry.clients.class%'
+
+    akeneo_elasticsearch.client_builder:
+        class: '%akeneo_elasticsearch.client_builder.class%'

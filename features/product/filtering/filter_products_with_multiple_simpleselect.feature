@@ -6,14 +6,14 @@ Feature: Filter products with multiples simpleselect filters
 
   Background:
     Given the "default" catalog configuration
-    And the following family:
-      | code      |
-      | furniture |
-      | library   |
     And the following attributes:
       | code    | label-en_US | type                     | useable_as_grid_filter | group |
       | color   | Color       | pim_catalog_simpleselect | 1                      | other |
       | company | Company     | pim_catalog_simpleselect | 1                      | other |
+    And the following family:
+      | code      | attributes    |
+      | furniture | color,company |
+      | library   | color,company |
     And the following "color" attribute options: Black and Green
     And the following "company" attribute options: Debian and Canonical and Suze
     And the following products:
@@ -30,7 +30,7 @@ Feature: Filter products with multiples simpleselect filters
     And I am logged in as "Mary"
 
   Scenario: Successfully filter products with the sames attributes
-    Given I am on the products page
+    Given I am on the products grid
     And I show the filter "company"
     And I filter by "company" with operator "in list" and value "Suze"
     And I show the filter "color"
@@ -41,7 +41,7 @@ Feature: Filter products with multiples simpleselect filters
     And I hide the filter "color"
 
   Scenario: Successfully filter product without commons attributes
-    Given I am on the products page
+    Given I am on the products grid
     And I show the filter "company"
     And I filter by "company" with operator "in list" and value "Debian"
     And I show the filter "color"
@@ -51,7 +51,7 @@ Feature: Filter products with multiples simpleselect filters
     And I hide the filter "color"
 
   Scenario: Successfully filter only one product
-    Given I am on the products page
+    Given I am on the products grid
     And I show the filter "company"
     And I filter by "company" with operator "in list" and value "Canonical"
     And I show the filter "color"

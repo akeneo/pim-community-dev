@@ -21,3 +21,26 @@ file.extensions.message: 'De bestandsextensie is niet toegestaan (toegestane ext
 "This type of value expects the use of comma (,) to separate decimals.": Dit type waarde verwacht een komma (,) om decimalen te scheiden.
 "This type of value expects the use of arabic decimal separator (٫) to separate decimals.": Dit type waarde verwacht een arabisch decimaal scheidingsteken (٫) om decimalen te scheiden.
 "This type of value expects the use of the format {{ date_format }} for dates.": Dit type waarde verwacht gebruik van het {{ date_format }} formaat voor datums.
+pim_catalog:
+  constraint:
+    product_identifier: Deze id's "%s" bestaan niet.
+    0: Er is een onverwachte fout opgetreden.
+    100: Onverwachte waarde
+    101: Dit veld verwacht een Boolean invoer (ja- of nee-waarde).
+    102: Dit veld verwacht een Float invoer (Zwevendekommagetal).
+    103: Dit veld verwacht een integer (afgerond getal).
+    104: Dit veld verwacht een numerieke invoer.
+    105: Dit veld verwacht tekstinvoer.
+    106: Dit veld verwacht een array als invoer.
+    107: Dit veld verwacht een array van arrays als invoer.
+    200: Er is een interne fout opgetreden
+    201: Er is een interne fout opgetreden
+    202: Dit veld verwacht een numerieke invoer.
+    203: Dit veld verwacht tekstinvoer.
+    204: Dit veld verwacht tekstinvoer.
+    205: Er is een interne fout opgetreden
+    300: Dit veld verwacht een geldig entiteit-code.
+    301: Dit veld verwacht een geldige scope en regio-instelling.
+    302: Dit veld verwacht een geldige scope.
+    303: Dit veld verwacht een geldig formaat voor associaties.
+

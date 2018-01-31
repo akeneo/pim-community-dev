@@ -12,8 +12,8 @@ use Context\Spin\TimeoutException;
 use Context\Traits\ClosestTrait;
 use Pim\Behat\Decorator\Common\AddSelect\AttributeAddSelectDecorator;
 use Pim\Behat\Decorator\Common\AddSelect\AttributeGroupAddSelectDecorator;
+use Pim\Behat\Decorator\Common\DropdownMenuDecorator;
 use Pim\Behat\Decorator\Field\Select2Decorator;
-use Pim\Behat\Decorator\Page\PanelableDecorator;
 
 /**
  * Basic form page
@@ -37,8 +37,14 @@ class Form extends Base
             [
                 'Dialog'                          => ['css' => 'div.modal'],
                 'Associations list'               => ['css' => '.associations-list'],
-                'Groups'                          => ['css' => '.tab-groups, .AknVerticalNavtab'],
-                'Group'                           => ['css' => '.AknVerticalNavtab-link:contains("%s")'],
+                'Group selector'                  => ['css' => '.group-selector'],
+                'Association type selector'       => [
+                    'css'        => '.association-type-selector',
+                    'decorators' => [DropdownMenuDecorator::class]
+                ],
+                'Tree selector'                   => ['css' => '.tree-selector'],
+                'Target selector'                 => ['css' => '.target-selector'],
+                'Attribute filter selector'       => ['css' => '.attribute-filter'],
                 'Validation errors'               => ['css' => '.validation-tooltip'],
                 'Available attributes form'       => ['css' => '#pim_available_attributes'],
                 'Available attributes button'     => ['css' => 'button:contains("Add attributes")'],
@@ -49,10 +55,6 @@ class Form extends Base
                     'css' => '.tab-pane.tab-history table.grid, .tab-container .history'
                 ],
                 'Save'                            => ['css' => '.AknButton--apply'],
-                'Panel sidebar'                   => [
-                    'css'        => '.edit-form > .content',
-                    'decorators' => [PanelableDecorator::class],
-                ],
                 'Available attributes'            => [
                     'css'        => '.add-attribute',
                     'decorators' => [AttributeAddSelectDecorator::class]
@@ -72,7 +74,11 @@ class Form extends Base
      */
     public function save()
     {
-        $this->getElement('Save')->click();
+        $this->spin(function () {
+            $this->getElement('Save')->click();
+
+            return true;
+        }, 'Cannot click on the save button.');
     }
 
     /**
@@ -101,38 +107,6 @@ class Form extends Base
     }
 
     /**
-     * Close the specified panel
-     *
-     * @throws \Context\Spin\TimeoutException
-     */
-    public function closePanel()
-    {
-        $elt = $this->spin(function () {
-            return $this->getElement('Panel container')->find('css', 'header .close');
-        });
-
-        $elt->click();
-    }
-
-    /**
-     * Get the tabs in the current page
-     *
-     * @return NodeElement[]
-     */
-    public function getTabs()
-    {
-        $tabs = $this->spin(function () {
-            return $this->find('css', $this->elements['Tabs']['css']);
-        });
-
-        if (!$tabs) {
-            $tabs = $this->getElement('Oro tabs');
-        }
-
-        return $tabs->findAll('css', 'a');
-    }
-
-    /**
      * Get the form tab containing $tab text
      *
      * @param string $tab
@@ -155,6 +129,108 @@ class Form extends Base
     }
 
     /**
+     * Visit the specified group
+     *
+     * @param string $groupName
+     * @param string $type
+     */
+    public function visitGroup($groupName, $type = 'Group')
+    {
+        $this->spin(function () use ($groupName, $type) {
+            $loadingMasks = $this->findAll('css', '.loading-mask');
+            if (0 < count(array_filter($loadingMasks, function ($loadingMask) {
+                return $loadingMask->isVisible();
+            }))) {
+                return false;
+            }
+            $this->getGroup($groupName, $type)->click();
+            $this->getGroup($groupName, $type)->click();
+
+            return true;
+        }, sprintf('Cannot visit group "%s"', $groupName));
+    }
+
+    /**
+     * @param $filter
+     */
+    public function filterAttributes($filter)
+    {
+        $this->spin(function () use ($filter) {
+            $loadingMasks = $this->findAll('css', '.loading-mask');
+            if (0 < count(array_filter($loadingMasks, function ($loadingMask) {
+                return $loadingMask->isVisible();
+            }))) {
+                return false;
+            }
+
+            $this->getGroup($filter, 'Attribute filter')->click();
+
+            return true;
+        }, sprintf('Cannot filter attributes with "%s"', $filter));
+    }
+
+    /**
+     * @param $attributeGroup
+     */
+    public function clickOnAttributeGroupHeader($attributeGroup)
+    {
+        $this->spin(function () use ($attributeGroup) {
+            $loadingMasks = $this->findAll('css', '.loading-mask');
+            if (0 < count(array_filter($loadingMasks, function ($loadingMask) {
+                return $loadingMask->isVisible();
+            }))) {
+                return false;
+            }
+
+            $groupHeader = $this->find('css', sprintf('.required-attribute-indicator[data-group="%s"]', $attributeGroup));
+
+            if (null === $groupHeader) {
+                return false;
+            }
+
+            $groupHeader->click();
+
+            return true;
+        }, sprintf('Cannot click on attribute group "%s" header', $attributeGroup));
+    }
+
+    /**
+     * @param $groupName
+     * @param string $type
+     *
+     * @return NodeElement
+     *
+     * //TODO: make it more generic, no logic is specific to groups here, it's just naming.
+     */
+    public function getGroup($groupName, $type = 'Group')
+    {
+        return $this->spin(function () use ($groupName, $type) {
+            $groupSelector = $this->openGroupSelector($type);
+
+            $groupLabels = $groupSelector->findAll('css', '.label');
+            foreach ($groupLabels as $groupLabel) {
+                if (strtolower(trim($groupLabel->getText())) === strtolower($groupName) && $groupLabel->isVisible()) {
+                    return $this->getClosest($groupLabel, 'AknDropdown-menuLink');
+                }
+            }
+
+            return false;
+        }, sprintf('Cannot find the %s "%s"', $type, $groupName));
+    }
+
+    /**
+     * Get the tabs in the current page
+     *
+     * @return NodeElement[]
+     */
+    public function getTabs()
+    {
+        return $this->spin(function () {
+            return $this->find('css', $this->elements['Tabs']['css']);
+        }, 'Cannot find the tab container')->findAll('css', 'a');
+    }
+
+    /**
      * Get the specified tab
      *
      * @param string $tab
@@ -163,50 +239,11 @@ class Form extends Base
      */
     public function getTab($tab)
     {
-        return $this->spin(function () use ($tab) {
-            return $this->find('css', sprintf('a:contains("%s")', $tab));
+        $groupSelector = $this->openGroupSelector();
+
+        return $this->spin(function () use ($tab, $groupSelector) {
+            return $groupSelector->find('css', sprintf('.AknDropdown-menuLink:contains("%s")', $tab));
         }, sprintf('Cannot find the tab named "%s"', $tab));
-    }
-
-    /**
-     * Visit the specified group
-     *
-     * @param string $group
-     */
-    public function visitGroup($group)
-    {
-        $this->spin(function () use ($group) {
-            $group = $this->findGroup($group);
-            if ($group->isVisible()) {
-                $group->click();
-
-                return true;
-            }
-        }, sprintf('Cannot click the group "%s".', $group));
-    }
-
-    /**
-     * Get the specified group
-     *
-     * @param string $group
-     */
-    public function findGroup($group)
-    {
-        return $this->spin(function () use ($group) {
-            $group = $this->find('css', sprintf($this->elements['Group']['css'], $group));
-
-            return $group;
-        }, sprintf('Cannot find the group "%s".', $group));
-    }
-
-    /**
-     * @return NodeElement
-     */
-    public function getAssociationsList()
-    {
-        return $this->spin(function () {
-            return $this->find('css', $this->elements['Associations list']['css']);
-        }, sprintf('Cannot find association list "%s"', $this->elements['Associations list']['css']));
     }
 
     /**
@@ -338,9 +375,6 @@ class Form extends Base
         }, sprintf('Cannot find "%s" file field', $locator));
 
         $field->attachFile($path);
-        $this
-            ->getSession()
-            ->executeScript('$(\'.edit .field-input input[type="file"], .AknMediaField-fileUploaderInput\').trigger(\'change\');');
     }
 
     /**
@@ -388,12 +422,19 @@ class Form extends Base
     {
         $label     = $this->extractLabelElement($field, $element);
         $fieldType = $this->getFieldType($label);
+
         switch ($fieldType) {
             case 'multiSelect2':
                 $this->fillMultiSelect2Field($label, $value);
                 break;
             case 'simpleSelect2':
                 $this->fillSelect2Field($label, $value);
+                break;
+            case 'metric':
+                $this->fillMetricField($label, $value);
+                break;
+            case 'switch':
+                $this->fillSwitchField($field, $value);
                 break;
             case 'datepicker':
                 $this->fillDateField($label, $value);
@@ -422,7 +463,7 @@ class Form extends Base
     public function getHistoryRows()
     {
         return $this->spin(function () {
-            return $this->getElement('Updates grid')->findAll('css', 'tbody tr');
+            return $this->getElement('Updates grid')->findAll('css', 'tbody tr.entity-version');
         }, 'Cannot find the history rows.');
     }
 
@@ -477,14 +518,14 @@ class Form extends Base
      */
     public function fillPopinFields($fields)
     {
-        foreach ($fields as $field => $value) {
-            $field = $this->spin(function () use ($field) {
-                return $this->find('css', sprintf('.modal-body .control-label:contains("%s") input', $field));
-            }, sprintf('Cannot find "%s" in popin field', $field));
+        foreach ($fields as $fieldCode => $value) {
+            $field = $this->spin(function () use ($fieldCode) {
+                return $this->find('css', sprintf('.modal-body .control-label:contains("%s") input', $fieldCode));
+            }, sprintf('Cannot find "%s" in popin field', $fieldCode));
 
             $field->setValue($value);
             $this->getSession()
-                ->executeScript('$(\'.modal-body .control-label:contains("%s") input\').trigger(\'change\');');
+                ->executeScript(sprintf('$(\'.modal-body .control-label:contains("%s") input\').trigger(\'change\');', $fieldCode));
         }
     }
 
@@ -695,6 +736,14 @@ class Form extends Base
                 return 'select';
             }
 
+            if ($this->getClosest($label, 'AknFieldContainer')->find('css', '.metric-container')) {
+                return 'metric';
+            }
+
+            if ($this->getClosest($label, 'AknFieldContainer')->find('css', '.switch')) {
+                return 'switch';
+            }
+
             if (null !== $this->find('css', sprintf('#date_selector_%s', $for))) {
                 return 'datepicker';
             }
@@ -757,6 +806,59 @@ class Form extends Base
         $field->setValue($value);
 
         return;
+    }
+
+    /**
+     * Fills a metric element with $value, identified by its $label.
+     *
+     * @param NodeElement $label
+     * @param string      $value
+     *
+     * @throws \InvalidArgumentException
+     */
+    protected function fillMetricField(NodeElement $label, $value)
+    {
+        if (false !== strpos($value, ' ')) {
+            list($text, $select) = explode(' ', $value);
+        } else {
+            $text   = $value;
+            $select = null;
+        }
+
+        $fieldContainer = $this->getClosest($label, 'AknFieldContainer');
+        $textField = $fieldContainer->find('css', 'input.amount');
+        $textField->setValue($text);
+
+        if (null !== $select) {
+            $selectField = $fieldContainer->find('css', 'select.unit');
+            $selectField->selectOption($select);
+        }
+    }
+
+    /**
+     * Fills a switch element with $value, identified by its $label.
+     *
+     * @param string $field
+     * @param string $value
+     *
+     * @throws \InvalidArgumentException
+     *
+     * @return bool
+     */
+    protected function fillSwitchField($field, $value)
+    {
+        if ('Yes' === $value) {
+            return $this->toggleSwitch($field, true);
+        }
+
+        if ('No' === $value) {
+            return $this->toggleSwitch($field, false);
+        }
+
+        throw new \InvalidArgumentException(sprintf(
+            'Switch fields accept only "Yes" or "No" value, %s provided.',
+            $value
+        ));
     }
 
     /**
@@ -861,23 +963,28 @@ class Form extends Base
     }
 
     /**
-     * Returns the tabs of the current page, if any.
+     * @param string $type
      *
      * @return NodeElement
      */
-    protected function getPageTabs()
+    public function openGroupSelector($type = 'Group')
     {
-        return $this->spin(function () {
-            $tabs = $this->find('css', $this->elements['Tabs']['css']);
-            if (null === $tabs) {
-                $tabs = $this->find('css', $this->elements['Oro tabs']['css']);
-            }
-            if (null === $tabs) {
-                $tabs = $this->find('css', $this->elements['Form tabs']['css']);
+        $groupSelector = $this->spin(function () use ($type) {
+            $groupSelectors = $this->findAll('css', $this->elements[sprintf('%s selector', $type)]['css']);
+            foreach ($groupSelectors as $groupSelector) {
+                if ($groupSelector->isVisible()) {
+                    return $groupSelector;
+                }
             }
 
-            return $tabs;
-        }, 'Cannot find any tabs in this page');
+            return null;
+        }, sprintf('Can not find the "%s" selector', $type));
+
+        if (!$groupSelector->hasClass('open')) {
+            $groupSelector->find('css', '[data-toggle="dropdown"]')->click();
+        }
+
+        return $groupSelector;
     }
 
     /**
@@ -892,7 +999,7 @@ class Form extends Base
         $button = $this->spin(function () {
             return $this->find('css', $this->elements['Available attributes button']['css']);
         }, 'Cannot find available attribute button');
-        
+
         return !$this->getClosest($button, 'select2-container')->hasClass('select2-container-disabled');
     }
 }

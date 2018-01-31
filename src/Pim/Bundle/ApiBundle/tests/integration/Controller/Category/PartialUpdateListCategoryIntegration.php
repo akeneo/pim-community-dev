@@ -14,13 +14,13 @@ class PartialUpdateListCategoryIntegration extends ApiTestCase
         $data =
 <<<JSON
     {"code": "categoryA2","labels":{"en_US":"category A2"}}
-    {"code": "categoryC","parent":"master"}
+    {"code": "categoryD","parent":"master"}
 JSON;
 
         $expectedContent =
 <<<JSON
 {"line":1,"code":"categoryA2","status_code":204}
-{"line":2,"code":"categoryC","status_code":201}
+{"line":2,"code":"categoryD","status_code":201}
 JSON;
 
         $response = $this->executeStreamRequest('PATCH', 'api/rest/v1/categories', [], [], [], $data);
@@ -39,29 +39,29 @@ JSON;
                     'en_US' => 'category A2'
                 ]
             ],
-            'categoryC' => [
-                'code'   => 'categoryC',
+            'categoryD' => [
+                'code'   => 'categoryD',
                 'parent' => 'master',
                 'labels' => []
             ]
         ];
 
         $this->assertSameCategories($expectedCategories['categoryA2'], 'categoryA2');
-        $this->assertSameCategories($expectedCategories['categoryC'], 'categoryC');
+        $this->assertSameCategories($expectedCategories['categoryD'], 'categoryD');
     }
 
     public function testCreateAndUpdateSameCategory()
     {
         $data =
 <<<JSON
-    {"code": "categoryC"}
-    {"code": "categoryC"}
+    {"code": "categoryD"}
+    {"code": "categoryD"}
 JSON;
 
         $expectedContent =
 <<<JSON
-{"line":1,"code":"categoryC","status_code":201}
-{"line":2,"code":"categoryC","status_code":204}
+{"line":1,"code":"categoryD","status_code":201}
+{"line":2,"code":"categoryD","status_code":204}
 JSON;
 
         $response = $this->executeStreamRequest('PATCH', 'api/rest/v1/categories', [], [], [], $data);
@@ -206,7 +206,7 @@ JSON;
 
         $expectedContent =
 <<<JSON
-{"line":1,"code":"foo","status_code":422,"message":"Property \"parent\" expects a valid category code. The category does not exist, \"bar\" given. Check the standard format documentation.","_links":{"documentation":{"href":"http:\/\/api.akeneo.com\/api-reference.html#patch_categories__code_"}}}
+{"line":1,"code":"foo","status_code":422,"message":"Property \"parent\" expects a valid category code. The category does not exist, \"bar\" given. Check the expected format on the API documentation.","_links":{"documentation":{"href":"http:\/\/api.akeneo.com\/api-reference.html#patch_categories__code_"}}}
 JSON;
 
         $response = $this->executeStreamRequest('PATCH', 'api/rest/v1/categories', [], [], [], $data);
@@ -270,54 +270,6 @@ JSON;
     }
 
     /**
-     * Execute a request where the response is streamed by chunk.
-     *
-     * The whole content of the request and the whole content of the response
-     * are loaded in memory.
-     * Therefore, do not use this function on with an high input/output volumetry.
-     *
-     * @param string $method
-     * @param string $uri
-     * @param array  $parameters
-     * @param array  $files
-     * @param array  $server
-     * @param string $content
-     * @param bool   $changeHistory
-     *
-     * @return array
-     */
-    protected function executeStreamRequest(
-        $method,
-        $uri,
-        array $parameters = [],
-        array $files = [],
-        array $server = [],
-        $content = null,
-        $changeHistory = true
-    ) {
-        $streamedContent = '';
-
-        ob_start(function($buffer) use (&$streamedContent) {
-            $streamedContent .= $buffer;
-
-            return '';
-        });
-
-        $client = $this->createAuthenticatedClient();
-        $client->setServerParameter('CONTENT_TYPE', StreamResourceResponse::CONTENT_TYPE);
-        $client->request($method, $uri, $parameters, $files, $server, $content, $changeHistory);
-
-        ob_end_flush();
-
-        $response = [
-            'http_response' => $client->getResponse(),
-            'content'       => $streamedContent,
-        ];
-
-        return $response;
-    }
-
-    /**
      * @param array  $expectedCategory normalized data of the category that should be created
      * @param string $code             code of the category that should be created
      */
@@ -335,6 +287,6 @@ JSON;
      */
     protected function getConfiguration()
     {
-        return new Configuration([Configuration::getTechnicalCatalogPath()]);
+        return $this->catalog->useTechnicalCatalog();
     }
 }

@@ -19,6 +19,8 @@ flash:
 comment:
   index:
     empty: 今のところコメントはありません。
+    header_comment: '{{ user }} 製品をコメントします。'
+    header_reply: '{{ user }} さんがコメントに返信'
   placeholder:
     new: コメントを書く
     reply: コメントに返信

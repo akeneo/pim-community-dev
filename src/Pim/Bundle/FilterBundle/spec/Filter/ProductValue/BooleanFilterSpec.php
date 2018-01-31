@@ -66,7 +66,7 @@ class BooleanFilterSpec extends ObjectBehavior
 
     function it_uses_the_boolean_filter_form_type(FormInterface $form, $factory)
     {
-        $factory->create(BooleanFilterType::NAME, [], ['csrf_protection' => false])->willReturn($form);
+        $factory->create(BooleanFilterType::class, [], ['csrf_protection' => false])->willReturn($form);
 
         $this->getForm()->shouldReturn($form);
     }
@@ -86,8 +86,8 @@ class BooleanFilterSpec extends ObjectBehavior
     ) {
         $utility->getParamMap()->willReturn([]);
         $utility->getExcludeParams()->willReturn([]);
-        $factory->create(BooleanFilterType::NAME, [], ['csrf_protection' => false])->willReturn($form);
-        $factory->createBuilder(BooleanFilterType::NAME, [], ['csrf_protection' => false])->willReturn($formBuilder);
+        $factory->create(BooleanFilterType::class, [], ['csrf_protection' => false])->willReturn($form);
+        $factory->createBuilder(BooleanFilterType::class, [], ['csrf_protection' => false])->willReturn($formBuilder);
         $form->createView()->willReturn($formView);
 
         $formBuilder->get('type')->willReturn($typeFormBuilder);
@@ -118,7 +118,6 @@ class BooleanFilterSpec extends ObjectBehavior
                 ],
                 'enabled'              => true,
                 'data_name'            => 'bar',
-                'contextSearch'        => false,
                 'populateDefault'      => true,
                 'type'                 => 'multichoice',
             ]

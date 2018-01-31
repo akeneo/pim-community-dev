@@ -1,0 +1,13 @@
+<div class="AknFilterBox-filter filter-select" data-toggle="dropdown">
+    <span class="AknFilterBox-filterLabel"><%- label %></span>
+    <span class="AknFilterBox-filterCriteria value"></span>
+    <span class="AknFilterBox-filterCaret"></span>
+</div>
+<div class="AknDropdown-menu">
+    <div class="AknDropdown-menuTitle"><%- label %></div>
+    <% _.each(options, function (option) { %>
+    <div class="AknDropdown-menuLink" data-value="<%- option.value %>">
+        <span class="label"><%- option.label %></span>
+    </div>
+    <% }) %>
+</div>

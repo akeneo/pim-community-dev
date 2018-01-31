@@ -11,6 +11,8 @@ Selected Rows: Ausgewählte Zeilen
 "Delete Confirmation": "Löschbestätigung"
 "Edit": "Bearbeiten"
 "Unexpected error occured. Please contact system administrator.": "Es ist ein unerwarteter Fehler aufgetreten. Bitte wenden Sie sich an den Systemadministrator."
+"Yes, revoke": "Ja, widerrufen"
+"Revoke Confirmation": "Bestätigung widerrufen"
 Now: Jetzt
 Prev: Zurück
 Next: Vor
@@ -31,7 +33,7 @@ Microsecond: Mikrosekunde
 "Time Zone": "Zeitzone"
 Localized value: Vom Gebietsschema abhängiger Wert
 Columns: Spalten
-Datagrid Configuration: Konfiguration Tabellenansicht
+Datagrid Configuration: Tabellen-Konfiguration
 Apply: Anwenden
 Action: Aktion
 Unit: Einheit

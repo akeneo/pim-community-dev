@@ -27,29 +27,17 @@ pim_import_export:
       history.title: 历史
       job_content.title: 内容
 pim_title.export_profile.index: 导出配置文件管理
-pim_title.export_profile.edit: 导出配置文件 %job.label% |编辑
-pim_title.export_profile.show: 导出配置文件 %job.label% |显示
 pim_title.export_execution.index: 导出处理记录
 pim_title.export_execution.show: 导出处理记录|详情
 pim_title.import_profile.index: 导入配置文件管理
-pim_title.import_profile.edit: 导入配置文件 %job.label% |编辑
-pim_title.import_profile.show: 导入配置文件 %job.label% |显示
 pim_title.import_execution.index: 导入处理记录
 pim_title.import_execution.show: 导入处理记录|详情
 export profile:
   title: 导出配置文件
-  overview: 导出配置文件概述
-  create: 创建导出配置文件
   edit: 编辑导出配置文件
-export report:
-  overview: 导出报告
 import profile:
   title: 导入方案
-  overview: 导入方案列表
-  create: 创建导入方案
   edit: 编辑导入方案
-import report:
-  overview: 导入报表
 pim_importexport:
   acl:
     export_profile:
@@ -107,12 +95,6 @@ flash:
     removed: 导入已被删除
     updated: 导入已成功更新
     running: 导入正在进行
-pim_menu:
-  item:
-    export_history: 导出历史
-    export_profile: 导出配置文件
-    import_history: 导入历史
-    import_profile: 导入方案
 General properties: 常规属性
 History: 历史
 pane.accordion:
@@ -146,5 +128,4 @@ Status: 状态
 Summary: 总结
 Start: 开始
 End: 结束
-set_attribute_requirements: 设置属性要求
 warning.label: 警告

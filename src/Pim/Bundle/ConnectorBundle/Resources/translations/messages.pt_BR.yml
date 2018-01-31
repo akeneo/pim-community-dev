@@ -5,8 +5,6 @@ pim_connector:
     entity_reader.title: Extração de Entidade
     csv_reader:
       title: Leitor de CSV
-    file_reader:
-      invalid_item_columns_count: 'Esperava ter %totalColumnsCount% colunas, porém tem %itemColumnsCount% em %filePath%:%lineno%'
     csv_product_reader.title: Leitor CSV de Produtos
     csv_category_reader.title: Leitor CSV de Categoria
     csv_variant_group .title: Leitor CSV de Grupo Variante
@@ -43,7 +41,6 @@ job_execution.summary:
     title: 'Codificação do arquivo:'
     skipped: pulado, extensão na lista branca
   product_skipped_no_diff: produto pulado (nenhuma diferença)
-  product_skipped_no_associations: produto ignorado (associações não detectadas)
   item_position: ler linhas
 batch_jobs:
   csv_product_export:
@@ -75,6 +72,8 @@ batch_jobs:
     validation.label: Validação de arquivo
     import.label: Importação de produto
     import_associations.label: Importação de associação
+  csv_product_model_import:
+    validation.label: Validação de arquivo
   csv_category_import:
     label: Importação de categoria em CSV
     validation.label: Validação de arquivo
@@ -95,6 +94,8 @@ batch_jobs:
     label: Importar família em CSV
     validation.label: Validação de arquivo
     import.label: Importar família
+  csv_family_variant_import:
+    validation.label: Validação de arquivo
   csv_group_import:
     label: Importação de grupo em CSV
     validation.label: Validação de arquivo
@@ -139,33 +140,37 @@ batch_jobs:
     validation.label: Validação de arquivo
     import.label: Grupo tipo importação
   xlsx_category_import:
-    label: Importação de categorias em XLSX
+    label: Importação de categorias por XLSX
     validation.label: Validação de arquivo
     import.label: Importação de categoria
   xlsx_association_type_import:
-    label: Importação de tipos de associação em XLSX
+    label: Importação de tipos de associação por XLSX
     validation.label: Validação de arquivo
     import.label: Importação de tipo de associação
   xlsx_attribute_import:
-    label: Importação de atributos em XLSX
+    label: Importação de atributos por XLSX
     validation.label: Validação de arquivo
     import.label: Importação de atributo
   xlsx_attribute_option_import:
-    label: Importação de opções de atributos em XLSX
+    label: Importação de opções de atributos por XLSX
     validation.label: Validação de arquivo
     import.label: Importação de opções de atributo
   xlsx_family_import:
-    label: Importação de família em XLSX
+    label: Importação de famílias por XLSX
     validation.label: Validação de arquivo
     import.label: Importar família
+  xlsx_family_variant_import:
+    validation.label: Validação de arquivo
   xlsx_product_export:
-    label: Exportação de produto em XLSX
+    label: Exportação de produtos em XLSX
     export.label: Exportação de produto
   xlsx_product_import:
     label: Importação de produtos por XLSX
     validation.label: Validação de arquivo
     import.label: Importação de produto
     import_associations.label: Importação de associação
+  xlsx_product_model_import:
+    validation.label: Validação de arquivo
   xlsx_group_export:
     label: Exportação de grupos em XLSX
     export.label: Exportação de grupo
@@ -173,11 +178,11 @@ batch_jobs:
     label: Exportação de grupos variantes em XLSX
     export.label: Exportar Grupo Variante
   xlsx_group_import:
-    label: Importação de grupos em XLSX
+    label: Importação de grupos por XLSX
     validation.label: Validação de arquivo
     import.label: Importação de grupo
   xlsx_variant_group_import:
-    label: Importação de grupos variantes em XLSX
+    label: Importação de grupos variantes por XLSX
     validation.label: Validação de arquivo
     import.label: Importação de grupos variantes
   xlsx_family_export:

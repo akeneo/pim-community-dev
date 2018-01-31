@@ -2,6 +2,7 @@
 
 namespace Oro\Bundle\FilterBundle\Form\Type\Filter;
 
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -15,7 +16,7 @@ class ChoiceFilterType extends AbstractChoiceType
     /**
      * {@inheritDoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return self::NAME;
     }
@@ -25,7 +26,7 @@ class ChoiceFilterType extends AbstractChoiceType
      */
     public function getParent()
     {
-        return FilterType::NAME;
+        return FilterType::class;
     }
 
     /**
@@ -40,7 +41,7 @@ class ChoiceFilterType extends AbstractChoiceType
 
         $resolver->setDefaults(
             [
-                'field_type'       => 'choice',
+                'field_type'       => ChoiceType::class,
                 'field_options'    => ['choices' => []],
                 'operator_choices' => $choices,
                 'populate_default' => true

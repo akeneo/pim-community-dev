@@ -22,7 +22,6 @@ class GroupTypeUpdater implements ObjectUpdaterInterface
      * Expected input format :
      * [
      *     'code'       => 'variant',
-     *     'is_variant' => true,
      *     'label'      => [
      *         'en_US' => 'variant',
      *         'fr_FR' => 'variantes',
@@ -52,15 +51,17 @@ class GroupTypeUpdater implements ObjectUpdaterInterface
      */
     protected function setData(GroupTypeInterface $groupType, $field, $data)
     {
-        if ('code' == $field) {
+        switch ($field) {
+          case 'code':
             $groupType->setCode($data);
-        } elseif ('is_variant' == $field) {
-            $groupType->setVariant($data);
-        } elseif ('label' == $field) {
+            break;
+          case 'labels':
+          case 'label':
             foreach ($data as $locale => $label) {
                 $groupType->setLocale($locale);
                 $groupType->setLabel($label);
             }
+            break;
         }
     }
 }

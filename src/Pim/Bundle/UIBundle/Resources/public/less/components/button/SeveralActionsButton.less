@@ -1,7 +1,7 @@
 @import '../../base/variables';
 
 .AknSeveralActionsButton {
-  @radius: 2px;
+  @radius: 100px;
 
   display: flex;
   text-transform: none;
@@ -20,6 +20,7 @@
     border-top-left-radius: @radius;
     border-bottom-left-radius: @radius;
     padding: 0 @AknButtonsPadding;
+    text-transform: uppercase;
   }
 
   &-caretContainer {
@@ -29,6 +30,11 @@
     border-bottom-right-radius: @radius;
     text-align: center;
     padding: 0;
+  }
+
+  &-caret {
+    width: 22px;
+    margin: 5px;
   }
 
   &-menu {

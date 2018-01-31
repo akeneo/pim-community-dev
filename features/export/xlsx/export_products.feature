@@ -1,3 +1,4 @@
+@javascript
 Feature: Export products in XLSX
   In order to be able to access and modify attributes data outside PIM
   As a product manager
@@ -35,7 +36,6 @@ Feature: Export products in XLSX
       | tshirt-black | description     | Ein sehr elegantes schwarzes T-Shirt | de_DE  | print     |
     And I am logged in as "Julia"
 
-  @javascript
   Scenario: Successfully export products to multiple channels
     Given the following job "xlsx_tablet_product_export" configuration:
       | filePath | %tmp%/xlsx_tablet_product_export/xlsx_tablet_product_export.xlsx |
@@ -48,7 +48,6 @@ Feature: Export products in XLSX
       | tshirt-white |                   | men_2013,men_2014,men_2015 | white | 10.00    | 30.00    | 20.00    | usa                    | 2                      |           |                          | A stylish white t-shirt  | 1       | tshirts |        | 1        | files/tshirt-white/image/SNKRS-1R.png |              |              | american_apparel | cotton   | White t-shirt | White t-shirt | 10                     | 10.00     | 9.00      | 15.00     | 2016-10-12          | size_M |           |                     |                          | 5      | KILOGRAM    |
       | tshirt-black |                   | men_2013,men_2014,men_2015 | black |          |          |          | usa                    |                        |           |                          |                          | 1       | tshirts |        | 0        |                                       |              |              | american_apparel | cotton   | Black t-shirt | Black t-shirt |                        | 10.00     | 9.00      | 15.00     |                     | size_L |           |                     |                          |        |             |
 
-  @javascript
   Scenario: Successfully export products into several files
     Given the following job "xlsx_tablet_product_export" configuration:
       | filePath     | %tmp%/xlsx_tablet_product_export/xlsx_tablet_product_export.xlsx |
@@ -85,9 +84,8 @@ Feature: Export products in XLSX
     When I am on the "xlsx_tablet_product_export" export job page
     And I launch the export job
     And I wait for the "xlsx_tablet_product_export" job to finish
-    And I press the "Download generated files" button
-    Then I should see the text "xlsx_tablet_product_export_1.xlsx"
-    And I should see the text "xlsx_tablet_product_export_2.xlsx"
+    Then I should see "xlsx_tablet_product_export_1.xlsx" on the "Download generated files" dropdown button
+    And I should see "xlsx_tablet_product_export_2.xlsx" on the "Download generated files" dropdown button
     And exported xlsx file 1 of "xlsx_tablet_product_export" should contain 3 rows
     And exported xlsx file 2 of "xlsx_tablet_product_export" should contain 3 rows
     And exported xlsx files of "xlsx_tablet_product_export" should contain:
@@ -97,7 +95,6 @@ Feature: Export products in XLSX
       | tshirt-yellow |                   | men_2013,men_2014,men_2015 | yellow | 10.00    | 20.00    | 30.00    | usa                    | 2                      |           |                          | A stylish yellow t-shirt | 1       | tshirts |        | 1        | files/tshirt-yellow/image/SNKRS-1R.png |              |              | american_apparel | cotton   | Yellow t-shirt | Yellow t-shirt | 10                     | 10.00     | 9.00      | 15.00     | 2016-10-12          | size_M |           |                     |                          | 5      | KILOGRAM    |
       | tshirt-green  |                   | men_2013,men_2014,men_2015 | green  |          |          |          | usa                    |                        |           |                          |                          | 1       | tshirts |        |          |                                        |              |              | american_apparel | cotton   | Green t-shirt  | Green t-shirt  |                        | 10.00     | 9.00      | 15.00     |                     | size_L |           |                     |                          |        |             |
 
-  @javascript
   Scenario: Successfully export products in xlsx with a selection of attributes
     Given the following job "xlsx_tablet_product_export" configuration:
       | filters | {"structure":{"locales":["en_US"],"scope":"tablet","attributes":["price","size","color","cost","description","name","image","release_date","weight"]}, "data": []} |
@@ -139,7 +136,6 @@ Feature: Export products in XLSX
       | tshirt-yellow | men_2013,men_2014,men_2015 | yellow | 10.00    | 20.00    | 30.00    |                          | A stylish yellow t-shirt | 1       | tshirts |        | files/tshirt-yellow/image/SNKRS-1R.png | Yellow t-shirt | Yellow t-shirt | 10.00     | 9.00      | 15.00     | 2016-10-12          | size_M | 5      | KILOGRAM    |
       | tshirt-green  | men_2013,men_2014,men_2015 | green  |          |          |          |                          |                          | 1       | tshirts |        |                                        | Green t-shirt  | Green t-shirt  | 10.00     | 9.00      | 15.00     |                     | size_L |        |             |
 
-  @javascript
   Scenario: Successfully export products in xlsx with an empty selection of attributes
     Given the following job "xlsx_tablet_product_export" configuration:
       | filters | {"structure":{"locales":["en_US"],"scope":"tablet","attributes":["sku"]}, "data": []} |

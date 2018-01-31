@@ -3,6 +3,7 @@
 namespace Pim\Component\Catalog\Model;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 
 /**
  * Abstract association entity
@@ -25,6 +26,9 @@ abstract class AbstractAssociation implements AssociationInterface
     /** @var ProductInterface[] */
     protected $products;
 
+    /** @var ProductModelInterface[] */
+    protected $productModels;
+
     /** @var GroupInterface[] */
     protected $groups;
 
@@ -37,6 +41,7 @@ abstract class AbstractAssociation implements AssociationInterface
     public function __construct()
     {
         $this->products = new ArrayCollection();
+        $this->productModels = new ArrayCollection();
         $this->groups = new ArrayCollection();
     }
 
@@ -133,6 +138,40 @@ abstract class AbstractAssociation implements AssociationInterface
         $this->products->removeElement($product);
 
         return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getProductModels(): Collection
+    {
+        return $this->productModels;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function addProductModel(ProductModelInterface $productModel): void
+    {
+        if (!$this->productModels->contains($productModel)) {
+            $this->productModels->add($productModel);
+        }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function removeProductModel(ProductModelInterface $productModel): void
+    {
+        $this->productModels->removeElement($productModel);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setProductModels($productModels): void
+    {
+        $this->productModels = $productModels;
     }
 
     /**

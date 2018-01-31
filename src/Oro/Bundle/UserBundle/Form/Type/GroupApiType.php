@@ -29,7 +29,7 @@ class GroupApiType extends GroupType
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'group';
     }

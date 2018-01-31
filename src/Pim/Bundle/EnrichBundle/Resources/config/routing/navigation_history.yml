@@ -1,4 +1,0 @@
-pim_enrich_navigation_history_rest_post:
-    path: /
-    defaults: { _controller: pim_enrich.controller.rest.navigation_history:postAction, _format: json }
-    methods: [POST]

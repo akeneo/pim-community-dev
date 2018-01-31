@@ -5,43 +5,61 @@
 
 // Font sizes
 @latoCoeff: 1.011; // Lato font is smaller than previous one (Helvetica)
-@AknHugeFontSize: 60px * @latoCoeff;
-@AknTitleFontSize: 18px * @latoCoeff;
-@AknFontSizeBig: 14px * @latoCoeff;
-@AknDefaultFontSize: 12px * @latoCoeff;
-@AknFontSizeSmall: 11px * @latoCoeff;
+@AknHugeFontSize: 60px;
+@AknAltTitleFontSize: 30px;
+@AknTitleFontSize: 26px;
+@AknFontSizeBigger: 16px;
+@AknFontSizeBig: 14px;
+@AknDefaultFontSize: 12px;
+@AknFontSizeSmall: 11px;
 @AknBigIconFontSize: 19px;
 @AknLittleIconFontSize: 16px;
 
 // Colors
-@AknLightGray: #F1F4F9;
 @AknDarkBlue: #11324D;
+@AknWhite: #FFFFFF;
 @AknGreen: #67b373;
-@AknOrange: #f8b43f;
-@AknRed: #d36050;
-@AknPurple: #52267D;
-@AknBlue: #4992C7;
+@AknOrange: #F8B441;
+@AknRed: #D4604F;
+@AknPurple: #52267D;      // TODO Change this to @AknDarkPurple
+@AknLightPurple: #9452BA; // TODO Change this to @AknPurple
+@AknBlue: #5992C7;
 @AknSlateGrey:#67768A;
 @AknGrey: #A1A9B7;
+@AknMediumGrey: #D9DDE2;
+@AknLightGray: #F9F9FB;
+
 @AknBorderColor: lighten(@AknGrey, 15%);
 @AknDefaultHoverBackground: @AknLightGray;
 @AknDisabledInputColor: lighten(@AknGrey, 25%);
-@AknDefaultFontColor: @AknDarkBlue;
+@AknDefaultFontColor: @AknSlateGrey;
+@AknFormFontColor: @AknDarkBlue;
 
 // Sizes
 @AknTabHeight: 46px;
 @AknBigButtonSize: 38px;
-@AknDefaultButtonSize: 34px;
+@AknDefaultButtonSize: 32px;
 @AknLittleButtonSize: 30px;
-@AknMicroButtonSize: 22px;
-@AknMainMenuHeight: 50px;
-@AknFormHeight: @AknDefaultButtonSize;
+@AknMicroButtonSize: 24px;
+@AknMainMenuWidth: 80px;
+@AknFormHeight: 40px;
 @AknIconSize: @AknLittleButtonSize;
-@AknMaxFormWidth: 500px;
+@AknMaxFormWidth: 460px;
 @AknCenteredContentWidth: 940px;
 @AknSmallProgressBarHeight: 16px;
-@AknMicroProgressBarHeight: 8px;
+@AknMicroProgressBarHeight: 2px;
 @AknDropdownMenuVerticalPadding: 5px;
+@AknFlashMessagesPadding: 44px;
+@AknLocalizableGap: 2px;
+@AknFullPagePadding: 24px;
+@AknPaddingBetweenBlocksLeftColumn: 36px;
+@AknPaddingLeftColumn: 30px;
+@AknThirdColumnWidth: 300px;
+@AknSecondColumnWidth: 280px;
+@AknCheckboxSize: 18px;
+@AknBottomPanelHeight: 60px;
 
 // Various
 @AknButtonsPadding: 12px;
+@AknColumnTiming: 0.3s;
+@AknColumnTransition: ease-in-out;

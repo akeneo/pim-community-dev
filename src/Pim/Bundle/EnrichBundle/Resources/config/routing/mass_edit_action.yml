@@ -1,35 +1,3 @@
-pim_enrich_mass_edit_product_action_choose:
-    path: /product/choose/{operationGroup}
-    defaults: { _controller: pim_enrich.controller.product.mass_edit_action:chooseAction, operationGroup: mass-edit }
-    requirements:
-        _method: GET|POST
-
-pim_enrich_mass_edit_product_action_configure:
-    path: /product/{operationAlias}/configure
-    defaults: { _controller: pim_enrich.controller.product.mass_edit_action:configureAction }
-    requirements:
-        _method: GET|POST
-
-pim_enrich_mass_edit_product_action_perform:
-    path: /product/{operationAlias}/perform
-    defaults: { _controller: pim_enrich.controller.product.mass_edit_action:performAction }
-    requirements:
-        _method: POST
-
-pim_enrich_mass_edit_family_action_choose:
-    path: /family/choose/{operationGroup}
-    defaults: { _controller: pim_enrich.controller.family.mass_edit_action:chooseAction, operationGroup: mass-edit }
-    requirements:
-        _method: GET|POST
-
-pim_enrich_mass_edit_family_action_configure:
-    path: /family/{operationAlias}/configure
-    defaults: { _controller: pim_enrich.controller.family.mass_edit_action:configureAction }
-    requirements:
-        _method: GET|POST
-
-pim_enrich_mass_edit_family_action_perform:
-    path: /family/{operationAlias}/perform
-    defaults: { _controller: pim_enrich.controller.family.mass_edit_action:performAction }
-    requirements:
-        _method: POST
+pim_enrich_mass_edit_action:
+    path: /mass_action
+    methods: [GET]

@@ -2,13 +2,13 @@
 
 namespace spec\Pim\Bundle\VersioningBundle\EventSubscriber;
 
-use Akeneo\Component\StorageUtils\StorageEvents;
 use Akeneo\Component\StorageUtils\Event\RemoveEvent;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
+use Akeneo\Component\StorageUtils\StorageEvents;
+use Akeneo\Component\Versioning\Model\VersionableInterface;
+use Akeneo\Component\Versioning\Model\VersionInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\VersioningBundle\Factory\VersionFactory;
-use Akeneo\Component\Versioning\Model\VersionInterface;
-use Akeneo\Component\Versioning\Model\VersionableInterface;
 use Pim\Bundle\VersioningBundle\Repository\VersionRepositoryInterface;
 use Prophecy\Argument;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;

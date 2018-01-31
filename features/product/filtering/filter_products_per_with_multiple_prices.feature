@@ -6,14 +6,14 @@ Feature: Filter products with multiples prices filters
 
   Background:
     Given the "default" catalog configuration
-    And the following family:
-      | code      |
-      | furniture |
-      | library   |
     And the following attributes:
       | code      | label-en_US | type                         | useable_as_grid_filter | group | decimals_allowed |
       | margin    | Margin      | pim_catalog_price_collection | 1                      | other | 0                |
       | transport | Transport   | pim_catalog_price_collection | 1                      | other | 0                |
+    And the following family:
+      | code      | attributes       |
+      | furniture | margin,transport |
+      | library   | margin,transport |
     And the following products:
       | sku    | family    | transport | margin |
       | BOOK   | library   |           |        |
@@ -26,7 +26,7 @@ Feature: Filter products with multiples prices filters
       | POST-2 | furniture | 15 EUR    |        |
       | POST-3 | furniture | 30 EUR    |        |
     And I am logged in as "Mary"
-    And I am on the products page
+    And I am on the products grid
     And I show the filter "transport"
     And I show the filter "margin"
 

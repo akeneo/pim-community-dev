@@ -6,6 +6,9 @@ use Akeneo\Test\Integration\Configuration;
 use Pim\Bundle\ApiBundle\tests\integration\ApiTestCase;
 use Symfony\Component\HttpFoundation\Response;
 
+/**
+ * @group ce
+ */
 class RootEndpointIntegration extends ApiTestCase
 {
     public function testGetEndpoint()
@@ -97,7 +100,11 @@ class RootEndpointIntegration extends ApiTestCase
                 "methods": ["GET"]
             },
             "pim_api_attribute_option_partial_update": {
-                "route": "/api/rest/v1/attributes/{attributeCode}/options/{optionCode}",
+                "route": "/api/rest/v1/attributes/{attributeCode}/options/{code}",
+                "methods": ["PATCH"]
+            },
+            "pim_api_attribute_option_partial_update_list": {
+                "route": "/api/rest/v1/attributes/{attributeCode}/options",
                 "methods": ["PATCH"]
             },
             "pim_api_channel_list": {
@@ -155,6 +162,114 @@ class RootEndpointIntegration extends ApiTestCase
             "pim_api_media_file_create": {
                 "route": "/api/rest/v1/media-files",
                 "methods": ["POST"]
+            },
+            "pim_api_attribute_group_list": {
+                "route": "/api/rest/v1/attribute-groups",
+                "methods": ["GET"]
+            },
+            "pim_api_attribute_group_get": {
+                "route": "/api/rest/v1/attribute-groups/{code}",
+                "methods": ["GET"]
+            },
+            "pim_api_attribute_group_create": {
+                "route": "/api/rest/v1/attribute-groups",
+                "methods": ["POST"]
+            },
+            "pim_api_attribute_group_partial_update": {
+                "route": "/api/rest/v1/attribute-groups/{code}",
+                "methods": ["PATCH"]
+            },
+            "pim_api_attribute_group_partial_update_list": {
+                "route": "/api/rest/v1/attribute-groups",
+                "methods": ["PATCH"]
+            },
+            "pim_api_currency_get": {
+                "route": "/api/rest/v1/currencies/{code}",
+                "methods": ["GET"]
+            },
+            "pim_api_currency_list": {
+                "route": "/api/rest/v1/currencies",
+                "methods": ["GET"]
+            },
+            "pim_api_measure_family_list": {
+                "route": "/api/rest/v1/measure-families",
+                "methods": ["GET"]
+            },
+            "pim_api_measure_family_get": {
+                "route": "/api/rest/v1/measure-families/{code}",
+                "methods": ["GET"]
+            },
+            "pim_api_channel_create": {
+                "route": "/api/rest/v1/channels",
+                "methods": ["POST"]
+            },
+            "pim_api_channel_partial_update": {
+                "route": "/api/rest/v1/channels/{code}",
+                "methods": ["PATCH"]
+            },
+            "pim_api_channel_partial_update_list": {
+                "route": "/api/rest/v1/channels",
+                "methods": ["PATCH"]
+            },
+            "pim_api_association_type_get": {
+                "route": "/api/rest/v1/association-types/{code}",
+                "methods": ["GET"]
+            },
+            "pim_api_association_type_list": {
+                "route": "/api/rest/v1/association-types",
+                "methods": ["GET"]
+            },
+            "pim_api_association_type_create": {
+                "route": "/api/rest/v1/association-types",
+                "methods": ["POST"]
+            },
+            "pim_api_association_type_partial_update": {
+                "route": "/api/rest/v1/association-types/{code}",
+                "methods": ["PATCH"]
+            },
+            "pim_api_association_type_partial_update_list": {
+                "route": "/api/rest/v1/association-types",
+                "methods": ["PATCH"]
+            },
+            "pim_api_product_model_get": {
+                "route": "/api/rest/v1/product-models/{code}",
+                "methods": ["GET"]
+            },
+            "pim_api_family_variant_get": {
+                "route": "/api/rest/v1/families/{familyCode}/variants/{code}",
+                "methods": ["GET"]
+            },
+            "pim_api_family_variant_list": {
+                "route": "/api/rest/v1/families/{familyCode}/variants",
+                "methods": ["GET"]
+            },
+            "pim_api_product_model_list": {
+                "route": "/api/rest/v1/product-models",
+                "methods": ["GET"]
+            },
+            "pim_api_product_model_create": {
+                "route": "/api/rest/v1/product-models",
+                "methods": ["POST"]
+            },
+            "pim_api_family_variant_create": {
+                "route": "/api/rest/v1/families/{familyCode}/variants",
+                "methods": ["POST"]
+            },
+            "pim_api_product_model_partial_update": {
+                "route": "/api/rest/v1/product-models/{code}",
+                "methods": ["PATCH"]
+            },
+            "pim_api_product_model_partial_update_list": {
+                "route": "/api/rest/v1/product-models",
+                "methods": ["PATCH"]
+            },
+            "pim_api_family_variant_partial_update": {
+                "route": "/api/rest/v1/families/{familyCode}/variants/{code}",
+                "methods": ["PATCH"]
+            },
+            "pim_api_family_variant_partial_update_list": {
+                "route": "/api/rest/v1/families/{familyCode}/variants",
+                "methods": ["PATCH"]
             }
         }
     }
@@ -170,6 +285,6 @@ JSON;
      */
     protected function getConfiguration()
     {
-        return new Configuration([Configuration::getTechnicalCatalogPath()]);
+        return $this->catalog->useTechnicalCatalog();
     }
 }

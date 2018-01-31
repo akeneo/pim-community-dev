@@ -17,13 +17,14 @@ Feature: Validate identifier attribute of a product
     When I am on the "bar" product page
     And I change the SKU to "sku-001"
     And I save the product
-    Then I should see validation tooltip "The value sku-001 is already set on another product for the unique attribute sku"
+    Then I should see validation tooltip "The same identifier is already set on another product"
     And there should be 1 error in the "Other" tab
 
   Scenario: Validate the max characters constraint of identifier attribute
-    Given I edit the "sku" attribute
+    Given I am on the "sku" attribute page
     And I change the "Max characters" to "10"
     And I save the attribute
+    And I should not see the text "There as unsaved changes"
     When I am on the "foo" product page
     And I change the SKU to "sku-0000000"
     And I save the product
@@ -31,10 +32,11 @@ Feature: Validate identifier attribute of a product
     And there should be 1 error in the "Other" tab
 
   Scenario: Validate the regexp validation rule constraint of identifier attribute
-    Given I edit the "sku" attribute
+    Given I am on the "sku" attribute page
     And I change the "Validation rule" to "Regular expression"
-    And I change the "Validation regexp" to "/^sku-\d*$/"
+    And I change the "Regular expression" to "/^sku-\d*$/"
     And I save the attribute
+    And I should not see the text "There are unsaved changes"
     When I am on the "foo" product page
     And I change the SKU to "001"
     And I save the product

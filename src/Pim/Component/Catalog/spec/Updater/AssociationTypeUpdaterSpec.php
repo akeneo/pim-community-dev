@@ -2,22 +2,31 @@
 
 namespace spec\Pim\Component\Catalog\Updater;
 
+use Akeneo\Component\Localization\TranslatableUpdater;
 use Akeneo\Component\StorageUtils\Exception\InvalidObjectException;
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Akeneo\Component\StorageUtils\Exception\UnknownPropertyException;
+use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Entity\AssociationTypeTranslation;
 use Pim\Component\Catalog\Model\AssociationTypeInterface;
+use Pim\Component\Catalog\Updater\AssociationTypeUpdater;
+use Symfony\Component\PropertyAccess\Exception\NoSuchPropertyException;
 
 class AssociationTypeUpdaterSpec extends ObjectBehavior
 {
-    function it_is_initializable()
+    function let(TranslatableUpdater $translatableUpdater)
     {
-        $this->shouldHaveType('Pim\Component\Catalog\Updater\AssociationTypeUpdater');
+        $this->beConstructedWith($translatableUpdater);
     }
 
-    function it_is_a_updater()
+    function it_is_initializable()
     {
-        $this->shouldImplement('Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface');
+        $this->shouldHaveType(AssociationTypeUpdater::class);
+    }
+
+    function it_is_an_updater()
+    {
+        $this->shouldImplement(ObjectUpdaterInterface::class);
     }
 
     function it_throws_an_exception_when_trying_to_update_anything_else_than_an_association_type()
@@ -25,7 +34,7 @@ class AssociationTypeUpdaterSpec extends ObjectBehavior
         $this->shouldThrow(
             InvalidObjectException::objectExpected(
                 'stdClass',
-                'Pim\Component\Catalog\Model\AssociationTypeInterface'
+                AssociationTypeInterface::class
             )
         )->during(
             'update',
@@ -34,15 +43,9 @@ class AssociationTypeUpdaterSpec extends ObjectBehavior
     }
 
     function it_updates_a_association_type(
-        AssociationTypeInterface $associationType,
-        AssociationTypeTranslation $translatable
+        $translatableUpdater,
+        AssociationTypeInterface $associationType
     ) {
-        $associationType->getTranslation()->willReturn($translatable);
-        $translatable->setLabel('Vente croisée')->shouldBeCalled();
-        $associationType->setCode('mycode')->shouldBeCalled();
-        $associationType->setLocale('fr_FR')->shouldBeCalled();
-        $associationType->getId()->willReturn(null);
-
         $values = [
             'code'   => 'mycode',
             'labels' => [
@@ -50,17 +53,78 @@ class AssociationTypeUpdaterSpec extends ObjectBehavior
             ],
         ];
 
+        $associationType->setCode('mycode')->shouldBeCalled();
+        $translatableUpdater->update($associationType, $values['labels'])->shouldBeCalled();
+
         $this->update($associationType, $values, []);
     }
 
-    function it_throws_an_exception_when_trying_to_update_a_non_existent_field(AssociationTypeInterface $associationType) {
-        $values = [
-            'non_existent_field' => 'field',
-            'code'               => 'mycode',
+    function it_throws_an_exception_when_code_is_not_a_scalar(AssociationTypeInterface $associationType)
+    {
+        $data = [
+            'code' => [],
         ];
 
         $this
-            ->shouldThrow(new UnknownPropertyException('non_existent_field', 'Property "non_existent_field" does not exist.'))
+            ->shouldThrow(
+                InvalidPropertyTypeException::scalarExpected(
+                    'code',
+                    AssociationTypeUpdater::class,
+                    []
+                )
+            )
+            ->during('update', [$associationType, $data, []]);
+    }
+
+    function it_throws_an_exception_when_labels_is_not_an_array(AssociationTypeInterface $associationType)
+    {
+        $data = [
+            'labels' => 'foo',
+        ];
+
+        $this
+            ->shouldThrow(
+                InvalidPropertyTypeException::arrayExpected(
+                    'labels',
+                    AssociationTypeUpdater::class,
+                    'foo'
+                )
+            )
+            ->during('update', [$associationType, $data, []]);
+    }
+
+    function it_throws_an_exception_when_a_value_in_labels_array_is_not_a_scalar(AssociationTypeInterface $associationType)
+    {
+        $data = [
+            'labels' => [
+                'fr_FR' => [],
+            ],
+        ];
+
+        $this
+            ->shouldThrow(
+                InvalidPropertyTypeException::validArrayStructureExpected(
+                    'labels',
+                    'one of the "labels" values is not a scalar',
+                    AssociationTypeUpdater::class,
+                    ['fr_FR' => []]
+                )
+            )
+            ->during('update', [$associationType, $data, []]);
+    }
+
+    function it_throws_an_exception_when_trying_to_update_a_non_existent_field(
+        AssociationTypeInterface $associationType
+    ) {
+        $values = ['non_existent_field' => 'field'];
+
+        $this
+            ->shouldThrow(
+                UnknownPropertyException::unknownProperty(
+                    'non_existent_field',
+                    new NoSuchPropertyException()
+                )
+            )
             ->during('update', [$associationType, $values, []]);
     }
 }

@@ -12,7 +12,7 @@ Feature:
     Given I am on the "csv_footwear_product_import" import job page
     When I upload and import the file "product_export_with_non_utf8_characters.csv"
     And I wait for the "csv_footwear_product_import" job to finish
-    Then I should see "The file \"/tmp/product_export_with_non_utf8_characters.csv\" is not correctly encoded in UTF-8. The lines 11, 15 are erroneous."
+    Then I should see the text "The file \"/tmp/pim/upload_tmp_dir/product_export_with_non_utf8_characters.csv\" is not correctly encoded in UTF-8. The lines 11, 15 are erroneous."
 
   Scenario: Import a file that contains only UTF-8 characters
     Given the following CSV file to import:
@@ -25,7 +25,7 @@ Feature:
     When I am on the "csv_footwear_product_import" import job page
     And I launch the import job
     And I wait for the "csv_footwear_product_import" job to finish
-    Then I should see "File encoding: UTF-8 OK"
+    Then I should see the text "File encoding: UTF-8 OK"
 
   Scenario: Import a file which content encoding should not be checked
     Given I am on the "csv_footwear_product_import" import job page

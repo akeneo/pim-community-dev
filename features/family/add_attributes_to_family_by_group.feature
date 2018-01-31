@@ -1,4 +1,4 @@
-@info https://akeneo.atlassian.net/browse/PIM-6095
+@javascript
 Feature: Add attributes by attribute groups to a family
   In order to configure families
   As an administrator
@@ -8,13 +8,13 @@ Feature: Add attributes by attribute groups to a family
     Given a "footwear" catalog configuration
     And I am logged in as "Peter"
 
-  @javascript
+  @info https://akeneo.atlassian.net/browse/PIM-6095
   Scenario: Successfully list available attribute groups
     Given I am on the "Sandals" family page
     And I visit the "Attributes" tab
     Then I should see available attribute group "Product information, Marketing, Sizes, Colors, Media and Other"
 
-  @javascript
+  @info https://akeneo.atlassian.net/browse/PIM-6095
   Scenario: Successfully add attributes by attribute groups to a family
     Given I am on the "Sandals" family page
     And I visit the "Attributes" tab

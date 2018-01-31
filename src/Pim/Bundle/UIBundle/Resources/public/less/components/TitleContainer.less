@@ -1,125 +1,128 @@
 @import '../base/variables';
 
 .AknTitleContainer {
-  @avatarSize: 58px;
+  @imageSize: 140px;
+  @padding: 40px;
 
-  background: lighten(@AknGrey, 30%);
-  padding: 15px 20px 10px 20px;
-  display: flex;
+  position: sticky;
+  top: 0;
+  margin: 0 -@padding 0 -@padding;
+  padding: @padding @padding 10px;
+  background: white;
+  z-index: 10;
 
-  &--condensed {
-    padding-top: 5px;
-    padding-bottom: 5px;
-  }
-
-  &-backContainer {
-    display: flex;
-  }
-
-  &-contentContainer {
-    flex-grow: 1;
-  }
-
-  &-mainLine {
+  &-line {
     display: flex;
     justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap;
   }
 
-  &-metaLine {
+  &-imageContainer:not(:empty) {
+    width: @imageSize + 2px;
+    height: @imageSize + 2px;
+    border: 1px solid @AknBorderColor;
+    margin-right: 20px;
+    border-radius: 4px;
+    display: flex;
+    overflow: hidden;
+    flex-basis: @imageSize + 2px;
+    flex-shrink: 0;
+  }
+
+  &-image {
+    margin: auto;
+    width: 100%;
+  }
+
+  &-mainContainer {
+    flex-grow: 1;
     display: flex;
     justify-content: space-between;
-    align-items: center;
-    margin-top: 5px;
+    flex-direction: column;
+    max-width: 100%;
   }
 
-  &-titleContainer {
-    display: flex;
+  &-imageContainer:not(:empty) ~ &-mainContainer {
+    max-width: ~"calc(100% - 150px)";
+  }
+
+  &-breadcrumbs {
     flex-grow: 1;
+    max-height: 32px;
+    overflow: hidden;
+    margin-right: 20px;
+    line-height: 16px;
+  }
+
+  &-buttonsContainer {
+    display: flex;
+    align-content: baseline;
+  }
+
+  &-userMenu:not(:empty) {
+    display: flex;
+    border-right: 1px solid @AknBorderColor;
+    margin-right: 20px;
+    padding-right: 20px;
+    height: @AknDefaultButtonSize;
+  }
+
+  &-userIcon {
+    height: @AknDefaultButtonSize;
+    width: @AknDefaultButtonSize;
+    border-radius: 100px;
+    cursor: pointer;
+    background-size: cover;
   }
 
   &-title {
-    color: @AknPurple;
+    color: @AknLightPurple;
     font-size: @AknTitleFontSize;
-    height: @AknDefaultButtonSize;
-    line-height: @AknDefaultButtonSize;
+    line-height: 34px;
     margin: 0;
     font-weight: normal;
     white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    flex-grow: 1;
 
     &:first-letter {
       text-transform: uppercase;
     }
   }
 
-  &-rightButtons {
-    order: 10;
-    display: flex;
-    justify-content: flex-end;
-    flex-grow: 1;
+  &-state {
+    order: 50;
+    align-self: center;
+    margin-right: 0;
+    margin-top: 6px;
+    text-align: right;
+    margin-left: 20px;
   }
 
-  &-rightButton {
-    margin-left: 10px;
+  &-context {
+    padding: 10px 0;
   }
 
-  &-titleButtons {
-    margin-left: 10px;
-    display: flex;
-    order: 10;
-    align-items: center;
+  &-search:not(:empty) {
+    flex: 1;
+    border-bottom: 1px solid @AknBorderColor;
+  }
+
+  &-metaItem {
+    & + & {
+      &:before {
+        content: ' | ';
+      }
+    }
   }
 
   &-meta {
-    font-size: @AknFontSizeSmall;
-    color: @AknLightFontColor;
-    flex-wrap: wrap;
-    line-height: 23px;
-    flex-grow: 1;
-  }
-
-  &-metaItem:not(:first-child):not(:empty):before {
-    content: ' | ';
-  }
-
-  &-metaLink {
-    cursor: pointer;
-
-    &:hover {
-      color: darken(@AknLightFontColor, 10%);
-    }
-  }
-
-  &-state {
-    order: 10;
-    align-self: flex-end;
-    flex-grow: 1;
-    text-align: right;
-  }
-
-  &-backLink {
-    min-height: @AknDefaultButtonSize;
-    width: @AknDefaultButtonSize;
-    line-height: @AknDefaultButtonSize;
-    background: darken(@AknLightGray, 5%);
-    height: ~"calc(100% - 4px)";
-    text-align: center;
-    margin-right: 10px;
-    border-radius: 2px;
     display: flex;
-    justify-content: center;
     align-items: center;
-
-    &:hover {
-      background: darken(@AknLightGray, 15%);
-    }
   }
 
-  &-avatar {
-    height: @avatarSize;
-    width: @avatarSize;
-    margin-right: 10px;
+  &-navigation {
+    width: 100%;
   }
 
   &--hidden {

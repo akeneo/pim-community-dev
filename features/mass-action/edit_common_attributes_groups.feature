@@ -15,18 +15,17 @@ Feature: Edit common attributes of many products at once
   Scenario: Successfully translate groups and labels
     Given I add the "french" locale to the "mobile" channel
     And the following attribute label translations:
-      | attribute | locale | label  | group | type             |
-      | name      | french | Nom    | other | pim_catalog_text |
-      | size      | french | Taille | other | pim_catalog_text |
-    And I am on the products page
-    And I filter by "scope" with operator "equals" and value "Mobile"
+      | attribute | locale | label  |
+      | name      | french | Nom    |
+      | size      | french | Taille |
+    And I am on the products grid
+    And I switch the scope to "Mobile"
     And I switch the locale to "fr_FR"
     When I select rows boots and sandals
-    And I press "Change product information" on the "Bulk Actions" dropdown button
-    And I choose the "Edit common attributes" operation
+    And I press the "Bulk actions" button
+    And I choose the "Edit attributes" operation
     And I display the Nom and Taille attributes
-    Then I should see "[info]"
-    And I should see "[sizes]"
-    And I should see "Nom"
+    Then I should see the text "[info]"
+    And I should see the text "Nom"
     When I visit the "[sizes]" group
-    Then I should see "Taille"
+    Then I should see the text "Taille"

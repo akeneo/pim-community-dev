@@ -22,6 +22,10 @@ pim_enrich_categorytree_create:
     path: /create/{parent}
     defaults: { _controller: pim_enrich.controller.category_tree.product:createAction, parent: null }
 
+pim_enrich_categorytree_create_tree:
+    path: /create
+    defaults: { _controller: pim_enrich.controller.category_tree.product:createAction }
+
 pim_enrich_categorytree_edit:
     path: /{id}/edit
     defaults: { _controller: pim_enrich.controller.category_tree.product:editAction }

@@ -16,34 +16,34 @@ use Symfony\Component\DependencyInjection\Reference;
 class RegisterProductQueryFilterPass implements CompilerPassInterface
 {
     /** @staticvar integer */
-    const DEFAULT_PRIORITY = 25;
+    private const DEFAULT_PRIORITY = 25;
 
-    /** @staticvar string */
-    const QUERY_FILTER_REGISTRY = 'pim_catalog.query.filter.registry';
+    /** @var string */
+    private $type;
 
-    /** @staticvar string */
-    const QUERY_FILTER_TAG = 'pim_catalog.doctrine.query.filter';
+    /**
+     * @param string $type
+     */
+    public function __construct(string $type)
+    {
+        $this->type = $type;
+    }
 
     /**
      * {@inheritdoc}
      */
     public function process(ContainerBuilder $container)
     {
-        $this->registerFilters($container);
-    }
+        $registryTag = sprintf('pim_catalog.query.filter.%s_registry', $this->type);
 
-    /**
-     * @param ContainerBuilder $container
-     */
-    protected function registerFilters(ContainerBuilder $container)
-    {
-        if (!$container->hasDefinition(self::QUERY_FILTER_REGISTRY)) {
+        if (!$container->hasDefinition($registryTag)) {
             throw new \LogicException('Filter registry must be configured');
         }
 
-        $registry = $container->getDefinition(self::QUERY_FILTER_REGISTRY);
+        $registry = $container->getDefinition($registryTag);
+        $filterTag = sprintf('pim_catalog.elasticsearch.query.%s_filter', $this->type);
 
-        $filters = $this->findAndSortTaggedServices(self::QUERY_FILTER_TAG, $container);
+        $filters = $this->findAndSortTaggedServices($filterTag, $container);
         foreach ($filters as $filter) {
             $registry->addMethodCall('register', [$filter]);
         }
@@ -55,9 +55,9 @@ class RegisterProductQueryFilterPass implements CompilerPassInterface
      * @param string           $tagName
      * @param ContainerBuilder $container
      *
-     * @return \Symfony\Component\DependencyInjection\Reference[]
+     * @return Reference[]
      */
-    protected function findAndSortTaggedServices($tagName, ContainerBuilder $container)
+    private function findAndSortTaggedServices($tagName, ContainerBuilder $container): array
     {
         $services = $container->findTaggedServiceIds($tagName);
 

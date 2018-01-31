@@ -94,7 +94,7 @@ pim_enrich:
         third: Configurar
         fourth: Confirmar
     change-status:
-      label: Alterar estado (ativar / desativar)
+      label: Alterar estado
       description: Os produtos selecionados serão ativados ou desativados.
       success_flash: Estado do(s) produto(s) foi alterado
       launched_flash: A ação em massa "mudar estado" foi despoletada. Irá receber notificação quando estiver concluída.
@@ -109,22 +109,18 @@ pim_enrich:
         invalid_attribute: O atributo com código "attribute_code" não é comum para os produtos que foram selecionados, atributo ignorado.
         no_valid_attribute: Nenhum dos atributos selecionados pode ser aplicado a este produto.
     classify-add:
-      label: Classificar produtos em categorias
       description: Os produtos serão posicionados nas categorias seguintes, o posicionamento existente será mantido também.
       success_flash: Os produto(s) foram classificados nas categorias selecionadas
       launched_flash: A ação em massa "adicionar a categorias" foi despoletada. Irá receber notificação quando estiver concluída.
     classify-move:
-      label: Mover produtos para categorias
       description: Os produtos serão colocados nas categorias seguintes, a sua localização atual será perdida.
       success_flash: O(s) produto(s) foram movidos para as categorias selecionadas
       launched_flash: A ação em massa "mover para categorias" foi despoletada. Irá receber notificação quando estiver concluída.
     classify-remove:
-      label: Retirar produtos de categorias
       description: Os produtos serão retirados das seguintes categorias.
       success_flash: O(s) produto(s) foram retirados das categorias selecionadas
       launched_flash: A ação em massa "retirar das categorias" foi despoletada. Irá receber notificação quando estiver concluída.
     change-family:
-      label: Mudar a família de produtos
       description: A família dos produtos seleccionados será alterada para a família escolhida
       success_flash: A família do produtos selecionados foi alterada com êxito
       launched_flash: A ação em massa "alterar família" foi despoletada. Irá receber notificação quando estiver concluída.
@@ -141,11 +137,8 @@ pim_enrich:
       already_in_variant_group_or_not_valid: Não pode agrupar o seguinte produto, porque já pertence a um grupo variante ou não possui o eixo do grupo.
       no_variant_group: Não existem grupos variantes por enquanto. Por favor, comece criando um grupo variante.
       no_valid_variant_group: Nenhum grupo variante está a partilhar atributos com produtos selecionados.
-      some_variant_groups_are_skipped:
-        The following variant groups have been skipped because they don't share attributes with selected products: '%groups%'
       launched_flash: A ação em massa "adicionar a grupo variante" foi despoletada. Irá receber notificação quando estiver concluída.
     set-attribute-requirements:
-      label: Estabelecer requisitos do atributo
       description: Os seguintes requisitos de atributo serão aplicados às famílias selecionadas
       success_flash: Os requisitos dos atributos foram aplicados às famílias selecionadas
       launched_flash: A ação em massa "definir requisitos de atributo" foi despoletada. Irá receber notificação quando estiver concluída.
@@ -269,9 +262,8 @@ pim_enrich:
         label: Escolha o tipo de dados de referência
 attribute:
   title: atributo
-  overview: visão geral de atributos
-  create: criar atributo
   edit: editar atributo
+  create: criar atributo
 attribute group:
   title: grupo de atributos
   overview: visão geral de grupo de atributo
@@ -299,17 +291,13 @@ channel:
   edit: editar canal
 currency:
   title: moeda
-  overview: visão geral de moeda
   create: criar moeda
   edit: editar moeda
 family:
   title: família
-  overview: visão geral de família
-  create: criar família
   edit: editar família
 locale:
   title: linguagem
-  overview: visão geral de linguagem
   create: criar linguagem
   edit: editar linguagem
 product:
@@ -319,22 +307,15 @@ product:
   edit: editar produto
 group:
   title: grupo
-  overview: visão geral do grupo
-  create: criar grupo
   edit: editar grupo
 group type:
   title: tipo de grupo
-  overview: visão geral do tipo de grupo
-  create: criar o tipo de grupo
   edit: editar o tipo de grupo
 variant group:
   title: grupo variante
-  overview: visão geral do grupo variante
-  create: criar grupo variante
   edit: editar grupo variante
 association type:
   title: tipo de associação
-  overview: visão geral do tipo de associação
   create: criar o tipo de associação
   edit: editar o tipo de associação
 products: produtos
@@ -356,7 +337,6 @@ btn:
     drag_or_upload: Arraste e solte para fazer o envio ou clique aqui
   edit: editar
   save: gravar
-  save and back: gravar e voltar à grelha
   save and create: gravar e criar novos
   save and next: gravar e avançar
   save and finish: gravar e terminar
@@ -425,7 +405,6 @@ flash:
     updated: Moeda atualizada com sucesso
     error.linked_to_channel: Não é possível desativar uma moeda ligada a um canal.
   family:
-    created: Família criada com sucesso
     updated: Família atualizada com sucesso
     removed: Família removida com sucesso
     identifier not removable: O atributo identificador não pode ser removido de uma família
@@ -444,7 +423,6 @@ flash:
     enabled: O produto foi ativado
     disabled: O produto foi desativado
   group:
-    created: Grupo criado com sucesso
     updated: Grupo atualizado com sucesso
     removed: Grupo removido com sucesso
   variant group:
@@ -489,7 +467,7 @@ info:
     select products: Por favor selecione produtos que devem pertencer a este grupo.
     selectable products: Os seguintes produtos selecionáveis têm um valor definido para cada eixo.
     no group types: Não há tipos de grupo existentes, clique aqui para criar um
-    more products: mais %count% produtos...
+    more products: 'mais %count% produtos...'
   association type:
     show products: Mostrar produtos
     show groups: Mostrar grupos
@@ -696,7 +674,7 @@ pim_enrich.mass_edit_action:
       third: Configurar
       fourth: Confirmar
   change-status:
-    label: Alterar estado (ativar / desativar)
+    label: Alterar estado
     description: Os produtos selecionados serão ativados ou desativados.
     success_flash: Estado do(s) produto(s) foi alterado
   edit-common-attributes:
@@ -708,11 +686,9 @@ pim_enrich.mass_edit_action:
     no_attribute.warning: Não há nenhum atributo em comum nos produtos selecionados. Por favor, altere a sua seleção.
     truncated_by_variant_attribute.warning: 'Alguns atributos comuns dos produtos seleccionados provêm de um grupo variante. Não estão disponíveis para edição em massa: %attributes%.'
   classify:
-    label: Classificar produtos em categorias
     description: Os produtos serão posicionados nas categorias seguintes, o posicionamento existente será mantido também.
     success_flash: Os produto(s) foram classificados nas categorias selecionadas
   change-family:
-    label: Mudar a família de produtos
     description: A família dos produtos seleccionados será alterada para a família escolhida
     success_flash: A família do produtos selecionados foi alterada com êxito
     no_family: Sem família
@@ -721,7 +697,6 @@ pim_enrich.mass_edit_action:
     description: Selecione os grupos aos quais pretende adicionar os produtos selecionados
     success_flash: Os produtos foram adicionados com êxito aos grupos selecionados
   set-attribute-requirements:
-    label: Estabelecer requisitos do atributo
     description: Os seguintes requisitos de atributo serão aplicados às famílias selecionadas
     success_flash: Os requisitos dos atributos foram aplicados às famílias selecionadas
 To enable: Para ativar
@@ -733,25 +708,6 @@ Current tab: Separador atual
 Group: Grupo
 View group: Visualizar grupo
 Products: Produtos
-pim_menu:
-  tab:
-    collect: Recolher
-    enrich: Enriquecer
-    settings: Preferências
-    spread: Propagação
-  item:
-    association_type: Tipos de associação
-    attribute: Atributos
-    attribute_group: Grupos de atributos
-    category: Categorias
-    channel: Canais
-    currency: Moedas
-    family: Famílias
-    group: Grupos
-    group_type: Tipos de grupo
-    locale: Linguagens
-    product: Produtos
-    variant_group: Grupos variantes
 Properties: Propriedades
 History: Histórico
 pane.accordion:
@@ -766,9 +722,7 @@ pane.accordion:
   group_values: Valores do grupo
 popin.create:
   association_type.title: Criar um novo tipo de associação
-  family.title: Criar uma nova família
   group.title: Criar um novo grupo
-  group_type.title: Criar um novo tipo de grupo
   product.title: Criar um novo produto
   variant_group.title: Criar um novo grupo variante
   option.title: Criar uma nova opção
@@ -865,10 +819,6 @@ batch_jobs:
       label: Editar atributos comuns
     clean:
       label: Limpar ficheiros de atributos comuns
-  set_attribute_requirements:
-    label: Estabelecer requisitos do atributo
-    perform:
-      label: Estabelecer requisitos do atributo
   csv_product_quick_export:
     quick_export.label: Csv exportação rápida de produtos
     perform:

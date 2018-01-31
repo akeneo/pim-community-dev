@@ -3,10 +3,9 @@ parameters:
 
 services:
     pim_comment.controller.comment:
-        scope: request
         class: '%pim_comment.controller.comment.class%'
         arguments:
             - '@security.token_storage'
-            - '@akeneo_storage_utils.doctrine.smart_manager_registry'
+            - '@doctrine.orm.default_entity_manager'
             - '@pim_comment.remover.comment'
             - '%pim_comment.entity.comment.class%'

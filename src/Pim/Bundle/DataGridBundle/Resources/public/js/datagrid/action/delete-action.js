@@ -3,12 +3,13 @@ define([
         'underscore',
         'oro/messenger',
         'oro/translator',
-        'oro/delete-confirmation',
+        'pim/dialog',
         'oro/modal',
         'oro/datagrid/model-action',
-        'oro/mediator'
+        'oro/mediator',
+        'pim/user-context'
     ],
-    function(_, messenger, __, DeleteConfirmation, Modal, ModelAction, mediator) {
+    function(_, messenger, __, Dialog, Modal, ModelAction, mediator, userContext) {
         'use strict';
 
         /**
@@ -45,7 +46,7 @@ define([
              * Execute delete model
              */
             execute: function() {
-                this.getConfirmDialog().open();
+                this.getConfirmDialog();
             },
 
             /**
@@ -56,12 +57,18 @@ define([
                 this.model.destroy({
                     url: this.getLink(),
                     wait: true,
-                    error: function() {
-                        this.getErrorDialog().open();
+                    error: function(element, response) {
+                        let message = '';
+                        const decodedResponse = JSON.parse(response.responseText);
+                        if (undefined !== decodedResponse.message) {
+                            message = decodedResponse.message
+                        }
+                        this.getErrorDialog(message).open();
                     }.bind(this),
                     success: function() {
-                        var messageText = __('flash.' + this.getEntityHint() + '.removed');
-                        messenger.notificationFlashMessage('success', messageText);
+                        var messageText = __('flash.' + this.getEntityCode() + '.removed');
+                        messenger.notify('success', messageText);
+                        userContext.initialize();
 
                         mediator.trigger('datagrid:doRefresh:' + this.gridName);
                     }.bind(this)
@@ -74,12 +81,15 @@ define([
              * @return {oro.Modal}
              */
             getConfirmDialog: function() {
-                if (!this.confirmModal) {
-                    this.confirmModal = new DeleteConfirmation({
-                        content: __('confirmation.remove.' + this.getEntityHint())
-                    });
-                    this.confirmModal.on('ok', _.bind(this.doDelete, this));
-                }
+                const entityCode = this.getEntityCode();
+
+                this.confirmModal = Dialog.confirmDelete(
+                    __(`confirmation.remove.${entityCode}`),
+                    __('pim_enrich.confirmation.delete_item'),
+                    this.doDelete.bind(this),
+                    this.getEntityHint(true)
+                );
+
                 return this.confirmModal;
             },
 
@@ -88,19 +98,15 @@ define([
              *
              * @return {oro.Modal}
              */
-            getErrorDialog: function() {
+            getErrorDialog: function(message) {
                 if (!this.errorModal) {
                     this.errorModal = new Modal({
                         title: __('Delete Error'),
-                        content: __('error.removing.' + this.getEntityHint()),
+                        content: '' === message ? __('error.removing.' + this.getEntityHint()) : message,
                         cancelText: false
                     });
                 }
                 return this.errorModal;
-            },
-
-            getEntityHint: function() {
-                return this.datagrid && this.datagrid.entityHint ? this.datagrid.entityHint : 'item';
             }
         });
     }

@@ -6,14 +6,14 @@ Feature: Filter products with multiples metrics filters
 
   Background:
     Given the "default" catalog configuration
-    And the following family:
-      | code      |
-      | furniture |
-      | library   |
     And the following attributes:
       | code      | label-en_US | type               | useable_as_grid_filter | metric_family | default_metric_unit | decimals_allowed | negative_allowed | group |
       | weight    | Weight      | pim_catalog_metric | 1                      | Weight        | GRAM                | 1                | 0                | other |
       | packaging | Packaging   | pim_catalog_metric | 1                      | Weight        | GRAM                | 1                | 0                | other |
+    And the following family:
+      | code      | attributes       |
+      | furniture | weight,packaging |
+      | library   | weight,packaging |
     And the following products:
       | sku    | family    | packaging | weight   |
       | BOOK   | library   |           |          |
@@ -26,7 +26,7 @@ Feature: Filter products with multiples metrics filters
       | POST-2 | furniture | 50 GRAM   |          |
       | POST-3 | furniture | 20 GRAM   |          |
     And I am logged in as "Mary"
-    And I am on the products page
+    And I am on the products grid
 
   Scenario: Successfully filter products with the sames attributes
     Given I show the filter "packaging"

@@ -30,9 +30,6 @@ class CurrencyRepository extends EntityRepository implements DatagridRepositoryI
     public function createDatagridQueryBuilder()
     {
         $qb = $this->createQueryBuilder('c');
-        $rootAlias = $qb->getRootAlias();
-
-        $qb->addSelect($rootAlias);
 
         return $qb;
     }

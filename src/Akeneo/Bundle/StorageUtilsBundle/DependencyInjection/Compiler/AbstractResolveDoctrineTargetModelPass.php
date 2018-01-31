@@ -21,8 +21,6 @@ abstract class AbstractResolveDoctrineTargetModelPass implements CompilerPassInt
     public function process(ContainerBuilder $container)
     {
         $this->resolveTargetEntities($container);
-
-        $this->resolveTargetDocuments($container);
     }
 
     /**
@@ -33,45 +31,6 @@ abstract class AbstractResolveDoctrineTargetModelPass implements CompilerPassInt
     protected function resolveTargetEntities(ContainerBuilder $container)
     {
         $definition = $container->findDefinition('doctrine.orm.listeners.resolve_target_entity');
-        foreach ($this->getParametersMapping() as $interface => $parameterName) {
-            $definition->addMethodCall(
-                'addResolveTargetEntity',
-                [
-                    $interface,
-                    new Parameter($parameterName),
-                    []
-                ]
-            );
-        }
-    }
-
-    /**
-     * Resolve target document interfaces AND target entity interfaces by using container parameters
-     *
-     * @param ContainerBuilder $container
-     */
-    protected function resolveTargetDocuments(ContainerBuilder $container)
-    {
-        if (!$container->hasDefinition('doctrine_mongodb.odm.listeners.resolve_target_document')) {
-            return;
-        }
-        $definition = $container->findDefinition('doctrine_mongodb.odm.listeners.resolve_target_document');
-
-        foreach ($this->getParametersMapping() as $interface => $parameterName) {
-            $definition->addMethodCall(
-                'addResolveTargetDocument',
-                [
-                    $interface,
-                    new Parameter($parameterName),
-                    []
-                ]
-            );
-        }
-
-        if (!$container->hasDefinition('akeneo_storage_utils.event_listeners.mongodb.resolve_target_entity')) {
-            return;
-        }
-        $definition = $container->findDefinition('akeneo_storage_utils.event_listeners.mongodb.resolve_target_entity');
         foreach ($this->getParametersMapping() as $interface => $parameterName) {
             $definition->addMethodCall(
                 'addResolveTargetEntity',

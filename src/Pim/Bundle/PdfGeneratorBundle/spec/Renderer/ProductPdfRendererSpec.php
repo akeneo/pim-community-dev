@@ -8,11 +8,11 @@ use Liip\ImagineBundle\Imagine\Data\DataManager;
 use Liip\ImagineBundle\Imagine\Filter\FilterManager;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Entity\Category;
+use Pim\Bundle\PdfGeneratorBundle\Builder\PdfBuilderInterface;
 use Pim\Component\Catalog\Model\AttributeGroupInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
-use Pim\Component\Catalog\Model\ProductValueInterface;
-use Pim\Bundle\PdfGeneratorBundle\Builder\PdfBuilderInterface;
+use Pim\Component\Catalog\Model\ValueInterface;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 
 class ProductPdfRendererSpec extends ObjectBehavior
@@ -70,7 +70,7 @@ class ProductPdfRendererSpec extends ObjectBehavior
             'groupedAttributes' => ['Design' => ['color' => $color]],
             'imagePaths'        => [],
             'customFont'        => null,
-            'filter'            => 'thumbnail',
+            'filter'            => 'pdf_thumbnail',
             'renderingDate'     => $renderingDate,
         ])->shouldBeCalled();
 
@@ -86,17 +86,20 @@ class ProductPdfRendererSpec extends ObjectBehavior
         ProductInterface $blender,
         AttributeGroupInterface $media,
         AttributeInterface $mainImage,
-        ProductValueInterface $productValue,
+        ValueInterface $value,
         FileInfoInterface $fileInfo,
         CacheManager $cacheManager
     ) {
-        $blender->getAttributes()->willReturn([$mainImage]);
-        $blender->getValue("main_image", "en_US", "ecommerce")->willReturn($productValue);
+        $mainImage->isLocalizable()->willReturn(true);
+        $mainImage->isScopable()->willReturn(true);
 
-        $productValue->getMedia()->willReturn($fileInfo);
+        $blender->getAttributes()->willReturn([$mainImage]);
+        $blender->getValue("main_image", "en_US", "ecommerce")->willReturn($value);
+
+        $value->getData()->willReturn($fileInfo);
         $fileInfo->getKey()->willReturn('fookey');
 
-        $cacheManager->isStored('fookey', 'thumbnail')->willReturn(true);
+        $cacheManager->isStored('fookey', 'pdf_thumbnail')->willReturn(true);
 
         $mainImage->getGroup()->willReturn($media);
         $media->getLabel()->willReturn('Media');
@@ -115,7 +118,7 @@ class ProductPdfRendererSpec extends ObjectBehavior
                 'groupedAttributes' => ['Media' => ['main_image' => $mainImage]],
                 'imagePaths'        => ['fookey'],
                 'customFont'        => null,
-                'filter'            => 'thumbnail',
+                'filter'            => 'pdf_thumbnail',
                 'renderingDate'     => $renderingDate,
             ]
         )->shouldBeCalled();

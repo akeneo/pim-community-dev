@@ -2,6 +2,22 @@ extensions:
     pim-channel-edit-form:
         module: pim/form/common/edit-form
 
+    pim-channel-edit-form-breadcrumbs:
+        module: pim/common/breadcrumbs
+        parent: pim-channel-edit-form
+        targetZone: breadcrumbs
+        config:
+            tab: pim-menu-settings
+            item: pim-menu-settings-channel
+
+    pim-channel-edit-form-user-navigation:
+        module: pim/menu/user-navigation
+        parent: pim-channel-edit-form
+        targetZone: user-menu
+        config:
+            userAccount: pim_menu.user.user_account
+            logout: pim_menu.user.logout
+
     pim-channel-edit-form-cache-invalidator:
         module: pim/cache-invalidator
         parent: pim-channel-edit-form
@@ -19,24 +35,22 @@ extensions:
         targetZone: title
         position: 110
 
-    pim-channel-edit-form-back-to-grid:
-        module: pim/form/common/back-to-grid
+    pim-channel-edit-form-secondary-actions:
+        module: pim/form/common/secondary-actions
         parent: pim-channel-edit-form
-        targetZone: back
-        aclResourceId: pim_enrich_channel_index
-        position: 80
-        config:
-            backUrl: pim_enrich_channel_index
+        targetZone: buttons
+        position: 50
 
     pim-channel-edit-form-delete:
         module: pim/channel-edit-form/delete
-        parent: pim-channel-edit-form
-        targetZone: buttons
+        parent: pim-channel-edit-form-secondary-actions
+        targetZone: secondary-actions
         aclResourceId: pim_enrich_channel_remove
         position: 90
         config:
             trans:
                 title: confirmation.remove.channel
+                subTitle: pim_menu.item.channel
                 content: pim_enrich.confirmation.delete_item
                 success: flash.channel.removed
                 fail: error.removing.channel
@@ -64,37 +78,29 @@ extensions:
         config:
             entity: pim_enrich.entity.channel.title
 
-    pim-channel-edit-form-created:
-        module: pim/form/common/meta/created
-        parent: pim-channel-edit-form
-        targetZone: meta
-        position: 90
-        config:
-            label: pim_enrich.entity.channel.meta.created
-            labelBy: pim_enrich.entity.channel.meta.created_by
-
-    pim-channel-edit-form-updated:
-        module: pim/form/common/meta/updated
-        parent: pim-channel-edit-form
-        targetZone: meta
-        position: 100
-        config:
-            label: pim_enrich.entity.channel.meta.updated
-            labelBy: pim_enrich.entity.channel.meta.updated_by
-
-    pim-channel-edit-form-properties:
-        module: pim/common/tab/properties
+    pim-channel-edit-form-properties-tab:
+        module: pim/common/tab
         parent: pim-channel-edit-form-form-tabs
         targetZone: container
         position: 100
         config:
-            label: 'pim_enrich.form.channel.tab.properties.title'
+            label: pim_enrich.form.channel.tab.properties.title
+
+    pim-channel-edit-form-properties:
+        module: pim/common/simple-view
+        parent: pim-channel-edit-form-properties-tab
+        targetZone: self
+        config:
+            template: pim/template/form/tab/sections
 
     pim-channel-edit-form-properties-general:
-        module: pim/channel-edit-form/properties/general
+        module: pim/create/properties/general
         parent: pim-channel-edit-form-properties
         targetZone: accordion
         position: 100
+        config:
+            title: pim_enrich.form.channel.tab.properties.general
+            codeLabel: pim_enrich.form.channel.tab.properties.code
 
     pim-channel-edit-form-properties-general-currencies:
         module: pim/channel-edit-form/properties/general/currencies
@@ -114,13 +120,23 @@ extensions:
         targetZone: general-select-fields
         position: 130
 
-    pim-channel-edit-form-properties-translation:
-        module: pim/common/properties/translation
+    pim-channel-edit-form-properties-translation-section:
+        module: pim/common/simple-view
         parent: pim-channel-edit-form-properties
         targetZone: accordion
         position: 140
         config:
-            label: 'pim_enrich.form.channel.tab.properties.label_translations'
+            template: pim/template/form/tab/section
+            templateParams:
+                sectionTitle: pim_enrich.form.channel.tab.properties.label_translations
+                dropZone: content
+
+    pim-channel-edit-form-properties-translation:
+        module: pim/common/properties/translation
+        parent: pim-channel-edit-form-properties-translation-section
+        targetZone: content
+        position: 100
+        config:
             fieldBaseId: 'pim_enrich_channel_form_label_'
 
     pim-channel-edit-form-properties-conversion-unit:

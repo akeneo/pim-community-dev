@@ -2,7 +2,6 @@
 
 namespace Pim\Bundle\CatalogBundle\tests\integration\Completeness\AttributeType;
 
-use Pim\Bundle\CatalogBundle\tests\integration\Completeness\AbstractCompletenessPerAttributeTypeIntegration;
 use Pim\Component\Catalog\AttributeTypes;
 
 /**
@@ -12,7 +11,7 @@ use Pim\Component\Catalog\AttributeTypes;
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-class TextAttributeTypeCompletenessIntegration extends AbstractCompletenessPerAttributeTypeIntegration
+class TextAttributeTypeCompletenessIntegration extends AbstractCompletenessPerAttributeTypeTestCase
 {
     public function testCompleteText()
     {
@@ -67,6 +66,7 @@ class TextAttributeTypeCompletenessIntegration extends AbstractCompletenessPerAt
             ]
         );
         $this->assertNotComplete($productDataNull);
+        $this->assertMissingAttributeForProduct($productDataNull, ['a_text']);
 
         $productDataEmptyString = $this->createProductWithStandardValues(
             $family,
@@ -84,8 +84,10 @@ class TextAttributeTypeCompletenessIntegration extends AbstractCompletenessPerAt
             ]
         );
         $this->assertNotComplete($productDataEmptyString);
+        $this->assertMissingAttributeForProduct($productDataEmptyString, ['a_text']);
 
         $productWithoutValue = $this->createProductWithStandardValues($family, 'product_without_values');
         $this->assertNotComplete($productWithoutValue);
+        $this->assertMissingAttributeForProduct($productWithoutValue, ['a_text']);
     }
 }

@@ -1,13 +1,11 @@
 pim_user_user_rest_get_current:
-    path: /{_format}
-    defaults: { _controller: pim_user.controller.user_rest:getCurrentAction, _format: json }
+    path: /
+    defaults: { _controller: pim_user.controller.user_rest:getCurrentAction }
     requirements:
-        _format: json
         method: GET
 
 pim_user_user_rest_get:
     path: /{identifier}
-    defaults: { _controller: pim_user.controller.user_rest:getAction, _format: json }
+    defaults: { _controller: pim_user.controller.user_rest:getAction }
     requirements:
-        _format: json
         method: GET

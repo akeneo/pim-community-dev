@@ -4,8 +4,8 @@ namespace Pim\Component\Catalog\Model;
 
 use Akeneo\Component\Classification\Model\CategoryInterface as BaseCategoryInterface;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Pim\Component\Catalog\AttributeTypes;
-use Pim\Component\Catalog\Exception\MissingIdentifierException;
 
 /**
  * Abstract product
@@ -18,6 +18,9 @@ abstract class AbstractProduct implements ProductInterface
 {
     /** @var int|string */
     protected $id;
+
+    /** @var array */
+    protected $rawValues;
 
     /** @var \Datetime $created */
     protected $created;
@@ -39,14 +42,12 @@ abstract class AbstractProduct implements ProductInterface
      */
     protected $scope;
 
-    /** @var ArrayCollection */
+    /**
+     * Not persisted. Loaded on the fly via the $rawValues.
+     *
+     * @var ValueCollectionInterface
+     */
     protected $values;
-
-    /** @var array */
-    protected $indexedValues;
-
-    /** @var bool */
-    protected $indexedValuesOutdated = true;
 
     /** @var FamilyInterface $family */
     protected $family;
@@ -54,7 +55,7 @@ abstract class AbstractProduct implements ProductInterface
     /** @var int */
     protected $familyId;
 
-    /** @var ArrayCollection $categories */
+    /** @var Collection $categories */
     protected $categories;
 
     /** @var array */
@@ -63,31 +64,35 @@ abstract class AbstractProduct implements ProductInterface
     /** @var bool $enabled */
     protected $enabled = true;
 
-    /** @var ArrayCollection $groups */
+    /** @var Collection $groups */
     protected $groups;
 
     /** @var array */
     protected $groupIds = [];
 
-    /** @var ArrayCollection $associations */
+    /** @var Collection $associations */
     protected $associations;
 
-    /** @var ArrayCollection $completenesses */
+    /** @var Collection $completenesses */
     protected $completenesses;
 
-    /** @var array */
-    protected $normalizedData;
+    /** @var string */
+    protected $identifier;
+
+    /** @var ArrayCollection */
+    protected $uniqueData;
 
     /**
      * Constructor
      */
     public function __construct()
     {
-        $this->values = new ArrayCollection();
+        $this->values = new ValueCollection();
         $this->categories = new ArrayCollection();
         $this->completenesses = new ArrayCollection();
         $this->groups = new ArrayCollection();
         $this->associations = new ArrayCollection();
+        $this->uniqueData = new ArrayCollection();
     }
 
     /**
@@ -183,11 +188,9 @@ abstract class AbstractProduct implements ProductInterface
     /**
      * {@inheritdoc}
      */
-    public function addValue(ProductValueInterface $value)
+    public function addValue(ValueInterface $value)
     {
-        $this->values[] = $value;
-        $this->indexedValues[$value->getAttribute()->getCode()][] = $value;
-        $value->setEntity($this);
+        $this->values->add($value);
 
         return $this;
     }
@@ -195,36 +198,9 @@ abstract class AbstractProduct implements ProductInterface
     /**
      * {@inheritdoc}
      */
-    public function removeValue(ProductValueInterface $value)
+    public function removeValue(ValueInterface $value)
     {
-        $this->removeIndexedValue($value);
-        $this->values->removeElement($value);
-
-        return $this;
-    }
-
-    /**
-     * Remove a value from the indexedValues array
-     *
-     * @param ProductValueInterface $value
-     *
-     * @return ProductInterface
-     */
-    protected function removeIndexedValue(ProductValueInterface $value)
-    {
-        $attributeCode = $value->getAttribute()->getCode();
-        $possibleValues =& $this->indexedValues[$attributeCode];
-
-        if (is_array($possibleValues)) {
-            foreach ($possibleValues as $key => $possibleValue) {
-                if ($value === $possibleValue) {
-                    unset($possibleValues[$key]);
-                    break;
-                }
-            }
-        } else {
-            unset($this->indexedValues[$attributeCode]);
-        }
+        $this->values->remove($value);
 
         return $this;
     }
@@ -234,49 +210,7 @@ abstract class AbstractProduct implements ProductInterface
      */
     public function getUsedAttributeCodes()
     {
-        return array_keys($this->getIndexedValues());
-    }
-
-    /**
-     * Build the values indexed by attribute code array
-     *
-     * @return array indexedValues
-     */
-    protected function getIndexedValues()
-    {
-        $this->indexValuesIfNeeded();
-
-        return $this->indexedValues;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function markIndexedValuesOutdated()
-    {
-        $this->indexedValuesOutdated = true;
-
-        return $this;
-    }
-
-    /**
-     * Build the indexed values if needed. First step
-     * is to make sure that the values are initialized
-     * (loaded from DB)
-     *
-     * @return ProductInterface
-     */
-    protected function indexValuesIfNeeded()
-    {
-        if ($this->indexedValuesOutdated) {
-            $this->indexedValues = [];
-            foreach ($this->values as $value) {
-                $this->indexedValues[$value->getAttribute()->getCode()][] = $value;
-            }
-            $this->indexedValuesOutdated = false;
-        }
-
-        return $this;
+        return $this->values->getAttributesKeys();
     }
 
     /**
@@ -284,34 +218,25 @@ abstract class AbstractProduct implements ProductInterface
      */
     public function getValue($attributeCode, $localeCode = null, $scopeCode = null)
     {
-        $indexedValues = $this->getIndexedValues();
+        return $this->getValues()->getByCodes($attributeCode, $scopeCode, $localeCode);
+    }
 
-        if (!isset($indexedValues[$attributeCode])) {
-            return null;
-        }
+    /**
+     * {@inheritdoc}
+     */
+    public function getRawValues()
+    {
+        return $this->rawValues;
+    }
 
-        $value = null;
-        $possibleValues = $indexedValues[$attributeCode];
+    /**
+     * {@inheritdoc}
+     */
+    public function setRawValues(array $rawValues)
+    {
+        $this->rawValues = $rawValues;
 
-        if (is_array($possibleValues)) {
-            foreach ($possibleValues as $possibleValue) {
-                $valueLocale = null;
-                $valueScope = null;
-
-                if (null !== $possibleValue->getLocale()) {
-                    $valueLocale = ($localeCode) ? $localeCode : $this->getLocale();
-                }
-                if (null !== $possibleValue->getScope()) {
-                    $valueScope = ($scopeCode) ? $scopeCode : $this->getScope();
-                }
-                if ($possibleValue->getLocale() === $valueLocale && $possibleValue->getScope() === $valueScope) {
-                    $value = $possibleValue;
-                    break;
-                }
-            }
-        }
-
-        return $value;
+        return $this;
     }
 
     /**
@@ -319,41 +244,13 @@ abstract class AbstractProduct implements ProductInterface
      */
     public function hasAttribute(AttributeInterface $attribute)
     {
-        $indexedValues = $this->getIndexedValues();
-
-        return isset($indexedValues[$attribute->getCode()]);
-    }
-
-    /**
-     * Check if a field or attribute exists
-     *
-     * @param string $attributeCode
-     *
-     * @return bool
-     */
-    public function __isset($attributeCode)
-    {
-        $indexedValues = $this->getIndexedValues();
-
-        return isset($indexedValues[$attributeCode]);
-    }
-
-    /**
-     * Get value data by attribute code
-     *
-     * @param string $attCode
-     *
-     * @return mixed
-     */
-    public function __get($attCode)
-    {
-        return $this->getValue($attCode);
+        return in_array($attribute, $this->getValues()->getAttributes(), true);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getFamily()
+    public function getFamily(): ?FamilyInterface
     {
         return $this->family;
     }
@@ -394,13 +291,20 @@ abstract class AbstractProduct implements ProductInterface
      */
     public function getIdentifier()
     {
-        foreach ($this->values as $value) {
-            if (AttributeTypes::IDENTIFIER === $value->getAttribute()->getType()) {
-                return $value;
-            }
-        }
+        return $this->identifier;
+    }
 
-        throw new MissingIdentifierException($this);
+    /**
+     * {@inheritdoc}
+     */
+    public function setIdentifier(ValueInterface $identifier)
+    {
+        $this->identifier = $identifier->getData();
+
+        $this->values->removeByAttribute($identifier->getAttribute());
+        $this->values->add($identifier);
+
+        return $this;
     }
 
     /**
@@ -408,13 +312,7 @@ abstract class AbstractProduct implements ProductInterface
      */
     public function getAttributes()
     {
-        $attributes = [];
-
-        foreach ($this->values as $value) {
-            $attributes[] = $value->getAttribute();
-        }
-
-        return $attributes;
+        return $this->getValues()->getAttributes();
     }
 
     /**
@@ -422,13 +320,17 @@ abstract class AbstractProduct implements ProductInterface
      */
     public function getValues()
     {
-        $values = new ArrayCollection();
+        return $this->values;
+    }
 
-        foreach ($this->values as $value) {
-            $values[ProductValueKeyGenerator::getKey($value)] = $value;
-        }
+    /**
+     * {@inheritdoc}
+     */
+    public function setValues(ValueCollectionInterface $values)
+    {
+        $this->values = $values;
 
-        return $values;
+        return $this;
     }
 
     /**
@@ -455,23 +357,53 @@ abstract class AbstractProduct implements ProductInterface
     /**
      * {@inheritdoc}
      */
-    public function getLabel($locale = null)
+    public function getImage()
     {
-        if ($this->family) {
-            if ($attributeAsLabel = $this->family->getAttributeAsLabel()) {
-                if ($locale) {
-                    $this->setLocale($locale);
-                }
-                if ($value = $this->getValue($attributeAsLabel->getCode())) {
-                    $data = $value->getData();
-                    if (!empty($data)) {
-                        return (string) $data;
-                    }
-                }
-            }
+        if (null === $this->family) {
+            return null;
         }
 
-        return (string) $this->getIdentifier()->getData();
+        $attributeAsImage = $this->family->getAttributeAsImage();
+
+        if (null === $attributeAsImage) {
+            return null;
+        }
+
+        return $this->getValue($attributeAsImage->getCode());
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getLabel($locale = null, $scope = null)
+    {
+        $identifier = (string) $this->getIdentifier();
+
+        if (null === $this->family) {
+            return $identifier;
+        }
+
+        $attributeAsLabel = $this->family->getAttributeAsLabel();
+
+        if (null === $attributeAsLabel) {
+            return $identifier;
+        }
+
+        $locale = $attributeAsLabel->isLocalizable() ? $locale : null;
+        $scope = $attributeAsLabel->isScopable() ? $scope : null;
+        $value = $this->getValue($attributeAsLabel->getCode(), $locale, $scope);
+
+        if (null === $value) {
+            return $identifier;
+        }
+
+        $data = $value->getData();
+
+        if (empty($data)) {
+            return $identifier;
+        }
+
+        return (string) $data;
     }
 
     /**
@@ -492,6 +424,14 @@ abstract class AbstractProduct implements ProductInterface
         }
 
         return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setCategories(Collection $categories): void
+    {
+        $this->categories = $categories;
     }
 
     /**
@@ -535,6 +475,14 @@ abstract class AbstractProduct implements ProductInterface
     /**
      * {@inheritdoc}
      */
+    public function setGroups(Collection $groups): void
+    {
+        $this->groups = $groups;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function isEnabled()
     {
         return $this->enabled;
@@ -561,27 +509,6 @@ abstract class AbstractProduct implements ProductInterface
     /**
      * {@inheritdoc}
      */
-    public function hasAttributeInVariantGroup(AttributeInterface $attribute)
-    {
-        foreach ($this->groups as $group) {
-            if ($group->getType()->isVariant()) {
-                if ($group->getAxisAttributes()->contains($attribute)) {
-                    return true;
-                }
-
-                $template = $group->getProductTemplate();
-                if (null !== $template && $template->hasValueForAttribute($attribute)) {
-                    return true;
-                }
-            }
-        }
-
-        return false;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function isAttributeRemovable(AttributeInterface $attribute)
     {
         if (AttributeTypes::IDENTIFIER === $attribute->getType()) {
@@ -589,10 +516,6 @@ abstract class AbstractProduct implements ProductInterface
         }
 
         if ($this->hasAttributeInFamily($attribute)) {
-            return false;
-        }
-
-        if ($this->hasAttributeInVariantGroup($attribute)) {
             return false;
         }
 
@@ -605,10 +528,6 @@ abstract class AbstractProduct implements ProductInterface
     public function isAttributeEditable(AttributeInterface $attribute)
     {
         if (!$this->hasAttributeInFamily($attribute)) {
-            return false;
-        }
-
-        if ($this->hasAttributeInVariantGroup($attribute)) {
             return false;
         }
 
@@ -644,23 +563,6 @@ abstract class AbstractProduct implements ProductInterface
         $this->groups->removeElement($group);
 
         return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getVariantGroup()
-    {
-        $groups = $this->getGroups();
-
-        /** @var GroupInterface $group */
-        foreach ($groups as $group) {
-            if ($group->getType()->isVariant()) {
-                return $group;
-            }
-        }
-
-        return null;
     }
 
     /**
@@ -737,9 +639,9 @@ abstract class AbstractProduct implements ProductInterface
     /**
      * {@inheritdoc}
      */
-    public function setAssociations(array $associations = [])
+    public function setAssociations(Collection $associations)
     {
-        $this->associations = new ArrayCollection($associations);
+        $this->associations = $associations;
 
         return $this;
     }
@@ -747,7 +649,7 @@ abstract class AbstractProduct implements ProductInterface
     /**
      * {@inheritdoc}
      */
-    public function setCompletenesses(ArrayCollection $completenesses)
+    public function setCompletenesses(Collection $completenesses)
     {
         $this->completenesses = $completenesses;
 
@@ -767,14 +669,34 @@ abstract class AbstractProduct implements ProductInterface
      */
     public function getReference()
     {
-        return $this->getIdentifier()->getData();
+        return $this->getIdentifier();
+    }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getUniqueData()
+    {
+        return $this->uniqueData;
+    }
+
+    /**
+     * @param ProductUniqueDataInterface $uniqueData
+     *
+     * @return ProductInterface
+     */
+    public function addUniqueData(ProductUniqueDataInterface $uniqueData)
+    {
+        $this->uniqueData->add($uniqueData);
+
+        return $this;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function setNormalizedData($normalizedData)
+    public function setUniqueData(Collection $data): void
     {
-        $this->normalizedData = $normalizedData;
+        $this->uniqueData = $data;
     }
 }

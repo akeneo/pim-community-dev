@@ -1,17 +1,18 @@
 parameters:
-    pim_enrich.connector.processor.mass_edit.product.update_value.class:           Pim\Bundle\EnrichBundle\Connector\Processor\MassEdit\Product\UpdateProductValueProcessor
-    pim_enrich.connector.processor.mass_edit.product.add_value.class:              Pim\Bundle\EnrichBundle\Connector\Processor\MassEdit\Product\AddProductValueProcessor
-    pim_enrich.connector.processor.mass_edit.product.remove_value.class:           Pim\Bundle\EnrichBundle\Connector\Processor\MassEdit\Product\RemoveProductValueProcessor
-    pim_enrich.connector.processor.mass_edit.product.edit_common_attributes.class: Pim\Bundle\EnrichBundle\Connector\Processor\MassEdit\Product\EditCommonAttributesProcessor
-    pim_enrich.connector.processor.mass_edit.product.add_to_variant_group.class:   Pim\Bundle\EnrichBundle\Connector\Processor\MassEdit\Product\AddProductToVariantGroupProcessor
-    pim_enrich.connector.processor.mass_edit.family.set_requirements.class:        Pim\Bundle\EnrichBundle\Connector\Processor\MassEdit\Family\SetAttributeRequirements
-    pim_enrich.connector.processor.quick_export.product.class:                     Pim\Bundle\EnrichBundle\Connector\Processor\QuickExport\ProductProcessor
+    pim_enrich.connector.processor.mass_edit.product.update_value.class:                       Pim\Bundle\EnrichBundle\Connector\Processor\MassEdit\Product\UpdateProductValueProcessor
+    pim_enrich.connector.processor.mass_edit.product.add_value.class:                          Pim\Bundle\EnrichBundle\Connector\Processor\MassEdit\Product\AddProductValueProcessor
+    pim_enrich.connector.processor.mass_edit.product.remove_value.class:                       Pim\Bundle\EnrichBundle\Connector\Processor\MassEdit\Product\RemoveProductValueProcessor
+    pim_enrich.connector.processor.mass_edit.product.edit_common_attributes.class:             Pim\Bundle\EnrichBundle\Connector\Processor\MassEdit\Product\EditCommonAttributesProcessor
+    pim_enrich.connector.processor.mass_edit.product.add_to_existing_product_model.class:      Pim\Bundle\EnrichBundle\Connector\Processor\MassEdit\Product\AddToExistingProductModelProcessor
+    pim_enrich.connector.processor.mass_edit.product.edit_attributes.class:        Pim\Bundle\EnrichBundle\Connector\Processor\MassEdit\Product\EditAttributesProcessor
+    pim_enrich.connector.processor.mass_edit.family.set_requirements.class:                    Pim\Bundle\EnrichBundle\Connector\Processor\MassEdit\Family\SetAttributeRequirements
+    pim_enrich.connector.processor.quick_export.product_and_product_model.class:               Pim\Bundle\EnrichBundle\Connector\Processor\QuickExport\ProductAndProductModelProcessor
 
 services:
     pim_enrich.connector.processor.mass_edit.product.update_value:
         class: '%pim_enrich.connector.processor.mass_edit.product.update_value.class%'
         arguments:
-            - '@pim_catalog.updater.product_property_setter'
+            - '@pim_catalog.updater.property_setter'
             - '@pim_catalog.validator.product'
 
     pim_enrich.connector.processor.mass_edit.product.add_value:
@@ -34,6 +35,22 @@ services:
             - '@pim_catalog.updater.product'
             - '@akeneo_storage_utils.doctrine.object_detacher'
 
+    pim_enrich.connector.processor.mass_edit.product.edit_attributes:
+        class: '%pim_enrich.connector.processor.mass_edit.product.edit_attributes.class%'
+        arguments:
+            - '@pim_catalog.validator.product'
+            - '@pim_catalog.validator.product_model'
+            - '@pim_catalog.updater.product'
+            - '@pim_catalog.updater.product_model'
+            - '@pim_catalog.repository.cached_attribute'
+            - '@pim_catalog.entity_with_family_variant.check_attribute_editable'
+
+    pim_enrich.connector.processor.mass_edit.product.add_to_existing_product_model:
+        class: '%pim_enrich.connector.processor.mass_edit.product.add_to_existing_product_model.class%'
+        arguments:
+            - '@pim_catalog.entity_with_family_variant.add_parent_to_product'
+            - '@validator'
+
     pim_enrich.connector.processor.mass_edit.family.set_requirements:
         class: '%pim_enrich.connector.processor.mass_edit.family.set_requirements.class%'
         arguments:
@@ -43,20 +60,25 @@ services:
             - '@validator'
             - '@akeneo_storage_utils.doctrine.object_detacher'
 
-    pim_enrich.connector.processor.mass_edit.product.add_to_variant_group:
-        class: '%pim_enrich.connector.processor.mass_edit.product.add_to_variant_group.class%'
-        arguments:
-            - '@pim_catalog.validator.product'
-            - '@pim_catalog.repository.group'
-            - '@pim_catalog.updater.product_template'
-
     pim_enrich.connector.processor.quick_export.product:
-        class: '%pim_enrich.connector.processor.quick_export.product.class%'
+        class: '%pim_enrich.connector.processor.quick_export.product_and_product_model.class%'
         arguments:
             - '@pim_catalog.normalizer.standard.product'
             - '@pim_catalog.repository.channel'
             - '@pim_catalog.repository.attribute'
-            - '@pim_catalog.builder.product'
+            - '@pim_catalog.values_filler.product'
+            - '@akeneo_storage_utils.doctrine.object_detacher'
+            - '@pim_user.provider.user'
+            - '@security.token_storage'
+            - '@pim_connector.processor.bulk_media_fetcher'
+
+    pim_enrich.connector.processor.quick_export.product_model:
+        class: '%pim_enrich.connector.processor.quick_export.product_and_product_model.class%'
+        arguments:
+            - '@pim_catalog.normalizer.standard.product_model'
+            - '@pim_catalog.repository.channel'
+            - '@pim_catalog.repository.attribute'
+            - '@pim_catalog.values_filler.entity_with_family_variant'
             - '@akeneo_storage_utils.doctrine.object_detacher'
             - '@pim_user.provider.user'
             - '@security.token_storage'

@@ -42,7 +42,7 @@ class FamilyRepositorySpec extends ObjectBehavior
         $queryBuilder->select('f')->willReturn($queryBuilder);
         $queryBuilder->select('f.id')->willReturn($queryBuilder);
         $queryBuilder->addSelect('COALESCE(NULLIF(ft.label, \'\'), CONCAT(\'[\', f.code, \']\')) as label')->willReturn($queryBuilder);
-        $queryBuilder->from('family', 'f')->willReturn($queryBuilder);
+        $queryBuilder->from('family', 'f', null)->willReturn($queryBuilder);
         $queryBuilder->leftJoin('f.translations', 'ft', 'WITH', 'ft.locale = :locale_code')->willReturn($queryBuilder);
         $queryBuilder->orderBy('label')->willReturn($queryBuilder);
         $queryBuilder->setParameter('locale_code', 'en_US')->willReturn($queryBuilder);
@@ -53,8 +53,8 @@ class FamilyRepositorySpec extends ObjectBehavior
         ]);
 
         $this->findTranslatedLabels(['locale_code' => 'en_US'])->shouldReturn([
-            10 => 'family en',
-            11 => '[family_other_code]',
+            'family en' => 10,
+            '[family_other_code]' => 11,
         ]);
     }
 }

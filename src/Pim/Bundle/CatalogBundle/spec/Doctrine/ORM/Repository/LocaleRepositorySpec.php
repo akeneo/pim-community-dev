@@ -4,13 +4,13 @@ namespace spec\Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository;
 
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Driver\Statement;
+use Doctrine\ORM\AbstractQuery;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\ORM\Query\Expr;
+use Doctrine\ORM\QueryBuilder;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
-use Doctrine\ORM\AbstractQuery;
-use Doctrine\ORM\QueryBuilder;
 
 class LocaleRepositorySpec extends ObjectBehavior
 {
@@ -36,7 +36,7 @@ class LocaleRepositorySpec extends ObjectBehavior
     {
         $em->createQueryBuilder()->willReturn($queryBuilder);
         $queryBuilder->select('l')->willReturn($queryBuilder);
-        $queryBuilder->from('locale', 'l')->willReturn($queryBuilder);
+        $queryBuilder->from('locale', 'l', null)->willReturn($queryBuilder);
         $queryBuilder->select('COUNT(l.id)')->willReturn($queryBuilder);
         $queryBuilder->expr()->willReturn($expr);
         $expr->eq('l.activated', true)->willReturn($expr);

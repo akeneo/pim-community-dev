@@ -11,19 +11,19 @@ Feature: Edit common attributes of many products at once
       | black_jacket | jackets | A black jacket | Eine schwarze Jacke | 1                         | 2                     |
       | white_jacket | jackets | A white jacket | Ein weißer Jacke    | 3                         | 4                     |
     And I am logged in as "Julia"
-    And I am on the products page
+    And I am on the products grid
 
   @info https://akeneo.atlassian.net/browse/PIM-5351
   Scenario: Successfully mass edit scoped product values
-    Given I filter by "scope" with operator "equals" and value "Print"
+    Given I switch the scope to "Print"
     And I select rows black_jacket and white_jacket
-    And I press "Change product information" on the "Bulk Actions" dropdown button
-    And I choose the "Edit common attributes" operation
-    Then I should see the text "The selected product's attributes will be edited with the following data for the locale English (United States) and the channel Print, chosen in the products grid."
+    And I press the "Bulk actions" button
+    And I choose the "Edit attributes" operation
+    Then I should see the text "Only the attributes belonging to the families of the selected products will be edited with the following data for the English (United States) locale and the Print channel."
     When I display the Customer rating attribute
     And I change the "Customer rating" to "5"
-    And I move on to the next step
-    And I wait for the "edit-common-attributes" mass-edit job to finish
+    And I confirm mass edit
+    And I wait for the "edit_common_attributes" job to finish
     Then the unlocalized ecommerce customer_rating of "black_jacket" should be "[1]"
     And the unlocalized ecommerce customer_rating of "white_jacket" should be "[3]"
     And the unlocalized print customer_rating of "black_jacket" should be "[5]"
@@ -32,16 +32,16 @@ Feature: Edit common attributes of many products at once
   @info https://akeneo.atlassian.net/browse/PIM-5351
   Scenario: Successfully mass edit localized product values
     Given I switch the locale to "de_DE"
-    And I filter by "scope" with operator "equals" and value "Ecommerce"
+    When I switch the scope to "Ecommerce"
     And I select rows black_jacket and white_jacket
-    And I press "Change product information" on the "Bulk Actions" dropdown button
-    And I choose the "Edit common attributes" operation
-    Then I should see the text "The selected product's attributes will be edited with the following data for the locale Deutsch (Deutschland) and the channel Ecommerce, chosen in the products grid."
+    And I press the "Bulk actions" button
+    And I choose the "Edit attributes" operation
+    Then I should see the text "Only the attributes belonging to the families of the selected products will be edited with the following data for the Deutsch (Deutschland) locale and the Ecommerce channel."
     When I display the Name attribute
     And I change the "Name" to "Une veste"
-    And I move on to the next step
-    And I wait for the "edit-common-attributes" mass-edit job to finish
-    Then the german name of "black_jacket" should be "Une veste"
-    And the german name of "white_jacket" should be "Une veste"
-    And the english name of "black_jacket" should be "A black jacket"
-    And the english name of "white_jacket" should be "A white jacket"
+    And I confirm mass edit
+    And I wait for the "edit_common_attributes" job to finish
+    Then the german localizable value name of "black_jacket" should be "Une veste"
+    And the german localizable value name of "white_jacket" should be "Une veste"
+    And the english localizable value name of "black_jacket" should be "A black jacket"
+    And the english localizable value name of "white_jacket" should be "A white jacket"

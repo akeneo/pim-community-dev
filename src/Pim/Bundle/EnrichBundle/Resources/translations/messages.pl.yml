@@ -128,8 +128,6 @@ pim_enrich:
       description: Wybierz grupę wariantów, do której chcesz dodać wybrane produkty
       success_flash: Produkty zostały pomyślnie dodane do wybranej grupy wariantów
       no_variant_group: Żadna grupa wariantów nie istnieje. Proszę zacznij od utworzenia jednej.
-      some_variant_groups_are_skipped:
-        The following variant groups have been skipped because they don't share attributes with selected products: '%groups%'
       launched_flash: Masowe zadanie "dodaj do grupy wariantów" zostało uruchomione. Zostaniesz powiadomiony o jego zakończeniu.
     set-attribute-requirements:
       label: Określ wymagania atrybutów
@@ -255,9 +253,8 @@ pim_enrich:
         label: Wybierz typ danych referencyjnych
 attribute:
   title: atrybut
-  overview: Przegląd atrybutów
-  create: utwórz atrybut
   edit: edytuj atrybut
+  create: utwórz atrybut
 attribute group:
   title: grupa atrybutów
   overview: Przegląd grup atrybutów
@@ -285,17 +282,13 @@ channel:
   edit: edytuj kanał
 currency:
   title: waluta
-  overview: Przegląd walut
   create: utwórz walutę
   edit: edytuj walutę
 family:
   title: rodzina
-  overview: Przegląd rodziny
-  create: utwórz rodzinę
   edit: edytuj rodzinę
 locale:
   title: ustawienia regionalne
-  overview: przegląd ustawień regionalnych
   create: utwórz ustawienie regionalne
   edit: edytuj ustawienie regionalne
 product:
@@ -305,22 +298,15 @@ product:
   edit: edytuj produkt
 group:
   title: grupa
-  overview: przegląd grupy
-  create: utwórz grupę
   edit: edytuj grupę
 group type:
   title: typ grupy
-  overview: przegląd typu grupy
-  create: utwórz typ grupy
   edit: edytuj typ grupy
 variant group:
   title: grupa wariantów
-  overview: przegląd grupy wariantów
-  create: utwórz grupę wariantów
   edit: edycja grupy wariantów
 association type:
   title: typ powiązania
-  overview: przegląd typów powiązań
   create: utwórz typ powiązania
   edit: edytuj typ powiązania
 products: produkty
@@ -342,7 +328,6 @@ btn:
     drag_or_upload: Przeciągnij i upuść aby przesłać, lub kliknij tutaj
   edit: edytuj
   save: zapisz
-  save and back: zapisz i wróć do tabeli
   save and create: zapisz i utwórz nowy
   save and next: zapisz i przejdź dalej
   save and finish: zapisz i zakończ
@@ -716,25 +701,6 @@ Current tab: Bieżąca karta
 Group: Grupa
 View group: Zobacz grupę
 Products: Produkty
-pim_menu:
-  tab:
-    collect: Gromadzenie
-    enrich: Uzupełnianie
-    settings: Ustawienia
-    spread: Propagowanie
-  item:
-    association_type: Typy powiązań
-    attribute: Atrybuty
-    attribute_group: Grupy Atrybutów
-    category: Kategorie
-    channel: Kanały
-    currency: Waluty
-    family: Rodziny
-    group: Grupy
-    group_type: Typy grup
-    locale: Ustawienia regionalne
-    product: Produkty
-    variant_group: Grupy wariantów
 Properties: Właściwości
 History: Historia
 pane.accordion:
@@ -772,6 +738,7 @@ Entity name: Nazwa encji
 Entity id: Id Encji
 Data: Dane
 Author: Autor
+Logged at: Zalogowano jako
 Deleted: Usunięty
 Old values: Poprzednie wartości
 New values: Nowe wartości

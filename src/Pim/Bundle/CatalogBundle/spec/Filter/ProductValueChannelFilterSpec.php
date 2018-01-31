@@ -4,18 +4,18 @@ namespace spec\Pim\Bundle\CatalogBundle\Filter;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\AttributeInterface;
-use Pim\Component\Catalog\Model\ProductValueInterface;
+use Pim\Component\Catalog\Model\ValueInterface;
 
 class ProductValueChannelFilterSpec extends ObjectBehavior
 {
-    public function it_does_not_filter_a_product_value_if_channel_option_is_empty(ProductValueInterface $price, AttributeInterface $priceAttribute)
+    public function it_does_not_filter_a_product_value_if_channel_option_is_empty(ValueInterface $price, AttributeInterface $priceAttribute)
     {
         $price->getAttribute()->willReturn($priceAttribute);
 
         $this->filterObject($price, 'pim:product_value:view', [])->shouldReturn(false);
     }
 
-    public function it_filters_a_product_value_if_it_is_not_in_channels_option(ProductValueInterface $price, AttributeInterface $priceAttribute)
+    public function it_filters_a_product_value_if_it_is_not_in_channels_option(ValueInterface $price, AttributeInterface $priceAttribute)
     {
         $price->getAttribute()->willReturn($priceAttribute);
         $priceAttribute->isScopable()->willReturn(true);
@@ -24,7 +24,7 @@ class ProductValueChannelFilterSpec extends ObjectBehavior
         $this->filterObject($price, 'pim:product_value:view', ['channels' => ['en_US']])->shouldReturn(true);
     }
 
-    public function it_does_not_filter_a_product_value_if_it_is_in_channels_options(ProductValueInterface $price, AttributeInterface $priceAttribute)
+    public function it_does_not_filter_a_product_value_if_it_is_in_channels_options(ValueInterface $price, AttributeInterface $priceAttribute)
     {
         $price->getAttribute()->willReturn($priceAttribute);
         $priceAttribute->isScopable()->willReturn(false);
@@ -33,7 +33,7 @@ class ProductValueChannelFilterSpec extends ObjectBehavior
         $this->filterObject($price, 'pim:product_value:view', ['channels' => ['en_US', 'fr_FR']])->shouldReturn(false);
     }
 
-    public function it_does_not_filter_a_product_value_if_it_is_not_scopable(ProductValueInterface $price, AttributeInterface $priceAttribute)
+    public function it_does_not_filter_a_product_value_if_it_is_not_scopable(ValueInterface $price, AttributeInterface $priceAttribute)
     {
         $price->getAttribute()->willReturn($priceAttribute);
         $priceAttribute->isScopable()->willReturn(false);

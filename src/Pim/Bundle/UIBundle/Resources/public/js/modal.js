@@ -1,4 +1,4 @@
-define(['underscore', 'backbone', 'backbone/bootstrap-modal'],
+define(['underscore', 'backbone', 'bootstrap-modal'],
 function (_, Backbone) {
     'use strict';
 

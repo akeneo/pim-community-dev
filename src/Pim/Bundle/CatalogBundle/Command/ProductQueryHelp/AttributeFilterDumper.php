@@ -7,6 +7,7 @@ use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Query\Filter\FilterRegistryInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Symfony\Component\Console\Helper\HelperSet;
+use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
@@ -37,7 +38,7 @@ class AttributeFilterDumper implements DumperInterface
     /**
      * {@inheritdoc}
      */
-    public function dump(OutputInterface $output, HelperSet $helperSet)
+    public function dump(OutputInterface $output)
     {
         $output->writeln("<info>Useable attributes filters...</info>");
         $attributeFilters = $this->getAttributeFilters();
@@ -48,10 +49,10 @@ class AttributeFilterDumper implements DumperInterface
             $rows = array_merge($rows, $this->getFilterInformationForAttribute($attribute, $attributeFilters));
         }
 
-        $table = $helperSet->get('table');
+        $table = new Table($output);
         $headers = ['attribute', 'localizable', 'scopable', 'attribute type', 'operators', 'filter_class'];
         $table->setHeaders($headers)->setRows($rows);
-        $table->render($output);
+        $table->render();
     }
 
     /**

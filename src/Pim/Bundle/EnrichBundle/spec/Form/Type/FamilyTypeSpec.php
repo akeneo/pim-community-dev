@@ -3,6 +3,8 @@
 namespace spec\Pim\Bundle\EnrichBundle\Form\Type;
 
 use PhpSpec\ObjectBehavior;
+use Pim\Bundle\CatalogBundle\Entity\Family;
+use Pim\Bundle\EnrichBundle\Form\Type\FamilyType;
 use Prophecy\Argument;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -16,18 +18,18 @@ class FamilyTypeSpec extends ObjectBehavior
         $builder->add(Argument::cetera())->willReturn($builder);
 
         $this->beConstructedWith(
-            'Pim\Bundle\CatalogBundle\Entity\Family'
+            Family::class
         );
     }
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('Pim\Bundle\EnrichBundle\Form\Type\FamilyType');
+        $this->shouldHaveType(FamilyType::class);
     }
 
-    function it_has_a_name()
+    function it_has_a_block_prefix()
     {
-        $this->getName()->shouldReturn('pim_enrich_family');
+        $this->getBlockPrefix()->shouldReturn('pim_enrich_family');
     }
 
     function it_builds_the_family_form($builder)
@@ -44,7 +46,7 @@ class FamilyTypeSpec extends ObjectBehavior
 
     function it_sets_the_default_form_data_class(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(['data_class' => 'Pim\Bundle\CatalogBundle\Entity\Family'])->shouldBeCalled();
-        $this->setDefaultOptions($resolver);
+        $resolver->setDefaults(['data_class' => Family::class])->shouldBeCalled();
+        $this->configureOptions($resolver);
     }
 }

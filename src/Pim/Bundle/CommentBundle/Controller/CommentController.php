@@ -24,7 +24,7 @@ class CommentController
     /** @var TokenStorageInterface */
     protected $tokenStorage;
 
-    /** @var ManagerRegistry */
+    /** @var ObjectManager */
     protected $doctrine;
 
     /** @var RemoverInterface */
@@ -35,13 +35,13 @@ class CommentController
 
     /**
      * @param TokenStorageInterface $tokenStorage
-     * @param ManagerRegistry       $doctrine
+     * @param ObjectManager         $doctrine
      * @param RemoverInterface      $commentRemover
      * @param string                $commentClassName
      */
     public function __construct(
         TokenStorageInterface $tokenStorage,
-        ManagerRegistry $doctrine,
+        ObjectManager $doctrine,
         RemoverInterface $commentRemover,
         $commentClassName
     ) {
@@ -64,8 +64,7 @@ class CommentController
      */
     public function deleteAction(Request $request, $id)
     {
-        $manager = $this->getManagerForClass($this->commentClassName);
-        $comment = $manager->find($this->commentClassName, $id);
+        $comment = $this->doctrine->find($this->commentClassName, $id);
 
         if (null === $comment) {
             throw new NotFoundHttpException(sprintf('Comment with id %s not found.', $id));
@@ -98,17 +97,5 @@ class CommentController
         }
 
         return $user;
-    }
-
-    /**
-     * Returns the Doctrine manager for the given class
-     *
-     * @param string $class
-     *
-     * @return ObjectManager
-     */
-    protected function getManagerForClass($class)
-    {
-        return $this->doctrine->getManagerForClass($class);
     }
 }

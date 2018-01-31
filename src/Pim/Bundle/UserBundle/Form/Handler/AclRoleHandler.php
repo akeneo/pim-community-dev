@@ -5,6 +5,7 @@ namespace Pim\Bundle\UserBundle\Form\Handler;
 use Oro\Bundle\UserBundle\Entity\Role;
 use Oro\Bundle\UserBundle\Form\Handler\AclRoleHandler as OroAclRoleHandler;
 use Pim\Bundle\UserBundle\Form\Type\AclRoleType;
+use Symfony\Component\Form\FormInterface;
 
 /**
  * Overriden AclRoleHandler to remove deactivated locales from the acl role form
@@ -30,10 +31,9 @@ class AclRoleHandler extends OroAclRoleHandler
         }
 
         $this->form = $this->formFactory->create(
-            new ACLRoleType(
-                $this->privilegeConfig
-            ),
-            $role
+            AclRoleType::class,
+            $role,
+            ['privilegeConfigOption' => $this->privilegeConfig]
         );
 
         return $this->form;

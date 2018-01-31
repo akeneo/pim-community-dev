@@ -1,3 +1,4 @@
+@javascript
 Feature: Export groups in XLSX
   In order to be able to access and modify attributes data outside PIM
   As a product manager
@@ -7,7 +8,6 @@ Feature: Export groups in XLSX
     Given an "apparel" catalog configuration
     And I am logged in as "Julia"
 
-  @javascript
   Scenario: Successfully export groups in xlsx with headers
     Given the following job "xlsx_group_export" configuration:
       | filePath | %tmp%/xlsx_group_export/xlsx_group_export.xlsx |
@@ -22,7 +22,6 @@ Feature: Export groups in XLSX
       | upsell     | upsell     | Upsell      | Upsell      | Vente incitative | Upsell        |
       | substitute | substitute | Substitute  | Substitute  | Substitut        | Ersatz        |
 
-  @javascript
   Scenario: Successfully export groups in xlsx without headers
     Given the following job "xlsx_group_export" configuration:
       | filePath   | %tmp%/xlsx_group_export/xlsx_group_export.xlsx |
@@ -37,7 +36,6 @@ Feature: Export groups in XLSX
       | upsell     | upsell     | Upsell     | Upsell     | Vente incitative | Upsell        |
       | substitute | substitute | Substitute | Substitute | Substitut        | Ersatz        |
 
-  @javascript
   Scenario: Successfully export groups in XLSX into several files
     Given the following job "xlsx_group_export" configuration:
       | filePath     | %tmp%/xlsx_group_export/xlsx_group_export.xlsx |
@@ -45,9 +43,8 @@ Feature: Export groups in XLSX
     When I am on the "xlsx_group_export" export job page
     And I launch the export job
     And I wait for the "xlsx_group_export" job to finish
-    And I press the "Download generated files" button
-    Then I should see the text "xlsx_group_export_1.xlsx"
-    And I should see the text "xlsx_group_export_2.xlsx"
+    Then I should see "xlsx_group_export_1.xlsx" on the "Download generated files" dropdown button
+    And I should see "xlsx_group_export_2.xlsx" on the "Download generated files" dropdown button
     And exported xlsx file 1 of "xlsx_group_export" should contain:
       | code       | type       | label-en_US | label-en_GB | label-fr_FR   | label-de_DE   |
       | similar    | similar    | Similar     | Similar     | Similaire     | Ähnlich       |

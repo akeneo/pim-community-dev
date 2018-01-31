@@ -8,44 +8,41 @@ parameters:
 
 services:
     pim_datagrid.controller.datagrid:
-        scope: request
         class: '%pim_datagrid.controller.datagrid.class%'
         arguments:
             - '@templating'
+            - '@oro_datagrid.datagrid.metadata_parser'
 
     pim_datagrid.controller.export:
         abstract: false
         class: '%pim_datagrid.controller.export.class%'
-        scope: request
         arguments:
-            - '@request'
+            - '@request_stack'
             - '@pim_datagrid.extension.mass_action.dispatcher'
             - '@pim_serializer'
 
     pim_datagrid.controller.product_export:
         class: '%pim_datagrid.controller.product_export.class%'
-        scope: request
         arguments:
-            - '@request'
+            - '@request_stack'
             - '@pim_datagrid.extension.mass_action.dispatcher'
             - '@pim_datagrid.adapter.oro_to_pim_grid_filter'
             - '@akeneo_batch.job.job_instance_repository'
             - '@security.token_storage'
-            - '@akeneo_batch.launcher.simple_job_launcher'
+            - '@akeneo_batch_queue.launcher.queue_job_launcher'
             - '@oro_datagrid.datagrid.manager'
+            - '@oro_datagrid.mass_action.parameters_parser'
 
     pim_datagrid.controller.datagrid_view:
-        scope: request
         class: '%pim_datagrid.controller.datagrid_view.class%'
         arguments:
             - '@templating'
 
     pim_datagrid.controller.mass_action:
-        scope: request
         class: '%pim_datagrid.controller.mass_action.class%'
         arguments:
-            - '@request'
             - '@pim_datagrid.extension.mass_action.dispatcher'
+            - '@oro_datagrid.mass_action.parameters_parser'
 
     pim_datagrid.controller.rest.datagrid_view:
         class: '%pim_datagrid.controller.rest.datagrid_view.class%'

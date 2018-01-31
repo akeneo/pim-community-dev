@@ -10,7 +10,7 @@
 define([
     'underscore',
     'pim/job/common/edit/field/field',
-    'text!pim/template/export/common/edit/field/select',
+    'pim/template/export/common/edit/field/select',
     'jquery.select2'
 ], function (
     _,

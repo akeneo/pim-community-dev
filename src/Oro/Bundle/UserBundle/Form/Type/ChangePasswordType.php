@@ -4,9 +4,12 @@ namespace Oro\Bundle\UserBundle\Form\Type;
 
 use Oro\Bundle\UserBundle\Form\EventListener\ChangePasswordSubscriber;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\PasswordType;
+use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Security\Core\Validator\Constraints\UserPassword;
+use Symfony\Component\Validator\Constraints\Valid;
 
 class ChangePasswordType extends AbstractType
 {
@@ -32,7 +35,7 @@ class ChangePasswordType extends AbstractType
 
         $builder->add(
             'currentPassword',
-            'password',
+            PasswordType::class,
             [
                 'required'    => false,
                 'label'       => 'Current password',
@@ -44,10 +47,10 @@ class ChangePasswordType extends AbstractType
         )
         ->add(
             'plainPassword',
-            'repeated',
+            RepeatedType::class,
             [
                 'required'        => true,
-                'type'            => 'password',
+                'type'            => PasswordType::class,
                 'invalid_message' => 'The password fields must match.',
                 'options'         => [
                     'attr' => [
@@ -57,7 +60,6 @@ class ChangePasswordType extends AbstractType
                 'first_options'      => ['label' => 'New password'],
                 'second_options'     => ['label' => 'Repeat new password'],
                 'mapped'             => false,
-                'cascade_validation' => true,
             ]
         );
     }
@@ -65,7 +67,7 @@ class ChangePasswordType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'oro_change_password';
     }
@@ -78,7 +80,7 @@ class ChangePasswordType extends AbstractType
         $resolver->setDefaults(
             [
                 'inherit_data'       => true,
-                'cascade_validation' => true,
+                'constraints' => new Valid(),
             ]
         );
     }

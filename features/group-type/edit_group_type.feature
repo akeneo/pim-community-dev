@@ -15,20 +15,19 @@ Feature: Edit a group type
     When I fill in the following information:
       | English (United States) | My cross-sell type |
     And I press the "Save" button
-    Then I should see "My cross-sell type"
+    Then I should see the text "My cross-sell type"
 
+  @skip-nav
   Scenario: Successfully display a dialog when we quit a page with unsaved changes
     Given I am on the "VARIANT" group type page
     When I fill in the following information:
       | English (United States) | My variant |
     When I click on the Akeneo logo
-    Then I should see a confirm dialog with the following content:
-      | title   | Are you sure you want to leave this page?                       |
-      | content | You will lose changes to the group type if you leave this page. |
+    Then I should see "You will lose changes to the group type if you leave this page." in popup
 
   @skip
   Scenario: Successfully display a message when there are unsaved changes
     Given I am on the "VARIANT" group type page
     When I fill in the following information:
       | English (United States) | My variant |
-    Then I should see "There are unsaved changes."
+    Then I should see the text "There are unsaved changes."

@@ -40,5 +40,6 @@ class PimUserExtension extends Extension
         $loader->load('updaters.yml');
         $loader->load('view_elements.yml');
         $loader->load('view_elements/user.yml');
+        $loader->load('view_elements/group.yml');
     }
 }

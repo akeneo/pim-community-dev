@@ -2,11 +2,11 @@
 
 namespace Pim\Bundle\EnrichBundle\Form\Type;
 
-use Pim\Bundle\CatalogBundle\Helper\LocaleHelper;
 use Pim\Bundle\EnrichBundle\Form\Subscriber\AddTranslatableFieldSubscriber;
 use Pim\Bundle\UserBundle\Context\UserContext;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Exception\InvalidConfigurationException;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -31,20 +31,13 @@ class TranslatableFieldType extends AbstractType
     protected $userContext;
 
     /**
-     * @var LocaleHelper
-     */
-    protected $localeHelper;
-
-    /**
      * @param ValidatorInterface $validator
      * @param UserContext        $userContext
-     * @param LocaleHelper       $localeHelper
      */
-    public function __construct(ValidatorInterface $validator, UserContext $userContext, LocaleHelper $localeHelper)
+    public function __construct(ValidatorInterface $validator, UserContext $userContext)
     {
         $this->validator = $validator;
         $this->userContext = $userContext;
-        $this->localeHelper = $localeHelper;
     }
 
     /**
@@ -73,7 +66,6 @@ class TranslatableFieldType extends AbstractType
             $builder->getFormFactory(),
             $this->validator,
             $this->userContext,
-            $this->localeHelper,
             $options
         );
         $builder->addEventSubscriber($subscriber);
@@ -94,7 +86,7 @@ class TranslatableFieldType extends AbstractType
                 'field'             => false,
                 'locales'           => $this->userContext->getUserLocaleCodes(),
                 'required_locale'   => [],
-                'widget'            => 'text'
+                'widget'            => TextType::class
             ]
         );
     }
@@ -102,7 +94,7 @@ class TranslatableFieldType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'pim_translatable_field';
     }

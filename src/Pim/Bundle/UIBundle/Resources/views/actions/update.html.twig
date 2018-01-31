@@ -1,10 +1,14 @@
-{% extends bap.layout%}
 {% import 'PimUIBundle::macros.html.twig' as UI %}
 {% import 'PimUIBundle:Default:page_elements.html.twig' as elements %}
 
 {% block page_container %}
     {% block content %}
-        <form id="{{ form.vars.name }}" action="{{ formAction }}" {{ form_enctype(form) }} method="post" class="unspaced">
+    <div class="AknDefault-mainContent">
+        {{ form_start(form, {
+            'action': formAction,
+            'method': 'post',
+            'id': form.vars.name
+        }) }}
 
             {% block pageHeader %}
                 {% set buttons %}
@@ -35,14 +39,13 @@
                     {% endblock breadcrumbs %}
                 {% endset %}
 
-                {% set back %}
-                    {% block back %}{% endblock %}
-                    {% if (breadcrumbs.hasAvatar is defined and breadcrumbs.hasAvatar) %}
-                        <img class="AknTitleContainer-avatar" src="{{ breadcrumbs.imagePath ? breadcrumbs.imagePath | imagine_filter('avatar_med') : asset('bundles/pimui/images/info-user.png') }}" alt="{{ breadcrumbs.entityTitle }}"/>
-                    {% endif %}
-                {% endset %}
-
-                {{ elements.page_header(title, buttons, [], meta, '', back) }}
+                {{ elements.page_header(
+                    {
+                        title: title,
+                        buttons: buttons,
+                        meta: meta
+                    }
+                ) }}
 
             {% endblock pageHeader %}
 
@@ -51,6 +54,7 @@
                     {{ UI.scrollData(id, data, form) }}
                 {% endblock content_data %}
             </div>
-        </form>
+        {{ form_end(form) }}
+    </div>
     {% endblock content %}
 {% endblock %}

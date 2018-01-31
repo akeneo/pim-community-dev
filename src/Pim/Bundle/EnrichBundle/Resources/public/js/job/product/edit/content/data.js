@@ -12,7 +12,7 @@ define(
         'jquery',
         'underscore',
         'oro/translator',
-        'text!pim/template/export/product/edit/content/data',
+        'pim/template/export/product/edit/content/data',
         'pim/form',
         'pim/fetcher-registry',
         'pim/form-builder',
@@ -112,20 +112,22 @@ define(
              * @return {Promise}
              */
             buildFilterView: function (filterConfig) {
-                return formBuilder.buildForm(filterConfig.view).then(function (filterView) {
-                    filterView.setRemovable(filterConfig.isRemovable);
-                    filterView.setType(filterConfig.view);
-                    filterView.setParentForm(this);
-                    filterView.setCode(filterConfig.field);
+                return formBuilder.getFormMeta(filterConfig.view)
+                    .then(formBuilder.buildForm)
+                    .then(function (filterView) {
+                        filterView.setRemovable(filterConfig.isRemovable);
+                        filterView.setType(filterConfig.view);
+                        filterView.setParentForm(this);
+                        filterView.setCode(filterConfig.field);
 
-                    return filterView.configure().then(function () {
-                        var data = {};
-                        filterView.trigger('pim_enrich:form:entity:pre_update', data);
-                        filterView.setData(data, {silent: true});
+                        return filterView.configure().then(function () {
+                            var data = {};
+                            filterView.trigger('pim_enrich:form:entity:pre_update', data);
+                            filterView.setData(data, {silent: true});
 
-                        return filterView;
-                    });
-                }.bind(this));
+                            return filterView;
+                        });
+                    }.bind(this));
             },
 
             /**
@@ -148,11 +150,7 @@ define(
                     .then(function (attribute) {
                         return {
                             field: attribute.code,
-                            /* jshint sub:true */
-                            /* jscs:disable requireDotNotation */
-                            view: attribute['filter_types']['product-export-builder'],
-                            /* jscs:enable requireDotNotation */
-                            /* jshint sub:false */
+                            view: attribute.filter_types['product-export-builder'],
                             isRemovable: true
                         };
                     });

@@ -1,5 +1,5 @@
-define(['underscore', 'oro/translator', 'oro/modal'],
-function (_, __, Modal) {
+define(['underscore', 'oro/translator', 'oro/modal', 'pim/template/grid/mass-actions-confirm'],
+function (_, __, Modal, confirmModalTemplate) {
     'use strict';
 
     /**
@@ -10,6 +10,7 @@ function (_, __, Modal) {
      * @extends oro.Modal
      */
     return Modal.extend({
+        confirmModalTemplate: _.template(confirmModalTemplate),
         /**
          * @param {Object} options
          */
@@ -17,10 +18,17 @@ function (_, __, Modal) {
             options = _.extend({
                 title: __('Delete Confirmation'),
                 okText: __('Yes, Delete'),
-                cancelText: __('Cancel')
+                cancelText: __('Cancel'),
+                template: this.confirmModalTemplate,
+                type: '',
+                buttonClass: 'AknButton--important',
+                illustrationClass: 'delete'
             }, options);
 
             arguments[0] = options;
+
+            this.$el.addClass('modal--fullPage');
+
             Modal.prototype.initialize.apply(this, arguments);
         }
     });

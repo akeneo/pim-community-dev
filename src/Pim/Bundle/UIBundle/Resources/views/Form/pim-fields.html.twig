@@ -279,7 +279,7 @@
 
 {% block widget_attributes %}
 {% spaceless %}
-    id="{{ id }}" name="{{ full_name }}"{% if read_only %} readonly="readonly"{% endif %}{% if disabled %} disabled="disabled"{% endif %}{% if required %} required="required"{% endif %}{% if max_length %} maxlength="{{ max_length }}"{% endif %}{% if pattern %} pattern="{{ pattern }}"{% endif %}
+    id="{{ id }}" name="{{ full_name }}"{% if attr.read_only is defined and attr.read_only == true %} readonly="readonly"{% endif %}{% if disabled %} disabled="disabled"{% endif %}{% if attr.max_length is defined %} maxlength="{{ max_length }}"{% endif %}{% if pattern is defined %} pattern="{{ pattern }}"{% endif %}
     {% for attrname, attrvalue in attr %}{% if attrname in ['placeholder', 'title'] %}{{ attrname }}="{{ attrvalue|trans({}, translation_domain) }}" {% else %}{{ attrname }}="{{ attrvalue }}" {% endif %}{% endfor %}
 {% endspaceless %}
 {% endblock widget_attributes %}
@@ -338,7 +338,7 @@
                 {{ form_widget(form.identity.id) }}
                 {{ form_widget(form.permissions) }}
             {% else %}
-                <div class="AknAcl acl-permission{{ form.vars.value.identity.name == '(default)' ? ' default-field AknAcl--hide hide' : '' }}">
+                <div class="AknAcl AknAcl-item acl-permission{{ form.vars.value.identity.name == '(default)' ? ' default-field AknAcl--hide hide' : '' }}">
                     {{ form_widget(form.permissions) }}
                     {{ form_widget(form.identity) }}
                 </div>
@@ -383,11 +383,13 @@
 {% endblock %}
 
 {% block pim_acl_access_level_selector_widget %}
-    {% set iconClass = 'icon-ok AknAcl-icon--granted granted' %}
-    {% if not form.vars.checked %}
-        {% set iconClass = 'icon-remove AknAcl-icon--nonGranted non-granted' %}
+    {% set iconClass = '' %}
+    {% if form.vars.checked %}
+        {% set iconClass = 'AknSelectButton--selected granted' %}
+    {% else %}
+        {% set iconClass = 'non-granted' %}
     {% endif %}
-    <a class="AknAcl-icon {{ iconClass }} acl-permission-toggle"></a>
+    <div class="select-button AknAcl-icon AknSelectButton {{ iconClass }} acl-permission-toggle"></div>
     {% set attr = attr|merge({ class: 'hide' }) %}
     {{ block('checkbox_widget') }}
 {% endblock %}

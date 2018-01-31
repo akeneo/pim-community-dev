@@ -7,8 +7,8 @@ Feature: Edit a product with attribute options
   Background:
     Given the "footwear" catalog configuration
     And the following channels:
-      | code      | label-en_US | color | currencies | locales | tree            |
-      | ecommerce | Ecommerce   | gray  | EUR,USD    | en_US   | 2014_collection |
+      | code      | label-en_US | currencies | locales | tree            |
+      | ecommerce | Ecommerce   | EUR,USD    | en_US   | 2014_collection |
     And the following attributes:
       | code   | label-en_US | label-fr_FR | label-de_DE | type                     | group |
       | multi  | Multi       | Multi       | Multi       | pim_catalog_multiselect  | other |

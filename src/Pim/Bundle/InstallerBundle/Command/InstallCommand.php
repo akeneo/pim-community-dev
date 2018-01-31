@@ -3,12 +3,10 @@
 namespace Pim\Bundle\InstallerBundle\Command;
 
 use Pim\Bundle\InstallerBundle\CommandExecutor;
-use Pim\Bundle\InstallerBundle\PimDirectoriesRegistry;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Filesystem\Filesystem;
 
 /**
  * Installer command to add PIM custom rules
@@ -56,36 +54,26 @@ class InstallCommand extends ContainerAwareCommand
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $forceInstall = $input->getOption('force');
-        // if there is application is not installed or no --force option
-        if ($this->getContainer()->hasParameter('installed') && $this->getContainer()->getParameter('installed')
-            && !$forceInstall
-        ) {
-            throw new \RuntimeException('Oro Application already installed.');
-        } elseif ($forceInstall) {
-            // if --force option we have to clear cache and set installed to false
-            $this->updateInstalledFlag($input, $output, false);
+
+        if ($this->isPimInstalled($output) && false === $forceInstall) {
+            throw new \RuntimeException('Akeneo PIM is already installed.');
         }
 
         $output->writeln(sprintf('<info>Installing %s Application.</info>', static::APP_NAME));
         $output->writeln('');
 
         try {
-            foreach ($this->getDirectoriesContainer()->getDirectories() as $directory) {
-                $this->cleanDirectory($directory);
-            }
-
             $this
-                ->checkStep($input, $output)
-                ->databaseStep($input, $output)
-                ->assetsStep($input, $output);
+                ->prepareRequiredDirectoriesStep()
+                ->checkStep()
+                ->databaseStep()
+                ->assetsStep($input);
         } catch (\Exception $e) {
             $output->writeln(sprintf('<error>Error during PIM installation. %s</error>', $e->getMessage()));
             $output->writeln('');
 
             return $e->getCode();
         }
-
-        $this->updateInstalledFlag($input, $output, date('c'));
 
         $output->writeln('');
         $output->writeln(sprintf('<info>%s Application has been successfully installed.</info>', static::APP_NAME));
@@ -94,16 +82,27 @@ class InstallCommand extends ContainerAwareCommand
     }
 
     /**
-     * Step where configuration is checked
-     *
-     * @param InputInterface  $input
-     * @param OutputInterface $output
+     * Step where required directories are created.
      *
      * @throws \RuntimeException
      *
      * @return InstallCommand
      */
-    protected function checkStep(InputInterface $input, OutputInterface $output)
+    protected function prepareRequiredDirectoriesStep(): InstallCommand
+    {
+        $this->commandExecutor->runCommand('pim:installer:prepare-required-directories');
+
+        return $this;
+    }
+
+    /**
+     * Step where configuration is checked
+     *
+     * @throws \RuntimeException
+     *
+     * @return InstallCommand
+     */
+    protected function checkStep()
     {
         $this->commandExecutor->runCommand('pim:installer:check-requirements');
 
@@ -113,12 +112,9 @@ class InstallCommand extends ContainerAwareCommand
     /**
      * Step where the database is built, the fixtures loaded and some command scripts launched
      *
-     * @param InputInterface  $input
-     * @param OutputInterface $output
-     *
      * @return InstallCommand
      */
-    protected function databaseStep(InputInterface $input, OutputInterface $output)
+    protected function databaseStep()
     {
         $this->commandExecutor->runCommand('pim:installer:db');
 
@@ -128,12 +124,11 @@ class InstallCommand extends ContainerAwareCommand
     /**
      * Load only assets
      *
-     * @param InputInterface  $input
-     * @param OutputInterface $output
+     * @param InputInterface $input
      *
      * @return InstallCommand
      */
-    protected function assetsStep(InputInterface $input, OutputInterface $output)
+    protected function assetsStep(InputInterface $input)
     {
         $options = false === $input->getOption('symlink') ? [] : ['--symlink' => true];
         $options = false === $input->getOption('clean') ? $options : array_merge($options, ['--clean' => true]);
@@ -144,45 +139,16 @@ class InstallCommand extends ContainerAwareCommand
     }
 
     /**
-     * Update installed flag
-     *
-     * @param InputInterface  $input
      * @param OutputInterface $output
-     * @param bool            $installed
      *
-     * @return InstallCommand
+     * @return boolean
      */
-    protected function updateInstalledFlag(InputInterface $input, OutputInterface $output, $installed)
+    protected function isPimInstalled(OutputInterface $output) : bool
     {
-        $output->writeln('<info>Updating installed flag.</info>');
+        $installStatus = $this->getContainer()->get('pim_installer.install_status_manager');
 
-        $dumper = $this->getContainer()->get('pim_installer.yaml_persister');
-        $params = $dumper->parse();
-        $params['system']['installed'] = $installed;
-        $dumper->dump($params);
+        $output->writeln('<info>Check PIM installation</info>');
 
-        return $this;
-    }
-
-    /**
-     * Remove directory and all subcontent
-     *
-     * @param string $folder
-     */
-    protected function cleanDirectory($folder)
-    {
-        $filesystem = new Filesystem();
-        if ($filesystem->exists($folder)) {
-            $filesystem->remove($folder);
-        }
-        $filesystem->mkdir($folder);
-    }
-
-    /**
-     * @return PimDirectoriesRegistry
-     */
-    protected function getDirectoriesContainer()
-    {
-        return $this->getContainer()->get('pim_installer.directories_registry');
+        return $installStatus->isPimInstalled();
     }
 }

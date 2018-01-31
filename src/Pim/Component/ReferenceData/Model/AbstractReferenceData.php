@@ -77,7 +77,7 @@ abstract class AbstractReferenceData implements ReferenceDataInterface
      */
     public function __toString()
     {
-        if (null !== $labelProperty = $this->getLabelProperty()) {
+        if (null !== $labelProperty = static::getLabelProperty()) {
             $getter = 'get' . ucfirst($labelProperty);
             $label = $this->$getter();
 

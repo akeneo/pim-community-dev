@@ -2,6 +2,28 @@ extensions:
     pim-job-instance-xlsx-product-import-edit:
         module: pim/form/common/edit-form
 
+    pim-job-instance-xlsx-product-import-edit-main-image:
+        module: pim/form/common/main-image
+        parent: pim-job-instance-xlsx-product-import-edit
+        targetZone: main-image
+        config:
+            path: bundles/pimui/images/illustration-import-xlsx.svg
+
+    pim-job-instance-xlsx-product-import-edit-user-navigation:
+        module: pim/menu/user-navigation
+        parent: pim-job-instance-xlsx-product-import-edit
+        targetZone: user-menu
+        config:
+            userAccount: pim_menu.user.user_account
+            logout: pim_menu.user.logout
+
+    pim-job-instance-xlsx-product-import-edit-breadcrumbs:
+        module: pim/common/breadcrumbs
+        parent: pim-job-instance-xlsx-product-import-edit
+        targetZone: breadcrumbs
+        config:
+            tab: pim-menu-imports
+
     pim-job-instance-xlsx-product-import-edit-cache-invalidator:
         module: pim/cache-invalidator
         parent: pim-job-instance-xlsx-product-import-edit
@@ -23,12 +45,22 @@ extensions:
             tabTitle: pim_enrich.form.job_instance.tab.properties.title
             tabCode: pim-job-instance-properties
 
+    pim-job-instance-xlsx-product-import-edit-global:
+        module: pim/job/common/edit/properties
+        parent: pim-job-instance-xlsx-product-import-edit-tabs
+        aclResourceId: pim_importexport_export_profile_property_edit
+        targetZone: container
+        position: 120
+        config:
+            tabTitle: pim_enrich.export.product.global_settings.title
+            tabCode: pim-job-instance-global
+
     pim-job-instance-xlsx-product-import-edit-history:
         module: pim/common/tab/history
         parent: pim-job-instance-xlsx-product-import-edit-tabs
         targetZone: container
         aclResourceId: pim_importexport_import_profile_history
-        position: 120
+        position: 130
         config:
             class: Akeneo\Component\Batch\Model\JobInstance
             title: pim_enrich.form.job_instance.tab.history.title
@@ -56,9 +88,9 @@ extensions:
 
     pim-job-instance-xlsx-product-import-edit-properties-file-path:
         module: pim/job/common/edit/field/text
-        parent: pim-job-instance-xlsx-product-import-edit-properties
+        parent: pim-job-instance-xlsx-product-import-edit-global
         position: 120
-        targetZone: global-settings
+        targetZone: properties
         config:
             fieldCode: configuration.filePath
             readOnly: false
@@ -67,9 +99,9 @@ extensions:
 
     pim-job-instance-xlsx-product-import-edit-properties-file-upload:
         module: pim/job/common/edit/field/switch
-        parent: pim-job-instance-xlsx-product-import-edit-properties
+        parent: pim-job-instance-xlsx-product-import-edit-global
         position: 130
-        targetZone: global-settings
+        targetZone: properties
         config:
             fieldCode: configuration.uploadAllowed
             readOnly: false
@@ -78,9 +110,9 @@ extensions:
 
     pim-job-instance-xlsx-product-import-edit-properties-decimal-separator:
         module: pim/job/common/edit/field/decimal-separator
-        parent: pim-job-instance-xlsx-product-import-edit-properties
+        parent: pim-job-instance-xlsx-product-import-edit-global
         position: 135
-        targetZone: global-settings
+        targetZone: properties
         config:
             fieldCode: configuration.decimalSeparator
             readOnly: false
@@ -89,9 +121,9 @@ extensions:
 
     pim-job-instance-xlsx-product-import-edit-properties-date-format:
         module: pim/job/product/edit/field/date-format
-        parent: pim-job-instance-xlsx-product-import-edit-properties
+        parent: pim-job-instance-xlsx-product-import-edit-global
         position: 140
-        targetZone: global-settings
+        targetZone: properties
         config:
             fieldCode: configuration.dateFormat
             readOnly: false
@@ -100,9 +132,9 @@ extensions:
 
     pim-job-instance-xlsx-product-import-edit-properties-enabled:
         module: pim/job/common/edit/field/switch
-        parent: pim-job-instance-xlsx-product-import-edit-properties
+        parent: pim-job-instance-xlsx-product-import-edit-global
         position: 150
-        targetZone: global-settings
+        targetZone: properties
         config:
             fieldCode: configuration.enabled
             readOnly: false
@@ -111,9 +143,9 @@ extensions:
 
     pim-job-instance-xlsx-product-import-edit-properties-categories-column:
         module: pim/job/common/edit/field/text
-        parent: pim-job-instance-xlsx-product-import-edit-properties
+        parent: pim-job-instance-xlsx-product-import-edit-global
         position: 160
-        targetZone: global-settings
+        targetZone: properties
         config:
             fieldCode: configuration.categoriesColumn
             readOnly: false
@@ -122,9 +154,9 @@ extensions:
 
     pim-job-instance-xlsx-product-import-edit-properties-family-column:
         module: pim/job/common/edit/field/text
-        parent: pim-job-instance-xlsx-product-import-edit-properties
+        parent: pim-job-instance-xlsx-product-import-edit-global
         position: 170
-        targetZone: global-settings
+        targetZone: properties
         config:
             fieldCode: configuration.familyColumn
             readOnly: false
@@ -133,9 +165,9 @@ extensions:
 
     pim-job-instance-xlsx-product-import-edit-properties-groups-column:
         module: pim/job/common/edit/field/text
-        parent: pim-job-instance-xlsx-product-import-edit-properties
+        parent: pim-job-instance-xlsx-product-import-edit-global
         position: 180
-        targetZone: global-settings
+        targetZone: properties
         config:
             fieldCode: configuration.groupsColumn
             readOnly: false
@@ -144,9 +176,9 @@ extensions:
 
     pim-job-instance-xlsx-product-import-edit-properties-enabled-comparison:
         module: pim/job/common/edit/field/switch
-        parent: pim-job-instance-xlsx-product-import-edit-properties
+        parent: pim-job-instance-xlsx-product-import-edit-global
         position: 190
-        targetZone: global-settings
+        targetZone: properties
         config:
             fieldCode: configuration.enabledComparison
             readOnly: false
@@ -155,9 +187,9 @@ extensions:
 
     pim-job-instance-xlsx-product-import-edit-properties-real-time-versioning:
         module: pim/job/common/edit/field/switch
-        parent: pim-job-instance-xlsx-product-import-edit-properties
+        parent: pim-job-instance-xlsx-product-import-edit-global
         position: 200
-        targetZone: global-settings
+        targetZone: properties
         config:
             fieldCode: configuration.realTimeVersioning
             readOnly: false
@@ -176,24 +208,21 @@ extensions:
         targetZone: meta
         position: 100
 
-    pim-job-instance-xlsx-product-import-edit-back-to-grid:
-        module: pim/form/common/back-to-grid
+    pim-job-instance-xlsx-product-import-edit-secondary-actions:
+        module: pim/form/common/secondary-actions
         parent: pim-job-instance-xlsx-product-import-edit
-        targetZone: back
-        aclResourceId: pim_importexport_import_profile_index
-        position: 80
-        config:
-            backUrl: pim_importexport_import_profile_index
+        targetZone: buttons
+        position: 50
 
     pim-job-instance-xlsx-product-import-edit-delete:
         module: pim/job/import/edit/delete
-        parent: pim-job-instance-xlsx-product-import-edit
-        targetZone: buttons
+        parent: pim-job-instance-xlsx-product-import-edit-secondary-actions
+        targetZone: secondary-actions
         aclResourceId: pim_importexport_import_profile_remove
         position: 100
         config:
             trans:
-                title: confirmation.remove.job_instance
+                title: confirmation.remove.import_profile
                 content: pim_enrich.confirmation.delete_item
                 success: flash.job_instance.removed
                 failed: error.removing.job_instance

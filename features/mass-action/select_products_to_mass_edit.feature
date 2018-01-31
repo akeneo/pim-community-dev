@@ -35,24 +35,20 @@ Feature: When I mass edit I should be able to see how many items will be edited
       | shoe_13   | high_heels |
       | shoe_14   | high_heels |
     And I am logged in as "Julia"
-    And I am on the products page
+    And I am on the products grid
 
   Scenario: Successfully count the number of mass-edited items when click on all products
-    Given I select all entities
-    When I press "Change product information" on the "Bulk Actions" dropdown button
-    Then I should see "Mass Edit (19 products)"
-
-  Scenario: Successfully count the number of mass-edited items when click on all visible products
-    Given I change the page size to 10
-    And I select all visible entities
-    When I press "Change product information" on the "Bulk Actions" dropdown button
-    Then I should see "Mass Edit (10 products)"
+    Given I sort by "ID" value descending
+    And I select rows boots
+    And I select all entities
+    When I press the "Bulk actions" button
+    Then I should see the text "Select your action"
 
   Scenario: Successfully count the number of mass-edited items by select them one by one
-    Given I change the page size to 50
-    When I select rows boots, shoe_1, shoe_14
-    And I press "Change product information" on the "Bulk Actions" dropdown button
-    Then I should see "Mass Edit (3 products)"
+    Given I sort by "ID" value descending
+    When I select rows boots
+    And I press the "Bulk actions" button
+    Then I should see the text "Select your action"
 
   Scenario: Successfully count the number of mass-edited items when using filters and select all action
     Given the following product values:
@@ -65,8 +61,9 @@ Feature: When I mass edit I should be able to see how many items will be edited
       | pump      | weight                   | 500 GRAM                |
       | highheels | weight                   | 500 GRAM                |
     And I show the filter "description"
-    And I filter by "scope" with operator "" and value "Tablet"
+    And I switch the scope to "Tablet"
     And I filter by "description" with operator "contains" and value "A beautiful description"
+    And I select rows sneakers
     And I select all entities
-    When I press "Change product information" on the "Bulk Actions" dropdown button
-    Then I should see "Mass Edit (2 products)"
+    When I press the "Bulk actions" button
+    Then I should see the text "Select your action"

@@ -1,25 +1,3 @@
 No products to remove: Aucun produit à supprimer
 "dot (.)": point (.)
 "comma (,)": virgule (,)
-pim_catalog:
-  constraint:
-    product_identifier: Ces identifiants "%s" n’existent pas.
-    0: Une erreur inattendue s'est produite.
-    100: Valeur non prévue
-    101: Ce champ attend une valeur booléenne.
-    102: Ce champ attend une valeur décimale.
-    103: Ce champ attend un nombre entier.
-    104: Ce champ attend une valeur numérique.
-    105: Ce champ attend une chaîne de caractères.
-    106: Ce champ attend un tableau de valeurs.
-    107: Ce champ attend un tableau de tableaux.
-    200: Une erreur interne est survenue
-    201: Une erreur interne est survenue
-    202: Ce champ attend une valeur numérique.
-    203: Ce champ attend une chaîne de caractères.
-    204: Ce champ attend une chaîne de caractères.
-    205: Une erreur interne est survenue
-    300: Ce champ attend un code d'entité valide.
-    301: Ce champ attend une portée et une locale valides.
-    302: Ce champ attend une portée valide.
-    303: Ce champ attend un format d'association valide.

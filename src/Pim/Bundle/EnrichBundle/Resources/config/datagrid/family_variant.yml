@@ -1,0 +1,39 @@
+datagrid:
+    family-variant-grid:
+        options:
+            entityHint: family_variant
+            locale_parameter: localeCode
+            manageFilters: false
+        source:
+            type: pim_datasource_family_variant
+            repository_method: createDatagridQueryBuilder
+        columns:
+            label:
+                label: Label
+                frontend_type: label
+            level_1:
+                label: Variant axis level 1
+                frontend_type: label
+            level_2:
+                label: Variant axis level 2
+                frontend_type: label
+        properties:
+            id: ~
+            familyVariantCode: ~
+            familyCode: ~
+        actions:
+            edit:
+                launcherOptions:
+                    className: AknIconButton AknIconButton--small AknIconButton--edit
+                type:         edit-in-modal
+                label:        Edit family variant
+                propertyCode: familyVariantCode
+                fetcher:      family-variant
+                form:         pim-family-variant-edit-form
+                rowAction:    true
+        filters:
+            columns:
+                label:
+                    type: search
+                    label: Label
+                    data_name: translation.label

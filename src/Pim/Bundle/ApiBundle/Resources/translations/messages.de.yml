@@ -7,20 +7,32 @@ pim_api:
     attribute_option:
       edit: Erstellen und Aktualisieren von Attributoptionen
       list: Attributoptionen auflisten
+    attribute_group:
+      edit: Erstellen und aktualisieren von Attributgruppen
+      list: Attributgruppen auflisten
     category:
       edit: Erstellen und Aktualisieren von Kategorien
       list: Kategorien auflisten
     family:
       edit: Erstellen und Aktualisieren von Produktfamilien
       list: Produktfamilien auflisten
-    channel.list: Ausgabekanäle auflisten
+    channel:
+      edit: Erstellen und aktualisieren von Kanälen
+      list: Ausgabekanäle auflisten
     locale.list: Gebietsschemata auflisten
+    currency.list: Währungen auflisten
+    association_type:
+      edit: Erstellen und aktualisieren von Verbindungstypen
+      list: Verbindungstypen auflisten
   acl_group:
     overall_access: Gesamtzugriff Web-API
     attribute: Attribute
     attribute_option: Attributoptionen
+    attribute_group: Attributgruppen
     category: Kategorien
     family: Produktfamilien
     channel: Ausgabekanäle
     locale: Gebietsschemata
-rights.api: Berechtigungen Web-API
+    currency: Währungen
+    association_type: Verbindungstypen
+rights.api: Web-API Berechtigungen

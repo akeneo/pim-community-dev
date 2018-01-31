@@ -1,9 +1,10 @@
 parameters:
     pim_datagrid.datasource.default.class: Pim\Bundle\DataGridBundle\Datasource\Datasource
     pim_datagrid.datasource.product.class: Pim\Bundle\DataGridBundle\Datasource\ProductDatasource
+    pim_datagrid.datasource.associated_product.class: Pim\Bundle\DataGridBundle\Datasource\AssociatedProductDatasource
     pim_datagrid.datasource.family.class: Pim\Bundle\DataGridBundle\Datasource\FamilyDatasource
     pim_datagrid.datasource.repository.class: Pim\Bundle\DataGridBundle\Datasource\RepositoryDatasource
-    pim_datagrid.datasource.support_resolver.class: Pim\Bundle\DataGridBundle\Datasource\DatasourceSupportResolver
+    pim_datagrid.datasource.family_variant.class: Pim\Bundle\DataGridBundle\Datasource\FamilyVariantDatasource
     pim_datagrid.datasource.adapter_resolver.class: Pim\Bundle\DataGridBundle\Datasource\DatasourceAdapterResolver
 
 services:
@@ -31,6 +32,15 @@ services:
             - '@pim_datagrid.datasource.result_record.hydrator.default'
         tags:
             - { name: oro_datagrid.datasource, type: pim_datasource_family }
+
+    pim_datagrid.datasource.family_variant:
+        class: '%pim_datagrid.datasource.family_variant.class%'
+        arguments:
+            - '@pim_enrich.repository.family_variant'
+            - '@pim_datagrid.datasource.result_record.hydrator.default'
+            - '@pim_datagrid.normalizer.family_variant'
+        tags:
+            - { name: oro_datagrid.datasource, type: pim_datasource_family_variant }
 
     pim_datagrid.datasource.group_type:
         class: '%pim_datagrid.datasource.repository.class%'
@@ -112,41 +122,52 @@ services:
         tags:
             - { name: oro_datagrid.datasource, type: pim_datasource_smart }
 
-    pim_datagrid.datasource.product:
+    pim_datagrid.datasource.product_and_product_model:
         class: '%pim_datagrid.datasource.product.class%'
         arguments:
             - '@pim_catalog.object_manager.product'
-            - '@pim_datagrid.datasource.result_record.hydrator.product'
-            - '@pim_catalog.query.product_query_builder_factory'
+            - '@pim_enrich.query.product_and_product_model_query_builder_from_size_factory'
+            - '@pim_serializer'
+            - '@pim_datagrid.event_subscriber.filter_entity_with_values_subscriber'
         calls:
             - [ setMassActionRepository, ['@pim_catalog.repository.product_mass_action'] ]
         tags:
             - { name: oro_datagrid.datasource, type: pim_datasource_product }
 
     pim_datagrid.datasource.associated_product:
-        class: '%pim_datagrid.datasource.product.class%'
+        class: '%pim_datagrid.datasource.associated_product.class%'
         arguments:
             - '@pim_catalog.object_manager.product'
-            - '@pim_datagrid.datasource.result_record.hydrator.associated_product'
-            - '@pim_catalog.query.product_query_builder_factory'
+            - '@pim_enrich.query.product_and_product_model_query_builder_from_size_factory'
+            - '@pim_serializer'
+            - '@pim_datagrid.event_subscriber.filter_entity_with_values_subscriber'
         tags:
             - { name: oro_datagrid.datasource, type: pim_datasource_associated_product }
 
-    pim_datagrid.datasource.support_resolver:
-        class: '%pim_datagrid.datasource.support_resolver.class%'
+    pim_datagrid.datasource.group_product:
+        class: '%pim_datagrid.datasource.product.class%'
         arguments:
-            - '%pim_catalog_product_storage_driver%'
-        calls:
-            - [addSmartDatasource, ['pim_datasource_product']]
-            - [addSmartDatasource, ['pim_datasource_associated_product']]
-            - [addSmartDatasource, ['pim_datasource_smart']]
+            - '@pim_catalog.object_manager.product'
+            - '@pim_catalog.query.product_query_builder_from_size_factory'
+            - '@pim_datagrid.normalizer.group_product'
+            - '@pim_datagrid.event_subscriber.filter_entity_with_values_subscriber'
+        tags:
+            - { name: oro_datagrid.datasource, type: pim_datasource_group_product }
+
+    pim_datagrid.datasource.api_connection:
+        class: '%pim_datagrid.datasource.repository.class%'
+        arguments:
+            - '@pim_enrich.repository.client'
+            - '@pim_datagrid.datasource.result_record.hydrator.default'
+        tags:
+            - { name: oro_datagrid.datasource, type: pim_datasource_api_connection }
 
     pim_datagrid.datasource.adapter_resolver:
         class: '%pim_datagrid.datasource.adapter_resolver.class%'
         arguments:
-            - '@pim_datagrid.datasource.support_resolver'
             - '%pim_filter.datasource.orm_adapter.class%'
             - '%pim_filter.datasource.product_orm_adapter.class%'
         calls:
             - [addProductDatasource, ['pim_datasource_product']]
             - [addProductDatasource, ['pim_datasource_associated_product']]
+            - [addProductDatasource, ['pim_datasource_group_product']]

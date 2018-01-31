@@ -1,0 +1,24 @@
+pim_api_attribute_group_list:
+    path: /attribute-groups
+    defaults: { _controller: pim_api.controller.attribute_group:listAction, _format: json }
+    methods: [GET]
+
+pim_api_attribute_group_create:
+    path: /attribute-groups
+    defaults: { _controller: pim_api.controller.attribute_group:createAction, _format: json }
+    methods: [POST]
+
+pim_api_attribute_group_get:
+    path: /attribute-groups/{code}
+    defaults: { _controller: pim_api.controller.attribute_group:getAction, _format: json }
+    methods: [GET]
+
+pim_api_attribute_group_partial_update:
+    path: /attribute-groups/{code}
+    defaults: { _controller: pim_api.controller.attribute_group:partialUpdateAction, _format: json }
+    methods: [PATCH]
+
+pim_api_attribute_group_partial_update_list:
+    path: /attribute-groups
+    defaults: { _controller: pim_api.controller.attribute_group:partialUpdateListAction, _format: json }
+    methods: [PATCH]

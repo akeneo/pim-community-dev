@@ -2,6 +2,8 @@
 
 namespace Pim\Component\Catalog\Query\Filter;
 
+use Pim\Bundle\CatalogBundle\Elasticsearch\SearchQueryBuilder;
+
 /**
  * Filter interface
  *
@@ -14,7 +16,7 @@ interface FilterInterface
     /**
      * Inject the query builder
      *
-     * @param \Doctrine\ORM\QueryBuilder|\Doctrine\ODM\MongoDB\Query\Builder $queryBuilder
+     * @param SearchQueryBuilder $queryBuilder
      */
     public function setQueryBuilder($queryBuilder);
 

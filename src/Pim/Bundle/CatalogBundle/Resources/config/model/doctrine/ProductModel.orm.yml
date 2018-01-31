@@ -1,0 +1,82 @@
+Pim\Component\Catalog\Model\ProductModel:
+    type: entity
+    table: pim_catalog_product_model
+    changeTrackingPolicy: DEFERRED_EXPLICIT
+    repositoryClass: Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\ProductModelRepository
+    gedmo:
+        tree:
+            type: nested
+    fields:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+        code:
+            type: string
+            length: 255
+            unique: true
+            nullable: false
+        rawValues:
+            type: native_json
+            column: raw_values
+        created:
+            type: datetime
+        updated:
+            type: datetime
+        root:
+            type: integer
+            gedmo:
+                - treeRoot
+        level:
+            type: integer
+            column: lvl
+            gedmo:
+                - treeLevel
+        left:
+            type: integer
+            column: lft
+            gedmo:
+                - treeLeft
+        right:
+            type: integer
+            column: rgt
+            gedmo:
+                - treeRight
+    manyToMany:
+        categories:
+            targetEntity: Pim\Component\Catalog\Model\CategoryInterface
+            joinTable:
+                name: pim_catalog_category_product_model
+                joinColumns:
+                    product_model_id:
+                        referencedColumnName: id
+                        onDelete: CASCADE
+                inverseJoinColumns:
+                    category_id:
+                        referencedColumnName: id
+                        onDelete: CASCADE
+    oneToMany:
+        products:
+            targetEntity: Pim\Component\Catalog\Model\VariantProductInterface
+            mappedBy: parent
+        productModels:
+            targetEntity: Pim\Component\Catalog\Model\ProductModelInterface
+            mappedBy: parent
+            orderBy:
+                left: ASC
+    manyToOne:
+        parent:
+            targetEntity: Pim\Component\Catalog\Model\ProductModelInterface
+            inversedBy: productModels
+            joinColumns:
+                parent_id:
+                    referencedColumnName: id
+                    onDelete: CASCADE
+            gedmo:
+                - treeParent
+        familyVariant:
+            targetEntity: Pim\Component\Catalog\Model\FamilyVariantInterface
+            joinColumn:
+                name: family_variant_id
+                referencedColumnName: id

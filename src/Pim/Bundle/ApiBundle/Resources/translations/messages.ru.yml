@@ -2,15 +2,24 @@ pim_api:
   acl:
     attribute:
       list: Список атрибутов
+    attribute_group:
+      list: Перечислить группы атрибутов
     category:
       list: Список категорий
     family:
       list: Просмотр семейств
-    channel.list: Список каналов
+    channel:
+      list: Список каналов
     locale.list: Просмотр локалей
+    currency.list: Список валют
+    association_type:
+      list: Список типов ассоциаций
   acl_group:
     attribute: Атрибуты
+    attribute_group: Группы атрибутов
     category: Категории
     family: Семейства
     channel: Каналы
     locale: Локали
+    currency: Валюты
+    association_type: Типы ассоциаций

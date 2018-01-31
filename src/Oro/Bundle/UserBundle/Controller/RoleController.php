@@ -7,7 +7,6 @@ use Oro\Bundle\UserBundle\Entity\Role;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 
 class RoleController extends Controller
@@ -28,15 +27,6 @@ class RoleController extends Controller
     public function updateAction(Role $entity)
     {
         return $this->update($entity);
-    }
-
-    /**
-     * @AclAncestor("pim_user_role_index")
-     * @Template
-     */
-    public function indexAction(Request $request)
-    {
-        return [];
     }
 
     /**
@@ -81,8 +71,8 @@ class RoleController extends Controller
                 $this->get('translator')->trans('oro.user.controller.role.message.saved')
             );
 
-            return new RedirectResponse(
-                $this->get('router')->generate('oro_user_role_update', ['id' => $entity->getId()])
+            return new JsonResponse(
+                ['route' => 'oro_user_role_update', 'params' => ['id' => $entity->getId()]]
             );
         }
 

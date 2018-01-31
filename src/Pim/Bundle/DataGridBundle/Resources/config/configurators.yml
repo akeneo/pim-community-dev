@@ -16,8 +16,7 @@ services:
             - '@pim_user.context.user'
             - '@pim_catalog.object_manager.product'
             - '@pim_catalog.repository.group'
-        calls:
-            - [setRequest, ['@?request=']]
+            - '@request_stack'
 
     pim_datagrid.datagrid.configuration.product.columns_configurator:
         class: '%pim_datagrid.datagrid.configuration.product.columns_configurator.class%'
@@ -40,12 +39,10 @@ services:
             - '@pim_datagrid.datagrid.configuration.product.configuration_registry'
             - '@oro_datagrid.datagrid.request_params'
             - '@pim_catalog.repository.group'
-        calls:
-            - [setRequest, ['@?request=']]
+            - '@request_stack'
 
     pim_datagrid.datagrid.request.parameters_extractor:
         class: '%pim_datagrid.datagrid.request.parameters_extractor.class%'
         arguments:
             - '@oro_datagrid.datagrid.request_params'
-        calls:
-            - [setRequest, ['@?request=']]
+            - '@request_stack'

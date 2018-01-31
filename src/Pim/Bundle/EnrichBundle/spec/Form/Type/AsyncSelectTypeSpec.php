@@ -6,7 +6,11 @@ use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterfa
 use Gedmo\Tree\RepositoryInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\EnrichBundle\Form\Factory\IdentifiableModelTransformerFactory;
+use Pim\Bundle\EnrichBundle\Form\Type\AsyncSelectType;
+use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\DataTransformerInterface;
+use Symfony\Component\Form\Exception\UnexpectedTypeException;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Routing\RouterInterface;
@@ -20,17 +24,17 @@ class AsyncSelectTypeSpec extends ObjectBehavior
 
     function it_is_a_form_type()
     {
-        $this->shouldBeAnInstanceOf('Symfony\Component\Form\AbstractType');
+        $this->shouldBeAnInstanceOf(AbstractType::class);
     }
 
-    function it_has_a_name()
+    function it_has_a_block_prefix()
     {
-        $this->getName()->shouldReturn('pim_async_select');
+        $this->getBlockPrefix()->shouldReturn('pim_async_select');
     }
 
     function it_has_a_hidden_parent()
     {
-        $this->getParent()->shouldReturn('hidden');
+        $this->getParent()->shouldReturn(HiddenType::class);
     }
 
     function it_builds_form(
@@ -59,7 +63,7 @@ class AsyncSelectTypeSpec extends ObjectBehavior
             'repository' => $repository->getWrappedObject()
         ];
 
-        $this->shouldThrow('\Symfony\Component\Form\Exception\UnexpectedTypeException')
+        $this->shouldThrow(UnexpectedTypeException::class)
             ->duringBuildForm($builder, $options);
     }
 

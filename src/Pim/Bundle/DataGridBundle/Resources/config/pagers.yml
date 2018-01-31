@@ -9,5 +9,12 @@ services:
     pim_datagrid.extension.pager.pager_resolver:
         class: '%pim_datagrid.extension.pager.pager_resolver.class%'
         arguments:
-            - '@pim_datagrid.datasource.support_resolver'
             - '@pim_datagrid.extension.pager.orm.pager'
+            - '@oro_datagrid.extension.pager.dummy_pager'
+            -
+                - 'product-grid'
+                - 'association-product-grid'
+                - 'product-variant-group-grid'
+                - 'product-group-grid'
+                - 'published-product-grid'
+                - 'association-product-picker-grid'

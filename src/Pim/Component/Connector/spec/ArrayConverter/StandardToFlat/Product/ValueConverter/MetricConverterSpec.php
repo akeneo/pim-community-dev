@@ -35,4 +35,28 @@ class MetricConverterSpec extends ObjectBehavior
 
         $this->convert('overall_frequency', $data)->shouldReturn($expected);
     }
+
+    function it_converts_empty_metric_product_value_from_standard_to_flat_format($columnsResolver)
+    {
+        $columnsResolver->resolveFlatAttributeName('overall_frequency', null, 'mobile')
+            ->willReturn('overall_frequency-mobile');
+
+        $expected = [
+            'overall_frequency-mobile'      => null,
+            'overall_frequency-mobile-unit' => null,
+        ];
+
+        $data = [
+            [
+                'locale' => null,
+                'scope'  => 'mobile',
+                'data'   => [
+                    'amount' => null,
+                    'unit'   => 'HERTZ',
+                ],
+            ]
+        ];
+
+        $this->convert('overall_frequency', $data)->shouldReturn($expected);
+    }
 }

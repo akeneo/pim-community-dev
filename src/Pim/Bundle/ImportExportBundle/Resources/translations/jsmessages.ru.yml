@@ -16,3 +16,10 @@ pim_connector:
     locales:
       validation:
         not_blank: Одна локаль должена быть выбрана, пожалуйста, выберите локаль для экспорта.
+page_title:
+  pim_importexport_export_profile_index: Управление профилями экспорта
+  pim_importexport_export_execution_index: История запусков экспорта
+  pim_importexport_export_execution_show: Запуск экспорта | Детали
+  pim_importexport_import_profile_index: Управление профилями импорта
+  pim_importexport_import_execution_index: История запусков импорта
+  pim_importexport_import_execution_show: Запуск импорта | Детали

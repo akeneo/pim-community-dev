@@ -22,7 +22,7 @@ class AjaxChoiceFilter extends ChoiceFilter
      */
     protected function getFormType()
     {
-        return AjaxChoiceFilterType::NAME;
+        return AjaxChoiceFilterType::class;
     }
 
     /**

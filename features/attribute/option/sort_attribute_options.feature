@@ -4,87 +4,73 @@ Feature: Sort attribute options
   As a product manager
   I need to sort options for attributes of type "Multi select" and "Simple select"
 
-  Background:
-    Given the "default" catalog configuration
+  Scenario: Auto sorting disable reorder
+    Given the "footwear" catalog configuration
     And I am logged in as "Julia"
     And I am on the attributes page
-
-  Scenario: Auto sorting disable reorder
-    Given I create a "Simple select" attribute
-    And I fill in the following information:
-      | Code            | size  |
-      | Attribute group | Other |
-    And I visit the "Values" tab
-    Then I should see the "Options" section
-    And I should see "To manage options, please save the attribute first"
-    When I save the attribute
-    Then I should see the flash message "Attribute successfully created"
-    When I check the "Automatic option sorting" switch
-    And I create the following attribute options:
-      | Code        |
-      | small_size  |
-      | medium_size |
-      | large_size  |
+    And I am on the "color" attribute page
+    And I visit the "Options" tab
+    And I check the "Sort automatically options by alphabetical order" switch
     Then I should not see reorder handles
-    And I should see "large_size medium_size small_size"
-    When I uncheck the "Automatic option sorting" switch
+    And the attribute options order should be black, blue, charcoal, greem, maroon, red, saddle, white
+    When I uncheck the "Sort automatically options by alphabetical order" switch
     Then I should see reorder handles
-    And I should see "small_size medium_size large_size"
+    And the attribute options order should be white, black, blue, maroon, saddle, greem, red, charcoal
 
-  Scenario: Display attribute options ordered by code in PEF when no label on options
-    Given I create a "Simple select" attribute
-    And I fill in the following information:
-      | Code            | size  |
-      | Attribute group | Other |
-    And I visit the "Values" tab
-    Then I should see the "Options" section
-    And I should see "To manage options, please save the attribute first"
-    When I save the attribute
-    Then I should see the flash message "Attribute successfully created"
-    When I check the "Automatic option sorting" switch
-    And I create the following attribute options:
-      | Code        |
-      | small_size  |
-      | medium_size |
-      | large_size  |
+  Scenario: Display attribute options ordered in PEF
+    Given the "footwear" catalog configuration
+    And I am logged in as "Julia"
+    And I am on the attributes page
+    And I am on the "color" attribute page
+    And I visit the "Options" tab
+    And I check the "Sort automatically options by alphabetical order" switch
     And I save the attribute
-    Then I should not see the text "There are unsaved changes"
-    When I am on the products page
-    And I create a new product
+    And I should not see the text "There are unsaved changes"
+    And I am on the products grid
+    And I create a product
     And I fill in the following information in the popin:
-      | SKU | a_product |
+      | SKU    | boots |
+      | Family | Boots |
     And I press the "Save" button in the popin
-    Then I should be on the product "a_product" edit page
-    When I add available attributes size
-    Then I should see the ordered choices [large_size], [medium_size], [small_size] in size
+    And I wait to be on the "boots" product page
+    When I visit the "Colors" group
+    Then I should see the ordered choices Black, Blue, Charcoal, Greem, Maroon, Red, Saddle, White in Color
 
-  Scenario: Display attribute options ordered by label in PEF
-    Given I create a "Simple select" attribute
-    And I fill in the following information:
-      | Code            | size  |
-      | Attribute group | Other |
-    When I visit the "Values" tab
-    Then I should see the "Options" section
-    And I should see "To manage options, please save the attribute first"
-    When I save the attribute
-    Then I should see the flash message "Attribute successfully created"
-    When I check the "Automatic option sorting" switch
+  Scenario: Display attribute options ordered in PEF when there are options without label
+    Given the "footwear" catalog configuration
+    And I am logged in as "Julia"
+    And I am on the attributes page
+    And I am on the "color" attribute page
+    And I visit the "Options" tab
+    And I check the "Sort automatically options by alphabetical order" switch
     And I create the following attribute options:
-      | Code        | en_US  | fr_FR  |
-      | small_size  | Csmall | Apetit |
-      | medium_size | Bmedium|        |
-      | large_size  | Alarge | Cgrand |
+      | Code   |
+      | yellow |
+      | pink   |
     And I save the attribute
-    Then I should not see the text "There are unsaved changes"
-    When I am on the products page
-    And I create a new product
+    And I should not see the text "There are unsaved changes"
+    And I am on the products page
+    And I create a product
     And I fill in the following information in the popin:
-      | SKU | a_product |
+      | SKU    | boots |
+      | Family | Boots |
     And I press the "Save" button in the popin
-    Then I should be on the product "a_product" edit page
-    When I am on the "a_product" product page
-    And I switch the locale to "en_US"
-    And I add available attributes size
-    Then I should see the ordered choices Alarge, Bmedium, Csmall in size
-    When I switch the locale to "fr_FR"
-    Then I should see the ordered choices [medium_size], Apetit, Cgrand in size
+    And I wait to be on the "boots" product page
+    When I visit the "Colors" group
+    Then I should see the ordered choices [pink], [yellow], Black, Blue, Charcoal, Greem, Maroon, Red, Saddle, White in Color
+
+  Scenario: Display attribute options ordered in a product variant creation (even twice)
+    Given the "catalog_modeling" catalog configuration
+    And I am logged in as "Julia"
+    And I am on the products grid
+    And I create a product model
+    When I fill in the following information in the popin:
+      | Code    | shoes_variant     |
+      | Family  | Clothing          |
+      | Variant | Clothing by color |
+    And I press the "Save" button in the popin
+    And I am on the "amor" product model page
+    When I open the variant navigation children selector for level 1
+    And I press the "Add new" button and wait for modal
+    Then I should see the ordered choices Black, Blue, Brown, Green, Grey, Navy blue, Orange, Pink, Red, White, Yellow, Battleship grey, Crimson red, Electric yellow, Antique white in Color
+    And I should see the ordered choices Black, Blue, Brown, Green, Grey, Navy blue, Orange, Pink, Red, White, Yellow, Battleship grey, Crimson red, Electric yellow, Antique white in Color

@@ -449,3 +449,5 @@ if (typeof window.define === "function" && window.define.amd) {
         return Translator;
     });
 }
+
+module.exports = Translator

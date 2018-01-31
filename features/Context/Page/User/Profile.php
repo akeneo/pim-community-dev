@@ -17,5 +17,5 @@ class Profile extends Base
     use ClosestTrait;
 
     /** @var string */
-    protected $path = '/user/profile/view';
+    protected $path = '#/user/profile/view';
 }

@@ -21,9 +21,9 @@ class ChoicesBuilderSpec extends ObjectBehavior
 
         $this->buildChoices([$item1, $item2, $item3])->shouldReturn(
             [
-                'val_1' => 'Choice 1',
-                'val_2' => 'Choice 2',
-                'val_3' => 'Choice 3',
+                'Choice 1' => 'val_1',
+                'Choice 2' => 'val_2',
+                'Choice 3' => 'val_3',
             ]
         );
     }

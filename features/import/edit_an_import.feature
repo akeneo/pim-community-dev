@@ -15,34 +15,34 @@ Feature: Edit an import
     When I fill in the following information:
       | Label | My import |
     And I press the "Save" button
-    Then I should see "My import"
+    Then I should see the text "My import"
 
   Scenario: Successfully update import job configuration
     Given I am on the "csv_footwear_product_import" import job edit page
-    Then I should see the File, Allow file upload, Delimiter, Enclosure, Escape, Enable the product, Categories column, Family column, Groups column, Real time history update, Decimal separator, Date format fields
+    And I visit the "Global settings" tab
+    Then I should see the File, Allow file upload, Delimiter, Enclosure, Enable the product, Categories column, Family column, Groups column, Real time history update, Decimal separator, Date format fields
     When I fill in the following information:
       | File              | /tmp/file.csv |
       | Delimiter         | \|            |
       | Enclosure         | '             |
-      | Escape            | \\            |
       | Categories column | cat           |
       | Family column     | fam           |
       | Groups column     | grp           |
       | Decimal separator | .             |
       | Date format       | yyyy-mm-dd    |
+    And I visit the "Global settings" tab
     And I uncheck the "Allow file upload" switch
     And I uncheck the "Enable the product" switch
     And I uncheck the "Real time history update" switch
     And I press the "Save" button
     And I should not see the text "There are unsaved changes."
+    And I press the "Edit" button
     Then I should see the text "File path"
     And the "File path" field should contain "/tmp/file.csv"
     And I should see the text "Delimiter"
     And the "Delimiter" field should contain "|"
     And I should see the text "Enclosure"
     And the "Enclosure" field should contain "'"
-    And I should see the text "Escape"
-    And the "Escape" field should contain "\\"
     And I should see the text "Real time history"
     And the "Real time history" field should contain ""
     And I should see the text "Enable the product"
@@ -60,6 +60,7 @@ Feature: Edit an import
 
   Scenario: Successfully update XLSX import job configuration
     Given I am on the "xlsx_footwear_product_import" import job edit page
+    And I visit the "Global settings" tab
     Then I should see the File, Allow file upload, Enable the product, Categories column, Family column, Groups column, Real time history update, Decimal separator, Date format fields
     When I fill in the following information:
       | File              | /tmp/file.csv |
@@ -73,6 +74,7 @@ Feature: Edit an import
     And I uncheck the "Real time history update" switch
     And I press the "Save" button
     And I should not see the text "There are unsaved changes."
+    And I press the "Edit" button
     Then I should see the text "File path"
     And the "File path" field should contain "/tmp/file.csv"
     And I should see the text "Real time history"
@@ -92,7 +94,6 @@ Feature: Edit an import
     And I should see the text "Allow file upload"
     And the "Allow file upload" field should contain ""
 
-  @javascript
   Scenario: Successfully display a dialog when we quit a page with unsaved changes
     Given I am on the "csv_footwear_product_import" import job edit page
     When I fill in the following information:
@@ -102,9 +103,8 @@ Feature: Edit an import
       | title   | Are you sure you want to leave this page?                           |
       | content | You will lose changes to the import profile if you leave this page. |
 
-  @skip
   Scenario: Successfully display a message when there are unsaved changes
     Given I am on the "csv_footwear_product_import" import job edit page
     When I fill in the following information:
       | Label | My import |
-    Then I should see "There are unsaved changes."
+    Then I should see the text "There are unsaved changes."

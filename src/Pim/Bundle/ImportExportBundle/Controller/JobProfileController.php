@@ -98,7 +98,7 @@ class JobProfileController
     public function createAction(Request $request)
     {
         $jobInstance = $this->jobInstanceFactory->createJobInstance($this->getJobType());
-        $form = $this->formFactory->create($this->jobInstanceFormType, $jobInstance);
+        $form = $this->formFactory->create(get_class($this->jobInstanceFormType), $jobInstance);
 
         if ($request->isMethod('POST')) {
             $form->handleRequest($request);
@@ -128,44 +128,6 @@ class JobProfileController
             sprintf(self::DEFAULT_CREATE_TEMPLATE, ucfirst($jobInstance->getType())),
             [
                 'form' => $form->createView()
-            ]
-        );
-    }
-
-    /**
-     * Show a job instance
-     *
-     * @param string  $code
-     *
-     * @return Response
-     */
-    public function showAction($code)
-    {
-        return $this->templating->renderResponse(
-            'PimEnrichBundle:JobInstance:form.html.twig',
-            [
-                'jobInstanceIdentifier' => $code,
-                'mode'                  => 'show',
-                'type'                  => $this->getJobType()
-            ]
-        );
-    }
-
-    /**
-     * Edit a job instance
-     *
-     * @param string $code
-     *
-     * @return Response
-     */
-    public function editAction($code)
-    {
-        return $this->templating->renderResponse(
-            'PimEnrichBundle:JobInstance:form.html.twig',
-            [
-                'jobInstanceIdentifier' => $code,
-                'mode'                  => 'edit',
-                'type'                  => $this->getJobType()
             ]
         );
     }

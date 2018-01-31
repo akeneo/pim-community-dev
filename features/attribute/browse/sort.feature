@@ -10,4 +10,4 @@ Feature: Sort attribute
     And I am on the attributes page
 
   Scenario: Successfully sort attributes
-    Then I should be able to sort the rows by Code, Label, Scopable, Localizable and Group
+    Then I should be able to sort the rows by Label, Scopable, Localizable and Group

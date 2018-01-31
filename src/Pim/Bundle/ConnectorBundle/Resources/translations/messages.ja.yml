@@ -9,10 +9,8 @@ pim_connector:
       invalid_item_columns_count: '%totalColumnsCount% 列を想定していますが、実際には%itemColumnsCount% 列が%filePath%の%lineno%にあります'
     csv_product_reader.title: CSV 製品リーダー
     csv_category_reader.title: CSV カテゴリー リーダー
-    csv_variant_group .title: バリアントグループのCSVリーダー
     dummy_processor.title: ダミーのプロセッサ
     product_processor.title: 製品の作成
-    variant_group_processor.title: バリアントグループの作成 / 更新
     category_processor.title: カテゴリの作成
     association_processor.title: 関連付けの作成
     product_association_processor.title: 関連付けの作成
@@ -26,7 +24,6 @@ pim_connector:
     file_writer.title: 出力
     product_writer.title: 製品ストレージ
     category_writer.title: カテゴリストレージ
-    variant_group_writer.title: バリアントグループストレージ
     writer.title: エンティティ ストレージ
     csv_writer.title: CSVライター
 job_execution.summary:
@@ -42,13 +39,19 @@ job_execution.summary:
   charset_validator:
     title: 'ファイルの文字コード:'
     skipped: スキップしました。拡張子がホワイトリストにあります
-  product_skipped_no_diff: スキップされた商品 (変更なし)
+  product_skipped_no_diff: スキップされた製品 (変更なし)
   product_skipped_no_associations: スキップされた商品 (関連性はなし)
+  product_model_skipped_no_diff: スキップされた製品モデル (変更なし)
   item_position: 行の読み込み
+  skipped_in_root_product_model: スキップされた親製品モデル
+  skipped_in_sub_product_model: スキップされた親でない製品モデル
 batch_jobs:
   csv_product_export:
     label: 商品をCSV形式でエクスポート
     export.label: 商品エクスポート
+  csv_product_model_export:
+    label: 製品モデルをCSV形式でエクスポート
+    export.label: 商品モデルをエクスポート
   csv_category_export:
     label: カテゴリをCSV形式でエクスポート
     export.label: カテゴリエクスポート
@@ -64,17 +67,23 @@ batch_jobs:
   csv_group_export:
     label: CSVにエクスポートするグループ
     export.label: グループエクスポート
-  csv_variant_group_export:
-    label: バリアントグループをCSVにエクスポート
-    export.label: バリアントグループをエクスポート
   csv_family_export:
     label: ファミリーをCSV形式でエクスポート
     export.label: ファミリーエクスポート
+  csv_family_variant_export:
+    label: ファミリーバリアントをCSV形式でエクスポート
+    export.label: ファミリーバリアントをエクスポート
   csv_product_import:
     label: 製品をCSV形式でインポート
     validation.label: ファイルの検証
     import.label: 製品のインポート
     import_associations.label: 関連付けのインポート
+  csv_product_model_import:
+    label: 製品モデルをCSV形式でインポート
+    validation.label: ファイルの検証
+    import_root_product_model.label: ルート製品モデルのインポート
+    import_sub_product_model.label: サブ製品モデルのインポート
+    import_product_model_descendants.label: 製品モデルの子孫を計算します。
   csv_category_import:
     label: カテゴリをCSV形式でインポート
     validation.label: ファイルの検証
@@ -95,14 +104,14 @@ batch_jobs:
     label: ファミリーをCSV形式でインポート
     validation.label: ファイルの検証
     import.label: ファミリーインポート
+  csv_family_variant_import:
+    label: ファミリーバリアントをCSV形式でインポート
+    validation.label: ファイルの検証
+    import.label: ファミリーバリアントをインポート
   csv_group_import:
     label: グループをCSVでインポート
     validation.label: ファイルの検証
     import.label: グループのインポート
-  csv_variant_group_import:
-    label: バリアントグループをCSVからインポート
-    validation.label: ファイルの検証
-    import.label: バリアントグループをインポート
   csv_channel_export:
     label: チャネルをCSV形式でエクスポート
     export.label: チャネルエクスポート
@@ -139,11 +148,11 @@ batch_jobs:
     validation.label: ファイルの検証
     import.label: グループタイプインポート
   xlsx_category_import:
-    label: カテゴリをXLSX形式でインポート
+    label: カテゴリをXLSX 形式でインポート
     validation.label: ファイルの検証
     import.label: カテゴリのインポート
   xlsx_association_type_import:
-    label: 関連タイプをXLSXでインポート
+    label: 関連タイプをXLSX形式でインポート
     validation.label: ファイルの検証
     import.label: 関連付けタイプのインポート
   xlsx_attribute_import:
@@ -158,31 +167,40 @@ batch_jobs:
     label: ファミリーをXLSX形式でインポート
     validation.label: ファイルの検証
     import.label: ファミリーインポート
+  xlsx_family_variant_import:
+    label: ファミリーバリアントをXLSX形式でインポート
+    validation.label: ファイルの検証
+    import.label: ファミリーバリアントをインポート
   xlsx_product_export:
     label: 商品をXLSX形式でエクスポート
     export.label: 商品エクスポート
+  xlsx_product_model_export:
+    label: 商品モデルをXLSX形式でエクスポート
+    export.label: 商品モデルをエクスポート
   xlsx_product_import:
-    label: 商品をXLSX形式でインポート
+    label: 製品をXLSX形式でインポート
     validation.label: ファイルの検証
     import.label: 製品のインポート
     import_associations.label: 関連付けのインポート
+  xlsx_product_model_import:
+    label: 商品モデルをXLSX形式でインポート
+    validation.label: ファイルの検証
+    import_root_product_model.label: ルート製品モデルのインポート
+    import_sub_product_model.label: サブ製品モデルのインポート
+    import_product_model_descendants.label: 製品モデルの子孫を計算します。
   xlsx_group_export:
-    label: グループをXLSX形式でインポート
+    label: グループをXLSX形式でエクスポート
     export.label: グループエクスポート
-  xlsx_variant_group_export:
-    label: バリアントグループをXLSX形式にエクスポート
-    export.label: バリアントグループをエクスポート
   xlsx_group_import:
     label: グループをXLSX形式でインポート
     validation.label: ファイルの検証
     import.label: グループのインポート
-  xlsx_variant_group_import:
-    label: バリアントグループをXLSX形式にインポート
-    validation.label: ファイルの検証
-    import.label: バリアントグループをインポート
   xlsx_family_export:
     label: ファミリーをXLSX形式でエクスポート
     export.label: ファミリーエクスポート
+  xlsx_family_variant_export:
+    label: ファミリーバリアントをXLSX形式でエクスポート
+    export.label: ファミリーバリアントをエクスポート
   xlsx_category_export:
     label: カテゴリをXLSX形式でエクスポート
     export.label: カテゴリエクスポート
@@ -193,8 +211,8 @@ batch_jobs:
     label: 属性オプションをXLSX形式でエクスポート
     export.label: 属性オプションをXLSX形式でエクスポート
   xlsx_association_type_export:
-    label: 関連タイプをXLSX形式でインポート
-    export.label: 関連タイプをXLSX形式でインポート
+    label: 関連タイプをXLSX形式でエクスポート
+    export.label: 関連タイプをXLSX形式でエクスポート
   xlsx_channel_export:
     label: チャネルをXLSX形式でエクスポート
     export.label: チャネルエクスポート

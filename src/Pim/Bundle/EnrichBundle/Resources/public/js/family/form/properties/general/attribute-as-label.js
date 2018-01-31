@@ -16,7 +16,7 @@ define([
         'pim/i18n',
         'pim/user-context',
         'pim/security-context',
-        'text!pim/template/family/tab/general/attribute-as-label',
+        'pim/template/family/tab/general/attribute-as-label',
         'jquery.select2'
     ],
     function (

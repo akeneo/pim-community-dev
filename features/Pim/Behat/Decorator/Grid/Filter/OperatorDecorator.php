@@ -28,11 +28,11 @@ class OperatorDecorator extends ElementDecorator
             $this->click();
             $operatorChoices = $this->getClosest($this, 'AknDropdown')->findAll(
                 'css',
-                '.dropdown-menu .choice_value, .dropdown-menu .operator_choice'
+                '.label, .AknDropdown-menu .choice_value, .AknDropdown-menu .operator_choice'
             );
 
             foreach ($operatorChoices as $choice) {
-                if (strtolower($value) === strtolower($choice->getText())) {
+                if (strtolower($value) === strtolower(trim($choice->getText()))) {
                     $choice->click();
 
                     return true;

@@ -7,53 +7,53 @@ Feature: Update product history when mass editing products
   Background:
     Given a "footwear" catalog configuration
     And I am logged in as "Julia"
-    And I am on the products page
-    And I create a new product
+    And I am on the products grid
+    And I create a product
     And I fill in the following information in the popin:
       | SKU    | boots |
-      | family | Boots |
+      | Family | Boots |
     And I press the "Save" button in the popin
     And I wait to be on the "boots" product page
     And I save the product
-    And I am on the products page
-    And I create a new product
+    And I am on the products grid
+    And I create a product
     And I fill in the following information in the popin:
       | SKU    | sneakers |
-      | family | Sneakers |
+      | Family | Sneakers |
     And I press the "Save" button in the popin
     And I wait to be on the "sneakers" product page
     And I save the product
-    And I am on the products page
-    And I create a new product
+    And I am on the products grid
+    And I create a product
     And I fill in the following information in the popin:
       | SKU    | sandals |
-      | family | Sandals |
+      | Family | Sandals |
     And I press the "Save" button in the popin
     And I wait to be on the "sandals" product page
     And I save the product
-    And I am on the products page
+    And I am on the products grid
     And I select rows boots, sandals and sneakers
-    And I press "Change product information" on the "Bulk Actions" dropdown button
+    And I press the "Bulk actions" button
 
   Scenario: Display history when adding products to groups
     Given I choose the "Add to groups" operation
     And I check "Similar boots"
-    And I move on to the next step
-    And I wait for the "add-to-groups" mass-edit job to finish
+    And I confirm mass edit
+    And I wait for the "add_product_value" job to finish
     When I edit the "boots" product
-    And I open the history
+    And I visit the "History" column tab
     Then there should be 2 updates
     And I should see history:
       | version | property | value         |
       | 2       | groups   | similar_boots |
     When I edit the "sneakers" product
-    And I open the history
+    And I visit the "History" column tab
     Then there should be 2 updates
     And I should see history:
       | version | property | value         |
       | 2       | groups   | similar_boots |
     When I edit the "sandals" product
-    And I open the history
+    And I visit the "History" column tab
     Then there should be 2 updates
     And I should see history:
       | version | property | value         |

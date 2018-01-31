@@ -1,7 +1,6 @@
 parameters:
     pim_dashboard.widget.registry.class:        Pim\Bundle\DashboardBundle\Widget\Registry
     pim_dashboard.widget.completeness.class:    Pim\Bundle\DashboardBundle\Widget\CompletenessWidget
-    pim_dashboard.widget.links.class:           Pim\Bundle\DashboardBundle\Widget\LinksWidget
     pim_dashboard.widget.last_operations.class: Pim\Bundle\DashboardBundle\Widget\LastOperationsWidget
 
 services:
@@ -11,39 +10,10 @@ services:
     ##
     # Widgets
     ##
-    pim_dashboard.widget.links:
-        class: '%pim_dashboard.widget.links.class%'
-        arguments:
-            - '@oro_security.security_facade'
-            -
-                -
-                    acl: pim_enrich_product_index
-                    route: pim_enrich_product_index
-                    label: pim_dashboard.link.label.product
-                    image: widget_links_products.png
-                -
-                    acl: pim_enrich_family_index
-                    route: pim_enrich_family_index
-                    label: pim_dashboard.link.label.family
-                    image: widget_links_families.png
-                -
-                    acl: pim_enrich_attribute_index
-                    route: pim_enrich_attribute_index
-                    label: pim_dashboard.link.label.attribute
-                    image: widget_links_attributes.png
-                -
-                    acl: pim_enrich_product_category_list
-                    route: pim_enrich_categorytree_index
-                    label: pim_dashboard.link.label.category
-                    image: widget_links_categories.png
-        tags:
-            - { name: pim_dashboard.widget, position: 10 }
-
     pim_dashboard.widget.completeness:
         class: '%pim_dashboard.widget.completeness.class%'
         arguments:
             - '@pim_catalog.repository.completeness'
-            - '@pim_catalog.helper.locale'
             - '@pim_user.context.user'
             - '@pim_catalog.filter.chained'
             - '@pim_catalog.repository.locale'

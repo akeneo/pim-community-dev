@@ -40,7 +40,7 @@ class ChannelRepository extends EntityRepository implements DatagridRepositoryIn
         );
 
         $qb
-            ->addSelect($rootAlias)
+            ->select($rootAlias)
             ->addSelect('category')
             ->addSelect(sprintf('%s AS categoryLabel', $treeExpr))
             ->addSelect(sprintf('%s AS channelLabel', $labelExpr))
@@ -51,7 +51,7 @@ class ChannelRepository extends EntityRepository implements DatagridRepositoryIn
             ->leftJoin('category.translations', 'ct', 'WITH', 'ct.locale = :localeCode')
             ->leftJoin($rootAlias . '.translations', 'translation', 'WITH', 'translation.locale = :localeCode');
 
-        $qb->groupBy($rootAlias);
+        $qb->distinct(true);
 
         return $qb;
     }

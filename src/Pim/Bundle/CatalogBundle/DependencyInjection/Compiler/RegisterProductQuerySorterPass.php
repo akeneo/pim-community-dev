@@ -22,7 +22,7 @@ class RegisterProductQuerySorterPass implements CompilerPassInterface
     const QUERY_SORTER_REGISTRY = 'pim_catalog.query.sorter.registry';
 
     /** @staticvar string */
-    const QUERY_SORTER_TAG = 'pim_catalog.doctrine.query.sorter';
+    const QUERY_SORTER_TAG = 'pim_catalog.elasticsearch.query.sorter';
 
     /**
      * {@inheritdoc}

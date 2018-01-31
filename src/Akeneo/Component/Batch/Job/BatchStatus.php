@@ -65,7 +65,7 @@ class BatchStatus
      */
     public static function getAllLabels()
     {
-        return self::$statusLabels;
+        return array_flip(self::$statusLabels);
     }
 
     /**

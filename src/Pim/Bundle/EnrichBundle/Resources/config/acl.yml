@@ -48,6 +48,14 @@ pim_enrich_associations_view:
     type: action
     label: pim_enrich.acl.product.associations_view
     group_name: pim_enrich.acl_group.product
+pim_enrich_associations_edit:
+    type: action
+    label: pim_enrich.acl.product.associations_edit
+    group_name: pim_enrich.acl_group.product
+pim_enrich_associations_remove:
+    type: action
+    label: pim_enrich.acl.association.remove
+    group_name: pim_enrich.acl_group.product
 pim_enrich_product_change_family:
     type: action
     label: pim_enrich.acl.product.change_family
@@ -60,10 +68,6 @@ pim_enrich_product_add_to_groups:
     type: action
     label: pim_enrich.acl.product.add_to_groups
     group_name: pim_enrich.acl_group.product
-pim_enrich_product_add_to_variant_group:
-    type: action
-    label: pim_enrich.acl.product.add_to_variant_group
-    group_name: pim_enrich.acl_group.product
 pim_enrich_product_comment:
     type: action
     label: pim_enrich.acl.product.comment
@@ -72,6 +76,28 @@ pim_enrich_product_history:
     type: action
     label: pim_enrich.acl.product.history
     group_name: pim_enrich.acl_group.product
+
+# Product Model
+pim_enrich_product_model_create:
+    type: action
+    label: pim_enrich.acl.product_model.create
+    group_name: pim_enrich.acl_group.product_model
+pim_enrich_product_model_edit_attributes:
+    type: action
+    label: pim_enrich.acl.product_model.edit_attributes
+    group_name: pim_enrich.acl_group.product_model
+pim_enrich_product_model_categories_view:
+    type: action
+    label: pim_enrich.acl.product_model.categories_view
+    group_name: pim_enrich.acl_group.product_model
+pim_enrich_product_model_history:
+    type: action
+    label: pim_enrich.acl.product_model.history
+    group_name: pim_enrich.acl_group.product_model
+pim_enrich_product_model_remove:
+    type: action
+    label: pim_enrich.acl.product_model.remove
+    group_name: pim_enrich.acl_group.product_model
 
 # Mass edit action
 pim_enrich_mass_edit:
@@ -233,40 +259,6 @@ pim_enrich_group_history:
     label: pim_enrich.acl.group.history
     group_name: pim_enrich.acl_group.group
 
-# Variant group
-pim_enrich_variant_group_index:
-    type: action
-    label: pim_enrich.acl.variant_group.index
-    group_name: pim_enrich.acl_group.variant_group
-pim_enrich_variant_group_create:
-    type: action
-    label: pim_enrich.acl.variant_group.create
-    group_name: pim_enrich.acl_group.variant_group
-pim_enrich_variant_group_edit:
-    type: action
-    label: pim_enrich.acl.variant_group.edit
-    group_name: pim_enrich.acl_group.variant_group
-pim_enrich_variant_group_remove:
-    type: action
-    label: pim_enrich.acl.variant_group.remove
-    group_name: pim_enrich.acl_group.variant_group
-pim_enrich_variant_group_history:
-    type: action
-    label: pim_enrich.acl.variant_group.history
-    group_name: pim_enrich.acl_group.variant_group
-pim_enrich_variant_group_edit_attributes:
-    type: action
-    label: pim_enrich.acl.variant_group.edit_attributes
-    group_name: pim_enrich.acl_group.variant_group
-pim_enrich_variant_group_add_attributes:
-    type: action
-    label: pim_enrich.acl.variant_group.add_attributes
-    group_name: pim_enrich.acl_group.variant_group
-pim_enrich_variant_group_remove_attribute:
-    type: action
-    label: pim_enrich.acl.variant_group.remove_attribute
-    group_name: pim_enrich.acl_group.variant_group
-
 # Group type
 pim_enrich_grouptype_index:
     type: action
@@ -312,3 +304,8 @@ pim_enrich_job_tracker_index:
     type: action
     label: pim_enrich.acl.job_tracker.index
     group_name: pim_enrich.acl_group.job_tracker
+
+# API connection
+pim_enrich_api_connection_manage:
+    type: action
+    label: pim_enrich.acl.api_connection.manage

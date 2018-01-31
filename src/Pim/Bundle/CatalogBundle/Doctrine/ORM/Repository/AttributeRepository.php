@@ -10,7 +10,6 @@ use Doctrine\ORM\QueryBuilder;
 use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
 use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Model\AttributeGroupInterface;
-use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 
@@ -27,16 +26,6 @@ class AttributeRepository extends EntityRepository implements
 {
     /** @var string $identifierCode */
     protected $identifierCode;
-
-    /**
-     * {@inheritdoc}
-     */
-    public function findWithGroups(array $attributeIds = [], array $criterias = [])
-    {
-        $qb = $this->findWithGroupsQB($attributeIds, $criterias);
-
-        return $qb->getQuery()->execute();
-    }
 
     /**
      * {@inheritdoc}
@@ -154,37 +143,30 @@ class AttributeRepository extends EntityRepository implements
      */
     public function findAvailableAxes($locale)
     {
-        $query = $this->findAllAxesQB()
-            ->select('a.id')
-            ->addSelect('COALESCE(NULLIF(t.label, \'\'), CONCAT(\'[\', a.code, \']\')) as label')
-            ->leftJoin('a.translations', 't')
-            ->andWhere('t.locale = :locale')
-            ->setParameter('locale', $locale)
-            ->orderBy('t.label')
-            ->getQuery();
+        $query = $this->getAxesQuery($locale);
 
         $axis = [];
         foreach ($query->getArrayResult() as $code) {
-            $axis[$code['id']] = $code['label'];
+            $axis[$code['label']] = $code['id'];
         }
 
         return $axis;
     }
 
     /**
-     * Get available attributes as label
-     *
-     * @return AttributeInterface[]
+     * {@inheritdoc}
      */
-    protected function getAvailableAttributesAsLabel()
+    public function getAxesQuery($locale)
     {
-        $qb = $this->createQueryBuilder('a');
-        $qb
-            ->andWhere(
-                $qb->expr()->in('a.type', [AttributeTypes::TEXT, AttributeTypes::IDENTIFIER])
-            );
-
-        return $qb->getQuery()->getResult();
+        return $this->findAllAxesQB()
+            ->select('a.id')
+            ->addSelect('COALESCE(NULLIF(t.label, \'\'), CONCAT(\'[\', a.code, \']\')) as label')
+            ->addSelect('a.code')
+            ->leftJoin('a.translations', 't')
+            ->andWhere('t.locale = :locale')
+            ->setParameter('locale', $locale)
+            ->orderBy('t.label')
+            ->getQuery();
     }
 
     /**
@@ -302,20 +284,6 @@ class AttributeRepository extends EntityRepository implements
     /**
      * {@inheritdoc}
      */
-    public function getNonIdentifierAttributes()
-    {
-        $qb = $this->createQueryBuilder('a');
-
-        $qb
-            ->andWhere($qb->expr()->neq('a.type', '?1'))
-            ->setParameter(1, AttributeTypes::IDENTIFIER);
-
-        return $qb->getQuery()->getResult();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getAttributeTypeByCodes(array $codes)
     {
         $results = $this->createQueryBuilder('a')
@@ -388,18 +356,5 @@ class AttributeRepository extends EntityRepository implements
             ->setParameter(':family', $family->getId());
 
         return $qb->getQuery()->getResult();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function countAll()
-    {
-        $count = $this->createQueryBuilder('a')
-            ->select('COUNT(a.id)')
-            ->getQuery()
-            ->getSingleScalarResult();
-
-        return $count;
     }
 }

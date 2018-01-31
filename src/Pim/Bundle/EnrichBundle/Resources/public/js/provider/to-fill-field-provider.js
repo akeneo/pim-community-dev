@@ -1,6 +1,6 @@
 'use strict';
 /**
- * Attribute group selector extension
+ * To fill field provider
  *
  * @author    Julien Sanchez <julien@akeneo.com>
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
@@ -9,45 +9,46 @@
 define(
     [
         'jquery',
-        'underscore',
-        'oro/mediator',
-        'pim/attribute-manager',
-        'pim/fetcher-registry'
+        'underscore'
     ],
-    function ($, _, mediator, attributeManager, fetcherRegistry) {
+    function (
+        $,
+        _
+    ) {
         return {
+            fieldsPromise: null,
+
             /**
-             * Get list of fields that need to be filled to complete the product
+             * Returns the missing required attributes of the current scope and locale for the given product
              *
-             * @param {object} root
-             * @param {object} product
+             * @param product Object
+             * @param scope String
+             * @param locale String
              *
-             * @return {promise}
+             * @return Array
              */
-            getFields: function (root, product) {
-                var filterPromises = [];
-                root.trigger(
-                    'pim_enrich:form:field:to-fill-filter',
-                    {'filters': filterPromises}
-                );
+            getMissingRequiredFields: function (product, scope, locale) {
+                const scopeMissingAttributes =  _.findWhere(product.meta.required_missing_attributes, {channel: scope});
+                if (undefined === scopeMissingAttributes) {
+                    return [];
+                }
 
-                return $.when.apply($, filterPromises).then(function () {
-                    return arguments;
-                }).then(function (filters) {
-                    return attributeManager.getAttributes(product)
-                        .then(function (attributeCodes) {
-                            return fetcherRegistry.getFetcher('attribute').fetchByIdentifiers(attributeCodes);
-                        })
-                        .then(function (attributesToFilter) {
-                            var filteredAttributes = _.reduce(filters, function (attributes, filter) {
-                                return filter(attributes);
-                            }, attributesToFilter);
+                const localeMissingAttributes = scopeMissingAttributes.locales[locale];
+                if (undefined === localeMissingAttributes) {
+                    return [];
+                }
 
-                            return _.map(filteredAttributes, function (attribute) {
-                                return attribute.code;
-                            });
-                        });
-                });
+                const missingAttributeCodes = localeMissingAttributes.missing.map(missing => missing.code);
+                const levelAttributeCodes = Object.keys(product.values);
+
+                return missingAttributeCodes.filter(missingAttribute => levelAttributeCodes.includes(missingAttribute));
+            },
+
+            /**
+             * Clear the to fill field cache
+             */
+            clear: function () {
+                this.fieldsPromise = null;
             }
         };
     }

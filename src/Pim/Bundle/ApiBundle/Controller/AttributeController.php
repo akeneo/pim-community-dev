@@ -23,6 +23,7 @@ use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
+use Symfony\Component\Routing\Router;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -281,7 +282,7 @@ class AttributeController
         } catch (PropertyException $exception) {
             throw new DocumentedHttpException(
                 Documentation::URL . $anchor,
-                sprintf('%s Check the standard format documentation.', $exception->getMessage()),
+                sprintf('%s Check the expected format on the API documentation.', $exception->getMessage()),
                 $exception
             );
         }
@@ -328,7 +329,7 @@ class AttributeController
     }
 
     /**
-     * Get a response with HTTP code when an object is created.
+     * Get a response with a location header to the created or updated resource.
      *
      * @param AttributeInterface $attribute
      * @param int                $status
@@ -338,7 +339,11 @@ class AttributeController
     protected function getResponse(AttributeInterface $attribute, $status)
     {
         $response = new Response(null, $status);
-        $url = $this->router->generate('pim_api_attribute_get', ['code' => $attribute->getCode()], true);
+        $url = $this->router->generate(
+            'pim_api_attribute_get',
+            ['code' => $attribute->getCode()],
+            Router::ABSOLUTE_URL
+        );
         $response->headers->set('Location', $url);
 
         return $response;

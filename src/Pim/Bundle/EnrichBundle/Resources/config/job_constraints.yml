@@ -1,5 +1,6 @@
 parameters:
     pim_enrich.connector.job.job_parameters.constraint_collection_provider.product_mass_edit.class: Pim\Bundle\EnrichBundle\Connector\Job\JobParameters\ConstraintCollectionProvider\ProductMassEdit
+    pim_enrich.connector.job.job_parameters.constraint_collection_provider.product_and_product_model_quick_export.class: Pim\Bundle\EnrichBundle\Connector\Job\JobParameters\ConstraintCollectionProvider\ProductAndProductModelQuickExport
     pim_enrich.connector.job.job_parameters.constraint_collection_provider.product_quick_export.class: Pim\Bundle\EnrichBundle\Connector\Job\JobParameters\ConstraintCollectionProvider\ProductQuickExport
     pim_enrich.connector.job.job_parameters.constraint_collection_provider.simple_mass_edit.class: Pim\Bundle\EnrichBundle\Connector\Job\JobParameters\ConstraintCollectionProvider\SimpleMassEdit
 
@@ -11,8 +12,12 @@ services:
                 - 'update_product_value'
                 - 'add_product_value'
                 - 'remove_product_value'
+                - 'move_to_category'
+                - 'add_to_category'
+                - 'remove_from_category'
+                - 'add_association'
                 - 'edit_common_attributes'
-                - 'add_to_variant_group'
+                - 'add_to_existing_product_model'
         tags:
             - { name: akeneo_batch.job.job_parameters.constraint_collection_provider }
 
@@ -20,6 +25,14 @@ services:
         class: '%pim_enrich.connector.job.job_parameters.constraint_collection_provider.product_quick_export.class%'
         arguments:
             - '@pim_connector.job.job_parameters.constraint_collection_provider.simple_csv_export'
+            - []
+        tags:
+            - { name: akeneo_batch.job.job_parameters.constraint_collection_provider }
+
+    pim_enrich.connector.job.job_parameters.constraint_collection_provider.product_and_product_model_csv_quick_export:
+        class: '%pim_enrich.connector.job.job_parameters.constraint_collection_provider.product_and_product_model_quick_export.class%'
+        arguments:
+            - '@pim_enrich.connector.job.job_parameters.constraint_collection_provider.product_csv_quick_export'
             -
                 - 'csv_product_quick_export'
                 - 'csv_product_grid_context_quick_export'
@@ -30,6 +43,14 @@ services:
         class: '%pim_enrich.connector.job.job_parameters.constraint_collection_provider.product_quick_export.class%'
         arguments:
             - '@pim_connector.job.job_parameters.constraint_collection_provider.simple_xlsx_export'
+            - []
+        tags:
+            - { name: akeneo_batch.job.job_parameters.constraint_collection_provider }
+
+    pim_enrich.connector.job.job_parameters.constraint_collection_provider.product_and_product_model_xlsx_quick_export:
+        class: '%pim_enrich.connector.job.job_parameters.constraint_collection_provider.product_and_product_model_quick_export.class%'
+        arguments:
+            - '@pim_enrich.connector.job.job_parameters.constraint_collection_provider.product_xlsx_quick_export'
             -
                 - 'xlsx_product_quick_export'
                 - 'xlsx_product_grid_context_quick_export'

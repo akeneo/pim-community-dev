@@ -3,13 +3,13 @@
 namespace Context;
 
 use Behat\Gherkin\Node\TableNode;
+use PHPUnit\Framework\Assert;
 use Pim\Behat\Context\PimContext;
 use Pim\Bundle\CatalogBundle\Command\GetProductCommand;
 use Pim\Bundle\CatalogBundle\Command\QueryProductCommand;
 use Pim\Bundle\CatalogBundle\Command\UpdateProductCommand;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
-use Symfony\Component\Process\PhpExecutableFinder;
 
 /**
  * Context for commands
@@ -25,13 +25,13 @@ class CommandContext extends PimContext
      */
     public function iLaunchedTheCompletenessCalculator()
     {
-        $this->getMainContext()->getSubcontext('hook')->clearUOW();
-
         $commandLauncher = $this->getService('pim_catalog.command_launcher');
         $commandLauncher->executeForeground('pim:completeness:calculate');
     }
 
     /**
+     * @param TableNode $filters
+     *
      * @Then /^I should get the following results for the given filters:$/
      */
     public function iShouldGetTheFollowingResultsForTheGivenFilters(TableNode $filters)
@@ -52,7 +52,7 @@ class CommandContext extends PimContext
             $actual   = json_decode($commandTester->getDisplay());
             sort($expected);
             sort($actual);
-            assertEquals($expected, $actual);
+            Assert::assertEquals($expected, $actual);
         }
     }
 
@@ -122,7 +122,7 @@ class CommandContext extends PimContext
             }
             $diff = $this->arrayIntersect($actual, $expected);
 
-            assertEquals(
+            Assert::assertEquals(
                 $expected,
                 $diff
             );

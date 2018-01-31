@@ -2,6 +2,7 @@ parameters:
     oro_datagrid.extension.toolbar.class:          Oro\Bundle\DataGridBundle\Extension\Toolbar\ToolbarExtension
     oro_datagrid.extension.formatter.class:        Oro\Bundle\DataGridBundle\Extension\Formatter\FormatterExtension
     oro_datagrid.extension.orm_pager.class:        Oro\Bundle\DataGridBundle\Extension\Pager\OrmPagerExtension
+    oro_datagrid.extension.pager.dummy_pager.class: Oro\Bundle\DataGridBundle\Extension\Pager\DummyPager
     oro_datagrid.extension.pager.orm.pager.class:  Oro\Bundle\DataGridBundle\Extension\Pager\Orm\Pager
     oro_datagrid.extension.orm_sorter.class:       Oro\Bundle\DataGridBundle\Extension\Sorter\OrmSorterExtension
     oro_datagrid.extension.action.class:           Oro\Bundle\DataGridBundle\Extension\Action\ActionExtension
@@ -26,6 +27,9 @@ services:
 
     oro_datagrid.extension.pager.orm.pager:
         class: '%oro_datagrid.extension.pager.orm.pager.class%'
+
+    oro_datagrid.extension.pager.dummy_pager:
+        class: '%oro_datagrid.extension.pager.dummy_pager.class%'
 
     oro_datagrid.extension.orm_sorter:
         class: '%oro_datagrid.extension.orm_sorter.class%'

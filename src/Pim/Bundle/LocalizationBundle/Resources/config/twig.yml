@@ -1,19 +1,10 @@
 parameters:
     pim_localization.twig.locale_extension.class:           Pim\Bundle\LocalizationBundle\Twig\LocaleExtension
-    pim_localization.twig.attribute_option_extension.class: Pim\Bundle\LocalizationBundle\Twig\AttributeOptionExtension
     pim_localization.twig.attribute_extension.class:        Pim\Bundle\LocalizationBundle\Twig\AttributeExtension
 
 services:
     pim_localization.twig.locale_extension:
         class: '%pim_localization.twig.locale_extension.class%'
-        tags:
-            - { name: twig.extension }
-
-    pim_localization.twig.attribute_option_extension:
-        class: '%pim_localization.twig.attribute_option_extension.class%'
-        arguments:
-            - '@pim_catalog.localization.presenter.registry'
-            - '@pim_enrich.resolver.locale'
         tags:
             - { name: twig.extension }
 

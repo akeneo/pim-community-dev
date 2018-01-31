@@ -6,6 +6,7 @@ use Akeneo\Component\Classification\Model\CategoryInterface;
 use Doctrine\Common\Collections\Collection;
 use Pim\Bundle\EnrichBundle\Doctrine\Counter\CategoryItemsCounterInterface;
 use Pim\Bundle\EnrichBundle\Doctrine\Counter\CategoryItemsCounterRegistryInterface;
+use Twig_SimpleFunction;
 
 /**
  * Twig extension to render category from twig templates
@@ -34,12 +35,12 @@ class CategoryExtension extends \Twig_Extension
     public function getFunctions()
     {
         return [
-            'children_response'                  => new \Twig_Function_Method($this, 'childrenResponse'),
-            'children_tree_response'             => new \Twig_Function_Method($this, 'childrenTreeResponse'),
-            'list_categories_response'           => new \Twig_Function_Method($this, 'listCategoriesResponse'),
-            'list_trees_response'                => new \Twig_Function_Method($this, 'listTreesResponse'),
-            'exceeds_products_limit_for_removal' => new \Twig_Function_Method($this, 'exceedsProductsLimitForRemoval'),
-            'get_products_limit_for_removal'     => new \Twig_Function_Method($this, 'getProductsLimitForRemoval')
+            new Twig_SimpleFunction('children_response', [$this, 'childrenResponse']),
+            new Twig_SimpleFunction('children_tree_response', [$this, 'childrenTreeResponse']),
+            new Twig_SimpleFunction('list_categories_response', [$this, 'listCategoriesResponse']),
+            new Twig_SimpleFunction('list_trees_response', [$this, 'listTreesResponse']),
+            new Twig_SimpleFunction('exceeds_products_limit_for_removal', [$this, 'exceedsProductsLimitForRemoval']),
+            new Twig_SimpleFunction('get_products_limit_for_removal', [$this, 'getProductsLimitForRemoval']),
         ];
     }
 
@@ -188,14 +189,6 @@ class CategoryExtension extends \Twig_Extension
     public function getProductsLimitForRemoval()
     {
         return $this->itemsLimitRemoval;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getName()
-    {
-        return 'pim_category_extension';
     }
 
     /**

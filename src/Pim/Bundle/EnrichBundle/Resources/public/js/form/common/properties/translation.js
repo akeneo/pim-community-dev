@@ -8,25 +8,27 @@
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 define([
+        'jquery',
         'underscore',
         'pim/form',
         'pim/fetcher-registry',
-        'text!pim/template/form/properties/translation'
+        'pim/template/form/properties/translation'
     ],
     function (
+        $,
         _,
         BaseForm,
         FetcherRegistry,
         template
     ) {
         return BaseForm.extend({
-            className: 'tabsection translation-container',
+            className: 'translation-container',
             template: _.template(template),
             events: {
                 'change .label-field': 'updateModel'
             },
             validationErrors: {},
-            locales: null,
+            locales: [],
 
             /**
              * {@inheritdoc}
@@ -59,7 +61,13 @@ define([
                     this.onLocalesUpdated.bind(this)
                 );
 
-                return BaseForm.prototype.configure.apply(this, arguments);
+                return $.when(
+                    this.getLocales(true)
+                        .then(function (locales) {
+                            this.locales = locales;
+                        }.bind(this)),
+                    BaseForm.prototype.configure.apply(this, arguments)
+                );
             },
 
             /**
@@ -86,27 +94,25 @@ define([
              * {@inheritdoc}
              */
             render: function () {
-                if (!this.locales) {
-                    FetcherRegistry.getFetcher('locale')
-                        .search({'activated': true, 'cached': true})
-                        .then(function (locales) {
-                            this.locales = locales;
-                            this.render();
-                        }.bind(this));
-                }
-
                 this.$el.html(this.template({
                     model: this.getFormData(),
                     locales: this.locales,
                     errors: this.validationErrors,
                     label: this.config.label,
                     fieldBaseId: this.config.fieldBaseId,
-                    isReadOnly: false /* false as default default value */
+                    isReadOnly: this.isReadOnly()
                 }));
 
                 this.delegateEvents();
 
                 this.renderExtensions();
+            },
+
+            /**
+             * @returns {Boolean}
+             */
+            isReadOnly: function () {
+                return false;
             },
 
             /**
@@ -128,15 +134,24 @@ define([
              * Updates locales if were updated
              */
             onLocalesUpdated: function () {
-                FetcherRegistry.getFetcher('locale')
-                    .search({'activated': true, 'cached': false})
+                this.getLocales(false)
                     .then(function (locales) {
-                        if (!_.isEqual(this.locales, locales)) {
                             this.locales = locales;
-                            return this.render();
-                        }
 
+                            return this.render();
                     }.bind(this));
+            },
+
+            /**
+             * Fetches and returns activated locales.
+             *
+             * @param {Boolean} cached
+             *
+             * @returns {Promise}
+             */
+            getLocales: function (cached) {
+                return FetcherRegistry.getFetcher('locale')
+                    .search({activated: true, cached: cached});
             }
         });
     }

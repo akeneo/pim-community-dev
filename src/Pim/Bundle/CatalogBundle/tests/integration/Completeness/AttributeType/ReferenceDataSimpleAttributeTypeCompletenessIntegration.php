@@ -3,7 +3,6 @@
 namespace Pim\Bundle\CatalogBundle\tests\integration\Completeness\AttributeType;
 
 use Akeneo\Test\Integration\Configuration;
-use Pim\Bundle\CatalogBundle\tests\integration\Completeness\AbstractCompletenessPerAttributeTypeIntegration;
 use Pim\Component\Catalog\AttributeTypes;
 
 /**
@@ -13,7 +12,7 @@ use Pim\Component\Catalog\AttributeTypes;
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-class ReferenceDataSimpleAttributeTypeCompletenessIntegration extends AbstractCompletenessPerAttributeTypeIntegration
+class ReferenceDataSimpleAttributeTypeCompletenessIntegration extends AbstractCompletenessPerAttributeTypeTestCase
 {
     public function testCompleteSimpleSelectReferenceData()
     {
@@ -68,26 +67,11 @@ class ReferenceDataSimpleAttributeTypeCompletenessIntegration extends AbstractCo
             ]
         );
         $this->assertNotComplete($productDataNull);
-
-        $productDataEmptyString = $this->createProductWithStandardValues(
-            $family,
-            'product_data_empty_string',
-            [
-                'values' => [
-                    'a_simple_select_reference_data' => [
-                        [
-                            'locale' => null,
-                            'scope'  => null,
-                            'data'   => '',
-                        ],
-                    ],
-                ],
-            ]
-        );
-        $this->assertNotComplete($productDataEmptyString);
+        $this->assertMissingAttributeForProduct($productDataNull, ['a_simple_select_reference_data']);
 
         $productWithoutValues = $this->createProductWithStandardValues($family, 'product_without_values');
         $this->assertNotComplete($productWithoutValues);
+        $this->assertMissingAttributeForProduct($productWithoutValues, ['a_simple_select_reference_data']);
     }
 
     /**
@@ -113,9 +97,6 @@ class ReferenceDataSimpleAttributeTypeCompletenessIntegration extends AbstractCo
      */
     protected function getConfiguration()
     {
-        return new Configuration([
-            Configuration::getMinimalCatalogPath(),
-            Configuration::getReferenceDataFixtures()
-        ]);
+        return $this->catalog->useMinimalCatalog();
     }
 }

@@ -2,7 +2,6 @@
 
 namespace Pim\Bundle\CatalogBundle\tests\integration\Completeness\AttributeType;
 
-use Pim\Bundle\CatalogBundle\tests\integration\Completeness\AbstractCompletenessPerAttributeTypeIntegration;
 use Pim\Component\Catalog\AttributeTypes;
 
 /**
@@ -12,7 +11,7 @@ use Pim\Component\Catalog\AttributeTypes;
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-class OptionsAttributeTypeCompletenessIntegration extends AbstractCompletenessPerAttributeTypeIntegration
+class OptionsAttributeTypeCompletenessIntegration extends AbstractCompletenessPerAttributeTypeTestCase
 {
     public function testCompleteOptions()
     {
@@ -73,24 +72,25 @@ class OptionsAttributeTypeCompletenessIntegration extends AbstractCompletenessPe
             ]
         );
         $this->assertNotComplete($productDataEmptyArray);
+        $this->assertMissingAttributeForProduct($productDataEmptyArray, ['a_multi_select']);
 
-//        TODO: This cannot work now, but will on TIP-613. Test is added now so it will not forgotten.
-//        $productDataNull = $this->createProductWithStandardValues(
-//            $family,
-//            'product_data_null',
-//            [
-//                'values' => [
-//                    'a_multi_select' => [
-//                        [
-//                            'locale' => null,
-//                            'scope'  => null,
-//                            'data'   => null,
-//                        ],
-//                    ],
-//                ],
-//            ]
-//        );
-//        $this->assertNotComplete($productDataNull);
+        $productDataNull = $this->createProductWithStandardValues(
+            $family,
+            'product_data_null',
+            [
+                'values' => [
+                    'a_multi_select' => [
+                        [
+                            'locale' => null,
+                            'scope'  => null,
+                            'data'   => null,
+                        ],
+                    ],
+                ],
+            ]
+        );
+        $this->assertNotComplete($productDataNull);
+        $this->assertMissingAttributeForProduct($productDataNull, ['a_multi_select']);
     }
 
     /**

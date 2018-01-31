@@ -1,16 +1,29 @@
 'use strict';
 
 define(
-    ['backbone', 'routing'],
-    function (Backbone, Routing) {
-        var DateContext = Backbone.Model.extend({
-            url: Routing.generate('pim_localization_format_date')
-        });
+    ['jquery', 'routing'],
+    ($, Routing) => {
+        var contextData = {};
 
-        var instance = new DateContext();
+        return {
+            /**
+             * Fetches data from the back then stores it.
+             *
+             * @returns {Promise}
+             */
+            initialize: () => {
+                return $.get(Routing.generate('pim_localization_format_date'))
+                    .then(response => contextData = response);
+            },
 
-        instance.fetch({async: false});
-
-        return instance;
+            /**
+             * Returns the value corresponding to the specified key.
+             *
+             * @param {String} key
+             *
+             * @returns {*}
+             */
+            get: key => contextData[key]
+        };
     }
 );

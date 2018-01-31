@@ -10,12 +10,20 @@
 define(
     [
         'underscore',
+        'oro/translator',
         'pim/form',
-        'text!pim/template/product/locale-switcher',
+        'pim/template/product/locale-switcher',
         'pim/fetcher-registry',
         'pim/i18n'
     ],
-    function (_, BaseForm, template, FetcherRegistry, i18n) {
+    function (
+        _,
+        __,
+        BaseForm,
+        template,
+        FetcherRegistry,
+        i18n
+    ) {
         return BaseForm.extend({
             template: _.template(template),
             className: 'AknDropdown AknButtonList-item locale-switcher',
@@ -23,6 +31,30 @@ define(
                 'click li a': 'changeLocale'
             },
             displayInline: false,
+            displayLabel: true,
+            config: {},
+
+            /**
+             * {@inheritdoc}
+             */
+            initialize: function (config) {
+                if (undefined !== config) {
+                    this.config = config.config;
+                }
+
+                BaseForm.prototype.initialize.apply(this, arguments);
+            },
+
+            /**
+             * {@inheritdoc}
+             */
+            configure: function () {
+                this.listenTo(this.getRoot(), 'pim_enrich:form:locale_switcher:change', function (localeEvent) {
+                    if ('base_product' === localeEvent.context) {
+                        this.render();
+                    }
+                }.bind(this));
+            },
 
             /**
              * {@inheritdoc}
@@ -30,15 +62,25 @@ define(
             render: function () {
                 this.getDisplayedLocales()
                     .done(function (locales) {
-                        var params = { localeCode: _.first(locales).code };
-                        this.trigger('pim_enrich:form:locale_switcher:pre_render', params);
+                        const params = {
+                            localeCode: _.first(locales).code,
+                            context: this.config.context
+                        };
+                        this.getRoot().trigger('pim_enrich:form:locale_switcher:pre_render', params);
+
+                        let currentLocale = locales.find(locale => locale.code === params.localeCode);
+                        if (undefined === currentLocale) {
+                            currentLocale = _.first(locales);
+                        }
 
                         this.$el.html(
                             this.template({
                                 locales: locales,
-                                currentLocale: _.findWhere(locales, {code: params.localeCode}),
+                                currentLocale,
                                 i18n: i18n,
-                                displayInline: this.displayInline
+                                displayInline: this.displayInline,
+                                displayLabel: this.displayLabel,
+                                label: __('pim_enrich.entity.product.meta.locale')
                             })
                         );
                         this.delegateEvents();
@@ -62,8 +104,9 @@ define(
              * @param {Object} event
              */
             changeLocale: function (event) {
-                this.trigger('pim_enrich:form:locale_switcher:change', {
-                    localeCode: event.currentTarget.dataset.locale
+                this.getRoot().trigger('pim_enrich:form:locale_switcher:change', {
+                    localeCode: event.currentTarget.dataset.locale,
+                    context: this.config.context
                 });
 
                 this.render();
@@ -76,6 +119,15 @@ define(
              */
             setDisplayInline: function (value) {
                 this.displayInline = value;
+            },
+
+            /**
+             * Updates the display label value
+             *
+             * @param {Boolean} value
+             */
+            setDisplayLabel: function (value) {
+                this.displayLabel = value;
             }
         });
     }

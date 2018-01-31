@@ -19,7 +19,7 @@ class Index extends Grid
     /**
      * @var string
      */
-    protected $path = '/enrich/product/';
+    protected $path = '#/enrich/product/';
 
     /**
      * {@inheritdoc}
@@ -33,7 +33,7 @@ class Index extends Grid
             [
                 'Categories tree'         => ['css' => '#tree'],
                 'Main context selector'   => [
-                    'css'        => '#container',
+                    'css'        => '.AknColumn-innerTop',
                     'decorators' => ['Pim\Behat\Decorator\ContextSwitcherDecorator'],
                 ],
                 'Tree select'             => ['css' => '#tree_select'],
@@ -41,6 +41,10 @@ class Index extends Grid
                 'Sidebar collapse button' => ['css' => '.sidebar .sidebar-controls i.icon-double-angle-left'],
                 'Sidebar expand button'   => ['css' => '.separator.collapsed i.icon-double-angle-right'],
                 'Manage filters options'  => ['css' => '.filter-list.select-filter-widget .ui-multiselect-checkboxes li label span'],
+                'Category tree'           => [
+                    'css'        => '#tree',
+                    'decorators' => [ 'Pim\Behat\Decorator\Tree\JsTreeDecorator' ]
+                ]
             ]
         );
     }
@@ -65,7 +69,7 @@ class Index extends Grid
     public function findLocaleLink($locale, $label, $flag = null)
     {
         $link = $this->getElement('Locales dropdown')
-            ->find('css', sprintf('li > a[href="/enrich/product/?dataLocale=%s"]', $locale));
+            ->find('css', sprintf('li > a[href="#/enrich/product/?dataLocale=%s"]', $locale));
 
         if (!$link) {
             throw new ElementNotFoundException(
@@ -146,5 +150,29 @@ class Index extends Grid
         return $this->spin(function () {
             return $this->findAll('css', $this->elements['Manage filters options']['css']);
         }, 'Filters list was not found.');
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * This method is overridden in this class because we have to wait modal to be display before continue
+     */
+    public function clickCreationLink()
+    {
+        $this->spin(function () {
+            $modal = $this->find('css', '.modal-backdrop');
+
+            if (null !== $modal && $modal->isVisible()) {
+                return true;
+            }
+
+            $button = $this->find('css', $this->elements['Creation link']['css']);
+
+            if (null !== $button && $button->isVisible()) {
+                $button->click();
+            }
+
+            return null;
+        }, 'Cannot create product');
     }
 }

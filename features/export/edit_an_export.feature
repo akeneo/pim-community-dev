@@ -16,10 +16,11 @@ Feature: Edit an export
       | Label | My export |
     And I press the "Save" button
     Then I should not see the text "There are unsaved changes"
-    Then I should see "My export"
+    Then I should see the text "My export"
 
   Scenario: Successfully update export job configuration
     Given I am on the "csv_footwear_product_export" export job edit page
+    When I visit the "Global settings" tab
     Then I should see the Delimiter, Enclosure, With header, File path and Decimal separator fields
     And I fill in the following information:
       | Delimiter         | \|            |
@@ -39,7 +40,8 @@ Feature: Edit an export
     And I filter by "sku" with operator "" and value "identifier1 identifier2,identifier3 ,identifier4"
     Then I press the "Save" button
     Then I should not see the text "There are unsaved changes"
-    When I visit the "General" tab
+    And I press the "Edit" button
+    When I visit the "Global settings" tab
     Then I should see the text "File path"
     And the "File path" field should contain "/tmp/file.csv"
     And I should see the text "Delimiter"
@@ -60,28 +62,24 @@ Feature: Edit an export
     And I should see the text "Not complete on all selected locales"
     And I should see the text "identifier1, identifier2, identifier3, identifier4"
 
+  @skip-nav
   Scenario: Successfully display a dialog when we quit a page with unsaved changes
     Given I am on the "csv_footwear_product_export" export job edit page
     When I fill in the following information:
       | Label | My export |
     When I click on the Akeneo logo
-    Then I should see a confirm dialog with the following content:
-      | title   | Are you sure you want to leave this page?                           |
-      | content | You will lose changes to the export profile if you leave this page. |
+    Then I should see "You will lose changes to the export profile if you leave this page." in popup
 
   @skip
   Scenario: Successfully display a message when there are unsaved changes
     Given I am on the "csv_footwear_product_export" export job edit page
     When I fill in the following information:
       | Label | My export |
-    Then I should see "There are unsaved changes."
+    Then I should see the text "There are unsaved changes."
 
   @jira https://akeneo.atlassian.net/browse/PIM-5965
   Scenario: Successfully display export filter in expected order
-    Given I am on the "csv_footwear_product_export" export job page
-    When I visit the "Content" tab
-    Then I should see the ordered filters family, enabled, completeness, updated, categories and sku
-    When I am on the "csv_footwear_product_export" export job edit page
+    Given I am on the "csv_footwear_product_export" export job edit page
     And I visit the "Content" tab
     Then I should see the ordered filters family, enabled, completeness, updated, categories and sku
     When I add available attributes Name and Weight

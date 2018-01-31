@@ -16,11 +16,6 @@ use Pim\Component\Catalog\Model\AttributeGroupInterface;
 interface AttributeGroupRepositoryInterface extends IdentifiableObjectRepositoryInterface, ObjectRepository
 {
     /**
-     * @return AttributeGroupInterface
-     */
-    public function findAllWithTranslations();
-
-    /**
      * Find all ordered by label with fallback to default mechanism
      *
      * @return array
@@ -33,13 +28,6 @@ interface AttributeGroupRepositoryInterface extends IdentifiableObjectRepository
      * @return null|AttributeGroupInterface
      */
     public function findDefaultAttributeGroup();
-
-    /**
-     * @param array $codes
-     *
-     * @return AttributeGroupInterface
-     */
-    public function getAttributeGroupsFromAttributeCodes(array $codes);
 
     /**
      * Find the largest attribute group sort order present in the database

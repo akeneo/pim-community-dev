@@ -2,14 +2,9 @@
 
 namespace Pim\Component\Catalog\Repository;
 
-use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Persistence\ObjectRepository;
-use Doctrine\ORM\NonUniqueResultException;
-use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\GroupInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
-use Pim\Component\Catalog\Model\ProductValueInterface;
-use Pim\Component\Catalog\Query\ProductQueryBuilderFactoryInterface;
 
 /**
  * Product repository interface
@@ -21,67 +16,6 @@ use Pim\Component\Catalog\Query\ProductQueryBuilderFactoryInterface;
 interface ProductRepositoryInterface extends ObjectRepository
 {
     /**
-     * Load a product entity with related attribute values
-     *
-     * @param int $id
-     *
-     * @throws NonUniqueResultException
-     *
-     * @return ProductInterface|null
-     */
-    public function findOneByWithValues($id);
-
-    /**
-     * @param ChannelInterface $channel
-     *
-     * @return mixed
-     */
-    public function buildByChannelAndCompleteness(ChannelInterface $channel);
-
-    /**
-     * @param array $ids
-     *
-     * @return \Doctrine\Common\Collections\ArrayCollection
-     */
-    public function findByIds(array $ids);
-
-    /**
-     * Find all products in a variant group (by variant axis attribute values)
-     *
-     * @param GroupInterface $variantGroup the variant group
-     * @param array          $criteria     the criteria
-     *
-     * @return array
-     */
-    public function findAllForVariantGroup(GroupInterface $variantGroup, array $criteria = []);
-
-    /**
-     * Returns a full product with all relations
-     *
-     * @param int $id
-     *
-     * @return \Pim\Component\Catalog\Model\ProductInterface
-     */
-    public function getFullProduct($id);
-
-    /**
-     * Returns true if a ProductValue with the provided value alread exists,
-     * false otherwise.
-     *
-     * @param ProductValueInterface $value
-     *
-     * @return bool
-     */
-    public function valueExists(ProductValueInterface $value);
-
-    /**
-     * @param ProductQueryBuilderFactoryInterface $factory
-     *
-     * @return ProductRepositoryInterface
-     */
-    public function setProductQueryBuilderFactory(ProductQueryBuilderFactoryInterface $factory);
-
-    /**
      * Get available attribute ids from a product ids list
      *
      * @param array $productIds
@@ -91,11 +25,6 @@ interface ProductRepositoryInterface extends ObjectRepository
     public function getAvailableAttributeIdsToExport(array $productIds);
 
     /**
-     * @return ObjectManager
-     */
-    public function getObjectManager();
-
-    /**
      * @param string $identifier
      *
      * @return ProductInterface|null
@@ -103,24 +32,8 @@ interface ProductRepositoryInterface extends ObjectRepository
     public function findOneByIdentifier($identifier);
 
     /**
-     * @param string|int $id
-     *
-     * @return ProductInterface|null
-     *
-     * @deprecated
-     */
-    public function findOneById($id);
-
-    /**
-     * @param int $variantGroupId
-     *
-     * @return array product ids
-     */
-    public function getEligibleProductIdsForVariantGroup($variantGroupId);
-
-    /**
      * @param GroupInterface $group
-     * @param                $maxResults
+     * @param int            $maxResults
      *
      * @return array
      */
@@ -138,7 +51,7 @@ interface ProductRepositoryInterface extends ObjectRepository
      *
      * @return int
      */
-    public function countAll();
+    public function countAll(): int;
 
     /**
      * Checks if the family has the specified attribute
@@ -151,20 +64,10 @@ interface ProductRepositoryInterface extends ObjectRepository
     public function hasAttributeInFamily($productId, $attributeCode);
 
     /**
-     * Checks if the group has the specified attribute
+     * Get products after the one provided. Mainly used to iterate through
+     * a large collecion.
      *
-     * @param mixed  $productId
-     * @param string $attributeCode
-     *
-     * @return bool
+     * The limit parameter defines the number of products to return.
      */
-    public function hasAttributeInVariantGroup($productId, $attributeCode);
-
-    /**
-     * @param GroupInterface $variantGroup
-     * @param array          $criteria
-     *
-     * @return array
-     */
-    public function findProductIdsForVariantGroup(GroupInterface $variantGroup, array $criteria = []);
+    public function searchAfter(?ProductInterface $product, int $limit): array;
 }

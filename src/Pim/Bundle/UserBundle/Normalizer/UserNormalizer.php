@@ -38,6 +38,7 @@ class UserNormalizer implements NormalizerInterface
             'uiLocale'      => $user->getUiLocale()->getCode(),
             'catalogScope'  => $user->getCatalogScope()->getCode(),
             'defaultTree'   => $user->getDefaultTree()->getCode(),
+            'avatar'        => $user->getImagePath(),
             'meta'          => [
                 'id' => $user->getId()
             ]

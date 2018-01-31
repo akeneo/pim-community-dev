@@ -12,7 +12,7 @@ namespace Pim\Bundle\InstallerBundle\Event;
 final class InstallerEvents
 {
     /**
-     * This event is dispatched after having installed the databases (ORM + MongoDB)
+     * This event is dispatched after having installed the database
      *
      * You can use it to create new tables that are not managed with doctrine.
      */

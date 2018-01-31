@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Pim\Bundle\ApiBundle\tests\integration\Controller\Product;
 
 use Akeneo\Test\Integration\Configuration;
@@ -10,26 +12,26 @@ class DeleteProductIntegration extends AbstractProductTestCase
     /**
      * {@inheritdoc}
      */
-    protected function getConfiguration()
+    protected function getConfiguration(): Configuration
     {
-        return new Configuration([Configuration::getTechnicalSqlCatalogPath()]);
+        return $this->catalog->useTechnicalSqlCatalog();
     }
 
     public function testDeleteAProduct()
     {
         $client = $this->createAuthenticatedClient();
 
-        $this->assertCount(3, $this->get('pim_catalog.repository.product')->findAll());
-        $this->assertEquals(30, $this->get('pim_catalog.repository.product_value_counter')->count());
+        $this->assertCount(7, $this->getFromTestContainer('pim_catalog.repository.product')->findAll());
 
+        $fooProduct = $this->getFromTestContainer('pim_catalog.repository.product')->findOneByIdentifier('foo');
+        $this->getFromTestContainer('pim_catalog.elasticsearch.indexer.product')->index($fooProduct);
         $client->request('DELETE', 'api/rest/v1/products/foo');
 
         $response = $client->getResponse();
         $this->assertSame(Response::HTTP_NO_CONTENT, $response->getStatusCode());
 
-        $this->assertCount(2, $this->get('pim_catalog.repository.product')->findAll());
-        $this->assertEquals(2, $this->get('pim_catalog.repository.product_value_counter')->count());
-        $this->assertNull($this->get('pim_catalog.repository.product')->findOneByIdentifier('foo'));
+        $this->assertCount(6, $this->getFromTestContainer('pim_catalog.repository.product')->findAll());
+        $this->assertNull($this->getFromTestContainer('pim_catalog.repository.product')->findOneByIdentifier('foo'));
     }
 
     public function testNotFoundAProduct()

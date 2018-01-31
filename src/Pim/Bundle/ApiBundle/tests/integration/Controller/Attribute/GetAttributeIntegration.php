@@ -6,6 +6,9 @@ use Akeneo\Test\Integration\Configuration;
 use Pim\Bundle\ApiBundle\tests\integration\ApiTestCase;
 use Symfony\Component\HttpFoundation\Response;
 
+/**
+ * @group ce
+ */
 class GetAttributeIntegration extends ApiTestCase
 {
     public function testGetAnAttribute()
@@ -41,7 +44,8 @@ class GetAttributeIntegration extends ApiTestCase
     "sort_order": 0,
     "localizable": false,
     "scopable": false,
-    "labels": {}
+    "labels": {},
+    "auto_option_sorting": null
 }
 JSON;
 
@@ -69,6 +73,6 @@ JSON;
      */
     protected function getConfiguration()
     {
-        return new Configuration([Configuration::getTechnicalCatalogPath()]);
+        return $this->catalog->useTechnicalCatalog();
     }
 }

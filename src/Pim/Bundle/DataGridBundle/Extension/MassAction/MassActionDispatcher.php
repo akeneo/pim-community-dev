@@ -39,42 +39,45 @@ class MassActionDispatcher
     /** @var MassActionParametersParser */
     protected $parametersParser;
 
+    /** @var array */
+    protected $gridsWithoutMassActionRepository;
+
     /**
      * @param MassActionHandlerRegistry  $handlerRegistry
      * @param ManagerInterface           $manager
      * @param RequestParameters          $requestParams
      * @param MassActionParametersParser $parametersParser
+     * @param array                      $gridsWithoutMassActionRepository
      */
     public function __construct(
         MassActionHandlerRegistry $handlerRegistry,
         ManagerInterface $manager,
         RequestParameters $requestParams,
-        MassActionParametersParser $parametersParser
+        MassActionParametersParser $parametersParser,
+        array $gridsWithoutMassActionRepository
     ) {
         $this->handlerRegistry = $handlerRegistry;
         $this->manager = $manager;
         $this->requestParams = $requestParams;
         $this->parametersParser = $parametersParser;
+        $this->gridsWithoutMassActionRepository = $gridsWithoutMassActionRepository;
     }
 
     /**
      * Dispatch datagrid mass action
      *
-     * @param Request $request
-     *
-     * @throws \LogicException
+     * @param array $parameters
      *
      * @return MassActionResponseInterface
      */
-    public function dispatch(Request $request)
+    public function dispatch(array $parameters)
     {
-        $parameters = $this->prepareMassActionParameters($request);
+        $parameters = $this->prepareMassActionParameters($parameters);
+
         $datagrid = $parameters['datagrid'];
         $massAction = $parameters['massAction'];
-        $inset = $parameters['inset'];
-        $values = $parameters['values'];
 
-        return $this->performMassAction($datagrid, $massAction, $inset, $values);
+        return $this->performMassAction($datagrid, $massAction);
     }
 
     /**
@@ -82,15 +85,13 @@ class MassActionDispatcher
      *
      * If Inset is defined, it returns filter on entity ids, else it returns all applied filters on the grid
      *
-     * @param Request $request
-     *
-     * @throws \LogicException
+     * @param array $parameters
      *
      * @return array
      */
-    public function getRawFilters(Request $request)
+    public function getRawFilters(array $parameters)
     {
-        $parameters = $this->prepareMassActionParameters($request);
+        $parameters = $this->prepareMassActionParameters($parameters);
         $datagrid = $parameters['datagrid'];
         $datasource = $datagrid->getDatasource();
 
@@ -101,14 +102,7 @@ class MassActionDispatcher
         if (true === $parameters['inset']) {
             $filters = [['field' => 'id', 'operator' => 'IN', 'value' => $parameters['values']]];
         } else {
-            if (empty($parameters['values'])) {
-                $filters = $datasource->getProductQueryBuilder()->getRawFilters();
-            } else {
-                $filters = array_merge(
-                    $datasource->getProductQueryBuilder()->getRawFilters(),
-                    [['field' => 'id', 'operator' => 'NOT IN', 'value' => $parameters['values']]]
-                );
-            }
+            $filters = $datasource->getProductQueryBuilder()->getRawFilters();
         }
 
         $datasourceParams = $datasource->getParameters();
@@ -134,38 +128,40 @@ class MassActionDispatcher
     /**
      * Dispatch datagrid mass action
      *
-     * @param Request $request
+     * @param array $parameters
      *
      * @throws \LogicException
      *
      * @return array
      */
-    protected function prepareMassActionParameters(Request $request)
+    protected function prepareMassActionParameters(array $parameters)
     {
-        $parameters = $this->parametersParser->parse($request);
         $inset = $this->prepareInsetParameter($parameters);
         $values = $this->prepareValuesParameter($parameters);
         $filters = $this->prepareFiltersParameter($parameters);
 
-        $actionName = $request->get('actionName');
         if ($inset && empty($values)) {
-            throw new \LogicException(sprintf('There is nothing to do in mass action "%s"', $actionName));
+            throw new \LogicException(sprintf('There is nothing to do in mass action "%s"', $parameters['actionName']));
         }
 
-        $datagridName = $request->get('gridName');
-        $datagrid = $this->manager->getDatagrid($datagridName);
-        $massAction = $this->getMassActionByName($actionName, $datagrid);
+        $datagrid = $this->manager->getDatagrid($parameters['gridName']);
+        $massAction = $this->getMassActionByName($parameters['actionName'], $datagrid);
         $this->requestParams->set(FilterExtension::FILTER_ROOT_PARAM, $filters);
 
         $qb = $datagrid->getAcceptedDatasource()->getQueryBuilder();
-        if (self::FAMILY_GRID_NAME === $datagridName) {
+        if (self::FAMILY_GRID_NAME === $parameters['gridName']) {
             $qbLocaleParameter = $qb->getParameter('localeCode');
             if (null !== $qbLocaleParameter && null === $qbLocaleParameter->getValue()) {
-                $qb->setParameter('localeCode', $request->query->get('dataLocale'));
+                $qb->setParameter('localeCode', $parameters['dataLocale']);
             }
         }
 
-        $repository = $datagrid->getDatasource()->getMassActionRepository();
+        $datasource = $datagrid->getDatasource();
+        if ($datasource instanceof ProductDatasource) {
+            $qb = $datasource->getProductQueryBuilder();
+        }
+
+        $repository = $datasource->getMassActionRepository();
         $repository->applyMassActionParameters($qb, $inset, $values);
 
         return [

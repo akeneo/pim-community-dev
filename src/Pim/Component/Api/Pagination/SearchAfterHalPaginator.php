@@ -100,14 +100,14 @@ class SearchAfterHalPaginator implements PaginatorInterface
     /**
      * Create a link from a route name.
      *
-     * @param string $routeName
-     * @param array  $parameters
-     * @param string $searchAfterIdentifier
-     * @param string $linkName
+     * @param string      $routeName
+     * @param array       $parameters
+     * @param string|null $searchAfterIdentifier
+     * @param string      $linkName
      *
      * @return Link
      */
-    protected function createLink($routeName, array $parameters, $searchAfterIdentifier, $linkName)
+    protected function createLink($routeName, array $parameters, ?string $searchAfterIdentifier, string $linkName): Link
     {
         $parameters['search_after'] = $searchAfterIdentifier;
 

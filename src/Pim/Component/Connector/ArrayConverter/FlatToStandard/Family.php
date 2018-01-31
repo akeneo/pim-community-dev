@@ -37,6 +37,7 @@ class Family implements ArrayConverterInterface
      *      'label-fr_FR'         => 'Moniteurs',
      *      'attributes'          => 'sku,name,description,price',
      *      'attribute_as_label'  => 'name',
+     *      'attribute_as_image'  => 'side_view',
      *      'requirements-print'  => 'sku,name,description',
      *      'requirements-mobile' => 'sku,name',
      * ]
@@ -46,6 +47,7 @@ class Family implements ArrayConverterInterface
      *      'code'                   => 'pc_monitors',
      *      'attributes'             => ['sku', 'name', 'description', 'price'],
      *      'attribute_as_label'     => 'name',
+     *      'attribute_as_image'     => 'side_view',
      *      'attribute_requirements' => [
      *          'mobile' => ['sku', 'name'],
      *          'print'  => ['sku', 'name', 'description'],
@@ -90,6 +92,7 @@ class Family implements ArrayConverterInterface
             switch ($field) {
                 case 'code':
                 case 'attribute_as_label':
+                case 'attribute_as_image':
                     $convertedItem[$field] = (string) $data;
                     break;
                 case 'attributes':

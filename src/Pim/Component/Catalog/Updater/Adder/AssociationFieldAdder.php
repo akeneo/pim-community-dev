@@ -8,6 +8,7 @@ use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterfa
 use Pim\Component\Catalog\Builder\ProductBuilderInterface;
 use Pim\Component\Catalog\Model\AssociationInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Model\ProductModelInterface;
 
 /**
  * Association field adder
@@ -22,24 +23,30 @@ class AssociationFieldAdder extends AbstractFieldAdder
     protected $productRepository;
 
     /** @var IdentifiableObjectRepositoryInterface */
+    protected $productModelRepository;
+
+    /** @var IdentifiableObjectRepositoryInterface */
     protected $groupRepository;
 
-    /** @var \Pim\Component\Catalog\Builder\ProductBuilderInterface */
+    /** @var ProductBuilderInterface */
     protected $productBuilder;
 
     /**
      * @param IdentifiableObjectRepositoryInterface $productRepository
+     * @param IdentifiableObjectRepositoryInterface $productModelRepository
      * @param IdentifiableObjectRepositoryInterface $groupRepository
-     * @param \Pim\Component\Catalog\Builder\ProductBuilderInterface               $productBuilder
+     * @param ProductBuilderInterface               $productBuilder
      * @param array                                 $supportedFields
      */
     public function __construct(
         IdentifiableObjectRepositoryInterface $productRepository,
+        IdentifiableObjectRepositoryInterface $productModelRepository,
         IdentifiableObjectRepositoryInterface $groupRepository,
         ProductBuilderInterface $productBuilder,
         array $supportedFields
     ) {
         $this->productRepository = $productRepository;
+        $this->productModelRepository = $productModelRepository;
         $this->groupRepository = $groupRepository;
         $this->productBuilder = $productBuilder;
         $this->supportedFields = $supportedFields;
@@ -52,15 +59,17 @@ class AssociationFieldAdder extends AbstractFieldAdder
      * {
      *     "XSELL": {
      *         "groups": ["group1", "group2"],
-     *         "products": ["AKN_TS1", "AKN_TSH2"]
+     *         "products": ["AKN_TS1", "AKN_TSH2"],
+     *         "product_models": ["amor"]
      *     },
      *     "UPSELL": {
      *         "groups": ["group3", "group4"],
-     *         "products": ["AKN_TS3", "AKN_TSH4"]
+     *         "products": ["AKN_TS3", "AKN_TSH4"],
+     *         "product_models": ["amor"]
      *     },
      * }
      */
-    public function addFieldData(ProductInterface $product, $field, $data, array $options = [])
+    public function addFieldData($product, $field, $data, array $options = [])
     {
         $this->checkData($field, $data);
         $this->addMissingAssociations($product);
@@ -70,9 +79,9 @@ class AssociationFieldAdder extends AbstractFieldAdder
     /**
      * Add missing associations (if association type has been added after the last processing)
      *
-     * @param ProductInterface $product
+     * @param ProductInterface|ProductModelInterface $product
      */
-    protected function addMissingAssociations(ProductInterface $product)
+    protected function addMissingAssociations($product)
     {
         $this->productBuilder->addMissingAssociations($product);
     }
@@ -80,12 +89,12 @@ class AssociationFieldAdder extends AbstractFieldAdder
     /**
      * Add products and groups to associations
      *
-     * @param ProductInterface $product
-     * @param mixed            $data
+     * @param ProductInterface|ProductModelInterface $product
+     * @param mixed                                  $data
      *
      * @throws InvalidPropertyException
      */
-    protected function addProductsAndGroupsToAssociations(ProductInterface $product, $data)
+    protected function addProductsAndGroupsToAssociations($product, $data)
     {
         foreach ($data as $typeCode => $items) {
             $association = $product->getAssociationForTypeCode($typeCode);
@@ -100,6 +109,7 @@ class AssociationFieldAdder extends AbstractFieldAdder
             }
             $this->addAssociatedProducts($association, $items['products']);
             $this->addAssociatedGroups($association, $items['groups']);
+            $this->addAssociatedProductModels($association, $items['product_models']);
         }
     }
 
@@ -123,6 +133,29 @@ class AssociationFieldAdder extends AbstractFieldAdder
                 );
             }
             $association->addProduct($associatedProduct);
+        }
+    }
+
+    /**
+     * @param AssociationInterface $association
+     * @param array                $productModelsIdentifiers
+     *
+     * @throws InvalidPropertyException
+     */
+    protected function addAssociatedProductModels(AssociationInterface $association, $productModelsIdentifiers)
+    {
+        foreach ($productModelsIdentifiers as $productModelIdentifier) {
+            $associatedProductModel = $this->productModelRepository->findOneByIdentifier($productModelIdentifier);
+            if (null === $associatedProductModel) {
+                throw InvalidPropertyException::validEntityCodeExpected(
+                    'associations',
+                    'product model identifier',
+                    'The product model does not exist',
+                    static::class,
+                    $productModelIdentifier
+                );
+            }
+            $association->addProductModel($associatedProductModel);
         }
     }
 
@@ -183,7 +216,7 @@ class AssociationFieldAdder extends AbstractFieldAdder
      */
     protected function checkAssociationData($field, array $data, $assocTypeCode, $items)
     {
-        if (!is_array($items) || !is_string($assocTypeCode) || !isset($items['products']) || !isset($items['groups'])) {
+        if (!is_array($items) || !is_string($assocTypeCode) || !isset($items['products']) || !isset($items['groups']) || !isset($items['product_models'])) {
             throw InvalidPropertyTypeException::validArrayStructureExpected(
                 $field,
                 sprintf('association format is not valid for the association type "%s".', $assocTypeCode),

@@ -3,20 +3,23 @@
 namespace spec\Pim\Bundle\UserBundle\Form\Type;
 
 use PhpSpec\ObjectBehavior;
+use Pim\Bundle\UserBundle\Form\Transformer\AccessLevelToBooleanTransformer;
+use Pim\Bundle\UserBundle\Form\Type\AclAccessLevelSelectorType;
 use Prophecy\Argument;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class AclAccessLevelSelectorTypeSpec extends ObjectBehavior
 {
-    function it_has_a_name()
+    function it_has_a_block_prefix()
     {
-        $this->getName()->shouldReturn('pim_acl_access_level_selector');
+        $this->getBlockPrefix()->shouldReturn('pim_acl_access_level_selector');
     }
 
     function it_extends_the_checkbox_form_type()
     {
-        $this->getParent()->shouldReturn('checkbox');
+        $this->getParent()->shouldReturn(CheckboxType::class);
     }
 
     function it_sets_the_default_acl_choices(OptionsResolver $resolver)
@@ -28,14 +31,14 @@ class AclAccessLevelSelectorTypeSpec extends ObjectBehavior
                 ]
             )
             ->shouldBeCalled();
-        $this->setDefaultOptions($resolver);
+        $this->configureOptions($resolver);
     }
 
     function it_adds_a_view_transformer_to_the_form(FormBuilderInterface $builder)
     {
         $builder
             ->addViewTransformer(
-                Argument::type('Pim\Bundle\UserBundle\Form\Transformer\AccessLevelToBooleanTransformer'),
+                Argument::type(AccessLevelToBooleanTransformer::class),
                 true
             )
             ->shouldBeCalled();

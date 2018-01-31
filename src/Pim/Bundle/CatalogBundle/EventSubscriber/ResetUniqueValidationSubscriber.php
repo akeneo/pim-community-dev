@@ -27,10 +27,8 @@ class ResetUniqueValidationSubscriber
      * @param UniqueValuesSet          $uniqueValueSet
      * @param UniqueAxesCombinationSet $uniqueAxesCombinationSet
      */
-    public function __construct(
-        UniqueValuesSet $uniqueValueSet,
-        UniqueAxesCombinationSet $uniqueAxesCombinationSet = null
-    ) {
+    public function __construct(UniqueValuesSet $uniqueValueSet, UniqueAxesCombinationSet $uniqueAxesCombinationSet)
+    {
         $this->uniqueValueSet = $uniqueValueSet;
         $this->uniqueAxesCombinationSet = $uniqueAxesCombinationSet;
     }
@@ -42,9 +40,6 @@ class ResetUniqueValidationSubscriber
     public function onAkeneoStoragePostsaveall()
     {
         $this->uniqueValueSet->reset();
-
-        if (null !== $this->uniqueAxesCombinationSet) {
-            $this->uniqueAxesCombinationSet->reset();
-        }
+        $this->uniqueAxesCombinationSet->reset();
     }
 }

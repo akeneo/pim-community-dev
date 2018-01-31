@@ -3,6 +3,8 @@
 namespace Pim\Bundle\EnrichBundle\Form\Type;
 
 use Akeneo\Bundle\FileStorageBundle\Form\Type\FileInfoType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormBuilderInterface;
 
 /**
@@ -24,19 +26,19 @@ class MediaType extends FileInfoType
         $builder
             ->add(
                 'removed',
-                'checkbox',
+                CheckboxType::class,
                 [
                     'required' => false,
                     'label'    => 'Remove media',
                 ]
             )
-            ->add('id', 'hidden');
+            ->add('id', HiddenType::class);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'pim_enrich_media';
     }

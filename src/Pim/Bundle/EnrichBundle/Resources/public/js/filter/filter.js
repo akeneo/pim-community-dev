@@ -6,7 +6,7 @@ define([
     'oro/translator',
     'oro/mediator',
     'pim/form',
-    'text!pim/template/filter/filter'
+    'pim/template/filter/filter'
 ], function (
     $,
     _,
@@ -130,7 +130,7 @@ define([
          * Sets the current value.
          *
          * @param {string} value
-         * @param {object} options
+         * @param {object} [options]
          */
         setValue: function (value, options) {
             options = options || {silent: true};

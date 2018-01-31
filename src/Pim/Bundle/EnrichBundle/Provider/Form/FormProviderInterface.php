@@ -17,11 +17,11 @@ interface FormProviderInterface
      *
      * @param mixed $element
      *
-     * @throws RuntimeException If no form is found for the given element
+     * @throws NoCompatibleFormProviderFoundException If no form is found for the given element
      *
      * @return string
      */
-    public function getForm($element);
+    public function getForm($element): string;
 
     /**
      * Does the Form provider support the element
@@ -30,5 +30,5 @@ interface FormProviderInterface
      *
      * @return bool
      */
-    public function supports($element);
+    public function supports($element): bool;
 }

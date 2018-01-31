@@ -1,0 +1,191 @@
+@import '../base/variables';
+
+.AknFullPage {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  background: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  z-index: 900;
+
+  &--modal {
+    position: inherit;
+  }
+
+  &-buttons {
+    display: flex;
+    justify-content: space-between;
+    padding: @AknFullPagePadding;
+
+    &--right {
+      justify-content: flex-end;
+    }
+  }
+
+  &-content {
+    display: flex;
+    justify-content: center;
+    overflow: auto;
+    flex: 1;
+
+    &--column {
+      flex-direction: column;
+      justify-content: space-around;
+      flex-grow: 1;
+    }
+  }
+
+  &-left {
+    width: 250px;
+    padding: 0 40px 0 0;
+  }
+
+  &-right {
+    width: 650px;
+    padding: 20px 0 0 40px;
+    border-left: 2px solid @AknLightPurple;
+  }
+
+  &-image {
+    width: 210px;
+    height: 210px;
+  }
+
+  &-bottom {
+    padding: @AknFullPagePadding;
+  }
+
+  &-subTitle {
+    color: @AknSlateGrey;
+    text-transform: uppercase;
+    font-size: @AknFontSizeBigger;
+  }
+
+  &-content--column &-subTitle,
+  &-content--column &-title {
+    margin:auto;
+    text-align: center;
+  }
+
+  &-title {
+    font-size: @AknAltTitleFontSize;
+    line-height: 1.4;
+    color: @AknDarkBlue;
+
+    &--highlight {
+      color: @AknLightPurple;
+    }
+  }
+
+  &-cancel {
+    display: inline-block;
+    width: 32px;
+    height: 32px;
+    background: url("../../images/icon-delete-slategrey.svg") no-repeat 50% 50%;
+    cursor: pointer;
+  }
+
+  &-description {
+    font-size: @AknFontSizeBigger;
+    line-height: 1.5;
+    margin-bottom: 10px;
+
+    &--bottom {
+        margin-bottom: 30px;
+    }
+  }
+
+  &-illustration {
+    background-image: url('../../images/illustration-attribute.svg');
+    background-size: 210px 210px;
+
+    &--api-connections {
+        background-image: url('../../images/illustrations/Api.svg');
+    }
+
+    &--association-types {
+        background-image: url('../../images/illustrations/Association-types.svg');
+    }
+
+    &--attributes {
+        background-image: url('../../images/illustrations/Attribute.svg');
+    }
+
+    &--attribute-groups {
+        background-image: url('../../images/illustrations/Attribute-groups.svg');
+    }
+
+    &--projects {
+        background-image: url('../../images/illustrations/Project.svg');
+    }
+
+    &--products {
+      background-image: url('../../images/illustrations/Product.svg');
+    }
+
+    &--product-models {
+      background-image: url('../../images/illustrations/Product-model.svg');
+    }
+
+    &--product-model {
+      background-image: url('../../images/illustrations/Product-model.svg');
+    }
+
+    &--delete {
+        background-image: url('../../images/illustrations/Delete.svg');
+    }
+
+    &--assets, &--asset {
+        background-image: url('../../images/illustrations/Asset.svg');
+    }
+
+    &--export-profiles {
+        background-image: url('../../images/illustrations/Export.svg');
+    }
+
+    &--import-profiles {
+        background-image: url('../../images/illustrations/Import.svg');
+    }
+
+    &--categories {
+        background-image: url('../../images/illustrations/Product-categories.svg');
+    }
+
+    &--families {
+        background-image: url('../../images/illustrations/Family.svg');
+    }
+
+    &--group,
+    &--groups {
+        background-image: url('../../images/illustrations/Groups.svg');
+    }
+
+    &--association {
+        background-image: url('../../images/illustrations/Association-types.svg');
+    }
+
+    &--channels {
+        background-image: url('../../images/illustrations/Channel.svg');
+    }
+
+    &--api {
+        background-image: url('../../images/illustrations/Api.svg');
+    }
+
+    &--users {
+        background-image: url('../../images/illustrations/User.svg');
+    }
+
+    &--roles {
+        background-image: url('../../images/illustrations/User-roles.svg');
+    }
+
+    &--proposal {
+        background-image: url('../../images/illustrations/Product.svg');
+    }
+  }
+}

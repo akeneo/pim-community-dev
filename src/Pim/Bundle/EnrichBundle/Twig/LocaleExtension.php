@@ -2,7 +2,8 @@
 
 namespace Pim\Bundle\EnrichBundle\Twig;
 
-use Pim\Bundle\CatalogBundle\Helper\LocaleHelper;
+use Pim\Bundle\UserBundle\Context\UserContext;
+use Symfony\Component\Intl;
 use Twig_Environment;
 
 /**
@@ -14,17 +15,15 @@ use Twig_Environment;
  */
 class LocaleExtension extends \Twig_Extension
 {
-    /** @var LocaleHelper */
-    protected $localeHelper;
+    /** @var UserContext */
+    protected $userContext;
 
     /**
-     * Constructor
-     *
-     * @param LocaleHelper $localeHelper
+     * @param UserContext $userContext
      */
-    public function __construct(LocaleHelper $localeHelper)
+    public function __construct(UserContext $userContext)
     {
-        $this->localeHelper = $localeHelper;
+        $this->userContext = $userContext;
     }
 
     /**
@@ -64,7 +63,7 @@ class LocaleExtension extends \Twig_Extension
      */
     public function currentLocaleCode()
     {
-        return $this->localeHelper->getCurrentLocaleCode();
+        return $this->userContext->getCurrentLocale()->getCode();
     }
 
     /**
@@ -77,7 +76,9 @@ class LocaleExtension extends \Twig_Extension
      */
     public function localeLabel($code, $translateIn = null)
     {
-        return $this->localeHelper->getLocaleLabel($code, $translateIn);
+        $translateIn = $translateIn ?: $this->getCurrentLocaleCode();
+
+        return \Locale::getDisplayName($code, $translateIn);
     }
 
     /**
@@ -90,7 +91,10 @@ class LocaleExtension extends \Twig_Extension
      */
     public function currencySymbol($code, $translateIn = null)
     {
-        return $this->localeHelper->getCurrencySymbol($code, $translateIn);
+        $translateIn = $translateIn ?: $this->getCurrentLocaleCode();
+        $language = \Locale::getPrimaryLanguage($translateIn);
+
+        return Intl\Intl::getCurrencyBundle()->getCurrencySymbol($code, $language);
     }
 
     /**
@@ -103,7 +107,10 @@ class LocaleExtension extends \Twig_Extension
      */
     public function currencyLabel($code, $translateIn = null)
     {
-        return $this->localeHelper->getCurrencyLabel($code, $translateIn);
+        $translateIn = $translateIn ?: $this->getCurrentLocaleCode();
+        $language = \Locale::getPrimaryLanguage($translateIn);
+
+        return Intl\Intl::getCurrencyBundle()->getCurrencyName($code, $language);
     }
 
     /**
@@ -121,19 +128,21 @@ class LocaleExtension extends \Twig_Extension
         return $environment->render(
             'PimEnrichBundle:Locale:_flag.html.twig',
             [
-                'label'    => $this->localeHelper->getLocaleLabel($code, $translateIn),
-                'region'   => $this->localeHelper->getRegion($code),
-                'language' => $this->localeHelper->getLanguage($code),
+                'label'    => $this->localeLabel($code, $translateIn),
+                'region'   => \Locale::getRegion($code),
+                'language' => \Locale::getPrimaryLanguage($code),
                 'short'    => $short,
             ]
         );
     }
 
     /**
-     * {@inheritdoc}
+     * Returns the current locale code
+     *
+     * @return string
      */
-    public function getName()
+    private function getCurrentLocaleCode()
     {
-        return 'pim_locale_extension';
+        return $this->userContext->getCurrentLocale()->getCode();
     }
 }

@@ -8,6 +8,7 @@ use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Pim\Bundle\ApiBundle\Documentation;
+use Pim\Bundle\ApiBundle\Stream\StreamResourceResponse;
 use Pim\Component\Api\Exception\DocumentedHttpException;
 use Pim\Component\Api\Exception\PaginationParametersException;
 use Pim\Component\Api\Exception\ViolationHttpException;
@@ -24,6 +25,7 @@ use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
+use Symfony\Component\Routing\Router;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -65,6 +67,9 @@ class AttributeOptionController
     /** @var ParameterValidatorInterface */
     protected $parameterValidator;
 
+    /** @var StreamResourceResponse */
+    protected $partialUpdateStreamResource;
+
     /** @var array */
     protected $apiConfiguration;
 
@@ -82,6 +87,7 @@ class AttributeOptionController
      * @param RouterInterface                $router
      * @param PaginatorInterface             $paginator
      * @param ParameterValidatorInterface    $parameterValidator
+     * @param StreamResourceResponse         $partialUpdateStreamResource
      * @param array                          $apiConfiguration
      * @param array                          $supportedAttributeTypes
      */
@@ -96,6 +102,7 @@ class AttributeOptionController
         RouterInterface $router,
         PaginatorInterface $paginator,
         ParameterValidatorInterface $parameterValidator,
+        StreamResourceResponse $partialUpdateStreamResource,
         array $apiConfiguration,
         array $supportedAttributeTypes
     ) {
@@ -109,6 +116,7 @@ class AttributeOptionController
         $this->router = $router;
         $this->paginator = $paginator;
         $this->parameterValidator = $parameterValidator;
+        $this->partialUpdateStreamResource = $partialUpdateStreamResource;
         $this->apiConfiguration = $apiConfiguration;
         $this->supportedAttributeTypes = $supportedAttributeTypes;
     }
@@ -234,7 +242,7 @@ class AttributeOptionController
     /**
      * @param Request $request
      * @param string  $attributeCode
-     * @param string  $optionCode
+     * @param string  $code
      *
      * @throws HttpException
      *
@@ -242,30 +250,46 @@ class AttributeOptionController
      *
      * @AclAncestor("pim_api_attribute_option_edit")
      */
-    public function partialUpdateAction(Request $request, $attributeCode, $optionCode)
+    public function partialUpdateAction(Request $request, $attributeCode, $code)
     {
         $attribute = $this->getAttribute($attributeCode);
 
         $data = $this->getDecodedContent($request->getContent());
 
-        $attributeOption = $this->attributeOptionsRepository->findOneByIdentifier($attributeCode . '.' . $optionCode);
+        $attributeOption = $this->attributeOptionsRepository->findOneByIdentifier($attributeCode . '.' . $code);
         $isCreation = null === $attributeOption;
 
-        $this->validateCodeConsistency($attributeCode, $optionCode, $data, $isCreation);
+        $this->validateCodeConsistency($attributeCode, $code, $data, $isCreation);
 
         if ($isCreation) {
             $attributeOption = $this->factory->create();
         }
 
         $data['attribute'] = array_key_exists('attribute', $data) ? $data['attribute'] : $attributeCode;
-        $data['code'] = array_key_exists('code', $data) ? $data['code'] : $optionCode;
-        $this->updateAttributeOption($attributeOption, $data, 'post_attributes__attribute_code__options');
+        $data['code'] = array_key_exists('code', $data) ? $data['code'] : $code;
+        $this->updateAttributeOption($attributeOption, $data, 'patch_attributes__attribute_code__options__code_');
         $this->validateAttributeOption($attributeOption);
 
         $this->saver->save($attributeOption);
 
         $status = $isCreation ? Response::HTTP_CREATED : Response::HTTP_NO_CONTENT;
         $response = $this->getResponse($attribute, $attributeOption, $status);
+
+        return $response;
+    }
+
+    /**
+     * @param Request $request
+     * @param string  $attributeCode
+     *
+     * @return Response
+     *
+     * @AclAncestor("pim_api_attribute_option_edit")
+     */
+    public function partialUpdateListAction(Request $request, string $attributeCode): Response
+    {
+        $resource = $request->getContent(true);
+        $response = $this->partialUpdateStreamResource->streamResponse($resource, ['attributeCode' => $attributeCode]);
 
         return $response;
     }
@@ -298,7 +322,7 @@ class AttributeOptionController
      */
     protected function isAttributeSupportingOptions(AttributeInterface $attribute)
     {
-        $attributeType = $attribute->getAttributeType();
+        $attributeType = $attribute->getType();
         if (!in_array($attributeType, $this->supportedAttributeTypes)) {
             throw new NotFoundHttpException(
                 sprintf(
@@ -346,7 +370,7 @@ class AttributeOptionController
         } catch (PropertyException $exception) {
             throw new DocumentedHttpException(
                 Documentation::URL . $anchor,
-                sprintf('%s Check the standard format documentation.', $exception->getMessage()),
+                sprintf('%s Check the expected format on the API documentation.', $exception->getMessage()),
                 $exception
             );
         }
@@ -386,7 +410,7 @@ class AttributeOptionController
                 'attributeCode' => $attribute->getCode(),
                 'code'    => $attributeOption->getCode(),
             ],
-            true
+            Router::ABSOLUTE_URL
         );
         $response->headers->set('Location', $route);
 

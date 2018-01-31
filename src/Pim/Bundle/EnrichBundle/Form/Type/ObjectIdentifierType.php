@@ -5,6 +5,7 @@ namespace Pim\Bundle\EnrichBundle\Form\Type;
 use Doctrine\Common\Persistence\ObjectRepository;
 use Pim\Bundle\EnrichBundle\Form\DataTransformer\EntityToIdentifierTransformer;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -23,13 +24,13 @@ class ObjectIdentifierType extends AbstractType
      */
     public function getParent()
     {
-        return 'hidden';
+        return HiddenType::class;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'pim_object_identifier';
     }
@@ -70,10 +71,8 @@ class ObjectIdentifierType extends AbstractType
                 'identifier'         => 'id',
             ])
             ->setAllowedValues('multiple', [true, false])
-            ->setAllowedValues([
-                'repository' => function ($repository) {
-                    return $repository instanceof ObjectRepository;
-                }
-            ]);
+            ->setAllowedValues('repository', function ($repository) {
+                return $repository instanceof ObjectRepository;
+            });
     }
 }

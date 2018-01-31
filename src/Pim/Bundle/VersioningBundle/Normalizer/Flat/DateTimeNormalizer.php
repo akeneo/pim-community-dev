@@ -11,7 +11,7 @@ namespace Pim\Bundle\VersioningBundle\Normalizer\Flat;
  *
  * @see       Pim\Bundle\TransformBundle\Normalizer\Flat\ProductNormalizer
  */
-class DateTimeNormalizer extends AbstractProductValueDataNormalizer
+class DateTimeNormalizer extends AbstractValueDataNormalizer
 {
     /** @var string[] */
     protected $supportedFormats = ['csv', 'flat'];

@@ -3,7 +3,6 @@
 namespace Pim\Bundle\CatalogBundle\AttributeType;
 
 use Pim\Component\Catalog\AttributeTypes;
-use Pim\Component\Catalog\Model\AttributeInterface;
 
 /**
  * Identifier attribute type
@@ -14,69 +13,6 @@ use Pim\Component\Catalog\Model\AttributeInterface;
  */
 class IdentifierType extends AbstractAttributeType
 {
-    /**
-     * {@inheritdoc}
-     */
-    protected function defineCustomAttributeProperties(AttributeInterface $attribute)
-    {
-        return [
-            'maxCharacters' => [
-                'name'      => 'maxCharacters',
-                'fieldType' => 'text'
-            ],
-            'validationRule' => [
-                'name'      => 'validationRule',
-                'fieldType' => 'choice',
-                'options'   => [
-                    'choices' => [
-                        null     => 'None',
-                        'regexp' => 'Regular expression'
-                    ],
-                    'select2' => true
-                ]
-            ],
-            'validationRegexp' => [
-                'name' => 'validationRegexp'
-            ],
-            'scopable' => [
-                'name'      => 'scopable',
-                'fieldType' => 'switch',
-                'options'   => [
-                    'data'      => false,
-                    'disabled'  => true,
-                    'read_only' => true
-                ]
-            ],
-            'unique' => [
-                'name'      => 'unique',
-                'fieldType' => 'switch',
-                'options'   => [
-                    'data'      => true,
-                    'disabled'  => true,
-                    'read_only' => true
-                ]
-            ],
-            'required' => [
-                'name'      => 'required',
-                'fieldType' => 'switch',
-                'options'   => [
-                    'data'      => true,
-                    'disabled'  => true,
-                    'read_only' => true
-                ]
-            ],
-            'useableAsGridFilter' => [
-                'name'      => 'useableAsGridFilter',
-                'fieldType' => 'switch',
-                'options'   => [
-                    'data'      => true,
-                    'disabled'  => true,
-                    'read_only' => true
-                ]
-            ]
-        ];
-    }
-
     /**
      * {@inheritdoc}
      */

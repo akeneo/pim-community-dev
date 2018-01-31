@@ -20,15 +20,12 @@ Feature: Set the attribute used as label
   Scenario: Successfully set a family attribute as the family label
     Given I am on the "Bags" family page
     Then eligible attributes as label should be SKU, Brand and Model
-
-  Scenario: Successfully set a family attribute as the family label
-    Given I am on the "Bags" family page
-    And I fill in the following information:
+    When I fill in the following information:
       | Attribute used as label | Brand |
     And I save the family
     And I should not see the text "There are unsaved changes."
-    Then I am on the families page
-    And I should see "Brand"
+    And I am on the families grid
+    Then I should see the text "Brand"
 
   Scenario: Successfully display the chosen attribute as the title of the product
     Given the attribute "Brand" has been chosen as the family "Bags" label
@@ -51,5 +48,5 @@ Feature: Set the attribute used as label
     And I visit the "Attributes" tab
     Then I should see attributes "Brand, Model, Size, Description" in group "Other"
     And I remove the "brand" attribute
-    Then I should see the flash message "This attribute can not be removed because it is used as the label of the family"
     And I should see attributes "Brand" in group "Other"
+    And I should not see the text "There are unsaved changes."

@@ -1,0 +1,7 @@
+<% _.each(operations, function (operation) { %>
+    <div class="AknSquareList-item<%- (operation.code === currentOperation) ? ' AknSquareList-item--selected' : '' %> operation" data-code="<%- operation.code %>">
+        <img src="/bundles/pimui/images/bulk/<%- operation.icon %>.svg" class="AknSquareList-icon">
+        <img src="/bundles/pimui/images/bulk/<%- operation.icon %>_selected.svg" class="AknSquareList-icon AknSquareList-icon--selected">
+        <div><%- operation.label %></div>
+    </div>
+<% }); %>

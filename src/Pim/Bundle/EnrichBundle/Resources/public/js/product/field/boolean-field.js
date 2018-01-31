@@ -8,7 +8,7 @@
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 define(
-    ['pim/field', 'underscore', 'text!pim/template/product/field/boolean', 'bootstrap.bootstrapswitch'],
+    ['pim/field', 'underscore', 'pim/template/product/field/boolean', 'bootstrap.bootstrapswitch'],
     function (Field, _, fieldTemplate) {
     return Field.extend({
         fieldTemplate: _.template(fieldTemplate),

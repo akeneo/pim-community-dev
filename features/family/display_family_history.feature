@@ -1,3 +1,4 @@
+@javascript
 Feature: Display the family history
   In order to know who, when and what changes has been made to an family
   As an administrator
@@ -7,19 +8,18 @@ Feature: Display the family history
     Given the "default" catalog configuration
     And I am logged in as "Peter"
     And the following attribute group:
-      | code    | label-en_US | group | type             |
-      | general | General     | other | pim_catalog_text |
+      | code    | label-en_US |
+      | general | General     |
     And the following attributes:
       | label-en_US | group   | type             | code        |
       | Description | General | pim_catalog_text | description |
 
-  @javascript
   Scenario: Successfully create a family and see the history
-    Given I am on the families page
+    Given I am on the families grid
     And I create a new family
     And I fill in the following information in the popin:
       | Code | Flyer |
-    And I save the family
+    And I press the "Save" button
     And I should see the flash message "Family successfully created"
     And I should not see the text "There are unsaved changes."
     And I am on the "Flyer" family page
@@ -31,7 +31,7 @@ Feature: Display the family history
     When I visit the "Properties" tab
     And I fill in the following information:
       | English (United States) | Fly |
-    And I save the family
+    And I press the "Save" button
     And I should see the flash message "Family successfully updated"
     And I should not see the text "There are unsaved changes."
     When I visit the "History" tab

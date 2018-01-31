@@ -17,20 +17,25 @@ Feature: Create an attribute
     And I save the attribute
     Then I should see the flash message "Attribute successfully created"
 
-  @info Codes 'id', associationTypes', 'categories', 'categoryId', 'completeness', 'enabled', 'family', 'groups', 'associations', 'products', 'scope', 'treeId', 'values', '*_groups' and '*_products' are reserved for grid filters and import/export column names
-  Scenario: Fail to create a text attribute with an invalid or reserved code
+  Scenario: Fail to create a text attribute with an invalid code
     Given I change the Code to an invalid value
-    And I scroll down
     And I change the "Attribute group" to "Other"
     And I save the attribute
     Then I should see validation error "Attribute code may contain only letters, numbers and underscores"
 
+  @info Codes 'id', associationTypes', 'categories', 'categoryId', 'completeness', 'enabled', 'family', 'groups', 'associations', 'products', 'scope', 'treeId', 'values', '*_groups' and '*_products' are reserved for grid filters and import/export column names
+  Scenario: Fail to create a text attribute with a reserved code
+    Given I change the "Code" to "categories"
+    And I change the "Attribute group" to "Other"
+    And I save the attribute
+    Then I should see validation error "This code is not available"
+
   Scenario: Fail to create a text attribute with an invalid validation regex
     Given I fill in the following information:
-     | Code              | short_description  |
-     | Validation rule   | Regular expression |
-     | Validation regexp | this is not valid  |
-     | Attribute group   | Other              |
+     | Code               | short_description  |
+     | Attribute group    | Other              |
+     | Validation rule    | Regular expression |
+     | Regular expression | this is not valid  |
     And I save the attribute
     Then I should see validation error "This regular expression is not valid."
 
@@ -42,8 +47,8 @@ Feature: Create an attribute
 
   @jira https://akeneo.atlassian.net/browse/PIM-6324
   Scenario: Successfully switch to tab with an invalid field
-      Given I visit the "Values" tab
-      And I save the attribute
-      Then I should see the Code field
-      Then I should be on the "Parameters" tab
-      And I should see validation error "This value should not be blank."
+    Given I visit the "Label translations" tab
+    And I save the attribute
+    Then I should see the Code field
+    And I should be on the "Properties" tab
+    And I should see validation error "This value should not be blank."

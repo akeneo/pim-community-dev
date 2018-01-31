@@ -3,9 +3,11 @@
 namespace spec\Pim\Component\Catalog\Validator;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Model\GroupInterface;
-use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Model\FamilyVariantInterface;
+use Pim\Component\Catalog\Model\ProductModelInterface;
+use Pim\Component\Catalog\Model\VariantProductInterface;
 use Pim\Component\Catalog\Validator\UniqueAxesCombinationSet;
+use Prophecy\Argument;
 
 class UniqueAxesCombinationSetSpec extends ObjectBehavior
 {
@@ -14,27 +16,49 @@ class UniqueAxesCombinationSetSpec extends ObjectBehavior
         $this->shouldHaveType(UniqueAxesCombinationSet::class);
     }
 
-    function it_adds_new_axis_combinations(
-        GroupInterface $variantGroup1,
-        GroupInterface $variantGroup2,
-        ProductInterface $product1,
-        ProductInterface $product2,
-        ProductInterface $product3
+    function it_adds_axes_combinations(
+        FamilyVariantInterface $familyVariant,
+        ProductModelInterface $rootProductModel,
+        ProductModelInterface $productModel,
+        VariantProductInterface $variantProduct
     ) {
-        $variantGroup1->getCode()->willReturn('variant_group_1');
-        $variantGroup2->getCode()->willReturn('variant_group_2');
+        $familyVariant->getCode()->willReturn('family_variant');
 
-        $product1->getIdentifier()->willReturn('product_1');
-        $product1->getVariantGroup()->willReturn($variantGroup1);
+        $rootProductModel->getCode()->willReturn('root_product_model');
+        $rootProductModel->getFamilyVariant()->willReturn($familyVariant);
 
-        $product2->getIdentifier()->willReturn('product_2');
-        $product2->getVariantGroup()->willReturn($variantGroup1);
+        $productModel->getCode()->willReturn('product_model');
+        $productModel->getParent()->willReturn($rootProductModel);
+        $productModel->getFamilyVariant()->willReturn($familyVariant);
 
-        $product3->getIdentifier()->willReturn('product_3');
-        $product3->getVariantGroup()->willReturn($variantGroup2);
+        $variantProduct->getIdentifier()->willReturn('variant_product');
+        $variantProduct->getParent()->willReturn($productModel);
+        $variantProduct->getFamilyVariant()->willReturn($familyVariant);
 
-        $this->addCombination($product1, 'size-xl,color-red')->shouldReturn(true);
-        $this->addCombination($product2, 'size-xl,color-red')->shouldReturn(false);
-        $this->addCombination($product3, 'size-xl,color-red')->shouldReturn(true);
+        $this->addCombination($productModel, '[a_color]')->shouldReturn(true);
+        $this->addCombination($variantProduct, '[a_size]')->shouldReturn(true);
+    }
+
+    function it_does_not_add_axes_combinations_twice(
+        FamilyVariantInterface $familyVariant,
+        ProductModelInterface $rootProductModel,
+        ProductModelInterface $productModel,
+        ProductModelInterface $invalidProductModel
+    ) {
+        $familyVariant->getCode()->willReturn('family_variant');
+
+        $rootProductModel->getCode()->willReturn('root_product_model');
+        $rootProductModel->getFamilyVariant()->willReturn($familyVariant);
+
+        $productModel->getCode()->willReturn('product_model');
+        $productModel->getParent()->willReturn($rootProductModel);
+        $productModel->getFamilyVariant()->willReturn($familyVariant);
+
+        $invalidProductModel->getCode()->willReturn('invalid_product_model');
+        $invalidProductModel->getParent()->willReturn($rootProductModel);
+        $invalidProductModel->getFamilyVariant()->willReturn($familyVariant);
+
+        $this->addCombination($productModel, '[a_color]')->shouldReturn(true);
+        $this->addCombination($invalidProductModel, '[a_color]')->shouldReturn(false);
     }
 }

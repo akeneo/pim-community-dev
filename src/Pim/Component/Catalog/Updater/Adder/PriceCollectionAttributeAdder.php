@@ -2,13 +2,12 @@
 
 namespace Pim\Component\Catalog\Updater\Adder;
 
-use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
-use Pim\Component\Catalog\Builder\ProductBuilderInterface;
+use Pim\Component\Catalog\Builder\EntityWithValuesBuilderInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
-use Pim\Component\Catalog\Model\ProductInterface;
-use Pim\Component\Catalog\Repository\CurrencyRepositoryInterface;
-use Pim\Component\Catalog\Validator\AttributeValidatorHelper;
+use Pim\Component\Catalog\Model\EntityWithValuesInterface;
+use Pim\Component\Catalog\Model\PriceCollectionInterface;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
  * Price collection attribute adder
@@ -19,24 +18,22 @@ use Pim\Component\Catalog\Validator\AttributeValidatorHelper;
  */
 class PriceCollectionAttributeAdder extends AbstractAttributeAdder
 {
-    /** @var CurrencyRepositoryInterface */
-    protected $currencyRepository;
+    /** @var NormalizerInterface */
+    protected $normalizer;
 
     /**
-     * @param ProductBuilderInterface     $productBuilder
-     * @param AttributeValidatorHelper    $attrValidatorHelper
-     * @param CurrencyRepositoryInterface $currencyRepository
-     * @param array                       $supportedTypes
+     * @param EntityWithValuesBuilderInterface $entityWithValuesBuilder
+     * @param NormalizerInterface              $normalizer
+     * @param array                            $supportedTypes
      */
     public function __construct(
-        ProductBuilderInterface $productBuilder,
-        AttributeValidatorHelper $attrValidatorHelper,
-        CurrencyRepositoryInterface $currencyRepository,
+        EntityWithValuesBuilderInterface $entityWithValuesBuilder,
+        NormalizerInterface $normalizer,
         array $supportedTypes
     ) {
-        parent::__construct($productBuilder, $attrValidatorHelper);
+        parent::__construct($entityWithValuesBuilder);
 
-        $this->currencyRepository = $currencyRepository;
+        $this->normalizer = $normalizer;
         $this->supportedTypes = $supportedTypes;
     }
 
@@ -56,29 +53,13 @@ class PriceCollectionAttributeAdder extends AbstractAttributeAdder
      * ]
      */
     public function addAttributeData(
-        ProductInterface $product,
+        EntityWithValuesInterface $entityWithValues,
         AttributeInterface $attribute,
         $data,
         array $options = []
     ) {
         $options = $this->resolver->resolve($options);
-        $this->checkLocaleAndScope($attribute, $options['locale'], $options['scope']);
-        $this->checkData($attribute, $data);
 
-        $this->addPrices($product, $attribute, $data, $options['locale'], $options['scope']);
-    }
-
-    /**
-     * Check if data are valid
-     *
-     * @param AttributeInterface $attribute
-     * @param mixed              $data
-     *
-     * @throws InvalidPropertyTypeException
-     * @throws InvalidPropertyException
-     */
-    protected function checkData(AttributeInterface $attribute, $data)
-    {
         if (!is_array($data)) {
             throw InvalidPropertyTypeException::arrayExpected(
                 $attribute->getCode(),
@@ -87,78 +68,57 @@ class PriceCollectionAttributeAdder extends AbstractAttributeAdder
             );
         }
 
-        foreach ($data as $price) {
-            if (!is_array($price)) {
-                throw InvalidPropertyTypeException::arrayOfArraysExpected(
-                    $attribute->getCode(),
-                    static::class,
-                    $data
-                );
-            }
-
-            if (!array_key_exists('amount', $price)) {
-                throw InvalidPropertyTypeException::arrayKeyExpected(
-                    $attribute->getCode(),
-                    'amount',
-                    static::class,
-                    $data
-                );
-            }
-
-            if (!array_key_exists('currency', $price)) {
-                throw InvalidPropertyTypeException::arrayKeyExpected(
-                    $attribute->getCode(),
-                    'currency',
-                    static::class,
-                    $data
-                );
-            }
-
-            if (!is_numeric($price['amount']) && null !== $price['amount']) {
-                throw new InvalidPropertyTypeException(
-                    $attribute->getCode(),
-                    $price['amount'],
-                    static::class,
-                    sprintf(
-                        'Property "%s" expects a numeric as data for the currency, "%s" given.',
-                        $attribute->getCode(),
-                        $price['amount']
-                    ),
-                    InvalidPropertyTypeException::NUMERIC_EXPECTED_CODE
-                );
-            }
-
-            if (!in_array($price['currency'], $this->currencyRepository->getActivatedCurrencyCodes())) {
-                throw InvalidPropertyException::validEntityCodeExpected(
-                    $attribute->getCode(),
-                    'currency code',
-                    'The currency does not exist',
-                    static::class,
-                    $price['currency']
-                );
-            }
-        }
+        $this->addPrices($entityWithValues, $attribute, $data, $options['locale'], $options['scope']);
     }
 
     /**
-     * Add prices into the product value
+     * Add prices into the value
      *
-     * @param ProductInterface   $product
-     * @param AttributeInterface $attribute
-     * @param mixed              $data
-     * @param string             $locale
-     * @param string             $scope
+     * @param EntityWithValuesInterface $entityWithValues
+     * @param AttributeInterface        $attribute
+     * @param mixed                     $data
+     * @param string                    $locale
+     * @param string                    $scope
      */
-    protected function addPrices(ProductInterface $product, AttributeInterface $attribute, $data, $locale, $scope)
+    protected function addPrices(
+        EntityWithValuesInterface $entityWithValues,
+        AttributeInterface $attribute,
+        $data,
+        $locale,
+        $scope
+    ) {
+        $value = $entityWithValues->getValue($attribute->getCode(), $locale, $scope);
+        if (null !== $value) {
+            $data = $this->addNewPrices($value->getData(), $data);
+        }
+
+        $this->entityWithValuesBuilder->addOrReplaceValue($entityWithValues, $attribute, $locale, $scope, $data);
+    }
+
+    /**
+     * Returns the combination of the previous prices and the new prices
+     * to add, all of them in PIM standard format.
+     *
+     * It is possible to have several prices for the same currency, this will be
+     * handled by the ValueFactory which will keep only the last one
+     * (here, it will be the new one passed to the adder).
+     *
+     * Validation will also be performed by the factory (array correctly
+     * formatted, locale, scope...).
+     *
+     * @param PriceCollectionInterface $previousPrices
+     * @param array                    $newPrices
+     *
+     * @return array
+     */
+    protected function addNewPrices(PriceCollectionInterface $previousPrices, array $newPrices)
     {
-        $value = $product->getValue($attribute->getCode(), $locale, $scope);
+        $standardizedPreviousPrices = [];
 
-        if (null === $value) {
-            $value = $this->productBuilder->addOrReplaceProductValue($product, $attribute, $locale, $scope);
+        foreach ($previousPrices as $previousPrice) {
+            $standardizedPreviousPrices[] = $this->normalizer->normalize($previousPrice, 'standard');
         }
 
-        foreach ($data as $price) {
-            $this->productBuilder->addPriceForCurrency($value, $price['currency'], $price['amount']);
-        }
+        return array_merge($standardizedPreviousPrices, $newPrices);
     }
 }

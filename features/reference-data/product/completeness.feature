@@ -29,92 +29,34 @@ Feature: Display the completeness of a product with reference data
 
   Scenario: Successfully display the completeness of the products with reference data
     Given I am on the "red-heels" product page
-    When I open the "Completeness" panel
+    When I visit the "Completeness" column tab
     Then I should see the completeness:
       | channel | locale | state   | ratio |
-      | mobile  | en_US  | warning | 50%   |
       | tablet  | en_US  | warning | 50%   |
+      | tablet  | fr_FR  | warning | 75%   |
+      | mobile  | en_US  | warning | 50%   |
       | mobile  | fr_FR  | success | 100%  |
-      | tablet  | fr_FR  | warning | 75%   |
     When I am on the "black-heels" product page
-    And I open the "Completeness" panel
+    And I visit the "Completeness" column tab
     Then I should see the completeness:
       | channel | locale | state   | ratio |
-      | mobile  | en_US  | warning | 50%   |
       | tablet  | en_US  | success | 100%  |
-      | mobile  | fr_FR  | warning | 25%   |
       | tablet  | fr_FR  | warning | 75%   |
-    When I am on the "green-heels" product page
-    And I open the "Completeness" panel
-    Then I should see the completeness:
-      | channel | locale | state   | ratio |
       | mobile  | en_US  | warning | 50%   |
-      | tablet  | en_US  | success | 100%  |
-      | mobile  | fr_FR  | warning | 50%   |
-      | tablet  | fr_FR  | success | 100%  |
-    When I am on the "high-heels" product page
-    And I open the "Completeness" panel
+      | mobile  | fr_FR  | warning | 25%   |
+    When I am on the "green-heels" product page
+    And I visit the "Completeness" column tab
     Then I should see the completeness:
       | channel | locale | state   | ratio |
-      | mobile  | en_US  | warning | 25%   |
+      | tablet  | en_US  | success | 100%  |
+      | tablet  | fr_FR  | success | 100%  |
+      | mobile  | en_US  | warning | 50%   |
+      | mobile  | fr_FR  | warning | 50%   |
+    When I am on the "high-heels" product page
+    And I visit the "Completeness" column tab
+    Then I should see the completeness:
+      | channel | locale | state   | ratio |
       | tablet  | en_US  | warning | 25%   |
-      | mobile  | fr_FR  | warning | 25%   |
       | tablet  | fr_FR  | warning | 25%   |
-
-  Scenario: Successfully display the completeness of the products with reference data in the grid
-    Given I am on the products page
-    And I switch the locale to "en_US"
-    And I filter by "scope" with operator "equals" and value "Mobile"
-    Then the row "red-heels" should contain:
-      | column   | value |
-      | complete | 50%   |
-    Then the row "black-heels" should contain:
-      | column   | value |
-      | complete | 50%   |
-    Then the row "green-heels" should contain:
-      | column   | value |
-      | complete | 50%   |
-    Then the row "high-heels" should contain:
-      | column   | value |
-      | complete | 25%   |
-    And I filter by "scope" with operator "equals" and value "Tablet"
-    Then the row "red-heels" should contain:
-      | column   | value |
-      | complete | 50%   |
-    Then the row "black-heels" should contain:
-      | column   | value |
-      | complete | 100%  |
-    Then the row "green-heels" should contain:
-      | column   | value |
-      | complete | 100%  |
-    Then the row "high-heels" should contain:
-      | column   | value |
-      | complete | 25%   |
-    And I switch the locale to "fr_FR"
-    And I filter by "scope" with operator "equals" and value "Mobile"
-    Then the row "red-heels" should contain:
-      | column   | value |
-      | complete | 100%  |
-    Then the row "black-heels" should contain:
-      | column   | value |
-      | complete | 25%   |
-    Then the row "green-heels" should contain:
-      | column   | value |
-      | complete | 50%   |
-    Then the row "high-heels" should contain:
-      | column   | value |
-      | complete | 25%   |
-    And I filter by "scope" with operator "equals" and value "Tablet"
-    Then the row "red-heels" should contain:
-      | column   | value |
-      | complete | 75%   |
-    Then the row "black-heels" should contain:
-      | column   | value |
-      | complete | 75%   |
-    Then the row "green-heels" should contain:
-      | column   | value |
-      | complete | 100%  |
-    Then the row "high-heels" should contain:
-      | column   | value |
-      | complete | 25%   |
-
+      | mobile  | en_US  | warning | 25%   |
+      | mobile  | fr_FR  | warning | 25%   |

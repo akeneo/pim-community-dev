@@ -48,20 +48,6 @@ pim_enrich:
       product.title: Producten
       property.title: Eigenschappen
       history.title: Geschiedenis
-  variant_group:
-    type:
-      VARIANT: Variant
-      X_SELL: Cross-Sell
-      ADDITIONAL: Extra
-      RELATED: Gerelateerde
-    tab:
-      product.title: Producten
-      property.title: Eigenschappen
-      history.title: Geschiedenis
-      attribute.title: Attributen
-    info:
-      no_attributes: Deze variant groep heeft nog geen kenmerken
-      no_attributes_in_selected_locale: Deze variant groep heeft geen kenmerken in deze locale
   completeness:
     progress_bar.title: '%ratio%% voltooid (1 vereiste waarde) | %ratio%% voltooid (%count% vereiste waarden)'
     subtitle: '{0} Voltooid|{1} 1 ontbrekende waarde|]1, Inf] %count% ontbrekende waarden'
@@ -83,7 +69,7 @@ pim_enrich:
       steps:
         second: Kies bewerking
     change-status:
-      label: Status wijzigen (inschakelen / uitschakelen)
+      label: Status wijzigen
       description: De geselecteerde producten zullen worden ingeschakeld of uitgeschakeld.
       success_flash: De status van één of meerdere producten is gewijzigd
       launched_flash: De massa actie "verander status" is gestart. U wordt op de hoogte gebracht wanneer dit is voltooid.
@@ -92,27 +78,22 @@ pim_enrich:
       description: De attributen van het geselecteerde product zullen worden bewerkt met de volgende gegevens voor de gekozen lokalisatie.
       empty: Selecteer de attributen die u wilt bewerken
       success_flash: De taak "update status van producten" is momenteel aan het lopen
-      launched_flash: De massa actie "wijzig gemeenschappelijke attributen" is gestart. U wordt op de hoogte gebracht wanneer dit is voltooid.
       message:
         warning: Er is geen gemeenschappelijke attribuut voor de geselecteerde producten. Gelieve uw selectie te wijzigen.
         no_valid_attribute: Geen van de geselecteerde attributen kan worden toegepast op dit product.
     classify-add:
-      label: Producten in categorieën indelen
       description: De producten zullen worden geplaatst in de volgende categorieën. De bestaande plaatsing wordt behouden.
       success_flash: Producten zijn in geselecteerde categorieën ingedeeld
       launched_flash: De massa actie "voeg toe aan categorieën" is gestart. U wordt op de hoogte gebracht wanneer dit is voltooid.
     classify-move:
-      label: Verplaats producten naar categorieën
       description: De producten zullen worden geplaatst in de volgende categorieën. De bestaande plaatsing gaat verloren.
       success_flash: Producten zijn verplaatst naar de geselecteerde categorieën
       launched_flash: De massa actie "verplaats naar categorieën" is gestart. U wordt op de hoogte gebracht wanneer dit is voltooid.
     classify-remove:
-      label: Verwijder producten van categorieën
       description: De producten zullen worden verwijderd uit de volgende categorieën.
       success_flash: Product(en) zijn verwijderd van de geselecteerde categorieën
       launched_flash: De massa actie "verwijder van categorieën" is gestart. U wordt op de hoogte gebracht wanneer dit is voltooid.
     change-family:
-      label: Wijzigen van de productfamilie
       description: De familie van de geselecteerde producten zal worden gewijzigd in de gekozen familie
       success_flash: De familie van de geselecteerde producten is succesvol gewijzigd
       launched_flash: De massa actie "verander familie" is gestart. U wordt op de hoogte gebracht wanneer dit is voltooid.
@@ -122,14 +103,6 @@ pim_enrich:
       success_flash: Producten werden met succes toegevoegd aan de geselecteerde groepen
       launched_flash: De massa actie "voeg toe aan groepen" is gestart. U wordt op de hoogte gebracht wanneer dit is voltooid.
       no_group: Geen groep beschikbaar. Gelieve eerst een groep aan te maken.
-    add-to-variant-group:
-      label: Voeg toe aan een variant groep
-      description: Selecteer de variant groep waarin u de geselecteerde producten wilt toevoegen
-      success_flash: Producten werden met succes toegevoegd aan de geselecteerde variant groepen
-      no_variant_group: Geen variant groep beschikbaar. Gelieve eerst een variant groep aan te maken.
-      some_variant_groups_are_skipped:
-        The following variant groups have been skipped because they don't share attributes with selected products: '%groups%'
-      launched_flash: De massa actie "voeg toe aan variant groep" is gestart. U wordt op de hoogte gebracht wanneer dit is voltooid.
     set-attribute-requirements:
       description: De volgende attribuutvereisten zullen worden toegepast op de geselecteerde families
       success_flash: De attribuutvereisten zijn toegepast op de geselecteerde families
@@ -155,11 +128,9 @@ pim_enrich:
       add_attribute: Voeg een attribuut toe aan een product
       remove_attribute: Verwijder een attribuut van een product
       categories_view: Raadpleeg de categorieën van een product
-      associations_view: Bekijk de associatietypes van een product
       change_family: Productfamilie wijzigen
       change_state: Status van product wijzigen
       add_to_groups: Product toevoegen aan groepen
-      add_to_variant_group: Voeg product toe aan een variant groep
       mass_edit: Product massabewerken acties
       comment: Geef commentaar op producten
       download: Download het product als PDF
@@ -227,15 +198,13 @@ pim_enrich:
     currency: Valuta
     family: Families
     group: Groepen
-    variant_group: Variantgroepen
     group_type: Groepstypen
     locale: Lokalisaties
     product: Producten
 attribute:
   title: attribuut
-  overview: Attribuutoverzicht
-  create: Attribuut aanmaken
   edit: attribuut bewerken
+  create: Attribuut aanmaken
 attribute group:
   title: attribuutgroep
   overview: Attribuutgroep overzicht
@@ -246,7 +215,7 @@ attribute group:
   create new: Maak een nieuwe attribuutgroep
 category:
   title: categorie
-  overview: categorie overzicht
+  overview: Categorieën
   create: categorie aanmaken
   edit: categorie bewerken
   suggest selection: Select een categorie aan de linkerkant
@@ -263,17 +232,13 @@ channel:
   edit: kanaal bewerken
 currency:
   title: valuta
-  overview: valuta overzicht
   create: valuta aanmaken
   edit: valuta bewerken
 family:
   title: familie
-  overview: familieoverzicht
-  create: familie aanmaken
   edit: familie bewerken
 locale:
   title: lokalisatie
-  overview: lokalisatieoverzicht
   create: lokalisatie aanmaken
   edit: lokalisatie bewerken
 product:
@@ -283,22 +248,12 @@ product:
   edit: product bewerken
 group:
   title: groep
-  overview: groepsoverzicht
-  create: groep aanmaken
   edit: groep bewerken
 group type:
   title: groepstype
-  overview: groepstype overzicht
-  create: groepstype aanmaken
   edit: groepstype bewerken
-variant group:
-  title: variantgroep
-  overview: variantgroepen overzicht
-  create: variantgroep aanmaken
-  edit: variantgroep bewerken
 association type:
   title: koppelingstype
-  overview: associatietype overzicht
   create: associatietype aanmaken
   edit: associatietype wijzigen
 products: producten
@@ -314,12 +269,10 @@ btn:
     locale: lokalisatie aanmaken
     product: product aanmaken
     group: groep aanmaken
-    variant group: variantgroep aanmaken
     association type: associatietype aanmaken
     group type: groepstype aanmaken
   edit: bewerken
   save: opslaan
-  save and back: opslaan en terug naar raster
   save and create: opslaan en nieuwe aanmaken
   save and next: opslaan en volgende
   save and finish: opslaan en afronden
@@ -334,7 +287,7 @@ btn:
   download_pdf: PDF
 confirmation:
   confirm: Bevestiging
-  delete: Bevestig verwijderen
+  delete: Verwijderen bevestigen
   leave: Weet u zeker dat u deze pagina wilt verlaten?
   discard changes: Als u deze pagina verlaat worden veranderingen aan %entity% niet opgeslagen.
   remove:
@@ -345,7 +298,6 @@ confirmation:
     family: Weet u zeker dat u de familie %name% wilt verwijderen?
     product: Weet u zeker dat u het product %name% wilt verwijderen?
     group: Weet u zeker dat u de groep %name% wilt verwijderen?
-    variant group: Weet u zeker dat u de variantgroep %name% wilt verwijderen?
     group type: Weet u zeker dat u het groepstype %name% wilt verwijderen?
     user: Weet u zeker dat u de gebruiker %name% wilt verwijderen?
   attribute group:
@@ -362,7 +314,6 @@ flash:
     updated: Attribuut succesvol bijgewerkt
     removed: Attribuut succesvol verwijderd
     identifier not removable: Id-attribuut kan niet worden verwijderd
-    used by groups: Dit attribuut kan niet worden verwijderd omdat het wordt gebruik door %count% variantengroepen
   attribute group:
     created: Attribuutgroep succesvol aangemaakt
     updated: Attribuutgroep succesvol bijgewerkt
@@ -384,7 +335,6 @@ flash:
   currency:
     updated: Valuta succesvol bijgewerkt
   family:
-    created: Familie succesvol aangemaakt
     updated: Famille mise à jour avec succès
     removed: Familie succesvol verwijderd
     identifier not removable: Id-attribuut kan niet worden verwijderd uit een familie
@@ -403,18 +353,12 @@ flash:
     enabled: Product is ingeschakeld
     disabled: Product is uitgeschakeld
   group:
-    created: Groep succesvol aangemaakt
     updated: Groep succesvol bijgewerkt
     removed: Groep succesvol verwijderd
-  variant group:
-    created: Variantgroep succesvol aangemaakt
-    updated: Variantgroep succesvol bijgewerkt
-    removed: Variantgroep succesvol verwijderd
   group type:
     created: Groepstype succesvol aangemaakt
     updated: Groepstype succesvol bijgewerkt
     removed: Groepstype succesvol verwijderd
-    cant remove variant: Groepstype variant kan niet worden verwijderd
     cant remove used: Groepstype wordt gebruikt door sommige groepen en kan niet worden verwijderd
   association type:
     created: Associatietype met succes aangemaakt
@@ -445,7 +389,7 @@ info:
     select products: Selecteer alstublieft de producten die behoren tot deze groep.
     selectable products: De volgende selecteerbare producten hebben een gedefinieerde waarde voor elke as.
     no group types: Er bestaan geen groepstypen, klik hier om er een aan te maken
-    more products: Nog %count% producten...
+    more products: 'Nog %count% producten...'
   association type:
     show products: Toon producten
     show groups: Toon groepen
@@ -469,7 +413,7 @@ Manage groups: Groepen beheren
 Code: Code
 Name: Naam
 Type: Type
-Scope: Bereik
+Scope: Kanaal
 Required: Verplicht
 Unique: Uniek
 Not required: Niet verplicht
@@ -568,7 +512,6 @@ pim_title.attribute:
   edit: "Attributen %attribute.label% | Bewerken"
 pim_title.product:
   index: "Producten"
-  edit: "Producten %product.sku% | Bewerken"
 pim_title.family:
   index: "Families"
   edit: "Families %family.label%|Bewerken"
@@ -583,9 +526,6 @@ pim_title.locale:
 pim_title.group:
   index: "Groepen"
   edit: "Groepen %group.label% | Bewerken"
-pim_title.variant_group:
-  index: "Variantgroepen"
-  edit: "Variantgroepen %group.label%|Bewerken"
 pim_title.association_type:
   index: "Associatietypes"
   edit: "Associatietypes %association type.label% | Bewerken"
@@ -632,21 +572,20 @@ pim_enrich.mass_edit_action:
     steps:
       second: Kies bewerking
   change-status:
-    label: Status wijzigen (inschakelen / uitschakelen)
+    label: Status wijzigen
     description: De geselecteerde producten zullen worden ingeschakeld of uitgeschakeld.
     success_flash: De status van één of meerdere producten is gewijzigd
   edit-common-attributes:
+    label: Bewerk attributen
     description: De attributen van het geselecteerde product zullen worden bewerkt met de volgende gegevens voor de gekozen lokalisatie.
     empty: Selecteer de attributen die u wilt bewerken
     success_flash: Productattributen zijn bijgewerkt
     message.warning: Er is geen gemeenschappelijke attribuut voor de geselecteerde producten. Gelieve uw selectie te wijzigen.
     no_attribute.warning: Er is geen gemeenschappelijke attribuut voor de geselecteerde producten. Gelieve uw selectie te wijzigen.
   classify:
-    label: Producten in categorieën indelen
     description: De producten zullen worden geplaatst in de volgende categorieën. De bestaande plaatsing wordt behouden.
     success_flash: Producten zijn in geselecteerde categorieën ingedeeld
   change-family:
-    label: Wijzigen van de productfamilie
     description: De familie van de geselecteerde producten zal worden gewijzigd in de gekozen familie
     success_flash: De familie van de geselecteerde producten is succesvol gewijzigd
     no_family: Geen familie
@@ -666,25 +605,6 @@ Current tab: Huidige tabblad
 Group: Groep
 View group: Bekijk groep
 Products: Producten
-pim_menu:
-  tab:
-    collect: Verzamelen
-    enrich: Verrijken
-    settings: Instellingen
-    spread: Verspreiden
-  item:
-    association_type: Associatietypes
-    attribute: Attributen
-    attribute_group: Attribuutgroepen
-    category: Categorieën
-    channel: Kanalen
-    currency: Valuta
-    family: Families
-    group: Groepen
-    group_type: Groepstypen
-    locale: Lokalisaties
-    product: Producten
-    variant_group: Variantgroepen
 Properties: Eigenschappen
 History: Geschiedenis
 pane.accordion:
@@ -698,11 +618,8 @@ pane.accordion:
   group_values: Groepswaarden
 popin.create:
   association_type.title: Een nieuw associatietype aanmaken
-  family.title: Nieuwe familie aanmaken
   group.title: Nieuwe groep aanmaken
-  group_type.title: Nieuw groepstype aanmaken
   product.title: Een nieuw product aanmaken
-  variant_group.title: Nieuwe variant groep toevoegen
   option.title: Nieuwe optie aanmaken
 In group: In groep
 Attribute as label: Attribuut als label
@@ -762,13 +679,19 @@ job_execution.summary:
   skip: Overgeslagen
   skipped_products: Overgeslagen producten
   skipped_attributes: Overgeslagen attributen
+edit_common_attributes.steps.edit_common_attributes_processor.title: Bewerk attributen
 update_product_value.steps.update_product_value_processor.title: Update productwaarde
 remove_product_value.steps.update_product_value_processor.title: Verwijder productwaarde
+edit_common_attributes: Bewerk attributen
 batch_jobs:
   update_product_value:
     label: Update productwaarde
     perform:
       label: Update productwaarde
+  edit_common_attributes:
+    label: Bewerk attributen
+    perform:
+      label: Bewerk attributen
 pim_enrich_attribute_form:
   code: Code
   unique: Unieke waarde

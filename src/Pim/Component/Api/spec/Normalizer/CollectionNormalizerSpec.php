@@ -2,10 +2,10 @@
 
 namespace spec\Pim\Component\Api\Normalizer;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\FamilyInterface;
 use Symfony\Component\Serializer\SerializerInterface;
-use Doctrine\Common\Collections\ArrayCollection;
 
 class CollectionNormalizerSpec extends ObjectBehavior
 {

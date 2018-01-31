@@ -5,14 +5,10 @@ pim_connector:
     entity_reader.title: Kohteen poisto
     csv_reader:
       title: CSV-lukija
-    file_reader:
-      invalid_item_columns_count: 'Odotettu %totalColumnsCount% saraketta, saatu %itemColumnsCount% %filePath%:%lineno%'
     csv_product_reader.title: CSV-tuotteen lukija
     csv_category_reader.title: CSV-kategorian lukija
-    csv_variant_group .title: CSV-vaihtoehtojen ryhmälukija
     dummy_processor.title: Malliprosessori
     product_processor.title: Tuotteen luominen
-    variant_group_processor.title: Malliryhmän luonti / päivitys
     category_processor.title: Kategorian luominen
     association_processor.title: Assosiaation luominen
     product_association_processor.title: Assosiaation luominen
@@ -26,11 +22,10 @@ pim_connector:
     file_writer.title: Ulostulo
     product_writer.title: Tuotteen varastointi
     category_writer.title: Kategorian varastointi
-    variant_group_writer.title: Variant ryhmän varastointi
     writer.title: Yksikön varastointi
     csv_writer.title: CSV-kirjoittaja
 job_execution.summary:
-  read: luettu
+  read: lue
   write: kirjoitettu
   skip: ohitettu
   create: luotu
@@ -44,11 +39,17 @@ job_execution.summary:
     skipped: ohitetaan, laajennus valkolistattu
   product_skipped_no_diff: ohitettu tuote (ei eroavaisuuksia)
   product_skipped_no_associations: ohitettu tuote (ei havaittuja assosiaatioita)
+  product_model_skipped_no_diff: ohitettu tuotemalli (ei eroavaisuuksia)
   item_position: lue rivit
+  skipped_in_root_product_model: ohitettu tuotemalli ylätason kanssa
+  skipped_in_sub_product_model: ohitettu tuotemalli ilman ylätasoa
 batch_jobs:
   csv_product_export:
     label: Tuotteiden vienti CSV-muodossa
     export.label: Tuotteiden vienti
+  csv_product_model_export:
+    label: Tuotemallien vienti CSV-muodossa
+    export.label: Tuotemallien vienti
   csv_category_export:
     label: Kategorian vienti CSV-muodossa
     export.label: Kategorian vienti
@@ -56,25 +57,31 @@ batch_jobs:
     label: Attribuuttien vienti CSV-muodossa
     export.label: Attribuuttien vienti
   csv_attribute_option_export:
-    label: Attribuuttien määritteiden vienti CSV-muodossa
-    export.label: Attribuuttien määritteiden vienti
+    label: Attribuutin vaihtoehtojen vienti CSV-muodossa
+    export.label: Attribuutin vaihtoehtojen vienti
   csv_association_type_export:
     label: Liitännäistyyppien vienti CSV-muodossa
     export.label: Liitännäistyyppien vienti
   csv_group_export:
     label: Ryhmän vienti CSV-muodossa
     export.label: Ryhmän vienti
-  csv_variant_group_export:
-    label: Muuttujaryhmien vienti CSV-muodossa
-    export.label: Muutujaryhmien vienti
   csv_family_export:
     label: Ryhmän tuonti CSV-tiedostona
     export.label: Ryhmän vienti
+  csv_family_variant_export:
+    label: Varianttiperheen vienti CSV-muodossa
+    export.label: Varianttiperheen vienti
   csv_product_import:
     label: Tuotteiden tuonti CSV-muodossa
     validation.label: Tiedostojen tarkistaminen
     import.label: Tuotteiden tuonti
     import_associations.label: Liitännäisten tuonti
+  csv_product_model_import:
+    label: Tuotemallien tuonti CSV-muodossa
+    validation.label: Tiedostojen tarkistaminen
+    import_root_product_model.label: Juuritason tuotemallin tuonti
+    import_sub_product_model.label: Alatason tuotemallin tuonti
+    import_product_model_descendants.label: Lasketaan tuotemallin rakenne
   csv_category_import:
     label: Kategorioiden tuonti CSV-muodossa
     validation.label: Tiedostojen tarkistaminen
@@ -84,9 +91,9 @@ batch_jobs:
     validation.label: Tiedostojen tarkistaminen
     import.label: Attribuuttien tuonti
   csv_attribute_option_import:
-    label: Attribuuttien määritteiden tuonti CSV-muodossa
+    label: Attribuutin vaihtoehtojen tuonti CSV-muodossa
     validation.label: Tiedostojen tarkistaminen
-    import.label: Attribuuttien määritteiden tuonti
+    import.label: Attribuuttien vaihtoehtojen tuonti
   csv_association_type_import:
     label: Liitännäistyyppien tuonti CSV-muodossa
     validation.label: Tiedostojen tarkistaminen
@@ -95,14 +102,14 @@ batch_jobs:
     label: Ryhmän tuonti CSV-tiedostona
     validation.label: Tiedostojen tarkistaminen
     import.label: Ryhmätuonti
+  csv_family_variant_import:
+    label: Varianttiperheen tuonti CSV-muodossa
+    validation.label: Tiedostojen tarkistaminen
+    import.label: Varianttiperheen tuonti
   csv_group_import:
     label: Ryhmien tuonti CSV-muodossa
     validation.label: Tiedostojen tarkistaminen
     import.label: Ryhmien tuonti
-  csv_variant_group_import:
-    label: Muuttujaryhmien tuonti CSV-muodossa
-    validation.label: Tiedostojen tarkistaminen
-    import.label: Muutujaryhmien tuonti
   csv_channel_export:
     label: Kanavavienti CSV-muodossa
     export.label: Kanavavienti
@@ -151,38 +158,47 @@ batch_jobs:
     validation.label: Tiedostojen tarkistaminen
     import.label: Attribuuttien tuonti
   xlsx_attribute_option_import:
-    label: Attribuuttien määritteiden tuonti XLSX-muodossa
+    label: Attribuuttien vaihtoehtojen tuonti XLSX-muodossa
     validation.label: Tiedostojen tarkistaminen
-    import.label: Attribuuttien määritteiden tuonti
+    import.label: Attribuuttien vaihtoehtojen tuonti
   xlsx_family_import:
     label: Perheiden tuonti XLSX-muodossa
     validation.label: Tiedostojen tarkistaminen
     import.label: Ryhmätuonti
+  xlsx_family_variant_import:
+    label: Varianttiperheen tuonti XLSX-muodossa
+    validation.label: Tiedostojen tarkistaminen
+    import.label: Varianttiperheen tuonti
   xlsx_product_export:
     label: Tuotteiden vienti XLSX-muodossa
     export.label: Tuotteiden vienti
+  xlsx_product_model_export:
+    label: Tuotemallien vienti XLSX-muodossa
+    export.label: Tuotemallien vienti
   xlsx_product_import:
     label: Tuotteiden tuonti XLSX-muodossa
     validation.label: Tiedostojen tarkistaminen
     import.label: Tuotteiden tuonti
     import_associations.label: Liitännäisten tuonti
+  xlsx_product_model_import:
+    label: Tuotemallien tuonti XLSX-muodossa
+    validation.label: Tiedostojen tarkistaminen
+    import_root_product_model.label: Juuritason tuotemallin tuonti
+    import_sub_product_model.label: Alatason tuotemallin tuonti
+    import_product_model_descendants.label: Lasketaan tuotemallin rakenne
   xlsx_group_export:
     label: Ryhmävienti XLSX-muodossa
     export.label: Ryhmän vienti
-  xlsx_variant_group_export:
-    label: Muuttujaryhmien vienti XLSX-muodossa
-    export.label: Muutujaryhmien vienti
   xlsx_group_import:
     label: Ryhmätuonti XLSX-muodossa
     validation.label: Tiedostojen tarkistaminen
     import.label: Ryhmien tuonti
-  xlsx_variant_group_import:
-    label: Muuttujaryhmien tuonti XLSX-muodossa
-    validation.label: Tiedostojen tarkistaminen
-    import.label: Muuttujaryhmien tuonti
   xlsx_family_export:
     label: Perhevienti XLSX-muodossa
     export.label: Ryhmän vienti
+  xlsx_family_variant_export:
+    label: Varianttiperheen vienti XLSX-muodossa
+    export.label: Varianttiperheen vienti
   xlsx_category_export:
     label: Kategoriavienti XLSX-muodossa
     export.label: Kategorian vienti
@@ -190,8 +206,8 @@ batch_jobs:
     label: Attribuuttivienti XLSX-muodossa
     export.label: Attribuuttivienti XLSX-muodossa
   xlsx_attribute_option_export:
-    label: Attribuuttien määritteiden vienti XLSX-muodossa
-    export.label: Attribuuttien määritteiden vienti XLSX-muodossa
+    label: Attribuuttien vaihtoehtojen vienti XLSX-muodossa
+    export.label: Attribuuttien vaihtoehtojen vienti XLSX-muodossa
   xlsx_association_type_export:
     label: Liitännäistyyppien vienti XLSX-muodossa
     export.label: Liitännäistyyppien vienti XLSX-muodossa

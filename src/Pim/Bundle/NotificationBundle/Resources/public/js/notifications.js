@@ -6,22 +6,24 @@ define(
         'routing',
         'pim/notification-list',
         'pim/indicator',
-        'text!pim/template/notification/notification',
-        'text!pim/template/notification/notification-footer'
+        'pim/template/notification/notification',
+        'pim/template/notification/notification-footer'
     ],
     function (Backbone, $, _, Routing, NotificationList, Indicator, notificationTpl, notificationFooterTpl) {
         'use strict';
 
-        var Notifications = Backbone.View.extend({
-            el: '#header-notification-widget',
+        if ('locked' === sessionStorage.getItem('notificationRefreshLocked')) {
+            sessionStorage.setItem('notificationRefreshLocked', 'available');
+        }
 
+        return Backbone.View.extend({
             options: {
                 imgUrl:                 '',
                 loadingText:            null,
                 noNotificationsMessage: null,
                 markAsReadMessage:      null,
-                indicatorBaseClass:     'AknBell-count',
-                indicatorEmptyClass:    'AknBell-count--hidden',
+                indicatorBaseClass:     'AknNotificationMenu-count',
+                indicatorEmptyClass:    'AknNotificationMenu-count--hidden',
                 refreshInterval:        30000
             },
 
@@ -29,15 +31,13 @@ define(
 
             refreshTimeout: null,
 
-            refreshLocked: false,
-
             template: _.template(notificationTpl),
 
             footerTemplate: _.template(notificationFooterTpl),
 
             events: {
-                'click a.dropdown-toggle':   'onOpen',
-                'click button.mark-as-read': 'markAllAsRead'
+                'click .notification-link': 'onOpen',
+                'click .mark-as-read': 'markAllAsRead'
             },
 
             markAllAsRead: function (e) {
@@ -60,7 +60,7 @@ define(
                 this.options = _.extend({}, this.options, opts);
                 this.collection = new NotificationList();
                 this.indicator  = new Indicator({
-                    el: this.$('.AknBell-countContainer'),
+                    el: this.$('.AknNotificationMenu-countContainer'),
                     value: 0,
                     className: this.options.indicatorBaseClass,
                     emptyClass: this.options.indicatorEmptyClass
@@ -70,6 +70,7 @@ define(
                     this.scheduleRefresh();
                     if (this.freezeCount) {
                         this.freezeCount = false;
+
                         return;
                     }
                     if (this.indicator.get('value') !== count) {
@@ -101,21 +102,26 @@ define(
             },
 
             scheduleRefresh: function () {
-                if (this.refreshLocked) {
+                if ('locked' === sessionStorage.getItem('notificationRefreshLocked')) {
                     return;
                 }
                 if (null !== this.refreshTimeout) {
                     clearTimeout(this.refreshTimeout);
                 }
 
-                this.refreshTimeout = setTimeout(_.bind(function () {
-                    this.refreshLocked = true;
-                    $.getJSON(Routing.generate('pim_notification_notification_count_unread'))
-                        .then(_.bind(function (count) {
-                            this.refreshLocked = false;
-                            this.collection.trigger('load:unreadCount', count, true);
-                        }, this));
-                }, this), this.options.refreshInterval);
+                this.refreshTimeout = setTimeout(this.refresh.bind(this), this.options.refreshInterval);
+            },
+
+            refresh: function () {
+                if ('locked' === sessionStorage.getItem('notificationRefreshLocked')) {
+                    return;
+                }
+                sessionStorage.setItem('notificationRefreshLocked', 'locked');
+                $.getJSON(Routing.generate('pim_notification_notification_count_unread'))
+                    .then(_.bind(function (count) {
+                        sessionStorage.setItem('notificationRefreshLocked', 'available');
+                        this.collection.trigger('load:unreadCount', count, true);
+                    }, this));
             },
 
             onOpen: function () {
@@ -125,10 +131,9 @@ define(
             },
 
             render: function () {
-                this.setElement($('#header-notification-widget'));
                 this.$el.html(this.template());
                 this.collection.setElement(this.$('ul'));
-                this.indicator.setElement(this.$('.AknBell-countContainer'));
+                this.indicator.setElement(this.$('.AknNotificationMenu-countContainer'));
                 this.renderFooter();
             },
 
@@ -146,20 +151,5 @@ define(
                 );
             }
         });
-
-        var notifications;
-
-        return {
-            init: function (options) {
-                if (notifications) {
-                    notifications.render();
-                } else {
-                    notifications = new Notifications(options);
-                }
-                if (_.has(options, 'unreadCount')) {
-                    notifications.collection.trigger('load:unreadCount', options.unreadCount, true);
-                }
-            }
-        };
     }
 );

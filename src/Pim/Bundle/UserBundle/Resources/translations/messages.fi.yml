@@ -8,6 +8,10 @@ pim_user:
       business_unit.title: Liiketoimintayksiköt
       email_synchronization.title: Sähköpostin synkronoinnin asetukset
       interfaces.title: Rajapinnat
+  group:
+    tab:
+      general.title: Yleinen
+      users.title: Käyttäjät
 oro.user.controller:
   group.message.saved: "Ryhmä tallennettu"
   role.message.saved: "Rooli tallennettu"
@@ -72,7 +76,7 @@ Birthday: Syntymäpäivä
 API key: API-avain
 Ui locale: Käyttöliittymän kieli
 UI locale: Käyttöliittymän kieli
-User salt: Käyttäjän suola
+User salt: Käyttäjän salt
 Current password: Nykyinen salasana
 New password: Uusi salasana
 Repeat new password: Uusi salasana (toista)

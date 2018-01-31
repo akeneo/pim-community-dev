@@ -4,7 +4,8 @@ namespace Pim\Component\Catalog\Validator\Constraints;
 
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\MetricInterface;
-use Pim\Component\Catalog\Model\ProductValueInterface;
+use Pim\Component\Catalog\Model\ValueInterface;
+use Pim\Component\Catalog\Value\MetricValueInterface;
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
@@ -39,8 +40,8 @@ class ValidMetricValidator extends ConstraintValidator
     /**
      * Validate metric type and default metric unit
      *
-     * @param AttributeInterface|MetricInterface|ProductValueInterface $object
-     * @param Constraint                                               $constraint
+     * @param AttributeInterface|MetricInterface|ValueInterface $object
+     * @param Constraint                                        $constraint
      */
     public function validate($object, Constraint $constraint)
     {
@@ -50,10 +51,10 @@ class ValidMetricValidator extends ConstraintValidator
         } elseif ($object instanceof MetricInterface && null !== $object->getData()) {
             $familyProperty = 'family';
             $unitProperty = 'unit';
-        } elseif ($object instanceof ProductValueInterface && null !== $object->getMetric()
-            && (null !== $object->getMetric()->getUnit() || null !== $object->getMetric()->getData())
+        } elseif ($object instanceof MetricValueInterface && null !== $object->getData()
+            && (null !== $object->getUnit() || null !== $object->getAmount())
         ) {
-            $object = $object->getMetric();
+            $object = $object->getData();
             $familyProperty = 'family';
             $unitProperty = 'unit';
         } else {

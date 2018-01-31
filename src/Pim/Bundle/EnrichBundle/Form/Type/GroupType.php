@@ -4,6 +4,7 @@ namespace Pim\Bundle\EnrichBundle\Form\Type;
 
 use Doctrine\ORM\EntityRepository;
 use Pim\Bundle\EnrichBundle\Form\Subscriber\DisableFieldSubscriber;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -70,7 +71,7 @@ class GroupType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'pim_enrich_group';
     }
@@ -95,7 +96,7 @@ class GroupType extends AbstractType
         $builder
             ->add(
                 'type',
-                'entity',
+                EntityType::class,
                 [
                     'class'         => 'PimCatalogBundle:GroupType',
                     'query_builder' => function (EntityRepository $repository) {

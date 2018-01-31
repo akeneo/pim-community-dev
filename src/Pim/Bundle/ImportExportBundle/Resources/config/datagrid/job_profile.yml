@@ -1,12 +1,13 @@
 datagrid:
     job-profile-grid:
+        options:
+            manageFilters: false
         source:
             type: pim_datasource_job_instance
         columns:
-            code:
-                label: Code
             label:
                 label: Label
+                frontend_type: label
             job_name:
                 label:     Job
                 type:      job_name
@@ -32,25 +33,26 @@ datagrid:
                     - code
         actions:
             view:
+                launcherOptions:
+                    className: AknIconButton AknIconButton--small AknIconButton--view
                 type:      navigate
                 label:     pim.grid.action.show.title
-                icon:      eye-open
                 link:      show_link
                 rowAction: true
             edit:
+                launcherOptions:
+                    className: AknIconButton AknIconButton--small AknIconButton--edit
                 type:  navigate
                 label: Edit
-                icon:  pencil
                 link:  edit_link
             delete:
+                launcherOptions:
+                    className: AknIconButton AknIconButton--small AknIconButton--trash
                 type:  delete
                 label: Delete
-                icon:  trash
                 link:  delete_link
         sorters:
             columns:
-                code:
-                    data_name: j.code
                 label:
                     data_name: j.label
                 connector:
@@ -58,14 +60,11 @@ datagrid:
                 status:
                     data_name: statusLabel
             default:
-                code: '%oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC'
+                label: '%oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC'
         filters:
             columns:
-                code:
-                    type:      string
-                    data_name: j.code
                 label:
-                    type:      string
+                    type:      search
                     data_name: j.label
                 job_name:
                     type:      choice
@@ -86,4 +85,4 @@ datagrid:
                         field_options:
                             multiple: true
                             choices:
-                                0: pim_import_export.status.0
+                                pim_import_export.status.0: 0

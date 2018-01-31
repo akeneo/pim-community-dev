@@ -3,7 +3,7 @@ Feature: Update boolean fields
   As an internal process or any user
   I need to be able to update a copy boolean field of a product
 
-  Scenario: Successfully update a text field
+  Scenario: Successfully update a boolean field
     Given a "apparel" catalog configuration
     And the following attributes:
       | code        | type                | group |

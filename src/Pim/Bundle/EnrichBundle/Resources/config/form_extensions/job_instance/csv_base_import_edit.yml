@@ -2,6 +2,28 @@ extensions:
     pim-job-instance-csv-base-import-edit:
         module: pim/form/common/edit-form
 
+    pim-job-instance-csv-base-import-edit-main-image:
+        module: pim/form/common/main-image
+        parent: pim-job-instance-csv-base-import-edit
+        targetZone: main-image
+        config:
+            path: bundles/pimui/images/illustration-import-csv.svg
+
+    pim-job-instance-csv-base-import-edit-user-navigation:
+        module: pim/menu/user-navigation
+        parent: pim-job-instance-csv-base-import-edit
+        targetZone: user-menu
+        config:
+            userAccount: pim_menu.user.user_account
+            logout: pim_menu.user.logout
+
+    pim-job-instance-csv-base-import-edit-breadcrumbs:
+        module: pim/common/breadcrumbs
+        parent: pim-job-instance-csv-base-import-edit
+        targetZone: breadcrumbs
+        config:
+            tab: pim-menu-imports
+
     pim-job-instance-csv-base-import-edit-cache-invalidator:
         module: pim/cache-invalidator
         parent: pim-job-instance-csv-base-import-edit
@@ -23,12 +45,22 @@ extensions:
             tabTitle: pim_enrich.form.job_instance.tab.properties.title
             tabCode: pim-job-instance-properties
 
+    pim-job-instance-csv-base-import-edit-global:
+        module: pim/job/common/edit/properties
+        parent: pim-job-instance-csv-base-import-edit-tabs
+        aclResourceId: pim_importexport_export_profile_property_edit
+        targetZone: container
+        position: 120
+        config:
+            tabTitle: pim_enrich.export.product.global_settings.title
+            tabCode: pim-job-instance-global
+
     pim-job-instance-csv-base-import-edit-history:
         module: pim/common/tab/history
         parent: pim-job-instance-csv-base-import-edit-tabs
         targetZone: container
         aclResourceId: pim_importexport_import_profile_history
-        position: 120
+        position: 130
         config:
             class: Akeneo\Component\Batch\Model\JobInstance
             title: pim_enrich.form.job_instance.tab.history.title
@@ -56,9 +88,9 @@ extensions:
 
     pim-job-instance-csv-base-import-edit-properties-file-path:
         module: pim/job/common/edit/field/text
-        parent: pim-job-instance-csv-base-import-edit-properties
+        parent: pim-job-instance-csv-base-import-edit-global
         position: 120
-        targetZone: global-settings
+        targetZone: properties
         config:
             fieldCode: configuration.filePath
             readOnly: false
@@ -67,9 +99,9 @@ extensions:
 
     pim-job-instance-csv-base-import-edit-properties-file-upload:
         module: pim/job/common/edit/field/switch
-        parent: pim-job-instance-csv-base-import-edit-properties
+        parent: pim-job-instance-csv-base-import-edit-global
         position: 130
-        targetZone: global-settings
+        targetZone: properties
         config:
             fieldCode: configuration.uploadAllowed
             readOnly: false
@@ -78,9 +110,9 @@ extensions:
 
     pim-job-instance-csv-base-import-edit-properties-delimiter:
         module: pim/job/common/edit/field/text
-        parent: pim-job-instance-csv-base-import-edit-properties
+        parent: pim-job-instance-csv-base-import-edit-global
         position: 140
-        targetZone: global-settings
+        targetZone: properties
         config:
             fieldCode: configuration.delimiter
             readOnly: false
@@ -89,25 +121,14 @@ extensions:
 
     pim-job-instance-csv-base-import-edit-properties-enclosure:
         module: pim/job/common/edit/field/text
-        parent: pim-job-instance-csv-base-import-edit-properties
+        parent: pim-job-instance-csv-base-import-edit-global
         position: 150
-        targetZone: global-settings
+        targetZone: properties
         config:
             fieldCode: configuration.enclosure
             readOnly: false
             label: pim_enrich.form.job_instance.tab.properties.enclosure.title
             tooltip: pim_enrich.form.job_instance.tab.properties.enclosure.help
-
-    pim-job-instance-csv-base-import-edit-properties-escape:
-        module: pim/job/common/edit/field/text
-        parent: pim-job-instance-csv-base-import-edit-properties
-        position: 160
-        targetZone: global-settings
-        config:
-            fieldCode: configuration.escape
-            readOnly: false
-            label: pim_enrich.form.job_instance.tab.properties.escape.title
-            tooltip: pim_enrich.form.job_instance.tab.properties.escape.help
 
     pim-job-instance-csv-base-import-edit-label:
         module: pim/job/common/edit/label
@@ -121,24 +142,21 @@ extensions:
         targetZone: meta
         position: 100
 
-    pim-job-instance-csv-base-import-edit-back-to-grid:
-        module: pim/form/common/back-to-grid
+    pim-job-instance-csv-base-import-edit-secondary-actions:
+        module: pim/form/common/secondary-actions
         parent: pim-job-instance-csv-base-import-edit
-        targetZone: back
-        aclResourceId: pim_importexport_import_profile_index
-        position: 80
-        config:
-            backUrl: pim_importexport_import_profile_index
+        targetZone: buttons
+        position: 50
 
     pim-job-instance-csv-base-import-edit-delete:
         module: pim/job/import/edit/delete
-        parent: pim-job-instance-csv-base-import-edit
-        targetZone: buttons
+        parent: pim-job-instance-csv-base-import-edit-secondary-actions
+        targetZone: secondary-actions
         aclResourceId: pim_importexport_import_profile_remove
         position: 100
         config:
             trans:
-                title: confirmation.remove.job_instance
+                title: confirmation.remove.import_profile
                 content: pim_enrich.confirmation.delete_item
                 success: flash.job_instance.removed
                 failed: error.removing.job_instance

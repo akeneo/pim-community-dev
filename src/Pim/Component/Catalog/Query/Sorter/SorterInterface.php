@@ -2,6 +2,8 @@
 
 namespace Pim\Component\Catalog\Query\Sorter;
 
+use Pim\Bundle\CatalogBundle\Elasticsearch\SearchQueryBuilder;
+
 /**
  * Sorter interface
  *
@@ -14,7 +16,7 @@ interface SorterInterface
     /**
      * Inject the query builder
      *
-     * @param \Doctrine\ORM\QueryBuilder|\Doctrine\ODM\MongoDB\Query\Builder $queryBuilder
+     * @param SearchQueryBuilder $queryBuilder
      */
     public function setQueryBuilder($queryBuilder);
 }

@@ -2,6 +2,8 @@
 
 namespace Pim\Component\Catalog\Model;
 
+use Doctrine\Common\Collections\Collection;
+
 /**
  * Product completeness interface
  *
@@ -12,20 +14,16 @@ namespace Pim\Component\Catalog\Model;
 interface CompletenessInterface
 {
     /**
+     * @return int
+     */
+    public function getId();
+
+    /**
      * Getter required count
      *
      * @return int
      */
     public function getRequiredCount();
-
-    /**
-     * Setter locale
-     *
-     * @param LocaleInterface $locale
-     *
-     * @return CompletenessInterface
-     */
-    public function setLocale(LocaleInterface $locale);
 
     /**
      * Getter ratio
@@ -35,36 +33,9 @@ interface CompletenessInterface
     public function getRatio();
 
     /**
-     * Setter missing count
-     *
-     * @param int $missingCount
-     *
-     * @return CompletenessInterface
-     */
-    public function setMissingCount($missingCount);
-
-    /**
-     * Setter channel
-     *
-     * @param ChannelInterface $channel
-     *
-     * @return CompletenessInterface
-     */
-    public function setChannel(ChannelInterface $channel);
-
-    /**
-     * Setter product
-     *
-     * @param ProductInterface $product
-     *
-     * @return CompletenessInterface
-     */
-    public function setProduct(ProductInterface $product);
-
-    /**
      * Getter locale
      *
-     * @return Locale
+     * @return LocaleInterface
      */
     public function getLocale();
 
@@ -90,20 +61,9 @@ interface CompletenessInterface
     public function getProduct();
 
     /**
-     * Setter required count
+     * Get the missing attributes
      *
-     * @param int $requiredCount
-     *
-     * @return CompletenessInterface
+     * @return Collection
      */
-    public function setRequiredCount($requiredCount);
-
-    /**
-     * Setter ratio
-     *
-     * @param int $ratio
-     *
-     * @return CompletenessInterface
-     */
-    public function setRatio($ratio);
+    public function getMissingAttributes();
 }

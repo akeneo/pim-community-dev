@@ -37,6 +37,7 @@ class ListFamilyIntegration extends ApiTestCase
                     "a_text", "a_text_area", "a_yes_no", "an_image", "sku"
                 ],
                 "attribute_as_label": "sku",
+                "attribute_as_image": "an_image",
                 "attribute_requirements": {
                     "ecommerce": [
                         "a_date", "a_file", "a_localizable_image", "a_localized_and_scopable_text_area", "a_metric",
@@ -52,7 +53,10 @@ class ListFamilyIntegration extends ApiTestCase
                         "a_text", "a_text_area", "a_yes_no", "an_image", "sku"
                     ]
                 },
-                "labels": {}
+                "labels": {
+                    "fr_FR" : "Une famille A",
+                    "en_US" : "A family A"
+                }
             },
             {
                 "_links": {
@@ -63,12 +67,15 @@ class ListFamilyIntegration extends ApiTestCase
                 "code": "familyA1",
                 "attributes": ["a_date", "a_file", "a_localizable_image", "sku"],
                 "attribute_as_label": "sku",
+                "attribute_as_image": null,
                 "attribute_requirements": {
                     "ecommerce": ["a_date", "a_file", "sku"],
                     "ecommerce_china": ["sku"],
                     "tablet": ["a_file", "a_localizable_image", "sku"]
                 },
-                "labels": {}
+                "labels": {
+                    "en_US" : "A family A1"
+                }
             },
             {
                 "_links": {
@@ -79,12 +86,50 @@ class ListFamilyIntegration extends ApiTestCase
                 "code": "familyA2",
                 "attributes": ["a_metric", "a_number_float", "sku"],
                 "attribute_as_label": "sku",
+                "attribute_as_image": null,
                 "attribute_requirements" : {
                     "ecommerce": ["a_metric", "sku"],
                     "ecommerce_china": ["sku"],
                     "tablet": ["a_number_float", "sku"]
                 },
                 "labels": {}
+            },
+            {
+            "_links":{
+               "self":{
+                  "href":"http:\/\/localhost\/api\/rest\/v1\/families\/familyA3"
+               }
+            },
+            "code":"familyA3",
+            "attributes":[
+               "a_localized_and_scopable_text_area",
+               "a_simple_select",
+               "a_text",
+               "a_yes_no",
+               "sku"
+            ],
+            "attribute_as_label":"sku",
+            "attribute_as_image":null,
+            "attribute_requirements":{
+               "ecommerce":[
+                  "a_localized_and_scopable_text_area",
+                  "a_simple_select",
+                  "a_yes_no",
+                  "sku"
+               ],
+               "ecommerce_china":[
+                  "sku"
+               ],
+               "tablet":[
+                  "a_localized_and_scopable_text_area",
+                  "a_simple_select",
+                  "a_yes_no",
+                  "sku"
+               ]
+            },
+            "labels":{
+            
+            }
             }
         ]
     }
@@ -110,7 +155,7 @@ JSON;
         "previous": {"href": "http://localhost/api/rest/v1/families?page=1&limit=10&with_count=true"}
     },
     "current_page": 2,
-    "items_count": 3,
+    "items_count": 4,
     "_embedded": {
         "items": []
     }
@@ -152,6 +197,6 @@ JSON;
      */
     protected function getConfiguration()
     {
-        return new Configuration([Configuration::getTechnicalCatalogPath()]);
+        return $this->catalog->useTechnicalCatalog();
     }
 }

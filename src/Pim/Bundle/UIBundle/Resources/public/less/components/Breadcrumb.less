@@ -2,13 +2,34 @@
 
 .AknBreadcrumb {
   color: @AknDefaultFontColor;
-  font-size: @AknFontSizeSmall;
+  font-size: @AknFontSizeBig;
+  text-transform: uppercase;
+  transition: color 0.2s ease-in;
 
   &-item {
     display: inline;
 
-    &:not(:first-child):before {
+    &--routable {
+      cursor: pointer;
+    }
+
+    &:after {
       content: ' / ';
+    }
+
+    &:hover {
+      color: @AknDefaultFontColor;
+    }
+
+    &--final {
+      color: @AknGrey;
+      &:after {
+        content: '';
+      }
+
+      &:hover {
+        color: @AknGrey;
+      }
     }
   }
 }

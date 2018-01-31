@@ -124,20 +124,12 @@ SQL;
 
         $categoryMetadata = $this->entityManager->getClassMetadata($categoryMapping['targetEntity']);
 
-        $valueMapping = $this->entityManager->getClassMetadata($this->productClass)->getAssociationMapping('values');
-        $valueMetadata = $this->entityManager->getClassMetadata($valueMapping['targetEntity']);
-
-        $attributeMapping = $valueMetadata->getAssociationMapping('attribute');
-        $attributeMetadata = $this->entityManager->getClassMetadata($attributeMapping['targetEntity']);
-
         return strtr(
             $sql,
             [
                 '%category_table%'      => $categoryMetadata->getTableName(),
                 '%category_join_table%' => $categoryMapping['joinTable']['name'],
                 '%product_table%'       => $this->entityManager->getClassMetadata($this->productClass)->getTableName(),
-                '%product_value_table%' => $valueMetadata->getTableName(),
-                '%attribute_table%'     => $attributeMetadata->getTableName(),
             ]
         );
     }

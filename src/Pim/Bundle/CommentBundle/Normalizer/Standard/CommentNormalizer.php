@@ -4,7 +4,8 @@ namespace Pim\Bundle\CommentBundle\Normalizer\Standard;
 
 use Pim\Bundle\CommentBundle\Model\CommentInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
-use Symfony\Component\Serializer\Normalizer\SerializerAwareNormalizer;
+use Symfony\Component\Serializer\SerializerAwareInterface;
+use Symfony\Component\Serializer\SerializerAwareTrait;
 
 /**
  * Standard Comment normalizer
@@ -13,8 +14,10 @@ use Symfony\Component\Serializer\Normalizer\SerializerAwareNormalizer;
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class CommentNormalizer extends SerializerAwareNormalizer implements NormalizerInterface
+class CommentNormalizer implements NormalizerInterface, SerializerAwareInterface
 {
+    use SerializerAwareTrait;
+
     /**
      * {@inheritdoc}
      */
@@ -31,6 +34,7 @@ class CommentNormalizer extends SerializerAwareNormalizer implements NormalizerI
             'author'       => [
                 'username' => $comment->getAuthor()->getUsername(),
                 'fullName' => sprintf('%s %s', $comment->getAuthor()->getFirstName(), $comment->getAuthor()->getLastName()),
+                'avatar'   => $comment->getAuthor()->getImagePath(),
             ],
             'body'         => $comment->getBody(),
             'created'      => $this->serializer->normalize($comment->getCreatedAt(), 'standard', $context),

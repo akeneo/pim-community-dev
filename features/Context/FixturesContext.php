@@ -4,20 +4,22 @@ namespace Context;
 
 use Acme\Bundle\AppBundle\Entity\Color;
 use Acme\Bundle\AppBundle\Entity\Fabric;
+use Akeneo\Bundle\ElasticsearchBundle\Client;
 use Akeneo\Component\Batch\Job\JobParameters;
 use Akeneo\Component\Batch\Model\JobExecution;
 use Akeneo\Component\Batch\Model\JobInstance;
 use Akeneo\Component\Batch\Model\StepExecution;
+use Akeneo\Component\Classification\Repository\CategoryRepositoryInterface;
 use Akeneo\Component\Localization\Localizer\LocalizerInterface;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
-use Behat\Behat\Context\Step;
+use Behat\ChainedStepsExtension\Step;
 use Behat\Gherkin\Node\TableNode;
 use Doctrine\Common\Util\ClassUtils;
 use League\Flysystem\MountManager;
+use OAuth2\OAuth2;
 use Oro\Bundle\UserBundle\Entity\Role;
+use PHPUnit\Framework\Assert;
 use Pim\Behat\Context\FixturesContext as BaseFixturesContext;
-use Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\ProductSaver;
-use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
 use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
 use Pim\Bundle\CatalogBundle\Entity\AttributeRequirement;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
@@ -27,13 +29,19 @@ use Pim\Bundle\CommentBundle\Model\CommentInterface;
 use Pim\Bundle\DataGridBundle\Entity\DatagridView;
 use Pim\Bundle\UserBundle\Entity\User;
 use Pim\Component\Catalog\AttributeTypes;
-use Pim\Component\Catalog\Builder\ProductBuilderInterface;
+use Pim\Component\Catalog\Builder\EntityWithValuesBuilderInterface;
 use Pim\Component\Catalog\Model\Association;
+use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\AttributeOptionInterface;
 use Pim\Component\Catalog\Model\LocaleInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Model\ProductModelInterface;
+use Pim\Component\Catalog\Model\ValueInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
+use Pim\Component\Catalog\Repository\FamilyVariantRepositoryInterface;
+use Pim\Component\Catalog\Value\OptionValueInterface;
 use Pim\Component\Connector\Job\JobParameters\DefaultValuesProvider\ProductCsvImport;
+use Pim\Component\Connector\Job\JobParameters\DefaultValuesProvider\ProductModelCsvImport;
 use Pim\Component\Connector\Job\JobParameters\DefaultValuesProvider\SimpleCsvExport;
 use Pim\Component\ReferenceData\Model\ReferenceDataInterface;
 
@@ -92,6 +100,12 @@ class FixturesContext extends BaseFixturesContext
             $data['enabled'] = ($data['enabled'] === 'yes');
         }
 
+        if (isset($data['parent'])) {
+            if (empty($data['parent'])) {
+                unset($data['parent']);
+            }
+        }
+
         foreach ($data as $key => $value) {
             $data[$key] = $this->replacePlaceholders($value);
         }
@@ -118,8 +132,9 @@ class FixturesContext extends BaseFixturesContext
         $this->getContainer()->get('pim_catalog.validator.unique_value_set')->reset();
         $this->getContainer()->get('pim_catalog.validator.unique_axes_combination_set')->reset();
 
-        $this->refresh($product);
         $this->buildProductHistory($product);
+
+        $this->getElasticsearchProductClient()->refreshIndex();
 
         return $product;
     }
@@ -147,6 +162,7 @@ class FixturesContext extends BaseFixturesContext
             $table->getRowsHash()
         );
     }
+
 
     /**
      * @param string $status
@@ -183,6 +199,110 @@ class FixturesContext extends BaseFixturesContext
     }
 
     /**
+     * @param TableNode $table
+     *
+     * @Given /^the following family variants?:$/
+     */
+    public function theFollowingFamilyVariants(TableNode $table)
+    {
+        $converter = $this->getContainer()->get('pim_connector.array_converter.flat_to_standard.family_variant');
+        $processor = $this->getContainer()->get('pim_connector.processor.denormalization.family_variant');
+        $saver = $this->getContainer()->get('pim_catalog.saver.family_variant');
+
+        foreach ($table->getHash() as $data) {
+            $saver->save($processor->process($converter->convert($data)));
+        }
+    }
+
+    /**
+     * @param TableNode $table
+     *
+     * @Given /^the following root product models?:$/
+     */
+    public function theFollowingRootProductModels(TableNode $table)
+    {
+        foreach ($table->getHash() as $data) {
+            foreach ($data as $key => $value) {
+                $data[$key] = $this->replacePlaceholders($value);
+            }
+
+            $converter = $this->getContainer()->get('pim_connector.array_converter.flat_to_standard.product_model');
+            $processor = $this->getContainer()->get('pim_connector.processor.denormalization.root_product_model');
+
+            $jobExecution = new JobExecution();
+            $provider = new ProductModelCsvImport(new SimpleCsvExport([]), []);
+            $params = $provider->getDefaultValues();
+            $params['enabledComparison'] = false;
+            $params['dateFormat'] = LocalizerInterface::DEFAULT_DATE_FORMAT;
+            $params['decimalSeparator'] = LocalizerInterface::DEFAULT_DECIMAL_SEPARATOR;
+            $jobParameters = new JobParameters($params);
+            $jobExecution->setJobParameters($jobParameters);
+            $stepExecution = new StepExecution('processor', $jobExecution);
+            $processor->setStepExecution($stepExecution);
+
+            $convertedData = $converter->convert($data);
+            $productModel = $processor->process($convertedData);
+
+            $errors = $this->getContainer()->get('pim_catalog.validator.product_model')->validate($productModel);
+            if (0 !== $errors->count()) {
+                throw new \LogicException('Product model could not be updated, invalid data provided.');
+            }
+
+            $this->getContainer()->get('pim_catalog.saver.product_model')->save($productModel);
+
+            $uniqueAxesCombinationSet = $this->getContainer()->get('pim_catalog.validator.unique_axes_combination_set');
+            $uniqueAxesCombinationSet->reset();
+
+            $this->refresh($productModel);
+            $this->getContainer()->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
+        }
+    }
+
+    /**
+     * @param TableNode $table
+     *
+     * @Given /^the following sub product models?:$/
+     */
+    public function theFollowingSubProductModels(TableNode $table)
+    {
+        foreach ($table->getHash() as $data) {
+            foreach ($data as $key => $value) {
+                $data[$key] = $this->replacePlaceholders($value);
+            }
+
+            $converter = $this->getContainer()->get('pim_connector.array_converter.flat_to_standard.product_model');
+            $processor = $this->getContainer()->get('pim_connector.processor.denormalization.sub_product_model');
+
+            $jobExecution = new JobExecution();
+            $provider = new ProductModelCsvImport(new SimpleCsvExport([]), []);
+            $params = $provider->getDefaultValues();
+            $params['enabledComparison'] = false;
+            $params['dateFormat'] = LocalizerInterface::DEFAULT_DATE_FORMAT;
+            $params['decimalSeparator'] = LocalizerInterface::DEFAULT_DECIMAL_SEPARATOR;
+            $jobParameters = new JobParameters($params);
+            $jobExecution->setJobParameters($jobParameters);
+            $stepExecution = new StepExecution('processor', $jobExecution);
+            $processor->setStepExecution($stepExecution);
+
+            $convertedData = $converter->convert($data);
+            $productModel = $processor->process($convertedData);
+
+            $errors = $this->getContainer()->get('pim_catalog.validator.product_model')->validate($productModel);
+            if (0 !== $errors->count()) {
+                throw new \LogicException('Product model could not be updated, invalid data provided.');
+            }
+
+            $this->getContainer()->get('pim_catalog.saver.product_model')->save($productModel);
+
+            $uniqueAxesCombinationSet = $this->getContainer()->get('pim_catalog.validator.unique_axes_combination_set');
+            $uniqueAxesCombinationSet->reset();
+
+            $this->refresh($productModel);
+            $this->getContainer()->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
+        }
+    }
+
+    /**
      * Generates a given number of families.
      *
      * @param int $familyNumber
@@ -191,13 +311,15 @@ class FixturesContext extends BaseFixturesContext
      */
     public function generatedFamilies($familyNumber)
     {
-        $table = new TableNode();
-        $table->addRow(['code']);
+        $table = [['code']];
         for ($i = 1; $i <= $familyNumber; $i++) {
             $familyCode = sprintf('family_%d', $i);
-            $table->addRow([$familyCode]);
+            $table[] = [$familyCode];
         }
-        return $this->theFollowingFamilies($table);
+
+        $tableNode = new TableNode($table);
+
+        return $this->theFollowingFamilies($tableNode);
     }
 
     /**
@@ -247,6 +369,8 @@ class FixturesContext extends BaseFixturesContext
      */
     public function theFollowingAttributeLabelTranslations(TableNode $table)
     {
+        $this->getEntityManager()->clear();
+
         foreach ($table->getHash() as $data) {
             $attribute = $this->getAttribute($data['attribute']);
             $standardData = [
@@ -268,6 +392,7 @@ class FixturesContext extends BaseFixturesContext
      */
     public function theFollowingProductValues(TableNode $table)
     {
+        $products = [];
         foreach ($table->getHash() as $row) {
             $row = array_merge(['locale' => null, 'scope' => null, 'value' => null], $row);
 
@@ -279,12 +404,13 @@ class FixturesContext extends BaseFixturesContext
                 $attributeCode .= '-' . $row['scope'];
             }
 
-            $data = [
-                'sku'          => $row['product'],
-                $attributeCode => $this->replacePlaceholders($row['value'])
-            ];
+            $products[$row['product']][$attributeCode] = $this->replacePlaceholders($row['value']);
+        }
 
-            $this->createProduct($data);
+        foreach ($products as $identifier => $product) {
+            $product['sku'] = $identifier;
+
+            $this->createProduct($product);
         }
     }
 
@@ -315,7 +441,7 @@ class FixturesContext extends BaseFixturesContext
         $product = $this->getProduct($sku);
 
         foreach ($this->listToArray($attributeCodes) as $code) {
-            $this->getProductBuilder()->addAttributeToProduct($product, $this->getAttribute($code));
+            $this->getProductBuilder()->addAttribute($product, $this->getAttribute($code));
         }
         $this->validate($product);
         $this->getProductSaver()->save($product);
@@ -437,6 +563,7 @@ class FixturesContext extends BaseFixturesContext
      */
     public function thereShouldBeTheFollowingFamilies(TableNode $table)
     {
+        $this->getEntityManager()->clear();
         foreach ($table->getHash() as $data) {
             $family = $this->getFamily($data['code']);
             unset($data['code']);
@@ -446,9 +573,15 @@ class FixturesContext extends BaseFixturesContext
                 if ('attributes' === $key) {
                     $this->assertArrayEquals(explode(',', $value), $family->getAttributeCodes());
                 } elseif ('attribute_as_label' === $key) {
-                    assertEquals($value, $family->getAttributeAsLabel()->getCode());
+                    Assert::assertEquals($value, $family->getAttributeAsLabel()->getCode());
+                } elseif ('attribute_as_image' === $key) {
+                    if ('' === $value) {
+                        Assert::assertNull($family->getAttributeAsImage());
+                    } else {
+                        Assert::assertEquals($value, $family->getAttributeAsImage()->getCode());
+                    }
                 } elseif (preg_match('/^label-(?P<locale>.*)$/', $key, $matches)) {
-                    assertEquals($value, $family->getTranslation($matches['locale'])->getLabel());
+                    Assert::assertEquals($value, $family->getTranslation($matches['locale'])->getLabel());
                 } elseif (preg_match('/^requirements-(?P<channel>.*)$/', $key, $matches)) {
                     $requirements = [];
                     foreach ($family->getAttributeRequirements() as $requirement) {
@@ -467,14 +600,68 @@ class FixturesContext extends BaseFixturesContext
     /**
      * @param TableNode $table
      *
+     * @Then /^there should be the following family variants:$/
+     */
+    public function thereShouldBeTheFollowingFamilyVariants(TableNode $table)
+    {
+        $this->getEntityManager()->clear();
+        foreach ($table->getHash() as $data) {
+            $familyVariant = $this->getFamilyVariant($data['code']);
+            unset($data['code']);
+
+            foreach ($data as $key => $value) {
+                $matches = null;
+                if ('family' === $key) {
+                    Assert::assertEquals($value, $familyVariant->getFamily()->getCode());
+                } elseif (preg_match('/^label-(?P<locale>.*)$/', $key, $matches)) {
+                    Assert::assertEquals($value, $familyVariant->getTranslation($matches['locale'])->getLabel());
+                } elseif (preg_match('/^variant-attributes_(?P<level>.*)$/', $key, $matches)) {
+                    $variantAttributeSet = $familyVariant->getVariantAttributeSet($matches['level']);
+
+                    if (null === $variantAttributeSet) {
+                        Assert::assertEmpty($value);
+                    } else {
+                        $variantAttributeCodes = $variantAttributeSet->getAttributes()->map(
+                            function (AttributeInterface $attribute) {
+                                return $attribute->getCode();
+                            }
+                        )->toArray();
+
+                        $this->assertArrayEquals(explode(',', $value), $variantAttributeCodes);
+                    }
+                } elseif (preg_match('/^variant-axes_(?P<level>.*)$/', $key, $matches)) {
+                    $variantAttributeSet = $familyVariant->getVariantAttributeSet($matches['level']);
+
+                    if (null === $variantAttributeSet) {
+                        Assert::assertEmpty($value);
+                    } else {
+                        $variantAxeCodes= $variantAttributeSet->getAxes()->map(
+                            function (AttributeInterface $attribute) {
+                                return $attribute->getCode();
+                            }
+                        )->toArray();
+
+                        $this->assertArrayEquals(explode(',', $value), $variantAxeCodes);
+                    }
+                } else {
+                    throw new \InvalidArgumentException(sprintf('Cannot check "%s" attribute of the family', $key));
+                }
+            }
+        }
+    }
+
+    /**
+     * @param TableNode $table
+     *
      * @Then /^there should be the following currencies:$/
      */
     public function thereShouldBeTheFollowingCurrencies(TableNode $table)
     {
+        $this->getEntityManager()->clear();
         foreach ($table->getHash() as $data) {
             $currency = $this->getCurrency($data['code']);
 
-            assertEquals($data['activated'], (int)$currency->isActivated());
+            Assert::assertEquals($data['activated'], (int) $currency->isActivated());
         }
     }
 
@@ -485,10 +672,11 @@ class FixturesContext extends BaseFixturesContext
      */
     public function thereShouldBeTheFollowingLocales(TableNode $table)
     {
+        $this->getEntityManager()->clear();
         foreach ($table->getHash() as $data) {
             $locale = $this->getLocale($data['code']);
 
-            assertNotNull($locale);
+            Assert::assertNotNull($locale);
         }
     }
 
@@ -499,6 +687,7 @@ class FixturesContext extends BaseFixturesContext
      */
     public function thereShouldBeTheFollowingChannels(TableNode $table)
     {
+        $this->getEntityManager()->clear();
         foreach ($table->getHash() as $data) {
             $channel = $this->getChannel($data['code']);
             unset($data['code']);
@@ -506,9 +695,9 @@ class FixturesContext extends BaseFixturesContext
             foreach ($data as $key => $value) {
                 $matches = null;
                 if ('tree' === $key) {
-                    assertEquals($value, $channel->getCategory()->getCode());
+                    Assert::assertEquals($value, $channel->getCategory()->getCode());
                 } elseif (preg_match('/^label-(?P<locale>.*)$/', $key, $matches)) {
-                    assertEquals($value, $channel->getTranslation($matches['locale'])->getLabel());
+                    Assert::assertEquals($value, $channel->getTranslation($matches['locale'])->getLabel());
                 } elseif ('locales' === $key) {
                     $this->assertArrayEquals(explode(',', $value), $channel->getLocaleCodes());
                 } elseif ('currencies' === $key) {
@@ -537,16 +726,15 @@ class FixturesContext extends BaseFixturesContext
      */
     public function thereShouldBeTheFollowingGroupTypes(TableNode $table)
     {
+        $this->getEntityManager()->clear();
         foreach ($table->getHash() as $data) {
             $groupType = $this->getGroupType($data['code']);
             unset($data['code']);
 
             foreach ($data as $key => $value) {
                 $matches = null;
-                if ('is_variant' === $key) {
-                    assertEquals($value, (int) $groupType->isVariant());
-                } elseif (preg_match('/^label-(?P<locale>.*)$/', $key, $matches)) {
-                    assertEquals($value, $groupType->getTranslation($matches['locale'])->getLabel());
+                if (preg_match('/^label-(?P<locale>.*)$/', $key, $matches)) {
+                    Assert::assertEquals($value, $groupType->getTranslation($matches['locale'])->getLabel());
                 } else {
                     throw new \InvalidArgumentException(
                         sprintf('Cannot check "%s" attribute of the group type', $key)
@@ -563,12 +751,12 @@ class FixturesContext extends BaseFixturesContext
      */
     public function thereShouldBeTheFollowingAttributeGroups(TableNode $table)
     {
+        $this->getEntityManager()->clear();
         foreach ($table->getHash() as $data) {
-            /** @var AttributeGroup $group */
             $group = $this->getAttributeGroup($data['code']);
 
-            assertEquals($data['label-en_US'], $group->getTranslation('en_US')->getLabel());
-            assertEquals($data['sort_order'], $group->getSortOrder());
+            Assert::assertEquals($data['label-en_US'], $group->getTranslation('en_US')->getLabel());
+            Assert::assertEquals($data['sort_order'], $group->getSortOrder());
 
             $attributes = $group->getAttributes();
             $codes = [];
@@ -576,7 +764,7 @@ class FixturesContext extends BaseFixturesContext
                 $codes[] = $attribute->getCode();
             }
             asort($codes);
-            assertEquals($data['attributes'], implode(',', $codes));
+            Assert::assertEquals($data['attributes'], implode(',', $codes));
         }
     }
 
@@ -587,6 +775,7 @@ class FixturesContext extends BaseFixturesContext
      */
     public function thereShouldBeTheFollowingOptions(TableNode $table)
     {
+        $this->getEntityManager()->clear();
         foreach ($table->getHash() as $data) {
             $attribute = $this->getEntityOrException('Attribute', ['code' => $data['attribute']]);
             $option    = $this->getEntityOrException(
@@ -594,10 +783,10 @@ class FixturesContext extends BaseFixturesContext
                 ['code' => $data['code'], 'attribute' => $attribute]
             );
             $option->setLocale('en_US');
-            assertEquals($data['label-en_US'], (string) $option);
+            Assert::assertEquals($data['label-en_US'], (string) $option);
 
             if (isset($data['sort_order'])) {
-                assertEquals($data['sort_order'], (string) $option->getSortOrder());
+                Assert::assertEquals($data['sort_order'], (string) $option->getSortOrder());
             }
         }
     }
@@ -609,13 +798,14 @@ class FixturesContext extends BaseFixturesContext
      */
     public function thereShouldBeTheFollowingCategories(TableNode $table)
     {
+        $this->getEntityManager()->clear();
         foreach ($table->getHash() as $data) {
             $category = $this->getCategory($data['code']);
-            assertEquals($data['label'], $category->getTranslation('en_US')->getLabel());
+            Assert::assertEquals($data['label'], $category->getTranslation('en_US')->getLabel());
             if (empty($data['parent'])) {
-                assertNull($category->getParent());
+                Assert::assertNull($category->getParent());
             } else {
-                assertEquals($data['parent'], $category->getParent()->getCode());
+                Assert::assertEquals($data['parent'], $category->getParent()->getCode());
             }
         }
     }
@@ -627,6 +817,7 @@ class FixturesContext extends BaseFixturesContext
      */
     public function thereShouldBeTheFollowingAssociationTypes(TableNode $table)
     {
+        $this->getEntityManager()->clear();
         foreach ($table->getHash() as $data) {
             $associationType = $this->getAssociationType($data['code']);
             unset($data['code']);
@@ -634,7 +825,7 @@ class FixturesContext extends BaseFixturesContext
             foreach ($data as $key => $value) {
                 $matches = null;
                 if (preg_match('/^label-(?P<locale>.*)$/', $key, $matches)) {
-                    assertEquals($value, $associationType->getTranslation($matches['locale'])->getLabel());
+                    Assert::assertEquals($value, $associationType->getTranslation($matches['locale'])->getLabel());
                 } else {
                     throw new \InvalidArgumentException(
                         sprintf('Cannot check "%s" attribute of the association type', $key)
@@ -654,21 +845,10 @@ class FixturesContext extends BaseFixturesContext
         $this->getEntityManager()->clear();
         foreach ($table->getHash() as $data) {
             $group = $this->getProductGroup($data['code']);
-            $this->refresh($group);
 
-            assertEquals($data['label-en_US'], $group->getTranslation('en_US')->getLabel());
-            assertEquals($data['label-fr_FR'], $group->getTranslation('fr_FR')->getLabel());
-            assertEquals($data['type'], $group->getType()->getCode());
-
-            if ($group->getType()->isVariant()) {
-                $attributes = [];
-                foreach ($group->getAxisAttributes() as $attribute) {
-                    $attributes[] = $attribute->getCode();
-                }
-                asort($attributes);
-                $attributes = implode(',', $attributes);
-                assertEquals($data['axis'], $attributes);
-            }
+            Assert::assertEquals($data['label-en_US'], $group->getTranslation('en_US')->getLabel());
+            Assert::assertEquals($data['label-fr_FR'], $group->getTranslation('fr_FR')->getLabel());
+            Assert::assertEquals($data['type'], $group->getType()->getCode());
         }
     }
 
@@ -748,22 +928,6 @@ class FixturesContext extends BaseFixturesContext
     {
         $converter = $this->getContainer()->get('pim_connector.array_converter.flat_to_standard.group');
         $processor = $this->getContainer()->get('pim_connector.processor.denormalization.group');
-        $saver     = $this->getContainer()->get('pim_catalog.saver.group');
-
-        foreach ($table->getHash() as $data) {
-            $saver->save($processor->process($converter->convert($data)));
-        }
-    }
-
-    /**
-     * @param TableNode $table
-     *
-     * @Given /^the following variant groups?:$/
-     */
-    public function theFollowingVariantGroups(TableNode $table)
-    {
-        $converter = $this->getContainer()->get('pim_connector.array_converter.flat_to_standard.variant_group');
-        $processor = $this->getContainer()->get('pim_connector.processor.denormalization.variant_group');
         $saver     = $this->getContainer()->get('pim_catalog.saver.group');
 
         foreach ($table->getHash() as $data) {
@@ -860,6 +1024,7 @@ class FixturesContext extends BaseFixturesContext
      * @param string $value
      *
      * @Given /^attribute (\w+) of "([^"]*)" should be "(.*)"$/
+     * @Given /^the product value (\w+) of "([^"]*)" should be "(.*)"$/
      */
     public function theOfShouldBe($attribute, $identifier, $value)
     {
@@ -874,12 +1039,28 @@ class FixturesContext extends BaseFixturesContext
      * @param string $identifier
      * @param string $value
      *
-     * @Given /^the (\w+) (\w+) of "([^"]*)" should be "(.*)"$/
+     * @Given /^the (\w+) localizable value (\w+) of "([^"]*)" should be "(.*)"$/
      */
-    public function theLocalizableOfShouldBe($lang, $attribute, $identifier, $value)
+    public function theLocalizableValueOfShouldBe($lang, $attribute, $identifier, $value)
     {
         $this->getMainContext()->getSubcontext('hook')->clearUOW();
         $productValue = $this->getProductValue($identifier, strtolower($attribute), $this->locales[$lang]);
+
+        $this->assertDataEquals($productValue->getData(), $value);
+    }
+
+    /**
+     * @param string $channel
+     * @param string $attribute
+     * @param string $identifier
+     * @param string $value
+     *
+     * @Given /^the (\w+) scopable value (\w+) of "([^"]*)" should be "(.*)"$/
+     */
+    public function theScopableValueOfShouldBe($channel, $attribute, $identifier, $value)
+    {
+        $this->getMainContext()->getSubcontext('hook')->clearUOW();
+        $productValue = $this->getProductValue($identifier, strtolower($attribute), null, $channel);
 
         $this->assertDataEquals($productValue->getData(), $value);
     }
@@ -893,9 +1074,9 @@ class FixturesContext extends BaseFixturesContext
      * @param string $identifier
      * @param string $value
      *
-     * @Given /^the (\w+) (\w+) (\w+) of "([^"]*)" should be "(.*)"$/
+     * @Given /^the ((?!product)\w+) (\w+) (\w+) of "([^"]*)" should be "(.*)"$/
      */
-    public function theScopableOfShouldBe($lang, $scope, $attribute, $identifier, $value)
+    public function theScopableAndLocalizableOfShouldBe($lang, $scope, $attribute, $identifier, $value)
     {
         $locale = 'unlocalized' === $lang ? null : $this->locales[$lang];
         $value = str_replace('|NL|', "\n", $value);
@@ -921,9 +1102,9 @@ class FixturesContext extends BaseFixturesContext
             foreach ($table->getHash() as $price) {
                 $productPrice = $productValue->getPrice($price['currency']);
                 if ('' === trim($price['amount'])) {
-                    assertEquals(null, $productPrice ? $productPrice->getData() : $productPrice);
+                    Assert::assertEquals(null, $productPrice ? $productPrice->getData() : $productPrice);
                 } else {
-                    assertEquals($price['amount'], $productPrice->getData());
+                    Assert::assertEquals($price['amount'], $productPrice->getData());
                 }
             }
         }
@@ -941,8 +1122,9 @@ class FixturesContext extends BaseFixturesContext
         $this->getMainContext()->getSubcontext('hook')->clearUOW();
         foreach ($this->listToArray($products) as $identifier) {
             $value      = $this->getProductValue($identifier, strtolower($attribute));
-            $actualCode = $value->getOption() ? $value->getOption()->getCode() : null;
-            assertEquals($optionCode, $actualCode);
+            $actualCode = $value instanceof OptionValueInterface && $value->getData()
+                ? $value->getData()->getCode() : null;
+            Assert::assertEquals($optionCode, $actualCode);
         }
     }
 
@@ -959,11 +1141,12 @@ class FixturesContext extends BaseFixturesContext
         $this->getMainContext()->getSubcontext('hook')->clearUOW();
         foreach ($this->listToArray($products) as $identifier) {
             $productValue = $this->getProductValue($identifier, strtolower($attribute));
-            $options      = $productValue->getOptions();
-            $optionCodes  = $options->map(
+            $options      = $productValue->getData();
+            $optionCodes  = array_map(
                 function ($option) {
                     return $option->getCode();
-                }
+                },
+                $options
             );
 
             $values = array_map(
@@ -974,12 +1157,12 @@ class FixturesContext extends BaseFixturesContext
             );
             $values = array_filter($values);
 
-            assertEquals(count($values), $options->count());
+            Assert::assertEquals(count($values), count($options));
             foreach ($values as $value) {
-                assertContains(
+                Assert::assertContains(
                     $value,
                     $optionCodes,
-                    sprintf('"%s" does not contain "%s"', implode(', ', $optionCodes->toArray()), $value)
+                    sprintf('"%s" does not contain "%s"', implode(', ', $optionCodes), $value)
                 );
             }
         }
@@ -995,17 +1178,25 @@ class FixturesContext extends BaseFixturesContext
     public function theFileOfShouldBe($attribute, $products, $filename)
     {
         $this->getMainContext()->getSubcontext('hook')->clearUOW();
-        foreach ($this->listToArray($products) as $identifier) {
-            $productValue = $this->getProductValue($identifier, strtolower($attribute));
-            $media        = $productValue->getMedia();
-            if ('' === trim($filename)) {
-                if ($media) {
-                    assertNull($media->getOriginalFilename());
+        $this->spin(function () use ($attribute, $products, $filename) {
+            foreach ($this->listToArray($products) as $identifier) {
+                $productValue = $this->getProductValue($identifier, strtolower($attribute));
+                $media        = $productValue->getData();
+                if ('' === trim($filename)) {
+                    if ($media) {
+                        Assert::assertNull($media->getOriginalFilename());
+                    }
+                } else {
+                    Assert::assertEquals($filename, $media->getOriginalFilename());
                 }
-            } else {
-                assertEquals($filename, $media->getOriginalFilename());
             }
-        }
+            return true;
+        }, sprintf(
+            'Cannot assert that the value for the attribute "%s" is "%s" for the products "%s"',
+            $attribute,
+            $filename,
+            implode(',', $this->listToArray($products))
+        ));
     }
 
     /**
@@ -1020,8 +1211,22 @@ class FixturesContext extends BaseFixturesContext
         $this->getMainContext()->getSubcontext('hook')->clearUOW();
         foreach ($this->listToArray($products) as $identifier) {
             $productValue = $this->getProductValue($identifier, strtolower($attribute));
-            assertEquals($data, $productValue->getMetric()->getData());
+            Assert::assertEquals($data, $productValue->getData()->getData());
         }
+    }
+
+    /**
+     * @param string $attribute
+     * @param string $identifier
+     * @param string $value
+     *
+     * @Given /^the product model value (\w+) of "([^"]*)" should be "(.*)"$/
+     */
+    public function theProductModelValueOfShouldBe(string $attribute, string $identifier, string $value)
+    {
+        $productValue = $this->getProductModelValue($identifier, strtolower($attribute));
+
+        $this->assertDataEquals((string) $productValue->getData(), $value);
     }
 
     /**
@@ -1066,13 +1271,25 @@ class FixturesContext extends BaseFixturesContext
     /**
      * @param int $expectedTotal
      *
+     * @Then /^there should be (\d+) family variants?$/
+     */
+    public function thereShouldBeFamilyVariants($expectedTotal)
+    {
+        $total = count($this->getFamilyVariantRepository()->findAll());
+
+        Assert::assertEquals($expectedTotal, $total);
+    }
+
+    /**
+     * @param int $expectedTotal
+     *
      * @Then /^there should be (\d+) products?$/
      */
     public function thereShouldBeProducts($expectedTotal)
     {
         $total = count($this->getProductRepository()->findAll());
 
-        assertEquals($expectedTotal, $total);
+        Assert::assertEquals($expectedTotal, $total);
     }
 
     /**
@@ -1084,7 +1301,7 @@ class FixturesContext extends BaseFixturesContext
     {
         $total = count($this->getAttributeRepository()->findAll());
 
-        assertEquals($expectedTotal, $total);
+        Assert::assertEquals($expectedTotal, $total);
     }
 
     /**
@@ -1094,11 +1311,10 @@ class FixturesContext extends BaseFixturesContext
      */
     public function thereShouldBeCategories($expectedTotal)
     {
-        $class      = $this->getContainer()->getParameter('pim_catalog.entity.category.class');
-        $repository = $this->getSmartRegistry()->getRepository($class);
+        $repository = $this->getCategoryRepository();
         $total      = count($repository->findAll());
 
-        assertEquals($expectedTotal, $total);
+        Assert::assertEquals($expectedTotal, $total);
     }
 
     /**
@@ -1110,8 +1326,6 @@ class FixturesContext extends BaseFixturesContext
     public function theProductShouldHaveTheFollowingValues($identifier, TableNode $table)
     {
         $this->spin(function () use ($identifier, $table) {
-            $this->getMainContext()->getSubcontext('hook')->clearUOW();
-
             $product = $this->getProduct($identifier);
 
             foreach ($table->getRowsHash() as $rawCode => $value) {
@@ -1125,14 +1339,17 @@ class FixturesContext extends BaseFixturesContext
                 $productValue  = $product->getValue($attributeCode, $localeCode, $scopeCode);
 
                 if ('' === $value) {
-                    assertEmpty((string) $productValue);
+                    Assert::assertEmpty((string) $productValue);
                 } elseif ('media' === $attribute->getBackendType()) {
                     // media filename is auto generated during media handling and cannot be guessed
                     // (it contains a timestamp)
                     if ('**empty**' === $value) {
-                        assertEmpty((string) $productValue);
+                        Assert::assertEmpty((string) $productValue);
                     } else {
-                        assertTrue(false !== strpos((string) $productValue, $value));
+                        Assert::assertTrue(
+                            null !== $productValue->getData() &&
+                            false !== strpos($productValue->getData()->getOriginalFilename(), $value)
+                        );
                     }
                 } elseif ('prices' === $attribute->getBackendType() && null !== $priceCurrency) {
                     // $priceCurrency can be null if we want to test all the currencies at the same time
@@ -1140,16 +1357,16 @@ class FixturesContext extends BaseFixturesContext
                     // example: 180.00 EUR, 220.00 USD
 
                     $price = $productValue->getPrice($priceCurrency);
-                    assertEquals($value, $price->getData());
+                    Assert::assertEquals($value, $price->getData());
                 } elseif ('date' === $attribute->getBackendType()) {
-                    assertEquals($value, $productValue->getDate()->format('Y-m-d'));
+                    Assert::assertEquals($value, $productValue->getData()->format('Y-m-d'));
                 } else {
-                    assertEquals($value, (string) $productValue);
+                    Assert::assertEquals($value, (string) $productValue);
                 }
             }
 
             return true;
-        }, sprintf('Cannot get the product %s', $identifier));
+        }, sprintf('Cannot get the values of the product %s', $identifier));
     }
 
     /**
@@ -1172,9 +1389,13 @@ class FixturesContext extends BaseFixturesContext
             if (isset($row['groups'])) {
                 $values['associations'][$row['type']]['groups'] = explode(',', $row['groups']);
             }
+
+            if (isset($row['product_models'])) {
+                $values['associations'][$row['type']]['product_models'] = explode(',', $row['product_models']);
+            }
         }
 
-        assertEquals([], $filter->filter($this->getProduct($identifier), $values));
+        Assert::assertEquals([], $filter->filter($this->getProduct($identifier), $values));
     }
 
     /**
@@ -1191,7 +1412,7 @@ class FixturesContext extends BaseFixturesContext
         if (!$family) {
             throw new \Exception(sprintf('Product "%s" doesn\'t have a family', $productCode));
         }
-        assertEquals($familyCode, $family->getCode());
+        Assert::assertEquals($familyCode, $family->getCode());
     }
 
     /**
@@ -1199,21 +1420,49 @@ class FixturesContext extends BaseFixturesContext
      * @param string $categoryCodes
      *
      *
-     * @Given /^(?:the )?categor(?:y|ies) of "([^"]*)" should be "([^"]*)"$/
+     * @Given /^(?:the )?categor(?:y|ies) of the product "([^"]*)" should be "([^"]*)"$/
      */
-    public function theCategoriesOfShouldBe($productCode, $categoryCodes)
+    public function theCategoriesOfTheProductShouldBe($productCode, $categoryCodes)
     {
-        $this->spin(function () use ($productCode, $categoryCodes) {
+        $expectedCategories = $this->listToArray($categoryCodes);
+        $this->spin(function () use ($productCode, $expectedCategories) {
             $product    = $this->getProduct($productCode);
             $categories = $product->getCategories()->map(
                 function ($category) {
                     return $category->getCode();
                 }
             )->toArray();
-            assertEquals($this->listToArray($categoryCodes), $categories);
+            sort($categories);
+            sort($expectedCategories);
+            Assert::assertEquals($expectedCategories, $categories);
 
             return true;
         }, sprintf('Cannot assert that %s categories are %s', $productCode, $categoryCodes));
+    }
+
+    /**
+     * @param string $productModelCode
+     * @param string $categoryCodes
+     *
+     *
+     * @Given /^(?:the )?categor(?:y|ies) of the product model "([^"]*)" should be "([^"]*)"$/
+     */
+    public function theCategoriesOfTheProductModelShouldBe($productModelCode, $categoryCodes)
+    {
+        $expectedCategories = $this->listToArray($categoryCodes);
+        $this->spin(function () use ($productModelCode, $expectedCategories) {
+            $product    = $this->getProductModel($productModelCode);
+            $categories = $product->getCategories()->map(
+                function ($category) {
+                    return $category->getCode();
+                }
+            )->toArray();
+            sort($categories);
+            sort($expectedCategories);
+            Assert::assertEquals($expectedCategories, $categories);
+
+            return true;
+        }, sprintf('Cannot assert that %s categories are %s', $productModelCode, $categoryCodes));
     }
 
     /**
@@ -1260,7 +1509,9 @@ class FixturesContext extends BaseFixturesContext
      */
     public function getUserGroup($userGroupName)
     {
-        return $this->getEntityOrException('UserGroup', ['name' => $userGroupName]);
+        return $this->spin(function () use ($userGroupName) {
+            return $this->getEntityOrException('UserGroup', ['name' => $userGroupName]);
+        }, sprintf('Cannot find group %s', $userGroupName));
     }
 
     /**
@@ -1290,7 +1541,7 @@ class FixturesContext extends BaseFixturesContext
      *
      * @throws \InvalidArgumentException
      *
-     * @return \Pim\Component\Catalog\Model\ProductInterface
+     * @return ProductInterface
      */
     public function getProduct($sku)
     {
@@ -1301,6 +1552,22 @@ class FixturesContext extends BaseFixturesContext
         $this->refresh($product);
 
         return $product;
+    }
+
+    /**
+     * @param string $code
+     *
+     * @throws \InvalidArgumentException
+     *
+     * @return ProductModelInterface
+     */
+    public function getProductModel($code)
+    {
+        $productModel = $this->spin(function () use ($code) {
+            return $this->getProductModelRepository()->findOneByIdentifier($code);
+        }, sprintf('Could not find a product model with code "%s"', $code));
+
+        return $productModel;
     }
 
     /**
@@ -1395,7 +1662,7 @@ class FixturesContext extends BaseFixturesContext
     {
         $user = $this->getUser($username);
         $this->refresh($user);
-        assertEquals($user->getUiLocale()->getLanguage(), $locale);
+        Assert::assertEquals($user->getUiLocale()->getLanguage(), $locale);
     }
 
     /**
@@ -1453,7 +1720,7 @@ class FixturesContext extends BaseFixturesContext
         $mountManager = $this->getMountManager();
 
         foreach ($product->getValues() as $value) {
-            if (in_array($value->getAttribute()->getAttributeType(), [AttributeTypes::IMAGE, AttributeTypes::FILE])) {
+            if (in_array($value->getAttribute()->getType(), [AttributeTypes::IMAGE, AttributeTypes::FILE])) {
                 $media = $value->getData();
                 if (null !== $media) {
                     $fs = $mountManager->getFilesystem($media->getStorage());
@@ -1474,8 +1741,8 @@ class FixturesContext extends BaseFixturesContext
     {
         $requirement = $this->getAttributeRequirement($attribute, $family, $channel);
 
-        assertNotNull($requirement);
-        assertTrue($requirement->isRequired());
+        Assert::assertNotNull($requirement);
+        Assert::assertTrue($requirement->isRequired());
     }
 
     /**
@@ -1489,8 +1756,8 @@ class FixturesContext extends BaseFixturesContext
     {
         $requirement = $this->getAttributeRequirement($attribute, $family, $channel);
 
-        assertNotNull($requirement);
-        assertFalse($requirement->isRequired());
+        Assert::assertNotNull($requirement);
+        Assert::assertFalse($requirement->isRequired());
     }
 
     /**
@@ -1505,8 +1772,8 @@ class FixturesContext extends BaseFixturesContext
         foreach ($this->getMainContext()->listToArray($attributes) as $attribute) {
             $requirement = $this->getAttributeRequirement($attribute, $family, $channel);
 
-            assertNotNull($requirement);
-            assertFalse($requirement->isRequired());
+            Assert::assertNotNull($requirement);
+            Assert::assertFalse($requirement->isRequired());
         }
     }
 
@@ -1549,13 +1816,17 @@ class FixturesContext extends BaseFixturesContext
         $family    = $this->getFamily($familyCode);
         $channel   = $this->getChannel($channelCode);
 
-        return $repo->findOneBy(
+        $requirement = $repo->findOneBy(
             [
                 'attribute' => $attribute,
                 'family'    => $family,
                 'channel'   => $channel,
             ]
         );
+
+        $em->refresh($requirement);
+
+        return $requirement;
     }
 
     /**
@@ -1593,13 +1864,7 @@ class FixturesContext extends BaseFixturesContext
     {
         $product->setUpdated(new \DateTime($expected));
 
-        $objectManager = null;
-        if ($this->isMongoDB()) {
-            $objectManager = $this->getDocumentManager();
-        } else {
-            $objectManager = $this->getEntityManager();
-        }
-
+        $objectManager = $this->getEntityManager();
         $objectManager->persist($product);
         $objectManager->flush();
     }
@@ -1611,7 +1876,7 @@ class FixturesContext extends BaseFixturesContext
      */
     public function theProductUpdatedDateShouldBeCloseTo(ProductInterface $product, $identifier, $expected)
     {
-        assertLessThan(60, abs(strtotime($expected) - $product->getUpdated()->getTimestamp()));
+        Assert::assertLessThan(60, abs(strtotime($expected) - $product->getUpdated()->getTimestamp()));
     }
 
     /**
@@ -1621,7 +1886,7 @@ class FixturesContext extends BaseFixturesContext
      */
     public function theProductUpdatedDateShouldNotBeCloseTo(ProductInterface $product, $identifier, $expected)
     {
-        assertGreaterThan(60, abs(strtotime($expected) - $product->getUpdated()->getTimestamp()));
+        Assert::assertGreaterThan(60, abs(strtotime($expected) - $product->getUpdated()->getTimestamp()));
     }
 
     /**
@@ -1651,6 +1916,23 @@ class FixturesContext extends BaseFixturesContext
     }
 
     /**
+     * @param TableNode $table
+     *
+     * @Given /^the following clients?:$/
+     */
+    public function theFollowingClients(TableNode $table)
+    {
+        $clientManager = $this->getContainer()->get('fos_oauth_server.client_manager.default');
+        foreach ($table->getHash() as $data) {
+            $client = $clientManager->createClient();
+            $client->setLabel($data['label']);
+            $client->setAllowedGrantTypes([OAuth2::GRANT_TYPE_USER_CREDENTIALS, OAuth2::GRANT_TYPE_REFRESH_TOKEN]);
+
+            $clientManager->updateClient($client);
+        }
+    }
+
+    /**
      * @param string $identifier
      * @param string $attribute
      * @param string $locale
@@ -1658,7 +1940,7 @@ class FixturesContext extends BaseFixturesContext
      *
      * @throws \InvalidArgumentException
      *
-     * @return \Pim\Component\Catalog\Model\ProductValueInterface
+     * @return ValueInterface
      */
     protected function getProductValue($identifier, $attribute, $locale = null, $scope = null)
     {
@@ -1681,17 +1963,45 @@ class FixturesContext extends BaseFixturesContext
     }
 
     /**
+     * @param string $identifier
+     * @param string $attribute
+     * @param string $locale
+     * @param string $scope
+     *
+     * @throws \InvalidArgumentException
+     *
+     * @return ValueInterface
+     */
+    private function getProductModelValue(string $identifier, string $attribute, string $locale = null, string $scope = null)
+    {
+        if (null === $productModel = $this->getProductModel($identifier)) {
+            throw new \InvalidArgumentException(sprintf('Could not find product model with code "%s"', $identifier));
+        }
+
+        if (null === $value = $productModel->getValue($attribute, $locale, $scope)) {
+            throw new \InvalidArgumentException(
+                sprintf(
+                    'Could not find product model value for attribute "%s" in locale "%s" for scope "%s"',
+                    $attribute,
+                    $locale,
+                    $scope
+                )
+            );
+        }
+
+        return $value;
+    }
+
+    /**
      * @param string $code
      * @param string $label
-     * @param bool   $isVariant
      *
      * @return \Pim\Component\Catalog\Model\GroupTypeInterface
      */
-    protected function createGroupType($code, $label, $isVariant)
+    protected function createGroupType($code, $label)
     {
         $type = new GroupType();
         $type->setCode($code);
-        $type->setVariant($isVariant);
         $type->setLocale('en_US')->setLabel($label);
 
         $this->validate($type);
@@ -1736,10 +2046,6 @@ class FixturesContext extends BaseFixturesContext
         $convertedData = $converter->convert($data);
         $category = $processor->process($convertedData);
 
-        /*
-         * When using ODM, one must persist and flush category without product
-         * before adding and persisting products inside it
-         */
         $products = $category->getProducts();
         $this->validate($category);
         $this->getContainer()->get('pim_catalog.saver.category')->save($category);
@@ -1916,11 +2222,27 @@ class FixturesContext extends BaseFixturesContext
     }
 
     /**
+     * @return FamilyVariantRepositoryInterface
+     */
+    protected function getFamilyVariantRepository()
+    {
+        return $this->getContainer()->get('pim_catalog.repository.family_variant');
+    }
+
+    /**
      * @return \Pim\Component\Catalog\Repository\ProductRepositoryInterface
      */
     protected function getProductRepository()
     {
         return $this->getContainer()->get('pim_catalog.repository.product');
+    }
+
+    /**
+     * @return \Pim\Component\Catalog\Repository\ProductModelRepositoryInterface
+     */
+    protected function getProductModelRepository()
+    {
+        return $this->getContainer()->get('pim_catalog.repository.product_model');
     }
 
     /**
@@ -1932,6 +2254,14 @@ class FixturesContext extends BaseFixturesContext
     }
 
     /**
+     * @return CategoryRepositoryInterface
+     */
+    protected function getCategoryRepository()
+    {
+        return $this->getContainer()->get('pim_catalog.repository.category');
+    }
+
+    /**
      * @return MountManager
      */
     protected function getMountManager()
@@ -1940,7 +2270,7 @@ class FixturesContext extends BaseFixturesContext
     }
 
     /**
-     * @return ProductBuilderInterface
+     * @return EntityWithValuesBuilderInterface
      */
     protected function getProductBuilder()
     {
@@ -1948,7 +2278,7 @@ class FixturesContext extends BaseFixturesContext
     }
 
     /**
-     * @return ProductSaver
+     * @return SaverInterface
      */
     protected function getProductSaver()
     {
@@ -1984,7 +2314,9 @@ class FixturesContext extends BaseFixturesContext
      */
     protected function getFieldExtractor()
     {
-        return $this->getContainer()->get('pim_connector.array_converter.flat_to_standard.product.attribute_column_info_extractor');
+        return $this
+            ->getContainer()
+            ->get('pim_connector.array_converter.flat_to_standard.product.attribute_column_info_extractor');
     }
 
     /**
@@ -2014,14 +2346,6 @@ class FixturesContext extends BaseFixturesContext
     }
 
     /**
-     * @return boolean
-     */
-    protected function isMongoDB()
-    {
-        return 'doctrine/mongodb-odm' === $this->getParameter('pim_catalog_product_storage_driver');
-    }
-
-    /**
      * Return doctrine manager instance
      *
      * @return \Doctrine\Common\Persistence\ObjectManager
@@ -2029,14 +2353,6 @@ class FixturesContext extends BaseFixturesContext
     protected function getEntityManager()
     {
         return $this->getContainer()->get('doctrine')->getManager();
-    }
-
-    /**
-     * @return \Doctrine\Common\Persistence\ObjectManager
-     */
-    protected function getDocumentManager()
-    {
-        return $this->getContainer()->get('doctrine_mongodb')->getManager();
     }
 
     /**
@@ -2049,6 +2365,14 @@ class FixturesContext extends BaseFixturesContext
     {
         sort($array1);
         sort($array2);
-        assertEquals(join(', ', $array1), join(', ', $array2));
+        Assert::assertEquals(join(', ', $array1), join(', ', $array2));
+    }
+
+    /**
+     * @return Client
+     */
+    protected function getElasticsearchProductClient()
+    {
+        return $this->getContainer()->get('akeneo_elasticsearch.client.product');
     }
 }

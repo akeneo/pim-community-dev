@@ -1,0 +1,70 @@
+extensions:
+    pim-user-group-index:
+        module: pim/common/simple-view
+        config:
+            template: pim/template/common/default-template
+
+    pim-user-group-index-grid-container:
+        module: pim/common/simple-view
+        parent: pim-user-group-index
+        targetZone: content
+        config:
+            template: pim/template/form/index/index
+
+    pim-user-group-index-user-navigation:
+        module: pim/menu/user-navigation
+        parent: pim-user-group-index
+        targetZone: user-menu
+        config:
+            userAccount: pim_menu.user.user_account
+            logout: pim_menu.user.logout
+
+    pim-user-group-grid-title:
+        module: pim/common/grid-title
+        parent: pim-user-group-index
+        targetZone: title
+        config:
+            title: pim_enrich.index.user_group.title
+
+    pim-user-group-index-breadcrumbs:
+        module: pim/common/breadcrumbs
+        parent: pim-user-group-index
+        targetZone: breadcrumbs
+        config:
+            tab: pim-menu-system
+            item: pim-menu-system-user-group
+
+    pim-user-group-index-filters-list:
+        module: oro/datafilter/filters-list
+        parent: pim-user-group-index-grid-container
+        targetZone: filters
+
+    pim-user-group-index-filters-manage:
+        module: oro/datafilter/filters-button
+        parent: pim-user-group-index-grid-container
+        targetZone: filters
+
+    pim-user-group-index-pagination:
+        module: oro/datagrid/pagination-input
+        parent: pim-user-group-index-grid-container
+        targetZone: toolbar
+        config:
+            gridName: pim-user-group-grid
+
+    pim-user-group-index-grid:
+        module: pim/form/common/index/grid
+        parent: pim-user-group-index-grid-container
+        position: 1000
+        config:
+            alias: pim-user-group-grid
+
+    pim-user-group-index-create-button:
+        module: pim/common/redirect
+        parent: pim-user-group-index
+        targetZone: buttons
+        position: 100
+        aclResourceId: pim_user_group_create
+        config:
+            label: pim_enrich.index.user_group.create_btn
+            route: oro_user_group_create
+            buttonClass: AknButton AknButton--apply

@@ -28,7 +28,7 @@ class ChoicesBuilder implements ChoicesBuilderInterface
                 ));
             }
 
-            $choices[$item->getChoiceValue()] = $item->getChoiceLabel();
+            $choices[$item->getChoiceLabel()] = $item->getChoiceValue();
         }
 
         return $choices;

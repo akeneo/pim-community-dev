@@ -4,6 +4,7 @@ namespace Oro\Bundle\UserBundle\Controller;
 use Pim\Bundle\UserBundle\Entity\UserInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Request;
 
 class ResetController extends Controller
 {
@@ -20,9 +21,9 @@ class ResetController extends Controller
     /**
      * Request reset user password
      */
-    public function sendEmailAction()
+    public function sendEmailAction(Request $request)
     {
-        $username = $this->getRequest()->request->get('username');
+        $username = $request->request->get('username');
         $user = $this->get('oro_user.manager')->findUserByUsernameOrEmail($username);
 
         if (null === $user) {
@@ -47,8 +48,7 @@ class ResetController extends Controller
         /**
          * @todo Move to postUpdate lifecycle event handler as service
          */
-        $message = \Swift_Message::newInstance()
-            ->setSubject('Reset password')
+        $message = (new \Swift_Message('Reset password'))
             ->setFrom($this->container->getParameter('oro_user.email'))
             ->setTo($user->getEmail())
             ->setBody(

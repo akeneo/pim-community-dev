@@ -1,25 +1,49 @@
 <% _.each(associationTypes, function (associationType) { %>
     <div class="AknTabHeader association-type<% if (associationType.code !== currentAssociationType) { %> AknTitleContainer--hidden<% } %>" data-association-type="<%- associationType.code %>">
-        <div>
-            <h3 class="AknTabHeader-title">
-                <%- associationType.labels[locale] || '[' + associationType.code + ']'  %>
-            </h3>
-            <span class="AknTabHeader-subTitle">
-                <%- _.__(
-                    'pim_enrich.form.product.tab.associations.info.number_of_associations',
-                    { productCount: associationType.productCount, groupCount: associationType.groupCount }
+        <div class="AknButtonList">
+            <div class="AknDropdown AknButtonList-item association-type-selector">
+                <a class="AknActionButton AknActionButton--important AknActionButton--withoutBorder" data-toggle="dropdown">
+                    <span class="AknActionButton-highlight"><%- associationType.labels[locale] || '[' + associationType.code + ']'  %></span>
+                    <span class="AknActionButton-caret"></span>
+                </a>
+                <ul class="associations-list AknDropdown-menu">
+                    <div class="AknDropdown-menuTitle"><%- label %></div>
+                    <% _.each(associationTypes, function (associationTypeSwitch) { %>
+                        <li data-association-type="<%- associationTypeSwitch.code %>">
+                            <a class="AknDropdown-menuLink<% if (associationType === associationTypeSwitch) { %> AknDropdown-menuLink--active<% } %> label">
+                                <%- associationTypeSwitch.labels[locale] || '[' + associationTypeSwitch.code + ']'  %>
+                            </a>
+                        </li>
+                    <% }) %>
+                </ul>
+            </div>
+            <div class="AknButtonList-item">
+                <%- __(
+                    numberAssociationLabelKey,
+                    { productCount: associationType.productCount, productModelCount: associationType.productModelCount, groupCount: associationType.groupCount }
                 ) %>
-           </span>
+            </div>
         </div>
-        <div>
-            <button type="button" class="AknButton AknButton--grey AknButton--small AknButton--withIcon target-button target-button <% if ('products' === currentAssociationTarget) { %> AknButton--hidden<% } %>" data-association-target="products">
-                <i class="AknButton-icon icon-random"></i>
-                <%- _.__('pim_enrich.form.product.tab.associations.info.show_products') %>
-            </button>
-            <button type="button" class="AknButton AknButton--grey AknButton--small AknButton--withIcon target-button target-button <% if ('groups' === currentAssociationTarget) { %> AknButton--hidden<% } %>" data-association-target="groups">
-                <i class="AknButton-icon icon-random"></i>
-                <%- _.__('pim_enrich.form.product.tab.associations.info.show_groups') %>
-            </button>
+        <div class="AknDropdown target-selector">
+            <a class="AknActionButton AknActionButton--withoutBorder" data-toggle="dropdown">
+                <span class="AknActionButton-highlight">
+                    <% if ('products' === currentAssociationTarget) { %>
+                        <%- showProductsLabel %>
+                    <% } else { %>
+                        <%- showGroupsLabel %>
+                    <% } %>
+                </span>
+                <span class="AknActionButton-caret"></span>
+            </a>
+            <ul class="AknDropdown-menu">
+                <div class="AknDropdown-menuTitle"><%- targetLabel %></div>
+                <li class="label target-button AknDropdown-menuLink<% if ('products' === currentAssociationTarget) { %> AknDropdown-menuLink--active<% } %>" data-association-target="products">
+                    <%- showProductsLabel %>
+                </li>
+                <li class="label target-button AknDropdown-menuLink<% if ('groups' === currentAssociationTarget) { %> AknDropdown-menuLink--active<% } %>" data-association-target="groups">
+                    <%- showGroupsLabel %>
+                </li>
+            </ul>
         </div>
    </div>
 <% }); %>

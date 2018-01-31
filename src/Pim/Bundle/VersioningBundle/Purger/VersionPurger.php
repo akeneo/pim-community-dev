@@ -69,9 +69,9 @@ class VersionPurger implements VersionPurgerInterface
         $this->configureOptions($optionResolver);
         $options = $optionResolver->resolve($options);
 
-        $versionsCursor = $this->versionRepository->findPotentiallyPurgeableBy($options);
+        $versionsPaginator = $this->versionRepository->findPotentiallyPurgeableBy($options);
 
-        foreach ($versionsCursor as $version) {
+        foreach ($versionsPaginator as $version) {
             $this->eventDispatcher->dispatch(
                 PurgeVersionEvents::PRE_ADVISEMENT,
                 new PreAdvisementVersionEvent($version)
@@ -110,9 +110,9 @@ class VersionPurger implements VersionPurgerInterface
         $this->configureOptions($optionResolver);
         $options = $optionResolver->resolve($options);
 
-        $versionsCursor = $this->versionRepository->findPotentiallyPurgeableBy($options);
+        $versionsPaginator = $this->versionRepository->findPotentiallyPurgeableBy($options);
 
-        return $versionsCursor->count();
+        return $versionsPaginator->count();
     }
 
     /**

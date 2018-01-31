@@ -5,6 +5,7 @@ namespace Pim\Bundle\CatalogBundle\Entity;
 use Akeneo\Component\Classification\Model\Category as BaseCategory;
 use Akeneo\Component\Localization\Model\TranslationInterface;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Pim\Component\Catalog\Model\CategoryInterface;
 
 /**
@@ -16,8 +17,11 @@ use Pim\Component\Catalog\Model\CategoryInterface;
  */
 class Category extends BaseCategory implements CategoryInterface
 {
-    /** @var ArrayCollection of ProductInterface */
+    /** @var Collection of ProductInterface */
     protected $products;
+
+    /** @var Collection of ProductModelInterface */
+    protected $productModels;
 
     /**
      * Used locale to override Translation listener's locale
@@ -41,6 +45,7 @@ class Category extends BaseCategory implements CategoryInterface
         parent::__construct();
 
         $this->products = new ArrayCollection();
+        $this->productModels = new ArrayCollection();
         $this->translations = new ArrayCollection();
         $this->channels = new ArrayCollection();
     }
@@ -69,6 +74,22 @@ class Category extends BaseCategory implements CategoryInterface
     public function getProductsCount()
     {
         return $this->products->count();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function hasProductModels(): bool
+    {
+        return $this->productModels->count() !== 0;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getProductModels(): Collection
+    {
+        return $this->productModels;
     }
 
     /**

@@ -38,13 +38,6 @@ interface LocaleRepositoryInterface extends IdentifiableObjectRepositoryInterfac
     public function getActivatedLocalesQB();
 
     /**
-     * Return a query builder for all locales
-     *
-     * @return mixed
-     */
-    public function getLocalesQB();
-
-    /**
      * Get the deleted locales of a channel (the channel is updated but not flushed yet).
      *
      * @param ChannelInterface $channel

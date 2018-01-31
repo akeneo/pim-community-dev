@@ -18,7 +18,11 @@ class BaseDecorator extends ElementDecorator
             return $this->find('css', '.filter-criteria-selector');
         }, 'Cannot open the filter');
 
-        $filter->click();
+        $this->spin(function () use ($filter) {
+            $filter->click();
+
+            return $this->hasClass('open-filter');
+        }, 'Cannot open the filter');
     }
 
     /**
@@ -26,6 +30,22 @@ class BaseDecorator extends ElementDecorator
      */
     public function remove()
     {
-        $this->find('css', '.disable-filter')->click();
+        $removeFilter = $this->spin(function () {
+            return $this->find('css', '.disable-filter');
+        }, 'Cannot find the remove button.');
+
+        $removeFilter->click();
+    }
+
+    /**
+     * Returns the displayed criteria in the filter
+     *
+     * @return string
+     */
+    public function getCriteriaHint()
+    {
+        return trim($this->spin(function () {
+            return $this->find('css', '.filter-criteria-hint');
+        }, 'Can not find the criteria hint of the filter')->getText());
     }
 }

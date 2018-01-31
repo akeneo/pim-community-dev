@@ -17,13 +17,14 @@ class PriceDecorator extends ElementDecorator
      */
     public function filter($operator, $value)
     {
-        $dropdowns = $this->findAll('css', '.dropdown-toggle');
-
         $operatorDropdown = $this->decorate(
-            $dropdowns[0],
+            $this->find('css', '.operator *[data-toggle="dropdown"]'),
             ['Pim\Behat\Decorator\Grid\Filter\OperatorDecorator']
         );
-        $currencyDropdown = $dropdowns[1];
+        $currencyDropdown = $this->decorate(
+            $this->find('css', '.currency *[data-toggle="dropdown"]'),
+            ['Pim\Behat\Decorator\Grid\Filter\OperatorDecorator']
+        );
 
         // Split '10.5 EUR' -> $data = 10.5; $currency = 'EUR'
         $value = '' !== $value ? explode(' ', $value) : [];
@@ -36,8 +37,7 @@ class PriceDecorator extends ElementDecorator
                 list($data, $currency) = $value;
                 break;
             default:
-                throw \InvalidArgumentException('You must specify a currency and a value');
-                break;
+                throw new \InvalidArgumentException('You must specify a currency and a value');
         }
 
         // Set the value:
@@ -45,24 +45,17 @@ class PriceDecorator extends ElementDecorator
             $this->find('css', 'input[name="value"]')->setValue($data);
         }
 
-        $currencyDropdown->click();
-        $currencyChoice = $currencyDropdown->getParent()->find(
-            'css', sprintf('.dropdown-menu .choice_value[data-value="%s"]', $currency)
-        );
-        if (null === $currencyChoice) {
-            throw new \Exception(sprintf('Cannot find the choice for currency %s', $currency));
-        }
-
-        $currencyChoice->click();
-
-        // Change the operator
         $operatorDropdown->setValue($operator);
+        $currencyDropdown->setValue($currency);
 
         // Update the filter
         $this->spin(function () {
+            if (!$this->find('css', '.filter-criteria')->isVisible()) {
+                return true;
+            }
             $this->find('css', '.filter-update')->click();
 
-            return true;
+            return false;
         }, 'Cannot update the filter');
     }
 }

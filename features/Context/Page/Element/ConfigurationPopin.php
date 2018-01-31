@@ -34,7 +34,6 @@ class ConfigurationPopin extends Element
         }, 'Cannot find the drop zone');
 
         foreach ($labels as $label) {
-            $searchInput->setValue($label);
             $item = $this->getItemForLabel($label);
             $this->dragElementTo($item, $dropZone);
         }

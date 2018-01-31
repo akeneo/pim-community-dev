@@ -7,10 +7,7 @@
             {% set url = null %}
         {% endif %}
         {% set title = ('btn.create.' ~ entity)|trans|capitalize %}
-        <a class="AknButton AknButton--apply{% if attr.class is defined %} {{ attr.class }}{% endif %} {% if icon %} AknButton--withIcon {% endif %}" href="{{ url ? url : 'javascript:void(0);' }}" title="{{ title }}"{% if attr %}{% for key, value in attr %}{% if key != 'class' %} {{ key }}="{{ value }}"{% endif %}{% endfor %}{% endif %}>
-        {% if icon %}
-            <i class="AknButton-icon icon-{{ icon }}"></i>
-          {% endif %}
+        <a class="AknButton AknButton--apply{% if attr.class is defined %} {{ attr.class }}{% endif %}" href="{{ url ? '#' ~ url : 'javascript:void(0);' }}" title="{{ title }}"{% if attr %}{% for key, value in attr %}{% if key != 'class' %} {{ key }}="{{ value }}"{% endif %}{% endfor %}{% endif %}>
           {{ title }}
         </a>
         {% if buttonId is defined %}
@@ -33,10 +30,7 @@
 {% macro submitBtn(text, icon, class = '') %}
 {% spaceless %}
     {% set text = text|default('btn.save')|trans|capitalize %}
-    <button type="submit" class="AknButton AknButton--apply AknButton--withIcon {{ class }}" title="{{ text }}">
-        {% if icon %}
-            <i class="AknButton-icon icon-{{ icon }}"></i>
-        {% endif %}
+    <button type="submit" class="AknButton AknButton--apply {{ class }}" title="{{ text }}">
         {{ text }}
     </button>
 {% endspaceless %}
@@ -59,27 +53,17 @@
 {% endspaceless %}
 {% endmacro %}
 
-{% macro backLink(url, title) %}
-{% spaceless %}
-    {% set title = title|default('btn.to grid') %}
-    <a class="AknTitleContainer-backLink back-link" title="{{ title|trans|capitalize }}" href="{{ url }}">
-        <i class="icon-chevron-left"></i>
-    </a>
-{% endspaceless %}
-{% endmacro %}
-
-{% macro deleteLinkAttributes(url, redirectUrl, message, successMessage, title) %}{% spaceless %}
+{% macro deleteLinkAttributes(url, redirectUrl, message, successMessage, title, subTitle) %}{% spaceless %}
     {% set message = message|default('confirmation.remove.item') %}
     {% set title = title|default('confirmation.delete'|trans) %}
     {% set successMessage = successMessage|default('flash.entity.removed'|trans) %}
-    href="javascript:void(0);" data-dialog="confirm" data-title="{{ title }}" data-message="{{ message }}" data-url="{{ url }}" data-redirect-url="{{ redirectUrl }}" data-method="DELETE" data-error-message="{% trans %}The element could not be deleted{% endtrans %}" data-success-message="{{ successMessage }}"
+    href="javascript:void(0);" data-dialog="delete" data-title="{{ title }}" data-subtitle="{{ subTitle }}" data-message="{{ message }}" data-url="{{ url }}" data-redirect-url="{{ redirectUrl }}" data-method="DELETE" data-error-message="{% trans %}The element could not be deleted{% endtrans %}" data-success-message="{{ successMessage }}"
 {% endspaceless %}{% endmacro %}
 
-{% macro deleteLink(url, acl, redirectUrl, message, successMessage, title, class = '') %}{% spaceless %}
+{% macro deleteLink(url, acl, redirectUrl, message, successMessage, title, class = '', subTitle = '') %}{% spaceless %}
     {% if acl is null or resource_granted(acl) %}
         {% import _self as elements %}
-        <a class="AknButton AknButton--withIcon AknButton--important {{ class }}" title="{{ 'btn.delete'|trans|capitalize }}" {{elements.deleteLinkAttributes(url, redirectUrl, message, successMessage, title)}} >
-            <i class="AknButton-icon icon-trash"></i>
+        <a class="{{ class }}" title="{{ 'btn.delete'|trans|capitalize }}" {{elements.deleteLinkAttributes(url, redirectUrl, message, successMessage, title, subTitle)}} >
             {{ 'btn.delete'|trans|capitalize }}
         </a>
     {% endif %}
@@ -89,52 +73,65 @@
 {% spaceless %}
     {% set title = opts.title is defined ? opts.title : text %}
     {% set icon = opts.icon is defined ? opts.icon : null %}
-    <a{% if opts.id is defined %} id="{{ opts.id }}"{% endif %} class="AknButton {{ opts.class is defined ? opts.class|join(' ') }}{% if text and icon %} AknButton--withIcon{% elseif icon %} icons-holder{% endif %} {{ icon }}" href="{{ url ? url : 'javascript:void(0);' }}"{% if title %} title="{{ title|trans|capitalize }}"{% endif %}{% if opts.attr is defined %}{% for key, value in opts.attr %} {{ key }}="{{ value }}"{% endfor %}{% endif %}>
-        {% if icon %}<i class="AknButton-icon icon-{{ icon }}"></i>{% endif %}
+    <a{% if opts.id is defined %} id="{{ opts.id }}"{% endif %} class="{{ opts.class is defined ? opts.class|join(' ') }}" href="{{ url ? url : 'javascript:void(0);' }}"{% if title %} title="{{ title|trans|capitalize }}"{% endif %}{% if opts.attr is defined %}{% for key, value in opts.attr %} {{ key }}="{{ value }}"{% endfor %}{% endif %}>
         {{ text|trans|capitalize }}
     </a>
 {% endspaceless %}
 {% endmacro %}
 
-{% macro page_header(title, buttons, titleButtons, meta, right, backButton, state) %}
+{% macro page_header(options) %}
+    {% set title = options.title is defined ? options.title : '' %}
+    {% set buttons = options.buttons is defined ? options.buttons : '' %}
+    {% set meta = options.meta is defined ? options.meta : '' %}
+    {% set backButton = options.backButton is defined ? options.backButton : '' %}
+    {% set state = options.state is defined ? options.state : '' %}
+    {% set image = options.image is defined ? options.image : '' %}
+    {% set context = options.context is defined ? options.context : '' %}
+
     <header class="AknTitleContainer navigation">
-        <div class="AknTitleContainer-backContainer" data-drop-zone="back">
-            {% if backButton is not empty %}
-                {{ backButton }}
-            {% endif %}
+        <div class="AknTitleContainer-line">
+            <div class="AknTitleContainer-imageContainer" data-drop-zone="main-image">{% block image %}{{ image }}{% endblock image %}</div>
+            <div class="AknTitleContainer-mainContainer">
+                <div>
+                    <div class="AknTitleContainer-line">
+                        <div class="AknTitleContainer-breadcrumbs" data-drop-zone="breadcrumbs"></div>
+                        <div class="AknTitleContainer-buttonsContainer">
+                            <div class="user-menu" data-drop-zone="user-menu"></div>
+                            <div class="AknButtonList" data-drop-zone="buttons">
+                                {% block navButtons %}{% endblock navButtons %}
+                                {% if buttons is not empty %}
+                                    {{ buttons }}
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="AknTitleContainer-line">
+                        <div class="AknTitleContainer-title" data-drop-zone="title">
+                            {% block title %}
+                                {{ title }}
+                            {% endblock title %}
+                        </div>
+                        <div class="AknTitleContainer-state" data-drop-zone="state">{{ state }}</div>
+                    </div>
+                </div>
+                <div>
+                    <div class="AknTitleContainer-line">
+                        <div class="AknTitleContainer-context AknButtonList" data-drop-zone="context">
+                            {{ context }}
+                        </div>
+                    </div>
+                    <div class="AknTitleContainer-line">
+                        <div class="AknTitleContainer-meta" data-drop-zone="meta">
+                            {% block meta %}
+                                {{ meta }}
+                            {% endblock meta %}
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="AknTitleContainer-contentContainer">
-            <div class="AknTitleContainer-mainLine">
-                <div class="AknTitleContainer-titleContainer" data-drop-zone="title">
-                    <h2 class="AknTitleContainer-title">
-                        {% block title %}
-                            {{ title }}
-                        {% endblock title %}
-                    </h2>
-                    {% if titleButtons is not empty %}
-                        <div class="AknTitleContainer-titleButtons AknButtonList" data-drop-zone="title-buttons">
-                            {{ titleButtons }}
-                        </div>
-                    {% endif %}
-                </div>
-                <div class="AknTitleContainer-rightButtons" data-drop-zone="buttons">
-                    {% block navButtons %}{% endblock navButtons %}
-                    {{ right }}
-                    {% if buttons is not empty %}
-                        <div class="AknButtonList AknButtonsList--right AknTitleContainer-rightButtons">
-                            {{ buttons }}
-                        </div>
-                    {% endif %}
-                </div>
-            </div>
-            <div class="AknTitleContainer-metaLine">
-                <div class="AknTitleContainer-meta">
-                    {{ meta }}
-                </div>
-                <div class="AknTitleContainer-state">
-                    {{ state }}
-                </div>
-            </div>
+        <div class="AknTitleContainer-line">
+            <div data-drop-zone="navigation"></div>
         </div>
     </header>
 {% endmacro %}
@@ -189,10 +186,7 @@
 {% macro updated(formId) %}
 {% spaceless %}
     <div id="entity-updated" style="opacity: 0">
-        <span class="AknBadge AknBadge--warning">
-            <i class="AknBadge-icon icon-circle"></i>
-            {{ 'info.updated'|trans }}
-        </span>
+        <span class="AknState">{{ 'info.updated'|trans }}</span>
     </div>
     <script type="text/javascript">
         require(
@@ -252,61 +246,13 @@
     {% if form.enabled is defined %}
         <div class="status-enabled pull-left">
             {% if form.enabled.vars.value %}
-                <div class="AknBadge AknBadge--rounded AknBadge--enabled status-enabled"><i class="icon-status-enabled icon-circle"></i>{{ 'info.product.enabled'|trans }}</div>
+                <div class="AknBadge AknBadge--enabled status-enabled"><i class="icon-status-enabled icon-circle"></i>{{ 'info.product.enabled'|trans }}</div>
             {% else %}
-                <div class="AknBadge AknBadge--rounded AknBadge--disabled status-disabled"><i class="icon-status-disabled icon-circle"></i>{{ 'info.product.disabled'|trans }}</div>
+                <div class="AknBadge AknBadge--disabled status-disabled"><i class="icon-status-disabled icon-circle"></i>{{ 'info.product.disabled'|trans }}</div>
             {% endif %}
         </div>
     {% endif %}
 {% endspaceless %}
-{% endmacro %}
-
-{% macro confirmLinkAttributes(url, redirectUrl, message, successMessage, title) %}{% spaceless %}
-    {% set title = title|default('confirmation.confirm'|trans) %}
-    href="javascript:void(0);" data-dialog="confirm" data-title="{{ title }}" data-message="{{ message }}" data-url="{{ url }}" data-redirect-url="{{ redirectUrl }}" data-method="POST" data-error-message="{% trans %}The action could not be performed{% endtrans %}" data-success-message="{{ successMessage }}"
-{% endspaceless %}{% endmacro %}
-
-{% macro confirmLink(url, redirectUrl, successMessage, buttonLabel, buttonIcon, message, buttonClass, title) %}{% spaceless %}
-    {% import _self as this %}
-    {% set buttonLabel = 'btn.' ~ buttonLabel %}
-    <a class="AknButton AknButton--withIcon {{ buttonClass }}" title="{{ buttonLabel|trans|capitalize }}" {{this.confirmLinkAttributes(url, redirectUrl, message, successMessage, title)}} >
-        <i class="AknButton-icon icon-{{ buttonIcon }}"></i>
-        {{ buttonLabel|trans|capitalize }}
-    </a>
-{% endspaceless %}{% endmacro %}
-
-{% macro flashMessagesContainer() %}
-    <div id="flash-messages" class="AknBreadcrumbContainer-flashContainer">
-        {% block messages %}
-            <div class="flash-messages-holder AknBreadcrumbContainer-flashList"></div>
-            <script type="text/template" id="message-item-template">
-                <div class="AknFlash alert <% if (type) {  %><%= 'alert-' + type + ' AknFlash--' + type %><% } %> fade in top-messages">
-                    <button type="button" class="AknFlash-closeButton close" data-dismiss="alert">&times;</button>
-                    <div class="message"><%= message %></div>
-                </div>
-            </script>
-            <script type="text/javascript">
-                require(
-                    ['jquery', 'oro/messenger'],
-                    function($, messenger) {
-                        messenger.setup({
-                            container: '#flash-messages .flash-messages-holder',
-                            template: _.template($.trim($('#message-item-template').html()))
-                        });
-                        {% if app.session.flashbag.peekAll|length > 0 %}
-                            $(function() {
-                                {% for type, messages in app.session.flashbag.all %}
-                                    {% for message in messages %}
-                                        messenger.notificationFlashMessage({{ type|json_encode|raw }}, {{ message|trans|json_encode|raw }});
-                                    {% endfor %}
-                                {% endfor %}
-                            });
-                        {% endif %}
-                    }
-                );
-            </script>
-        {% endblock messages %}
-    </div>
 {% endmacro %}
 
 {% macro form_container(content) %}

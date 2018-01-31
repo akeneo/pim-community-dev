@@ -19,7 +19,7 @@ class DelegatingClassMetadataFactorySpec extends ObjectBehavior
 
     function it_is_a_validator_metadata_factory()
     {
-        $this->shouldBeAnInstanceOf('Symfony\Component\Validator\MetadataFactoryInterface');
+        $this->shouldBeAnInstanceOf(MetadataFactoryInterface::class);
     }
 
     function it_delegate_metadata_creation_to_the_first_factory_having_one_for_an_object(

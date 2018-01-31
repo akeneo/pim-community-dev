@@ -1,7 +1,7 @@
 'use strict';
 
 define(
-    ['underscore', 'backbone', 'text!pim/template/error/error'],
+    ['underscore', 'backbone', 'pim/template/error/error'],
     function (_, Backbone, template) {
         return Backbone.View.extend({
             template: _.template(template),

@@ -17,15 +17,17 @@ function(_, __, AbstractFilter, MultiselectDecorator) {
          * @property
          */
         template: _.template(
-            '<div class="AknActionButton filter-select filter-criteria-selector">' +
-                '<% if (showLabel) { %><%= label %>: <% } %>' +
+            '<div class="AknFilterBox-filter filter-select filter-criteria-selector">' +
+                '<% if (showLabel) { %>' +
+                    '<span class="AknFilterBox-filterLabel"><%= label %></span>' +
+                '<% } %>' +
                 '<select>' +
                     '<% _.each(options, function (option) { %>' +
                         '<option value="<%= option.value %>"<% if (option.value == emptyValue.type) { %> selected="selected"<% } %>><%= option.label %></option>' +
                     '<% }); %>' +
                 '</select>' +
             '</div>' +
-            '<% if (canDisable) { %><a href="<%= nullLink %>" class="disable-filter"><i class="icon-remove hide-text"><%- _.__("Close") %></i></a><% } %>'
+            '<% if (canDisable) { %><a href="<%= nullLink %>" class="AknFilterBox-disableFilter AknIconButton AknIconButton--small AknIconButton--remove disable-filter"></a><% } %>'
         ),
 
         /**
@@ -84,7 +86,7 @@ function(_, __, AbstractFilter, MultiselectDecorator) {
          */
         widgetOptions: {
             multiple: false,
-            classes: 'AknActionButton-selectButton select-filter-widget'
+            classes: 'AknFilterBox-filterCriteria select-filter-widget'
         },
 
         /**
@@ -142,6 +144,8 @@ function(_, __, AbstractFilter, MultiselectDecorator) {
          * @return {*}
          */
         render: function () {
+            AbstractFilter.prototype.render.apply(this, arguments);
+
             var options =  this.choices.slice(0);
             this.$el.empty();
 
@@ -180,14 +184,11 @@ function(_, __, AbstractFilter, MultiselectDecorator) {
                     selectedText: _.bind(function(numChecked, numTotal, checkedItems) {
                         return this._getSelectedText(checkedItems);
                     }, this),
-                    position: {
-                        my: 'left top+2',
-                        at: 'left bottom',
-                        of: this.$(this.containerSelector)
-                    },
                     open: _.bind(function() {
                         this.selectWidget.onOpenDropdown();
                         this._setDropdownWidth();
+                        this.selectWidget.getWidget().find('input[type="search"]').attr('placeholder', this.label);
+                        this._updateCriteriaSelectorPosition();
                         this._setButtonPressed(this.$(this.containerSelector), true);
                         this.selectDropdownOpened = true;
                     }, this),
@@ -203,8 +204,12 @@ function(_, __, AbstractFilter, MultiselectDecorator) {
 
             this.selectWidget.setViewDesign(this);
             this.$(this.buttonSelector)
-                .append('<span class="AknActionButton-caret AknCaret"></span>')
+                .append('<span class="AknFilterBox-filterCaret"></span>')
                 .find('span:first-child').addClass('filter-criteria-hint');
+        },
+
+        getCriteria() {
+            return this.selectWidget.getWidget()
         },
 
         /**
@@ -287,8 +292,9 @@ function(_, __, AbstractFilter, MultiselectDecorator) {
             this.setValue(this._formatRawValue(this._readDOMValue()));
 
             // update dropdown
-            var widget = this.$(this.containerSelector);
-            this.selectWidget.updateDropdownPosition(widget);
+            if (null !== this.selectWidget) {
+                this._updateCriteriaSelectorPosition();
+            }
         },
 
         /**
@@ -315,6 +321,7 @@ function(_, __, AbstractFilter, MultiselectDecorator) {
             AbstractFilter.prototype._onValueUpdated.apply(this, arguments);
 
             if (this.selectWidget) {
+                this._updateCriteriaSelectorPosition();
                 this.selectWidget.multiselect('refresh');
             }
         },

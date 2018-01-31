@@ -2,54 +2,67 @@ datagrid:
     product-grid:
         options:
             entityHint: product
-            requireJSModules:
-                - pim/datagrid/configure-columns-action
+            filtersAsColumn: true
+            displayTypes:
+                default:
+                    label: grid.display_selector.list
+                gallery:
+                    label: grid.display_selector.gallery
+                    rowView: oro/datagrid/product-row
+                    manageColumns: false
         source:
             acl_resource:      pim_enrich_product_index
             type:              pim_datasource_product
             entity:            '%pim_catalog.entity.product.class%'
-            repository_method: createDatagridQueryBuilder
         columns:
+            identifier:
+                label: ID
+                data_name:     identifier
+                type:          field
+            image:
+                label:         Image
+                data_name:     image
+                frontend_type: product-and-product-model-image
             label:
                 label:         Label
-                data_name:     productLabel
-                selector:      product_label
+                data_name:     label
+                type:          field
+                frontend_type: product-and-product-model-label
             family:
                 label:         Family
-                data_name:     familyLabel
-                selector:      product_family
+                data_name:     family
+                type:          field
             enabled:
                 label:         Status
-                type:          twig
-                template:      PimDataGridBundle:Property:enabled.html.twig
-                frontend_type: html
+                frontend_type: enabled
             completeness:
                 label:         Complete
-                type:          twig
-                data_name:     ratio
-                template:      PimDataGridBundle:Property:completeness.html.twig
-                frontend_type: html
-                selector:      product_completeness
+                frontend_type: completeness
             created:
                 label:         Created At
-                type:          product_value_date
-                frontend_type: date
+                type:          field
             updated:
                 label:         Updated At
-                type:          product_value_date
-                frontend_type: date
+                type:          field
+            complete_variant_products:
+                label:         Variant products
+                data_name:     complete_variant_product
+                frontend_type: complete-variant-product
+        other_columns:
             groups:
                 label:         Groups
-                type:          product_groups
-                selector:      product_groups
+                data_name:     groups
+                type:          field
+            parent:
+                label: Parent
+                data_name: parent
+                type: field
         properties:
-            id: ~
-            edit_link:
-                type: url
-                route: pim_enrich_product_edit
-                params:
-                    - id
-                    - dataLocale
+            id:
+                type:          field
+                data_name:     search_id
+            document_type: ~
+            technical_id: ~
             delete_link:
                 type: url
                 route: pim_enrich_product_rest_remove
@@ -62,72 +75,69 @@ datagrid:
                     - id
         actions:
             edit:
-                type:      navigate
+                type:      navigate-product-and-product-model
                 label:
                 icon:
-                link:      edit_link
                 rowAction: true
             edit_attributes:
-                type:      tab-redirect
+                launcherOptions:
+                    className: AknIconButton AknIconButton--small AknIconButton--edit
+                type:      navigate-product-and-product-model
                 label:     Edit attributes of the product
-                tab:       pim-product-edit-form-attributes
-                icon:      pencil
-                link:      edit_link
+                tabRedirects:
+                    product: pim-product-edit-form-attributes
+                    product_model: pim-product-model-edit-form-attributes
             edit_categories:
-                type:  tab-redirect
+                launcherOptions:
+                    className: AknIconButton AknIconButton--small AknIconButton--folder
+                type:  navigate-product-and-product-model
                 label: Classify the product
-                tab:   pim-product-edit-form-categories
-                icon:  folder-close
-                link:  edit_link
+                tabRedirects:
+                    product: pim-product-edit-form-categories
+                    product_model: pim-product-edit-form-categories
             delete:
-                type:  delete
+                launcherOptions:
+                    className: AknIconButton AknIconButton--small AknIconButton--trash
+                type:  delete-product
                 label: Delete the product
-                icon:  trash
                 link:  delete_link
                 acl_resource: pim_enrich_product_remove
             toggle_status:
-                type:  ajax
+                launcherOptions:
+                    className: AknIconButton AknIconButton--small AknIconButton--switch
+                type:  toggle-product
                 label: Toggle status
-                icon:  retweet
                 link:  toggle_status_link
+                acl_resource: pim_enrich_product_change_state
         mass_actions_groups:
             bulk_actions:
                 label: pim_datagrid.mass_action_group.bulk_actions.label
             quick_export:
                 label: pim_datagrid.mass_action_group.quick_export.label
         mass_actions:
-            mass_edit:
+            product_edit:
                 type: edit
                 acl_resource: pim_enrich_mass_edit
                 label: pim.grid.mass_action.mass_edit
                 handler: product_mass_edit
-                route: pim_enrich_mass_edit_product_action_choose
-                launcherOptions:
-                    group: bulk_actions
+                route: pim_enrich_mass_edit_action
+                className: 'AknButton AknButton--action AknButtonList-item'
+                route_parameters:
+                    actionName: product-edit
             sequential_edit:
-                type: edit
+                type: sequential_edit
                 acl_resource: pim_enrich_product_edit_attributes
                 label: pim.grid.mass_action.sequential_edit
                 handler: sequential_edit
                 route: pim_enrich_mass_edit_action_sequential_edit
-                launcherOptions:
-                    group: bulk_actions
-            category_edit:
-                type: edit
-                acl_resource: pim_enrich_mass_edit
-                label: pim.grid.mass_action.category_edit
-                handler: product_mass_edit
-                route: pim_enrich_mass_edit_product_action_choose
-                route_parameters:
-                    operationGroup: category-edit
-                launcherOptions:
-                    group: bulk_actions
+                className: 'AknButton AknButton--action AknButtonList-item'
             delete:
                 type: delete
                 label: pim.grid.mass_action.delete
                 entity_name: product
                 acl_resource: pim_enrich_product_remove
                 handler: product_mass_delete
+                className: 'AknButton AknButton--important AknButtonList-item'
                 messages:
                     confirm_title: pim_datagrid.mass_action.delete.confirm_title
                     confirm_content: pim_datagrid.mass_action.delete.confirm_content
@@ -135,8 +145,6 @@ datagrid:
                     success: pim_datagrid.mass_action.delete.success
                     error: pim_datagrid.mass_action.delete.error
                     empty_selection: pim_datagrid.mass_action.delete.empty_selection
-                launcherOptions:
-                    group: bulk_actions
             quick_export_grid_context_xlsx:
                 type: export
                 label: pim.grid.mass_action.quick_export.xlsx_grid_context
@@ -203,6 +211,9 @@ datagrid:
                     group: quick_export
         sorters:
             columns:
+                identifier:
+                    data_name: identifier
+                    sorter: product_field
                 family:
                     data_name: familyLabel
                     sorter:    product_family
@@ -246,8 +257,8 @@ datagrid:
                     options:
                         field_options:
                             choices:
-                                1: Enabled
-                                0: Disabled
+                                Enabled: 1
+                                Disabled: 0
                 scope:
                     type:      product_scope
                     label:     Scope
@@ -269,3 +280,16 @@ datagrid:
                     ftype:     date
                     data_name: updated
                     label:     Updated At
+                label_or_identifier:
+                    type: label_or_identifier
+                    label: Label or identifier
+                    data_name: label_or_identifier
+                parent:
+                    label:         Parent
+                    data_name:     parent
+                    type:          product_value_string
+                    ftype:         parent
+                    options:
+                        field_options:
+                            attr:
+                                choice_list: true

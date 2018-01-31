@@ -9,7 +9,6 @@ jobs:
             uploadAllowed:      true
             delimiter:          ;
             enclosure:          '"'
-            escape:             '\'
             enabled:            true
             categoriesColumn:   categories
             familyColumn:       family
@@ -53,7 +52,6 @@ jobs:
             uploadAllowed:       true
             delimiter:           ;
             enclosure:           '"'
-            escape:              '\'
     csv_footwear_category_export:
         connector: Akeneo CSV Connector
         alias:     csv_category_export
@@ -73,7 +71,6 @@ jobs:
             uploadAllowed: true
             delimiter:     ;
             enclosure:     '"'
-            escape:        '\'
     csv_footwear_association_type_export:
         connector: Akeneo CSV Connector
         alias:     csv_association_type_export
@@ -93,7 +90,6 @@ jobs:
             uploadAllowed: true
             delimiter:     ;
             enclosure:     '"'
-            escape:        '\'
     xlsx_footwear_group_import:
         connector: Akeneo XLSX Connector
         alias:     xlsx_group_import
@@ -112,16 +108,6 @@ jobs:
             enclosure:  '"'
             withHeader: true
             filePath: /tmp/group.csv
-    csv_footwear_variant_group_export:
-        connector: Akeneo CSV Connector
-        alias:     csv_variant_group_export
-        label:     CSV footwear variant group export
-        type:      export
-        configuration:
-            delimiter:  ;
-            enclosure:  '"'
-            withHeader: true
-            filePath: /tmp/variant_group.csv
     csv_footwear_attribute_import:
         connector: Akeneo CSV Connector
         alias:     csv_attribute_import
@@ -131,7 +117,6 @@ jobs:
             uploadAllowed: true
             delimiter:     ;
             enclosure:     '"'
-            escape:        '\'
     csv_footwear_attribute_export:
         connector: Akeneo CSV Connector
         alias:     csv_attribute_export
@@ -151,7 +136,6 @@ jobs:
             uploadAllowed: true
             delimiter:     ;
             enclosure:     '"'
-            escape:        '\'
     csv_footwear_option_export:
         connector: Akeneo CSV Connector
         alias:     csv_attribute_option_export
@@ -222,26 +206,6 @@ jobs:
             enclosure:  '"'
             withHeader: true
             filePath: /tmp/attribute_group.csv
-    csv_footwear_variant_group_import:
-        connector: Akeneo CSV Connector
-        alias:     csv_variant_group_import
-        label:     CSV footwear variant group import
-        type:      import
-        configuration:
-            uploadAllowed: true
-            delimiter:     ;
-            enclosure:     '"'
-            escape:        '\'
-            copyValues:    true
-            filePath:      /tmp/footwear_variant_group.csv
-    xlsx_footwear_variant_group_import:
-        connector: Akeneo XLSX Connector
-        alias:     xlsx_variant_group_import
-        label:     XLSX footwear variant group import
-        type:      import
-        configuration:
-            uploadAllowed: true
-            filePath:      /tmp/variant_group.xlsx
     csv_footwear_family_import:
         connector: Akeneo CSV Connector
         alias:     csv_family_import
@@ -251,7 +215,6 @@ jobs:
             uploadAllowed: true
             delimiter:     ;
             enclosure:     '"'
-            escape:        '\'
     csv_footwear_currency_import:
         connector: Akeneo CSV Connector
         alias:     csv_currency_import
@@ -261,7 +224,6 @@ jobs:
             uploadAllowed: true
             delimiter:     ;
             enclosure:     '"'
-            escape:        '\'
     csv_footwear_channel_import:
         connector: Akeneo CSV Connector
         alias:     csv_channel_import
@@ -271,7 +233,6 @@ jobs:
             uploadAllowed: true
             delimiter:     ;
             enclosure:     '"'
-            escape:        '\'
     csv_footwear_locale_import:
         connector: Akeneo CSV Connector
         alias:     csv_locale_import
@@ -281,7 +242,6 @@ jobs:
             uploadAllowed: true
             delimiter:     ;
             enclosure:     '"'
-            escape:        '\'
     csv_footwear_group_type_import:
         connector: Akeneo CSV Connector
         alias:     csv_group_type_import
@@ -291,7 +251,6 @@ jobs:
             uploadAllowed: true
             delimiter:     ;
             enclosure:     '"'
-            escape:        '\'
     csv_footwear_attribute_group_import:
         connector: Akeneo CSV Connector
         alias:     csv_attribute_group_import
@@ -301,7 +260,6 @@ jobs:
             uploadAllowed: true
             delimiter:     ;
             enclosure:     '"'
-            escape:        '\'
     update_product_value:
         connector: Akeneo Mass Edit Connector
         alias:     update_product_value
@@ -317,20 +275,40 @@ jobs:
         alias:     remove_product_value
         label:     Mass remove products values
         type:      mass_edit
+    move_to_category:
+        connector: Akeneo Mass Edit Connector
+        alias:     move_to_category
+        label:     Mass move to categories
+        type:      mass_edit
+    add_association:
+        connector: Akeneo Mass Edit Connector
+        alias:     add_association
+        label:     Mass associate products
+        type:      mass_edit
+    add_to_category:
+        connector: Akeneo Mass Edit Connector
+        alias:     add_to_category
+        label:     Mass add to categories
+        type:      mass_edit
+    remove_from_category:
+        connector: Akeneo Mass Edit Connector
+        alias:     remove_from_category
+        label:     Mass remove from categories
+        type:      mass_edit
     edit_common_attributes:
         connector: Akeneo Mass Edit Connector
         alias:     edit_common_attributes
-        label:     Mass edit common product attributes
+        label:     Mass edit product attributes
         type:      mass_edit
     set_attribute_requirements:
         connector: Akeneo Mass Edit Connector
         alias:     set_attribute_requirements
         label:     Set family attribute requirements
         type:      mass_edit
-    add_to_variant_group:
+    add_to_existing_product_model:
         connector: Akeneo Mass Edit Connector
-        alias:     add_to_variant_group
-        label:     Mass add products to variant group
+        alias:     add_to_existing_product_model
+        label:     Add to existing product model
         type:      mass_edit
     csv_product_quick_export:
         connector: Akeneo CSV Connector
@@ -341,7 +319,8 @@ jobs:
             delimiter:  ;
             enclosure:  '"'
             withHeader: true
-            filePath:   /tmp/products_export_%locale%_%scope%.csv
+            filePathProduct:      /tmp/1_products_export_%locale%_%scope%.csv
+            filePathProductModel: /tmp/2_product_models_export_%locale%_%scope%.csv
     xlsx_footwear_product_import_fr:
         connector: Akeneo XLSX Connector
         alias:     xlsx_product_import
@@ -449,7 +428,8 @@ jobs:
         configuration:
             withHeader: true
             linesPerFile: 10000
-            filePath:   /tmp/products_export_%locale%_%scope%.xlsx
+            filePathProduct:      /tmp/1_products_export_%locale%_%scope%.xlsx
+            filePathProductModel: /tmp/2_product_models_export_%locale%_%scope%.xlsx
     xlsx_footwear_family_export:
         connector: Akeneo XLSX Connector
         alias:     xlsx_family_export
@@ -549,7 +529,8 @@ jobs:
             delimiter:  ;
             enclosure:  '"'
             withHeader: true
-            filePath:   /tmp/products_export_grid_context_%locale%_%scope%.csv
+            filePathProduct:      /tmp/1_products_export_grid_context_%locale%_%scope%.csv
+            filePathProductModel: /tmp/2_product_models_export_grid_context_%locale%_%scope%.csv
     xlsx_product_grid_context_quick_export:
         connector: Akeneo XLSX Connector
         alias: xlsx_product_grid_context_quick_export
@@ -558,4 +539,20 @@ jobs:
         configuration:
             withHeader: true
             linesPerFile: 10000
-            filePath:   /tmp/products_export_grid_context_%locale%_%scope%.xlsx
+            filePathProduct:      /tmp/1_products_export_grid_context_%locale%_%scope%.xlsx
+            filePathProductModel: /tmp/2_product_models_export_grid_context_%locale%_%scope%.xlsx
+    compute_product_models_descendants:
+        connector: internal
+        alias:     compute_product_models_descendants
+        label:     Compute product models descendants
+        type:      compute_product_models_descendants
+    compute_completeness_of_products_family:
+        connector: internal
+        alias:     compute_completeness_of_products_family
+        label:     compute completeness of products family
+        type:      compute_completeness_of_products_family
+    compute_family_variant_structure_changes:
+        connector: internal
+        alias:     compute_family_variant_structure_changes
+        label:     Compute variant structure changes
+        type:      compute_family_variant_structure_changes

@@ -11,15 +11,30 @@ define(
     [
         'jquery',
         'underscore',
+        'oro/translator',
         'pim/form/common/group-selector',
         'pim/attribute-group-manager',
-        'text!pim/template/form/tab/attribute/attribute-group-selector',
+        'pim/template/form/tab/attribute/attribute-group-selector',
         'pim/user-context',
         'pim/i18n',
         'pim/provider/to-fill-field-provider'
     ],
-    function ($, _, GroupSelectorForm, AttributeGroupManager, template, UserContext, i18n, toFillFieldProvider) {
+    function (
+        $,
+        _,
+        __,
+        GroupSelectorForm,
+        AttributeGroupManager,
+        template,
+        UserContext,
+        i18n,
+        toFillFieldProvider
+    ) {
         return GroupSelectorForm.extend({
+            tagName: 'div',
+
+            className: 'AknDropdown AknButtonList-item nav nav-tabs group-selector',
+
             template: _.template(template),
 
             /**
@@ -28,8 +43,12 @@ define(
             configure: function () {
                 this.listenTo(this.getRoot(), 'pim_enrich:form:entity:validation_error', this.onValidationError);
                 this.listenTo(this.getRoot(), 'pim_enrich:form:entity:post_fetch', this.onPostFetch);
-                this.listenTo(UserContext, 'change:catalogLocale', this.render);
-                this.listenTo(UserContext, 'change:catalogScope', this.render);
+                this.listenTo(this.getRoot(), 'pim_enrich:form:to-fill:cleared', this.render);
+                this.listenTo(
+                    this.getRoot(),
+                    'pim_enrich:form:switch_attribute_group',
+                    this.setAttributeGroup.bind(this)
+                );
 
                 return GroupSelectorForm.prototype.configure.apply(this, arguments);
             },
@@ -83,29 +102,47 @@ define(
              */
             render: function () {
                 $.when(
-                    toFillFieldProvider.getFields(this.getRoot(), this.getFormData()),
                     AttributeGroupManager.getAttributeGroupsForObject(this.getFormData())
-                ).then(function (attributes, attributeGroups) {
-                    var toFillAttributeGroups = _.uniq(_.map(attributes, function (attribute) {
+                ).then(function (attributeGroups) {
+                    const scope = UserContext.get('catalogScope');
+                    const locale = UserContext.get('catalogLocale');
+                    const attributes = toFillFieldProvider.getMissingRequiredFields(this.getFormData(), scope, locale);
+
+                    const toFillAttributeGroups = _.uniq(_.map(attributes, function (attribute) {
                         return AttributeGroupManager.getAttributeGroupForAttribute(
                             attributeGroups,
                             attribute
                         );
                     }));
 
-                    this.$el.html(this.template({
-                        current: this.getCurrent(),
-                        elements: _.sortBy(this.getElements(), 'sort_order'),
-                        badges: this.badges,
-                        locale: UserContext.get('catalogLocale'),
-                        toFillAttributeGroups: toFillAttributeGroups,
-                        i18n: i18n
-                    }));
+                    this.$el.empty();
+                    if (!_.isEmpty(this.getElements())) {
+                        this.$el.html(this.template({
+                            current: this.getCurrent(),
+                            elements: _.sortBy(this.getElements(), 'sort_order'),
+                            badges: this.badges,
+                            locale: UserContext.get('catalogLocale'),
+                            toFillAttributeGroups: toFillAttributeGroups,
+                            allAttributeCode: this.all.code,
+                            currentElement: _.findWhere(this.getElements(), {code: this.getCurrent()}),
+                            i18n: i18n,
+                            label: __('pim_enrich.form.product.tab.attributes.attribute_group_selector')
+                        }));
+                    }
 
                     this.delegateEvents();
                 }.bind(this));
 
                 return this;
+            },
+
+            /**
+             * Set current group from event
+             *
+             * @param {[type]} attributeGroupCode [description]
+             */
+            setAttributeGroup: function (attributeGroupCode) {
+                this.setCurrent(attributeGroupCode, {silent: true});
             }
         });
     }

@@ -3,22 +3,29 @@
 {% block bodyClass %}AknLogin{% endblock %}
 
 {% block content %}
-<div class="container">
-    <div class="title-box">
+<div class="AknLogin-mainContainer container">
+    <div class="AknLogin-title">
         {% embed 'PimUIBundle::logo.html.twig' %}{% endembed %}
     </div>
 
-    <form action="{{ path('oro_user_reset_reset', { token: token }) }}" {{ form_enctype(form) }} method="post" class="form-signin">
-        <h2 class="title">{{ 'Password Reset'|trans }}</h2>
-        <fieldset>
-            {{ form_errors(form) }}
-            {{ form_widget(form.plainPassword) }}
-            {{ form_widget(form._token) }}
-            <div class="form-row">
-                <a href="{{ path('oro_user_security_login') }}" class="btn btn-large extra-btn-large">{{ 'Cancel'|trans }}</a>
-                <button type="submit" class="btn btn-large pull-right btn-primary">{{ 'Reset'|trans }}</button>
+    {{ form_start(form, {
+        'action': path('oro_user_reset_reset', {token: token}),
+        'method': 'post',
+        'class': 'form-signin'
+    }) }}
+    <h2 class="title">{{ 'Password Reset'|trans }}</h2>
+    <fieldset>
+        {{ form_errors(form) }}
+        {{ form_widget(form.plainPassword) }}
+        {{ form_widget(form._token) }}
+        <div class="AknLogin-form">
+            <div class="AknLogin-formCell"></div>
+            <div class="AknLogin-formCell AknLogin-formCell--small">
+                <a href="{{ path('oro_user_security_login') }}" class="AknLogin-link">{{ 'Cancel'|trans }}</a>
+                <button type="submit" class="AknButton AknButton--apply AknButton--big AknButton--uppercase">{{ 'Reset'|trans }}</button>
             </div>
-        </fieldset>
-    </form>
+        </div>
+    </fieldset>
+    {{ form_end(form) }}
 </div>
 {% endblock %}

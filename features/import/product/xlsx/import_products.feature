@@ -34,7 +34,7 @@ Feature: Import XLSX products
     Then there should be 10 products
     And the family of the product "SKU-006" should be "boots"
     And product "SKU-007" should be enabled
-    And the english tablet name of "SKU-001" should be "Donec"
+    And the english localizable value name of "SKU-001" should be "Donec"
     And the english tablet description of "SKU-002" should be "Pellentesque habitant morbi tristique senectus et netus et malesuada fames"
 
   Scenario: Successfully import an XLSX file of product with carriage return in product description
@@ -71,7 +71,7 @@ Feature: Import XLSX products
     And I launch the import job
     And I wait for the "xlsx_footwear_product_import" job to finish
     Then there should be 1 product
-    And the english tablet name of "123" should be "456"
+    And the english localizable value name of "123" should be "456"
     And the english tablet description of "123" should be "7890"
 
   Scenario: Successfully import a csv file for a product with a numeric data for an simple select attribute

@@ -1,0 +1,15 @@
+Pim\Component\Catalog\Model\VariantProduct:
+    type: entity
+    manyToOne:
+        parent:
+            targetEntity: Pim\Component\Catalog\Model\ProductModelInterface
+            inversedBy: products
+            joinColumns:
+                product_model_id:
+                    referencedColumnName: id
+                    onDelete: CASCADE
+        familyVariant:
+            targetEntity: Pim\Component\Catalog\Model\FamilyVariantInterface
+            joinColumn:
+                name: family_variant_id
+                referencedColumnName: id

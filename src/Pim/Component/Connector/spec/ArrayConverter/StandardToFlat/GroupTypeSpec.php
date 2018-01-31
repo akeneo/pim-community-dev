@@ -10,14 +10,12 @@ class GroupTypeSpec extends ObjectBehavior
     {
         $expected = [
             'code'        => 'VARIANT',
-            'is_variant'  => '1',
             'label-en_US' => 'variant',
             'label-fr_FR' => 'variantes',
         ];
 
         $item = [
             'code'       => 'VARIANT',
-            'is_variant' => true,
             'labels'      => [
                 'en_US' => 'variant',
                 'fr_FR' => 'variantes',

@@ -11,8 +11,8 @@ use Pim\Component\Catalog\Repository\AssociationRepositoryInterface;
 use Pim\Component\Catalog\Repository\AssociationTypeRepositoryInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\Form\Form;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Translation\TranslatorInterface;
@@ -26,8 +26,8 @@ use Symfony\Component\Translation\TranslatorInterface;
  */
 class AssociationTypeController
 {
-    /** @var Request */
-    protected $request;
+    /** @var RequestStack */
+    protected $requestStack;
 
     /** @var RouterInterface */
     protected $router;
@@ -48,7 +48,7 @@ class AssociationTypeController
     protected $assocTypeRepo;
 
     /**
-     * @param Request                            $request
+     * @param RequestStack                       $requestStack
      * @param RouterInterface                    $router
      * @param TranslatorInterface                $translator
      * @param AssociationRepositoryInterface     $assocRepository
@@ -58,7 +58,7 @@ class AssociationTypeController
      * @param AssociationTypeRepositoryInterface $assocTypeRepo
      */
     public function __construct(
-        Request $request,
+        RequestStack $requestStack,
         RouterInterface $router,
         TranslatorInterface $translator,
         AssociationRepositoryInterface $assocRepository,
@@ -67,7 +67,7 @@ class AssociationTypeController
         RemoverInterface $assocTypeRemover,
         AssociationTypeRepositoryInterface $assocTypeRepo
     ) {
-        $this->request = $request;
+        $this->requestStack = $requestStack;
         $this->router = $router;
         $this->translator = $translator;
         $this->assocRepository = $assocRepository;
@@ -75,56 +75,6 @@ class AssociationTypeController
         $this->assocTypeForm = $assocTypeForm;
         $this->assocTypeRemover = $assocTypeRemover;
         $this->assocTypeRepo = $assocTypeRepo;
-    }
-
-    /**
-     * List association types
-     *
-     * @Template
-     * @AclAncestor("pim_enrich_associationtype_index")
-     *
-     * @return Response
-     */
-    public function indexAction()
-    {
-        return [];
-    }
-
-    /**
-     * Create an association type
-     *
-     * @param Request $request
-     *
-     * @Template
-     * @AclAncestor("pim_enrich_associationtype_create")
-     *
-     * @return Response|RedirectResponse
-     */
-    public function createAction(Request $request)
-    {
-        if (!$request->isXmlHttpRequest()) {
-            return new RedirectResponse($this->router->generate('pim_enrich_associationtype_index'));
-        }
-
-        $associationType = new AssociationType();
-
-        if ($this->assocTypeHandler->process($associationType)) {
-            $this->request->getSession()->getFlashBag()->add('success', new Message('flash.association type.created'));
-
-            $response = [
-                'status' => 1,
-                'url'    => $this->router->generate(
-                    'pim_enrich_associationtype_edit',
-                    ['code' => $associationType->getCode()]
-                )
-            ];
-
-            return new Response(json_encode($response));
-        }
-
-        return [
-            'form' => $this->assocTypeForm->createView(),
-        ];
     }
 
     /**

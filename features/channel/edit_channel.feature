@@ -17,15 +17,14 @@ Feature: Edit a channel
     And I press the "Save" button
     Then I should see the text "My tablet"
 
+  @skip-nav
   Scenario: Successfully display a dialog when we quit a page with unsaved changes
     Given I am logged in as "Peter"
     When  I am on the "mobile" channel page
     And I fill in the following information:
       | English (United States) | My mobile |
     And I click on the Akeneo logo
-    Then I should see a confirm dialog with the following content:
-      | title   | Are you sure you want to leave this page?                    |
-      | content | You will lose changes to the channel if you leave this page. |
+    Then I should see "You will lose changes to the channel if you leave this page." in popup
 
   Scenario: Successfully display a message when there are unsaved changes
     Given I am logged in as "Peter"
@@ -45,7 +44,7 @@ Feature: Edit a channel
     Then the grid should contain 2 elements
     And I should see locales "en_US" and "br_FR"
     When I am on the "tablet" channel page
-    And I press the "Delete" button
+    And I press the secondary action "Delete"
     And I confirm the deletion
     And I am on the locales page
     Then the grid should contain 1 element
@@ -63,7 +62,7 @@ Feature: Edit a channel
   Scenario: Successfully replace a channel locale by another one when there is only one channel
     Given I am logged in as "Peter"
     And I am on the channels page
-    And I click on the "Delete" action of the row which contains "tablet"
+    And I click on the "Delete" action of the row which contains "Tablet"
     And I confirm the deletion
     And I am on the "mobile" channel page
     When I change the "Locales" to "German (Germany)"

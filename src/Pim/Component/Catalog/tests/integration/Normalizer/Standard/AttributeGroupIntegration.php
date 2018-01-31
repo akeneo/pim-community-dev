@@ -8,11 +8,11 @@ use Pim\Component\Catalog\tests\integration\Normalizer\Standard\AbstractStandard
  * @author    Marie Bochu <marie.bochu@akeneo.com>
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ *
+ * @group ce
  */
 class AttributeGroupIntegration extends AbstractStandardNormalizerTestCase
 {
-    protected $purgeDatabaseForEachTest = false;
-
     public function testAttributeGroupWithoutAttribute()
     {
         $expected = [
@@ -34,12 +34,9 @@ class AttributeGroupIntegration extends AbstractStandardNormalizerTestCase
             'code'       => 'attributeGroupB',
             'sort_order' => 2,
             'attributes' => [
-                'an_image',
                 'a_metric',
                 'a_metric_without_decimal',
-                'a_metric_without_decimal_negative',
                 'a_metric_negative',
-                'a_multi_select',
                 'a_number_float',
                 'a_number_float_negative',
                 'a_number_integer',
@@ -47,7 +44,9 @@ class AttributeGroupIntegration extends AbstractStandardNormalizerTestCase
                 'a_simple_select',
                 'a_localizable_image',
                 'a_scopable_image',
-                'a_localizable_scopable_image'
+                'a_localizable_scopable_image',
+                'a_simple_select_color',
+                'a_simple_select_size'
             ],
             'labels'     => [
                 'en_US' => 'Attribute group B',

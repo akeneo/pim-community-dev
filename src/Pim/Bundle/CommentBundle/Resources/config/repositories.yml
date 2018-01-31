@@ -4,8 +4,7 @@ parameters:
 services:
     pim_comment.repository.comment:
         class: '%pim_comment.repository.comment.class%'
-        factory_service: doctrine.orm.entity_manager
-        factory_method: getRepository
+        factory: 'doctrine.orm.entity_manager:getRepository'
         arguments: ['%pim_comment.entity.comment.class%']
         tags:
             - { name: 'pim_repository' }

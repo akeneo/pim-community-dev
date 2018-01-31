@@ -79,6 +79,7 @@ define(
 
         var getNodeId = function (node) {
             var nodeId = (node && node.attr && node.attr('id')) ? node.attr('id').replace('node_', '') : '';
+
             return +nodeId;
         };
 
@@ -193,6 +194,8 @@ define(
             if ($node.attr('rel') === 'folder' && !$('#node_' + unclassified).length) {
                 createNode(unclassified, $node.attr('id'), 'jstree.' + relatedEntity + '.unclassified');
             }
+
+            triggerUpdate();
         };
 
         var onSelectNode = function (e, data) {

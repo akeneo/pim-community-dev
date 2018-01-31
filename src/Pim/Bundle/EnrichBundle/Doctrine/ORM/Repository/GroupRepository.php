@@ -4,6 +4,7 @@ namespace Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository;
 
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\Query\Expr;
 use Pim\Bundle\DataGridBundle\Doctrine\ORM\Repository\DatagridRepositoryInterface;
 use Pim\Bundle\UserBundle\Context\UserContext;
 use Pim\Component\Enrich\Provider\TranslatedLabelsProviderInterface;
@@ -47,7 +48,7 @@ class GroupRepository extends EntityRepository implements
 
         $choices = [];
         foreach ($queryBuilder->getArrayResult() as $code) {
-            $choices[$code['id']] = $code['label'];
+            $choices[$code['label']] = $code['id'];
         }
 
         return $choices;
@@ -60,23 +61,22 @@ class GroupRepository extends EntityRepository implements
     {
         $qb = $this->createQueryBuilder('g');
 
-        $groupLabelExpr = '(CASE WHEN translation.label IS NULL THEN g.code ELSE translation.label END)';
-        $typeLabelExpr = '(CASE WHEN typTrans.label IS NULL THEN typ.code ELSE typTrans.label END)';
-        $typeExpr = $qb->expr()->in('type.id', ':groupTypes');
+        $groupLabelExpr = 'COALESCE(translation.label, g.code)';
+        $typeLabelExpr = 'COALESCE(typeTrans.label, type.code)';
 
         $qb
             ->addSelect(sprintf('%s AS groupLabel', $groupLabelExpr))
             ->addSelect(sprintf('%s AS typeLabel', $typeLabelExpr))
-            ->addSelect('translation.label');
+            ->addSelect('translation.label')
+        ;
 
         $qb
-            ->leftJoin('g.translations', 'translation', 'WITH', 'translation.locale = :localeCode')
-            ->leftJoin('g.type', 'typ')
-            ->leftJoin('typ.translations', 'typTrans', 'WITH', 'typTrans.locale = :localeCode')
-            ->leftJoin('g.axisAttributes', 'attribute')
-            ->innerJoin('g.type', 'type', 'WITH', $typeExpr);
+            ->innerJoin('g.type', 'type')
+            ->leftJoin('g.translations', 'translation', Expr\Join::WITH, 'translation.locale = :localeCode')
+            ->leftJoin('type.translations', 'typeTrans', Expr\Join::WITH, 'typeTrans.locale = :localeCode')
+        ;
 
-        $qb->groupBy('g');
+        $qb->distinct(true);
 
         return $qb;
     }

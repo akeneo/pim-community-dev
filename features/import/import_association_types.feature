@@ -40,7 +40,7 @@ Feature: Import association types
     When I am on the "csv_footwear_association_type_import" import job page
     And I launch the import job
     And I wait for the "csv_footwear_association_type_import" job to finish
-    And I should see "Field \"code\" must be filled"
+    And I should see the text "Field \"code\" must be filled"
 
   Scenario: Successfully import association types in XLSX
     Given the "footwear" catalog configuration

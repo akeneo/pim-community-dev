@@ -7,6 +7,7 @@ use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Doctrine\Common\Util\ClassUtils;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Pim\Bundle\CommentBundle\Builder\CommentBuilder;
+use Pim\Bundle\CommentBundle\Form\Type\CommentType;
 use Pim\Bundle\CommentBundle\Repository\CommentRepositoryInterface;
 use Pim\Bundle\EnrichBundle\Resolver\LocaleResolver;
 use Pim\Component\Catalog\Model\ProductInterface;
@@ -140,7 +141,7 @@ class ProductCommentController
         $product = $this->findProductOr404($id);
         $data = json_decode($request->getContent(), true);
         $comment = $this->commentBuilder->buildComment($product, $this->getUser());
-        $form = $this->formFactory->create('pim_comment_comment', $comment, ['csrf_protection' => false]);
+        $form = $this->formFactory->create(CommentType::class, $comment, ['csrf_protection' => false]);
         $form->submit($data, false);
 
         if ($form->isValid()) {
@@ -180,7 +181,7 @@ class ProductCommentController
 
         $reply = $this->commentBuilder->buildComment($product, $this->getUser());
         $form = $this->formFactory->create(
-            'pim_comment_comment',
+            CommentType::class,
             $reply,
             ['is_reply' => true, 'csrf_protection' => false]
         );
@@ -222,7 +223,7 @@ class ProductCommentController
      */
     protected function findProductOr404($id)
     {
-        $product = $this->productRepository->findOneByWithValues($id);
+        $product = $this->productRepository->find($id);
 
         if (!$product) {
             throw new NotFoundHttpException(

@@ -8,7 +8,6 @@ jobs:
             uploadAllowed:     true
             delimiter:         ;
             enclosure:         '"'
-            escape:            '\'
             enabled:            true
             categoriesColumn:   categories
             familyColumn:       family
@@ -164,7 +163,6 @@ jobs:
             uploadAllowed:       true
             delimiter:           ;
             enclosure:           '"'
-            escape:              '\'
     category_export:
         connector: Akeneo CSV Connector
         alias:     csv_category_export
@@ -184,7 +182,6 @@ jobs:
             uploadAllowed: true
             delimiter:     ;
             enclosure:     '"'
-            escape:        '\'
     association_type_export:
         connector: Akeneo CSV Connector
         alias:     csv_association_type_export
@@ -204,7 +201,6 @@ jobs:
             uploadAllowed: true
             delimiter:     ;
             enclosure:     '"'
-            escape:        '\'
     group_export:
         connector: Akeneo CSV Connector
         alias:     csv_group_export
@@ -224,36 +220,6 @@ jobs:
             withHeader: true
             linesPerFile: 10000
             filePath:   /tmp/xlsx_group_export.xlsx
-    variant_group_import:
-        connector: Akeneo CSV Connector
-        alias:     csv_variant_group_import
-        label:     Variant group import
-        type:      import
-        configuration:
-            uploadAllowed: true
-            delimiter:     ;
-            enclosure:     '"'
-            escape:        '\'
-            copyValues: true
-    variant_group_export:
-        connector: Akeneo CSV Connector
-        alias:     csv_variant_group_export
-        label:     Variant group export
-        type:      export
-        configuration:
-            delimiter:  ;
-            enclosure:  '"'
-            withHeader: true
-            filePath: /tmp/variant_group.csv
-    xlsx_variant_group_export:
-        connector: Akeneo XLSX Connector
-        alias:     xlsx_variant_group_export
-        label:     Variant group export
-        type:      export
-        configuration:
-            filePath:   /tmp/xlsx_variant_group_export.xlsx
-            linesPerFile: 10000
-            withHeader: true
     attribute_import:
         connector: Akeneo CSV Connector
         alias:     csv_attribute_import
@@ -263,7 +229,6 @@ jobs:
             uploadAllowed: true
             delimiter:     ;
             enclosure:     '"'
-            escape:        '\'
     attribute_export:
         connector: Akeneo CSV Connector
         alias:     csv_attribute_export
@@ -283,7 +248,6 @@ jobs:
             uploadAllowed: true
             delimiter:     ;
             enclosure:     '"'
-            escape:        '\'
     option_export:
         connector: Akeneo CSV Connector
         alias:     csv_attribute_option_export
@@ -309,13 +273,48 @@ jobs:
         alias:     remove_product_value
         label:     Mass remove products values
         type:      mass_edit
+    move_to_category:
+        connector: Akeneo Mass Edit Connector
+        alias:     move_to_category
+        label:     Mass move to categories
+        type:      mass_edit
+    add_association:
+        connector: Akeneo Mass Edit Connector
+        alias:     add_association
+        label:     Mass associate products
+        type:      mass_edit
+    add_to_category:
+        connector: Akeneo Mass Edit Connector
+        alias:     add_to_category
+        label:     Mass add to categories
+        type:      mass_edit
+    remove_from_category:
+        connector: Akeneo Mass Edit Connector
+        alias:     remove_from_category
+        label:     Mass remove from categories
+        type:      mass_edit
     edit_common_attributes:
         connector: Akeneo Mass Edit Connector
         alias:     edit_common_attributes
-        label:     Mass edit common product attributes
+        label:     Mass edit product attributes
         type:      mass_edit
-    add_to_variant_group:
+    add_to_existing_product_model:
         connector: Akeneo Mass Edit Connector
-        alias:     add_to_variant_group
-        label:     Mass add products to variant group
+        alias:     add_to_existing_product_model
+        label:     Add to existing product model
         type:      mass_edit
+    compute_product_models_descendants:
+        connector: internal
+        alias:     compute_product_models_descendants
+        label:     Compute product models descendants
+        type:      compute_product_models_descendants
+    compute_completeness_of_products_family:
+        connector: internal
+        alias:     compute_completeness_of_products_family
+        label:     compute completeness of products family
+        type:      compute_completeness_of_products_family
+    compute_family_variant_structure_changes:
+        connector: internal
+        alias:     compute_family_variant_structure_changes
+        label:     Compute variant structure changes
+        type:      compute_family_variant_structure_changes

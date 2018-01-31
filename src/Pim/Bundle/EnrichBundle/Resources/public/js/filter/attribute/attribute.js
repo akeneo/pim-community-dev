@@ -34,7 +34,7 @@ define([
          * {@inherit}
          */
         initialize: function (config) {
-            if (config.config) {
+            if (undefined !== config) {
                 this.config = config.config;
             }
 
@@ -117,30 +117,23 @@ define([
          * @param {Object} attribute
          */
         addContextDropdowns: function (attribute) {
-            var container = $('<span class="AknFieldContainer-contextContainer filter-context">');
+            var container = $('<span class="AknFieldContainer-contextContainer AknButtonList filter-context">');
 
             if (attribute.scopable) {
                 var scopeSwitcher = new ScopeSwitcher();
-                scopeSwitcher.setDisplayInline(true);
+                scopeSwitcher.setDisplayInline(false);
+                scopeSwitcher.setDisplayLabel(false);
 
-                this.listenTo(
-                    scopeSwitcher,
-                    'pim_enrich:form:scope_switcher:pre_render',
-                    function (scopeEvent) {
-                        if (this.getScope()) {
-                            scopeEvent.scopeCode = this.getScope();
-                        } else {
-                            this.setScope(scopeEvent.scopeCode, {silent: true});
-                        }
-                    }.bind(this)
-                );
+                this.listenTo(scopeSwitcher, 'pim_enrich:form:scope_switcher:pre_render', this.initScope.bind(this));
 
                 this.listenTo(
                     scopeSwitcher,
                     'pim_enrich:form:scope_switcher:change',
                     function (scopeEvent) {
-                        this.setScope(scopeEvent.scopeCode, {silent: true});
-                        this.trigger('pim_enrich:form:entity:post_update');
+                        if ('base_product' === scopeEvent.context) {
+                            this.setScope(scopeEvent.scopeCode, {silent: true});
+                            this.trigger('pim_enrich:form:entity:post_update');
+                        }
                     }.bind(this)
                 );
 
@@ -149,26 +142,19 @@ define([
 
             if (attribute.localizable) {
                 var localeSwitcher = new LocaleSwitcher();
-                localeSwitcher.setDisplayInline(true);
+                localeSwitcher.setDisplayInline(false);
+                localeSwitcher.setDisplayLabel(false);
 
-                this.listenTo(
-                    localeSwitcher,
-                    'pim_enrich:form:locale_switcher:pre_render',
-                    function (localeEvent) {
-                        if (this.getLocale()) {
-                            localeEvent.localeCode = this.getLocale();
-                        } else {
-                            this.setLocale(localeEvent.localeCode, {silent: true});
-                        }
-                    }.bind(this)
-                );
+                this.listenTo(localeSwitcher, 'pim_enrich:form:locale_switcher:pre_render', this.initLocale.bind(this));
 
                 this.listenTo(
                     localeSwitcher,
                     'pim_enrich:form:locale_switcher:change',
                     function (localeEvent) {
-                        this.setLocale(localeEvent.localeCode, {silent: true});
-                        this.trigger('pim_enrich:form:entity:post_update');
+                        if ('base_product' === localeEvent.context) {
+                            this.setLocale(localeEvent.localeCode, {silent: true});
+                            this.trigger('pim_enrich:form:entity:post_update');
+                        }
                     }.bind(this)
                 );
 
@@ -176,7 +162,7 @@ define([
             }
 
             this.addElement(
-                'after-input',
+                'after-label',
                 'filter-context',
                 container
             );
@@ -224,7 +210,7 @@ define([
 
             $.when.apply($, promises)
                 .then(function () {
-                    var container = $('<span class="filter-context">');
+                    var container = $('<span class="AknButtonList filter-context">');
                     _.each(_.toArray(arguments), function (item) {
                         container.append(item);
                     });
@@ -235,6 +221,36 @@ define([
                         container
                     );
                 }.bind(this));
+        },
+
+        /**
+         * Initialize the scope
+         *
+         * @param {Object} scopeEvent
+         * @param {string} scopeEvent.context
+         * @param {string} scopeEvent.scopeCode
+         */
+        initScope: function (scopeEvent) {
+            if (this.getScope()) {
+                scopeEvent.scopeCode = this.getScope();
+            } else {
+                this.setScope(scopeEvent.scopeCode, {silent: true});
+            }
+        },
+
+        /**
+         * Initialize the locale
+         *
+         * @param {Object} localeEvent
+         * @param {string} localeEvent.context
+         * @param {string} localeEvent.localeCode
+         */
+        initLocale: function (localeEvent) {
+            if (this.getLocale()) {
+                localeEvent.localeCode = this.getLocale();
+            } else {
+                this.setLocale(localeEvent.localeCode, {silent: true});
+            }
         }
     });
 });

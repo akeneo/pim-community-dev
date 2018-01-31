@@ -14,7 +14,7 @@ pim_dashboard:
       title: Percentuale di completamento per canale e localizzazione
     last_operations:
       title: Ultime operazioni
-      empty: Nessuna operazione trovata
+      empty: Non ci sono operazioni
       status: Stato
       date: Data
       type: Tipo
@@ -25,3 +25,4 @@ pim_dashboard:
         export: Esporta
         mass_edit: Modifica di massa
         quick_export: Esportazione rapida
+        compute_product_models_descendants: Calcola modelli di prodotto discendenti

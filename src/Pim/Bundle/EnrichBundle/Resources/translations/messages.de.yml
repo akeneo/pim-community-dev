@@ -49,20 +49,6 @@ pim_enrich:
       product.title: Produkte
       property.title: Eigenschaften
       history.title: Historie
-  variant_group:
-    type:
-      VARIANT: Variante
-      X_SELL: Cross-Sell
-      ADDITIONAL: Ergänzend
-      RELATED: Verknüpft
-    tab:
-      product.title: Produkte
-      property.title: Eigenschaften
-      history.title: Historie
-      attribute.title: Attribute
-    info:
-      no_attributes: Diese Variantengruppe hat noch keine Attribute
-      no_attributes_in_selected_locale: Diese Variantengruppe hat in diesem Gebietsschema noch keine Attribute
   completeness:
     progress_bar.title: '%ratio%% vollständig (1 fehlender Wert)|%ratio%% vollständig (%count% fehlende Werte)'
     subtitle: '{0} Vollständig|{1} 1 fehlender Wert|]1,Inf] %count% fehlende Werte'
@@ -94,7 +80,7 @@ pim_enrich:
         third: Konfigurieren
         fourth: Bestätigen
     change-status:
-      label: Status ändern (aktivieren / deaktivieren)
+      label: Status ändern
       description: Die ausgewählten Produkte werden aktiviert oder deaktiviert.
       success_flash: Der Produktstatus wurde geändert
       launched_flash: Die Massenbearbeitung "Status ändern" wurde gestartet. Sie werden benachrichtigt, sobald diese erledigt ist.
@@ -103,28 +89,25 @@ pim_enrich:
       description: Die ausgewählten Produktattribute werden mit den folgenden Daten für das ausgewählte Gebietsschema bearbeitet.
       empty: Bitte wählen Sie die Attribute aus, welche Sie bearbeiten möchten
       success_flash: Die Statusaktualisierung der Produkte wird derzeit ausgeführt
-      launched_flash: Die Massenbearbeitung "gemeinsame Attribute bearbeiten" wurde gestartet. Sie werden benachrichtigt, sobald diese erledigt ist.
       message:
         warning: Für die ausgewählten Produkte gibt es keine gemeinsamen Attribute. Bitte passen Sie Ihre Auswahl an.
         invalid_attribute: Das Attribut mit dem Code "attribute_code" ist kein gemeinsames Attribut der ausgewählten Produkte. Attribut übersprungen.
         no_valid_attribute: Keines der ausgewählten Attribute kann auf dieses Produkt angewendet werden.
     classify-add:
-      label: Zuordnung von Produkten in Kategorien
       description: Die Produkte werden den folgenden Kategorien zugeordnet. Bestehende Zuordnungen bleiben erhalten.
       success_flash: Die Produkte wurden den ausgewählten Kategorien zugeordnet
       launched_flash: Die Massenbearbeitung "zu Kategorien hinzufügen" wurde gestartet. Sie werden benachrichtigt, sobald diese erledigt ist.
     classify-move:
-      label: Produkte in Kategorien verschieben
+      label: Zwischen Kategorien verschieben
       description: Die Produkte werden folgenden Kategorien zugeordnet, die bestehende Zuordnung wird verworfen.
       success_flash: Produkt(e) wurden in die ausgewählten Kategorien verschoben
       launched_flash: Die Massenbearbeitung "in Kategorien verschieben" wurde gestartet. Sie werden benachrichtigt, sobald diese erledigt ist.
     classify-remove:
-      label: Produkte aus Kategorien entfernen
+      label: Aus Kategorien entfernen
       description: Die Produkte werden aus den folgenden Kategorien entfernt.
       success_flash: Produkt(e) wurden aus den ausgewählten Kategorien entfernt
       launched_flash: Die Massenbearbeitung "aus Kategorien entfernen" wurde gestartet. Sie werden benachrichtigt, sobald diese erledigt ist.
     change-family:
-      label: Produktfamilie der Produkte ändern
       description: Die Produktfamilie der ausgewählten Produkte wird auf die gewählte Produktfamilie geändert
       success_flash: Die Produktfamilie der ausgewählten Produkte wurde erfolgreich geändert
       launched_flash: Die Massenbearbeitung "Produktfamilie ändern" wurde gestartet. Sie werden benachrichtigt, sobald diese erledigt ist.
@@ -134,16 +117,6 @@ pim_enrich:
       success_flash: Die Produkte wurden den ausgewählten Gruppen erfolgreich hinzugefügt
       launched_flash: Die Massenbearbeitung "zu Gruppen hinzufügen" wurde gestartet. Sie werden benachrichtigt, sobald diese erledigt ist.
       no_group: Bis jetzt keine Gruppen vorhanden. Beginnen Sie mit dem Anlegen einer Gruppe.
-    add-to-variant-group:
-      label: Zu einer Variantengruppe hinzufügen
-      description: Bitte wählen Sie die Variantengruppe aus, in welche die ausgewählten Produkte hinzugefügt werden sollen
-      success_flash: Die Produkte wurden erfolgreich zur ausgewählten Variantengruppe hinzugefügt
-      already_in_variant_group_or_not_valid: Sie können die folgenden Produkte nicht gruppieren, da sie bereits in einer Variantengruppe verwendet werden oder die Gruppenachse nicht besitzen.
-      no_variant_group: Bis jetzt keine Variantengruppen vorhanden. Beginnen Sie mit dem Anlegen einer Variantengruppe.
-      no_valid_variant_group: Keine Variantengruppe teilt Attribute mit den ausgewählten Produkten.
-      some_variant_groups_are_skipped:
-        The following variant groups have been skipped because they don't share attributes with selected products: '%groups%'
-      launched_flash: Die Massenbearbeitung "zu Variantengruppe hinzufügen" wurde gestartet. Sie werden benachrichtigt, sobald diese erledigt ist.
     set-attribute-requirements:
       label: Benötigte Attribute auswählen
       description: Die folgenden benötigten Attribute werden den ausgewählten Produktfamilien zugeordnet
@@ -170,15 +143,15 @@ pim_enrich:
       add_attribute: Ein Attribut zu einem Produkt hinzufügen
       remove_attribute: Ein Attribut von einem Produkt entfernen
       categories_view: Die Kategorien eines Produktes ansehen
-      associations_view: Die Verbindungstypen eines Produktes ansehen
       change_family: Produktfamilie ändern
       change_state: Status eines Produktes ändern
       add_to_groups: Ein Produkt zu Gruppen zuordnen
-      add_to_variant_group: Ein Produkt zu einer Variantengruppe hinzufügen
       mass_edit: Aktionen zur Massenbearbeitung von Produkten
       comment: Produkte kommentieren
       download: Produkt als PDF herunterladen
       history: Produkthistorie ansehen
+    product_model:
+      edit_attributes: Attribute eines Produktmodells bearbeiten
     category:
       list: Kategorien auflisten
       create: Eine Kategorie anlegen
@@ -223,15 +196,6 @@ pim_enrich:
       edit: Eine Gruppe bearbeiten
       remove: Eine Gruppe entfernen
       history: Gruppenhistorie ansehen
-    variant_group:
-      index: Variantengruppen auflisten
-      create: Eine Variantengruppe anlegen
-      edit: Eine Variantengruppe bearbeiten
-      remove: Eine Variantengruppe löschen
-      history: Die Historie einer Variantengruppe ansehen
-      edit_attributes: Die Attribute von Variantengruppen bearbeiten
-      add_attributes: Attribute zu Variantengruppen hinzufügen
-      remove_attribute: Attribute von Variantengruppen entfernen
     group_type:
       index: Gruppentypen auflisten
       create: Einen Gruppentyp anlegen
@@ -245,6 +209,8 @@ pim_enrich:
       history: Verbindungstypen-Historie ansehen
     job_tracker:
       index: Prozess-Tracker ansehen
+    api_connection:
+      manage: API-Verbindungen verwalten
   acl_group:
     association_type: Verbindungstypen
     attribute: Attribute
@@ -254,24 +220,18 @@ pim_enrich:
     currency: Währungen
     family: Produktfamilien
     group: Gruppen
-    variant_group: Variantengruppen
     group_type: Gruppentypen
     locale: Gebietsschemata
     product: Produkte
-  product_value:
-    tooltip:
-      from_variant:
-        title: Aktualisierung durch eine Variantengruppe
-        content: Dieses Feld wurde durch die folgende Variantengruppe aktualisiert
+    product_model: Produktmodelle
   reference_data:
     empty_value:
       reference_data_type:
         label: Wählen Sie den Referenz-Datentyp
 attribute:
   title: Attribut
-  overview: Attribute Übersicht
-  create: Attribut anlegen
   edit: Attribut bearbeiten
+  create: Attribut anlegen
 attribute group:
   title: Attributgruppe
   overview: Attributgruppen Übersicht
@@ -282,7 +242,7 @@ attribute group:
   create new: Eine neue Attributgruppe anlegen
 category:
   title: Kategorie
-  overview: Kategorieübersicht
+  overview: Kategorien
   create: Kategorie anlegen
   edit: Kategorie bearbeiten
   suggest selection: Bitte wählen Sie eine Kategorie auf der linken Seite
@@ -299,17 +259,13 @@ channel:
   edit: Ausgabekanal bearbeiten
 currency:
   title: Währung
-  overview: Währungsübersicht
   create: Währung anlegen
   edit: Währung bearbeiten
 family:
   title: Produktfamilie
-  overview: Produktfamilien-Übersicht
-  create: Produktfamilie anlegen
   edit: Produktfamilie bearbeiten
 locale:
   title: Gebietsschema
-  overview: Gebietsschema-Übersicht
   create: Gebietsschema anlegen
   edit: Gebietsschema bearbeiten
 product:
@@ -319,22 +275,12 @@ product:
   edit: Produkt bearbeiten
 group:
   title: Gruppe
-  overview: Gruppenübersicht
-  create: Gruppe anlegen
   edit: Gruppe bearbeiten
 group type:
   title: Gruppentyp
-  overview: Gruppentypen-Übersicht
-  create: Gruppentyp anlegen
   edit: Gruppentyp bearbeiten
-variant group:
-  title: Variantengruppe
-  overview: Variantengruppen-Übersicht
-  create: Variantengruppe anlegen
-  edit: Variantengruppe bearbeiten
 association type:
   title: Verbindungstyp
-  overview: Verbindungstypen-Übersicht
   create: Verbindungstyp anlegen
   edit: Verbindungstyp bearbeiten
 products: Produkte
@@ -350,13 +296,11 @@ btn:
     locale: Gebietsschema anlegen
     product: Produkt anlegen
     group: Gruppe anlegen
-    variant group: Variantengruppe anlegen
     association type: Verbindungstyp anlegen
     group type: Gruppentyp anlegen
     drag_or_upload: Upload per Drag & Drop oder hier klicken
   edit: Bearbeiten
   save: Speichern
-  save and back: speichern und zurück zur Tabellenansicht
   save and create: Speichern und neuen anlegen
   save and next: Speichern und weiter
   save and finish: Speichern und fertigstellen
@@ -366,13 +310,13 @@ btn:
   next: Vor
   back: Zurück
   confirm: Bestätigen
-  to grid: Zurück zur Tabellenansicht
+  to grid: Zurück zur Übersicht
   to parent: Zurück zur übergeordneten Ebene
   download_pdf: PDF
   download: Download
 confirmation:
   confirm: Bestätigung
-  delete: Löschbestätigung
+  delete: Löschen bestätigen
   leave: Möchten Sie diese Seite wirklich verlassen?
   discard changes: Änderungen an der %entity% gehen verloren, wenn Sie die Seite verlassen.
   remove:
@@ -383,7 +327,6 @@ confirmation:
     family: Sind Sie sicher, dass Sie die Produktfamilie %name% entfernen möchten?
     product: Sind Sie sicher, dass Sie das Produkt %name% löschen möchten?
     group: Sind Sie sicher, dass Sie die Gruppe %name% löschen möchten?
-    variant group: Sind Sie sicher, dass Sie die Variantengruppe %name% löschen möchten?
     group type: Sind Sie sicher, dass Sie die Gruppe %name% löschen möchten?
     user: Sind Sie sicher, dass Sie den Benutzer %name% löschen möchten?
   attribute group:
@@ -392,8 +335,6 @@ confirmation:
     remove attribute: Sind Sie sicher, dass Sie das Attribut %name% aus dieser Produktfamilie entfernen möchten?
   product:
     remove attribute: Sind Sie sicher, dass Sie das Attribut %name% aus diesem Produkt entfernen möchten?
-  variant_group:
-    remove_attribute: Sind Sie sicher, dass Sie das Attribut %name% aus dieser Variantengruppe entfernen möchten?
 flash:
   entity:
     removed: Element wurde gelöscht
@@ -402,7 +343,6 @@ flash:
     updated: Attribut erfolgreich aktualisiert
     removed: Attribut erfolgreich entfernt
     identifier not removable: Ein Attribut zur eindeutigen Identifizierung kann nicht entfernt werden
-    used by groups: Dieses Attribut kann nicht gelöscht werden, da es in %count% Variantengruppen verwendet wird
   attribute group:
     created: Attributgruppe erfolgreich angelegt
     updated: Attributgruppe erfolgreich aktualisiert
@@ -425,7 +365,6 @@ flash:
     updated: Währung erfolgreich aktualisiert
     error.linked_to_channel: Sie können eine Währung, die einem Ausgabekanal zugeordnet ist, nicht deaktivieren.
   family:
-    created: Produktfamilie erfolgreich angelegt
     updated: Produktfamilie erfolgreich aktualisiert
     removed: Produktfamilie erfolgreich entfernt
     identifier not removable: Das identifizierende Attribut einer Produktfamilie kann nicht entfernt werden
@@ -444,20 +383,12 @@ flash:
     enabled: Produkt wurde aktiviert
     disabled: Produkt wurde deaktiviert
   group:
-    created: Gruppe erfolgreich erstellt
     updated: Gruppe erfolgreich aktualisiert
     removed: Gruppe erfolgreich entfernt
-  variant group:
-    created: Variantengruppe erfolgreich erstellt
-    updated: Variantengruppe erfolgreich aktualisiert
-    removed: Variantengruppe erfolgreich entfernt
-    attributes_added: Attribute erfolgreich zur Variantengruppe hinzugefügt
-    attribute_removed: Attribute erfolgreich aus der Variantengruppe entfernt
   group type:
     created: Gruppentyp erfolgreich erstellt
     updated: Gruppentyp erfolgreich aktualisiert
     removed: Gruppentyp erfolgreich gelöscht
-    cant remove variant: Gruppentyp Variante kann nicht gelöscht werden
     cant remove used: Der Gruppentyp wird von anderen Gruppen verwendet und kann nicht gelöscht werden
   association type:
     created: Verbindungstyp erfolgreich erstellt
@@ -513,12 +444,12 @@ Manage groups: Gruppen verwalten
 Code: Code
 Name: Name
 Type: Typ
-Scope: Gültigkeitsbereich
+Scope: Ausgabekanal
 Required: Erforderlich
 Unique: Eindeutig
 Not required: Nicht erforderlich
 Translatable: Übersetzbar
-Scopable: Wert je Ausgabekanal
+Scopable: Je Ausgabekanal individualisierbar
 Localizable: Lokalisierbar
 Unique value: Eindeutiger Wert
 Attribute group: Attributgruppe
@@ -541,10 +472,10 @@ Defaultvalue: Standardwert
 Variant: Variante
 Smart: Smart
 Useable as grid column: Verwendbar als Spalte in der Übersicht
-Useable as grid filter: Verwendbar in der Tabellenansicht
+Useable as grid filter: Verwendbar im Raster
 Family: Produktfamilie
 Available locales: Verfügbare Gebietsschemata
-Locale specific: Gebietsschemaspezifisch
+Locale specific: Gebietsschema-spezifisch
 default: Standard
 Axis: Achse
 Add attributes: Attribute hinzufügen
@@ -571,6 +502,7 @@ No matches found: Keine Treffer gefunden
 Category tree: Kategorie-Strukturbaum
 Completeness: Vollständigkeit
 Attribute used as label: Attribut als Label verwendet
+Credentials: Anmeldeinformationen
 Global: Global
 Channel: Ausgabekanal
 Expand all channels: Alle Ausgabekanäle erweitern
@@ -593,7 +525,7 @@ Negative allowed: Negative Werte zulassen
 Date min: Min. Datum
 Date max: Max. Datum
 Metric family: Metrische Gruppe
-Default metric unit: Standardmaßeinheit
+Default metric unit: Standard-Maßeinheit
 Max file size: Maximale Dateigröße (MB)
 Allowed extensions: Zulässige Dateiendungen
 None: Keine
@@ -615,9 +547,9 @@ pim_title.category:
 pim_title.attribute:
   index: "Attribute"
   create: "Attribute | Anlegen"
+  edit: "Attributee %attribute.label% | Bearbeiten"
 pim_title.product:
   index: "Produkte"
-  edit: "Produkte %product.sku% | Bearbeiten"
 pim_title.family:
   index: "Produktfamilien"
   edit: "Produktfamilien %family.label% | Bearbeiten"
@@ -632,9 +564,6 @@ pim_title.locale:
 pim_title.group:
   index: "Gruppen"
   edit: "Gruppen %group.label% | Bearbeiten"
-pim_title.variant_group:
-  index: "Variantengruppen"
-  edit: "Variantengruppen %group.label% | Bearbeiten"
 pim_title.association_type:
   index: "Verbindungstypen"
   edit: "Verbindungstypen %association type.label% | Bearbeiten"
@@ -696,23 +625,20 @@ pim_enrich.mass_edit_action:
       third: Konfigurieren
       fourth: Bestätigen
   change-status:
-    label: Status ändern (aktivieren / deaktivieren)
+    label: Status ändern
     description: Die ausgewählten Produkte werden aktiviert oder deaktiviert.
     success_flash: Der Produktstatus wurde geändert
   edit-common-attributes:
-    label: Gemeinsame Attribute bearbeiten
+    label: Attribute bearbeiten
     description: Die ausgewählten Produktattribute werden mit den folgenden Daten für das ausgewählte Gebietsschema bearbeitet.
     empty: Bitte wählen Sie die Attribute aus, welche Sie bearbeiten möchten
     success_flash: Die Produkt-Attribute wurden aktualisiert
     message.warning: Für die ausgewählten Produkte gibt es keine gemeinsamen Attribute. Bitte passen Sie Ihre Auswahl an.
     no_attribute.warning: Für die ausgewählten Produkte gibt es keine gemeinsamen Attribute. Bitte passen Sie Ihre Auswahl an.
-    truncated_by_variant_attribute.warning: 'Einige gemeinsame Attribute der ausgewählten Produkte stammen aus einer Variantengruppe. Diese sind für eine Massenbearbeitung nicht verfügbar: %attributes%.'
   classify:
-    label: Zuordnung von Produkten in Kategorien
     description: Die Produkte werden den folgenden Kategorien zugeordnet. Bestehende Zuordnungen bleiben erhalten.
     success_flash: Die Produkte wurden den ausgewählten Kategorien zugeordnet
   change-family:
-    label: Produktfamilie der Produkte ändern
     description: Die Produktfamilie der ausgewählten Produkte wird auf die gewählte Produktfamilie geändert
     success_flash: Die Produktfamilie der ausgewählten Produkte wurde erfolgreich geändert
     no_family: Keine Familie
@@ -724,7 +650,7 @@ pim_enrich.mass_edit_action:
     label: Benötigte Attribute auswählen
     description: Die folgenden benötigten Attribute werden den ausgewählten Produktfamilien zugeordnet
     success_flash: Die benötigten Attribute wurden den ausgewählten Produktfamilien zugeordnet
-To enable: Zu aktivieren
+To enable: Aktivieren
 Select attributes: Attribute auswählen
 Select: Auswählen
 Remove this attribute: Dieses Attribut löschen
@@ -733,25 +659,6 @@ Current tab: Aktueller Reiter
 Group: Gruppe
 View group: Gruppe ansehen
 Products: Produkte
-pim_menu:
-  tab:
-    collect: Sammeln
-    enrich: Anreichern
-    settings: Einstellungen
-    spread: Ausleiten
-  item:
-    association_type: Verbindungstypen
-    attribute: Attribute
-    attribute_group: Attributgruppen
-    category: Kategorien
-    channel: Ausgabekanäle
-    currency: Währungen
-    family: Produktfamilien
-    group: Gruppen
-    group_type: Gruppentypen
-    locale: Gebietsschemata
-    product: Produkte
-    variant_group: Variantengruppen
 Properties: Eigenschaften
 History: Historie
 pane.accordion:
@@ -766,11 +673,8 @@ pane.accordion:
   group_values: Werte der Gruppe
 popin.create:
   association_type.title: Einen neuen Verbindungstyp anlegen
-  family.title: Neue Produktfamilie anlegen
   group.title: Neue Gruppe anlegen
-  group_type.title: Neuen Gruppentypen anlegen
   product.title: Neues Produkt anlegen
-  variant_group.title: Neue Variantengruppe anlegen
   option.title: Neue Option anlegen
 In group: In Gruppe
 Attribute as label: Attribut als Label
@@ -843,16 +747,10 @@ job_execution.summary:
   skipped_attributes: Übersprungene Attribute
   skipped_families: Übersprungene Produktfamilien
 pim_mass_edit_execution_show: Ausgeführte Massenbearbeitung | Details
-edit_common_attributes.steps.edit_common_attributes_processor.title: Gemeinsame Attribute bearbeiten
+edit_common_attributes.steps.edit_common_attributes_processor.title: Attribute bearbeiten
 update_product_value.steps.update_product_value_processor.title: Wert des Produkts aktualisieren
 remove_product_value.steps.update_product_value_processor.title: Produktwert entfernen
-add_to_variant_group_clean.steps.excluded.title: Ausgeschlossene Produkte
-add_to_variant_group_clean.steps.duplicated.title: Doppelte Achse
-add_to_variant_group.steps.excluded.title: Ausgeschlossene Produkte
-add_to_variant_group.steps.duplicated.title: Doppelte Achse
-add_to_variant_group.steps.cleaner.warning.description: 'Das Produkt kann der gewählten Variantengruppe nicht zugeordnet werden: gleiche Variantenachsenwerte mit einem anderen Produkt in der Auswahl'
-edit_common_attributes: Gemeinsame Attribute bearbeiten
-edit_common_attributes_clean: Bereinige Dateien für gemeinsame Attribute
+edit_common_attributes: Attribute bearbeiten
 perform.steps.duplicated.title: Doppelte Achse
 perform.steps.excluded.title: Ausgeschlossene Produkte
 batch_jobs:
@@ -865,11 +763,9 @@ batch_jobs:
     perform:
       label: Wert des Produkts aktualisieren
   edit_common_attributes:
-    label: Gemeinsame Attribute bearbeiten
+    label: Attribute bearbeiten
     perform:
-      label: Gemeinsame Attribute bearbeiten
-    clean:
-      label: Bereinige Dateien für gemeinsame Attribute
+      label: Attribute bearbeiten
   set_attribute_requirements:
     label: Benötigte Attribute auswählen
     perform:
@@ -890,10 +786,6 @@ batch_jobs:
     quick_export.label: Xlsx Produkt-Schnellexport kontextabhängig
     perform:
       label: Xlsx Produkt-Schnellexport kontextabhängig
-  add_to_variant_group:
-    label: Zu einer Variantengruppe hinzufügen
-    perform:
-      label: Zu einer Variantengruppe hinzufügen
 mass_edit report:
   overview: Massenbearbeitung Reports
 job_tracker:
@@ -909,6 +801,6 @@ pim_enrich_attribute_form:
   localizable: Wert je Gebietsschema
   unique: Eindeutiger Wert
   availableLocales: Verfügbare Gebietsschemata
-  locale_specific: Gebietsschemaspezifisch
+  locale_specific: Gebietsschema-spezifisch
   group: Attributgruppe
-  useableAsGridFilter: Verwendbar in der Tabellenansicht
+  useableAsGridFilter: Verwendbar im Raster

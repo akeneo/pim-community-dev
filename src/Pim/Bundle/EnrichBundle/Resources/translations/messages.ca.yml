@@ -49,20 +49,6 @@ pim_enrich:
       product.title: Productes
       property.title: Propietats
       history.title: Històric
-  variant_group:
-    type:
-      VARIANT: Variant
-      X_SELL: Venda creuada
-      ADDITIONAL: Addicional
-      RELATED: Relacionat
-    tab:
-      product.title: Productes
-      property.title: Propietats
-      history.title: Històric
-      attribute.title: Atributs
-    info:
-      no_attributes: Aquest grup de variants encara no té cap atribut
-      no_attributes_in_selected_locale: Aquesta grup de variants no té cap atribut per aquesta configuració regional
   completeness:
     progress_bar.title: '%ratio% completa (1 valor requerit) |%ratio%% completa (%count% valors requerits)'
     subtitle: '{0} Complet|{1} falta 1 valor|] 1, Inf] %count% valors perduts'
@@ -94,7 +80,7 @@ pim_enrich:
         third: Configurar
         fourth: Confirmar
     change-status:
-      label: Canviar l'estat (activar / desactivar)
+      label: Canviar l'estat
       description: Els productes seleccionats seran activats o desactivats.
       success_flash: S'ha canviat l'estat del(s) producte(s)
       launched_flash: L'acció en massa "canviar estat" ja s'ha engegat. Se li notificarà una cop acabi.
@@ -103,28 +89,23 @@ pim_enrich:
       description: Els atributs del producte seleccionat s'editaran amb les següents dades pels paràmetres regionals triats.
       empty: Si us plau seleccioneu l'atribut o atributs que voleu editar
       success_flash: La tasca d'actualització del(s) producte(s) està en marxa
-      launched_flash: L'acció en massa "editar atributs comuns" ja s'ha engegat. Se li notificarà una cop acabi.
       message:
         warning: No hi ha cap atribut en comú per als productes seleccionats. Canvieu la vostra selecció, si us plau.
         invalid_attribute: L'atribut amb codi "attribute_code" no és comú per als productes seleccionats, atribut omès.
         no_valid_attribute: No es pot aplicar cap dels atributs seleccions a aquest producte.
     classify-add:
-      label: Classificar els productes en categories
       description: Els productes es posicionaran a les següents categories, tot mantenint l'emplaçament actual.
       success_flash: El(s) producte(s) han estat classificat(s) a les categories seleccionades
       launched_flash: L'acció en massa "afegir categories" ja s'ha engegat. Se li notificarà una cop acabi.
     classify-move:
-      label: Moure els productes a les categories
       description: Els productes es posicionaran a les següents categories, tot mantenint l'emplaçament actual.
       success_flash: El(s) producte(s) ha(n) estat mogut(s) a les categories seleccionades
       launched_flash: L'acció en massa "moure a categories" ja s'ha engegat. Se li notificarà una cop acabi.
     classify-remove:
-      label: Eliminar productes de les categories
       description: Els productes s'eliminaran de les següents categories.
       success_flash: El(s) producte(s) ha(n) estat eliminat(s) de les categories seleccionades
       launched_flash: L'acció en massa "eliminar de categories" ja s'ha engegat. Se li notificarà una cop acabi.
     change-family:
-      label: Canviar la família de productes
       description: La família dels productes seleccionats es canviarà per la família escollida
       success_flash: La família del(s) producte(s) seleccionat(s) s'ha canviat correctament
       launched_flash: L'acció en massa "canviar família" ja s'ha engegat. Se li notificarà una cop acabi.
@@ -134,18 +115,7 @@ pim_enrich:
       success_flash: Els productes s'han afegit correctament als grups seleccionats
       launched_flash: L'acció en massa "afegir a grups" ja s'ha engegat. Se li notificarà una cop acabi.
       no_group: Cap grup ara mateix. Si us plau, comenceu creant un grup.
-    add-to-variant-group:
-      label: Afegir a un grup de variants
-      description: Seleccioneu el grup de variants on afegir els productes seleccionats
-      success_flash: Els productes s'han afegit correctament al grup de variants seleccionat
-      already_in_variant_group_or_not_valid: No podeu agrupar els següents productes perquè ja es troba en un grup de variants o no té l'eix del grup.
-      no_variant_group: Cap grup de variants de moment. Si us plau, comenceu creant un grup de variants.
-      no_valid_variant_group: Cap grup de variants comparteix atributs amb els productes seleccionats.
-      some_variant_groups_are_skipped:
-        The following variant groups have been skipped because they don't share attributes with selected products: '%groups%'
-      launched_flash: L'acció en massa "afegir a grup de variants" ja s'ha engegat. Se li notificarà una cop acabi.
     set-attribute-requirements:
-      label: Establir els requeriments d'atribut
       description: Els següents requisits d'atribut s'aplicaran a les famílies seleccionades
       success_flash: Els requisits d'atribut s'han aplicat a les famílies seleccionades
       launched_flash: L'acció en massa "definiu els requeriments d'atribut" ja s'ha engegat. Se li notificarà una cop acabi.
@@ -170,11 +140,9 @@ pim_enrich:
       add_attribute: Afegir un atribut a un producte
       remove_attribute: Treure un atribut d'un producte
       categories_view: Consultar les categories d'un producte
-      associations_view: Mostra els tipus d'associació d'un producte
       change_family: Canviar la família del producte
       change_state: Canviar l'estat del producte
       add_to_groups: Afegir el producte a grups
-      add_to_variant_group: Afegir el producte a un grup de variants
       mass_edit: Accions d'edició en massa del producte
       comment: Comentar productes
       download: Descarregar el producte en format PDF
@@ -223,15 +191,6 @@ pim_enrich:
       edit: Editar un grup
       remove: Eliminar un grup
       history: Veure l'històric del grup
-    variant_group:
-      index: Llistar grup de variants
-      create: Crear un grup de variants
-      edit: Editar un grup de variants
-      remove: Eliminar un grup de variants
-      history: Veure històric del grup de variants
-      edit_attributes: Editar els atributs del grup de variants
-      add_attributes: Afegir atributs al grup de variants
-      remove_attribute: Eliminar atributs del grup de variants
     group_type:
       index: Llistar tipus de grup
       create: Crear un tipus de grup
@@ -254,24 +213,17 @@ pim_enrich:
     currency: Monedes
     family: Famílies
     group: Grups
-    variant_group: Grups de variants
     group_type: Tipus de grup
     locale: Configuracions regionals
     product: Productes
-  product_value:
-    tooltip:
-      from_variant:
-        title: Actualitzat per un grup de variants
-        content: Aquest camp s'actualitza pel següent grup de variants
   reference_data:
     empty_value:
       reference_data_type:
         label: Triar el tipus de dades de referència
 attribute:
   title: atribut
-  overview: resum de l'atribut
-  create: crear atribut
   edit: editar atribut
+  create: crear atribut
 attribute group:
   title: grup d'atributs
   overview: resum de grup d'atributs
@@ -282,7 +234,7 @@ attribute group:
   create new: Crear un nou grup d'atributs
 category:
   title: categoria
-  overview: resum de categoria
+  overview: Categories
   create: crear categoria
   edit: editar categoria
   suggest selection: Seleccioneu una categoria a l'esquerra
@@ -299,17 +251,13 @@ channel:
   edit: editar canal
 currency:
   title: moneda
-  overview: resum de moneda
   create: crear moneda
   edit: editar moneda
 family:
   title: família
-  overview: resum de família
-  create: crear família
   edit: editar família
 locale:
   title: configuració regional
-  overview: resum de configuració regional
   create: crear configuració regional
   edit: editar configuració regional
 product:
@@ -319,22 +267,12 @@ product:
   edit: editar producte
 group:
   title: grup
-  overview: resum del grup
-  create: crear grup
   edit: editar grup
 group type:
   title: tipus de grup
-  overview: resum de tipus de grup
-  create: crear tipus de grup
   edit: editar tipus de grup
-variant group:
-  title: grup de variants
-  overview: resum de grup de variants
-  create: crear grup de variants
-  edit: editar grup de variants
 association type:
   title: tipus d'associació
-  overview: resum de tipus d'associació
   create: crear tipus d'associació
   edit: editar tipus d'associació
 products: productes
@@ -350,13 +288,11 @@ btn:
     locale: crear configuració regional
     product: crear producte
     group: crear grup
-    variant group: crear grup de variants
     association type: crear tipus d'associació
     group type: crear tipus de grup
     drag_or_upload: Arrossegueu-lo aquí per carregar o feu-hi clic
   edit: editar
   save: guardar
-  save and back: guardar i tornar a la quadrícula
   save and create: guardar i crear-ne de nous
   save and next: guardar i seguir
   save and finish: guardar i finalitzar
@@ -372,7 +308,7 @@ btn:
   download: descarregar
 confirmation:
   confirm: Confirmació
-  delete: Confirmació de l'eliminació
+  delete: Confirmar l'eliminació
   leave: Esteu segur que voleu sortir d'aquesta pàgina?
   discard changes: Si sortiu de la pàgina perdreu els canvis a %entity%.
   remove:
@@ -383,7 +319,6 @@ confirmation:
     family: Esteu segur que voleu eliminar la família %name%?
     product: Esteu segur que voleu suprimir el producte %name%?
     group: Esteu segur que voleu eliminar el grup %name%?
-    variant group: Esteu segur que voleu eliminar el grup de variants %name%?
     group type: Esteu segur que voleu suprimir el tipus de grup %name%?
     user: Esteu segur que voleu suprimir l'usuari %name%?
   attribute group:
@@ -392,8 +327,6 @@ confirmation:
     remove attribute: Esteu segur que voleu suprimir l'atribut %name% d'aquesta família?
   product:
     remove attribute: Esteu segur que voleu suprimir l'atribut %name% d'aquest producte?
-  variant_group:
-    remove_attribute: Esteu segur que voleu suprimir l'atribut %name% d'aquest grup de variants?
 flash:
   entity:
     removed: L'element ha estat suprimit
@@ -402,7 +335,6 @@ flash:
     updated: Atribut actualitzat correctament
     removed: Atribut suprimit correctament
     identifier not removable: L'atribut identificador no es pot suprimir
-    used by groups: Aquest atribut no es pot suprimir perquè s'utilitza a %count% grups de variants
   attribute group:
     created: Grup d'atributs creat correctament
     updated: Grup d'atributs actualitzat correctament
@@ -425,7 +357,6 @@ flash:
     updated: Moneda actualitzada correctament
     error.linked_to_channel: Podeu inhabilitar una moneda vinculada a un canal.
   family:
-    created: Família creada correctament
     updated: Família actualitzada correctament
     removed: Família eliminada correctament
     identifier not removable: L'atribut identificador no es pot suprimir d'una família
@@ -444,20 +375,12 @@ flash:
     enabled: El producte ha estat habilitat
     disabled: El producte ha estat deshabilitat
   group:
-    created: Grup creat correctament
     updated: Grup actualitzat correctament
     removed: Grup suprimit correctament
-  variant group:
-    created: Grup de variants creat correctament
-    updated: Grup de variants actualitzat correctament
-    removed: Grup de variants suprimit correctament
-    attributes_added: Atributs afegits correctament al grup de variants
-    attribute_removed: Atribut correctament suprimit del grup de variants
   group type:
     created: Tipus de grup creat correctament
     updated: Tipus de grup actualitzat correctament
     removed: Tipus de grup suprimit correctament
-    cant remove variant: Aquest tipus de grup no pot ser suprimit
     cant remove used: Aquest tipus de grup és utilitzat per alguns grups i no es pot suprimir
   association type:
     created: Tipus d'associació creat correctament
@@ -513,7 +436,7 @@ Manage groups: Gestionar grups
 Code: Codi
 Name: Nom
 Type: Tipus
-Scope: Abast
+Scope: Canal
 Required: Obligatori
 Unique: Únic
 Not required: No és obligatori
@@ -618,7 +541,6 @@ pim_title.attribute:
   edit: "Atributs %attribute.label% | Editar"
 pim_title.product:
   index: "Productes"
-  edit: "Productes %product.sku% | Editar"
 pim_title.family:
   index: "Famílies"
   edit: "Famílies %family.label% | Editar"
@@ -633,9 +555,6 @@ pim_title.locale:
 pim_title.group:
   index: "Grups"
   edit: "Grups %group.label% | Editar"
-pim_title.variant_group:
-  index: "Grups de variants"
-  edit: "Grups de variants %group.label% | Editar"
 pim_title.association_type:
   index: "Tipus d'associació"
   edit: "Tipus d'Associació %association type.label% | Editar"
@@ -697,23 +616,20 @@ pim_enrich.mass_edit_action:
       third: Configurar
       fourth: Confirmar
   change-status:
-    label: Canviar l'estat (activar / desactivar)
+    label: Canviar l'estat
     description: Els productes seleccionats seran activats o desactivats.
     success_flash: S'ha canviat l'estat del(s) producte(s)
   edit-common-attributes:
-    label: Editar atributs comuns
+    label: Editar atributs
     description: Els atributs del producte seleccionat s'editaran amb les següents dades pels paràmetres regionals triats.
     empty: Si us plau seleccioneu l'atribut o atributs que voleu editar
     success_flash: S'han actualitzat els atributs de producte
     message.warning: No hi ha cap atribut en comú per als productes seleccionats. Canvieu la vostra selecció, si us plau.
     no_attribute.warning: No hi ha cap atribut en comú per als productes seleccionats. Canvieu la vostra selecció, si us plau.
-    truncated_by_variant_attribute.warning: 'Alguns atributs comuns dels productes seleccionats provenen d''un grup de variants. No estan disponibles per a edició massiva: %attributes%.'
   classify:
-    label: Classificar els productes en categories
     description: Els productes es posicionaran a les següents categories, tot mantenint l'emplaçament actual.
     success_flash: El(s) producte(s) han estat classificat(s) a les categories seleccionades
   change-family:
-    label: Canviar la família de productes
     description: La família dels productes seleccionats es canviarà per la família escollida
     success_flash: La família del(s) producte(s) seleccionat(s) s'ha canviat correctament
     no_family: Cap família
@@ -722,7 +638,6 @@ pim_enrich.mass_edit_action:
     description: Seleccioneu els grups on volgueu afegir els productes seleccionats
     success_flash: Els productes s'han afegit correctament als grups seleccionats
   set-attribute-requirements:
-    label: Establir els requeriments d'atribut
     description: Els següents requisits d'atribut s'aplicaran a les famílies seleccionades
     success_flash: Els requisits d'atribut s'han aplicat a les famílies seleccionades
 To enable: Per activar
@@ -734,25 +649,6 @@ Current tab: Pestanya actual
 Group: Grup
 View group: Veure grup
 Products: Productes
-pim_menu:
-  tab:
-    collect: Recollir
-    enrich: Enriquir
-    settings: Preferències
-    spread: Dispersió
-  item:
-    association_type: Tipus d'associació
-    attribute: Atributs
-    attribute_group: Grups d'atribut
-    category: Categories
-    channel: Canals
-    currency: Monedes
-    family: Famílies
-    group: Grups
-    group_type: Tipus de grup
-    locale: Configuracions regionals
-    product: Productes
-    variant_group: Grups de variants
 Properties: Propietats
 History: Històric
 pane.accordion:
@@ -767,11 +663,8 @@ pane.accordion:
   group_values: Valors de grup
 popin.create:
   association_type.title: Crear un nou tipus d'associació
-  family.title: Crear una nova família
   group.title: Crea un grup nou
-  group_type.title: Crear un nou tipus de grup
   product.title: Crear un nou producte
-  variant_group.title: Crear un nou grup de variants
   option.title: Crear una nova opció
 In group: En grup
 Attribute as label: Atribut com a etiqueta
@@ -843,16 +736,10 @@ job_execution.summary:
   skipped_products: Productes omesos
   skipped_attributes: Atributs omesos
 pim_mass_edit_execution_show: Execucions edicions en massa | Detalls
-edit_common_attributes.steps.edit_common_attributes_processor.title: Editar atributs comuns
+edit_common_attributes.steps.edit_common_attributes_processor.title: Editar atributs
 update_product_value.steps.update_product_value_processor.title: Actualitzar el valor del producte
 remove_product_value.steps.update_product_value_processor.title: Treure el valor del producte
-add_to_variant_group_clean.steps.excluded.title: Producte exclòs
-add_to_variant_group_clean.steps.duplicated.title: Eix duplicat
-add_to_variant_group.steps.excluded.title: Producte exclòs
-add_to_variant_group.steps.duplicated.title: Eix duplicat
-add_to_variant_group.steps.cleaner.warning.description: 'Aquest producte no es pot definir pel grup de variants seleccionat: dupliqueu els valors de l''eix de variació amb un altre producte en selecció'
-edit_common_attributes: Editar atributs comuns
-edit_common_attributes_clean: Netejar arxius per atributs comuns
+edit_common_attributes: Editar atributs
 perform.steps.duplicated.title: Eix duplicat
 perform.steps.excluded.title: Producte exclòs
 batch_jobs:
@@ -865,15 +752,9 @@ batch_jobs:
     perform:
       label: Actualitzar el valor del producte
   edit_common_attributes:
-    label: Editar atributs comuns
+    label: Editar atributs
     perform:
-      label: Editar atributs comuns
-    clean:
-      label: Netejar arxius per atributs comuns
-  set_attribute_requirements:
-    label: Establir els requeriments d'atribut
-    perform:
-      label: Establir els requeriments d'atribut
+      label: Editar atributs
   csv_product_quick_export:
     quick_export.label: Exportació ràpida de producte en CSV
     perform:
@@ -890,10 +771,6 @@ batch_jobs:
     quick_export.label: Exportació ràpida de marc de quadrícula de producte en XLSX
     perform:
       label: Exportació ràpida de marc de quadrícula de producte en XLSX
-  add_to_variant_group:
-    label: Afegir a un grup de variants
-    perform:
-      label: Afegir a un grup de variants
 mass_edit report:
   overview: Edició en massa d'informes
 job_tracker:

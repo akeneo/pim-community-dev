@@ -2,7 +2,7 @@
 
 namespace Pim\Component\Catalog\tests\integration\Normalizer\Standard;
 
-use Akeneo\Test\Integration\MediaSanitizer;
+use Akeneo\Test\IntegrationTestsBundle\Sanitizer\MediaSanitizer;
 
 /**
  * @author    Marie Bochu <marie.bochu@akeneo.com>

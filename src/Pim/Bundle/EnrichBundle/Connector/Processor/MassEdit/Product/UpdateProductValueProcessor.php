@@ -4,7 +4,9 @@ namespace Pim\Bundle\EnrichBundle\Connector\Processor\MassEdit\Product;
 
 use Akeneo\Component\StorageUtils\Updater\PropertySetterInterface;
 use Pim\Bundle\EnrichBundle\Connector\Processor\AbstractProcessor;
+use Pim\Component\Catalog\Model\Product;
 use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Model\ProductModelInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
@@ -54,11 +56,11 @@ class UpdateProductValueProcessor extends AbstractProcessor
     /**
      * Validate the product
      *
-     * @param ProductInterface $product
+     * @param ProductInterface|ProductModelInterface $product
      *
      * @return bool
      */
-    protected function isProductValid(ProductInterface $product)
+    protected function isProductValid($product)
     {
         $violations = $this->validator->validate($product);
         $this->addWarningMessage($violations, $product);
@@ -69,12 +71,10 @@ class UpdateProductValueProcessor extends AbstractProcessor
     /**
      * Set data from $actions to the given $product
      *
-     * @param ProductInterface $product
-     * @param array            $actions
-     *
-     * @return UpdateProductValueProcessor
+     * @param ProductInterface|ProductModelInterface $product
+     * @param array                                  $actions
      */
-    protected function setData(ProductInterface $product, array $actions)
+    protected function setData($product, array $actions)
     {
         foreach ($actions as $action) {
             $this->propertySetter->setData($product, $action['field'], $action['value']);

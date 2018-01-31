@@ -1,12 +1,15 @@
 twig:
     exception_controller: FOS\RestBundle\Controller\ExceptionController::showAction
-    form:
-        resources:
-            - 'PimUIBundle:Form:pim-fields.html.twig'
+    form_theme: ['PimUIBundle:Form:pim-fields.html.twig']
     globals:
-        bap:
-            layout:      PimEnrichBundle::base.html.twig
-            start_route: oro_default
         ws:
             port:        '%websocket_port%'
             host:        '%websocket_host%'
+# Added in v2.0.2 to handle versioning strategy of assets (no need of refresh browser cache after a patch appliance)
+# It's defined in app/config/config.yml and also defined here to avoid breaking change for projects installed from standard distribs v2.0.0 or v2.0.1
+# TODO: To be droped in 2.1 when merging 2.0 branch into master branch
+framework:
+    assets:
+        packages:
+            frontend:
+                version_strategy: pim_enrich.version_strategy

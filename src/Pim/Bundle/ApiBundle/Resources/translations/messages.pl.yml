@@ -2,15 +2,24 @@ pim_api:
   acl:
     attribute:
       list: Przeglądanie atrybutów
+    attribute_group:
+      list: Przeglądanie grup atrybutów
     category:
       list: Przeglądanie kategorii
     family:
       list: Przeglądanie rodzin
-    channel.list: Przeglądanie kanałów
+    channel:
+      list: Przeglądanie kanałów
     locale.list: Przeglądanie ustawień regionalnych
+    currency.list: Przeglądanie walut
+    association_type:
+      list: Przeglądanie typów powiązań
   acl_group:
     attribute: Atrybuty
+    attribute_group: Grupy Atrybutów
     category: Kategorie
     family: Rodziny
     channel: Kanały
     locale: Ustawienia regionalne
+    currency: Waluty
+    association_type: Typy powiązań

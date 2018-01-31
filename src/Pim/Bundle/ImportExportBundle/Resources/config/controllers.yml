@@ -6,7 +6,6 @@ parameters:
 
 services:
     pim_import_export.controller.export_profile:
-        scope: request
         class: '%pim_import_export.controller.export_profile.class%'
         arguments:
             - '@templating'
@@ -20,7 +19,6 @@ services:
             - export
 
     pim_import_export.controller.import_profile:
-        scope: request
         class: '%pim_import_export.controller.import_profile.class%'
         arguments:
             - '@templating'
@@ -34,7 +32,6 @@ services:
             - import
 
     pim_import_export.controller.export_execution:
-        scope: request
         class: '%pim_import_export.controller.export_execution.class%'
         arguments:
             - '@templating'
@@ -48,7 +45,6 @@ services:
             - export
 
     pim_import_export.controller.import_execution:
-        scope: request
         class: '%pim_import_export.controller.import_execution.class%'
         arguments:
             - '@templating'

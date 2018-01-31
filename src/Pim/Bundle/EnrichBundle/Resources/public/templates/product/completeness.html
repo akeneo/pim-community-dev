@@ -1,0 +1,41 @@
+<% if (!hasFamily) { %>
+    <p><%- noFamilyLabel %></p>
+<% } else if (_.isEmpty(completenesses) || hasFamilyChanged) { %>
+    <p><%- noCompletenessLabel %></p>
+<% } else { %>
+    <% _.each(completenesses, function(channel) { %>
+        <% var ratio = channel['stats']['average']; %>
+        <div class="AknCompletenessPanel-block completeness-block">
+            <header class="AknCompletenessPanel-header">
+                <span class="AknCompletenessPanel-headerLocale channel" data-channel="<%- channel.channel %>">
+                    <%- (null !== channel.labels[catalogLocale]) ? channel.labels[catalogLocale] : ('[' + channel.channel + ']') %>
+                </span>
+                <span class="AknCompletenessPanel-headerStats stats">
+                    <%- ratio %>%
+                </span>
+            </header>
+            <div class="AknCompletenessPanel-content content">
+                <% _.each(channel['locales'], function(localeCompleteness) { %>
+                    <% if (localeCompleteness.completeness) { %>
+                        <div class="AknCompletenessPanel-channel">
+                            <div class="AknCompletenessPanel-progressContainer">
+                                <span class="AknCompletenessPanel-channelTitle locale" data-locale="<%- localeCompleteness.completeness.locale %>">
+                                    <%- localeCompleteness.label %>
+                                </span>
+                                <span class="AknCompletenessPanel-progressRatio literal-progress"><%- localeCompleteness.completeness.ratio %>%</span>
+                            </div>
+                            <div class="AknCompletenessPanel-progress AknProgress AknProgress--micro progress <%- localeCompleteness.completeness.ratio === 100 ? 'AknProgress--apply' : 'AknProgress--warning' %>">
+                                <div class="AknProgress-bar bar" data-ratio="<%- localeCompleteness.completeness.ratio %>" style="width: <%- localeCompleteness.completeness.ratio %>%;"></div>
+                            </div>
+                            <% if (localeCompleteness.completeness.missing > 0) { %>
+                                <div class="AknCompletenessPanel-missing missing">
+                                    <%- __(missingValuesKey, {count: localeCompleteness.completeness.missing}, localeCompleteness.completeness.missing) %>
+                                </div>
+                            <% } %>
+                        </div>
+                    <% }%>
+                <% }); %>
+            </div>
+        </div>
+    <% }); %>
+<% } %>

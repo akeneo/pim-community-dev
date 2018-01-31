@@ -1,0 +1,14 @@
+<div class="AknDropdown">
+    <div class="AknTitleContainer-userIcon"
+        data-toggle="dropdown"
+        title="<%- firstName %> <%- lastName %>"
+        style="background-image:url('<%- !_.isEmpty(avatar) ? avatar : 'bundles/pimui/images/info-user.png' %>')"
+    ></div>
+    <div class="AknDropdown-menu AknDropdown-menu--right">
+        <div class="AknDropdown-menuTitle"><%- firstName %> <%- lastName %></div>
+        <div class="AknDropdown-menuLink user-account"><%- userAccountLabel %></div>
+        <div class="AknDropdown-menuLink logout"><%- logoutLabel %></div>
+    </div>
+</div>
+
+<div class="AknNotificationMenu AknDropdown dropdown notification"></div>

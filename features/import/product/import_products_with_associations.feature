@@ -26,9 +26,9 @@ Feature: Execute a job
     And I wait for the "csv_footwear_product_import" job to finish
     Then there should be 3 products
     Given I edit the "SKU-001" product
-    When I visit the "Associations" tab
-    And I visit the "Cross sell" group
-    Then I should see "2 products and 1 groups"
+    When I visit the "Associations" column tab
+    And I visit the "Cross sell" association type
+    Then I should see the text "2 product(s), 0 product model(s) and 1 group(s)"
 
   @pim-2445
   Scenario: Successfully skip associations with not existing product (owner side)
@@ -43,7 +43,7 @@ Feature: Execute a job
     And I launch the import job
     And I wait for the "csv_footwear_product_import" job to finish
     Then there should be 0 product
-    And I should see "No product with identifier \"SKU-001\" has been found"
+    And I should see the text "No product with identifier \"SKU-001\" has been found"
 
   Scenario: Successfully skip associations with no existing product (associated side)
     Given the following CSV file to import:
@@ -57,7 +57,7 @@ Feature: Execute a job
     And I launch the import job
     And I wait for the "csv_footwear_product_import" job to finish
     Then there should be 1 product
-    And I should see "Property \"associations\" expects a valid product identifier. The product does not exist, \"SKU-002\" given."
+    And I should see the text "Property \"associations\" expects a valid product identifier. The product does not exist, \"SKU-002\" given."
 
   Scenario: Successfully import a csv file with associations between invalid but existing products
     Given the following products:
@@ -79,10 +79,10 @@ Feature: Execute a job
     And I wait for the "csv_footwear_product_import" job to finish
     Then there should be 3 products
     Given I edit the "SKU-001" product
-    When I visit the "Associations" tab
-    And I visit the "Cross sell" group
-    Then I should see "2 products and 1 groups"
-    And the english name of "SKU-001" should be "Before"
+    When I visit the "Associations" column tab
+    And I visit the "Cross sell" association type
+    Then I should see the text "2 product(s), 0 product model(s) and 1 group(s)"
+    And the english localizable value name of "SKU-001" should be "Before"
 
   Scenario: Successfully skip associations without modification
     Given the following product:
@@ -90,10 +90,11 @@ Feature: Execute a job
       | SKU-001 | sku-001    |
       | SKU-002 | sku-002    |
     When I edit the "SKU-001" product
-    And I visit the "Associations" tab
-    And I visit the "Cross sell" group
+    And I visit the "Associations" column tab
+    And I visit the "Cross sell" association type
+    And I press the "Add associations" button
     Then I check the rows "SKU-002"
-    And I save the product
+    And I press the "Confirm" button in the popin
     And the following CSV file to import:
       """
       sku;X_SELL-products
@@ -105,7 +106,7 @@ Feature: Execute a job
     And I launch the import job
     And I wait for the "csv_footwear_product_import" job to finish
     Then there should be 2 products
-    And I should see "skipped product (no differences) 1"
+    And I should see the text "skipped product (no differences) 1"
 
   Scenario: Successfully remove associations
     Given the following product:
@@ -113,10 +114,11 @@ Feature: Execute a job
       | SKU-001 | sku-001    |
       | SKU-002 | sku-002    |
     When I edit the "SKU-001" product
-    And I visit the "Associations" tab
-    And I visit the "Cross sell" group
+    And I visit the "Associations" column tab
+    And I visit the "Cross sell" association type
+    And I press the "Add associations" button
     Then I check the rows "SKU-002"
-    And I save the product
+    And I press the "Confirm" button in the popin
     And the following CSV file to import:
       """
       sku;X_SELL-products
@@ -128,9 +130,9 @@ Feature: Execute a job
     And I launch the import job
     And I wait for the "csv_footwear_product_import" job to finish
     When I edit the "SKU-001" product
-    And I visit the "Associations" tab
-    And I visit the "Cross sell" group
-    Then I should see "0 products and 0 groups"
+    And I visit the "Associations" column tab
+    And I visit the "Cross sell" association type
+    Then I should see the text "0 product(s), 0 product model(s) and 0 group(s)"
 
   @jira https://akeneo.atlassian.net/browse/PIM-6019
   Scenario: Successfully import product without remove already existing associations when option "compare values" is set to false
@@ -139,10 +141,11 @@ Feature: Execute a job
       | SKU-001 | sku-001    |
       | SKU-002 | sku-002    |
     When I edit the "SKU-001" product
-    And I visit the "Associations" tab
-    And I visit the "Cross sell" group
+    And I visit the "Associations" column tab
+    And I visit the "Cross sell" association type
+    And I press the "Add associations" button
     And I check the rows "SKU-002"
-    And I save the product
+    And I press the "Confirm" button in the popin
     And the following CSV file to import:
       """
       sku

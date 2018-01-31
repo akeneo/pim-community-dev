@@ -16,10 +16,8 @@ framework:
     validation:
         enable_annotations: true
         enabled: true
-        api: 2.5
     templating:      { engines: ['twig', 'php'] } #assets_version: SomeVersionScheme
     default_locale:  "%locale%"
-    trusted_proxies: ~
     session:
         name:                 BAPID
         handler_id:           session.handler.pdo
@@ -30,13 +28,17 @@ framework:
     serializer:
         enabled:              true
     http_method_override: true
+    assets:
+        packages:
+            frontend:
+                version_strategy: pim_enrich.version_strategy
 
 # Twig Configuration
 twig:
     debug:            "%kernel.debug%"
     strict_variables: "%kernel.debug%"
     globals:
-        uservoice_key: %uservoice_key%
+        uservoice_key: "%uservoice_key%"
 
 # Assetic Configuration
 assetic:
@@ -44,35 +46,6 @@ assetic:
     use_controller: false
     filters:
         cssrewrite: ~
-
-# Doctrine Configuration
-doctrine:
-    dbal:
-        default_connection:   default
-        connections:
-            default:
-                driver:       "%database_driver%"
-                host:         "%database_host%"
-                port:         "%database_port%"
-                unix_socket:  "%database_unix_socket%"
-                dbname:       "%database_name%"
-                user:         "%database_user%"
-                password:     "%database_password%"
-                charset:      UTF8
-            session:
-                driver:       "%database_driver%"
-                host:         "%database_host%"
-                port:         "%database_port%"
-                unix_socket:  "%database_unix_socket%"
-                dbname:       "%database_name%"
-                user:         "%database_user%"
-                password:     "%database_password%"
-                charset:      UTF8
-        types:
-            datetime: Akeneo\Bundle\StorageUtilsBundle\Doctrine\DBAL\Types\UTCDateTimeType
-    orm:
-        auto_generate_proxy_classes: "%kernel.debug%"
-        auto_mapping: true
 
 # Swiftmailer Configuration
 swiftmailer:
@@ -84,16 +57,6 @@ swiftmailer:
     password:                 "%mailer_password%"
     spool:                    { type: memory }
 
-# FOSOAuthServer Configuration
-fos_oauth_server:
-    db_driver:                orm
-    client_class:             Pim\Bundle\ApiBundle\Entity\Client
-    access_token_class:       Pim\Bundle\ApiBundle\Entity\AccessToken
-    refresh_token_class:      Pim\Bundle\ApiBundle\Entity\RefreshToken
-    auth_code_class:          Pim\Bundle\ApiBundle\Entity\AuthCode
-    service:
-        user_provider:        pim_user.provider.user
-
 pim_reference_data:
     fabrics:
         class: Acme\Bundle\AppBundle\Entity\Fabric
@@ -101,9 +64,3 @@ pim_reference_data:
     color:
         class: Acme\Bundle\AppBundle\Entity\Color
         type: simple
-
-akeneo_storage_utils:
-    mapping_overrides:
-        -
-            original: Pim\Component\Catalog\Model\ProductValue
-            override: Acme\Bundle\AppBundle\Model\ProductValue

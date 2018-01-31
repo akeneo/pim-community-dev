@@ -11,7 +11,7 @@ define(
     [
         'pim/field',
         'underscore',
-        'text!pim/template/product/field/textarea'
+        'pim/template/product/field/textarea'
     ],
     function (
         Field,

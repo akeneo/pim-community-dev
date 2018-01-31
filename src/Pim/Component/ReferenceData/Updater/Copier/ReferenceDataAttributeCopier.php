@@ -2,13 +2,11 @@
 
 namespace Pim\Component\ReferenceData\Updater\Copier;
 
-use Pim\Component\Catalog\Builder\ProductBuilderInterface;
+use Pim\Component\Catalog\Builder\EntityWithValuesBuilderInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
-use Pim\Component\Catalog\Model\ProductInterface;
-use Pim\Component\Catalog\Model\ProductValueInterface;
+use Pim\Component\Catalog\Model\EntityWithValuesInterface;
 use Pim\Component\Catalog\Updater\Copier\AbstractAttributeCopier;
 use Pim\Component\Catalog\Validator\AttributeValidatorHelper;
-use Pim\Component\ReferenceData\MethodNameGuesser;
 
 /**
  * Copy a reference data value attribute in other reference data value attribute
@@ -20,18 +18,19 @@ use Pim\Component\ReferenceData\MethodNameGuesser;
 class ReferenceDataAttributeCopier extends AbstractAttributeCopier
 {
     /**
-     * @param ProductBuilderInterface  $productBuilder
-     * @param AttributeValidatorHelper $attrValidatorHelper
-     * @param array                    $supportedFromTypes
-     * @param array                    $supportedToTypes
+     * @param EntityWithValuesBuilderInterface $entityWithValuesBuilder
+     * @param AttributeValidatorHelper         $attrValidatorHelper
+     * @param array                            $supportedFromTypes
+     * @param array                            $supportedToTypes
      */
     public function __construct(
-        ProductBuilderInterface $productBuilder,
+        EntityWithValuesBuilderInterface $entityWithValuesBuilder,
         AttributeValidatorHelper $attrValidatorHelper,
         array $supportedFromTypes,
         array $supportedToTypes
     ) {
-        parent::__construct($productBuilder, $attrValidatorHelper);
+        parent::__construct($entityWithValuesBuilder, $attrValidatorHelper);
+
         $this->supportedFromTypes = $supportedFromTypes;
         $this->supportedToTypes = $supportedToTypes;
     }
@@ -40,8 +39,8 @@ class ReferenceDataAttributeCopier extends AbstractAttributeCopier
      * {@inheritdoc}
      */
     public function copyAttributeData(
-        ProductInterface $fromProduct,
-        ProductInterface $toProduct,
+        EntityWithValuesInterface $fromEntityWithValues,
+        EntityWithValuesInterface $toEntityWithValues,
         AttributeInterface $fromAttribute,
         AttributeInterface $toAttribute,
         array $options = []
@@ -56,8 +55,8 @@ class ReferenceDataAttributeCopier extends AbstractAttributeCopier
         $this->checkLocaleAndScope($toAttribute, $toLocale, $toScope);
 
         $this->copySingleValue(
-            $fromProduct,
-            $toProduct,
+            $fromEntityWithValues,
+            $toEntityWithValues,
             $fromAttribute,
             $toAttribute,
             $fromLocale,
@@ -74,24 +73,25 @@ class ReferenceDataAttributeCopier extends AbstractAttributeCopier
     {
         $supportsFrom = in_array($fromAttribute->getType(), $this->supportedFromTypes);
         $supportsTo = in_array($toAttribute->getType(), $this->supportedToTypes);
+
         $referenceData = ($fromAttribute->getReferenceDataName() === $toAttribute->getReferenceDataName());
 
         return $supportsFrom && $supportsTo && $referenceData;
     }
 
     /**
-     * @param ProductInterface   $fromProduct
-     * @param ProductInterface   $toProduct
-     * @param AttributeInterface $fromAttribute
-     * @param AttributeInterface $toAttribute
-     * @param string|null        $fromLocale
-     * @param string|null        $toLocale
-     * @param string|null        $fromScope
-     * @param string|null        $toScope
+     * @param EntityWithValuesInterface $fromEntityWithValues
+     * @param EntityWithValuesInterface $toEntityWithValues
+     * @param AttributeInterface        $fromAttribute
+     * @param AttributeInterface        $toAttribute
+     * @param string|null               $fromLocale
+     * @param string|null               $toLocale
+     * @param string|null               $fromScope
+     * @param string|null               $toScope
      */
     protected function copySingleValue(
-        ProductInterface $fromProduct,
-        ProductInterface $toProduct,
+        EntityWithValuesInterface $fromEntityWithValues,
+        EntityWithValuesInterface $toEntityWithValues,
         AttributeInterface $fromAttribute,
         AttributeInterface $toAttribute,
         $fromLocale,
@@ -99,37 +99,15 @@ class ReferenceDataAttributeCopier extends AbstractAttributeCopier
         $fromScope,
         $toScope
     ) {
-        $fromValue = $fromProduct->getValue($fromAttribute->getCode(), $fromLocale, $fromScope);
-        if (null !== $fromValue) {
-            $toValue = $toProduct->getValue($toAttribute->getCode(), $toLocale, $toScope);
-            if (null === $toValue) {
-                $toValue = $this->productBuilder->addOrReplaceProductValue($toProduct, $toAttribute, $toLocale, $toScope);
-            }
-
-            $fromDataGetter = $this->getValueMethodName($fromValue, $fromAttribute, 'get');
-            $toDataSetter = $this->getValueMethodName($toValue, $toAttribute, 'set');
-
-            $toValue->$toDataSetter($fromValue->$fromDataGetter());
-        }
-    }
-
-    /**
-     * @param ProductValueInterface $value
-     * @param AttributeInterface    $attribute
-     * @param string                $type
-     *
-     * @return string
-     */
-    private function getValueMethodName(ProductValueInterface $value, AttributeInterface $attribute, $type)
-    {
-        $method = MethodNameGuesser::guess($type, $attribute->getReferenceDataName(), true);
-
-        if (!method_exists($value, $method)) {
-            throw new \LogicException(
-                sprintf('ProductValue method "%s" is not implemented', $method)
+        $fromValue = $fromEntityWithValues->getValue($fromAttribute->getCode(), $fromLocale, $fromScope);
+        if (null !== $fromValue && null !== $fromValue->getData()) {
+            $this->entityWithValuesBuilder->addOrReplaceValue(
+                $toEntityWithValues,
+                $toAttribute,
+                $toLocale,
+                $toScope,
+                $fromValue->getData()->getCode()
             );
         }
-
-        return $method;
     }
 }

@@ -1,8 +1,0 @@
-services:
-    pim_analytics.data_collector.storage:
-        class: '%pim_analytics.data_collector.storage.class%'
-        arguments:
-            - '%pim_catalog_product_storage_driver%'
-        tags:
-            - { name: pim_analytics.data_collector, type: system_info_report }
-            - { name: pim_analytics.data_collector, type: system_info_report }

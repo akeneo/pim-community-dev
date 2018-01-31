@@ -7,7 +7,7 @@ use Pim\Component\Catalog\AttributeTypeRegistry;
 use Pim\Component\Catalog\Model\AttributeInterface;
 
 /**
- * Attribute factory
+ * Creates and configures an attribute instance.
  *
  * @author    Olivier Soulet <olivier.soulet@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)

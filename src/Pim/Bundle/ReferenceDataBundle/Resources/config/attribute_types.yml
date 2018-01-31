@@ -6,19 +6,13 @@ services:
     pim_reference_data.attributetype.simpleselect:
         class: '%pim_reference_data.attribute_type.simpleselect.class%'
         arguments:
-            - reference_data_option
-            - pim_ajax_reference_data
-            - '@pim_catalog.validator.constraint_guesser.chained_attribute'
-            - '@pim_reference_data.registry'
+            - 'reference_data_option'
         tags:
             - { name: pim_catalog.attribute_type, alias: pim_reference_data_simpleselect, entity: '%pim_catalog.entity.product.class%' }
 
     pim_reference_data.attributetype.multiselect:
         class: '%pim_reference_data.attribute_type.multiselect.class%'
         arguments:
-            - reference_data_options
-            - pim_ajax_reference_data
-            - '@pim_catalog.validator.constraint_guesser.chained_attribute'
-            - '@pim_reference_data.registry'
+            - 'reference_data_options'
         tags:
             - { name: pim_catalog.attribute_type, alias: pim_reference_data_multiselect, entity: '%pim_catalog.entity.product.class%' }

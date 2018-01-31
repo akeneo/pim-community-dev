@@ -4,7 +4,7 @@ Feature: Filter group types
   As an administrator
   I need to be able to filter group types
 
-  Scenario: Successfully filter group types
+  Background:
     Given the "default" catalog configuration
     And the following group types:
       | code    | label-en_US |
@@ -12,9 +12,9 @@ Feature: Filter group types
       | special | Special     |
     And I am logged in as "Peter"
     Given I am on the group types page
-    Then the grid should contain 4 elements
-    And I should see group types related and special
-    And I should be able to use the following filters:
-      | filter | operator | value | result  |
-      | code   | contains | rel   | related |
-      | label  | contains | Spec  | special |
+    Then the grid should contain 3 elements
+
+  Scenario: Successfully search on label
+    When I search "Spec"
+    Then the grid should contain 1 element
+    Then I should see entity Special

@@ -1,7 +1,7 @@
 <script type="text/javascript">
     require(
-        ['jquery', 'backbone', 'pim/tree/manage', 'jquery.sidebarize', 'bootstrap'],
-        function($, Backbone, TreeManage){
+        ['jquery', 'pim/tree/manage', 'jquery.sidebarize', 'bootstrap'],
+        function($, TreeManage){
             'use strict';
             $(function() {
                 var buttons = [];
@@ -14,11 +14,9 @@
                     }).html(
                         $('<i>', { 'class': 'icon-plus-sign' })
                     ).on('click', function () {
-                        Backbone.history.navigate('url={{ path(route ~ '_categorytree_create') }}', { trigger: true });
+                        Backbone.history.navigate('#{{ path(route ~ '_categorytree_create') }}', { trigger: true });
                     }).tooltip());
                 {% endif %}
-                // Instantiate sidebar
-                $('#category-tree-container').sidebarize({ buttons: buttons });
                 new TreeManage('#tree', '{{ route }}');
             });
         }

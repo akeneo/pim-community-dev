@@ -6,8 +6,8 @@ use Akeneo\Component\Classification\CategoryAwareInterface;
 use Akeneo\Component\Localization\Model\LocalizableInterface;
 use Akeneo\Component\Versioning\Model\VersionableInterface;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Pim\Bundle\CommentBundle\Model\CommentSubjectInterface;
-use Pim\Component\Catalog\Exception\MissingIdentifierException;
 
 /**
  * Product interface
@@ -23,7 +23,8 @@ interface ProductInterface extends
     VersionableInterface,
     CommentSubjectInterface,
     ReferableInterface,
-    CategoryAwareInterface
+    CategoryAwareInterface,
+    EntityWithFamilyInterface
 {
     /**
      * Get the ID of the product
@@ -44,52 +45,22 @@ interface ProductInterface extends
     /**
      * Get the identifier of the product
      *
-     * @throws MissingIdentifierException if no identifier could be found
-     *
-     * @return ProductValueInterface the identifier of the product
+     * @return string
      */
     public function getIdentifier();
 
     /**
-     * Get values
-     *
-     * @return ArrayCollection | ProductValueInterface[]
-     */
-    public function getValues();
-
-    /**
-     * Get value related to attribute code
-     *
-     * @param string $attributeCode
-     * @param string $localeCode
-     * @param string $scopeCode
-     *
-     * @return ProductValueInterface
-     */
-    public function getValue($attributeCode, $localeCode = null, $scopeCode = null);
-
-    /**
-     * Add value, override to deal with relation owner side
-     *
-     * @param ProductValueInterface $value
+     * @param ValueInterface $identifier
      *
      * @return ProductInterface
-     */
-    public function addValue(ProductValueInterface $value);
-
-    /**
-     * Remove value
      *
-     * @param ProductValueInterface $value
-     *
-     * @return ProductInterface
      */
-    public function removeValue(ProductValueInterface $value);
+    public function setIdentifier(ValueInterface $identifier);
 
     /**
      * Get the product groups
      *
-     * @return ArrayCollection
+     * @return Collection
      */
     public function getGroups();
 
@@ -101,6 +72,11 @@ interface ProductInterface extends
      * @return ProductInterface
      */
     public function addGroup(GroupInterface $group);
+
+    /**
+     * @param Collection $groups
+     */
+    public function setGroups(Collection $groups): void;
 
     /**
      * Remove a group
@@ -119,13 +95,6 @@ interface ProductInterface extends
     public function getOrderedGroups();
 
     /**
-     * Get the variant group of the product
-     *
-     * @return GroupInterface|null
-     */
-    public function getVariantGroup();
-
-    /**
      * Get groups code
      *
      * @return array
@@ -135,18 +104,18 @@ interface ProductInterface extends
     /**
      * Get types of associations
      *
-     * @return AssociationInterface[]|ArrayCollection
+     * @return Collection
      */
     public function getAssociations();
 
     /**
      * Set types of associations
      *
-     * @param AssociationInterface[] $associations
+     * @param Collection $associations
      *
      * @return ProductInterface
      */
-    public function setAssociations(array $associations = []);
+    public function setAssociations(Collection $associations);
 
     /**
      * Add a type of an association
@@ -212,34 +181,11 @@ interface ProductInterface extends
     /**
      * Set product completenesses
      *
-     * @param Collection $completenesses CompletenessInterface
+     * @param Collection $completenesses
      *
      * @return ProductInterface
      */
-    public function setCompletenesses(ArrayCollection $completenesses);
-
-    /**
-     * Get the attributes of the product
-     *
-     * @return AttributeInterface[] the attributes of the current product
-     */
-    public function getAttributes();
-
-    /**
-     * Get whether or not an attribute is part of a product
-     *
-     * @param AttributeInterface $attribute
-     *
-     * @return bool
-     */
-    public function hasAttribute(AttributeInterface $attribute);
-
-    /**
-     * Get the list of used attribute code from the indexed values
-     *
-     * @return array
-     */
-    public function getUsedAttributeCodes();
+    public function setCompletenesses(Collection $completenesses);
 
     /**
      * @param AttributeInterface $attribute
@@ -247,13 +193,6 @@ interface ProductInterface extends
      * @return bool
      */
     public function hasAttributeInFamily(AttributeInterface $attribute);
-
-    /**
-     * @param AttributeInterface $attribute
-     *
-     * @return bool
-     */
-    public function hasAttributeInVariantGroup(AttributeInterface $attribute);
 
     /**
      * Check if an attribute can be removed from the product
@@ -274,25 +213,21 @@ interface ProductInterface extends
     public function isAttributeEditable(AttributeInterface $attribute);
 
     /**
-     * Mark the indexed as outdated
+     * Get product image
      *
-     * @return ProductInterface
+     * @return mixed|null
      */
-    public function markIndexedValuesOutdated();
+    public function getImage();
 
     /**
      * Get product label
      *
      * @param string $locale
+     * @param string $scopeCode
      *
      * @return mixed|string
      */
-    public function getLabel($locale = null);
-
-    /**
-     * @param mixed $normalizedData
-     */
-    public function setNormalizedData($normalizedData);
+    public function getLabel($locale = null, $scopeCode = null);
 
     /**
      * Set family
@@ -302,13 +237,6 @@ interface ProductInterface extends
      * @return ProductInterface
      */
     public function setFamily(FamilyInterface $family = null);
-
-    /**
-     * Get family
-     *
-     * @return FamilyInterface
-     */
-    public function getFamily();
 
     /**
      * Get family id
@@ -325,4 +253,21 @@ interface ProductInterface extends
      * @return ProductInterface
      */
     public function setFamilyId($familyId);
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getUniqueData();
+
+    /**
+     * @param ProductUniqueDataInterface $uniqueData
+     *
+     * @return ProductInterface
+     */
+    public function addUniqueData(ProductUniqueDataInterface $uniqueData);
+
+    /**
+     * @param $data Collection
+     */
+    public function setUniqueData(Collection $data): void;
 }

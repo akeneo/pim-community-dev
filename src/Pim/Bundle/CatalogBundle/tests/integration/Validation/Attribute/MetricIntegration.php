@@ -157,6 +157,31 @@ class MetricIntegration extends AbstractAttributeTestCase
         $this->assertSame('reference_data_name', $violations->get(0)->getPropertyPath());
     }
 
+    public function testMetricShouldNotHaveAutoOptionSorting()
+    {
+        $attribute = $this->createAttribute();
+
+        $this->updateAttribute(
+            $attribute,
+            [
+                'code'                => 'new_metric',
+                'type'                => 'pim_catalog_metric',
+                'group'               => 'attributeGroupA',
+                'metric_family'       => 'Length',
+                'default_metric_unit' => 'METER',
+                'decimals_allowed'    => true,
+                'negative_allowed'    => false,
+                'auto_option_sorting' => true,
+            ]
+        );
+
+        $violations = $this->validateAttribute($attribute);
+
+        $this->assertCount(1, $violations);
+        $this->assertSame('This attribute cannot have options.', $violations->get(0)->getMessage());
+        $this->assertSame('auto_option_sorting', $violations->get(0)->getPropertyPath());
+    }
+
     public function testMetricShouldNotHaveMaxCharacters()
     {
         $attribute = $this->createAttribute();

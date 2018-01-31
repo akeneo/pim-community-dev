@@ -1,5 +1,4 @@
 "oro_datagrid.no_data_hint %entityHint%": Er bestaat geen %entityHint%.
-oro_datagrid.not_found_hint: Er zijn geen resultaten gevonden. Proberen te een andere zoekterm.
 oro_datagrid.label_add_filter: Filters beheren
 oro_datagrid.label_loading_mask: Bezig met laden . . .
 oro.grid.mass_action.selected_rows: Geselecteerde rijen

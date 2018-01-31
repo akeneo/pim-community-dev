@@ -22,7 +22,7 @@ class ImageExtension extends \Twig_Extension
     public function getFunctions()
     {
         return [
-            'image_path' => new \Twig_Function_Method($this, 'getImagePath'),
+            new \Twig_SimpleFunction('image_path', [$this, 'getImagePath']),
         ];
     }
 
@@ -46,13 +46,5 @@ class ImageExtension extends \Twig_Extension
         }
 
         return $path;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getName()
-    {
-        return 'pim_pdf_generator_image_extension';
     }
 }

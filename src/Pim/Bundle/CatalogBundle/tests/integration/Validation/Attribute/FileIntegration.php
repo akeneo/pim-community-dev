@@ -55,6 +55,11 @@ class FileIntegration extends AbstractAttributeTestCase
         $this->assertDoesNotHaveAReferenceDataName('pim_catalog_file');
     }
 
+    public function testFileShouldNotHaveAutoOptionSorting()
+    {
+        $this->assertDoesNotHaveAutoOptionSorting('pim_catalog_file');
+    }
+
     public function testFileShouldNotHaveMaxCharacters()
     {
         $this->assertDoesNotHaveMaxCharacters('pim_catalog_file');

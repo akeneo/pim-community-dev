@@ -5,7 +5,6 @@ namespace Pim\Component\Catalog\Updater\Adder;
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
-use Pim\Component\Catalog\Model\ProductInterface;
 
 /**
  * Adds the group field
@@ -36,7 +35,7 @@ class GroupFieldAdder extends AbstractFieldAdder
      *
      * Expected data input format : ["group_code"]
      */
-    public function addFieldData(ProductInterface $product, $field, $data, array $options = [])
+    public function addFieldData($product, $field, $data, array $options = [])
     {
         $this->checkData($field, $data);
 
@@ -49,15 +48,6 @@ class GroupFieldAdder extends AbstractFieldAdder
                     $field,
                     'group code',
                     'The group does not exist',
-                    static::class,
-                    $groupCode
-                );
-            }
-
-            if ($group->getType()->isVariant()) {
-                throw InvalidPropertyException::validGroupExpected(
-                    $field,
-                    'Cannot process variant group, only groups are supported',
                     static::class,
                     $groupCode
                 );

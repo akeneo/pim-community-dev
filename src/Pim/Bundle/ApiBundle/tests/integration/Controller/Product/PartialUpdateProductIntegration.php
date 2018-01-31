@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Pim\Bundle\ApiBundle\tests\integration\Controller\Product;
 
 use Akeneo\Test\Integration\Configuration;
@@ -10,7 +12,7 @@ class PartialUpdateProductIntegration extends AbstractProductTestCase
     /**
      * {@inheritdoc}
      */
-    public function setUp()
+    protected function setUp()
     {
         parent::setUp();
 
@@ -26,18 +28,12 @@ class PartialUpdateProductIntegration extends AbstractProductTestCase
             'categories' => ['master'],
         ]);
 
-        $this->createProduct('product_variant_group', [
-            'variant_group' => 'variantA',
-            'values'        => [
-                'a_simple_select'                    => [
-                    ['locale' => null, 'scope' => null, 'data' => 'optionB'],
-                ],
-            ],
-        ]);
-
         $this->createProduct('product_associations', [
             'associations'  => [
-                'X_SELL' => ['groups'   => ['groupA'], 'products' => ['product_categories']],
+                'PACK'         => ['groups'   => [], 'products' => [], 'product_models' => []],
+                'SUBSTITUTION' => ['groups'   => [], 'products' => [], 'product_models' => []],
+                'UPSELL'       => ['groups'   => [], 'products' => [], 'product_models' => []],
+                'X_SELL'       => ['groups'   => ['groupA'], 'products' => ['product_categories'], 'product_models' => []],
             ],
         ]);
 
@@ -53,7 +49,6 @@ class PartialUpdateProductIntegration extends AbstractProductTestCase
         $this->createProduct('complete', [
             'family'        => 'familyA2',
             'groups'        => ['groupA'],
-            'variant_group' => 'variantA',
             'categories'    => ['master'],
             'values'        => [
                 'a_metric' => [
@@ -67,7 +62,10 @@ class PartialUpdateProductIntegration extends AbstractProductTestCase
                 ],
             ],
             'associations'  => [
-                'X_SELL' => ['groups'   => ['groupA'], 'products' => ['product_categories']],
+                'PACK'         => ['groups'   => [], 'products' => [], 'product_models' => []],
+                'SUBSTITUTION' => ['groups'   => [], 'products' => [], 'product_models' => []],
+                'UPSELL'       => ['groups'   => [], 'products' => [], 'product_models' => []],
+                'X_SELL'       => ['groups'   => ['groupA'], 'products' => ['product_categories'], 'product_models' => []],
             ],
         ]);
     }
@@ -85,8 +83,8 @@ JSON;
         $expectedProduct = [
             'identifier'    => 'product_create_with_identifier',
             'family'        => null,
+            'parent'        => null,
             'groups'        => [],
-            'variant_group' => null,
             'categories'    => [],
             'enabled'       => true,
             'values'        => [
@@ -122,8 +120,8 @@ JSON;
         $expectedProduct = [
             'identifier'    => 'product_create_without_identifier',
             'family'        => null,
+            'parent'        => null,
             'groups'        => [],
-            'variant_group' => null,
             'categories'    => [],
             'enabled'       => true,
             'values'        => [
@@ -187,8 +185,8 @@ JSON;
         $expectedProduct = [
             'identifier'    => 'product_categories',
             'family'        => null,
+            'parent'        => null,
             'groups'        => [],
-            'variant_group' => null,
             'categories'    => ['master'],
             'enabled'       => true,
             'values'        => [
@@ -224,8 +222,8 @@ JSON;
         $expectedProduct = [
             'identifier'    => 'product_categories',
             'family'        => null,
+            'parent'        => null,
             'groups'        => [],
-            'variant_group' => null,
             'categories'    => ['master'],
             'enabled'       => true,
             'values'        => [
@@ -266,8 +264,8 @@ JSON;
         $expectedProduct = [
             'identifier'    => 'new_product_categories',
             'family'        => null,
+            'parent'        => null,
             'groups'        => [],
-            'variant_group' => null,
             'categories'    => ['master'],
             'enabled'       => true,
             'values'        => [
@@ -344,8 +342,8 @@ JSON;
         $expectedProduct = [
             'identifier'    => 'product_family',
             'family'        => 'familyA',
+            'parent'        => null,
             'groups'        => [],
-            'variant_group' => null,
             'categories'    => [],
             'enabled'       => true,
             'values'        => [
@@ -382,8 +380,8 @@ JSON;
         $expectedProduct = [
             'identifier'    => 'product_family',
             'family'        => null,
+            'parent'        => null,
             'groups'        => [],
-            'variant_group' => null,
             'categories'    => [],
             'enabled'       => true,
             'values'        => [
@@ -420,8 +418,8 @@ JSON;
         $expectedProduct = [
             'identifier'    => 'product_groups',
             'family'        => null,
+            'parent'        => null,
             'groups'        => ['groupA', 'groupB'],
-            'variant_group' => null,
             'categories'    => [],
             'enabled'       => true,
             'values'        => [
@@ -458,8 +456,9 @@ JSON;
         $expectedProduct = [
             'identifier'    => 'product_groups',
             'family'        => null,
+            'parent'        => null,
             'groups'        => [],
-            'variant_group' => null,
+
             'categories'    => [],
             'enabled'       => true,
             'values'        => [
@@ -496,8 +495,9 @@ JSON;
         $expectedProduct = [
             'identifier'    => 'product_categories',
             'family'        => null,
+            'parent'        => null,
             'groups'        => [],
-            'variant_group' => null,
+
             'categories'    => ["categoryA", "categoryA1"],
             'enabled'       => true,
             'values'        => [
@@ -534,8 +534,9 @@ JSON;
         $expectedProduct = [
             'identifier'    => 'product_categories',
             'family'        => null,
+            'parent'        => null,
             'groups'        => [],
-            'variant_group' => null,
+
             'categories'    => [],
             'enabled'       => true,
             'values'        => [
@@ -555,118 +556,32 @@ JSON;
         $this->assertSameProducts($expectedProduct, 'product_categories');
     }
 
-    public function testProductPartialUpdateWithTheVariantGroupUpdated()
-    {
-        $client = $this->createAuthenticatedClient();
-
-        $data =
-<<<JSON
-    {
-        "identifier": "product_variant_group",
-        "variant_group": "variantB",
-        "values": {
-            "a_simple_select": [{
-                "locale": null,
-                "scope": null,
-                "data": "optionA"
-            }]
-        }
-    }
-JSON;
-
-        $client->request('PATCH', 'api/rest/v1/products/product_variant_group', [], [], [], $data);
-
-        $expectedProduct = [
-            'identifier'    => 'product_variant_group',
-            'family'        => null,
-            'groups'        => [],
-            'variant_group' => "variantB",
-            'categories'    => [],
-            'enabled'       => true,
-            'values'        => [
-                'sku' => [
-                    ['locale' => null, 'scope' => null, 'data' => 'product_variant_group'],
-                ],
-                'a_simple_select'                    => [
-                    ['locale' => null, 'scope' => null, 'data' => 'optionA'],
-                ],
-                'a_text'   => [
-                    ['locale' => null, 'scope' => null, 'data' => 'Variant group B'],
-                ],
-
-            ],
-            'created'       => '2016-06-14T13:12:50+02:00',
-            'updated'       => '2016-06-14T13:12:50+02:00',
-            'associations'  => [],
-        ];
-
-        $response = $client->getResponse();
-
-        $this->assertSame('', $response->getContent());
-        $this->assertSame(Response::HTTP_NO_CONTENT, $response->getStatusCode());
-        $this->assertSameProducts($expectedProduct, 'product_variant_group');
-    }
-
-    public function testProductPartialUpdateWithTheVariantGroupDeleted()
-    {
-        $client = $this->createAuthenticatedClient();
-
-        $data =
-<<<JSON
-    {
-        "identifier": "product_variant_group",
-        "variant_group": null
-    }
-JSON;
-
-        $client->request('PATCH', 'api/rest/v1/products/product_variant_group', [], [], [], $data);
-
-        $expectedProduct = [
-            'identifier'    => 'product_variant_group',
-            'family'        => null,
-            'groups'        => [],
-            'variant_group' => null,
-            'categories'    => [],
-            'enabled'       => true,
-            'values'        => [
-                'sku' => [
-                    ['locale' => null, 'scope' => null, 'data' => 'product_variant_group'],
-                ],
-                'a_simple_select'                    => [
-                    ['locale' => null, 'scope' => null, 'data' => 'optionB'],
-                ],
-                'a_text'   => [
-                    ['locale' => null, 'scope' => null, 'data' => 'A name'],
-                ],
-
-            ],
-            'created'       => '2016-06-14T13:12:50+02:00',
-            'updated'       => '2016-06-14T13:12:50+02:00',
-            'associations'  => [],
-        ];
-
-        $response = $client->getResponse();
-
-        $this->assertSame('', $response->getContent());
-        $this->assertSame(Response::HTTP_NO_CONTENT, $response->getStatusCode());
-        $this->assertSameProducts($expectedProduct, 'product_variant_group');
-    }
-
+    /**
+     * @group ce
+     */
     public function testProductPartialUpdateWithTheAssociationsUpdated()
     {
+        $this->createProductModel([
+            'code' => 'a_product_model',
+            'family_variant' => 'familyVariantA1',
+            'values'  => [],
+        ]);
+
         $client = $this->createAuthenticatedClient();
 
-        $data =
-<<<JSON
-    {
-        "identifier": "product_associations",
-        "associations": {
-            "PACK": {
-                "groups": ["groupA"],
-                "products": ["product_categories", "product_family"]
-            }
+        $data = <<<JSON
+{
+    "identifier": "product_associations",
+    "associations": {
+        "PACK": {
+            "groups": ["groupA"],
+            "products": ["product_categories", "product_family"]
+        },
+        "SUBSTITUTION": {
+            "product_models": ["a_product_model"]
         }
     }
+}
 JSON;
 
         $client->request('PATCH', 'api/rest/v1/products/product_associations', [], [], [], $data);
@@ -674,8 +589,9 @@ JSON;
         $expectedProduct = [
             'identifier'    => 'product_associations',
             'family'        => null,
+            'parent'        => null,
             'groups'        => [],
-            'variant_group' => null,
+
             'categories'    => [],
             'enabled'       => true,
             'values'        => [
@@ -685,9 +601,27 @@ JSON;
             ],
             'created'       => '2016-06-14T13:12:50+02:00',
             'updated'       => '2016-06-14T13:12:50+02:00',
-            'associations'  => [
-                'PACK'   => ['groups'   => ['groupA'], 'products' => ['product_categories', 'product_family']],
-                'X_SELL' => ['groups'   => ['groupA'], 'products' => ['product_categories']],
+            'associations' => [
+                'PACK' => [
+                    'groups' => ['groupA'],
+                    'products' => ['product_family', 'product_categories'],
+                    'product_models' => [],
+                ],
+                'SUBSTITUTION' => [
+                    'groups' => [],
+                    'products' => [],
+                    'product_models' => ['a_product_model']
+                ],
+                'UPSELL' => [
+                    'groups' => [],
+                    'products' => [],
+                    'product_models' => [],
+                ],
+                'X_SELL' => [
+                    'groups' => ['groupA'],
+                    'products' => ['product_categories'],
+                    'product_models' => [],
+                ],
             ],
         ];
 
@@ -719,8 +653,9 @@ JSON;
         $expectedProduct = [
             'identifier'    => 'product_associations',
             'family'        => null,
+            'parent'        => null,
             'groups'        => [],
-            'variant_group' => null,
+
             'categories'    => [],
             'enabled'       => true,
             'values'        => [
@@ -731,8 +666,11 @@ JSON;
             'created'       => '2016-06-14T13:12:50+02:00',
             'updated'       => '2016-06-14T13:12:50+02:00',
             'associations'  => [
-                'X_SELL' => ['groups'   => [], 'products' => ['product_categories']],
-            ],
+                'PACK'         => ['groups'   => [], 'products' => [], 'product_models' => []],
+                'SUBSTITUTION' => ['groups'   => [], 'products' => [], 'product_models' => []],
+                'UPSELL'       => ['groups'   => [], 'products' => [], 'product_models' => []],
+                'X_SELL'       => ['groups'   => [], 'products' => ['product_categories'], 'product_models' => []],
+           ],
         ];
 
         $response = $client->getResponse();
@@ -768,8 +706,9 @@ JSON;
         $expectedProduct = [
             'identifier'    => 'product_associations',
             'family'        => null,
+            'parent'        => null,
             'groups'        => [],
-            'variant_group' => null,
+
             'categories'    => [],
             'enabled'       => true,
             'values'        => [
@@ -779,7 +718,12 @@ JSON;
             ],
             'created'       => '2016-06-14T13:12:50+02:00',
             'updated'       => '2016-06-14T13:12:50+02:00',
-            'associations'  => [],
+            'associations'  => [
+                'PACK'         => ['groups'   => [], 'products' => [], 'product_models' => []],
+                'SUBSTITUTION' => ['groups'   => [], 'products' => [], 'product_models' => []],
+                'UPSELL'       => ['groups'   => [], 'products' => [], 'product_models' => []],
+                'X_SELL'       => ['groups'   => [], 'products' => [], 'product_models' => []],
+            ],
         ];
 
         $response = $client->getResponse();
@@ -806,8 +750,9 @@ JSON;
         $expectedProduct = [
             'identifier'    => 'product_categories',
             'family'        => null,
+            'parent'        => null,
             'groups'        => [],
-            'variant_group' => null,
+
             'categories'    => ['master'],
             'enabled'       => false,
             'values'        => [
@@ -852,8 +797,9 @@ JSON;
         $expectedProduct = [
             'identifier'    => 'localizable',
             'family'        => null,
+            'parent'        => null,
             'groups'        => [],
-            'variant_group' => null,
+
             'categories'    => [],
             'enabled'       => true,
             'values'        => [
@@ -903,8 +849,9 @@ JSON;
         $expectedProduct = [
             'identifier'    => 'localizable',
             'family'        => null,
+            'parent'        => null,
             'groups'        => [],
-            'variant_group' => null,
+
             'categories'    => [],
             'enabled'       => true,
             'values'        => [
@@ -951,8 +898,9 @@ JSON;
         $expectedProduct = [
             'identifier'    => 'localizable',
             'family'        => null,
+            'parent'        => null,
             'groups'        => [],
-            'variant_group' => null,
+
             'categories'    => [],
             'enabled'       => true,
             'values'        => [
@@ -991,7 +939,6 @@ JSON;
     {
         "identifier": "complete",
         "groups": ["groupA", "groupB"],
-        "variant_group": "variantB",
         "family": "familyA2",
         "categories": ["master", "categoryA"],
         "values": {
@@ -1004,22 +951,24 @@ JSON;
                 "locale": null,
                 "scope": null,
                 "data": [{
-                    "amount": "45.00",
-                    "currency": "USD"
-                }, {
                     "amount": "56.53",
                     "currency": "EUR"
+                },
+                {
+                    "amount": "45.00",
+                    "currency": "USD"
                 }]
             }],
             "a_price_without_decimal": [{
                 "locale": null,
                 "scope": null,
                 "data": [{
-                    "amount": -45,
-                    "currency": "USD"
-                }, {
                     "amount": 56,
                     "currency": "EUR"
+                },
+                {
+                    "amount": -45,
+                    "currency": "USD"
                 }]
             }],
             "a_ref_data_multi_select": [{
@@ -1068,8 +1017,8 @@ JSON;
         $expectedProduct = [
             'identifier'    => 'complete',
             'family'        => 'familyA2',
+            'parent'        => null,
             'groups'        => ['groupA', 'groupB'],
-            'variant_group' => 'variantB',
             'categories'    => ['categoryA', 'master'],
             'enabled'       => true,
             'values'        => [
@@ -1085,16 +1034,13 @@ JSON;
                 'a_simple_select'                    => [
                     ['locale' => null, 'scope' => null, 'data' => 'optionA'],
                 ],
-                'a_text'                             => [
-                    ['locale' => null, 'scope'  => null, 'data'   => 'Variant group B'],
-                ],
                 'a_price'                            => [
                     [
                         'locale' => null,
                         'scope'  => null,
                         'data'   => [
-                            ['amount' => '45.00', 'currency' => 'USD'],
                             ['amount' => '56.53', 'currency' => 'EUR'],
+                            ['amount' => '45.00', 'currency' => 'USD'],
                         ],
                     ],
                 ],
@@ -1103,8 +1049,8 @@ JSON;
                         'locale' => null,
                         'scope'  => null,
                         'data'   => [
-                            ['amount' => -45, 'currency' => 'USD'],
                             ['amount' => 56, 'currency' => 'EUR'],
+                            ['amount' => -45, 'currency' => 'USD'],
                         ],
                     ],
                 ],
@@ -1147,7 +1093,10 @@ JSON;
             'created'       => '2016-06-14T13:12:50+02:00',
             'updated'       => '2016-06-14T13:12:50+02:00',
             'associations'  => [
-                'X_SELL' => ['groups'   => ['groupA'], 'products' => ['product_categories']],
+                'PACK'         => ['groups'   => [], 'products' => [], 'product_models' => []],
+                'SUBSTITUTION' => ['groups'   => [], 'products' => [], 'product_models' => []],
+                'UPSELL'       => ['groups'   => [], 'products' => [], 'product_models' => []],
+                'X_SELL'       => ['groups'   => ['groupA'], 'products' => ['product_categories'], 'product_models' => []],
             ],
         ];
 
@@ -1174,8 +1123,9 @@ JSON;
         $expectedProduct = [
             'identifier'    => 'product_categories',
             'family'        => null,
+            'parent'        => null,
             'groups'        => [],
-            'variant_group' => null,
+
             'categories'    => ['master'],
             'enabled'       => true,
             'values'        => [
@@ -1198,8 +1148,7 @@ JSON;
         $this->assertSame(Response::HTTP_NO_CONTENT, $response->getStatusCode());
 
         $product = $this->get('pim_catalog.repository.product')->findOneByIdentifier('product_categories');
-        $normalizer = $this->get('pim_catalog.normalizer.standard.product');
-        $standardizedProduct = $normalizer->normalize($product);
+        $standardizedProduct = $this->get('pim_serializer')->normalize($product, 'standard');
 
         $this->assertNotSame('2014-06-14T13:12:50+02:00', $standardizedProduct['created']);
         $this->assertNotSame('2014-06-14T13:12:50+02:00', $standardizedProduct['updated']);
@@ -1285,7 +1234,7 @@ JSON;
             'errors'  => [
                 [
                     'property' => 'identifier',
-                    'message'  => 'The value product_family is already set on another product for the unique attribute sku',
+                    'message'  => 'The same identifier is already set on another product',
                 ],
             ],
         ];
@@ -1309,7 +1258,7 @@ JSON;
         $client->request('PATCH', 'api/rest/v1/products/product_categories', [], [], [], $data);
         $expectedContent = [
             'code'    => 422,
-            'message' => 'Property "extra_property" does not exist. Check the standard format documentation.',
+            'message' => 'Property "extra_property" does not exist. Check the expected format on the API documentation.',
             '_links'  => [
                 'documentation' => [
                     'href' => 'http://api.akeneo.com/api-reference.html#patch_products__code_'
@@ -1373,7 +1322,7 @@ JSON;
         $client->request('PATCH', 'api/rest/v1/products/product_categories', [], [], [], $data);
         $expectedContent = [
             'code'    => 422,
-            'message' => 'Property "enabled" expects a boolean as data, "NULL" given. Check the standard format documentation.',
+            'message' => 'Property "enabled" expects a boolean as data, "NULL" given. Check the expected format on the API documentation.',
             '_links'  => [
                 'documentation' => [
                     'href' => 'http://api.akeneo.com/api-reference.html#patch_products__code_'
@@ -1396,7 +1345,6 @@ JSON;
         "identifier": "product_family",
         "family": "familyA2",
         "groups": [],
-        "variant_group": null,
         "categories": [],
         "values": {
             "unknown_attribute":[{
@@ -1412,7 +1360,7 @@ JSON;
         $client->request('PATCH', 'api/rest/v1/products/product_family', [], [], [], $data);
         $expectedContent = [
             'code'    => 422,
-            'message' => 'Property "unknown_attribute" does not exist. Check the standard format documentation.',
+            'message' => 'Property "unknown_attribute" does not exist. Check the expected format on the API documentation.',
             '_links'  => [
                 'documentation' => [
                     'href' => "http://api.akeneo.com/api-reference.html#patch_products__code_"
@@ -1425,34 +1373,109 @@ JSON;
         $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
     }
 
-    /**
-     * @param array  $expectedProduct normalized data of the product that should be created
-     * @param string $identifier identifier of the product that should be created
-     */
-    protected function assertSameProducts(array $expectedProduct, $identifier)
+    public function testProductPartialUpdateWithInvalidFieldData()
     {
-        $product = $this->get('pim_catalog.repository.product')->findOneByIdentifier($identifier);
-        $normalizer = $this->get('pim_catalog.normalizer.standard.product');
-        $standardizedProduct = $normalizer->normalize($product);
+        $client = $this->createAuthenticatedClient();
 
-        $standardizedProduct = static::sanitizeDateFields($standardizedProduct);
-        $expectedProduct = static::sanitizeDateFields($expectedProduct);
+        $data =
+<<<JSON
+    {
+        "identifier": "product_family",
+        "family": ["familyA"]
+    }
+JSON;
+        $client->request('PATCH', 'api/rest/v1/products/product_family', [], [], [], $data);
 
-        $standardizedProduct = static::sanitizeMediaAttributeData($standardizedProduct);
-        $expectedProduct = static::sanitizeMediaAttributeData($expectedProduct);
+        $expectedContent = [
+            'code'    => 422,
+            'message' => 'Property "family" expects a scalar as data, "array" given. Check the expected format on the API documentation.',
+            '_links'  => [
+                'documentation' => [
+                    'href' => "http://api.akeneo.com/api-reference.html#patch_products__code_"
+                ],
+            ],
+        ];
 
-        ksort($expectedProduct['values']);
-        ksort($standardizedProduct['values']);
-
-        $this->assertSame($expectedProduct, $standardizedProduct);
+        $response = $client->getResponse();
+        $this->assertSame($expectedContent, json_decode($response->getContent(), true));
+        $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
     }
 
+    public function testProductPartialUpdateWithInvalidAttributeData()
+    {
+        $client = $this->createAuthenticatedClient();
+
+        $data =
+<<<JSON
+    {
+        "identifier": "big_boot",
+        "family": "familyA",
+        "values": {
+            "a_text":[{
+                "locale": null,
+                "scope": null,
+                "data": ["an_array"]
+            }]
+        }
+    }
+JSON;
+        $client->request('PATCH', 'api/rest/v1/products/big_boot', [], [], [], $data);
+
+        $expectedContent = [
+            'code'    => 422,
+            'message' => 'Property "a_text" expects a scalar as data, "array" given. Check the expected format on the API documentation.',
+            '_links'  => [
+                'documentation' => [
+                    'href' => "http://api.akeneo.com/api-reference.html#patch_products__code_"
+                ],
+            ],
+        ];
+
+        $response = $client->getResponse();
+        $this->assertSame($expectedContent, json_decode($response->getContent(), true));
+        $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
+    }
+
+    public function testResponseWhenAssociatingToNonExistingProductModel()
+    {
+        $client = $this->createAuthenticatedClient();
+
+        $data = <<<JSON
+{
+    "identifier": "big_boot",
+    "associations": {
+        "X_SELL": {
+            "product_models": ["a_non_exiting_product_model"]
+        }
+    }
+}
+JSON;
+
+        $expected = <<<JSON
+{
+    "code": 422,
+    "message": "Property \"associations\" expects a valid Product model identifier. The product model does not exist, \"a_non_exiting_product_model\" given. Check the expected format on the API documentation.",
+    "_links": {
+        "documentation": {
+            "href": "http:\/\/api.akeneo.com\/api-reference.html#post_products"
+        }
+    }
+}
+JSON;
+
+        $client->request('POST', 'api/rest/v1/products', [], [], [], $data);
+
+        $response = $client->getResponse();
+
+        $this->assertJsonStringEqualsJsonString($expected, $response->getContent());
+        $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
+    }
 
     /**
      * {@inheritdoc}
      */
-    protected function getConfiguration()
+    protected function getConfiguration(): Configuration
     {
-        return new Configuration([Configuration::getTechnicalCatalogPath()]);
+        return $this->catalog->useTechnicalCatalog();
     }
 }

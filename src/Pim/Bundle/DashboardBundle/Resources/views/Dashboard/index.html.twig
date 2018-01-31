@@ -1,16 +1,62 @@
-{% extends bap.layout %}
+{% import 'PimUIBundle:Default:page_elements.html.twig' as elements %}
 
 {% block content %}
-    <header class="AknTitleContainer navigation">
-        <div class="AknTitleContainer-titleContainer" data-drop-zone="title">
-            <h2 class="AknTitleContainer-title">{{ 'pim_dashboard.title'|trans }}</h2>
-        </div>
-        <div class="AknTitleContainer-metaLine"></div>
-    </header>
 
-    {{ render(controller('pim_dashboard.controller.widget:listAction')) }}
-    <div class="AknFooter">
-        {% embed 'PimDashboardBundle:Dashboard:version.html.twig' %}{% endembed %}
-        {% embed 'PimAnalyticsBundle:Update:last_patch.html.twig' %}{% endembed %}
+    <div class="AknDefault-mainContent">
+
+        {% set image %}
+            <img
+                class="AknTitleContainer-image"
+                src="{{ app.user.imagePath ? app.user.imagePath | imagine_filter('thumbnail_small') : asset('bundles/pimui/images/info-user.png') }}"
+            >
+        {% endset %}
+
+        {{ elements.page_header(
+            {
+                title: 'pim_dashboard.title'|trans,
+                image: image
+            }
+        ) }}
+
+        {{ render(controller('pim_dashboard.controller.widget:listAction')) }}
+
+        <div class="AknFooter">
+            {% embed 'PimDashboardBundle:Dashboard:version.html.twig' %}{% endembed %}
+            {% embed 'PimAnalyticsBundle:Update:last_patch.html.twig' %}{% endembed %}
+        </div>
     </div>
+    <script>
+        require(
+            [
+                'pim/common/breadcrumbs',
+                'pim/fetcher-registry',
+                'pim/form-builder'
+            ],
+            function(
+                Breadcrumbs,
+                FetcherRegistry,
+                FormBuilder
+            ) {
+                $(function() {
+                    var breadcrumbs = new Breadcrumbs({
+                        config: {
+                            tab: 'pim-menu-activity',
+                            item: 'pim-menu-activity-dashboard'
+                        }
+                    });
+                    breadcrumbs.configure().then(function () {
+                        breadcrumbs.render();
+                        $('*[data-drop-zone="breadcrumbs"]').append(breadcrumbs.$el);
+                    });
+
+                    FetcherRegistry.initialize().done(function () {
+                        FormBuilder.build('pim-menu-user-navigation').then(function (form) {
+                            $('.user-menu').append(form.el);
+                            form.render();
+                        }.bind(this));
+                    });
+                });
+            }
+        );
+    </script>
 {% endblock %}

@@ -2,6 +2,7 @@
 
 namespace Pim\Component\Catalog\Query\Filter;
 
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 
 /**
@@ -15,9 +16,6 @@ class FieldFilterHelper
 {
     /** @var string */
     const CODE_PROPERTY = 'code';
-
-    /** @var string */
-    const ID_PROPERTY = 'id';
 
     /**
      * Get field code part
@@ -73,6 +71,54 @@ class FieldFilterHelper
     {
         if (!is_array($value)) {
             throw InvalidPropertyTypeException::arrayExpected(static::getCode($field), $className, $value);
+        }
+    }
+
+    /**
+     * Check if value is a datetime corresponding to a format
+     *
+     * @param string $field
+     * @param string|\DateTime $value
+     * @param string $format
+     * @param string $dateMessageFormat
+     * @param string $className
+     *
+     */
+    public static function checkDateTime($field, $value, $format, $dateMessageFormat, $className)
+    {
+        if ($value instanceof \DateTime) {
+            return;
+        }
+
+        if (!is_string($value)) {
+            throw InvalidPropertyException::dateExpected($field, $format, $className, $value);
+        }
+
+        $dateTime = \DateTime::createFromFormat($format, $value);
+
+        if (false === $dateTime || 0 < $dateTime->getLastErrors()['warning_count']) {
+            throw InvalidPropertyException::dateExpected(
+                $field,
+                $dateMessageFormat,
+                $className,
+                $value
+            );
+        }
+    }
+
+    /**
+     * Check if value is a string
+     *
+     * @param string $field
+     * @param mixed  $value
+     * @param string $className
+     *
+     * @throws InvalidPropertyTypeException
+     */
+    public static function checkString($field, $value, $className)
+    {
+        if (!is_string($value) && null !== $value) {
+            throw InvalidPropertyTypeException::stringExpected($field, $className, $value);
         }
     }
 

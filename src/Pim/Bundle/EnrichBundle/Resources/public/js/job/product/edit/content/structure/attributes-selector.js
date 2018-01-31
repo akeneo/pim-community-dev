@@ -15,8 +15,8 @@ define(
         'pim/i18n',
         'pim/user-context',
         'pim/fetcher-registry',
-        'text!pim/template/export/product/edit/content/structure/attributes-selector',
-        'text!pim/template/export/product/edit/content/structure/attribute-list'
+        'pim/template/export/product/edit/content/structure/attributes-selector',
+        'pim/template/export/product/edit/content/structure/attribute-list'
     ],
     function (
         $,
@@ -84,7 +84,9 @@ define(
                         attributeGroups: attributeGroups,
                         attributeCount: attributeCount,
                         currentGroup: this.currentGroup,
-                        selectedAttributes: selectedAttributes
+                        selectedAttributes: selectedAttributes,
+                        title: __('pim_enrich.export.product.filter.attributes_selector.title'),
+                        description: __('pim_enrich.export.product.filter.attributes_selector.description')
                     }));
 
                     this.initializeSortable();
@@ -179,11 +181,7 @@ define(
                     };
 
                     if (null !== this.currentGroup) {
-                        /* jshint sub:true */
-                        /* jscs:disable requireDotNotation */
-                        searchOptions.options['attribute_groups'] = [this.currentGroup];
-                        /* jshint sub:false */
-                        /* jscs:enable requireDotNotation */
+                        searchOptions.options.attribute_groups = [this.currentGroup];
                     }
 
                     this.isFetching = true;
