@@ -42,11 +42,9 @@ stage("Build") {
     def uuid = UUID.randomUUID().toString()
     withCredentials([string(credentialsId: 'composer-token', variable: 'token')]) {
         podTemplate(label: "build-" + uuid, containers: [
-            containerTemplate(name: "docker", image: "paulwoelfel/docker-gcloud:v1.13", ttyEnabled: true, command: 'cat', envVars: [envVar(key: "DOCKER_API_VERSION", value: "1.23")], resourceRequestCpu: '100m', resourceRequestMemory: '200Mi'),
+            containerTemplate(name: "docker", image: "paulwoelfel/docker-gcloud:v1.13", ttyEnabled: true, command: 'cat', resourceRequestCpu: '100m', resourceRequestMemory: '200Mi'),
             containerTemplate(name: "php", ttyEnabled: true, command: 'cat', image: "eu.gcr.io/akeneo-ci/php:7.1-fpm", envVars: [envVar(key: "COMPOSER_AUTH", value: "{\"github-oauth\":{\"github.com\": \"$token\"}}")], resourceRequestCpu: '750m', resourceRequestMemory: '2000Mi'),
             containerTemplate(name: "node", ttyEnabled: true, command: 'cat', image: "node:8", resourceRequestCpu: '750m', resourceRequestMemory: '2000Mi')
-        ], volumes: [
-            hostPathVolume(hostPath: "/var/run/docker.sock", mountPath: "/var/run/docker.sock")
         ]) {
             node("build-" + uuid) {
                 dir('/home/jenkins/pim') {
@@ -68,9 +66,7 @@ stage("Build") {
                         }
 
                         sh "cp .ci/parameters.ci.yml app/config/parameters_test.yml"
-
-                        sh "docker build -t eu.gcr.io/akeneo-ci/pim-enterprise-dev:pull-request-${env.CHANGE_ID}-build-${env.BUILD_NUMBER} ."
-                        sh "gcloud docker -- push eu.gcr.io/akeneo-ci/pim-enterprise-dev:pull-request-${env.CHANGE_ID}-build-${env.BUILD_NUMBER}"
+                        sh "gcloud container builds submit --tag eu.gcr.io/akeneo-ci/pim-enterprise-dev:pull-request-${env.CHANGE_ID}-build-${env.BUILD_NUMBER} ."
                     }
                 }
             }
