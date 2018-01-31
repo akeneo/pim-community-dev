@@ -265,6 +265,14 @@ class UserType extends AbstractType
                 ]
             )
             ->add(
+                'phone',
+                TextType::class,
+                [
+                    'label'    => 'Phone',
+                    'required' => false,
+                ]
+            )
+            ->add(
                 'birthday',
                 DateType::class,
                 [

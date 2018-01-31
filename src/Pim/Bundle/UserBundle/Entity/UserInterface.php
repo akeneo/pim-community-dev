@@ -516,4 +516,16 @@ interface UserInterface extends AdvancedUserInterface, \Serializable, EntityUplo
      * @return UserInterface
      */
     public function setDefaultGridView($alias, $defaultGridView);
+
+    /**
+     * @return null|string
+     */
+    public function getPhone(): ?string;
+
+    /**
+     * @param string $phone
+     *
+     * @return UserInterface
+     */
+    public function setPhone(?string $phone): UserInterface;
 }

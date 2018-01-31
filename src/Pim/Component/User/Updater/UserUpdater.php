@@ -165,6 +165,9 @@ class UserUpdater implements ObjectUpdaterInterface
                     $user->addGroup($role);
                 }
                 break;
+            case 'phone':
+                $user->setPhone($data);
+                break;
         }
     }
 
