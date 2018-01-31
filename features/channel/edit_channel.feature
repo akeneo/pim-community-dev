@@ -41,14 +41,14 @@ Feature: Edit a channel
     Then I should not see the text "There are unsaved changes."
     And I am on the locales page
     And I filter by "activated" with operator "equals" and value "yes"
-    Then the grid should contain 2 elements
-    And I should see locales "en_US" and "br_FR"
+    Then the grid should contain 3 elements
+    And I should see locales "en_US", "br_FR" and "fr_FR"
     When I am on the "tablet" channel page
     And I press the secondary action "Delete"
     And I confirm the deletion
     And I am on the locales page
-    Then the grid should contain 1 element
-    And I should see locale "en_US"
+    Then the grid should contain 2 element
+    And I should see locale "en_US" and "fr_FR"
 
   Scenario: Successfully display the translation of the unit of metrics
     Given I am logged in as "Julien"
