@@ -230,35 +230,7 @@ define(
         var ItemCollectionView = Backbone.View.extend({
             tagName: 'table',
             className: 'AknGrid AknGrid--unclickable table attribute-option-view',
-            template: _.template(
-                '<!-- Pim/Bundle/EnrichBundle/Resources/public/js/pim-attributeoptionview.js -->' +
-                '<colgroup>' +
-                    '<col class="code" span="1"></col>' +
-                    '<col class="fields" span="<%= locales.length %>"></col>' +
-                    '<col class="action" span="1"></col>' +
-                '</colgroup>' +
-                '<thead>' +
-                    '<tr>' +
-                        '<th class="AknGrid-headerCell"><%= code_label %></th>' +
-                        '<% _.each(locales, function (locale) { %>' +
-                        '<th class="AknGrid-headerCell">' +
-                            '<%= locale %>' +
-                        '</th>' +
-                        '<% }); %>' +
-                        '<th class="AknGrid-headerCell AknGrid-headerCell--right">Action</th>' +
-                    '</tr>' +
-                '</thead>' +
-                '<tbody></tbody>' +
-                '<tfoot>' +
-                    '<tr class="AknGrid-bodyRow">' +
-                        '<td class="AknGrid-bodyCell AknGrid-bodyCell--right" colspan="<%= 2 + locales.length %>">' +
-                            '<span class="AknButton AknButton--grey AknButton--small option-add">' +
-                                '<%= add_option_label %>' +
-                            '</span>' +
-                        '</td>' +
-                    '</tr>' +
-                '</tfoot>'
-            ),
+            template: _.template(indexTemplate),
             events: {
                 'click .option-add': 'addItem'
             },
