@@ -82,15 +82,15 @@ class UserUpdaterSpec extends ObjectBehavior
         $this->update($user, $data, [])->shouldReturn($this);
     }
 
-    function it_throws_an_exception_if_catalog_locale_does_not_exist(UserInterface $user)
+    function it_throws_an_exception_if_catalog_default_locale_does_not_exist(UserInterface $user)
     {
         $data = [
-            'catalog_locale' => 'unknown',
+            'catalog_default_locale' => 'unknown',
         ];
 
         $this->shouldThrow(
             InvalidPropertyException::validEntityCodeExpected(
-                'catalog_locale',
+                'catalog_default_locale',
                 'locale code',
                 'The locale does not exist',
                 UserUpdater::class,
@@ -104,12 +104,12 @@ class UserUpdaterSpec extends ObjectBehavior
     function it_throws_an_exception_if_category_does_not_exist(UserInterface $user)
     {
         $data = [
-            'default_tree' => 'unknown',
+            'default_category_tree' => 'unknown',
         ];
 
         $this->shouldThrow(
             InvalidPropertyException::validEntityCodeExpected(
-                'default_tree',
+                'default_category_tree',
                 'category code',
                 'The category does not exist',
                 UserUpdater::class,
@@ -123,12 +123,12 @@ class UserUpdaterSpec extends ObjectBehavior
     function it_throws_an_exception_if_channel_does_not_exist(UserInterface $user)
     {
         $data = [
-            'catalog_scope' => 'unknown',
+            'catalog_default_scope' => 'unknown',
         ];
 
         $this->shouldThrow(
             InvalidPropertyException::validEntityCodeExpected(
-                'catalog_scope',
+                'catalog_default_scope',
                 'channel code',
                 'The channel does not exist',
                 UserUpdater::class,

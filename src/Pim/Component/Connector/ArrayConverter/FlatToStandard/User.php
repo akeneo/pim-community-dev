@@ -32,34 +32,34 @@ class User implements ArrayConverterInterface
      *
      * Before:
      * [
-     *      'username'       => 'julia',
-     *      'email'          => 'Julia@example.com',
-     *      'password'       => 'julia',
-     *      'first_name'     => 'Julia',
-     *      'last_name'      => 'Stark',
-     *      'catalog_locale' => 'en_US',
-     *      'user_locale'    => 'en_US',
-     *      'catalog_scope'  => 'ecommerce',
-     *      'default_tree'   => 'men_2013',
-     *      'roles'          => 'ROLE_USER',
-     *      'groups'         => 'Redactor',
-     *      'enabled'        => '1',
+     *      'username'               => 'julia',
+     *      'email'                  => 'Julia@example.com',
+     *      'password'               => 'julia',
+     *      'first_name'             => 'Julia',
+     *      'last_name'              => 'Stark',
+     *      'catalog_default_locale' => 'en_US',
+     *      'user_default_locale'    => 'en_US',
+     *      'catalog_default_scope'  => 'ecommerce',
+     *      'default_category_tree'  => 'men_2013',
+     *      'roles'                  => 'ROLE_USER',
+     *      'groups'                 => 'Redactor',
+     *      'enabled'                => '1',
      * ]
      *
      * After:
      * [
-     *      'username'       => 'julia',
-     *      'email'          => 'Julia@example.com',
-     *      'password'       => 'julia',
-     *      'first_name'     => 'Julia',
-     *      'last_name'      => 'Stark',
-     *      'catalog_locale' => 'en_US',
-     *      'user_locale'    => 'en_US',
-     *      'catalog_scope'  => 'ecommerce',
-     *      'default_tree'   => 'men_2013',
-     *      'roles'          => ['ROLE_USER'],
-     *      'groups'         => ['Redactor'],
-     *      'enabled'        => true,
+     *      'username'               => 'julia',
+     *      'email'                  => 'Julia@example.com',
+     *      'password'               => 'julia',
+     *      'first_name'             => 'Julia',
+     *      'last_name'              => 'Stark',
+     *      'catalog_default_locale' => 'en_US',
+     *      'user_default_locale'    => 'en_US',
+     *      'catalog_default_scope'  => 'ecommerce',
+     *      'default_category_tree'  => 'men_2013',
+     *      'roles'                  => ['ROLE_USER'],
+     *      'groups'                 => ['Redactor'],
+     *      'enabled'                => true,
      * ]
      */
     public function convert(array $item, array $options = [])

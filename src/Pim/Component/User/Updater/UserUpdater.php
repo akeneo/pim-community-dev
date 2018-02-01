@@ -142,16 +142,16 @@ class UserUpdater implements ObjectUpdaterInterface
             case 'email_notifications':
                 $user->setEmailNotifications($data);
                 break;
-            case 'catalog_locale':
-                $user->setCatalogLocale($this->findLocale('catalog_locale', $data));
+            case 'catalog_default_locale':
+                $user->setCatalogLocale($this->findLocale('catalog_default_locale', $data));
                 break;
-            case 'user_locale':
-                $user->setUiLocale($this->findLocale('user_locale', $data));
+            case 'user_default_locale':
+                $user->setUiLocale($this->findLocale('user_default_locale', $data));
                 break;
-            case 'catalog_scope':
+            case 'catalog_default_scope':
                 $user->setCatalogScope($this->findChannel($data));
                 break;
-            case 'default_tree':
+            case 'default_category_tree':
                 $user->setDefaultTree($this->findCategory($data));
                 break;
             case 'roles':
@@ -190,7 +190,7 @@ class UserUpdater implements ObjectUpdaterInterface
 
         if (null === $category) {
             throw InvalidPropertyException::validEntityCodeExpected(
-                'default_tree',
+                'default_category_tree',
                 'category code',
                 'The category does not exist',
                 static::class,
@@ -239,7 +239,7 @@ class UserUpdater implements ObjectUpdaterInterface
 
         if (null === $channel) {
             throw InvalidPropertyException::validEntityCodeExpected(
-                'catalog_scope',
+                'catalog_default_scope',
                 'channel code',
                 'The channel does not exist',
                 static::class,
