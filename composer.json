@@ -25,7 +25,7 @@
         "classmap": [ "app/AppKernel.php", "app/AppCache.php", "tests/AppKernelTest.php"]
     },
     "require": {
-        "akeneo/pim-community-dev": "~2.1.4",
+        "akeneo/pim-community-dev": "2.1.x-dev@dev",
         "phpspec/php-diff": "1.0.2"
     },
     "require-dev": {
