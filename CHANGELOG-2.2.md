@@ -11,6 +11,7 @@
 - PIM-6367: Change the constructor of `PimEnterprise\Component\CatalogRule\Engine\ProductRuleApplier\ProductsSaver` to add `Akeneo\Component\StorageUtils\Saver\BulkSaverInterface`
 - PIM-6367: Change the constructor of `PimEnterprise\Component\CatalogRule\ActionApplier\SetterActionApplier` to add `Pim\Component\Catalog\Repository\AttributeRepositoryInterface`
 - PIM-6367: Change the constructor of `PimEnterprise\Component\CatalogRule\ActionApplier\AdderActionApplier` to add `Pim\Component\Catalog\Repository\AttributeRepositoryInterface`
+- PIM-6367: Change the constructor of `PimEnterprise\Component\CatalogRule\ActionApplier\RemoverActionApplier` to add `Pim\Component\Catalog\Repository\AttributeRepositoryInterface`
 
 ### Services and parameters
 
