@@ -143,7 +143,6 @@ define(
                 );
             },
 
-
             /**
              * Looks for the attributes set corresponding to the specified level of the family variant
              * and fetches its axes attributes.
