@@ -12,7 +12,7 @@ namespace Pim\Bundle\CatalogBundle;
 class Version
 {
     /** @staticvar string */
-    const VERSION = '1.7.16';
+    const VERSION = '1.7.17';
 
     /** @staticvar string */
     const VERSION_CODENAME = 'The Old Grey Hare';
