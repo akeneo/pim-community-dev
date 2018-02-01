@@ -9,6 +9,7 @@ use Akeneo\Component\Batch\Job\JobRepositoryInterface;
 use Akeneo\Component\Batch\Model\JobExecution;
 use Akeneo\Component\Batch\Model\JobInstance;
 use Akeneo\Component\Batch\Model\StepExecution;
+use Akeneo\Component\Batch\Model\Warning;
 use Doctrine\DBAL\Connection;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\PersistentCollection;
@@ -207,32 +208,22 @@ class DoctrineJobRepository implements JobRepositoryInterface
      *
      * As the warnings are extra-lazy, in a persistent collection, this do not
      * cause a new memory leak.
-     *
-     * @param StepExecution $stepExecution
-     * @param string        $reason
-     * @param array         $reasonParameters
-     * @param array         $item
-     *
-     * @todo Add interface on master (or find a proper way to do this as it is kind of a dirty hack).
      */
-    public function insertWarning(
-        StepExecution $stepExecution,
-        $reason,
-        $reasonParameters = [],
-        $item = []
-    ) {
+    public function addWarning(Warning $warning): void
+    {
         $sqlQuery = <<<SQL
 INSERT INTO akeneo_batch_warning (step_execution_id, reason, reason_parameters, item)
 VALUES (:step_execution_id, :reason, :reason_parameters, :item)
 SQL;
 
         $connection = $this->jobManager->getConnection();
+        $stepExecution = $warning->getStepExecution();
 
         $statement = $connection->prepare($sqlQuery);
         $statement->bindValue('step_execution_id', $stepExecution->getId());
-        $statement->bindValue('reason', $reason);
-        $statement->bindValue('reason_parameters', $reasonParameters, 'array');
-        $statement->bindValue('item', $item, 'array');
+        $statement->bindValue('reason', $warning->getReason());
+        $statement->bindValue('reason_parameters', $warning->getReasonParameters(), 'array');
+        $statement->bindValue('item', $warning->getItem(), 'array');
         $statement->execute();
 
         if ($stepExecution->getWarnings() instanceof PersistentCollection) {

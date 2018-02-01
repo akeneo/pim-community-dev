@@ -40,3 +40,7 @@
 - PIM-6367: Rename class parameter `pim_enrich.elasticsearch.cursor_factory.class` into `pim_catalog.elasticsearch.cursor_factory.class`
 - PIM-6367: Remove argument `pim_catalog.resolver.attribute_values` from service `pim_catalog.builder.product`
 - PIM-6367: Remove argument `pim_catalog.resolver.attribute_values` from service `pim_catalog.builder.variant_product`
+
+### Interfaces
+
+- Add method `Akeneo\Component\Batch\Job\JobRepositoryInterface::addWarning`
