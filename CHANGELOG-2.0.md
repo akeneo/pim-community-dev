@@ -6,6 +6,7 @@
 
 - PIM-7131: Fix mass add product values when number of products selected is greater than batch size
 - PIM-7144: Fix translated label of attribute groups in the product edit form
+- TIP-831: Upgrade jquery to 3.3.1
 
 # 2.0.13 (2018-01-23)
 
