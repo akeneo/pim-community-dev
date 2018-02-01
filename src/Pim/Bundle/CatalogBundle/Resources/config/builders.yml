@@ -11,7 +11,6 @@ services:
             - '@pim_catalog.repository.family'
             - '@pim_catalog.repository.association_type'
             - '@event_dispatcher'
-            - '@pim_catalog.resolver.attribute_values'
             - '@pim_catalog.builder.entity_with_values'
             - {'product': '%pim_catalog.entity.product.class%', 'association': '%pim_catalog.entity.association.class%'}
 
@@ -22,7 +21,6 @@ services:
             - '@pim_catalog.repository.family'
             - '@pim_catalog.repository.association_type'
             - '@event_dispatcher'
-            - '@pim_catalog.resolver.attribute_values'
             - '@pim_catalog.builder.entity_with_values'
             - {'product': '%pim_catalog.entity.variant_product.class%', 'association': '%pim_catalog.entity.association.class%'}
 
