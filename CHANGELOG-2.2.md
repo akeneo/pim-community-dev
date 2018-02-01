@@ -53,3 +53,7 @@
 ### Interfaces
 
 - Add method `Akeneo\Component\Batch\Job\JobRepositoryInterface::addWarning`
+
+## Have a better UX/UI
+
+- GITHUB-7373: Add translation for 'select action' in mass edit instead of hard coded string 
