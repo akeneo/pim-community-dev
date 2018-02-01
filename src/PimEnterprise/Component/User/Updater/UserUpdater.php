@@ -13,9 +13,7 @@ namespace PimEnterprise\Component\User\Updater;
 
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
-use Oro\Bundle\UserBundle\Entity\UserManager;
-use Pim\Bundle\UserBundle\Entity\UserInterface;
-use Pim\Component\User\Updater\UserUpdater as BaseUserUpdater;
+use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use PimEnterprise\Component\ProductAsset\Model\CategoryInterface;
 
 /**
@@ -25,50 +23,48 @@ use PimEnterprise\Component\ProductAsset\Model\CategoryInterface;
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class UserUpdater extends BaseUserUpdater
+class UserUpdater implements ObjectUpdaterInterface
 {
+    /** @var ObjectUpdaterInterface */
+    private $userUpdater;
+
     /** @var IdentifiableObjectRepositoryInterface */
-    protected $categoryAssetRepository;
+    private $categoryAssetRepository;
 
     public function __construct(
-        UserManager $userManager,
-        IdentifiableObjectRepositoryInterface $categoryRepository,
-        IdentifiableObjectRepositoryInterface $localeRepository,
-        IdentifiableObjectRepositoryInterface $channelRepository,
-        IdentifiableObjectRepositoryInterface $roleRepository,
-        IdentifiableObjectRepositoryInterface $groupRepository,
+        ObjectUpdaterInterface $userUpdater,
         IdentifiableObjectRepositoryInterface $categoryAssetRepository
     ) {
-        parent::__construct(
-            $userManager,
-            $categoryRepository,
-            $localeRepository,
-            $channelRepository,
-            $roleRepository,
-            $groupRepository
-        );
-
         $this->categoryAssetRepository = $categoryAssetRepository;
+        $this->userUpdater = $userUpdater;
     }
 
     /**
      * {@inheritdoc}
      */
-    protected function setData(UserInterface $user, $field, $data)
+    public function update($user, array $data, array $options = [])
     {
-        switch ($field) {
-            case 'default_asset_tree':
-                $user->setDefaultAssetTree($this->findAssetCategory($data));
-                break;
-            case 'proposals_to_review_notification':
-                $user->setProposalsToReviewNotification($data);
-                break;
-            case 'proposals_state_notifications':
-                $user->setProposalsStateNotification($data);
-                break;
+        $ceData = array_filter($data, function ($field) {
+            return !in_array($field, ['default_asset_tree', 'proposals_to_review_notification', 'proposals_state_notifications']);
+        }, ARRAY_FILTER_USE_KEY);
+
+        $this->userUpdater->update($user, $ceData, $options);
+
+        foreach ($data as $field => $value) {
+            switch ($field) {
+                case 'default_asset_tree':
+                    $user->setDefaultAssetTree($this->findAssetCategory($value));
+                    break;
+                case 'proposals_to_review_notification':
+                    $user->setProposalsToReviewNotification($value);
+                    break;
+                case 'proposals_state_notifications':
+                    $user->setProposalsStateNotification($value);
+                    break;
+            }
         }
 
-        parent::setData($user, $field, $data);
+        return $this;
     }
 
     /**
@@ -86,7 +82,7 @@ class UserUpdater extends BaseUserUpdater
 
         if (null === $category) {
             throw InvalidPropertyException::validEntityCodeExpected(
-                'defaultAssetTree',
+                'default_asset_tree',
                 'category code',
                 'The category does not exist',
                 static::class,

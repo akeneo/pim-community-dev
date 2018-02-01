@@ -2,13 +2,10 @@ parameters:
     pimee_user.updater.user.class: PimEnterprise\Component\User\Updater\UserUpdater
 
 services:
-    pim_user.updater.user:
+    pimee_user.updater.user:
         class: '%pimee_user.updater.user.class%'
+        decorates: pim_user.updater.user
+        decoration_inner_name: pim_user.updater.user.ce
         arguments:
-            - '@oro_user.manager'
-            - '@pim_catalog.repository.category'
-            - '@pim_catalog.repository.locale'
-            - '@pim_catalog.repository.channel'
-            - '@pim_user.repository.role'
-            - '@pim_user.repository.group'
+            - '@pim_user.updater.user.ce'
             - '@pimee_product_asset.repository.category'
