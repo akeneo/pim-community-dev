@@ -282,7 +282,7 @@ define(
                     return '[' + entity.code + ']';
                 }
 
-                return entity.labels[locale];
+                return entity.labels[locale] ? entity.labels[locale] : '[' + entity.code + ']';
             }
         });
     }
