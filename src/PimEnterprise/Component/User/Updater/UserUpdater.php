@@ -57,7 +57,7 @@ class UserUpdater extends BaseUserUpdater
     protected function setData(UserInterface $user, $field, $data)
     {
         switch ($field) {
-            case 'defaultAssetTree':
+            case 'default_asset_tree':
                 $user->setDefaultAssetTree($this->findAssetCategory($data));
                 break;
             case 'proposals_to_review_notification':
