@@ -118,6 +118,9 @@ class ListProductModelWithPermissionIntegration extends ApiTestCase
                         {"locale":"en_US", "scope":null, "data":true},
                         {"locale":"fr_FR", "scope":null, "data":true}
                     ],
+                    "sub_product_model_axis_attribute":[
+                        {"locale":null, "scope":null, "data":true}
+                    ],
                     "root_product_model_edit_attribute":[
                         {"locale":"en_US","scope":null,"data":true},
                         {"locale":"fr_FR","scope":null,"data":true}

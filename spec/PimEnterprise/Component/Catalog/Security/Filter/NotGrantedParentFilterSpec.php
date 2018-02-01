@@ -34,7 +34,7 @@ class NotGrantedParentFilterSpec extends ObjectBehavior
     {
         $product->getParent()->willReturn(null);
 
-        $this->filter($product)->shouldReturn($product);
+        $this->filter($product)->shouldBeAnInstanceOf(VariantProductInterface::class);
     }
 
     function it_filters_an_entity_with_family_variant(
@@ -51,6 +51,7 @@ class NotGrantedParentFilterSpec extends ObjectBehavior
             ->willReturn($filteredParent);
         $product->setParent($filteredParent)->shouldBeCalled();
 
-        $this->filter($product)->shouldReturn($product);
+        $filteredProduct = $this->filter($product);
+        $filteredProduct->shouldBeAnInstanceOf(VariantProductInterface::class);
     }
 }

@@ -34,9 +34,12 @@ class NotGrantedParentFilter implements NotGrantedDataFilterInterface
         if (!$entityWithFamilyVariant instanceof EntityWithFamilyVariantInterface) {
             return $entityWithFamilyVariant;
         }
-        $this->setFilteredParent($entityWithFamilyVariant);
 
-        return $entityWithFamilyVariant;
+        $filteredEntityWithFamilyVariant = clone $entityWithFamilyVariant;
+
+        $this->setFilteredParent($filteredEntityWithFamilyVariant);
+
+        return $filteredEntityWithFamilyVariant;
     }
 
     /**
@@ -50,6 +53,11 @@ class NotGrantedParentFilter implements NotGrantedDataFilterInterface
         if (null === $parent = $entityWithFamilyVariant->getParent()) {
             return $entityWithFamilyVariant;
         }
+
+        // force to load product to avoid cloning of the proxy object, which does not copy value collection
+        // but only properties declared in doctrine
+        // @see Doctrine\ORM\Proxy\ProxyFactory::createCloner
+        $parent->getCode();
 
         $parent = $this->filteredProductModelFactory->create($parent);
         $entityWithFamilyVariant->setParent($parent);

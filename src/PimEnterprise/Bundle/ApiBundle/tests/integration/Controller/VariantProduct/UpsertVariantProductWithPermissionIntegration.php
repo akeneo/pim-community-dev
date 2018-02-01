@@ -46,15 +46,15 @@ JSON;
             'enabled'      => true,
             'values'       => [
                 'root_product_model_no_view_attribute' => [
-                    ['locale' => null, 'scope' => null, 'data' => true],
+                    ['locale' => 'fr_FR', 'scope' => null, 'data' => true],
                 ],
-                'sub_product_model_no_view_attribute'  => [
+                'sub_product_model_axis_attribute'  => [
                     ['locale' => null, 'scope' => null, 'data' => true],
                 ],
                 'sku'                                  => [
                     ['locale' => null, 'scope' => null, 'data' => 'variant_product'],
                 ],
-                'variant_product_no_view_attribute'    => [
+                'variant_product_axis_attribute'    => [
                     ['locale' => null, 'scope' => null, 'data' => true],
                 ],
             ],
@@ -109,7 +109,9 @@ JSON;
             'enabled'       => true,
             'values'        => [
                 'root_product_model_no_view_attribute' => [
-                    ['locale' => null, 'scope' => null, 'data' => true],
+                    ['locale' => 'en_US', 'scope' => null, 'data' => true],
+                    ['locale' => 'fr_FR', 'scope' => null, 'data' => true],
+                    ['locale' => 'de_DE', 'scope' => null, 'data' => true],
                 ],
                 'root_product_model_view_attribute' => [
                     ['locale' => 'en_US', 'scope' => null, 'data' => true],
@@ -121,24 +123,13 @@ JSON;
                     ['locale' => 'fr_FR', 'scope' => null, 'data' => true],
                     ['locale' => 'de_DE', 'scope' => null, 'data' => true],
                 ],
-                'sub_product_model_no_view_attribute' => [
+                'sub_product_model_axis_attribute' => [
                     ['locale' => null, 'scope' => null, 'data' => true],
                 ],
-                'sub_product_model_view_attribute' => [
+                'sub_product_model_no_view_attribute' => [
                     ['locale' => 'en_US', 'scope' => null, 'data' => true],
                     ['locale' => 'fr_FR', 'scope' => null, 'data' => true],
                     ['locale' => 'de_DE', 'scope' => null, 'data' => true],
-                ],
-                'sku'                              => [
-                    ['locale' => null, 'scope'  => null, 'data'   => 'variant_product'],
-                ],
-                'sub_product_model_edit_attribute' => [
-                    ['locale' => 'en_US', 'scope' => null, 'data' => true],
-                    ['locale' => 'fr_FR', 'scope' => null, 'data' => true],
-                    ['locale' => 'de_DE', 'scope' => null, 'data' => true],
-                ],
-                'sub_product_model_no_view_attribute' => [
-                    ['locale' => null, 'scope' => null, 'data' => true],
                 ],
                 'sub_product_model_view_attribute' => [
                     ['locale' => 'en_US', 'scope' => null, 'data' => true],
@@ -149,9 +140,14 @@ JSON;
                     ['locale' => 'en_US', 'scope' => null, 'data' => true],
                     ['locale' => 'fr_FR', 'scope' => null, 'data' => true],
                     ['locale' => 'de_DE', 'scope' => null, 'data' => true],
+                ],
+                'variant_product_axis_attribute' => [
+                    ['locale' => null, 'scope' => null, 'data' => true],
                 ],
                 'variant_product_no_view_attribute' => [
-                    ['locale' => null, 'scope' => null, 'data' => true],
+                    ['locale' => 'en_US', 'scope' => null, 'data' => true],
+                    ['locale' => 'fr_FR', 'scope' => null, 'data' => true],
+                    ['locale' => 'de_DE', 'scope' => null, 'data' => true],
                 ],
                 'variant_product_view_attribute' => [
                     ['locale' => 'en_US', 'scope' => null, 'data' => true],
@@ -163,6 +159,9 @@ JSON;
                     ['locale' => 'fr_FR', 'scope' => null, 'data' => true],
                     ['locale' => 'de_DE', 'scope' => null, 'data' => true],
                 ],
+                'sku'                              => [
+                    ['locale' => null, 'scope'  => null, 'data'   => 'variant_product'],
+                ],
             ],
             'created'       => '2016-06-14T13:12:50+02:00',
             'updated'       => '2016-06-14T13:12:50+02:00',
@@ -172,9 +171,6 @@ JSON;
         $this->assertSameProduct($expectedProduct, 'variant_product');
     }
 
-    /**
-     * @fail
-     */
     public function testUpdateVariantProductValuesByMergingNonViewableCategories()
     {
         $this->loader->loadProductModelsFixturesForCategoryPermissions();
@@ -189,12 +185,28 @@ JSON;
             WHERE identifier = "colored_sized_sweat_own"
 SQL;
 
+
         $this->assertUpdated('colored_sized_sweat_own', $data, $sql, [
-            ['code' => 'category_without_right'],
             ['code' => 'view_category'],
-            ['code' => 'own_category'],
             ['code' => 'edit_category'],
         ]);
+
+        $this->getFromTestContainer('doctrine')->getManager()->clear();
+        $product = $this
+            ->getFromTestContainer('pim_catalog.repository.product')
+            ->findOneByIdentifier('colored_sized_sweat_own');
+
+        $categories = $product->getCategories();
+        $categoryCodes = [];
+        foreach ($categories as $category) {
+            $categoryCodes[] = $category->getCode();
+        }
+
+        Assert::assertEquals(
+            ['view_category', 'edit_category', 'own_category', 'category_without_right'],
+            $categoryCodes
+        );
+
     }
 
     public function testUpdateVariantProductAssociationWithNotViewableProduct()
@@ -239,9 +251,10 @@ JSON;
     }
 
     /**
-     * @fail
+     * On product values inherited the parents, we only validate attribute and locale visibility.
+     * We ignore any modification of the data on product values of the parents.
      */
-    public function testUpdateNotViewableAttribute()
+    public function testUpdateByModifyingProductValueOnNotViewableAttribute()
     {
         $this->loader->loadProductModelsFixturesForAttributeAndLocalePermissions();
 
@@ -251,117 +264,83 @@ JSON;
         $this->assertUnprocessableEntity('variant_product', $data, sprintf($message, 'root_product_model_no_view_attribute'));
 
         $data = '{"values": {"sub_product_model_no_view_attribute": [{"locale": null, "scope":null, "data":false}]}}';
-        $this->assertUnprocessableEntity('variant_product', $data, sprintf($message, 'root_product_model_no_view_attribute'));
+        $this->assertUnprocessableEntity('variant_product', $data, sprintf($message, 'sub_product_model_no_view_attribute'));
 
         $data = '{"values": {"variant_product_no_view_attribute": [{"locale": null, "scope":null, "data":false}]}}';
         $this->assertUnprocessableEntity('variant_product', $data, sprintf($message, 'variant_product_no_view_attribute'));
     }
 
     /**
-     * @fail
+     * On product values inherited the parents, we only validate attribute and locale visibility.
+     * We ignore any modification of the data on product values of the parents.
      */
-    public function testUpdateByModifyingViewableAttribute()
+    public function testUpdateByyModifyingProductValueOnViewableAttribute()
     {
         $this->loader->loadProductModelsFixturesForAttributeAndLocalePermissions();
 
-        $message = 'Attribute "%s" belongs to the attribute group "attributeGroupB" on which you only have view permission.';
 
         $data = '{"values": {"root_product_model_view_attribute": [{"locale": "fr_FR", "scope":null, "data":false}]}}';
-        $this->assertUnauthorized('variant_product', $data, sprintf($message, 'root_product_model_view_attribute'));
+        $this->assertUpdated('variant_product', $data);
 
         $data = '{"values": {"sub_product_model_view_attribute": [{"locale": "fr_FR", "scope":null, "data":false}]}}';
-        $this->assertUnauthorized('variant_product', $data, sprintf($message, 'sub_product_model_view_attribute'));
+        $this->assertUpdated('variant_product', $data);
 
+        $message = 'Attribute "%s" belongs to the attribute group "attributeGroupB" on which you only have view permission.';
         $data = '{"values": {"variant_product_view_attribute": [{"locale": "fr_FR", "scope":null, "data":false}]}}';
         $this->assertUnauthorized('variant_product', $data, sprintf($message, 'variant_product_view_attribute'));
     }
 
-    public function testUpdateWithoutModifyingViewableAttribute()
-    {
-        $this->loader->loadProductModelsFixturesForAttributeAndLocalePermissions();
-
-        $data = '{"values": {"root_product_model_view_attribute": [{"locale": "fr_FR", "scope":null, "data":false}]}}';
-        $this->assertUpdated('variant_product', $data);
-
-        $data = '{"values": {"sub_product_model_view_attribute": [{"locale": "fr_FR", "scope":null, "data":false}]}}';
-        $this->assertUpdated('variant_product', $data);
-
-
-        $data = '{"values": {"variant_product_view_attribute": [{"locale": "fr_FR", "scope":null, "data":true}]}}';
-        $this->assertUpdated('variant_product', $data);
-    }
-
     /**
-     * @fail
+     * On product values inherited the parents, we only validate attribute and locale visibility.
+     * We ignore any modification of the data on product values of the parents.
      */
-    public function testUpdateByModifyingNotViewableLocale()
+    public function testUpdateByModifyingProductValueOnNotViewableLocale()
     {
         $this->loader->loadProductModelsFixturesForAttributeAndLocalePermissions();
 
         $message = 'Attribute "%s" expects an existing and activated locale, "de_DE" given. Check the expected format on the API documentation.';
 
         $data = '{"values": {"root_product_model_edit_attribute": [{"locale": "de_DE", "scope":null, "data":false}]}}';
-        $this->assertUnauthorized('variant_product', $data, sprintf($message, 'root_product_model_edit_attribute'));
+        $this->assertUnprocessableEntity('variant_product', $data, sprintf($message, 'root_product_model_edit_attribute'));
 
         $data = '{"values": {"sub_product_model_edit_attribute": [{"locale": "de_DE", "scope":null, "data":false}]}}';
-        $this->assertUnauthorized('variant_product', $data, sprintf($message, 'sub_product_model_edit_attribute'));
+        $this->assertUnprocessableEntity('variant_product', $data, sprintf($message, 'sub_product_model_edit_attribute'));
 
         $data = '{"values": {"variant_product_edit_attribute": [{"locale": "de_DE", "scope":null, "data":false}]}}';
         $this->assertUnprocessableEntity('variant_product', $data, sprintf($message, 'variant_product_edit_attribute'));
     }
 
     /**
-     * @fail
+     * On product values inherited the parents, we only validate attribute and locale visibility.
+     * We ignore any modification of the data on product values of the parents.
      */
-    public function testUpdateByModifyingViewableLocale()
+    public function testUpdateByModifyingProductValueOnViewableLocale()
     {
         $this->loader->loadProductModelsFixturesForAttributeAndLocalePermissions();
 
         $message = 'You only have a view permission on the locale "fr_FR".';
 
         $data = '{"values": {"root_product_model_edit_attribute": [{"locale": "fr_FR", "scope":null, "data":false}]}}';
-        $this->assertUnauthorized('variant_product', $data, sprintf($message, 'root_product_model_view_attribute'));
+        $this->assertUpdated('variant_product', $data);
 
         $data = '{"values": {"sub_product_model_edit_attribute": [{"locale": "fr_FR", "scope":null, "data":false}]}}';
-        $this->assertUnauthorized('variant_product', $data, sprintf($message, 'sub_product_model_view_attribute'));
+        $this->assertUpdated('variant_product', $data);
 
         $data = '{"values": {"variant_product_edit_attribute": [{"locale": "fr_FR", "scope":null, "data":false}]}}';
         $this->assertUnauthorized('variant_product', $data, sprintf($message, 'variant_product_view_attribute'));
     }
 
-    public function testUpdateWithoutModifyingViewableLocale()
-    {
-        $this->loader->loadProductModelsFixturesForAttributeAndLocalePermissions();
-
-        $data = '{"values": {"root_product_model_edit_attribute": [{"locale": "fr_FR", "scope":null, "data":true}]}}';
-        $this->assertUpdated('variant_product', $data);
-
-        $data = '{"values": {"sub_product_model_edit_attribute": [{"locale": "fr_FR", "scope":null, "data":true}]}}';
-        $this->assertUpdated('variant_product', $data);
-
-        $data = '{"values": {"variant_product_edit_attribute": [{"locale": "fr_FR", "scope":null, "data":true}]}}';
-        $this->assertUpdated('variant_product', $data);
-    }
-
-    public function testUpdateOwnOrEditVariantProductWithNotViewableCategory()
+    public function testUpdateEditVariantProductWithNotViewableCategory()
     {
         $this->loader->loadProductModelsFixturesForCategoryPermissions();
 
-        $message = 'Property "categories" expects a valid category code. The category does not exist, "category_without_right" given. Check the expected format on the API documentation.';
-
-        $data = '{"categories": ["own_category", "category_without_right"]}';
-        $this->assertUnprocessableEntity('colored_sized_trousers', $data, $message);
-        $this->assertUnprocessableEntity('colored_sized_shoes_own', $data, $message);
-        $this->assertUnprocessableEntity('colored_sized_sweat_own', $data, $message);
+        $message = 'You cannot update the field "categories". You should at least own this product to do it.';
 
         $data = '{"categories": ["edit_category", "category_without_right"]}';
-        $this->assertUnprocessableEntity('colored_sized_sweat_edit', $data, $message);
-        $this->assertUnprocessableEntity('colored_sized_shoes_edit', $data, $message);
+        $this->assertUnauthorized('colored_sized_sweat_edit', $data, $message);
+        $this->assertUnauthorized('colored_sized_shoes_edit', $data, $message);
     }
 
-    /**
-     * @fail
-     */
     public function testUpdateOwnVariantProductWithViewableCategory()
     {
         $this->loader->loadProductModelsFixturesForCategoryPermissions();
@@ -372,9 +351,6 @@ JSON;
         $this->assertUpdated('colored_sized_trousers', $data);
     }
 
-    /**
-     * @fail
-     */
     public function testUpdateVariantProductByLosingOwnRight()
     {
         $this->loader->loadProductModelsFixturesForCategoryPermissions();
@@ -382,25 +358,23 @@ JSON;
         $message = 'You should at least keep your product in one category on which you have an own permission.';
         $data = '{"categories": ["edit_category"]}';
         $this->assertUnauthorized('colored_sized_trousers', $data, $message);
-
-        $data = '{"categories": ["view_category"]}';
-        $this->assertUnauthorized('colored_sized_shoes_own', $data, $message);
-
-        $data = '{"categories": ["edit_category"]}';
-        $this->assertUnauthorized('colored_sized_trousers', $data, $message);
     }
 
     /**
-     * @fail
+     * If parent category has own right, product is considered as owned.
+     * Therefore, it is successfully updated.
      */
     public function testUpdateCategorizedVariantProductByKeepingOwnRight()
     {
         $this->loader->loadProductModelsFixturesForCategoryPermissions();
 
         $data = '{"categories": ["own_category"]}';
+        $this->assertUpdated('colored_sized_trousers', $data);
+
+        $data = '{"categories": ["view_category"]}';
         $this->assertUpdated('colored_sized_sweat_own', $data);
         $this->assertUpdated('colored_sized_shoes_own', $data);
-        $this->assertUpdated('colored_sized_trousers', $data);
+
     }
 
     /**
