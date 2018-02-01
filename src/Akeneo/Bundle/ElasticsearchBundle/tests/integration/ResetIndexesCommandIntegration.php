@@ -37,6 +37,13 @@ class ResetIndexesCommandIntegration extends TestCase
         $esClients = $this->get('akeneo_elasticsearch.registry.clients')->getClients();
 
         foreach ($esClients as $esClient) {
+            if ($this->hasParameter('product_proposal_index_name')) {
+                $proposalIndex = $this->getParameter('product_proposal_index_name');
+                if (null !== $proposalIndex && $proposalIndex === $esClient->getIndexName()) {
+                    continue;
+                }
+            }
+
             $allDocuments = $esClient->search('pim_catalog_product', [
                 '_source' => 'identifier',
                 'query' => [

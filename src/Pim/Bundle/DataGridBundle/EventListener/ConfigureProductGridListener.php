@@ -39,17 +39,15 @@ class ConfigureProductGridListener
     protected $sortersConfigurator;
 
     /**
-     * Constructor
-     *
-     * @param ContextConfigurator $contextConfigurator
-     * @param ColumnsConfigurator $columnsConfigurator
-     * @param FiltersConfigurator $filtersConfigurator
-     * @param SortersConfigurator $sortersConfigurator
+     * @param ContextConfigurator   $contextConfigurator
+     * @param ColumnsConfigurator   $columnsConfigurator
+     * @param ConfiguratorInterface $filtersConfigurator
+     * @param SortersConfigurator   $sortersConfigurator
      */
     public function __construct(
         ContextConfigurator $contextConfigurator,
         ColumnsConfigurator $columnsConfigurator,
-        FiltersConfigurator $filtersConfigurator,
+        ConfiguratorInterface $filtersConfigurator,
         SortersConfigurator $sortersConfigurator
     ) {
         $this->contextConfigurator = $contextConfigurator;

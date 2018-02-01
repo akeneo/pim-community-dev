@@ -77,6 +77,16 @@ abstract class TestCase extends KernelTestCase
     }
 
     /**
+     * @param string $parameter
+     *
+     * @return bool
+     */
+    protected function hasParameter(string $parameter)
+    {
+        return static::$kernel->getContainer()->hasParameter($parameter);
+    }
+
+    /**
      * {@inheritdoc}
      */
     protected function tearDown()
