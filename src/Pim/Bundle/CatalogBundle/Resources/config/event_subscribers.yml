@@ -1,5 +1,4 @@
 parameters:
-    pim_catalog.event_subscriber.product_category.class:             Pim\Bundle\CatalogBundle\EventSubscriber\ProductCategorySubscriber
     pim_catalog.event_subscriber.create_attribute_requirement.class: Pim\Bundle\CatalogBundle\EventSubscriber\CreateAttributeRequirementSubscriber
     pim_catalog.event_subscriber.localizable.class: Pim\Bundle\CatalogBundle\EventSubscriber\LocalizableSubscriber
     pim_catalog.event_subscriber.scopable.class: Pim\Bundle\CatalogBundle\EventSubscriber\ScopableSubscriber
@@ -19,6 +18,7 @@ parameters:
     pim_catalog.event_subscriber.remove_attributes_from_family_variants_on_family_update.class: Pim\Bundle\CatalogBundle\EventSubscriber\RemoveAttributesFromFamilyVariantsOnFamilyUpdateSubscriber
     pim_catalog.event_subscriber.save_family_variants_on_family_update.class: Pim\Bundle\CatalogBundle\EventSubscriber\SaveFamilyVariantOnFamilyUpdateSubscriber
     pim_catalog.event_subscriber.add_parent_to_product.class: Pim\Bundle\CatalogBundle\EventSubscriber\AddParentAProductSubscriber
+    pim_catalog.event_subscriber.limit_attribute.class: Pim\Component\Limit\EventSubscriber\LimitAttributeSubscriber
 
 services:
     # Subscribers
@@ -169,5 +169,12 @@ services:
             - '@pim_catalog.saver.family_variant'
             - '@pim_catalog.saver.family_variant'
             - '@akeneo_storage_utils.doctrine.object_detacher'
+        tags:
+            - { name: kernel.event_subscriber }
+
+    pim_catalog.event_subscriber.limit_attribute:
+        class: '%pim_catalog.event_subscriber.limit_attribute.class%'
+        arguments:
+            - '@pim_catalog.registry.current_number'
         tags:
             - { name: kernel.event_subscriber }

@@ -1,0 +1,15 @@
+parameters:
+    pim_catalog.registry.current_number.class:    Pim\Component\Limit\Registry\CurrentNumberRegistry
+    pim_catalog.registry.quota.class:             Pim\Component\Limit\Registry\QuotaRegistry
+
+services:
+    pim_catalog.registry.current_number:
+        class: '%pim_catalog.registry.current_number.class%'
+        arguments:
+            - '@doctrine.orm.entity_manager'
+
+    pim_catalog.registry.quota:
+        class: '%pim_catalog.registry.quota.class%'
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '%pim_catalog.limit%'

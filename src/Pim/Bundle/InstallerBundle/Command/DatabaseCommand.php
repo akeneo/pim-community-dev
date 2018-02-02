@@ -152,6 +152,24 @@ class DatabaseCommand extends ContainerAwareCommand
         $db = $this->getContainer()->get('doctrine');
 
         $db->getConnection()->exec($sessionTableSql);
+
+        $limitTableSql = "CREATE TABLE pim_limit (
+            id INT AUTO_INCREMENT NOT NULL, 
+            code VARCHAR(100) NOT NULL, 
+            value INTEGER (100) NOT NULL, 
+            UNIQUE INDEX UNIQ_63E4C70577153098 (code), 
+            PRIMARY KEY(id)
+            )
+            COLLATE utf8_unicode_ci ENGINE = InnoDB";
+
+        $db->getConnection()->exec($limitTableSql);
+
+        $limitTableInsert = "INSERT INTO pim_limit VALUES(1, 'ATTRIBUTE_NUMBER', 0),
+        (2, 'ATTRIBUTE_ONLY_SCOPABLE_NUMBER', 0),
+        (3, 'ATTRIBUTE_ONLY_LOCALIZABLE_NUMBER', 0),
+        (4, 'ATTRIBUTE_SCOPABLE_AND_LOCALIZABLE_NUMBER', 0)";
+
+        $db->getConnection()->exec($limitTableInsert);
     }
 
     /**

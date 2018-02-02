@@ -8,6 +8,7 @@ use Akeneo\Component\StorageUtils\StorageEvents;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Util\ClassUtils;
 use Pim\Component\Catalog\Model\AttributeInterface;
+use Pim\Component\Limit\Registry\QuotaRegistry;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
@@ -26,16 +27,22 @@ class AttributeSaver implements SaverInterface, BulkSaverInterface
     /** @var EventDispatcherInterface */
     protected $eventDispatcher;
 
+    /** @var QuotaRegistry */
+    protected $quotaRegistry;
+
     /**
      * @param ObjectManager                  $objectManager
      * @param EventDispatcherInterface       $eventDispatcher
+     * @param QuotaRegistry                  $quotaRegistry
      */
     public function __construct(
         ObjectManager $objectManager,
-        EventDispatcherInterface $eventDispatcher
+        EventDispatcherInterface $eventDispatcher,
+        QuotaRegistry $quotaRegistry
     ) {
         $this->objectManager = $objectManager;
         $this->eventDispatcher = $eventDispatcher;
+        $this->quotaRegistry = $quotaRegistry;
     }
 
     /**
@@ -46,6 +53,11 @@ class AttributeSaver implements SaverInterface, BulkSaverInterface
         $this->validateAttribute($attribute);
 
         $options['unitary'] = true;
+        $options['is_new'] = null === $attribute->getId();
+
+        if ($this->quotaRegistry->isLimitReachedForAttribute(1) && $options['is_new']) {
+            throw new \Exception();
+        }
 
         $this->eventDispatcher->dispatch(StorageEvents::PRE_SAVE, new GenericEvent($attribute, $options));
 
@@ -66,24 +78,46 @@ class AttributeSaver implements SaverInterface, BulkSaverInterface
         }
 
         $options['unitary'] = false;
+        $areObjectsNew = array_map(function ($attribute) {
+            return null === $attribute->getId();
+        }, $attributes);
+
+        if ($this->quotaRegistry->isLimitReachedForAttribute(count(array_filter($areObjectsNew)))) {
+            throw new \Exception('BLA');
+        }
 
         $this->eventDispatcher->dispatch(StorageEvents::PRE_SAVE_ALL, new GenericEvent($attributes, $options));
 
-        foreach ($attributes as $attribute) {
+        foreach ($attributes as $i => $attribute) {
             $this->validateAttribute($attribute);
 
-            $this->eventDispatcher->dispatch(StorageEvents::PRE_SAVE, new GenericEvent($attribute, $options));
+            $this->eventDispatcher->dispatch(
+                StorageEvents::PRE_SAVE,
+                new GenericEvent(
+                    $attribute,
+                    array_merge($options, ['is_new' => $areObjectsNew[$i]])
+                )
+            );
 
             $this->objectManager->persist($attribute);
         }
 
         $this->objectManager->flush();
 
-        foreach ($attributes as $attribute) {
-            $this->eventDispatcher->dispatch(StorageEvents::POST_SAVE, new GenericEvent($attribute, $options));
+        foreach ($attributes as $i => $attribute) {
+            $this->eventDispatcher->dispatch(
+                StorageEvents::POST_SAVE,
+                new GenericEvent(
+                    $attribute,
+                    array_merge($options, ['is_new' => $areObjectsNew[$i]])
+                )
+            );
         }
 
-        $this->eventDispatcher->dispatch(StorageEvents::POST_SAVE_ALL, new GenericEvent($attributes, $options));
+        $this->eventDispatcher->dispatch(
+            StorageEvents::POST_SAVE_ALL,
+            new GenericEvent($attributes, array_merge($options, ['are_new' => $areObjectsNew]))
+        );
     }
 
     /**

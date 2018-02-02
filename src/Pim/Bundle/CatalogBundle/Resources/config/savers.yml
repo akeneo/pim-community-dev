@@ -88,6 +88,7 @@ services:
         arguments:
             - '@doctrine.orm.entity_manager'
             - '@event_dispatcher'
+            - '@pim_catalog.registry.quota'
 
     pim_catalog.saver.attribute_option:
         class: '%pim_catalog.saver.base.class%'
