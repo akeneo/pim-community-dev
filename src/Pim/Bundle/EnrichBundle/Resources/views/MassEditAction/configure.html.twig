@@ -142,7 +142,7 @@
                         $('.confirmation').addClass('hide');
                     });
 
-                    var itemIds = JSON.parse(localStorage.getItem('mass_action.mass_edit.itemIds')).join(',');
+                    var itemIds = JSON.parse(localStorage.getItem('mass_action.itemIds')).join(',');
                     $('input.pim-hidden-form-input[name="itemIds"]').val(itemIds)
                 });
             }
