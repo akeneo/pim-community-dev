@@ -59,6 +59,9 @@ class ExecuteRuleWithoutPermissionsAppliedIntegration extends TestCase
             ]
         );
 
+        $this->get('akeneo_elasticsearch.client.product')->refreshIndex();
+        $this->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
+
         $this->get('doctrine')->getManager()->clear();
     }
 
@@ -120,8 +123,6 @@ class ExecuteRuleWithoutPermissionsAppliedIntegration extends TestCase
         $product = $this->get('pim_catalog.builder.product')->createProduct($identifier);
         $this->get('pim_catalog.updater.product')->update($product, $data);
         $this->get('pim_catalog.saver.product')->save($product);
-
-        $this->get('akeneo_elasticsearch.client.product')->refreshIndex();
 
         return $product;
     }

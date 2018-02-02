@@ -17,3 +17,7 @@
 ### Services and parameters
 
 - PIM-6367: Remove argument `pim_catalog.resolver.attribute_values_with_permissions` from service `pimee_workflow.builder.published_product`
+- PIM-6367: Rename service `pimee_enrich.query.product_and_product_model_query_builder_factory_with_permissions`
+    into `pimee_catalog.query.product_and_product_model_query_builder_factory_with_permissions`
+- PIM-6367: Rename service `pimee_enrich.query.product_and_product_model_query_builder_factory.with_permissions_and_product_and_product_model_cursor`
+    into `pimee_catalog.query.product_and_product_model_query_builder_factory.with_permissions_and_product_and_product_model_cursor`
