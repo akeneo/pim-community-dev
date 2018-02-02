@@ -193,7 +193,7 @@ function($, _, Backbone, routing, Navigation, __, mediator, messenger, error, Mo
                 navigation = Navigation.getInstance();
 
             /** @PIM-7132: Save the selected items in the localstorage instead of passing them through a URL parameter
-             * to avoid a "URL too long" error. **/
+             * to avoid a "URL too long" **/
             action.saveItemIds();
 
             if (navigation) {
@@ -211,15 +211,9 @@ function($, _, Backbone, routing, Navigation, __, mediator, messenger, error, Mo
                 return;
             }
             action.datagrid.showLoading();
-            $.ajax({
-                url: action.getLink(),
-                method: action.getMethod(),
-                data: action.getActionParameters(),
-                context: action,
-                dataType: 'json',
-                error: action._onAjaxError,
-                success: action._onAjaxSuccess
-            });
+            $.post(action.getLinkWithParameters(), {itemIds: action.getSelectedRows().join(',')})
+                .done(action._onAjaxSuccess)
+                .fail(action._onAjaxError);
         },
 
         _onAjaxError: function(jqXHR, textStatus, errorThrown) {

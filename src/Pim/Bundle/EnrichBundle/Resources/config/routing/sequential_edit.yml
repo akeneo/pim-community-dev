@@ -4,6 +4,12 @@ pim_enrich_mass_edit_action_sequential_edit:
     requirements:
         _method: GET|POST
 
+pim_enrich_mass_edit_action_sequential_edit_redirect:
+    path: /redirect
+    defaults: { _controller: pim_enrich.controller.sequential_edit:getRedirectAction }
+    requirements:
+        _method: GET|POST
+
 pim_enrich_mass_edit_action_sequential_edit_get:
     path: /get.{_format}
     defaults: { _controller: pim_enrich.controller.sequential_edit:getAction, _format: json }

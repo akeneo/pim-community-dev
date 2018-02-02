@@ -2,7 +2,6 @@
 
 namespace Pim\Bundle\EnrichBundle\Controller;
 
-use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Pim\Bundle\DataGridBundle\Extension\MassAction\MassActionDispatcher;
 use Pim\Bundle\EnrichBundle\Manager\SequentialEditManager;
 use Pim\Bundle\UserBundle\Context\UserContext;
@@ -86,6 +85,18 @@ class SequentialEditController
         );
 
         $this->seqEditManager->save($sequentialEdit);
+
+        return new JsonResponse(
+            [
+                'id'         => current($sequentialEdit->getObjectSet()),
+                'dataLocale' => $request->get('dataLocale'),
+            ]
+        );
+    }
+
+    public function getRedirectAction(Request $request)
+    {
+        $sequentialEdit = $this->seqEditManager->findByUser($this->userContext->getUser());
 
         return new RedirectResponse(
             $this->router->generate(
