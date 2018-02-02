@@ -34,7 +34,7 @@ services:
     pimee_enrich.mass_edit.add_product_value.processor:
         class: '%pimee_enrich.connector.processor.mass_edit.product.add_value_with_permissions.class%'
         arguments:
-            - '@pim_catalog.updater.product_property_adder'
+            - '@pim_catalog.updater.property_adder'
             - '@pim_catalog.validator.product'
             - '@oro_user.manager'
             - '@security.authorization_checker'
@@ -52,7 +52,7 @@ services:
     pimee_enrich.mass_edit.remove_product_value.processor:
         class: '%pimee_enrich.connector.processor.mass_edit.product.remove_value_with_permissions.class%'
         arguments:
-            - '@pim_catalog.updater.product_property_remover'
+            - '@pim_catalog.updater.property_remover'
             - '@pim_catalog.validator.product'
             - '@oro_user.manager'
             - '@security.authorization_checker'

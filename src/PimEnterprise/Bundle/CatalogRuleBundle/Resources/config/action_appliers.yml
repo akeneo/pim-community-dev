@@ -15,20 +15,20 @@ services:
     pimee_catalog_rule.action_applier.copier:
         class: '%pimee_catalog_rule.action_applier.copier.class%'
         arguments:
-            - '@pim_catalog.updater.product_property_copier'
+            - '@pim_catalog.updater.property_copier'
         tags:
             - { name: akeneo_rule_engine.action_applier, priority: 100 }
 
     pimee_catalog_rule.action_applier.adder:
         class: '%pimee_catalog_rule.action_applier.adder.class%'
         arguments:
-            - '@pim_catalog.updater.product_property_adder'
+            - '@pim_catalog.updater.property_adder'
         tags:
             - { name: akeneo_rule_engine.action_applier, priority: 100 }
 
     pimee_catalog_rule.action_applier.remover:
         class: '%pimee_catalog_rule.action_applier.remover.class%'
         arguments:
-            - '@pim_catalog.updater.product_property_remover'
+            - '@pim_catalog.updater.property_remover'
         tags:
             - { name: akeneo_rule_engine.action_applier, priority: 100 }
