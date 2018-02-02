@@ -3,9 +3,9 @@ parameters:
     pim_catalog.updater.product_model.class:                  Pim\Component\Catalog\Updater\ProductModelUpdater
     pim_catalog.updater.entity_with_values.class:             Pim\Component\Catalog\Updater\EntityWithValuesUpdater
     pim_catalog.updater.property_setter.class:                Pim\Component\Catalog\Updater\PropertySetter
-    pim_catalog.updater.product_property_adder.class:         Pim\Component\Catalog\Updater\ProductPropertyAdder
-    pim_catalog.updater.product_property_copier.class:        Pim\Component\Catalog\Updater\ProductPropertyCopier
-    pim_catalog.updater.product_property_remover.class:       Pim\Component\Catalog\Updater\ProductPropertyRemover
+    pim_catalog.updater.property_adder.class:                 Pim\Component\Catalog\Updater\PropertyAdder
+    pim_catalog.updater.property_copier.class:                Pim\Component\Catalog\Updater\PropertyCopier
+    pim_catalog.updater.property_remover.class:               Pim\Component\Catalog\Updater\PropertyRemover
     pim_catalog.updater.attribute_option.class:               Pim\Component\Catalog\Updater\AttributeOptionUpdater
     pim_catalog.updater.attribute.class:                      Pim\Component\Catalog\Updater\AttributeUpdater
     pim_catalog.updater.group.class:                          Pim\Component\Catalog\Updater\GroupUpdater
@@ -80,20 +80,20 @@ services:
             - '@pim_catalog.repository.cached_attribute'
             - '@pim_catalog.updater.setter.registry'
 
-    pim_catalog.updater.product_property_adder:
-        class: '%pim_catalog.updater.product_property_adder.class%'
+    pim_catalog.updater.property_adder:
+        class: '%pim_catalog.updater.property_adder.class%'
         arguments:
             - '@pim_catalog.repository.cached_attribute'
             - '@pim_catalog.updater.adder.registry'
 
-    pim_catalog.updater.product_property_remover:
-        class: '%pim_catalog.updater.product_property_remover.class%'
+    pim_catalog.updater.property_remover:
+        class: '%pim_catalog.updater.property_remover.class%'
         arguments:
             - '@pim_catalog.repository.cached_attribute'
             - '@pim_catalog.updater.remover.registry'
 
-    pim_catalog.updater.product_property_copier:
-        class: '%pim_catalog.updater.product_property_copier.class%'
+    pim_catalog.updater.property_copier:
+        class: '%pim_catalog.updater.property_copier.class%'
         arguments:
             - '@pim_catalog.repository.cached_attribute'
             - '@pim_catalog.updater.copier.registry'

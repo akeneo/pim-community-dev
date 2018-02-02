@@ -151,7 +151,7 @@ class MediaAttributeCopierIntegration extends AbstractCopierTestCase
 
         $options = array_merge($defaultOptions, $options);
 
-        $productCopier = $this->get('pim_catalog.updater.product_property_copier');
+        $productCopier = $this->get('pim_catalog.updater.property_copier');
 
         $productCopier->copyData(
             $product,

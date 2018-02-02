@@ -6,13 +6,15 @@ use Akeneo\Component\StorageUtils\Exception\InvalidObjectException;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\AttributeInterface;
+use Pim\Component\Catalog\Model\EntityWithValuesInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Model\ProductModelInterface;
 use Pim\Component\Catalog\Updater\Copier\AttributeCopierInterface;
 use Pim\Component\Catalog\Updater\Copier\CopierRegistryInterface;
 use Pim\Component\Catalog\Updater\Copier\FieldCopierInterface;
 use Prophecy\Argument;
 
-class ProductPropertyCopierSpec extends ObjectBehavior
+class PropertyCopierSpec extends ObjectBehavior
 {
     function let(
         IdentifiableObjectRepositoryInterface $attributeRepository,
@@ -26,7 +28,7 @@ class ProductPropertyCopierSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('Pim\Component\Catalog\Updater\ProductPropertyCopier');
+        $this->shouldHaveType('Pim\Component\Catalog\Updater\PropertyCopier');
     }
 
     function it_copies_a_data_to_a_product_attribute(
@@ -63,6 +65,40 @@ class ProductPropertyCopierSpec extends ObjectBehavior
         $this->copyData($fromProduct, $toProduct, 'category', 'category');
     }
 
+    function it_copies_a_data_to_a_product_model_attribute(
+        $copierRegistry,
+        $attributeRepository,
+        ProductModelInterface $productModel,
+        AttributeInterface $fromAttribute,
+        AttributeInterface $toAttribute,
+        AttributeCopierInterface $copier
+    ) {
+        $attributeRepository->findOneByIdentifier('color_one')->willReturn($fromAttribute);
+        $attributeRepository->findOneByIdentifier('color_two')->willReturn($toAttribute);
+        $copierRegistry->getCopier('color_one', 'color_two')->willReturn($copier);
+        $copier
+            ->copyAttributeData($productModel, $productModel, $fromAttribute, $toAttribute, [])
+            ->shouldBeCalled();
+
+        $this->copyData($productModel, $productModel, 'color_one', 'color_two');
+    }
+
+    function it_copies_a_data_to_a_product_model_field(
+        $copierRegistry,
+        $attributeRepository,
+        ProductModelInterface $fromProductModel,
+        ProductModelInterface $toProductModel,
+        FieldCopierInterface $copier
+    ) {
+        $attributeRepository->findOneByIdentifier('category')->willReturn(null);
+        $copierRegistry->getCopier('category', 'category')->willReturn($copier);
+        $copier
+            ->copyFieldData($fromProductModel, $toProductModel, 'category', 'category', [])
+            ->shouldBeCalled();
+
+        $this->copyData($fromProductModel, $toProductModel, 'category', 'category');
+    }
+
     function it_throws_an_exception_when_it_copies_an_unknown_field($attributeRepository, ProductInterface $product)
     {
         $attributeRepository->findOneByIdentifier(Argument::any())->willReturn(null);
@@ -76,8 +112,8 @@ class ProductPropertyCopierSpec extends ObjectBehavior
         $this->shouldThrow(
             new InvalidObjectException(
                 'stdClass',
-                ProductInterface::class,
-                'Expects a "Pim\Component\Catalog\Model\ProductInterface", "stdClass" and "stdClass" provided.'
+                EntityWithValuesInterface::class,
+                'Expects a "Pim\Component\Catalog\Model\EntityWithValuesInterface", "stdClass" and "stdClass" provided.'
             )
         )->during(
             'copyData',

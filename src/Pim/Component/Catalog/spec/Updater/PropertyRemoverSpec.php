@@ -7,12 +7,13 @@ use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterfa
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Model\ProductModelInterface;
 use Pim\Component\Catalog\Updater\Remover\AttributeRemoverInterface;
 use Pim\Component\Catalog\Updater\Remover\FieldRemoverInterface;
 use Pim\Component\Catalog\Updater\Remover\RemoverRegistryInterface;
 use Prophecy\Argument;
 
-class ProductPropertyRemoverSpec extends ObjectBehavior
+class PropertyRemoverSpec extends ObjectBehavior
 {
     function let(
         IdentifiableObjectRepositoryInterface $attributeRepository,
@@ -26,7 +27,7 @@ class ProductPropertyRemoverSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('Pim\Component\Catalog\Updater\ProductPropertyRemover');
+        $this->shouldHaveType('Pim\Component\Catalog\Updater\PropertyRemover');
     }
 
     function it_removes_a_data_to_a_product_attribute(
@@ -60,6 +61,37 @@ class ProductPropertyRemoverSpec extends ObjectBehavior
         $this->removeData($product, 'category', ['tshirt'], []);
     }
 
+    function it_removes_a_data_to_a_product_model_attribute(
+        $removerRegistry,
+        $attributeRepository,
+        ProductModelInterface $productModel,
+        AttributeInterface $attribute,
+        AttributeRemoverInterface $remover
+    ) {
+        $attributeRepository->findOneByIdentifier('name')->willReturn($attribute);
+        $removerRegistry->getRemover('name')->willReturn($remover);
+        $remover
+            ->removeAttributeData($productModel, $attribute, 'my name', [])
+            ->shouldBeCalled();
+
+        $this->removeData($productModel, 'name', 'my name', []);
+    }
+
+    function it_removes_a_data_to_a_product_model_field(
+        $removerRegistry,
+        $attributeRepository,
+        ProductModelInterface $productModel,
+        FieldRemoverInterface $remover
+    ) {
+        $attributeRepository->findOneByIdentifier('category')->willReturn(null);
+        $removerRegistry->getRemover('category')->willReturn($remover);
+        $remover
+            ->removeFieldData($productModel, 'category', ['tshirt'], [])
+            ->shouldBeCalled();
+
+        $this->removeData($productModel, 'category', ['tshirt'], []);
+    }
+
     function it_throws_an_exception_when_it_removes_an_unknown_field(
         $attributeRepository,
         $removerRegistry,
@@ -79,7 +111,7 @@ class ProductPropertyRemoverSpec extends ObjectBehavior
         $this->shouldThrow(
             InvalidObjectException::objectExpected(
                 'stdClass',
-                'Pim\Component\Catalog\Model\ProductInterface or Pim\Component\Catalog\Model\ProductModelInterface'
+                'Pim\Component\Catalog\Model\EntityWithValuesInterface'
             )
         )->during(
             'removeData',

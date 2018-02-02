@@ -14,6 +14,9 @@
 ### Classes
 
 - PIM-6367: Rename `Pim\Bundle\EnrichBundle\ProductQueryBuilder\MassEditProductAndProductModelQueryBuilder` into `Pim\Component\Catalog\Query\ProductAndProductModelQueryBuilder`
+- PIM-6367: Rename `Pim\Component\Catalog\Updater\ProductPropertyAdder` into `Pim\Component\Catalog\Updater\PropertyAdder`
+- PIM-6367: Rename `Pim\Component\Catalog\Updater\ProductPropertyRemover` into `Pim\Component\Catalog\Updater\PropertyRemover`
+- PIM-6367: Rename `Pim\Component\Catalog\Updater\ProductPropertyCopier` into `Pim\Component\Catalog\Updater\PropertyCopier`
 - PIM-6367: Move `Pim\Bundle\EnrichBundle\Elasticsearch\ProductAndProductModelQueryBuilderFactory` to `Pim\Bundle\CatalogBundle\Elasticsearch\ProductAndProductModelQueryBuilderFactory`
 - PIM-6367: Move `Pim\Bundle\EnrichBundle\Elasticsearch\CursorFactory` to `Pim\Bundle\CatalogBundle\Elasticsearch\CursorFactory`
 - PIM-6367: Move `Pim\Bundle\EnrichBundle\Elasticsearch\Cursor` to `Pim\Bundle\CatalogBundle\Elasticsearch\Cursor`
@@ -35,8 +38,14 @@
 - PIM-6367: Rename service `pim_enrich.query.product_and_product_model_query_builder_factory` into `pim_catalog.query.product_and_product_model_query_builder_factory`
 - PIM-6367: Rename service `pim_enrich.query.product_and_product_model_query_builder_factory.with_product_and_product_model_cursor` into `pim_catalog.query.product_and_product_model_query_builder_factory.with_product_and_product_model_cursor`
 - PIM-6367: Rename service `pim_enrich.factory.product_and_product_model_cursor` into `pim_catalog.factory.product_and_product_model_cursor`
+- PIM-6367: Rename service `pim_catalog.updater.product_property_adder` into `pim_catalog.updater.property_adder`
+- PIM-6367: Rename service `pim_catalog.updater.product_property_remover` into `pim_catalog.updater.property_remover`
+- PIM-6367: Rename service `pim_catalog.updaterproduct_.property_copier` into `pim_catalog.updater.property_copier`
 - PIM-6367: Rename class parameter `pim_enrich.query.elasticsearch.product_and_model_query_builder_factory.class` into `pim_catalog.query.elasticsearch.product_and_model_query_builder_factory.class`
 - PIM-6367: Rename class parameter `pim_enrich.query.mass_edit_product_and_product_model_query_builder.class` into `pim_catalog.query.product_and_product_model_query_builder.class`
 - PIM-6367: Rename class parameter `pim_enrich.elasticsearch.cursor_factory.class` into `pim_catalog.elasticsearch.cursor_factory.class`
+- PIM-6367: Rename class parameter `pim_catalog.updater.product_property_adder.class` into `pim_catalog.updater.property_adder.class`
+- PIM-6367: Rename class parameter `pim_catalog.updater.product_property_remover.class` into `pim_catalog.updater.property_remover.class`
+- PIM-6367: Rename class parameter `pim_catalog.updater.product_property_copier.class` into `pim_catalog.updater.property_copier.class`
 - PIM-6367: Remove argument `pim_catalog.resolver.attribute_values` from service `pim_catalog.builder.product`
 - PIM-6367: Remove argument `pim_catalog.resolver.attribute_values` from service `pim_catalog.builder.variant_product`
