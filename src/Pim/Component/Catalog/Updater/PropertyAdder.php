@@ -4,63 +4,62 @@ namespace Pim\Component\Catalog\Updater;
 
 use Akeneo\Component\StorageUtils\Exception\InvalidObjectException;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
-use Akeneo\Component\StorageUtils\Updater\PropertyRemoverInterface;
+use Akeneo\Component\StorageUtils\Updater\PropertyAdderInterface;
 use Doctrine\Common\Util\ClassUtils;
 use Pim\Component\Catalog\Model\AttributeInterface;
-use Pim\Component\Catalog\Model\ProductInterface;
-use Pim\Component\Catalog\Model\ProductModelInterface;
-use Pim\Component\Catalog\Updater\Remover\AttributeRemoverInterface;
-use Pim\Component\Catalog\Updater\Remover\RemoverRegistryInterface;
+use Pim\Component\Catalog\Model\EntityWithValuesInterface;
+use Pim\Component\Catalog\Updater\Adder\AdderRegistryInterface;
+use Pim\Component\Catalog\Updater\Adder\AttributeAdderInterface;
 
 /**
- * Removes a data in the property of an object
+ * Adds a data in the property of an object
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductPropertyRemover implements PropertyRemoverInterface
+class PropertyAdder implements PropertyAdderInterface
 {
     /** @var IdentifiableObjectRepositoryInterface */
     protected $attributeRepository;
 
-    /** @var RemoverRegistryInterface */
-    protected $removerRegistry;
+    /** @var AdderRegistryInterface */
+    protected $adderRegistry;
 
     /**
      * @param IdentifiableObjectRepositoryInterface $repository
-     * @param RemoverRegistryInterface              $removerRegistry
+     * @param AdderRegistryInterface                $adderRegistry
      */
     public function __construct(
         IdentifiableObjectRepositoryInterface $repository,
-        RemoverRegistryInterface $removerRegistry
+        AdderRegistryInterface $adderRegistry
     ) {
         $this->attributeRepository = $repository;
-        $this->removerRegistry = $removerRegistry;
+        $this->adderRegistry = $adderRegistry;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function removeData($product, $field, $data, array $options = [])
+    public function addData($product, $field, $data, array $options = [])
     {
-        if (!($product instanceof ProductInterface || $product instanceof ProductModelInterface)) {
+        if (!$product instanceof EntityWithValuesInterface) {
             throw InvalidObjectException::objectExpected(
                 ClassUtils::getClass($product),
-                sprintf('%s or %s', ProductInterface::class, ProductModelInterface::class)
+                EntityWithValuesInterface::class
             );
         }
 
-        $remover = $this->removerRegistry->getRemover($field);
-        if (null === $remover) {
-            throw new \LogicException(sprintf('No remover found for field "%s"', $field));
+        $adder = $this->adderRegistry->getAdder($field);
+        if (null === $adder) {
+            throw new \LogicException(sprintf('No adder found for field "%s"', $field));
         }
 
-        if ($remover instanceof AttributeRemoverInterface) {
+        if ($adder instanceof AttributeAdderInterface) {
             $attribute = $this->getAttribute($field);
-            $remover->removeAttributeData($product, $attribute, $data, $options);
+            $adder->addAttributeData($product, $attribute, $data, $options);
         } else {
-            $remover->removeFieldData($product, $field, $data, $options);
+            $adder->addFieldData($product, $field, $data, $options);
         }
 
         return $this;

@@ -7,7 +7,7 @@ use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterfa
 use Akeneo\Component\StorageUtils\Updater\PropertyCopierInterface;
 use Doctrine\Common\Util\ClassUtils;
 use Pim\Component\Catalog\Model\AttributeInterface;
-use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Model\EntityWithValuesInterface;
 use Pim\Component\Catalog\Updater\Copier\AttributeCopierInterface;
 use Pim\Component\Catalog\Updater\Copier\CopierRegistryInterface;
 
@@ -18,7 +18,7 @@ use Pim\Component\Catalog\Updater\Copier\CopierRegistryInterface;
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductPropertyCopier implements PropertyCopierInterface
+class PropertyCopier implements PropertyCopierInterface
 {
     /** @var IdentifiableObjectRepositoryInterface */
     protected $attributeRepository;
@@ -42,21 +42,23 @@ class ProductPropertyCopier implements PropertyCopierInterface
      * {@inheritdoc}
      */
     public function copyData(
-        $fromProduct,
-        $toProduct,
+        $fromEntityWithValues,
+        $toEntityWithValues,
         $fromField,
         $toField,
         array $options = []
     ) {
-        if (!$fromProduct instanceof ProductInterface || !$toProduct instanceof ProductInterface) {
+        if (!$fromEntityWithValues instanceof EntityWithValuesInterface ||
+            !$toEntityWithValues instanceof EntityWithValuesInterface
+        ) {
             throw new InvalidObjectException(
-                ClassUtils::getClass($fromProduct),
-                ProductInterface::class,
+                ClassUtils::getClass($fromEntityWithValues),
+                EntityWithValuesInterface::class,
                 sprintf(
                     'Expects a "%s", "%s" and "%s" provided.',
-                    ProductInterface::class,
-                    ClassUtils::getClass($fromProduct),
-                    ClassUtils::getClass($toProduct)
+                    EntityWithValuesInterface::class,
+                    ClassUtils::getClass($fromEntityWithValues),
+                    ClassUtils::getClass($toEntityWithValues)
                 )
             );
         }
@@ -69,9 +71,15 @@ class ProductPropertyCopier implements PropertyCopierInterface
         if ($copier instanceof AttributeCopierInterface) {
             $fromAttribute = $this->getAttribute($fromField);
             $toAttribute = $this->getAttribute($toField);
-            $copier->copyAttributeData($fromProduct, $toProduct, $fromAttribute, $toAttribute, $options);
+            $copier->copyAttributeData(
+                $fromEntityWithValues,
+                $toEntityWithValues,
+                $fromAttribute,
+                $toAttribute,
+                $options
+            );
         } else {
-            $copier->copyFieldData($fromProduct, $toProduct, $fromField, $toField, $options);
+            $copier->copyFieldData($fromEntityWithValues, $toEntityWithValues, $fromField, $toField, $options);
         }
 
         return $this;

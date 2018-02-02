@@ -18,13 +18,13 @@ services:
     pim_enrich.connector.processor.mass_edit.product.add_value:
         class: '%pim_enrich.connector.processor.mass_edit.product.add_value.class%'
         arguments:
-            - '@pim_catalog.updater.product_property_adder'
+            - '@pim_catalog.updater.property_adder'
             - '@pim_catalog.validator.product'
 
     pim_enrich.connector.processor.mass_edit.product.remove_value:
         class: '%pim_enrich.connector.processor.mass_edit.product.remove_value.class%'
         arguments:
-            - '@pim_catalog.updater.product_property_remover'
+            - '@pim_catalog.updater.property_remover'
             - '@pim_catalog.validator.product'
 
     pim_enrich.connector.processor.mass_edit.product.edit_common_attributes:

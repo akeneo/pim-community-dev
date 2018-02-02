@@ -3,7 +3,7 @@
 namespace Pim\Component\Catalog\Updater\Copier;
 
 use Akeneo\Component\StorageUtils\Exception\PropertyException;
-use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Model\EntityWithValuesInterface;
 
 /**
  * Copies a data from a product's field to another product's field
@@ -17,17 +17,17 @@ interface FieldCopierInterface extends CopierInterface
     /**
      * Copy a data from a source field to a destination field
      *
-     * @param ProductInterface $fromProduct
-     * @param ProductInterface $toProduct
-     * @param string           $fromField
-     * @param string           $toField
-     * @param array            $options
+     * @param EntityWithValuesInterface $fromEntityWithValues
+     * @param EntityWithValuesInterface $toEntityWithValues
+     * @param string                    $fromField
+     * @param string                    $toField
+     * @param array                     $options
      *
      * @throws PropertyException
      */
     public function copyFieldData(
-        ProductInterface $fromProduct,
-        ProductInterface $toProduct,
+        EntityWithValuesInterface $fromEntityWithValues,
+        EntityWithValuesInterface $toEntityWithValues,
         $fromField,
         $toField,
         array $options = []
