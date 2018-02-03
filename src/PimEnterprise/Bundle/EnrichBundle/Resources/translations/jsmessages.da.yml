@@ -86,7 +86,7 @@ pimee_enrich:
           messages:
             approve:
               success: Forslaget er blevet anvendt.
-              error: Dette forslag kan ikke anvendes på grund af følgende fejl. {{ error }}
+              error: "Dette forslag kan ikke anvendes på grund af følgende fejl. {{ error }}"
             reject:
               success: Forslaget er blevet afvist.
             remove:
