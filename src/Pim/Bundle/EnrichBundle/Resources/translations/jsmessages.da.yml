@@ -184,7 +184,7 @@ pim_enrich:
         deletion_failed: Produktet kunne ikke slettes.
         update_successful: Produktet blev opdateret.
         update_failed: Produktet kunne ikke opdateres.
-        field_not_ready: 'Produktet kan ikke gemmes lige nu. Følgende felter er ikke klar: {{ fields }}'
+        field_not_ready: "Produktet kan ikke gemmes lige nu. Følgende felter er ikke klar: {{ fields }}"
         already_in_upload: Der findes allerede en fil indlæst for denne attribut for denne landestandard "{{ locale }}" og "{{ scope }}"
       error:
         upload: Der opstod en fejl under fil indlæsningen
@@ -248,7 +248,7 @@ pim_enrich:
         update_successful: Produktmodellen opdateret. Fuldstændigheden af dens variant produkter vil blive genberegnet.
         deletion_successful: Produktmodellen slettet.
         update_failed: Produktmodellen kunne ikke opdateres.
-        field_not_ready: 'Produktmodellen kan ikke gemmes lige nu. Følgende felter er ikke klar: {{ fields }}'
+        field_not_ready: "Produktmodellen kan ikke gemmes lige nu. Følgende felter er ikke klar: {{ fields }}"
       read_only_parent_attribute_from_common: Denne attribut kan opdateres på de fælles attributter.
       read_only_parent_attribute_from_model: "Denne attribut kan opdateres på attributterne af {{ axes }}"
       variant_axis: Variant akse
@@ -267,7 +267,7 @@ pim_enrich:
         deletion_failed: Sammenhængs type kunne ikke slettes.
         update_successful: Sammenhængstype opdateret
         update_failed: Sammenhængs type kunne ikke opdateres.
-        field_not_ready: 'Produktet kan ikke gemmes lige nu. Følgende felter er ikke klar: {{ fields }}'
+        field_not_ready: "Produktet kan ikke gemmes lige nu. Følgende felter er ikke klar: {{ fields }}"
       meta:
         created: Oprettet
         created_by: Oprettet af
@@ -286,7 +286,7 @@ pim_enrich:
         deletion_failed: Gruppetypen kunne ikke slettes.
         update_successful: Gruppetypen opdateret
         update_failed: Gruppetypen kunne ikke opdateres.
-        field_not_ready: 'Produktet kan ikke gemmes lige nu. Følgende felter er ikke klar: {{ fields }}'
+        field_not_ready: "Produktet kan ikke gemmes lige nu. Følgende felter er ikke klar: {{ fields }}"
       meta:
         created: Oprettet
         created_by: Oprettet af
@@ -308,7 +308,7 @@ pim_enrich:
         update_failed: Kanalen kunne ikke opdateres.
         create_successful: Kanal oprettet.
         create_failed: Kanalen kunne ikke opdateres.
-        field_not_ready: 'Produktet kan ikke gemmes lige nu. Følgende felter er ikke klar: {{ fields }}'
+        field_not_ready: "Produktet kan ikke gemmes lige nu. Følgende felter er ikke klar: {{ fields }}"
       meta:
         created: Oprettet
         created_by: Oprettet af
@@ -373,7 +373,7 @@ pim_enrich:
         deletion_failed: Gruppen kunne ikke slettes.
         update_successful: Gruppe opdateret
         update_failed: Gruppen kunne ikke opdateres.
-        field_not_ready: 'Gruppen kan ikke gemmes lige nu. Følgende felter er ikke klar: {{ fields }}'
+        field_not_ready: "Gruppen kan ikke gemmes lige nu. Følgende felter er ikke klar: {{ fields }}"
       btn:
         save: Gem
       meta:
@@ -399,7 +399,7 @@ pim_enrich:
         update_failed: Atributten kunne ikke opdateres.
         create_successful: Atributten blev oprettet.
         create_failed: Atributten kunne ikke oprettes.
-        field_not_ready: 'Attributten kan ikke gemmes lige nu. Følgende felter er ikke klar: {{ fields }}'
+        field_not_ready: "Attributten kan ikke gemmes lige nu. Følgende felter er ikke klar: {{ fields }}"
       scopable: Omfangbar
       type:
         pim_catalog_identifier: Identifikator
@@ -813,12 +813,12 @@ pim_enrich:
           help: Kanalen definerer mulighederne for produkt værdier, de landestandarder, der bruges til at vælge data og træet bruges til at vælge produkter.
         locales:
           title: Landestandarder
-          help: 'Landestandarderne definerer de lokaliserede produkt værdier at eksportere. Ex: kun produktinformation på fransk.'
+          help: "Landestandarderne definerer de lokaliserede produkt værdier at eksportere. Ex: kun produktinformation på fransk."
         attributes:
           title: Attributter
           edit: Redigér
           label: "{0} alle attributter |{1} én attribut valgt |] 1, Inf [{{ count }} attributter valgt"
-          help: 'Vælg produktinformation til eksport. Eks: kun de tekniske attributter.'
+          help: "Vælg produktinformation til eksport. Eks: kun de tekniske attributter."
           empty: Alle attributter vil blive eksporteret
           modal:
             apply: Anvend
@@ -835,7 +835,7 @@ pim_enrich:
           description: Vælg fabrikat oplysningerne eksportere
         family:
           title: Familie
-          help: 'Vælg produkterne, der eksporteres af deres familie. Eks: Eksport kun sko og kjoler.'
+          help: "Vælg produkterne, der eksporteres af deres familie. Eks: Eksport kun sko og kjoler."
           operators:
             IN: I listen
             "NOT IN": Ikke på listen
@@ -851,7 +851,7 @@ pim_enrich:
             "SINCE LAST JOB": Opdaterede produkter siden sidste eksport
         enabled:
           title: Status
-          help: 'Vælg produkterne, der eksporteres efter deres status. Eks: Eksportere produkter uanset deres status.'
+          help: "Vælg produkterne, der eksporteres efter deres status. Eks: Eksportere produkter uanset deres status."
           value:
             all: Alle
             enabled: Aktiveret
@@ -1239,6 +1239,7 @@ batch_jobs:
     label: Familie import i CSV
     validation.label: Filvalidering
     import.label: Familie import
+    compute_data_related_to_family_variants.label: Beregn produkt model data
   csv_family_variant_import:
     label: Familie variant import i CSV
     validation.label: Filvalidering
@@ -1302,6 +1303,7 @@ batch_jobs:
     label: Familie import i XLSX
     validation.label: Filvalidering
     import.label: Familie import
+    compute_data_related_to_family_variants.label: Beregn produkt model data
   xlsx_family_variant_import:
     label: Familie variant import i XLSX
     validation.label: Filvalidering

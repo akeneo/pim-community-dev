@@ -637,11 +637,11 @@ pim_enrich:
           help: El canal defineix l'abast per els valors de producte, les configuracions regionals utilitzades per seleccionar les dades i l'arbre utilitzat per seleccionar els productes.
         locales:
           title: Configuracions regionals
-          help: 'Les configuracions regionals defineixen els valors regionalitzats de producte a exportar. Ex: només informació en francès.'
+          help: "Les configuracions regionals defineixen els valors regionalitzats de producte a exportar. Ex: només informació en francès."
         attributes:
           title: Atributs
           edit: Editar
-          help: 'Seleccionar la informació del producte a exportar. Ex: només els atributs tècnics.'
+          help: "Seleccionar la informació del producte a exportar. Ex: només els atributs tècnics."
           empty: S'exportaran tots els atributs
           modal:
             apply: Aplicar
@@ -656,7 +656,7 @@ pim_enrich:
           title: Atributs
         family:
           title: Família
-          help: 'Seleccionar els productes per exportar de la seva família. Ex: Exportar només sabates i vestits.'
+          help: "Seleccionar els productes per exportar de la seva família. Ex: Exportar només sabates i vestits."
           operators:
             IN: A la llista
             "NOT IN": Fora de llista
@@ -672,7 +672,7 @@ pim_enrich:
             "SINCE LAST JOB": Productes actualitzats des de la última exportació
         enabled:
           title: Estat
-          help: 'Seleccionar els productes d''exportació per la seva condició. Ex: Exportar productes independentment del seu estatus.'
+          help: "Seleccionar els productes d'exportació per la seva condició. Ex: Exportar productes independentment del seu estatus."
           value:
             all: Tots
             enabled: Habilitat
