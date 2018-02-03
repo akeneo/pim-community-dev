@@ -183,7 +183,7 @@ pim_enrich:
         deletion_failed: Tuotetta ei voi poistaa.
         update_successful: Tuote päivitetty.
         update_failed: Tuotetta ei voitu päivittää.
-        field_not_ready: 'Tuotetta ei voida tallentaa. Seuraavat kentät eivät ole valmiita: {{ fields }}'
+        field_not_ready: "Tuotetta ei voida tallentaa. Seuraavat kentät eivät ole valmiita: {{ fields }}"
         already_in_upload: Tiedosto on jo ladattu attribuutin lokaatiossa "{{ locale }}" ja laajuudessa "{{ scope }}"
       error:
         upload: Virhe tiedoston lataamisessa
@@ -247,7 +247,7 @@ pim_enrich:
         update_successful: Tuotemallin päivittäminen onnistui. Tuotevarianttien täyttöaste lasketaan uudelleen.
         deletion_successful: Tuotemallin poisto onnistui.
         update_failed: Tuotemallia ei voitu päivittää.
-        field_not_ready: 'Tuotemallia ei voida tallentaa. Seuraavat kentät eivät ole valmiita: {{ fields }}'
+        field_not_ready: "Tuotemallia ei voida tallentaa. Seuraavat kentät eivät ole valmiita: {{ fields }}"
       read_only_parent_attribute_from_common: Tätä attribuuttia voidaan muokata yhteisissä attribuuteissa.
       read_only_parent_attribute_from_model: "Tätä attribuuttia voidaan muokata {{ axes }} attribuuteissa"
       variant_axis: Varianttiulottuvuus
@@ -266,7 +266,7 @@ pim_enrich:
         deletion_failed: Assosiaatiotyyppiä ei voida poistaa.
         update_successful: Assosiaatiotyypin päivittäminen onnistui.
         update_failed: Assosiaatiotyyppiä ei voitu päivittää.
-        field_not_ready: 'Assosiaatiotyyppiä ei voida tallentaa. Seuraavat kentät eivät ole valmiita: {{ fields }}'
+        field_not_ready: "Assosiaatiotyyppiä ei voida tallentaa. Seuraavat kentät eivät ole valmiita: {{ fields }}"
       meta:
         created: Luotu
         created_by: Luoja
@@ -285,7 +285,7 @@ pim_enrich:
         deletion_failed: Ryhmätyyppiä ei voida poistaa.
         update_successful: Ryhmätyypin päivittäminen onnistui.
         update_failed: Ryhmätyyppiä ei voitu päivittää.
-        field_not_ready: 'Ryhmätyyppiä ei voida tallentaa. Seuraavat kentät eivät ole valmiita: {{ fields }}'
+        field_not_ready: "Ryhmätyyppiä ei voida tallentaa. Seuraavat kentät eivät ole valmiita: {{ fields }}"
       meta:
         created: Luotu
         created_by: Luoja
@@ -307,7 +307,7 @@ pim_enrich:
         update_failed: Kanavaa ei voitu päivittää.
         create_successful: Kanavan luominen onnistui.
         create_failed: Kanavaa ei voitu luoda.
-        field_not_ready: 'Kanavaa ei voida tallentaa. Seuraavat kentät eivät ole valmiita: {{ fields }}'
+        field_not_ready: "Kanavaa ei voida tallentaa. Seuraavat kentät eivät ole valmiita: {{ fields }}"
       meta:
         created: Luotu
         created_by: Luoja
@@ -372,7 +372,7 @@ pim_enrich:
         deletion_failed: Ryhmää ei voida poistaa.
         update_successful: Ryhmän päivittäminen onnistui.
         update_failed: Ryhmää ei voitu päivittää.
-        field_not_ready: 'Ryhmää ei voida tallentaa. Seuraavat kentät eivät ole valmiita: {{ fields }}'
+        field_not_ready: "Ryhmää ei voida tallentaa. Seuraavat kentät eivät ole valmiita: {{ fields }}"
       btn:
         save: Tallenna
       meta:
@@ -398,7 +398,7 @@ pim_enrich:
         update_failed: Attribuuttia ei voitu päivittää.
         create_successful: Attribuutin luominen onnistui.
         create_failed: Attribuuttia ei voitu luoda.
-        field_not_ready: 'Attribuuttia ei voida tallentaa. Seuraavat kentät eivät ole valmiita: {{ fields }}'
+        field_not_ready: "Attribuuttia ei voida tallentaa. Seuraavat kentät eivät ole valmiita: {{ fields }}"
       scopable: Kanavakohtainen
       type:
         pim_catalog_identifier: Tunniste
@@ -806,12 +806,12 @@ pim_enrich:
           help: Kanava määrittää tuotearvojen laajuuden, arvojen lokaation ja tuotepuun, jolla rajataan mukaan otettavat tuotteet.
         locales:
           title: Alueet
-          help: 'Lokaatiot määrittävät minkä kieliset arvot otetaan mukaan vientiin. Esim: vain suomenkieliset tuotetiedot.'
+          help: "Lokaatiot määrittävät minkä kieliset arvot otetaan mukaan vientiin. Esim: vain suomenkieliset tuotetiedot."
         attributes:
           title: Attribuutit
           edit: Muokkaa
           label: "{0}Kaikki attribuutit|{1}Yksi attribuutti valittu|]1,Inf[ {{ count }} attribuuttia valittu"
-          help: 'Valitse vietävä attribuuttiryhmä. Esim: vain tekniset attribuutit.'
+          help: "Valitse vietävä attribuuttiryhmä. Esim: vain tekniset attribuutit."
           empty: Kaikki attribuutit viedään
           modal:
             apply: Valitse
@@ -828,7 +828,7 @@ pim_enrich:
           description: Valitse tuotetiedot vientiin
         family:
           title: Perhe
-          help: 'Valitse vietävät tuotteet perheen mukaan. Esim: vie vain kengät ja hameet.'
+          help: "Valitse vietävät tuotteet perheen mukaan. Esim: vie vain kengät ja hameet."
           operators:
             IN: Luettelossa
             "NOT IN": Ei luettelossa
@@ -844,7 +844,7 @@ pim_enrich:
             "SINCE LAST JOB": Viime viennin jälkeen päivitetyt tuotteet
         enabled:
           title: Status
-          help: 'Valitse vietävät tuotteet statuksen mukaan. Esim: Vie tuotteet statuksesta huolimatta.'
+          help: "Valitse vietävät tuotteet statuksen mukaan. Esim: Vie tuotteet statuksesta huolimatta."
           value:
             all: Kaikki
             enabled: Käytössä
