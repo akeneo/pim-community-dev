@@ -159,7 +159,7 @@ pim_enrich:
         deletion_failed: Produkten kunde inte raderas.
         update_successful: Produkten har uppdaterats.
         update_failed: Produkten kunde inte uppdateras.
-        field_not_ready: 'Produkten kan inte sparas just nu. Följande fält inte är redo: {{ fields }}'
+        field_not_ready: "Produkten kan inte sparas just nu. Följande fält inte är redo: {{ fields }}"
         already_in_upload: En fil är har redan laddats upp för det här attributet i språkvariant "{{ locale }}" och omfattning "{{ scope }}"
       error:
         upload: Ett fel inträffade under filuppladdning
@@ -563,12 +563,12 @@ pim_enrich:
           help: Kanalen definierar tillämpningsområdet för produktvärden, de språk som används för att välja data och trädet används för att välja produkter.
         locales:
           title: Språk
-          help: 'Språken väljer de lokaliserade produktvärdena att exportera. Ex: endast produktinformation på franska.'
+          help: "Språken väljer de lokaliserade produktvärdena att exportera. Ex: endast produktinformation på franska."
         attributes:
           title: Attribut
           edit: Ändra
           label: "{0} alla attribut |{1} ett attribut valt |] 1 Inf [{{ count }} attribut valda"
-          help: 'Välj vilken produktinformation som ska exporteras. Ex: endast tekniska attribut.'
+          help: "Välj vilken produktinformation som ska exporteras. Ex: endast tekniska attribut."
           empty: Alla attribut kommer att exporteras
           modal:
             apply: Tillämpa
@@ -583,7 +583,7 @@ pim_enrich:
           empty_selection: Alla attribut kommer att exporteras
         family:
           title: Familj
-          help: Välj vilka produkter som exporteras beroende på familj. T. ex. exportera endast skor och klänningar.
+          help: "Välj vilka produkter som exporteras beroende på familj. T. ex. exportera endast skor och klänningar."
           operators:
             IN: I listan
             "NOT IN": Inte i listan
@@ -599,7 +599,7 @@ pim_enrich:
             "SINCE LAST JOB": Ändrade produkter sedan senaste export
         enabled:
           title: Status
-          help: Välj vilka produkter som exporteras beroende på status. T. ex. exportera produkter oavsett status.
+          help: "Välj vilka produkter som exporteras beroende på status. T. ex. exportera produkter oavsett status."
           value:
             all: Alla
             enabled: Aktiverad

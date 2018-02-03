@@ -706,7 +706,7 @@ pim_enrich.mass_edit_action:
     success_flash: O(s) atributo(s) do(s) produto(s) foi(ram) atualizado(s)
     message.warning: Não há nenhum atributo em comum nos produtos selecionados. Por favor, altere a sua seleção.
     no_attribute.warning: Não há nenhum atributo em comum nos produtos selecionados. Por favor, altere a sua seleção.
-    truncated_by_variant_attribute.warning: 'Alguns atributos comuns dos produtos seleccionados provêm de um grupo variante. Não estão disponíveis para edição em massa: %attributes%.'
+    truncated_by_variant_attribute.warning: "Alguns atributos comuns dos produtos seleccionados provêm de um grupo variante. Não estão disponíveis para edição em massa: %attributes%."
   classify:
     label: Classificar os produtos em categorias
     description: Os produtos serão posicionados nas categorias, o posicionamento existente será mantido.
@@ -849,7 +849,7 @@ add_to_variant_group_clean.steps.excluded.title: Produto excluído
 add_to_variant_group_clean.steps.duplicated.title: Eixo duplicado
 add_to_variant_group.steps.excluded.title: Produto excluído
 add_to_variant_group.steps.duplicated.title: Eixo duplicado
-add_to_variant_group.steps.cleaner.warning.description: 'O produto não pode ser definido no grupo variante selecionado: duplicação dos valores do eixo variavel com outro produto na seleção'
+add_to_variant_group.steps.cleaner.warning.description: "O produto não pode ser definido no grupo variante selecionado: duplicação dos valores do eixo variavel com outro produto na seleção"
 edit_common_attributes: Editar atributos comuns
 edit_common_attributes_clean: Limpar ficheiros de atributos comuns
 perform.steps.duplicated.title: Eixo duplicado

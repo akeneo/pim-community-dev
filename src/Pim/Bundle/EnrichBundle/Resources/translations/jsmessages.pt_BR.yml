@@ -159,7 +159,7 @@ pim_enrich:
         deletion_failed: O produto não pode ser deletado.
         update_successful: Produto atualizado com sucesso.
         update_failed: O produto não pode ser atualizado.
-        field_not_ready: 'O produto não pode ser salvo agora. Os seguintes campos não estão prontos: {{ fields }}'
+        field_not_ready: "O produto não pode ser salvo agora. Os seguintes campos não estão prontos: {{ fields }}"
         already_in_upload: Um arquivo ja está sendo enviado para esse atributo no local "{{ locale }}" e no escopo "{{ scope }}"
       error:
         upload: Ocorreu um erro ao fazer o envio do arquivo
@@ -563,12 +563,12 @@ pim_enrich:
           help: O canal define o escopo para os valores de produtos, as localidades usadas para selecionar dados e a árvore utilizada para selecionar produtos.
         locales:
           title: Localidades
-          help: 'As localidades define os valores de produtos localizados para exportar. Ex: apenas informações de produto em Francês.'
+          help: "As localidades define os valores de produtos localizados para exportar. Ex: apenas informações de produto em Francês."
         attributes:
           title: Atributos
           edit: Editar
           label: "{0} todos os atributos |{1} um atributo selecionado |] 1, Inf [{{ count }} atributos selecionados"
-          help: 'Selecione as informações do produto a exportar. Ex: somente os atributos técnicos.'
+          help: "Selecione as informações do produto a exportar. Ex: somente os atributos técnicos."
           empty: Todos os atributos serão exportados
           modal:
             apply: Aplicar
@@ -583,7 +583,7 @@ pim_enrich:
           empty_selection: Todos os atributos serão exportados
         family:
           title: Família
-          help: 'Selecione os produtos para exportação por sua família. Ex: Exporte somente os sapatos e vestidos.'
+          help: "Selecione os produtos para exportação por sua família. Ex: Exporte somente os sapatos e vestidos."
           operators:
             IN: Na lista
             "NOT IN": Não está na lista
@@ -599,7 +599,7 @@ pim_enrich:
             "SINCE LAST JOB": Produtos atualizados desde a última exportação
         enabled:
           title: Status
-          help: 'Selecione os produtos para exportação pelo seu status. Ex: Exporte produtos qualquer seu status.'
+          help: "Selecione os produtos para exportação pelo seu status. Ex: Exporte produtos qualquer seu status."
           value:
             all: Todos
             enabled: Habilitado
