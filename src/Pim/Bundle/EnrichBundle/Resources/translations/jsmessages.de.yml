@@ -159,7 +159,7 @@ pim_enrich:
         deletion_failed: Das Produkt konnte nicht gelöscht werden.
         update_successful: Produkt erfolgreich aktualisiert.
         update_failed: Das Produkt konnte nicht aktualisiert werden.
-        field_not_ready: 'Das Produkt kann gerade nicht gespeichert. Folgende Felder sind nicht bereit: {{ fields }}'
+        field_not_ready: "Das Produkt kann gerade nicht gespeichert. Folgende Felder sind nicht bereit: {{ fields }}"
         already_in_upload: Es wird bereits eine Datei für dieses Attribut im Gebietsschema "{{ locale }}" und Gültigkeitsbereich "{{ scope }}" hochgeladen
       error:
         upload: Während des Hochladens der Datei ist ein Fehler aufgetreten
@@ -563,12 +563,12 @@ pim_enrich:
           help: Ein Ausgabekanal definiert den Umfang für Produktwerte, sowie die Gebietsschemas und den Strukturbaum um die Daten und Produkte zu selektieren.
         locales:
           title: Gebietsschemata
-          help: 'Das Gebietsschema definiert die lokalisierten Produktwerte für den Export. Beispiel: Nur Produktinformationen in französischer Sprache.'
+          help: "Das Gebietsschema definiert die lokalisierten Produktwerte für den Export. Beispiel: Nur Produktinformationen in französischer Sprache."
         attributes:
           title: Attribute
           edit: Bearbeiten
           label: "{0} alle Attribute |{1} ein Attribut ausgewählt |] 1, Inf [{{ count }} Attribute ausgewählt"
-          help: Wählen Sie die Produktinformationen die exportiert werden sollen. (z.B. alle technischen Attribute)
+          help: "Wählen Sie die Produktinformationen die exportiert werden sollen. (z.B. alle technischen Attribute)"
           empty: Alle Attribute werden exportiert
           modal:
             apply: Anwenden
@@ -583,7 +583,7 @@ pim_enrich:
           empty_selection: Alle Attribute werden exportiert
         family:
           title: Produktfamilie
-          help: Wählen Sie die Produkte, die entsprechend Ihrer Produktfamilie exportiert werden sollen. (z.B. nur Schuhe und Anzüge).
+          help: "Wählen Sie die Produkte, die entsprechend Ihrer Produktfamilie exportiert werden sollen. (z.B. nur Schuhe und Anzüge)."
           operators:
             IN: In Liste
             "NOT IN": Nicht in der Liste
@@ -599,7 +599,7 @@ pim_enrich:
             "SINCE LAST JOB": Aktualisierte Produkte seit letztem Export
         enabled:
           title: Status
-          help: Wählen Sie die Produkte, die entsprechend Ihres Status exportiert werden sollen.
+          help: "Wählen Sie die Produkte, die entsprechend Ihres Status exportiert werden sollen."
           value:
             all: Alle
             enabled: Aktiviert

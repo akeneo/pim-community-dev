@@ -707,7 +707,7 @@ pim_enrich.mass_edit_action:
     success_flash: S'han actualitzat els atributs de producte
     message.warning: No hi ha cap atribut en comú per als productes seleccionats. Canvieu la vostra selecció, si us plau.
     no_attribute.warning: No hi ha cap atribut en comú per als productes seleccionats. Canvieu la vostra selecció, si us plau.
-    truncated_by_variant_attribute.warning: 'Alguns atributs comuns dels productes seleccionats provenen d''un grup de variants. No estan disponibles per a edició massiva: %attributes%.'
+    truncated_by_variant_attribute.warning: "Alguns atributs comuns dels productes seleccionats provenen d'un grup de variants. No estan disponibles per a edició massiva: %attributes%."
   classify:
     label: Classificar els productes en categories
     description: Els productes es posicionaran a les següents categories, tot mantenint l'emplaçament actual.
@@ -850,7 +850,7 @@ add_to_variant_group_clean.steps.excluded.title: Producte exclòs
 add_to_variant_group_clean.steps.duplicated.title: Eix duplicat
 add_to_variant_group.steps.excluded.title: Producte exclòs
 add_to_variant_group.steps.duplicated.title: Eix duplicat
-add_to_variant_group.steps.cleaner.warning.description: 'Aquest producte no es pot definir pel grup de variants seleccionat: dupliqueu els valors de l''eix de variació amb un altre producte en selecció'
+add_to_variant_group.steps.cleaner.warning.description: "Aquest producte no es pot definir pel grup de variants seleccionat: dupliqueu els valors de l'eix de variació amb un altre producte en selecció"
 edit_common_attributes: Editar atributs comuns
 edit_common_attributes_clean: Netejar arxius per atributs comuns
 perform.steps.duplicated.title: Eix duplicat

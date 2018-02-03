@@ -706,7 +706,7 @@ pim_enrich.mass_edit_action:
     success_flash: Die Produkt-Attribute wurden aktualisiert
     message.warning: Für die ausgewählten Produkte gibt es keine gemeinsamen Attribute. Bitte passen Sie Ihre Auswahl an.
     no_attribute.warning: Für die ausgewählten Produkte gibt es keine gemeinsamen Attribute. Bitte passen Sie Ihre Auswahl an.
-    truncated_by_variant_attribute.warning: 'Einige gemeinsame Attribute der ausgewählten Produkte stammen aus einer Variantengruppe. Diese sind für eine Massenbearbeitung nicht verfügbar: %attributes%.'
+    truncated_by_variant_attribute.warning: "Einige gemeinsame Attribute der ausgewählten Produkte stammen aus einer Variantengruppe. Diese sind für eine Massenbearbeitung nicht verfügbar: %attributes%."
   classify:
     label: Zuordnung von Produkten in Kategorien
     description: Die Produkte werden den folgenden Kategorien zugeordnet. Bestehende Zuordnungen bleiben erhalten.
@@ -850,7 +850,7 @@ add_to_variant_group_clean.steps.excluded.title: Ausgeschlossene Produkte
 add_to_variant_group_clean.steps.duplicated.title: Doppelte Achse
 add_to_variant_group.steps.excluded.title: Ausgeschlossene Produkte
 add_to_variant_group.steps.duplicated.title: Doppelte Achse
-add_to_variant_group.steps.cleaner.warning.description: 'Das Produkt kann der gewählten Variantengruppe nicht zugeordnet werden: gleiche Variantenachsenwerte mit einem anderen Produkt in der Auswahl'
+add_to_variant_group.steps.cleaner.warning.description: "Das Produkt kann der gewählten Variantengruppe nicht zugeordnet werden: gleiche Variantenachsenwerte mit einem anderen Produkt in der Auswahl"
 edit_common_attributes: Gemeinsame Attribute bearbeiten
 edit_common_attributes_clean: Bereinige Dateien für gemeinsame Attribute
 perform.steps.duplicated.title: Doppelte Achse

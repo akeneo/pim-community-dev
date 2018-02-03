@@ -707,7 +707,7 @@ pim_enrich.mass_edit_action:
     success_flash: Atributo(s) del producto(s) han sido actualizados
     message.warning: No hay ningún atributo en común para los productos seleccionados. Por favor cambie su selección.
     no_attribute.warning: No hay ningún atributo en común para los productos seleccionados. Por favor cambie su selección.
-    truncated_by_variant_attribute.warning: 'Algunos atributos comunes de los productos seleccionados provienen de un grupo de variantes. Los mismos no están disponibles para edición en masa: %attributes%.'
+    truncated_by_variant_attribute.warning: "Algunos atributos comunes de los productos seleccionados provienen de un grupo de variantes. Los mismos no están disponibles para edición en masa: %attributes%."
   classify:
     label: Clasificar los productos en categorías
     description: Los productos se colocará en las siguientes categorías, la posición actual se mantendrá.
@@ -851,7 +851,7 @@ add_to_variant_group_clean.steps.excluded.title: Producto excluido
 add_to_variant_group_clean.steps.duplicated.title: Eje duplicado
 add_to_variant_group.steps.excluded.title: Producto excluido
 add_to_variant_group.steps.duplicated.title: Eje duplicado
-add_to_variant_group.steps.cleaner.warning.description: 'El producto no puede ser afectado al grupo de variantes seleccionado: duplicación de valores del eje de variación con otro producto en la selección'
+add_to_variant_group.steps.cleaner.warning.description: "El producto no puede ser afectado al grupo de variantes seleccionado: duplicación de valores del eje de variación con otro producto en la selección"
 edit_common_attributes: Editar atributos comunes
 edit_common_attributes_clean: Limpiar archivos para los atributos comunes
 perform.steps.duplicated.title: Eje duplicado

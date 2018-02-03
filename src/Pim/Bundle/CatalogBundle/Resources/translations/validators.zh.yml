@@ -15,7 +15,7 @@ This value should not be a decimal.: 该值不应该为小数
 'The file extension is not allowed (allowed extensions: %extensions%).': '不允许的文件扩展名 (允许扩展︰ %extensions%)。'
 "The value %value% is already set on another product for the unique attribute %attribute%": 值 %value% 已经设置为另一个产品的唯一属性 %attribute%
 regex.comma_or_semicolon.message: 此字段不应该包含任何逗号或分号。
-file.extensions.message: 不允许的文件扩展名 (允许扩展︰ %extensions%)。
+file.extensions.message: '不允许的文件扩展名 (允许扩展︰ %extensions%)。'
 "This type of value expects the use of {{ decimal_separator }} to separate decimals.": 这种类型的值可以使用 {{ decimal_separator }} 来分隔十进制数字。
 "This type of value expects the use of dot (.) to separate decimals.": 这种类型的值可以使用点（.）来分隔十进制数字。
 "This type of value expects the use of comma (,) to separate decimals.": 这种类型的值可以使用逗号（，）来分隔十进制数字。

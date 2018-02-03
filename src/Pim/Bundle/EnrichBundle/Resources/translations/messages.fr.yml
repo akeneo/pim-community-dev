@@ -707,7 +707,7 @@ pim_enrich.mass_edit_action:
     success_flash: Le(s) attribut(s) ont été mis à jour
     message.warning: Il n'y a pas d'attribut en commun pour les produits sélectionnés. Veuillez modifier votre sélection.
     no_attribute.warning: Il n'y a pas d'attribut en commun pour les produits sélectionnés. Veuillez modifier votre sélection.
-    truncated_by_variant_attribute.warning: 'Certains attributs des produits sélectionnés sont liés à un groupe de variantes. Ils ne sont pas disponibles pour l''édition en masse : %attributes%.'
+    truncated_by_variant_attribute.warning: "Certains attributs des produits sélectionnés sont liés à un groupe de variantes. Ils ne sont pas disponibles pour l'édition en masse : %attributes%."
   classify:
     label: Classifier les produits dans des catégories
     description: Les produits seront positionnés dans les catégories suivantes, le placement existant avant l'opération sera conservé.
@@ -851,7 +851,7 @@ add_to_variant_group_clean.steps.excluded.title: Produit exclu
 add_to_variant_group_clean.steps.duplicated.title: Axe dupliqué
 add_to_variant_group.steps.excluded.title: Produit exclu
 add_to_variant_group.steps.duplicated.title: Axe dupliqué
-add_to_variant_group.steps.cleaner.warning.description: 'Le produit ne peut pas être affecté au groupe de variantes : duplication de la valeur de l''axe de variation avec un autre produit de la sélection'
+add_to_variant_group.steps.cleaner.warning.description: "Le produit ne peut pas être affecté au groupe de variantes : duplication de la valeur de l'axe de variation avec un autre produit de la sélection"
 edit_common_attributes: Modifier les attributs communs
 edit_common_attributes_clean: Nettoyer les fichiers pour les attributs communs
 perform.steps.duplicated.title: Axe dupliqué
