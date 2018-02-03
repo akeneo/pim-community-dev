@@ -86,7 +86,7 @@ pimee_enrich:
           messages:
             approve:
               success: Ehdotus on otettu käyttöön onnistuneesti.
-              error: 'Ehdotusta ei voida ottaa käyttöön seuraavan virheen vuoksi: {{ error }}'
+              error: "Ehdotusta ei voida ottaa käyttöön seuraavan virheen vuoksi: {{ error }}"
             reject:
               success: Ehdotus on hylätty.
             remove:
