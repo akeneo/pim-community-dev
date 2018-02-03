@@ -152,7 +152,7 @@ pim_enrich:
         deletion_failed: Le produit n'a pas pu être supprimé.
         update_successful: Le produit a bien été mis à jour.
         update_failed: Le produit n'a pas pu être mis à jour.
-        field_not_ready: 'Le produit ne peut être sauvé dès maintenant. Les champs suivants ne sont pas prêts : {{ fields }}'
+        field_not_ready: "Le produit ne peut être sauvé dès maintenant. Les champs suivants ne sont pas prêts : {{ fields }}"
         already_in_upload: Un fichier est déjà en téléchargement pour cet attribut pour la locale "{{ locale }}" et le canal "{{ scope }}"
       error:
         upload: Une erreur s'est produite lors du transfert du fichier.
@@ -341,12 +341,12 @@ pim_enrich:
           help: Le canal définit la portée des valeurs des produits, les locales utilisées pour sélectionner les données ainsi que l'arbre de catégories utilisé pour sélectionner les produits.
         locales:
           title: Locales
-          help: 'Les locales définissent les valeurs de produits traduisibles à exporter. Par ex.: les informations des produits en allemand.'
+          help: "Les locales définissent les valeurs de produits traduisibles à exporter. Par ex.: les informations des produits en allemand."
         attributes:
           title: Attributs
           edit: Modifier
           label: "{0} Tous les attributs|{1} Un attribut sélectionné|]1,Inf[ {{ count }} attributs sélectionnés"
-          help: 'Sélectionne les informations du produit à exporter. Par ex. : seulement les attributs techniques.'
+          help: "Sélectionne les informations du produit à exporter. Par ex. : seulement les attributs techniques."
           empty: Tous les attributs vont être exportés
           modal:
             apply: Appliquer
@@ -361,7 +361,7 @@ pim_enrich:
           empty_selection: Tous les attributs vont être exportés
         family:
           title: Famille
-          help: 'Sélectionne les produits à exporter en fonction de leur famille. Par ex. : exporter seulement les chaussures et les robes.'
+          help: "Sélectionne les produits à exporter en fonction de leur famille. Par ex. : exporter seulement les chaussures et les robes."
           operators:
             IN: Dans la liste
             "NOT IN": Pas dans la liste
@@ -377,7 +377,7 @@ pim_enrich:
             "SINCE LAST JOB": Produits mis à jour depuis le dernier export
         enabled:
           title: État
-          help: 'Choisir les produits à exporter selon leur statut. Par ex. : exporter les produits quel que soit leur statut.'
+          help: "Choisir les produits à exporter selon leur statut. Par ex. : exporter les produits quel que soit leur statut."
           value:
             all: Tous
             enabled: Activé

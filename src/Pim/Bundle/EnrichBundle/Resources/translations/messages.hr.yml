@@ -718,7 +718,7 @@ pim_enrich.mass_edit_action:
     success_flash: Atribut(i) proizvoda su ažurirani
     message.warning: Ne postoji zajednički atribut za odabrane proizvode. Promijenite odabir.
     no_attribute.warning: Ne postoji zajednički atribut za odabrane proizvode. Promijenite odabir.
-    truncated_by_variant_attribute.warning: 'Neki uobičajene atributi iz odabranih proizvode dolaze iz varijante grupe. Oni nisu dostupni za masovno uređivanje: %attributes%.'
+    truncated_by_variant_attribute.warning: "Neki uobičajene atributi iz odabranih proizvode dolaze iz varijante grupe. Oni nisu dostupni za masovno uređivanje: %attributes%."
   classify:
     label: Klasificiraj proizvode u kategorije
     description: Proizvodi će biti postavljeni u sljedeće kategorije, postojeći položaj je zadržan.
@@ -861,7 +861,7 @@ add_to_variant_group_clean.steps.excluded.title: Isključeni proizvod
 add_to_variant_group_clean.steps.duplicated.title: Dvostruke osi
 add_to_variant_group.steps.excluded.title: Isključeni proizvod
 add_to_variant_group.steps.duplicated.title: Dvostruke osi
-add_to_variant_group.steps.cleaner.warning.description: 'Proizvod se ne može postaviti u odabranu varijantu grupe: dvostruke vrijednosti osi varijacije s drugim proizvodom u odabiru'
+add_to_variant_group.steps.cleaner.warning.description: "Proizvod se ne može postaviti u odabranu varijantu grupe: dvostruke vrijednosti osi varijacije s drugim proizvodom u odabiru"
 edit_common_attributes: Uredi uobičajene atribute
 edit_common_attributes_clean: Obriši datoteke za uobičajene atribute
 perform.steps.duplicated.title: Dvostruke osi

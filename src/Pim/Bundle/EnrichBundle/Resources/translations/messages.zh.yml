@@ -496,7 +496,7 @@ info:
     disable: 禁用
     disabled: 已禁用
   group:
-    axis: 属性轴：%attributes%
+    axis: '属性轴：%attributes%'
     select products: 请选择属于这个组的商品
     selectable products: 以下可选商品在每个属性轴都有值
     no group types: 没有组类型存在，请单击此处以创建一个
@@ -718,7 +718,7 @@ pim_enrich.mass_edit_action:
     success_flash: 产品属性已更新
     message.warning: 所选定的产品中没有共同的产品属性。请更改您的选择。
     no_attribute.warning: 所选定的产品中没有共同的产品属性。请更改您的选择。
-    truncated_by_variant_attribute.warning: 选定的产品中一些常见的属性从来自款式组。他们并不可用于批量编辑︰ %attributes%。
+    truncated_by_variant_attribute.warning: "选定的产品中一些常见的属性从来自款式组。他们并不可用于批量编辑︰ %attributes%。"
   classify:
     label: 在目录中为产品分类
     description: 产品将被放入以下目录，现存的位置也会保留。
@@ -862,7 +862,7 @@ add_to_variant_group_clean.steps.excluded.title: 被排除在外的产品
 add_to_variant_group_clean.steps.duplicated.title: 重复的轴
 add_to_variant_group.steps.excluded.title: 被排除在外的产品
 add_to_variant_group.steps.duplicated.title: 重复的轴
-add_to_variant_group.steps.cleaner.warning.description: 产品不能进入所选的款式组︰ 与其它产品有重复的差异轴值。
+add_to_variant_group.steps.cleaner.warning.description: "产品不能进入所选的款式组︰ 与其它产品有重复的差异轴值。"
 edit_common_attributes: 编辑共同属性
 edit_common_attributes_clean: 为共同的属性清理文件
 perform.steps.duplicated.title: 重复的轴

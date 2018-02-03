@@ -718,7 +718,7 @@ pim_enrich.mass_edit_action:
     success_flash: Атрибуты товаров были обновлены
     message.warning: У выбранных продуктов нет атрибутов. Пожалуйста выберите что-нибудь другое.
     no_attribute.warning: У выбранных продуктов нет атрибутов. Пожалуйста выберите что-нибудь другое.
-    truncated_by_variant_attribute.warning: 'Некоторые общие атрибуты для выбранных продуктов получены из групп вариантов. Они не доступны для массового изменения: %attributes%.'
+    truncated_by_variant_attribute.warning: "Некоторые общие атрибуты для выбранных продуктов получены из групп вариантов. Они не доступны для массового изменения: %attributes%."
   classify:
     label: Классифицировать товары в категориях
     description: Продукты будут добавлены в следующие категории, исходное расположение сохраниться.
@@ -861,7 +861,7 @@ add_to_variant_group_clean.steps.excluded.title: Исключенные прод
 add_to_variant_group_clean.steps.duplicated.title: Продублированные оси
 add_to_variant_group.steps.excluded.title: Исключенные продукты
 add_to_variant_group.steps.duplicated.title: Продублированные оси
-add_to_variant_group.steps.cleaner.warning.description: 'Продукт не может принадлежать к выбранной группе вариантов: продублируйте значения вариативной оси с другим выбранным продуктом'
+add_to_variant_group.steps.cleaner.warning.description: "Продукт не может принадлежать к выбранной группе вариантов: продублируйте значения вариативной оси с другим выбранным продуктом"
 edit_common_attributes: Редактировать общие атрибуты
 edit_common_attributes_clean: Редактировать файлы общих атрибутов
 perform.steps.duplicated.title: Продублированные оси

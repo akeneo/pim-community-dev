@@ -718,7 +718,7 @@ pim_enrich.mass_edit_action:
     success_flash: 製品属性が更新されました
     message.warning: 選択した製品に共通する属性はありません。他の製品を選択してください。
     no_attribute.warning: 選択した製品に共通する属性はありません。他の製品を選択してください。
-    truncated_by_variant_attribute.warning: '選択した製品のいくつかの共通する属性はバリアントグループに従います。これらは大容量版のためご利用いただけません: %attributes%。'
+    truncated_by_variant_attribute.warning: "選択した製品のいくつかの共通する属性はバリアントグループに従います。これらは大容量版のためご利用いただけません: %attributes%。"
   classify:
     label: 製品をカテゴリに分類
     description: 製品は以下のカテゴリに配置されます、既存の表示順が保持されます。
@@ -862,7 +862,7 @@ add_to_variant_group_clean.steps.excluded.title: 除外製品
 add_to_variant_group_clean.steps.duplicated.title: 重複した軸
 add_to_variant_group.steps.excluded.title: 除外製品
 add_to_variant_group.steps.duplicated.title: 重複した軸
-add_to_variant_group.steps.cleaner.warning.description: '選択したバリアントグループ内に商品を設定できません: 選択された他の製品でバリエーションの基準値を複製します。'
+add_to_variant_group.steps.cleaner.warning.description: "選択したバリアントグループ内に商品を設定できません: 選択された他の製品でバリエーションの基準値を複製します。"
 edit_common_attributes: 共通の属性を編集
 edit_common_attributes_clean: 共通の属性を持つファイルを削除
 perform.steps.duplicated.title: 重複した軸
