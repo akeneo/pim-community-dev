@@ -340,12 +340,12 @@ pim_enrich:
           help: 渠道定义了产品值的范围、 用于选择数据的本地化语言，以及用来选择产品的目录树。
         locales:
           title: 本地化语言
-          help: 本地化语言定义了要导出的本地化产品值。例如， 仅法国的产品信息
+          help: "本地化语言定义了要导出的本地化产品值。例如， 仅法国的产品信息"
         attributes:
           title: 属性
           edit: 编辑
           label: "{0} 所有产品 |{1} 一类别选择 |]1，Inf [{{ count }} 类别选择"
-          help: 选择要导出的产品信息。例如︰ 仅导出有技术类的属性。
+          help: "选择要导出的产品信息。例如︰ 仅导出有技术类的属性。"
           empty: 将导出所有属性
           modal:
             apply: 应用
@@ -360,7 +360,7 @@ pim_enrich:
           empty_selection: 将导出所有属性
         family:
           title: 产品族
-          help: 按品类选中产品进行导出。例如︰ 只导出鞋和衣服。
+          help: "按品类选中产品进行导出。例如︰ 只导出鞋和衣服。"
           operators:
             IN: 在列表中
             "NOT IN": 不在列表中
@@ -376,7 +376,7 @@ pim_enrich:
             "SINCE LAST JOB": 从上次导出后更新过的产品
         enabled:
           title: 状态
-          help: 根据它们的状态来选择产品导出。例如，导出所有状态的产品。
+          help: "根据它们的状态来选择产品导出。例如，导出所有状态的产品。"
           value:
             all: 所有
             enabled: 已启用

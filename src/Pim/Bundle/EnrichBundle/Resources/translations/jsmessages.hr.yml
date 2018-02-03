@@ -340,12 +340,12 @@ pim_enrich:
           help: Kanal definira opseg za vrijednosti proizvoda, lokal se koristi za odabir podataka, a stabla se koriste za odabir proizvoda.
         locales:
           title: Lokalizacija
-          help: 'Lokal definira lokalizirane vrijednosti proizvoda za izvoz. Npr: samo informacije o proizvodu na francuskom.'
+          help: "Lokal definira lokalizirane vrijednosti proizvoda za izvoz. Npr: samo informacije o proizvodu na francuskom."
         attributes:
           title: Atributi
           edit: Uredi
           label: "{0} svi atributi |{1} jedan atribut odabran |] 1, Inf [{{ count }} atributa odabrano"
-          help: 'Odaberite informacije o proizvodima za izvoz. Npr: samo tehnički atributi.'
+          help: "Odaberite informacije o proizvodima za izvoz. Npr: samo tehnički atributi."
           empty: Svi atributi će se izvesti
           modal:
             apply: Primijeni
@@ -360,7 +360,7 @@ pim_enrich:
           empty_selection: Svi atributi će se izvesti
         family:
           title: Obitelj
-          help: 'Odaberite proizvode za izvoz u odnosu na njihovu obitelji. Ex: Izvoz samo za cipele i haljine.'
+          help: "Odaberite proizvode za izvoz u odnosu na njihovu obitelji. Ex: Izvoz samo za cipele i haljine."
           operators:
             IN: U popisu
             "NOT IN": Nije na popisu
@@ -376,7 +376,7 @@ pim_enrich:
             "SINCE LAST JOB": Ažurirani proizvodi od zadnjeg exporta
         enabled:
           title: Status
-          help: 'Odaberite proizvode za izvoz preko njihovog statusa. Ex: Izvoz proizvoda neovisno o njihovom statusu.'
+          help: "Odaberite proizvode za izvoz preko njihovog statusa. Ex: Izvoz proizvoda neovisno o njihovom statusu."
           value:
             all: Sve
             enabled: Omogućeno
