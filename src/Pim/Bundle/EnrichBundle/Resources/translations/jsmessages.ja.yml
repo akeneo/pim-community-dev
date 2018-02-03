@@ -180,7 +180,7 @@ pim_enrich:
         deletion_failed: 製品を削除できませんでした。
         update_successful: 商品を更新しました。
         update_failed: 製品を更新できませんでした。
-        field_not_ready: この製品をすぐに保存できません。次のフィールドが準備ができていません：{{ fields }}
+        field_not_ready: "この製品をすぐに保存できません。次のフィールドが準備ができていません：{{ fields }}"
         already_in_upload: ファイルはすでに {{ locale }} ローケル と {{ scope }} スコープでこの属性のためにアップロードされています
       error:
         upload: ファイルをアップロード中にエラーが発生
@@ -242,7 +242,7 @@ pim_enrich:
         create_successful: 製品モデルを作成しました
         update_successful: 製品モデルが正常に更新されました。そのバリエーションの商品の完全性が再計算されます。
         update_failed: 製品モデルを更新できませんでした。
-        field_not_ready: この製品モデルをすぐに保存できません。次のフィールドが準備ができていません：{{ fields }}
+        field_not_ready: "この製品モデルをすぐに保存できません。次のフィールドが準備ができていません：{{ fields }}"
       read_only_parent_attribute_from_common: この属性は、共通の属性を更新できます。
       read_only_parent_attribute_from_model: "この属性は、{{ axes }} によって属性で更新できます。"
       variant_axis: バリアントの軸
@@ -260,7 +260,7 @@ pim_enrich:
         deletion_failed: 関連タイプを削除できませんでした。
         update_successful: 関連タイプが正常に更新されました。
         update_failed: 関連タイプを更新できませんでした。
-        field_not_ready: この連合タイプをすぐに保存できません。次のフィールドが準備ができていません：{{ fields }}
+        field_not_ready: "この連合タイプをすぐに保存できません。次のフィールドが準備ができていません：{{ fields }}"
       meta:
         created: 作成日時
         created_by: 作成者：
@@ -279,7 +279,7 @@ pim_enrich:
         deletion_failed: グループタイプを削除できませんでした。
         update_successful: グループタイプを更新しました。
         update_failed: グループタイプを更新できませんでした。
-        field_not_ready: このグループタイプをすぐに保存できません。次のフィールドが準備ができていません：{{ fields }}
+        field_not_ready: "このグループタイプをすぐに保存できません。次のフィールドが準備ができていません：{{ fields }}"
       meta:
         created: 作成日時
         created_by: 作成者：
@@ -301,7 +301,7 @@ pim_enrich:
         update_failed: チャンネルを更新できませんでした。
         create_successful: チャンネルを作成しました。
         create_failed: チャンネルを作成できませんでした。
-        field_not_ready: このチャネルをすぐに保存できません。次のフィールドが準備ができていません：{{ fields }}
+        field_not_ready: "このチャネルをすぐに保存できません。次のフィールドが準備ができていません：{{ fields }}"
       meta:
         created: 作成日時
         created_by: 作成者：
@@ -366,7 +366,7 @@ pim_enrich:
         deletion_failed: グループを削除できませんでした。
         update_successful: グループを更新しました。
         update_failed: グループを更新できませんでした。
-        field_not_ready: このグループをすぐに保存できません。次のフィールドが準備ができていません：{{ fields }}
+        field_not_ready: "このグループをすぐに保存できません。次のフィールドが準備ができていません：{{ fields }}"
       btn:
         save: 保存
       meta:
@@ -798,12 +798,12 @@ pim_enrich:
           help: チャンネルは、製品の値と、データを選択するために使用するローケルおよび製品を選択するために使用するツリーのスコープを定義しています。
         locales:
           title: ロケール
-          help: 'ロケールは、エクスポートするローカライズされた製品の値を定義します。例: フランス語で書かれた唯一の製品情報。'
+          help: "ロケールは、エクスポートするローカライズされた製品の値を定義します。例: フランス語で書かれた唯一の製品情報。"
         attributes:
           title: 属性
           edit: 編集
           label: "{0} すべての属性 |{1} 1つの属性の選択 |]1、Inf [{{ count }} 属性の選択"
-          help: 'エクスポートする製品情報を選択します。例: 技術的な属性のみ。'
+          help: "エクスポートする製品情報を選択します。例: 技術的な属性のみ。"
           empty: 全ての属性がエクスポートされます
           modal:
             apply: 適用
@@ -820,7 +820,7 @@ pim_enrich:
           description: エクスポートする製品情報を選択
         family:
           title: ファミリー
-          help: '製品のファミリーによってエクスポートする製品を選択します。例: 靴とドレスのみをエクスポート。'
+          help: "製品のファミリーによってエクスポートする製品を選択します。例: 靴とドレスのみをエクスポート。"
           operators:
             IN: リストに存在する
             "NOT IN": 一覧にありません
@@ -836,7 +836,7 @@ pim_enrich:
             "SINCE LAST JOB": 最後のエクスポートから更新された製品
         enabled:
           title: ステータス
-          help: '製品の状態でエクスポートする製品を選択します。例: いかなる状態でも製品をエクスポートします。'
+          help: "製品の状態でエクスポートする製品を選択します。例: いかなる状態でも製品をエクスポートします。"
           value:
             all: すべて
             enabled: 有効

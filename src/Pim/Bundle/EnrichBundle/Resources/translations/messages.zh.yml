@@ -409,7 +409,7 @@ info:
     disable: 禁用
     disabled: 已禁用
   group:
-    axis: 属性轴：%attributes%
+    axis: '属性轴：%attributes%'
     select products: 请选择属于这个组的商品
     selectable products: 以下可选商品在每个属性轴都有值
     no group types: 没有组类型存在，请单击此处以创建一个
