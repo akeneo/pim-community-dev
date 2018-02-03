@@ -86,7 +86,7 @@ pimee_enrich:
           messages:
             approve:
               success: 提案が正常に適用されました。
-              error: この提案は、次のエラーのため適用できません。エラー：{{ error }}
+              error: "この提案は、次のエラーのため適用できません。エラー：{{ error }}"
             reject:
               success: 提案は拒否されました。
             remove:
