@@ -85,7 +85,7 @@ pimee_enrich:
           messages:
             approve:
               success: Der Vorschlag wurde erfolgreich freigegeben.
-              error: 'Der Vorschlag kann aufgrund des folgenden Fehlers nicht freigegeben werden: {{ error }}'
+              error: "Der Vorschlag kann aufgrund des folgenden Fehlers nicht freigegeben werden: {{ error }}"
             reject:
               success: Der Vorschlag wurde abgelehnt.
             remove:

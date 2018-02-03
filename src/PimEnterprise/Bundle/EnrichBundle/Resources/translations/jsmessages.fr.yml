@@ -86,7 +86,7 @@ pimee_enrich:
           messages:
             approve:
               success: La proposition a été soumise avec succès.
-              error: 'La proposition ne peut être soumise en raison de l''erreur suivante: {{ error }}'
+              error: "La proposition ne peut être soumise en raison de l'erreur suivante: {{ error }}"
             reject:
               success: La proposition a été rejetée.
             remove:
