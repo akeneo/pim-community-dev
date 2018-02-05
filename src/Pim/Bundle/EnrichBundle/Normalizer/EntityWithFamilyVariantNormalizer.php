@@ -175,6 +175,11 @@ class EntityWithFamilyVariantNormalizer implements NormalizerInterface
                         $valuesForLocale[] = empty($label) ? '[' . $option->getCode() . ']' : $label;
 
                         break;
+                    case AttributeTypes::REFERENCE_DATA_SIMPLE_SELECT:
+                        $option = $value->getData();
+                        $valuesForLocale[] = (string) $option;
+
+                        break;
                     case AttributeTypes::METRIC:
                         $valuesForLocale[] = sprintf(
                             '%s %s',
