@@ -80,15 +80,6 @@ function(_, messenger, __, Modal, AbstractAction) {
             return params;
         },
 
-        getSelectedRows: function() {
-            var selectionState = this.datagrid.getSelectionState();
-            var itemIds = _.map(selectionState.selectedModels, function(model) {
-                return model.get(this.identifierFieldName);
-            }, this);
-
-            return itemIds;
-        },
-
         _handleAjax: function(action) {
             if (action.dispatched) {
                 return;
