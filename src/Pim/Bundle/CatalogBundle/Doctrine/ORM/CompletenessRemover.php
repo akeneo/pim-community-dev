@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Doctrine\ORM;
 
+use Akeneo\Component\StorageUtils\Cache\CacheClearerInterface;
 use Akeneo\Component\StorageUtils\Cursor\CursorInterface;
 use Doctrine\DBAL\Connection;
 use Doctrine\ORM\EntityManagerInterface;
@@ -40,22 +41,30 @@ class CompletenessRemover implements CompletenessRemoverInterface
     /** @var string */
     protected $completenessTable;
 
+    /** @var CacheClearerInterface */
+    protected $clearer;
+
     /**
      * @param ProductQueryBuilderFactoryInterface $pqbFactory
      * @param EntityManagerInterface              $entityManager
      * @param ProductIndexer                      $indexer
      * @param string                              $completenessTable
+     * @param CacheClearerInterface               $clearer
+     *
+     * TODO: Pull-up day. Refactor before merge in master.
      */
     public function __construct(
         ProductQueryBuilderFactoryInterface $pqbFactory,
         EntityManagerInterface $entityManager,
         ProductIndexer $indexer,
-        $completenessTable
+        $completenessTable,
+        CacheClearerInterface $clearer = null
     ) {
         $this->pqbFactory = $pqbFactory;
         $this->entityManager = $entityManager;
         $this->indexer = $indexer;
         $this->completenessTable = $completenessTable;
+        $this->clearer = $clearer;
     }
 
     /**
@@ -132,6 +141,7 @@ class CompletenessRemover implements CompletenessRemoverInterface
             $bulkedProducts[] = $product;
             $productIds[] = $product->getId();
 
+            $this->clearProductCompleteness($product, $channel, $locale);
             if (self::BULK_SIZE === $bulkCounter) {
                 $this->entityManager->getConnection()->executeQuery(
                     $query,
@@ -139,6 +149,9 @@ class CompletenessRemover implements CompletenessRemoverInterface
                     $queryTypes
                 );
                 $this->indexer->indexAll($bulkedProducts);
+                if (null !== $this->clearer) {
+                    $this->clearer->clear();
+                }
 
                 $bulkedProducts = [];
                 $productIds = [];
@@ -146,8 +159,6 @@ class CompletenessRemover implements CompletenessRemoverInterface
             } else {
                 $bulkCounter++;
             }
-
-            $this->clearProductCompleteness($product, $channel, $locale);
         }
 
         if (!empty($productIds)) {
@@ -157,6 +168,9 @@ class CompletenessRemover implements CompletenessRemoverInterface
                 $queryTypes
             );
             $this->indexer->indexAll($bulkedProducts);
+            if (null !== $this->clearer) {
+                $this->clearer->clear();
+            }
         }
     }
 
