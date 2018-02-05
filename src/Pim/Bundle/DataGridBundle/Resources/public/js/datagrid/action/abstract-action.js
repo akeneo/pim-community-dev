@@ -212,8 +212,8 @@ function($, _, Backbone, routing, Navigation, __, mediator, messenger, error, Mo
             }
             action.datagrid.showLoading();
             $.post(action.getLinkWithParameters(), {itemIds: action.getSelectedRows().join(',')})
-                .done(action._onAjaxSuccess)
-                .fail(action._onAjaxError);
+                .done(action._onAjaxSuccess.bind(this))
+                .fail(action._onAjaxError.bind(this));
         },
 
         _onAjaxError: function(jqXHR, textStatus, errorThrown) {
@@ -290,6 +290,15 @@ function($, _, Backbone, routing, Navigation, __, mediator, messenger, error, Mo
             }).on('ok', callback);
         },
 
-        saveItemIds: function() {}
+        saveItemIds: function() {},
+
+        getSelectedRows: function() {
+            var selectionState = this.datagrid.getSelectionState();
+            var itemIds = _.map(selectionState.selectedModels, function(model) {
+                return model.get(this.identifierFieldName);
+            }, this);
+
+            return itemIds;
+        }
     });
 });
