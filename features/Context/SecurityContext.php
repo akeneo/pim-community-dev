@@ -499,6 +499,28 @@ class SecurityContext extends RawMinkContext implements KernelAwareInterface
         $this->doCall('DELETE', $url);
     }
 
+    /**
+     * @When /^I make a direct authenticated DELETE call on the "([^"]*)" group$/
+     */
+    public function iMakeADirectAuthenticatedDeleteCallOnTheGroup($groupCode)
+    {
+        $routeName = 'pim_enrich_group_remove';
+
+        $group = $this->kernel
+            ->getContainer()
+            ->get('pim_catalog.repository.group')
+            ->findOneByIdentifier($groupCode);
+
+        $url = $this->kernel
+            ->getContainer()
+            ->get('router')
+            ->generate($routeName, [
+                'id' => $group->getId(),
+            ]);
+
+        $this->doCall('DELETE', $url);
+    }
+
 
 //    /**
 //     * @When /^I make a direct authenticated POST call on the "([^"]*)" user group with following data:$/
@@ -551,6 +573,19 @@ class SecurityContext extends RawMinkContext implements KernelAwareInterface
             ->findOneByIdentifier(sprintf('%s.%s', $attributeCode, $attributeOptionCode));
 
         assertEquals($order, $attributeOption->getSortOrder());
+    }
+
+    /**
+     * @Then /^there should be a "([^"]*)" group$/
+     */
+    public function thereShouldBeAGroup($groupCode)
+    {
+        $group = $this->kernel
+            ->getContainer()
+            ->get('pim_catalog.repository.group')
+            ->findOneByIdentifier($groupCode);
+
+        assertNotNull($group);
     }
 
     /**
