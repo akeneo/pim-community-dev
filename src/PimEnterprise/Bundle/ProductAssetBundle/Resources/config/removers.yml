@@ -36,3 +36,4 @@ services:
         parent: pim_catalog.remover.completeness
         arguments:
             - '@pim_catalog.repository.attribute'
+            - '@pim_connector.doctrine.cache_clearer'
