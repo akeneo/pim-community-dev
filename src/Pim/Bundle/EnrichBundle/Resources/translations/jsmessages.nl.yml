@@ -651,7 +651,7 @@ pim_enrich:
         attributes:
           title: Attributen
           edit: Bewerken
-          help: Selecteer de product informatie om te exporteren. Bv. enkel technische attributen.
+          help: "Selecteer de product informatie om te exporteren. Bv. enkel technische attributen."
           empty: Alle attributen worden geëxporteerd
           modal:
             apply: Toepassen
@@ -666,7 +666,7 @@ pim_enrich:
           title: Attributen
         family:
           title: Familie
-          help: Selecteer de producten om te importeren volgens hun familie. Bv. exporteer enkel schoenen en jurken.
+          help: "Selecteer de producten om te importeren volgens hun familie. Bv. exporteer enkel schoenen en jurken."
           operators:
             IN: In lijst
             "NOT IN": Niet in de lijst
@@ -682,7 +682,7 @@ pim_enrich:
             "SINCE LAST JOB": Geüpdatete producten sinds laatste export
         enabled:
           title: Status
-          help: Selecteer de producten om te exporteren volgens hun status. Bv. exporteer allerlei producten volgens hun status.
+          help: "Selecteer de producten om te exporteren volgens hun status. Bv. exporteer allerlei producten volgens hun status."
           value:
             all: Alle
             enabled: Ingeschakeld
