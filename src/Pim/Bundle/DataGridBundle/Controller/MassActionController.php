@@ -4,6 +4,7 @@ namespace Pim\Bundle\DataGridBundle\Controller;
 
 use Pim\Bundle\DataGridBundle\Extension\MassAction\MassActionDispatcher;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
@@ -38,10 +39,14 @@ class MassActionController
     /**
      * Mass delete action
      *
-     * @return JsonResponse
+     * @return RedirectResponse|JsonResponse
      */
-    public function massActionAction()
+    public function massActionAction(Request $request)
     {
+        if (!$request->isXmlHttpRequest()) {
+            return new RedirectResponse('/');
+        }
+
         $response = $this->massActionDispatcher->dispatch($this->request);
 
         $data = [

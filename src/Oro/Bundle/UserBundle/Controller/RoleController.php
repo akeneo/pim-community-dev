@@ -7,6 +7,7 @@ use Oro\Bundle\UserBundle\Entity\Role;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 
 class RoleController extends Controller
@@ -43,8 +44,12 @@ class RoleController extends Controller
      *
      * @AclAncestor("pim_user_role_remove")
      */
-    public function deleteAction($id)
+    public function deleteAction(Request $request, $id)
     {
+        if (!$request->isXmlHttpRequest()) {
+            return new RedirectResponse('/');
+        }
+
         $em = $this->get('doctrine.orm.entity_manager');
         $roleClass = $this->container->getParameter('oro_user.role.entity.class');
         $role = $em->getRepository($roleClass)->find($id);
