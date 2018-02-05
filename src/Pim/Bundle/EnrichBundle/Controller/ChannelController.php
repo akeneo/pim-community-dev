@@ -144,6 +144,10 @@ class ChannelController
      */
     public function removeAction(Request $request, Channel $channel)
     {
+        if (!$request->isXmlHttpRequest()) {
+            return new RedirectResponse('/');
+        }
+
         // TODO This validation should be moved to a validator and that validation triggered by the remover
         $channelCount = $this->channelRepository->countAll();
         if ($channelCount <= 1) {

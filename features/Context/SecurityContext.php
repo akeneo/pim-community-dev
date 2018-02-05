@@ -427,6 +427,28 @@ class SecurityContext extends RawMinkContext implements KernelAwareInterface
         $this->doCall('DELETE', $url);
     }
 
+    /**
+     * @When /^I make a direct authenticated DELETE call on the "([^"]*)" channel$/
+     */
+    public function iMakeADirectAuthenticatedDeleteCallOnTheChannel($channelCode)
+    {
+        $routeName = 'pim_enrich_channel_remove';
+
+        $channel = $this->kernel
+            ->getContainer()
+            ->get('pim_catalog.repository.channel')
+            ->findOneByIdentifier($channelCode);
+
+        $url = $this->kernel
+            ->getContainer()
+            ->get('router')
+            ->generate($routeName, [
+                'id' => $channel->getId(),
+            ]);
+
+        $this->doCall('DELETE', $url);
+    }
+
 //    /**
 //     * @When /^I make a direct authenticated POST call on the "([^"]*)" user group with following data:$/
 //     */
@@ -478,6 +500,19 @@ class SecurityContext extends RawMinkContext implements KernelAwareInterface
             ->findOneByIdentifier(sprintf('%s.%s', $attributeCode, $attributeOptionCode));
 
         assertEquals($order, $attributeOption->getSortOrder());
+    }
+
+    /**
+     * @Then /^there should be a "([^"]*)" channel$/
+     */
+    public function thereShouldBeAChannel($channelCode)
+    {
+        $channel = $this->kernel
+            ->getContainer()
+            ->get('pim_catalog.repository.channel')
+            ->findOneByIdentifier($channelCode);
+
+        assertNotNull($channel);
     }
 
     /**
