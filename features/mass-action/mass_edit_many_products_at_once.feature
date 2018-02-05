@@ -22,7 +22,7 @@ Feature: Mass edit many products at once via a form
     And I expand the "default" category
     And I press the "2018 collection" button
     And I confirm mass edit
-    And I wait for the "add_product_value" job to finish
+    And I wait for the "add_to_category" job to finish
     Then I should see the text "COMPLETED"
     And I should see the text "read 103"
     And I should see the text "processed 103"
@@ -53,9 +53,8 @@ Feature: Mass edit many products at once via a form
     And I expand the "master" category
     And I press the "Custom category" button
     And I confirm mass edit
-    And I wait for the "add_product_value" job to finish
+    And I wait for the "add_to_category" job to finish
     Then I should see the text "COMPLETED"
-    And I should see the text "read 345"
-    And I should see the text "processed 345"
-    And I should see the text "skipped 83"
+    And I should see the text "read 428"
+    And I should see the text "processed 428"
     And the category of the product "product_1" should be "custom_category"
