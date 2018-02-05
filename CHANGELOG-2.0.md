@@ -1,9 +1,12 @@
-# 2.0.x
+# 2.0.15 (2018-02-01)
+
+# 2.0.14 (2018-02-01)
 
 ## Bug fixes
 
 - PIM-7108: Fix a bug preventing the change of an asset last update date when uploading a new reference file
 - PIM-7128: Fix drag & drop for the mass upload of assets
+- PIM-7146: Fix rule import with condition on completeness
 
 # 2.0.13 (2018-01-23)
 
