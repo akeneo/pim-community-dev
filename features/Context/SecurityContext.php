@@ -374,6 +374,58 @@ class SecurityContext extends RawMinkContext implements KernelAwareInterface
         $this->doCall('PUT', $url, [], $attributeOptionIds);
     }
 
+    /**
+     * @When /^I make a direct authenticated POST call to move the "([^"]*)" category into the "([^"]*)" category$/
+     */
+    public function iMakeADirectAuthenticatedPostCallToMoveTheCategoryIntoTheCategory($childCategoryCode, $parentCategoryCode)
+    {
+        $routeName = 'pim_enrich_categorytree_movenode';
+
+        $url = $this->kernel
+            ->getContainer()
+            ->get('router')
+            ->generate($routeName);
+
+        $childCategory = $this->kernel
+            ->getContainer()
+            ->get('pim_catalog.repository.category')
+            ->findOneByIdentifier($childCategoryCode);
+
+        $parentCategory = $this->kernel
+            ->getContainer()
+            ->get('pim_catalog.repository.category')
+            ->findOneByIdentifier($parentCategoryCode);
+
+        $this->doCall('POST', $url, [
+            'id' => $childCategory->getId(),
+            'parent' => $parentCategory->getId(),
+            'prev_sibling' => null,
+            'position' => 0,
+            'copy' => 0,
+        ]);
+    }
+
+    /**
+     * @When /^I make a direct authenticated DELETE call on the "([^"]*)" category$/
+     */
+    public function iMakeADirectAuthenticatedDeleteCallOnTheCategory($categoryCode)
+    {
+        $routeName = 'pim_enrich_categorytree_remove';
+
+        $category = $this->kernel
+            ->getContainer()
+            ->get('pim_catalog.repository.category')
+            ->findOneByIdentifier($categoryCode);
+
+        $url = $this->kernel
+            ->getContainer()
+            ->get('router')
+            ->generate($routeName, [
+                'id' => $category->getId(),
+            ]);
+
+        $this->doCall('DELETE', $url);
+    }
 
 //    /**
 //     * @When /^I make a direct authenticated POST call on the "([^"]*)" user group with following data:$/
@@ -403,6 +455,19 @@ class SecurityContext extends RawMinkContext implements KernelAwareInterface
 //    }
 
     /**
+     * @Then /^the category "([^"]*)" should have "([^"]*)" as parent$/
+     */
+    public function theCategoryShouldHaveAsParent($childCategoryCode, $parentCategoryCode)
+    {
+        $childCategory = $this->kernel
+            ->getContainer()
+            ->get('pim_catalog.repository.category')
+            ->findOneByIdentifier($childCategoryCode);
+
+        assertEquals($parentCategoryCode, $childCategory->getParent()->getCode());
+    }
+
+    /**
      * @Then /^the order for attribute options "([^"]*)" of attribute "([^"]*)" should be (\d+)$/
      */
     public function theOrderForAttributeOptionsOfAttributeShouldBe($attributeOptionCode, $attributeCode, $order)
@@ -412,17 +477,7 @@ class SecurityContext extends RawMinkContext implements KernelAwareInterface
             ->get('pim_catalog.repository.attribute_option')
             ->findOneByIdentifier(sprintf('%s.%s', $attributeCode, $attributeOptionCode));
 
-        assertEquals(
-            $order,
-            $attributeOption->getSortOrder(),
-            sprintf(
-                'Order for attribute option "%s" of attribute "%s" is %s, but %s was expected.',
-                $attributeOptionCode,
-                $attributeCode,
-                $attributeOption->getSortOrder(),
-                $order
-            )
-        );
+        assertEquals($order, $attributeOption->getSortOrder());
     }
 
     /**
@@ -435,10 +490,20 @@ class SecurityContext extends RawMinkContext implements KernelAwareInterface
             ->get('pim_catalog.repository.association_type')
             ->findOneByIdentifier($associationTypeCode);
 
-        assertNotNull(
-            $associationType,
-            sprintf("Association type with code '%s' should exist, but it's not.", $associationTypeCode)
-        );
+        assertNotNull($associationType);
+    }
+
+    /**
+     * @Then /^there should be a "([^"]*)" category$/
+     */
+    public function thereShouldBeACategory($categoryCode)
+    {
+        $category = $this->kernel
+            ->getContainer()
+            ->get('pim_catalog.repository.category')
+            ->findOneByIdentifier($categoryCode);
+
+        assertNotNull($category);
     }
 
     /**
@@ -451,10 +516,7 @@ class SecurityContext extends RawMinkContext implements KernelAwareInterface
             ->get('pim_catalog.repository.attribute_group')
             ->findOneByIdentifier($attributeGroupCode);
 
-        assertNotNull(
-            $attributeGroup,
-            sprintf("Attribute group with code '%s' should exist, but it's not.", $attributeGroupCode)
-        );
+        assertNotNull($attributeGroup);
     }
 
     /**
@@ -467,10 +529,7 @@ class SecurityContext extends RawMinkContext implements KernelAwareInterface
             ->get('pim_catalog.repository.attribute')
             ->findOneByIdentifier($attributeCode);
 
-        assertNotNull(
-            $attribute,
-            sprintf("Attribute with code '%s' should exist, but it's not.", $attributeCode)
-        );
+        assertNotNull($attribute);
     }
 
     /**
@@ -483,10 +542,7 @@ class SecurityContext extends RawMinkContext implements KernelAwareInterface
             ->get('pim_datagrid.repository.datagrid_view')
             ->findOneBy(['label' => $datagridViewLabel]);
 
-        assertNotNull(
-            $view,
-            sprintf("Datagrid view with label '%s' should exist, but it's not.", $datagridViewLabel)
-        );
+        assertNotNull($view);
     }
 
     /**
@@ -499,10 +555,7 @@ class SecurityContext extends RawMinkContext implements KernelAwareInterface
             ->get('pim_catalog.repository.product')
             ->findOneByIdentifier($productIdentifier);
 
-        assertNotNull(
-            $product,
-            sprintf("Product with identifier '%s' should exist, but it's not.", $productIdentifier)
-        );
+        assertNotNull($product);
     }
 
     /**
@@ -516,18 +569,11 @@ class SecurityContext extends RawMinkContext implements KernelAwareInterface
             ->findOneByIdentifier(sprintf('%s.%s', $attributeCode, $attributeOptionCode));
 
         if ($not) {
-            assertNull(
-                $attributeOption,
-                sprintf("Attribute option with identifier '%s' for attribute '%s' should not exist, but it is.", $attributeOptionCode, $attributeCode)
-            );
+            assertNull($attributeOption);
         } else {
-            assertNotNull(
-                $attributeOption,
-                sprintf("Attribute option with identifier '%s' for attribute '%s' should exist, but it's not.", $attributeOptionCode, $attributeCode)
-            );
+            assertNotNull($attributeOption);
         }
     }
-
 
     /**
      * @param string $method

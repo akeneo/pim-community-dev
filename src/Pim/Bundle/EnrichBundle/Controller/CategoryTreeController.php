@@ -140,6 +140,10 @@ class CategoryTreeController extends Controller
      */
     public function moveNodeAction(Request $request)
     {
+        if (!$request->isXmlHttpRequest()) {
+            return new RedirectResponse('/');
+        }
+
         if (false === $this->securityFacade->isGranted($this->buildAclName('category_edit'))) {
             throw new AccessDeniedException();
         }
@@ -351,8 +355,12 @@ class CategoryTreeController extends Controller
      *
      * @return Response|RedirectResponse
      */
-    public function removeAction($id)
+    public function removeAction(Request $request, $id)
     {
+        if (!$request->isXmlHttpRequest()) {
+            return new RedirectResponse('/');
+        }
+
         if (false === $this->securityFacade->isGranted($this->buildAclName('category_remove'))) {
             throw new AccessDeniedException();
         }
