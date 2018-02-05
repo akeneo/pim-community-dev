@@ -449,6 +449,57 @@ class SecurityContext extends RawMinkContext implements KernelAwareInterface
         $this->doCall('DELETE', $url);
     }
 
+    /**
+     * @When /^I make a direct authenticated DELETE call on the "([^"]*)" family$/
+     */
+    public function iMakeADirectAuthenticatedDeleteCallOnTheFamily($familyCode)
+    {
+        $routeName = 'pim_enrich_family_remove';
+
+        $family = $this->kernel
+            ->getContainer()
+            ->get('pim_catalog.repository.family')
+            ->findOneByIdentifier($familyCode);
+
+        $url = $this->kernel
+            ->getContainer()
+            ->get('router')
+            ->generate($routeName, [
+                'id' => $family->getId(),
+            ]);
+
+        $this->doCall('DELETE', $url);
+    }
+
+    /**
+     * @When /^I make a direct authenticated DELETE call on the "([^"]*)" attribute of family "([^"]*)"$/
+     */
+    public function iMakeADirectAuthenticatedDeleteCallOnTheAttributeOfFamily($attributeCode, $familyCode)
+    {
+        $routeName = 'pim_enrich_family_removeattribute';
+
+        $attribute = $this->kernel
+            ->getContainer()
+            ->get('pim_catalog.repository.attribute')
+            ->findOneByIdentifier($attributeCode);
+
+        $family = $this->kernel
+            ->getContainer()
+            ->get('pim_catalog.repository.family')
+            ->findOneByIdentifier($familyCode);
+
+        $url = $this->kernel
+            ->getContainer()
+            ->get('router')
+            ->generate($routeName, [
+                'familyId' => $family->getId(),
+                'attributeId' => $attribute->getId(),
+            ]);
+
+        $this->doCall('DELETE', $url);
+    }
+
+
 //    /**
 //     * @When /^I make a direct authenticated POST call on the "([^"]*)" user group with following data:$/
 //     */
@@ -500,6 +551,37 @@ class SecurityContext extends RawMinkContext implements KernelAwareInterface
             ->findOneByIdentifier(sprintf('%s.%s', $attributeCode, $attributeOptionCode));
 
         assertEquals($order, $attributeOption->getSortOrder());
+    }
+
+    /**
+     * @Then /^there should be a "([^"]*)" attribute in the "([^"]*)" family$/
+     */
+    public function thereShouldBeAAttributeInTheFamily($attributeCode, $familyCode)
+    {
+        $family = $this->kernel
+            ->getContainer()
+            ->get('pim_catalog.repository.family')
+            ->findOneByIdentifier($familyCode);
+
+        $hasAttribute = $this->kernel
+            ->getContainer()
+            ->get('pim_catalog.repository.family')
+            ->hasAttribute($family->getId(), $attributeCode);
+
+        assertTrue($hasAttribute);
+    }
+
+    /**
+     * @Then /^there should be a "([^"]*)" family$/
+     */
+    public function thereShouldBeAFamily($familyCode)
+    {
+        $family = $this->kernel
+            ->getContainer()
+            ->get('pim_catalog.repository.family')
+            ->findOneByIdentifier($familyCode);
+
+        assertNotNull($family);
     }
 
     /**

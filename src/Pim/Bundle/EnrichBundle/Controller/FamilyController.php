@@ -20,6 +20,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -253,10 +254,14 @@ class FamilyController
      *
      * @AclAncestor("pim_enrich_family_remove")
      *
-     * @return \Symfony\Component\HttpFoundation\Response|\Symfony\Component\HttpFoundation\RedirectResponse
+     * @return Response
      */
     public function removeAction($id)
     {
+        if (!$this->request->isXmlHttpRequest()) {
+            return new RedirectResponse('/');
+        }
+
         $family = $this->familyRepository->find($id);
 
         if (null === $family) {
@@ -323,10 +328,14 @@ class FamilyController
      *
      * @throws DeleteException
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @return Response
      */
     public function removeAttributeAction($familyId, $attributeId)
     {
+        if (!$this->request->isXmlHttpRequest()) {
+            return new RedirectResponse('/');
+        }
+
         $family = $this->familyRepository->find($familyId);
 
         if (null === $family) {
