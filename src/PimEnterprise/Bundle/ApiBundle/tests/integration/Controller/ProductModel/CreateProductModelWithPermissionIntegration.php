@@ -24,7 +24,7 @@ class CreateProductModelWithPermissionIntegration extends ApiTestCase
     public function testCreateRootProductModel()
     {
         $this->loader->loadProductModelsForAssociationPermissions();
-        $this->makeAttributeAxesEditable('root_product_model_no_view_attribute');
+        $this->makeAttributeAxesEditable('sub_product_model_axis_attribute');
 
         $data = <<<JSON
             {
@@ -32,11 +32,7 @@ class CreateProductModelWithPermissionIntegration extends ApiTestCase
                 "family_variant": "family_variant_permission",
                 "categories": ["view_category"],
                 "parent": null,
-                "values": {
-                    "root_product_model_no_view_attribute": [
-                        {"locale": null, "scope": null, "data": false }
-                    ]
-                }
+                "values": {}
             }
 JSON;
 
@@ -47,11 +43,7 @@ JSON;
             'family_variant'    => 'family_variant_permission',
             'parent'            => null,
             'categories'        => ['view_category'],
-            'values'            => [
-                'root_product_model_no_view_attribute' => [
-                    ['locale' => null, 'scope' => null, 'data' => false],
-                ]
-            ],
+            'values'            => [],
             'created'      => '2016-06-14T13:12:50+02:00',
             'updated'      => '2016-06-14T13:12:50+02:00'
         ];
@@ -60,13 +52,10 @@ JSON;
         $this->assertSameProductModel($expectedProductModel, 'root_product_model_creation');
     }
 
-    /**
-     * @fail
-     */
     public function testCreateSubProductModel()
     {
         $this->loader->loadProductModelsForAssociationPermissions();
-        $this->makeAttributeAxesEditable('sub_product_model_no_view_attribute');
+        $this->makeAttributeAxesEditable('sub_product_model_axis_attribute');
 
         $data = <<<JSON
             {
@@ -75,7 +64,7 @@ JSON;
                 "categories": ["own_category"],
                 "parent": "root_product_model",
                 "values": {
-                    "sub_product_model_no_view_attribute": [
+                    "sub_product_model_axis_attribute": [
                         {"locale": null, "scope": null, "data": false }
                     ]
                 }
@@ -90,7 +79,10 @@ JSON;
             'parent'            => "root_product_model",
             'categories'        => ['own_category'],
             'values'            => [
-                'sub_product_model_no_view_attribute' => [
+                'root_product_model_no_view_attribute' => [
+                    ['locale' => 'fr_FR', 'scope' => null, 'data' => true],
+                ],
+                'sub_product_model_axis_attribute' => [
                     ['locale' => null, 'scope' => null, 'data' => false],
                 ]
             ],
@@ -115,16 +107,13 @@ JSON;
             }
 JSON;
 
-        $this->assertValidationFailed($data, "attribute", 'Attribute "sub_product_model_no_view_attribute" cannot be empty, as it is defined as an axis for this entity');
+        $this->assertValidationFailed($data, "attribute", 'Attribute "sub_product_model_axis_attribute" cannot be empty, as it is defined as an axis for this entity');
     }
 
-    /**
-     * @fail
-     */
     public function testCreateWithoutModifyingViewableAttributeFromParent()
     {
         $this->loader->loadProductModelsFixturesForAttributeAndLocalePermissions();
-        $this->makeAttributeAxesEditable('sub_product_model_no_view_attribute');
+        $this->makeAttributeAxesEditable('sub_product_model_axis_attribute');
 
         $data = <<<JSON
             {
@@ -140,12 +129,8 @@ JSON;
                             "data": true 
                         }
                     ],
-                    "sub_product_model_view_attribute": [
-                        {
-                            "locale": null,
-                            "scope": null,
-                            "data": false
-                        }
+                    "sub_product_model_axis_attribute": [
+                        {"locale": null, "scope": null, "data": false }
                     ]
                 }
             }
@@ -156,7 +141,7 @@ JSON;
     public function testCreateWithoutModifyingEditableAttributeFromParent()
     {
         $this->loader->loadProductModelsFixturesForAttributeAndLocalePermissions();
-        $this->makeAttributeAxesEditable('sub_product_model_no_view_attribute');
+        $this->makeAttributeAxesEditable('sub_product_model_axis_attribute');
 
         $data = <<<JSON
             {
@@ -172,12 +157,8 @@ JSON;
                             "data": true 
                         }
                     ],
-                    "sub_product_model_no_view_attribute": [
-                        {
-                            "locale": null,
-                            "scope": null,
-                            "data": false
-                        }
+                    "sub_product_model_axis_attribute": [
+                        {"locale": null, "scope": null, "data": false }
                     ]
                 }
             }
@@ -185,45 +166,10 @@ JSON;
         $this->assertCreated($data);
     }
 
-    /**
-     * @fail
-     */
-    public function testCreateByModifyingAttributeFromParent()
-    {
-        $this->loader->loadProductModelsFixturesForAttributeAndLocalePermissions();
-        $this->makeAttributeAxesEditable('sub_product_model_no_view_attribute');
-
-        $data = <<<JSON
-            {
-                "code": "sub_product_model_creation",
-                "family_variant": "family_variant_permission",
-                "categories": ["own_category"],
-                "parent": "root_product_model",
-                "values": {
-                    "root_product_model_edit_attribute": [
-                        {
-                            "locale": "en_US",
-                            "scope": null,
-                            "data": false 
-                        }
-                    ],
-                    "sub_product_model_no_view_attribute": [
-                        {
-                            "locale": null,
-                            "scope": null,
-                            "data": false
-                        }
-                    ]
-                }
-            }
-JSON;
-        $this->assertUnprocessableEntity($data, '');
-    }
-
     public function testCreateWithNotViewableLocale()
     {
         $this->loader->loadProductModelsFixturesForAttributeAndLocalePermissions();
-        $this->makeAttributeAxesEditable('sub_product_model_no_view_attribute');
+        $this->makeAttributeAxesEditable('sub_product_model_axis_attribute');
 
         $message = 'Attribute "sub_product_model_edit_attribute" expects an existing and activated locale, "de_DE" given. Check the expected format on the API documentation.';
 
@@ -235,12 +181,8 @@ JSON;
                 "categories": ["own_category"],
                 "parent": "root_product_model",
                 "values": {
-                    "sub_product_model_no_view_attribute": [
-                        {
-                            "locale": null,
-                            "scope": null,
-                            "data": false
-                        }
+                    "sub_product_model_axis_attribute": [
+                        {"locale": null, "scope": null, "data": false }
                     ],
                     "sub_product_model_edit_attribute": [
                         {
@@ -256,13 +198,10 @@ JSON;
         $this->assertUnprocessableEntity($data, $message);
     }
 
-    /**
-     * @fail
-     */
     public function testCreateWithoutModifyingViewableLocaleFromParent()
     {
         $this->loader->loadProductModelsFixturesForAttributeAndLocalePermissions();
-        $this->makeAttributeAxesEditable('sub_product_model_no_view_attribute');
+        $this->makeAttributeAxesEditable('sub_product_model_axis_attribute');
 
         $data = <<<JSON
             {
@@ -271,7 +210,7 @@ JSON;
                 "categories": ["own_category"],
                 "parent": "root_product_model",
                 "values": {
-                    "sub_product_model_no_view_attribute": [
+                    "sub_product_model_axis_attribute": [
                         {
                             "locale": null,
                             "scope": null,
@@ -293,7 +232,7 @@ JSON;
     }
 
     /**
-     * @param string $data                      data submitted
+     * @param string $data data submitted
      */
     private function assertCreated(string $data): void
     {

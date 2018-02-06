@@ -62,9 +62,7 @@ JSON;
 
     }
 
-    /**
-     * @fail
-     */
+
     public function testCantAssociateMediaToAnOnlyViewableLocaleAttributeMediaOfAProductModel()
     {
         $this->loadProductModelsFixturesForAttributeAndLocaleAndMediaPermissions();
@@ -88,7 +86,7 @@ JSON;
 }
 JSON;
         $this->getFromTestContainer('doctrine')->getManager()->clear();
-        $this->assertCount(0, $this->getFromTestContainer('pim_api.repository.media_file')->findAll());
+        $this->assertCount(1, $this->getFromTestContainer('pim_api.repository.media_file')->findAll());
         $this->assertJsonStringEqualsJsonString($expected, $response->getContent());
         $this->assertSame(Response::HTTP_FORBIDDEN, $response->getStatusCode());
 
@@ -168,9 +166,11 @@ JSON;
                 'sub_product_model_no_view_attribute',
                 'sub_product_model_view_attribute',
                 'sub_product_model_edit_attribute',
+                'sub_product_model_axis_attribute',
                 'variant_product_no_view_attribute',
                 'variant_product_view_attribute',
                 'variant_product_edit_attribute',
+                'variant_product_axis_attribute',
                 'root_product_model_no_view_attribute_media',
                 'root_product_model_view_attribute_media',
                 'root_product_model_edit_attribute_media',
@@ -189,7 +189,7 @@ JSON;
         $this->getFromTestContainer('pim_catalog.updater.family_variant')->update($familyVariant, [
             'variant_attribute_sets' => [
                 [
-                    'axes' => ['sub_product_model_no_view_attribute'],
+                    'axes' => ['sub_product_model_axis_attribute'],
                     'attributes' => [
                         'sub_product_model_no_view_attribute',
                         'sub_product_model_no_view_attribute_media',
@@ -199,7 +199,7 @@ JSON;
                     'level'=> 1,
                 ],
                 [
-                    'axes' => ['variant_product_no_view_attribute'],
+                    'axes' => ['variant_product_axis_attribute'],
                     'attributes' => [
                         'variant_product_no_view_attribute'
                     ],

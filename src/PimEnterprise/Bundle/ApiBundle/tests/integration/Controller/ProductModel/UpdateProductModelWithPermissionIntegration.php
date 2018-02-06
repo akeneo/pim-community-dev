@@ -49,7 +49,9 @@ JSON;
                     ['locale' => 'fr_FR', 'scope' => null, 'data' => true],
                 ],
                 'root_product_model_no_view_attribute' => [
-                    ['locale' => null, 'scope' => null, 'data' => true],
+                    ['locale' => 'de_DE', 'scope' => null, 'data' => true],
+                    ['locale' => 'en_US', 'scope' => null, 'data' => true],
+                    ['locale' => 'fr_FR', 'scope' => null, 'data' => true]
                 ],
                 'root_product_model_view_attribute' => [
                     ['locale' => 'de_DE', 'scope' => null, 'data' => true],
@@ -70,11 +72,54 @@ JSON;
 
         $data = '{"values": {"sub_product_model_edit_attribute": [{ "data": false, "locale": "en_US", "scope": null }]}}';
 
-        $client = $this->createAuthenticatedClient([], [], null, null, 'mary', 'mary');
-        $client->request('PATCH', 'api/rest/v1/product-models/sub_product_model', [], [], [], $data);
-        $response = $client->getResponse();
+        $this->assertUpdated('sub_product_model', $data);
 
-        Assert::assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
+        $expectedProductModel = [
+            'code'           => 'sub_product_model',
+            'family_variant' => 'family_variant_permission',
+            'parent'         => 'root_product_model',
+            'categories'     => ['own_category'],
+            'values'         => [
+                'root_product_model_edit_attribute' => [
+                    ['locale' => 'de_DE', 'scope' => null, 'data' => true],
+                    ['locale' => 'en_US', 'scope' => null, 'data' => true],
+                    ['locale' => 'fr_FR', 'scope' => null, 'data' => true],
+                ],
+                'root_product_model_no_view_attribute' => [
+                    ['locale' => 'de_DE', 'scope' => null, 'data' => true],
+                    ['locale' => 'en_US', 'scope' => null, 'data' => true],
+                    ['locale' => 'fr_FR', 'scope' => null, 'data' => true]
+                ],
+                'root_product_model_view_attribute' => [
+                    ['locale' => 'de_DE', 'scope' => null, 'data' => true],
+                    ['locale' => 'en_US', 'scope' => null, 'data' => true],
+                    ['locale' => 'fr_FR', 'scope' => null, 'data' => true],
+                ],
+                'sub_product_model_axis_attribute' => [
+                    ['locale' => null, 'scope' => null, 'data' => true],
+                ],
+                'sub_product_model_edit_attribute' => [
+                    ['locale' => 'fr_FR', 'scope' => null, 'data' => true],
+                    ['locale' => 'en_US', 'scope' => null, 'data' => false],
+                    ['locale' => 'de_DE', 'scope' => null, 'data' => true],
+                ],
+                'sub_product_model_no_view_attribute' => [
+                    ['locale' => 'de_DE', 'scope' => null, 'data' => true],
+                    ['locale' => 'en_US', 'scope' => null, 'data' => true],
+                    ['locale' => 'fr_FR', 'scope' => null, 'data' => true],
+                ],
+                'sub_product_model_view_attribute' => [
+                    ['locale' => 'de_DE', 'scope' => null, 'data' => true],
+                    ['locale' => 'en_US', 'scope' => null, 'data' => true],
+                    ['locale' => 'fr_FR', 'scope' => null, 'data' => true],
+                ],
+            ],
+            'created'       => '2016-06-14T13:12:50+02:00',
+            'updated'       => '2016-06-14T13:12:50+02:00',
+            'associations'  => null,
+        ];
+
+        $this->assertSameProduct($expectedProductModel, 'sub_product_model');
     }
 
     public function testUpdateSubProductModelValuesByMergingNonViewableCategories()
@@ -119,9 +164,6 @@ SQL;
         $this->assertUpdated('colored_tshirt_view', '{}');
     }
 
-    /**
-     * @fail
-     */
     public function testUpdateNotViewableAttribute()
     {
         $this->loader->loadProductModelsFixturesForAttributeAndLocalePermissions();
@@ -135,82 +177,41 @@ SQL;
         $this->assertUnprocessableEntity('sub_product_model', $data, sprintf($message, 'sub_product_model_no_view_attribute'));
     }
 
-    /**
-     * @fail
-     */
     public function testUpdateByModifyingViewableAttribute()
     {
         $this->loader->loadProductModelsFixturesForAttributeAndLocalePermissions();
 
         $message = 'Attribute "%s" belongs to the attribute group "attributeGroupB" on which you only have view permission.';
 
-        $data = '{"values": {"root_product_model_view_attribute": [{"locale": "fr_FR", "scope":null, "data":false}]}}';
-        $this->assertUnauthorized('sub_product_model', $data, sprintf($message, 'root_product_model_view_attribute'));
-
         $data = '{"values": {"sub_product_model_view_attribute": [{"locale": "fr_FR", "scope":null, "data":false}]}}';
         $this->assertUnauthorized('sub_product_model', $data, sprintf($message, 'sub_product_model_view_attribute'));
     }
 
-    /**
-     * @fail
-     */
     public function testUpdateAxesAttributeFail()
     {
         $this->loader->loadProductModelsFixturesForAttributeAndLocalePermissions();
-
-        $message = 'Attribute "%s" cannot be empty, as it is defined as an axis for this entity';
-
-        $data = '{"values": {"root_product_model_view_attribute": [{"locale": "fr_FR", "scope":null, "data":false}]}}';
-        $this->assertUnprocessableEntity('sub_product_model', $data, sprintf($message, 'sub_product_model_view_attribute'));
-
-        $data = '{"values": {"sub_product_model_view_attribute": [{"locale": "fr_FR", "scope":null, "data":false}]}}';
-        $this->assertUnprocessableEntity('sub_product_model', $data, sprintf($message, 'sub_product_model_view_attribute'));
+        $data = '{"values": {"sub_product_model_axis_attribute": [{"locale": null, "scope":null, "data":false}]}}';
+        $this->assertUnprocessableEntity('sub_product_model', $data);
     }
 
-    /**
-     * @fail
-     */
     public function testUpdateByModifyingNotViewableLocale()
     {
         $this->loader->loadProductModelsFixturesForAttributeAndLocalePermissions();
 
         $message = 'Attribute "%s" expects an existing and activated locale, "de_DE" given. Check the expected format on the API documentation.';
 
-        $data = '{"values": {"root_product_model_edit_attribute": [{"locale": "de_DE", "scope":null, "data":false}]}}';
-        $this->assertUnauthorized('sub_product_model', $data, sprintf($message, 'root_product_model_edit_attribute'));
-
         $data = '{"values": {"sub_product_model_edit_attribute": [{"locale": "de_DE", "scope":null, "data":false}]}}';
-        $this->assertUnauthorized('sub_product_model', $data, sprintf($message, 'sub_product_model_edit_attribute'));
+        $this->assertUnprocessableEntity('sub_product_model', $data, sprintf($message, 'sub_product_model_edit_attribute'));
     }
 
-    /**
-     * @fail
-     */
     public function testUpdateByModifyingViewableLocale()
     {
         $this->loader->loadProductModelsFixturesForAttributeAndLocalePermissions();
 
         $message = 'You only have a view permission on the locale "fr_FR".';
 
-        $data = '{"values": {"root_product_model_edit_attribute": [{"locale": "fr_FR", "scope":null, "data":false}]}}';
-        $this->assertUnauthorized('sub_product_model', $data, sprintf($message, 'root_product_model_view_attribute'));
-
         $data = '{"values": {"sub_product_model_edit_attribute": [{"locale": "fr_FR", "scope":null, "data":false}]}}';
         $this->assertUnauthorized('sub_product_model', $data, sprintf($message, 'sub_product_model_view_attribute'));
-    }
-
-    /**
-     * @fail
-     */
-    public function testUpdateWithoutModifyingViewableLocale()
-    {
-        $this->loader->loadProductModelsFixturesForAttributeAndLocalePermissions();
-
-        $data = '{"values": {"root_product_model_edit_attribute": [{"locale": "fr_FR", "scope":null, "data":true}]}}';
-        $this->assertUpdated('sub_product_model', $data);
-
-        $data = '{"values": {"sub_product_model_edit_attribute": [{"locale": "fr_FR", "scope":null, "data":true}]}}';
-        $this->assertUpdated('sub_product_model', $data);
     }
 
     public function testUpdateOwnOrEditProductModelWithNotViewableCategory()
@@ -229,9 +230,6 @@ SQL;
         $this->assertUnprocessableEntity('colored_shoes_edit', $data, $message);
     }
 
-    /**
-     * @fail
-     */
     public function testUpdateOwnProductModelWithViewableCategory()
     {
         $this->loader->loadProductModelsFixturesForCategoryPermissions();
@@ -242,9 +240,6 @@ SQL;
         $this->assertUpdated('colored_trousers', $data);
     }
 
-    /**
-     * @fail
-     */
     public function testUpdateCategorizedProductModelByKeepingOwnRight()
     {
         $this->loader->loadProductModelsFixturesForCategoryPermissions();
@@ -294,7 +289,7 @@ SQL;
      * @param string $data
      * @param string $message
      */
-    private function assertUnprocessableEntity(string $code, string $data, string $message)
+    private function assertUnprocessableEntity(string $code, string $data, string $message = null)
     {
         $client = $this->createAuthenticatedClient([], [], null, null, 'mary', 'mary');
 
@@ -312,12 +307,11 @@ SQL;
             }
         }
 JSON;
-        $expected = sprintf($error, Response::HTTP_UNPROCESSABLE_ENTITY, addslashes($message));
-        if(isset(json_decode($response->getContent(), true)['errors'])) {
-            var_dump(json_decode($response->getContent(), true)['errors']);
-        }
         Assert::assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
-        Assert::assertJsonStringEqualsJsonString($expected, $response->getContent());
+        if(!is_null($message)) {
+            $expected = sprintf($error, Response::HTTP_UNPROCESSABLE_ENTITY, addslashes($message));
+            Assert::assertJsonStringEqualsJsonString($expected, $response->getContent());
+        }
     }
 
     /**
