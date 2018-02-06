@@ -1,6 +1,6 @@
 const fetcherRegistry = require('pim/fetcher-registry');
-import ChannelInterface, { createChannel } from 'pimfront/app/domain/model/channel';
-import { channelsUpdated } from 'pimfront/app/domain/event/channel';
+import ChannelInterface, {createChannel} from 'pimfront/app/domain/model/channel';
+import {channelsUpdated} from 'pimfront/app/domain/event/channel';
 import hidrateAll from 'pimfront/app/application/hidrator/hidrator';
 
 const hidrator = (channel: any): ChannelInterface => {

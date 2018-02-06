@@ -3,13 +3,13 @@ import ProductInterface, {
   Product,
   ProductModel,
   RawProductInterface,
-  ModelType
+  ModelType,
 } from 'pimfront/product/domain/model/product';
 import hidrateAll from 'pimfront/app/application/hidrator/hidrator';
-import { dataReceived, childrenReceived } from 'pimfront/product-grid/domain/event/search';
-import { State } from 'pimfront/product-grid/application/reducer/main';
-import { Filter } from 'pimfront/grid/domain/model/query';
-import { startLoading, stopLoading, goNextPage, goFirstPage } from 'pimfront/grid/application/event/search';
+import {dataReceived, childrenReceived} from 'pimfront/product-grid/domain/event/search';
+import {State} from 'pimfront/product-grid/application/reducer/main';
+import {Filter} from 'pimfront/grid/domain/model/query';
+import {startLoading, stopLoading, goNextPage, goFirstPage} from 'pimfront/grid/application/event/search';
 
 export const productHidrator = (product: RawProductInterface): ProductInterface => {
   switch (product.meta.model_type) {
@@ -20,7 +20,6 @@ export const productHidrator = (product: RawProductInterface): ProductInterface 
     default:
       throw new Error(`Cannot handle model type ${product.meta.model_type}`);
   }
-
 };
 
 interface Query {
@@ -37,12 +36,13 @@ const stateToQuery = (state: State<Product>): Query => {
     channel: undefined === state.user.catalogChannel ? '' : state.user.catalogChannel,
     limit: state.grid.query.limit,
     page: state.grid.query.page,
-    filters: state.grid.query.filters
-  }
+    filters: state.grid.query.filters,
+  };
 };
 
-const fetchResults = async (query: Query): Promise<{products: ProductInterface[], total: number}> => {
-  const {items, total}: {items: RawProductInterface[], total: number} = await fetcherRegistry.getFetcher('product-grid')
+const fetchResults = async (query: Query): Promise<{products: ProductInterface[]; total: number}> => {
+  const {items, total}: {items: RawProductInterface[]; total: number} = await fetcherRegistry
+    .getFetcher('product-grid')
     .search(query);
 
   return {products: hidrateAll<ProductInterface>(productHidrator)(items), total};
@@ -68,7 +68,10 @@ export const needMoreResultsAction = () => (dispatch: any, getState: any) => {
   }
 };
 
-export const loadChildrenAction = (product: ProductInterface) => async (dispatch: any, getState: any): Promise<void> => {
+export const loadChildrenAction = (product: ProductInterface) => async (
+  dispatch: any,
+  getState: any
+): Promise<void> => {
   const query = stateToQuery(getState());
   query.filters = [
     ...query.filters.filter((filter: Filter) => 'parent' !== filter.field),
@@ -76,8 +79,8 @@ export const loadChildrenAction = (product: ProductInterface) => async (dispatch
       field: 'parent',
       operator: 'IN',
       value: [product.getIdentifier()],
-      options: {}
-    }
+      options: {},
+    },
   ];
 
   query.page = 0;

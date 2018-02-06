@@ -1,4 +1,4 @@
-import { Product, ModelType } from './product';
+import {Product, ModelType} from './product';
 
 describe('>>>MODEL --- product', () => {
   test('get label with existing locale', () => {
@@ -9,10 +9,10 @@ describe('>>>MODEL --- product', () => {
         id: 12,
         completenesses: {},
         model_type: ModelType.Product,
-        has_children: false
+        has_children: false,
       },
       identifier: 'my_identifier',
-      family: 'my_family'
+      family: 'my_family',
     });
 
     expect(product.getLabel('ecommerce', 'en_US')).toBe('My label');
@@ -26,10 +26,10 @@ describe('>>>MODEL --- product', () => {
         image: {filePath: 'asset/img.png', originalFilename: 'toto.png'},
         completenesses: {},
         model_type: ModelType.Product,
-        has_children: false
+        has_children: false,
       },
       identifier: 'my_identifier',
-      family: 'my_family'
+      family: 'my_family',
     });
 
     expect(product.getLabel('ecommerce', 'fr_FR')).toBe('my_identifier');

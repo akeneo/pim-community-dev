@@ -1,27 +1,28 @@
-import { Display } from 'pimfront/product-grid/domain/event/display';
+import {Display} from 'pimfront/product-grid/domain/event/display';
 
 export interface ProductGridState {
   display: Display;
-};
+}
 
 export default (
-  state: ProductGridState|undefined,
+  state: ProductGridState | undefined,
   action: {
-    type: string,
-    display: Display
-  }): ProductGridState => {
+    type: string;
+    display: Display;
+  }
+): ProductGridState => {
   if (undefined === state) {
     state = {
-      display: Display.List
+      display: Display.List,
     };
   }
 
   switch (action.type) {
     case 'CHANGE_GRID_DISPLAY':
       state = {...state, display: action.display};
-    break;
+      break;
     default:
-    break;
+      break;
   }
 
   return state;

@@ -11,7 +11,7 @@ class ConcreteLocale {
   readonly region: string;
   readonly language: string;
 
-  public constructor (code: string, label: string, region: string, language: string) {
+  public constructor(code: string, label: string, region: string, language: string) {
     this.code = code;
     this.label = label;
     this.region = region;
@@ -20,10 +20,5 @@ class ConcreteLocale {
 }
 
 export const createLocale = (rawLocale: any): Locale => {
-  return new ConcreteLocale(
-    rawLocale.code,
-    rawLocale.label,
-    rawLocale.region,
-    rawLocale.language
-  );
+  return new ConcreteLocale(rawLocale.code, rawLocale.label, rawLocale.region, rawLocale.language);
 };

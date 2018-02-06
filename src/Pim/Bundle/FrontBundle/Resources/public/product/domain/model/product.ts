@@ -1,17 +1,17 @@
 export enum ModelType {
   Product = 'product',
-  ProductModel = 'product_model'
-};
+  ProductModel = 'product_model',
+}
 
 export interface MetaInterface {
-  image: ImageInterface|null;
+  image: ImageInterface | null;
   id: number;
   completenesses: any;
-  model_type: ModelType,
-  has_children: boolean,
+  model_type: ModelType;
+  has_children: boolean;
   label: {
     [locale: string]: string;
-  }
+  };
 }
 
 export interface ImageInterface {
@@ -40,23 +40,23 @@ export default interface ProductInterface extends RawProductInterface {
   getCompleteness(channel: string, locale: string): Completeness;
   getImagePath(): string;
   getIdentifier(): string;
-  hasChildren (): boolean;
-  getChildren (): ProductInterface[];
-  shouldHaveChildren (): boolean;
-}
+  hasChildren(): boolean;
+  getChildren(): ProductInterface[];
+  shouldHaveChildren(): boolean;
+};
 
 export class Product implements ProductInterface {
   readonly meta: MetaInterface;
   readonly family: string;
   readonly identifier: string;
 
-  private constructor ({meta, family, identifier}: RawProductInterface) {
+  private constructor({meta, family, identifier}: RawProductInterface) {
     if (undefined === identifier) {
       throw new Error('Property identifier needs to be defined to create a product');
     }
 
-    this.meta       = meta;
-    this.family     = family;
+    this.meta = meta;
+    this.family = family;
     this.identifier = identifier;
   }
 
@@ -69,29 +69,30 @@ export class Product implements ProductInterface {
   }
 
   public getCompleteness(channel: string, locale: string): Completeness {
-    const completeness = this.meta.completenesses
-      .find((completeness: any) => completeness.channel === channel && completeness.locale === locale)
+    const completeness = this.meta.completenesses.find(
+      (completeness: any) => completeness.channel === channel && completeness.locale === locale
+    );
 
     return undefined !== completeness ? completeness : {};
   }
 
-  public getImagePath (): string {
+  public getImagePath(): string {
     return null !== this.meta.image ? encodeURIComponent(this.meta.image.filePath) : 'undefined';
   }
 
-  public getIdentifier (): string {
+  public getIdentifier(): string {
     return this.identifier;
   }
 
-  public getChildren (): ProductInterface[] {
+  public getChildren(): ProductInterface[] {
     return [];
   }
 
-  public hasChildren (): boolean {
+  public hasChildren(): boolean {
     return false;
   }
 
-  public shouldHaveChildren (): boolean {
+  public shouldHaveChildren(): boolean {
     return this.meta.has_children;
   }
 }
@@ -102,14 +103,14 @@ export class ProductModel implements ProductInterface {
   readonly code: string;
   readonly children: ProductInterface[];
 
-  private constructor ({meta, family, code, children}: RawProductInterface) {
+  private constructor({meta, family, code, children}: RawProductInterface) {
     if (undefined === code) {
       throw new Error('Property code needs to be defined to create a product model');
     }
 
-    this.meta     = meta;
-    this.family   = family;
-    this.code     = code;
+    this.meta = meta;
+    this.family = family;
+    this.code = code;
     this.children = undefined !== children ? children : [];
   }
 
@@ -127,27 +128,27 @@ export class ProductModel implements ProductInterface {
       locale: '',
       missing: 0,
       ratio: 0,
-      required: 0
+      required: 0,
     };
   }
 
-  public getImagePath (): string {
+  public getImagePath(): string {
     return null !== this.meta.image ? encodeURIComponent(this.meta.image.filePath) : 'undefined';
   }
 
-  public getIdentifier (): string {
+  public getIdentifier(): string {
     return this.code;
   }
 
-  public getChildren (): ProductInterface[] {
+  public getChildren(): ProductInterface[] {
     return this.children;
   }
 
-  public hasChildren (): boolean {
+  public hasChildren(): boolean {
     return this.children.length > 0;
   }
 
-  public shouldHaveChildren (): boolean {
+  public shouldHaveChildren(): boolean {
     return this.meta.has_children;
   }
 }

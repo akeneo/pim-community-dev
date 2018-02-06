@@ -1,7 +1,7 @@
 import Locale, {createLocale} from 'pimfront/app/domain/model/locale';
 
 interface LabelCollection {
-  [locale: string]: string
+  [locale: string]: string;
 }
 
 export default interface Channel {
@@ -15,7 +15,7 @@ class ConcreteChannel {
   readonly labels: LabelCollection;
   readonly locales: Locale[];
 
-  public constructor (code: string, labels: LabelCollection, locales: Locale[] = []) {
+  public constructor(code: string, labels: LabelCollection, locales: Locale[] = []) {
     this.code = code;
     this.labels = labels;
     this.locales = locales;

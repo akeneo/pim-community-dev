@@ -1,31 +1,31 @@
-import { combineReducers } from 'redux'
+import {combineReducers} from 'redux';
 import Locale from 'pimfront/app/domain/model/locale';
 import Channel from 'pimfront/app/domain/model/channel';
 
 export interface StructureState {
   locales: Locale[];
   channels: Channel[];
-};
+}
 
-const locales = (state: Locale[] = [], {type, locales}: {type: string, locales: Locale[]}) => {
+const locales = (state: Locale[] = [], {type, locales}: {type: string; locales: Locale[]}) => {
   switch (type) {
     case 'LOCALES_UPDATED':
       state = locales;
-    break;
+      break;
     default:
-    break;
+      break;
   }
 
   return state;
 };
 
-const channels = (state: Channel[] = [], {type, channels}: {type: string, channels: Channel[]}) => {
+const channels = (state: Channel[] = [], {type, channels}: {type: string; channels: Channel[]}) => {
   switch (type) {
     case 'CHANNELS_UPDATED':
       state = channels;
-    break;
+      break;
     default:
-    break;
+      break;
   }
 
   return state;
@@ -33,5 +33,5 @@ const channels = (state: Channel[] = [], {type, channels}: {type: string, channe
 
 export default combineReducers({
   locales,
-  channels
+  channels,
 });
