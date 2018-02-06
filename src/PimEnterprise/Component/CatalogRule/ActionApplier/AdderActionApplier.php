@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Akeneo PIM Enterprise Edition.
  *
@@ -14,6 +16,10 @@ namespace PimEnterprise\Component\CatalogRule\ActionApplier;
 use Akeneo\Bundle\RuleEngineBundle\Model\ActionInterface;
 use Akeneo\Component\RuleEngine\ActionApplier\ActionApplierInterface;
 use Akeneo\Component\StorageUtils\Updater\PropertyAdderInterface;
+use Pim\Component\Catalog\Model\EntityWithFamilyVariantInterface;
+use Pim\Component\Catalog\Model\EntityWithValuesInterface;
+use Pim\Component\Catalog\Model\FamilyVariantInterface;
+use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use PimEnterprise\Component\CatalogRule\Model\ProductAddActionInterface;
 
 /**
@@ -24,36 +30,114 @@ use PimEnterprise\Component\CatalogRule\Model\ProductAddActionInterface;
 class AdderActionApplier implements ActionApplierInterface
 {
     /** @var PropertyAdderInterface */
-    protected $propertyAdder;
+    private $propertyAdder;
+
+    /** @var AttributeRepositoryInterface */
+    private $attributeRepository;
 
     /**
-     * @param PropertyAdderInterface $propertyAdder
+     * @param PropertyAdderInterface       $propertyAdder
+     * @param AttributeRepositoryInterface $attributeRepository
      */
-    public function __construct(PropertyAdderInterface $propertyAdder)
-    {
+    public function __construct(
+        PropertyAdderInterface $propertyAdder,
+        AttributeRepositoryInterface $attributeRepository
+    ) {
         $this->propertyAdder = $propertyAdder;
+        $this->attributeRepository = $attributeRepository;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function applyAction(ActionInterface $action, array $products = [])
+    public function applyAction(ActionInterface $action, array $entitiesWithValues = []): void
     {
-        foreach ($products as $product) {
-            $this->propertyAdder->addData(
-                $product,
-                $action->getField(),
-                $action->getItems(),
-                $action->getOptions()
-            );
+        foreach ($entitiesWithValues as $entityWithValues) {
+            if (!$entityWithValues instanceof EntityWithFamilyVariantInterface) {
+                $this->addDataOnEntityWithValues($entityWithValues, $action);
+            } else {
+                $this->addDataOnEntityWithFamilyVariant($entityWithValues, $action);
+            }
         }
     }
 
     /**
      * {@inheritdoc}
      */
-    public function supports(ActionInterface $action)
+    public function supports(ActionInterface $action): bool
     {
         return $action instanceof ProductAddActionInterface;
+    }
+
+    /**
+     * @param EntityWithFamilyVariantInterface $entityWithFamilyVariant
+     * @param ProductAddActionInterface        $action
+     */
+    private function addDataOnEntityWithFamilyVariant(
+        EntityWithFamilyVariantInterface $entityWithFamilyVariant,
+        ProductAddActionInterface $action
+    ): void {
+        $field = $action->getField();
+
+        $attribute = $this->attributeRepository->findOneByIdentifier($field);
+        if (null === $attribute) {
+            $this->addDataOnEntityWithValues($entityWithFamilyVariant, $action);
+
+            return;
+        }
+
+        $level = $this->getActionFieldLevel($field, $entityWithFamilyVariant->getFamilyVariant());
+
+        if ($entityWithFamilyVariant->getVariationLevel() === $level) {
+            $this->addDataOnEntityWithValues($entityWithFamilyVariant, $action);
+        }
+    }
+
+    /**
+     * @param string                 $actionField
+     * @param FamilyVariantInterface $familyVariant
+     *
+     * @return int
+     */
+    private function getActionFieldLevel(
+        string $actionField,
+        FamilyVariantInterface $familyVariant
+    ): int {
+        $level = 0;
+        $attributeSets = $familyVariant->getVariantAttributeSets();
+
+        foreach ($attributeSets as $attributeSet) {
+            $hasAttribute = false;
+
+            foreach ($attributeSet->getAttributes() as $attribute) {
+                if ($attribute->getCode() === $actionField) {
+                    $hasAttribute = true;
+                    break;
+                }
+            }
+
+            if ($hasAttribute) {
+                $level = $attributeSet->getLevel();
+                break;
+            }
+        }
+
+        return $level;
+    }
+
+    /**
+     * @param EntityWithValuesInterface $entityWithValues
+     * @param ProductAddActionInterface $action
+     */
+    private function addDataOnEntityWithValues(
+        EntityWithValuesInterface $entityWithValues,
+        ProductAddActionInterface $action
+    ): void {
+        $this->propertyAdder->addData(
+            $entityWithValues,
+            $action->getField(),
+            $action->getItems(),
+            $action->getOptions()
+        );
     }
 }

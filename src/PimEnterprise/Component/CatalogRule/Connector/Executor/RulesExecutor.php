@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Akeneo PIM Enterprise Edition.
  *
@@ -14,10 +16,12 @@ namespace PimEnterprise\Component\CatalogRule\Connector\Executor;
 use Akeneo\Bundle\RuleEngineBundle\Repository\RuleDefinitionRepositoryInterface;
 use Akeneo\Bundle\RuleEngineBundle\Runner\RunnerInterface;
 use Akeneo\Component\Batch\Item\ItemWriterInterface;
+use Pim\Component\Catalog\Model\EntityWithValuesInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Model\ProductModelInterface;
 
 /**
- * Execute all the rules to a set of products.
+ * Execute all the rules to a set of entities with family.
  *
  * @author Pierre Allard <pierre.allard@akeneo.com>
  */
@@ -42,39 +46,55 @@ class RulesExecutor implements ItemWriterInterface
     }
 
     /**
-     * @param ProductInterface[] $products
+     * @param EntityWithValuesInterface[] $entitiesWithValues
      *
      * {@inheritdoc}
      */
-    public function write(array $products)
+    public function write(array $entitiesWithValues): void
     {
-        $productIds = $this->getProductIds($products);
+        $entityIds = $this->getEntityIds($entitiesWithValues);
 
-        if (!empty($productIds)) {
+        if (!empty($entityIds['selected_products']) || !empty($entityIds['selected_product_models'])) {
             $ruleDefinitions = $this->ruleRepository->findAllOrderedByPriority();
 
             foreach ($ruleDefinitions as $ruleDefinition) {
-                $this->runner->run($ruleDefinition, ['selected_products' => $productIds]);
+                $this->runner->run($ruleDefinition, $entityIds);
             }
         }
     }
 
     /**
-     * @param array $entitiesWithFamily
+     * @param EntityWithValuesInterface[] $entitiesWithValues
      *
      * @return string[]
      */
-    private function getProductIds(array $entitiesWithFamily): array
+    private function getEntityIds(array $entitiesWithValues): array
     {
-        $productIds = [];
-        foreach ($entitiesWithFamily as $entityWithFamily) {
-            if ($entityWithFamily instanceof ProductInterface &&
-                null !== $entityWithFamily->getId()
+        $entityIds = [
+            'selected_products' => [],
+            'selected_product_models' => [],
+        ];
+
+        foreach ($entitiesWithValues as $entityWithValues) {
+            if ($entityWithValues instanceof ProductInterface &&
+                null !== $entityWithValues->getId()
             ) {
-                $productIds[] = (string) $entityWithFamily->getId();
+                $entityIds['selected_products'][] = sprintf(
+                    '%s%d',
+                    'product_',
+                    $entityWithValues->getId()
+                );
+            } elseif ($entityWithValues instanceof ProductModelInterface &&
+                null !== $entityWithValues->getId()
+            ) {
+                $entityIds['selected_product_models'][] = sprintf(
+                    '%s%d',
+                    'product_model_',
+                    $entityWithValues->getId()
+                );
             }
         }
 
-        return $productIds;
+        return $entityIds;
     }
 }

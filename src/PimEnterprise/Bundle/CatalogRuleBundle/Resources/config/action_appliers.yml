@@ -9,6 +9,7 @@ services:
         class: '%pimee_catalog_rule.action_applier.setter.class%'
         arguments:
             - '@pim_catalog.updater.property_setter'
+            - '@pim_catalog.repository.attribute'
         tags:
             - { name: akeneo_rule_engine.action_applier, priority: 100 }
 
@@ -16,6 +17,7 @@ services:
         class: '%pimee_catalog_rule.action_applier.copier.class%'
         arguments:
             - '@pim_catalog.updater.property_copier'
+            - '@pim_catalog.repository.attribute'
         tags:
             - { name: akeneo_rule_engine.action_applier, priority: 100 }
 
@@ -23,6 +25,7 @@ services:
         class: '%pimee_catalog_rule.action_applier.adder.class%'
         arguments:
             - '@pim_catalog.updater.property_adder'
+            - '@pim_catalog.repository.attribute'
         tags:
             - { name: akeneo_rule_engine.action_applier, priority: 100 }
 
@@ -30,5 +33,6 @@ services:
         class: '%pimee_catalog_rule.action_applier.remover.class%'
         arguments:
             - '@pim_catalog.updater.property_remover'
+            - '@pim_catalog.repository.attribute'
         tags:
             - { name: akeneo_rule_engine.action_applier, priority: 100 }
