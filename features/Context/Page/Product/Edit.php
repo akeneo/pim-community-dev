@@ -253,18 +253,6 @@ class Edit extends ProductEditForm
     }
 
     /**
-     * @param string $label
-     *
-     * @return NodeElement[]
-     */
-    public function findFieldIcons($label)
-    {
-        $field = $this->findFieldContainer($label);
-
-        return $field->findAll('css', 'i[class*="icon-"]');
-    }
-
-    /**
      * @param string $name
      *
      * @return NodeElement[]
