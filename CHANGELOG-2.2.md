@@ -4,6 +4,7 @@
 
 - PIM-6367: Apply rules on products models values
 - PIM-7166: Display on product model edit form that an attribute can be updated by a rule
+- PIM-7125: As Peter, I would like to use rules to unclassify products from a tree
 
 ## BC breaks
 
@@ -14,6 +15,8 @@
 - PIM-6367: Change the constructor of `PimEnterprise\Component\CatalogRule\ActionApplier\AdderActionApplier` to add `Pim\Component\Catalog\Repository\AttributeRepositoryInterface`
 - PIM-6367: Change the constructor of `PimEnterprise\Component\CatalogRule\ActionApplier\RemoverActionApplier` to add `Pim\Component\Catalog\Repository\AttributeRepositoryInterface`
 - PIM-6367: Change the constructor of `PimEnterprise\Component\CatalogRule\ActionApplier\CopierActionApplier` to add `Pim\Component\Catalog\Repository\AttributeRepositoryInterface`
+- PIM-7125: Change the constructor of `PimEnterprise\Component\CatalogRule\ActionApplier\RemoverActionApplier` to add `Akeneo\Component\Classification\Repository\CategoryRepositoryInterface`
+- PIM-7125: Change the constructor of `PimEnterprise\Bundle\CatalogRuleBundle\Twig\RuleExtension` to add `Symfony\Component\Translation\TranslatorInterface`
 
 ### Services and parameters
 
