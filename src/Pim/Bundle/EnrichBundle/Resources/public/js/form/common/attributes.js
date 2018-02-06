@@ -218,7 +218,7 @@ define(
                                     this.attributeGroupTemplate,
                                     i18n.getLabel(
                                         section.attributeGroup.labels,
-                                        UserContext.get('uiLocale'),
+                                        UserContext.get('catalogLocale'),
                                         section.attributeGroup.code
                                     )
                                 ));

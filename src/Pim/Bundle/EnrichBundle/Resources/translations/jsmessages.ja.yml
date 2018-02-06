@@ -1,5 +1,4 @@
 confirmation:
-  title: 確認
   remove:
     item: このアイテムを削除してもよろしいですか?
     association_type: この関連付けタイプを削除してもよろしいですか。
@@ -27,7 +26,7 @@ pim_datagrid:
       label: 削除
       confirm_content: 選択された製品を削除してもよろしいですか？
       success: 選択した製品が正常に削除されました。
-      error: 商品の削除中にエラーが発生しました、やり直してください
+      error: 選択した製品の削除中にエラーが発生しました、やり直してください
   view_selector:
     view: ビュー
     create_view_modal:
@@ -244,6 +243,8 @@ pim_enrich:
         update_successful: 製品モデルが正常に更新されました。そのバリエーションの商品の完全性が再計算されます。
         update_failed: 製品モデルを更新できませんでした。
         field_not_ready: "この製品モデルをすぐに保存できません。次のフィールドが準備ができていません：{{ fields }}"
+      read_only_parent_attribute_from_common: この属性は、共通の属性を更新できます。
+      read_only_parent_attribute_from_model: "この属性は、{{ axes }} によって属性で更新できます。"
       variant_axis: バリアントの軸
       add_child:
         create: 新しく追加
@@ -333,14 +334,14 @@ pim_enrich:
       variant:
         common:
           title: 共通の属性
-          empty: 共通の属性はありません
+          empty: 共通の属性はありません。
         axis.label: バリアントの軸
         level_1.label: バリアント属性レベル 1
         level_2.label: バリアント属性レベル 2
         add_variant: バリエーションを追加
         create_label: 新しいファミリーバリアントを作成
         create_description: ファミリーバリアントでは、バリエーションを含む製品の構造を定義できます。管理するバリアントのレベル、各レベルのバリアントの軸として使用される属性の数を選択し、属性を分散する方法を定義します。
-        update_description: バリアントレベルでこれらの属性を管理できるよう、選択したバリアントレベルで属性をドラッグ＆ドロップする。
+        update_description: '。バリアントレベルでこれらの属性を管理できるよう、選択したバリアントレベルで属性をドラッグ＆ドロップする。'
         create: 作成
         cancel: キャンセル
         code: コード
@@ -349,11 +350,11 @@ pim_enrich:
         axis_level: 様々な軸レベル
         required: 必須
         confirm_attribute_removal:
-          title: 属性の削除を確認します
-          message: これらの属性を削除することで、ファミリーバリアントとの共通属性に戻すことになり、バリアント製品から削除することになる
+          title: 属性の削除を確認します。
+          message: これらの属性を削除することで、ファミリーバリ円との共通属性に戻すことになり、バリアント製品から削除することになる
     family_variant:
       info:
-        update_successful: ファミリーバリアントが正常に更新されました。バリエーションを含む商品は、変更内容に従って更新されます。
+        update_successful: 家族のバリアントが正常に更新されました。バリエーションを含む商品は、変更内容に従って更新されます。
     attribute_option:
       code: コード
       label: ラベル
@@ -459,6 +460,7 @@ pim_enrich:
             none_exist: 関連タイプがありません。
             show_products: ディスプレイ製品
             show_groups: ディスプレイグループ
+            number_of_associations: "{{ productCount }} 件の製品と{{ groupCount }} 件のグループ"
           association_type_selector: 関連タイプ
           target: ターゲット
         attributes:
@@ -474,6 +476,7 @@ pim_enrich:
             load_more: 他の結果を読み込み中です…
           attribute_group_selector: 属性グループ
           attribute_group_all: すべて
+          attribute_group.to_fill_count: "{1}1 空の必要な属性 |]1、Inf [{{ count }} 空の必要な属性"
           attribute_filter:
             display: 表示
             all: 全ての属性
@@ -779,9 +782,6 @@ pim_enrich:
             select_attributes: 属性を追加
             add: 追加
             attributes_groups_selected: '{{ itemsCount }} グループの選択'
-    basket:
-      title: バスケット
-      empty_basket: カートが空です。
   job:
     upload: '{{ type }} ファイルをドロップするか、またはディスクを参照するをクリックしてください'
   export:
@@ -1027,9 +1027,11 @@ pim_enrich:
         add_to_category:
           label: カテゴリーに追加
           label_count: "{1}追加 <span class=\"AknFullPage-title--highlight\"> 1 カテゴリに</span> |]1、Inf [ 追加 <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} カテゴリに</span>"
+          description: 製品は以下のカテゴリに配置されます、既存の表示順が保持されます。
         move_to_category:
           label: カテゴリ間を移動
           label_count: "{1}動かす <span class=\"AknFullPage-title--highlight\"> 1 カテゴリ間を</span> |]1、Inf [ 動かす <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} カテゴリを</span>"
+          description: 製品は以下のカテゴリに配置され、既存の表示順は削除されます。
         remove_from_category:
           label: カテゴリから削除
           label_count: "{1}取り除く <span class=\"AknFullPage-title--highlight\"> 1 製品</span> |]1、Inf [ 取り除く <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} 製品</span>"

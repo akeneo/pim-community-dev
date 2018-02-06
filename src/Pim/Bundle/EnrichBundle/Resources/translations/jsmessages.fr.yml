@@ -1,5 +1,4 @@
 confirmation:
-  title: Confirmer
   remove:
     item: Êtes-vous sûr(e) de vouloir supprimer cet élément ?
     association_type: Êtes-vous sûr(e) de que vouloir supprimer ce type d'association ?
@@ -185,7 +184,7 @@ pim_enrich:
         update_successful: Le produit a bien été mis à jour.
         update_failed: Le produit n'a pas pu être mis à jour.
         field_not_ready: "Le produit ne peut être sauvé dès maintenant. Les champs suivants ne sont pas prêts : {{ fields }}"
-        already_in_upload: Un fichier est déjà en téléchargement pour cet attribut pour la locale "{{ locale }}" et le canal "{{ scope }}"
+        already_in_upload: Un fichier est déjà en téléchargement pour cet attribut dans la locale "{{ locale }}" et le canal "{{ scope }}"
       error:
         upload: Une erreur s'est produite lors du transfert du fichier.
       meta:
@@ -249,7 +248,7 @@ pim_enrich:
         deletion_successful: Le modèle de produit a bien été supprimé.
         update_failed: Le modèle de produit n'a pas pu être mis à jour.
         field_not_ready: "Le modèle de produit ne peut être sauvé dès maintenant. Les champs suivants ne sont pas prêts : {{ fields }}"
-      read_only_parent_attribute_from_common: Cet attribut peut être mis à jour dans les attributs communs.
+      read_only_parent_attribute_from_common: Cet attribut peut être mis à jour sur les attributs communs.
       read_only_parent_attribute_from_model: "Cet attribut peut être mis à jour sur les attributs par {{ axes }}"
       variant_axis: Axe de variante
       title: modèles de produits
@@ -469,12 +468,9 @@ pim_enrich:
             none_exist: Aucun type d'association n'existe.
             show_products: Afficher les produits
             show_groups: Afficher les groupes
-            number_of_associations: "{{ productCount }} produit(s), {{ productModelCount }} modèle(s) de produit et {{ groupCount }} groupe(s)"
+            number_of_associations: "{{ productCount }} produit(s) et {{ groupCount }} groupe(s)"
           association_type_selector: Type d'association
           target: Destination
-          manage: Ajouter des associations {{ associationType }}
-          manage_description: Sélectionner les produits que vous souhaitez associer avec le produit actuel
-          add_associations: Ajouter des associations
         attributes:
           title: Attributs
           btn:
@@ -488,7 +484,7 @@ pim_enrich:
             load_more: Chargement de plus de résultats...
           attribute_group_selector: Groupe d'attributs
           attribute_group_all: Tous
-          attribute_group.to_fill_count: "{1}1 attribut requis manquant |] 1, Inf [{{ count }} attributs requis manquants"
+          attribute_group.to_fill_count: "{1}1 attribute requis vide|]1, Inf [{{ count }} attributes requis vides"
           attribute_filter:
             display: Affichage
             all: Tous les attributs
@@ -794,9 +790,6 @@ pim_enrich:
             select_attributes: Ajouter des attributs
             add: Ajouter
             attributes_groups_selected: '{{ itemsCount }} groupe(s) sélectionné(s)'
-    basket:
-      title: Panier
-      empty_basket: Le panier est vide
   job:
     upload: Déposez votre fichier {{ type }} ici, ou cliquez ici pour le chercher sur votre disque
   export:
@@ -1047,11 +1040,11 @@ pim_enrich:
         add_to_category:
           label: Ajouter à des catégories
           label_count: "{1}Ajouter <span class=\"AknFullPage-title--highlight\">1 produit</span> à des catégories|] 1, Inf [Ajouter <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} produits</span> à des categories"
-          description: Les produits seront classés dans les catégories suivantes, la classification actuelle sera maintenue.
+          description: Les produits seront positionnés dans les catégories suivantes, le placement existant avant l'opération sera conservé.
         move_to_category:
           label: Déplacer vers d'autres catégories
           label_count: "{1}Déplacer <span class=\"AknFullPage-title--highlight\">1 produit</span> vers des catégories|] 1, Inf [Déplacer <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} produits</span> vers des categories"
-          description: Les produits seront classés dans les catégories suivantes, la classification actuelle sera perdue.
+          description: Les produits seront positionnés dans les catégories suivantes, le placement existant avant l'opération sera perdu.
         remove_from_category:
           label: Retirer des catégories
           label_count: "{1}Retirer <span class=\"AknFullPage-title--highlight\">1 produit</span> de catégories|] 1, Inf [Retirer <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} produits</span> de categories"
@@ -1060,11 +1053,6 @@ pim_enrich:
           label: Ajouter à un modèle de produit existant
           label_count: "{1}Ajouter <span class=\"AknFullPage-title--highlight\">1 produit</span> à un modèle de produit existant|] 1, Inf [Ajouter <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} produits</span> à un modèle de produit existant"
           description: Le modèle de produit sélectionné va rassembler des produits et améliorer l'enrichissement de leurs propriétés communes.
-        associate_to_product_and_product_model:
-          label: Associer aux produits
-          label_count: "{1}Associer <span class=\"AknFullPage-title--highlight\">1 produit</span> à des produits ou modèles de produits|] 1, Inf [Associer <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} produits</span> à des produits ou modèles de produits"
-          description: Les produits sélectionnés depuis la grille seront associés aux produits et modèles de produits sélectionnés, pour le type d'association sélectionné
-          validate: Veuillez ajouter une association avant de passer à l’étape suivante
     family:
       title: Action de masse sur les familles
       confirm: "{1}Vous êtes sur le point de mettre à jour une famille avec les renseignements suivants, merci de confirmer.|] 1, Inf [Vous êtes sur le point de mettre à jour {{ itemsCount }} familles avec les renseignements suivants, merci de confirmer."
@@ -1117,8 +1105,8 @@ page_title:
   pim_enrich_associationtype_edit: Type d'association {{ association type.label }} | Modification
   pim_enrich_grouptype_index: Types de groupe
   pim_enrich_grouptype_edit: Type de groupe {{ group type.label }} | Modification
-  pim_enrich_mass_edit_action_choose: Édition en masse | Choisir
-  pim_enrich_mass_edit_action_configure: Édition en masse | Configurer
+  pim_enrich_mass_edit_action_choose: Édition de masse | Choisir
+  pim_enrich_mass_edit_action_configure: Édition de masse | Configurer
   pim_enrich_mass_edit_action_perform: Edition en masse | Effectuer
   pim_enrich_job_tracker_index: Traqueur de processus
   pim_enrich_job_tracker_show: Traqueur de processus | Voir la tâche
@@ -1141,22 +1129,6 @@ batch_jobs:
       label: Modifier des attributs
     cleaner:
       label: Nettoyer les fichiers pour les attributs
-  add_to_category:
-    label: Ajouter à une catégorie
-    perform:
-      label: Ajouter à une catégorie
-  move_to_category:
-    label: Déplacer dans la catégorie
-    perform:
-      label: Déplacer dans la catégorie
-  remove_from_category:
-    label: Retirer de la catégorie
-    perform:
-      label: Retirer de la catégorie
-  add_association:
-    label: Associer aux produits
-    perform:
-      label: Associer aux produits
   add_to_existing_product_model:
     label: Ajouter à un modèle de produit existant
     perform:
