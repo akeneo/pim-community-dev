@@ -3,14 +3,12 @@ import Sidebar from 'pimfront/product-grid/application/component/sidebar';
 import ProductInterface from 'pimfront/product/domain/model/product';
 import { connect } from 'react-redux';
 import { GlobalState } from 'pimfront/product-grid/application/store/main';
-const __ = require('oro/translator');
 import { redirectToProduct } from 'pimfront/product-grid/application/action/router';
 import { needMoreResultsAction, loadChildrenAction } from 'pimfront/product-grid/application/action/search';
 import { Display } from 'pimfront/product-grid/domain/event/display';
 import DisplaySwitcher from 'pimfront/product-grid/application/component/header/display-switcher';
 import { changeGridDisplay } from 'pimfront/product-grid/domain/event/display';
-import RowView from 'pimfront/product-grid/application/component/item/row';
-import GalleryView from 'pimfront/product-grid/application/component/item/gallery';
+import Table from 'pimfront/product-grid/application/component/table';
 
 interface GridDispatch {
   onRedirectToProduct: (product: ProductInterface) => void;
@@ -44,9 +42,6 @@ export class GridView extends React.Component<
   }
 
   render () {
-    const isGallery = this.props.displayType === Display.Gallery;
-    const ItemView = isGallery ? GalleryView : RowView;
-
     return (
       <div className="AknDefault-contentWithColumn">
         <div className="AknDefault-contentWithBottom">
@@ -57,39 +52,17 @@ export class GridView extends React.Component<
                   <DisplaySwitcher displayType={this.props.displayType} onDisplayChange={this.props.onchangeGridDisplay}/>
                 </div>
               </div>
-              <div className={isGallery ? 'AknGrid--gallery' : ''}>
+              <div className={this.props.displayType === Display.Gallery ? 'AknGrid--gallery' : ''}>
                 <div className="AknGridContainer AknGridContainer--withCheckbox">
-                  <table className="AknGrid">
-                    <thead className="AknGrid-header">
-                      <tr className="AknGrid-bodyRow">
-                        <th className="AknGrid-headerCell AknGrid-headerCell--checkbox select-all-header-cell"></th>
-                        <th className="AknGrid-headerCell">{__('ID')} <span className="AknGrid-caret AknCaret caret"></span></th>
-                        <th className="AknGrid-headerCell"><span>{__('Image')}</span></th>
-                        <th className="AknGrid-headerCell"><span>{__('Label')}</span></th>
-                        <th className="AknGrid-headerCell">{__('Family')} <span className="AknGrid-caret AknCaret caret"></span></th>
-                        <th className="AknGrid-headerCell">{__('Status')} <span className="AknGrid-caret AknCaret caret"></span></th>
-                        <th className="AknGrid-headerCell">{__('Complete')} <span className="AknGrid-caret AknCaret caret"></span></th>
-                        <th className="AknGrid-headerCell">{__('Created at')} <span className="AknGrid-caret AknCaret caret"></span></th>
-                        <th className="AknGrid-headerCell AknGrid-headerCell--descending descending">
-                          {__('Updated at')} <span className="AknGrid-caret AknCaret caret"></span>
-                        </th>
-                        <th className="AknGrid-headerCell"><span>{__('Variant products')}</span></th>
-                        <th className="AknGrid-headerCell action-column"></th>
-                      </tr>
-                    </thead>
-                    <tbody className="AknGrid-body">
-                      {this.props.items.map((product: ProductInterface) => (
-                        <ItemView
-                          key={product.getIdentifier()}
-                          product={product}
-                          channel={this.props.context.channel}
-                          locale={this.props.context.locale}
-                          onRedirectToProduct={this.props.onRedirectToProduct}
-                          onLoadChildren={this.props.onLoadChildren}
-                        />
-                      ))}
-                    </tbody>
-                  </table>
+                  <Table
+                    onRedirectToProduct={this.props.onRedirectToProduct}
+                    onLoadChildren={this.props.onLoadChildren}
+                    channel={this.props.context.channel}
+                    locale={this.props.context.locale}
+                    items={this.props.items}
+                    displayType={this.props.displayType}
+                    withHeader={true}
+                  />
                 </div>
               </div>
             </div>

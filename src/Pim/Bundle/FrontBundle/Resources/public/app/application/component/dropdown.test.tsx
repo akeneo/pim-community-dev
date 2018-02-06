@@ -82,7 +82,8 @@ describe('>>>COMPONENT --- dropdown', () => {
       selectedElement={'item'}
     />);
 
-    expect(dropdown.find('.AknDropdown').length).toEqual(0);
+    expect(dropdown.find('.AknDropdown').length).toEqual(1);
+    expect(dropdown.find('.AknDropdown-menuLink').length).toEqual(0);
   });
 
   test('Uses the given custom item view', () => {

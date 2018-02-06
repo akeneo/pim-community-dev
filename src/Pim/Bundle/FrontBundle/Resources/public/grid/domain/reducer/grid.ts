@@ -6,6 +6,7 @@ export default <Element>(
   action: {
     type: string,
     append: boolean,
+    total: number,
     data: {
       items: Element[],
       columns: Column[]
@@ -18,8 +19,8 @@ export default <Element>(
   switch (action.type) {
     case 'DATA_RECEIVED':
       state = action.append ?
-        {...state, items: [...state.items, ...action.data.items]} :
-        {...state, items: action.data.items};
+        {...state, items: [...state.items, ...action.data.items], total: action.total} :
+        {...state, items: action.data.items, total: action.total};
     break;
     case 'START_LOADING_RESULTS':
       state = {...state, isFetching: true};

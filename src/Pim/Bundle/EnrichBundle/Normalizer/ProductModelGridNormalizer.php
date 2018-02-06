@@ -165,9 +165,7 @@ class ProductModelGridNormalizer implements NormalizerInterface
 
         $scopeCode = $context['channel'] ?? null;
 
-        $hasChildren = null === $productModel->getParent() ?
-            false === $productModel->getProducts()->isEmpty() :
-            false === $productModel->hasProductModels();
+        $hasChildren = $productModel->hasProductModels() || !$productModel->getProducts()->isEmpty();
 
         $normalizedProductModel['meta'] = [
                 'variant_product_completenesses' => $variantProductCompletenesses->values(),

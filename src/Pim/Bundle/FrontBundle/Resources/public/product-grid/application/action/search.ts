@@ -23,21 +23,29 @@ export const productHidrator = (product: RawProductInterface): ProductInterface 
 
 };
 
-const stateToQuery = (state: State<Product>) => {
+interface Query {
+  locale: string;
+  channel: string;
+  limit: number;
+  page: number;
+  filters: Filter[];
+}
+
+const stateToQuery = (state: State<Product>): Query => {
   return {
-    locale: state.user.catalogLocale,
-    channel: state.user.catalogChannel,
+    locale: undefined === state.user.catalogLocale ? '' : state.user.catalogLocale,
+    channel: undefined === state.user.catalogChannel ? '' : state.user.catalogChannel,
     limit: state.grid.query.limit,
     page: state.grid.query.page,
     filters: state.grid.query.filters
   }
 };
 
-const fetchResults = async (state: State<Product>): Promise<ProductInterface[]> => {
-  const products: RawProductInterface[] = await fetcherRegistry.getFetcher('product-grid')
-    .search(stateToQuery(state));
+const fetchResults = async (query: Query): Promise<{products: ProductInterface[], total: number}> => {
+  const {items, total}: {items: RawProductInterface[], total: number} = await fetcherRegistry.getFetcher('product-grid')
+    .search(query);
 
-  return hidrateAll<ProductInterface>(productHidrator)(products);
+  return {products: hidrateAll<ProductInterface>(productHidrator)(items), total};
 };
 
 export const updateResultsAction = (append: boolean = false) => async (dispatch: any, getState: any): Promise<void> => {
@@ -47,9 +55,9 @@ export const updateResultsAction = (append: boolean = false) => async (dispatch:
     dispatch(goFirstPage());
   }
 
-  const products = await fetchResults(getState());
+  const {products, total} = await fetchResults(stateToQuery(getState()));
 
-  dispatch(dataReceived(products, append));
+  dispatch(dataReceived(products, total, append));
   dispatch(stopLoading());
 };
 
@@ -60,20 +68,21 @@ export const needMoreResultsAction = () => (dispatch: any, getState: any) => {
   }
 };
 
-export const loadChildrenAction = (product: ProductInterface) => async (dispatch: any, getState: any): Promise<ProductInterface[]> => {
-  const state = getState();
-  state.grid.query.filters = [
-    ...state.grid.query.filters.filter((filter: Filter) => 'parent' !== filter.field),
+export const loadChildrenAction = (product: ProductInterface) => async (dispatch: any, getState: any): Promise<void> => {
+  const query = stateToQuery(getState());
+  query.filters = [
+    ...query.filters.filter((filter: Filter) => 'parent' !== filter.field),
     {
       field: 'parent',
       operator: 'IN',
-      value: [product.getIdentifier()]
+      value: [product.getIdentifier()],
+      options: {}
     }
   ];
 
-  const children = await fetchResults(state);
+  query.page = 0;
 
-  dispatch(childrenReceived(product.getIdentifier(), children));
+  const {products} = await fetchResults(query);
 
-  return children;
+  dispatch(childrenReceived(product.getIdentifier(), products));
 };

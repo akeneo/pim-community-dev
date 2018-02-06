@@ -3,17 +3,20 @@ import Query, { createQuery } from './query';
 export default interface GridState<Element> {
   readonly query: Query;
   readonly items: Element[];
+  readonly total: number;
   readonly isFetching: boolean;
 }
 
 class ConcreteGridState<Element> implements GridState<Element> {
   readonly query: Query;
   readonly items: Element[];
+  readonly total: number;
   readonly isFetching: boolean;
 
-  public constructor (query: Query, items: Element[] = [], isFetching: boolean = false) {
+  public constructor (query: Query, items: Element[] = [], total: number = 0, isFetching: boolean = false) {
     this.query     = query;
     this.items     = items;
+    this.total     = total;
     this.isFetching = isFetching;
   }
 };
@@ -28,6 +31,7 @@ export const createState = <Element>(rawState: any): GridState<Element> => {
       }
     ]}),
     rawState.items,
+    rawState.total,
     rawState.isFetching
   );
 };

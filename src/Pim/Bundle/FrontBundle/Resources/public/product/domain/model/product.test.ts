@@ -8,7 +8,8 @@ describe('>>>MODEL --- product', () => {
         image: {filePath: 'asset/img.png', originalFilename: 'toto.png'},
         id: 12,
         completenesses: {},
-        model_type: ModelType.Product
+        model_type: ModelType.Product,
+        has_children: false
       },
       identifier: 'my_identifier',
       family: 'my_family'
@@ -24,7 +25,8 @@ describe('>>>MODEL --- product', () => {
         id: 12,
         image: {filePath: 'asset/img.png', originalFilename: 'toto.png'},
         completenesses: {},
-        model_type: ModelType.Product
+        model_type: ModelType.Product,
+        has_children: false
       },
       identifier: 'my_identifier',
       family: 'my_family'

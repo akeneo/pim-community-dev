@@ -13,6 +13,23 @@ export interface State<GridElement> {
   structure: StructureState;
 };
 
+const addChildren = (parentIdentifier: string, children: ProductInterface[]) => (item: ProductInterface): ProductInterface => {
+  if (!(item instanceof ProductModel)) {
+    return item;
+  }
+
+  if (item.hasChildren()) {
+     return ProductModel.create({...item, children: item.children.map(addChildren(parentIdentifier, children))});
+  }
+
+  if (item.getIdentifier() === parentIdentifier
+  ) {
+    return ProductModel.create({...item, children});
+  }
+
+  return item;
+}
+
 const productMainGrid = (
   state: GridState<ProductInterface>,
   action: {
@@ -23,17 +40,7 @@ const productMainGrid = (
 ) => {
   switch (action.type) {
     case 'CHILDREN_RECEIVED':
-      const items = state.items.map((item: ProductInterface) => {
-        if (item.getIdentifier() === action.identifier &&
-          item instanceof ProductModel
-        ) {
-          return ProductModel.create({...item, children: action.children});
-        }
-
-        return item;
-      });
-
-      state = {...state, items: items};
+      state = {...state, items: state.items.map(addChildren(action.identifier, action.children))};
     break;
     default:
     break;

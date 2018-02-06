@@ -74,6 +74,18 @@
     background: lighten(@AknBlue, 32%);
   }
 
+  &-bodyRow--depth1 {
+    background: lighten(@AknGrey, 30%);
+
+    & td:first-child {
+      margin-left: 10px;
+    }
+  }
+
+  &-bodyRow--depth2 {
+    background: lighten(@AknGrey, 25%);
+  }
+
   &-bodyContainer--collapsed &-bodyRow:not(&-headerToggle) {
     display: none;
   }

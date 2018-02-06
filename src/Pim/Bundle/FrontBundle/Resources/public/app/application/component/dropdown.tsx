@@ -88,8 +88,6 @@ export default class Dropdown extends React.Component<
       return !null;
     }
 
-
-
     const openClass = this.state.isOpen ? 'AknDropdown-menu--open' : '';
     const dropdownButton = (label: string) => {
       const Button = undefined !== this.props.ButtonView ? this.props.ButtonView : DefaultButtonView;
@@ -114,8 +112,8 @@ export default class Dropdown extends React.Component<
       <div className="AknDropdown">
         {dropdownButton(this.getElement(this.state.selectedElement).label)}
         <div className={'AknDropdown-menu ' + openClass}>
-            <div className="AknDropdown-menuTitle">{this.props.label}</div>
-            {ElementViews}
+          <div className="AknDropdown-menuTitle">{this.props.label}</div>
+          {ElementViews}
         </div>
       </div>
     );

@@ -194,6 +194,7 @@ class ProductGridNormalizer implements NormalizerInterface
             'form'              => $this->formProvider->getForm($product),
             'id'                => $product->getId(),
             'model_type'        => 'product',
+            'has_children'      => false,
             'completenesses'    => $this->getNormalizedCompletenesses($product),
             'image'             => $this->normalizeImage($product->getImage(), $context),
         ] + $this->getLabels($product, $scopeCode) + $this->getAssociationMeta($product);

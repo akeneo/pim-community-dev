@@ -8,6 +8,7 @@ export interface MetaInterface {
   id: number;
   completenesses: any;
   model_type: ModelType,
+  has_children: boolean,
   label: {
     [locale: string]: string;
   }
@@ -39,6 +40,9 @@ export default interface ProductInterface extends RawProductInterface {
   getCompleteness(channel: string, locale: string): Completeness;
   getImagePath(): string;
   getIdentifier(): string;
+  hasChildren (): boolean;
+  getChildren (): ProductInterface[];
+  shouldHaveChildren (): boolean;
 }
 
 export class Product implements ProductInterface {
@@ -77,6 +81,18 @@ export class Product implements ProductInterface {
 
   public getIdentifier (): string {
     return this.identifier;
+  }
+
+  public getChildren (): ProductInterface[] {
+    return [];
+  }
+
+  public hasChildren (): boolean {
+    return false;
+  }
+
+  public shouldHaveChildren (): boolean {
+    return this.meta.has_children;
   }
 }
 
@@ -121,5 +137,17 @@ export class ProductModel implements ProductInterface {
 
   public getIdentifier (): string {
     return this.code;
+  }
+
+  public getChildren (): ProductInterface[] {
+    return this.children;
+  }
+
+  public hasChildren (): boolean {
+    return this.children.length > 0;
+  }
+
+  public shouldHaveChildren (): boolean {
+    return this.meta.has_children;
   }
 }

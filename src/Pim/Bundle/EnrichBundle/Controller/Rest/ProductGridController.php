@@ -51,6 +51,6 @@ class ProductGridController {
             $cursor->next();
         }
 
-        return new JsonResponse($products);
+        return new JsonResponse(['items' => $products, 'total' => count($cursor)]);
     }
 }
