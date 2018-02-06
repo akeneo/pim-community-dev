@@ -7,7 +7,7 @@
     "webpack": "webpack --config webpack.config.js --env=prod",
     "webpack-dev": "webpack --config webpack.config.js",
     "webpack-watch": "webpack --progress --config webpack.config.js --watch",
-    "prettier": "prettier --config .prettierrc.json --parser typescript --write \"./src/**/*.ts\";",
+    "prettier": "prettier --config .prettierrc.json --parser typescript --write \"./src/**/*.ts\"; prettier --config .prettierrc.json --parser typescript --write \"./src/**/*.tsx\"",
     "before-commit": "yarn prettier && yarn lint",
     "webpack-test": "webpack --config webpack-test.config.js",
     "lint": "node ./node_modules/eslint/bin/eslint 'src/**/*.js' --ignore-path .eslintignore --quiet",

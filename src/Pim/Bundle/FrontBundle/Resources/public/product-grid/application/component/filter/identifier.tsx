@@ -5,28 +5,28 @@ import * as trans from 'pimenrich/lib/translator';
 const operators = [
   {
     identifier: 'CONTAINS',
-    label: 'contains'
+    label: 'contains',
   },
   {
     identifier: 'DOES_NOT_CONTAIN',
-    label: 'does not contain'
+    label: 'does not contain',
   },
   {
     identifier: 'EQUALS',
-    label: 'is equal to'
+    label: 'is equal to',
   },
   {
     identifier: 'STARTS_WITH',
-    label: 'starts with'
+    label: 'starts with',
   },
   {
     identifier: 'IS_EMPTY',
-    label: 'is empty'
+    label: 'is empty',
   },
   {
     identifier: 'IN_LIST',
-    label: 'in list'
-  }
+    label: 'in list',
+  },
 ];
 
 export default () => {
@@ -58,10 +58,12 @@ export default () => {
           <input type="text" name="value" className="AknTextField select-field" />
         </div>
         <div className="AknFilterChoice-button">
-          <button type="button" className="AknButton AknButton--apply filter-update">{trans.get('Update')}</button>
+          <button type="button" className="AknButton AknButton--apply filter-update">
+            {trans.get('Update')}
+          </button>
         </div>
       </div>
-      <div className="AknFilterBox-disableFilter AknIconButton AknIconButton--small AknIconButton--remove disable-filter"></div>
+      <div className="AknFilterBox-disableFilter AknIconButton AknIconButton--small AknIconButton--remove disable-filter" />
     </div>
   );
-}
+};

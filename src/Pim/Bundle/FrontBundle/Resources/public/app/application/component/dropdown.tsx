@@ -4,64 +4,73 @@ export interface DropdownElement {
   identifier: string;
   label: string;
   original?: any;
-};
+}
 
-const DefaultButtonView = (
-  {label, selectedElement, onClick}:
-  {label: string, selectedElement: DropdownElement, onClick: () => void}
-) => (
+const DefaultButtonView = ({
+  label,
+  selectedElement,
+  onClick,
+}: {
+  label: string;
+  selectedElement: DropdownElement;
+  onClick: () => void;
+}) => (
   <div className="AknActionButton AknActionButton--withoutBorder" onClick={() => onClick()}>
     <span className="AknActionButton-highlight">{label}</span>
-    <span className="AknActionButton-caret"></span>
+    <span className="AknActionButton-caret" />
   </div>
 );
 
-const DefaultItemView = (
-  {element, isActive, onClick}:
-  {element: DropdownElement, isActive: boolean, onClick: (element: DropdownElement) => void}
-) => {
-  const className = `AknDropdown-menuLink ${isActive ? 'AknDropdown-menuLink--active' : ''}`
+const DefaultItemView = ({
+  element,
+  isActive,
+  onClick,
+}: {
+  element: DropdownElement;
+  isActive: boolean;
+  onClick: (element: DropdownElement) => void;
+}) => {
+  const className = `AknDropdown-menuLink ${isActive ? 'AknDropdown-menuLink--active' : ''}`;
 
   return (
     <div className={className} onClick={() => onClick(element)}>
       {element.label}
     </div>
-  )
+  );
 };
 
 interface Props {
   elements: DropdownElement[];
   selectedElement: string;
   ButtonView?: (
-    {label, selectedElement, onClick}:
-    {label: string, selectedElement: DropdownElement, onClick: () => void}
+    {label, selectedElement, onClick}: {label: string; selectedElement: DropdownElement; onClick: () => void}
   ) => JSX.Element;
   ItemView?: (
-    {element, isActive, onClick}:
-    {element: DropdownElement, isActive: boolean, onClick: (element: DropdownElement) => void}
+    {
+      element,
+      isActive,
+      onClick,
+    }: {element: DropdownElement; isActive: boolean; onClick: (element: DropdownElement) => void}
   ) => JSX.Element;
   label: string;
   onSelectionChange: (element: string) => void;
 }
 
-export default class Dropdown extends React.Component<
-  Props,
-  {isOpen: boolean, selectedElement: string}
-> {
-  constructor (props: Props) {
+export default class Dropdown extends React.Component<Props, {isOpen: boolean; selectedElement: string}> {
+  constructor(props: Props) {
     super(props);
 
     this.state = {
       isOpen: false,
-      selectedElement: props.selectedElement
+      selectedElement: props.selectedElement,
     };
   }
 
-  open () {
+  open() {
     this.setState({isOpen: true});
   }
 
-  elementSelected (element: DropdownElement) {
+  elementSelected(element: DropdownElement) {
     this.setState({isOpen: false});
     if (element.identifier !== this.state.selectedElement) {
       this.setState({selectedElement: element.identifier});
@@ -69,21 +78,19 @@ export default class Dropdown extends React.Component<
     }
   }
 
-  close () {
+  close() {
     this.setState({isOpen: false});
   }
 
-  getElement (identifier: string) {
-    const searchedElement: DropdownElement|undefined = this.props.elements.find(
-      ((element: DropdownElement) => element.identifier === identifier)
+  getElement(identifier: string) {
+    const searchedElement: DropdownElement | undefined = this.props.elements.find(
+      (element: DropdownElement) => element.identifier === identifier
     );
 
-    return undefined === searchedElement ?
-      {identifier: identifier, label: identifier} :
-      searchedElement;
+    return undefined === searchedElement ? {identifier: identifier, label: identifier} : searchedElement;
   }
 
-  render () {
+  render() {
     if (null === this.state) {
       return !null;
     }
@@ -92,7 +99,13 @@ export default class Dropdown extends React.Component<
     const dropdownButton = (label: string) => {
       const Button = undefined !== this.props.ButtonView ? this.props.ButtonView : DefaultButtonView;
 
-      return <Button label={label} selectedElement={this.getElement(this.state.selectedElement)} onClick={this.open.bind(this)}/>
+      return (
+        <Button
+          label={label}
+          selectedElement={this.getElement(this.state.selectedElement)}
+          onClick={this.open.bind(this)}
+        />
+      );
     };
 
     const ElementViews = this.props.elements.map((element: DropdownElement) => {

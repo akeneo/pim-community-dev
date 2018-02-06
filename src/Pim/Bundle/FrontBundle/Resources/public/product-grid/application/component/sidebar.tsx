@@ -1,13 +1,13 @@
 import * as React from 'react';
-import { gridLocaleChanged } from 'pimfront/product-grid/application/action/locale';
-import { gridChannelChanged } from 'pimfront/product-grid/application/action/channel';
+import {gridLocaleChanged} from 'pimfront/product-grid/application/action/locale';
+import {gridChannelChanged} from 'pimfront/product-grid/application/action/channel';
 import Locale from 'pimfront/app/domain/model/locale';
 import Channel from 'pimfront/app/domain/model/channel';
 import LocaleSwitcher from 'pimfront/app/application/component/locale-switcher';
 import ChannelSwitcher from 'pimfront/app/application/component/channel-switcher';
 import IdentifierFilter from 'pimfront/product-grid/application/component/filter/identifier';
-import { GlobalState } from 'pimfront/product-grid/application/store/main';
-import { connect } from 'react-redux';
+import {GlobalState} from 'pimfront/product-grid/application/store/main';
+import {connect} from 'react-redux';
 
 interface SidebarDispatch {
   onCatalogLocaleChanged: (locale: Locale) => void;
@@ -20,16 +20,18 @@ interface SidebarViewState {
     channel: string;
   };
   structure: {
-    locales: Locale[],
-    channels: Channel[]
-  }
+    locales: Locale[];
+    channels: Channel[];
+  };
 }
 
-export const SidebarView = (
-  {context, structure, onCatalogLocaleChanged, onCatalogChannelChanged}:
-  SidebarViewState & SidebarDispatch
-) => {
-  const channel: Channel|undefined = structure.channels.find((channel: Channel) => context.channel === channel.code);
+export const SidebarView = ({
+  context,
+  structure,
+  onCatalogLocaleChanged,
+  onCatalogChannelChanged,
+}: SidebarViewState & SidebarDispatch) => {
+  const channel: Channel | undefined = structure.channels.find((channel: Channel) => context.channel === channel.code);
   const locales = undefined !== channel ? channel.locales : [];
 
   return (
@@ -38,10 +40,14 @@ export const SidebarView = (
         <div className="AknColumn-innerTop">
           <div className="AknColumn-part">
             <div className="AknColumn-block">
-              <ChannelSwitcher channelCode={context.channel} channels={structure.channels} onChannelChange={onCatalogChannelChanged}/>
+              <ChannelSwitcher
+                channelCode={context.channel}
+                channels={structure.channels}
+                onChannelChange={onCatalogChannelChanged}
+              />
             </div>
             <div className="AknColumn-block">
-              <LocaleSwitcher localeCode={context.locale} locales={locales} onLocaleChange={onCatalogLocaleChanged}/>
+              <LocaleSwitcher localeCode={context.locale} locales={locales} onLocaleChange={onCatalogLocaleChanged} />
             </div>
           </div>
           <div className="AknFilterBox-list">
@@ -50,7 +56,7 @@ export const SidebarView = (
         </div>
       </div>
     </div>
-  )
+  );
 };
 
 export const sidebarDecorator = connect(
@@ -61,12 +67,12 @@ export const sidebarDecorator = connect(
     return {
       context: {
         locale,
-        channel
+        channel,
       },
       structure: {
         locales: state.structure.locales,
-        channels: state.structure.channels
-      }
+        channels: state.structure.channels,
+      },
     };
   },
   (dispatch: any): SidebarDispatch => {
@@ -76,7 +82,7 @@ export const sidebarDecorator = connect(
       },
       onCatalogChannelChanged: (channel: Channel) => {
         dispatch(gridChannelChanged(channel));
-      }
+      },
     };
   }
 );

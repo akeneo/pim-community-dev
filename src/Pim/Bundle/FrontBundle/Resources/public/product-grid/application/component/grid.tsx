@@ -1,13 +1,13 @@
 import * as React from 'react';
 import Sidebar from 'pimfront/product-grid/application/component/sidebar';
 import ProductInterface from 'pimfront/product/domain/model/product';
-import { connect } from 'react-redux';
-import { GlobalState } from 'pimfront/product-grid/application/store/main';
-import { redirectToProduct } from 'pimfront/product-grid/application/action/router';
-import { needMoreResultsAction, loadChildrenAction } from 'pimfront/product-grid/application/action/search';
-import { Display } from 'pimfront/product-grid/domain/event/display';
+import {connect} from 'react-redux';
+import {GlobalState} from 'pimfront/product-grid/application/store/main';
+import {redirectToProduct} from 'pimfront/product-grid/application/action/router';
+import {needMoreResultsAction, loadChildrenAction} from 'pimfront/product-grid/application/action/search';
+import {Display} from 'pimfront/product-grid/domain/event/display';
 import DisplaySwitcher from 'pimfront/product-grid/application/component/header/display-switcher';
-import { changeGridDisplay } from 'pimfront/product-grid/domain/event/display';
+import {changeGridDisplay} from 'pimfront/product-grid/domain/event/display';
 import Table from 'pimfront/product-grid/application/component/table';
 
 interface GridDispatch {
@@ -24,16 +24,13 @@ interface GridViewState {
   };
   items: ProductInterface[];
   displayType: Display;
-};
+}
 
-export class GridView extends React.Component<
-  GridViewState & GridDispatch,
-  {}
-> {
-  handleScroll (event: any) {
-    const scrollSize     = event.target.children[0].offsetHeight;
+export class GridView extends React.Component<GridViewState & GridDispatch, {}> {
+  handleScroll(event: any) {
+    const scrollSize = event.target.children[0].offsetHeight;
     const scrollPosition = event.target.scrollTop;
-    const containerSize  = event.target.offsetHeight;
+    const containerSize = event.target.offsetHeight;
     const remainingHeightToBottom = scrollSize - scrollPosition - containerSize;
 
     if (remainingHeightToBottom < 2000) {
@@ -41,7 +38,7 @@ export class GridView extends React.Component<
     }
   }
 
-  render () {
+  render() {
     return (
       <div className="AknDefault-contentWithColumn">
         <div className="AknDefault-contentWithBottom">
@@ -49,7 +46,10 @@ export class GridView extends React.Component<
             <div>
               <div className="AknGridToolbar">
                 <div className="AknGridToolbar-right AknDisplaySelector">
-                  <DisplaySwitcher displayType={this.props.displayType} onDisplayChange={this.props.onchangeGridDisplay}/>
+                  <DisplaySwitcher
+                    displayType={this.props.displayType}
+                    onDisplayChange={this.props.onchangeGridDisplay}
+                  />
                 </div>
               </div>
               <div className={this.props.displayType === Display.Gallery ? 'AknGrid--gallery' : ''}>
@@ -82,10 +82,10 @@ export const gridConnector = connect(
     return {
       context: {
         locale,
-        channel
+        channel,
       },
       items: state.grid.items,
-      displayType: state.productGrid.display
+      displayType: state.productGrid.display,
     };
   },
   (dispatch: any): GridDispatch => {
@@ -101,7 +101,7 @@ export const gridConnector = connect(
       },
       onchangeGridDisplay: (display: Display) => {
         dispatch(changeGridDisplay(display));
-      }
+      },
     };
   }
 );
