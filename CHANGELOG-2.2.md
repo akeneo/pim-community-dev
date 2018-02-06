@@ -3,6 +3,7 @@
 ## Improve Julia's experience
 
 - PIM-6367: Apply rules on products models values
+- PIM-7166: Display on product model edit form that an attribute can be updated by a rule
 
 ## BC breaks
 
