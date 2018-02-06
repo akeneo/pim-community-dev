@@ -102,13 +102,29 @@ Feature: List all rules
           - type:        set
             field:       enabled
             value:       true
+      unclassify_2014_collection_tees:
+        priority: 30
+        conditions:
+          - field:    family
+            operator: IN
+            value:
+              - tees
+          - field:    enabled
+            operator: =
+            value:    false
+        actions:
+          - type:   remove
+            field:  categories
+            items:
+              - 2014_collection
+            apply_children: true
       """
     And I am logged in as "Julia"
     And I am on the rules page
 
   Scenario: Successfully show rules
     Then the rows should be sorted ascending by code
-    And the grid should contain 2 elements
+    And the grid should contain 3 elements
     And I should be able to sort the rows by code
 
     And the row "copy_description" should contain the texts:
@@ -136,6 +152,12 @@ Feature: List all rules
       | Action    | Then name [ en ] is copied into name [ de ]                         |
       | Action    | Then true is set into enabled                                       |
 
+    And the row "unclassify_2014_collection_tees" should contain the texts:
+      | column    | value                                                               |
+      | Condition | If family in tees                                                   |
+      | Condition | If enabled equals false                                             |
+      | Action    | Then 2014_collection and children is removed from categories        |
+
   Scenario: Successfully search rules
     When I search "description"
     Then the grid should contain 1 element
@@ -146,10 +168,10 @@ Feature: List all rules
     And I should see the text "Confirm deletion"
     And I should see the text "Are you sure you want to delete this rule?"
     And I confirm the deletion
-    And the grid should contain 1 elements
+    And the grid should contain 2 elements
 
   Scenario: Successfully delete a set of rules using bulk action
-    When I select rows copy_description and update_tees_collection
+    When I select rows copy_description and update_tees_collection and unclassify_2014_collection_tees
     And I press the "Delete" bottom button
     Then I should see the text "Confirm deletion"
     And I should see the text "Are you sure you want to delete the selected rules?"

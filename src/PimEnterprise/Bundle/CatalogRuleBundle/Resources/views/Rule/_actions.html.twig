@@ -8,7 +8,7 @@
         {% elseif action.type in ["add", "remove"] %}
             {% set parameters = {
                 '%field%': action.field|append_locale_and_scope_context(action.options.locale|default, action.options.scope|default)|highlight,
-                '%value%': action.items|present_rule_action_value(action.field)|highlight,
+                '%value%': action.items|present_rule_action_value(action.field)|append_apply_children_context(action.field, action.apply_children)|highlight,
             } %}
         {% else %}
             {% set parameters = {

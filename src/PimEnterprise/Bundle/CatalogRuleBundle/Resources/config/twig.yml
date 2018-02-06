@@ -9,5 +9,6 @@ services:
             - '@pim_catalog.localization.presenter.registry'
             - '@pim_enrich.resolver.locale'
             - '@pim_catalog.repository.attribute'
+            - '@translator'
         tags:
             - { name: twig.extension }

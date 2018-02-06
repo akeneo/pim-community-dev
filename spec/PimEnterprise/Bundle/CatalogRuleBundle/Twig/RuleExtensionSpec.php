@@ -3,20 +3,22 @@
 namespace spec\PimEnterprise\Bundle\CatalogRuleBundle\Twig;
 
 use Akeneo\Component\Localization\Presenter\PresenterInterface;
-use PhpSpec\Formatter\Presenter\Presenter;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\AttributeRepository;
 use Pim\Bundle\EnrichBundle\Resolver\LocaleResolver;
 use Pim\Component\Catalog\Localization\Presenter\PresenterRegistryInterface;
 use Prophecy\Argument;
+use Symfony\Component\Translation\TranslatorInterface;
 
 class RuleExtensionSpec extends ObjectBehavior
 {
-    function let(PresenterRegistryInterface $presenterRegistry,
-                 LocaleResolver $localeResolver,
-                 AttributeRepository $attributeRepository
+    function let(
+        PresenterRegistryInterface $presenterRegistry,
+        LocaleResolver $localeResolver,
+        AttributeRepository $attributeRepository,
+        TranslatorInterface $translator
     ) {
-        $this->beConstructedWith($presenterRegistry, $localeResolver, $attributeRepository);
+        $this->beConstructedWith($presenterRegistry, $localeResolver, $attributeRepository, $translator);
     }
 
     function it_is_a_twig_extension()
@@ -28,13 +30,16 @@ class RuleExtensionSpec extends ObjectBehavior
     {
         $filters = $this->getFilters();
 
-        $filters->shouldHaveCount(2);
+        $filters->shouldHaveCount(3);
 
         $filters[0]->shouldBeAnInstanceOf('\Twig_SimpleFilter');
         $filters[0]->getName()->shouldReturn('present_rule_action_value');
 
         $filters[1]->shouldBeAnInstanceOf('\Twig_SimpleFilter');
         $filters[1]->getName()->shouldReturn('append_locale_and_scope_context');
+
+        $filters[2]->shouldBeAnInstanceOf('\Twig_SimpleFilter');
+        $filters[2]->getName()->shouldReturn('append_apply_children_context');
     }
 
     function it_presents_rule_action_with_scalar_value(AttributeRepository $attributeRepository)
