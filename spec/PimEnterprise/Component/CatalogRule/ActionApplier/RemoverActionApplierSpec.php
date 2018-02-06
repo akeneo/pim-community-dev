@@ -2,6 +2,8 @@
 
 namespace spec\PimEnterprise\Component\CatalogRule\ActionApplier;
 
+use Akeneo\Component\Classification\Model\CategoryInterface;
+use Akeneo\Component\Classification\Repository\CategoryRepositoryInterface;
 use Akeneo\Component\StorageUtils\Updater\PropertyRemoverInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\AttributeInterface;
@@ -18,9 +20,10 @@ class RemoverActionApplierSpec extends ObjectBehavior
 {
     function let(
         PropertyRemoverInterface $propertyRemover,
-        AttributeRepositoryInterface $attributeRepository
+        AttributeRepositoryInterface $attributeRepository,
+        CategoryRepositoryInterface $categoryRepository
     ) {
-        $this->beConstructedWith($propertyRemover, $attributeRepository);
+        $this->beConstructedWith($propertyRemover, $attributeRepository, $categoryRepository);
     }
 
     function it_supports_remove_action(ProductRemoveActionInterface $action)
@@ -165,5 +168,58 @@ class RemoverActionApplierSpec extends ObjectBehavior
         $propertyRemover->removeData($entityWithFamilyVariant, 'categories', ['socks'], [])->shouldBeCalled();
 
         $this->applyAction($action, [$entityWithFamilyVariant]);
+    }
+
+    function it_removes_children_categories_with_apply_children_option_set_to_true(
+        $propertyRemover,
+        $categoryRepository,
+        ProductRemoveActionInterface $action,
+        ProductInterface $product,
+        CategoryInterface $firstCategory,
+        CategoryInterface $secondCategory
+    ) {
+        $action->getItems()->willReturn(
+            [
+                'first_category',
+                'second_category',
+            ]
+        );
+        $action->getOptions()->willReturn(
+            [
+                'locale'         => null,
+                'scope'          => null,
+                'apply_children' => true,
+            ]
+        );
+        $action->getField()->willReturn('categories');
+
+        $categoryRepository->getCategoriesByCodes(['first_category', 'second_category'])
+                           ->willReturn([$firstCategory, $secondCategory]);
+        $categoryRepository->getAllChildrenCodes($firstCategory)->willReturn(['first_category_child']);
+        $categoryRepository->getAllChildrenCodes($secondCategory)->willReturn(
+            [
+                'second_category_child',
+                'second_category_other_child',
+            ]
+        );
+
+        $propertyRemover->removeData(
+            $product,
+            'categories',
+            [
+                'first_category',
+                'second_category',
+                'first_category_child',
+                'second_category_child',
+                'second_category_other_child',
+            ],
+            [
+                'locale'         => null,
+                'scope'          => null,
+                'apply_children' => true,
+            ]
+        )->shouldBeCalled();
+
+        $this->applyAction($action, [$product]);
     }
 }

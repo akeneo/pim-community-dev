@@ -47,6 +47,18 @@ Feature: Export rules
           to_field: name
           from_locale: en_US
           to_locale: fr_FR
+    remove_categories:
+      priority: 40
+      conditions:
+        - field:    enabled
+          operator: =
+          value:    false
+      actions:
+        - type:  remove
+          field: categories
+          items:
+            - 2014_collection
+          apply_children: true
     """
     And the following job "clothing_rule_export" configuration:
       | filePath | %tmp%/rule_export/rule_export.yml |
@@ -102,4 +114,16 @@ Feature: Export rules
                     to_field: name
                     from_locale: en_US
                     to_locale: fr_FR
+        remove_categories:
+            priority: 40
+            conditions:
+                - field:    enabled
+                  operator: =
+                  value:    false
+            actions:
+                - type:  remove
+                  field: categories
+                  items:
+                      - 2014_collection
+                  apply_children: true
     """

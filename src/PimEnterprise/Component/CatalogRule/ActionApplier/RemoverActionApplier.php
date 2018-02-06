@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace PimEnterprise\Component\CatalogRule\ActionApplier;
 
 use Akeneo\Bundle\RuleEngineBundle\Model\ActionInterface;
+use Akeneo\Component\Classification\Repository\CategoryRepositoryInterface;
 use Akeneo\Component\RuleEngine\ActionApplier\ActionApplierInterface;
 use Akeneo\Component\StorageUtils\Updater\PropertyRemoverInterface;
 use Pim\Component\Catalog\Model\EntityWithFamilyVariantInterface;
@@ -35,16 +36,22 @@ class RemoverActionApplier implements ActionApplierInterface
     /** @var AttributeRepositoryInterface */
     private $attributeRepository;
 
+    /** @var CategoryRepositoryInterface */
+    private $categoryRepository;
+
     /**
      * @param PropertyRemoverInterface     $propertyRemover
      * @param AttributeRepositoryInterface $attributeRepository
+     * @param CategoryRepositoryInterface  $categoryRepository
      */
     public function __construct(
         PropertyRemoverInterface $propertyRemover,
-        AttributeRepositoryInterface $attributeRepository
+        AttributeRepositoryInterface $attributeRepository,
+        CategoryRepositoryInterface $categoryRepository
     ) {
         $this->propertyRemover = $propertyRemover;
         $this->attributeRepository = $attributeRepository;
+        $this->categoryRepository = $categoryRepository;
     }
 
     /**
@@ -104,8 +111,31 @@ class RemoverActionApplier implements ActionApplierInterface
         $this->propertyRemover->removeData(
             $entityWithValues,
             $action->getField(),
-            $action->getItems(),
+            $this->getImpactedItems($action),
             $action->getOptions()
         );
+    }
+
+    /**
+     * Get all items impacted by the action.
+     * Practically, add children categories codes if "field" = "categories" and "apply_children" option is true
+     *
+     * @param ProductRemoveActionInterface $action
+     *
+     * @return array
+     */
+    private function getImpactedItems(ProductRemoveActionInterface $action): array
+    {
+        $items = $action->getItems();
+        $options = $action->getOptions();
+
+        if (true === ($options['apply_children'] ?? false)) {
+            $categories = $this->categoryRepository->getCategoriesByCodes($items);
+            foreach ($categories as $category) {
+                $items = array_merge($items, $this->categoryRepository->getAllChildrenCodes($category));
+            }
+        }
+
+        return array_unique($items);
     }
 }

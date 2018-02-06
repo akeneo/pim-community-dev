@@ -912,3 +912,55 @@ Feature: Import rules
     Then the row "sony_beautiful_description" should contain the texts:
       | column | value                                                                         |
       | Action | Then description [ en \| mobile ] is copied into description [ en \| tablet ] |
+
+  Scenario: Skip rules with invalid apply_children option for remove action
+    Given the following product rule definitions:
+      """
+      sony_beautiful_description:
+        priority: 10
+        conditions:
+          - field:    family
+            operator: IN
+            value:
+              - jackets
+          - field:    enabled
+            operator: =
+            value:    false
+        actions:
+          - type:  remove
+            field: weather_conditions
+            items:
+              - dry
+      """
+    And the following yaml file to import:
+    """
+    rules:
+        remove_option_weather_for_disabled_jackets:
+            priority: 10
+            conditions:
+                - field:    family
+                  operator: IN
+                  value:
+                      - jackets
+                - field:    enabled
+                  operator: =
+                  value:    false
+            actions:
+              - type:           remove
+                field:          weather_conditions
+                items:
+                    - wet
+                apply_children: true
+    """
+    And the following job "clothing_rule_import" configuration:
+      | filePath | %file to import% |
+    When I am on the "clothing_rule_import" import job page
+    And I launch the import job
+    And I wait for the "clothing_rule_import" job to finish
+    Then I should see the text "skipped 1"
+    And I should see the text "actions[0]: The \"apply_children\" option can only be applied with field \"categories\", \"weather_conditions\" given"
+    When I am on the "weather_conditions" attribute page
+    And I visit the "Rules" tab
+    Then the row "sony_beautiful_description" should contain the texts:
+      | column | value                                       |
+      | Action | Then dry is removed from weather_conditions |

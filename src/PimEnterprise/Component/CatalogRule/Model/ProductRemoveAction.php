@@ -36,6 +36,10 @@ class ProductRemoveAction implements ProductRemoveActionInterface
             'locale' => isset($data['locale']) ? $data['locale'] : null,
             'scope'  => isset($data['scope']) ? $data['scope'] : null
         ];
+
+        if (isset($data['apply_children'])) {
+            $this->options['apply_children'] = $data['apply_children'];
+        }
     }
 
     /**
