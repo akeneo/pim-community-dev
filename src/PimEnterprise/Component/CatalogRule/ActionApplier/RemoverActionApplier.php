@@ -118,7 +118,7 @@ class RemoverActionApplier implements ActionApplierInterface
 
     /**
      * Get all items impacted by the action.
-     * Practically, add children categories codes if "field" = "categories" and "apply_children" option is true
+     * Practically, add children categories codes if "field" = "categories" and "include_children" option is true
      *
      * @param ProductRemoveActionInterface $action
      *
@@ -129,7 +129,7 @@ class RemoverActionApplier implements ActionApplierInterface
         $items = $action->getItems();
         $options = $action->getOptions();
 
-        if (true === ($options['apply_children'] ?? false)) {
+        if (true === ($options['include_children'] ?? false)) {
             $categories = $this->categoryRepository->getCategoriesByCodes($items);
             foreach ($categories as $category) {
                 $items = array_merge($items, $this->categoryRepository->getAllChildrenCodes($category));

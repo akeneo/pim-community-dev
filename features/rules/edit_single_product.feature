@@ -651,7 +651,7 @@ Feature: Read a single product by applying rules
             field: categories
             items:
               - 2014_collection
-            apply_children: false
+            include_children: false
       """
     And the product rule "rule_remove_category_jacket" is executed
     Then the categories of the product "my-jacket" should be "summer_collection, jackets"
@@ -677,7 +677,7 @@ Feature: Read a single product by applying rules
             field: categories
             items:
               - summer_collection
-            apply_children: true
+            include_children: true
       """
     And the product rule "rule_remove_category_jacket" is executed
     Then the categories of the product "my-jacket" should be "2014_collection, winter_collection"

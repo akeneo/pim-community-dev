@@ -37,7 +37,7 @@ Feature: Import rules for categories
                   field: categories
                   items:
                       - 2014_collection
-                  apply_children: true
+                  include_children: true
     """
     And the following job "clothing_rule_import" configuration:
       | filePath | %file to import% |

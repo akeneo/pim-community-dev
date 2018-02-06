@@ -39,7 +39,7 @@ class RuleExtensionSpec extends ObjectBehavior
         $filters[1]->getName()->shouldReturn('append_locale_and_scope_context');
 
         $filters[2]->shouldBeAnInstanceOf('\Twig_SimpleFilter');
-        $filters[2]->getName()->shouldReturn('append_apply_children_context');
+        $filters[2]->getName()->shouldReturn('append_include_children_context');
     }
 
     function it_presents_rule_action_with_scalar_value(AttributeRepository $attributeRepository)

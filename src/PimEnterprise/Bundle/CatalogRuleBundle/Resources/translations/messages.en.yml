@@ -26,7 +26,7 @@ pimee_catalog_rule:
             "add": Then %value% is added to %field%
             "remove": Then %value% is removed from %field%
         options:
-            apply_children: and children
+            include_children: and children
     condition:
         label: If %field% %operator% %value%
         operators:

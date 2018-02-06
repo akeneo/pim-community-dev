@@ -117,7 +117,7 @@ Feature: List all rules
             field:  categories
             items:
               - 2014_collection
-            apply_children: true
+            include_children: true
       """
     And I am logged in as "Julia"
     And I am on the rules page

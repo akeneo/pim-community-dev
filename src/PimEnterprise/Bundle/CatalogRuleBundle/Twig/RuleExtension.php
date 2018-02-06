@@ -61,7 +61,7 @@ class RuleExtension extends \Twig_Extension
         return [
             new \Twig_SimpleFilter('present_rule_action_value', [$this, 'presentRuleActionValue']),
             new \Twig_SimpleFilter('append_locale_and_scope_context', [$this, 'appendLocaleAndScopeContext']),
-            new \Twig_SimpleFilter('append_apply_children_context', [$this, 'appendApplyChildrenContext']),
+            new \Twig_SimpleFilter('append_include_children_context', [$this, 'appendIncludeChildrenContext']),
         ];
     }
 
@@ -156,16 +156,16 @@ class RuleExtension extends \Twig_Extension
     /**
      * @param string $value
      * @param string $field
-     * @param bool $applyChildren
+     * @param bool $includeChildren
      *
      * @return string
      */
-    public function appendApplyChildrenContext($value, $field = '', $applyChildren = false)
+    public function appendIncludeChildrenContext($value, $field = '', $includeChildren = false)
     {
-        if ('categories' === $field && true === $applyChildren) {
+        if ('categories' === $field && true === $includeChildren) {
             $locale = $this->localeResolver->getCurrentLocale();
             $value .= sprintf(' %s', $this->translator->trans(
-                'pimee_catalog_rule.actions.options.apply_children',
+                'pimee_catalog_rule.actions.options.include_children',
                 [],
                 null,
                 $locale

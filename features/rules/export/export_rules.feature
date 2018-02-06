@@ -58,7 +58,7 @@ Feature: Export rules
           field: categories
           items:
             - 2014_collection
-          apply_children: true
+          include_children: true
     """
     And the following job "clothing_rule_export" configuration:
       | filePath | %tmp%/rule_export/rule_export.yml |
@@ -125,5 +125,5 @@ Feature: Export rules
                   field: categories
                   items:
                       - 2014_collection
-                  apply_children: true
+                  include_children: true
     """

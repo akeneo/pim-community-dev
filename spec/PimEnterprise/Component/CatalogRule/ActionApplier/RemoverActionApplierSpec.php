@@ -170,7 +170,7 @@ class RemoverActionApplierSpec extends ObjectBehavior
         $this->applyAction($action, [$entityWithFamilyVariant]);
     }
 
-    function it_removes_children_categories_with_apply_children_option_set_to_true(
+    function it_removes_children_categories_with_include_children_option_set_to_true(
         $propertyRemover,
         $categoryRepository,
         ProductRemoveActionInterface $action,
@@ -186,9 +186,9 @@ class RemoverActionApplierSpec extends ObjectBehavior
         );
         $action->getOptions()->willReturn(
             [
-                'locale'         => null,
-                'scope'          => null,
-                'apply_children' => true,
+                'locale'           => null,
+                'scope'            => null,
+                'include_children' => true,
             ]
         );
         $action->getField()->willReturn('categories');
@@ -214,9 +214,9 @@ class RemoverActionApplierSpec extends ObjectBehavior
                 'second_category_other_child',
             ],
             [
-                'locale'         => null,
-                'scope'          => null,
-                'apply_children' => true,
+                'locale'           => null,
+                'scope'            => null,
+                'include_children' => true,
             ]
         )->shouldBeCalled();
 

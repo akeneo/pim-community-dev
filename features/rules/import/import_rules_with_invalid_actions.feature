@@ -913,7 +913,7 @@ Feature: Import rules
       | column | value                                                                         |
       | Action | Then description [ en \| mobile ] is copied into description [ en \| tablet ] |
 
-  Scenario: Skip rules with invalid apply_children option for remove action
+  Scenario: Skip rules with invalid include_children option for remove action
     Given the following product rule definitions:
       """
       sony_beautiful_description:
@@ -950,7 +950,7 @@ Feature: Import rules
                 field:          weather_conditions
                 items:
                     - wet
-                apply_children: true
+                include_children: true
     """
     And the following job "clothing_rule_import" configuration:
       | filePath | %file to import% |
@@ -958,7 +958,7 @@ Feature: Import rules
     And I launch the import job
     And I wait for the "clothing_rule_import" job to finish
     Then I should see the text "skipped 1"
-    And I should see the text "actions[0]: The \"apply_children\" option can only be applied with field \"categories\", \"weather_conditions\" given"
+    And I should see the text "actions[0]: The \"include_children\" option can only be applied with field \"categories\", \"weather_conditions\" given"
     When I am on the "weather_conditions" attribute page
     And I visit the "Rules" tab
     Then the row "sony_beautiful_description" should contain the texts:
