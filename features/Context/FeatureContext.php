@@ -25,6 +25,7 @@ use Pim\Behat\Context\Domain\System\PermissionsContext;
 use Pim\Behat\Context\Domain\TreeContext;
 use Pim\Behat\Context\HookContext;
 use Pim\Behat\Context\JobContext;
+use Pim\Behat\Context\LaunchJobContext;
 use Pim\Behat\Context\PimContext;
 use Pim\Behat\Context\Storage\FileInfoStorage;
 use Pim\Behat\Context\Storage\ProductStorage;
@@ -106,6 +107,7 @@ class FeatureContext extends PimContext implements KernelAwareContext
         $this->contexts['domain-group'] = $environment->getContext(ProductGroupContext::class);
         $this->contexts['hook'] = $environment->getContext(HookContext::class);
         $this->contexts['job'] = $environment->getContext(JobContext::class);
+        $this->contexts['launchJob'] = $environment->getContext(LaunchJobContext::class);
         $this->contexts['viewSelector'] = $environment->getContext(ViewSelectorContext::class);
         $this->contexts['storage-product'] = $environment->getContext(ProductStorage::class);
         $this->contexts['storage-file-info'] = $environment->getContext(FileInfoStorage::class);

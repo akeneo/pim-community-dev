@@ -71,6 +71,8 @@ class JobContext extends PimContext
 
         $saver = $this->getMainContext()->getContainer()->get('akeneo_batch.saver.job_instance');
         $saver->save($jobInstance);
+
+        return $jobInstance;
     }
 
     /**
