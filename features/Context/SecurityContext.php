@@ -543,6 +543,99 @@ class SecurityContext extends RawMinkContext implements KernelAwareInterface
         $this->doCall('DELETE', $url);
     }
 
+    /**
+     * @When /^I make a direct authenticated POST call to create a "([^"]*)" product in the family "([^"]*)"$/
+     */
+    public function iMakeADirectAuthenticatedPostCallToCreateAProduct($productIdentifier, $familyCode)
+    {
+        $routeName = 'pim_enrich_product_rest_create';
+
+        $url = $this->kernel
+            ->getContainer()
+            ->get('router')
+            ->generate($routeName);
+
+        $this->doCall('POST', $url, [
+            'identifier' => $productIdentifier,
+            'family' => $familyCode
+        ]);
+    }
+
+    /**
+     * @When /^I make a direct authenticated POST call to disable the "([^"]*)" product$/
+     */
+    public function iMakeADirectAuthenticatedPostCallToDisableTheProduct($productIdentifier)
+    {
+        $routeName = 'pim_enrich_product_rest_post';
+
+        $product = $this->kernel
+            ->getContainer()
+            ->get('pim_catalog.repository.product')
+            ->findOneByIdentifier($productIdentifier);
+
+        $url = $this->kernel
+            ->getContainer()
+            ->get('router')
+            ->generate($routeName, [
+                'id' => $product->getId(),
+            ]);
+
+        $this->doCall('POST', $url, [], [
+            'enabled' => false,
+            'values' => [],
+        ]);
+    }
+
+    /**
+     * @When /^I make a direct authenticated DELETE call on the "([^"]*)" product$/
+     */
+    public function iMakeADirectAuthenticatedDeleteCallOnTheProduct($productIdentifier)
+    {
+        $routeName = 'pim_enrich_product_rest_remove';
+
+        $product = $this->kernel
+            ->getContainer()
+            ->get('pim_catalog.repository.product')
+            ->findOneByIdentifier($productIdentifier);
+
+        $url = $this->kernel
+            ->getContainer()
+            ->get('router')
+            ->generate($routeName, [
+                'id' => $product->getId(),
+            ]);
+
+        $this->doCall('DELETE', $url);
+    }
+
+    /**
+     * @When /^I make a direct authenticated DELETE call on the "([^"]*)" product to remove the "([^"]*)" attribute$/
+     */
+    public function iMakeADirectAuthenticatedDeleteCallOnTheProductToRemoveTheAttribute($productIdentifier, $attributeCode)
+    {
+        $routeName = 'pim_enrich_product_remove_attribute_rest';
+
+        $product = $this->kernel
+            ->getContainer()
+            ->get('pim_catalog.repository.product')
+            ->findOneByIdentifier($productIdentifier);
+
+        $attribute = $this->kernel
+            ->getContainer()
+            ->get('pim_catalog.repository.attribute')
+            ->findOneByIdentifier($attributeCode);
+
+        $url = $this->kernel
+            ->getContainer()
+            ->get('router')
+            ->generate($routeName, [
+                'id' => $product->getId(),
+                'attributeId' => $attribute->getId(),
+            ]);
+
+        $this->doCall('DELETE', $url);
+    }
+
 //    /**
 //     * @When /^I make a direct authenticated POST call on the "([^"]*)" user group with following data:$/
 //     */
@@ -732,16 +825,20 @@ class SecurityContext extends RawMinkContext implements KernelAwareInterface
     }
 
     /**
-     * @Then /^there should be a "([^"]*)" product$/
+     * @Then /^there should( not)? be a "([^"]*)" product$/
      */
-    public function thereShouldBeAProduct($productIdentifier)
+    public function thereShouldBeAProduct($not, $productIdentifier)
     {
         $product = $this->kernel
             ->getContainer()
             ->get('pim_catalog.repository.product')
             ->findOneByIdentifier($productIdentifier);
 
-        assertNotNull($product);
+        if ($not) {
+            assertNull($product);
+        } else {
+            assertNotNull($product);
+        }
     }
 
     /**
