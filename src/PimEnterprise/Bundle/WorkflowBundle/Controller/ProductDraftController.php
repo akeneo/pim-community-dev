@@ -227,12 +227,7 @@ class ProductDraftController
         $jobExecution = $this->simpleJobLauncher
             ->launch($jobInstance, $this->tokenStorage->getToken()->getUser(), $configuration);
 
-        return new RedirectResponse(
-            $this->router->generate(
-                'pim_enrich_job_tracker_show',
-                ['id' => $jobExecution->getId()]
-            )
-        );
+        return new JsonResponse(['jobExecutionId' => $jobExecution->getId()]);
     }
 
     /**
@@ -255,11 +250,15 @@ class ProductDraftController
         $jobExecution = $this->simpleJobLauncher
             ->launch($jobInstance, $this->tokenStorage->getToken()->getUser(), $configuration);
 
+        return new JsonResponse(['jobExecutionId' => $jobExecution->getId()]);
+    }
+
+    public function massActionRedirectAction(Request $request)
+    {
+        $jobExecutionId = $request->get('jobExecutionId');
+
         return new RedirectResponse(
-            $this->router->generate(
-                'pim_enrich_job_tracker_show',
-                ['id' => $jobExecution->getId()]
-            )
+            $this->router->generate('pim_enrich_job_tracker_show', ['id' => $jobExecutionId])
         );
     }
 

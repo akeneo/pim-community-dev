@@ -11,12 +11,14 @@ define(
         'jquery',
         'underscore',
         'oro/datagrid/mass-action',
+        'oro/navigation',
         'pim/form-modal'
     ],
     function (
         $,
         _,
         MassAction,
+        Navigation,
         FormModal
     ) {
         return MassAction.extend({
@@ -50,6 +52,21 @@ define(
 
                 formModal.open().then(function () {
                     MassAction.prototype.execute.apply(this, arguments);
+                    $.post(this.getLinkWithParameters(), {itemIds: this.getSelectedRows().join(',')})
+                        .done(function (data) {
+                            var url = '/product_draft/redirect?jobExecutionId=' + data.jobExecutionId,
+                                navigation = Navigation.getInstance();
+
+                            if (navigation) {
+                                navigation.processRedirect({fullRedirect: false, location: url});
+                            }
+                        })
+                        .error(function (jqXHR) {
+                            messenger.notificationFlashMessage(
+                                'error',
+                                _.__(jqXHR.responseText)
+                            );
+                        });
                 }.bind(this));
             },
 
