@@ -8,6 +8,7 @@ use Akeneo\Component\StorageUtils\Updater\PropertyRemoverInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\EntityWithFamilyVariantInterface;
+use Pim\Component\Catalog\Model\EntityWithValuesInterface;
 use Pim\Component\Catalog\Model\FamilyVariantInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
@@ -174,7 +175,7 @@ class RemoverActionApplierSpec extends ObjectBehavior
         $propertyRemover,
         $categoryRepository,
         ProductRemoveActionInterface $action,
-        ProductInterface $product,
+        EntityWithValuesInterface $entityWithValues,
         CategoryInterface $firstCategory,
         CategoryInterface $secondCategory
     ) {
@@ -204,7 +205,7 @@ class RemoverActionApplierSpec extends ObjectBehavior
         );
 
         $propertyRemover->removeData(
-            $product,
+            $entityWithValues,
             'categories',
             [
                 'first_category',
@@ -220,6 +221,6 @@ class RemoverActionApplierSpec extends ObjectBehavior
             ]
         )->shouldBeCalled();
 
-        $this->applyAction($action, [$product]);
+        $this->applyAction($action, [$entityWithValues]);
     }
 }
