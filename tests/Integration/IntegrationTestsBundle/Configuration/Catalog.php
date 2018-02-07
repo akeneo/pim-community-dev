@@ -103,6 +103,7 @@ class Catalog implements CatalogInterface
      */
     private function getRootDirectory()
     {
-        return __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR;
+        return __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . '..' .
+            DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR;
     }
 }
