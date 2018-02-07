@@ -1,5 +1,6 @@
 PimEnterprise\Component\CatalogRule\Model\ProductRemoveAction:
     constraints:
+        - \PimEnterprise\Bundle\CatalogRuleBundle\Validator\Constraint\IncludeChildrenOption: ~
         - \PimEnterprise\Bundle\CatalogRuleBundle\Validator\Constraint\PropertyAction: ~
     properties:
         field:

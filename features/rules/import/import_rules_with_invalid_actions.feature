@@ -916,7 +916,7 @@ Feature: Import rules
   Scenario: Skip rules with invalid include_children option for remove action
     Given the following product rule definitions:
       """
-      sony_beautiful_description:
+      remove_option_weather_for_disabled_jackets:
         priority: 10
         conditions:
           - field:    family
@@ -946,8 +946,8 @@ Feature: Import rules
                   operator: =
                   value:    false
             actions:
-              - type:           remove
-                field:          weather_conditions
+              - type:  remove
+                field: weather_conditions
                 items:
                     - wet
                 include_children: true
@@ -961,6 +961,60 @@ Feature: Import rules
     And I should see the text "actions[0]: The \"include_children\" option can only be applied with field \"categories\", \"weather_conditions\" given"
     When I am on the "weather_conditions" attribute page
     And I visit the "Rules" tab
-    Then the row "sony_beautiful_description" should contain the texts:
+    Then the row "remove_option_weather_for_disabled_jackets" should contain the texts:
       | column | value                                       |
       | Action | Then dry is removed from weather_conditions |
+
+  Scenario: Skip rules with invalid include_children option type for remove action
+    Given the following product rule definitions:
+      """
+      remove_categories_for_disabled_jackets:
+        priority: 10
+        conditions:
+          - field:    family
+            operator: IN
+            value:
+              - jackets
+          - field:    enabled
+            operator: =
+            value:    false
+        actions:
+          - type:  remove
+            field: categories
+            items:
+              - summer_collection
+            include_children: true
+      """
+    And the following yaml file to import:
+    """
+    rules:
+        remove_categories_for_disabled_jackets:
+            priority: 10
+            conditions:
+                - field:    family
+                  operator: IN
+                  value:
+                  - jackets
+                - field:    enabled
+                  operator: =
+                  value:    false
+            actions:
+                - type:  remove
+                  field: categories
+                  items:
+                    - 2014_collection
+                  include_children: yolo
+    """
+    And the following job "clothing_rule_import" configuration:
+      | filePath | %file to import% |
+    When I am on the "clothing_rule_import" import job page
+    And I launch the import job
+    And I wait for the "clothing_rule_import" job to finish
+    Then I should see the text "skipped 1"
+    And I should see the text "actions[0]: The \"include_children\" option is expected to be of type \"bool\", \"string\" given."
+    When I am on the rules page
+    Then the row "remove_categories_for_disabled_jackets" should contain the texts:
+      | column    | value                                                          |
+      | Condition | If family in jackets                                           |
+      | Condition | If enabled equals false                                        |
+      | Action    | Then summer_collection and children is removed from categories |

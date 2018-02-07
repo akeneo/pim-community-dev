@@ -160,7 +160,7 @@ class RuleExtension extends \Twig_Extension
      *
      * @return string
      */
-    public function appendIncludeChildrenContext($value, $field = '', $includeChildren = false)
+    public function appendIncludeChildrenContext($value, $field = '', $includeChildren = false): string
     {
         if ('categories' === $field && true === $includeChildren) {
             $locale = $this->localeResolver->getCurrentLocale();

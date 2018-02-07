@@ -653,7 +653,7 @@ Feature: Read a single product by applying rules
               - 2014_collection
             include_children: false
       """
-    And the product rule "rule_remove_category_jacket" is executed
+    When the product rule "rule_remove_category_jacket" is executed
     Then the categories of the product "my-jacket" should be "summer_collection, jackets"
 
   Scenario: Successfully execute a rule with a "remove" action on a category and its children
@@ -679,5 +679,5 @@ Feature: Read a single product by applying rules
               - summer_collection
             include_children: true
       """
-    And the product rule "rule_remove_category_jacket" is executed
+    When the product rule "rule_remove_category_jacket" is executed
     Then the categories of the product "my-jacket" should be "2014_collection, winter_collection"
