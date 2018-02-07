@@ -1,4 +1,4 @@
-import Flag from './flag';
+import Flag from 'pimfront/app/application/component/flag';
 import * as React from 'react';
 import {shallow} from 'enzyme';
 import {createLocale} from 'pimfront/app/domain/model/locale';

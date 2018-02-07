@@ -1,4 +1,4 @@
-import Dropdown, {DropdownElement} from './dropdown';
+import Dropdown, {DropdownElement} from 'pimfront/app/application/component/dropdown';
 import * as React from 'react';
 import {mount} from 'enzyme';
 

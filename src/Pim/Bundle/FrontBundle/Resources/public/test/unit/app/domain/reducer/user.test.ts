@@ -1,4 +1,4 @@
-import reducer from './user';
+import reducer from 'pimfront/app/domain/reducer/user';
 
 describe('>>>REDUCER --- user', () => {
   test('handle empty state', () => {

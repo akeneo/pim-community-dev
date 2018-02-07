@@ -1,4 +1,4 @@
-import reducer from './structure';
+import reducer from 'pimfront/app/domain/reducer/structure';
 
 describe('>>>REDUCER --- structure', () => {
   test('handle empty state', () => {
