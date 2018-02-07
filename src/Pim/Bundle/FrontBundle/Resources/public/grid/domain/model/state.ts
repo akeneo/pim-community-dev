@@ -27,11 +27,11 @@ export const createState = <Element>(rawState: any): GridState<Element> => {
       ? rawState.query
       : createQuery({
           filters: [
-            {
-              field: 'family',
-              operator: 'IN',
-              value: ['clothing'],
-            },
+            // {
+            //   field: 'family',
+            //   operator: 'IN',
+            //   value: ['clothing'],
+            // },
           ],
         }),
     rawState.items,

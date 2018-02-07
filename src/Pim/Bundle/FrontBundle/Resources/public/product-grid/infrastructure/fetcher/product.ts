@@ -1,4 +1,4 @@
-const routing = require('routing');
+import * as routing from 'routing';
 import * as jQuery from 'jquery';
 import {RawProductInterface} from 'pimfront/product/domain/model/product';
 
@@ -45,8 +45,8 @@ class ProductGridFetcher {
         .then((products: RawProductInterface[]) => {
           resolve(products);
         })
-        .fail(([...args]) => {
-          reject.apply(args);
+        .fail(function () {
+          reject.apply(arguments);
         });
     });
   }

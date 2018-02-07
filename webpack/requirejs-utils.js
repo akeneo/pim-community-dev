@@ -2,7 +2,28 @@ const _ = require('lodash');
 const deepMerge = require('deepmerge');
 const path = require('path');
 const { parse } = require('yamljs');
-const { readFileSync, writeFileSync } = require('fs');
+const { readFileSync, readdirSync, writeFileSync, statSync } = require('fs');
+
+const getFrontModules = (originalDir, bundle) => (dir, modules) => {
+    dir = dir || originalDir + bundle + '/';
+    modules = modules || {};
+    const files = readdirSync(dir);
+
+    files.forEach(function(file) {
+        if (statSync(dir + file).isDirectory()) {
+            modules = getFrontModules(originalDir)(dir + file + '/', modules);
+        }
+        else {
+            const filePath = (dir + file).substring(originalDir.length);
+            const fileInfo = path.parse(filePath);
+            if (['.ts', '.tsx'].includes(fileInfo.ext)) {
+                modules[`${fileInfo.dir}/${fileInfo.name}`] = `${fileInfo.dir}/${fileInfo.base}`;
+            }
+        }
+    });
+
+    return modules;
+}
 
 const utils = {
     /**
@@ -45,8 +66,7 @@ const utils = {
     getModulePaths(baseDir, sourceDir, sourcePath) {
         const pathSourceFile = require(sourcePath);
         const { config, paths } = utils.getRequireConfig(pathSourceFile, baseDir);
-
-        const aliases = Object.assign(paths, {
+        const aliases = Object.assign(paths, getFrontModules('./web/bundles/', 'pimfront')(), {
             'require-polyfill': path.resolve(sourceDir, './webpack/require-polyfill.js'),
             'require-context': path.resolve(sourceDir, './webpack/require-context.js'),
             'module-registry': path.resolve(baseDir, './web/js/module-registry.js'),

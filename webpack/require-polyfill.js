@@ -7,7 +7,6 @@ define(['jquery', 'underscore', 'require-context'], function ($, _, requireConte
      */
     return function(modules, cb) {
         var resolvedModules = [];
-
         if (typeof modules === 'string') {
             return requireContext(modules);
         } else {
