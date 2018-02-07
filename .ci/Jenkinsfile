@@ -1,15 +1,13 @@
 #!groovy
 
-import org.csanchez.jenkins.plugins.kubernetes.pipeline.PodTemplateAction
-
 String[] editions = ["ce"]
-String[] features = ["features"]
+String[] features = ["features", "tests/features"]
 String launchUnitTests = "yes"
 String launchIntegrationTests = "yes"
 String launchBehatTests = "yes"
 String verboseOutputs = "yes"
-String dotsPerLine = "50"
 String slackChannel = ""
+String tag = "eu.gcr.io/akeneo-ci/pim-community-dev:${env.BRANCH_NAME}"
 
 stage("Build") {
     milestone 1
@@ -22,7 +20,7 @@ stage("Build") {
                 choice(choices: 'no\nyes', description: 'Enable Verbose mode', name: 'verboseOutputs'),
                 string(defaultValue: '', description: 'Channel or user to notify (example : "#channel,@user")', name: 'slackChannel'),
                 string(defaultValue: 'ee,ce', description: 'PIM edition the behat tests should run on (comma separated values)', name: 'editions'),
-                string(defaultValue: 'features,vendor/akeneo/pim-community-dev/features', description: 'Behat scenarios to build', name: 'features'),
+                string(defaultValue: 'features,tests/features,vendor/akeneo/pim-community-dev/features,vendor/akeneo/pim-community-dev/tests/features', description: 'Behat scenarios to build', name: 'features'),
             ])
 
             editions = userInput['editions'].tokenize(',')
@@ -36,434 +34,99 @@ stage("Build") {
     }
     milestone 2
 
-    parallel(
-        "pim-ce": {withBuildNode({
-            checkout scm
-            container("php") {
-                sh "composer update --ansi --optimize-autoloader --no-interaction --no-progress --prefer-dist --ignore-platform-reqs --no-suggest"
-                sh "bin/console --ansi assets:install"
-                sh "bin/console --ansi pim:installer:dump-require-paths"
-            }
-            container("node") {
-                sh "yarn install --no-progress"
-                sh "yarn run webpack"
-            }
-            container("docker") {
-                sh "cp .ci/behat.community.yml behat.yml"
-                for (feature in features) {
-                    sh "sed -i \"/paths/a\\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ -\\ ${feature}\" behat.yml"
-                }
+    withCredentials([string(credentialsId: 'composer-token', variable: 'token')]) {
+        parallel(
+            "pim-ce": {
+                pod(label: "build", containers: [
+                    containerTemplate(name: "docker", image: "paulwoelfel/docker-gcloud:latest", ttyEnabled: true, command: 'cat', resourceRequestCpu: '100m', resourceRequestMemory: '200Mi')
+                ]) {container('docker') {
+                    checkout scm
+                    sh "gcloud container builds submit --config .ci/builder.yaml --substitutions _IMAGE_TAG=${tag} ."
+                }}
+            },
+            "pim-ee": {
+                if (editions.contains("ee")) {
+                    pod(label: "build", containers: [
+                        containerTemplate(name: "docker", image: "paulwoelfel/docker-gcloud:latest", ttyEnabled: true, command: 'cat', resourceRequestCpu: '100m', resourceRequestMemory: '200Mi')
+                    ]) {container('docker') {
+                        checkout([$class: 'GitSCM',
+                            branches: [[name: 'master']],
+                            userRemoteConfigs: [[credentialsId: 'github-credentials', url: 'https://github.com/akeneo/pim-enterprise-dev.git']]
+                        ])
 
-                sh "cp app/config/parameters_test.yml.dist app/config/parameters_test.yml"
-                sh "sed -i \"s#database_host: .*#database_host: 127.0.0.1#g\" app/config/parameters_test.yml"
-                sh "sed -i \"s#index_hosts: .*#index_hosts: 'elastic:changeme@127.0.0.1:9200'#g\" app/config/parameters_test.yml"
-                sh "sed \"\$a    installer_data: 'PimInstallerBundle:minimal'\n\" app/config/parameters_test.yml"
-
-                sh "gcloud container builds submit --tag eu.gcr.io/akeneo-ci/pim-community-dev:pull-request-${env.CHANGE_ID}-build-${env.BUILD_NUMBER}-ce ."
-            }
-        })},
-        "pim-ee": {
-            if (editions.contains("ee")) {
-                withBuildNode({
-                    checkout([$class: 'GitSCM',
-                        branches: [[name: 'master']],
-                        userRemoteConfigs: [[credentialsId: 'github-credentials', url: 'https://github.com/akeneo/pim-enterprise-dev.git']]
-                    ])
-                    // Required to avoid permission error when "composer update"
-                    sh "mkdir -m 777 vendor"
-
-                    container("php") {
-                        sh "composer require --dev --no-update phpspec/phpspec:~3.4.2"
-                        sh "composer require --dev --no-update phpunit/phpunit:~5.7.22"
-                        sh "composer require --dev --no-update sebastian/exporter:~2.0.0"
-                        sh "composer require --dev --no-update liuggio/fastest:~1.4.4"
-                        sh "composer update --ansi --optimize-autoloader --no-interaction --no-progress --prefer-dist --no-scripts --ignore-platform-reqs --no-suggest"
-
-                        // Required to avoid permission error when "deleteDir()"
-                        sh "chmod 777 -R vendor/akeneo"
-
-                        dir('vendor/akeneo/pim-community-dev') {
-                            deleteDir()
+                        dir('packages/pim-community-dev') {
                             checkout scm
                         }
 
-                        sh "php -d memory_limit=-1 /usr/bin/composer --ansi -n run-script post-update-cmd"
-                        sh "bin/console --ansi assets:install"
-                        sh "bin/console --ansi pim:installer:dump-require-paths"
-                    }
-                    container("node") {
-                        sh "yarn install --no-progress"
-                        sh "yarn run webpack"
-                    }
-                    container("docker") {
-                        sh "cp vendor/akeneo/pim-community-dev/.ci/behat.enterprise.yml behat.yml"
-                        sh "cp app/config/parameters_test.yml.dist app/config/parameters_test.yml"
-                        sh "sed -i \"s#database_host: .*#database_host: 127.0.0.1#g\" app/config/parameters_test.yml"
-                        sh "sed -i \"s#index_hosts: .*#index_hosts: 'elastic:changeme@127.0.0.1:9200'#g\" app/config/parameters_test.yml"
-                        sh "sed \"\$a    installer_data: 'PimEnterpriseInstallerBundle:minimal'\n\" app/config/parameters_test.yml"
-
-                        // Compatibility layer while the EE is not up to date with the new CI
-                        sh "cp vendor/akeneo/pim-community-dev/Dockerfile ."
-                        sh "cp -R vendor/akeneo/pim-community-dev/.ci ."
-                        for (feature in features) {
-                            sh "sed -i \"/paths/a\\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ -\\ ${feature}\" behat.yml"
-                        }
-
-                        sh "gcloud container builds submit --tag eu.gcr.io/akeneo-ci/pim-community-dev:pull-request-${env.CHANGE_ID}-build-${env.BUILD_NUMBER}-ee ."
-                    }
-                })
-            } else {
-                echo "Skipping Enterprise Edition matrix"
+                        sh "gcloud container builds submit --config .ci/builder.yaml --substitutions _IMAGE_TAG=${tag}-ee ."
+                    }}
+                } else {
+                    echo "Skipping Enterprise Edition matrix"
+                }
             }
-        }
-    )
+        )
+    }
 }
 
 stage("Test") {
     try {
         parallel(
-            "phpunit": {
-                if (launchUnitTests.equals("yes")) {
-                    withPhp({
-                        try {
-                            sh "cd /home/jenkins/pim && vendor/bin/phpunit -c app/phpunit.xml.dist --testsuite PIM_Unit_Test --log-junit ${env.WORKSPACE}/junit_output.xml"
-                        } finally {
-                            junit "junit_output.xml"
-                        }
-                    })
-                } else {
-                    echo "Skipping unit test phpunit"
-                }
-            },
-            "phpspec": {
-                if (launchUnitTests.equals("yes")) {
-                    withPhp({
-                        sh "chown -R phpuser /home/jenkins/pim"
-                        try {
-                            sh "cd /home/jenkins/pim && su phpuser -c './vendor/bin/phpspec run --format=junit' > ${env.WORKSPACE}/junit_output.xml"
-                        } finally {
-                            junit "junit_output.xml"
-                        }
-                    })
-                } else {
-                    echo "Skipping unit test phpspec"
-                }
-            },
-            "php-cs-fixer": {
-                if (launchUnitTests.equals("yes")) {
-                    withPhp({
-                        try {
-                            sh "cd /home/jenkins/pim && vendor/bin/php-cs-fixer fix --diff --dry-run --config=.php_cs.php --format=junit > ${env.WORKSPACE}/junit_output.xml"
-                        } finally {
-                            junit "junit_output.xml"
-                        }
-                    })
-                } else {
-                    echo "Skipping unit test php-cs-fixer"
-                }
-            },
-            "grunt": {
-                if (launchUnitTests.equals("yes")) {
-                    withNode({
-                        sh "cd /home/jenkins/pim && yarn run lint"
-                    })
-                } else {
-                    echo "Skipping unit test grunt"
-                }
-            },
-            "php-coupling-detector": {
-                if (launchUnitTests.equals("yes")) {
-                    withPhp({
-                        sh "cd /home/jenkins/pim && vendor/bin/php-coupling-detector detect --config-file=.php_cd.php src"
-                    })
-                } else {
-                    echo "Skipping unit test php-coupling-detector"
-                }
-            },
-            "phpunit-integration-ce": {
-                if (launchIntegrationTests.equals("yes") && editions.contains("ce")) {
-                    queue({
-                        def files = sh (returnStdout: true, script: 'find /home/jenkins/pim/src /home/jenkins/pim/tests -name "*Integration.php" -exec sh -c "grep -Ho \'function test\' {} | uniq -c"  \\; | sed "s/:function test//"').tokenize('\n')
-                        def messages = new net.sf.json.JSONArray()
-
-                        for (line in files) {
-                            def file = line.tokenize(' ')
-                            def commands = [
-                                [container: "php", script: "bin/console --env=test pim:install --force"],
-                                [container: "php", script: "chmod 777 -R var/cache var/logs app/archive /tmp/pim app/file_storage app/uploads"],
-                                [container: "php", script: "chmod 777 /tmp"],
-                                [container: "php", script: "mkdir -m 777 -p app/build/logs/behat web/media"],
-                                [
-                                    container: "php",
-                                    junit: [in: "/home/jenkins/pim/", name: "junit_output.xml"],
-                                    script: "php -d error_reporting='E_ALL' vendor/bin/phpunit -c app/phpunit.xml.dist " + file[1] + " --log-junit junit_output.xml"
-                                ]
-                            ]
-                            def message = new net.sf.json.JSONObject()
-                            message.put("name",file[1])
-                            message.put("commands",commands)
-                            messages.add(message)
-                        }
-
-                        return messages
-                    }, 30, "ce", verboseOutputs, dotsPerLine)
-                } else {
-                    echo "Skipping integration test"
-                }
-            },
-            "behat-ce": {
-                if (launchBehatTests.equals("yes") && editions.contains("ce")) {
-                    queue({
-                        def messages = new net.sf.json.JSONArray()
-
-                        def legacyScenarios = sh (returnStdout: true, script: "cd /home/jenkins/pim && php vendor/bin/behat -p legacy --list-scenarios").tokenize('\n')
-                        def acceptanceScenarios = sh (returnStdout: true, script: "cd /home/jenkins/pim && php vendor/bin/behat -p acceptance --list-scenarios").tokenize('\n')
-
-                        def legacyMessages = runBehatScenarios(legacyScenarios, 'legacy')
-                        messages.addAll(legacyMessages)
-
-                        def acceptanceMessages = runBehatScenarios(acceptanceScenarios, 'acceptance')
-                        messages.addAll(acceptanceMessages)
-
-                        return messages
-                    }, 100, "ce", verboseOutputs, dotsPerLine)
-                } else {
-                    echo "Skipping behat test"
-                }
-            },
-            "phpunit-integration-ee": {
-                if (launchIntegrationTests.equals("yes") && editions.contains("ee")) {
-                    queue({
-                        def files = sh (returnStdout: true, script: 'find /home/jenkins/pim/src /home/jenkins/pim/tests -name "*Integration.php" -exec sh -c "grep -Ho \'function test\' {} | uniq -c"  \\; | sed "s/:function test//"').tokenize('\n')
-                        def messages = new net.sf.json.JSONArray()
-
-                        for (line in files) {
-                            def file = line.tokenize(' ')
-                            def commands = [
-                                [container: "php", script: "bin/console --env=test pim:install --force"],
-                                [container: "php", script: "chmod 777 -R var/cache var/logs app/archive /tmp/pim app/file_storage app/uploads"],
-                                [container: "php", script: "mkdir -m 777 -p app/build/logs/behat web/media"],
-                                [
-                                    container: "php",
-                                    junit: [in: "/home/jenkins/pim/", name: "junit_output.xml"],
-                                    script: "php -d error_reporting='E_ALL' vendor/bin/phpunit -c app/phpunit.xml.dist --exclude-group ce" + file[1] + " --log-junit junit_output.xml"
-                                ]
-                            ]
-                            def message = new net.sf.json.JSONObject()
-                            message.put("name",file[1])
-                            message.put("commands",commands)
-                            messages.add(message)
-                        }
-
-                        return messages
-                    }, 10, "ee", verboseOutputs, dotsPerLine)
-                } else {
-                    echo "Skipping integration test"
-                }
-            },
-            "behat-ee": {
-                if (launchBehatTests.equals("yes") && editions.contains("ee")) {
-                    queue({
-                        def scenarios = sh (returnStdout: true, script: "cd /home/jenkins/pim && php vendor/bin/behat --list-scenarios").tokenize('\n')
-                        def messages = new net.sf.json.JSONArray()
-                        for (scenario in scenarios) {
-                            def commands = [
-                                [container: "php", script: "bin/console --env=behat --quiet pim:install --force"],
-                                [container: "php", script: "touch var/logs/behat.log"],
-                                [container: "php", script: "chmod 777 -R var/cache var/logs app/archive /tmp/pim app/file_storage app/uploads"],
-                                [container: "php", script: "mkdir -m 777 -p app/build/logs/behat web/media"],
-                                [container: "php", script: "sed -i '2 a umask(0000);' vendor/behat/behat/bin/behat"],
-                                [container: "php", script: "ln -s ../bin/console app/console"],
-                                [
-                                    container: "php",
-                                    junit: [in: "/home/jenkins/pim/app/build/logs/behat/", name: "*.xml"],
-                                    artifacts: [in: "/tmp/behat/screenshots", name: "*.png"],
-                                    script: "php vendor/bin/behat --strict -vv " + scenario
-                                ]
-                            ]
-                            def message = new net.sf.json.JSONObject()
-                            message.put("name",scenario)
-                            message.put("commands",commands)
-                            messages.add(message)
-                        }
-
-                        return messages
-                    }, 150, "ee", verboseOutputs, dotsPerLine)
-                } else {
-                    echo "Skipping behat test"
-                }
-            }
+            "phpunit": {testif(
+                condition: launchUnitTests.equals("yes"),
+                container: tag,
+                script: "cd /var/www/pim && vendor/bin/phpunit -c app/phpunit.xml.dist --testsuite PIM_Unit_Test --log-junit %workspace%/junit_output.xml",
+                junit: "junit_output.xml"
+            )},
+            "phpspec": {testif(
+                condition: launchUnitTests.equals("yes"),
+                container: tag,
+                script: "cd /var/www/pim && su -s /bin/sh www-data -c './vendor/bin/phpspec run --format=junit' > %workspace%/junit_output.xml",
+                junit: "junit_output.xml"
+            )},
+            "php-cs-fixer": {testif(
+                condition: launchUnitTests.equals("yes"),
+                container: tag,
+                script: "cd /var/www/pim && vendor/bin/php-cs-fixer fix --diff --dry-run --config=.php_cs.php --format=junit > %workspace%/junit_output.xml",
+                junit: "junit_output.xml"
+            )},
+            "grunt": {testif(
+                condition: launchUnitTests.equals("yes"),
+                container: tag,
+                script: "cd /var/www/pim && yarn run lint"
+            )},
+            "php-coupling-detector": {testif(
+                condition: launchUnitTests.equals("yes"),
+                container: tag,
+                script: "cd /var/www/pim && vendor/bin/php-coupling-detector detect --config-file=.php_cd.php src"
+            )},
+            "phpunit-integration-ce": {queue(
+                condition: launchIntegrationTests.equals("yes") && editions.contains("ce"),
+                verbose: (verboseOutputs == "yes"),
+                container: tag,
+                parallelism: 65,
+                fetcher: {return pimIntegrationFetcher(paths: ["/var/www/pim/src", "/var/www/pim/vendor/akeneo/pim-community-dev"])}
+            )},
+            "behat-ce": {queue(
+                condition: launchBehatTests.equals("yes") && editions.contains("ce"),
+                verbose: (verboseOutputs == "yes"),
+                container: tag,
+                fetcher: {return pimBehatFetcher(profiles: ["legacy", "acceptance"], features: features)}
+            )},
+            "phpunit-integration-ee": {queue(
+                condition: launchIntegrationTests.equals("yes") && editions.contains("ee"),
+                verbose: (verboseOutputs == "yes"),
+                container: "${tag}-ee",
+                parallelism: 75,
+                fetcher: {return pimIntegrationFetcher(paths: ["/var/www/pim/src", "/var/www/pim/vendor/akeneo/pim-community-dev"])}
+            )},
+            "behat-ee": {queue(
+                condition: launchBehatTests.equals("yes") && editions.contains("ee"),
+                verbose: (verboseOutputs == "yes"),
+                container: "${tag}-ee",
+                fetcher: {return pimBehatFetcher(profiles: ["legacy", "acceptance"], features: features)}
+            )}
         )
     } finally {
-        clearTemplateNames()
-        def uuid = UUID.randomUUID().toString()
-        podTemplate(label: "cleanup-" + uuid, containers: [
-            containerTemplate(name: "docker", image: "paulwoelfel/docker-gcloud:v1.13", ttyEnabled: true, command: 'cat', envVars: [envVar(key: "DOCKER_API_VERSION", value: "1.23")], resourceRequestCpu: '100m', resourceRequestMemory: '200Mi')
-        ]) {
-            node("cleanup-" + uuid) {
-                container("docker") {
-                    sh "gcloud -q container images delete eu.gcr.io/akeneo-ci/pim-community-dev:pull-request-${env.CHANGE_ID}-build-${env.BUILD_NUMBER}-ce"
-                    if (editions.contains("ee")) {
-                        sh "gcloud -q container images delete eu.gcr.io/akeneo-ci/pim-community-dev:pull-request-${env.CHANGE_ID}-build-${env.BUILD_NUMBER}-ee"
-                    }
-                }
-            }
-        }
-
-        notifySlack(slackChannel);
+        notifySlack(slackChannel)
     }
-}
-
-def withBuildNode(body) {
-    clearTemplateNames()
-    def uuid = UUID.randomUUID().toString()
-
-    withCredentials([string(credentialsId: 'composer-token', variable: 'token')]) {
-        podTemplate(label: "build-" + uuid, containers: [
-            containerTemplate(name: "docker", image: "paulwoelfel/docker-gcloud:v1.13", ttyEnabled: true, command: 'cat', resourceRequestCpu: '100m', resourceRequestMemory: '200Mi'),
-            containerTemplate(name: "php", ttyEnabled: true, command: 'cat', image: "eu.gcr.io/akeneo-ci/php:7.1-fpm", envVars: [envVar(key: "COMPOSER_AUTH", value: "{\"github-oauth\":{\"github.com\": \"$token\"}}")], resourceRequestCpu: '750m', resourceRequestMemory: '2000Mi'),
-            containerTemplate(name: "node", ttyEnabled: true, command: 'cat', image: "node:8", resourceRequestCpu: '750m', resourceRequestMemory: '2000Mi')
-        ]) {
-            node("build-" + uuid) {
-                dir('/home/jenkins/pim') {
-                    body()
-                }
-            }
-        }
-    }
-}
-
-def withPhp(body) {
-    clearTemplateNames()
-    def uuid = UUID.randomUUID().toString()
-    podTemplate(label: "php-" + uuid, containers: [
-        containerTemplate(name: "php", ttyEnabled: true, command: 'cat', image: "eu.gcr.io/akeneo-ci/php:7.1-fpm", resourceRequestCpu: '500m', resourceRequestMemory: '1000Mi')
-    ], annotations: [
-        podAnnotation(key: "pod.beta.kubernetes.io/init-containers", value: "[{\"name\": \"pim\", \"imagePullPolicy\": \"Always\", \"image\": \"eu.gcr.io/akeneo-ci/pim-community-dev:pull-request-${env.CHANGE_ID}-build-${env.BUILD_NUMBER}-ce\", \"command\": [\"sh\", \"-c\", \"cp -Rp /pim /home/jenkins\"], \"volumeMounts\":[{\"name\":\"workspace-volume\",\"mountPath\":\"/home/jenkins\"}]}]")
-    ]) {
-        node("php-" + uuid) {
-            container("php") {
-                body()
-            }
-        }
-    }
-}
-
-def withNode(body) {
-    clearTemplateNames()
-    def uuid = UUID.randomUUID().toString()
-    podTemplate(label: "node-" + uuid, containers: [
-        containerTemplate(name: "node", ttyEnabled: true, alwaysPullImage: true, command: 'cat', image: "node:8", resourceRequestCpu: '500m', resourceRequestMemory: '1000Mi')
-    ], annotations: [
-        podAnnotation(key: "pod.beta.kubernetes.io/init-containers", value: "[{\"name\": \"pim\", \"imagePullPolicy\": \"Always\", \"image\": \"eu.gcr.io/akeneo-ci/pim-community-dev:pull-request-${env.CHANGE_ID}-build-${env.BUILD_NUMBER}-ce\", \"command\": [\"sh\", \"-c\", \"cp -Rp /pim /home/jenkins\"], \"volumeMounts\":[{\"name\":\"workspace-volume\",\"mountPath\":\"/home/jenkins\"}]}]")
-    ]) {
-        node("node-" + uuid) {
-            container("node") {
-                body()
-            }
-        }
-    }
-}
-
-def queue(body, scale, edition, verboseOutputs, dotsPerLine) {
-    def verbosity = (verboseOutputs == "yes") ? "-v" : ""
-    def linesize = (dotsPerLine.isNumber())? dotsPerLine :"50"
-    clearTemplateNames()
-    def uuid = UUID.randomUUID().toString()
-    podTemplate(label: "pubsub-" + uuid, containers: [
-        containerTemplate(name: "php", ttyEnabled: true, command: 'cat', image: "eu.gcr.io/akeneo-ci/php:7.1-fpm", resourceRequestCpu: '100m', resourceRequestMemory: '200Mi'),
-        containerTemplate(name: "gcloud", ttyEnabled: true, command: 'cat', image: "eu.gcr.io/akeneo-ci/gcloud:1.0", alwaysPullImage: true, resourceRequestCpu: '100m', resourceRequestMemory: '200Mi', envVars: [envVar(key: "PUBSUB_PROJECT_ID", value: "akeneo-ci")])
-    ], annotations: [
-        podAnnotation(key: "pod.beta.kubernetes.io/init-containers", value: "[{\"name\": \"pim\", \"imagePullPolicy\": \"Always\", \"image\": \"eu.gcr.io/akeneo-ci/pim-community-dev:pull-request-${env.CHANGE_ID}-build-${env.BUILD_NUMBER}-${edition}\", \"command\": [\"sh\", \"-c\", \"cp -Rp /pim /home/jenkins\"], \"volumeMounts\":[{\"name\":\"workspace-volume\",\"mountPath\":\"/home/jenkins\"}]}]")
-    ]) {
-        node("pubsub-" + uuid) {
-            def messages = []
-
-            container("php") {
-                messages = body()
-            }
-
-            container("gcloud") {
-                sh "gcloud.phar pubsub:topic:create ${NODE_NAME}"
-                sh "gcloud.phar pubsub:topic:create ${NODE_NAME}-results"
-                sh "gcloud.phar pubsub:subscription:create ${NODE_NAME} ${NODE_NAME}-subscription"
-                sh "gcloud.phar pubsub:subscription:create ${NODE_NAME}-results ${NODE_NAME}-results-subscription"
-
-                def size = messages.size()
-
-                writeJSON file: 'output.json', json: messages
-                sh "gcloud.phar pubsub:message:publish ${NODE_NAME} output.json"
-
-                sh "sed -i 's#JOB_SCALE#${scale}#g' /home/jenkins/pim/.ci/k8s/pubsub_consumer_job.yaml"
-                sh "sed -i 's#JOB_NAME#${NODE_NAME}#g' /home/jenkins/pim/.ci/k8s/pubsub_consumer_job.yaml"
-                sh "sed -i 's#JOB_COMPLETIONS#${size}#g' /home/jenkins/pim/.ci/k8s/pubsub_consumer_job.yaml"
-                sh "sed -i 's#SUBSCRIPTION_NAME#${NODE_NAME}-subscription#g' /home/jenkins/pim/.ci/k8s/pubsub_consumer_job.yaml"
-                sh "sed -i 's#RESULT_TOPIC#${NODE_NAME}-results#g' /home/jenkins/pim/.ci/k8s/pubsub_consumer_job.yaml"
-                sh "sed -i 's#PIM_IMAGE#eu.gcr.io/akeneo-ci/pim-community-dev:pull-request-${env.CHANGE_ID}-build-${env.BUILD_NUMBER}-${edition}#g' /home/jenkins/pim/.ci/k8s/pubsub_consumer_job.yaml"
-
-                try {
-                    sh "kubectl apply -f /home/jenkins/pim/.ci/k8s/"
-                    sh "gcloud.phar ${verbosity} job:wait --dotsperline ${linesize} ${NODE_NAME}-results-subscription ${size} ${env.WORKSPACE} --ansi"
-                } finally {
-                    sh "kubectl delete job ${NODE_NAME}"
-                    sh "gcloud.phar pubsub:topic:delete ${NODE_NAME}"
-                    sh "gcloud.phar pubsub:topic:delete ${NODE_NAME}-results"
-                    sh "gcloud.phar pubsub:subscription:delete ${NODE_NAME}-subscription"
-                    sh "gcloud.phar pubsub:subscription:delete ${NODE_NAME}-results-subscription"
-
-                    junit allowEmptyResults: true, testResults: 'junit/**/*.xml'
-                    archiveArtifacts allowEmptyArchive: true, artifacts: 'artifacts/**/*.png'
-                }
-            }
-        }
-    }
-}
-
-@NonCPS
-def clearTemplateNames() {
-    // see https://issues.jenkins-ci.org/browse/JENKINS-42184
-    currentBuild.rawBuild.getAction( PodTemplateAction.class )?.stack?.clear()
-}
-
-def runBehatScenarios(scenarios, profile) {
-    def messages = new net.sf.json.JSONArray()
-
-    for (scenario in scenarios) {
-        def commands = [
-            [container: "php", script: "bin/console --env=behat --quiet pim:install --force"],
-            [container: "php", script: "touch var/logs/behat.log"],
-            [container: "php", script: "chmod 777 -R var/cache var/logs app/archive /tmp/pim app/file_storage app/uploads"],
-            [container: "php", script: "mkdir -m 777 -p app/build/logs/behat web/media"],
-            [container: "php", script: "sed -i '2 a umask(0000);' vendor/behat/behat/bin/behat"],
-            [
-                container: "php",
-                junit: [in: "/home/jenkins/pim/app/build/logs/behat/", name: "*.xml"],
-                artifacts: [in: "/tmp/behat/screenshots", name: "*.png"],
-                script: "php vendor/bin/behat --strict -vv -p " + profile + " " + scenario
-            ]
-        ]
-        def message = new net.sf.json.JSONObject()
-        message.put("name",scenario)
-        message.put("commands",commands)
-        messages.add(message)
-    }
-
-    return messages;
-}
-
-def notifySlack(String slackChannel) {
-    if (slackChannel == '') {
-        return;
-    }
-
-    // Null status means success
-    buildStatus = currentBuild.result
-
-    String color = '#42C02D'
-    if (buildStatus != null) {
-        color = '#FF0000'
-    }
-
-    def msg = "<${env.BUILD_URL}|Build finished:> `${env.JOB_NAME}`"
-    slackSend(color: color, message: msg, channel:"${slackChannel}")
 }
