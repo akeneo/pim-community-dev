@@ -84,8 +84,8 @@ class ReferenceDataValueFactory implements ValueFactoryInterface
             return;
         }
 
-        if (!is_string($data)) {
-            throw InvalidPropertyTypeException::stringExpected(
+        if (!is_scalar($data)) {
+            throw InvalidPropertyTypeException::scalarExpected(
                 $attribute->getCode(),
                 static::class,
                 $data

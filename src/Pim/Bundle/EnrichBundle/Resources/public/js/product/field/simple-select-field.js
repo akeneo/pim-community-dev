@@ -114,10 +114,10 @@ define(
                                 }
 
                                 this.choicePromise.then(function (response) {
-                                    var selected = _.findWhere(response, {code: id});
+                                    var selected = _.find(response, (elem) => elem.code == id);
 
                                     if (!selected) {
-                                        selected = _.findWhere(response.results, {id: id});
+                                        selected = _.find(response.results, (elem) => elem.id == id);
                                     } else {
                                         selected = this.convertBackendItem(selected);
                                     }
