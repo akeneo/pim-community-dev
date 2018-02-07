@@ -51,7 +51,6 @@ define(
                 );
 
                 formModal.open().then(function () {
-                    MassAction.prototype.execute.apply(this, arguments);
                     $.post(this.getLinkWithParameters(), {itemIds: this.getSelectedRows().join(',')})
                         .done(function (data) {
                             var url = '/product_draft/redirect?jobExecutionId=' + data.jobExecutionId,
