@@ -5,7 +5,8 @@ Feature: Set the attribute used as label
   I need to be able to set the attribute used as the label
 
   Background:
-    Given the "default" catalog configuration
+    Given the minimal catalog
+    And an admin user "Peter Williams"
     And the following attributes:
       | label-en_US | type                 | group | code        | decimals_allowed | negative_allowed |
       | Brand       | pim_catalog_text     | other | brand       |                  |                  |

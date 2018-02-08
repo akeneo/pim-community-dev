@@ -89,6 +89,8 @@ legacy:
                     - '@pim_catalog.repository.product'
                 - Pim\Behat\Context\Domain\Enrich\ItemPickerContext:
                     - 'Context\FeatureContext'
+                - Pim\Behat\Context\CatalogContext:
+                    - '@service_container'
     extensions:
         Behat\ChainedStepsExtension: ~
         Behat\MinkExtension:
