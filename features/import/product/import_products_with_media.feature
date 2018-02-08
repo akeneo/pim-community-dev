@@ -1,4 +1,3 @@
-@javascript
 Feature: Import media with products
   In order to re-use the images and documents I have set on my products
   As a product manager
@@ -14,7 +13,6 @@ Feature: Import media with products
     And the following family:
       | code         | attributes                         |
       | media_family | frontView,name,userManual,warranty |
-    And I am logged in as "Julia"
 
   Scenario: Successfully import media
     Given the following CSV file to import:
@@ -23,11 +21,8 @@ Feature: Import media with products
       bic-core-148;media_family;;bic-core-148.gif;"Bic Core 148";bic-core-148.txt;2014_collection
       fanatic-freewave-76;media_family;;fanatic-freewave-76.gif;"Fanatic Freewave 76";fanatic-freewave-76.txt;2014_collection
       """
-    And the following job "csv_footwear_product_import" configuration:
-      | filePath | %file to import% |
-    And import directory of "csv_footwear_product_import" contains the following media:
-      | bic-core-148.gif        |
-      | bic-core-148.txt        |
+    When I import it via the job "csv_footwear_product_import" as "Julia"
+    And I wait for this job to finish
       | fanatic-freewave-76.gif |
       | fanatic-freewave-76.txt |
     When I am on the "csv_footwear_product_import" import job page
@@ -48,11 +43,8 @@ Feature: Import media with products
       bic-core-148;media_family;;bic-core-148.gif;"Bic Core 148";bic-core-148.txt;2014_collection
       fanatic-freewave-76;media_family;;;"Fanatic Freewave 76";;2014_collection
       """
-    And the following job "csv_footwear_product_import" configuration:
-      | filePath | %file to import% |
-    And import directory of "csv_footwear_product_import" contains the following media:
-      | bic-core-148.gif |
-      | bic-core-148.txt |
+    When I import it via the job "csv_footwear_product_import" as "Julia"
+    And I wait for this job to finish
     When I am on the "csv_footwear_product_import" import job page
     And I launch the import job
     And I wait for the "csv_footwear_product_import" job to finish
@@ -74,11 +66,8 @@ Feature: Import media with products
     And the following random files:
       | filename            | size |
       | sneakers-manual.txt | 3    |
-    And the following job "csv_footwear_product_import" configuration:
-      | filePath | %file to import% |
-    And import directory of "csv_footwear_product_import" contains the following media:
-      | sneakers-manual.txt |
-      | bic-core-148.txt    |
+    When I import it via the job "csv_footwear_product_import" as "Julia"
+    And I wait for this job to finish
     When I am on the "csv_footwear_product_import" import job page
     And I launch the import job
     And I wait for the "csv_footwear_product_import" job to finish
@@ -97,11 +86,8 @@ Feature: Import media with products
     And the following random files:
       | filename            | size |
       | sneakers-manual.txt | 3    |
-    And the following job "csv_footwear_product_import" configuration:
-      | filePath | %file to import% |
-    And import directory of "csv_footwear_product_import" contains the following media:
-      | fanatic-freewave-76.txt |
-      | warranty.txt            |
+    When I import it via the job "csv_footwear_product_import" as "Julia"
+    And I wait for this job to finish
     When I am on the "csv_footwear_product_import" import job page
     And I launch the import job
     And I wait for the "csv_footwear_product_import" job to finish
@@ -128,11 +114,8 @@ Feature: Import media with products
       fanatic-freewave-41;Fanatic Freewave 41;fanatic-freewave-76.txt
       fanatic-freewave-37;Fanatic Freewave 37;
       """
-    And the following job "csv_footwear_product_import" configuration:
-      | filePath | %file to import% |
-    And import directory of "csv_footwear_product_import" contains the following media:
-      | bic-core-148.txt        |
-      | fanatic-freewave-76.txt |
+    When I import it via the job "csv_footwear_product_import" as "Julia"
+    And I wait for this job to finish
     When I am on the "csv_footwear_product_import" import job page
     And I launch the import job
     And I wait for the "csv_footwear_product_import" job to finish

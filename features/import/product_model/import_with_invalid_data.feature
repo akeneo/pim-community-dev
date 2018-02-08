@@ -1,4 +1,3 @@
-@javascript
 Feature: Skip invalid product models through CSV
   In order to import correct product model
   As a catalog manager
@@ -6,7 +5,6 @@ Feature: Skip invalid product models through CSV
 
   Background:
     Given the "catalog_modeling" catalog configuration
-    And I am logged in as "Julia"
 
   Scenario: Skip a root product model if a code and a family variant are not defined
     Given the following CSV file to import:
@@ -15,11 +13,8 @@ Feature: Skip invalid product models through CSV
       code-001;;;master_men;Spring2017;description;Blazers_1654;100 EUR;;;;;;;
       ;;clothing_color_size;master_men;Spring2017;description;Blazers_1654;100 EUR;;;;;;;
       """
-    And the following job "csv_catalog_modeling_product_model_import" configuration:
-      | filePath | %file to import% |
-    When I am on the "csv_catalog_modeling_product_model_import" import job page
-    And I launch the import job
-    And I wait for the "csv_catalog_modeling_product_model_import" job to finish
+    When I import it via the job "csv_catalog_modeling_product_model_import" as "Julia"
+    And I wait for this job to finish
     Then I should see the text "Status: Completed"
     And I should see the text "skipped 2"
     And I should see the text "The product model code must not be empty"
@@ -38,11 +33,8 @@ Feature: Skip invalid product models through CSV
       code-001;;clothing_color_size;master_men;Spring2017;description;Blazers_1654;100 EUR;;;;;;;
       ;code-001;clothing_color_size;master_men_blazers;;;;;blue;Blazers;composition;;;;
       """
-    And the following job "csv_catalog_modeling_product_model_import" configuration:
-      | filePath | %file to import% |
-    When I am on the "csv_catalog_modeling_product_model_import" import job page
-    And I launch the import job
-    And I wait for the "csv_catalog_modeling_product_model_import" job to finish
+    When I import it via the job "csv_catalog_modeling_product_model_import" as "Julia"
+    And I wait for this job to finish
     Then I should see the text "Status: Completed"
     And I should see the text "created 1"
     And I should see the text "skipped 1"
@@ -62,11 +54,8 @@ Feature: Skip invalid product models through CSV
       code-003;code-002;clothing_color_size;master_men_blazers;;;;;blue;Blazers;composition;;;;
       code-004;code-005;clothing_color_size;master_men_blazers;;;;;blue;Blazers;composition;;;;
       """
-    And the following job "csv_catalog_modeling_product_model_import" configuration:
-      | filePath | %file to import% |
-    When I am on the "csv_catalog_modeling_product_model_import" import job page
-    And I launch the import job
-    And I wait for the "csv_catalog_modeling_product_model_import" job to finish
+    When I import it via the job "csv_catalog_modeling_product_model_import" as "Julia"
+    And I wait for this job to finish
     Then I should see the text "Status: Completed"
     And I should see the text "The product model \"code-003\" cannot have the product model \"code-002\" as parent"
     And I should see the text "Property \"parent\" expects a valid parent code. The product model does not exist, \"code-005\" given"
@@ -87,11 +76,8 @@ Feature: Skip invalid product models through CSV
       code;parent;family_variant;categories;collection;description-en_US-ecommerce;erp_name-en_US;price;color;name-en_US;composition;size;ean;sku;weight
       code-002;code-001;clothing_colorsize;master_men;Spring2017;A description for 002;Blazers_1654;50 EUR;;;;;;;
       """
-    And the following job "csv_catalog_modeling_product_model_import" configuration:
-      | filePath          | %file to import% |
-      | enabledComparison | no               |
-    When I am on the "csv_catalog_modeling_product_model_import" import job page
-    And I launch the import job
+    When I import it via the job "csv_catalog_modeling_product_model_import" as "Julia"
+    And I wait for this job to finish
     And I wait for the "csv_catalog_modeling_product_model_import" job to finish
     Then I should see the text "Status: Completed"
     And I should see the text "skipped 1"
@@ -114,11 +100,8 @@ Feature: Skip invalid product models through CSV
       code;parent;family_variant;color
       code-002;code-001;clothing_color_size;red
       """
-    And the following job "csv_catalog_modeling_product_model_import" configuration:
-      | filePath          | %file to import% |
-      | enabledComparison | no               |
-    When I am on the "csv_catalog_modeling_product_model_import" import job page
-    And I launch the import job
+    When I import it via the job "csv_catalog_modeling_product_model_import" as "Julia"
+    And I wait for this job to finish
     And I wait for the "csv_catalog_modeling_product_model_import" job to finish
     Then I should see the text "Status: Completed"
     And I should see the text "skipped 1"
@@ -141,11 +124,8 @@ Feature: Skip invalid product models through CSV
       code;parent;family_variant;categories;collection;description-en_US-ecommerce;erp_name-en_US;price;color;variation_name-en_US;composition;size;ean;sku;weight
       code-003;code-001;clothing_color_size;master_men_blazers;;;;;blue;Blazers;composition;;;;
       """
-    And the following job "csv_catalog_modeling_product_model_import" configuration:
-      | filePath | %file to import% |
-    When I am on the "csv_catalog_modeling_product_model_import" import job page
-    And I launch the import job
-    And I wait for the "csv_catalog_modeling_product_model_import" job to finish
+    When I import it via the job "csv_catalog_modeling_product_model_import" as "Julia"
+    And I wait for this job to finish
     Then I should see the text "Status: Completed"
     And I should see the text "skipped 1"
     And I should see the text "Cannot set value \"[blue]\" for the attribute axis \"color\", as another sibling entity already has this value"

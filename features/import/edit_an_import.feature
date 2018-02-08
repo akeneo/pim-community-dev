@@ -6,7 +6,6 @@ Feature: Edit an import
 
   Background:
     Given a "footwear" catalog configuration
-    And I am logged in as "Peter"
 
   Scenario: Successfully edit an import job
     Given I am on the "csv_footwear_product_import" import job edit page

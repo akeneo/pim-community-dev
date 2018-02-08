@@ -7,7 +7,6 @@ Feature: Delete import
 
   Background:
     Given a "footwear" catalog configuration
-    And I am logged in as "Peter"
     And I am on the imports page
 
   Scenario: Successfully delete a CSV import job from the jobs page

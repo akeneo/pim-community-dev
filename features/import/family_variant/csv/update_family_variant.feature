@@ -1,4 +1,3 @@
-@javascript
 Feature: Update variants of family through CSV import
   In order to setup my application
   As an administrator
@@ -11,7 +10,6 @@ Feature: Update variants of family through CSV import
       | another_clothing_color_and_size | clothing | Clothing by color and size | color          | size           | color,image,variation_image,composition | size,ean,sku         |
       | another_shoes_size              | shoes    | Shoes by size              | eu_shoes_size  |                |                                         |                      |
       | another_clothing_color_size     | clothing | Clothing by color/size     | color,size     |                | name,image,variation_image              |                      |
-    And I am logged in as "Peter"
     And I am on the imports page
 
   Scenario: I successfully update family variants through CSV import
@@ -22,11 +20,8 @@ Feature: Update variants of family through CSV import
       another_shoes_size;shoes;Shoes variant by size;eu_shoes_size;;weight;
       another_clothing_color_size;clothing;Clothing variant by color/size;color,size;;name,image,variation_image,composition;
       """
-    And the following job "csv_catalog_modeling_family_variant_import" configuration:
-      | filePath | %file to import% |
-    When I am on the "csv_catalog_modeling_family_variant_import" import job page
-    And I launch the import job
-    And I wait for the "csv_catalog_modeling_family_variant_import" job to finish
+    When I import it via the job "csv_catalog_modeling_family_variant_import" as "Julia"
+    And I wait for this job to finish
     Then I should see the text "read lines 3"
     And I should see the text "processed 3"
     And there should be the following family variants:

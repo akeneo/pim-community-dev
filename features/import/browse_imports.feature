@@ -1,4 +1,3 @@
-@javascript
 Feature: Browse imports
   In order to view the list of import job instances that have been created
   As a product manager
@@ -6,7 +5,6 @@ Feature: Browse imports
 
   Background:
     Given an "apparel" catalog configuration
-    And I am logged in as "Julia"
     And I am on the imports page
 
   @ce

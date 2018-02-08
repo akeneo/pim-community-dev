@@ -79,6 +79,8 @@ default:
                     - 1024
                 - PimEnterprise\Behat\Context\JobContext:
                     - 'Context\EnterpriseFeatureContext'
+                - Pim\Behat\Context\LaunchJobContext:
+                    - 'Context\FeatureContext'
                 - PimEnterprise\Behat\Context\NavigationContext:
                     - 'Context\EnterpriseFeatureContext'
                     - 'http://127.0.0.1/'

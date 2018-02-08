@@ -1,4 +1,3 @@
-@javascript
 Feature: Handle import of invalid XLSX data
   In order to ease the correction of an invalid XLSX file import
   As a product manager
@@ -16,11 +15,8 @@ Feature: Handle import of invalid XLSX data
       SUBSTITUTION;Substitutions
       SUPER PACK;Super pack
       """
-    And the following job "xlsx_footwear_association_type_import" configuration:
-      | filePath | %file to import% |
-    And I am logged in as "Julia"
-    And I am on the "xlsx_footwear_association_type_import" import job page
-    And I launch the "xlsx_footwear_association_type_import" import job
+    When I import it via the job "xlsx_footwear_association_type_import" as "Julia"
+    And I wait for this job to finish
     And I wait for the "xlsx_footwear_association_type_import" job to finish
     Then I should see the text "Download invalid data"
     And the invalid data file of "xlsx_footwear_association_type_import" should contain:
@@ -41,11 +37,8 @@ Feature: Handle import of invalid XLSX data
       pim_catalog_text;comment;Comment;other;0;1;;;;;0;0;7;;255;;;;;
       pim_catalog_price_collection;price;Price;NOPE;0;1;;;;;0;0;1;;;1;200;1;;
       """
-    And the following job "xlsx_footwear_attribute_import" configuration:
-      | filePath | %file to import% |
-    And I am logged in as "Julia"
-    And I am on the "xlsx_footwear_attribute_import" export job page
-    And I launch the "xlsx_footwear_attribute_import" import job
+    When I import it via the job "xlsx_footwear_attribute_import" as "Julia"
+    And I wait for this job to finish
     And I wait for the "xlsx_footwear_attribute_import" job to finish
     Then I should see the text "Download invalid data"
     And the invalid data file of "xlsx_footwear_attribute_import" should contain:
@@ -65,11 +58,8 @@ Feature: Handle import of invalid XLSX data
       manufacturer;Caterpillar;Caterpillar;4
       weather_conditions;snowy;Snowy;5
       """
-    And the following job "xlsx_footwear_option_import" configuration:
-      | filePath | %file to import% |
-    And I am logged in as "Julia"
-    And I am on the "xlsx_footwear_option_import" export job page
-    And I launch the "xlsx_footwear_option_import" import job
+    When I import it via the job "xlsx_footwear_option_import" as "Julia"
+    And I wait for this job to finish
     And I wait for the "xlsx_footwear_option_import" job to finish
     Then I should see the text "Download invalid data"
     And the invalid data file of "xlsx_footwear_option_import" should contain:
@@ -88,11 +78,8 @@ Feature: Handle import of invalid XLSX data
       winter_boots;Winter boots;winter_collection
       invalid code 2;Sandals;summer_collection
       """
-    And the following job "xlsx_footwear_category_import" configuration:
-      | filePath | %file to import% |
-    And I am logged in as "Julia"
-    And I am on the "xlsx_footwear_category_import" export job page
-    And I launch the "xlsx_footwear_category_import" import job
+    When I import it via the job "xlsx_footwear_category_import" as "Julia"
+    And I wait for this job to finish
     And I wait for the "xlsx_footwear_category_import" job to finish
     Then I should see the text "Download invalid data"
     And the invalid data file of "xlsx_footwear_category_import" should contain:
@@ -116,11 +103,8 @@ Feature: Handle import of invalid XLSX data
       a_family_8;name,description,BULLETPROOF
       a_family_9;name,description,destocking_date
       """
-    And the following job "xlsx_footwear_family_import" configuration:
-      | filePath | %file to import% |
-    And I am logged in as "Julia"
-    And I am on the "xlsx_footwear_family_import" export job page
-    And I launch the "xlsx_footwear_family_import" import job
+    When I import it via the job "xlsx_footwear_family_import" as "Julia"
+    And I wait for this job to finish
     And I wait for the "xlsx_footwear_family_import" job to finish
     Then I should see the text "Download invalid data"
     And the invalid data file of "xlsx_footwear_family_import" should contain:
@@ -137,11 +121,8 @@ Feature: Handle import of invalid XLSX data
       similar_boots;RELATED;Similar boots
       invalid code;RELATED;Invalid data
       """
-    And the following job "xlsx_footwear_group_import" configuration:
-      | filePath | %file to import% |
-    And I am logged in as "Julia"
-    And I am on the "xlsx_footwear_group_import" export job page
-    And I launch the "xlsx_footwear_group_import" import job
+    When I import it via the job "xlsx_footwear_group_import" as "Julia"
+    And I wait for this job to finish
     And I wait for the "xlsx_footwear_group_import" job to finish
     Then I should see the text "Download invalid data"
     And the invalid data file of "xlsx_footwear_group_import" should contain:
@@ -165,11 +146,8 @@ Feature: Handle import of invalid XLSX data
       SKU-009;sneakers
       SKU-010;boots
       """
-    And the following job "xlsx_footwear_product_import" configuration:
-      | filePath | %file to import% |
-    And I am logged in as "Julia"
-    And I am on the "xlsx_footwear_product_import" export job page
-    And I launch the "xlsx_footwear_product_import" import job
+    When I import it via the job "xlsx_footwear_product_import" as "Julia"
+    And I wait for this job to finish
     And I wait for the "xlsx_footwear_product_import" job to finish
     Then I should see the text "Download invalid data"
     And the invalid data file of "xlsx_footwear_product_import" should contain:

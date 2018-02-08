@@ -1,4 +1,3 @@
-@javascript
 Feature: Update product models through CSV import
   In order to setup my application
   As a product manager
@@ -6,7 +5,6 @@ Feature: Update product models through CSV import
 
   Background:
     Given the "catalog_modeling" catalog configuration
-    And I am logged in as "Julia"
 
   Scenario: Julia successfully updates an exiting root product model through CSV import
     Given the following root product model:
@@ -17,11 +15,8 @@ Feature: Update product models through CSV import
       code;parent;family_variant;categories;collection;description-en_US-ecommerce;erp_name-en_US;price;color;name-en_US;composition;size;ean;sku;weight
       code-001;;clothing_color_size;master_men;Spring2017;A new description;Blazers_1654;50 EUR;;;;;;;
       """
-    And the following job "csv_catalog_modeling_product_model_import" configuration:
-      | filePath          | %file to import% |
-      | enabledComparison | no               |
-    When I am on the "csv_catalog_modeling_product_model_import" import job page
-    And I launch the import job
+    When I import it via the job "csv_catalog_modeling_product_model_import" as "Julia"
+    And I wait for this job to finish
     And I wait for the "csv_catalog_modeling_product_model_import" job to finish
     Then there should be the following root product model:
       | code     | categories | family_variant      | collection   | description-en_US-ecommerce | erp_name-en_US | price     |
@@ -39,11 +34,8 @@ Feature: Update product models through CSV import
       code;parent;family_variant;categories;collection;description-en_US-ecommerce;erp_name-en_US;price;color;variation_name-en_US;composition;size;ean;sku;weight
       code-002;code-001;clothing_color_size;master_men_blazers;;A new description for a sub model;;;blue;Beautiful blazers;composition;;;;
       """
-    And the following job "csv_catalog_modeling_product_model_import" configuration:
-      | filePath          | %file to import% |
-      | enabledComparison | no               |
-    When I am on the "csv_catalog_modeling_product_model_import" import job page
-    And I launch the import job
+    When I import it via the job "csv_catalog_modeling_product_model_import" as "Julia"
+    And I wait for this job to finish
     And I wait for the "csv_catalog_modeling_product_model_import" job to finish
     Then there should be the following root product model:
       | code     | categories | family_variant      | collection   | description-en_US-ecommerce | erp_name-en_US | price      |
@@ -65,11 +57,8 @@ Feature: Update product models through CSV import
       code-001;;clothing_color_size;master_men;Spring2017;a new description;Blazers_1654;50 EUR;;;
       code-002;code-001;clothing_color_size;master_men_blazers;;;;;blue;Beautiful blazers;composition
       """
-    And the following job "csv_catalog_modeling_product_model_import" configuration:
-      | filePath          | %file to import% |
-      | enabledComparison | yes              |
-    When I am on the "csv_catalog_modeling_product_model_import" import job page
-    And I launch the import job
+    When I import it via the job "csv_catalog_modeling_product_model_import" as "Julia"
+    And I wait for this job to finish
     And I wait for the "csv_catalog_modeling_product_model_import" job to finish
     Then there should be the following root product model:
       | code     | categories | family_variant      | collection   | description-en_US-ecommerce | erp_name-en_US | price     |

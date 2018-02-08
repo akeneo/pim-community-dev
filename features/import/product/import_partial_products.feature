@@ -1,4 +1,3 @@
-@javascript
 Feature: Import partial product information
   In order to avoid overwriting existing data
   As a product manager
@@ -14,11 +13,8 @@ Feature: Import partial product information
       sku;name-en_US
       caterpillar-boots;"Caterpillar boots"
       """
-    And the following job "csv_footwear_product_import" configuration:
-      | filePath | %file to import% |
-    And I am logged in as "Julia"
-    When I am on the "csv_footwear_product_import" import job page
-    And I launch the import job
+    When I import it via the job "csv_footwear_product_import" as "Julia"
+    And I wait for this job to finish
     And I wait for the "csv_footwear_product_import" job to finish
     Then there should be 1 product
     And the english localizable value name of "caterpillar-boots" should be "Caterpillar boots"

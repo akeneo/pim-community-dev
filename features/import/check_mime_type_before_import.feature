@@ -1,4 +1,3 @@
-@javascript
 Feature:
   In order to prevent importing invalid files
   As a product manager
@@ -6,7 +5,6 @@ Feature:
 
   Background:
     Given the "footwear" catalog configuration
-    And I am logged in as "Julia"
 
   @unstable
   Scenario: Import a file that is not a csv file

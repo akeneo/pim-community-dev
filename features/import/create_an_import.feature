@@ -6,7 +6,6 @@ Feature: Create an import
 
   Background:
     Given the "default" catalog configuration
-    And I am logged in as "Peter"
     And I am on the imports page
 
   Scenario: Successfully create an import

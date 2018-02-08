@@ -12,7 +12,6 @@ Feature: Import currencies
       """
     When I import it via the job "csv_footwear_currency_import" as "Julia"
     And I wait for this job to finish
-    Then there should be the following currencies:
       | code | activated |
       | AMD  | 1         |
 
@@ -26,7 +25,6 @@ Feature: Import currencies
       """
     When I import it via the job "csv_footwear_currency_import" as "Julia"
     And I wait for this job to finish
-    Then there should be the following currencies:
       | code | activated |
       | AMD  | 1         |
       | ARM  | 0         |

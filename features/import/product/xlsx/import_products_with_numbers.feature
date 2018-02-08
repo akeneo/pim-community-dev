@@ -1,4 +1,3 @@
-@javascript
 Feature: Import XLSX products with numbers
   In order to use existing product information
   As a product manager
@@ -9,7 +8,6 @@ Feature: Import XLSX products with numbers
     And the following family:
       | code          | attributes                |
       | number_family | number_in_stock,rate_sale |
-    And I am logged in as "Julia"
 
   @info If Excel opens a file containing numeric strings that match its locale config it will be transformed into real numbers
   Scenario: Successfully import an XLSX file of products with real integers

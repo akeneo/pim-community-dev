@@ -1,4 +1,3 @@
-@javascript
 Feature: Import variant products through CSV import
   In order to setup my application
   As a product manager
@@ -6,7 +5,6 @@ Feature: Import variant products through CSV import
 
   Background:
     Given the "catalog_modeling" catalog configuration
-    And I am logged in as "Julia"
 
   Scenario: Create new variant products through CSV import
     Given the following CSV file to import:
@@ -14,11 +12,8 @@ Feature: Import variant products through CSV import
       sku;color;size;family;parent;name-en_US;weight;weight-unit;ean
       apollon_blue_xl;blue;xl;clothing;apollon_blue;;800;GRAM;EAN
       """
-    And the following job "csv_catalog_modeling_product_import" configuration:
-      | filePath | %file to import% |
-    When I am on the "csv_catalog_modeling_product_import" import job page
-    And I launch the import job
-    And I wait for the "csv_catalog_modeling_product_import" job to finish
+    When I import it via the job "csv_catalog_modeling_product_import" as "Julia"
+    And I wait for this job to finish
     Then the parent of the product "apollon_blue_xl" should be "apollon_blue"
     And product "apollon_blue_xl" should be enabled
     And the family of "apollon_blue_xl" should be "clothing"
@@ -35,11 +30,8 @@ Feature: Import variant products through CSV import
       sku;color;size;family;parent;name-en_US;weight;weight-unit;ean;enabled
       1111111121;blue;s;clothing;apollon_blue;;600;GRAM;EAN;0
       """
-    And the following job "csv_catalog_modeling_product_import" configuration:
-      | filePath | %file to import% |
-    When I am on the "csv_catalog_modeling_product_import" import job page
-    And I launch the import job
-    And I wait for the "csv_catalog_modeling_product_import" job to finish
+    When I import it via the job "csv_catalog_modeling_product_import" as "Julia"
+    And I wait for this job to finish
     Then product "1111111121" should be disabled
     And the product "1111111121" should have the following values:
       | color  | [blue]        |

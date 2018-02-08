@@ -1,4 +1,3 @@
-@javascript
 Feature: Import options
   In order to reuse the options
   As a product manager
@@ -9,7 +8,6 @@ Feature: Import options
     And the following attributes:
       | code  | label-en_US | type                     | group |
       | brand | Brand       | pim_catalog_simpleselect | other |
-    And I am logged in as "Julia"
     And the following CSV file to import:
       """
       attribute;code;label-en_US
@@ -18,11 +16,8 @@ Feature: Import options
       brand;Nike;Nike
       brand;Caterpillar;Caterpillar
       """
-    And the following job "csv_footwear_option_import" configuration:
-      | filePath | %file to import% |
-    When I am on the "csv_footwear_option_import" import job page
-    And I launch the import job
-    And I wait for the "csv_footwear_option_import" job to finish
+    When I import it via the job "csv_footwear_option_import" as "Julia"
+    And I wait for this job to finish
     Then there should be the following options:
       | attribute | code        | label-en_US |
       | brand     | Converse    | Converse    |
@@ -36,17 +31,13 @@ Feature: Import options
     And the following attributes:
       | code  | label-en_US | type                     | group |
       | brand | Brand       | pim_catalog_simpleselect | other |
-    And I am logged in as "Julia"
     And the following CSV file to import:
       """
       attribute;code;label-en_US
       brand;;Converse
       """
-    And the following job "csv_footwear_option_import" configuration:
-      | filePath | %file to import% |
-    When I am on the "csv_footwear_option_import" import job page
-    And I launch the import job
-    And I wait for the "csv_footwear_option_import" job to finish
+    When I import it via the job "csv_footwear_option_import" as "Julia"
+    And I wait for this job to finish
     Then I should see the text "skipped 1"
     And I should see the text "code: This value should not be blank"
 
@@ -55,17 +46,13 @@ Feature: Import options
     And the following attributes:
       | code  | label-en_US | type                     | group |
       | brand | Brand       | pim_catalog_simpleselect | other |
-    And I am logged in as "Julia"
     And the following CSV file to import:
       """
       attribute;code;label-en_US
       unknown;option_code;Converse
       """
-    And the following job "csv_footwear_option_import" configuration:
-      | filePath | %file to import% |
-    When I am on the "csv_footwear_option_import" import job page
-    And I launch the import job
-    And I wait for the "csv_footwear_option_import" job to finish
+    When I import it via the job "csv_footwear_option_import" as "Julia"
+    And I wait for this job to finish
     Then I should see the text "skipped 1"
     And I should see the text "Property \"attribute\" expects a valid attribute code. The attribute does not exist, \"unknown\" given."
 
@@ -75,18 +62,14 @@ Feature: Import options
     And the following attributes:
       | code | label-en_US | type                     | group |
       | test | Test        | pim_catalog_simpleselect | other |
-    And I am logged in as "Julia"
     And the following CSV file to import:
       """
       attribute;code;sort_order;label-fr_FR;label-en_US;label-de_DE;label-en_GB
       test;test_A04;3;04FR;04US;04DE;04GB
       test;test_A05;2;05FR;05US;05DE;05GB
       """
-    And the following job "option_import" configuration:
-      | filePath | %file to import% |
-    When I am on the "option_import" import job page
-    And I launch the import job
-    Then I wait for the "option_import" job to finish
+    When I import it via the job "option_import" as "Julia"
+    And I wait for this job to finish
     And I am on the "Test" attribute page
     And I visit the "Options" tab
     And I should see the text "04FR"
@@ -104,18 +87,14 @@ Feature: Import options
     And the following attributes:
       | code | label-en_US | type                     | group |
       | test | Test        | pim_catalog_simpleselect | other |
-    And I am logged in as "Julia"
     And the following CSV file to import:
       """
       attribute;code;sort_order;label-fr_FR;label-fr_CA;label-en_US;label-de_DE
       test;test_A04;3;04FR;04CA;04US;04DE
       test;test_A05;2;05FR;05CA;05US;05DE
       """
-    And the following job "option_import" configuration:
-      | filePath | %file to import% |
-    When I am on the "option_import" import job page
-    And I launch the import job
-    And I wait for the "option_import" job to finish
+    When I import it via the job "option_import" as "Julia"
+    And I wait for this job to finish
     Then I should see the text "Status: FAILED"
     And I should see the text "Field \"label-fr_CA\" is provided, authorized fields are: \"attribute, code, sort_order, label-de_DE, label-en_GB, label-en_US, label-fr_FR\""
 
@@ -124,7 +103,6 @@ Feature: Import options
     And the following attributes:
       | code  | label-en_US | type                     | group |
       | brand | Brand       | pim_catalog_simpleselect | other |
-    And I am logged in as "Julia"
     And the following CSV file to import:
       """
       attribute;code;label-en_US
@@ -133,11 +111,8 @@ Feature: Import options
       brand;30;Nike
       brand;04;Caterpillar
       """
-    And the following job "csv_footwear_option_import" configuration:
-      | filePath | %file to import% |
-    When I am on the "csv_footwear_option_import" import job page
-    And I launch the import job
-    And I wait for the "csv_footwear_option_import" job to finish
+    When I import it via the job "csv_footwear_option_import" as "Julia"
+    And I wait for this job to finish
     Then there should be the following options:
       | attribute | code | label-en_US |
       | brand     | 1    | Converse    |
@@ -150,7 +125,6 @@ Feature: Import options
     And the following attributes:
       | code  | label-en_US | type                     | group |
       | brand | Brand       | pim_catalog_simpleselect | other |
-    And I am logged in as "Julia"
     And the following XLSX file to import:
       """
       attribute;code;label-en_US
@@ -159,11 +133,8 @@ Feature: Import options
       brand;Nike;Nike
       brand;Caterpillar;Caterpillar
       """
-    And the following job "xlsx_footwear_option_import" configuration:
-      | filePath | %file to import% |
-    When I am on the "xlsx_footwear_option_import" import job page
-    And I launch the import job
-    And I wait for the "xlsx_footwear_option_import" job to finish
+    When I import it via the job "xlsx_footwear_option_import" as "Julia"
+    And I wait for this job to finish
     Then there should be the following options:
       | attribute | code        | label-en_US |
       | brand     | Converse    | Converse    |
@@ -177,7 +148,6 @@ Feature: Import options
     And the following attributes:
       | code  | label-en_US | type                     | group |
       | brand | Brand       | pim_catalog_simpleselect | other |
-    And I am logged in as "Julia"
     And the following CSV file to import:
       """
       attribute;code;label-en_US;sort_order
@@ -186,11 +156,8 @@ Feature: Import options
       brand;Nike;Nike;3
       brand;Caterpillar;Caterpillar;4
       """
-    And the following job "csv_footwear_option_import" configuration:
-      | filePath | %file to import% |
-    And I am on the "csv_footwear_option_import" import job page
-    And I launch the import job
-    And I wait for the "csv_footwear_option_import" job to finish
+    When I import it via the job "csv_footwear_option_import" as "Julia"
+    And I wait for this job to finish
     And the following CSV file to import:
       """
       attribute;code;label-en_US
@@ -199,11 +166,8 @@ Feature: Import options
       brand;TimberLand;TimberLand
       brand;Converse;Converse
       """
-    And the following job "csv_footwear_option_import" configuration:
-      | filePath | %file to import% |
-    And I am on the "csv_footwear_option_import" import job page
-    And I launch the import job
-    And I wait for the "csv_footwear_option_import" job to finish
+    When I import it via the job "csv_footwear_option_import" as "Julia"
+    And I wait for this job to finish
     Then there should be the following options:
       | attribute | code        | label-en_US | sort_order |
       | brand     | Converse    | Converse    | 1          |

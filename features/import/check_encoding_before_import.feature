@@ -1,4 +1,3 @@
-@javascript
 Feature:
   In order to import valid files
   As a product manager
@@ -6,7 +5,6 @@ Feature:
 
   Background:
     Given the "footwear" catalog configuration
-    And I am logged in as "Julia"
 
   Scenario: Import a file that contains non UTF-8 characters
     Given I am on the "csv_footwear_product_import" import job page
@@ -20,11 +18,8 @@ Feature:
       sku;name-en_US;description-en_US-ecommerce
       SKU-001;Donec;dictum magna. Ut tincidunt orci quis lectus. Nullam suscipit, est
       """
-    And the following job "csv_footwear_product_import" configuration:
-    | filePath | %file to import% |
-    When I am on the "csv_footwear_product_import" import job page
-    And I launch the import job
-    And I wait for the "csv_footwear_product_import" job to finish
+    When I import it via the job "csv_footwear_product_import" as "Julia"
+    And I wait for this job to finish
     Then I should see the text "File encoding: UTF-8 OK"
 
   Scenario: Import a file which content encoding should not be checked

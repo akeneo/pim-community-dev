@@ -1,4 +1,3 @@
-@javascript
 Feature: View an import detail page
   In order to know if an import is ready to be executed
   As a product manager
@@ -6,7 +5,6 @@ Feature: View an import detail page
 
   Background:
     Given the "footwear" catalog configuration
-    And I am logged in as "Julia"
 
   Scenario: Successfully display the import information
     Given I am on the imports page

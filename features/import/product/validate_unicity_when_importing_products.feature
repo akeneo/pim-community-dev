@@ -1,4 +1,3 @@
-@javascript
 Feature: Validate values for unique attributes when importing products
   In order to keep catalog data consistent
   As a product manager
@@ -12,7 +11,6 @@ Feature: Validate values for unique attributes when importing products
       | date                  | pim_catalog_date   | marketing | 1      | 0        | 0           | 1                      |                  |                  |
       | number                | pim_catalog_number | marketing | 1      | 0        | 0           | 1                      | 0                | 0                |
       | text                  | pim_catalog_text   | marketing | 1      | 0        | 0           | 1                      |                  |                  |
-    And I am logged in as "Julia"
 
   Scenario: Successfully ignore duplicate unique date values
     Given the following CSV file to import:
@@ -21,11 +19,8 @@ Feature: Validate values for unique attributes when importing products
       SKU-001;2014-01-01
       SKU-002;2014-01-01
       """
-    And the following job "csv_footwear_product_import" configuration:
-      | filePath | %file to import% |
-    When I am on the "csv_footwear_product_import" import job page
-    And I launch the import job
-    And I wait for the "csv_footwear_product_import" job to finish
+    When I import it via the job "csv_footwear_product_import" as "Julia"
+    And I wait for this job to finish
     Then I should see the text "The value 2014-01-01 is already set on another product for the unique attribute date"
     And there should be 1 product
 
@@ -36,11 +31,8 @@ Feature: Validate values for unique attributes when importing products
       SKU-001;123
       SKU-002;123
       """
-    And the following job "csv_footwear_product_import" configuration:
-      | filePath | %file to import% |
-    When I am on the "csv_footwear_product_import" import job page
-    And I launch the import job
-    And I wait for the "csv_footwear_product_import" job to finish
+    When I import it via the job "csv_footwear_product_import" as "Julia"
+    And I wait for this job to finish
     Then I should see the text "The value 123 is already set on another product for the unique attribute number"
     And there should be 1 product
 
@@ -51,11 +43,8 @@ Feature: Validate values for unique attributes when importing products
       SKU-001;foo
       SKU-002;foo
       """
-    And the following job "csv_footwear_product_import" configuration:
-      | filePath | %file to import% |
-    When I am on the "csv_footwear_product_import" import job page
-    And I launch the import job
-    And I wait for the "csv_footwear_product_import" job to finish
+    When I import it via the job "csv_footwear_product_import" as "Julia"
+    And I wait for this job to finish
     Then I should see the text "The value foo is already set on another product for the unique attribute text"
     And there should be 1 product
 
@@ -73,11 +62,8 @@ Feature: Validate values for unique attributes when importing products
       AKNTS_BPXL;1200000011a
       AKNTS_BPXXL;1200000011a
       """
-    And the following job "csv_footwear_product_import" configuration:
-      | filePath | %file to import% |
-    When I am on the "csv_footwear_product_import" import job page
-    And I launch the import job
-    And I wait for the "csv_footwear_product_import" job to finish
+    When I import it via the job "csv_footwear_product_import" as "Julia"
+    And I wait for this job to finish
     Then I should see the text "The value 1200000011a is already set on another product for the unique attribute test_unique_attribute"
     And I am on the products grid
     When I show the filter "test_unique_attribute"
@@ -99,11 +85,8 @@ Feature: Validate values for unique attributes when importing products
     And the following products:
       | sku      |
       | 17727158 |
-    And the following job "csv_footwear_product_import" configuration:
-      | filePath | %file to import% |
-    When I am on the "csv_footwear_product_import" import job page
-    And I launch the import job
-    And I wait for the "csv_footwear_product_import" job to finish
+    When I import it via the job "csv_footwear_product_import" as "Julia"
+    And I wait for this job to finish
     And I am on the products grid
     And I filter by "sku" with operator "is equal to" and value "17727158"
     And I should see products 17727158

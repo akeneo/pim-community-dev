@@ -90,7 +90,6 @@ Feature: Execute a job
 
   @javascript
   Scenario: Successfully import products through file upload
-    Given I am logged in as "Julia"
     And the following CSV file to import:
       """
       sku;family;groups;categories;name-en_US;description-en_US-tablet
@@ -105,11 +104,8 @@ Feature: Execute a job
       SKU-009;sneakers;;;porttitor;sagittis. Duis gravida. Praesent eu nulla at sem molestie sodales.
       SKU-010;boots;;sandals,winter_boots;non,;vestibulum nec, euismod in, dolor. Fusce feugiat. Lorem ipsum dolor
       """
-    And the following job "csv_footwear_product_import" configuration:
-      | uploadAllowed | yes |
-    When I am on the "csv_footwear_product_import" import job page
-    And I upload and import the file "%file to import%"
-    And I wait for the "csv_footwear_product_import" job to finish
+    When I import it via the job "csv_footwear_product_import" as "Julia"
+    And I wait for this job to finish
     Then there should be 10 products
 
   Scenario: Successfully import products prices
@@ -259,7 +255,6 @@ Feature: Execute a job
 
   @javascript
   Scenario: Successfully import products when category code is integer
-    Given I am logged in as "Julia"
     And the following products:
       | sku    |
       | jacket |
@@ -278,18 +273,14 @@ Feature: Execute a job
 
   @javascript
   Scenario: Successfully import a csv file of products and the completeness should be computed
-    Given I am logged in as "Julia"
     And the following CSV file to import:
       """
       sku;family;groups;categories;name-en_US;description-en_US-tablet;price;size;color
       SKU-001;boots;similar_boots;winter_boots;Donec;dictum magna. Ut tincidunt orci quis lectus. Nullam suscipit, est;"100 EUR, 90 USD";40;
       SKU-002;sneakers;;winter_boots;Donex;Pellentesque habitant morbi tristique senectus et netus et malesuada fames;"100 EUR, 90 USD";37;red
       """
-    And the following job "csv_footwear_product_import" configuration:
-      | filePath | %file to import% |
-    When I am on the "csv_footwear_product_import" import job page
-    And I launch the import job
-    And I wait for the "csv_footwear_product_import" job to finish
+    When I import it via the job "csv_footwear_product_import" as "Julia"
+    And I wait for this job to finish
     And I am on the "SKU-001" product page
     When I visit the "Completeness" column tab
     And I should see the completeness:
@@ -306,18 +297,14 @@ Feature: Execute a job
   @jira https://akeneo.atlassian.net/browse/PIM-6085
   @javascript
   Scenario: Successfully import product associations with modified column name
-    Given I am logged in as "Julia"
     And the following CSV file to import:
       """
       sku;family;groupes;catégories;name-en_US;description-en_US-tablet;price;size;color
       SKU-001;boots;similar_boots;winter_boots;Donec;dictum magna. Ut tincidunt orci quis lectus. Nullam suscipit, est;"100 EUR, 90 USD";40;
       SKU-002;sneakers;;winter_boots;Donex;Pellentesque habitant morbi tristique senectus et netus et malesuada fames;"100 EUR, 90 USD";37;red
       """
-    And the following job "csv_footwear_product_import" configuration:
-      | filePath          | %file to import% |
-      | enabledComparison | yes              |
-      | categoriesColumn  | catégories       |
-      | groupsColumn      | groupes          |
+    When I import it via the job "csv_footwear_product_import" as "Julia"
+    And I wait for this job to finish
     When I am on the "csv_footwear_product_import" import job page
     And I launch the import job
     And I wait for the "csv_footwear_product_import" job to finish

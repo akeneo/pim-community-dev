@@ -1,4 +1,3 @@
-@javascript
 Feature: Execute a job
   In order to use existing product information
   As a product manager
@@ -9,7 +8,6 @@ Feature: Execute a job
     And the following product groups:
       | code  | label-en_US | type    |
       | CROSS | Bag Cross   | RELATED |
-    And I am logged in as "Julia"
 
   Scenario: Successfully import a csv file of products and be able to download the imported file
     Given the following CSV file to import:
@@ -26,9 +24,6 @@ Feature: Execute a job
       SKU-009;sneakers;;;porttitor;sagittis. Duis gravida. Praesent eu nulla at sem molestie sodales.
       SKU-010;boots;CROSS;sandals;non,;vestibulum nec, euismod in, dolor. Fusce feugiat. Lorem ipsum dolor
       """
-    And the following job "csv_footwear_product_import" configuration:
-      | filePath | %file to import% |
-    When I am on the "csv_footwear_product_import" import job page
-    And I launch the import job
-    And I wait for the "csv_footwear_product_import" job to finish
+    When I import it via the job "csv_footwear_product_import" as "Julia"
+    And I wait for this job to finish
     Then I should see the text "Download read files"

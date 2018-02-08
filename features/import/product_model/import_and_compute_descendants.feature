@@ -1,4 +1,3 @@
-@javascript
 Feature: Create product models through CSV import and update their descendants
   In order to import product model
   As a catalog manager
@@ -12,11 +11,8 @@ Feature: Create product models through CSV import and update their descendants
       model-tshirt-divided;clothing_color_size;;zaro;20;Machine-washable;400;;
       model-tshirt-divided-navy-blue;clothing_color_size;model-tshirt-divided;;;;;navy_blue;100% cotton
       """
-    And the following job "csv_catalog_modeling_product_model_import" configuration:
-      | filePath | %file to import% |
-    And I am logged in as "Julia"
-
-  Scenario: Successfully compute products' completenesses of the product models
+    When I import it via the job "csv_catalog_modeling_product_model_import" as "Julia"
+    And I wait for this job to finish
     Given I am on the "tshirt-divided-navy-blue-m" product page
     And I visit the "Completeness" column tab
     Then I should see the completeness:

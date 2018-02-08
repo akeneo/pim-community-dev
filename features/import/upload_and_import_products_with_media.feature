@@ -6,7 +6,6 @@ Feature: Upload and import products with media
 
   Background:
     Given a "footwear" catalog configuration
-    And I am logged in as "Julia"
 
   Scenario: Successfully upload and import an archive
     Given I am on the "csv_footwear_product_import" import job page

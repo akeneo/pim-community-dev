@@ -1,4 +1,3 @@
-@javascript
 Feature: Create variants of family through CSV import
   In order to setup my application
   As an administrator
@@ -6,7 +5,6 @@ Feature: Create variants of family through CSV import
 
   Background:
     Given the "catalog_modeling" catalog configuration
-    And I am logged in as "Peter"
     And I am on the imports page
 
   Scenario: I successfully create and use a family variant import in CSV
