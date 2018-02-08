@@ -1,4 +1,3 @@
-
 module.exports = {
   channelList: `
   [
@@ -160,5 +159,5 @@ module.exports = {
       ],
       "total": 1
     }
-  `
+  `,
 };

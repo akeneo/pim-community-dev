@@ -1,7 +1,7 @@
-const {Given, When, Then} = require('cucumber');
+const {Given, Then} = require('cucumber');
 const assert = require('assert');
-const { channelList, productList } = require('./fixtures');
-const { random, json, spin } = require('./tools');
+const {channelList, productList} = require('./../fixtures');
+const {random, json, spin} = require('./../tools');
 
 Given(/^a product grid$/, async function() {
   await this.page.setRequestInterception(true);
@@ -9,7 +9,7 @@ Given(/^a product grid$/, async function() {
     if (interceptedRequest.url().includes('/configuration/channel/rest')) {
       random(() => {
         interceptedRequest.respond(json(channelList));
-      })
+      });
     }
     if (interceptedRequest.url().includes('/enrich/product/rest/grid/') && interceptedRequest.url().includes('en_US')) {
       random(() => {
@@ -27,7 +27,7 @@ Given(/^a product grid$/, async function() {
 });
 
 Then('the locale should be {string}', async function(expectedLocale) {
-  const actualLocale = await this.page.evaluate((element) => {
+  const actualLocale = await this.page.evaluate(element => {
     return element.dataset.identifier;
   }, await this.page.waitFor('.locale-switcher .value'));
 
@@ -44,9 +44,9 @@ Then('I switch the locale to {string}', async function(locale) {
 Then('the product {string} of {string} should be {string}', async function(column, productIdentifier, expectedValue) {
   const row = await this.page.waitFor(`.AknGrid-bodyRow[data-identifier="${productIdentifier}"]`);
   const cell = await row.$(`.AknGrid-bodyCell[data-column="${column}"]`);
-  const actualValue = await this.page.evaluate((element) => {
+  const actualValue = await this.page.evaluate(element => {
     return element.innerHTML;
   }, cell);
 
-  assert.equal(actualValue, expectedValue)
+  assert.equal(actualValue, expectedValue);
 });

@@ -15,7 +15,11 @@ const DefaultButtonView = ({
   selectedElement: DropdownElement;
   onClick: () => void;
 }) => (
-  <div className="AknActionButton AknActionButton--withoutBorder" data-identifier={selectedElement.identifier} onClick={() => onClick()}>
+  <div
+    className="AknActionButton AknActionButton--withoutBorder"
+    data-identifier={selectedElement.identifier}
+    onClick={() => onClick()}
+  >
     <span className="AknActionButton-highlight">{label}</span>
     <span className="AknActionButton-caret" />
   </div>

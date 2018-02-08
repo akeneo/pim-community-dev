@@ -12,14 +12,15 @@ describe('>>>FETCHER --- product', () => {
     page.once('request', interceptedRequest => {
       interceptedRequest.respond({
         contentType: 'application/json',
-        body: '{"items": [], "total": 0}'
+        body: '{"items": [], "total": 0}',
       });
     });
 
     const [err, products] = await page.evaluate(async () => {
       const fetcherRegistry = require('pim/fetcher-registry');
 
-      return await fetcherRegistry.getFetcher('product-grid')
+      return await fetcherRegistry
+        .getFetcher('product-grid')
         .search({locale: 'en_US', channel: 'ecommerce', limit: 25, page: 0, filters: []});
     });
 
@@ -30,14 +31,15 @@ describe('>>>FETCHER --- product', () => {
   it('provide an error if not authenticated', async () => {
     page.once('request', interceptedRequest => {
       interceptedRequest.respond({
-        status: 403
+        status: 403,
       });
     });
 
     const [err, products] = await page.evaluate(async () => {
       const fetcherRegistry = require('pim/fetcher-registry');
 
-      return await fetcherRegistry.getFetcher('product-grid')
+      return await fetcherRegistry
+        .getFetcher('product-grid')
         .search({locale: 'en_US', channel: 'ecommerce', limit: 25, page: 0, filters: []});
     });
 
