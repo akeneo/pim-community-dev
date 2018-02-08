@@ -72,10 +72,14 @@ class DefaultColumnSorter implements ColumnSorterInterface
      */
     protected function compare($a, $b)
     {
-        $a = $this->getColumnCode($a);
-        $b = $this->getColumnCode($b);
+        $ca = $this->getColumnCode($a);
+        $cb = $this->getColumnCode($b);
 
-        return array_search($a, $this->firstDefaultColumns) - array_search($b, $this->firstDefaultColumns);
+        if ($ca == $cb) {
+            return strnatcmp($a, $b);
+        } else {
+            return array_search($a, $this->firstDefaultColumns) - array_search($b, $this->firstDefaultColumns);
+        }
     }
 
     /**
