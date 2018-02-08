@@ -211,7 +211,9 @@ function($, _, Backbone, routing, Navigation, __, mediator, messenger, error, Mo
                 return;
             }
             action.datagrid.showLoading();
-            $.post(action.getLinkWithParameters(), {itemIds: action.getSelectedRows().join(',')})
+
+            var payload = _.extend({itemIds: action.getSelectedRows().join(',')}, action.getActionParameters());
+            $.post(action.getLinkWithParameters(), payload)
                 .done(action._onAjaxSuccess.bind(this))
                 .fail(action._onAjaxError.bind(this));
         },
@@ -290,8 +292,16 @@ function($, _, Backbone, routing, Navigation, __, mediator, messenger, error, Mo
             }).on('ok', callback);
         },
 
+        /**
+         * Saves in the localstorage the list of selected ids in the datagrid.
+         */
         saveItemIds: function() {},
 
+        /**
+         * Returns a list of ids corresponding to the selected rows in the datagrid.
+         *
+         * @returns {Array} an array of string
+         */
         getSelectedRows: function() {
             var selectionState = this.datagrid.getSelectionState();
             var itemIds = _.map(selectionState.selectedModels, function(model) {

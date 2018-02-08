@@ -97,7 +97,7 @@ class MassActionDispatcherSpec extends ObjectBehavior
                 'actionName' => 'mass_edit_action',
             ],
             [
-                'productIds' => 'id_1,id_2',
+                'itemIds' => 'id_1,id_2',
             ]
         );
 

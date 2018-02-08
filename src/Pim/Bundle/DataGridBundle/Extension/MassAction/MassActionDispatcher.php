@@ -301,7 +301,7 @@ class MassActionDispatcher
      *
      * @return array
      */
-    private function getValues(Request $request)
+    protected function getValues(Request $request)
     {
         $values = $this->getValuesFromRequest($request);
         if (empty($values)) {
@@ -324,7 +324,7 @@ class MassActionDispatcher
      *
      * @return array
      */
-    private function getValuesFromRequest(Request $request)
+    protected function getValuesFromRequest(Request $request)
     {
         $all = $request->request->all();
 

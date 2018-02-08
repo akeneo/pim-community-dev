@@ -66,7 +66,7 @@ class SequentialEditController
      *
      * @param Request $request
      *
-     * @return RedirectResponse
+     * @return JsonResponse
      */
     public function sequentialEditAction(Request $request)
     {
@@ -94,6 +94,13 @@ class SequentialEditController
         );
     }
 
+    /**
+     * Redirects to the sequential product edit page.
+     *
+     * @param Request $request
+     *
+     * @return RedirectResponse
+     */
     public function getRedirectAction(Request $request)
     {
         $sequentialEdit = $this->seqEditManager->findByUser($this->userContext->getUser());

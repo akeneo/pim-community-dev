@@ -17,7 +17,7 @@ config:
         oro/datagrid/tab-redirect-action:       pimdatagrid/js/datagrid/action/tab-redirect-action
         pim/datagrid/configure-columns-action:  pimdatagrid/js/datagrid/action/configure-columns-action
         oro/export-widget:                      pimdatagrid/js/datagrid/widget/export-widget
-        oro/datagrid/sequential_edit-action:    pimdatagrid/js/datagrid/widget/sequential_edit-action
+        oro/datagrid/sequential_edit-action:    pimdatagrid/js/datagrid/action/sequential_edit-action
         pim/datagrid/state:                     pimdatagrid/js/datagrid/state
         pim/datagrid/state-listener:            pimdatagrid/js/datagrid/state-listener
         pim/datagrid/column-form-listener:      pimdatagrid/js/datagrid/listener/column-form-listener
