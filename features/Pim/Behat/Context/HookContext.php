@@ -50,23 +50,15 @@ class HookContext extends PimContext
      */
     public function purgeDatabase()
     {
-        $purgers[] = new ORMPurger($this->getService('doctrine')->getManager());
-
-        $purgers[] = new DBALPurger(
+        $connection = $this->getService('database_connection');
+        $schemaManager = $connection->getSchemaManager();
+        $tables = $schemaManager->listTableNames();
+        $purger = new DBALPurger(
             $this->getService('database_connection'),
-            [
-                'pim_session',
-                'acl_entries',
-                'acl_object_identity_ancestors',
-                'acl_object_identities',
-                'acl_security_identities',
-                'acl_classes'
-            ]
+            $tables
         );
 
-        foreach ($purgers as $purger) {
-            $purger->purge();
-        }
+        $purger->purge();
 
         $this->resetElasticsearchIndex();
     }
