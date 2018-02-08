@@ -23,7 +23,7 @@ export default ({
   };
 
   const row = (
-    <tr className={`AknGrid-bodyRow row-click-action AknGrid-bodyRow--depth${depth}`} onClick={clickAction}>
+    <tr className={`AknGrid-bodyRow row-click-action AknGrid-bodyRow--depth${depth}`} data-identifier={product.getIdentifier()} onClick={clickAction}>
       <td className="AknGrid-bodyCell AknGrid-bodyCell--tight AknGrid-bodyCell--checkbox select-row-cell" />
       <td className="AknGrid-bodyCell string-cell" data-column="identifier">
         {product.getIdentifier()}

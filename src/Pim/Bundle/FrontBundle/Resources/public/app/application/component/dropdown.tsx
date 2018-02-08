@@ -15,7 +15,7 @@ const DefaultButtonView = ({
   selectedElement: DropdownElement;
   onClick: () => void;
 }) => (
-  <div className="AknActionButton AknActionButton--withoutBorder" onClick={() => onClick()}>
+  <div className="AknActionButton AknActionButton--withoutBorder" data-identifier={selectedElement.identifier} onClick={() => onClick()}>
     <span className="AknActionButton-highlight">{label}</span>
     <span className="AknActionButton-caret" />
   </div>
@@ -33,7 +33,7 @@ const DefaultItemView = ({
   const className = `AknDropdown-menuLink ${isActive ? 'AknDropdown-menuLink--active' : ''}`;
 
   return (
-    <div className={className} onClick={() => onClick(element)}>
+    <div className={className} data-identifier={element.identifier} onClick={() => onClick(element)}>
       {element.label}
     </div>
   );
@@ -53,6 +53,7 @@ interface Props {
     }: {element: DropdownElement; isActive: boolean; onClick: (element: DropdownElement) => void}
   ) => JSX.Element;
   label: string;
+  className?: string;
   onSelectionChange: (element: string) => void;
 }
 
@@ -122,7 +123,7 @@ export default class Dropdown extends React.Component<Props, {isOpen: boolean; s
     });
 
     return (
-      <div className="AknDropdown">
+      <div className={`AknDropdown ${this.props.className}`}>
         {dropdownButton(this.getElement(this.state.selectedElement).label)}
         <div className={'AknDropdown-menu ' + openClass}>
           <div className="AknDropdown-menuTitle">{this.props.label}</div>

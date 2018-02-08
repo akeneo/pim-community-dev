@@ -16,7 +16,7 @@ const LocaleItemView = ({
   const menuLinkClass = `AknDropdown-menuLink ${isActive ? `AknDropdown-menuLink--active` : ''}`;
 
   return (
-    <div className={menuLinkClass} data-locale={element.identifier} onClick={() => onClick(element)}>
+    <div className={menuLinkClass} data-identifier={element.identifier} onClick={() => onClick(element)}>
       <span className="label">
         <Flag locale={element.original} displayLanguage />
       </span>
@@ -35,7 +35,7 @@ const LocaleButtonView = ({
 }) => (
   <div className="AknActionButton AknActionButton--withoutBorder" onClick={onClick}>
     <div className="AknColumn-subtitle">{trans.get('Locale')}</div>
-    <div className="AknColumn-value value">
+    <div className="AknColumn-value value" data-identifier={selectedElement.identifier}>
       <Flag locale={selectedElement.original} displayLanguage />
     </div>
   </div>
@@ -70,6 +70,7 @@ export default ({
           onLocaleChange(locale);
         }
       }}
+      className="locale-switcher"
     />
   );
 };

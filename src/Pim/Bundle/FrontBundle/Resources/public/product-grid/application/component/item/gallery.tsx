@@ -16,7 +16,7 @@ export default ({
     (product instanceof ProductModel ? ' AknGrid-bodyRow--withLayer' : '');
 
   return (
-    <tr title="{product.getLabel(channel, locale)}" className={rowClass} onClick={() => onRedirectToProduct(product)}>
+    <tr title="{product.getLabel(channel, locale)}" className={rowClass} data-identifier={product.getIdentifier()} onClick={() => onRedirectToProduct(product)}>
       <td
         className="AknGrid-fullImage"
         style={{backgroundImage: `url("${getImageShowUrl(product.meta.image, 'thumbnail')}")`, display: 'block'}}

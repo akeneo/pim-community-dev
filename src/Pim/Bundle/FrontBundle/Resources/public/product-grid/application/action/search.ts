@@ -5,6 +5,7 @@ import ProductInterface, {
   RawProductInterface,
   ModelType,
 } from 'pimfront/product/domain/model/product';
+import {ServerResponse} from 'pimfront/product-grid/infrastructure/fetcher/product';
 import hidrateAll from 'pimfront/app/application/hidrator/hidrator';
 import {dataReceived, childrenReceived} from 'pimfront/product-grid/domain/event/search';
 import {State} from 'pimfront/product-grid/application/reducer/main';
@@ -41,9 +42,10 @@ const stateToQuery = (state: State<Product>): Query => {
 };
 
 const fetchResults = async (query: Query): Promise<{products: ProductInterface[]; total: number}> => {
-  const {items, total}: {items: RawProductInterface[]; total: number} = await fetcherRegistry
-    .getFetcher('product-grid')
-    .search(query);
+  const [err, {items, total}]: [any, ServerResponse] = await fetcherRegistry.getFetcher('product-grid').search(query);
+
+  if (null !== err) {
+  }
 
   return {products: hidrateAll<ProductInterface>(productHidrator)(items), total};
 };

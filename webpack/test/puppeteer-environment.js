@@ -24,7 +24,7 @@ class PuppeteerEnvironment extends NodeEnvironment {
       browserWSEndpoint: wsEndpoint,
     });
 
-    const page = await global.__BROWSER__.newPage();
+    const page = await this.global.__BROWSER__.newPage();
     await page.setRequestInterception(true);
     page.on('request', interceptedRequest => {
       if (interceptedRequest.url() === 'http://pim.com/') {
@@ -34,6 +34,7 @@ class PuppeteerEnvironment extends NodeEnvironment {
         })
       }
     });
+    await page.goto('http://pim.com');
 
     this.global.__PAGE__ = page;
   }

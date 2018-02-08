@@ -1,5 +1,6 @@
 import * as routing from 'routing';
 import * as jQuery from 'jquery';
+import to from 'await-to-js';
 import {RawProductInterface} from 'pimfront/product/domain/model/product';
 
 interface Filter {
@@ -15,6 +16,11 @@ export interface SearchOptions {
   scope: string;
   limit: number;
   from: number;
+}
+
+export interface ServerResponse {
+  items: RawProductInterface[];
+  total: number;
 }
 
 const queryToParameters = (query: any) => {
@@ -38,17 +44,18 @@ class ProductGridFetcher {
     this.options = options;
   }
 
-  search(query: SearchOptions): Promise<RawProductInterface[]> {
-    return new Promise((resolve, reject) => {
-      jQuery
-        .ajax({url: routing.generate(this.options.urls.list), data: queryToParameters(query)})
-        .then((products: RawProductInterface[]) => {
-          resolve(products);
-        })
-        .fail(function () {
-          reject.apply(arguments);
-        });
-    });
+  search(query: SearchOptions): Promise<[any, ServerResponse | undefined]> {
+    return to<ServerResponse>(
+      new Promise((resolve, reject) => {
+        jQuery
+          .ajax({
+            url: routing.generate(this.options.urls.list),
+            data: queryToParameters(query),
+          })
+          .then((response: ServerResponse) => resolve(response))
+          .fail((error: any) => reject({status: error.status, text: error.responseText}));
+      })
+    );
   }
 
   clear() {}

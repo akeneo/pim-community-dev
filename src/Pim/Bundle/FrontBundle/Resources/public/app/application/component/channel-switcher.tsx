@@ -13,7 +13,7 @@ const ChannelButtonView = ({
   selectedElement: DropdownElement;
   onClick: () => void;
 }) => (
-  <div className="AknActionButton AknActionButton--withoutBorder" onClick={onClick}>
+  <div className="AknActionButton AknActionButton--withoutBorder" data-identifier={selectedElement.identifier} onClick={onClick}>
     <div className="AknColumn-subtitle">{trans.get('Channel')}</div>
     <div className="AknColumn-value value">{selectedElement.label}</div>
   </div>
@@ -47,6 +47,7 @@ export default ({
           onChannelChange(channel);
         }
       }}
+      className="channel-switcher"
     />
   );
 };

@@ -6,6 +6,7 @@
   "scripts": {
     "webpack": "webpack --config webpack.config.js --env=prod",
     "webpack-dev": "webpack --config webpack.config.js",
+    "webpack-test": "webpack --config webpack-test.config.js",
     "webpack-watch": "webpack --progress --config webpack.config.js --watch",
     "prettier": "prettier --config .prettierrc.json --parser typescript --write \"./src/**/*.ts\"; prettier --config .prettierrc.json --parser typescript --write \"./src/**/*.tsx\"",
     "before-commit": "yarn prettier && yarn lint && yarn test",
@@ -15,7 +16,9 @@
     "acceptance": "cucumber-js --tags @acceptance-front -r ./webpack/test/acceptance/run-steps.js -r ./tests/front/acceptance/cucumber",
     "acceptance-report": "yarn run acceptance ./tests/features/ -f json:web/test_dist/acceptance-js.json && node webpack/test/acceptance/generate-report.js",
     "unit": "jest --no-cache --config ./unit.jest.js",
-    "integration": "jest --no-cache --config ./integration.jest.js"
+    "integration": "jest --no-cache --config ./integration.jest.js",
+    "acceptance": "cucumber-js -r ./src/Pim/Bundle/FrontBundle/Resources/test/acceptance/cucumber ./src/Pim/Bundle/FrontBundle/Resources/test/acceptance/features",
+    "test": "yarn unit && yarn webpack-test && yarn integration && yarn acceptance"
   },
   "repository": {
     "type": "git",
@@ -29,6 +32,7 @@
     "@types/enzyme": "^3.1.6",
     "@types/jest": "^22.0.1",
     "@types/redux-logger": "^3.0.5",
+    "await-to-js": "^2.0.1",
     "colors": "1.1.2",
     "cucumber": "4.0.0",
     "cucumber-html-reporter": "4.0.1",
@@ -42,6 +46,7 @@
     "html-webpack-inline-source-plugin": "^0.0.9",
     "html-webpack-plugin": "^2.30.1",
     "jest": "^22.0.5",
+    "prettier": "^1.10.2",
     "read-pkg": "2.0.0",
     "redux-logger": "^3.0.6",
     "ts-jest": "^22.0.1",
