@@ -80,16 +80,6 @@ function(_, messenger, __, Modal, AbstractAction) {
             return params;
         },
 
-        _handleAjax: function(action) {
-            if (action.dispatched) {
-                return;
-            }
-            action.datagrid.showLoading();
-            $.post(action.getLinkWithParameters(), {itemIds: action.getSelectedRows().join(',')})
-                .done(this._onAjaxSuccess.bind(this))
-                .fail(this._onAjaxError.bind(this));
-        },
-
         /**
          * Get extra parameters (sorters and custom parameters)
          * @param {array}  params
@@ -144,6 +134,11 @@ function(_, messenger, __, Modal, AbstractAction) {
             return result;
         },
 
+        _onAjaxSuccess: function(data, textStatus, jqXHR) {
+            this.datagrid.resetSelectionState();
+            AbstractAction.prototype._onAjaxSuccess.apply(this, arguments);
+        },
+
         /**
          * Get view for confirm modal
          *
@@ -157,6 +152,9 @@ function(_, messenger, __, Modal, AbstractAction) {
             }).on('ok', callback);
         },
 
+        /**
+         * Saves in the localstorage the list of selected ids in the datagrid.
+         */
         saveItemIds: function() {
             localStorage.setItem('mass_action.itemIds', JSON.stringify(this.getSelectedRows()));
         }

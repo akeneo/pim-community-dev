@@ -1,6 +1,6 @@
 define(
-    ['jquery', 'underscore', 'backbone', 'oro/navigation',  'routing','oro/messenger', 'oro/datagrid/mass-action'],
-    function ($, _, Backbone, Navigation, Routing, messenger, MassAction) {
+    ['jquery', 'oro/translator', 'underscore', 'backbone', 'oro/navigation',  'routing','oro/messenger', 'oro/datagrid/mass-action'],
+    function ($, _, __, Backbone, Navigation, Routing, messenger, MassAction) {
         'use strict';
 
         return MassAction.extend({
@@ -13,8 +13,7 @@ define(
                 $.post(this.getLinkWithParameters(), {itemIds: this.getSelectedRows().join(',')})
                     .done(function () {
                         var navigation = Navigation.getInstance(),
-                            // url = Routing.generate('pim_enrich_mass_edit_action_sequential_edit_redirect');
-                            url = '/enrich/sequential_edit/redirect';
+                            url = Routing.generate('pim_enrich_mass_edit_action_sequential_edit_redirect');
 
                         navigation.processRedirect({
                             fullRedirect: false,
@@ -24,7 +23,7 @@ define(
                     .error(function (jqXHR) {
                         messenger.notificationFlashMessage(
                             'error',
-                            _.__(jqXHR.responseText)
+                            __(jqXHR.responseText)
                         );
                     });
             }
