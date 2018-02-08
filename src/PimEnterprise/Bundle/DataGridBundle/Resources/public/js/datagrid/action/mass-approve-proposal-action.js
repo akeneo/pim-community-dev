@@ -53,8 +53,11 @@ define(
                 formModal.open().then(function () {
                     $.post(this.getLinkWithParameters(), {itemIds: this.getSelectedRows().join(',')})
                         .done(function (data) {
-                            var url = '/product_draft/redirect?jobExecutionId=' + data.jobExecutionId,
-                                navigation = Navigation.getInstance();
+                            var navigation = Navigation.getInstance();
+                            var url = Navigation.generate(
+                                'pimee_workflow_product_draft_mass_action_redirect',
+                                {'jobExecutionId': data.jobExecutionId}
+                            );
 
                             if (navigation) {
                                 navigation.processRedirect({fullRedirect: false, location: url});

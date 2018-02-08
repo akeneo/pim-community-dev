@@ -253,6 +253,13 @@ class ProductDraftController
         return new JsonResponse(['jobExecutionId' => $jobExecution->getId()]);
     }
 
+    /**
+     * Redirects to the process tracker for the following job execution id.
+     *
+     * @param Request $request
+     *
+     * @return RedirectResponse
+     */
     public function massActionRedirectAction(Request $request)
     {
         $jobExecutionId = $request->get('jobExecutionId');
