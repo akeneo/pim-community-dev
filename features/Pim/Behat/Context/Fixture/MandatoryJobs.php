@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Pim\Behat\Context\Fixtures;
+namespace Pim\Behat\Context\Fixture;
 
 use Symfony\Component\Yaml\Parser;
 

@@ -1,0 +1,82 @@
+services:
+    # PIM user related builders
+    behat.fixture.builder.group:
+        class: 'Pim\Behat\Context\Fixture\EntityLoader'
+        arguments:
+            - '@pim_user.factory.group'
+            - '@pim_user.updater.group'
+            - '@pim_user.saver.group'
+            - '@validator'
+
+    behat.fixture.builder.role:
+        class: 'Pim\Behat\Context\Fixture\EntityLoader'
+        arguments:
+            - '@pim_user.factory.role'
+            - '@pim_user.updater.role'
+            - '@pim_user.saver.role'
+            - '@validator'
+
+    behat.fixture.builder.user:
+        class: 'Pim\Behat\Context\Fixture\EntityLoader'
+        arguments:
+            - '@pim_user.factory.user'
+            - '@pim_user.updater.user'
+            - '@pim_user.saver.user'
+            - '@validator'
+
+    # PIM catalog related builders
+    behat.fixture.builder.attribute:
+        class: 'Pim\Behat\Context\Fixture\EntityLoader'
+        arguments:
+            - '@pim_catalog.factory.attribute'
+            - '@pim_catalog.updater.attribute'
+            - '@pim_catalog.saver.attribute'
+            - '@validator'
+
+    behat.fixture.builder.attribute_group:
+        class: 'Pim\Behat\Context\Fixture\EntityLoader'
+        arguments:
+            - '@pim_catalog.factory.attribute_group'
+            - '@pim_catalog.updater.attribute_group'
+            - '@pim_catalog.saver.attribute_group'
+            - '@validator'
+
+    behat.fixture.builder.category:
+        class: 'Pim\Behat\Context\Fixture\EntityLoader'
+        arguments:
+            - '@pim_catalog.factory.category'
+            - '@pim_catalog.updater.category'
+            - '@pim_catalog.saver.category'
+            - '@validator'
+
+    behat.fixture.builder.channel:
+        class: 'Pim\Behat\Context\Fixture\EntityLoader'
+        arguments:
+            - '@pim_catalog.factory.channel'
+            - '@pim_catalog.updater.channel'
+            - '@pim_catalog.saver.channel'
+            - '@validator'
+
+    behat.fixture.builder.currency:
+        class: 'Pim\Behat\Context\Fixture\EntityLoader'
+        arguments:
+            - '@pim_catalog.factory.currency'
+            - '@pim_catalog.updater.currency'
+            - '@pim_catalog.saver.currency'
+            - '@validator'
+
+    behat.fixture.builder.job_instance:
+        class: 'Pim\Behat\Context\Fixture\EntityLoader'
+        arguments:
+            - '@pim_connector.factory.job_instance'
+            - '@akeneo_batch.updater.job_instance'
+            - '@akeneo_batch.saver.job_instance'
+            - '@validator'
+
+    behat.fixture.builder.locale:
+        class: 'Pim\Behat\Context\Fixture\EntityLoader'
+        arguments:
+            - '@pim_catalog.factory.locale'
+            - '@pim_catalog.updater.locale'
+            - '@pim_catalog.saver.locale'
+            - '@validator'

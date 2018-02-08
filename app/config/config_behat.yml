@@ -1,6 +1,7 @@
 imports:
     - { resource: config.yml }
     - { resource: parameters_test.yml }
+    - { resource: ../../features/Pim/config/services.yml }
 
 framework:
     test: ~
