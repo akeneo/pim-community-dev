@@ -1,9 +1,10 @@
 # Testing in the PIM
 
-
 ## Types of tests
 
-### Unit - test a unit of code (usually, it's a class)
+### Unit - test a unit of code
+
+Most often, a unit of code is a class.
 
 Characteristics:
 
@@ -15,6 +16,9 @@ Characteristics:
 
 Examples:
 
+- backend: TODO
+- frontend: TODO
+
 
 ### Acceptance: test a business use case
 
@@ -22,36 +26,42 @@ Characteristics:
 
 - several classes are tested at the same time
 - business language is used (ie: we use Gherkin)
-- describes a business problem we want to solve (ie: it's not about UI, CLI or UX)
+- describes a business use case or a business rule (ie: it's not about UI, CLI or UX, neither about a text we should see)
 - mock only what you own
 - services which perform I/O calls are mocked (like Doctrine repositories for instance)
 - "lives" in memory only
 
 Examples:
 
+- backend: TODO
+- frontend: TODO
 
 ### Integration: test
 
 Characteristics:
 
 - one class is tested at a time
-- no mock
+- no mock for the system you want to test
 - tests only services that perform I/O calls (like Doctrine repositories for instance)
 
 Examples:
 
+- backend: test a Doctrine repository using MySQL
+- frontend test a fetcher performing HTTP calls
 
 ### End to end: test the whole application
 
 Characteristics:
 
-- boots the whole application
+- boots the whole application, which means the backend and the frontend
+- no mock for the system you want to test
+- can require complex setup (like a browser and Selenium for instance)
+- tests nominal use cases
 
 Examples:
 
-- from UI to database
-- from CLI to database
-- etc..
+- test that a user can fill in product values via the UI
+- test that an import can be launched via the CLI
 
 
 ## Ports and adapters architecture
@@ -71,6 +81,7 @@ Acceptance:
 Integration:
 
 - focuses on the Infrastructure layer
+- tests an Adapter
 
 End to end:
 
@@ -79,8 +90,9 @@ End to end:
 
 ## Actual VS Expected
 
-### The ideal pyramid
+### Today's situation
 
+### The ideal pyramid
 
 
 ## FAQ
