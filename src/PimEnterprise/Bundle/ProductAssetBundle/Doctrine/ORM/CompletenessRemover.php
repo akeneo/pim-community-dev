@@ -2,7 +2,7 @@
 
 namespace PimEnterprise\Bundle\ProductAssetBundle\Doctrine\ORM;
 
-use Akeneo\Component\StorageUtils\Cache\CacheClearerInterface;
+use Akeneo\Component\StorageUtils\Detacher\BulkObjectDetacherInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Pim\Bundle\CatalogBundle\Doctrine\ORM\CompletenessRemover as BaseCompletenessRemover;
 use Pim\Bundle\CatalogBundle\Elasticsearch\Indexer\ProductIndexer;
@@ -30,20 +30,18 @@ class CompletenessRemover extends BaseCompletenessRemover implements Completenes
      * @param EntityManagerInterface              $entityManager
      * @param ProductIndexer                      $indexer
      * @param string                              $completenessTable
+     * @param BulkObjectDetacherInterface         $bulkDetacher
      * @param AttributeRepositoryInterface        $attributeRepository
-     * @param CacheClearerInterface               $clearer
-     *
-     * TODO: Pull-up day. Refactor before merge in master.
      */
     public function __construct(
         ProductQueryBuilderFactoryInterface $pqbFactory,
         EntityManagerInterface $entityManager,
         ProductIndexer $indexer,
         $completenessTable,
-        AttributeRepositoryInterface $attributeRepository,
-        CacheClearerInterface $clearer = null
+        BulkObjectDetacherInterface $bulkDetacher,
+        AttributeRepositoryInterface $attributeRepository
     ) {
-        parent::__construct($pqbFactory, $entityManager, $indexer, $completenessTable, $clearer);
+        parent::__construct($pqbFactory, $entityManager, $indexer, $completenessTable, $bulkDetacher);
         $this->attributeRepository = $attributeRepository;
     }
 

@@ -20,4 +20,4 @@ services:
             - '@pim_catalog.object_manager.product'
             - '@pim_catalog.elasticsearch.published_product_indexer'
             - 'pimee_workflow_published_product_completeness'
-            - '@pim_connector.doctrine.cache_clearer'
+            - '@akeneo_storage_utils.doctrine.object_detacher'
