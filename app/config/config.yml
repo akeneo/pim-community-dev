@@ -5,7 +5,6 @@ imports:
     - { resource: '@PimEnrichBundle/Resources/config/pim.yml' }
 
 framework:
-    #esi:             ~
     translator:      { fallback: en }
     secret:          "%secret%"
     router:
@@ -64,3 +63,6 @@ pim_reference_data:
     color:
         class: Acme\Bundle\AppBundle\Entity\Color
         type: simple
+
+parameters:
+    pim_ce_dev_src_folder_location: '%kernel.project_dir%'
