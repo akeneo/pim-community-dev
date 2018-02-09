@@ -687,6 +687,46 @@ class SecurityContext extends RawMinkContext implements KernelAwareInterface
         $this->doCall('DELETE', $url);
     }
 
+    /**
+     * @When /^I make a direct authenticated POST call on the "([^"]*)" variant group to change its "([^"]*)" label to "([^"]*)"$/
+     */
+    public function iMakeADirectAuthenticatedPostCallOnTheVariantGroupToChangeItsLabelTo($variantGroupCode, $localeLabelCode, $labelValue)
+    {
+        $routeName = 'pim_enrich_variant_group_rest_post';
+
+        $url = $this->kernel
+            ->getContainer()
+            ->get('router')
+            ->generate($routeName, [
+                'code' => $variantGroupCode,
+            ]);
+
+        $this->doCall('POST', $url, [], [
+            'code' => $variantGroupCode,
+            'values' => [],
+            'labels' => [
+                $localeLabelCode => $labelValue
+            ]
+        ]);
+    }
+
+    /**
+     * @When /^I make a direct authenticated DELETE call on the "([^"]*)" variant group$/
+     */
+    public function iMakeADirectAuthenticatedDeleteCallOnTheVariantGroup($variantGroupCode)
+    {
+        $routeName = 'pim_enrich_variant_group_rest_remove';
+
+        $url = $this->kernel
+            ->getContainer()
+            ->get('router')
+            ->generate($routeName, [
+                'code' => $variantGroupCode,
+            ]);
+
+        $this->doCall('DELETE', $url);
+    }
+
 //    /**
 //     * @When /^I make a direct authenticated POST call on the "([^"]*)" user group with following data:$/
 //     */
@@ -713,6 +753,34 @@ class SecurityContext extends RawMinkContext implements KernelAwareInterface
 //        $this->doCall('POST', $url, $params);
 //        var_dump($params);
 //    }
+
+    /**
+     * @Then /^there should be a "([^"]*)" variant group$/
+     */
+    public function thereShouldBeAVariantGroup($variantGroupCode)
+    {
+        $variantGroup = $this->kernel
+            ->getContainer()
+            ->get('pim_catalog.repository.group')
+            ->findOneByIdentifier($variantGroupCode);
+
+        assertNotNull($variantGroup);
+    }
+
+    /**
+     * @Then /^the label of variant group "([^"]*)" should be "([^"]*)"$/
+     */
+    public function theLabelOfVariantGroupShouldBe($variantGroupCode, $expectedLabel)
+    {
+        $variantGroup = $this->kernel
+            ->getContainer()
+            ->get('pim_catalog.repository.group')
+            ->findOneByIdentifier($variantGroupCode);
+
+        $label = $variantGroup->getLabel();
+
+        assertEquals($expectedLabel, $label);
+    }
 
     /**
      * @Then /^the category "([^"]*)" should have "([^"]*)" as parent$/
