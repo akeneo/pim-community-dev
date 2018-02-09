@@ -4,35 +4,35 @@ declare(strict_types=1);
 
 namespace Akeneo\Test\Acceptance\Locale;
 
-use Akeneo\Test\Acceptance\ResourceBuilder;
-use Behat\Behat\Context\Context as BehatContext;
+use Akeneo\Test\Acceptance\Common\EntityBuilder;
+use Akeneo\Test\Acceptance\Common\ListOfCodes;
+use Behat\Behat\Context\Context;
 use PHPUnit\Framework\Assert;
 
-class LocaleContext implements BehatContext
+final class LocaleContext implements Context
 {
     /** @var InMemoryLocaleRepository */
     private $localeRepository;
 
-    /** @var ResourceBuilder */
+    /** @var EntityBuilder */
     private $localeBuilder;
 
     public function __construct(
         InMemoryLocaleRepository $localeRepository,
-        ResourceBuilder $localeBuilder
+        EntityBuilder $localeBuilder
     ) {
         $this->localeRepository = $localeRepository;
         $this->localeBuilder = $localeBuilder;
     }
 
     /**
-     * @Given /^the following locales? "([^"]*)"$/
+     * @Given the following locales :localeCodes
      */
     public function theFollowingLocale(string $localeCodes)
     {
-        $localeCodes = explode(',', $localeCodes);
-        foreach ($localeCodes as $localeCode) {
-            $localeCode = trim($localeCode);
+        $localeCodes = new ListOfCodes($localeCodes);
 
+        foreach ($localeCodes->explode() as $localeCode) {
             $locale = $this->localeBuilder->build(['code' => $localeCode]);
 
             $this->localeRepository->save($locale);
@@ -40,12 +40,14 @@ class LocaleContext implements BehatContext
     }
 
     /**
-     * @Then /^I should have activated locales "([^"]*)"$/
+     * @Then the locales :localeCodes is activated
      */
     public function iShouldHaveActivatedLocales(string $localeCodes)
     {
-        foreach (explode(',', $localeCodes) as $localeCode) {
-            $locale = $this->localeRepository->findOneByIdentifier(trim($localeCode));
+        $localeCodes = new ListOfCodes($localeCodes);
+
+        foreach ($localeCodes->explode() as $localeCode) {
+            $locale = $this->localeRepository->findOneByIdentifier($localeCode);
             Assert::assertTrue($locale->isActivated());
         }
     }

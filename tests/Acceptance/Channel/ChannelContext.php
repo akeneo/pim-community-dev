@@ -5,32 +5,33 @@ declare(strict_types=1);
 namespace Akeneo\Test\Acceptance\Channel;
 
 use Akeneo\Test\Acceptance\Category\InMemoryCategoryRepository;
+use Akeneo\Test\Acceptance\Common\EntityBuilder;
+use Akeneo\Test\Acceptance\Common\ListOfCodes;
 use Akeneo\Test\Acceptance\Currency\InMemoryCurrencyRepository;
 use Akeneo\Test\Acceptance\Locale\InMemoryLocaleRepository;
-use Akeneo\Test\Acceptance\ResourceBuilder;
-use Behat\Behat\Context\Context as BehatContext;
+use Behat\Behat\Context\Context;
 
-class ChannelContext implements BehatContext
+final class ChannelContext implements Context
 {
     /** @var InMemoryLocaleRepository */
-    protected $localeRepository;
+    private $localeRepository;
 
     /** @var InMemoryChannelRepository */
-    protected $channelRepository;
+    private $channelRepository;
 
     /** @var InMemoryCategoryRepository */
     private $categoryRepository;
 
-    /** @var ResourceBuilder */
+    /** @var EntityBuilder */
     private $channelBuilder;
 
-    /** @var ResourceBuilder */
+    /** @var EntityBuilder */
     private $categoryBuilder;
 
-    /** @var ResourceBuilder */
+    /** @var EntityBuilder */
     private $currencyRepository;
 
-    /** @var ResourceBuilder */
+    /** @var EntityBuilder */
     private $currencyBuilder;
 
     public function __construct(
@@ -38,9 +39,9 @@ class ChannelContext implements BehatContext
         InMemoryCategoryRepository $categoryRepository,
         InMemoryChannelRepository $channelRepository,
         InMemoryCurrencyRepository $currencyRepository,
-        ResourceBuilder $categoryBuilder,
-        ResourceBuilder $channelBuilder,
-        ResourceBuilder $currencyBuilder
+        EntityBuilder $categoryBuilder,
+        EntityBuilder $channelBuilder,
+        EntityBuilder $currencyBuilder
     ) {
         $this->localeRepository = $localeRepository;
         $this->channelRepository = $channelRepository;
@@ -52,10 +53,12 @@ class ChannelContext implements BehatContext
     }
 
     /**
-     * @Given /^the following "([^"]*)" channel with locales? "([^"]*)"$/
+     * @Given the following :channelCode channel with locales :localeCodes
      */
     public function theFollowingChannel(string $channelCode, string $localeCodes)
     {
+        $localeCodes = new ListOfCodes($localeCodes);
+
         $masterCategory = $this->categoryBuilder->build(['code' => 'master']);
         $this->categoryRepository->save($masterCategory);
 
@@ -64,7 +67,7 @@ class ChannelContext implements BehatContext
 
         $channelData = [
             'code' => $channelCode,
-            'locales' => explode(',', $localeCodes),
+            'locales' => $localeCodes->explode(),
             'category_tree' => 'master',
             'currencies' => ['EUR']
         ];
@@ -74,18 +77,16 @@ class ChannelContext implements BehatContext
     }
 
     /**
-     * @Then /^I remove the locale "([^"]*)" from the "([^"]*)" channel$/
+     * @Then the locale :localeCode is removed from the :channelCode channel
      */
     public function iRemoveTheLocaleFromTheChannel(string $localeCode, string $channelCode)
     {
-        $channel = $this->channelRepository->findOneByIdentifier($channelCode);
-        if (null === $channel) {
-            throw new \Exception(sprintf('Channel "%s" not found', $channelCode));
+        if (null === $channel = $this->channelRepository->findOneByIdentifier($channelCode)) {
+            throw new \Exception(sprintf('Channel "%s" cannot be found', $channelCode));
         }
 
-        $locale = $this->localeRepository->findOneByIdentifier($localeCode);
-        if (null === $locale) {
-            throw new \Exception(sprintf('Locale "%s" not found', $localeCode));
+        if (null === $locale = $this->localeRepository->findOneByIdentifier($localeCode)) {
+            throw new \Exception(sprintf('Locale "%s" cannot be found', $localeCode));
         }
 
         $channel->removeLocale($locale);
@@ -93,12 +94,17 @@ class ChannelContext implements BehatContext
     }
 
     /**
-     * @When I add the locale :localeCode from the :channelCode channel
+     * @When the locale :localeCode is added to the :channelCode channel
      */
     public function iAddTheLocaleFromTheChannel($localeCode, $channelCode)
     {
-        $channel = $this->channelRepository->findOneByIdentifier($channelCode);
-        $locale = $this->localeRepository->findOneByIdentifier($localeCode);
+        if (null === $channel = $this->channelRepository->findOneByIdentifier($channelCode)) {
+            throw new \Exception(sprintf('Channel "%s" cannot be found', $channelCode));
+        }
+
+        if (null === $locale = $this->localeRepository->findOneByIdentifier($localeCode)) {
+            throw new \Exception(sprintf('Locale "%s" cannot be found', $localeCode));
+        }
 
         $channel->addLocale($locale);
 

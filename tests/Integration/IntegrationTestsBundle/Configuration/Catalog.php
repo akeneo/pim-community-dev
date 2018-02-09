@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Test\IntegrationTestsBundle\Configuration;
 
 use Akeneo\Test\Integration\Configuration;
+use Akeneo\Test\IntegrationTestsBundle\Path;
 
 /**
  * @author    Alexandre Hocquard <alexandre.hocquard@akeneo.com>
@@ -18,8 +19,9 @@ class Catalog implements CatalogInterface
      */
     public function useTechnicalSqlCatalog(): Configuration
     {
-        $catalogDirectories = [realpath($this->getRootDirectory() . 'tests' . DIRECTORY_SEPARATOR . 'catalog' .
-            DIRECTORY_SEPARATOR . 'technical_sql')];
+        $catalogDirectories = [
+            (string) new Path('tests', 'Integration', 'catalog','technical_sql'),
+        ];
 
         $fixtureDirectories = [
             $this->getTechnicalFixtures(),
@@ -34,8 +36,9 @@ class Catalog implements CatalogInterface
      */
     public function useTechnicalCatalog(): Configuration
     {
-        $catalogDirectories = [realpath($this->getRootDirectory() . 'tests' . DIRECTORY_SEPARATOR . 'catalog' .
-            DIRECTORY_SEPARATOR . 'technical')];
+        $catalogDirectories = [
+            (string) new Path('tests', 'Integration', 'catalog','technical'),
+        ];
 
         $fixtureDirectories = [
             $this->getTechnicalFixtures(),
@@ -50,9 +53,9 @@ class Catalog implements CatalogInterface
      */
     public function useMinimalCatalog(): Configuration
     {
-        $catalogDirectories = [realpath($this->getRootDirectory() . 'src' . DIRECTORY_SEPARATOR . 'Pim' .
-            DIRECTORY_SEPARATOR . 'Bundle' . DIRECTORY_SEPARATOR . 'InstallerBundle' . DIRECTORY_SEPARATOR .
-            'Resources' . DIRECTORY_SEPARATOR . 'fixtures' . DIRECTORY_SEPARATOR . 'minimal')];
+        $catalogDirectories = [
+            (string) new Path('src', 'Pim','Bundle','InstallerBundle','Resources','fixtures', 'minimal'),
+        ];
 
         $fixtureDirectories = [
             $this->getReferenceDataFixtures(),
@@ -67,43 +70,35 @@ class Catalog implements CatalogInterface
      */
     public function useFunctionalCatalog(string $catalog): Configuration
     {
-        $catalogDirectories = [realpath($this->getRootDirectory() . 'features'. DIRECTORY_SEPARATOR . 'Context' .
-            DIRECTORY_SEPARATOR .'catalog'. DIRECTORY_SEPARATOR . $catalog)];
+        $catalogDirectories = [
+            (string) new Path('features', 'Context','catalog', $catalog),
+        ];
 
         $fixtureDirectories = [
-            realpath($this->getRootDirectory(). DIRECTORY_SEPARATOR . 'features'. DIRECTORY_SEPARATOR . 'Context' .
-            DIRECTORY_SEPARATOR .'fixtures'),
+            (string) new Path('features', 'Context'),
             $this->getReferenceDataFixtures()
         ];
 
         return new Configuration($catalogDirectories, $fixtureDirectories);
     }
 
-
     /**
-     * {@inheritdoc}
+     * @return string
+     *
+     * @throws \Exception
      */
     private function getReferenceDataFixtures(): string
     {
-        $path = $this->getRootDirectory() . 'src' . DIRECTORY_SEPARATOR . 'Acme' .
-            DIRECTORY_SEPARATOR . 'Bundle' . DIRECTORY_SEPARATOR . 'AppBundle' . DIRECTORY_SEPARATOR . 'Resources' .
-            DIRECTORY_SEPARATOR . 'fixtures' . DIRECTORY_SEPARATOR;
-        $test = realpath($path);
-
-        return $test;
-    }
-
-    private function getTechnicalFixtures(): string
-    {
-        return realpath($this->getRootDirectory() . 'tests' . DIRECTORY_SEPARATOR . 'fixtures');
+        return (string) new Path('src', 'Acme','Bundle','AppBundle','Resources','fixtures');
     }
 
     /**
      * @return string
+     *
+     * @throws \Exception
      */
-    private function getRootDirectory()
+    private function getTechnicalFixtures(): string
     {
-        return __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . '..' .
-            DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR;
+        return (string) new Path('tests', 'Integration', 'fixtures');
     }
 }

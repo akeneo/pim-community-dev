@@ -213,28 +213,16 @@ stage("Test") {
             "behat-ce": {
                 if (launchBehatTests.equals("yes") && editions.contains("ce")) {
                     queue({
-                        def scenarios = sh (returnStdout: true, script: "cd /home/jenkins/pim && php vendor/bin/behat --list-scenarios").tokenize('\n')
                         def messages = new net.sf.json.JSONArray()
 
-                        for (scenario in scenarios) {
-                            def commands = [
-                                [container: "php", script: "bin/console --env=behat --quiet pim:install --force"],
-                                [container: "php", script: "touch var/logs/behat.log"],
-                                [container: "php", script: "chmod 777 -R var/cache var/logs app/archive /tmp/pim app/file_storage app/uploads"],
-                                [container: "php", script: "mkdir -m 777 -p app/build/logs/behat web/media"],
-                                [container: "php", script: "sed -i '2 a umask(0000);' vendor/behat/behat/bin/behat"],
-                                [
-                                    container: "php",
-                                    junit: [in: "/home/jenkins/pim/app/build/logs/behat/", name: "*.xml"],
-                                    artifacts: [in: "/tmp/behat/screenshots", name: "*.png"],
-                                    script: "php vendor/bin/behat --strict -vv " + scenario
-                                ]
-                            ]
-                            def message = new net.sf.json.JSONObject()
-                            message.put("name",scenario)
-                            message.put("commands",commands)
-                            messages.add(message)
-                        }
+                        def legacyScenarios = sh (returnStdout: true, script: "cd /home/jenkins/pim && php vendor/bin/behat -p legacy --list-scenarios").tokenize('\n')
+                        def acceptanceScenarios = sh (returnStdout: true, script: "cd /home/jenkins/pim && php vendor/bin/behat -p acceptance --list-scenarios").tokenize('\n')
+
+                        def legacyMessages = runBehatScenarios(legacyScenarios, 'legacy')
+                        messages.addAll(legacyMessages)
+
+                        def acceptanceMessages = runBehatScenarios(acceptanceScenarios, 'acceptance')
+                        messages.addAll(acceptanceMessages)
 
                         return messages
                     }, 100, "ce", verboseOutputs, dotsPerLine)
@@ -432,4 +420,30 @@ def queue(body, scale, edition, verboseOutputs, dotsPerLine) {
 def clearTemplateNames() {
     // see https://issues.jenkins-ci.org/browse/JENKINS-42184
     currentBuild.rawBuild.getAction( PodTemplateAction.class )?.stack?.clear()
+}
+
+def runBehatScenarios(scenarios, profile) {
+    def messages = new net.sf.json.JSONArray()
+
+    for (scenario in scenarios) {
+        def commands = [
+            [container: "php", script: "bin/console --env=behat --quiet pim:install --force"],
+            [container: "php", script: "touch var/logs/behat.log"],
+            [container: "php", script: "chmod 777 -R var/cache var/logs app/archive /tmp/pim app/file_storage app/uploads"],
+            [container: "php", script: "mkdir -m 777 -p app/build/logs/behat web/media"],
+            [container: "php", script: "sed -i '2 a umask(0000);' vendor/behat/behat/bin/behat"],
+            [
+                container: "php",
+                junit: [in: "/home/jenkins/pim/app/build/logs/behat/", name: "*.xml"],
+                artifacts: [in: "/tmp/behat/screenshots", name: "*.png"],
+                script: "php vendor/bin/behat --strict -vv -p " + profile + " " + scenario
+            ]
+        ]
+        def message = new net.sf.json.JSONObject()
+        message.put("name",scenario)
+        message.put("commands",commands)
+        messages.add(message)
+    }
+
+    return messages;
 }

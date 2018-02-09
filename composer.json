@@ -15,9 +15,9 @@
         },
         "psr-4": {
             "Pim\\Upgrade\\": "upgrades/",
+            "Pim\\Behat\\": "features/Pim/Behat",
             "Akeneo\\Test\\IntegrationTestsBundle\\": "tests/Integration/IntegrationTestsBundle/",
             "Akeneo\\Test\\Integration\\": "tests/Integration/",
-            "Pim\\Behat\\": "features/",
             "Akeneo\\Test\\Acceptance\\": "tests/Acceptance/"
         },
         "classmap": [ "app/AppKernel.php", "app/AppCache.php", "tests/Integration/AppKernelTest.php" ]
@@ -88,10 +88,10 @@
         "sebastian/exporter": "~3.1.0",
         "sensiolabs/behat-page-object-extension": "2.1.0",
         "squizlabs/php_codesniffer": "2.*",
-        "liuggio/fastest": "1.4.4",
         "friends-of-behat/context-service-extension": "^1.1",
         "friends-of-behat/cross-container-extension": "^1.0",
-        "friends-of-behat/symfony-extension": "^1.0"
+        "friends-of-behat/symfony-extension": "^1.0",
+        "liuggio/fastest": "~1.4.4"
     },
     "suggest": {
         "akeneo/catalogs": "In order to install one of the Akeneo catalogs"

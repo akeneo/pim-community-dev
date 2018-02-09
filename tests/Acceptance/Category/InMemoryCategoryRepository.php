@@ -1,17 +1,20 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Akeneo\Test\Acceptance\Category;
 
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
+use Akeneo\Test\Acceptance\Common\NotImplementedException;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Persistence\ObjectRepository;
 
-class InMemoryCategoryRepository implements
-    ObjectRepository,
+final class InMemoryCategoryRepository implements
     IdentifiableObjectRepositoryInterface,
-    SaverInterface
+    SaverInterface,
+    ObjectRepository
 {
     /** @var Collection */
     private $categories;
@@ -21,69 +24,47 @@ class InMemoryCategoryRepository implements
         $this->categories = new ArrayCollection();
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getIdentifierProperties()
     {
         return ['code'];
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function findOneByIdentifier($code)
     {
         return $this->categories->get($code);
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function save($category, array $options = [])
     {
         $this->categories->set($category->getCode(), $category);
     }
 
-
     /**
-     * Finds an object by its primary key / identifier.
-     *
-     * @param mixed $id The identifier.
-     *
-     * @return object|null The object.
-     */
-    public function find($id)
-    {
-        // TODO: Implement find() method.
-    }
-
-    /**
-     * Finds all objects in the repository.
-     *
-     * @return array The objects.
-     */
-    public function findAll()
-    {
-        // TODO: Implement findAll() method.
-    }
-
-    /**
-     * Finds objects by a set of criteria.
-     *
-     * Optionally sorting and limiting details can be passed. An implementation may throw
-     * an UnexpectedValueException if certain values of the sorting or limiting details are
-     * not supported.
-     *
-     * @param array      $criteria
-     * @param array|null $orderBy
-     * @param int|null   $limit
-     * @param int|null   $offset
-     *
-     * @return array The objects.
-     *
-     * @throws \UnexpectedValueException
+     * {@inheritdoc}
      */
     public function findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
     {
         $categories = [];
-        foreach ($this->categories as $locale) {
+        foreach ($this->categories as $category) {
+            $keepThisCategory = true;
             foreach ($criteria as $key => $value) {
-                $getter = 'get' . ucfirst($key);
-                if ($locale->$getter() === $value) {
-                    $categories[$locale] = $locale;
+                $getter = sprintf('get%s', ucfirst($key));
+                if ($category->$getter() !== $value) {
+                    $keepThisCategory = false;
                 }
+            }
+
+            if ($keepThisCategory) {
+                $categories[] = $category;
             }
         }
 
@@ -91,24 +72,34 @@ class InMemoryCategoryRepository implements
     }
 
     /**
-     * Finds a single object by a set of criteria.
-     *
-     * @param array $criteria The criteria.
-     *
-     * @return object|null The object.
+     * {@inheritdoc}
      */
-    public function findOneBy(array $criteria)
+    public function find($id)
     {
-        // TODO: Implement findOneBy() method.
+        throw new NotImplementedException(__METHOD__);
     }
 
     /**
-     * Returns the class name of the object managed by the repository.
-     *
-     * @return string
+     * {@inheritdoc}
+     */
+    public function findAll()
+    {
+        throw new NotImplementedException(__METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function findOneBy(array $criteria)
+    {
+        throw new NotImplementedException(__METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
      */
     public function getClassName()
     {
-        // TODO: Implement getClassName() method.
+        throw new NotImplementedException(__METHOD__);
     }
 }
