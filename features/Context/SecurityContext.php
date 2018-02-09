@@ -636,6 +636,57 @@ class SecurityContext extends RawMinkContext implements KernelAwareInterface
         $this->doCall('DELETE', $url);
     }
 
+    /**
+     * @Given /^I add the attribute "([^"]*)" with value "([^"]*)" to the "([^"]*)" variant group$/
+     */
+    public function iAddTheAttributeWithValueToTheVariantGroup($attributeCode, $attributeValue, $variantGroupCode)
+    {
+        $variantGroup = $this->kernel
+            ->getContainer()
+            ->get('pim_catalog.repository.group')
+            ->findOneByIdentifier($variantGroupCode);
+
+        $this->kernel
+            ->getContainer()
+            ->get('pim_catalog.updater.variant_group')
+            ->update($variantGroup, [
+                'code' => $variantGroupCode,
+                'values' => [
+                    $attributeCode => [
+                        ['locale' => null, 'scope' => null, 'data' => $attributeValue]
+                    ]
+                ]
+            ]);
+
+        $this->kernel
+            ->getContainer()
+            ->get('pim_catalog.saver.group')
+            ->save($variantGroup);
+    }
+
+    /**
+     * @When /^I make a direct authenticated DELETE call on the "([^"]*)" attribute of the "([^"]*)" variant group$/
+     */
+    public function iMakeADirectAuthenticatedDeleteCallOnTheAttributeOfTheVariantGroup($attributeCode, $variantGroupCode)
+    {
+        $routeName = 'pim_enrich_variant_group_rest_remove_attribute';
+
+        $attribute = $this->kernel
+            ->getContainer()
+            ->get('pim_catalog.repository.attribute')
+            ->findOneByIdentifier($attributeCode);
+
+        $url = $this->kernel
+            ->getContainer()
+            ->get('router')
+            ->generate($routeName, [
+                'code' => $variantGroupCode,
+                'attributeId' => $attribute->getId(),
+            ]);
+
+        $this->doCall('DELETE', $url);
+    }
+
 //    /**
 //     * @When /^I make a direct authenticated POST call on the "([^"]*)" user group with following data:$/
 //     */
@@ -687,6 +738,24 @@ class SecurityContext extends RawMinkContext implements KernelAwareInterface
             ->findOneByIdentifier(sprintf('%s.%s', $attributeCode, $attributeOptionCode));
 
         assertEquals($order, $attributeOption->getSortOrder());
+    }
+
+    /**
+     * @Then /^the variant group "([^"]*)" should have the "([^"]*)" attribute$/
+     */
+    public function theVariantGroupShouldHaveTheAttribute($variantGroupCode, $attributeCode)
+    {
+        $variantGroup = $this->kernel
+            ->getContainer()
+            ->get('pim_catalog.repository.group')
+            ->findOneByIdentifier($variantGroupCode);
+
+        $hasAttribute = $this->kernel
+            ->getContainer()
+            ->get('pim_catalog.repository.group')
+            ->hasAttribute([$variantGroup->getId()], $attributeCode);
+
+        assertTrue($hasAttribute);
     }
 
     /**
