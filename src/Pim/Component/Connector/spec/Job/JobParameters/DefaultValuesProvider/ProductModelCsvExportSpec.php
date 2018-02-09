@@ -5,13 +5,17 @@ namespace spec\Pim\Component\Connector\Job\JobParameters\DefaultValuesProvider;
 use Akeneo\Component\Batch\Job\JobInterface;
 use Akeneo\Component\Batch\Job\JobParameters\DefaultValuesProviderInterface;
 use PhpSpec\ObjectBehavior;
+use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
+use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
 
 class ProductModelCsvExportSpec extends ObjectBehavior
 {
     function let(
-        DefaultValuesProviderInterface $decoratedProvider
+        DefaultValuesProviderInterface $decoratedProvider,
+        ChannelRepositoryInterface $channelRepository,
+        LocaleRepositoryInterface $localeRepository
     ) {
-        $this->beConstructedWith($decoratedProvider, ['my_supported_job_name']);
+        $this->beConstructedWith($decoratedProvider, $channelRepository, $localeRepository, ['my_supported_job_name']);
     }
 
     function it_is_a_provider()

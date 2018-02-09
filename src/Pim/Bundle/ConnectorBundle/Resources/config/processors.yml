@@ -10,7 +10,6 @@ parameters:
 
     pim_connector.processor.normalization.class:                  Pim\Component\Connector\Processor\Normalization\Processor
     pim_connector.processor.normalization.product.class:          Pim\Component\Connector\Processor\Normalization\ProductProcessor
-    pim_connector.processor.normalization.product_model.class:    Pim\Component\Connector\Processor\Normalization\ProductModelProcessor
 
     pim_connector.processor.bulk_media_fetcher.class: Pim\Component\Connector\Processor\BulkMediaFetcher
     pim_connector.processor.attribute_filter.product_model.class: Pim\Component\Catalog\ProductModel\Filter\ProductModelAttributeFilter
@@ -243,14 +242,14 @@ services:
             - '@pim_connector.doctrine.cache_clearer'
 
     pim_connector.processor.normalization.product_model:
-        class: '%pim_connector.processor.normalization.product_model.class%'
+        class: '%pim_connector.processor.normalization.product.class%'
         arguments:
             - '@pim_catalog.normalizer.standard.product_model'
             - '@pim_catalog.repository.channel'
             - '@pim_catalog.repository.attribute'
-            - '@akeneo_storage_utils.doctrine.object_detacher'
             - '@pim_connector.processor.bulk_media_fetcher'
             - '@pim_catalog.values_filler.entity_with_family_variant'
+            - '@pim_connector.doctrine.cache_clearer'
 
     pim_connector.processor.normalization.family:
         class: '%pim_connector.processor.normalization.class%'

@@ -11,7 +11,9 @@ use Akeneo\Component\Batch\Model\JobExecution;
 use Akeneo\Component\Batch\Model\JobInstance;
 use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
+use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use PhpSpec\ObjectBehavior;
+use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
 use Pim\Component\Catalog\Model\ValueCollectionInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
@@ -25,18 +27,20 @@ class ProductModelProcessorSpec extends ObjectBehavior
 {
     function let(
         NormalizerInterface $normalizer,
+        IdentifiableObjectRepositoryInterface $channelRepository,
         AttributeRepositoryInterface $attributeRepository,
         ObjectDetacherInterface $detacher,
         BulkMediaFetcher $mediaFetcher,
-        StepExecution $stepExecution,
-        EntityWithFamilyValuesFillerInterface $valuesFiller
+        EntityWithFamilyValuesFillerInterface $productModelValuesFiller,
+        StepExecution $stepExecution
     ) {
         $this->beConstructedWith(
             $normalizer,
+            $channelRepository,
             $attributeRepository,
             $detacher,
             $mediaFetcher,
-            $valuesFiller
+            $productModelValuesFiller
         );
 
         $this->setStepExecution($stepExecution);
@@ -57,21 +61,26 @@ class ProductModelProcessorSpec extends ObjectBehavior
         $normalizer,
         $stepExecution,
         $mediaFetcher,
-        $valuesFiller,
+        $productModelValuesFiller,
         $attributeRepository,
+        $channelRepository,
         ProductModelInterface $productModel,
-        JobParameters $jobParameters
+        JobParameters $jobParameters,
+        ChannelInterface $ecommerce
     ) {
         $attributeRepository->findMediaAttributeCodes()->willReturn(['picture']);
-
+        $channelRepository->findOneByIdentifier('ecommerce')->willReturn($ecommerce);
+        $ecommerce->getCode()->willReturn('ecommerce');
+        $ecommerce->getLocaleCodes()->willReturn(['en_US', 'fr_FR']);
         $stepExecution->getJobParameters()->willReturn($jobParameters);
+        $jobParameters->get('filters')->willReturn(['structure' => ['scope' => 'ecommerce', 'locales' => ['en_US', 'fr_FR']]]);
         $jobParameters->get('filePath')->willReturn('/my/path/product_model.csv');
         $jobParameters->has('with_media')->willReturn(true);
         $jobParameters->get('with_media')->willReturn(false);
 
-        $valuesFiller->fillMissingValues($productModel)->shouldBeCalled();
+        $productModelValuesFiller->fillMissingValues($productModel)->shouldBeCalled();
 
-        $normalizer->normalize($productModel, 'standard')
+        $normalizer->normalize($productModel, 'standard', ['channels' => ['ecommerce'], 'locales' => ['en_US', 'fr_FR']])
             ->willReturn([
                 'code'    => 'janis',
                 'categories' => ['cat1', 'cat2'],
@@ -118,20 +127,26 @@ class ProductModelProcessorSpec extends ObjectBehavior
         $normalizer,
         $stepExecution,
         $mediaFetcher,
-        $valuesFiller,
+        $productModelValuesFiller,
+        $channelRepository,
         ProductModelInterface $productModel,
         JobParameters $jobParameters,
         JobExecution $jobExecution,
         JobInstance $jobInstance,
         ValueCollectionInterface $valuesCollection,
-        ExecutionContext $executionContext
+        ExecutionContext $executionContext,
+        ChannelInterface $ecommerce
     ) {
+        $channelRepository->findOneByIdentifier('ecommerce')->willReturn($ecommerce);
+        $ecommerce->getCode()->willReturn('ecommerce');
+        $ecommerce->getLocaleCodes()->willReturn(['en_US', 'fr_FR']);
+
         $stepExecution->getJobParameters()->willReturn($jobParameters);
         $jobParameters->get('filePath')->willReturn('/my/path/product_model.csv');
         $jobParameters->has('with_media')->willReturn(true);
         $jobParameters->get('with_media')->willReturn(true);
-
-        $valuesFiller->fillMissingValues($productModel)->shouldBeCalled();
+        $jobParameters->get('filters')->willReturn(['structure' => ['scope' => 'ecommerce', 'locales' => ['en_US', 'fr_FR']]]);
+        $productModelValuesFiller->fillMissingValues($productModel)->shouldBeCalled();
         $productModel->getCode()->willReturn('janis');
         $productModel->getValues()->willReturn($valuesCollection);
 
@@ -158,7 +173,7 @@ class ProductModelProcessorSpec extends ObjectBehavior
             ]
         ];
 
-        $normalizer->normalize($productModel, 'standard')
+        $normalizer->normalize($productModel, 'standard', ['channels' => ['ecommerce'], 'locales' => ['en_US', 'fr_FR']])
             ->willReturn($productModelStandard);
 
         $mediaFetcher->fetchAll($valuesCollection, '/working/directory/', 'janis')->shouldBeCalled();
@@ -174,20 +189,27 @@ class ProductModelProcessorSpec extends ObjectBehavior
         $normalizer,
         $stepExecution,
         $mediaFetcher,
-        $valuesFiller,
+        $productModelValuesFiller,
+        $channelRepository,
         ProductModelInterface $productModel,
         JobParameters $jobParameters,
         JobExecution $jobExecution,
         JobInstance $jobInstance,
         ValueCollectionInterface $valuesCollection,
-        ExecutionContext $executionContext
+        ExecutionContext $executionContext,
+        ChannelInterface $ecommerce
     ) {
+        $channelRepository->findOneByIdentifier('ecommerce')->willReturn($ecommerce);
+        $ecommerce->getCode()->willReturn('ecommerce');
+        $ecommerce->getLocaleCodes()->willReturn(['en_US', 'fr_FR']);
+
         $stepExecution->getJobParameters()->willReturn($jobParameters);
         $jobParameters->get('filePath')->willReturn('/my/path/product_model.csv');
         $jobParameters->has('with_media')->willReturn(true);
         $jobParameters->get('with_media')->willReturn(true);
+        $jobParameters->get('filters')->willReturn(['structure' => ['scope' => 'ecommerce', 'locales' => ['en_US', 'fr_FR']]]);
 
-        $valuesFiller->fillMissingValues($productModel)->shouldBeCalled();
+        $productModelValuesFiller->fillMissingValues($productModel)->shouldBeCalled();
         $productModel->getCode()->willReturn('janis');
         $productModel->getValues()->willReturn($valuesCollection);
 
@@ -209,7 +231,7 @@ class ProductModelProcessorSpec extends ObjectBehavior
             ]
         ];
 
-        $normalizer->normalize($productModel, 'standard')
+        $normalizer->normalize($productModel, 'standard', ['channels' => ['ecommerce'], 'locales' => ['en_US', 'fr_FR']])
             ->willReturn($productModelStandard);
 
         $mediaFetcher->fetchAll($valuesCollection, '/working/directory/', 'janis')->shouldBeCalled();

@@ -9,9 +9,11 @@ use Akeneo\Component\Batch\Job\JobParameters;
 use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\Batch\Step\StepExecutionAwareInterface;
 use Akeneo\Component\StorageUtils\Cache\EntityManagerClearerInterface;
+use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
+use Pim\Component\Catalog\Model\EntityWithFamilyInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Model\ProductModelInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
-use Pim\Component\Catalog\Repository\IdentifiableObjectRepositoryInterface;
 use Pim\Component\Catalog\ValuesFiller\EntityWithFamilyValuesFillerInterface;
 use Pim\Component\Connector\Processor\BulkMediaFetcher;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -84,6 +86,7 @@ class ProductProcessor implements ItemProcessorInterface, StepExecutionAwareInte
             $product,
             'standard',
             [
+                'filter_types' => ['pim.transform.product_value.structured'],
                 'channels' => [$channel->getCode()],
                 'locales'  => array_intersect(
                     $channel->getLocaleCodes(),
@@ -129,12 +132,12 @@ class ProductProcessor implements ItemProcessorInterface, StepExecutionAwareInte
     /**
      * Fetch medias on the local filesystem
      *
-     * @param ProductInterface $product
+     * @param EntityWithFamilyInterface $product
      * @param string           $directory
      */
-    protected function fetchMedia(ProductInterface $product, $directory)
+    protected function fetchMedia(EntityWithFamilyInterface $product, $directory)
     {
-        $identifier = $product->getIdentifier();
+        $identifier = $product instanceof ProductModelInterface ? $product->getCode() : $product->getIdentifier();
         $this->mediaFetcher->fetchAll($product->getValues(), $directory, $identifier);
 
         foreach ($this->mediaFetcher->getErrors() as $error) {

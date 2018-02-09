@@ -21,16 +21,16 @@ use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
 class ProductModelCsvExport implements DefaultValuesProviderInterface
 {
     /** @var DefaultValuesProviderInterface */
-    protected $simpleProvider;
+    private $simpleProvider;
 
     /** @var array */
-    protected $supportedJobNames;
+    private $supportedJobNames;
 
     /** @var ChannelRepositoryInterface */
-    protected $channelRepository;
+    private $channelRepository;
 
     /** @var LocaleRepositoryInterface */
-    protected $localeRepository;
+    private $localeRepository;
 
     /**
      * @param DefaultValuesProviderInterface $simpleProvider
@@ -68,16 +68,6 @@ class ProductModelCsvExport implements DefaultValuesProviderInterface
 
         $parameters['filters'] = [
             'data'      => [
-                // [
-                //     'field'    => 'enabled',
-                //     'operator' => Operators::EQUALS,
-                //     'value'    => true,
-                // ],
-                // [
-                //     'field'    => 'completeness',
-                //     'operator' => Operators::GREATER_OR_EQUAL_THAN,
-                //     'value'    => 100,
-                // ],
                 [
                     'field'    => 'categories',
                     'operator' => Operators::IN_CHILDREN_LIST,

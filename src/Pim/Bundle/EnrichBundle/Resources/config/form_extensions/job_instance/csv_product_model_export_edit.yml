@@ -60,7 +60,7 @@ extensions:
         parent: pim-job-instance-csv-product-model-export-edit-tabs
         aclResourceId: pim_importexport_export_profile_content_edit
         targetZone: container
-        position: 130
+        position: 125
         config:
             tabTitle: pim_enrich.form.job_instance.tab.content.title
             tabCode: pim-job-instance-content

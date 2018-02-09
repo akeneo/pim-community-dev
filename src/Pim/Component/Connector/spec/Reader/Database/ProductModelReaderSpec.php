@@ -3,10 +3,13 @@
 namespace spec\Pim\Component\Connector\Reader\Database;
 
 use Akeneo\Component\Batch\Item\ItemReaderInterface;
+use Akeneo\Component\Batch\Job\JobParameters;
 use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\Batch\Step\StepExecutionAwareInterface;
 use Akeneo\Component\StorageUtils\Cursor\CursorInterface;
+use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use PhpSpec\ObjectBehavior;
+use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
 use Pim\Component\Catalog\Query\ProductQueryBuilderFactoryInterface;
 use Pim\Component\Catalog\Query\ProductQueryBuilderInterface;
@@ -16,9 +19,10 @@ class ProductModelReaderSpec extends ObjectBehavior
 {
     function let(
         ProductQueryBuilderFactoryInterface $pqbFactory,
+        IdentifiableObjectRepositoryInterface $channelRepository,
         StepExecution $stepExecution
     ) {
-        $this->beConstructedWith($pqbFactory);
+        $this->beConstructedWith($pqbFactory, $channelRepository);
 
         $this->setStepExecution($stepExecution);
     }
@@ -32,13 +36,19 @@ class ProductModelReaderSpec extends ObjectBehavior
     function it_reads_product_models(
         $pqbFactory,
         $stepExecution,
+        $channelRepository,
         ProductQueryBuilderInterface $pqb,
         CursorInterface $cursor,
         ProductModelInterface $productModel1,
         ProductModelInterface $productModel2,
-        ProductModelInterface $productModel3
+        ProductModelInterface $productModel3,
+        JobParameters $parameters,
+        ChannelInterface $ecommerce
     ) {
-        $pqbFactory->create([])
+        $channelRepository->findOneByIdentifier('ecommerce')->willReturn($ecommerce);
+        $stepExecution->getJobParameters()->willReturn($parameters);
+        $parameters->get('filters')->willReturn(['structure' => ['scope' => 'ecommerce', 'locales' => ['en_US', 'fr_FR']]]);
+        $pqbFactory->create(['filters' => ['structure' => ['scope' => 'ecommerce', 'locales' => ['en_US', 'fr_FR']]], 'default_scope' => null])
             ->shouldBeCalled()
             ->willReturn($pqb);
         $pqb->execute()
