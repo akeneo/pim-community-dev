@@ -1,5 +1,4 @@
 confirmation:
-  title: Bekræft
   remove:
     item: Er du sikker på at du vil slette dette emne?
     association_type: Er du sikker på du vil slette denne associationstype?
@@ -180,11 +179,11 @@ pim_enrich:
         new_value: Ny værdi
         actions: Aktioner
       info:
-        deletion_successful: Produktet blev slettet.
+        deletion_successful: Produkt slettet.
         deletion_failed: Produktet kunne ikke slettes.
         update_successful: Produktet blev opdateret.
         update_failed: Produktet kunne ikke opdateres.
-        field_not_ready: 'Produktet kan ikke gemmes lige nu. Følgende felter er ikke klar: {{ fields }}'
+        field_not_ready: "Produktet kan ikke gemmes lige nu. Følgende felter er ikke klar: {{ fields }}"
         already_in_upload: Der findes allerede en fil indlæst for denne attribut for denne landestandard "{{ locale }}" og "{{ scope }}"
       error:
         upload: Der opstod en fejl under fil indlæsningen
@@ -248,8 +247,8 @@ pim_enrich:
         update_successful: Produktmodellen opdateret. Fuldstændigheden af dens variant produkter vil blive genberegnet.
         deletion_successful: Produktmodellen slettet.
         update_failed: Produktmodellen kunne ikke opdateres.
-        field_not_ready: 'Produktmodellen kan ikke gemmes lige nu. Følgende felter er ikke klar: {{ fields }}'
-      read_only_parent_attribute_from_common: Denne attribut kan opdateres på de fælles attributter.
+        field_not_ready: "Produktmodellen kan ikke gemmes lige nu. Følgende felter er ikke klar: {{ fields }}"
+      read_only_parent_attribute_from_common: Denne attribut kan blive opdateret på de fælles attributter.
       read_only_parent_attribute_from_model: "Denne attribut kan opdateres på attributterne af {{ axes }}"
       variant_axis: Variant akse
       title: Produktmodeller
@@ -267,7 +266,7 @@ pim_enrich:
         deletion_failed: Sammenhængs type kunne ikke slettes.
         update_successful: Sammenhængstype opdateret
         update_failed: Sammenhængs type kunne ikke opdateres.
-        field_not_ready: 'Produktet kan ikke gemmes lige nu. Følgende felter er ikke klar: {{ fields }}'
+        field_not_ready: "Produktet kan ikke gemmes lige nu. Følgende felter er ikke klar: {{ fields }}"
       meta:
         created: Oprettet
         created_by: Oprettet af
@@ -286,7 +285,7 @@ pim_enrich:
         deletion_failed: Gruppetypen kunne ikke slettes.
         update_successful: Gruppetypen opdateret
         update_failed: Gruppetypen kunne ikke opdateres.
-        field_not_ready: 'Produktet kan ikke gemmes lige nu. Følgende felter er ikke klar: {{ fields }}'
+        field_not_ready: "Produktet kan ikke gemmes lige nu. Følgende felter er ikke klar: {{ fields }}"
       meta:
         created: Oprettet
         created_by: Oprettet af
@@ -308,7 +307,7 @@ pim_enrich:
         update_failed: Kanalen kunne ikke opdateres.
         create_successful: Kanal oprettet.
         create_failed: Kanalen kunne ikke opdateres.
-        field_not_ready: 'Produktet kan ikke gemmes lige nu. Følgende felter er ikke klar: {{ fields }}'
+        field_not_ready: "Produktet kan ikke gemmes lige nu. Følgende felter er ikke klar: {{ fields }}"
       meta:
         created: Oprettet
         created_by: Oprettet af
@@ -373,7 +372,7 @@ pim_enrich:
         deletion_failed: Gruppen kunne ikke slettes.
         update_successful: Gruppe opdateret
         update_failed: Gruppen kunne ikke opdateres.
-        field_not_ready: 'Gruppen kan ikke gemmes lige nu. Følgende felter er ikke klar: {{ fields }}'
+        field_not_ready: "Gruppen kan ikke gemmes lige nu. Følgende felter er ikke klar: {{ fields }}"
       btn:
         save: Gem
       meta:
@@ -399,7 +398,7 @@ pim_enrich:
         update_failed: Atributten kunne ikke opdateres.
         create_successful: Atributten blev oprettet.
         create_failed: Atributten kunne ikke oprettes.
-        field_not_ready: 'Attributten kan ikke gemmes lige nu. Følgende felter er ikke klar: {{ fields }}'
+        field_not_ready: "Attributten kan ikke gemmes lige nu. Følgende felter er ikke klar: {{ fields }}"
       scopable: Omfangbar
       type:
         pim_catalog_identifier: Identifikator
@@ -464,19 +463,16 @@ pim_enrich:
     product:
       tab:
         associations:
-          title: Associationer
+          title: Tilknytninger
           info:
             none_exist: Der findes ingen sammenhængstype.
             show_products: Display-produkter
             show_groups: Visningsgrupper
-            number_of_associations: "{{ productCount }} produkt(er), {{ productModelCount }} produkt model(er) og {{ groupCount }} gruppe(r)"
+            number_of_associations: "{{ productCount }} produkter og {{ groupCount }} grupper"
           association_type_selector: Sammenhængstyper
           target: Mål
-          manage: Tilføj {{ associationType }} foreninger
-          manage_description: Vælg de produkter, du vil knytte til det aktuelle produkt
-          add_associations: Tilføj tilknytning
         attributes:
-          title: Attributter
+          title: Egenskaber
           btn:
             add: Tilføj
             add_attributes: Tilføj egenskab
@@ -500,7 +496,7 @@ pim_enrich:
           title: Fuldstændighed
           info:
             no_family: Ingen familie defineret. Definér venligst en familie for at beregne fuldstændigheden af dette produkt.
-            no_completeness: Du har lige ændret familie på produktet. Gem det først for at beregne fuldstændigheden for den nye familie.
+            no_completeness: Du har lige ændret familie af produktet. Gem det første for at beregne fuldstændighed for den nye familie.
           missing_values: "{1} 1 mangler værdi |] 1, Inf [{{ count }} manglende værdier"
         history:
           title: Historik
@@ -518,7 +514,7 @@ pim_enrich:
       change_family:
         modal:
           title: Ændre produktfamilien
-          merge_attributes: Aktuelle attributter flettes sammen med dem i den nye familie.
+          merge_attributes: Aktuelle attributter flettes med dem i den nye familie.
           keep_attributes: Ingen attributter vil blive fjernet.
           change_family_to: Ændre familien til
           empty_selection: Vælg familie
@@ -571,7 +567,7 @@ pim_enrich:
           empty_attribute_as_image: Ikke valgte
           label_translations: Etiket oversættelser
         attributes:
-          title: Attributter
+          title: Egenskaber
           label_label: Etiket
           toolbox:
             select_attributes_by_groups: Tilføj efter gruppe
@@ -589,7 +585,7 @@ pim_enrich:
     attribute_option:
       flash:
         option_created: Attribut tilvalg oprettet
-        error_creating_option: Der opstod en fejl under oprettelsen af attribut egenskaben
+        error_creating_option: Der opstod en fejl hvor prøver hen til oprette indstillingen attribut
       add_option_modal:
         title: Tilføj attribut tilvalg
         confirm: Tilføj
@@ -618,7 +614,7 @@ pim_enrich:
           code: Kode
           label_translations: Etiket oversættelser
         attribute:
-          title: Attributter
+          title: Egenskaber
           table:
             name: Navn
             type: Type
@@ -694,7 +690,7 @@ pim_enrich:
             title: Afgrænser
             help: Ét tegn bruges til at angive feltafgrænseren
           enclosure:
-            title: Indgrænse
+            title: Beholder
             help: Ét tegn bruges til at angive felt-indgrænsningen
           with_header:
             title: Med hoved
@@ -713,7 +709,7 @@ pim_enrich:
             help: Navnet på kolonnen kategorier
           escape:
             title: Forlad
-            help: One character used to set the field escape
+            help: Ét tegn bruges til at angive felt adskillelse
           family_column:
             title: Familie kolonne
             help: Navnet på kolonnen familie
@@ -794,9 +790,6 @@ pim_enrich:
             select_attributes: Tilføj egenskab
             add: Tilføj
             attributes_groups_selected: '{{ itemsCount }} gruppe(r) valgt'
-    basket:
-      title: Indkøbskurv
-      empty_basket: Indkøbskurven er tom
   job:
     upload: Slip din {{ type }} fil her, eller klik for at gennemse disken
   export:
@@ -806,19 +799,19 @@ pim_enrich:
       structure:
         title: Filtrere data
         attributes:
-          title: Attributter
+          title: Egenskaber
       filter:
         channel:
           title: Kanal
           help: Kanalen definerer mulighederne for produkt værdier, de landestandarder, der bruges til at vælge data og træet bruges til at vælge produkter.
         locales:
           title: Landestandarder
-          help: 'Landestandarderne definerer de lokaliserede produkt værdier at eksportere. Ex: kun produktinformation på fransk.'
+          help: "Landestandarderne definerer de lokaliserede produkt værdier at eksportere. Ex: kun produktinformation på fransk."
         attributes:
-          title: Attributter
+          title: Egenskaber
           edit: Redigér
           label: "{0} alle attributter |{1} én attribut valgt |] 1, Inf [{{ count }} attributter valgt"
-          help: 'Vælg produktinformation til eksport. Eks: kun de tekniske attributter.'
+          help: "Vælg produktinformation til eksport. Eks: kun de tekniske egenskaber."
           empty: Alle attributter vil blive eksporteret
           modal:
             apply: Anvend
@@ -835,7 +828,7 @@ pim_enrich:
           description: Vælg fabrikat oplysningerne eksportere
         family:
           title: Familie
-          help: 'Vælg produkterne, der eksporteres af deres familie. Eks: Eksport kun sko og kjoler.'
+          help: "Vælg produkterne, der eksporteres af deres familie. Eks: Eksport kun sko og kjoler."
           operators:
             IN: I listen
             "NOT IN": Ikke på listen
@@ -851,7 +844,7 @@ pim_enrich:
             "SINCE LAST JOB": Opdaterede produkter siden sidste eksport
         enabled:
           title: Status
-          help: 'Vælg produkterne, der eksporteres efter deres status. Eks: Eksportere produkter uanset deres status.'
+          help: "Vælg produkterne, der eksporteres efter deres status. Eks: Eksportere produkter uanset deres status."
           value:
             all: Alle
             enabled: Aktiveret
@@ -1047,11 +1040,11 @@ pim_enrich:
         add_to_category:
           label: Tilføje til kategorier
           label_count: "{1}Tilføj <span class=\"AknFullPage-title--highlight\"> 1 produkt</span> grupper |] 1, Inf [Tilføj <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} produkter</span> til grupper"
-          description: Produkterne vil blive klassificeret i følgende kategorier, den nuværende klassificering bibeholdes.
+          description: Produkterne vil blive placeret i følgende kategorier, den nuværende placering bibeholdes.
         move_to_category:
           label: Flyt mellem kategorier
           label_count: "{1}Flyt <span class=\"AknFullPage-title--highlight\"> 1 produkt</span> mellem kategorier |] 1, Inf [Flyt <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} produkter</span> mellem kategorier"
-          description: Produkterne vil blive klassificeret i følgende kategorier, den nuværende klassificering bibeholdes.
+          description: Produkterne vil blive placeret i følgende kategorier, den nuværende placering er bibeholdt.
         remove_from_category:
           label: Fjern fra kategorier
           label_count: "{1}Fjern <span class=\"AknFullPage-title--highlight\"> 1 produkt</span> fra kategorier |] 1, Inf [Fjern <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} produkter</span> fra kategorier"
@@ -1060,11 +1053,6 @@ pim_enrich:
           label: Føj til en eksisterende produktmodel
           label_count: "{1}Add <span class=\"AknFullPage-title--highlight\"> 1 produkt</span> til en eksisterende produktmodel |] 1, Inf [Tilføj <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} produkter</span> til en eksisterende produktmodel"
           description: Den valgte produktmodel vil samle produkterne og giver mulighed for berigelse af deres fælles egenskaber.
-        associate_to_product_and_product_model:
-          label: Associeret produkter
-          label_count: "{1}Associer <span class=\"AknFullPage-title--highlight\"> 1 produkt</span> til produkter eller produkt modeller |] 1, Inf [Associer <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} produkter</span> til produkter eller produkt modeller"
-          description: De valgte produkter i listen vil blive associeret til de udvalgte produkter og produkt modeller for den valgte associetingstype
-          validate: Vælg venligst associering før du fortsætter til næste trin
     family:
       title: Familier massehandling
       confirm: "{1} Du er ved at opdatere et produkt med følgende oplysninger, bekræft venligst. |Du er ved at opdatere {{ itemsCount }} produkter med følgende oplysninger, bekræft venligst."
@@ -1086,9 +1074,9 @@ pim_enrich:
           description: Følgende attribut krav vil blive anvendt til de valgte familier
           label_count: "Sæt attribut kravene for  <span class=\"AknFullPage-title--highlight\">1 familie</span>|] 1, Inf [Sæt attribut kravene for <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} familier</span>"
 pim_enrich.error:
-  exception.title: Beklager! Der opstod en {{ status_code }} fejl...
+  exception.title: Beklager! Der opstod en {{ status_code }}...
   http:
-    403: Du har ikke adgang til denne side
+    403: Forbudt. Du har ikke adgang til denne side
 page_title:
   oro_default: Kontrolpanel
   pim_enrich_attributegroup_index: Attributgrupper
@@ -1098,8 +1086,8 @@ page_title:
   pim_enrich_categorytree_create: Kategori træer | Oprette
   pim_enrich_categorytree_edit: Kategori træ {{ category.label }} | Rediger
   pim_enrich_categorytree_create_tree: Kategori træer | Oprette
-  pim_enrich_attribute_index: Attributter
-  pim_enrich_attribute_create: Attributter | Opret
+  pim_enrich_attribute_index: Egenskaber
+  pim_enrich_attribute_create: Attributter | Oprette
   pim_enrich_attribute_edit: Attribut {{ attribute.label }} | Rediger
   pim_enrich_product_index: Produkter
   pim_enrich_product_edit: Produkt {{ product.label }} | Rediger
@@ -1107,7 +1095,7 @@ page_title:
   pim_enrich_family_index: Familier
   pim_enrich_family_edit: Familie {{ family.label }} | Rediger
   pim_enrich_channel_index: Kanaler
-  pim_enrich_channel_create: Kanaler | Opret
+  pim_enrich_channel_create: Kanaler | Oprette
   pim_enrich_channel_edit: Kanal {{ channel.label }} | Rediger
   pim_enrich_currency_index: Valutaer
   pim_enrich_locale_index: Landestandarder
@@ -1141,22 +1129,6 @@ batch_jobs:
       label: Rediger attributter
     cleaner:
       label: Rens filer til fælles attributter
-  add_to_category:
-    label: Tilføje til kategorier
-    perform:
-      label: Tilføje til kategorier
-  move_to_category:
-    label: Flyt til kategori
-    perform:
-      label: Flyt til kategori
-  remove_from_category:
-    label: Fjern fra kategori
-    perform:
-      label: Fjern fra kategori
-  add_association:
-    label: Associeret produkter
-    perform:
-      label: Associeret produkter
   add_to_existing_product_model:
     label: Føj til en eksisterende produktmodel
     perform:
@@ -1239,6 +1211,7 @@ batch_jobs:
     label: Familie import i CSV
     validation.label: Filvalidering
     import.label: Familie import
+    compute_data_related_to_family_variants.label: Beregn produkt model data
   csv_family_variant_import:
     label: Familie variant import i CSV
     validation.label: Filvalidering
@@ -1302,6 +1275,7 @@ batch_jobs:
     label: Familie import i XLSX
     validation.label: Filvalidering
     import.label: Familie import
+    compute_data_related_to_family_variants.label: Beregn produkt model data
   xlsx_family_variant_import:
     label: Familie variant import i XLSX
     validation.label: Filvalidering

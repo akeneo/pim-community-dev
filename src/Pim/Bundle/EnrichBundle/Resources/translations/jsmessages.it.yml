@@ -1,5 +1,4 @@
 confirmation:
-  title: Conferma
   remove:
     item: Sei sicuro di voler eliminare questo articolo?
     association_type: Sei sicuro di voler eliminare questo tipo di associazione?
@@ -83,7 +82,7 @@ error:
     role: Non è possibile eliminare questo ruolo
     attribute_option: Errore durante la cancellazione dell'opzione attributo
   saving:
-    attribute_option: Impossibile salvare l'opzione dell'attributo
+    attribute_option: Non è possibile salvare l'opzione dell'attributo
     export_profile: Non è possibile salvare il profilo di esportazione. Si prega di verificare che tutti i filtri siano correttamente valorizzati
 alert:
   attribute_option:
@@ -116,7 +115,7 @@ pim:
         xlsx_grid_context: Excel (Contesto di griglia)
       delete: Eliminare
       mass_edit: Azioni di massa
-      category_edit: Sposta i prodotti nelle categorie
+      category_edit: Spostare i prodotti nelle categorie
       sequential_edit: Modifica sequenziale
 jstree.create: Crea
 jstree.done: Completato
@@ -126,10 +125,10 @@ pim_enrich:
   item:
     list:
       delete.label: Eliminare
-      delete.error: Errore durante l'eliminazione della voce
+      delete.error: Errore durante l'eliminazione dell'articolo
     delete:
-      confirm.content: Sei sicuro di che voler eliminare la voce {{ itemName }}? Non è possibile annullare questa azione
-      confirm.title: Elimina la voce {{ itemName }}
+      confirm.content: Sei sicuro di che voler eliminare questo {{ itemName }}? Non è possibile annullare questa azione
+      confirm.title: Elimina questo {{ itemName }}
   navigation:
     link:
       back_to_grid: Torna alla griglia
@@ -139,7 +138,7 @@ pim_enrich:
       label: Salva
     info:
       update_failed: Aggiornamento non riuscito
-      update_successful: Aggiornato correttamente
+      update_successful: Aggiornamento completato
     create_popin:
       code: Codice
       label: Etichetta
@@ -177,7 +176,7 @@ pim_enrich:
         deletion_failed: Il prodotto non può essere eliminato.
         update_successful: Prodotto aggiornato correttamente.
         update_failed: Il prodotto non può essere aggiornato.
-        field_not_ready: 'Il prodotto non può essere salvato in questo momento. I seguenti campi non sono pronti: {{ fields }}'
+        field_not_ready: "Il prodotto non può essere salvato in questo momento. I seguenti campi non sono pronti: {{ fields }}"
         already_in_upload: Un file è già in caricamento per questo attributo nell'impostazione internazionale "{{ locale }}" e nell'ambito "{{ scope }}"
       error:
         upload: Si è verificato un errore durante il caricamento del file
@@ -198,7 +197,7 @@ pim_enrich:
             title: Gruppo {{ group }}
             view_group: Visualizzazione gruppo
             group_label: Etichetta
-            more_products: '{{ count }} altri prodotti...'
+            more_products: '{{ count }} prodotti in più...'
             close: Chiudi
         status: Stato
         scope: Canale
@@ -216,7 +215,7 @@ pim_enrich:
       localizable:
         channel_locale_unavailable: Questo campo localizzabile non è disponibile per l'impostazione internazionale '{{ locale }}' e per il canale '{{ channel }}'
       media:
-        upload: Trascina e rilascia qui un file per caricarlo o fai click qui
+        upload: Rilascia i file qui dentro per caricarli oppure clicca qui
       create_popin:
         type: Prodotto
         title: Crea
@@ -234,7 +233,9 @@ pim_enrich:
       info:
         update_successful: Modello di prodotto aggiornato correttamente. La completezza delle sue varianti sarà ricalcolata.
         update_failed: Il modello di prodotto non può essere aggiornato.
-        field_not_ready: 'Il modello di prodotto non può essere salvato in questo momento. I campi seguenti non sono pronti: {{ fields }}'
+        field_not_ready: "Il modello di prodotto non può essere salvato in questo momento. I campi seguenti non sono pronti: {{ fields }}"
+      read_only_parent_attribute_from_common: Questo attributo può essere aggiornato con gli attributi in comune.
+      read_only_parent_attribute_from_model: "Questo attributo può essere aggiornato con gli attributi per {{ axes }}"
       variant_axis: Asse di variante
       add_child:
         cancel: Annulla
@@ -247,7 +248,7 @@ pim_enrich:
         deletion_failed: Il tipo di associazione non può essere eliminato.
         update_successful: Tipo di associazione aggiornato con successo.
         update_failed: Il tipo di associazione non può essere aggiornato.
-        field_not_ready: 'Il tipo di associazione non può essere salvato in questo momento. I seguenti campi non sono pronti: {{ fields }}'
+        field_not_ready: "Il tipo di associazione non può essere salvato in questo momento. I seguenti campi non sono pronti: {{ fields }}"
       meta:
         created: Creato
         created_by: Creato da
@@ -266,7 +267,7 @@ pim_enrich:
         deletion_failed: Il tipo di gruppo non può essere eliminato.
         update_successful: Il tipo di gruppo è stato aggiornato correttamente.
         update_failed: Il tipo di gruppo non può essere aggiornato.
-        field_not_ready: 'Il tipo di gruppo non può essere salvato in questo momento. I seguenti campi non sono pronti: {{ fields }}'
+        field_not_ready: "Il tipo di gruppo non può essere salvato in questo momento. I seguenti campi non sono pronti: {{ fields }}"
       meta:
         created: Creato
         created_by: Creato da
@@ -288,7 +289,7 @@ pim_enrich:
         update_failed: Il canale non può essere aggiornato.
         create_successful: Canale creato con successo.
         create_failed: Il canale non può essere creato.
-        field_not_ready: 'Il canale non può essere salvato in questo momento. I seguenti campi non sono pronti: {{ fields }}'
+        field_not_ready: "Il canale non può essere salvato in questo momento. I seguenti campi non sono pronti: {{ fields }}"
       meta:
         created: Creato
         created_by: Creato da
@@ -342,7 +343,7 @@ pim_enrich:
         deletion_failed: Il gruppo non può essere eliminato.
         update_successful: Gruppo aggiornato con successo.
         update_failed: Il gruppo non può essere aggiornato.
-        field_not_ready: 'Il gruppo non può essere salvato in questo momento. I seguenti campi non sono pronti: {{ fields }}'
+        field_not_ready: "Il gruppo non può essere salvato in questo momento. I seguenti campi non sono pronti: {{ fields }}"
       btn:
         save: Salva
       meta:
@@ -430,6 +431,7 @@ pim_enrich:
             none_exist: Nessun tipo di associazione esistente.
             show_products: Visualizza i prodotti
             show_groups: Mostra gruppi
+            number_of_associations: "{{ productCount }} prodotto(i) e {{ groupCount }} gruppo(i)"
           association_type_selector: Tipi di associazione
           target: Target
         attributes:
@@ -445,6 +447,7 @@ pim_enrich:
             load_more: Carica ulteriori risultati...
           attribute_group_selector: Gruppo attributi
           attribute_group_all: Tutti
+          attribute_group.to_fill_count: "{1}1 attibuto obbligatorio vuoto|]1, Inf [{{ count }} attributi obbligatori vuoti"
           attribute_filter:
             display: Mostra
             all: Tutti gli attributi
@@ -660,7 +663,7 @@ pim_enrich:
             help: Esportare o meno i file e le immagini del prodotto
           lines_per_file:
             title: Numero di linee per file
-            help: Definisci il numero limite di righe per file
+            help: Definire il numero limite di righe per file
           upload_allowed:
             title: Consentire il caricamento di file
             help: Consentire o no il caricamento diretto di file
@@ -750,9 +753,6 @@ pim_enrich:
             select_attributes: Aggiungi attributi
             add: Aggiungi
             attributes_groups_selected: '{{ itemsCount }} gruppo(i) selezionato(i)'
-    basket:
-      title: Basket
-      empty_basket: Il basket è vuoto
   job:
     upload: Rilascia i tuoi file {{ type }} qui, o clicca per selezionare dal disco
   export:
@@ -769,12 +769,12 @@ pim_enrich:
           help: Il canale definisce l'ambito per i valori di prodotto, le impostazioni internazionali utilizzate per selezionare i dati e l'albero utilizzato per selezionare i prodotti.
         locales:
           title: Impostazioni locali
-          help: 'Le impostazioni internazionali determinano i valori localizzati di prodotto da esportare. Es: solo le informazioni di prodotto in francese.'
+          help: "Le impostazioni internazionali determinano i valori localizzati di prodotto da esportare. Es: solo le informazioni di prodotto in francese."
         attributes:
           title: Attributi
           edit: Modifica
           label: "{0}Tutti gli attributi|{1}Un attributo selezionato|]1,Inf[{{ count }} attributi selezionati"
-          help: 'Seleziona le informazioni di prodotto da esportare. Es: solo gli attributi tecnici.'
+          help: "Seleziona le informazioni di prodotto da esportare. Es: solo gli attributi tecnici."
           empty: Tutti gli attributi verranno esportati
           modal:
             apply: Applica
@@ -791,7 +791,7 @@ pim_enrich:
           description: Seleziona le informazioni di prodotto da esportare
         family:
           title: Famiglia
-          help: 'Seleziona i prodotti da esportare in base alla loro famiglia. Es: Esportare solo le scarpe e gli abiti.'
+          help: "Seleziona i prodotti da esportare in base alla loro famiglia. Es: Esportare solo le scarpe e gli abiti."
           operators:
             IN: In elenco
             "NOT IN": Non in elenco
@@ -807,7 +807,7 @@ pim_enrich:
             "SINCE LAST JOB": Prodotti aggiornati dall'ultima esportazione
         enabled:
           title: Stato
-          help: 'Selezionare i prodotti da esportare in base al loro stato. Es: Esportare prodotti qualunque sia lo stato.'
+          help: "Selezionare i prodotti da esportare in base al loro stato. Es: Esportare prodotti qualunque sia lo stato."
           value:
             all: Tutti
             enabled: Attivato
@@ -819,7 +819,7 @@ pim_enrich:
             ALL: Nessuna condizione sulla completezza
             ">=": Completo in almeno una delle impostazioni internazionali selezionate
             "GREATER OR EQUALS THAN ON ALL LOCALES": Completo in tutte le impostazioni internazionali selezionate
-            LOWER THAN ON ALL LOCALES: Non completo in tutte le impostazioni internazionali selezionate
+            LOWER THAN ON ALL LOCALES: Non completo in tutte le impostazione internazionali selezionate
           empty_selection: Seleziona una famiglia
         category:
           title: Categoria
@@ -998,9 +998,11 @@ pim_enrich:
         add_to_category:
           label: Aggiungi alle categorie
           label_count: "{1}Aggiungi <span class=\"AknFullPage-title--highlight\">1 prodotto</span> to categories|] 1, Inf [Aggiungi <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} prodotti</span> to categories"
+          description: Gli articoli saranno posizionati nelle seguenti categorie, il posizionamento attuale è mantenuto.
         move_to_category:
           label: Sposta tra categorie
           label_count: "{1}Sposta <span class=\"AknFullPage-title--highlight\">1 prodotto</span> between categories|] 1, Inf [Sposta <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} prodotti</span> between categories"
+          description: I prodotti saranno posizionati nelle seguenti categorie; il posizionamento attuale viene perso.
         remove_from_category:
           label: Rimuovi dalle categorie
           label_count: "{1}Rimuovi <span class=\"AknFullPage-title--highlight\">1 prodotto</span> from categories|] 1, Inf [Rmuovi <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} prodotti</span> from categories"
