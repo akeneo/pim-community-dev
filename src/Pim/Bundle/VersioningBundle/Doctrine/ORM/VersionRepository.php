@@ -3,9 +3,11 @@
 namespace Pim\Bundle\VersioningBundle\Doctrine\ORM;
 
 use Akeneo\Bundle\StorageUtilsBundle\Doctrine\ORM\Repository\CursorableRepositoryInterface;
+use Akeneo\Component\Versioning\Model\Version;
 use Doctrine\DBAL\Types\Type;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\NoResultException;
+use Doctrine\ORM\Query\ResultSetMappingBuilder;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Pim\Bundle\VersioningBundle\Repository\VersionRepositoryInterface;
 
@@ -50,7 +52,21 @@ class VersionRepository extends EntityRepository implements VersionRepositoryInt
      */
     public function getNewestLogEntryForRessources($resourceNames)
     {
-        return $this->findOneBy(['resourceName' => $resourceNames], ['loggedAt' => 'desc'], 1);
+        $rsm = new ResultSetMappingBuilder($this->_em);
+        $rsm->addRootEntityFromClassMetadata(Version::class, 't0');
+
+        $query = $this->_em->createNativeQuery(sprintf(<<<SQL
+            SELECT %s FROM pim_versioning_version t0
+            USE INDEX (resource_name_idx)
+            WHERE t0.resource_name IN (:resourceNames)
+            ORDER BY t0.logged_at DESC
+            LIMIT 1
+SQL
+        , $rsm->generateSelectClause()), $rsm);
+
+        $query->setParameter('resourceNames', $resourceNames);
+
+        return $query->getSingleResult();
     }
 
     /**
