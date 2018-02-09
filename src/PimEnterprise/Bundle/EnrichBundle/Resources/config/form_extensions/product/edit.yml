@@ -18,13 +18,7 @@ extensions:
         module: pimee/product-edit-form/attributes/smart-attribute
         parent: pim-product-edit-form-attributes
         targetZone: self
-        position: 100
-
-    pim-product-model-edit-form-smart-attribute:
-        module: pimee/product-edit-form/attributes/smart-attribute
-        parent: pim-product-model-edit-form-attributes
-        targetZone: self
-        position: 100
+        position: 110
 
     pim-product-edit-form-history-published:
         module: pimee/product-edit-form/tab/history/published

@@ -115,7 +115,29 @@ class EnterpriseFeatureContext extends FeatureContext
             }
         }
 
-        throw $this->createExpectationException('Affected by a rule icon was not found');
+        throw $this->createExpectationException('"Affected by a rule" icon was not found');
+    }
+
+    /**
+     * @param string $attribute
+     *
+     * @throws ExpectationException
+     *
+     * @return bool
+     *
+     * @Then /^I should not see that (.*) is a smart$/
+     */
+    public function iShouldNotSeeThatAttributeIsASmart($attribute)
+    {
+        $icons = $this->getSubcontext('navigation')->getCurrentPage()->findFieldIcons($attribute);
+
+        foreach ($icons as $icon) {
+            if ($icon->getParent()->hasClass('from-smart')) {
+                throw $this->createExpectationException('"Affected by a rule icon" was found');
+            }
+        }
+
+        return true;
     }
 
     /**
