@@ -4,7 +4,7 @@
 
 ### Unit - test a unit of code
 
-Most often, a unit of code is a class.
+Most of the time, a unit of code is a class.
 
 Characteristics:
 
