@@ -727,6 +727,50 @@ class SecurityContext extends RawMinkContext implements KernelAwareInterface
         $this->doCall('DELETE', $url);
     }
 
+    /**
+     * @When /^I make a direct authenticated DELETE call on the "([^"]*)" export job profile$/
+     */
+    public function iMakeADirectAuthenticatedDeleteCallOnTheExportJobProfile($exportJobProfileCode)
+    {
+        $routeName = 'pim_importexport_export_profile_remove';
+
+        $exportJobProfile = $this->kernel
+            ->getContainer()
+            ->get('pim_import_export.repository.job_instance')
+            ->findOneByIdentifier($exportJobProfileCode);
+
+        $url = $this->kernel
+            ->getContainer()
+            ->get('router')
+            ->generate($routeName, [
+                'id' => $exportJobProfile->getId(),
+            ]);
+
+        $this->doCall('DELETE', $url);
+    }
+
+    /**
+     * @When /^I make a direct authenticated DELETE call on the "([^"]*)" import job profile$/
+     */
+    public function iMakeADirectAuthenticatedDeleteCallOnTheImportJobProfile($importJobProfileCode)
+    {
+        $routeName = 'pim_importexport_import_profile_remove';
+
+        $importJobProfile = $this->kernel
+            ->getContainer()
+            ->get('pim_import_export.repository.job_instance')
+            ->findOneByIdentifier($importJobProfileCode);
+
+        $url = $this->kernel
+            ->getContainer()
+            ->get('router')
+            ->generate($routeName, [
+                'id' => $importJobProfile->getId(),
+            ]);
+
+        $this->doCall('DELETE', $url);
+    }
+
 //    /**
 //     * @When /^I make a direct authenticated POST call on the "([^"]*)" user group with following data:$/
 //     */
@@ -753,6 +797,20 @@ class SecurityContext extends RawMinkContext implements KernelAwareInterface
 //        $this->doCall('POST', $url, $params);
 //        var_dump($params);
 //    }
+
+    /**
+     * @Then /^there should be a "([^"]*)" export job profile$/
+     * @Then /^there should be a "([^"]*)" import job profile$/
+     */
+    public function thereShouldBeAExportJobProfile($exportJobProfileCode)
+    {
+        $exportJobProfile = $this->kernel
+            ->getContainer()
+            ->get('pim_import_export.repository.job_instance')
+            ->findOneByIdentifier($exportJobProfileCode);
+
+        assertNotNull($exportJobProfile);
+    }
 
     /**
      * @Then /^there should be a "([^"]*)" variant group$/

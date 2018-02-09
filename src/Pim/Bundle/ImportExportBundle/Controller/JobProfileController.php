@@ -315,6 +315,10 @@ class JobProfileController
      */
     public function removeAction(Request $request, $id)
     {
+        if (!$request->isXmlHttpRequest()) {
+            return new RedirectResponse('/');
+        }
+
         try {
             $jobInstance = $this->getJobInstance($id);
         } catch (NotFoundHttpException $e) {
