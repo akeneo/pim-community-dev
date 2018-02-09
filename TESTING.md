@@ -20,13 +20,13 @@ Examples:
 - frontend: TODO
 
 
-### Acceptance: test a business use case
+### Acceptance - test a business use case or ensure a business rule
 
 Characteristics:
 
 - several classes are tested at the same time
 - business language is used (ie: we use Gherkin)
-- describes a business use case or a business rule (ie: it's not about UI, CLI or UX, neither about a text we should see)
+- describes a business use case or ensure a business rule (ie: it's not about UI, CLI or UX, neither about a text we should see)
 - mock only what you own
 - services which perform I/O calls are mocked (like Doctrine repositories for instance)
 - "lives" in memory only
@@ -36,7 +36,7 @@ Examples:
 - backend: TODO
 - frontend: TODO
 
-### Integration: test
+### Integration - test the integration of the code with the outside world
 
 Characteristics:
 
@@ -49,7 +49,7 @@ Examples:
 - backend: test a Doctrine repository using MySQL
 - frontend test a fetcher performing HTTP calls
 
-### End to end: test the whole application
+### End to end - test the whole application
 
 Characteristics:
 
@@ -88,7 +88,7 @@ End to end:
 - crosses over all the layers, from an adapter to another by passing through the Domain layer (for instance: Adapter A -> Application -> Domain -> Application -> Adapter B)
 
 
-## Actual VS Expected
+## Actual vs Expected
 
 ### Today's situation
 
@@ -103,7 +103,7 @@ You should refer to the [ports and adapters architecture](#ports-and-adapters-ar
 
 > I'm afraid to write less end to end tests that before. Are you sure it's a good idea?
 
-For sure, end to end are a really safe cocoon. They strictly ensure what we have coded works as expected. But you should also remember that it becomes a burden when they are too numerous. As long as you 
+For sure, end to end tests are a really safe cocoon. They strictly ensure what we have coded works as expected. But you should also remember that they become a burden when they are too numerous. As long as you have many unit and acceptance tests, as well as the necessary integration tests, you're safe. That means all your use cases are covered, and you're able to communicate with the outside world. A few system tests will only ensure that you have correctly glued all the pieces together. They do nothing more.
 
 > What is service that performs I/O calls?
 
