@@ -25,6 +25,9 @@ class CatalogContext implements Context
     private $jobInstances;
     private $locales;
 
+    private $roleRepository;
+    private $groupRepository;
+
     public function __construct(
         EntityLoader $groups,
         EntityLoader $roles,
@@ -108,7 +111,7 @@ class CatalogContext implements Context
     }
 
     /**
-     * @Given /^an admin user "([^"]*)"$/
+     * @Given /^the administrator "([^"]*)"$/
      */
     public function createAdminUser(string $name, string $userName = ''): void
     {
@@ -130,6 +133,33 @@ class CatalogContext implements Context
             'default_tree' => 'default',
             'roles' => ['ROLE_ADMINISTRATOR'],
             'groups' => ['IT support'],
+            'enabled' => true,
+        ]]);
+    }
+
+    /**
+     * @Given /^the manager "([^"]*)"$/
+     */
+    public function createManagerUser(string $name, string $userName = ''): void
+    {
+        list($firstName, $lastName) = explode(' ', $name);
+
+        if ('' === $userName) {
+            $userName = $firstName;
+        }
+
+        $this->users->load([[
+            'username' => $userName,
+            'first_name' => $firstName,
+            'last_name' => $lastName,
+            'email' => $userName.'@example.com',
+            'password' => $userName,
+            'catalog_locale' => 'en_US',
+            'user_locale' => 'en_US',
+            'catalog_scope' => 'ecommerce',
+            'default_tree' => 'default',
+            'roles' => ['ROLE_MANAGER'],
+            'groups' => ['Manager'],
             'enabled' => true,
         ]]);
     }

@@ -6,7 +6,7 @@ Feature: Set the attribute used as label
 
   Background:
     Given the minimal catalog
-    And an admin user "Peter Williams"
+    And the administrator "Peter Williams"
     And the following attributes:
       | label-en_US | type                 | group | code        | decimals_allowed | negative_allowed |
       | Brand       | pim_catalog_text     | other | brand       |                  |                  |
