@@ -269,6 +269,12 @@ pim_enrich:
             reference_data_type:
                 label: Choose the reference data type
 
+    notification:
+        settings:
+            remove_completeness_for_channel_and_locale:
+                start: The locale has been removed from the channel. We are currently cleaning completenesses linked to them.
+                done: Removal of a locale on a channel finished.
+
 # Entity and page header titles
 attribute:
     title:    attribute
@@ -829,6 +835,7 @@ Format address by address country: Format address by address country
 Language: Language
 Timezone: Timezone
 Currency: Currency
+settings: Settings
 oro.locale:
     address_format:
         region_name_type:

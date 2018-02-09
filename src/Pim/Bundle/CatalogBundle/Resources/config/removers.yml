@@ -91,7 +91,7 @@ services:
             - '@pim_catalog.object_manager.product'
             - '@pim_catalog.elasticsearch.indexer.product'
             - 'pim_catalog_completeness'
-            - '@pim_connector.doctrine.cache_clearer'
+            - '@akeneo_storage_utils.doctrine.object_detacher'
 
     pim_catalog.remover.base_options_resolver:
         class: '%pim_catalog.remover.base_options_resolver.class%'

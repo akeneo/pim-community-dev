@@ -2,29 +2,35 @@
 
 namespace spec\Pim\Bundle\EnrichBundle\EventListener\Storage;
 
+use Akeneo\Component\Console\CommandLauncher;
 use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
 use Akeneo\Component\StorageUtils\StorageEvents;
 use PhpSpec\ObjectBehavior;
+use Pim\Bundle\EnrichBundle\EventListener\Storage\ChannelLocaleSubscriber;
 use Pim\Component\Catalog\Completeness\CompletenessRemoverInterface;
 use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\LocaleInterface;
 use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
 use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\GenericEvent;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 
 class ChannelLocaleSubscriberSpec extends ObjectBehavior
 {
     function let(
         LocaleRepositoryInterface $repository,
         BulkSaverInterface $saver,
-        CompletenessRemoverInterface $completeness
+        CompletenessRemoverInterface $completeness,
+        CommandLauncher $commandLauncher,
+        TokenStorageInterface $tokenStorage
     ) {
-        $this->beConstructedWith($repository, $saver, $completeness);
+        $this->beConstructedWith($repository, $saver, $completeness, $commandLauncher, $tokenStorage);
     }
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('Pim\Bundle\EnrichBundle\EventListener\Storage\ChannelLocaleSubscriber');
+        $this->shouldHaveType(ChannelLocaleSubscriber::class);
     }
 
     function it_subscribes_to_storage_events()
@@ -61,31 +67,75 @@ class ChannelLocaleSubscriberSpec extends ObjectBehavior
         $this->updateChannel($event);
     }
 
-    function it_updates_channel(
+    function it_updates_channel_when_a_locale_has_been_removed(
         $repository,
         $saver,
-        $completeness,
+        $commandLauncher,
+        $tokenStorage,
         GenericEvent $event,
         ChannelInterface $channel,
         LocaleInterface $localeEn,
         LocaleInterface $localeFr,
-        LocaleInterface $localeEs
+        LocaleInterface $localeEs,
+        TokenInterface $token
     ) {
         $event->getSubject()->willReturn($channel);
         $repository->getDeletedLocalesForChannel($channel)->willReturn([$localeEn]);
-        $completeness->removeForChannelAndLocale($channel, $localeEn)->shouldBeCalled();
 
+        $localeEn->getCode()->willReturn('en_US');
         $localeFr->hasChannel($channel)->willReturn(true);
         $localeEs->hasChannel($channel)->willReturn(false);
 
         $channel->getLocales()->willReturn([$localeFr, $localeEs]);
+        $channel->getCode()->willReturn('print');
         $channel->hasLocale($localeEn)->willReturn(false);
         $channel->hasLocale($localeFr)->willReturn(true);
 
         $localeEn->removeChannel($channel)->shouldBeCalled();
         $localeEs->addChannel($channel)->shouldBeCalled();
 
-        $saver->saveAll([$localeEn, $localeFr, $localeEs])->shouldBeCalled();
+        $saver->saveAll([$localeFr, $localeEs, $localeEn])->shouldBeCalled();
+
+        $tokenStorage->getToken()->willReturn($token);
+        $token->getUsername()->willReturn('julia');
+
+        $commandLauncher
+            ->executeBackground(
+                'pim:catalog:remove-completeness-for-channel-and-locale print en_US julia'
+            )->shouldBeCalled();
+
+        $this->updateChannel($event);
+    }
+
+    function it_updates_channel_without_removed_locale(
+        $repository,
+        $saver,
+        $commandLauncher,
+        $tokenStorage,
+        GenericEvent $event,
+        ChannelInterface $channel,
+        LocaleInterface $localeFr,
+        LocaleInterface $localeEs,
+        TokenInterface $token
+    ) {
+        $event->getSubject()->willReturn($channel);
+        $repository->getDeletedLocalesForChannel($channel)->willReturn([]);
+
+        $localeFr->hasChannel($channel)->willReturn(true);
+        $localeEs->hasChannel($channel)->willReturn(false);
+
+        $channel->getLocales()->willReturn([$localeFr, $localeEs]);
+        $channel->getCode()->willReturn('print');
+        $channel->hasLocale($localeFr)->willReturn(true);
+
+        $localeEs->addChannel($channel)->shouldBeCalled();
+
+        $saver->saveAll([$localeFr, $localeEs])->shouldBeCalled();
+
+        $tokenStorage->getToken()->willReturn($token);
+        $token->getUsername()->willReturn('julia');
+
+        $commandLauncher->executeBackground(Argument::any())->shouldNotBeCalled();
 
         $this->updateChannel($event);
     }
