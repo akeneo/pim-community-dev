@@ -2,3 +2,15 @@ Pim\Bundle\UserBundle\Entity\User:
     constraints:
         - Pim\Bundle\UserBundle\Validator\Constraints\UserPreferences:
             groups: [User]
+    properties:
+        uiLocale:
+            - NotBlank: ~
+        catalogLocale:
+            - NotBlank: ~
+            - Pim\Component\Catalog\Validator\Constraints\ActivatedLocale: ~
+        phone:
+            - Regex:
+                pattern: '/^\+[0-9]+$/'
+                message: "The phone has to respect the international format (eg: +33755667788)."
+            - Length:
+                max: 20

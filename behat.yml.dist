@@ -1,6 +1,8 @@
-default:
+legacy:
     suites:
         TEST-pim:
+            paths:
+                - '%paths.base%/features/EndToEnd'
             contexts:
                 - Behat\MinkExtension\Context\MinkContext
                 - Context\FeatureContext:
@@ -108,3 +110,23 @@ default:
             factory:
                 page_parameters:
                     base_url: http://akeneo-pim-behat.local/
+
+acceptance:
+    suites:
+        acceptance:
+            paths:
+                - '%paths.base%/tests/features/'
+            contexts_services:
+                - test.locale.context
+                - test.channel.context
+            filters:
+                tags: '@acceptance'
+
+    extensions:
+        FriendsOfBehat\ContextServiceExtension:
+           imports:
+               - "tests/Acceptance/Resources/config/services.yml"
+        FriendsOfBehat\CrossContainerExtension: ~
+        FriendsOfBehat\SymfonyExtension:
+            kernel:
+                env: acceptance

@@ -53,3 +53,4 @@
 ### Interfaces
 
 - Add method `Akeneo\Component\Batch\Job\JobRepositoryInterface::addWarning`
+- PIM-7163: Add `Pim\Bundle\UserBundle\Entity\UserInterface::setPhone` and `Pim\Bundle\UserBundle\Entity\UserInterface::getPhone`

@@ -118,6 +118,11 @@ suites:
         psr4_prefix: Pim\Component\Catalog
         spec_path: src/Pim/Component/Catalog
         src_path: src/Pim/Component/Catalog
+    User:
+        namespace: Pim\Component\User
+        psr4_prefix: Pim\Component\User
+        spec_path: src/Pim/Component/User
+        src_path: src/Pim/Component/User
 
     ## Pim Bundles
     AnalyticsBundle:
