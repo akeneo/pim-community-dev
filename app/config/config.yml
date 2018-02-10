@@ -5,7 +5,6 @@ imports:
     - { resource: '@PimEnterpriseEnrichBundle/Resources/config/pimee.yml' }
 
 framework:
-    #esi:             ~
     translator:      { fallback: en }
     secret:          "%secret%"
     router:
@@ -66,3 +65,7 @@ pim_reference_data:
     assets:
         class: PimEnterprise\Component\ProductAsset\Model\Asset
         type: multi
+
+parameters:
+    pim_ce_dev_src_folder_location: '%kernel.project_dir%/vendor/akeneo/pim-community-dev'
+    pim_ee_dev_src_folder_location: '%kernel.project_dir%'
