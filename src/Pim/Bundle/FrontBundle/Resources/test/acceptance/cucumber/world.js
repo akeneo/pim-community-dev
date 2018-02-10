@@ -11,7 +11,7 @@ Before(async function() {
   this.browser = await puppeteer.launch({
     ignoreHTTPSErrors: true,
     args: ['--no-sandbox', '--disable-setuid-sandbox'],
-    headless: false,
+    headless: true,
     slowMo: DEBUG ? 250 : 0,
   });
   this.page = await this.browser.newPage();

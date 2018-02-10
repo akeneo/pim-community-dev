@@ -1,5 +1,4 @@
 Feature: Grid is working properly
-
   Scenario: I can switch the locale
     Given a product grid
     Then the locale should be "en_US"
