@@ -157,7 +157,7 @@ pim_enrich:
       label: Tilføje tags til aktiver
       description: Tags vil blive tilføjet til aktiverne. Hvis nogle tags ikke findes, vil de blive oprettet.
       success_flash: Tag (s) er blevet tilføjet til aktiver(ne)
-      launched_flash: Massehandling "Tilføj tags til aktiver" er blevet igangsat. Du får besked, når det er afsluttet.
+      launched_flash: Massehandling "Tilføj tags aktiver" er blevet startet. Du får besked, når den er aflsuttet.
       message.error: Det angivne tag findes ikke
 pim:
   grid:
