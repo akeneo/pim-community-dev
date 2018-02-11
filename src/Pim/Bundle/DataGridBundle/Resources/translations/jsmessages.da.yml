@@ -65,7 +65,7 @@ pim_datagrid:
       confirm_ok: OK
       empty_selection: Du har ikke valgt et produkt
 pim.grid.mass_action.quick_export.title: Hurtig eksport
-pim.grid.mass_action.quick_export.launched: Hurtig eksport er blevet lanceret
+pim.grid.mass_action.quick_export.launched: Hurtig eksport er blevet startet
 pim.grid.action.launch.title: Kør
 pim.grid.action.show.title: Vis
 Please select view: Vælg visning

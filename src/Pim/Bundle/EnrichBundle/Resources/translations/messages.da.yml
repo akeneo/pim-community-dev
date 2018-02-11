@@ -97,7 +97,7 @@ pim_enrich:
       label: Ændre status (aktiver / deaktiver)
       description: De valgte produkter vil blive aktiveret eller deaktiveret.
       success_flash: Produkt(er) status er blevet ændret
-      launched_flash: Bulk-handlingen "Skift status" er blevet lanceret. Du får besked, når det er gjort.
+      launched_flash: Bulk-handlingen "Skift status" er blevet startet. Du får besked, når det er gjort.
     edit-common-attributes:
       label: Rediger attributter
       description: De valgte produktattributter vil blive redigeret med følgende data for den valgte landestandard.
@@ -112,7 +112,7 @@ pim_enrich:
       label: Klassificere produkter i kategorier
       description: Produkterne vil blive placeret i følgende kategorier, den nuværende placering er bibeholdt.
       success_flash: Produkt(er), der er blevet klassificeret i udvalgte kategorier
-      launched_flash: Handlingen bulk "Føj til kategorier" er blevet lanceret. Du får besked, når det er afsluttet.
+      launched_flash: Handlingen bulk "Føj til kategorier" er blevet startet. Du får besked, når det er afsluttet.
     classify-move:
       label: Flyt produkter til kategorier
       description: Produkterne vil blive placeret i følgende kategorier, den nuværende placering er bibeholdt.
