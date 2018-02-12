@@ -1090,7 +1090,7 @@ class SecurityContext extends RawMinkContext implements KernelAwareInterface
      * @param string $method
      * @param string $url
      */
-    private function doCall($method, $url, $data = [], $content = [], $username = 'Julia')
+    protected function doCall($method, $url, $data = [], $content = [], $username = 'Julia')
     {
         $this->logIn($username);
         $this->client->request($method, $url, $data, [], [], json_encode($content));
@@ -1102,7 +1102,7 @@ class SecurityContext extends RawMinkContext implements KernelAwareInterface
     /**
      * @param string $username
      */
-    private function logIn($username = 'Julia')
+    protected function logIn($username = 'Julia')
     {
         // http://symfony.com/doc/current/testing/http_authentication.html
 
