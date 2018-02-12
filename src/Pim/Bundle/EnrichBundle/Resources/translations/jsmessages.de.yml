@@ -230,6 +230,8 @@ pim_enrich:
         update_successful: Produktmodell erfolgreich aktualisiert. Die Vollständigkeit der Produktvarianten wird neu berechnet.
         update_failed: Das Produktmodell konnte nicht aktualisiert werden.
         field_not_ready: "Das Produktmodel kann gerade nicht gespeichert werden. Folgende Felder sind unvollständig: {{ fields }}"
+      read_only_parent_attribute_from_common: Dieses Attribut muss als gemeinsames Attribut bearbeitet werden.
+      read_only_parent_attribute_from_model: "Dieses Attribut muss als Attribut von {{ axes }} bearbeitet werden"
       variant_axis: Variantenachse(n)
       add_child:
         cancel: Abbrechen

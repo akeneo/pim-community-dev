@@ -235,6 +235,8 @@ pim_enrich:
         update_successful: Modello di prodotto aggiornato correttamente. La completezza delle sue varianti sarà ricalcolata.
         update_failed: Il modello di prodotto non può essere aggiornato.
         field_not_ready: "Il modello di prodotto non può essere salvato in questo momento. I campi seguenti non sono pronti: {{ fields }}"
+      read_only_parent_attribute_from_common: Questo attributo può essere aggiornato con gli attributi in comune.
+      read_only_parent_attribute_from_model: "Questo attributo può essere aggiornato con gli attributi per {{ axes }}"
       variant_axis: Asse di variante
       add_child:
         cancel: Annulla

@@ -244,6 +244,8 @@ pim_enrich:
         update_successful: 製品モデルが正常に更新されました。そのバリエーションの商品の完全性が再計算されます。
         update_failed: 製品モデルを更新できませんでした。
         field_not_ready: "この製品モデルをすぐに保存できません。次のフィールドが準備ができていません：{{ fields }}"
+      read_only_parent_attribute_from_common: この属性は、共通の属性を更新できます。
+      read_only_parent_attribute_from_model: "この属性は、{{ axes }} によって属性で更新できます。"
       variant_axis: バリアントの軸
       add_child:
         create: 新しく追加
