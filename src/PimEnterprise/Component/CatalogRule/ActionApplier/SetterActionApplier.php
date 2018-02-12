@@ -18,7 +18,7 @@ use Akeneo\Component\RuleEngine\ActionApplier\ActionApplierInterface;
 use Akeneo\Component\StorageUtils\Updater\PropertySetterInterface;
 use Pim\Component\Catalog\Model\EntityWithFamilyVariantInterface;
 use Pim\Component\Catalog\Model\EntityWithValuesInterface;
-use Pim\Component\Catalog\Model\FamilyVariantInterface;
+use Pim\Component\Catalog\Normalizer\Standard\Product\PropertiesNormalizer;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use PimEnterprise\Component\CatalogRule\Model\ProductSetActionInterface;
 
@@ -53,10 +53,10 @@ class SetterActionApplier implements ActionApplierInterface
     public function applyAction(ActionInterface $action, array $entitiesWithValues = []): void
     {
         foreach ($entitiesWithValues as $entityWithValues) {
-            if (!$entityWithValues instanceof EntityWithFamilyVariantInterface) {
-                $this->setDataOnEntityWithValues($entityWithValues, $action);
-            } else {
+            if ($entityWithValues instanceof EntityWithFamilyVariantInterface) {
                 $this->setDataOnEntityWithFamilyVariant($entityWithValues, $action);
+            } else {
+                $this->setDataOnEntityWithValues($entityWithValues, $action);
             }
         }
     }
@@ -79,7 +79,7 @@ class SetterActionApplier implements ActionApplierInterface
     ): void {
         $field = $action->getField();
 
-        if ('categories' === $field) {
+        if (PropertiesNormalizer::FIELD_CATEGORIES === $field) {
             $newCategoryCodes = $action->getValue();
             $parent = $entityWithFamilyVariant->getParent();
 
@@ -97,43 +97,11 @@ class SetterActionApplier implements ActionApplierInterface
             return;
         }
 
-        $level = $this->getActionFieldLevel($field, $entityWithFamilyVariant->getFamilyVariant());
+        $level = $entityWithFamilyVariant->getFamilyVariant()->getLevelForAttributeCode($field);
 
         if ($entityWithFamilyVariant->getVariationLevel() === $level) {
             $this->setDataOnEntityWithValues($entityWithFamilyVariant, $action);
         }
-    }
-
-    /**
-     * @param string                 $actionField
-     * @param FamilyVariantInterface $familyVariant
-     *
-     * @return int
-     */
-    private function getActionFieldLevel(
-        string $actionField,
-        FamilyVariantInterface $familyVariant
-    ): int {
-        $level = 0;
-        $attributeSets = $familyVariant->getVariantAttributeSets();
-
-        foreach ($attributeSets as $attributeSet) {
-            $hasAttribute = false;
-
-            foreach ($attributeSet->getAttributes() as $attribute) {
-                if ($attribute->getCode() === $actionField) {
-                    $hasAttribute = true;
-                    break;
-                }
-            }
-
-            if ($hasAttribute) {
-                $level = $attributeSet->getLevel();
-                break;
-            }
-        }
-
-        return $level;
     }
 
     /**

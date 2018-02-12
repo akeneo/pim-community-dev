@@ -18,7 +18,6 @@ use Akeneo\Component\RuleEngine\ActionApplier\ActionApplierInterface;
 use Akeneo\Component\StorageUtils\Updater\PropertyAdderInterface;
 use Pim\Component\Catalog\Model\EntityWithFamilyVariantInterface;
 use Pim\Component\Catalog\Model\EntityWithValuesInterface;
-use Pim\Component\Catalog\Model\FamilyVariantInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use PimEnterprise\Component\CatalogRule\Model\ProductAddActionInterface;
 
@@ -53,10 +52,10 @@ class AdderActionApplier implements ActionApplierInterface
     public function applyAction(ActionInterface $action, array $entitiesWithValues = []): void
     {
         foreach ($entitiesWithValues as $entityWithValues) {
-            if (!$entityWithValues instanceof EntityWithFamilyVariantInterface) {
-                $this->addDataOnEntityWithValues($entityWithValues, $action);
-            } else {
+            if ($entityWithValues instanceof EntityWithFamilyVariantInterface) {
                 $this->addDataOnEntityWithFamilyVariant($entityWithValues, $action);
+            } else {
+                $this->addDataOnEntityWithValues($entityWithValues, $action);
             }
         }
     }
@@ -86,43 +85,11 @@ class AdderActionApplier implements ActionApplierInterface
             return;
         }
 
-        $level = $this->getActionFieldLevel($field, $entityWithFamilyVariant->getFamilyVariant());
+        $level = $entityWithFamilyVariant->getFamilyVariant()->getLevelForAttributeCode($field);
 
         if ($entityWithFamilyVariant->getVariationLevel() === $level) {
             $this->addDataOnEntityWithValues($entityWithFamilyVariant, $action);
         }
-    }
-
-    /**
-     * @param string                 $actionField
-     * @param FamilyVariantInterface $familyVariant
-     *
-     * @return int
-     */
-    private function getActionFieldLevel(
-        string $actionField,
-        FamilyVariantInterface $familyVariant
-    ): int {
-        $level = 0;
-        $attributeSets = $familyVariant->getVariantAttributeSets();
-
-        foreach ($attributeSets as $attributeSet) {
-            $hasAttribute = false;
-
-            foreach ($attributeSet->getAttributes() as $attribute) {
-                if ($attribute->getCode() === $actionField) {
-                    $hasAttribute = true;
-                    break;
-                }
-            }
-
-            if ($hasAttribute) {
-                $level = $attributeSet->getLevel();
-                break;
-            }
-        }
-
-        return $level;
     }
 
     /**
