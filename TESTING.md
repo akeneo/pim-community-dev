@@ -1,5 +1,10 @@
 # Testing in the PIM
 
+## About
+
+This document aims to help the writing of tests in the PIM. It's the result of trainings and workshops we had with [Matthias Noback](https://matthiasnoback.nl/) around this topic. This guide applies for both backend and frontend applications.
+
+
 ## Types of tests
 
 ### Unit - test a unit of code
@@ -10,7 +15,7 @@ Characteristics:
 
 - one class is tested at a time
 - no I/O call
-- no setup required (ie: no fixtures for instance)
+- no setup required (no fixtures for instance)
 - mock only what you own
 - "lives" in memory only
 
@@ -25,8 +30,8 @@ Examples:
 Characteristics:
 
 - several classes are tested at the same time
-- business language is used (ie: we use Gherkin)
-- describes a business use case or ensure a business rule (ie: it's not about UI, CLI or UX, neither about a text we should see)
+- business language is used (we use Gherkin)
+- describes a business use case or ensure a business rule (it's not about UI, CLI or UX, neither about a text we should see)
 - mock only what you own
 - services which perform I/O calls are mocked (like Doctrine repositories for instance)
 - "lives" in memory only
@@ -40,8 +45,8 @@ Examples:
 
 Characteristics:
 
-- one class is tested at a time
-- no mock for the system you want to test
+- no mock
+- may test several classes at the same time
 - tests only services that perform I/O calls (like Doctrine repositories for instance)
 
 Examples:
@@ -53,8 +58,8 @@ Examples:
 
 Characteristics:
 
-- boots the whole application, which means the backend and the frontend
-- no mock for the system you want to test
+- tests the application as a whole (the backend and the frontend are tested at the same time)
+- tests the real application (no mock)
 - can require complex setup (like a browser and Selenium for instance)
 - tests nominal use cases
 
@@ -103,8 +108,8 @@ You should refer to the [ports and adapters architecture](#ports-and-adapters-ar
 
 > I'm afraid to write less end to end tests that before. Are you sure it's a good idea?
 
-For sure, end to end tests are a really safe cocoon. They strictly ensure what we have coded works as expected. But you should also remember that they become a burden when they are too numerous. As long as you have many unit and acceptance tests, as well as the necessary integration tests, you're safe. That means all your use cases are covered, and you're able to communicate with the outside world. A few system tests will only ensure that you have correctly glued all the pieces together. They do nothing more.
+For sure, end to end tests are a really safe cocoon. They strictly ensure what we have coded works as expected. But you should also remember that they become a burden when they are too numerous. As long as you have many unit and acceptance tests, as well as the necessary integration tests, you're safe. That means all your use cases are covered, and you're able to communicate with the outside world. A few system tests will only ensure that you have correctly glued all the pieces together. They do nothing more. In any case, if you have some doubt, ask the piece of advice of a teammate.
 
-> What is service that performs I/O calls?
+> What is a service that performs I/O calls?
 
 Any service that uses an external system (relatively to your code). Can be considered as external systems: the file system, the system time, any system called via the network, a database or a search engine for instance. That means a Doctrine repository, which communicate with the database, is a service performing I/O calls.
