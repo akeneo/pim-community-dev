@@ -101,7 +101,7 @@ Feature: Approve or refuse several product drafts at once
       | leather-jacket | ready  | user_one | {"values":{"name":[{"locale":"en_US","scope":null,"data":"Awesome leather jacket"}]}, "review_statuses":{"name":[{"locale":"en_US","scope":null,"status":"to_review"}]}} |
       | wool-jacket    | ready  | user_two | {"values":{"name":[{"locale":"en_US","scope":null,"data":"Lame wool jacket"}]}, "review_statuses":{"name":[{"locale":"en_US","scope":null,"status":"to_review"}]}}       |
     And I am on the proposals page
-    Then I filter by "author" with operator "equals" and value "user_one"
+    Then I filter by "author" with operator "in list" and value "user_one"
     And I select rows Leather jacket
     And I press the "Approve all selected" button
     And I confirm the action

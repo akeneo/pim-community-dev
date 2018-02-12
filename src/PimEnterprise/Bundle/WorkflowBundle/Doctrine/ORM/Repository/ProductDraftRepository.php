@@ -12,11 +12,11 @@
 namespace PimEnterprise\Bundle\WorkflowBundle\Doctrine\ORM\Repository;
 
 use Akeneo\Component\StorageUtils\Repository\CursorableRepositoryInterface;
+use Akeneo\Component\StorageUtils\Repository\SearchableRepositoryInterface;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Query\Filter\Operators;
-use PimEnterprise\Bundle\WorkflowBundle\Doctrine\Repository;
 use PimEnterprise\Component\Workflow\Model\ProductDraft;
 use PimEnterprise\Component\Workflow\Model\ProductDraftInterface;
 use PimEnterprise\Component\Workflow\Repository\ProductDraftRepositoryInterface;
@@ -27,7 +27,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
  *
  * @author Gildas Quemener <gildas@akeneo.com>
  */
-class ProductDraftRepository extends EntityRepository implements ProductDraftRepositoryInterface, CursorableRepositoryInterface
+class ProductDraftRepository extends EntityRepository implements ProductDraftRepositoryInterface, CursorableRepositoryInterface, SearchableRepositoryInterface
 {
     /**
      * {@inheritdoc}
@@ -450,5 +450,34 @@ class ProductDraftRepository extends EntityRepository implements ProductDraftRep
         $query->useQueryCache(false);
 
         return $query->execute();
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * @return UserInterface[]
+     */
+    public function findBySearch($search = null, array $options = [])
+    {
+        $qb = $this->createQueryBuilder('p');
+        $qb->select('p')->distinct(true);
+
+        if (null !== $search && '' !== $search) {
+            $qb->where('p.author like :search')->setParameter('search', '%' . $search . '%');
+        }
+
+        if (isset($options['identifiers']) && is_array($options['identifiers']) && !empty($options['identifiers'])) {
+            $qb->andWhere('p.author in (:codes)');
+            $qb->setParameter('codes', $options['identifiers']);
+        }
+
+        if (isset($options['limit'])) {
+            $qb->setMaxResults((int) $options['limit']);
+            if (isset($options['page'])) {
+                $qb->setFirstResult((int) $options['limit'] * ((int) $options['page'] - 1));
+            }
+        }
+
+        return $qb->getQuery()->getResult();
     }
 }

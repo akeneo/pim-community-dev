@@ -335,6 +335,31 @@ class ProductDraftController
         return new JsonResponse(['results' => $normalizedAttributes]);
     }
 
+    public function authorAction(Request $request)
+    {
+        $options = $request->query->get('options', ['limit' => 20]);
+
+        if ($request->query->has('identifiers')) {
+            $options['identifiers'] = explode(',', $request->query->get('identifiers'));
+        }
+
+        $users = $this->repository->findBySearch(
+            $request->query->get('search'),
+            $options
+        );
+
+        $normalized = [];
+        foreach ($users as $user) {
+            $normalized[$user->getAuthor()] = [
+                'username'      => $user->getAuthor(),
+            ];
+            $normalized[$user->getAuthor()]['code'] = $user->getAuthor();
+            $normalized[$user->getAuthor()]['labels']['en_US'] = $user->getAuthor();
+        }
+
+        return new JsonResponse($normalized);
+    }
+
     /**
      * Find a product draft for the current user and specified product
      *
