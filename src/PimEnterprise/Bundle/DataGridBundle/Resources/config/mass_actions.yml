@@ -34,6 +34,7 @@ services:
         arguments:
             - '@pim_datagrid.datasource.result_record.hydrator.object_id'
             - '@event_dispatcher'
+            - '@pimee_workflow.factory.product_proposal_cursor'
         tags:
             - { name: pim_datagrid.extension.mass_action.handler, alias: mass_approve }
 
@@ -42,6 +43,7 @@ services:
         arguments:
             - '@pim_datagrid.datasource.result_record.hydrator.object_id'
             - '@event_dispatcher'
+            - '@pimee_workflow.factory.product_proposal_cursor'
         tags:
             - { name: pim_datagrid.extension.mass_action.handler, alias: mass_refuse }
 
