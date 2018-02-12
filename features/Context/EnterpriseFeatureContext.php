@@ -28,6 +28,7 @@ class EnterpriseFeatureContext extends FeatureContext
         $this->useContext('webUser', new EnterpriseWebUser());
         $this->useContext('datagrid', new EnterpriseDataGridContext());
         $this->useContext('navigation', new EnterpriseNavigationContext($parameters['base_url']));
+        $this->useContext('security', new EnterpriseSecurityContext($parameters['base_url']));
         $this->useContext('transformations', new EnterpriseTransformationContext());
         $this->useContext('assertions', new EnterpriseAssertionContext());
         $this->useContext('command', new EnterpriseCommandContext());
