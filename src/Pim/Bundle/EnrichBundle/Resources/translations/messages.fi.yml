@@ -125,8 +125,8 @@ pim_enrich:
     set-attribute-requirements:
       label: Aseta vaaditut attribuutit
       description: Seuraavat attribuuttivaatimukset otetaan käyttöön valituille perheille
-      success_flash: Attribuuttivaatimukset otetaan käyttöön valituille perheille
-      launched_flash: Massatoiminto "aseta attribuuttivaatimukset" on käynnistetty. Sinulle ilmoitetaan, kun se on valmis.
+      success_flash: Määritteen vaatimuksia sovellettiin valittuihin ryhmiin
+      launched_flash: Bulkkitoiminto "Aseta määritteen vaatimukset" on käynnistetty. Saat ilmoituksen, kun se on valmis.
     mass_action:
       quick_export:
         launched_flash: Tuotteiden vienti on parhaillaan käynnissä
@@ -145,11 +145,11 @@ pim_enrich:
       create: Luo tuote
       edit_attributes: Muokkaa tuotteen ominaisuuksia
       remove: Poista tuote
-      add_attribute: Lisää attribuutti tuotteeseen
-      remove_attribute: Poista attribuutti tuotteelta
+      add_attribute: Lisää määrite tuotteeseen
+      remove_attribute: Poista määrite tuotteesta
       categories_view: Katso tuotteen kategorioita
       associations_view: Näytä tuotteen assosiaatiot
-      associations_edit: Lisää tuotteelle assosiaatioita
+      associations_edit: Lisää assosiaatiot tuotteelle
       change_family: Vaihda tuoteryhmää
       change_state: Muuta tuotteen tilaa
       add_to_groups: Lisää tuote ryhmiin
@@ -182,14 +182,14 @@ pim_enrich:
       index: Listaa tuoteperheet
       create: Luo tuoteperhe
       edit_properties: Muokkaa tuoteperheen ominaisuuksia
-      edit_attributes: Muokkaa perheen attribuutteja
+      edit_attributes: Muokkaa tuoteperheen määritteitä
       remove: Poista tuoteperhe
       history: Tarkastele tuoteperheen historiaa
     attribute_group:
-      index: Listaa attribuuttiryhmät
-      create: Luo attribuuttiryhmä
+      index: Listaa määriteryhmät
+      create: Luo määriteryhmä
       edit: Muokkaa attribuuttiryhmää
-      remove: Poista attribuuttiryhmä
+      remove: Poista määriteryhmä
       sort: Lajittele attribuuttiryhmiä
       add_attribute: Lisää attribuutti ryhmään
       remove_attribute: Poista attribuutti ryhmästä
@@ -213,11 +213,11 @@ pim_enrich:
       edit: Editoi ryhmätyyppiä
       remove: Poista ryhmätyyppi
     association_type:
-      index: Listaa assosiaatiotyypit
-      create: Luo assosiaatiotyyppi
-      edit: Muokkaa assosiaatiotyyppiä
-      remove: Poista assosiaatiotyyppi
-      history: Näytä assosiaatiotyypin historia
+      index: Listaa määritetyypit
+      create: Luo määritetyyppi
+      edit: Muokkaa määritetyyppiä
+      remove: Poista määritetyyppi
+      history: Näytä määritetyypin historia
     association:
       remove: Poista tuotteen assosiaatiot
     job_tracker:
@@ -380,7 +380,7 @@ flash:
   family:
     updated: Tuoteperhe päivitetty
     removed: Tuoteperhe poistettu
-    identifier not removable: Tunniste-attribuuttia ei voi poistaa perheeltä
+    identifier not removable: Tunnus-määritettä ei voi poistaa tuoteperheestä
     label attribute not removable: Attribuuttia ei voi poistaa koska sitä käytetään tuoteperheen nimikkeenä
     attribute not found: Attribuutti ei kuulu tähän tuoteperheeseen
     attributes added: Attribuutit lisätty tuoteperheeseen
@@ -580,16 +580,16 @@ pim_title.group:
   edit: "Ryhmien %group.label% | Muokkaa"
 pim_title.association_type:
   index: "Assosiaatiotyypit"
-  edit: "Assosiaatiotyypit %association type.label% | Muokkaa"
+  edit: "Määritetyypit %association type.label% | Muokkaa"
 pim_title.group_type:
   index: "Ryhmätyypit"
   edit: "Ryhmätyypit %group type.label% | Muokkaa"
 pim_title.mass_edit_product_action:
   choose: "Massaedit | Valitse"
-  configure: "Massamuokkus | Määritä"
+  configure: "Massaedit | Määritä"
 pim_title.mass_edit_family_action:
   choose: "Massaedit | Valitse"
-  configure: "Massamuokkaus | Määritä"
+  configure: "Massaedit | Määritä"
 pim_title.job_tracker:
   index: Prosessiseurain
   show: "Prosessin tracker | Näytä työ"
@@ -665,7 +665,7 @@ pim_enrich.mass_edit_action:
   set-attribute-requirements:
     label: Aseta vaaditut attribuutit
     description: Seuraavat attribuuttivaatimukset otetaan käyttöön valituille perheille
-    success_flash: Attribuuttivaatimukset otetaan käyttöön valituille perheille
+    success_flash: Määritteen vaatimuksia sovellettiin valittuihin ryhmiin
 To enable: Ottaa käyttöön
 Select attributes: Valitse attribuutit
 Select: Valitse
@@ -688,7 +688,7 @@ pane.accordion:
   options: Vaihtoehdot
   group_values: Ryhmän arvot
 popin.create:
-  association_type.title: Luo uusi assosiaatiotyyppi
+  association_type.title: Luo uusi määritetyyppi
   group.title: Luo uusi ryhmä
   product.title: Luo uusi tuote
   option.title: Luo uusi vaihtoehto
@@ -770,10 +770,6 @@ edit_common_attributes: Muokkaa attribuutteja
 perform.steps.duplicated.title: Päällekkäät akselit
 perform.steps.excluded.title: Poissuljetut tuotteet
 batch_jobs:
-  add_product_value:
-    label: Lisää tuotteen arvo
-    perform:
-      label: Lisää tuotteen arvo
   update_product_value:
     label: Päivitä tuotteen arvo
     perform:
