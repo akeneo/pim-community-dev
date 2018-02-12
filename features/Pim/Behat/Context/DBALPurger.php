@@ -22,7 +22,7 @@ class DBALPurger implements PurgerInterface
 
     /**
      * @param Connection $connection The connection to use
-     * @param string[]   $tables     The tables to purge, the order is significant
+     * @param string[]   $tables     The tables to purge, the order is not significant
      */
     public function __construct(Connection $connection, array $tables)
     {
@@ -35,9 +35,13 @@ class DBALPurger implements PurgerInterface
      */
     public function purge()
     {
+        $sql = 'SET FOREIGN_KEY_CHECKS = 0;';
+
         foreach ($this->tables as $table) {
-            $sql = 'DELETE FROM ' . $table;
-            $this->connection->exec($sql);
+            $sql .= sprintf('DELETE FROM %s ;', $table);
         }
+
+        $sql .= 'SET FOREIGN_KEY_CHECKS = 1;';
+        $this->connection->exec($sql);
     }
 }

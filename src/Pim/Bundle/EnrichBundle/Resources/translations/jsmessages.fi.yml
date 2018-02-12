@@ -399,7 +399,7 @@ pim_enrich:
         create_successful: Attribuutin luominen onnistui.
         create_failed: Attribuuttia ei voitu luoda.
         field_not_ready: "Attribuuttia ei voida tallentaa. Seuraavat kentät eivät ole valmiita: {{ fields }}"
-      scopable: Scopable
+      scopable: Kanavakohtainen
       type:
         pim_catalog_identifier: Tunniste
         pim_catalog_text: Teksti
