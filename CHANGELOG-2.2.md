@@ -53,3 +53,4 @@
 ### Interfaces
 
 - Add method `Akeneo\Component\Batch\Job\JobRepositoryInterface::addWarning`
+- PIM-7165: Add method `Pim\Component\Catalog\Model\FamilyInterface::getLevelForAttributeCode`
