@@ -7,6 +7,7 @@ use Pim\Bundle\NotificationBundle\Entity\Repository\UserNotificationRepositoryIn
 use Pim\Bundle\UserBundle\Context\UserContext;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
@@ -105,10 +106,14 @@ class NotificationController
      *
      * @param int $id
      *
-     * @return JsonResponse
+     * @return JsonResponse|RedirectResponse
      */
-    public function removeAction($id)
+    public function removeAction(Request $request, $id)
     {
+        if (!$request->isXmlHttpRequest()) {
+            return new RedirectResponse('/');
+        }
+
         $user = $this->userContext->getUser();
 
         if (null !== $user) {

@@ -8,6 +8,7 @@ use Behat\Gherkin\Node\TableNode;
 use Behat\MinkExtension\Context\RawMinkContext;
 use Behat\Symfony2Extension\Context\KernelAwareInterface;
 use Doctrine\Common\Util\ClassUtils;
+use Pim\Bundle\NotificationBundle\Entity\Notification;
 use Symfony\Bundle\FrameworkBundle\Client;
 use Symfony\Component\BrowserKit\Cookie;
 use Symfony\Component\HttpKernel\KernelInterface;
@@ -771,32 +772,64 @@ class SecurityContext extends RawMinkContext implements KernelAwareInterface
         $this->doCall('DELETE', $url);
     }
 
-//    /**
-//     * @When /^I make a direct authenticated POST call on the "([^"]*)" user group with following data:$/
-//     */
-//    public function iMakeADirectAuthenticatedPostCallOnTheUserGroupWithFollowingData($userGroupCode, TableNode $table)
-//    {
-//        $routeName = 'oro_user_group_update';
-//        $params = [];
-//
-//        foreach ($table->getRows() as $data) {
-//            $params[$data[0]] = $data[1];
-//        }
-//
-//        $userGroup = $this->kernel
-//            ->getContainer()
-//            ->get('pim_user.repository.group')
-//            ->findOneByIdentifier($userGroupCode);
-//
-//        $url = $this->kernel
-//            ->getContainer()
-//            ->get('router')
-//            ->generate($routeName, ['id' => $userGroup->getId()]);
-//
-//
-//        $this->doCall('POST', $url, $params);
-//        var_dump($params);
-//    }
+    /**
+     * @Given /^there is a notification for user "([^"]*)"$/
+     */
+    public function thereIsANotificationForUser($username)
+    {
+        $notification = new Notification();
+        $notification->setType(0)->setMessage(0);
+
+        $this->kernel
+            ->getContainer()
+            ->get('pim_notification.notifier')
+            ->notify($notification, [$username]);
+    }
+
+    /**
+     * @When /^I make a direct authenticated DELETE call on the last notification of user "([^"]*)"$/
+     */
+    public function iMakeADirectAuthenticatedDeleteCallOnTheLastNotificationOfUser($username)
+    {
+        $routeName = 'pim_notification_notification_remove';
+
+        $user = $this->kernel
+            ->getContainer()
+            ->get('pim_user.repository.user')
+            ->findOneBy(['username' => $username]);
+
+        $notification = $this->kernel
+            ->getContainer()
+            ->get('pim_notification.repository.user_notification')
+            ->findOneBy(['user' => $user]);
+
+        $url = $this->kernel
+            ->getContainer()
+            ->get('router')
+            ->generate($routeName, [
+                'id' => $notification->getId(),
+            ]);
+
+        $this->doCall('DELETE', $url);
+    }
+
+    /**
+     * @Then /^there should be (\d+) notification for user "([^"]*)"$/
+     */
+    public function thereShouldBeNotificationForUser($nbNotifications, $username)
+    {
+        $user = $this->kernel
+            ->getContainer()
+            ->get('pim_user.repository.user')
+            ->findOneBy(['username' => $username]);
+
+        $count = $this->kernel
+            ->getContainer()
+            ->get('pim_notification.repository.user_notification')
+            ->countUnreadForUser($user);
+
+        assertEquals($nbNotifications, $count);
+    }
 
     /**
      * @Then /^there should be a "([^"]*)" export job profile$/
