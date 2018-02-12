@@ -3,8 +3,8 @@
 namespace spec\PimEnterprise\Component\CatalogRule\Validator;
 
 use PhpSpec\ObjectBehavior;
-use PimEnterprise\Bundle\CatalogRuleBundle\Validator\Constraint\IncludeChildrenOption;
 use PimEnterprise\Component\CatalogRule\Model\ProductRemoveActionInterface;
+use PimEnterprise\Component\CatalogRule\Validator\Constraint\IncludeChildrenOption;
 use PimEnterprise\Component\CatalogRule\Validator\IncludeChildrenOptionValidator;
 use Prophecy\Argument;
 use Symfony\Component\Validator\Constraint;

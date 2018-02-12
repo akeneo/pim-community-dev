@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Bundle\CatalogRuleBundle\Validator\Constraint;
+namespace PimEnterprise\Component\CatalogRule\Validator\Constraint;
 
 use Symfony\Component\Validator\Constraint;
 

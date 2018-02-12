@@ -4,6 +4,7 @@ namespace spec\PimEnterprise\Component\CatalogRule\ActionApplier;
 
 use Akeneo\Component\Classification\Model\CategoryInterface;
 use Akeneo\Component\Classification\Repository\CategoryRepositoryInterface;
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Akeneo\Component\StorageUtils\Updater\PropertyRemoverInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\AttributeInterface;
@@ -14,6 +15,7 @@ use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
 use Pim\Component\Catalog\Model\VariantProductInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
+use PimEnterprise\Component\CatalogRule\ActionApplier\RemoverActionApplier;
 use PimEnterprise\Component\CatalogRule\Model\ProductRemoveActionInterface;
 use Prophecy\Argument;
 
@@ -40,11 +42,11 @@ class RemoverActionApplierSpec extends ObjectBehavior
         $action->getField()->willReturn('multi-select');
         $action->getOptions()->willReturn([
             'locale' => 'en_US',
-            'scope'  => 'ecommerce'
+            'scope'  => 'ecommerce',
         ]);
         $action->getItems()->willReturn([
             'multi1',
-            'multi2'
+            'multi2',
         ]);
 
         $propertyRemover->removeData(
@@ -52,11 +54,11 @@ class RemoverActionApplierSpec extends ObjectBehavior
             'multi-select',
             [
                 'multi1',
-                'multi2'
+                'multi2',
             ],
             [
                 'locale' => 'en_US',
-                'scope'  => 'ecommerce'
+                'scope'  => 'ecommerce',
             ]
         )->shouldBeCalled();
 
@@ -88,7 +90,7 @@ class RemoverActionApplierSpec extends ObjectBehavior
             'multi-select',
             [
                 'multi1',
-                'multi2'
+                'multi2',
             ],
             []
         )->shouldBeCalled();
@@ -121,7 +123,7 @@ class RemoverActionApplierSpec extends ObjectBehavior
             'multi-select',
             [
                 'multi1',
-                'multi2'
+                'multi2',
             ],
             []
         )->shouldBeCalled();
@@ -222,5 +224,21 @@ class RemoverActionApplierSpec extends ObjectBehavior
         )->shouldBeCalled();
 
         $this->applyAction($action, [$entityWithValues]);
+    }
+
+    function it_throws_exception_if_items_is_not_an_array(
+        ProductRemoveActionInterface $action,
+        EntityWithValuesInterface $entityWithValues
+    ) {
+        $action->getField()->willReturn('foo');
+        $action->getItems()->willReturn('Not an array');
+
+        $this->shouldThrow(
+            InvalidPropertyTypeException::arrayExpected(
+                'foo',
+                RemoverActionApplier::class,
+                'Not an array'
+            )
+        )->during('applyAction', [$action, [$entityWithValues]]);
     }
 }

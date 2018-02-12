@@ -11,8 +11,8 @@
 
 namespace PimEnterprise\Component\CatalogRule\Validator;
 
-use PimEnterprise\Bundle\CatalogRuleBundle\Validator\Constraint\IncludeChildrenOption;
 use PimEnterprise\Component\CatalogRule\Model\ProductRemoveActionInterface;
+use PimEnterprise\Component\CatalogRule\Validator\Constraint\IncludeChildrenOption;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
@@ -38,22 +38,28 @@ class IncludeChildrenOptionValidator extends ConstraintValidator
         }
 
         $options = $action->getOptions();
-        if (isset($options['include_children'])) {
-            if ('categories' !== $action->getField()) {
-                $this->context->buildViolation(
-                    $constraint->invalidFieldMessage,
-                    [
-                        '%field%' => $action->getField(),
-                    ]
-                )->addViolation();
-            } elseif (!is_bool($options['include_children'])) {
-                $this->context->buildViolation(
-                    $constraint->invalidTypeMessage,
-                    [
-                        '%type%' => gettype($options['include_children']),
-                    ]
-                )->addViolation();
-            }
+        if (!isset($options['include_children'])) {
+            return;
+        }
+
+        if ('categories' !== $action->getField()) {
+            $this->context->buildViolation(
+                $constraint->invalidFieldMessage,
+                [
+                    '%field%' => $action->getField(),
+                ]
+            )->addViolation();
+
+            return;
+        }
+
+        if (!is_bool($options['include_children'])) {
+            $this->context->buildViolation(
+                $constraint->invalidTypeMessage,
+                [
+                    '%type%' => gettype($options['include_children']),
+                ]
+            )->addViolation();
         }
     }
 }

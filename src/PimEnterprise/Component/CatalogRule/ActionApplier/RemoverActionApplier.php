@@ -16,6 +16,7 @@ namespace PimEnterprise\Component\CatalogRule\ActionApplier;
 use Akeneo\Bundle\RuleEngineBundle\Model\ActionInterface;
 use Akeneo\Component\Classification\Repository\CategoryRepositoryInterface;
 use Akeneo\Component\RuleEngine\ActionApplier\ActionApplierInterface;
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Akeneo\Component\StorageUtils\Updater\PropertyRemoverInterface;
 use Pim\Component\Catalog\Model\EntityWithFamilyVariantInterface;
 use Pim\Component\Catalog\Model\EntityWithValuesInterface;
@@ -127,6 +128,14 @@ class RemoverActionApplier implements ActionApplierInterface
     private function getImpactedItems(ProductRemoveActionInterface $action): array
     {
         $items = $action->getItems();
+        if (!is_array($items)) {
+            throw InvalidPropertyTypeException::arrayExpected(
+                $action->getField(),
+                __CLASS__,
+                $items
+            );
+        }
+
         $options = $action->getOptions();
 
         if (true === ($options['include_children'] ?? false)) {
