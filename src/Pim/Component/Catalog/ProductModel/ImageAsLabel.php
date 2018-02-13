@@ -68,13 +68,13 @@ class ImageAsLabel
         do {
             $modelChild = current($this->productModelRepository->findBy(
                 ['parent' => $entity],
-                ['created' => 'DESC', 'code' => 'ASC'],
+                ['created' => 'ASC', 'code' => 'ASC'],
                 1
             ));
 
             $productChild = current($this->productRepository->findBy(
                 ['parent' => $entity],
-                ['created' => 'DESC', 'identifier' => 'ASC'],
+                ['created' => 'ASC', 'identifier' => 'ASC'],
                 1
             ));
 

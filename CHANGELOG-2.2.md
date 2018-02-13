@@ -4,6 +4,10 @@
 
 - GITHUB-7641: Fix bug related to product export
 
+## Enhancements
+
+- PIM-7106: Display the 1st variant product created as product model image
+
 # 2.2.0-ALPHA0 (2018-02-13)
 
 ## Enhancements

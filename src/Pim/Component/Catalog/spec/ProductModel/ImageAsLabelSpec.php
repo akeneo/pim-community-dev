@@ -138,13 +138,13 @@ class ImageAsLabelSpec extends ObjectBehavior
 
         $productModelRepository->findBy(
             ['parent' => $productModel],
-            ['created' => 'DESC', 'code' => 'ASC'],
+            ['created' => 'ASC', 'code' => 'ASC'],
             1
         )->willReturn([$subProductModel]);
 
         $productRepository->findBy(
             ['parent' => $productModel],
-            ['created' => 'DESC', 'identifier' => 'ASC'],
+            ['created' => 'ASC', 'identifier' => 'ASC'],
             1
         )->willReturn([]);
 
@@ -191,13 +191,13 @@ class ImageAsLabelSpec extends ObjectBehavior
 
         $productModelRepository->findBy(
             ['parent' => $productModel],
-            ['created' => 'DESC', 'code' => 'ASC'],
+            ['created' => 'ASC', 'code' => 'ASC'],
             1
         )->willReturn([]);
 
         $productRepository->findBy(
             ['parent' => $productModel],
-            ['created' => 'DESC', 'identifier' => 'ASC'],
+            ['created' => 'ASC', 'identifier' => 'ASC'],
             1
         )->willReturn([$variantProduct]);
 
@@ -243,13 +243,13 @@ class ImageAsLabelSpec extends ObjectBehavior
 
         $productModelRepository->findBy(
             ['parent' => $productModel],
-            ['created' => 'DESC', 'code' => 'ASC'],
+            ['created' => 'ASC', 'code' => 'ASC'],
             1
         )->willReturn([]);
 
         $productRepository->findBy(
             ['parent' => $productModel],
-            ['created' => 'DESC', 'identifier' => 'ASC'],
+            ['created' => 'ASC', 'identifier' => 'ASC'],
             1
         )->willReturn([]);
 
