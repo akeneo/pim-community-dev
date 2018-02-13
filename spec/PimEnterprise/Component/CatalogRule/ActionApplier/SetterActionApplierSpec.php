@@ -56,11 +56,6 @@ class SetterActionApplierSpec extends ObjectBehavior
         ProductSetActionInterface $action,
         VariantProductInterface $variantProduct,
         FamilyVariantInterface $familyVariant,
-        Collection $attributeSetCollection,
-        \Iterator $attributeSetsIterator,
-        VariantAttributeSetInterface $attributeSet,
-        Collection $attributeCollection,
-        \Iterator $attributeIterator,
         AttributeInterface $name
     ) {
         $action->getField()->willReturn('name');
@@ -72,22 +67,7 @@ class SetterActionApplierSpec extends ObjectBehavior
         $variantProduct->getVariationLevel()->willReturn(1);
 
         $variantProduct->getFamilyVariant()->willReturn($familyVariant);
-        $familyVariant->getVariantAttributeSets()->willReturn($attributeSetCollection);
-
-        $attributeSetCollection->getIterator()->willReturn($attributeSetsIterator);
-        $attributeSetsIterator->valid()->willReturn(true, false);
-        $attributeSetsIterator->current()->willReturn($attributeSet);
-        $attributeSetsIterator->rewind()->shouldBeCalled();
-
-        $attributeSet->getLevel()->willReturn(1);
-        $attributeSet->getAttributes()->willReturn($attributeCollection);
-
-        $attributeCollection->getIterator()->willReturn($attributeIterator);
-        $attributeIterator->valid()->willReturn(true, false);
-        $attributeIterator->current()->willReturn($name);
-        $attributeIterator->rewind()->shouldBeCalled();
-
-        $name->getCode()->willReturn('name');
+        $familyVariant->getLevelForAttributeCode('name')->willReturn(1);
 
         $propertySetter->setData(
             $variantProduct,
@@ -105,11 +85,6 @@ class SetterActionApplierSpec extends ObjectBehavior
         ProductSetActionInterface $action,
         ProductModelInterface $productModel,
         FamilyVariantInterface $familyVariant,
-        Collection $attributeSetCollection,
-        \Iterator $attributeSetsIterator,
-        VariantAttributeSetInterface $attributeSet,
-        Collection $attributeCollection,
-        \Iterator $attributeIterator,
         AttributeInterface $name
     ) {
         $action->getField()->willReturn('name');
@@ -121,22 +96,7 @@ class SetterActionApplierSpec extends ObjectBehavior
         $productModel->getVariationLevel()->willReturn(1);
 
         $productModel->getFamilyVariant()->willReturn($familyVariant);
-        $familyVariant->getVariantAttributeSets()->willReturn($attributeSetCollection);
-
-        $attributeSetCollection->getIterator()->willReturn($attributeSetsIterator);
-        $attributeSetsIterator->valid()->willReturn(true, false);
-        $attributeSetsIterator->current()->willReturn($attributeSet);
-        $attributeSetsIterator->rewind()->shouldBeCalled();
-
-        $attributeSet->getLevel()->willReturn(1);
-        $attributeSet->getAttributes()->willReturn($attributeCollection);
-
-        $attributeCollection->getIterator()->willReturn($attributeIterator);
-        $attributeIterator->valid()->willReturn(true, false);
-        $attributeIterator->current()->willReturn($name);
-        $attributeIterator->rewind()->shouldBeCalled();
-
-        $name->getCode()->willReturn('name');
+        $familyVariant->getLevelForAttributeCode('name')->willReturn(1);
 
         $propertySetter->setData(
             $productModel,
@@ -148,68 +108,12 @@ class SetterActionApplierSpec extends ObjectBehavior
         $this->applyAction($action, [$productModel]);
     }
 
-    function it_applies_set_action_on_entity_with_family_variant_if_attribute_is_a_common_one(
-        $propertySetter,
-        $attributeRepository,
-        ProductSetActionInterface $action,
-        EntityWithFamilyVariantInterface $entityWithFamilyVariant,
-        FamilyVariantInterface $familyVariant,
-        Collection $attributeSetCollection,
-        \Iterator $attributeSetsIterator,
-        VariantAttributeSetInterface $attributeSet,
-        Collection $attributeCollection,
-        \Iterator $attributeIterator,
-        AttributeInterface $name
-    ) {
-        $action->getField()->willReturn('name');
-        $action->getValue()->willReturn('sexy socks');
-        $action->getOptions()->willReturn([]);
-
-        $attributeRepository->findOneByIdentifier('name')->willReturn($name);
-
-        $entityWithFamilyVariant->getVariationLevel()->willReturn(0);
-
-        $entityWithFamilyVariant->getFamilyVariant()->willReturn($familyVariant);
-        $familyVariant->getVariantAttributeSets()->willReturn($attributeSetCollection);
-
-        $attributeSetCollection->getIterator()->willReturn($attributeSetsIterator);
-        $attributeSetsIterator->valid()->willReturn(true, false);
-        $attributeSetsIterator->current()->willReturn($attributeSet);
-        $attributeSetsIterator->rewind()->shouldBeCalled();
-        $attributeSetsIterator->next()->shouldBeCalled();
-
-        $attributeSet->getLevel()->willReturn(0);
-        $attributeSet->getAttributes()->willReturn($attributeCollection);
-
-        $attributeCollection->getIterator()->willReturn($attributeIterator);
-        $attributeIterator->valid()->willReturn(true, false);
-        $attributeIterator->current()->willReturn($name);
-        $attributeIterator->rewind()->shouldBeCalled();
-        $attributeIterator->next()->shouldBeCalled();
-
-        $name->getCode()->willReturn('another_name');
-
-        $propertySetter->setData(
-            $entityWithFamilyVariant,
-            'name',
-            'sexy socks',
-            []
-        )->shouldBeCalled();
-
-        $this->applyAction($action, [$entityWithFamilyVariant]);
-    }
-
     function it_does_not_apply_set_action_on_entity_with_family_variant_if_variation_level_is_not_right(
         $propertySetter,
         $attributeRepository,
         ProductSetActionInterface $action,
         EntityWithFamilyVariantInterface $entityWithFamilyVariant,
         FamilyVariantInterface $familyVariant,
-        Collection $attributeSetCollection,
-        \Iterator $attributeSetsIterator,
-        VariantAttributeSetInterface $attributeSet,
-        Collection $attributeCollection,
-        \Iterator $attributeIterator,
         AttributeInterface $name
     ) {
         $action->getField()->willReturn('name');
@@ -221,68 +125,7 @@ class SetterActionApplierSpec extends ObjectBehavior
         $entityWithFamilyVariant->getVariationLevel()->willReturn(2);
 
         $entityWithFamilyVariant->getFamilyVariant()->willReturn($familyVariant);
-        $familyVariant->getVariantAttributeSets()->willReturn($attributeSetCollection);
-
-        $attributeSetCollection->getIterator()->willReturn($attributeSetsIterator);
-        $attributeSetsIterator->valid()->willReturn(true, false);
-        $attributeSetsIterator->current()->willReturn($attributeSet);
-        $attributeSetsIterator->rewind()->shouldBeCalled();
-
-        $attributeSet->getLevel()->willReturn(1);
-        $attributeSet->getAttributes()->willReturn($attributeCollection);
-
-        $attributeCollection->getIterator()->willReturn($attributeIterator);
-        $attributeIterator->valid()->willReturn(true, false);
-        $attributeIterator->current()->willReturn($name);
-        $attributeIterator->rewind()->shouldBeCalled();
-
-        $name->getCode()->willReturn('name');
-
-        $propertySetter->setData(Argument::cetera())->shouldNotBeCalled();
-
-        $this->applyAction($action, [$entityWithFamilyVariant]);
-    }
-
-    function it_does_not_apply_set_action_on_entity_with_family_variant_if_it_does_not_have_the_attribute(
-        $propertySetter,
-        $attributeRepository,
-        ProductSetActionInterface $action,
-        EntityWithFamilyVariantInterface $entityWithFamilyVariant,
-        FamilyVariantInterface $familyVariant,
-        Collection $attributeSetCollection,
-        \Iterator $attributeSetsIterator,
-        VariantAttributeSetInterface $attributeSet,
-        Collection $attributeCollection,
-        \Iterator $attributeIterator,
-        AttributeInterface $name
-    ) {
-        $action->getField()->willReturn('name');
-        $action->getValue()->willReturn('sexy socks');
-        $action->getOptions()->willReturn([]);
-
-        $attributeRepository->findOneByIdentifier('name')->willReturn($name);
-
-        $entityWithFamilyVariant->getVariationLevel()->willReturn(1);
-
-        $entityWithFamilyVariant->getFamilyVariant()->willReturn($familyVariant);
-        $familyVariant->getVariantAttributeSets()->willReturn($attributeSetCollection);
-
-        $attributeSetCollection->getIterator()->willReturn($attributeSetsIterator);
-        $attributeSetsIterator->valid()->willReturn(true, false);
-        $attributeSetsIterator->current()->willReturn($attributeSet);
-        $attributeSetsIterator->rewind()->shouldBeCalled();
-        $attributeSetsIterator->next()->shouldBeCalled();
-
-        $attributeSet->getLevel()->willReturn(1);
-        $attributeSet->getAttributes()->willReturn($attributeCollection);
-
-        $attributeCollection->getIterator()->willReturn($attributeIterator);
-        $attributeIterator->valid()->willReturn(true, false);
-        $attributeIterator->current()->willReturn($name);
-        $attributeIterator->rewind()->shouldBeCalled();
-        $attributeIterator->next()->shouldBeCalled();
-
-        $name->getCode()->willReturn('another_name');
+        $familyVariant->getLevelForAttributeCode('name')->willReturn(1);
 
         $propertySetter->setData(Argument::cetera())->shouldNotBeCalled();
 

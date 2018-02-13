@@ -3,14 +3,12 @@
 namespace spec\PimEnterprise\Component\CatalogRule\ActionApplier;
 
 use Akeneo\Component\StorageUtils\Updater\PropertyRemoverInterface;
-use Doctrine\Common\Collections\Collection;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\EntityWithFamilyVariantInterface;
 use Pim\Component\Catalog\Model\FamilyVariantInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
-use Pim\Component\Catalog\Model\VariantAttributeSetInterface;
 use Pim\Component\Catalog\Model\VariantProductInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use PimEnterprise\Component\CatalogRule\Model\ProductRemoveActionInterface;
@@ -67,12 +65,7 @@ class RemoverActionApplierSpec extends ObjectBehavior
         ProductRemoveActionInterface $action,
         VariantProductInterface $variantProduct,
         AttributeInterface $multiSelectAttribute,
-        FamilyVariantInterface $familyVariant,
-        Collection $attributeSetCollection,
-        \Iterator $attributeSetsIterator,
-        VariantAttributeSetInterface $attributeSet,
-        Collection $attributeCollection,
-        \Iterator $attributeIterator
+        FamilyVariantInterface $familyVariant
     ) {
         $action->getField()->willReturn('multi-select');
         $action->getOptions()->willReturn([]);
@@ -82,20 +75,7 @@ class RemoverActionApplierSpec extends ObjectBehavior
         $multiSelectAttribute->getCode()->willReturn('multi-select');
 
         $variantProduct->getFamilyVariant()->willReturn($familyVariant);
-        $familyVariant->getVariantAttributeSets()->willReturn($attributeSetCollection);
-
-        $attributeSetCollection->getIterator()->willReturn($attributeSetsIterator);
-        $attributeSetsIterator->valid()->willReturn(true, false);
-        $attributeSetsIterator->current()->willReturn($attributeSet);
-        $attributeSetsIterator->rewind()->shouldBeCalled();
-
-        $attributeSet->getLevel()->willReturn(2);
-        $attributeSet->getAttributes()->willReturn($attributeCollection);
-
-        $attributeCollection->getIterator()->willReturn($attributeIterator);
-        $attributeIterator->valid()->willReturn(true, false);
-        $attributeIterator->current()->willReturn($multiSelectAttribute);
-        $attributeIterator->rewind()->shouldBeCalled();
+        $familyVariant->getLevelForAttributeCode('multi-select')->willReturn(2);
 
         $variantProduct->getVariationLevel()->willReturn(2);
 
@@ -118,12 +98,7 @@ class RemoverActionApplierSpec extends ObjectBehavior
         ProductRemoveActionInterface $action,
         ProductModelInterface $productModel,
         AttributeInterface $multiSelectAttribute,
-        FamilyVariantInterface $familyVariant,
-        Collection $attributeSetCollection,
-        \Iterator $attributeSetsIterator,
-        VariantAttributeSetInterface $attributeSet,
-        Collection $attributeCollection,
-        \Iterator $attributeIterator
+        FamilyVariantInterface $familyVariant
     ) {
         $action->getField()->willReturn('multi-select');
         $action->getOptions()->willReturn([]);
@@ -133,20 +108,7 @@ class RemoverActionApplierSpec extends ObjectBehavior
         $multiSelectAttribute->getCode()->willReturn('multi-select');
 
         $productModel->getFamilyVariant()->willReturn($familyVariant);
-        $familyVariant->getVariantAttributeSets()->willReturn($attributeSetCollection);
-
-        $attributeSetCollection->getIterator()->willReturn($attributeSetsIterator);
-        $attributeSetsIterator->valid()->willReturn(true, false);
-        $attributeSetsIterator->current()->willReturn($attributeSet);
-        $attributeSetsIterator->rewind()->shouldBeCalled();
-
-        $attributeSet->getLevel()->willReturn(2);
-        $attributeSet->getAttributes()->willReturn($attributeCollection);
-
-        $attributeCollection->getIterator()->willReturn($attributeIterator);
-        $attributeIterator->valid()->willReturn(true, false);
-        $attributeIterator->current()->willReturn($multiSelectAttribute);
-        $attributeIterator->rewind()->shouldBeCalled();
+        $familyVariant->getLevelForAttributeCode('multi-select')->willReturn(2);
 
         $productModel->getVariationLevel()->willReturn(2);
 
@@ -163,72 +125,13 @@ class RemoverActionApplierSpec extends ObjectBehavior
         $this->applyAction($action, [$productModel]);
     }
 
-    function it_applies_remove_action_on_entity_with_family_variant_if_attribute_is_a_common_one(
-        $propertyRemover,
-        $attributeRepository,
-        ProductRemoveActionInterface $action,
-        EntityWithFamilyVariantInterface $entityWithFamilyVariant,
-        AttributeInterface $multiSelectAttribute,
-        AttributeInterface $anotherMultiSelectAttribute,
-        FamilyVariantInterface $familyVariant,
-        Collection $attributeSetCollection,
-        \Iterator $attributeSetsIterator,
-        VariantAttributeSetInterface $attributeSet,
-        Collection $attributeCollection,
-        \Iterator $attributeIterator
-    ) {
-        $action->getField()->willReturn('multi-select');
-        $action->getOptions()->willReturn([]);
-        $action->getItems()->willReturn(['multi1', 'multi2']);
-
-        $attributeRepository->findOneByIdentifier('multi-select')->willReturn($multiSelectAttribute);
-        $multiSelectAttribute->getCode()->willReturn('multi-select');
-
-        $entityWithFamilyVariant->getFamilyVariant()->willReturn($familyVariant);
-        $familyVariant->getVariantAttributeSets()->willReturn($attributeSetCollection);
-
-        $attributeSetCollection->getIterator()->willReturn($attributeSetsIterator);
-        $attributeSetsIterator->valid()->willReturn(true, false);
-        $attributeSetsIterator->current()->willReturn($attributeSet);
-        $attributeSetsIterator->rewind()->shouldBeCalled();
-        $attributeSetsIterator->next()->shouldBeCalled();
-
-        $attributeSet->getAttributes()->willReturn($attributeCollection);
-
-        $attributeCollection->getIterator()->willReturn($attributeIterator);
-        $attributeIterator->valid()->willReturn(true, false);
-        $attributeIterator->current()->willReturn($anotherMultiSelectAttribute);
-        $attributeIterator->rewind()->shouldBeCalled();
-        $attributeIterator->next()->shouldBeCalled();
-
-        $anotherMultiSelectAttribute->getCode()->willReturn('anoter_multi_select');
-        $entityWithFamilyVariant->getVariationLevel()->willReturn(0);
-
-        $propertyRemover->removeData(
-            $entityWithFamilyVariant,
-            'multi-select',
-            [
-                'multi1',
-                'multi2'
-            ],
-            []
-        )->shouldBeCalled();
-
-        $this->applyAction($action, [$entityWithFamilyVariant]);
-    }
-
     function it_does_not_apply_remove_action_on_entity_with_family_variant_if_variation_level_is_not_right(
         $propertyRemover,
         $attributeRepository,
         ProductRemoveActionInterface $action,
         EntityWithFamilyVariantInterface $entityWithFamilyVariant,
         AttributeInterface $multiSelectAttribute,
-        FamilyVariantInterface $familyVariant,
-        Collection $attributeSetCollection,
-        \Iterator $attributeSetsIterator,
-        VariantAttributeSetInterface $attributeSet,
-        Collection $attributeCollection,
-        \Iterator $attributeIterator
+        FamilyVariantInterface $familyVariant
     ) {
         $action->getField()->willReturn('multi-select');
         $action->getOptions()->willReturn([]);
@@ -238,68 +141,9 @@ class RemoverActionApplierSpec extends ObjectBehavior
         $multiSelectAttribute->getCode()->willReturn('multi-select');
 
         $entityWithFamilyVariant->getFamilyVariant()->willReturn($familyVariant);
-        $familyVariant->getVariantAttributeSets()->willReturn($attributeSetCollection);
+        $familyVariant->getLevelForAttributeCode('multi-select')->willReturn(2);
 
-        $attributeSetCollection->getIterator()->willReturn($attributeSetsIterator);
-        $attributeSetsIterator->valid()->willReturn(true, false);
-        $attributeSetsIterator->current()->willReturn($attributeSet);
-        $attributeSetsIterator->rewind()->shouldBeCalled();
-
-        $attributeSet->getLevel()->willReturn(1);
-        $attributeSet->getAttributes()->willReturn($attributeCollection);
-
-        $attributeCollection->getIterator()->willReturn($attributeIterator);
-        $attributeIterator->valid()->willReturn(true, false);
-        $attributeIterator->current()->willReturn($multiSelectAttribute);
-        $attributeIterator->rewind()->shouldBeCalled();
-
-        $entityWithFamilyVariant->getVariationLevel()->willReturn(2);
-
-        $propertyRemover->removeData(Argument::cetera())->shouldNotBeCalled();
-
-        $this->applyAction($action, [$entityWithFamilyVariant]);
-    }
-
-    function it_does_not_apply_remove_action_on_entity_with_family_variant_if_it_does_not_have_the_attribute(
-        $propertyRemover,
-        $attributeRepository,
-        ProductRemoveActionInterface $action,
-        EntityWithFamilyVariantInterface $entityWithFamilyVariant,
-        AttributeInterface $multiSelectAttribute,
-        AttributeInterface $anotherMultiSelectAttribute,
-        FamilyVariantInterface $familyVariant,
-        Collection $attributeSetCollection,
-        \Iterator $attributeSetsIterator,
-        VariantAttributeSetInterface $attributeSet,
-        Collection $attributeCollection,
-        \Iterator $attributeIterator
-    ) {
-        $action->getField()->willReturn('multi-select');
-        $action->getOptions()->willReturn([]);
-        $action->getItems()->willReturn(['multi1', 'multi2']);
-
-        $attributeRepository->findOneByIdentifier('multi-select')->willReturn($multiSelectAttribute);
-        $multiSelectAttribute->getCode()->willReturn('multi-select');
-
-        $entityWithFamilyVariant->getFamilyVariant()->willReturn($familyVariant);
-        $familyVariant->getVariantAttributeSets()->willReturn($attributeSetCollection);
-
-        $attributeSetCollection->getIterator()->willReturn($attributeSetsIterator);
-        $attributeSetsIterator->valid()->willReturn(true, false);
-        $attributeSetsIterator->current()->willReturn($attributeSet);
-        $attributeSetsIterator->rewind()->shouldBeCalled();
-        $attributeSetsIterator->next()->shouldBeCalled();
-
-        $attributeSet->getAttributes()->willReturn($attributeCollection);
-
-        $attributeCollection->getIterator()->willReturn($attributeIterator);
-        $attributeIterator->valid()->willReturn(true, false);
-        $attributeIterator->current()->willReturn($anotherMultiSelectAttribute);
-        $attributeIterator->rewind()->shouldBeCalled();
-        $attributeIterator->next()->shouldBeCalled();
-
-        $anotherMultiSelectAttribute->getCode()->willReturn('anoter_multi_select');
-        $entityWithFamilyVariant->getVariationLevel()->willReturn(2);
+        $entityWithFamilyVariant->getVariationLevel()->willReturn(1);
 
         $propertyRemover->removeData(Argument::cetera())->shouldNotBeCalled();
 
