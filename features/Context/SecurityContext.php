@@ -2,7 +2,6 @@
 
 namespace Context;
 
-
 use Behat\Behat\Exception\PendingException;
 use Behat\Gherkin\Node\TableNode;
 use Behat\MinkExtension\Context\RawMinkContext;
@@ -1094,9 +1093,6 @@ class SecurityContext extends RawMinkContext implements KernelAwareInterface
     {
         $this->logIn($username);
         $this->client->request($method, $url, $data, [], [], json_encode($content));
-
-//        print_r($this->client->getResponse()->getContent());
-//        print_r($this->client->getResponse()->getStatusCode());
     }
 
     /**
