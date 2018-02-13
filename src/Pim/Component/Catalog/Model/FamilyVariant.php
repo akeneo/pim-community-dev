@@ -90,7 +90,7 @@ class FamilyVariant implements FamilyVariantInterface
      */
     public function getVariantAttributeSet(int $level): ?VariantAttributeSetInterface
     {
-        if ($level <= 0) {
+        if (0 >= $level) {
             throw new \InvalidArgumentException('The level must be greater than 0');
         }
 
@@ -241,6 +241,40 @@ class FamilyVariant implements FamilyVariantInterface
     public function getTranslationFQCN()
     {
         return FamilyVariantTranslation::class;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getLevelForAttributeCode(string $attributeCode): int
+    {
+        if (!$this->getFamily()->hasAttributeCode($attributeCode)) {
+            throw new \InvalidArgumentException(sprintf(
+                'Impossible to get variation level for attribute "%s", as family "%" does not contain it.',
+                $attributeCode,
+                $this->getFamily()->getCode()
+            ));
+        }
+
+        $level = 0;
+
+        foreach ($this->variantAttributeSets as $attributeSet) {
+            $variantAttributeSetHasAttribute = false;
+
+            foreach ($attributeSet->getAttributes() as $attribute) {
+                if ($attribute->getCode() === $attributeCode) {
+                    $variantAttributeSetHasAttribute = true;
+                    break;
+                }
+            }
+
+            if ($variantAttributeSetHasAttribute) {
+                $level = $attributeSet->getLevel();
+                break;
+            }
+        }
+
+        return $level;
     }
 
     /**
