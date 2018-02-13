@@ -80,6 +80,15 @@ interface FamilyVariantInterface extends TranslatableInterface
     public function getNumberOfLevel(): int;
 
     /**
+     * Returns the variant attribute set level in which a given attribute is located.
+     *
+     * @param string $attributeCode
+     *
+     * @return int
+     */
+    public function getLevelForAttributeCode(string $attributeCode): int;
+
+    /**
      * Get available axes attribute types
      *
      * @return array

@@ -5,7 +5,10 @@ namespace spec\Pim\Component\Catalog\Model;
 use Akeneo\Component\Localization\Model\TranslatableInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Pim\Bundle\CatalogBundle\Entity\Attribute;
+use Pim\Bundle\CatalogBundle\Entity\Family;
 use Pim\Component\Catalog\Model\AttributeInterface;
+use Pim\Component\Catalog\Model\VariantAttributeSet;
 use Pim\Component\Catalog\Model\VariantAttributeSetInterface;
 use Pim\Component\Catalog\Model\CommonAttributeCollection;
 use Pim\Component\Catalog\Model\FamilyInterface;
@@ -136,5 +139,72 @@ class FamilyVariantSpec extends ObjectBehavior
         $this->shouldThrow(\InvalidArgumentException::class)->during('getVariantAttributeSet', [
             0,
         ]);
+    }
+
+    function it_throws_an_exception_if_family_variant_does_not_contain_asked_attribute_code()
+    {
+        $attribute = new Attribute();
+        $attribute->setCode('name');
+
+        $family = new Family();
+        $family->addAttribute($attribute);
+        $this->setFamily($family);
+
+        $this->shouldThrow(\InvalidArgumentException::class)->during('getLevelForAttributeCode', ['description']);
+    }
+
+    function it_gets_the_attribute_set_level_for_provided_attribute_code()
+    {
+        $name = new Attribute();
+        $name->setCode('name');
+
+        $variantAttributeSet = new VariantAttributeSet();
+        $variantAttributeSet->addAttribute($name);
+        $variantAttributeSet->setLevel(1);
+
+        $family = new Family();
+        $family->addAttribute($name);
+        $this->setFamily($family);
+        $this->addVariantAttributeSet($variantAttributeSet);
+
+        $this->getLevelForAttributeCode('name')->shouldReturn(1);
+    }
+
+    function it_gets_the_attribute_set_level_for_provided_axis_code()
+    {
+        $color = new Attribute();
+        $color->setCode('color');
+
+        $variantAttributeSet = new VariantAttributeSet();
+        $variantAttributeSet->setAxes([$color]);
+        $variantAttributeSet->setLevel(1);
+
+        $family = new Family();
+        $family->addAttribute($color);
+        $this->setFamily($family);
+        $this->addVariantAttributeSet($variantAttributeSet);
+
+        $this->getLevelForAttributeCode('color')->shouldReturn(1);
+    }
+
+    function it_gets_the_attribute_set_level_for_provided_common_attribute_code()
+    {
+        $color = new Attribute();
+        $color->setCode('color');
+
+        $name = new Attribute();
+        $name->setCode('name');
+
+        $variantAttributeSet = new VariantAttributeSet();
+        $variantAttributeSet->setAxes([$color]);
+        $variantAttributeSet->setLevel(1);
+
+        $family = new Family();
+        $family->addAttribute($color);
+        $family->addAttribute($name);
+        $this->setFamily($family);
+        $this->addVariantAttributeSet($variantAttributeSet);
+
+        $this->getLevelForAttributeCode('name')->shouldReturn(0);
     }
 }

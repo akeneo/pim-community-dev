@@ -1,4 +1,4 @@
-# 2.2.x
+# 2.2.0-ALPHA0 (2018-02-13)
 
 ## Enhancements
 
@@ -53,3 +53,4 @@
 ### Interfaces
 
 - Add method `Akeneo\Component\Batch\Job\JobRepositoryInterface::addWarning`
+- PIM-7165: Add method `Pim\Component\Catalog\Model\FamilyInterface::getLevelForAttributeCode`

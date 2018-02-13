@@ -1,3 +1,7 @@
+# 2.1.x
+
+- PIM-7168: Fix "status" filter on job tracker datagrid
+
 # 2.1.4 (2018-02-01)
 
 # 2.1.3 (2018-02-01)

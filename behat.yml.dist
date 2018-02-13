@@ -1,4 +1,4 @@
-default:
+legacy:
     suites:
         TEST-pim:
             contexts:
@@ -108,3 +108,22 @@ default:
             factory:
                 page_parameters:
                     base_url: http://akeneo-pim-behat.local/
+
+acceptance:
+    suites:
+        acceptance:
+            paths:
+                - '%paths.base%/tests/features/'
+            contexts_services:
+                - test.locale.context
+                - test.channel.context
+            filters:
+                tags: '@acceptance'
+    extensions:
+        FriendsOfBehat\ContextServiceExtension:
+           imports:
+               - "tests/Acceptance/Resources/config/behat/services.yml"
+        FriendsOfBehat\CrossContainerExtension: ~
+        FriendsOfBehat\SymfonyExtension:
+            kernel:
+                env: acceptance
