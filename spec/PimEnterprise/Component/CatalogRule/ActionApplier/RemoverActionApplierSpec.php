@@ -2,15 +2,20 @@
 
 namespace spec\PimEnterprise\Component\CatalogRule\ActionApplier;
 
+use Akeneo\Component\Classification\Model\CategoryInterface;
+use Akeneo\Component\Classification\Repository\CategoryRepositoryInterface;
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Akeneo\Component\StorageUtils\Updater\PropertyRemoverInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\EntityWithFamilyVariantInterface;
+use Pim\Component\Catalog\Model\EntityWithValuesInterface;
 use Pim\Component\Catalog\Model\FamilyVariantInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
 use Pim\Component\Catalog\Model\VariantProductInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
+use PimEnterprise\Component\CatalogRule\ActionApplier\RemoverActionApplier;
 use PimEnterprise\Component\CatalogRule\Model\ProductRemoveActionInterface;
 use Prophecy\Argument;
 
@@ -18,9 +23,10 @@ class RemoverActionApplierSpec extends ObjectBehavior
 {
     function let(
         PropertyRemoverInterface $propertyRemover,
-        AttributeRepositoryInterface $attributeRepository
+        AttributeRepositoryInterface $attributeRepository,
+        CategoryRepositoryInterface $categoryRepository
     ) {
-        $this->beConstructedWith($propertyRemover, $attributeRepository);
+        $this->beConstructedWith($propertyRemover, $attributeRepository, $categoryRepository);
     }
 
     function it_supports_remove_action(ProductRemoveActionInterface $action)
@@ -36,11 +42,11 @@ class RemoverActionApplierSpec extends ObjectBehavior
         $action->getField()->willReturn('multi-select');
         $action->getOptions()->willReturn([
             'locale' => 'en_US',
-            'scope'  => 'ecommerce'
+            'scope'  => 'ecommerce',
         ]);
         $action->getItems()->willReturn([
             'multi1',
-            'multi2'
+            'multi2',
         ]);
 
         $propertyRemover->removeData(
@@ -48,11 +54,11 @@ class RemoverActionApplierSpec extends ObjectBehavior
             'multi-select',
             [
                 'multi1',
-                'multi2'
+                'multi2',
             ],
             [
                 'locale' => 'en_US',
-                'scope'  => 'ecommerce'
+                'scope'  => 'ecommerce',
             ]
         )->shouldBeCalled();
 
@@ -84,7 +90,7 @@ class RemoverActionApplierSpec extends ObjectBehavior
             'multi-select',
             [
                 'multi1',
-                'multi2'
+                'multi2',
             ],
             []
         )->shouldBeCalled();
@@ -117,7 +123,7 @@ class RemoverActionApplierSpec extends ObjectBehavior
             'multi-select',
             [
                 'multi1',
-                'multi2'
+                'multi2',
             ],
             []
         )->shouldBeCalled();
@@ -165,5 +171,74 @@ class RemoverActionApplierSpec extends ObjectBehavior
         $propertyRemover->removeData($entityWithFamilyVariant, 'categories', ['socks'], [])->shouldBeCalled();
 
         $this->applyAction($action, [$entityWithFamilyVariant]);
+    }
+
+    function it_removes_children_categories_with_include_children_option_set_to_true(
+        $propertyRemover,
+        $categoryRepository,
+        ProductRemoveActionInterface $action,
+        EntityWithValuesInterface $entityWithValues,
+        CategoryInterface $firstCategory,
+        CategoryInterface $secondCategory
+    ) {
+        $action->getItems()->willReturn(
+            [
+                'first_category',
+                'second_category',
+            ]
+        );
+        $action->getOptions()->willReturn(
+            [
+                'locale'           => null,
+                'scope'            => null,
+                'include_children' => true,
+            ]
+        );
+        $action->getField()->willReturn('categories');
+
+        $categoryRepository->getCategoriesByCodes(['first_category', 'second_category'])
+                           ->willReturn([$firstCategory, $secondCategory]);
+        $categoryRepository->getAllChildrenCodes($firstCategory)->willReturn(['first_category_child']);
+        $categoryRepository->getAllChildrenCodes($secondCategory)->willReturn(
+            [
+                'second_category_child',
+                'second_category_other_child',
+            ]
+        );
+
+        $propertyRemover->removeData(
+            $entityWithValues,
+            'categories',
+            [
+                'first_category',
+                'second_category',
+                'first_category_child',
+                'second_category_child',
+                'second_category_other_child',
+            ],
+            [
+                'locale'           => null,
+                'scope'            => null,
+                'include_children' => true,
+            ]
+        )->shouldBeCalled();
+
+        $this->applyAction($action, [$entityWithValues]);
+    }
+
+    function it_throws_exception_if_items_is_not_an_array(
+        ProductRemoveActionInterface $action,
+        EntityWithValuesInterface $entityWithValues
+    ) {
+        $action->getField()->willReturn('foo');
+        $action->getItems()->willReturn('Not an array');
+
+        $this->shouldThrow(
+            InvalidPropertyTypeException::arrayExpected(
+                'foo',
+                RemoverActionApplier::class,
+                'Not an array'
+            )
+        )->during('applyAction', [$action, [$entityWithValues]]);
     }
 }

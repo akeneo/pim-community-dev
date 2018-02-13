@@ -11,10 +11,10 @@
 
 namespace PimEnterprise\Bundle\CatalogRuleBundle\Twig;
 
-use Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\AttributeRepository;
 use Pim\Bundle\EnrichBundle\Resolver\LocaleResolver;
 use Pim\Component\Catalog\Localization\Presenter\PresenterRegistryInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
+use Symfony\Component\Translation\TranslatorInterface;
 
 /**
  * Twig extension for rule presentation
@@ -32,19 +32,25 @@ class RuleExtension extends \Twig_Extension
     /** @var AttributeRepositoryInterface */
     protected $attributeRepository;
 
+    /** @var TranslatorInterface */
+    protected $translator;
+
     /**
      * @param PresenterRegistryInterface   $presenterRegistry
      * @param LocaleResolver               $localeResolver
      * @param AttributeRepositoryInterface $attributeRepository
+     * @param TranslatorInterface          $translator
      */
     public function __construct(
         PresenterRegistryInterface $presenterRegistry,
         LocaleResolver $localeResolver,
-        AttributeRepositoryInterface $attributeRepository
+        AttributeRepositoryInterface $attributeRepository,
+        TranslatorInterface $translator
     ) {
         $this->presenterRegistry   = $presenterRegistry;
         $this->localeResolver      = $localeResolver;
         $this->attributeRepository = $attributeRepository;
+        $this->translator = $translator;
     }
 
     /**
@@ -55,6 +61,7 @@ class RuleExtension extends \Twig_Extension
         return [
             new \Twig_SimpleFilter('present_rule_action_value', [$this, 'presentRuleActionValue']),
             new \Twig_SimpleFilter('append_locale_and_scope_context', [$this, 'appendLocaleAndScopeContext']),
+            new \Twig_SimpleFilter('append_include_children_context', [$this, 'appendIncludeChildrenContext']),
         ];
     }
 
@@ -141,6 +148,28 @@ class RuleExtension extends \Twig_Extension
 
         if (!empty($append)) {
             $value .= sprintf(' [ %s ]', implode(' | ', $append));
+        }
+
+        return $value;
+    }
+
+    /**
+     * @param string $value
+     * @param string $field
+     * @param bool $includeChildren
+     *
+     * @return string
+     */
+    public function appendIncludeChildrenContext(string $value, string $field = '', ?bool $includeChildren = false): string
+    {
+        if ('categories' === $field && true === $includeChildren) {
+            $locale = $this->localeResolver->getCurrentLocale();
+            $value .= sprintf(' %s', $this->translator->trans(
+                'pimee_catalog_rule.actions.options.include_children',
+                [],
+                null,
+                $locale
+            ));
         }
 
         return $value;
