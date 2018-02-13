@@ -50,7 +50,8 @@ class IndexProductProposalsSubscriber implements EventSubscriberInterface
     }
 
     /**
-     * Index one single product or published product.
+     * Index one single product proposal.
+     * If there is no values to review, remove the product proposal in the index.
      *
      * @param GenericEvent $event
      */
@@ -65,13 +66,19 @@ class IndexProductProposalsSubscriber implements EventSubscriberInterface
             return;
         }
 
-        if ($productProposal instanceof ProductDraftInterface && $productProposal->getStatus() === ProductDraftInterface::READY) {
-            $this->productProposalIndexer->index($productProposal);
+        if ($productProposal instanceof ProductDraftInterface) {
+            $changesToReview = $productProposal->getChangesToReview();
+            if (!empty($changesToReview['values'])) {
+                $productProposal->setChanges($changesToReview);
+                $this->productProposalIndexer->index($productProposal);
+            } else {
+                $this->productProposalIndexer->remove($productProposal->getId());
+            }
         }
     }
 
     /**
-     * Index several products or published products at a time.
+     * Index several product proposals at a time.
      *
      * @param GenericEvent $event
      */
@@ -82,17 +89,33 @@ class IndexProductProposalsSubscriber implements EventSubscriberInterface
             return;
         }
 
-        if (!current($productProposals) instanceof ProductInterface) {
+        if (!current($productProposals) instanceof ProductDraftInterface) {
             return;
         }
 
-        if (current($productProposals) instanceof ProductDraftInterface && current($productProposals)->getStatus() === ProductDraftInterface::READY) {
-            $this->productProposalIndexer->index($productProposals);
+        $proposalsToIndex = [];
+        $proposalsToRemove = [];
+        foreach ($productProposals as $productProposal) {
+            $changesToReview = $productProposal->getChangesToReview();
+            if (!empty($changesToReview['values'])) {
+                $productProposal->setChanges($changesToReview);
+                $proposalsToIndex[] = $productProposal;
+            } else {
+                $proposalsToRemove[] = $productProposal;
+            }
+        }
+
+        if (!empty($proposalsToIndex)) {
+            $this->productProposalIndexer->indexAll($proposalsToIndex);
+        }
+
+        if (!empty($proposalsToRemove)) {
+            $this->productProposalIndexer->removeAll($proposalsToRemove);
         }
     }
 
     /**
-     * Delete one single product or published product from the right ES index
+     * Delete one single product proposal.
      *
      * @param RemoveEvent $event
      */

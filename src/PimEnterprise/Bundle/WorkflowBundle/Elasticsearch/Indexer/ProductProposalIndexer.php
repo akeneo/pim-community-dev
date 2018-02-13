@@ -54,7 +54,7 @@ class ProductProposalIndexer implements IndexerInterface, BulkIndexerInterface, 
     }
 
     /**
-     * Indexes a product proposal in both the product index and the product and product model index.
+     * Indexes a product proposal in from the product proposal index.
      *
      * {@inheritdoc}
      */
@@ -66,7 +66,7 @@ class ProductProposalIndexer implements IndexerInterface, BulkIndexerInterface, 
     }
 
     /**
-     * Indexes a product proposal in both the product index and the product and product model index.
+     * Indexes a product proposal in both from the product proposal index.
      *
      * If the index_refresh is provided, it uses the refresh strategy defined.
      * Otherwise the waitFor strategy is by default.
@@ -103,17 +103,20 @@ class ProductProposalIndexer implements IndexerInterface, BulkIndexerInterface, 
     }
 
     /**
-     * Removes the product proposal from both the product index and the product and product model index.
+     * Removes the product proposal from the product proposal index.
      *
      * {@inheritdoc}
      */
     public function remove($objectId, array $options = []) : void
     {
-        $this->productProposalClient->delete($this->indexType, $objectId);
+        $documents = $this->productProposalClient->search($this->indexType, ['query' => ['term' => ['id' => $objectId]]]);
+        if (0 !== $documents['hits']['total']) {
+            $this->productProposalClient->delete($this->indexType, $objectId);
+        }
     }
 
     /**
-     * Removes the product proposals from both the product proposal index and the product proposal.
+     * Removes the product proposals from the product proposal index.
      *
      * {@inheritdoc}
      */
@@ -126,6 +129,8 @@ class ProductProposalIndexer implements IndexerInterface, BulkIndexerInterface, 
      * Checks the normalized object has the minimum property needed for the indexation to work.
      *
      * @param array $normalization
+     *
+     * @throws \InvalidArgumentException
      */
     protected function validateObjectNormalization(array $normalization) : void
     {
