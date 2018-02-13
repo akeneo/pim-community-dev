@@ -20,6 +20,22 @@
 
 - PIM-6334: Change the constructor of `Pim\Component\Catalog\Normalizer\Standard\ProductModelNormalizer` to add `Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface`
 
+## BC breaks
+
+- Change the constructor of `Pim\Component\Connector\Processor\Denormalization\Product` to remove last `Pim\Component\Catalog\Builder\ProductBuilderInterface`.
+
+### Classes
+
+- Remove last argument of method `fromFlatData` in `Pim\Component\Connector\Processor\Denormalization\Product\FindProductToImport`
+
+### Constructors
+
+
+
+### Services and parameters
+
+- Remove service `pim_catalog.builder.variant_product`
+
 # 2.2.0-ALPHA0 (2018-02-13)
 
 ## Enhancements

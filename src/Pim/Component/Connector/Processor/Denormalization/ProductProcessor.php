@@ -108,7 +108,7 @@ class ProductProcessor extends AbstractProcessor implements ItemProcessorInterfa
             $familyCode = $this->getFamilyCode($item);
             $filteredItem = $this->filterItemData($item);
 
-            $product = $this->findProductToImport->fromFlatData($identifier, $familyCode, $parentProductModelCode);
+            $product = $this->findProductToImport->fromFlatData($identifier, $familyCode);
         } catch (AccessDeniedException $e) {
             $this->skipItemWithMessage($item, $e->getMessage(), $e);
         }

@@ -13,13 +13,11 @@ class FindProductToImportSpec extends ObjectBehavior
 {
     function let(
         IdentifiableObjectRepositoryInterface $productRepository,
-        ProductBuilderInterface $productBuilder,
-        ProductBuilderInterface $variantProductBuilder
+        ProductBuilderInterface $productBuilder
     ) {
         $this->beConstructedWith(
             $productRepository,
-            $productBuilder,
-            $variantProductBuilder
+            $productBuilder
         );
     }
 
@@ -34,16 +32,7 @@ class FindProductToImportSpec extends ObjectBehavior
     ) {
         $productRepository->findOneByIdentifier('product_identifier')->willReturn($product);
 
-        $this->fromFlatData('product_identifier', 'family', '')->shouldReturn($product);
-    }
-
-    function it_finds_variant_product_from_flat_data_given_by_the_reader(
-        $productRepository,
-        ProductInterface $variantProduct
-    ) {
-        $productRepository->findOneByIdentifier('product_identifier')->willReturn($variantProduct);
-
-        $this->fromFlatData('product_identifier', 'family', 'parent_code')->shouldReturn($variantProduct);
+        $this->fromFlatData('product_identifier', 'family')->shouldReturn($product);
     }
 
     function it_creates_product_from_flat_data_given_by_the_reader(
@@ -55,16 +44,5 @@ class FindProductToImportSpec extends ObjectBehavior
         $productBuilder->createProduct('product_identifier', 'family')->willReturn($product);
 
         $this->fromFlatData('product_identifier', 'family', '')->shouldReturn($product);
-    }
-
-    function it_creates_variant_product_from_flat_data_given_by_the_reader(
-        $productRepository,
-        $variantProductBuilder,
-        ProductInterface $variantProduct
-    ) {
-        $productRepository->findOneByIdentifier('product_identifier')->willReturn(null);
-        $variantProductBuilder->createProduct('product_identifier', 'family')->willReturn($variantProduct);
-
-        $this->fromFlatData('product_identifier', 'family', 'parent_code')->shouldReturn($variantProduct);
     }
 }

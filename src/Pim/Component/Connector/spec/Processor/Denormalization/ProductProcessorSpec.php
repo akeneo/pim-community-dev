@@ -75,7 +75,7 @@ class ProductProcessorSpec extends ObjectBehavior
         $jobParameters->get('dateFormat')->willReturn('yyyy-MM-dd');
 
         $productRepository->getIdentifierProperties()->willReturn(['sku']);
-        $productToImport->fromFlatData('tshirt', 'Summer Tshirt', '')->willReturn($product);
+        $productToImport->fromFlatData('tshirt', 'Summer Tshirt')->willReturn($product);
         $product->getId()->willReturn(42);
 
         $addParent->to($product, '')->willReturn($product);
@@ -178,7 +178,7 @@ class ProductProcessorSpec extends ObjectBehavior
         $jobParameters->get('dateFormat')->willReturn('yyyy-MM-dd');
 
         $productRepository->getIdentifierProperties()->willReturn(['sku']);
-        $productToImport->fromFlatData('tshirt', 'Tshirt', '')->willReturn($product);
+        $productToImport->fromFlatData('tshirt', 'Tshirt')->willReturn($product);
         $product->getId()->willReturn(42);
 
         $addParent->to($product, '')->willReturn($product);
@@ -282,7 +282,7 @@ class ProductProcessorSpec extends ObjectBehavior
         $jobParameters->get('dateFormat')->willReturn('yyyy-MM-dd');
 
         $productRepository->getIdentifierProperties()->willReturn(['sku']);
-        $productToImport->fromFlatData('tshirt', 'Tshirt', '')->willReturn($product);
+        $productToImport->fromFlatData('tshirt', 'Tshirt')->willReturn($product);
         $product->getId()->willReturn(42);
 
         $addParent->to($product, '')->willReturn($product);
@@ -420,7 +420,7 @@ class ProductProcessorSpec extends ObjectBehavior
         $jobParameters->get('dateFormat')->willReturn('yyyy-MM-dd');
 
         $productRepository->getIdentifierProperties()->willReturn(['sku']);
-        $productToImport->fromFlatData('tshirt', 'Tshirt', '')->willReturn($product);
+        $productToImport->fromFlatData('tshirt', 'Tshirt')->willReturn($product);
         $stepExecution->getSummaryInfo('item_position')->shouldBeCalled();
 
         $addParent->to($product, '')->willReturn($product);
@@ -527,7 +527,7 @@ class ProductProcessorSpec extends ObjectBehavior
         $jobParameters->get('dateFormat')->willReturn('yyyy-MM-dd');
 
         $productRepository->getIdentifierProperties()->willReturn(['sku']);
-        $productToImport->fromFlatData('tshirt', 'Tshirt', '')->willReturn($product);
+        $productToImport->fromFlatData('tshirt', 'Tshirt')->willReturn($product);
 
         $stepExecution->getSummaryInfo('item_position')->shouldBeCalled();
         $addParent->to($product, '')->willReturn($product);
@@ -638,7 +638,7 @@ class ProductProcessorSpec extends ObjectBehavior
         $jobParameters->get('dateFormat')->willReturn('yyyy-MM-dd');
 
         $productRepository->getIdentifierProperties()->willReturn(['sku']);
-        $productToImport->fromFlatData('tshirt', 'Tshirt', '')->willReturn($product);
+        $productToImport->fromFlatData('tshirt', 'Tshirt')->willReturn($product);
         $product->getId()->willReturn(1);
         $addParent->to($product, '')->willReturn($product);
 
@@ -738,7 +738,7 @@ class ProductProcessorSpec extends ObjectBehavior
         $jobParameters->get('dateFormat')->willReturn('yyyy-MM-dd');
 
         $productRepository->getIdentifierProperties()->willReturn(['sku']);
-        $productToImport->fromFlatData('tshirt', 'Summer Tshirt', '')->willReturn($product);
+        $productToImport->fromFlatData('tshirt', 'Summer Tshirt')->willReturn($product);
         $product->getId()->willReturn(42);
 
         $addParent->to($product, '')->willReturn($product);
@@ -843,7 +843,7 @@ class ProductProcessorSpec extends ObjectBehavior
         $jobParameters->get('dateFormat')->willReturn('yyyy-MM-dd');
 
         $productRepository->getIdentifierProperties()->willReturn(['sku']);
-        $productToImport->fromFlatData('tshirt', 'Tshirt', '')->willReturn($product);
+        $productToImport->fromFlatData('tshirt', 'Tshirt')->willReturn($product);
 
         $addParent->to($product, '')->willReturn($product);
 

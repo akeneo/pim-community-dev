@@ -16,7 +16,7 @@ class CreateVariantProductIntegration extends TestCase
 {
     public function testVariantProductHasValidParent(): void
     {
-        $variantProduct = $this->get('pim_catalog.builder.variant_product')->createProduct('minerva_blue_m');
+        $variantProduct = $this->get('pim_catalog.builder.product')->createProduct('minerva_blue_m');
         $this->get('pim_catalog.updater.product')->update($variantProduct, [
             'parent' => 'minerva',
             'values' => [
@@ -40,7 +40,7 @@ class CreateVariantProductIntegration extends TestCase
 
     public function testVariantAxisValuesCombinationIsUniqueInDatabase(): void
     {
-        $variantProduct = $this->get('pim_catalog.builder.variant_product')->createProduct('apollon_blue_m_bis');
+        $variantProduct = $this->get('pim_catalog.builder.product')->createProduct('apollon_blue_m_bis');
         $this->get('pim_catalog.updater.product')->update($variantProduct, [
             'parent' => 'apollon_blue',
             'values' => [
@@ -65,7 +65,7 @@ class CreateVariantProductIntegration extends TestCase
 
     public function testVariantAxisValuesCombinationIsUniqueInMemory(): void
     {
-        $variantProduct1 = $this->get('pim_catalog.builder.variant_product')->createProduct('apollon_blue_l_1');
+        $variantProduct1 = $this->get('pim_catalog.builder.product')->createProduct('apollon_blue_l_1');
         $this->get('pim_catalog.updater.product')->update($variantProduct1, [
             'parent' => 'apollon_blue',
             'values' => [
@@ -81,7 +81,7 @@ class CreateVariantProductIntegration extends TestCase
         $errors = $this->get('pim_catalog.validator.product')->validate($variantProduct1);
         $this->assertEquals(0, $errors->count());
 
-        $variantProduct2 = $this->get('pim_catalog.builder.variant_product')->createProduct('apollon_blue_l_2');
+        $variantProduct2 = $this->get('pim_catalog.builder.product')->createProduct('apollon_blue_l_2');
         $this->get('pim_catalog.updater.product')->update($variantProduct2, [
             'parent' => 'apollon_blue',
             'values' => [
