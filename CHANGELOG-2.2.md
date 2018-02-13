@@ -1,3 +1,9 @@
+# 2.2.X
+
+## Bug fixes
+
+- GITHUB-7641: Fix bug related to product export
+
 # 2.2.0-ALPHA0 (2018-02-13)
 
 ## Enhancements
