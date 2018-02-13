@@ -183,7 +183,7 @@ pim_enrich:
         deletion_failed: Le produit n'a pas pu être supprimé.
         update_successful: Le produit a bien été mis à jour.
         update_failed: Le produit n'a pas pu être mis à jour.
-        field_not_ready: 'Le produit ne peut être sauvé dès maintenant. Les champs suivants ne sont pas prêts : {{ fields }}'
+        field_not_ready: "Le produit ne peut être sauvé dès maintenant. Les champs suivants ne sont pas prêts : {{ fields }}"
         already_in_upload: Un fichier est déjà en téléchargement pour cet attribut dans la locale "{{ locale }}" et le canal "{{ scope }}"
       error:
         upload: Une erreur s'est produite lors du transfert du fichier.
@@ -247,7 +247,7 @@ pim_enrich:
         update_successful: Le modèle de produit a été mis à jour. La complétude de ses produits variants va être recalculée.
         deletion_successful: Le modèle de produit a bien été supprimé.
         update_failed: Le modèle de produit n'a pas pu être mis à jour.
-        field_not_ready: 'Le modèle de produit ne peut être sauvé dès maintenant. Les champs suivants ne sont pas prêts : {{ fields }}'
+        field_not_ready: "Le modèle de produit ne peut être sauvé dès maintenant. Les champs suivants ne sont pas prêts : {{ fields }}"
       read_only_parent_attribute_from_common: Cet attribut peut être mis à jour sur les attributs communs.
       read_only_parent_attribute_from_model: "Cet attribut peut être mis à jour sur les attributs par {{ axes }}"
       variant_axis: Axe de variante
@@ -266,7 +266,7 @@ pim_enrich:
         deletion_failed: Le type d’association n’a pas pu être supprimé.
         update_successful: Le type d'association a été mis à jour avec succès.
         update_failed: Le type d’association n’a pas pu être modifié.
-        field_not_ready: 'Le type d''association ne peut être sauvé dès maintenant. Les champs suivants ne sont pas prêts : {{ fields }}'
+        field_not_ready: "Le type d'association ne peut être sauvé dès maintenant. Les champs suivants ne sont pas prêts : {{ fields }}"
       meta:
         created: Créé
         created_by: Créé par
@@ -285,7 +285,7 @@ pim_enrich:
         deletion_failed: Le type de groupe n'a pas pu être supprimé.
         update_successful: Le type de groupe a bien été mis à jour.
         update_failed: Le type de groupe n'a pas pu être mis à jour.
-        field_not_ready: 'Le type de groupe ne peut être sauvé dès maintenant. Les champs suivants ne sont pas prêts : {{ fields }}'
+        field_not_ready: "Le type de groupe ne peut être sauvé dès maintenant. Les champs suivants ne sont pas prêts : {{ fields }}"
       meta:
         created: Créé
         created_by: Créé par
@@ -307,7 +307,7 @@ pim_enrich:
         update_failed: Le canal n'a pas pu être mis à jour.
         create_successful: Canal créé avec succès.
         create_failed: Le canal ne peut pas être créé.
-        field_not_ready: 'Le canal ne peut être sauvé dès maintenant. Les champs suivants ne sont pas prêts : {{ fields }}'
+        field_not_ready: "Le canal ne peut être sauvé dès maintenant. Les champs suivants ne sont pas prêts : {{ fields }}"
       meta:
         created: Créé
         created_by: Créé par
@@ -372,7 +372,7 @@ pim_enrich:
         deletion_failed: Le groupe n'a pas pu être supprimé.
         update_successful: Groupe mis à jour avec succès.
         update_failed: Le groupe n'a pas pu être mis à jour.
-        field_not_ready: 'Le groupe ne peut être sauvé dès maintenant. Les champs suivants ne sont pas prêts : {{ fields }}'
+        field_not_ready: "Le groupe ne peut être sauvé dès maintenant. Les champs suivants ne sont pas prêts : {{ fields }}"
       btn:
         save: Enregistrer
       meta:
@@ -398,7 +398,7 @@ pim_enrich:
         update_failed: L'attribut n'a pas pu être mis à jour.
         create_successful: Attribut créé avec succès.
         create_failed: L'attribut n'a pas pu être créé.
-        field_not_ready: 'L''attribut ne peut être sauvé dès maintenant. Les champs suivants ne sont pas prêts : {{ fields }}'
+        field_not_ready: "L'attribut ne peut être sauvé dès maintenant. Les champs suivants ne sont pas prêts : {{ fields }}"
       scopable: Décliné par canal
       type:
         pim_catalog_identifier: Identifiant
@@ -806,12 +806,12 @@ pim_enrich:
           help: Le canal définit la portée des valeurs des produits, les locales utilisées pour sélectionner les données ainsi que l'arbre de catégories utilisé pour sélectionner les produits.
         locales:
           title: Locales
-          help: 'Les locales définissent les valeurs de produits traduisibles à exporter. Par ex.: les informations des produits en allemand.'
+          help: "Les locales définissent les valeurs de produits traduisibles à exporter. Par ex.: les informations des produits en allemand."
         attributes:
           title: Attributs
           edit: Modifier
           label: "{0}Tous les attributs|{1}1 attribut sélectionné|]1,Inf[{{ count }} attributs sélectionnés"
-          help: 'Sélectionne les informations du produit à exporter. Par ex. : seulement les attributs techniques.'
+          help: "Sélectionne les informations du produit à exporter. Par ex. : seulement les attributs techniques."
           empty: Tous les attributs vont être exportés
           modal:
             apply: Appliquer
@@ -828,7 +828,7 @@ pim_enrich:
           description: Sélectionnez les informations produit à exporter
         family:
           title: Famille
-          help: 'Sélectionne les produits à exporter en fonction de leur famille. Par ex. : exporter seulement les chaussures et les robes.'
+          help: "Sélectionne les produits à exporter en fonction de leur famille. Par ex. : exporter seulement les chaussures et les robes."
           operators:
             IN: Dans la liste
             "NOT IN": Pas dans la liste
@@ -844,7 +844,7 @@ pim_enrich:
             "SINCE LAST JOB": Produits mis à jour depuis le dernier export
         enabled:
           title: État
-          help: 'Choisir les produits à exporter selon leur statut. Par ex. : exporter les produits quel que soit leur statut.'
+          help: "Choisir les produits à exporter selon leur statut. Par ex. : exporter les produits quel que soit leur statut."
           value:
             all: Tous
             enabled: Activé
@@ -1211,6 +1211,7 @@ batch_jobs:
     label: Import des familles en CSV
     validation.label: Validation du fichier
     import.label: Import des familles
+    compute_data_related_to_family_variants.label: Mise à jour des données des modèles de produit
   csv_family_variant_import:
     label: Import des variantes de famille en CSV
     validation.label: Validation du fichier
@@ -1274,6 +1275,7 @@ batch_jobs:
     label: Import des familles en XLSX
     validation.label: Validation du fichier
     import.label: Import des familles
+    compute_data_related_to_family_variants.label: Mise à jour des données des modèles de produit
   xlsx_family_variant_import:
     label: Import des variantes de famille en XLSX
     validation.label: Validation du fichier
