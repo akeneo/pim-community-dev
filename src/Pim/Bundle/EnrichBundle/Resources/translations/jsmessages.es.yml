@@ -678,11 +678,11 @@ pim_enrich:
           title: Canal
         locales:
           title: Locales
-          help: 'Los locales definen los valores de producto traducidos a exportar. Ej.: sólo obtener información de producto en inglés.'
+          help: "Los locales definen los valores de producto traducidos a exportar. Ej.: sólo obtener información de producto en inglés."
         attributes:
           title: Atributos
           edit: Editar
-          help: 'Seleccionar la información de producto a exportar. Ej.: solo atributos técnicos.'
+          help: "Seleccionar la información de producto a exportar. Ej.: solo atributos técnicos."
           empty: Se exportarán todos los atributos
           modal:
             apply: Aplicar
@@ -697,7 +697,7 @@ pim_enrich:
           title: Atributos
         family:
           title: Familia
-          help: 'Seleccionar los productos a exportar según su familia. Ej.: Exportar sólo los zapatos y vestidos.'
+          help: "Seleccionar los productos a exportar según su familia. Ej.: Exportar sólo los zapatos y vestidos."
           operators:
             IN: En la lista
             "NOT IN": No figura en la lista
@@ -713,7 +713,7 @@ pim_enrich:
             "SINCE LAST JOB": Productos actualizados desde la última exportación
         enabled:
           title: Estado
-          help: 'Seleccionar el producto a exportar según su estado. Ej.: Exportar productos sin importar su estado.'
+          help: "Seleccionar el producto a exportar según su estado. Ej.: Exportar productos sin importar su estado."
           value:
             all: Todos
             enabled: Habilitado

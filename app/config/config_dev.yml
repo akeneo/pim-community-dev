@@ -29,3 +29,6 @@ oro_assetic:
 
 swiftmailer:
     disable_delivery: true
+
+parameters:
+    router.request_context.base_url: "/app_dev.php"
