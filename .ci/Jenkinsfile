@@ -9,6 +9,7 @@ String launchIntegrationTests = "yes"
 String launchBehatTests = "yes"
 String verboseOutputs = "yes"
 String dotsPerLine = "50"
+String slackChannel = ""
 
 stage("Build") {
     milestone 1
@@ -19,7 +20,7 @@ stage("Build") {
                 choice(choices: 'yes\nno', description: 'Run integration tests', name: 'launchIntegrationTests'),
                 choice(choices: 'yes\nno', description: 'Run behat tests', name: 'launchBehatTests'),
                 choice(choices: 'no\nyes', description: 'Enable Verbose mode', name: 'verboseOutputs'),
-                string(defaultValue: '50', description: 'Number of dots per line', name: 'dotsperline'),
+                string(defaultValue: '', description: 'Channel or user to notify (example : "#channel,@user")', name: 'slackChannel'),
                 string(defaultValue: 'ee,ce', description: 'PIM edition the behat tests should run on (comma separated values)', name: 'editions'),
                 string(defaultValue: 'features,vendor/akeneo/pim-community-dev/features', description: 'Behat scenarios to build', name: 'features'),
             ])
@@ -30,7 +31,7 @@ stage("Build") {
             launchIntegrationTests = userInput['launchIntegrationTests']
             launchBehatTests = userInput['launchBehatTests']
             verboseOutputs = userInput['verboseOutputs']
-            dotsPerLine = userInput['dotsperline']
+            slackChannel = userInput['slackChannel']
         }
     }
     milestone 2
@@ -320,6 +321,8 @@ stage("Test") {
                 }
             }
         }
+
+        notifySlack(slackChannel);
     }
 }
 
@@ -432,4 +435,21 @@ def queue(body, scale, edition, verboseOutputs, dotsPerLine) {
 def clearTemplateNames() {
     // see https://issues.jenkins-ci.org/browse/JENKINS-42184
     currentBuild.rawBuild.getAction( PodTemplateAction.class )?.stack?.clear()
+}
+
+def notifySlack(String slackChannel) {
+    if (slackChannel == '') {
+        return;
+    }
+
+    // Null status means success
+    buildStatus = currentBuild.result
+
+    String color = '#42C02D'
+    if (buildStatus != null) {
+        color = '#FF0000'
+    }
+
+    def msg = "<${env.BUILD_URL}|Build finished:> `${env.JOB_NAME}`"
+    slackSend(color: color, message: msg, channel:"${slackChannel}")
 }
