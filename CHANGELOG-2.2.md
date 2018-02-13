@@ -1,3 +1,9 @@
+# 2.2.x
+
+## Improve Julia's experience
+
+- PIM-7165: Execute rules after a product model import
+
 # 2.2.0-ALPHA0 (2018-02-13)
 
 ## Improve Julia's experience

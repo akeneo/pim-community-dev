@@ -1,12 +1,18 @@
 services:
-    # CSV Product Import steps ----------------------------------------------------------------------------------------
+    # CSV Import steps ----------------------------------------------------------------------------------------
     pimee_catalog_rule.step.csv_product.import:
         alias: pim_connector.step.csv_product.import
+
+    pimee_catalog_rule.step.csv_root_product_model.import:
+        alias: pim_connector.step.csv_root_product_model.import
+
+    pimee_catalog_rule.step.csv_sub_product_model.import:
+        alias: pim_connector.step.csv_sub_product_model.import
 
     pimee_catalog_rule.step.csv_product.import_associations:
         alias: pim_connector.step.csv_product.import_associations
 
-    # XLSX Product Import steps ---------------------------------------------------------------------------------------
+    # XLSX Import steps ---------------------------------------------------------------------------------------
     pimee_catalog_rule.step.xlsx_product.import:
         alias: pim_connector.step.xlsx_product.import
 
@@ -22,6 +28,17 @@ services:
             - '@akeneo_batch.job_repository'
             - '@pimee_catalog_rule.reader.file.csv_product_with_rule'
             - '@pimee_catalog_rule.processor.product_loader'
+            - '@pimee_catalog_rule.executor.rules'
+            - 100
+
+    pimee_catalog_rule.step.csv_product_model.execute_rules:
+        class: '%pim_connector.step.item_step.class%'
+        arguments:
+            - 'execute_rules'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@pimee_catalog_rule.reader.file.csv_product_model_with_rule'
+            - '@pim_connector.processor.denormalization.product_model_loader'
             - '@pimee_catalog_rule.executor.rules'
             - 100
 

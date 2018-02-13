@@ -43,6 +43,7 @@ services:
                 yml_asset_channel_configuration_import: pim-job-instance-yml-base-import
                 yml_asset_channel_configuration_export: pim-job-instance-yml-base-export
                 csv_product_import_with_rules: pim-job-instance-csv-product-import
+                csv_product_model_import_with_rules: pim-job-instance-csv-product-model-import
                 csv_product_proposal_import: pim-job-instance-csv-product-import
                 csv_published_product_export: pim-job-instance-csv-product-export
                 csv_asset_category_import: pim-job-instance-csv-base-import

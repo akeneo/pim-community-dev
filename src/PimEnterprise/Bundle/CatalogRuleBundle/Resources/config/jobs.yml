@@ -1,5 +1,6 @@
 parameters:
     pimee_catalog_rule.job_name.csv_product_import_with_rules: 'csv_product_import_with_rules'
+    pimee_catalog_rule.job_name.csv_product_model_import_with_rules: 'csv_product_model_import_with_rules'
     pimee_catalog_rule.job_name.xlsx_product_import_with_rules: 'xlsx_product_import_with_rules'
     pimee_catalog_rule.job_name.yml_rule_import: 'yml_rule_import'
     pimee_catalog_rule.job_name.yml_rule_export: 'yml_rule_export'
@@ -20,6 +21,20 @@ services:
                 - '@pimee_catalog_rule.step.csv_product.import'
                 - '@pimee_catalog_rule.step.csv_product.import_associations'
                 - '@pimee_catalog_rule.step.csv_product.execute_rules'
+        tags:
+            - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.csv%', type: '%pim_connector.job.import_type%' }
+
+    pimee_catalog_rule.job.csv_product_model_import_with_rules:
+        class: '%pim_connector.job.simple_job.class%'
+        arguments:
+            - '%pimee_catalog_rule.job_name.csv_product_model_import_with_rules%'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            -
+                - '@pim_connector.step.charset_validator'
+                - '@pimee_catalog_rule.step.csv_root_product_model.import'
+                - '@pimee_catalog_rule.step.csv_sub_product_model.import'
+                - '@pimee_catalog_rule.step.csv_product_model.execute_rules'
         tags:
             - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.csv%', type: '%pim_connector.job.import_type%' }
 
