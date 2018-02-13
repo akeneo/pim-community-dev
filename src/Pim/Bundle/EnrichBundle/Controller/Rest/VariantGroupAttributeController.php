@@ -12,6 +12,7 @@ use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
@@ -61,7 +62,7 @@ class VariantGroupAttributeController
      *
      * @throws NotFoundHttpException If variant group or attribute is not found or the user cannot see it
      *
-     * @return JsonResponse|RedirectResponse
+     * @return Response
      */
     public function removeAttributeAction(Request $request, $code, $attributeId)
     {

@@ -9,6 +9,7 @@ use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Notification controller
@@ -106,7 +107,7 @@ class NotificationController
      *
      * @param int $id
      *
-     * @return JsonResponse|RedirectResponse
+     * @return Response
      */
     public function removeAction(Request $request, $id)
     {

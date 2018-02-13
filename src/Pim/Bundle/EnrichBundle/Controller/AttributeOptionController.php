@@ -20,6 +20,7 @@ use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
@@ -172,7 +173,7 @@ class AttributeOptionController
      *
      * @param int $attributeOptionId
      *
-     * @return JsonResponse|RedirectResponse
+     * @return Response
      *
      * @AclAncestor("pim_enrich_attribute_edit")
      */
@@ -199,7 +200,7 @@ class AttributeOptionController
      * @param Request $request
      * @param int     $attributeId
      *
-     * @return JsonResponse|RedirectResponse
+     * @return Response
      *
      * @AclAncestor("pim_enrich_attribute_edit")
      */

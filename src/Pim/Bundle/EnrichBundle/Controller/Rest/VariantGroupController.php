@@ -14,6 +14,7 @@ use Pim\Component\Catalog\Repository\GroupRepositoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -144,7 +145,7 @@ class VariantGroupController
      * @throws NotFoundHttpException     If product is not found or the user cannot see it
      * @throws AccessDeniedHttpException If the user does not have right to edit the product
      *
-     * @return JsonResponse|RedirectResponse
+     * @return Response
      */
     public function postAction(Request $request, $code)
     {
@@ -195,7 +196,7 @@ class VariantGroupController
      *
      * @AclAncestor("pim_enrich_group_remove")
      *
-     * @return JsonResponse|RedirectResponse
+     * @return Response
      */
     public function removeAction(Request $request, $code)
     {

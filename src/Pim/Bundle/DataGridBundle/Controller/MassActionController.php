@@ -6,6 +6,7 @@ use Pim\Bundle\DataGridBundle\Extension\MassAction\MassActionDispatcher;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Mass action controller for edit and delete actions
@@ -39,7 +40,7 @@ class MassActionController
     /**
      * Mass delete action
      *
-     * @return RedirectResponse|JsonResponse
+     * @return Response
      */
     public function massActionAction(Request $request)
     {

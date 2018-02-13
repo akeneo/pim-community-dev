@@ -21,6 +21,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -164,7 +165,7 @@ class ProductController
     /**
      * @param Request $request
      *
-     * @return JsonResponse|RedirectResponse
+     * @return Response
      */
     public function createAction(Request $request)
     {
@@ -207,7 +208,7 @@ class ProductController
      * @throws NotFoundHttpException     If product is not found or the user cannot see it
      * @throws AccessDeniedHttpException If the user does not have right to edit the product
      *
-     * @return JsonResponse|RedirectResponse
+     * @return Response
      */
     public function postAction(Request $request, $id)
     {
@@ -261,7 +262,7 @@ class ProductController
      *
      * @AclAncestor("pim_enrich_product_remove")
      *
-     * @return JsonResponse|RedirectResponse
+     * @return Response
      */
     public function removeAction(Request $request, $id)
     {
@@ -287,7 +288,7 @@ class ProductController
      * @throws AccessDeniedHttpException If the user does not have right to edit the product
      * @throws BadRequestHttpException   If the attribute is not removable
      *
-     * @return JsonResponse|RedirectResponse
+     * @return Response
      */
     public function removeAttributeAction(Request $request, $id, $attributeId)
     {
