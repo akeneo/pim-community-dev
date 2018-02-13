@@ -85,7 +85,7 @@ pimee_enrich:
           messages:
             approve:
               success: La proposta è stata applicata con successo.
-              error: 'La proposta non può essere applicata a causa del seguente errore: {{ error }}'
+              error: "La proposta non può essere applicata a causa del seguente errore: {{ error }}"
             reject:
               success: La proposta non è stata accettata.
             remove:

@@ -12,7 +12,7 @@ services:
     pimee_catalog_rule.validator.existing_filter_field:
         class: '%pimee_catalog_rule.validator.existing_filter_field.class%'
         arguments:
-            - '@pim_catalog.query.filter.product_and_product_model_registry'
+            - '@pim_catalog.query.filter.product_registry'
         tags:
             - { name: validator.constraint_validator, alias: pimee_filter_field_validator }
 

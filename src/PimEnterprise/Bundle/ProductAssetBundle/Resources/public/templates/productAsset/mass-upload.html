@@ -31,11 +31,13 @@
             <label class="upload-zone file empty">
               <div class="upload-info">
                 <div class="AknMediaField-emptyContainer">
-                  <span title="upload icon" class="AknMediaField-uploadIcon" />
-                  <span class="upload-filename" data-empty-title="<%- __('pimee_product_asset.mass_upload.drag_and_drop') %>">
-                    <%- __('pimee_product_asset.mass_upload.drag_and_drop') %>
-                  </span>
-                </div>
+                  <div class="AknMediaField-fileUploaderInput mass-upload-dropzone"></div>
+                  <div class="AknMediaField-emptyContainer">
+                      <span title="upload icon" class="AknMediaField-uploadIcon" />
+                      <span class="upload-filename" data-empty-title="<%- __('pimee_product_asset.mass_upload.drag_and_drop') %>">
+                        <%- __('pimee_product_asset.mass_upload.drag_and_drop') %>
+                      </span>
+                  </div>
               </div>
             </label>
             <div class="icons-container"></div>
@@ -53,4 +55,3 @@
   </div>
 </div>
 
-<div class="mass-upload-dropzone"></div>
