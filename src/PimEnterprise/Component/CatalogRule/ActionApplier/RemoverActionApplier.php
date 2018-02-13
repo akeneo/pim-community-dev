@@ -18,7 +18,6 @@ use Akeneo\Component\RuleEngine\ActionApplier\ActionApplierInterface;
 use Akeneo\Component\StorageUtils\Updater\PropertyRemoverInterface;
 use Pim\Component\Catalog\Model\EntityWithFamilyVariantInterface;
 use Pim\Component\Catalog\Model\EntityWithValuesInterface;
-use Pim\Component\Catalog\Model\FamilyVariantInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use PimEnterprise\Component\CatalogRule\Model\ProductRemoveActionInterface;
 
@@ -54,10 +53,10 @@ class RemoverActionApplier implements ActionApplierInterface
     public function applyAction(ActionInterface $action, array $entitiesWithValues = []): void
     {
         foreach ($entitiesWithValues as $entityWithValues) {
-            if (!$entityWithValues instanceof EntityWithFamilyVariantInterface) {
-                $this->removeDataOnEntityWithValues($entityWithValues, $action);
-            } else {
+            if ($entityWithValues instanceof EntityWithFamilyVariantInterface) {
                 $this->removeDataOnEntityWithFamilyVariant($entityWithValues, $action);
+            } else {
+                $this->removeDataOnEntityWithValues($entityWithValues, $action);
             }
         }
     }
@@ -87,43 +86,11 @@ class RemoverActionApplier implements ActionApplierInterface
             return;
         }
 
-        $level = $this->getActionFieldLevel($field, $entityWithFamilyVariant->getFamilyVariant());
+        $level = $entityWithFamilyVariant->getFamilyVariant()->getLevelForAttributeCode($field);
 
         if ($entityWithFamilyVariant->getVariationLevel() === $level) {
             $this->removeDataOnEntityWithValues($entityWithFamilyVariant, $action);
         }
-    }
-
-    /**
-     * @param string                 $actionField
-     * @param FamilyVariantInterface $familyVariant
-     *
-     * @return int
-     */
-    private function getActionFieldLevel(
-        string $actionField,
-        FamilyVariantInterface $familyVariant
-    ): int {
-        $level = 0;
-        $attributeSets = $familyVariant->getVariantAttributeSets();
-
-        foreach ($attributeSets as $attributeSet) {
-            $hasAttribute = false;
-
-            foreach ($attributeSet->getAttributes() as $attribute) {
-                if ($attribute->getCode() === $actionField) {
-                    $hasAttribute = true;
-                    break;
-                }
-            }
-
-            if ($hasAttribute) {
-                $level = $attributeSet->getLevel();
-                break;
-            }
-        }
-
-        return $level;
     }
 
     /**
