@@ -55,16 +55,15 @@ jobs:
         label:     Demo CSV product model import with rules
         type:      import
         configuration:
-            filePath:           /tmp/product_model.csv
-            uploadAllowed:      true
-            delimiter:          ;
-            enclosure:          '"'
-            enabled:            true
-            categoriesColumn:   categories
-            familyColumn:       family
-            groupsColumn:       groups
+            filePath: /tmp/product_model.csv
+            uploadAllowed: true
+            delimiter: ;
+            enclosure: '"'
+            enabled: true
+            categoriesColumn: categories
+            familyVariantColumn: familyVariant
             realTimeVersioning: true
-            decimalSeparator:   .
+            decimalSeparator: .
             dateFormat: yyyy-MM-dd
     xlsx_product_import_with_rules:
         connector: Akeneo XLSX Connector
@@ -87,14 +86,13 @@ jobs:
         label:     XLSX Demo product model import with rules
         type:      import
         configuration:
-            filePath:           /tmp/product_model.xlsx
-            uploadAllowed:      true
-            enabled:            true
-            categoriesColumn:   categories
-            familyColumn:       family
-            groupsColumn:       groups
+            filePath: /tmp/product_model.xlsx
+            uploadAllowed: true
+            enabled: true
+            categoriesColumn: categories
+            familyVariantColumn: family_variant
             realTimeVersioning: true
-            decimalSeparator:   .
+            decimalSeparator: .
             dateFormat: yyyy-MM-dd
     csv_product_export:
         connector: Akeneo CSV Connector
