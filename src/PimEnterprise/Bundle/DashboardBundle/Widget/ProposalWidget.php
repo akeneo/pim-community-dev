@@ -116,7 +116,7 @@ class ProposalWidget implements WidgetInterface
                 'authorFullName'   => $this->getAuthorFullName($proposal->getAuthor()),
                 'productReviewUrl' => $route . $this->getProposalGridParametersAsUrl(
                     $proposal->getAuthor(),
-                    $proposal->getProduct()->getId()
+                    $proposal->getProduct()->getIdentifier()
                 ),
                 'createdAt'        => $this->presenter->present($proposal->getCreatedAt(), ['locale' => $locale])
             ];
@@ -156,24 +156,23 @@ class ProposalWidget implements WidgetInterface
 
     /**
      * @param string     $authorUsername
-     * @param string|int $productId
+     * @param string|int $productIdentifier
      *
      * @return string
      */
-    protected function getProposalGridParametersAsUrl($authorUsername, $productId)
+    protected function getProposalGridParametersAsUrl($authorUsername, $productIdentifier)
     {
         $gridParameters = [
             'f' => [
                 'author' => [
                     'value' => [
-                        $authorUsername
-                    ]
+                        $authorUsername,
+                    ],
                 ],
-                'product' => [
-                    'value' => [
-                        $productId
-                    ]
-                ]
+                'sku'    => [
+                    'value' => $productIdentifier,
+                    'type' => 1,
+                ],
             ],
         ];
 

@@ -209,6 +209,7 @@ class EnterpriseWebUser extends BaseWebUser
 
         foreach ($hash as $row) {
             $button = $this->getElementByDataAttribute($row, $partialButton);
+            $this->wait();
             $button->click();
 
             $comment = isset($row['comment']) ? $row['comment'] : '';
