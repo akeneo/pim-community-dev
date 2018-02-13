@@ -4,7 +4,7 @@ Feature: Allow only XHR requests for some mass actions
   I need to only do XHR calls for some mass actions
 
   Background:
-    Given a "footwear" catalog configuration
+    Given a "default" catalog configuration
     And the following product:
       | sku        |
       | high-heels |

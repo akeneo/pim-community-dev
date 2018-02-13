@@ -4,7 +4,7 @@ Feature: Allow only XHR requests for some notifications actions
   I need to only do XHR calls for some notifications actions
 
   Background:
-    Given a "footwear" catalog configuration
+    Given a "default" catalog configuration
 
   Scenario: Authorize only XHR calls for export notifications deletion
     Given there is a notification for user "Julia"

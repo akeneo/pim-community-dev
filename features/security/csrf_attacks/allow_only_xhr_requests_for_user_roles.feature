@@ -4,7 +4,7 @@ Feature: Allow only XHR requests for some user roles actions
   I need to only do XHR calls for some user roles actions
 
   Background:
-    Given a "footwear" catalog configuration
+    Given a "default" catalog configuration
 
   Scenario: Authorize only XHR calls for user roles deletion
     When I make a direct authenticated DELETE call on the "ROLE_USER" user role

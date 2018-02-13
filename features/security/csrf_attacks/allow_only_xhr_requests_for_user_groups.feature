@@ -4,7 +4,7 @@ Feature: Allow only XHR requests for some user groups actions
   I need to only do XHR calls for some user groups actions
 
   Background:
-    Given a "footwear" catalog configuration
+    Given a "default" catalog configuration
 
   Scenario: Authorize only XHR calls for user groups deletion
     When I make a direct authenticated DELETE call on the "Redactor" user group

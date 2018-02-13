@@ -4,7 +4,7 @@ Feature: Allow only XHR requests for some datagrid views actions
   I need to only do XHR calls for some datagrid views actions
 
   Background:
-    Given a "footwear" catalog configuration
+    Given a "default" catalog configuration
     And the following datagrid views:
       | label     | alias        | columns | filters   |
       | Sku views | product-grid | sku     | f[sku]=-1 |

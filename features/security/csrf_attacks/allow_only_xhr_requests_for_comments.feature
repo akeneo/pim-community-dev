@@ -5,7 +5,7 @@ Feature: Allow only XHR requests for some comments actions
   I need to only do XHR calls for some comments actions
 
   Background:
-    Given a "footwear" catalog configuration
+    Given a "default" catalog configuration
     And the following product:
       | sku        |
       | high-heels |
