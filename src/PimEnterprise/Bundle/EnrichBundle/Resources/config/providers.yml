@@ -55,6 +55,7 @@ services:
                 xlsx_asset_category_export: pim-job-instance-xlsx-base-export
                 xlsx_asset_category_import: pim-job-instance-xlsx-base-import
                 xlsx_product_import_with_rules: pim-job-instance-xlsx-product-import
+                xlsx_product_model_import_with_rules: pim-job-instance-xlsx-product-model-import
                 xlsx_product_proposal_import: pim-job-instance-xlsx-product-import
                 xlsx_asset_import: pim-job-instance-xlsx-base-import
                 xlsx_asset_variation_export: pim-job-instance-xlsx-base-export

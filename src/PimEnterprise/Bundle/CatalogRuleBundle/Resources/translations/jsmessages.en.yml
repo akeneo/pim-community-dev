@@ -86,14 +86,20 @@ batch_jobs:
         import.label:              Product import
         import_associations.label: Association import
     csv_product_model_import_with_rules:
-        label:                     Product model import in CSV with rules
-        execute_rules.label:       Rules execution
-        validation.label:          File validation
-        import.label:              Product model import
-        import_associations.label: Association import
+        label: Product model import in CSV with rules
+        execute_rules.label: Rules execution
+        validation.label: File validation
+        import_root_product_model.label: Root product model import
+        import_sub_product_model.label: Sub product model import
     xlsx_product_import_with_rules:
         label:                     Product import in XLSX with rules
         execute_rules.label:       Rules execution
         validation.label:          File validation
         import.label:              Product import
         import_associations.label: Association import
+    xlsx_product_model_import_with_rules:
+        label: Product model import in XLSX with rules
+        execute_rules.label: Rules execution
+        validation.label: File validation
+        import_root_product_model.label: Root product model import
+        import_sub_product_model.label: Sub product model import

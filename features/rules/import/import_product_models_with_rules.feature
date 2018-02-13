@@ -1,8 +1,8 @@
 @javascript
-Feature: Import products with rules
+Feature: Import product models with rules
   In order ease the enrichment of the catalog
   As a regular user
-  I need to be able to import products and apply rules
+  I need to be able to import product models and apply rules
 
   Background:
     Given a "default" catalog configuration
@@ -74,6 +74,34 @@ Feature: Import products with rules
     When I am on the "csv_product_model_import_with_rules" import job page
     And I launch the import job
     And I wait for the "csv_product_model_import_with_rules" job to finish
+    Then there should be the following root product models:
+      | code          | name-en_US     |
+      | bag_model     | I have no name |
+      | another_model | The other bag  |
+      | new_model     | I have no name |
+    Then there should be the following product models:
+      | code      | description-en_US-ecommerce |
+      | black_bag | A useless description       |
+      | red_bag   | The original description    |
+      | white_bag | A useless description       |
+
+  Scenario: Apply rules on product models imported in XLSX
+    Given the following XLSX file to import:
+      """
+      code;parent;family_variant;categories;color;description-en_US-ecommerce;name-en_US
+      bag_model;;bag_color_size;default;;;A name
+      new_model;;bag_color_size;default;;;Another name
+      black_bag;bag_model;bag_color_size;default;black;A description;
+      white_bag;bag_model;bag_color_size;default;white;A description;
+      """
+    And the following job:
+      | connector             | type   | alias                                | code                                 | label                                |
+      | Akeneo XLSX Connector | import | xlsx_product_model_import_with_rules | xlsx_product_model_import_with_rules | XLSX product model import with rules |
+    And the following job "xlsx_product_model_import_with_rules" configuration:
+      | filePath | %file to import% |
+    When I am on the "xlsx_product_model_import_with_rules" import job page
+    And I launch the import job
+    And I wait for the "xlsx_product_model_import_with_rules" job to finish
     Then there should be the following root product models:
       | code          | name-en_US     |
       | bag_model     | I have no name |
