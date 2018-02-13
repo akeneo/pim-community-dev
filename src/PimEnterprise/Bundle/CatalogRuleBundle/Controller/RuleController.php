@@ -22,6 +22,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
@@ -107,7 +108,7 @@ class RuleController
      * @throws NotFoundHttpException
      * @throws \Exception
      *
-     * @return JsonResponse|RedirectResponse
+     * @return Response
      */
     public function deleteAction(Request $request, $id)
     {

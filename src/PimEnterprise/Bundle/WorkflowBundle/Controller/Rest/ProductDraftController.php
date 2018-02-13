@@ -29,6 +29,7 @@ use PimEnterprise\Component\Workflow\Repository\ProductDraftRepositoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
@@ -227,7 +228,7 @@ class ProductDraftController
      * @throws \LogicException
      * @throws AccessDeniedHttpException
      *
-     * @return JsonResponse| RedirectResponse
+     * @return Response
      */
     public function reviewAction(Request $request, $id, $action)
     {
@@ -272,7 +273,7 @@ class ProductDraftController
      * @throws \LogicException
      * @throws AccessDeniedHttpException
      *
-     * @return JsonResponse|RedirectResponse
+     * @return Response
      */
     public function removeAction(Request $request, $id)
     {
