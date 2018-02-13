@@ -172,7 +172,7 @@ pim_enrich:
         deletion_failed: Das Produkt konnte nicht gelöscht werden.
         update_successful: Produkt erfolgreich aktualisiert.
         update_failed: Das Produkt konnte nicht aktualisiert werden.
-        field_not_ready: 'Das Produkt kann gerade nicht gespeichert werden. Folgende Felder sind unvollständig: {{ fields }}'
+        field_not_ready: "Das Produkt kann gerade nicht gespeichert werden. Folgende Felder sind unvollständig: {{ fields }}"
         already_in_upload: Es wird bereits eine Datei für dieses Attribut im Gebietsschema "{{ locale }}" und Gültigkeitsbereich "{{ scope }}" hochgeladen
       error:
         upload: Während des Hochladens der Datei ist ein Fehler aufgetreten
@@ -228,7 +228,7 @@ pim_enrich:
       info:
         update_successful: Produktmodell erfolgreich aktualisiert. Die Vollständigkeit der Produktvarianten wird neu berechnet.
         update_failed: Das Produktmodell konnte nicht aktualisiert werden.
-        field_not_ready: 'Das Produktmodel kann gerade nicht gespeichert werden. Folgende Felder sind unvollständig: {{ fields }}'
+        field_not_ready: "Das Produktmodel kann gerade nicht gespeichert werden. Folgende Felder sind unvollständig: {{ fields }}"
       read_only_parent_attribute_from_common: Dieses Attribut muss als gemeinsames Attribut bearbeitet werden.
       read_only_parent_attribute_from_model: "Dieses Attribut muss als Attribut von {{ axes }} bearbeitet werden"
       variant_axis: Variantenachse(n)
@@ -243,7 +243,7 @@ pim_enrich:
         deletion_failed: Verbindungstyp konnte nicht entfernt werden.
         update_successful: Verbindungstyp erfolgreich aktualisiert.
         update_failed: Verbindungstyp konnte nicht aktualisiert werden.
-        field_not_ready: 'Der Verbindungstyp kann gerade nicht gespeichert werden. Folgende Felder sind unvollständig: {{ fields }}'
+        field_not_ready: "Der Verbindungstyp kann gerade nicht gespeichert werden. Folgende Felder sind unvollständig: {{ fields }}"
       meta:
         created: Erstellt
         created_by: Erstellt von
@@ -262,7 +262,7 @@ pim_enrich:
         deletion_failed: Gruppentyp konnte nicht gelöscht werden.
         update_successful: Gruppentyp erfolgreich aktualisiert.
         update_failed: Der Gruppentyp konnte nicht aktualisiert werden.
-        field_not_ready: 'Der Gruppentyp kann gerade nicht gespeichert werden. Folgende Felder sind unvollständig: {{ fields }}'
+        field_not_ready: "Der Gruppentyp kann gerade nicht gespeichert werden. Folgende Felder sind unvollständig: {{ fields }}"
       meta:
         created: Erstellt
         created_by: Erstellt von
@@ -284,7 +284,7 @@ pim_enrich:
         update_failed: Ausgabekanal konnte nicht aktualisiert werden.
         create_successful: Ausgabekanal erfolgreich angelegt.
         create_failed: Ausgabekanal konnte nicht angelegt werden.
-        field_not_ready: 'Der Channel kann gerade nicht gespeichert werden. Folgende Felder sind unvollständig: {{ fields }}'
+        field_not_ready: "Der Channel kann gerade nicht gespeichert werden. Folgende Felder sind unvollständig: {{ fields }}"
       meta:
         created: Erstellt
         created_by: Erstellt von
@@ -329,7 +329,7 @@ pim_enrich:
         deletion_failed: Gruppe konnte nicht gelöscht werden.
         update_successful: Gruppe erfolgreich aktualisiert.
         update_failed: Die Gruppe konnte nicht aktualisiert werden.
-        field_not_ready: 'Die Gruppe kann gerade nicht gespeichert werden. Folgende Felder sind unvollständig: {{ fields }}'
+        field_not_ready: "Die Gruppe kann gerade nicht gespeichert werden. Folgende Felder sind unvollständig: {{ fields }}"
       btn:
         save: Speichern
       meta:
@@ -747,11 +747,11 @@ pim_enrich:
           help: Ein Ausgabekanal definiert den Umfang für Produktwerte, sowie die Gebietsschemas und den Strukturbaum um die Daten und Produkte zu selektieren.
         locales:
           title: Gebietsschemata
-          help: 'Das Gebietsschema definiert die lokalisierten Produktwerte für den Export. Beispiel: Nur Produktinformationen in französischer Sprache.'
+          help: "Das Gebietsschema definiert die lokalisierten Produktwerte für den Export. Beispiel: Nur Produktinformationen in französischer Sprache."
         attributes:
           title: Attribute
           edit: Bearbeiten
-          help: Wählen Sie die Produktinformationen die exportiert werden sollen. (z.B. alle technischen Attribute)
+          help: "Wählen Sie die Produktinformationen die exportiert werden sollen. (z.B. alle technischen Attribute)"
           empty: Alle Attribute werden exportiert
           modal:
             apply: Anwenden
@@ -768,7 +768,7 @@ pim_enrich:
           description: Wählen Sie die Produktinformationen die exportiert werden sollen
         family:
           title: Produktfamilie
-          help: Wählen Sie die Produkte, die entsprechend Ihrer Produktfamilie exportiert werden sollen. (z.B. nur Schuhe und Anzüge).
+          help: "Wählen Sie die Produkte, die entsprechend Ihrer Produktfamilie exportiert werden sollen. (z.B. nur Schuhe und Anzüge)."
           operators:
             IN: In Liste
             "NOT IN": Nicht in der Liste
@@ -784,7 +784,7 @@ pim_enrich:
             "SINCE LAST JOB": Aktualisierte Produkte seit letztem Export
         enabled:
           title: Status
-          help: Wählen Sie die Produkte, die entsprechend Ihres Status exportiert werden sollen.
+          help: "Wählen Sie die Produkte, die entsprechend Ihres Status exportiert werden sollen."
           value:
             all: Alle
             enabled: Aktiviert

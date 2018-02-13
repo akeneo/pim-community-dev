@@ -8,7 +8,7 @@ before: antes
 after: después
 from: desde
 to: hasta
-and: y
+and: "y"
 system_filter_group: Sistema
 oro_filter.filters.manage: Administrar filtros
 oro_filter.placeholder.all: Todos
