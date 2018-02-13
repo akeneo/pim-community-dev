@@ -320,6 +320,7 @@ stage("Test") {
                 }
             }
         }
+        slackSend channel: '@alexandre.hocquard', color: 'good', message: 'Build is finished'
     }
 }
 
