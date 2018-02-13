@@ -1,4 +1,4 @@
-default:
+legacy:
     suites:
         all:
             paths:
@@ -119,3 +119,24 @@ default:
         pretty: true
         pim:
             output_path: app/build/logs/behat/
+
+acceptance:
+    suites:
+        acceptance:
+            paths:
+                - '%paths.base%/tests/features/'
+            contexts_services:
+                - test.locale.context
+                - test.channel.context
+            filters:
+                tags: '@acceptance'
+
+    extensions:
+        Liuggio\Fastest\Behat\ListFeaturesExtension\Extension: ~
+        FriendsOfBehat\ContextServiceExtension:
+           imports:
+               - "tests/Acceptance/Resources/config/behat/services.yml"
+        FriendsOfBehat\CrossContainerExtension: ~
+        FriendsOfBehat\SymfonyExtension:
+            kernel:
+                env: acceptance

@@ -1,0 +1,51 @@
+services:
+    ### Entity builder
+    test.channel.builder:
+        class: 'Akeneo\Test\Acceptance\Common\EntityBuilder'
+        arguments:
+            - '@__symfony__.pim_catalog.factory.channel'
+            - '@__symfony__.pim_catalog.updater.channel'
+            - '@__symfony__.validator'
+
+    test.locale.builder:
+        class: 'Akeneo\Test\Acceptance\Common\EntityBuilder'
+        arguments:
+            - '@__symfony__.pim_catalog.factory.locale'
+            - '@__symfony__.pim_catalog.updater.locale'
+            - '@__symfony__.validator'
+
+    test.category.builder:
+        class: 'Akeneo\Test\Acceptance\Common\EntityBuilder'
+        arguments:
+            - '@__symfony__.pim_catalog.factory.category'
+            - '@__symfony__.pim_catalog.updater.category'
+            - '@__symfony__.validator'
+
+    test.currency.builder:
+        class: 'Akeneo\Test\Acceptance\Common\EntityBuilder'
+        arguments:
+            - '@__symfony__.pim_catalog.factory.currency'
+            - '@__symfony__.pim_catalog.updater.currency'
+            - '@__symfony__.validator'
+
+    ### Behat context, don't forget to tag them (fob.context_service)
+    test.locale.context:
+        class: 'Akeneo\Test\Acceptance\Locale\LocaleContext'
+        arguments:
+            - '@__symfony__.pim_catalog.repository.locale'
+            - '@test.locale.builder'
+        tags:
+            - { name: fob.context_service }
+
+    test.channel.context:
+        class: 'Akeneo\Test\Acceptance\Channel\ChannelContext'
+        arguments:
+            - '@__symfony__.pim_catalog.repository.locale'
+            - '@__symfony__.pim_catalog.repository.category'
+            - '@__symfony__.pim_catalog.repository.channel'
+            - '@__symfony__.pim_catalog.repository.currency'
+            - '@test.category.builder'
+            - '@test.channel.builder'
+            - '@test.currency.builder'
+        tags:
+            - { name: fob.context_service }

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Test\IntegrationTestsBundle\Loader;
 
+use Akeneo\Test\IntegrationTestsBundle\Path;
 use Doctrine\ORM\EntityManagerInterface;
 
 /**
@@ -75,15 +76,15 @@ final class ReferenceDataLoader
 
     private function getFabricsSql(): string
     {
-        $path = __DIR__ . '/../../../src/Acme/Bundle/AppBundle/Resources/fixtures/fabrics.sql';
+        $path = (string) new Path('src', 'Acme', 'Bundle', 'AppBundle', 'Resources', 'fixtures', 'fabrics.sql');
 
-        return file_get_contents(realpath($path));
+        return file_get_contents($path);
     }
 
     private function getColorSql(): string
     {
-        $path = __DIR__ . '/../../../src/Acme/Bundle/AppBundle/Resources/fixtures/colors.sql';
+        $path = (string) new Path('src', 'Acme', 'Bundle', 'AppBundle', 'Resources', 'fixtures', 'colors.sql');
 
-        return file_get_contents(realpath($path));
+        return file_get_contents($path);
     }
 }

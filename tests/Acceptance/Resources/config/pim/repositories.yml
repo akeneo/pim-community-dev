@@ -1,0 +1,5 @@
+parameters:
+    pim_catalog.repository.locale.class: Akeneo\Test\Acceptance\Locale\InMemoryLocaleRepository
+    pim_catalog.repository.channel.class: Akeneo\Test\Acceptance\Channel\InMemoryChannelRepository
+    pim_catalog.repository.category.class: Akeneo\Test\Acceptance\Category\InMemoryCategoryRepository
+    pim_catalog.repository.currency.class: Akeneo\Test\Acceptance\Currency\InMemoryCurrencyRepository
