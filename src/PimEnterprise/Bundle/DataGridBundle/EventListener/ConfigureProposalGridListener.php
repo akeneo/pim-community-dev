@@ -13,7 +13,6 @@ namespace PimEnterprise\Bundle\DataGridBundle\EventListener;
 
 use Oro\Bundle\DataGridBundle\Event\BuildBefore;
 use Pim\Bundle\DataGridBundle\Datagrid\Configuration\ConfiguratorInterface;
-use Pim\Bundle\DataGridBundle\Datagrid\Configuration\Product\FiltersConfigurator;
 
 /**
  * Grid listener to configure proposal grid
@@ -25,16 +24,16 @@ class ConfigureProposalGridListener
     /** @var ConfiguratorInterface */
     private $contextConfigurator;
 
-    /** @var FiltersConfigurator */
+    /** @var ConfiguratorInterface */
     private $filtersConfigurator;
 
     /**
      * @param ConfiguratorInterface $contextConfigurator
-     * @param FiltersConfigurator   $filtersConfigurator
+     * @param ConfiguratorInterface $filtersConfigurator
      */
     public function __construct(
         ConfiguratorInterface $contextConfigurator,
-        FiltersConfigurator $filtersConfigurator
+        ConfiguratorInterface $filtersConfigurator
     ) {
         $this->contextConfigurator = $contextConfigurator;
         $this->filtersConfigurator = $filtersConfigurator;
