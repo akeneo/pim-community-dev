@@ -1,9 +1,8 @@
 #!/usr/bin/env bash
 
-bin/console --env=prod cache:clear --no-warmup
-bin/console --env=dev cache:clear --no-warmup
-bin/console --env=behat cache:clear --no-warmup
+rm -rf ./var/cache
+rm -rf ./web/js
+rm -rf ./web/css
 bin/console --env=prod pim:installer:assets --symlink --clean
 
-yarn install
-yarn run webpack
+yarn run webpack-dev
