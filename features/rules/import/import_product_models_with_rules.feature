@@ -74,12 +74,12 @@ Feature: Import product models with rules
     When I am on the "csv_product_model_import_with_rules" import job page
     And I launch the import job
     And I wait for the "csv_product_model_import_with_rules" job to finish
-    Then there should be the following root product models:
+    Then there should be the following root product model:
       | code          | name-en_US     |
       | bag_model     | I have no name |
       | another_model | The other bag  |
       | new_model     | I have no name |
-    Then there should be the following product models:
+    Then there should be the following product model:
       | code      | description-en_US-ecommerce |
       | black_bag | A useless description       |
       | red_bag   | The original description    |
@@ -102,12 +102,12 @@ Feature: Import product models with rules
     When I am on the "xlsx_product_model_import_with_rules" import job page
     And I launch the import job
     And I wait for the "xlsx_product_model_import_with_rules" job to finish
-    Then there should be the following root product models:
+    Then there should be the following root product model:
       | code          | name-en_US     |
       | bag_model     | I have no name |
       | another_model | The other bag  |
       | new_model     | I have no name |
-    Then there should be the following product models:
+    Then there should be the following product model:
       | code      | description-en_US-ecommerce |
       | black_bag | A useless description       |
       | red_bag   | The original description    |
