@@ -20,10 +20,11 @@ use PimEnterprise\Bundle\DataGridBundle\Adapter\OroToPimGridFilterAdapter;
 use PimEnterprise\Bundle\ImportExportBundle\Entity\Repository\JobInstanceRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
-use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * Rule controller
@@ -107,10 +108,14 @@ class RuleController
      * @throws NotFoundHttpException
      * @throws \Exception
      *
-     * @return JsonResponse
+     * @return Response
      */
-    public function deleteAction($id)
+    public function deleteAction(Request $request, $id)
     {
+        if (!$request->isXmlHttpRequest()) {
+            return new RedirectResponse('/');
+        }
+
         if (null === $rule = $this->repository->find($id)) {
             throw new NotFoundHttpException(
                 sprintf('Rule definition with id "%s" can not be found.', (string) $id)
