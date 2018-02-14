@@ -1,7 +1,7 @@
 import * as React from 'react';
 import Channel from 'pimfront/app/domain/model/channel';
 import Dropdown, {DropdownElement} from 'pimfront/app/application/component/dropdown';
-import * as trans from 'pimenrich/lib/translator';
+import __ from 'pimfront/tools/translator';
 const userContext = require('pim/user-context');
 
 const ChannelButtonView = ({
@@ -18,7 +18,7 @@ const ChannelButtonView = ({
     data-identifier={selectedElement.identifier}
     onClick={onClick}
   >
-    <div className="AknColumn-subtitle">{trans.get('Channel')}</div>
+    <div className="AknColumn-subtitle">{__('Channel')}</div>
     <div className="AknColumn-value value">{selectedElement.label}</div>
   </div>
 );
@@ -41,7 +41,7 @@ export default ({
           original: channel,
         };
       })}
-      label={trans.get('Channel')}
+      label={__('Channel')}
       selectedElement={channelCode}
       ButtonView={ChannelButtonView}
       onSelectionChange={(selection: string) => {

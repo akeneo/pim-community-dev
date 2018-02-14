@@ -8,6 +8,7 @@ import ChannelSwitcher from 'pimfront/app/application/component/channel-switcher
 import IdentifierFilter from 'pimfront/product-grid/application/component/filter/identifier';
 import {GlobalState} from 'pimfront/product-grid/application/store/main';
 import {connect} from 'react-redux';
+import LoadingIndicator from 'pimfront/app/application/component/loading-indicator';
 
 interface SidebarDispatch {
   onCatalogLocaleChanged: (locale: Locale) => void;
@@ -23,11 +24,13 @@ interface SidebarViewState {
     locales: Locale[];
     channels: Channel[];
   };
+  isFetching: boolean;
 }
 
 export const SidebarView = ({
   context,
   structure,
+  isFetching,
   onCatalogLocaleChanged,
   onCatalogChannelChanged,
 }: SidebarViewState & SidebarDispatch) => {
@@ -38,6 +41,7 @@ export const SidebarView = ({
     <div className="AknColumn">
       <div className="AknColumn-inner">
         <div className="AknColumn-innerTop">
+          <LoadingIndicator loading={isFetching} />
           <div className="AknColumn-part">
             <div className="AknColumn-block">
               <ChannelSwitcher
@@ -73,6 +77,7 @@ export const sidebarDecorator = connect(
         locales: state.structure.locales,
         channels: state.structure.channels,
       },
+      isFetching: state.grid.isFetching,
     };
   },
   (dispatch: any): SidebarDispatch => {

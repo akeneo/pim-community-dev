@@ -1,24 +1,35 @@
 const maxRandomLatency =
   undefined !== process.env.MAX_RANDOM_LATENCY_MS ? parseInt(process.env.MAX_RANDOM_LATENCY_MS) : 1000;
 
-module.exports = {
-  random: (methodToDelay, customMaxRandomLatency = maxRandomLatency) => {
-    setTimeout(methodToDelay, Math.random() * maxRandomLatency);
-  },
-  json: body => ({
-    contentType: 'application/json',
-    body,
-  }),
-  spin: async function() {
-    const [page, cb, ...rest] = arguments;
+const answer = (methodToDelay, randomLatency = true, customMaxRandomLatency = maxRandomLatency) => {
+  setTimeout(methodToDelay, (randomLatency ? Math.random() : 1) * customMaxRandomLatency);
+};
 
-    return await page.waitFor(
-      cb,
-      {
-        polling: 'mutation',
-        timeout: 5000,
-      },
-      ...rest
-    );
-  },
+const answerJson = (request, response, randomLatency = true, customMaxRandomLatency = maxRandomLatency) => {
+  answer(() => request.respond(json(response)), randomLatency, customMaxRandomLatency);
+};
+
+const json = body => ({
+  contentType: 'application/json',
+  body: typeof body === 'string' ? body : JSON.stringify(body),
+});
+
+const spin = async function() {
+  const [page, cb, ...rest] = arguments;
+
+  return await page.waitFor(
+    cb,
+    {
+      polling: 'mutation',
+      timeout: 5000,
+    },
+    ...rest
+  );
+};
+
+module.exports = {
+  answer,
+  answerJson,
+  json,
+  spin,
 };

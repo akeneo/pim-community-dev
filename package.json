@@ -17,7 +17,8 @@
     "prettier": "prettier --config .prettierrc.json --parser typescript --write \"./src/**/*.ts\"; prettier --config .prettierrc.json --parser typescript --write \"./src/**/*.tsx\"; prettier --config .prettierrc.json --write \"./src/Pim/Bundle/FrontBundle/**/*.js\"",
     "unit": "jest --no-cache --config ./unit.jest.js",
     "integration": "jest --no-cache --config ./integration.jest.js",
-    "acceptance": "cucumber-js -r ./src/Pim/Bundle/FrontBundle/Resources/test/acceptance/cucumber ./src/Pim/Bundle/FrontBundle/Resources/test/acceptance/features",
+    "acceptance": "cucumber-js -r ./src/Pim/Bundle/FrontBundle/Resources/test/acceptance/cucumber ./src/Pim/Bundle/FrontBundle/Resources/test/acceptance/features -f progress",
+    "acceptance-report": "node ./webpack/test/acceptance/report.js",
     "test": "yarn unit && yarn webpack-test && yarn integration && yarn acceptance"
   },
   "repository": {

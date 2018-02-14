@@ -7,7 +7,12 @@ const os = require('os')
 const DIR = path.join(os.tmpdir(), 'jest_puppeteer_global_setup')
 
 module.exports = async function() {
-  const browser = await puppeteer.launch({ headless: !process.env.DEBUG });
+  const browser = await puppeteer.launch({
+    headless: !process.env.DEBUG,
+      ignoreHTTPSErrors: true,
+      args: ['--no-sandbox', '--disable-setuid-sandbox'],
+      headless: true,
+    });
   // store the browser instance so we can teardown it later
   global.__BROWSER__ = browser;
 

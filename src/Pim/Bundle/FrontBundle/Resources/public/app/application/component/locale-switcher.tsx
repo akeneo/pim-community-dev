@@ -2,7 +2,7 @@ import * as React from 'react';
 import Locale from 'pimfront/app/domain/model/locale';
 import Flag from 'pimfront/app/application/component/flag';
 import Dropdown, {DropdownElement} from 'pimfront/app/application/component/dropdown';
-import * as trans from 'pimenrich/lib/translator';
+import __ from 'pimfront/tools/translator';
 
 const LocaleItemView = ({
   element,
@@ -34,7 +34,7 @@ const LocaleButtonView = ({
   onClick: () => void;
 }) => (
   <div className="AknActionButton AknActionButton--withoutBorder" onClick={onClick}>
-    <div className="AknColumn-subtitle">{trans.get('Locale')}</div>
+    <div className="AknColumn-subtitle">{__('Locale')}</div>
     <div className="AknColumn-value value" data-identifier={selectedElement.identifier}>
       <Flag locale={selectedElement.original} displayLanguage />
     </div>
@@ -59,7 +59,7 @@ export default ({
           original: locale,
         };
       })}
-      label={trans.get('Locale')}
+      label={__('Locale')}
       selectedElement={localeCode}
       ItemView={LocaleItemView}
       ButtonView={LocaleButtonView}

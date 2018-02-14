@@ -9,6 +9,7 @@ import {Display} from 'pimfront/product-grid/domain/event/display';
 import DisplaySwitcher from 'pimfront/product-grid/application/component/header/display-switcher';
 import {changeGridDisplay} from 'pimfront/product-grid/domain/event/display';
 import Table from 'pimfront/product-grid/application/component/table';
+import __ from 'pimfront/tools/translator';
 
 interface GridDispatch {
   onRedirectToProduct: (product: ProductInterface) => void;
@@ -24,6 +25,7 @@ interface GridViewState {
   };
   items: ProductInterface[];
   displayType: Display;
+  totalResults: number;
 }
 
 export class GridView extends React.Component<GridViewState & GridDispatch, {}> {
@@ -43,6 +45,33 @@ export class GridView extends React.Component<GridViewState & GridDispatch, {}> 
       <div className="AknDefault-contentWithColumn">
         <div className="AknDefault-contentWithBottom">
           <div className="AknDefault-mainContent" onScroll={this.handleScroll.bind(this)}>
+            <header className="AknTitleContainer navigation">
+              <div className="AknTitleContainer-line">
+                <div className="AknTitleContainer-mainContainer">
+                  <div className="AknTitleContainer-line">
+                    <div className="AknTitleContainer-breadcrumbs">
+                      <div className="AknBreadcrumb">
+                        <span
+                          className="AknBreadcrumb-item AknBreadcrumb-item--routable breadcrumb-tab"
+                          data-code="pim-menu-products"
+                        >
+                          Products
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="AknTitleContainer-line">
+                    <div className="AknTitleContainer-title">
+                      {__(
+                        'pim_enrich.entity.product.index_title',
+                        {count: this.props.totalResults},
+                        this.props.totalResults
+                      )}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </header>
             <div>
               <div className="AknGridToolbar">
                 <div className="AknGridToolbar-right AknDisplaySelector">
@@ -86,6 +115,7 @@ export const gridConnector = connect(
       },
       items: state.grid.items,
       displayType: state.productGrid.display,
+      totalResults: state.grid.total,
     };
   },
   (dispatch: any): GridDispatch => {

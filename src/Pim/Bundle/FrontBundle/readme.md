@@ -6,10 +6,13 @@
     - product interface for both [DONE]
     - different implementation [DONE]
     - make the grid statefull [NOT FOR NOW]
-- import on grid
-- advance bar on mass edit
-- loading item
+
+- loading item [DONE]
 - number of result
 - filter
 - sort
+- manage filters
+- simple categories
+- import on grid
+- advance bar on mass edit
 - column (basic)/drag and drop

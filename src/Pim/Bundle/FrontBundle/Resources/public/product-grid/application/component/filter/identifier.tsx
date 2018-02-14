@@ -1,6 +1,6 @@
 import * as React from 'react';
 import Dropdown from 'pimfront/app/application/component/dropdown';
-import * as trans from 'pimenrich/lib/translator';
+import __ from 'pimfront/tools/translator';
 
 const operators = [
   {
@@ -47,7 +47,7 @@ export default () => {
               <div className="AknFilterChoice-title">{field}</div>
               <Dropdown
                 elements={operators}
-                label={trans.get('pim.grid.choice_filter.operator')}
+                label={__('pim.grid.choice_filter.operator')}
                 selectedElement="CONTAINS"
                 onSelectionChange={() => {}}
               />
@@ -59,7 +59,7 @@ export default () => {
         </div>
         <div className="AknFilterChoice-button">
           <button type="button" className="AknButton AknButton--apply filter-update">
-            {trans.get('Update')}
+            {__('Update')}
           </button>
         </div>
       </div>

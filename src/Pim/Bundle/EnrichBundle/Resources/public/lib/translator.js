@@ -379,7 +379,7 @@ var Translator = (function () {
        * @param {Number} number         A number of objects being described.
        * @return {String} The corresponding message if the key exists otherwise the key will be returned.
        */
-        get: function(key, placeholders = {}, number = 1) {
+        get: function(key, placeholders, number) {
             var _message = _messages[key],
                 _number = parseInt(number, 10),
                 _placeholders = placeholders || {};

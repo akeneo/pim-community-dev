@@ -1,6 +1,6 @@
 import * as React from 'react';
 import ProductInterface from 'pimfront/product/domain/model/product';
-import * as trans from 'pimenrich/lib/translator';
+import __ from 'pimfront/tools/translator';
 import ListView from 'pimfront/product-grid/application/component/item/list';
 import GalleryView from 'pimfront/product-grid/application/component/item/gallery';
 import {Display} from 'pimfront/product-grid/domain/event/display';
@@ -38,31 +38,31 @@ export default ({
           <tr className="AknGrid-bodyRow">
             <th className="AknGrid-headerCell AknGrid-headerCell--checkbox select-all-header-cell" />
             <th className="AknGrid-headerCell">
-              {trans.get('ID')} <span className="AknGrid-caret AknCaret caret" />
+              {__('ID')} <span className="AknGrid-caret AknCaret caret" />
             </th>
             <th className="AknGrid-headerCell">
-              <span>{trans.get('Image')}</span>
+              <span>{__('Image')}</span>
             </th>
             <th className="AknGrid-headerCell">
-              <span>{trans.get('Label')}</span>
+              <span>{__('Label')}</span>
             </th>
             <th className="AknGrid-headerCell">
-              {trans.get('Family')} <span className="AknGrid-caret AknCaret caret" />
+              {__('Family')} <span className="AknGrid-caret AknCaret caret" />
             </th>
             <th className="AknGrid-headerCell">
-              {trans.get('Status')} <span className="AknGrid-caret AknCaret caret" />
+              {__('Status')} <span className="AknGrid-caret AknCaret caret" />
             </th>
             <th className="AknGrid-headerCell">
-              {trans.get('Complete')} <span className="AknGrid-caret AknCaret caret" />
+              {__('Complete')} <span className="AknGrid-caret AknCaret caret" />
             </th>
             <th className="AknGrid-headerCell">
-              {trans.get('Created at')} <span className="AknGrid-caret AknCaret caret" />
+              {__('Created at')} <span className="AknGrid-caret AknCaret caret" />
             </th>
             <th className="AknGrid-headerCell AknGrid-headerCell--descending descending">
-              {trans.get('Updated at')} <span className="AknGrid-caret AknCaret caret" />
+              {__('Updated at')} <span className="AknGrid-caret AknCaret caret" />
             </th>
             <th className="AknGrid-headerCell">
-              <span>{trans.get('Variant products')}</span>
+              <span>{__('Variant products')}</span>
             </th>
             <th className="AknGrid-headerCell action-column" />
           </tr>
