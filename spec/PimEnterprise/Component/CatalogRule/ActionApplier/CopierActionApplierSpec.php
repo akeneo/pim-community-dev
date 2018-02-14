@@ -3,14 +3,12 @@
 namespace spec\PimEnterprise\Component\CatalogRule\ActionApplier;
 
 use Akeneo\Component\StorageUtils\Updater\PropertyCopierInterface;
-use Doctrine\Common\Collections\Collection;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\EntityWithFamilyVariantInterface;
 use Pim\Component\Catalog\Model\FamilyVariantInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
-use Pim\Component\Catalog\Model\VariantAttributeSetInterface;
 use Pim\Component\Catalog\Model\VariantProductInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use PimEnterprise\Component\CatalogRule\Model\ProductCopyActionInterface;
@@ -56,12 +54,7 @@ class CopierActionApplierSpec extends ObjectBehavior
         ProductCopyActionInterface $action,
         VariantProductInterface $variantProduct,
         AttributeInterface $nameAttribute,
-        FamilyVariantInterface $familyVariant,
-        Collection $attributeSetCollection,
-        \Iterator $attributeSetsIterator,
-        VariantAttributeSetInterface $attributeSet,
-        Collection $attributeCollection,
-        \Iterator $attributeIterator
+        FamilyVariantInterface $familyVariant
     ) {
         $action->getFromField()->willReturn('sku');
         $action->getToField()->willReturn('name');
@@ -71,20 +64,7 @@ class CopierActionApplierSpec extends ObjectBehavior
         $nameAttribute->getCode()->willReturn('name');
 
         $variantProduct->getFamilyVariant()->willReturn($familyVariant);
-        $familyVariant->getVariantAttributeSets()->willReturn($attributeSetCollection);
-
-        $attributeSetCollection->getIterator()->willReturn($attributeSetsIterator);
-        $attributeSetsIterator->valid()->willReturn(true, false);
-        $attributeSetsIterator->current()->willReturn($attributeSet);
-        $attributeSetsIterator->rewind()->shouldBeCalled();
-
-        $attributeSet->getLevel()->willReturn(2);
-        $attributeSet->getAttributes()->willReturn($attributeCollection);
-
-        $attributeCollection->getIterator()->willReturn($attributeIterator);
-        $attributeIterator->valid()->willReturn(true, false);
-        $attributeIterator->current()->willReturn($nameAttribute);
-        $attributeIterator->rewind()->shouldBeCalled();
+        $familyVariant->getLevelForAttributeCode('name')->willReturn(2);
 
         $variantProduct->getVariationLevel()->willReturn(2);
 
@@ -105,12 +85,7 @@ class CopierActionApplierSpec extends ObjectBehavior
         ProductCopyActionInterface $action,
         ProductModelInterface $productModel,
         AttributeInterface $descriptionAttribute,
-        FamilyVariantInterface $familyVariant,
-        Collection $attributeSetCollection,
-        \Iterator $attributeSetsIterator,
-        VariantAttributeSetInterface $attributeSet,
-        Collection $attributeCollection,
-        \Iterator $attributeIterator
+        FamilyVariantInterface $familyVariant
     ) {
         $action->getFromField()->willReturn('description');
         $action->getToField()->willReturn('description');
@@ -125,20 +100,7 @@ class CopierActionApplierSpec extends ObjectBehavior
         $descriptionAttribute->getCode()->willReturn('description');
 
         $productModel->getFamilyVariant()->willReturn($familyVariant);
-        $familyVariant->getVariantAttributeSets()->willReturn($attributeSetCollection);
-
-        $attributeSetCollection->getIterator()->willReturn($attributeSetsIterator);
-        $attributeSetsIterator->valid()->willReturn(true, false);
-        $attributeSetsIterator->current()->willReturn($attributeSet);
-        $attributeSetsIterator->rewind()->shouldBeCalled();
-
-        $attributeSet->getLevel()->willReturn(2);
-        $attributeSet->getAttributes()->willReturn($attributeCollection);
-
-        $attributeCollection->getIterator()->willReturn($attributeIterator);
-        $attributeIterator->valid()->willReturn(true, false);
-        $attributeIterator->current()->willReturn($descriptionAttribute);
-        $attributeIterator->rewind()->shouldBeCalled();
+        $familyVariant->getLevelForAttributeCode('description')->willReturn(2);
 
         $productModel->getVariationLevel()->willReturn(2);
 
@@ -158,70 +120,13 @@ class CopierActionApplierSpec extends ObjectBehavior
         $this->applyAction($action, [$productModel]);
     }
 
-    function it_applies_copy_action_on_entity_with_family_variant_if_attribute_is_a_common_one(
-        $propertyCopier,
-        $attributeRepository,
-        ProductCopyActionInterface $action,
-        EntityWithFamilyVariantInterface $entityWithFamilyVariant,
-        AttributeInterface $nameAttribute,
-        AttributeInterface $descriptionAttribute,
-        FamilyVariantInterface $familyVariant,
-        Collection $attributeSetCollection,
-        \Iterator $attributeSetsIterator,
-        VariantAttributeSetInterface $attributeSet,
-        Collection $attributeCollection,
-        \Iterator $attributeIterator
-    ) {
-        $action->getFromField()->willReturn('sku');
-        $action->getToField()->willReturn('name');
-        $action->getOptions()->willReturn([]);
-
-        $attributeRepository->findOneByIdentifier('name')->willReturn($nameAttribute);
-
-        $entityWithFamilyVariant->getFamilyVariant()->willReturn($familyVariant);
-        $familyVariant->getVariantAttributeSets()->willReturn($attributeSetCollection);
-
-        $attributeSetCollection->getIterator()->willReturn($attributeSetsIterator);
-        $attributeSetsIterator->valid()->willReturn(true, false);
-        $attributeSetsIterator->current()->willReturn($attributeSet);
-        $attributeSetsIterator->rewind()->shouldBeCalled();
-        $attributeSetsIterator->next()->shouldBeCalled();
-
-        $attributeSet->getAttributes()->willReturn($attributeCollection);
-
-        $attributeCollection->getIterator()->willReturn($attributeIterator);
-        $attributeIterator->valid()->willReturn(true, false);
-        $attributeIterator->current()->willReturn($descriptionAttribute);
-        $attributeIterator->rewind()->shouldBeCalled();
-        $attributeIterator->next()->shouldBeCalled();
-
-        $descriptionAttribute->getCode()->willReturn('description');
-
-        $entityWithFamilyVariant->getVariationLevel()->willReturn(0);
-
-        $propertyCopier->copyData(
-            $entityWithFamilyVariant,
-            $entityWithFamilyVariant,
-            'sku',
-            'name',
-            []
-        )->shouldBeCalled();
-
-        $this->applyAction($action, [$entityWithFamilyVariant]);
-    }
-
     function it_does_not_apply_copy_action_on_entity_with_family_variant_if_variation_level_is_not_right(
         $propertyCopier,
         $attributeRepository,
         ProductCopyActionInterface $action,
         EntityWithFamilyVariantInterface $entityWithFamilyVariant,
         AttributeInterface $nameAttribute,
-        FamilyVariantInterface $familyVariant,
-        Collection $attributeSetCollection,
-        \Iterator $attributeSetsIterator,
-        VariantAttributeSetInterface $attributeSet,
-        Collection $attributeCollection,
-        \Iterator $attributeIterator
+        FamilyVariantInterface $familyVariant
     ) {
         $action->getFromField()->willReturn('sku');
         $action->getToField()->willReturn('name');
@@ -231,66 +136,7 @@ class CopierActionApplierSpec extends ObjectBehavior
         $nameAttribute->getCode()->willReturn('name');
 
         $entityWithFamilyVariant->getFamilyVariant()->willReturn($familyVariant);
-        $familyVariant->getVariantAttributeSets()->willReturn($attributeSetCollection);
-
-        $attributeSetCollection->getIterator()->willReturn($attributeSetsIterator);
-        $attributeSetsIterator->valid()->willReturn(true, false);
-        $attributeSetsIterator->current()->willReturn($attributeSet);
-        $attributeSetsIterator->rewind()->shouldBeCalled();
-
-        $attributeSet->getLevel()->willReturn(2);
-        $attributeSet->getAttributes()->willReturn($attributeCollection);
-
-        $attributeCollection->getIterator()->willReturn($attributeIterator);
-        $attributeIterator->valid()->willReturn(true, false);
-        $attributeIterator->current()->willReturn($nameAttribute);
-        $attributeIterator->rewind()->shouldBeCalled();
-
-        $entityWithFamilyVariant->getVariationLevel()->willReturn(1);
-
-        $propertyCopier->copyData(Argument::cetera())->shouldNotBeCalled();
-
-        $this->applyAction($action, [$entityWithFamilyVariant]);
-    }
-
-    function it_does_not_apply_copy_action_on_entity_with_family_variant_if_it_does_not_have_the_attribute(
-        $propertyCopier,
-        $attributeRepository,
-        ProductCopyActionInterface $action,
-        EntityWithFamilyVariantInterface $entityWithFamilyVariant,
-        AttributeInterface $nameAttribute,
-        AttributeInterface $descriptionAttribute,
-        FamilyVariantInterface $familyVariant,
-        Collection $attributeSetCollection,
-        \Iterator $attributeSetsIterator,
-        VariantAttributeSetInterface $attributeSet,
-        Collection $attributeCollection,
-        \Iterator $attributeIterator
-    ) {
-        $action->getFromField()->willReturn('sku');
-        $action->getToField()->willReturn('name');
-        $action->getOptions()->willReturn([]);
-
-        $attributeRepository->findOneByIdentifier('name')->willReturn($nameAttribute);
-
-        $entityWithFamilyVariant->getFamilyVariant()->willReturn($familyVariant);
-        $familyVariant->getVariantAttributeSets()->willReturn($attributeSetCollection);
-
-        $attributeSetCollection->getIterator()->willReturn($attributeSetsIterator);
-        $attributeSetsIterator->valid()->willReturn(true, false);
-        $attributeSetsIterator->current()->willReturn($attributeSet);
-        $attributeSetsIterator->rewind()->shouldBeCalled();
-        $attributeSetsIterator->next()->shouldBeCalled();
-
-        $attributeSet->getAttributes()->willReturn($attributeCollection);
-
-        $attributeCollection->getIterator()->willReturn($attributeIterator);
-        $attributeIterator->valid()->willReturn(true, false);
-        $attributeIterator->current()->willReturn($descriptionAttribute);
-        $attributeIterator->rewind()->shouldBeCalled();
-        $attributeIterator->next()->shouldBeCalled();
-
-        $descriptionAttribute->getCode()->willReturn('description');
+        $familyVariant->getLevelForAttributeCode('name')->willReturn(2);
 
         $entityWithFamilyVariant->getVariationLevel()->willReturn(1);
 
