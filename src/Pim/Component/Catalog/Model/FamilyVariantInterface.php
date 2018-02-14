@@ -84,6 +84,8 @@ interface FamilyVariantInterface extends TranslatableInterface
      *
      * @param string $attributeCode
      *
+     * @throws \InvalidArgumentException
+     *
      * @return int
      */
     public function getLevelForAttributeCode(string $attributeCode): int;
