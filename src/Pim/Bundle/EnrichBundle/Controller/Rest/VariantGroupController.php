@@ -12,7 +12,9 @@ use Pim\Bundle\UserBundle\Context\UserContext;
 use Pim\Component\Catalog\Localization\Localizer\AttributeConverterInterface;
 use Pim\Component\Catalog\Repository\GroupRepositoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -143,10 +145,14 @@ class VariantGroupController
      * @throws NotFoundHttpException     If product is not found or the user cannot see it
      * @throws AccessDeniedHttpException If the user does not have right to edit the product
      *
-     * @return JsonResponse
+     * @return Response
      */
     public function postAction(Request $request, $code)
     {
+        if (!$request->isXmlHttpRequest()) {
+            return new RedirectResponse('/');
+        }
+
         $variantGroup = $this->repository->findOneByIdentifier($code);
         if (null === $variantGroup) {
             throw new NotFoundHttpException(sprintf('Variant group with code "%s" not found', $code));
@@ -190,10 +196,14 @@ class VariantGroupController
      *
      * @AclAncestor("pim_enrich_group_remove")
      *
-     * @return JsonResponse
+     * @return Response
      */
-    public function removeAction($code)
+    public function removeAction(Request $request, $code)
     {
+        if (!$request->isXmlHttpRequest()) {
+            return new RedirectResponse('/');
+        }
+
         $variantGroup = $this->repository->findOneByIdentifier($code);
         if (null === $variantGroup) {
             throw new NotFoundHttpException(sprintf('Variant group with code "%s" not found', $code));

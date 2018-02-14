@@ -9,6 +9,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 
 class GroupController extends Controller
@@ -51,8 +52,12 @@ class GroupController extends Controller
      *
      * @AclAncestor("pim_user_group_remove")
      */
-    public function deleteAction($id)
+    public function deleteAction(Request $request, $id)
     {
+        if (!$request->isXmlHttpRequest()) {
+            return new RedirectResponse('/');
+        }
+
         $em = $this->get('doctrine.orm.entity_manager');
         $groupClass = $this->container->getParameter('oro_user.group.entity.class');
         $group = $em->getRepository($groupClass)->find($id);

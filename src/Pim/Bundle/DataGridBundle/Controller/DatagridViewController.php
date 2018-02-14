@@ -9,6 +9,7 @@ use Pim\Bundle\EnrichBundle\Flash\Message;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
@@ -161,6 +162,10 @@ class DatagridViewController
      */
     public function removeAction(DatagridView $view)
     {
+        if (!$this->request->isXmlHttpRequest()) {
+            return new RedirectResponse('/');
+        }
+
         if ($view->getOwner() !== $this->tokenStorage->getToken()->getUser()) {
             throw new DeleteException($this->translator->trans('flash.datagrid view.not removable'));
         }

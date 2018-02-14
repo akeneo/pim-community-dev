@@ -169,8 +169,12 @@ class GroupController
      *
      * @return Response|RedirectResponse
      */
-    public function removeAction(Group $group)
+    public function removeAction(Request $request, Group $group)
     {
+        if (!$request->isXmlHttpRequest()) {
+            return new RedirectResponse('/');
+        }
+
         $this->groupRemover->remove($group);
 
         if ($this->request->isXmlHttpRequest()) {

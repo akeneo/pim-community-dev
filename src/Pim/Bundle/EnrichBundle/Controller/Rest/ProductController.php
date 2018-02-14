@@ -19,7 +19,9 @@ use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -163,10 +165,14 @@ class ProductController
     /**
      * @param Request $request
      *
-     * @return JsonResponse
+     * @return Response
      */
     public function createAction(Request $request)
     {
+        if (!$request->isXmlHttpRequest()) {
+            return new RedirectResponse('/');
+        }
+
         $product = $this->productBuilder->createProduct(
             $request->request->get('identifier'),
             $request->request->get('family', null)
@@ -202,10 +208,14 @@ class ProductController
      * @throws NotFoundHttpException     If product is not found or the user cannot see it
      * @throws AccessDeniedHttpException If the user does not have right to edit the product
      *
-     * @return JsonResponse
+     * @return Response
      */
     public function postAction(Request $request, $id)
     {
+        if (!$request->isXmlHttpRequest()) {
+            return new RedirectResponse('/');
+        }
+
         $product = $this->findProductOr404($id);
         if ($this->objectFilter->filterObject($product, 'pim.internal_api.product.edit')) {
             throw new AccessDeniedHttpException();
@@ -252,10 +262,14 @@ class ProductController
      *
      * @AclAncestor("pim_enrich_product_remove")
      *
-     * @return JsonResponse
+     * @return Response
      */
-    public function removeAction($id)
+    public function removeAction(Request $request, $id)
     {
+        if (!$request->isXmlHttpRequest()) {
+            return new RedirectResponse('/');
+        }
+
         $product = $this->findProductOr404($id);
         $this->productRemover->remove($product);
 
@@ -274,10 +288,14 @@ class ProductController
      * @throws AccessDeniedHttpException If the user does not have right to edit the product
      * @throws BadRequestHttpException   If the attribute is not removable
      *
-     * @return JsonResponse
+     * @return Response
      */
-    public function removeAttributeAction($id, $attributeId)
+    public function removeAttributeAction(Request $request, $id, $attributeId)
     {
+        if (!$request->isXmlHttpRequest()) {
+            return new RedirectResponse('/');
+        }
+
         $product = $this->findProductOr404($id);
         if ($this->objectFilter->filterObject($product, 'pim.internal_api.product.edit')) {
             throw new AccessDeniedHttpException();

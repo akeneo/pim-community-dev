@@ -170,6 +170,10 @@ class AssociationTypeController
      */
     public function removeAction(AssociationType $associationType)
     {
+        if (!$this->request->isXmlHttpRequest()) {
+            return new RedirectResponse('/');
+        }
+
         $this->assocTypeRemover->remove($associationType);
 
         if ($this->request->isXmlHttpRequest()) {

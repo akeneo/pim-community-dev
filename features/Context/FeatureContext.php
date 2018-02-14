@@ -62,6 +62,7 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
         $this->useContext('datagrid', new DataGridContext());
         $this->useContext('command', new CommandContext());
         $this->useContext('navigation', new NavigationContext($parameters['base_url']));
+        $this->useContext('security', new SecurityContext($parameters['base_url']));
         $this->useContext('transformations', new TransformationContext());
         $this->useContext('assertions', new AssertionContext());
         $this->useContext('technical', new TechnicalContext());

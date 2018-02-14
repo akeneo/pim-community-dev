@@ -10,6 +10,9 @@ use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\GroupInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
@@ -59,10 +62,14 @@ class VariantGroupAttributeController
      *
      * @throws NotFoundHttpException If variant group or attribute is not found or the user cannot see it
      *
-     * @return JsonResponse
+     * @return Response
      */
-    public function removeAttributeAction($code, $attributeId)
+    public function removeAttributeAction(Request $request, $code, $attributeId)
     {
+        if (!$request->isXmlHttpRequest()) {
+            return new RedirectResponse('/');
+        }
+
         $group = $this->findVariantGroupOr404($code);
         $attribute = $this->findAttributeOr404($attributeId);
 

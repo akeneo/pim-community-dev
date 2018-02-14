@@ -18,7 +18,9 @@ use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
@@ -121,12 +123,16 @@ class AttributeOptionController
      * @param Request $request
      * @param int     $attributeId
      *
-     * @return JsonResponse
+     * @return FormInterface|RedirectResponse
      *
      * @AclAncestor("pim_enrich_attribute_edit")
      */
     public function createAction(Request $request, $attributeId)
     {
+        if (!$request->isXmlHttpRequest()) {
+            return new RedirectResponse('/');
+        }
+
         $attribute = $this->findAttributeOr404($attributeId);
 
         $attributeOption = $this->optionFactory->create();
@@ -144,12 +150,16 @@ class AttributeOptionController
      * @param Request $request
      * @param int     $attributeOptionId
      *
-     * @return JsonResponse
+     * @return FormInterface|RedirectResponse
      *
      * @AclAncestor("pim_enrich_attribute_edit")
      */
     public function updateAction(Request $request, $attributeOptionId)
     {
+        if (!$request->isXmlHttpRequest()) {
+            return new RedirectResponse('/');
+        }
+
         $attributeOption = $this->findAttributeOptionOr404($attributeOptionId);
 
         //Should be replaced by a paramConverter
@@ -163,12 +173,16 @@ class AttributeOptionController
      *
      * @param int $attributeOptionId
      *
-     * @return JsonResponse
+     * @return Response
      *
      * @AclAncestor("pim_enrich_attribute_edit")
      */
-    public function deleteAction($attributeOptionId)
+    public function deleteAction(Request $request, $attributeOptionId)
     {
+        if (!$request->isXmlHttpRequest()) {
+            return new RedirectResponse('/');
+        }
+
         $attributeOption = $this->findAttributeOptionOr404($attributeOptionId);
 
         try {
@@ -186,12 +200,16 @@ class AttributeOptionController
      * @param Request $request
      * @param int     $attributeId
      *
-     * @return JsonResponse
+     * @return Response
      *
      * @AclAncestor("pim_enrich_attribute_edit")
      */
     public function updateSortingAction(Request $request, $attributeId)
     {
+        if (!$request->isXmlHttpRequest()) {
+            return new RedirectResponse('/');
+        }
+
         $attribute = $this->findAttributeOr404($attributeId);
         //Should be replaced by a paramConverter
         $data = json_decode($request->getContent(), true);
