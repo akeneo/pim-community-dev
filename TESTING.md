@@ -2,7 +2,7 @@
 
 ## About
 
-This document aims to help the writing of tests in the PIM. It's the result of trainings and workshops we had with [Matthias Noback](https://matthiasnoback.nl/) around this topic. This guide applies for both backend and frontend applications.
+This document aims to help the writing of tests in the PIM. It's the result of training sessions and workshops we had with [Matthias Noback](https://matthiasnoback.nl/) around this topic. This guide applies for both backend and frontend applications.
 
 
 ## Types of tests
@@ -81,7 +81,7 @@ Unit:
 
 Acceptance:
 
-- focuses on the Acceptance layer
+- focuses on the Application layer
 
 Integration:
 
