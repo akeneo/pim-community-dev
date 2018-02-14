@@ -10,6 +10,7 @@ use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\EntityWithFamilyVariantInterface;
 use Pim\Component\Catalog\Model\EntityWithValuesInterface;
+use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Component\Catalog\Model\FamilyVariantInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
@@ -71,14 +72,17 @@ class RemoverActionApplierSpec extends ObjectBehavior
         ProductRemoveActionInterface $action,
         VariantProductInterface $variantProduct,
         AttributeInterface $multiSelectAttribute,
-        FamilyVariantInterface $familyVariant
+        FamilyVariantInterface $familyVariant,
+        FamilyInterface $family
     ) {
         $action->getField()->willReturn('multi-select');
         $action->getOptions()->willReturn([]);
         $action->getItems()->willReturn(['multi1', 'multi2']);
 
         $attributeRepository->findOneByIdentifier('multi-select')->willReturn($multiSelectAttribute);
-        $multiSelectAttribute->getCode()->willReturn('multi-select');
+
+        $variantProduct->getFamily()->willReturn($family);
+        $family->hasAttributeCode('multi-select')->willReturn(true);
 
         $variantProduct->getFamilyVariant()->willReturn($familyVariant);
         $familyVariant->getLevelForAttributeCode('multi-select')->willReturn(2);
@@ -104,14 +108,17 @@ class RemoverActionApplierSpec extends ObjectBehavior
         ProductRemoveActionInterface $action,
         ProductModelInterface $productModel,
         AttributeInterface $multiSelectAttribute,
-        FamilyVariantInterface $familyVariant
+        FamilyVariantInterface $familyVariant,
+        FamilyInterface $family
     ) {
         $action->getField()->willReturn('multi-select');
         $action->getOptions()->willReturn([]);
         $action->getItems()->willReturn(['multi1', 'multi2']);
 
         $attributeRepository->findOneByIdentifier('multi-select')->willReturn($multiSelectAttribute);
-        $multiSelectAttribute->getCode()->willReturn('multi-select');
+
+        $productModel->getFamily()->willReturn($family);
+        $family->hasAttributeCode('multi-select')->willReturn(true);
 
         $productModel->getFamilyVariant()->willReturn($familyVariant);
         $familyVariant->getLevelForAttributeCode('multi-select')->willReturn(2);
@@ -137,14 +144,17 @@ class RemoverActionApplierSpec extends ObjectBehavior
         ProductRemoveActionInterface $action,
         EntityWithFamilyVariantInterface $entityWithFamilyVariant,
         AttributeInterface $multiSelectAttribute,
-        FamilyVariantInterface $familyVariant
+        FamilyVariantInterface $familyVariant,
+        FamilyInterface $family
     ) {
         $action->getField()->willReturn('multi-select');
         $action->getOptions()->willReturn([]);
         $action->getItems()->willReturn(['multi1', 'multi2']);
 
         $attributeRepository->findOneByIdentifier('multi-select')->willReturn($multiSelectAttribute);
-        $multiSelectAttribute->getCode()->willReturn('multi-select');
+
+        $entityWithFamilyVariant->getFamily()->willReturn($family);
+        $family->hasAttributeCode('multi-select')->willReturn(true);
 
         $entityWithFamilyVariant->getFamilyVariant()->willReturn($familyVariant);
         $familyVariant->getLevelForAttributeCode('multi-select')->willReturn(2);
@@ -240,5 +250,28 @@ class RemoverActionApplierSpec extends ObjectBehavior
                 'Not an array'
             )
         )->during('applyAction', [$action, [$entityWithValues]]);
+    }
+
+    function it_does_not_apply_remove_action_if_the_field_is_not_an_attribute_of_the_family(
+        $propertyRemover,
+        $attributeRepository,
+        ProductRemoveActionInterface $action,
+        EntityWithFamilyVariantInterface $entityWithFamilyVariant,
+        AttributeInterface $multiSelectAttribute,
+        FamilyInterface $family
+    ) {
+        $action->getField()->willReturn('multi-select');
+        $action->getOptions()->willReturn([]);
+        $action->getItems()->willReturn(['multi1', 'multi2']);
+
+        $attributeRepository->findOneByIdentifier('multi-select')->willReturn($multiSelectAttribute);
+
+        $entityWithFamilyVariant->getFamily()->willReturn($family);
+        $family->hasAttributeCode('multi-select')->willReturn(false);
+
+        $entityWithFamilyVariant->getFamilyVariant()->shouldNotBeCalled();
+        $propertyRemover->removeData(Argument::cetera())->shouldNotBeCalled();
+
+        $this->applyAction($action, [$entityWithFamilyVariant]);
     }
 }

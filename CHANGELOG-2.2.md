@@ -4,6 +4,7 @@
 
 - PIM-7165: Execute rules after a product model import
 - PIM-7125: As Peter, I would like to use rules to unclassify products from a tree
+- PIM-7186: Don't apply a rule if its action field is an attribute not present in the family
 
 ## BC breaks
 

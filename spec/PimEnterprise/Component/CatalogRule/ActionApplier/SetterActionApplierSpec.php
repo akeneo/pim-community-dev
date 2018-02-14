@@ -9,6 +9,7 @@ use Doctrine\Common\Collections\Collection;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\EntityWithFamilyVariantInterface;
+use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Component\Catalog\Model\FamilyVariantInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
@@ -56,13 +57,17 @@ class SetterActionApplierSpec extends ObjectBehavior
         ProductSetActionInterface $action,
         VariantProductInterface $variantProduct,
         FamilyVariantInterface $familyVariant,
-        AttributeInterface $name
+        AttributeInterface $name,
+        FamilyInterface $family
     ) {
         $action->getField()->willReturn('name');
         $action->getValue()->willReturn('sexy socks');
         $action->getOptions()->willReturn([]);
 
         $attributeRepository->findOneByIdentifier('name')->willReturn($name);
+
+        $variantProduct->getFamily()->willReturn($family);
+        $family->hasAttributeCode('name')->willReturn(true);
 
         $variantProduct->getVariationLevel()->willReturn(1);
 
@@ -85,13 +90,17 @@ class SetterActionApplierSpec extends ObjectBehavior
         ProductSetActionInterface $action,
         ProductModelInterface $productModel,
         FamilyVariantInterface $familyVariant,
-        AttributeInterface $name
+        AttributeInterface $name,
+        FamilyInterface $family
     ) {
         $action->getField()->willReturn('name');
         $action->getValue()->willReturn('sexy socks');
         $action->getOptions()->willReturn([]);
 
         $attributeRepository->findOneByIdentifier('name')->willReturn($name);
+
+        $productModel->getFamily()->willReturn($family);
+        $family->hasAttributeCode('name')->willReturn(true);
 
         $productModel->getVariationLevel()->willReturn(1);
 
@@ -114,13 +123,17 @@ class SetterActionApplierSpec extends ObjectBehavior
         ProductSetActionInterface $action,
         EntityWithFamilyVariantInterface $entityWithFamilyVariant,
         FamilyVariantInterface $familyVariant,
-        AttributeInterface $name
+        AttributeInterface $name,
+        FamilyInterface $family
     ) {
         $action->getField()->willReturn('name');
         $action->getValue()->willReturn('sexy socks');
         $action->getOptions()->willReturn([]);
 
         $attributeRepository->findOneByIdentifier('name')->willReturn($name);
+
+        $entityWithFamilyVariant->getFamily()->willReturn($family);
+        $family->hasAttributeCode('name')->willReturn(true);
 
         $entityWithFamilyVariant->getVariationLevel()->willReturn(2);
 
@@ -233,5 +246,28 @@ class SetterActionApplierSpec extends ObjectBehavior
         $propertySetter->setData(Argument::cetera())->shouldNotBeCalled();
 
         $this->applyAction($action, [$entity]);
+    }
+
+    function it_does_not_apply_set_action_if_the_field_is_not_an_attribute_of_the_family(
+        $propertySetter,
+        $attributeRepository,
+        ProductSetActionInterface $action,
+        EntityWithFamilyVariantInterface $entityWithFamilyVariant,
+        FamilyInterface $family,
+        AttributeInterface $name
+    ) {
+        $action->getField()->willReturn('name');
+        $action->getValue()->willReturn('sexy socks');
+        $action->getOptions()->willReturn([]);
+
+        $attributeRepository->findOneByIdentifier('name')->willReturn($name);
+
+        $entityWithFamilyVariant->getFamily()->willReturn($family);
+        $family->hasAttributeCode('name')->willReturn(false);
+
+        $entityWithFamilyVariant->getFamilyVariant()->shouldNotBeCalled();
+        $propertySetter->setData(Argument::cetera())->shouldNotBeCalled();
+
+        $this->applyAction($action, [$entityWithFamilyVariant]);
     }
 }
