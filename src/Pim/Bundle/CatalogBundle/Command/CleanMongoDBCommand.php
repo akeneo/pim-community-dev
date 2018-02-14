@@ -224,7 +224,7 @@ class CleanMongoDBCommand extends ContainerAwareCommand
      * @param array $product
      * @param int   $valueIndex
      *
-     * @return bool
+     * @return array
      */
     protected function checkReferenceDataFields(array $product, $valueIndex)
     {
@@ -245,21 +245,21 @@ class CleanMongoDBCommand extends ContainerAwareCommand
      * @param array   $product
      * @param integer $valueIndex    index of the prodcut value
      *
-     * @return bool whether the reference data exists or not.
+     * @return array
      */
     protected function checkReferenceDataField(array $referenceData, array $product, $valueIndex)
     {
         $referenceDataField = $product['values'][$valueIndex][$referenceData['field']];
 
         if (!is_array($referenceDataField)) {
-            if (null !== $this->findEntity($referenceData['class'], $referenceDataField)) {
+            if (!$this->isReferenceDataExisting($referenceData['class'], $referenceDataField)) {
                 $this->addMissingEntity($referenceData['class'], $referenceDataField);
             }
 
             unset($product['values'][$valueIndex]);
         } else {
             foreach ($referenceDataField as $key => $referenceDataId) {
-                if (null !== $this->findEntity($referenceData['class'], $referenceDataId)) {
+                if (!$this->isReferenceDataExisting($referenceData['class'], $referenceDataId)) {
                     $this->addMissingEntity($referenceData['class'], $referenceDataId);
                 }
 
@@ -295,11 +295,11 @@ class CleanMongoDBCommand extends ContainerAwareCommand
      * @param string $entityClass
      * @param int    $id
      *
-     * @return null|object
+     * @return bool
      */
-    protected function findEntity($entityClass, $id)
+    protected function isReferenceDataExisting($entityClass, $id)
     {
-        return $this->getContainer()->get('doctrine.orm.entity_manager')->find($entityClass, $id);
+        return null !== $this->getContainer()->get('doctrine.orm.entity_manager')->find($entityClass, $id);
     }
 
     /**
