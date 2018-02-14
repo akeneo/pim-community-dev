@@ -18,7 +18,6 @@ parameters:
     pim_catalog.event_subscriber.compute_family_variant_structure_changes.class: Pim\Bundle\CatalogBundle\EventSubscriber\ComputeFamilyVariantStructureChangesSubscriber
     pim_catalog.event_subscriber.remove_attributes_from_family_variants_on_family_update.class: Pim\Bundle\CatalogBundle\EventSubscriber\RemoveAttributesFromFamilyVariantsOnFamilyUpdateSubscriber
     pim_catalog.event_subscriber.save_family_variants_on_family_update.class: Pim\Bundle\CatalogBundle\EventSubscriber\SaveFamilyVariantOnFamilyUpdateSubscriber
-    pim_catalog.event_subscriber.add_parent_to_product.class: Pim\Bundle\CatalogBundle\EventSubscriber\AddParentAProductSubscriber
 
 services:
     # Subscribers
