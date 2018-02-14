@@ -62,7 +62,7 @@ datagrid:
                     data_name: j.type
                 status:
                     type:             choice
-                    data_name:        status
+                    data_name:        e.status
                     options:
                         field_options:
                             multiple: true

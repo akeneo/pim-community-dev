@@ -11,15 +11,16 @@
     "autoload": {
         "psr-0": {
             "": "src/",
-            "Context": "features/",
-            "Pim\\Behat": "features/"
+            "Context": "features/"
         },
         "psr-4": {
             "Pim\\Upgrade\\": "upgrades/",
-            "Akeneo\\Test\\IntegrationTestsBundle\\": "tests/IntegrationTestsBundle/",
-            "Akeneo\\Test\\Integration\\": "tests/"
+            "Pim\\Behat\\": "features/Pim/Behat",
+            "Akeneo\\Test\\IntegrationTestsBundle\\": "tests/Integration/IntegrationTestsBundle/",
+            "Akeneo\\Test\\Integration\\": "tests/Integration/",
+            "Akeneo\\Test\\Acceptance\\": "tests/Acceptance/"
         },
-        "classmap": [ "app/AppKernel.php", "app/AppCache.php", "tests/AppKernelTest.php" ]
+        "classmap": [ "app/AppKernel.php", "app/AppCache.php", "tests/Integration/AppKernelTest.php" ]
     },
     "require": {
         "php": ">=7.1.0",
@@ -71,14 +72,14 @@
     "require-dev": {
         "akeneo/phpspec-skip-example-extension": "2.0.*",
         "akeneo/php-coupling-detector": "0.2.0",
-        "behat/behat": "3.1.0",
-        "behat/gherkin":"4.4.5",
+        "behat/behat": "3.4.3",
+        "behat/gherkin":"4.5.1",
         "behat/mink":"1.7.1",
         "behat/mink-browserkit-driver": "1.3.2",
-        "behat/mink-extension": "2.2.0",
+        "behat/mink-extension": "2.3.0",
         "behat/mink-selenium2-driver": "1.3.1",
-        "behat/symfony2-extension": "2.1.1",
-        "behat/transliterator":"1.1.0",
+        "behat/symfony2-extension": "2.1.4",
+        "behat/transliterator":"1.2.0",
         "kriswallsmith/buzz": "^0.15",
         "pdepend/pdepend": "2.1.*",
         "phpmd/phpmd": "1.*",
@@ -87,7 +88,10 @@
         "sebastian/exporter": "~3.1.0",
         "sensiolabs/behat-page-object-extension": "2.1.0",
         "squizlabs/php_codesniffer": "2.*",
-        "liuggio/fastest": "1.4.4"
+        "friends-of-behat/context-service-extension": "^1.1",
+        "friends-of-behat/cross-container-extension": "^1.0",
+        "friends-of-behat/symfony-extension": "^1.0",
+        "liuggio/fastest": "~1.4.4"
     },
     "suggest": {
         "akeneo/catalogs": "In order to install one of the Akeneo catalogs"
