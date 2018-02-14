@@ -2,6 +2,9 @@
 
 import org.csanchez.jenkins.plugins.kubernetes.pipeline.PodTemplateAction
 
+slackChannelNotif ="#product-dev"
+
+
 String[] editions = ["ce"]
 String[] features = ["features"]
 String launchUnitTests = "yes"
@@ -22,6 +25,7 @@ stage("Build") {
                 string(defaultValue: '50', description: 'Number of dots per line', name: 'dotsperline'),
                 string(defaultValue: 'ee,ce', description: 'PIM edition the behat tests should run on (comma separated values)', name: 'editions'),
                 string(defaultValue: 'features,vendor/akeneo/pim-community-dev/features', description: 'Behat scenarios to build', name: 'features'),
+                string(defaultValue: "", description: 'Slack channel (#channel) or User to notify (@user.id)', name: 'slackChannelNotif'),
             ])
 
             editions = userInput['editions'].tokenize(',')
@@ -31,10 +35,11 @@ stage("Build") {
             launchBehatTests = userInput['launchBehatTests']
             verboseOutputs = userInput['verboseOutputs']
             dotsPerLine = userInput['dotsperline']
+            slackChannelNotif= userInput['slackChannelNotif']
         }
     }
     milestone 2
-
+    notifySlack("STARTED")
     parallel(
         "pim-ce": {withBuildNode({
             checkout scm
@@ -320,6 +325,7 @@ stage("Test") {
                 }
             }
         }
+        notifySlack()
     }
 }
 
@@ -432,4 +438,28 @@ def queue(body, scale, edition, verboseOutputs, dotsPerLine) {
 def clearTemplateNames() {
     // see https://issues.jenkins-ci.org/browse/JENKINS-42184
     currentBuild.rawBuild.getAction( PodTemplateAction.class )?.stack?.clear()
+}
+
+def notifySlack(String buildStatus="") {
+    // Build status of null means success.
+    buildStatus = buildStatus ?: currentBuild.result
+
+    def color
+
+    if (buildStatus == 'STARTED') {
+        color = '#D4DADF'
+    } else if (buildStatus == 'SUCCESS') {
+        color = '#BDFFC3'
+    } else if (buildStatus == 'UNSTABLE') {
+        color = '#FFFE89'
+    } else {
+        color = '#FF9FA1'
+    }
+
+    def msg = "${buildStatus}: `${env.JOB_NAME}` #${env.BUILD_NUMBER}: (<${env.BUILD_URL}|Open>)"
+    if(this.respondsTo('slackSend')) {
+        slackSend(color: color, message: msg, channel:"${slackChannelNotif}")
+    } else {
+        echo "slack plugin is not installed"
+    }
 }
