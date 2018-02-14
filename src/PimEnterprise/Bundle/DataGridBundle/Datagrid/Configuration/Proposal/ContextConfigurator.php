@@ -83,8 +83,6 @@ class ContextConfigurator implements ConfiguratorInterface
             $this->configuration->offsetSetByPath($path, $params);
         }
 
-        $this->addLocaleCode();
-        $this->addScopeCode();
         $this->addAttributesConfig();
         $this->addPaginationConfig();
         $this->addRepositoryParameters();
@@ -113,26 +111,6 @@ class ContextConfigurator implements ConfiguratorInterface
     }
 
     /**
-     * Inject current locale code in the datagrid configuration
-     */
-    protected function addLocaleCode(): void
-    {
-        $localeCode = $this->getCurrentLocaleCode();
-        $path = $this->getSourcePath(self::DISPLAYED_LOCALE_KEY);
-        $this->configuration->offsetSetByPath($path, $localeCode);
-    }
-
-    /**
-     * Inject current scope code in the datagrid configuration
-     */
-    protected function addScopeCode(): void
-    {
-        $scopeCode = $this->getCurrentScopeCode();
-        $path = $this->getSourcePath(self::DISPLAYED_SCOPE_KEY);
-        $this->configuration->offsetSetByPath($path, $scopeCode);
-    }
-
-    /**
      * Inject attributes configurations in the datagrid configuration
      */
     protected function addAttributesConfig(): void
@@ -158,35 +136,6 @@ class ContextConfigurator implements ConfiguratorInterface
         }
 
         return $dataLocale;
-    }
-
-    /**
-     * Get current scope from datagrid parameters, then user config
-     *
-     * @return string
-     */
-    protected function getCurrentScopeCode(): string
-    {
-        $filterValues = $this->requestParams->get('_filter');
-        $currentScopeCode = null;
-
-        if (isset($filterValues['scope']['value'])) {
-            $currentScopeCode = $filterValues['scope']['value'];
-        }
-
-        if (null === $currentScopeCode) {
-            $requestFilters = $this->getRequest()->get('filters');
-            if (isset($requestFilters['scope']['value'])) {
-                $currentScopeCode = $requestFilters['scope']['value'];
-            }
-        }
-
-        if (null === $currentScopeCode) {
-            $channel = $this->userContext->getUser()->getCatalogScope();
-            $currentScopeCode = $channel->getCode();
-        }
-
-        return $currentScopeCode;
     }
 
     /**

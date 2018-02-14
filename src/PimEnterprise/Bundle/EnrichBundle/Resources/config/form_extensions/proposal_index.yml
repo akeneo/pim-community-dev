@@ -43,15 +43,6 @@ extensions:
         config:
           template: pim/template/product/grid/column-inner
 
-    pim-proposal-index-locale-switcher:
-        module: pim/grid/locale-switcher
-        parent: pim-proposal-index-column-inner
-        targetZone: column-context-switcher
-        position: 10
-        config:
-            routeName: pimee_workflow_proposal_index
-            localeParamName: dataLocale
-
     pim-proposal-index-filters-manage:
         module: oro/datafilter/filters-button
         parent: pim-proposal-index-column-inner

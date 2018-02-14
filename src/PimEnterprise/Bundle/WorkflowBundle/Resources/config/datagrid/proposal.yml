@@ -38,13 +38,11 @@ datagrid:
                 route: pimee_workflow_product_draft_approve
                 params:
                     - id
-                    - dataLocale
             refuse_link:
                 type: url
                 route: pimee_workflow_product_draft_refuse
                 params:
                     - id
-                    - dataLocale
         actions:
             approve:
                 type: approve-proposal
@@ -90,13 +88,6 @@ datagrid:
                     ftype:     date
                     data_name: created
                     label:     pimee_workflow.product_draft.created
-                scope:
-                    type:      product_scope
-                    label:     Scope
-                    data_name: values.scope
-                    options:
-                        field_options:
-                            choices: '@pim_catalog.repository.channel->getLabelsIndexedByCode(@pim_user.context.user->getCurrentLocaleCode())'
                 label_or_identifier:
                     type: label_or_identifier
                     label: Label or identifier

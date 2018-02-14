@@ -53,7 +53,6 @@ Feature: List proposals
     When I am on the proposals page
     And I reload the page
     Then the grid should contain 3 elements
-    And I switch the scope to "ecommerce"
     And I show the filter "<filter>"
     And I filter by "<filter>" with operator "<operator>" and value "<value>"
     Then the grid should contain <count> elements
@@ -79,12 +78,11 @@ Feature: List proposals
     When I am on the proposals page
     And I reload the page
     Then the grid should contain 3 elements
-    And I switch the scope to "ecommerce"
     And I show the filter "name"
     And I filter by "name" with operator "is not empty" and value ""
     And I show the filter "price"
     And I filter by "price" with operator "is not empty" and value "USD"
-    Then the grid should contain 2 elements
+    Then the grid should contain 1 element
     And I should see entities "jacket"
 
   Scenario: Successfully approve or reject a proposal
@@ -93,7 +91,6 @@ Feature: List proposals
       | product category | user group | access |
       | 2014_collection  | IT support | own    |
     And I am on the proposals page
-    And I reload the page
     And I should see entities tshirt, sweater and jacket
     When I click on the "Approve all" action of the row which contains "tshirt"
     And I press the "Send" button in the popin
