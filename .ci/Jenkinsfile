@@ -239,6 +239,7 @@ stage("Test") {
             "behat-ce": {
                 if (launchBehatTests.equals("yes") && editions.contains("ce")) {
                     queue({
+                        sh (returnStdout: true, script: "mkdir -m 777 -p /home/jenkins/pim/app/build/logs/behat/");
                         def scenariosCE = []
                         for (feature in features) {
                             scenariosCE = (scenariosCE + sh (returnStdout: true, script: "cd /home/jenkins/pim && if [ -e $feature ]; then php ./bin/behat $feature --list-scenarios; fi").tokenize('\n'))
@@ -284,6 +285,7 @@ stage("Test") {
             "behat-ee": {
                 if (launchBehatTests.equals("yes") && editions.contains("ee")) {
                     queue({
+                        sh (returnStdout: true, script: "mkdir -m 777 -p /home/jenkins/pim/app/build/logs/behat/");
                         def scenariosEE = []
                         for (feature in features) {
                             scenariosEE = (scenariosEE + sh (returnStdout: true, script: "cd /home/jenkins/pim && if [ -e $feature ]; then php ./bin/behat $feature --list-scenarios; fi").tokenize('\n'))
@@ -326,6 +328,7 @@ stage("Test") {
             "behat-ce-odm": {
                 if (launchBehatTests.equals("yes") && editions.contains("ceodm")) {
                     queue({
+                        sh (returnStdout: true, script: "mkdir -m 777 -p /home/jenkins/pim/app/build/logs/behat/");
                         def scenariosCE = []
                         for (feature in features) {
                             scenariosCE = (scenariosCE + sh (returnStdout: true, script: "cd /home/jenkins/pim && if [ -e $feature ]; then php ./bin/behat $feature --list-scenarios; fi").tokenize('\n'))
@@ -371,6 +374,7 @@ stage("Test") {
             "behat-ee-odm": {
                 if (launchBehatTests.equals("yes") && editions.contains("eeodm")) {
                     queue({
+                        sh (returnStdout: true, script: "mkdir -m 777 -p /home/jenkins/pim/app/build/logs/behat/");
                         def scenariosEE = []
                         for (feature in features) {
                             scenariosEE = (scenariosEE + sh (returnStdout: true, script: "cd /home/jenkins/pim && if [ -e $feature ]; then php ./bin/behat $feature --list-scenarios; fi").tokenize('\n'))
