@@ -49,6 +49,22 @@ jobs:
             realTimeVersioning: true
             decimalSeparator:   .
             dateFormat: yyyy-MM-dd
+    csv_product_model_import_with_rules:
+        connector: Akeneo CSV Connector
+        alias:     csv_product_model_import_with_rules
+        label:     Demo CSV product model import with rules
+        type:      import
+        configuration:
+            filePath: /tmp/product_model.csv
+            uploadAllowed: true
+            delimiter: ;
+            enclosure: '"'
+            enabled: true
+            categoriesColumn: categories
+            familyVariantColumn: familyVariant
+            realTimeVersioning: true
+            decimalSeparator: .
+            dateFormat: yyyy-MM-dd
     xlsx_product_import_with_rules:
         connector: Akeneo XLSX Connector
         alias:     xlsx_product_import_with_rules
@@ -63,6 +79,20 @@ jobs:
             groupsColumn:       groups
             realTimeVersioning: true
             decimalSeparator:   .
+            dateFormat: yyyy-MM-dd
+    xlsx_product_model_import_with_rules:
+        connector: Akeneo XLSX Connector
+        alias:     xlsx_product_model_import_with_rules
+        label:     XLSX Demo product model import with rules
+        type:      import
+        configuration:
+            filePath: /tmp/product_model.xlsx
+            uploadAllowed: true
+            enabled: true
+            categoriesColumn: categories
+            familyVariantColumn: family_variant
+            realTimeVersioning: true
+            decimalSeparator: .
             dateFormat: yyyy-MM-dd
     csv_product_export:
         connector: Akeneo CSV Connector
