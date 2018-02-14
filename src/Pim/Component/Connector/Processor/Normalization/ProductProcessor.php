@@ -109,6 +109,10 @@ class ProductProcessor implements ItemProcessorInterface, StepExecutionAwareInte
             );
         }
 
+        foreach ($product->getGroups() as $group) {
+            $this->detacher->detach($group);
+        }
+
         $this->detacher->detach($product);
 
         return $productStandard;
