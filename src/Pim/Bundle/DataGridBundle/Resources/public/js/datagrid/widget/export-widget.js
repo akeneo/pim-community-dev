@@ -12,7 +12,7 @@ define(
             },
 
             run: function () {
-                $.get(this.action.getLinkWithParameters())
+                $.post(this.action.getLinkWithParameters(), {itemIds: this.action.getSelectedRows().join(',')})
                     .done(function () {
                         messenger.notificationFlashMessage(
                             'success',

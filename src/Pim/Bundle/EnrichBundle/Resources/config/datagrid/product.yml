@@ -105,11 +105,12 @@ datagrid:
                 launcherOptions:
                     group: bulk_actions
             sequential_edit:
-                type: edit
+                type: sequential_edit
                 acl_resource: pim_enrich_product_edit_attributes
                 label: pim.grid.mass_action.sequential_edit
                 handler: sequential_edit
                 route: pim_enrich_mass_edit_action_sequential_edit
+                frontend_type: sequential_edit
                 launcherOptions:
                     group: bulk_actions
             category_edit:
