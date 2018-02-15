@@ -69,9 +69,11 @@ Examples:
 - test that an import can be launched via the CLI
 
 
-## Ports and adapters architecture
+## It's all about architecture
 
-### What's that?
+### The foundations: ports and adapters
+
+### 
 
 ### The relation with the tests
 
