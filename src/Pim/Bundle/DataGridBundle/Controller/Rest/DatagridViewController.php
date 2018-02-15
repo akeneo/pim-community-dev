@@ -11,7 +11,9 @@ use Pim\Bundle\DataGridBundle\Manager\DatagridViewManager;
 use Pim\Bundle\DataGridBundle\Repository\DatagridViewRepositoryInterface;
 use Pim\Bundle\EnrichBundle\Flash\Message;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
@@ -216,10 +218,14 @@ class DatagridViewController
      * @param Request $request
      * @param string  $identifier
      *
-     * @return JsonResponse
+     * @return Response
      */
     public function removeAction(Request $request, $identifier)
     {
+        if (!$request->isXmlHttpRequest()) {
+            return new RedirectResponse('/');
+        }
+
         $user = $this->tokenStorage->getToken()->getUser();
         $view = $this->datagridViewRepo->findOneBy(['owner' => $user, 'id' => $identifier]);
 

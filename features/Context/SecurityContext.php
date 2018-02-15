@@ -132,7 +132,7 @@ class SecurityContext extends RawMinkContext implements KernelAwareInterface
      */
     public function iMakeADirectAuthenticatedDeleteCallOnTheDatagridView($datagridViewLabel, $username)
     {
-        $routeName = 'pim_datagrid_view_remove';
+        $routeName = 'pim_datagrid_view_rest_remove';
 
         $view = $this->kernel
             ->getContainer()
@@ -142,7 +142,7 @@ class SecurityContext extends RawMinkContext implements KernelAwareInterface
         $url = $this->kernel
             ->getContainer()
             ->get('router')
-            ->generate($routeName, ['id' => $view->getId()]);
+            ->generate($routeName, ['identifier' => $view->getId()]);
 
         $this->doCall('DELETE', $url, [], [], $username);
     }
