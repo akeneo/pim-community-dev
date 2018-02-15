@@ -461,18 +461,13 @@ class SecurityContext extends RawMinkContext implements KernelAwareInterface
      */
     public function iMakeADirectAuthenticatedDeleteCallOnTheGroup($groupCode)
     {
-        $routeName = 'pim_enrich_group_remove';
-
-        $group = $this->kernel
-            ->getContainer()
-            ->get('pim_catalog.repository.group')
-            ->findOneByIdentifier($groupCode);
+        $routeName = 'pim_enrich_group_rest_remove';
 
         $url = $this->kernel
             ->getContainer()
             ->get('router')
             ->generate($routeName, [
-                'id' => $group->getId(),
+                'code' => $groupCode,
             ]);
 
         $this->doCall('DELETE', $url);
