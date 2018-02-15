@@ -175,17 +175,12 @@ class SecurityContext extends RawMinkContext implements KernelAwareInterface
      */
     public function iMakeADirectAuthenticatedDeleteCallOnTheAssociationType($associationTypeCode)
     {
-        $routeName = 'pim_enrich_associationtype_remove';
-
-        $associationType = $this->kernel
-            ->getContainer()
-            ->get('pim_catalog.repository.association_type')
-            ->findOneByIdentifier($associationTypeCode);
+        $routeName = 'pim_enrich_associationtype_rest_remove';
 
         $url = $this->kernel
             ->getContainer()
             ->get('router')
-            ->generate($routeName, ['id' => $associationType->getId()]);
+            ->generate($routeName, ['code' => $associationTypeCode]);
 
         $this->doCall('DELETE', $url);
     }

@@ -10,6 +10,7 @@ use Pim\Bundle\UserBundle\Context\UserContext;
 use Pim\Component\Catalog\Model\AssociationTypeInterface;
 use Pim\Component\Catalog\Repository\AssociationTypeRepositoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -143,12 +144,16 @@ class AssociationTypeController
      *
      * @param $code
      *
-     * @return JsonResponse
+     * @return Response
      *
      * @AclAncestor("pim_enrich_associationtype_remove")
      */
-    public function removeAction($code)
+    public function removeAction(Request $request, $code)
     {
+        if (!$request->isXmlHttpRequest()) {
+            return new RedirectResponse('/');
+        }
+
         $associationType = $this->getAssociationTypeOr404($code);
 
         $this->remover->remove($associationType);
