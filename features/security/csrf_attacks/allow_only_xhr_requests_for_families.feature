@@ -9,7 +9,3 @@ Feature: Allow only XHR requests for some families actions
   Scenario: Authorize only XHR calls for families deletion
     When I make a direct authenticated DELETE call on the "boots" family
     Then there should be a "boots" family
-
-  Scenario: Authorize only XHR calls for families attribute deletion
-    When I make a direct authenticated DELETE call on the "lace_color" attribute of family "boots"
-    Then there should be a "lace_color" attribute in the "boots" family

@@ -444,46 +444,13 @@ class SecurityContext extends RawMinkContext implements KernelAwareInterface
      */
     public function iMakeADirectAuthenticatedDeleteCallOnTheFamily($familyCode)
     {
-        $routeName = 'pim_enrich_family_remove';
-
-        $family = $this->kernel
-            ->getContainer()
-            ->get('pim_catalog.repository.family')
-            ->findOneByIdentifier($familyCode);
+        $routeName = 'pim_enrich_family_rest_remove';
 
         $url = $this->kernel
             ->getContainer()
             ->get('router')
             ->generate($routeName, [
-                'id' => $family->getId(),
-            ]);
-
-        $this->doCall('DELETE', $url);
-    }
-
-    /**
-     * @When /^I make a direct authenticated DELETE call on the "([^"]*)" attribute of family "([^"]*)"$/
-     */
-    public function iMakeADirectAuthenticatedDeleteCallOnTheAttributeOfFamily($attributeCode, $familyCode)
-    {
-        $routeName = 'pim_enrich_family_removeattribute';
-
-        $attribute = $this->kernel
-            ->getContainer()
-            ->get('pim_catalog.repository.attribute')
-            ->findOneByIdentifier($attributeCode);
-
-        $family = $this->kernel
-            ->getContainer()
-            ->get('pim_catalog.repository.family')
-            ->findOneByIdentifier($familyCode);
-
-        $url = $this->kernel
-            ->getContainer()
-            ->get('router')
-            ->generate($routeName, [
-                'familyId' => $family->getId(),
-                'attributeId' => $attribute->getId(),
+                'code' => $familyCode,
             ]);
 
         $this->doCall('DELETE', $url);
