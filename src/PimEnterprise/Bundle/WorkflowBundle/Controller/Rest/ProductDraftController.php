@@ -27,7 +27,9 @@ use PimEnterprise\Component\Security\Attributes as SecurityAttributes;
 use PimEnterprise\Component\Workflow\Model\ProductDraftInterface;
 use PimEnterprise\Component\Workflow\Repository\ProductDraftRepositoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
@@ -226,10 +228,14 @@ class ProductDraftController
      * @throws \LogicException
      * @throws AccessDeniedHttpException
      *
-     * @return JsonResponse
+     * @return Response
      */
     public function reviewAction(Request $request, $id, $action)
     {
+        if (!$request->isXmlHttpRequest()) {
+            return new RedirectResponse('/');
+        }
+
         $productDraft = $this->findProductDraftOr404($id);
 
         if (!in_array($action, $this->supportedReviewActions)) {
@@ -267,10 +273,14 @@ class ProductDraftController
      * @throws \LogicException
      * @throws AccessDeniedHttpException
      *
-     * @return JsonResponse
+     * @return Response
      */
     public function removeAction(Request $request, $id)
     {
+        if (!$request->isXmlHttpRequest()) {
+            return new RedirectResponse('/');
+        }
+
         $productDraft = $this->findProductDraftOr404($id);
 
         if (!$this->authorizationChecker->isGranted(SecurityAttributes::OWN, $productDraft->getProduct())) {
