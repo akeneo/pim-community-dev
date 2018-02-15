@@ -85,10 +85,12 @@ class CopierActionApplier implements ActionApplierInterface
             return;
         }
 
-        $toLevel = $entityWithFamilyVariant->getFamilyVariant()->getLevelForAttributeCode($toField);
+        if ($entityWithFamilyVariant->getFamily()->hasAttributeCode($toField)) {
+            $toLevel = $entityWithFamilyVariant->getFamilyVariant()->getLevelForAttributeCode($toField);
 
-        if ($entityWithFamilyVariant->getVariationLevel() === $toLevel) {
-            $this->copyDataOnEntityWithValues($entityWithFamilyVariant, $action);
+            if ($entityWithFamilyVariant->getVariationLevel() === $toLevel) {
+                $this->copyDataOnEntityWithValues($entityWithFamilyVariant, $action);
+            }
         }
     }
 
