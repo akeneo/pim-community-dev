@@ -3,6 +3,7 @@
 ## Bug fixes
 
 - PIM-7132: Fix "url too long" when doing a mass edit
+- PIM-7182: Fix the clean mongodb command for reference data
 
 ## Security fixes
 
