@@ -14,35 +14,31 @@ AcmeEnterprise\Bundle\AppBundle\Model\ProductValue:
         integer_idx:
             columns:
                 - value_integer
-#    fields:
-#        myNewField:
-#            type: string
-#            length: 255
-#            nullable: true
-#            column: my_new_field
-#    manyToOne:
-#        color:
-#            targetEntity: AcmeEnterprise\Bundle\AppBundle\Entity\Color
-#            joinColumn:
-#                name: color_id
-#                referencedColumnName: id
-#    manyToMany:
-#        fabrics:
-#            targetEntity: AcmeEnterprise\Bundle\AppBundle\Entity\Fabric
-#            cascade:
-#                - refresh
-#            joinTable:
-#                name: acme_catalog_product_value_fabric
-#                joinColumns:
-#                    value_id:
-#                        referencedColumnName: id
-#                        nullable: true
-#                        onDelete: CASCADE
-#                inverseJoinColumns:
-#                    fabric_id:
-#                        referencedColumnName: id
-#                        nullable: false
-
-
-
-
+    fields:
+        myNewField:
+            type: string
+            length: 255
+            nullable: true
+            column: my_new_field
+    manyToOne:
+        color:
+            targetEntity: AcmeEnterprise\Bundle\AppBundle\Entity\Color
+            joinColumn:
+                name: color_id
+                referencedColumnName: id
+    manyToMany:
+        fabrics:
+            targetEntity: AcmeEnterprise\Bundle\AppBundle\Entity\Fabric
+            cascade:
+                - refresh
+            joinTable:
+                name: acme_catalog_product_value_fabric
+                joinColumns:
+                    value_id:
+                        referencedColumnName: id
+                        nullable: true
+                        onDelete: CASCADE
+                inverseJoinColumns:
+                    fabric_id:
+                        referencedColumnName: id
+                        nullable: false
