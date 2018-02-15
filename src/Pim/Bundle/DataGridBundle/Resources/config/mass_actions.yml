@@ -1,5 +1,6 @@
 parameters:
     pim_datagrid.extension.mass_action.type.export.class:                 Pim\Bundle\DataGridBundle\Extension\MassAction\Actions\Export\ExportMassAction
+    pim_datagrid.extension.mass_action.type.sequential_edit.class:        Pim\Bundle\DataGridBundle\Extension\MassAction\Actions\SequentialEdit\SequentialEditAction
     pim_datagrid.extension.mass_action.type.delete.class:                 Pim\Bundle\DataGridBundle\Extension\MassAction\Actions\Ajax\DeleteMassAction
     pim_datagrid.extension.mass_action.handler.edit.class:                Pim\Bundle\DataGridBundle\Extension\MassAction\Handler\EditMassActionHandler
     pim_datagrid.extension.mass_action.handler.export.class:              Pim\Bundle\DataGridBundle\Extension\MassAction\Handler\ExportMassActionHandler
@@ -82,6 +83,12 @@ services:
         scope: prototype
         tags:
             - { name: oro_datagrid.extension.mass_action.type, type: export }
+
+    pim_datagrid.extension.mass_action.type.sequential_edit:
+        class: '%pim_datagrid.extension.mass_action.type.sequential_edit.class%'
+        scope: prototype
+        tags:
+            - { name: oro_datagrid.extension.mass_action.type, type: sequential_edit }
 
     pim_datagrid.extension.mass_action.type.edit:
         class: Pim\Bundle\DataGridBundle\Extension\MassAction\Actions\Redirect\EditMassAction

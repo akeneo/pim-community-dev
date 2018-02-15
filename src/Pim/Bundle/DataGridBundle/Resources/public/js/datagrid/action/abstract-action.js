@@ -194,6 +194,11 @@ function($, _, Backbone, routing, Navigation, __, mediator, messenger, error, Mo
             }
             var url = action.getLinkWithParameters(),
                 navigation = Navigation.getInstance();
+
+            /** @PIM-7132: Save the selected items in the localstorage instead of passing them through a URL parameter
+             * to avoid a "URL too long" **/
+            action.saveItemIds();
+
             if (navigation) {
                 navigation.processRedirect({
                     fullRedirect: false,
@@ -209,15 +214,11 @@ function($, _, Backbone, routing, Navigation, __, mediator, messenger, error, Mo
                 return;
             }
             action.datagrid.showLoading();
-            $.ajax({
-                url: action.getLink(),
-                method: action.getMethod(),
-                data: action.getActionParameters(),
-                context: action,
-                dataType: 'json',
-                error: action._onAjaxError,
-                success: action._onAjaxSuccess
-            });
+
+            var payload = _.extend({itemIds: action.getSelectedRows().join(',')}, action.getActionParameters());
+            $.post(action.getLinkWithParameters(), payload)
+                .done(action._onAjaxSuccess.bind(this))
+                .fail(action._onAjaxError.bind(this));
         },
 
         _onAjaxError: function(jqXHR, textStatus, errorThrown) {
@@ -292,6 +293,25 @@ function($, _, Backbone, routing, Navigation, __, mediator, messenger, error, Mo
                 content: this.messages.confirm_content,
                 okText: this.messages.confirm_ok
             }).on('ok', callback);
+        },
+
+        /**
+         * Saves in the localstorage the list of selected ids in the datagrid.
+         */
+        saveItemIds: function() {},
+
+        /**
+         * Returns a list of ids corresponding to the selected rows in the datagrid.
+         *
+         * @returns {Array} an array of string
+         */
+        getSelectedRows: function() {
+            var selectionState = this.datagrid.getSelectionState();
+            var itemIds = _.map(selectionState.selectedModels, function(model) {
+                return model.get(this.identifierFieldName);
+            }, this);
+
+            return itemIds;
         }
     });
 });

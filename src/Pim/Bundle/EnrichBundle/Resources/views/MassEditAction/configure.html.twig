@@ -51,6 +51,8 @@
                     ) }}
                 </div>
 
+                <input type="hidden" name="itemIds" value="" class="pim-hidden-form-input" />
+
                 <div class="AknButtonList AknButtonList--right confirmation AknButtonList--hide">
                     {{ elements.link(
                         'btn.cancel',
@@ -167,6 +169,9 @@
                         $('.AknButtonList.confirmation').addClass('AknButtonList--hide');
                         $('.AknMessageBox.confirmation').addClass('AknMessageBox--hide');
                     });
+
+                    var itemIds = JSON.parse(localStorage.getItem('mass_action.itemIds')).join(',');
+                    $('input.pim-hidden-form-input[name="itemIds"]').val(itemIds)
                 });
             }
         );

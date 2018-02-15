@@ -145,8 +145,12 @@ class GroupTypeController
      *
      * @return Response|RedirectResponse
      */
-    public function removeAction(GroupType $groupType)
+    public function removeAction(Request $request, GroupType $groupType)
     {
+        if (!$request->isXmlHttpRequest()) {
+            return new RedirectResponse('/');
+        }
+
         if ($groupType->isVariant()) {
             throw new DeleteException($this->translator->trans('flash.group type.cant remove variant'));
         } elseif (count($groupType->getGroups()) > 0) {
