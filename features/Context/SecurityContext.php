@@ -684,18 +684,13 @@ class SecurityContext extends RawMinkContext implements KernelAwareInterface
      */
     public function iMakeADirectAuthenticatedDeleteCallOnTheExportJobProfile($exportJobProfileCode)
     {
-        $routeName = 'pim_importexport_export_profile_remove';
-
-        $exportJobProfile = $this->kernel
-            ->getContainer()
-            ->get('pim_import_export.repository.job_instance')
-            ->findOneByIdentifier($exportJobProfileCode);
+        $routeName = 'pim_enrich_job_instance_rest_export_delete';
 
         $url = $this->kernel
             ->getContainer()
             ->get('router')
             ->generate($routeName, [
-                'id' => $exportJobProfile->getId(),
+                'code' => $exportJobProfileCode,
             ]);
 
         $this->doCall('DELETE', $url);
@@ -706,18 +701,13 @@ class SecurityContext extends RawMinkContext implements KernelAwareInterface
      */
     public function iMakeADirectAuthenticatedDeleteCallOnTheImportJobProfile($importJobProfileCode)
     {
-        $routeName = 'pim_importexport_import_profile_remove';
-
-        $importJobProfile = $this->kernel
-            ->getContainer()
-            ->get('pim_import_export.repository.job_instance')
-            ->findOneByIdentifier($importJobProfileCode);
+        $routeName = 'pim_enrich_job_instance_rest_import_delete';
 
         $url = $this->kernel
             ->getContainer()
             ->get('router')
             ->generate($routeName, [
-                'id' => $importJobProfile->getId(),
+                'code' => $importJobProfileCode,
             ]);
 
         $this->doCall('DELETE', $url);
@@ -790,8 +780,8 @@ class SecurityContext extends RawMinkContext implements KernelAwareInterface
     {
         $exportJobProfile = $this->kernel
             ->getContainer()
-            ->get('pim_import_export.repository.job_instance')
-            ->findOneByIdentifier($exportJobProfileCode);
+            ->get('pim_enrich.repository.job_instance')
+            ->findOneBy(['code' => $exportJobProfileCode]);
 
         assertNotNull($exportJobProfile);
     }
