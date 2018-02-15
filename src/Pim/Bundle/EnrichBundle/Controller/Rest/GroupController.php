@@ -140,10 +140,14 @@ class GroupController
      * @throws NotFoundHttpException     If product is not found or the user cannot see it
      * @throws AccessDeniedHttpException If the user does not have permissions to edit the product
      *
-     * @return JsonResponse
+     * @return Response
      */
     public function postAction(Request $request, $code)
     {
+        if (!$request->isXmlHttpRequest()) {
+            return new RedirectResponse('/');
+        }
+
         $group = $this->groupRepository->findOneByIdentifier($code);
         if (null === $group) {
             throw new NotFoundHttpException(sprintf('Group with code "%s" not found', $code));

@@ -9,3 +9,7 @@ Feature: Allow only XHR requests for some groups actions
   Scenario: Authorize only XHR calls for groups deletion
     When I make a direct authenticated DELETE call on the "similar_boots" group
     Then there should be a "similar_boots" group
+
+  Scenario: Authorize only XHR calls for groups update
+    When I make a direct authenticated POST call on the "similar_boots" group to change its "en_US" label to "Jambon"
+    Then the label of group "similar_boots" should be "Similar boots"

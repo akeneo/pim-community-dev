@@ -474,6 +474,29 @@ class SecurityContext extends RawMinkContext implements KernelAwareInterface
     }
 
     /**
+     * @When /^I make a direct authenticated POST call on the "([^"]*)" group to change its "([^"]*)" label to "([^"]*)"$/
+     */
+    public function iMakeADirectAuthenticatedPostCallOnTheGroupToChangeItsLabelTo($groupCode, $localeCode, $labelValue)
+    {
+        $routeName = 'pim_enrich_group_rest_post';
+
+        $url = $this->kernel
+            ->getContainer()
+            ->get('router')
+            ->generate($routeName, [
+                'code' => $groupCode,
+            ]);
+
+        $this->doCall('POST', $url, [], [
+            'code' => $groupCode,
+            'labels' => [
+                $localeCode => $labelValue
+            ],
+            'products' => []
+        ]);
+    }
+
+    /**
      * @When /^I make a direct authenticated DELETE call on the "([^"]*)" group type$/
      */
     public function iMakeADirectAuthenticatedDeleteCallOnTheGroupType($groupTypeCode)
@@ -810,6 +833,21 @@ class SecurityContext extends RawMinkContext implements KernelAwareInterface
             ->findOneByIdentifier($variantGroupCode);
 
         $label = $variantGroup->getLabel();
+
+        assertEquals($expectedLabel, $label);
+    }
+
+    /**
+     * @Then /^the label of group "([^"]*)" should be "([^"]*)"$/
+     */
+    public function theLabelOfGroupShouldBe($groupCode, $expectedLabel)
+    {
+        $group = $this->kernel
+            ->getContainer()
+            ->get('pim_catalog.repository.group')
+            ->findOneByIdentifier($groupCode);
+
+        $label = $group->getLabel();
 
         assertEquals($expectedLabel, $label);
     }
