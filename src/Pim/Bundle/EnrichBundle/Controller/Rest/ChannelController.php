@@ -11,6 +11,7 @@ use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
 use Pim\Component\Catalog\Updater\ChannelUpdater;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
@@ -160,10 +161,14 @@ class ChannelController
      * @throws HttpExceptionInterface
      * @throws \InvalidArgumentException
      *
-     * @return JsonResponse
+     * @return Response
      */
-    public function removeAction($code)
+    public function removeAction(Request $request, $code)
     {
+        if (!$request->isXmlHttpRequest()) {
+            return new RedirectResponse('/');
+        }
+
         $channel = $this->getChannel($code);
         $this->remover->remove($channel);
 

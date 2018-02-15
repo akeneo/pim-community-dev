@@ -427,18 +427,13 @@ class SecurityContext extends RawMinkContext implements KernelAwareInterface
      */
     public function iMakeADirectAuthenticatedDeleteCallOnTheChannel($channelCode)
     {
-        $routeName = 'pim_enrich_channel_remove';
-
-        $channel = $this->kernel
-            ->getContainer()
-            ->get('pim_catalog.repository.channel')
-            ->findOneByIdentifier($channelCode);
+        $routeName = 'pim_enrich_channel_rest_remove';
 
         $url = $this->kernel
             ->getContainer()
             ->get('router')
             ->generate($routeName, [
-                'id' => $channel->getId(),
+                'code' => $channelCode,
             ]);
 
         $this->doCall('DELETE', $url);
