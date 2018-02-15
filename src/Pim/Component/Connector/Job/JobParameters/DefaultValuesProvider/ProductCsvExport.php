@@ -62,7 +62,7 @@ class ProductCsvExport implements DefaultValuesProviderInterface
         $defaultChannelCode = (0 !== count($channels)) ? $channels[0]->getCode() : null;
 
         $localesCodes = $this->localeRepository->getActivatedLocaleCodes();
-        $defaultLocaleCode = (0 !== count($localesCodes)) ? $localesCodes[0] : null;
+        $defaultLocaleCodes = (0 !== count($localesCodes)) ? [$localesCodes[0]] : [];
 
         $parameters['filters'] = [
             'data'      => [
@@ -84,7 +84,7 @@ class ProductCsvExport implements DefaultValuesProviderInterface
             ],
             'structure' => [
                 'scope'   => $defaultChannelCode,
-                'locales' => [$defaultLocaleCode],
+                'locales' => $defaultLocaleCodes,
             ],
         ];
 

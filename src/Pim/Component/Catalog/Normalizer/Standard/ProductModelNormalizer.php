@@ -46,6 +46,8 @@ class ProductModelNormalizer extends SerializerAwareNormalizer implements Normal
             throw new \LogicException('Serializer must be a normalizer');
         }
 
+        $context = array_merge(['filter_types' => ['pim.transform.product_value.structured']], $context);
+
         $data[self::FIELD_CODE] = $productModel->getCode();
         $data[self::FIELD_FAMILY_VARIANT] = $productModel->getFamilyVariant()->getCode();
         $data[self::FIELD_PARENT] = null !== $productModel->getParent() ? $productModel->getParent()->getCode() : null;
@@ -66,7 +68,7 @@ class ProductModelNormalizer extends SerializerAwareNormalizer implements Normal
     }
 
     /**
-     * Normalize the values of the product
+     * Normalize the values of the product model
      *
      * @param ValueCollectionInterface $values
      * @param string                   $format
@@ -74,7 +76,7 @@ class ProductModelNormalizer extends SerializerAwareNormalizer implements Normal
      *
      * @return ArrayCollection
      */
-    private function normalizeValues(ValueCollectionInterface $values, $format, array $context = [])
+    private function normalizeValues(ValueCollectionInterface $values, string $format, array $context = [])
     {
         foreach ($context['filter_types'] as $filterType) {
             $values = $this->filter->filterCollection($values, $filterType, $context);

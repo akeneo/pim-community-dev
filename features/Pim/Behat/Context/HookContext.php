@@ -335,8 +335,5 @@ class HookContext extends PimContext
 
         $esClientProductAndModel = $this->getService('akeneo_elasticsearch.client.product_and_product_model');
         $esClientProductAndModel->resetIndex();
-
-        $esClientProductAndModel = $this->getService('akeneo_elasticsearch.client.product_model');
-        $esClientProductAndModel->resetIndex();
     }
 }
