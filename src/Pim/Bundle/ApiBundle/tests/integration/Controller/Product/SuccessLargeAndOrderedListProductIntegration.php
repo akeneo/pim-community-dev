@@ -25,8 +25,6 @@ class SuccessLargeAndOrderedListProductIntegration extends AbstractProductTestCa
     {
         parent::setUp();
 
-        $this->get('akeneo_elasticsearch.client.product')->resetIndex();
-
         $identifiers = [];
         for ($i = 0; $i < $this->getListSize(); $i++) {
             $identifiers[] = 'sku-' . str_pad((string) $i, 4, '0', STR_PAD_LEFT);

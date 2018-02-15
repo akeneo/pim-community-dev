@@ -81,12 +81,11 @@ class FixturesLoader implements FixturesLoaderInterface
     public function load(): void
     {
         $this->systemUserAuthenticator->createSystemUser();
-        $this->container->get('akeneo_elasticsearch.client.product_model')->resetIndex();
+
+        $this->resetElasticsearchIndex();
 
         $files = $this->getFilesToLoad($this->configuration->getCatalogDirectories());
         $fixturesHash = $this->getHashForFiles($files);
-
-        $this->container->get('akeneo_elasticsearch.client.product')->resetIndex();
 
         $dumpFile = sys_get_temp_dir().self::CACHE_DIR.$fixturesHash.'.sql';
 
@@ -96,8 +95,6 @@ class FixturesLoader implements FixturesLoaderInterface
             $this->restoreDatabase($dumpFile);
             $this->clearAclCache();
 
-            $this->container->get('akeneo_elasticsearch.client.product_and_product_model')->resetIndex();
-
             $this->indexProductModels();
             $this->indexProducts();
 
@@ -105,7 +102,6 @@ class FixturesLoader implements FixturesLoaderInterface
         }
 
         $this->databaseSchemaHandler->reset();
-        $this->container->get('akeneo_elasticsearch.client.product_and_product_model')->resetIndex();
 
         $this->loadData();
         $this->dumpDatabase($dumpFile);
@@ -386,5 +382,15 @@ class FixturesLoader implements FixturesLoaderInterface
     {
         $productModels = $this->container->get('pim_catalog.repository.product_model')->findAll();
         $this->container->get('pim_catalog.elasticsearch.indexer.product_model')->indexAll($productModels);
+    }
+
+    protected function resetElasticsearchIndex(): void
+    {
+        $clientRegistry = $this->container->get('akeneo_elasticsearch.registry.clients');
+        $clients = $clientRegistry->getClients();
+
+        foreach ($clients as $client) {
+            $client->resetIndex();
+        }
     }
 }
