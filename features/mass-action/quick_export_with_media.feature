@@ -57,3 +57,20 @@ Feature: Quick export many products with media from datagrid
     And export directory of "xlsx_product_quick_export" should contain the following media:
       | files/boots/side_view/akeneo.jpg     |
       | files/sneakers/side_view/akeneo2.jpg |
+
+  Scenario: Successfully quick export products with media without selecting the attribute media in the grid
+    Given I am on the products page
+    When I select rows boots, sandals
+    And I press "CSV (Grid context)" on the "Quick Export" dropdown button
+    And I wait for the "csv_product_grid_context_quick_export" quick export to finish
+    And I go on the last executed job resume of "csv_product_grid_context_quick_export"
+    Then I should see the text "COMPLETED"
+    And exported file of "csv_product_grid_context_quick_export" should contain:
+      """
+      sku;enabled;family;groups
+      boots;1;boots;
+      sandals;1;sandals;
+      """
+    And export directory of "csv_product_quick_export" should not contain the following media:
+      | files/boots/side_view/akeneo.jpg     |
+      | files/sneakers/side_view/akeneo2.jpg |
