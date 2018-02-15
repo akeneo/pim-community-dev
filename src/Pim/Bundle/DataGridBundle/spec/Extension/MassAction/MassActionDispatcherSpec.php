@@ -141,9 +141,9 @@ class MassActionDispatcherSpec extends ObjectBehavior
             $postParameters
         );
 
-        $parametersParser->parse($request)->willReturn(['inset' => 'inset', 'values' => 1]);
+        $parametersParser->parse($request)->willReturn(['inset' => 'inset', 'values' => [1]]);
         $datasource->getMassActionRepository()->willReturn($massActionRepository);
-        $massActionRepository->applyMassActionParameters($queryBuilder, 'inset', 1)->willReturn(null);
+        $massActionRepository->applyMassActionParameters($queryBuilder, 'inset', [1])->willReturn(null);
         $massActionExtension->getMassAction('mass_edit_action', $grid)->willReturn($massActionInterface);
         $acceptor->getExtensions()->willReturn([$massActionExtension]);
 
