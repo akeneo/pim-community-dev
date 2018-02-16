@@ -24,14 +24,39 @@ class AdderActionApplierSpec extends ObjectBehavior
         $this->beConstructedWith($propertyAdder, $attributeRepository);
     }
 
-    function it_applies_add_action_on_non_variant_product(
+    function it_applies_add_field_action_on_non_variant_product(
         $propertyAdder,
+        $attributeRepository,
         ProductAddActionInterface $action,
         ProductInterface $product
     ) {
         $action->getField()->willReturn('color');
         $action->getItems()->willReturn(['red', 'blue']);
         $action->getOptions()->willReturn([]);
+
+        $attributeRepository->findOneByIdentifier('color')->willReturn(null);
+        $propertyAdder->addData($product, 'color', ['red', 'blue'], [])->shouldBeCalled();
+
+        $this->applyAction($action, [$product]);
+    }
+
+    function it_applies_add_attribute_action_on_non_variant_product(
+        $propertyAdder,
+        $attributeRepository,
+        ProductAddActionInterface $action,
+        AttributeInterface $colorAttribute,
+        ProductInterface $product,
+        FamilyInterface $family
+    ) {
+        $action->getField()->willReturn('color');
+        $action->getItems()->willReturn(['red', 'blue']);
+        $action->getOptions()->willReturn([]);
+
+        $product->getFamily()->willReturn($family);
+        $family->hasAttributeCode('color')->willReturn(true);
+
+        $attributeRepository->findOneByIdentifier('color')->willReturn($colorAttribute);
+        $product->getFamilyVariant()->willReturn(null);
 
         $propertyAdder->addData($product, 'color', ['red', 'blue'], [])->shouldBeCalled();
 
