@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace PimEnterprise\Component\Catalog\Security\Merger;
 
 use Akeneo\Component\StorageUtils\Exception\InvalidObjectException;
-use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Doctrine\Common\Util\ClassUtils;
 use Pim\Component\Catalog\EntityWithFamilyVariant\AddParent;
 use Pim\Component\Catalog\Model\EntityWithFamilyVariantInterface;
@@ -91,8 +90,8 @@ class MergeDataOnProduct implements NotGrantedDataMergerInterface
             $filteredProduct->getIdentifier()
         ));
 
-        if ($filteredProduct instanceof EntityWithFamilyVariantInterface) {
-            if ($fullProduct instanceof EntityWithFamilyVariantInterface) {
+        if ($filteredProduct->isVariant()) {
+            if ($fullProduct->isVariant()) {
                 $fullProduct->setFamilyVariant($filteredProduct->getFamilyVariant());
             } elseif (null !== $filteredProduct->getParent()) {
                 $fullProduct = $this->addParent->to($fullProduct, $filteredProduct->getParent()->getCode());
@@ -109,9 +108,10 @@ class MergeDataOnProduct implements NotGrantedDataMergerInterface
     }
 
     /**
-     * @param EntityWithFamilyVariantInterface $filteredProduct
+     * @param EntityWithFamilyVariantInterface $entityWithFamilyVariant
      *
      * @return EntityWithFamilyVariantInterface
+     *
      */
     private function setParent(EntityWithFamilyVariantInterface $entityWithFamilyVariant): EntityWithFamilyVariantInterface
     {
