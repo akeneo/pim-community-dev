@@ -27,21 +27,4 @@ class HookContext extends BaseHookContext
         $this->getMainContext()->getSubcontext('catalogConfiguration')
             ->addConfigurationDirectory(__DIR__.'/../../../Context/catalog');
     }
-
-    /**
-     * @BeforeScenario
-     */
-    public function purgeDatabase()
-    {
-        $sqlTables = [
-            'pimee_teamwork_assistant_completeness_per_attribute_group',
-            'pimee_teamwork_assistant_project_product',
-        ];
-
-        $purger = new DBALPurger($this->getService('database_connection'), $sqlTables);
-
-        $purger->purge();
-
-        parent::purgeDatabase();
-    }
 }
