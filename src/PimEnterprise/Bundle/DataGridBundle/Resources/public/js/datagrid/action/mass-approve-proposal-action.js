@@ -10,13 +10,21 @@ define(
     [
         'jquery',
         'underscore',
+        'routing',
+        'oro/translator',
         'oro/datagrid/mass-action',
+        'oro/navigation',
+        'oro/messenger',
         'pim/form-modal'
     ],
     function (
         $,
         _,
+        Routing,
+        __,
         MassAction,
+        Navigation,
+        messenger,
         FormModal
     ) {
         return MassAction.extend({
@@ -37,9 +45,9 @@ define(
              */
             execute: function () {
                 var modalParameters = {
-                    title: _.__('pimee_enrich.entity.product_draft.modal.accept_selected_proposal'),
-                    okText: _.__('pimee_enrich.entity.product_draft.modal.confirm'),
-                    cancelText: _.__('pimee_enrich.entity.product_draft.modal.cancel')
+                    title: __('pimee_enrich.entity.product_draft.modal.accept_selected_proposal'),
+                    okText: __('pimee_enrich.entity.product_draft.modal.confirm'),
+                    cancelText: __('pimee_enrich.entity.product_draft.modal.cancel')
                 };
 
                 var formModal = new FormModal(
@@ -49,7 +57,24 @@ define(
                 );
 
                 formModal.open().then(function () {
-                    MassAction.prototype.execute.apply(this, arguments);
+                    $.post(this.getLinkWithParameters(), {itemIds: this.getSelectedRows().join(',')})
+                        .done(function (data) {
+                            var navigation = Navigation.getInstance();
+                            var url = Routing.generate(
+                                'pimee_workflow_product_draft_mass_action_redirect',
+                                {'jobExecutionId': data.jobExecutionId}
+                            );
+
+                            if (navigation) {
+                                navigation.processRedirect({fullRedirect: false, location: url});
+                            }
+                        })
+                        .error(function (jqXHR) {
+                            messenger.notificationFlashMessage(
+                                'error',
+                                __(jqXHR.responseText)
+                            );
+                        });
                 }.bind(this));
             },
 

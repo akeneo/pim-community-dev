@@ -8,12 +8,12 @@ pimee_catalog_rule_rule_delete:
     defaults: { _controller: pimee_catalog_rule.controller.rule:deleteAction }
     requirements:
         id: '\d+'
-    methods: [DELETE]
+    methods: [DELETE|POST]
 
 pimee_catalog_rule_rule_mass_impacted_product_count:
     path: /configuration/rules/impacted-products
     defaults: { _controller: pimee_catalog_rule.controller.rule:massImpactedProductCountAction }
-    methods: [GET]
+    methods: [GET|POST]
 
 pimee_catalog_rule_rule_execute:
     path: /configuration/rules/execute
