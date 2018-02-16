@@ -58,7 +58,6 @@ Feature: Revert product attributes to a previous version
       | family | Tees   |
     And I press the "Save" button in the popin
     And I wait to be on the "marcel" product page
-    Given I am on the "marcel" product page
     And I visit the "Attributes" tab
     And I visit the "Marketing" group
     And I change the "Price" to "19.99 EUR"
