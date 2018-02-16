@@ -155,6 +155,15 @@ services:
         tags:
             - { name: 'pimee_workflow.elasticsearch.query.product_proposal_filter', priority: 30 }
 
+    pimee_workflow.query.elasticsearch.filter.text:
+        class: '%pim_catalog.query.elasticsearch.filter.text.class%'
+        arguments:
+            - '@pim_catalog.validator.helper.attribute'
+            - ['pim_catalog_text']
+            - ['STARTS WITH', 'CONTAINS', 'DOES NOT CONTAIN', '=', 'EMPTY', 'NOT EMPTY', '!=']
+        tags:
+            - { name: 'pimee_workflow.elasticsearch.query.product_proposal_filter', priority: 30 }
+
     pimee_workflow.query.elasticsearch.filter.text_area:
         class: '%pim_catalog.query.elasticsearch.filter.text_area.class%'
         arguments:
@@ -179,6 +188,26 @@ services:
         arguments:
             - ['id']
             - ['IN', 'NOT IN', '=', '!=']
+        tags:
+            - { name: 'pimee_workflow.elasticsearch.query.product_proposal_filter', priority: 30 }
+
+    pimee_workflow.query.elasticsearch.filter.price:
+        class: '%pim_catalog.query.elasticsearch.filter.price.class%'
+        arguments:
+            - '@pim_catalog.validator.helper.attribute'
+            - '@pim_catalog.repository.currency'
+            - ['pim_catalog_price_collection']
+            - ['<', '<=', '=', '!=', '>=', '>', 'EMPTY', 'EMPTY FOR CURRENCY', 'EMPTY ON ALL CURRENCIES', 'NOT EMPTY', 'NOT EMPTY ON AT LEAST ONE CURRENCY', 'NOT EMPTY FOR CURRENCY']
+        tags:
+            - { name: 'pimee_workflow.elasticsearch.query.product_proposal_filter', priority: 30 }
+
+    pimee_workflow.query.elasticsearch.filter.option:
+        class: '%pim_catalog.query.elasticsearch.filter.option.class%'
+        arguments:
+            - '@pim_catalog.validator.helper.attribute'
+            - '@pim_catalog.repository.attribute_option'
+            - ['pim_catalog_simpleselect', 'pim_catalog_multiselect']
+            - ['IN', 'EMPTY', 'NOT EMPTY', 'NOT IN']
         tags:
             - { name: 'pimee_workflow.elasticsearch.query.product_proposal_filter', priority: 30 }
 
