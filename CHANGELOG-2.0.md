@@ -1,3 +1,16 @@
+# 2.0.x
+
+## Bug fixes
+
+- PIM-7100: Fix permissions are now well applied on parent level when exporting products
+- PIM-7101: Fix permissions are now well applied on parent level when exporting product models
+
+## BC breaks
+
+- Change the constructor of `PimEnterprise\Bundle\WorkflowBundle\Doctrine\ORM\Repository\PublishedProductWithPermissionRepository` to add `PimEnterprise\Component\Security\Authorization\DenyNotGrantedCategorizedEntity`
+- Change the constructor of `PimEnterprise\Bundle\CatalogBundle\Doctrine\ORM\Repository\ProductModelRepository` to add `PimEnterprise\Component\Security\Authorization\DenyNotGrantedCategorizedEntity`
+- Change the constructor of `PimEnterprise\Bundle\CatalogBundle\Doctrine\ORM\Repository\ProductRepository` to add `PimEnterprise\Component\Security\Authorization\DenyNotGrantedCategorizedEntity`
+
 # 2.0.15 (2018-02-01)
 
 # 2.0.14 (2018-02-01)
