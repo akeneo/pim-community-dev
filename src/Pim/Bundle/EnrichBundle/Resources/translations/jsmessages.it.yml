@@ -953,7 +953,6 @@ pim_enrich:
       title: Gruppi di attributi
       create_btn: Crea
     api_connection:
-      title: "] -Inf, 1] {{ count }} connessoine API|] 1, Inf [{{ count }} connessioni API"
       create_btn: Crea
   mass_edit:
     next: Successivo
