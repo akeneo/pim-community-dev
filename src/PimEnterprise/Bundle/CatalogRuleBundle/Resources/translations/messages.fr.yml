@@ -25,6 +25,8 @@ pimee_catalog_rule:
       "set_value": Alors %value% est défini dans %field%
       "add": Alors %value% est ajouté à %field%
       "remove": Alors %value% est retiré de %field%
+    options:
+      include_children: et les enfants
   condition:
     label: Si %field% %operator% %value%
     operators:

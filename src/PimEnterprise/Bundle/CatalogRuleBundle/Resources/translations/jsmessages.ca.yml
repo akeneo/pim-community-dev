@@ -76,9 +76,15 @@ batch_jobs:
     validation.label: Validar arxius
     import.label: Importar productes
     import_associations.label: Importar associacions
+  csv_product_model_import_with_rules:
+    execute_rules.label: Execució de les regles
+    validation.label: Validar arxius
   xlsx_product_import_with_rules:
     label: Importació de productes amb regles a XLSX
     execute_rules.label: Execució de les regles
     validation.label: Validar arxius
     import.label: Importar productes
     import_associations.label: Importar associacions
+  xlsx_product_model_import_with_rules:
+    execute_rules.label: Execució de les regles
+    validation.label: Validar arxius
