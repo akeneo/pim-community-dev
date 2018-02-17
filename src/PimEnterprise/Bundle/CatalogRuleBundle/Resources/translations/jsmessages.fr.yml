@@ -84,9 +84,21 @@ batch_jobs:
     validation.label: Validation du fichier
     import.label: Import des produits
     import_associations.label: Import des associations de produits
+  csv_product_model_import_with_rules:
+    label: Import de modèles de produits en CSV avec exécution des règles
+    execute_rules.label: Exécution des règles
+    validation.label: Validation du fichier
+    import_root_product_model.label: Import modèle de produit racine
+    import_sub_product_model.label: Import sous-modèle de produit
   xlsx_product_import_with_rules:
     label: Import de produits en XLSX avec exécution des règles
     execute_rules.label: Exécution des règles
     validation.label: Validation du fichier
     import.label: Import des produits
     import_associations.label: Import des associations de produits
+  xlsx_product_model_import_with_rules:
+    label: Import de modèles de produits en XLSX avec exécution des règles
+    execute_rules.label: Exécution des règles
+    validation.label: Validation du fichier
+    import_root_product_model.label: Import modèle de produit racine
+    import_sub_product_model.label: Import sous-modèle de produit

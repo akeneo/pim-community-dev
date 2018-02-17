@@ -76,9 +76,15 @@ batch_jobs:
     validation.label: Проверка файла
     import.label: Импорт продуктов
     import_associations.label: Импорт ассоциаций
+  csv_product_model_import_with_rules:
+    execute_rules.label: Выполнение правил
+    validation.label: Проверка файла
   xlsx_product_import_with_rules:
     label: Импорт продуктов из XLSX с правилами
     execute_rules.label: Выполнение правил
     validation.label: Проверка файла
     import.label: Импорт продуктов
     import_associations.label: Импорт ассоциаций
+  xlsx_product_model_import_with_rules:
+    execute_rules.label: Выполнение правил
+    validation.label: Проверка файла

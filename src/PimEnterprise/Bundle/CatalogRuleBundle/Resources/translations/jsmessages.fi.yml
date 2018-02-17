@@ -83,9 +83,17 @@ batch_jobs:
     validation.label: Tiedostojen tarkistaminen
     import.label: Tuotteiden tuonti
     import_associations.label: Liitännäisten tuonti
+  csv_product_model_import_with_rules:
+    validation.label: Tiedostojen tarkistaminen
+    import_root_product_model.label: Juuritason tuotemallin tuonti
+    import_sub_product_model.label: Alatason tuotemallin tuonti
   xlsx_product_import_with_rules:
     label: Tuotteiden ja sääntöjen tuonti XLSX-muodossa
     execute_rules.label: Sääntöjen suorittaminen
     validation.label: Tiedostojen tarkistaminen
     import.label: Tuotteiden tuonti
     import_associations.label: Liitännäisten tuonti
+  xlsx_product_model_import_with_rules:
+    validation.label: Tiedostojen tarkistaminen
+    import_root_product_model.label: Juuritason tuotemallin tuonti
+    import_sub_product_model.label: Alatason tuotemallin tuonti
