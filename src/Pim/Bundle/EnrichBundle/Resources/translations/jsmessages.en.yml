@@ -7,6 +7,7 @@ confirmation:
         attribute:        Are you sure you want to delete this attribute?
         attribute_group:  Are you sure you want to delete this attribute group?
         family:           Are you sure you want to delete this family?
+        family_variant:   Are you sure you want to delete this family variant ?
         product:          Are you sure you want to delete this product?
         product_model:    Are you sure you want to delete this product model? All its children, product models and variant products, will be also deleted.
         channel:          Are you sure you want to delete this channel?
@@ -49,6 +50,8 @@ flash:
         removed: Attribute group successfully removed
     family:
         removed: Family successfully removed
+    family_variant:
+        removed: Family variant successfully removed
     product:
         removed: Product successfully removed
     product_model:

@@ -297,6 +297,7 @@ services:
             - '@validator'
             - '@pim_enrich.normalizer.violation'
             - '@pim_catalog.saver.family_variant'
+            - '@pim_catalog.remover.family_variant'
 
     pim_enrich.controller.rest.form_extension:
         class: '%pim_enrich.controller.rest.form_extension.class%'
