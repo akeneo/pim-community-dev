@@ -1,0 +1,6 @@
+parameters:
+    pim_catalog.limit:
+        attribute_number: 3000
+        attribute_only_scopable_number: 700
+        attribute_only_localizable_number: 700
+        attribute_only_scopable_and_localizable_number: 700

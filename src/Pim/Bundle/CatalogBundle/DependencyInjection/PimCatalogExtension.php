@@ -47,6 +47,7 @@ class PimCatalogExtension extends Extension
         $loader->load('job_constraints.yml');
         $loader->load('job_defaults.yml');
         $loader->load('jobs.yml');
+        $loader->load('limit.yml');
         $loader->load('localization/factories.yml');
         $loader->load('localization/localizers.yml');
         $loader->load('localization/presenters.yml');
@@ -57,6 +58,7 @@ class PimCatalogExtension extends Extension
         $loader->load('product_models.yml');
         $loader->load('product_values.yml');
         $loader->load('query_builders.yml');
+        $loader->load('registry.yml');
         $loader->load('removers.yml');
         $loader->load('repositories.yml');
         $loader->load('resolvers.yml');
