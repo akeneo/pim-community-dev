@@ -21,6 +21,11 @@ datagrid:
             id: ~
             familyVariantCode: ~
             familyCode: ~
+            delete_link:
+                type: url
+                route: pim_enrich_family_variant_rest_remove
+                params:
+                    - familyVariantCode
         actions:
             edit:
                 launcherOptions:
@@ -31,6 +36,12 @@ datagrid:
                 fetcher:      family-variant
                 form:         pim-family-variant-edit-form
                 rowAction:    true
+            delete:
+                launcherOptions:
+                    className: AknIconButton AknIconButton--small AknIconButton--trash
+                type:  delete
+                label: Delete
+                link:  delete_link
         filters:
             columns:
                 label:

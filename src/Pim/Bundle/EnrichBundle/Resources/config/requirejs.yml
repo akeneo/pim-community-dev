@@ -44,6 +44,8 @@ config:
             url: pim_enrich_channel_rest_remove
         pim/remover/family:
             url: pim_enrich_family_rest_remove
+        pim/remover/family-variant:
+            url: pim_enrich_family_variant_rest_remove
         pim/remover/group:
             url: pim_enrich_group_rest_remove
         pim/remover/product:
@@ -592,6 +594,7 @@ config:
         pim/remover/group-type:          pimenrich/js/remover/group-type-remover
         pim/remover/channel:             pimenrich/js/remover/channel
         pim/remover/family:              pimenrich/js/remover/family
+        pim/remover/family-variant:      pimenrich/js/remover/family-variant
         pim/remover/product:             pimenrich/js/remover/product-remover
         pim/remover/product-model:       pimenrich/js/remover/product-model-remover
         pim/remover/group:               pimenrich/js/remover/group-remover
@@ -663,6 +666,7 @@ config:
         pim/family-variant-edit-form/edit:                                  pimenrich/js/family-variant/form/edit
         pim/family-variant-edit-form/attribute-set:                         pimenrich/js/family-variant/form/attribute-set
         pim/family-variant-edit-form/save:                                  pimenrich/js/family-variant/form/save
+        pim/family-variant-edit-form/delete:                                pimenrich/js/family-variant/form/delete
 
         # Exports
         pim/job-instance-edit-form/save:        pimenrich/js/job/common/edit/save

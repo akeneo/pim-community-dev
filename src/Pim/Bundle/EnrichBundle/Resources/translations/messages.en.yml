@@ -377,6 +377,7 @@ confirmation:
         attribute group:  Are you sure you want to delete the attribute group %name%?
         category:         Are you sure you want to delete the category %name%?
         family:           Are you sure you want to delete the family %name%?
+        family_variant:   Are you sure you want to delete the family variant %name%?
         product:          Are you sure you want to delete the product %name%?
         group:            Are you sure you want to delete the group %name%?
         group type:       Are you sure you want to delete the group type %name%?
