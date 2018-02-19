@@ -8,8 +8,7 @@ services:
       COMPOSER_HOME: /home/docker/.composer
       PHP_IDE_CONFIG: 'serverName=pim-ce-cli'
       PHP_XDEBUG_ENABLED: 0
-      PHP_XDEBUG_IDE_KEY: XDEBUG_IDE_KEY
-      PHP_XDEBUG_REMOTE_HOST: xxx.xxx.xxx.xxx
+      PHP_XDEBUG_IDE_KEY: 'XDEBUG_IDE_KEY'
       XDEBUG_CONFIG: 'remote_host=xxx.xxx.xxx.xxx'
     user: docker
     volumes:
@@ -39,7 +38,7 @@ services:
     ports:
       - '5900:5900'
     volumes:
-      - ./:/srv/pim
+      - ./:/srv/pim:ro
     networks:
       - behat
 
@@ -81,7 +80,7 @@ services:
       MYSQL_PASSWORD: akeneo_pim
       MYSQL_DATABASE: akeneo_pim
     ports:
-      - '3306:3306'
+      - '33006:3306'
     networks:
       - akeneo
 
@@ -93,7 +92,7 @@ services:
       MYSQL_PASSWORD: akeneo_pim
       MYSQL_DATABASE: akeneo_pim
     ports:
-      - '3307:3306'
+      - '33007:3306'
     networks:
       - behat
 

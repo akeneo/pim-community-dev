@@ -118,7 +118,23 @@ datagrid:
                 label: pim.grid.mass_action.sequential_edit
                 handler: sequential_edit
                 route: pim_enrich_mass_edit_action_sequential_edit
+<<<<<<< HEAD
                 className: 'AknButton AknButton--action AknButtonList-item'
+=======
+                frontend_type: sequential_edit
+                launcherOptions:
+                    group: bulk_actions
+            category_edit:
+                type: edit
+                acl_resource: pim_enrich_mass_edit
+                label: pim.grid.mass_action.category_edit
+                handler: product_mass_edit
+                route: pim_enrich_mass_edit_product_action_choose
+                route_parameters:
+                    operationGroup: category-edit
+                launcherOptions:
+                    group: bulk_actions
+>>>>>>> origin/1.7
             delete:
                 type: delete
                 label: pim.grid.mass_action.delete

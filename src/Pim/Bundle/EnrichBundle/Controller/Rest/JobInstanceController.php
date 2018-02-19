@@ -21,7 +21,9 @@ use Pim\Bundle\EnrichBundle\Provider\Form\FormProviderInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\PropertyAccess\PropertyAccess;
@@ -225,10 +227,14 @@ class JobInstanceController
      *
      * @AclAncestor("pim_importexport_import_profile_remove")
      *
-     * @return JsonResponse
+     * @return Response
      */
-    public function deleteImportAction($code)
+    public function deleteImportAction(Request $request, $code)
     {
+        if (!$request->isXmlHttpRequest()) {
+            return new RedirectResponse('/');
+        }
+
         return $this->deleteAction($code);
     }
 
@@ -239,10 +245,14 @@ class JobInstanceController
      *
      * @AclAncestor("pim_importexport_export_profile_remove")
      *
-     * @return JsonResponse
+     * @return Response
      */
-    public function deleteExportAction($code)
+    public function deleteExportAction(Request $request, $code)
     {
+        if (!$request->isXmlHttpRequest()) {
+            return new RedirectResponse('/');
+        }
+
         return $this->deleteAction($code);
     }
 

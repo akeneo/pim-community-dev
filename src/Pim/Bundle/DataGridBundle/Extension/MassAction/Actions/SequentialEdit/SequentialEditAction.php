@@ -1,38 +1,39 @@
 <?php
 
-namespace Pim\Bundle\DataGridBundle\Extension\MassAction\Actions\Export;
+namespace Pim\Bundle\DataGridBundle\Extension\MassAction\Actions\SequentialEdit;
 
 use Oro\Bundle\DataGridBundle\Extension\Action\ActionConfiguration;
-use Oro\Bundle\DataGridBundle\Extension\MassAction\Actions\Widget\WidgetMassAction;
+use Oro\Bundle\DataGridBundle\Extension\Action\Actions\AbstractAction;
+use Oro\Bundle\DataGridBundle\Extension\MassAction\Actions\MassActionInterface;
 
 /**
- * Mass export action
+ * Sequential edit action
  *
- * @author    Filips Alpe <filips@akeneo.com>
- * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
+ * @author    Samir Boulil <samir.boulil@akeneo.com>
+ * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ExportMassAction extends WidgetMassAction implements ExportMassActionInterface
+class SequentialEditAction extends AbstractAction implements MassActionInterface
 {
     /** @var array $requiredOptions */
-    protected $requiredOptions = ['route', 'frontend_type', 'handler', 'context'];
+    protected $requiredOptions = [];
 
     /** @var array $requiredRouteParams */
-    protected $requiredRouteParams = ['_format', '_contentType'];
+    protected $requiredRouteParams = [];
 
     /**
      * {@inheritdoc}
      */
     public function setOptions(ActionConfiguration $options)
     {
-        $options['frontend_type'] = 'export';
+        $options['frontend_type'] = 'sequential_edit';
 
         if (empty($options['route'])) {
-            $options['route'] = 'pim_datagrid_export_index';
+            $options['route'] = 'pim_enrich_mass_edit_action_sequential_edit';
         }
 
         if (empty($options['handler'])) {
-            $options['handler'] = 'quick_export';
+            $options['handler'] = 'sequential_edit';
         }
 
         if (empty($options['context'])) {
@@ -40,14 +41,6 @@ class ExportMassAction extends WidgetMassAction implements ExportMassActionInter
         }
 
         return parent::setOptions($options);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getExportContext()
-    {
-        return $this->options['context'];
     }
 
     /**
