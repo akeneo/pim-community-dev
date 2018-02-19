@@ -11,14 +11,10 @@ class EnterpriseSecurityContext extends SecurityContext
     {
         $routeName = 'pimee_catalog_rule_rule_delete';
 
-        $rule = $this->kernel
-            ->getContainer()
-            ->get('akeneo_rule_engine.repository.rule_definition')
+        $rule = $this->getService('akeneo_rule_engine.repository.rule_definition')
             ->findOneByIdentifier($ruleCode);
 
-        $url = $this->kernel
-            ->getContainer()
-            ->get('router')
+        $url = $this->getService('router')
             ->generate($routeName, ['id' => $rule->getId()]);
 
         $this->doCall('DELETE', $url);
@@ -31,14 +27,10 @@ class EnterpriseSecurityContext extends SecurityContext
     {
         $routeName = 'pimee_product_asset_remove';
 
-        $asset = $this->kernel
-            ->getContainer()
-            ->get('pimee_product_asset.repository.asset')
+        $asset = $this->getService('pimee_product_asset.repository.asset')
             ->findOneByIdentifier($assetCode);
 
-        $url = $this->kernel
-            ->getContainer()
-            ->get('router')
+        $url = $this->getService('router')
             ->generate($routeName, ['id' => $asset->getId()]);
 
         $this->doCall('DELETE', $url);
@@ -51,14 +43,10 @@ class EnterpriseSecurityContext extends SecurityContext
     {
         $routeName = 'pimee_workflow_product_draft_rest_approve';
 
-        $proposal = $this->kernel
-            ->getContainer()
-            ->get('pimee_workflow.repository.product_draft')
+        $proposal = $this->getService('pimee_workflow.repository.product_draft')
             ->findOneBy(['author' => $username]);
 
-        $url = $this->kernel
-            ->getContainer()
-            ->get('router')
+        $url = $this->getService('router')
             ->generate($routeName, ['id' => $proposal->getId()]);
 
         $this->doCall('POST', $url);
@@ -71,14 +59,10 @@ class EnterpriseSecurityContext extends SecurityContext
     {
         $routeName = 'pimee_workflow_product_draft_rest_reject';
 
-        $proposal = $this->kernel
-            ->getContainer()
-            ->get('pimee_workflow.repository.product_draft')
+        $proposal = $this->getService('pimee_workflow.repository.product_draft')
             ->findOneBy(['author' => $username]);
 
-        $url = $this->kernel
-            ->getContainer()
-            ->get('router')
+        $url = $this->getService('router')
             ->generate($routeName, ['id' => $proposal->getId()]);
 
         $this->doCall('POST', $url);
@@ -91,14 +75,10 @@ class EnterpriseSecurityContext extends SecurityContext
     {
         $routeName = 'pimee_workflow_product_draft_rest_remove';
 
-        $proposal = $this->kernel
-            ->getContainer()
-            ->get('pimee_workflow.repository.product_draft')
+        $proposal = $this->getService('pimee_workflow.repository.product_draft')
             ->findOneBy(['author' => $username]);
 
-        $url = $this->kernel
-            ->getContainer()
-            ->get('router')
+        $url = $this->getService('router')
             ->generate($routeName, ['id' => $proposal->getId()]);
 
         $this->doCall('POST', $url);
@@ -110,9 +90,7 @@ class EnterpriseSecurityContext extends SecurityContext
      */
     public function thereShouldBeAAsset($assetCode)
     {
-        $asset = $this->kernel
-            ->getContainer()
-            ->get('pimee_product_asset.repository.asset')
+        $asset = $this->getService('pimee_product_asset.repository.asset')
             ->findOneByIdentifier($assetCode);
 
         assertNotNull($asset);
@@ -123,9 +101,7 @@ class EnterpriseSecurityContext extends SecurityContext
      */
     public function thereShouldBeARule($ruleCode)
     {
-        $rule = $this->kernel
-            ->getContainer()
-            ->get('akeneo_rule_engine.repository.rule_definition')
+        $rule = $this->getService('akeneo_rule_engine.repository.rule_definition')
             ->findOneByIdentifier($ruleCode);
 
         assertNotNull($rule);
