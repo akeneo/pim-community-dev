@@ -17,5 +17,5 @@ Feature: Allow only XHR requests for some comments actions
     When I make a direct authenticated DELETE call on the last comment of "high-heels" product
     And I am logged in as "Julia"
     And I am on the "high-heels" product page
-    And I open the "Comments" panel
+    And I visit the "Comments" column tab
     Then I should see the text "Waiting for the confirmation of our manufacturer to update it."

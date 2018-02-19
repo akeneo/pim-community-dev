@@ -2,40 +2,18 @@
 
 namespace Context;
 
-use Behat\Behat\Exception\PendingException;
-use Behat\Gherkin\Node\TableNode;
-use Behat\MinkExtension\Context\RawMinkContext;
-use Behat\Symfony2Extension\Context\KernelAwareInterface;
 use Doctrine\Common\Util\ClassUtils;
+use Pim\Behat\Context\PimContext;
 use Pim\Bundle\NotificationBundle\Entity\Notification;
 use Symfony\Bundle\FrameworkBundle\Client;
 use Symfony\Component\BrowserKit\Cookie;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
-class SecurityContext extends RawMinkContext implements KernelAwareInterface
+class SecurityContext extends PimContext
 {
-    /** @var KernelInterface */
-    protected $kernel;
-
     /** @var Client */
     protected $client;
-
-    /**
-     * @param string $baseUrl
-     */
-    public function __construct($baseUrl)
-    {
-        $this->baseUrl = $baseUrl;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setKernel(KernelInterface $kernel)
-    {
-        $this->kernel = $kernel;
-    }
 
     /**
      * @When /^I make a direct authenticated DELETE call on the "([^"]*)" user group$/
@@ -44,14 +22,12 @@ class SecurityContext extends RawMinkContext implements KernelAwareInterface
     {
         $routeName = 'oro_user_group_delete';
 
-        $userGroup = $this->kernel
-            ->getContainer()
-            ->get('pim_user.repository.group')
+        $userGroup = $this
+            ->getService('pim_user.repository.group')
             ->findOneByIdentifier($userGroupLabel);
 
-        $url = $this->kernel
-            ->getContainer()
-            ->get('router')
+        $url = $this
+            ->getService('router')
             ->generate($routeName, ['id' => $userGroup->getId()]);
 
         $this->doCall('DELETE', $url);
@@ -64,14 +40,12 @@ class SecurityContext extends RawMinkContext implements KernelAwareInterface
     {
         $routeName = 'oro_user_role_delete';
 
-        $userRole = $this->kernel
-            ->getContainer()
-            ->get('pim_user.repository.role')
+        $userRole = $this
+            ->getService('pim_user.repository.role')
             ->findOneByIdentifier($role);
 
-        $url = $this->kernel
-            ->getContainer()
-            ->get('router')
+        $url = $this
+            ->getService('router')
             ->generate($routeName, ['id' => $userRole->getId()]);
 
         $this->doCall('DELETE', $url);
@@ -84,14 +58,12 @@ class SecurityContext extends RawMinkContext implements KernelAwareInterface
     {
         $routeName = 'oro_user_user_delete';
 
-        $user = $this->kernel
-            ->getContainer()
-            ->get('pim_user.repository.user')
+        $user = $this
+            ->getService('pim_user.repository.user')
             ->findOneByIdentifier($username);
 
-        $url = $this->kernel
-            ->getContainer()
-            ->get('router')
+        $url = $this
+            ->getService('router')
             ->generate($routeName, ['id' => $user->getId()]);
 
         $this->doCall('DELETE', $url);
@@ -104,14 +76,12 @@ class SecurityContext extends RawMinkContext implements KernelAwareInterface
     {
         $routeName = 'pim_comment_comment_delete';
 
-        $product = $this->kernel
-            ->getContainer()
-            ->get('pim_catalog.repository.product')
+        $product = $this
+            ->getService('pim_catalog.repository.product')
             ->findOneByIdentifier($productIdentifier);
 
-        $comments = $this->kernel
-            ->getContainer()
-            ->get('pim_comment.repository.comment')
+        $comments = $this
+            ->getService('pim_comment.repository.comment')
             ->getComments(
                 ClassUtils::getClass($product),
                 $product->getId()
@@ -119,9 +89,8 @@ class SecurityContext extends RawMinkContext implements KernelAwareInterface
 
         $lastComment = end($comments);
 
-        $url = $this->kernel
-            ->getContainer()
-            ->get('router')
+        $url = $this
+            ->getService('router')
             ->generate($routeName, ['id' => $lastComment->getId()]);
 
         $this->doCall('DELETE', $url);
@@ -134,14 +103,12 @@ class SecurityContext extends RawMinkContext implements KernelAwareInterface
     {
         $routeName = 'pim_datagrid_view_rest_remove';
 
-        $view = $this->kernel
-            ->getContainer()
-            ->get('pim_datagrid.repository.datagrid_view')
+        $view = $this
+            ->getService('pim_datagrid.repository.datagrid_view')
             ->findOneBy(['label' => $datagridViewLabel]);
 
-        $url = $this->kernel
-            ->getContainer()
-            ->get('router')
+        $url = $this
+            ->getService('router')
             ->generate($routeName, ['identifier' => $view->getId()]);
 
         $this->doCall('DELETE', $url, [], [], $username);
@@ -154,14 +121,12 @@ class SecurityContext extends RawMinkContext implements KernelAwareInterface
     {
         $routeName = 'pim_datagrid_mass_action';
 
-        $product = $this->kernel
-            ->getContainer()
-            ->get('pim_catalog.repository.product')
+        $product = $this
+            ->getService('pim_catalog.repository.product')
             ->findOneByIdentifier($productIndentifier);
 
-        $url = $this->kernel
-            ->getContainer()
-            ->get('router')
+        $url = $this
+            ->getService('router')
             ->generate($routeName, ['gridName' => 'product-grid', 'actionName' => 'delete']);
 
         $this->doCall('GET', $url, [
@@ -177,9 +142,8 @@ class SecurityContext extends RawMinkContext implements KernelAwareInterface
     {
         $routeName = 'pim_enrich_associationtype_rest_remove';
 
-        $url = $this->kernel
-            ->getContainer()
-            ->get('router')
+        $url = $this
+            ->getService('router')
             ->generate($routeName, ['code' => $associationTypeCode]);
 
         $this->doCall('DELETE', $url);
@@ -190,17 +154,11 @@ class SecurityContext extends RawMinkContext implements KernelAwareInterface
      */
     public function iMakeADirectAuthenticatedDeleteCallOnTheAttribute($attributeCode)
     {
-        $routeName = 'pim_enrich_attribute_remove';
+        $routeName = 'pim_enrich_attribute_rest_remove';
 
-        $attribute = $this->kernel
-            ->getContainer()
-            ->get('pim_catalog.repository.attribute')
-            ->findOneByIdentifier($attributeCode);
-
-        $url = $this->kernel
-            ->getContainer()
-            ->get('router')
-            ->generate($routeName, ['id' => $attribute->getId()]);
+        $url = $this
+            ->getService('router')
+            ->generate($routeName, ['code' => $attributeCode]);
 
         $this->doCall('DELETE', $url);
     }
@@ -210,45 +168,11 @@ class SecurityContext extends RawMinkContext implements KernelAwareInterface
      */
     public function iMakeADirectAuthenticatedDeleteCallOnTheAttributeGroup($attributeGroupCode)
     {
-        $routeName = 'pim_enrich_attributegroup_remove';
+        $routeName = 'pim_enrich_attributegroup_rest_remove';
 
-        $attributeGroup = $this->kernel
-            ->getContainer()
-            ->get('pim_catalog.repository.attribute_group')
-            ->findOneByIdentifier($attributeGroupCode);
-
-        $url = $this->kernel
-            ->getContainer()
-            ->get('router')
-            ->generate($routeName, ['id' => $attributeGroup->getId()]);
-
-        $this->doCall('DELETE', $url);
-    }
-
-    /**
-     * @When /^I make a direct authenticated DELETE call on the "([^"]*)" attribute in the "([^"]*)" attribute group$/
-     */
-    public function iMakeADirectAuthenticatedDeleteCallOnTheAttributeInTheAttributeGroup($attributeCode, $attributeGroupCode)
-    {
-        $routeName = 'pim_enrich_attributegroup_removeattribute';
-
-        $attribute = $this->kernel
-            ->getContainer()
-            ->get('pim_catalog.repository.attribute')
-            ->findOneByIdentifier($attributeCode);
-
-        $attributeGroup = $this->kernel
-            ->getContainer()
-            ->get('pim_catalog.repository.attribute_group')
-            ->findOneByIdentifier($attributeGroupCode);
-
-        $url = $this->kernel
-            ->getContainer()
-            ->get('router')
-            ->generate($routeName, [
-                'groupId' => $attributeGroup->getId(),
-                'attributeId' => $attribute->getId(),
-            ]);
+        $url = $this
+            ->getService('router')
+            ->generate($routeName, ['identifier' => $attributeGroupCode]);
 
         $this->doCall('DELETE', $url);
     }
@@ -260,14 +184,12 @@ class SecurityContext extends RawMinkContext implements KernelAwareInterface
     {
         $routeName = 'pim_enrich_attributeoption_create';
 
-        $attribute = $this->kernel
-            ->getContainer()
-            ->get('pim_catalog.repository.attribute')
+        $attribute = $this
+            ->getService('pim_catalog.repository.attribute')
             ->findOneByIdentifier($attributeCode);
 
-        $url = $this->kernel
-            ->getContainer()
-            ->get('router')
+        $url = $this
+            ->getService('router')
             ->generate($routeName, [
                 'attributeId' => $attribute->getId(),
             ]);
@@ -284,19 +206,16 @@ class SecurityContext extends RawMinkContext implements KernelAwareInterface
     {
         $routeName = 'pim_enrich_attributeoption_update';
 
-        $attribute = $this->kernel
-            ->getContainer()
-            ->get('pim_catalog.repository.attribute')
+        $attribute = $this
+            ->getService('pim_catalog.repository.attribute')
             ->findOneByIdentifier($attributeCode);
 
-        $attributeOption = $this->kernel
-            ->getContainer()
-            ->get('pim_catalog.repository.attribute_option')
+        $attributeOption = $this
+            ->getService('pim_catalog.repository.attribute_option')
             ->findOneByIdentifier(sprintf('%s.%s', $attributeCode, $attributeOptionCode));
 
-        $url = $this->kernel
-            ->getContainer()
-            ->get('router')
+        $url = $this
+            ->getService('router')
             ->generate($routeName, [
                 'attributeId' => $attribute->getId(),
                 'attributeOptionId' => $attributeOption->getId(),
@@ -315,19 +234,16 @@ class SecurityContext extends RawMinkContext implements KernelAwareInterface
     {
         $routeName = 'pim_enrich_attributeoption_delete';
 
-        $attribute = $this->kernel
-            ->getContainer()
-            ->get('pim_catalog.repository.attribute')
+        $attribute = $this
+            ->getService('pim_catalog.repository.attribute')
             ->findOneByIdentifier($attributeCode);
 
-        $attributeOption = $this->kernel
-            ->getContainer()
-            ->get('pim_catalog.repository.attribute_option')
+        $attributeOption = $this
+            ->getService('pim_catalog.repository.attribute_option')
             ->findOneByIdentifier(sprintf('%s.%s', $attributeCode, $attributeOptionCode));
 
-        $url = $this->kernel
-            ->getContainer()
-            ->get('router')
+        $url = $this
+            ->getService('router')
             ->generate($routeName, [
                 'attributeId' => $attribute->getId(),
                 'attributeOptionId' => $attributeOption->getId(),
@@ -343,21 +259,18 @@ class SecurityContext extends RawMinkContext implements KernelAwareInterface
     {
         $routeName = 'pim_enrich_attributeoption_update_sorting';
 
-        $attribute = $this->kernel
-            ->getContainer()
-            ->get('pim_catalog.repository.attribute')
+        $attribute = $this
+            ->getService('pim_catalog.repository.attribute')
             ->findOneByIdentifier($attributeCode);
 
-        $url = $this->kernel
-            ->getContainer()
-            ->get('router')
+        $url = $this
+            ->getService('router')
             ->generate($routeName, [
                 'attributeId' => $attribute->getId(),
             ]);
 
-        $attributeOptions = $this->kernel
-            ->getContainer()
-            ->get('pim_catalog.repository.attribute_option')
+        $attributeOptions = $this
+            ->getService('pim_catalog.repository.attribute_option')
             ->getOptions('en_US', $attribute->getId())['results'];
 
         $attributeOptionIds = array_map(function ($attributeOption) {
@@ -376,19 +289,16 @@ class SecurityContext extends RawMinkContext implements KernelAwareInterface
     {
         $routeName = 'pim_enrich_categorytree_movenode';
 
-        $url = $this->kernel
-            ->getContainer()
-            ->get('router')
+        $url = $this
+            ->getService('router')
             ->generate($routeName);
 
-        $childCategory = $this->kernel
-            ->getContainer()
-            ->get('pim_catalog.repository.category')
+        $childCategory = $this
+            ->getService('pim_catalog.repository.category')
             ->findOneByIdentifier($childCategoryCode);
 
-        $parentCategory = $this->kernel
-            ->getContainer()
-            ->get('pim_catalog.repository.category')
+        $parentCategory = $this
+            ->getService('pim_catalog.repository.category')
             ->findOneByIdentifier($parentCategoryCode);
 
         $this->doCall('POST', $url, [
@@ -407,14 +317,12 @@ class SecurityContext extends RawMinkContext implements KernelAwareInterface
     {
         $routeName = 'pim_enrich_categorytree_remove';
 
-        $category = $this->kernel
-            ->getContainer()
-            ->get('pim_catalog.repository.category')
+        $category = $this
+            ->getService('pim_catalog.repository.category')
             ->findOneByIdentifier($categoryCode);
 
-        $url = $this->kernel
-            ->getContainer()
-            ->get('router')
+        $url = $this
+            ->getService('router')
             ->generate($routeName, [
                 'id' => $category->getId(),
             ]);
@@ -429,9 +337,8 @@ class SecurityContext extends RawMinkContext implements KernelAwareInterface
     {
         $routeName = 'pim_enrich_channel_rest_remove';
 
-        $url = $this->kernel
-            ->getContainer()
-            ->get('router')
+        $url = $this
+            ->getService('router')
             ->generate($routeName, [
                 'code' => $channelCode,
             ]);
@@ -446,9 +353,8 @@ class SecurityContext extends RawMinkContext implements KernelAwareInterface
     {
         $routeName = 'pim_enrich_family_rest_remove';
 
-        $url = $this->kernel
-            ->getContainer()
-            ->get('router')
+        $url = $this
+            ->getService('router')
             ->generate($routeName, [
                 'code' => $familyCode,
             ]);
@@ -463,9 +369,8 @@ class SecurityContext extends RawMinkContext implements KernelAwareInterface
     {
         $routeName = 'pim_enrich_group_rest_remove';
 
-        $url = $this->kernel
-            ->getContainer()
-            ->get('router')
+        $url = $this
+            ->getService('router')
             ->generate($routeName, [
                 'code' => $groupCode,
             ]);
@@ -480,9 +385,8 @@ class SecurityContext extends RawMinkContext implements KernelAwareInterface
     {
         $routeName = 'pim_enrich_group_rest_post';
 
-        $url = $this->kernel
-            ->getContainer()
-            ->get('router')
+        $url = $this
+            ->getService('router')
             ->generate($routeName, [
                 'code' => $groupCode,
             ]);
@@ -501,18 +405,12 @@ class SecurityContext extends RawMinkContext implements KernelAwareInterface
      */
     public function iMakeADirectAuthenticatedDeleteCallOnTheGroupType($groupTypeCode)
     {
-        $routeName = 'pim_enrich_grouptype_remove';
+        $routeName = 'pim_enrich_grouptype_rest_remove';
 
-        $groupType = $this->kernel
-            ->getContainer()
-            ->get('pim_catalog.repository.group_type')
-            ->findOneByIdentifier($groupTypeCode);
-
-        $url = $this->kernel
-            ->getContainer()
-            ->get('router')
+        $url = $this
+            ->getService('router')
             ->generate($routeName, [
-                'id' => $groupType->getId(),
+                'code' => $groupTypeCode,
             ]);
 
         $this->doCall('DELETE', $url);
@@ -525,9 +423,8 @@ class SecurityContext extends RawMinkContext implements KernelAwareInterface
     {
         $routeName = 'pim_enrich_product_rest_create';
 
-        $url = $this->kernel
-            ->getContainer()
-            ->get('router')
+        $url = $this
+            ->getService('router')
             ->generate($routeName);
 
         $this->doCall('POST', $url, [
@@ -543,14 +440,12 @@ class SecurityContext extends RawMinkContext implements KernelAwareInterface
     {
         $routeName = 'pim_enrich_product_rest_post';
 
-        $product = $this->kernel
-            ->getContainer()
-            ->get('pim_catalog.repository.product')
+        $product = $this
+            ->getService('pim_catalog.repository.product')
             ->findOneByIdentifier($productIdentifier);
 
-        $url = $this->kernel
-            ->getContainer()
-            ->get('router')
+        $url = $this
+            ->getService('router')
             ->generate($routeName, [
                 'id' => $product->getId(),
             ]);
@@ -568,14 +463,12 @@ class SecurityContext extends RawMinkContext implements KernelAwareInterface
     {
         $routeName = 'pim_enrich_product_rest_remove';
 
-        $product = $this->kernel
-            ->getContainer()
-            ->get('pim_catalog.repository.product')
+        $product = $this
+            ->getService('pim_catalog.repository.product')
             ->findOneByIdentifier($productIdentifier);
 
-        $url = $this->kernel
-            ->getContainer()
-            ->get('router')
+        $url = $this
+            ->getService('router')
             ->generate($routeName, [
                 'id' => $product->getId(),
             ]);
@@ -590,19 +483,16 @@ class SecurityContext extends RawMinkContext implements KernelAwareInterface
     {
         $routeName = 'pim_enrich_product_remove_attribute_rest';
 
-        $product = $this->kernel
-            ->getContainer()
-            ->get('pim_catalog.repository.product')
+        $product = $this
+            ->getService('pim_catalog.repository.product')
             ->findOneByIdentifier($productIdentifier);
 
-        $attribute = $this->kernel
-            ->getContainer()
-            ->get('pim_catalog.repository.attribute')
+        $attribute = $this
+            ->getService('pim_catalog.repository.attribute')
             ->findOneByIdentifier($attributeCode);
 
-        $url = $this->kernel
-            ->getContainer()
-            ->get('router')
+        $url = $this
+            ->getService('router')
             ->generate($routeName, [
                 'id' => $product->getId(),
                 'attributeId' => $attribute->getId(),
@@ -616,14 +506,12 @@ class SecurityContext extends RawMinkContext implements KernelAwareInterface
      */
     public function iAddTheAttributeWithValueToTheVariantGroup($attributeCode, $attributeValue, $variantGroupCode)
     {
-        $variantGroup = $this->kernel
-            ->getContainer()
-            ->get('pim_catalog.repository.group')
+        $variantGroup = $this
+            ->getService('pim_catalog.repository.group')
             ->findOneByIdentifier($variantGroupCode);
 
-        $this->kernel
-            ->getContainer()
-            ->get('pim_catalog.updater.variant_group')
+        $this
+            ->getService('pim_catalog.updater.variant_group')
             ->update($variantGroup, [
                 'code' => $variantGroupCode,
                 'values' => [
@@ -633,9 +521,8 @@ class SecurityContext extends RawMinkContext implements KernelAwareInterface
                 ]
             ]);
 
-        $this->kernel
-            ->getContainer()
-            ->get('pim_catalog.saver.group')
+        $this
+            ->getService('pim_catalog.saver.group')
             ->save($variantGroup);
     }
 
@@ -646,14 +533,12 @@ class SecurityContext extends RawMinkContext implements KernelAwareInterface
     {
         $routeName = 'pim_enrich_variant_group_rest_remove_attribute';
 
-        $attribute = $this->kernel
-            ->getContainer()
-            ->get('pim_catalog.repository.attribute')
+        $attribute = $this
+            ->getService('pim_catalog.repository.attribute')
             ->findOneByIdentifier($attributeCode);
 
-        $url = $this->kernel
-            ->getContainer()
-            ->get('router')
+        $url = $this
+            ->getService('router')
             ->generate($routeName, [
                 'code' => $variantGroupCode,
                 'attributeId' => $attribute->getId(),
@@ -669,9 +554,8 @@ class SecurityContext extends RawMinkContext implements KernelAwareInterface
     {
         $routeName = 'pim_enrich_variant_group_rest_post';
 
-        $url = $this->kernel
-            ->getContainer()
-            ->get('router')
+        $url = $this
+            ->getService('router')
             ->generate($routeName, [
                 'code' => $variantGroupCode,
             ]);
@@ -692,9 +576,8 @@ class SecurityContext extends RawMinkContext implements KernelAwareInterface
     {
         $routeName = 'pim_enrich_variant_group_rest_remove';
 
-        $url = $this->kernel
-            ->getContainer()
-            ->get('router')
+        $url = $this
+            ->getService('router')
             ->generate($routeName, [
                 'code' => $variantGroupCode,
             ]);
@@ -709,9 +592,8 @@ class SecurityContext extends RawMinkContext implements KernelAwareInterface
     {
         $routeName = 'pim_enrich_job_instance_rest_export_delete';
 
-        $url = $this->kernel
-            ->getContainer()
-            ->get('router')
+        $url = $this
+            ->getService('router')
             ->generate($routeName, [
                 'code' => $exportJobProfileCode,
             ]);
@@ -726,9 +608,8 @@ class SecurityContext extends RawMinkContext implements KernelAwareInterface
     {
         $routeName = 'pim_enrich_job_instance_rest_import_delete';
 
-        $url = $this->kernel
-            ->getContainer()
-            ->get('router')
+        $url = $this
+            ->getService('router')
             ->generate($routeName, [
                 'code' => $importJobProfileCode,
             ]);
@@ -744,9 +625,8 @@ class SecurityContext extends RawMinkContext implements KernelAwareInterface
         $notification = new Notification();
         $notification->setType(0)->setMessage(0);
 
-        $this->kernel
-            ->getContainer()
-            ->get('pim_notification.notifier')
+        $this
+            ->getService('pim_notification.notifier')
             ->notify($notification, [$username]);
     }
 
@@ -757,19 +637,16 @@ class SecurityContext extends RawMinkContext implements KernelAwareInterface
     {
         $routeName = 'pim_notification_notification_remove';
 
-        $user = $this->kernel
-            ->getContainer()
-            ->get('pim_user.repository.user')
+        $user = $this
+            ->getService('pim_user.repository.user')
             ->findOneBy(['username' => $username]);
 
-        $notification = $this->kernel
-            ->getContainer()
-            ->get('pim_notification.repository.user_notification')
+        $notification = $this
+            ->getService('pim_notification.repository.user_notification')
             ->findOneBy(['user' => $user]);
 
-        $url = $this->kernel
-            ->getContainer()
-            ->get('router')
+        $url = $this
+            ->getService('router')
             ->generate($routeName, [
                 'id' => $notification->getId(),
             ]);
@@ -782,14 +659,12 @@ class SecurityContext extends RawMinkContext implements KernelAwareInterface
      */
     public function thereShouldBeNotificationForUser($nbNotifications, $username)
     {
-        $user = $this->kernel
-            ->getContainer()
-            ->get('pim_user.repository.user')
+        $user = $this
+            ->getService('pim_user.repository.user')
             ->findOneBy(['username' => $username]);
 
-        $count = $this->kernel
-            ->getContainer()
-            ->get('pim_notification.repository.user_notification')
+        $count = $this
+            ->getService('pim_notification.repository.user_notification')
             ->countUnreadForUser($user);
 
         assertEquals($nbNotifications, $count);
@@ -801,9 +676,8 @@ class SecurityContext extends RawMinkContext implements KernelAwareInterface
      */
     public function thereShouldBeAExportJobProfile($exportJobProfileCode)
     {
-        $exportJobProfile = $this->kernel
-            ->getContainer()
-            ->get('pim_enrich.repository.job_instance')
+        $exportJobProfile = $this
+            ->getService('pim_enrich.repository.job_instance')
             ->findOneBy(['code' => $exportJobProfileCode]);
 
         assertNotNull($exportJobProfile);
@@ -814,9 +688,8 @@ class SecurityContext extends RawMinkContext implements KernelAwareInterface
      */
     public function thereShouldBeAVariantGroup($variantGroupCode)
     {
-        $variantGroup = $this->kernel
-            ->getContainer()
-            ->get('pim_catalog.repository.group')
+        $variantGroup = $this
+            ->getService('pim_catalog.repository.group')
             ->findOneByIdentifier($variantGroupCode);
 
         assertNotNull($variantGroup);
@@ -827,9 +700,8 @@ class SecurityContext extends RawMinkContext implements KernelAwareInterface
      */
     public function theLabelOfVariantGroupShouldBe($variantGroupCode, $expectedLabel)
     {
-        $variantGroup = $this->kernel
-            ->getContainer()
-            ->get('pim_catalog.repository.group')
+        $variantGroup = $this
+            ->getService('pim_catalog.repository.group')
             ->findOneByIdentifier($variantGroupCode);
 
         $label = $variantGroup->getLabel();
@@ -842,9 +714,8 @@ class SecurityContext extends RawMinkContext implements KernelAwareInterface
      */
     public function theLabelOfGroupShouldBe($groupCode, $expectedLabel)
     {
-        $group = $this->kernel
-            ->getContainer()
-            ->get('pim_catalog.repository.group')
+        $group = $this
+            ->getService('pim_catalog.repository.group')
             ->findOneByIdentifier($groupCode);
 
         $label = $group->getLabel();
@@ -857,9 +728,8 @@ class SecurityContext extends RawMinkContext implements KernelAwareInterface
      */
     public function theCategoryShouldHaveAsParent($childCategoryCode, $parentCategoryCode)
     {
-        $childCategory = $this->kernel
-            ->getContainer()
-            ->get('pim_catalog.repository.category')
+        $childCategory = $this
+            ->getService('pim_catalog.repository.category')
             ->findOneByIdentifier($childCategoryCode);
 
         assertEquals($parentCategoryCode, $childCategory->getParent()->getCode());
@@ -870,9 +740,8 @@ class SecurityContext extends RawMinkContext implements KernelAwareInterface
      */
     public function theOrderForAttributeOptionsOfAttributeShouldBe($attributeOptionCode, $attributeCode, $order)
     {
-        $attributeOption = $this->kernel
-            ->getContainer()
-            ->get('pim_catalog.repository.attribute_option')
+        $attributeOption = $this
+            ->getService('pim_catalog.repository.attribute_option')
             ->findOneByIdentifier(sprintf('%s.%s', $attributeCode, $attributeOptionCode));
 
         assertEquals($order, $attributeOption->getSortOrder());
@@ -883,14 +752,12 @@ class SecurityContext extends RawMinkContext implements KernelAwareInterface
      */
     public function theVariantGroupShouldHaveTheAttribute($variantGroupCode, $attributeCode)
     {
-        $variantGroup = $this->kernel
-            ->getContainer()
-            ->get('pim_catalog.repository.group')
+        $variantGroup = $this
+            ->getService('pim_catalog.repository.group')
             ->findOneByIdentifier($variantGroupCode);
 
-        $hasAttribute = $this->kernel
-            ->getContainer()
-            ->get('pim_catalog.repository.group')
+        $hasAttribute = $this
+            ->getService('pim_catalog.repository.group')
             ->hasAttribute([$variantGroup->getId()], $attributeCode);
 
         assertTrue($hasAttribute);
@@ -901,9 +768,8 @@ class SecurityContext extends RawMinkContext implements KernelAwareInterface
      */
     public function thereShouldBeAGroupType($groupTypeCode)
     {
-        $groupType = $this->kernel
-            ->getContainer()
-            ->get('pim_catalog.repository.group_type')
+        $groupType = $this
+            ->getService('pim_catalog.repository.group_type')
             ->findOneByIdentifier($groupTypeCode);
 
         assertNotNull($groupType);
@@ -914,9 +780,8 @@ class SecurityContext extends RawMinkContext implements KernelAwareInterface
      */
     public function thereShouldBeAGroup($groupCode)
     {
-        $group = $this->kernel
-            ->getContainer()
-            ->get('pim_catalog.repository.group')
+        $group = $this
+            ->getService('pim_catalog.repository.group')
             ->findOneByIdentifier($groupCode);
 
         assertNotNull($group);
@@ -927,14 +792,12 @@ class SecurityContext extends RawMinkContext implements KernelAwareInterface
      */
     public function thereShouldBeAAttributeInTheFamily($attributeCode, $familyCode)
     {
-        $family = $this->kernel
-            ->getContainer()
-            ->get('pim_catalog.repository.family')
+        $family = $this
+            ->getService('pim_catalog.repository.family')
             ->findOneByIdentifier($familyCode);
 
-        $hasAttribute = $this->kernel
-            ->getContainer()
-            ->get('pim_catalog.repository.family')
+        $hasAttribute = $this
+            ->getService('pim_catalog.repository.family')
             ->hasAttribute($family->getId(), $attributeCode);
 
         assertTrue($hasAttribute);
@@ -945,9 +808,8 @@ class SecurityContext extends RawMinkContext implements KernelAwareInterface
      */
     public function thereShouldBeAFamily($familyCode)
     {
-        $family = $this->kernel
-            ->getContainer()
-            ->get('pim_catalog.repository.family')
+        $family = $this
+            ->getService('pim_catalog.repository.family')
             ->findOneByIdentifier($familyCode);
 
         assertNotNull($family);
@@ -958,9 +820,8 @@ class SecurityContext extends RawMinkContext implements KernelAwareInterface
      */
     public function thereShouldBeAChannel($channelCode)
     {
-        $channel = $this->kernel
-            ->getContainer()
-            ->get('pim_catalog.repository.channel')
+        $channel = $this
+            ->getService('pim_catalog.repository.channel')
             ->findOneByIdentifier($channelCode);
 
         assertNotNull($channel);
@@ -971,9 +832,8 @@ class SecurityContext extends RawMinkContext implements KernelAwareInterface
      */
     public function thereShouldBeAAssociationType($associationTypeCode)
     {
-        $associationType = $this->kernel
-            ->getContainer()
-            ->get('pim_catalog.repository.association_type')
+        $associationType = $this
+            ->getService('pim_catalog.repository.association_type')
             ->findOneByIdentifier($associationTypeCode);
 
         assertNotNull($associationType);
@@ -984,9 +844,8 @@ class SecurityContext extends RawMinkContext implements KernelAwareInterface
      */
     public function thereShouldBeACategory($categoryCode)
     {
-        $category = $this->kernel
-            ->getContainer()
-            ->get('pim_catalog.repository.category')
+        $category = $this
+            ->getService('pim_catalog.repository.category')
             ->findOneByIdentifier($categoryCode);
 
         assertNotNull($category);
@@ -997,9 +856,8 @@ class SecurityContext extends RawMinkContext implements KernelAwareInterface
      */
     public function thereShouldBeAAttributeGroup($attributeGroupCode)
     {
-        $attributeGroup = $this->kernel
-            ->getContainer()
-            ->get('pim_catalog.repository.attribute_group')
+        $attributeGroup = $this
+            ->getService('pim_catalog.repository.attribute_group')
             ->findOneByIdentifier($attributeGroupCode);
 
         assertNotNull($attributeGroup);
@@ -1010,9 +868,8 @@ class SecurityContext extends RawMinkContext implements KernelAwareInterface
      */
     public function thereShouldBeAAttribute($attributeCode)
     {
-        $attribute = $this->kernel
-            ->getContainer()
-            ->get('pim_catalog.repository.attribute')
+        $attribute = $this
+            ->getService('pim_catalog.repository.attribute')
             ->findOneByIdentifier($attributeCode);
 
         assertNotNull($attribute);
@@ -1023,9 +880,8 @@ class SecurityContext extends RawMinkContext implements KernelAwareInterface
      */
     public function thereShouldBeADatagridView($datagridViewLabel)
     {
-        $view = $this->kernel
-            ->getContainer()
-            ->get('pim_datagrid.repository.datagrid_view')
+        $view = $this
+            ->getService('pim_datagrid.repository.datagrid_view')
             ->findOneBy(['label' => $datagridViewLabel]);
 
         assertNotNull($view);
@@ -1036,9 +892,8 @@ class SecurityContext extends RawMinkContext implements KernelAwareInterface
      */
     public function thereShouldBeAProduct($not, $productIdentifier)
     {
-        $product = $this->kernel
-            ->getContainer()
-            ->get('pim_catalog.repository.product')
+        $product = $this
+            ->getService('pim_catalog.repository.product')
             ->findOneByIdentifier($productIdentifier);
 
         if ($not) {
@@ -1053,9 +908,8 @@ class SecurityContext extends RawMinkContext implements KernelAwareInterface
      */
     public function thereShouldNotBeAAttributeOptionForAttribute($not, $attributeOptionCode, $attributeCode)
     {
-        $attributeOption = $this->kernel
-            ->getContainer()
-            ->get('pim_catalog.repository.attribute_option')
+        $attributeOption = $this
+            ->getService('pim_catalog.repository.attribute_option')
             ->findOneByIdentifier(sprintf('%s.%s', $attributeCode, $attributeOptionCode));
 
         if ($not) {
@@ -1082,16 +936,15 @@ class SecurityContext extends RawMinkContext implements KernelAwareInterface
     {
         // http://symfony.com/doc/current/testing/http_authentication.html
 
-        $client = new Client($this->kernel);
+        $client = new Client($this->getKernel());
         $client->disableReboot();
         $client->followRedirects();
         $this->client = $client;
 
         $session = $this->client->getContainer()->get('session');
 
-        $user = $this->kernel
-            ->getContainer()
-            ->get('pim_user.repository.user')
+        $user = $this
+            ->getService('pim_user.repository.user')
             ->findOneBy(['username' => $username]);
 
         $token = new UsernamePasswordToken($user, null, 'main', $user->getRoles());

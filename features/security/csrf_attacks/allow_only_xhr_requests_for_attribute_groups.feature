@@ -12,7 +12,3 @@ Feature: Allow only XHR requests for some attribute groups actions
   Scenario: Authorize only XHR calls for attribute groups deletion
     When I make a direct authenticated DELETE call on the "csrf_test" attribute group
     Then there should be a "csrf_test" attribute group
-
-  Scenario: Authorize only XHR calls for attribute groups attribute deletion
-    When I make a direct authenticated DELETE call on the "price" attribute in the "marketing" attribute group
-    Then there should be a "price" attribute

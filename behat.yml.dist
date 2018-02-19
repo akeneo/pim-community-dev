@@ -29,6 +29,8 @@ default:
                     - 'Context\FeatureContext'
                 - Context\ViewSelectorContext:
                     - 'Context\FeatureContext'
+                - Context\SecurityContext:
+                    - 'Context\FeatureContext'
                 - Pim\Behat\Context\AttributeValidationContext:
                     - 'Context\FeatureContext'
                 - Pim\Behat\Context\Domain\Collect\ImportProfilesContext:
