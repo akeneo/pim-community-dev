@@ -20,7 +20,7 @@ class ExportMassActionSpec extends ObjectBehavior
         $options = ActionConfiguration::createNamed('export', []);
 
         $this->shouldThrow(
-            new \LogicException('The parameter "_format" for action "export" is required')
+            new \LogicException('There is no route_parameter named "_format" for action "export"')
         )->duringSetOptions($options);
     }
 
@@ -32,7 +32,7 @@ class ExportMassActionSpec extends ObjectBehavior
         $options = ActionConfiguration::createNamed('export', $params);
 
         $this->shouldThrow(
-            new \LogicException('The parameter "_contentType" for action "export" is required')
+            new \LogicException('There is no route_parameter named "_contentType" for action "export"')
         )->duringSetOptions($options);
     }
 

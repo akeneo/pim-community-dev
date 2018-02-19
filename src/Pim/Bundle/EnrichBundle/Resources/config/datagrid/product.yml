@@ -119,9 +119,6 @@ datagrid:
                 handler: sequential_edit
                 route: pim_enrich_mass_edit_action_sequential_edit
                 className: 'AknButton AknButton--action AknButtonList-item'
-                frontend_type: sequential_edit
-                launcherOptions:
-                    group: bulk_actions
             delete:
                 type: delete
                 label: pim.grid.mass_action.delete

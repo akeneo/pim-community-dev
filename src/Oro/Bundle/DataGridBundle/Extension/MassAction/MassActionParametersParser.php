@@ -16,8 +16,10 @@ class MassActionParametersParser
         $inset = $request->get('inset', true);
         $inset = !empty($inset) && 'false' !== $inset;
 
-        $all = $request->request->all();
-        $values = isset($all['itemIds']) ? explode(',', $all['itemIds']) : [];
+        $values = $request->get('values', '');
+        if (!is_array($values)) {
+            $values = $values !== '' ? explode(',', $values) : [];
+        }
 
         $filters = $request->get('filters', null);
         if (is_string($filters)) {
