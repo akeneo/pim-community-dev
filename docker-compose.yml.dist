@@ -4,12 +4,11 @@ services:
   fpm:
     image: akeneo/fpm:php-7.1
     environment:
-      BEHAT_TMPDIR: /srv/pim/var/cache/tmp
-      COMPOSER_HOME: /home/docker/.composer
+      BEHAT_TMPDIR: '/srv/pim/var/cache/tmp'
+      COMPOSER_HOME: '/home/docker/.composer'
       PHP_IDE_CONFIG: 'serverName=pim-ee-cli'
       PHP_XDEBUG_ENABLED: 0
-      PHP_XDEBUG_IDE_KEY: XDEBUG_IDE_KEY
-      PHP_XDEBUG_REMOTE_HOST: xxx.xxx.xxx.xxx
+      PHP_XDEBUG_IDE_KEY: 'XDEBUG_IDE_KEY'
       XDEBUG_CONFIG: 'remote_host=xxx.xxx.xxx.xxx'
     user: docker
     volumes:
@@ -37,9 +36,9 @@ services:
   selenium:
     image: selenium/standalone-firefox-debug:2.53.1-beryllium
     ports:
-      - '5900:5900'
+      - '5910:5900'
     volumes:
-      - ./:/srv/pim
+      - ./:/srv/pim:ro
     networks:
       - behat
 
@@ -53,8 +52,8 @@ services:
       - '8080:80'
     volumes:
       - ./:/srv/pim:ro
-      - ./docker/httpd.conf:/usr/local/apache2/conf/httpd.conf
-      - ./docker/akeneo.conf:/usr/local/apache2/conf/vhost.conf
+      - ./docker/httpd.conf:/usr/local/apache2/conf/httpd.conf:ro
+      - ./docker/akeneo.conf:/usr/local/apache2/conf/vhost.conf:ro
     networks:
       - akeneo
 
@@ -68,8 +67,8 @@ services:
       - '8081:80'
     volumes:
       - ./:/srv/pim:ro
-      - ./docker/httpd.conf:/usr/local/apache2/conf/httpd.conf
-      - ./docker/akeneo-behat.conf:/usr/local/apache2/conf/vhost.conf
+      - ./docker/httpd.conf:/usr/local/apache2/conf/httpd.conf:ro
+      - ./docker/akeneo-behat.conf:/usr/local/apache2/conf/vhost.conf:ro
     networks:
       - behat
 
@@ -81,7 +80,7 @@ services:
       MYSQL_PASSWORD: akeneo_pim
       MYSQL_DATABASE: akeneo_pim
     ports:
-      - '3306:3306'
+      - '33006:3306'
     networks:
       - akeneo
 
@@ -93,7 +92,7 @@ services:
       MYSQL_PASSWORD: akeneo_pim
       MYSQL_DATABASE: akeneo_pim
     ports:
-      - '3307:3306'
+      - '33007:3306'
     networks:
       - behat
 
@@ -102,7 +101,7 @@ services:
     environment:
       ES_JAVA_OPTS: '-Xms512m -Xmx512m'
     ports:
-      - '9200:9200'
+      - '9210:9200'
     networks:
       - akeneo
       - behat

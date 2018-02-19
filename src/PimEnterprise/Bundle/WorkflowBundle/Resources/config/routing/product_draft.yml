@@ -10,6 +10,10 @@ pimee_workflow_product_draft_mass_approve:
     path: /mass-approve
     defaults: { _controller: pimee_workflow.controller.product_draft:massApproveAction }
 
+pimee_workflow_product_draft_mass_action_redirect:
+    path: /redirect
+    defaults: { _controller: pimee_workflow.controller.product_draft:massActionRedirectAction }
+
 pimee_workflow_product_draft_mass_refuse:
     path: /mass-refuse
     defaults: { _controller: pimee_workflow.controller.product_draft:massRefuseAction }

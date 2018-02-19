@@ -319,6 +319,10 @@ class ProductAssetController extends Controller
      */
     public function removeAction($id)
     {
+        if (!$request->isXmlHttpRequest()) {
+            return new RedirectResponse('/');
+        }
+
         $productAsset = $this->findProductAssetOr404($id);
         if (!$this->isGranted(Attributes::EDIT, $productAsset)) {
             throw new AccessDeniedException();
