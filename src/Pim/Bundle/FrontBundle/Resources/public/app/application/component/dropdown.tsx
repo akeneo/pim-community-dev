@@ -71,6 +71,10 @@ export default class Dropdown extends React.Component<Props, {isOpen: boolean; s
     };
   }
 
+  componentWillReceiveProps(nextProps: Props) {
+    this.setState({selectedElement: nextProps.selectedElement});
+  }
+
   open() {
     this.setState({isOpen: true});
   }

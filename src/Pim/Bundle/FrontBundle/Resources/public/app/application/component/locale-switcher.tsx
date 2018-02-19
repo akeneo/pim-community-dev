@@ -33,9 +33,13 @@ const LocaleButtonView = ({
   selectedElement: DropdownElement;
   onClick: () => void;
 }) => (
-  <div className="AknActionButton AknActionButton--withoutBorder" onClick={onClick}>
+  <div
+    className="AknActionButton AknActionButton--withoutBorder"
+    data-identifier={selectedElement.identifier}
+    onClick={onClick}
+  >
     <div className="AknColumn-subtitle">{__('Locale')}</div>
-    <div className="AknColumn-value value" data-identifier={selectedElement.identifier}>
+    <div className="AknColumn-value" data-identifier={selectedElement.identifier}>
       <Flag locale={selectedElement.original} displayLanguage />
     </div>
   </div>

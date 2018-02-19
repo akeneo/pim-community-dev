@@ -1,3 +1,5 @@
+# Roadmap
+
 - async/await [DONE]
 - test dropdown [DONE]
 - optimize product fetch [DONE]
@@ -7,8 +9,9 @@
     - different implementation [DONE]
     - make the grid statefull [NOT FOR NOW]
 
-- loading item [DONE]
-- number of result
+- loading item [DONE] <- test
+- number of result [DONE] <- test
+- add option to test commands
 - filter
 - sort
 - manage filters

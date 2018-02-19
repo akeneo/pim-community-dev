@@ -19,7 +19,9 @@ const ChannelButtonView = ({
     onClick={onClick}
   >
     <div className="AknColumn-subtitle">{__('Channel')}</div>
-    <div className="AknColumn-value value">{selectedElement.label}</div>
+    <div className="AknColumn-value" data-identifier={selectedElement.identifier}>
+      {selectedElement.label}
+    </div>
   </div>
 );
 

@@ -10,10 +10,10 @@ export default (
 ): UserState => {
   switch (action.type) {
     case 'LOCALE_CHANGED':
-      state = {...state, [action.target]: action.locale};
+      state = {...state, [`${action.target}Locale`]: action.locale};
       break;
     case 'CHANNEL_CHANGED':
-      state = {...state, [action.target]: action.channel};
+      state = {...state, [`${action.target}Channel`]: action.channel};
       break;
     default:
       break;

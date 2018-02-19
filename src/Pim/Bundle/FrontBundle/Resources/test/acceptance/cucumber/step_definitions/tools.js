@@ -27,9 +27,14 @@ const spin = async function() {
   );
 };
 
+const csvToArray = (csv, separator = ',') => {
+  return csv.split(separator).map(value => value.trim());
+};
+
 module.exports = {
   answer,
   answerJson,
   json,
   spin,
+  csvToArray,
 };

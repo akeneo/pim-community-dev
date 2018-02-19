@@ -1,7 +1,8 @@
 const capitalize = source => source.replace(/\b\w/g, l => l.toUpperCase());
+const activatedLocaleCode = ['en_US', 'fr_FR', 'de_DE'];
 
 const createChannel = (code, locales = [], labels = null, category_tree = null) => {
-  const localeCodes = 0 === locales.length ? ['en_US', 'fr_FR', 'de_DE'] : locales;
+  const localeCodes = 0 === locales.length ? activatedLocaleCode : locales;
 
   return {
     code,
@@ -12,8 +13,8 @@ const createChannel = (code, locales = [], labels = null, category_tree = null) 
     labels:
       null !== labels
         ? labels
-        : localeCodes.reduce((result, localeCode) => {
-            result[localeCode] = capitalize(localeCode);
+        : activatedLocaleCode.reduce((result, localeCode) => {
+            result[localeCode] = capitalize(code);
 
             return result;
           }, {}),
@@ -32,7 +33,7 @@ const createLocale = code => {
     fr: 'French',
     en: 'English',
   };
-  const [region, language] = code.split('_');
+  const [language, region] = code.split('_');
 
   return {
     code,

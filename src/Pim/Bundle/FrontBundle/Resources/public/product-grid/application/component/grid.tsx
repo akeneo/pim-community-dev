@@ -136,6 +136,4 @@ export const gridConnector = connect(
   }
 );
 
-console.log(process);
-
 export default gridConnector(GridView);

@@ -20,23 +20,19 @@ interface SidebarViewState {
     locale: string;
     channel: string;
   };
-  structure: {
-    locales: Locale[];
-    channels: Channel[];
-  };
+  locales: Locale[];
+  channels: Channel[];
   isFetching: boolean;
 }
 
 export const SidebarView = ({
   context,
-  structure,
+  channels,
+  locales,
   isFetching,
   onCatalogLocaleChanged,
   onCatalogChannelChanged,
 }: SidebarViewState & SidebarDispatch) => {
-  const channel: Channel | undefined = structure.channels.find((channel: Channel) => context.channel === channel.code);
-  const locales = undefined !== channel ? channel.locales : [];
-
   return (
     <div className="AknColumn">
       <div className="AknColumn-inner">
@@ -46,7 +42,7 @@ export const SidebarView = ({
             <div className="AknColumn-block">
               <ChannelSwitcher
                 channelCode={context.channel}
-                channels={structure.channels}
+                channels={channels}
                 onChannelChange={onCatalogChannelChanged}
               />
             </div>
@@ -65,18 +61,21 @@ export const SidebarView = ({
 
 export const sidebarDecorator = connect(
   (state: GlobalState): SidebarViewState => {
-    const locale = undefined === state.user.catalogLocale ? '' : state.user.catalogLocale;
-    const channel = undefined === state.user.catalogChannel ? '' : state.user.catalogChannel;
+    const localeCode = undefined === state.user.catalogLocale ? '' : state.user.catalogLocale;
+    const channelCode = undefined === state.user.catalogChannel ? '' : state.user.catalogChannel;
+
+    const channel: Channel | undefined = state.structure.channels.find(
+      (channel: Channel) => channelCode === channel.code
+    );
+    const locales = undefined !== channel ? channel.locales : [];
 
     return {
       context: {
-        locale,
-        channel,
+        locale: localeCode,
+        channel: channelCode,
       },
-      structure: {
-        locales: state.structure.locales,
-        channels: state.structure.channels,
-      },
+      locales,
+      channels: state.structure.channels,
       isFetching: state.grid.isFetching,
     };
   },

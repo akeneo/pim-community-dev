@@ -14,6 +14,7 @@
     "beforeEach": true,
     "it": true,
     "expect": true,
+    "Promise": true,
     "__dirname": true,
     "__moduleConfig": true,
     "__contextPlaceholder": true,
