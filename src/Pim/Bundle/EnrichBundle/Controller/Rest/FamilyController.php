@@ -54,6 +54,7 @@ class FamilyController
         $options = $request->query->get('options', ['limit' => 20]);
 
         if ($request->query->has('identifiers')) {
+            $options = $request->query->get('options');
             $options['identifiers'] = explode(',', $request->query->get('identifiers'));
         }
 
