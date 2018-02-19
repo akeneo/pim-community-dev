@@ -10,12 +10,14 @@ define(
     [
         'jquery',
         'underscore',
+        'oro/translator',
         'oro/datagrid/mass-action',
         'pim/form-modal'
     ],
     function (
         $,
         _,
+        __,
         MassAction,
         FormModal
     ) {
