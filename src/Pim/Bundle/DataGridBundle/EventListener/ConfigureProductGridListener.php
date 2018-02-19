@@ -6,7 +6,6 @@ use Oro\Bundle\DataGridBundle\Event\BuildBefore;
 use Pim\Bundle\DataGridBundle\Datagrid\Configuration\ConfiguratorInterface;
 use Pim\Bundle\DataGridBundle\Datagrid\Configuration\Product\ColumnsConfigurator;
 use Pim\Bundle\DataGridBundle\Datagrid\Configuration\Product\ContextConfigurator;
-use Pim\Bundle\DataGridBundle\Datagrid\Configuration\Product\FiltersConfigurator;
 use Pim\Bundle\DataGridBundle\Datagrid\Configuration\Product\SortersConfigurator;
 
 /**
@@ -29,7 +28,7 @@ class ConfigureProductGridListener
     protected $columnsConfigurator;
 
     /**
-     * @var FiltersConfigurator
+     * @var ConfiguratorInterface
      */
     protected $filtersConfigurator;
 
