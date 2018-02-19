@@ -234,7 +234,6 @@ extensions:
         config:
             entity: pim_enrich.entity.job_instance.title
 
-
     pim-job-instance-csv-product-export-edit-content-structure-scope:
         module: pim/job/product/edit/content/structure/scope
         parent: pim-job-instance-csv-product-export-edit-content-structure

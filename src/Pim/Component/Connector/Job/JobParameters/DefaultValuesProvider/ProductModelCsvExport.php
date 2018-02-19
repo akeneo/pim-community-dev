@@ -26,15 +26,27 @@ class ProductModelCsvExport implements DefaultValuesProviderInterface
     /** @var array */
     private $supportedJobNames;
 
+    /** @var ChannelRepositoryInterface */
+    private $channelRepository;
+
+    /** @var LocaleRepositoryInterface */
+    private $localeRepository;
+
     /**
      * @param DefaultValuesProviderInterface $simpleProvider
+     * @param ChannelRepositoryInterface     $channelRepository
+     * @param LocaleRepositoryInterface      $localeRepository
      * @param array                          $supportedJobNames
      */
     public function __construct(
         DefaultValuesProviderInterface $simpleProvider,
+        ChannelRepositoryInterface $channelRepository,
+        LocaleRepositoryInterface $localeRepository,
         array $supportedJobNames
     ) {
-        $this->simpleProvider = $simpleProvider;
+        $this->simpleProvider    = $simpleProvider;
+        $this->channelRepository = $channelRepository;
+        $this->localeRepository  = $localeRepository;
         $this->supportedJobNames = $supportedJobNames;
     }
 
@@ -47,6 +59,26 @@ class ProductModelCsvExport implements DefaultValuesProviderInterface
         $parameters['decimalSeparator'] = LocalizerInterface::DEFAULT_DECIMAL_SEPARATOR;
         $parameters['dateFormat'] = LocalizerInterface::DEFAULT_DATE_FORMAT;
         $parameters['with_media'] = true;
+
+        $channels = $this->channelRepository->getFullChannels();
+        $defaultChannelCode = (0 !== count($channels)) ? $channels[0]->getCode() : null;
+
+        $localesCodes = $this->localeRepository->getActivatedLocaleCodes();
+        $defaultLocaleCodes = (0 !== count($localesCodes)) ? [$localesCodes[0]] : [];
+
+        $parameters['filters'] = [
+            'data'      => [
+                [
+                    'field'    => 'categories',
+                    'operator' => Operators::IN_CHILDREN_LIST,
+                    'value'    => []
+                ]
+            ],
+            'structure' => [
+                'scope'   => $defaultChannelCode,
+                'locales' => $defaultLocaleCodes,
+            ],
+        ];
 
         return $parameters;
     }

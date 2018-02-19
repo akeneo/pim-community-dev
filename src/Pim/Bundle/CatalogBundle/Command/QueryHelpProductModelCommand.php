@@ -2,18 +2,19 @@
 
 namespace Pim\Bundle\CatalogBundle\Command;
 
+use Pim\Bundle\CatalogBundle\Command\DumperInterface;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
- * Helps to query products
+ * Helps to query product models
  *
- * @author    Nicolas Dupont <nicolas@akeneo.com>
- * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
+ * @author    Julien Sanchez <julien@akeneo.com>
+ * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class QueryHelpProductCommand extends ContainerAwareCommand
+class QueryHelpProductModelCommand extends ContainerAwareCommand
 {
     /**
      * {@inheritdoc}
@@ -21,8 +22,8 @@ class QueryHelpProductCommand extends ContainerAwareCommand
     protected function configure()
     {
         $this
-            ->setName('pim:product:query-help')
-            ->setDescription('Display useable product query filters');
+            ->setName('pim:product-model:query-help')
+            ->setDescription('Display useable product model query filters');
     }
 
     /**
@@ -37,16 +38,16 @@ class QueryHelpProductCommand extends ContainerAwareCommand
     /**
      * @return DumperInterface
      */
-    protected function getFieldFilterDumper()
+    protected function getFieldFilterDumper(): DumperInterface
     {
-        return $this->getContainer()->get('pim_catalog.query.filter.product.field_dumper');
+        return $this->getContainer()->get('pim_catalog.query.filter.product_model.field_dumper');
     }
 
     /**
      * @return DumperInterface
      */
-    protected function getAttributeFilterDumper()
+    protected function getAttributeFilterDumper(): DumperInterface
     {
-        return $this->getContainer()->get('pim_catalog.query.filter.product.attribute_dumper');
+        return $this->getContainer()->get('pim_catalog.query.filter.product_model.attribute_dumper');
     }
 }

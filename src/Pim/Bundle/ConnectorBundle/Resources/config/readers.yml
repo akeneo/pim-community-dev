@@ -72,9 +72,13 @@ services:
             - '@pim_catalog.repository.group'
 
     pim_connector.reader.database.product_model:
-        class: '%pim_connector.reader.database.product_model.class%'
+        class: '%pim_connector.reader.database.product.class%'
         arguments:
             - '@pim_catalog.query.product_model_query_builder_factory'
+            - '@pim_catalog.repository.channel'
+            - '@pim_catalog.manager.completeness'
+            - '@pim_catalog.converter.metric'
+            - false
 
     pim_connector.reader.database.channel:
         class: '%pim_connector.reader.database.class%'

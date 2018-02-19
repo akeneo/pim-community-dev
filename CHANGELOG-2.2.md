@@ -1,4 +1,4 @@
-# 2.2.X
+# 2.2.x
 
 ## Bug fixes
 
@@ -7,6 +7,18 @@
 ## Enhancements
 
 - PIM-7106: Display the 1st variant product created as product model image
+- PIM-6334: Add support of product model to the export builder
+
+## BC breaks
+
+### Classes
+
+- PIM-6334: Removal of class `Pim\Component\Connector\Processor\Normalization\ProductModelProcessor`
+- PIM-6334: Removal of class `Pim\Component\Connector\Reader\Database\ProductModelReader`
+
+### Constructors
+
+- PIM-6334: Change the constructor of `Pim\Component\Catalog\Normalizer\Standard\ProductModelNormalizer` to add `Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface`
 
 # 2.2.0-ALPHA0 (2018-02-13)
 
