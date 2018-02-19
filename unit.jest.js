@@ -4,7 +4,7 @@ const baseConfig = JSON.parse(fs.readFileSync('webpack/test/base.jest.json', 'ut
 
 const unitConfig = {
   "setupFiles": [
-    "./webpack/test/enzyme.js"
+    "./webpack/test/unit/enzyme.js"
   ],
   "testRegex": "(/__tests__/.*|(\\.|/)(unit))\\.(jsx?|tsx?)$"
 };

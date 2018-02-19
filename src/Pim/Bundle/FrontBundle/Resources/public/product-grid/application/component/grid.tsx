@@ -61,7 +61,7 @@ export class GridView extends React.Component<GridViewState & GridDispatch, {}> 
                     </div>
                   </div>
                   <div className="AknTitleContainer-line">
-                    <div className="AknTitleContainer-title">
+                    <div className="AknTitleContainer-title" data-result-count={this.props.totalResults}>
                       {__(
                         'pim_enrich.entity.product.index_title',
                         {count: this.props.totalResults},

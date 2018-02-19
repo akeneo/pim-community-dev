@@ -9,11 +9,12 @@
     - different implementation [DONE]
     - make the grid statefull [NOT FOR NOW]
 
-- loading item [DONE] <- test
+- loading item [DONE]
 - number of result [DONE] <- test
-- add option to test commands
+- add option to test commands [DONE]
 - filter
 - sort
+- add translation to acceptance
 - manage filters
 - simple categories
 - import on grid

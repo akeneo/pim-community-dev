@@ -12,6 +12,16 @@ Given('the following channels with locales:', async function(rawChannels) {
   });
 });
 
+Given('the channels {string}', async function(csvChannelCodes) {
+  const channels = csvToArray(csvChannelCodes).map(channelCode => createChannel(channelCode));
+
+  this.page.on('request', request => {
+    if (request.url().includes('/configuration/channel/rest')) {
+      answerJson(request, channels);
+    }
+  });
+});
+
 Then('the locales {string}', async function(csvLocaleCodes) {
   const locales = csvToArray(csvLocaleCodes).map(localeCode => createLocale(localeCode));
   this.page.on('request', request => {

@@ -4,7 +4,7 @@ const fs = require('fs')
 const os = require('os')
 const path = require('path')
 const DIR = path.join(os.tmpdir(), 'jest_puppeteer_global_setup')
-const baseFile = fs.readFileSync(__dirname + '/../../web/test_dist/index.html', 'utf-8')
+const baseFile = fs.readFileSync(__dirname + '/../../../web/test_dist/index.html', 'utf-8')
 
 class PuppeteerEnvironment extends NodeEnvironment {
   constructor(config) {

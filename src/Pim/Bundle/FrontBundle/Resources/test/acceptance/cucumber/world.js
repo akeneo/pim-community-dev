@@ -4,17 +4,17 @@ const path = require('path');
 const os = require('os');
 const {Before, After, Status} = require('cucumber');
 
-const DEBUG = process.env.DEBUG === '0';
-process.env.RANDOM = true;
 const baseFile = fs.readFileSync(process.cwd() + '/web/test_dist/index.html', 'utf-8');
 
 Before({timeout: 10 * 1000}, async function() {
+  process.env.RANDOM = this.parameters.random;
+  process.env.MAX_RANDOM_LATENCY_MS = this.parameters.maxLatency;
   this.baseUrl = 'http://pim.com/';
   this.browser = await puppeteer.launch({
     ignoreHTTPSErrors: true,
     args: ['--no-sandbox', '--disable-setuid-sandbox'],
-    headless: true,
-    slowMo: DEBUG ? 250 : 0,
+    headless: !this.parameters.debug,
+    slowMo: 0,
   });
   this.page = await this.browser.newPage();
   await this.page.setRequestInterception(true);
@@ -24,15 +24,15 @@ Before({timeout: 10 * 1000}, async function() {
       this.consoleLogs.push(message.text());
     }
   });
-  this.page.on('request', interceptedRequest => {
-    if (interceptedRequest.url() === this.baseUrl) {
-      interceptedRequest.respond({
+  this.page.on('request', request => {
+    if (request.url() === this.baseUrl) {
+      request.respond({
         contentType: 'text/html',
-        body: baseFile,
+        body: fs.readFileSync(process.cwd() + '/web/test_dist/index.html', 'utf-8'),
       });
     }
-    if (interceptedRequest.url().includes('/rest/user/')) {
-      interceptedRequest.respond({
+    if (request.url().includes('/rest/user/')) {
+      request.respond({
         contentType: 'application/json',
         body: `{
   "username": "admin",
@@ -81,6 +81,8 @@ After(async function(scenario) {
     return this.attach(imageBuffer, 'image/png');
   }
 
-  this.page.close();
-  this.browser.close();
+  if (!this.parameters.debug) {
+    this.page.close();
+    this.browser.close();
+  }
 });
