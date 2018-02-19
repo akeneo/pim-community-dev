@@ -1,11 +1,12 @@
 # 1.7.x
 
-# Improvements
+## Improvements
 
 - IM-824: Change message when the user or email is not valid to a more generic message
 
 ## Bug Fixes
 
+- PIM-7188: Avoid duplicate products during import
 - PIM-7164: Fix a memory leak on product export caused by associated products not being detached
 
 # 1.7.18 (2018-02-22)

@@ -43,6 +43,9 @@ class ProductProcessor extends AbstractProcessor implements ItemProcessorInterfa
     /** @var ProductFilterInterface */
     protected $productFilter;
 
+    /** @var array list of identifiers previously seen with at least one diff in this process */
+    private $seenWithDiff = [];
+
     /**
      * @param IdentifiableObjectRepositoryInterface $repository         product repository
      * @param ProductBuilderInterface               $builder            product builder
@@ -66,6 +69,7 @@ class ProductProcessor extends AbstractProcessor implements ItemProcessorInterfa
         $this->validator = $validator;
         $this->detacher = $detacher;
         $this->productFilter = $productFilter;
+        $this->seenWithDiff = [];
     }
 
     /**
@@ -74,8 +78,9 @@ class ProductProcessor extends AbstractProcessor implements ItemProcessorInterfa
     public function process($item)
     {
         $itemHasStatus = isset($item['enabled']);
+        $jobParameters = $this->stepExecution->getJobParameters();
         if (!isset($item['enabled'])) {
-            $item['enabled'] = $jobParameters = $this->stepExecution->getJobParameters()->get('enabled');
+            $item['enabled'] = $jobParameters->get('enabled');
         }
 
         $identifier = $this->getIdentifier($item);
@@ -93,16 +98,20 @@ class ProductProcessor extends AbstractProcessor implements ItemProcessorInterfa
             unset($filteredItem['enabled']);
         }
 
-        $jobParameters = $this->stepExecution->getJobParameters();
         $enabledComparison = $jobParameters->get('enabledComparison');
         if ($enabledComparison) {
             $filteredItem = $this->filterIdenticalData($product, $filteredItem);
 
             if (empty($filteredItem) && null !== $product->getId()) {
-                $this->detachProduct($product);
+                if (!isset($this->seenWithDiff[$identifier])) {
+                    // only detach products when no previous line has modified the same identifier (to avoid duplicates)
+                    $this->detachProduct($product);
+                }
                 $this->stepExecution->incrementSummaryInfo('product_skipped_no_diff');
 
                 return null;
+            } else {
+                $this->seenWithDiff[$identifier] = true;
             }
         }
 
