@@ -1,3 +1,9 @@
+# 2.0.x
+
+## API Improvements
+
+- API: Apply permissions on products model and variant products
+
 # 2.0.16 (2018-02-22)
 
 ## Bug fixes

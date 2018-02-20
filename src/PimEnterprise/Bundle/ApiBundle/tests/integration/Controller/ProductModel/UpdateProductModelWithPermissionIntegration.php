@@ -164,6 +164,25 @@ SQL;
         $this->assertUpdated('colored_tshirt_view', '{}');
     }
 
+    public function testUpdateUnclassifiedProductModelByMergingViewableCategory()
+    {
+        $this->loader->loadProductModelsFixturesForCategoryPermissions();
+
+        $data = '{"categories": ["view_category"]}';
+
+        $message = 'You should at least keep your product in one category on which you have an own permission.';
+        $this->assertUnauthorized('colored_trousers', $data, $message);
+    }
+
+    public function testUpdateUnclassifiedProductModelByMergingEditableCategory()
+    {
+        $this->loader->loadProductModelsFixturesForCategoryPermissions();
+
+        $data = '{"categories": ["edit_category"]}';
+
+        $this->assertUpdated('colored_trousers', $data);
+    }
+    
     public function testUpdateNotViewableAttribute()
     {
         $this->loader->loadProductModelsFixturesForAttributeAndLocalePermissions();
