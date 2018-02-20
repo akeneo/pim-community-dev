@@ -317,7 +317,7 @@ class ProductAssetController extends Controller
      *
      * @return Response
      */
-    public function removeAction($id)
+    public function removeAction(Request $request, $id)
     {
         if (!$request->isXmlHttpRequest()) {
             return new RedirectResponse('/');
