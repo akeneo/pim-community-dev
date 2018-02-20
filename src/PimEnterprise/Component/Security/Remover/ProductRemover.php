@@ -44,7 +44,7 @@ class ProductRemover implements RemoverInterface, BulkRemoverInterface
      * @param RemoverInterface                      $remover
      * @param BulkRemoverInterface                  $bulkRemover
      * @param AuthorizationCheckerInterface         $authorizationChecker
-     * @param IdentifiableObjectRepositoryInterface $productRepository
+     * @param IdentifiableObjectRepositoryInterface $filteredProductRepository
      */
     public function __construct(
         RemoverInterface $remover,
