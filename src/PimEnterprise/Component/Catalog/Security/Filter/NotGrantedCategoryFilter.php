@@ -14,10 +14,8 @@ namespace PimEnterprise\Component\Catalog\Security\Filter;
 use Akeneo\Component\Classification\CategoryAwareInterface;
 use Akeneo\Component\StorageUtils\Exception\InvalidObjectException;
 use Doctrine\Common\Util\ClassUtils;
-use Pim\Component\Catalog\Model\ProductInterface;
-use Pim\Component\Catalog\Model\ProductModelInterface;
+use Pim\Component\Catalog\Model\VariantProductInterface;
 use PimEnterprise\Component\Security\Attributes;
-use PimEnterprise\Component\Security\Exception\ResourceAccessDeniedException;
 use PimEnterprise\Component\Security\NotGrantedDataFilterInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
@@ -52,7 +50,13 @@ class NotGrantedCategoryFilter implements NotGrantedDataFilterInterface
         }
 
         $filteredObjectWithCategories = clone $objectWithCategories;
-        $categories = clone $filteredObjectWithCategories->getCategories();
+
+        if ($objectWithCategories instanceof VariantProductInterface) {
+            $categories = clone $objectWithCategories->getCategoriesForVariation();
+        } else {
+            $categories = clone $objectWithCategories->getCategories();
+        }
+
         if (0 === $categories->count()) {
             return $filteredObjectWithCategories;
         }
@@ -61,27 +65,6 @@ class NotGrantedCategoryFilter implements NotGrantedDataFilterInterface
             if (!$this->authorizationChecker->isGranted(Attributes::VIEW_ITEMS, $category)) {
                 $categories->remove($index);
             }
-        }
-
-        if (0 === $categories->count() && 0 !== $objectWithCategories->getCategories()->count()) {
-            if ($objectWithCategories instanceof ProductModelInterface) {
-                throw new ResourceAccessDeniedException($objectWithCategories, sprintf(
-                    'You can neither view, nor update, nor delete the product model "%s", as it is only categorized in categories on which you do not have a view permission.',
-                    $objectWithCategories->getCode()
-                ));
-            }
-
-            if ($objectWithCategories instanceof ProductInterface) {
-                throw new ResourceAccessDeniedException($objectWithCategories, sprintf(
-                    'You can neither view, nor update, nor delete the product "%s", as it is only categorized in categories on which you do not have a view permission.',
-                    $objectWithCategories->getIdentifier()
-                ));
-            }
-
-            throw new ResourceAccessDeniedException(
-                $objectWithCategories,
-                'You can neither view, nor update, nor delete this entity, as it is only categorized in categories on which you do not have a view permission.'
-            );
         }
 
         $filteredObjectWithCategories->setCategories($categories);

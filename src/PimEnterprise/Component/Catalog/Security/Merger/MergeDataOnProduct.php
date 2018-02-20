@@ -109,7 +109,7 @@ class MergeDataOnProduct implements NotGrantedDataMergerInterface
     }
 
     /**
-     * @param EntityWithFamilyVariantInterface $filteredProduct
+     * @param EntityWithFamilyVariantInterface $entityWithFamilyVariant
      *
      * @return EntityWithFamilyVariantInterface
      */

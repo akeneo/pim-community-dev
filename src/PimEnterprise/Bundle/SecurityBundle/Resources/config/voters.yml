@@ -9,6 +9,7 @@ parameters:
     pimee_security.voter.datagrid_view.class: PimEnterprise\Bundle\SecurityBundle\Voter\DatagridViewVoter
     pimee_security.voter.category_owner.class: PimEnterprise\Bundle\SecurityBundle\Voter\CategoryOwnerVoter
     pimee_security.cached_authorization_checker.class: PimEnterprise\Component\Security\Authorization\CachedAuthorizationChecker
+    pimee_security.deny_not_granted_categorized_entity.class: PimEnterprise\Component\Security\Authorization\DenyNotGrantedCategorizedEntity
 
 services:
     pimee_security.voter.attribute:
@@ -80,3 +81,8 @@ services:
         arguments:
             - '@security.base_authorization_checker'
             - '@security.token_storage'
+
+    pimee_security.deny_not_granted_categorized_entity:
+        class: '%pimee_security.deny_not_granted_categorized_entity.class%'
+        arguments:
+            - '@pimee_security.cached_authorization_checker'

@@ -3,10 +3,10 @@
 namespace spec\PimEnterprise\Bundle\ProductAssetBundle\Doctrine\ORM;
 
 use Akeneo\Component\StorageUtils\Cursor\CursorInterface;
+use Akeneo\Component\StorageUtils\Detacher\BulkObjectDetacherInterface;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Statement;
-use Doctrine\DBAL\Types\Type;
 use Doctrine\ORM\EntityManagerInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Elasticsearch\Indexer\ProductIndexer;
@@ -27,13 +27,15 @@ class CompletenessRemoverSpec extends ObjectBehavior
         EntityManagerInterface $entityManager,
         ProductIndexer $indexer,
         AttributeRepositoryInterface $attributeRepository,
-        Connection $connection
+        Connection $connection,
+        BulkObjectDetacherInterface $bulkDetacher
     ) {
         $this->beConstructedWith(
             $pqbFactory,
             $entityManager,
             $indexer,
             'pim_catalog_completeness',
+            $bulkDetacher,
             $attributeRepository
         );
 
