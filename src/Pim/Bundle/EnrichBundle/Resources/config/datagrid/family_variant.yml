@@ -42,6 +42,7 @@ datagrid:
                 type:  delete
                 label: Delete
                 link:  delete_link
+                acl_resource: pim_enrich_family_variant_remove
         filters:
             columns:
                 label:

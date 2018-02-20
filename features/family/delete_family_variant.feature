@@ -16,14 +16,12 @@ Feature: Delete a family variant
     And I visit the "Variants" tab
     When I click on the "Delete" action of the row which contains "empty_family_variant"
     And I confirm the deletion
-    Then I should see the flash message "Family variant successfully removed"
-    And I should not see the text "empty_family_variant"
+    Then I should not see the text "empty_family_variant"
 
   Scenario: Unsuccessfully delete a family variant used by product models
     Given I am on the "Clothing" family page
     And I visit the "Variants" tab
     When I click on the "Delete" action of the row which contains "Clothing by size"
     And I confirm the deletion
-    Then I should see the flash message "Cannot remove family variant \"clothing_size\" as it is used by some product models"
     And I should see the text "Clothing by size"
 

@@ -213,6 +213,8 @@ pim_enrich:
             edit_attributes: Edit attributes of a family
             remove: Remove a family
             history: View family history
+        family_variant:
+            remove: Remove a family variant
         attribute_group:
             index: List attribute groups
             create: Create an attribute group
