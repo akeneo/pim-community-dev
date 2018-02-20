@@ -332,8 +332,18 @@ class AttributeGroupController
      *
      * @AclAncestor("pim_enrich_attributegroup_remove")
      */
-    public function removeAction($identifier)
+    public function removeAction(Request $request, $identifier)
     {
+        if (!$request->isXmlHttpRequest()) {
+            return new JsonResponse(
+                [
+                    'message' => 'An error occurred.',
+                    'global' => true,
+                ],
+                Response::HTTP_BAD_REQUEST
+            );
+        }
+
         $attributeGroup = $this->getAttributeGroupOr404($identifier);
 
         if ('other' === $attributeGroup->getCode()) {

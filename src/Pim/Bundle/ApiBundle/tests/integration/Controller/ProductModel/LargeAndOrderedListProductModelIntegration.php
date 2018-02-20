@@ -18,8 +18,6 @@ class LargeAndOrderedListProductModelIntegration extends AbstractProductTestCase
     {
         parent::setUp();
 
-        $this->get('akeneo_elasticsearch.client.product_model')->resetIndex();
-
         $data = [];
         for ($i = 0; $i < $this->getListSize(); $i++) {
             $data[] = [

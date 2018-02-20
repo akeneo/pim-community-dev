@@ -163,7 +163,7 @@ services:
             - '@pim_api.security.primary_key_encrypter'
             - '@pim_catalog.query.product_query_builder_from_size_factory'
             - '@pim_catalog.builder.variant_product'
-            - '@pim_connector.processor.attribute_filter.product'
+            - '@pim_api.filter.product_attribute_filter'
             - '@pim_catalog.entity_with_family_variant.add_parent_to_product'
             - '%pim_api.configuration%'
 
@@ -183,7 +183,7 @@ services:
             - '@pim_catalog.saver.product_model'
             - '@router'
             - '@pim_catalog.validator.product_model'
-            - '@pim_connector.processor.attribute_filter.product_model'
+            - '@pim_api.filter.product_model_attribute_filter'
             - '@pim_catalog.repository.product_model'
             - '@pim_api.stream.product_model_partial_update_stream'
             - '%pim_api.configuration%'
