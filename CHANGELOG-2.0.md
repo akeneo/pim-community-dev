@@ -5,6 +5,7 @@
 - PIM-7100: Fix permissions are now well applied on parent level when exporting products
 - PIM-7101: Fix permissions are now well applied on parent level when exporting product models
 - PIM-7185: Fix permissions tab on Product Model import/export profiles
+- PIM-7196: Fix locale switching on product edit form in read only mode
 
 ## BC breaks
 
