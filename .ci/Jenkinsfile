@@ -237,7 +237,7 @@ stage("Test") {
                 }
             },
             "phpunit-integration": {
-                if (editions.contains("ceodm") && launchIntegrationTests.equals("yes")) {
+                if (launchIntegrationTests.equals("yes")) {
                     queue({
                         def files = sh (returnStdout: true, script: 'find /home/jenkins/pim/src -name "*Integration.php" -exec sh -c "grep -Ho \'function test\' {} | uniq -c"  \\; | sed "s/:function test//"').tokenize('\n')
                         def messages = new net.sf.json.JSONArray()
@@ -261,7 +261,7 @@ stage("Test") {
                         }
 
                         return messages
-                    }, 10, "ceodm", verboseOutputs, dotsPerLine)
+                    }, 10, "ce", verboseOutputs, dotsPerLine)
                 } else {
                     echo "Skipping integration test"
                 }
