@@ -10,12 +10,14 @@ define(
     [
         'jquery',
         'underscore',
+        'oro/translator',
         'oro/datagrid/mass-action',
         'pim/form-modal'
     ],
     function (
         $,
         _,
+        __,
         MassAction,
         FormModal
     ) {
@@ -37,9 +39,9 @@ define(
              */
             execute: function () {
                 var modalParameters = {
-                    title: _.__('pimee_enrich.entity.product_draft.modal.reject_selected_proposal'),
-                    okText: _.__('pimee_enrich.entity.product_draft.modal.confirm'),
-                    cancelText: _.__('pimee_enrich.entity.product_draft.modal.cancel')
+                    title: __('pimee_enrich.entity.product_draft.modal.reject_selected_proposal'),
+                    okText: __('pimee_enrich.entity.product_draft.modal.confirm'),
+                    cancelText: __('pimee_enrich.entity.product_draft.modal.cancel')
                 };
 
                 var formModal = new FormModal(
