@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Pim\Component\Catalog\Validator\Constraints;
 
-use Pim\Component\Catalog\Model\VariantProductInterface;
+use Pim\Component\Catalog\Model\ProductInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
@@ -24,12 +24,16 @@ class VariantProductParentValidator extends ConstraintValidator
      */
     public function validate($variantProduct, Constraint $constraint): void
     {
-        if (!$variantProduct instanceof VariantProductInterface) {
-            throw new UnexpectedTypeException($variantProduct, VariantProductInterface::class);
+        if (!$variantProduct instanceof ProductInterface) {
+            throw new UnexpectedTypeException($variantProduct, ProductInterface::class);
         }
 
         if (!$constraint instanceof VariantProductParent) {
             throw new UnexpectedTypeException($constraint, VariantProductParent::class);
+        }
+
+        if (!$variantProduct->isVariant()) {
+            return;
         }
 
         $parent = $variantProduct->getParent();

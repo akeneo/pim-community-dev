@@ -4,7 +4,6 @@ namespace Context;
 
 use Acme\Bundle\AppBundle\Entity\Color;
 use Acme\Bundle\AppBundle\Entity\Fabric;
-use Akeneo\Bundle\ElasticsearchBundle\Client;
 use Akeneo\Component\Batch\Job\JobParameters;
 use Akeneo\Component\Batch\Model\JobExecution;
 use Akeneo\Component\Batch\Model\JobInstance;
@@ -33,6 +32,7 @@ use Pim\Component\Catalog\Builder\EntityWithValuesBuilderInterface;
 use Pim\Component\Catalog\Model\Association;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\AttributeOptionInterface;
+use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Component\Catalog\Model\LocaleInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
@@ -208,6 +208,34 @@ class FixturesContext extends BaseFixturesContext
         foreach ($table->getHash() as $data) {
             $saver->save($processor->process($converter->convert($data)));
         }
+    }
+
+    /**
+     * @Given the family :familyCode has the attributes :attributeCodes
+     */
+    public function theFamilyHasTheAttributes($familyCode, $attributeCodes)
+    {
+        $familyRepository = $this->getContainer()->get('pim_catalog.repository.family');
+        $familySaver = $this->getContainer()->get('pim_catalog.saver.family');
+        $attributeRepository = $this->getContainer()->get('pim_catalog.repository.attribute');
+
+        $family = $familyRepository->findOneByIdentifier($familyCode);
+
+        if (null === $family) {
+            throw new \Exception(sprintf('The family "%s" does not exist.', $familyCode));
+        }
+
+        foreach ($this->listToArray($attributeCodes) as $attributeCode) {
+            $attribute = $attributeRepository->findOneByIdentifier($attributeCode);
+
+            if (null === $family) {
+                throw new \Exception(sprintf('The attribute "%s" does not exist.', $attributeCode));
+            }
+
+            $family->addAttribute($attribute);
+        }
+
+        $familySaver->save($family);
     }
 
     /**

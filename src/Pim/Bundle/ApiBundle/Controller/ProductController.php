@@ -30,7 +30,6 @@ use Pim\Component\Catalog\Exception\ObjectNotFoundException;
 use Pim\Component\Catalog\Exception\UnsupportedFilterException;
 use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
-use Pim\Component\Catalog\Model\VariantProductInterface;
 use Pim\Component\Catalog\ProductModel\Filter\AttributeFilterInterface;
 use Pim\Component\Catalog\Query\Filter\Operators;
 use Pim\Component\Catalog\Query\ProductQueryBuilderFactoryInterface;
@@ -413,7 +412,7 @@ class ProductController
         }
 
         try {
-            if (isset($data['parent']) || $product instanceof VariantProductInterface) {
+            if (isset($data['parent']) || $product->isVariant()) {
                 $data = $this->productAttributeFilter->filter($data);
             }
 
@@ -826,7 +825,7 @@ class ProductController
      */
     protected function needUpdateFromProductToVariant(ProductInterface $product, array $data, bool $isCreation): bool
     {
-        return !$isCreation && !$product instanceof VariantProductInterface &&
+        return !$isCreation && !$product->isVariant() &&
             isset($data['parent']) && '' !== $data['parent'];
     }
 }

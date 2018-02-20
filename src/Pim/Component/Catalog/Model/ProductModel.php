@@ -296,7 +296,7 @@ class ProductModel implements ProductModelInterface
     /**
      * {@inheritdoc}
      */
-    public function addProduct(VariantProductInterface $product): ProductModelInterface
+    public function addProduct(ProductInterface $product): ProductModelInterface
     {
         $product->setParent($this);
         if (!$this->products->contains($product)) {

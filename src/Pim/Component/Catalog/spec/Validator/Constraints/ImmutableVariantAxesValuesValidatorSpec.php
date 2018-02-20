@@ -13,7 +13,7 @@ use Pim\Component\Catalog\Model\EntityWithFamilyVariantInterface;
 use Pim\Component\Catalog\Model\FamilyVariantInterface;
 use Pim\Component\Catalog\Model\ValueCollectionInterface;
 use Pim\Component\Catalog\Model\ValueInterface;
-use Pim\Component\Catalog\Model\VariantProductInterface;
+use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Validator\Constraints\ImmutableVariantAxesValues;
 use Pim\Component\Catalog\Validator\Constraints\ImmutableVariantAxesValuesValidator;
 use Pim\Component\Catalog\Validator\Constraints\VariantProductParent;
@@ -67,7 +67,7 @@ class ImmutableVariantAxesValuesValidatorSpec extends ObjectBehavior
 
     function it_does_not_build_a_violation_if_the_entity_has_no_id(
         $context,
-        VariantProductInterface $variantProduct,
+        ProductInterface $variantProduct,
         ImmutableVariantAxesValues $constraint
     ) {
         $variantProduct->getId()->willReturn(null);
@@ -78,7 +78,7 @@ class ImmutableVariantAxesValuesValidatorSpec extends ObjectBehavior
 
     function it_does_not_build_a_violation_if_the_entity_has_no_familyVariant(
         $context,
-        VariantProductInterface $variantProduct,
+        ProductInterface $variantProduct,
         ImmutableVariantAxesValues $constraint
     ) {
         $variantProduct->getId()->willReturn(42);
@@ -92,7 +92,7 @@ class ImmutableVariantAxesValuesValidatorSpec extends ObjectBehavior
         $context,
         $attributesProvider,
         $valueCollectionFactory,
-        VariantProductInterface $variantProduct,
+        ProductInterface $variantProduct,
         ImmutableVariantAxesValues $constraint,
         FamilyVariantInterface $familyVariant,
         AttributeInterface $sizeAttribute,

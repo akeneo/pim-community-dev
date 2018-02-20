@@ -8,7 +8,6 @@ use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterfa
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Pim\Component\Catalog\Model\AttributeInterface;
-use Pim\Component\Catalog\Model\VariantProductInterface;
 use Symfony\Component\OptionsResolver\Exception\MissingOptionsException;
 
 /**
@@ -74,7 +73,7 @@ class ProductAttributeFilter implements AttributeFilterInterface
         }
 
         $product = $this->productRepository->findOneByIdentifier($standardProduct['identifier']);
-        if (null !== $product && $product instanceof VariantProductInterface && null !== $product->getParent()
+        if (null !== $product && $product->isVariant() && null !== $product->getParent()
             && !array_key_exists('parent', $standardProduct)) {
             $standardProduct['parent'] = $product->getParent()->getCode();
         }

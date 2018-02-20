@@ -20,6 +20,30 @@
 
 - PIM-6334: Change the constructor of `Pim\Component\Catalog\Normalizer\Standard\ProductModelNormalizer` to add `Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface`
 
+## BC breaks
+
+### Constructors
+
+- Change the constructor of `Pim\Component\Connector\Processor\Denormalization\Product` to remove last `Pim\Component\Catalog\Builder\ProductBuilderInterface`.
+- Change the constructor of `Pim\Component\Catalog\EntityWithFamilyVariant` to remove the `Pim\Component\Catalog\EntityWithFamily\CreateVariantProduct` dependency.
+
+### Classes
+
+- Remove last argument of method `fromFlatData` in `Pim\Component\Connector\Processor\Denormalization\Product\FindProductToImport`
+- Remove class `Pim\Component\Catalog\EntityWithFamily\CreateVariantProduct`
+- Remove class `Pim\Bundle\CatalogBundle\EventSubscriber\AddParentAProductSubscriber`
+- Remove class `Pim\Bundle\CatalogBundle\Doctrine\ORM\Query\ConvertProductToVariantProduct`
+
+### Services and parameters
+
+- Remove service `pim_catalog.builder.variant_product`
+- Remove parameter `pim_catalog.entity.variant_product.class`
+- Remove service `pim_catalog.entity_with_family.create_variant_product_from_product`
+
+## Deprecations
+
+- Deprecate interface `Pim\Component\Catalog\Model\VariantProductInterface`. Please use `Pim\Component\Catalog\Model\ProductInterface::isVariant()` to determine is a product is variant or not.
+
 # 2.2.0-ALPHA0 (2018-02-13)
 
 ## Enhancements

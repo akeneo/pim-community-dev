@@ -13,10 +13,8 @@ use Pim\Component\Catalog\Completeness\CompletenessCalculatorInterface;
 use Pim\Component\Catalog\FamilyVariant\EntityWithFamilyVariantAttributesProvider;
 use Pim\Component\Catalog\Localization\Localizer\AttributeConverterInterface;
 use Pim\Component\Catalog\Manager\CompletenessManager;
-use Pim\Component\Catalog\Model\EntityWithFamilyVariantInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ValueInterface;
-use Pim\Component\Catalog\Model\VariantProductInterface;
 use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
 use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
 use Pim\Component\Catalog\ValuesFiller\EntityWithFamilyValuesFillerInterface;
@@ -211,10 +209,8 @@ class ProductNormalizer implements NormalizerInterface
             'image'             => $this->normalizeImage($product->getImage(), $context),
         ] + $this->getLabels($product, $scopeCode) + $this->getAssociationMeta($product);
 
-        $normalizedProduct['meta']['ascendant_category_ids'] =
-            ($product instanceof EntityWithFamilyVariantInterface)
-            ? $this->ascendantCategoriesQuery->getCategoryIds($product)
-            : [];
+        $normalizedProduct['meta']['ascendant_category_ids'] = $product->isVariant() ?
+            $this->ascendantCategoriesQuery->getCategoryIds($product) : [];
 
         $normalizedProduct['meta'] += $this->getMetaForVariantProduct($product, $format, $context);
 
@@ -320,7 +316,7 @@ class ProductNormalizer implements NormalizerInterface
             'level'                     => null,
         ];
 
-        if (!$product instanceof VariantProductInterface) {
+        if (!$product instanceof ProductInterface || !$product->isVariant()) {
             return $meta;
         }
 

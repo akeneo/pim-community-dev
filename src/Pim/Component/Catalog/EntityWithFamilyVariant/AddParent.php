@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace Pim\Component\Catalog\EntityWithFamilyVariant;
 
-use Pim\Component\Catalog\EntityWithFamily\CreateVariantProduct;
 use Pim\Component\Catalog\EntityWithFamily\Event\ParentHasBeenAddedToProduct;
 use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Model\ProductModelInterface;
+use Pim\Component\Catalog\Model\ValueCollectionInterface;
+use Pim\Component\Catalog\Model\ValueInterface;
 use Pim\Component\Catalog\Repository\ProductModelRepositoryInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
@@ -23,24 +25,18 @@ class AddParent
     /** @var ProductModelRepositoryInterface */
     private $productModelRepository;
 
-    /** @var CreateVariantProduct */
-    private $createVariantProduct;
-
     /** @var EventDispatcherInterface */
     private $eventDispatcher;
 
     /**
      * @param ProductModelRepositoryInterface $productModelRepository
-     * @param CreateVariantProduct            $createVariantProduct
      * @param EventDispatcherInterface        $eventDispatcher
      */
     public function __construct(
         ProductModelRepositoryInterface $productModelRepository,
-        CreateVariantProduct $createVariantProduct,
         EventDispatcherInterface $eventDispatcher
     ) {
         $this->productModelRepository = $productModelRepository;
-        $this->createVariantProduct = $createVariantProduct;
         $this->eventDispatcher = $eventDispatcher;
     }
 
@@ -65,13 +61,33 @@ class AddParent
             );
         }
 
-        $variantProduct = $this->createVariantProduct->from($product, $productModel);
+        $product->setParent($productModel);
+        $product->setFamilyVariant($productModel->getFamilyVariant());
+        $product->setValues($this->filterNonVariantValues($productModel, $product));
 
         $this->eventDispatcher->dispatch(
             ParentHasBeenAddedToProduct::EVENT_NAME,
-            new ParentHasBeenAddedToProduct($variantProduct, $parentProductModelCode)
+            new ParentHasBeenAddedToProduct($product, $parentProductModelCode)
         );
 
-        return $variantProduct;
+        return $product;
+    }
+
+    private function filterNonVariantValues(
+        ProductModelInterface $productModel,
+        ProductInterface $product
+    ): ValueCollectionInterface {
+        $familyVariant = $productModel->getFamilyVariant();
+        $variantAttributes = $familyVariant->getVariantAttributeSet(
+            $familyVariant->getNumberOfLevel()
+        )->getAttributes();
+
+        $filteredValues = $product->getValues()->filter(
+            function (ValueInterface $value) use ($variantAttributes) {
+                return $variantAttributes->contains($value->getAttribute());
+            }
+        );
+
+        return $filteredValues;
     }
 }

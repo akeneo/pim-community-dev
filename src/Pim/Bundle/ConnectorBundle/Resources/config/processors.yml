@@ -65,7 +65,6 @@ services:
         arguments:
             - '@pim_catalog.repository.product'
             - '@pim_catalog.builder.product'
-            - '@pim_catalog.builder.variant_product'
 
     pim_connector.processor.denormalization.root_product_model:
         class: '%pim_connector.processor.denormalization.product_model.class%'

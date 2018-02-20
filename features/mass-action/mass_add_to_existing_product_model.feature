@@ -42,7 +42,7 @@ Feature: Apply a add to products to existing product model
     When I confirm mass edit
     And I wait for the "add_to_existing_product_model" job to finish
     Then I should see the text "COMPLETED"
-    And I should see the text "Product and product model families should be the same."
+    And I should see the text "The variant product family must be the same than its parent"
 
   Scenario: Successfully adds products to product model
     Given I am on the "1111111171" product page

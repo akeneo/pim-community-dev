@@ -13,7 +13,7 @@ use Pim\Component\Catalog\Model\AttributeOptionValueInterface;
 use Pim\Component\Catalog\Model\CompletenessInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
 use Pim\Component\Catalog\Model\ValueInterface;
-use Pim\Component\Catalog\Model\VariantProductInterface;
+use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\ProductModel\ImageAsLabel;
 use Pim\Component\Catalog\ProductModel\Query\CompleteVariantProducts;
 use Pim\Component\Catalog\ProductModel\Query\VariantProductRatioInterface;
@@ -55,7 +55,7 @@ class EntityWithFamilyVariantNormalizerSpec extends ObjectBehavior
         $attributesProvider,
         $completenessCollectionNormalizer,
         $completenessCalculator,
-        VariantProductInterface $variantProduct,
+        ProductInterface $variantProduct,
         AttributeInterface $colorAttribute,
         AttributeInterface $sizeAttribute,
         ValueInterface $colorValue,
@@ -71,6 +71,7 @@ class EntityWithFamilyVariantNormalizerSpec extends ObjectBehavior
         ];
         $localeRepository->getActivatedLocaleCodes()->willReturn(['fr_FR', 'en_US']);
 
+        $variantProduct->isVariant()->willReturn(true);
         $variantProduct->getLabel('fr_FR')->willReturn('Tshirt Blanc S');
         $variantProduct->getLabel('en_US')->willReturn('Tshirt White S');
         $variantProduct->getId()->willReturn(42);

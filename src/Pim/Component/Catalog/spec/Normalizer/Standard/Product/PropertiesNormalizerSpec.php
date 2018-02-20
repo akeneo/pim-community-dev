@@ -8,7 +8,6 @@ use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductModel;
 use Pim\Component\Catalog\Model\ValueCollection;
-use Pim\Component\Catalog\Model\VariantProductInterface;
 use Pim\Component\Catalog\Normalizer\Standard\Product\PropertiesNormalizer;
 use Prophecy\Argument;
 use Symfony\Component\Serializer\SerializerInterface;
@@ -52,6 +51,7 @@ class PropertiesNormalizerSpec extends ObjectBehavior
         $values->getIterator()->willReturn($iterator);
 
         $family->getCode()->willReturn('my_family');
+        $product->isVariant()->willReturn(false);
         $product->getFamily()->willReturn($family);
         $product->getGroupCodes()->willReturn([]);
         $product->getCategoryCodes()->willReturn([]);
@@ -101,7 +101,7 @@ class PropertiesNormalizerSpec extends ObjectBehavior
     function it_normalizes_the_properties_of_the_variant_product(
         $filter,
         $serializer,
-        VariantProductInterface $product,
+        ProductInterface $product,
         ProductModel $productModel,
         FamilyInterface $family,
         ValueCollection $values,
@@ -110,6 +110,7 @@ class PropertiesNormalizerSpec extends ObjectBehavior
         $values->getIterator()->willReturn($iterator);
 
         $family->getCode()->willReturn('my_family');
+        $product->isVariant()->willReturn(true);
         $product->getFamily()->willReturn($family);
         $product->getGroupCodes()->willReturn([]);
         $product->getCategoryCodes()->willReturn([]);

@@ -1,7 +1,22 @@
 Pim\Component\Catalog\Model\Product:
+    group_sequence:
+        - Product
+        - VariantProduct
+        - UniqueAxis
+        - api
     constraints:
         - Pim\Component\Catalog\Validator\Constraints\UniqueEntity:
             entityClass: Pim\Component\Catalog\Model\ProductInterface
+        - Pim\Component\Catalog\Validator\Constraints\NotEmptyFamily:
+            groups:
+              - api
+        - Pim\Component\Catalog\Validator\Constraints\SameFamilyThanParent: ~
+        - Pim\Component\Catalog\Validator\Constraints\NotEmptyVariantAxes: ~
+        - Pim\Component\Catalog\Validator\Constraints\VariantProductParent: ~
+        - Pim\Component\Catalog\Validator\Constraints\UniqueVariantAxis:
+            groups: [UniqueAxis]
+        - Pim\Component\Catalog\Validator\Constraints\ImmutableVariantAxesValues: ~
+
     properties:
         identifier:
             - NotBlank: ~

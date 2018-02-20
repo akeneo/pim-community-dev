@@ -9,7 +9,7 @@ use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\ProductModelDescendantsSaver;
 use Pim\Component\Catalog\Manager\CompletenessManager;
 use Pim\Component\Catalog\Model\ProductModelInterface;
-use Pim\Component\Catalog\Model\VariantProductInterface;
+use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Query\Filter\Operators;
 use Pim\Component\Catalog\Query\ProductQueryBuilderFactoryInterface;
 use Pim\Component\Catalog\Query\ProductQueryBuilderInterface;
@@ -50,8 +50,8 @@ class ProductModelDescendantsSaverSpec extends ObjectBehavior
         $productModelIndexer,
         ProductQueryBuilderInterface $pqb,
         ProductModelInterface $productModel,
-        VariantProductInterface $variantProduct1,
-        VariantProductInterface $variantProduct2,
+        ProductInterface $variantProduct1,
+        ProductInterface $variantProduct2,
         CursorInterface $cursor
     ) {
         $productModel->getCode()->willReturn('product_model_code');

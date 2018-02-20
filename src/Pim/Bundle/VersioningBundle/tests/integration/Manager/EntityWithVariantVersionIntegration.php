@@ -8,8 +8,8 @@ use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use Doctrine\Common\Util\ClassUtils;
 use Pim\Component\Catalog\Model\EntityWithFamilyVariantInterface;
+use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
-use Pim\Component\Catalog\Model\VariantProductInterface;
 
 /**
  * @author    Damien Carcel <damien.carcel@akeneo.com>
@@ -58,7 +58,7 @@ class EntityWithVariantVersionIntegration extends TestCase
             ],
         ]);
 
-        $apollonBlueXXL = $this->get('pim_catalog.repository.variant_product')->findOneByIdentifier('1111111119');
+        $apollonBlueXXL = $this->get('pim_catalog.repository.product')->findOneByIdentifier('1111111119');
         $oldEAN = null === $apollonBlueXXL->getValue('ean')
             ? ''
             : $apollonBlueXXL->getValue('ean')->getData();
@@ -147,10 +147,10 @@ class EntityWithVariantVersionIntegration extends TestCase
     }
 
     /**
-     * @param VariantProductInterface $variantProduct
-     * @param array                   $data
+     * @param ProductInterface $variantProduct
+     * @param array            $data
      */
-    private function updateVariantProduct(VariantProductInterface $variantProduct, array $data): void
+    private function updateVariantProduct(ProductInterface $variantProduct, array $data): void
     {
         $this->get('pim_catalog.updater.product')->update($variantProduct, $data);
 

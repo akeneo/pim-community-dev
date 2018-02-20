@@ -1,5 +1,5 @@
 parameters:
-    pim_analytics.repository.entity_countable.class:      Pim\Bundle\AnalyticsBundle\Repository\EntityCountableRepository
+    pim_analytics.repository.entity_countable.class: Pim\Bundle\AnalyticsBundle\Repository\EntityCountableRepository
 
 services:
     pim_analytics.repository.channel:
@@ -31,12 +31,6 @@ services:
         arguments:
             - '@doctrine.orm.entity_manager'
             - '%pim_catalog.entity.product_model.class%'
-
-    pim_analytics.repository.variant_product:
-        class: '%pim_analytics.repository.entity_countable.class%'
-        arguments:
-            - '@doctrine.orm.entity_manager'
-            - '%pim_catalog.entity.variant_product.class%'
 
     pim_analytics.repository.family_variant:
         class: '%pim_analytics.repository.entity_countable.class%'

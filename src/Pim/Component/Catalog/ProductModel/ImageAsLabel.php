@@ -8,6 +8,7 @@ use Pim\Component\Catalog\Model\ProductModelInterface;
 use Pim\Component\Catalog\Model\ValueInterface;
 use Pim\Component\Catalog\Repository\ProductModelRepositoryInterface;
 use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
+use Pim\Component\Catalog\Repository\VariantProductRepositoryInterface;
 
 /**
  * For a given ProductModel, this class retrieves the ValueInterface of its attribute as image,
@@ -27,12 +28,12 @@ class ImageAsLabel
     private $productRepository;
 
     /**
-     * @param ProductModelRepositoryInterface $productModelRepository
-     * @param ProductRepositoryInterface      $productRepository
+     * @param ProductModelRepositoryInterface   $productModelRepository
+     * @param VariantProductRepositoryInterface $productRepository
      */
     public function __construct(
         ProductModelRepositoryInterface $productModelRepository,
-        ProductRepositoryInterface $productRepository
+        VariantProductRepositoryInterface $productRepository
     ) {
         $this->productModelRepository = $productModelRepository;
         $this->productRepository = $productRepository;
@@ -72,21 +73,17 @@ class ImageAsLabel
                 1
             ));
 
-            $productChild = current($this->productRepository->findBy(
-                ['parent' => $entity],
-                ['created' => 'ASC', 'identifier' => 'ASC'],
-                1
-            ));
+            $productChild = $this->productRepository->findLastCreatedByParent($entity);
 
             if (false !== $modelChild) {
                 $entity = $modelChild;
             }
 
-            if (false !== $productChild) {
+            if (null !== $productChild) {
                 $entity = $productChild;
             }
 
-            if (false === $modelChild && false === $productChild) {
+            if (false === $modelChild && null === $productChild) {
                 return null;
             }
 

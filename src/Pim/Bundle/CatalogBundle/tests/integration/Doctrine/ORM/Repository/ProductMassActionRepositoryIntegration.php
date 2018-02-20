@@ -7,7 +7,6 @@ namespace Pim\Bundle\CatalogBundle\tests\integration\Doctrine\ORM\Repository;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use Pim\Component\Catalog\Model\ProductInterface;
-use Pim\Component\Catalog\Model\VariantProductInterface;
 
 /**
  * @author    Damien Carcel <damien.carcel@akeneo.com>
@@ -35,7 +34,7 @@ class ProductMassActionRepositoryIntegration extends TestCase
             [$variantProductId]
         );
         $this->assertSame(1, $deletedVariantProductsCount);
-        $this->assertNull($this->get('pim_catalog.repository.variant_product')->findOneById($variantProductId));
+        $this->assertNull($this->get('pim_catalog.repository.product')->findOneById($variantProductId));
     }
 
     /**
@@ -57,9 +56,9 @@ class ProductMassActionRepositoryIntegration extends TestCase
     }
 
     /**
-     * @return VariantProductInterface
+     * @return ProductInterface
      */
-    private function createVariantProduct(): VariantProductInterface
+    private function createVariantProduct(): ProductInterface
     {
         $entityBuilder = $this->getFromTestContainer('akeneo_integration_tests.catalog.fixture.build_entity');
 
