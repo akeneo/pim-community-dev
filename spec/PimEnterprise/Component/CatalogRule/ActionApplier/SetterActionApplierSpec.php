@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace spec\PimEnterprise\Component\CatalogRule\ActionApplier;
 
 use Akeneo\Component\StorageUtils\Updater\PropertySetterInterface;
-use Doctrine\Common\Collections\Collection;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\EntityWithFamilyVariantInterface;
@@ -13,7 +12,6 @@ use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Component\Catalog\Model\FamilyVariantInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
-use Pim\Component\Catalog\Model\VariantAttributeSetInterface;
 use Pim\Component\Catalog\Model\VariantProductInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use PimEnterprise\Component\CatalogRule\Model\ProductSetActionInterface;
@@ -31,8 +29,9 @@ class SetterActionApplierSpec extends ObjectBehavior
         $this->supports($action)->shouldReturn(true);
     }
 
-    function it_applies_set_action_on_non_variant_product(
+    function it_applies_set_field_action_on_non_variant_product(
         $propertySetter,
+        $attributeRepository,
         ProductSetActionInterface $action,
         ProductInterface $product
     ) {
@@ -40,6 +39,35 @@ class SetterActionApplierSpec extends ObjectBehavior
         $action->getValue()->willReturn('sexy socks');
         $action->getOptions()->willReturn([]);
 
+        $attributeRepository->findOneByIdentifier('name')->willReturn(null);
+
+        $propertySetter->setData(
+            $product,
+            'name',
+            'sexy socks',
+            []
+        )->shouldBeCalled();
+
+        $this->applyAction($action, [$product]);
+    }
+
+    function it_applies_set_attribute_action_on_non_variant_product(
+        $propertySetter,
+        $attributeRepository,
+        ProductSetActionInterface $action,
+        ProductInterface $product,
+        AttributeInterface $name,
+        FamilyInterface $family
+    ) {
+        $action->getField()->willReturn('name');
+        $action->getValue()->willReturn('sexy socks');
+        $action->getOptions()->willReturn([]);
+
+        $product->getFamily()->willReturn($family);
+        $family->hasAttributeCode('name')->willReturn(true);
+
+        $attributeRepository->findOneByIdentifier('name')->willReturn($name);
+        $product->getFamilyVariant()->willReturn(null);
 
         $propertySetter->setData(
             $product,

@@ -35,10 +35,13 @@ class RemoverActionApplierSpec extends ObjectBehavior
         $this->supports($action)->shouldReturn(true);
     }
 
-    function it_applies_remove_action_on_non_variant_product(
+    function it_applies_remove_attribute_action_on_non_variant_product(
         $propertyRemover,
+        $attributeRepository,
         ProductRemoveActionInterface $action,
-        ProductInterface $product
+        ProductInterface $product,
+        AttributeInterface $attribute,
+        FamilyInterface $family
     ) {
         $action->getField()->willReturn('multi-select');
         $action->getOptions()->willReturn([
@@ -49,6 +52,11 @@ class RemoverActionApplierSpec extends ObjectBehavior
             'multi1',
             'multi2',
         ]);
+
+        $product->getFamily()->willReturn($family);
+        $family->hasAttributeCode('multi-select')->willReturn(true);
+        $product->getFamilyVariant()->willReturn(null);
+        $attributeRepository->findOneByIdentifier('multi-select')->willReturn($attribute);
 
         $propertyRemover->removeData(
             $product,
@@ -61,6 +69,35 @@ class RemoverActionApplierSpec extends ObjectBehavior
                 'locale' => 'en_US',
                 'scope'  => 'ecommerce',
             ]
+        )->shouldBeCalled();
+
+        $this->applyAction($action, [$product]);
+    }
+
+    function it_applies_remove_field_action_on_non_variant_product(
+        $propertyRemover,
+        $attributeRepository,
+        ProductRemoveActionInterface $action,
+        ProductInterface $product
+    ) {
+        $action->getField()->willReturn('category');
+        $action->getOptions()->willReturn([]);
+        $action->getItems()->willReturn([
+            'foo',
+            'bar',
+        ]);
+
+        $attributeRepository->findOneByIdentifier('category')->willReturn(null);
+        $product->getFamilyVariant()->willReturn(null);
+
+        $propertyRemover->removeData(
+            $product,
+            'category',
+            [
+                'foo',
+                'bar',
+            ],
+            []
         )->shouldBeCalled();
 
         $this->applyAction($action, [$product]);

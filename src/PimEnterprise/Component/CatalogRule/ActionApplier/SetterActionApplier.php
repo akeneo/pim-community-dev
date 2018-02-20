@@ -97,12 +97,26 @@ class SetterActionApplier implements ActionApplierInterface
             return;
         }
 
-        if ($entityWithFamilyVariant->getFamily()->hasAttributeCode($field)) {
-            $level = $entityWithFamilyVariant->getFamilyVariant()->getLevelForAttributeCode($field);
+        if (null === $entityWithFamilyVariant->getFamily()) {
+            $this->setDataOnEntityWithValues($entityWithFamilyVariant, $action);
 
-            if ($entityWithFamilyVariant->getVariationLevel() === $level) {
-                $this->setDataOnEntityWithValues($entityWithFamilyVariant, $action);
-            }
+            return;
+        }
+
+        if (!$entityWithFamilyVariant->getFamily()->hasAttributeCode($field)) {
+            return;
+        }
+
+        if (null === $entityWithFamilyVariant->getFamilyVariant()) {
+            $this->setDataOnEntityWithValues($entityWithFamilyVariant, $action);
+
+            return;
+        }
+
+        $level = $entityWithFamilyVariant->getFamilyVariant()->getLevelForAttributeCode($field);
+
+        if ($entityWithFamilyVariant->getVariationLevel() === $level) {
+            $this->setDataOnEntityWithValues($entityWithFamilyVariant, $action);
         }
     }
 

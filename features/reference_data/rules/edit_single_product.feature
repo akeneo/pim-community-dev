@@ -25,7 +25,8 @@ Feature: Update a single product by applying rules
     And I am logged in as "Julia"
 
   Scenario: Successfully execute a rule with setter actions to update non empty values on reference data attributes
-    Given the following products:
+    Given the family "heels" has the attributes "cap_color, lace_fabric"
+    And the following products:
       | sku       | family |
       | red-heels | heels  |
     And the following product values:
@@ -89,7 +90,8 @@ Feature: Update a single product by applying rules
       | lace_fabric-en_US-mobile | [cashmere], [gore-tex], [toile] |
 
   Scenario: Successfully execute a rule with copier actions to update non empty values on reference data attributes
-    Given the following products:
+    Given the family "heels" has the attributes "cap_color"
+    And the following products:
       | sku       | family |
       | red-heels | heels  |
     And the following product values:

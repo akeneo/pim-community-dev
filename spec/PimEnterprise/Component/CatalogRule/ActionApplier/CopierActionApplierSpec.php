@@ -10,7 +10,6 @@ use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Component\Catalog\Model\FamilyVariantInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
-use Pim\Component\Catalog\Model\VariantProductInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use PimEnterprise\Component\CatalogRule\Model\ProductCopyActionInterface;
 use Prophecy\Argument;
@@ -31,12 +30,22 @@ class CopierActionApplierSpec extends ObjectBehavior
 
     function it_applies_copy_action_on_non_variant_product(
         $propertyCopier,
+        $attributeRepository,
         ProductCopyActionInterface $action,
-        ProductInterface $product
+        ProductInterface $product,
+        AttributeInterface $nameAttribute,
+        FamilyInterface $family
     ) {
         $action->getFromField()->willReturn('sku');
         $action->getToField()->willReturn('name');
         $action->getOptions()->willReturn([]);
+
+        $attributeRepository->findOneByIdentifier('name')->willReturn($nameAttribute);
+        $nameAttribute->getCode()->willReturn('name');
+
+        $product->getFamilyVariant()->willReturn(null);
+        $product->getFamily()->willReturn($family);
+        $family->hasAttributeCode('name')->willReturn(true);
 
         $propertyCopier->copyData(
             $product,
@@ -53,7 +62,7 @@ class CopierActionApplierSpec extends ObjectBehavior
         $propertyCopier,
         $attributeRepository,
         ProductCopyActionInterface $action,
-        VariantProductInterface $variantProduct,
+        ProductInterface $variantProduct,
         AttributeInterface $nameAttribute,
         FamilyVariantInterface $familyVariant,
         FamilyInterface $family

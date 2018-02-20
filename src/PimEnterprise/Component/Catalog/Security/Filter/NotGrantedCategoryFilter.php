@@ -51,6 +51,7 @@ class NotGrantedCategoryFilter implements NotGrantedDataFilterInterface
             );
         }
 
+        $objectWithCategories->getCategories();
         $filteredObjectWithCategories = clone $objectWithCategories;
         $categories = clone $filteredObjectWithCategories->getCategories();
         if (0 === $categories->count()) {

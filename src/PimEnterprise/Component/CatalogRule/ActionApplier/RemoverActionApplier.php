@@ -94,12 +94,26 @@ class RemoverActionApplier implements ActionApplierInterface
             return;
         }
 
-        if ($entityWithFamilyVariant->getFamily()->hasAttributeCode($field)) {
-            $level = $entityWithFamilyVariant->getFamilyVariant()->getLevelForAttributeCode($field);
+        if (null === $entityWithFamilyVariant->getFamily()) {
+            $this->removeDataOnEntityWithValues($entityWithFamilyVariant, $action);
 
-            if ($entityWithFamilyVariant->getVariationLevel() === $level) {
-                $this->removeDataOnEntityWithValues($entityWithFamilyVariant, $action);
-            }
+            return;
+        }
+
+        if (!$entityWithFamilyVariant->getFamily()->hasAttributeCode($field)) {
+            return;
+        }
+
+        if (null === $entityWithFamilyVariant->getFamilyVariant()) {
+            $this->removeDataOnEntityWithValues($entityWithFamilyVariant, $action);
+
+            return;
+        }
+
+        $level = $entityWithFamilyVariant->getFamilyVariant()->getLevelForAttributeCode($field);
+
+        if ($entityWithFamilyVariant->getVariationLevel() === $level) {
+            $this->removeDataOnEntityWithValues($entityWithFamilyVariant, $action);
         }
     }
 

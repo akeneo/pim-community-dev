@@ -344,6 +344,7 @@ Feature: Read a single product by applying rules
       | report          | Report          | pim_catalog_file             | 0        | 0           | txt                |               |                     | other |                  |
       | climate         | Climate         | pim_catalog_multiselect      | 0        | 0           |                    |               |                     | other |                  |
       | promotion_price | Promotion price | pim_catalog_price_collection | 0        | 0           |                    |               |                     | other | 0                |
+    And the family "jackets" has the attributes "made_in_france, report, climate, promotion_price, width"
     And the following products:
       | sku       | family  | weather_conditions |
       | my-jacket | jackets | dry                |
@@ -450,6 +451,7 @@ Feature: Read a single product by applying rules
       | report          | Report          | pim_catalog_file             | 0        | 0           | txt                |               |                     | other |                  |
       | climate         | Climate         | pim_catalog_multiselect      | 0        | 0           |                    |               |                     | other |                  |
       | promotion_price | Promotion price | pim_catalog_price_collection | 0        | 0           |                    |               |                     | other | 0                |
+    And the family "jackets" has the attributes "made_in_france, report, climate, promotion_price, width"
     And the following products:
       | sku       | family  | weather_conditions |
       | my-jacket | jackets | dry                |
