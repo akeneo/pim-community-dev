@@ -119,7 +119,6 @@ datagrid:
                 type: edit
                 acl_resource: pim_enrich_mass_edit
                 label: pim.grid.mass_action.mass_edit
-                handler: product_mass_edit
                 route: pim_enrich_mass_edit_action
                 className: 'AknButton AknButton--action AknButtonList-item'
                 route_parameters:
