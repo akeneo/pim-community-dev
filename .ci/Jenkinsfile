@@ -13,7 +13,6 @@ String verboseOutputs = "yes"
 String dotsPerLine = "50"
 
 stage("Build") {
-
     milestone 1
     if (env.BRANCH_NAME =~ /^PR-/) {
         timeout(time:5, unit:'DAYS') {
@@ -171,6 +170,7 @@ stage("Test") {
             "behat-orm": {
                 if (launchBehatTests.equals("yes") && storages.contains("orm")) {
                     queue({
+                        sh (returnStdout: true, script: "mkdir -m 777 -p /home/jenkins/pim/app/build/logs/behat/");
                         def scenarios = []
                         for (feature in features) {
                             scenarios = (scenarios + sh (returnStdout: true, script: "cd /home/jenkins/pim && if [ -e $feature ]; then php ./bin/behat $feature --list-scenarios; fi").tokenize('\n'))
@@ -217,6 +217,7 @@ stage("Test") {
             "behat-odm": {
                 if (launchBehatTests.equals("yes") && storages.contains("odm")) {
                     queue({
+                        sh (returnStdout: true, script: "mkdir -m 777 -p /home/jenkins/pim/app/build/logs/behat/");
                         def scenarios = []
                         for (feature in features) {
                             scenarios = (scenarios + sh (returnStdout: true, script: "cd /home/jenkins/pim && if [ -e $feature ]; then php ./bin/behat $feature --list-scenarios; fi").tokenize('\n'))
