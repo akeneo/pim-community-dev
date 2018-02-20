@@ -11,9 +11,11 @@ use Akeneo\Component\Batch\Model\JobInstance;
 use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Builder\ProductBuilderInterface;
 use Pim\Component\Catalog\Model\ChannelInterface;
+use Pim\Component\Catalog\Model\GroupInterface;
 use Pim\Component\Catalog\Model\LocaleInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductValueInterface;
@@ -113,6 +115,94 @@ class ProductProcessorSpec extends ObjectBehavior
         $mediaFetcher->fetchAll(Argument::cetera())->shouldNotBeCalled();
         $mediaFetcher->getErrors()->shouldNotBeCalled();
 
+        $product->getGroups()->willReturn([]);
+        $detacher->detach($product)->shouldBeCalled();
+
+        $this->process($product)->shouldReturn([
+            'enabled'    => true,
+            'categories' => ['cat1', 'cat2'],
+            'values' => [
+                'size' => [
+                    [
+                        'locale' => null,
+                        'scope'  => null,
+                        'data'   => 'M'
+                    ]
+                ]
+            ]
+        ]);
+    }
+
+    function it_processes_a_product_with_groups(
+        $detacher,
+        $normalizer,
+        $channelRepository,
+        $stepExecution,
+        $mediaFetcher,
+        $productBuilder,
+        $attributeRepository,
+        ChannelInterface $channel,
+        LocaleInterface $locale,
+        ProductInterface $product,
+        JobParameters $jobParameters,
+        Collection $groupCollection,
+        \Iterator $groupIterator,
+        GroupInterface $groupA,
+        GroupInterface $groupB
+    ) {
+        $attributeRepository->findMediaAttributeCodes()->willReturn(['picture']);
+
+        $stepExecution->getJobParameters()->willReturn($jobParameters);
+        $jobParameters->get('filePath')->willReturn('/my/path/product.csv');
+        $jobParameters->get('filters')->willReturn(
+            [
+                'structure' => ['scope' => 'mobile', 'locales' => ['en_US', 'fr_FR']]
+            ]
+        );
+        $jobParameters->has('with_media')->willReturn(true);
+        $jobParameters->get('with_media')->willReturn(false);
+
+        $channelRepository->findOneByIdentifier('mobile')->willReturn($channel);
+        $channel->getLocales()->willReturn(new ArrayCollection([$locale]));
+        $channel->getCode()->willReturn('foobar');
+        $channel->getLocaleCodes()->willReturn(['en_US', 'de_DE']);
+
+        $productBuilder->addMissingProductValues($product, [$channel], [$locale])->shouldBeCalled();
+
+        $normalizer->normalize($product, 'json', ['channels' => ['foobar'], 'locales' => ['en_US']])
+            ->willReturn([
+                'enabled'    => true,
+                'categories' => ['cat1', 'cat2'],
+                'values' => [
+                    'picture' => [
+                        [
+                            'locale' => null,
+                            'scope'  => null,
+                            'data'   => 'a/b/c/d/e/f/little_cat.jpg'
+                        ]
+                    ],
+                    'size' => [
+                        [
+                            'locale' => null,
+                            'scope'  => null,
+                            'data'   => 'M'
+                        ]
+                    ]
+                ]
+            ]);
+
+        $mediaFetcher->fetchAll(Argument::cetera())->shouldNotBeCalled();
+        $mediaFetcher->getErrors()->shouldNotBeCalled();
+
+        $product->getGroups()->willReturn($groupCollection);
+        $groupCollection->getIterator()->willReturn($groupIterator);
+        $groupIterator->rewind()->shouldBeCalled();
+        $groupIterator->valid()->willReturn(true, true, false);
+        $groupIterator->current()->willReturn($groupA, $groupB);
+        $groupIterator->next()->shouldBeCalled();
+
+        $detacher->detach($groupA)->shouldBeCalled();
+        $detacher->detach($groupB)->shouldBeCalled();
         $detacher->detach($product)->shouldBeCalled();
 
         $this->process($product)->shouldReturn([
@@ -196,6 +286,7 @@ class ProductProcessorSpec extends ObjectBehavior
         $mediaFetcher->fetchAll($valuesCollection, '/working/directory/', 'AKIS_XS')->shouldBeCalled();
         $mediaFetcher->getErrors()->willReturn([]);
 
+        $product->getGroups()->willReturn([]);
         $this->process($product)->shouldReturn($productStandard);
 
         $detacher->detach($product)->shouldBeCalled();
@@ -234,6 +325,7 @@ class ProductProcessorSpec extends ObjectBehavior
         $channel->getLocaleCodes()->willReturn(['en_US', 'de_DE']);
 
         $productBuilder->addMissingProductValues($product, [$channel], [$locale])->shouldBeCalled();
+        $product->getGroups()->willReturn([]);
         $product->getIdentifier()->willReturn($identifier);
         $product->getValues()->willReturn($valuesCollection);
         $identifier->getData()->willReturn('AKIS_XS');

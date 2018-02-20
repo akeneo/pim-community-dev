@@ -2,7 +2,7 @@
 
 import org.csanchez.jenkins.plugins.kubernetes.pipeline.PodTemplateAction
 
-String[] editions = ["ce"]
+String[] editions = ["ce", "ceodm"]
 String[] features = ["features"]
 String launchUnitTests = "yes"
 String launchIntegrationTests = "yes"
@@ -37,31 +37,27 @@ stage("Build") {
 
     parallel(
         "pim-ce": {
-            if (editions.contains("ce")) {
-                withBuildNode({
-                    checkout scm
-                    container("php") {
-                        sh "composer update --ansi --optimize-autoloader --no-interaction --no-progress --prefer-dist --no-suggest"
-                        sh "app/console oro:requirejs:generate-config"
-                        sh "app/console assets:install"
-                    }
-                    container("node") {
-                        sh "npm install --color=always"
-                    }
-                    container("docker") {
-                        sh "cp .ci/behat.community.yml behat.yml"
+            withBuildNode({
+                checkout scm
+                container("php") {
+                    sh "composer update --ansi --optimize-autoloader --no-interaction --no-progress --prefer-dist --no-suggest"
+                    sh "app/console oro:requirejs:generate-config"
+                    sh "app/console assets:install"
+                }
+                container("node") {
+                    sh "npm install --color=always"
+                }
+                container("docker") {
+                    sh "cp .ci/behat.community.yml behat.yml"
 
-                        sh "mkdir -m 777 -p app/build/logs/behat app/build/logs/consumer "
-                        sh "cp app/config/parameters_test.yml.dist app/config/parameters_test.yml"
-                        sh "sed -i \"s#database_host: .*#database_host: 127.0.0.1#g\" app/config/parameters_test.yml"
-                        sh "sed \"\$a    installer_data: 'PimInstallerBundle:minimal'\n\" app/config/parameters_test.yml"
+                    sh "mkdir -m 777 -p app/build/logs/behat app/build/logs/consumer "
+                    sh "cp app/config/parameters_test.yml.dist app/config/parameters_test.yml"
+                    sh "sed -i \"s#database_host: .*#database_host: 127.0.0.1#g\" app/config/parameters_test.yml"
+                    sh "sed \"\$a    installer_data: 'PimInstallerBundle:minimal'\n\" app/config/parameters_test.yml"
 
-                        sh "gcloud container builds submit --tag eu.gcr.io/akeneo-ci/pim-community-dev:pull-request-${env.CHANGE_ID}-build-${env.BUILD_NUMBER}-ce ."
-                    }
-                })
-            } else {
-                echo "Skipping Community Edition matrix"
-            }
+                    sh "gcloud container builds submit --tag eu.gcr.io/akeneo-ci/pim-community-dev:pull-request-${env.CHANGE_ID}-build-${env.BUILD_NUMBER}-ce ."
+                }
+            })
         },
         "pim-ee": {
             if (editions.contains("ee")) {
@@ -74,10 +70,6 @@ stage("Build") {
                     sh "mkdir -m 777 vendor"
 
                     container("php") {
-                        sh "composer require --dev --no-update phpspec/phpspec:~3.4.2"
-                        sh "composer require --dev --no-update phpunit/phpunit:~5.7.22"
-                        sh "composer require --dev --no-update sebastian/exporter:~2.0.0"
-                        sh "composer require --dev --no-update liuggio/fastest:~1.4.4"
                         sh "php -d memory_limit=-1 /usr/local/bin/composer update --optimize-autoloader --no-interaction --no-progress --prefer-dist --ansi"
 
                         // Required to avoid permission error when "deleteDir()"
@@ -154,10 +146,6 @@ stage("Build") {
                     ])
                     sh "mkdir -m 777 vendor"
                     container("php") {
-                        sh "composer require --dev --no-update phpspec/phpspec:~3.4.2"
-                        sh "composer require --dev --no-update phpunit/phpunit:~5.7.22"
-                        sh "composer require --dev --no-update sebastian/exporter:~2.0.0"
-                        sh "composer require --dev --no-update liuggio/fastest:~1.4.4"              
                         sh "php -d memory_limit=-1 /usr/local/bin/composer update --optimize-autoloader --no-interaction --no-progress --prefer-dist --ansi"
                         sh "chmod 777 -R vendor/akeneo"
                         dir('vendor/akeneo/pim-community-dev') {
@@ -201,9 +189,9 @@ stage("Test") {
         milestone 3
         parallel(
             "phpunit": {
-                if (editions.contains("ce") && launchUnitTests.equals("yes")) {
+                if (launchUnitTests.equals("yes")) {
                     withPhp({
-                        try {                            
+                        try {
                             sh "cd /home/jenkins/pim && ./bin/phpunit -c app/phpunit.xml.dist --testsuite PIM_Unit_Test --log-junit ${env.WORKSPACE}/junit_output.xml"
                         } finally {
                             junit "junit_output.xml"
@@ -214,7 +202,7 @@ stage("Test") {
                 }
             },
             "phpspec": {
-                if (editions.contains("ce") && launchUnitTests.equals("yes")) {
+                if (launchUnitTests.equals("yes")) {
                     withPhp({
                         try {
                             sh "cd /home/jenkins/pim && chown -R docker /home/jenkins/pim && su docker -c './bin/phpspec run --format=junit' > ${env.WORKSPACE}/junit_output.xml"
@@ -227,9 +215,9 @@ stage("Test") {
                 }
             },
             "php-cs-fixer": {
-                if (editions.contains("ce") && launchUnitTests.equals("yes")) {
+                if (launchUnitTests.equals("yes")) {
                     withPhp({
-                        try {    
+                        try {
                             sh "cd /home/jenkins/pim && ./bin/php-cs-fixer fix --diff --dry-run --config=.php_cs.php --format=junit > ${env.WORKSPACE}/junit_output.xml"
                         } finally {
                             junit "junit_output.xml"
@@ -240,7 +228,7 @@ stage("Test") {
                 }
             },
             "grunt": {
-                if (editions.contains("ce") && launchUnitTests.equals("yes")) {
+                if (launchUnitTests.equals("yes")) {
                     withGrunt({
                         sh "cd /home/jenkins/pim && grunt"
                     })
@@ -254,7 +242,7 @@ stage("Test") {
                         def files = sh (returnStdout: true, script: 'find /home/jenkins/pim/src -name "*Integration.php" -exec sh -c "grep -Ho \'function test\' {} | uniq -c"  \\; | sed "s/:function test//"').tokenize('\n')
                         def messages = new net.sf.json.JSONArray()
                         for (line in files) {
-                            def file = line.tokenize(' ') 
+                            def file = line.tokenize(' ')
                             def commands = [
                                 [container: "php", script: "./app/console --env=test pim:install --force"],
                                 [container: "php", script: "mkdir -p app/cache app/logs app/archive /tmp/pim app/file_storage app/uploads"],
@@ -269,7 +257,7 @@ stage("Test") {
                             def message = new net.sf.json.JSONObject()
                             message.put("name",file[1])
                             message.put("commands",commands)
-                            messages.add(message)                                
+                            messages.add(message)
                         }
 
                         return messages
@@ -281,11 +269,12 @@ stage("Test") {
             "behat-ce": {
                 if (launchBehatTests.equals("yes") && editions.contains("ce")) {
                     queue({
+                        sh (returnStdout: true, script: "mkdir -m 777 -p /home/jenkins/pim/app/build/logs/behat/");
                         def scenarios = []
                         for (feature in features) {
                             scenarios = (scenarios + sh (returnStdout: true, script: "cd /home/jenkins/pim && if [ -e $feature ]; then php ./bin/behat $feature --list-scenarios; fi").tokenize('\n'))
                         }
-                        scenarios = scenarios.unique()   
+                        scenarios = scenarios.unique()
                         def messages = new net.sf.json.JSONArray()
 
                         for (scenario in scenarios) {
@@ -314,7 +303,7 @@ stage("Test") {
                             def message = new net.sf.json.JSONObject()
                             message.put("name",scenario)
                             message.put("commands",commands)
-                            messages.add(message)                            
+                            messages.add(message)
                         }
 
                         return messages
@@ -326,6 +315,7 @@ stage("Test") {
             "behat-ee": {
                 if (launchBehatTests.equals("yes") && editions.contains("ee")) {
                     queue({
+                        sh (returnStdout: true, script: "mkdir -m 777 -p /home/jenkins/pim/app/build/logs/behat/");
                         def scenarios = []
                         for (feature in features) {
                             scenarios = (scenarios + sh (returnStdout: true, script: "cd /home/jenkins/pim && if [ -e $feature ]; then php ./bin/behat $feature --list-scenarios; fi").tokenize('\n'))
@@ -371,6 +361,7 @@ stage("Test") {
             "behat-ce-odm": {
                 if (launchBehatTests.equals("yes") && editions.contains("ceodm")) {
                     queue({
+                        sh (returnStdout: true, script: "mkdir -m 777 -p /home/jenkins/pim/app/build/logs/behat/");
                         def scenarios = []
                         for (feature in features) {
                             scenarios = (scenarios + sh (returnStdout: true, script: "cd /home/jenkins/pim && if [ -e $feature ]; then php ./bin/behat $feature --list-scenarios; fi").tokenize('\n'))
@@ -416,6 +407,7 @@ stage("Test") {
             "behat-ee-odm": {
                 if (launchBehatTests.equals("yes") && editions.contains("eeodm")) {
                     queue({
+                        sh (returnStdout: true, script: "mkdir -m 777 -p /home/jenkins/pim/app/build/logs/behat/");
                         def scenarios = []
                         for (feature in features) {
                             scenarios = (scenarios + sh (returnStdout: true, script: "cd /home/jenkins/pim && if [ -e $feature ]; then php ./bin/behat $feature --list-scenarios; fi").tokenize('\n'))
@@ -470,7 +462,7 @@ stage("Test") {
                     if (editions.contains("ce")) {
                         sh "gcloud -q container images delete eu.gcr.io/akeneo-ci/pim-community-dev:pull-request-${env.CHANGE_ID}-build-${env.BUILD_NUMBER}-ce"
                     }
-                    if (editions.contains("ee")) {                 
+                    if (editions.contains("ee")) {
                         sh "gcloud -q container images delete eu.gcr.io/akeneo-ci/pim-community-dev:pull-request-${env.CHANGE_ID}-build-${env.BUILD_NUMBER}-ee"
                     }
                     if (editions.contains("ceodm")) {
