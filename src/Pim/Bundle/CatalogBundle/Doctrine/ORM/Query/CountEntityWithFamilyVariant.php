@@ -5,8 +5,8 @@ namespace Pim\Bundle\CatalogBundle\Doctrine\ORM\Query;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Pim\Component\Catalog\Model\FamilyVariantInterface;
+use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
-use Pim\Component\Catalog\Model\VariantProductInterface;
 use Pim\Component\Catalog\ProductAndProductModel\Query\CountEntityWithFamilyVariantInterface;
 
 /**
@@ -75,7 +75,7 @@ class CountEntityWithFamilyVariant implements CountEntityWithFamilyVariantInterf
     {
         $queryBuilder = $this->entityManager->createQueryBuilder();
         $productCount = $queryBuilder->select('COUNT(p)')
-            ->from(VariantProductInterface::class, 'p')
+            ->from(ProductInterface::class, 'p')
             ->where('p.familyVariant = :family_variant_id')
             ->setParameter(':family_variant_id', $familyVariant->getId())
             ->getQuery()
