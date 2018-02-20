@@ -27,6 +27,8 @@
         "phpspec/php-diff": "1.0.2"
     },
     "require-dev": {
+        "akeneo/php-coupling-detector": "0.2",
+        "akeneo/phpspec-skip-example-extension": "2.0.*",
         "behat/behat": "2.5.5",
         "behat/gherkin":"2.3.5",
         "behat/mink":"1.7.1",
@@ -37,16 +39,14 @@
         "behat/transliterator":"1.0.1",
         "doctrine/mongodb-odm-bundle": "3.2.0",
         "kriswallsmith/buzz": ">=0.5",
-        "pdepend/pdepend": "1.1.*",
+        "liuggio/fastest": "1.6.*",
+        "pdepend/pdepend": "2.1.*",
         "phpmd/phpmd": "1.*",
-        "phpspec/phpspec": "~3.4.2",
-        "akeneo/phpspec-skip-example-extension": "2.0.*",
-        "phpunit/phpunit": "~5.7.22",
-        "sebastian/exporter": "~2.0.0",
-        "liuggio/fastest": "~1.4.4",
+        "phpspec/phpspec": "3.4.*",
+        "phpunit/phpunit": "5.7.*",
+        "sebastian/exporter": "2.0.*",
         "sensiolabs/behat-page-object-extension": "1.0.1",
-        "squizlabs/php_codesniffer": "2.*",
-        "akeneo/php-coupling-detector": "dev-master"
+        "squizlabs/php_codesniffer": "2.*"
     },
     "suggest": {
         "doctrine/mongodb-odm-bundle": "In order to activate the MongoDB support within Akeneo",
