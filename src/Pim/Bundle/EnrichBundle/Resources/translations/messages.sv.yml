@@ -485,7 +485,7 @@ info:
     disable: Inaktivera
     disabled: Inaktiverad
   group:
-    axis: Variation axel %attributes%
+    axis: 'Variation axel %attributes%'
     select products: Välj produkter som bör tillhöra denna grupp.
     selectable products: Följande valbara produkter har ett definierat värde för varje axel.
     no group types: Ingen grupptyper finns, klicka här för att skapa en
@@ -707,7 +707,7 @@ pim_enrich.mass_edit_action:
     success_flash: Produkt(er) attribut har uppdaterats
     message.warning: Det finns inga gemensamma attribut för de valda produkterna. Vänligen ändra ditt val.
     no_attribute.warning: Det finns inga gemensamma attribut för de valda produkterna. Vänligen ändra ditt val.
-    truncated_by_variant_attribute.warning: 'Vissa gemensamma attribut från de utvalda produkter kommer från en variantgrupp. De är inte tillgängliga för massa redigering: %attributes%.'
+    truncated_by_variant_attribute.warning: "Vissa gemensamma attribut från de utvalda produkter kommer från en variantgrupp. De är inte tillgängliga för massa redigering: %attributes%."
   classify:
     label: Klassificera produkter i kategorier
     description: Produkterna kommer att vara placerad i följande kategorier, befintliga placeringen hålls.
@@ -851,7 +851,7 @@ add_to_variant_group_clean.steps.excluded.title: Utesluten produkt
 add_to_variant_group_clean.steps.duplicated.title: Duplicerade Axis
 add_to_variant_group.steps.excluded.title: Uteslutna produkt
 add_to_variant_group.steps.duplicated.title: Duplicerade Axis
-add_to_variant_group.steps.cleaner.warning.description: 'Produkten kan inte anges i den valda variantgrupp: duplicera variation axelvärden med en annan produkt i urval'
+add_to_variant_group.steps.cleaner.warning.description: "Produkten kan inte anges i den valda variantgrupp: duplicera variation axelvärden med en annan produkt i urval"
 edit_common_attributes: Redigera vanliga attribut(er)
 edit_common_attributes_clean: Rensa filer för vanliga attribut
 perform.steps.duplicated.title: Duplicerade Axlar

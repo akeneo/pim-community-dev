@@ -17,6 +17,7 @@ use Pim\Component\Catalog\Factory\AttributeFactory;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -297,8 +298,18 @@ class AttributeController
      *
      * @AclAncestor("pim_enrich_attribute_remove")
      */
-    public function removeAction(string $code): JsonResponse
+    public function removeAction(Request $request, string $code): JsonResponse
     {
+        if (!$request->isXmlHttpRequest()) {
+            return new JsonResponse(
+                [
+                    'message' => 'An error occurred.',
+                    'global' => true,
+                ],
+                Response::HTTP_BAD_REQUEST
+            );
+        }
+
         $isAnFamilyVariantAxis = $this->attributeIsAFamilyVariantAxisQuery->execute($code);
 
         if ($isAnFamilyVariantAxis) {

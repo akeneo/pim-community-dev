@@ -111,6 +111,7 @@ class FeatureContext extends PimContext implements KernelAwareContext
         $this->contexts['attribute-validation'] = $environment->getContext(AttributeValidationContext::class);
         $this->contexts['role'] = $environment->getContext(PermissionsContext::class);
         $this->contexts['export-builder'] = $environment->getContext(ExportBuilderContext::class);
+        $this->contexts['security'] = $environment->getContext(SecurityContext::class);
     }
 
     /**
