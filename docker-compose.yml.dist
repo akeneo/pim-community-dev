@@ -4,8 +4,8 @@ services:
   fpm:
     image: akeneo/fpm:php-7.1
     environment:
-      BEHAT_TMPDIR: /srv/pim/var/cache/tmp
-      COMPOSER_HOME: /home/docker/.composer
+      BEHAT_TMPDIR: '/srv/pim/var/cache/tmp'
+      COMPOSER_HOME: '/home/docker/.composer'
       PHP_IDE_CONFIG: 'serverName=pim-ce-cli'
       PHP_XDEBUG_ENABLED: 0
       PHP_XDEBUG_IDE_KEY: 'XDEBUG_IDE_KEY'
@@ -36,7 +36,7 @@ services:
   selenium:
     image: selenium/standalone-firefox-debug:2.53.1-beryllium
     ports:
-      - '5900:5900'
+      - '5910:5900'
     volumes:
       - ./:/srv/pim:ro
     networks:
@@ -52,8 +52,8 @@ services:
       - '8080:80'
     volumes:
       - ./:/srv/pim:ro
-      - ./docker/httpd.conf:/usr/local/apache2/conf/httpd.conf
-      - ./docker/akeneo.conf:/usr/local/apache2/conf/vhost.conf
+      - ./docker/httpd.conf:/usr/local/apache2/conf/httpd.conf:ro
+      - ./docker/akeneo.conf:/usr/local/apache2/conf/vhost.conf:ro
     networks:
       - akeneo
 
@@ -67,8 +67,8 @@ services:
       - '8081:80'
     volumes:
       - ./:/srv/pim:ro
-      - ./docker/httpd.conf:/usr/local/apache2/conf/httpd.conf
-      - ./docker/akeneo-behat.conf:/usr/local/apache2/conf/vhost.conf
+      - ./docker/httpd.conf:/usr/local/apache2/conf/httpd.conf:ro
+      - ./docker/akeneo-behat.conf:/usr/local/apache2/conf/vhost.conf:ro
     networks:
       - behat
 
@@ -101,7 +101,7 @@ services:
     environment:
       ES_JAVA_OPTS: '-Xms512m -Xmx512m'
     ports:
-      - '9200:9200'
+      - '9210:9200'
     networks:
       - akeneo
       - behat
