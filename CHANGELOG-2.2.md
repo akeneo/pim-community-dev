@@ -8,6 +8,7 @@
 
 - PIM-7106: Display the 1st variant product created as product model image
 - PIM-6334: Add support of product model to the export builder
+- PIM-6329: The family variant is now removable from the UI
 
 ## BC breaks
 

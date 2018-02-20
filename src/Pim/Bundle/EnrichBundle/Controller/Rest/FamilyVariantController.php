@@ -8,6 +8,7 @@ use Akeneo\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use Akeneo\Component\StorageUtils\Remover\RemoverInterface;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
+use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Pim\Component\Catalog\Model\FamilyVariantInterface;
 use Pim\Component\Catalog\Repository\FamilyVariantRepositoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -48,9 +49,7 @@ class FamilyVariantController
     /** @var SaverInterface */
     protected $saver;
 
-    /**
-     * @var null|RemoverInterface
-     */
+    /** @var RemoverInterface */
     private $remover;
 
     /**
@@ -61,7 +60,7 @@ class FamilyVariantController
      * @param ValidatorInterface               $validator
      * @param NormalizerInterface              $constraintViolationNormalizer
      * @param SaverInterface                   $saver
-     * @param RemoverInterface|null            $remover @pull-up: remove null
+     * @param RemoverInterface                 $remover
      */
     public function __construct(
         FamilyVariantRepositoryInterface $familyVariantRepository,
@@ -71,7 +70,7 @@ class FamilyVariantController
         ValidatorInterface $validator,
         NormalizerInterface $constraintViolationNormalizer,
         SaverInterface $saver,
-        RemoverInterface $remover = null
+        RemoverInterface $remover
     ) {
         $this->familyVariantRepository = $familyVariantRepository;
         $this->normalizer = $normalizer;
@@ -136,9 +135,15 @@ class FamilyVariantController
      * @return JsonResponse
      *
      * @throws HttpExceptionInterface
+     *
+     * @AclAncestor("pim_enrich_family_variant_remove")
      */
     public function removeAction(Request $request, $familyVariantCode)
     {
+        if (!$request->isXmlHttpRequest()) {
+            return new JsonResponse(['message' => 'An error occurred.', 'global' => true], Response::HTTP_BAD_REQUEST);
+        }
+
         $familyVariant = $this->getFamilyVariant($familyVariantCode);
         try {
             $this->remover->remove($familyVariant);
