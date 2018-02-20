@@ -134,19 +134,7 @@ jobs:
             withHeader: true
             with_media: true
             filters:
-                data:
-                    -
-                        field: enabled
-                        operator: '='
-                        value: true
-                    -
-                        field: categories
-                        operator: 'IN CHILDREN'
-                        value: ['2014_collection']
-                    -
-                        field: completeness
-                        operator: '>='
-                        value: 100
+                data: []
                 structure:
                     scope: mobile
                     locales:
