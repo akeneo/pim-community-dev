@@ -63,8 +63,9 @@ class ReferenceDataProperty extends FieldProperty
     protected function getReferenceDataLabel(array $referenceData, $referenceDataType)
     {
         $referenceDataClass = $this->getReferenceDataClass($referenceDataType);
+        $labelProperty = $referenceDataClass::getLabelProperty();
 
-        if (null !== $labelProperty = $referenceDataClass::getLabelProperty()) {
+        if (null !== $labelProperty && isset($referenceData[$labelProperty])) {
             $label = $referenceData[$labelProperty];
 
             if (!empty($label)) {

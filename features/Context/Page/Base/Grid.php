@@ -790,31 +790,36 @@ class Grid extends Index
      * @param bool $withHidden
      * @param bool $withActions
      *
-     * @throws \InvalidArgumentException
+     * @throws TimeoutException
      *
      * @return NodeElement[]
      */
     protected function getColumnHeaders($withHidden = false, $withActions = true)
     {
-        $head     = $this->getGrid()->find('css', 'thead');
-        $selector = '//th';
-        if (!$withActions) {
-            // This selector is equivalent to css selector
-            // ':not(.action-column):not(.select-all-header-cell):not(:has(input))'
-            // but we have to do it in xpath because :has() is neither supported by current
-            // browsers nor emulated by Selenium.
-            $selector .= '['.
-                'not(contains(@class, \'action-column\')) '.
-                'and not(contains(@class, \'select-all-header-cell\')) '.
-                'and not(input)'.
-            ']';
-        }
+        $headers = $this->spin(function () use ($withActions) {
+            $head     = $this->getGrid()->find('css', 'thead');
+            $selector = '//th';
+            if (!$withActions) {
+                // This selector is equivalent to css selector
+                // ':not(.action-column):not(.select-all-header-cell):not(:has(input))'
+                // but we have to do it in xpath because :has() is neither supported by current
+                // browsers nor emulated by Selenium.
+                $selector .= '['.
+                    'not(contains(@class, \'action-column\')) '.
+                    'and not(contains(@class, \'select-all-header-cell\')) '.
+                    'and not(input)'.
+                    ']';
+            }
 
-        if (null === $head) {
-            throw new \InvalidArgumentException('Cannot find grid head.');
-        }
+            $headers = $head->findAll('xpath', $selector);
 
-        $headers = $head->findAll('xpath', $selector);
+            if (null === $headers) {
+                return false;
+            }
+
+            return $headers;
+        }, 'Could not find grid headers.');
+
 
         if ($withHidden) {
             return $headers;
@@ -832,6 +837,8 @@ class Grid extends Index
      * Get column header
      *
      * @param string $columnName
+     *
+     * @throws TimeoutException
      *
      * @return NodeElement
      */
