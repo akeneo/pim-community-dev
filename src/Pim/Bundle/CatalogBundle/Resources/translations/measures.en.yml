@@ -1,36 +1,68 @@
 Area:              Area
+Area:              Yüzölçümü
 ACRE:              Acre
+ACRE:              Dönüm
 ARE:               Are
+ARE:               Ar
 ARPENT:            Arpent
+ARPENT:            Arpa
 CENTIARE:          Centiare
+CENTIARE:          Hektar
 HECTARE:           Hectare
+HECTARE:           Hektar
 SQUARE_CENTIMETER: Square centimeter
+SQUARE_CENTIMETER: Santimetre kare
+SQUARE_DECIMETER:  Square decimeter
 SQUARE_DECIMETER:  Square decimeter
 SQUARE_DEKAMETER:  Square dekameter
+SQUARE_DEKAMETER:  Dekametre kare
 SQUARE_FOOT:       Square foot
+SQUARE_FOOT:       Metrekare
 SQUARE_FURLONG:    Square furlong
+SQUARE_FURLONG:    Kare milin sekizde biri
 SQUARE_HECTOMETER: Square hectometer
+SQUARE_HECTOMETER: Dekametre kare
 SQUARE_INCH:       Square inch
+SQUARE_INCH:       İnç kare
 SQUARE_KILOMETER:  Square kilometer
+SQUARE_KILOMETER:  Kilometre kare
 SQUARE_METER:      Square meter
+SQUARE_METER:      Metrekare
 SQUARE_MIL:        Square mil
+SQUARE_MIL:        Mil kare
 SQUARE_MILE:       Square mile
+SQUARE_MILE:       Milkare
 SQUARE_MILLIMETER: Square millimeter
+SQUARE_MILLIMETER: Milimetre kare
 SQUARE_YARD:       Square yard
+SQUARE_YARD:       Yarda kare
 
 Binary:   Binary
+Binary:   İkili
+BIT:      Bit
 BIT:      Bit
 BYTE:     Byte
+BYTE:     Bayt
 KILOBYTE: Kilobyte
+KILOBYTE: Kilobayt
 MEGABYTE: Megabyte
+MEGABYTE: Megabayt
 GIGABYTE: Gigabyte
+GIGABYTE: Gigabayt
 TERABYTE: Terabyte
+TERABYTE: Terabayt
 
 Frequency: Frequency
+Frequency: Frekans
+GIGAHERTZ: Gigahertz
 GIGAHERTZ: Gigahertz
 KILOHERTZ: Kilohertz
+KILOHERTZ: Kilohertz
+MEGAHERTZ: Megahertz
 MEGAHERTZ: Megahertz
 TERAHERTZ: Terahertz
+TERAHERTZ: Terahertz
+HERTZ:     Hertz
 HERTZ:     Hertz
 
 Length:     Length
