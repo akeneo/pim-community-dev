@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Pim\Component\Connector\Job\JobParameters\ConstraintCollectionProvider;
 
 use Akeneo\Component\Batch\Job\JobInterface;
