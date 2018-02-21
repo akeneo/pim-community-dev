@@ -3,11 +3,11 @@
 namespace Context;
 
 use Doctrine\Common\Util\ClassUtils;
+use PHPUnit\Framework\Assert;
 use Pim\Behat\Context\PimContext;
 use Pim\Bundle\NotificationBundle\Entity\Notification;
 use Symfony\Bundle\FrameworkBundle\Client;
 use Symfony\Component\BrowserKit\Cookie;
-use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
 class SecurityContext extends PimContext
@@ -667,7 +667,7 @@ class SecurityContext extends PimContext
             ->getService('pim_notification.repository.user_notification')
             ->countUnreadForUser($user);
 
-        assertEquals($nbNotifications, $count);
+        Assert::assertEquals($nbNotifications, $count);
     }
 
     /**
@@ -680,7 +680,7 @@ class SecurityContext extends PimContext
             ->getService('pim_enrich.repository.job_instance')
             ->findOneBy(['code' => $exportJobProfileCode]);
 
-        assertNotNull($exportJobProfile);
+        Assert::assertNotNull($exportJobProfile);
     }
 
     /**
@@ -692,7 +692,7 @@ class SecurityContext extends PimContext
             ->getService('pim_catalog.repository.group')
             ->findOneByIdentifier($variantGroupCode);
 
-        assertNotNull($variantGroup);
+        Assert::assertNotNull($variantGroup);
     }
 
     /**
@@ -706,7 +706,7 @@ class SecurityContext extends PimContext
 
         $label = $variantGroup->getLabel();
 
-        assertEquals($expectedLabel, $label);
+        Assert::assertEquals($expectedLabel, $label);
     }
 
     /**
@@ -720,7 +720,7 @@ class SecurityContext extends PimContext
 
         $label = $group->getLabel();
 
-        assertEquals($expectedLabel, $label);
+        Assert::assertEquals($expectedLabel, $label);
     }
 
     /**
@@ -732,7 +732,7 @@ class SecurityContext extends PimContext
             ->getService('pim_catalog.repository.category')
             ->findOneByIdentifier($childCategoryCode);
 
-        assertEquals($parentCategoryCode, $childCategory->getParent()->getCode());
+        Assert::assertEquals($parentCategoryCode, $childCategory->getParent()->getCode());
     }
 
     /**
@@ -744,7 +744,7 @@ class SecurityContext extends PimContext
             ->getService('pim_catalog.repository.attribute_option')
             ->findOneByIdentifier(sprintf('%s.%s', $attributeCode, $attributeOptionCode));
 
-        assertEquals($order, $attributeOption->getSortOrder());
+        Assert::assertEquals($order, $attributeOption->getSortOrder());
     }
 
     /**
@@ -760,7 +760,7 @@ class SecurityContext extends PimContext
             ->getService('pim_catalog.repository.group')
             ->hasAttribute([$variantGroup->getId()], $attributeCode);
 
-        assertTrue($hasAttribute);
+        Assert::assertTrue($hasAttribute);
     }
 
     /**
@@ -772,7 +772,7 @@ class SecurityContext extends PimContext
             ->getService('pim_catalog.repository.group_type')
             ->findOneByIdentifier($groupTypeCode);
 
-        assertNotNull($groupType);
+        Assert::assertNotNull($groupType);
     }
 
     /**
@@ -784,7 +784,7 @@ class SecurityContext extends PimContext
             ->getService('pim_catalog.repository.group')
             ->findOneByIdentifier($groupCode);
 
-        assertNotNull($group);
+        Assert::assertNotNull($group);
     }
 
     /**
@@ -800,7 +800,7 @@ class SecurityContext extends PimContext
             ->getService('pim_catalog.repository.family')
             ->hasAttribute($family->getId(), $attributeCode);
 
-        assertTrue($hasAttribute);
+        Assert::assertTrue($hasAttribute);
     }
 
     /**
@@ -812,7 +812,7 @@ class SecurityContext extends PimContext
             ->getService('pim_catalog.repository.family')
             ->findOneByIdentifier($familyCode);
 
-        assertNotNull($family);
+        Assert::assertNotNull($family);
     }
 
     /**
@@ -824,7 +824,7 @@ class SecurityContext extends PimContext
             ->getService('pim_catalog.repository.channel')
             ->findOneByIdentifier($channelCode);
 
-        assertNotNull($channel);
+        Assert::assertNotNull($channel);
     }
 
     /**
@@ -836,7 +836,7 @@ class SecurityContext extends PimContext
             ->getService('pim_catalog.repository.association_type')
             ->findOneByIdentifier($associationTypeCode);
 
-        assertNotNull($associationType);
+        Assert::assertNotNull($associationType);
     }
 
     /**
@@ -848,7 +848,7 @@ class SecurityContext extends PimContext
             ->getService('pim_catalog.repository.category')
             ->findOneByIdentifier($categoryCode);
 
-        assertNotNull($category);
+        Assert::assertNotNull($category);
     }
 
     /**
@@ -860,7 +860,7 @@ class SecurityContext extends PimContext
             ->getService('pim_catalog.repository.attribute_group')
             ->findOneByIdentifier($attributeGroupCode);
 
-        assertNotNull($attributeGroup);
+        Assert::assertNotNull($attributeGroup);
     }
 
     /**
@@ -872,7 +872,7 @@ class SecurityContext extends PimContext
             ->getService('pim_catalog.repository.attribute')
             ->findOneByIdentifier($attributeCode);
 
-        assertNotNull($attribute);
+        Assert::assertNotNull($attribute);
     }
 
     /**
@@ -884,7 +884,7 @@ class SecurityContext extends PimContext
             ->getService('pim_datagrid.repository.datagrid_view')
             ->findOneBy(['label' => $datagridViewLabel]);
 
-        assertNotNull($view);
+        Assert::assertNotNull($view);
     }
 
     /**
@@ -897,9 +897,9 @@ class SecurityContext extends PimContext
             ->findOneByIdentifier($productIdentifier);
 
         if ($not) {
-            assertNull($product);
+            Assert::assertNull($product);
         } else {
-            assertNotNull($product);
+            Assert::assertNotNull($product);
         }
     }
 
@@ -913,9 +913,9 @@ class SecurityContext extends PimContext
             ->findOneByIdentifier(sprintf('%s.%s', $attributeCode, $attributeOptionCode));
 
         if ($not) {
-            assertNull($attributeOption);
+            Assert::assertNull($attributeOption);
         } else {
-            assertNotNull($attributeOption);
+            Assert::assertNotNull($attributeOption);
         }
     }
 
