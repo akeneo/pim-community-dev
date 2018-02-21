@@ -16,8 +16,8 @@ class CompletenessFilterSpec extends ObjectBehavior
     function let(SearchQueryBuilder $sqb)
     {
         $this->beConstructedWith(['completeness'], [
-            'AT_LEAST_COMPLETE',
-            'AT_LEAST_INCOMPLETE',
+            'AT LEAST COMPLETE',
+            'AT LEAST INCOMPLETE',
         ]);
 
         $this->setQueryBuilder($sqb);
@@ -37,16 +37,16 @@ class CompletenessFilterSpec extends ObjectBehavior
     {
         $this->getOperators()->shouldReturn(
             [
-                'AT_LEAST_COMPLETE',
-                'AT_LEAST_INCOMPLETE',
+                'AT LEAST COMPLETE',
+                'AT LEAST INCOMPLETE',
             ]
         );
     }
 
     function it_supports_operators()
     {
-        $this->supportsOperator('AT_LEAST_COMPLETE')->shouldReturn(true);
-        $this->supportsOperator('AT_LEAST_INCOMPLETE')->shouldReturn(true);
+        $this->supportsOperator('AT LEAST COMPLETE')->shouldReturn(true);
+        $this->supportsOperator('AT LEAST INCOMPLETE')->shouldReturn(true);
         $this->supportsOperator('FAKE')->shouldReturn(false);
     }
 

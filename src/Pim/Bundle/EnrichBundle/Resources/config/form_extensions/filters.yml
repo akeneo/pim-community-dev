@@ -16,6 +16,14 @@ extensions:
                 - GREATER OR EQUALS THAN ON ALL LOCALES
                 - LOWER THAN ON ALL LOCALES
 
+    akeneo-product-model-completeness-filter:
+        module: pim/filter/product-model/completeness
+        config:
+            operators:
+                - ALL
+                - AT LEAST COMPLETE
+                - AT LEAST INCOMPLETE
+
     akeneo-product-category-filter:
         module: pim/filter/product/category
 
