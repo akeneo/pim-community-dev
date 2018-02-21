@@ -54,4 +54,6 @@ class Operators
     public const IS_NOT_EMPTY_ON_AT_LEAST_ONE_CURRENCY = 'NOT EMPTY ON AT LEAST ONE CURRENCY';
     public const AT_LEAST_COMPLETE = 'AT LEAST COMPLETE';
     public const AT_LEAST_INCOMPLETE = 'AT LEAST INCOMPLETE';
+    public const ALL_COMPLETE = 'ALL COMPLETE';
+    public const ALL_INCOMPLETE = 'ALL INCOMPLETE';
 }
