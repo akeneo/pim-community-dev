@@ -781,6 +781,7 @@ config:
         pim/filter/product/enabled:            pimenrich/js/filter/product/enabled
         pim/filter/product/updated:            pimenrich/js/filter/product/updated
         pim/filter/product/completeness:       pimenrich/js/filter/product/completeness
+        pim/filter/product-model/completeness: pimenrich/js/filter/product-model/completeness
         pim/filter/product/category:           pimenrich/js/filter/product/category
         pim/filter/product/category/selector:  pimenrich/js/filter/product/category/selector
         pim/filter/attribute/identifier:       pimenrich/js/filter/attribute/identifier

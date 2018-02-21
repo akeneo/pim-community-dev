@@ -7,22 +7,22 @@ class PimCatalogCompletenessIntegration extends AbstractPimCatalogTestCase
     public function testQueryCompleteOrIncompleteProductModel()
     {
         $this->assertDocument(
-            $this->executeProductModelQuery('at_least_complete', 'ecommerce', 'en_US'),
+            $this->executeProductModelQuery('at least complete', 'ecommerce', 'en_US'),
             ['document_1', 'document_2']
         );
 
         $this->assertDocument(
-            $this->executeProductModelQuery('at_least_complete', 'ecommerce', 'fr_FR'),
+            $this->executeProductModelQuery('at least complete', 'ecommerce', 'fr_FR'),
             ['document_2']
         );
 
         $this->assertDocument(
-            $this->executeProductModelQuery('at_least_incomplete', 'ecommerce', 'en_US'),
+            $this->executeProductModelQuery('at least incomplete', 'ecommerce', 'en_US'),
             ['document_1']
         );
 
         $this->assertDocument(
-            $this->executeProductModelQuery('at_least_incomplete', 'ecommerce', 'fr_FR'),
+            $this->executeProductModelQuery('at least incomplete', 'ecommerce', 'fr_FR'),
             []
         );
     }
@@ -134,7 +134,7 @@ class PimCatalogCompletenessIntegration extends AbstractPimCatalogTestCase
                 'identifier' => 'document_4',
             ],
         ];
-        
+
         $this->indexDocuments($products);
     }
 
