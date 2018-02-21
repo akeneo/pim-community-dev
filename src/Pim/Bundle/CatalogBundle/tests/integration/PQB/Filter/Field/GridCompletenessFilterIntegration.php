@@ -86,6 +86,35 @@ class GridCompletenessFilterIntegration extends AbstractProductQueryBuilderTestC
     }
 
     /**
+     * Test the AT LEAST COMPLETE filter on all locale
+     */
+    public function testCompleteOnAllLocaleOperator()
+    {
+        $result = $this->executeFilter([[
+            'completeness',
+            Operators::AT_LEAST_COMPLETE,
+            null,
+            [
+                'locale' => null,
+                'scope' => 'tablet',
+                'locales' => ['fr_FR', 'en_US', 'de_DE']
+            ]
+        ]]);
+
+        $assert = new AssertEntityWithValues(
+            [
+                'sub_product_model',
+                'root_product_model_one_level',
+                'root_product_model_two_level',
+            ],
+            iterator_to_array($result),
+            'The right complete variant products / product models did not be found (channel: ecommerce, locale: en_US).'
+        );
+
+        $assert->same();
+    }
+
+    /**
      * The filter expect a non empty locale
      *
      * @expectedException \Akeneo\Component\StorageUtils\Exception\InvalidPropertyException
