@@ -200,6 +200,7 @@ services:
             - '@pim_catalog.builder.product'
             - '@akeneo_storage_utils.doctrine.object_detacher'
             - '@pim_connector.processor.bulk_media_fetcher'
+            - '@pim_connector.detacher.stored_product_detacher'
 
     pim_connector.processor.normalization.variant_group:
         class: '%pim_connector.processor.normalization.variant_group.class%'

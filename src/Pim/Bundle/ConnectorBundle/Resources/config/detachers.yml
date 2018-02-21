@@ -1,0 +1,8 @@
+parameters:
+    pim_connector.detacher.stored_product_detacher.class: Pim\Bundle\ConnectorBundle\Doctrine\Common\Detacher\StoredProductDetacher
+
+services:
+    pim_connector.detacher.stored_product_detacher:
+        class: '%pim_connector.detacher.stored_product_detacher.class%'
+        arguments:
+            - '@akeneo_storage_utils.doctrine.object_detacher'
