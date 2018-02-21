@@ -39,7 +39,7 @@ Feature: Show a product
     And I should be able to access the edit "rangers" product page
 
   Scenario: View a product in read only mode
-    When I am on the "boots" product show page
+    Given I am on the "boots" product show page
     Then the product SKU should be "boots"
     And the field SKU should be read only
     And the product Name should be "Party boots"
@@ -55,3 +55,10 @@ Feature: Show a product
     Given I visit the "Colors" group
     And the product Main color should be "blue"
     And the field Main color should be read only
+
+  @jira https://akeneo.atlassian.net/browse/PIM-7196
+  Scenario: Switch locale on a product page in read only mode
+    Given I am on the "boots" product show page
+    Then the locale "en_US" should be selected
+    When I switch the locale to "fr_FR"
+    Then the locale "fr_FR" should be selected
