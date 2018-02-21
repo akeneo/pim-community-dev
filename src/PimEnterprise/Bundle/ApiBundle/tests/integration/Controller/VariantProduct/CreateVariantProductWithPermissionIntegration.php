@@ -71,18 +71,22 @@ JSON;
                 'PACK'       => [
                     'groups'   => [],
                     'products' => [],
+                    'product_models' => [],
                 ],
                 'SUBSTITUTION' => [
                     'groups'   => [],
                     'products' => [],
+                    'product_models' => [],
                 ],
                 'UPSELL'       => [
                     'groups'   => [],
                     'products' => [],
+                    'product_models' => [],
                 ],
                 'X_SELL'       => [
                     'groups'   => [],
                     'products' => ['product_own'],
+                    'product_models' => [],
                 ],
             ],
         ];

@@ -118,7 +118,7 @@ class ListVariantProductWithPermissionIntegration extends ApiTestCase
                 "updated": "2016-06-14T13:12:50+02:00",
                 "identifier": "variant_product",
                 "groups": [],
-                "associations": [],
+                "associations": {},
                 "metadata": {"workflow_status":"working_copy"}
             }
         ]
@@ -206,19 +206,23 @@ JSON;
                         "associations": {
                             "PACK":{
                                 "groups":[],
-                                "products":[]
+                                "products":[],
+                                "product_models":[]
                             },
                             "SUBSTITUTION":{
                                 "groups":[],
-                                "products":[]
+                                "products":[],
+                                "product_models":[]
                             },
                             "UPSELL":{
                                 "groups":[],
-                                "products":[]
+                                "products":[],
+                                "product_models":[]
                             },
                             "X_SELL":{
                                 "groups":[],
-                                "products":["product_view"]
+                                "products":["product_view"],
+                                "product_models":[]
                             }
                         },
                         "metadata": {"workflow_status":"working_copy"}
