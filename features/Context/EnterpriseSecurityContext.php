@@ -2,6 +2,8 @@
 
 namespace Context;
 
+use PHPUnit\Framework\Assert;
+
 class EnterpriseSecurityContext extends SecurityContext
 {
     /**
@@ -93,7 +95,7 @@ class EnterpriseSecurityContext extends SecurityContext
         $asset = $this->getService('pimee_product_asset.repository.asset')
             ->findOneByIdentifier($assetCode);
 
-        assertNotNull($asset);
+        Assert::assertNotNull($asset);
     }
 
     /**
@@ -104,6 +106,6 @@ class EnterpriseSecurityContext extends SecurityContext
         $rule = $this->getService('akeneo_rule_engine.repository.rule_definition')
             ->findOneByIdentifier($ruleCode);
 
-        assertNotNull($rule);
+        Assert::assertNotNull($rule);
     }
 }
