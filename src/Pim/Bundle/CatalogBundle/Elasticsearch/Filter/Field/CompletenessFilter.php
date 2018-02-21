@@ -44,7 +44,7 @@ class CompletenessFilter extends AbstractFieldFilter implements FieldFilterInter
         if (empty($channel)) {
             throw InvalidPropertyException::dataExpected('completeness', 'a valid channel', static::class);
         }
-        $locales = empty($locale) ? $options['locale'] : [$locale];
+        $locales = empty($locale) ? $options['locales'] : [$locale];
 
         switch ($operator) {
             case Operators::AT_LEAST_COMPLETE:
@@ -62,8 +62,7 @@ class CompletenessFilter extends AbstractFieldFilter implements FieldFilterInter
                         ],
                     ];
                 }
-
-                $this->searchQueryBuilder->addFilter($shouldClauses);
+                $this->searchQueryBuilder->addFilter(['bool' => ['should' => $shouldClauses]]);
                 break;
 
             case Operators::AT_LEAST_INCOMPLETE:

@@ -129,6 +129,8 @@ services:
 
     pim_catalog.normalizer.indexing_product_model.product_model.properties:
         class: '%pim_catalog.normalizer.indexing_product_model.product_model.properties.class%'
+        arguments:
+            - '@pim_catalog.doctrine.query.complete_filter'
         tags:
             - { name: pim_serializer.normalizer, priority: 40 }
 
