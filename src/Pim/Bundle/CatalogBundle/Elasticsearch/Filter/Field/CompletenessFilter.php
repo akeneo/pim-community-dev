@@ -37,21 +37,22 @@ class CompletenessFilter extends AbstractFieldFilter implements FieldFilterInter
      */
     public function addFieldFilter($field, $operator, $value, $locale = null, $channel = null, $options = [])
     {
-        if (empty($locale)) {
+        if (empty($locale) && $options['locales']) {
             throw InvalidPropertyException::dataExpected('completeness', 'a valid locale', static::class);
         }
 
         if (empty($channel)) {
             throw InvalidPropertyException::dataExpected('completeness', 'a valid channel', static::class);
         }
-
-        $productFilterField = sprintf('completeness.%s.%s', $channel, $locale);
+        $locales = empty($locale) ? $options['locale'] : [$locale];
 
         switch ($operator) {
             case Operators::AT_LEAST_COMPLETE:
-                $productModelFilterField = sprintf('at_least_complete.%s.%s', $channel, $locale);
-                $this->searchQueryBuilder->addFilter(
-                    [
+                $shouldClauses = [];
+                foreach ($locales as $locale) {
+                    $productFilterField = sprintf('completeness.%s.%s', $channel, $locale);
+                    $productModelFilterField = sprintf('at_least_complete.%s.%s', $channel, $locale);
+                    $shouldClauses[] = [
                         'bool' => [
                             'should' => [
                                 ['term' => [$productFilterField => 100]],
@@ -59,8 +60,10 @@ class CompletenessFilter extends AbstractFieldFilter implements FieldFilterInter
                             ],
                             'minimum_should_match' => 1,
                         ],
-                    ]
-                );
+                    ];
+                }
+
+                $this->searchQueryBuilder->addFilter($shouldClauses);
                 break;
 
             case Operators::AT_LEAST_INCOMPLETE:
