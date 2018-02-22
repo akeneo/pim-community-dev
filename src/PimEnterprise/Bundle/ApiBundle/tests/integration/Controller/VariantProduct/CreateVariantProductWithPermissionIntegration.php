@@ -369,7 +369,7 @@ JSON;
 
         $error = <<<JSON
         {
-            "code": "%s",
+            "code": %s,
             "message": "%s",
             "_links": {
                 "documentation":{
@@ -399,7 +399,7 @@ JSON;
 
         $error = <<<JSON
         {
-            "code": "%s",
+            "code": %s,
             "message": "Validation failed.",
             "errors": [
                 {

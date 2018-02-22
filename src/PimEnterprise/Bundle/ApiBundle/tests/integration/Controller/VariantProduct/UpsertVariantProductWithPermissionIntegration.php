@@ -430,7 +430,7 @@ JSON;
 
         $error = <<<JSON
             {
-                "code": "%s",
+                "code": %s,
                 "message": "%s",
                 "_links": {
                     "documentation":{
