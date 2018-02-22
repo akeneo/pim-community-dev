@@ -20,6 +20,7 @@ use Pim\Component\Catalog\Model\AssociationTypeInterface;
 use Pim\Component\Catalog\Model\GroupInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use PimEnterprise\Component\Catalog\Security\Factory\FilteredEntityFactory;
+use PimEnterprise\Component\Security\Authorization\DenyNotGrantedCategorizedEntity;
 use PimEnterprise\Component\Workflow\Repository\PublishedProductRepositoryInterface;
 
 /**
@@ -38,22 +39,28 @@ class PublishedProductWithPermissionRepository extends EntityRepository implemen
     /** @var FilteredEntityFactory */
     private $filteredProductFactory;
 
+    /** @var DenyNotGrantedCategorizedEntity */
+    private $denyNotGrantedPublishedProduct;
+
     /**
      * @param EntityManagerInterface              $em
      * @param PublishedProductRepositoryInterface $publishedProductRepository
      * @param FilteredEntityFactory               $filteredProductFactory
+     * @param DenyNotGrantedCategorizedEntity     $denyNotGrantedPublishedProduct
      * @param string                              $entityName
      */
     public function __construct(
         EntityManagerInterface $em,
         PublishedProductRepositoryInterface $publishedProductRepository,
         FilteredEntityFactory $filteredProductFactory,
+        DenyNotGrantedCategorizedEntity $denyNotGrantedPublishedProduct,
         string $entityName
     ) {
         parent::__construct($em, $em->getClassMetadata($entityName));
 
         $this->publishedProductRepository = $publishedProductRepository;
         $this->filteredProductFactory = $filteredProductFactory;
+        $this->denyNotGrantedPublishedProduct = $denyNotGrantedPublishedProduct;
     }
 
     /**
@@ -313,6 +320,8 @@ class PublishedProductWithPermissionRepository extends EntityRepository implemen
      */
     private function getFilteredPublishedProduct(ProductInterface $publishedProduct): ProductInterface
     {
+        $this->denyNotGrantedPublishedProduct->denyIfNotGranted($publishedProduct);
+
         return $this->filteredProductFactory->create($publishedProduct);
     }
 
@@ -327,6 +336,7 @@ class PublishedProductWithPermissionRepository extends EntityRepository implemen
     {
         $filteredPublishedProducts = [];
         foreach ($publishedProducts as $publishedProduct) {
+            $this->denyNotGrantedPublishedProduct->denyIfNotGranted($publishedProduct);
             $filteredPublishedProducts[] = $this->filteredProductFactory->create($publishedProduct);
         }
 

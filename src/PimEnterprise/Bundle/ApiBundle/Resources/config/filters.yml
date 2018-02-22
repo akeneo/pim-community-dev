@@ -1,0 +1,21 @@
+parameters:
+    pimee_api.filter.granted_product_attribute_filter.class: PimEnterprise\Component\Catalog\ProductModel\Filter\GrantedProductAttributeFilter
+    pimee_api.filter.granted_product_model_attribute_filter.class: PimEnterprise\Component\Catalog\ProductModel\Filter\GrantedProductAttributeFilter
+
+services:
+    pimee_api.filter.granted_product_attribute_filter:
+        class: '%pimee_api.filter.granted_product_attribute_filter.class%'
+        arguments:
+            - '@pim_api.filter.product_attribute_filter'
+            - '@pim_catalog.repository.cached_attribute'
+            - '@pim_catalog.repository.cached_locale'
+            - '@security.authorization_checker'
+
+    pimee_api.filter.granted_product_model_attribute_filter:
+        class: '%pimee_api.filter.granted_product_model_attribute_filter.class%'
+        arguments:
+            - '@pim_api.filter.product_model_attribute_filter'
+            - '@pim_catalog.repository.cached_attribute'
+            - '@pim_catalog.repository.cached_locale'
+            - '@security.authorization_checker'
+

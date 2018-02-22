@@ -16,6 +16,7 @@ use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Persistence\ObjectRepository;
 use Doctrine\Common\Util\ClassUtils;
+use Pim\Component\Catalog\Model\VariantProductInterface;
 use Pim\Component\Catalog\Updater\Setter\AbstractFieldSetter;
 use Pim\Component\Catalog\Updater\Setter\FieldSetterInterface;
 use PimEnterprise\Component\Security\Attributes;
@@ -80,7 +81,12 @@ class GrantedCategoryFieldSetter extends AbstractFieldSetter implements FieldSet
         $this->categoryFieldSetter->setFieldData($entityWithCategories, $field, $data, $options);
 
         $isOwner = false;
-        foreach ($entityWithCategories->getCategories() as $category) {
+
+        // TODO: @merge refactor this line on master after variant product refactoring
+        $categories = $entityWithCategories instanceof VariantProductInterface ?
+            $entityWithCategories->getCategoriesForVariation() : $entityWithCategories->getCategories();
+
+        foreach ($categories as $category) {
             if (!$this->authorizationChecker->isGranted([Attributes::VIEW_ITEMS], $category)) {
                 throw InvalidPropertyException::validEntityCodeExpected(
                     $field,
@@ -90,6 +96,9 @@ class GrantedCategoryFieldSetter extends AbstractFieldSetter implements FieldSet
                     $category->getCode()
                 );
             }
+        }
+
+        foreach ($entityWithCategories->getCategories() as $category) {
             if ($this->authorizationChecker->isGranted([Attributes::OWN_PRODUCTS], $category)) {
                 $isOwner = true;
             }
