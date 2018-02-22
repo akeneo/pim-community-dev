@@ -79,9 +79,9 @@ Feature: Quick export many products with media from datagrid
     Then I should see the text "COMPLETED"
     And first exported file of "csv_product_grid_context_quick_export" should contain:
       """
-      sku;enabled;family;groups
-      boots;1;boots;
-      sandals;1;sandals;
+      sku;enabled;family
+      boots;1;boots
+      sandals;1;sandals
       """
     And export directory of "csv_product_quick_export" should not contain the following media:
       | files/boots/side_view/akeneo.jpg     |
