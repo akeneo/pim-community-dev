@@ -165,8 +165,18 @@ class GroupTypeController
      *
      * @AclAncestor("pim_enrich_grouptype_remove")
      */
-    public function removeAction($code)
+    public function removeAction(Request $request, $code)
     {
+        if (!$request->isXmlHttpRequest()) {
+            return new JsonResponse(
+                [
+                    'message' => 'An error occurred.',
+                    'global' => true,
+                ],
+                Response::HTTP_BAD_REQUEST
+            );
+        }
+
         $groupType = $this->getGroupTypeOr404($code);
 
         $this->remover->remove($groupType);

@@ -3,6 +3,7 @@
 namespace spec\Pim\Bundle\CatalogBundle\Doctrine\ORM;
 
 use Akeneo\Component\StorageUtils\Cursor\CursorInterface;
+use Akeneo\Component\StorageUtils\Detacher\BulkObjectDetacherInterface;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Driver\Statement;
@@ -26,9 +27,10 @@ class CompletenessRemoverSpec extends ObjectBehavior
         ProductQueryBuilderFactoryInterface $pqbFactory,
         EntityManagerInterface $entityManager,
         ProductIndexer $indexer,
-        Connection $connection
+        Connection $connection,
+        BulkObjectDetacherInterface $bulkDetacher
     ) {
-        $this->beConstructedWith($pqbFactory, $entityManager, $indexer, 'pim_catalog_completeness');
+        $this->beConstructedWith($pqbFactory, $entityManager, $indexer, 'pim_catalog_completeness', $bulkDetacher);
 
         $entityManager->getConnection()->willReturn($connection);
     }
@@ -62,6 +64,7 @@ class CompletenessRemoverSpec extends ObjectBehavior
         $indexer,
         $connection,
         $pqbFactory,
+        $bulkDetacher,
         ProductQueryBuilderInterface $pqb,
         ProductInterface $product1,
         ProductInterface $product2,
@@ -103,6 +106,7 @@ class CompletenessRemoverSpec extends ObjectBehavior
         $completenesses2->clear()->shouldBeCalled();
 
         $indexer->indexAll([$product1, $product2])->shouldBeCalled();
+        $bulkDetacher->detachAll([$product1, $product2])->shouldBeCalled();
 
         $this->removeForFamily($family);
     }
@@ -111,6 +115,7 @@ class CompletenessRemoverSpec extends ObjectBehavior
         $indexer,
         $connection,
         $pqbFactory,
+        $bulkDetacher,
         ProductQueryBuilderInterface $pqb,
         ProductInterface $product1,
         ProductInterface $product2,
@@ -165,6 +170,7 @@ class CompletenessRemoverSpec extends ObjectBehavior
         $completenesses2->removeElement($completeness2)->shouldBeCalled();
 
         $indexer->indexAll([$product1, $product2])->shouldBeCalled();
+        $bulkDetacher->detachAll([$product1, $product2])->shouldBeCalled();
 
         $this->removeForChannelAndLocale($channel, $locale);
     }

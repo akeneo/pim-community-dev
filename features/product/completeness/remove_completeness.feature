@@ -27,6 +27,11 @@ Feature: Display the completeness of a product
     When I change the "Locales" to "French (France)"
     And I press the "Save" button
     Then I should not see the text "There are unsaved changes."
+    And I should have 2 new notifications
+    And I should see notification:
+      | type    | message                                                                                                |
+      | warning | The locale has been removed from the channel. We are currently cleaning completenesses linked to them. |
+      | success | Removal of a locale on a channel finished.                                                             |
     And I am on the "sneakers" product page
     When I visit the "Completeness" column tab
     Then I should see the completeness:
