@@ -10,13 +10,6 @@
 
     <form action="{{ path('oro_user_reset_send_email') }}" method="post" class="form-reset">
         <h2 class="AknLogin-subTitle">{{ 'Forgot Password'|trans }}</h2>
-
-        {% if invalid_username is defined %}
-            <div class="AknMessageBox AknMessageBox--error">
-                {{ 'The username or email address "%username%" does not exist.'|trans({ '%username%': invalid_username }) }}
-            </div>
-        {% endif %}
-
         <fieldset>
             <div class="AknLogin-form">
                 <input class="AknTextField" type="text" name="username" required="required" placeholder="{{ 'Username or Email'|trans }}" autofocus="autofocus"/>
