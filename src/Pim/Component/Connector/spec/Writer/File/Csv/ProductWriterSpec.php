@@ -9,6 +9,7 @@ use Akeneo\Component\Batch\Model\JobExecution;
 use Akeneo\Component\Batch\Model\JobInstance;
 use Akeneo\Component\Batch\Model\StepExecution;
 use PhpSpec\ObjectBehavior;
+use Pim\Bundle\ConnectorBundle\Doctrine\Common\Detacher\StoredProductDetacherInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Pim\Component\Connector\ArrayConverter\ArrayConverterInterface;
 use Pim\Component\Connector\Writer\File\FileExporterPathGeneratorInterface;
@@ -31,7 +32,8 @@ class ProductWriterSpec extends ObjectBehavior
         BufferFactory $bufferFactory,
         FlatItemBufferFlusher $flusher,
         AttributeRepositoryInterface $attributeRepository,
-        FileExporterPathGeneratorInterface $fileExporterPath
+        FileExporterPathGeneratorInterface $fileExporterPath,
+        StoredProductDetacherInterface $storedProductDetacher
     ) {
         $this->directory = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'spec' . DIRECTORY_SEPARATOR;
         $this->filesystem = new Filesystem();
@@ -43,7 +45,8 @@ class ProductWriterSpec extends ObjectBehavior
             $flusher,
             $attributeRepository,
             $fileExporterPath,
-            ['pim_catalog_file', 'pim_catalog_image']
+            ['pim_catalog_file', 'pim_catalog_image'],
+            $storedProductDetacher
         );
     }
 
@@ -62,6 +65,7 @@ class ProductWriterSpec extends ObjectBehavior
         $attributeRepository,
         $fileExporterPath,
         $bufferFactory,
+        $storedProductDetacher,
         FlatItemBuffer $flatRowBuffer,
         StepExecution $stepExecution,
         JobParameters $jobParameters,
@@ -69,6 +73,8 @@ class ProductWriterSpec extends ObjectBehavior
         JobInstance $jobInstance,
         ExecutionContext $executionContext
     ) {
+        $storedProductDetacher->detachStoredProducts()->shouldBeCalled();
+
         $this->setStepExecution($stepExecution);
         $stepExecution->getJobParameters()->willReturn($jobParameters);
         $stepExecution->getJobExecution()->willReturn($jobExecution);
@@ -223,6 +229,7 @@ class ProductWriterSpec extends ObjectBehavior
         $attributeRepository,
         $fileExporterPath,
         $bufferFactory,
+        $storedProductDetacher,
         FlatItemBuffer $flatRowBuffer,
         StepExecution $stepExecution,
         JobParameters $jobParameters,
@@ -230,6 +237,8 @@ class ProductWriterSpec extends ObjectBehavior
         JobInstance $jobInstance,
         ExecutionContext $executionContext
     ) {
+        $storedProductDetacher->detachStoredProducts()->shouldBeCalled();
+
         $this->setStepExecution($stepExecution);
         $stepExecution->getJobParameters()->willReturn($jobParameters);
         $stepExecution->getJobExecution()->willReturn($jobExecution);

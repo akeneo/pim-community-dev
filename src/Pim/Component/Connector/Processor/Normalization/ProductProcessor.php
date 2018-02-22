@@ -9,6 +9,7 @@ use Akeneo\Component\Batch\Job\JobParameters;
 use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\Batch\Step\StepExecutionAwareInterface;
 use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
+use Pim\Bundle\ConnectorBundle\Doctrine\Common\Detacher\StoredProductDetacherInterface;
 use Pim\Component\Catalog\Builder\ProductBuilderInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
@@ -46,13 +47,17 @@ class ProductProcessor implements ItemProcessorInterface, StepExecutionAwareInte
     /** @var BulkMediaFetcher */
     protected $mediaFetcher;
 
+    /** @var StoredProductDetacherInterface */
+    protected $storedProductDetacher;
+
     /**
-     * @param NormalizerInterface          $normalizer
-     * @param ChannelRepositoryInterface   $channelRepository
-     * @param AttributeRepositoryInterface $attributeRepository
-     * @param ProductBuilderInterface      $productBuilder
-     * @param ObjectDetacherInterface      $detacher
-     * @param BulkMediaFetcher             $mediaFetcher
+     * @param NormalizerInterface                 $normalizer
+     * @param ChannelRepositoryInterface          $channelRepository
+     * @param AttributeRepositoryInterface        $attributeRepository
+     * @param ProductBuilderInterface             $productBuilder
+     * @param ObjectDetacherInterface             $detacher
+     * @param BulkMediaFetcher                    $mediaFetcher
+     * @param StoredProductDetacherInterface|null $storedProductDetacher
      */
     public function __construct(
         NormalizerInterface $normalizer,
@@ -60,7 +65,8 @@ class ProductProcessor implements ItemProcessorInterface, StepExecutionAwareInte
         AttributeRepositoryInterface $attributeRepository,
         ProductBuilderInterface $productBuilder,
         ObjectDetacherInterface $detacher,
-        BulkMediaFetcher $mediaFetcher
+        BulkMediaFetcher $mediaFetcher,
+        StoredProductDetacherInterface $storedProductDetacher = null
     ) {
         $this->normalizer = $normalizer;
         $this->detacher = $detacher;
@@ -68,6 +74,7 @@ class ProductProcessor implements ItemProcessorInterface, StepExecutionAwareInte
         $this->attributeRepository = $attributeRepository;
         $this->productBuilder = $productBuilder;
         $this->mediaFetcher = $mediaFetcher;
+        $this->storedProductDetacher = $storedProductDetacher;
     }
 
     /**
@@ -109,11 +116,7 @@ class ProductProcessor implements ItemProcessorInterface, StepExecutionAwareInte
             );
         }
 
-        foreach ($product->getGroups() as $group) {
-            $this->detacher->detach($group);
-        }
-
-        $this->detacher->detach($product);
+        $this->detachProduct($product);
 
         return $productStandard;
     }
@@ -182,7 +185,7 @@ class ProductProcessor implements ItemProcessorInterface, StepExecutionAwareInte
     }
 
     /**
-     * Are there attributes to filters ?
+     * Are there attributes to filter?
      *
      * @param JobParameters $parameters
      *
@@ -192,5 +195,34 @@ class ProductProcessor implements ItemProcessorInterface, StepExecutionAwareInte
     {
         return isset($parameters->get('filters')['structure']['attributes'])
             && !empty($parameters->get('filters')['structure']['attributes']);
+    }
+
+    /**
+     * Detach the product after it was normalized.
+     *
+     * As the StoredProductDetacher is optional and can be null (done like that
+     * to avoid BC break in a patch), we still need the previous way to detach
+     * products.
+     *
+     * If the StoredProductDetacher is injected in the processor, the product
+     * will only be stored, to be detached in the product writer.
+     *
+     * @see \Pim\Component\Connector\Writer\File\AbstractItemMediaWriter
+     *
+     * @param ProductInterface $product
+     */
+    private function detachProduct(ProductInterface $product)
+    {
+        if (null !== $this->storedProductDetacher) {
+            $this->storedProductDetacher->storeProductToDetach($product);
+
+            return;
+        }
+
+        foreach ($product->getGroups() as $group) {
+            $this->detacher->detach($group);
+        }
+
+        $this->detacher->detach($product);
     }
 }

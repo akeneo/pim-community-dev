@@ -1,3 +1,9 @@
+# 1.7.x
+
+## Big Fixes
+
+- PIM-7164: Fix a memory leak on product export caused by associated products not being detached
+
 # 1.7.18 (2018-02-22)
 
 # 1.7.17 (2018-02-01)

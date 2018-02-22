@@ -186,6 +186,7 @@ services:
             - '@pim_catalog.repository.attribute'
             - '@pim_connector.writer.file.media_exporter_path_generator'
             - ['pim_catalog_file', 'pim_catalog_image']
+            - '@pim_connector.detacher.stored_product_detacher'
 
     pim_connector.writer.file.csv_product_quick_export:
         class: '%pim_connector.writer.file.csv_product.class%'
@@ -301,6 +302,7 @@ services:
              - '@pim_catalog.repository.attribute'
              - '@pim_connector.writer.file.media_exporter_path_generator'
              - ['pim_catalog_file', 'pim_catalog_image']
+             - '@pim_connector.detacher.stored_product_detacher'
 
     pim_connector.writer.file.xlsx_product_quick_export:
         class: '%pim_connector.writer.file.xlsx_product.class%'
