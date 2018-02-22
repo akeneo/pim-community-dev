@@ -4,7 +4,26 @@ parameters:
   pimee_workflow.query.elasticsearch.filter.identifier.class: PimEnterprise\Bundle\WorkflowBundle\Elasticsearch\Filter\Field\IdentifierFilter
   pimee_workflow.query.elasticsearch.sorter.author.class: PimEnterprise\Bundle\WorkflowBundle\Elasticsearch\Sorter\Field\AuthorSorter
 
+  # attribute filters
+  pimee_workflow.query.elasticsearch.filter.text.class: PimEnterprise\Bundle\WorkflowBundle\Elasticsearch\Filter\Attribute\TextFilter
+  pimee_workflow.query.elasticsearch.filter.text_area.class: PimEnterprise\Bundle\WorkflowBundle\Elasticsearch\Filter\Attribute\TextAreaFilter
+  pimee_workflow.query.elasticsearch.filter.price.class: PimEnterprise\Bundle\WorkflowBundle\Elasticsearch\Filter\Attribute\PriceFilter
+  pimee_workflow.query.elasticsearch.filter.option.class: PimEnterprise\Bundle\WorkflowBundle\Elasticsearch\Filter\Attribute\OptionFilter
+  pimee_workflow.query.elasticsearch.filter.number.class: PimEnterprise\Bundle\WorkflowBundle\Elasticsearch\Filter\Attribute\NumberFilter
+  pimee_workflow.query.elasticsearch.filter.metric.class: PimEnterprise\Bundle\WorkflowBundle\Elasticsearch\Filter\Attribute\MetricFilter
+  pimee_workflow.query.elasticsearch.filter.media.class: PimEnterprise\Bundle\WorkflowBundle\Elasticsearch\Filter\Attribute\MediaFilter
+  pimee_workflow.query.elasticsearch.filter.date.class: PimEnterprise\Bundle\WorkflowBundle\Elasticsearch\Filter\Attribute\DateFilter
+  pimee_workflow.query.elasticsearch.filter.boolean.class: PimEnterprise\Bundle\WorkflowBundle\Elasticsearch\Filter\Attribute\BooleanFilter
+
+  pimee_workflow.query.elasticsearch.attribute_path_resolver.class: PimEnterprise\Bundle\WorkflowBundle\Elasticsearch\Filter\Attribute\ProposalAttributePathResolver
+
 services:
+    pimee_workflow.query.elasticsearch.attribute_path_resolver:
+        class: '%pimee_workflow.query.elasticsearch.attribute_path_resolver.class%'
+        arguments:
+            - '@pim_catalog.repository.channel'
+            - '@pim_catalog.repository.locale'
+
     pimee_workflow.doctrine.query.published_product_query_builder_factory:
         class: '%pim_catalog.query.elasticsearch.product_query_builder_factory.class%'
         arguments:
@@ -133,8 +152,6 @@ services:
                 - 'EMPTY'
                 - 'NOT EMPTY'
                 - '!='
-                - 'SINCE LAST N DAYS'
-                - 'SINCE LAST JOB'
         tags:
             - { name: 'pimee_workflow.elasticsearch.query.product_proposal_filter', priority: 30 }
 
@@ -156,27 +173,27 @@ services:
             - { name: 'pimee_workflow.elasticsearch.query.product_proposal_filter', priority: 30 }
 
     pimee_workflow.query.elasticsearch.filter.text:
-        class: '%pim_catalog.query.elasticsearch.filter.text.class%'
+        class: '%pimee_workflow.query.elasticsearch.filter.text.class%'
         arguments:
-            - '@pim_catalog.validator.helper.attribute'
+            - '@pimee_workflow.query.elasticsearch.attribute_path_resolver'
             - ['pim_catalog_text']
-            - ['STARTS WITH', 'CONTAINS', 'DOES NOT CONTAIN', '=', 'EMPTY', 'NOT EMPTY', '!=']
+            - ['STARTS WITH', 'CONTAINS', 'DOES NOT CONTAIN', '=', 'EMPTY', 'NOT EMPTY']
         tags:
             - { name: 'pimee_workflow.elasticsearch.query.product_proposal_filter', priority: 30 }
 
     pimee_workflow.query.elasticsearch.filter.text_area:
-        class: '%pim_catalog.query.elasticsearch.filter.text_area.class%'
+        class: '%pimee_workflow.query.elasticsearch.filter.text_area.class%'
         arguments:
-            - '@pim_catalog.validator.helper.attribute'
+            - '@pimee_workflow.query.elasticsearch.attribute_path_resolver'
             - ['pim_catalog_textarea']
-            - ['STARTS WITH', 'CONTAINS', 'DOES NOT CONTAIN', '=', 'EMPTY', 'NOT EMPTY', '!=']
+            - ['STARTS WITH', 'CONTAINS', 'DOES NOT CONTAIN', '=', 'EMPTY', 'NOT EMPTY']
         tags:
             - { name: 'pimee_workflow.elasticsearch.query.product_proposal_filter', priority: 30 }
 
     pimee_workflow.query.elasticsearch.filter.option:
-        class: '%pim_catalog.query.elasticsearch.filter.option.class%'
+        class: '%pimee_workflow.query.elasticsearch.filter.option.class%'
         arguments:
-            - '@pim_catalog.validator.helper.attribute'
+            - '@pimee_workflow.query.elasticsearch.attribute_path_resolver'
             - '@pim_catalog.repository.attribute_option'
             - ['pim_catalog_simpleselect', 'pim_catalog_multiselect']
             - ['IN', 'EMPTY', 'NOT EMPTY', 'NOT IN']
@@ -192,12 +209,70 @@ services:
             - { name: 'pimee_workflow.elasticsearch.query.product_proposal_filter', priority: 30 }
 
     pimee_workflow.query.elasticsearch.filter.price:
-        class: '%pim_catalog.query.elasticsearch.filter.price.class%'
+        class: '%pimee_workflow.query.elasticsearch.filter.price.class%'
         arguments:
-            - '@pim_catalog.validator.helper.attribute'
+            - '@pimee_workflow.query.elasticsearch.attribute_path_resolver'
             - '@pim_catalog.repository.currency'
             - ['pim_catalog_price_collection']
             - ['<', '<=', '=', '!=', '>=', '>', 'EMPTY', 'EMPTY FOR CURRENCY', 'EMPTY ON ALL CURRENCIES', 'NOT EMPTY', 'NOT EMPTY ON AT LEAST ONE CURRENCY', 'NOT EMPTY FOR CURRENCY']
+        tags:
+            - { name: 'pimee_workflow.elasticsearch.query.product_proposal_filter', priority: 30 }
+
+    pimee_workflow.query.elasticsearch.filter.boolean:
+        class: '%pimee_workflow.query.elasticsearch.filter.boolean.class%'
+        arguments:
+            - '@pimee_workflow.query.elasticsearch.attribute_path_resolver'
+            - ['pim_catalog_boolean']
+            - ['=', '!=', 'NOT EMPTY']
+        tags:
+            - { name: 'pimee_workflow.elasticsearch.query.product_proposal_filter', priority: 30 }
+
+    pimee_workflow.query.elasticsearch.filter.number:
+        class: '%pimee_workflow.query.elasticsearch.filter.number.class%'
+        arguments:
+            - '@pimee_workflow.query.elasticsearch.attribute_path_resolver'
+            - ['pim_catalog_number']
+            - ['<', '<=', '=', '!=', '>=', '>', 'EMPTY', 'NOT EMPTY']
+        tags:
+            - { name: 'pimee_workflow.elasticsearch.query.product_proposal_filter', priority: 30 }
+
+    pimee_workflow.doctrine.query.filter.date:
+        class: '%pimee_workflow.query.elasticsearch.filter.date.class%'
+        arguments:
+            - '@pimee_workflow.query.elasticsearch.attribute_path_resolver'
+            - ['pim_catalog_date']
+            - ['=', '<', '>', 'BETWEEN', 'NOT BETWEEN', 'EMPTY', 'NOT EMPTY', '!=']
+        tags:
+            - { name: 'pimee_workflow.elasticsearch.query.product_proposal_filter', priority: 30 }
+
+    pimee_workflow.query.elasticsearch.filter.metric:
+        class: '%pimee_workflow.query.elasticsearch.filter.metric.class%'
+        arguments:
+            - '@pimee_workflow.query.elasticsearch.attribute_path_resolver'
+            - '@akeneo_measure.manager'
+            - '@akeneo_measure.measure_converter'
+            - ['pim_catalog_metric']
+            - ['<', '<=', '=', '!=', '>=', '>', 'EMPTY', 'EMPTY FOR CURRENCY', 'EMPTY ON ALL CURRENCIES', 'NOT EMPTY', 'NOT EMPTY ON AT LEAST ONE CURRENCY', 'NOT EMPTY FOR CURRENCY']
+        tags:
+            - { name: 'pimee_workflow.elasticsearch.query.product_proposal_filter', priority: 30 }
+
+    pimee_workflow.query.elasticsearch.filter.media:
+        class: '%pimee_workflow.query.elasticsearch.filter.media.class%'
+        arguments:
+            - '@pimee_workflow.query.elasticsearch.attribute_path_resolver'
+            - ['pim_catalog_file', 'pim_catalog_image']
+            - ['STARTS WITH', 'CONTAINS', 'DOES NOT CONTAIN', '=', '!=', 'EMPTY', 'NOT EMPTY']
+        tags:
+            - { name: 'pimee_workflow.elasticsearch.query.product_proposal_filter', priority: 30 }
+
+    pimee_workflow.query.elasticsearch.filter.reference_data:
+        class: '%pim_reference_data.query.elasticsearch.filter.reference_data.class%'
+        arguments:
+            - '@pim_catalog.validator.helper.attribute'
+            - '@pim_reference_data.repository_resolver'
+            - '@pim_reference_data.registry'
+            - ['pim_reference_data_simpleselect', 'pim_reference_data_multiselect']
+            - ['IN', 'EMPTY', 'NOT EMPTY', 'NOT IN']
         tags:
             - { name: 'pimee_workflow.elasticsearch.query.product_proposal_filter', priority: 30 }
 
