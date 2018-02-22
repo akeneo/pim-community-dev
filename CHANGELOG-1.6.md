@@ -12,10 +12,6 @@
 
 - PIM-7116: Fix multiple CRSF vulnerabilities on several endpoints by allowing only XHR calls (see https://www.owasp.org/index.php/Cross-Site_Request_Forgery_(CSRF)_Prevention_Cheat_Sheet#Protecting_REST_Services:_Use_of_Custom_Request_Headers)
 
-## Bug fixes
-
-- PIM-7170: Fix media files unnecessarily generated during quick export
-
 # 1.6.21 (2018-01-11)
 
 ## Bug fixes
