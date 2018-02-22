@@ -54,7 +54,89 @@ class ExportCompletenessFilterIntegration extends AbstractProductQueryBuilderTes
                 'root_product_model_two_level',
             ],
             iterator_to_array($result),
-            'The right complete variant products / product models did not be found (channel: ecommerce, locale: en_US).'
+            'The right complete variant products / product models did not be found (channel: ecommerce, locale: en_US, fr_FR, de_DE).'
+        );
+
+        $assert->same();
+    }
+
+    /**
+     * Test the AT LEAST INCOMPLETE filter on all locale
+     * @group do
+     */
+    public function testIncompleteOnAllLocaleOperator()
+    {
+        $result = $this->executeFilter([[
+            'completeness',
+            Operators::AT_LEAST_INCOMPLETE,
+            null,
+            [
+                'locale' => null,
+                'scope' => 'tablet',
+                'locales' => ['fr_FR', 'en_US', 'de_DE']
+            ]
+        ]]);
+
+        $assert = new AssertEntityWithValues(
+            [
+                'sub_product_model',
+                'root_product_model_one_level',
+                'root_product_model_two_level',
+            ],
+            iterator_to_array($result),
+            'The right complete variant products / product models did not be found (channel: ecommerce, locale: en_US, fr_FR, de_DE).'
+        );
+
+        $assert->same();
+    }
+
+    /**
+     * Test the ALL COMPLETE filter on all locale
+     * @group do
+     */
+    public function testAllCompleteOnAllLocaleOperator()
+    {
+        $result = $this->executeFilter([[
+            'completeness',
+            Operators::ALL_COMPLETE,
+            null,
+            [
+                'locale' => null,
+                'scope' => 'tablet',
+                'locales' => ['fr_FR', 'en_US', 'de_DE']
+            ]
+        ]]);
+
+        $assert = new AssertEntityWithValues(
+            [],
+            iterator_to_array($result),
+            'The right complete variant products / product models did not be found (channel: ecommerce, locale: en_US, fr_FR, de_DE).'
+        );
+
+        $assert->same();
+    }
+
+    /**
+     * Test the ALL INCOMPLETE filter on all locale
+     * @group do
+     */
+    public function testAllIncompleteOnAllLocaleOperator()
+    {
+        $result = $this->executeFilter([[
+            'completeness',
+            Operators::ALL_INCOMPLETE,
+            null,
+            [
+                'locale' => null,
+                'scope' => 'tablet',
+                'locales' => ['fr_FR', 'en_US', 'de_DE']
+            ]
+        ]]);
+
+        $assert = new AssertEntityWithValues(
+            [],
+            iterator_to_array($result),
+            'The right complete variant products / product models did not be found (channel: ecommerce, locale: en_US, fr_FR, de_DE).'
         );
 
         $assert->same();

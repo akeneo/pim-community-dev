@@ -60,7 +60,7 @@ define([
          * {@inheritdoc}
          */
         isEmpty: function () {
-            return false;
+            return 'ALL' === this.getFormData().operator;
         },
 
         /**
