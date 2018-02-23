@@ -38,15 +38,18 @@ class ProductQueryBuilderFactory implements ProductQueryBuilderFactoryInterface
      * @param ProductQueryBuilderFactoryInterface $pqbFactory
      * @param TokenStorageInterface               $tokenStorage
      * @param CategoryAccessRepository            $categoryAccessRepository
+     * @param string                              $accessLevel
      */
     public function __construct(
         ProductQueryBuilderFactoryInterface $pqbFactory,
         TokenStorageInterface $tokenStorage,
-        CategoryAccessRepository $categoryAccessRepository
+        CategoryAccessRepository $categoryAccessRepository,
+        $accessLevel
     ) {
         $this->pqbFactory = $pqbFactory;
         $this->tokenStorage = $tokenStorage;
         $this->categoryAccessRepository = $categoryAccessRepository;
+        $this->accessLevel = $accessLevel;
     }
 
     /**
@@ -67,7 +70,7 @@ class ProductQueryBuilderFactory implements ProductQueryBuilderFactoryInterface
 
         $grantedCategories = $this->categoryAccessRepository->getGrantedCategoryCodes(
             $token->getUser(),
-            Attributes::VIEW_ITEMS
+            $this->accessLevel
         );
 
         $pqb->addFilter('categories', Operators::IN_LIST_OR_UNCLASSIFIED, $grantedCategories);
