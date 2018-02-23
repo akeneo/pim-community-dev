@@ -7,7 +7,6 @@ namespace spec\PimEnterprise\Component\Catalog\Security\Filter;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
-use Pim\Component\Catalog\Model\VariantProductInterface;
 use PimEnterprise\Component\Catalog\Security\Factory\FilteredEntityFactory;
 use PimEnterprise\Component\Catalog\Security\Filter\NotGrantedParentFilter;
 use PimEnterprise\Component\Security\NotGrantedDataFilterInterface;
@@ -27,19 +26,19 @@ class NotGrantedParentFilterSpec extends ObjectBehavior
 
     function it_does_not_filter_an_entity_without_family_variant(ProductInterface $product)
     {
-        $this->filter($product)->shouldReturn($product);
+        $this->filter($product)->shouldBeLike($product);
     }
 
-    function it_does_not_filter_an_entity_with_family_variant_but_no_parent(VariantProductInterface $product)
+    function it_does_not_filter_an_entity_with_family_variant_but_no_parent(ProductInterface $product)
     {
         $product->getParent()->willReturn(null);
 
-        $this->filter($product)->shouldBeAnInstanceOf(VariantProductInterface::class);
+        $this->filter($product)->shouldBeAnInstanceOf(ProductInterface::class);
     }
 
     function it_filters_an_entity_with_family_variant(
         $filteredProductModelFactory,
-        VariantProductInterface $product,
+        ProductInterface $product,
         ProductModelInterface $parent,
         ProductModelInterface $filteredParent
     ) {
@@ -52,6 +51,6 @@ class NotGrantedParentFilterSpec extends ObjectBehavior
         $product->setParent($filteredParent)->shouldBeCalled();
 
         $filteredProduct = $this->filter($product);
-        $filteredProduct->shouldBeAnInstanceOf(VariantProductInterface::class);
+        $filteredProduct->shouldBeAnInstanceOf(ProductInterface::class);
     }
 }

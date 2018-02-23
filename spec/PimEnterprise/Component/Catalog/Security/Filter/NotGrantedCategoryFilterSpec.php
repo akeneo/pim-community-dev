@@ -41,7 +41,8 @@ class NotGrantedCategoryFilterSpec extends ObjectBehavior
         CategoryInterface $categoryA,
         CategoryInterface $categoryB
     ) {
-        $product->getCategories()->willReturn($categories);
+        $product->getCategories()->shouldBeCalled();
+        $product->getCategoriesForVariation()->willReturn($categories);
         $categories->count()->willReturn(2);
 
         $categories->getIterator()->willReturn($iterator);

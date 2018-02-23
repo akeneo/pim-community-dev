@@ -3,6 +3,7 @@
 namespace spec\PimEnterprise\Component\Catalog\Security\Updater\Setter;
 
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Util\ClassUtils;
 use PhpSpec\ObjectBehavior;
@@ -65,7 +66,7 @@ class GrantedCategoryFieldSetterSpec extends ObjectBehavior
         $product->getCategoryCodes()->willReturn([]);
         $categoryAccessRepository->areAllCategoryCodesGranted($user, Attributes::VIEW_ITEMS, [])->willReturn(true);
 
-        $product->getCategories()->willReturn([$categoryA, $categoryB]);
+        $product->getCategoriesForVariation()->willReturn([$categoryA, $categoryB]);
         $authorizationChecker->isGranted([Attributes::VIEW_ITEMS], $categoryA)->willReturn(true);
         $authorizationChecker->isGranted([Attributes::VIEW_ITEMS], $categoryB)->willReturn(true);
 
@@ -114,7 +115,9 @@ class GrantedCategoryFieldSetterSpec extends ObjectBehavior
         $fullProduct->getCategoryCodes()->willReturn(['categoryA', 'categoryB', 'categoryC']);
 
         $product->getId()->willReturn(1);
-        $product->getCategories()->willReturn([]);
+        $categories = new ArrayCollection();
+        $product->getCategoriesForVariation()->willReturn($categories);
+        $product->getCategories()->willReturn($categories);
         $authorizationChecker->isGranted([Attributes::OWN], $product)->willReturn(true);
 
         $this->shouldThrow(
@@ -149,7 +152,11 @@ class GrantedCategoryFieldSetterSpec extends ObjectBehavior
         $productRepository->find(1)->willReturn($fullProduct);
 
         $product->getId()->willReturn(1);
-        $product->getCategories()->willReturn([$categoryA, $categoryB]);
+        $categories = new ArrayCollection();
+        $categories->add($categoryA->getWrappedObject());
+        $categories->add($categoryB->getWrappedObject());
+        $product->getCategoriesForVariation()->willReturn($categories);
+        $product->getCategories()->willReturn($categories);
         $authorizationChecker->isGranted([Attributes::OWN], $product)->willReturn(true);
         $authorizationChecker->isGranted([Attributes::VIEW_ITEMS], $categoryA)->willReturn(true);
         $authorizationChecker->isGranted([Attributes::VIEW_ITEMS], $categoryB)->willReturn(false);
@@ -193,7 +200,11 @@ class GrantedCategoryFieldSetterSpec extends ObjectBehavior
         $productRepository->find(1)->willReturn($fullProduct);
 
         $product->getId()->willReturn(1);
-        $product->getCategories()->willReturn([$categoryA, $categoryB]);
+        $categories = new ArrayCollection();
+        $categories->add($categoryA->getWrappedObject());
+        $categories->add($categoryB->getWrappedObject());
+        $product->getCategoriesForVariation()->willReturn($categories);
+        $product->getCategories()->willReturn($categories);
         $authorizationChecker->isGranted([Attributes::OWN], $product)->willReturn(true);
         $authorizationChecker->isGranted([Attributes::VIEW_ITEMS], $categoryA)->willReturn(true);
         $authorizationChecker->isGranted([Attributes::VIEW_ITEMS], $categoryB)->willReturn(true);
