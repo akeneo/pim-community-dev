@@ -698,6 +698,7 @@ Format address by address country: Oblikovanje adresa prema adresi zemlje
 Language: Jezik
 Timezone: Vremenska zona
 Currency: Valuta
+settings: Postavke
 oro.locale:
   address_format:
     region_name_type:
