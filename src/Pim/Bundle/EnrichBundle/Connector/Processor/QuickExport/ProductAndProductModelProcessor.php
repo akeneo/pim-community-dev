@@ -10,6 +10,7 @@ use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use Pim\Bundle\EnrichBundle\Connector\Processor\AbstractProcessor;
 use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Model\ValueCollectionInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
 use Pim\Component\Catalog\ValuesFiller\EntityWithFamilyValuesFillerInterface;
@@ -97,9 +98,9 @@ class ProductAndProductModelProcessor extends AbstractProcessor
         $parameters = $this->stepExecution->getJobParameters();
         $normalizerContext = $this->getNormalizerContext($parameters);
         $productStandard = $this->normalizer->normalize($entityWithValues, 'standard', $normalizerContext);
+        $selectedProperties = $parameters->get('selected_properties');
 
         if ($this->areAttributesToFilter($parameters)) {
-            $selectedProperties = $parameters->get('selected_properties');
             if (in_array('identifier', $selectedProperties)) {
                 $identifier = $this->attributeRepository->findOneBy(['type' => AttributeTypes::IDENTIFIER]);
                 $selectedProperties[] = $identifier->getCode();
@@ -118,7 +119,12 @@ class ProductAndProductModelProcessor extends AbstractProcessor
             $identifier = ($entityWithValues instanceof ProductInterface)
                 ? $entityWithValues->getIdentifier()
                 : $entityWithValues->getCode();
-            $this->mediaFetcher->fetchAll($entityWithValues->getValues(), $directory, $identifier);
+
+            $entityValues = $this->areAttributesToFilter($parameters)
+                ? $this->filterValues($entityWithValues->getValues(), $selectedProperties)
+                : $entityWithValues->getValues();
+
+            $this->mediaFetcher->fetchAll($entityValues, $directory, $identifier);
 
             foreach ($this->mediaFetcher->getErrors() as $error) {
                 $this->stepExecution->addWarning($error['message'], [], new DataInvalidItem($error['media']));
@@ -220,5 +226,22 @@ class ProductAndProductModelProcessor extends AbstractProcessor
 
         $token = new UsernamePasswordToken($user, null, 'main', $user->getRoles());
         $this->tokenStorage->setToken($token);
+    }
+
+    /**
+     * Filter values to keep only those that are defined by the context.
+     *
+     * @param ValueCollectionInterface $values
+     * @param array                    $selectedAttributes
+     *
+     * @return ValueCollectionInterface
+     */
+    protected function filterValues(ValueCollectionInterface $values, array $selectedAttributes)
+    {
+        return $values->filter(function ($productValue) use ($selectedAttributes) {
+            $attributeCode = $productValue->getAttribute()->getCode();
+
+            return in_array($attributeCode, $selectedAttributes);
+        });
     }
 }

@@ -5,7 +5,9 @@ namespace Pim\Bundle\DataGridBundle\Controller;
 use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionParametersParser;
 use Pim\Bundle\DataGridBundle\Extension\MassAction\MassActionDispatcher;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Mass action controller for edit and delete actions
@@ -39,10 +41,14 @@ class MassActionController
     /**
      * Mass delete action
      *
-     * @return JsonResponse
+     * @return Response
      */
     public function massActionAction(Request $request)
     {
+        if (!$request->isXmlHttpRequest()) {
+            return new RedirectResponse('/');
+        }
+
         $parameters = $this->parameterParser->parse($request);
         $response = $this->massActionDispatcher->dispatch($parameters);
         $data = [
