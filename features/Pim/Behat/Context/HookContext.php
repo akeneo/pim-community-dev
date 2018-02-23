@@ -10,7 +10,6 @@ use Behat\Mink\Driver\Selenium2Driver;
 use Behat\Mink\Exception\UnsupportedDriverActionException;
 use Behat\Testwork\Tester\Result\TestResult;
 use Context\FeatureContext;
-use Doctrine\Common\DataFixtures\Purger\ORMPurger;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Process\Process;
@@ -330,10 +329,11 @@ class HookContext extends PimContext
      */
     private function resetElasticsearchIndex()
     {
-        $esClientProduct = $this->getService('akeneo_elasticsearch.client.product');
-        $esClientProduct->resetIndex();
+        $clientRegistry = $this->getService('akeneo_elasticsearch.registry.clients');
+        $clients = $clientRegistry->getClients();
 
-        $esClientProductAndModel = $this->getService('akeneo_elasticsearch.client.product_and_product_model');
-        $esClientProductAndModel->resetIndex();
+        foreach ($clients as $client) {
+            $client->resetIndex();
+        }
     }
 }
