@@ -1,10 +1,8 @@
 <?php
 
-namespace Oro\Bundle\UserBundle\Controller;
+namespace Pim\Bundle\UserBundle\Controller;
 
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\Security\Core\Security;
 
 class SecurityController extends Controller
 {

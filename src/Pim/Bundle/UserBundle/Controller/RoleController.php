@@ -1,10 +1,8 @@
 <?php
 
-namespace Oro\Bundle\UserBundle\Controller;
+namespace Pim\Bundle\UserBundle\Controller;
 
-use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Pim\Component\User\Model\Role;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -63,9 +61,10 @@ class RoleController extends Controller
 
     /**
      * @param Role $entity
-     * @return array
+     *
+     * @return array|JsonResponse
      */
-    protected function update(Role $entity)
+    private function update(Role $entity)
     {
         $aclRoleHandler = $this->get('oro_user.form.handler.acl_role');
         $aclRoleHandler->createForm($entity);

@@ -9,3 +9,6 @@ user_group_rest:
 security_rest:
     resource: '@PimUserBundle/Resources/config/routing/security_rest.yml'
     prefix: /rest/security
+
+old_oro_routes:
+    resource: "@UserBundle/Resources/config/routing/old_oro_routes.yml"

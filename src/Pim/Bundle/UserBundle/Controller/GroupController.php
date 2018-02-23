@@ -1,11 +1,9 @@
 <?php
 
-namespace Oro\Bundle\UserBundle\Controller;
+namespace Pim\Bundle\UserBundle\Controller;
 
-use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Oro\Bundle\UserBundle\OroUserEvents;
 use Pim\Component\User\Model\Group;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -65,9 +63,10 @@ class GroupController extends Controller
 
     /**
      * @param Group $entity
-     * @return array
+     *
+     * @return array|JsonResponse
      */
-    protected function update(Group $entity)
+    private function update(Group $entity)
     {
         if ($this->get('oro_user.form.handler.group')->process($entity)) {
             $this->get('session')->getFlashBag()->add(
@@ -89,19 +88,11 @@ class GroupController extends Controller
     }
 
     /**
-     * @return EventDispatcherInterface
-     */
-    protected function getEventDispatcher()
-    {
-        return $this->get('event_dispatcher');
-    }
-
-    /**
      * @param string $event
      * @param Group  $group
      */
-    protected function dispatchGroupEvent($event, Group $group = null)
+    private function dispatchGroupEvent($event, Group $group = null)
     {
-        $this->getEventDispatcher()->dispatch($event, new GenericEvent($group));
+        $this->get('event_dispatcher')->dispatch($event, new GenericEvent($group));
     }
 }

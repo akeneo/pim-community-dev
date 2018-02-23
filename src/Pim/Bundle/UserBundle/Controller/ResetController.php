@@ -1,8 +1,7 @@
 <?php
-namespace Oro\Bundle\UserBundle\Controller;
+namespace Pim\Bundle\UserBundle\Controller;
 
 use Pim\Bundle\UserBundle\Entity\UserInterface;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 
