@@ -7,38 +7,15 @@ use JMS\Serializer\Annotation\Type;
 use Pim\Bundle\UserBundle\Entity\User;
 use Symfony\Component\Security\Core\Role\Role as BaseRole;
 
-/**
- * Role Entity
- *
- * @ORM\Entity(repositoryClass="Oro\Bundle\UserBundle\Entity\Repository\RoleRepository")
- * @ORM\Table(name="oro_access_role")
- */
 class Role extends BaseRole
 {
-    /**
-     * @var int
-     *
-     * @ORM\Id
-     * @ORM\Column(type="smallint", name="id")
-     * @ORM\GeneratedValue(strategy="AUTO")
-     * @Type("integer")
-     */
+    /** @var int */
     protected $id;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(type="string", unique=true, length=30, nullable=false)
-     * @Type("string")
-     */
+    /** @var string */
     protected $role;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(type="string", length=30)
-     * @Type("string")
-     */
+    /** @var string */
     protected $label;
 
     /**

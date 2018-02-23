@@ -4,36 +4,16 @@ namespace Pim\Component\User\Model;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity(repositoryClass="Oro\Bundle\UserBundle\Entity\Repository\GroupRepository")
- * @ORM\Table(name="oro_access_group")
- */
 class Group implements GroupInterface
 {
-    /**
-     * @ORM\Id
-     * @ORM\Column(type="smallint", name="id")
-     * @ORM\GeneratedValue(strategy="AUTO")
-     * @Type("integer")
-     */
+    /** @var integer */
     protected $id;
 
-    /**
-     * @ORM\Column(type="string", unique=true, length=30, nullable=false)
-     * @Type("string")
-     */
+    /** @var string */
     protected $name;
 
-    /**
-     * @ORM\ManyToMany(targetEntity="Role")
-     * @ORM\JoinTable(name="pim_user_access_group_role",
-     *      joinColumns={@ORM\JoinColumn(name="group_id", referencedColumnName="id", onDelete="CASCADE")},
-     *      inverseJoinColumns={@ORM\JoinColumn(name="role_id", referencedColumnName="id", onDelete="CASCADE")}
-     * )
-     * @Exclude
-     */
+    /** @var ArrayCollection */
     protected $roles;
 
     /**
