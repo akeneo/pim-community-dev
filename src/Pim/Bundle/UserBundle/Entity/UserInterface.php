@@ -4,11 +4,11 @@ namespace Pim\Bundle\UserBundle\Entity;
 
 use DateTime;
 use Doctrine\Common\Collections\Collection;
-use Oro\Bundle\UserBundle\Entity\EntityUploadedImageInterface;
 use Pim\Bundle\DataGridBundle\Entity\DatagridView;
 use Pim\Component\Catalog\Model\CategoryInterface;
 use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\LocaleInterface;
+use Pim\Component\User\EntityUploadedImageInterface;
 use Pim\Component\User\Model\GroupInterface;
 use Pim\Component\User\Model\Role;
 use Symfony\Component\HttpFoundation\File\UploadedFile;

@@ -1,6 +1,6 @@
 <?php
 
-namespace Oro\Bundle\UserBundle\Entity;
+namespace Pim\Component\User;
 
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 

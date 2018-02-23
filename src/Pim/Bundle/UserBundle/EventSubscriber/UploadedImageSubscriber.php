@@ -1,10 +1,10 @@
 <?php
 
-namespace Oro\Bundle\UserBundle\Entity\EventListener;
+namespace Pim\Bundle\UserBundle\EventSubscriber;
 
 use Doctrine\Common\EventSubscriber;
 use Doctrine\ORM\Event\LifecycleEventArgs;
-use Oro\Bundle\UserBundle\Entity\EntityUploadedImageInterface;
+use Pim\Component\User\EntityUploadedImageInterface;
 
 class UploadedImageSubscriber implements EventSubscriber
 {
