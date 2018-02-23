@@ -78,7 +78,7 @@ class GrantedCategoryFieldSetter extends AbstractFieldSetter implements FieldSet
     {
         $areCategoriesVisible = $this->areAllCategoriesVisibleOnEntity($entityWithCategories);
         $wasOwner = $this->authorizationChecker->isGranted([Attributes::OWN], $entityWithCategories);
-        if($entityWithCategories instanceof ProductModelInterface &&
+        if ($entityWithCategories instanceof ProductModelInterface &&
             $this->authorizationChecker->isGranted(Attributes::EDIT_ITEMS, $entityWithCategories)) {
             $wasOwner = true;
         }
@@ -107,8 +107,7 @@ class GrantedCategoryFieldSetter extends AbstractFieldSetter implements FieldSet
             if ($entityWithCategories instanceof ProductModelInterface &&
                 $this->authorizationChecker->isGranted(Attributes::EDIT_ITEMS, $category)) {
                 $isOwner = true;
-            }
-            else if ($this->authorizationChecker->isGranted([Attributes::OWN_PRODUCTS], $category)) {
+            } elseif ($this->authorizationChecker->isGranted([Attributes::OWN_PRODUCTS], $category)) {
                 $isOwner = true;
             }
         }
