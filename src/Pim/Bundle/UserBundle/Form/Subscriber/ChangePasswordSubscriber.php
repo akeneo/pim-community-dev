@@ -1,6 +1,6 @@
 <?php
 
-namespace Oro\Bundle\UserBundle\Form\EventListener;
+namespace Pim\Bundle\UserBundle\Form\Subscriber;
 
 use Pim\Bundle\UserBundle\Entity\UserInterface;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;

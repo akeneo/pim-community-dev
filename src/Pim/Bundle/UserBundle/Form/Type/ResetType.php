@@ -1,6 +1,6 @@
 <?php
 
-namespace Oro\Bundle\UserBundle\Form\Type;
+namespace Pim\Bundle\UserBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;

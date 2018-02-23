@@ -1,6 +1,6 @@
 <?php
 
-namespace Oro\Bundle\UserBundle\Form\Handler;
+namespace Pim\Bundle\UserBundle\Form\Handler;
 
 use Oro\Bundle\UserBundle\Entity\UserManager;
 use Pim\Bundle\UserBundle\Entity\UserInterface;

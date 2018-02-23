@@ -2,7 +2,7 @@
 
 namespace Oro\Bundle\UserBundle\Tests\Unit\Type;
 
-use Oro\Bundle\UserBundle\Form\EventListener\ChangePasswordSubscriber;
+use Pim\Bundle\UserBundle\Form\Subscriber\ChangePasswordSubscriber;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\Test\FormIntegrationTestCase;
 

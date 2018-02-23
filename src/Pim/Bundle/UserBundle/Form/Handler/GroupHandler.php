@@ -1,18 +1,15 @@
 <?php
 
-namespace Oro\Bundle\UserBundle\Form\Handler;
+namespace Pim\Bundle\UserBundle\Form\Handler;
 
 use Doctrine\Common\Persistence\ObjectManager;
 use Pim\Bundle\UserBundle\Entity\UserInterface;
-use Pim\Component\User\Model\Role;
+use Pim\Component\User\Model\GroupInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 
-/**
- * TODO: Remove this class after api for acl is ready
- */
-class RoleHandler
+class GroupHandler
 {
     /**
      * @var FormInterface
@@ -44,20 +41,19 @@ class RoleHandler
     /**
      * Process form
      *
-     * @param  Role $entity
-     * @return bool True on successfull processing, false otherwise
+     * @param  GroupInterface $entity
+     * @return bool           True on successfull processing, false otherwise
      */
-    public function process(Role $entity)
+    public function process(GroupInterface $entity)
     {
         $this->form->setData($entity);
 
         if (in_array($this->getRequest()->getMethod(), ['POST', 'PUT'])) {
-            $this->form->submit($this->getRequest());
+            $this->form->handleRequest($this->getRequest());
 
             if ($this->form->isValid()) {
                 $appendUsers = $this->form->get('appendUsers')->getData();
                 $removeUsers = $this->form->get('removeUsers')->getData();
-                $entity->setRole(strtoupper(trim(preg_replace('/[^\w\-]/i', '_', $entity->getLabel()))));
                 $this->onSuccess($entity, $appendUsers, $removeUsers);
 
                 return true;
@@ -70,11 +66,11 @@ class RoleHandler
     /**
      * "Success" form handler
      *
-     * @param Role            $entity
+     * @param GroupInterface  $entity
      * @param UserInterface[] $appendUsers
      * @param UserInterface[] $removeUsers
      */
-    protected function onSuccess(Role $entity, array $appendUsers, array $removeUsers)
+    protected function onSuccess(GroupInterface $entity, array $appendUsers, array $removeUsers)
     {
         $this->appendUsers($entity, $appendUsers);
         $this->removeUsers($entity, $removeUsers);
@@ -83,31 +79,31 @@ class RoleHandler
     }
 
     /**
-     * Append users to role
+     * Append users to group
      *
-     * @param Role            $role
+     * @param GroupInterface  $group
      * @param UserInterface[] $users
      */
-    protected function appendUsers(Role $role, array $users)
+    protected function appendUsers(GroupInterface $group, array $users)
     {
         /** @var $user UserInterface */
         foreach ($users as $user) {
-            $user->addRole($role);
+            $user->addGroup($group);
             $this->manager->persist($user);
         }
     }
 
     /**
-     * Remove users from role
+     * Remove users from group
      *
-     * @param Role           $role
+     * @param GroupInterface  $group
      * @param UserInterface[] $users
      */
-    protected function removeUsers(Role $role, array $users)
+    protected function removeUsers(GroupInterface $group, array $users)
     {
         /** @var $user UserInterface */
         foreach ($users as $user) {
-            $user->removeRole($role);
+            $user->removeGroup($group);
             $this->manager->persist($user);
         }
     }

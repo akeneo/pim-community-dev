@@ -1,8 +1,8 @@
 <?php
 
-namespace Oro\Bundle\UserBundle\Form\Type;
+namespace Pim\Bundle\UserBundle\Form\Type;
 
-use Oro\Bundle\UserBundle\Form\EventListener\ChangePasswordSubscriber;
+use Pim\Bundle\UserBundle\Form\Subscriber\ChangePasswordSubscriber;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;

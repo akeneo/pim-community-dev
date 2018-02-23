@@ -2,7 +2,6 @@
 
 namespace Pim\Bundle\UserBundle\Form\Handler;
 
-use Oro\Bundle\UserBundle\Form\Handler\AbstractUserHandler;
 use Pim\Bundle\UserBundle\Entity\User;
 use Pim\Bundle\UserBundle\Entity\UserInterface;
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace Oro\Bundle\UserBundle\Form\Type;
+namespace Pim\Bundle\UserBundle\Form\Type;
 
 use Pim\Bundle\EnrichBundle\Form\Type\EntityIdentifierType;
 use Pim\Component\User\Model\Group;

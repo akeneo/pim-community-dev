@@ -4,18 +4,35 @@ namespace Pim\Bundle\UserBundle\Form\Type;
 
 use Oro\Bundle\SecurityBundle\Form\Type\AclPrivilegeType;
 use Oro\Bundle\SecurityBundle\Form\Type\PrivilegeCollectionType;
-use Oro\Bundle\UserBundle\Form\Type\AclRoleType as OroAclRoleType;
+use Pim\Bundle\EnrichBundle\Form\Type\EntityIdentifierType;
+use Pim\Component\User\Model\Role;
+use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
- * Overriden AclRoleType to remove ACLs for disabled locales
+ * AclRoleType to remove ACLs for disabled locales
  *
  * @author    Filips Alpe <filips@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class AclRoleType extends OroAclRoleType
+class AclRoleType extends AbstractType
 {
+    /**
+     * @var array privilege fields config
+     */
+    private $privilegeConfig;
+
+    /**
+     * @param array $privilegeTypeConfig
+     */
+    public function __construct(array $privilegeTypeConfig)
+    {
+        $this->privilegeConfig = $privilegeTypeConfig;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -26,11 +43,11 @@ class AclRoleType extends OroAclRoleType
                 $fieldName,
                 PrivilegeCollectionType::class,
                 [
-                    'entry_type'    => AclPrivilegeType::class,
-                    'allow_add'     => true,
-                    'prototype'     => false,
-                    'allow_delete'  => false,
-                    'mapped'        => false,
+                    'entry_type' => AclPrivilegeType::class,
+                    'allow_add' => true,
+                    'prototype' => false,
+                    'allow_delete' => false,
+                    'mapped' => false,
                     'entry_options' => [
                         'privileges_config' => $config,
                     ],
@@ -41,6 +58,74 @@ class AclRoleType extends OroAclRoleType
         // Empty the privilege config to prevent parent from overriding the fields
         $this->privilegeConfig = [];
 
-        parent::buildForm($builder, $options);
+        $builder->add(
+            'label',
+            TextType::class,
+            [
+                'required' => true,
+                'label' => 'Role',
+            ]
+        );
+
+        foreach ($this->privilegeConfig as $fieldName => $config) {
+            $builder->add(
+                $fieldName,
+                new PrivilegeCollectionType(),
+                [
+                    'entry_type' => new AclPrivilegeType(),
+                    'allow_add' => true,
+                    'prototype' => false,
+                    'allow_delete' => false,
+                    'mapped' => false,
+                    'options' => [
+                        'privileges_config' => $config,
+                    ],
+                ]
+            );
+        }
+
+        $builder->add(
+            'appendUsers',
+            EntityIdentifierType::class,
+            [
+                'class' => 'PimUserBundle:User',
+                'required' => false,
+                'mapped' => false,
+                'multiple' => true,
+            ]
+        );
+
+        $builder->add(
+            'removeUsers',
+            EntityIdentifierType::class,
+            [
+                'class' => 'PimUserBundle:User',
+                'required' => false,
+                'mapped' => false,
+                'multiple' => true,
+            ]
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function configureOptions(OptionsResolver $resolver)
+    {
+        $resolver->setDefaults(
+            [
+                'data_class' => Role::class,
+                'intention' => 'role',
+                'privilegeConfigOption' => [],
+            ]
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getBlockPrefix()
+    {
+        return 'oro_user_role_form';
     }
 }

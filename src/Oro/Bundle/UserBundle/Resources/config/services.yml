@@ -7,7 +7,7 @@ parameters:
     oro_user.security.login.class:    Pim\Bundle\UserBundle\EventListener\LoginSubscriber
     oro_user.role.listener.class:     Pim\Bundle\UserBundle\EventListener\RoleListener
     oro_user.entity_with_image.subscriber.class: Pim\Bundle\UserBundle\EventSubscriber\UploadedImageSubscriber
-    oro_user.change_password.subscriber.class:   Oro\Bundle\UserBundle\Form\EventListener\ChangePasswordSubscriber
+    oro_user.change_password.subscriber.class:   Pim\Bundle\UserBundle\Form\Subscriber\ChangePasswordSubscriber
 
 services:
     oro_user.manager:

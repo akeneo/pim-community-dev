@@ -1,8 +1,8 @@
 <?php
 
-namespace Oro\Bundle\UserBundle\Form\Type;
+namespace Pim\Bundle\UserBundle\Form\Type;
 
-use Oro\Bundle\UserBundle\Form\EventListener\PatchSubscriber;
+use Pim\Bundle\UserBundle\Form\Subscriber\PatchSubscriber;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 

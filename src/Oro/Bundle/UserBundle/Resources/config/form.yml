@@ -1,15 +1,15 @@
 parameters:
-    oro_user.form.type.reset.class:             Oro\Bundle\UserBundle\Form\Type\ResetType
-    oro_user.form.type.acl_role_type.class:     Oro\Bundle\UserBundle\Form\Type\AclRoleType
-    oro_user.form.type.role.api.class:          Oro\Bundle\UserBundle\Form\Type\RoleApiType
-    oro_user.form.type.group.class:             Oro\Bundle\UserBundle\Form\Type\GroupType
-    oro_user.form.type.group.api.class:         Oro\Bundle\UserBundle\Form\Type\GroupApiType
-    oro_user.form.type.change_password.class:   Oro\Bundle\UserBundle\Form\Type\ChangePasswordType
-    oro_user.form.handler.user.class:           Oro\Bundle\UserBundle\Form\Handler\UserHandler
-    oro_user.form.handler.reset.class:          Oro\Bundle\UserBundle\Form\Handler\ResetHandler
-    oro_user.form.handler.role.class:           Oro\Bundle\UserBundle\Form\Handler\RoleHandler
-    oro_user.form.handler.group.class:          Oro\Bundle\UserBundle\Form\Handler\GroupHandler
-    oro_user.form.handler.acl_role.class:       Oro\Bundle\UserBundle\Form\Handler\AclRoleHandler
+    oro_user.form.type.reset.class:             Pim\Bundle\UserBundle\Form\Type\ResetType
+    oro_user.form.type.acl_role_type.class:     Pim\Bundle\UserBundle\Form\Type\AclRoleType
+    oro_user.form.type.role.api.class:          Pim\Bundle\UserBundle\Form\Type\RoleApiType
+    oro_user.form.type.group.class:             Pim\Bundle\UserBundle\Form\Type\GroupType
+    oro_user.form.type.group.api.class:         Pim\Bundle\UserBundle\Form\Type\GroupApiType
+    oro_user.form.type.change_password.class:   Pim\Bundle\UserBundle\Form\Type\ChangePasswordType
+    oro_user.form.handler.user.class:           Pim\Bundle\UserBundle\Form\Handler\UserHandler
+    oro_user.form.handler.reset.class:          Pim\Bundle\UserBundle\Form\Handler\ResetHandler
+    oro_user.form.handler.role.class:           Pim\Bundle\UserBundle\Form\Handler\RoleHandler
+    oro_user.form.handler.group.class:          Pim\Bundle\UserBundle\Form\Handler\GroupHandler
+    oro_user.form.handler.acl_role.class:       Pim\Bundle\UserBundle\Form\Handler\AclRoleHandler
 
 services:
     oro_user.form.user:

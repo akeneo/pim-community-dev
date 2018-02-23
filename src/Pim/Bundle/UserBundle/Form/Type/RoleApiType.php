@@ -1,19 +1,17 @@
 <?php
 
-namespace Oro\Bundle\UserBundle\Form\Type;
+namespace Pim\Bundle\UserBundle\Form\Type;
 
-use Oro\Bundle\UserBundle\Form\EventListener\PatchSubscriber;
 use Pim\Bundle\EnrichBundle\Form\Type\EntityIdentifierType;
+use Pim\Bundle\UserBundle\Form\Subscriber\PatchSubscriber;
+use Pim\Component\User\Model\Role;
+use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class RoleApiType extends AclRoleType
+class RoleApiType extends AbstractType
 {
-    public function __construct()
-    {
-    }
-
     /**
      * {@inheritdoc}
      */
@@ -24,7 +22,7 @@ class RoleApiType extends AclRoleType
             TextType::class,
             [
                 'required' => true,
-                'label'    => 'Role'
+                'label' => 'Role',
             ]
         );
 
@@ -32,9 +30,9 @@ class RoleApiType extends AclRoleType
             'appendUsers',
             EntityIdentifierType::class,
             [
-                'class'    => 'PimUserBundle:User',
+                'class' => 'PimUserBundle:User',
                 'required' => false,
-                'mapped'   => false,
+                'mapped' => false,
                 'multiple' => true,
             ]
         );
@@ -43,14 +41,13 @@ class RoleApiType extends AclRoleType
             'removeUsers',
             EntityIdentifierType::class,
             [
-                'class'    => 'PimUserBundle:User',
+                'class' => 'PimUserBundle:User',
                 'required' => false,
-                'mapped'   => false,
+                'mapped' => false,
                 'multiple' => true,
             ]
         );
     }
-
 
     /**
      * {@inheritdoc}
@@ -65,9 +62,14 @@ class RoleApiType extends AclRoleType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        parent::configureOptions($resolver);
-
-        $resolver->setDefaults(['csrf_protection' => false]);
+        $resolver->setDefaults(
+            [
+                'data_class' => Role::class,
+                'intention' => 'role',
+                'privilegeConfigOption' => [],
+                'csrf_protection' => false,
+            ]
+        );
     }
 
     /**
