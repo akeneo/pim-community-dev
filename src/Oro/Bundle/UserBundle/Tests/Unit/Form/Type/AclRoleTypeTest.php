@@ -44,7 +44,7 @@ class AclRoleTypeTest extends \PHPUnit_Framework_TestCase
         $resolver->expects($this->once())->method('setDefaults')
             ->with(
                 [
-                    'data_class' => 'Oro\Bundle\UserBundle\Entity\Role',
+                    'data_class' => 'Pim\Component\User\Model\Role',
                     'intention'  => 'role'
                 ]
             );

@@ -1,6 +1,6 @@
 <?php
 
-namespace Oro\Bundle\UserBundle\Entity;
+namespace Pim\Component\User\Model;
 
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation\Type;

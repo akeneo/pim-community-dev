@@ -5,13 +5,12 @@ namespace Pim\Bundle\UserBundle\Entity;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Doctrine\ORM\Mapping as ORM;
-use Oro\Bundle\UserBundle\Entity\Role;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
 use Pim\Component\Catalog\Model\CategoryInterface;
 use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\LocaleInterface;
 use Pim\Component\User\Model\GroupInterface;
+use Pim\Component\User\Model\Role;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 /**

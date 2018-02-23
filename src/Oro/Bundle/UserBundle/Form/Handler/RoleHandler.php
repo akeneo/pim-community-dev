@@ -3,8 +3,8 @@
 namespace Oro\Bundle\UserBundle\Form\Handler;
 
 use Doctrine\Common\Persistence\ObjectManager;
-use Oro\Bundle\UserBundle\Entity\Role;
 use Pim\Bundle\UserBundle\Entity\UserInterface;
+use Pim\Component\User\Model\Role;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;

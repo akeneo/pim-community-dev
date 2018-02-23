@@ -3,7 +3,7 @@ namespace Oro\Bundle\UserBundle\Entity\Repository;
 
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
-use Oro\Bundle\UserBundle\Entity\Role;
+use Pim\Component\User\Model\Role;
 
 class RoleRepository extends EntityRepository
 {

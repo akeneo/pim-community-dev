@@ -2,9 +2,9 @@
 
 namespace Pim\Bundle\UserBundle\Form\Handler;
 
-use Oro\Bundle\UserBundle\Entity\Role;
 use Oro\Bundle\UserBundle\Form\Handler\AclRoleHandler as OroAclRoleHandler;
 use Pim\Bundle\UserBundle\Form\Type\AclRoleType;
+use Pim\Component\User\Model\Role;
 use Symfony\Component\Form\FormInterface;
 
 /**

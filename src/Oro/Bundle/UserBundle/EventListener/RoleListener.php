@@ -5,7 +5,7 @@ namespace Oro\Bundle\UserBundle\EventListener;
 use Doctrine\ORM\Event\PreUpdateEventArgs;
 use Oro\Bundle\SecurityBundle\Acl\Persistence\AclSidManager;
 use Oro\Bundle\SecurityBundle\DependencyInjection\Utils\ServiceLink;
-use Oro\Bundle\UserBundle\Entity\Role;
+use Pim\Component\User\Model\Role;
 
 class RoleListener
 {
