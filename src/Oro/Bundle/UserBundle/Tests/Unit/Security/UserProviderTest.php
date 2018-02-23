@@ -2,7 +2,7 @@
 
 namespace Oro\Bundle\UserBundle\Tests\Security;
 
-use Oro\Bundle\UserBundle\Security\UserProvider;
+use Pim\Bundle\UserBundle\Security\UserProvider;
 use Symfony\Component\Security\Core\Encoder\EncoderFactory;
 use Symfony\Component\Security\Core\Encoder\MessageDigestPasswordEncoder;
 

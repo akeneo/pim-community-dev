@@ -1,0 +1,5 @@
+pim_user.security.provider:
+    class: 'Pim\Bundle\UserBundle\Security\UserProvider'
+    public: false
+    arguments:
+        - '@oro_user.manager'

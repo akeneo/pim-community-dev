@@ -1,6 +1,6 @@
 <?php
 
-namespace Oro\Bundle\UserBundle\Security;
+namespace Pim\Bundle\UserBundle\Security;
 
 use Oro\Bundle\UserBundle\Entity\UserManager;
 use Pim\Bundle\UserBundle\Entity\UserInterface;
