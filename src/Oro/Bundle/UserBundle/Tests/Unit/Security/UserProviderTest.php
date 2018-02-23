@@ -42,7 +42,7 @@ class UserProviderTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue($class));
 
         $this->userManager = $this->createMock(
-            'Oro\Bundle\UserBundle\Entity\UserManager',
+            'Pim\Bundle\UserBundle\Manager\UserManager',
             ['findUserBy', 'findUserByUsernameOrEmail', 'getClass'],
             [static::USER_CLASS, $om, $ef]
         );

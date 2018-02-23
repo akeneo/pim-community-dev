@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\UserBundle\EventListener;
 
-use Oro\Bundle\UserBundle\Entity\UserManager;
 use Pim\Bundle\UserBundle\Entity\UserInterface;
+use Pim\Bundle\UserBundle\Manager\UserManager;
 use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
 
 class LoginSubscriber

@@ -3,8 +3,8 @@
 namespace Oro\Bundle\UserBundle\Tests\Entity;
 
 use Akeneo\Component\StorageUtils\Factory\SimpleFactory;
-use Oro\Bundle\UserBundle\Entity\UserManager;
 use Pim\Bundle\UserBundle\Entity\UserInterface;
+use Pim\Bundle\UserBundle\Manager\UserManager;
 use Pim\Component\User\Model\Role;
 use Symfony\Component\Security\Core\Encoder\EncoderFactory;
 use Symfony\Component\Security\Core\Encoder\MessageDigestPasswordEncoder;
@@ -21,7 +21,7 @@ class UserManagerTest extends \PHPUnit_Framework_TestCase
     protected $user;
 
     /**
-     * @var UserManager
+     * @var \Pim\Bundle\UserBundle\Manager\UserManager
      */
     protected $userManager;
 
@@ -61,7 +61,7 @@ class UserManagerTest extends \PHPUnit_Framework_TestCase
             ->method('getName')
             ->will($this->returnValue(static::USER_CLASS));
 
-        $this->userManager = new UserManager(static::USER_CLASS, $this->om, $ef);
+        $this->userManager = new \Pim\Bundle\UserBundle\Manager\UserManager(static::USER_CLASS, $this->om, $ef);
         $this->userFactory = new SimpleFactory(static::USER_CLASS);
     }
 

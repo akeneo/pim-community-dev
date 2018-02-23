@@ -1,6 +1,6 @@
 <?php
 
-namespace Oro\Bundle\UserBundle\Entity;
+namespace Pim\Bundle\UserBundle\Manager;
 
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Persistence\ObjectRepository;
