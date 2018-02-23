@@ -35,7 +35,7 @@ class RoleUpdater implements ObjectUpdaterInterface
      * Expected input format :
      * {
      *     'role': 'ROLE_ADMINISTRATOR',
-     *     'name': 'Administrator',
+     *     'label': 'Administrator',
      * }
      */
     public function update($role, array $data, array $options = [])
