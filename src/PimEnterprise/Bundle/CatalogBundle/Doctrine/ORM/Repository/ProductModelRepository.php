@@ -20,6 +20,7 @@ use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
 use Pim\Component\Catalog\Repository\ProductModelRepositoryInterface;
 use PimEnterprise\Component\Catalog\Security\Factory\FilteredEntityFactory;
+use PimEnterprise\Component\Security\Authorization\DenyNotGrantedCategorizedEntity;
 
 /**
  * Decorates CE product model repository to apply permissions.
@@ -37,11 +38,15 @@ class ProductModelRepository extends EntityRepository implements ProductModelRep
     /** @var FilteredEntityFactory */
     private $filteredProductModelFactory;
 
+    /** @var DenyNotGrantedCategorizedEntity */
+    private $denyNotGrantedCategorizedEntity;
+
     /**
      * @param EntityManagerInterface          $em
      * @param ProductModelRepositoryInterface $productModelRepository
      * @param FilteredEntityFactory           $filteredProductModelFactory
      * @param FilteredEntityFactory           $filteredProductFactory
+     * @param DenyNotGrantedCategorizedEntity $denyNotGrantedCategorizedEntity
      * @param string                          $entityName
      */
     public function __construct(
@@ -49,6 +54,7 @@ class ProductModelRepository extends EntityRepository implements ProductModelRep
         ProductModelRepositoryInterface $productModelRepository,
         FilteredEntityFactory $filteredProductModelFactory,
         FilteredEntityFactory $filteredProductFactory,
+        DenyNotGrantedCategorizedEntity $denyNotGrantedCategorizedEntity,
         string $entityName
     ) {
         parent::__construct($em, $em->getClassMetadata($entityName));
@@ -56,6 +62,7 @@ class ProductModelRepository extends EntityRepository implements ProductModelRep
         $this->productModelRepository = $productModelRepository;
         $this->filteredProductFactory = $filteredProductFactory;
         $this->filteredProductModelFactory = $filteredProductModelFactory;
+        $this->denyNotGrantedCategorizedEntity = $denyNotGrantedCategorizedEntity;
     }
 
     /**
@@ -240,13 +247,15 @@ class ProductModelRepository extends EntityRepository implements ProductModelRep
      */
     private function getFilteredProductModel(ProductModelInterface $productModel): ProductModelInterface
     {
+        $this->denyNotGrantedCategorizedEntity->denyIfNotGranted($productModel);
+
         return $this->filteredProductModelFactory->create($productModel);
     }
 
     /**
      * Get product models filtered with only granted data
      *
-     * @param ProductModelInterface[] $products
+     * @param ProductModelInterface[] $productModels
      *
      * @return array
      */
@@ -254,6 +263,7 @@ class ProductModelRepository extends EntityRepository implements ProductModelRep
     {
         $filteredProductModels = [];
         foreach ($productModels as $productModel) {
+            $this->denyNotGrantedCategorizedEntity->denyIfNotGranted($productModel);
             $filteredProductModels[] = $this->filteredProductModelFactory->create($productModel);
         }
 
@@ -271,6 +281,7 @@ class ProductModelRepository extends EntityRepository implements ProductModelRep
     {
         $filteredProducts = [];
         foreach ($products as $product) {
+            $this->denyNotGrantedCategorizedEntity->denyIfNotGranted($product);
             $filteredProducts[] = $this->filteredProductFactory->create($product);
         }
 

@@ -9,7 +9,7 @@ services:
         arguments:
             - '@pim_api.checker.query_parameters.community'
             - '@security.authorization_checker'
-            - '@pim_catalog.repository.locale'
-            - '@pim_catalog.repository.attribute'
-            - '@pim_catalog.repository.category'
+            - '@pim_catalog.repository.cached_locale'
+            - '@pim_catalog.repository.cached_attribute'
+            - '@pim_catalog.repository.cached_category'
         public: false

@@ -33,6 +33,8 @@ default:
                     - 'Context\EnterpriseFeatureContext'
                 - Context\EnterpriseItemPickerContext:
                     - 'Context\EnterpriseFeatureContext'
+                - Context\EnterpriseSecurityContext:
+                    - 'Context\EnterpriseFeatureContext'
                 - Pim\Behat\Context\AttributeValidationContext:
                     - 'Context\EnterpriseFeatureContext'
                 - Pim\Behat\Context\Domain\Collect\ImportProfilesContext:
