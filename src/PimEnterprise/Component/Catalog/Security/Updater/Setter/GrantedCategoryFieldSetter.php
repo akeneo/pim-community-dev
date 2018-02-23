@@ -79,7 +79,8 @@ class GrantedCategoryFieldSetter extends AbstractFieldSetter implements FieldSet
         $areCategoriesVisible = $this->areAllCategoriesVisibleOnEntity($entityWithCategories);
         $wasOwner = $this->authorizationChecker->isGranted([Attributes::OWN], $entityWithCategories);
         if ($entityWithCategories instanceof ProductModelInterface &&
-            $this->authorizationChecker->isGranted(Attributes::EDIT_ITEMS, $entityWithCategories)) {
+            $this->authorizationChecker->isGranted(Attributes::EDIT_ITEMS, $entityWithCategories)
+        ) {
             $wasOwner = true;
         }
 
@@ -105,7 +106,8 @@ class GrantedCategoryFieldSetter extends AbstractFieldSetter implements FieldSet
 
         foreach ($entityWithCategories->getCategories() as $category) {
             if ($entityWithCategories instanceof ProductModelInterface &&
-                $this->authorizationChecker->isGranted(Attributes::EDIT_ITEMS, $category)) {
+                $this->authorizationChecker->isGranted(Attributes::EDIT_ITEMS, $category)
+            ) {
                 $isOwner = true;
             } elseif ($this->authorizationChecker->isGranted([Attributes::OWN_PRODUCTS], $category)) {
                 $isOwner = true;
@@ -151,6 +153,10 @@ class GrantedCategoryFieldSetter extends AbstractFieldSetter implements FieldSet
         }
         $user = $this->tokenStorage->getToken()->getUser();
 
-        return $this->categoryAccessRepository->areAllCategoryCodesGranted($user, Attributes::VIEW_ITEMS, $categoryCodes);
+        return $this->categoryAccessRepository->areAllCategoryCodesGranted(
+            $user,
+            Attributes::VIEW_ITEMS,
+            $categoryCodes
+        );
     }
 }
