@@ -47,7 +47,7 @@ Pim\Bundle\UserBundle\Entity\User:
         imageFile:
             - Image:        ~
 
-Oro\Bundle\UserBundle\Entity\Role:
+Pim\Component\User\Model\Role:
     constraints:
         - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity: label
     properties:
@@ -56,7 +56,7 @@ Oro\Bundle\UserBundle\Entity\Role:
             - Length:
                 max:        25
 
-Oro\Bundle\UserBundle\Entity\Group:
+Pim\Component\User\Model\Group:
     constraints:
         - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity: name
     properties:

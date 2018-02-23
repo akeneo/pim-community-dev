@@ -102,7 +102,7 @@ class Group implements GroupInterface
             $roleName = $role;
         } else {
             throw new \InvalidArgumentException(
-                '$role must be an instance of Oro\Bundle\UserBundle\Entity\Role or a string'
+                '$role must be an instance of Pim\Component\User\Model\Group or a string'
             );
         }
 
@@ -137,7 +137,7 @@ class Group implements GroupInterface
             $roleObject = $this->getRole($role);
         } else {
             throw new \InvalidArgumentException(
-                '$role must be an instance of Oro\Bundle\UserBundle\Entity\Role or a string'
+                '$role must be an instance of Pim\Component\User\Model\Group or a string'
             );
         }
         if ($roleObject) {

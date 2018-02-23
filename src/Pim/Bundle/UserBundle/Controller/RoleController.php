@@ -2,7 +2,9 @@
 
 namespace Pim\Bundle\UserBundle\Controller;
 
+use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Pim\Component\User\Model\Role;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -12,7 +14,7 @@ class RoleController extends Controller
 {
     /**
      * @AclAncestor("pim_user_role_create")
-     * @Template("OroUserBundle:Role:update.html.twig")
+     * @Template("PimUserBundle:Role:update.html.twig")
      */
     public function createAction()
     {

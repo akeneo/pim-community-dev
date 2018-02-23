@@ -2,12 +2,13 @@
 
 namespace Pim\Bundle\UserBundle\Controller;
 
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 class SecurityController extends Controller
 {
     /**
-     * @Template("OroUserBundle:Security:login.html.twig")
+     * @Template("PimUserBundle:Security:login.html.twig")
      */
     public function loginAction()
     {

@@ -2,8 +2,10 @@
 
 namespace Pim\Bundle\UserBundle\Controller;
 
+use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Pim\Component\User\Model\Group;
 use Pim\Component\User\UserEvents;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -15,7 +17,7 @@ class GroupController extends Controller
     /**
      * Create group form
      *
-     * @Template("OroUserBundle:Group:update.html.twig")
+     * @Template("PimUserBundle:Group:update.html.twig")
      * @AclAncestor("pim_user_group_create")
      */
     public function createAction()

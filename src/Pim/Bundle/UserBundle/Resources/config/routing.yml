@@ -11,4 +11,4 @@ security_rest:
     prefix: /rest/security
 
 old_oro_routes:
-    resource: "@UserBundle/Resources/config/routing/old_oro_routes.yml"
+    resource: "@PimUserBundle/Resources/config/routing/old_oro_routes.yml"

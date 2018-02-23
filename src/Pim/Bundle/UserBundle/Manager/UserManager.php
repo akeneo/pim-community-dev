@@ -7,6 +7,7 @@ use Doctrine\Common\Persistence\ObjectRepository;
 use Doctrine\ORM\QueryBuilder;
 use Pim\Bundle\UserBundle\Entity\User;
 use Pim\Bundle\UserBundle\Entity\UserInterface;
+use Pim\Component\User\Model\Role;
 use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
@@ -58,7 +59,7 @@ class UserManager implements UserProviderInterface
         // we need to make sure to have at least one role
         if ($user->getRolesCollection()->isEmpty()) {
             $role = $this->getStorageManager()
-                ->getRepository('OroUserBundle:Role')->findOneBy(['role' => User::ROLE_DEFAULT]);
+                ->getRepository(Role::class)->findOneBy(['role' => User::ROLE_DEFAULT]);
 
             if (!$role) {
                 throw new \RuntimeException('Default user role not found');

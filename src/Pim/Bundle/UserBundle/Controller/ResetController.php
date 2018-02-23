@@ -26,7 +26,7 @@ class ResetController extends Controller
         $user = $this->get('pim_user.manager')->findUserByUsernameOrEmail($username);
 
         if (null === $user) {
-            return $this->render('OroUserBundle:Reset:request.html.twig', ['invalid_username' => $username]);
+            return $this->render('PimUserBundle:Reset:request.html.twig', ['invalid_username' => $username]);
         }
 
         if ($user->isPasswordRequestNonExpired($this->container->getParameter('pim_user.reset.ttl'))) {
@@ -51,7 +51,7 @@ class ResetController extends Controller
             ->setFrom($this->container->getParameter('pim_user.email'))
             ->setTo($user->getEmail())
             ->setBody(
-                $this->renderView('OroUserBundle:Mail:reset.html.twig', ['user' => $user]),
+                $this->renderView('PimUserBundle:Mail:reset.html.twig', ['user' => $user]),
                 'text/html'
             );
 

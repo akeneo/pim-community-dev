@@ -32,7 +32,7 @@ class GroupType extends AbstractType
                 'entity',
                 array(
                     'label'    => 'Roles',
-                    'class'    => 'OroUserBundle:Role',
+                    'class'    => 'PimUserBundle:Role',
                     'query_builder' => function ($builder) {
                         return $builder->createQueryBuilder('r')
                             ->where('r.role != :anonRole')

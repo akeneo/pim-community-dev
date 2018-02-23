@@ -11,7 +11,7 @@ datagrid:
                     - g.id
                     - g.name
                 from:
-                    - { table: OroUserBundle:Group, alias: g }
+                    - { table: Pim\Component\User\Model\Group, alias: g }
                 where:
                     and:
                         - g.name <> '%pim_user.entity.class%::GROUP_DEFAULT'
