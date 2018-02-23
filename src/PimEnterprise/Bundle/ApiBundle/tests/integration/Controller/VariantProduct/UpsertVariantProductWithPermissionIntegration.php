@@ -185,7 +185,6 @@ JSON;
             WHERE identifier = "colored_sized_sweat_own"
 SQL;
 
-
         $this->assertUpdated('colored_sized_sweat_own', $data, $sql, [
             ['code' => 'view_category'],
             ['code' => 'edit_category'],
@@ -244,8 +243,6 @@ JSON;
         $data = '{"categories": ["own_category"]}';
 
         $this->assertUnauthorized('colored_sized_shoes_view', $data, sprintf($message, 'colored_sized_shoes_view'));
-        $this->assertUnauthorized('colored_sized_tshirt_view', $data, sprintf($message, 'colored_sized_tshirt_view'));
-        $this->assertUnauthorized('colored_sized_tshirt_view', $data, sprintf($message, 'colored_sized_tshirt_view'));
         $this->assertUnauthorized('colored_sized_tshirt_view', $data, sprintf($message, 'colored_sized_tshirt_view'));
         $this->assertUpdated('colored_sized_tshirt_view', '{}');
     }

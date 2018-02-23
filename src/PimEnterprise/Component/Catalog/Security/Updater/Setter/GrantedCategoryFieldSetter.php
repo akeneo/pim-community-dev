@@ -16,6 +16,7 @@ use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Persistence\ObjectRepository;
 use Doctrine\Common\Util\ClassUtils;
+use Pim\Component\Catalog\Model\ProductModelInterface;
 use Pim\Component\Catalog\Model\VariantProductInterface;
 use Pim\Component\Catalog\Updater\Setter\AbstractFieldSetter;
 use Pim\Component\Catalog\Updater\Setter\FieldSetterInterface;
@@ -77,6 +78,10 @@ class GrantedCategoryFieldSetter extends AbstractFieldSetter implements FieldSet
     {
         $areCategoriesVisible = $this->areAllCategoriesVisibleOnEntity($entityWithCategories);
         $wasOwner = $this->authorizationChecker->isGranted([Attributes::OWN], $entityWithCategories);
+        if($entityWithCategories instanceof ProductModelInterface &&
+            $this->authorizationChecker->isGranted(Attributes::EDIT_ITEMS, $entityWithCategories)) {
+            $wasOwner = true;
+        }
 
         $this->categoryFieldSetter->setFieldData($entityWithCategories, $field, $data, $options);
 
@@ -99,7 +104,11 @@ class GrantedCategoryFieldSetter extends AbstractFieldSetter implements FieldSet
         }
 
         foreach ($entityWithCategories->getCategories() as $category) {
-            if ($this->authorizationChecker->isGranted([Attributes::OWN_PRODUCTS], $category)) {
+            if ($entityWithCategories instanceof ProductModelInterface &&
+                $this->authorizationChecker->isGranted(Attributes::EDIT_ITEMS, $category)) {
+                $isOwner = true;
+            }
+            else if ($this->authorizationChecker->isGranted([Attributes::OWN_PRODUCTS], $category)) {
                 $isOwner = true;
             }
         }
