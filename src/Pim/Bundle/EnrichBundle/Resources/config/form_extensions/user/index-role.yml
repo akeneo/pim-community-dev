@@ -66,5 +66,5 @@ extensions:
         aclResourceId: pim_user_role_create
         config:
             label: pim_enrich.index.user_role.create_btn
-            route: oro_user_role_create
+            route: pim_user_role_create
             buttonClass: AknButton AknButton--apply

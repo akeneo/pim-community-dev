@@ -74,7 +74,7 @@ class UserType extends AbstractType
         string $productGridFilterTypeClassName
     ) {
         $this->tokenStorage = $tokenStorage;
-        $this->isMyProfilePage = 'oro_user_profile_update' === $requestStack
+        $this->isMyProfilePage = 'pim_user_profile_update' === $requestStack
                 ->getCurrentRequest()
                 ->attributes
                 ->get('_route');

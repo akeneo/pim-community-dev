@@ -126,6 +126,6 @@ class AclRoleType extends AbstractType
      */
     public function getBlockPrefix()
     {
-        return 'oro_user_role_form';
+        return 'pim_user_role_form';
     }
 }

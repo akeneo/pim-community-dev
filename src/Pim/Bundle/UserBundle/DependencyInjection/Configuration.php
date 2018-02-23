@@ -15,7 +15,7 @@ class Configuration implements ConfigurationInterface
     {
         $builder = new TreeBuilder();
         $builder
-            ->root('oro_user')
+            ->root('pim_user')
             ->children()
                 ->arrayNode('reset')
                     ->addDefaultsIfNotSet()

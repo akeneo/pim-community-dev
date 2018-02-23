@@ -55,6 +55,6 @@ class ResetType extends AbstractType
      */
     public function getBlockPrefix()
     {
-        return 'oro_user_reset';
+        return 'pim_user_reset';
     }
 }

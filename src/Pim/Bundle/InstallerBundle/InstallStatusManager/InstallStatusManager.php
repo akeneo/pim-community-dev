@@ -9,7 +9,7 @@ use Doctrine\DBAL\Exception\ConnectionException;
 use Pim\Bundle\InstallerBundle\Exception\UnavailableCreationTimeException;
 
 /**
- * Checks whether the PIM has already been installed by checking that an 'oro_user' table exists.
+ * Checks whether the PIM has already been installed by checking that an 'pim_user' table exists.
  *
  * @author    Vincent Berruchon <vincent.berruchon@akeneo.com>
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
@@ -17,7 +17,7 @@ use Pim\Bundle\InstallerBundle\Exception\UnavailableCreationTimeException;
  */
 class InstallStatusManager
 {
-    public const INSTALL_TABLE_NAME ='oro_user';
+    public const INSTALL_TABLE_NAME ='pim_user';
     public const MYSQL_META_COLUMN_CREATE_TIME ='create_time';
 
     /**
@@ -41,7 +41,7 @@ class InstallStatusManager
     }
 
     /**
-     * Returns null if the PIM not installed or returns the timestamp of creation of the 'oro_user' table.
+     * Returns null if the PIM not installed or returns the timestamp of creation of the 'pim_user' table.
      *
      * @return \DateTime
      */

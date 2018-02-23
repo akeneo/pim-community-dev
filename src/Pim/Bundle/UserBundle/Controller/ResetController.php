@@ -7,7 +7,7 @@ use Symfony\Component\HttpFoundation\Request;
 
 class ResetController extends Controller
 {
-    const SESSION_EMAIL = 'oro_user_reset_email';
+    const SESSION_EMAIL = 'pim_user_reset_email';
 
     /**
      * @Template
@@ -23,19 +23,19 @@ class ResetController extends Controller
     public function sendEmailAction(Request $request)
     {
         $username = $request->request->get('username');
-        $user = $this->get('oro_user.manager')->findUserByUsernameOrEmail($username);
+        $user = $this->get('pim_user.manager')->findUserByUsernameOrEmail($username);
 
         if (null === $user) {
             return $this->render('OroUserBundle:Reset:request.html.twig', ['invalid_username' => $username]);
         }
 
-        if ($user->isPasswordRequestNonExpired($this->container->getParameter('oro_user.reset.ttl'))) {
+        if ($user->isPasswordRequestNonExpired($this->container->getParameter('pim_user.reset.ttl'))) {
             $this->get('session')->getFlashBag()->add(
                 'warn',
                 'The password for this user has already been requested within the last 24 hours.'
             );
 
-            return $this->redirect($this->generateUrl('oro_user_reset_request'));
+            return $this->redirect($this->generateUrl('pim_user_reset_request'));
         }
 
         if (null === $user->getConfirmationToken()) {
@@ -48,7 +48,7 @@ class ResetController extends Controller
          * @todo Move to postUpdate lifecycle event handler as service
          */
         $message = (new \Swift_Message('Reset password'))
-            ->setFrom($this->container->getParameter('oro_user.email'))
+            ->setFrom($this->container->getParameter('pim_user.email'))
             ->setTo($user->getEmail())
             ->setBody(
                 $this->renderView('OroUserBundle:Mail:reset.html.twig', ['user' => $user]),
@@ -58,9 +58,9 @@ class ResetController extends Controller
         $user->setPasswordRequestedAt(new \DateTime('now', new \DateTimeZone('UTC')));
 
         $this->get('mailer')->send($message);
-        $this->get('oro_user.manager')->updateUser($user);
+        $this->get('pim_user.manager')->updateUser($user);
 
-        return $this->redirect($this->generateUrl('oro_user_reset_check_email'));
+        return $this->redirect($this->generateUrl('pim_user_reset_check_email'));
     }
 
     /**
@@ -77,7 +77,7 @@ class ResetController extends Controller
 
         if (empty($email)) {
             // the user does not come from the sendEmail action
-            return $this->redirect($this->generateUrl('oro_user_reset_request'));
+            return $this->redirect($this->generateUrl('pim_user_reset_request'));
         }
 
         return [
@@ -92,7 +92,7 @@ class ResetController extends Controller
      */
     public function resetAction($token)
     {
-        $user = $this->get('oro_user.manager')->findUserByConfirmationToken($token);
+        $user = $this->get('pim_user.manager')->findUserByConfirmationToken($token);
         $session = $this->get('session');
 
         if (null === $user) {
@@ -101,28 +101,28 @@ class ResetController extends Controller
             );
         }
 
-        if (!$user->isPasswordRequestNonExpired($this->container->getParameter('oro_user.reset.ttl'))) {
+        if (!$user->isPasswordRequestNonExpired($this->container->getParameter('pim_user.reset.ttl'))) {
             $session->getFlashBag()->add(
                 'warn',
                 'The password for this user has already been requested within the last 24 hours.'
             );
 
-            return $this->redirect($this->generateUrl('oro_user_reset_request'));
+            return $this->redirect($this->generateUrl('pim_user_reset_request'));
         }
 
-        if ($this->get('oro_user.form.handler.reset')->process($user)) {
+        if ($this->get('pim_user.form.handler.reset')->process($user)) {
             $session->getFlashBag()->add('success', 'Your password has been successfully reset. You may login now.');
 
             // force user logout
             $session->invalidate();
             $this->get('security.token_storage')->setToken(null);
 
-            return $this->redirect($this->generateUrl('oro_user_security_login'));
+            return $this->redirect($this->generateUrl('pim_user_security_login'));
         }
 
         return [
             'token' => $token,
-            'form'  => $this->get('oro_user.form.reset')->createView(),
+            'form'  => $this->get('pim_user.form.reset')->createView(),
         ];
     }
 

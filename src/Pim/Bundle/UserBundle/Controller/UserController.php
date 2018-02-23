@@ -31,7 +31,7 @@ class UserController extends Controller
      */
     public function viewProfileAction()
     {
-        return $this->view($this->getUser(), 'oro_user_profile_update');
+        return $this->view($this->getUser(), 'pim_user_profile_update');
     }
 
     /**
@@ -40,16 +40,16 @@ class UserController extends Controller
     public function updateProfileAction()
     {
         $user = $this->getUser();
-        $route = $this->get('router')->generate('oro_user_profile_update');
+        $route = $this->get('router')->generate('pim_user_profile_update');
 
-        if ($this->get('oro_user.form.handler.user')->process($user)) {
+        if ($this->get('pim_user.form.handler.user')->process($user)) {
             $this->update($user);
 
             return new RedirectResponse($route);
         }
 
         return [
-            'form'      => $this->get('oro_user.form.user')->createView(),
+            'form'      => $this->get('pim_user.form.user')->createView(),
             'editRoute' => $route,
         ];
     }
@@ -64,17 +64,17 @@ class UserController extends Controller
     {
         $user = $this->get('pim_user.factory.user')->create();
 
-        if ($this->get('oro_user.form.handler.user')->process($user)) {
+        if ($this->get('pim_user.form.handler.user')->process($user)) {
             $user = $this->update($user);
 
             return new RedirectResponse(
-                $this->get('router')->generate('oro_user_update', ['id' => $user->getId()])
+                $this->get('router')->generate('pim_user_update', ['id' => $user->getId()])
             );
         }
 
         return [
-            'form'      => $this->get('oro_user.form.user')->createView(),
-            'editRoute' => $this->get('router')->generate('oro_user_create')
+            'form'      => $this->get('pim_user.form.user')->createView(),
+            'editRoute' => $this->get('router')->generate('pim_user_create')
         ];
     }
 
@@ -91,16 +91,16 @@ class UserController extends Controller
             throw new NotFoundHttpException(sprintf('User with the ID "%s" does not exit', $id));
         }
 
-        $route = $this->get('router')->generate('oro_user_update', ['id' => $user->getId()]);
+        $route = $this->get('router')->generate('pim_user_update', ['id' => $user->getId()]);
 
-        if ($this->get('oro_user.form.handler.user')->process($user)) {
+        if ($this->get('pim_user.form.handler.user')->process($user)) {
             $this->update($user);
 
             return new RedirectResponse($route);
         }
 
         return [
-            'form'      => $this->get('oro_user.form.user')->createView(),
+            'form'      => $this->get('pim_user.form.user')->createView(),
             'editRoute' => $route
         ];
     }
@@ -129,7 +129,7 @@ class UserController extends Controller
         $currentUser = $tokenStorage ? $tokenStorage->getUser() : null;
         if (is_object($currentUser) && $currentUser->getId() != $id) {
             $em = $this->get('doctrine.orm.entity_manager');
-            $userClass = $this->container->getParameter('oro_user.entity.class');
+            $userClass = $this->container->getParameter('pim_user.entity.class');
             $user = $em->getRepository($userClass)->find($id);
 
             if (!$user) {

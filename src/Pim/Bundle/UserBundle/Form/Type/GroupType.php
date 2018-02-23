@@ -83,6 +83,6 @@ class GroupType extends AbstractType
      */
     public function getBlockPrefix()
     {
-        return 'oro_user_group';
+        return 'pim_user_group';
     }
 }

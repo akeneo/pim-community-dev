@@ -28,7 +28,7 @@ class UserConfigManagerTest extends \PHPUnit_Framework_TestCase
      * @var array
      */
     protected $settings = [
-        'oro_user' => [
+        'pim_user' => [
             'level'    => [
                 'value' => 20,
                 'type'  => 'scalar',

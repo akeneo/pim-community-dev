@@ -279,7 +279,7 @@ extensions:
         position: 130
         config:
             title: pim_menu.item.user
-            to: oro_user_index
+            to: pim_user_index
 
     pim-menu-system-user-group:
         module: pim/menu/item
@@ -288,7 +288,7 @@ extensions:
         position: 140
         config:
             title: pim_menu.item.user_group
-            to: oro_user_group_index
+            to: pim_user_group_index
 
     pim-menu-system-user-role:
         module: pim/menu/item
@@ -297,7 +297,7 @@ extensions:
         position: 150
         config:
             title: pim_menu.item.user_role
-            to: oro_user_role_index
+            to: pim_user_role_index
 
     pim-menu-help:
         module: pim/menu/help
