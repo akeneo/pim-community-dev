@@ -16,6 +16,7 @@ use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Persistence\ObjectRepository;
 use Doctrine\Common\Util\ClassUtils;
+use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\VariantProductInterface;
 use Pim\Component\Catalog\Updater\Setter\AbstractFieldSetter;
 use Pim\Component\Catalog\Updater\Setter\FieldSetterInterface;
@@ -82,8 +83,9 @@ class GrantedCategoryFieldSetter extends AbstractFieldSetter implements FieldSet
 
         $isOwner = false;
 
-        // TODO: @merge refactor this line on master after variant product refactoring
-        $categories = $entityWithCategories instanceof VariantProductInterface ?
+        // TODO: refactor it by introducing a method getCategoriesForVariation for ProductModelInterface
+        // TODO: and a common interface with ProductInterface
+        $categories = $entityWithCategories instanceof ProductInterface ?
             $entityWithCategories->getCategoriesForVariation() : $entityWithCategories->getCategories();
 
         foreach ($categories as $category) {

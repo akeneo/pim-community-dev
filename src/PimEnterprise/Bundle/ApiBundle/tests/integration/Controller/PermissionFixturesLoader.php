@@ -9,7 +9,6 @@ use PHPUnit\Framework\Assert;
 use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
-use Pim\Component\Catalog\Model\VariantProductInterface;
 use PimEnterprise\Component\Security\Attributes;
 use Psr\Container\ContainerInterface;
 
@@ -128,7 +127,7 @@ class PermissionFixturesLoader
         $this->createProduct('product_no_view', $productNoView);
         $this->createProduct('product_view', $productView);
         $this->createProduct('product_own', $productOwn);
-        $this->createVariantProduct('variant_product', $variantProduct);
+        $this->createProduct('variant_product', $variantProduct);
     }
 
     /**
@@ -254,7 +253,7 @@ class PermissionFixturesLoader
 
         $this->createProductModel($rootProductModel);
         $this->createProductModel($subProductModel);
-        $this->createVariantProduct('variant_product', $variantProduct);
+        $this->createProduct('variant_product', $variantProduct);
     }
 
 
@@ -402,7 +401,7 @@ class PermissionFixturesLoader
                 ],
             ];
 
-            $this->createVariantProduct($identifier, $data);
+            $this->createProduct($identifier, $data);
         }
     }
 
@@ -526,29 +525,6 @@ class PermissionFixturesLoader
         $errors = $this->container->get('validator')->validate($familyVariant);
         Assert::assertCount(0, $errors);
         $this->container->get('pim_catalog.saver.family_variant')->save($familyVariant);
-    }
-
-    /**
-     * @param string $identifier
-     * @param array  $data
-     *
-     * @return VariantProductInterface
-     * @throws \Exception
-     */
-    protected function createVariantProduct($identifier, array $data = []) : VariantProductInterface
-    {
-        $product = $this->container->get('pim_catalog.builder.variant_product')->createProduct($identifier);
-        $this->container->get('pim_catalog.updater.product')->update($product, $data);
-
-        $errors = $this->container->get('pim_catalog.validator.product')->validate($product);
-
-        Assert::assertCount(0, $errors);
-
-        $this->container->get('pim_catalog.saver.product')->save($product);
-
-        $this->container->get('akeneo_elasticsearch.client.product')->refreshIndex();
-
-        return $product;
     }
 
     /**
