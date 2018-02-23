@@ -190,7 +190,7 @@ class ProductProcessor implements ItemProcessorInterface, StepExecutionAwareInte
     }
 
     /**
-     * Are there attributes to filters ?
+     * Are there attributes to filter?
      *
      * @param JobParameters $parameters
      *
