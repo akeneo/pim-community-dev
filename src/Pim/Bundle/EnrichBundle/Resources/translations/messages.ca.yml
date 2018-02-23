@@ -699,6 +699,7 @@ Format address by address country: Format d'adreça per país
 Language: Idioma
 Timezone: Zona horària
 Currency: Moneda
+settings: Preferències
 oro.locale:
   address_format:
     region_name_type:

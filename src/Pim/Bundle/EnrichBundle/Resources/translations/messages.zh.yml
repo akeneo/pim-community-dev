@@ -699,6 +699,7 @@ Format address by address country: 按地址所在国家进行格式化地址
 Language: 语言
 Timezone: 时区
 Currency: 货币
+settings: 设置 
 oro.locale:
   address_format:
     region_name_type:
