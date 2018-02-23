@@ -1,5 +1,5 @@
 <?php
-namespace Oro\Bundle\UserBundle\Entity\Repository;
+namespace Pim\Bundle\UserBundle\Repository;
 
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
