@@ -1,8 +1,8 @@
 <?php
 
-namespace Oro\Bundle\UserBundle;
+namespace Pim\Component\User;
 
-class OroUserEvents
+class UserEvents
 {
     const PRE_CREATE_GROUP = 'oro.user.pre_create_group';
     const POST_CREATE_GROUP = 'oro.user.post_create_group';

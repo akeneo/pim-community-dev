@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\UserBundle\Controller;
 
-use Oro\Bundle\UserBundle\OroUserEvents;
 use Pim\Component\User\Model\Group;
+use Pim\Component\User\UserEvents;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -20,7 +20,7 @@ class GroupController extends Controller
      */
     public function createAction()
     {
-        $this->dispatchGroupEvent(OroUserEvents::PRE_CREATE_GROUP);
+        $this->dispatchGroupEvent(UserEvents::PRE_CREATE_GROUP);
         return $this->update(new Group());
     }
 
@@ -32,7 +32,7 @@ class GroupController extends Controller
      */
     public function updateAction(Group $entity)
     {
-        $this->dispatchGroupEvent(OroUserEvents::PRE_UPDATE_GROUP, $entity);
+        $this->dispatchGroupEvent(UserEvents::PRE_UPDATE_GROUP, $entity);
         return $this->update($entity);
     }
 
