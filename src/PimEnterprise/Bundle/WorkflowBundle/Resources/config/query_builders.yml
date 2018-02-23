@@ -2,6 +2,7 @@ parameters:
   pimee_workflow.query.elasticsearch.filter.author.class: PimEnterprise\Bundle\WorkflowBundle\Elasticsearch\Filter\Field\AuthorFilter
   pimee_workflow.query.elasticsearch.filter.label_or_identifier.class: PimEnterprise\Bundle\WorkflowBundle\Elasticsearch\Filter\Field\LabelOrIdentifierFilter
   pimee_workflow.query.elasticsearch.filter.identifier.class: PimEnterprise\Bundle\WorkflowBundle\Elasticsearch\Filter\Field\IdentifierFilter
+  pimee_workflow.query.elasticsearch.sorter.author.class: PimEnterprise\Bundle\WorkflowBundle\Elasticsearch\Sorter\Field\AuthorSorter
 
 services:
     pimee_workflow.doctrine.query.published_product_query_builder_factory:
@@ -161,7 +162,7 @@ services:
 
     #Sorters
     pimee_workflow.query.elasticsearch.sorter.author:
-        class: '%pim_catalog.query.elasticsearch.sorter.base_field.class%'
+        class: '%pimee_workflow.query.elasticsearch.sorter.author.class%'
         arguments:
             - ['author']
         tags:
