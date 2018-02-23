@@ -712,6 +712,7 @@ Format address by address country: Formatiere nach Land der Adresse
 Language: Sprache
 Timezone: Zeitzone
 Currency: Währung
+settings: Einstellungen
 oro.locale:
   address_format:
     region_name_type:
