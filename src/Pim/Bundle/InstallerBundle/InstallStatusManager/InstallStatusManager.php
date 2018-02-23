@@ -17,7 +17,7 @@ use Pim\Bundle\InstallerBundle\Exception\UnavailableCreationTimeException;
  */
 class InstallStatusManager
 {
-    public const INSTALL_TABLE_NAME ='pim_user';
+    public const INSTALL_TABLE_NAME ='oro_user';
     public const MYSQL_META_COLUMN_CREATE_TIME ='create_time';
 
     /**
