@@ -107,7 +107,7 @@ Pim\Bundle\UserBundle\Entity\User:
         roles:
             targetEntity: Pim\Component\User\Model\Role
             joinTable:
-                name: pim_user_access_role
+                name: oro_user_access_role
                 joinColumns:
                     user_id:
                         referencedColumnName: id
@@ -119,7 +119,7 @@ Pim\Bundle\UserBundle\Entity\User:
         groups:
             targetEntity: Pim\Component\User\Model\Group
             joinTable:
-                name: pim_user_access_group
+                name: oro_user_access_group
                 joinColumns:
                     user_id:
                         referencedColumnName: id
