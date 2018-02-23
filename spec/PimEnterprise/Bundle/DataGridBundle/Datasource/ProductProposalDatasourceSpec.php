@@ -59,11 +59,6 @@ class ProductProposalDatasourceSpec extends ObjectBehavior
                     'code' => 'attribute_3'
                 ],
             ],
-            'locale_code' => 'fr_FR',
-            'scope_code' => 'ecommerce',
-
-            'association_type_id' => 2,
-            'current_group_id' => 3,
             PagerExtension::PER_PAGE_PARAM => 15
         ];
 
@@ -72,8 +67,6 @@ class ProductProposalDatasourceSpec extends ObjectBehavior
             'repository_method'     => 'createQueryBuilder',
             'limit'                 => 15,
             'from'                  => 0,
-            'default_locale'        => 'fr_FR',
-            'default_scope'         => 'ecommerce',
         ])->willReturn($pqb);
 
         $pqb->getQueryBuilder()->shouldBeCalledTimes(1);
@@ -92,12 +85,7 @@ class ProductProposalDatasourceSpec extends ObjectBehavior
 
         $productProposalNormalizer->normalize(
             $productProposal,
-            'datagrid',
-            [
-                'locales'             => ['fr_FR'],
-                'channels'            => ['ecommerce'],
-                'data_locale'         => 'fr_FR'
-            ]
+            'datagrid'
         )->willReturn(
             [
                 'identifier'       => 'product_1',

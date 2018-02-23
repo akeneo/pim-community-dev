@@ -46,7 +46,7 @@ class FiltersConfigurator implements ConfiguratorInterface
     protected $isProjectOwner = false;
 
     /**
-     * @param ConfiguratorInterface      $filtersConfiguration
+     * @param ConfiguratorInterface      $filtersConfigurator
      * @param RequestStack               $stack
      * @param ProjectRepositoryInterface $projectRepository
      * @param TokenStorageInterface      $tokenStorage

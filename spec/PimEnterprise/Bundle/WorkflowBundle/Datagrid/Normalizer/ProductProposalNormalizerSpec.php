@@ -12,10 +12,8 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class ProductProposalNormalizerSpec extends ObjectBehavior
 {
-    function let(CollectionFilterInterface $filter, NormalizerInterface $normalizer)
+    function let(NormalizerInterface $normalizer)
     {
-        $this->beConstructedWith($filter);
-
         $normalizer->implement(NormalizerInterface::class);
         $this->setNormalizer($normalizer);
     }
@@ -33,7 +31,7 @@ class ProductProposalNormalizerSpec extends ObjectBehavior
 
     function it_normalizes(
         $normalizer,
-        $filter,
+        CollectionFilterInterface $filter,
         ProductDraftInterface $productProposal,
         ValueCollectionInterface $valueCollection,
         ProductInterface $product
