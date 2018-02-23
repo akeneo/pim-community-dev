@@ -2,6 +2,7 @@
 
 namespace Oro\Bundle\UserBundle\DependencyInjection;
 
+use Pim\Bundle\UserBundle\DependencyInjection\Configuration;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader;

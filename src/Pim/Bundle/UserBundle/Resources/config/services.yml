@@ -1,5 +1,41 @@
-pim_user.security.provider:
-    class: 'Pim\Bundle\UserBundle\Security\UserProvider'
-    public: false
-    arguments:
-        - '@oro_user.manager'
+parameters:
+    oro_user.manager.class: Pim\Bundle\UserBundle\Manager\UserManager
+    oro_user.entity.class: Pim\Bundle\UserBundle\Entity\User
+    oro_user.group.entity.class: Pim\Component\User\Model\Group
+    oro_user.role.entity.class: Pim\Component\User\Model\Role
+
+services:
+    oro_user.manager:
+        class: 'Pim\Bundle\UserBundle\Manager\UserManager'
+        arguments: ['%oro_user.entity.class%', "@doctrine.orm.entity_manager", "@security.encoder_factory"]
+
+    oro_user.security.login:
+        class: 'Pim\Bundle\UserBundle\EventListener\LoginSubscriber'
+        arguments: ["@oro_user.manager"]
+        tags:
+            - { name: kernel.event_listener, event: security.interactive_login, method: onLogin }
+
+    oro_user.role.listener:
+        class: 'Pim\Bundle\UserBundle\EventListener\RoleListener'
+        arguments: ["@oro_security.link.sid_manager"]
+        tags:
+            - { name: doctrine.event_listener, event: preUpdate }
+
+    oro_user.entity_with_image.subscriber:
+        class: 'Pim\Bundle\UserBundle\EventSubscriber\UploadedImageSubscriber'
+        arguments:
+            - '%kernel.root_dir%'
+        tags:
+            - { name: doctrine.event_subscriber }
+
+    oro_user.change_password.subscriber:
+        class: 'Pim\Bundle\UserBundle\Form\Subscriber\ChangePasswordSubscriber'
+        arguments:
+            - '@form.factory'
+            - '@security.token_storage'
+
+    pim_user.security.provider:
+        class: 'Pim\Bundle\UserBundle\Security\UserProvider'
+        public: false
+        arguments:
+            - '@oro_user.manager'

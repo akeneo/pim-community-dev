@@ -1,6 +1,6 @@
 <?php
 
-namespace Oro\Bundle\UserBundle\DependencyInjection;
+namespace Pim\Bundle\UserBundle\DependencyInjection;
 
 use Pim\Bundle\UserBundle\Form\Type\AclAccessLevelSelectorType;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;

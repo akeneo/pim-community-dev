@@ -10,7 +10,7 @@ security:
             chain:
                 providers:                  [oro_user]
         oro_user:
-            id:                             oro_user.security.provider
+            id:                             pim_user.security.provider
 
     encoders:
         Pim\Bundle\UserBundle\Entity\User: sha512
