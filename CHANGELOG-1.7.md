@@ -1,6 +1,10 @@
 # 1.7.x
 
-## Big Fixes
+# Improvements
+
+- IM-824: Change message when the user or email is not valid to a more generic message
+
+## Bug Fixes
 
 - PIM-7164: Fix a memory leak on product export caused by associated products not being detached
 
