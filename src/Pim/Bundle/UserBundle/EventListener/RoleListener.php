@@ -1,6 +1,6 @@
 <?php
 
-namespace Oro\Bundle\UserBundle\EventListener;
+namespace Pim\Bundle\UserBundle\EventListener;
 
 use Doctrine\ORM\Event\PreUpdateEventArgs;
 use Oro\Bundle\SecurityBundle\Acl\Persistence\AclSidManager;

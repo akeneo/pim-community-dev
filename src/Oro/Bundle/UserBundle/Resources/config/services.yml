@@ -4,8 +4,8 @@ parameters:
     oro_user.group.entity.class:      Oro\Bundle\UserBundle\Entity\Group
     oro_user.role.entity.class:       Oro\Bundle\UserBundle\Entity\Role
     oro_user.security.provider.class: Oro\Bundle\UserBundle\Security\UserProvider
-    oro_user.security.login.class:    Oro\Bundle\UserBundle\EventListener\LoginSubscriber
-    oro_user.role.listener.class:     Oro\Bundle\UserBundle\EventListener\RoleListener
+    oro_user.security.login.class:    Pim\Bundle\UserBundle\EventListener\LoginSubscriber
+    oro_user.role.listener.class:     Pim\Bundle\UserBundle\EventListener\RoleListener
     oro_user.entity_with_image.subscriber.class: Pim\Bundle\UserBundle\EventSubscriber\UploadedImageSubscriber
     oro_user.change_password.subscriber.class:   Oro\Bundle\UserBundle\Form\EventListener\ChangePasswordSubscriber
 

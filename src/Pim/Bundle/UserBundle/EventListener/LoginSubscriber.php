@@ -1,6 +1,6 @@
 <?php
 
-namespace Oro\Bundle\UserBundle\EventListener;
+namespace Pim\Bundle\UserBundle\EventListener;
 
 use Oro\Bundle\UserBundle\Entity\UserManager;
 use Pim\Bundle\UserBundle\Entity\UserInterface;
