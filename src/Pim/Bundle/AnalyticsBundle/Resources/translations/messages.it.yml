@@ -19,6 +19,7 @@ pim_analytics:
     registered_bundles: Bundle registrati
     nb_channels: Numero di canali
     nb_products: Numero di prodotti
+    nb_product_models: Numero di modelli di prodotto
     nb_attributes: Numero di attributi
     nb_scopable_attributes: Numero di attributi customizzabili per canale
     nb_localizable_attributes: Numero di attributi localizzabili

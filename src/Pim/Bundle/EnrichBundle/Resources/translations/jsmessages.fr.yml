@@ -6,6 +6,7 @@ confirmation:
     attribute: Êtes-vous sûr(e) de vouloir supprimer cet attribut ?
     attribute_group: Êtes-vous sûr(e) de vouloir supprimer ce groupe d'attributs ?
     family: Êtes-vous sûr(e) de que vouloir supprimer cette famille ?
+    family_variant: Êtes-vous sûr(e) de vouloir supprimer la variante de famille ?
     product: Êtes-vous sûr(e) de que vouloir supprimer ce produit ?
     product_model: Êtes-vous sûr de que vouloir supprimer ce modèle de produit ? Tous ses enfants, modèles de produit et de variantes de produits seront également supprimés.
     channel: Êtes-vous sûr(e) de que vouloir supprimer ce canal ?
@@ -46,6 +47,8 @@ flash:
     removed: Groupe d'attributs supprimé avec succès
   family:
     removed: Famille supprimée avec succès
+  family_variant:
+    removed: La variante de famille a été supprimée
   product:
     removed: Produit supprimé avec succès
   product_model:

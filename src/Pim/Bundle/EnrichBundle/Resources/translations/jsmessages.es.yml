@@ -221,10 +221,20 @@ pim_enrich:
         created: Producto creado éxitosamente
       completeness: Completo
     product_model:
+      create_popin:
+        content: Un modelo de producto reúne todas sus variantes y facilita el enriquecimiento de sus propiedades comunes.
+      info:
+        create_successful: Modelo de producto creado éxitosamente
+        update_successful: Modelo de producto actualizado exitosamente. La integridad de sus productos variantes se recalculará.
+        update_failed: El modelo de producto no pudo ser actualizado.
+        field_not_ready: "El modelo de producto no puede ser guardado en el momento. Los siguientes campos no están listos: {{ fields }}"
       add_child:
+        create: Añadir nuevo
         cancel: Cancelar
         confirm: Confirmar
+        create_label: "Añadir un nuevo {{ axes }}"
         fields:
+          required_label: (eje variante)
           code: Código
     association_type:
       info:
@@ -232,6 +242,7 @@ pim_enrich:
         deletion_failed: No se ha podido eliminar correctamente el tipo de asociación.
         update_successful: Tipo de asociación actualizado correctamente.
         update_failed: No se ha podido actualizar el tipo de asociación.
+        field_not_ready: "El tipo de asociación no se puede guardar ahora. No están listos los siguientes campos: {{ fields }}"
       meta:
         created: Creado
         created_by: Creado por
@@ -245,6 +256,11 @@ pim_enrich:
       message:
         created: Tipo de asociación se creó correctamente
     group_type:
+      info:
+        deletion_successful: Tipo de grupo eliminado exitosamente.
+        deletion_failed: No se pudo eliminar el tipo de grupo.
+        update_successful: Tipo de grupo actualizado correctamente.
+        update_failed: El tipo de grupo no pudo ser actualizado.
       meta:
         created: Creado
         created_by: Creado por
@@ -277,8 +293,13 @@ pim_enrich:
       title: familia
       selected: familias seleccionadas
       info:
+        update_successful: Familia actualizada con éxito.
         create_successful: Canal creado correctamente.
         update_failed: Ha ocurrido un error durante la actualización de la familia.
+        cant_remove_attribute_as_label: No se puede remover el atributo utilizado como etiqueta
+        cant_remove_attribute_as_image: No se puede quitar el atributo utilizado como la imagen principal
+        attribute_edit_permission_is_not_granted: Usted no tiene derechos para editar los atributos de la familia
+        cant_remove_attribute_used_as_axis: No se puede quitar este atributo utilizado como eje variante en una variante familiar
       meta:
         created: Creado
         created_by: Creado por
@@ -291,10 +312,14 @@ pim_enrich:
       message:
         created: Familia creada correctamente
       variant:
+        axis.label: Eje variante
+        create_label: Crear una nueva variante de familia
+        create_description: En una variante de familia, puede definir una estructura para productos con variantes. Elija el número de los distintos niveles de variantes gestionados, los atributos utilizados como ejes variantes para cada nivel y luego defina cómo se distribuyen los atributos.
         create: Crear
         cancel: Cancelar
         code: Código
         label: Etiqueta
+        levels: Niveles de variantes
     attribute_option:
       code: Código
       label: Etiqueta
@@ -675,6 +700,8 @@ pim_enrich:
     basket:
       title: Cesta
       empty_basket: La cesta está vacía
+  job:
+    upload: Soltar su archivo {{ type }} aquí, o haga clic para buscar en el disco
   export:
     product:
       data:
@@ -693,6 +720,7 @@ pim_enrich:
         attributes:
           title: Atributos
           edit: Editar
+          label: "Todos los atributos {0} |{1} Un atributo seleccionado |] 1, Inf [{{ count }} atributos seleccionados"
           help: "Seleccionar la información de producto a exportar. Ej.: solo atributos técnicos."
           empty: Se exportarán todos los atributos
           modal:
@@ -707,6 +735,7 @@ pim_enrich:
           all_group: Todos los grupos
           empty_selection: Se exportarán todos los atributos
           title: Atributos
+          description: Seleccione la información del producto a exportar
         family:
           title: Familia
           help: "Seleccionar los productos a exportar según su familia. Ej.: Exportar sólo los zapatos y vestidos."
@@ -744,6 +773,7 @@ pim_enrich:
           help: Usar las categorías de producto en el árbol (definido por el canal anterior) para seleccionar los productos a exportar
         identifier:
           title: Identificador
+          help: Use los identificadores de producto para exportar separados por comas, espacios o saltos de línea
         metric:
           operators:
             "=": Es igual que
@@ -813,6 +843,8 @@ pim_enrich:
       global_settings:
         title: Configuración global
   index:
+    association_type:
+      create_btn: Crear un tipo de asociación
     import_profiles:
       list: Seleccionar un trabajo
       create_popin:
@@ -822,13 +854,18 @@ pim_enrich:
     export_profiles:
       create_popin:
         title: Crear
+    grouptype:
+      create_btn: Crear tipo de grupo
     user:
       create_btn: Crear usuario
     user_role:
       create_btn: Crear rol
     user_group:
       create_btn: Crear grupo
+    channel:
+      create_btn: Crear canal
     attribute:
+      create_btn: Crear atributo
       modal_title: Elija el tipo de atributo
     attribute_group:
       title: Grupos de atributos
@@ -837,9 +874,11 @@ pim_enrich:
       create_btn: Crear
   mass_edit:
     next: Siguiente
+    previous: Atrás
     cancel: Cancelar
     confirm: Confirmar
     product:
+      title: Productos de acción masiva
       step:
         select:
           label: Elegir productos
@@ -861,6 +900,8 @@ pim_enrich:
           label: Agregar a grupos
           description: Seleccione los grupos en los cuales agregará los productos seleccionados
           field: Grupos
+        add_to_category:
+          label: Agregar a categorias
         remove_from_category:
           description: Se eliminarán los productos de las siguientes categorías.
     family:
@@ -1086,11 +1127,22 @@ batch_jobs:
     label: Importar tipo de grupos en XLSX
     validation.label: Validación de archivo
     import.label: Importar tipo de grupos
+job_tracker:
+  download_archive:
+    input: Descargar archivos leídos
+    invalid_xlsx: Descargar datos inválidos
+    invalid_csv: Descargar datos inválidos
 pim_menu:
   tab:
+    activity: Actividad
+    imports: Importaciones
     products: Productos
+    exports: Exportaciones
     settings: Configuración
     system: Sistema
+    help:
+      title: Ayuda
+      helper: Centro de ayuda de Akeneo
   item:
     association_type: Tipos de asociaciones
     attribute: Atributos
@@ -1116,9 +1168,15 @@ pim_menu:
     user_role: Roles
     info: Información del sistema
     job_tracker: Seguimiento de procesos
+  navigation:
+    activity: Actividad de navegación
+    system: Sistema de navegación
+    user: Navegación del gestor de usuario
+    settings: Navegación de ajustes
   user:
     logout: Salir
     user_account: Mi cuenta
 pim_notification:
   mark_all_as_read: Marcar todo como leído
+  no_notifications: Sin notificaciones
   loading: Cargando...
