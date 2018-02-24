@@ -722,6 +722,7 @@ Format address by address country: Formater adresse efter lande adresse
 Language: Sprog
 Timezone: Tidszone
 Currency: Valuta
+settings: Indstillinger
 oro.locale:
   address_format:
     region_name_type:

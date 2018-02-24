@@ -722,6 +722,7 @@ Format address by address country: Muotoile osoite osoitteen maan mukaan
 Language: Kieli
 Timezone: Aikavyöhyke
 Currency: Valuutta
+settings: Asetukset
 oro.locale:
   address_format:
     region_name_type:
