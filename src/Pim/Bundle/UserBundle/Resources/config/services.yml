@@ -19,7 +19,7 @@ services:
             - { name: doctrine.event_listener, event: preUpdate }
 
     pim_user.entity_with_image.subscriber:
-        class: 'Pim\Bundle\UserBundle\EventSubscriber\UploadedImageSubscriber'
+        class: 'Pim\Bundle\UserBundle\EventListener\UploadedImageSubscriber'
         arguments:
             - '%kernel.root_dir%'
         tags:
