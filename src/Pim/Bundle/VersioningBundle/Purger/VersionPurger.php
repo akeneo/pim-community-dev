@@ -146,8 +146,6 @@ class VersionPurger implements VersionPurgerInterface
      * Configure an option resolver with default option values
      *
      * @param OptionsResolver $optionResolver
-     *
-     * @return OptionsResolver
      */
     protected function configureOptions(OptionsResolver $optionResolver)
     {

@@ -6,6 +6,7 @@
 
 ## Bug Fixes
 
+- PIM-7134: Fix a memory leak when purging version history (MongoDB)
 - PIM-7164: Fix a memory leak on product export caused by associated products not being detached
 
 # 1.7.18 (2018-02-22)
