@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\UserBundle\EventSubscriber;
+namespace Pim\Bundle\UserBundle\EventListener;
 
 use Doctrine\ORM\EntityManager;
 use Pim\Bundle\UserBundle\Event\UserEvent;

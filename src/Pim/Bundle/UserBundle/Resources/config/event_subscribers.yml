@@ -1,9 +1,9 @@
 parameters:
-    pim_user.event_subscriber.user_preferences.class: Pim\Bundle\UserBundle\EventSubscriber\UserPreferencesSubscriber
-    pim_user.event_subscriber.group.class:            Pim\Bundle\UserBundle\EventSubscriber\GroupSubscriber
-    pim_locale.locale_subscriber.class:               Pim\Bundle\UserBundle\EventSubscriber\LocaleSubscriber
+    pim_user.event_subscriber.user_preferences.class: Pim\Bundle\UserBundle\EventListener\UserPreferencesSubscriber
+    pim_user.event_subscriber.group.class:            Pim\Bundle\UserBundle\EventListener\GroupSubscriber
+    pim_locale.locale_subscriber.class:               Pim\Bundle\UserBundle\EventListener\LocaleSubscriber
     pim_locale.locale_listener.class:                 Pim\Bundle\UserBundle\EventListener\LocaleListener
-    pim_user.event_listener.create_user_system.class: Pim\Bundle\UserBundle\EventSubscriber\CreateUserSystemListener
+    pim_user.event_listener.create_user_system.class: Pim\Bundle\UserBundle\EventListener\CreateUserSystemListener
 
 services:
     pim_user.event_subscriber.user_preferences:
