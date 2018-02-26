@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\UserBundle\EventSubscriber;
+namespace Pim\Bundle\UserBundle\EventListener;
 
 use Pim\Bundle\UserBundle\Entity\User;
 use Pim\Component\User\Model\GroupInterface;

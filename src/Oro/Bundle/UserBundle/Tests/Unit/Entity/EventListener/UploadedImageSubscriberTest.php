@@ -2,7 +2,7 @@
 
 namespace Oro\Bundle\UserBundle\Tests\Unit\Entity\EventListener;
 
-use Pim\Bundle\UserBundle\EventSubscriber\UploadedImageSubscriber;
+use Pim\Bundle\UserBundle\EventListener\UploadedImageSubscriber;
 use Pim\Component\User\EntityUploadedImageInterface;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
