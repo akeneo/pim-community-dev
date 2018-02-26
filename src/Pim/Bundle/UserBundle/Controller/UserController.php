@@ -2,11 +2,9 @@
 
 namespace Pim\Bundle\UserBundle\Controller;
 
-use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Pim\Bundle\UserBundle\Entity\User;
 use Pim\Bundle\UserBundle\Entity\UserInterface;
-use Pim\Bundle\UserBundle\Event\UserEvent;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Pim\Component\User\Event\UserEvent;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\HttpFoundation\JsonResponse;

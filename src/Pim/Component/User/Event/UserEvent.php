@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\UserBundle\Event;
+namespace Pim\Component\User\Event;
 
 use Symfony\Component\EventDispatcher\GenericEvent;
 
