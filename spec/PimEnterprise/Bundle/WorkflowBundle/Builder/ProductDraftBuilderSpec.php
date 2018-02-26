@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace spec\PimEnterprise\Bundle\WorkflowBundle\Builder;
 
-use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Comparator\ComparatorInterface;
 use Pim\Component\Catalog\Comparator\ComparatorRegistry;
@@ -12,14 +11,14 @@ use Pim\Component\Catalog\Factory\ValueCollectionFactoryInterface;
 use Pim\Component\Catalog\Factory\ValueFactory;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
-use Pim\Component\Catalog\Model\ValueCollection;
 use Pim\Component\Catalog\Model\ValueCollectionInterface;
 use Pim\Component\Catalog\Model\ValueInterface;
+use Pim\Component\Catalog\Model\VariantProductInterface;
+use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Builder\ProductDraftBuilder;
 use PimEnterprise\Component\Workflow\Factory\ProductDraftFactory;
 use PimEnterprise\Component\Workflow\Model\ProductDraftInterface;
 use PimEnterprise\Component\Workflow\Repository\ProductDraftRepositoryInterface;
-use Prophecy\Argument;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class ProductDraftBuilderSpec extends ObjectBehavior
@@ -27,7 +26,7 @@ class ProductDraftBuilderSpec extends ObjectBehavior
     function let(
         NormalizerInterface $normalizer,
         ComparatorRegistry $comparatorRegistry,
-        IdentifiableObjectRepositoryInterface $attributeRepository,
+        AttributeRepositoryInterface $attributeRepository,
         ProductDraftFactory $factory,
         ProductDraftRepositoryInterface $productDraftRepo,
         ValueCollectionFactoryInterface $valueCollectionFactory,
@@ -74,7 +73,6 @@ class ProductDraftBuilderSpec extends ObjectBehavior
         ];
 
         $newValuesCollection->add($textValue);
-        $product->isVariant()->willReturn(false);
         $product->getValues()->willReturn($newValuesCollection);
         $normalizer->normalize($newValuesCollection, 'standard')->willReturn([
             'name' => [
@@ -93,7 +91,7 @@ class ProductDraftBuilderSpec extends ObjectBehavior
         $textAttribute->getCode()->willReturn('name');
         $textAttribute->getType()->willReturn('text');
         $textAttribute->isUnique()->willReturn(false);
-        $attributeRepository->findOneByIdentifier('name')->willReturn($textAttribute);
+        $attributeRepository->getAttributeTypeByCodes(['name'])->willReturn(['name' => 'text']);
         $comparatorRegistry->getAttributeComparator('text')->willReturn($textComparator);
         $textComparator->compare(
             ['data' => 'product', 'locale' => null, 'scope' => null],
@@ -107,7 +105,6 @@ class ProductDraftBuilderSpec extends ObjectBehavior
         $newTextValue->getLocale()->willReturn(null);
 
         $productDraftRepo->findUserProductDraft($product, 'mary')->willReturn($productDraft);
-        $productDraft->setValues(Argument::any())->shouldBeCalled();
         $productDraft->setChanges([
             'values' => ['name' => [['data' => 'product', 'locale' => null, 'scope' => null]]]
         ])->shouldBeCalled();
@@ -135,7 +132,6 @@ class ProductDraftBuilderSpec extends ObjectBehavior
         $rawValues = [];
 
         $newValuesCollection->add($textValue);
-        $product->isVariant()->willReturn(false);
         $product->getValues()->willReturn($newValuesCollection);
         $normalizer->normalize($newValuesCollection, 'standard')->willReturn([
             'name' => [
@@ -150,7 +146,7 @@ class ProductDraftBuilderSpec extends ObjectBehavior
         $textAttribute->getCode()->willReturn('name');
         $textAttribute->getType()->willReturn('text');
         $textAttribute->isUnique()->willReturn(false);
-        $attributeRepository->findOneByIdentifier('name')->willReturn($textAttribute);
+        $attributeRepository->getAttributeTypeByCodes(['name'])->willReturn(['name' => 'text']);
         $comparatorRegistry->getAttributeComparator('text')->willReturn($textComparator);
         $textComparator->compare(
             ['data' => 'product', 'locale' => null, 'scope' => null],
@@ -164,7 +160,6 @@ class ProductDraftBuilderSpec extends ObjectBehavior
         $newTextValue->getLocale()->willReturn(null);
 
         $productDraftRepo->findUserProductDraft($product, 'mary')->willReturn($productDraft);
-        $productDraft->setValues(Argument::any())->shouldBeCalled();
         $productDraft->setChanges([
             'values' => ['name' => [['data' => 'product', 'locale' => null, 'scope' => null]]]
         ])->shouldBeCalled();
@@ -194,7 +189,6 @@ class ProductDraftBuilderSpec extends ObjectBehavior
         ];
 
         $newValuesCollection->add($textValue);
-        $product->isVariant()->willReturn(false);
         $product->getValues()->willReturn($newValuesCollection);
         $normalizer->normalize($newValuesCollection, 'standard')->willReturn([
             'name' => [
@@ -211,7 +205,7 @@ class ProductDraftBuilderSpec extends ObjectBehavior
         ]);
 
         $textAttribute->getType()->willReturn('text');
-        $attributeRepository->findOneByIdentifier('name')->willReturn($textAttribute);
+        $attributeRepository->getAttributeTypeByCodes(['name'])->willReturn(['name' => 'text']);
         $comparatorRegistry->getAttributeComparator('text')->willReturn($textComparator);
         $textComparator->compare(
             ['data' => 'my product', 'locale' => null, 'scope' => null],
@@ -263,5 +257,70 @@ class ProductDraftBuilderSpec extends ObjectBehavior
         $this->shouldThrow(
             new \LogicException('Cannot find attribute with code "name".')
         )->during('build', [$product, 'mary']);
+    }
+
+    function it_builds_a_variant_product_draft_when_submitted_data_is_different_from_product_data(
+        $normalizer,
+        $valueCollectionFactory,
+        $comparatorRegistry,
+        $attributeRepository,
+        $valueFactory,
+        $productDraftRepo,
+        VariantProductInterface $variantProduct,
+        AttributeInterface $textAttribute,
+        ValueInterface $textValue,
+        ValueInterface $newTextValue,
+        ComparatorInterface $textComparator,
+        ProductDraftInterface $productDraft,
+        ValueCollectionInterface $newValuesCollection,
+        ValueCollectionInterface $originalValuesCollection
+    ) {
+        $rawValues = [
+            'name' => [
+                '<all_channels>' => [
+                    '<all_locales>' => 'my product'
+                ]
+            ]
+        ];
+
+        $newValuesCollection->add($textValue);
+        $variantProduct->getValuesForVariation()->willReturn($newValuesCollection);
+        $normalizer->normalize($newValuesCollection, 'standard')->willReturn([
+            'name' => [
+                ['data' => 'product', 'locale' => null, 'scope' => null]
+            ]
+        ]);
+
+        $variantProduct->getRawValues()->willReturn($rawValues);
+        $valueCollectionFactory->createFromStorageFormat($rawValues)->willReturn($originalValuesCollection);
+        $normalizer->normalize($originalValuesCollection, 'standard')->willReturn([
+            'name' => [
+                ['data' => 'my product', 'locale' => null, 'scope' => null]
+            ]
+        ]);
+
+        $textAttribute->getCode()->willReturn('name');
+        $textAttribute->getType()->willReturn('text');
+        $textAttribute->isUnique()->willReturn(false);
+        $attributeRepository->getAttributeTypeByCodes(['name'])->willReturn(['name' => 'text']);
+        $comparatorRegistry->getAttributeComparator('text')->willReturn($textComparator);
+        $textComparator->compare(
+            ['data' => 'product', 'locale' => null, 'scope' => null],
+            ['data' => 'my product', 'locale' => null, 'scope' => null]
+        )->willReturn(['data' => 'product', 'locale' => null, 'scope' => null]);
+
+        $valueFactory->create($textAttribute, null, null, 'product')->willReturn($newTextValue);
+        $newTextValue->getAttribute()->willReturn($textAttribute);
+        $newTextValue->getData()->willReturn('product');
+        $newTextValue->getScope()->willReturn(null);
+        $newTextValue->getLocale()->willReturn(null);
+
+        $productDraftRepo->findUserProductDraft($variantProduct, 'mary')->willReturn($productDraft);
+        $productDraft->setChanges([
+            'values' => ['name' => [['data' => 'product', 'locale' => null, 'scope' => null]]]
+        ])->shouldBeCalled();
+        $productDraft->setAllReviewStatuses(ProductDraftInterface::CHANGE_DRAFT)->shouldBeCalled();
+
+        $this->build($variantProduct, 'mary')->shouldReturn($productDraft);
     }
 }
