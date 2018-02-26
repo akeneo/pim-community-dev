@@ -6,10 +6,10 @@ use Akeneo\Component\StorageUtils\Updater\PropertyCopierInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\EntityWithFamilyVariantInterface;
+use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Component\Catalog\Model\FamilyVariantInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
-use Pim\Component\Catalog\Model\VariantProductInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use PimEnterprise\Component\CatalogRule\Model\ProductCopyActionInterface;
 use Prophecy\Argument;
@@ -30,12 +30,22 @@ class CopierActionApplierSpec extends ObjectBehavior
 
     function it_applies_copy_action_on_non_variant_product(
         $propertyCopier,
+        $attributeRepository,
         ProductCopyActionInterface $action,
-        ProductInterface $product
+        ProductInterface $product,
+        AttributeInterface $nameAttribute,
+        FamilyInterface $family
     ) {
         $action->getFromField()->willReturn('sku');
         $action->getToField()->willReturn('name');
         $action->getOptions()->willReturn([]);
+
+        $attributeRepository->findOneByIdentifier('name')->willReturn($nameAttribute);
+        $nameAttribute->getCode()->willReturn('name');
+
+        $product->getFamilyVariant()->willReturn(null);
+        $product->getFamily()->willReturn($family);
+        $family->hasAttributeCode('name')->willReturn(true);
 
         $propertyCopier->copyData(
             $product,
@@ -52,16 +62,19 @@ class CopierActionApplierSpec extends ObjectBehavior
         $propertyCopier,
         $attributeRepository,
         ProductCopyActionInterface $action,
-        VariantProductInterface $variantProduct,
+        ProductInterface $variantProduct,
         AttributeInterface $nameAttribute,
-        FamilyVariantInterface $familyVariant
+        FamilyVariantInterface $familyVariant,
+        FamilyInterface $family
     ) {
         $action->getFromField()->willReturn('sku');
         $action->getToField()->willReturn('name');
         $action->getOptions()->willReturn([]);
 
         $attributeRepository->findOneByIdentifier('name')->willReturn($nameAttribute);
-        $nameAttribute->getCode()->willReturn('name');
+
+        $variantProduct->getFamily()->willReturn($family);
+        $family->hasAttributeCode('name')->willReturn(true);
 
         $variantProduct->getFamilyVariant()->willReturn($familyVariant);
         $familyVariant->getLevelForAttributeCode('name')->willReturn(2);
@@ -85,7 +98,8 @@ class CopierActionApplierSpec extends ObjectBehavior
         ProductCopyActionInterface $action,
         ProductModelInterface $productModel,
         AttributeInterface $descriptionAttribute,
-        FamilyVariantInterface $familyVariant
+        FamilyVariantInterface $familyVariant,
+        FamilyInterface $family
     ) {
         $action->getFromField()->willReturn('description');
         $action->getToField()->willReturn('description');
@@ -97,7 +111,9 @@ class CopierActionApplierSpec extends ObjectBehavior
         ]);
 
         $attributeRepository->findOneByIdentifier('description')->willReturn($descriptionAttribute);
-        $descriptionAttribute->getCode()->willReturn('description');
+
+        $productModel->getFamily()->willReturn($family);
+        $family->hasAttributeCode('description')->willReturn(true);
 
         $productModel->getFamilyVariant()->willReturn($familyVariant);
         $familyVariant->getLevelForAttributeCode('description')->willReturn(2);
@@ -126,14 +142,17 @@ class CopierActionApplierSpec extends ObjectBehavior
         ProductCopyActionInterface $action,
         EntityWithFamilyVariantInterface $entityWithFamilyVariant,
         AttributeInterface $nameAttribute,
-        FamilyVariantInterface $familyVariant
+        FamilyVariantInterface $familyVariant,
+        FamilyInterface $family
     ) {
         $action->getFromField()->willReturn('sku');
         $action->getToField()->willReturn('name');
         $action->getOptions()->willReturn([]);
 
         $attributeRepository->findOneByIdentifier('name')->willReturn($nameAttribute);
-        $nameAttribute->getCode()->willReturn('name');
+
+        $entityWithFamilyVariant->getFamily()->willReturn($family);
+        $family->hasAttributeCode('name')->willReturn(true);
 
         $entityWithFamilyVariant->getFamilyVariant()->willReturn($familyVariant);
         $familyVariant->getLevelForAttributeCode('name')->willReturn(2);
@@ -157,6 +176,29 @@ class CopierActionApplierSpec extends ObjectBehavior
 
         $attributeRepository->findOneByIdentifier('name')->willReturn(null);
 
+        $propertyCopier->copyData(Argument::cetera())->shouldNotBeCalled();
+
+        $this->applyAction($action, [$entityWithFamilyVariant]);
+    }
+
+    function it_does_not_apply_copy_action_if_the_field_is_not_an_attribute_of_the_family(
+        $propertyCopier,
+        $attributeRepository,
+        ProductCopyActionInterface $action,
+        EntityWithFamilyVariantInterface $entityWithFamilyVariant,
+        AttributeInterface $nameAttribute,
+        FamilyInterface $family
+    ) {
+        $action->getFromField()->willReturn('sku');
+        $action->getToField()->willReturn('name');
+        $action->getOptions()->willReturn([]);
+
+        $attributeRepository->findOneByIdentifier('name')->willReturn($nameAttribute);
+
+        $entityWithFamilyVariant->getFamily()->willReturn($family);
+        $family->hasAttributeCode('name')->willReturn(false);
+
+        $entityWithFamilyVariant->getFamilyVariant()->shouldNotBeCalled();
         $propertyCopier->copyData(Argument::cetera())->shouldNotBeCalled();
 
         $this->applyAction($action, [$entityWithFamilyVariant]);

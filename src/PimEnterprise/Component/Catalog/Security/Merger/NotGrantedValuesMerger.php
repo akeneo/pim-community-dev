@@ -146,7 +146,9 @@ class NotGrantedValuesMerger implements NotGrantedDataMergerInterface
             }
         }
 
-        if ($filteredEntityWithValues instanceof EntityWithFamilyVariantInterface) {
+        if ($filteredEntityWithValues instanceof EntityWithFamilyVariantInterface &&
+            null !== $filteredEntityWithValues->getFamilyVariant()
+        ) {
             $values = clone $filteredEntityWithValues->getValuesForVariation();
         } else {
             $values = clone $filteredEntityWithValues->getValues();

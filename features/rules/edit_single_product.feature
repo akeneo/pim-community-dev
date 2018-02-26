@@ -344,6 +344,7 @@ Feature: Read a single product by applying rules
       | report          | Report          | pim_catalog_file             | 0        | 0           | txt                |               |                     | other |                  |
       | climate         | Climate         | pim_catalog_multiselect      | 0        | 0           |                    |               |                     | other |                  |
       | promotion_price | Promotion price | pim_catalog_price_collection | 0        | 0           |                    |               |                     | other | 0                |
+    And the family "jackets" has the attributes "made_in_france, report, climate, promotion_price, width"
     And the following products:
       | sku       | family  | weather_conditions |
       | my-jacket | jackets | dry                |
@@ -450,6 +451,7 @@ Feature: Read a single product by applying rules
       | report          | Report          | pim_catalog_file             | 0        | 0           | txt                |               |                     | other |                  |
       | climate         | Climate         | pim_catalog_multiselect      | 0        | 0           |                    |               |                     | other |                  |
       | promotion_price | Promotion price | pim_catalog_price_collection | 0        | 0           |                    |               |                     | other | 0                |
+    And the family "jackets" has the attributes "made_in_france, report, climate, promotion_price, width"
     And the following products:
       | sku       | family  | weather_conditions |
       | my-jacket | jackets | dry                |
@@ -629,3 +631,55 @@ Feature: Read a single product by applying rules
       | mobile  | de_DE  | warning | 5              | 16%   |
       | mobile  | en_US  | warning | 4              | 33%   |
       | mobile  | fr_FR  | warning | 4              | 33%   |
+
+  Scenario: Successfully execute a rule with a "remove" action on a single category
+    Given the following products:
+      | sku       | family  | categories                                  | enabled |
+      | my-jacket | jackets | 2014_collection, summer_collection, jackets | no      |
+    And the following product rule definitions:
+      """
+      rule_remove_category_jacket:
+        priority: 10
+        conditions:
+          - field:    family
+            operator: IN
+            value:
+              - jackets
+          - field:    enabled
+            operator: =
+            value:    false
+        actions:
+          - type:  remove
+            field: categories
+            items:
+              - 2014_collection
+            include_children: false
+      """
+    When the product rule "rule_remove_category_jacket" is executed
+    Then the categories of the product "my-jacket" should be "summer_collection, jackets"
+
+  Scenario: Successfully execute a rule with a "remove" action on a category and its children
+    Given the following products:
+      | sku       | family  | categories                                                     | enabled |
+      | my-jacket | jackets | 2014_collection, summer_collection, winter_collection, jackets | no      |
+    And the following product rule definitions:
+      """
+      rule_remove_category_jacket:
+        priority: 10
+        conditions:
+          - field:    family
+            operator: IN
+            value:
+              - jackets
+          - field:    enabled
+            operator: =
+            value:    false
+        actions:
+          - type:  remove
+            field: categories
+            items:
+              - summer_collection
+            include_children: true
+      """
+    When the product rule "rule_remove_category_jacket" is executed
+    Then the categories of the product "my-jacket" should be "2014_collection, winter_collection"

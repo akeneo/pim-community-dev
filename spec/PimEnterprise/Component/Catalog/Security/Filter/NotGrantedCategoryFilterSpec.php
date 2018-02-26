@@ -41,7 +41,8 @@ class NotGrantedCategoryFilterSpec extends ObjectBehavior
         CategoryInterface $categoryA,
         CategoryInterface $categoryB
     ) {
-        $product->getCategories()->willReturn($categories);
+        $product->getCategories()->shouldBeCalled();
+        $product->getCategoriesForVariation()->willReturn($categories);
         $categories->count()->willReturn(2);
 
         $categories->getIterator()->willReturn($iterator);
@@ -89,103 +90,6 @@ class NotGrantedCategoryFilterSpec extends ObjectBehavior
         $productModel->setCategories($categories)->shouldBeCalled();
 
         $this->filter($productModel)->shouldReturnAnInstanceOf(ProductModelInterface::class);
-    }
-
-    function it_throws_an_exception_if_all_categories_have_been_removed_and_make_product_not_viewable(
-        $authorizationChecker,
-        ProductInterface $product,
-        ArrayCollection $categories,
-        \ArrayIterator $iterator,
-        CategoryInterface $categoryA,
-        CategoryInterface $categoryB
-    ) {
-        $product->getIdentifier()->willReturn('product_a');
-        $product->getCategories()->willReturn($categories);
-        $categories->count()->willReturn(2, 0, 2);
-
-        $categories->getIterator()->willReturn($iterator);
-        $iterator->rewind()->shouldBeCalled();
-        $iterator->valid()->willReturn(true, true, false);
-        $iterator->key()->willReturn(1, 2);
-        $iterator->current()->willReturn($categoryA, $categoryB);
-        $iterator->next()->shouldBeCalled();
-
-        $authorizationChecker->isGranted(Attributes::VIEW_ITEMS, $categoryB)->willReturn(false);
-        $categories->remove(1)->shouldBeCalled();
-        $authorizationChecker->isGranted(Attributes::VIEW_ITEMS, $categoryA)->willReturn(false);
-        $categories->remove(2)->shouldBeCalled();
-
-        $product->setCategories($categories)->shouldNotBeCalled();
-
-        $this->shouldThrow(
-            new ResourceAccessDeniedException(
-                $product->getWrappedObject(),
-                'You can neither view, nor update, nor delete the product "product_a", as it is only categorized in categories on which you do not have a view permission.'
-            )
-        )->during('filter', [$product]);
-    }
-
-    function it_throws_an_exception_if_all_categories_have_been_removed_and_make_product_model_not_viewable(
-        $authorizationChecker,
-        ProductModelInterface $productModel,
-        ArrayCollection $categories,
-        \ArrayIterator $iterator,
-        CategoryInterface $categoryA,
-        CategoryInterface $categoryB
-    ) {
-        $productModel->getCode()->willReturn('product_model_a');
-        $productModel->getCategories()->willReturn($categories);
-        $categories->count()->willReturn(2, 0, 2);
-
-        $categories->getIterator()->willReturn($iterator);
-        $iterator->rewind()->shouldBeCalled();
-        $iterator->valid()->willReturn(true, true, false);
-        $iterator->key()->willReturn(1, 2);
-        $iterator->current()->willReturn($categoryA, $categoryB);
-        $iterator->next()->shouldBeCalled();
-
-        $authorizationChecker->isGranted(Attributes::VIEW_ITEMS, $categoryB)->willReturn(false);
-        $authorizationChecker->isGranted(Attributes::VIEW_ITEMS, $categoryA)->willReturn(false);
-        $categories->remove(1)->shouldBeCalled();
-        $categories->remove(2)->shouldBeCalled();
-
-        $this->shouldThrow(
-            new ResourceAccessDeniedException(
-                $productModel->getWrappedObject(),
-                'You can neither view, nor update, nor delete the product model "product_model_a", as it is only categorized in categories on which you do not have a view permission.'
-            )
-        )->during('filter', [$productModel]);
-    }
-
-    function it_throws_an_exception_if_all_categories_have_been_removed_and_make_category_aware_entity_not_viewable(
-        $authorizationChecker,
-        CategoryAwareInterface $categoryAwareEntity,
-        ArrayCollection $categories,
-        \ArrayIterator $iterator,
-        CategoryInterface $categoryA,
-        CategoryInterface $categoryB
-    ) {
-        $categoryAwareEntity->getCategories()->willReturn($categories);
-        $categories->count()->willReturn(2, 0, 2);
-
-        $categories->getIterator()->willReturn($iterator);
-        $iterator->rewind()->shouldBeCalled();
-        $iterator->valid()->willReturn(true, true, false);
-        $iterator->key()->willReturn(1, 2);
-        $iterator->current()->willReturn($categoryA, $categoryB);
-        $iterator->next()->shouldBeCalled();
-
-        $authorizationChecker->isGranted(Attributes::VIEW_ITEMS, $categoryB)->willReturn(false);
-        $authorizationChecker->isGranted(Attributes::VIEW_ITEMS, $categoryA)->willReturn(false);
-        $categories->remove(1)->shouldBeCalled();
-        $categories->remove(2)->shouldBeCalled();
-
-        $this->shouldThrow(
-            new ResourceAccessDeniedException(
-                $categoryAwareEntity->getWrappedObject(),
-                'You can neither view, nor update, nor delete this entity, as it is only categorized in categories on which you do not have a view permission.'
-            )
-        )->during('filter', [$categoryAwareEntity]);
     }
 
     function it_throws_an_exception_if_subject_is_not_a_category_aware_entity()

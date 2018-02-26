@@ -84,9 +84,19 @@ batch_jobs:
     validation.label: Filvalidering
     import.label: Produkt import
     import_associations.label: Association import
+  csv_product_model_import_with_rules:
+    execute_rules.label: Regler udførelse
+    validation.label: Filvalidering
+    import_root_product_model.label: Rodprodukt import
+    import_sub_product_model.label: Under produkt import
   xlsx_product_import_with_rules:
     label: Produkt import i CSV med regler
     execute_rules.label: Regler udførelse
     validation.label: Filvalidering
     import.label: Produkt import
     import_associations.label: Association import
+  xlsx_product_model_import_with_rules:
+    execute_rules.label: Regler udførelse
+    validation.label: Filvalidering
+    import_root_product_model.label: Rodprodukt import
+    import_sub_product_model.label: Under produkt import

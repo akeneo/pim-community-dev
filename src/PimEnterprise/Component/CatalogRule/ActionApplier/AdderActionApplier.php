@@ -85,6 +85,22 @@ class AdderActionApplier implements ActionApplierInterface
             return;
         }
 
+        if (null === $entityWithFamilyVariant->getFamily()) {
+            $this->addDataOnEntityWithValues($entityWithFamilyVariant, $action);
+
+            return;
+        }
+
+        if (!$entityWithFamilyVariant->getFamily()->hasAttributeCode($field)) {
+            return;
+        }
+
+        if (null === $entityWithFamilyVariant->getFamilyVariant()) {
+            $this->addDataOnEntityWithValues($entityWithFamilyVariant, $action);
+
+            return;
+        }
+
         $level = $entityWithFamilyVariant->getFamilyVariant()->getLevelForAttributeCode($field);
 
         if ($entityWithFamilyVariant->getVariationLevel() === $level) {

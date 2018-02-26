@@ -29,12 +29,30 @@ services:
         tags:
             - { name: akeneo_batch.job.job_parameters.default_values_provider }
 
+    pimee_catalog_rule.job.job_parameters.default_values_provider.product_model_csv_import:
+        class: '%pim_connector.job.job_parameters.default_values_provider.product_model_csv_import.class%'
+        arguments:
+            - '@pim_connector.job.job_parameters.default_values_provider.simple_csv_import'
+            -
+                - 'csv_product_model_import_with_rules'
+        tags:
+            - { name: akeneo_batch.job.job_parameters.default_values_provider }
+
     pimee_catalog_rule.job.job_parameters.default_values_provider.product_xlsx_import:
         class: '%pim_connector.job.job_parameters.default_values_provider.product_xlsx_import.class%'
         arguments:
             - '@pim_connector.job.job_parameters.default_values_provider.simple_xlsx_import'
             -
                 - 'xlsx_product_import_with_rules'
+        tags:
+            - { name: akeneo_batch.job.job_parameters.default_values_provider }
+
+    pimee_catalog_rule.job.job_parameters.default_values_provider.product_model_xlsx_import:
+        class: '%pim_connector.job.job_parameters.default_values_provider.product_model_xlsx_import.class%'
+        arguments:
+            - '@pim_connector.job.job_parameters.default_values_provider.simple_xlsx_import'
+            -
+                - 'xlsx_product_model_import_with_rules'
         tags:
             - { name: akeneo_batch.job.job_parameters.default_values_provider }
 

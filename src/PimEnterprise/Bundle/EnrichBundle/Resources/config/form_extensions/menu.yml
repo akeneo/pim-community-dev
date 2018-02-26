@@ -2,6 +2,7 @@ extensions:
     pim-menu-asset:
         module: pim/menu/tab
         parent: pim-menu
+        aclResourceId: pimee_product_asset_index
         position: 35
         targetZone: mainMenu
         config:

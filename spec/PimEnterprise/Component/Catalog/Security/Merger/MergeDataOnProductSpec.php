@@ -15,7 +15,6 @@ use Pim\Component\Catalog\Model\Product;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
 use Pim\Component\Catalog\Model\ValueInterface;
-use Pim\Component\Catalog\Model\VariantProductInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Pim\Component\Catalog\Repository\ProductModelRepositoryInterface;
 use Pim\Component\Catalog\Value\ScalarValue;
@@ -65,6 +64,8 @@ class MergeDataOnProductSpec extends ObjectBehavior
         $filteredProduct->getIdentifier()->willReturn('my_sku');
         $filteredProduct->getGroups()->willReturn($groups);
         $filteredProduct->getUniqueData()->willReturn($uniqueData);
+        $filteredProduct->isVariant()->willReturn(false);
+        $filteredProduct->getParent()->willReturn(null);
 
         $attributeRepository->getIdentifierCode()->willReturn('sku');
         $filteredProduct->getValue('sku')->willReturn($identifierValue);
@@ -86,7 +87,7 @@ class MergeDataOnProductSpec extends ObjectBehavior
 
     function it_sets_parent_from_unit_of_work_if_it_is_a_variant_product_and_if_it_is_new(
         $productModelRepository,
-        VariantProductInterface $filteredVariantProduct,
+        ProductInterface $filteredVariantProduct,
         ProductModelInterface $parent,
         ProductModelInterface $parentInUoW
     ) {
@@ -103,9 +104,9 @@ class MergeDataOnProductSpec extends ObjectBehavior
         $productModelRepository,
         $attributeRepository,
         $addParent,
-        VariantProductInterface $filteredVariantProduct,
+        ProductInterface $filteredVariantProduct,
         ProductInterface $fullProduct,
-        VariantProductInterface $fullVariantProduct,
+        ProductInterface $fullVariantProduct,
         ProductModelInterface $parent,
         ProductModelInterface $parentInUoW,
         $valuesMerger,
@@ -131,6 +132,7 @@ class MergeDataOnProductSpec extends ObjectBehavior
         $filteredVariantProduct->getIdentifier()->willReturn('my_sku');
         $filteredVariantProduct->getGroups()->willReturn($groups);
         $filteredVariantProduct->getUniqueData()->willReturn($uniqueData);
+        $filteredVariantProduct->isVariant()->willReturn(true);
 
         $attributeRepository->getIdentifierCode()->willReturn('sku');
         $filteredVariantProduct->getValue('sku')->willReturn($identifierValue);
@@ -142,6 +144,7 @@ class MergeDataOnProductSpec extends ObjectBehavior
         $fullProduct->setIdentifier(Argument::type(ScalarValue::class))->shouldBeCalled();
         $fullProduct->setGroups($groups)->shouldBeCalled();
         $fullProduct->setUniqueData($uniqueData)->shouldBeCalled();
+        $fullProduct->isVariant()->willReturn(false);
 
         $addParent->to($fullProduct, 'parent_code')->willReturn($fullVariantProduct);
 

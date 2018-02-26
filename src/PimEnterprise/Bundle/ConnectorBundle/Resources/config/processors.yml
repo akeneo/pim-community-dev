@@ -16,4 +16,3 @@ services:
         arguments:
             - '@pimee_workflow.repository.delegating_product'
             - '@pim_catalog.builder.product'
-            - '@pim_catalog.builder.variant_product'
