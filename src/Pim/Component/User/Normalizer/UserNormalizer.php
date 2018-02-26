@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\UserBundle\Normalizer;
+namespace Pim\Component\User\Normalizer;
 
 use Pim\Bundle\UserBundle\Entity\UserInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
