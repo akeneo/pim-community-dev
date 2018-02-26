@@ -70,21 +70,28 @@ services:
     akeneo_integration_tests.catalog.configuration:
         synthetic: true
 
-    akeneo_integration_tests.catalog.factory.product:
-        class: 'Akeneo\Test\IntegrationTestsBundle\Fixture\Factory\Product'
+    ### Builder
+    akeneo_integration_tests.catalog.product.builder:
+        class: 'Akeneo\Test\IntegrationTestsBundle\Fixture\EntityWithValue\Builder\Product'
         arguments:
             - '@pim_catalog.builder.product'
             - '@pim_catalog.updater.product'
             - '@validator'
 
-    akeneo_integration_tests.catalog.factory.product_model:
-        class: 'Akeneo\Test\IntegrationTestsBundle\Fixture\Factory\ProductModel'
+    akeneo_integration_tests.base.product_model.builder:
+        class: 'Akeneo\Test\IntegrationTestsBundle\Fixture\EntityBuilder'
         arguments:
             - '@pim_catalog.factory.product_model'
             - '@pim_catalog.updater.product_model'
-            - '@pim_catalog.repository.product_model'
             - '@validator'
 
+    akeneo_integration_tests.catalog.product_model.builder:
+        class: 'Akeneo\Test\IntegrationTestsBundle\Fixture\EntityWithValue\Builder\ProductModel'
+        arguments:
+            - '@akeneo_integration_tests.base.product_model.builder'
+            - '@pim_catalog.repository.product_model'
+
+    ### Saver
     akeneo_integration_tests.fixture.saver.entity_with_value:
         class: 'Akeneo\Test\IntegrationTestsBundle\Doctrine\Repository\EntityWithValue'
         arguments:

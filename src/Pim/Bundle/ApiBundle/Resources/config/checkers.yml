@@ -5,7 +5,7 @@ services:
     pim_api.checker.query_parameters:
         class: '%pim_api.checker.query_parameters.class%'
         arguments:
-            - '@pim_catalog.repository.locale'
-            - '@pim_catalog.repository.attribute'
-            - '@pim_catalog.repository.category'
+            - '@pim_catalog.repository.cached_locale'
+            - '@pim_catalog.repository.cached_attribute'
+            - '@pim_catalog.repository.cached_category'
             - ['family', 'enabled', 'groups', 'categories', 'completeness', 'identifier', 'created', 'updated']

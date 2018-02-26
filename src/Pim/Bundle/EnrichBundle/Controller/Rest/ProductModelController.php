@@ -13,8 +13,8 @@ use Pim\Bundle\EnrichBundle\Normalizer\EntityWithFamilyVariantNormalizer;
 use Pim\Bundle\UserBundle\Context\UserContext;
 use Pim\Component\Catalog\Comparator\Filter\EntityWithValuesFilter;
 use Pim\Component\Catalog\Localization\Localizer\AttributeConverterInterface;
+use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
-use Pim\Component\Catalog\Model\VariantProductInterface;
 use Pim\Component\Catalog\Repository\FamilyVariantRepositoryInterface;
 use Pim\Component\Catalog\Repository\ProductModelRepositoryInterface;
 use Pim\Component\Enrich\Converter\ConverterInterface;
@@ -305,11 +305,11 @@ class ProductModelController
 
         $normalizedChildren = [];
         foreach ($children as $child) {
-            if (!$child instanceof ProductModelInterface && !$child instanceof VariantProductInterface) {
+            if (!$child instanceof ProductModelInterface && !$child instanceof ProductInterface) {
                 throw new \LogicException(sprintf(
                     'Child of a product model must be of class "%s" or "%s", "%s" received.',
                     ProductModelInterface::class,
-                    VariantProductInterface::class,
+                    ProductInterface::class,
                     get_class($child)
                 ));
             }

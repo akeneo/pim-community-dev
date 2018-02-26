@@ -71,7 +71,7 @@ abstract class AbstractExportTestCase extends TestCase
      */
     protected function createVariantProduct(string $identifier, array $data = []) : ProductInterface
     {
-        $product = $this->get('pim_catalog.builder.variant_product')->createProduct($identifier);
+        $product = $this->get('pim_catalog.builder.product')->createProduct($identifier);
         $this->get('pim_catalog.updater.product')->update($product, $data);
         $constraintList = $this->get('pim_catalog.validator.product')->validate($product);
         $this->assertEquals(0, $constraintList->count());

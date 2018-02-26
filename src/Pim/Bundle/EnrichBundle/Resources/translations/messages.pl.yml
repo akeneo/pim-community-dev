@@ -674,7 +674,7 @@ pim_enrich.mass_edit_action:
     success_flash: Atrybut(y) produkt(ów) zostały zaktualizowane
     message.warning: Brak wspólnych atrybutów dla zaznaczonych produktów. Proszę wybierz inne produkty.
     no_attribute.warning: Brak wspólnych atrybutów dla zaznaczonych produktów. Proszę wybierz inne produkty.
-    truncated_by_variant_attribute.warning: 'Niektóre wspólne atrybuty spośród wybranych produktów pochodzą z grup wariantów. Nie mogą one podlegać masowej edycji: %attributes%.'
+    truncated_by_variant_attribute.warning: "Niektóre wspólne atrybuty spośród wybranych produktów pochodzą z grup wariantów. Nie mogą one podlegać masowej edycji: %attributes%."
   classify:
     label: Klasyfikuj produkty w kategorie
     description: Produkty zostanie umieszczony w następujących kategoriach, istniejące rozmieszczenie nie zostanie zmienione.

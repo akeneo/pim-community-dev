@@ -14,5 +14,4 @@ services:
         class: '%pim_catalog.entity_with_family_variant.add_parent_to_product.class%'
         arguments:
             - '@pim_catalog.repository.product_model'
-            - '@pim_catalog.entity_with_family.create_variant_product_from_product'
             - '@event_dispatcher'

@@ -28,7 +28,6 @@ use Pim\Component\Catalog\Model\GroupInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
 use Pim\Component\Catalog\Model\ValueInterface;
-use Pim\Component\Catalog\Model\VariantProductInterface;
 use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
 use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
 use Pim\Component\Catalog\ValuesFiller\EntityWithFamilyValuesFillerInterface;
@@ -167,6 +166,7 @@ class ProductNormalizerSpec extends ObjectBehavior
 
         $productValueConverter->convert($valuesLocalized)->willReturn($valuesConverted);
 
+        $mug->isVariant()->willReturn(false);
         $mug->getId()->willReturn(12);
         $versionManager->getOldestLogEntry($mug)->willReturn('create_version');
         $versionNormalizer->normalize('create_version', 'internal_api')->willReturn('normalized_create_version');
@@ -256,7 +256,7 @@ class ProductNormalizerSpec extends ObjectBehavior
         $attributesProvider,
         $ascendantCategories,
         $incompleteValuesNormalizer,
-        VariantProductInterface $mug,
+        ProductInterface $mug,
         AssociationInterface $upsell,
         AssociationTypeInterface $groupType,
         GroupInterface $group,
@@ -298,6 +298,7 @@ class ProductNormalizerSpec extends ObjectBehavior
             'picture'             => [['data' => 'a/b/c/my_picture.jpg', 'locale' => null, 'scope' => null]]
         ];
 
+        $mug->isVariant()->willReturn(true);
         $normalizer->normalize($mug, 'standard', $options)->willReturn($productNormalized);
         $localizedConverter->convertToLocalizedFormats($productNormalized['values'], $options)->willReturn($valuesLocalized);
 

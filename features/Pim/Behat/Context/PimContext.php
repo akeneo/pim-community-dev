@@ -91,6 +91,14 @@ class PimContext extends RawMinkContext implements KernelAwareContext
     }
 
     /**
+     * @return KernelInterface
+     */
+    protected function getKernel()
+    {
+        return $this->kernel;
+    }
+
+    /**
      * Transform a list to array
      *
      * @param string $list

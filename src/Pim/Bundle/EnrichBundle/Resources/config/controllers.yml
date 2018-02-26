@@ -297,6 +297,7 @@ services:
             - '@validator'
             - '@pim_enrich.normalizer.violation'
             - '@pim_catalog.saver.family_variant'
+            - '@pim_catalog.remover.family_variant'
 
     pim_enrich.controller.rest.form_extension:
         class: '%pim_enrich.controller.rest.form_extension.class%'
@@ -356,7 +357,7 @@ services:
             - '@pim_catalog.comparator.filter.product'
             - '@pim_enrich.converter.enrich_to_standard.product_value'
             - '@pim_enrich.normalizer.product_violation'
-            - '@pim_catalog.builder.variant_product'
+            - '@pim_catalog.builder.product'
 
     pim_enrich.controller.rest.product_model:
         class: '%pim_enrich.controller.rest.product_model.class%'

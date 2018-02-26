@@ -54,6 +54,33 @@ class ProductModelCsvExport implements ConstraintCollectionProviderInterface
                 'groups' => ['Default', 'FileConfiguration'],
             ]
         );
+        $constraintFields['filters'] = [
+            new FilterData(['groups' => ['Default', 'DataFilters']]),
+            new Collection(
+                [
+                    'fields'           => [
+                        'structure' => [
+                            new FilterStructureLocale(['groups' => ['Default', 'DataFilters']]),
+                            new Collection(
+                                [
+                                    'fields'             => [
+                                        'locales'    => new NotBlank(['groups' => ['Default', 'DataFilters']]),
+                                        'scope'      => new Channel(['groups' => ['Default', 'DataFilters']]),
+                                        'attributes' => new FilterStructureAttribute(
+                                            [
+                                                'groups' => ['Default', 'DataFilters'],
+                                            ]
+                                        ),
+                                    ],
+                                    'allowMissingFields' => true,
+                                ]
+                            ),
+                        ],
+                    ],
+                    'allowExtraFields' => true,
+                ]
+            ),
+        ];
 
         return new Collection(['fields' => $constraintFields]);
     }

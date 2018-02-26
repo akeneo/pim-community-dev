@@ -7,7 +7,7 @@ use Akeneo\Component\StorageUtils\StorageEvents;
 use Pim\Bundle\CatalogBundle\EventSubscriber\IndexProductModelCompleteDataSubscriber;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\ProductModelInterface;
-use Pim\Component\Catalog\Model\VariantProductInterface;
+use Pim\Component\Catalog\Model\ProductInterface;
 use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
@@ -40,13 +40,14 @@ class IndexProductModelCompleteDataSubscriberSpec extends ObjectBehavior
         $productModelIndexer,
         GenericEvent $event,
         ProductModelInterface $productModel,
-        VariantProductInterface $product
+        ProductInterface $product
     ) {
         $event->getSubject()->willReturn($productModel);
         $productModelIndexer->index(Argument::any())->shouldNotBeCalled();
         $this->computeNumberOfCompleteVariantProduct($event);
 
         $event->getSubject()->willReturn($product);
+        $product->isVariant()->willReturn(true);
         $product->getParent()->willReturn(null);
         $productModelIndexer->index(Argument::any())->shouldNotBeCalled();
         $this->computeNumberOfCompleteVariantProduct($event);
@@ -55,10 +56,11 @@ class IndexProductModelCompleteDataSubscriberSpec extends ObjectBehavior
     function it_computes_number_of_complete_variant_product_with_one_level(
         $productModelIndexer,
         GenericEvent $event,
-        VariantProductInterface $product,
+        ProductInterface $product,
         ProductModelInterface $rootProductModel
     ) {
         $event->getSubject()->willReturn($product);
+        $product->isVariant()->willReturn(true);
         $product->getParent()->willReturn($rootProductModel);
         $rootProductModel->getParent()->willReturn(null);
 
@@ -69,11 +71,12 @@ class IndexProductModelCompleteDataSubscriberSpec extends ObjectBehavior
     function it_computes_number_of_complete_variant_product_with_two_level(
         $productModelIndexer,
         GenericEvent $event,
-        VariantProductInterface $product,
+        ProductInterface $product,
         ProductModelInterface $rootProductModel,
         ProductModelInterface $subProductModel
     ) {
         $event->getSubject()->willReturn($product);
+        $product->isVariant()->willReturn(true);
         $product->getParent()->willReturn($subProductModel);
         $subProductModel->getParent()->willReturn(null);
         $product->getParent()->willReturn($rootProductModel);

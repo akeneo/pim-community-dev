@@ -9,7 +9,6 @@ use Pim\Component\Catalog\Model\EntityWithFamilyInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ValueCollectionInterface;
 use Pim\Component\Catalog\Model\ValueInterface;
-use Pim\Component\Catalog\Model\VariantProductInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -193,7 +192,7 @@ class ProductNormalizer implements NormalizerInterface, NormalizerAwareInterface
      */
     private function getParentCode(EntityWithFamilyInterface $product): ?string
     {
-        if ($product instanceof VariantProductInterface && null !== $product->getParent()) {
+        if ($product instanceof ProductInterface && $product->isVariant() && null !== $product->getParent()) {
             return $product->getParent()->getCode();
         }
 
