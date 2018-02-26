@@ -4,13 +4,12 @@ namespace spec\Pim\Component\Catalog\EntityWithFamily\Event;
 
 use Pim\Component\Catalog\EntityWithFamily\Event\ParentHasBeenAddedToProduct;
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Model\VariantProductInterface;
-use Prophecy\Argument;
+use Pim\Component\Catalog\Model\ProductInterface;
 use Symfony\Component\EventDispatcher\Event;
 
 class ParentHasBeenAddedToProductSpec extends ObjectBehavior
 {
-    function let(VariantProductInterface $variantProduct)
+    function let(ProductInterface $variantProduct)
     {
         $this->beConstructedWith($variantProduct, 'code');
     }

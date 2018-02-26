@@ -8,22 +8,21 @@ use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\ORM\QueryBuilder;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\VariantProductRepository;
+use Pim\Component\Catalog\Model\Product;
 use Pim\Component\Catalog\Model\ProductModelInterface;
-use Pim\Component\Catalog\Model\VariantProductInterface;
-use Pim\Component\Catalog\Query\ProductQueryBuilderFactoryInterface;
-use Pim\Component\Catalog\Repository\GroupRepositoryInterface;
+use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Repository\VariantProductRepositoryInterface;
-use Pim\Component\ReferenceData\ConfigurationRegistryInterface;
 use Prophecy\Argument;
 
 class VariantProductRepositorySpec extends ObjectBehavior
 {
     function let(
         EntityManager $em,
-        ClassMetadata $class
+        ClassMetadata $classMetadata
     ) {
-        $class->name = 'Pim\Component\Catalog\Model\Product';
-        $this->beConstructedWith($em, $class);
+        $classMetadata->name = Product::class;
+        $em->getClassMetadata(Product::class)->willReturn($classMetadata);
+        $this->beConstructedWith($em, Product::class);
     }
 
     function it_is_initializable()
@@ -38,11 +37,11 @@ class VariantProductRepositorySpec extends ObjectBehavior
 
     function it_finds_siblings_variant_products_for_an_existing_variant_product(
         $em,
-        VariantProductInterface $variantProduct,
+        ProductInterface $variantProduct,
         ProductModelInterface $productModel,
         QueryBuilder $queryBuilder,
         AbstractQuery $query,
-        VariantProductInterface $sibling
+        ProductInterface $sibling
     ) {
         $variantProduct->getParent()->willReturn($productModel);
         $variantProduct->getId()->willReturn(42);
@@ -63,11 +62,11 @@ class VariantProductRepositorySpec extends ObjectBehavior
 
     function it_finds_siblings_variant_products_for_a_new_variant_product(
         $em,
-        VariantProductInterface $variantProduct,
+        ProductInterface $variantProduct,
         ProductModelInterface $productModel,
         QueryBuilder $queryBuilder,
         AbstractQuery $query,
-        VariantProductInterface $sibling
+        ProductInterface $sibling
     ) {
         $variantProduct->getParent()->willReturn($productModel);
         $variantProduct->getId()->willReturn(null);

@@ -9,7 +9,7 @@ use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\FamilyVariantInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
 use Pim\Component\Catalog\Model\VariantAttributeSetInterface;
-use Pim\Component\Catalog\Model\VariantProductInterface;
+use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
 
 class VariantNavigationNormalizerSpec extends ObjectBehavior
@@ -159,7 +159,7 @@ class VariantNavigationNormalizerSpec extends ObjectBehavior
         AttributeInterface $sizeAttribute,
         ProductModelInterface $rootProductModel,
         ProductModelInterface $productModel,
-        VariantProductInterface $variantProduct
+        ProductInterface $variantProduct
     ) {
         // Attribute sets of the family variant
         $attributeSets->getIterator()->willReturn($attributeSetsIterator);

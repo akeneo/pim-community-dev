@@ -66,13 +66,6 @@ pim_enrich_product_history_rest_get:
         entityId: '[0-9a-f]+'
     methods: [GET]
 
-pim_enrich_variant_product_history_rest_get:
-    path: /rest/variant-product/{entityId}/history
-    defaults: { _controller: pim_enrich.controller.rest.versioning:getAction, entityType: variant_product }
-    requirements:
-        entityId: '[0-9a-f]+'
-    methods: [GET]
-
 pim_enrich_product_remove_attribute_rest:
     path: /rest/{id}/{attributeId}
     defaults: { _controller: pim_enrich.controller.rest.product:removeAttributeAction }

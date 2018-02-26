@@ -7,7 +7,6 @@ namespace Pim\Component\Catalog\Normalizer\Indexing\ProductAndProductModel;
 use Pim\Component\Catalog\Model\EntityWithFamilyVariantInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
-use Pim\Component\Catalog\Model\VariantProductInterface;
 use Pim\Component\Catalog\Normalizer\Standard\Product\PropertiesNormalizer as StandardPropertiesNormalizer;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\SerializerAwareInterface;
@@ -76,14 +75,14 @@ class ProductPropertiesNormalizer implements NormalizerInterface, SerializerAwar
 
 
         $familyVariantCode = null;
-        if ($product instanceof VariantProductInterface) {
+        if ($product->isVariant()) {
             $familyVariant = $product->getFamilyVariant();
             $familyVariantCode = null !== $familyVariant ? $familyVariant->getCode() : null;
         }
         $data[self::FIELD_FAMILY_VARIANT] = $familyVariantCode;
 
         $parentCode = null;
-        if ($product instanceof VariantProductInterface && null !== $product->getParent()) {
+        if ($product->isVariant() && null !== $product->getParent()) {
             $parentCode = $product->getParent()->getCode();
         }
         $data[self::FIELD_PARENT] = $parentCode;
@@ -133,7 +132,7 @@ class ProductPropertiesNormalizer implements NormalizerInterface, SerializerAwar
      */
     public function supportsNormalization($data, $format = null)
     {
-        return ($data instanceof ProductInterface || $data instanceof VariantProductInterface)
+        return $data instanceof ProductInterface
             && ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX === $format;
     }
 
@@ -164,15 +163,15 @@ class ProductPropertiesNormalizer implements NormalizerInterface, SerializerAwar
     }
 
     /**
-     * @param $product
+     * @param ProductInterface $product
      *
      * @return array
      */
-    private function getAncestors($product): array
+    private function getAncestors(ProductInterface $product): array
     {
         $ancestorsIds = [];
         $ancestorsCodes = [];
-        if ($product instanceof EntityWithFamilyVariantInterface) {
+        if ($product->isVariant()) {
             $ancestorsIds = $this->getAncestorsIds($product);
             $ancestorsCodes = $this->getAncestorsCodes($product);
         }

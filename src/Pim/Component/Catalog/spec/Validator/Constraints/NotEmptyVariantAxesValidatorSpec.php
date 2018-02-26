@@ -132,7 +132,7 @@ class NotEmptyVariantAxesValidatorSpec extends ObjectBehavior
     ) {
         $entity->getFamilyVariant()->willReturn($familyVariant);
         $axesProvider->getAxes($entity)->willReturn([$attribute]);
-        
+
         $value->getData()->willReturn($metric);
         $metric->getData()->willReturn(null);
         $attribute->getCode()->willReturn('display_diagonal');

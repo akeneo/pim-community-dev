@@ -6,9 +6,7 @@ use Akeneo\Component\Batch\Job\JobParameters;
 use Akeneo\Component\Batch\Model\StepExecution;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\EntityWithFamilyVariant\AddParent;
-use Pim\Component\Catalog\Exception\InvalidArgumentException;
 use Pim\Component\Catalog\Model\ProductInterface;
-use Pim\Component\Catalog\Model\VariantProductInterface;
 use Prophecy\Argument;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -34,6 +32,8 @@ class AddToExistingProductModelProcessorSpec extends ObjectBehavior
         JobParameters $jobParameters,
         ConstraintViolationListInterface $violations
     ) {
+        $product->isVariant()->willReturn(false);
+
         $this->setStepExecution($stepExecution);
         $stepExecution->getJobParameters()->willReturn($jobParameters);
         $jobParameters->get('actions')->willReturn([['value' => '42']]);
@@ -50,9 +50,10 @@ class AddToExistingProductModelProcessorSpec extends ObjectBehavior
         $addParent,
         ProductInterface $product,
         StepExecution $stepExecution,
-        JobParameters $jobParameters,
-        InvalidArgumentException $exception
+        JobParameters $jobParameters
     ) {
+        $product->isVariant()->willReturn(false);
+
         $this->setStepExecution($stepExecution);
         $stepExecution->getJobParameters()->willReturn($jobParameters);
         $jobParameters->get('actions')->willReturn([['value' => '42']]);
@@ -63,10 +64,12 @@ class AddToExistingProductModelProcessorSpec extends ObjectBehavior
     }
 
     function it_adds_warning_for_variant_product(
-        VariantProductInterface $product,
+        ProductInterface $product,
         StepExecution $stepExecution,
         JobParameters $jobParameters
     ) {
+        $product->isVariant()->willReturn(true);
+
         $this->setStepExecution($stepExecution);
         $stepExecution->getJobParameters()->willReturn($jobParameters);
         $jobParameters->get('actions')->willReturn([['value' => '42']]);

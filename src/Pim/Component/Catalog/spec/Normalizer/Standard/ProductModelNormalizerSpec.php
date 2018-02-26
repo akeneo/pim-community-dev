@@ -2,10 +2,11 @@
 
 namespace spec\Pim\Component\Catalog\Normalizer\Standard;
 
+use PhpSpec\ObjectBehavior;
+use Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface;
 use Pim\Component\Catalog\Model\FamilyVariantInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
 use Pim\Component\Catalog\Model\ValueCollection;
-use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Normalizer\Standard\ProductModelNormalizer;
 use Prophecy\Argument;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -14,6 +15,11 @@ use Symfony\Component\Serializer\SerializerAwareInterface;
 
 class ProductModelNormalizerSpec extends ObjectBehavior
 {
+    function let(
+        CollectionFilterInterface $filter
+    ) {
+        $this->beConstructedWith($filter);
+    }
     function it_is_initializable()
     {
         $this->shouldHaveType(ProductModelNormalizer::class);
@@ -30,6 +36,7 @@ class ProductModelNormalizerSpec extends ObjectBehavior
     }
 
     function it_normalizes_product_model_without_parent(
+        $filter,
         ProductModelInterface $productModel,
         Serializer $normalizer,
         FamilyVariantInterface $familyVariant,
@@ -45,18 +52,20 @@ class ProductModelNormalizerSpec extends ObjectBehavior
         $productModel->getValues()->willReturn($values);
 
         $normalizer
-            ->normalize($values, 'standard', [])
+            ->normalize($values, 'standard', ['filter_types' => ['pim.transform.product_value.structured']])
             ->willReturn(['name' => [['locale' => null, 'scope' => null, 'value' => 'foo']]]);
+
+        $filter->filterCollection($values, 'pim.transform.product_value.structured', ['filter_types' => ['pim.transform.product_value.structured']])->willReturn($values);
 
         $productModel->getCategoryCodes()->willReturn(['tshirt']);
 
         $created = new \DateTime('2010-06-23');
         $productModel->getCreated()->willReturn($created);
-        $normalizer->normalize($created, 'standard', [])->willReturn('2010-06-23T00:00:00+01:00');
+        $normalizer->normalize($created, 'standard', ['filter_types' => ['pim.transform.product_value.structured']])->willReturn('2010-06-23T00:00:00+01:00');
 
         $updated = new \DateTime('2010-06-23 23:00:00');
         $productModel->getUpdated()->willReturn($updated);
-        $normalizer->normalize($updated, 'standard', [])->willReturn('2010-06-23T23:00:00+01:00');
+        $normalizer->normalize($updated, 'standard', ['filter_types' => ['pim.transform.product_value.structured']])->willReturn('2010-06-23T23:00:00+01:00');
 
         $this->normalize($productModel, 'standard')->shouldReturn([
             'code' => 'code',
@@ -78,6 +87,7 @@ class ProductModelNormalizerSpec extends ObjectBehavior
     }
 
     function it_normalizes_product_model_with_parent(
+        $filter,
         ProductModelInterface $productModel,
         Serializer $normalizer,
         FamilyVariantInterface $familyVariant,
@@ -95,18 +105,20 @@ class ProductModelNormalizerSpec extends ObjectBehavior
         $productModel->getValues()->willReturn($values);
 
         $normalizer
-            ->normalize($values, 'standard', [])
+            ->normalize($values, 'standard', ['filter_types' => ['pim.transform.product_value.structured']])
             ->willReturn(['name' => [['locale' => null, 'scope' => null, 'value' => 'foo']]]);
+
+        $filter->filterCollection($values, 'pim.transform.product_value.structured', ['filter_types' => ['pim.transform.product_value.structured']])->willReturn($values);
 
         $productModel->getCategoryCodes()->willReturn(['tshirt']);
 
         $created = new \DateTime('2010-06-23');
         $productModel->getCreated()->willReturn($created);
-        $normalizer->normalize($created, 'standard', [])->willReturn('2010-06-23T00:00:00+01:00');
+        $normalizer->normalize($created, 'standard', ['filter_types' => ['pim.transform.product_value.structured']])->willReturn('2010-06-23T00:00:00+01:00');
 
         $updated = new \DateTime('2010-06-23 23:00:00');
         $productModel->getUpdated()->willReturn($updated);
-        $normalizer->normalize($updated, 'standard', [])->willReturn('2010-06-23T23:00:00+01:00');
+        $normalizer->normalize($updated, 'standard', ['filter_types' => ['pim.transform.product_value.structured']])->willReturn('2010-06-23T23:00:00+01:00');
 
         $this->normalize($productModel, 'standard')->shouldReturn([
             'code' => 'code',

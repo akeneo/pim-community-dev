@@ -1,7 +1,6 @@
 parameters:
     pim_catalog.entity.abstract_product.class:             Pim\Component\Catalog\Model\AbstractProduct
     pim_catalog.entity.product.class:                      Pim\Component\Catalog\Model\Product
-    pim_catalog.entity.variant_product.class:              Pim\Component\Catalog\Model\VariantProduct
     pim_catalog.entity.product_model.class:                Pim\Component\Catalog\Model\ProductModel
     pim_catalog.entity.product_unique_data.class:          Pim\Component\Catalog\Model\ProductUniqueData
     pim_catalog.entity.association.class:                  Pim\Component\Catalog\Model\Association

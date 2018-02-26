@@ -9,9 +9,11 @@ use Akeneo\Component\Batch\Job\JobParameters;
 use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\Batch\Step\StepExecutionAwareInterface;
 use Akeneo\Component\StorageUtils\Cache\EntityManagerClearerInterface;
+use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
+use Pim\Component\Catalog\Model\EntityWithFamilyInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Model\ProductModelInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
-use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
 use Pim\Component\Catalog\ValuesFiller\EntityWithFamilyValuesFillerInterface;
 use Pim\Component\Connector\Processor\BulkMediaFetcher;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -28,7 +30,7 @@ class ProductProcessor implements ItemProcessorInterface, StepExecutionAwareInte
     /** @var NormalizerInterface */
     protected $normalizer;
 
-    /** @var ChannelRepositoryInterface */
+    /** @var IdentifiableObjectRepositoryInterface */
     protected $channelRepository;
 
     /** @var AttributeRepositoryInterface */
@@ -48,7 +50,7 @@ class ProductProcessor implements ItemProcessorInterface, StepExecutionAwareInte
 
     /**
      * @param NormalizerInterface                   $normalizer
-     * @param ChannelRepositoryInterface            $channelRepository
+     * @param IdentifiableObjectRepositoryInterface $channelRepository
      * @param AttributeRepositoryInterface          $attributeRepository
      * @param BulkMediaFetcher                      $mediaFetcher
      * @param EntityWithFamilyValuesFillerInterface $productValuesFiller
@@ -56,18 +58,18 @@ class ProductProcessor implements ItemProcessorInterface, StepExecutionAwareInte
      */
     public function __construct(
         NormalizerInterface $normalizer,
-        ChannelRepositoryInterface $channelRepository,
+        IdentifiableObjectRepositoryInterface $channelRepository,
         AttributeRepositoryInterface $attributeRepository,
         BulkMediaFetcher $mediaFetcher,
         EntityWithFamilyValuesFillerInterface $productValuesFiller,
         EntityManagerClearerInterface $cacheClearer
     ) {
-        $this->normalizer = $normalizer;
-        $this->channelRepository = $channelRepository;
+        $this->normalizer          = $normalizer;
+        $this->channelRepository   = $channelRepository;
         $this->attributeRepository = $attributeRepository;
-        $this->mediaFetcher = $mediaFetcher;
+        $this->mediaFetcher        = $mediaFetcher;
         $this->productValuesFiller = $productValuesFiller;
-        $this->cacheClearer = $cacheClearer;
+        $this->cacheClearer        = $cacheClearer;
     }
 
     /**
@@ -80,13 +82,18 @@ class ProductProcessor implements ItemProcessorInterface, StepExecutionAwareInte
         $channel = $this->channelRepository->findOneByIdentifier($structure['scope']);
         $this->productValuesFiller->fillMissingValues($product);
 
-        $productStandard = $this->normalizer->normalize($product, 'standard', [
-            'channels' => [$channel->getCode()],
-            'locales'  => array_intersect(
-                $channel->getLocaleCodes(),
-                $parameters->get('filters')['structure']['locales']
-            ),
-        ]);
+        $productStandard = $this->normalizer->normalize(
+            $product,
+            'standard',
+            [
+                'filter_types' => ['pim.transform.product_value.structured'],
+                'channels' => [$channel->getCode()],
+                'locales'  => array_intersect(
+                    $channel->getLocaleCodes(),
+                    $parameters->get('filters')['structure']['locales']
+                ),
+            ]
+        );
 
         if ($this->areAttributesToFilter($parameters)) {
             $attributesToFilter = $this->getAttributesToFilter($parameters);
@@ -125,12 +132,12 @@ class ProductProcessor implements ItemProcessorInterface, StepExecutionAwareInte
     /**
      * Fetch medias on the local filesystem
      *
-     * @param ProductInterface $product
+     * @param EntityWithFamilyInterface $product
      * @param string           $directory
      */
-    protected function fetchMedia(ProductInterface $product, $directory)
+    protected function fetchMedia(EntityWithFamilyInterface $product, $directory)
     {
-        $identifier = $product->getIdentifier();
+        $identifier = $product instanceof ProductModelInterface ? $product->getCode() : $product->getIdentifier();
         $this->mediaFetcher->fetchAll($product->getValues(), $directory, $identifier);
 
         foreach ($this->mediaFetcher->getErrors() as $error) {

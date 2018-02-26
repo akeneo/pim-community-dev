@@ -141,6 +141,12 @@ jobs:
             enclosure:  '"'
             withHeader: true
             filePath: /tmp/product_models.csv
+            filters:
+                data: []
+                structure:
+                    scope: ecommerce
+                    locales:
+                        - en_US
     compute_product_models_descendants:
         connector: internal
         alias:     compute_product_models_descendants

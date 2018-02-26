@@ -90,7 +90,7 @@ class UpdateVariantProductIntegration extends TestCase
     {
         parent::setUp();
 
-        $product = $this->get('pim_catalog.builder.variant_product')->createProduct('apollon_blue_xl', 'clothing');
+        $product = $this->get('pim_catalog.builder.product')->createProduct('apollon_blue_xl', 'clothing');
         $this->get('pim_catalog.updater.product')->update($product, [
             'parent' => 'apollon_blue',
             'values' => [

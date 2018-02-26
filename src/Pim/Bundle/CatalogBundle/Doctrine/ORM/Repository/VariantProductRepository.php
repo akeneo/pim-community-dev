@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository;
 
-use Pim\Component\Catalog\Model\VariantProductInterface;
+use Doctrine\ORM\EntityManagerInterface;
+use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Model\ProductModelInterface;
 use Pim\Component\Catalog\Repository\VariantProductRepositoryInterface;
 
 /**
@@ -12,15 +14,29 @@ use Pim\Component\Catalog\Repository\VariantProductRepositoryInterface;
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class VariantProductRepository extends ProductRepository implements VariantProductRepositoryInterface
+class VariantProductRepository implements VariantProductRepositoryInterface
 {
+    /** @var EntityManagerInterface */
+    private $entityManager;
+
+    /**
+     * @param EntityManagerInterface $entityManager
+     */
+    public function __construct(EntityManagerInterface $entityManager)
+    {
+        $this->entityManager = $entityManager;
+    }
+
     /**
      * {@inheritdoc}
      */
-    public function findSiblingsProducts(VariantProductInterface $product): array
+    public function findSiblingsProducts(ProductInterface $product): array
     {
-        $qb = $this
-            ->createQueryBuilder('vp')
+        $qb = $this->entityManager->createQueryBuilder();
+
+        $qb
+            ->select('vp')
+            ->from(ProductInterface::class, 'vp')
             ->where('vp.parent = :parent')
             ->setParameter('parent', $product->getParent());
 
@@ -34,13 +50,26 @@ class VariantProductRepository extends ProductRepository implements VariantProdu
     /**
      * {@inheritdoc}
      */
-    public function countAll(): int
+    public function findLastCreatedByParent(ProductModelInterface $parent): ?ProductInterface
     {
-        $qb = $this
-            ->createQueryBuilder('vp')
-            ->select('COUNT(vp.id)')
-            ->where('vp.parent IS NOT NULL');
+        $qb = $this->entityManager->createQueryBuilder();
 
-        return (int) $qb->getQuery()->getSingleScalarResult();
+        $qb
+            ->select('vp')
+            ->from(ProductInterface::class, 'vp')
+            ->where('vp.parent = :parent')
+            ->setParameter('parent', $parent->getParent())
+            ->orderBy('vp.created', 'ASC')
+            ->addOrderBy('vp.identifier', 'ASC')
+            ->setMaxResults(1)
+        ;
+
+        $results = $qb->getQuery()->execute();
+
+        if (empty($results)) {
+            return null;
+        }
+
+        return current($results);
     }
 }

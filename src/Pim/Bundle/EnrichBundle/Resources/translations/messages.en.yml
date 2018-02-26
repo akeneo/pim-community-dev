@@ -213,6 +213,8 @@ pim_enrich:
             edit_attributes: Edit attributes of a family
             remove: Remove a family
             history: View family history
+        family_variant:
+            remove: Remove a family variant
         attribute_group:
             index: List attribute groups
             create: Create an attribute group
@@ -271,6 +273,12 @@ pim_enrich:
         empty_value:
             reference_data_type:
                 label: Choose the reference data type
+
+    notification:
+        settings:
+            remove_completeness_for_channel_and_locale:
+                start: The locale has been removed from the channel. We are currently cleaning completenesses linked to them.
+                done: Removal of a locale on a channel finished.
 
 # Entity and page header titles
 attribute:
@@ -377,6 +385,7 @@ confirmation:
         attribute group:  Are you sure you want to delete the attribute group %name%?
         category:         Are you sure you want to delete the category %name%?
         family:           Are you sure you want to delete the family %name%?
+        family_variant:   Are you sure you want to delete the family variant %name%?
         product:          Are you sure you want to delete the product %name%?
         group:            Are you sure you want to delete the group %name%?
         group type:       Are you sure you want to delete the group type %name%?
@@ -832,6 +841,7 @@ Format address by address country: Format address by address country
 Language: Language
 Timezone: Timezone
 Currency: Currency
+settings: Settings
 oro.locale:
     address_format:
         region_name_type:

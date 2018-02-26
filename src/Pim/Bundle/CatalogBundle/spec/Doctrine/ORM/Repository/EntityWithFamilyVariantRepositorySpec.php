@@ -6,7 +6,7 @@ use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\EntityWithFamilyVariantRepository;
 use Pim\Component\Catalog\Model\FamilyVariantInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
-use Pim\Component\Catalog\Model\VariantProductInterface;
+use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Repository\EntityWithFamilyVariantRepositoryInterface;
 use Pim\Component\Catalog\Repository\ProductModelRepositoryInterface;
 use Pim\Component\Catalog\Repository\VariantProductRepositoryInterface;
@@ -34,9 +34,10 @@ class EntityWithFamilyVariantRepositorySpec extends ObjectBehavior
     function it_finds_no_siblings_if_entity_has_no_family_variant(
         $variantProductRepository,
         $productModelRepository,
-        VariantProductInterface $variantProduct,
+        ProductInterface $variantProduct,
         ProductModelInterface $productModel
     ) {
+        $variantProduct->isVariant()->willReturn(true);
         $variantProduct->getFamilyVariant()->willReturn(null);
         $productModel->getFamilyVariant()->willReturn(null);
         $productModel->isRootProductModel()->shouldNotBeCalled();
@@ -85,11 +86,12 @@ class EntityWithFamilyVariantRepositorySpec extends ObjectBehavior
     function it_finds_the_siblings_of_a_variant_product(
         $variantProductRepository,
         $productModelRepository,
-        VariantProductInterface $variantProduct,
+        ProductInterface $variantProduct,
         FamilyVariantInterface $familyVariant,
-        VariantProductInterface $sibling1,
-        VariantProductInterface $sibling2
+        ProductInterface $sibling1,
+        ProductInterface $sibling2
     ) {
+        $variantProduct->isVariant()->willReturn(true);
         $variantProduct->getFamilyVariant()->willReturn($familyVariant);
 
         $variantProductRepository->findSiblingsProducts($variantProduct)->willReturn([$sibling1, $sibling2]);

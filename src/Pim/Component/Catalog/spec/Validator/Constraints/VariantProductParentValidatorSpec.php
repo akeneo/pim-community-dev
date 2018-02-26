@@ -7,7 +7,6 @@ use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\FamilyVariantInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
-use Pim\Component\Catalog\Model\VariantProductInterface;
 use Pim\Component\Catalog\Validator\Constraints\VariantProductParent;
 use Pim\Component\Catalog\Validator\Constraints\VariantProductParentValidator;
 use Pim\Component\Catalog\Validator\Constraints\ProductModelPositionInTheVariantTree;
@@ -36,8 +35,8 @@ class VariantProductParentValidatorSpec extends ObjectBehavior
         $this->shouldImplement(ConstraintValidatorInterface::class);
     }
 
-    function it_throws_an_exception_if_validated_entity_is_not_a_variant_product(
-        ProductInterface $product,
+    function it_throws_an_exception_if_validated_entity_is_not_a_product(
+        \stdClass $product,
         VariantProductParent $constraint
     ) {
         $this->shouldThrow(UnexpectedTypeException::class)->during('validate', [
@@ -47,7 +46,7 @@ class VariantProductParentValidatorSpec extends ObjectBehavior
     }
 
     function it_throws_an_exception_if_variant_product_is_not_validated_against_the_right_constraint(
-        VariantProductInterface $product,
+        ProductInterface $product,
         ProductModelPositionInTheVariantTree $constraint
     ) {
         $this->shouldThrow(UnexpectedTypeException::class)->during('validate', [
@@ -58,12 +57,13 @@ class VariantProductParentValidatorSpec extends ObjectBehavior
 
     function it_builds_violation_if_variant_product_has_no_parent(
         $context,
-        VariantProductInterface $variantProduct,
+        ProductInterface $variantProduct,
         FamilyVariantInterface $familyVariant,
         ProductModelInterface $productModel,
         ConstraintViolationBuilderInterface $constraintViolationBuilder,
         VariantProductParent $constraint
     ) {
+        $variantProduct->isVariant()->willReturn(true);
         $variantProduct->getFamilyVariant()->willReturn($familyVariant);
         $variantProduct->getParent()->willReturn(null);
         $variantProduct->getIdentifier()->willReturn('variant_product');
@@ -82,13 +82,14 @@ class VariantProductParentValidatorSpec extends ObjectBehavior
 
     function it_builds_violation_if_variant_product_parent_is_not_at_the_correct_tree_position(
         $context,
-        VariantProductInterface $variantProduct,
+        ProductInterface $variantProduct,
         FamilyVariantInterface $familyVariant,
         ProductModelInterface $productModel,
         Collection $productModels,
         ConstraintViolationBuilderInterface $constraintViolationBuilder,
         VariantProductParent $constraint
     ) {
+        $variantProduct->isVariant()->willReturn(true);
         $variantProduct->getFamilyVariant()->willReturn($familyVariant);
         $variantProduct->getParent()->willReturn($productModel);
         $variantProduct->getIdentifier()->willReturn('variant_product');
@@ -108,14 +109,26 @@ class VariantProductParentValidatorSpec extends ObjectBehavior
         $this->validate($variantProduct, $constraint);
     }
 
+    function it_does_not_build_violation_if_product_is_not_variant(
+        $context,
+        ProductInterface $product,
+        VariantProductParent $constraint
+    ) {
+        $product->isVariant()->willReturn(false);
+        $context->buildViolation(Argument::cetera())->shouldNotBeCalled();
+
+        $this->validate($product, $constraint);
+    }
+
     function it_does_not_build_violation_if_variant_product_parent_is_at_the_correct_tree_position(
         $context,
-        VariantProductInterface $variantProduct,
+        ProductInterface $variantProduct,
         FamilyVariantInterface $familyVariant,
         ProductModelInterface $productModel,
         Collection $productModels,
         VariantProductParent $constraint
     ) {
+        $variantProduct->isVariant()->willReturn(true);
         $variantProduct->getFamilyVariant()->willReturn($familyVariant);
         $variantProduct->getParent()->willReturn($productModel);
 

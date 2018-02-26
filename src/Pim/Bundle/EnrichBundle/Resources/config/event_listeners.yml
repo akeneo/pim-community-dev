@@ -44,6 +44,8 @@ services:
             - '@pim_catalog.repository.locale'
             - '@pim_catalog.saver.locale'
             - '@pim_catalog.remover.completeness'
+            - '@pim_catalog.command_launcher'
+            - '@security.token_storage'
         tags:
             - { name: kernel.event_subscriber }
 

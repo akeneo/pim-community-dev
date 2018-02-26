@@ -165,15 +165,26 @@ services:
     pim_catalog.query.sorter.registry:
         class: '%pim_catalog.query.sorter.registry.class%'
 
-    pim_catalog.query.filter.field_dumper:
+    pim_catalog.query.filter.product.field_dumper:
         class: '%pim_catalog.query.filter.field_dumper.class%'
         arguments:
             - '@pim_catalog.query.filter.product_registry'
 
-    pim_catalog.query.filter.attribute_dumper:
+    pim_catalog.query.filter.product.attribute_dumper:
         class: '%pim_catalog.query.filter.attribute_dumper.class%'
         arguments:
             - '@pim_catalog.query.filter.product_registry'
+            - '@pim_catalog.repository.attribute'
+
+    pim_catalog.query.filter.product_model.field_dumper:
+        class: '%pim_catalog.query.filter.field_dumper.class%'
+        arguments:
+            - '@pim_catalog.query.filter.product_model_registry'
+
+    pim_catalog.query.filter.product_model.attribute_dumper:
+        class: '%pim_catalog.query.filter.attribute_dumper.class%'
+        arguments:
+            - '@pim_catalog.query.filter.product_model_registry'
             - '@pim_catalog.repository.attribute'
 
     # PQB common utils
