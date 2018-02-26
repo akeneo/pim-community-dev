@@ -2,9 +2,11 @@
 
 namespace Pim\Bundle\UserBundle\Doctrine\ORM\Repository;
 
-use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
+use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\QueryBuilder;
 use Pim\Bundle\UserBundle\Entity\User;
-use Pim\Bundle\UserBundle\Repository\RoleRepository as BaseRoleRepository;
+use Pim\Component\User\Model\RoleInterface;
+use Pim\Component\User\Repository\RoleRepositoryInterface;
 
 /**
  * Role repository
@@ -13,9 +15,16 @@ use Pim\Bundle\UserBundle\Repository\RoleRepository as BaseRoleRepository;
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class RoleRepository extends BaseRoleRepository implements
-    IdentifiableObjectRepositoryInterface
+class RoleRepository extends EntityRepository implements RoleRepositoryInterface
 {
+    /**
+     * {@inheritdoc}
+     */
+    public function getIdentifierProperties()
+    {
+        return ['role'];
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -27,9 +36,9 @@ class RoleRepository extends BaseRoleRepository implements
     /**
      * Create a QB to find all roles but the anonymous one
      *
-     * @return \Doctrine\ORM\QueryBuilder
+     * @return QueryBuilder
      */
-    public function getAllButAnonymousQB()
+    public function getAllButAnonymousQB(): QueryBuilder
     {
         return $this->createQueryBuilder('r')
             ->where('r.role <> :anon')
@@ -37,10 +46,19 @@ class RoleRepository extends BaseRoleRepository implements
     }
 
     /**
-     * {@inheritdoc}
+     * Get user query builder
+     *
+     * @param  RoleInterface $role
+     *
+     * @return QueryBuilder
      */
-    public function getIdentifierProperties()
+    public function getUserQueryBuilder(RoleInterface $role): QueryBuilder
     {
-        return ['role'];
+        return $this->_em->createQueryBuilder()
+            ->select('u')
+            ->from('PimUserBundle:User', 'u')
+            ->join('u.roles', 'role')
+            ->where('role = :role')
+            ->setParameter('role', $role);
     }
 }
