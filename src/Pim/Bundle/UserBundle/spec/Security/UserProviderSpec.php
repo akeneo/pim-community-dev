@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Pim\Bundle\UserBundle\Provider;
+namespace spec\Pim\Bundle\UserBundle\Security;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Component\User\Repository\UserRepositoryInterface;
