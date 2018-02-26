@@ -73,7 +73,7 @@ class VersionRepository extends DocumentRepository implements VersionRepositoryI
     /**
      * @param array $params
      *
-     * @return \Doctrine\ORM\QueryBuilder
+     * @return \Doctrine\ODM\MongoDB\Query\Builder
      */
     public function createDatagridQueryBuilder(array $params = [])
     {
