@@ -933,4 +933,40 @@ class ProductProcessorSpec extends ObjectBehavior
             ->process($convertedData)
             ->shouldReturn($product);
     }
+
+    /**
+     * @see PIM-7188
+     */
+    function it_only_detach_if_not_yet_seen_as_to_write(
+        $productRepository,
+        $productBuilder,
+        $productUpdater,
+        $productValidator,
+        $productFilter,
+        $productDetacher,
+        $stepExecution,
+        ProductInterface $product,
+        ConstraintViolationListInterface $violationList,
+        JobParameters $jobParameters
+    ) {
+        $stepExecution->getJobParameters()->willReturn($jobParameters);
+        $stepExecution->incrementSummaryInfo('product_skipped_no_diff')->shouldBeCalled();
+        $jobParameters->get('enabledComparison')->willReturn(true);
+        $jobParameters->get('enabled')->willReturn(true);
+
+        $product->getId()->willReturn(1);
+
+        $productRepository->getIdentifierProperties()->willReturn(['sku']);
+        $productRepository->findOneByIdentifier('tshirt')->willReturn($product);
+
+        $productValidator->validate($product)->willReturn($violationList);
+
+        $data = ['identifier' => 'tshirt', 'name' => 'same'];
+        $productFilter->filter($product, Argument::any())->willReturn($data, []);
+
+        $this->process($data);
+        $this->process($data);
+
+        $productDetacher->detach($product)->shouldNotHaveBeenCalled();
+    }
 }
