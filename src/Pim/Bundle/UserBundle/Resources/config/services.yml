@@ -30,9 +30,3 @@ services:
         arguments:
             - '@form.factory'
             - '@security.token_storage'
-
-    pim_user.security.provider:
-        class: 'Pim\Bundle\UserBundle\Security\UserProvider'
-        public: false
-        arguments:
-            - '@pim_user.manager'

@@ -1,5 +1,5 @@
 parameters:
-  pim_user.provider.user.class: Pim\Bundle\UserBundle\Provider\UserProvider
+  pim_user.provider.user.class: Pim\Bundle\UserBundle\Security\UserProvider
 
 services:
   pim_user.provider.user:
