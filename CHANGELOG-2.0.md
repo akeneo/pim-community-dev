@@ -1,3 +1,9 @@
+# 2.0.x
+
+## Improvements
+
+- GITHUB-7730: Improve product and product model import performances by using cached repositories
+
 # 2.0.16 (2018-02-22)
 
 ## Bug fixes
