@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace PimEnterprise\Bundle\WorkflowBundle\Elasticsearch\Filter\Attribute;
 
 /*

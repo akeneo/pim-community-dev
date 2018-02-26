@@ -19,7 +19,7 @@ class GridHelperSpec extends ObjectBehavior
         );
     }
 
-    function it_cshoudl_be_a_grid_helper()
+    function it_should_be_a_grid_helper()
     {
         $this->shouldBeAnInstanceOf(GridHelper::class);
     }

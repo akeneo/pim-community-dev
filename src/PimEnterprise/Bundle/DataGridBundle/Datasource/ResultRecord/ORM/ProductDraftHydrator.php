@@ -71,7 +71,6 @@ class ProductDraftHydrator implements HydratorInterface
     {
         $defaultNormalizedItem = [
             'id'            => $item->getId(),
-            'dataLocale'    => $this->extractor->getParameter('dataLocale'),
             'categories'    => null,
             'values'        => [],
             'created'       => null,

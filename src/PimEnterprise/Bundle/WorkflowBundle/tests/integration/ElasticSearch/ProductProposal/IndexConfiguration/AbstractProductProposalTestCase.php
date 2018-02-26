@@ -94,6 +94,14 @@ abstract class AbstractProductProposalTestCase extends TestCase
         $this->assertSame($expectedProposalProductIdentifiers, $actualProductIdentifiers);
     }
 
+    /**
+     * Build elasticsearch query
+     *
+     * @param array $filters
+     * @param array $mustNot
+     *
+     * @return array
+     */
     protected function buildQuery(array $filters = [], array $mustNot = []): array
     {
         $query = ['query' => ['bool' => ['filter' => ['bool' => ['should' => []]], 'must_not' => []]]];

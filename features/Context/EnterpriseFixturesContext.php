@@ -137,8 +137,6 @@ class EnterpriseFixturesContext extends BaseFixturesContext
             $productDraft->setValues(new ValueCollection($values));
 
             $this->getContainer()->get('pimee_workflow.saver.product_draft')->save($productDraft);
-
-            $this->refresh($productDraft);
             $this->getContainer()->get('akeneo_elasticsearch.client.product_proposal')->refreshIndex();
         }
     }

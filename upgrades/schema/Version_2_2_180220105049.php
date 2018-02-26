@@ -81,7 +81,7 @@ class Version_2_2_180220105049 extends AbstractMigration implements ContainerAwa
     private function updateProductDraftsRawValues(array $drafts)
     {
         $productValueFactory = $this->container->get('pim_catalog.factory.value');
-        $attributeRepository = $this->container->get('pim_catalog.repository.attribute');
+        $attributeRepository = $this->container->get('pim_catalog.repository.cached_attribute');
         $productDraftRepository = $this->container->get('pimee_workflow.repository.product_draft');
         $productProposalIndexer = $this->container->get('pim_catalog.elasticsearch.product_proposal_indexer');
 
@@ -126,5 +126,8 @@ class Version_2_2_180220105049 extends AbstractMigration implements ContainerAwa
 
         $drafts = $productDraftRepository->findByIds($draftsIds);
         $productProposalIndexer->indexAll($drafts);
+
+        $clearer = $this->container->get('pim_connector.doctrine.cache_clearer');
+        $clearer->clear();
     }
 }

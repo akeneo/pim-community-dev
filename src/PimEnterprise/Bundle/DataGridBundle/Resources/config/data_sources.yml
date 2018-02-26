@@ -48,7 +48,7 @@ services:
             - '@pimee_workflow.doctrine.query.proposal_product_query_builder_from_size_factory_with_permissions'
             - '@pimee_workflow.normalizer.proposal_product'
         calls:
-            - [ setMassActionRepository, ['@pimee_workflow.repository.published_product_mass_action' ]]
+            - [ setMassActionRepository, ['@pimee_workflow.repository.product_draft' ]]
         tags:
             - { name: oro_datagrid.datasource, type: pimee_datasource_proposal_product }
 

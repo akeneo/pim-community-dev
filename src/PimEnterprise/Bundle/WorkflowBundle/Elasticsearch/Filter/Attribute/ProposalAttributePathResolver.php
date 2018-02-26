@@ -36,6 +36,13 @@ class ProposalAttributePathResolver
         $this->localeRepository = $localeRepository;
     }
 
+    /**
+     * Return attribute path for elasticsearch query
+     *
+     * @param AttributeInterface $attribute
+     *
+     * @return array
+     */
     public function getAttributePaths(AttributeInterface $attribute): array
     {
         $baseAttribute = 'values.' . $attribute->getCode() . '-' . $attribute->getBackendType();

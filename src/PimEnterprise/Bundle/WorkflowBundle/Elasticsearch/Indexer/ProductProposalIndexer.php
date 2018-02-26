@@ -82,7 +82,6 @@ class ProductProposalIndexer implements IndexerInterface, BulkIndexerInterface, 
         $indexRefresh = $options['index_refresh'] ?? Refresh::waitFor();
 
         $normalizedProducts = [];
-        $normalizedProductModels = [];
         foreach ($objects as $object) {
             $normalizedProduct = $this->normalizer->normalize(
                 $object,
@@ -90,13 +89,6 @@ class ProductProposalIndexer implements IndexerInterface, BulkIndexerInterface, 
             );
             $this->validateObjectNormalization($normalizedProduct);
             $normalizedProducts[] = $normalizedProduct;
-
-            $normalizedProductModel = $this->normalizer->normalize(
-                $object,
-                ProductProposalNormalizer::INDEXING_FORMAT_PRODUCT_PROPOSAL_INDEX
-            );
-            $this->validateObjectNormalization($normalizedProductModel);
-            $normalizedProductModels[] = $normalizedProductModel;
         }
 
         $this->productProposalClient->bulkIndexes($this->indexType, $normalizedProducts, 'id', $indexRefresh);

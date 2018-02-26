@@ -3,15 +3,11 @@
 namespace spec\PimEnterprise\Component\Workflow\Normalizer\Indexing\ProductProposal;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Model\AttributeInterface;
-use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ValueCollectionInterface;
-use Pim\Component\Catalog\Model\ValueInterface;
 use PimEnterprise\Component\Workflow\Model\ProductDraftInterface;
 use PimEnterprise\Component\Workflow\Normalizer\Indexing\ProductProposal\PropertiesNormalizer;
 use PimEnterprise\Component\Workflow\Normalizer\Indexing\ProductProposalNormalizer;
-use Prophecy\Argument;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\SerializerInterface;
 
@@ -28,7 +24,7 @@ class PropertiesNormalizerSpec extends ObjectBehavior
         $this->shouldHaveType(PropertiesNormalizer::class);
     }
 
-    function it_supports_products(ProductDraftInterface $productProposal)
+    function it_supports_product_proposal(ProductDraftInterface $productProposal)
     {
         $this->supportsNormalization(new \stdClass(), 'whatever')->shouldReturn(false);
         $this->supportsNormalization(new \stdClass(), ProductProposalNormalizer::INDEXING_FORMAT_PRODUCT_PROPOSAL_INDEX)->shouldReturn(false);

@@ -11,7 +11,6 @@
 
 namespace PimEnterprise\Bundle\DataGridBundle\Extension\MassAction\Handler;
 
-use Akeneo\Component\StorageUtils\Cursor\CursorFactoryInterface;
 use Oro\Bundle\DataGridBundle\Datagrid\DatagridInterface;
 use Oro\Bundle\DataGridBundle\Extension\MassAction\Actions\MassActionInterface;
 use Pim\Bundle\DataGridBundle\Extension\MassAction\Event\MassActionEvent;
@@ -30,19 +29,12 @@ class MassApproveActionHandler implements MassActionHandlerInterface
     /** @var EventDispatcherInterface */
     protected $eventDispatcher;
 
-    /** @var CursorFactoryInterface */
-    protected $cursorFactory;
-
     /**
      * @param EventDispatcherInterface $eventDispatcher
-     * @param CursorFactoryInterface   $cursorFactory
      */
-    public function __construct(
-        EventDispatcherInterface $eventDispatcher,
-        CursorFactoryInterface $cursorFactory
-    ) {
+    public function __construct(EventDispatcherInterface $eventDispatcher)
+    {
         $this->eventDispatcher = $eventDispatcher;
-        $this->cursorFactory = $cursorFactory;
     }
 
     /**
@@ -56,11 +48,10 @@ class MassApproveActionHandler implements MassActionHandlerInterface
 
         $datasource = $datagrid->getDatasource();
 
-        $pqb = $datasource->getProductQueryBuilder();
-        $cursor = $this->cursorFactory->createCursor($pqb->getQueryBuilder()->getQuery());
+        $products = $datasource->getProductQueryBuilder()->execute();
 
         $objectIds = [];
-        foreach ($cursor as $productObject) {
+        foreach ($products as $productObject) {
             if ($productObject instanceof ProductDraftInterface) {
                 $objectIds[] = $productObject->getId();
             }

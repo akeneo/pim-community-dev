@@ -19,7 +19,7 @@ use PimEnterprise\Bundle\FilterBundle\Filter\ProductDraftFilterUtility;
 use Symfony\Component\Form\FormFactoryInterface;
 
 /**
- * Author filter or an Elasticsearch query.
+ * Author filter for an Elasticsearch query.
  *
  * @author Olivier Soulet <olivier.soulet@akeneo.com>
  */

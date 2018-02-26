@@ -42,7 +42,6 @@ class PropertiesNormalizer implements NormalizerInterface, SerializerAwareInterf
             throw new \LogicException('Serializer must be a normalizer');
         }
 
-        $context = array_merge(['filter_types' => ['pim.transform.product_value.structured']], $context);
 
         $data = [];
 
@@ -60,8 +59,7 @@ class PropertiesNormalizer implements NormalizerInterface, SerializerAwareInterf
         $data[StandardPropertiesNormalizer::FIELD_VALUES] = !$productProposal->getValues()->isEmpty()
             ? $this->serializer->normalize(
                 $productProposal->getValues(),
-                ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX,
-                $context
+                ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX
             ) : [];
 
         $attributeAsLabelCode = null !== $product->getFamily() ?
@@ -72,8 +70,7 @@ class PropertiesNormalizer implements NormalizerInterface, SerializerAwareInterf
         $productlabel = null !== $labelValue
             ? $this->serializer->normalize(
                 $labelValue,
-                ProductProposalNormalizer::INDEXING_FORMAT_PRODUCT_PROPOSAL_INDEX,
-                $context
+                ProductProposalNormalizer::INDEXING_FORMAT_PRODUCT_PROPOSAL_INDEX
             ) : [];
 
         $data[StandardPropertiesNormalizer::FIELD_LABEL] = $this->getLabel(

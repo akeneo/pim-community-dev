@@ -14,12 +14,11 @@
 - AOB-2: Change the constructor of `PimEnterprise\Bundle\DataGridBundle\Datasource\ResultRecord\ORM\ProductDraftHydrator` to add `PimEnterprise\Bundle\WorkflowBundle\Datagrid\Normalizer\ProductProposalNormalizer`
 - AOB-2: Change the constructor of `PimEnterprise\Bundle\DataGridBundle\EventListener\ConfigureProductGridListener` to add `Pim\Bundle\DataGridBundle\Datagrid\Configuration\ConfiguratorInterface`
 - AOB-2: Change the constructor of `PimEnterprise\Bundle\DataGridBundle\EventListener\ConfigureProposalGridListener` to add `Pim\Bundle\DataGridBundle\Datagrid\Configuration\ConfiguratorInterface`
-- AOB-2: Change the constructor of `PimEnterprise\Bundle\DataGridBundle\Extension\MassAction\Handler\MassAproveActionHandler` to add `Akeneo\Component\StorageUtils\Cursor\CursorFactoryInterface`
-- AOB-2: Change the constructor of `PimEnterprise\Bundle\DataGridBundle\Extension\MassAction\Handler\MassAproveActionHandler` to remove `Pim\Bundle\DataGridBundle\Datasource\ResultRecord\HydratorInterface`
-- AOB-2: Change the constructor of `PimEnterprise\Bundle\DataGridBundle\Extension\MassAction\Handler\MassRefuseActionHandler` to add `Akeneo\Component\StorageUtils\Cursor\CursorFactoryInterface`
+- AOB-2: Change the constructor of `PimEnterprise\Bundle\DataGridBundle\Extension\MassAction\Handler\MassApproveActionHandler` to remove `Pim\Bundle\DataGridBundle\Datasource\ResultRecord\HydratorInterface`
 - AOB-2: Change the constructor of `PimEnterprise\Bundle\DataGridBundle\Extension\MassAction\Handler\MassRefuseActionHandler` to remove `Pim\Bundle\DataGridBundle\Datasource\ResultRecord\HydratorInterface`
-- AOB-2: `PimEnterprise\Bundle\WorkflowBundle\Doctrine\ORM\Repository` now implements `Akeneo\Component\StorageUtils\Repository\CursorableRepositoryInterface`
-- AOB-2: `PimEnterprise\Bundle\WorkflowBundle\Doctrine\ORM\Repository` now implements `Akeneo\Component\StorageUtils\Repository\SearchableRepositoryInterface`
+- AOB-2: `PimEnterprise\Bundle\WorkflowBundle\Doctrine\ORM\Repository\ProductDraftRepository` now implements `Akeneo\Component\StorageUtils\Repository\CursorableRepositoryInterface`
+- AOB-2: `PimEnterprise\Bundle\WorkflowBundle\Doctrine\ORM\Repository\ProductDraftRepository` now implements `Akeneo\Component\StorageUtils\Repository\SearchableRepositoryInterface`
+- AOB-2: `PimEnterprise\Bundle\WorkflowBundle\Doctrine\ORM\Repository\ProductDraftRepository` now implements `Pim\Bundle\DataGridBundle\Doctrine\ORM\Repository\MassActionRepositoryInterface`
 - AOB-2: `PimEnterprise\Component\Workflow\Model\ProductDraftInterface` now implements `Pim\Component\Catalog\Model\EntityWithValuesInterface`
 - AOB-2: `PimEnterprise\Bundle\DataGridBundle\Datagrid\Configuration\Product\FiltersConfigurator` now implements `Pim\Bundle\DataGridBundle\Datagrid\Configuration\ConfiguratorInterface`
 

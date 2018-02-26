@@ -13,6 +13,11 @@ namespace PimEnterprise\Bundle\WorkflowBundle\Elasticsearch\Filter\Field;
 
 use Pim\Bundle\CatalogBundle\Elasticsearch\Filter\IdentifierFilter as BaseIdentifierFilter;
 
+/**
+ * Override default Elasticsearch identifier filter for proposal
+ *
+ * @author    Philippe Mossière <philippe.mossiere@akeneo.com>
+ */
 class IdentifierFilter extends BaseIdentifierFilter
 {
     const IDENTIFIER_KEY = 'product_identifier';

@@ -15,6 +15,7 @@ use Akeneo\Component\StorageUtils\Repository\CursorableRepositoryInterface;
 use Akeneo\Component\StorageUtils\Repository\SearchableRepositoryInterface;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
+use Pim\Bundle\DataGridBundle\Doctrine\ORM\Repository\MassActionRepositoryInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Query\Filter\Operators;
 use PimEnterprise\Component\Workflow\Model\ProductDraft;
@@ -27,7 +28,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
  *
  * @author Gildas Quemener <gildas@akeneo.com>
  */
-class ProductDraftRepository extends EntityRepository implements ProductDraftRepositoryInterface, CursorableRepositoryInterface, SearchableRepositoryInterface
+class ProductDraftRepository extends EntityRepository implements ProductDraftRepositoryInterface, CursorableRepositoryInterface, SearchableRepositoryInterface, MassActionRepositoryInterface
 {
     /**
      * {@inheritdoc}
@@ -239,38 +240,10 @@ class ProductDraftRepository extends EntityRepository implements ProductDraftRep
      */
     public function applyMassActionParameters($qb, $inset, array $values)
     {
-        if ($values) {
-            $rootAlias = $qb->getRootAlias();
-            $valueWhereCondition =
-                $inset
-                    ? $qb->expr()->in($rootAlias, $values)
-                    : $qb->expr()->notIn($rootAlias, $values);
-            $qb->andWhere($valueWhereCondition);
+        if (!empty($values)) {
+            $condition = $inset ? Operators::IN_LIST : Operators::NOT_IN_LIST;
+            $qb->addFilter('id', $condition, $values);
         }
-
-        if (null !== $qb->getDQLPart('where')) {
-            $whereParts = $qb->getDQLPart('where')->getParts();
-            $qb->resetDQLPart('where');
-
-            foreach ($whereParts as $part) {
-                if (!is_string($part) || !strpos($part, 'entityIds')) {
-                    $qb->andWhere($part);
-                }
-            }
-        }
-
-        $qb->setParameters(
-            $qb->getParameters()->filter(
-                function ($parameter) {
-                    return $parameter->getName() !== 'entityIds';
-                }
-            )
-        );
-
-        $qb->resetDQLPart('orderBy');
-
-        // remove limit of the query
-        $qb->setMaxResults(null);
     }
 
     /**

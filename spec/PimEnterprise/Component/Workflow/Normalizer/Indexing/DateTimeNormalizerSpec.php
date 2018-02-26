@@ -19,7 +19,7 @@ class DateTimeNormalizerSpec extends ObjectBehavior
         $this->shouldHaveType(DateTimeNormalizer::class);
     }
 
-    function it_support_dates()
+    function it_supports_dates()
     {
         $date = new \DateTime();
         $this->supportsNormalization(new \stdClass(), 'whatever')->shouldReturn(false);
@@ -34,7 +34,7 @@ class DateTimeNormalizerSpec extends ObjectBehavior
             ->shouldReturn(true);
     }
 
-    function it_normalizes_product_assocations($standardNormalizer)
+    function it_normalizes_dates($standardNormalizer)
     {
         $date = new \DateTime();
         $standardNormalizer->normalize($date, ProductProposalNormalizer::INDEXING_FORMAT_PRODUCT_PROPOSAL_INDEX, ['context'])

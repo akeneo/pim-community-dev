@@ -46,7 +46,7 @@ class ProductQueryBuilderFactory implements ProductQueryBuilderFactoryInterface
         ProductQueryBuilderFactoryInterface $pqbFactory,
         TokenStorageInterface $tokenStorage,
         CategoryAccessRepository $categoryAccessRepository,
-        $accessLevel
+        string $accessLevel
     ) {
         $this->pqbFactory = $pqbFactory;
         $this->tokenStorage = $tokenStorage;

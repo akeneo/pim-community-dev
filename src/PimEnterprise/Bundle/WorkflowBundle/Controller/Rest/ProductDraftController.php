@@ -335,9 +335,16 @@ class ProductDraftController
         return new JsonResponse(['results' => $normalizedAttributes]);
     }
 
+    /**
+     * Search on product draft author collection.
+     *
+     * @param Request $request
+     *
+     * @return JsonResponse
+     */
     public function authorAction(Request $request)
     {
-        $options = $request->query->get('options', ['limit' => 20]);
+        $options = $request->query->get('options', ['limit' => SearchableRepositoryInterface::FETCH_LIMIT]);
 
         if ($request->query->has('identifiers')) {
             $options['identifiers'] = explode(',', $request->query->get('identifiers'));
@@ -354,7 +361,7 @@ class ProductDraftController
                 'username'      => $user->getAuthor(),
             ];
             $normalized[$user->getAuthor()]['code'] = $user->getAuthor();
-            $normalized[$user->getAuthor()]['labels']['en_US'] = $user->getAuthor();
+            $normalized[$user->getAuthor()]['labels'][$this->userContext->getUiLocaleCode()] = $user->getAuthor();
         }
 
         return new JsonResponse($normalized);

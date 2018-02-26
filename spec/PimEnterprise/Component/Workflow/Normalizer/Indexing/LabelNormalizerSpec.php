@@ -6,15 +6,16 @@ use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ValueInterface;
 use Pim\Component\Catalog\Normalizer\Indexing\ProductAndProductModel\ProductModelNormalizer;
+use PimEnterprise\Component\Workflow\Normalizer\Indexing\LabelNormalizer;
 use PimEnterprise\Component\Workflow\Normalizer\Indexing\ProductProposalNormalizer;
 use PimEnterprise\Component\Workflow\Normalizer\Indexing\TextNormalizer;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
-class TextNormalizerSpec extends ObjectBehavior
+class LabelNormalizerSpec extends ObjectBehavior
 {
     function it_is_initializable()
     {
-        $this->shouldHaveType(TextNormalizer::class);
+        $this->shouldHaveType(LabelNormalizer::class);
     }
 
     function it_is_a_normalizer()

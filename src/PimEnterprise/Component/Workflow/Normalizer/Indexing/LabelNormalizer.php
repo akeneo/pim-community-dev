@@ -13,7 +13,6 @@ namespace PimEnterprise\Component\Workflow\Normalizer\Indexing;
 
 use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Model\ValueInterface;
-use Pim\Component\Catalog\Normalizer\Indexing\Value\AbstractProductValueNormalizer;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -21,7 +20,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  *
  * @author Philippe Mossière <philippe.mossiere@akeneo.com>
  */
-class TextNormalizer extends AbstractProductValueNormalizer implements NormalizerInterface
+class LabelNormalizer implements NormalizerInterface
 {
     /**
      * {@inheritdoc}
@@ -39,5 +38,20 @@ class TextNormalizer extends AbstractProductValueNormalizer implements Normalize
     protected function getNormalizedData(ValueInterface $value)
     {
         return $value->getData();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function normalize($proposalValue, $format = null, array $context = [])
+    {
+        $locale = (null === $proposalValue->getLocale()) ? '<all_locales>' : $proposalValue->getLocale();
+        $channel = (null === $proposalValue->getScope()) ? '<all_channels>' : $proposalValue->getScope();
+
+        $key = $proposalValue->getAttribute()->getCode() . '-' . $proposalValue->getAttribute()->getBackendType();
+        $structure = [];
+        $structure[$key][$channel][$locale] = $this->getNormalizedData($proposalValue);
+
+        return $structure;
     }
 }

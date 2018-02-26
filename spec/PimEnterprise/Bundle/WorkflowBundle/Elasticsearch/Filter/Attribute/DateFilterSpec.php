@@ -378,7 +378,6 @@ class DateFilterSpec extends ObjectBehavior
         $this->itThrowsArrayExpection($publishedOn, Operators::NOT_BETWEEN, 'NOT_AN_ARRAY');
     }
 
-
     function it_throws_an_exception_when_the_given_value_is_a_mal_formatted_array(
         AttributeInterface $publishedOn,
         SearchQueryBuilder $sqb
