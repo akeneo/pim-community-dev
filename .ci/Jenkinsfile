@@ -37,30 +37,32 @@ stage("Build") {
 
     parallel(
         "pim-ce": {
-            withBuildNode({
-                checkout scm
-                container("php") {
-                    sh "composer update --ansi --optimize-autoloader --no-interaction --no-progress --prefer-dist --no-suggest"
-                    sh "app/console oro:requirejs:generate-config"
-                    sh "app/console assets:install"
-                }
-                container("node") {
-                    sh "npm install --color=always"
-                }
-                container("docker") {
-                    sh "cp .ci/behat.community.yml behat.yml"
+            if ((editions.contains("ce") && launchBehatTests.equals("yes")) || launchUnitTests.equals("yes") || launchIntegrationTests.equals("yes")) {
+                withBuildNode({
+                    checkout scm
+                    container("php") {
+                        sh "composer update --ansi --optimize-autoloader --no-interaction --no-progress --prefer-dist --no-suggest"
+                        sh "app/console oro:requirejs:generate-config"
+                        sh "app/console assets:install"
+                    }
+                    container("node") {
+                        sh "npm install --color=always"
+                    }
+                    container("docker") {
+                        sh "cp .ci/behat.community.yml behat.yml"
 
-                    sh "mkdir -m 777 -p app/build/logs/behat app/build/logs/consumer "
-                    sh "cp app/config/parameters_test.yml.dist app/config/parameters_test.yml"
-                    sh "sed -i \"s#database_host: .*#database_host: 127.0.0.1#g\" app/config/parameters_test.yml"
-                    sh "sed \"\$a    installer_data: 'PimInstallerBundle:minimal'\n\" app/config/parameters_test.yml"
+                        sh "mkdir -m 777 -p app/build/logs/behat app/build/logs/consumer "
+                        sh "cp app/config/parameters_test.yml.dist app/config/parameters_test.yml"
+                        sh "sed -i \"s#database_host: .*#database_host: 127.0.0.1#g\" app/config/parameters_test.yml"
+                        sh "sed \"\$a    installer_data: 'PimInstallerBundle:minimal'\n\" app/config/parameters_test.yml"
 
-                    sh "gcloud container builds submit --tag eu.gcr.io/akeneo-ci/pim-community-dev:pull-request-${env.CHANGE_ID}-build-${env.BUILD_NUMBER}-ce ."
-                }
-            })
+                        sh "gcloud container builds submit --tag eu.gcr.io/akeneo-ci/pim-community-dev:pull-request-${env.CHANGE_ID}-build-${env.BUILD_NUMBER}-ce ."
+                    }
+                })
+            }
         },
         "pim-ee": {
-            if (editions.contains("ee")) {
+            if (editions.contains("ee") && launchBehatTests.equals("yes")) {
                 withBuildNode({
                     checkout([$class: 'GitSCM',
                         branches: [[name: '1.7']],
@@ -106,7 +108,7 @@ stage("Build") {
             }
         },
         "pim-ce-odm": {
-            if (editions.contains("ceodm")) {
+            if (editions.contains("ceodm") && launchBehatTests.equals("yes")) {
                 withBuildNode({
                     checkout scm
                     container("php") {
@@ -138,7 +140,7 @@ stage("Build") {
             }
         },
          "pim-ee-odm": {
-             if (editions.contains("eeodm")) {
+             if (editions.contains("eeodm") && launchBehatTests.equals("yes")) {
                 withBuildNode({
                     checkout([$class: 'GitSCM',
                         branches: [[name: '1.7']],
@@ -459,16 +461,16 @@ stage("Test") {
         ]) {
             node("cleanup-" + uuid) {
                 container("docker") {
-                    if (editions.contains("ce")) {
+                    if (launchBehatTests.equals("yes") && editions.contains("ce")) {
                         sh "gcloud -q container images delete eu.gcr.io/akeneo-ci/pim-community-dev:pull-request-${env.CHANGE_ID}-build-${env.BUILD_NUMBER}-ce"
                     }
-                    if (editions.contains("ee")) {
+                    if (launchBehatTests.equals("yes") && editions.contains("ee")) {
                         sh "gcloud -q container images delete eu.gcr.io/akeneo-ci/pim-community-dev:pull-request-${env.CHANGE_ID}-build-${env.BUILD_NUMBER}-ee"
                     }
-                    if (editions.contains("ceodm")) {
+                    if (launchBehatTests.equals("yes") && editions.contains("ceodm")) {
                         sh "gcloud -q container images delete eu.gcr.io/akeneo-ci/pim-community-dev:pull-request-${env.CHANGE_ID}-build-${env.BUILD_NUMBER}-ceodm"
                     }
-                    if (editions.contains("eeodm")) {
+                    if (launchBehatTests.equals("yes") && editions.contains("eeodm")) {
                         sh "gcloud -q container images delete eu.gcr.io/akeneo-ci/pim-community-dev:pull-request-${env.CHANGE_ID}-build-${env.BUILD_NUMBER}-eeodm"
                     }
                 }
