@@ -1,3 +1,18 @@
+# 2.2.0-ALPHA1 (2018-02-21)
+
+## Improve Julia's experience
+
+- PIM-7165: Execute rules after a product model import
+- PIM-7125: As Peter, I would like to use rules to unclassify products from a tree
+- PIM-7186: Don't apply a rule if its action field is an attribute not present in the family
+
+## BC breaks
+
+### Constructors
+
+- PIM-7125: Change the constructor of `PimEnterprise\Component\CatalogRule\ActionApplier\RemoverActionApplier` to add `Akeneo\Component\Classification\Repository\CategoryRepositoryInterface`
+- PIM-7125: Change the constructor of `PimEnterprise\Bundle\CatalogRuleBundle\Twig\RuleExtension` to add `Symfony\Component\Translation\TranslatorInterface`
+
 # 2.2.0-ALPHA0 (2018-02-13)
 
 ## Improve Julia's experience

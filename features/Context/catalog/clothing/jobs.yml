@@ -90,6 +90,16 @@ jobs:
                         - de_DE
                         - en_US
                         - fr_FR
+    csv_clothing_product_model_export:
+        connector: Akeneo CSV Connector
+        alias:     csv_product_model_export
+        label:     Clothing product model export
+        type:      export
+        configuration:
+            delimiter:  ;
+            enclosure:  '"'
+            withHeader: true
+            filePath: /tmp/product_model.csv
     csv_clothing_category_import:
         connector: Akeneo CSV Connector
         alias:     csv_category_import
@@ -274,6 +284,20 @@ jobs:
             decimalSeparator: .
             dateFormat:       MM/dd/yyyy
             filePath:         '/tmp/xlsx_clothing_product_proposal_import.xlsx'
+    xlsx_clothing_product_export:
+        connector: Akeneo XLSX Connector
+        alias:     xlsx_product_export
+        label:     Demo XLSX product import
+        type:      import
+        configuration:
+            filePath: '/tmp/xlsx_clothing_product_proposal_import.xlsx'
+    xlsx_clothing_product_model_export:
+        connector: Akeneo XLSX Connector
+        alias:     xlsx_product_model_export
+        label:     Demo XLSX product model import
+        type:      import
+        configuration:
+            filePath: '/tmp/xlsx_clothing_product_model_proposal_import.xlsx'
     add_product_value:
         connector: Akeneo Mass Edit Connector
         alias:     add_product_value

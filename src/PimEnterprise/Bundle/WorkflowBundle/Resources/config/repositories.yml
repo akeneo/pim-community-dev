@@ -25,6 +25,7 @@ services:
             - '@pim_catalog.object_manager.product'
             - '@pimee_workflow.repository.published_product_without_permission'
             - '@pimee_catalog.security.factory.filtered_product'
+            - '@pimee_security.deny_not_granted_categorized_entity'
             - '%pimee_workflow.entity.published_product.class%'
 
     pimee_workflow.repository.published_product_category:

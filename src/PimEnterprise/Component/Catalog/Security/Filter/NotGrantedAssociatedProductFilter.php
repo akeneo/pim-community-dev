@@ -49,6 +49,7 @@ class NotGrantedAssociatedProductFilter implements NotGrantedDataFilterInterface
             );
         }
 
+        $entityWithAssociations->getAssociations();
         $filteredEntityWithAssociations = clone $entityWithAssociations;
         $clonedAssociations = new ArrayCollection();
 

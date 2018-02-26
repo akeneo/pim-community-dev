@@ -11,6 +11,7 @@ use Pim\Component\Catalog\Model\EntityWithValuesInterface;
 use Pim\Component\Catalog\Model\LocaleInterface;
 use Pim\Component\Catalog\Model\Product;
 use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Model\ProductModelInterface;
 use Pim\Component\Catalog\Model\ValueCollectionInterface;
 use Pim\Component\Catalog\Model\ValueInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
@@ -95,6 +96,7 @@ class NotGrantedValuesMergerSpec extends ObjectBehavior
 
         $valueCollectionFactory->createFromStorageFormat($notGrantedValues)->willReturn([$textValue, $colorValue]);
 
+        $filteredProduct->getFamilyVariant()->willReturn(null);
         $filteredProduct->getValues()->willReturn($values);
         $fullProduct->setValues($values)->shouldBeCalled();
 

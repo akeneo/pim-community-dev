@@ -5,6 +5,8 @@ namespace spec\PimEnterprise\Component\Workflow\Model;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\FamilyInterface;
+use Pim\Component\Catalog\Model\FamilyVariantInterface;
+use Pim\Component\Catalog\Model\ProductModelInterface;
 use Pim\Component\Catalog\Model\ValueCollectionInterface;
 use Pim\Component\Catalog\Model\ValueInterface;
 
@@ -191,5 +193,96 @@ class PublishedProductSpec extends ObjectBehavior
         $this->setIdentifier($identifier);
 
         $this->getLabel('fr_FR')->shouldReturn('shovel');
+    }
+
+    function it_is_not_a_variant_product()
+    {
+        $this->isVariant()->shouldReturn(false);
+    }
+
+    function it_is_a_variant_product(ProductModelInterface $parent)
+    {
+        $this->setParent($parent);
+        $this->isVariant()->shouldReturn(true);
+    }
+
+    function it_has_the_values_of_the_variation(
+        ValueCollectionInterface $valueCollection
+    ) {
+        $this->setValues($valueCollection);
+
+        $this->getValuesForVariation()->shouldBeLike($valueCollection);
+    }
+
+    function it_has_values_when_it_is_not_variant(
+        ValueCollectionInterface $valueCollection
+    ) {
+        $this->setValues($valueCollection);
+        $this->setParent(null);
+
+        $this->getValues()->shouldBeLike($valueCollection);
+    }
+
+    function it_has_values_of_its_parent_when_it_is_variant(
+        ValueCollectionInterface $valueCollection,
+        ProductModelInterface $productModel,
+        ValueCollectionInterface $parentValuesCollection,
+        \Iterator $iterator,
+        ValueInterface $value,
+        AttributeInterface $valueAttribute,
+        ValueInterface $otherValue,
+        AttributeInterface $otherValueAttribute
+    ) {
+        $this->setValues($valueCollection);
+        $this->setParent($productModel);
+
+        $valueCollection->toArray()->willReturn([$value]);
+
+        $valueAttribute->getCode()->willReturn('value');
+        $valueAttribute->isUnique()->willReturn(false);
+        $value->getAttribute()->willReturn($valueAttribute);
+        $value->getScope()->willReturn(null);
+        $value->getLocale()->willReturn(null);
+
+        $otherValueAttribute->getCode()->willReturn('otherValue');
+        $otherValueAttribute->isUnique()->willReturn(false);
+        $otherValue->getAttribute()->willReturn($otherValueAttribute);
+        $otherValue->getScope()->willReturn(null);
+        $otherValue->getLocale()->willReturn(null);
+
+        $productModel->getParent()->willReturn(null);
+        $productModel->getValuesForVariation()->willReturn($parentValuesCollection);
+        $parentValuesCollection->getIterator()->willreturn($iterator);
+        $iterator->rewind()->shouldBeCalled();
+        $iterator->valid()->willReturn(true, false);
+        $iterator->current()->willReturn($otherValue);
+        $iterator->next()->shouldBeCalled();
+
+        $values = $this->getValues();
+        $values->toArray()->shouldBeLike(
+            [
+                'value-<all_channels>-<all_locales>'      => $value,
+                'otherValue-<all_channels>-<all_locales>' => $otherValue
+            ]
+        );
+    }
+
+    function it_has_a_variation_level(ProductModelInterface $productModel)
+    {
+        $this->setParent($productModel);
+        $productModel->getVariationLevel()->willReturn(7);
+        $this->getVariationLevel()->shouldReturn(8);
+    }
+
+    function it_has_a_product_model(ProductModelInterface $productModel)
+    {
+        $this->setParent($productModel);
+        $this->getParent()->shouldReturn($productModel);
+    }
+
+    function it_has_a_family_variant(FamilyVariantInterface $familyVariant)
+    {
+        $this->setFamilyVariant($familyVariant);
+        $this->getFamilyVariant()->shouldReturn($familyVariant);
     }
 }

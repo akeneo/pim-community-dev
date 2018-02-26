@@ -76,9 +76,15 @@ batch_jobs:
     validation.label: Provjera valjanosti datoteke
     import.label: Uvoz proizvoda
     import_associations.label: Uvoz pridruživanja
+  csv_product_model_import_with_rules:
+    execute_rules.label: Izvođenje pravila
+    validation.label: Provjera valjanosti datoteke
   xlsx_product_import_with_rules:
     label: Uvoz proizvoda u XLSX s pravilima
     execute_rules.label: Izvođenje pravila
     validation.label: Provjera valjanosti datoteke
     import.label: Uvoz proizvoda
     import_associations.label: Uvoz pridruživanja
+  xlsx_product_model_import_with_rules:
+    execute_rules.label: Izvođenje pravila
+    validation.label: Provjera valjanosti datoteke

@@ -83,9 +83,19 @@ batch_jobs:
     validation.label: ファイルの検証
     import.label: 製品のインポート
     import_associations.label: 関連付けのインポート
+  csv_product_model_import_with_rules:
+    execute_rules.label: ルールの実行
+    validation.label: ファイルの検証
+    import_root_product_model.label: ルート製品モデルのインポート
+    import_sub_product_model.label: サブ製品モデルのインポート
   xlsx_product_import_with_rules:
     label: ルールのあるXLSX 形式で製品のインポート
     execute_rules.label: ルールの実行
     validation.label: ファイルの検証
     import.label: 製品のインポート
     import_associations.label: 関連付けのインポート
+  xlsx_product_model_import_with_rules:
+    execute_rules.label: ルールの実行
+    validation.label: ファイルの検証
+    import_root_product_model.label: ルート製品モデルのインポート
+    import_sub_product_model.label: サブ製品モデルのインポート

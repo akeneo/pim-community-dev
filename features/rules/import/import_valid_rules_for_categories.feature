@@ -25,13 +25,23 @@ Feature: Import rules for categories
                   items:
                       - summer_collection
                       - winter_collection
+        remove_clothes_categories_and_children:
+            conditions:
+                -
+                  field:    handmade
+                  operator: =
+                  value:    true
+            actions:
+                -
+                  type:  remove
+                  field: categories
+                  items:
                       - 2014_collection
-                  locale: null
-                  scope: null
+                  include_children: true
     """
     And the following job "clothing_rule_import" configuration:
       | filePath | %file to import% |
     When I am on the "clothing_rule_import" import job page
     And I launch the import job
     And I wait for the "clothing_rule_import" job to finish
-    Then I should see the text "created 1"
+    Then I should see the text "created 2"

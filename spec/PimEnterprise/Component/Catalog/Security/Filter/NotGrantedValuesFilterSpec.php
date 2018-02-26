@@ -11,6 +11,7 @@ use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\CategoryInterface;
 use Pim\Component\Catalog\Model\EntityWithFamilyVariantInterface;
 use Pim\Component\Catalog\Model\EntityWithValuesInterface;
+use Pim\Component\Catalog\Model\FamilyVariantInterface;
 use Pim\Component\Catalog\Model\LocaleInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ValueCollectionInterface;
@@ -122,8 +123,10 @@ class NotGrantedValuesFilterSpec extends ObjectBehavior
         ValueInterface $colorValue,
         AttributeInterface $textAttribute,
         AttributeInterface $colorAttribute,
-        \ArrayIterator $valuesIterator
+        \ArrayIterator $valuesIterator,
+        FamilyVariantInterface $familyVariant
     ) {
+        $entityWithFamilyVariant->getFamilyVariant()->willReturn($familyVariant);
         $entityWithFamilyVariant->getValuesForVariation()->willReturn($values);
         $values->getIterator()->willReturn($valuesIterator);
         $valuesIterator->rewind()->shouldBeCalled();

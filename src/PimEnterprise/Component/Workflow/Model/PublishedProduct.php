@@ -20,7 +20,9 @@ use Pim\Component\Catalog\Model\AssociationInterface;
 use Pim\Component\Catalog\Model\AssociationTypeInterface;
 use Pim\Component\Catalog\Model\AttributeGroupInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
+use Pim\Component\Catalog\Model\EntityWithFamilyVariantInterface;
 use Pim\Component\Catalog\Model\FamilyInterface;
+use Pim\Component\Catalog\Model\FamilyVariantInterface;
 use Pim\Component\Catalog\Model\GroupInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
@@ -111,6 +113,12 @@ class PublishedProduct implements ReferableInterface, PublishedProductInterface
 
     /** @var ArrayCollection */
     protected $uniqueData;
+
+    /** @var ProductModelInterface $parent */
+    protected $parent;
+
+    /** @var FamilyVariantInterface */
+    protected $familyVariant;
 
     /**
      * Constructor
@@ -368,7 +376,13 @@ class PublishedProduct implements ReferableInterface, PublishedProductInterface
      */
     public function getValues()
     {
-        return $this->values;
+        if (!$this->isVariant()) {
+            return $this->values;
+        }
+
+        $values = ValueCollection::fromCollection($this->values);
+
+        return $this->getAllValues($this, $values);
     }
 
     /**
@@ -459,7 +473,7 @@ class PublishedProduct implements ReferableInterface, PublishedProductInterface
      */
     public function addCategory(BaseCategoryInterface $category)
     {
-        if (!$this->categories->contains($category)) {
+        if (!$this->categories->contains($category) && !$this->hasAncestryCategory($category)) {
             $this->categories->add($category);
         }
 
@@ -812,5 +826,141 @@ class PublishedProduct implements ReferableInterface, PublishedProductInterface
     public function setUniqueData(Collection $data): void
     {
         $this->uniqueData = $data;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getParent(): ?ProductModelInterface
+    {
+        return $this->parent;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setParent(ProductModelInterface $parent = null): void
+    {
+        $this->parent = $parent;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getFamilyVariant(): ?FamilyVariantInterface
+    {
+        return $this->familyVariant;
+    }
+
+    /**
+     * @param FamilyVariantInterface $familyVariant
+     */
+    public function setFamilyVariant(FamilyVariantInterface $familyVariant): void
+    {
+        $this->familyVariant = $familyVariant;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getVariationLevel(): int
+    {
+        return $this->getParent()->getVariationLevel() + 1;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getValuesForVariation(): ValueCollectionInterface
+    {
+        return $this->values;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getCategoriesForVariation(): Collection
+    {
+        return $this->categories;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isVariant(): bool
+    {
+        return null !== $this->getParent();
+    }
+
+    /**
+     * @param EntityWithFamilyVariantInterface $entity
+     * @param ValueCollectionInterface         $valueCollection
+     *
+     * @return ValueCollectionInterface
+     */
+    private function getAllValues(
+        EntityWithFamilyVariantInterface $entity,
+        ValueCollectionInterface $valueCollection
+    ): ValueCollectionInterface {
+        $parent = $entity->getParent();
+
+        if (null === $parent) {
+            return $valueCollection;
+        }
+
+        foreach ($parent->getValuesForVariation() as $value) {
+            $valueCollection->add($value);
+        }
+
+        return $this->getAllValues($parent, $valueCollection);
+    }
+
+    /**
+     * @param EntityWithFamilyVariantInterface $entity
+     * @param Collection                       $categoryCollection
+     *
+     * @return Collection
+     */
+    private function getAllCategories(
+        EntityWithFamilyVariantInterface $entity,
+        Collection $categoryCollection
+    ): Collection {
+        $parent = $entity->getParent();
+
+        if (null === $parent) {
+            return $categoryCollection;
+        }
+
+        foreach ($parent->getCategories() as $category) {
+            if (!$categoryCollection->contains($category)) {
+                $categoryCollection->add($category);
+            }
+        }
+
+        return $this->getAllCategories($parent, $categoryCollection);
+    }
+
+    /**
+     * Does the ancestry of the entity already has the $category?
+     *
+     * @param BaseCategoryInterface $category
+     *
+     * @return bool
+     */
+    private function hasAncestryCategory(BaseCategoryInterface $category): bool
+    {
+        $parent = $this->getParent();
+        if (null === $parent) {
+            return false;
+        }
+
+        // no need recursion here as getCategories already look in the whole ancestry
+        foreach ($parent->getCategories() as $ancestryCategory) {
+            if ($ancestryCategory->getCode() === $category->getCode()) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

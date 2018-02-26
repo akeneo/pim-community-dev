@@ -16,6 +16,8 @@ use Akeneo\Component\StorageUtils\Repository\CachedObjectRepositoryInterface;
 use Doctrine\Common\Util\ClassUtils;
 use Pim\Component\Catalog\Model\EntityWithFamilyVariantInterface;
 use Pim\Component\Catalog\Model\EntityWithValuesInterface;
+use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Model\ProductModelInterface;
 use PimEnterprise\Component\Security\Attributes;
 use PimEnterprise\Component\Security\NotGrantedDataFilterInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
@@ -56,7 +58,8 @@ class NotGrantedValuesFilter implements NotGrantedDataFilterInterface
 
         $filteredEntityWithValues = clone $entityWithValues;
 
-        if ($filteredEntityWithValues instanceof EntityWithFamilyVariantInterface) {
+        if ($filteredEntityWithValues instanceof EntityWithFamilyVariantInterface &&
+            null !== $filteredEntityWithValues->getFamilyVariant()) {
             $values = clone $filteredEntityWithValues->getValuesForVariation();
         } else {
             $values = clone $filteredEntityWithValues->getValues();

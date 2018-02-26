@@ -1,12 +1,13 @@
 parameters:
-    pimee_catalog_rule.validator.existing_filter_field.class: PimEnterprise\Component\CatalogRule\Validator\ExistingFilterFieldValidator
-    pimee_catalog_rule.validator.existing_set_field.class:    PimEnterprise\Component\CatalogRule\Validator\ExistingSetFieldValidator
-    pimee_catalog_rule.validator.existing_copy_fields.class:  PimEnterprise\Component\CatalogRule\Validator\ExistingCopyFieldsValidator
-    pimee_catalog_rule.validator.existing_add_field.class:    PimEnterprise\Component\CatalogRule\Validator\ExistingAddFieldValidator
-    pimee_catalog_rule.validator.non_empty_value.class:       PimEnterprise\Component\CatalogRule\Validator\NonEmptyValueConditionValidator
-    pimee_catalog_rule.validator.value_condition.class:       PimEnterprise\Component\CatalogRule\Validator\ValueConditionValidator
-    pimee_catalog_rule.validator.property_action.class:       PimEnterprise\Component\CatalogRule\Validator\PropertyActionValidator
-    pimee_catalog_rule.validator.existing_remove_field.class: PimEnterprise\Component\CatalogRule\Validator\ExistingRemoveFieldValidator
+    pimee_catalog_rule.validator.existing_filter_field.class:   PimEnterprise\Component\CatalogRule\Validator\ExistingFilterFieldValidator
+    pimee_catalog_rule.validator.existing_set_field.class:      PimEnterprise\Component\CatalogRule\Validator\ExistingSetFieldValidator
+    pimee_catalog_rule.validator.existing_copy_fields.class:    PimEnterprise\Component\CatalogRule\Validator\ExistingCopyFieldsValidator
+    pimee_catalog_rule.validator.existing_add_field.class:      PimEnterprise\Component\CatalogRule\Validator\ExistingAddFieldValidator
+    pimee_catalog_rule.validator.non_empty_value.class:         PimEnterprise\Component\CatalogRule\Validator\NonEmptyValueConditionValidator
+    pimee_catalog_rule.validator.value_condition.class:         PimEnterprise\Component\CatalogRule\Validator\ValueConditionValidator
+    pimee_catalog_rule.validator.property_action.class:         PimEnterprise\Component\CatalogRule\Validator\PropertyActionValidator
+    pimee_catalog_rule.validator.existing_remove_field.class:   PimEnterprise\Component\CatalogRule\Validator\ExistingRemoveFieldValidator
+    pimee_catalog_rule.validator.include_children_option.class: PimEnterprise\Component\CatalogRule\Validator\IncludeChildrenOptionValidator
 
 services:
     pimee_catalog_rule.validator.existing_filter_field:
@@ -67,3 +68,8 @@ services:
                 - '@pim_catalog.updater.remover.registry'
             tags:
                 - { name: validator.constraint_validator, alias: pimee_remove_field_validator }
+
+    pimee_catalog_rule.validator.include_children_option:
+        class: '%pimee_catalog_rule.validator.include_children_option.class%'
+        tags:
+            - { name: validator.constraint_validator, alias: pimee_include_children_option_validator }

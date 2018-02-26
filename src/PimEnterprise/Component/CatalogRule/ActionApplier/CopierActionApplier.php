@@ -85,6 +85,22 @@ class CopierActionApplier implements ActionApplierInterface
             return;
         }
 
+        if (null === $entityWithFamilyVariant->getFamily()) {
+            $this->copyDataOnEntityWithValues($entityWithFamilyVariant, $action);
+
+            return;
+        }
+
+        if (!$entityWithFamilyVariant->getFamily()->hasAttributeCode($toField)) {
+            return;
+        }
+
+        if (null === $entityWithFamilyVariant->getFamilyVariant()) {
+            $this->copyDataOnEntityWithValues($entityWithFamilyVariant, $action);
+
+            return;
+        }
+
         $toLevel = $entityWithFamilyVariant->getFamilyVariant()->getLevelForAttributeCode($toField);
 
         if ($entityWithFamilyVariant->getVariationLevel() === $toLevel) {
