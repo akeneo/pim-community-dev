@@ -3,6 +3,8 @@
 namespace spec\Akeneo\Bundle\BatchBundle\Launcher;
 
 use Akeneo\Bundle\BatchBundle\Launcher\JobLauncherInterface;
+use Akeneo\Component\Batch\Event\EventInterface;
+use Akeneo\Component\Batch\Event\JobExecutionEvent;
 use Akeneo\Component\Batch\Job\Job;
 use Akeneo\Component\Batch\Job\JobParameters;
 use Akeneo\Component\Batch\Job\JobParametersFactory;
@@ -13,6 +15,8 @@ use Akeneo\Component\Batch\Model\JobExecution;
 use Akeneo\Component\Batch\Model\JobInstance;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\UserBundle\Entity\UserInterface;
+use Prophecy\Argument;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 
@@ -22,9 +26,10 @@ class SimpleJobLauncherSpec extends ObjectBehavior
         JobRepositoryInterface $jobRepository,
         JobParametersFactory $jobParametersFactory,
         JobRegistry $jobRegistry,
-        JobParametersValidator $jobParametersValidator
+        JobParametersValidator $jobParametersValidator,
+        EventDispatcherInterface $eventDispatcher
     ) {
-        $this->beConstructedWith($jobRepository, $jobParametersFactory, $jobRegistry, $jobParametersValidator, '/', 'prod', '/logs');
+        $this->beConstructedWith($jobRepository, $jobParametersFactory, $jobRegistry, $jobParametersValidator, '/', 'prod', '/logs', $eventDispatcher);
     }
 
     function it_is_a_job_launcher()
@@ -42,7 +47,8 @@ class SimpleJobLauncherSpec extends ObjectBehavior
         Job $job,
         JobParameters $jobParameters,
         ConstraintViolationListInterface $constraintViolationList,
-        ConstraintViolation $constraintViolation
+        ConstraintViolation $constraintViolation,
+        $eventDispatcher
     ) {
         $jobInstance->getJobName()->willReturn('job_instance_name');
         $jobInstance->getCode()->willReturn('job_instance_code');
@@ -61,6 +67,8 @@ class SimpleJobLauncherSpec extends ObjectBehavior
         $jobRegistry->get('job_instance_name')->willReturn($job);
         $jobParametersFactory->create($job, ['foo' => 'bar'])->willReturn($jobParameters);
         $jobParametersValidator->validate($job, $jobParameters, ['Default', 'Execution'])->willReturn($constraintViolationList);
+
+        $eventDispatcher->dispatch(EventInterface::JOB_EXECUTION_CREATED, Argument::type(JobExecutionEvent::class))->shouldNotBeCalled();
 
         $this
             ->shouldThrow(new \RuntimeException('Job instance "job_instance_code" running the job "" with parameters "" is invalid because of "' . PHP_EOL .'  - error"'))

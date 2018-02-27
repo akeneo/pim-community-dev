@@ -80,6 +80,7 @@ services:
             - '%kernel.root_dir%'
             - '%kernel.environment%'
             - '%logs_dir%'
+            - '@event_dispatcher'
 
     akeneo_batch.entity_manager.persisted_connection_entity_manager:
         class: '%akeneo_batch.entity_manager.persisted_connection_entity_manager.class%'
