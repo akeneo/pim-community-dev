@@ -11,7 +11,7 @@
 
 namespace PimEnterprise\Component\Security\Repository;
 
-use Pim\Bundle\UserBundle\Entity\UserInterface;
+use Pim\Component\User\Model\UserInterface;
 
 /**
  * Interface for access repository

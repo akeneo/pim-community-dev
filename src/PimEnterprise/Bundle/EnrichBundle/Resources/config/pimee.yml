@@ -28,5 +28,5 @@ pim_enrich:
 akeneo_storage_utils:
     mapping_overrides:
         -
-            original: Pim\Bundle\UserBundle\Entity\User
+            original: Pim\Component\User\Model\User
             override: PimEnterprise\Bundle\UserBundle\Entity\User

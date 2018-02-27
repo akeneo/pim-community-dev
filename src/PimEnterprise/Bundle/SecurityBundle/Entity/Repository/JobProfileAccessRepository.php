@@ -15,9 +15,9 @@ use Akeneo\Bundle\StorageUtilsBundle\Doctrine\TableNameBuilder;
 use Akeneo\Component\Batch\Model\JobInstance;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Doctrine\ORM\EntityRepository;
-use Pim\Bundle\UserBundle\Entity\UserInterface;
 use Pim\Component\User\Model\Group;
 use Pim\Component\User\Model\GroupInterface;
+use Pim\Component\User\Model\UserInterface;
 use PimEnterprise\Component\Security\Attributes;
 use PimEnterprise\Component\Security\Repository\AccessRepositoryInterface;
 

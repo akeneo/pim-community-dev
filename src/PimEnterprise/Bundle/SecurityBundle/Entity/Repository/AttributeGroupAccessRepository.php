@@ -15,10 +15,10 @@ use Akeneo\Bundle\StorageUtilsBundle\Doctrine\TableNameBuilder;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
-use Pim\Bundle\UserBundle\Entity\UserInterface;
 use Pim\Component\Catalog\Model\AttributeGroupInterface;
 use Pim\Component\User\Model\Group;
 use Pim\Component\User\Model\GroupInterface;
+use Pim\Component\User\Model\UserInterface;
 use PimEnterprise\Component\Security\Attributes;
 
 /**

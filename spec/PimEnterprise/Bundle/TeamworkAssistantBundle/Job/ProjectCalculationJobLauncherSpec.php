@@ -6,7 +6,7 @@ use Akeneo\Bundle\BatchBundle\Job\JobInstanceRepository;
 use Akeneo\Bundle\BatchBundle\Launcher\JobLauncherInterface;
 use Akeneo\Component\Batch\Model\JobInstance;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\UserBundle\Entity\UserInterface;
+use Pim\Component\User\Model\UserInterface;
 use PimEnterprise\Component\TeamworkAssistant\Model\ProjectInterface;
 
 class ProjectCalculationJobLauncherSpec extends ObjectBehavior

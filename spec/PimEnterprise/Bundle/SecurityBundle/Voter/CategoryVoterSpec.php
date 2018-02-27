@@ -4,7 +4,7 @@ namespace spec\PimEnterprise\Bundle\SecurityBundle\Voter;
 
 use Doctrine\Common\Util\ClassUtils;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\UserBundle\Entity\UserInterface;
+use Pim\Component\User\Model\UserInterface;
 use PimEnterprise\Bundle\SecurityBundle\Manager\CategoryAccessManager;
 use PimEnterprise\Bundle\SecurityBundle\Voter\CategoryVoter;
 use PimEnterprise\Component\ProductAsset\Model\Category;

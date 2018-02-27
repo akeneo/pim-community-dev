@@ -17,7 +17,7 @@ PimEnterprise\Component\TeamworkAssistant\Model\ProjectStatus:
             nullable: true
     manyToOne:
         user:
-            targetEntity: Pim\Bundle\UserBundle\Entity\UserInterface
+            targetEntity: Pim\Component\User\Model\UserInterface
             joinColumns:
                 user_id:
                     nullable: false

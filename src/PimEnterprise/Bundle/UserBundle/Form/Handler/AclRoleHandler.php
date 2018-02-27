@@ -11,7 +11,7 @@
 
 namespace PimEnterprise\Bundle\UserBundle\Form\Handler;
 
-use Pim\Bundle\UserBundle\Form\Handler\AclRoleHandler as OroAclRoleHandler;
+use Pim\Bundle\UserBundle\Form\Handler\AclRoleHandler as PimAclRoleHandler;
 use Pim\Component\User\Model\Role;
 use PimEnterprise\Bundle\UserBundle\Form\Type\AclRoleType;
 
@@ -22,7 +22,7 @@ use PimEnterprise\Bundle\UserBundle\Form\Type\AclRoleType;
  *
  * @deprecated To be removed when UserBundle from oro will be moved to Pim namespace
  */
-class AclRoleHandler extends OroAclRoleHandler
+class AclRoleHandler extends PimAclRoleHandler
 {
     /**
      * {@inheritdoc}
