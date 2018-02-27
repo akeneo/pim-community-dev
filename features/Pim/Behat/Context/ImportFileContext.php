@@ -74,6 +74,22 @@ final class ImportFileContext extends PimContext implements SnippetAcceptingCont
         Assert::assertEquals($productsSkipped[1], $number);
     }
 
+    /**
+     * @Then /^I should have the error "(?P<error>(?:[^"]|\\")*)"$/
+     */
+    public function iShouldHaveTheError($error)
+    {
+        foreach ($this->jobExecution->getStepExecutions() as $stepExecution) {
+            foreach ($stepExecution->getWarnings() as $warning) {
+                if (str_replace('\\"', '"', $error) === trim($warning->getReason())) {
+                    return true;
+                }
+            }
+        }
+
+        throw new \Exception(sprintf('Cannot find the error "%s"', $error));
+    }
+
     private function waitForJobToFinish(JobInstance $jobInstance): JobExecution
     {
         $jobInstance->getJobExecutions()->setInitialized(false);
