@@ -7,6 +7,8 @@ This document aims to help the writing of tests in the PIM. It's the result of t
 
 ## Types of tests
 
+Let's remind here the characteristics of each type of tests, the tools we must use from now on and give some concrete examples to help the reader.
+
 ### Unit - test a unit of code
 
 Most of the time, a unit of code is a class.
@@ -19,29 +21,38 @@ Characteristics:
 - mock only what you own
 - "lives" in memory only
 
+Tools:
+
+- backend: PhpSpec
+- frontend: TODO
+
 Examples:
 
 - backend: TODO
 - frontend: TODO
-
 
 ### Acceptance - test a business use case or ensure a business rule
 
 Characteristics:
 
 - several classes are tested at the same time
-- business language is used (we use Gherkin)
+- business language is used, which means we must use _Gherkin_
 - describes a business use case or ensure a business rule (it's not about UI, CLI or UX, neither about a text we should see)
 - mock only what you own
 - services which perform I/O calls are mocked (like Doctrine repositories for instance)
 - "lives" in memory only
+
+Tools:
+
+- backend: Behat (no Mink, no Selenium)
+- frontend: TODO
 
 Examples:
 
 - backend: TODO
 - frontend: TODO
 
-### Integration - test the integration of the code with the outside world
+### Integration - test the integration of a brick with the outside world
 
 Characteristics:
 
@@ -49,10 +60,15 @@ Characteristics:
 - may test several classes at the same time
 - tests only services that perform I/O calls (like Doctrine repositories for instance)
 
+Tools:
+
+- backend: PhpUnit
+- frontend: TODO
+
 Examples:
 
 - backend: test a Doctrine repository using MySQL
-- frontend test a fetcher performing HTTP calls
+- frontend: test a fetcher performing HTTP calls
 
 ### End to end - test the whole application
 
@@ -62,6 +78,10 @@ Characteristics:
 - tests the real application (no mock)
 - can require complex setup (like a browser and Selenium for instance)
 - tests nominal use cases
+
+Tools:
+
+- Behat with Mink and Selenium
 
 Examples:
 
@@ -73,7 +93,7 @@ Examples:
 
 ### The foundations: ports and adapters
 
-### 
+
 
 ### The relation with the tests
 
@@ -115,3 +135,19 @@ For sure, end to end tests are a really safe cocoon. They strictly ensure what w
 > What is a service that performs I/O calls?
 
 Any service that uses an external system (relatively to your code). Can be considered as external systems: the file system, the system time, any system called via the network, a database or a search engine for instance. That means a Doctrine repository, which communicate with the database, is a service performing I/O calls.
+
+## Resources
+
+> How to write useful and powerful Gherkin?
+
+[Modelling by Example Workshop](https://fr.slideshare.net/CiaranMcNulty/modelling-by-example-workshop-phpnw-2016) by Ciaran McNulty
+
+> I want to know more about that ports and adapters thing!
+
+[Hexagonal architecture](http://alistair.cockburn.us/Hexagonal%20architecture), original article by Alistair Cockburn
+
+[Improve Your Software Architecture with Ports and Adapters](https://spin.atomicobject.com/2013/02/23/ports-adapters-software-architecture/) by Tony Baker
+
+[Ports & Adapters Architecture](https://herbertograca.com/2017/09/14/ports-adapters-architecture/) by Herberto Graça
+
+[Ports-And-Adapters / Hexagonal Architecture](http://www.dossier-andreas.net/software_architecture/ports_and_adapters.html)
