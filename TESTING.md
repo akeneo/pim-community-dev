@@ -16,7 +16,7 @@ Most of the time, a unit of code is a class.
 Characteristics:
 
 - it tests only one class at a time
-- it performs no I/O call
+- it performs no [I/O call]("faq)
 - it doesn't require any setup (no fixtures for instance)
 - it mocks only what we own
 - it "lives" in memory only
@@ -39,7 +39,7 @@ Characteristics:
 - it uses the business language, which means _Gherkin_ must be used
 - it describes a business use case or it ensures a business rule (it's not about UI, CLI or UX, neither about a text we should see)
 - it mocks only what we own
-- it mocks services performing I/O calls (like Doctrine repositories for instance)
+- it mocks services performing [I/O calls]("faq)
 - it "lives" in memory only
 
 Tools:
@@ -58,7 +58,7 @@ Characteristics:
 
 - it has no mock (it tests the real classes)
 - it may test several classes at the same time
-- it tests only services that perform I/O calls (like Doctrine repositories for instance)
+- it tests only services that perform [I/O calls]("faq)
 
 Tools:
 
