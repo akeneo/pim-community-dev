@@ -2,6 +2,9 @@
 
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\HttpKernel\Kernel;
+use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\Routing\RouteCollectionBuilder;
 
 /**
  * PIM AppKernel
@@ -12,167 +15,52 @@ use Symfony\Component\HttpKernel\Kernel;
  */
 class AppKernel extends Kernel
 {
+    use MicroKernelTrait;
+
+    private const CONFIG_EXTS = '.{php,xml,yaml,yml}';
+
     /**
-     * Registers your custom bundles
-     *
-     * @return array
+     * {@inheritdoc}
      */
-    protected function registerProjectBundles()
+    public function registerBundles(): iterable
     {
-        return [
-            // your app bundles should be registered here
-            new Acme\Bundle\AppBundle\AcmeAppBundle(),
-        ];
+        $contents = require __DIR__ . '/bundles.php';
+        foreach ($contents as $class => $envs) {
+            if (isset($envs['all']) || isset($envs[$this->environment])) {
+                yield new $class();
+            }
+        }
     }
 
     /**
      * {@inheritdoc}
      */
-    public function registerBundles()
+    protected function configureContainer(ContainerBuilder $container, LoaderInterface $loader): void
     {
-        $bundles = $this->registerProjectBundles();
-
-        if (in_array($this->getEnvironment(), array('dev', 'test', 'behat'))) {
-            $bundles[] = new Sensio\Bundle\DistributionBundle\SensioDistributionBundle();
-            $bundles[] = new Sensio\Bundle\GeneratorBundle\SensioGeneratorBundle();
-            $bundles[] = new Symfony\Bundle\DebugBundle\DebugBundle();
-            $bundles[] = new Symfony\Bundle\WebProfilerBundle\WebProfilerBundle();
-            $bundles[] = new Symfony\Bundle\WebServerBundle\WebServerBundle();
+        $confDir = __DIR__. '/config';
+        $loader->load($confDir . '/packages/*' . self::CONFIG_EXTS, 'glob');
+        if (is_dir($confDir . '/packages/' . $this->environment)) {
+            $loader->load($confDir . '/packages/' . $this->environment . '/**/*' . self::CONFIG_EXTS, 'glob');
         }
 
-        $bundles = array_merge(
-            $this->getSymfonyBundles(),
-            $this->getOroDependencies(),
-            $this->getOroBundles(),
-            $this->getPimDependenciesBundles(),
-            $this->getPimBundles(),
-            $bundles
-        );
-
-        return $bundles;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function registerContainerConfiguration(LoaderInterface $loader)
-    {
         $loader->load($this->getRootDir() . '/config/config_' . $this->getEnvironment() . '.yml');
-
         if (is_file($file = $this->getRootDir() . '/config/config_' . $this->getEnvironment() . '_local.yml')) {
             $loader->load($file);
         }
     }
 
     /**
-     * Bundles coming from the PIM
-     *
-     * @return array
+     * {@inheritdoc}
      */
-    protected function getPimBundles()
+    protected function configureRoutes(RouteCollectionBuilder $routes): void
     {
-        return [
-            // BAP overriden bundles
-            new Pim\Bundle\FilterBundle\PimFilterBundle(),
-            new Pim\Bundle\NavigationBundle\PimNavigationBundle(),
-            new Pim\Bundle\UserBundle\PimUserBundle(),
-
-            // PIM bundles
-            new Akeneo\Bundle\ClassificationBundle\AkeneoClassificationBundle(),
-            new Pim\Bundle\AnalyticsBundle\PimAnalyticsBundle(),
-            new Pim\Bundle\ApiBundle\PimApiBundle(),
-            new Pim\Bundle\CatalogBundle\PimCatalogBundle(),
-            new Pim\Bundle\CommentBundle\PimCommentBundle(),
-            new Pim\Bundle\ConnectorBundle\PimConnectorBundle(),
-            new Pim\Bundle\DashboardBundle\PimDashboardBundle(),
-            new Pim\Bundle\DataGridBundle\PimDataGridBundle(),
-            new Pim\Bundle\EnrichBundle\PimEnrichBundle(),
-            new Pim\Bundle\ImportExportBundle\PimImportExportBundle(),
-            new Pim\Bundle\InstallerBundle\PimInstallerBundle(),
-            new Pim\Bundle\LocalizationBundle\PimLocalizationBundle(),
-            new Pim\Bundle\NotificationBundle\PimNotificationBundle(),
-            new Pim\Bundle\PdfGeneratorBundle\PimPdfGeneratorBundle(),
-            new Pim\Bundle\ReferenceDataBundle\PimReferenceDataBundle(),
-            new Pim\Bundle\UIBundle\PimUIBundle(),
-            new Pim\Bundle\VersioningBundle\PimVersioningBundle(),
-        ];
-    }
-
-    /**
-     * Bundles required by the PIM
-     *
-     * @return array
-     */
-    protected function getPimDependenciesBundles()
-    {
-        return [
-            new Akeneo\Bundle\ElasticsearchBundle\AkeneoElasticsearchBundle(),
-            new Akeneo\Bundle\BatchBundle\AkeneoBatchBundle(),
-            new Akeneo\Bundle\BatchQueueBundle\AkeneoBatchQueueBundle(),
-            new Akeneo\Bundle\BufferBundle\AkeneoBufferBundle(),
-            new Akeneo\Bundle\FileStorageBundle\AkeneoFileStorageBundle(),
-            new Akeneo\Bundle\MeasureBundle\AkeneoMeasureBundle(),
-            new Akeneo\Bundle\StorageUtilsBundle\AkeneoStorageUtilsBundle(),
-            new Doctrine\Bundle\MigrationsBundle\DoctrineMigrationsBundle(),
-            new FOS\OAuthServerBundle\FOSOAuthServerBundle(),
-            new Oneup\FlysystemBundle\OneupFlysystemBundle(),
-        ];
-    }
-
-    /**
-     * Bundles coming from Symfony Standard Framework.
-     *
-     * @return array
-     */
-    protected function getSymfonyBundles()
-    {
-        return [
-            new Doctrine\Bundle\DoctrineBundle\DoctrineBundle(),
-            new Doctrine\Bundle\DoctrineCacheBundle\DoctrineCacheBundle(),
-            new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
-            new Symfony\Bundle\AsseticBundle\AsseticBundle(),
-            new Symfony\Bundle\FrameworkBundle\FrameworkBundle(),
-            new Symfony\Bundle\MonologBundle\MonologBundle(),
-            new Symfony\Bundle\SecurityBundle\SecurityBundle(),
-            new Symfony\Bundle\SwiftmailerBundle\SwiftmailerBundle(),
-            new Symfony\Bundle\TwigBundle\TwigBundle(),
-        ];
-    }
-
-    /**
-     * * Bundles required by Oro Platform
-     *
-     * @return array
-     */
-    protected function getOroDependencies()
-    {
-        return [
-            new Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle(),
-            new Escape\WSSEAuthenticationBundle\EscapeWSSEAuthenticationBundle(),
-            new FOS\JsRoutingBundle\FOSJsRoutingBundle(),
-            new FOS\RestBundle\FOSRestBundle(),
-            new JMS\SerializerBundle\JMSSerializerBundle(),
-            new Knp\Bundle\MenuBundle\KnpMenuBundle(),
-            new Liip\ImagineBundle\LiipImagineBundle(),
-        ];
-    }
-
-    /**
-     * Bundles coming from Oro Platform
-     *
-     * @return array
-     */
-    protected function getOroBundles()
-    {
-        return [
-            new Oro\Bundle\AsseticBundle\OroAsseticBundle(),
-            new Oro\Bundle\ConfigBundle\OroConfigBundle(),
-            new Oro\Bundle\DataGridBundle\OroDataGridBundle(),
-            new Oro\Bundle\FilterBundle\OroFilterBundle(),
-            new Oro\Bundle\SecurityBundle\OroSecurityBundle(),
-            new Oro\Bundle\TranslationBundle\OroTranslationBundle(),
-            new Oro\Bundle\UserBundle\OroUserBundle(),
-        ];
+        $confDir = __DIR__ . '/config';
+        if (is_dir($confDir . '/routes/')) {
+            $routes->import($confDir . '/routes/*' . self::CONFIG_EXTS, '/', 'glob');
+        }
+        if (is_dir($confDir . '/routes/' . $this->environment)) {
+            $routes->import($confDir . '/routes/' . $this->environment . '/**/*' . self::CONFIG_EXTS, '/', 'glob');
+        }
     }
 
     /**
