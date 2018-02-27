@@ -42,6 +42,7 @@ services:
             - '@akeneo_batch.job.job_parameters_validator'
             - '@akeneo_batch_queue.queue.database_job_execution_queue'
             - '%kernel.environment%'
+            - '@event_dispatcher'
 
     akeneo_batch.launcher.simple_job_launcher:
         class: '%akeneo_batch_queue.launcher.queue_job_launcher.class%'
@@ -52,3 +53,4 @@ services:
             - '@akeneo_batch.job.job_parameters_validator'
             - '@akeneo_batch_queue.queue.database_job_execution_queue'
             - '%kernel.environment%'
+            - '@event_dispatcher'

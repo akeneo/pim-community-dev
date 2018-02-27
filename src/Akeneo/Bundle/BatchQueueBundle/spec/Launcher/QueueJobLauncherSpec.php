@@ -3,6 +3,8 @@
 namespace spec\Akeneo\Bundle\BatchQueueBundle\Launcher;
 
 use Akeneo\Bundle\BatchQueueBundle\Launcher\QueueJobLauncher;
+use Akeneo\Component\Batch\Event\EventInterface;
+use Akeneo\Component\Batch\Event\JobExecutionEvent;
 use Akeneo\Component\Batch\Job\Job;
 use Akeneo\Component\Batch\Job\JobParameters;
 use Akeneo\Component\Batch\Job\JobParametersFactory;
@@ -16,6 +18,7 @@ use Akeneo\Component\BatchQueue\Queue\JobExecutionQueueInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\UserBundle\Entity\User;
 use Prophecy\Argument;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
@@ -27,9 +30,10 @@ class QueueJobLauncherSpec extends ObjectBehavior
         JobParametersFactory $jobParametersFactory,
         JobRegistry $jobRegistry,
         JobParametersValidator $jobParametersValidator,
-        JobExecutionQueueInterface $queue
+        JobExecutionQueueInterface $queue,
+        EventDispatcherInterface $eventDispatcher
     ) {
-        $this->beConstructedWith($jobRepository, $jobParametersFactory, $jobRegistry, $jobParametersValidator, $queue, 'test');
+        $this->beConstructedWith($jobRepository, $jobParametersFactory, $jobRegistry, $jobParametersValidator, $queue, 'test', $eventDispatcher);
     }
 
     function it_is_a_job_launcher()
@@ -48,7 +52,8 @@ class QueueJobLauncherSpec extends ObjectBehavior
         JobExecution $jobExecution,
         Job $job,
         JobParameters $jobParameters,
-        ConstraintViolationListInterface $constraintViolationList
+        ConstraintViolationListInterface $constraintViolationList,
+        $eventDispatcher
     ) {
         $jobInstance->getJobName()->willReturn('job_instance_name');
         $jobInstance->getRawParameters()->willReturn(['foo' => 'bar']);
@@ -65,6 +70,8 @@ class QueueJobLauncherSpec extends ObjectBehavior
 
         $queue->publish(Argument::type(JobExecutionMessage::class))->shouldBeCalled();
 
+        $eventDispatcher->dispatch(EventInterface::JOB_EXECUTION_CREATED, Argument::type(JobExecutionEvent::class))->shouldBeCalled();
+
         $this->launch($jobInstance, $user, ['baz' => 'foz'])->shouldReturn($jobExecution);
     }
 
@@ -76,11 +83,11 @@ class QueueJobLauncherSpec extends ObjectBehavior
         $queue,
         JobInstance $jobInstance,
         User $user,
-        JobExecutionMessage $jobExecutionMessage,
         JobExecution $jobExecution,
         Job $job,
         JobParameters $jobParameters,
-        ConstraintViolationListInterface $constraintViolationList
+        ConstraintViolationListInterface $constraintViolationList,
+        $eventDispatcher
     ) {
         $jobInstance->getJobName()->willReturn('job_instance_name');
         $jobInstance->getRawParameters()->willReturn(['foo' => 'bar']);
@@ -99,6 +106,8 @@ class QueueJobLauncherSpec extends ObjectBehavior
 
         $queue->publish(Argument::type(JobExecutionMessage::class))->shouldBeCalled();
 
+        $eventDispatcher->dispatch(EventInterface::JOB_EXECUTION_CREATED, Argument::type(JobExecutionEvent::class))->shouldBeCalled();
+
         $this->launch($jobInstance, $user, ['baz' => 'foz', 'send_email' => true])->shouldReturn($jobExecution);
     }
 
@@ -112,7 +121,8 @@ class QueueJobLauncherSpec extends ObjectBehavior
         Job $job,
         JobParameters $jobParameters,
         ConstraintViolationListInterface $constraintViolationList,
-        ConstraintViolation $constraintViolation
+        ConstraintViolation $constraintViolation,
+        $eventDispatcher
     ) {
         $jobInstance->getJobName()->willReturn('job_instance_name');
         $jobInstance->getCode()->willReturn('job_instance_code');
@@ -131,6 +141,8 @@ class QueueJobLauncherSpec extends ObjectBehavior
         $jobRegistry->get('job_instance_name')->willReturn($job);
         $jobParametersFactory->create($job, ['foo' => 'bar'])->willReturn($jobParameters);
         $jobParametersValidator->validate($job, $jobParameters, ['Default', 'Execution'])->willReturn($constraintViolationList);
+
+        $eventDispatcher->dispatch(EventInterface::JOB_EXECUTION_CREATED, Argument::type(JobExecutionEvent::class))->shouldNotBeCalled();
 
         $this
             ->shouldThrow(new \RuntimeException('Job instance "job_instance_code" running the job "" with parameters "" is invalid because of "' . PHP_EOL .'  - error"'))
