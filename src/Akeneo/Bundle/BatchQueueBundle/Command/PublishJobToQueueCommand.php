@@ -5,11 +5,14 @@ declare(strict_types=1);
 namespace Akeneo\Bundle\BatchQueueBundle\Command;
 
 use Akeneo\Bundle\BatchBundle\Notification\MailNotifier;
+use Akeneo\Component\Batch\Event\EventInterface;
+use Akeneo\Component\Batch\Event\JobExecutionEvent;
 use Akeneo\Component\Batch\Job\JobParameters;
 use Akeneo\Component\Batch\Job\JobParametersFactory;
 use Akeneo\Component\Batch\Job\JobParametersValidator;
 use Akeneo\Component\Batch\Job\JobRegistry;
 use Akeneo\Component\Batch\Job\JobRepositoryInterface;
+use Akeneo\Component\Batch\Model\JobExecution;
 use Akeneo\Component\Batch\Model\JobInstance;
 use Akeneo\Component\BatchQueue\Queue\JobExecutionMessage;
 use Akeneo\Component\BatchQueue\Queue\JobExecutionQueueInterface;
@@ -122,6 +125,8 @@ class PublishJobToQueueCommand extends ContainerAwareCommand
 
         $this->getJobExecutionQueue()->publish($jobExecutionMessage);
 
+        $this->dispatchJobExecutionEvent(EventInterface::JOB_EXECUTION_CREATED, $jobExecution);
+
         $output->writeln(
             sprintf(
                 '<info>%s %s has been successfully pushed into the queue.</info>',
@@ -131,6 +136,18 @@ class PublishJobToQueueCommand extends ContainerAwareCommand
         );
 
         return self::EXIT_SUCCESS_CODE;
+    }
+
+    /**
+     * Trigger event linked to JobExecution
+     *
+     * @param string       $eventName    Name of the event
+     * @param JobExecution $jobExecution Object to store job execution
+     */
+    private function dispatchJobExecutionEvent($eventName, JobExecution $jobExecution)
+    {
+        $event = new JobExecutionEvent($jobExecution);
+        $this->getContainer()->get('event_dispatcher')->dispatch($eventName, $event);
     }
 
     /**
