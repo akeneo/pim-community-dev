@@ -31,6 +31,21 @@ extensions:
             icon: icon-edit
             illustration: attributes
 
+    pim-mass-product-edit-configure-add-attribute-values:
+        module: pim/mass-edit-form/product/add-attribute-values
+        parent: pim-mass-product-edit
+        position: 115
+        aclResourceId: pim_enrich_product_edit_attributes
+        config:
+            title: pim_enrich.mass_edit.product.title
+            label: pim_enrich.mass_edit.product.operation.add_attribute_value.label
+            labelCount: pim_enrich.mass_edit.product.operation.add_attribute_value.label_count
+            description: pim_enrich.mass_edit.product.operation.add_attribute_value.description
+            code: add_attribute_value
+            jobInstanceCode: add_attribute_value
+            icon: icon-add-attribute-values
+            illustration: attributes
+
     pim-mass-product-edit-configure-change-family:
         module: pim/mass-edit-form/product/change-family
         parent: pim-mass-product-edit

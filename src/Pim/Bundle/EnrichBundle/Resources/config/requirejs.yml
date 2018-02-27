@@ -801,6 +801,7 @@ config:
         pim/mass-edit-form/product/associate:                         pimenrich/js/mass-edit/form/product/associate
         pim/mass-edit-form/product/change-status:                     pimenrich/js/mass-edit/form/product/change-status
         pim/mass-edit-form/product/edit-common-attributes:            pimenrich/js/mass-edit/form/product/edit-common-attributes
+        pim/mass-edit-form/product/add-attribute-values:              pimenrich/js/mass-edit/form/product/edit-common-attributes
         pim/mass-edit-form/product/add-to-existing-product-model:     pimenrich/js/mass-edit/form/product/add-to-existing-product-model
         pim/mass-edit-form/product/change-family:                     pimenrich/js/mass-edit/form/product/change-family
         pim/mass-edit-form/product/add-to-group:                      pimenrich/js/mass-edit/form/product/add-to-group

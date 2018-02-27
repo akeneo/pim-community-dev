@@ -1056,6 +1056,10 @@ pim_enrich:
                     label: Edit attributes
                     label_count: "{1}Edit attributes of <span class=\"AknFullPage-title--highlight\">1 product</span>|] 1, Inf [Edit attributes of <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span>"
                     description: Only the attributes belonging to the families of the selected products will be edited with the following data for the {{ locale }} locale and the {{ scope }} channel.
+                add_attribute_value:
+                    label: Add attribute values
+                    label_count: "{1}Add attribute values for <span class=\"AknFullPage-title--highlight\">1 product</span>|] 1, Inf [Add attribute values for <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span>"
+                    description: Only the attributes belonging to the families of the selected products will be edited with the following data for the {{ locale }} locale and the {{ scope }} channel.
                 change_family:
                     label: Change family
                     label_count: "{1}Change the family of <span class=\"AknFullPage-title--highlight\">1 product</span>|] 1, Inf [Change the family of <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span>"
