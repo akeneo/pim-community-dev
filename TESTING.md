@@ -126,7 +126,7 @@ End to end:
 
 > I don't know if I should write a unit, an acceptance, an integration or an end-to-end test. What should I do?
 
-You should refer to the [ports and adapters architecture](#ports-and-adapters-architecture). Ask yourself, where your class is standing regarding the different layers. Then, you can refer to [this section](#what-is-my-test-about).
+You should refer to the [ports and adapters architecture](#ports-and-adapters-architecture). Ask yourself, where your class is standing regarding the different layers. Then, you can refer to [this section](#the-relation-with-the-tests).
 
 > I'm afraid to write less end to end tests that before. Are you sure it's a good idea?
 
