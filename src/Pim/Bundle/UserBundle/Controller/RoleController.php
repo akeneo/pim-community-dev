@@ -42,7 +42,7 @@ class RoleController extends Controller
         }
 
         $em = $this->get('doctrine.orm.entity_manager');
-        $roleClass = $this->container->getParameter('pim_user.role.entity.class');
+        $roleClass = $this->container->getParameter('pim_user.entity.role.class');
         $role = $em->getRepository($roleClass)->find($id);
 
         if (!$role) {

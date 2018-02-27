@@ -50,7 +50,7 @@ class GroupController extends Controller
         }
 
         $em = $this->get('doctrine.orm.entity_manager');
-        $groupClass = $this->container->getParameter('pim_user.group.entity.class');
+        $groupClass = $this->container->getParameter('pim_user.entity.group.class');
         $group = $em->getRepository($groupClass)->find($id);
 
         if (!$group) {
