@@ -1,0 +1,124 @@
+extensions:
+    pim-catalog-volume-index:
+        module: pim/common/simple-view
+        config:
+            template: pim/template/common/default-template
+
+    pim-catalog-volume-index-grid-container:
+        module: pim/common/simple-view
+        parent: pim-catalog-volume-index
+        targetZone: content
+        config:
+            template: pim/template/form/index/index
+
+    pim-catalog-volume-index-user-navigation:
+        module: pim/menu/user-navigation
+        parent: pim-catalog-volume-index
+        targetZone: user-menu
+        config:
+            userAccount: pim_menu.user.user_account
+            logout: pim_menu.user.logout
+
+    pim-catalog-volume-index-grid-title:
+        module: pim/common/grid-title
+        parent: pim-catalog-volume-index
+        targetZone: title
+        config:
+            countable: false
+            title: pim_menu.item.catalog_volume
+
+    pim-catalog-volume-index-breadcrumbs:
+        module: pim/common/breadcrumbs
+        parent: pim-catalog-volume-index
+        targetZone: breadcrumbs
+        config:
+            tab: pim-menu-system
+            item: pim-menu-system-catalog-volume
+
+    pim-catalog-volume-axes-header:
+        parent: pim-catalog-volume-index
+        module: pim/common/simple-view
+        targetZone: content
+        config:
+            template: pim/template/catalog-volume/header
+
+    pim-catalog-volume-axes-section:
+        module: pim/catalog-volume/section
+        parent: pim-catalog-volume-index
+        template: pim/template/catalog-volume/section
+        targetZone: content
+        config:
+            title: Axes that leverage the number of product values
+            hint:
+                code: hint-product-values
+                title: Did you know that the total number of product values in your PIM is directly linked to the following axes?. To have more details, we invite you to browse this article.
+
+    pim-catalog-volume-products-axis:
+        module: pim/catalog-volume/axis
+        parent: pim-catalog-volume-index
+        targetZone: content
+        config:
+            code: products
+            template: pim/template/catalog-volume/number
+            icon: icon-clipboard
+            title: Products
+
+    pim-catalog-volume-attributes-by-family-axis:
+        module: pim/catalog-volume/axis
+        parent: pim-catalog-volume-index
+        targetZone: content
+        config:
+            code: attributes_by_family
+            template: pim/template/catalog-volume/mean-max
+            icon: icon-tag
+            title: Attributes by family
+
+    pim-catalog-volume-channels-axis:
+        module: pim/catalog-volume/axis
+        parent: pim-catalog-volume-index
+        targetZone: content
+        config:
+            code: channels
+            template: pim/template/catalog-volume/number
+            icon: icon-channels
+            title: Channels
+
+    pim-catalog-volume-locales-axis:
+        module: pim/catalog-volume/axis
+        parent: pim-catalog-volume-index
+        targetZone: content
+        config:
+            code: locales
+            template: pim/template/catalog-volume/number
+            icon: icon-flags
+            title: Locales
+
+    pim-catalog-volume-scopable-attributes-axis:
+        module: pim/catalog-volume/axis
+        parent: pim-catalog-volume-index
+        targetZone: content
+        config:
+            code: scopable_attributes
+            template: pim/template/catalog-volume/number
+            icon: icon-tag
+            title: Scopable attributes
+
+    pim-catalog-volume-localizable-scopable-attributes-axis:
+        module: pim/catalog-volume/axis
+        parent: pim-catalog-volume-index
+        targetZone: content
+        config:
+            code: localizable_scopable_attributes
+            template: pim/template/catalog-volume/number
+            icon: icon-tag
+            title: Localizable and scopable attributes
+
+    pim-catalog-volume-localizable-attributes-axis:
+        module: pim/catalog-volume/axis
+        parent: pim-catalog-volume-index
+        targetZone: content
+        config:
+            code: localizable_attributes
+            template: pim/template/catalog-volume/number
+            icon: icon-tag
+            title: Localizable attribute

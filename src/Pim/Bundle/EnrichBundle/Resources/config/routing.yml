@@ -18,6 +18,10 @@ value_rest:
     resource: '@PimEnrichBundle/Resources/config/routing/value/rest.yml'
     prefix: /rest/value
 
+catalog_volume:
+    resource: '@PimEnrichBundle/Resources/config/routing/catalog_volume.yml'
+    prefix: /system/catalog-volume
+
 channel:
     resource: '@PimEnrichBundle/Resources/config/routing/channel.yml'
     prefix: /configuration/channel

@@ -236,6 +236,15 @@ extensions:
         targetZone: navigation
         config:
             title: pim_menu.navigation.system
+    
+    pim-menu-system-catalog-volume:
+        module: pim/menu/item
+        parent: pim-menu-system-navigation-block
+        aclResourceId: oro_config_system
+        position: 100
+        config:
+            title: pim_menu.item.catalog_volume
+            to: pim_enrich_catalog_volume_index 
 
     pim-menu-system-configuration:
         module: pim/menu/item
