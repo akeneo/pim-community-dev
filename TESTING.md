@@ -15,11 +15,11 @@ Most of the time, a unit of code is a class.
 
 Characteristics:
 
-- one class is tested at a time
-- no I/O call
-- no setup required (no fixtures for instance)
-- mock only what you own
-- "lives" in memory only
+- it tests only one class at a time
+- it performs no I/O call
+- it doesn't require any setup (no fixtures for instance)
+- it mocks only what we own
+- it "lives" in memory only
 
 Tools:
 
@@ -35,17 +35,17 @@ Examples:
 
 Characteristics:
 
-- several classes are tested at the same time
-- business language is used, which means we must use _Gherkin_
-- describes a business use case or ensure a business rule (it's not about UI, CLI or UX, neither about a text we should see)
-- mock only what you own
-- services which perform I/O calls are mocked (like Doctrine repositories for instance)
-- "lives" in memory only
+- it tests several classes at the same time
+- it uses the business language, which means _Gherkin_ must be used
+- it describes a business use case or it ensures a business rule (it's not about UI, CLI or UX, neither about a text we should see)
+- it mocks only what we own
+- it mocks services performing I/O calls (like Doctrine repositories for instance)
+- it "lives" in memory only
 
 Tools:
 
-- backend: Behat (no Mink, no Selenium)
-- frontend: TODO
+- backend: Gherkin through Behat (no Mink, no Selenium)
+- frontend: Gherkin through TODO
 
 Examples:
 
@@ -56,9 +56,9 @@ Examples:
 
 Characteristics:
 
-- no mock
-- may test several classes at the same time
-- tests only services that perform I/O calls (like Doctrine repositories for instance)
+- it has no mock (it tests the real classes)
+- it may test several classes at the same time
+- it tests only services that perform I/O calls (like Doctrine repositories for instance)
 
 Tools:
 
@@ -74,10 +74,10 @@ Examples:
 
 Characteristics:
 
-- tests the application as a whole (the backend and the frontend are tested at the same time)
-- tests the real application (no mock)
-- can require complex setup (like a browser and Selenium for instance)
-- tests nominal use cases
+- it tests the application as a whole (the backend and the frontend are tested at the same time)
+- it has no mock (it tests the real application)
+- it can require a complex setup (like a browser and Selenium for instance)
+- it tests nominal use cases
 
 Tools:
 
@@ -134,7 +134,7 @@ For sure, end to end tests are a really safe cocoon. They strictly ensure what w
 
 > What is a service that performs I/O calls?
 
-Any service that uses an external system (relatively to your code). Can be considered as external systems: the file system, the system time, any system called via the network, a database or a search engine for instance. That means a Doctrine repository, which communicate with the database, is a service performing I/O calls.
+Any service that uses an external system (relatively to your code). Can be considered as external systems: the file system, the system time, any system called via the network, a database or a search engine for instance. That means a Doctrine repository, which communicates with the database, is a service performing I/O calls.
 
 ## Resources
 
