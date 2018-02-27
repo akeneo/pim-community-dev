@@ -138,7 +138,7 @@ Any service that uses an external system (relatively to your code). Can be consi
 
 ## Resources
 
-> How to write useful and powerful Gherkin?
+> How can I write useful and powerful Gherkin?
 
 [Modelling by Example Workshop](https://fr.slideshare.net/CiaranMcNulty/modelling-by-example-workshop-phpnw-2016) by Ciaran McNulty
 
