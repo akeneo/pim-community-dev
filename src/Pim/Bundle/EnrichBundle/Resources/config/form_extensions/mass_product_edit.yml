@@ -23,6 +23,9 @@ extensions:
         targetZone: other-actions
         position: 90
         config:
+            attributeTypes:
+                - 'pim_catalog_multiselect'
+                - 'pim_reference_data_multiselect'
             select2:
                 placeholder: 'pim_enrich.form.product.mass_edit.select_attributes'
             events:
