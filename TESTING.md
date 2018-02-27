@@ -99,20 +99,20 @@ Examples:
 
 Unit:
 
-- focuses on the Domain layer
+- it focuses on the Domain layer
 
 Acceptance:
 
-- focuses on the Application layer
+- it focuses on the Application layer
 
 Integration:
 
-- focuses on the Infrastructure layer
-- tests an Adapter
+- it focuses on the Infrastructure layer
+- it tests an Adapter
 
 End to end:
 
-- crosses over all the layers, from an adapter to another by passing through the Domain layer (for instance: Adapter A -> Application -> Domain -> Application -> Adapter B)
+- it crosses over all the layers, from an adapter to another by passing through the Domain layer (for instance: Adapter A -> Application -> Domain -> Application -> Adapter B)
 
 
 ## Actual vs Expected
