@@ -8,6 +8,7 @@
 
 - PIM-7188: Avoid duplicate products during import
 - PIM-7164: Fix a memory leak on product export caused by associated products not being detached
+- PIM-7134: Fix a memory leak when purging version history (MongoDB)
 
 # 1.7.18 (2018-02-22)
 
