@@ -26,7 +26,10 @@ define(
              * {@inheritdoc}
              */
             render() {
-                this.$el.html(this.template());
+                this.$el.html(this.template({
+                    title: this.config.title,
+                    hint: this.config.hint
+                }));
             }
         });
     }

@@ -10,7 +10,7 @@ define(
         'pim/page-title',
         'routing'
     ],
-    function ($, _, __, BaseController, FormBuilder, PageTitle, Routing) {
+    function ($, _, __, BaseController, FormBuilder, PageTitle) {
         return BaseController.extend({
             /**
              * {@inheritdoc}
@@ -18,7 +18,7 @@ define(
             renderForm: function () {
                 return $.when(
                     FormBuilder.build('pim-catalog-volume-index'),
-                ).then((form, response) => {
+                ).then((form) => {
                     this.on('pim:controller:can-leave', function (event) {
                         form.trigger('pim_enrich:form:can-leave', event);
                     });
@@ -36,6 +36,7 @@ define(
                         attributes: { value: 120, warning: false },
                         options_by_attribute: { value: { mean: 10, max: 20 }, warning: false },
                         categories: { value: 10001, warning: true },
+                        category_trees: { value: 3, warning: false},
                         variant_products: { value: 120000, warning: false },
                         product_models: { value: 21000, warning: false }
                     };

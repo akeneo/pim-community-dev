@@ -14,8 +14,16 @@ define(
         requireContext
     ) {
         return BaseForm.extend({
+            config: {
+                icon: '',
+                title: '',
+                warning: false,
+                warningText: 'Wow! You hit a record with this axis! Don\'t hesitate to contact us if you need any help with this kind of volume.',
+                value: 0
+            },
+
             initialize: function (options) {
-                this.config = Object.assign({}, options.config);
+                this.config = Object.assign({}, this.config, options.config);
 
                 return BaseForm.prototype.initialize.apply(this, arguments);
             },
@@ -31,7 +39,7 @@ define(
                     icon: this.config.icon,
                     title: this.config.title,
                     warning: data.warning,
-                    warningText: 'Wow! You hit a record with this axis! Don\'t hesitate to contact us if you need any help with this kind of volume.',
+                    warningText: this.config.warningText,
                     value: data.value
                 }));
             }
