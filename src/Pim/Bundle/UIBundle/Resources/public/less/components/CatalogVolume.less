@@ -1,0 +1,151 @@
+@import '../base/variables';
+
+.AknCatalogVolume {
+    display: flex;
+
+    &-section {
+        margin-bottom: 20px;
+    }
+
+    &-sectionHeading {
+        display: flex;
+        flex-direction: column;
+    }
+
+    &-remove {
+        margin: 15px;
+    }
+
+    &-hint {
+        background: #F5F9FC;
+        display: flex;
+        padding: 5px;
+        font-size: 13px;
+        color: @AknSlateGrey;
+        min-height: 80px;
+        align-items: center;
+
+        &--header {
+            margin-bottom: 20px;
+        }
+    }
+
+    &-hintTitle {
+        flex-grow: 1;
+    }
+
+    &-headerTitle {
+        font-size: 18px;
+        color: @AknDarkBlue;
+        margin-top: 20px;
+        margin-bottom: 20px;
+
+        span {
+            color: @AknLightPurple
+        }
+    }
+
+    &-headerDescription {
+        font-size: 13px;
+        color: @AknSlateGrey;
+        margin-top: 10px;
+    }
+
+    &-icon {
+        min-width: 70px;
+        min-height: 60px;
+        height: auto;
+        border-right: 1px @AknMediumGrey solid;
+        margin-right: 15px;
+        background-repeat: no-repeat;
+        background-position: 50% 15px;
+        background-size: 29px auto;
+
+        &--product {
+            background-image: url("../../images/icon-product.svg");
+        }
+
+        &--channel {
+            background-image: url("../../images/icon-channel.svg");
+        }
+
+        &--tag {
+            background-image: url("../../images/icon-tag.svg");
+        }
+
+        &--tagplus {
+            background-image: url("../../images/icon-add-attribute.svg");
+        }
+
+        &--locale {
+            background-image: url("../../images/icon-locale.svg");
+        }
+
+        &--family {
+            background-image: url("../../images/bulk/icon-template.svg");
+        }
+
+        &--folders {
+            background-image: url("../../images/bulk/icon-folders.svg");
+        }
+
+        &--category {
+            background-image: url("../../images/icon-folder.svg");
+        }
+
+        &--models {
+            background-image: url("../../images/bulk/icon-model.svg");
+        }
+
+        &--variant {
+            background-image: url("../../images/bulk/icon-variant.svg");
+        }
+
+        &--shop {
+            background-image: url("../../images/icon-shop.svg");
+        }
+
+        &--locale {
+            background-image: url("../../images/icon-locale.svg");
+        }
+
+        &--info {
+            background-image: url("../../images/icon-info.svg");
+        }
+    }
+
+    &-axis {
+        display: flex;
+        width: 33%;
+        height: auto;
+        margin-bottom: 20px;
+        padding-right: 20px;
+    }
+
+    &-axisContainer {
+        padding-top: 20px;
+        display: flex;
+        height: auto;
+        flex-wrap: wrap;
+        width: 100%;
+        flex-direction: row;
+        align-items: flex-start;
+    }
+
+    &-warning {
+        font-size: 13px;
+        margin-top: 10px;
+        color: @AknSlateGrey;
+    }
+
+    &-title {
+        font-size: 15px;
+    }
+
+    &-value {
+        color: @AknLightPurple;
+        font-size: 16px;
+        margin-top: 5px;
+        display: block;
+    }
+}

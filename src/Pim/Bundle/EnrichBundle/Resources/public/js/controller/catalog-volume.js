@@ -7,10 +7,9 @@ define(
         'oro/translator',
         'pim/controller/front',
         'pim/form-builder',
-        'pim/page-title',
         'routing'
     ],
-    function ($, _, __, BaseController, FormBuilder, PageTitle) {
+    function ($, _, __, BaseController, FormBuilder) {
         return BaseController.extend({
             /**
              * {@inheritdoc}
@@ -24,7 +23,8 @@ define(
                     });
 
                     const dummyData = {
-                        product_values: { value: 36867028, warning: false },
+                        product_values: { value: 36867028 },
+                        product_values_average: { value: 326 },
                         products: { value: 120000, warning: false },
                         attributes_by_family: { value: {mean: 75, max: 75 }, warning: false },
                         channels: { value: 3, warning: false },

@@ -5,7 +5,7 @@ define(
         'underscore',
         'pim/form',
         'oro/translator',
-        'pim/template/catalog-volume/section'
+        'pim/template/catalog-volume/header'
     ],
     function (
         _,
@@ -14,9 +14,12 @@ define(
         template
     ) {
         return BaseForm.extend({
-            className: 'AknCatalogVolume-section',
+            className: 'AknCatalogVolume-hint AknCatalogVolume-hint--header',
             template: _.template(template),
 
+            /**
+             * {@inheritdoc}
+             */
             initialize: function (options) {
                 this.config = Object.assign({}, options.config);
 
@@ -27,12 +30,17 @@ define(
              * {@inheritdoc}
              */
             render() {
-                this.$el.html(this.template({
-                    title: __(this.config.title),
-                    hint: __(this.config.hint)
-                }));
+                const {
+                    product_values,
+                    product_values_average
+                } = this.getRoot().getFormData();
 
-                this.renderExtensions();
+                this.$el.html(this.template({
+                    title: __(this.config.title)
+                    .replace('{{values}}', product_values.value)
+                    .replace('{{average}}', product_values_average.value),
+                    description: __(this.config.description)
+                }));
             }
         });
     }

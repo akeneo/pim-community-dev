@@ -1,7 +1,10 @@
 <div class="AknCatalogVolume-sectionHeading">
-    <%- title %>
-    <div class="AknCatalogVolume-icon AknCatalogVolume-icon--info"></div>
-    <div class="AknCatalogVolume-hint"><%- hint.title %></div>
-    <div class="AknVolume-sectionClose"></div>
+    <div class="AknWidget-header widget-header"><%- title %></div>
+    <div class="AknCatalogVolume-hint">
+        <div class="AknCatalogVolume-icon AknCatalogVolume-icon--info"></div>
+        <div class="AknCatalogVolume-hintTitle"> <%- hint.title %></div>
+        <div class="AknCatalogVolume-remove AknIconButton AknIconButton--remove"></div>
+    </div>
 </div>
+<div class="AknCatalogVolume-axisContainer" data-drop-zone="content"></div>
 

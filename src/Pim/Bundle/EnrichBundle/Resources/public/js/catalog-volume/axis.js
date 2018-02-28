@@ -14,6 +14,7 @@ define(
         requireContext
     ) {
         return BaseForm.extend({
+            className: 'AknCatalogVolume-axis',
             config: {
                 icon: '',
                 title: '',

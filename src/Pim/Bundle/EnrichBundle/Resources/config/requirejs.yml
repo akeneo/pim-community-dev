@@ -642,6 +642,7 @@ config:
 
         # Catalog volume monitoring
         pim/catalog-volume/section:                      pimenrich/js/catalog-volume/section
+        pim/catalog-volume/header:                      pimenrich/js/catalog-volume/header
         pim/catalog-volume/axis:                      pimenrich/js/catalog-volume/axis
 
         # Channel

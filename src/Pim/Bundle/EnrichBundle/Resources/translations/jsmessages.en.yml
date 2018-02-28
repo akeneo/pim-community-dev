@@ -1479,3 +1479,7 @@ pim_notification:
     mark_all_as_read: Mark all as read
     no_notifications: No notifications
     loading: Loading...
+
+catalog_volume:
+    product_values: "You have <span>{{values}}</span> product values in your PIM! On average, it's <span>{{average}}</span> product values per product! 💪"
+    product_values_description: 'The more product values you have, the more valuable your PIM is, the higher your ROI is! More details <a href="#">here</a>'
