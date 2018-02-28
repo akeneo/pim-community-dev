@@ -100,7 +100,7 @@ JSON;
 
         $expectedResponseContent =
 <<<JSON
-{"code":404,"message":"You can neither view, nor update, nor delete the product \\"product_with_draft\\", as it is only categorized in categories on which you do not have a view permission."}
+{"code":404,"message":"Product \\"product_with_draft\\" does not exist."}
 JSON;
 
         $response = $clientAsMary->getResponse();

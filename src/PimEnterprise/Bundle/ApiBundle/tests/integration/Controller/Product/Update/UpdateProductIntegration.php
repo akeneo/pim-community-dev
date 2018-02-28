@@ -50,7 +50,7 @@ JSON;
     {
         $expectedResponseContent =
             <<<JSON
-{"code":404,"message":"You can neither view, nor update, nor delete the product \"product_not_viewable_by_redactor\", as it is only categorized in categories on which you do not have a view permission."}
+{"code":404,"message":"Product \"product_not_viewable_by_redactor\" does not exist."}
 JSON;
         $data = <<<JSON
 {

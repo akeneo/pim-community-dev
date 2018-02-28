@@ -101,7 +101,7 @@ class CreateMediaFileWithPermissionsIntegration extends AbstractMediaFileTestCas
         $expected = <<<JSON
 {
     "code": 404,
-    "message": "You can neither view, nor update, nor delete the product \"product_not_viewable_by_redactor\", as it is only categorized in categories on which you do not have a view permission."
+    "message": "Product \"product_not_viewable_by_redactor\" does not exist."
 }
 JSON;
         $this->assertJsonStringEqualsJsonString($expected, $response->getContent());

@@ -34,8 +34,7 @@ class DenyNotGrantedCategorizedEntitySpec extends ObjectBehavior
             ->shouldThrow(
                 new ResourceViewAccessDeniedException(
                     $productModel->getWrappedObject(),
-                    'You can neither view, nor update, nor delete the product model "product_model", as it is only ' .
-                    'categorized in categories on which you do not have a view permission.'
+                    'Product model "product_model" does not exist.'
                 )
             )
             ->during('denyIfNotGranted', [$productModel]);
@@ -64,8 +63,7 @@ class DenyNotGrantedCategorizedEntitySpec extends ObjectBehavior
             ->shouldThrow(
                 new ResourceViewAccessDeniedException(
                     $product->getWrappedObject(),
-                    'You can neither view, nor update, nor delete the product "product", as it is only categorized ' .
-                    'in categories on which you do not have a view permission.'
+                    'Product "product" does not exist.'
                 )
             )
             ->during('denyIfNotGranted', [$product]);
@@ -93,8 +91,7 @@ class DenyNotGrantedCategorizedEntitySpec extends ObjectBehavior
             ->shouldThrow(
                 new ResourceViewAccessDeniedException(
                     $categoryAware->getWrappedObject(),
-                    'You can neither view, nor update, nor delete this entity, as it is only categorized ' .
-                    'in categories on which you do not have a view permission.'
+                    'This entity does not exist.'
                 )
             )
             ->during('denyIfNotGranted', [$categoryAware]);
