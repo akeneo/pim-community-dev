@@ -12,6 +12,7 @@ Feature: Display available field options
     And I am logged in as "Julia"
     And I am on the attributes page
 
+  @unstable
   Scenario: Successfully update a read only attribute through an import
     Given I am on the "description" attribute page
     And I check the "Read only" switch

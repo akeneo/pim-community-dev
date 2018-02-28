@@ -61,7 +61,7 @@ class FileTransformerSpec extends ObjectBehavior
         ];
 
         $file->getPathname()->willReturn(__FILE__);
-        $file->getPath()->willReturn(__DIR__);
+        $file->getPath()->willReturn(sys_get_temp_dir());
 
         $registry->get('thumbnail', 'text/x-php')->willReturn($thumbnailTransformation);
         $registry->get('colorspace', 'text/x-php')->willReturn($colorSpaceTransformation);
@@ -72,6 +72,6 @@ class FileTransformerSpec extends ObjectBehavior
         $outputFile = $this->transform($file, $rawTransformations, $outputFilename);
         $outputFile->getFilename()->shouldBe($outputFilename);
 
-        unlink(__DIR__ . '/' . $outputFilename);
+        unlink(sys_get_temp_dir() . DIRECTORY_SEPARATOR . $outputFilename);
     }
 }
