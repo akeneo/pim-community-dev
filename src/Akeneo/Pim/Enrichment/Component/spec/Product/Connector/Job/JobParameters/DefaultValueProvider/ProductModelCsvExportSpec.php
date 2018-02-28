@@ -2,11 +2,13 @@
 
 namespace spec\Akeneo\Pim\Enrichment\Component\Product\Connector\Job\JobParameters\DefaultValueProvider;
 
+use Akeneo\Channel\Component\Model\ChannelInterface;
+use Akeneo\Channel\Component\Model\LocaleInterface;
+use Akeneo\Channel\Component\Repository\ChannelRepositoryInterface;
+use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
 use Akeneo\Tool\Component\Batch\Job\JobInterface;
 use Akeneo\Tool\Component\Batch\Job\JobParameters\DefaultValuesProviderInterface;
 use PhpSpec\ObjectBehavior;
-use Akeneo\Channel\Component\Repository\ChannelRepositoryInterface;
-use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
 
 class ProductModelCsvExportSpec extends ObjectBehavior
 {
@@ -24,9 +26,20 @@ class ProductModelCsvExportSpec extends ObjectBehavior
     }
 
     function it_provides_default_values(
-        $decoratedProvider
+        $decoratedProvider,
+        $channelRepository,
+        $localeRepository,
+        ChannelInterface $channel,
+        LocaleInterface $locale
     ) {
         $decoratedProvider->getDefaultValues()->willReturn(['decoratedParam' => true]);
+
+        $channelRepository->getFullChannels()->willReturn([$channel]);
+        $channel->getCode()->willReturn('channel');
+
+        $localeRepository->getActivatedLocaleCodes()->willReturn([$locale]);
+        $locale->getCode()->willReturn('locale');
+
         $this->getDefaultValues()->shouldReturnWellFormedDefaultValues();
     }
 
