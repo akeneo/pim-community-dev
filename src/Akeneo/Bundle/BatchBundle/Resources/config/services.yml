@@ -77,10 +77,10 @@ services:
             - '@akeneo_batch.job_parameters_factory'
             - '@akeneo_batch.job.job_registry'
             - '@akeneo_batch.job.job_parameters_validator'
+            - '@event_dispatcher'
             - '%kernel.root_dir%'
             - '%kernel.environment%'
             - '%logs_dir%'
-            - '@event_dispatcher'
 
     akeneo_batch.entity_manager.persisted_connection_entity_manager:
         class: '%akeneo_batch.entity_manager.persisted_connection_entity_manager.class%'

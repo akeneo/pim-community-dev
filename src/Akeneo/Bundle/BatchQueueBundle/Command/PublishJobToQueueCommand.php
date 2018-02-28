@@ -144,7 +144,7 @@ class PublishJobToQueueCommand extends ContainerAwareCommand
      * @param string       $eventName    Name of the event
      * @param JobExecution $jobExecution Object to store job execution
      */
-    private function dispatchJobExecutionEvent($eventName, JobExecution $jobExecution)
+    private function dispatchJobExecutionEvent($eventName, JobExecution $jobExecution): void
     {
         $event = new JobExecutionEvent($jobExecution);
         $this->getContainer()->get('event_dispatcher')->dispatch($eventName, $event);

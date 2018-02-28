@@ -47,8 +47,7 @@ class QueueJobLauncher implements JobLauncherInterface
     private $environment;
 
     /** @var EventDispatcherInterface */
-    protected $eventDispatcher;
-
+    private $eventDispatcher;
 
     /**
      * @param JobRepositoryInterface     $jobRepository
@@ -65,16 +64,16 @@ class QueueJobLauncher implements JobLauncherInterface
         JobRegistry $jobRegistry,
         JobParametersValidator $jobParametersValidator,
         JobExecutionQueueInterface $queue,
-        string $environment,
-        EventDispatcherInterface $eventDispatcher
+        EventDispatcherInterface $eventDispatcher,
+        string $environment
     ) {
         $this->jobRepository = $jobRepository;
         $this->jobParametersFactory = $jobParametersFactory;
         $this->jobRegistry = $jobRegistry;
         $this->jobParametersValidator = $jobParametersValidator;
         $this->queue = $queue;
-        $this->environment = $environment;
         $this->eventDispatcher = $eventDispatcher;
+        $this->environment = $environment;
     }
 
     /**

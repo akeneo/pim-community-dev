@@ -33,7 +33,7 @@ class QueueJobLauncherSpec extends ObjectBehavior
         JobExecutionQueueInterface $queue,
         EventDispatcherInterface $eventDispatcher
     ) {
-        $this->beConstructedWith($jobRepository, $jobParametersFactory, $jobRegistry, $jobParametersValidator, $queue, 'test', $eventDispatcher);
+        $this->beConstructedWith($jobRepository, $jobParametersFactory, $jobRegistry, $jobParametersValidator, $queue, $eventDispatcher, 'test');
     }
 
     function it_is_a_job_launcher()

@@ -65,19 +65,19 @@ class SimpleJobLauncher implements JobLauncherInterface
         JobParametersFactory $jobParametersFactory,
         JobRegistry $jobRegistry,
         JobParametersValidator $jobParametersValidator,
+        EventDispatcherInterface $eventDispatcher,
         $rootDir,
         $environment,
-        $logDir,
-        EventDispatcherInterface $eventDispatcher
+        $logDir
     ) {
         $this->jobRepository = $jobRepository;
         $this->jobParametersFactory = $jobParametersFactory;
         $this->jobRegistry = $jobRegistry;
         $this->jobParametersValidator = $jobParametersValidator;
+        $this->eventDispatcher = $eventDispatcher;
         $this->rootDir = $rootDir;
         $this->environment = $environment;
         $this->logDir = $logDir;
-        $this->eventDispatcher = $eventDispatcher;
     }
 
     /**
