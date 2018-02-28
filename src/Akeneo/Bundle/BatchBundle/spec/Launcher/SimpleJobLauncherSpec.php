@@ -37,7 +37,7 @@ class SimpleJobLauncherSpec extends ObjectBehavior
         $this->shouldHaveType(JobLauncherInterface::class);
     }
 
-    function it_launches_a_job_by_pushing_it_to_the_queue(
+    function it_launches_a_job(
         $jobRegistry,
         $jobParametersFactory,
         $jobParametersValidator,

@@ -36,6 +36,9 @@ class SimpleJobLauncher implements JobLauncherInterface
     /** @var JobParametersValidator */
     protected $jobParametersValidator;
 
+    /** @var EventDispatcherInterface */
+    protected $eventDispatcher;
+
     /** @var string */
     protected $rootDir;
 
@@ -45,9 +48,6 @@ class SimpleJobLauncher implements JobLauncherInterface
     /** @var string */
     protected $logDir;
 
-    /** @var EventDispatcherInterface */
-    protected $eventDispatcher;
-
     /**
      * Constructor
      *
@@ -55,10 +55,10 @@ class SimpleJobLauncher implements JobLauncherInterface
      * @param JobParametersFactory      $jobParametersFactory
      * @param JobRegistry               $jobRegistry
      * @param JobParametersValidator    $jobParametersValidator
+     * @param EventDispatcherInterface  $eventDispatcher
      * @param string                    $rootDir
      * @param string                    $environment
      * @param string                    $logDir
-     * @param EventDispatcherInterface  $eventDispatcher
      */
     public function __construct(
         JobRepositoryInterface $jobRepository,
