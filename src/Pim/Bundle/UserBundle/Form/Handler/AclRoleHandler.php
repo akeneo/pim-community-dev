@@ -24,22 +24,22 @@ use Symfony\Component\HttpFoundation\RequestStack;
 class AclRoleHandler
 {
     /** @var RequestStack */
-    private $requestStack;
+    protected $requestStack;
 
     /** @var FormFactory */
-    private $formFactory;
+    protected $formFactory;
 
     /** @var FormInterface */
-    private $form;
+    protected $form;
 
     /** @var ObjectManager */
-    private $manager;
+    protected $manager;
 
     /** @var AclManager */
-    private $aclManager;
+    protected $aclManager;
 
     /** @var array */
-    private $privilegeConfig;
+    protected $privilegeConfig;
 
     /**
      * @param FormFactory $formFactory
