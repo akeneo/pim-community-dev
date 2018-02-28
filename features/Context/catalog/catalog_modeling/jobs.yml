@@ -39,6 +39,11 @@ jobs:
         alias:     edit_common_attributes
         label:     Mass edit product attributes
         type:      mass_edit
+    add_attribute_value:
+        connector: Akeneo Mass Edit Connector
+        alias:     add_attribute_value
+        label:     Mass add attribute value
+        type:      mass_edit
     set_attribute_requirements:
         connector: Akeneo Mass Edit Connector
         alias:     set_attribute_requirements
