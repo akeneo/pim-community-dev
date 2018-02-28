@@ -121,6 +121,8 @@ End to end:
 
 ### The ideal pyramid
 
+![Ideal tests pyramid](/tests_pyramid.png "Ideal tests pyramid")
+
 
 ## FAQ
 
