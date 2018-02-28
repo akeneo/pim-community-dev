@@ -27,7 +27,12 @@ class DeleteVariantProductWithPermissionIntegration extends ApiTestCase
         $message = 'You can neither view, nor update, nor delete the product "colored_sized_sweat_no_view", as it is only categorized in categories on which you do not have a view permission.';
         $data = '{"categories": ["own_category"]}';
 
-        $this->assertUnauthorized('colored_sized_sweat_no_view', $data, sprintf($message, 'colored_sized_sweat_no_view'));
+        $this->assertUnauthorized(
+            'colored_sized_sweat_no_view',
+            $data,
+            sprintf($message, 'colored_sized_sweat_no_view'),
+            Response::HTTP_NOT_FOUND
+        );
     }
 
     public function testDeleteOnlyViewableVariantProduct()
@@ -85,17 +90,18 @@ class DeleteVariantProductWithPermissionIntegration extends ApiTestCase
      * @param string $identifier
      * @param string $data
      * @param string $message
+     * @param int    $expectedResponseCode
      */
-    private function assertUnauthorized(string $identifier, string $data, string $message):void
+    private function assertUnauthorized(string $identifier, string $data, string $message, int $expectedResponseCode = Response::HTTP_FORBIDDEN):void
     {
         $client = $this->createAuthenticatedClient([], [], null, null, 'mary', 'mary');
 
         $client->request('DELETE', 'api/rest/v1/products/' . $identifier, [], [], [], $data);
         $response = $client->getResponse();
 
-        $expected = sprintf('{"code":%d,"message":"%s"}', Response::HTTP_FORBIDDEN, addslashes($message));
+        $expected = sprintf('{"code":%d,"message":"%s"}', $expectedResponseCode, addslashes($message));
 
-        Assert::assertSame(Response::HTTP_FORBIDDEN, $response->getStatusCode());
+        Assert::assertSame($expectedResponseCode, $response->getStatusCode());
         Assert::assertEquals($expected, $response->getContent());
     }
 

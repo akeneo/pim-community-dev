@@ -154,12 +154,12 @@ JSON;
 
         $expectedResponseContent =
 <<<JSON
-{"code":403,"message":"You can neither view, nor update, nor delete the product \\"product_with_draft\\", as it is only categorized in categories on which you do not have a view permission."}
+{"code":404,"message":"You can neither view, nor update, nor delete the product \\"product_with_draft\\", as it is only categorized in categories on which you do not have a view permission."}
 JSON;
 
         $response = $client->getResponse();
 
-        $this->assertSame(Response::HTTP_FORBIDDEN, $response->getStatusCode());
+        $this->assertSame(Response::HTTP_NOT_FOUND, $response->getStatusCode());
         $this->assertSame($response->getContent(), $expectedResponseContent);
     }
 

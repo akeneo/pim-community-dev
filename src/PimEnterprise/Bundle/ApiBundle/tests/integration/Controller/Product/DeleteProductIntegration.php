@@ -82,14 +82,14 @@ JSON;
     {
         $expectedResponseContent =
 <<<JSON
-{"code":403,"message":"You can neither view, nor update, nor delete the product \"product_not_viewable_by_redactor\", as it is only categorized in categories on which you do not have a view permission."}
+{"code":404,"message":"You can neither view, nor update, nor delete the product \"product_not_viewable_by_redactor\", as it is only categorized in categories on which you do not have a view permission."}
 JSON;
 
         $client = $this->createAuthenticatedClient([], [], null, null, 'mary', 'mary');
         $client->request('DELETE', 'api/rest/v1/products/product_not_viewable_by_redactor');
 
         $response = $client->getResponse();
-        $this->assertSame(Response::HTTP_FORBIDDEN, $response->getStatusCode());
+        $this->assertSame(Response::HTTP_NOT_FOUND, $response->getStatusCode());
         $this->assertSame($expectedResponseContent, $response->getContent());
         $this->assertProductNotDeleted('product_not_viewable_by_redactor');
     }

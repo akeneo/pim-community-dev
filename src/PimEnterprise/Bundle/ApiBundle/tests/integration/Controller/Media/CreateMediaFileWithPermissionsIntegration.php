@@ -100,12 +100,12 @@ class CreateMediaFileWithPermissionsIntegration extends AbstractMediaFileTestCas
 
         $expected = <<<JSON
 {
-    "code": 403,
+    "code": 404,
     "message": "You can neither view, nor update, nor delete the product \"product_not_viewable_by_redactor\", as it is only categorized in categories on which you do not have a view permission."
 }
 JSON;
         $this->assertJsonStringEqualsJsonString($expected, $response->getContent());
-        $this->assertSame(Response::HTTP_FORBIDDEN, $response->getStatusCode());
+        $this->assertSame(Response::HTTP_NOT_FOUND, $response->getStatusCode());
     }
 
     public function testErrorWhenAttributeGroupIsOnlyViewableByRedactor()

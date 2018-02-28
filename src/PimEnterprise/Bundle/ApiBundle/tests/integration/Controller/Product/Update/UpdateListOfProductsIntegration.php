@@ -156,7 +156,7 @@ JSON;
     {"identifier": "toto"}
 JSON;
         $expectedContent = <<<JSON
-{"line":1,"identifier":"product_not_viewable_by_redactor","status_code":403,"message":"You can neither view, nor update, nor delete the product \"product_not_viewable_by_redactor\", as it is only categorized in categories on which you do not have a view permission."}
+{"line":1,"identifier":"product_not_viewable_by_redactor","status_code":404,"message":"You can neither view, nor update, nor delete the product \"product_not_viewable_by_redactor\", as it is only categorized in categories on which you do not have a view permission."}
 {"line":2,"identifier":"toto","status_code":201}
 JSON;
         $response = $this->executeAndCheckStreamRequest($data);

@@ -8,7 +8,7 @@ use Akeneo\Component\Classification\CategoryAwareInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
 use PimEnterprise\Component\Security\Attributes;
-use PimEnterprise\Component\Security\Exception\ResourceAccessDeniedException;
+use PimEnterprise\Component\Security\Exception\ResourceViewAccessDeniedException;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 /**
@@ -36,13 +36,13 @@ class DenyNotGrantedCategorizedEntity
      *
      * @param CategoryAwareInterface $categoryAwareEntity
      *
-     * @throws ResourceAccessDeniedException
+     * @throws ResourceViewAccessDeniedException
      */
     public function denyIfNotGranted(CategoryAwareInterface $categoryAwareEntity): void
     {
         if (!$this->authorizationChecker->isGranted(Attributes::VIEW, $categoryAwareEntity)) {
             if ($categoryAwareEntity instanceof ProductModelInterface) {
-                throw new ResourceAccessDeniedException(
+                throw new ResourceViewAccessDeniedException(
                     $categoryAwareEntity,
                     sprintf(
                         'You can neither view, nor update, nor delete the product model "%s", as it is only ' .
@@ -53,7 +53,7 @@ class DenyNotGrantedCategorizedEntity
             }
 
             if ($categoryAwareEntity instanceof ProductInterface) {
-                throw new ResourceAccessDeniedException(
+                throw new ResourceViewAccessDeniedException(
                     $categoryAwareEntity,
                     sprintf(
                         'You can neither view, nor update, nor delete the product "%s", as it is only categorized ' .
@@ -63,7 +63,7 @@ class DenyNotGrantedCategorizedEntity
                 );
             }
 
-            throw new ResourceAccessDeniedException(
+            throw new ResourceViewAccessDeniedException(
                 $categoryAwareEntity,
                 'You can neither view, nor update, nor delete this entity, as it is only categorized in categories ' .
                 'on which you do not have a view permission.'
