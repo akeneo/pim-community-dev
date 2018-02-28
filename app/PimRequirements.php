@@ -31,7 +31,6 @@ class PimRequirements extends SymfonyRequirements
         'curl',
         'gd',
         'intl',
-        'mcrypt',
         'pdo_mysql',
         'soap',
         'xml',
