@@ -34,6 +34,10 @@ IMPORTANT: In order for your PIM to work properly, you will need to run the foll
 - AOB-2: Change the constructor of `Pim\Bundle\DataGridBundle\EventListener\ConfigureProductGridListner` to remove `Pim\Bundle\DataGridBundle\Datagrid\Configuration\Product\FiltersConfigurator`
 - AOB-2: Add `Akeneo\Component\StorageUtils\Repository\CountableRepositoryInterface` to `Pim\Bundle\UserBundle\Repository\UserRepositoryInterface`
 
+## Enhancements
+
+- PIM-6389: Add attribute value for collections in bulk actions
+
 # 2.2.0-ALPHA1 (2018-02-21)
 
 ## Bug fixes
