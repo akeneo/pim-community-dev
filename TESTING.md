@@ -123,6 +123,8 @@ End to end:
 
 ![Ideal tests pyramid](/tests_pyramid.png "Ideal tests pyramid")
 
+## How to move towards the ideal pyramid?
+
 
 ## FAQ
 
@@ -137,6 +139,10 @@ For sure, end to end tests are a really safe cocoon. They strictly ensure what w
 > What is a service that performs I/O calls?
 
 Any service that uses an external system (relatively to your code). Can be considered as external systems: the file system, the system time, any system called via the network, a database or a search engine for instance. That means a Doctrine repository, which communicates with the database, is a service performing I/O calls.
+
+> Testing is really cool, but our CI builds are too long. So I don't want to test anymore. What should I do?
+
+Your frustration is completely understandable. And yes, the path towards short CI builds will be long. But we've achieved the first and the most difficult step, which was to understand how we should test correctly. Now it's just a matter of time and team motivation. A dedicated section explains how we can [improve current situation](how-to-move-towards-the-ideal-pyramid).
 
 ## Resources
 
