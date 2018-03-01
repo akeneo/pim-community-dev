@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\UserBundle\EventListener;
 
-use Pim\Bundle\UserBundle\Entity\User;
 use Pim\Component\User\Model\GroupInterface;
+use Pim\Component\User\Model\User;
 use Pim\Component\User\UserEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;

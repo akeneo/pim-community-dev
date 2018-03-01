@@ -1,5 +1,5 @@
 parameters:
-    pim_user.entity.class: Pim\Bundle\UserBundle\Entity\User
+    pim_user.entity.class: Pim\Component\User\Model\User
 
 services:
     pim_user.manager:

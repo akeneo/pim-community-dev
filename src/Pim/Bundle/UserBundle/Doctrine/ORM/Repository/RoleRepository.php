@@ -4,8 +4,8 @@ namespace Pim\Bundle\UserBundle\Doctrine\ORM\Repository;
 
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
-use Pim\Bundle\UserBundle\Entity\User;
 use Pim\Component\User\Model\RoleInterface;
+use Pim\Component\User\Model\User;
 use Pim\Component\User\Repository\RoleRepositoryInterface;
 
 /**
