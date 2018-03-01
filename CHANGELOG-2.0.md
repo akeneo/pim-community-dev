@@ -3,6 +3,7 @@
 ## Improvements
 
 - GITHUB-7730: Improve product and product model import performances by using cached repositories
+- API-547: return 422 instead 403 during product partial update
 
 ## Bug fixes
 
