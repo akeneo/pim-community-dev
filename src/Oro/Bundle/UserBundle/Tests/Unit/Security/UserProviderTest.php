@@ -8,7 +8,7 @@ use Symfony\Component\Security\Core\Encoder\MessageDigestPasswordEncoder;
 
 class UserProviderTest extends \PHPUnit_Framework_TestCase
 {
-    const USER_CLASS = 'Pim\Bundle\UserBundle\Entity\UserInterface';
+    const USER_CLASS = 'Pim\Component\User\Model\UserInterface';
 
     /**
      * @var \PHPUnit_Framework_MockObject_MockObject
@@ -71,7 +71,7 @@ class UserProviderTest extends \PHPUnit_Framework_TestCase
 
     public function testRefreshUserBy()
     {
-        $user = $this->getMockBuilder('Pim\Bundle\UserBundle\Entity\UserInterface')
+        $user = $this->getMockBuilder('Pim\Component\User\Model\UserInterface')
             ->setMethods(['getId'])
             ->getMock();
 
@@ -79,7 +79,7 @@ class UserProviderTest extends \PHPUnit_Framework_TestCase
             ->method('getId')
             ->will($this->returnValue(123));
 
-        $refreshedUser = $this->createMock('Pim\Bundle\UserBundle\Entity\UserInterface');
+        $refreshedUser = $this->createMock('Pim\Component\User\Model\UserInterface');
 
         $this->userManager
             ->expects($this->once())
@@ -95,7 +95,7 @@ class UserProviderTest extends \PHPUnit_Framework_TestCase
      */
     public function testRefreshDeleted()
     {
-        $user = $this->createMock('Pim\Bundle\UserBundle\Entity\UserInterface');
+        $user = $this->createMock('Pim\Component\User\Model\UserInterface');
 
         $this->userManager
             ->expects($this->once())

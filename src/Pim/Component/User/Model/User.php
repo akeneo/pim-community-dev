@@ -8,7 +8,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
 use Pim\Bundle\UserBundle\Entity\Group;
-use Pim\Bundle\UserBundle\Entity\UserInterface;
+use Pim\Component\User\Model\UserInterface;
 use Pim\Component\Catalog\Model\CategoryInterface;
 use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\LocaleInterface;
@@ -198,7 +198,7 @@ class User implements UserInterface
 
     public function getClass()
     {
-        return 'Pim\Bundle\UserBundle\Entity\UserInterface';
+        return 'Pim\Component\User\Model\UserInterface';
     }
 
     /**

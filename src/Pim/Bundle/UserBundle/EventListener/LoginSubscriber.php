@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\UserBundle\EventListener;
 
-use Pim\Bundle\UserBundle\Entity\UserInterface;
+use Pim\Component\User\Model\UserInterface;
 use Pim\Bundle\UserBundle\Manager\UserManager;
 use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
 

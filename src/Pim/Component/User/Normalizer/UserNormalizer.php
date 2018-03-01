@@ -2,7 +2,7 @@
 
 namespace Pim\Component\User\Normalizer;
 
-use Pim\Bundle\UserBundle\Entity\UserInterface;
+use Pim\Component\User\Model\UserInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**

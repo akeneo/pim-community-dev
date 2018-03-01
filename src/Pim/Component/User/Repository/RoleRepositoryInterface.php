@@ -4,7 +4,7 @@ namespace Pim\Component\User\Repository;
 
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Doctrine\Common\Persistence\ObjectRepository;
-use Pim\Bundle\UserBundle\Entity\UserInterface;
+use Pim\Component\User\Model\UserInterface;
 
 /**
  * @author    Arnaud Langlade <arnaud.langlade@akeneo.com>

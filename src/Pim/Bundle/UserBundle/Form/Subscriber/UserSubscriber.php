@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\UserBundle\Form\Subscriber;
 
-use Pim\Bundle\UserBundle\Entity\UserInterface;
+use Pim\Component\User\Model\UserInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormEvent;
@@ -85,7 +85,8 @@ class UserSubscriber implements EventSubscriberInterface
     /**
      * Returns true if passed user is currently authenticated
      *
-     * @param  UserInterface $user
+     * @param  \Pim\Component\User\Model\UserInterface $user
+     *
      * @return bool
      */
     protected function isCurrentUser(UserInterface $user)

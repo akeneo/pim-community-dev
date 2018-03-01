@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\UserBundle\Form\Handler;
 
-use Pim\Bundle\UserBundle\Entity\UserInterface;
+use Pim\Component\User\Model\UserInterface;
 use Pim\Component\User\Model\Group;
 use Pim\Component\User\Model\User;
 
@@ -36,7 +36,7 @@ class UserHandler extends AbstractUserHandler
     }
 
     /**
-     * @param UserInterface $user
+     * @param \Pim\Component\User\Model\UserInterface $user
      */
     protected function onSuccess(UserInterface $user)
     {
