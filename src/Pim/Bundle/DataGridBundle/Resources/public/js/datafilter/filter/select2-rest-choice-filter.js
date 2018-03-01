@@ -106,7 +106,6 @@ define(
                 } else {
                     this._setInputValue(this.criteriaValueSelectors.value, value.value);
                 }
-                this._setInputValue(this.criteriaValueSelectors.type, value.type);
                 this._highlightDropdown(value.type, '.operator');
 
                 return this;
