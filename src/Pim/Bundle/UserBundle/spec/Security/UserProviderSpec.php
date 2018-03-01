@@ -1,9 +1,9 @@
 <?php
 
-namespace spec\Pim\Bundle\UserBundle\Provider;
+namespace spec\Pim\Bundle\UserBundle\Security;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\UserBundle\Repository\UserRepositoryInterface;
+use Pim\Component\User\Repository\UserRepositoryInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 class UserProviderSpec extends ObjectBehavior

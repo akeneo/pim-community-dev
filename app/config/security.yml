@@ -8,9 +8,9 @@ security:
     providers:
         chain_provider:
             chain:
-                providers:                  [pim_user]
+                providers: [pim_user]
         pim_user:
-            id:                             pim_user.security.provider
+            id: pim_user.provider.user
 
     encoders:
         Pim\Bundle\UserBundle\Entity\User: sha512

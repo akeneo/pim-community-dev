@@ -1,15 +1,17 @@
 <?php
 
-namespace Pim\Bundle\UserBundle\EventSubscriber;
+namespace Pim\Bundle\UserBundle\EventListener;
 
 use Doctrine\ORM\EntityManager;
-use Pim\Bundle\UserBundle\Event\UserEvent;
+use Pim\Component\User\Event\UserEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
+use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
+use Symfony\Component\Security\Http\SecurityEvents;
 use Symfony\Component\Translation\TranslatorInterface;
 
 /**
@@ -70,6 +72,17 @@ class LocaleSubscriber implements EventSubscriberInterface
     }
 
     /**
+     * @param InteractiveLoginEvent $event
+     */
+    public function onSecurityInteractiveLogin(InteractiveLoginEvent $event)
+    {
+        $user = $event->getAuthenticationToken()->getUser();
+
+        $event->getRequest()->getSession()->remove('dataLocale');
+        $event->getRequest()->getSession()->set('_locale', $user->getUiLocale()->getCode());
+    }
+
+    /**
      * @return array
      */
     public static function getSubscribedEvents()
@@ -77,6 +90,7 @@ class LocaleSubscriber implements EventSubscriberInterface
         return [
             UserEvent::POST_UPDATE => [['onPostUpdate']],
             KernelEvents::REQUEST  => [['onKernelRequest', 17]],
+            SecurityEvents::INTERACTIVE_LOGIN  => [['onSecurityInteractiveLogin']],
         ];
     }
 

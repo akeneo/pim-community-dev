@@ -2,12 +2,14 @@
 
 namespace Pim\Component\User\Model;
 
-use Doctrine\ORM\Mapping as ORM;
-use JMS\Serializer\Annotation\Type;
 use Pim\Bundle\UserBundle\Entity\User;
-use Symfony\Component\Security\Core\Role\Role as BaseRole;
 
-class Role extends BaseRole
+/**
+ * @author    Arnaud Langlade <arnaud.langlade@akeneo.com>
+ * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
+class Role implements RoleInterface
 {
     /** @var int */
     protected $id;
@@ -30,9 +32,7 @@ class Role extends BaseRole
     }
 
     /**
-     * Return the role id
-     *
-     * @return int
+     * {@inheritdoc}
      */
     public function getId()
     {
@@ -40,9 +40,7 @@ class Role extends BaseRole
     }
 
     /**
-     * Return the role name field
-     *
-     * @return string
+     * {@inheritdoc}
      */
     public function getRole()
     {
@@ -50,9 +48,7 @@ class Role extends BaseRole
     }
 
     /**
-     * Return the role label field
-     *
-     * @return string
+     * {@inheritdoc}
      */
     public function getLabel()
     {
@@ -60,11 +56,7 @@ class Role extends BaseRole
     }
 
     /**
-     * Set role name only for newly created role
-     *
-     * @param  string            $role Role name
-     * @throws \RuntimeException
-     * @return Role
+     * {@inheritdoc}
      */
     public function setRole($role)
     {
@@ -79,10 +71,7 @@ class Role extends BaseRole
     }
 
     /**
-     * Set the new label for role
-     *
-     * @param  string $label New label
-     * @return Role
+     * {@inheritdoc}
      */
     public function setLabel($label)
     {
