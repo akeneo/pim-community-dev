@@ -1483,3 +1483,29 @@ pim_notification:
 catalog_volume:
     product_values: "You have <span>{{values}}</span> product values in your PIM! On average, it's <span>{{average}}</span> product values per product! 💪"
     product_values_description: 'The more product values you have, the more valuable your PIM is, the higher your ROI is! More details <a href="#">here</a>'
+    section:
+        product_values:
+            hint: Did you know that the total number of product values in your PIM is directly linked to the following axes? To have more details, we invite you to browse this article.
+            title: Axes that leverage the number of product values
+        catalog_structure:
+            hint: Hint for the catalog structure
+            title: Axes related to the catalog structure
+        variant_modelling:
+            hint: Hint for the axes regarding the variant modelling
+            title: Axes regarding the variant modelling
+    axis:
+        products: Products
+        attributes_by_family: Attributes by family
+        channels: Channels
+        locales: Locales
+        scopable_attributes: Scopable attributes
+        localizable_scopable_attributes: Localizable and scopable attributes
+        localizable_attributes: Localizable attributes
+        families: Families
+        attributes: Attributes
+        options_by_attribute: Options by attribute
+        categories: Categories
+        category_trees: Category trees
+        variant_products: Product variants
+        product_models: Product models
+        warning: Wow! You hit a record with this axis! Don't hesitate to contact us if you need any help with this kind of volume.

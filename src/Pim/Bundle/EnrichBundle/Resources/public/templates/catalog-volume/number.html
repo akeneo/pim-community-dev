@@ -1,10 +1,14 @@
-<div class="AknCatalogVolume-icon AknCatalogVolume-icon--<%- icon %>"></div>
-<div class="AknCatalogVolume-title">
-    <%- title %>
-    <div class="AknCatalogVolume-value"><%- value %></div>
-    <% if (true === warning) { %>
-        <div class="AknCatalogVolume-warning">
-            <%- warningText %>
+<div class="AknCatalogVolume-axis">
+    <div class="AknCatalogVolume-icon AknCatalogVolume-icon--<%- icon %>"></div>
+    <div class="AknCatalogVolume-title">
+        <%- title %>
+        <div class="AknCatalogVolume-value">
+            <%- value.toLocaleString('en', { useGrouping: true }) %>
         </div>
-    <% } %>
+        <% if (true === warning) { %>
+            <div class="AknCatalogVolume-warning">
+                <%- warningText %>
+            </div>
+        <% } %>
+    </div>
 </div>

@@ -642,8 +642,7 @@ config:
 
         # Catalog volume monitoring
         pim/catalog-volume/section:                      pimenrich/js/catalog-volume/section
-        pim/catalog-volume/header:                      pimenrich/js/catalog-volume/header
-        pim/catalog-volume/axis:                      pimenrich/js/catalog-volume/axis
+        pim/catalog-volume/header:                       pimenrich/js/catalog-volume/header
 
         # Channel
         pim/channel-edit-form/delete:                           pimenrich/js/channel/form/delete
@@ -1250,7 +1249,7 @@ config:
         pimcommunity/grid/view-selector/current:  pimenrich/js/grid/view-selector-current
 
         # Catalog volume monitoring
-        pim/template/catalog-volume/header:     pimenrich/templates/catalog-volume/header.html
-        pim/template/catalog-volume/section:     pimenrich/templates/catalog-volume/section.html
-        pim/template/catalog-volume/number:     pimenrich/templates/catalog-volume/number.html
+        pim/template/catalog-volume/header:       pimenrich/templates/catalog-volume/header.html
+        pim/template/catalog-volume/section:      pimenrich/templates/catalog-volume/section.html
+        pim/template/catalog-volume/number:       pimenrich/templates/catalog-volume/number.html
         pim/template/catalog-volume/mean-max:     pimenrich/templates/catalog-volume/mean-max.html

@@ -35,7 +35,6 @@ extensions:
             tab: pim-menu-system
             item: pim-menu-system-catalog-volume
 
-    # This should have its own module
     pim-catalog-volume-axes-header:
         parent: pim-catalog-volume-index
         module: pim/catalog-volume/header
@@ -52,186 +51,34 @@ extensions:
         targetZone: content
         position: 20
         config:
-            title: Axes that leverage the number of product values
+            title: catalog_volume.section.product_values.title
             hint:
                 code: hint-product-values
-                title: Did you know that the total number of product values in your PIM is directly linked to the following axes?. To have more details, we invite you to browse this article.
-
-    pim-catalog-volume-products-axis:
-        module: pim/catalog-volume/axis
-        parent: pim-catalog-volume-product-values-section
-        targetZone: content
-        position: 30
-        config:
-            code: products
-            template: pim/template/catalog-volume/number
-            icon: product
-            title: Products
-
-    pim-catalog-volume-channels-axis:
-        module: pim/catalog-volume/axis
-        parent: pim-catalog-volume-product-values-section
-        targetZone: content
-        position: 40
-        config:
-            code: channels
-            template: pim/template/catalog-volume/number
-            icon: shop
-            title: Channels
-
-    pim-catalog-volume-scopable-attributes-axis:
-        module: pim/catalog-volume/axis
-        parent: pim-catalog-volume-product-values-section
-        targetZone: content
-        position: 50
-        config:
-            code: scopable_attributes
-            template: pim/template/catalog-volume/number
-            icon: tag
-            title: Scopable attributes
-
-    pim-catalog-volume-attributes-by-family-axis:
-        module: pim/catalog-volume/axis
-        parent: pim-catalog-volume-product-values-section
-        targetZone: content
-        position: 60
-        config:
-            code: attributes_by_family
-            template: pim/template/catalog-volume/mean-max
-            icon: family
-            title: Attributes by family
-
-    pim-catalog-volume-locales-axis:
-        module: pim/catalog-volume/axis
-        parent: pim-catalog-volume-product-values-section
-        targetZone: content
-        position: 70
-        config:
-            code: locales
-            template: pim/template/catalog-volume/number
-            icon: locale
-            title: Locales
-
-    pim-catalog-volume-localizable-scopable-attributes-axis:
-        module: pim/catalog-volume/axis
-        parent: pim-catalog-volume-product-values-section
-        targetZone: content
-        position: 80
-        config:
-            code: localizable_scopable_attributes
-            template: pim/template/catalog-volume/number
-            icon: tag
-            title: Localizable and scopable attributes
-
-    pim-catalog-volume-localizable-attributes-axis:
-        module: pim/catalog-volume/axis
-        parent: pim-catalog-volume-product-values-section
-        targetZone: content
-        position: 90
-        config:
-            code: localizable_attributes
-            template: pim/template/catalog-volume/number
-            icon: tag
-            title: Localizable attributes
+                title: catalog_volume.section.product_values.hint
+            axes: [products, channels, scopable_attributes, attributes_by_family, locales, localizable_scopable_attributes, localizable_attributes]
 
     pim-catalog-volume-catalog-structure-section:
         module: pim/catalog-volume/section
         parent: pim-catalog-volume-index
         template: pim/template/catalog-volume/section
         targetZone: content
-        position: 100
+        position: 30
         config:
-            title: Axes related to the catalog structure
+            title: catalog_volume.section.catalog_structure.title
             hint:
                 code: hint-catalog-structure
-                title: Hint for the catalog structure
-
-    pim-catalog-volume-families-axis:
-        module: pim/catalog-volume/axis
-        parent: pim-catalog-volume-catalog-structure-section
-        targetZone: content
-        position: 110
-        config:
-            code: families
-            template: pim/template/catalog-volume/number
-            icon: family
-            title: Families
-
-    pim-catalog-volume-attributes-axis:
-        module: pim/catalog-volume/axis
-        parent: pim-catalog-volume-catalog-structure-section
-        targetZone: content
-        position: 120
-        config:
-            code: attributes
-            template: pim/template/catalog-volume/number
-            icon: tag
-            title: Attributes
-
-    pim-catalog-volume-options-by-attribute-axis:
-        module: pim/catalog-volume/axis
-        parent: pim-catalog-volume-catalog-structure-section
-        targetZone: content
-        position: 130
-        config:
-            code: options_by_attribute
-            template: pim/template/catalog-volume/mean-max
-            icon: tagplus
-            title: Options by attribute
-
-    pim-catalog-volume-categories-axis:
-        module: pim/catalog-volume/axis
-        parent: pim-catalog-volume-catalog-structure-section
-        targetZone: content
-        position: 140
-        config:
-            code: categories
-            template: pim/template/catalog-volume/number
-            icon: category
-            title: Categories
-
-    pim-catalog-volume-category-trees-axis:
-        module: pim/catalog-volume/axis
-        parent: pim-catalog-volume-catalog-structure-section
-        targetZone: content
-        position: 150
-        config:
-            code: category_trees
-            template: pim/template/catalog-volume/number
-            icon: folders
-            title: Category trees
+                title: catalog_volume.section.catalog_structure.hint
+            axes: [families, attributes, options_by_attribute, categories, category_trees]
 
     pim-catalog-volume-variant-modelling-section:
         module: pim/catalog-volume/section
         parent: pim-catalog-volume-index
         template: pim/template/catalog-volume/section
         targetZone: content
-        position: 160
+        position: 40
         config:
-            title: Axes regarding the variant modelling
+            title: catalog_volume.section.variant_modelling.title
             hint:
                 code: hint-variant-modelling
-                title: Hint for the axes regarding the variant modelling
-
-    pim-catalog-volume-product-variant-axis:
-        module: pim/catalog-volume/axis
-        parent: pim-catalog-volume-variant-modelling-section
-        targetZone: content
-        position: 170
-        config:
-            code: variant_products
-            template: pim/template/catalog-volume/number
-            icon: variant
-            title: Product variants
-
-    pim-catalog-volume-product-model-axis:
-        module: pim/catalog-volume/axis
-        parent: pim-catalog-volume-variant-modelling-section
-        targetZone: content
-        position: 180
-        config:
-            code: product_models
-            template: pim/template/catalog-volume/number
-            icon: models
-            title: Product models
-
+                title: catalog_volume.section.variant_modelling.hint
+            axes: [variant_products, product_models]
