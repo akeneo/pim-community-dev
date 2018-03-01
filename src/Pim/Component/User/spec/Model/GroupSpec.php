@@ -33,7 +33,7 @@ class GroupSpec extends ObjectBehavior
         $this->addRole($user);
         $this->addRole($admin);
 
-        $this->removeRole(new Role('admin'));
+        $this->removeRole($admin);
 
         $this->getRole('user')->shouldReturn($user);
         $this->hasRole('admin')->shouldReturn(false);

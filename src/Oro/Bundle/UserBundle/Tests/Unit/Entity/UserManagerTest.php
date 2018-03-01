@@ -3,9 +3,9 @@
 namespace Oro\Bundle\UserBundle\Tests\Entity;
 
 use Akeneo\Component\StorageUtils\Factory\SimpleFactory;
-use Pim\Component\User\Model\UserInterface;
 use Pim\Bundle\UserBundle\Manager\UserManager;
 use Pim\Component\User\Model\Role;
+use Pim\Component\User\Model\UserInterface;
 use Symfony\Component\Security\Core\Encoder\EncoderFactory;
 use Symfony\Component\Security\Core\Encoder\MessageDigestPasswordEncoder;
 
