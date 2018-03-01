@@ -128,11 +128,9 @@ datagrid:
                 type: sequential_edit
                 acl_resource: pim_enrich_product_edit_attributes
                 label: pim.grid.mass_action.sequential_edit
-                handler: sequential_edit
-                route: pim_enrich_mass_edit_action_sequential_edit
                 className: 'AknButton AknButton--action AknButtonList-item'
-            delete:
-                type: delete
+            delete_products_and_product_models:
+                type: mass_delete
                 label: pim.grid.mass_action.delete
                 entity_name: product
                 acl_resource: pim_enrich_product_remove

@@ -14,6 +14,7 @@ parameters:
     pim_enrich.job.name.edit_common_attributes: 'edit_common_attributes'
     pim_enrich.job.name.add_to_existing_product_model: 'add_to_existing_product_model'
     pim_enrich.job.name.set_attribute_requirements: 'set_attribute_requirements'
+    pim_enrich.job.name.delete_products_and_product_models: 'delete_products_and_product_models'
     pim_enrich.job.simple_job.class: Akeneo\Component\Batch\Job\Job
     pim_enrich.step.item_step.class: Akeneo\Component\Batch\Step\ItemStep
     pim_enrich.job.quick_export_type: quick_export
@@ -179,5 +180,16 @@ services:
             - '@akeneo_batch.job_repository'
             -
                 - '@pim_enrich.step.set_attribute_requirements.mass_edit'
+        tags:
+            - { name: akeneo_batch.job, connector: '%pim_enrich.connector_name.mass_edit%', type: '%pim_enrich.job.mass_edit_type%' }
+
+    pim_enrich.job.delete_products_and_product_models:
+        class: '%pim_connector.job.simple_job.class%'
+        arguments:
+            - '%pim_enrich.job.name.delete_products_and_product_models%'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            -
+                - '@pim_enrich.step.delete_products_and_product_models.mass_edit'
         tags:
             - { name: akeneo_batch.job, connector: '%pim_enrich.connector_name.mass_edit%', type: '%pim_enrich.job.mass_edit_type%' }

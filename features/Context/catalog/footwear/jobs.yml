@@ -310,6 +310,11 @@ jobs:
         alias:     add_to_existing_product_model
         label:     Add to existing product model
         type:      mass_edit
+    delete_products_and_product_models:
+        connector: Akeneo Mass Edit Connector
+        alias:     delete_products_and_product_models
+        label:     Mass delete products
+        type:      mass_delete
     csv_product_quick_export:
         connector: Akeneo CSV Connector
         alias: csv_product_quick_export

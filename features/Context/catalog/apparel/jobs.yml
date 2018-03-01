@@ -318,3 +318,8 @@ jobs:
         alias:     compute_family_variant_structure_changes
         label:     Compute variant structure changes
         type:      compute_family_variant_structure_changes
+    delete_products_and_product_models:
+        connector: Akeneo Mass Edit Connector
+        alias:     delete_products_and_product_models
+        label:     Mass delete products
+        type:      mass_delete

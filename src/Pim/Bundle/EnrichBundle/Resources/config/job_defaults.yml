@@ -2,6 +2,7 @@ parameters:
     pim_enrich.connector.job.job_parameters.default_values_provider.product_mass_edit.class: Pim\Bundle\EnrichBundle\Connector\Job\JobParameters\DefaultValuesProvider\ProductMassEdit
     pim_enrich.connector.job.job_parameters.default_values_provider.product_quick_export.class: Pim\Bundle\EnrichBundle\Connector\Job\JobParameters\DefaultValuesProvider\ProductQuickExport
     pim_enrich.connector.job.job_parameters.default_values_provider.simple_mass_edit.class: Pim\Bundle\EnrichBundle\Connector\Job\JobParameters\DefaultValuesProvider\SimpleMassEdit
+    pim_enrich.connector.job.job_parameters.default_values_provider.product_and_product_model_mass_delete.class: Pim\Bundle\EnrichBundle\Connector\Job\JobParameters\DefaultValuesProvider\ProductAndProductModelMassDelete
 
 services:
     pim_enrich.connector.job.job_parameters.default_values_provider.product_mass_edit:
@@ -17,6 +18,14 @@ services:
                 - 'add_association'
                 - 'edit_common_attributes'
                 - 'add_to_existing_product_model'
+        tags:
+            - { name: akeneo_batch.job.job_parameters.default_values_provider }
+
+    pim_enrich.connector.job.job_parameters.default_values_provider.product_and_product_model_mass_delete:
+        class: '%pim_enrich.connector.job.job_parameters.default_values_provider.product_and_product_model_mass_delete.class%'
+        arguments:
+            -
+                - 'delete_products_and_product_models'
         tags:
             - { name: akeneo_batch.job.job_parameters.default_values_provider }
 
