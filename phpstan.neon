@@ -1,0 +1,8 @@
+parameters:
+	excludes_analyse:
+		- %currentWorkingDirectory%/src/Acme
+		- %currentWorkingDirectory%/src/Akeneo/*/spec/*
+		- %currentWorkingDirectory%/src/Behat/*
+		- %currentWorkingDirectory%/src/Oro/*
+		- %currentWorkingDirectory%/src/Pim/*/spec/*
+		- %currentWorkingDirectory%/src/Pim/*/tests/*
