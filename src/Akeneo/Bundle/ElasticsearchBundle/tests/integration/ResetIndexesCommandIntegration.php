@@ -34,16 +34,9 @@ class ResetIndexesCommandIntegration extends TestCase
 
     private function assertIndexesNotEmpty(): void
     {
-        $esClients = $this->get('akeneo_elasticsearch.registry.clients')->getClients();
+        $esClients = $this->getEsClients();
 
         foreach ($esClients as $esClient) {
-            if ($this->hasParameter('product_proposal_index_name')) {
-                $proposalIndex = $this->getParameter('product_proposal_index_name');
-                if (null !== $proposalIndex && $proposalIndex === $esClient->getIndexName()) {
-                    continue;
-                }
-            }
-
             $allDocuments = $esClient->search('pim_catalog_product', [
                 '_source' => 'identifier',
                 'query' => [
@@ -63,7 +56,7 @@ class ResetIndexesCommandIntegration extends TestCase
 
     private function assertIndexesEmpty(): void
     {
-        $esClients = $this->get('akeneo_elasticsearch.registry.clients')->getClients();
+        $esClients = $this->getEsClients();
 
         foreach ($esClients as $esClient) {
             $allDocuments = $esClient->search('pim_catalog_product', [
@@ -73,5 +66,14 @@ class ResetIndexesCommandIntegration extends TestCase
             ]);
             $this->assertEquals(0, count($allDocuments['hits']['hits']));
         }
+    }
+
+    private function getEsClients(): array
+    {
+        return [
+            $this->get('akeneo_elasticsearch.client.product'),
+            $this->get('akeneo_elasticsearch.client.product_model'),
+            $this->get('akeneo_elasticsearch.client.product_and_product_model'),
+        ];
     }
 }
