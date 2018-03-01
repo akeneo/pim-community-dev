@@ -47,7 +47,7 @@ class WriterSpec extends ObjectBehavior
         $stepExecution->getJobExecution()->willReturn($jobExecution);
         $jobExecution->getJobInstance()->willReturn($jobInstance);
         $jobInstance->getLabel()->willReturn('job_label');
-        $jobParameters->get('filePath')->willReturn('my/file/path/%job_label%_%datetime%.csv');
+        $jobParameters->get('filePath')->willReturn(sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'my/file/path/%job_label%_%datetime%.csv');
         $jobParameters->has('ui_locale')->willReturn(false);
         $jobParameters->get('withHeader')->willReturn(true);
 
@@ -127,7 +127,7 @@ class WriterSpec extends ObjectBehavior
         $jobParameters->has('linesPerFile')->willReturn(false);
         $jobParameters->get('delimiter')->willReturn(';');
         $jobParameters->get('enclosure')->willReturn('"');
-        $jobParameters->get('filePath')->willReturn('my/file/path/%job_label%_%datetime%.csv');
+        $jobParameters->get('filePath')->willReturn(sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'my/file/path/%job_label%_%datetime%.csv');
         $jobParameters->has('ui_locale')->willReturn(false);
         $stepExecution->getJobExecution()->willReturn($jobExecution);
         $jobExecution->getJobInstance()->willReturn($jobInstance);
@@ -149,7 +149,10 @@ class WriterSpec extends ObjectBehavior
             Argument::type('array'),
             Argument::type('string'),
             -1
-        )->willReturn(['my/file/path/foo1', 'my/file/path/foo2']);
+        )->willReturn([
+            sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'my/file/path/foo1',
+            sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'my/file/path/foo2'
+        ]);
 
         $this->flush();
     }
