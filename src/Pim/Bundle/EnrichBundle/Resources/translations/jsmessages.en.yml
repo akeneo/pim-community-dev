@@ -1488,10 +1488,10 @@ catalog_volume:
             hint: Did you know that the total number of product values in your PIM is directly linked to the following axes? To have more details, we invite you to browse this article.
             title: Axes that leverage the number of product values
         catalog_structure:
-            hint: Hint for the catalog structure
+            hint: You may know that a good catalog structure is really important and is a condition to efficient enrichment. Below are the various axes to monitor your catalog structure.
             title: Axes related to the catalog structure
         variant_modelling:
-            hint: Hint for the axes regarding the variant modelling
+            hint: If you are using the variant modelling, here are the axes to help you monitor your volume.
             title: Axes regarding the variant modelling
     axis:
         products: Products

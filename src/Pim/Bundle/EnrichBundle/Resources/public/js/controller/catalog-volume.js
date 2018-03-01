@@ -36,7 +36,12 @@ define(
                         categories: { value: 10001, warning: true, type: 'number'},
                         category_trees: { value: 3, warning: false, type: 'number'},
                         variant_products: { value: 120000, warning: false, type: 'number'},
-                        product_models: { value: 21000, warning: false, type: 'number'}
+                        product_models: { value: 21000, warning: false, type: 'number'},
+
+                        // EE
+                        assets: { value: 120, warning: false, type: 'number' },
+                        asset_categories: { value: 6000, warning: false, type: 'number' },
+                        asset_category_trees: { value: 2, warning: false, type: 'number'}
                     };
 
                     form.setData(dummyData);

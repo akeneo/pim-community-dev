@@ -20,6 +20,11 @@ define(
         return BaseForm.extend({
             className: 'AknCatalogVolume-section',
             template: _.template(template),
+            hideHint: null,
+            events: {
+                'click .AknCatalogVolume-remove': 'closeHint',
+                'click .open-hint': 'openHint'
+            },
             config: {
                 warningText: __('catalog_volume.axis.warning'),
                 templates: {
@@ -27,7 +32,6 @@ define(
                     number: 'pim/template/catalog-volume/number'
                 }
             },
-
             /**
              * {@inheritdoc}
              */
@@ -38,12 +42,23 @@ define(
             },
 
             /**
+             * If the hint key is in localStorage, don't show it on first render
+             * @return {Boolean}
+             */
+            hintIsHidden() {
+                if (false === this.hideHint) return false;
+
+                return !!localStorage.getItem(this.config.hint.code);
+            },
+
+            /**
              * {@inheritdoc}
              */
             render() {
                 this.$el.empty().html(this.template({
                     title: __(this.config.title),
-                    hintTitle: __(this.config.hint.title)
+                    hintTitle: __(this.config.hint.title),
+                    hintIsHidden: this.hintIsHidden()
                 }));
 
                 this.renderAxes(this.config.axes, this.getRoot().getFormData());
@@ -70,6 +85,23 @@ define(
 
                     this.$('.AknCatalogVolume-axisContainer').append(el);
                 });
+            },
+
+            /**
+             * Close the hint box and store the key in localStorage
+             */
+            closeHint() {
+                localStorage.setItem(this.config.hint.code, true);
+                this.hideHint = true;
+                this.render();
+            },
+
+            /**
+             * Open the hint box
+             */
+            openHint() {
+                this.hideHint = false;
+                this.render();
             }
         });
     }
