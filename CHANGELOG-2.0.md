@@ -3,7 +3,7 @@
 ## API Improvements
 
 - API: Apply permissions on products model and variant products
-- API-547: Respond with 404 when a product is not viewable by the user
+- API-547: Standardization of the API responses when the user is no granted to view a product
 
 # 2.0.16 (2018-02-22)
 

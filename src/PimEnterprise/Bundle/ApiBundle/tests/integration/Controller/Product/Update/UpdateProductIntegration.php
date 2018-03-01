@@ -36,13 +36,13 @@ class UpdateProductIntegration extends AbstractProductTestCase
 }
 JSON;
         $expectedContent = <<<JSON
-{"code":403,"message":"You cannot associate a product on which you have not a view permission."}
+{"code":422,"message":"Property \"associations\" expects a valid product identifier. The product does not exist, \"product_not_viewable_by_redactor\" given. Check the expected format on the API documentation.","_links":{"documentation":{"href":"http:\/\/api.akeneo.com\/api-reference.html#patch_products__code_"}}}
 JSON;
         $client = $this->createAuthenticatedClient([], [], null, null, 'mary', 'mary');
         $client->request('PATCH', 'api/rest/v1/products/simple_product', [], [], [], $data);
 
         $response = $client->getResponse();
-        $this->assertSame(Response::HTTP_FORBIDDEN, $response->getStatusCode());
+        $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
         $this->assertSame($expectedContent, $response->getContent());
     }
 

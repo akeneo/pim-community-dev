@@ -141,7 +141,7 @@ JSON;
     {"identifier": "toto"}
 JSON;
         $expectedContent = <<<JSON
-{"line":1,"identifier":"not_existing_product","status_code":403,"message":"You cannot associate a product on which you have not a view permission."}
+{"line":1,"identifier":"not_existing_product","status_code":422,"message":"Property \"associations\" expects a valid product identifier. The product does not exist, \"product_not_viewable_by_redactor\" given. Check the expected format on the API documentation.","_links":{"documentation":{"href":"http:\/\/api.akeneo.com\/api-reference.html#patch_products__code_"}}}
 {"line":2,"identifier":"toto","status_code":201}
 JSON;
         $response = $this->executeAndCheckStreamRequest($data);

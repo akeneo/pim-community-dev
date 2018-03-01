@@ -222,8 +222,8 @@ SQL;
             }
 JSON;
 
-        $message = 'You cannot associate a product on which you have not a view permission.';
-        $this->assertUnauthorized('variant_product', $data, $message);
+        $message = 'Property "associations" expects a valid product identifier. The product does not exist, "product_no_view" given. Check the expected format on the API documentation.';
+        $this->assertUnprocessableEntity('variant_product', $data, $message);
     }
 
     public function testUpdateNotViewableVariantProduct()
