@@ -3,13 +3,21 @@
 namespace Pim\Component\User\Model;
 
 use Pim\Bundle\UserBundle\Entity\User;
+use Symfony\Component\Security\Core\Role\Role as SymfonyRole;
 
 /**
  * @author    Arnaud Langlade <arnaud.langlade@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ *
+ * @todo This "write" model should not extends Symfony\Component\Security\Core\Role\Role.We should create a "read"
+ * model that extends that class.
+ *
+ * For now, this model MUST extends Symfony\Component\Security\Core\Role\Role because the symfony security component
+ * do some stuff if the role is a instance of this class. You should have a look to
+ * Symfony\Component\Security\Acl\Domain\RoleSecurityIdentity for instance
  */
-class Role implements RoleInterface
+class Role extends SymfonyRole implements RoleInterface
 {
     /** @var int */
     protected $id;
