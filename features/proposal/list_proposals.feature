@@ -100,6 +100,7 @@ Feature: List proposals
     When I click on the "Reject all" action of the row which contains "jacket"
     And I press the "Send" button in the popin
     Then I should see the flash message "The proposal has been refused."
+    And I reload the page
     And the grid should contain 1 element
 
   Scenario: Successfully display only proposals that the current user can approve
