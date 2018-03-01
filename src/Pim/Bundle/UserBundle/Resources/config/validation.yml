@@ -1,4 +1,4 @@
-Pim\Bundle\UserBundle\Entity\User:
+Pim\Component\User\Model\User:
     constraints:
         - Pim\Bundle\UserBundle\Validator\Constraints\UserPreferences:
             groups: [User]

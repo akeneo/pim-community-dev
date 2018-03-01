@@ -3,7 +3,7 @@
 namespace Pim\Bundle\UserBundle\Controller;
 
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
-use Pim\Bundle\UserBundle\Entity\UserInterface;
+use Pim\Component\User\Model\UserInterface;
 use Pim\Component\User\Event\UserEvent;
 use Pim\Component\User\Model\User;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;

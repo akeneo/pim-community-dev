@@ -3,7 +3,7 @@
 namespace Oro\Bundle\UserBundle\Tests\Entity;
 
 use Akeneo\Component\StorageUtils\Factory\SimpleFactory;
-use Pim\Bundle\UserBundle\Entity\UserInterface;
+use Pim\Component\User\Model\UserInterface;
 use Pim\Bundle\UserBundle\Manager\UserManager;
 use Pim\Component\User\Model\Role;
 use Symfony\Component\Security\Core\Encoder\EncoderFactory;
@@ -11,12 +11,12 @@ use Symfony\Component\Security\Core\Encoder\MessageDigestPasswordEncoder;
 
 class UserManagerTest extends \PHPUnit_Framework_TestCase
 {
-    const USER_CLASS = 'Pim\Bundle\UserBundle\Entity\UserInterface';
+    const USER_CLASS = 'Pim\Component\User\Model\UserInterface';
     const TEST_NAME = 'Jack';
     const TEST_EMAIL = 'jack@jackmail.net';
 
     /**
-     * @var UserInterface
+     * @var \Pim\Component\User\Model\UserInterface
      */
     protected $user;
 

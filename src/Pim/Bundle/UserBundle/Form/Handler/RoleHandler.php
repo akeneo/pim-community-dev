@@ -3,7 +3,7 @@
 namespace Pim\Bundle\UserBundle\Form\Handler;
 
 use Doctrine\Common\Persistence\ObjectManager;
-use Pim\Bundle\UserBundle\Entity\UserInterface;
+use Pim\Component\User\Model\UserInterface;
 use Pim\Component\User\Model\Role;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -70,9 +70,9 @@ class RoleHandler
     /**
      * "Success" form handler
      *
-     * @param Role            $entity
-     * @param UserInterface[] $appendUsers
-     * @param UserInterface[] $removeUsers
+     * @param Role                                      $entity
+     * @param \Pim\Component\User\Model\UserInterface[] $appendUsers
+     * @param UserInterface[]                           $removeUsers
      */
     protected function onSuccess(Role $entity, array $appendUsers, array $removeUsers)
     {
