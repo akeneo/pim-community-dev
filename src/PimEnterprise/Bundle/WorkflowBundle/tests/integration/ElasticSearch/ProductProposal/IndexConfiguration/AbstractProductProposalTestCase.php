@@ -12,7 +12,7 @@ use Akeneo\Test\Integration\TestCase;
  */
 abstract class AbstractProductProposalTestCase extends TestCase
 {
-    const DOCUMENT_TYPE = 'pimee_workflow_published_product';
+    const DOCUMENT_TYPE = 'pimee_workflow_product_proposal';
 
     private const PAGE_SIZE = 100;
 
