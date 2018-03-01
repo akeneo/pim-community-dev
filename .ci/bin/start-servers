@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+set -eu -o pipefail
+
+chown -R mysql:mysql /var/lib/mysql /var/run/mysqld
+su -s /bin/bash -c "/usr/sbin/mysqld '--basedir=/usr' '--datadir=/var/lib/mysql' '--user=mysql' '--log-error=/var/log/mysql/mysqld.log' '--socket=/var/run/mysqld/mysqld.sock' '--port=3306'&" mysql
+su -s /bin/bash -c "/usr/share/elasticsearch/bin/elasticsearch -d -p /var/run/elasticsearch/elasticsearch -Edefault.path.logs=/var/log/elasticsearch -Edefault.path.data=/var/lib/elasticsearch -Edefault.path.conf=/etc/elasticsearch" elasticsearch
+php-fpm -D
+apachectl start
+xvfb-run -n 99 --server-args="-screen 0 1360x1020x24 -ac +extension RANDR" java -Xms1g -Xmx1g -jar /opt/selenium/selenium-server-standalone.jar&
+
+while [[ $(mysqladmin ping --silent) != "mysqld is alive" ]]; do
+    printf .
+    sleep 1
+done

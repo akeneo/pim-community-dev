@@ -1,22 +1,30 @@
 default:
     paths:
         features: features
+    filters:
+        tags: "~skip&&~skip-pef&&~doc&&~unstable&&~unstable-app&&~deprecated&&~@unstable-app"
     context:
-        class:  Context\FeatureContext
+        class: Context\FeatureContext
         parameters:
-            base_url: http://akeneo-pim-behat.local/
-            timeout: 30000
+            base_url: 'http://127.0.0.1/'
+            timeout: 50000
             window_width: 1280
             window_height: 1024
     extensions:
         Behat\MinkExtension\Extension:
             default_session: symfony2
             show_cmd: chromium-browser %s
-            selenium2: ~
-            base_url: http://akeneo-pim-behat.local/
+            selenium2:
+                wd_host: 'http://127.0.0.1:4444/wd/hub'
+            base_url: 'http://127.0.0.1/'
             files_path: 'features/Context/fixtures/'
         Behat\Symfony2Extension\Extension:
             kernel:
                 env: behat
                 debug: false
         SensioLabs\Behat\PageObjectExtension\Extension: ~
+        Liuggio\Fastest\Behat2\ListFeaturesExtension\Extension: ~
+    formatter:
+        name: Context\SummaryFormatter, Pim\Behat\Formatter\JUnitFormatter
+        parameters:
+            output_path: null,app/build/logs/behat/
