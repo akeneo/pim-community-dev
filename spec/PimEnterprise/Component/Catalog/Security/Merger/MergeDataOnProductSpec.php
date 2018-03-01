@@ -67,7 +67,7 @@ class MergeDataOnProductSpec extends ObjectBehavior
         $filteredProduct->getUniqueData()->willReturn($uniqueData);
 
         $attributeRepository->getIdentifierCode()->willReturn('sku');
-        $filteredProduct->getValue('sku')->willReturn($identifierValue);
+        $fullProduct->getValue('sku')->willReturn($identifierValue);
         $identifierValue->getAttribute()->willReturn($identifierAttribute);
 
         $valuesMerger->merge($filteredProduct, $fullProduct)->willReturn($fullProduct);
@@ -133,7 +133,7 @@ class MergeDataOnProductSpec extends ObjectBehavior
         $filteredVariantProduct->getUniqueData()->willReturn($uniqueData);
 
         $attributeRepository->getIdentifierCode()->willReturn('sku');
-        $filteredVariantProduct->getValue('sku')->willReturn($identifierValue);
+        $fullProduct->getValue('sku')->willReturn($identifierValue);
         $identifierValue->getAttribute()->willReturn($identifierAttribute);
 
         $fullProduct->setEnabled(true)->shouldBeCalled();
@@ -150,6 +150,47 @@ class MergeDataOnProductSpec extends ObjectBehavior
         $categoryMerger->merge($filteredVariantProduct, $fullVariantProduct)->willReturn($fullVariantProduct);
 
         $this->merge($filteredVariantProduct, $fullProduct)->shouldReturn($fullVariantProduct);
+    }
+
+    function it_merges_values_even_if_identifier_is_not_granted(
+        $attributeRepository,
+        $valuesMerger,
+        $associationMerger,
+        $categoryMerger,
+        ProductInterface $filteredProduct,
+        ProductInterface $fullProduct,
+        FamilyInterface $family,
+        ValueInterface $identifierValue,
+        AttributeInterface $identifierAttribute,
+        ArrayCollection $groups,
+        ArrayCollection $uniqueData
+    ) {
+        $filteredProduct->getId()->willReturn(1);
+        $filteredProduct->isEnabled()->willReturn(true);
+        $filteredProduct->getFamily()->willReturn($family);
+        $filteredProduct->getFamilyId()->willReturn(2);
+        $filteredProduct->getIdentifier()->willReturn('my_sku');
+        $filteredProduct->getGroups()->willReturn($groups);
+        $filteredProduct->getUniqueData()->willReturn($uniqueData);
+
+        $filteredProduct->getValue('sku')->willReturn(null);
+
+        $attributeRepository->getIdentifierCode()->willReturn('sku');
+        $fullProduct->getValue('sku')->willReturn($identifierValue);
+        $identifierValue->getAttribute()->willReturn($identifierAttribute);
+
+        $valuesMerger->merge($filteredProduct, $fullProduct)->willReturn($fullProduct);
+        $associationMerger->merge($filteredProduct, $fullProduct)->willReturn($fullProduct);
+        $categoryMerger->merge($filteredProduct, $fullProduct)->willReturn($fullProduct);
+
+        $fullProduct->setEnabled(true)->shouldBeCalled();
+        $fullProduct->setFamily($family)->shouldBeCalled();
+        $fullProduct->setFamilyId(2)->shouldBeCalled();
+        $fullProduct->setIdentifier(Argument::type(ScalarValue::class))->shouldBeCalled();
+        $fullProduct->setGroups($groups)->shouldBeCalled();
+        $fullProduct->setUniqueData($uniqueData)->shouldBeCalled();
+
+        $this->merge($filteredProduct, $fullProduct)->shouldReturn($fullProduct);
     }
 
     function it_throws_an_exception_if_filtered_subject_is_not_a_product()
