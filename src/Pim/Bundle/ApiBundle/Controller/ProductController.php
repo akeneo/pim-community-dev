@@ -39,7 +39,6 @@ use Pim\Component\Catalog\Query\Sorter\Directions;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -425,7 +424,7 @@ class ProductController
                 $exception
             );
         } catch (InvalidArgumentException $exception) {
-            throw new AccessDeniedHttpException($exception->getMessage(), $exception);
+            throw new UnprocessableEntityHttpException($exception->getMessage(), $exception);
         }
     }
 
