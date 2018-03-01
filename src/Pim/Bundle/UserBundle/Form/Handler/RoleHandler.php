@@ -3,8 +3,8 @@
 namespace Pim\Bundle\UserBundle\Form\Handler;
 
 use Doctrine\Common\Persistence\ObjectManager;
-use Pim\Component\User\Model\UserInterface;
 use Pim\Component\User\Model\Role;
+use Pim\Component\User\Model\UserInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;

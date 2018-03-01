@@ -4,6 +4,7 @@ namespace spec\Pim\Component\User\Updater;
 
 use Akeneo\Component\StorageUtils\Exception\InvalidObjectException;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
+use Oro\Bundle\SecurityBundle\Acl\Persistence\AclManager;
 use Pim\Component\User\Model\Group;
 use Pim\Component\User\Model\RoleInterface;
 use Pim\Component\User\Updater\RoleUpdater;
@@ -12,6 +13,11 @@ use Prophecy\Argument;
 
 class RoleUpdaterSpec extends ObjectBehavior
 {
+    function let(AclManager $aclManager)
+    {
+        $this->beConstructedWith($aclManager);
+    }
+
     function it_is_initializable()
     {
         $this->shouldHaveType(RoleUpdater::class);

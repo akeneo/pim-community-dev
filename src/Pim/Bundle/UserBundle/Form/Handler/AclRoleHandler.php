@@ -6,9 +6,9 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Persistence\ObjectManager;
 use Oro\Bundle\SecurityBundle\Acl\Persistence\AclManager;
 use Oro\Bundle\SecurityBundle\Acl\Persistence\AclPrivilegeRepository;
-use Pim\Component\User\Model\UserInterface;
 use Pim\Bundle\UserBundle\Form\Type\AclRoleType;
 use Pim\Component\User\Model\Role;
+use Pim\Component\User\Model\UserInterface;
 use Symfony\Component\Form\FormFactory;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -197,8 +197,8 @@ class AclRoleHandler
      * "Success" form handler
      *
      * @param Role                                      $entity
-     * @param \Pim\Component\User\Model\UserInterface[] $appendUsers
-     * @param \Pim\Component\User\Model\UserInterface[] $removeUsers
+     * @param UserInterface[] $appendUsers
+     * @param UserInterface[] $removeUsers
      */
     protected function onSuccess(Role $entity, array $appendUsers, array $removeUsers)
     {
@@ -212,11 +212,11 @@ class AclRoleHandler
      * Append users to role
      *
      * @param Role                                      $role
-     * @param \Pim\Component\User\Model\UserInterface[] $users
+     * @param UserInterface[] $users
      */
     protected function appendUsers(Role $role, array $users)
     {
-        /** @var $user \Pim\Component\User\Model\UserInterface */
+        /** @var $user UserInterface */
         foreach ($users as $user) {
             $user->addRole($role);
             $this->manager->persist($user);
@@ -227,11 +227,11 @@ class AclRoleHandler
      * Remove users from role
      *
      * @param Role                                      $role
-     * @param \Pim\Component\User\Model\UserInterface[] $users
+     * @param UserInterface[] $users
      */
     protected function removeUsers(Role $role, array $users)
     {
-        /** @var $user \Pim\Component\User\Model\UserInterface */
+        /** @var $user UserInterface */
         foreach ($users as $user) {
             $user->removeRole($role);
             $this->manager->persist($user);

@@ -3,9 +3,9 @@
 namespace Pim\Bundle\UserBundle\Controller;
 
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
-use Pim\Component\User\Model\UserInterface;
 use Pim\Component\User\Event\UserEvent;
 use Pim\Component\User\Model\User;
+use Pim\Component\User\Model\UserInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\EventDispatcher\GenericEvent;

@@ -2,9 +2,9 @@
 
 namespace Pim\Bundle\UserBundle\Form\Handler;
 
-use Pim\Component\User\Model\UserInterface;
 use Pim\Component\User\Model\Group;
 use Pim\Component\User\Model\User;
+use Pim\Component\User\Model\UserInterface;
 
 /**
  * Overridden UserHandler to remove tag management

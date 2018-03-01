@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Pim\Bundle\UserBundle\EventSubscriber;
+namespace spec\Pim\Bundle\UserBundle\EventListener;
 
 use Doctrine\ORM\EntityManager;
 use Oro\Bundle\ConfigBundle\Entity\ConfigValue;

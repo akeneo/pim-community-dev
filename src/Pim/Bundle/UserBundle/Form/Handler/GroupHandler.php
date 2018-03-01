@@ -3,8 +3,8 @@
 namespace Pim\Bundle\UserBundle\Form\Handler;
 
 use Doctrine\Common\Persistence\ObjectManager;
-use Pim\Component\User\Model\UserInterface;
 use Pim\Component\User\Model\GroupInterface;
+use Pim\Component\User\Model\UserInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -67,8 +67,8 @@ class GroupHandler
      * "Success" form handler
      *
      * @param GroupInterface                            $entity
-     * @param \Pim\Component\User\Model\UserInterface[] $appendUsers
-     * @param \Pim\Component\User\Model\UserInterface[] $removeUsers
+     * @param UserInterface[] $appendUsers
+     * @param UserInterface[] $removeUsers
      */
     protected function onSuccess(GroupInterface $entity, array $appendUsers, array $removeUsers)
     {
@@ -82,11 +82,11 @@ class GroupHandler
      * Append users to group
      *
      * @param GroupInterface                            $group
-     * @param \Pim\Component\User\Model\UserInterface[] $users
+     * @param UserInterface[] $users
      */
     protected function appendUsers(GroupInterface $group, array $users)
     {
-        /** @var $user \Pim\Component\User\Model\UserInterface */
+        /** @var $user UserInterface */
         foreach ($users as $user) {
             $user->addGroup($group);
             $this->manager->persist($user);
@@ -97,11 +97,11 @@ class GroupHandler
      * Remove users from group
      *
      * @param GroupInterface                            $group
-     * @param \Pim\Component\User\Model\UserInterface[] $users
+     * @param UserInterface[] $users
      */
     protected function removeUsers(GroupInterface $group, array $users)
     {
-        /** @var $user \Pim\Component\User\Model\UserInterface */
+        /** @var $user UserInterface */
         foreach ($users as $user) {
             $user->removeGroup($group);
             $this->manager->persist($user);
