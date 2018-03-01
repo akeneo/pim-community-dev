@@ -5,7 +5,7 @@ namespace Pim\Bundle\UserBundle\Context;
 use Akeneo\Component\Classification\Model\CategoryInterface;
 use Akeneo\Component\Classification\Repository\CategoryRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Builder\ChoicesBuilderInterface;
-use Pim\Bundle\UserBundle\Entity\UserInterface;
+use Pim\Component\User\Model\UserInterface;
 use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\LocaleInterface;
 use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
@@ -259,7 +259,7 @@ class UserContext
     /**
      * Get authenticated user
      *
-     * @return UserInterface|null
+     * @return \Pim\Component\User\Model\UserInterface|null
      */
     public function getUser()
     {

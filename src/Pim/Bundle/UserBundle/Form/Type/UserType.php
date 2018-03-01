@@ -5,7 +5,7 @@ namespace Pim\Bundle\UserBundle\Form\Type;
 use Pim\Bundle\UIBundle\Form\Type\DateType;
 use Pim\Bundle\UserBundle\Doctrine\ORM\Repository\GroupRepository;
 use Pim\Bundle\UserBundle\Doctrine\ORM\Repository\RoleRepository;
-use Pim\Bundle\UserBundle\Entity\UserInterface;
+use Pim\Component\User\Model\UserInterface;
 use Pim\Bundle\UserBundle\Form\Event\UserFormBuilderEvent;
 use Pim\Bundle\UserBundle\Form\Subscriber\UserPreferencesSubscriber;
 use Pim\Bundle\UserBundle\Form\Subscriber\UserSubscriber;

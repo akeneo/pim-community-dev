@@ -1,4 +1,4 @@
-Pim\Bundle\UserBundle\Entity\User:
+Pim\Component\User\Model\User:
     exclusion_policy: ALL
     properties:
         firstName:

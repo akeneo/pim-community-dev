@@ -9,7 +9,7 @@ Pim\Bundle\ApiBundle\Entity\RefreshToken:
                 strategy: AUTO
     manyToOne:
         user:
-            targetEntity: Pim\Bundle\UserBundle\Entity\UserInterface
+            targetEntity: Pim\Component\User\Model\UserInterface
             joinColumns:
                 user:
                     referencedColumnName: id

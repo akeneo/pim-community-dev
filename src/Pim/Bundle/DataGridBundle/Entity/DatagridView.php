@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\DataGridBundle\Entity;
 
-use Pim\Bundle\UserBundle\Entity\UserInterface;
+use Pim\Component\User\Model\UserInterface;
 
 /**
  * Datagrid view entity
@@ -25,7 +25,7 @@ class DatagridView
     /** @var string */
     protected $type = self::TYPE_PUBLIC;
 
-    /** @var UserInterface */
+    /** @var \Pim\Component\User\Model\UserInterface */
     protected $owner;
 
     /** @var string */
@@ -108,11 +108,11 @@ class DatagridView
     /**
      * Set owner
      *
-     * @param UserInterface $owner
+     * @param \Pim\Component\User\Model\UserInterface $owner
      *
      * @return DatagridView
      */
-    public function setOwner(UserInterface $owner)
+    public function setOwner(\Pim\Component\User\Model\UserInterface $owner)
     {
         $this->owner = $owner;
 
@@ -122,7 +122,7 @@ class DatagridView
     /**
      * Get owner
      *
-     * @return UserInterface
+     * @return \Pim\Component\User\Model\UserInterface
      */
     public function getOwner()
     {
