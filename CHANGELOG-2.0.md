@@ -1,5 +1,9 @@
 # 2.0.x
 
+## Bug fixes
+
+- PIM-7218: Fix save on product when attribute "identifier" belongs to an attribute group not viewable by a user
+
 ## API Improvements
 
 - API: Apply permissions on products model and variant products
