@@ -2,12 +2,21 @@
 
 namespace Pim\Component\User\Model;
 
-use Doctrine\ORM\Mapping as ORM;
-use JMS\Serializer\Annotation\Type;
-use Pim\Bundle\UserBundle\Entity\User;
-use Symfony\Component\Security\Core\Role\Role as BaseRole;
+use Symfony\Component\Security\Core\Role\Role as SymfonyRole;
 
-class Role extends BaseRole
+/**
+ * @author    Arnaud Langlade <arnaud.langlade@akeneo.com>
+ * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ *
+ * @todo This "write" model should not extends Symfony\Component\Security\Core\Role\Role.We should create a "read"
+ * model that extends that class.
+ *
+ * For now, this model MUST extends Symfony\Component\Security\Core\Role\Role because the symfony security component
+ * do some stuff if the role is a instance of this class. You should have a look to
+ * Symfony\Component\Security\Acl\Domain\RoleSecurityIdentity for instance
+ */
+class Role extends SymfonyRole implements RoleInterface
 {
     /** @var int */
     protected $id;
@@ -30,9 +39,7 @@ class Role extends BaseRole
     }
 
     /**
-     * Return the role id
-     *
-     * @return int
+     * {@inheritdoc}
      */
     public function getId()
     {
@@ -40,9 +47,7 @@ class Role extends BaseRole
     }
 
     /**
-     * Return the role name field
-     *
-     * @return string
+     * {@inheritdoc}
      */
     public function getRole()
     {
@@ -50,9 +55,7 @@ class Role extends BaseRole
     }
 
     /**
-     * Return the role label field
-     *
-     * @return string
+     * {@inheritdoc}
      */
     public function getLabel()
     {
@@ -60,11 +63,7 @@ class Role extends BaseRole
     }
 
     /**
-     * Set role name only for newly created role
-     *
-     * @param  string            $role Role name
-     * @throws \RuntimeException
-     * @return Role
+     * {@inheritdoc}
      */
     public function setRole($role)
     {
@@ -79,10 +78,7 @@ class Role extends BaseRole
     }
 
     /**
-     * Set the new label for role
-     *
-     * @param  string $label New label
-     * @return Role
+     * {@inheritdoc}
      */
     public function setLabel($label)
     {

@@ -6,8 +6,8 @@ use Akeneo\Component\StorageUtils\Exception\InvalidObjectException;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Doctrine\Common\Util\ClassUtils;
 use Oro\Bundle\SecurityBundle\Acl\Persistence\AclManager;
-use Pim\Bundle\UserBundle\Entity\User;
 use Pim\Component\User\Model\Role;
+use Pim\Component\User\Model\User;
 
 /**
  * Updates a role
@@ -35,7 +35,7 @@ class RoleUpdater implements ObjectUpdaterInterface
      * Expected input format :
      * {
      *     'role': 'ROLE_ADMINISTRATOR',
-     *     'name': 'Administrator',
+     *     'label': 'Administrator',
      * }
      */
     public function update($role, array $data, array $options = [])

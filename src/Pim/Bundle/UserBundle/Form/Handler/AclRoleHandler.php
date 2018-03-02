@@ -6,9 +6,9 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Persistence\ObjectManager;
 use Oro\Bundle\SecurityBundle\Acl\Persistence\AclManager;
 use Oro\Bundle\SecurityBundle\Acl\Persistence\AclPrivilegeRepository;
-use Pim\Bundle\UserBundle\Entity\UserInterface;
 use Pim\Bundle\UserBundle\Form\Type\AclRoleType;
 use Pim\Component\User\Model\Role;
+use Pim\Component\User\Model\UserInterface;
 use Symfony\Component\Form\FormFactory;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -91,7 +91,6 @@ class AclRoleHandler
 
         return $this->form;
     }
-
 
     /**
      * Save role
@@ -196,7 +195,7 @@ class AclRoleHandler
     /**
      * "Success" form handler
      *
-     * @param Role            $entity
+     * @param Role                                      $entity
      * @param UserInterface[] $appendUsers
      * @param UserInterface[] $removeUsers
      */
@@ -211,7 +210,7 @@ class AclRoleHandler
     /**
      * Append users to role
      *
-     * @param Role            $role
+     * @param Role                                      $role
      * @param UserInterface[] $users
      */
     protected function appendUsers(Role $role, array $users)
@@ -226,7 +225,7 @@ class AclRoleHandler
     /**
      * Remove users from role
      *
-     * @param Role            $role
+     * @param Role                                      $role
      * @param UserInterface[] $users
      */
     protected function removeUsers(Role $role, array $users)

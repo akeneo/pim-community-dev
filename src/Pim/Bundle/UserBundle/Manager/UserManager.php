@@ -5,9 +5,9 @@ namespace Pim\Bundle\UserBundle\Manager;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Persistence\ObjectRepository;
 use Doctrine\ORM\QueryBuilder;
-use Pim\Bundle\UserBundle\Entity\User;
-use Pim\Bundle\UserBundle\Entity\UserInterface;
 use Pim\Component\User\Model\Role;
+use Pim\Component\User\Model\User;
+use Pim\Component\User\Model\UserInterface;
 use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
@@ -202,7 +202,7 @@ class UserManager implements UserProviderInterface
 
         if (!$user instanceof SecurityUserInterface) {
             throw new UnsupportedUserException(
-                sprintf('Expected an instance of Pim\Bundle\UserBundle\Entity\UserInterface, but got "%s"', get_class($user))
+                sprintf('Expected an instance of Pim\Component\User\Model\UserInterface, but got "%s"', get_class($user))
             );
         }
 
@@ -268,7 +268,7 @@ class UserManager implements UserProviderInterface
         return $this->getStorageManager()
             ->createQueryBuilder()
             ->select('u')
-            ->from('PimUserBundle:User', 'u')
+            ->from(UserInterface::class, 'u')
             ->orderBy('u.id', 'ASC');
     }
 

@@ -2,81 +2,66 @@
 
 namespace Pim\Bundle\UserBundle\Security;
 
-use Pim\Bundle\UserBundle\Entity\UserInterface;
-use Pim\Bundle\UserBundle\Manager\UserManager;
+use Doctrine\Common\Util\ClassUtils;
+use Pim\Component\User\Repository\UserRepositoryInterface;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
-use Symfony\Component\Security\Core\User\UserInterface as SecurityUserInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 
+/**
+ * Implementation of Symfony UserProviderInterface
+ *
+ * @author    Yohan Blain <yohan.blain@akeneo.com>
+ * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
 class UserProvider implements UserProviderInterface
 {
-    /**
-     * @var UserManager
-     */
-    protected $userManager;
+    /** @var UserRepositoryInterface */
+    protected $userRepository;
 
     /**
-     * Constructor.
-     *
-     * @param UserManager $userManager
+     * @param UserRepositoryInterface $userRepository
      */
-    public function __construct(UserManager $userManager)
+    public function __construct(UserRepositoryInterface $userRepository)
     {
-        $this->userManager = $userManager;
+        $this->userRepository = $userRepository;
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function loadUserByUsername($username)
     {
-        $user = $this->findUser($username);
-
+        $user = $this->userRepository->findOneByIdentifier($username);
         if (!$user) {
-            throw new UsernameNotFoundException(sprintf('Username "%s" does not exist.', $username));
+            throw new UsernameNotFoundException(sprintf('User with username "%s" does not exist.', $username));
         }
 
         return $user;
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
-    public function refreshUser(SecurityUserInterface $user)
+    public function refreshUser(UserInterface $user)
     {
-        if (!$user instanceof UserInterface) {
-            throw new UnsupportedUserException(
-                sprintf('Expected an instance of Pim\Bundle\UserBundle\Entity\UserInterface, but got "%s".', get_class($user))
-            );
+        $userClass = ClassUtils::getClass($user);
+        if (!$this->supportsClass($userClass)) {
+            throw new UnsupportedUserException(sprintf('User object of class "%s" is not supported.', $userClass));
         }
 
-        if (null === $reloadedUser = $this->userManager->findUserBy(['id' => $user->getId()])) {
-            throw new UsernameNotFoundException(sprintf('User with ID "%d" could not be reloaded.', $user->getId()));
-        }
+        $reloadedUser = $this->loadUserByUsername($user->getUsername());
 
         return $reloadedUser;
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function supportsClass($class)
     {
-        $userClass = $this->userManager->getClass();
-
-        return $userClass === $class || is_subclass_of($class, $userClass);
-    }
-
-    /**
-     * Finds a user by username.
-     * This method is meant to be an extension point for possible child classes.
-     *
-     * @param  string    $username
-     * @return UserInterface|null
-     */
-    protected function findUser($username)
-    {
-        return $this->userManager->findUserByUsernameOrEmail($username);
+        return is_subclass_of($class, 'Symfony\Component\Security\Core\User\UserInterface');
     }
 }

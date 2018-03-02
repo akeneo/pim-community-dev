@@ -4,7 +4,13 @@ namespace Pim\Component\User\Model;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\Mapping as ORM;
 
+/**
+ * @author    Arnaud Langlade <arnaud.langlade@akeneo.com>
+ * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
 class Group implements GroupInterface
 {
     /** @var integer */
@@ -26,7 +32,7 @@ class Group implements GroupInterface
     }
 
     /**
-     * @return int
+     * {@inheritdoc}
      */
     public function getId()
     {
@@ -34,7 +40,7 @@ class Group implements GroupInterface
     }
 
     /**
-     * @return string
+     * {@inheritdoc}
      */
     public function getName()
     {
@@ -42,8 +48,7 @@ class Group implements GroupInterface
     }
 
     /**
-     * @param  string $name
-     * @return Group
+     * {@inheritdoc}
      */
     public function setName($name)
     {
@@ -52,6 +57,9 @@ class Group implements GroupInterface
         return $this;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getRoleLabelsAsString()
     {
         $labels = [];
@@ -64,8 +72,7 @@ class Group implements GroupInterface
     }
 
     /**
-     * Returns the group roles
-     * @return Collection The roles
+     * {@inheritdoc}
      */
     public function getRoles()
     {
@@ -73,9 +80,7 @@ class Group implements GroupInterface
     }
 
     /**
-     * Get role by string
-     * @param  string $roleName Role name
-     * @return Role|null
+     * {@inheritdoc}
      */
     public function getRole($roleName)
     {
@@ -90,9 +95,7 @@ class Group implements GroupInterface
     }
 
     /**
-     * @param  Role|string $role
-     * @throws \InvalidArgumentException
-     * @return boolean
+     * {@inheritdoc}
      */
     public function hasRole($role)
     {
@@ -102,7 +105,7 @@ class Group implements GroupInterface
             $roleName = $role;
         } else {
             throw new \InvalidArgumentException(
-                '$role must be an instance of Pim\Component\User\Model\Group or a string'
+                sprintf('$role must be an instance of %s or a string', Group::class)
             );
         }
 
@@ -110,9 +113,7 @@ class Group implements GroupInterface
     }
 
     /**
-     * Adds a Role to the Collection
-     * @param  Role $role
-     * @return Group
+     * {@inheritdoc}
      */
     public function addRole(Role $role)
     {
@@ -124,10 +125,7 @@ class Group implements GroupInterface
     }
 
     /**
-     * Remove the Role object from collection
-     * @param  Role|string $role
-     * @throws \InvalidArgumentException
-     * @return Group
+     * {@inheritdoc}
      */
     public function removeRole($role)
     {
@@ -137,7 +135,7 @@ class Group implements GroupInterface
             $roleObject = $this->getRole($role);
         } else {
             throw new \InvalidArgumentException(
-                '$role must be an instance of Pim\Component\User\Model\Group or a string'
+                sprintf('$role must be an instance of %s or a string', Group::class)
             );
         }
         if ($roleObject) {
@@ -148,10 +146,7 @@ class Group implements GroupInterface
     }
 
     /**
-     * Set new Roles collection
-     * @param  array|Collection $roles
-     * @throws \InvalidArgumentException
-     * @return Group
+     * {@inheritdoc}
      */
     public function setRoles($roles)
     {
