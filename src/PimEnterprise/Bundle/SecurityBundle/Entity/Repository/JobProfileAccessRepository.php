@@ -16,6 +16,7 @@ use Akeneo\Component\Batch\Model\JobInstance;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Doctrine\ORM\EntityRepository;
 use Pim\Bundle\UserBundle\Entity\UserInterface;
+use Pim\Component\User\Model\Group;
 use Pim\Component\User\Model\GroupInterface;
 use PimEnterprise\Component\Security\Attributes;
 use PimEnterprise\Component\Security\Repository\AccessRepositoryInterface;
@@ -47,7 +48,7 @@ class JobProfileAccessRepository extends EntityRepository implements
         $qb = $this->createQueryBuilder('ja');
         $qb
             ->select('g')
-            ->innerJoin('OroUserBundle:Group', 'g', 'WITH', 'ja.userGroup = g.id')
+            ->innerJoin(Group::class, 'g', 'WITH', 'ja.userGroup = g.id')
             ->where('ja.jobProfile = :jobProfile')
             ->andWhere($qb->expr()->eq($this->getAccessField($accessLevel), true))
             ->setParameter('jobProfile', $jobProfile);
@@ -144,7 +145,7 @@ class JobProfileAccessRepository extends EntityRepository implements
 
         $qb = $this->createQueryBuilder('a')
             ->innerJoin($jobProfileClass, 'j', 'WITH', 'a.jobProfile = j.id')
-            ->innerJoin('OroUserBundle:Group', 'g', 'WITH', 'a.userGroup = g.id')
+            ->innerJoin(Group::class, 'g', 'WITH', 'a.userGroup = g.id')
             ->where('j.code = :jobProfileCode')
             ->andWhere('g.name = :userGroupName')
             ->setParameter('jobProfileCode', $jobProfileCode)

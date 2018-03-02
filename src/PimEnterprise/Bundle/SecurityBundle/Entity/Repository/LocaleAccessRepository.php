@@ -14,6 +14,7 @@ namespace PimEnterprise\Bundle\SecurityBundle\Entity\Repository;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Doctrine\ORM\EntityRepository;
 use Pim\Component\Catalog\Model\LocaleInterface;
+use Pim\Component\User\Model\Group;
 use Pim\Component\User\Model\GroupInterface;
 use PimEnterprise\Component\Security\Attributes;
 
@@ -38,7 +39,7 @@ class LocaleAccessRepository extends EntityRepository implements IdentifiableObj
         $qb = $this->createQueryBuilder('a');
         $qb
             ->select('g')
-            ->innerJoin('OroUserBundle:Group', 'g', 'WITH', 'a.userGroup = g.id')
+            ->innerJoin(Group::class, 'g', 'WITH', 'a.userGroup = g.id')
             ->where('a.locale = :locale')
             ->andWhere($qb->expr()->eq(sprintf('a.%s', $accessField), true))
             ->setParameter('locale', $locale);
@@ -96,7 +97,7 @@ class LocaleAccessRepository extends EntityRepository implements IdentifiableObj
         $localeClass = $associationMappings['locale']['targetEntity'];
 
         $qb = $this->createQueryBuilder('a')
-            ->innerJoin('OroUserBundle:Group', 'g', 'WITH', 'a.userGroup = g.id')
+            ->innerJoin(Group::class, 'g', 'WITH', 'a.userGroup = g.id')
             ->innerJoin($localeClass, 'l', 'WITH', 'a.locale = l.id')
             ->where('l.code = :localeCode')
             ->andWhere('g.name = :userGroupName')

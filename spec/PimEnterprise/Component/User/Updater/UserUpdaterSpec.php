@@ -3,7 +3,7 @@
 namespace spec\PimEnterprise\Component\User\Updater;
 
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
-use Oro\Bundle\UserBundle\Entity\UserManager;
+use Pim\Bundle\UserBundle\Manager\UserManager;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 

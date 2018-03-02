@@ -14,8 +14,8 @@ namespace PimEnterprise\Bundle\EnrichBundle\Connector\Processor\MassEdit\Product
 use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
-use Oro\Bundle\UserBundle\Entity\UserManager;
 use Pim\Bundle\EnrichBundle\Connector\Processor\MassEdit\Product\EditAttributesProcessor as BaseProcessor;
+use Pim\Bundle\UserBundle\Manager\UserManager;
 use Pim\Component\Catalog\EntityWithFamilyVariant\CheckAttributeEditable;
 use Pim\Component\Catalog\Model\EntityWithFamilyInterface;
 use PimEnterprise\Component\Security\Attributes;

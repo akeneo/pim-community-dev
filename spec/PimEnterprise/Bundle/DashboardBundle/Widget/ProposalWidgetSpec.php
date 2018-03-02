@@ -3,7 +3,7 @@
 namespace spec\PimEnterprise\Bundle\DashboardBundle\Widget;
 
 use Akeneo\Component\Localization\Presenter\PresenterInterface;
-use Oro\Bundle\UserBundle\Entity\UserManager;
+use Pim\Bundle\UserBundle\Manager\UserManager;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\UserBundle\Entity\UserInterface;
 use Pim\Component\Catalog\Model\LocaleInterface;

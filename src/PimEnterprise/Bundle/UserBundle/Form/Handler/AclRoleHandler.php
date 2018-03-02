@@ -11,8 +11,8 @@
 
 namespace PimEnterprise\Bundle\UserBundle\Form\Handler;
 
-use Oro\Bundle\UserBundle\Entity\Role;
-use Oro\Bundle\UserBundle\Form\Handler\AclRoleHandler as OroAclRoleHandler;
+use Pim\Bundle\UserBundle\Form\Handler\AclRoleHandler as OroAclRoleHandler;
+use Pim\Component\User\Model\Role;
 use PimEnterprise\Bundle\UserBundle\Form\Type\AclRoleType;
 
 /**

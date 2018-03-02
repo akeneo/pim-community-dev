@@ -9,6 +9,7 @@ use PHPUnit\Framework\Assert;
 use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
+use Pim\Component\User\Model\Group;
 use PimEnterprise\Component\Security\Attributes;
 use Psr\Container\ContainerInterface;
 
@@ -600,7 +601,7 @@ class PermissionFixturesLoader
         $entityManager = $this->container->get('doctrine.orm.default_entity_manager');
 
         $category = $entityManager->getRepository('PimCatalogBundle:Category')->findOneBy(['code' => $categoryCode]);
-        $userGroup = $entityManager->getRepository('OroUserBundle:Group')->findOneBy(['name' => $userGroupName]);
+        $userGroup = $entityManager->getRepository(Group::class)->findOneBy(['name' => $userGroupName]);
 
         $accessManager->revokeAccess($category);
         $accessManager->grantAccess($category, $userGroup, $right);

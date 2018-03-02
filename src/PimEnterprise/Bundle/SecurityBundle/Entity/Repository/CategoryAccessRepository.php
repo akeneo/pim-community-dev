@@ -18,6 +18,7 @@ use Doctrine\ORM\AbstractQuery;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
 use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\User\Model\Group;
 use Pim\Component\User\Model\GroupInterface;
 use PimEnterprise\Component\Security\Attributes;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -47,7 +48,7 @@ class CategoryAccessRepository extends EntityRepository implements IdentifiableO
         $qb = $this->createQueryBuilder('a');
         $qb
             ->select('g')
-            ->innerJoin('OroUserBundle:Group', 'g', 'WITH', 'a.userGroup = g.id')
+            ->innerJoin(Group::class, 'g', 'WITH', 'a.userGroup = g.id')
             ->where('a.category = :category')
             ->andWhere($qb->expr()->eq(sprintf('a.%s', $this->getAccessField($accessLevel)), true))
             ->setParameter('category', $category);
@@ -509,7 +510,7 @@ class CategoryAccessRepository extends EntityRepository implements IdentifiableO
         $categoryClass = $associationMappings['category']['targetEntity'];
 
         $qb = $this->createQueryBuilder('a')
-            ->innerJoin('OroUserBundle:Group', 'g', 'WITH', 'a.userGroup = g.id')
+            ->innerJoin(Group::class, 'g', 'WITH', 'a.userGroup = g.id')
             ->innerJoin($categoryClass, 'c', 'WITH', 'a.category = c.id')
             ->where('c.code = :categoryCode')
             ->andWhere('g.name = :userGroupName')

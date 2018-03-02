@@ -13,8 +13,8 @@ namespace PimEnterprise\Component\User\Updater;
 
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
-use Oro\Bundle\UserBundle\Entity\UserManager;
 use Pim\Bundle\UserBundle\Entity\UserInterface;
+use Pim\Bundle\UserBundle\Manager\UserManager;
 use Pim\Component\User\Updater\UserUpdater as BaseUserUpdater;
 use PimEnterprise\Component\ProductAsset\Model\CategoryInterface;
 

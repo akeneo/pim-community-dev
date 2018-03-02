@@ -11,8 +11,8 @@
 
 namespace PimEnterprise\Bundle\UserBundle\Form\Type;
 
-use Oro\Bundle\UserBundle\Entity\Group;
 use Pim\Bundle\EnrichBundle\Form\Type\EntityIdentifierType;
+use Pim\Component\User\Model\Group;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -64,6 +64,6 @@ class GroupType extends AbstractType
      */
     public function getBlockPrefix()
     {
-        return 'oro_user_group';
+        return 'pim_user_group';
     }
 }

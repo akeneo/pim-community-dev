@@ -38,7 +38,7 @@ PimEnterprise\Bundle\SecurityBundle\Entity\ProductCategoryAccess:
                     onDelete: CASCADE
                     nullable: false
         userGroup:
-            targetEntity: Oro\Bundle\UserBundle\Entity\Group
+            targetEntity: Pim\Component\User\Model\Group
             joinColumns:
                 user_group_id:
                     referencedColumnName: id

@@ -2,7 +2,7 @@
 
 namespace spec\PimEnterprise\Bundle\SecurityBundle\Normalizer\Flat;
 
-use Oro\Bundle\UserBundle\Entity\Group;
+use Pim\Component\User\Model\Group;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\CategoryInterface;
 use PimEnterprise\Bundle\SecurityBundle\Manager\CategoryAccessManager;

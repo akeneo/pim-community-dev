@@ -2,7 +2,7 @@
 
 namespace spec\PimEnterprise\Component\TeamworkAssistant\Job\ProjectCalculation\CalculationStep;
 
-use Oro\Bundle\UserBundle\Entity\Group;
+use Pim\Component\User\Model\Group;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\LocaleInterface;

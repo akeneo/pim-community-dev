@@ -7,7 +7,7 @@ services:
         arguments:
             - '@security.authorization_checker'
             - '@pimee_workflow.repository.product_draft'
-            - '@oro_user.manager'
+            - '@pim_user.manager'
             - '@security.token_storage'
             - '@pim_catalog.localization.presenter.datetime'
             - '@router'

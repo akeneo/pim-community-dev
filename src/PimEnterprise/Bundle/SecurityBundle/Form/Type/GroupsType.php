@@ -11,6 +11,7 @@
 
 namespace PimEnterprise\Bundle\SecurityBundle\Form\Type;
 
+use Pim\Component\User\Model\Group;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -29,7 +30,7 @@ class GroupsType extends AbstractType
     {
         $resolver->setDefaults(
             [
-                'class'    => 'OroUserBundle:Group',
+                'class'    => Group::class,
                 'property' => 'name',
                 'multiple' => true,
                 'required' => false,

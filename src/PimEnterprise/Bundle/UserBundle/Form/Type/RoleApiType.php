@@ -11,8 +11,8 @@
 
 namespace PimEnterprise\Bundle\UserBundle\Form\Type;
 
-use Oro\Bundle\UserBundle\Entity\Role;
 use Pim\Bundle\EnrichBundle\Form\Type\EntityIdentifierType;
+use Pim\Component\User\Model\Role;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;

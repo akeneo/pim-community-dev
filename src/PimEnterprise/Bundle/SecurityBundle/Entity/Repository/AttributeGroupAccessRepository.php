@@ -17,6 +17,7 @@ use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
 use Pim\Bundle\UserBundle\Entity\UserInterface;
 use Pim\Component\Catalog\Model\AttributeGroupInterface;
+use Pim\Component\User\Model\Group;
 use Pim\Component\User\Model\GroupInterface;
 use PimEnterprise\Component\Security\Attributes;
 
@@ -47,7 +48,7 @@ class AttributeGroupAccessRepository extends EntityRepository implements Identif
         $qb = $this->createQueryBuilder('a');
         $qb
             ->select('g')
-            ->innerJoin('OroUserBundle:Group', 'g', 'WITH', 'a.userGroup = g.id')
+            ->innerJoin(Group::class, 'g', 'WITH', 'a.userGroup = g.id')
             ->where('a.attributeGroup = :group')
             ->andWhere($qb->expr()->eq(sprintf('a.%s', $accessField), true))
             ->setParameter('group', $group);
@@ -334,7 +335,7 @@ class AttributeGroupAccessRepository extends EntityRepository implements Identif
 
         $qb = $this->createQueryBuilder('a')
             ->innerJoin($attributeGroupClass, 'c', 'WITH', 'a.attributeGroup = c.id')
-            ->innerJoin('OroUserBundle:Group', 'g', 'WITH', 'a.userGroup = g.id')
+            ->innerJoin(Group::class, 'g', 'WITH', 'a.userGroup = g.id')
             ->where('c.code = :attributeGroupCode')
             ->andWhere('g.name = :userGroupName')
             ->setParameter('attributeGroupCode', $attributeGroupCode)

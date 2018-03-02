@@ -4,7 +4,7 @@ namespace spec\PimEnterprise\Bundle\SecurityBundle\EventSubscriber;
 
 use Akeneo\Component\Batch\Model\JobInstance;
 use Akeneo\Component\StorageUtils\StorageEvents;
-use Oro\Bundle\UserBundle\Entity\Group;
+use Pim\Component\User\Model\Group;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Entity\Attribute;
 use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;

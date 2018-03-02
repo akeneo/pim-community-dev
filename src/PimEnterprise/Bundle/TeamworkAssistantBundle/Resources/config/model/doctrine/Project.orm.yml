@@ -65,7 +65,7 @@ PimEnterprise\Component\TeamworkAssistant\Model\Project:
                 - remove
     manyToMany:
         userGroups:
-            targetEntity: Oro\Bundle\UserBundle\Entity\Group
+            targetEntity: Pim\Component\User\Model\Group
             joinTable:
                 name: pimee_teamwork_assistant_project_user_group
                 joinColumns:

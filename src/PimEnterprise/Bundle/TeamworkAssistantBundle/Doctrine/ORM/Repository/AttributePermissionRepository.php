@@ -13,6 +13,7 @@ namespace PimEnterprise\Bundle\TeamworkAssistantBundle\Doctrine\ORM\Repository;
 
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
+use Pim\Component\User\Model\Group;
 use PimEnterprise\Component\TeamworkAssistant\Repository\AttributePermissionRepositoryInterface;
 
 /**
@@ -37,7 +38,7 @@ class AttributePermissionRepository extends EntityRepository implements Attribut
         $queryBuilder = $this->createQueryBuilder('a');
 
         $queryBuilder->select('g')
-            ->innerJoin('OroUserBundle:Group', 'g', 'WITH', 'a.userGroup = g.id')
+            ->innerJoin(Group::class, 'g', 'WITH', 'a.userGroup = g.id')
             ->leftJoin('a.attributeGroup', 'ag')
             ->where($queryBuilder->expr()->eq('a.editAttributes', true))
             ->andWhere($queryBuilder->expr()->in('ag.code', ':identifiers'))

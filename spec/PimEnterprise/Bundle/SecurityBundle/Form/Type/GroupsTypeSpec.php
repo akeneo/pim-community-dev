@@ -3,6 +3,7 @@
 namespace spec\PimEnterprise\Bundle\SecurityBundle\Form\Type;
 
 use PhpSpec\ObjectBehavior;
+use Pim\Component\User\Model\Group;
 use Prophecy\Argument;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -31,7 +32,7 @@ class GroupsTypeSpec extends ObjectBehavior
         $resolver
             ->setDefaults(
                 Argument::allOf(
-                    Argument::withEntry('class', 'OroUserBundle:Group'),
+                    Argument::withEntry('class', Group::class),
                     Argument::withEntry('property', 'name'),
                     Argument::withEntry('multiple', true),
                     Argument::withEntry('required', false),

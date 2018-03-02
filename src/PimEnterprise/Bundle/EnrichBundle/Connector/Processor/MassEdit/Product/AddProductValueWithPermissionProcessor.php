@@ -14,8 +14,8 @@ namespace PimEnterprise\Bundle\EnrichBundle\Connector\Processor\MassEdit\Product
 use Akeneo\Component\Batch\Item\DataInvalidItem;
 use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\StorageUtils\Updater\PropertyAdderInterface;
-use Oro\Bundle\UserBundle\Entity\UserManager;
 use Pim\Bundle\EnrichBundle\Connector\Processor\MassEdit\Product\AddProductValueProcessor as BaseProcessor;
+use Pim\Bundle\UserBundle\Manager\UserManager;
 use Pim\Component\Catalog\Model\EntityWithValuesInterface;
 use PimEnterprise\Component\Security\Attributes;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;

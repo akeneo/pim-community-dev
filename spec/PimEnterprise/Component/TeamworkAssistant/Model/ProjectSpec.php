@@ -2,7 +2,7 @@
 
 namespace spec\PimEnterprise\Component\TeamworkAssistant\Model;
 
-use Oro\Bundle\UserBundle\Entity\Group;
+use Pim\Component\User\Model\Group;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\DataGridBundle\Entity\DatagridView;
 use Pim\Component\Catalog\Model\ChannelInterface;
