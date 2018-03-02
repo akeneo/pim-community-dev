@@ -15,7 +15,7 @@ datagrid:
                     - { table: Pim\Component\User\Model\Role, alias: r }
                 where:
                     and:
-                        - r.role <> '%pim_user.entity.class%::ROLE_ANONYMOUS'
+                        - r.role <> '%pim_user.entity.user.class%::ROLE_ANONYMOUS'
         columns:
             label:
                 label: oro.user.grid.roles.columns.label

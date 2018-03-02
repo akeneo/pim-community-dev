@@ -70,7 +70,7 @@ services:
 
     pim_user.form.type.reset:
         class:                        '%pim_user.form.type.reset.class%'
-        arguments:                    ['%pim_user.entity.class%']
+        arguments:                    ['%pim_user.entity.user.class%']
         tags:
             - { name: form.type, alias: pim_user_reset }
 

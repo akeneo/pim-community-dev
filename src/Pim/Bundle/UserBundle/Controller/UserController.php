@@ -131,7 +131,7 @@ class UserController extends Controller
         $currentUser = $tokenStorage ? $tokenStorage->getUser() : null;
         if (is_object($currentUser) && $currentUser->getId() != $id) {
             $em = $this->get('doctrine.orm.entity_manager');
-            $userClass = $this->container->getParameter('pim_user.entity.class');
+            $userClass = $this->container->getParameter('pim_user.entity.user.class');
             $user = $em->getRepository($userClass)->find($id);
 
             if (!$user) {
