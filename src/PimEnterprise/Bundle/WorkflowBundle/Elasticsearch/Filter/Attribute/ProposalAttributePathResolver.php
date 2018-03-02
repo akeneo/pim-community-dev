@@ -82,6 +82,8 @@ class ProposalAttributePathResolver
 
             if ($attribute->isLocaleSpecific()) {
                 $localeCodes = $attribute->getAvailableLocaleCodes();
+            } elseif (!$attribute->isLocalizable()) {
+                $localeCodes = ['<all_locales>'];
             } elseif ($channel->getLocaleCodes()) {
                 $localeCodes = $channel->getLocaleCodes();
             }

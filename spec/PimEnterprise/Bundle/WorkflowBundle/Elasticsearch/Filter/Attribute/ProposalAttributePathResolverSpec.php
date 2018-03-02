@@ -31,6 +31,7 @@ class ProposalAttributePathResolverSpec extends ObjectBehavior
         $textAttribute->getBackendType()->willReturn('textarea');
         $textAttribute->isScopable()->willReturn(true);
         $textAttribute->isLocaleSpecific()->willReturn(false);
+        $textAttribute->isLocalizable()->willReturn(true);
 
         $channelRepository->findAll()->willReturn([$channelEcommerce, $channelTablet]);
         $channelEcommerce->getCode()->willReturn('ecommerce');
