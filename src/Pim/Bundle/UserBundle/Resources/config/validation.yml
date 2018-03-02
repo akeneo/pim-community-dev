@@ -16,9 +16,6 @@ Pim\Component\User\Model\User:
                 min:        6
                 max:        255
             - Email:        ~
-            - Regex:
-                pattern: /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*))@([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}$/
-                message: This value is not a valid email address.
         plainPassword:
             - NotBlank:
                 groups:     [Registration]
@@ -72,7 +69,3 @@ Pim\Component\User\Model\Group:
             - NotBlank:     ~
             - Length:
                 max:        30
-#        roles:
-#            - Count:
-#                min:        1
-#                minMessage: "You must select at least {{ limit }} role"
