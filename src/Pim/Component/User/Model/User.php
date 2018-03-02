@@ -661,7 +661,7 @@ class User implements UserInterface
             $roleName = $role;
         } else {
             throw new \InvalidArgumentException(
-                '$role must be an instance of Pim\Component\User\Model\Role or a string'
+                sprintf('$role must be an instance of %s or a string', Role::class)
             );
         }
 
@@ -691,7 +691,7 @@ class User implements UserInterface
             $roleObject = $this->getRole($role);
         } else {
             throw new \InvalidArgumentException(
-                '$role must be an instance of Pim\Component\User\Model\Role or a string'
+                sprintf('$role must be an instance of %s or a string', Role::class)
             );
         }
         if ($roleObject) {

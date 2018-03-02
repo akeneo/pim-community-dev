@@ -24,7 +24,7 @@ use Pim\Component\User\Model\UserInterface;
  */
 class UserUpdater implements ObjectUpdaterInterface
 {
-    /** @var \Pim\Bundle\UserBundle\Manager\UserManager */
+    /** @var UserManager */
     protected $userManager;
 
     /** @var IdentifiableObjectRepositoryInterface */

@@ -105,7 +105,7 @@ class Group implements GroupInterface
             $roleName = $role;
         } else {
             throw new \InvalidArgumentException(
-                '$role must be an instance of Pim\Component\User\Model\Group or a string'
+                sprintf('$role must be an instance of %s or a string', Group::class)
             );
         }
 
@@ -135,7 +135,7 @@ class Group implements GroupInterface
             $roleObject = $this->getRole($role);
         } else {
             throw new \InvalidArgumentException(
-                '$role must be an instance of Pim\Component\User\Model\Group or a string'
+                sprintf('$role must be an instance of %s or a string', Group::class)
             );
         }
         if ($roleObject) {
