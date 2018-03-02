@@ -12,6 +12,7 @@
 namespace PimEnterprise\Bundle\WorkflowBundle;
 
 use Doctrine\Bundle\DoctrineBundle\DependencyInjection\Compiler\DoctrineOrmMappingsPass;
+use Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\RegisterProductQueryFilterPass;
 use PimEnterprise\Bundle\WorkflowBundle\DependencyInjection\Compiler;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
@@ -28,7 +29,9 @@ class PimEnterpriseWorkflowBundle extends Bundle
      */
     public function build(ContainerBuilder $container)
     {
-        $container->addCompilerPass(new Compiler\ResolveDoctrineTargetModelsPass());
+        $container
+            ->addCompilerPass(new Compiler\ResolveDoctrineTargetModelsPass())
+            ->addCompilerPass(new Compiler\RegisterProductProposalQueryFilterPass('product_proposal'));
 
         $mappings = [
             realpath(__DIR__ . '/Resources/config/model/doctrine') => 'PimEnterprise\Component\Workflow\Model'

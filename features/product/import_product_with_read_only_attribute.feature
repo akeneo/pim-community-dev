@@ -10,12 +10,12 @@ Feature: Display available field options
       | sku       | family  |
       | my-jacket | jackets |
     And I am logged in as "Julia"
-    And I am on the attributes page
 
   Scenario: Successfully update a read only attribute through an import
     Given I am on the "description" attribute page
     And I check the "Read only" switch
     And I save the "attribute"
+    And I should see the text "Description"
     And the following CSV file to import:
       """
       sku;family;groups;categories;name-en_US;description-en_US-tablet

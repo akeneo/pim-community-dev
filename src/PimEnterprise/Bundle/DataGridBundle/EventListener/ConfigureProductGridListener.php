@@ -12,9 +12,9 @@
 namespace PimEnterprise\Bundle\DataGridBundle\EventListener;
 
 use Oro\Bundle\DataGridBundle\Event\BuildBefore;
+use Pim\Bundle\DataGridBundle\Datagrid\Configuration\ConfiguratorInterface;
 use Pim\Bundle\DataGridBundle\Datagrid\Configuration\Product\ColumnsConfigurator;
 use Pim\Bundle\DataGridBundle\Datagrid\Configuration\Product\ContextConfigurator;
-use Pim\Bundle\DataGridBundle\Datagrid\Configuration\Product\FiltersConfigurator;
 use Pim\Bundle\DataGridBundle\Datagrid\Configuration\Product\SortersConfigurator;
 use Pim\Bundle\DataGridBundle\EventListener\ConfigureProductGridListener as BaseConfigureProductGridListener;
 use PimEnterprise\Bundle\DataGridBundle\Datagrid\Configuration\Product\RowActionsConfigurator;
@@ -33,14 +33,14 @@ class ConfigureProductGridListener extends BaseConfigureProductGridListener
     /**
      * @param ContextConfigurator    $contextConfigurator
      * @param ColumnsConfigurator    $columnsConfigurator
-     * @param FiltersConfigurator    $filtersConfigurator
+     * @param ConfiguratorInterface  $filtersConfigurator
      * @param SortersConfigurator    $sortersConfigurator
      * @param RowActionsConfigurator $actionsConfigurator
      */
     public function __construct(
         ContextConfigurator $contextConfigurator,
         ColumnsConfigurator $columnsConfigurator,
-        FiltersConfigurator $filtersConfigurator,
+        ConfiguratorInterface $filtersConfigurator,
         SortersConfigurator $sortersConfigurator,
         RowActionsConfigurator $actionsConfigurator = null
     ) {

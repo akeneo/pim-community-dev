@@ -336,6 +336,38 @@ class ProductDraftController
     }
 
     /**
+     * Search on product draft author collection.
+     *
+     * @param Request $request
+     *
+     * @return JsonResponse
+     */
+    public function authorAction(Request $request)
+    {
+        $options = $request->query->get('options', ['limit' => SearchableRepositoryInterface::FETCH_LIMIT]);
+
+        if ($request->query->has('identifiers')) {
+            $options['identifiers'] = explode(',', $request->query->get('identifiers'));
+        }
+
+        $users = $this->repository->findBySearch(
+            $request->query->get('search'),
+            $options
+        );
+
+        $normalized = [];
+        foreach ($users as $user) {
+            $normalized[$user->getAuthor()] = [
+                'username'      => $user->getAuthor(),
+            ];
+            $normalized[$user->getAuthor()]['code'] = $user->getAuthor();
+            $normalized[$user->getAuthor()]['labels'][$this->userContext->getUiLocaleCode()] = $user->getAuthor();
+        }
+
+        return new JsonResponse($normalized);
+    }
+
+    /**
      * Find a product draft for the current user and specified product
      *
      * @param ProductInterface $product

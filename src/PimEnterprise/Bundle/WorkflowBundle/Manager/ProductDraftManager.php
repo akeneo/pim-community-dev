@@ -415,6 +415,14 @@ class ProductDraftManager
                     $value['locale'],
                     $value['scope']
                 );
+                $valueToRemove = $productDraft->getValues()->getByCodes(
+                    $attributeCode,
+                    $value['scope'],
+                    $value['locale']
+                );
+                if (null !== $valueToRemove) {
+                    $productDraft->getValues()->remove($valueToRemove);
+                }
             }
         }
 
@@ -433,6 +441,14 @@ class ProductDraftManager
         foreach ($appliedChanges as $attributeCode => $values) {
             foreach ($values as $value) {
                 $productDraft->removeChange($attributeCode, $value['locale'], $value['scope']);
+                $valueToRemove = $productDraft->getValues()->getByCodes(
+                    $attributeCode,
+                    $value['scope'],
+                    $value['locale']
+                );
+                if (null !== $valueToRemove) {
+                    $productDraft->getValues()->remove($valueToRemove);
+                }
             }
         }
 

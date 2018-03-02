@@ -15,6 +15,9 @@ PimEnterprise\Component\Workflow\Model\ProductDraft:
         changes:
             type: json_array
             nullalble: false
+        rawValues:
+            type: native_json
+            column: raw_values
         author:
             type: string
             nullalble: false

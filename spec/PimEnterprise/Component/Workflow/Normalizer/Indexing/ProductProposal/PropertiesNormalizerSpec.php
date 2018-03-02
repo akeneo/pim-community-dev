@@ -1,0 +1,75 @@
+<?php
+
+namespace spec\PimEnterprise\Component\Workflow\Normalizer\Indexing\ProductProposal;
+
+use PhpSpec\ObjectBehavior;
+use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Model\ValueCollectionInterface;
+use PimEnterprise\Component\Workflow\Model\ProductDraftInterface;
+use PimEnterprise\Component\Workflow\Normalizer\Indexing\ProductProposal\PropertiesNormalizer;
+use PimEnterprise\Component\Workflow\Normalizer\Indexing\ProductProposalNormalizer;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
+use Symfony\Component\Serializer\SerializerInterface;
+
+class PropertiesNormalizerSpec extends ObjectBehavior
+{
+    function let(SerializerInterface $serializer)
+    {
+        $serializer->implement(NormalizerInterface::class);
+        $this->setSerializer($serializer);
+    }
+
+    function it_is_initializable()
+    {
+        $this->shouldHaveType(PropertiesNormalizer::class);
+    }
+
+    function it_supports_product_proposal(ProductDraftInterface $productProposal)
+    {
+        $this->supportsNormalization(new \stdClass(), 'whatever')->shouldReturn(false);
+        $this->supportsNormalization(new \stdClass(), ProductProposalNormalizer::INDEXING_FORMAT_PRODUCT_PROPOSAL_INDEX)->shouldReturn(false);
+        $this->supportsNormalization($productProposal, 'whatever')->shouldReturn(false);
+        $this->supportsNormalization($productProposal, ProductProposalNormalizer::INDEXING_FORMAT_PRODUCT_PROPOSAL_INDEX)->shouldReturn(true);
+    }
+
+    function it_normalizes_product_proposal(
+        $serializer,
+        ProductDraftInterface $productProposal,
+        ValueCollectionInterface $valueCollection,
+        ProductInterface $product
+    ) {
+        $now = new \DateTime('now', new \DateTimeZone('UTC'));
+
+        $productProposal->getId()->willReturn(1);
+        $productProposal->getProduct()->willReturn($product);
+        $product->getIdentifier()->willReturn('1');
+
+        $productProposal->getAuthor()->willReturn('mary');
+        $product->getCategoryCodes()->willReturn([]);
+
+        $productProposal->getCreatedAt()->willReturn($now);
+        $serializer->normalize(
+            $productProposal->getWrappedObject()->getCreatedAt(),
+            ProductProposalNormalizer::INDEXING_FORMAT_PRODUCT_PROPOSAL_INDEX
+        )->willReturn($now->format('c'));
+
+        $productProposal->getValues()->willReturn($valueCollection);
+        $valueCollection->isEmpty()->willReturn(true);
+
+        $product->getFamily()->willReturn(null);
+        $product->getValue(null)->willReturn(null);
+
+        $this->normalize($productProposal, ProductProposalNormalizer::INDEXING_FORMAT_PRODUCT_PROPOSAL_INDEX)->shouldReturn(
+            [
+                'id' => '1',
+                'product_identifier' => '1',
+                'identifier' => '1',
+                'created' => $now->format('c'),
+                'author' => 'mary',
+                'categories' => [],
+                'values' => [],
+                'label' => [],
+            ]
+        );
+    }
+}

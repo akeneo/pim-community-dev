@@ -13,10 +13,10 @@ namespace PimEnterprise\Bundle\DataGridBundle\Extension\MassAction\Handler;
 
 use Oro\Bundle\DataGridBundle\Datagrid\DatagridInterface;
 use Oro\Bundle\DataGridBundle\Extension\MassAction\Actions\MassActionInterface;
-use Pim\Bundle\DataGridBundle\Datasource\ResultRecord\HydratorInterface;
 use Pim\Bundle\DataGridBundle\Extension\MassAction\Event\MassActionEvent;
 use Pim\Bundle\DataGridBundle\Extension\MassAction\Handler\MassActionHandlerInterface;
 use PimEnterprise\Bundle\DataGridBundle\Extension\MassAction\Event\MassActionEvents;
+use PimEnterprise\Component\Workflow\Model\ProductDraftInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
@@ -26,19 +26,14 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
  */
 class MassApproveActionHandler implements MassActionHandlerInterface
 {
-    /** @var HydratorInterface */
-    protected $hydrator;
-
     /** @var EventDispatcherInterface */
     protected $eventDispatcher;
 
     /**
-     * @param HydratorInterface        $hydrator
      * @param EventDispatcherInterface $eventDispatcher
      */
-    public function __construct(HydratorInterface $hydrator, EventDispatcherInterface $eventDispatcher)
+    public function __construct(EventDispatcherInterface $eventDispatcher)
     {
-        $this->hydrator = $hydrator;
         $this->eventDispatcher = $eventDispatcher;
     }
 
@@ -52,14 +47,20 @@ class MassApproveActionHandler implements MassActionHandlerInterface
         $this->eventDispatcher->dispatch(MassActionEvents::MASS_APPROVE_PRE_HANDLER, $massActionEvent);
 
         $datasource = $datagrid->getDatasource();
-        $datasource->setHydrator($this->hydrator);
 
-        $results = $datasource->getResults();
+        $products = $datasource->getProductQueryBuilder()->execute();
+
+        $objectIds = [];
+        foreach ($products as $productObject) {
+            if ($productObject instanceof ProductDraftInterface) {
+                $objectIds[] = $productObject->getId();
+            }
+        }
 
         // dispatch post handler event
-        $massActionEvent = new MassActionEvent($datagrid, $massAction, $results);
+        $massActionEvent = new MassActionEvent($datagrid, $massAction, $objectIds);
         $this->eventDispatcher->dispatch(MassActionEvents::MASS_APPROVE_POST_HANDLER, $massActionEvent);
 
-        return $results;
+        return $objectIds;
     }
 }

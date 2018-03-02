@@ -19,7 +19,7 @@ Feature: Approve proposals in datagrid and reload page when delete last
       | Price | 30 USD | Marketing |
     And I am logged in as "Julia"
     And I am on the proposals page
-    And I filter by "author" with operator "" and value "Mary"
+    And I filter by "author" with operator "in list" and value "Mary"
 
   @jira https://akeneo.atlassian.net/browse/PIM-5448
   Scenario: Successfully filter proposals and approve them
