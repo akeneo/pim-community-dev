@@ -79,7 +79,7 @@ class LocaleSubscriber implements EventSubscriberInterface
         $user = $event->getAuthenticationToken()->getUser();
 
         $event->getRequest()->getSession()->remove('dataLocale');
-        $event->getRequest()->getSession()->set('_locale', $user->getUiLocale()->getCode());
+        $event->getRequest()->getSession()->set('_locale', $user->getUiLocale());
     }
 
     /**

@@ -2,7 +2,9 @@
 
 namespace Pim\Bundle\UserBundle\Security;
 
+use Akeneo\Component\StorageUtils\Exception\ResourceNotFoundException;
 use Doctrine\Common\Util\ClassUtils;
+use Pim\Bundle\UserBundle\Persistence\ORM\Query\FindAuthenticatedUser;
 use Pim\Component\User\Repository\UserRepositoryInterface;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
@@ -19,24 +21,29 @@ use Symfony\Component\Security\Core\User\UserProviderInterface;
 class UserProvider implements UserProviderInterface
 {
     /** @var UserRepositoryInterface */
-    protected $userRepository;
+    private $findAuthenticatedUserQuery;
 
     /**
-     * @param UserRepositoryInterface $userRepository
+     * @param FindAuthenticatedUser $findAuthenticatedUserQuery
      */
-    public function __construct(UserRepositoryInterface $userRepository)
+    public function __construct(FindAuthenticatedUser $findAuthenticatedUserQuery)
     {
-        $this->userRepository = $userRepository;
+        $this->findAuthenticatedUserQuery = $findAuthenticatedUserQuery;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function loadUserByUsername($username)
+    public function loadUserByUsername($username): UserInterface
     {
-        $user = $this->userRepository->findOneByIdentifier($username);
-        if (!$user) {
-            throw new UsernameNotFoundException(sprintf('User with username "%s" does not exist.', $username));
+        try {
+            $user = ($this->findAuthenticatedUserQuery)($username);
+        } catch (ResourceNotFoundException $exception) {
+            throw new UsernameNotFoundException(
+                sprintf('User with username "%s" does not exist.', $username),
+                0,
+                $exception
+            );
         }
 
         return $user;
@@ -45,7 +52,7 @@ class UserProvider implements UserProviderInterface
     /**
      * {@inheritdoc}
      */
-    public function refreshUser(UserInterface $user)
+    public function refreshUser(UserInterface $user): UserInterface
     {
         $userClass = ClassUtils::getClass($user);
         if (!$this->supportsClass($userClass)) {
@@ -60,8 +67,8 @@ class UserProvider implements UserProviderInterface
     /**
      * {@inheritdoc}
      */
-    public function supportsClass($class)
+    public function supportsClass($class): bool
     {
-        return is_subclass_of($class, 'Symfony\Component\Security\Core\User\UserInterface');
+        return is_subclass_of($class, UserInterface::class);
     }
 }

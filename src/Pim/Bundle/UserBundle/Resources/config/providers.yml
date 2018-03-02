@@ -1,8 +1,11 @@
-parameters:
-  pim_user.provider.user.class: Pim\Bundle\UserBundle\Security\UserProvider
-
 services:
   pim_user.provider.user:
-    class: '%pim_user.provider.user.class%'
-    arguments:
-      - '@pim_user.repository.user'
+      class: 'Pim\Bundle\UserBundle\Security\UserProvider'
+      arguments:
+        - '@pim_user.user.find_by_username_query'
+
+  pim_user.user.find_by_username_query:
+      class: 'Pim\Bundle\UserBundle\Persistence\ORM\Query\FindAuthenticatedUser'
+      public: false
+      arguments:
+          - '@doctrine.orm.entity_manager'

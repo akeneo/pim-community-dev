@@ -2,34 +2,36 @@
 
 namespace spec\Pim\Bundle\UserBundle\Security;
 
+use Akeneo\Component\StorageUtils\Exception\ResourceNotFoundException;
 use PhpSpec\ObjectBehavior;
-use Pim\Component\User\Repository\UserRepositoryInterface;
-use Symfony\Component\Security\Core\User\UserInterface;
+use Pim\Bundle\UserBundle\Persistence\ORM\Query\FindAuthenticatedUser;
+use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
+use Symfony\Component\Security\Core\User\AdvancedUserInterface;
 
 class UserProviderSpec extends ObjectBehavior
 {
-    function let(UserRepositoryInterface $userRepository)
+    function let(FindAuthenticatedUser $findAuthenticatedUserQuery)
     {
-        $this->beConstructedWith($userRepository);
+        $this->beConstructedWith($findAuthenticatedUserQuery);
     }
 
-    function it_loads_a_user_by_its_username($userRepository, UserInterface $julia)
+    function it_loads_a_user_by_its_username($findAuthenticatedUserQuery, AdvancedUserInterface $julia)
     {
-        $userRepository->findOneByIdentifier('julia')->willReturn($julia);
+        $findAuthenticatedUserQuery->__invoke('julia')->willReturn($julia);
         $this->loadUserByUsername('julia')->shouldReturn($julia);
     }
 
-    function it_refreshes_a_user($userRepository, UserInterface $julia)
+    function it_refreshes_a_user($findAuthenticatedUserQuery, AdvancedUserInterface $julia)
     {
-        $userRepository->findOneByIdentifier('julia')->willReturn($julia);
+        $findAuthenticatedUserQuery->__invoke('julia')->willReturn($julia);
         $julia->getUsername()->willReturn('julia');
         $this->refreshUser($julia)->shouldReturn($julia);
     }
 
-    function it_throws_an_exception_if_user_does_not_exist($userRepository)
+    function it_throws_an_exception_if_user_does_not_exist($findAuthenticatedUserQuery)
     {
-        $userRepository->findOneByIdentifier('jean-pacôme')->willReturn(null);
-        $this->shouldThrow('Symfony\Component\Security\Core\Exception\UsernameNotFoundException')
+        $findAuthenticatedUserQuery->__invoke('jean-pacôme')->willThrow(ResourceNotFoundException::class);
+        $this->shouldThrow(UsernameNotFoundException::class)
              ->during('loadUserByUsername', ['jean-pacôme']);
     }
 }

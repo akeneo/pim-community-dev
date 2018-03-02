@@ -53,6 +53,8 @@ class UserController
             throw new NotFoundHttpException('No logged in user found');
         }
 
+        $user = $this->userRepository->findOneByIdentifier($user->getUsername());
+
         return new JsonResponse($this->normalizer->normalize($user, 'internal_api'));
     }
 
