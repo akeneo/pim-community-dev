@@ -24,6 +24,9 @@
 - AOB-2: `PimEnterprise\Component\Workflow\Model\ProductDraftInterface` now implements `Pim\Component\Catalog\Model\EntityWithValuesInterface`
 - AOB-2: `PimEnterprise\Bundle\DataGridBundle\Datagrid\Configuration\Product\FiltersConfigurator` now implements `Pim\Bundle\DataGridBundle\Datagrid\Configuration\ConfiguratorInterface`
 
+## New jobs
+Be sure to run the following command `bin/console pim:installer:grant-backend-processes-accesses --env=prod` to add missing job profile accesses.
+
 # 2.2.0-ALPHA1 (2018-02-21)
 
 ## Improve Julia's experience
