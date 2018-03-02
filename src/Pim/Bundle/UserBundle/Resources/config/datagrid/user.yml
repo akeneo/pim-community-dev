@@ -1,6 +1,6 @@
 datagrid:
     pim-user-grid:
-        extended_entity_name: '%pim_user.entity.class%'
+        extended_entity_name: '%pim_user.entity.user.class%'
         options:
             entityHint: user
             manageFilters: false
@@ -18,7 +18,7 @@ datagrid:
                     - u.updatedAt
                     - u.enabled
                 from:
-                    - { table: '%pim_user.entity.class%', alias: u }
+                    - { table: '%pim_user.entity.user.class%', alias: u }
         columns:
             username:
                 label: oro.user.grid.users.columns.username
