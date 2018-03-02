@@ -2,9 +2,9 @@
 
 namespace Pim\Bundle\UserBundle\EventSubscriber;
 
-use Oro\Bundle\UserBundle\OroUserEvents;
 use Pim\Bundle\UserBundle\Entity\User;
 use Pim\Component\User\Model\GroupInterface;
+use Pim\Component\User\UserEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
@@ -23,8 +23,8 @@ class GroupSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            OroUserEvents::PRE_DELETE_GROUP => 'preDeleteGroup',
-            OroUserEvents::PRE_UPDATE_GROUP => 'preUpdateGroup',
+            UserEvents::PRE_DELETE_GROUP => 'preDeleteGroup',
+            UserEvents::PRE_UPDATE_GROUP => 'preUpdateGroup',
         ];
     }
 

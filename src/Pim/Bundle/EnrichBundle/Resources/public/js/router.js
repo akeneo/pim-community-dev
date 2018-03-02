@@ -126,7 +126,7 @@ define(
 
                 switch (xhr.status) {
                     case 401:
-                        window.location = this.generate('oro_user_security_login');
+                        window.location = this.generate('pim_user_security_login');
                         break;
                     default:
                         this.errorPage(xhr);

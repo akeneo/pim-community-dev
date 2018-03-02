@@ -1,0 +1,19 @@
+Pim\Component\User\Model\Role:
+    type: entity
+    table: oro_access_role
+    changeTrackingPolicy: DEFERRED_EXPLICIT
+    repositoryClass: Pim\Bundle\UserBundle\Doctrine\ORM\Repository\RoleRepository
+    fields:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+        role:
+            type: string
+            unique: true
+            nullable: false
+            lenght: 30
+        label:
+            type: string
+            lenght: 30

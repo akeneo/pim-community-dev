@@ -2,15 +2,15 @@
 
 namespace Pim\Bundle\UserBundle\Form\Type;
 
-use Oro\Bundle\UserBundle\Form\EventListener\UserSubscriber;
-use Oro\Bundle\UserBundle\Form\Type\ChangePasswordType;
-use Pim\Bundle\EnrichBundle\Form\Type\ProductGridFilterChoiceType;
 use Pim\Bundle\UIBundle\Form\Type\DateType;
 use Pim\Bundle\UserBundle\Doctrine\ORM\Repository\GroupRepository;
 use Pim\Bundle\UserBundle\Doctrine\ORM\Repository\RoleRepository;
 use Pim\Bundle\UserBundle\Entity\UserInterface;
 use Pim\Bundle\UserBundle\Event\UserFormBuilderEvent;
 use Pim\Bundle\UserBundle\Form\Subscriber\UserPreferencesSubscriber;
+use Pim\Bundle\UserBundle\Form\Subscriber\UserSubscriber;
+use Pim\Component\User\Model\Group;
+use Pim\Component\User\Model\Role;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\AbstractType;
@@ -76,7 +76,7 @@ class UserType extends AbstractType
         string $productGridFilterTypeClassName
     ) {
         $this->tokenStorage = $tokenStorage;
-        $this->isMyProfilePage = 'oro_user_profile_update' === $requestStack
+        $this->isMyProfilePage = 'pim_user_profile_update' === $requestStack
                 ->getCurrentRequest()
                 ->attributes
                 ->get('_route');
@@ -113,7 +113,7 @@ class UserType extends AbstractType
                 EntityType::class,
                 [
                     'label'         => 'Roles',
-                    'class'         => 'OroUserBundle:Role',
+                    'class'         => Role::class,
                     'choice_label'  => 'label',
                     'query_builder' => $this->roleRepository->getAllButAnonymousQB(),
                     'multiple'      => true,
@@ -129,7 +129,7 @@ class UserType extends AbstractType
                 'groups',
                 EntityType::class,
                 [
-                    'class'         => 'OroUserBundle:Group',
+                    'class'         => Group::class,
                     'choice_label'  => 'name',
                     'query_builder' => $this->groupRepository->getAllButDefaultQB(),
                     'multiple'      => true,

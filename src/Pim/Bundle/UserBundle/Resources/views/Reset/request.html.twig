@@ -8,7 +8,7 @@
         {% embed 'PimUIBundle::logo.html.twig' %}{% endembed %}
     </div>
 
-    <form action="{{ path('oro_user_reset_send_email') }}" method="post" class="form-reset">
+    <form action="{{ path('pim_user_reset_send_email') }}" method="post" class="form-reset">
         <h2 class="AknLogin-subTitle">{{ 'Forgot Password'|trans }}</h2>
 
         {% if invalid_username is defined %}
@@ -23,7 +23,7 @@
                 <button type="submit" class="AknButton AknButton--apply AknButton--big">{{ 'Request'|trans }}</button>
             </div>
             <div class="AknLogin-form">
-                <a href="{{ path('oro_user_security_login') }}" class="AknLogin-link cancel">{{ 'Cancel'|trans }}</a>
+                <a href="{{ path('pim_user_security_login') }}" class="AknLogin-link cancel">{{ 'Cancel'|trans }}</a>
             </div>
         </fieldset>
     </form>

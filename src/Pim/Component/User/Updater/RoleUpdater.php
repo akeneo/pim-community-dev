@@ -6,8 +6,8 @@ use Akeneo\Component\StorageUtils\Exception\InvalidObjectException;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Doctrine\Common\Util\ClassUtils;
 use Oro\Bundle\SecurityBundle\Acl\Persistence\AclManager;
-use Oro\Bundle\UserBundle\Entity\Role;
 use Pim\Bundle\UserBundle\Entity\User;
+use Pim\Component\User\Model\Role;
 
 /**
  * Updates a role

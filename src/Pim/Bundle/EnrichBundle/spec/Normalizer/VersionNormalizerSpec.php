@@ -4,9 +4,9 @@ namespace spec\Pim\Bundle\EnrichBundle\Normalizer;
 
 use Akeneo\Component\Localization\Presenter\PresenterInterface;
 use Akeneo\Component\Versioning\Model\Version;
-use Oro\Bundle\UserBundle\Entity\UserManager;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\UserBundle\Entity\User;
+use Pim\Bundle\UserBundle\Manager\UserManager;
 use Pim\Component\Catalog\Localization\Presenter\PresenterRegistryInterface;
 use Prophecy\Argument;
 use Symfony\Component\Translation\TranslatorInterface;

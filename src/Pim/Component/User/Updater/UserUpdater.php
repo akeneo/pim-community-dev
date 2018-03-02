@@ -8,12 +8,12 @@ use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Doctrine\Common\Util\ClassUtils;
-use Oro\Bundle\UserBundle\Entity\Role;
-use Oro\Bundle\UserBundle\Entity\UserManager;
 use Pim\Bundle\UserBundle\Entity\UserInterface;
+use Pim\Bundle\UserBundle\Manager\UserManager;
 use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\LocaleInterface;
 use Pim\Component\User\Model\GroupInterface;
+use Pim\Component\User\Model\Role;
 
 /**
  * Updates an user
@@ -24,7 +24,7 @@ use Pim\Component\User\Model\GroupInterface;
  */
 class UserUpdater implements ObjectUpdaterInterface
 {
-    /** @var UserManager */
+    /** @var \Pim\Bundle\UserBundle\Manager\UserManager */
     protected $userManager;
 
     /** @var IdentifiableObjectRepositoryInterface */

@@ -3,8 +3,8 @@
 namespace Pim\Bundle\UserBundle\Doctrine\ORM\Repository;
 
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
-use Oro\Bundle\UserBundle\Entity\Repository\RoleRepository as BaseRoleRepository;
 use Pim\Bundle\UserBundle\Entity\User;
+use Pim\Bundle\UserBundle\Repository\RoleRepository as BaseRoleRepository;
 
 /**
  * Role repository

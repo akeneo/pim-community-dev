@@ -41,5 +41,13 @@ class PimUserExtension extends Extension
         $loader->load('view_elements.yml');
         $loader->load('view_elements/user.yml');
         $loader->load('view_elements/group.yml');
+        $loader->load('services.yml');
+
+
+        $configuration = new Configuration();
+        $config = $this->processConfiguration($configuration, $configs);
+        $container->setParameter('pim_user.reset.ttl', $config['reset']['ttl']);
+        $container->setParameter('pim_user.email', [$config['email']['address'] => $config['email']['name']]);
+        $container->setParameter('pim_user.privileges', $config['privileges']);
     }
 }
