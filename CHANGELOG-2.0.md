@@ -7,6 +7,7 @@
 ## Bug fixes
 
 - PIM-7199: Display a message when trying to delete the pim identifier attribute
+- PIM-7217: Fix missing and disabled fields in product model import
 
 # 2.0.16 (2018-02-22)
 
