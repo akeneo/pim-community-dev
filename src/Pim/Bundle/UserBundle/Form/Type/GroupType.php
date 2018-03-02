@@ -4,7 +4,7 @@ namespace Pim\Bundle\UserBundle\Form\Type;
 
 use Pim\Bundle\EnrichBundle\Form\Type\EntityIdentifierType;
 use Pim\Component\User\Model\Group;
-use Pim\Component\User\Model\UserInterface;
+use Pim\Component\User\Model\User;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -48,7 +48,7 @@ class GroupType extends AbstractType
                 'appendUsers',
                 EntityIdentifierType::class,
                 [
-                    'class'    => UserInterface::class,
+                    'class'    => User::class,
                     'required' => false,
                     'mapped'   => false,
                     'multiple' => true,
@@ -58,7 +58,7 @@ class GroupType extends AbstractType
                 'removeUsers',
                 EntityIdentifierType::class,
                 [
-                    'class'    => UserInterface::class,
+                    'class'    => User::class,
                     'required' => false,
                     'mapped'   => false,
                     'multiple' => true,
