@@ -1,13 +1,12 @@
 <?php
 
-namespace Pim\Component\User\Updater;
+namespace Pim\Component\User\Role;
 
 use Akeneo\Component\StorageUtils\Exception\InvalidObjectException;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Doctrine\Common\Util\ClassUtils;
 use Oro\Bundle\SecurityBundle\Acl\Persistence\AclManager;
-use Pim\Component\User\Model\Role;
-use Pim\Component\User\Model\User;
+use Pim\Component\User\User\User;
 
 /**
  * Updates a role
@@ -58,9 +57,9 @@ class RoleUpdater implements ObjectUpdaterInterface
     }
 
     /**
-     * @param Role   $role
-     * @param string $field
-     * @param mixed  $data
+     * @param \Pim\Component\User\Role\Role $role
+     * @param string                        $field
+     * @param mixed                         $data
      *
      * @throws \InvalidArgumentException
      */
@@ -79,7 +78,7 @@ class RoleUpdater implements ObjectUpdaterInterface
     /**
      * Load the ACL per role
      *
-     * @param Role $role
+     * @param \Pim\Component\User\Role\Role $role
      */
     protected function loadAcls(Role $role)
     {

@@ -1,11 +1,10 @@
 <?php
 
-namespace spec\Pim\Component\User\Model;
+namespace spec\Pim\Component\User\Role;
 
-use Pim\Component\User\Model\Role;
 use PhpSpec\ObjectBehavior;
-use Pim\Component\User\Model\RoleInterface;
-use Prophecy\Argument;
+use Pim\Component\User\Role\Role;
+use Pim\Component\User\Role\RoleInterface;
 
 class RoleSpec extends ObjectBehavior
 {

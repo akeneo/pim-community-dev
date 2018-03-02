@@ -2,9 +2,8 @@
 
 namespace Pim\Bundle\UserBundle\EventListener;
 
-use Pim\Component\User\Model\GroupInterface;
-use Pim\Component\User\Model\User;
-use Pim\Component\User\UserEvents;
+use Pim\Component\User\User\Event\UserEvents;
+use Pim\Component\User\User\User;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
@@ -57,7 +56,7 @@ class GroupSubscriber implements EventSubscriberInterface
      */
     protected function checkDefaultGroup(GenericEvent $event)
     {
-        /** @var GroupInterface $group */
+        /** @var \Pim\Component\User\Group\GroupInterface $group */
         $group = $event->getSubject();
 
         if (strtolower(User::GROUP_DEFAULT) === strtolower($group->getName())) {

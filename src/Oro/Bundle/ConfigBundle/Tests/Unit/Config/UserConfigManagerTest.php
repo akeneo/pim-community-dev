@@ -4,7 +4,7 @@ namespace Oro\Bundle\ConfigBundle\Tests\Unit\Config;
 
 use Doctrine\Common\Persistence\ObjectRepository;
 use Oro\Bundle\ConfigBundle\Config\UserConfigManager;
-use Pim\Component\User\Model\User;
+use Pim\Component\User\User\User;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 class UserConfigManagerTest extends \PHPUnit_Framework_TestCase
@@ -42,8 +42,8 @@ class UserConfigManagerTest extends \PHPUnit_Framework_TestCase
         $this->object = new UserConfigManager($this->om, $this->settings);
 
         $this->tokenStorage = $this->createMock('Symfony\Component\Security\Core\TokenStorageInterface');
-        $this->group1 = $this->createMock('Pim\Component\User\Model\Group');
-        $this->group2 = $this->createMock('Pim\Component\User\Model\Group');
+        $this->group1 = $this->createMock('Pim\Component\User\Group\Group');
+        $this->group2 = $this->createMock('Pim\Component\User\Group\Group');
 
         $token = $this->createMock('Symfony\Component\Security\Core\Authentication\Token\TokenInterface');
         $user = new User();

@@ -8,7 +8,7 @@ use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\DataGridBundle\Entity\DatagridView;
 use Pim\Bundle\DataGridBundle\Updater\DatagridViewUpdater;
-use Pim\Component\User\Model\UserInterface;
+use Pim\Component\User\User\UserInterface;
 
 class DatagridViewUpdaterSpec extends ObjectBehavior
 {

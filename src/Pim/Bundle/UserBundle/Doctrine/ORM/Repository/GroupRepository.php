@@ -4,10 +4,10 @@ namespace Pim\Bundle\UserBundle\Doctrine\ORM\Repository;
 
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
-use Pim\Component\User\Model\GroupInterface;
-use Pim\Component\User\Model\User;
-use Pim\Component\User\Model\UserInterface;
-use Pim\Component\User\Repository\GroupRepositoryInterface;
+use Pim\Component\User\Group\GroupInterface;
+use Pim\Component\User\Group\GroupRepositoryInterface;
+use Pim\Component\User\User\User;
+use Pim\Component\User\User\UserInterface;
 
 /**
  * User group repository

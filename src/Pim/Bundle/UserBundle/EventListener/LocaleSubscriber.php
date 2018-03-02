@@ -3,7 +3,7 @@
 namespace Pim\Bundle\UserBundle\EventListener;
 
 use Doctrine\ORM\EntityManager;
-use Pim\Component\User\Event\UserEvent;
+use Pim\Component\User\User\Event\UserEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\HttpFoundation\Request;

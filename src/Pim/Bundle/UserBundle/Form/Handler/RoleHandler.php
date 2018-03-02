@@ -3,8 +3,8 @@
 namespace Pim\Bundle\UserBundle\Form\Handler;
 
 use Doctrine\Common\Persistence\ObjectManager;
-use Pim\Component\User\Model\Role;
-use Pim\Component\User\Model\UserInterface;
+use Pim\Component\User\User\UserInterface;
+use Pim\Component\User\Role\Role;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -44,7 +44,8 @@ class RoleHandler
     /**
      * Process form
      *
-     * @param  Role $entity
+     * @param  \Pim\Component\User\Role\Role $entity
+     *
      * @return bool True on successfull processing, false otherwise
      */
     public function process(Role $entity)
@@ -70,9 +71,9 @@ class RoleHandler
     /**
      * "Success" form handler
      *
-     * @param Role                                      $entity
-     * @param \Pim\Component\User\Model\UserInterface[] $appendUsers
-     * @param UserInterface[]                           $removeUsers
+     * @param \Pim\Component\User\Role\Role            $entity
+     * @param \Pim\Component\User\User\UserInterface[] $appendUsers
+     * @param UserInterface[]                          $removeUsers
      */
     protected function onSuccess(Role $entity, array $appendUsers, array $removeUsers)
     {
@@ -85,8 +86,8 @@ class RoleHandler
     /**
      * Append users to role
      *
-     * @param Role            $role
-     * @param UserInterface[] $users
+     * @param \Pim\Component\User\Role\Role $role
+     * @param UserInterface[]               $users
      */
     protected function appendUsers(Role $role, array $users)
     {
@@ -100,8 +101,8 @@ class RoleHandler
     /**
      * Remove users from role
      *
-     * @param Role           $role
-     * @param UserInterface[] $users
+     * @param \Pim\Component\User\Role\Role $role
+     * @param UserInterface[]               $users
      */
     protected function removeUsers(Role $role, array $users)
     {

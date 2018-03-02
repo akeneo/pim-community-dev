@@ -1,7 +1,7 @@
 parameters:
-    pim_user.updater.user.class:  Pim\Component\User\Updater\UserUpdater
-    pim_user.updater.group.class: Pim\Component\User\Updater\GroupUpdater
-    pim_user.updater.role.class:  Pim\Component\User\Updater\RoleUpdater
+    pim_user.updater.user.class:  Pim\Component\User\User\UserUpdater
+    pim_user.updater.group.class: Pim\Component\User\Group\GroupUpdater
+    pim_user.updater.role.class:  Pim\Component\User\Role\RoleUpdater
 
 services:
     pim_user.updater.user:

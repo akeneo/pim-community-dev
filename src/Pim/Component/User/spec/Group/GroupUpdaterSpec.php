@@ -1,14 +1,13 @@
 <?php
 
-namespace spec\Pim\Component\User\Updater;
+namespace spec\Pim\Component\User\Role;
 
 use Akeneo\Component\StorageUtils\Exception\InvalidObjectException;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
-use Pim\Component\User\Model\GroupInterface;
-use Pim\Component\User\Model\Role;
-use Pim\Component\User\Updater\GroupUpdater;
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
+use Pim\Component\User\Group\GroupInterface;
+use Pim\Component\User\Group\GroupUpdater;
+use Pim\Component\User\Role\Role;
 
 class GroupUpdaterSpec extends ObjectBehavior
 {

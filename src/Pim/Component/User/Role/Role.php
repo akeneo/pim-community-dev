@@ -1,7 +1,8 @@
 <?php
 
-namespace Pim\Component\User\Model;
+namespace Pim\Component\User\Role;
 
+use Pim\Component\User\User\User;
 use Symfony\Component\Security\Core\Role\Role as SymfonyRole;
 
 /**

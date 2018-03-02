@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Component\User\Updater;
+namespace Pim\Component\User\User;
 
 use Akeneo\Component\Classification\Model\CategoryInterface;
 use Akeneo\Component\StorageUtils\Exception\InvalidObjectException;
@@ -11,9 +11,8 @@ use Doctrine\Common\Util\ClassUtils;
 use Pim\Bundle\UserBundle\Manager\UserManager;
 use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\LocaleInterface;
-use Pim\Component\User\Model\GroupInterface;
-use Pim\Component\User\Model\Role;
-use Pim\Component\User\Model\UserInterface;
+use Pim\Component\User\Group\GroupInterface;
+use Pim\Component\User\Role\Role;
 
 /**
  * Updates an user

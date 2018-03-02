@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Component\User\Repository;
+namespace Pim\Component\User\Group;
 
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 

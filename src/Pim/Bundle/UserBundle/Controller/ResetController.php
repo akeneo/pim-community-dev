@@ -1,7 +1,7 @@
 <?php
 namespace Pim\Bundle\UserBundle\Controller;
 
-use Pim\Component\User\Model\UserInterface;
+use Pim\Component\User\User\UserInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -131,7 +131,7 @@ class ResetController extends Controller
      * Get the truncated email displayed when requesting the resetting.
      * The default implementation only keeps the part following @ in the address.
      *
-     * @param \Pim\Component\User\Model\UserInterface $user
+     * @param \Pim\Component\User\User\UserInterface $user
      *
      * @return string
      */

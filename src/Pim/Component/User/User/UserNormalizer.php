@@ -1,8 +1,7 @@
 <?php
 
-namespace Pim\Component\User\Normalizer;
+namespace Pim\Component\User\User;
 
-use Pim\Component\User\Model\UserInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**

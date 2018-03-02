@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Component\User;
+namespace Pim\Component\User\User\Event;
 
 class UserEvents
 {

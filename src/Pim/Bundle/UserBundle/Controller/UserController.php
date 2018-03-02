@@ -3,9 +3,9 @@
 namespace Pim\Bundle\UserBundle\Controller;
 
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
-use Pim\Component\User\Event\UserEvent;
-use Pim\Component\User\Model\User;
-use Pim\Component\User\Model\UserInterface;
+use Pim\Component\User\User\Event\UserEvent;
+use Pim\Component\User\User\User;
+use Pim\Component\User\User\UserInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\EventDispatcher\GenericEvent;
@@ -150,7 +150,7 @@ class UserController extends Controller
     /**
      * @param UserInterface $user
      *
-     * @return UserInterface
+     * @return \Pim\Component\User\User\UserInterface
      */
     protected function update(UserInterface $user)
     {
@@ -170,8 +170,8 @@ class UserController extends Controller
     }
 
     /**
-     * @param User   $user
-     * @param string $editRoute
+     * @param \Pim\Component\User\User\User $user
+     * @param string                        $editRoute
      *
      * @return array
      */

@@ -5,7 +5,7 @@ namespace spec\Pim\Bundle\CommentBundle\Normalizer\Standard;
 use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CommentBundle\Model\CommentInterface;
-use Pim\Component\User\Model\UserInterface;
+use Pim\Component\User\User\UserInterface;
 use Symfony\Component\Serializer\SerializerInterface;
 
 class CommentNormalizerSpec extends ObjectBehavior

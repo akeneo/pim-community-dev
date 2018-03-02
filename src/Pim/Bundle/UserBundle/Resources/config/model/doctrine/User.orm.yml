@@ -97,7 +97,7 @@ Pim\Component\User\Model\User:
                 default: false
     manyToMany:
         roles:
-            targetEntity: Pim\Component\User\Model\Role
+            targetEntity: Pim\Component\User\Role\Role
             joinTable:
                 name: oro_user_access_role
                 joinColumns:
@@ -109,7 +109,7 @@ Pim\Component\User\Model\User:
                         referencedColumnName: id
                         onDelete: CASCADE
         groups:
-            targetEntity: Pim\Component\User\Model\Group
+            targetEntity: Pim\Component\User\Group\Group
             joinTable:
                 name: oro_user_access_group
                 joinColumns:

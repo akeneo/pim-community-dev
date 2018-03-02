@@ -1,10 +1,8 @@
 <?php
 
-namespace Pim\Component\User\Repository;
+namespace Pim\Component\User\Role;
 
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
-use Doctrine\Common\Persistence\ObjectRepository;
-use Pim\Component\User\Model\UserInterface;
 
 /**
  * @author    Arnaud Langlade <arnaud.langlade@akeneo.com>

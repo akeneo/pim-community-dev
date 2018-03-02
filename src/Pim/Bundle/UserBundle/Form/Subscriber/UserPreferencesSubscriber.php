@@ -9,7 +9,7 @@ use Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\LocaleRepository;
 use Pim\Bundle\EnrichBundle\Form\Type\LightEntityType;
 use Pim\Bundle\UserBundle\Context\UserContext;
 use Pim\Component\Enrich\Provider\TranslatedLabelsProviderInterface;
-use Pim\Component\User\Model\UserInterface;
+use Pim\Component\User\User\UserInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\FormEvent;
@@ -130,8 +130,8 @@ class UserPreferencesSubscriber implements EventSubscriberInterface
     }
 
     /**
-     * @param FormInterface                           $form
-     * @param \Pim\Component\User\Model\UserInterface $user
+     * @param FormInterface                          $form
+     * @param \Pim\Component\User\User\UserInterface $user
      */
     protected function updateUiLocale(FormInterface $form, UserInterface $user)
     {

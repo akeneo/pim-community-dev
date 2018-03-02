@@ -7,8 +7,8 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Oro\Bundle\SecurityBundle\Acl\Persistence\AclManager;
 use Oro\Bundle\SecurityBundle\Acl\Persistence\AclPrivilegeRepository;
 use Pim\Bundle\UserBundle\Form\Type\AclRoleType;
-use Pim\Component\User\Model\Role;
-use Pim\Component\User\Model\UserInterface;
+use Pim\Component\User\User\UserInterface;
+use Pim\Component\User\Role\Role;
 use Symfony\Component\Form\FormFactory;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -72,7 +72,7 @@ class AclRoleHandler
     /**
      * Create form for role manipulation
      *
-     * @param Role $role
+     * @param \Pim\Component\User\Role\Role $role
      *
      * @return FormInterface
      */
@@ -163,7 +163,7 @@ class AclRoleHandler
     }
 
     /**
-     * @param Role $role
+     * @param \Pim\Component\User\Role\Role $role
      */
     protected function processPrivileges(Role $role)
     {
@@ -217,7 +217,7 @@ class AclRoleHandler
      */
     protected function appendUsers(Role $role, array $users)
     {
-        /** @var $user UserInterface */
+        /** @var $user \Pim\Component\User\User\UserInterface */
         foreach ($users as $user) {
             $user->addRole($role);
             $this->manager->persist($user);
@@ -232,7 +232,7 @@ class AclRoleHandler
      */
     protected function removeUsers(Role $role, array $users)
     {
-        /** @var $user UserInterface */
+        /** @var $user \Pim\Component\User\User\UserInterface */
         foreach ($users as $user) {
             $user->removeRole($role);
             $this->manager->persist($user);

@@ -1,15 +1,14 @@
 <?php
 
-namespace spec\Pim\Component\User\Updater;
+namespace spec\Pim\Component\User\Role;
 
 use Akeneo\Component\StorageUtils\Exception\InvalidObjectException;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Oro\Bundle\SecurityBundle\Acl\Persistence\AclManager;
-use Pim\Component\User\Model\Group;
-use Pim\Component\User\Model\RoleInterface;
-use Pim\Component\User\Updater\RoleUpdater;
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
+use Pim\Component\User\Group\Group;
+use Pim\Component\User\Role\RoleInterface;
+use Pim\Component\User\Role\RoleUpdater;
 
 class RoleUpdaterSpec extends ObjectBehavior
 {

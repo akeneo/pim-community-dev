@@ -1,8 +1,10 @@
 <?php
 
-namespace Pim\Component\User\Model;
+namespace Pim\Component\User\Group;
 
 use Doctrine\Common\Collections\Collection;
+use Pim\Component\User\Role\Role;
+use Pim\Component\User\Role\RoleInterface;
 
 /**
  * @author    Arnaud Langlade <arnaud.langlade@akeneo.com>
@@ -48,7 +50,7 @@ interface GroupInterface
     public function getRole($roleName): ?RoleInterface;
 
     /**
-     * @param  Role|string $role
+     * @param  \Pim\Component\User\Role\Role|string $role
      *
      * @throws \InvalidArgumentException
      *

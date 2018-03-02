@@ -1,9 +1,10 @@
 <?php
 
-namespace Pim\Component\User\Model;
+namespace Pim\Component\User\Group;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Pim\Component\User\Role\Role;
 
 /**
  * @author    Arnaud Langlade <arnaud.langlade@akeneo.com>

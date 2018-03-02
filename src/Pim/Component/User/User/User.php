@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Component\User\Model;
+namespace Pim\Component\User\User;
 
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -10,7 +10,9 @@ use Pim\Bundle\CatalogBundle\Entity\Channel;
 use Pim\Component\Catalog\Model\CategoryInterface;
 use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\LocaleInterface;
-use Pim\Component\User\Model\UserInterface;
+use Pim\Component\User\Group\Group;
+use Pim\Component\User\Group\GroupInterface;
+use Pim\Component\User\Role\Role;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 /**
@@ -189,7 +191,7 @@ class User implements UserInterface
 
     public function getClass()
     {
-        return 'Pim\Component\User\Model\UserInterface';
+        return UserInterface::class;
     }
 
     /**

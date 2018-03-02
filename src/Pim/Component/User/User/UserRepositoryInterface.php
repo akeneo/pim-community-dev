@@ -1,10 +1,9 @@
 <?php
 
-namespace Pim\Component\User\Repository;
+namespace Pim\Component\User\User;
 
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Doctrine\Common\Persistence\ObjectRepository;
-use Pim\Component\User\Model\UserInterface;
 
 /**
  * User repository interface
@@ -20,7 +19,7 @@ interface UserRepositoryInterface extends IdentifiableObjectRepositoryInterface,
      *
      * @param array $groupIds
      *
-     * @return \Pim\Component\User\Model\UserInterface[]
+     * @return \Pim\Component\User\User\UserInterface[]
      */
     public function findByGroupIds(array $groupIds);
 }

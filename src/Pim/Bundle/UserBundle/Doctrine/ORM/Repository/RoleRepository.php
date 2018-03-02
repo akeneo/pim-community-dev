@@ -4,10 +4,10 @@ namespace Pim\Bundle\UserBundle\Doctrine\ORM\Repository;
 
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
-use Pim\Component\User\Model\RoleInterface;
-use Pim\Component\User\Model\User;
-use Pim\Component\User\Model\UserInterface;
-use Pim\Component\User\Repository\RoleRepositoryInterface;
+use Pim\Component\User\Role\RoleInterface;
+use Pim\Component\User\Role\RoleRepositoryInterface;
+use Pim\Component\User\User\User;
+use Pim\Component\User\User\UserInterface;
 
 /**
  * Role repository
@@ -49,7 +49,7 @@ class RoleRepository extends EntityRepository implements RoleRepositoryInterface
     /**
      * Get user query builder
      *
-     * @param  RoleInterface $role
+     * @param RoleInterface $role
      *
      * @return QueryBuilder
      */

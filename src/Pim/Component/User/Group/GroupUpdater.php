@@ -1,11 +1,10 @@
 <?php
 
-namespace Pim\Component\User\Updater;
+namespace Pim\Component\User\Group;
 
 use Akeneo\Component\StorageUtils\Exception\InvalidObjectException;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Doctrine\Common\Util\ClassUtils;
-use Pim\Component\User\Model\GroupInterface;
 
 /**
  * Updates a group

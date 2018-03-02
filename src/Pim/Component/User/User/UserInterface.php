@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Component\User\Model;
+namespace Pim\Component\User\User;
 
 use DateTime;
 use Doctrine\Common\Collections\Collection;
@@ -10,6 +10,8 @@ use Pim\Component\Catalog\Model\CategoryInterface;
 use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\LocaleInterface;
 use Pim\Component\User\EntityUploadedImageInterface;
+use Pim\Component\User\Group\GroupInterface;
+use Pim\Component\User\Role\Role;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Security\Core\User\AdvancedUserInterface;
 
