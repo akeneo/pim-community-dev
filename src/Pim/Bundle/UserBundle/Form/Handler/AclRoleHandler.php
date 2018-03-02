@@ -92,7 +92,6 @@ class AclRoleHandler
         return $this->form;
     }
 
-
     /**
      * Save role
      *

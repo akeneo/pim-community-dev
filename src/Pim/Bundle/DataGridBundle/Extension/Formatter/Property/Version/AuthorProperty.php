@@ -16,15 +16,15 @@ use Symfony\Component\Translation\TranslatorInterface;
  */
 class AuthorProperty extends FieldProperty
 {
-    /** @var \Pim\Bundle\UserBundle\Manager\UserManager */
+    /** @var UserManager */
     protected $userManager;
 
     /** @var string[] */
     protected $userCachedResults;
 
     /**
-     * @param TranslatorInterface                        $translator
-     * @param \Pim\Bundle\UserBundle\Manager\UserManager $userManager
+     * @param TranslatorInterface $translator
+     * @param UserManager         $userManager
      */
     public function __construct(TranslatorInterface $translator, UserManager $userManager)
     {
@@ -47,8 +47,8 @@ class AuthorProperty extends FieldProperty
         }
 
         return [
-            'author'  => $author,
-            'context' => $context
+            'author' => $author,
+            'context' => $context,
         ];
     }
 
