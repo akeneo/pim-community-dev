@@ -5,6 +5,7 @@ namespace Pim\Component\User\Group;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Pim\Component\User\Role\Role;
+use Pim\Component\User\Role\RoleInterface;
 
 /**
  * @author    Arnaud Langlade <arnaud.langlade@akeneo.com>
@@ -80,7 +81,7 @@ class Group implements GroupInterface
     /**
      * {@inheritdoc}
      */
-    public function getRole($roleName): RoleInterface
+    public function getRole($roleName): ?RoleInterface
     {
         /** @var $role Role */
         foreach ($this->getRoles() as $role) {

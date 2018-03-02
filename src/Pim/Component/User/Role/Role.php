@@ -17,7 +17,7 @@ use Symfony\Component\Security\Core\Role\Role as SymfonyRole;
  * do some stuff if the role is a instance of this class. You should have a look to
  * Symfony\Component\Security\Acl\Domain\RoleSecurityIdentity for instance
  */
-class Role extends SymfonyRole implements RoleInterface
+classRole extends SymfonyRole implements RoleInterface
 {
     /** @var int */
     protected $id;
