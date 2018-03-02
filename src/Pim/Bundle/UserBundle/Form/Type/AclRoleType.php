@@ -6,7 +6,7 @@ use Oro\Bundle\SecurityBundle\Form\Type\AclPrivilegeType;
 use Oro\Bundle\SecurityBundle\Form\Type\PrivilegeCollectionType;
 use Pim\Bundle\EnrichBundle\Form\Type\EntityIdentifierType;
 use Pim\Component\User\Model\Role;
-use Pim\Component\User\Model\UserInterface;
+use Pim\Component\User\Model\User;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -89,7 +89,7 @@ class AclRoleType extends AbstractType
             'appendUsers',
             EntityIdentifierType::class,
             [
-                'class' => UserInterface::class,
+                'class' => User::class,
                 'required' => false,
                 'mapped' => false,
                 'multiple' => true,
@@ -100,7 +100,7 @@ class AclRoleType extends AbstractType
             'removeUsers',
             EntityIdentifierType::class,
             [
-                'class' => UserInterface::class,
+                'class' => User::class,
                 'required' => false,
                 'mapped' => false,
                 'multiple' => true,
