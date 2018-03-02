@@ -10,7 +10,7 @@ datagrid:
                     - u.firstName
                     - u.lastName
                 from:
-                    - { table: PimUserBundle:User, alias: u }
+                    - { table: Pim\Component\User\Model\User, alias: u }
 
         columns: []
 

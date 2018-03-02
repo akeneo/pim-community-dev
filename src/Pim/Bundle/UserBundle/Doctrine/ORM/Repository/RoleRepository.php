@@ -6,6 +6,7 @@ use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
 use Pim\Component\User\Model\RoleInterface;
 use Pim\Component\User\Model\User;
+use Pim\Component\User\Model\UserInterface;
 use Pim\Component\User\Repository\RoleRepositoryInterface;
 
 /**
@@ -56,7 +57,7 @@ class RoleRepository extends EntityRepository implements RoleRepositoryInterface
     {
         return $this->_em->createQueryBuilder()
             ->select('u')
-            ->from('PimUserBundle:User', 'u')
+            ->from(UserInterface::class, 'u')
             ->join('u.roles', 'role')
             ->where('role = :role')
             ->setParameter('role', $role);

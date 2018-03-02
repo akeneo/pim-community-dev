@@ -268,7 +268,7 @@ class UserManager implements UserProviderInterface
         return $this->getStorageManager()
             ->createQueryBuilder()
             ->select('u')
-            ->from('PimUserBundle:User', 'u')
+            ->from(UserInterface::class, 'u')
             ->orderBy('u.id', 'ASC');
     }
 

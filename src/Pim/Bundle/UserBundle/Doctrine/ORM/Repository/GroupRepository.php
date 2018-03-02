@@ -6,6 +6,7 @@ use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
 use Pim\Component\User\Model\GroupInterface;
 use Pim\Component\User\Model\User;
+use Pim\Component\User\Model\UserInterface;
 use Pim\Component\User\Repository\GroupRepositoryInterface;
 
 /**
@@ -76,7 +77,7 @@ class GroupRepository extends EntityRepository implements GroupRepositoryInterfa
     {
         return $this->_em->createQueryBuilder()
             ->select('u')
-            ->from('PimUserBundle:User', 'u')
+            ->from(UserInterface::class, 'u')
             ->join('u.groups', 'groups')
             ->where('groups = :group')
             ->setParameter('group', $group);
