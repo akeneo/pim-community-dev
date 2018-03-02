@@ -3,14 +3,14 @@
 namespace Pim\Bundle\UserBundle\Form\Type;
 
 use Pim\Bundle\UIBundle\Form\Type\DateType;
-use Pim\Bundle\UserBundle\Doctrine\ORM\Repository\GroupRepository;
-use Pim\Bundle\UserBundle\Doctrine\ORM\Repository\RoleRepository;
 use Pim\Bundle\UserBundle\Form\Event\UserFormBuilderEvent;
 use Pim\Bundle\UserBundle\Form\Subscriber\UserPreferencesSubscriber;
 use Pim\Bundle\UserBundle\Form\Subscriber\UserSubscriber;
+use Pim\Bundle\UserBundle\Persistence\ORM\Repository\GroupRepository;
+use Pim\Bundle\UserBundle\Persistence\ORM\Repository\RoleRepository;
 use Pim\Component\User\Group\Group;
-use Pim\Component\User\User\UserInterface;
 use Pim\Component\User\Role\Role;
+use Pim\Component\User\User\UserInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\AbstractType;

@@ -2,7 +2,7 @@ Pim\Component\User\Model\Group:
     type: entity
     table: oro_access_group
     changeTrackingPolicy: DEFERRED_EXPLICIT
-    repositoryClass: Pim\Bundle\UserBundle\Doctrine\ORM\Repository\GroupRepository
+    repositoryClass: Pim\Bundle\UserBundle\Persistence\ORM\Repository\GroupRepository
     fields:
         id:
             type: integer

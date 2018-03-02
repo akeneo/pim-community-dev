@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\UserBundle\Doctrine\ORM\Repository;
+namespace Pim\Bundle\UserBundle\Persistence\ORM\Repository;
 
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
