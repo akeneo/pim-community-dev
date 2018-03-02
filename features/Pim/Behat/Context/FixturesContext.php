@@ -35,7 +35,7 @@ class FixturesContext extends PimContext
         'AssociationType'  => 'PimCatalogBundle:AssociationType',
         'JobInstance'      => 'Akeneo\Component\Batch\Model\JobInstance',
         'JobConfiguration' => 'Pim\Component\Connector\Model\JobConfiguration',
-        'User'             => 'PimUserBundle:User',
+        'User'             => 'Pim\Component\User\Model\User',
         'Role'             => 'Pim\Component\User\Model\Role',
         'UserGroup'        => 'Pim\Component\User\Model\Group',
         'Locale'           => 'PimCatalogBundle:Locale',
