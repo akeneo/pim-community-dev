@@ -1,10 +1,7 @@
-parameters:
-    pim_user.entity.class: Pim\Component\User\Model\User
-
 services:
     pim_user.manager:
         class: 'Pim\Bundle\UserBundle\Manager\UserManager'
-        arguments: ['%pim_user.entity.class%', "@doctrine.orm.entity_manager", "@security.encoder_factory"]
+        arguments: ['%pim_user.entity.user.class%', "@doctrine.orm.entity_manager", "@security.encoder_factory"]
 
     pim_user.security.login:
         class: 'Pim\Bundle\UserBundle\EventListener\LoginSubscriber'
