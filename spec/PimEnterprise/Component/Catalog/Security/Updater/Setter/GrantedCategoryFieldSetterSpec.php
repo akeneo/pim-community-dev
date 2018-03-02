@@ -204,7 +204,7 @@ class GrantedCategoryFieldSetterSpec extends ObjectBehavior
             new InvalidArgumentException('You should at least keep your product in one category on which you have an own permission.')
         )->during('setFieldData', [$product, 'categories', $data, []]);
     }
-    
+
     function it_not_throws_an_exception_when_you_changed_to_a_category_editable_for_product_model(
         $authorizationChecker,
         $tokenStorage,
@@ -231,7 +231,7 @@ class GrantedCategoryFieldSetterSpec extends ObjectBehavior
         $productModel->getId()->willReturn(1);
         $productModel->getCategories()->willReturn([]);
         $authorizationChecker->isGranted([Attributes::OWN], $productModel)->willReturn(false);
-        $authorizationChecker->isGranted([Attributes::EDIT_ITEMS], $productModel)->willReturn(true);
+        $authorizationChecker->isGranted([Attributes::EDIT], $productModel)->willReturn(true);
 
         $this->shouldNotThrow(
             new InvalidArgumentException('You should at least keep your product in one category on which you have an own permission.')

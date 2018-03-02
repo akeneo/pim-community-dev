@@ -174,6 +174,21 @@ SQL;
         $this->assertUnauthorized('colored_trousers', $data, $message);
     }
 
+    public function testRemoveViewableCategoriesOnProductEditableButNotOwned()
+    {
+        $this->loader->loadProductModelsFixturesForCategoryPermissions();
+
+        $productModel = $this->get('pim_catalog.repository.product_model')->findOneByIdentifier('sweat_edit');
+        $this->get('pim_api.updater.product_model')->update($productModel, ['categories' => ['edit_category', 'category_without_right']]);
+        $this->get('pim_catalog.saver.product_model')->save($productModel);
+        $this->get('doctrine.orm.entity_manager')->clear();
+
+        $data = '{"categories": []}';
+
+        $message = 'You should at least keep your product in one category on which you have an own permission.';
+        $this->assertUnauthorized('sweat_edit', $data, $message);
+    }
+
     public function testUpdateUnclassifiedProductModelByMergingEditableCategory()
     {
         $this->loader->loadProductModelsFixturesForCategoryPermissions();
@@ -182,7 +197,7 @@ SQL;
 
         $this->assertUpdated('colored_trousers', $data);
     }
-    
+
     public function testUpdateNotViewableAttribute()
     {
         $this->loader->loadProductModelsFixturesForAttributeAndLocalePermissions();
