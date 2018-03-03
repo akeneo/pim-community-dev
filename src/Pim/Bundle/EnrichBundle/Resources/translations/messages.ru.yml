@@ -234,7 +234,7 @@ pim_enrich:
       remove_attribute: Удалить атрибуты из группы вариантов
     group_type:
       index: Список типов группы
-      create: Создать тип группы
+      create: Создание типов группы
       edit: Редактировать тип группы
       remove: Удалить тип группы
     association_type:
