@@ -7,7 +7,7 @@ user:
       state: Kun uusi ehdotus on hyväksytty tai hylätty
       yes: true
       no: false
-  asset_delay_reminder: Omaisuuden viivästyksen muistutus (päivissä)
+  asset_delay_reminder: Muistutus assetin käyttöoikeuden päättymisestä (päivissä)
   default_published_product_grid_view:
     label: Oletusarvoinen julkaistujen tuotteiden ruudukkonäkymä
 Default asset tree: Omaisuuden oletuspuu
