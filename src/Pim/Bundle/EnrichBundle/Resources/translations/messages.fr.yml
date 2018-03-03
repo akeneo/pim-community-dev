@@ -185,6 +185,8 @@ pim_enrich:
       edit_attributes: Modifier les attributs d'une famille
       remove: Supprimer une famille
       history: Afficher l'historique de la famille
+    family_variant:
+      remove: Supprimez une variante de famille
     attribute_group:
       index: Liste des groupes d'attributs
       create: Créer un groupe d'attributs
@@ -241,6 +243,11 @@ pim_enrich:
     empty_value:
       reference_data_type:
         label: Choisir un type de données référentielles
+  notification:
+    settings:
+      remove_completeness_for_channel_and_locale:
+        start: La locale a été retirée du canal. Les complétudes liées sont en cours de suppression.
+        done: Suppression d'un paramètre régional pour un canal terminée.
 attribute:
   title: attribut
   edit: Modifier un attribut
@@ -338,6 +345,7 @@ confirmation:
     attribute group: Êtes-vous sûr(e) de vouloir supprimer le groupe d'attributs %name% ?
     category: Êtes-vous sûr(e) de vouloir supprimer la catégorie %name% ?
     family: Êtes-vous sûr(e) de vouloir supprimer la famille %name% ?
+    family_variant: Êtes-vous sûr(e) de vouloir supprimer la variante de famille %name% ?
     product: Êtes-vous sûr(e) de vouloir supprimer le produit %name% ?
     group: Êtes-vous sûr(e) de vouloir supprimer le groupe %name% ?
     group type: Êtes-vous sûr(e) de vouloir supprimer le groupe %name% ?
@@ -725,6 +733,7 @@ Format address by address country: Format d'adresse par pays
 Language: Langue
 Timezone: Fuseau horaire
 Currency: Devise
+settings: Paramètres
 oro.locale:
   address_format:
     region_name_type:

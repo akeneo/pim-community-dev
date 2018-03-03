@@ -654,6 +654,7 @@ Format address by address country: Adres opmaken op basis van land
 Language: Taal
 Timezone: Tijdzone
 Currency: Valuta
+settings: Instellingen
 oro.locale:
   address_format:
     region_name_type:
