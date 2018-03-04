@@ -185,6 +185,8 @@ pim_enrich:
       edit_attributes: Modifier les attributs d'une famille
       remove: Supprimer une famille
       history: Afficher l'historique de la famille
+    family_variant:
+      remove: Supprimez une variante de famille
     attribute_group:
       index: Liste des groupes d'attributs
       create: Créer un groupe d'attributs
@@ -338,6 +340,7 @@ confirmation:
     attribute group: Êtes-vous sûr(e) de vouloir supprimer le groupe d'attributs %name% ?
     category: Êtes-vous sûr(e) de vouloir supprimer la catégorie %name% ?
     family: Êtes-vous sûr(e) de vouloir supprimer la famille %name% ?
+    family_variant: Êtes-vous sûr(e) de vouloir supprimer la variante de famille %name% ?
     product: Êtes-vous sûr(e) de vouloir supprimer le produit %name% ?
     group: Êtes-vous sûr(e) de vouloir supprimer le groupe %name% ?
     group type: Êtes-vous sûr(e) de vouloir supprimer le groupe %name% ?
