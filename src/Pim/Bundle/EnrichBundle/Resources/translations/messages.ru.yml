@@ -700,6 +700,7 @@ Format address by address country: Формат адреса по стандар
 Language: Язык
 Timezone: Часовой пояс
 Currency: Валюта
+settings: Настройки
 oro.locale:
   address_format:
     region_name_type:
