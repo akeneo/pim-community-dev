@@ -16,8 +16,8 @@ class CompletenessFilterSpec extends ObjectBehavior
     function let(SearchQueryBuilder $sqb)
     {
         $this->beConstructedWith(['completeness'], [
-            'AT LEAST COMPLETE',
-            'AT LEAST INCOMPLETE',
+            'ALL COMPLETE',
+            'ALL INCOMPLETE',
         ]);
 
         $this->setQueryBuilder($sqb);
@@ -37,29 +37,33 @@ class CompletenessFilterSpec extends ObjectBehavior
     {
         $this->getOperators()->shouldReturn(
             [
-                'AT LEAST COMPLETE',
-                'AT LEAST INCOMPLETE',
+                'ALL COMPLETE',
+                'ALL INCOMPLETE',
             ]
         );
     }
 
     function it_supports_operators()
     {
-        $this->supportsOperator('AT LEAST COMPLETE')->shouldReturn(true);
-        $this->supportsOperator('AT LEAST INCOMPLETE')->shouldReturn(true);
+        $this->supportsOperator('ALL COMPLETE')->shouldReturn(true);
+        $this->supportsOperator('ALL INCOMPLETE')->shouldReturn(true);
         $this->supportsOperator('FAKE')->shouldReturn(false);
     }
 
-    function it_adds_a_complete_filter($sqb)
+    function it_adds_an_at_least_complete_filter($sqb)
     {
         $sqb->addFilter(
             [
                 'bool' => [
-                    'should' => [
-                        ['term' => ['completeness.ecommerce.en_US' => 100]],
-                        ['term' => ['at_least_complete.ecommerce.en_US' => 1]],
-                    ],
-                    'minimum_should_match' => 1,
+                    'should' => [[
+                        'bool' => [
+                            'should' => [
+                                ['term' => ['completeness.ecommerce.en_US' => 100]],
+                                ['term' => ['all_incomplete.ecommerce.en_US' => 0]],
+                            ],
+                            'minimum_should_match' => 1,
+                        ],
+                    ]],
                 ],
             ]
         )->shouldBeCalled();
@@ -68,16 +72,20 @@ class CompletenessFilterSpec extends ObjectBehavior
             ->shouldReturn($this);
     }
 
-    function it_adds_a_incomplete_filter($sqb)
+    function it_adds_an_at_least_incomplete_filter($sqb)
     {
         $sqb->addFilter(
             [
                 'bool' => [
-                    'should' => [
-                        ['range' => ['completeness.ecommerce.fr_FR' => ['lt' => 100]]],
-                        ['term' => ['at_least_incomplete.ecommerce.fr_FR' => 1]],
-                    ],
-                    'minimum_should_match' => 1,
+                    'should' => [[
+                        'bool' => [
+                            'should' => [
+                                ['range' => ['completeness.ecommerce.fr_FR' => ['lt' => 100]]],
+                                ['term' => ['all_complete.ecommerce.fr_FR' => 0]],
+                            ],
+                            'minimum_should_match' => 1,
+                        ],
+                    ]],
                 ],
             ]
         )->shouldBeCalled();

@@ -26,8 +26,8 @@ class ProductModelPropertiesNormalizer implements NormalizerInterface, Serialize
     private const FIELD_FAMILY_VARIANT = 'family_variant';
     private const FIELD_ID = 'id';
     private const FIELD_PARENT = 'parent';
-    private const FIELD_AT_LEAST_COMPLETE = 'at_least_complete';
-    private const FIELD_AT_LEAST_INCOMPLETE = 'at_least_incomplete';
+    private const FIELD_ALL_INCOMPLETE = 'all_incomplete';
+    private const FIELD_ALL_COMPLETE = 'all_complete';
     private const FIELD_ANCESTORS = 'ancestors';
 
     /** @var CompleteFilterInterface */
@@ -84,16 +84,15 @@ class ProductModelPropertiesNormalizer implements NormalizerInterface, Serialize
                 $context
             ) : [];
 
+        $normalizedData = $this->completenessGridFilterQuery->findCompleteFilterData($productModel);
+        $data[self::FIELD_ALL_COMPLETE] = $normalizedData->allComplete();
+        $data[self::FIELD_ALL_INCOMPLETE] = $normalizedData->allIncomplete();
+        $data[self::FIELD_ANCESTORS] = $this->getAncestors($productModel);
 
         $data[StandardPropertiesNormalizer::FIELD_LABEL] = $this->getLabel(
             $data[StandardPropertiesNormalizer::FIELD_VALUES],
             $productModel
         );
-
-        $normalizedData = $this->completenessGridFilterQuery->findCompleteFilterData($productModel);
-        $data[self::FIELD_AT_LEAST_COMPLETE] = $normalizedData->atLeastComplete();
-        $data[self::FIELD_AT_LEAST_INCOMPLETE] = $normalizedData->atLeastIncomplete();
-        $data[self::FIELD_ANCESTORS] = $this->getAncestors($productModel);
 
         return $data;
     }

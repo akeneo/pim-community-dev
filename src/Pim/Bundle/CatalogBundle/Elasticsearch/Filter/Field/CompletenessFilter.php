@@ -49,28 +49,22 @@ class CompletenessFilter extends AbstractFieldFilter implements FieldFilterInter
 
         $locales = empty($locale) ? $options['locales'] : [$locale];
 
-        // The indexation has a weird naming:
-        // - At least one complete:   at_least_complete == 1
-        // - All complete:            at_least_incomplete == 0
-        // - At least one incomplete: at_least_incomplete == 1
-        // - All incomplete:          at_least_complete == 0
-        //
-        // This filter should be like that:
-        // - At least one complete:   all_complete == 0
-        // - All complete:            all_complete == 1
-        // - At least one incomplete: all_incomplete == 0
-        // - All incomplete:          all_incomplete == 1
+        // How the filter works
+        // - At least one complete:   all_incomplete == false
+        // - All complete:            all_complete == true
+        // - At least one incomplete: all_complete == false
+        // - All incomplete:          all_incomplete == true
         switch ($operator) {
             case Operators::AT_LEAST_COMPLETE:
                 $shouldClauses = [];
                 foreach ($locales as $locale) {
-                    $productFilterField = sprintf('completeness.%s.%s', $channel, $locale);
-                    $productModelFilterField = sprintf('at_least_complete.%s.%s', $channel, $locale);
+                    $completeness = sprintf('completeness.%s.%s', $channel, $locale);
+                    $allIncomplete = sprintf('all_incomplete.%s.%s', $channel, $locale);
                     $shouldClauses[] = [
                         'bool' => [
                             'should' => [
-                                ['term' => [$productFilterField => 100]],
-                                ['term' => [$productModelFilterField => 1]],
+                                ['term' => [$completeness => 100]],
+                                ['term' => [$allIncomplete => 0]],
                             ],
                             'minimum_should_match' => 1,
                         ],
@@ -82,13 +76,13 @@ class CompletenessFilter extends AbstractFieldFilter implements FieldFilterInter
             case Operators::ALL_COMPLETE:
                 $mustClauses = [];
                 foreach ($locales as $locale) {
-                    $productFilterField = sprintf('completeness.%s.%s', $channel, $locale);
-                    $productModelFilterField = sprintf('at_least_incomplete.%s.%s', $channel, $locale);
+                    $completeness = sprintf('completeness.%s.%s', $channel, $locale);
+                    $allComplete = sprintf('all_complete.%s.%s', $channel, $locale);
                     $mustClauses[] = [
                         'bool' => [
                             'should' => [
-                                ['term' => [$productFilterField => 100]],
-                                ['term' => [$productModelFilterField => 0]],
+                                ['term' => [$completeness => 100]],
+                                ['term' => [$allComplete => 1]],
                             ],
                             'minimum_should_match' => 1,
                         ],
@@ -100,13 +94,13 @@ class CompletenessFilter extends AbstractFieldFilter implements FieldFilterInter
             case Operators::AT_LEAST_INCOMPLETE:
                 $shouldClause = [];
                 foreach ($locales as $locale) {
-                    $productFilterField = sprintf('completeness.%s.%s', $channel, $locale);
-                    $productModelFilterField = sprintf('at_least_incomplete.%s.%s', $channel, $locale);
+                    $completeness = sprintf('completeness.%s.%s', $channel, $locale);
+                    $allComplete = sprintf('all_complete.%s.%s', $channel, $locale);
                     $shouldClause[] = [
                         'bool' => [
                             'should' => [
-                                ['range' => [$productFilterField => ['lt' => 100]]],
-                                ['term' => [$productModelFilterField => 1]],
+                                ['range' => [$completeness => ['lt' => 100]]],
+                                ['term' => [$allComplete => 0]],
                             ],
                             'minimum_should_match' => 1,
                         ],
@@ -118,13 +112,13 @@ class CompletenessFilter extends AbstractFieldFilter implements FieldFilterInter
             case Operators::ALL_INCOMPLETE:
                 $mustClauses = [];
                 foreach ($locales as $locale) {
-                    $productFilterField = sprintf('completeness.%s.%s', $channel, $locale);
-                    $productModelFilterField = sprintf('at_least_complete.%s.%s', $channel, $locale);
+                    $completeness = sprintf('completeness.%s.%s', $channel, $locale);
+                    $allIncomplete = sprintf('all_incomplete.%s.%s', $channel, $locale);
                     $mustClauses[] = [
                         'bool' => [
                             'should' => [
-                                ['range' => [$productFilterField => ['lt' => 100]]],
-                                ['term' => [$productModelFilterField => 0]],
+                                ['range' => [$completeness => ['lt' => 100]]],
+                                ['term' => [$allIncomplete => 1]],
                             ],
                             'minimum_should_match' => 1,
                         ],
