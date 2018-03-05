@@ -9,6 +9,10 @@
 - API: Apply permissions on products model and variant products
 - API-547: Standardization of the API responses when the user is no granted to view a product
 
+## Bug fixes
+
+- API-591: Fix to handle product models that are only editable and that should act like owned
+
 # 2.0.16 (2018-02-22)
 
 ## Bug fixes
