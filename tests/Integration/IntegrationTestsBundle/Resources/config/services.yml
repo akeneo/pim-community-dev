@@ -73,6 +73,7 @@ services:
     ### Builder
     akeneo_integration_tests.catalog.product.builder:
         class: 'Akeneo\Test\IntegrationTestsBundle\Fixture\EntityWithValue\Builder\Product'
+        shared: false
         arguments:
             - '@pim_catalog.builder.product'
             - '@pim_catalog.updater.product'
@@ -80,6 +81,7 @@ services:
 
     akeneo_integration_tests.base.product_model.builder:
         class: 'Akeneo\Test\IntegrationTestsBundle\Fixture\EntityBuilder'
+        shared: false
         arguments:
             - '@pim_catalog.factory.product_model'
             - '@pim_catalog.updater.product_model'
@@ -87,6 +89,7 @@ services:
 
     akeneo_integration_tests.catalog.product_model.builder:
         class: 'Akeneo\Test\IntegrationTestsBundle\Fixture\EntityWithValue\Builder\ProductModel'
+        shared: false
         arguments:
             - '@akeneo_integration_tests.base.product_model.builder'
             - '@pim_catalog.repository.product_model'
