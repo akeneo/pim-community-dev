@@ -3,6 +3,7 @@
 ## Improvements
 
 - GITHUB-7730: Improve product and product model import performances by using cached repositories
+- GITHUB-7757: Fix wrong position of warning icon, thanks @AngelVazquezArroyo !
 
 ## Bug fixes
 
