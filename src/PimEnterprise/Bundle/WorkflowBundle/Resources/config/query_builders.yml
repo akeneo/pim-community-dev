@@ -276,16 +276,6 @@ services:
         tags:
             - { name: 'pimee_workflow.elasticsearch.query.product_proposal_filter', priority: 30 }
 
-    pimee_workflow.query.elasticsearch.filter.option:
-        class: '%pim_catalog.query.elasticsearch.filter.option.class%'
-        arguments:
-            - '@pim_catalog.validator.helper.attribute'
-            - '@pim_catalog.repository.attribute_option'
-            - ['pim_catalog_simpleselect', 'pim_catalog_multiselect']
-            - ['IN', 'EMPTY', 'NOT EMPTY', 'NOT IN']
-        tags:
-            - { name: 'pimee_workflow.elasticsearch.query.product_proposal_filter', priority: 30 }
-
     #Sorters
     pimee_workflow.query.elasticsearch.sorter.author:
         class: '%pimee_workflow.query.elasticsearch.sorter.author.class%'
