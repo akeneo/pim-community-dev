@@ -3,7 +3,7 @@
 namespace Pim\Bundle\DataGridBundle\Repository;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use Pim\Component\User\Model\UserInterface;
+use Pim\Component\User\User\UserInterface;
 
 /**
  * Datagrid view repository interface
@@ -17,7 +17,7 @@ interface DatagridViewRepositoryInterface
     /**
      * Get all datagrid view type for a given user
      *
-     * @param \Pim\Component\User\Model\UserInterface $user
+     * @param \Pim\Component\User\User\UserInterface $user
      *
      * @return ArrayCollection
      */
@@ -40,10 +40,10 @@ interface DatagridViewRepositoryInterface
      * The search is applied on label with the given $term.
      * You can pass $options to add limit or page info.
      *
-     * @param UserInterface $user
-     * @param string        $alias
-     * @param string        $term
-     * @param array         $options
+     * @param \Pim\Component\User\User\UserInterface $user
+     * @param string                                 $alias
+     * @param string                                 $term
+     * @param array                                  $options
      *
      * @return ArrayCollection
      */

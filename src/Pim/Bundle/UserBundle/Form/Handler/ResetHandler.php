@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\UserBundle\Form\Handler;
 
-use Pim\Component\User\Model\UserInterface;
+use Pim\Component\User\User\UserInterface;
 
 /**
  * Overridden ResetHandler in order to manage the reset password

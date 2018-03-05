@@ -41,8 +41,7 @@ use Pim\Component\Connector\Job\JobParameters\DefaultValuesProvider\ProductCsvIm
 use Pim\Component\Connector\Job\JobParameters\DefaultValuesProvider\ProductModelCsvImport;
 use Pim\Component\Connector\Job\JobParameters\DefaultValuesProvider\SimpleCsvExport;
 use Pim\Component\ReferenceData\Model\ReferenceDataInterface;
-use Pim\Component\User\Model\Role;
-use Pim\Component\User\Model\User;
+use Pim\Component\User\Role\Role;
 
 /**
  * A context for creating entities
@@ -1556,7 +1555,7 @@ class FixturesContext extends BaseFixturesContext
     /**
      * @param string $userRoleName
      *
-     * @return Role
+     * @return \Pim\Component\User\Role\Role
      *
      * @Then /^there should be a "([^"]+)" user role$/
      */
@@ -1568,7 +1567,7 @@ class FixturesContext extends BaseFixturesContext
     /**
      * @param string $roleLabel
      *
-     * @return Role
+     * @return \Pim\Component\User\Role\Role
      */
     public function getRole($roleLabel)
     {
@@ -2100,7 +2099,7 @@ class FixturesContext extends BaseFixturesContext
     /**
      * @param array $data
      *
-     * @return Role
+     * @return \Pim\Component\User\Role\Role
      */
     protected function createRole($data)
     {

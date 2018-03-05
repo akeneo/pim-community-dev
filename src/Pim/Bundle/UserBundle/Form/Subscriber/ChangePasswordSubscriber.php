@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\UserBundle\Form\Subscriber;
 
-use Pim\Component\User\Model\UserInterface;
+use Pim\Component\User\User\UserInterface;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
@@ -56,7 +56,7 @@ class ChangePasswordSubscriber extends UserSubscriber
     public function onSubmit(FormEvent $event)
     {
         $form = $event->getForm();
-        /** @var UserInterface $user */
+        /** @var \Pim\Component\User\User\UserInterface $user */
         $user = $form->getParent()->getData();
         $plainPassword = $form->get('plainPassword');
 

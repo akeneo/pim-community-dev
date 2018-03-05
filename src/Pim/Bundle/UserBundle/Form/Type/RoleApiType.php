@@ -4,8 +4,8 @@ namespace Pim\Bundle\UserBundle\Form\Type;
 
 use Pim\Bundle\EnrichBundle\Form\Type\EntityIdentifierType;
 use Pim\Bundle\UserBundle\Form\Subscriber\PatchSubscriber;
-use Pim\Component\User\Model\Role;
-use Pim\Component\User\Model\User;
+use Pim\Component\User\Role\Role;
+use Pim\Component\User\User\User;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;

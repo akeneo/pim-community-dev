@@ -8,7 +8,7 @@ use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterfa
 use Akeneo\Component\StorageUtils\StorageEvents;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\EventSubscriber\ComputeCompletenessOnFamilyUpdateSubscriber;
-use Pim\Component\User\Model\UserInterface;
+use Pim\Component\User\User\UserInterface;
 use Pim\Component\Catalog\Model\AttributeRequirementInterface;
 use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Component\Catalog\Repository\AttributeRequirementRepositoryInterface;

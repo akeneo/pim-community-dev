@@ -4,7 +4,7 @@ namespace Pim\Bundle\DataGridBundle\Repository;
 
 use Doctrine\ORM\EntityRepository;
 use Pim\Bundle\DataGridBundle\Entity\DatagridView;
-use Pim\Component\User\Model\UserInterface;
+use Pim\Component\User\User\UserInterface;
 
 /**
  * Datagrid view repository

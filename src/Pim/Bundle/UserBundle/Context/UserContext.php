@@ -9,7 +9,7 @@ use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\LocaleInterface;
 use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
 use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
-use Pim\Component\User\Model\UserInterface;
+use Pim\Component\User\User\UserInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
@@ -259,7 +259,7 @@ class UserContext
     /**
      * Get authenticated user
      *
-     * @return \Pim\Component\User\Model\UserInterface|null
+     * @return \Pim\Component\User\User\UserInterface|null
      */
     public function getUser()
     {

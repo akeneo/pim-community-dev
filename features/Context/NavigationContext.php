@@ -11,7 +11,7 @@ use Pim\Component\Catalog\Model\AttributeGroupInterface;
 use Pim\Component\Catalog\Model\GroupTypeInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductModel;
-use Pim\Component\User\Model\Role;
+use Pim\Component\User\Role\Role;
 
 /**
  * Context for navigating the website
@@ -226,7 +226,7 @@ class NavigationContext extends BaseNavigationContext
     }
 
     /**
-     * @param Role $role
+     * @param \Pim\Component\User\Role\Role $role
      *
      * @Given /^I should be on the ("([^"]*)" role) page$/
      */
