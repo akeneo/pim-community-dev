@@ -97,6 +97,8 @@ services:
             - '@pimee_enrich.connector.writer.mass_edit.product_and_product_model'
             - 1000
 
+    # Anything to override here ?
+
     # CSV Quick Export steps ------------------------------------------------------------------------------------------
     pimee_enrich.step.csv_published_product.quick_export:
         class: '%pim_connector.step.item_step.class%'
