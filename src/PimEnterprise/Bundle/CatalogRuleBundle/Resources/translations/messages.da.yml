@@ -25,6 +25,8 @@ pimee_catalog_rule:
       "set_value": Så %value% er indstillet til %field%
       "add": Så er %value% tilføjet til %field%
       "remove": Så %value% er fjernet fra %field%
+    options:
+      include_children: og undersider
   condition:
     label: Hvis %field% %operator% %value%
     operators:
