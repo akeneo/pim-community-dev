@@ -36,25 +36,31 @@ class AddAttributeValueProcessor extends AbstractProcessor
     /** @var CheckAttributeEditable */
     protected $checkAttributeEditable;
 
+    /** @var array */
+    protected $supportedTypes;
+
     /**
      * @param ValidatorInterface                    $productValidator
      * @param ValidatorInterface                    $productModelValidator
-     * @param PropertyAdderInterface               $propertyAdder
+     * @param PropertyAdderInterface                $propertyAdder
      * @param IdentifiableObjectRepositoryInterface $attributeRepository
      * @param CheckAttributeEditable                $checkAttributeEditable
+     * @param array                                 $supportedTypes
      */
     public function __construct(
         ValidatorInterface $productValidator,
         ValidatorInterface $productModelValidator,
         PropertyAdderInterface $propertyAdder,
         IdentifiableObjectRepositoryInterface $attributeRepository,
-        CheckAttributeEditable $checkAttributeEditable
+        CheckAttributeEditable $checkAttributeEditable,
+        array $supportedTypes
     ) {
         $this->productValidator = $productValidator;
         $this->productModelValidator = $productModelValidator;
         $this->propertyAdder = $propertyAdder;
         $this->attributeRepository = $attributeRepository;
         $this->checkAttributeEditable = $checkAttributeEditable;
+        $this->supportedTypes = $supportedTypes;
     }
 
     /**
@@ -126,7 +132,10 @@ class AddAttributeValueProcessor extends AbstractProcessor
     {
         $attribute = $this->attributeRepository->findOneByIdentifier($attributeCode);
 
-        return $this->checkAttributeEditable->isEditable($entity, $attribute);
+        $isEditable = $this->checkAttributeEditable->isEditable($entity, $attribute);
+        $hasCorrectType = in_array($attribute->getType(), $this->supportedTypes);
+
+        return $isEditable && $hasCorrectType;
     }
 
     /**
