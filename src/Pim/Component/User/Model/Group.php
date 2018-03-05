@@ -79,7 +79,7 @@ class Group implements GroupInterface
     /**
      * {@inheritdoc}
      */
-    public function getRole($roleName): RoleInterface
+    public function getRole($roleName): ?RoleInterface
     {
         /** @var $role Role */
         foreach ($this->getRoles() as $role) {
