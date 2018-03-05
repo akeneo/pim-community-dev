@@ -123,18 +123,17 @@ services:
         tags:
             - { name: akeneo_batch.job, connector: '%pim_enrich.connector_name.mass_edit%', type: '%pim_enrich.job.mass_edit_type%' }
 
-#    I don't think we should execute rules here.
-#    pim_enrich.job.add_attribute_value:
-#        class: '%pim_connector.job.simple_job.class%'
-#        arguments:
-#            - '%pim_enrich.job.name.add_attribute_value%'
-#            - '@event_dispatcher'
-#            - '@akeneo_batch.job_repository'
-#            -
-#                - '@pim_enrich.step.add_attribute_value.mass_edit'
-#                - '@pimee_enrich.step.execute_rules'
-#        tags:
-#            - { name: akeneo_batch.job, connector: '%pim_enrich.connector_name.mass_edit%', type: '%pim_enrich.job.mass_edit_type%' }
+    pim_enrich.job.add_attribute_value:
+         class: '%pim_connector.job.simple_job.class%'
+         arguments:
+             - '%pim_enrich.job.name.add_attribute_value%'
+             - '@event_dispatcher'
+             - '@akeneo_batch.job_repository'
+             -
+                 - '@pimee_enrich.step.add_attribute_value.mass_edit.perform'
+                 - '@pimee_enrich.step.execute_rules'
+         tags:
+             - { name: akeneo_batch.job, connector: '%pim_enrich.connector_name.mass_edit%', type: '%pim_enrich.job.mass_edit_type%' }
 
     # CSV Quick Exports -----------------------------------------------------------------------------------------------
     pimee_enrich.job.csv_published_product_quick_export:
