@@ -19,6 +19,8 @@ pim_enrich:
       attribute.title: Atributos
       history.title: Histórico
   family:
+    info:
+      cant_remove_attribute_used_as_axis: No se puede quitar este atributo utilizado como eje variante en una variante familiar
     tab:
       property.title: Propiedades
       attribute.title: Atributos
@@ -94,6 +96,7 @@ pim_enrich:
         invalid_attribute: El atributo con el código "attribute_code" no es común para los productos seleccionados, atributo ignorado.
         no_valid_attribute: Ninguno de los atributos seleccionados puede ser aplicado a este producto.
     classify-add:
+      label: Agregar a categorias
       description: Los productos se colocará en las siguientes categorías, la posición actual se mantendrá.
       success_flash: Los producto(s) han sido clasificados en las categorías seleccionadas
       launched_flash: La acción en bloque "añadir a categorías" ha sido lanzada. Será notificado una vez finalizada.
@@ -627,6 +630,7 @@ pim_enrich.mass_edit_action:
     message.warning: No hay ningún atributo en común para los productos seleccionados. Por favor cambie su selección.
     no_attribute.warning: No hay ningún atributo en común para los productos seleccionados. Por favor cambie su selección.
   classify:
+    label: Agregar a categorias
     description: Los productos se colocará en las siguientes categorías, la posición actual se mantendrá.
     success_flash: Los producto(s) han sido clasificados en las categorías seleccionadas
   change-family:
@@ -699,6 +703,7 @@ Format address by address country: Formatear dirección por dirección del país
 Language: idioma
 Timezone: Zona horaria
 Currency: Moneda
+settings: Configuración
 oro.locale:
   address_format:
     region_name_type:

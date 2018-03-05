@@ -185,6 +185,8 @@ pim_enrich:
       edit_attributes: Rediger attributterne for en familie
       remove: Fjern en familie
       history: Se familie historik
+    family_variant:
+      remove: Vælg en familie variant
     attribute_group:
       index: List attributgrupper
       create: Opret en attributgruppe
@@ -241,6 +243,11 @@ pim_enrich:
     empty_value:
       reference_data_type:
         label: Vælg reference datatype
+  notification:
+    settings:
+      remove_completeness_for_channel_and_locale:
+        start: Landestandard er blevet fjernet fra denne kannal. Relaterede fulstændighed ajourføres 
+        done: Fjernelse af landestandard fra denne kannal er afsluttet.
 attribute:
   title: attribut
   edit: rediger attribut
@@ -338,6 +345,7 @@ confirmation:
     attribute group: Er du sikker på du vil slette attributgruppen %name%?
     category: Er du sikker på du vil slette kategorien %name%?
     family: Er du sikker på du vil slette denne familie %name%?
+    family_variant: Er du sikker på at du vil slette denne familie variant %name%?
     product: Er du sikker på du vil slette produktet %name%?
     group: Er du sikker på du vil slette produktet %name%?
     group type: Er du sikker på du vil slette produktet %name%?
@@ -725,6 +733,7 @@ Format address by address country: Formater adresse efter lande adresse
 Language: Sprog
 Timezone: Tidszone
 Currency: Valuta
+settings: Indstillinger
 oro.locale:
   address_format:
     region_name_type:
