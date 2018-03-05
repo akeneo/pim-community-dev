@@ -89,6 +89,7 @@ class VersionPurger implements VersionPurgerInterface
                     $this->versionRemover->removeAll($versionsToPurge);
                     $this->objectDetacher->detachAll($versionsToPurge);
                     $versionsToPurge = [];
+                    $this->versionRepository->clear();
                 }
             } else {
                 $this->objectDetacher->detach($version);
@@ -146,8 +147,6 @@ class VersionPurger implements VersionPurgerInterface
      * Configure an option resolver with default option values
      *
      * @param OptionsResolver $optionResolver
-     *
-     * @return OptionsResolver
      */
     protected function configureOptions(OptionsResolver $optionResolver)
     {
