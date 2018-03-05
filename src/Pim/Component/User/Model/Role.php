@@ -9,11 +9,11 @@ use Symfony\Component\Security\Core\Role\Role as SymfonyRole;
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
- * @todo This "write" model should not extends Symfony\Component\Security\Core\Role\Role.We should create a "read"
+ * @todo This "write" model should not extend Symfony\Component\Security\Core\Role\Role.We should create a "read"
  * model that extends that class.
  *
- * For now, this model MUST extends Symfony\Component\Security\Core\Role\Role because the symfony security component
- * do some stuff if the role is a instance of this class. You should have a look to
+ * For now, this model MUST extend Symfony\Component\Security\Core\Role\Role because the symfony security component
+ * does some stuff if the role is a instance of this class. You should have a look to
  * Symfony\Component\Security\Acl\Domain\RoleSecurityIdentity for instance
  */
 class Role extends SymfonyRole implements RoleInterface
