@@ -23,7 +23,7 @@ class CreateVariantProductWithPermissionIntegration extends ApiTestCase
 
     public function testCreateVariantProductWithAssociation()
     {
-        $this->loader->loadProductModelsForAssociationPermissions();
+        $this->loader->loadProductsForAssociationPermissions();
 
         $data = <<<JSON
             {
@@ -97,7 +97,7 @@ JSON;
 
     public function testCreateVariantProductWithNotVisibleAxisAttribute()
     {
-        $this->loader->loadProductModelsForAssociationPermissions();
+        $this->loader->loadProductsForAssociationPermissions();
         $this->makeAttributeAxesNotViewable('variant_product_axis_attribute');
 
         $data = <<<JSON
@@ -112,7 +112,7 @@ JSON;
 
     public function testCreateVariantProductAssociationWithNotViewableProduct()
     {
-        $this->loader->loadProductModelsForAssociationPermissions();
+        $this->loader->loadProductsForAssociationPermissions();
 
         $data = <<<JSON
             {
