@@ -42,8 +42,8 @@ class AclRoleHandler
     protected $privilegeConfig;
 
     /**
-     * @param FormFactory $formFactory
-     * @param array $privilegeConfig
+     * @param FormFactory  $formFactory
+     * @param array        $privilegeConfig
      * @param RequestStack $requestStack
      */
     public function __construct(FormFactory $formFactory, array $privilegeConfig, RequestStack $requestStack)
@@ -96,6 +96,7 @@ class AclRoleHandler
      * Save role
      *
      * @param Role $role
+     *
      * @return bool
      */
     public function process(Role $role)
@@ -180,7 +181,8 @@ class AclRoleHandler
 
     /**
      * @param ArrayCollection $privileges
-     * @param array $rootIds
+     * @param array           $rootIds
+     *
      * @return ArrayCollection
      */
     protected function filterPrivileges(ArrayCollection $privileges, array $rootIds)
@@ -195,7 +197,7 @@ class AclRoleHandler
     /**
      * "Success" form handler
      *
-     * @param Role                                      $entity
+     * @param Role            $entity
      * @param UserInterface[] $appendUsers
      * @param UserInterface[] $removeUsers
      */
@@ -210,7 +212,7 @@ class AclRoleHandler
     /**
      * Append users to role
      *
-     * @param Role                                      $role
+     * @param Role            $role
      * @param UserInterface[] $users
      */
     protected function appendUsers(Role $role, array $users)
@@ -225,7 +227,7 @@ class AclRoleHandler
     /**
      * Remove users from role
      *
-     * @param Role                                      $role
+     * @param Role            $role
      * @param UserInterface[] $users
      */
     protected function removeUsers(Role $role, array $users)

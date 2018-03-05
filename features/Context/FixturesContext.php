@@ -1652,7 +1652,7 @@ class FixturesContext extends BaseFixturesContext
     /**
      * @param string $username
      *
-     * @return \Pim\Component\User\Model\User
+     * @return User
      *
      * @Then /^there should be a "([^"]*)" user$/
      */

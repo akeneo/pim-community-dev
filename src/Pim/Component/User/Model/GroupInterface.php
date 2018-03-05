@@ -14,37 +14,38 @@ interface GroupInterface
     /**
      * @return int
      */
-    public function getId();
+    public function getId(): ?int;
 
     /**
      * @return string
      */
-    public function getName();
+    public function getName(): ?string;
 
     /**
      * @param  string $name
-     *
-     * @return Group
      */
-    public function setName($name);
+    public function setName($name): void;
 
-    public function getRoleLabelsAsString();
+    /**
+     * @return string
+     */
+    public function getRoleLabelsAsString(): string;
 
     /**
      * Returns the group roles
      *
      * @return Collection The roles
      */
-    public function getRoles();
+    public function getRoles(): Collection;
 
     /**
      * Get role by string
      *
      * @param  string $roleName Role name
      *
-     * @return Role|null
+     * @return RoleInterface|null
      */
-    public function getRole($roleName);
+    public function getRole($roleName): ?RoleInterface;
 
     /**
      * @param  Role|string $role
@@ -53,14 +54,14 @@ interface GroupInterface
      *
      * @return boolean
      */
-    public function hasRole($role);
+    public function hasRole($role): bool;
 
     /**
      * Adds a Role to the Collection
      *
-     * @param  Role $role
+     * @param RoleInterface $role
      */
-    public function addRole(Role $role);
+    public function addRole(RoleInterface $role): void;
 
     /**
      * Remove the Role object from collection
@@ -69,7 +70,7 @@ interface GroupInterface
      *
      * @throws \InvalidArgumentException
      */
-    public function removeRole($role);
+    public function removeRole($role): void;
 
     /**
      * Set new Roles collection
@@ -78,5 +79,5 @@ interface GroupInterface
      *
      * @throws \InvalidArgumentException
      */
-    public function setRoles($roles);
+    public function setRoles($roles): void;
 }
