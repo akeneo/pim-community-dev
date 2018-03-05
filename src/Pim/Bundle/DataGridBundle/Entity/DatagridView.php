@@ -25,7 +25,7 @@ class DatagridView
     /** @var string */
     protected $type = self::TYPE_PUBLIC;
 
-    /** @var \Pim\Component\User\Model\UserInterface */
+    /** @var UserInterface */
     protected $owner;
 
     /** @var string */
@@ -108,11 +108,11 @@ class DatagridView
     /**
      * Set owner
      *
-     * @param \Pim\Component\User\Model\UserInterface $owner
+     * @param UserInterface $owner
      *
      * @return DatagridView
      */
-    public function setOwner(\Pim\Component\User\Model\UserInterface $owner)
+    public function setOwner(UserInterface $owner)
     {
         $this->owner = $owner;
 
@@ -122,7 +122,7 @@ class DatagridView
     /**
      * Get owner
      *
-     * @return \Pim\Component\User\Model\UserInterface
+     * @return UserInterface
      */
     public function getOwner()
     {

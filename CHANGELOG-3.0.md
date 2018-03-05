@@ -15,10 +15,10 @@
 - Move `Pim\Bundle\UserBundle\Controller\UserGroupRestController` to `Pim\Bundle\UserBundle\Controller\Rest\UserGroupController`
 - Move `Pim\Bundle\UserBundle\Controller\SecurityRestController` to `Pim\Bundle\UserBundle\Controller\Rest\SecurityController`
 - Move `Pim\Bundle\UserBundle\Controller\UserRestController` to `Pim\Bundle\UserBundle\Controller\Rest\UserController`
-- Move all class from `Oro\Bundle\UserBundle\Controller` to `Pim\Bundle\UserBundle\Controller`
-- Move all class from `Oro\Bundle\UserBundle\EventListener` to `Pim\Bundle\UserBundle\EventListener`
-- Move all class from `Oro\Bundle\UserBundle\Form\EventListener` to `Pim\Bundle\UserBundle\Form\Subscriber`
-- Move all class from `Oro\Bundle\UserBundle\Entity\Repository` to `Pim\Bundle\UserBundle\Doctrine\ORM\Repository`
+- Move all classes from `Oro\Bundle\UserBundle\Controller` to `Pim\Bundle\UserBundle\Controller`
+- Move all classes from `Oro\Bundle\UserBundle\EventListener` to `Pim\Bundle\UserBundle\EventListener`
+- Move all classes from `Oro\Bundle\UserBundle\Form\EventListener` to `Pim\Bundle\UserBundle\Form\Subscriber`
+- Move all classes from `Oro\Bundle\UserBundle\Entity\Repository` to `Pim\Bundle\UserBundle\Doctrine\ORM\Repository`
 - Move `Oro\Bundle\UserBundle\Entity\EntityUploadedImageInterface` to `Pim\Component\User\EntityUploadedImageInterface`
 - Move `Oro\Bundle\UserBundle\Entity\EventListener\UploadedImageSubscriber` to `Pim\Bundle\UserBundle\EventSubscriber\UploadedImageSubscriber`
 - Move `Oro\Bundle\UserBundle\Form\Handler\AbstractUserHandler` to `Pim\Bundle\UserBundle\Form\Handler\AbstractUserHandler`
