@@ -147,9 +147,15 @@ SQL;
     {
         $this->loader->loadProductModelsFixturesForCategoryPermissions();
 
-        $message = 'You can neither view, nor update, nor delete the product model "colored_sweat_no_view", as it is only categorized in categories on which you do not have a view permission.';
-        $data = '{"categories": ["own_category"]}';
-        $this->assertUnauthorized('colored_sweat_no_view', $data, $message);
+        $client = $this->createAuthenticatedClient([], [], null, null, 'mary', 'mary');
+
+        $client->request('PATCH', 'api/rest/v1/product-models/' . 'colored_sweat_no_view', [], [], [], '{"categories": ["own_category"]}');
+        $response = $client->getResponse();
+
+        $expectedContent = sprintf('{"code":%d,"message":"Product model \"colored_sweat_no_view\" does not exist."}', Response::HTTP_NOT_FOUND);
+
+        Assert::assertSame(Response::HTTP_NOT_FOUND, $response->getStatusCode());
+        Assert::assertEquals($expectedContent, $response->getContent());
     }
 
     public function testUpdateOnlyViewableProductModel()
@@ -182,7 +188,7 @@ SQL;
 
         $this->assertUpdated('colored_trousers', $data);
     }
-    
+
     public function testUpdateNotViewableAttribute()
     {
         $this->loader->loadProductModelsFixturesForAttributeAndLocalePermissions();
@@ -303,6 +309,7 @@ SQL;
         Assert::assertSame(Response::HTTP_FORBIDDEN, $response->getStatusCode());
         Assert::assertEquals($expected, $response->getContent());
     }
+
     /**
      * @param string $code
      * @param string $data

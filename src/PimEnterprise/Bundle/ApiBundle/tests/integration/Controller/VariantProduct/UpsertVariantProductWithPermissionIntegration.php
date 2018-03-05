@@ -222,17 +222,23 @@ SQL;
             }
 JSON;
 
-        $message = 'You cannot associate a product on which you have not a view permission.';
-        $this->assertUnauthorized('variant_product', $data, $message);
+        $message = 'Property "associations" expects a valid product identifier. The product does not exist, "product_no_view" given. Check the expected format on the API documentation.';
+        $this->assertUnprocessableEntity('variant_product', $data, $message);
     }
 
     public function testUpdateNotViewableVariantProduct()
     {
         $this->loader->loadProductModelsFixturesForCategoryPermissions();
 
-        $message = 'You can neither view, nor update, nor delete the product "colored_sized_sweat_no_view", as it is only categorized in categories on which you do not have a view permission.';
-        $data = '{"categories": ["own_category"]}';
-        $this->assertUnauthorized('colored_sized_sweat_no_view', $data, $message);
+        $client = $this->createAuthenticatedClient([], [], null, null, 'mary', 'mary');
+
+        $client->request('PATCH', 'api/rest/v1/products/' . 'colored_sized_sweat_no_view', [], [], [], '{"categories": ["own_category"]}');
+        $response = $client->getResponse();
+
+        $expectedContent = sprintf('{"code":%d,"message":"Product \"colored_sized_sweat_no_view\" does not exist."}', Response::HTTP_NOT_FOUND);
+
+        Assert::assertSame(Response::HTTP_NOT_FOUND, $response->getStatusCode());
+        Assert::assertEquals($expectedContent, $response->getContent());
     }
 
     public function testUpdateOnlyViewableVariantProduct()

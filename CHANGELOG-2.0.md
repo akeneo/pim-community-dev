@@ -7,6 +7,7 @@
 ## API Improvements
 
 - API: Apply permissions on products model and variant products
+- API-547: Standardization of the API responses when the user is no granted to view a product
 
 # 2.0.16 (2018-02-22)
 

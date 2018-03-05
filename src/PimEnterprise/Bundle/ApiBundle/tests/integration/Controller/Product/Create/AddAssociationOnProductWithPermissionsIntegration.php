@@ -23,8 +23,8 @@ JSON;
 
         $client->request('POST', 'api/rest/v1/products', [], [], [], $data);
         $response = $client->getResponse();
-        $this->assertSame(403, $response->getStatusCode());
-        $this->assertSame('{"code":403,"message":"You cannot associate a product on which you have not a view permission."}', $response->getContent());
+        $this->assertSame(422, $response->getStatusCode());
+        $this->assertSame('{"code":422,"message":"Property \"associations\" expects a valid product identifier. The product does not exist, \"product_not_viewable_by_redactor\" given. Check the expected format on the API documentation.","_links":{"documentation":{"href":"http:\/\/api.akeneo.com\/api-reference.html#post_products"}}}', $response->getContent());
     }
 
     public function testSuccessProductWithGrantedAssociatedProductForManager()
