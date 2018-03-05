@@ -1,0 +1,13 @@
+extensions:
+    pimee-catalog-volume-assets-section:
+        module: pim/catalog-volume/section
+        parent: pim-catalog-volume-index
+        template: pim/template/catalog-volume/section
+        targetZone: content
+        position: 50
+        config:
+            title: catalog_volume.section.assets.title
+            hint:
+                code: hint-asset-axes
+                title: catalog_volume.section.assets.hint
+            axes: [assets, asset_categories, asset_category_trees]
