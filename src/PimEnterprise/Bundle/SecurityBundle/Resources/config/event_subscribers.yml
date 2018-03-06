@@ -1,7 +1,7 @@
 parameters:
     # Datagrid
     pimee_security.event_subscriber.datagrid.product_category_access.class: PimEnterprise\Bundle\SecurityBundle\EventSubscriber\Datagrid\ProductCategoryAccessSubscriber
-    pimee_security.event_subscriber.datagrid.asset_category_access.class:   PimEnterprise\Bundle\SecurityBundle\EventSubscriber\Datagrid\AssetCategoryAccessSubscriber
+    pimee_security.event_subscriber.datagrid.asset_category_access.class:   PimEnterprise\Bundle\ProductAssetBundle\Security\AssetCategoryAccessSubscriber
 
     # Enrich
     pimee_security.event_subscriber.enrich.job_permissions.class:            PimEnterprise\Bundle\SecurityBundle\EventSubscriber\Enrich\JobPermissionsSubscriber
