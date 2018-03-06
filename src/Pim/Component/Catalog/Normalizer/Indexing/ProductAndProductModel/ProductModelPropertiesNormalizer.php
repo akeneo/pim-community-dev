@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Pim\Component\Catalog\Normalizer\Indexing\ProductAndProductModel;
 
-use Pim\Component\Catalog\Model\EntityWithFamilyVariantInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
 use Pim\Component\Catalog\Normalizer\Standard\Product\PropertiesNormalizer as StandardPropertiesNormalizer;
 use Pim\Component\Catalog\ProductAndProductModel\Query\CompleteFilterInterface;
@@ -27,8 +26,8 @@ class ProductModelPropertiesNormalizer implements NormalizerInterface, Serialize
     private const FIELD_FAMILY_VARIANT = 'family_variant';
     private const FIELD_ID = 'id';
     private const FIELD_PARENT = 'parent';
-    private const FIELD_AT_LEAST_COMPLETE = 'at_least_complete';
-    private const FIELD_AT_LEAST_INCOMPLETE = 'at_least_incomplete';
+    private const FIELD_ALL_INCOMPLETE = 'all_incomplete';
+    private const FIELD_ALL_COMPLETE = 'all_complete';
     private const FIELD_ANCESTORS = 'ancestors';
 
     /** @var CompleteFilterInterface */
@@ -86,10 +85,9 @@ class ProductModelPropertiesNormalizer implements NormalizerInterface, Serialize
             ) : [];
 
         $normalizedData = $this->completenessGridFilterQuery->findCompleteFilterData($productModel);
-        $data[self::FIELD_AT_LEAST_COMPLETE] = $normalizedData->atLeastComplete();
-        $data[self::FIELD_AT_LEAST_INCOMPLETE] = $normalizedData->atLeastIncomplete();
+        $data[self::FIELD_ALL_COMPLETE] = $normalizedData->allComplete();
+        $data[self::FIELD_ALL_INCOMPLETE] = $normalizedData->allIncomplete();
         $data[self::FIELD_ANCESTORS] = $this->getAncestors($productModel);
-
 
         $data[StandardPropertiesNormalizer::FIELD_LABEL] = $this->getLabel(
             $data[StandardPropertiesNormalizer::FIELD_VALUES],
@@ -112,6 +110,7 @@ class ProductModelPropertiesNormalizer implements NormalizerInterface, Serialize
         if (null === $productModel->getFamily()) {
             return [];
         }
+
         $valuePath = sprintf('%s-text', $productModel->getFamily()->getAttributeAsLabel()->getCode());
         if (!isset($values[$valuePath])) {
             return [];

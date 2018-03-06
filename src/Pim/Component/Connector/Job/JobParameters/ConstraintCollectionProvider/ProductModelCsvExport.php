@@ -7,7 +7,7 @@ namespace Pim\Component\Connector\Job\JobParameters\ConstraintCollectionProvider
 use Akeneo\Component\Batch\Job\JobInterface;
 use Akeneo\Component\Batch\Job\JobParameters\ConstraintCollectionProviderInterface;
 use Pim\Component\Catalog\Validator\Constraints\Channel;
-use Pim\Component\Connector\Validator\Constraints\FilterData;
+use Pim\Component\Connector\Validator\Constraints\ProductModelFilterData;
 use Pim\Component\Connector\Validator\Constraints\FilterStructureAttribute;
 use Pim\Component\Connector\Validator\Constraints\FilterStructureLocale;
 use Symfony\Component\Validator\Constraints\Collection;
@@ -55,7 +55,7 @@ class ProductModelCsvExport implements ConstraintCollectionProviderInterface
             ]
         );
         $constraintFields['filters'] = [
-            new FilterData(['groups' => ['Default', 'DataFilters']]),
+            new ProductModelFilterData(['groups' => ['Default', 'DataFilters']]),
             new Collection(
                 [
                     'fields'           => [
