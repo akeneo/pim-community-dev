@@ -54,8 +54,8 @@ class CompleteFilterData
 
     /**
      * Return an array of "integer" indexed by channel and locale:
-     *    - 1 means that there is at least variant product complete
-     *    - 0 means that all variant product are incomplete
+     *    - 1 means that all variant product are incomplete
+     *    - 0 means that at least one product is incomplete
      *
      * This method will return an array like that:
      * [
@@ -70,18 +70,18 @@ class CompleteFilterData
      *
      * @return array
      */
-    public function atLeastComplete(): array
+    public function allIncomplete(): array
     {
         $normalizedData = [];
         foreach ($this->flatData as $row) {
             list($channel, $locale, $complete) = array_values($row);
 
             if (!isset($normalizedData[$channel][$locale])) {
-                $normalizedData[$channel][$locale] = 0;
+                $normalizedData[$channel][$locale] = 1;
             }
 
             if (1 === (int) $complete) {
-                $normalizedData[$channel][$locale] = 1;
+                $normalizedData[$channel][$locale] = 0;
             }
         }
 
@@ -90,8 +90,8 @@ class CompleteFilterData
 
     /**
      * Return an array of "integer" indexed by channel and locale:
-     *    - 1 means that there is at least variant product incomplete
-     *    - 0 means that all variant product are complete
+     *    - 1 means that all variant product are complete
+     *    - 0 means that there is at least variant product incomplete
      *
      * This method will return an array like that:
      * [
@@ -106,18 +106,18 @@ class CompleteFilterData
      *
      * @return array
      */
-    public function atLeastIncomplete(): array
+    public function allComplete(): array
     {
         $normalizedData = [];
         foreach ($this->flatData as $row) {
             list($channel, $locale, $complete, $incomplete) = array_values($row);
 
             if (!isset($normalizedData[$channel][$locale])) {
-                $normalizedData[$channel][$locale] = 0;
+                $normalizedData[$channel][$locale] = 1;
             }
 
             if (1 === (int) $incomplete) {
-                $normalizedData[$channel][$locale] = 1;
+                $normalizedData[$channel][$locale] = 0;
             }
         }
 
