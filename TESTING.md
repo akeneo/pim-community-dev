@@ -75,9 +75,11 @@ Examples:
 Characteristics:
 
 - it tests the application as a whole (the backend and the frontend are tested at the same time)
+- it treats the application as a black box
 - it has no mock (it tests the real application)
 - it can require a complex setup (like a browser and Selenium for instance)
 - it tests nominal use cases
+- it tests critical use cases
 
 Tools:
 
@@ -132,7 +134,7 @@ End to end:
 
 You should refer to the [ports and adapters architecture](#ports-and-adapters-architecture). Ask yourself, where your class is standing regarding the different layers. Then, you can refer to [this section](#the-relation-with-the-tests).
 
-> I'm afraid to write less end to end tests that before. Are you sure it's a good idea?
+> I'm afraid to write less end to end tests than before. Are you sure it's a good idea?
 
 For sure, end to end tests are a really safe cocoon. They strictly ensure what we have coded works as expected. But you should also remember that they become a burden when they are too numerous. As long as you have many unit and acceptance tests, as well as the necessary integration tests, you're safe. That means all your use cases are covered, and you're able to communicate with the outside world. A few system tests will only ensure that you have correctly glued all the pieces together. They do nothing more. In any case, if you have some doubt, ask the piece of advice of a teammate.
 
@@ -148,7 +150,11 @@ Your frustration is completely understandable. And yes, the path towards short C
 
 > How can I write useful and powerful Gherkin?
 
+[Writing good Gherkin](https://automationpanda.com/2017/01/30/bdd-101-writing-good-gherkin/) by Andrew Knight
+
 [Modelling by Example Workshop](https://fr.slideshare.net/CiaranMcNulty/modelling-by-example-workshop-phpnw-2016) by Ciaran McNulty
+
+[Introducing Modelling by Example](http://stakeholderwhisperer.com/posts/2014/10/introducing-modelling-by-example) by Konstantin Kudryashov
 
 > I want to know more about that ports and adapters thing!
 
