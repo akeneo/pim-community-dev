@@ -4,7 +4,7 @@ namespace Oro\Bundle\ConfigBundle\Tests\Unit\Config;
 
 use Doctrine\Common\Persistence\ObjectRepository;
 use Oro\Bundle\ConfigBundle\Config\UserConfigManager;
-use Pim\Bundle\UserBundle\Entity\User;
+use Pim\Component\User\Model\User;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 class UserConfigManagerTest extends \PHPUnit_Framework_TestCase
