@@ -142,12 +142,12 @@ class FixturesContext extends BaseFixturesContext
     /**
      * @param int $numberOfProducts
      *
-     * @Given /^([0-9]+) empty products$/
+     * @Given /^([0-9]+) empty products(?: for the "([^"]+)" family)?$/
      */
-    public function createEmptyProducts(int $numberOfProducts)
+    public function createEmptyProducts(int $numberOfProducts, string $familyCode = '')
     {
         for (;$numberOfProducts > 0; $numberOfProducts--) {
-            $this->createProduct(sprintf('product_%s', $numberOfProducts));
+            $this->createProduct(['sku' => sprintf('product_%s', $numberOfProducts), 'family' => $familyCode]);
         }
     }
 

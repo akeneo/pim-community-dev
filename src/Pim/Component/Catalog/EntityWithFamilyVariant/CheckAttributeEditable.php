@@ -33,7 +33,7 @@ class CheckAttributeEditable
             return true;
         }
 
-        if (!$family->hasAttribute($attribute)) {
+        if (!$family->hasAttributeCode($attribute->getCode())) {
             return false;
         }
 
