@@ -2,16 +2,14 @@
 
 ## Bug fixes
 
+- AOB-59: Fix proposal for variant product
 - PIM-7218: Fix save on product when attribute "identifier" belongs to an attribute group not viewable by a user
+- API-591: Fix to handle product models that are only editable and that should act like owned
 
 ## API Improvements
 
 - API: Apply permissions on products model and variant products
 - API-547: Standardization of the API responses when the user is no granted to view a product
-
-## Bug fixes
-
-- API-591: Fix to handle product models that are only editable and that should act like owned
 
 # 2.0.16 (2018-02-22)
 
