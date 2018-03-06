@@ -31,7 +31,7 @@ class Controller
     protected $options;
 
     /**
-     * @param Translator $translator
+     * @param TranslatorInterface $translator
      * @param EngineInterface $templating
      * @param string|TemplateReferenceInterface $template a template name or a TemplateReferenceInterface instance
      * @param array $options array('domains' => array(), 'debug' => true|false)
