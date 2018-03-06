@@ -95,6 +95,13 @@ Examples:
 
 ### The foundations: ports and adapters
 
+### A slight touch of Domain-Driven Design
+
+Domain-Driven Design follows the same principles that ports and adapters regarding the layers segregation. The most important thing is that no external layer should leak into an internal layer. The main difference is that it introduces a new layer, which means we end up with:
+
+- Domain: it holds the model and all the business logic
+- Application: it orchestrates the Domain and Infrastructure layers. It translates and validates the outside world to the Domain. It is the realm of use cases.
+- Infrastructure: it talks with the outside world. Typically, it persists domain objects and receives user's inputs. This is where we'll find the repository implementations, the frameworks glue, everything that's related databases, HTTP and all the other ports of the system.
 
 
 ### The relation with the tests
@@ -165,3 +172,6 @@ Your frustration is completely understandable. And yes, the path towards short C
 [Ports & Adapters Architecture](https://herbertograca.com/2017/09/14/ports-adapters-architecture/) by Herberto Graça
 
 [Ports-And-Adapters / Hexagonal Architecture](http://www.dossier-andreas.net/software_architecture/ports_and_adapters.html)
+
+> I want to know more about the separation layers described in Domain-Driven Design!
+
