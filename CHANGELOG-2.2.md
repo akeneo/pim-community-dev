@@ -5,6 +5,7 @@
 - PIM-7097: Add sticky behaviour to product edit form
 - PIM-7097: Change the loading image
 - PIM-7090: Add completeness filter on product model export builder
+- PIM-6803: Message when delete a family with family variant.
 - PIM-7143: Be able to delete products and product models in mass using a backend job
 
 ## BC breaks
