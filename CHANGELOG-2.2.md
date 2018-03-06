@@ -4,6 +4,8 @@
 
 ### Constructors
 
+- AOB-2: Change the constructor of `PimEnterprise\Bundle\DataGridBundle\Extension\MassAction\Handler\MassApproveActionHandler` to add `Akeneo\Bundle\ElasticsearchBundle\Cursor\CursorFactoryInterface` as new argument.
+- AOB-2: Change the constructor of `PimEnterprise\Bundle\DataGridBundle\Extension\MassAction\Handler\MassRefuseActionHandler` to add `Akeneo\Bundle\ElasticsearchBundle\Cursor\CursorFactoryInterface` as new argument.
 - AOB-2: Change the constructor of `PimEnterprise\Bundle\CatalogBundle\Security\Elasticsearch\ProductQueryBuilderFactory` to add `$accessLevel` as new argument.
 - AOB-2: Change the constructor of `PimEnterprise\Bundle\DataGridBundle\Datagrid\Configuration\Product\FiltersConfigurator` to add `Pim\Bundle\DataGridBundle\Datagrid\Configuration\ConfiguratorInterface`
 - AOB-2: Change the constructor of `PimEnterprise\Bundle\DataGridBundle\Datagrid\Configuration\Product\FiltersConfigurator` to remove `Pim\Bundle\DataGridBundle\Datagrid\Configuration\Product\ConfigurationRegistry`
