@@ -24,12 +24,12 @@ Characteristics:
 Tools:
 
 - backend: PhpSpec
-- frontend: TODO
+- frontend: Jest & Enzyme
 
 Examples:
 
 - backend: TODO
-- frontend: TODO
+- frontend: test the dropdown component
 
 ### Acceptance - test a business use case or ensure a business rule
 
@@ -45,7 +45,7 @@ Characteristics:
 Tools:
 
 - backend: Gherkin through Behat (no Mink, no Selenium)
-- frontend: Gherkin through TODO
+- frontend: Gherkin through CucumberJS & Puppeteer
 
 Examples:
 
@@ -63,7 +63,7 @@ Characteristics:
 Tools:
 
 - backend: PhpUnit
-- frontend: TODO
+- frontend: Jest with Puppeteer
 
 Examples:
 
