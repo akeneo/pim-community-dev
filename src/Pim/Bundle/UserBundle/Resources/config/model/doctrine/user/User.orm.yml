@@ -1,4 +1,4 @@
-Pim\Component\User\Model\User:
+Pim\Component\User\User\User:
     type: entity
     table: oro_user
     changeTrackingPolicy: DEFERRED_EXPLICIT

@@ -1,4 +1,4 @@
-Pim\Component\User\Model\Group:
+Pim\Component\User\Group\Group:
     type: entity
     table: oro_access_group
     changeTrackingPolicy: DEFERRED_EXPLICIT

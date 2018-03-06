@@ -22,7 +22,9 @@ class PimUserBundle extends Bundle
         $container->addCompilerPass(new ResolveDoctrineTargetModelPass());
 
         $productMappings = [
-            realpath(__DIR__ . '/Resources/config/model/doctrine') => 'Pim\Component\User\Model'
+            realpath(__DIR__ . '/Resources/config/model/doctrine/user') => 'Pim\Component\User\User',
+            realpath(__DIR__ . '/Resources/config/model/doctrine/role') => 'Pim\Component\User\Role',
+            realpath(__DIR__ . '/Resources/config/model/doctrine/group') => 'Pim\Component\User\Group',
         ];
 
         $container->addCompilerPass(

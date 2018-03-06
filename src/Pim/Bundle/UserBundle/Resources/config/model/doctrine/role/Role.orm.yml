@@ -1,4 +1,4 @@
-Pim\Component\User\Model\Role:
+Pim\Component\User\Role\Role:
     type: entity
     table: oro_access_role
     changeTrackingPolicy: DEFERRED_EXPLICIT

@@ -20,6 +20,8 @@ class ResolveDoctrineTargetModelPass extends AbstractResolveDoctrineTargetModelP
     {
         return [
             'Pim\Component\User\User\UserInterface' => 'pim_user.entity.user.class',
+            'Pim\Component\User\Role\RoleInterface' => 'pim_user.entity.role.class',
+            'Pim\Component\User\Group\GroupInterface' => 'pim_user.entity.group.class',
         ];
     }
 }
