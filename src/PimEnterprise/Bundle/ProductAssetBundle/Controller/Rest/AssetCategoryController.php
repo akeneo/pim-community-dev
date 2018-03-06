@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Bundle\EnrichBundle\Controller\Rest;
+namespace PimEnterprise\Bundle\ProductAssetBundle\Controller\Rest;
 
 use PimEnterprise\Component\ProductAsset\Repository\AssetCategoryRepositoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;

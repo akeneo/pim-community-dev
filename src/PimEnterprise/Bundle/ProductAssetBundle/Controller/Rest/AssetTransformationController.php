@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Bundle\EnrichBundle\Controller\Rest;
+namespace PimEnterprise\Bundle\ProductAssetBundle\Controller\Rest;
 
 use PimEnterprise\Component\ProductAsset\Repository\ChannelConfigurationRepositoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -21,7 +21,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  * @author Alexandr Jeliuc <alex@jeliuc.com>
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  */
-class ChannelController
+class AssetTransformationController
 {
     /** @var ChannelConfigurationRepositoryInterface */
     protected $transformationRepository;

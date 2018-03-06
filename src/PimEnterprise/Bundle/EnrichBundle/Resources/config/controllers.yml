@@ -3,9 +3,9 @@ parameters:
     pim_enrich.controller.product.class:                    PimEnterprise\Bundle\EnrichBundle\Controller\ProductController
     pim_enrich.controller.product_model.class:              PimEnterprise\Bundle\EnrichBundle\Controller\ProductModelController
     pim_enrich.controller.locale.class:                     PimEnterprise\Bundle\EnrichBundle\Controller\LocaleController
-    pimee_enrich.controller.rest.asset_category.class:      PimEnterprise\Bundle\EnrichBundle\Controller\Rest\AssetCategoryController
+    pimee_enrich.controller.rest.asset_category.class:      PimEnterprise\Bundle\ProductAssetBundle\Controller\Rest\AssetCategoryController
     pimee_enrich.controller.rule_relation.class:            PimEnterprise\Bundle\EnrichBundle\Controller\RuleRelationController
-    pimee_enrich.controller.channel.class:                  PimEnterprise\Bundle\EnrichBundle\Controller\Rest\ChannelController
+    pimee_enrich.controller.channel.class:                  PimEnterprise\Bundle\ProductAssetBundle\Controller\Rest\ChannelController
 
 services:
     # overriden to add security checks and use a smarter product saver which update draft or working copy
