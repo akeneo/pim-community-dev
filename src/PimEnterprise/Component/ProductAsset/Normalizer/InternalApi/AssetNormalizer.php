@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Bundle\EnrichBundle\Normalizer;
+namespace PimEnterprise\Component\ProductAsset\Normalizer\InternalApi;
 
 use Akeneo\Component\Classification\Model\CategoryInterface;
 use Doctrine\Common\Collections\Collection;
