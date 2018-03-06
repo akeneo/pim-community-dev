@@ -150,11 +150,13 @@ final class AuthenticatedUser implements AdvancedUserInterface
     public function serialize()
     {
         return serialize(
-            array(
-                $this->id,
-                $this->username,
+            [
                 $this->password,
-            )
+                $this->salt,
+                $this->username,
+                $this->enabled,
+                $this->id,
+            ]
         );
     }
 
@@ -164,9 +166,11 @@ final class AuthenticatedUser implements AdvancedUserInterface
     public function unserialize($serialized)
     {
         list(
-            $this->id,
-            $this->username,
             $this->password,
-        ) = unserialize($serialized);
+            $this->salt,
+            $this->username,
+            $this->enabled,
+            $this->id
+            ) = unserialize($serialized);
     }
 }

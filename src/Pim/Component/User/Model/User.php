@@ -150,38 +150,6 @@ class User implements UserInterface
     /**
      * {@inheritdoc}
      */
-    public function serialize()
-    {
-        return serialize(
-            [
-                $this->password,
-                $this->salt,
-                $this->username,
-                $this->enabled,
-                $this->confirmationToken,
-                $this->id,
-            ]
-        );
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function unserialize($serialized)
-    {
-        list(
-            $this->password,
-            $this->salt,
-            $this->username,
-            $this->enabled,
-            $this->confirmationToken,
-            $this->id
-        ) = unserialize($serialized);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function eraseCredentials()
     {
         $this->plainPassword = null;
@@ -361,30 +329,6 @@ class User implements UserInterface
     public function getUpdatedAt()
     {
         return $this->updatedAt;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function isEnabled()
-    {
-        return $this->enabled;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function isAccountNonExpired()
-    {
-        return true;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function isAccountNonLocked()
-    {
-        return $this->isEnabled();
     }
 
     /**
