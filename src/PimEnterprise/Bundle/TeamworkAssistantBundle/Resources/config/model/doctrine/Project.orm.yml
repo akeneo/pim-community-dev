@@ -29,7 +29,7 @@ PimEnterprise\Component\TeamworkAssistant\Model\Project:
             nullable: true
     manyToOne:
         owner:
-            targetEntity: Pim\Bundle\UserBundle\Entity\UserInterface
+            targetEntity: Pim\Component\User\Model\UserInterface
             joinColumns:
                 owner_id:
                     nullable: false

@@ -5,7 +5,7 @@ namespace spec\PimEnterprise\Bundle\CatalogRuleBundle\EventSubscriber;
 use Akeneo\Bundle\RuleEngineBundle\Model\Rule;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\NotificationBundle\NotifierInterface;
-use Pim\Bundle\UserBundle\Entity\UserInterface;
+use Pim\Component\User\Model\UserInterface;
 use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;

@@ -11,7 +11,7 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\Provider;
 
-use Pim\Bundle\UserBundle\Repository\UserRepositoryInterface;
+use Pim\Component\User\Repository\UserRepositoryInterface;
 use PimEnterprise\Bundle\UserBundle\Entity\UserInterface;
 
 /**

@@ -11,7 +11,7 @@
 
 namespace PimEnterprise\Bundle\UserBundle\Entity;
 
-use Pim\Bundle\UserBundle\Entity\UserInterface as BaseUserInterface;
+use Pim\Component\User\Model\UserInterface as BaseUserInterface;
 use PimEnterprise\Component\ProductAsset\Model\CategoryInterface;
 
 /**
