@@ -14,6 +14,7 @@ parameters:
   pimee_workflow.query.elasticsearch.filter.media.class: PimEnterprise\Bundle\WorkflowBundle\Elasticsearch\Filter\Attribute\MediaFilter
   pimee_workflow.query.elasticsearch.filter.date.class: PimEnterprise\Bundle\WorkflowBundle\Elasticsearch\Filter\Attribute\DateFilter
   pimee_workflow.query.elasticsearch.filter.boolean.class: PimEnterprise\Bundle\WorkflowBundle\Elasticsearch\Filter\Attribute\BooleanFilter
+  pimee_workflow.query.elasticsearch.filter.reference_data.class: PimEnterprise\Bundle\WorkflowBundle\Elasticsearch\Filter\Attribute\ReferenceDataFilter
 
   pimee_workflow.query.elasticsearch.attribute_path_resolver.class: PimEnterprise\Bundle\WorkflowBundle\Elasticsearch\Filter\Attribute\ProposalAttributePathResolver
 
@@ -275,9 +276,9 @@ services:
             - { name: 'pimee_workflow.elasticsearch.query.product_proposal_filter', priority: 30 }
 
     pimee_workflow.query.elasticsearch.filter.reference_data:
-        class: '%pim_reference_data.query.elasticsearch.filter.reference_data.class%'
+        class: '%pimee_workflow.query.elasticsearch.filter.reference_data.class%'
         arguments:
-            - '@pim_catalog.validator.helper.attribute'
+            - '@pimee_workflow.query.elasticsearch.attribute_path_resolver'
             - '@pim_reference_data.repository_resolver'
             - '@pim_reference_data.registry'
             - ['pim_reference_data_simpleselect', 'pim_reference_data_multiselect']
