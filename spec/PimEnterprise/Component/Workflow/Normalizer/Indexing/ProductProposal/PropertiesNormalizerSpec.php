@@ -3,8 +3,11 @@
 namespace spec\PimEnterprise\Component\Workflow\Normalizer\Indexing\ProductProposal;
 
 use PhpSpec\ObjectBehavior;
+use Pim\Component\Catalog\Model\AttributeInterface;
+use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ValueCollectionInterface;
+use Pim\Component\Catalog\Normalizer\Indexing\Product\ProductNormalizer;
 use PimEnterprise\Component\Workflow\Model\ProductDraftInterface;
 use PimEnterprise\Component\Workflow\Normalizer\Indexing\ProductProposal\PropertiesNormalizer;
 use PimEnterprise\Component\Workflow\Normalizer\Indexing\ProductProposalNormalizer;
@@ -36,7 +39,9 @@ class PropertiesNormalizerSpec extends ObjectBehavior
         $serializer,
         ProductDraftInterface $productProposal,
         ValueCollectionInterface $valueCollection,
-        ProductInterface $product
+        ProductInterface $product,
+        FamilyInterface $family,
+        AttributeInterface $attribute
     ) {
         $now = new \DateTime('now', new \DateTimeZone('UTC'));
 
@@ -50,13 +55,21 @@ class PropertiesNormalizerSpec extends ObjectBehavior
         $productProposal->getCreatedAt()->willReturn($now);
         $serializer->normalize(
             $productProposal->getWrappedObject()->getCreatedAt(),
-            ProductProposalNormalizer::INDEXING_FORMAT_PRODUCT_PROPOSAL_INDEX
+            ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX
         )->willReturn($now->format('c'));
+
+        $product->getFamily()->willReturn($family);
+        $family->getCode()->willReturn(null);
+        $serializer->normalize(
+            $product->getWrappedObject()->getFamily(),
+            ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX
+        )->willReturn(['code' => 'family']);
 
         $productProposal->getValues()->willReturn($valueCollection);
         $valueCollection->isEmpty()->willReturn(true);
 
-        $product->getFamily()->willReturn(null);
+        $family->getAttributeAsLabel()->willReturn($attribute);
+        $attribute->getCode()->willReturn(null);
         $product->getValue(null)->willReturn(null);
 
         $this->normalize($productProposal, ProductProposalNormalizer::INDEXING_FORMAT_PRODUCT_PROPOSAL_INDEX)->shouldReturn(
@@ -65,6 +78,7 @@ class PropertiesNormalizerSpec extends ObjectBehavior
                 'product_identifier' => '1',
                 'identifier' => '1',
                 'created' => $now->format('c'),
+                'family' => ['code' => 'family'],
                 'author' => 'mary',
                 'categories' => [],
                 'values' => [],

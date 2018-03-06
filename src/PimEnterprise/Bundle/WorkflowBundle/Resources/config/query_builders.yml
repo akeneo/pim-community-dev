@@ -137,6 +137,15 @@ services:
         tags:
             - { name: 'pimee_workflow.elasticsearch.query.product_proposal_filter', priority: 30 }
 
+    pimee_workflow.query.elasticsearch.filter.family:
+        class: '%pim_catalog.query.elasticsearch.filter.family.class%'
+        arguments:
+            - '@pim_catalog.repository.family'
+            - ['family']
+            - ['IN', 'NOT IN', 'EMPTY', 'NOT EMPTY']
+        tags:
+            - { name: 'pimee_workflow.elasticsearch.query.product_proposal_filter', priority: 30 }
+
     pimee_workflow.query.elasticsearch.filter.datetime:
         class: '%pim_catalog.query.elasticsearch.filter.datetime.class%'
         arguments:

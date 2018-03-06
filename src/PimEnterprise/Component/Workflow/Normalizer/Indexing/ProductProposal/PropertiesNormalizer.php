@@ -42,7 +42,6 @@ class PropertiesNormalizer implements NormalizerInterface, SerializerAwareInterf
             throw new \LogicException('Serializer must be a normalizer');
         }
 
-
         $data = [];
 
         $data[self::FIELD_ID] = (string) $productProposal->getId();
@@ -52,8 +51,12 @@ class PropertiesNormalizer implements NormalizerInterface, SerializerAwareInterf
         $data[StandardPropertiesNormalizer::FIELD_IDENTIFIER] = (string) $productProposal->getId();
         $data[StandardPropertiesNormalizer::FIELD_CREATED] = $this->serializer->normalize(
             $productProposal->getCreatedAt(),
-            ProductProposalNormalizer::INDEXING_FORMAT_PRODUCT_PROPOSAL_INDEX
+            ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX
         );
+        $data[StandardPropertiesNormalizer::FIELD_FAMILY] = null !== $product->getFamily() ? $this->serializer->normalize(
+            $product->getFamily(),
+            ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX
+        ) : null;
         $data[self::FIELD_AUTHOR] = (string) $productProposal->getAuthor();
         $data[StandardPropertiesNormalizer::FIELD_CATEGORIES] = $product->getCategoryCodes();
         $data[StandardPropertiesNormalizer::FIELD_VALUES] = !$productProposal->getValues()->isEmpty()
@@ -67,14 +70,14 @@ class PropertiesNormalizer implements NormalizerInterface, SerializerAwareInterf
 
         $labelValue = $product->getValue($attributeAsLabelCode);
 
-        $productlabel = null !== $labelValue
+        $productLabel = null !== $labelValue
             ? $this->serializer->normalize(
                 $labelValue,
-                ProductProposalNormalizer::INDEXING_FORMAT_PRODUCT_PROPOSAL_INDEX
+                $format
             ) : [];
 
         $data[StandardPropertiesNormalizer::FIELD_LABEL] = $this->getLabel(
-            $productlabel,
+            $productLabel,
             $product
         );
 

@@ -244,6 +244,8 @@ mappings:
                 normalizer: 'text_normalizer'
             categories:
                 type: 'keyword'
+            family.code:
+                type: 'keyword'
             created:
                 type: 'date'
             identifier:
@@ -253,6 +255,12 @@ mappings:
                 type: 'keyword'
                 normalizer: 'identifier_normalizer'
         dynamic_templates:
+            -
+                family:
+                    path_match: 'family.labels.*'
+                    mapping:
+                        type: 'keyword'
+                        normalizer: 'family_normalizer'
             -
                 label_scopable_localizable_structure:
                     path_match: 'label.*'
