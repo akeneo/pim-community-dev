@@ -13,7 +13,6 @@ namespace PimEnterprise\Bundle\ProductAssetBundle\Datagrid\Filter;
 
 use Oro\Bundle\FilterBundle\Filter\FilterUtility as BaseFilterUtility;
 use Pim\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
-use PimEnterprise\Bundle\FilterBundle\Filter\Tag\TagFilterAwareInterface;
 use PimEnterprise\Component\ProductAsset\Repository\AssetRepositoryInterface;
 
 /**

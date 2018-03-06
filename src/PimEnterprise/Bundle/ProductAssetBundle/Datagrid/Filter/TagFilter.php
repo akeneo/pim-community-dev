@@ -12,7 +12,7 @@
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
-namespace PimEnterprise\Bundle\FilterBundle\Filter\Tag;
+namespace PimEnterprise\Bundle\ProductAssetBundle\Datagrid\Filter;
 
 use Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
 use Oro\Bundle\FilterBundle\Filter\FilterUtility;

@@ -17,7 +17,7 @@ class ProductAssetFilterUtilitySpec extends ObjectBehavior
 
     function it_can_filter_by_tag()
     {
-        $this->shouldImplement('PimEnterprise\Bundle\FilterBundle\Filter\Tag\TagFilterAwareInterface');
+        $this->shouldImplement('PimEnterprise\Bundle\ProductAssetBundle\Datagrid\Filter\TagFilterAwareInterface');
     }
 
     function it_applies_a_tag_filter(

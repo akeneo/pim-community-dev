@@ -1,6 +1,6 @@
 parameters:
     pimee_product_asset.filter.product_asset.class: Pim\Bundle\ReferenceDataBundle\Datagrid\Filter\ReferenceDataFilter
-    pimee_filter.product_asset_tag_filter.class:    PimEnterprise\Bundle\FilterBundle\Filter\Tag\TagFilter
+    pimee_filter.product_asset_tag_filter.class:    PimEnterprise\Bundle\ProductAssetBundle\Datagrid\Filter\TagFilter
     pimee_filter.product_asset_utility.class:       PimEnterprise\Bundle\ProductAssetBundle\Datagrid\Filter\ProductAssetFilterUtility
 
 services:
