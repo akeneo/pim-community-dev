@@ -16,7 +16,7 @@ use Symfony\Component\Translation\TranslatorInterface;
  */
 class UiLocaleProvider implements LocaleProviderInterface
 {
-    const MAIN_LOCALE = 'en';
+    const MAIN_LOCALE = 'en_US';
 
     /** @var TranslatorInterface */
     protected $translator;
@@ -48,7 +48,7 @@ class UiLocaleProvider implements LocaleProviderInterface
         $mainProgress = $this->getProgress(self::MAIN_LOCALE);
 
         foreach ($localeNames as $code => $locale) {
-            if ($this->isAvailableLocale($fallbackLocales, $locales, $code, $mainProgress)) {
+            if ($this->isAvailableLocale($fallbackLocales, $code, $mainProgress)) {
                 $locales[$code] = $locale;
             }
         }
@@ -75,21 +75,22 @@ class UiLocaleProvider implements LocaleProviderInterface
      * translated to more than the percentage of the main locale.
      *
      * @param array  $fallbackLocales
-     * @param array  $locales
      * @param string $code
      * @param int    $mainProgress
      *
      * @return bool
      */
-    protected function isAvailableLocale(array $fallbackLocales, array $locales, $code, $mainProgress)
+    protected function isAvailableLocale(array $fallbackLocales, $code, $mainProgress)
     {
         if (in_array($code, $fallbackLocales)) {
             return true;
         }
 
-        if (strlen($code) > 2 && isset($locales[substr($code, 0, 2)])) {
-            return true;
+        if (strpos($code, '_') === false) {
+            // Remove locales without region
+            return false;
         }
+
         $progress = $this->getProgress($code);
 
         return ($progress >= $mainProgress * $this->minPercentage);
