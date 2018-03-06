@@ -1,5 +1,9 @@
 # 1.6.x
 
+- GITHUB-7760: Fix wrong HTTP status in AttributeOptionController::deleteAction, cheers @amansilla!
+
+# 1.6.22 (2018-02-26)
+
 ## Bug fixes
 
 - PIM-7132: Fix "url too long" when doing a mass edit
