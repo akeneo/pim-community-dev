@@ -2,6 +2,7 @@
 
 namespace spec\PimEnterprise\Bundle\CatalogBundle\Doctrine\MongoDBODM;
 
+use Akeneo\Component\StorageUtils\Cursor\CursorInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\MongoDB\Query\Builder;
 use Doctrine\ODM\MongoDB\DocumentManager;
@@ -9,6 +10,9 @@ use Doctrine\ODM\MongoDB\Query\Query;
 use Doctrine\ORM\EntityManagerInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Query\Filter\Operators;
+use Pim\Component\Catalog\Query\ProductQueryBuilderFactoryInterface;
+use Pim\Component\Catalog\Query\ProductQueryBuilderInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
 use Pim\Component\Catalog\Repository\FamilyRepositoryInterface;
@@ -27,7 +31,8 @@ class CompletenessGeneratorSpec extends ObjectBehavior
         FamilyRepositoryInterface $familyRepository,
         AssetRepositoryInterface $assetRepository,
         AttributeRepositoryInterface $attributeRepository,
-        EntityManagerInterface $manager
+        EntityManagerInterface $manager,
+        ProductQueryBuilderFactoryInterface $pqbFactory
     ) {
         $productClass = 'Pim\Component\Catalog\Model\ProductInterface';
 
@@ -38,7 +43,8 @@ class CompletenessGeneratorSpec extends ObjectBehavior
             $assetRepository,
             $attributeRepository,
             $manager,
-            $productClass
+            $productClass,
+            $pqbFactory
         );
     }
 
@@ -51,6 +57,9 @@ class CompletenessGeneratorSpec extends ObjectBehavior
     public function it_can_schedule_completeness_for_an_asset(
         $documentManager,
         $attributeRepository,
+        $pqbFactory,
+        ProductQueryBuilderInterface $pqb,
+        CursorInterface $products,
         Builder $qb,
         Query $query,
         AssetInterface $asset,
@@ -62,7 +71,23 @@ class CompletenessGeneratorSpec extends ObjectBehavior
 
         $attributeRepository->getAttributeCodesByType('pim_assets_collection')->willReturn(['gallery', 'foobar']);
 
-        $asset->getId()->willReturn(666);
+        $asset->getCode()->willReturn('my_asset');
+
+        $pqbFactory->create()->willReturn($pqb);
+
+        $pqb->addFilter('gallery', Operators::IN_LIST, ['my_asset'])->shouldBeCalled();
+        $pqb->addFilter('foobar', Operators::IN_LIST, ['my_asset'])->shouldBeCalled();
+
+        $pqb->execute()->willReturn($products);
+        $products->count()->willReturn(2);
+
+        $products->rewind()->shouldBeCalled();
+        $products->valid()->willReturn(true, true, false);
+        $products->current()->willReturn($product1, $product2);
+        $products->next()->shouldBeCalled();
+
+        $product1->getId()->willReturn('ID_1');
+        $product2->getId()->willReturn('ID_2');
 
         $qb->update()->willReturn($qb);
         $qb->multiple(true)->willReturn($qb);
@@ -70,15 +95,10 @@ class CompletenessGeneratorSpec extends ObjectBehavior
         $qb->expr()->willReturn($qb);
         $qb->addOr(\Prophecy\Argument::any())->willReturn($qb);
 
-        $qb->field('normalizedData.gallery')->willReturn($qb);
-        $qb->exists(true)->willReturn($qb);
-        $qb->field('normalizedData.gallery.id')->willReturn($qb);
-        $qb->equals(666)->willReturn($qb);
-
-        $qb->field('normalizedData.foobar')->willReturn($qb);
-        $qb->exists(true)->willReturn($qb);
-        $qb->field('normalizedData.foobar.id')->willReturn($qb);
-        $qb->equals(666)->willReturn($qb);
+        $qb->field('id')->willReturn($qb);
+        $qb->equals('ID_1')->willReturn($qb);
+        $qb->field('id')->willReturn($qb);
+        $qb->equals('ID_2')->willReturn($qb);
 
         $qb->field('completenesses')->willReturn($qb);
         $qb->unsetField()->willReturn($qb);
@@ -90,6 +110,7 @@ class CompletenessGeneratorSpec extends ObjectBehavior
 
         $product1->getCompletenesses()->willReturn(new ArrayCollection());
         $product2->getCompletenesses()->willReturn(new ArrayCollection());
+
         $this->scheduleForAsset($asset);
     }
 }
