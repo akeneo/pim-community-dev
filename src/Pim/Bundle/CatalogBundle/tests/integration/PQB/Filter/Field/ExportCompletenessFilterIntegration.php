@@ -18,7 +18,7 @@ use Pim\Component\Catalog\Query\Filter\Operators;
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class GridCompletenessFilterIntegration extends AbstractProductQueryBuilderTestCase
+class ExportCompletenessFilterIntegration extends AbstractProductQueryBuilderTestCase
 {
     public function setUp()
     {
@@ -31,62 +31,8 @@ class GridCompletenessFilterIntegration extends AbstractProductQueryBuilderTestC
     }
 
     /**
-     * Test the AT LEAST COMPLETE filter
-     */
-    public function testCompleteOperator()
-    {
-        $result = $this->executeFilter([[
-            'completeness',
-            Operators::AT_LEAST_COMPLETE,
-            null,
-            [
-                'locale' => 'en_US',
-                'scope' => 'ecommerce',
-            ]
-        ]]);
-
-        $assert = new AssertEntityWithValues(
-            [
-                'simple_product',
-                'root_product_model_one_level',
-                'root_product_model_two_level',
-            ],
-            iterator_to_array($result),
-            'The right complete variant products / product models did not be found (channel: ecommerce, locale: en_US).'
-        );
-
-        $assert->same();
-    }
-
-    /**
-     * Test the AT LEAST INCOMPLETE filter
-     */
-    public function testIncompleteOperator()
-    {
-        $result = $this->executeFilter([[
-            'completeness',
-            Operators::AT_LEAST_INCOMPLETE,
-            null,
-            [
-                'locale' => 'fr_FR',
-                'scope' => 'tablet',
-            ]
-        ]]);
-
-        $assert = new AssertEntityWithValues(
-            [
-                'simple_product',
-                'root_product_model_two_level'
-            ],
-            iterator_to_array($result),
-            'The right incomplete variant products / product models did not be found (channel: tablet, locale: fr_FR).'
-        );
-
-        $assert->same();
-    }
-
-    /**
      * Test the AT LEAST COMPLETE filter on all locale
+     * @group do
      */
     public function testCompleteOnAllLocaleOperator()
     {
@@ -108,31 +54,92 @@ class GridCompletenessFilterIntegration extends AbstractProductQueryBuilderTestC
                 'root_product_model_two_level',
             ],
             iterator_to_array($result),
-            'The right complete variant products / product models did not be found (channel: ecommerce, locale: en_US).'
+            'The right complete variant products / product models did not be found (channel: ecommerce, locale: en_US, fr_FR, de_DE).'
         );
 
         $assert->same();
     }
 
     /**
-     * The filter expect a non empty locale
-     *
-     * @expectedException \Akeneo\Component\StorageUtils\Exception\InvalidPropertyException
-     * @expectedExceptionMessage Property "completeness" expects a valid locale.
+     * Test the AT LEAST INCOMPLETE filter on all locale
+     * @group do
      */
-    public function testErrorLocaleIsNotMissing()
+    public function testIncompleteOnAllLocaleOperator()
     {
-        $this->executeFilter([['completeness', Operators::AT_LEAST_COMPLETE, null, ['scope' => 'ecommerce']]]);
+        $result = $this->executeFilter([[
+            'completeness',
+            Operators::AT_LEAST_INCOMPLETE,
+            null,
+            [
+                'locale' => null,
+                'scope' => 'tablet',
+                'locales' => ['fr_FR', 'en_US', 'de_DE']
+            ]
+        ]]);
+
+        $assert = new AssertEntityWithValues(
+            [
+                'sub_product_model',
+                'root_product_model_one_level',
+                'root_product_model_two_level',
+            ],
+            iterator_to_array($result),
+            'The right complete variant products / product models did not be found (channel: ecommerce, locale: en_US, fr_FR, de_DE).'
+        );
+
+        $assert->same();
     }
+
     /**
-     * The filter expect a non empty channel
-     *
-     * @expectedException \Akeneo\Component\StorageUtils\Exception\InvalidPropertyException
-     * @expectedExceptionMessage Property "completeness" expects a valid channel.
+     * Test the ALL COMPLETE filter on all locale
+     * @group do
      */
-    public function testErrorChannelIsNotMissing()
+    public function testAllCompleteOnAllLocaleOperator()
     {
-        $this->executeFilter([['completeness', Operators::AT_LEAST_COMPLETE, null, ['locale' => 'en_US']]]);
+        $result = $this->executeFilter([[
+            'completeness',
+            Operators::ALL_COMPLETE,
+            null,
+            [
+                'locale' => null,
+                'scope' => 'tablet',
+                'locales' => ['fr_FR', 'en_US', 'de_DE']
+            ]
+        ]]);
+
+        $assert = new AssertEntityWithValues(
+            [],
+            iterator_to_array($result),
+            'The right complete variant products / product models did not be found (channel: ecommerce, locale: en_US, fr_FR, de_DE).'
+        );
+
+        $assert->same();
+    }
+
+    /**
+     * Test the ALL INCOMPLETE filter on all locale
+     * @group do
+     */
+    public function testAllIncompleteOnAllLocaleOperator()
+    {
+        $result = $this->executeFilter([[
+            'completeness',
+            Operators::ALL_INCOMPLETE,
+            null,
+            [
+                'locale' => null,
+                'scope' => 'tablet',
+                'locales' => ['fr_FR', 'en_US', 'de_DE']
+            ]
+        ]]);
+
+        $assert = new AssertEntityWithValues(
+            [],
+            iterator_to_array($result),
+            'The right complete variant products / product models did not be found (channel: ecommerce, locale: en_US, fr_FR, de_DE).'
+        );
+
+        $assert->same();
     }
 
     /**
@@ -144,9 +151,7 @@ class GridCompletenessFilterIntegration extends AbstractProductQueryBuilderTestC
      */
     protected function executeFilter(array $filters)
     {
-        $pqb = $this->get('pim_enrich.query.product_and_product_model_query_builder_from_size_factory')->create(
-            ['limit' => 100]
-        );
+        $pqb = $this->get('pim_catalog.query.product_model_query_builder_factory')->create();
 
         foreach ($filters as $filter) {
             $context = isset($filter[3]) ? $filter[3] : [];

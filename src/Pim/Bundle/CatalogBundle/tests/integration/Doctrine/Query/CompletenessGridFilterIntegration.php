@@ -34,25 +34,6 @@ class CompletenessGridFilterIntegration extends TestCase
         $this->assertEquals(
             [
                 'ecommerce' => [
-                    'en_US' => 1,
-                ],
-                'ecommerce_china' => [
-                    'en_US' => 1,
-                    'zh_CN' => 1,
-                ],
-                'tablet' => [
-                    'de_DE' => 0,
-                    'en_US' => 1,
-                    'fr_FR' => 1,
-                ],
-            ],
-            $result->atLeastComplete(),
-            'The number of variant product at least complete is wrong'
-        );
-
-        $this->assertEquals(
-            [
-                'ecommerce' => [
                     'en_US' => 0,
                 ],
                 'ecommerce_china' => [
@@ -61,12 +42,31 @@ class CompletenessGridFilterIntegration extends TestCase
                 ],
                 'tablet' => [
                     'de_DE' => 1,
-                    'en_US' => 1,
-                    'fr_FR' => 1,
+                    'en_US' => 0,
+                    'fr_FR' => 0,
                 ],
             ],
-            $result->atLeastIncomplete(),
-            'The number of variant product at least incomplete is wrong'
+            $result->allIncomplete(),
+            'The number of variant product at all incomplete is wrong'
+        );
+
+        $this->assertEquals(
+            [
+                'ecommerce' => [
+                    'en_US' => 1,
+                ],
+                'ecommerce_china' => [
+                    'en_US' => 1,
+                    'zh_CN' => 1,
+                ],
+                'tablet' => [
+                    'de_DE' => 0,
+                    'en_US' => 0,
+                    'fr_FR' => 0,
+                ],
+            ],
+            $result->allComplete(),
+            'The number of variant product all complete is wrong'
         );
     }
 
@@ -81,25 +81,6 @@ class CompletenessGridFilterIntegration extends TestCase
         $this->assertEquals(
             [
                 'ecommerce' => [
-                    'en_US' => 1,
-                ],
-                'ecommerce_china' => [
-                    'en_US' => 1,
-                    'zh_CN' => 1,
-                ],
-                'tablet' => [
-                    'de_DE' => 0,
-                    'en_US' => 1,
-                    'fr_FR' => 1,
-                ],
-            ],
-            $result->atLeastComplete(),
-            'The number of variant product at least complete is wrong'
-        );
-
-        $this->assertEquals(
-            [
-                'ecommerce' => [
                     'en_US' => 0,
                 ],
                 'ecommerce_china' => [
@@ -108,12 +89,31 @@ class CompletenessGridFilterIntegration extends TestCase
                 ],
                 'tablet' => [
                     'de_DE' => 1,
-                    'en_US' => 1,
-                    'fr_FR' => 1,
+                    'en_US' => 0,
+                    'fr_FR' => 0,
                 ],
             ],
-            $result->atLeastIncomplete(),
-            'The number of variant product at least incomplete is wrong'
+            $result->allIncomplete(),
+            'The number of variant product all incomplete is wrong'
+        );
+
+        $this->assertEquals(
+            [
+                'ecommerce' => [
+                    'en_US' => 1,
+                ],
+                'ecommerce_china' => [
+                    'en_US' => 1,
+                    'zh_CN' => 1,
+                ],
+                'tablet' => [
+                    'de_DE' => 0,
+                    'en_US' => 0,
+                    'fr_FR' => 0,
+                ],
+            ],
+            $result->allComplete(),
+            'The number of variant product all complete is wrong'
         );
     }
 
@@ -128,25 +128,6 @@ class CompletenessGridFilterIntegration extends TestCase
         $this->assertEquals(
             [
                 'ecommerce' => [
-                    'en_US' => 1,
-                ],
-                'ecommerce_china' => [
-                    'en_US' => 1,
-                    'zh_CN' => 1,
-                ],
-                'tablet' => [
-                    'de_DE' => 0,
-                    'en_US' => 1,
-                    'fr_FR' => 1,
-                ],
-            ],
-            $result->atLeastComplete(),
-            'The number of variant product at least complete is wrong'
-        );
-
-        $this->assertEquals(
-            [
-                'ecommerce' => [
                     'en_US' => 0,
                 ],
                 'ecommerce_china' => [
@@ -155,12 +136,31 @@ class CompletenessGridFilterIntegration extends TestCase
                 ],
                 'tablet' => [
                     'de_DE' => 1,
-                    'en_US' => 1,
+                    'en_US' => 0,
                     'fr_FR' => 0,
                 ],
             ],
-            $result->atLeastIncomplete(),
-            'The number of variant product at least incomplete is wrong'
+            $result->allIncomplete(),
+            'The number of variant product all incomplete is wrong'
+        );
+
+        $this->assertEquals(
+            [
+                'ecommerce' => [
+                    'en_US' => 1,
+                ],
+                'ecommerce_china' => [
+                    'en_US' => 1,
+                    'zh_CN' => 1,
+                ],
+                'tablet' => [
+                    'de_DE' => 0,
+                    'en_US' => 0,
+                    'fr_FR' => 1,
+                ],
+            ],
+            $result->allComplete(),
+            'The number of variant product all complete is wrong'
         );
     }
 
