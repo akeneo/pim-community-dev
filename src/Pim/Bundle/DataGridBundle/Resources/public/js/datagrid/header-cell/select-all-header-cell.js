@@ -173,8 +173,10 @@ define(
          * @private
          */
         _selectAll: function () {
-            this.collection.each(function (model) {
-                model.trigger("backgrid:select", model, true);
+            this.collection.each((model) => {
+                if (!this.isSelectedModel(model)) {
+                    model.trigger("backgrid:select", model, true);
+                }
             });
         },
 

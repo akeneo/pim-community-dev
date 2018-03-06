@@ -9,6 +9,7 @@
 
 - PIM-7118: Fix bug related to product export
 - PIM-7199: Display a message when trying to delete the pim identifier attribute
+- PIM-7214: Fix a bug that prevents to select multiple items across pages in Products, Family and associations grids
 - PIM-7217: Fix missing and disabled fields in product model import
 - PIM-7167: Fix slowness when going back to the Product grid when a family is used in the filter
 
