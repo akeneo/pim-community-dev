@@ -1,4 +1,4 @@
-username;first_name;last_name;email;password;catalog_locale;user_locale;catalog_scope;default_tree;roles;groups;enabled
+username;first_name;last_name;email;password;catalog_default_locale;user_default_locale;catalog_default_scope;default_category_tree;roles;groups;enabled
 admin;John;Doe;admin@example.com;admin;en_US;en_US;ecommerce;master;ROLE_ADMINISTRATOR;IT support;1
 Julia;Julia;Stark;Julia@example.com;Julia;en_US;en_US;ecommerce;master;ROLE_CATALOG_MANAGER;Manager;1
 Peter;Peter;Williams;Peter@example.com;Peter;en_US;en_US;ecommerce;master;ROLE_ADMINISTRATOR;IT support;1
