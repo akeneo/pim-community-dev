@@ -24,10 +24,15 @@ class DeleteVariantProductWithPermissionIntegration extends ApiTestCase
     {
         $this->loader->loadProductModelsFixturesForCategoryPermissions();
 
-        $message = 'You can neither view, nor update, nor delete the product "colored_sized_sweat_no_view", as it is only categorized in categories on which you do not have a view permission.';
-        $data = '{"categories": ["own_category"]}';
+        $client = $this->createAuthenticatedClient([], [], null, null, 'mary', 'mary');
 
-        $this->assertUnauthorized('colored_sized_sweat_no_view', $data, sprintf($message, 'colored_sized_sweat_no_view'));
+        $client->request('DELETE', 'api/rest/v1/products/' . 'colored_sized_sweat_no_view', [], [], [], '{"categories": ["own_category"]}');
+        $response = $client->getResponse();
+
+        $expectedContent = sprintf('{"code":%d,"message":"Product \"colored_sized_sweat_no_view\" does not exist."}', Response::HTTP_NOT_FOUND);
+
+        Assert::assertSame(Response::HTTP_NOT_FOUND, $response->getStatusCode());
+        Assert::assertEquals($expectedContent, $response->getContent());
     }
 
     public function testDeleteOnlyViewableVariantProduct()

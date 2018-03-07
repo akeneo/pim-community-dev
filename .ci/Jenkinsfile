@@ -13,7 +13,6 @@ String dotsPerLine = "50"
 String slackChannel = ""
 
 stage("Build") {
-
     milestone 1
     if (env.BRANCH_NAME =~ /^PR-/) {
         timeout(time:5, unit:'DAYS') {

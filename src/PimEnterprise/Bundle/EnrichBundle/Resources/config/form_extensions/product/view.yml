@@ -137,6 +137,8 @@ extensions:
         parent: pimee-product-view-attributes
         targetZone: context-selectors
         position: 110
+        config:
+            context: base_product
 
     pimee-product-view-locale-specific:
         module: pim/product-edit-form/attributes/locale-specific

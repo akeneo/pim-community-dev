@@ -8,7 +8,7 @@ use Akeneo\Component\Classification\CategoryAwareInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
 use PimEnterprise\Component\Security\Attributes;
-use PimEnterprise\Component\Security\Exception\ResourceAccessDeniedException;
+use PimEnterprise\Component\Security\Exception\ResourceViewAccessDeniedException;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 /**
@@ -33,41 +33,30 @@ class DenyNotGrantedCategorizedEntity
     /**
      * Checks if the $categoryAwareEntity is granted against the current authentication token.
      * If not granted it denies the entity by throwing an exception.
+     * If the view permission is not granted, the message will be voluntary vague.
      *
      * @param CategoryAwareInterface $categoryAwareEntity
      *
-     * @throws ResourceAccessDeniedException
+     * @throws ResourceViewAccessDeniedException
      */
     public function denyIfNotGranted(CategoryAwareInterface $categoryAwareEntity): void
     {
         if (!$this->authorizationChecker->isGranted(Attributes::VIEW, $categoryAwareEntity)) {
             if ($categoryAwareEntity instanceof ProductModelInterface) {
-                throw new ResourceAccessDeniedException(
+                throw new ResourceViewAccessDeniedException(
                     $categoryAwareEntity,
-                    sprintf(
-                        'You can neither view, nor update, nor delete the product model "%s", as it is only ' .
-                        'categorized in categories on which you do not have a view permission.',
-                        $categoryAwareEntity->getCode()
-                    )
+                    sprintf('Product model "%s" does not exist.', $categoryAwareEntity->getCode())
                 );
             }
 
             if ($categoryAwareEntity instanceof ProductInterface) {
-                throw new ResourceAccessDeniedException(
+                throw new ResourceViewAccessDeniedException(
                     $categoryAwareEntity,
-                    sprintf(
-                        'You can neither view, nor update, nor delete the product "%s", as it is only categorized ' .
-                        'in categories on which you do not have a view permission.',
-                        $categoryAwareEntity->getIdentifier()
-                    )
+                    sprintf('Product "%s" does not exist.', $categoryAwareEntity->getIdentifier())
                 );
             }
 
-            throw new ResourceAccessDeniedException(
-                $categoryAwareEntity,
-                'You can neither view, nor update, nor delete this entity, as it is only categorized in categories ' .
-                'on which you do not have a view permission.'
-            );
+            throw new ResourceViewAccessDeniedException($categoryAwareEntity, 'This entity does not exist.');
         }
     }
 }
