@@ -10,6 +10,7 @@ use Akeneo\Bundle\RuleEngineBundle\Runner\RunnerInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
+use PimEnterprise\Component\CatalogRule\Repository\ProductModelDescendantRepositoryInterface;
 use Prophecy\Argument;
 
 class RulesExecutorSpec extends ObjectBehavior
@@ -49,12 +50,10 @@ class RulesExecutorSpec extends ObjectBehavior
         $productModelB->getId()->willReturn(666);
 
         $runner->run($ruleDefinition1, [
-            'selected_products' => ['product_42', 'product_84'],
-            'selected_product_models' => ['product_model_42', 'product_model_666'],
+            'selected_entities_with_values' => ['product_42', 'product_84', 'product_model_42', 'product_model_666'],
         ])->shouldBeCalled();
         $runner->run($ruleDefinition2, [
-            'selected_products' => ['product_42', 'product_84'],
-            'selected_product_models' => ['product_model_42', 'product_model_666'],
+            'selected_entities_with_values' => ['product_42', 'product_84', 'product_model_42', 'product_model_666'],
         ])->shouldBeCalled();
 
         $this->write([$productA, $productB, $productModelA, $productModelB]);
@@ -73,8 +72,7 @@ class RulesExecutorSpec extends ObjectBehavior
         $productModel->getId()->willReturn(null);
 
         $runner->run($ruleDefinition, [
-            'selected_products' => ['product_42'],
-            'selected_product_models' => [],
+            'selected_entities_with_values' => ['product_42'],
         ])->shouldBeCalled();
 
         $this->write([$product, $productModel]);
@@ -93,8 +91,7 @@ class RulesExecutorSpec extends ObjectBehavior
         $productModel->getId()->willReturn(42);
 
         $runner->run($ruleDefinition, [
-            'selected_products' => [],
-            'selected_product_models' => ['product_model_42'],
+            'selected_entities_with_values' => ['product_model_42'],
         ])->shouldBeCalled();
 
         $this->write([$product, $productModel]);

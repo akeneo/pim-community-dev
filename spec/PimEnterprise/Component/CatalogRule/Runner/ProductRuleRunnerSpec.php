@@ -85,7 +85,7 @@ class ProductRuleRunnerSpec extends ObjectBehavior
         $selector->select($rule)->shouldBeCalled()->willReturn($subjectSet);
         $applier->apply($rule, $subjectSet)->shouldBeCalled();
 
-        $this->run($definition, ['selected_products' => [1, 2, 3]]);
+        $this->run($definition, ['selected_entities_with_values' => [1, 2, 3]]);
     }
 
     function it_dries_run_a_rule_on_a_subset_of_products(
@@ -101,6 +101,6 @@ class ProductRuleRunnerSpec extends ObjectBehavior
         $selector->select($rule)->shouldBeCalled()->willReturn($subjectSet);
         $applier->apply(Argument::any())->shouldNotBeCalled();
 
-        $this->dryRun($definition, ['selected_products' => [1, 2, 3]]);
+        $this->dryRun($definition, ['selected_entities_with_values' => [1, 2, 3]]);
     }
 }
