@@ -28,11 +28,6 @@ oro_user_reset_send_email:
     defaults: { _controller: OroUserBundle:Reset:sendEmail }
     methods: [POST]
 
-oro_user_reset_check_email:
-    path: /user/check-email
-    defaults: { _controller: OroUserBundle:Reset:checkEmail }
-    methods: [GET]
-
 oro_user_reset_reset:
     path: /user/reset/{token}
     defaults: { _controller: OroUserBundle:Reset:reset }

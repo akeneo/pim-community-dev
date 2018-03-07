@@ -86,7 +86,7 @@
         "sebastian/exporter": "~3.1.0",
         "sensiolabs/behat-page-object-extension": "2.1.0",
         "squizlabs/php_codesniffer": "2.*",
-        "liuggio/fastest": "1.4.4"
+        "liuggio/fastest": "1.6.*"
     },
     "suggest": {
         "akeneo/catalogs": "In order to install one of the Akeneo catalogs"
