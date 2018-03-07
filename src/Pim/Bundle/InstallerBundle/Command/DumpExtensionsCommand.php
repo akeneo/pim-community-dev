@@ -16,7 +16,7 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class DumpExtensionsCommand extends ContainerAwareCommand
 {
-    const MAIN_CONFIG_FILE_NAME = './test_dist/extensions.json';
+    const MAIN_CONFIG_FILE_NAME = 'test_dist/extensions.json';
 
     /**
      * {@inheritdoc}

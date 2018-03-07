@@ -10,8 +10,8 @@
     "webpack-test": "webpack --config webpack-test.config.js",
     "lint": "node ./node_modules/eslint/bin/eslint 'src/**/*.js' --ignore-path .eslintignore --quiet",
     "lint-fix": "node ./node_modules/eslint/bin/eslint 'src/**/*.js' --ignore-path .eslintignore --quiet --fix",
-    "acceptance": "DEBUG=puppeteer:page node webpack/test/acceptance/run.js",
-    "acceptance-debug": "node --inspect-brk webpack/test/acceptance/run.js"
+    "acceptance": "cucumber-js -r ./webpack/test/acceptance/run.js -r ./tests/front/acceptance/cucumber ./tests/front/acceptance/features/",
+    "acceptance-debug": "cucumber-js -r ./webpack/test/acceptance/run.js -r ./tests/front/acceptance/cucumber/step-definitions ./tests/front/acceptance/features/ --world-parameters='{\"debug\": true}'"
   },
   "repository": {
     "type": "git",
@@ -55,6 +55,7 @@
     "merge-objects": "1.0.5",
     "raw-loader": "0.5.1",
     "regexp-replace-loader": "1.0.0",
+    "step-dictionary": "^0.1.2",
     "summernote": "0.6.5",
     "text-loader": "0.0.1",
     "underscore": "1.8.3",

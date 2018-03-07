@@ -11,7 +11,8 @@
     "__dirname": true,
     "__moduleConfig": true,
     "__contextPlaceholder": true,
-    "__contextPaths": true
+    "__contextPaths": true,
+    "process"
   },
   "rules": {
     "space-infix-ops": 2,
