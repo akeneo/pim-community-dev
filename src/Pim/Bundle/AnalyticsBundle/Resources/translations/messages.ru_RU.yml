@@ -1,0 +1,39 @@
+pim_analytics:
+  new_patch_available: Доступен новый патч
+  system_config:
+    group:
+      notification.title: Уведомления
+      version_update.title: Oбновления версии
+    form:
+      version_update.label: Уведомления о новых версиях
+      version_update.tooltip: Отправить запрос на отдаленный сервер для извлечения уведомлений о выпуске новых патчей
+  system_info:
+    title: Информация о системе
+    download: TXT
+  info_type:
+    pim_edition: Издание
+    pim_version: Версия
+    pim_storage_driver: Диск. пространство
+    pim_environment: Среда
+    pim_install_time: Время установки
+    registered_bundles: Зарегистрированные связки
+    nb_channels: Количество каналов
+    nb_products: Количество продуктов
+    nb_attributes: Количество атрибутов
+    nb_locales: Количество локалeй
+    nb_families: Количество семейств
+    nb_users: Количество пользователей
+    pim_storage_version: Версия хранениях базы данных
+    os_version: Версия ОС
+    php_version: Версия PHP
+    mysql_version: Версия MySQL
+    mariadb_version: Версия MariaDB
+    mongodb_version: Версия MongoDB
+    server_version: Версия сервера
+    php_extensions: Расширения PHP
+  acl:
+    system_info:
+      index: Информация о системе
+pim_menu:
+  item:
+    system_info: Информация о системе

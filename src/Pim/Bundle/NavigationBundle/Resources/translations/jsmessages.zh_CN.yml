@@ -1,0 +1,4 @@
+"Sorry, page was not loaded correctly": "抱歉，页面加载错误"
+"Your local changes will be lost. Are you sure you want to refresh the page?": "你本地的更改将会丢失。你确定你想要刷新页面？"
+"navigation.message.content.outdated": "{{ title }} 页面的内容已经过时，请 <a href='#' data-action='page-refresh'> 刷新页面</a>"
+"Content of pinned page is outdated": "订阅页面的内容已经过时"

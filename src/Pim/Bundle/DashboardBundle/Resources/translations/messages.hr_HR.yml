@@ -1,0 +1,27 @@
+pim_dashboard:
+  title: Nadzorna ploča
+  version: Verzija
+  link.label:
+    product: Upravljanje proizvodima
+    category: Upravljanje kategorijama
+    attribute: Upravljanje atributima
+    family: Upravljanje obiteljima
+  widget:
+    error:
+      title: Pogreška tijekom učitavanja dodatka
+      message: Dodatak '%alias%' ne postoji
+    completeness:
+      title: Potpunost kanala i lokalizacije
+    last_operations:
+      title: Zadnja operacija
+      empty: Nije pronađena niti jedna operacija
+      status: Status
+      date: Datum
+      type: Tip
+      "profile name": Naziv profila
+      details: Detalji
+      job_type:
+        import: Uvoz
+        export: Izvoz
+        mass_edit: Masovno uređivanje
+        quick_export: Brzi izvoz

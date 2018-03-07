@@ -1,0 +1,108 @@
+Item deleted: Element gelöscht
+Are you sure you want to delete this item?: Möchten Sie dieses Element wirklich löschen?
+Delete Error: Fehler beim Löschen
+Are you sure you want to do remove selected items?: Sind Sie sicher, dass Sie die gewählten Elemente entfernen möchten?
+Selected items were removed.: Die ausgewählten Elemente wurden entfernt.
+Selected items were not removed.: Die ausgewählten Elemente wurden nicht entfernt.
+Please, select items to remove.: Bitte die Elemente auswählen, die entfernt werden sollen.
+Cannot delete item.: Element kann nicht gelöscht werden.
+Refresh Confirmation: Aktualisierungsbestätigung
+Your local changes will be lost. Are you sure you want to refresh grid?: Ihre lokalen Änderungen gehen verloren. Sind Sie sicher, dass Sie die Tabelle aktualisieren möchten?
+Reset Confirmation: Reset-Bestätigung
+Your local changes will be lost. Are you sure you want to reset grid?: Ihre lokalen Änderungen gehen verloren. Sind Sie sicher, dass Sie die Tabelle zurücksetzen möchten?
+Confirmation: Bestätigung
+edit: Bearbeiten
+copy: Kopieren
+remove: Entfernen
+Status: Status
+All: Alle
+Per page: Pro Seite
+Mass Action Confirmation: Massenaktion-Bestätigung
+Mass action performed.: Massenaktion durchgeführt.
+Mass action is not performed.: Massenaktion nicht durchgeführt.
+Please, select items to perform mass action.: Wählen Sie die Elemente zum Ausführen der Massenaktion.
+Execution Confirmation: Ausführungsbestätigung
+Are you sure you want to do this?: Sind Sie sicher, dass Sie das tun möchten?
+Action performed.: Aktion ausgeführt.
+Action is not performed.: Aktion nicht ausgeführt.
+Please, select item to perform action.: Bitte Element zum Ausführen der Aktion wählen.
+View per page: Pro Seite
+Enabled: Aktiviert
+Disabled: Deaktiviert
+not_available: N/A
+Yes: true
+No: false
+oro.datagrid.entityHint: Entität
+oro.datagrid.noentities: Keine Einträge gefunden
+oro.datagrid.noresults: "Für Ihre Suche wurden leider keine passenden Treffer gefunden."
+oro.datagrid.noresults_subTitle: "Wiederholen Sie Ihre Suche mit anderen Suchkriterien."
+oro.datagrid.nocolumns: Es sind keine Spalten für diese Tabelle konfiguriert
+oro.datagrid.pagination.label: "Seite"
+oro.datagrid.pagination.totalPages: "von {{ totalPages }}"
+oro.datagrid.pagination.totalRecords: "{{ totalRecords }} Datensätze"
+oro.datagrid.action.reset: "Zurücksetzen"
+oro.datagrid.action.refresh: "Aktualisieren"
+oro_datagrid.select.all: "Alle"
+oro_datagrid.select.visible: "Alle sichtbaren"
+oro_datagrid.select.none: "Keine"
+oro_datagrid.select.select: "Auswählen"
+pim.grid.ajax_choice_filter.label_empty: ist leer
+pim.grid.ajax_choice_filter.label_not_empty: ist nicht leer
+pim:
+  grid:
+    choice_filter:
+      label_empty: ist leer
+      label_not_empty: ist nicht leer
+      label_in_list: in Liste
+      operator: Operator
+    price_filter:
+      label: Währung
+    category_filter:
+      done: Fertig
+Available Columns: Verfügbare Spalten
+Displayed Columns: Ausgewählte Spalten
+datagrid_view.columns.min_message: Sie müssen mindestens eine Spalte der Tabelle zur Anzeige auswählen
+pim_datagrid:
+  column_configurator:
+    label: Spalten
+    title: Spaltenauswahl anpassen
+    all_groups: Alle Gruppen
+    search: Suche
+    clear: Zurücksetzen
+    displayed_columns: Ausgewählte Spalten
+    apply: Anwenden
+    cancel: Abbrechen
+    remove_column: Entfernen
+    attribute_groups: Attributgruppen
+  mass_action:
+    delete:
+      confirm_title: Löschen bestätigen
+      confirm_ok: OK
+      empty_selection: Kein Produkt ausgewählt
+pim.grid.mass_action.quick_export.title: Schnell-Export
+pim.grid.mass_action.quick_export.launched: Der Schnellexport wurde gestartet
+pim.grid.action.launch.title: Starten
+pim.grid.action.show.title: Anzeigen
+Please select view: Bitte Ansicht auswählen
+Loading...: Lädt...
+View: Ansehen
+from: von
+to: bis
+grid.view_selector:
+  default_view: Standardansicht
+  save_changes: Diese Ansicht speichern
+  remove: Diese Ansicht löschen
+  create_view: Ansicht erstellen
+  create: Anlegen
+  search: Suche
+  views: Ansichten
+  placeholder: Name der neuen Ansicht
+  choose_label: Wählen Sie eine Bezeichnung für die Ansicht
+  confirmation:
+    remove: Sind Sie sicher, dass Sie diese Ansicht löschen möchten?
+    delete: Löschen bestätigen
+grid.view_selector.flash.updated: Tabellen-Ansicht erfolgreich aktualisiert
+grid.display_selector:
+  label: Anzeige
+Client ID: Client-ID
+Secret: Secret

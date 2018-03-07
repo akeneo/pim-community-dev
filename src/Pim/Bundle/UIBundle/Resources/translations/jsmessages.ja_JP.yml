@@ -1,0 +1,119 @@
+Close: 閉じる
+Update: 更新
+Selected Rows: 選択した行
+"Yes": "はい"
+"Yes, Delete": "はい、削除します"
+"Yes, I Agree": "はい、同意します。"
+"Yes, do it": "はい、実行します"
+"No": "いいえ"
+"Ok, got it.": "はい、わかりました。"
+"Cancel": "キャンセル"
+"Delete Confirmation": "削除の確認"
+"Edit": "編集"
+"Unexpected error occured. Please contact system administrator.": "予期しないエラーが発生しました。システム管理者に問い合わせてください。"
+"Yes, revoke": "削除する"
+"Revoke Confirmation": "削除の確認"
+Now: 今
+Prev: 前
+Next: 次
+Today: 今日
+Wk: Wk
+Done: 完了
+AM: 午前
+A: A
+PM: 午後
+P: P
+"Choose Time": "時間を選択"
+Time: 時間
+Hour: 時
+Minute: 分
+Second: 秒
+Millisecond: ミリ秒
+Microsecond: マイクロ秒
+"Time Zone": "タイムゾーン"
+Localized value: ローカライズした値
+Columns: 列
+Datagrid Configuration: データグリッド設定
+Apply: 適用
+Action: アクション
+Unit: 単位
+Currency: 通貨
+jstree:
+  all: 全ての製品
+  unclassified: 未分類の製品
+  product:
+    all: 全ての製品
+    unclassified: 未分類の製品
+  no_tree: 利用できるツリーがありません
+  include_sub: サブカテゴリを含む
+  loading: 読み込み中...
+datetimepicker:
+  days:
+    Sunday: 日曜日
+    Monday: 月曜日
+    Tuesday: 火曜日
+    Wednesday: 水曜日
+    Thursday: 木曜日
+    Friday: 金曜日
+    Saturday: 土曜日
+  daysShort:
+    Sun: 日
+    Mon: 月
+    Tue: 火
+    Wed: 水
+    Thu: 木
+    Fri: 金
+    Sat: 土
+  daysMin:
+    Su: 日
+    Mo: 月
+    Tu: 火
+    We: 水
+    Th: 木
+    Fr: 金
+    Sa: 土
+  months:
+    January: 1月
+    February: 2月
+    March: 3月
+    April: 4月
+    May: 5月
+    June: 6月
+    July: 7月
+    August: 8月
+    September: 9月
+    October: 10月
+    November: 11月
+    December: 12月
+  monthsShort:
+    Jan: 1月
+    Feb: 2月
+    Mar: 3月
+    Apr: 4月
+    May: 5月
+    Jun: 6月
+    Jul: 7月
+    Aug: 8月
+    Sep: 9月
+    Oct: 10月
+    Nov: 11月
+    Dec: 12月
+oro_config:
+  form:
+    config:
+      title: システム設定
+      tab:
+        system:
+          title: システム
+      group:
+        localization:
+          title: ローカライズ
+          system_locale: 言語
+        notification:
+          title: お知らせ
+          system_notification: 新しいバージョンの通知
+        loading_message:
+          title: メールを読み込んでいます
+          label: 読み込みメッセージを有効にする
+        loading_messages:
+          label: 可能な読み込みメッセージ

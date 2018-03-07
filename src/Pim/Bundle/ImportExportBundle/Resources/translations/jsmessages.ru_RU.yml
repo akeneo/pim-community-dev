@@ -1,0 +1,25 @@
+job_execution:
+  summary:
+    display_item: Показать элемент
+    hide_item: Скрыть элемент
+pim_connector:
+  export:
+    categories:
+      selector:
+        modal:
+          title: Выбор категориий
+          cancel: Отмена
+          confirm: Подтверждение
+        label: "{0} Все продукты |{1} Одна категория выбрана |] 1, Inf [ {{ count }} выбранные категории"
+        edit: Редактировать
+        title: Выберите категории
+    locales:
+      validation:
+        not_blank: Одна локаль должена быть выбрана, пожалуйста, выберите локаль для экспорта.
+page_title:
+  pim_importexport_export_profile_index: Управление профилями экспорта
+  pim_importexport_export_execution_index: История запусков экспорта
+  pim_importexport_export_execution_show: Запуск экспорта | Детали
+  pim_importexport_import_profile_index: Управление профилями импорта
+  pim_importexport_import_execution_index: История запусков импорта
+  pim_importexport_import_execution_show: Запуск импорта | Детали

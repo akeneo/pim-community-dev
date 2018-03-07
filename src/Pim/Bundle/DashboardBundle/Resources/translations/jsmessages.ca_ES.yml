@@ -1,0 +1,20 @@
+pim_dashboard:
+  widget:
+    last_operations:
+      empty: No s'han trobat operacions
+      status: Estat
+      date: Data
+      type: Tipus
+      profile_name: Nom del perfil
+      details: Detalls
+      job_type:
+        import: Importar
+        export: Exportar
+        mass_edit: Edició massiva
+        quick_export: Exportació ràpida
+    completeness:
+      load_more: 'Carrega''n més...'
+    header:
+      view_all: Mostra tots
+page_title:
+  pim_dashboard_index: Panell de contol

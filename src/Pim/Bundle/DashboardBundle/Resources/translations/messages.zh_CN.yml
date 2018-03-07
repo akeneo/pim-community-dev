@@ -1,0 +1,27 @@
+pim_dashboard:
+  title: 主界面
+  version: 版本
+  link.label:
+    product: 管理产品
+    category: 管理分类
+    attribute: 管理属性
+    family: 管理品类
+  widget:
+    error:
+      title: 加载小部件时出现错误
+      message: 小部件 '%alias%' 不存在
+    completeness:
+      title: 数据在渠道与本地化上的完成度
+    last_operations:
+      title: 最近的一些操作
+      empty: 无操作
+      status: 状态
+      date: 日期
+      type: 类型
+      "profile name": 方案名称
+      details: 详细资料
+      job_type:
+        import: 导入
+        export: 导出
+        mass_edit: 批量编辑
+        quick_export: 快速导出

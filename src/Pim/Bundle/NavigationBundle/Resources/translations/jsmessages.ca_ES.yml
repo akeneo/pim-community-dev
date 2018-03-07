@@ -1,0 +1,4 @@
+"Sorry, page was not loaded correctly": "Ho sentim, la pàgina no s'ha carregat correctament"
+"Your local changes will be lost. Are you sure you want to refresh the page?": "Es perdran els canvis locals. Esteu segur que voleu actualitzar la pàgina?"
+"navigation.message.content.outdated": "El contingut de la pàgina {{ title }} és obsoleta, si us plau <a href='#' data-action='page-refresh'> recarregueu la pàgina</a>"
+"Content of pinned page is outdated": "El contingut de la pàgina marcada és antiquat"

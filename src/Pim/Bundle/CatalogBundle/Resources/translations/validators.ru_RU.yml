@@ -1,0 +1,46 @@
+An identifier attribute already exists.: Атрибут-идентификатор уже существует.
+Attribute code may contain only letters, numbers and underscore: Код атрибута может содержать только буквы, цифры и символ подчеркивания
+Attribute code may contain only letters (at least one), numbers and underscores: Код атрибута может содержать только буквы (минимум одну), цифры и символ подчеркивания
+This attribute type can't be used as a grid filter: Этот тип атрибута не может использоваться как фильтр
+This code is not available: Этот код недоступен
+This attribute type must be required: Этот тип атрибута должен быть обязательным
+This attribute type can't be required: Этот тип атрибута не может быть обязательным
+This attribute type can't have unique value: Этот тип атрибута не может иметь уникальное значение
+No default value may be specified for this attribute type: Значение по умолчанию не может быть указано для этого типа атрибута
+This value should be Yes or No: Это значение должно быть Да или Нет
+This value should not be blank: Это значение не должно быть пустым
+Option code may contain only letters, numbers and underscores: Код элемента может содержать только буквы, цифры и символ подчеркивания
+Option code may contain only letters (at least one), numbers and underscores: Код элемента может содержать только буквы (минимум одну), цифры и символ подчеркивания
+This value should not be a decimal.: Это значение не должно быть десятичным.
+'The file extension is not allowed (allowed extensions: %extensions%).': 'Расширение файла не разрешается (возможные расширения: %extensions%).'
+"The value %value% is already set on another product for the unique attribute %attribute%": Значение %value% уже установленo на другом продукте для уникального атрибутa %attribute%
+regex.comma_or_semicolon.message: Это поле не должно содержать запятыe или точки с запятой.
+file.extensions.message: 'Расширение файла не разрешается (возможные расширения: %extensions%).'
+"This type of value expects the use of {{ decimal_separator }} to separate decimals.": Этот тип значения предполагает использование {{ decimal_separator }} для разделения десятичных знаков.
+"This type of value expects the use of dot (.) to separate decimals.": Этот тип значения предполагает использование точки (.) для разделения десятичных знаков.
+"This type of value expects the use of comma (,) to separate decimals.": Этот тип значения предполагает использование запятой (,) для разделения десятичных знаков.
+"This type of value expects the use of arabic decimal separator (٫) to separate decimals.": Этот тип значения предполагает использование арабского десятичного разделителя (٫) для разделения десятичных знаков.
+"This type of value expects the use of the format {{ date_format }} for dates.": Этот тип значения предполагает использование {{ date_format }} формата для дат.
+pim_catalog:
+  constraint:
+    product_identifier: Эти идентификаторы «%s» не существуют.
+    0: Произошла непредвиденная ошибка.
+    100: Неожиданное значение
+    101: В этом поле ожидается логическое значение.
+    102: В этом поле ожидается число с плавающей точкой.
+    103: В этом поле ожидается целочисленное значение.
+    104: В этом поле ожидается числовое значение.
+    105: В этом поле ожидается строковое значение.
+    106: В этом поле ожидается значение массива.
+    107: В этом поле ожидается массив массивов как значение.
+    200: Произошла внутренняя ошибка
+    201: Произошла внутренняя ошибка
+    202: В этом поле ожидается числовое значение.
+    203: В этом поле ожидается строковое значение.
+    204: В этом поле ожидается строковое значение.
+    205: Произошла внутренняя ошибка
+    300: В этом поле ожидается действительный код сущности.
+    301: В этом поле ожидаются действительные канал и локаль.
+    302: В этом поле ожидается действительный канал.
+    303: В этом поле ожидается действительный формат ассоциации.
+

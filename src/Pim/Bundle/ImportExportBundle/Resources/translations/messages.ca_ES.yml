@@ -1,0 +1,131 @@
+Job: Job
+Connector: Connector
+pim_import_export:
+  job: Job
+  connector: Connector
+  status:
+    - A punt
+  download_archive:
+    archive: descarregar l' arxiu generat | descarregar arxius generats
+    output: descarregar fitxer generat|descarregar fitxers generats
+    input: descarregar fitxer llegit|descarregar fitxers llegits
+    invalid_xlsx: descarregar dades no vàlides
+    invalid_csv: descarregar dades no vàlides
+  notification:
+    export:
+      error: La exportació <strong>%label%</strong> ha fallat
+      warning: La exportació <strong>%label%</strong> acabat amb alguns avisos
+      success: La exportació <strong>%label%</strong> ha acabat
+    import:
+      error: La importació <strong>%label%</strong> ha fallat
+      warning: La importació <strong>%label%</strong> acabat amb alguns avisos
+      success: La importació <strong>%label%</strong> ha acabat
+  list: Seleccioneu un job
+  job_profile:
+    tab:
+      property.title: Propietats generals
+      history.title: Històric
+      job_content.title: Contingut
+pim_title.export_profile.index: Gestió de perfils d'exportació
+pim_title.export_execution.index: Exportar històric d'execucions
+pim_title.export_execution.show: Exportar execucions | Detalls
+pim_title.import_profile.index: Gestió de perfils d'importació
+pim_title.import_execution.index: Importar històric d'execucions
+pim_title.import_execution.show: Importar execucions | Detalls
+export profile:
+  title: exportar perfil
+  edit: editar perfil d'exportació
+import profile:
+  title: importar perfil
+  edit: editar perfil d'importació
+pim_importexport:
+  acl:
+    export_profile:
+      index: Veure llista de perfils exportats
+      create: Creeu un perfil d'exportació
+      show: Mostrar un perfil d'exportació
+      edit: Editar un perfil d'exportació
+      remove: Eliminar un perfil d'exportació
+      launch: Engegar un perfil d'exportació
+      property_edit: Editar una exportació de propietats generals de perfil
+      property_show: Mostrar una exportació de propietats generals de perfil
+      history: Veure exportació de l'històric del perfil
+      content_edit: Editar un contingut de perfil d'exportació
+      content_show: Mostrar un contingut de perfil d'exportació
+    import_profile:
+      index: Veure llista de perfils d'importació
+      create: Crear un perfil d'importació
+      show: Mostrar un perfil d'importació
+      edit: Editar un perfil d'importació
+      remove: Eliminar un perfil d'importació
+      launch: Engegar un perfil d'importació
+      history: Veure l'històric del perfil d'importació
+    export_execution:
+      index: Veure llista d'informes d'exportació
+      show: Veure detalls de l'informe d'exportació
+      dl_log: Descarregar informe del registre d'exportació
+      dl_files: Descarregar els fitxers exportats
+    import_execution:
+      index: Veure llista d'informes d'importació
+      show: Veure detalls de l'informe d'importació
+      dl_log: Descarregar informe de registres d'importació
+      dl_files: Descarregar arxius importats
+  acl_group:
+    export: Perfils d'exportació
+    import: Perfils d'importació
+btn:
+  create:
+    export profile: crear perfil d'exportació
+    import profile: crear perfil d'importació
+Upload and import now: Carregar i importar ara
+import now: Importar ara
+export now: Exportar ara
+confirmation:
+  remove:
+    export profile: Esteu segur que voleu suprimir el perfil d'exportació %name%?
+    import profile: Esteu segur que voleu suprimir el perfil d'importació %name%?
+flash:
+  export:
+    created: La exportació s'ha creat amb èxit
+    removed: S'ha eliminat la exportació
+    updated: La exportació s'ha actualitzat correctament
+    running: La exportació s'està executant
+  import:
+    created: La importació s'ha creat amb èxit
+    removed: S'ha eliminat la importació
+    updated: La importació s'ha actualitzat correctament
+    running: La importació s'està executant
+General properties: Propietats generals
+History: Històric
+pane.accordion:
+  properties: Propietats
+  global_settings: Configuració global
+  filters: Filtres
+popin.create:
+  export_profile.title: Crear un nou perfil d'exportació
+  import_profile.title: Crear un nou perfil d'importació
+'Display item': Visualitzar element
+'Hide item': Amagar element
+'Collecting data about job execution...': Recollida de dades sobre l'execució del job...
+'You must select a file to upload': Heu de seleccionar un arxiu per carregar
+Download log: Descarregar registre
+Show profile: Mostrar perfil
+execution details: detalls d'execució
+job_execution.summary:
+  read: llegir
+  write: escrit
+  skip: omès
+  create: creat
+  update: actualitzat
+  update_products: productes actualitzats
+  skip_products: productes omesos
+  displayed: primers avisos mostrats
+  charset_validator:
+    title: 'Codificació de l''arxiu:'
+    skipped: omès, extensió a la llista blanca
+Step: Pas
+Status: Estat
+Summary: Sumari
+Start: Començar
+End: Fi
+warning.label: Avís

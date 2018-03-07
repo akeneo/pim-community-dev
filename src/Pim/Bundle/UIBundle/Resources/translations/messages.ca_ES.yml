@@ -1,0 +1,47 @@
+User: Usuari
+Run demo: Executar demostració
+Product: Producte
+Attribute list: Llista d'atributs
+Attribute Group list: Llista de grups d'atribut
+Users: Usuaris
+Roles: Rols
+Groups: Grups
+Configuration: Configuració
+Currency list: Llista de monedes
+Locale list: Llista de configuracions regionals
+Logged in as: Heu entrat com a
+Logout: Tanca sessió
+Login: Iniciar Sessió
+Previous: Anterior
+Next: Següent
+Channel list: Llista de canals
+Select file: Seleccionar fitxer
+Change file: Canviar fitxer
+Remove file: Suprimir arxiu
+Delete: Suprimir
+Save: Desar
+Cancel: Cancelar
+Get help: Demanar ajuda
+My User: El meu compte
+oro.form.choose_value: Trïa un valor...
+Read more: Veure més
+oro.form.click_here_to_select: Feu clic aquí per seleccionar...
+Add: Afegir
+"Learn how to use this space": "Aprengui a com utilitzar aquest espai"
+"How To Use Pinbar": "Com utilitzar el Pinbar"
+Pinbar: Pinbar
+Favorites: Favorits
+Most Viewed: Més vistos
+"Add this page to favorites": "Afegir aquesta pàgina a favorits"
+"Minimize the window to the pinbar": "Minimitzar finestra a la pinbar"
+"Loading ...": "Carregant ..."
+"Yes": "Sí"
+"No": "No"
+required: (obligatori)
+pim_ui.system_config:
+  form:
+    loading_message_enabled.label: Permetre els missatges que s'estan carregant
+    loading_messages.label: Missatges de càrrega disponibles
+    loading_messages.tooltip: Tots els missatges de càrrega disponibles estaran separats per salts de línia
+  group:
+    loading_message.title: S'estan carregant els missatges

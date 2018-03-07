@@ -1,0 +1,20 @@
+pim_dashboard:
+  widget:
+    last_operations:
+      empty: 无操作
+      status: 状态
+      date: 日期
+      type: 类型
+      profile_name: 方案名称
+      details: 详细资料
+      job_type:
+        import: 导入
+        export: 导出
+        mass_edit: 批量编辑
+        quick_export: 快速导出
+    completeness:
+      load_more: '加载更多...'
+    header:
+      view_all: 显示所有
+page_title:
+  pim_dashboard_index: 主界面

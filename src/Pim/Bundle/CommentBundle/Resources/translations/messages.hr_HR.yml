@@ -1,0 +1,25 @@
+btn:
+  post: Dodaj novi komentar
+  reply: Odgovor
+confirmation:
+  remove:
+    comment: Da li sigurno želite izbrisati ovaj komentar?
+flash:
+  comment:
+    create:
+      success: Tvoj komentar je uspješno kreiran.
+      error: Došlo je do pogreške tijekom stvaranja tvojeg komentara.
+    delete:
+      success: Tvoj komentar je uspješno izbrisan.
+      error: Došlo je do pogreške tijekom brisanja tvojeg komentara.
+    reply:
+      success: Tvoj odgovor je uspješno kreiran.
+      error: Došlo je do pogreške tijekom stvaranja tvojeg odgovora.
+comment:
+  index:
+    empty: Nije pronađen komentar.
+  placeholder:
+    new: Napiši novi komentar...
+    reply: Odgovor na ovaj komentar...
+pim_comment:
+  product.tab.comment.title: Komentari
