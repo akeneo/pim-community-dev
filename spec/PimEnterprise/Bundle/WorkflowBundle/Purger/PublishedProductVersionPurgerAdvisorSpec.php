@@ -4,6 +4,8 @@ namespace spec\PimEnterprise\Bundle\VersioningBundle\Purger;
 
 use Akeneo\Component\Versioning\Model\VersionInterface;
 use PhpSpec\ObjectBehavior;
+use Pim\Bundle\VersioningBundle\Purger\VersionPurgerAdvisorInterface;
+use PimEnterprise\Bundle\WorkflowBundle\Purger\PublishedProductVersionPurgerAdvisor;
 use PimEnterprise\Component\Workflow\Repository\PublishedProductRepositoryInterface;
 use Prophecy\Argument;
 
@@ -17,12 +19,12 @@ class PublishedProductVersionPurgerAdvisorSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('PimEnterprise\Bundle\VersioningBundle\Purger\PublishedProductVersionPurgerAdvisor');
+        $this->shouldHaveType(PublishedProductVersionPurgerAdvisor::class);
     }
 
     function it_is_an_advisor()
     {
-        $this->shouldImplement('Pim\Bundle\VersioningBundle\Purger\VersionPurgerAdvisorInterface');
+        $this->shouldImplement(VersionPurgerAdvisorInterface::class);
     }
 
     function it_supports_products_versions_only(VersionInterface $v1, VersionInterface $v2)
