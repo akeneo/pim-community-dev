@@ -117,7 +117,7 @@ acceptance:
     suites:
         acceptance:
             paths:
-                - '%paths.base%/tests/features/'
+                - '%paths.base%/tests/back/features/'
             contexts_services:
                 - test.locale.context
                 - test.channel.context
@@ -126,7 +126,7 @@ acceptance:
     extensions:
         FriendsOfBehat\ContextServiceExtension:
            imports:
-               - "tests/Acceptance/Resources/config/behat/services.yml"
+               - "tests/back/Acceptance/Resources/config/behat/services.yml"
         FriendsOfBehat\CrossContainerExtension: ~
         FriendsOfBehat\SymfonyExtension:
             kernel:
