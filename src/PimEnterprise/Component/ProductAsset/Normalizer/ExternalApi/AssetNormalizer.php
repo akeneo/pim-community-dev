@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Bundle\ApiBundle\Normalizer;
+namespace PimEnterprise\Component\ProductAsset\Normalizer\ExternalApi;
 
 use Doctrine\Common\Collections\Collection;
 use Pim\Component\Api\Hal\Link;

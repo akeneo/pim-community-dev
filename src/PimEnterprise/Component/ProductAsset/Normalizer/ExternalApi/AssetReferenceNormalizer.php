@@ -11,11 +11,11 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Bundle\ApiBundle\Normalizer;
+namespace PimEnterprise\Component\ProductAsset\Normalizer\ExternalApi;
 
 use Pim\Component\Api\Hal\Link;
-use PimEnterprise\Bundle\ApiBundle\Controller\AssetVariationController;
-use PimEnterprise\Component\ProductAsset\Model\VariationInterface;
+use PimEnterprise\Bundle\ApiBundle\Controller\AssetReferenceController;
+use PimEnterprise\Component\ProductAsset\Model\ReferenceInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -23,7 +23,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 /**
  * @author Damien Carcel <damien.carcel@akeneo.com>
  */
-class AssetVariationNormalizer implements NormalizerInterface
+class AssetReferenceNormalizer implements NormalizerInterface
 {
     /** @var NormalizerInterface */
     private $componentNormalizer;
@@ -44,16 +44,15 @@ class AssetVariationNormalizer implements NormalizerInterface
     /**
      * {@inheritdoc}
      */
-    public function normalize($variation, $format = null, array $context = []): array
+    public function normalize($reference, $format = null, array $context = []): array
     {
-        $normalizedVariation = $this->componentNormalizer->normalize($variation, $format, $context);
+        $normalizedReference = $this->componentNormalizer->normalize($reference, $format, $context);
 
         $route = $this->router->generate(
-            'pimee_api_asset_variation_download',
+            'pimee_api_asset_reference_download',
             [
-                'code' => $variation->getAsset()->getCode(),
-                'channelCode' => $normalizedVariation['scope'],
-                'localeCode' => $normalizedVariation['locale'] ?: AssetVariationController::NON_LOCALIZABLE_VARIATION,
+                'code' => $reference->getAsset()->getCode(),
+                'localeCode' => $normalizedReference['locale'] ?: AssetReferenceController::NON_LOCALIZABLE_REFERENCE,
             ],
             UrlGeneratorInterface::ABSOLUTE_URL
         );
@@ -61,7 +60,7 @@ class AssetVariationNormalizer implements NormalizerInterface
 
         return array_merge(
             ['_link' => $link->toArray()],
-            $normalizedVariation
+            $normalizedReference
         );
     }
 
@@ -70,6 +69,6 @@ class AssetVariationNormalizer implements NormalizerInterface
      */
     public function supportsNormalization($data, $format = null): bool
     {
-        return $data instanceof VariationInterface && 'external_api' === $format;
+        return $data instanceof ReferenceInterface && 'external_api' === $format;
     }
 }

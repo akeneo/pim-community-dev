@@ -3,9 +3,9 @@
 namespace spec\PimEnterprise\Bundle\ApiBundle\Normalizer;
 
 use PhpSpec\ObjectBehavior;
-use PimEnterprise\Bundle\ApiBundle\Normalizer\AssetVariationNormalizer;
 use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
 use PimEnterprise\Component\ProductAsset\Model\VariationInterface;
+use PimEnterprise\Component\ProductAsset\Normalizer\ExternalApi\AssetVariationNormalizer;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;

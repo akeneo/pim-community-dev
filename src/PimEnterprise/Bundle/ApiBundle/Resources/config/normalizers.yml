@@ -2,9 +2,9 @@ parameters:
     pimee_api.normalizer.published_product.class: PimEnterprise\Component\Api\Normalizer\PublishedProductNormalizer
     pimee_api.component.normalizer.asset_reference.class: PimEnterprise\Component\Api\Normalizer\AssetReferenceNormalizer
     pimee_api.component.normalizer.asset_variation.class: PimEnterprise\Component\Api\Normalizer\AssetVariationNormalizer
-    pimee_api.bundle.normalizer.asset_reference.class: PimEnterprise\Bundle\ApiBundle\Normalizer\AssetReferenceNormalizer
-    pimee_api.bundle.normalizer.asset_variation.class: PimEnterprise\Bundle\ApiBundle\Normalizer\AssetVariationNormalizer
-    pimee_api.bundle.normalizer.asset.class: PimEnterprise\Bundle\ApiBundle\Normalizer\AssetNormalizer
+    pimee_api.bundle.normalizer.asset_reference.class: PimEnterprise\Component\ProductAsset\Normalizer\ExternalApi\AssetReferenceNormalizer
+    pimee_api.bundle.normalizer.asset_variation.class: PimEnterprise\Component\ProductAsset\Normalizer\ExternalApi\AssetVariationNormalizer
+    pimee_api.bundle.normalizer.asset.class: PimEnterprise\Component\ProductAsset\Normalizer\ExternalApi\AssetNormalizer
 
 services:
     pimee_api.normalizer.published_product:
