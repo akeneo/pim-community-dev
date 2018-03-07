@@ -14,7 +14,7 @@ Feature: Monitor catalog volume
     And the report returns 4 scopable attributes
     And the report returns 3 localizable and scopable attributes
 
-  Scenario: Warn the user administrator when the number of attributes has passed the limit
+  Scenario: Warn the user administrator when the number of attributes is high
     Given 5 localizable attributes
     And 4 scopable attributes
     And 3 localizable and scopable attributes
@@ -24,7 +24,7 @@ Feature: Monitor catalog volume
     And the limit of the number of localizable and scopable attributes is set to 2
     And the limit of the total number of attributes is set to 2
     When the administrator user asks for the catalog volume monitoring report
-    Then the report returns warn the users that the limit of the total number of attributes has been passed
-    And the report warns the users that the limit of the number of localizable attributes has been passed
-    And the report warns the users that the limit of the number of scopable attributes has been passed
-    And the report warns the users that the limit of the number of localizable and scopable attributes has been passed
+    Then the report returns warn the users that the total number of attributes is high
+    And the report warns the users the number of localizable attributes is high
+    And the report warns the users the number of scopable attributes is high
+    And the report warns the users the number of localizable and scopable attributes is high
