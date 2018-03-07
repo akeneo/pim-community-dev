@@ -55,3 +55,14 @@ Feature: Edit a user
     When I am logged in as "Mary"
     And I edit the "admin" user
     Then I should see the text "Edit user - John Doe"
+
+  Scenario: Successfully setup user timezone
+    Given I edit the "Peter" user
+    And I visit the "Interfaces" tab
+    Then I should see the text "UTC"
+    When I fill in the following information:
+      | Timezone | Paris |
+    And I save the user
+    And I reload the page
+    And I visit the "Interfaces" tab
+    Then I should see the text "Paris CET (UTC+01:00)"
