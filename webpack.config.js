@@ -14,7 +14,7 @@ const sourcePath = path.join(rootDir, 'web/js/require-paths.js');
 
 if (!fs.existsSync(sourcePath)) {
     throw new Error(`The web/js/require-paths.js module does not exist - You need to run
-    "bin/console pim:install" or "bin/console pim:instal
+    "bin/console pim:install" or "bin/console pim:installer:dump-require-paths" before
     running webpack \n`);
 }
 
