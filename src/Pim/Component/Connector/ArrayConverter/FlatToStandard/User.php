@@ -44,6 +44,7 @@ class User implements ArrayConverterInterface
      *      'roles'                  => 'ROLE_USER',
      *      'groups'                 => 'Redactor',
      *      'enabled'                => '1',
+     *      'timezone'               => 'UTC',
      * ]
      *
      * After:
@@ -60,6 +61,7 @@ class User implements ArrayConverterInterface
      *      'roles'                  => ['ROLE_USER'],
      *      'groups'                 => ['Redactor'],
      *      'enabled'                => true,
+     *      'timezone'               => 'UTC',
      * ]
      */
     public function convert(array $item, array $options = [])
@@ -94,6 +96,8 @@ class User implements ArrayConverterInterface
             $convertedItem[$field] = '' !== $data ? explode(',', $data) : [];
         } elseif (in_array($field, ['enabled', 'email_notifications'])) {
             $convertedItem[$field] = '1' === $data ? true : false;
+        } elseif (in_array($field, ['timezone'])) {
+            $convertedItem[$field] = '' !== $data ? $data : null;
         } else {
             $convertedItem[$field] = $data;
         }
