@@ -17,7 +17,7 @@ use PimEnterprise\Component\ProductAsset\Model\CategoryInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
- * Flat asset category normalizer
+ * Flat asset category  normalizer
  *
  * @author Marie Bochu <marie.bochu@akeneo.com>
  */
