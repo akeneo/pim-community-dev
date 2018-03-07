@@ -2,7 +2,7 @@ parameters:
     pimee_versioning.normalizer.category.class:        PimEnterprise\Bundle\SecurityBundle\Normalizer\Flat\CategoryNormalizer
     pimee_versioning.normalizer.attribute_group.class: PimEnterprise\Bundle\SecurityBundle\Normalizer\Flat\AttributeGroupNormalizer
     pimee_versioning.normalizer.locale.class:          PimEnterprise\Bundle\SecurityBundle\Normalizer\Flat\LocaleNormalizer
-    pimee_versioning.normalizer.asset_category.class:  PimEnterprise\Bundle\SecurityBundle\Normalizer\Flat\AssetCategoryNormalizer
+    pimee_versioning.normalizer.asset_category.class:  PimEnterprise\Component\ProductAsset\Normalizer\Flat\AssetCategoryNormalizer
     pimee_security.normalizer.job_instance.class:      PimEnterprise\Component\Security\Normalizer\Standard\JobInstanceNormalizer
     pimee_security.normalizer.attribute_group.class:   PimEnterprise\Component\Security\Normalizer\Standard\AttributeGroupNormalizer
 

@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Bundle\SecurityBundle\Normalizer\Flat;
+namespace PimEnterprise\Component\ProductAsset\Normalizer\Flat;
 
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;
 use PimEnterprise\Bundle\SecurityBundle\Manager\CategoryAccessManager;
