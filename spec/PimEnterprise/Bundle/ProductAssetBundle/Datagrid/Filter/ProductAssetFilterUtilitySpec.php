@@ -6,6 +6,7 @@ use Doctrine\ORM\QueryBuilder;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
 use Pim\Component\Catalog\Query\Filter\Operators;
+use PimEnterprise\Bundle\ProductAssetBundle\Datagrid\Filter\TagFilterAwareInterface;
 use PimEnterprise\Component\ProductAsset\Repository\AssetRepositoryInterface;
 
 class ProductAssetFilterUtilitySpec extends ObjectBehavior
@@ -17,7 +18,7 @@ class ProductAssetFilterUtilitySpec extends ObjectBehavior
 
     function it_can_filter_by_tag()
     {
-        $this->shouldImplement('PimEnterprise\Bundle\ProductAssetBundle\Datagrid\Filter\TagFilterAwareInterface');
+        $this->shouldImplement(TagFilterAwareInterface::class);
     }
 
     function it_applies_a_tag_filter(
