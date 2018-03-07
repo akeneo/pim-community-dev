@@ -2,6 +2,8 @@ parameters:
     pimee_product_asset.controller.product_asset.class:      PimEnterprise\Bundle\ProductAssetBundle\Controller\ProductAssetController
     pimee_product_asset.controller.rest.mass_upload.class:   PimEnterprise\Bundle\ProductAssetBundle\Controller\Rest\MassUploadController
     pimee_product_asset.controller.rest.product_asset.class: PimEnterprise\Bundle\ProductAssetBundle\Controller\Rest\ProductAssetController
+    pimee_product_asset.controller.asset_transformation.class: PimEnterprise\Bundle\ProductAssetBundle\Controller\Rest\AssetTransformationController
+    pimee_product_asset.controller.rest.asset_category.class: PimEnterprise\Bundle\ProductAssetBundle\Controller\Rest\AssetCategoryController
 
 services:
     pimee_product_asset.controller.product_asset:
@@ -78,3 +80,15 @@ services:
             - '@security.token_storage'
         calls:
             - [ setContainer, [ '@service_container' ] ]
+
+    pimee_product_asset.controller.rest.asset_category:
+        class: '%pimee_product_asset.controller.rest.asset_category.class%'
+        arguments:
+            - '@pimee_product_asset.repository.asset_category'
+            - '@pim_internal_api_serializer'
+
+    pimee_product_asset.controller.asset_transformation:
+        class: '%pimee_product_asset.controller.asset_transformation.class%'
+        arguments:
+            - '@pimee_product_asset.repository.channel_configuration'
+            - '@pim_internal_api_serializer'

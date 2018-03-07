@@ -1,7 +1,5 @@
 parameters:
     pimee_product_asset.filter.product_asset.class: Pim\Bundle\ReferenceDataBundle\Datagrid\Filter\ReferenceDataFilter
-    pimee_filter.product_asset_tag_filter.class:    PimEnterprise\Bundle\ProductAssetBundle\Datagrid\Filter\TagFilter
-    pimee_filter.product_asset_utility.class:       PimEnterprise\Bundle\ProductAssetBundle\Datagrid\Filter\ProductAssetFilterUtility
 
 services:
     pimee_product_asset.filter.product_asset:
@@ -14,16 +12,3 @@ services:
             - '@pim_reference_data.registry'
         tags:
             - { name: oro_filter.extension.orm_filter.filter, type: pim_assets_collection }
-
-    pimee_filter.product_asset_utility:
-        class: '%pimee_filter.product_asset_utility.class%'
-        arguments:
-            - '@pimee_product_asset.repository.asset'
-
-    pimee_product_asset.filter.tag_filter:
-        class: '%pimee_filter.product_asset_tag_filter.class%'
-        arguments:
-            - '@form.factory'
-            - '@pimee_filter.product_asset_utility'
-        tags:
-            - { name: oro_filter.extension.orm_filter.filter, type: product_asset_tag }
