@@ -1,0 +1,46 @@
+An identifier attribute already exists.: 属性ID已经存在
+Attribute code may contain only letters, numbers and underscore: 属性代码只能包含字母，数字和下划线
+Attribute code may contain only letters (at least one), numbers and underscores: 属性代码只能包含字母（至少1个），数字和下划线
+This attribute type can't be used as a grid filter: 此属性类型不能用作数据筛选器
+This code is not available: 代码不可用
+This attribute type must be required: 此属性的类型是必填的
+This attribute type can't be required: 此属性的类型不是必填的
+This attribute type can't have unique value: 此属性类型不需要有唯一的值
+No default value may be specified for this attribute type: 对该属性类型可能没有指定默认的值
+This value should be Yes or No: 此值应该是Yes或No
+This value should not be blank: 该值不应该为空
+Option code may contain only letters, numbers and underscores: 选项代码仅可包含字母，数字和下划线
+Option code may contain only letters (at least one), numbers and underscores: 选项代码仅可包含字母（至少1个），数字和下划线
+This value should not be a decimal.: 该值不应该为小数
+'The file extension is not allowed (allowed extensions: %extensions%).': '不允许的文件扩展名 (允许扩展︰ %extensions%)。'
+"The value %value% is already set on another product for the unique attribute %attribute%": 值 %value% 已经设置为另一个产品的唯一属性 %attribute%
+regex.comma_or_semicolon.message: 此字段不应该包含任何逗号或分号。
+file.extensions.message: '不允许的文件扩展名 (允许扩展︰ %extensions%)。'
+"This type of value expects the use of {{ decimal_separator }} to separate decimals.": 这种类型的值可以使用 {{ decimal_separator }} 来分隔十进制数字。
+"This type of value expects the use of dot (.) to separate decimals.": 这种类型的值可以使用点（.）来分隔十进制数字。
+"This type of value expects the use of comma (,) to separate decimals.": 这种类型的值可以使用逗号（，）来分隔十进制数字。
+"This type of value expects the use of arabic decimal separator (٫) to separate decimals.": 这种类型的值可以使用阿拉伯语十进制分隔符（,）来分隔十进制数字。
+"This type of value expects the use of the format {{ date_format }} for dates.": 这种类型的值可以使用这种格式 {{ date_format }} 来分隔十进制数字。
+pim_catalog:
+  constraint:
+    product_identifier: 这些标识符"%s"并不存在。
+    0: 发生意外错误。
+    100: 非预期的值
+    101: 此空需要填入一个布尔值。
+    102: 此空需要填入一个浮点值。
+    103: 此空需要填入一个整数值。
+    104: 此空需要填入一个整数值。
+    105: 此空需要填入一个字符串。
+    106: 此空需要填入一个数组
+    107: 此空需要填入一个数组的数组。
+    200: 发生了内部错误.
+    201: 发生了内部错误.
+    202: 此空需要填入一个整数值。
+    203: 此空需要填入一个字符串。
+    204: 此空需要填入一个字符串。
+    205: 发生了内部错误.
+    300: 此空需要填入一个有效的实体代号
+    301: 此空需要填入一个有效的范围和本地语言
+    302: 此空需要填入一个有效的范围
+    303: 此空需要填入一个有效的关联格式
+

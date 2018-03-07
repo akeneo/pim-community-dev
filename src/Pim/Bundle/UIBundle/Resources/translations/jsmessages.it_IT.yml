@@ -1,0 +1,119 @@
+Close: Chiudi
+Update: Carica
+Selected Rows: Righe selezionate
+"Yes": "Sì"
+"Yes, Delete": "Sì, elimina"
+"Yes, I Agree": "Sì, sono d'accordo"
+"Yes, do it": "Sì, prosegui"
+"No": "No"
+"Ok, got it.": "Ok, capito."
+"Cancel": "Annulla"
+"Delete Confirmation": "Conferma cancellazione"
+"Edit": "Modifica"
+"Unexpected error occured. Please contact system administrator.": "Si è verificato un errore imprevisto. Contattare l'amministratore di sistema."
+"Yes, revoke": "Si, revoca"
+"Revoke Confirmation": "Revoca conferma"
+Now: Ora
+Prev: Precedente
+Next: Successivo
+Today: Oggi
+Wk: Wk
+Done: Completato
+AM: AM
+A: A
+PM: PM
+P: P
+"Choose Time": "Scegli l'ora"
+Time: Ora
+Hour: Ora
+Minute: Minuti
+Second: Secondi
+Millisecond: Millisecondi
+Microsecond: Microsecondi
+"Time Zone": "Fuso orario"
+Localized value: Valori localizzati
+Columns: Colonne
+Datagrid Configuration: Configurazione tabella di dati
+Apply: Applica
+Action: Azione
+Unit: Unità
+Currency: Valuta
+jstree:
+  all: Tutti i prodotti
+  unclassified: Prodotti non classificati
+  product:
+    all: Tutti i prodotti
+    unclassified: Prodotti non classificati
+  no_tree: Nessuna struttura disponibile
+  include_sub: Includere le sotto-categorie
+  loading: Caricamento in corso ...
+datetimepicker:
+  days:
+    Sunday: Domenica
+    Monday: Lunedi
+    Tuesday: Martedi
+    Wednesday: Mercoledì
+    Thursday: Giovedì
+    Friday: Venerdì
+    Saturday: Sabato
+  daysShort:
+    Sun: Dom
+    Mon: Lun
+    Tue: Mar
+    Wed: Mer
+    Thu: Gio
+    Fri: Ven
+    Sat: Sab
+  daysMin:
+    Su: Do
+    Mo: Lu
+    Tu: Ma
+    We: Me
+    Th: Gi
+    Fr: Ve
+    Sa: Sa
+  months:
+    January: Gennaio
+    February: Febbraio
+    March: Marzo
+    April: Aprile
+    May: Maggio
+    June: Giugno
+    July: Luglio
+    August: Agosto
+    September: Settembre
+    October: Ottobre
+    November: Novembre
+    December: Dicembre
+  monthsShort:
+    Jan: Gen
+    Feb: Feb
+    Mar: Mar
+    Apr: Apr
+    May: Maggio
+    Jun: Giu
+    Jul: Lug
+    Aug: Ago
+    Sep: Set
+    Oct: Oct
+    Nov: Nov
+    Dec: Dic
+oro_config:
+  form:
+    config:
+      title: Configurazione del sistema
+      tab:
+        system:
+          title: Sistema
+      group:
+        localization:
+          title: Localizzazione
+          system_locale: Lingua
+        notification:
+          title: Notifiche
+          system_notification: Notifiche di nuove versioni
+        loading_message:
+          title: Messaggi per "caricamento in corso"
+          label: Abilita i messaggi di caricamento
+        loading_messages:
+          label: Messaggi di caricamento disponibili

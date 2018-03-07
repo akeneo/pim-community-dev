@@ -1,0 +1,4 @@
+"Sorry, page was not loaded correctly": "Извините, страница загружена неправильно"
+"Your local changes will be lost. Are you sure you want to refresh the page?": "Ваши локальные изменения будут потеряны. Вы действительно хотите обновить страницу?"
+"navigation.message.content.outdated": "Содержание страницы {{ title }} устарело, пожалуйста, <a href='#' data-action='page-refresh'> обновите страницу</a>"
+"Content of pinned page is outdated": "Содержание закрепленной страницы устарело"

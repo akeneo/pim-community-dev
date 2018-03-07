@@ -1,0 +1,48 @@
+User: Utente
+Run demo: Eseguire la demo
+Product: Prodotto
+Attribute list: Elenco degli attributi
+Attribute Group list: Elenco attributi di gruppo
+Users: Utenti
+Roles: Ruoli
+Groups: Gruppi
+Configuration: Configurazione
+Currency list: Elenco di valute
+Locale list: Elenco delle impostazioni locali
+Logged in as: Accesso eseguito come
+Logout: Disconnetti
+Login: Login
+Previous: Precedente
+Next: Successivo
+Channel list: Elenco canali
+Select file: Seleziona il file
+Change file: Modifica file
+Remove file: Rimuovi file
+Delete: Eliminare
+Save: Salva
+Cancel: Annulla
+Get help: Chiedi aiuto
+My User: Il mio profilo
+oro.form.choose_value: Scegliere un valore...
+Read more: Maggiori informazioni
+oro.form.click_here_to_select: Clicca qui per selezionare...
+Add: Aggiungi
+"Learn how to use this space": "Imparare come utilizzare questo spazio"
+"How To Use Pinbar": "Come utilizzare la Pinbar"
+Pinbar: Pinbar
+Favorites: Preferiti
+Most Viewed: Più visualizzati
+"Add this page to favorites": "Aggiungi questa pagina ai preferiti"
+"Minimize the window to the pinbar": "Minimizzare la finestra per la pinbar"
+"Loading ...": "Caricamento in corso ..."
+"Yes": "Sì"
+"No": "No"
+required: (richiesto)
+pim_ui.system_config:
+  form:
+    loading_message_enabled.label: Abilita i messaggi di caricamento
+    loading_messages.label: Messaggi di caricamento disponibili
+    loading_messages.tooltip: Tutti i messagi disponibili di caricamento separati da interruzioni di riga
+  group:
+    loading_message.title: Messaggi per "caricamento in corso"
+other_actions: Altre azioni

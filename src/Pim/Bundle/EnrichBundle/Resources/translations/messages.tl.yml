@@ -475,6 +475,9 @@ default: Default
 Axis: Aksis
 Add attributes: Magdagdag ng mga katangian
 Translate from: Translasyon mula sa
+switch_on: "Oo"
+switch_off: "Hindi"
+Close: Sarado
 Search: Maghanap
 Choose the attribute type: Pumili sa uri ng katangian
 Choose the attribute group: Pumili sa grupo ng katangian
@@ -554,6 +557,7 @@ pim_title.currency:
 pim_title.locale:
   index: "Ang mga lokal"
 pim_title.group:
+  index: "Mga grupo"
   edit: "Mga grupo %group.label% | I-edit"
 pim_title.association_type:
   index: "Mga uri ng asosasyon"
@@ -669,6 +673,7 @@ Status: Estado
 Change History: Baguhin ang kasaysayan
 Data Audit: Pag-awdit ng datos
 Data Audit - System: 'Pag-awdit sa datos - sistema'
+Action: Aksyon
 Version: Bersyon
 Entity type: Uri ng entity
 Entity name: Pangalan ng entity
@@ -688,6 +693,7 @@ Location: Lokasyon
 Format address by address country: Pag-format ng address sa pamamagitan ng address na bansa
 Language: Wika
 Timezone: Timezone
+Currency: Pera
 settings: Mga setting
 oro.locale:
   address_format:

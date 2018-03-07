@@ -1,0 +1,21 @@
+pim_dashboard:
+  widget:
+    last_operations:
+      empty: Ninguna operacione encontrada
+      status: Estado
+      date: Fecha
+      type: Tipo
+      profile_name: Nombre del perfil
+      details: Detalles
+      warning_count: Advertencias
+      job_type:
+        import: Importar
+        export: Exportar
+        mass_edit: Edición en masa
+        quick_export: Exportación rápida
+    completeness:
+      load_more: 'Cargar más...'
+    header:
+      view_all: Ver todo
+page_title:
+  pim_dashboard_index: Cartelera

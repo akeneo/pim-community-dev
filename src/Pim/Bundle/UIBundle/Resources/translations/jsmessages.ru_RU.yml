@@ -1,0 +1,112 @@
+Close: Закрыть
+Update: Обновить
+Selected Rows: Выбранные строки
+"Yes": "Да"
+"Yes, Delete": "Да, удалить"
+"Yes, I Agree": "Да, я согласен"
+"Yes, do it": "Да, сделать это"
+"No": "Нет"
+"Ok, got it.": "Ок, я понял."
+"Cancel": "Отмена"
+"Delete Confirmation": "Подтверждение удаления"
+"Edit": "Редактировать"
+"Unexpected error occured. Please contact system administrator.": "Произошла непредвиденная ошибка. Пожалуйста, свяжитесь с системным администратором."
+Now: Сейчас
+Prev: Предыдущий
+Next: Следующая
+Today: Сегодня
+Wk: Нед
+Done: Готово
+AM: AM
+A: A
+PM: PM
+P: P
+"Choose Time": "Выберите время"
+Time: Время
+Hour: Час
+Minute: Минута
+Second: Секунда
+Millisecond: Миллисекунда
+Microsecond: Микросекунда
+"Time Zone": "Часовой пояс"
+Localized value: Локализованное значение
+Columns: Столбцы
+Datagrid Configuration: Настройки таблицы
+Apply: Применить
+Action: Действие
+Unit: Единица
+Currency: Валюта
+jstree:
+  all: Все товары
+  unclassified: Неклассифицированные товары
+  product:
+    all: Все товары
+    unclassified: Неклассифицированные товары
+  no_tree: Дерево категорий недоступно
+  include_sub: Включить подкатегории
+  loading: Загрузка ...
+datetimepicker:
+  days:
+    Sunday: Воскресенье
+    Monday: Понедельник
+    Tuesday: Вторник
+    Wednesday: Среда
+    Thursday: Четверг
+    Friday: Пятница
+    Saturday: Суббота
+  daysShort:
+    Sun: Вск
+    Mon: Пнд
+    Tue: Втр
+    Wed: Срд
+    Thu: Чтв
+    Fri: Птн
+    Sat: Сбт
+  daysMin:
+    Su: Вс
+    Mo: По
+    Tu: Вт
+    We: Ср
+    Th: Чт
+    Fr: Пт
+    Sa: Сб
+  months:
+    January: Январь
+    February: Февраль
+    March: Март
+    April: Апрель
+    May: Май
+    June: Июнь
+    July: Июль
+    August: Август
+    September: Сентябрь
+    October: Октябрь
+    November: Ноябрь
+    December: Декабрь
+  monthsShort:
+    Jan: Янв
+    Feb: Фев
+    Mar: Мар
+    Apr: Апр
+    May: Май
+    Jun: Июн
+    Jul: Июл
+    Aug: Авг
+    Sep: Сен
+    Oct: Окт
+    Nov: Ноя
+    Dec: Дек
+oro_config:
+  form:
+    config:
+      title: Конфигурация системы
+      tab:
+        system:
+          title: Система
+      group:
+        localization:
+          title: Локализация
+          system_locale: Язык
+        notification:
+          title: Уведомления
+          system_notification: Уведомления о новых версиях
