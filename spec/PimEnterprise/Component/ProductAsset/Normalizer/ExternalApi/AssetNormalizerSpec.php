@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\PimEnterprise\Bundle\ApiBundle\Normalizer;
+namespace spec\PimEnterprise\Component\ProductAsset\Normalizer\ExternalApi;
 
 use Doctrine\Common\Collections\Collection;
 use PhpSpec\ObjectBehavior;

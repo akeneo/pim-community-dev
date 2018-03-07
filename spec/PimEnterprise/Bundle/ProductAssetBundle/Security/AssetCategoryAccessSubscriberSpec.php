@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\PimEnterprise\Bundle\SecurityBundle\EventSubscriber\Datagrid;
+namespace spec\PimEnterprise\Bundle\ProductAssetBundle\Security\AssetCategoryAccessSubscriber;
 
 use Doctrine\ORM\QueryBuilder;
 use Oro\Bundle\DataGridBundle\Datagrid\DatagridInterface;
@@ -8,8 +8,8 @@ use Oro\Bundle\DataGridBundle\Datasource\DatasourceInterface;
 use Oro\Bundle\DataGridBundle\Event\BuildAfter;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\DataGridBundle\Datasource\DatasourceInterface as PimDatasource;
-use Pim\Component\User\Model\UserInterface;
 use Pim\Component\Catalog\Query\Filter\Operators;
+use Pim\Component\User\Model\UserInterface;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;
 use PimEnterprise\Component\ProductAsset\Repository\AssetRepositoryInterface;
 use PimEnterprise\Component\Security\Attributes;

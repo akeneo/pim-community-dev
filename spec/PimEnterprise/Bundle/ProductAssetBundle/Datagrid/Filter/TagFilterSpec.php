@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\PimEnterprise\Bundle\FilterBundle\Filter\Tag;
+namespace spec\PimEnterprise\Bundle\ProductAssetBundle\Datagrid\Filter;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;

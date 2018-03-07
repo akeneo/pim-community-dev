@@ -1,10 +1,10 @@
 <?php
 
-namespace spec\PimEnterprise\Bundle\SecurityBundle\Normalizer\Flat;
+namespace spec\PimEnterprise\Component\ProductAsset\Normalizer\Flat;
 
-use Pim\Component\User\Model\Group;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\CategoryInterface;
+use Pim\Component\User\Model\Group;
 use PimEnterprise\Bundle\SecurityBundle\Manager\CategoryAccessManager;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
@@ -15,7 +15,7 @@ class AssetCategoryNormalizerSpec extends ObjectBehavior
         $this->beConstructedWith($categoryNormalizer, $accessManager);
     }
 
-    function it_normalize_a_category_with_access_informations(
+    function it_normalize_an_category_with_access_informations(
         $accessManager,
         $categoryNormalizer,
         CategoryInterface $pants,

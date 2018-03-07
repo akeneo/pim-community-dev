@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\PimEnterprise\Bundle\ApiBundle\Normalizer;
+namespace spec\PimEnterprise\Component\ProductAsset\Normalizer\ExternalApi;
 
 use PhpSpec\ObjectBehavior;
 use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
