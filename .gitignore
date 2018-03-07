@@ -3,6 +3,7 @@ web/media/*
 web/css/*
 web/js/*
 web/dist/*
+web/test_dist/*
 web/cache/
 web/uploads/*
 web/uploads_test/*

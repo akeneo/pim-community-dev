@@ -8,7 +8,8 @@
     "webpack-dev": "webpack --config webpack.config.js",
     "webpack-watch": "webpack --progress --config webpack.config.js --watch",
     "lint": "node ./node_modules/eslint/bin/eslint 'src/**/*.js' --ignore-path .eslintignore --quiet",
-    "lint-fix": "node ./node_modules/eslint/bin/eslint 'src/**/*.js' --ignore-path .eslintignore --quiet --fix"
+    "lint-fix": "node ./node_modules/eslint/bin/eslint 'src/**/*.js' --ignore-path .eslintignore --quiet --fix",
+    "webpack-test": "webpack --config webpack-test.config.js"
   },
   "repository": {
     "type": "git",
@@ -21,7 +22,12 @@
   "devDependencies": {
     "colors": "1.1.2",
     "dep-diff": "1.0.1",
-    "read-pkg": "2.0.0"
+    "read-pkg": "2.0.0",
+    "cucumber": "^4.0.0",
+    "cucumber-html-reporter": "^4.0.1",
+    "html-webpack-inline-source-plugin": "^0.0.9",
+    "html-webpack-plugin": "^2.30.1",
+    "yargs": "^11.0.0"
   },
   "dependencies": {
     "JSON2": "0.1.0",
