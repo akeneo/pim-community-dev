@@ -13,6 +13,7 @@ use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Pim\Bundle\CatalogBundle\Doctrine\ORM\Query\AttributeIsAFamilyVariantAxis;
 use Pim\Bundle\CatalogBundle\Filter\ObjectFilterInterface;
 use Pim\Bundle\UserBundle\Context\UserContext;
+use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Factory\AttributeFactory;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
@@ -325,6 +326,19 @@ class AttributeController
         }
 
         $attribute = $this->getAttributeOr404($code);
+
+        if (AttributeTypes::IDENTIFIER === $attribute->getType()) {
+            $message = $this->translator->trans('flash.attribute.identifier_not_removable');
+
+            return new JsonResponse(
+                [
+                    'message' => $message,
+                    'global' => true,
+                ],
+                Response::HTTP_INTERNAL_SERVER_ERROR
+            );
+        }
+
         $this->remover->remove($attribute);
 
         return new JsonResponse(null, Response::HTTP_NO_CONTENT);

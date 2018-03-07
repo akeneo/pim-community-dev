@@ -211,31 +211,6 @@ class ProductProcessor extends AbstractProcessor implements ItemProcessorInterfa
     }
 
     /**
-     * @param string      $identifier
-     * @param string|null $familyCode
-     * @param string      $parentCode
-     *
-     * @return ProductInterface
-     * @throws AccessDeniedException
-     */
-    protected function findOrCreateProduct(
-        string $identifier,
-        ?string $familyCode,
-        string $parentCode
-    ): ProductInterface {
-        $product = $this->repository->findOneByIdentifier($identifier);
-        if (null === $product && '' !== $parentCode) {
-            $product = $this->variantProductBuilder->createProduct($identifier, $familyCode);
-        }
-
-        if (null === $product) {
-            $product = $this->productBuilder->createProduct($identifier, $familyCode);
-        }
-
-        return $product;
-    }
-
-    /**
      * @param ProductInterface $product
      * @param array            $filteredItem
      *
