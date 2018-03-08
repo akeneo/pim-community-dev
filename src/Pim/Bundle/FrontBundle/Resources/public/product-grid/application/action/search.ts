@@ -9,8 +9,8 @@ import {ServerResponse} from 'pimfront/product-grid/infrastructure/fetcher/produ
 import hidrateAll from 'pimfront/app/application/hidrator/hidrator';
 import {dataReceived, childrenReceived} from 'pimfront/product-grid/domain/event/search';
 import {State} from 'pimfront/product-grid/application/reducer/main';
-import GridFilter from 'pimfront/product-grid/domain/model/filter/filter';
 import {startLoading, stopLoading, goNextPage, goFirstPage} from 'pimfront/grid/application/event/search';
+import {NormalizedFilter} from 'pimfront/product-grid/domain/model/filter/filter';
 
 export const productHidrator = (product: RawProductInterface): ProductInterface => {
   switch (product.meta.model_type) {
@@ -44,10 +44,10 @@ const stateToQuery = (state: State<Product>): Query => {
     channel: undefined === state.user.catalogChannel ? '' : state.user.catalogChannel,
     limit: state.grid.query.limit,
     page: state.grid.query.page,
-    filters: state.grid.query.filters.map((filter: GridFilter) => ({
-      field: filter.field.identifier,
-      operator: filter.operator.identifier,
-      value: filter.value.getValue(),
+    filters: state.grid.query.filters.map((filter: NormalizedFilter): QueryFilter => ({
+      field: filter.field,
+      operator: filter.operator,
+      value: filter.value,
       options: {},
     })),
   };
@@ -57,12 +57,20 @@ const fetchResults = async (query: Query): Promise<{products: ProductInterface[]
   const [err, {items, total}]: [any, ServerResponse] = await fetcherRegistry.getFetcher('product-grid').search(query);
 
   if (null !== err) {
+    // TODO: handle error here
   }
 
   return {products: hidrateAll<ProductInterface>(productHidrator)(items), total};
 };
 
-export const updateResults = (append: boolean = false) => async (dispatch: any, getState: any): Promise<void> => {
+export const updateResults = (append: boolean = false) => async (
+  dispatch: any,
+  getState: any
+): Promise<void> | void => {
+  if (getState().grid.isFetching) {
+    return;
+  }
+
   dispatch(startLoading());
 
   if (false === append) {

@@ -3,12 +3,19 @@ import {Operator} from 'pimfront/product-grid/domain/model/filter/operator';
 import {Value} from 'pimfront/product-grid/domain/model/filter/value';
 import {Property, Attribute} from 'pimfront/product-grid/domain/model/field';
 
+export interface NormalizedFilter {
+  field: string;
+  operator: string;
+  value: any;
+}
+
 export default interface Filter {
   field: Field;
   operator: Operator;
   value: Value;
   isEmpty: () => boolean;
   getOperators(): Operator[];
+  normalize(): NormalizedFilter;
 };
 
 abstract class BaseFilter implements Filter {
@@ -27,6 +34,14 @@ abstract class BaseFilter implements Filter {
   }
 
   abstract getOperators(): Operator[];
+
+  normalize(): NormalizedFilter {
+    return {
+      field: this.field.identifier,
+      operator: this.operator.identifier,
+      value: this.value.getValue(),
+    };
+  }
 }
 
 export abstract class PropertyFilter extends BaseFilter {

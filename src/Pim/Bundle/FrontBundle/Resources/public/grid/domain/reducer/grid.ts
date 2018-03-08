@@ -1,5 +1,6 @@
 import GridState, {createState as createGridState} from 'pimfront/grid/domain/model/state';
 import {Column} from 'pimfront/grid/domain/model/query';
+import {NormalizedFilter} from 'pimfront/product-grid/domain/model/filter/filter';
 
 export default <Element>(
   state: GridState<Element> | undefined,
@@ -7,6 +8,7 @@ export default <Element>(
     type: string;
     append: boolean;
     total: number;
+    filters: NormalizedFilter[];
     data: {
       items: Element[];
       columns: Column[];
@@ -37,6 +39,11 @@ export default <Element>(
       break;
     case 'COLUMNS_UPDATED':
       state = {...state, query: {...state.query, columns: action.data.columns}};
+      break;
+    case 'FILTER_ADDED':
+      const newFilters: NormalizedFilter[] = Array.from(new Set([...state.query.filters, ...action.filters]));
+
+      state = {...state, query: {...state.query, filters: newFilters}};
       break;
     default:
       break;

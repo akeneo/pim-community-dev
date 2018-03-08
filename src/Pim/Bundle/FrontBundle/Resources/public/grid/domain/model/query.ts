@@ -1,4 +1,4 @@
-import Filter from 'pimfront/product-grid/domain/model/filter/filter';
+import {NormalizedFilter} from 'pimfront/product-grid/domain/model/filter/filter';
 
 enum Sort {
   Ascending,
@@ -14,18 +14,18 @@ export interface Column {
 
 export default interface Query {
   readonly columns: Column[];
-  readonly filters: Filter[];
+  readonly filters: NormalizedFilter[];
   readonly page: number;
   readonly limit: number;
 };
 
 class ConcreteQuery implements Query {
   readonly columns: Column[];
-  readonly filters: Filter[];
+  readonly filters: NormalizedFilter[];
   readonly page: number;
   readonly limit: number;
 
-  public constructor(columns: Column[] = [], filters: Filter[] = [], page: number = 0, limit: number = 25) {
+  public constructor(columns: Column[] = [], filters: NormalizedFilter[] = [], page: number = 0, limit: number = 25) {
     this.columns = columns;
     this.filters = filters;
     this.page = page;

@@ -11,6 +11,7 @@ import LoadingIndicator from 'pimfront/app/application/component/loading-indicat
 import StatusFilterModel from 'pimfront/product-grid/domain/model/filter/property/status';
 import BooleanFilterView from 'pimfront/product-grid/application/component/filter/boolean';
 import {Property} from 'pimfront/product-grid/domain/model/field';
+import {NormalizedFilter} from 'pimfront/product-grid/domain/model/filter/filter';
 
 interface SidebarDispatch {
   onCatalogLocaleChanged: (locale: Locale) => void;
@@ -25,6 +26,7 @@ interface SidebarViewState {
   locales: Locale[];
   channels: Channel[];
   isFetching: boolean;
+  filters: NormalizedFilter[];
 }
 
 export const SidebarView = ({
@@ -83,6 +85,7 @@ export const sidebarDecorator = connect(
       locales,
       channels: state.structure.channels,
       isFetching: state.grid.isFetching,
+      filters: state.grid.query.filters,
     };
   },
   (dispatch: any): SidebarDispatch => {

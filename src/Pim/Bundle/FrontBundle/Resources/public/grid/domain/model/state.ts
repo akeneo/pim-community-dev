@@ -1,4 +1,4 @@
-import Query, {createQuery} from './query';
+import Query, {createQuery} from 'pimfront/grid/domain/model/query';
 
 export default interface GridState<Element> {
   readonly query: Query;
