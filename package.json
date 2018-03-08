@@ -16,15 +16,16 @@
     "webpack-test": "webpack --config $npm_package_config_source/webpack-test.config.js",
     "lint": "eslint 'src/**/*.js' --config $npm_package_config_source/.eslintrc --ignore-path $npm_package_config_source/.eslintignore --quiet",
     "lint-fix": "eslint 'src/**/*.js' --config $npm_package_config_source/.eslintrc --ignore-path $npm_package_config_source/.eslintignore --quiet --fix",
-    "acceptance": "node webpack/test/acceptance/run.js",
-    "acceptance-fix": "NODE_PATH=./node_modules cucumber-js -r ./vendor/akeneo/pim-community-dev/tests/front/acceptance/cucumber ./vendor/akeneo/pim-community-dev/tests/front/acceptance/features"
+    "acceptance": "cucumber-js -r ./webpack/test/acceptance/run.js -r ./tests/front/acceptance/cucumber/step-definitions ./tests/front/acceptance/features/",
+    "acceptance-debug": "cucumber-js -r ./webpack/test/acceptance/run.js -r ./tests/front/acceptance/cucumber/step-definitions ./tests/front/acceptance/features/ --world-parameters='{\"debug\": true}'"
   },
   "devDependencies": {
     "colors": "1.1.2",
     "cucumber-html-reporter": "^4.0.2",
     "dep-diff": "1.0.1",
     "html-webpack-inline-source-plugin": "^0.0.9",
-    "read-pkg": "2.0.0"
+    "read-pkg": "2.0.0",
+    "step-dictionary": "^0.1.2"
   },
   "dependencies": {
     "JSON2": "0.1.0",

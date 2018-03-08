@@ -1,17 +1,12 @@
-const dir = process.cwd();
 const path = require('path');
 const fs = require('fs');
-
-const communityDir = "./vendor/akeneo/pim-community-dev/"
-
-const runnerPath = path.resolve(dir, communityDir + 'webpack/test/acceptance/cucumber-runner');
-const runner = require(runnerPath);
 const cucumber = require('cucumber');
 
-// console.log(fs.realpathSync(communityDir + 'tests/front/acceptance/cucumber/step-definitions/'));
+const StepDictionary = require('step-dictionary');
+const world = path.resolve(process.cwd(), './vendor/akeneo/pim-community-dev/tests/front/acceptance/cucumber/world.js');
+const community = path.resolve(process.cwd(), './vendor/akeneo/pim-community-dev/tests/front/acceptance/cucumber/step-definitions')
+const dictionary = new StepDictionary(community);
 
-runner(cucumber, [
-    // fs.realpathSync(communityDir + 'tests/front/acceptance/cucumber/step-definitions/'),
-    communityDir + 'tests/front/acceptance/cucumber/step-definitions/',
-    './tests/front/acceptance/cucumber/step-definitions/'
-]);
+require(world)(cucumber)
+dictionary.paths.forEach(file => require(file)(cucumber))
+
