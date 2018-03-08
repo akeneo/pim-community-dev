@@ -3,16 +3,13 @@
 namespace Pim\Bundle\UserBundle\Security;
 
 use Akeneo\Component\StorageUtils\Exception\ResourceNotFoundException;
-use Doctrine\Common\Util\ClassUtils;
-use Pim\Bundle\UserBundle\Persistence\ORM\Query\FindAuthenticatedUser;
-use Pim\Component\User\Repository\UserRepositoryInterface;
-use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
+use Pim\Bundle\UserBundle\Persistence\ORM\Query;
 use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 
 /**
- * Implementation of Symfony UserProviderInterface
+ * Loads UserInterface objects from some source for the authentication system.
  *
  * @author    Yohan Blain <yohan.blain@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
@@ -20,13 +17,13 @@ use Symfony\Component\Security\Core\User\UserProviderInterface;
  */
 class UserProvider implements UserProviderInterface
 {
-    /** @var UserRepositoryInterface */
+    /** @var Query\FindAuthenticatedUser */
     private $findAuthenticatedUserQuery;
 
     /**
-     * @param FindAuthenticatedUser $findAuthenticatedUserQuery
+     * @param Query\FindAuthenticatedUser $findAuthenticatedUserQuery
      */
-    public function __construct(FindAuthenticatedUser $findAuthenticatedUserQuery)
+    public function __construct(Query\FindAuthenticatedUser $findAuthenticatedUserQuery)
     {
         $this->findAuthenticatedUserQuery = $findAuthenticatedUserQuery;
     }
@@ -54,11 +51,6 @@ class UserProvider implements UserProviderInterface
      */
     public function refreshUser(UserInterface $user): UserInterface
     {
-        $userClass = ClassUtils::getClass($user);
-        if (!$this->supportsClass($userClass)) {
-            throw new UnsupportedUserException(sprintf('User object of class "%s" is not supported.', $userClass));
-        }
-
         $reloadedUser = $this->loadUserByUsername($user->getUsername());
 
         return $reloadedUser;
@@ -69,6 +61,6 @@ class UserProvider implements UserProviderInterface
      */
     public function supportsClass($class): bool
     {
-        return is_subclass_of($class, UserInterface::class);
+        return $class instanceof UserInterface;
     }
 }
