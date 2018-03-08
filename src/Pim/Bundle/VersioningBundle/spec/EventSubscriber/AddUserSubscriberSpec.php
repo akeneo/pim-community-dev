@@ -40,6 +40,7 @@ class AddUserSubscriberSpec extends ObjectBehavior
         User $user
     ) {
         $tokenStorage->getToken()->willReturn($token);
+        $token->isAuthenticated()->willReturn(true);
         $token->getUser()->willReturn($user);
         $user->getUsername()->willReturn('foo');
 
