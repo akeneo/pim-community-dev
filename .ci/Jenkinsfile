@@ -113,6 +113,15 @@ stage("Test") {
                     echo "Skipping unit test grunt"
                 }
             },
+            "js-acceptance": {
+                if (launchUnitTests.equals("yes")) {
+                    withNode({
+                        sh "cd /home/jenkins/pim && npm run webpack-test && npm run acceptance"
+                    })
+                } else {
+                    echo "Skipping acceptance tests"
+                }
+            },
             "php-coupling-detector": {
                 if (launchUnitTests.equals("yes")) {
                     withPhp({
@@ -224,7 +233,7 @@ def withNode(body) {
     clearTemplateNames()
     def uuid = UUID.randomUUID().toString()
     podTemplate(label: "node-" + uuid, containers: [
-        containerTemplate(name: "node", ttyEnabled: true, alwaysPullImage: true, command: 'cat', image: "node:8", resourceRequestCpu: '500m', resourceRequestMemory: '1000Mi')
+        containerTemplate(name: "node", ttyEnabled: true, alwaysPullImage: true, command: 'cat', image: "juliensnz/node", resourceRequestCpu: '500m', resourceRequestMemory: '1000Mi')
     ], annotations: [
         podAnnotation(key: "pod.beta.kubernetes.io/init-containers", value: "[{\"name\": \"pim\", \"imagePullPolicy\": \"Always\", \"image\": \"eu.gcr.io/akeneo-ci/pim-enterprise-dev:pull-request-${env.CHANGE_ID}-build-${env.BUILD_NUMBER}\", \"command\": [\"sh\", \"-c\", \"cp -Rp /pim /home/jenkins\"], \"volumeMounts\":[{\"name\":\"workspace-volume\",\"mountPath\":\"/home/jenkins\"}]}]")
     ]) {
