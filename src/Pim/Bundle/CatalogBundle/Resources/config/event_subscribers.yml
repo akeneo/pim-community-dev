@@ -152,7 +152,6 @@ services:
             - '@security.token_storage'
             - '@akeneo_batch_queue.launcher.queue_job_launcher'
             - '@akeneo_batch.job.job_instance_repository'
-            - '@pim_catalog.repository.attribute_requirement'
             - '%pim_catalog.compute_completeness_of_products_family.job_name%'
         tags:
             - { name: kernel.event_subscriber }

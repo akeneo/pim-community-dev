@@ -3,6 +3,7 @@
 namespace spec\Pim\Component\Catalog\Normalizer\Indexing\ProductAndProductModel;
 
 use PhpSpec\ObjectBehavior;
+use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\VariantProductInterface;
 use Pim\Component\Catalog\Normalizer\Indexing\ProductAndProductModel\ProductModelNormalizer;
@@ -48,8 +49,11 @@ class ProductNormalizerSpec extends ObjectBehavior
 
     function it_normalizes_a_product_in_product_and_product_model_format(
         $propertiesNormalizer,
-        ProductInterface $product
+        ProductInterface $product,
+        FamilyInterface $family
     ) {
+        $product->getFamily()->willReturn($family);
+        $family->getAttributeCodes()->willReturn(['attr1', 'attr2']);
         $product->getRawValues()
             ->willReturn([
                 'property_1' => ['value_1'],
@@ -65,14 +69,17 @@ class ProductNormalizerSpec extends ObjectBehavior
             ->shouldReturn([
                 'properties'                => 'properties are normalized here',
                 'document_type'              => ProductInterface::class,
-                'attributes_for_this_level' => ['property_1', 'property_2'],
+                'attributes_for_this_level' => ['attr1', 'attr2', 'property_1', 'property_2'],
             ]);
     }
 
     function it_normalizes_a_variant_product_in_product_and_product_model_format(
         $propertiesNormalizer,
-        VariantProductInterface $variantProduct
+        VariantProductInterface $variantProduct,
+        FamilyInterface $family
     ) {
+        $variantProduct->getFamily()->willReturn($family);
+        $family->getAttributeCodes()->willReturn(['attr1', 'attr2']);
         $variantProduct->getVariationLevel()->willReturn(0);
         $variantProduct->getRawValues()
             ->willReturn([
@@ -89,7 +96,7 @@ class ProductNormalizerSpec extends ObjectBehavior
             ->shouldReturn([
                 'properties'                => 'properties are normalized here',
                 'document_type'              => ProductInterface::class,
-                'attributes_for_this_level' => ['property_1', 'property_2'],
+                'attributes_for_this_level' => ['attr1', 'attr2', 'property_1', 'property_2'],
             ]);
     }
 }

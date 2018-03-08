@@ -60,7 +60,28 @@ class ProductAndProductModelIndexingIntegration extends TestCase
                 'codes' => [],
             ],
             'document_type' => ProductModelInterface::class,
-            'attributes_for_this_level' => ['a_text']
+            'attributes_for_this_level' => [
+                'sku',
+                'a_date',
+                'a_file',
+                'an_image',
+                'a_metric',
+                'a_multi_select',
+                'a_number_float',
+                'a_number_float_negative',
+                'a_number_integer',
+                'a_price',
+                'a_ref_data_multi_select',
+                'a_ref_data_simple_select',
+                'a_simple_select',
+                'a_text',
+                'a_text_area',
+                'a_yes_no',
+                'a_localizable_image',
+                'a_scopable_price',
+                'a_localized_and_scopable_text_area',
+                'a_text',
+            ]
         ];
 
         $this->assertProductModelIndexingFormat('qux', $expected);
@@ -109,7 +130,28 @@ class ProductAndProductModelIndexingIntegration extends TestCase
                 'codes' => ['qux'],
             ],
             'document_type' => ProductModelInterface::class,
-            'attributes_for_this_level' => ['a_simple_select']
+            'attributes_for_this_level' => [
+                'sku',
+                'a_date',
+                'a_file',
+                'an_image',
+                'a_metric',
+                'a_multi_select',
+                'a_number_float',
+                'a_number_float_negative',
+                'a_number_integer',
+                'a_price',
+                'a_ref_data_multi_select',
+                'a_ref_data_simple_select',
+                'a_simple_select',
+                'a_text',
+                'a_text_area',
+                'a_yes_no',
+                'a_localizable_image',
+                'a_scopable_price',
+                'a_localized_and_scopable_text_area',
+                'a_simple_select',
+            ]
         ];
 
         $this->assertProductModelIndexingFormat('quux', $expected);
@@ -164,7 +206,29 @@ class ProductAndProductModelIndexingIntegration extends TestCase
                 'codes' => ['quux', 'qux'],
             ],
             'document_type' => ProductInterface::class,
-            'attributes_for_this_level' => ['sku', 'a_yes_no']
+            'attributes_for_this_level' => [
+                'sku',
+                'a_date',
+                'a_file',
+                'an_image',
+                'a_metric',
+                'a_multi_select',
+                'a_number_float',
+                'a_number_float_negative',
+                'a_number_integer',
+                'a_price',
+                'a_ref_data_multi_select',
+                'a_ref_data_simple_select',
+                'a_simple_select',
+                'a_text',
+                'a_text_area',
+                'a_yes_no',
+                'a_localizable_image',
+                'a_scopable_price',
+                'a_localized_and_scopable_text_area',
+                'sku',
+                'a_yes_no',
+            ]
         ];
 
         $this->assertProductIndexingFormat('qux', $expected);
@@ -225,7 +289,6 @@ class ProductAndProductModelIndexingIntegration extends TestCase
             ],
             'enabled'        => true,
             'categories'     => ['categoryA1', 'categoryB'],
-            'groups'         => ['groupA', 'groupB'],
             'groups'         => ['groupA', 'groupB'],
             'in_group'       => [
                 'groupA'   => true,
@@ -442,6 +505,25 @@ class ProductAndProductModelIndexingIntegration extends TestCase
             ],
             'document_type' => ProductInterface::class,
             'attributes_for_this_level' => [
+                'sku',
+                'a_date',
+                'a_file',
+                'an_image',
+                'a_metric',
+                'a_multi_select',
+                'a_number_float',
+                'a_number_float_negative',
+                'a_number_integer',
+                'a_price',
+                'a_ref_data_multi_select',
+                'a_ref_data_simple_select',
+                'a_simple_select',
+                'a_text',
+                'a_text_area',
+                'a_yes_no',
+                'a_localizable_image',
+                'a_scopable_price',
+                'a_localized_and_scopable_text_area',
                 123,
                 'sku',
                 'a_date',

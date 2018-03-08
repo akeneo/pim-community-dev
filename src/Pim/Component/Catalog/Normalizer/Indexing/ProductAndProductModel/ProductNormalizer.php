@@ -38,8 +38,13 @@ class ProductNormalizer implements NormalizerInterface
     {
         $data = $this->propertiesNormalizer->normalize($product, $format, $context);
 
+        $attributeCodes = [];
+        if (null !== $product->getFamily()) {
+            $attributeCodes = $product->getFamily()->getAttributeCodes();
+        }
+
         $data[self::FIELD_DOCUMENT_TYPE] = ProductInterface::class;
-        $data[self::FIELD_ATTRIBUTES_IN_LEVEL] = array_keys($product->getRawValues());
+        $data[self::FIELD_ATTRIBUTES_IN_LEVEL] = array_merge($attributeCodes, array_keys($product->getRawValues()));
 
         return $data;
     }

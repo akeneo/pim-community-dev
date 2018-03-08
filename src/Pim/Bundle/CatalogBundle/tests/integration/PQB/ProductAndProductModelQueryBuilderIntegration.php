@@ -127,8 +127,30 @@ class ProductAndProductModelQueryBuilderIntegration extends AbstractProductAndPr
             $result,
             [
                 'model-tshirt-divided',
+                'model-tshirt-divided-battleship-grey',
+                'model-tshirt-divided-crimson-red',
+                'model-tshirt-divided-navy-blue',
                 'model-tshirt-unique-color-kurt',
                 'model-tshirt-unique-size',
+                'tshirt-divided-battleship-grey-l',
+                'tshirt-divided-battleship-grey-m',
+                'tshirt-divided-battleship-grey-xxs',
+                'tshirt-divided-battleship-grey-xxxl',
+                'tshirt-divided-crimson-red-l',
+                'tshirt-divided-crimson-red-m',
+                'tshirt-divided-crimson-red-xxs',
+                'tshirt-divided-crimson-red-xxxl',
+                'tshirt-divided-navy-blue-l',
+                'tshirt-divided-navy-blue-m',
+                'tshirt-divided-navy-blue-xxs',
+                'tshirt-divided-navy-blue-xxxl',
+                'tshirt-unique-color-kurt-l',
+                'tshirt-unique-color-kurt-m',
+                'tshirt-unique-color-kurt-xxs',
+                'tshirt-unique-color-kurt-xxxl',
+                'tshirt-unique-size-crimson-red',
+                'tshirt-unique-size-electric-yellow',
+                'tshirt-unique-size-navy-blue',
             ]
         );
     }
@@ -151,10 +173,18 @@ class ProductAndProductModelQueryBuilderIntegration extends AbstractProductAndPr
             [
                 'model-tshirt-divided-crimson-red',
                 'model-tshirt-unique-color-kurt',
-                'tshirt-unique-size-crimson-red',
-                'running-shoes-xxs-crimson-red',
                 'running-shoes-m-crimson-red',
+                'running-shoes-xxs-crimson-red',
                 'running-shoes-xxxl-crimson-red',
+                'tshirt-divided-crimson-red-l',
+                'tshirt-divided-crimson-red-m',
+                'tshirt-divided-crimson-red-xxs',
+                'tshirt-divided-crimson-red-xxxl',
+                'tshirt-unique-color-kurt-l',
+                'tshirt-unique-color-kurt-m',
+                'tshirt-unique-color-kurt-xxs',
+                'tshirt-unique-color-kurt-xxxl',
+                'tshirt-unique-size-crimson-red',
             ]
         );
     }
@@ -163,7 +193,16 @@ class ProductAndProductModelQueryBuilderIntegration extends AbstractProductAndPr
     {
         $result = $this->executeFilter([['color', Operators::IN_LIST, ['battleship_grey']]]);
 
-        $this->assert($result, ['model-tshirt-divided-battleship-grey', 'model-braided-hat']);
+        $this->assert($result, [
+            'braided-hat-m',
+            'braided-hat-xxxl',
+            'model-braided-hat',
+            'model-tshirt-divided-battleship-grey',
+            'tshirt-divided-battleship-grey-l',
+            'tshirt-divided-battleship-grey-m',
+            'tshirt-divided-battleship-grey-xxs',
+            'tshirt-divided-battleship-grey-xxxl',
+        ]);
     }
 
     public function testSearchColorBlue()
@@ -174,10 +213,14 @@ class ProductAndProductModelQueryBuilderIntegration extends AbstractProductAndPr
             $result,
             [
                 'model-tshirt-divided-navy-blue',
-                'tshirt-unique-size-navy-blue',
-                'running-shoes-xxs-navy-blue',
                 'running-shoes-m-navy-blue',
+                'running-shoes-xxs-navy-blue',
                 'running-shoes-xxxl-navy-blue',
+                'tshirt-divided-navy-blue-l',
+                'tshirt-divided-navy-blue-m',
+                'tshirt-divided-navy-blue-xxs',
+                'tshirt-divided-navy-blue-xxxl',
+                'tshirt-unique-size-navy-blue',
                 'watch',
             ]
         );
@@ -190,13 +233,16 @@ class ProductAndProductModelQueryBuilderIntegration extends AbstractProductAndPr
         $this->assert(
             $result,
             [
-                'tshirt-divided-battleship-grey-xxs',
-                'tshirt-divided-navy-blue-xxs',
-                'tshirt-divided-crimson-red-xxs',
-                'tshirt-unique-color-kurt-xxs',
-                'model-running-shoes-xxs',
                 'biker-jacket-leather-xxs',
                 'biker-jacket-polyester-xxs',
+                'model-running-shoes-xxs',
+                'running-shoes-xxs-antique-white',
+                'running-shoes-xxs-crimson-red',
+                'running-shoes-xxs-navy-blue',
+                'tshirt-divided-battleship-grey-xxs',
+                'tshirt-divided-crimson-red-xxs',
+                'tshirt-divided-navy-blue-xxs',
+                'tshirt-unique-color-kurt-xxs',
             ]
         );
     }
@@ -208,14 +254,17 @@ class ProductAndProductModelQueryBuilderIntegration extends AbstractProductAndPr
         $this->assert(
             $result,
             [
+                'biker-jacket-leather-xxxl',
+                'biker-jacket-polyester-xxxl',
+                'braided-hat-xxxl',
+                'model-running-shoes-xxxl',
+                'running-shoes-xxxl-antique-white',
+                'running-shoes-xxxl-crimson-red',
+                'running-shoes-xxxl-navy-blue',
                 'tshirt-divided-battleship-grey-xxxl',
                 'tshirt-divided-crimson-red-xxxl',
                 'tshirt-divided-navy-blue-xxxl',
                 'tshirt-unique-color-kurt-xxxl',
-                'braided-hat-xxxl',
-                'model-running-shoes-xxxl',
-                'biker-jacket-leather-xxxl',
-                'biker-jacket-polyester-xxxl',
             ]
         );
     }
@@ -268,7 +317,13 @@ class ProductAndProductModelQueryBuilderIntegration extends AbstractProductAndPr
             ]
         );
 
-        $this->assert($result, ['model-tshirt-divided-battleship-grey']);
+        $this->assert($result, [
+            'model-tshirt-divided-battleship-grey',
+            'tshirt-divided-battleship-grey-l',
+            'tshirt-divided-battleship-grey-m',
+            'tshirt-divided-battleship-grey-xxs',
+            'tshirt-divided-battleship-grey-xxxl',
+        ]);
     }
 
     public function testSearchMaterialCotton()
@@ -282,6 +337,21 @@ class ProductAndProductModelQueryBuilderIntegration extends AbstractProductAndPr
                 'model-tshirt-divided-crimson-red',
                 'model-tshirt-unique-color-kurt',
                 'model-tshirt-unique-size',
+                'tshirt-divided-battleship-grey-l',
+                'tshirt-divided-battleship-grey-m',
+                'tshirt-divided-battleship-grey-xxs',
+                'tshirt-divided-battleship-grey-xxxl',
+                'tshirt-divided-crimson-red-l',
+                'tshirt-divided-crimson-red-m',
+                'tshirt-divided-crimson-red-xxs',
+                'tshirt-divided-crimson-red-xxxl',
+                'tshirt-unique-color-kurt-l',
+                'tshirt-unique-color-kurt-m',
+                'tshirt-unique-color-kurt-xxs',
+                'tshirt-unique-color-kurt-xxxl',
+                'tshirt-unique-size-crimson-red',
+                'tshirt-unique-size-electric-yellow',
+                'tshirt-unique-size-navy-blue',
             ]
         );
     }
@@ -293,8 +363,23 @@ class ProductAndProductModelQueryBuilderIntegration extends AbstractProductAndPr
         $this->assert(
             $result,
             [
-                'model-running-shoes',
+                'biker-jacket-leather-m',
+                'biker-jacket-leather-xxs',
+                'biker-jacket-leather-xxxl',
                 'model-biker-jacket-leather',
+                'model-running-shoes',
+                'model-running-shoes-m',
+                'model-running-shoes-xxs',
+                'model-running-shoes-xxxl',
+                'running-shoes-m-antique-white',
+                'running-shoes-m-crimson-red',
+                'running-shoes-m-navy-blue',
+                'running-shoes-xxs-antique-white',
+                'running-shoes-xxs-crimson-red',
+                'running-shoes-xxs-navy-blue',
+                'running-shoes-xxxl-antique-white',
+                'running-shoes-xxxl-crimson-red',
+                'running-shoes-xxxl-navy-blue',
             ]
         );
     }
@@ -328,6 +413,14 @@ class ProductAndProductModelQueryBuilderIntegration extends AbstractProductAndPr
             [
                 'model-tshirt-divided-crimson-red',
                 'model-tshirt-unique-color-kurt',
+                'tshirt-divided-crimson-red-l',
+                'tshirt-divided-crimson-red-m',
+                'tshirt-divided-crimson-red-xxs',
+                'tshirt-divided-crimson-red-xxxl',
+                'tshirt-unique-color-kurt-l',
+                'tshirt-unique-color-kurt-m',
+                'tshirt-unique-color-kurt-xxs',
+                'tshirt-unique-color-kurt-xxxl',
                 'tshirt-unique-size-crimson-red',
             ]
         );

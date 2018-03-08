@@ -224,9 +224,12 @@ class FixturesContext extends BaseFixturesContext
         $processor = $this->getContainer()->get('pim_connector.processor.denormalization.family');
         $saver     = $this->getContainer()->get('pim_catalog.saver.family');
 
+        $families = [];
         foreach ($table->getHash() as $data) {
-            $saver->save($processor->process($converter->convert($data)));
+            $families[] = $processor->process($converter->convert($data));
         }
+
+        $saver->saveAll($families);
     }
 
     /**
