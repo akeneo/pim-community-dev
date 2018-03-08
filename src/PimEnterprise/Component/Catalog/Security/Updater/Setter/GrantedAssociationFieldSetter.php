@@ -11,11 +11,11 @@
 
 namespace PimEnterprise\Component\Catalog\Security\Updater\Setter;
 
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Pim\Component\Catalog\Updater\Setter\AbstractFieldSetter;
 use Pim\Component\Catalog\Updater\Setter\FieldSetterInterface;
 use PimEnterprise\Component\Security\Attributes;
-use PimEnterprise\Component\Security\Exception\ResourceAccessDeniedException;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 /**
@@ -67,9 +67,12 @@ class GrantedAssociationFieldSetter extends AbstractFieldSetter implements Field
             foreach ($associations['products'] as $associatedProductIdentifier) {
                 $associatedProduct = $this->productRepository->findOneByIdentifier($associatedProductIdentifier);
                 if (!$this->authorizationChecker->isGranted([Attributes::VIEW], $associatedProduct)) {
-                    throw new ResourceAccessDeniedException(
-                        $associatedProduct,
-                        'You cannot associate a product on which you have not a view permission.'
+                    throw InvalidPropertyException::validEntityCodeExpected(
+                        'associations',
+                        'product identifier',
+                        'The product does not exist',
+                        static::class,
+                        $associatedProductIdentifier
                     );
                 }
             }

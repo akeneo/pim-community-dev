@@ -50,7 +50,7 @@ productD;productA
 CSV;
 
         $expectedWarnings = [
-            'You cannot associate a product on which you have not a view permission.',
+            'Property "associations" expects a valid product identifier. The product does not exist, "productB" given.',
             'Product "productC" cannot be updated. It should be at least in an own category.',
             'You cannot update the field "associations". You should at least own this product to do it.',
         ];

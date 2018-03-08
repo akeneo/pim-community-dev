@@ -87,8 +87,8 @@ CSV;
         ];
 
         $expectedWarnings = [
-            'You can neither view, nor update, nor delete the product "productA", as it is only categorized in categories on which you do not have a view permission.',
-            'You can neither view, nor update, nor delete the product "productA", as it is only categorized in categories on which you do not have a view permission.'
+            'Product "productA" does not exist.',
+            'Product "productA" does not exist.'
         ];
 
         $this->assertAuthenticatedImport($importCSV, 'mary', $expected, 1, 0, 2, $expectedWarnings);

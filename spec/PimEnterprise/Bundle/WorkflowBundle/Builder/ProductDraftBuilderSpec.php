@@ -1,0 +1,326 @@
+<?php
+
+declare(strict_types=1);
+
+namespace spec\PimEnterprise\Bundle\WorkflowBundle\Builder;
+
+use PhpSpec\ObjectBehavior;
+use Pim\Component\Catalog\Comparator\ComparatorInterface;
+use Pim\Component\Catalog\Comparator\ComparatorRegistry;
+use Pim\Component\Catalog\Factory\ValueCollectionFactoryInterface;
+use Pim\Component\Catalog\Factory\ValueFactory;
+use Pim\Component\Catalog\Model\AttributeInterface;
+use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Model\ValueCollectionInterface;
+use Pim\Component\Catalog\Model\ValueInterface;
+use Pim\Component\Catalog\Model\VariantProductInterface;
+use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
+use PimEnterprise\Bundle\WorkflowBundle\Builder\ProductDraftBuilder;
+use PimEnterprise\Component\Workflow\Factory\ProductDraftFactory;
+use PimEnterprise\Component\Workflow\Model\ProductDraftInterface;
+use PimEnterprise\Component\Workflow\Repository\ProductDraftRepositoryInterface;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
+
+class ProductDraftBuilderSpec extends ObjectBehavior
+{
+    function let(
+        NormalizerInterface $normalizer,
+        ComparatorRegistry $comparatorRegistry,
+        AttributeRepositoryInterface $attributeRepository,
+        ProductDraftFactory $factory,
+        ProductDraftRepositoryInterface $productDraftRepo,
+        ValueCollectionFactoryInterface $valueCollectionFactory,
+        ValueFactory $valueFactory
+    ) {
+        $this->beConstructedWith(
+            $normalizer,
+            $comparatorRegistry,
+            $attributeRepository,
+            $factory,
+            $productDraftRepo,
+            $valueCollectionFactory,
+            $valueFactory
+        );
+    }
+
+    function it_is_initializable()
+    {
+        $this->shouldHaveType(ProductDraftBuilder::class);
+    }
+
+    function it_builds_a_simple_product_draft_when_submitted_data_is_different_from_product_data(
+        $normalizer,
+        $valueCollectionFactory,
+        $comparatorRegistry,
+        $attributeRepository,
+        $valueFactory,
+        $productDraftRepo,
+        ProductInterface $product,
+        AttributeInterface $textAttribute,
+        ValueInterface $textValue,
+        ValueInterface $newTextValue,
+        ComparatorInterface $textComparator,
+        ProductDraftInterface $productDraft,
+        ValueCollectionInterface $newValuesCollection,
+        ValueCollectionInterface $originalValuesCollection
+    ) {
+        $rawValues = [
+            'name' => [
+                '<all_channels>' => [
+                    '<all_locales>' => 'my product'
+                ]
+            ]
+        ];
+
+        $newValuesCollection->add($textValue);
+        $product->getValues()->willReturn($newValuesCollection);
+        $normalizer->normalize($newValuesCollection, 'standard')->willReturn([
+            'name' => [
+                ['data' => 'product', 'locale' => null, 'scope' => null]
+            ]
+        ]);
+
+        $product->getRawValues()->willReturn($rawValues);
+        $valueCollectionFactory->createFromStorageFormat($rawValues)->willReturn($originalValuesCollection);
+        $normalizer->normalize($originalValuesCollection, 'standard')->willReturn([
+            'name' => [
+                ['data' => 'my product', 'locale' => null, 'scope' => null]
+            ]
+        ]);
+
+        $textAttribute->getCode()->willReturn('name');
+        $textAttribute->getType()->willReturn('text');
+        $textAttribute->isUnique()->willReturn(false);
+        $attributeRepository->getAttributeTypeByCodes(['name'])->willReturn(['name' => 'text']);
+        $comparatorRegistry->getAttributeComparator('text')->willReturn($textComparator);
+        $textComparator->compare(
+            ['data' => 'product', 'locale' => null, 'scope' => null],
+            ['data' => 'my product', 'locale' => null, 'scope' => null]
+        )->willReturn(['data' => 'product', 'locale' => null, 'scope' => null]);
+
+        $valueFactory->create($textAttribute, null, null, 'product')->willReturn($newTextValue);
+        $newTextValue->getAttribute()->willReturn($textAttribute);
+        $newTextValue->getData()->willReturn('product');
+        $newTextValue->getScope()->willReturn(null);
+        $newTextValue->getLocale()->willReturn(null);
+
+        $productDraftRepo->findUserProductDraft($product, 'mary')->willReturn($productDraft);
+        $productDraft->setChanges([
+            'values' => ['name' => [['data' => 'product', 'locale' => null, 'scope' => null]]]
+        ])->shouldBeCalled();
+        $productDraft->setAllReviewStatuses(ProductDraftInterface::CHANGE_DRAFT)->shouldBeCalled();
+
+        $this->build($product, 'mary')->shouldReturn($productDraft);
+    }
+
+    function it_builds_a_simple_product_draft_when_data_submitted_is_new(
+        $normalizer,
+        $valueCollectionFactory,
+        $comparatorRegistry,
+        $attributeRepository,
+        $valueFactory,
+        $productDraftRepo,
+        ProductInterface $product,
+        AttributeInterface $textAttribute,
+        ValueInterface $textValue,
+        ValueInterface $newTextValue,
+        ComparatorInterface $textComparator,
+        ProductDraftInterface $productDraft,
+        ValueCollectionInterface $newValuesCollection,
+        ValueCollectionInterface $originalValuesCollection
+    ) {
+        $rawValues = [];
+
+        $newValuesCollection->add($textValue);
+        $product->getValues()->willReturn($newValuesCollection);
+        $normalizer->normalize($newValuesCollection, 'standard')->willReturn([
+            'name' => [
+                ['data' => 'product', 'locale' => null, 'scope' => null]
+            ]
+        ]);
+
+        $product->getRawValues()->willReturn($rawValues);
+        $valueCollectionFactory->createFromStorageFormat($rawValues)->willReturn($originalValuesCollection);
+        $normalizer->normalize($originalValuesCollection, 'standard')->willReturn([]);
+
+        $textAttribute->getCode()->willReturn('name');
+        $textAttribute->getType()->willReturn('text');
+        $textAttribute->isUnique()->willReturn(false);
+        $attributeRepository->getAttributeTypeByCodes(['name'])->willReturn(['name' => 'text']);
+        $comparatorRegistry->getAttributeComparator('text')->willReturn($textComparator);
+        $textComparator->compare(
+            ['data' => 'product', 'locale' => null, 'scope' => null],
+            []
+        )->willReturn(['data' => 'product', 'locale' => null, 'scope' => null]);
+
+        $valueFactory->create($textAttribute, null, null, 'product')->willReturn($newTextValue);
+        $newTextValue->getAttribute()->willReturn($textAttribute);
+        $newTextValue->getData()->willReturn('product');
+        $newTextValue->getScope()->willReturn(null);
+        $newTextValue->getLocale()->willReturn(null);
+
+        $productDraftRepo->findUserProductDraft($product, 'mary')->willReturn($productDraft);
+        $productDraft->setChanges([
+            'values' => ['name' => [['data' => 'product', 'locale' => null, 'scope' => null]]]
+        ])->shouldBeCalled();
+        $productDraft->setAllReviewStatuses(ProductDraftInterface::CHANGE_DRAFT)->shouldBeCalled();
+
+        $this->build($product, 'mary')->shouldReturn($productDraft);
+    }
+
+    function it_does_not_build_a_simple_product_draft_if_submitted_data_is_the_same_as_product_data(
+        $normalizer,
+        $valueCollectionFactory,
+        $comparatorRegistry,
+        $attributeRepository,
+        ProductInterface $product,
+        AttributeInterface $textAttribute,
+        ValueInterface $textValue,
+        ComparatorInterface $textComparator,
+        ValueCollectionInterface $newValuesCollection,
+        ValueCollectionInterface $originalValuesCollection
+    ) {
+        $rawValues = [
+            'name' => [
+                '<all_channels>' => [
+                    '<all_locales>' => 'my product'
+                ]
+            ]
+        ];
+
+        $newValuesCollection->add($textValue);
+        $product->getValues()->willReturn($newValuesCollection);
+        $normalizer->normalize($newValuesCollection, 'standard')->willReturn([
+            'name' => [
+                ['data' => 'my product', 'locale' => null, 'scope' => null]
+            ]
+        ]);
+
+        $product->getRawValues()->willReturn($rawValues);
+        $valueCollectionFactory->createFromStorageFormat($rawValues)->willReturn($originalValuesCollection);
+        $normalizer->normalize($originalValuesCollection, 'standard')->willReturn([
+            'name' => [
+                ['data' => 'my product', 'locale' => null, 'scope' => null]
+            ]
+        ]);
+
+        $textAttribute->getType()->willReturn('text');
+        $attributeRepository->getAttributeTypeByCodes(['name'])->willReturn(['name' => 'text']);
+        $comparatorRegistry->getAttributeComparator('text')->willReturn($textComparator);
+        $textComparator->compare(
+            ['data' => 'my product', 'locale' => null, 'scope' => null],
+            ['data' => 'my product', 'locale' => null, 'scope' => null]
+        )->willReturn(null);
+
+        $this->build($product, 'mary')->shouldReturn(null);
+    }
+
+    function it_throws_an_exception_if_attribute_type_is_unknown(
+        $normalizer,
+        $valueCollectionFactory,
+        $attributeRepository,
+        ProductInterface $product,
+        AttributeInterface $textAttribute,
+        ValueInterface $textValue,
+        ValueCollectionInterface $newValuesCollection,
+        ValueCollectionInterface $originalValuesCollection
+    ) {
+        $rawValues = [
+            'name' => [
+                '<all_channels>' => [
+                    '<all_locales>' => 'my product'
+                ]
+            ]
+        ];
+
+        $newValuesCollection->add($textValue);
+        $product->getValues()->willReturn($newValuesCollection);
+        $normalizer->normalize($newValuesCollection, 'standard')->willReturn([
+            'name' => [
+                ['data' => 'product', 'locale' => null, 'scope' => null]
+            ]
+        ]);
+
+        $product->getRawValues()->willReturn($rawValues);
+        $valueCollectionFactory->createFromStorageFormat($rawValues)->willReturn($originalValuesCollection);
+        $normalizer->normalize($originalValuesCollection, 'standard')->willReturn([
+            'name' => [
+                ['data' => 'my product', 'locale' => null, 'scope' => null]
+            ]
+        ]);
+
+        $textAttribute->getCode()->willReturn('name');
+        $textAttribute->getType()->willReturn('text');
+        $textAttribute->isUnique()->willReturn(false);
+        $attributeRepository->getAttributeTypeByCodes(['name'])->willReturn(['yes_no' => 'boolean']);
+
+        $this->shouldThrow(
+            new \LogicException('Cannot find attribute with code "name".')
+        )->during('build', [$product, 'mary']);
+    }
+
+    function it_builds_a_variant_product_draft_when_submitted_data_is_different_from_product_data(
+        $normalizer,
+        $valueCollectionFactory,
+        $comparatorRegistry,
+        $attributeRepository,
+        $valueFactory,
+        $productDraftRepo,
+        VariantProductInterface $variantProduct,
+        AttributeInterface $textAttribute,
+        ValueInterface $textValue,
+        ValueInterface $newTextValue,
+        ComparatorInterface $textComparator,
+        ProductDraftInterface $productDraft,
+        ValueCollectionInterface $newValuesCollection,
+        ValueCollectionInterface $originalValuesCollection
+    ) {
+        $rawValues = [
+            'name' => [
+                '<all_channels>' => [
+                    '<all_locales>' => 'my product'
+                ]
+            ]
+        ];
+
+        $newValuesCollection->add($textValue);
+        $variantProduct->getValuesForVariation()->willReturn($newValuesCollection);
+        $normalizer->normalize($newValuesCollection, 'standard')->willReturn([
+            'name' => [
+                ['data' => 'product', 'locale' => null, 'scope' => null]
+            ]
+        ]);
+
+        $variantProduct->getRawValues()->willReturn($rawValues);
+        $valueCollectionFactory->createFromStorageFormat($rawValues)->willReturn($originalValuesCollection);
+        $normalizer->normalize($originalValuesCollection, 'standard')->willReturn([
+            'name' => [
+                ['data' => 'my product', 'locale' => null, 'scope' => null]
+            ]
+        ]);
+
+        $textAttribute->getCode()->willReturn('name');
+        $textAttribute->getType()->willReturn('text');
+        $textAttribute->isUnique()->willReturn(false);
+        $attributeRepository->getAttributeTypeByCodes(['name'])->willReturn(['name' => 'text']);
+        $comparatorRegistry->getAttributeComparator('text')->willReturn($textComparator);
+        $textComparator->compare(
+            ['data' => 'product', 'locale' => null, 'scope' => null],
+            ['data' => 'my product', 'locale' => null, 'scope' => null]
+        )->willReturn(['data' => 'product', 'locale' => null, 'scope' => null]);
+
+        $valueFactory->create($textAttribute, null, null, 'product')->willReturn($newTextValue);
+        $newTextValue->getAttribute()->willReturn($textAttribute);
+        $newTextValue->getData()->willReturn('product');
+        $newTextValue->getScope()->willReturn(null);
+        $newTextValue->getLocale()->willReturn(null);
+
+        $productDraftRepo->findUserProductDraft($variantProduct, 'mary')->willReturn($productDraft);
+        $productDraft->setChanges([
+            'values' => ['name' => [['data' => 'product', 'locale' => null, 'scope' => null]]]
+        ])->shouldBeCalled();
+        $productDraft->setAllReviewStatuses(ProductDraftInterface::CHANGE_DRAFT)->shouldBeCalled();
+
+        $this->build($variantProduct, 'mary')->shouldReturn($productDraft);
+    }
+}
