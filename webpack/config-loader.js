@@ -35,5 +35,5 @@ module.exports = function(content) {
     const moduleName = aliases[modulePath];
     const moduleConfig = options.configMap[formatModuleName(moduleName)] || {};
 
-    return `var __moduleConfig = ${JSON.stringify(moduleConfig)} ; ${content}`;
+    return `var __moduleConfig = ${JSON.stringify(moduleConfig)}; ${content}`;
 };

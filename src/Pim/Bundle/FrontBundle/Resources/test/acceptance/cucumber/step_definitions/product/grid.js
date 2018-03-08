@@ -40,11 +40,11 @@ Then('the product {string} of {string} should be {string}', async function(colum
 });
 
 Then('I should see the loading indicator', async function() {
-  await this.page.waitFor(`.AknLoadingIndicator--loading`);
+  await this.page.waitFor('.AknLoadingIndicator--loading');
 });
 
 Then('I should not see the loading indicator', async function() {
-  await this.page.waitFor(`.AknLoadingIndicator:not(.AknLoadingIndicator--loading)`);
+  await this.page.waitFor('.AknLoadingIndicator:not(.AknLoadingIndicator--loading)');
 });
 
 Then('I should see that we have {int} results', async function(expectedNumberOfResults) {

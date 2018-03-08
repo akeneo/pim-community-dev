@@ -1,10 +1,10 @@
 import * as React from 'react';
 import Sidebar from 'pimfront/product-grid/application/component/sidebar';
-import ProductInterface from 'pimfront/product/domain/model/product';
+import ProductInterface from 'pimfront/product-grid/domain/model/product';
 import {connect} from 'react-redux';
 import {GlobalState} from 'pimfront/product-grid/application/store/main';
 import {redirectToProduct} from 'pimfront/product-grid/application/action/router';
-import {needMoreResultsAction, loadChildrenAction} from 'pimfront/product-grid/application/action/search';
+import {needMoreResults, loadChildren} from 'pimfront/product-grid/application/action/search';
 import {Display} from 'pimfront/product-grid/domain/event/display';
 import DisplaySwitcher from 'pimfront/product-grid/application/component/header/display-switcher';
 import {changeGridDisplay} from 'pimfront/product-grid/domain/event/display';
@@ -124,10 +124,10 @@ export const gridConnector = connect(
         dispatch(redirectToProduct(product));
       },
       onLoadChildren: (product: ProductInterface) => {
-        dispatch(loadChildrenAction(product));
+        dispatch(loadChildren(product));
       },
       onNeedMoreResults: () => {
-        dispatch(needMoreResultsAction());
+        dispatch(needMoreResults());
       },
       onchangeGridDisplay: (display: Display) => {
         dispatch(changeGridDisplay(display));

@@ -4,12 +4,12 @@ import ProductInterface, {
   ProductModel,
   RawProductInterface,
   ModelType,
-} from 'pimfront/product/domain/model/product';
+} from 'pimfront/product-grid/domain/model/product';
 import {ServerResponse} from 'pimfront/product-grid/infrastructure/fetcher/product';
 import hidrateAll from 'pimfront/app/application/hidrator/hidrator';
 import {dataReceived, childrenReceived} from 'pimfront/product-grid/domain/event/search';
 import {State} from 'pimfront/product-grid/application/reducer/main';
-import {Filter} from 'pimfront/grid/domain/model/query';
+import GridFilter from 'pimfront/product-grid/domain/model/filter/filter';
 import {startLoading, stopLoading, goNextPage, goFirstPage} from 'pimfront/grid/application/event/search';
 
 export const productHidrator = (product: RawProductInterface): ProductInterface => {
@@ -23,12 +23,19 @@ export const productHidrator = (product: RawProductInterface): ProductInterface 
   }
 };
 
+interface QueryFilter {
+  field: string;
+  operator: string;
+  value: any;
+  options: any;
+}
+
 interface Query {
   locale: string;
   channel: string;
   limit: number;
   page: number;
-  filters: Filter[];
+  filters: QueryFilter[];
 }
 
 const stateToQuery = (state: State<Product>): Query => {
@@ -37,7 +44,12 @@ const stateToQuery = (state: State<Product>): Query => {
     channel: undefined === state.user.catalogChannel ? '' : state.user.catalogChannel,
     limit: state.grid.query.limit,
     page: state.grid.query.page,
-    filters: state.grid.query.filters,
+    filters: state.grid.query.filters.map((filter: GridFilter) => ({
+      field: filter.field.identifier,
+      operator: filter.operator.identifier,
+      value: filter.value.getValue(),
+      options: {},
+    })),
   };
 };
 
@@ -50,7 +62,7 @@ const fetchResults = async (query: Query): Promise<{products: ProductInterface[]
   return {products: hidrateAll<ProductInterface>(productHidrator)(items), total};
 };
 
-export const updateResultsAction = (append: boolean = false) => async (dispatch: any, getState: any): Promise<void> => {
+export const updateResults = (append: boolean = false) => async (dispatch: any, getState: any): Promise<void> => {
   dispatch(startLoading());
 
   if (false === append) {
@@ -63,20 +75,21 @@ export const updateResultsAction = (append: boolean = false) => async (dispatch:
   dispatch(stopLoading());
 };
 
-export const needMoreResultsAction = () => (dispatch: any, getState: any) => {
-  if (!getState().grid.isFetching && getState().grid.items.length < 500) {
+export const needMoreResults = () => (dispatch: any, getState: any) => {
+  if (
+    !getState().grid.isFetching &&
+    getState().grid.items.length < 500 &&
+    getState().grid.items.length < getState().grid.total
+  ) {
     dispatch(goNextPage());
-    dispatch(updateResultsAction(true));
+    dispatch(updateResults(true));
   }
 };
 
-export const loadChildrenAction = (product: ProductInterface) => async (
-  dispatch: any,
-  getState: any
-): Promise<void> => {
+export const loadChildren = (product: ProductInterface) => async (dispatch: any, getState: any): Promise<void> => {
   const query = stateToQuery(getState());
   query.filters = [
-    ...query.filters.filter((filter: Filter) => 'parent' !== filter.field),
+    ...query.filters.filter((filter: QueryFilter) => 'parent' !== filter.field),
     {
       field: 'parent',
       operator: 'IN',

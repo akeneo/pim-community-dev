@@ -1,0 +1,10 @@
+config:
+    config:
+        pimfront/product-grid/application/configuration/filters:
+            property:
+              enabled:
+                model: pimfront/product-grid/domain/model/filter/property/status
+                label: Status
+            attribute:
+              pim_catalog_boolean:
+                model: pimfront/product-grid/domain/model/filter/attribute/boolean

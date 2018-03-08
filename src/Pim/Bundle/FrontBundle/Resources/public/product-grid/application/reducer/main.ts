@@ -2,7 +2,7 @@ import GridState from 'pimfront/grid/domain/model/state';
 import user, {UserState} from 'pimfront/app/domain/reducer/user';
 import structure, {StructureState} from 'pimfront/app/domain/reducer/structure';
 import productGrid, {ProductGridState} from 'pimfront/product-grid/domain/reducer/grid';
-import ProductInterface, {ProductModel} from 'pimfront/product/domain/model/product';
+import ProductInterface, {ProductModel} from 'pimfront/product-grid/domain/model/product';
 import {combineReducers} from 'redux';
 import grid from 'pimfront/grid/domain/reducer/grid';
 

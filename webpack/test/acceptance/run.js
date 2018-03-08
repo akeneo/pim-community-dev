@@ -50,17 +50,18 @@ const run = async function () {
   }
 }
 
-run();
+run().then(() => {
+  if (true === argv.report) {
+    var options = {
+        theme: 'bootstrap',
+        jsonFile: 'coverage/acceptance-js.json',
+        output: 'coverage/acceptance/cucumber_report.html',
+        reportSuiteAsScenarios: true,
+        launchReport: true
+    };
 
-if (true === argv.report) {
-  var options = {
-      theme: 'bootstrap',
-      jsonFile: 'coverage/acceptance-js.json',
-      output: 'coverage/acceptance/cucumber_report.html',
-      reportSuiteAsScenarios: true,
-      launchReport: true
-  };
+    reporter.generate(options);
+  }
+});
 
-  reporter.generate(options);
-}
 

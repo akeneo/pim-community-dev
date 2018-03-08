@@ -17,40 +17,52 @@ class BaseFilterProvider implements FilterProviderInterface
     /** @var array */
     protected $filters = [
         AttributeTypes::BOOLEAN => [
-            'product-export-builder' => 'akeneo-attribute-boolean-filter'
+            'product-export-builder' => 'akeneo-attribute-boolean-filter',
+            'product-grid' => 'akeneo_attribute_boolean_filter'
         ],
         AttributeTypes::TEXT => [
-            'product-export-builder' => 'akeneo-attribute-string-filter'
+            'product-export-builder' => 'akeneo-attribute-string-filter',
+            'product-grid' => 'akeneo_attribute_string_filter'
         ],
         AttributeTypes::NUMBER => [
-            'product-export-builder' => 'akeneo-attribute-number-filter'
+            'product-export-builder' => 'akeneo-attribute-number-filter',
+            'product-grid' => 'akeneo_attribute_number_filter'
         ],
         AttributeTypes::TEXTAREA => [
-            'product-export-builder' => 'akeneo-attribute-string-filter'
+            'product-export-builder' => 'akeneo-attribute-string-filter',
+            'product-grid' => 'akeneo_attribute_string_filter'
         ],
         AttributeTypes::IDENTIFIER => [
-            'product-export-builder' => 'akeneo-attribute-identifier-filter'
+            'product-export-builder' => 'akeneo-attribute-identifier-filter',
+            'product-grid' => 'akeneo_attribute_identifier_filter'
         ],
         AttributeTypes::METRIC => [
-            'product-export-builder' => 'akeneo-attribute-metric-filter'
+            'product-export-builder' => 'akeneo-attribute-metric-filter',
+            'product-grid' => 'akeneo_attribute_metric_filter'
         ],
         AttributeTypes::PRICE_COLLECTION => [
-            'product-export-builder' => 'akeneo-attribute-price-collection-filter'
+            'product-export-builder' => 'akeneo-attribute-price-collection-filter',
+            'product-grid' => 'akeneo_attribute_price_collection_filter'
         ],
         AttributeTypes::IMAGE => [
-            'product-export-builder' => 'akeneo-attribute-media-filter'
+            'product-export-builder' => 'akeneo-attribute-media-filter',
+            'product-grid' => 'akeneo_attribute_media_filter'
         ],
         AttributeTypes::FILE => [
-            'product-export-builder' => 'akeneo-attribute-media-filter'
+            'product-export-builder' => 'akeneo-attribute-media-filter',
+            'product-grid' => 'akeneo_attribute_media_filter'
         ],
         AttributeTypes::OPTION_SIMPLE_SELECT => [
-            'product-export-builder' => 'akeneo-attribute-select-filter'
+            'product-export-builder' => 'akeneo-attribute-select-filter',
+            'product-grid' => 'akeneo_attribute_select_filter'
         ],
         AttributeTypes::OPTION_MULTI_SELECT => [
-            'product-export-builder' => 'akeneo-attribute-select-filter'
+            'product-export-builder' => 'akeneo-attribute-select-filter',
+            'product-grid' => 'akeneo_attribute_select_filter'
         ],
         AttributeTypes::DATE => [
-            'product-export-builder' => 'akeneo-attribute-date-filter'
+            'product-export-builder' => 'akeneo-attribute-date-filter',
+            'product-grid' => 'akeneo_attribute_date_filter'
         ],
     ];
 

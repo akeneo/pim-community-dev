@@ -1,5 +1,5 @@
 import * as React from 'react';
-import ProductInterface from 'pimfront/product/domain/model/product';
+import ProductInterface from 'pimfront/product-grid/domain/model/product';
 import __ from 'pimfront/tools/translator';
 import ListView from 'pimfront/product-grid/application/component/item/list';
 import GalleryView from 'pimfront/product-grid/application/component/item/gallery';

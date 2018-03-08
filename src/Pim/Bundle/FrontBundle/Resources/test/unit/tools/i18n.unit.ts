@@ -1,4 +1,5 @@
 import i18n from 'pimfront/tools/i18n';
+
 describe('>>>TOOLS --- i18n', () => {
   test('get label for existing translation', () => {
     expect(i18n.getLabel({en_US: 'My label'}, 'en_US', 'my_code')).toBe('My label');

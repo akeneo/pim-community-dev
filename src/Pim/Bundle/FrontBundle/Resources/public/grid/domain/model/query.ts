@@ -1,3 +1,5 @@
+import Filter from 'pimfront/product-grid/domain/model/filter/filter';
+
 enum Sort {
   Ascending,
   Descending,
@@ -8,13 +10,6 @@ export interface Column {
   sort?: Sort;
   action: boolean;
   label: string;
-}
-
-export interface Filter {
-  field: string;
-  operator: string;
-  value: any;
-  options: any;
 }
 
 export default interface Query {

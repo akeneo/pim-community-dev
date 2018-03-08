@@ -28,7 +28,7 @@ Before({timeout: 10 * 1000}, async function() {
     if (request.url() === this.baseUrl) {
       request.respond({
         contentType: 'text/html',
-        body: fs.readFileSync(process.cwd() + '/web/test_dist/index.html', 'utf-8'),
+        body: baseFile,
       });
     }
     if (request.url().includes('/rest/user/')) {

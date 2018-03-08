@@ -1,5 +1,5 @@
 import * as React from 'react';
-import ProductInterface, {ProductModel} from 'pimfront/product/domain/model/product';
+import ProductInterface, {ProductModel} from 'pimfront/product-grid/domain/model/product';
 import {getImageShowUrl} from 'pimfront/tools/media-url-generator';
 
 export default ({

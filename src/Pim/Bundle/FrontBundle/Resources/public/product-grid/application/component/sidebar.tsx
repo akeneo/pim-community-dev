@@ -5,10 +5,12 @@ import Locale from 'pimfront/app/domain/model/locale';
 import Channel from 'pimfront/app/domain/model/channel';
 import LocaleSwitcher from 'pimfront/app/application/component/locale-switcher';
 import ChannelSwitcher from 'pimfront/app/application/component/channel-switcher';
-import IdentifierFilter from 'pimfront/product-grid/application/component/filter/identifier';
 import {GlobalState} from 'pimfront/product-grid/application/store/main';
 import {connect} from 'react-redux';
 import LoadingIndicator from 'pimfront/app/application/component/loading-indicator';
+import StatusFilterModel from 'pimfront/product-grid/domain/model/filter/property/status';
+import BooleanFilterView from 'pimfront/product-grid/application/component/filter/boolean';
+import {Property} from 'pimfront/product-grid/domain/model/field';
 
 interface SidebarDispatch {
   onCatalogLocaleChanged: (locale: Locale) => void;
@@ -51,7 +53,11 @@ export const SidebarView = ({
             </div>
           </div>
           <div className="AknFilterBox-list">
-            <IdentifierFilter />
+            <BooleanFilterView
+              filter={StatusFilterModel.createEmptyFromProperty(
+                Property.createFromProperty({identifier: 'enabled', label: 'Status'})
+              )}
+            />
           </div>
         </div>
       </div>

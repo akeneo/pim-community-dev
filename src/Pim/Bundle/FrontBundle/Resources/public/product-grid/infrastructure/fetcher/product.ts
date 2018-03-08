@@ -1,7 +1,7 @@
 import * as routing from 'routing';
 import * as jQuery from 'jquery';
 import to from 'await-to-js';
-import {RawProductInterface} from 'pimfront/product/domain/model/product';
+import {RawProductInterface} from 'pimfront/product-grid/domain/model/product';
 
 interface Filter {
   field: string;

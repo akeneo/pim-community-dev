@@ -1,7 +1,7 @@
 import {catalogChannelChanged, catalogLocaleChanged} from 'pimfront/app/domain/event/user';
 import Channel from 'pimfront/app/domain/model/channel';
 import Locale from 'pimfront/app/domain/model/locale';
-import {updateResultsAction} from 'pimfront/product-grid/application/action/search';
+import {updateResults} from 'pimfront/product-grid/application/action/search';
 
 export const gridChannelChanged = (channel: Channel) => (dispatch: any, getState: any): void => {
   dispatch(catalogChannelChanged(channel.code));
@@ -10,5 +10,5 @@ export const gridChannelChanged = (channel: Channel) => (dispatch: any, getState
     dispatch(catalogLocaleChanged(channel.locales[0].code));
   }
 
-  return dispatch(updateResultsAction());
+  return dispatch(updateResults());
 };

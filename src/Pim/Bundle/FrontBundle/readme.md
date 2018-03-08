@@ -20,3 +20,10 @@
 - import on grid
 - advance bar on mass edit
 - column (basic)/drag and drop
+
+
+next:
+- make the test pass on the filter configuration provider
+- add check on the filter configuration to split the property fields from the attribute fields;
+-
+- add fetch to the backend

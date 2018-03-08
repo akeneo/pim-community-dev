@@ -1,5 +1,5 @@
 const routing = require('routing');
-import {ImageInterface} from 'pimfront/product/domain/model/product';
+import {ImageInterface} from 'pimfront/product-grid/domain/model/product';
 
 export const getImageShowUrl = (image: ImageInterface | null, filter: string): string => {
   const path = null !== image ? image.filePath : 'undefined';

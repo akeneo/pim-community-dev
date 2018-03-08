@@ -2,7 +2,7 @@
 
 define(['jquery', 'underscore', 'pim/base-fetcher', 'require-context'],
 function ($, _, BaseFetcher, requireContext) {
-    return {
+    const FetcherRegistry = {
         fetchers: {},
         initializePromise: null,
 
@@ -73,4 +73,6 @@ function ($, _, BaseFetcher, requireContext) {
             });
         }
     };
+
+    return FetcherRegistry;
 });

@@ -1,4 +1,4 @@
-import {Product, ModelType} from 'pimfront/product/domain/model/product';
+import {Product, ModelType} from 'pimfront/product-grid/domain/model/product';
 
 describe('>>>MODEL --- product', () => {
   test('get label with existing locale', () => {

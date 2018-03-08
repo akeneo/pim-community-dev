@@ -1,4 +1,4 @@
-import ProductInterface from 'pimfront/product/domain/model/product';
+import ProductInterface from 'pimfront/product-grid/domain/model/product';
 import {redirectToRoute} from 'pimfront/app/application/event/router';
 
 export const redirectToProduct = (product: ProductInterface) => {
