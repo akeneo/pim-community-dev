@@ -10,7 +10,7 @@
 - AOB-2: Change the constructor of `PimEnterprise\Bundle\DataGridBundle\Datagrid\Configuration\Product\FiltersConfigurator` to add `Pim\Bundle\DataGridBundle\Datagrid\Configuration\ConfiguratorInterface`
 - AOB-2: Change the constructor of `PimEnterprise\Bundle\DataGridBundle\Datagrid\Configuration\Product\FiltersConfigurator` to remove `Pim\Bundle\DataGridBundle\Datagrid\Configuration\Product\ConfigurationRegistry`
 - AOB-2: Change the constructor of `PimEnterprise\Bundle\DataGridBundle\Datagrid\Configuration\Proposal\ContextConfigurator` to add `Pim\Component\Catalog\Repository\AttributeRepositoryInterface`
-- AOB-2: Change the constructor of `PimEnterprise\Bundle\DataGridBundle\Datagrid\Configuration\Proposal` 
+- AOB-2: Change the constructor of `PimEnterprise\Bundle\DataGridBundle\Datagrid\Configuration\Proposal`
          to remove `PimEnterprise\Component\Workflow\Repository\ProductDraftRepositoryInterface`,
                    `Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface`, `Symfony\Component\HttpFoundation\RequestStack`,`PimEnterprise\Bundle\WorkflowBundle\Provider\ProductDraftGrantedAttributeProvider`
 - AOB-2: Change the constructor of `PimEnterprise\Bundle\DataGridBundle\Datasource\ResultRecord\ORM\ProductDraftHydrator` to add `PimEnterprise\Bundle\WorkflowBundle\Datagrid\Normalizer\ProductProposalNormalizer`
