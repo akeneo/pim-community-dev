@@ -24,7 +24,7 @@ class FindAuthenticatedUserSpec extends ObjectBehavior
         $this->shouldHaveType(FindAuthenticatedUser::class);
     }
 
-    function it_find_user_by_username(
+    function it_finds_user_by_username(
         $entityManager,
         QueryBuilder $userQueryBuilder,
         QueryBuilder $roleQueryBuilder,

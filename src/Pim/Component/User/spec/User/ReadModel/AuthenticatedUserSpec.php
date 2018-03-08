@@ -58,7 +58,7 @@ class AuthenticatedUserSpec extends ObjectBehavior
         $this->getSalt()->shouldReturn('salt');
     }
 
-    function it_remove_sensitive_data_from_the_user()
+    function it_removes_sensitive_data_from_the_user()
     {
         $this->eraseCredentials()->shouldReturn(null);
     }
@@ -88,7 +88,7 @@ class AuthenticatedUserSpec extends ObjectBehavior
         $this->serialize()->shouldBeString();
     }
 
-    function it_is_unserialize_the_users()
+    function it_is_unserializes_the_users()
     {
         $this->unserialize('serialized user')->shouldReturn(null);
     }
