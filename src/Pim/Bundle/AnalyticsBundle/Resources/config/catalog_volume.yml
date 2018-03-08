@@ -1,0 +1,10 @@
+services:
+    pim_catalog_volume:
+        class: Pim\Component\Catalog\VolumeLimits\Application\GetVolumes
+        arguments:
+            - '@pim_catalog_volume.query.attributes_per_family'
+
+    pim_catalog_volume.query.attributes_per_family:
+        class: Pim\Component\Catalog\VolumeLimits\Infra\DBAL\Query\AttributesPerFamily
+        arguments:
+            - '@doctrine.dbal.default_connection'

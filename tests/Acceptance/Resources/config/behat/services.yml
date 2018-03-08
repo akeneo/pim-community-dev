@@ -49,3 +49,9 @@ services:
             - '@test.currency.builder'
         tags:
             - { name: fob.context_service }
+
+    test.catalog_volume_limits.attribute_per_family_context:
+        class: 'Akeneo\Test\Acceptance\CatalogVolumeLimits\AttributePerFamilyContext'
+        arguments: []
+        tags:
+            - { name: fob.context_service }
