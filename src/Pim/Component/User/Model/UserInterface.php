@@ -514,4 +514,9 @@ interface UserInterface extends EntityUploadedImageInterface
      * @return UserInterface
      */
     public function setDefaultGridView($alias, $defaultGridView);
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getUsername();
 }

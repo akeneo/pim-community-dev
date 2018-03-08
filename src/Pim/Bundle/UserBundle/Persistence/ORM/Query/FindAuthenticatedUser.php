@@ -40,7 +40,7 @@ class FindAuthenticatedUser
     {
         $query = $this->entityManager->createQueryBuilder()
             ->select(
-                'user.id, user.username, user.password, user.email, user.enabled, user.salt, uiLocale.code as uiLocaleCode'
+                'user.id, user.username, user.password, user.email, user.enabled, user.salt, uiLocale.code as uiLocaleCode, user.email'
             )
             ->from(User::class, 'user', null)
             ->innerJoin('user.uiLocale', 'uiLocale')
@@ -70,7 +70,8 @@ class FindAuthenticatedUser
             $roles,
             $flatUser['enabled'],
             $flatUser['salt'],
-            $flatUser['uiLocaleCode']
+            $flatUser['uiLocaleCode'],
+            $flatUser['email']
         );
 
         return $user;

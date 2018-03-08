@@ -10,7 +10,16 @@ class AuthenticatedUserSpec extends ObjectBehavior
 {
     function let()
     {
-        $this->beConstructedWith(40, 'username', 'password', [['role' => 'ROLE_ADMIN']], true, 'salt', 'en_US');
+        $this->beConstructedWith(
+            40,
+            'username',
+            'password',
+            [['role' => 'ROLE_ADMIN']],
+            true,
+            'salt',
+            'en_US',
+            'email@email.com'
+        );
     }
 
     function it_is_initializable()
@@ -51,6 +60,11 @@ class AuthenticatedUserSpec extends ObjectBehavior
     function it_has_roles()
     {
         $this->getRoles()->shouldBeArray();
+    }
+
+    function it_has_an_email()
+    {
+        $this->getEmail()->shouldReturn('email@email.com');
     }
 
     function it_has_salt()

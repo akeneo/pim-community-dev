@@ -14,9 +14,8 @@ use Akeneo\Component\Batch\Model\JobInstance;
 use Akeneo\Component\BatchQueue\Queue\JobExecutionMessage;
 use Akeneo\Component\BatchQueue\Queue\JobExecutionQueueInterface;
 use PhpSpec\ObjectBehavior;
-use Pim\Component\User\Model\User;
+use Pim\Component\User\ReadModel\AuthenticatedUser;
 use Prophecy\Argument;
-use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 
@@ -44,7 +43,7 @@ class QueueJobLauncherSpec extends ObjectBehavior
         $jobRepository,
         $queue,
         JobInstance $jobInstance,
-        UserInterface $user,
+        AuthenticatedUser $user,
         JobExecution $jobExecution,
         Job $job,
         JobParameters $jobParameters,
@@ -75,7 +74,7 @@ class QueueJobLauncherSpec extends ObjectBehavior
         $jobRepository,
         $queue,
         JobInstance $jobInstance,
-        User $user,
+        AuthenticatedUser $user,
         JobExecutionMessage $jobExecutionMessage,
         JobExecution $jobExecution,
         Job $job,
@@ -107,7 +106,7 @@ class QueueJobLauncherSpec extends ObjectBehavior
         $jobParametersFactory,
         $jobParametersValidator,
         JobInstance $jobInstance,
-        UserInterface $user,
+        AuthenticatedUser $user,
         JobExecution $jobExecution,
         Job $job,
         JobParameters $jobParameters,

@@ -33,19 +33,20 @@ class FindAuthenticatedUserSpec extends ObjectBehavior
     ) {
         $entityManager->createQueryBuilder()->willReturn($userQueryBuilder, $roleQueryBuilder);
 
-        $userQueryBuilder->select('user.id, user.username, user.password, user.email, user.enabled, user.salt, uiLocale.code as uiLocaleCode')->willReturn($userQueryBuilder);
+        $userQueryBuilder->select('user.id, user.username, user.password, user.email, user.enabled, user.salt, uiLocale.code as uiLocaleCode, user.email')->willReturn($userQueryBuilder);
         $userQueryBuilder->from(User::class, 'user', null)->willReturn($userQueryBuilder);
         $userQueryBuilder->innerJoin('user.uiLocale', 'uiLocale')->willReturn($userQueryBuilder);
         $userQueryBuilder->where('user.username = :username')->willReturn($userQueryBuilder);
         $userQueryBuilder->setParameter('username', 'arnaud')->willReturn($userQueryBuilder);
         $userQueryBuilder->getQuery()->willReturn($userQuery);
-        $userQuery->getOneOrNullResult()->willReturn([
+        $userQuery->getSingleResult(AbstractQuery::HYDRATE_ARRAY)->willReturn([
             'id' => 40,
             'username' => 'username',
             'password' => 'password',
             'enabled' => true,
             'salt' => 'salt',
             'uiLocaleCode' => 'en_US',
+            'email' => 'email@email.com',
         ]);
 
         $roleQueryBuilder->select('role.role')->willReturn($roleQueryBuilder);
@@ -67,7 +68,8 @@ class FindAuthenticatedUserSpec extends ObjectBehavior
             ],
             true,
             'salt',
-            'en_US'
+            'en_US',
+            'email@email.com'
         ));
     }
 
@@ -77,14 +79,14 @@ class FindAuthenticatedUserSpec extends ObjectBehavior
         AbstractQuery $userQuery
     ) {
         $entityManager->createQueryBuilder()->willReturn($userQueryBuilder);
-        $userQueryBuilder->select('user.id, user.username, user.password, user.email, user.enabled, user.salt, uiLocale.code as uiLocaleCode')->willReturn($userQueryBuilder);
+        $userQueryBuilder->select('user.id, user.username, user.password, user.email, user.enabled, user.salt, uiLocale.code as uiLocaleCode, user.email')->willReturn($userQueryBuilder);
         $userQueryBuilder->from(User::class, 'user', null)->willReturn($userQueryBuilder);
         $userQueryBuilder->innerJoin('user.uiLocale', 'uiLocale')->willReturn($userQueryBuilder);
         $userQueryBuilder->where('user.username = :username')->willReturn($userQueryBuilder);
         $userQueryBuilder->setParameter('username', 'arnaud')->willReturn($userQueryBuilder);
         $userQueryBuilder->getQuery()->willReturn($userQuery);
 
-        $userQuery->getOneOrNullResult()->willThrow(NoResultException::class);
+        $userQuery->getSingleResult(AbstractQuery::HYDRATE_ARRAY)->willThrow(NoResultException::class);
 
         $this->shouldThrow(ResourceNotFoundException::class)->during('__invoke', ['arnaud']);
     }

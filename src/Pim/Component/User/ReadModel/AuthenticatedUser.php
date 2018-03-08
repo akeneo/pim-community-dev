@@ -7,7 +7,7 @@ namespace Pim\Component\User\ReadModel;
 use Symfony\Component\Security\Core\User\AdvancedUserInterface;
 
 /**
- * Object that represents the data needed to authenticated an user.
+ * Read model (DTO) that represents the data needed to authenticated an user.
  *
  * @author    Arnaud Langlade <arnaud.langlade@akeneo.com>
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
@@ -35,6 +35,8 @@ final class AuthenticatedUser implements AdvancedUserInterface
 
     /** @var string */
     private $uiLocale;
+    /** @var string */
+    private $email;
 
     /**
      * @param int    $id
@@ -44,6 +46,7 @@ final class AuthenticatedUser implements AdvancedUserInterface
      * @param bool   $enabled
      * @param string $salt
      * @param string $uiLocale
+     * @param string $email
      */
     public function __construct(
         int $id,
@@ -52,7 +55,8 @@ final class AuthenticatedUser implements AdvancedUserInterface
         array $roles,
         bool $enabled,
         string $salt,
-        string $uiLocale
+        string $uiLocale,
+        string $email
     ) {
         $this->id = $id;
         $this->username = $username;
@@ -61,6 +65,7 @@ final class AuthenticatedUser implements AdvancedUserInterface
         $this->enabled = $enabled;
         $this->salt = $salt;
         $this->uiLocale = $uiLocale;
+        $this->email = $email;
     }
 
     /**
@@ -124,24 +129,44 @@ final class AuthenticatedUser implements AdvancedUserInterface
     {
     }
 
+    /**
+     * @return bool
+     */
     public function isAccountNonExpired(): bool
     {
         return true;
     }
 
+    /**
+     * @return bool
+     */
     public function isAccountNonLocked(): bool
     {
         return $this->enabled;
     }
 
+    /**
+     * @return bool
+     */
     public function isCredentialsNonExpired(): bool
     {
         return true;
     }
 
+    /**
+     * @return bool
+     */
     public function isEnabled(): bool
     {
         return $this->enabled;
+    }
+
+    /**
+     * @return string
+     */
+    public function Email(): string
+    {
+        return $this->email;
     }
 
     /**

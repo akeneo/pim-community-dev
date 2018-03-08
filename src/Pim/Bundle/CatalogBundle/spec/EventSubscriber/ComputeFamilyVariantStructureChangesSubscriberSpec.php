@@ -7,13 +7,12 @@ use Akeneo\Bundle\BatchBundle\Launcher\SimpleJobLauncher;
 use Akeneo\Component\Batch\Model\JobInstance;
 use Akeneo\Component\StorageUtils\StorageEvents;
 use PhpSpec\ObjectBehavior;
-use Pim\Component\User\Model\UserInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Pim\Component\Catalog\Model\FamilyVariantInterface;
 use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
-
 
 class ComputeFamilyVariantStructureChangesSubscriberSpec extends ObjectBehavior
 {
