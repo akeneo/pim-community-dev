@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Pim\Bundle\UserBundle\Persistence\ORM\Query;
 
 use Akeneo\Component\StorageUtils\Exception\ResourceNotFoundException;
+use Doctrine\ORM\AbstractQuery;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\NoResultException;
 use Pim\Component\User\Model\User;
@@ -12,7 +13,8 @@ use Pim\Component\User\ReadModel\AuthenticatedUser;
 use Symfony\Component\Security\Core\User\AdvancedUserInterface;
 
 /**
- * Get the data from the database to hydrate `Pim\Component\User\ReadModel\AuthenticatedUser`
+ * Get the data from the database to hydrate `Pim\Component\User\ReadModel\AuthenticatedUser`, this object represents
+ * an authenticated user.
  *
  * @author    Arnaud Langlade <arnaud.langlade@akeneo.com>
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
@@ -47,7 +49,7 @@ class FindAuthenticatedUser
             ->getQuery();
 
         try {
-            $flatUser = $query->getOneOrNullResult();
+            $flatUser = $query->getSingleResult(AbstractQuery::HYDRATE_ARRAY);
         } catch (NoResultException $exception) {
             throw new ResourceNotFoundException(AuthenticatedUser::class, 0, $exception);
         }
