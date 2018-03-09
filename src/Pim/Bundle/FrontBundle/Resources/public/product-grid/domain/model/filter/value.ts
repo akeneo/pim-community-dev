@@ -33,9 +33,9 @@ export class String implements Value {
 }
 
 export class Boolean implements Value {
-  readonly value: boolean | null;
+  readonly value: boolean;
 
-  private constructor(value: boolean | null) {
+  private constructor(value: boolean) {
     this.value = value;
   }
 
@@ -47,16 +47,12 @@ export class Boolean implements Value {
     return new Boolean(false);
   }
 
-  public static empty(): Boolean {
-    return new Boolean(null);
-  }
-
-  public static fromValue(value: boolean | null): Boolean {
+  public static fromValue(value: boolean): Boolean {
     return new Boolean(value);
   }
 
   public toString() {
-    return null === this.value ? '' : this.value ? 'true' : 'false';
+    return this.value ? 'true' : 'false';
   }
 
   public getValue(): any {
@@ -64,7 +60,7 @@ export class Boolean implements Value {
   }
 
   public isEmpty() {
-    return null === this.value;
+    return false;
   }
 }
 

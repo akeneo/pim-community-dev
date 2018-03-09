@@ -8,9 +8,9 @@ import ChannelSwitcher from 'pimfront/app/application/component/channel-switcher
 import {GlobalState} from 'pimfront/product-grid/application/store/main';
 import {connect} from 'react-redux';
 import LoadingIndicator from 'pimfront/app/application/component/loading-indicator';
-import StatusFilterModel from 'pimfront/product-grid/domain/model/filter/property/status';
-import BooleanFilterView from 'pimfront/product-grid/application/component/filter/boolean';
-import {Property} from 'pimfront/product-grid/domain/model/field';
+// import StatusFilterModel from 'pimfront/product-grid/domain/model/filter/property/status';
+// import BooleanFilterView from 'pimfront/product-grid/application/component/filter/boolean';
+// import {Property} from 'pimfront/product-grid/domain/model/field';
 import {NormalizedFilter} from 'pimfront/product-grid/domain/model/filter/filter';
 // import filters from 'pimfront/product-grid/application/configuration/filters';
 // import Filter from 'pimfront/product-grid/domain/model/filter/filter';
@@ -57,48 +57,48 @@ export const SidebarView = ({
             </div>
           </div>
           <div className="AknFilterBox-list">
-            <BooleanFilterView
-              filter={StatusFilterModel.createEmptyFromProperty(
-                Property.createFromProperty({identifier: 'enabled', label: 'Status'})
-              )}
-            />
           </div>
         </div>
       </div>
     </div>
   );
 };
+            // <BooleanFilterView
+            //   filter={StatusFilterModel.createEmptyFromProperty(
+            //     Property.createFromProperty({identifier: 'enabled', label: 'Status'})
+            //   )}
+            // />
 
-interface FilterViewState {
-  filters: NormalizedFilter[];
-}
+// interface FilterViewState {
+//   filters: NormalizedFilter[];
+// }
 
-interface FilterDispatch {}
+// interface FilterDispatch {}
 
-class FiltersView extends React.Component<FilterViewState & FilterDispatch, FilterViewState> {
-  private filterViews = Element[];
+// class FiltersView extends React.Component<FilterViewState & FilterDispatch, FilterViewState> {
+//   private filterViews = Element[];
 
-  constructor(props: FilterViewState & FilterDispatch) {
-    super(props);
-  }
+//   constructor(props: FilterViewState & FilterDispatch) {
+//     super(props);
+//   }
 
-  componentWillMount() {
-    this.initializeFilters(this.state.filters);
-  }
+//   componentWillMount() {
+//     this.initializeFilters(this.state.filters);
+//   }
 
-  private async initializeFilters(filters: NormalizedFilter[]): Promise<void> {
-    this.filterViews = await Promise.all(filters.map(async (filter: NormalizedFilter) => {
-      const filterModel = await filters.getFilterModelFromNormalizedFilter(filter);
-      const FilterView = filters.getViewFromFilterModel(filterModel);
+//   private async initializeFilters(filters: NormalizedFilter[]): Promise<void> {
+//     // this.filterViews = await Promise.all(filters.map(async (filter: NormalizedFilter) => {
+//     //   const filterModel = await filters.getFilterModelFromNormalizedFilter(filter);
+//     //   const FilterView = filters.getViewFromFilterModel(filterModel);
 
-      return <FilterView filter={filterModel} />;
-    }));
-  }
+//     //   return <FilterView filter={filterModel} />;
+//     // }));
+//   }
 
-  render() {
-    return <div>{this.filterViews}</div>;
-  }
-}
+//   render() {
+//     return <div>{this.filterViews}</div>;
+//   }
+// }
 
 export const sidebarDecorator = connect(
   (state: GlobalState): SidebarViewState => {

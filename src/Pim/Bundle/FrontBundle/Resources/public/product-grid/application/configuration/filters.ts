@@ -1,11 +1,15 @@
 const fetcherRegistry = require('pimenrich/js/fetcher/fetcher-registry');
 const requireContext = require('require-context');
 import FilterInterface, {
-  AttributeFilter as AbstractAttributeFilter,
-  PropertyFilter as AbstractPropertyFilter,
+  AttributeFilter,
+  PropertyFilter,
+  NormalizedFilter,
+  BaseFilter
 } from 'pimfront/product-grid/domain/model/filter/filter';
-import {Property, Attribute, RawAttributeInterface} from 'pimfront/product-grid/domain/model/field';
+import {Field, Property, Attribute} from 'pimfront/product-grid/domain/model/field';
 import {BaseOperator} from 'pimfront/product-grid/domain/model/filter/operator';
+import {Value} from 'pimfront/product-grid/domain/model/filter/value';
+import {BaseOperator as Operator} from 'pimfront/product-grid/domain/model/filter/operator';
 
 interface PropertyFilterConfiguration {
   [property: string]: {
@@ -28,6 +32,7 @@ interface FilterConfiguration {
   property: PropertyFilterConfiguration;
   attribute: AttributeFilterConfiguration;
   operator: OperatorFilterConfiguration;
+  value: string[]
 }
 
 export class Filters {
@@ -45,112 +50,99 @@ export class Filters {
     return new Filters(configuration, fetcherRegistry, requireContext);
   }
 
-  /**
-   * Provides the filter models from the code given in parameter
-   *
-   * There is two types of filters:
-   *  - property filters (status, completeness, etc)
-   *  - attribute filters (sku, name, description, etc)
-   *
-   * To determine which one is which from the code, we look for the property field configuration and fetche the attributes
-   */
-  // public async getEmptyFilterModelsFromCodes(codes: string[]): Promise<FilterInterface[]> {
-  //   const propertyFilterCodesToBuild = Object.keys(this.configuration.property);
-  //
-  //   const suspectedAttributeFilterCodesToBuild = codes.filter(
-  //     (code: string) => !propertyFilterCodesToBuild.includes(code)
-  //   );
-  //
-  //   const attributeModels = await this.fetcherRegistry
-  //     .getFetcher('attribute')
-  //     .fetchByIdentifiers(suspectedAttributeFilterCodesToBuild);
-  //
-  //   const attributeFilterCodesToBuild = attributeModels.map((attribute: RawAttributeInterface) => attribute.identifier);
-  //
-  //   const filters = codes.map((code: string) => {
-  //     const isAPropertyFilter = propertyFilterCodesToBuild.includes(code);
-  //     const isAnAttributeFilter = attributeFilterCodesToBuild.includes(code);
-  //
-  //     if (!isAPropertyFilter && !isAnAttributeFilter) {
-  //       throw Error(
-  //         `The field "${code}" is neither an attribute filter nor a property filter. Did you registered it well in the requirejs configuration?`
-  //       );
-  //     }
-  //
-  //     return isAPropertyFilter ? this.createEmptyPropertyFilterModel(code) : this.createEmptyAttributeFilterModel(code);
-  //   });
-  //
-  //   return Promise.all(filters);
-  // }
+  public async getEmptyFilter(code: string): Promise<FilterInterface> {
+    const FilterClass = await this.getFilter(code);
 
-  public async getEmptyFilterModelFromCode(code: string): Promise<FilterInterface> {
+    return FilterClass.createEmpty(await this.getField(code));
+  }
+
+  public async getPopulatedFilter(filter: NormalizedFilter): Promise<FilterInterface> {
+    const FilterClass = await this.getFilter(filter.field);
+
+    const field = await this.getField(filter.field);
+    const operator = await this.getOperator(filter.operator);
+    const value = await this.getValue(filter.value);
+
+    return FilterClass.create(field, operator, value);
+  }
+
+  private async getFilter(code: string): Promise<typeof BaseFilter> {
     const isProperty = Object.keys(this.configuration.property).includes(code);
 
     return isProperty ?
-      this.createEmptyPropertyFilterModel(code) :
-      this.createEmptyAttributeFilterModel(code);
+      this.getPropertyFilter(code) :
+      this.getAttributeFilter(code);
   }
-
-  public async getOperatorModel(operator: string):  Promise<OperatorInterface>{
-    const operatorPath = this.configuration.operator[operator];
-
-    if (undefined === operatorPath) {
-      throw Error(`The operator "${operator}" isn't defined. Did you register well the operator in your configuration?`)
-    }
-
-    const Operator = this.loadModule(operatorPath).default;
-
-    if (Operator instanceof BaseOperator) {
-      throw Error(`The given module (${operatorPath}) doesn't implement OperatorInterface.`)
-    }
-
-    return Operator.create();
-  }
-
-/*  public async getViewFromFilterModel(filter: FilterInterface): Promise<any> {
-    return filter instanceof AbstractPropertyFilter
-      ? this.gePropertyViewFilterFromModel(filter)
-      : this.getAttributeViewFilterFromModel(filter);
-  }*/
 
   /**
-   * Loads and create a property filter for the given code
+   * Loads a property filter for the given code
    */
-  private async createEmptyPropertyFilterModel(code: string): Promise<FilterInterface> {
-    const PropertyFilter: typeof AbstractPropertyFilter = await this.loadModule(
+  private async getPropertyFilter(code: string): Promise<typeof PropertyFilter> {
+    return await this.loadModule(
       this.configuration.property[code].model
     );
-
-    const property = Property.createFromProperty({identifier: code, label: this.configuration.property[code].label});
-
-    return PropertyFilter.createEmptyFromProperty(property);
   }
 
   /**
    * Loads and create an attribute filter for the given code
    */
-  private async createEmptyAttributeFilterModel(code: string): Promise<FilterInterface> {
+  private async getAttributeFilter(code: string): Promise<typeof AttributeFilter> {
     const rawAttribute = await this.fetcherRegistry.getFetcher('attribute').fetch(code);
 
     const attribute = Attribute.createFromAttribute(rawAttribute);
 
-    const AttributeFilter: typeof AbstractAttributeFilter = await this.loadModule(
+    return await this.loadModule(
       this.configuration.attribute[attribute.type].model
     );
-
-    return AttributeFilter.createEmptyFromAttribute(attribute);
   }
 
-  /**
-   * Loads and create a property filter for the given code
-   */
-  // private async getAttributeViewFilterFromModel(filter: AttributeFilterInterface): Promise<any> {
-  //   this.loadModule(filter.field);
-  //   return PropertyFilter.createEmptyFromProperty(property);
-  // }
+  private async getField(code: string): Promise<Field> {
+    const isProperty = Object.keys(this.configuration.property).includes(code);
+
+    if (isProperty) {
+      return Promise.resolve(
+        Property.createFromProperty({identifier: code, label: this.configuration.property[code].label})
+      );
+    }
+
+    const rawAttribute = await this.fetcherRegistry.getFetcher('attribute').fetch(code);
+
+    return Attribute.createFromAttribute(rawAttribute);
+  }
+
+  private async getOperator(operator: string): Promise<Operator>{
+    const operatorPath = this.configuration.operator[operator];
+
+    if (undefined === operatorPath) {
+      throw Error(`The operator "${operator}" isn't defined.
+Did you register well the operator in your configuration?`)
+    }
+
+    const OperatorClass: typeof Operator = await this.loadModule(operatorPath);
+
+    if (!(OperatorClass instanceof BaseOperator)) {
+      throw Error(`The given module (${operatorPath}) doesn't implement OperatorInterface.`)
+    }
+
+    return OperatorClass.create();
+  }
+
+  private async getValue(value: any): Promise<Value>{
+    const valueFactories = await Promise.all(
+      this.configuration.value.map(async (valueFactoryPath: string) => this.loadModule(valueFactoryPath))
+    );
+
+    const valueFactory = valueFactories.find((valueFactory: any) => null !== valueFactory(value));
+
+    if (undefined === valueFactory) {
+      throw Error(`Cannot find a value factory for value ${JSON.stringify(value)}.
+Did you register well the value factory in your configuration?`)
+    }
+
+    return valueFactory(value);
+  }
 
   private async loadModule(path: string): Promise<any> {
-    console.log(path);
     const module = await this.requireContext(`${path}`);
 
     if (typeof module === 'undefined') {

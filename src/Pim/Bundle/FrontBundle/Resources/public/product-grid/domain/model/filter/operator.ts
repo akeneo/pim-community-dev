@@ -6,6 +6,10 @@ export interface Operator {
 export abstract class BaseOperator implements Operator {
   readonly identifier: string;
   readonly needValue: boolean;
+
+  public static create(): Operator {
+    throw Error('The create method need to be implemented');
+  }
 }
 
 export class All extends BaseOperator {

@@ -15,8 +15,8 @@ class Equal extends BaseOperator {
 export default class Boolean extends AttributeFilter {
   private static operators: Operator[] = [All.create(), Equal.create()];
 
-  public static createEmptyFromAttribute(attribute: AttributeInterface) {
-    return new Boolean(attribute, All.create(), BooleanValue.empty());
+  public static createEmpty(attribute: AttributeInterface) {
+    return new Boolean(attribute, All.create(), BooleanValue.true());
   }
 
   public static create(attribute: AttributeInterface, operator: Operator, value: Value) {
