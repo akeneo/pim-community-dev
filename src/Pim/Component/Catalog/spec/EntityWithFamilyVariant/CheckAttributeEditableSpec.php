@@ -36,8 +36,7 @@ class CheckAttributeEditableSpec extends ObjectBehavior
         AttributeInterface $attribute
     ) {
         $entity->getFamily()->willReturn($family);
-        $attribute->getCode()->willReturn('code1');
-        $family->hasAttributeCode(Argument::type('string'))->willReturn(false);
+        $family->hasAttribute($attribute)->willReturn(false);
         $this->isEditable($entity, $attribute)->shouldReturn(false);
     }
 
@@ -47,8 +46,7 @@ class CheckAttributeEditableSpec extends ObjectBehavior
         AttributeInterface $attribute
     ) {
         $product->getFamily()->willReturn($family);
-        $attribute->getCode()->willReturn('code1');
-        $family->hasAttributeCode(Argument::type('string'))->willReturn(true);
+        $family->hasAttribute($attribute)->willReturn(true);
         $this->isEditable($product, $attribute)->shouldReturn(true);
     }
 
@@ -57,8 +55,7 @@ class CheckAttributeEditableSpec extends ObjectBehavior
         FamilyInterface $family,
         AttributeInterface $attribute
     ) {
-        $attribute->getCode()->willReturn('code1');
-        $family->hasAttributeCode(Argument::type('string'))->willReturn(true);
+        $family->hasAttribute($attribute)->willReturn(true);
         $product->getFamily()->willReturn($family);
         $product->getFamilyVariant()->willReturn(null);
 
@@ -70,8 +67,7 @@ class CheckAttributeEditableSpec extends ObjectBehavior
         FamilyInterface $family,
         AttributeInterface $attribute
     ) {
-        $attribute->getCode()->willReturn('code1');
-        $family->hasAttributeCode(Argument::type('string'))->willReturn(true);
+        $family->hasAttribute($attribute)->willReturn(true);
         $productModel->getFamily()->willReturn($family);
         $productModel->getFamilyVariant()->willReturn(null);
 
@@ -84,8 +80,7 @@ class CheckAttributeEditableSpec extends ObjectBehavior
         FamilyVariantInterface $familyVariant,
         AttributeInterface $attribute
     ) {
-        $attribute->getCode()->willReturn('code1');
-        $family->hasAttributeCode(Argument::type('string'))->willReturn(true);
+        $family->hasAttribute($attribute)->willReturn(true);
         $product->getFamily()->willReturn($family);
         $product->getFamilyVariant()->willReturn($familyVariant);
         $product->getVariationLevel()->willReturn(1);
@@ -100,8 +95,7 @@ class CheckAttributeEditableSpec extends ObjectBehavior
         FamilyVariantInterface $familyVariant,
         AttributeInterface $attribute
     ) {
-        $attribute->getCode()->willReturn('code1');
-        $family->hasAttributeCode(Argument::type('string'))->willReturn(true);
+        $family->hasAttribute($attribute)->willReturn(true);
         $productModel->getFamily()->willReturn($family);
         $productModel->getFamilyVariant()->willReturn($familyVariant);
         $productModel->getVariationLevel()->willReturn(1);
@@ -117,8 +111,7 @@ class CheckAttributeEditableSpec extends ObjectBehavior
         AttributeInterface $attribute,
         VariantAttributeSetInterface $attributeSet
     ) {
-        $attribute->getCode()->willReturn('code1');
-        $family->hasAttributeCode(Argument::type('string'))->willReturn(true);
+        $family->hasAttribute($attribute)->willReturn(true);
         $product->getFamily()->willReturn($family);
         $product->getVariationLevel()->willReturn(1);
         $product->getFamilyVariant()->willReturn($familyVariant);
@@ -136,8 +129,7 @@ class CheckAttributeEditableSpec extends ObjectBehavior
         AttributeInterface $attribute,
         VariantAttributeSetInterface $attributeSet
     ) {
-        $attribute->getCode()->willReturn('code1');
-        $family->hasAttributeCode(Argument::type('string'))->willReturn(true);
+        $family->hasAttribute($attribute)->willReturn(true);
         $product->getFamily()->willReturn($family);
         $product->getVariationLevel()->willReturn(1);
         $product->getFamilyVariant()->willReturn($familyVariant);
@@ -155,8 +147,7 @@ class CheckAttributeEditableSpec extends ObjectBehavior
         AttributeInterface $attribute,
         VariantAttributeSetInterface $attributeSet
     ) {
-        $attribute->getCode()->willReturn('code1');
-        $family->hasAttributeCode(Argument::type('string'))->willReturn(true);
+        $family->hasAttribute($attribute)->willReturn(true);
         $productModel->getFamily()->willReturn($family);
         $productModel->getVariationLevel()->willReturn(1);
         $productModel->getFamilyVariant()->willReturn($familyVariant);
@@ -174,8 +165,7 @@ class CheckAttributeEditableSpec extends ObjectBehavior
         AttributeInterface $attribute,
         VariantAttributeSetInterface $attributeSet
     ) {
-        $attribute->getCode()->willReturn('code1');
-        $family->hasAttributeCode(Argument::type('string'))->willReturn(true);
+        $family->hasAttribute($attribute)->willReturn(true);
         $productModel->getFamily()->willReturn($family);
         $productModel->getVariationLevel()->willReturn(1);
         $productModel->getFamilyVariant()->willReturn($familyVariant);
@@ -193,8 +183,7 @@ class CheckAttributeEditableSpec extends ObjectBehavior
         AttributeInterface $attribute,
         CommonAttributeCollection $commonAttributes
     ) {
-        $attribute->getCode()->willReturn('code1');
-        $family->hasAttributeCode(Argument::type('string'))->willReturn(true);
+        $family->hasAttribute($attribute)->willReturn(true);
         $productModel->getFamily()->willReturn($family);
         $productModel->getVariationLevel()->willReturn(0);
         $productModel->getFamilyVariant()->willReturn($familyVariant);
@@ -212,8 +201,7 @@ class CheckAttributeEditableSpec extends ObjectBehavior
         AttributeInterface $attribute,
         CommonAttributeCollection $commonAttributes
     ) {
-        $attribute->getCode()->willReturn('code1');
-        $family->hasAttributeCode(Argument::type('string'))->willReturn(true);
+        $family->hasAttribute($attribute)->willReturn(true);
         $productModel->getFamily()->willReturn($family);
         $productModel->getVariationLevel()->willReturn(0);
         $productModel->getFamilyVariant()->willReturn($familyVariant);
