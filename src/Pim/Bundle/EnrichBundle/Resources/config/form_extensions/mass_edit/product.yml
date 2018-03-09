@@ -22,6 +22,7 @@ extensions:
         position: 110
         aclResourceId: pim_enrich_product_edit_attributes
         config:
+            innerForm: pim-mass-product-edit-form
             title: pim_enrich.mass_edit.product.title
             label: pim_enrich.mass_edit.product.operation.edit_common.label
             labelCount: pim_enrich.mass_edit.product.operation.edit_common.label_count
@@ -32,11 +33,12 @@ extensions:
             illustration: attributes
 
     pim-mass-product-edit-configure-add-attribute-values:
-        module: pim/mass-edit-form/product/add-attribute-values
+        module: pim/mass-edit-form/product/edit-common-attributes
         parent: pim-mass-product-edit
         position: 115
         aclResourceId: pim_enrich_product_edit_attributes
         config:
+            innerForm: pim-mass-product-add-form
             title: pim_enrich.mass_edit.product.title
             label: pim_enrich.mass_edit.product.operation.add_attribute_value.label
             labelCount: pim_enrich.mass_edit.product.operation.add_attribute_value.label_count
