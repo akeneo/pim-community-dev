@@ -4,6 +4,7 @@
 
 ### Interfaces
 
+- AOB-55: Add method `getTimezone` and `setTimezone` to `Pim\Bundle\UserBundle\Entity\UserInterface`
 - PIM-7163: Add `Pim\Bundle\UserBundle\Entity\UserInterface::setPhone` and `Pim\Bundle\UserBundle\Entity\UserInterface::getPhone`
 
 # 2.2.0-ALPHA2 (2018-03-07)

@@ -172,6 +172,9 @@ class UserUpdater implements ObjectUpdaterInterface
             case 'enabled':
                 $user->setEnabled($data);
                 break;
+            case 'timezone':
+                $user->setTimezone($data);
+                break;
             default:
                 throw UnknownPropertyException::unknownProperty($field);
         }

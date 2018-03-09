@@ -528,4 +528,18 @@ interface UserInterface extends AdvancedUserInterface, \Serializable, EntityUplo
      * @return UserInterface
      */
     public function setPhone(?string $phone): UserInterface;
+
+    /**
+     * Return the User timezone
+     *
+     * @return string
+     */
+    public function getTimezone(): string;
+
+    /**
+     * @param string $timezone
+     *
+     * @return UserInterface
+     */
+    public function setTimezone(string $timezone): UserInterface;
 }

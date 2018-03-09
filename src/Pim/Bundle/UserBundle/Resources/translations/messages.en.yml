@@ -98,6 +98,7 @@ user:
         label: Default product grid view
     default_grid_view:
         none: None
+    timezone: Timezone
 
 # Role
 Role: Role
