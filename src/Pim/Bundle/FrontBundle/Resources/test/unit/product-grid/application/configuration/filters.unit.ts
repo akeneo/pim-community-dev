@@ -62,7 +62,7 @@ describe('>>>APPLICATION --- config - filters', () => {
     const filters = new Filters(config, fetcherRegistry, moduleLoader);
 
     try {
-      await filters.getEmptyFiltersFromCodes(['no existing filter']);
+      await filters.getEmptyFilterModelsFromCodes(['no existing filter']);
     } catch (err) {
       expect(err.message).toBe(
         'The field "no existing filter" is neither an attribute filter nor a property filter. Did you registered it well in the requirejs configuration?'
@@ -74,7 +74,7 @@ describe('>>>APPLICATION --- config - filters', () => {
     expect.assertions(1);
     const filters = new Filters(config, fetcherRegistry, moduleLoader);
 
-    const actualFilters = await filters.getEmptyFiltersFromCodes([]);
+    const actualFilters = await filters.getEmptyFilterModelsFromCodes([]);
 
     expect(actualFilters).toEqual([]);
   });
@@ -92,7 +92,7 @@ describe('>>>APPLICATION --- config - filters', () => {
 
     const filters = new Filters(config, fetcherRegistry, moduleLoader);
 
-    const [status, refurbished] = await filters.getEmptyFiltersFromCodes(['enabled', 'refurbished']);
+    const [status, refurbished] = await filters.getEmptyFilterModelsFromCodes(['enabled', 'refurbished']);
 
     expect(status).toEqual(expectedStatus);
     expect(refurbished).toEqual(expectedRefurbished);

@@ -4,7 +4,7 @@ import filtersConfiguration from 'pimfront/product-grid/application/configuratio
 import Filter from 'pimfront/product-grid/domain/model/filter/filter';
 
 export const addFilters = (filterCodes: string[]) => async (dispatch: any, getState: any): Promise<void> => {
-  const filters: Filter[] = await filtersConfiguration.getEmptyFiltersFromCodes(filterCodes);
+  const filters: Filter[] = await filtersConfiguration.getEmptyFilterModelsFromCodes(filterCodes);
 
   dispatch(filterAdded(filters.map((filter: Filter) => filter.normalize())));
 

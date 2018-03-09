@@ -1,4 +1,4 @@
-import {Field} from 'pimfront/product-grid/domain/model/field';
+import {Field, PropertyInterface, AttributeInterface} from 'pimfront/product-grid/domain/model/field';
 import {Operator} from 'pimfront/product-grid/domain/model/filter/operator';
 import {Value} from 'pimfront/product-grid/domain/model/filter/value';
 import {Property, Attribute} from 'pimfront/product-grid/domain/model/field';
@@ -45,12 +45,16 @@ abstract class BaseFilter implements Filter {
 }
 
 export abstract class PropertyFilter extends BaseFilter {
+  readonly field: PropertyInterface;
+
   public static createEmptyFromProperty(property: Property): Filter {
     throw Error('You need to implement the createEmptyFromProperty method');
   }
 }
 
 export abstract class AttributeFilter extends BaseFilter {
+  readonly field: AttributeInterface;
+
   public static createEmptyFromAttribute(Attribute: Attribute): Filter {
     throw Error('You need to implement the createEmptyFromAttribute method');
   }

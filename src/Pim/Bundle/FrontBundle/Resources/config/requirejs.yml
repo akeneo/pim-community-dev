@@ -4,7 +4,9 @@ config:
             property:
               enabled:
                 model: pimfront/product-grid/domain/model/filter/property/status
+                view: pimfront/product-grid/application/component/filter/boolean
                 label: Status
             attribute:
               pim_catalog_boolean:
                 model: pimfront/product-grid/domain/model/filter/attribute/boolean
+                view: pimfront/product-grid/application/component/filter/boolean

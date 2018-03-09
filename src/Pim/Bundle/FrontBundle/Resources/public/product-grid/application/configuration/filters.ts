@@ -48,14 +48,13 @@ export class Filters {
    *
    * To determine which one is which from the code, we look for the property field configuration and fetche the attributes
    */
-  public async getEmptyFiltersFromCodes(codes: string[]): Promise<FilterInterface[]> {
+  public async getEmptyFilterModelsFromCodes(codes: string[]): Promise<FilterInterface[]> {
     const propertyFilterCodesToBuild = Object.keys(this.configuration.property);
 
     const suspectedAttributeFilterCodesToBuild = codes.filter(
       (code: string) => !propertyFilterCodesToBuild.includes(code)
     );
 
-    // We prefetch attributes to have them in cache with only one request.
     const attributeModels = await this.fetcherRegistry
       .getFetcher('attribute')
       .fetchByIdentifiers(suspectedAttributeFilterCodesToBuild);
@@ -72,16 +71,22 @@ export class Filters {
         );
       }
 
-      return isAPropertyFilter ? this.createEmptyPropertyFilter(code) : this.createEmptyAttributeFilter(code);
+      return isAPropertyFilter ? this.createEmptyPropertyFilterModel(code) : this.createEmptyAttributeFilterModel(code);
     });
 
     return Promise.all(filters);
   }
 
+  public async getViewFromFilterModel(filter: FilterInterface): Promise<any> {
+    return filter instanceof AbstractPropertyFilter
+      ? this.gePropertyViewFilterFromModel(filter)
+      : this.getAttributeViewFilterFromModel(filter);
+  }
+
   /**
    * Loads and create a property filter for the given code
    */
-  private async createEmptyPropertyFilter(code: string): Promise<FilterInterface> {
+  private async createEmptyPropertyFilterModel(code: string): Promise<FilterInterface> {
     const PropertyFilter: typeof AbstractPropertyFilter = await this.loadModule(
       this.configuration.property[code].model
     );
@@ -94,7 +99,7 @@ export class Filters {
   /**
    * Loads and create an attribute filter for the given code
    */
-  private async createEmptyAttributeFilter(code: string): Promise<FilterInterface> {
+  private async createEmptyAttributeFilterModel(code: string): Promise<FilterInterface> {
     const rawAttribute = await this.fetcherRegistry.getFetcher('attribute').fetch(code);
 
     const attribute = Attribute.createFromAttribute(rawAttribute);
@@ -104,6 +109,14 @@ export class Filters {
     );
 
     return AttributeFilter.createEmptyFromAttribute(attribute);
+  }
+
+  /**
+   * Loads and create a property filter for the given code
+   */
+  private async getAttributeViewFilterFromModel(filter: AttributeFilterInterface): Promise<any> {
+    this.loadModule(filter.field);
+    return PropertyFilter.createEmptyFromProperty(property);
   }
 
   private async loadModule(path: string): Promise<any> {
