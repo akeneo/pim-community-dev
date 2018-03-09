@@ -8,6 +8,7 @@ use Akeneo\Bundle\BatchBundle\Launcher\JobLauncherInterface;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Component\StorageUtils\StorageEvents;
 use Pim\Component\Catalog\Model\FamilyInterface;
+use Pim\Component\Catalog\Repository\AttributeRequirementRepositoryInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
@@ -33,22 +34,28 @@ class ComputeCompletenessOnFamilyUpdateSubscriber implements EventSubscriberInte
     /** @var string */
     private $jobName;
 
+    /** @var AttributeRequirementRepositoryInterface */
+    private $attributeRequirementRepository;
+
     /**
      * @param TokenStorageInterface                   $tokenStorage
      * @param JobLauncherInterface                    $jobLauncher
      * @param IdentifiableObjectRepositoryInterface   $jobInstanceRepository
+     * @param AttributeRequirementRepositoryInterface $attributeRequirementRepository
      * @param string                                  $jobName
      */
     public function __construct(
         TokenStorageInterface $tokenStorage,
         JobLauncherInterface $jobLauncher,
         IdentifiableObjectRepositoryInterface $jobInstanceRepository,
+        AttributeRequirementRepositoryInterface $attributeRequirementRepository, // useless now, will be remove on master
         string $jobName
     ) {
         $this->tokenStorage = $tokenStorage;
         $this->jobLauncher = $jobLauncher;
         $this->jobInstanceRepository = $jobInstanceRepository;
         $this->jobName = $jobName;
+        $this->attributeRequirementRepository = $attributeRequirementRepository;
     }
 
     /**

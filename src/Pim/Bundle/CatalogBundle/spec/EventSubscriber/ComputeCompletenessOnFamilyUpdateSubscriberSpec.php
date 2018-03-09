@@ -22,9 +22,10 @@ class ComputeCompletenessOnFamilyUpdateSubscriberSpec extends ObjectBehavior
     function let(
         TokenStorageInterface $tokenStorage,
         JobLauncherInterface $jobLauncher,
-        IdentifiableObjectRepositoryInterface $jobInstanceRepository
+        IdentifiableObjectRepositoryInterface $jobInstanceRepository,
+        AttributeRequirementRepositoryInterface $attributeRequirementRepository
     ) {
-      $this->beConstructedWith($tokenStorage, $jobLauncher, $jobInstanceRepository, 'my_job_name');
+      $this->beConstructedWith($tokenStorage, $jobLauncher, $jobInstanceRepository, $attributeRequirementRepository, 'my_job_name');
     }
 
     function it_is_initializable()
