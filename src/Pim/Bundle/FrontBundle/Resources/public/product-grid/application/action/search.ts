@@ -66,9 +66,9 @@ const fetchResults = async (query: Query): Promise<{products: ProductInterface[]
 export const updateResults = (append: boolean = false) => async (
   dispatch: any,
   getState: any
-): Promise<void> | void => {
+): Promise<void> => {
   if (getState().grid.isFetching) {
-    return;
+    return Promise.resolve();
   }
 
   dispatch(startLoading());

@@ -12,8 +12,8 @@ import StatusFilterModel from 'pimfront/product-grid/domain/model/filter/propert
 import BooleanFilterView from 'pimfront/product-grid/application/component/filter/boolean';
 import {Property} from 'pimfront/product-grid/domain/model/field';
 import {NormalizedFilter} from 'pimfront/product-grid/domain/model/filter/filter';
-import filters from 'pimfront/product-grid/application/configuration/filters';
-import Filter from 'pimfront/product-grid/domain/model/filter/filter';
+// import filters from 'pimfront/product-grid/application/configuration/filters';
+// import Filter from 'pimfront/product-grid/domain/model/filter/filter';
 
 interface SidebarDispatch {
   onCatalogLocaleChanged: (locale: Locale) => void;
@@ -76,24 +76,23 @@ interface FilterViewState {
 interface FilterDispatch {}
 
 class FiltersView extends React.Component<FilterViewState & FilterDispatch, FilterViewState> {
-  private filterViews = [];
+  private filterViews = Element[];
 
   constructor(props: FilterViewState & FilterDispatch) {
     super(props);
   }
 
   componentWillMount() {
-    this.initializeFilters();
+    this.initializeFilters(this.state.filters);
   }
 
-  private async initializeFilters(): Promise<void> {
-    const filterModels = await filters.getFilterModelsFromNormalizedFilters(this.state.filters);
+  private async initializeFilters(filters: NormalizedFilter[]): Promise<void> {
+    this.filterViews = await Promise.all(filters.map(async (filter: NormalizedFilter) => {
+      const filterModel = await filters.getFilterModelFromNormalizedFilter(filter);
+      const FilterView = filters.getViewFromFilterModel(filterModel);
 
-    this.filterViews = filterModels.map((filter: Filter) => {
-      const View = filters.getViewFromFilterModel(filter);
-
-      return <View filter={filter} />;
-    });
+      return <FilterView filter={filterModel} />;
+    }));
   }
 
   render() {

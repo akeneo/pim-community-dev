@@ -2,7 +2,7 @@ import * as ReactDOM from 'react-dom';
 import * as React from 'react';
 import {Provider} from 'react-redux';
 const userContext = require('pim/user-context');
-import {addFilters} from 'pimfront/product-grid/application/action/filter';
+import {addFilter} from 'pimfront/product-grid/application/action/filter';
 import {updateChannels} from 'pimfront/app/application/action/channel';
 import store from 'pimfront/product-grid/application/store/main';
 import Grid from 'pimfront/product-grid/application/component/grid';
@@ -13,7 +13,7 @@ const render = (Component: any) => (DOMElement: HTMLElement) => {
   store.dispatch(catalogChannelChanged(userContext.get('catalogScope')));
   store.dispatch(uiLocaleChanged(userContext.get('uiLocale')));
   store.dispatch(updateChannels());
-  store.dispatch(addFilters(['enabled']));
+  store.dispatch(addFilter('enabled'));
 
   return ReactDOM.render(
     <Provider store={store}>

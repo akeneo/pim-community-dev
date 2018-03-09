@@ -3,10 +3,10 @@ import {filterAdded} from 'pimfront/product-grid/domain/event/filter';
 import filtersConfiguration from 'pimfront/product-grid/application/configuration/filters';
 import Filter from 'pimfront/product-grid/domain/model/filter/filter';
 
-export const addFilters = (filterCodes: string[]) => async (dispatch: any, getState: any): Promise<void> => {
-  const filters: Filter[] = await filtersConfiguration.getEmptyFilterModelsFromCodes(filterCodes);
+export const addFilter = (filterCode: string) => async (dispatch: any, getState: any): Promise<void> => {
+  const filter: Filter = await filtersConfiguration.getEmptyFilterModelFromCode(filterCode);
 
-  dispatch(filterAdded(filters.map((filter: Filter) => filter.normalize())));
+  dispatch(filterAdded(filter.normalize()));
 
   return dispatch(updateResults());
 };

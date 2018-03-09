@@ -8,7 +8,7 @@ export default <Element>(
     type: string;
     append: boolean;
     total: number;
-    filters: NormalizedFilter[];
+    filter: NormalizedFilter;
     data: {
       items: Element[];
       columns: Column[];
@@ -41,7 +41,7 @@ export default <Element>(
       state = {...state, query: {...state.query, columns: action.data.columns}};
       break;
     case 'FILTER_ADDED':
-      const newFilters: NormalizedFilter[] = Array.from(new Set([...state.query.filters, ...action.filters]));
+      const newFilters: NormalizedFilter[] = Array.from(new Set([...state.query.filters, action.filter]));
 
       state = {...state, query: {...state.query, filters: newFilters}};
       break;
