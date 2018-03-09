@@ -106,7 +106,7 @@ JSON;
 
     public function testGetViewableAssociationsOnVariantProduct()
     {
-        $this->loader->loadProductModelsForAssociationPermissions();
+        $this->loader->loadProductsForAssociationPermissions();
         $client = $this->createAuthenticatedClient([], [], null, null, 'mary', 'mary');
 
         $client->request('GET', 'api/rest/v1/products/variant_product');

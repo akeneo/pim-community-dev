@@ -1,3 +1,9 @@
+# 2.1.x
+
+## Web API
+
+- API-580: Manage permissions about associations between products and product models
+
 # 2.1.5 (2018-02-23)
 
 # 2.1.4 (2018-02-01)

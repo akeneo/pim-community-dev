@@ -23,29 +23,6 @@ class UpdateProductIntegration extends AbstractProductTestCase
         $this->assertSame(Response::HTTP_NO_CONTENT, $patchResponse->getStatusCode());
     }
 
-    public function testFailedToAssociateAProductNotGranted()
-    {
-        $this->createProduct('simple_product');
-        $data = <<<JSON
-{
-    "associations": {
-        "PACK": {
-            "products": ["product_not_viewable_by_redactor"]
-        }
-    }
-}
-JSON;
-        $expectedContent = <<<JSON
-{"code":422,"message":"Property \"associations\" expects a valid product identifier. The product does not exist, \"product_not_viewable_by_redactor\" given. Check the expected format on the API documentation.","_links":{"documentation":{"href":"http:\/\/api.akeneo.com\/api-reference.html#patch_products__code_"}}}
-JSON;
-        $client = $this->createAuthenticatedClient([], [], null, null, 'mary', 'mary');
-        $client->request('PATCH', 'api/rest/v1/products/simple_product', [], [], [], $data);
-
-        $response = $client->getResponse();
-        $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
-        $this->assertSame($expectedContent, $response->getContent());
-    }
-
     public function testFailedToUpdateProductNotViewableByUser()
     {
         $expectedResponseContent =

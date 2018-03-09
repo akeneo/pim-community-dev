@@ -359,8 +359,6 @@ JSON;
         $this->assertSame($expectedContent, $response['content']);
     }
 
-    /**
-     * Failed see https://akeneo.atlassian.net/browse/API-352
     public function testFailedToAssociateANotGrantedProductWhichHasAlreadyBeenProcessed()
     {
         $this->createProduct('another_without_category');
@@ -369,14 +367,13 @@ JSON;
     {"identifier": "another_without_category", "associations": {"PACK": {"products": ["product_not_viewable_by_redactor"]}}}
 JSON;
         $expectedContent = <<<JSON
-{"line":1,"identifier":"product_not_viewable_by_redactor","status_code":403,"message":"You can neither view, nor update, nor delete the product \"product_not_viewable_by_redactor\", as it is only categorized in categories on which you do not have a view permission."}
-{"line":2,"identifier":"another_without_category","status_code":403, "message":"You cannot associate a product on which you have not a view permission."}
+{"line":1,"identifier":"product_not_viewable_by_redactor","status_code":404,"message":"Product \"product_not_viewable_by_redactor\" does not exist."}
+{"line":2,"identifier":"another_without_category","status_code":422,"message":"Property \"associations\" expects a valid product identifier. The product does not exist, \"product_not_viewable_by_redactor\" given. Check the expected format on the API documentation.","_links":{"documentation":{"href":"http:\/\/api.akeneo.com\/api-reference.html#patch_products__code_"}}}
 JSON;
         $response = $this->executeAndCheckStreamRequest($data);
 
         $this->assertSame($expectedContent, $response['content']);
     }
-    */
 
     /**
      * @param mixed $data

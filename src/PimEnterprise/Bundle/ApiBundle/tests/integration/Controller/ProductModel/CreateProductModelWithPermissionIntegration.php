@@ -23,7 +23,7 @@ class CreateProductModelWithPermissionIntegration extends ApiTestCase
 
     public function testCreateRootProductModel()
     {
-        $this->loader->loadProductModelsForAssociationPermissions();
+        $this->loader->loadProductsForAssociationPermissions();
         $this->makeAttributeAxesEditable('sub_product_model_axis_attribute');
 
         $data = <<<JSON
@@ -54,7 +54,7 @@ JSON;
 
     public function testCreateSubProductModel()
     {
-        $this->loader->loadProductModelsForAssociationPermissions();
+        $this->loader->loadProductsForAssociationPermissions();
         $this->makeAttributeAxesEditable('sub_product_model_axis_attribute');
 
         $data = <<<JSON
@@ -96,7 +96,7 @@ JSON;
 
     public function testCreateSubProductModelWithNotVisibleAxisAttribute()
     {
-        $this->loader->loadProductModelsForAssociationPermissions();
+        $this->loader->loadProductsForAssociationPermissions();
 
         $data = <<<JSON
             {

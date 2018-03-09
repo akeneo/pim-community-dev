@@ -70,7 +70,7 @@ class PermissionFixturesLoader
      * |          | variant_product_no_view_attribute          |
      * +----------+--------------------------------------------+
      */
-    public function loadProductModelsForAssociationPermissions(): void
+    public function loadProductsForAssociationPermissions(): void
     {
         $this->createCategoryFixtures();
         $this->createAttributeFixtures();
@@ -123,8 +123,22 @@ class PermissionFixturesLoader
             'categories' => ['own_category'],
         ];
 
+        $productModelNoView = [
+            'code' => 'product_model_no_view',
+            'family_variant' => 'family_variant_permission',
+            'categories' => ['category_without_right'],
+        ];
+
+        $productModelView = [
+            'code' => 'product_model_view',
+            'family_variant' => 'family_variant_permission',
+            'categories' => ['view_category'],
+        ];
+
         $this->createProductModel($rootProductModel);
         $this->createProductModel($subProductModel);
+        $this->createProductModel($productModelView);
+        $this->createProductModel($productModelNoView);
         $this->createProduct('product_no_view', $productNoView);
         $this->createProduct('product_view', $productView);
         $this->createProduct('product_own', $productOwn);

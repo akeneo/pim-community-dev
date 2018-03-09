@@ -23,7 +23,7 @@ class UpsertVariantProductWithPermissionIntegration extends ApiTestCase
 
     public function testUpdateVariantProductValuesByMergingNonViewableAssociations()
     {
-        $this->loader->loadProductModelsForAssociationPermissions();
+        $this->loader->loadProductsForAssociationPermissions();
 
         $data = <<<JSON
             {
@@ -214,7 +214,7 @@ SQL;
 
     public function testUpdateVariantProductAssociationWithNotViewableProduct()
     {
-        $this->loader->loadProductModelsForAssociationPermissions();
+        $this->loader->loadProductsForAssociationPermissions();
 
         $data = <<<JSON
             {
@@ -227,6 +227,24 @@ SQL;
 JSON;
 
         $message = 'Property "associations" expects a valid product identifier. The product does not exist, "product_no_view" given. Check the expected format on the API documentation.';
+        $this->assertUnprocessableEntity('variant_product', $data, $message);
+    }
+
+    public function testUpdateVariantProductAssociationWithNotViewableProductModel()
+    {
+        $this->loader->loadProductsForAssociationPermissions();
+
+        $data = <<<JSON
+            {
+                "associations": {
+                    "X_SELL": {
+                        "product_models": ["product_model_no_view"]
+                    }
+                }
+            }
+JSON;
+
+        $message = 'Property "associations" expects a valid product model identifier. The product model does not exist, "product_model_no_view" given. Check the expected format on the API documentation.';
         $this->assertUnprocessableEntity('variant_product', $data, $message);
     }
 
