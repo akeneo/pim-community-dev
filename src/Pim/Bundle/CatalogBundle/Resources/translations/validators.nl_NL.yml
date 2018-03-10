@@ -1,0 +1,46 @@
+An identifier attribute already exists.: Er bestaat al een id-attribuut.
+Attribute code may contain only letters, numbers and underscore: Attribuutcode mag alleen letters, cijfers en underscores bevatten
+Attribute code may contain only letters (at least one), numbers and underscores: De attribuutcode mag alleen letters (één op z'n minst), nummers en liggende streepjes bevatten
+This attribute type can't be used as a grid filter: Dit attribuuttype kan niet worden gebruikt als een rasterfilter
+This code is not available: Deze code is niet beschikbaar
+This attribute type must be required: Dit attribuuttype moet worden vereist
+This attribute type can't be required: Dit attribuuttype kan niet worden vereist
+This attribute type can't have unique value: Dit attribuuttype kan geen unieke waarde hebben
+No default value may be specified for this attribute type: Er kan geen standaardwaarde voor dit kenmerktype worden opgegeven
+This value should be Yes or No: Deze waarde moet ja of nee zijn
+This value should not be blank: Deze waarde mag niet leeg zijn
+Option code may contain only letters, numbers and underscores: Optiecode kan alleen letters, cijfers en onderstrepingstekens bevatten
+Option code may contain only letters (at least one), numbers and underscores: De optiecode mag alleen letters (één op z'n minst), nummers en liggende streepjes bevatten
+This value should not be a decimal.: Deze waarde kan geen decimaal zijn.
+'The file extension is not allowed (allowed extensions: %extensions%).': 'De bestandsextensie is niet toegestaan (toegestane extensies: %extensions%).'
+"The value %value% is already set on another product for the unique attribute %attribute%": De waarde %value% is al ingesteld op een ander product voor the unieke attribuut %attribute%
+regex.comma_or_semicolon.message: Dit veld mag geen komma of puntkomma bevatten.
+file.extensions.message: 'De bestandsextensie is niet toegestaan (toegestane extensies: %extensions%).'
+"This type of value expects the use of {{ decimal_separator }} to separate decimals.": Dit type waarde verwacht een {{ decimal_separator }} om decimalen te scheiden.
+"This type of value expects the use of dot (.) to separate decimals.": Dit type waarde verwacht een punt (.) om decimalen te scheiden.
+"This type of value expects the use of comma (,) to separate decimals.": Dit type waarde verwacht een komma (,) om decimalen te scheiden.
+"This type of value expects the use of arabic decimal separator (٫) to separate decimals.": Dit type waarde verwacht een arabisch decimaal scheidingsteken (٫) om decimalen te scheiden.
+"This type of value expects the use of the format {{ date_format }} for dates.": Dit type waarde verwacht gebruik van het {{ date_format }} formaat voor datums.
+pim_catalog:
+  constraint:
+    product_identifier: Deze id's "%s" bestaan niet.
+    0: Er is een onverwachte fout opgetreden.
+    100: Onverwachte waarde
+    101: Dit veld verwacht een Boolean invoer (ja- of nee-waarde).
+    102: Dit veld verwacht een Float invoer (Zwevendekommagetal).
+    103: Dit veld verwacht een integer (afgerond getal).
+    104: Dit veld verwacht een numerieke invoer.
+    105: Dit veld verwacht tekstinvoer.
+    106: Dit veld verwacht een array als invoer.
+    107: Dit veld verwacht een array van arrays als invoer.
+    200: Er is een interne fout opgetreden
+    201: Er is een interne fout opgetreden
+    202: Dit veld verwacht een numerieke invoer.
+    203: Dit veld verwacht tekstinvoer.
+    204: Dit veld verwacht tekstinvoer.
+    205: Er is een interne fout opgetreden
+    300: Dit veld verwacht een geldig entiteit-code.
+    301: Dit veld verwacht een geldige scope en regio-instelling.
+    302: Dit veld verwacht een geldige scope.
+    303: Dit veld verwacht een geldig formaat voor associaties.
+

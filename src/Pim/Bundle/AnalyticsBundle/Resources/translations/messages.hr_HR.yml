@@ -1,0 +1,39 @@
+pim_analytics:
+  new_patch_available: Dostupna je nova zakrpa
+  system_config:
+    group:
+      notification.title: Obavijesti
+      version_update.title: Ažuriranja inačice
+    form:
+      version_update.label: Obavijesti o novoj inačici
+      version_update.tooltip: Pošaljite upit na udaljeni poslužitelj za dohvaćanje informacija o objavljenim novim zakrpama
+  system_info:
+    title: Informacije o sustavu
+    download: TXT
+  info_type:
+    pim_edition: Izdanje
+    pim_version: Verzija
+    pim_storage_driver: Pohrana
+    pim_environment: Okruženje
+    pim_install_time: Datum instalacije
+    registered_bundles: Registrirani paketi
+    nb_channels: Broj kanala
+    nb_products: Broj proizvoda
+    nb_attributes: Broj atributa
+    nb_locales: Broj lokalnih vrijednosti
+    nb_families: Broj obitelji
+    nb_users: Broj korisnika
+    pim_storage_version: Verzija pohrane
+    os_version: Verzija OS
+    php_version: PHP verzija
+    mysql_version: MySQL verzija
+    mariadb_version: MariaDB verzija
+    mongodb_version: MongoDB verzija
+    server_version: Verzija poslužitelja
+    php_extensions: PHP ekstenzije
+  acl:
+    system_info:
+      index: Informacije o sustavu
+pim_menu:
+  item:
+    system_info: Informacije o sustavu

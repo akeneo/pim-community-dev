@@ -1,0 +1,4 @@
+"Sorry, page was not loaded correctly": "Sorry, de pagina is niet correct geladen"
+"Your local changes will be lost. Are you sure you want to refresh the page?": "Uw lokale wijzigingen zullen verloren gaan. Weet u zeker dat u de pagina wilt vernieuwen?"
+"navigation.message.content.outdated": "De pagina-inhoud van {{ title }} is verouderd, graag <a href='#' data-action='page-refresh'>de pagina vernieuwen</a>"
+"Content of pinned page is outdated": "Inhoud van vaste pagina is verouderd"

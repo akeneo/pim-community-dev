@@ -1,0 +1,223 @@
+pim_connector:
+  steps:
+    dummy_reader.title: Lector de prueba
+    product_reader.title: Extracción de productos
+    entity_reader.title: Extracción de entidades
+    csv_reader:
+      title: Lector de CSV
+    file_reader:
+      invalid_item_columns_count: 'Se esperan tener %totalColumnsCount% columnas, actualmente hay %itemColumnsCount% en %filePath%:%lineno%'
+    csv_product_reader.title: Lector CSV de productos
+    csv_category_reader.title: Lector CSV de categorías
+    dummy_processor.title: Procesador de prueba
+    product_processor.title: Creación de productos
+    category_processor.title: Creación de categorías
+    association_processor.title: Creación de asociaciones
+    product_association_processor.title: Creación de asociaciones
+    group_processor.title: Creación de grupos
+    attribute_processor.title: Creación de atributos
+    attribute_option_processor.title: Creación de opciones de atributos
+    heterogeneous_processor.title: Serializador CSV de productos
+    homogeneous_processor.title: Serializador CSV de entidades
+    transformer_processor.title: Transformación
+    dummy_writer.title: Escritor de prueba
+    file_writer.title: Salida
+    product_writer.title: Almacenamiento de productos
+    category_writer.title: Almacenamiento de categorías
+    writer.title: Almacenamiento de entidades
+    csv_writer.title: Editor Csv
+job_execution.summary:
+  read: leer
+  write: escrito
+  skip: omitido
+  create: creado
+  process: procesadas
+  update_products: productos actualizados
+  process_products: productos procesados
+  skip_products: productos omitidos
+  displayed: primeras advertencias mostradas
+  charset_validator:
+    title: 'Codificación de Archivo:'
+    skipped: omitido, extensión en lista blanca
+  product_skipped_no_diff: producto omitido (ninguna diferencia)
+  product_skipped_no_associations: Productos omitidos (asociaciones no detectadas)
+  item_position: líneas leídas
+batch_jobs:
+  csv_product_export:
+    label: Exportar productos a CSV
+    export.label: Exportar productos
+  csv_category_export:
+    label: Exportar categorías a CSV
+    export.label: Exportar categorías
+  csv_attribute_export:
+    label: Exportar atributos a CSV
+    export.label: Exportar atributos
+  csv_attribute_option_export:
+    label: Exportar opciones de atributos a CSV
+    export.label: Exportar opciones de atributos
+  csv_association_type_export:
+    label: Exportar tipos de asociaciones a CSV
+    export.label: Exportar tipos de asociaciones
+  csv_group_export:
+    label: Exportar grupos a CSV
+    export.label: Exportar grupos
+  csv_family_export:
+    label: Exportar familias en CSV
+    export.label: Exportar familias
+  csv_product_import:
+    label: Importar productos desde CSV
+    validation.label: Validación de archivo
+    import.label: Importar productos
+    import_associations.label: Importar asociaciones
+  csv_product_model_import:
+    validation.label: Validación de archivo
+  csv_category_import:
+    label: Importar categorías desde CSV
+    validation.label: Validación de archivo
+    import.label: Importar categorías
+  csv_attribute_import:
+    label: Importar atributos desde CSV
+    validation.label: Validación de archivo
+    import.label: Importar atributos
+  csv_attribute_option_import:
+    label: Importar opciones de atributos desde CSV
+    validation.label: Validación de archivo
+    import.label: Importar opciones de atributos
+  csv_association_type_import:
+    label: Importar tipos de asociaciones desde CSV
+    validation.label: Validación de archivo
+    import.label: Importar tipos de asociaciones
+  csv_family_import:
+    label: Importar familias en CSV
+    validation.label: Validación de archivo
+    import.label: Importe de familias
+  csv_family_variant_import:
+    validation.label: Validación de archivo
+  csv_group_import:
+    label: Importar grupos desde CSV
+    validation.label: Validación de archivo
+    import.label: Importar grupos
+  csv_channel_export:
+    label: Exportar canal en CSV
+    export.label: Exportar canal
+  csv_locale_export:
+    label: Exportar locales en CSV
+    export.label: Exportar locales
+  csv_attribute_group_export:
+    label: Exportar grupo de atributos en CSV
+    export.label: Exportar grupo de atributos
+  csv_currency_export:
+    label: Exportar monedas en CSV
+    export.label: Exportar monedas
+  csv_group_type_export:
+    label: Exportar tipo de grupos en CSV
+    export.label: Exportar tipo de grupos
+  csv_channel_import:
+    label: Importar canal en CSV
+    validation.label: Validación de archivo
+    import.label: Importar canales
+  csv_locale_import:
+    label: Importar locales en CSV
+    validation.label: Validación de archivo
+    import.label: Importar locales
+  csv_attribute_group_import:
+    label: Importar grupo de atributos en CSV
+    validation.label: Validación de archivo
+    import.label: Importar grupo de atributos
+  csv_currency_import:
+    label: Importar monedas en CSV
+    validation.label: Validación de archivo
+    import.label: Importar monedas
+  csv_group_type_import:
+    label: Importar tipo de grupos en CSV
+    validation.label: Validación de archivo
+    import.label: Importar tipo de grupos
+  xlsx_category_import:
+    label: Importar categorías en XLSX
+    validation.label: Validación de archivo
+    import.label: Importar categorías
+  xlsx_association_type_import:
+    label: Importar tipo de asociaciones en XLSX
+    validation.label: Validación de archivo
+    import.label: Importar tipos de asociaciones
+  xlsx_attribute_import:
+    label: Importar atributos en XLSX
+    validation.label: Validación de archivo
+    import.label: Importar atributos
+  xlsx_attribute_option_import:
+    label: Importar opciones de atributos en XLSX
+    validation.label: Validación de archivo
+    import.label: Importar opciones de atributos
+  xlsx_family_import:
+    label: Importar familias en XLSX
+    validation.label: Validación de archivo
+    import.label: Importe de familias
+  xlsx_family_variant_import:
+    validation.label: Validación de archivo
+  xlsx_product_export:
+    label: Exportar producto en XLSX
+    export.label: Exportar productos
+  xlsx_product_import:
+    label: Importar productos en XLSX
+    validation.label: Validación de archivo
+    import.label: Importar productos
+    import_associations.label: Importar asociaciones
+  xlsx_product_model_import:
+    validation.label: Validación de archivo
+  xlsx_group_export:
+    label: Exportar grupos en XLSX
+    export.label: Exportar grupos
+  xlsx_group_import:
+    label: Importar grupos en XLSX
+    validation.label: Validación de archivo
+    import.label: Importar grupos
+  xlsx_family_export:
+    label: Exportar familias en XLSX
+    export.label: Exportar familias
+  xlsx_category_export:
+    label: Exportar categorías en XLSX
+    export.label: Exportar categorías
+  xlsx_attribute_export:
+    label: Exportar atributos en XLSX
+    export.label: Exportar atributos en XLSX
+  xlsx_attribute_option_export:
+    label: Exportar opciones de atributos en XLSX
+    export.label: Exportar opciones de atributos en XLSX
+  xlsx_association_type_export:
+    label: Exportar tipo de asociaciones en XLSX
+    export.label: Exportar tipo de asociaciones en XLSX
+  xlsx_channel_export:
+    label: Exportar canales en XLSX
+    export.label: Exportar canal
+  xlsx_locale_export:
+    label: Exportar locales en XLSX
+    export.label: Exportar locales
+  xlsx_attribute_group_export:
+    label: Exportar grupo de atributos en XLSX
+    export.label: Exportar grupo de atributos
+  xlsx_currency_export:
+    label: Exportar monedas en XLSX
+    export.label: Exportar monedas
+  xlsx_group_type_export:
+    label: Exportar tipo de grupos en XLSX
+    export.label: Exportar tipo de grupos
+  xlsx_channel_import:
+    label: Importar canales en XLSX
+    validation.label: Validación de archivo
+    import.label: Importar canales
+  xlsx_locale_import:
+    label: Importar locales en XLSX
+    validation.label: Validación de archivo
+    import.label: Importar locales
+  xlsx_attribute_group_import:
+    label: Importar grupo de atributos en XLSX
+    validation.label: Validación de archivo
+    import.label: Importar grupo de atributos
+  xlsx_currency_import:
+    label: Importar monedas en XLSX
+    validation.label: Validación de archivo
+    import.label: Importar monedas
+  xlsx_group_type_import:
+    label: Importar tipo de grupos en XLSX
+    validation.label: Validación de archivo
+    import.label: Importar tipo de grupos

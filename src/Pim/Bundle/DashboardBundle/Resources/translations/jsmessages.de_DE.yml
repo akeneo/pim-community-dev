@@ -1,0 +1,22 @@
+pim_dashboard:
+  widget:
+    last_operations:
+      empty: Keine Vorgänge gefunden
+      status: Status
+      date: Datum
+      type: Typ
+      profile_name: Profilname
+      details: Details
+      warning_count: Warnungen
+      job_type:
+        import: Import
+        export: Export
+        mass_edit: Massenbearbeitung
+        quick_export: Schnellexport
+        compute_product_models_descendants: Vererbungen der Produktmodelle berechnen
+    completeness:
+      load_more: 'Mehr laden...'
+    header:
+      view_all: Alle anzeigen
+page_title:
+  pim_dashboard_index: Dashboard

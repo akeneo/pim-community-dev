@@ -1,0 +1,119 @@
+Close: Sulje
+Update: Päivitä
+Selected Rows: Valitut rivit
+"Yes": "Kyllä"
+"Yes, Delete": "Kyllä, poista"
+"Yes, I Agree": "Kyllä, hyväksyn"
+"Yes, do it": "Kyllä, tee se"
+"No": "Ei"
+"Ok, got it.": "OK."
+"Cancel": "Peruuta"
+"Delete Confirmation": "Poiston vahvistus"
+"Edit": "Muokkaa"
+"Unexpected error occured. Please contact system administrator.": "Odottamaton virhe. Ota yhteyttä järjestelmänvalvojaan."
+"Yes, revoke": "Kyllä, poista"
+"Revoke Confirmation": "Poiston vahvistus"
+Now: Nyt
+Prev: Edellinen
+Next: Seuraava
+Today: Tänään
+Wk: Vk
+Done: Valmis
+AM: AM
+A: A
+PM: PM
+P: P
+"Choose Time": "Valitse aika"
+Time: Aika
+Hour: Tunti
+Minute: Minuutti
+Second: Sekunti
+Millisecond: Millisekunti
+Microsecond: Mikrosekunti
+"Time Zone": "Aikavyöhyke"
+Localized value: Paikallinen arvo
+Columns: Sarakkeet
+Datagrid Configuration: Datagrid-kokoonpano
+Apply: Valitse
+Action: Toimi
+Unit: Yksikkö
+Currency: Valuutta
+jstree:
+  all: Kaikki tuotteet
+  unclassified: Luokittelemattomat tuotteet
+  product:
+    all: Kaikki tuotteet
+    unclassified: Luokittelemattomat tuotteet
+  no_tree: Ei puuta käytettävissä
+  include_sub: Sisällytä alakategoriat
+  loading: Ladataan ...
+datetimepicker:
+  days:
+    Sunday: Sunnuntai
+    Monday: Maanantai
+    Tuesday: Tiistai
+    Wednesday: Keskiviikko
+    Thursday: Torstai
+    Friday: Perjantai
+    Saturday: Lauantai
+  daysShort:
+    Sun: Su
+    Mon: Ma
+    Tue: Ti
+    Wed: Ke
+    Thu: To
+    Fri: Pe
+    Sat: La
+  daysMin:
+    Su: Su
+    Mo: Ma
+    Tu: Ti
+    We: Ke
+    Th: To
+    Fr: Pe
+    Sa: La
+  months:
+    January: Tammikuu
+    February: Helmikuu
+    March: Maaliskuu
+    April: Huhtikuu
+    May: Toukokuu
+    June: Kesäkuu
+    July: Heinäkuu
+    August: Elokuu
+    September: Syyskuu
+    October: Lokakuu
+    November: Marraskuu
+    December: Joulukuu
+  monthsShort:
+    Jan: Tammi
+    Feb: Helmi
+    Mar: Maalis
+    Apr: Huhti
+    May: Toukokuu
+    Jun: Kesä
+    Jul: Heinä
+    Aug: Elo
+    Sep: Syys
+    Oct: Loka
+    Nov: Marras
+    Dec: Joulu
+oro_config:
+  form:
+    config:
+      title: Järjestelmän asetukset
+      tab:
+        system:
+          title: Järjestelmä
+      group:
+        localization:
+          title: Lokalisointi
+          system_locale: Kieli
+        notification:
+          title: Ilmoitukset
+          system_notification: Uuden version päivitykset
+        loading_message:
+          title: Latausviestit
+          label: Aktivoi latausviestit
+        loading_messages:
+          label: Käytettävät latausviestit

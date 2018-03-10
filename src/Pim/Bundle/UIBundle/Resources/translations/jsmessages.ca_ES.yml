@@ -1,0 +1,117 @@
+Close: Tancar
+Update: Actualitzar
+Selected Rows: Files seleccionades
+"Yes": "Sí"
+"Yes, Delete": "Sí, Suprimir"
+"Yes, I Agree": "Sí, Estic d'acord"
+"Yes, do it": "Sí, fes-ho"
+"No": "No"
+"Ok, got it.": "D'acord, ho entenc."
+"Cancel": "Cancelar"
+"Delete Confirmation": "Suprimir Confirmació"
+"Edit": "Editar"
+"Unexpected error occured. Please contact system administrator.": "Error inesperat. Contacti amb el seu administrador de sistemes."
+Now: Ara
+Prev: Anterior
+Next: Següent
+Today: Avui
+Wk: Setm
+Done: Fet
+AM: AM
+A: A
+PM: PM
+P: P
+"Choose Time": "Trieu l'hora"
+Time: Hora
+Hour: Hora
+Minute: Minut
+Second: Segon
+Millisecond: Mil·lisegon
+Microsecond: Microsegon
+"Time Zone": "Zona horària"
+Localized value: Valor amb configuració regional
+Columns: Columnes
+Datagrid Configuration: Configuració de la quadrícula de dades
+Apply: Aplicar
+Action: Acció
+Unit: Unitat
+Currency: Moneda
+jstree:
+  all: Tots els productes
+  unclassified: Productes sense classificar
+  product:
+    all: Tots els productes
+    unclassified: Productes sense classificar
+  no_tree: No hi ha cap arbre disponible
+  include_sub: Incloure subcategories
+  loading: Carregant ...
+datetimepicker:
+  days:
+    Sunday: Diumenge
+    Monday: Dilluns
+    Tuesday: Dimarts
+    Wednesday: Dimecres
+    Thursday: Dijous
+    Friday: Divendres
+    Saturday: Dissabte
+  daysShort:
+    Sun: Dg
+    Mon: Dll
+    Tue: Dim
+    Wed: Dic
+    Thu: Dij
+    Fri: Div
+    Sat: Dis
+  daysMin:
+    Su: Dm
+    Mo: Dll
+    Tu: Dm
+    We: Dc
+    Th: Dj
+    Fr: Dv
+    Sa: Ds
+  months:
+    January: Gener
+    February: Febrer
+    March: Març
+    April: Abril
+    May: Maig
+    June: Juny
+    July: Juliol
+    August: Agost
+    September: Setembre
+    October: Octubre
+    November: Novembre
+    December: Desembre
+  monthsShort:
+    Jan: Gen
+    Feb: Feb
+    Mar: Mar
+    Apr: Abr
+    May: Maig
+    Jun: Jun
+    Jul: Jul
+    Aug: Ago
+    Sep: Set
+    Oct: Oct
+    Nov: Nov
+    Dec: Des
+oro_config:
+  form:
+    config:
+      title: Configuració de sistema
+      tab:
+        system:
+          title: Sistema
+      group:
+        localization:
+          title: Configuració regional
+          system_locale: Idioma
+        notification:
+          title: Notificacions
+          system_notification: Notificacions de noves versions
+        loading_message:
+          title: S'estan carregant els missatges
+          label: Permetre els missatges que s'estan carregant
+        loading_messages:
+          label: Missatges de càrrega disponibles

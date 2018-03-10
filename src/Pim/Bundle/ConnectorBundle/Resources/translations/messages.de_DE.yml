@@ -1,0 +1,240 @@
+pim_connector:
+  steps:
+    dummy_reader.title: Dummy-Leser
+    product_reader.title: Produktextraktion
+    entity_reader.title: Entitätsextraktion
+    csv_reader:
+      title: CSV-Leser
+    file_reader:
+      invalid_item_columns_count: 'Erwartet wurden %totalColumnsCount% Spalten, tatsächlich vorhanden sind %itemColumnsCount% in %filePath%:%lineno%'
+    csv_product_reader.title: CSV Produkt-Leser
+    csv_category_reader.title: CSV Kategorie-Leser
+    dummy_processor.title: Dummy-Prozessor
+    product_processor.title: Produkterstellung
+    category_processor.title: Kategorieerstellung
+    association_processor.title: Verbindungserstellung
+    product_association_processor.title: Verbindungserstellung
+    group_processor.title: Gruppenerstellung
+    attribute_processor.title: Attributerstellung
+    attribute_option_processor.title: Attributoptionserstellung
+    heterogeneous_processor.title: Produkt CSV-Serialisierer
+    homogeneous_processor.title: CSV Entitäten-Serialisierer
+    transformer_processor.title: Umwandlung
+    dummy_writer.title: Dummy-Schreiber
+    file_writer.title: Ausgabe
+    product_writer.title: Produkt-Speicher
+    category_writer.title: Kategorie-Speicher
+    writer.title: Entitäten-Speicher
+    csv_writer.title: CSV-Schreiber
+job_execution.summary:
+  read: Lesen
+  write: geschrieben
+  skip: übersprungen
+  create: erstellt
+  process: verarbeitet
+  update_products: Aktualisierte Produkte
+  process_products: verarbeitete Produkte
+  skip_products: Übersprungene Produkte
+  displayed: Die ersten Warnungen angezeigt
+  charset_validator:
+    title: 'Datei Zeichenkodierung:'
+    skipped: übersprungen, Erweiterung in der Whitelist
+  product_skipped_no_diff: Übersprungenes Produkt (keine Unterschiede)
+  product_skipped_no_associations: Produkt übersprungen (keine Verbindungen vorhanden)
+  product_model_skipped_no_diff: Produktmodell übersprungen (keine Unterschiede)
+  item_position: gelesene Zeilen
+  skipped_in_root_product_model: Produktmodell mit übergeordneter Ebene übersprungen
+  skipped_in_sub_product_model: Produktmodell ohne übergeordnete Ebene übersprungen
+batch_jobs:
+  csv_product_export:
+    label: Produkt-Export als CSV-Datei
+    export.label: Produkt export
+  csv_product_model_export:
+    label: Produktmodell-Export als CSV-Datei
+    export.label: Produktmodell-Export
+  csv_category_export:
+    label: Kategorie-Export als CSV-Datei
+    export.label: Kategorie export
+  csv_attribute_export:
+    label: Attribut-Export als CSV-Datei
+    export.label: Attribut export
+  csv_attribute_option_export:
+    label: Attribut-Option in CSV-Datei exportieren
+    export.label: Attribut-Option export
+  csv_association_type_export:
+    label: Verbindungstyp-Export als CSV-Datei
+    export.label: Verbindungstyp-Export
+  csv_group_export:
+    label: Gruppen-Export in CSV-Datei
+    export.label: Gruppen-Export
+  csv_family_export:
+    label: Produktfamilien-Export als CSV-Datei
+    export.label: Produktfamilien-Export
+  csv_product_import:
+    label: Produkt-Export als CSV-Datei
+    validation.label: Dateivalidierung
+    import.label: Produkt import
+    import_associations.label: Produktverbindungen-Import
+  csv_product_model_import:
+    label: Produktmodell-Import aus CSV-Datei
+    validation.label: Dateivalidierung
+    import_root_product_model.label: Produktmodell-Import Hauptebene
+    import_sub_product_model.label: Produktmodell-Import Subebene
+    import_product_model_descendants.label: Vererbungen der Produktmodelle berechnen
+  csv_category_import:
+    label: Kategorie-Import aus CSV-Datei
+    validation.label: Dateivalidierung
+    import.label: Kategorie-Import
+  csv_attribute_import:
+    label: Attribut-Import aus CSV-Datei
+    validation.label: Dateivalidierung
+    import.label: Attribut-Import
+  csv_attribute_option_import:
+    label: Attribut-Optionen aus CSV-Datei importieren
+    validation.label: Dateivalidierung
+    import.label: Attribut-Option import
+  csv_association_type_import:
+    label: Verbindungstyp-Import als CSV-Datei
+    validation.label: Dateivalidierung
+    import.label: Verbindungstyp-Import
+  csv_family_import:
+    label: Produktfamilien-Import aus CSV-Datei
+    validation.label: Dateivalidierung
+    import.label: Produktfamilien-Import
+  csv_family_variant_import:
+    validation.label: Dateivalidierung
+  csv_group_import:
+    label: Gruppen-Import aus CSV-Datei
+    validation.label: Dateivalidierung
+    import.label: Gruppen-Import
+  csv_channel_export:
+    label: Ausgabekanal-Export als CSV-Datei
+    export.label: Ausgabekanal-Export
+  csv_locale_export:
+    label: Gebietsschema-Export als CSV-Datei
+    export.label: Gebietsschema-Export
+  csv_attribute_group_export:
+    label: Attributgruppen-Export als CSV-Datei
+    export.label: Attributgruppen-Export
+  csv_currency_export:
+    label: Währungs-Export als CSV-Datei
+    export.label: Währungs-Export
+  csv_group_type_export:
+    label: Gruppentyp-Export als CSV-Datei
+    export.label: Gruppentyp-Export
+  csv_channel_import:
+    label: Ausgabekanal-Import aus CSV-Datei
+    validation.label: Dateivalidierung
+    import.label: Ausgabekanal-Import
+  csv_locale_import:
+    label: Gebietsschema-Import aus CSV-Datei
+    validation.label: Dateivalidierung
+    import.label: Gebietsschema-Import
+  csv_attribute_group_import:
+    label: Attributgruppen-Import aus CSV-Datei
+    validation.label: Dateivalidierung
+    import.label: Attributgruppen-Import
+  csv_currency_import:
+    label: Währungs-Import aus CSV-Datei
+    validation.label: Dateivalidierung
+    import.label: Währungs-Import
+  csv_group_type_import:
+    label: Gruppentyp-Import aus CSV-Datei
+    validation.label: Dateivalidierung
+    import.label: Gruppentyp-Import
+  xlsx_category_import:
+    label: Kategorie-Import aus XLSX-Datei
+    validation.label: Dateivalidierung
+    import.label: Kategorie-Import
+  xlsx_association_type_import:
+    label: Verbindungstyp-Import aus XLSX-Datei
+    validation.label: Dateivalidierung
+    import.label: Verbindungstyp-Import
+  xlsx_attribute_import:
+    label: Attribut-Import aus XLSX-Datei
+    validation.label: Dateivalidierung
+    import.label: Attribut-Import
+  xlsx_attribute_option_import:
+    label: Attributoptionen-Import aus XLSX-Datei
+    validation.label: Dateivalidierung
+    import.label: Attribut-Option import
+  xlsx_family_import:
+    label: Produktfamilien-Import aus XLSX-Datei
+    validation.label: Dateivalidierung
+    import.label: Produktfamilien-Import
+  xlsx_family_variant_import:
+    validation.label: Dateivalidierung
+  xlsx_product_export:
+    label: Produkt-Export als XLSX-Datei
+    export.label: Produkt export
+  xlsx_product_model_export:
+    label: Produktmodell-Export als XLSX-Datei
+    export.label: Produktmodell-Export
+  xlsx_product_import:
+    label: Produkt-Import aus XLSX-Datei
+    validation.label: Dateivalidierung
+    import.label: Produkt import
+    import_associations.label: Produktverbindungen-Import
+  xlsx_product_model_import:
+    label: Produktmodell-Import aus XLSX-Datei
+    validation.label: Dateivalidierung
+    import_root_product_model.label: Produktmodell-Import Hauptebene
+    import_sub_product_model.label: Produktmodell-Import Subebene
+    import_product_model_descendants.label: Vererbungen der Produktmodelle berechnen
+  xlsx_group_export:
+    label: Gruppen-Export als XSLX-Datei
+    export.label: Gruppen-Export
+  xlsx_group_import:
+    label: Gruppen-Import aus XLSX-Datei
+    validation.label: Dateivalidierung
+    import.label: Gruppen-Import
+  xlsx_family_export:
+    label: Produktfamilien-Eport als XLSX-Datei
+    export.label: Produktfamilien-Export
+  xlsx_category_export:
+    label: Kategorie-Export als XLSX-Datei
+    export.label: Kategorie export
+  xlsx_attribute_export:
+    label: Attribut-Export als XLSX-Datei
+    export.label: Attribut-Export als XLSX-Datei
+  xlsx_attribute_option_export:
+    label: Attributoptionen-Export als XLSX-Datei
+    export.label: Attributoptionen-Export als XLSX-Datei
+  xlsx_association_type_export:
+    label: Verbindungstyp-Export als XLSX-Datei
+    export.label: Verbindungstyp-Export als XLSX-Datei
+  xlsx_channel_export:
+    label: Ausgabekanal-Export als XLSX-Datei
+    export.label: Ausgabekanal-Export
+  xlsx_locale_export:
+    label: Gebietsschema-Export als XLSX-Datei
+    export.label: Gebietsschema-Export
+  xlsx_attribute_group_export:
+    label: Attributgruppen-Export als XLSX-Datei
+    export.label: Attributgruppen-Export
+  xlsx_currency_export:
+    label: Währungs-Export als XLSX-Datei
+    export.label: Währungs-Export
+  xlsx_group_type_export:
+    label: Gruppentyp-Export als XLSX-Datei
+    export.label: Gruppentyp-Export
+  xlsx_channel_import:
+    label: Ausgabekanal-Import aus XLSX-Datei
+    validation.label: Dateivalidierung
+    import.label: Ausgabekanal-Import
+  xlsx_locale_import:
+    label: Gebietsschema-Import aus XLSX-Datei
+    validation.label: Dateivalidierung
+    import.label: Gebietsschema-Import
+  xlsx_attribute_group_import:
+    label: Attributgruppen-Import aus XLSX-Datei
+    validation.label: Dateivalidierung
+    import.label: Attributgruppen-Import
+  xlsx_currency_import:
+    label: Währungs-Import aus XLSX-Datei
+    validation.label: Dateivalidierung
+    import.label: Währungs-Import
+  xlsx_group_type_import:
+    label: Gruppen-Import aus XLSX-Datei
+    validation.label: Dateivalidierung
+    import.label: Gruppentyp-Import

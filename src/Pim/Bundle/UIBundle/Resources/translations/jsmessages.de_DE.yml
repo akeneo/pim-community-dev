@@ -1,0 +1,119 @@
+Close: Schließen
+Update: Aktualisieren
+Selected Rows: Ausgewählte Zeilen
+"Yes": "Ja"
+"Yes, Delete": "Ja, löschen"
+"Yes, I Agree": "Ja, ich stimme zu"
+"Yes, do it": "Ja, ausführen"
+"No": "Nein"
+"Ok, got it.": "Ja, verstanden."
+"Cancel": "Abbrechen"
+"Delete Confirmation": "Löschbestätigung"
+"Edit": "Bearbeiten"
+"Unexpected error occured. Please contact system administrator.": "Es ist ein unerwarteter Fehler aufgetreten. Bitte wenden Sie sich an den Systemadministrator."
+"Yes, revoke": "Ja, widerrufen"
+"Revoke Confirmation": "Bestätigung widerrufen"
+Now: Jetzt
+Prev: Zurück
+Next: Vor
+Today: Heute
+Wk: KW
+Done: Fertig
+AM: AM
+A: A
+PM: PM
+P: P
+"Choose Time": "Zeit wählen"
+Time: Zeit
+Hour: Stunde
+Minute: Minute
+Second: Sekunde
+Millisecond: Millisekunde
+Microsecond: Mikrosekunde
+"Time Zone": "Zeitzone"
+Localized value: Vom Gebietsschema abhängiger Wert
+Columns: Spalten
+Datagrid Configuration: Tabellen-Konfiguration
+Apply: Anwenden
+Action: Aktion
+Unit: Einheit
+Currency: Währung
+jstree:
+  all: Alle Produkte
+  unclassified: Nicht klassifizierte Produkte
+  product:
+    all: Alle Produkte
+    unclassified: Nicht klassifizierte Produkte
+  no_tree: Kein Strukturbaum verfügbar
+  include_sub: Unterkategorien einschließen
+  loading: Lädt ...
+datetimepicker:
+  days:
+    Sunday: Sonntag
+    Monday: Montag
+    Tuesday: Dienstag
+    Wednesday: Mittwoch
+    Thursday: Donnerstag
+    Friday: Freitag
+    Saturday: Samstag
+  daysShort:
+    Sun: So
+    Mon: Mo
+    Tue: Di
+    Wed: Mi
+    Thu: Do
+    Fri: Fr
+    Sat: Sa
+  daysMin:
+    Su: So
+    Mo: Mo
+    Tu: Di
+    We: Mi
+    Th: Do
+    Fr: Fr
+    Sa: Sa
+  months:
+    January: Januar
+    February: Februar
+    March: März
+    April: April
+    May: Mai
+    June: Juni
+    July: Juli
+    August: August
+    September: September
+    October: Oktober
+    November: November
+    December: Dezember
+  monthsShort:
+    Jan: Jan
+    Feb: Feb
+    Mar: Mrz
+    Apr: Apr
+    May: Mai
+    Jun: Jun
+    Jul: Jul
+    Aug: Aug
+    Sep: Sep
+    Oct: Okt
+    Nov: Nov
+    Dec: Dez
+oro_config:
+  form:
+    config:
+      title: Systemkonfiguration
+      tab:
+        system:
+          title: System
+      group:
+        localization:
+          title: Lokalisierung
+          system_locale: Sprache
+        notification:
+          title: Benachrichtigungen
+          system_notification: Benachrichtigungen über neue Versionen
+        loading_message:
+          title: Nachrichten werden geladen
+          label: Nachrichten laden aktivieren
+        loading_messages:
+          label: Nachrichten laden aktivieren
