@@ -6,6 +6,7 @@ confirmation:
     attribute: Er du sikker på du vil slette attributten?
     attribute_group: Er du sikker på du vil slette denne attributgruppe?
     family: Er du sikker på at du vil slette denne familie?
+    family_variant: Er du sikker på at du vil slette denne familie variant?
     product: Er du sikker på du vil slette dette produkt?
     product_model: Er du sikker på du vil slette denne produktmodel? Alle underliggende produkter, produktmodeller og variant produkter, slettes også.
     channel: Er du sikker på du vil slette denne kanal?
@@ -46,6 +47,8 @@ flash:
     removed: Attributgruppe fjernet
   family:
     removed: Familien fjernet
+  family_variant:
+    removed: Familie variant fjernet
   product:
     removed: Produktet blev fjernet
   product_model:

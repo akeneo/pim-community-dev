@@ -716,6 +716,7 @@ Format address by address country: Formato indirizzo a seconda del Paese
 Language: Lingua
 Timezone: Fuso orario
 Currency: Valuta
+settings: Impostazioni
 oro.locale:
   address_format:
     region_name_type:
