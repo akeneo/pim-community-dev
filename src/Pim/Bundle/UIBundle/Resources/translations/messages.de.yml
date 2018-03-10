@@ -41,7 +41,6 @@ required: (erforderlich)
 pim_ui.system_config:
   form:
     loading_message_enabled.label: Nachrichten laden aktivieren
-    loading_message_enabled.tooltip: Zeige benutzerfreundliche Nachrichten während eine Seite geladen wird
     loading_messages.label: Nachrichten laden aktivieren
     loading_messages.tooltip: Alle verfügbaren Nachrichten durch Zeilenschaltungen trennen
   group:
