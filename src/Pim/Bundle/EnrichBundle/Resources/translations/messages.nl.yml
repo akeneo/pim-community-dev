@@ -314,7 +314,7 @@ flash:
     created: Attribuut succesvol aangemaakt
     updated: Attribuut succesvol bijgewerkt
     removed: Attribuut succesvol verwijderd
-    identifier not removable: Id-attribuut kan niet worden verwijderd
+    identifier_not_removable: Id-attribuut kan niet worden verwijderd
   attribute group:
     created: Attribuutgroep succesvol aangemaakt
     updated: Attribuutgroep succesvol bijgewerkt
@@ -655,6 +655,7 @@ Format address by address country: Adres opmaken op basis van land
 Language: Taal
 Timezone: Tijdzone
 Currency: Valuta
+settings: Instellingen
 oro.locale:
   address_format:
     region_name_type:
