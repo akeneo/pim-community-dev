@@ -334,7 +334,7 @@ flash:
     created: Atribut creat correctament
     updated: Atribut actualitzat correctament
     removed: Atribut suprimit correctament
-    identifier not removable: L'atribut identificador no es pot suprimir
+    identifier_not_removable: L'atribut identificador no es pot suprimir
   attribute group:
     created: Grup d'atributs creat correctament
     updated: Grup d'atributs actualitzat correctament
@@ -699,6 +699,7 @@ Format address by address country: Format d'adreça per país
 Language: Idioma
 Timezone: Zona horària
 Currency: Moneda
+settings: Preferències
 oro.locale:
   address_format:
     region_name_type:

@@ -241,6 +241,11 @@ pim_enrich:
     empty_value:
       reference_data_type:
         label: Choisir un type de données référentielles
+  notification:
+    settings:
+      remove_completeness_for_channel_and_locale:
+        start: La locale a été retirée du canal. Les complétudes liées sont en cours de suppression.
+        done: Suppression d'un paramètre régional pour un canal terminée.
 attribute:
   title: attribut
   edit: Modifier un attribut
@@ -355,7 +360,7 @@ flash:
     created: Attribut créé avec succès
     updated: Attribut mis à jour avec succès
     removed: Attribut supprimé avec succès
-    identifier not removable: Un attribut de type identifiant ne peut pas être supprimé
+    identifier_not_removable: Un attribut de type identifiant ne peut pas être supprimé
   attribute group:
     created: Groupe d'attributs créé avec succès
     updated: Groupe d'attributs mis à jour avec succès
@@ -725,6 +730,7 @@ Format address by address country: Format d'adresse par pays
 Language: Langue
 Timezone: Fuseau horaire
 Currency: Devise
+settings: Paramètres
 oro.locale:
   address_format:
     region_name_type:

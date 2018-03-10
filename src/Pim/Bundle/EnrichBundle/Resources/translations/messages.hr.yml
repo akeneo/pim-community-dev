@@ -334,7 +334,7 @@ flash:
     created: Atribut je uspješno kreiran
     updated: Atribut je uspješno ažuriran
     removed: Atribut je uspješno uklonjen
-    identifier not removable: Identifikator atributa ne može biti uklonjen
+    identifier_not_removable: Identifikator atributa ne može biti uklonjen
   attribute group:
     created: Atribut grupe je uspješno kreiran
     updated: Atribut grupe je uspješno ažuriran
@@ -698,6 +698,7 @@ Format address by address country: Oblikovanje adresa prema adresi zemlje
 Language: Jezik
 Timezone: Vremenska zona
 Currency: Valuta
+settings: Postavke
 oro.locale:
   address_format:
     region_name_type:
