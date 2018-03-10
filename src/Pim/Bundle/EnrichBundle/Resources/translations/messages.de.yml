@@ -343,7 +343,7 @@ flash:
     created: Attribut erfolgreich erstellt
     updated: Attribut erfolgreich aktualisiert
     removed: Attribut erfolgreich entfernt
-    identifier not removable: Ein Attribut zur eindeutigen Identifizierung kann nicht entfernt werden
+    identifier_not_removable: Ein Attribut zur eindeutigen Identifizierung kann nicht entfernt werden
   attribute group:
     created: Attributgruppe erfolgreich angelegt
     updated: Attributgruppe erfolgreich aktualisiert
@@ -712,6 +712,7 @@ Format address by address country: Formatiere nach Land der Adresse
 Language: Sprache
 Timezone: Zeitzone
 Currency: Währung
+settings: Einstellungen
 oro.locale:
   address_format:
     region_name_type:

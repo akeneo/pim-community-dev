@@ -352,7 +352,7 @@ flash:
     created: Attribuutin luominen onnistui
     updated: Attribuutin päivittäminen onnistui
     removed: Attribuutin poistaminen onnistui
-    identifier not removable: Attribuutin identifioijaa ei voi poistaa
+    identifier_not_removable: Attribuutin identifioijaa ei voi poistaa
   attribute group:
     created: Attribuuttiryhmän luominen onnistui
     updated: Attribuuttiryhmän päivittäminen onnistui
@@ -722,6 +722,7 @@ Format address by address country: Muotoile osoite osoitteen maan mukaan
 Language: Kieli
 Timezone: Aikavyöhyke
 Currency: Valuutta
+settings: Asetukset
 oro.locale:
   address_format:
     region_name_type:

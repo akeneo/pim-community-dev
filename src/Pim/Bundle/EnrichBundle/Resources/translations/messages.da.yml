@@ -238,6 +238,11 @@ pim_enrich:
     empty_value:
       reference_data_type:
         label: Vælg reference datatype
+  notification:
+    settings:
+      remove_completeness_for_channel_and_locale:
+        start: Landestandard er blevet fjernet fra denne kannal. Relaterede fulstændighed ajourføres 
+        done: Fjernelse af landestandard fra denne kannal er afsluttet.
 attribute:
   title: attribut
   edit: rediger attribut
@@ -352,7 +357,7 @@ flash:
     created: Attributten er blevet oprettet
     updated: Attributten opdateret
     removed: Attributten blev slettet
-    identifier not removable: Id attribut kan ikke fjernes
+    identifier_not_removable: Id attribut kan ikke fjernes
   attribute group:
     created: Attributgruppe oprettet
     updated: Attributgruppe opdateret
@@ -722,6 +727,7 @@ Format address by address country: Formater adresse efter lande adresse
 Language: Sprog
 Timezone: Tidszone
 Currency: Valuta
+settings: Indstillinger
 oro.locale:
   address_format:
     region_name_type:
