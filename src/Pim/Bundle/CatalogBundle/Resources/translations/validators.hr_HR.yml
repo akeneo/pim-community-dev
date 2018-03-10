@@ -1,0 +1,46 @@
+An identifier attribute already exists.: Atribut identifikatora već postoji.
+Attribute code may contain only letters, numbers and underscore: Atribut šifre može sadržavati samo slova, brojeve i donju crtu
+Attribute code may contain only letters (at least one), numbers and underscores: Atribut šifre može sadržavati samo slova (barem jedno), brojke i donju crtu
+This attribute type can't be used as a grid filter: Ovaj atribut se ne može koristiti kao filter u tablici
+This code is not available: Ovaj kod nije dostupan
+This attribute type must be required: Ova vrsta atributa je obavezna
+This attribute type can't be required: Ova vrsta atributa nije obavezna
+This attribute type can't have unique value: Ova vrsta atributa ne mora imati jedinstvenu vrijednost
+No default value may be specified for this attribute type: Zadana vrijednost ne mora biti specificirana za ovu vrstu atributa
+This value should be Yes or No: Ova vrijednost bi trebala biti sa oznakom Da ili Ne
+This value should not be blank: Ova vrijednost ne bi trebala biti prazna
+Option code may contain only letters, numbers and underscores: Opcija šifre može sadržavati samo slova, brojeve i donju crtu
+Option code may contain only letters (at least one), numbers and underscores: Opcija šifre može sadržavati samo slova (barem jedno), brojke i donju crtu
+This value should not be a decimal.: Ta vrijednost ne smije biti decimalna.
+'The file extension is not allowed (allowed extensions: %extensions%).': 'Ekstenzija datoteke nije dozvoljena (dozvoljene ekstenzije: %extensions%).'
+"The value %value% is already set on another product for the unique attribute %attribute%": Vrijednost %value% je već postavljena za neki drugi proizvod za jedinstveni atribut %attribute%
+regex.comma_or_semicolon.message: Ovo polje ne smije sadržavati niti zarez niti točku-zarez.
+file.extensions.message: 'Ekstenzija datoteke nije dozvoljena (dozvoljene ekstenzije: %extensions%).'
+"This type of value expects the use of {{ decimal_separator }} to separate decimals.": Ovaj tip vrijednosti očekuje korištenje {{ decimal_separator }} za razdvajanje decimala.
+"This type of value expects the use of dot (.) to separate decimals.": Ovj tip vrijednosti očekuje korištenje točke (.) za razdvajanje decimala.
+"This type of value expects the use of comma (,) to separate decimals.": Ovj tip vrijednosti očekuje korištenje zareza (,) za razdvajanje decimala.
+"This type of value expects the use of arabic decimal separator (٫) to separate decimals.": Ovj tip vrijednosti očekuje korištenje arapskog decimalnog razdjelnika (٫) za razdvajanje decimala.
+"This type of value expects the use of the format {{ date_format }} for dates.": Ovaj tip vrijednosti očekuje korištenje {{ date_format }} oblika za datume.
+pim_catalog:
+  constraint:
+    product_identifier: Ovi identifikatori "%s" ne postoje.
+    0: Dogodila se neočekivana pogreška.
+    100: Neočekivana vrijednost
+    101: U ovom se polju očekuje boolean vrijednost.
+    102: U ovom se polju očekuje float vrijednost.
+    103: U ovom se polju očekuje cjelobrojna vrijednost.
+    104: U ovom se polju očekuje numerička vrijednost.
+    105: U ovom se polju očekuje alfanumerička vrijednost.
+    106: U ovom se polju očekuje vrijednost polja.
+    107: U ovom se polju očekuje niz polja kao vrijednost.
+    200: Dogodila se interna pogreška
+    201: Dogodila se interna pogreška
+    202: U ovom se polju očekuje numerička vrijednost.
+    203: U ovom se polju očekuje alfanumerička vrijednost.
+    204: U ovom se polju očekuje alfanumerička vrijednost.
+    205: Dogodila se interna pogreška
+    300: U ovom se polju očekuje valjani entitet.
+    301: U ovom se polju očekuje valjan opseg i lokacija.
+    302: U ovom se polju očekuje valjan opseg.
+    303: U ovom se polju očekuje valjan format pridruživanja.
+

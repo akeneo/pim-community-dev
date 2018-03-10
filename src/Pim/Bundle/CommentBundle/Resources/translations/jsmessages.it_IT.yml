@@ -1,0 +1,28 @@
+btn:
+  post: Aggiugni un nuovo commento
+  reply: Rispondi
+  cancel: Annulla
+confirmation:
+  remove:
+    comment: Sei sicuro di voler eliminare questo commento?
+flash:
+  comment:
+    create:
+      success: Commento creato con successo.
+      error: Si è verificato un errore durante la creazione del tuo commento.
+    delete:
+      success: Commento eliminato con successo.
+      error: Si è verificato un errore durante la creazione del tuo commento.
+    reply:
+      success: Risposta creata con successo.
+      error: Si è verificato un errore durante la creazione della risposta.
+comment:
+  index:
+    empty: Non ci sono ancora commenti
+    header_comment: '{{ user }} commenta il prodotto'
+    header_reply: '{{ user }} risponde al commento'
+  placeholder:
+    new: Scrivi un nuovo commento...
+    reply: Rispondi a questo commento...
+pim_comment:
+  product.panel.comment.title: Commenti

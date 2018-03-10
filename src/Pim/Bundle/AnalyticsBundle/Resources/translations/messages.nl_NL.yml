@@ -1,0 +1,39 @@
+pim_analytics:
+  new_patch_available: Nieuwe patch beschikbaar
+  system_config:
+    group:
+      notification.title: Meldingen
+      version_update.title: Versie updates
+    form:
+      version_update.label: Meldingen nieuwe versies
+      version_update.tooltip: Controleer of er nieuwe patches beschikbaar zijn
+  system_info:
+    title: Systeeminformatie
+    download: TXT
+  info_type:
+    pim_edition: Editie
+    pim_version: Versie
+    pim_storage_driver: Opslag
+    pim_environment: Omgeving
+    pim_install_time: Tijd van installatie
+    registered_bundles: Geregistreerde bundels
+    nb_channels: Aantal kanalen
+    nb_products: Aantal producten
+    nb_attributes: Aantal attributen
+    nb_locales: Aantal lokaliseringen
+    nb_families: Aantal families
+    nb_users: Aantal gebruikers
+    pim_storage_version: Opslag versie
+    os_version: Besturingssysteem versie
+    php_version: PHP versie
+    mysql_version: MySQL versie
+    mariadb_version: MariaDB versie
+    mongodb_version: MongoDB versie
+    server_version: Server versie
+    php_extensions: PHP extensies
+  acl:
+    system_info:
+      index: Systeeminformatie
+pim_menu:
+  item:
+    system_info: Systeeminformatie

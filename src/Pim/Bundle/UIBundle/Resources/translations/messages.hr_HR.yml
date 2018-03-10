@@ -1,0 +1,47 @@
+User: Korisnik
+Run demo: Pokreni demo
+Product: Proizvod
+Attribute list: Popis atributa
+Attribute Group list: Popis grupe atributa
+Users: Korisnici
+Roles: Role
+Groups: Grupe
+Configuration: Konfiguracija
+Currency list: Tečajna lista
+Locale list: Popis regionalnih postavki
+Logged in as: Prijavljen kao
+Logout: Odjava
+Login: Prijava
+Previous: Prethodna
+Next: Sljedeća
+Channel list: Popis kanala
+Select file: Odaberi datoteku
+Change file: Promijeni datoteku
+Remove file: Ukloni datoteku
+Delete: Obriši
+Save: Spremi
+Cancel: Poništi
+Get help: Pomoć
+My User: Moj korisnički račun
+oro.form.choose_value: Odaberi vrijednost...
+Read more: Pročitaj više
+oro.form.click_here_to_select: Klikni ovdje za odabir...
+Add: Dodaj
+"Learn how to use this space": "Nauči kako koristiti ovaj prostor"
+"How To Use Pinbar": "Kako koristiti Pinbar"
+Pinbar: Pinbar
+Favorites: Favoriti
+Most Viewed: Najgledanije
+"Add this page to favorites": "Dodaj ovu stranicu u favorite"
+"Minimize the window to the pinbar": "Minimiziraj prozor na pinbar"
+"Loading ...": "Učitavanje ..."
+"Yes": "Da"
+"No": "Ne"
+required: (obavezno)
+pim_ui.system_config:
+  form:
+    loading_message_enabled.label: Omogućiti učitavanje poruke
+    loading_messages.label: Dostupno učitavanje poruka
+    loading_messages.tooltip: Sve dostupne poruke učitavanja odvojene su linijama
+  group:
+    loading_message.title: Učitavanje poruka

@@ -1,0 +1,112 @@
+Close: Sluiten
+Update: Bijwerken
+Selected Rows: Geselecteerde rijen
+"Yes": "Ja"
+"Yes, Delete": "Ja, verwijderen"
+"Yes, I Agree": "Ja, ik ga akkoord"
+"Yes, do it": "Ja, doen"
+"No": "Nee"
+"Ok, got it.": "Okee, begrepen."
+"Cancel": "Annuleren"
+"Delete Confirmation": "Verwijderen bevestigen"
+"Edit": "Bewerken"
+"Unexpected error occured. Please contact system administrator.": "Onverwachte fout opgetreden. Neem contact op met de systeembeheerder."
+Now: Nu
+Prev: Vorige
+Next: Volgende
+Today: Vandaag
+Wk: Wk
+Done: Gedaan
+AM: AM
+A: A
+PM: PM
+P: P
+"Choose Time": "Kies een tijd"
+Time: Tijd
+Hour: Uur
+Minute: Minuut
+Second: Seconde
+Millisecond: Milliseconde
+Microsecond: Microseconde
+"Time Zone": "Tijdzone"
+Localized value: Gelokaliseerde waarde
+Columns: Kolommen
+Datagrid Configuration: Datagrid configuratie
+Apply: Toepassen
+Action: Actie
+Unit: Eenheid
+Currency: Valuta
+jstree:
+  all: Alle producten
+  unclassified: Niet-geclassificeerde producten
+  product:
+    all: Alle producten
+    unclassified: Niet-geclassificeerde producten
+  no_tree: Geen structuur beschikbaar
+  include_sub: Inclusief subcategorieën
+  loading: Bezig met laden...
+datetimepicker:
+  days:
+    Sunday: zondag
+    Monday: maandag
+    Tuesday: dinsdag
+    Wednesday: woensdag
+    Thursday: donderdag
+    Friday: vrijdag
+    Saturday: zaterdag
+  daysShort:
+    Sun: zo
+    Mon: ma
+    Tue: di
+    Wed: woe
+    Thu: do
+    Fri: vrij
+    Sat: zat
+  daysMin:
+    Su: zo
+    Mo: ma
+    Tu: di
+    We: wo
+    Th: do
+    Fr: vr
+    Sa: za
+  months:
+    January: januari
+    February: februari
+    March: maart
+    April: april
+    May: mei
+    June: juni
+    July: juli
+    August: augustus
+    September: september
+    October: oktober
+    November: november
+    December: december
+  monthsShort:
+    Jan: jan
+    Feb: feb
+    Mar: mar
+    Apr: apr
+    May: mei
+    Jun: jun
+    Jul: jul
+    Aug: aug
+    Sep: sep
+    Oct: okt
+    Nov: nov
+    Dec: dec
+oro_config:
+  form:
+    config:
+      title: Systeemconfiguratie
+      tab:
+        system:
+          title: Systeem
+      group:
+        localization:
+          title: Lokalisatie
+          system_locale: Taal
+        notification:
+          title: Meldingen
+          system_notification: Meldingen nieuwe versies

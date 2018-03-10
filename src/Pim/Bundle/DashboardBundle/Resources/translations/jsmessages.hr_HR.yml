@@ -1,0 +1,20 @@
+pim_dashboard:
+  widget:
+    last_operations:
+      empty: Nije pronađena niti jedna operacija
+      status: Status
+      date: Datum
+      type: Tip
+      profile_name: Naziv profila
+      details: Detalji
+      job_type:
+        import: Uvoz
+        export: Izvoz
+        mass_edit: Masovno uređivanje
+        quick_export: Brzi izvoz
+    completeness:
+      load_more: 'Učitaj više...'
+    header:
+      view_all: Pogledaj sve
+page_title:
+  pim_dashboard_index: Nadzorna ploča

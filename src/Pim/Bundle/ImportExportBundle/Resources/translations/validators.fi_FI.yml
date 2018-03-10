@@ -1,0 +1,4 @@
+This directory is not writable: Tähän kansioon ei voi kirjoittaa.
+This directory is not valid: Tämä kansio ei ole kelvollinen.
+pim_import_export.job_instance.unknown_job_definition: Ei voinut luoda %job_type% jolla on tuntematon työmääritys
+This code is already taken: Tämä koodi on jo käytössä
