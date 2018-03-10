@@ -494,12 +494,15 @@ pim_enrich:
             IN: Na liście
         enabled:
           title: Status
+          help: "Wybierz produkty do eksportu ze względu na ich status. Np: Eksportuj produkty niezależnie od ich statusu."
           value:
             all: Wszystkie
             enabled: Włączony
             disabled: Nieaktywny
         completeness:
           title: Kompletność
+          operators:
+            ALL: Brak warunku kompletności
         identifier:
           title: Identyfikator
         metric:

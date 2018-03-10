@@ -41,7 +41,6 @@ required: (obavezno)
 pim_ui.system_config:
   form:
     loading_message_enabled.label: Omogućiti učitavanje poruke
-    loading_message_enabled.tooltip: Prikaz korisničko prijateljskih poruka dok se čeka učitavanje stranice
     loading_messages.label: Dostupno učitavanje poruka
     loading_messages.tooltip: Sve dostupne poruke učitavanja odvojene su linijama
   group:
