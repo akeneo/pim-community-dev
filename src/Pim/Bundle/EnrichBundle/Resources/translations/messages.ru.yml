@@ -193,7 +193,7 @@ pim_enrich:
       history: Просмотреть журнал группы
     group_type:
       index: Список типов группы
-      create: Создать тип группы
+      create: Создание типов группы
       edit: Редактировать тип группы
       remove: Удалить тип группы
     association_type:
@@ -334,7 +334,7 @@ flash:
     created: Атрибут успешно создан
     updated: Атрибут успешно обновлен
     removed: Атрибут успешно удален
-    identifier not removable: Идентификатор атрибута не может быть удален
+    identifier_not_removable: Идентификатор атрибута не может быть удален
   attribute group:
     created: Группа атрибутов успешно создана
     updated: Группа атрибутов успешно обновлена
@@ -699,6 +699,7 @@ Format address by address country: Формат адреса по стандар
 Language: Язык
 Timezone: Часовой пояс
 Currency: Валюта
+settings: Настройки
 oro.locale:
   address_format:
     region_name_type:

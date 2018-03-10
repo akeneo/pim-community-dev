@@ -349,7 +349,7 @@ flash:
     created: 属性を作成しました
     updated: 属性を更新しました
     removed: 属性を削除しました
-    identifier not removable: 識別子の属性は削除できません
+    identifier_not_removable: 識別子の属性は削除できません
   attribute group:
     created: 属性グループを作成しました
     updated: 属性グループを作成しました
@@ -719,6 +719,7 @@ Format address by address country: 住所の国で住所をフォーマット
 Language: 言語
 Timezone: タイムゾーン
 Currency: 通貨
+settings: 設定
 oro.locale:
   address_format:
     region_name_type:
