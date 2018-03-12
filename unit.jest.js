@@ -6,6 +6,10 @@ const unitConfig = {
   "globals": {
     "__moduleConfig": {}
   },
+  "moduleNameMapper": {
+    "^require-context$": "<rootDir>/webpack/require-context.js",
+    "^module-registry$": "<rootDir>/web/js/module-registry.js"
+  },
   "setupFiles": [
     "./webpack/test/unit/enzyme.js"
   ],

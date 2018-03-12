@@ -73,8 +73,10 @@ After(async function(scenario) {
       console.log(logMessages);
     }
 
-    this.page.close();
-    this.browser.close();
+    if (!this.parameters.debug) {
+      this.page.close();
+      this.browser.close();
+    }
 
     console.log(`Screenshot available at ${filePath}`, 'text/plain');
 

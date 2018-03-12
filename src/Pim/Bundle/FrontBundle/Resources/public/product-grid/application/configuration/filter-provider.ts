@@ -1,4 +1,5 @@
 const fetcherRegistry = require('pimenrich/js/fetcher/fetcher-registry');
+const requireContext = require('require-context');
 import FilterInterface, {
   AttributeFilter,
   PropertyFilter,
@@ -224,4 +225,4 @@ Did you register well the value factory in your configuration?`);
   }
 }
 
-export default FilterProvider.create(__moduleConfig as FilterConfiguration, fetcherRegistry, require);
+export default FilterProvider.create(__moduleConfig as FilterConfiguration, fetcherRegistry, requireContext);

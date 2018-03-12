@@ -1,5 +1,5 @@
-define(['module-registry'], function(moduleRegistry) {
-    return function(moduleName) {
-        return moduleRegistry(moduleName);
-    };
-});
+const moduleRegistry = require('module-registry');
+
+module.exports = (moduleName) => {
+  return moduleRegistry(moduleName);
+};
