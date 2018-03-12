@@ -55,7 +55,6 @@ define(
                     }
 
                     this.collection = collection;
-                    this.count = 0;
                     this.updateView();
                 };
                 this.listenTo(this.getRoot(), 'grid_load:start', setCollection);
@@ -111,7 +110,6 @@ define(
              * Updates the count after clicking in "Select all visible" button
              */
             selectVisible() {
-                this.count = 0;
                 this.collection.trigger('backgrid:selectAllVisible');
 
                 this.updateView();
