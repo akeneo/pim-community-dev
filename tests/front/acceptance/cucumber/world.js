@@ -1,14 +1,16 @@
+const puppeteer = require('puppeteer');
+const fs = require('fs');
+const path = require('path');
+const os = require('os');
+const extensions = require(`${process.cwd()}/web/test_dist/extensions.json`);
+
 module.exports = function(cucumber) {
     const {Before, After, Status} = cucumber;
-    const puppeteer = require('puppeteer');
-    const fs = require('fs');
-    const path = require('path');
-    const os = require('os');
-    const extensions = require(`${process.cwd()}/web/test_dist/extensions.json`);
 
     Before({timeout: 10 * 1000}, async function() {
-        process.env.RANDOM = this.parameters.random;
-        process.env.MAX_RANDOM_LATENCY_MS = this.parameters.maxLatency;
+        process.env.RANDOM = this.parameters.random || true;
+        process.env.MAX_RANDOM_LATENCY_MS = this.parameters.maxLatency || 1000;
+
         this.baseUrl = 'http://pim.com/';
         this.browser = await puppeteer.launch({
             ignoreHTTPSErrors: true,
@@ -82,8 +84,8 @@ module.exports = function(cucumber) {
             }
 
             if (!this.parameters.debug) {
-                this.page.close();
-                this.browser.close();
+                await this.page.close();
+                await this.browser.close();
             }
 
             console.log(`Screenshot available at ${filePath}`, 'text/plain');
@@ -92,8 +94,8 @@ module.exports = function(cucumber) {
         }
 
         if (!this.parameters.debug) {
-            this.page.close();
-            this.browser.close();
+            await this.page.close();
+            await this.browser.close();
         }
     });
 };

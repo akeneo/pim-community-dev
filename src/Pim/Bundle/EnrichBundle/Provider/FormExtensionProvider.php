@@ -61,13 +61,17 @@ class FormExtensionProvider
     /**
      * @return array
      */
-    public function getExtensions()
+    public function getExtensions(bool $unfiltered)
     {
         $securityFacade = $this->securityFacade;
 
         usort($this->extensions, function ($extension1, $extension2) {
             return (int) $extension1['position'] - (int) $extension2['position'];
         });
+
+        if (true === $unfiltered) {
+            return $this->extensions;
+        }
 
         return array_filter(
             $this->extensions,

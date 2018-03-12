@@ -172,7 +172,7 @@ module.exports = {
 
     plugins: [
         // Clean up the dist folder and source maps before rebuild
-        new WebpackCleanupPlugin(),
+        new WebpackCleanupPlugin({ exclude: ['extensions.json'] }),
 
         // Map modules to variables for global use
         new webpack.ProvidePlugin({'_': 'underscore', 'Backbone': 'backbone', '$': 'jquery', 'jQuery': 'jquery'}),

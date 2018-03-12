@@ -40,7 +40,7 @@ class DumpExtensionsCommand extends ContainerAwareCommand
         $webRoot = realpath($rootDir . '/../web');
 
         $content = json_encode([
-            'extensions'       => $extensionProvider->getExtensions(),
+            'extensions'       => $extensionProvider->getExtensions(true),
             'attribute_fields' => $extensionProvider->getAttributeFields()
         ]);
 

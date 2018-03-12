@@ -55,3 +55,4 @@ yarn.lock
 package-lock.json
 .yarn-metadata.json
 yarn-error.log
+coverage/*
