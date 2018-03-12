@@ -17,9 +17,9 @@
             "Pim\\Behat": "vendor/akeneo/pim-community-dev/features/"
         },
         "psr-4": {
-            "Akeneo\\Test\\IntegrationTestsBundle\\": "vendor/akeneo/pim-community-dev/tests/IntegrationTestsBundle/",
+            "Akeneo\\Test\\IntegrationTestsBundle\\": "vendor/akeneo/pim-community-dev/tests/back/IntegrationTestsBundle/",
             "AkeneoEnterprise\\Test\\IntegrationTestsBundle\\": "tests/IntegrationTestsBundle/",
-            "Akeneo\\Test\\Integration\\": "vendor/akeneo/pim-community-dev/tests/",
+            "Akeneo\\Test\\Integration\\": "vendor/akeneo/pim-community-dev/tests/back/Integration/",
             "Pim\\Upgrade\\": "upgrades/"
         },
         "classmap": [ "app/AppKernel.php", "app/AppCache.php", "tests/AppKernelTest.php"]
