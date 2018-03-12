@@ -17,7 +17,7 @@ Feature: Export channels
     And exported file of "csv_footwear_channel_export" should contain:
     """
     code;label-fr_FR;label-en_US;label-de_DE;conversion_units;currencies;locales;tree
-    mobile;Mobile;Mobile;Mobil;;EUR;en_US;2014_collection
+    mobile;Mobile;Mobile;Mobil;;EUR;en_US,fr_FR;2014_collection
     tablet;Tablette;Tablet;Tablet;;USD,EUR;en_US;2014_collection
     """
 
@@ -37,6 +37,6 @@ Feature: Export channels
     And exported file of "csv_footwear_channel_export" should contain:
     """
     code;label-fr_FR;label-en_US;label-de_DE;conversion_units;currencies;locales;tree
-    mobile;Mobile;Mobile;Mobil;;EUR;en_US;2014_collection
+    mobile;Mobile;Mobile;Mobil;;EUR;en_US,fr_FR;2014_collection
     tablet;Tablette;Tablet;Tablet;;USD,EUR;en_US;2014_collection
     """

@@ -21,6 +21,7 @@ class UserSpec extends ObjectBehavior
             'roles'          => 'ROLE_USER',
             'groups'         => 'Redactor',
             'enabled'        => '0',
+            'timezone'       => '',
         ];
 
         $item = [
@@ -36,6 +37,7 @@ class UserSpec extends ObjectBehavior
             'roles'          => ['ROLE_USER'],
             'groups'         => ['Redactor'],
             'enabled'        => false,
+            'timezone'       => null,
         ];
 
         $this->convert($item)->shouldReturn($expected);

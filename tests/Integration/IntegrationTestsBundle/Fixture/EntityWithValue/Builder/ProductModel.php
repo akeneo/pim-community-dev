@@ -155,17 +155,3 @@ final class ProductModel
         return $this;
     }
 }
-
-$this->product = $this->getFromTestContainer('akeneo_integration_tests.catalog.product.builder')
-    ->withIdentifier('my-product')
-    ->withFamily('accessories')
-    ->withValue('color', 'red')
-    ->withValue('description', 'description', 'en_US', 'ecommerce')
-    ->withValue('name', 'name', 'en_US')
-    // The variant product must only have the following values.
-    ->withValue('size', 'l')
-    ->withValue('ean', 'ean')
-    ->withCategories('master_accessories_belts')
-    ->withGroups('related')
-    ->withAssociations('X_SELL', '1111111171')
-    ->build();
