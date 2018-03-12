@@ -63,10 +63,7 @@ const fetchResults = async (query: Query): Promise<{products: ProductInterface[]
   return {products: hidrateAll<ProductInterface>(productHidrator)(items), total};
 };
 
-export const updateResults = (append: boolean = false) => async (
-  dispatch: any,
-  getState: any
-): Promise<void> => {
+export const updateResults = (append: boolean = false) => async (dispatch: any, getState: any): Promise<void> => {
   if (getState().grid.isFetching) {
     return Promise.resolve();
   }

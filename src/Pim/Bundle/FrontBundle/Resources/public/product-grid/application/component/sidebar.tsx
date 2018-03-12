@@ -56,18 +56,17 @@ export const SidebarView = ({
               <LocaleSwitcher localeCode={context.locale} locales={locales} onLocaleChange={onCatalogLocaleChanged} />
             </div>
           </div>
-          <div className="AknFilterBox-list">
-          </div>
+          <div className="AknFilterBox-list" />
         </div>
       </div>
     </div>
   );
 };
-            // <BooleanFilterView
-            //   filter={StatusFilterModel.createEmptyFromProperty(
-            //     Property.createFromProperty({identifier: 'enabled', label: 'Status'})
-            //   )}
-            // />
+// <BooleanFilterView
+//   filter={StatusFilterModel.createEmptyFromProperty(
+//     Property.createFromProperty({identifier: 'enabled', label: 'Status'})
+//   )}
+// />
 
 // interface FilterViewState {
 //   filters: NormalizedFilter[];

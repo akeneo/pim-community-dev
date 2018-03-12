@@ -20,7 +20,7 @@ export default class Boolean extends AttributeFilter {
   }
 
   public static create(attribute: AttributeInterface, operator: Operator, value: Value) {
-      return new Boolean(attribute, operator, value);
+    return new Boolean(attribute, operator, value);
   }
 
   getOperators(): Operator[] {
