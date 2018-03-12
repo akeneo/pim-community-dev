@@ -12,3 +12,4 @@ services:
         class: '%pimee_datagrid.datasource.result_record.hydrator.product_draft.class%'
         arguments:
           - '@pim_datagrid.datagrid.request.parameters_extractor'
+          - '@pimee_workflow.normalizer.proposal_product'

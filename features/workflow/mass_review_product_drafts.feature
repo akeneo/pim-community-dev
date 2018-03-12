@@ -32,7 +32,7 @@ Feature: Approve or refuse several product drafts at once
   Scenario: Unsuccessfully approve proposals that contain values I can't edit
     Given the following product drafts:
       | product        | status | author                               | result                                                                                                                                                                               |
-      | leather-jacket | ready  | csv_clothing_product_proposal_import | {"values":{"legacy_attribute":[{"locale":"en_US","scope":null,"data":"Dumb value"}]}, "review_statuses":{"legacy_attribute":[{"locale":"en_US","scope":null,"status":"to_review"}]}} |
+      | leather-jacket | ready  | csv_clothing_product_proposal_import | {"values":{"legacy_attribute":[{"locale":null,"scope":null,"data":"Dumb value"}]}, "review_statuses":{"legacy_attribute":[{"locale":null,"scope":null,"status":"to_review"}]}} |
       | wool-jacket    | ready  | csv_clothing_product_proposal_import | {"values":{"name":[{"locale":"en_US","scope":null,"data":"Lame wool jacket"}]}, "review_statuses":{"name":[{"locale":"en_US","scope":null,"status":"to_review"}]}}                   |
     And I am on the proposals page
     When I select rows Leather jacket and Wool jacket
@@ -64,7 +64,7 @@ Feature: Approve or refuse several product drafts at once
   Scenario: Unsuccessfully reject proposals that contain values I can't edit
     Given the following product drafts:
       | product        | status | author                               | result                                                                                                                                                                               |
-      | leather-jacket | ready  | csv_clothing_product_proposal_import | {"values":{"legacy_attribute":[{"locale":"en_US","scope":null,"data":"Dumb value"}]}, "review_statuses":{"legacy_attribute":[{"locale":"en_US","scope":null,"status":"to_review"}]}} |
+      | leather-jacket | ready  | csv_clothing_product_proposal_import | {"values":{"legacy_attribute":[{"locale":null,"scope":null,"data":"Dumb value"}]}, "review_statuses":{"legacy_attribute":[{"locale":null,"scope":null,"status":"to_review"}]}} |
       | wool-jacket    | ready  | csv_clothing_product_proposal_import | {"values":{"name":[{"locale":"en_US","scope":null,"data":"Lame wool jacket"}]}, "review_statuses":{"name":[{"locale":"en_US","scope":null,"status":"to_review"}]}}                   |
     And I am on the proposals page
     When I select rows Leather jacket and Wool jacket
@@ -101,7 +101,7 @@ Feature: Approve or refuse several product drafts at once
       | leather-jacket | ready  | user_one | {"values":{"name":[{"locale":"en_US","scope":null,"data":"Awesome leather jacket"}]}, "review_statuses":{"name":[{"locale":"en_US","scope":null,"status":"to_review"}]}} |
       | wool-jacket    | ready  | user_two | {"values":{"name":[{"locale":"en_US","scope":null,"data":"Lame wool jacket"}]}, "review_statuses":{"name":[{"locale":"en_US","scope":null,"status":"to_review"}]}}       |
     And I am on the proposals page
-    Then I filter by "author" with operator "equals" and value "user_one"
+    Then I filter by "author" with operator "in list" and value "user_one"
     And I select rows Leather jacket
     And I press the "Approve all selected" button
     And I confirm the action

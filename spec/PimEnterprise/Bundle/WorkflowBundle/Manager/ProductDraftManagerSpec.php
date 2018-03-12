@@ -10,6 +10,7 @@ use Pim\Bundle\UserBundle\Context\UserContext;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\LocaleInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Model\ValueCollectionInterface;
 use PimEnterprise\Component\Workflow\Applier\ProductDraftApplierInterface;
 use PimEnterprise\Component\Workflow\Event\ProductDraftEvents;
 use PimEnterprise\Component\Workflow\Factory\ProductDraftFactory;
@@ -63,11 +64,14 @@ class ProductDraftManagerSpec extends ObjectBehavior
         ProductDraftInterface $draft,
         AttributeInterface $attribute,
         ProductInterface $product,
-        ProductDraftInterface $partialDraft
+        ProductDraftInterface $partialDraft,
+        ValueCollectionInterface $values
     ) {
         $draft->getStatus()->willReturn(ProductDraftInterface::READY);
         $draft->getProduct()->willReturn($product);
         $draft->getAuthor()->willReturn('author');
+        $draft->getValues()->willReturn($values);
+        $values->getByCodes('sku', null, null)->willReturn(null);
         $attribute->getCode()->willReturn('sku');
         $partialDraft->getProduct()->willReturn($product);
 
@@ -112,11 +116,14 @@ class ProductDraftManagerSpec extends ObjectBehavior
         ProductDraftInterface $draft,
         AttributeInterface $attribute,
         ProductInterface $product,
-        ProductDraftInterface $partialDraft
+        ProductDraftInterface $partialDraft,
+        ValueCollectionInterface $values
     ) {
         $draft->getStatus()->willReturn(ProductDraftInterface::READY);
         $draft->getProduct()->willReturn($product);
         $draft->getAuthor()->willReturn('author');
+        $draft->getValues()->willReturn($values);
+        $values->getByCodes('sku', null, null)->willReturn(null);
         $attribute->getCode()->willReturn('sku');
         $partialDraft->getProduct()->willReturn($product);
 
@@ -150,10 +157,15 @@ class ProductDraftManagerSpec extends ObjectBehavior
         $workingCopySaver,
         $remover,
         ProductDraftInterface $draft,
-        ProductInterface $product
+        ProductInterface $product,
+        ValueCollectionInterface $values
     ) {
         $draft->getStatus()->willReturn(ProductDraftInterface::READY);
         $draft->getProduct()->willReturn($product);
+        $draft->getValues()->willReturn($values);
+        $values->getByCodes('description', 'ecommerce', 'en_US')->willReturn(null);
+        $values->getByCodes('description', 'tablet', 'fr_FR')->willReturn(null);
+        $values->getByCodes('sku', null, null)->willReturn(null);
 
         $dispatcher->dispatch(ProductDraftEvents::PRE_APPROVE, Argument::any())->shouldBeCalled();
         $dispatcher->dispatch(ProductDraftEvents::POST_APPROVE, Argument::any())->shouldBeCalled();
@@ -198,11 +210,15 @@ class ProductDraftManagerSpec extends ObjectBehavior
         $draftSaver,
         ProductDraftInterface $draft,
         ProductInterface $product,
-        ProductDraftInterface $partialDraft
+        ProductDraftInterface $partialDraft,
+        ValueCollectionInterface $values
     ) {
         $draft->getStatus()->willReturn(ProductDraftInterface::READY);
         $draft->getProduct()->willReturn($product);
         $draft->getAuthor()->willReturn('author');
+        $draft->getValues()->willReturn($values);
+        $values->getByCodes('sku', null, null)->willReturn(null);
+        $values->getByCodes('description', 'tablet', 'fr_FR')->willReturn(null);
         $partialDraft->getProduct()->willReturn($product);
 
         $dispatcher->dispatch(ProductDraftEvents::PRE_APPROVE, Argument::any())->shouldBeCalled();
@@ -256,9 +272,13 @@ class ProductDraftManagerSpec extends ObjectBehavior
         $dispatcher,
         $valuesFilter,
         $draftSaver,
-        ProductDraftInterface $draft
+        ProductDraftInterface $draft,
+        ValueCollectionInterface $values
     ) {
         $draft->getStatus()->willReturn(ProductDraftInterface::READY);
+        $draft->getValues()->willReturn($values);
+        $values->getByCodes('sku', null, null)->willReturn(null);
+        $values->getByCodes('description', 'tablet', 'fr_FR')->willReturn(null);
 
         $dispatcher->dispatch(ProductDraftEvents::PRE_REFUSE, Argument::any())->shouldBeCalled();
         $dispatcher->dispatch(ProductDraftEvents::POST_REFUSE, Argument::any())->shouldBeCalled();
@@ -391,9 +411,15 @@ class ProductDraftManagerSpec extends ObjectBehavior
         $dispatcher,
         $remover,
         $draftSaver,
-        ProductDraftInterface $productDraft
+        ProductDraftInterface $productDraft,
+        ValueCollectionInterface $values
     ) {
         $productDraft->getStatus()->willReturn(ProductDraftInterface::IN_PROGRESS);
+        $productDraft->getValues()->willReturn($values);
+        $values->getByCodes('sku', null, null)->willReturn(null);
+        $values->getByCodes('description', 'tablet', 'fr_FR')->willReturn(null);
+        $values->getByCodes('description', 'mobile', 'fr_FR')->willReturn(null);
+
         $values = [
             'description' => [
                 ['locale' => 'fr_FR', 'scope' => 'tablet', 'data' => 'bar'],

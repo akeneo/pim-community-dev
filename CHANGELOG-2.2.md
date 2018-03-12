@@ -1,3 +1,29 @@
+# 2.2.0-ALPHA2 (2018-03-07)
+
+## BC breaks
+
+### Constructors
+
+- AOB-2: Change the constructor of `PimEnterprise\Bundle\DataGridBundle\Extension\MassAction\Handler\MassApproveActionHandler` to add `Akeneo\Bundle\ElasticsearchBundle\Cursor\CursorFactoryInterface` as new argument.
+- AOB-2: Change the constructor of `PimEnterprise\Bundle\DataGridBundle\Extension\MassAction\Handler\MassRefuseActionHandler` to add `Akeneo\Bundle\ElasticsearchBundle\Cursor\CursorFactoryInterface` as new argument.
+- AOB-2: Change the constructor of `PimEnterprise\Bundle\CatalogBundle\Security\Elasticsearch\ProductQueryBuilderFactory` to add `$accessLevel` as new argument.
+- AOB-2: Change the constructor of `PimEnterprise\Bundle\DataGridBundle\Datagrid\Configuration\Product\FiltersConfigurator` to add `Pim\Bundle\DataGridBundle\Datagrid\Configuration\ConfiguratorInterface`
+- AOB-2: Change the constructor of `PimEnterprise\Bundle\DataGridBundle\Datagrid\Configuration\Product\FiltersConfigurator` to remove `Pim\Bundle\DataGridBundle\Datagrid\Configuration\Product\ConfigurationRegistry`
+- AOB-2: Change the constructor of `PimEnterprise\Bundle\DataGridBundle\Datagrid\Configuration\Proposal\ContextConfigurator` to add `Pim\Component\Catalog\Repository\AttributeRepositoryInterface`
+- AOB-2: Change the constructor of `PimEnterprise\Bundle\DataGridBundle\Datagrid\Configuration\Proposal` 
+         to remove `PimEnterprise\Component\Workflow\Repository\ProductDraftRepositoryInterface`,
+                   `Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface`, `Symfony\Component\HttpFoundation\RequestStack`,`PimEnterprise\Bundle\WorkflowBundle\Provider\ProductDraftGrantedAttributeProvider`
+- AOB-2: Change the constructor of `PimEnterprise\Bundle\DataGridBundle\Datasource\ResultRecord\ORM\ProductDraftHydrator` to add `PimEnterprise\Bundle\WorkflowBundle\Datagrid\Normalizer\ProductProposalNormalizer`
+- AOB-2: Change the constructor of `PimEnterprise\Bundle\DataGridBundle\EventListener\ConfigureProductGridListener` to add `Pim\Bundle\DataGridBundle\Datagrid\Configuration\ConfiguratorInterface`
+- AOB-2: Change the constructor of `PimEnterprise\Bundle\DataGridBundle\EventListener\ConfigureProposalGridListener` to add `Pim\Bundle\DataGridBundle\Datagrid\Configuration\ConfiguratorInterface`
+- AOB-2: Change the constructor of `PimEnterprise\Bundle\DataGridBundle\Extension\MassAction\Handler\MassApproveActionHandler` to remove `Pim\Bundle\DataGridBundle\Datasource\ResultRecord\HydratorInterface`
+- AOB-2: Change the constructor of `PimEnterprise\Bundle\DataGridBundle\Extension\MassAction\Handler\MassRefuseActionHandler` to remove `Pim\Bundle\DataGridBundle\Datasource\ResultRecord\HydratorInterface`
+- AOB-2: `PimEnterprise\Bundle\WorkflowBundle\Doctrine\ORM\Repository\ProductDraftRepository` now implements `Akeneo\Component\StorageUtils\Repository\CursorableRepositoryInterface`
+- AOB-2: `PimEnterprise\Bundle\WorkflowBundle\Doctrine\ORM\Repository\ProductDraftRepository` now implements `Akeneo\Component\StorageUtils\Repository\SearchableRepositoryInterface`
+- AOB-2: `PimEnterprise\Bundle\WorkflowBundle\Doctrine\ORM\Repository\ProductDraftRepository` now implements `Pim\Bundle\DataGridBundle\Doctrine\ORM\Repository\MassActionRepositoryInterface`
+- AOB-2: `PimEnterprise\Component\Workflow\Model\ProductDraftInterface` now implements `Pim\Component\Catalog\Model\EntityWithValuesInterface`
+- AOB-2: `PimEnterprise\Bundle\DataGridBundle\Datagrid\Configuration\Product\FiltersConfigurator` now implements `Pim\Bundle\DataGridBundle\Datagrid\Configuration\ConfiguratorInterface`
+
 # 2.2.0-ALPHA1 (2018-02-21)
 
 ## Improve Julia's experience

@@ -14,6 +14,7 @@ use Context\FixturesContext as BaseFixturesContext;
 use Context\Spin\SpinCapableTrait;
 use PHPUnit\Framework\Assert;
 use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Model\ValueCollection;
 use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
 use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
 use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
@@ -98,6 +99,7 @@ class EnterpriseFixturesContext extends BaseFixturesContext
                 $productDraft->setCreatedAt(new \DateTime($data['createdAt']));
             }
 
+            $values = [];
             if (isset($data['result'])) {
                 $changes = json_decode($data['result'], true);
                 if (null === $changes) {
@@ -111,6 +113,18 @@ class EnterpriseFixturesContext extends BaseFixturesContext
                 }
 
                 $productDraft->setChanges($changes);
+
+                foreach ($changes['values'] as $code => $rawValue) {
+                    $attribute = $this->getContainer()->get('pim_catalog.repository.attribute')->findOneByIdentifier($code);
+                    foreach ($rawValue as $value) {
+                        $values[] = $this->getContainer()->get('pim_catalog.factory.value')->create(
+                            $attribute,
+                            $value['scope'],
+                            $value['locale'],
+                            $value['data']
+                        );
+                    }
+                }
             }
 
             if ('ready' === $data['status']) {
@@ -120,8 +134,10 @@ class EnterpriseFixturesContext extends BaseFixturesContext
                 $productDraft->markAsInProgress();
                 $productDraft->setAllReviewStatuses(ProductDraftInterface::CHANGE_DRAFT);
             }
+            $productDraft->setValues(new ValueCollection($values));
 
             $this->getContainer()->get('pimee_workflow.saver.product_draft')->save($productDraft);
+            $this->getContainer()->get('akeneo_elasticsearch.client.product_proposal')->refreshIndex();
         }
     }
 

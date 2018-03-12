@@ -11,11 +11,12 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\Builder;
 
+use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Pim\Component\Catalog\Comparator\ComparatorRegistry;
 use Pim\Component\Catalog\Factory\ValueCollectionFactoryInterface;
 use Pim\Component\Catalog\Factory\ValueFactory;
 use Pim\Component\Catalog\Model\ProductInterface;
-use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
+use Pim\Component\Catalog\Model\ValueCollection;
 use PimEnterprise\Component\Workflow\Builder\ProductDraftBuilderInterface;
 use PimEnterprise\Component\Workflow\Factory\ProductDraftFactory;
 use PimEnterprise\Component\Workflow\Model\ProductDraftInterface;
@@ -35,7 +36,7 @@ class ProductDraftBuilder implements ProductDraftBuilderInterface
     /** @var ComparatorRegistry */
     protected $comparatorRegistry;
 
-    /** @var AttributeRepositoryInterface */
+    /** @var IdentifiableObjectRepositoryInterface */
     protected $attributeRepository;
 
     /** @var ProductDraftFactory */
@@ -51,18 +52,18 @@ class ProductDraftBuilder implements ProductDraftBuilderInterface
     protected $valueFactory;
 
     /**
-     * @param NormalizerInterface             $normalizer
-     * @param ComparatorRegistry              $comparatorRegistry
-     * @param AttributeRepositoryInterface    $attributeRepository
-     * @param ProductDraftFactory             $factory
-     * @param ProductDraftRepositoryInterface $productDraftRepo
-     * @param ValueCollectionFactoryInterface $valueCollectionFactory
-     * @param ValueFactory                    $valueFactory
+     * @param NormalizerInterface                   $normalizer
+     * @param ComparatorRegistry                    $comparatorRegistry
+     * @param IdentifiableObjectRepositoryInterface $attributeRepository
+     * @param ProductDraftFactory                   $factory
+     * @param ProductDraftRepositoryInterface       $productDraftRepo
+     * @param ValueCollectionFactoryInterface       $valueCollectionFactory
+     * @param ValueFactory                          $valueFactory
      */
     public function __construct(
         NormalizerInterface $normalizer,
         ComparatorRegistry $comparatorRegistry,
-        AttributeRepositoryInterface $attributeRepository,
+        IdentifiableObjectRepositoryInterface $attributeRepository,
         ProductDraftFactory $factory,
         ProductDraftRepositoryInterface $productDraftRepo,
         ValueCollectionFactoryInterface $valueCollectionFactory,
@@ -84,16 +85,17 @@ class ProductDraftBuilder implements ProductDraftBuilderInterface
     {
         $newValues = $this->normalizer->normalize($product->getValues(), 'standard');
         $originalValues = $this->getOriginalValues($product);
-        $attributeTypes = $this->attributeRepository->getAttributeTypeByCodes(array_keys($newValues));
 
-        $diff = [];
-        foreach ($newValues as $code => $new) {
-            if (!isset($attributeTypes[$code])) {
+        $values = [];
+        foreach ($newValues as $code => $newValue) {
+            $attribute = $this->attributeRepository->findOneByIdentifier($code);
+
+            if (null === $attribute) {
                 throw new \LogicException(sprintf('Cannot find attribute with code "%s".', $code));
             }
 
-            foreach ($new as $index => $changes) {
-                $comparator = $this->comparatorRegistry->getAttributeComparator($attributeTypes[$code]);
+            foreach ($newValue as $index => $changes) {
+                $comparator = $this->comparatorRegistry->getAttributeComparator($attribute->getType());
                 $diffAttribute = $comparator->compare(
                     $changes,
                     $this->getOriginalValue($originalValues, $code, $changes['locale'], $changes['scope'])
@@ -101,12 +103,21 @@ class ProductDraftBuilder implements ProductDraftBuilderInterface
 
                 if (null !== $diffAttribute) {
                     $diff['values'][$code][] = $diffAttribute;
+
+                    $attribute = $this->attributeRepository->findOneByIdentifier($code);
+                    $values[] = $this->valueFactory->create(
+                        $attribute,
+                        $changes['scope'],
+                        $changes['locale'],
+                        $changes['data']
+                    );
                 }
             }
         }
 
         if (!empty($diff)) {
             $productDraft = $this->getProductDraft($product, $username);
+            $productDraft->setValues(new ValueCollection($values));
             $productDraft->setChanges($diff);
             $productDraft->setAllReviewStatuses(ProductDraftInterface::CHANGE_DRAFT);
 

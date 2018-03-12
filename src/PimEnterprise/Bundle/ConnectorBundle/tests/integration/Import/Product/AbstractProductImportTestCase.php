@@ -9,6 +9,7 @@ use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use Akeneo\Test\IntegrationTestsBundle\Launcher\JobLauncher;
 use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Model\ValueCollection;
 use PimEnterprise\Component\Workflow\Model\ProductDraftInterface;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
@@ -82,6 +83,22 @@ abstract class AbstractProductImportTestCase extends TestCase
     ): ProductDraftInterface {
         $productDraft = $this->get('pimee_workflow.factory.product_draft')->createProductDraft($product, $username);
         $productDraft->setChanges($draftData);
+
+
+        $values = [];
+        foreach ($draftData['values'] as $code => $value) {
+            $attribute = $this->get('pim_catalog.repository.attribute')->findOneByIdentifier($code);
+            foreach ($value as $data) {
+                $values[] = $this->get('pim_catalog.factory.value')->create(
+                    $attribute,
+                    $data['scope'],
+                    $data['locale'],
+                    $data['data']
+                );
+            }
+        }
+
+        $productDraft->setValues(new ValueCollection($values));
         $productDraft->setAllReviewStatuses(ProductDraftInterface::CHANGE_DRAFT);
 
         $this->get('pimee_workflow.saver.product_draft')->save($productDraft);

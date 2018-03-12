@@ -15,7 +15,6 @@ use Pim\Component\Catalog\Query\Filter\Operators;
 use Pim\Component\Catalog\Query\ProductQueryBuilderFactoryInterface;
 use Pim\Component\Catalog\Query\ProductQueryBuilderInterface;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;
-use PimEnterprise\Component\Security\Attributes;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 /**
@@ -25,6 +24,9 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
  */
 class ProductQueryBuilderFactory implements ProductQueryBuilderFactoryInterface
 {
+    /** @var string */
+    private $accessLevel;
+
     /** @var ProductQueryBuilderFactoryInterface */
     private $pqbFactory;
 
@@ -38,15 +40,18 @@ class ProductQueryBuilderFactory implements ProductQueryBuilderFactoryInterface
      * @param ProductQueryBuilderFactoryInterface $pqbFactory
      * @param TokenStorageInterface               $tokenStorage
      * @param CategoryAccessRepository            $categoryAccessRepository
+     * @param string                              $accessLevel
      */
     public function __construct(
         ProductQueryBuilderFactoryInterface $pqbFactory,
         TokenStorageInterface $tokenStorage,
-        CategoryAccessRepository $categoryAccessRepository
+        CategoryAccessRepository $categoryAccessRepository,
+        string $accessLevel
     ) {
         $this->pqbFactory = $pqbFactory;
         $this->tokenStorage = $tokenStorage;
         $this->categoryAccessRepository = $categoryAccessRepository;
+        $this->accessLevel = $accessLevel;
     }
 
     /**
@@ -67,7 +72,7 @@ class ProductQueryBuilderFactory implements ProductQueryBuilderFactoryInterface
 
         $grantedCategories = $this->categoryAccessRepository->getGrantedCategoryCodes(
             $token->getUser(),
-            Attributes::VIEW_ITEMS
+            $this->accessLevel
         );
 
         $pqb->addFilter('categories', Operators::IN_LIST_OR_UNCLASSIFIED, $grantedCategories);

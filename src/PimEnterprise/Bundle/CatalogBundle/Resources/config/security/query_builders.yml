@@ -10,6 +10,7 @@ services:
             - '@pim_catalog.query.product_query_builder_factory_with_all_categories'
             - '@security.token_storage'
             - '@pimee_security.repository.category_access'
+            - 'VIEW_ITEMS'
 
     pimee_catalog.query.product_query_builder_search_after_size_factory_with_permissions:
         class: '%pimee_catalog.query.elasticsearch.product_query_builder_factory.class%'
@@ -19,6 +20,7 @@ services:
             - '@pim_catalog.query.product_query_builder_search_after_size_factory_with_all_categories'
             - '@security.token_storage'
             - '@pimee_security.repository.category_access'
+            - 'VIEW_ITEMS'
 
     pimee_catalog.query.product_query_builder_from_size_factory_with_permissions:
         class: '%pimee_catalog.query.elasticsearch.product_query_builder_factory.class%'
@@ -28,6 +30,7 @@ services:
             - '@pim_catalog.query.product_query_builder_from_size_factory_with_all_categories'
             - '@security.token_storage'
             - '@pimee_security.repository.category_access'
+            - 'VIEW_ITEMS'
 
     pimee_catalog.query.product_model_query_builder_factory_with_permissions:
         class: '%pimee_catalog.query.elasticsearch.product_query_builder_factory.class%'
@@ -37,6 +40,7 @@ services:
             - '@pim_catalog.query.product_model_query_builder_factory.without_permission'
             - '@security.token_storage'
             - '@pimee_security.repository.category_access'
+            - 'VIEW_ITEMS'
 
     pimee_catalog.query.product_model_query_builder_search_after_size_factory_with_permissions:
         class: '%pimee_catalog.query.elasticsearch.product_query_builder_factory.class%'
@@ -46,6 +50,7 @@ services:
             - '@pim_catalog.query.product_model_query_builder_search_after_size_factory.without_permission'
             - '@security.token_storage'
             - '@pimee_security.repository.category_access'
+            - 'VIEW_ITEMS'
 
     pimee_catalog.query.product_model_query_builder_from_size_factory_with_permissions:
         class: '%pimee_catalog.query.elasticsearch.product_query_builder_factory.class%'
@@ -55,6 +60,7 @@ services:
             - '@pim_catalog.query.product_model_query_builder_from_size_factory.without_permission'
             - '@security.token_storage'
             - '@pimee_security.repository.category_access'
+            - 'VIEW_ITEMS'
 
     pim_catalog.query.product_query_builder_factory_without_permission:
         class: '%pim_catalog.query.elasticsearch.product_query_builder_factory.class%'
@@ -90,3 +96,4 @@ services:
             - '@pim_catalog.query.product_and_product_model_query_builder_factory.with_product_and_product_model_cursor'
             - '@security.token_storage'
             - '@pimee_security.repository.category_access'
+            - 'VIEW_ITEMS'

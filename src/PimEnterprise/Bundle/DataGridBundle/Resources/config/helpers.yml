@@ -14,11 +14,7 @@ services:
     pimee_datagrid.datagrid.configuration.proposal.grid_helper:
         class: '%pimee_datagrid.datagrid.configuration.proposal.grid_helper.class%'
         arguments:
-            - '@pimee_workflow.repository.product_draft'
             - '@security.authorization_checker'
-            - '@security.token_storage'
-            - '@request_stack'
-            - '@pimee_workflow.provider.product_draft_granted_attribute'
             - '@pimee_workflow.helper.product_draft_changes_permission'
 
     pimee_datagrid.datagrid.configuration.published_product.grid_helper:

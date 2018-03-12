@@ -84,6 +84,11 @@ legacy:
                     - 1024
                 - PimEnterprise\Behat\Context\JobContext:
                     - 'Context\EnterpriseFeatureContext'
+                - Pim\Behat\Context\ImportFileContext:
+                    - 'Context\EnterpriseFeatureContext'
+                - PimEnterprise\Behat\Context\NavigationContext:
+                    - 'Context\EnterpriseFeatureContext'
+                    - 'http://akeneo-pim-enterprise-behat.local/'
                 - Pim\Behat\Context\Storage\FileInfoStorage:
                     - 'Context\EnterpriseFeatureContext'
                 - Pim\Behat\Context\Storage\ProductStorage:

@@ -59,6 +59,7 @@ class PimEnterpriseWorkflowExtension extends Extension
         $loader->load('removers.yml');
         $loader->load('repositories.yml');
         $loader->load('savers.yml');
+        $loader->load('serializers_indexing.yml');
         $loader->load('twig.yml');
         $loader->load('readers.yml');
         $loader->load('steps.yml');

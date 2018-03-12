@@ -30,3 +30,11 @@ akeneo_storage_utils:
         -
             original: Pim\Component\User\Model\User
             override: PimEnterprise\Bundle\UserBundle\Entity\User
+
+akeneo_elasticsearch:
+    hosts: "%index_hosts%"
+    indexes:
+        -
+            service_name: "akeneo_elasticsearch.client.product_proposal"
+            index_name: "%product_proposal_index_name%"
+            configuration_files: "%elasticsearch_index_configuration_files%"

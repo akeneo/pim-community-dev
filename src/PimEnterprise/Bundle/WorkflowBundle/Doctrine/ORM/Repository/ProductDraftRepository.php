@@ -11,11 +11,13 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\Doctrine\ORM\Repository;
 
+use Akeneo\Component\StorageUtils\Repository\CursorableRepositoryInterface;
+use Akeneo\Component\StorageUtils\Repository\SearchableRepositoryInterface;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
+use Pim\Bundle\DataGridBundle\Doctrine\ORM\Repository\MassActionRepositoryInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Query\Filter\Operators;
-use PimEnterprise\Bundle\WorkflowBundle\Doctrine\Repository;
 use PimEnterprise\Component\Workflow\Model\ProductDraft;
 use PimEnterprise\Component\Workflow\Model\ProductDraftInterface;
 use PimEnterprise\Component\Workflow\Repository\ProductDraftRepositoryInterface;
@@ -26,7 +28,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
  *
  * @author Gildas Quemener <gildas@akeneo.com>
  */
-class ProductDraftRepository extends EntityRepository implements ProductDraftRepositoryInterface
+class ProductDraftRepository extends EntityRepository implements ProductDraftRepositoryInterface, CursorableRepositoryInterface, SearchableRepositoryInterface, MassActionRepositoryInterface
 {
     /**
      * {@inheritdoc}
@@ -238,38 +240,10 @@ class ProductDraftRepository extends EntityRepository implements ProductDraftRep
      */
     public function applyMassActionParameters($qb, $inset, array $values)
     {
-        if ($values) {
-            $rootAlias = $qb->getRootAlias();
-            $valueWhereCondition =
-                $inset
-                    ? $qb->expr()->in($rootAlias, $values)
-                    : $qb->expr()->notIn($rootAlias, $values);
-            $qb->andWhere($valueWhereCondition);
+        if (!empty($values)) {
+            $condition = $inset ? Operators::IN_LIST : Operators::NOT_IN_LIST;
+            $qb->addFilter('id', $condition, $values);
         }
-
-        if (null !== $qb->getDQLPart('where')) {
-            $whereParts = $qb->getDQLPart('where')->getParts();
-            $qb->resetDQLPart('where');
-
-            foreach ($whereParts as $part) {
-                if (!is_string($part) || !strpos($part, 'entityIds')) {
-                    $qb->andWhere($part);
-                }
-            }
-        }
-
-        $qb->setParameters(
-            $qb->getParameters()->filter(
-                function ($parameter) {
-                    return $parameter->getName() !== 'entityIds';
-                }
-            )
-        );
-
-        $qb->resetDQLPart('orderBy');
-
-        // remove limit of the query
-        $qb->setMaxResults(null);
     }
 
     /**
@@ -434,5 +408,49 @@ class ProductDraftRepository extends EntityRepository implements ProductDraftRep
         }
 
         return $data instanceof \DateTime ? $data->format('Y-m-d H:i:s') : $data;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getItemsFromIdentifiers(array $identifiers)
+    {
+        $qb = $this->createQueryBuilder('p')
+            ->where('p.id IN (:ids)')
+            ->setParameter('ids', $identifiers);
+
+        $query = $qb->getQuery();
+        $query->useQueryCache(false);
+
+        return $query->execute();
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * @return UserInterface[]
+     */
+    public function findBySearch($search = null, array $options = [])
+    {
+        $qb = $this->createQueryBuilder('p');
+        $qb->select('p')->distinct(true);
+
+        if (null !== $search && '' !== $search) {
+            $qb->where('p.author like :search')->setParameter('search', '%' . $search . '%');
+        }
+
+        if (isset($options['identifiers']) && is_array($options['identifiers']) && !empty($options['identifiers'])) {
+            $qb->andWhere('p.author in (:codes)');
+            $qb->setParameter('codes', $options['identifiers']);
+        }
+
+        if (isset($options['limit'])) {
+            $qb->setMaxResults((int) $options['limit']);
+            if (isset($options['page'])) {
+                $qb->setFirstResult((int) $options['limit'] * ((int) $options['page'] - 1));
+            }
+        }
+
+        return $qb->getQuery()->getResult();
     }
 }

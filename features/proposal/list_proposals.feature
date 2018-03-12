@@ -54,20 +54,36 @@ Feature: List proposals
     And I reload the page
     Then the grid should contain 3 elements
     And I show the filter "<filter>"
-    And I filter by "<filter>" with operator "" and value "<value>"
+    And I filter by "<filter>" with operator "<operator>" and value "<value>"
     Then the grid should contain <count> elements
     And I should see entities <result>
 
     Examples:
-      | filter    | value             | result                  | count |
-      | author    | Julia             | jacket                  | 1     |
-      | author    | Sandra,Mary       | sweater, tshirt         | 2     |
-      | product   | tshirt            | tshirt                  | 1     |
-      | product   | tshirt,jacket     | tshirt, jacket          | 2     |
-      | attribute | Name              | tshirt, sweater, jacket | 3     |
-      | attribute | Description       | tshirt                  | 1     |
-      | attribute | Price             | jacket                  | 1     |
-      | attribute | Description,Price | tshirt, jacket          | 2     |
+      | filter              | operator     | value         | count | result                  |
+      | author              | in list      | Julia         | 1     | jacket                  |
+      | author              | in list      | Sandra,Mary   | 2     | sweater, tshirt         |
+      | label_or_identifier | equals       | tshirt        | 1     | tshirt                  |
+      | sku                 | in list      | tshirt,jacket | 2     | tshirt, jacket          |
+      | name                | is not empty |               | 3     | tshirt, sweater, jacket |
+      | description         | is not empty |               | 1     | tshirt                  |
+      | price               | is not empty | USD           | 1     | jacket                  |
+
+  Scenario: Successfully apply multiple filters on proposal grid
+    Given I am logged in as "Peter"
+    When I am on the proposals page
+    Then the grid should contain 1 elements
+    Given the following product category accesses:
+      | product category | user group | access |
+      | 2014_collection  | IT support | own    |
+    When I am on the proposals page
+    And I reload the page
+    Then the grid should contain 3 elements
+    And I show the filter "name"
+    And I filter by "name" with operator "is not empty" and value ""
+    And I show the filter "price"
+    And I filter by "price" with operator "is not empty" and value "USD"
+    Then the grid should contain 1 element
+    And I should see entities "jacket"
 
   Scenario: Successfully approve or reject a proposal
     Given I am logged in as "Peter"
@@ -84,6 +100,7 @@ Feature: List proposals
     When I click on the "Reject all" action of the row which contains "jacket"
     And I press the "Send" button in the popin
     Then I should see the flash message "The proposal has been refused."
+    And I reload the page
     And the grid should contain 1 element
 
   Scenario: Successfully display only proposals that the current user can approve
@@ -130,6 +147,7 @@ Feature: List proposals
       | tshirt  | Mary   | description |          | Summer t-shirt description |
     And I click on the "Reject All" action of the row which contains "tshirt"
     And I press the "Send" button in the popin
+    And I refresh current page
     And I should see the text "There is no proposal to review"
     When I logout
     And I am logged in as "Mary"

@@ -6,12 +6,15 @@ use Doctrine\ORM\AbstractQuery;
 use Doctrine\ORM\QueryBuilder;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\DataGridBundle\Datagrid\Request\RequestParametersExtractorInterface;
+use PimEnterprise\Bundle\WorkflowBundle\Datagrid\Normalizer\ProductProposalNormalizer;
 
 class ProductDraftHydratorSpec extends ObjectBehavior
 {
-    function let(RequestParametersExtractorInterface $extractor)
-    {
-        $this->beConstructedWith($extractor);
+    function let(
+        RequestParametersExtractorInterface $extractor,
+        ProductProposalNormalizer $normalizer
+    ) {
+        $this->beConstructedWith($extractor, $normalizer);
     }
 
     function it_is_a_hydrator()

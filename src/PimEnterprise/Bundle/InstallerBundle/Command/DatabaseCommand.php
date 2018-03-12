@@ -11,9 +11,7 @@
 
 namespace PimEnterprise\Bundle\InstallerBundle\Command;
 
-use Akeneo\Bundle\StorageUtilsBundle\DependencyInjection\AkeneoStorageUtilsExtension;
 use Pim\Bundle\InstallerBundle\Command\DatabaseCommand as BaseDatabaseCommand;
-use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
