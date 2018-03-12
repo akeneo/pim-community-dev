@@ -2,9 +2,14 @@
 
 namespace spec\Pim\Component\Catalog\Normalizer\Indexing\ProductAndProductModel;
 
+use Doctrine\Common\Collections\Collection;
 use PhpSpec\ObjectBehavior;
+use Pim\Component\Catalog\Model\AttributeInterface;
+use Pim\Component\Catalog\Model\CommonAttributeCollection;
 use Pim\Component\Catalog\Model\FamilyInterface;
+use Pim\Component\Catalog\Model\FamilyVariantInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
+use Pim\Component\Catalog\Model\VariantAttributeSetInterface;
 use Pim\Component\Catalog\Normalizer\Indexing\ProductAndProductModel\ProductModelNormalizer;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
@@ -40,11 +45,21 @@ class ProductModelNormalizerSpec extends ObjectBehavior
     function it_normalizes_a_root_product_model_in_indexing_format(
         $propertiesNormalizer,
         ProductModelInterface $productModel,
-        FamilyInterface $family
+        FamilyInterface $family,
+        FamilyVariantInterface $familyVariant,
+        CommonAttributeCollection $commonAttributes,
+        AttributeInterface $attrOne,
+        AttributeInterface $attrTwo
     ) {
         $productModel->getFamily()->willReturn($family);
-        $family->getAttributeCodes()->willReturn(['attr1', 'attr2']);
         $productModel->getVariationLevel()->willReturn(0);
+        $productModel->getFamilyVariant()->willReturn($familyVariant);
+        $familyVariant->getCommonAttributes()->willReturn($commonAttributes);
+        $commonAttributes->toArray()->willReturn([$attrOne, $attrTwo]);
+
+        $attrOne->getCode()->willReturn('attr1');
+        $attrTwo->getCode()->willReturn('attr2');
+
         $productModel->getRawValues()
             ->willReturn([
                 'property_1' => ['value_1'],
@@ -67,11 +82,27 @@ class ProductModelNormalizerSpec extends ObjectBehavior
     function it_normalizes_a_sub_product_model_in_indexing_format(
         $propertiesNormalizer,
         ProductModelInterface $productModel,
-        FamilyInterface $family
+        FamilyInterface $family,
+        FamilyVariantInterface $familyVariant,
+        VariantAttributeSetInterface $variantAttributeSet,
+        Collection $attributes,
+        Collection $axes,
+        AttributeInterface $propertyOne,
+        AttributeInterface $axeOne
     ) {
         $productModel->getFamily()->willReturn($family);
-        $family->getAttributeCodes()->willReturn(['attr1', 'attr2']);
         $productModel->getVariationLevel()->willReturn(1);
+
+        $productModel->getFamilyVariant()->willReturn($familyVariant);
+        $familyVariant->getVariantAttributeSet(1)->willReturn($variantAttributeSet);
+        $variantAttributeSet->getAttributes()->willReturn($attributes);
+        $variantAttributeSet->getAxes()->willReturn($axes);
+
+        $attributes->toArray()->willReturn([$propertyOne]);
+        $axes->toArray()->willReturn([$axeOne]);
+        $propertyOne->getCode()->willReturn('attr1');
+        $axeOne->getCode()->willReturn('attr2');
+
         $productModel->getRawValues()
             ->willReturn([
                 'property_1' => ['value_1'],
