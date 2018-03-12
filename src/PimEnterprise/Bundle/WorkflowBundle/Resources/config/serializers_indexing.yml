@@ -1,7 +1,6 @@
 parameters:
     pimee_workflow.normalizer.indexing_product_proposal.class: PimEnterprise\Component\Workflow\Normalizer\Indexing\ProductProposalNormalizer
     pimee_workflow.normalizer.indexing_product_proposal.properties.class: PimEnterprise\Component\Workflow\Normalizer\Indexing\ProductProposal\PropertiesNormalizer
-    pimee_workflow.normalizer.indexing_product_proposal.datetime.class: PimEnterprise\Component\Workflow\Normalizer\Indexing\DateTimeNormalizer
     pimee_workflow.normalizer.indexing_product_proposal.label.class: PimEnterprise\Component\Workflow\Normalizer\Indexing\LabelNormalizer
 
 services:
@@ -16,13 +15,6 @@ services:
         class: '%pimee_workflow.normalizer.indexing_product_proposal.properties.class%'
         tags:
             - { name: pim_serializer.normalizer, priority: 40 }
-
-    pimee_workflow.normalizer.indexing_product_proposal.datetime:
-        class: '%pimee_workflow.normalizer.indexing_product_proposal.datetime.class%'
-        arguments:
-            - '@pim_catalog.normalizer.indexing_product.datetime'
-        tags:
-            - { name: pim_serializer.normalizer, priority: 90 }
 
     pimee_workflow.normalizer.indexing_product_proposal.text:
         class: '%pimee_workflow.normalizer.indexing_product_proposal.label.class%'

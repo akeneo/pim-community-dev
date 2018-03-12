@@ -194,6 +194,11 @@ class ProductDraftChangesExtension extends \Twig_Extension implements Twig_Exten
         $newAttribute = $this->attributeFactory->createAttribute($attribute->getType());
         $newAttribute->setCode($code);
         $newAttribute->setMetricFamily($attribute->getMetricFamily());
+
+        if ($attribute->isBackendTypeReferenceData()) {
+            $newAttribute->setReferenceDataName($attribute->getReferenceDataName());
+        }
+
         $value = $this->valueFactory->create($newAttribute, null, null, null);
 
         return $value;

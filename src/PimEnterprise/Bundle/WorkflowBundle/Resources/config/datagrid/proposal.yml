@@ -74,6 +74,15 @@ datagrid:
                 className: 'AknButton AknButton--important AknButtonList-item'
         filters:
             columns:
+                family:
+                    type:      product_family
+                    label:     Family
+                    data_name: family
+                    options:
+                        field_options:
+                            multiple: true
+                            attr:
+                                empty_choice: true
                 author:
                     type:        product_draft_author
                     data_name:   author
