@@ -56,6 +56,16 @@ services:
         tags:
             - { name: pim_serializer.normalizer, priority: 100 }
 
+    pimee_product_asset.normalizer.external_api.asset:
+        class: '%pimee_product_asset.normalizer.external_api.asset.class%'
+        arguments:
+            - '@pimee_product_asset.normalizer.standard.asset'
+            - '@pimee_product_asset.normalizer.external_api.asset_variation'
+            - '@pimee_product_asset.normalizer.external_api.asset_reference'
+            - '@router'
+        tags:
+            - { name: pim_serializer.normalizer, priority: 100 }
+
     # Internal api
     pimee_product_asset.normalizer.internal_api.asset:
         class: '%pimee_product_asset.normalizer.internal_api.asset.class%'
