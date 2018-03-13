@@ -61,26 +61,30 @@ class FormExtensionProvider
     /**
      * @return array
      */
-    public function getExtensions(bool $unfiltered)
+    public function getFilteredExtensions()
     {
+        $extensions = $this->getExtensions();
         $securityFacade = $this->securityFacade;
 
-        usort($this->extensions, function ($extension1, $extension2) {
-            return (int) $extension1['position'] - (int) $extension2['position'];
-        });
-
-        if (true === $unfiltered) {
-            return $this->extensions;
-        }
-
         return array_filter(
-            $this->extensions,
+            $extensions,
             function ($extension) use ($securityFacade) {
                 $acl = $extension['aclResourceId'];
 
                 return null === $acl || $securityFacade->isGranted($acl);
             }
         );
+    }
+    /**
+     * @return array
+     */
+    public function getExtensions()
+    {
+        usort($this->extensions, function ($extension1, $extension2) {
+            return (int) $extension1['position'] - (int) $extension2['position'];
+        });
+
+        return $this->extensions;
     }
 
     /**

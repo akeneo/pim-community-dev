@@ -1,8 +1,9 @@
+const { createUser } = require('./fixtures');
 const puppeteer = require('puppeteer');
+const extensions = require(`${process.cwd()}/web/test_dist/extensions.json`);
 const fs = require('fs');
 const path = require('path');
 const os = require('os');
-const extensions = require(`${process.cwd()}/web/test_dist/extensions.json`);
 
 module.exports = function(cucumber) {
     const {Before, After, Status} = cucumber;
@@ -18,14 +19,17 @@ module.exports = function(cucumber) {
             headless: !this.parameters.debug,
             slowMo: 0
         });
+
         this.page = await this.browser.newPage();
         await this.page.setRequestInterception(true);
+
         this.consoleLogs = [];
         this.page.on('console', message => {
             if (['error', 'warning'].includes(message.type())) {
                 this.consoleLogs.push(message.text());
             }
         });
+
         this.page.on('request', request => {
             if (request.url() === this.baseUrl) {
                 request.respond({
@@ -36,27 +40,7 @@ module.exports = function(cucumber) {
             if (request.url().includes('/rest/user/')) {
                 request.respond({
                     contentType: 'application/json',
-                    body: `{
-    "username": "admin",
-    "email": "admin@example.com",
-    "namePrefix": null,
-    "firstName": "John",
-    "middleName": null,
-    "lastName": "Doe",
-    "nameSuffix": null,
-    "birthday": null,
-    "image": null,
-    "lastLogin": 1518092814,
-    "loginCount": 18,
-    "catalogLocale": "en_US",
-    "uiLocale": "en_US",
-    "catalogScope": "ecommerce",
-    "defaultTree": "master",
-    "avatar": null,
-    "meta": {
-      "id": 1
-    }
-  }`
+                    body: `${JSON.stringify(createUser())}`
                 });
             }
 
@@ -75,10 +59,18 @@ module.exports = function(cucumber) {
 
     After(async function(scenario) {
         if (Status.FAILED === scenario.result.status) {
-            const filePath = path.join(os.tmpdir(), 'scenario.png');
+            const { uri, line } = scenario.sourceLocation;
+            const fileName = `${uri}:${line}.png`;
+            const folder = path.join(os.tmpdir(), 'js-acceptance');
+
+            const filePath = path.join(folder, fileName.replace(/\//g, '__'));
             const imageBuffer = await this.page.screenshot({path: filePath});
+
             if (0 < this.consoleLogs.length) {
-                const logMessages = this.consoleLogs.reduce((result, message) => `${result}\nError logged: ${message}`, '');
+                const logMessages = this.consoleLogs.reduce(
+                    (result, message) => `${result}\nError logged: ${message}`, ''
+                );
+
                 this.attach(logMessages, 'text/plain');
                 console.log(logMessages);
             }
@@ -88,9 +80,16 @@ module.exports = function(cucumber) {
                 await this.browser.close();
             }
 
-            console.log(`Screenshot available at ${filePath}`, 'text/plain');
+            console.log(`Screenshot available at ${filePath}`);
+            await this.attach(imageBuffer, 'image/png');
+            // await fs.writeFile(filePath, imageBuffer);
+            //
+            // await fs.stat(filePath, (err, stats) => {
+            //     if (err) return console.log('Error: ', err);
+            //     console.log('File exists at: ', filePath, stats);
+            // });
 
-            return this.attach(imageBuffer, 'image/png');
+            return;
         }
 
         if (!this.parameters.debug) {
