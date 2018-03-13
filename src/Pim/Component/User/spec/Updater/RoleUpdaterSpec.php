@@ -28,10 +28,15 @@ class RoleUpdaterSpec extends ObjectBehavior
         $this->shouldImplement(ObjectUpdaterInterface::class);
     }
 
-    function it_updates_the_role_properties(RoleInterface $role)
+    function it_updates_the_role_properties($aclManager, RoleInterface $role)
     {
+        $aclManager->getAllExtensions()->willReturn([]);
+        $aclManager->getSid($role)->shouldBeCalled();
+        $aclManager->flush()->shouldBeCalled();
+
         $role->setRole('ROLE_ADMINISTRATOR')->shouldBeCalled();
         $role->setLabel('name')->shouldBeCalled();
+        $role->getRole()->willReturn('ROLE_ADMINISTRATOR');
 
         $this->update(
             $role,

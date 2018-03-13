@@ -46,7 +46,11 @@ Pim\Component\User\Model\User:
                   message: "The phone has to respect the international format (eg: +33755667788)."
               - Length:
                   max: 20
-
+        uiLocale:
+            - NotBlank: ~
+        catalogLocale:
+            - NotBlank: ~
+            - Pim\Component\Catalog\Validator\Constraints\ActivatedLocale: ~
 Pim\Component\User\Model\Role:
     constraints:
         - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity: label
