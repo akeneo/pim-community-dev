@@ -69,7 +69,7 @@ class PermissionFixturesLoader
      * |          | variant_product_no_view_attribute          |
      * +----------+--------------------------------------------+
      */
-    public function loadProductModelsForAssociationPermissions(): void
+    public function loadProductsForAssociationPermissions(): void
     {
         $this->createCategoryFixtures();
         $this->createAttributeFixtures();
@@ -122,8 +122,22 @@ class PermissionFixturesLoader
             'categories' => ['own_category'],
         ];
 
+        $productModelNoView = [
+            'code' => 'product_model_no_view',
+            'family_variant' => 'family_variant_permission',
+            'categories' => ['category_without_right'],
+        ];
+
+        $productModelView = [
+            'code' => 'product_model_view',
+            'family_variant' => 'family_variant_permission',
+            'categories' => ['view_category'],
+        ];
+
         $this->createProductModel($rootProductModel);
         $this->createProductModel($subProductModel);
+        $this->createProductModel($productModelView);
+        $this->createProductModel($productModelNoView);
         $this->createProduct('product_no_view', $productNoView);
         $this->createProduct('product_view', $productView);
         $this->createProduct('product_own', $productOwn);
@@ -299,7 +313,6 @@ class PermissionFixturesLoader
      * +----------+--------------------------------------------+
      * | View     | colored_sized_shoes_view                   |
      * |          | colored_sized_tshirt_view                  |
-     * |          | colored_sized_tshirt_view                  |
      * |          | colored_sized_sweat_edit                   |
      * |          | colored_sized_shoes_edit                   |
      * |          | colored_sized_sweat_own                    |
@@ -403,6 +416,42 @@ class PermissionFixturesLoader
 
             $this->createProduct($identifier, $data);
         }
+    }
+
+    /**
+     * @param string $code
+     * @param string $right
+     * @param bool $localizable
+     * @param string $type
+     * @throws \Psr\Container\ContainerExceptionInterface
+     * @throws \Psr\Container\NotFoundExceptionInterface
+     */
+    public function createAttribute(string $code, string $right, bool $localizable = true, $type = AttributeTypes::BOOLEAN): void
+    {
+        switch ($right) {
+            case 'view':
+                $attributeGroup = 'attributeGroupB';
+                break;
+            case 'edit':
+                $attributeGroup = 'attributeGroupA';
+                break;
+            default:
+                $attributeGroup = 'attributeGroupC';
+        }
+
+        $data = [
+            'code' => $code,
+            'type' => $type,
+            'localizable' => $localizable,
+            'scopable' => false,
+            'group' => $attributeGroup
+        ];
+
+        $attribute = $this->container->get('pim_catalog.factory.attribute')->create();
+        $this->container->get('pim_catalog.updater.attribute')->update($attribute, $data);
+        $constraints = $this->container->get('validator')->validate($attribute);
+        Assert::assertCount(0, $constraints);
+        $this->container->get('pim_catalog.saver.attribute')->save($attribute);
     }
 
     private function createCategoryFixtures(): void
@@ -619,38 +668,5 @@ class PermissionFixturesLoader
         $category = $entityManager->getRepository('PimCatalogBundle:Category')->findOneBy(['code' => $categoryCode]);
         $accessManager->revokeAccess($category);
         $entityManager->flush();
-    }
-
-    /**
-     * @param string $code
-     * @param bool   $localizable
-     * @param string $right
-     */
-    private function createAttribute(string $code, string $right, bool $localizable = true): void
-    {
-        switch ($right) {
-            case 'view':
-                $attributeGroup = 'attributeGroupB';
-                break;
-            case 'edit':
-                $attributeGroup = 'attributeGroupA';
-                break;
-            default:
-                $attributeGroup = 'attributeGroupC';
-        }
-
-        $data = [
-            'code' => $code,
-            'type' => AttributeTypes::BOOLEAN,
-            'localizable' => $localizable,
-            'scopable' => false,
-            'group' => $attributeGroup
-        ];
-
-        $attribute = $this->container->get('pim_catalog.factory.attribute')->create();
-        $this->container->get('pim_catalog.updater.attribute')->update($attribute, $data);
-        $constraints = $this->container->get('validator')->validate($attribute);
-        Assert::assertCount(0, $constraints);
-        $this->container->get('pim_catalog.saver.attribute')->save($attribute);
     }
 }

@@ -8,7 +8,7 @@ use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
 use PimEnterprise\Component\Security\Attributes;
 use PimEnterprise\Component\Security\Authorization\DenyNotGrantedCategorizedEntity;
-use PimEnterprise\Component\Security\Exception\ResourceAccessDeniedException;
+use PimEnterprise\Component\Security\Exception\ResourceViewAccessDeniedException;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 class DenyNotGrantedCategorizedEntitySpec extends ObjectBehavior
@@ -32,10 +32,9 @@ class DenyNotGrantedCategorizedEntitySpec extends ObjectBehavior
 
         $this
             ->shouldThrow(
-                new ResourceAccessDeniedException(
+                new ResourceViewAccessDeniedException(
                     $productModel->getWrappedObject(),
-                    'You can neither view, nor update, nor delete the product model "product_model", as it is only ' .
-                    'categorized in categories on which you do not have a view permission.'
+                    'Product model "product_model" does not exist.'
                 )
             )
             ->during('denyIfNotGranted', [$productModel]);
@@ -48,7 +47,7 @@ class DenyNotGrantedCategorizedEntitySpec extends ObjectBehavior
         $authorizationChecker->isGranted(Attributes::VIEW, $productModel)->willReturn(true);
 
         $this
-            ->shouldNotThrow('PimEnterprise\Component\Security\Exception\ResourceAccessDeniedException')
+            ->shouldNotThrow('PimEnterprise\Component\Security\Exception\ResourceViewAccessDeniedException')
             ->during('denyIfNotGranted', [$productModel]);
         $this->denyIfNotGranted($productModel)->shouldReturn(null);
     }
@@ -62,10 +61,9 @@ class DenyNotGrantedCategorizedEntitySpec extends ObjectBehavior
 
         $this
             ->shouldThrow(
-                new ResourceAccessDeniedException(
+                new ResourceViewAccessDeniedException(
                     $product->getWrappedObject(),
-                    'You can neither view, nor update, nor delete the product "product", as it is only categorized ' .
-                    'in categories on which you do not have a view permission.'
+                    'Product "product" does not exist.'
                 )
             )
             ->during('denyIfNotGranted', [$product]);
@@ -78,7 +76,7 @@ class DenyNotGrantedCategorizedEntitySpec extends ObjectBehavior
         $authorizationChecker->isGranted(Attributes::VIEW, $product)->willReturn(true);
 
         $this
-            ->shouldNotThrow('PimEnterprise\Component\Security\Exception\ResourceAccessDeniedException')
+            ->shouldNotThrow('PimEnterprise\Component\Security\Exception\ResourceViewAccessDeniedException')
             ->during('denyIfNotGranted', [$product]);
         $this->denyIfNotGranted($product)->shouldReturn(null);
     }
@@ -91,10 +89,9 @@ class DenyNotGrantedCategorizedEntitySpec extends ObjectBehavior
 
         $this
             ->shouldThrow(
-                new ResourceAccessDeniedException(
+                new ResourceViewAccessDeniedException(
                     $categoryAware->getWrappedObject(),
-                    'You can neither view, nor update, nor delete this entity, as it is only categorized ' .
-                    'in categories on which you do not have a view permission.'
+                    'This entity does not exist.'
                 )
             )
             ->during('denyIfNotGranted', [$categoryAware]);
@@ -107,7 +104,7 @@ class DenyNotGrantedCategorizedEntitySpec extends ObjectBehavior
         $authorizationChecker->isGranted(Attributes::VIEW, $categoryAware)->willReturn(true);
 
         $this
-            ->shouldNotThrow('PimEnterprise\Component\Security\Exception\ResourceAccessDeniedException')
+            ->shouldNotThrow('PimEnterprise\Component\Security\Exception\ResourceViewAccessDeniedException')
             ->during('denyIfNotGranted', [$categoryAware]);
         $this->denyIfNotGranted($categoryAware)->shouldReturn(null);
     }

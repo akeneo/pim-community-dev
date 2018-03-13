@@ -5,12 +5,12 @@ namespace spec\PimEnterprise\Component\Catalog\Security\Updater\Setter;
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Persistence\ObjectManager;
-use Doctrine\Common\Util\ClassUtils;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\UserBundle\Entity\UserInterface;
 use Pim\Component\Catalog\Model\CategoryInterface;
-use Pim\Component\Catalog\Model\Product;
 use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Model\ProductModelInterface;
+use Pim\Component\Catalog\Repository\ProductModelRepositoryInterface;
 use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
 use Pim\Component\Catalog\Updater\Setter\FieldSetterInterface;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;
@@ -215,4 +215,38 @@ class GrantedCategoryFieldSetterSpec extends ObjectBehavior
             new InvalidArgumentException('You should at least keep your product in one category on which you have an own permission.')
         )->during('setFieldData', [$product, 'categories', $data, []]);
     }
+
+    function it_not_throws_an_exception_when_you_changed_to_a_category_editable_for_product_model(
+        $authorizationChecker,
+        $tokenStorage,
+        $categoryAccessRepository,
+        $entityManager,
+        TokenInterface $token,
+        UserInterface $user,
+        ProductModelInterface $productModel,
+        ProductModelInterface $fullProductModel,
+        ProductModelRepositoryInterface $productModelRepository
+    ) {
+        $data = ['categoryA', 'categoryB'];
+        $tokenStorage->getToken()->willReturn($token);
+        $token->getUser()->willReturn($user);
+        $productModel->getCategoryCodes()->willReturn(['categoryA', 'categoryB', 'categoryC']);
+        $categoryAccessRepository
+            ->areAllCategoryCodesGranted($user, Attributes::VIEW_ITEMS, ['categoryA', 'categoryB', 'categoryC'])
+            ->willReturn(false);
+
+        $entityManager->getRepository(Argument::any())->willReturn($productModelRepository);
+        $productModelRepository->find(1)->willReturn($fullProductModel);
+        $fullProductModel->getCategoryCodes()->willReturn(['categoryA', 'categoryB', 'categoryC']);
+
+        $productModel->getId()->willReturn(1);
+        $productModel->getCategories()->willReturn([]);
+        $authorizationChecker->isGranted([Attributes::OWN], $productModel)->willReturn(false);
+        $authorizationChecker->isGranted([Attributes::EDIT], $productModel)->willReturn(true);
+
+        $this->shouldNotThrow(
+            new InvalidArgumentException('You should at least keep your product in one category on which you have an own permission.')
+        )->during('setFieldData', [$productModel, 'categories', $data, []]);
+    }
+
 }

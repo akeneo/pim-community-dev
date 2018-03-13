@@ -16,6 +16,7 @@ use Pim\Component\Catalog\Comparator\ComparatorRegistry;
 use Pim\Component\Catalog\Factory\ValueCollectionFactoryInterface;
 use Pim\Component\Catalog\Factory\ValueFactory;
 use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Model\VariantProductInterface;
 use Pim\Component\Catalog\Model\ValueCollection;
 use PimEnterprise\Component\Workflow\Builder\ProductDraftBuilderInterface;
 use PimEnterprise\Component\Workflow\Factory\ProductDraftFactory;
@@ -83,7 +84,8 @@ class ProductDraftBuilder implements ProductDraftBuilderInterface
      */
     public function build(ProductInterface $product, $username)
     {
-        $newValues = $this->normalizer->normalize($product->getValues(), 'standard');
+        $values = $product instanceof VariantProductInterface ? $product->getValuesForVariation() : $product->getValues();
+        $newValues = $this->normalizer->normalize($values, 'standard');
         $originalValues = $this->getOriginalValues($product);
 
         $values = [];
