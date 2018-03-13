@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Bundle\ApiBundle\Controller;
+namespace PimEnterprise\Bundle\ProductAssetBundle\Controller\ExternalApi;
 
 use Akeneo\Component\FileStorage\Exception\FileRemovalException;
 use Akeneo\Component\FileStorage\Exception\FileTransferException;

@@ -11,7 +11,7 @@
 
 declare(strict_types=1);
 
-namespace PimEnterprise\Bundle\ApiBundle\Controller;
+namespace PimEnterprise\Bundle\ProductAssetBundle\Controller\ExternalApi;
 
 use Akeneo\Component\StorageUtils\Exception\PropertyException;
 use Akeneo\Component\StorageUtils\Factory\SimpleFactoryInterface;

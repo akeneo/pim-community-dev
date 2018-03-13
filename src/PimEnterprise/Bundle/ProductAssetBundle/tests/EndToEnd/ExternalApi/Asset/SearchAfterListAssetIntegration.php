@@ -1,9 +1,9 @@
 <?php
 
-namespace PimEnterprise\Bundle\ApiBundle\tests\EndToEnd\Controller\AssetCategory;
+namespace PimEnterprise\Bundle\ProductAssetBundle\tests\EndToEnd\ExternalApi\AssetCategory;
 
 use Akeneo\Test\Integration\Configuration;
-use PimEnterprise\Bundle\ApiBundle\tests\EndToEnd\Controller\Asset\AbstractAssetTestCase;
+use PimEnterprise\Bundle\ProductAssetBundle\tests\EndToEnd\ExternalApi\Asset\AbstractAssetTestCase;
 use Symfony\Component\HttpFoundation\Response;
 
 class SearchAfterListAssetIntegration extends AbstractAssetTestCase

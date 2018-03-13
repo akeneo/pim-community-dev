@@ -5,7 +5,7 @@ services:
             - '@http_kernel'
             - '@pim_catalog.validator.unique_value_set'
             - '%pim_api.configuration%'
-            - 'pimee_api.controller.asset_category:partialUpdateAction'
+            - 'pimee_product_asset.controller.asset_category:partialUpdateAction'
             - 'code'
 
     pim_api.stream.asset_partial_update_stream:
@@ -14,5 +14,5 @@ services:
             - '@http_kernel'
             - '@pim_catalog.validator.unique_value_set'
             - '%pim_api.configuration%'
-            - 'pimee_api.controller.asset:partialUpdateAction'
+            - 'pimee_product_asset.controller.asset:partialUpdateAction'
             - 'code'

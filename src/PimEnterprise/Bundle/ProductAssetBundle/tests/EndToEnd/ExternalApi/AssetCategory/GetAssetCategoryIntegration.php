@@ -1,6 +1,6 @@
 <?php
 
-namespace PimEnterprise\Bundle\ApiBundle\tests\EndToEnd\Controller\AssetCategory;
+namespace PimEnterprise\Bundle\ProductAssetBundle\tests\EndToEnd\ExternalApi\AssetCategory;
 
 use Pim\Bundle\ApiBundle\tests\integration\ApiTestCase;
 use Symfony\Component\HttpFoundation\Response;

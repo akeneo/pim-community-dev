@@ -11,65 +11,42 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Bundle\ApiBundle\tests\EndToEnd\Controller\Asset;
+namespace PimEnterprise\Bundle\ProductAssetBundle\tests\EndToEnd\ExternalApi\Asset;
+
+use PimEnterprise\Bundle\ProductAssetBundle\Controller\ExternalApi\AssetVariationController;
 
 /**
  * @author Damien Carcel <damien.carcel@akeneo.com>
  */
-class DownloadAssetVariationFileIntegration extends AbstractAssetTestCase
+class GetAssetVariationIntegration extends AbstractAssetTestCase
 {
     public function testGetVariationForNonLocalizableAsset()
     {
+        $standardizedAssets = $this->getStandardizedAssets();
         $client = $this->createAuthenticatedClient();
 
-        $contentFile = '';
-        ob_start(function ($streamedFile) use (&$contentFile) {
-            $contentFile .= $streamedFile;
-
-            return '';
-        });
-        $client->request(
-            'GET',
-            'api/rest/v1/assets/non_localizable_asset/variation-files/ecommerce/no-locale/download'
-        );
-        ob_end_clean();
-
+        $client->request('GET', 'api/rest/v1/assets/non_localizable_asset/variation-files/ecommerce/no-locale');
         $response = $client->getResponse();
+
         $this->assertSame($response->getStatusCode(), 200);
-        $this->assertSame(
-            'attachment; filename="ziggy-ecommerce.png"',
-            $response->headers->get('content-disposition')
-        );
-        $this->assertSame('image/png', $response->headers->get('content-type'));
-        $this->assertEquals(
-            $contentFile,
-            file_get_contents($this->getVariationFile('non_localizable_asset', 'ecommerce', null))
+        $this->assertResponseContent(
+            $this->getExpectedVariation($standardizedAssets['non_localizable_asset'], 'ecommerce', null),
+            $response->getContent()
         );
     }
 
     public function testGetVariationForLocalizableAsset()
     {
+        $standardizedAssets = $this->getStandardizedAssets();
         $client = $this->createAuthenticatedClient();
 
-        $contentFile = '';
-        ob_start(function ($streamedFile) use (&$contentFile) {
-            $contentFile .= $streamedFile;
-
-            return '';
-        });
-        $client->request('GET', 'api/rest/v1/assets/localizable_asset/variation-files/ecommerce/en_US/download');
-        ob_end_clean();
-
+        $client->request('GET', 'api/rest/v1/assets/localizable_asset/variation-files/ecommerce/en_US');
         $response = $client->getResponse();
+
         $this->assertSame($response->getStatusCode(), 200);
-        $this->assertSame(
-            'attachment; filename="ziggy-en_US-ecommerce.png"',
-            $response->headers->get('content-disposition')
-        );
-        $this->assertSame('image/png', $response->headers->get('content-type'));
-        $this->assertEquals(
-            $contentFile,
-            file_get_contents($this->getVariationFile('localizable_asset', 'ecommerce', 'en_US'))
+        $this->assertResponseContent(
+            $this->getExpectedVariation($standardizedAssets['localizable_asset'], 'ecommerce', 'en_US'),
+            $response->getContent()
         );
     }
 
@@ -82,7 +59,7 @@ class DownloadAssetVariationFileIntegration extends AbstractAssetTestCase
 
         $client->request(
             'GET',
-            'api/rest/v1/assets/localizable_asset_without_references/variation-files/ecommerce/en_US/download'
+            'api/rest/v1/assets/localizable_asset_without_references/variation-files/ecommerce/en_US'
         );
         $response = $client->getResponse();
 
@@ -106,7 +83,7 @@ JSON;
 
         $client->request(
             'GET',
-            'api/rest/v1/assets/non_localizable_asset_without_references/variation-files/ecommerce/no-locale/download'
+            'api/rest/v1/assets/non_localizable_asset_without_references/variation-files/ecommerce/no-locale'
         );
         $response = $client->getResponse();
 
@@ -128,7 +105,7 @@ JSON;
     {
         $client = $this->createAuthenticatedClient();
 
-        $client->request('GET', 'api/rest/v1/assets/ham_and_jam/variation-files/ecommerce/no-locale/download');
+        $client->request('GET', 'api/rest/v1/assets/ham_and_jam/variation-files/ecommerce/no-locale');
         $response = $client->getResponse();
 
         $expectedContent = <<<JSON
@@ -145,13 +122,13 @@ JSON;
     /**
      * Should be an integration test.
      */
-    public function testLocaleDoesNotExist()
+    public function testGivenLocaleDoesNotExist()
     {
         $client = $this->createAuthenticatedClient();
 
         $client->request(
             'GET',
-            'api/rest/v1/assets/non_localizable_asset_without_references/variation-files/ecommerce/ham/download'
+            'api/rest/v1/assets/non_localizable_asset_without_references/variation-files/ecommerce/ham'
         );
         $response = $client->getResponse();
 
@@ -169,13 +146,13 @@ JSON;
     /**
      * Should be an integration test.
      */
-    public function testChannelDoesNotExist()
+    public function testGivenChannelDoesNotExist()
     {
         $client = $this->createAuthenticatedClient();
 
         $client->request(
             'GET',
-            'api/rest/v1/assets/non_localizable_asset_without_references/variation-files/jam/en_US/download'
+            'api/rest/v1/assets/non_localizable_asset_without_references/variation-files/jam/en_US'
         );
         $response = $client->getResponse();
 
@@ -199,7 +176,7 @@ JSON;
 
         $client->request(
             'GET',
-            'api/rest/v1/assets/localizable_asset_without_references/variation-files/ecommerce/no-locale/download'
+            'api/rest/v1/assets/localizable_asset_without_references/variation-files/ecommerce/no-locale'
         );
         $response = $client->getResponse();
 
@@ -223,7 +200,7 @@ JSON;
 
         $client->request(
             'GET',
-            'api/rest/v1/assets/non_localizable_asset_without_references/variation-files/ecommerce/en_US/download'
+            'api/rest/v1/assets/non_localizable_asset_without_references/variation-files/ecommerce/en_US'
         );
         $response = $client->getResponse();
 
@@ -247,7 +224,7 @@ JSON;
 
         $client->request(
             'GET',
-            'api/rest/v1/assets/localizable_asset_without_references/variation-files/ecommerce/fr_FR/download'
+            'api/rest/v1/assets/localizable_asset_without_references/variation-files/ecommerce/fr_FR'
         );
         $response = $client->getResponse();
 
@@ -263,42 +240,51 @@ JSON;
     }
 
     /**
-     * Returns the real path to an asset variation file for a given channel and
-     * locale (locale is provided only if the asset is localizable, must be null
-     * otherwise).
-     *
-     * @param string      $assetCode
-     * @param string      $channelCode
-     * @param null|string $localeCode
-     *
-     * @return string
+     * @param array  $expected
+     * @param string $responseContent
      */
-    private function getVariationFile(string $assetCode, string $channelCode, ?string $localeCode): string
+    private function assertResponseContent(array $expected, string $responseContent): void
     {
-        $asset = $this->get('pimee_product_asset.repository.asset')->findOneByIdentifier($assetCode);
-        $this->assertNotNull($asset);
+        $variation = json_decode($responseContent, true);
+        ksort($variation);
 
-        $channel = $this->get('pim_api.repository.channel')->findOneByIdentifier($channelCode);
-        $this->assertNotNull($channel);
+        $this->assertEquals($expected, $variation);
+    }
 
-        $locale = null;
-        if (null !== $localeCode) {
-            $locale = $this->get('pim_api.repository.locale')->findOneByIdentifier($localeCode);
-            $this->assertNotNull($locale);
+    /**
+     * @param string      $expected
+     * @param string      $channel
+     * @param null|string $locale
+     *
+     * @throws \PHPUnit_Framework_AssertionFailedError
+     *
+     * @return array
+     */
+    private function getExpectedVariation(string $expected, string $channel, ?string $locale): array
+    {
+        $expected = json_decode($expected, true);
+        $expected = $this->sanitizeNormalizedAsset($expected);
+
+        foreach ($expected['variation_files'] as $normalizedVariation) {
+            if (null === $locale && $channel === $normalizedVariation['scope']) {
+                unset($normalizedVariation['_link']['self']);
+
+                return $normalizedVariation;
+            }
+
+            if ($locale === $normalizedVariation['locale'] && $channel === $normalizedVariation['scope']) {
+                unset($normalizedVariation['_link']['self']);
+
+                return $normalizedVariation;
+            }
         }
 
-        $variation = $asset->getVariation($channel, $locale);
-        $this->assertNotNull($variation);
-
-        $fileInfo = $variation->getFileInfo();
-        $this->assertNotNull($variation);
-
-        $variationFileRealPath = sprintf(
-            '%s/%s',
-            $this->getParameter('asset_storage_dir'),
-            $fileInfo->getKey()
+        throw new \PHPUnit_Framework_AssertionFailedError(
+            sprintf(
+                'No asset "%s" variation found for locale "%s"',
+                $expected['code'],
+                $locale ?? AssetVariationController::NON_LOCALIZABLE_VARIATION
+            )
         );
-
-        return realpath($variationFileRealPath);
     }
 }

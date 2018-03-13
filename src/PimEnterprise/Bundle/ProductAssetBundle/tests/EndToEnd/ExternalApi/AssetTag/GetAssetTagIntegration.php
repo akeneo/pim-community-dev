@@ -1,6 +1,6 @@
 <?php
 
-namespace PimEnterprise\Bundle\ApiBundle\tests\EndToEnd\Controller\AssetTag;
+namespace PimEnterprise\Bundle\ProductAssetBundle\tests\EndToEnd\ExternalApi\AssetTag;
 
 /*
  * This file is part of the Akeneo PIM Enterprise Edition.
@@ -11,7 +11,7 @@ namespace PimEnterprise\Bundle\ApiBundle\tests\EndToEnd\Controller\AssetTag;
  * file that was distributed with this source code.
  */
 
-use PimEnterprise\Bundle\ApiBundle\tests\EndToEnd\Controller\Asset\AbstractAssetTestCase;
+use PimEnterprise\Bundle\ProductAssetBundle\tests\EndToEnd\ExternalApi\Asset\AbstractAssetTestCase;
 
 /**
  * @author Philippe Mossière <philippe.mossiere@akeneo.com>

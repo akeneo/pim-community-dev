@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace PimEnterprise\Component\ProductAsset\Normalizer\ExternalApi;
 
 use Pim\Component\Api\Hal\Link;
-use PimEnterprise\Bundle\ApiBundle\Controller\AssetReferenceController;
+use PimEnterprise\Bundle\ProductAssetBundle\Controller\ExternalApi\AssetReferenceController;
 use PimEnterprise\Component\ProductAsset\Model\ReferenceInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\RouterInterface;

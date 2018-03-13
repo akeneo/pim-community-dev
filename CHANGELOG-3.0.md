@@ -19,3 +19,8 @@
 - Move `PimEnterprise\Bundle\ApiBundle\Router\ProxyProductRouter` to `PimEnterprise\Bundle\WorkflowBundle\Router\ProxyProductRouter`
 - Move `PimEnterprise\Component\Api\Normalizer\ProductNormalizer` to `PimEnterprise\Component\Workflow\Normalizer\ExternalApi\ProductNormalizer`
 - Move `PimEnterprise\Bundle\ApiBundle\Doctrine\ORM\Repository\AssetRepository` to `PimEnterprise\Bundle\ProductAssetBundle\Doctrine\ORM\Repository\ExternalApi\AssetRepository`
+- Move `PimEnterprise\Bundle\ApiBundle\Controller\AssetCategoryController` to `PimEnterprise\Bundle\ProductAssetBundle\Controller\ExternalApi\AssetCategoryController`
+- Move `PimEnterprise\Bundle\ApiBundle\Controller\AssetController` to `PimEnterprise\Bundle\ProductAssetBundle\Controller\ExternalApi\AssetController`
+- Move `PimEnterprise\Bundle\ApiBundle\Controller\AssetReferenceController` to `PimEnterprise\Bundle\ProductAssetBundle\Controller\ExternalApi\AssetReferenceController`
+- Move `PimEnterprise\Bundle\ApiBundle\Controller\AssetTagController` to `PimEnterprise\Bundle\ProductAssetBundle\Controller\ExternalApi\AssetTagController`
+- Move `PimEnterprise\Bundle\ApiBundle\Controller\AssetVariationController` to `PimEnterprise\Bundle\ProductAssetBundle\Controller\ExternalApi\AssetVariationController`

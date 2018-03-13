@@ -1,6 +1,6 @@
 <?php
 
-namespace PimEnterprise\Bundle\ApiBundle\tests\EndToEnd\Controller\AssetTag;
+namespace PimEnterprise\Bundle\ProductAssetBundle\tests\EndToEnd\ExternalApi\AssetTag;
 
 use Symfony\Component\HttpFoundation\Response;
 

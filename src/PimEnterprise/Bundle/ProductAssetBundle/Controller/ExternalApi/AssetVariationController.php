@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Bundle\ApiBundle\Controller;
+namespace PimEnterprise\Bundle\ProductAssetBundle\Controller\ExternalApi;
 
 use Akeneo\Component\FileStorage\Exception\FileTransferException;
 use Akeneo\Component\FileStorage\File\FileFetcherInterface;
@@ -24,6 +24,7 @@ use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Pim\Component\Api\Exception\ViolationHttpException;
 use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\LocaleInterface;
+use PimEnterprise\Bundle\ApiBundle\Controller\FileRemovalException;
 use PimEnterprise\Component\ProductAsset\Factory\ReferenceFactory;
 use PimEnterprise\Component\ProductAsset\Factory\VariationFactory;
 use PimEnterprise\Component\ProductAsset\FileStorage;

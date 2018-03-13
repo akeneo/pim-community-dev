@@ -1,6 +1,6 @@
 <?php
 
-namespace PimEnterprise\Bundle\ApiBundle\tests\EndToEnd\Controller\Asset;
+namespace PimEnterprise\Bundle\ProductAssetBundle\tests\EndToEnd\ExternalApi\Asset;
 
 use Akeneo\Test\Integration\Configuration;
 use Symfony\Component\HttpFoundation\Response;

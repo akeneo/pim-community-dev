@@ -1,28 +1,26 @@
 <?php
 
-namespace PimEnterprise\Bundle\ApiBundle\tests\EndToEnd\Controller\Asset;
+namespace PimEnterprise\Bundle\ProductAssetBundle\tests\EndToEnd\ExternalApi\AssetCategory;
 
-use Akeneo\Test\Integration\Configuration;
 use Pim\Bundle\ApiBundle\Stream\StreamResourceResponse;
+use Pim\Bundle\ApiBundle\tests\integration\ApiTestCase;
 use Symfony\Component\HttpFoundation\Response;
 
-class PartialUpdateListAssetIntegration extends AbstractAssetTestCase
+class PartialUpdateListAssetCategoryIntegration extends ApiTestCase
 {
-    public function testCreateAndUpdateAListOfAssets()
+    public function testCreateAndUpdateAListOfAssetCategories()
     {
         $data = <<<JSON
-            {"code": "cat", "description": "foo"}
-            {"code": "new_asset"}
-            {"code": "new_asset"}
+            {"code": "asset_main_catalog","labels":{"en_US":"New label"}}
+            {"code": "new_asset_category","parent":"asset_main_catalog"}
 JSON;
 
         $expectedContent = <<<JSON
-{"line":1,"code":"cat","status_code":204}
-{"line":2,"code":"new_asset","status_code":201}
-{"line":3,"code":"new_asset","status_code":204}
+{"line":1,"code":"asset_main_catalog","status_code":204}
+{"line":2,"code":"new_asset_category","status_code":201}
 JSON;
 
-        $response = $this->executeStreamRequest('PATCH', 'api/rest/v1/assets', [], [], [], $data);
+        $response = $this->executeStreamRequest('PATCH', 'api/rest/v1/asset-categories', [], [], [], $data);
         $httpResponse = $response['http_response'];
 
         $this->assertSame(Response::HTTP_OK, $httpResponse->getStatusCode());
@@ -30,27 +28,45 @@ JSON;
         $this->assertArrayHasKey('content-type', $httpResponse->headers->all());
         $this->assertSame(StreamResourceResponse::CONTENT_TYPE, $httpResponse->headers->get('content-type'));
 
-        $expectedAssets = [
-            'cat' => [
-                'code' => 'cat',
-                'localizable' => true,
-                'description' => 'foo',
-                'end_of_use' => '2041-04-02T00:00:00+01:00',
-                'tags' => ['animal'],
-                'categories' => ['asset_main_catalog']
+        $expectedAssetCategories = [
+            'asset_main_catalog' => [
+                'code'   => 'asset_main_catalog',
+                'parent' => null,
+                'labels' => [
+                    'en_US' => 'New label'
+                ]
             ],
-            'new_asset' => [
-                'code' => 'new_asset',
-                'localizable' => false,
-                'description' => null,
-                'end_of_use' => null,
-                'tags' => [],
-                'categories' => []
+            'new_asset_category' => [
+                'code'   => 'new_asset_category',
+                'parent' => 'asset_main_catalog',
+                'labels' => []
             ]
         ];
 
-        $this->assertSameAssets($expectedAssets['cat'], 'cat');
-        $this->assertSameAssets($expectedAssets['new_asset'], 'new_asset');
+        $this->assertSameAssetCategories($expectedAssetCategories['asset_main_catalog'], 'asset_main_catalog');
+        $this->assertSameAssetCategories($expectedAssetCategories['new_asset_category'], 'new_asset_category');
+    }
+
+    /**
+     * Should be an integration test.
+     */
+    public function testCreateAndUpdateSameAssetCategory()
+    {
+        $data = <<<JSON
+            {"code": "new_asset_category"}
+            {"code": "new_asset_category"}
+JSON;
+
+        $expectedContent = <<<JSON
+{"line":1,"code":"new_asset_category","status_code":201}
+{"line":2,"code":"new_asset_category","status_code":204}
+JSON;
+
+        $response = $this->executeStreamRequest('PATCH', 'api/rest/v1/asset-categories', [], [], [], $data);
+        $httpResponse = $response['http_response'];
+
+        $this->assertSame(Response::HTTP_OK, $httpResponse->getStatusCode());
+        $this->assertSame($expectedContent, $response['content']);
     }
 
     /**
@@ -70,7 +86,7 @@ JSON;
         }
         $expectedContent = implode(PHP_EOL, $expectedContent);
 
-        $response = $this->executeStreamRequest('PATCH', 'api/rest/v1/assets', [], [], [], $data);
+        $response = $this->executeStreamRequest('PATCH', 'api/rest/v1/asset-categories', [], [], [], $data);
         $httpResponse = $response['http_response'];
 
         $this->assertSame(Response::HTTP_OK, $httpResponse->getStatusCode());
@@ -99,7 +115,7 @@ JSON;
             }
 JSON;
 
-        $client->request('PATCH', 'api/rest/v1/assets', [], [], [], $data);
+        $client->request('PATCH', 'api/rest/v1/asset-categories', [], [], [], $data);
 
         $response = $client->getResponse();
         $this->assertJsonStringEqualsJsonString($expectedContent, $response->getContent());
@@ -150,7 +166,7 @@ JSON;
 {"line":10,"status_code":400,"message":"Invalid json message received"}
 JSON;
 
-        $response = $this->executeStreamRequest('PATCH', 'api/rest/v1/assets', [], [], [], $data);
+        $response = $this->executeStreamRequest('PATCH', 'api/rest/v1/asset-categories', [], [], [], $data);
         $httpResponse = $response['http_response'];
 
 
@@ -180,7 +196,7 @@ JSON;
 {"line":5,"status_code":422,"message":"Code is missing."}
 JSON;
 
-        $response = $this->executeStreamRequest('PATCH', 'api/rest/v1/assets', [], [], [], $data);
+        $response = $this->executeStreamRequest('PATCH', 'api/rest/v1/asset-categories', [], [], [], $data);
         $httpResponse = $response['http_response'];
 
         $this->assertSame(Response::HTTP_OK, $httpResponse->getStatusCode());
@@ -190,34 +206,34 @@ JSON;
     /**
      * Should be an integration test.
      */
-    public function testUpdateAssetWhenUpdaterFailed()
+    public function testUpdateAssetCategoryWhenUpdaterFailed()
     {
         $data = <<<JSON
-            {"code": "foo", "unknown_property":"foo"}
+            {"code": "foo", "parent":"bar"}
 JSON;
 
         $expectedContent = <<<JSON
-{"line":1,"code":"foo","status_code":422,"message":"Property \"unknown_property\" does not exist. Check the expected format on the API documentation.","_links":{"documentation":{"href":"http:\/\/api.akeneo.com\/api-reference.html#post_asset"}}}
+{"line":1,"code":"foo","status_code":422,"message":"Property \"parent\" expects a valid category code. The category does not exist, \"bar\" given. Check the expected format on the API documentation.","_links":{"documentation":{"href":"http:\/\/api.akeneo.com\/api-reference.html#patch_asset_categories__code_"}}}
 JSON;
 
-        $response = $this->executeStreamRequest('PATCH', 'api/rest/v1/assets', [], [], [], $data);
+        $response = $this->executeStreamRequest('PATCH', 'api/rest/v1/asset-categories', [], [], [], $data);
         $httpResponse = $response['http_response'];
 
         $this->assertSame(Response::HTTP_OK, $httpResponse->getStatusCode());
         $this->assertSame($expectedContent, $response['content']);
     }
 
-    public function testUpdateAssetWhenValidationFailed()
+    public function testUpdateCategoryWhenValidationFailed()
     {
         $data = <<<JSON
             {"code": "foo,"}
 JSON;
 
         $expectedContent = <<<JSON
-{"line":1,"code":"foo,","status_code":422,"message":"Validation failed.","errors":[{"property":"code","message":"Asset code may contain only letters, numbers and underscores"}]}
+{"line":1,"code":"foo,","status_code":422,"message":"Validation failed.","errors":[{"property":"code","message":"Category code may contain only letters, numbers and underscores"}]}
 JSON;
 
-        $response = $this->executeStreamRequest('PATCH', 'api/rest/v1/assets', [], [], [], $data);
+        $response = $this->executeStreamRequest('PATCH', 'api/rest/v1/asset-categories', [], [], [], $data);
         $httpResponse = $response['http_response'];
 
         $this->assertSame(Response::HTTP_OK, $httpResponse->getStatusCode());
@@ -242,7 +258,7 @@ JSON;
 
         $client = $this->createAuthenticatedClient();
         $client->setServerParameter('CONTENT_TYPE', 'application/json');
-        $client->request('PATCH', 'api/rest/v1/assets', [], [], [], $data);
+        $client->request('PATCH', 'api/rest/v1/asset-categories', [], [], [], $data);
 
         $response = $client->getResponse();
         $this->assertSame(Response::HTTP_UNSUPPORTED_MEDIA_TYPE, $response->getStatusCode());
@@ -260,25 +276,22 @@ JSON;
     }
 
     /**
-     * @param array  $expectedAsset normalized data of the asset that should be created
-     * @param string $code             code of the asset that should be created
+     * @param array  $expectedCategory normalized data of the asset category that should be created
+     * @param string $code             code of the category that should be created
      */
-    protected function assertSameAssets(array $expectedAsset, $code)
+    protected function assertSameAssetCategories(array $expectedCategory, $code)
     {
-        $asset = $this->get('pimee_product_asset.repository.asset')->findOneByIdentifier($code);
-        $normalizer = $this->get('pimee_product_asset.normalizer.standard.asset');
-        $standardizedAsset = $normalizer->normalize($asset);
+        $category = $this->get('pimee_product_asset.repository.category')->findOneByIdentifier($code);
+        $normalizer = $this->get('pim_catalog.normalizer.standard.category');
+        $standardizedCategory = $normalizer->normalize($category);
 
-        $expectedAsset = $this->sanitizeNormalizedAsset($expectedAsset);
-        $standardizedAsset = $this->sanitizeNormalizedAsset($standardizedAsset);
-
-        $this->assertSame($expectedAsset, $standardizedAsset);
+        $this->assertSame($expectedCategory, $standardizedCategory);
     }
 
     /**
      * {@inheritdoc}
      */
-    protected function getConfiguration(): Configuration
+    protected function getConfiguration()
     {
         return $this->catalog->useTechnicalCatalog();
     }

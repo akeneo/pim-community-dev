@@ -11,9 +11,9 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Bundle\ApiBundle\tests\EndToEnd\Controller\Asset;
+namespace PimEnterprise\Bundle\ProductAssetBundle\tests\EndToEnd\ExternalApi\Asset;
 
-use PimEnterprise\Bundle\ApiBundle\Controller\AssetReferenceController;
+use PimEnterprise\Bundle\ProductAssetBundle\Controller\ExternalApi\AssetReferenceController;
 
 /**
  * @author Damien Carcel <damien.carcel@akeneo.com>
