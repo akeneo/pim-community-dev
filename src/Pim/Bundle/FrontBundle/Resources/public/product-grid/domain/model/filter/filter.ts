@@ -1,11 +1,18 @@
 import {Field, PropertyInterface, AttributeInterface} from 'pimfront/product-grid/domain/model/field';
 import {Operator} from 'pimfront/product-grid/domain/model/filter/operator';
 import {Value} from 'pimfront/product-grid/domain/model/filter/value';
+import {InvalidArgument} from 'pimfront/product-grid/domain/model/error';
 
-export interface NormalizedFilter {
-  field: string;
-  operator: string;
-  value: any;
+export class NormalizedFilter {
+  private constructor(readonly field: string, readonly operator: string, readonly value: any) {}
+
+  public static create({field, operator, value}: {field: string; operator: string; value: any}) {
+    if (undefined === field || undefined === operator || undefined === value) {
+      throw new InvalidArgument(`The given normalized filter is not valid. Arguments: ${JSON.stringify(arguments)}`);
+    }
+
+    return new NormalizedFilter(field, operator, value);
+  }
 }
 
 export default interface Filter {
@@ -23,6 +30,12 @@ export abstract class BaseFilter implements Filter {
   readonly value: Value;
 
   protected constructor(field: Field, operator: Operator, value: Value) {
+    if (!this.getOperators().find((currentOperator: Operator) => currentOperator.equals(operator))) {
+      throw new InvalidArgument(`The operator given to create the "${field.identifier}" filter is not valid.
+Given: ${operator.identifier}
+Supported: ${this.getOperators().map((mappedOperator: Operator) => `"${mappedOperator.identifier}"`)}
+`);
+    }
     this.field = field;
     this.operator = operator;
     this.value = value;

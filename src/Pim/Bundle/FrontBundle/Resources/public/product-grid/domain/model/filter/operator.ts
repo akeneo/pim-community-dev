@@ -1,14 +1,16 @@
 export interface Operator {
   readonly identifier: string;
   readonly needValue: boolean;
+
+  equals(operator: Operator): boolean;
 }
 
 export abstract class BaseOperator implements Operator {
   readonly identifier: string;
   readonly needValue: boolean;
 
-  public static create(): Operator {
-    throw Error('The create method need to be implemented');
+  public equals(operator: Operator): boolean {
+    return this.identifier === operator.identifier;
   }
 }
 
@@ -18,6 +20,15 @@ export class All extends BaseOperator {
 
   public static create(): All {
     return new All();
+  }
+}
+
+export class Equal extends BaseOperator {
+  readonly identifier: string = '=';
+  readonly needValue: boolean = true;
+
+  public static create(): Equal {
+    return new Equal();
   }
 }
 

@@ -1,22 +1,13 @@
 import {AttributeFilter} from 'pimfront/product-grid/domain/model/filter/filter';
-import {Boolean as BooleanValue, Value} from 'pimfront/product-grid/domain/model/filter/value';
-import {Operator, BaseOperator, All} from 'pimfront/product-grid/domain/model/filter/operator';
+import {Null as NullValue, Value} from 'pimfront/product-grid/domain/model/filter/value';
+import {Operator, All, Equal} from 'pimfront/product-grid/domain/model/filter/operator';
 import {AttributeInterface} from 'pimfront/product-grid/domain/model/field';
-
-class Equal extends BaseOperator {
-  readonly identifier: string = '=';
-  readonly needValue: boolean = true;
-
-  public static create(): Equal {
-    return new Equal();
-  }
-}
 
 export default class Boolean extends AttributeFilter {
   private static operators: Operator[] = [All.create(), Equal.create()];
 
   public static createEmpty(attribute: AttributeInterface) {
-    return new Boolean(attribute, All.create(), BooleanValue.true());
+    return new Boolean(attribute, All.create(), NullValue.null());
   }
 
   public static create(attribute: AttributeInterface, operator: Operator, value: Value) {

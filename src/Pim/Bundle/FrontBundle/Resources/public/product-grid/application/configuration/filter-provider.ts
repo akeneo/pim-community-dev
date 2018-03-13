@@ -7,9 +7,9 @@ import FilterInterface, {
   BaseFilter,
 } from 'pimfront/product-grid/domain/model/filter/filter';
 import {Field, Property, Attribute, RawAttributeInterface} from 'pimfront/product-grid/domain/model/field';
-import {BaseOperator} from 'pimfront/product-grid/domain/model/filter/operator';
 import {Value} from 'pimfront/product-grid/domain/model/filter/value';
 import {BaseOperator as Operator} from 'pimfront/product-grid/domain/model/filter/operator';
+import {InvalidArgument} from 'pimfront/product-grid/domain/model/error';
 
 interface PropertyFilterConfiguration {
   [property: string]: {
@@ -35,27 +35,8 @@ interface FilterConfiguration {
   value: string[];
 }
 
-export class UnknownProperty extends Error {
-  constructor(message: string) {
-    super(message);
-
-    Object.setPrototypeOf(this, UnknownProperty.prototype);
-  }
-}
-export class Missconfiguration extends Error {
-  constructor(message: string) {
-    super(message);
-
-    Object.setPrototypeOf(this, Missconfiguration.prototype);
-  }
-}
-export class InvalidArgument extends Error {
-  constructor(message: string) {
-    super(message);
-
-    Object.setPrototypeOf(this, InvalidArgument.prototype);
-  }
-}
+export class UnknownProperty extends Error {}
+export class Missconfiguration extends Error {}
 
 export class FilterProvider {
   private configuration: FilterConfiguration;
@@ -72,13 +53,20 @@ export class FilterProvider {
     return new FilterProvider(configuration, fetcherRegistry, requireContext);
   }
 
-  public async getEmptyFilter(code: string): Promise<FilterInterface> {
+  public async getEmptyFilter(code: string = ''): Promise<FilterInterface> {
+    if ('' === code) {
+      throw new InvalidArgument('The method getEmptyFilter expect a code as parameter');
+    }
+
     const FilterClass = await this.getFilter(code);
 
     return FilterClass.createEmpty(await this.getField(code));
   }
 
   public async getPopulatedFilter(filter: NormalizedFilter): Promise<FilterInterface> {
+    if (!(filter instanceof NormalizedFilter)) {
+      throw new InvalidArgument('The method getPopulatedFilter expect a valid NormalizedFilter');
+    }
     const FilterClass = await this.getFilter(filter.field);
 
     const field = await this.getField(filter.field);
@@ -89,10 +77,6 @@ export class FilterProvider {
   }
 
   private async getFilter(code: string = ''): Promise<typeof BaseFilter> {
-    if ('' === code) {
-      throw new InvalidArgument('The method getFilter expect a code as parameter');
-    }
-
     const isProperty = Object.keys(this.configuration.property).includes(code);
 
     if (isProperty) {
@@ -180,21 +164,23 @@ config:
     return Attribute.createFromAttribute(rawAttribute);
   }
 
-  private async getOperator(operator: string): Promise<Operator> {
-    const operatorPath = this.configuration.operator[operator];
+  private async getOperator(operatorCode: string): Promise<Operator> {
+    const operatorPath = this.configuration.operator[operatorCode];
 
     if (undefined === operatorPath) {
-      throw new Missconfiguration(`The operator "${operator}" isn't defined.
+      throw new Missconfiguration(`The operator "${operatorCode}" isn't defined.
 Did you register well the operator in your configuration?`);
     }
 
-    const OperatorClass: typeof Operator = await this.loadModule(operatorPath);
+    const OperatorClass = await this.loadModule(operatorPath);
 
-    if (!(OperatorClass instanceof BaseOperator)) {
-      throw new Missconfiguration(`The given module (${operatorPath}) doesn't implement OperatorInterface.`);
+    const operator = OperatorClass.create();
+
+    if (!(operator instanceof Operator)) {
+      throw new Missconfiguration(`The given module "${operatorPath}" doesn't implement OperatorInterface.`);
     }
 
-    return OperatorClass.create();
+    return operator;
   }
 
   private async getValue(value: any): Promise<Value> {

@@ -3,12 +3,12 @@ config:
         pimfront/product-grid/application/configuration/filter-provider:
             property:
                 enabled:
-                    model: pimfront/product-grid/domain/model/filter/property/status
+                    model: pimfront/product-grid/domain/model/filter/field/boolean
                     view: pimfront/product-grid/application/component/filter/boolean
                     label: Status
             attribute:
                 pim_catalog_boolean:
-                    model: pimfront/product-grid/domain/model/filter/attribute/boolean
+                    model: pimfront/product-grid/domain/model/filter/field/boolean
                     view: pimfront/product-grid/application/component/filter/boolean
             operator:
                 ALL: pimfront/product-grid/domain/model/filter/operator

@@ -60,7 +60,7 @@ define([
          * {@inheritdoc}
          */
         isEmpty: function () {
-            return this.config.neverEmpty ? false :  'ALL' === this.getOperator();
+            return this.config.neverEmpty ? false : 'ALL' === this.getOperator();
         },
 
         /**
