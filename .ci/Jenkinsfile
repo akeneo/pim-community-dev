@@ -55,6 +55,7 @@ stage("Build") {
                         sh "composer update --ansi --optimize-autoloader --no-interaction --no-progress --prefer-dist --ignore-platform-reqs --no-suggest"
                         sh "bin/console --ansi assets:install"
                         sh "bin/console --ansi pim:installer:dump-require-paths"
+                        sh "bin/console --ansi pim:installer:dump-extensions"
                     }
                     container("node") {
                         sh "yarn install --no-progress"
@@ -113,13 +114,13 @@ stage("Test") {
                     echo "Skipping unit test grunt"
                 }
             },
-            "js-acceptance": {
+            "frontend-acceptance": {
                 if (launchUnitTests.equals("yes")) {
                     withNode({
-                        sh "cd /home/jenkins/pim && npm run webpack-test && npm run acceptance"
+                        sh "cd /home/jenkins/pim && yarn run webpack-test && MAX_RANDOM_LATENCY_MS=100 yarn run acceptance ./vendor/akeneo/pim-community-dev/tests/features ./tests/features"
                     })
                 } else {
-                    echo "Skipping acceptance tests"
+                    echo "Skipping frontend acceptance tests"
                 }
             },
             "php-coupling-detector": {
