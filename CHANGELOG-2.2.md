@@ -1,5 +1,10 @@
 # 2.2.x
 
+## Enhancements
+
+- PIM-7097: Add sticky behaviour to product edit form
+- PIM-7097: Change the loading image
+
 ## BC breaks
 
 ### Interfaces
