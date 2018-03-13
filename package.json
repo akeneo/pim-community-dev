@@ -27,6 +27,7 @@
     "dep-diff": "1.0.1",
     "glob": "^7.1.2",
     "html-webpack-inline-source-plugin": "^0.0.9",
+    "html-webpack-plugin": "^3.0.6",
     "puppeteer": "^1.1.1",
     "read-pkg": "2.0.0"
   },
