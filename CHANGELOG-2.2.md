@@ -5,6 +5,7 @@
 - PIM-7097: Add sticky behaviour to product edit form
 - PIM-7097: Change the loading image
 - PIM-7090: Add completeness filter on product model export builder
+- PIM-7112: Add lock display on images/assets when user has no edit right.
 
 ## BC breaks
 
