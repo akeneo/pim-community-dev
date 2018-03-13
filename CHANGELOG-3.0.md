@@ -24,3 +24,5 @@
 - Move `PimEnterprise\Bundle\ApiBundle\Controller\AssetReferenceController` to `PimEnterprise\Bundle\ProductAssetBundle\Controller\ExternalApi\AssetReferenceController`
 - Move `PimEnterprise\Bundle\ApiBundle\Controller\AssetTagController` to `PimEnterprise\Bundle\ProductAssetBundle\Controller\ExternalApi\AssetTagController`
 - Move `PimEnterprise\Bundle\ApiBundle\Controller\AssetVariationController` to `PimEnterprise\Bundle\ProductAssetBundle\Controller\ExternalApi\AssetVariationController`
+- Move `PimEnterprise\Bundle\ApiBundle\Normalizer\AssetReferenceNormalizer` to `PimEnterprise\Component\ProductAsset\Normalizer\ExternalApi\AssetReferenceNormalizer`
+- Move `PimEnterprise\Bundle\ApiBundle\Normalizer\AssetVariationNormalizer` to `PimEnterprise\Component\ProductAsset\Normalizer\ExternalApi\AssetVariationNormalizer`

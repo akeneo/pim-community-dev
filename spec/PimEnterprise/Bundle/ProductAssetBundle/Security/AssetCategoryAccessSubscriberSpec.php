@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\PimEnterprise\Bundle\ProductAssetBundle\Security\AssetCategoryAccessSubscriber;
+namespace spec\PimEnterprise\Bundle\ProductAssetBundle\Security;
 
 use Doctrine\ORM\QueryBuilder;
 use Oro\Bundle\DataGridBundle\Datagrid\DatagridInterface;
