@@ -4,7 +4,6 @@ namespace spec\PimEnterprise\Component\Catalog\Security\Merger;
 
 use Akeneo\Component\StorageUtils\Exception\InvalidObjectException;
 use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Util\ClassUtils;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\AssociationInterface;
@@ -13,17 +12,29 @@ use Pim\Component\Catalog\Model\Product;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
 use Pim\Component\Catalog\Updater\Setter\FieldSetterInterface;
-use PimEnterprise\Component\Security\Attributes;
+use PimEnterprise\Bundle\SecurityBundle\Entity\Query\ItemCategoryAccessQuery;
 use PimEnterprise\Component\Security\NotGrantedDataMergerInterface;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 class NotGrantedAssociatedProductMergerSpec extends ObjectBehavior
 {
     function let(
         AuthorizationCheckerInterface $authorizationChecker,
-        FieldSetterInterface $associationSetter
+        FieldSetterInterface $associationSetter,
+        ItemCategoryAccessQuery $productCategoryAccessQuery,
+        ItemCategoryAccessQuery $productModelCategoryAccessQuery,
+        TokenStorageInterface $tokenStorage
     ) {
-        $this->beConstructedWith($authorizationChecker, $associationSetter);
+        $this->beConstructedWith(
+            $authorizationChecker,
+            $associationSetter,
+            $productCategoryAccessQuery,
+            $productModelCategoryAccessQuery,
+            $tokenStorage
+        );
     }
 
     function it_implements_a_not_granted_data_merger_interface()
@@ -37,8 +48,10 @@ class NotGrantedAssociatedProductMergerSpec extends ObjectBehavior
     }
 
     function it_merges_not_granted_associated_products_in_product(
-        $authorizationChecker,
         $associationSetter,
+        $productCategoryAccessQuery,
+        $productModelCategoryAccessQuery,
+        $tokenStorage,
         ProductInterface $filteredProduct,
         ProductInterface $fullProduct,
         ProductInterface $productB,
@@ -49,24 +62,55 @@ class NotGrantedAssociatedProductMergerSpec extends ObjectBehavior
         AssociationInterface $XSELLForFilteredProduct,
         AssociationTypeInterface $associationTypeXSELLForFilteredProduct,
         AssociationInterface $XSELLForFullProduct,
-        AssociationTypeInterface $associationTypeXSELLForFullProduct
+        AssociationTypeInterface $associationTypeXSELLForFullProduct,
+        TokenInterface $token,
+        UserInterface $user,
+        ArrayCollection $productCollection,
+        ArrayCollection $productModelCollection,
+        \ArrayIterator $productIterator,
+        \ArrayIterator $productModelIterator
     ) {
+        $productB->getId()->willReturn(1);
         $productB->getIdentifier()->willReturn('product_b');
+        $productC->getId()->willReturn(2);
         $productC->getIdentifier()->willReturn('product_c');
+        $productD->getId()->willReturn(3);
         $productD->getIdentifier()->willReturn('product_d');
+        $productModelA->getId()->willReturn(3);
         $productModelA->getCode()->willReturn('product_model_a');
+        $productModelB->getId()->willReturn(4);
         $productModelB->getCode()->willReturn('product_model_b');
+
+        $tokenStorage->getToken()->willReturn($token);
+        $token->getUser()->willReturn($user);
 
         $fullProduct->getAssociations()->willReturn([$XSELLForFullProduct]);
         $XSELLForFullProduct->getAssociationType()->willReturn($associationTypeXSELLForFullProduct);
-        $XSELLForFullProduct->getProducts()->willReturn([$productB, $productC]);
-        $XSELLForFullProduct->getProductModels()->willReturn(new ArrayCollection([$productModelA->getWrappedObject(), $productModelB->getWrappedObject()]));
-
         $associationTypeXSELLForFullProduct->getCode()->willReturn('X_SELL');
-        $authorizationChecker->isGranted([Attributes::VIEW], $productB)->willReturn(false);
-        $authorizationChecker->isGranted([Attributes::VIEW], $productC)->willReturn(true);
-        $authorizationChecker->isGranted([Attributes::VIEW], $productModelA)->willReturn(false);
-        $authorizationChecker->isGranted([Attributes::VIEW], $productModelB)->willReturn(true);
+
+        $productCollection->add($productB);
+        $productCollection->add($productC);
+        $productCollection->toArray()->willReturn([$productB, $productC]);
+        $productCollection->getIterator()->willReturn($productIterator);
+        $productIterator->rewind()->shouldBeCalled();
+        $productIterator->valid()->willReturn(true, true, false);
+        $productIterator->current()->willReturn($productB, $productC);
+        $productIterator->next()->shouldBeCalled();
+
+        $productModelCollection->add($productModelA);
+        $productModelCollection->add($productModelB);
+        $productModelCollection->toArray()->willReturn([$productModelA, $productModelB]);
+        $productModelCollection->getIterator()->willReturn($productModelIterator);
+        $productModelIterator->rewind()->shouldBeCalled();
+        $productModelIterator->valid()->willReturn(true, true, false);
+        $productModelIterator->current()->willReturn($productModelA, $productModelB);
+        $productModelIterator->next()->shouldBeCalled();
+
+        $XSELLForFullProduct->getProducts()->willReturn($productCollection);
+        $XSELLForFullProduct->getProductModels()->willReturn($productModelCollection);
+
+        $productCategoryAccessQuery->getGrantedItemIds([$productB, $productC], $user)->willReturn([2 => 2]);
+        $productModelCategoryAccessQuery->getGrantedItemIds([$productModelA, $productModelB], $user)->willReturn([4 => 4]);
 
         $filteredProduct->getAssociations()->willReturn([$XSELLForFilteredProduct]);
         $XSELLForFilteredProduct->getAssociationType()->willReturn($associationTypeXSELLForFilteredProduct);
@@ -83,8 +127,10 @@ class NotGrantedAssociatedProductMergerSpec extends ObjectBehavior
     }
 
     function it_merges_not_granted_associated_products_with_new_association_type_in_product(
-        $authorizationChecker,
         $associationSetter,
+        $tokenStorage,
+        $productCategoryAccessQuery,
+        $productModelCategoryAccessQuery,
         ProductInterface $filteredProduct,
         ProductInterface $fullProduct,
         ProductInterface $productB,
@@ -95,24 +141,55 @@ class NotGrantedAssociatedProductMergerSpec extends ObjectBehavior
         AssociationInterface $UPSELLForFilteredProduct,
         AssociationTypeInterface $associationTypeUPSELLForFilteredProduct,
         AssociationInterface $XSELLForFullProduct,
-        AssociationTypeInterface $associationTypeXSELLForFullProduct
+        AssociationTypeInterface $associationTypeXSELLForFullProduct,
+        TokenInterface $token,
+        UserInterface $user,
+        ArrayCollection $productCollection,
+        ArrayCollection $productModelCollection,
+        \ArrayIterator $productIterator,
+        \ArrayIterator $productModelIterator
     ) {
+        $productB->getId()->willReturn(1);
         $productB->getIdentifier()->willReturn('product_b');
+        $productC->getId()->willReturn(2);
         $productC->getIdentifier()->willReturn('product_c');
+        $productD->getId()->willReturn(3);
         $productD->getIdentifier()->willReturn('product_d');
+        $productModelA->getId()->willReturn(1);
         $productModelA->getCode()->willReturn('product_model_a');
+        $productModelB->getId()->willReturn(2);
         $productModelB->getCode()->willReturn('product_model_b');
+
+        $tokenStorage->getToken()->willReturn($token);
+        $token->getUser()->willReturn($user);
 
         $fullProduct->getAssociations()->willReturn([$XSELLForFullProduct]);
         $XSELLForFullProduct->getAssociationType()->willReturn($associationTypeXSELLForFullProduct);
-        $XSELLForFullProduct->getProducts()->willReturn([$productB]);
-        $XSELLForFullProduct->getProductModels()->willReturn(new ArrayCollection([$productModelA->getWrappedObject(), $productModelB->getWrappedObject()]));
+        $XSELLForFullProduct->getProducts()->willReturn($productCollection);
+        $XSELLForFullProduct->getProductModels()->willReturn($productModelCollection);
         $associationTypeXSELLForFullProduct->getCode()->willReturn('X_SELL');
-        $authorizationChecker->isGranted([Attributes::VIEW], $productB)->willReturn(false);
-        $authorizationChecker->isGranted([Attributes::VIEW], $productC)->willReturn(true);
-        $authorizationChecker->isGranted([Attributes::VIEW], $productD)->willReturn(true);
-        $authorizationChecker->isGranted([Attributes::VIEW], $productModelA)->willReturn(false);
-        $authorizationChecker->isGranted([Attributes::VIEW], $productModelB)->willReturn(true);
+
+        $productCollection->add($productB);
+        $productCollection->add($productC);
+        $productCollection->add($productD);
+        $productCollection->toArray()->willReturn([$productB, $productC, $productD]);
+        $productCollection->getIterator()->willReturn($productIterator);
+        $productIterator->rewind()->shouldBeCalled();
+        $productIterator->valid()->willReturn(true, true, true, false);
+        $productIterator->current()->willReturn($productB, $productC, $productD);
+        $productIterator->next()->shouldBeCalled();
+
+        $productModelCollection->add($productModelA);
+        $productModelCollection->add($productModelB);
+        $productModelCollection->toArray()->willReturn([$productModelA, $productModelB]);
+        $productModelCollection->getIterator()->willReturn($productModelIterator);
+        $productModelIterator->rewind()->shouldBeCalled();
+        $productModelIterator->valid()->willReturn(true, true, false);
+        $productModelIterator->current()->willReturn($productModelA, $productModelB);
+        $productModelIterator->next()->shouldBeCalled();
+
+        $productCategoryAccessQuery->getGrantedItemIds([$productB, $productC, $productD], $user)->willReturn([2 => 2, 3 => 3]);
+        $productModelCategoryAccessQuery->getGrantedItemIds([$productModelA, $productModelB], $user)->willReturn([2 => 2]);
 
         $filteredProduct->getAssociations()->willReturn([$UPSELLForFilteredProduct]);
         $UPSELLForFilteredProduct->getAssociationType()->willReturn($associationTypeUPSELLForFilteredProduct);
@@ -132,35 +209,64 @@ class NotGrantedAssociatedProductMergerSpec extends ObjectBehavior
     function it_merges_not_granted_associated_products_and_removes_granted_product(
         $authorizationChecker,
         $associationSetter,
+        $tokenStorage,
+        $productCategoryAccessQuery,
+        $productModelCategoryAccessQuery,
         ProductInterface $filteredProduct,
         ProductInterface $fullProduct,
         ProductInterface $productB,
         ProductInterface $productC,
-        ProductInterface $productD,
         ProductModelInterface $productModelA,
         ProductModelInterface $productModelB,
         AssociationInterface $XSELLForFilteredProduct,
         AssociationTypeInterface $associationTypeXSELLForFilteredProduct,
         AssociationInterface $XSELLForFullProduct,
         AssociationTypeInterface $associationTypeXSELLForFullProduct,
-        Collection $productModels,
-        \Iterator $iteratorProductModels
+        TokenInterface $token,
+        UserInterface $user,
+        ArrayCollection $productCollection,
+        ArrayCollection $productModelCollection,
+        \ArrayIterator $productIterator,
+        \ArrayIterator $productModelIterator
     ) {
+        $productB->getId()->willReturn(1);
         $productB->getIdentifier()->willReturn('product_b');
+        $productC->getId()->willReturn(2);
         $productC->getIdentifier()->willReturn('product_c');
-        $productD->getIdentifier()->willReturn('product_d');
+        $productModelA->getId()->willReturn(1);
         $productModelA->getCode()->willReturn('product_model_a');
+        $productModelB->getId()->willReturn(2);
         $productModelB->getCode()->willReturn('product_model_b');
+
+        $tokenStorage->getToken()->willReturn($token);
+        $token->getUser()->willReturn($user);
 
         $fullProduct->getAssociations()->willReturn([$XSELLForFullProduct]);
         $XSELLForFullProduct->getAssociationType()->willReturn($associationTypeXSELLForFullProduct);
-        $XSELLForFullProduct->getProducts()->willReturn([$productB, $productC]);
-        $XSELLForFullProduct->getProductModels()->willReturn(new ArrayCollection([$productModelA->getWrappedObject(), $productModelB->getWrappedObject()]));
+        $XSELLForFullProduct->getProducts()->willReturn($productCollection);
+        $XSELLForFullProduct->getProductModels()->willReturn($productModelCollection);
         $associationTypeXSELLForFullProduct->getCode()->willReturn('X_SELL');
-        $authorizationChecker->isGranted([Attributes::VIEW], $productB)->willReturn(false);
-        $authorizationChecker->isGranted([Attributes::VIEW], $productC)->willReturn(true);
-        $authorizationChecker->isGranted([Attributes::VIEW], $productModelA)->willReturn(true);
-        $authorizationChecker->isGranted([Attributes::VIEW], $productModelB)->willReturn(false);
+
+        $productCollection->add($productB);
+        $productCollection->add($productC);
+        $productCollection->toArray()->willReturn([$productB, $productC]);
+        $productCollection->getIterator()->willReturn($productIterator);
+        $productIterator->rewind()->shouldBeCalled();
+        $productIterator->valid()->willReturn(true, true, false);
+        $productIterator->current()->willReturn($productB, $productC);
+        $productIterator->next()->shouldBeCalled();
+
+        $productModelCollection->add($productModelA);
+        $productModelCollection->add($productModelB);
+        $productModelCollection->toArray()->willReturn([$productModelA, $productModelB]);
+        $productModelCollection->getIterator()->willReturn($productModelIterator);
+        $productModelIterator->rewind()->shouldBeCalled();
+        $productModelIterator->valid()->willReturn(true, true, false);
+        $productModelIterator->current()->willReturn($productModelA, $productModelB);
+        $productModelIterator->next()->shouldBeCalled();
+
+        $productCategoryAccessQuery->getGrantedItemIds([$productB, $productC], $user)->willReturn([2 => 2]);
+        $productModelCategoryAccessQuery->getGrantedItemIds([$productModelA, $productModelB], $user)->willReturn([1 => 1]);
 
         $filteredProduct->getAssociations()->willReturn([$XSELLForFilteredProduct]);
         $XSELLForFilteredProduct->getAssociationType()->willReturn($associationTypeXSELLForFilteredProduct);

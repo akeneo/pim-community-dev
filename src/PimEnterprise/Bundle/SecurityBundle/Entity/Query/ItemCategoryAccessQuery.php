@@ -17,6 +17,9 @@ use Doctrine\DBAL\Connection;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
+/**
+ * Returns the granted item depending on category access
+ */
 class ItemCategoryAccessQuery
 {
     /** @var EntityManagerInterface */

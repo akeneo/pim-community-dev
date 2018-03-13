@@ -17,6 +17,9 @@ services:
         arguments:
             - '@security.authorization_checker'
             - '@pim_catalog.updater.association_field_without_permission'
+            - '@pimee_security.query.product_category_access'
+            - '@pimee_security.query.product_model_category_access'
+            - '@security.token_storage'
 
     pimee_catalog.security.merger.not_granted_values:
         class: '%pimee_catalog.security.merger.not_granted_values.class%'
