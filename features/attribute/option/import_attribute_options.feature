@@ -33,3 +33,20 @@ Feature: Import attribute options
     When I visit the "Product information" group
     And I change the "Manufacturer" to "[Converse]"
     Then I should see the text "[Converse]"
+
+  @jira https://akeneo.atlassian.net/browse/PIM-7237
+  Scenario: Successfully create new attribute options with duplicate options codes for the same attribute
+    Given the following CSV file to import:
+      """
+      code;attribute;sort_order;label-en_US
+      new_red;color;0;New Red
+      new_red;color;0;Red is dead
+      """
+    And the following job "csv_footwear_option_import" configuration:
+      | filePath | %file to import% |
+    When I am on the "csv_footwear_option_import" import job page
+    And I launch the import job
+    And I wait for the "csv_footwear_option_import" job to finish
+    Then there should be the following attribute options:
+      | attribute | code    | label-en_US |
+      | color     | new_red | Red is dead |

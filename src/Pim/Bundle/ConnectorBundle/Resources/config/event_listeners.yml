@@ -1,0 +1,8 @@
+parameters:
+    pim_connector.reset_processed_items_batch_subscriber.class: Pim\Bundle\ConnectorBundle\EventListener\ResetProcessedItemsBatchSubscriber
+
+services:
+    pim_connector.reset_processed_items_batch_subscriber:
+        class: '%pim_connector.reset_processed_items_batch_subscriber.class%'
+        tags:
+            - { name: kernel.event_subscriber }
