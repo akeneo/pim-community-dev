@@ -48,11 +48,11 @@ Supported: ${this.getOperators().map((mappedOperator: Operator) => `"${mappedOpe
   abstract getOperators(): Operator[];
 
   normalize(): NormalizedFilter {
-    return {
+    return NormalizedFilter.create({
       field: this.field.identifier,
       operator: this.operator.identifier,
       value: this.value.getValue(),
-    };
+    });
   }
 
   public static createEmpty(field: Field): Filter {

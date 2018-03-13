@@ -1,6 +1,7 @@
 import {PropertyFilter} from 'pimfront/product-grid/domain/model/filter/filter';
 import {Value, Collection} from 'pimfront/product-grid/domain/model/filter/value';
-import {Operator, InArray} from 'pimfront/product-grid/domain/model/filter/operator';
+import {Operator} from 'pimfront/product-grid/domain/model/filter/operator';
+import InArray from 'pimfront/product-grid/domain/model/filter/operator/in-array';
 import {Field} from 'pimfront/product-grid/domain/model/field';
 
 export default class Status extends PropertyFilter {

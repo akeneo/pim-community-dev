@@ -1,16 +1,22 @@
 config:
     config:
-        pimfront/product-grid/application/configuration/filter-provider:
+        pimfront/product-grid/application/configuration/filter-model:
             property:
                 enabled:
-                    model: pimfront/product-grid/domain/model/filter/field/boolean
-                    view: pimfront/product-grid/application/component/filter/boolean
+                    model: pimfront/product-grid/domain/model/filter/property/boolean
                     label: Status
             attribute:
                 pim_catalog_boolean:
-                    model: pimfront/product-grid/domain/model/filter/field/boolean
-                    view: pimfront/product-grid/application/component/filter/boolean
+                    model: pimfront/product-grid/domain/model/filter/attribute/boolean
             operator:
-                ALL: pimfront/product-grid/domain/model/filter/operator
+                ALL: pimfront/product-grid/domain/model/filter/operator/all
             value:
                 - pimfront/product-grid/application/configuration/value
+
+        pimfront/product-grid/application/configuration/filter-view:
+            property:
+                enabled:
+                    view: pimfront/product-grid/application/component/filter/boolean
+            attribute:
+                pim_catalog_boolean:
+                    view: pimfront/product-grid/application/component/filter/boolean

@@ -1,6 +1,6 @@
 const fetcherRegistry = require('pimenrich/js/fetcher/fetcher-registry');
 const requireContext = require('require-context');
-import FilterInterface, {
+import Filter, {
   AttributeFilter,
   PropertyFilter,
   NormalizedFilter,
@@ -10,6 +10,7 @@ import {Field, Property, Attribute, RawAttributeInterface} from 'pimfront/produc
 import {Value} from 'pimfront/product-grid/domain/model/filter/value';
 import {BaseOperator as Operator} from 'pimfront/product-grid/domain/model/filter/operator';
 import {InvalidArgument} from 'pimfront/product-grid/domain/model/error';
+import {UnknownProperty, Missconfiguration} from 'pimfront/product-grid/application/configuration/error';
 
 interface PropertyFilterConfiguration {
   [property: string]: {
@@ -35,9 +36,6 @@ interface FilterConfiguration {
   value: string[];
 }
 
-export class UnknownProperty extends Error {}
-export class Missconfiguration extends Error {}
-
 export class FilterProvider {
   private configuration: FilterConfiguration;
   private fetcherRegistry: any;
@@ -53,7 +51,7 @@ export class FilterProvider {
     return new FilterProvider(configuration, fetcherRegistry, requireContext);
   }
 
-  public async getEmptyFilter(code: string = ''): Promise<FilterInterface> {
+  public async getEmptyFilter(code: string = ''): Promise<Filter> {
     if ('' === code) {
       throw new InvalidArgument('The method getEmptyFilter expect a code as parameter');
     }
@@ -63,7 +61,7 @@ export class FilterProvider {
     return FilterClass.createEmpty(await this.getField(code));
   }
 
-  public async getPopulatedFilter(filter: NormalizedFilter): Promise<FilterInterface> {
+  public async getPopulatedFilter(filter: NormalizedFilter): Promise<Filter> {
     if (!(filter instanceof NormalizedFilter)) {
       throw new InvalidArgument('The method getPopulatedFilter expect a valid NormalizedFilter');
     }
@@ -106,8 +104,8 @@ export class FilterProvider {
       const confPath = `
 config:
     config:
-        pimfront/product-grid/application/configuration/filter-provider:
-            field:
+        pimfront/product-grid/application/configuration/filter-model:
+            property:
                 ${code}:
                     model: your_model_path_here
       `;
@@ -134,7 +132,7 @@ config:
       const confPath = `
   config:
       config:
-          pimfront/product-grid/application/configuration/filter-provider:
+          pimfront/product-grid/application/configuration/filter-model:
               attribute:
                   ${attribute.type}:
                       model: your_model_path_here

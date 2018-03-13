@@ -1,8 +1,9 @@
-import {FilterProvider} from 'pimfront/product-grid/application/configuration/filter-provider';
-import BooleanFilter from 'pimfront/product-grid/domain/model/filter/field/boolean';
+import {FilterProvider} from 'pimfront/product-grid/application/configuration/filter-model';
+import BooleanPropertyFilter from 'pimfront/product-grid/domain/model/filter/property/boolean';
+import BooleanAttributeFilter from 'pimfront/product-grid/domain/model/filter/attribute/boolean';
 import {Property, Attribute} from 'pimfront/product-grid/domain/model/field';
 import {NormalizedFilter} from 'pimfront/product-grid/domain/model/filter/filter';
-import {All} from 'pimfront/product-grid/domain/model/filter/operator';
+import All from 'pimfront/product-grid/domain/model/filter/operator/all';
 import valueProvider from 'pimfront/product-grid/application/configuration/value';
 import {Null} from 'pimfront/product-grid/domain/model/filter/value';
 
@@ -66,11 +67,11 @@ const moduleLoader = modulePath => {
   switch (modulePath) {
     case 'a/model/path/to/a/property/filter':
       return {
-        default: BooleanFilter,
+        default: BooleanPropertyFilter,
       };
     case 'a/model/path/to/an/attribute/filter':
       return {
-        default: BooleanFilter,
+        default: BooleanAttributeFilter,
       };
     case 'an/operator/path':
       return {
@@ -90,7 +91,6 @@ let filterProvider = new FilterProvider(config, fetcherRegistry, moduleLoader);
 describe('>>>APPLICATION --- config - filters', () => {
   test('It throw an exception for the given unknown property code', async () => {
     expect.assertions(1);
-    const filters = new FilterProvider(config, fetcherRegistry, moduleLoader);
 
     try {
       await filterProvider.getEmptyFilter('no existing filter');
@@ -103,7 +103,6 @@ describe('>>>APPLICATION --- config - filters', () => {
 
   test('It returns an empty array if no codes are passed', async () => {
     expect.assertions(1);
-    const filters = new FilterProvider(config, fetcherRegistry, moduleLoader);
     try {
       await filterProvider.getEmptyFilter();
     } catch (error) {
@@ -111,11 +110,11 @@ describe('>>>APPLICATION --- config - filters', () => {
     }
   });
 
-  test('It provides me a filter for the given field code', async () => {
+  test('It provides me a filter for the given property code', async () => {
     expect.assertions(1);
     const statusProperty = Property.createFromProperty({identifier: 'enabled', label: 'Status'});
 
-    const expectedStatus = BooleanFilter.createEmpty(statusProperty);
+    const expectedStatus = BooleanPropertyFilter.createEmpty(statusProperty);
 
     const status = await filterProvider.getEmptyFilter('enabled');
 
@@ -129,7 +128,7 @@ describe('>>>APPLICATION --- config - filters', () => {
       type: 'pim_catalog_boolean',
     });
 
-    const expectedRefurbished = BooleanFilter.createEmpty(refurbishedAttribute);
+    const expectedRefurbished = BooleanAttributeFilter.createEmpty(refurbishedAttribute);
 
     const refurbished = await filterProvider.getEmptyFilter('refurbished');
 
@@ -148,7 +147,7 @@ describe('>>>APPLICATION --- config - filters', () => {
     }
   });
 
-  test('It throw a missconfigured error if I have an error in my field configuration', async () => {
+  test('It throw a missconfigured error if I have an error in my property configuration', async () => {
     expect.assertions(3);
 
     try {
@@ -162,7 +161,6 @@ describe('>>>APPLICATION --- config - filters', () => {
 
   test('It throw an exception for the given unknown property code', async () => {
     expect.assertions(1);
-    const filters = new FilterProvider(config, fetcherRegistry, moduleLoader);
 
     const unknownNormalizedFilter = NormalizedFilter.create({field: 'no existing filter', operator: '=', value: true});
 
@@ -177,7 +175,6 @@ describe('>>>APPLICATION --- config - filters', () => {
 
   test('It returns an empty array if no codes are passed', async () => {
     expect.assertions(1);
-    const filters = new FilterProvider(config, fetcherRegistry, moduleLoader);
     try {
       await filterProvider.getPopulatedFilter();
     } catch (error) {
@@ -191,7 +188,7 @@ describe('>>>APPLICATION --- config - filters', () => {
     const allOperator = All.create();
     const nullValue = Null.fromValue(null);
 
-    const expectedStatus = BooleanFilter.create(statusProperty, allOperator, nullValue);
+    const expectedStatus = BooleanPropertyFilter.create(statusProperty, allOperator, nullValue);
 
     const statusNormalizedFilter = NormalizedFilter.create({field: 'enabled', operator: 'ALL', value: null});
 
@@ -209,7 +206,7 @@ describe('>>>APPLICATION --- config - filters', () => {
     const allOperator = All.create();
     const nullValue = Null.fromValue(null);
 
-    const expectedRefurbished = BooleanFilter.create(refurbishedAttribute, allOperator, nullValue);
+    const expectedRefurbished = BooleanAttributeFilter.create(refurbishedAttribute, allOperator, nullValue);
 
     const normalizedFilter = NormalizedFilter.create({field: 'refurbished', operator: 'ALL', value: null});
 

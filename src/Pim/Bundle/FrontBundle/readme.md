@@ -13,6 +13,8 @@
 - number of result [DONE] <- test
 - add option to test commands [DONE]
 - filter
+    - models [DONE]
+    - views
 - sort
 - add translation to acceptance
 - manage filters
