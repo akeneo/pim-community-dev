@@ -18,3 +18,4 @@
 - Move `PimEnterprise\Bundle\ApiBundle\Controller\ProductProposalController` to `PimEnterprise\Bundle\WorkflowBundle\Controller\Api\ProductProposalController`
 - Move `PimEnterprise\Bundle\ApiBundle\Router\ProxyProductRouter` to `PimEnterprise\Bundle\WorkflowBundle\Router\ProxyProductRouter`
 - Move `PimEnterprise\Component\Api\Normalizer\ProductNormalizer` to `PimEnterprise\Component\Workflow\Normalizer\ExternalApi\ProductNormalizer`
+- Move `PimEnterprise\Bundle\ApiBundle\Doctrine\ORM\Repository\AssetRepository` to `PimEnterprise\Bundle\ProductAssetBundle\Doctrine\ORM\Repository\ExternalApi\AssetRepository`

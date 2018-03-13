@@ -50,7 +50,7 @@ JSON;
 
         $client->request('POST', 'api/rest/v1/assets', [], [], [], $data);
 
-        $asset = $this->get('pimee_api.repository.asset')->findOneByIdentifier('new_asset');
+        $asset = $this->get('pimee_product_asset.repository.asset')->findOneByIdentifier('new_asset');
         $normalizedAsset = [
             'code'        => 'new_asset',
             'localizable'   => true,

@@ -104,7 +104,7 @@ abstract class AbstractAssetTestCase extends ApiTestCase
         $ecommerceChinaChannel = $this->get('pim_api.repository.channel')->findOneByIdentifier('ecommerce_china');
         $tabletChannel = $this->get('pim_api.repository.channel')->findOneByIdentifier('tablet');
 
-        $nonLocalizableAsset = $this->get('pimee_api.repository.asset')->findOneByIdentifier('non_localizable_asset');
+        $nonLocalizableAsset = $this->get('pimee_product_asset.repository.asset')->findOneByIdentifier('non_localizable_asset');
         $nonLocalizableReference = $nonLocalizableAsset->getReference()->getFileInfo()->getKey();
         $nonLocalizableVariationEcommerce = $nonLocalizableAsset
             ->getVariation($ecommerceChannel)
@@ -192,7 +192,7 @@ JSON;
         $french = $this->get('pim_api.repository.locale')->findOneByIdentifier('fr_FR');
         $german = $this->get('pim_api.repository.locale')->findOneByIdentifier('de_DE');
 
-        $localizableAsset = $this->get('pimee_api.repository.asset')->findOneByIdentifier('localizable_asset');
+        $localizableAsset = $this->get('pimee_product_asset.repository.asset')->findOneByIdentifier('localizable_asset');
 
         $localizableReferenceChinese = $localizableAsset->getReference($chinese)->getFileInfo()->getKey();
         $localizableReferenceEnglish = $localizableAsset->getReference($english)->getFileInfo()->getKey();

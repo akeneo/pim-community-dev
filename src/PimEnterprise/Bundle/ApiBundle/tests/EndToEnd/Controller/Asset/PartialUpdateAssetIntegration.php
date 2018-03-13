@@ -50,7 +50,7 @@ JSON;
 
         $client->request('PATCH', 'api/rest/v1/assets/new_asset', [], [], [], $data);
 
-        $asset = $this->get('pimee_api.repository.asset')->findOneByIdentifier('new_asset');
+        $asset = $this->get('pimee_product_asset.repository.asset')->findOneByIdentifier('new_asset');
         $normalizedAsset = [
             'code'        => 'new_asset',
             'localizable' => true,
@@ -101,7 +101,7 @@ JSON;
 
         $client->request('PATCH', 'api/rest/v1/assets/non_localizable_asset', [], [], [], $data);
 
-        $asset = $this->get('pimee_api.repository.asset')->findOneByIdentifier('non_localizable_asset');
+        $asset = $this->get('pimee_product_asset.repository.asset')->findOneByIdentifier('non_localizable_asset');
         $normalizedAsset = [
             'code'        => 'non_localizable_asset',
             'localizable' => false,

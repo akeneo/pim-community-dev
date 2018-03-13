@@ -275,7 +275,7 @@ JSON;
      */
     private function getVariationFile(string $assetCode, string $channelCode, ?string $localeCode): string
     {
-        $asset = $this->get('pimee_api.repository.asset')->findOneByIdentifier($assetCode);
+        $asset = $this->get('pimee_product_asset.repository.asset')->findOneByIdentifier($assetCode);
         $this->assertNotNull($asset);
 
         $channel = $this->get('pim_api.repository.channel')->findOneByIdentifier($channelCode);

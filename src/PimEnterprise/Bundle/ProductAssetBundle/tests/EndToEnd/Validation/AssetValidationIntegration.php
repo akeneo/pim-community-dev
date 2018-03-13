@@ -39,7 +39,7 @@ class AssetValidationIntegration extends TestCase
 
     public function testAssetImmutableCode()
     {
-        $asset = $this->get('pimee_api.repository.asset')->findOneByIdentifier('cat');
+        $asset = $this->get('pimee_product_asset.repository.asset')->findOneByIdentifier('cat');
         $this->getUpdater()->update($asset, ['code' => 'new_code']);
 
         $violations = $this->getValidator()->validate($asset);

@@ -283,7 +283,7 @@ JSON;
 
         $locale = $this->get('pim_api.repository.locale')->findOneByIdentifier($localeCode);
         $channel = $this->get('pim_api.repository.channel')->findOneByIdentifier($channelCode);
-        $asset = $this->get('pimee_api.repository.asset')->findOneByIdentifier($assetCode);
+        $asset = $this->get('pimee_product_asset.repository.asset')->findOneByIdentifier($assetCode);
         $variation = $asset->getVariation($channel, $locale);
 
         $fileInfo = $variation->getFileInfo();

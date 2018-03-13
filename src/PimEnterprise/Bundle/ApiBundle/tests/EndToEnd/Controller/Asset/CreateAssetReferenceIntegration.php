@@ -115,7 +115,7 @@ JSON;
         $tablet = $this->get('pim_api.repository.channel')->findOneByIdentifier('tablet');
 
         $locale = $this->get('pim_api.repository.locale')->findOneByIdentifier('en_US');
-        $asset = $this->get('pimee_api.repository.asset')->findOneByIdentifier('localizable_asset_without_references');
+        $asset = $this->get('pimee_product_asset.repository.asset')->findOneByIdentifier('localizable_asset_without_references');
         $reference = $asset->getReference($locale);
 
         Assert::assertNull($reference->getVariation($ecommerce)->getFileInfo());
@@ -128,7 +128,7 @@ JSON;
      */
     public function testItDoesNotGenerateLockedVariations()
     {
-        $asset = $this->get('pimee_api.repository.asset')->findOneByIdentifier('localizable_asset');
+        $asset = $this->get('pimee_product_asset.repository.asset')->findOneByIdentifier('localizable_asset');
         $ecommerce = $this->get('pim_api.repository.channel')->findOneByIdentifier('ecommerce');
         $locale = $this->get('pim_api.repository.locale')->findOneByIdentifier('en_US');
 
@@ -281,7 +281,7 @@ JSON;
         $this->get('doctrine.orm.default_entity_manager')->clear();
 
         $locale = $this->get('pim_api.repository.locale')->findOneByIdentifier($localeCode);
-        $asset = $this->get('pimee_api.repository.asset')->findOneByIdentifier($assetCode);
+        $asset = $this->get('pimee_product_asset.repository.asset')->findOneByIdentifier($assetCode);
         $reference = $asset->getReference($locale);
         $referenceFileInfo = $reference->getFileInfo();
 
@@ -305,7 +305,7 @@ JSON;
         int $expectedNumberVariations
     ):void {
         $locale = $this->get('pim_api.repository.locale')->findOneByIdentifier($localeCode);
-        $asset = $this->get('pimee_api.repository.asset')->findOneByIdentifier($assetCode);
+        $asset = $this->get('pimee_product_asset.repository.asset')->findOneByIdentifier($assetCode);
         $reference = $asset->getReference($locale);
         $referenceFileInfo = $reference->getFileInfo();
 

@@ -1,13 +1,13 @@
 <?php
 
-namespace spec\PimEnterprise\Bundle\ApiBundle\Doctrine\ORM\Repository;
+namespace spec\PimEnterprise\Bundle\ProductAssetBundle\Doctrine\ORM\Repository\ExternalApi;
 
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
-use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\Mapping\ClassMetadata;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Api\Repository\SearchAfterPageableRepositoryInterface;
-use PimEnterprise\Bundle\ApiBundle\Doctrine\ORM\Repository\AssetRepository;
+use PimEnterprise\Bundle\ProductAssetBundle\Doctrine\ORM\Repository\ExternalApi\AssetRepository;
 use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
 use PimEnterprise\Component\ProductAsset\Repository\AssetRepositoryInterface;
 

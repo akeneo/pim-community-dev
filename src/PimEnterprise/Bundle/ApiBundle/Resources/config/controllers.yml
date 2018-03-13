@@ -112,7 +112,7 @@ services:
     pimee_api.controller.asset_reference:
         class: '%pimee_api.controller.asset_reference.class%'
         arguments:
-            - '@pimee_api.repository.asset'
+            - '@pimee_product_asset.repository.asset'
             - '@pim_api.repository.locale'
             - '@akeneo_file_storage.file_storage.filesystem_provider'
             - '@akeneo_file_storage.file_storage.file.streamed_file_fetcher'
@@ -130,7 +130,7 @@ services:
     pimee_api.controller.asset_variation:
         class: '%pimee_api.controller.asset_variation.class%'
         arguments:
-            - '@pimee_api.repository.asset'
+            - '@pimee_product_asset.repository.asset'
             - '@pim_api.repository.channel'
             - '@pim_api.repository.locale'
             - '@akeneo_file_storage.file_storage.filesystem_provider'
@@ -147,9 +147,9 @@ services:
     pimee_api.controller.asset:
         class : '%pimee_api.controller.asset.class%'
         arguments:
-            - '@pimee_api.repository.asset'
-            - '@pimee_api.repository.asset'
-            - '@pimee_api.repository.asset'
+            - '@pimee_product_asset.repository.asset'
+            - '@pimee_product_asset.repository.asset'
+            - '@pimee_product_asset.repository.asset'
             - '@pim_serializer'
             - '@pim_api.pagination.parameter_validator'
             - '@pim_api.pagination.offset_hal_paginator'

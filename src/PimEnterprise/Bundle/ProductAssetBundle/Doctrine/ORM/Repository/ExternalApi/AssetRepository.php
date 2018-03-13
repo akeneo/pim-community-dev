@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Bundle\ApiBundle\Doctrine\ORM\Repository;
+namespace PimEnterprise\Bundle\ProductAssetBundle\Doctrine\ORM\Repository\ExternalApi;
 
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Doctrine\ORM\EntityManagerInterface;
