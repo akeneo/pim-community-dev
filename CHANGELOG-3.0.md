@@ -4,6 +4,10 @@
 
 - TIP-236: Merge Oro User bundle/component into Akeneo User bundle/component 
 
+## Enhancements
+
+- TIP-832: Enable regional languages for UI
+
 ## BC breaks
 
 - Move `Pim\Bundle\UserBundle\Entity\UserInterface` to `Pim\Component\User\Model\UserInterface`
