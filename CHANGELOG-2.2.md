@@ -7,6 +7,7 @@
 - PIM-7090: Add completeness filter on product model export builder
 - PIM-6803: Message when delete a family with family variant.
 - PIM-7143: Be able to delete products and product models in mass using a backend job
+- PIM-7112: Add lock display on images/assets when user has no edit right.
 
 ## BC breaks
 
