@@ -175,6 +175,7 @@ Request: Request
 Check Email: Check Email
 password_reset_email_sent: An email has been sent to %email%. It contains a link you must click to reset your password.
 Go to homepage: Go to homepage
+
 oro.user.form.choose_user: Choose a user...
 
 change_password:
