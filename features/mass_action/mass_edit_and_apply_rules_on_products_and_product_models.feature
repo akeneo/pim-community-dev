@@ -80,8 +80,8 @@ Feature: Apply rules after a mass edit execution
     And the product "bag_uni_red" should have the following values:
       | description-en_US-ecommerce | A cheap bag |
     And the product "a_bag" should have the following values:
-      | name-en_US                  | A Just a bag |
-      | description-en_US-ecommerce | A cheap bag  |
+      | name-en_US                  | Just a bag  |
+      | description-en_US-ecommerce | A cheap bag |
     But there should be the following product model:
       | code        | description-en_US-ecommerce |
       | bag_2_small | A nice red bag              |
