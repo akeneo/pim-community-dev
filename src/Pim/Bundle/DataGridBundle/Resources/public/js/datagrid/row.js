@@ -42,6 +42,20 @@ function($, _, Backgrid) {
         },
 
         /**
+         * {@inheritdoc}
+         */
+        render: function () {
+            Backgrid.Row.prototype.render.apply(this, arguments);
+
+            const isChecked = this.$el.find('input[type=checkbox]').prop('checked');
+            if (true === isChecked) {
+                this.$el.addClass('AknGrid-bodyRow--selected');
+            }
+
+            return this;
+        },
+
+        /**
          * jQuery event handler for row click, trigger "clicked" event if row element was clicked
          *
          * @param {Event} e

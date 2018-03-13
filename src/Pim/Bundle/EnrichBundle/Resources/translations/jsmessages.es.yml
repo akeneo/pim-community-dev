@@ -1,5 +1,4 @@
 confirmation:
-  title: Confirmar
   remove:
     item: '¿Está seguro de que desea borrar este elemento?'
     association_type: '¿Está seguro que desea eliminar este tipo de asociación?'
@@ -159,7 +158,7 @@ pim_enrich:
       history:
         version: Versión
         author: Autor
-        logged_at: Sesión iniciada el
+        logged_at: Registrado el
         from: De
         modified: Modificado
         old_value: Valor anterior
@@ -170,7 +169,6 @@ pim_enrich:
         deletion_failed: El producto no puede ser eliminado.
         update_successful: Producto actualizado con éxito.
         update_failed: El producto no puede ser actualizado.
-        field_not_ready: "El producto no se puede guardar ahora. Los siguientes campos no están listos: {{ fields }}"
         already_in_upload: Un fichero ya está siendo cargado por este atributo en el local "{{ locale }}" y objetivo "{{ scope }}"
       error:
         upload: Ocurrió un error durante la carga del fichero
@@ -228,7 +226,10 @@ pim_enrich:
         update_successful: Modelo de producto actualizado exitosamente. La integridad de sus productos variantes se recalculará.
         update_failed: El modelo de producto no pudo ser actualizado.
         field_not_ready: "El modelo de producto no puede ser guardado en el momento. Los siguientes campos no están listos: {{ fields }}"
+      read_only_parent_attribute_from_common: Este atributo se puede actualizar en los atributos comunes.
+      read_only_parent_attribute_from_model: "Este atributo se puede actualizar en los atributos de {{ axes }}"
       variant_axis: Eje variante
+      title: modelos de productos
       add_child:
         create: Añadir nuevo
         cancel: Cancelar
@@ -313,14 +314,23 @@ pim_enrich:
       message:
         created: Familia creada correctamente
       variant:
+        common:
+          title: Atributos comunes
+          empty: No hay ningún atributo común
         axis.label: Eje variante
         create_label: Crear una nueva variante de familia
         create_description: En una variante de familia, puede definir una estructura para productos con variantes. Elija el número de los distintos niveles de variantes gestionados, los atributos utilizados como ejes variantes para cada nivel y luego defina cómo se distribuyen los atributos.
+        update_description: Arrastrar & soltar los atributos al nivel de variante seleccionado para tener estos atributos administrados en el nivel de dicha variante.
         create: Crear
         cancel: Cancelar
         code: Código
         label: Etiqueta
         levels: Niveles de variantes
+        confirm_attribute_removal:
+          message: Al remover estos atributos los pondrá de vuelta en los atributos comunes de la variante familiar y removerá los valores de los productos variantes
+    family_variant:
+      info:
+        update_successful: Variante familiar exitosamente actualizada. Los productos con variantes serán actualizados con sus cambios.
     attribute_option:
       code: Código
       label: Etiqueta
@@ -677,16 +687,11 @@ pim_enrich:
             available_locales: Locales disponibles
             code: Código
             date_max: Fecha máx
-            date_min: Fecha min
             default_metric_unit: Unidad métrica predeterminada
             group: Grupo de atributos
             is_locale_specific: Local específico
             localizable: Valor por local
-            max_characters: Caracteres Max
-            max_file_size: Tamaño máximo de archivo (MB)
             metric_family: Familia métrica
-            number_max: Número máx
-            number_min: Número min
             scopable: Valor por canal
             type: Tipo
             unique: Valor único
@@ -711,9 +716,7 @@ pim_enrich:
           toolbox:
             select_attributes: Agregar atributos
             add: Agregar
-    basket:
-      title: Cesta
-      empty_basket: La cesta está vacía
+            attributes_groups_selected: '{{ itemsCount }} grupo(s) seleccionado'
   job:
     upload: Soltar su archivo {{ type }} aquí, o haga clic para buscar en el disco
   export:
@@ -727,7 +730,7 @@ pim_enrich:
       filter:
         channel:
           title: Canal
-          help: El canal define el objetivo de los valores del producto, los locales utilizados para seleccionar los datos, y el árbol usado para seleccionar los productos.
+          help: El canal define el alcance de los valores del producto, los locales utilizados para seleccionar los datos, y el árbol usado para seleccionar los productos.
         locales:
           title: Locales
           help: "Los locales definen los valores de producto traducidos a exportar. Ej.: sólo obtener información de producto en inglés."
@@ -829,7 +832,6 @@ pim_enrich:
             DOES NOT CONTAIN: No contiene
             "=": Es igual que
             STARTS WITH: Comienza por
-            ENDS WITH: Termina por
             EMPTY: Está vacía
             NOT EMPTY: No está vacío
         date:
@@ -916,6 +918,9 @@ pim_enrich:
           field: Grupos
         add_to_category:
           label: Agregar a categorias
+          description: Los productos se colocará en las siguientes categorías, la posición actual se mantendrá.
+        move_to_category:
+          description: Los productos se colocarán en las siguientes categorías, la posición actual se perderá.
         remove_from_category:
           description: Se eliminarán los productos de las siguientes categorías.
     family:
@@ -967,6 +972,9 @@ batch_jobs:
     label: Editar atributos
     perform:
       label: Editar atributos
+  csv_product_quick_export:
+    perform:
+      label: Exportación rápida del producto en CSV
   csv_product_export:
     label: Exportar productos a CSV
     export.label: Exportar productos
@@ -1129,7 +1137,6 @@ batch_jobs:
     import.label: Importar canales
   xlsx_locale_import:
     label: Importar locales en XLSX
-    validation.label: Validación de archivo
     import.label: Importar locales
   xlsx_attribute_group_import:
     label: Importar grupo de atributos en XLSX
@@ -1172,6 +1179,7 @@ pim_menu:
     group_type: Tipos de grupo
     locale: Locales
     product: Productos
+    product_model: Modelo de productos
     published_product: Productos publicados
     export_history: Histórico de exportaciones
     export_profile: Perfiles de exportación
@@ -1184,6 +1192,7 @@ pim_menu:
     user_role: Roles
     info: Información del sistema
     job_tracker: Seguimiento de procesos
+    api_connection: Conexiones API
   navigation:
     activity: Actividad de navegación
     system: Sistema de navegación
