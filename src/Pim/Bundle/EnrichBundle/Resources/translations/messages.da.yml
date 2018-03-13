@@ -363,7 +363,7 @@ flash:
     created: Attributten er blevet oprettet
     updated: Attributten opdateret
     removed: Attributten blev slettet
-    identifier not removable: Id attribut kan ikke fjernes
+    identifier_not_removable: Id attribut kan ikke fjernes
   attribute group:
     created: Attributgruppe oprettet
     updated: Attributgruppe opdateret

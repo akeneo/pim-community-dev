@@ -337,7 +337,7 @@ flash:
     created: Atributo creado correctamente
     updated: Atributo actualizado correctamente
     removed: Atributo eliminado correctamente
-    identifier not removable: El identificador de atributo no puede ser eliminado
+    identifier_not_removable: El identificador de atributo no puede ser eliminado
   attribute group:
     created: Grupo de atributos creado correctamente
     updated: Grupo de atributos actualizado correctamente

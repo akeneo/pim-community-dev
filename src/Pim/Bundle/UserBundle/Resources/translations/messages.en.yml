@@ -173,5 +173,5 @@ Username or Email: Username or Email
 Forgot Password: Forgot Password
 Request: Request
 Check Email: Check Email
-password_reset_email_sent: An email has been sent to %email%. It contains a link you must click to reset your password.
+password_reset_email_sent: An email has been sent to the user. It contains a link to reset the password.
 Go to homepage: Go to homepage

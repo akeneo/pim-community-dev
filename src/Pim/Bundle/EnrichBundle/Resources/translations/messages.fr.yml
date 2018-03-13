@@ -363,7 +363,7 @@ flash:
     created: Attribut créé avec succès
     updated: Attribut mis à jour avec succès
     removed: Attribut supprimé avec succès
-    identifier not removable: Un attribut de type identifiant ne peut pas être supprimé
+    identifier_not_removable: Un attribut de type identifiant ne peut pas être supprimé
   attribute group:
     created: Groupe d'attributs créé avec succès
     updated: Groupe d'attributs mis à jour avec succès

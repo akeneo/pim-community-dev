@@ -2,6 +2,26 @@
 
 ## Bug fixes
 
+- PIM-7214: Fix a bug that prevents to select multiple items across pages in Products, Family and associations grids
+
+# 2.0.17 (2018-03-06)
+
+## Improvements
+
+- GITHUB-7730: Improve product and product model import performances by using cached repositories
+- GITHUB-7757: Fix wrong position of warning icon, thanks @AngelVazquezArroyo !
+
+## Bug fixes
+
+- PIM-7118: Fix bug related to product export
+- PIM-7199: Display a message when trying to delete the pim identifier attribute
+- PIM-7217: Fix missing and disabled fields in product model import
+- PIM-7167: Fix slowness when going back to the Product grid when a family is used in the filter
+
+# 2.0.16 (2018-02-22)
+
+## Bug fixes
+
 - PIM-7170: Fix media files unnecessarily generated during quick export
 - PIM-7155: Fix remove a locale from a channel
 

@@ -4,13 +4,11 @@ Feature: Delete an attribute
   As a product manager
   I need to delete a text attribute
 
-  Background:
-    Given the "footwear" catalog configuration
-    And I am logged in as "Julia"
-
   @jira https://akeneo.atlassian.net/browse/PIM-5347
   Scenario: Successfully delete and recreate a text attribute used in a product and filter on it
-    Given I am on the products grid
+    Given the "footwear" catalog configuration
+    And I am logged in as "Julia"
+    And I am on the products grid
     And I create a product
     And I fill in the following information in the popin:
       | SKU    | caterpillar_1 |
@@ -38,3 +36,13 @@ Feature: Delete an attribute
     And I should be able to use the following filters:
       | filter | operator | value          | result |
       | name   | contains | My caterpillar |        |
+
+  @jira https://akeneo.atlassian.net/browse/PIM-7199
+  Scenario: An identifier attribute cannot be deleted
+    Given the "default" catalog configuration
+    And I am logged in as "Julia"
+    When I am on the attributes page
+    And I click on the "delete" action of the row which contains "SKU"
+    And I confirm the deletion
+    Then I should see the text "Identifier attribute can not be removed"
+    And there should be a "SKU" attribute
