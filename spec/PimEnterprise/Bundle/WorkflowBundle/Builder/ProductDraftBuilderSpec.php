@@ -11,9 +11,9 @@ use Pim\Component\Catalog\Factory\ValueCollectionFactoryInterface;
 use Pim\Component\Catalog\Factory\ValueFactory;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Model\ValueCollection;
 use Pim\Component\Catalog\Model\ValueCollectionInterface;
 use Pim\Component\Catalog\Model\ValueInterface;
-use Pim\Component\Catalog\Model\VariantProductInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Builder\ProductDraftBuilder;
 use PimEnterprise\Component\Workflow\Factory\ProductDraftFactory;
@@ -64,6 +64,7 @@ class ProductDraftBuilderSpec extends ObjectBehavior
         ValueCollectionInterface $newValuesCollection,
         ValueCollectionInterface $originalValuesCollection
     ) {
+        $product->isVariant()->willReturn(false);
         $rawValues = [
             'name' => [
                 '<all_channels>' => [
@@ -91,7 +92,7 @@ class ProductDraftBuilderSpec extends ObjectBehavior
         $textAttribute->getCode()->willReturn('name');
         $textAttribute->getType()->willReturn('text');
         $textAttribute->isUnique()->willReturn(false);
-        $attributeRepository->getAttributeTypeByCodes(['name'])->willReturn(['name' => 'text']);
+        $attributeRepository->findOneByIdentifier('name')->willReturn($textAttribute);
         $comparatorRegistry->getAttributeComparator('text')->willReturn($textComparator);
         $textComparator->compare(
             ['data' => 'product', 'locale' => null, 'scope' => null],
@@ -105,6 +106,7 @@ class ProductDraftBuilderSpec extends ObjectBehavior
         $newTextValue->getLocale()->willReturn(null);
 
         $productDraftRepo->findUserProductDraft($product, 'mary')->willReturn($productDraft);
+        $productDraft->setValues(new ValueCollection([$newTextValue->getWrappedObject()]))->shouldBeCalled();
         $productDraft->setChanges([
             'values' => ['name' => [['data' => 'product', 'locale' => null, 'scope' => null]]]
         ])->shouldBeCalled();
@@ -113,7 +115,7 @@ class ProductDraftBuilderSpec extends ObjectBehavior
         $this->build($product, 'mary')->shouldReturn($productDraft);
     }
 
-    function it_builds_a_simple_product_draft_when_data_submitted_is_new(
+    function it_builds_a_simple_product_draft_when_submitted_data_is_new(
         $normalizer,
         $valueCollectionFactory,
         $comparatorRegistry,
@@ -129,6 +131,7 @@ class ProductDraftBuilderSpec extends ObjectBehavior
         ValueCollectionInterface $newValuesCollection,
         ValueCollectionInterface $originalValuesCollection
     ) {
+        $product->isVariant()->willReturn(false);
         $rawValues = [];
 
         $newValuesCollection->add($textValue);
@@ -146,7 +149,7 @@ class ProductDraftBuilderSpec extends ObjectBehavior
         $textAttribute->getCode()->willReturn('name');
         $textAttribute->getType()->willReturn('text');
         $textAttribute->isUnique()->willReturn(false);
-        $attributeRepository->getAttributeTypeByCodes(['name'])->willReturn(['name' => 'text']);
+        $attributeRepository->findOneByIdentifier('name')->willReturn($textAttribute);
         $comparatorRegistry->getAttributeComparator('text')->willReturn($textComparator);
         $textComparator->compare(
             ['data' => 'product', 'locale' => null, 'scope' => null],
@@ -160,6 +163,7 @@ class ProductDraftBuilderSpec extends ObjectBehavior
         $newTextValue->getLocale()->willReturn(null);
 
         $productDraftRepo->findUserProductDraft($product, 'mary')->willReturn($productDraft);
+        $productDraft->setValues(new ValueCollection([$newTextValue->getWrappedObject()]))->shouldBeCalled();
         $productDraft->setChanges([
             'values' => ['name' => [['data' => 'product', 'locale' => null, 'scope' => null]]]
         ])->shouldBeCalled();
@@ -180,6 +184,7 @@ class ProductDraftBuilderSpec extends ObjectBehavior
         ValueCollectionInterface $newValuesCollection,
         ValueCollectionInterface $originalValuesCollection
     ) {
+        $product->isVariant()->willReturn(false);
         $rawValues = [
             'name' => [
                 '<all_channels>' => [
@@ -205,7 +210,7 @@ class ProductDraftBuilderSpec extends ObjectBehavior
         ]);
 
         $textAttribute->getType()->willReturn('text');
-        $attributeRepository->getAttributeTypeByCodes(['name'])->willReturn(['name' => 'text']);
+        $attributeRepository->findOneByIdentifier('name')->willReturn($textAttribute);
         $comparatorRegistry->getAttributeComparator('text')->willReturn($textComparator);
         $textComparator->compare(
             ['data' => 'my product', 'locale' => null, 'scope' => null],
@@ -215,7 +220,7 @@ class ProductDraftBuilderSpec extends ObjectBehavior
         $this->build($product, 'mary')->shouldReturn(null);
     }
 
-    function it_throws_an_exception_if_attribute_type_is_unknown(
+    function it_throws_an_exception_if_the_attribute_does_not_exist(
         $normalizer,
         $valueCollectionFactory,
         $attributeRepository,
@@ -225,6 +230,7 @@ class ProductDraftBuilderSpec extends ObjectBehavior
         ValueCollectionInterface $newValuesCollection,
         ValueCollectionInterface $originalValuesCollection
     ) {
+        $product->isVariant()->willReturn(false);
         $rawValues = [
             'name' => [
                 '<all_channels>' => [
@@ -250,9 +256,7 @@ class ProductDraftBuilderSpec extends ObjectBehavior
         ]);
 
         $textAttribute->getCode()->willReturn('name');
-        $textAttribute->getType()->willReturn('text');
-        $textAttribute->isUnique()->willReturn(false);
-        $attributeRepository->getAttributeTypeByCodes(['name'])->willReturn(['yes_no' => 'boolean']);
+        $attributeRepository->findOneByIdentifier('name')->willReturn(null);
 
         $this->shouldThrow(
             new \LogicException('Cannot find attribute with code "name".')
@@ -266,7 +270,7 @@ class ProductDraftBuilderSpec extends ObjectBehavior
         $attributeRepository,
         $valueFactory,
         $productDraftRepo,
-        VariantProductInterface $variantProduct,
+        ProductInterface $variantProduct,
         AttributeInterface $textAttribute,
         ValueInterface $textValue,
         ValueInterface $newTextValue,
@@ -275,6 +279,7 @@ class ProductDraftBuilderSpec extends ObjectBehavior
         ValueCollectionInterface $newValuesCollection,
         ValueCollectionInterface $originalValuesCollection
     ) {
+        $variantProduct->isVariant()->willReturn(true);
         $rawValues = [
             'name' => [
                 '<all_channels>' => [
@@ -302,7 +307,7 @@ class ProductDraftBuilderSpec extends ObjectBehavior
         $textAttribute->getCode()->willReturn('name');
         $textAttribute->getType()->willReturn('text');
         $textAttribute->isUnique()->willReturn(false);
-        $attributeRepository->getAttributeTypeByCodes(['name'])->willReturn(['name' => 'text']);
+        $attributeRepository->findOneByIdentifier('name')->willReturn($textAttribute);
         $comparatorRegistry->getAttributeComparator('text')->willReturn($textComparator);
         $textComparator->compare(
             ['data' => 'product', 'locale' => null, 'scope' => null],
@@ -316,6 +321,7 @@ class ProductDraftBuilderSpec extends ObjectBehavior
         $newTextValue->getLocale()->willReturn(null);
 
         $productDraftRepo->findUserProductDraft($variantProduct, 'mary')->willReturn($productDraft);
+        $productDraft->setValues(new ValueCollection([$newTextValue->getWrappedObject()]))->shouldBeCalled();
         $productDraft->setChanges([
             'values' => ['name' => [['data' => 'product', 'locale' => null, 'scope' => null]]]
         ])->shouldBeCalled();

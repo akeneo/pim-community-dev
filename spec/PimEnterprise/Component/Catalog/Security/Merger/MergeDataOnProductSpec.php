@@ -175,11 +175,14 @@ class MergeDataOnProductSpec extends ObjectBehavior
         $filteredProduct->getIdentifier()->willReturn('my_sku');
         $filteredProduct->getGroups()->willReturn($groups);
         $filteredProduct->getUniqueData()->willReturn($uniqueData);
+        $filteredProduct->isVariant()->willReturn(false);
+        $filteredProduct->getParent()->willReturn(null);
 
         $filteredProduct->getValue('sku')->willReturn(null);
 
         $attributeRepository->getIdentifierCode()->willReturn('sku');
         $fullProduct->getValue('sku')->willReturn($identifierValue);
+        $fullProduct->isVariant()->willReturn(false);
         $identifierValue->getAttribute()->willReturn($identifierAttribute);
 
         $valuesMerger->merge($filteredProduct, $fullProduct)->willReturn($fullProduct);
