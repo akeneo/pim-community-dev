@@ -46,7 +46,13 @@ class DateTimeNormalizer implements NormalizerInterface
     {
         $stdProductValue = $this->standardNormalizer->normalize($date, 'standard', $context);
 
-        $stdProductValue = $this->presenter->present($stdProductValue, ['locale' => $this->userContext->getUiLocaleCode()]);
+        $stdProductValue = $this->presenter->present(
+            $stdProductValue,
+            [
+                'locale'   => $this->userContext->getUiLocaleCode(),
+                'timezone' => $this->userContext->getUserTimezone(),
+            ]
+        );
 
         return $stdProductValue;
     }
