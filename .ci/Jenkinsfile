@@ -142,7 +142,7 @@ stage("Test") {
                         def files = sh (returnStdout: true, script: 'find /home/jenkins/pim/src -name "*Integration.php" -exec sh -c "grep -Ho \'function test\' {} | uniq -c"  \\; | sed "s/:function test//"').tokenize('\n')
                         def messages = new net.sf.json.JSONArray()
                         for (line in files) {
-                            def file = line.tokenize(' ') 
+                            def file = line.tokenize(' ')
                             def commands = [
                                 [container: "php", script: "./app/console --env=test pim:install --force"],
                                 [container: "php", script: "mkdir -p app/cache app/logs app/archive /tmp/pim app/file_storage app/uploads"],
@@ -287,7 +287,7 @@ def withBuildNode(body) {
         podTemplate(label: "build-" + uuid, containers: [
             containerTemplate(name: "docker", image: "paulwoelfel/docker-gcloud:v1.13", ttyEnabled: true, command: 'cat', resourceRequestCpu: '100m', resourceRequestMemory: '200Mi'),
             containerTemplate(name: "php", ttyEnabled: true, command: 'cat', image: "eu.gcr.io/akeneo-ci/httpd-php:5.6", envVars: [envVar(key: "COMPOSER_AUTH", value: "{\"github-oauth\":{\"github.com\": \"$token\"}}")], resourceRequestCpu: '750m', resourceRequestMemory: '2000Mi'),
-            containerTemplate(name: "node", ttyEnabled: true, command: 'cat', image: "node:8", resourceRequestCpu: '750m', resourceRequestMemory: '2000Mi')
+            containerTemplate(name: "node", ttyEnabled: true, command: 'cat', image: "node:8.9", resourceRequestCpu: '750m', resourceRequestMemory: '2000Mi')
         ]) {
             node("build-" + uuid) {
                 dir('/home/jenkins/pim') {
