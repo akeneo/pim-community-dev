@@ -2,6 +2,7 @@
 
 namespace Pim\Component\Connector\Writer\File\Yaml;
 
+use Akeneo\Component\Batch\Item\FlushableInterface;
 use Akeneo\Component\Batch\Item\ItemWriterInterface;
 use Akeneo\Component\Batch\Job\RuntimeErrorException;
 use Akeneo\Component\Batch\Step\StepExecutionAwareInterface;
@@ -18,15 +19,20 @@ use Symfony\Component\Yaml\Yaml;
  */
 class Writer extends AbstractFileWriter implements
     ItemWriterInterface,
-    StepExecutionAwareInterface
+    StepExecutionAwareInterface,
+    FlushableInterface
 {
     const INLINE_ARRAY_LEVEL = 8;
+    const INDENT_SPACES = 4;
 
     /** @var ArrayConverterInterface */
     protected $arrayConverter;
 
     /** @var string */
     protected $header;
+
+    /** @var bool */
+    protected $isFirstWriting;
 
     /**
      * @param ArrayConverterInterface $arrayConverter
@@ -38,6 +44,7 @@ class Writer extends AbstractFileWriter implements
 
         $this->arrayConverter = $arrayConverter;
         $this->header = $header;
+        $this->isFirstWriting = true;
     }
 
     /**
@@ -51,38 +58,86 @@ class Writer extends AbstractFileWriter implements
         }
 
         $flatItems = call_user_func_array('array_merge', $flatItems);
-        if (null !== $this->header) {
-            $data = [];
-            $data[$this->header] = $flatItems;
-        }
 
         $path = $this->getPath();
         if (!is_dir(dirname($path))) {
             $this->localFs->mkdir(dirname($path));
         }
 
-        $yaml = Yaml::dump($data, self::INLINE_ARRAY_LEVEL);
+        if ($this->isFirstWriting) {
+            $items = $this->overwrite($flatItems, $path);
+            $this->isFirstWriting = false;
+            $this->incrementSummaryInfo($items);
+
+            return;
+        }
+
+        $items = $this->append($flatItems, $path);
+        $this->incrementSummaryInfo($items);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function flush()
+    {
+        $this->isFirstWriting = true;
+    }
+
+    /**
+     * @param array $items
+     * @param string $path
+     *
+     * @return array
+     */
+    protected function overwrite(array $items, string $path): array
+    {
+        $data = [];
+
+        if (null !== $this->header) {
+            $data[$this->header] = $items;
+        }
+
+        $yaml = Yaml::dump($data, self::INLINE_ARRAY_LEVEL, self::INDENT_SPACES);
+
+        if (false === file_put_contents($path, $yaml)) {
+            throw new RuntimeErrorException('Failed to write to file %path%', ['%path%' => $this->getPath()]);
+        }
+
+        return $data;
+    }
+
+    /**
+     * @param array $items
+     * @param string $path
+     *
+     * @return array
+     */
+    protected function append(array $items, string $path): array
+    {
+        $yaml = Yaml::dump($items, self::INLINE_ARRAY_LEVEL, self::INDENT_SPACES);
+
+        if (null !== $this->header) {
+            $yaml = preg_replace('/^/m', '    ', $yaml);
+            $items = [$this->header => $items];
+        }
 
         if (false === file_put_contents($path, $yaml, FILE_APPEND)) {
             throw new RuntimeErrorException('Failed to write to file %path%', ['%path%' => $this->getPath()]);
         }
 
-        $this->incrementSummaryInfo($data);
+        return $items;
     }
 
     /**
      * @param array $data
      */
-    protected function incrementSummaryInfo(array $data)
+    protected function incrementSummaryInfo(array $data): void
     {
-        if (null !== $this->header) {
-            foreach ($data[$this->header] as $item) {
-                $this->stepExecution->incrementSummaryInfo('write');
-            }
-        } else {
-            foreach ($data as $item) {
-                $this->stepExecution->incrementSummaryInfo('write');
-            }
+        $items = null !== $this->header ? $data[$this->header] : $data;
+
+        foreach ($items as $item) {
+            $this->stepExecution->incrementSummaryInfo('write');
         }
     }
 }

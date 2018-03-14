@@ -2,6 +2,7 @@
 
 ## Bug fixes
 
+- PIM-7129: Fix repeated content for a Yaml export
 - PIM-7255: Reduce Slowness of the datagrid
 - PIM-7152: Fix errors due to deletion of attributes linked to published products
 - PIM-7214: Fix a bug that prevents to select multiple items across pages in Products, Family and associations grids
