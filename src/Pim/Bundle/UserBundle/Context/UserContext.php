@@ -88,7 +88,7 @@ class UserContext
      *
      * @return LocaleInterface
      */
-    public function getCurrentLocale()
+    public function getCurrentLocale(): LocaleInterface
     {
         $locale = $this->getRequestLocale();
 
@@ -126,7 +126,7 @@ class UserContext
      *
      * @return string
      */
-    public function getCurrentLocaleCode()
+    public function getCurrentLocaleCode(): string
     {
         return $this->getCurrentLocale()->getCode();
     }
@@ -136,7 +136,7 @@ class UserContext
      *
      * @return LocaleInterface[]
      */
-    public function getUserLocales()
+    public function getUserLocales(): array
     {
         if ($this->userLocales === null) {
             $this->userLocales = $this->localeRepository->getActivatedLocales();
@@ -150,7 +150,7 @@ class UserContext
      *
      * @return array
      */
-    public function getUserLocaleCodes()
+    public function getUserLocaleCodes(): array
     {
         return array_map(
             function ($locale) {
@@ -165,7 +165,7 @@ class UserContext
      *
      * @return ChannelInterface
      */
-    public function getUserChannel()
+    public function getUserChannel(): ChannelInterface
     {
         $catalogScope = $this->getUserOption('catalogScope');
 
@@ -181,7 +181,7 @@ class UserContext
      *
      * @return string
      */
-    public function getUserChannelCode()
+    public function getUserChannelCode(): string
     {
         return $this->getUserChannel()->getCode();
     }
@@ -191,7 +191,7 @@ class UserContext
      *
      * @return string[]
      */
-    public function getChannelChoicesWithUserChannel()
+    public function getChannelChoicesWithUserChannel(): array
     {
         $channels = $this->channelRepository->findAll();
         $channelChoices = $this->choicesBuilder->buildChoices($channels);
@@ -211,7 +211,7 @@ class UserContext
      *
      * @return CategoryInterface|null
      */
-    public function getUserCategoryTree($relatedEntity)
+    public function getUserCategoryTree($relatedEntity): ?CategoryInterface
     {
         if (static::USER_PRODUCT_CATEGORY_TYPE === $relatedEntity) {
             return $this->getUserProductCategoryTree();
@@ -225,11 +225,28 @@ class UserContext
      *
      * @return CategoryInterface
      */
-    public function getUserProductCategoryTree()
+    public function getUserProductCategoryTree(): CategoryInterface
     {
         $defaultTree = $this->getUserOption('defaultTree');
 
         return $defaultTree ?: current($this->categoryRepository->getTrees());
+    }
+
+    /**
+     * Return the current user's timezone.
+     *
+     * @throws \RuntimeException
+     *
+     * @return string
+     */
+    public function getUserTimezone(): string
+    {
+        $user = $this->getUser();
+        if (null === $user) {
+            throw new \RuntimeException('Impossible to load the current user from context.');
+        }
+
+        return $user->getTimezone();
     }
 
     /**
