@@ -38,7 +38,7 @@ Feature: Mass add product value to products at once via a form
     When I am on the products grid
     And I select rows Hat and Scarf
     And I press the "Bulk actions" button
-    And I choose the "Add attribute values" operation
+    And I choose the "Add attributes values" operation
     And I display the Collection attribute
     And I change the "Collection" to "Autumn 2016, Spring 2015"
     And I confirm mass edit
@@ -77,7 +77,7 @@ Feature: Mass add product value to products at once via a form
     And I filter by "family" with operator "in list" and value "megazor"
     And I select rows super_watch and super_hat
     And I press the "Bulk actions" button
-    And I choose the "Add attribute values" operation
+    And I choose the "Add attributes values" operation
     And I display the Assets attribute
     And I start to manage assets for "Assets"
     And I check the row "video_3"
