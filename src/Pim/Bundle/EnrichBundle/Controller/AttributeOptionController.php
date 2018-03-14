@@ -189,7 +189,7 @@ class AttributeOptionController
         try {
             $this->optionRemover->remove($attributeOption);
         } catch (\Exception $e) {
-            return new JsonResponse(['message' => $e->getMessage()], $e->getCode());
+            return new JsonResponse(['message' => $e->getMessage()], Response::HTTP_BAD_REQUEST);
         }
 
         return new JsonResponse();

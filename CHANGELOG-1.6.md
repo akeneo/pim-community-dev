@@ -1,10 +1,16 @@
 # 1.6.x
 
+- GITHUB-7760: Fix wrong HTTP status in AttributeOptionController::deleteAction, cheers @amansilla!
+
+# 1.6.22 (2018-02-26)
+
 ## Bug fixes
 
 - PIM-7132: Fix "url too long" when doing a mass edit
-- PIM-7182: Fix the clean mongodb command for reference data
+- PIM-7169: Fix a memory leak on product export when having many variant groups
 - PIM-7170: Fix media files unnecessarily generated during quick export
+- PIM-7182: Fix the clean mongodb command for reference data
+- PIM-7151: Fix the family filter display on import/export profile
 
 ## Security fixes
 

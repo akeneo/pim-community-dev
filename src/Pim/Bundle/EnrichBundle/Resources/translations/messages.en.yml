@@ -405,7 +405,7 @@ flash:
         created:                  Attribute successfully created
         updated:                  Attribute successfully updated
         removed:                  Attribute successfully removed
-        identifier not removable: Identifier attribute can not be removed
+        identifier_not_removable: Identifier attribute can not be removed
     attribute group:
         created:           Attribute group successfully created
         updated:           Attribute group successfully updated
