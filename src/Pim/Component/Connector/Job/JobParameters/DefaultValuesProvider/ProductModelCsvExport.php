@@ -69,6 +69,11 @@ class ProductModelCsvExport implements DefaultValuesProviderInterface
         $parameters['filters'] = [
             'data'      => [
                 [
+                    'field'    => 'completeness',
+                    'operator' => Operators::AT_LEAST_COMPLETE,
+                    'value'    => 100,
+                ],
+                [
                     'field'    => 'categories',
                     'operator' => Operators::IN_CHILDREN_LIST,
                     'value'    => []

@@ -544,7 +544,7 @@ define(
                 makeItSticky(this.getRoot().headerSize())(header);
 
                 const sectionTitles = this.el.querySelectorAll('.AknSubsection-title');
-                sectionTitles.forEach(makeItSticky(header.offsetHeight + this.getRoot().headerSize()));
+                _.each(sectionTitles, makeItSticky(header.offsetHeight + this.getRoot().headerSize()));
             }
         });
     }

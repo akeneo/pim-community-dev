@@ -271,6 +271,9 @@ extensions:
                 -
                     field: categories
                     view: akeneo-product-category-filter
+                -
+                    field: completeness
+                    view: akeneo-product-model-completeness-filter
 
     pim-job-instance-csv-product-model-export-edit-content-default-attribute-filters:
         module: pim/job/product/edit/content/data/default-attribute-filters

@@ -73,11 +73,7 @@ jobs:
             withHeader: true
             with_media: true
             filters:
-                data:
-                    -
-                        field: categories
-                        operator: 'IN CHILDREN'
-                        value: ['master']
+                data: []
                 structure:
                     scope: mobile
                     locales:
