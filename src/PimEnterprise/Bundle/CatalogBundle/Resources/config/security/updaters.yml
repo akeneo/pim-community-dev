@@ -29,6 +29,7 @@ services:
             - '@security.authorization_checker'
             - '@pim_catalog.repository.product_without_permission'
             - ['associations']
+            - '@pim_catalog.repository.product_model_without_permission'
         tags:
             - { name: 'pim_catalog.updater.setter' }
 

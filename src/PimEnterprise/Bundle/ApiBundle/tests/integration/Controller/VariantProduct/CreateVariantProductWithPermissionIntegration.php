@@ -23,7 +23,7 @@ class CreateVariantProductWithPermissionIntegration extends ApiTestCase
 
     public function testCreateVariantProductWithAssociation()
     {
-        $this->loader->loadProductModelsForAssociationPermissions();
+        $this->loader->loadProductsForAssociationPermissions();
 
         $data = <<<JSON
             {
@@ -97,7 +97,7 @@ JSON;
 
     public function testCreateVariantProductWithNotVisibleAxisAttribute()
     {
-        $this->loader->loadProductModelsForAssociationPermissions();
+        $this->loader->loadProductsForAssociationPermissions();
         $this->makeAttributeAxesNotViewable('variant_product_axis_attribute');
 
         $data = <<<JSON
@@ -112,7 +112,7 @@ JSON;
 
     public function testCreateVariantProductAssociationWithNotViewableProduct()
     {
-        $this->loader->loadProductModelsForAssociationPermissions();
+        $this->loader->loadProductsForAssociationPermissions();
 
         $data = <<<JSON
             {
@@ -131,8 +131,8 @@ JSON;
             }
 JSON;
 
-        $message = 'You cannot associate a product on which you have not a view permission.';
-        $this->assertUnauthorized($data, $message);
+        $message = 'Property "associations" expects a valid product identifier. The product does not exist, "product_no_view" given. Check the expected format on the API documentation.';
+        $this->assertUnprocessableEntity($data, $message);
     }
 
     /**

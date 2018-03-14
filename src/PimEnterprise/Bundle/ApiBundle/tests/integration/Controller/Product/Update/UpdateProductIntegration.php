@@ -23,34 +23,11 @@ class UpdateProductIntegration extends AbstractProductTestCase
         $this->assertSame(Response::HTTP_NO_CONTENT, $patchResponse->getStatusCode());
     }
 
-    public function testFailedToAssociateAProductNotGranted()
-    {
-        $this->createProduct('simple_product');
-        $data = <<<JSON
-{
-    "associations": {
-        "PACK": {
-            "products": ["product_not_viewable_by_redactor"]
-        }
-    }
-}
-JSON;
-        $expectedContent = <<<JSON
-{"code":403,"message":"You cannot associate a product on which you have not a view permission."}
-JSON;
-        $client = $this->createAuthenticatedClient([], [], null, null, 'mary', 'mary');
-        $client->request('PATCH', 'api/rest/v1/products/simple_product', [], [], [], $data);
-
-        $response = $client->getResponse();
-        $this->assertSame(Response::HTTP_FORBIDDEN, $response->getStatusCode());
-        $this->assertSame($expectedContent, $response->getContent());
-    }
-
     public function testFailedToUpdateProductNotViewableByUser()
     {
         $expectedResponseContent =
             <<<JSON
-{"code":403,"message":"You can neither view, nor update, nor delete the product \"product_not_viewable_by_redactor\", as it is only categorized in categories on which you do not have a view permission."}
+{"code":404,"message":"Product \"product_not_viewable_by_redactor\" does not exist."}
 JSON;
         $data = <<<JSON
 {
@@ -70,7 +47,7 @@ JSON;
         $client->request('PATCH', 'api/rest/v1/products/product_not_viewable_by_redactor', [], [], [], $data);
 
         $response = $client->getResponse();
-        $this->assertSame(Response::HTTP_FORBIDDEN, $response->getStatusCode());
+        $this->assertSame(Response::HTTP_NOT_FOUND, $response->getStatusCode());
         $this->assertSame($expectedResponseContent, $response->getContent());
     }
 
