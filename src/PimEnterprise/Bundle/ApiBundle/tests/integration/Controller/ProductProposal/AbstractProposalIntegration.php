@@ -51,7 +51,7 @@ class AbstractProposalIntegration extends ApiTestCase
      */
     protected function createVariantProduct(string $identifier, array $data = []): ProductInterface
     {
-        $product = $this->get('pim_catalog.builder.variant_product')->createProduct($identifier);
+        $product = $this->get('pim_catalog.builder.product')->createProduct($identifier);
 
         $this->updateProduct($product, $data);
 

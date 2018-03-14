@@ -54,7 +54,7 @@ class VariantProductBuilderIntegration extends TestCase
         $this->get('pim_catalog.saver.product_model')->save($productModel);
 
         // create variant product
-        $product = $this->get('pim_catalog.builder.variant_product')->createProduct('my_variant_product');
+        $product = $this->get('pim_catalog.builder.product')->createProduct('my_variant_product');
         $this->get('pim_catalog.updater.product')->update($product, [
             'categories' => ['categoryA'],
             'parent' => 'product_model',
