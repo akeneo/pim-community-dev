@@ -63,9 +63,11 @@ class IsSmartFilter extends BooleanFilter
                 $this->relationClass,
                 'rlr',
                 'WITH',
-                sprintf('rlr.resourceId = %s.id AND rlr.resourceName = :attributeClass', $rootAlias)
-            )
-            ->setParameter('attributeClass', $this->attributeClass);
+                $qb->expr()->andX(
+                    $qb->expr()->eq('rlr.resourceId', sprintf('%s.id', $rootAlias)),
+                    $qb->expr()->eq('rlr.resourceName', $qb->expr()->literal($this->attributeClass))
+                )
+            );
 
         switch ($data['value']) {
             case BooleanFilterType::TYPE_YES:
