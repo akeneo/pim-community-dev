@@ -111,7 +111,7 @@ class UpdateFamilyIntegration extends TestCase
     private function assertAttributeMissingFromFamilyVariants(string $attributeCode, string $familyCode): void
     {
         $this->get('doctrine.orm.default_entity_manager')->clear();
-        $family = $this->testKernel->getContainer()->get('pim_catalog.repository.family')->findOneByIdentifier(
+        $family = $this->get('pim_catalog.repository.family')->findOneByIdentifier(
             $familyCode
         );
         foreach ($family->getFamilyVariants() as $familyVariant) {

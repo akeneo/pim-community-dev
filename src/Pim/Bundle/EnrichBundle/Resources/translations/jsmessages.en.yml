@@ -1233,6 +1233,7 @@ batch_jobs:
         validation.label: File validation
         import.label: Family import
         compute_data_related_to_family_variants.label: Compute product models data
+        compute_data_related_to_family_products.label: Compute products data
     csv_family_variant_import:
         label: Family variant import in CSV
         validation.label: File validation
@@ -1297,6 +1298,7 @@ batch_jobs:
         validation.label: File validation
         import.label: Family import
         compute_data_related_to_family_variants.label: Compute product models data
+        compute_data_related_to_family_products.label: Compute products data
     xlsx_family_variant_import:
         label: Family variant import in XLSX
         validation.label: File validation
