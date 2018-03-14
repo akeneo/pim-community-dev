@@ -5,6 +5,7 @@ namespace Pim\Bundle\LocalizationBundle\Controller;
 use Akeneo\Component\Localization\Factory\DateFactory;
 use Akeneo\Component\Localization\Localizer\LocalizerInterface;
 use Pim\Bundle\EnrichBundle\Resolver\LocaleResolver;
+use Pim\Bundle\UserBundle\Context\UserContext;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 /**
@@ -25,6 +26,9 @@ class FormatController
     /** @var LocaleResolver */
     protected $localeResolver;
 
+    /** @var UserContext */
+    protected $userContext;
+
     /** @var array */
     protected $formats;
 
@@ -32,17 +36,20 @@ class FormatController
      * @param DateFactory    $dateFactory
      * @param DateFactory    $datetimeFactory
      * @param LocaleResolver $localeResolver
+     * @param UserContext    $userContext
      * @param array          $formats
      */
     public function __construct(
         DateFactory $dateFactory,
         DateFactory $datetimeFactory,
         LocaleResolver $localeResolver,
+        UserContext $userContext,
         array $formats
     ) {
         $this->dateFactory     = $dateFactory;
         $this->datetimeFactory = $datetimeFactory;
         $this->localeResolver  = $localeResolver;
+        $this->userContext     = $userContext;
         $this->formats         = $formats;
     }
 
@@ -77,6 +84,7 @@ class FormatController
                     'format'        => $timeFormatter->getPattern(),
                     'defaultFormat' => LocalizerInterface::DEFAULT_DATETIME_FORMAT,
                 ],
+                'timezone'       => $this->userContext->getUserTimezone(),
                 'language'       => $locale,
                 '12_hour_format' => false !== strpos($timeFormatter->getPattern(), 'a')
             ]
