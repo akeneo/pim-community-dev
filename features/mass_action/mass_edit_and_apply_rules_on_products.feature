@@ -33,7 +33,7 @@ Feature: Apply rules on products after a mass edit execution
     When I am on the products grid
     And I select rows tshirt-github, tshirt-docker
     And I press the "Bulk actions" button
-    And I choose the "Edit attributes" operation
+    And I choose the "Edit attributes values" operation
     And I display the Name attribute
     And I visit the "Product information" group
     And I change the "Name" to "tshirt"
