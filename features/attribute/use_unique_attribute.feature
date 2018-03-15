@@ -30,6 +30,6 @@ Feature: Use an unique attribute
     And I am on the products grid
     And I select rows a_boot
     And I press the "Bulk actions" button
-    When I choose the "Edit attributes" operation
+    When I choose the "Edit attributes values" operation
     Then I should not see available attribute Unique attribute
     And I should see available attribute Name
