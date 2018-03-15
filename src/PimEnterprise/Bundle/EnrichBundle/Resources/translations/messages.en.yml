@@ -162,3 +162,7 @@ job_execution.summary:
 
 pim_enrich_attribute_form:
     isReadOnly: Read only
+
+batch_jobs:
+    edit_common_attributes:
+        execute_rules.label: Execute rules

@@ -1,8 +1,8 @@
 @javascript
-Feature: Apply rules after a mass edit have run
+Feature: Apply rules on products after a mass edit execution
   In order to have fully modified products after a mass edit
   As a product manager
-  I need to have rules launched on a product mass edit
+  I need to have rules launched after a mass edit
 
   Background:
     Given a "clothing" catalog configuration

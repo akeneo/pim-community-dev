@@ -54,11 +54,11 @@ class RulesExecutor implements ItemWriterInterface
     {
         $entityIds = $this->getEntityIds($entitiesWithValues);
 
-        if (!empty($entityIds['selected_products']) || !empty($entityIds['selected_product_models'])) {
+        if (!empty($entityIds)) {
             $ruleDefinitions = $this->ruleRepository->findAllOrderedByPriority();
 
             foreach ($ruleDefinitions as $ruleDefinition) {
-                $this->runner->run($ruleDefinition, $entityIds);
+                $this->runner->run($ruleDefinition, ['selected_entities_with_values' => $entityIds]);
             }
         }
     }
@@ -70,16 +70,13 @@ class RulesExecutor implements ItemWriterInterface
      */
     private function getEntityIds(array $entitiesWithValues): array
     {
-        $entityIds = [
-            'selected_products' => [],
-            'selected_product_models' => [],
-        ];
+        $entityIds = [];
 
         foreach ($entitiesWithValues as $entityWithValues) {
             if ($entityWithValues instanceof ProductInterface &&
                 null !== $entityWithValues->getId()
             ) {
-                $entityIds['selected_products'][] = sprintf(
+                $entityIds[] = sprintf(
                     '%s%d',
                     'product_',
                     $entityWithValues->getId()
@@ -87,7 +84,7 @@ class RulesExecutor implements ItemWriterInterface
             } elseif ($entityWithValues instanceof ProductModelInterface &&
                 null !== $entityWithValues->getId()
             ) {
-                $entityIds['selected_product_models'][] = sprintf(
+                $entityIds[] = sprintf(
                     '%s%d',
                     'product_model_',
                     $entityWithValues->getId()

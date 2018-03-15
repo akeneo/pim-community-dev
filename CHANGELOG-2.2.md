@@ -1,3 +1,9 @@
+# 2.2.x
+
+## Improve Julia's experience
+
+- PIM-7187: Apply rules after mass edit on product models
+
 # 2.2.0-ALPHA2 (2018-03-07)
 
 ## BC breaks
