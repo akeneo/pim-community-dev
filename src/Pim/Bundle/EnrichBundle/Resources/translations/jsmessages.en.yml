@@ -19,6 +19,7 @@ confirmation:
         role:             Are you sure you want to delete this role?
         job_instance:     Are you sure you want to delete this job instance?
         api_connection:   Are you sure you want to revoke this API connection? All API calls made through this connection will now throw an error.
+        products_and_product_models: Are you sure you want to delete the selected products and product models? All the product models' children will be also deleted.
 
 pim_datagrid:
     mass_action_group:
@@ -121,6 +122,7 @@ Classify the product:           Classify the product
 Delete the product:             Delete the product
 Change status:                  Change status
 Toggle status:                  Toggle status
+mass_delete: Mass delete
 
 # Quick export labels
 pim:

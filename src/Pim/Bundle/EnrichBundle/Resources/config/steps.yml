@@ -1,5 +1,7 @@
 parameters:
     pim_enrich.step.mass_edit.step.class: Pim\Bundle\EnrichBundle\Connector\Step\MassEditStep
+    pim_enrich.delete_products_and_product_models.tasklet_name: 'delete_products_and_product_models'
+    pim_enrich.tasklet.delete_products_and_product_models.class: Pim\Component\Enrich\Job\DeleteProductsAndProductModelsTasklet
 
 services:
     # CSV Quick Export steps ------------------------------------------------------------------------------------------
@@ -148,6 +150,24 @@ services:
             - '@pim_enrich.connector.reader.mass_edit.family'
             - '@pim_enrich.connector.processor.mass_edit.family.set_requirements'
             - '@pim_connector.writer.database.family'
+
+    pim_enrich.step.delete_products_and_product_models.mass_edit:
+        class: '%pim_connector.step.tasklet.class%'
+        arguments:
+            - '%pim_enrich.delete_products_and_product_models.tasklet_name%'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@pim_enrich.tasklet.delete_products_and_product_models'
+
+    pim_enrich.tasklet.delete_products_and_product_models:
+        class: '%pim_enrich.tasklet.delete_products_and_product_models.class%'
+        arguments:
+            - '@pim_catalog.query.product_and_product_model_query_builder_factory'
+            - '@pim_catalog.remover.product'
+            - '@pim_catalog.remover.product_model'
+            - '@pim_connector.doctrine.cache_clearer'
+            - '@pim_catalog.filter.chained'
+            - 100
 
     # Cleaner steps -------------------------------------------------------------------------------------------------
     pim_enrich.step.clean:

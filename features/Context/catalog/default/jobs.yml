@@ -44,6 +44,11 @@ jobs:
         alias:     set_attribute_requirements
         label:     Set family attribute requirements
         type:      mass_edit
+    delete_products_and_product_models:
+        connector: Akeneo Mass Edit Connector
+        alias:     delete_products_and_product_models
+        label:     Mass delete products
+        type:      mass_delete
     add_to_existing_product_model:
         connector: Akeneo Mass Edit Connector
         alias:     add_to_existing_product_model
