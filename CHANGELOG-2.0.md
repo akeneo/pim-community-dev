@@ -2,6 +2,7 @@
 
 ## Bug fixes
 
+- PIM-7152: Fix errors due to deletion of attributes linked to published products
 - PIM-7214: Fix a bug that prevents to select multiple items across pages in Products, Family and associations grids
 - PIM-7215: Fix wrong direction of sorting arrow in the grids
 - PIM-7220: Fix the filter "is empty" when the attribute belongs to a family
