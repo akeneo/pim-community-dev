@@ -27,6 +27,8 @@ Feature: Remove a product
     And I select row jean
     And I press the "Delete" button
     And I confirm the removal
+    And I wait for the "delete_products_and_product_models" job to finish
+    And I am on the products grid
     Then I should not see product jean
     Then I should get the following proposals:
       | product | username | result                                                                                                                                                            |
