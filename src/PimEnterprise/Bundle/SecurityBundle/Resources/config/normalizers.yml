@@ -6,6 +6,12 @@ parameters:
     pimee_security.normalizer.job_instance.class:      PimEnterprise\Component\Security\Normalizer\Standard\JobInstanceNormalizer
     pimee_security.normalizer.attribute_group.class:   PimEnterprise\Component\Security\Normalizer\Standard\AttributeGroupNormalizer
 
+    pimee_security.normalizer.authorization.product.class: PimEnterprise\Component\Security\Normalizer\Authorization\ProductNormalizer
+    pimee_security.normalizer.authorization.product_model.class: PimEnterprise\Component\Security\Normalizer\Authorization\ProductModelNormalizer
+
+    # Encoders
+    pimee_authorization_serializer.encoder.json.class: Symfony\Component\Serializer\Encoder\JsonEncoder
+
 services:
     pimee_versioning.normalizer.category:
         class: '%pimee_versioning.normalizer.category.class%'
@@ -54,3 +60,24 @@ services:
             - '@pimee_security.manager.attribute_group_access'
         tags:
             - { name: pim_serializer.normalizer, priority: 110 }
+
+    # authorization
+    pimee_authorization_serializer:
+        class: Symfony\Component\Serializer\Serializer
+
+    # Encoders
+    pimee_authorization_serializer.encoder.json:
+        public: false
+        class: '%pim_serializer.encoder.json.class%'
+        tags:
+            - { name: pimee_authorization_serializer.encoder, priority: 90 }
+
+    pimee_security.normalizer.authorization.product:
+        class: '%pimee_security.normalizer.authorization.product.class%'
+        tags:
+            - { name: pimee_authorization_serializer.normalizer, priority: 110 }
+
+    pimee_security.normalizer.authorization.product_model:
+        class: '%pimee_security.normalizer.authorization.product_model.class%'
+        tags:
+            - { name: pimee_authorization_serializer.normalizer, priority: 110 }
