@@ -1,3 +1,9 @@
+# 2.0.x
+
+## Bug fixes
+
+PIM-6885: Display all product information to users having only view rights
+
 # 2.0.17 (2018-03-06)
 
 ## Bug fixes
