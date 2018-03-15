@@ -68,7 +68,7 @@ services:
             - '@pim_catalog.validator.unique_value_set'
             - '@pim_catalog.validator.unique_axes_combination_set'
         tags:
-           - { name: kernel.event_listener, event: akeneo.storage.post_save_all }
+           - { name: kernel.event_listener, event: akeneo_batch.item_step_after_batch }
 
     pim_catalog.event_subscriber.compute_product_raw_values:
         class: '%pim_catalog.event_subscriber.compute_product_raw_values.class%'
