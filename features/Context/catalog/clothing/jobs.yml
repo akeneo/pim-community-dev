@@ -100,6 +100,14 @@ jobs:
             enclosure:  '"'
             withHeader: true
             filePath: /tmp/product_model.csv
+            filters:
+                data: []
+                structure:
+                    scope: mobile
+                    locales:
+                        - de_DE
+                        - en_US
+                        - fr_FR
     csv_clothing_category_import:
         connector: Akeneo CSV Connector
         alias:     csv_category_import
@@ -298,6 +306,14 @@ jobs:
         type:      import
         configuration:
             filePath: '/tmp/xlsx_clothing_product_model_proposal_import.xlsx'
+            filters:
+                data: []
+                structure:
+                    scope: mobile
+                    locales:
+                        - de_DE
+                        - en_US
+                        - fr_FR
     add_product_value:
         connector: Akeneo Mass Edit Connector
         alias:     add_product_value
