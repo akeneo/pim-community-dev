@@ -4,13 +4,21 @@ parameters:
     pim_connector.validator.constraints.filter_structure_attribute_validator.class: Pim\Component\Connector\Validator\Constraints\FilterStructureAttributeValidator
 
 services:
-    pim_connector.validator.constraints.filter_data_validator:
+    pim_connector.validator.constraints.product_filter_data_validator:
         class: '%pim_connector.validator.constraints.filter_data_validator.class%'
         arguments:
             - '@pim_catalog.query.product_query_builder_factory'
             - '@translator'
         tags:
-            - { name: validator.constraint_validator, alias: filter_data_validator }
+            - { name: validator.constraint_validator, alias: product_filter_data_validator }
+
+    pim_connector.validator.constraints.product_model_filter_data_validator:
+        class: '%pim_connector.validator.constraints.filter_data_validator.class%'
+        arguments:
+            - '@pim_catalog.query.product_model_query_builder_factory'
+            - '@translator'
+        tags:
+            - { name: validator.constraint_validator, alias: product_model_filter_data_validator }
 
     pim_connector.validator.constraints.filter_structure_locale_validator:
         class: '%pim_connector.validator.constraints.filter_structure_locale_validator.class%'

@@ -106,7 +106,9 @@ define(
              * @return {number}
              */
             headerSize: function () {
-                return this.el.querySelector('header.navigation').offsetHeight;
+                const header = this.el.querySelector('header.navigation');
+
+                return null !== header ? header.offsetHeight : 0;
             }
         });
     }

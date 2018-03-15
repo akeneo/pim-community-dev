@@ -91,6 +91,12 @@ jobs:
             enclosure:  '"'
             withHeader: true
             with_media: true
+            filters:
+                data: []
+                structure:
+                    scope: ecommerce
+                    locales:
+                        - en_US
     xlsx_product_grid_context_quick_export:
         connector: Akeneo XLSX Connector
         alias: xlsx_product_grid_context_quick_export
