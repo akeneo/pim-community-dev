@@ -17,6 +17,12 @@
 - AOB-55: Add method `getTimezone` and `setTimezone` to `Pim\Bundle\UserBundle\Entity\UserInterface`
 - PIM-7163: Add `Pim\Bundle\UserBundle\Entity\UserInterface::setPhone` and `Pim\Bundle\UserBundle\Entity\UserInterface::getPhone`
 
+### Constructors
+
+- AOB-100: Change the constructor of `Pim\Bundle\EnrichBundle\Controller\Rest\VersioningController` to add `Pim\Bundle\UserBundle\Context\UserContext`
+- AOB-100: Change the constructor of `Pim\Bundle\EnrichBundle\Normalizer\ProductModelNormalizer` to add `Pim\Bundle\UserBundle\Context\UserContext`
+- AOB-100: Change the constructor of `Pim\Bundle\LocalizationBundle\Controller\FormatController` to add `Pim\Bundle\UserBundle\Context\UserContext`
+
 ## Migration
 
 - New data has been indexed in Elasticsearch. Please re-index the products and product models by launching the commands `pim:product:index --all -e prod` and `pim:product-model:index --all -e prod`.
