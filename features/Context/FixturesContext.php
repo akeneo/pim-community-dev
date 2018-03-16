@@ -184,6 +184,23 @@ class FixturesContext extends BaseFixturesContext
     }
 
     /**
+     * @Given the :identifier product created at :createdAt
+     */
+    public function theProductCreatedAt(string $identifier, string $createdAt)
+    {
+        $product = $this->createProduct(['sku' => $identifier]);
+
+        $this->getContainer()->get('doctrine')->getConnection()->update(
+            'pim_catalog_product',
+            ['created' => $createdAt],
+            ['id' => $product->getId()]
+        );
+
+        $this->refresh($product);
+        $this->getProductSaver()->save($product);
+    }
+
+    /**
      * @param TableNode $table
      *
      * @Given /^the product?:$/
