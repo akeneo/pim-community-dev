@@ -97,6 +97,17 @@ services:
             - '@pimee_enrich.connector.writer.mass_edit.product_and_product_model'
             - 1000
 
+    pimee_enrich.step.add_attribute_value.mass_edit.perform:
+        class: '%pim_connector.step.item_step.class%'
+        arguments:
+            - 'perform'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@pim_enrich.reader.database.product_and_product_model'
+            - '@pim_enrich.connector.processor.mass_edit.product.add_attribute_value'
+            - '@pimee_enrich.connector.writer.mass_edit.product_and_product_model'
+            - 1000
+
     # CSV Quick Export steps ------------------------------------------------------------------------------------------
     pimee_enrich.step.csv_published_product.quick_export:
         class: '%pim_connector.step.item_step.class%'

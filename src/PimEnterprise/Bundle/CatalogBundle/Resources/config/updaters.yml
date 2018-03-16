@@ -1,5 +1,6 @@
 parameters:
     pimee_catalog.updater.attribute.class: PimEnterprise\Component\Catalog\Updater\AttributeUpdater
+    pimee_catalog.updater.adder.asset_collection_value.class: PimEnterprise\Component\Catalog\Updater\Adder\AssetCollectionAdder
     pimee_catalog.updater.attribute.properties:
         - is_read_only
 
@@ -11,6 +12,14 @@ services:
         arguments:
             - '@pim_catalog.updater.attribute.base'
             - '%pimee_catalog.updater.attribute.properties%'
+
+    pimee_catalog.updater.adder.asset_collection_value:
+        class: '%pimee_catalog.updater.adder.asset_collection_value.class%'
+        arguments:
+            - '@pim_catalog.builder.entity_with_values'
+            - ['pim_assets_collection']
+        tags:
+            - { name: 'pim_catalog.updater.adder' }
 
     pim_catalog.updater.group:
         class: '%pim_catalog.updater.group.class%'
