@@ -37,6 +37,8 @@ use PimEnterprise\Component\ProductAsset\Repository\AssetRepositoryInterface;
  */
 class CompletenessGenerator extends CommunityCompletenessGenerator implements CompletenessGeneratorInterface
 {
+    const BULK_SIZE = 50;
+
     /** @var Connection */
     protected $connection;
 
@@ -82,13 +84,61 @@ class CompletenessGenerator extends CommunityCompletenessGenerator implements Co
      */
     public function scheduleForAsset(AssetInterface $asset)
     {
-        $attributesCodes = $this->getAssetCollectionAttributeCodes();
-        foreach ($attributesCodes as $attributeCode) {
+        $attributeCodes = $this->getAssetCollectionAttributeCodes();
+        if (null !== $this->productQueryBuilderFactory) {
+            $this->resetCompletenessUsingPQB($asset, $attributeCodes);
+        } else {
+            $this->resetCompletenessInOneMongoQuery($asset, $attributeCodes);
+        }
+    }
+
+    /**
+     * Better way to reset the completeness of products, using the PQB and taking advantage of customers having
+     * ES bundle.
+     *
+     * @param AssetInterface $asset
+     * @param array          $attributeCodes
+     */
+    public function resetCompletenessUsingPQB(AssetInterface $asset, array $attributeCodes)
+    {
+        foreach ($attributeCodes as $attributeCode) {
             $productsToReset = $this->getProductsWithAsset($asset, $attributeCode);
             if ($productsToReset->count() > 0) {
                 $this->bulkResetCompleteness($productsToReset);
             }
         }
+    }
+
+    /**
+     * Legacy way of updating the completeness of products having the asset attributes.
+     *
+     * This is made in one query that selects and updates but may be too long to run for big catalogs.
+     *
+     * @param AssetInterface $asset
+     * @param array          $attributesCodes
+     */
+    public function resetCompletenessInOneMongoQuery(AssetInterface $asset, array $attributesCodes)
+    {
+        $productQb = $this->documentManager->createQueryBuilder($this->productClass);
+        $productQb
+            ->update()
+            ->multiple(true);
+
+        foreach ($attributesCodes as $code) {
+            $normalizedKey = sprintf('normalizedData.%s', $code);
+            $searchedId = sprintf('%s.id', $normalizedKey);
+
+            $productQb->addOr(
+                $productQb->expr()
+                    ->field($normalizedKey)->exists(true)
+                    ->field($searchedId)->equals($asset->getId())
+            );
+        }
+
+        $productQb->field('completenesses')->unsetField()
+            ->field('normalizedData.completenesses')->unsetField()
+            ->getQuery()
+            ->execute();
     }
 
     /**
@@ -244,7 +294,7 @@ class CompletenessGenerator extends CommunityCompletenessGenerator implements Co
         foreach ($products as $product) {
             $productToResetIds[] = $product->getId();
 
-            if (0 === \count($productToResetIds) % 50) {
+            if (0 === \count($productToResetIds) % self::BULK_SIZE) {
                 $this->resetCompleteness($productToResetIds);
                 $productToResetIds = [];
             }
