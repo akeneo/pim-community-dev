@@ -65,7 +65,7 @@ Feature: Apply rules after a mass edit execution
     When I am on the products grid
     And I select rows bag_1, bag_uni and a_bag
     And I press the "Bulk actions" button
-    And I choose the "Edit attributes" operation
+    And I choose the "Edit attributes values" operation
     And I display the Name attribute
     And I change the "Name" to "Just a bag"
     When I confirm mass edit
