@@ -501,6 +501,7 @@ Parameters: Parametry
 System: System
 Values: Wartości
 General parameters: Parametry ogólne
+Backend parameters: Parametry backend-u
 Label: Etykieta
 Default label: Domyślna etykieta
 Default value: Wartość domyślna
@@ -707,6 +708,7 @@ pane.accordion:
   node_values: Wartości węzła
   general_properties: Ustawienia ogólne
   locale_values: Wartości ustawienia regionalnego
+  backend_parameters: Parametry backend-u
   general_parameters: Parametry ogólne
   label_translations: Tłumaczenia etykiety
   options: Ustawienia
