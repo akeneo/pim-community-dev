@@ -27,26 +27,10 @@
     </groups>
 
     <testsuites>
-        <!-- PIM test suites -->
         <testsuite name="PIM_Integration_Test">
-            <file></file>
+            <directory suffix="Integration.php">../src</directory>
+            <directory suffix="Integration.php">../vendor/akeneo/pim-community-dev/src</directory>
+            <directory suffix="Integration.php">../vendor/akeneo/pim-community-dev/tests</directory>
         </testsuite>
     </testsuites>
-
-    <filter>
-        <whitelist>
-            <directory>../src/Pim</directory>
-            <exclude>
-                <!-- exclude demo used load sample data -->
-                <directory>../src/Pim/Bundle/DemoBundle</directory>
-                <directory>../src/*/*Bundle/Resources</directory>
-                <directory>../src/*/*Bundle/Tests</directory>
-                <directory>../src/*/Bundle/*Bundle/Resources</directory>
-                <directory>../src/*/Bundle/*Bundle/Tests</directory>
-                <directory>../src/*/Bundle/*Bundle/vendor</directory>
-                <directory>../src/*/Bundle/*Bundle/cov</directory>
-                <directory>../src/*/Bundle/*Bundle/DataFixtures/ORM/Load*Data.php</directory>
-            </exclude>
-        </whitelist>
-    </filter>
 </phpunit>

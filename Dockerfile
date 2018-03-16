@@ -125,7 +125,8 @@ RUN cp app/config/parameters_test.yml.dist app/config/parameters_test.yml \
   && composer update --ansi --optimize-autoloader --no-interaction --no-progress --prefer-dist --ignore-platform-reqs --no-suggest \
   && yarn install --no-progress \
   && yarn run webpack \
-  && .ci/bin/start-servers \
+  && .ci/bin/start-mysql \
+  && .ci/bin/start-elasticsearch \
   && rm -rf /tmp/composer /tmp/yarn /usr/local/bin/composer \
   && mysql -e "CREATE DATABASE IF NOT EXISTS \`akeneo_pim\` ;" \
   && mysql -e "CREATE USER 'akeneo_pim'@'%' IDENTIFIED BY 'akeneo_pim';" \
@@ -148,4 +149,4 @@ RUN chmod +x /usr/local/bin/dumb-init \
 
 EXPOSE 80 9200 4444 3306
 
-CMD /bin/sh -c /var/www/pim/.ci/bin/start-servers && sleep infinity
+CMD /bin/sh -c /var/www/pim/.ci/bin/start-mysql && /var/www/pim/.ci/bin/start-elasticsearch && /var/www/pim/.ci/bin/start-webserver && /var/www/pim/.ci/bin/start-selenium && sleep infinity
