@@ -19,6 +19,9 @@ imports:
 akeneo_storage_utils:
     storage_driver: '%pim_catalog_product_storage_driver%'
 
+parameters:
+    pim_job_product_batch_size: 10
+
 services:
     oro.cache.abstract:
         abstract:  true

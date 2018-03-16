@@ -72,6 +72,7 @@ services:
             - '@pim_connector.reader.file.csv_product'
             - '@pim_connector.processor.denormalization.product'
             - '@pim_connector.writer.database.product'
+            - '%pim_job_product_batch_size%'
 
     pim_connector.step.csv_product.import_associations:
         class: '%pim_connector.step.item_step.class%'
@@ -216,7 +217,7 @@ services:
             - '@pim_connector.reader.database.product'
             - '@pim_connector.processor.normalization.product'
             - '@pim_connector.writer.file.csv_product'
-            - 10
+            - '%pim_job_product_batch_size%'
 
     pim_connector.step.csv_category.export:
         class: '%pim_connector.step.item_step.class%'
@@ -348,6 +349,7 @@ services:
             - '@pim_connector.reader.file.xlsx_product'
             - '@pim_connector.processor.denormalization.product'
             - '@pim_connector.writer.database.product'
+            - '%pim_job_product_batch_size%'
 
     pim_connector.step.xlsx_product.import_associations:
         class: '%pim_connector.step.item_step.class%'
@@ -496,7 +498,7 @@ services:
             - '@pim_connector.reader.database.product'
             - '@pim_connector.processor.normalization.product'
             - '@pim_connector.writer.file.xlsx_product'
-            - 10
+            - '%pim_job_product_batch_size%'
 
     pim_connector.step.xlsx_category.export:
         class: '%pim_connector.step.item_step.class%'
