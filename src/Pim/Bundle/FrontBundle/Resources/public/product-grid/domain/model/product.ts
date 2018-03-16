@@ -30,8 +30,7 @@ export interface Completeness {
 export interface RawProductInterface {
   meta: MetaInterface;
   family: string;
-  identifier?: string;
-  code?: string;
+  identifier: string;
   children?: ProductInterface[];
 }
 
@@ -93,24 +92,24 @@ export class Product implements ProductInterface {
   }
 
   public shouldHaveChildren(): boolean {
-    return this.meta.has_children;
+    return false;
   }
 }
 
 export class ProductModel implements ProductInterface {
   readonly meta: MetaInterface;
   readonly family: string;
-  readonly code: string;
+  readonly identifier: string;
   readonly children: ProductInterface[];
 
-  private constructor({meta, family, code, children}: RawProductInterface) {
-    if (undefined === code) {
-      throw new Error('Property code needs to be defined to create a product model');
+  private constructor({meta, family, identifier, children}: RawProductInterface) {
+    if (undefined === identifier) {
+      throw new Error('Property "identifier" needs to be defined to create a product model');
     }
 
     this.meta = meta;
     this.family = family;
-    this.code = code;
+    this.identifier = identifier;
     this.children = undefined !== children ? children : [];
   }
 
@@ -137,7 +136,7 @@ export class ProductModel implements ProductInterface {
   }
 
   public getIdentifier(): string {
-    return this.code;
+    return this.identifier;
   }
 
   public getChildren(): ProductInterface[] {

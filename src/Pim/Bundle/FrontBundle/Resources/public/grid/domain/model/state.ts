@@ -1,4 +1,5 @@
 import Query, {createQuery} from 'pimfront/grid/domain/model/query';
+// import {NormalizedFilter} from 'pimfront/product-grid/domain/model/filter/filter';
 
 export default interface GridState<Element> {
   readonly query: Query;
@@ -27,11 +28,11 @@ export const createState = <Element>(rawState: any): GridState<Element> => {
       ? rawState.query
       : createQuery({
           filters: [
-            // {
+            // NormalizedFilter.create({
             //   field: 'family',
             //   operator: 'IN',
             //   value: ['clothing'],
-            // },
+            // }),
           ],
         }),
     rawState.items,

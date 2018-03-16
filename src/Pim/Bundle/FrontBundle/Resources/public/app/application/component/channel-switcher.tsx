@@ -46,12 +46,8 @@ export default ({
       label={__('Channel')}
       selectedElement={channelCode}
       ButtonView={ChannelButtonView}
-      onSelectionChange={(selection: string) => {
-        const channel = channels.find((channel: Channel) => channel.code === selection);
-
-        if (undefined !== channel) {
-          onChannelChange(channel);
-        }
+      onSelectionChange={(channel: DropdownElement) => {
+        onChannelChange(channel.original);
       }}
       className="channel-switcher"
     />

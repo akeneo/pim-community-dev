@@ -14,7 +14,7 @@ import LoadingIndicator from 'pimfront/app/application/component/loading-indicat
 import {NormalizedFilter} from 'pimfront/product-grid/domain/model/filter/filter';
 import filterModelProvider from 'pimfront/product-grid/application/configuration/filter-model';
 import filterViewProvider from 'pimfront/product-grid/application/configuration/filter-view';
-// import Filter from 'pimfront/product-grid/domain/model/filter/filter';
+import Filter from 'pimfront/product-grid/domain/model/filter/filter';
 
 interface SidebarDispatch {
   onCatalogLocaleChanged: (locale: Locale) => void;
@@ -71,7 +71,9 @@ interface FilterViewState {
   filters: NormalizedFilter[];
 }
 
-interface FilterDispatch {}
+interface FilterDispatch {
+  onFilterChange: (filter: Filter) => void;
+}
 
 class FiltersView extends React.Component<FilterViewState & FilterDispatch, FilterViewState> {
   private filterViews: any[] = [];
@@ -88,7 +90,7 @@ class FiltersView extends React.Component<FilterViewState & FilterDispatch, Filt
         const model = await filterModelProvider.getPopulatedFilter(filter);
         const FilterView = await filterViewProvider.getFilter(model);
 
-        return <FilterView filter={model} />;
+        return <FilterView key={model.field.identifier} filter={model} onFilterChange={} />;
       })
     );
 

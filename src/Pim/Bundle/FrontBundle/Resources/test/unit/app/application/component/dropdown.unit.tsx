@@ -76,8 +76,8 @@ describe('>>>COMPONENT --- dropdown', () => {
       <Dropdown
         elements={elements}
         label={'my dropdown'}
-        onSelectionChange={(newValue: string) => {
-          value = newValue;
+        onSelectionChange={(newValue: DropdownElement) => {
+          value = newValue.identifier;
         }}
         selectedElement={value}
       />
@@ -98,8 +98,8 @@ describe('>>>COMPONENT --- dropdown', () => {
       <Dropdown
         elements={elements}
         label={'my dropdown'}
-        onSelectionChange={(newValue: string) => {
-          value = newValue;
+        onSelectionChange={(newValue: DropdownElement) => {
+          value = newValue.identifier;
         }}
         selectedElement={'another_item'}
       />

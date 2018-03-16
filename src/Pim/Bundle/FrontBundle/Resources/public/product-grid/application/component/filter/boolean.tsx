@@ -1,27 +1,31 @@
 import * as React from 'react';
-import Filter from 'pimfront/product-grid/domain/model/filter/filter';
+import Dropdown, {DropdownElement} from 'pimfront/app/application/component/dropdown';
+import BooleanPropertyFilter, {Choice} from 'pimfront/product-grid/domain/model/filter/property/boolean';
+import BooleanAttributeFilter from 'pimfront/product-grid/domain/model/filter/attribute/boolean';
+import {InvalidFilterModel} from 'pimfront/product-grid/application/component/filter/error';
 
 interface FilterViewProps {
-  filter: Filter;
+  filter: BooleanAttributeFilter | BooleanPropertyFilter;
+  onFilterChange: (filter: Filter) => void;
 }
 
 interface FilterViewState {
   isOpen: boolean;
-  filter: Filter;
+  selectedItem: Choice;
 }
 
 export default class Boolean extends React.Component<FilterViewProps, FilterViewState> {
   constructor(props: FilterViewProps) {
     super(props);
 
+    if (!(props.filter instanceof BooleanAttributeFilter || props.filter instanceof BooleanPropertyFilter)) {
+      throw new InvalidFilterModel('The provided model is not compatible witht the Boolean component');
+    }
+
     this.state = {
       isOpen: false,
-      filter: props.filter,
+      selectedItem: props.filter.getChoiceFromFilter(props.filter),
     };
-  }
-
-  componentWillReceiveProps(nextProps: FilterViewState) {
-    this.setState({filter: nextProps.filter});
   }
 
   render() {
@@ -29,11 +33,25 @@ export default class Boolean extends React.Component<FilterViewProps, FilterView
       <div className="AknFilterBox-filterContainer" data-name="enabled" data-type="choice">
         <div className="AknFilterBox-filter filter-select filter-criteria-selector">
           <span className="AknFilterBox-filterLabel">Status</span>
-          <select>
-            <option value="">All</option>
-            <option value="1">Enabled</option>
-            <option value="0">Disabled</option>
-          </select>
+          <Dropdown
+            elements={this.props.filter.getChoices().map((choice: Choice): DropdownElement => ({
+              identifier: choice.identifier,
+              label: `${choice.identifier}`,
+              original: choice,
+            }))}
+            label={'boolean'}
+            selectedElement={this.state.selectedItem.identifier}
+            onSelectionChange={(choice: DropdownElement) => {
+              const filter = this.props.filter.getFilterFromChoice(choice.original);
+
+              this.props.onFilterChange(filter);
+              // const locale = locales.find((locale: Locale) => locale.code === selection);
+
+              // if (undefined !== locale) {
+              //   onLocaleChange(locale);
+              // }
+            }}
+          />
           <button
             type="button"
             className="ui-multiselect ui-corner-all AknFilterBox-filterCriteria select-filter-widget"

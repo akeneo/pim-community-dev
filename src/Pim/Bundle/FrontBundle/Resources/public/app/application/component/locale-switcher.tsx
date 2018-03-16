@@ -67,12 +67,8 @@ export default ({
       selectedElement={localeCode}
       ItemView={LocaleItemView}
       ButtonView={LocaleButtonView}
-      onSelectionChange={(selection: string) => {
-        const locale = locales.find((locale: Locale) => locale.code === selection);
-
-        if (undefined !== locale) {
-          onLocaleChange(locale);
-        }
+      onSelectionChange={(locale: DropdownElement) => {
+        onLocaleChange(locale.original);
       }}
       className="locale-switcher"
     />

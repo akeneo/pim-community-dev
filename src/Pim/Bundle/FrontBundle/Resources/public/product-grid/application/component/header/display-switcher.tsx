@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {Display} from 'pimfront/product-grid/domain/event/display';
-import Dropdown from 'pimfront/app/application/component/dropdown';
+import Dropdown, {DropdownElement} from 'pimfront/app/application/component/dropdown';
 import __ from 'pimfront/tools/translator';
 
 export default ({
@@ -24,8 +24,8 @@ export default ({
       ]}
       label={__('grid.display_selector.label')}
       selectedElement={displayType}
-      onSelectionChange={(selection: Display) => {
-        onDisplayChange(selection);
+      onSelectionChange={(selection: DropdownElement) => {
+        onDisplayChange(selection.original);
       }}
     />
   );

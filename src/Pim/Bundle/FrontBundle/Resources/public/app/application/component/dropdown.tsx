@@ -58,7 +58,7 @@ interface Props {
   ) => JSX.Element;
   label: string;
   className?: string;
-  onSelectionChange: (element: string) => void;
+  onSelectionChange: (element: DropdownElement) => void;
 }
 
 export default class Dropdown extends React.Component<Props, {isOpen: boolean; selectedElement: string}> {
@@ -83,7 +83,7 @@ export default class Dropdown extends React.Component<Props, {isOpen: boolean; s
     this.setState({isOpen: false});
     if (element.identifier !== this.state.selectedElement) {
       this.setState({selectedElement: element.identifier});
-      this.props.onSelectionChange(element.identifier);
+      this.props.onSelectionChange(element);
     }
   }
 
