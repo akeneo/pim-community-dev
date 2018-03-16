@@ -59,7 +59,7 @@ class VersionNormalizer implements NormalizerInterface
      */
     public function normalize($version, $format = null, array $context = [])
     {
-        $context = ['locale' => $this->translator->getLocale()];
+        $context = array_merge($context, ['locale' => $this->translator->getLocale()]);
 
         return [
             'id'           => $version->getId(),
