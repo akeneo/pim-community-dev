@@ -45,6 +45,13 @@ export default <Element>(
 
       state = {...state, query: {...state.query, filters: newFilters}};
       break;
+    case 'FILTER_UPDATED':
+      const updatedFilters: NormalizedFilter[] = state.query.filters.map(
+        (filter: NormalizedFilter) => (filter.field === action.filter.field ? action.filter : filter)
+      );
+
+      state = {...state, query: {...state.query, filters: updatedFilters}};
+      break;
     default:
       break;
   }

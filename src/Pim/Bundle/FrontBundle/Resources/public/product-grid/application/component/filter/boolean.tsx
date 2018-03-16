@@ -3,10 +3,11 @@ import Dropdown, {DropdownElement} from 'pimfront/app/application/component/drop
 import BooleanPropertyFilter, {Choice} from 'pimfront/product-grid/domain/model/filter/property/boolean';
 import BooleanAttributeFilter from 'pimfront/product-grid/domain/model/filter/attribute/boolean';
 import {InvalidFilterModel} from 'pimfront/product-grid/application/component/filter/error';
+import Filter from 'pimfront/product-grid/domain/model/filter/filter';
 
 interface FilterViewProps {
   filter: BooleanAttributeFilter | BooleanPropertyFilter;
-  onFilterChange: (filter: Filter) => void;
+  onFilterChanged: (filter: Filter) => void;
 }
 
 interface FilterViewState {
@@ -44,12 +45,7 @@ export default class Boolean extends React.Component<FilterViewProps, FilterView
             onSelectionChange={(choice: DropdownElement) => {
               const filter = this.props.filter.getFilterFromChoice(choice.original);
 
-              this.props.onFilterChange(filter);
-              // const locale = locales.find((locale: Locale) => locale.code === selection);
-
-              // if (undefined !== locale) {
-              //   onLocaleChange(locale);
-              // }
+              this.props.onFilterChanged(filter);
             }}
           />
           <button

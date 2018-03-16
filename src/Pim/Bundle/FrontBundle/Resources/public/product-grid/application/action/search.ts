@@ -27,7 +27,7 @@ interface QueryFilter {
   field: string;
   operator: string;
   value: any;
-  options: any;
+  context: any;
 }
 
 interface Query {
@@ -48,7 +48,7 @@ const stateToQuery = (state: State<Product>): Query => {
       field: filter.field,
       operator: filter.operator,
       value: filter.value,
-      options: {},
+      context: {},
     })),
   };
 };
@@ -99,7 +99,7 @@ export const loadChildren = (product: ProductInterface) => async (dispatch: any,
       field: 'parent',
       operator: 'IN',
       value: [product.getIdentifier()],
-      options: {},
+      context: {},
     },
   ];
 

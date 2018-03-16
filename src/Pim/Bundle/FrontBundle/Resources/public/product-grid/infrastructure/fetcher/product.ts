@@ -29,7 +29,7 @@ const queryToParameters = (query: any) => {
     default_scope: query.channel,
     limit: query.limit,
     from: query.page * query.limit,
-    filters: query.filters,
+    filters: JSON.stringify(query.filters),
   };
 };
 

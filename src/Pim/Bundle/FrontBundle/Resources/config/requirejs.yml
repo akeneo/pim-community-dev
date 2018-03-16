@@ -10,6 +10,7 @@ config:
                     model: pimfront/product-grid/domain/model/filter/attribute/boolean
             operator:
                 ALL: pimfront/product-grid/domain/model/filter/operator/all
+                '=': pimfront/product-grid/domain/model/filter/operator/equal
             value:
                 - pimfront/product-grid/application/configuration/value
 

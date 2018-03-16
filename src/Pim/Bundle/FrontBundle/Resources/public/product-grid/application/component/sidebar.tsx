@@ -1,6 +1,7 @@
 import * as React from 'react';
 import {gridLocaleChanged} from 'pimfront/product-grid/application/action/locale';
 import {gridChannelChanged} from 'pimfront/product-grid/application/action/channel';
+import {filterChanged} from 'pimfront/product-grid/application/action/filter';
 import Locale from 'pimfront/app/domain/model/locale';
 import Channel from 'pimfront/app/domain/model/channel';
 import LocaleSwitcher from 'pimfront/app/application/component/locale-switcher';
@@ -8,9 +9,6 @@ import ChannelSwitcher from 'pimfront/app/application/component/channel-switcher
 import {GlobalState} from 'pimfront/product-grid/application/store/main';
 import {connect} from 'react-redux';
 import LoadingIndicator from 'pimfront/app/application/component/loading-indicator';
-// import StatusFilterModel from 'pimfront/product-grid/domain/model/filter/property/status';
-// import BooleanFilterView from 'pimfront/product-grid/application/component/filter/boolean';
-// import {Property} from 'pimfront/product-grid/domain/model/field';
 import {NormalizedFilter} from 'pimfront/product-grid/domain/model/filter/filter';
 import filterModelProvider from 'pimfront/product-grid/application/configuration/filter-model';
 import filterViewProvider from 'pimfront/product-grid/application/configuration/filter-view';
@@ -19,6 +17,7 @@ import Filter from 'pimfront/product-grid/domain/model/filter/filter';
 interface SidebarDispatch {
   onCatalogLocaleChanged: (locale: Locale) => void;
   onCatalogChannelChanged: (channel: Channel) => void;
+  onFilterChanged: (filter: Filter) => void;
 }
 
 interface SidebarViewState {
@@ -40,6 +39,7 @@ export const SidebarView = ({
   filters,
   onCatalogLocaleChanged,
   onCatalogChannelChanged,
+  onFilterChanged,
 }: SidebarViewState & SidebarDispatch) => {
   return (
     <div className="AknColumn">
@@ -59,7 +59,7 @@ export const SidebarView = ({
             </div>
           </div>
           <div className="AknFilterBox-list">
-            <FiltersView filters={filters} />
+            <FiltersView filters={filters} onFilterChanged={onFilterChanged} />
           </div>
         </div>
       </div>
@@ -72,7 +72,7 @@ interface FilterViewState {
 }
 
 interface FilterDispatch {
-  onFilterChange: (filter: Filter) => void;
+  onFilterChanged: (filter: Filter) => void;
 }
 
 class FiltersView extends React.Component<FilterViewState & FilterDispatch, FilterViewState> {
@@ -90,7 +90,7 @@ class FiltersView extends React.Component<FilterViewState & FilterDispatch, Filt
         const model = await filterModelProvider.getPopulatedFilter(filter);
         const FilterView = await filterViewProvider.getFilter(model);
 
-        return <FilterView key={model.field.identifier} filter={model} onFilterChange={} />;
+        return <FilterView key={model.field.identifier} filter={model} onFilterChanged={this.props.onFilterChanged} />;
       })
     );
 
@@ -130,6 +130,9 @@ export const sidebarDecorator = connect(
       },
       onCatalogChannelChanged: (channel: Channel) => {
         dispatch(gridChannelChanged(channel));
+      },
+      onFilterChanged: (filter: Filter) => {
+        dispatch(filterChanged(filter));
       },
     };
   }
