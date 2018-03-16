@@ -15,6 +15,14 @@ class LoggerSubscriberSpec extends ObjectBehavior
         $this->beConstructedWith($logger, $translator);
     }
 
+    function it_logs_job_execution_created($logger, JobExecutionEvent $event, JobExecution $jobExecution)
+    {
+        $event->getJobExecution()->willReturn($jobExecution);
+        $jobExecution->__toString()->willReturn('job exec');
+        $logger->debug('Job execution is created: job exec')->shouldBeCalled();
+        $this->jobExecutionCreated($event);
+    }
+
     function it_logs_before_job_execution($logger, JobExecutionEvent $event, JobExecution $jobExecution)
     {
         $event->getJobExecution()->willReturn($jobExecution);
