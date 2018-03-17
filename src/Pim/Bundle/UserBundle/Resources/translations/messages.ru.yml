@@ -89,6 +89,7 @@ user:
     label: Представление сетки продуктов по умолчанию
   default_grid_view:
     none: Нет
+  timezone: Часовой пояс
 Role: Роль
 Owner: Владелец
 General: Основные

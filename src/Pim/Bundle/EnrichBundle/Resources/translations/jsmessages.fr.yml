@@ -18,6 +18,7 @@ confirmation:
     role: Êtes-vous sûr(e) de vouloir supprimer ce rôle ?
     job_instance: Êtes-vous sûr(e) de vouloir supprimer cette opération ?
     api_connection: Êtes-vous certain(e) de vouloir révoquer cette connexion API ? Toutes les requêtes API renverront ensuite une erreur.
+    products_and_product_models: Êtes-vous sûr(e) de vouloir supprimer les produits et modèles de produits sélectionnés ? Tous les enfants des modèles de produits seront aussi supprimés.
 pim_datagrid:
   mass_action_group:
     bulk_actions:
@@ -113,6 +114,7 @@ Classify the product: Classer le produit
 Delete the product: Supprimer le produit
 Change status: Changer le statut
 Toggle status: Changer le statut
+mass_delete: Suppression massive
 pim:
   grid:
     mass_action:
@@ -867,6 +869,8 @@ pim_enrich:
             ">=": Complet sur au moins une locale sélectionnée
             "GREATER OR EQUALS THAN ON ALL LOCALES": Complet sur toutes les locales sélectionnées
             LOWER THAN ON ALL LOCALES: Incomplet sur toutes les locales sélectionnées
+            AT LEAST COMPLETE: Au moins un produit enfant complet sur une locale sélectionnée
+            ALL COMPLETE: Tous les produits enfants complets sur toutes les locales sélectionnées
           empty_selection: Sélectionnez une famille
         category:
           title: Catégorie

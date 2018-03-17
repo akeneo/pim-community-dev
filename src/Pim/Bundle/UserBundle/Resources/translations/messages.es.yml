@@ -89,6 +89,7 @@ user:
     label: Vista de grilla de producto automática
   default_grid_view:
     none: Ninguno
+  timezone: Zona horaria
 Role: Rol
 Owner: Propietario
 General: General

@@ -89,6 +89,7 @@ user:
     label: Vue par défaut de la grille des produits
   default_grid_view:
     none: Aucun
+  timezone: Fuseau horaire
 Role: Rôle
 Owner: Propriétaire
 General: Général
@@ -153,5 +154,5 @@ Username or Email: Nom d'utilisateur ou Email
 Forgot Password: Mot de passe oublié
 Request: Demande
 Check Email: Vérifier l'email
-password_reset_email_sent: Un email vous a été envoyé. Il contient pour réinitialiser votre mot de passe.
+password_reset_email_sent: Un email vous a été envoyé. Il contient un lien pour réinitialiser votre mot de passe.
 Go to homepage: Aller à la page d'accueil

@@ -77,6 +77,7 @@ Removed user: Verwijderde gebruiker
 user:
   default_grid_view:
     none: Geen
+  timezone: Tijdzone
 Role: Rol
 Owner: Eigenaar
 General: Algemeen

@@ -765,12 +765,18 @@ pim_mass_edit:
       error: L'export rapide <strong>%label%</strong> a échoué
       warning: L'export rapide <strong>%label%</strong> est terminé avec quelques mises en garde
       success: L'export rapide <strong>%label%</strong> est terminé
+    mass_delete:
+      error: La suppression massive <strong>%label%</strong> a echoué
+      warning: La suppression massive <strong>%label%</strong> est terminée avec quelques avertissements
+      success: La suppression massive <strong>%label%</strong> est terminée
 job_execution.summary:
   mass_edited: Édition en masse
   skip: Ignoré
   skipped_products: Produits ignorés
   skipped_attributes: Attributs ignorés
   skipped_families: Familles ignorées
+  deleted_products: Produits supprimés
+  deleted_product_models: Modèles de produits supprimés
 pim_mass_edit_execution_show: Exécutions des éditions en masse | Détails
 edit_common_attributes.steps.edit_common_attributes_processor.title: Modifier des attributs
 update_product_value.steps.update_product_value_processor.title: Mise à jour de la valeur du produit
@@ -836,6 +842,8 @@ batch_jobs:
     quick_export.label: Export rapide de la grille de produits en XLSX
     perform:
       label: Export rapide de la grille de produits en XLSX
+  delete_products_and_product_models:
+    delete_products_and_product_models.label: Suppression massive de produits
 mass_edit report:
   overview: Rapports des éditions en masse
 job_tracker:
