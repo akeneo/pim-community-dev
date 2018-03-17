@@ -133,15 +133,37 @@ DELETE: Eliminar
 ASSIGN: Asignar
 SHARE: Compartir
 oro:
-  security:
-    access-level:
-      BASIC: Usuario
-      LOCAL: Unidad de negocio
-      DEEP: División
-      GLOBAL: Organización
-      SYSTEM: Sistema
-      NONE: Ninguno
-Create group: Crear grupo
+  user:
+    controller:
+      group:
+        message:
+          saved: "Grupo guardado"
+      role:
+        message:
+          saved: "Rol guardado"
+      user:
+        message:
+          saved: "Usuario guardado"
+      status:
+        message:
+          saved: "Estado guardado"
+    grid:
+      users:
+        columns:
+          username: "Nombre de usuario"
+          email: "Correo Electrónico"
+          firstName: "Primer nombre"
+          lastName: "Apellidos"
+          createdAt: "Creado el"
+          updatedAt: "Actualizado el"
+          enabled: "Estado"
+      roles:
+        columns:
+          label: "Etiqueta"
+      groups:
+        columns:
+          name: "Nombre"
+"Create group": "Crear grupo"
 btn.create.user-group: Crear grupo
 Has group: Tiene grupo
 Save and Close: Guardar y cerrar
@@ -150,8 +172,12 @@ Log in: Iniciar sesion
 Remember me on this computer: Recordarme en esta computadora
 Forgot your password?: '¿Olvidó su contraseña?'
 Username or Email: Nombre de usuario o Email
-Forgot Password: Contraseña olvidada
+"Forgot Password": "Contraseña olvidada"
 Request: Petición
 Check Email: Revise su correo electrónico
 password_reset_email_sent: Se envió un correo electrónico a %email%. Contiene un enlace que usted debe hacer clic para restablecer su contraseña.
 Go to homepage: Ir a la página de inicio
+Login: Ingresar
+"Create role": "Crear rol"
+"Edit role": "Editar rol"
+"Logout": "Salir"

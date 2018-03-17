@@ -133,15 +133,37 @@ DELETE: 削除
 ASSIGN: 割り当て
 SHARE: 共有
 oro:
-  security:
-    access-level:
-      BASIC: ユーザー
-      LOCAL: 部署
-      DEEP: 事業部
-      GLOBAL: 組織
-      SYSTEM: システム
-      NONE: なし
-Create group: グループを作成
+  user:
+    controller:
+      group:
+        message:
+          saved: "グループが保存されました"
+      role:
+        message:
+          saved: "ロールを保存しました"
+      user:
+        message:
+          saved: "ユーザーを保存しました"
+      status:
+        message:
+          saved: "ステータスを保存しました"
+    grid:
+      users:
+        columns:
+          username: "ユーザー名"
+          email: "電子メール"
+          firstName: "名"
+          lastName: "姓"
+          createdAt: "作成日"
+          updatedAt: "更新日"
+          enabled: "ステータス"
+      roles:
+        columns:
+          label: "ラベル"
+      groups:
+        columns:
+          name: "名前"
+"Create group": "グループを作成"
 btn.create.user-group: グループを作成
 Has group: グループあり
 Save and Close: 保存して閉じる
@@ -150,8 +172,12 @@ Log in: ログイン
 Remember me on this computer: ログイン状態を維持する
 Forgot your password?: パスワードをお忘れですか?
 Username or Email: ユーザー名またはメールアドレス
-Forgot Password: パスワードを忘れた
+"Forgot Password": "パスワードを忘れた"
 Request: リクエスト
 Check Email: メールをチェック
 password_reset_email_sent: メールが %email% 宛に送信されました。パスワードをリセットするためのリンクが含まれています。
 Go to homepage: ホームページに移動
+Login: ログイン
+"Create role": "権限を作成"
+"Edit role": "権限を編集"
+"Logout": "ログアウト"

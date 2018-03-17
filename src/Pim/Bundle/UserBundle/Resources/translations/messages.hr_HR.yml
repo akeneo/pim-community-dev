@@ -133,15 +133,37 @@ DELETE: Obriši
 ASSIGN: Dodijeli
 SHARE: Podijeli
 oro:
-  security:
-    access-level:
-      BASIC: Korisnik
-      LOCAL: Poslovna jedinica
-      DEEP: Odjel
-      GLOBAL: Organizacija
-      SYSTEM: Sustav
-      NONE: Niti jedan
-Create group: Kreiraj grupu
+  user:
+    controller:
+      group:
+        message:
+          saved: "Grupa je spremljena"
+      role:
+        message:
+          saved: "Rola je spremljena"
+      user:
+        message:
+          saved: "Korisnik je spremljen"
+      status:
+        message:
+          saved: "Status je spremljen"
+    grid:
+      users:
+        columns:
+          username: "Korisničko ime"
+          email: "Email"
+          firstName: "Ime"
+          lastName: "Prezime"
+          createdAt: "Kreirano u"
+          updatedAt: "Ažurirano u"
+          enabled: "Status"
+      roles:
+        columns:
+          label: "Oznaka"
+      groups:
+        columns:
+          name: "Ime"
+"Create group": "Kreiraj grupu"
 btn.create.user-group: Kreiraj grupu
 Has group: Sadržava grupu
 Save and Close: Spremi i zatvori
@@ -150,8 +172,12 @@ Log in: Prijava
 Remember me on this computer: Zapamti me na ovom računalu
 Forgot your password?: Zaboravili ste svoju lozinku?
 Username or Email: Korisničko ime ili E-mail
-Forgot Password: Zaboravio/la si lozinku
+"Forgot Password": "Zaboravio/la si lozinku"
 Request: Zahtjev
 Check Email: Provjeri e-poštu
 password_reset_email_sent: E-mail je poslan na %email%. Sadrži poveznicu za ponovno postavljanje lozinke.
 Go to homepage: Idi na početnu stranicu
+Login: Prijava
+"Create role": "Kreiraj rolu"
+"Edit role": "Uredi rolu"
+"Logout": "Odjava"

@@ -133,15 +133,37 @@ DELETE: Supprimer
 ASSIGN: Assigner
 SHARE: Partager
 oro:
-  security:
-    access-level:
-      BASIC: Utilisateur
-      LOCAL: Entité commerciale
-      DEEP: Division
-      GLOBAL: Organisation
-      SYSTEM: Système
-      NONE: Aucun
-Create group: Créer un groupe
+  user:
+    controller:
+      group:
+        message:
+          saved: "Groupe enregistré"
+      role:
+        message:
+          saved: "Rôle enregistré"
+      user:
+        message:
+          saved: "Utilisateur enregistré"
+      status:
+        message:
+          saved: "Statut enregistré"
+    grid:
+      users:
+        columns:
+          username: "Nom d'utilisateur"
+          email: "Email"
+          firstName: "Prénom"
+          lastName: "Nom"
+          createdAt: "Crée le"
+          updatedAt: "Mis à jour le"
+          enabled: "État"
+      roles:
+        columns:
+          label: "Libellé"
+      groups:
+        columns:
+          name: "Nom"
+"Create group": "Créer un groupe"
 btn.create.user-group: Créer un groupe
 Has group: Appartient au groupe
 Save and Close: Enregistrer et fermer
@@ -150,8 +172,77 @@ Log in: Connexion
 Remember me on this computer: Mémoriser mes informations sur cet ordinateur
 Forgot your password?: Mot de passe oublié ?
 Username or Email: Nom d'utilisateur ou Email
-Forgot Password: Mot de passe oublié
+"Forgot Password": "Mot de passe oublié"
 Request: Demande
 Check Email: Vérifier l'email
 password_reset_email_sent: Un email a été envoyé à %email%. Il contient un lien, vous devez cliquer sur ce lien pour réinitialiser votre mot de passe.
 Go to homepage: Aller à la page d'accueil
+oro.user.form.choose_user: Choisissez un utilisateur...
+change_password:
+  flash:
+    success: Le mot de passe a été changé
+resetting:
+  flash:
+    success: Le mot de passe a été réinitialisé avec succès
+"%%username%% - View user - User Management": "%%username%% - Voir un utilisateur - Gestion des utilisateurs"
+"%%username%% - Edit user - User Management": "%%username%% - Modifier un utilisateur - Gestion des utilisateurs"
+"New user - User Management": "Nouvel utilisateur - Gestion des utilisateurs"
+"Users - User Management": "Utilisateurs - Gestion des utilisateurs"
+"Edit role - User management": "Modifier Rôle - Gestion des utilisateurs"
+"Add role - User management": "Ajouter un rôle - Gestion des utilisateurs"
+"Roles - User management": "Rôles - Gestion des utilisateurs"
+Login: Connexion
+"User Status - User Management": "Statut de l'utilisateur - Gestion des utilisateurs"
+"Add Status - User Management": "Ajouter un statut - Gestion des utilisateurs"
+"Password Reset": Réinitialisation de mot de passe
+"Password Reset - Check Email": "Réinitialisation de mot de passe - Email de vérification"
+"Acl Resources - User Management": "Ressources ACL - Gestion des utilisateurs"
+"Edit group - User Management": "Modifier le groupe - Gestion des utilisateurs"
+"Add group - User Management": "Ajouter un groupe - Gestion des utilisateurs"
+"Groups - User Management": "Groupes - Gestion des utilisateurs"
+"Group manipulation": "Administration de groupe"
+"Create new group": "Créer un nouveau groupe"
+"Edit group": "Modifier le groupe"
+"View group list": "Voir la liste des groupes"
+"List of groups": "Liste des groupes"
+"User manipulation": "Administration des utilisateurs"
+"View user user": "Visualiser les utilisateurs"
+"Generate new API key": "Générer une nouvelle clé API"
+"Create user user": "Créer un utilisateur"
+"Edit user user": "Modifier un utilisateur"
+"View list of user users": "Voir la liste des utilisateurs"
+"Reset user password": "Réinitialiser le mot de passe de l'utilisateur"
+"reset password": "réinitialiser le mot de passe"
+"Oro Reset password page": "Page de réinitialisation de mot de passe Oro"
+"send reset mail": "envoyer un email de réinitialisation"
+"Request reset user password": "Demande de réinitialisation du mot de passe"
+"reset password check email": "Email de vérification de réinitialisation de mot de passe"
+"Tell the user to check his email provider": "Indiquez à l’utilisateur de vérifier sa messagerie"
+"Role manipulation": "Administration de rôle"
+"Create role": "Créer un rôle"
+"Create new role": "Créer un nouveau rôle"
+"Edit role": "Modifier un rôle"
+"View role list": "Voir la liste des rôles"
+"List of roles": "Liste des rôles"
+"Oro Security": "Sécurité de Oro"
+"Login page": "Page d'identification"
+"Oro Login page": "Page d'identification Oro"
+"Login check": "Vérification de la connexion"
+"Oro Login check": "Vérification de la connexion Oro"
+"Logout": "Déconnexion"
+"Oro Logout": "Oro Déconnexion"
+"ACL manipulation": "Administration des ACL"
+"ACL manipulation from API": "Administration des ACL de l'API"
+"View ACL tree": "Voir l'arbre des ACL"
+"View ACL tree for a particular role": "Voir l'arbre des ACL depuis un rôle particulier"
+"View ACL resource": "Voir les ressources ACL"
+"View user group": "Afficher le groupe d'utilisateurs"
+"Remove group": "Supprimer groupe"
+"View group roles": "Voir la liste des rôles"
+"Remove user user": "Supprimer un utilisateur"
+"View user roles": "Visualiser les rôles utilisateurs"
+"View user groups": "Afficher les groupes utilisateurs"
+"View user ACL": "Visualiser les ACL de l'utilisateur"
+"View role": "Afficher le rôle"
+"Remove role": "Supprimer le rôle"
+"Template controller": "Contrôleur de modèle"

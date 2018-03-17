@@ -121,15 +121,37 @@ DELETE: Verwijderen
 ASSIGN: Toewijzen
 SHARE: Delen
 oro:
-  security:
-    access-level:
-      BASIC: Gebruiker
-      LOCAL: Bedrijfsdivisie
-      DEEP: Divisie
-      GLOBAL: Organisatie
-      SYSTEM: Systeem
-      NONE: Geen
-Create group: Groep aanmaken
+  user:
+    controller:
+      group:
+        message:
+          saved: "Groep opgeslagen"
+      role:
+        message:
+          saved: "Rol opgeslagen"
+      user:
+        message:
+          saved: "Gebruiker opgeslagen"
+      status:
+        message:
+          saved: "Status opgeslagen"
+    grid:
+      users:
+        columns:
+          username: "Gebruikersnaam"
+          email: "E-mail"
+          firstName: "Voornaam"
+          lastName: "Achternaam"
+          createdAt: "Aangemaakt op"
+          updatedAt: "Bijgewerkt op"
+          enabled: "Status"
+      roles:
+        columns:
+          label: "Label"
+      groups:
+        columns:
+          name: "Naam"
+"Create group": "Groep aanmaken"
 btn.create.user-group: Groep aanmaken
 Has group: Heeft groep
 Save and Close: Opslaan en sluiten
@@ -138,8 +160,12 @@ Log in: Login
 Remember me on this computer: Onthoud mijn gegevens op deze computer
 Forgot your password?: Uw wachtwoord vergeten?
 Username or Email: Gebruikersnaam of E-mail
-Forgot Password: Wachtwoord vergeten
+"Forgot Password": "Wachtwoord vergeten"
 Request: Aanvragen
 Check Email: E-mail controleren
 password_reset_email_sent: Een e-mail is naar %email% verstuurd. Het bevat een link waarop u moet klikken om uw wachtwoord te resetten.
 Go to homepage: Ga naar de homepage
+Login: Aanmelden
+"Create role": "Rol aanmaken"
+"Edit role": "Rol bewerken"
+"Logout": "Afmelden"
