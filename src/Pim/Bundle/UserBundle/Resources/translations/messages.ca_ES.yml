@@ -133,15 +133,37 @@ DELETE: Suprimir
 ASSIGN: Assignar
 SHARE: Compartir
 oro:
-  security:
-    access-level:
-      BASIC: Usuari
-      LOCAL: Unitats de negoci
-      DEEP: Divisió
-      GLOBAL: Organització
-      SYSTEM: Sistema
-      NONE: Cap
-Create group: Crear grup
+  user:
+    controller:
+      group:
+        message:
+          saved: "Grup desat"
+      role:
+        message:
+          saved: "Rol desat"
+      user:
+        message:
+          saved: "Usuari desat"
+      status:
+        message:
+          saved: "Estat desat"
+    grid:
+      users:
+        columns:
+          username: "Nom d’usuari"
+          email: "Adreça electrònica"
+          firstName: "Nom"
+          lastName: "Segon cognom"
+          createdAt: "Creat el"
+          updatedAt: "Actualitzat el"
+          enabled: "Estat"
+      roles:
+        columns:
+          label: "Etiqueta"
+      groups:
+        columns:
+          name: "Nom"
+"Create group": "Crear grup"
 btn.create.user-group: Crear grup
 Has group: Té grup
 Save and Close: Desar i tancar
@@ -150,8 +172,12 @@ Log in: Entrar
 Remember me on this computer: Recorda'm en aquest ordinador
 Forgot your password?: Heu oblidat la contrasenya?
 Username or Email: Usuari o correu electrònic
-Forgot Password: He oblidat la contrasenya
+"Forgot Password": "He oblidat la contrasenya"
 Request: Petició
 Check Email: Comprovar el correu electrònic
 password_reset_email_sent: S'ha enviat un correu electrònic a %email% que conté un enllaç on fer clic per restablir la contrasenya.
 Go to homepage: Anar a la pàgina d'inici
+Login: Iniciar Sessió
+"Create role": "Crear rol"
+"Edit role": "Editar rol"
+"Logout": "Tanca sessió"
