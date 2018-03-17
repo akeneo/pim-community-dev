@@ -89,6 +89,7 @@ user:
     label: Vista de quadrícula de producte per defecte
   default_grid_view:
     none: Cap
+  timezone: Zona horària
 Role: Rol
 Owner: Propietari
 General: General
