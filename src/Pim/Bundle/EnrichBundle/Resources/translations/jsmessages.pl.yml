@@ -492,7 +492,6 @@ pim_enrich:
           title: Rodzina
           operators:
             IN: Na liście
-          empty_selection: Brak warunków dla rodzin
         enabled:
           title: Status
           help: "Wybierz produkty do eksportu ze względu na ich status. Np: Eksportuj produkty niezależnie od ich statusu."
@@ -504,8 +503,6 @@ pim_enrich:
           title: Kompletność
           operators:
             ALL: Brak warunku kompletności
-        category:
-          help: Użyj kategorii produktów w drzewie (zdefiniowanym przez kanał powyżej), aby wybrać produkty do eksportu
         identifier:
           title: Identyfikator
         metric:
