@@ -149,3 +149,6 @@ job_execution.summary:
   proposal_deleted: slettet
 pim_enrich_attribute_form:
   isReadOnly: Skrivebeskyttet
+batch_jobs:
+  edit_common_attributes:
+    execute_rules.label: Udfør regler
