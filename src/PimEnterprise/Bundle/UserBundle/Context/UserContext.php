@@ -193,7 +193,7 @@ class UserContext extends BaseUserContext
      *
      * @return CategoryInterface
      */
-    public function getUserProductCategoryTree()
+    public function getUserProductCategoryTree(): CategoryInterface
     {
         $defaultTree = $this->getUserOption($this->treeOptionKey);
 
