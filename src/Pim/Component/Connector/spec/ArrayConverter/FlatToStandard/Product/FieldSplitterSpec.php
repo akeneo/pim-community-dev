@@ -20,6 +20,7 @@ class FieldSplitterSpec extends ObjectBehavior
         $this->splitPrices('')->shouldReturn([]);
         $this->splitPrices('invalid')->shouldReturn(['invalid']);
         $this->splitPrices('120.25 EUR,  gruik#125 USD')->shouldReturn(['120.25 EUR', 'gruik#125 USD']);
+        $this->splitPrices('123 EUR, ARS,23423 AUD')->shouldReturn(['123 EUR', 'ARS', '23423 AUD']);
     }
 
     function it_split_collection()
