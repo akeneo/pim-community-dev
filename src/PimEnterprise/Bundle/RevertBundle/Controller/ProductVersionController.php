@@ -9,11 +9,11 @@
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Bundle\VersioningBundle\Controller;
+namespace PimEnterprise\Bundle\RevertBundle\Controller;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
-use PimEnterprise\Bundle\VersioningBundle\Reverter\ProductReverter;
+use PimEnterprise\Bundle\RevertBundle\Reverter\ProductReverter;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
@@ -52,7 +52,7 @@ class ProductVersionController
      *
      * @return JsonResponse
      *
-     * @AclAncestor("pimee_versioning_product_version_revert")
+     * @AclAncestor("pimee_revert_product_version_revert")
      */
     public function revertAction($id)
     {

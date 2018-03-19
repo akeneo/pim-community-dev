@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Bundle\VersioningBundle\DependencyInjection;
+namespace PimEnterprise\Bundle\RevertBundle\DependencyInjection;
 
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -21,7 +21,7 @@ use Symfony\Component\HttpKernel\DependencyInjection\Extension;
  *
  * To learn more see {@link http://symfony.com/doc/current/cookbook/bundles/extension.html}
  */
-class PimEnterpriseVersioningExtension extends Extension
+class PimEnterpriseRevertExtension extends Extension
 {
     /**
      * {@inheritdoc}

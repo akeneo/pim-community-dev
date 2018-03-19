@@ -97,7 +97,7 @@ class AppKernel extends Kernel
             new PimEnterprise\Bundle\TeamworkAssistantBundle\PimEnterpriseTeamworkAssistantBundle(),
             new PimEnterprise\Bundle\UIBundle\PimEnterpriseUIBundle(),
             new PimEnterprise\Bundle\UserBundle\PimEnterpriseUserBundle(),
-            new PimEnterprise\Bundle\VersioningBundle\PimEnterpriseVersioningBundle(),
+            new PimEnterprise\Bundle\RevertBundle\PimEnterpriseRevertBundle(),
             new PimEnterprise\Bundle\WorkflowBundle\PimEnterpriseWorkflowBundle(),
             new PimEnterprise\Bundle\ApiBundle\PimEnterpriseApiBundle(),
         ];

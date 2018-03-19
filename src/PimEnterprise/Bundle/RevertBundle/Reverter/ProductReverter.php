@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Bundle\VersioningBundle\Reverter;
+namespace PimEnterprise\Bundle\RevertBundle\Reverter;
 
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
@@ -17,7 +17,7 @@ use Akeneo\Component\Versioning\Model\Version;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Connector\ArrayConverter\ArrayConverterInterface;
-use PimEnterprise\Bundle\VersioningBundle\Exception\RevertException;
+use PimEnterprise\Bundle\RevertBundle\Exception\RevertException;
 use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
