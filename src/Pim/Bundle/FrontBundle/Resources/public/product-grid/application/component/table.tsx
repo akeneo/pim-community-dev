@@ -69,17 +69,20 @@ export default ({
         </thead>
       ) : null}
       <tbody className="AknGrid-body">
-        {items.map((product: ProductInterface) => (
-          <ItemView
-            key={product.getIdentifier()}
-            product={product}
-            channel={channel}
-            locale={locale}
-            onRedirectToProduct={onRedirectToProduct}
-            onLoadChildren={onLoadChildren}
-            depth={depth}
-          />
-        ))}
+        {items.map((product: ProductInterface, index: number) => {
+          return (
+            <ItemView
+              key={product.getIdentifier()}
+              product={product}
+              channel={channel}
+              locale={locale}
+              onRedirectToProduct={onRedirectToProduct}
+              onLoadChildren={onLoadChildren}
+              depth={depth}
+              position={index}
+            />
+          );
+        })}
       </tbody>
     </table>
   );

@@ -10,11 +10,17 @@
   border-collapse: collapse;
 
   &-bodyRow {
-    transition: background 0.2s ease-in;
+    transition: background 0.2s ease-in, opacity .2s ease-out, transform .2s ease-out;
   }
 
-  &-bodyRow + &-bodyRow:not(&-bodyRow--withoutTopBorder) &-bodyCell {
-    border-top: 1px solid @AknBorderColor;
+  &-bodyRow--hidden {
+    opacity: 0;
+    transform: translateY(25px);
+  }
+
+  &-bodyRow--displayed {
+    opacity: 1;
+    transform: none;
   }
 
   &-bodyRow + &-bodyRow &-bodyCell:first-child&-bodyCell--checkbox {

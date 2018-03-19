@@ -7,7 +7,7 @@ export default ({
   locale,
   channel,
   onRedirectToProduct,
-}: {product: ProductInterface; channel: string; locale: string} & {
+}: {product: ProductInterface; channel: string; locale: string; depth: number; position: number} & {
   onRedirectToProduct: (product: ProductInterface) => void;
   onLoadChildren: (product: ProductInterface) => void;
 }) => {
