@@ -52,7 +52,14 @@ class DateTimeNormalizerSpec extends ObjectBehavior
 
         $standardNormalizer->normalize($datetime, 'standard', [])->willReturn('2015-01-01T23:50:00+01:00');
         $userContext->getUiLocaleCode()->willReturn('en_US');
-        $presenter->present('2015-01-01T23:50:00+01:00', ['locale' => 'en_US'])->willReturn('01/01/2015');
+        $userContext->getUserTimezone()->willReturn('Pacific/Kiritimati');
+        $presenter->present(
+            '2015-01-01T23:50:00+01:00',
+            [
+                'locale'   => 'en_US',
+                'timezone' => 'Pacific/Kiritimati',
+            ]
+        )->willReturn('01/01/2015');
 
         $this->normalize($datetime, 'datagrid')->shouldReturn('01/01/2015');
     }
@@ -65,7 +72,14 @@ class DateTimeNormalizerSpec extends ObjectBehavior
 
         $standardNormalizer->normalize($datetime, 'standard', [])->willReturn('2014-12-31T18:00:00-05:00');
         $userContext->getUiLocaleCode()->willReturn('en_US');
-        $presenter->present('2014-12-31T18:00:00-05:00', ['locale' => 'en_US'])->willReturn('12/31/2014');
+        $userContext->getUserTimezone()->willReturn('Pacific/Kiritimati');
+        $presenter->present(
+            '2014-12-31T18:00:00-05:00',
+            [
+                'locale'   => 'en_US',
+                'timezone' => 'Pacific/Kiritimati',
+            ]
+        )->willReturn('12/31/2014');
 
         $this->normalize($datetime, 'datagrid')->shouldReturn('12/31/2014');
     }

@@ -190,8 +190,18 @@ class ProductNormalizer implements NormalizerInterface
         $oldestLog = $this->versionManager->getOldestLogEntry($product);
         $newestLog = $this->versionManager->getNewestLogEntry($product);
 
-        $created = null !== $oldestLog ? $this->versionNormalizer->normalize($oldestLog, 'internal_api') : null;
-        $updated = null !== $newestLog ? $this->versionNormalizer->normalize($newestLog, 'internal_api') : null;
+        $created = null !== $oldestLog ?
+            $this->versionNormalizer->normalize(
+                $oldestLog,
+                'internal_api',
+                ['timezone' => $this->userContext->getUserTimezone()]
+            ) : null;
+        $updated = null !== $newestLog ?
+            $this->versionNormalizer->normalize(
+                $newestLog,
+                'internal_api',
+                ['timezone' => $this->userContext->getUserTimezone()]
+            ) : null;
 
         $scopeCode = $context['channel'] ?? null;
 

@@ -326,7 +326,7 @@ JSON;
     private function getDiscriminantDatetime(): \Datetime
     {
         sleep(1);
-        $datetime = new \DateTime('now');
+        $datetime = new \DateTime('now', new \DateTimeZone('UTC'));
         sleep(1);
 
         return $datetime;
