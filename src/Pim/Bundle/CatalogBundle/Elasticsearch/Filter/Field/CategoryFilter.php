@@ -134,24 +134,13 @@ class CategoryFilter extends AbstractFieldFilter implements FieldFilterInterface
      *
      * @param string $field
      * @param mixed  $values
-     *
-     * @throws ObjectNotFoundException
      */
-    protected function checkValue($field, $values)
+    protected function checkValue($field, $values): void
     {
         FieldFilterHelper::checkArray($field, $values, static::class);
 
         foreach ($values as $value) {
             FieldFilterHelper::checkIdentifier($field, $value, static::class);
-        }
-
-        $categoryCodes = $this->categoryRepository->getCodesIfExist($values);
-        if (count($categoryCodes) !== count($values)) {
-            $diff = array_diff($values, $categoryCodes);
-            $message = count($diff) > 1 ? 'Objects "category" with codes "%s" do not exist' : 'Object "category" with code "%s" does not exist';
-            throw new ObjectNotFoundException(
-                sprintf($message, implode(', ', $diff))
-            );
         }
     }
 
