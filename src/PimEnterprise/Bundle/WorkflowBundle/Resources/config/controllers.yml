@@ -4,8 +4,6 @@ parameters:
     pimee_workflow.controller.published_product_rest.class: PimEnterprise\Bundle\WorkflowBundle\Controller\Rest\PublishedProductController
     pimee_workflow.controller.product_draft_rest.class:     PimEnterprise\Bundle\WorkflowBundle\Controller\Rest\ProductDraftController
     pimee_workflow.controller.rest.product.class:           PimEnterprise\Bundle\WorkflowBundle\Controller\Rest\ProductController
-    pimee_workflow.controller.external_api.product_draft.class: PimEnterprise\Bundle\WorkflowBundle\Controller\Api\ProductDraftController
-    pimee_workflow.controller.external_api.product_proposal.class: PimEnterprise\Bundle\WorkflowBundle\Controller\Api\ProductProposalController
 
 services:
     pimee_workflow.controller.product_draft:
@@ -70,23 +68,3 @@ services:
             - '@pim_catalog.repository.product'
             - '@pim_internal_api_serializer'
             - '@pim_catalog.filter.chained'
-
-    # External API
-    pimee_workflow.controller.external_api.product_proposal:
-        class : '%pimee_workflow.controller.external_api.product_proposal.class%'
-        arguments:
-            - '@pim_api.repository.product'
-            - '@pimee_workflow.repository.product_draft'
-            - '@pimee_workflow.manager.product_draft'
-            - '@security.token_storage'
-            - '@security.authorization_checker'
-
-    pimee_workflow.controller.external_api.product_draft:
-        class: '%pimee_workflow.controller.external_api.product_draft.class%'
-        arguments:
-            - '@pim_api.repository.product'
-            - '@pimee_workflow.repository.product_draft'
-            - '@pimee_workflow.applier.product_draft'
-            - '@pim_serializer'
-            - '@security.token_storage'
-            - '@security.authorization_checker'
