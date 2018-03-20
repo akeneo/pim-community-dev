@@ -3,11 +3,9 @@
 namespace Pim\Bundle\CatalogBundle\Elasticsearch\Filter\Field;
 
 use Pim\Component\Catalog\Exception\InvalidOperatorException;
-use Pim\Component\Catalog\Exception\ObjectNotFoundException;
 use Pim\Component\Catalog\Query\Filter\FieldFilterHelper;
 use Pim\Component\Catalog\Query\Filter\FieldFilterInterface;
 use Pim\Component\Catalog\Query\Filter\Operators;
-use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 
 /**
  * Filter that searches Elasticsearch documents containing the given attributes ($value)
@@ -19,20 +17,14 @@ use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
  */
 class WithAttributesFilter extends AbstractFieldFilter implements FieldFilterInterface
 {
-    /** @var AttributeRepositoryInterface */
-    protected $attributeRepository;
-
     /**
-     * @param AttributeRepositoryInterface $attributeRepository
      * @param array                        $supportedFields
      * @param array                        $supportedOperators
      */
     public function __construct(
-        AttributeRepositoryInterface $attributeRepository,
         array $supportedFields = [],
         array $supportedOperators = []
     ) {
-        $this->attributeRepository = $attributeRepository;
         $this->supportedFields = $supportedFields;
         $this->supportedOperators = $supportedOperators;
     }
@@ -79,8 +71,6 @@ class WithAttributesFilter extends AbstractFieldFilter implements FieldFilterInt
      *
      * @param string $field
      * @param mixed  $values
-     *
-     * @throws ObjectNotFoundException
      */
     protected function checkValue($field, $values)
     {
@@ -88,11 +78,6 @@ class WithAttributesFilter extends AbstractFieldFilter implements FieldFilterInt
 
         foreach ($values as $value) {
             FieldFilterHelper::checkIdentifier($field, $value, static::class);
-            if (null === $this->attributeRepository->findOneByIdentifier($value)) {
-                throw new ObjectNotFoundException(
-                    sprintf('Object "attribute" with code "%s" does not exist', $value)
-                );
-            }
         }
     }
 }

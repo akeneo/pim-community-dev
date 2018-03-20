@@ -11,16 +11,14 @@ use Pim\Component\Catalog\Exception\InvalidOperatorException;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Query\Filter\AttributeFilterInterface;
 use Pim\Component\Catalog\Query\Filter\Operators;
-use Pim\Component\Catalog\Repository\CurrencyRepositoryInterface;
 use Pim\Component\Catalog\Validator\AttributeValidatorHelper;
 
 class PriceFilterSpec extends ObjectBehavior
 {
-    function let(AttributeValidatorHelper $attributeValidatorHelper, CurrencyRepositoryInterface $currencyRepository)
+    function let(AttributeValidatorHelper $attributeValidatorHelper)
     {
         $this->beConstructedWith(
             $attributeValidatorHelper,
-            $currencyRepository,
             ['pim_catalog_price_collection'],
             ['<', '<=', '=', '>=', '>', 'EMPTY', 'NOT EMPTY', '!=']
         );
@@ -71,11 +69,9 @@ class PriceFilterSpec extends ObjectBehavior
 
     function it_adds_a_filter_with_operator_lower_than(
         $attributeValidatorHelper,
-        $currencyRepository,
         AttributeInterface $price,
         SearchQueryBuilder $sqb
     ) {
-        $currencyRepository->getActivatedCurrencyCodes()->willReturn(['EUR', 'USD']);
         $price->getCode()->willReturn('a_price');
         $price->getBackendType()->willReturn('prices');
 
@@ -103,11 +99,9 @@ class PriceFilterSpec extends ObjectBehavior
 
     function it_adds_a_filter_with_operator_lower_or_equal_than(
         $attributeValidatorHelper,
-        $currencyRepository,
         AttributeInterface $price,
         SearchQueryBuilder $sqb
     ) {
-        $currencyRepository->getActivatedCurrencyCodes()->willReturn(['EUR', 'USD']);
         $price->getCode()->willReturn('a_price');
         $price->getBackendType()->willReturn('prices');
 
@@ -135,11 +129,9 @@ class PriceFilterSpec extends ObjectBehavior
 
     function it_adds_a_filter_with_operator_equals(
         $attributeValidatorHelper,
-        $currencyRepository,
         AttributeInterface $price,
         SearchQueryBuilder $sqb
     ) {
-        $currencyRepository->getActivatedCurrencyCodes()->willReturn(['EUR', 'USD']);
         $price->getCode()->willReturn('a_price');
         $price->getBackendType()->willReturn('prices');
 
@@ -167,11 +159,9 @@ class PriceFilterSpec extends ObjectBehavior
 
     function it_adds_a_filter_with_operator_not_equal(
         $attributeValidatorHelper,
-        $currencyRepository,
         AttributeInterface $price,
         SearchQueryBuilder $sqb
     ) {
-        $currencyRepository->getActivatedCurrencyCodes()->willReturn(['EUR', 'USD']);
         $price->getCode()->willReturn('a_price');
         $price->getBackendType()->willReturn('prices');
 
@@ -207,11 +197,9 @@ class PriceFilterSpec extends ObjectBehavior
 
     function it_adds_a_filter_with_operator_greater_or_equal_than(
         $attributeValidatorHelper,
-        $currencyRepository,
         AttributeInterface $price,
         SearchQueryBuilder $sqb
     ) {
-        $currencyRepository->getActivatedCurrencyCodes()->willReturn(['EUR', 'USD']);
         $price->getCode()->willReturn('a_price');
         $price->getBackendType()->willReturn('prices');
 
@@ -239,11 +227,9 @@ class PriceFilterSpec extends ObjectBehavior
 
     function it_adds_a_filter_with_operator_greater_than(
         $attributeValidatorHelper,
-        $currencyRepository,
         AttributeInterface $price,
         SearchQueryBuilder $sqb
     ) {
-        $currencyRepository->getActivatedCurrencyCodes()->willReturn(['EUR', 'USD']);
         $price->getCode()->willReturn('a_price');
         $price->getBackendType()->willReturn('prices');
 
@@ -295,11 +281,9 @@ class PriceFilterSpec extends ObjectBehavior
 
     function it_adds_a_filter_with_operator_is_empty_for_currency(
         $attributeValidatorHelper,
-        $currencyRepository,
         AttributeInterface $price,
         SearchQueryBuilder $sqb
     ) {
-        $currencyRepository->getActivatedCurrencyCodes()->willReturn(['EUR', 'USD']);
         $price->getCode()->willReturn('a_price');
         $price->getBackendType()->willReturn('prices');
 
@@ -352,12 +336,9 @@ class PriceFilterSpec extends ObjectBehavior
 
     function it_adds_a_filter_with_operator_is_not_empty_for_currency(
         $attributeValidatorHelper,
-        $currencyRepository,
         AttributeInterface $price,
         SearchQueryBuilder $sqb
     ) {
-        $currencyRepository->getActivatedCurrencyCodes()->willReturn(['EUR', 'USD']);
-
         $price->getCode()->willReturn('a_price');
         $price->getBackendType()->willReturn('prices');
 
@@ -460,11 +441,9 @@ class PriceFilterSpec extends ObjectBehavior
 
     function it_throws_if_the_currency_is_not_supported(
         $attributeValidatorHelper,
-        $currencyRepository,
         AttributeInterface $price,
         SearchQueryBuilder $sqb
     ) {
-        $currencyRepository->getActivatedCurrencyCodes()->willReturn(['USD']);
         $price->getCode()->willReturn('a_price');
 
         $attributeValidatorHelper->validateLocale($price, 'en_US')->shouldBeCalled();
@@ -483,19 +462,6 @@ class PriceFilterSpec extends ObjectBehavior
         )->during(
             'addAttributeFilter',
             [$price, Operators::EQUALS, ['amount' => 12], 'en_US', 'ecommerce']
-        );
-
-        $this->shouldThrow(
-            InvalidPropertyException::validEntityCodeExpected(
-                'a_price',
-                'currency',
-                'The currency does not exist',
-                PriceFilter::class,
-                'YEN'
-            )
-        )->during(
-            'addAttributeFilter',
-            [$price, Operators::EQUALS, ['amount' => 12, 'currency' => 'YEN'], 'en_US', 'ecommerce']
         );
 
         $this->shouldThrow(
@@ -592,11 +558,9 @@ class PriceFilterSpec extends ObjectBehavior
 
     function it_throws_an_exception_when_it_filters_on_an_unsupported_operator(
         $attributeValidatorHelper,
-        $currencyRepository,
         AttributeInterface $price,
         SearchQueryBuilder $sqb
     ) {
-        $currencyRepository->getActivatedCurrencyCodes()->willReturn(['USD']);
         $price->getCode()->willReturn('a_price');
         $price->getBackendType()->willReturn('prices');
 

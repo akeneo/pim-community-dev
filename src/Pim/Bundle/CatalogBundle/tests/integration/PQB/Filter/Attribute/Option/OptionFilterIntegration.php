@@ -88,15 +88,6 @@ class OptionFilterIntegration extends AbstractProductQueryBuilderTestCase
     }
 
     /**
-     * @expectedException \Pim\Component\Catalog\Exception\ObjectNotFoundException
-     * @expectedExceptionMessage Object "option" with code "NOT_FOUND" does not exist
-     */
-    public function testErrorOptionNotFound()
-    {
-        $this->executeFilter([['a_simple_select', Operators::IN_LIST, ['NOT_FOUND']]]);
-    }
-
-    /**
      * @expectedException \Pim\Component\Catalog\Exception\UnsupportedFilterException
      * @expectedExceptionMessage Filter on property "a_simple_select" is not supported or does not support operator "BETWEEN"
      */

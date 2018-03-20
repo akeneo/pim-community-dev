@@ -23,10 +23,9 @@ use Pim\Component\Catalog\Repository\FamilyRepositoryInterface;
  */
 class FamilyFilterSpec extends ObjectBehavior
 {
-    function let(FamilyRepositoryInterface $familyRepository)
+    function let()
     {
         $this->beConstructedWith(
-            $familyRepository,
             ['family'],
             ['IN', 'NOT IN', 'EMPTY', 'NOT EMPTY']
         );
@@ -63,12 +62,9 @@ class FamilyFilterSpec extends ObjectBehavior
     }
 
     function it_adds_a_filter_with_operator_in_list(
-        $familyRepository,
         SearchQueryBuilder $sqb,
         FamilyInterface $family
     ) {
-        $familyRepository->findOneByIdentifier('familyA')->willReturn($family);
-
         $sqb->addFilter(
             [
                 'terms' => [
@@ -82,12 +78,9 @@ class FamilyFilterSpec extends ObjectBehavior
     }
 
     function it_adds_a_filter_with_operator_not_in_list(
-        $familyRepository,
         SearchQueryBuilder $sqb,
         FamilyInterface $family
     ) {
-        $familyRepository->findOneByIdentifier('familyA')->willReturn($family);
-
         $sqb->addMustNot(
             [
                 'terms' => [
@@ -101,11 +94,8 @@ class FamilyFilterSpec extends ObjectBehavior
     }
 
     function it_adds_a_filter_with_operator_is_empty(
-        $familyRepository,
-        SearchQueryBuilder $sqb,
-        FamilyInterface $family
+        SearchQueryBuilder $sqb
     ) {
-        $familyRepository->findOneByIdentifier('familyA')->willReturn($family);
         $sqb->addMustNot(
             [
                 'exists' => ['field' => 'family.code'],
@@ -116,12 +106,7 @@ class FamilyFilterSpec extends ObjectBehavior
         $this->addFieldFilter('family', Operators::IS_EMPTY, ['familyA'], null, null, []);
     }
 
-    function it_adds_a_filter_with_operator_is_not_empty(
-        $familyRepository,
-        SearchQueryBuilder $sqb,
-        FamilyInterface $family
-    ) {
-        $familyRepository->findOneByIdentifier('familyA')->willReturn($family);
+    function it_adds_a_filter_with_operator_is_not_empty(SearchQueryBuilder $sqb) {
         $sqb->addFilter(
             [
                 'exists' => ['field' => 'family.code'],
@@ -205,24 +190,8 @@ class FamilyFilterSpec extends ObjectBehavior
         )->during('addFieldFilter', ['family', Operators::IN_LIST, [false], null, null, []]);
     }
 
-    function it_throws_an_exception_when_the_given_value_is_not_a_known_family(
-        $familyRepository,
-        SearchQueryBuilder $sqb
-    ) {
-        $familyRepository->findOneByIdentifier('UNKNOWN_FAMILY')->willReturn(null);
-        $this->setQueryBuilder($sqb);
-
-        $this->shouldThrow(
-            new ObjectNotFoundException('Object "family" with code "UNKNOWN_FAMILY" does not exist')
-        )->during('addFieldFilter', ['family', Operators::IN_LIST, ['UNKNOWN_FAMILY'], null, null, []]);
-    }
-
-    function it_throws_an_exception_when_it_filters_on_an_unsupported_operator(
-        $familyRepository,
-        SearchQueryBuilder $sqb,
-        FamilyInterface $family
-    ) {
-        $familyRepository->findOneByIdentifier('familyA')->willReturn($family);
+    function it_throws_an_exception_when_it_filters_on_an_unsupported_operator(SearchQueryBuilder $sqb)
+    {
         $this->setQueryBuilder($sqb);
 
         $this->shouldThrow(

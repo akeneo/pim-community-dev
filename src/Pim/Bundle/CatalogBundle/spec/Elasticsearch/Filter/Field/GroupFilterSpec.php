@@ -22,10 +22,9 @@ use Pim\Component\User\Model\GroupInterface;
  */
 class GroupFilterSpec extends ObjectBehavior
 {
-    function let(GroupRepositoryInterface $groupRepository)
+    function let()
     {
         $this->beConstructedWith(
-            $groupRepository,
             ['groups'],
             ['IN', 'NOT IN', 'EMPTY', 'NOT EMPTY']
         );
@@ -61,13 +60,7 @@ class GroupFilterSpec extends ObjectBehavior
         $this->supportsField('a_not_supported_field')->shouldReturn(false);
     }
 
-    function it_adds_a_filter_with_operator_in_list(
-        $groupRepository,
-        GroupInterface $group,
-        SearchQueryBuilder $sqb
-    ) {
-        $groupRepository->findOneByIdentifier('groupsA')->willReturn($group);
-
+    function it_adds_a_filter_with_operator_in_list(SearchQueryBuilder $sqb) {
         $sqb->addFilter(
             [
                 'terms' => [
@@ -81,12 +74,8 @@ class GroupFilterSpec extends ObjectBehavior
     }
 
     function it_adds_a_filter_with_operator_not_in_list(
-        $groupRepository,
-        GroupInterface $group,
         SearchQueryBuilder $sqb
     ) {
-        $groupRepository->findOneByIdentifier('groupsA')->willReturn($group);
-
         $sqb->addMustNot(
             [
                 'terms' => [
@@ -100,10 +89,8 @@ class GroupFilterSpec extends ObjectBehavior
     }
 
     function it_adds_a_filter_with_operator_is_empty(
-        $groupRepository,
         SearchQueryBuilder $sqb
     ) {
-        $groupRepository->findOneByIdentifier()->shouldNotBeCalled();
         $sqb->addMustNot(
             [
                 'exists' => ['field' => 'groups'],
@@ -115,10 +102,8 @@ class GroupFilterSpec extends ObjectBehavior
     }
 
     function it_adds_a_filter_with_operator_is_not_empty(
-        $groupRepository,
         SearchQueryBuilder $sqb
     ) {
-        $groupRepository->findOneByIdentifier()->shouldNotBeCalled();
         $sqb->addFilter(
             [
                 'exists' => ['field' => 'groups'],
@@ -203,26 +188,9 @@ class GroupFilterSpec extends ObjectBehavior
         )->during('addFieldFilter', ['groups', Operators::IN_LIST, [false], null, null, []]);
     }
 
-    function it_throws_an_exception_when_the_given_value_is_not_a_known_group(
-        $groupRepository,
-        SearchQueryBuilder $sqb
-    ) {
-        $groupRepository->findOneByIdentifier('UNKNOWN_GROUP')->willReturn(null);
-
-        $this->setQueryBuilder($sqb);
-
-        $this->shouldThrow(
-            new ObjectNotFoundException('Object "groups" with code "UNKNOWN_GROUP" does not exist')
-        )->during('addFieldFilter', ['groups', Operators::IN_LIST, ['UNKNOWN_GROUP'], null, null, []]);
-    }
-
     function it_throws_an_exception_when_it_filters_on_an_unsupported_operator(
-        $groupRepository,
-        GroupInterface $group,
         SearchQueryBuilder $sqb
     ) {
-        $groupRepository->findOneByIdentifier('groupsA')->willReturn($group);
-
         $this->setQueryBuilder($sqb);
 
         $this->shouldThrow(
