@@ -8,7 +8,6 @@ use Pim\Component\Catalog\Exception\InvalidOperatorException;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Query\Filter\AttributeFilterInterface;
 use Pim\Component\Catalog\Query\Filter\Operators;
-use Pim\Component\Catalog\Repository\CurrencyRepositoryInterface;
 use Pim\Component\Catalog\Validator\AttributeValidatorHelper;
 
 /**
@@ -41,23 +40,17 @@ use Pim\Component\Catalog\Validator\AttributeValidatorHelper;
  */
 class PriceFilter extends AbstractAttributeFilter implements AttributeFilterInterface
 {
-    /** @var CurrencyRepositoryInterface */
-    protected $currencyRepository;
-
     /**
      * @param AttributeValidatorHelper    $attrValidatorHelper
-     * @param CurrencyRepositoryInterface $currencyRepository
      * @param array                       $supportedAttributeTypes
      * @param array                       $supportedOperators
      */
     public function __construct(
         AttributeValidatorHelper $attrValidatorHelper,
-        CurrencyRepositoryInterface $currencyRepository,
         array $supportedAttributeTypes = [],
         array $supportedOperators = []
     ) {
         $this->attrValidatorHelper = $attrValidatorHelper;
-        $this->currencyRepository = $currencyRepository;
         $this->supportedAttributeTypes = $supportedAttributeTypes;
         $this->supportedOperators = $supportedOperators;
     }
@@ -264,10 +257,7 @@ class PriceFilter extends AbstractAttributeFilter implements AttributeFilterInte
             );
         }
 
-        if ('' === $data['currency'] ||
-            !is_string($data['currency']) ||
-            !in_array($data['currency'], $this->currencyRepository->getActivatedCurrencyCodes())
-        ) {
+        if ('' === $data['currency'] || !is_string($data['currency'])) {
             throw InvalidPropertyException::validEntityCodeExpected(
                 $attribute->getCode(),
                 'currency',

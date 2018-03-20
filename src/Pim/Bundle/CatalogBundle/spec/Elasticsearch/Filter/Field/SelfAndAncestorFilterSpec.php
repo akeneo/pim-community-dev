@@ -17,13 +17,8 @@ use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
 
 class SelfAndAncestorFilterSpec extends ObjectBehavior
 {
-    function let(
-        ProductModelRepositoryInterface $productModelRepository,
-        ProductRepositoryInterface $productRepository
-    ) {
+    function let() {
         $this->beConstructedWith(
-            $productModelRepository,
-            $productRepository,
             ['self_and_ancestors.id'],
             ['IN', 'NOT IN']
         );
@@ -55,17 +50,8 @@ class SelfAndAncestorFilterSpec extends ObjectBehavior
     }
 
     function it_adds_a_filter_with_operator_IN(
-        $productModelRepository,
-        $productRepository,
-        SearchQueryBuilder $sqb,
-        ProductModelInterface $productModel,
-        ProductInterface $product
+        SearchQueryBuilder $sqb
     ) {
-        $productModelRepository->findOneBy(['id' => '1'])->shouldNotBeCalled();
-        $productModelRepository->findOneBy(['id' => '2'])->willReturn($productModel);
-        $productRepository->findOneBy(['id' => '1'])->willReturn($product);
-        $productRepository->findOneBy(['id' => '2'])->shouldNotBeCalled();
-
         $sqb->addShould(
             [
                 'terms' => ['id' => ['product_1', 'product_model_2']],
@@ -90,17 +76,8 @@ class SelfAndAncestorFilterSpec extends ObjectBehavior
     }
 
     function it_adds_a_filter_with_operator_NOT_IN(
-        $productModelRepository,
-        $productRepository,
-        SearchQueryBuilder $sqb,
-        ProductModelInterface $productModel,
-        ProductInterface $product
+        SearchQueryBuilder $sqb
     ) {
-        $productModelRepository->findOneBy(['id' => '1'])->shouldNotBeCalled();
-        $productModelRepository->findOneBy(['id' => '2'])->willReturn($productModel);
-        $productRepository->findOneBy(['id' => '1'])->willReturn($product);
-        $productRepository->findOneBy(['id' => '2'])->shouldNotBeCalled();
-
         $sqb->addMustNot(
             [
                 'terms' => ['id' => ['product_1', 'product_model_2']],
@@ -141,19 +118,5 @@ class SelfAndAncestorFilterSpec extends ObjectBehavior
                 SelfAndAncestorFilter::class
             )
         )->during('addFieldFilter', ['self_and_ancestors.id', Operators::IN_CHILDREN_LIST, ['product_1'], null, null, []]);
-    }
-
-    function it_throws_if_the_value_is_not_a_product_id_nor_a_product_model_id(
-        SearchQueryBuilder $sqb
-    ) {
-        $this->setQueryBuilder($sqb);
-        $this->shouldThrow(
-            new ObjectNotFoundException(
-                'Object with ID "not_a_product_id_nor_a_product_model_id" does not exist as a product nor as a product model'
-            )
-        )->during(
-            'addFieldFilter',
-            ['self_and_ancestors.id', Operators::IN_LIST, ['not_a_product_id_nor_a_product_model_id'], null, null, []]
-        );
     }
 }

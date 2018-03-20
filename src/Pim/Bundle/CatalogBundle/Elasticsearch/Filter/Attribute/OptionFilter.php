@@ -2,9 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Elasticsearch\Filter\Attribute;
 
-use Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\AttributeOptionRepository;
 use Pim\Component\Catalog\Exception\InvalidOperatorException;
-use Pim\Component\Catalog\Exception\ObjectNotFoundException;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Query\Filter\AttributeFilterInterface;
 use Pim\Component\Catalog\Query\Filter\FieldFilterHelper;
@@ -20,23 +18,17 @@ use Pim\Component\Catalog\Validator\AttributeValidatorHelper;
  */
 class OptionFilter extends AbstractAttributeFilter implements AttributeFilterInterface
 {
-    /** @var AttributeOptionRepository */
-    protected $attributeOptionRepository;
-
     /**
      * @param AttributeValidatorHelper  $attrValidatorHelper
-     * @param AttributeOptionRepository $attributeOptionRepository
      * @param array                     $supportedAttributeTypes
      * @param array                     $supportedOperators
      */
     public function __construct(
         AttributeValidatorHelper $attrValidatorHelper,
-        AttributeOptionRepository $attributeOptionRepository,
         array $supportedAttributeTypes = [],
         array $supportedOperators = []
     ) {
         $this->attrValidatorHelper = $attrValidatorHelper;
-        $this->attributeOptionRepository = $attributeOptionRepository;
         $this->supportedAttributeTypes = $supportedAttributeTypes;
         $this->supportedOperators = $supportedOperators;
     }
@@ -119,8 +111,6 @@ class OptionFilter extends AbstractAttributeFilter implements AttributeFilterInt
      *
      * @param AttributeInterface $attribute
      * @param mixed              $values
-     *
-     * @throws ObjectNotFoundException
      */
     protected function checkValue(AttributeInterface $attribute, $values)
     {
@@ -128,25 +118,6 @@ class OptionFilter extends AbstractAttributeFilter implements AttributeFilterInt
 
         foreach ($values as $value) {
             FieldFilterHelper::checkIdentifier($attribute->getCode(), $value, static::class);
-        }
-
-        $attributeOptions = $this->attributeOptionRepository->findCodesByIdentifiers($attribute->getCode(), $values);
-        $optionCodes = array_map(
-            function ($attributeOptions) {
-                return $attributeOptions['code'];
-            },
-            $attributeOptions
-        );
-
-        $unexistingValues = array_diff($values, $optionCodes);
-        if (count($unexistingValues) > 0) {
-            throw new ObjectNotFoundException(
-                sprintf(
-                    'Object "%s" with code "%s" does not exist',
-                    $attribute->getBackendType(),
-                    reset($unexistingValues)
-                )
-            );
         }
     }
 }

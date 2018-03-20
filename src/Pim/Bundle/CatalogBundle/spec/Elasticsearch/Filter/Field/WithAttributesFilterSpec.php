@@ -21,10 +21,9 @@ use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
  */
 class WithAttributesFilterSpec extends ObjectBehavior
 {
-    function let(AttributeRepositoryInterface $attributeRepository)
+    function let()
     {
         $this->beConstructedWith(
-            $attributeRepository,
             ['attributes', 'attributes_for_this_level'],
             ['IN', 'NOT IN']
         );
@@ -56,12 +55,9 @@ class WithAttributesFilterSpec extends ObjectBehavior
     }
 
     function it_adds_a_filter_with_operator_in_list(
-        $attributeRepository,
         SearchQueryBuilder $sqb,
         AttributeInterface $attribute
     ) {
-        $attributeRepository->findOneByIdentifier('attributeA')->willReturn($attribute);
-
         $sqb->addFilter(
             [
                 'terms' => [
@@ -75,12 +71,8 @@ class WithAttributesFilterSpec extends ObjectBehavior
     }
 
     function it_adds_a_filter_with_operator_not_in_list(
-        $attributeRepository,
-        SearchQueryBuilder $sqb,
-        AttributeInterface $attribute
+        SearchQueryBuilder $sqb
     ) {
-        $attributeRepository->findOneByIdentifier('attributeA')->willReturn($attribute);
-
         $sqb->addMustNot(
             [
                 'terms' => [
@@ -139,24 +131,9 @@ class WithAttributesFilterSpec extends ObjectBehavior
         )->during('addFieldFilter', ['attributes', Operators::IN_LIST, [false], null, null, []]);
     }
 
-    function it_throws_an_exception_when_the_given_value_is_not_a_known_family(
-        $attributeRepository,
+    function it_throws_an_exception_when_it_filters_on_an_unsupported_operator(
         SearchQueryBuilder $sqb
     ) {
-        $attributeRepository->findOneByIdentifier('UNKNOWN_FAMILY')->willReturn(null);
-        $this->setQueryBuilder($sqb);
-
-        $this->shouldThrow(
-            new ObjectNotFoundException('Object "attribute" with code "UNKNOWN_FAMILY" does not exist')
-        )->during('addFieldFilter', ['attributes', Operators::IN_LIST, ['UNKNOWN_FAMILY'], null, null, []]);
-    }
-
-    function it_throws_an_exception_when_it_filters_on_an_unsupported_operator(
-        $attributeRepository,
-        SearchQueryBuilder $sqb,
-        AttributeInterface $attribute
-    ) {
-        $attributeRepository->findOneByIdentifier('attributeA')->willReturn($attribute);
         $this->setQueryBuilder($sqb);
 
         $this->shouldThrow(
