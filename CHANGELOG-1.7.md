@@ -2,6 +2,7 @@
 
 ## Bug fixes
 
+- GITHUB-7507: Fix XLSX product export to allow decimal separator configuration (Thanks [wa-daniel-fahl](https://github.com/wa-daniel-fahl)!
 - PIM-7069: Fix Channel export regarding conversion_units output
 
 # 1.7.19 (2018-02-27)
