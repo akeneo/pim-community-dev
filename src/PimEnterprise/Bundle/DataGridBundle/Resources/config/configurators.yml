@@ -2,7 +2,7 @@ parameters:
     pim_datagrid.datagrid.configuration.product.context_configurator.class:       PimEnterprise\Bundle\DataGridBundle\Datagrid\Configuration\Product\ContextConfigurator
     pimee_datagrid.datagrid.configuration.product.filters_configurator.class:     PimEnterprise\Bundle\DataGridBundle\Datagrid\Configuration\Product\FiltersConfigurator
     pimee_datagrid.datagrid.configuration.product.row_actions_configurator.class: PimEnterprise\Bundle\DataGridBundle\Datagrid\Configuration\Product\RowActionsConfigurator
-    pimee_datagrid.datagrid.configuration.proposal.context_configurator.class:    PimEnterprise\Bundle\DataGridBundle\Datagrid\Configuration\Proposal\ContextConfigurator
+    pimee_datagrid.datagrid.configuration.proposal.context_configurator.class:    PimEnterprise\Bundle\WorkflowBundle\Datagrid\Configuration\Proposal\ContextConfigurator
 
 services:
     pim_datagrid.datagrid.configuration.product.context_configurator:

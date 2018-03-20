@@ -1,9 +1,9 @@
 <?php
 
-namespace spec\PimEnterprise\Bundle\DataGridBundle\Datagrid\Configuration\Proposal;
+namespace spec\PimEnterprise\Bundle\WorkflowBundle\Datagrid\Configuration\Proposal;
 
 use PhpSpec\ObjectBehavior;
-use PimEnterprise\Bundle\DataGridBundle\Datagrid\Configuration\Proposal\GridHelper;
+use PimEnterprise\Bundle\WorkflowBundle\Datagrid\Configuration\Proposal\GridHelper;
 use PimEnterprise\Bundle\WorkflowBundle\Helper\ProductDraftChangesPermissionHelper;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 

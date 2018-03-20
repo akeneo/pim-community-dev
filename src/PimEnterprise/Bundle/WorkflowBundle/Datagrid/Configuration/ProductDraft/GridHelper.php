@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Bundle\DataGridBundle\Datagrid\Configuration\Proposal;
+namespace PimEnterprise\Bundle\WorkflowBundle\Datagrid\Configuration\ProductDraft;
 
 use Oro\Bundle\DataGridBundle\Datasource\ResultRecordInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Helper\ProductDraftChangesPermissionHelper;
@@ -18,13 +18,13 @@ use PimEnterprise\Component\Workflow\Model\ProductDraftInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 /**
- * Helper for proposal datagrid
+ * Helper for product draft datagrid
  *
  * @author Filips Alpe <filips@akeneo.com>
  */
 class GridHelper
 {
-    /** @var AuthorizationCheckerInterface */
+    /** @var AuthorizationCheckerInterface  */
     protected $authorizationChecker;
 
     /** @var ProductDraftChangesPermissionHelper */
@@ -43,21 +43,40 @@ class GridHelper
     }
 
     /**
-     * Returns callback that will disable approve and refuse buttons given permissions on proposal
+     * Returns callback that will disable approve and refuse buttons given product draft status and permissions
      *
      * @return callable
      */
     public function getActionConfigurationClosure()
     {
         return function (ResultRecordInterface $record) {
-            $canReview = $this->permissionHelper->canEditOneChangeToReview($record->getValue('proposal_product'));
-            $toReview = $record->getValue('proposal_product')->getStatus() === ProductDraftInterface::READY;
-            $isOwner = $this->authorizationChecker->isGranted(Attributes::OWN, $record->getValue('product'));
+            $productDraft = $record->getValue('proposal_product');
+
+            $canReview = $this->permissionHelper->canEditOneChangeToReview($productDraft);
+            $canDelete = $this->permissionHelper->canEditOneChangeDraft($productDraft);
+
+            $toReview = $productDraft->getStatus() === ProductDraftInterface::READY;
+            $inProgress = $productDraft->isInProgress();
+            $isOwner = $this->authorizationChecker->isGranted(Attributes::OWN, $productDraft->getProduct());
 
             return [
-                'approve' => $isOwner && $toReview && $canReview,
-                'refuse'  => $isOwner && $toReview && $canReview
+                'approve' => $toReview && $isOwner && $canReview,
+                'refuse'  => $toReview && $isOwner && $canReview,
+                'remove'  => $inProgress && $isOwner && $canDelete
             ];
         };
+    }
+
+    /**
+     * Returns available product draft status choices
+     *
+     * @return array
+     */
+    public function getStatusChoices()
+    {
+        return [
+            ProductDraftInterface::IN_PROGRESS => 'pimee_workflow.product_draft.status.in_progress',
+            ProductDraftInterface::READY       => 'pimee_workflow.product_draft.status.ready',
+        ];
     }
 }
