@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Bundle\WorkflowBundle\tests\integration\ElasticSearch\IndexConfiguration;
+namespace PimEnterprise\Bundle\WorkflowBundle\tests\integration\ElasticSearch\PublishedProduct\IndexConfiguration;
 
 use Akeneo\Bundle\ElasticsearchBundle\Client;
 use Akeneo\Test\Integration\Configuration;

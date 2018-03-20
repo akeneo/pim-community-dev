@@ -22,16 +22,21 @@ use Pim\Bundle\DataGridBundle\Datagrid\Configuration\ConfiguratorInterface;
 class ConfigureProposalGridListener
 {
     /** @var ConfiguratorInterface */
-    protected $contextConfigurator;
+    private $contextConfigurator;
+
+    /** @var ConfiguratorInterface */
+    private $filtersConfigurator;
 
     /**
-     * Constructor
-     *
      * @param ConfiguratorInterface $contextConfigurator
+     * @param ConfiguratorInterface $filtersConfigurator
      */
-    public function __construct(ConfiguratorInterface $contextConfigurator)
-    {
+    public function __construct(
+        ConfiguratorInterface $contextConfigurator,
+        ConfiguratorInterface $filtersConfigurator
+    ) {
         $this->contextConfigurator = $contextConfigurator;
+        $this->filtersConfigurator = $filtersConfigurator;
     }
 
     /**
@@ -42,5 +47,6 @@ class ConfigureProposalGridListener
         $datagridConfig = $event->getConfig();
 
         $this->contextConfigurator->configure($datagridConfig);
+        $this->filtersConfigurator->configure($datagridConfig);
     }
 }

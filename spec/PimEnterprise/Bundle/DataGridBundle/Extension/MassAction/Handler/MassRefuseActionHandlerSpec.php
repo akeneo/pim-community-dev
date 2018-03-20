@@ -2,28 +2,35 @@
 
 namespace spec\PimEnterprise\Bundle\DataGridBundle\Extension\MassAction\Handler;
 
+use Akeneo\Component\StorageUtils\Cursor\CursorFactoryInterface;
 use Oro\Bundle\DataGridBundle\Datagrid\DatagridInterface;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\DataGridBundle\Datasource\DatasourceInterface;
-use Pim\Bundle\DataGridBundle\Datasource\ResultRecord\HydratorInterface;
+use Pim\Bundle\CatalogBundle\Elasticsearch\SearchQueryBuilder;
 use Pim\Bundle\DataGridBundle\Extension\MassAction\Actions\Redirect\EditMassAction;
+use Pim\Component\Catalog\Query\ProductQueryBuilderInterface;
 use PimEnterprise\Bundle\DataGridBundle\Extension\MassAction\Event\MassActionEvents;
+use PimEnterprise\Component\Workflow\Model\ProductDraftInterface;
 use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class MassRefuseActionHandlerSpec extends ObjectBehavior
 {
-    function let(HydratorInterface $hydrator, EventDispatcherInterface $eventDispatcher)
+    function let(EventDispatcherInterface $eventDispatcher, CursorFactoryInterface $cursorFactory)
     {
-        $this->beConstructedWith($hydrator, $eventDispatcher);
+        $this->beConstructedWith($eventDispatcher, $cursorFactory);
     }
 
     function it_handles_edit_mass_action(
         $eventDispatcher,
-        $hydrator,
+        $cursorFactory,
+        SearchQueryBuilder $searchQueryBuilder,
         DatagridInterface $datagrid,
-        DatasourceInterface $datasource,
-        EditMassAction $massAction
+        DatasourceSpecInterface $datasource,
+        EditMassAction $massAction,
+        ProductQueryBuilderInterface $pqb,
+        ProductDraftInterface $productDraft1,
+        ProductDraftInterface $productDraft2,
+        ProductDraftInterface $productDraft3
     ) {
         $objectIds = ['foo', 'bar', 'baz'];
 
@@ -37,8 +44,16 @@ class MassRefuseActionHandlerSpec extends ObjectBehavior
         )->shouldBeCalled();
 
         $datagrid->getDatasource()->willReturn($datasource);
-        $datasource->setHydrator($hydrator)->shouldBeCalled();
-        $datasource->getResults()->willReturn($objectIds);
+        $datasource->getProductQueryBuilder()->willReturn($pqb);
+
+        $pqb->getQueryBuilder()->willReturn($searchQueryBuilder);
+        $searchQueryBuilder->getQuery()->willReturn([]);
+
+        $productDraft1->getId()->willReturn('foo');
+        $productDraft2->getId()->willReturn('bar');
+        $productDraft3->getId()->willReturn('baz');
+
+        $cursorFactory->createCursor([])->willReturn([$productDraft1, $productDraft2, $productDraft3]);
 
         $this->handle($datagrid, $massAction)->shouldReturn($objectIds);
     }

@@ -13,8 +13,7 @@ namespace PimEnterprise\Bundle\DataGridBundle\Datagrid\Configuration\Product;
 
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use Oro\Bundle\FilterBundle\Grid\Extension\Configuration as FilterConfiguration;
-use Pim\Bundle\DataGridBundle\Datagrid\Configuration\Product\ConfigurationRegistry;
-use Pim\Bundle\DataGridBundle\Datagrid\Configuration\Product\FiltersConfigurator as BaseFiltersConfigurator;
+use Pim\Bundle\DataGridBundle\Datagrid\Configuration\ConfiguratorInterface;
 use PimEnterprise\Bundle\FilterBundle\Filter\Product\PermissionFilter;
 use PimEnterprise\Bundle\FilterBundle\Filter\Product\ProjectCompletenessFilter;
 use PimEnterprise\Component\TeamworkAssistant\Repository\ProjectRepositoryInterface;
@@ -22,12 +21,15 @@ use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 /**
- * Override filters configurator to add is owner filter in product grid
+ * Decorate filters configurator to add is owner filter in product grid
  *
  * @author Nicolas Dupont <nicolas@akeneo.com>
  */
-class FiltersConfigurator extends BaseFiltersConfigurator
+class FiltersConfigurator implements ConfiguratorInterface
 {
+    /** @var ConfiguratorInterface */
+    private $filtersConfigurator;
+
     /** @var RequestStack */
     protected $stack;
 
@@ -44,19 +46,18 @@ class FiltersConfigurator extends BaseFiltersConfigurator
     protected $isProjectOwner = false;
 
     /**
-     * @param ConfigurationRegistry      $registry
+     * @param ConfiguratorInterface      $filtersConfigurator
      * @param RequestStack               $stack
      * @param ProjectRepositoryInterface $projectRepository
      * @param TokenStorageInterface      $tokenStorage
      */
     public function __construct(
-        ConfigurationRegistry $registry,
+        ConfiguratorInterface $filtersConfigurator,
         RequestStack $stack,
         ProjectRepositoryInterface $projectRepository,
         TokenStorageInterface $tokenStorage
     ) {
-        parent::__construct($registry);
-
+        $this->filtersConfigurator = $filtersConfigurator;
         $this->stack = $stack;
         $this->projectRepository = $projectRepository;
         $this->tokenStorage = $tokenStorage;
@@ -67,7 +68,7 @@ class FiltersConfigurator extends BaseFiltersConfigurator
      */
     public function configure(DatagridConfiguration $configuration)
     {
-        parent::configure($configuration);
+        $this->filtersConfigurator->configure($configuration);
 
         $this->retrieveTeamworkAssistantInformations();
 

@@ -11,7 +11,10 @@
 
 namespace PimEnterprise\Component\Workflow\Model;
 
+use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Model\ValueCollectionInterface;
+use Pim\Component\Catalog\Model\ValueInterface;
 
 /**
  * Product draft
@@ -31,6 +34,12 @@ class ProductDraft implements ProductDraftInterface
 
     /** @var \DateTime */
     protected $createdAt;
+
+    /** @var ValueCollectionInterface */
+    protected $values;
+
+    /** @var array */
+    protected $rawValues;
 
     /** @var array */
     protected $changes = [];
@@ -55,7 +64,7 @@ class ProductDraft implements ProductDraftInterface
     /**
      * {@inheritdoc}
      */
-    public function getId()
+    public function getId(): ?int
     {
         return $this->id;
     }
@@ -63,7 +72,15 @@ class ProductDraft implements ProductDraftInterface
     /**
      * {@inheritdoc}
      */
-    public function setProduct(ProductInterface $product)
+    public function getIdentifier(): string
+    {
+        return (string) $this->getId();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setProduct(ProductInterface $product): ProductDraftInterface
     {
         $this->product = $product;
 
@@ -73,7 +90,7 @@ class ProductDraft implements ProductDraftInterface
     /**
      * {@inheritdoc}
      */
-    public function getProduct()
+    public function getProduct(): ProductInterface
     {
         return $this->product;
     }
@@ -81,7 +98,7 @@ class ProductDraft implements ProductDraftInterface
     /**
      * {@inheritdoc}
      */
-    public function setAuthor($author)
+    public function setAuthor($author): ProductDraftInterface
     {
         $this->author = $author;
 
@@ -91,7 +108,7 @@ class ProductDraft implements ProductDraftInterface
     /**
      * {@inheritdoc}
      */
-    public function getAuthor()
+    public function getAuthor(): string
     {
         return $this->author;
     }
@@ -99,7 +116,7 @@ class ProductDraft implements ProductDraftInterface
     /**
      * {@inheritdoc}
      */
-    public function setCreatedAt(\DateTime $createdAt)
+    public function setCreatedAt(\DateTime $createdAt): ProductDraftInterface
     {
         $this->createdAt = $createdAt;
 
@@ -109,7 +126,7 @@ class ProductDraft implements ProductDraftInterface
     /**
      * {@inheritdoc}
      */
-    public function getCreatedAt()
+    public function getCreatedAt(): \DateTime
     {
         return $this->createdAt;
     }
@@ -117,7 +134,25 @@ class ProductDraft implements ProductDraftInterface
     /**
      * {@inheritdoc}
      */
-    public function setChanges(array $changes)
+    public function setRawValues(array $rawValues): ProductDraftInterface
+    {
+        $this->rawValues = $rawValues;
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getRawValues(): array
+    {
+        return $this->rawValues;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setChanges(array $changes): ProductDraftInterface
     {
         $this->changes = $changes;
 
@@ -127,7 +162,7 @@ class ProductDraft implements ProductDraftInterface
     /**
      * {@inheritdoc}
      */
-    public function getChanges()
+    public function getChanges(): array
     {
         return $this->changes;
     }
@@ -135,7 +170,7 @@ class ProductDraft implements ProductDraftInterface
     /**
      * {@inheritdoc}
      */
-    public function getChangesByStatus($status)
+    public function getChangesByStatus($status): array
     {
         $changes = $this->changes;
 
@@ -160,7 +195,7 @@ class ProductDraft implements ProductDraftInterface
     /**
      * {@inheritdoc}
      */
-    public function getChangesToReview()
+    public function getChangesToReview(): array
     {
         return $this->getChangesByStatus(self::CHANGE_TO_REVIEW);
     }
@@ -403,5 +438,75 @@ class ProductDraft implements ProductDraftInterface
     public function getDataLocale()
     {
         return $this->dataLocale;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getAttributes(): array
+    {
+        return $this->getValues()->getAttributes();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getValues(): ValueCollectionInterface
+    {
+        return $this->values;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setValues(ValueCollectionInterface $values): ProductDraftInterface
+    {
+        $this->values = $values;
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function addValue(ValueInterface $value)
+    {
+        $this->values->add($value);
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function removeValue(ValueInterface $value)
+    {
+        $this->values->remove($value);
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getUsedAttributeCodes()
+    {
+        return $this->values->getAttributesKeys();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getValue($attributeCode, $localeCode = null, $scopeCode = null)
+    {
+        return $this->getValues()->getByCodes($attributeCode, $scopeCode, $localeCode);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function hasAttribute(AttributeInterface $attribute)
+    {
+        return in_array($attribute, $this->getValues()->getAttributes(), true);
     }
 }

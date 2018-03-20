@@ -1,99 +1,99 @@
-{% if record.rootEntity.getStatus() == constant('PimEnterprise\\Component\\Workflow\\Model\\ProductDraft::IN_PROGRESS') %}
-    <em>{{ 'pimee_workflow.proposal.draft_in_progress'|trans({'%author%': record.rootEntity.author}) }}</em>
-{% elseif value['values'] is defined %}
-    {% for code, changes in value['values'] %}
+{% if record.getValue('status') == constant('PimEnterprise\\Component\\Workflow\\Model\\ProductDraft::IN_PROGRESS') %}
+    <em>{{ 'pimee_workflow.proposal.draft_in_progress'|trans({'%author%': record.getValue('author')}) }}</em>
+{% else %}
+    {% for code, changes in value %}
         {% set isAttributeLocalizable = is_attribute_localizable(code) %}
         {% set canView = is_attribute_granted(constant('PimEnterprise\\Component\\Security\\Attributes::VIEW_ATTRIBUTES'), code) %}
         {% for change in changes %}
-            {% set product_draft_change = present_product_draft_change(record.rootEntity, change, code) %}
+            {% set product_draft_change = present_product_draft_change(record.getValue('proposal_product'), change, code) %}
             {% if
                 canView and
                 (not isAttributeLocalizable or is_locale_granted(constant('PimEnterprise\\Component\\Security\\Attributes::VIEW_ITEMS'), change.locale)) and
                 product_draft_change|length > 0
             %}
-            {%
-                set canReview = (
-                    is_attribute_granted(constant('PimEnterprise\\Component\\Security\\Attributes::EDIT_ATTRIBUTES'), code) and
-                    is_granted(constant('PimEnterprise\\Component\\Security\\Attributes::OWN'), record.rootEntity.product) and
-                    (not isAttributeLocalizable or is_locale_granted(constant('PimEnterprise\\Component\\Security\\Attributes::EDIT_ITEMS'), change.locale))
-                )
-            %}
-            <table
-                class="AknGrid AknGrid--condensed proposal-changes{% if not canReview %} readonly{% endif %}"
-                data-product="{{ record.rootEntity.product.identifier }}"
-                data-scope="{{ change.scope }}"
-                data-locale="{{ change.locale }}"
-                data-attribute="{{ code }}"
-                data-product-draft="{{ record.rootEntity.id }}"
-                data-author="{{ record.rootEntity.author }}"
-            >
-                <thead>
-                    <tr>
-                        <th class="AknGrid-headerCell label-cell">{{ get_attribute_label_from_code(code) }}</th>
-                        <th class="AknGrid-headerCell">
-                            {{ change.locale|pretty_locale_name }}
+                {%
+                    set canReview = (
+                        is_attribute_granted(constant('PimEnterprise\\Component\\Security\\Attributes::EDIT_ATTRIBUTES'), code) and
+                        is_granted(constant('PimEnterprise\\Component\\Security\\Attributes::OWN'), record.getValue('product')) and
+                        (not isAttributeLocalizable or is_locale_granted(constant('PimEnterprise\\Component\\Security\\Attributes::EDIT_ITEMS'), change.locale))
+                    )
+                %}
+                <table
+                    class="AknGrid AknGrid--condensed proposal-changes{% if not canReview %} readonly{% endif %}"
+                    data-product="{{ record.getValue('product').identifier }}"
+                    data-scope="{{ change.scope }}"
+                    data-locale="{{ change.locale }}"
+                    data-attribute="{{ code }}"
+                    data-product-draft="{{ record.getValue('id') }}"
+                    data-author="{{ record.getValue('author') }}"
+                >
+                    <thead>
+                        <tr>
+                            <th class="AknGrid-headerCell label-cell">{{ get_attribute_label_from_code(code) }}</th>
+                            <th class="AknGrid-headerCell">
+                                {{ change.locale|pretty_locale_name }}
 
-                            {% if change.scope is not null %}
-                                - {{ change.scope }}
-                            {% endif %}
-                        </th>
-                        <th class="AknGrid-headerCell action-cell">
-                            {% if canReview %}
-                                <div class="AknButtonList AknButtonList--right">
-                                    <button
-                                        class="AknButtonList-item AknIconButton AknIconButton--apply AknIconButton--small partial-approve-link"
-                                        data-product="{{ record.rootEntity.product.identifier }}"
-                                        data-scope="{{ change.scope }}"
-                                        data-locale="{{ change.locale }}"
-                                        data-attribute="{{ code }}"
-                                        data-product-draft="{{ record.rootEntity.id }}"
-                                        data-author="{{ record.rootEntity.author }}"
-                                        data-action="approve"
-                                        title="{{ 'pimee_workflow.product_draft.action.partial_approve'|trans({'%attribute%': code, '%product%': record.rootEntity.product.identifier}) }}">
-                                        <i class="icon-ok"></i>
-                                    </button>
-                                    <button
-                                        class="AknButtonList-item AknIconButton AknIconButton--important AknIconButton--small partial-reject-link"
-                                        data-product="{{ record.rootEntity.product.identifier }}"
-                                        data-scope="{{ change.scope }}"
-                                        data-locale="{{ change.locale }}"
-                                        data-attribute="{{ code }}"
-                                        data-product-draft="{{ record.rootEntity.id }}"
-                                        data-author="{{ record.rootEntity.author }}"
-                                        data-action="reject"
-                                        title="{{ 'pimee_workflow.product_draft.action.partial_reject'|trans({'%attribute%': code, '%product%': record.rootEntity.product.identifier}) }}">
-                                        <i class="icon-remove"></i>
-                                    </button>
-                                </div>
-                            {% endif %}
-                        </th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% if product_draft_change.before != product_draft_change.after %}
-                        <tr class="AknGrid-bodyRow">
-                            <td class="AknGrid-bodyCell AknGrid-bodyCell--tight">{{ 'pimee_workflow.proposal.original_value'|trans }}</td>
-                            <td class="AknGrid-bodyCell original-value" colspan="2">
-                                <span class="AknDiff AknDiff--remove">
-                                    {{ product_draft_change.before|raw }}
-                                </span>
-                            </td>
+                                {% if change.scope is not null %}
+                                    - {{ change.scope }}
+                                {% endif %}
+                            </th>
+                            <th class="AknGrid-headerCell action-cell">
+                                {% if canReview %}
+                                    <div class="AknButtonList AknButtonList--right">
+                                        <button
+                                            class="AknButtonList-item AknIconButton AknIconButton--apply AknIconButton--small partial-approve-link"
+                                            data-product="{{ record.getValue('product').identifier }}"
+                                            data-scope="{{ change.scope }}"
+                                            data-locale="{{ change.locale }}"
+                                            data-attribute="{{ code }}"
+                                            data-product-draft="{{ record.getValue('id') }}"
+                                            data-author="{{ record.getValue('author') }}"
+                                            data-action="approve"
+                                            title="{{ 'pimee_workflow.product_draft.action.partial_approve'|trans({'%attribute%': code, '%product%': record.getValue('product').identifier}) }}">
+                                            <i class="icon-ok"></i>
+                                        </button>
+                                        <button
+                                            class="AknButtonList-item AknIconButton AknIconButton--important AknIconButton--small partial-reject-link"
+                                            data-product="{{ record.getValue('product').identifier }}"
+                                            data-scope="{{ change.scope }}"
+                                            data-locale="{{ change.locale }}"
+                                            data-attribute="{{ code }}"
+                                            data-product-draft="{{ record.getValue('id') }}"
+                                            data-author="{{ record.getValue('author') }}"
+                                            data-action="reject"
+                                            title="{{ 'pimee_workflow.product_draft.action.partial_reject'|trans({'%attribute%': code, '%product%': record.getValue('product').identifier}) }}">
+                                            <i class="icon-remove"></i>
+                                        </button>
+                                    </div>
+                                {% endif %}
+                            </th>
                         </tr>
-                        <tr class="AknGrid-bodyRow">
-                            <td class="AknGrid-bodyCell AknGrid-bodyCell--tight">{{ 'pimee_workflow.proposal.new_value'|trans }}</td>
-                            <td class="AknGrid-bodyCell new-value" colspan="2">
-                                <span class="AknDiff AknDiff--add">
-                                    {{ product_draft_change.after|raw }}
-                                </span>
-                            </td>
-                        </tr>
-                    {% else %}
-                        <tr class="AknGrid-bodyRow">
-                            <td class="AknGrid-bodyCell AknGrid-bodyCell--full" colspan="3"><em>{{ 'pimee_workflow.proposal.no_diff'|trans({'%value%': change.data }) }}</em></td>
-                        </tr>
-                    {% endif %}
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        {% if product_draft_change.before != product_draft_change.after %}
+                            <tr class="AknGrid-bodyRow">
+                                <td class="AknGrid-bodyCell AknGrid-bodyCell--tight">{{ 'pimee_workflow.proposal.original_value'|trans }}</td>
+                                <td class="AknGrid-bodyCell original-value" colspan="2">
+                                    <span class="AknDiff AknDiff--remove">
+                                        {{ product_draft_change.before|raw }}
+                                    </span>
+                                </td>
+                            </tr>
+                            <tr class="AknGrid-bodyRow">
+                                <td class="AknGrid-bodyCell AknGrid-bodyCell--tight">{{ 'pimee_workflow.proposal.new_value'|trans }}</td>
+                                <td class="AknGrid-bodyCell new-value" colspan="2">
+                                    <span class="AknDiff AknDiff--add">
+                                        {{ product_draft_change.after|raw }}
+                                    </span>
+                                </td>
+                            </tr>
+                        {% else %}
+                            <tr class="AknGrid-bodyRow">
+                                <td class="AknGrid-bodyCell AknGrid-bodyCell--full" colspan="3"><em>{{ 'pimee_workflow.proposal.no_diff'|trans({'%value%': change.data }) }}</em></td>
+                            </tr>
+                        {% endif %}
+                    </tbody>
+                </table>
             {% endif %}
         {% endfor %}
     {% endfor %}

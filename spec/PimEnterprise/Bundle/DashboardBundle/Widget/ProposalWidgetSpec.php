@@ -86,6 +86,8 @@ class ProposalWidgetSpec extends ObjectBehavior
 
         $firstProduct->getId()->willReturn(1);
         $secondProduct->getId()->willReturn(2);
+        $firstProduct->getIdentifier()->willReturn('sku1');
+        $secondProduct->getIdentifier()->willReturn('sku2');
         $firstProduct->getLabel()->willReturn('First product');
         $secondProduct->getLabel()->willReturn('Second product');
         $first->getAuthor()->willReturn('julia');
@@ -106,7 +108,7 @@ class ProposalWidgetSpec extends ObjectBehavior
                     'productLabel'     => 'First product',
                     'authorFullName'   => 'Julia Stark',
                     'productReviewUrl' =>
-                        '/my/route/|g/f%5Bauthor%5D%5Bvalue%5D%5B0%5D=julia&f%5Bproduct%5D%5Bvalue%5D%5B0%5D=1',
+                        '/my/route/|g/f%5Bauthor%5D%5Bvalue%5D%5B0%5D=julia&f%5Bsku%5D%5Bvalue%5D=sku1&f%5Bsku%5D%5Btype%5D=1',
                     'createdAt'        => $firstCreatedAt->format('m/d/Y')
                 ],
                 [
@@ -114,7 +116,7 @@ class ProposalWidgetSpec extends ObjectBehavior
                     'productLabel'     => 'Second product',
                     'authorFullName'   => 'Julia Stark',
                     'productReviewUrl' =>
-                        '/my/route/|g/f%5Bauthor%5D%5Bvalue%5D%5B0%5D=julia&f%5Bproduct%5D%5Bvalue%5D%5B0%5D=2',
+                        '/my/route/|g/f%5Bauthor%5D%5Bvalue%5D%5B0%5D=julia&f%5Bsku%5D%5Bvalue%5D=sku2&f%5Bsku%5D%5Btype%5D=1',
                     'createdAt'        => $secondCreatedAt->format('m/d/Y')
                 ]
             ]
@@ -142,6 +144,8 @@ class ProposalWidgetSpec extends ObjectBehavior
 
         $firstProduct->getId()->willReturn(1);
         $secondProduct->getId()->willReturn(2);
+        $firstProduct->getIdentifier()->willReturn('sku1');
+        $secondProduct->getIdentifier()->willReturn('sku2');
         $firstProduct->getLabel()->willReturn('First product');
         $secondProduct->getLabel()->willReturn('Second product');
         $first->getAuthor()->willReturn('jack');
@@ -162,7 +166,7 @@ class ProposalWidgetSpec extends ObjectBehavior
                     'productLabel'     => 'First product',
                     'authorFullName'   => 'jack',
                     'productReviewUrl' =>
-                        '/my/route/|g/f%5Bauthor%5D%5Bvalue%5D%5B0%5D=jack&f%5Bproduct%5D%5Bvalue%5D%5B0%5D=1',
+                        '/my/route/|g/f%5Bauthor%5D%5Bvalue%5D%5B0%5D=jack&f%5Bsku%5D%5Bvalue%5D=sku1&f%5Bsku%5D%5Btype%5D=1',
                     'createdAt'        => $firstCreatedAt->format('m/d/Y')
                 ],
                 [
@@ -170,7 +174,7 @@ class ProposalWidgetSpec extends ObjectBehavior
                     'productLabel'     => 'Second product',
                     'authorFullName'   => 'jack',
                     'productReviewUrl' =>
-                        '/my/route/|g/f%5Bauthor%5D%5Bvalue%5D%5B0%5D=jack&f%5Bproduct%5D%5Bvalue%5D%5B0%5D=2',
+                        '/my/route/|g/f%5Bauthor%5D%5Bvalue%5D%5B0%5D=jack&f%5Bsku%5D%5Bvalue%5D=sku2&f%5Bsku%5D%5Btype%5D=1',
                     'createdAt'        => $secondCreatedAt->format('m/d/Y')
                 ]
             ]

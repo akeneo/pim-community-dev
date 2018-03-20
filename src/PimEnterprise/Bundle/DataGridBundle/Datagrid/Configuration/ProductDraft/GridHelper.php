@@ -50,10 +50,10 @@ class GridHelper
     public function getActionConfigurationClosure()
     {
         return function (ResultRecordInterface $record) {
-            $productDraft = $record->getRootEntity();
+            $productDraft = $record->getValue('proposal_product');
 
-            $canReview = $this->permissionHelper->canEditOneChangeToReview($record->getRootEntity());
-            $canDelete = $this->permissionHelper->canEditOneChangeDraft($record->getRootEntity());
+            $canReview = $this->permissionHelper->canEditOneChangeToReview($productDraft);
+            $canDelete = $this->permissionHelper->canEditOneChangeDraft($productDraft);
 
             $toReview = $productDraft->getStatus() === ProductDraftInterface::READY;
             $inProgress = $productDraft->isInProgress();

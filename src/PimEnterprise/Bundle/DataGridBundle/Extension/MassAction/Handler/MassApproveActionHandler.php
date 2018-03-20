@@ -11,12 +11,13 @@
 
 namespace PimEnterprise\Bundle\DataGridBundle\Extension\MassAction\Handler;
 
+use Akeneo\Component\StorageUtils\Cursor\CursorFactoryInterface;
 use Oro\Bundle\DataGridBundle\Datagrid\DatagridInterface;
 use Oro\Bundle\DataGridBundle\Extension\MassAction\Actions\MassActionInterface;
-use Pim\Bundle\DataGridBundle\Datasource\ResultRecord\HydratorInterface;
 use Pim\Bundle\DataGridBundle\Extension\MassAction\Event\MassActionEvent;
 use Pim\Bundle\DataGridBundle\Extension\MassAction\Handler\MassActionHandlerInterface;
 use PimEnterprise\Bundle\DataGridBundle\Extension\MassAction\Event\MassActionEvents;
+use PimEnterprise\Component\Workflow\Model\ProductDraftInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
@@ -26,20 +27,20 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
  */
 class MassApproveActionHandler implements MassActionHandlerInterface
 {
-    /** @var HydratorInterface */
-    protected $hydrator;
-
     /** @var EventDispatcherInterface */
     protected $eventDispatcher;
 
+    /** @var CursorFactoryInterface */
+    protected $cursorFactory;
+
     /**
-     * @param HydratorInterface        $hydrator
      * @param EventDispatcherInterface $eventDispatcher
+     * @param CursorFactoryInterface   $cursorFactory
      */
-    public function __construct(HydratorInterface $hydrator, EventDispatcherInterface $eventDispatcher)
+    public function __construct(EventDispatcherInterface $eventDispatcher, CursorFactoryInterface $cursorFactory)
     {
-        $this->hydrator = $hydrator;
         $this->eventDispatcher = $eventDispatcher;
+        $this->cursorFactory = $cursorFactory;
     }
 
     /**
@@ -52,14 +53,21 @@ class MassApproveActionHandler implements MassActionHandlerInterface
         $this->eventDispatcher->dispatch(MassActionEvents::MASS_APPROVE_PRE_HANDLER, $massActionEvent);
 
         $datasource = $datagrid->getDatasource();
-        $datasource->setHydrator($this->hydrator);
 
-        $results = $datasource->getResults();
+        $pqb = $datasource->getProductQueryBuilder();
+        $cursor = $this->cursorFactory->createCursor($pqb->getQueryBuilder()->getQuery());
+
+        $objectIds = [];
+        foreach ($cursor as $productObject) {
+            if ($productObject instanceof ProductDraftInterface) {
+                $objectIds[] = $productObject->getId();
+            }
+        }
 
         // dispatch post handler event
-        $massActionEvent = new MassActionEvent($datagrid, $massAction, $results);
+        $massActionEvent = new MassActionEvent($datagrid, $massAction, $objectIds);
         $this->eventDispatcher->dispatch(MassActionEvents::MASS_APPROVE_POST_HANDLER, $massActionEvent);
 
-        return $results;
+        return $objectIds;
     }
 }

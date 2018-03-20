@@ -55,7 +55,7 @@ class SendForApprovalSubscriberSpec extends ObjectBehavior
         $event->getSubject()->willReturn($productDraft);
         $event->getArgument('comment')->willReturn('comment');
 
-        $product->getId()->willReturn(666);
+        $product->getIdentifier()->willReturn('666');
         $product->getLabel('en_US')->willReturn('Light Saber');
 
         $productDraft->getProduct()->willReturn($product);
@@ -84,11 +84,10 @@ class SendForApprovalSubscriberSpec extends ObjectBehavior
                         'mary'
                     ]
                 ],
-                'product' => [
-                    'value' => [
-                        '666'
-                    ]
-                ]
+                'sku'    => [
+                    'value' => '666',
+                    'type' => 1,
+                ],
             ]
         ];
 
