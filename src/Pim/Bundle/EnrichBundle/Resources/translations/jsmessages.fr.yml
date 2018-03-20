@@ -1247,6 +1247,7 @@ batch_jobs:
     validation.label: Validation du fichier
     import.label: Import des familles
     compute_data_related_to_family_variants.label: Mise à jour des données des modèles de produit
+    compute_data_related_to_family_products.label: Calcul des données produits
   csv_family_variant_import:
     label: Import des variantes de famille en CSV
     validation.label: Validation du fichier
@@ -1311,6 +1312,7 @@ batch_jobs:
     validation.label: Validation du fichier
     import.label: Import des familles
     compute_data_related_to_family_variants.label: Mise à jour des données des modèles de produit
+    compute_data_related_to_family_products.label: Calcul des données produits
   xlsx_family_variant_import:
     label: Import des variantes de famille en XLSX
     validation.label: Validation du fichier
