@@ -2,7 +2,9 @@
 
 namespace spec\PimEnterprise\Component\ProductAsset\Normalizer\ExternalApi;
 
+use Akeneo\Component\FileStorage\Model\FileInfoInterface;
 use PhpSpec\ObjectBehavior;
+use Pim\Component\Catalog\Model\LocaleInterface;
 use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
 use PimEnterprise\Component\ProductAsset\Model\ReferenceInterface;
 use PimEnterprise\Component\ProductAsset\Normalizer\ExternalApi\AssetReferenceNormalizer;
@@ -12,9 +14,9 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class AssetReferenceNormalizerSpec extends ObjectBehavior
 {
-    function let(NormalizerInterface $componentNormalizer, RouterInterface $router)
+    function let(RouterInterface $router)
     {
-        $this->beConstructedWith($componentNormalizer, $router);
+        $this->beConstructedWith($router);
     }
 
     function it_is_initializable()
@@ -28,15 +30,14 @@ class AssetReferenceNormalizerSpec extends ObjectBehavior
     }
 
     function it_normalizes_a_non_localizable_asset_reference(
-        $componentNormalizer,
         $router,
         ReferenceInterface $reference,
-        AssetInterface $asset
+        AssetInterface $asset,
+        FileInfoInterface $fileInfo
     ) {
-        $componentNormalizer->normalize($reference, 'external_api', [])->willReturn([
-            'locale' => null,
-            'code' => 'path/to/the/file.extension',
-        ]);
+        $reference->getLocale()->willReturn(null);
+        $reference->getFileInfo()->willReturn($fileInfo);
+        $fileInfo->getKey()->willReturn('path/to/the/file.extension');
 
         $reference->getAsset()->willReturn($asset);
         $asset->getCode()->willReturn('the_reference_asset');
@@ -62,15 +63,16 @@ class AssetReferenceNormalizerSpec extends ObjectBehavior
     }
 
     function it_normalizes_a_localizable_asset_reference(
-        $componentNormalizer,
         $router,
+        LocaleInterface $locale,
         ReferenceInterface $reference,
-        AssetInterface $asset
+        AssetInterface $asset,
+        FileInfoInterface $fileInfo
     ) {
-        $componentNormalizer->normalize($reference, 'external_api', [])->willReturn([
-            'locale' => 'a_locale',
-            'code' => 'path/to/the/file.extension',
-        ]);
+        $reference->getLocale()->willReturn($locale);
+        $locale->getCode()->willReturn('a_locale');
+        $reference->getFileInfo()->willReturn($fileInfo);
+        $fileInfo->getKey()->willReturn('path/to/the/file.extension');
 
         $reference->getAsset()->willReturn($asset);
         $asset->getCode()->willReturn('the_reference_asset');
@@ -88,6 +90,100 @@ class AssetReferenceNormalizerSpec extends ObjectBehavior
             '_link' => [
                 'download' => [
                     'href' => '/assets/the_reference_asset/reference-files/a_locale/download',
+                ],
+            ],
+            'locale' => 'a_locale',
+            'code' => 'path/to/the/file.extension',
+        ]);
+    }
+
+    function it_normalizes_a_non_localizable_asset_reference_without_file(
+        ReferenceInterface $reference
+    ) {
+        $reference->getLocale()->willReturn(null);
+        $reference->getFileInfo()->willReturn(null);
+
+        $normalizedReference = $this->normalize($reference, 'external_api', []);
+
+        $normalizedReference['locale']->shouldBe(null);
+        $normalizedReference['code']->shouldBe(null);
+    }
+
+    function it_normalizes_a_localizable_asset_reference_without_file(
+        ReferenceInterface $reference,
+        AssetInterface $asset,
+        LocaleInterface $locale
+    ) {
+        $reference->getLocale()->willReturn($locale);
+        $locale->getCode()->willReturn('a_locale');
+        $reference->getFileInfo()->willReturn(null);
+        $reference->getAsset()->willReturn($asset);
+
+        $normalizedReference = $this->normalize($reference, 'external_api', []);
+
+        $normalizedReference['locale']->shouldBe('a_locale');
+        $normalizedReference['code']->shouldBe(null);
+    }
+
+    function it_normalizes_a_non_localizable_asset_reference_with_file(
+        $router,
+        ReferenceInterface $reference,
+        AssetInterface $asset,
+        FileInfoInterface $fileInfo
+    ) {
+        $reference->getLocale()->willReturn(null);
+        $reference->getFileInfo()->willReturn($fileInfo);
+        $reference->getAsset()->willReturn($asset);
+        $asset->getCode()->willReturn('the_reference_asset');
+        $fileInfo->getKey()->willReturn('path/to/the/file.extension');
+
+        $router->generate(
+            'pimee_api_asset_reference_download',
+            [
+                'code' => 'the_reference_asset',
+                'localeCode' => 'no-locale',
+            ],
+            UrlGeneratorInterface::ABSOLUTE_URL
+        )->willReturn('/assets/the_reference_asset/reference-files/no-locale/download');
+
+        $this->normalize($reference, 'external_api', [])->shouldReturn([
+            '_link' => [
+                'download' => [
+                    'href' => '/assets/the_reference_asset/reference-files/no-locale/download',
+                ],
+            ],
+            'locale' => null,
+            'code' => 'path/to/the/file.extension',
+        ]);
+    }
+
+    function it_normalizes_a_localizable_asset_reference_with_file(
+        $router,
+        ReferenceInterface $reference,
+        LocaleInterface $locale,
+        AssetInterface $asset,
+        FileInfoInterface $fileInfo
+    ) {
+        $reference->getLocale()->willReturn($locale);
+        $locale->getCode()->willReturn('a_locale');
+        $reference->getAsset()->willReturn($asset);
+        $asset->getCode()->willReturn('the_reference_asset');
+        $reference->getFileInfo()->willReturn($fileInfo);
+        $fileInfo->getKey()->willReturn('path/to/the/file.extension');
+
+        $router->generate(
+            'pimee_api_asset_reference_download',
+            [
+                'code' => 'the_reference_asset',
+                'localeCode' => 'a_locale',
+            ],
+            UrlGeneratorInterface::ABSOLUTE_URL
+        )->willReturn('/assets/the_reference_asset/reference-files/no-locale/download');
+
+        $this->normalize($reference, 'external_api', [])->shouldReturn([
+            '_link' => [
+                'download' => [
+                    'href' => '/assets/the_reference_asset/reference-files/no-locale/download',
                 ],
             ],
             'locale' => 'a_locale',

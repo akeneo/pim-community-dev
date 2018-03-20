@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace PimEnterprise\Component\ProductAsset\Normalizer\ExternalApi;
 
 use Pim\Component\Api\Hal\Link;
-use PimEnterprise\Bundle\ProductAssetBundle\Controller\ExternalApi\AssetVariationController;
 use PimEnterprise\Component\ProductAsset\Model\VariationInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\RouterInterface;
@@ -26,18 +25,18 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 class AssetVariationNormalizer implements NormalizerInterface
 {
     /** @var NormalizerInterface */
-    private $componentNormalizer;
+    private $standardNormalizer;
 
     /** @var RouterInterface */
     private $router;
 
     /**
-     * @param NormalizerInterface $componentNormalizer
+     * @param NormalizerInterface $standardNormalizer
      * @param RouterInterface     $router
      */
-    public function __construct(NormalizerInterface $componentNormalizer, RouterInterface $router)
+    public function __construct(NormalizerInterface $standardNormalizer, RouterInterface $router)
     {
-        $this->componentNormalizer = $componentNormalizer;
+        $this->standardNormalizer = $standardNormalizer;
         $this->router = $router;
     }
 
@@ -46,14 +45,20 @@ class AssetVariationNormalizer implements NormalizerInterface
      */
     public function normalize($variation, $format = null, array $context = []): array
     {
-        $normalizedVariation = $this->componentNormalizer->normalize($variation, $format, $context);
+        $standardNormalizedVariation = $this->standardNormalizer->normalize($variation, $format, $context);
+
+        $normalizedVariation = [
+            'locale' => $standardNormalizedVariation['locale'],
+            'scope' => $standardNormalizedVariation['channel'],
+            'code' => $standardNormalizedVariation['code'],
+        ];
 
         $route = $this->router->generate(
             'pimee_api_asset_variation_download',
             [
                 'code' => $variation->getAsset()->getCode(),
                 'channelCode' => $normalizedVariation['scope'],
-                'localeCode' => $normalizedVariation['locale'] ?: AssetVariationController::NON_LOCALIZABLE_VARIATION,
+                'localeCode' => $normalizedVariation['locale'] ?: 'no-locale',
             ],
             UrlGeneratorInterface::ABSOLUTE_URL
         );

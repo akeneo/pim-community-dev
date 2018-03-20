@@ -12,9 +12,9 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class AssetVariationNormalizerSpec extends ObjectBehavior
 {
-    function let(NormalizerInterface $componentNormalizer, RouterInterface $router)
+    function let(NormalizerInterface $standardNormalizer, RouterInterface $router)
     {
-        $this->beConstructedWith($componentNormalizer, $router);
+        $this->beConstructedWith($standardNormalizer, $router);
     }
 
     function it_is_initializable()
@@ -35,14 +35,14 @@ class AssetVariationNormalizerSpec extends ObjectBehavior
     }
 
     function it_normalizes_a_non_localizable_variation(
-        $componentNormalizer,
+        $standardNormalizer,
         $router,
         VariationInterface $variation,
         AssetInterface $asset
     ) {
-        $componentNormalizer->normalize($variation, 'external_api', [])->willReturn([
+        $standardNormalizer->normalize($variation, 'external_api', [])->willReturn([
             'locale' => null,
-            'scope' => 'ecommerce',
+            'channel' => 'ecommerce',
             'code' => 'path/to/variation_file.jpg',
         ]);
 
@@ -72,14 +72,14 @@ class AssetVariationNormalizerSpec extends ObjectBehavior
     }
 
     function it_normalizes_a_localizable_variation(
-        $componentNormalizer,
+        $standardNormalizer,
         $router,
         VariationInterface $variation,
         AssetInterface $asset
     ) {
-        $componentNormalizer->normalize($variation, 'external_api', [])->willReturn([
+        $standardNormalizer->normalize($variation, 'external_api', [])->willReturn([
             'locale' => 'en_US',
-            'scope' => 'ecommerce',
+            'channel' => 'ecommerce',
             'code' => 'path/to/variation_file.jpg',
         ]);
 

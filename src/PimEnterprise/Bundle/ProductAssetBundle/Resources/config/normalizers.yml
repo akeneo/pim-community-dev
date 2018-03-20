@@ -36,22 +36,18 @@ services:
         tags:
             - { name: pim_versioning.serializer.normalizer, priority: 100 }
 
-    # external api
+    # External api
     pimee_product_asset.normalizer.external_api.asset_reference:
         class: '%pimee_product_asset.normalizer.external_api.asset_reference.class%'
         arguments:
-            - '@pimee_api.component.normalizer.asset_reference'
             - '@router'
         tags:
             - { name: pim_serializer.normalizer, priority: 100 }
 
-    pimee_api.component.normalizer.asset_reference:
-        class: '%pimee_api.component.normalizer.asset_reference.class%'
-
     pimee_product_asset.normalizer.external_api.asset_variation:
         class: '%pimee_product_asset.normalizer.external_api.asset_variation.class%'
         arguments:
-            - '@pimee_api.component.normalizer.asset_variation'
+            - '@pimee_product_asset.normalizer.standard.variation'
             - '@router'
         tags:
             - { name: pim_serializer.normalizer, priority: 100 }

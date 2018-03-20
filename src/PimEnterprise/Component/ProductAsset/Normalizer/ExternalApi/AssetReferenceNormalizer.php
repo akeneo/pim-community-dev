@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace PimEnterprise\Component\ProductAsset\Normalizer\ExternalApi;
 
 use Pim\Component\Api\Hal\Link;
-use PimEnterprise\Bundle\ProductAssetBundle\Controller\ExternalApi\AssetReferenceController;
 use PimEnterprise\Component\ProductAsset\Model\ReferenceInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\RouterInterface;
@@ -25,19 +24,14 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  */
 class AssetReferenceNormalizer implements NormalizerInterface
 {
-    /** @var NormalizerInterface */
-    private $componentNormalizer;
-
     /** @var RouterInterface */
     private $router;
 
     /**
-     * @param NormalizerInterface $componentNormalizer
-     * @param RouterInterface     $router
+     * @param RouterInterface $router
      */
-    public function __construct(NormalizerInterface $componentNormalizer, RouterInterface $router)
+    public function __construct(RouterInterface $router)
     {
-        $this->componentNormalizer = $componentNormalizer;
         $this->router = $router;
     }
 
@@ -46,13 +40,22 @@ class AssetReferenceNormalizer implements NormalizerInterface
      */
     public function normalize($reference, $format = null, array $context = []): array
     {
-        $normalizedReference = $this->componentNormalizer->normalize($reference, $format, $context);
+        $localeCode = $reference->getLocale() ? $reference->getLocale()->getCode() : null;
+
+        if (null === $reference->getFileInfo()) {
+            return [
+                'locale' => $localeCode,
+                'code' => null,
+            ];
+        }
+
+        $code = $reference->getFileInfo()->getKey();
 
         $route = $this->router->generate(
             'pimee_api_asset_reference_download',
             [
                 'code' => $reference->getAsset()->getCode(),
-                'localeCode' => $normalizedReference['locale'] ?: AssetReferenceController::NON_LOCALIZABLE_REFERENCE,
+                'localeCode' => $localeCode ?: 'no-locale'
             ],
             UrlGeneratorInterface::ABSOLUTE_URL
         );
@@ -60,7 +63,10 @@ class AssetReferenceNormalizer implements NormalizerInterface
 
         return array_merge(
             ['_link' => $link->toArray()],
-            $normalizedReference
+            [
+                'locale' => $localeCode,
+                'code' => $code,
+            ]
         );
     }
 
