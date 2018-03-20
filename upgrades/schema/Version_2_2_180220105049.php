@@ -44,6 +44,8 @@ class Version_2_2_180220105049 extends AbstractMigration implements ContainerAwa
 
             $this->connection->commit();
         }
+
+        $this->disableMigrationWarning();
     }
 
     /**
@@ -129,5 +131,14 @@ class Version_2_2_180220105049 extends AbstractMigration implements ContainerAwa
 
         $clearer = $this->container->get('pim_connector.doctrine.cache_clearer');
         $clearer->clear();
+    }
+
+    /**
+     * Function that does a non altering operation on the DB using SQL to hide the doctrine warning stating that no
+     * sql query has been made to the db during the migration process.
+     */
+    private function disableMigrationWarning()
+    {
+        $this->addSql('SELECT * FROM oro_user');
     }
 }
