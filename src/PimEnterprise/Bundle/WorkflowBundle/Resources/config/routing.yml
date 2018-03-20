@@ -30,3 +30,12 @@ pimee_workflow_categorytree:
 pimee_workflow_rest_product:
     resource: '@PimEnterpriseWorkflowBundle/Resources/config/routing/rest/product.yml'
     prefix: /workflow
+
+# External API
+api_product_draft:
+    resource: '@PimEnterpriseWorkflowBundle/Resources/config/routing/product_draft.yml'
+    prefix: /rest/v1
+
+product_proposal:
+    resource: '@PimEnterpriseWorkflowBundle/Resources/config/routing/product_proposal.yml'
+    prefix: /rest/v1

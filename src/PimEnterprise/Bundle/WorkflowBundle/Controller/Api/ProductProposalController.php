@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Bundle\ApiBundle\Controller;
+namespace PimEnterprise\Bundle\WorkflowBundle\Controller\Api;
 
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Manager\ProductDraftManager;
