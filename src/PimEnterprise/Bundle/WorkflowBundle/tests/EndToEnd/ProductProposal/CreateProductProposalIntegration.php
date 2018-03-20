@@ -1,6 +1,6 @@
 <?php
 
-namespace PimEnterprise\Bundle\ApiBundle\tests\integration\Controller\ProductProposal;
+namespace PimEnterprise\Bundle\WorkflowBundle\tests\EndToEnd\ProductProposal;
 
 use Akeneo\Test\Integration\Configuration;
 use Pim\Component\Catalog\Model\ProductInterface;
