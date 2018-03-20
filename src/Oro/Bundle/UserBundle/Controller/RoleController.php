@@ -44,8 +44,12 @@ class RoleController extends Controller
      *
      * @AclAncestor("pim_user_role_remove")
      */
-    public function deleteAction($id)
+    public function deleteAction(Request $request, $id)
     {
+        if (!$request->isXmlHttpRequest()) {
+            return new RedirectResponse('/');
+        }
+
         $em = $this->get('doctrine.orm.entity_manager');
         $roleClass = $this->container->getParameter('oro_user.role.entity.class');
         $role = $em->getRepository($roleClass)->find($id);

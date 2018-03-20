@@ -55,7 +55,6 @@ function(_, messenger, __, Modal, AbstractAction) {
             }, this);
             var params = {
                 inset: selectionState.inset ? 1 : 0,
-                values: idValues.join(',')
             };
 
             if (selectionState.inset) {
@@ -151,6 +150,13 @@ function(_, messenger, __, Modal, AbstractAction) {
                 content: this.messages.confirm_content,
                 okText: this.messages.confirm_ok
             }).on('ok', callback);
+        },
+
+        /**
+         * Saves in the localstorage the list of selected ids in the datagrid.
+         */
+        saveItemIds: function() {
+            localStorage.setItem('mass_action.itemIds', JSON.stringify(this.getSelectedRows()));
         }
     });
 });

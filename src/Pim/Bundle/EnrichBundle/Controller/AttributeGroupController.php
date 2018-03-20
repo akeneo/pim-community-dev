@@ -253,10 +253,14 @@ class AttributeGroupController
      *
      * @AclAncestor("pim_enrich_attributegroup_remove")
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @return Response
      */
     public function removeAction(Request $request, AttributeGroup $group)
     {
+        if (!$request->isXmlHttpRequest()) {
+            return new RedirectResponse('/');
+        }
+
         if ($group === $this->getDefaultGroup()) {
             throw new DeleteException($this->translator->trans('flash.attribute group.not removed default'));
         }
@@ -343,8 +347,12 @@ class AttributeGroupController
      *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
-    public function removeAttributeAction($groupId, $attributeId)
+    public function removeAttributeAction(Request $request, $groupId, $attributeId)
     {
+        if (!$request->isXmlHttpRequest()) {
+            return new RedirectResponse('/');
+        }
+
         $group = $this->findAttributeGroupOr404($groupId);
         $attribute = $this->findAttributeOr404($attributeId);
 

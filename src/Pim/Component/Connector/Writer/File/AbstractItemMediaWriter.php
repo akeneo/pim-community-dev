@@ -10,6 +10,7 @@ use Akeneo\Component\Batch\Job\JobParameters;
 use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\Batch\Step\StepExecutionAwareInterface;
 use Akeneo\Component\Buffer\BufferFactory;
+use Pim\Bundle\ConnectorBundle\Doctrine\Common\Detacher\StoredProductDetacherInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Pim\Component\Connector\ArrayConverter\ArrayConverterInterface;
 use Symfony\Component\Filesystem\Filesystem;
@@ -44,6 +45,9 @@ abstract class AbstractItemMediaWriter implements
     /** @var string[] */
     protected $mediaAttributeTypes;
 
+    /** @var StoredProductDetacherInterface */
+    protected $storedProductDetacher;
+
     /** @var StepExecution */
     protected $stepExecution;
 
@@ -60,12 +64,13 @@ abstract class AbstractItemMediaWriter implements
     protected $datetimeFormat = 'Y-m-d_H-i-s';
 
     /**
-     * @param ArrayConverterInterface            $arrayConverter
-     * @param BufferFactory                      $bufferFactory
-     * @param FlatItemBufferFlusher              $flusher
-     * @param AttributeRepositoryInterface       $attributeRepository
-     * @param FileExporterPathGeneratorInterface $fileExporterPath
-     * @param array                              $mediaAttributeTypes
+     * @param ArrayConverterInterface             $arrayConverter
+     * @param BufferFactory                       $bufferFactory
+     * @param FlatItemBufferFlusher               $flusher
+     * @param AttributeRepositoryInterface        $attributeRepository
+     * @param FileExporterPathGeneratorInterface  $fileExporterPath
+     * @param string[]                            $mediaAttributeTypes
+     * @param StoredProductDetacherInterface|null $storedProductDetacher
      */
     public function __construct(
         ArrayConverterInterface $arrayConverter,
@@ -73,7 +78,8 @@ abstract class AbstractItemMediaWriter implements
         FlatItemBufferFlusher $flusher,
         AttributeRepositoryInterface $attributeRepository,
         FileExporterPathGeneratorInterface $fileExporterPath,
-        array $mediaAttributeTypes
+        array $mediaAttributeTypes,
+        StoredProductDetacherInterface $storedProductDetacher = null
     ) {
         $this->arrayConverter = $arrayConverter;
         $this->bufferFactory = $bufferFactory;
@@ -81,6 +87,7 @@ abstract class AbstractItemMediaWriter implements
         $this->attributeRepository = $attributeRepository;
         $this->mediaAttributeTypes = $mediaAttributeTypes;
         $this->fileExporterPath = $fileExporterPath;
+        $this->storedProductDetacher = $storedProductDetacher;
 
         $this->localFs = new Filesystem();
     }
@@ -105,6 +112,10 @@ abstract class AbstractItemMediaWriter implements
      */
     public function write(array $items)
     {
+        if (null !== $this->storedProductDetacher) {
+            $this->storedProductDetacher->detachStoredProducts();
+        }
+
         $parameters = $this->stepExecution->getJobParameters();
         $converterOptions = $this->getConverterOptions($parameters);
 

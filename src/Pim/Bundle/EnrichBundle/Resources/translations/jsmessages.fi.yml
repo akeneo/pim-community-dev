@@ -159,7 +159,7 @@ pim_enrich:
         deletion_failed: Tuotetta ei voi poistaa.
         update_successful: Tuote päivitetty.
         update_failed: Tuotetta ei voitu päivittää.
-        field_not_ready: 'Tuotetta ei voida tallentaa. Seuraavat kentät eivät ole vielä valmiina: {{ fields }}'
+        field_not_ready: "Tuotetta ei voida tallentaa. Seuraavat kentät eivät ole vielä valmiina: {{ fields }}"
         already_in_upload: Tiedosto on jo ladattu määritteen lokaatiossa "{{ locale }}" ja laajuudessa "{{ scope }}"
       error:
         upload: Virhe tiedoston lataamisessa
@@ -563,12 +563,12 @@ pim_enrich:
           help: Kanava määrittää tuotearvojen laajuuden, arvojen lokaation ja tuotepuun, jolla rajataan mukaan otettavat tuotteet.
         locales:
           title: Alueet
-          help: 'Lokaatiot määrittävät minkäkieliset arvot otetaan mukaan vientiin. Esim: vain suomenkieliset tuotetiedot.'
+          help: "Lokaatiot määrittävät minkäkieliset arvot otetaan mukaan vientiin. Esim: vain suomenkieliset tuotetiedot."
         attributes:
           title: Attribuutit
           edit: Muokkaa
           label: "{0} Kaikki attribuutit|{1} Yksi attribuutti valittu|]1,Inf[ {{ count }} attribuuttia valittu"
-          help: 'Valitse vietävä attribuuttiryhmä. Esim: vain tekniset attribuutit.'
+          help: "Valitse vietävä attribuuttiryhmä. Esim: vain tekniset attribuutit."
           empty: Kaikki attribuutit viedään
           modal:
             apply: Valitse
@@ -583,7 +583,7 @@ pim_enrich:
           empty_selection: Kaikki attribuutit viedään
         family:
           title: Perhe
-          help: 'Valitse vietävät tuotteet perheen mukaan. Esim: vie vain kengät ja hameet.'
+          help: "Valitse vietävät tuotteet perheen mukaan. Esim: vie vain kengät ja hameet."
           operators:
             IN: Luettelossa
             "NOT IN": Ei luettelossa
@@ -599,7 +599,7 @@ pim_enrich:
             "SINCE LAST JOB": Viime viennin jälkeen päivitetyt tuotteet
         enabled:
           title: Status
-          help: 'Valitse vietävät tuotteet statuksen mukaan. Esim: Vie tuotteet statuksesta huolimatta.'
+          help: "Valitse vietävät tuotteet statuksen mukaan. Esim: Vie tuotteet statuksesta huolimatta."
           value:
             all: Kaikki
             enabled: Käytössä

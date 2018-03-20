@@ -25,10 +25,11 @@ class FamilyTransformer
 
         if (isset($normalizedData['family'])) {
             $family = $normalizedData['family'];
-            $result['familyLabel'] = '['.$family['code'].']';
 
             if (isset($family['labels'][$locale]) && '' !== $family['labels'][$locale]) {
                 $result['familyLabel'] = $family['labels'][$locale];
+            } else {
+                $result['familyLabel'] = '['.$family['code'].']';
             }
 
             if (isset($family['attributeAsLabel']) && $family['attributeAsLabel'] !== null) {

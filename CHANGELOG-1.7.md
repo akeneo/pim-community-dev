@@ -2,7 +2,28 @@
 
 ## Bug fixes
 
-- Fix XLSX product export to allow decimal separator configuration (Thanks [wa-daniel-fahl](https://github.com/wa-daniel-fahl)!
+- GITHUB-7507: Fix XLSX product export to allow decimal separator configuration (Thanks [wa-daniel-fahl](https://github.com/wa-daniel-fahl)!
+- PIM-7069: Fix Channel export regarding conversion_units output
+
+# 1.7.19 (2018-02-27)
+
+## Improvements
+
+- IM-824: Change message when the user or email is not valid to a more generic message
+
+## Bug Fixes
+
+- PIM-7188: Avoid duplicate products during import
+- PIM-7164: Fix a memory leak on product export caused by associated products not being detached
+- PIM-7134: Fix a memory leak when purging version history (MongoDB)
+
+# 1.7.18 (2018-02-22)
+
+# 1.7.17 (2018-02-01)
+
+## Bug Fixes
+
+- PIM-7130: Fix product update when association type code is an integer
 
 # 1.7.16 (2018-01-11)
 

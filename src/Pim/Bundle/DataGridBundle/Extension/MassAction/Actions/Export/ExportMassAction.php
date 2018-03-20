@@ -43,6 +43,14 @@ class ExportMassAction extends WidgetMassAction implements ExportMassActionInter
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function getExportContext()
+    {
+        return $this->options['context'];
+    }
+
+    /**
      * Add method to assert required route parameters
      */
     protected function assertHasRequiredOptions()
@@ -63,20 +71,12 @@ class ExportMassAction extends WidgetMassAction implements ExportMassActionInter
             if (!isset($this->options['route_parameters'][$requiredRouteParam])) {
                 throw new \LogicException(
                     sprintf(
-                        'There is no route_parameter named "%s" for action "%s"',
+                        'The parameter "%s" for action "%s" is required',
                         $requiredRouteParam,
                         $this->getName()
                     )
                 );
             }
         }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getExportContext()
-    {
-        return $this->options['context'];
     }
 }

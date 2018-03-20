@@ -338,6 +338,10 @@ class AttributeController
      */
     public function removeAction(Request $request, $id)
     {
+        if (!$request->isXmlHttpRequest()) {
+            return new RedirectResponse('/');
+        }
+
         $attribute = $this->findAttributeOr404($id);
         $this->validateRemoval($attribute);
 

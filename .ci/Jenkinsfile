@@ -2,7 +2,7 @@
 
 import org.csanchez.jenkins.plugins.kubernetes.pipeline.PodTemplateAction
 
-String[] editions = ["ce"]
+String[] editions = ["ce", "ceodm"]
 String[] features = ["features"]
 String launchUnitTests = "yes"
 String launchIntegrationTests = "yes"
@@ -37,7 +37,7 @@ stage("Build") {
 
     parallel(
         "pim-ce": {
-            if (editions.contains("ce")) {
+            if ((editions.contains("ce") && launchBehatTests.equals("yes")) || launchUnitTests.equals("yes") || launchIntegrationTests.equals("yes")) {
                 withBuildNode({
                     checkout scm
                     container("php") {
@@ -56,16 +56,13 @@ stage("Build") {
                         sh "sed -i \"s#database_host: .*#database_host: 127.0.0.1#g\" app/config/parameters_test.yml"
                         sh "sed \"\$a    installer_data: 'PimInstallerBundle:minimal'\n\" app/config/parameters_test.yml"
 
-                        sh "docker build -t eu.gcr.io/akeneo-ci/pim-community-dev:pull-request-${env.CHANGE_ID}-build-${env.BUILD_NUMBER}-ce ."
-                        sh "gcloud docker -- push eu.gcr.io/akeneo-ci/pim-community-dev:pull-request-${env.CHANGE_ID}-build-${env.BUILD_NUMBER}-ce"
+                        sh "gcloud container builds submit --tag eu.gcr.io/akeneo-ci/pim-community-dev:pull-request-${env.CHANGE_ID}-build-${env.BUILD_NUMBER}-ce ."
                     }
                 })
-            } else {
-                echo "Skipping Community Edition matrix"
             }
         },
         "pim-ee": {
-            if (editions.contains("ee")) {
+            if (editions.contains("ee") && launchBehatTests.equals("yes")) {
                 withBuildNode({
                     checkout([$class: 'GitSCM',
                         branches: [[name: '1.7']],
@@ -75,10 +72,6 @@ stage("Build") {
                     sh "mkdir -m 777 vendor"
 
                     container("php") {
-                        sh "composer require --dev --no-update phpspec/phpspec:~3.4.2"
-                        sh "composer require --dev --no-update phpunit/phpunit:~5.7.22"
-                        sh "composer require --dev --no-update sebastian/exporter:~2.0.0"
-                        sh "composer require --dev --no-update liuggio/fastest:~1.4.4"
                         sh "php -d memory_limit=-1 /usr/local/bin/composer update --optimize-autoloader --no-interaction --no-progress --prefer-dist --ansi"
 
                         // Required to avoid permission error when "deleteDir()"
@@ -107,8 +100,7 @@ stage("Build") {
                         sh "cp vendor/akeneo/pim-community-dev/Dockerfile ."
                         sh "cp -R vendor/akeneo/pim-community-dev/.ci ."
 
-                        sh "docker build -t eu.gcr.io/akeneo-ci/pim-community-dev:pull-request-${env.CHANGE_ID}-build-${env.BUILD_NUMBER}-ee ."
-                        sh "gcloud docker -- push eu.gcr.io/akeneo-ci/pim-community-dev:pull-request-${env.CHANGE_ID}-build-${env.BUILD_NUMBER}-ee"
+                        sh "gcloud container builds submit --tag eu.gcr.io/akeneo-ci/pim-community-dev:pull-request-${env.CHANGE_ID}-build-${env.BUILD_NUMBER}-ee ."
                     }
                 })
             } else {
@@ -116,7 +108,7 @@ stage("Build") {
             }
         },
         "pim-ce-odm": {
-            if (editions.contains("ceodm")) {
+            if (editions.contains("ceodm") && launchBehatTests.equals("yes")) {
                 withBuildNode({
                     checkout scm
                     container("php") {
@@ -140,8 +132,7 @@ stage("Build") {
                         sh "sed -i \"s@# mongodb_server: .*@mongodb_server: 'mongodb://127.0.0.1:27017'@g\" app/config/pim_parameters.yml"
                         sh "printf \"    pim_catalog_product_storage_driver: doctrine/mongodb-odm\n\" >> app/config/parameters_test.yml"
 
-                        sh "docker build -t eu.gcr.io/akeneo-ci/pim-community-dev:pull-request-${env.CHANGE_ID}-build-${env.BUILD_NUMBER}-ceodm ."
-                        sh "gcloud docker -- push eu.gcr.io/akeneo-ci/pim-community-dev:pull-request-${env.CHANGE_ID}-build-${env.BUILD_NUMBER}-ceodm"
+                        sh "gcloud container builds submit --tag eu.gcr.io/akeneo-ci/pim-community-dev:pull-request-${env.CHANGE_ID}-build-${env.BUILD_NUMBER}-ceodm ."
                     }
                 })
             } else {
@@ -149,7 +140,7 @@ stage("Build") {
             }
         },
          "pim-ee-odm": {
-             if (editions.contains("eeodm")) {
+             if (editions.contains("eeodm") && launchBehatTests.equals("yes")) {
                 withBuildNode({
                     checkout([$class: 'GitSCM',
                         branches: [[name: '1.7']],
@@ -157,10 +148,6 @@ stage("Build") {
                     ])
                     sh "mkdir -m 777 vendor"
                     container("php") {
-                        sh "composer require --dev --no-update phpspec/phpspec:~3.4.2"
-                        sh "composer require --dev --no-update phpunit/phpunit:~5.7.22"
-                        sh "composer require --dev --no-update sebastian/exporter:~2.0.0"
-                        sh "composer require --dev --no-update liuggio/fastest:~1.4.4"              
                         sh "php -d memory_limit=-1 /usr/local/bin/composer update --optimize-autoloader --no-interaction --no-progress --prefer-dist --ansi"
                         sh "chmod 777 -R vendor/akeneo"
                         dir('vendor/akeneo/pim-community-dev') {
@@ -189,8 +176,7 @@ stage("Build") {
                         sh "cp vendor/akeneo/pim-community-dev/Dockerfile ."
                         sh "cp -R vendor/akeneo/pim-community-dev/.ci ."
 
-                        sh "docker build -t eu.gcr.io/akeneo-ci/pim-community-dev:pull-request-${env.CHANGE_ID}-build-${env.BUILD_NUMBER}-eeodm ."
-                        sh "gcloud docker -- push eu.gcr.io/akeneo-ci/pim-community-dev:pull-request-${env.CHANGE_ID}-build-${env.BUILD_NUMBER}-eeodm"
+                        sh "gcloud container builds submit --tag eu.gcr.io/akeneo-ci/pim-community-dev:pull-request-${env.CHANGE_ID}-build-${env.BUILD_NUMBER}-eeodm ."
                     }
                 })
             } else {
@@ -205,9 +191,9 @@ stage("Test") {
         milestone 3
         parallel(
             "phpunit": {
-                if (editions.contains("ce") && launchUnitTests.equals("yes")) {
+                if (launchUnitTests.equals("yes")) {
                     withPhp({
-                        try {                            
+                        try {
                             sh "cd /home/jenkins/pim && ./bin/phpunit -c app/phpunit.xml.dist --testsuite PIM_Unit_Test --log-junit ${env.WORKSPACE}/junit_output.xml"
                         } finally {
                             junit "junit_output.xml"
@@ -218,7 +204,7 @@ stage("Test") {
                 }
             },
             "phpspec": {
-                if (editions.contains("ce") && launchUnitTests.equals("yes")) {
+                if (launchUnitTests.equals("yes")) {
                     withPhp({
                         try {
                             sh "cd /home/jenkins/pim && chown -R docker /home/jenkins/pim && su docker -c './bin/phpspec run --format=junit' > ${env.WORKSPACE}/junit_output.xml"
@@ -231,9 +217,9 @@ stage("Test") {
                 }
             },
             "php-cs-fixer": {
-                if (editions.contains("ce") && launchUnitTests.equals("yes")) {
+                if (launchUnitTests.equals("yes")) {
                     withPhp({
-                        try {    
+                        try {
                             sh "cd /home/jenkins/pim && ./bin/php-cs-fixer fix --diff --dry-run --config=.php_cs.php --format=junit > ${env.WORKSPACE}/junit_output.xml"
                         } finally {
                             junit "junit_output.xml"
@@ -244,7 +230,7 @@ stage("Test") {
                 }
             },
             "grunt": {
-                if (editions.contains("ce") && launchUnitTests.equals("yes")) {
+                if (launchUnitTests.equals("yes")) {
                     withGrunt({
                         sh "cd /home/jenkins/pim && grunt"
                     })
@@ -253,12 +239,12 @@ stage("Test") {
                 }
             },
             "phpunit-integration": {
-                if (editions.contains("ceodm") && launchIntegrationTests.equals("yes")) {
+                if (launchIntegrationTests.equals("yes")) {
                     queue({
                         def files = sh (returnStdout: true, script: 'find /home/jenkins/pim/src -name "*Integration.php" -exec sh -c "grep -Ho \'function test\' {} | uniq -c"  \\; | sed "s/:function test//"').tokenize('\n')
                         def messages = new net.sf.json.JSONArray()
                         for (line in files) {
-                            def file = line.tokenize(' ') 
+                            def file = line.tokenize(' ')
                             def commands = [
                                 [container: "php", script: "./app/console --env=test pim:install --force"],
                                 [container: "php", script: "mkdir -p app/cache app/logs app/archive /tmp/pim app/file_storage app/uploads"],
@@ -273,11 +259,11 @@ stage("Test") {
                             def message = new net.sf.json.JSONObject()
                             message.put("name",file[1])
                             message.put("commands",commands)
-                            messages.add(message)                                
+                            messages.add(message)
                         }
 
                         return messages
-                    }, 10, "ceodm", verboseOutputs, dotsPerLine)
+                    }, 10, "ce", verboseOutputs, dotsPerLine)
                 } else {
                     echo "Skipping integration test"
                 }
@@ -285,11 +271,12 @@ stage("Test") {
             "behat-ce": {
                 if (launchBehatTests.equals("yes") && editions.contains("ce")) {
                     queue({
+                        sh (returnStdout: true, script: "mkdir -m 777 -p /home/jenkins/pim/app/build/logs/behat/");
                         def scenarios = []
                         for (feature in features) {
                             scenarios = (scenarios + sh (returnStdout: true, script: "cd /home/jenkins/pim && if [ -e $feature ]; then php ./bin/behat $feature --list-scenarios; fi").tokenize('\n'))
                         }
-                        scenarios = scenarios.unique()   
+                        scenarios = scenarios.unique()
                         def messages = new net.sf.json.JSONArray()
 
                         for (scenario in scenarios) {
@@ -318,7 +305,7 @@ stage("Test") {
                             def message = new net.sf.json.JSONObject()
                             message.put("name",scenario)
                             message.put("commands",commands)
-                            messages.add(message)                            
+                            messages.add(message)
                         }
 
                         return messages
@@ -330,6 +317,7 @@ stage("Test") {
             "behat-ee": {
                 if (launchBehatTests.equals("yes") && editions.contains("ee")) {
                     queue({
+                        sh (returnStdout: true, script: "mkdir -m 777 -p /home/jenkins/pim/app/build/logs/behat/");
                         def scenarios = []
                         for (feature in features) {
                             scenarios = (scenarios + sh (returnStdout: true, script: "cd /home/jenkins/pim && if [ -e $feature ]; then php ./bin/behat $feature --list-scenarios; fi").tokenize('\n'))
@@ -375,6 +363,7 @@ stage("Test") {
             "behat-ce-odm": {
                 if (launchBehatTests.equals("yes") && editions.contains("ceodm")) {
                     queue({
+                        sh (returnStdout: true, script: "mkdir -m 777 -p /home/jenkins/pim/app/build/logs/behat/");
                         def scenarios = []
                         for (feature in features) {
                             scenarios = (scenarios + sh (returnStdout: true, script: "cd /home/jenkins/pim && if [ -e $feature ]; then php ./bin/behat $feature --list-scenarios; fi").tokenize('\n'))
@@ -420,6 +409,7 @@ stage("Test") {
             "behat-ee-odm": {
                 if (launchBehatTests.equals("yes") && editions.contains("eeodm")) {
                     queue({
+                        sh (returnStdout: true, script: "mkdir -m 777 -p /home/jenkins/pim/app/build/logs/behat/");
                         def scenarios = []
                         for (feature in features) {
                             scenarios = (scenarios + sh (returnStdout: true, script: "cd /home/jenkins/pim && if [ -e $feature ]; then php ./bin/behat $feature --list-scenarios; fi").tokenize('\n'))
@@ -465,21 +455,22 @@ stage("Test") {
         )
     } finally {
         clearTemplateNames()
-        podTemplate(label: "cleanup", containers: [
-            containerTemplate(name: "docker", image: "paulwoelfel/docker-gcloud", ttyEnabled: true, command: 'cat')
+        def uuid = UUID.randomUUID().toString()
+        podTemplate(label: "cleanup-" + uuid, containers: [
+            containerTemplate(name: "docker", image: "paulwoelfel/docker-gcloud:v1.13", ttyEnabled: true, command: 'cat', envVars: [envVar(key: "DOCKER_API_VERSION", value: "1.23")], resourceRequestCpu: '100m', resourceRequestMemory: '200Mi')
         ]) {
-            node("cleanup") {
+            node("cleanup-" + uuid) {
                 container("docker") {
-                    if (editions.contains("ce")) {
+                    if (launchBehatTests.equals("yes") && editions.contains("ce")) {
                         sh "gcloud -q container images delete eu.gcr.io/akeneo-ci/pim-community-dev:pull-request-${env.CHANGE_ID}-build-${env.BUILD_NUMBER}-ce"
                     }
-                    if (editions.contains("ee")) {                 
+                    if (launchBehatTests.equals("yes") && editions.contains("ee")) {
                         sh "gcloud -q container images delete eu.gcr.io/akeneo-ci/pim-community-dev:pull-request-${env.CHANGE_ID}-build-${env.BUILD_NUMBER}-ee"
                     }
-                    if (editions.contains("ceodm")) {
+                    if (launchBehatTests.equals("yes") && editions.contains("ceodm")) {
                         sh "gcloud -q container images delete eu.gcr.io/akeneo-ci/pim-community-dev:pull-request-${env.CHANGE_ID}-build-${env.BUILD_NUMBER}-ceodm"
                     }
-                    if (editions.contains("eeodm")) {
+                    if (launchBehatTests.equals("yes") && editions.contains("eeodm")) {
                         sh "gcloud -q container images delete eu.gcr.io/akeneo-ci/pim-community-dev:pull-request-${env.CHANGE_ID}-build-${env.BUILD_NUMBER}-eeodm"
                     }
                 }
@@ -493,11 +484,9 @@ def withBuildNode(body) {
     def uuid = UUID.randomUUID().toString()
     withCredentials([string(credentialsId: 'composer-token', variable: 'token')]) {
         podTemplate(label: "build-" + uuid, containers: [
-            containerTemplate(name: "docker", image: "paulwoelfel/docker-gcloud", ttyEnabled: true, command: 'cat', envVars: [envVar(key: "DOCKER_API_VERSION", value: "1.23")], resourceRequestCpu: '100m', resourceRequestMemory: '200Mi'),
+            containerTemplate(name: "docker", image: "paulwoelfel/docker-gcloud:v1.13", ttyEnabled: true, command: 'cat', resourceRequestCpu: '100m', resourceRequestMemory: '200Mi'),
             containerTemplate(name: "php", ttyEnabled: true, command: 'cat', image: "eu.gcr.io/akeneo-ci/httpd-php:5.6", envVars: [envVar(key: "COMPOSER_AUTH", value: "{\"github-oauth\":{\"github.com\": \"$token\"}}")], resourceRequestCpu: '750m', resourceRequestMemory: '2000Mi'),
             containerTemplate(name: "node", ttyEnabled: true, command: 'cat', image: "node:8", resourceRequestCpu: '750m', resourceRequestMemory: '2000Mi')
-        ], volumes: [
-            hostPathVolume(hostPath: "/var/run/docker.sock", mountPath: "/var/run/docker.sock")
         ]) {
             node("build-" + uuid) {
                 dir('/home/jenkins/pim') {
@@ -551,10 +540,6 @@ def queue(body, scale, edition, verboseOutputs, dotsPerLine) {
         containerTemplate(name: "gcloud", ttyEnabled: true, command: 'cat', image: "eu.gcr.io/akeneo-ci/gcloud:1.0", alwaysPullImage: true, resourceRequestCpu: '100m', resourceRequestMemory: '200Mi', envVars: [envVar(key: "PUBSUB_PROJECT_ID", value: "akeneo-ci")])
     ], annotations: [
         podAnnotation(key: "pod.beta.kubernetes.io/init-containers", value: "[{\"name\": \"pim\", \"imagePullPolicy\": \"Always\", \"image\": \"eu.gcr.io/akeneo-ci/pim-community-dev:pull-request-${env.CHANGE_ID}-build-${env.BUILD_NUMBER}-${edition}\", \"command\": [\"sh\", \"-c\", \"cp -Rp /pim /home/jenkins\"], \"volumeMounts\":[{\"name\":\"workspace-volume\",\"mountPath\":\"/home/jenkins\"}]}]")
-    ], volumes: [
-        hostPathVolume(hostPath: "/var/run/docker.sock", mountPath: "/var/run/docker.sock"),
-        hostPathVolume(hostPath: "/usr/bin/docker", mountPath: "/usr/bin/docker")
-
     ]) {
         node("pubsub-" + uuid) {
             def messages = []

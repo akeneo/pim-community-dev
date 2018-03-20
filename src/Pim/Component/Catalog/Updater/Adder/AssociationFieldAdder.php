@@ -168,6 +168,7 @@ class AssociationFieldAdder extends AbstractFieldAdder
         }
 
         foreach ($data as $assocTypeCode => $items) {
+            $assocTypeCode = (string) $assocTypeCode;
             $this->checkAssociationData($field, $data, $assocTypeCode, $items);
         }
     }

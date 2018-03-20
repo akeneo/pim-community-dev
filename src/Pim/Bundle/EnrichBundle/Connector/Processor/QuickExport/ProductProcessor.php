@@ -7,6 +7,7 @@ use Akeneo\Component\Batch\Job\JobInterface;
 use Akeneo\Component\Batch\Job\JobParameters;
 use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
+use Doctrine\Common\Collections\Collection;
 use Pim\Bundle\EnrichBundle\Connector\Processor\AbstractProcessor;
 use Pim\Component\Catalog\Builder\ProductBuilderInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
@@ -104,7 +105,11 @@ class ProductProcessor extends AbstractProcessor
             $directory = $this->stepExecution->getJobExecution()->getExecutionContext()
                 ->get(JobInterface::WORKING_DIRECTORY_PARAMETER);
 
-            $this->fetchMedia($product, $directory);
+            $productValues = $this->areAttributesToFilter($parameters)
+                ? $this->filterProductValues($product, $parameters->get('selected_properties'))
+                : $product->getValues();
+
+            $this->fetchMedia($product, $directory, $productValues);
         }
 
         $this->detacher->detach($product);
@@ -152,15 +157,16 @@ class ProductProcessor extends AbstractProcessor
     }
 
     /**
-     * Fetch medias on the local filesystem
+     * Fetch medias on the local filesystem for given product values.
      *
      * @param ProductInterface $product
      * @param string           $directory
+     * @param Collection       $productValues
      */
-    protected function fetchMedia(ProductInterface $product, $directory)
+    protected function fetchMedia(ProductInterface $product, $directory, Collection $productValues)
     {
         $identifier = $product->getIdentifier()->getData();
-        $this->mediaFetcher->fetchAll($product->getValues(), $directory, $identifier);
+        $this->mediaFetcher->fetchAll($productValues, $directory, $identifier);
 
         foreach ($this->mediaFetcher->getErrors() as $error) {
             $this->stepExecution->addWarning($error['message'], [], new DataInvalidItem($error['media']));
@@ -218,5 +224,24 @@ class ProductProcessor extends AbstractProcessor
 
         $token = new UsernamePasswordToken($user, null, 'main', $user->getRoles());
         $this->tokenStorage->setToken($token);
+    }
+
+    /**
+     * Filter the product values to keep only those that are selected from the context.
+     *
+     * @param ProductInterface $product
+     * @param array            $selectedAttributes
+     *
+     * @return Collection
+     */
+    protected function filterProductValues(ProductInterface $product, array $selectedAttributes)
+    {
+        $productValues = $product->getValues();
+
+        return $productValues->filter(function ($productValue) use ($selectedAttributes) {
+            $attributeCode = $productValue->getAttribute()->getCode();
+
+            return in_array($attributeCode, $selectedAttributes);
+        });
     }
 }

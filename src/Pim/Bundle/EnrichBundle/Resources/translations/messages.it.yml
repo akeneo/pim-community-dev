@@ -707,7 +707,7 @@ pim_enrich.mass_edit_action:
     success_flash: L'attributo (/gli attributi) dell'articolo (/degli articoli) è stato caricato
     message.warning: Non esiste un attributo in comune per i prodotti selezionati. Si prega di cambiare la selezione.
     no_attribute.warning: Non esiste un attributo in comune per i prodotti selezionati. Si prega di cambiare la selezione.
-    truncated_by_variant_attribute.warning: 'Alcuni attributi comuni dai prodotti selezionati provengono da un gruppo di varianti. Non sono disponibili per la modifica di massa: %attributes%.'
+    truncated_by_variant_attribute.warning: "Alcuni attributi comuni dai prodotti selezionati provengono da un gruppo di varianti. Non sono disponibili per la modifica di massa: %attributes%."
   classify:
     label: Classificare i prodotti in categorie
     description: Gli articoli saranno posizionati nelle seguenti categorie, il posizionamento attuale è mantenuto.
@@ -851,7 +851,7 @@ add_to_variant_group_clean.steps.excluded.title: Prodotto escluso
 add_to_variant_group_clean.steps.duplicated.title: Dimensione Duplicata
 add_to_variant_group.steps.excluded.title: Prodotto escluso
 add_to_variant_group.steps.duplicated.title: Dimensione Duplicata
-add_to_variant_group.steps.cleaner.warning.description: 'Il prodotto non può essere impostato nel gruppo di varianti selezionato: duplica i valori della dimensione variante con un altro prodotto nella selezione'
+add_to_variant_group.steps.cleaner.warning.description: "Il prodotto non può essere impostato nel gruppo di varianti selezionato: duplica i valori della dimensione variante con un altro prodotto nella selezione"
 edit_common_attributes: Modifica gli attributi comuni
 edit_common_attributes_clean: Pulisci i file per gli attributi comuni
 perform.steps.duplicated.title: Dimensione Duplicata

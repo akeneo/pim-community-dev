@@ -73,7 +73,7 @@ class SequentialEditController
      *
      * @param Request $request
      *
-     * @return RedirectResponse
+     * @return JsonResponse
      */
     public function sequentialEditAction(Request $request)
     {
@@ -92,6 +92,25 @@ class SequentialEditController
         );
 
         $this->saver->save($sequentialEdit);
+
+        return new JsonResponse(
+            [
+                'id'         => current($sequentialEdit->getObjectSet()),
+                'dataLocale' => $request->get('dataLocale'),
+            ]
+        );
+    }
+
+    /**
+     * Redirects to the sequential product edit page.
+     *
+     * @param Request $request
+     *
+     * @return RedirectResponse
+     */
+    public function getRedirectAction(Request $request)
+    {
+        $sequentialEdit = $this->seqEditManager->findByUser($this->userContext->getUser());
 
         return new RedirectResponse(
             $this->router->generate(

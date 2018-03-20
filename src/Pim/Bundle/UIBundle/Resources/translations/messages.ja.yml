@@ -41,7 +41,6 @@ required: (必須)
 pim_ui.system_config:
   form:
     loading_message_enabled.label: 読み込みメッセージを有効にする
-    loading_message_enabled.tooltip: ページのロードを待っている間に使いやすいメッセージを表示する
     loading_messages.label: 可能な読み込みメッセージ
     loading_messages.tooltip: ロード可能な全てのメッセージは、改行で区切られています
   group:

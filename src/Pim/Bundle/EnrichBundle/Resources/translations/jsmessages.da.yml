@@ -159,7 +159,7 @@ pim_enrich:
         deletion_failed: Produktet kunne ikke slettes.
         update_successful: Produktet blev opdateret.
         update_failed: Produktet kunne ikke opdateres.
-        field_not_ready: 'Produktet kan ikke gemmes lige nu. Følgende felter er ikke klar: {{ fields }}'
+        field_not_ready: "Produktet kan ikke gemmes lige nu. Følgende felter er ikke klar: {{ fields }}"
         already_in_upload: Der findes allerede en fil indlæst for denne attribut for denne landestandard "{{ locale }}" og "{{ scope }}"
       error:
         upload: Der opstod en fejl under fil upload
@@ -563,12 +563,12 @@ pim_enrich:
           help: Kanalen definerer mulighederne for produkt værdier, de landestandarder, der bruges til at vælge data og træet bruges til at vælge produkter.
         locales:
           title: Landestandarder
-          help: 'Landestandarderne definerer de lokaliserede produkt værdier at eksportere. Ex: kun produktinformation på fransk.'
+          help: "Landestandarderne definerer de lokaliserede produkt værdier at eksportere. Ex: kun produktinformation på fransk."
         attributes:
           title: Egenskaber
           edit: Redigér
           label: "{0} alle attributter |{1} én attribut valgt |] 1, Inf [{{ count }} attributter valgt"
-          help: 'Vælg produktinformation til eksport. Ex: kun de tekniske egenskaber.'
+          help: "Vælg produktinformation til eksport. Ex: kun de tekniske egenskaber."
           empty: Alle attributter vil blive eksporteret
           modal:
             apply: Anvend
@@ -583,7 +583,7 @@ pim_enrich:
           empty_selection: Alle attributter vil blive eksporteret
         family:
           title: Familie
-          help: 'Vælg produkterne, der eksporteres af deres familie. Ex: Eksport kun de sko og kjoler.'
+          help: "Vælg produkterne, der eksporteres af deres familie. Ex: Eksport kun de sko og kjoler."
           operators:
             IN: I listen
             "NOT IN": Ikke på listen
@@ -599,7 +599,7 @@ pim_enrich:
             "SINCE LAST JOB": Opdaterede produkter siden sidste eksport
         enabled:
           title: Status
-          help: 'Vælg produkterne, der eksporteres af deres status. Ex: Eksportere produkter overhovedet deres status.'
+          help: "Vælg produkterne, der eksporteres af deres status. Ex: Eksportere produkter overhovedet deres status."
           value:
             all: Alle
             enabled: Aktiveret
