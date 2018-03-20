@@ -28,6 +28,7 @@ Feature: Mass edit many products at once via a form
     And I should see the text "processed 103"
     And the category of the product "product_1" should be "2018_collection"
 
+  @unstable
   Scenario: Add product models to a category
     Given the "catalog_modeling" catalog configuration
     And the following root product models:

@@ -70,7 +70,7 @@ class DefaultImageProviderSpec extends ObjectBehavior
 
     private function getImagePath($fileType)
     {
-        return __DIR__ . DIRECTORY_SEPARATOR . $fileType . '.png';
+        return sys_get_temp_dir() . DIRECTORY_SEPARATOR . $fileType . '.png';
     }
 
     private function getFileKey($fileType)
