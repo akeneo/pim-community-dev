@@ -1,5 +1,4 @@
 parameters:
-    pimee_api.normalizer.product.class: PimEnterprise\Component\Api\Normalizer\ProductNormalizer
     pimee_api.normalizer.published_product.class: PimEnterprise\Component\Api\Normalizer\PublishedProductNormalizer
     pimee_api.component.normalizer.asset_reference.class: PimEnterprise\Component\Api\Normalizer\AssetReferenceNormalizer
     pimee_api.component.normalizer.asset_variation.class: PimEnterprise\Component\Api\Normalizer\AssetVariationNormalizer
@@ -8,16 +7,6 @@ parameters:
     pimee_api.bundle.normalizer.asset.class: PimEnterprise\Bundle\ApiBundle\Normalizer\AssetNormalizer
 
 services:
-    pimee_api.normalizer.product:
-        class: '%pimee_api.normalizer.product.class%'
-        decorates: pim_api.normalizer.product
-        decoration_inner_name: pim_api.normalizer.product.community
-        arguments:
-            - '@pim_api.normalizer.product.community'
-            - '@pimee_workflow.repository.product_draft'
-            - '@security.authorization_checker'
-            - '@security.token_storage'
-
     pimee_api.normalizer.published_product:
         class: '%pimee_api.normalizer.published_product.class%'
         arguments:

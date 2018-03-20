@@ -2,6 +2,7 @@ parameters:
     pimee_workflow.controller.external_api.product_draft.class: PimEnterprise\Bundle\WorkflowBundle\Controller\Api\ProductDraftController
     pimee_workflow.controller.external_api.product_proposal.class: PimEnterprise\Bundle\WorkflowBundle\Controller\Api\ProductProposalController
     pimee_api.router.proxy_product.class: PimEnterprise\Bundle\WorkflowBundle\Router\ProxyProductRouter
+    pimee_api.normalizer.product.class: PimEnterprise\Component\Workflow\Normalizer\ExternalApi\ProductNormalizer
 
 services:
     # Controllers
@@ -33,3 +34,14 @@ services:
             - '@pimee_workflow.repository.product_draft'
             - '@pim_api.repository.product'
             - 'pimee_api_product_draft_get'
+
+    # Normalizer
+    pimee_api.normalizer.product:
+        class: '%pimee_api.normalizer.product.class%'
+        decorates: pim_api.normalizer.product
+        decoration_inner_name: pim_api.normalizer.product.community
+        arguments:
+            - '@pim_api.normalizer.product.community'
+            - '@pimee_workflow.repository.product_draft'
+            - '@security.authorization_checker'
+            - '@security.token_storage'

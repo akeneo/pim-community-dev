@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Component\Api\Normalizer;
+namespace PimEnterprise\Component\Workflow\Normalizer\ExternalApi;
 
 use Pim\Component\Catalog\Model\ProductInterface;
 use PimEnterprise\Component\Security\Attributes;
