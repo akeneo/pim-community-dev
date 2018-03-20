@@ -19,6 +19,7 @@ Feature: Import families
     And I wait for the "csv_footwear_family_import" job to finish
     And I should see the text "Family import"
     And I should see the text "Compute product models data"
+    And I should see the text "Compute products data"
     Then there should be the following family:
       | code     | attributes            | attribute_as_label | requirements-mobile | requirements-tablet | label-en_US |
       | tractors | sku,name,manufacturer | name               | sku,manufacturer    | sku,manufacturer    | Tractors    |
@@ -40,6 +41,7 @@ Feature: Import families
     And I wait for the "csv_catalog_modeling_family_import" job to finish
     And I should see the text "Family import"
     And I should see the text "Compute product models data"
+    And I should see the text "Compute products data"
     And the product model "model-braided-hat" should not have the following values "material"
     And there should only be the following job instance executed:
       | job_instance                       | times |
@@ -98,6 +100,7 @@ Feature: Import families
     And I wait for the "xlsx_catalog_modeling_family_import" job to finish
     And I should see the text "Family import"
     And I should see the text "Compute product models data"
+    And I should see the text "Compute products data"
     And the product model "model-braided-hat" should not have the following values "material"
     And there should only be the following job instance executed:
       | job_instance                        | times |
