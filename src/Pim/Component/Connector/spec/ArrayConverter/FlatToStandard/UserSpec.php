@@ -27,6 +27,7 @@ class UserSpec extends ObjectBehavior
             'roles'          => 'ROLE_USER',
             'groups'         => 'Redactor',
             'enabled'        => '1',
+            'timezone'       => '',
         ];
 
         $checker->checkFieldsPresence(
@@ -52,6 +53,7 @@ class UserSpec extends ObjectBehavior
             'roles'          => ['ROLE_USER'],
             'groups'         => ['Redactor'],
             'enabled'        => true,
+            'timezone'       => null,
         ]);
     }
 }

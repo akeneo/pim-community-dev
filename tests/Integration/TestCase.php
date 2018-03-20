@@ -40,10 +40,11 @@ abstract class TestCase extends KernelTestCase
         $this->testKernel->boot();
 
         $this->catalog = $this->testKernel->getContainer()->get('akeneo_integration_tests.configuration.catalog');
-        $this->testKernel->getContainer()->set('akeneo_integration_tests.catalog.configuration', $this->getConfiguration());
-
-        $fixturesLoader = $this->testKernel->getContainer()->get('akeneo_integration_tests.loader.fixtures_loader');
-        $fixturesLoader->load();
+        if (null !== $this->getConfiguration()) {
+            $this->testKernel->getContainer()->set('akeneo_integration_tests.catalog.configuration', $this->getConfiguration());
+            $fixturesLoader = $this->testKernel->getContainer()->get('akeneo_integration_tests.loader.fixtures_loader');
+            $fixturesLoader->load();
+        }
     }
 
     /**
@@ -74,6 +75,16 @@ abstract class TestCase extends KernelTestCase
     protected function getParameter(string $parameter)
     {
         return static::$kernel->getContainer()->getParameter($parameter);
+    }
+
+    /**
+     * @param string $parameter
+     *
+     * @return bool
+     */
+    protected function hasParameter(string $parameter)
+    {
+        return static::$kernel->getContainer()->hasParameter($parameter);
     }
 
     /**

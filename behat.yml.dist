@@ -72,6 +72,8 @@ legacy:
                     - 1024
                 - Pim\Behat\Context\JobContext:
                     - 'Context\FeatureContext'
+                - Pim\Behat\Context\ImportFileContext:
+                    - 'Context\FeatureContext'
                 - Pim\Behat\Context\Storage\FileInfoStorage:
                     - 'Context\FeatureContext'
                 - Pim\Behat\Context\Storage\ProductStorage:

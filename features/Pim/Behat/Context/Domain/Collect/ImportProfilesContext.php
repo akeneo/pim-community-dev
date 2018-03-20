@@ -45,7 +45,7 @@ class ImportProfilesContext extends ImportExportContext
             foreach (explode(PHP_EOL, $string) as $row) {
                 $rowCells = explode(";", $row);
                 foreach ($rowCells as &$cell) {
-                    if (is_numeric($cell)) {
+                    if (is_numeric($cell) && 0 === preg_match('|^\+[0-9]+$|', $cell)) {
                         $cell = false === strpos($cell, '.') ? (int) $cell : (float) $cell;
                     }
                 }
