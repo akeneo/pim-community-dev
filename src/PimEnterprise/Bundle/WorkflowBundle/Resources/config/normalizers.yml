@@ -9,13 +9,6 @@ services:
         tags:
             - { name: pim_internal_api_serializer.normalizer, priority: 120 }
 
-    pimee_workflow.normalizer.published_product:
-        class: '%pimee_workflow.normalizer.published_product.class%'
-        arguments:
-            - '@pimee_enrich.normalizer.product'
-        tags:
-            - { name: pim_internal_api_serializer.normalizer, priority: 130 }
-
     pimee_workflow.normalizer.proposal_product:
         class: '%pimee_workflow.normalizer.proposal_product.class%'
         tags:
