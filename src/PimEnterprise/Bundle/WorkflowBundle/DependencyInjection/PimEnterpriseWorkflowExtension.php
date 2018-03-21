@@ -67,5 +67,6 @@ class PimEnterpriseWorkflowExtension extends Extension
         $loader->load('steps.yml');
         $loader->load('security.yml');
         $loader->load('jobs.yml');
+        $loader->load('widgets.yml');
     }
 }

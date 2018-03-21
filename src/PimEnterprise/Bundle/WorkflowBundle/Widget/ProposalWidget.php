@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Bundle\DashboardBundle\Widget;
+namespace PimEnterprise\Bundle\WorkflowBundle\Widget;
 
 use Akeneo\Component\Localization\Presenter\PresenterInterface;
 use Pim\Bundle\DashboardBundle\Widget\WidgetInterface;
