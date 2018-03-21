@@ -87,6 +87,6 @@ class Version_2_2_20180321135455_product_model_export_job_parameters extends Abs
      */
     private function disableMigrationWarning()
     {
-        $this->addSql('SELECT * FROM oro_user');
+        $this->addSql('SELECT * FROM oro_user LIMIT 1');
     }
 }
