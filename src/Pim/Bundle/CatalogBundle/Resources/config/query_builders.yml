@@ -338,8 +338,6 @@ services:
     pim_catalog.query.elasticsearch.filter.self_and_ancestor:
         class: '%pim_catalog.query.elasticsearch.filter.self_and_ancestor.class%'
         arguments:
-            - '@pim_catalog.repository.product_model'
-            - '@pim_catalog.repository.product'
             - ['self_and_ancestor.id']
             - ['IN', 'NOT IN']
         tags:
