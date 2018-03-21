@@ -299,7 +299,6 @@ services:
     pim_catalog.query.elasticsearch.filter.with_attributes:
         class: '%pim_catalog.query.elasticsearch.filter.with_attributes.class%'
         arguments:
-            - '@pim_catalog.repository.attribute'
             - ['attributes_for_this_level']
             - ['IN', 'NOT IN']
         tags:
