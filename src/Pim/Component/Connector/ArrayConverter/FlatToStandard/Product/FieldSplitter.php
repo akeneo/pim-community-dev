@@ -65,8 +65,15 @@ class FieldSplitter extends BaseFieldSplitter
             // Strip quotation marks
             $cleanedValue = preg_replace('/["]/', '', $value);
 
-            // Replace commas between prices with semicolons (excluding commas between numbers)
-            $matches = preg_replace('/([a-z]+),/ixm', '\1;', $cleanedValue);
+            // Replace these types of commas with semicolon:
+            // Commas after currency type: 'EUR, ...'
+            // Commas between numbers and currency symbols: '123.00, $199...'
+            // Dots used as separators: '123,100 EUR.199 USD'
+            $matches = preg_replace('/
+                (?:,(?<=[a-z],)
+                |(?=,?\s?\p{Sc}),)
+                |(?:.(?<=[a-z]\.))
+             /ixm', '\1;', $cleanedValue);
 
             // Get an array of values by exploding semicolon delimited values
             $prices = explode(';', $matches);
