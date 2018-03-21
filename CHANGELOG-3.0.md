@@ -1,11 +1,5 @@
 # 3.0
 
-## BC Breaks
-
-- Move namespace `PimEnterprise\Bundle\VersioningBundle\UpdateGuesser` to `PimEnterprise\Bundle\SecurityBundle\UpdateGuesser`
-- Move `PimEnterprise\Bundle\VersioningBundle\EventSubscriber\AddVersionSubscriber` to `PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\PublishedProduct\SkipVersionSubscriber`
-- Move namespace `PimEnterprise\Bundle\VersioningBundle\Purger` to `PimEnterprise\Bundle\WorkflowBundle\Purger`
-
 ## Technical improvement
 
 - TIP-236: Merge Oro User bundle/component into Akeneo User bundle/component 
@@ -13,6 +7,9 @@
 
 ## BC breaks
 
+- Move namespace `PimEnterprise\Bundle\VersioningBundle\UpdateGuesser` to `PimEnterprise\Bundle\SecurityBundle\UpdateGuesser`
+- Move `PimEnterprise\Bundle\VersioningBundle\EventSubscriber\AddVersionSubscriber` to `PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\PublishedProduct\SkipVersionSubscriber`
+- Move namespace `PimEnterprise\Bundle\VersioningBundle\Purger` to `PimEnterprise\Bundle\WorkflowBundle\Purger`
 - Move all classes from `PimEnterprise\Bundle\ApiBundle\Normalizer` to `PimEnterprise\Component\ProductAsset\Normalizer\ExternalApi`
 - Move all classes from `PimEnterprise\Bundle\EnrichBundle\Controller\Rest` to `PimEnterprise\Bundle\ProductAssetBundle\Controller\Rest`
 - Move all classes from `PimEnterprise\Bundle\FilterBundle\Filter\Tag` to `PimEnterprise\Bundle\ProductAssetBundle\Datagrid\Filter`
@@ -32,3 +29,15 @@
 - Move `PimEnterprise\Bundle\ApiBundle\Controller\AssetVariationController` to `PimEnterprise\Bundle\ProductAssetBundle\Controller\ExternalApi\AssetVariationController`
 - Move `PimEnterprise\Bundle\ApiBundle\Normalizer\AssetReferenceNormalizer` to `PimEnterprise\Component\ProductAsset\Normalizer\ExternalApi\AssetReferenceNormalizer`
 - Move `PimEnterprise\Bundle\ApiBundle\Normalizer\AssetVariationNormalizer` to `PimEnterprise\Component\ProductAsset\Normalizer\ExternalApi\AssetVariationNormalizer`
+- Move `PimEnterprise\Bundle\DataGridBundle\Datagrid\Configuration\ProductDraft\GridHelper` to `PimEnterprise\Bundle\WorkflowBundle\Datagrid\Configuration\ProductDraft\GridHelper`
+- Move `PimEnterprise\Bundle\DataGridBundle\Datagrid\Configuration\Proposal\ContextConfigurator` to `PimEnterprise\Bundle\WorkflowBundle\Datagrid\Configuration\Proposal\ContextConfigurator`
+- Move `PimEnterprise\Bundle\DataGridBundle\Datagrid\Configuration\Proposal\GridHelper` to `PimEnterprise\Bundle\WorkflowBundle\Datagrid\Configuration\Proposal\GridHelper`
+- Move `PimEnterprise\Bundle\DataGridBundle\Datasource\ProductProposalDatasource` to `PimEnterprise\Bundle\WorkflowBundle\Datagrid\Datasource\ProductProposalDatasource`
+- Move `PimEnterprise\Bundle\DataGridBundle\Datasource\ResultRecord\ORM\ProductDraftHydrator` to `PimEnterprise\Bundle\WorkflowBundle\Datagrid\Datasource\ResultRecord\ProductDraftHydrator`
+- Move `PimEnterprise\Bundle\DataGridBundle\EventListener\ConfigureProposalGridListener` to `PimEnterprise\Bundle\WorkflowBundle\Datagrid\EventListener\ConfigureProposalGridListener`
+- Move `PimEnterprise\Bundle\FilterBundle\Filter\ProductDraft\AttributeChoiceFilter` to `PimEnterprise\Bundle\WorkflowBundle\Datagrid\Filter\AttributeChoiceFilter`
+- Move `PimEnterprise\Bundle\FilterBundle\Filter\ProductDraft\AuthorFilter` to `PimEnterprise\Bundle\WorkflowBundle\Datagrid\Filter\AuthorFilter`
+- Move `PimEnterprise\Bundle\FilterBundle\Filter\ProductDraft\ChoiceFilter` to `PimEnterprise\Bundle\WorkflowBundle\Datagrid\Filter\ChoiceFilter`
+- Move `PimEnterprise\Bundle\FilterBundle\Filter\ProductDraftFilterUtility` to `PimEnterprise\Bundle\WorkflowBundle\Datagrid\Filter\ProductDraftFilterUtility`
+- Move `PimEnterprise\Bundle\DataGridBundle\Extension\MassAction\Handler\MassApproveActionHandler` to `PimEnterprise\Bundle\WorkflowBundle\Datagrid\MassAction\Handler\MassApproveActionHandler`
+- Move `PimEnterprise\Bundle\DataGridBundle\Extension\MassAction\Handler\MassRefuseActionHandler` to `PimEnterprise\Bundle\WorkflowBundle\Datagrid\MassAction\Handler\MassRefuseActionHandler`
