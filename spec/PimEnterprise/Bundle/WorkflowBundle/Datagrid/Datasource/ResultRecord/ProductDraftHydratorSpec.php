@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\PimEnterprise\Bundle\WorkflowBundle\Datagrid\ResultRecord;
+namespace spec\PimEnterprise\Bundle\WorkflowBundle\Datagrid\Datasource\ResultRecord;
 
 use Doctrine\ORM\AbstractQuery;
 use Doctrine\ORM\QueryBuilder;

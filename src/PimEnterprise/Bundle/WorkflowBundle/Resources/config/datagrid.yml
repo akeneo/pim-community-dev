@@ -2,8 +2,10 @@ parameters:
     pimee_workflow.datagrid.event_listener.inject_product_for_product_draft.class: PimEnterprise\Bundle\WorkflowBundle\Datagrid\EventListener\InjectProductForProductDraftSubscriber
     pimee_workflow.datagrid.configuration.product_draft.grid_helper.class: PimEnterprise\Bundle\WorkflowBundle\Datagrid\Configuration\ProductDraft\GridHelper
     pimee_workflow.datagrid.configuration.proposal.grid_helper.class: PimEnterprise\Bundle\WorkflowBundle\Datagrid\Configuration\Proposal\GridHelper
-    pimee_workflow.datasource.result_record.hydrator.product_draft.class: PimEnterprise\Bundle\WorkflowBundle\Datagrid\ResultRecord\ProductDraftHydrator
+    pimee_workflow.datasource.result_record.hydrator.product_draft.class: PimEnterprise\Bundle\WorkflowBundle\Datagrid\Datasource\ResultRecord\ProductDraftHydrator
     pimee_workflow.datagrid.mass_action.handler.mass_approve.class: PimEnterprise\Bundle\WorkflowBundle\Datagrid\MassAction\Handler\MassApproveActionHandler
+    pimee_workflow.datagrid.datasource.product_proposal.class: PimEnterprise\Bundle\WorkflowBundle\Datagrid\Datasource\ProductProposalDatasource
+    pimee_workflow.datagrid.datasource.product_draft.class: Pim\Bundle\DataGridBundle\Datasource\Datasource
 
 services:
     # Listener
@@ -81,7 +83,6 @@ services:
             - '@pimee_workflow.helper.product_draft_changes_permission'
 
     # Result record
-
     pim_datagrid.datasource.result_record.hydrator.product_draft:
         class: '%pimee_workflow.datasource.result_record.hydrator.product_draft.class%'
         arguments:
@@ -96,3 +97,21 @@ services:
             - '@pimee_workflow.factory.product_proposal_cursor'
         tags:
             - { name: pim_datagrid.extension.mass_action.handler, alias: mass_approve }
+
+    pimee_workflow.datagrid.datasource.proposal_product:
+        class: '%pimee_workflow.datagrid.datasource.product_proposal.class%'
+        arguments:
+            - '@pimee_workflow.doctrine.query.proposal_product_query_builder_from_size_factory_with_permissions'
+            - '@pimee_workflow.normalizer.proposal_product'
+        calls:
+            - [ setMassActionRepository, ['@pimee_workflow.repository.product_draft' ]]
+        tags:
+            - { name: oro_datagrid.datasource, type: pimee_datasource_proposal_product }
+
+    pimee_catalog.datasource.product_draft:
+        class: '%pimee_workflow.datagrid.datasource.product_draft.class%'
+        arguments:
+            - '@pim_catalog.object_manager.product'
+            - '@pim_datagrid.datasource.result_record.hydrator.product_draft'
+        tags:
+            - { name: oro_datagrid.datasource, type: pimee_datasource_product_draft }

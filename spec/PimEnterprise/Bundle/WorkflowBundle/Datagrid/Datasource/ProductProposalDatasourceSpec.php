@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\PimEnterprise\Bundle\DataGridBundle\Datasource;
+namespace spec\PimEnterprise\Bundle\WorkflowBundle\Datagrid\Datasource;
 
 use Akeneo\Component\StorageUtils\Cursor\CursorInterface;
 use Oro\Bundle\DataGridBundle\Datagrid\Datagrid;
@@ -11,7 +11,7 @@ use Pim\Bundle\DataGridBundle\Datasource\ParameterizableInterface;
 use Pim\Bundle\DataGridBundle\Extension\Pager\PagerExtension;
 use Pim\Component\Catalog\Query\ProductQueryBuilderFactoryInterface;
 use Pim\Component\Catalog\Query\ProductQueryBuilderInterface;
-use PimEnterprise\Bundle\DataGridBundle\Datasource\ProductProposalDatasource;
+use PimEnterprise\Bundle\WorkflowBundle\Datagrid\Datasource\ProductProposalDatasource;
 use PimEnterprise\Component\Workflow\Model\ProductDraftInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
