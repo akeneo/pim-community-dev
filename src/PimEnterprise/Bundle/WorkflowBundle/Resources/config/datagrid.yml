@@ -6,9 +6,18 @@ parameters:
     pimee_workflow.datagrid.mass_action.handler.mass_approve.class: PimEnterprise\Bundle\WorkflowBundle\Datagrid\MassAction\Handler\MassApproveActionHandler
     pimee_workflow.datagrid.datasource.product_proposal.class: PimEnterprise\Bundle\WorkflowBundle\Datagrid\Datasource\ProductProposalDatasource
     pimee_workflow.datagrid.datasource.product_draft.class: Pim\Bundle\DataGridBundle\Datasource\Datasource
+    pimee_workflow.datagrid.event_listener.configure_proposal_grid_listener.class: PimEnterprise\Bundle\WorkflowBundle\Datagrid\EventListener\ConfigureProposalGridListener
 
 services:
     # Listener
+    pimee_workflow.datagrid.event_listener.configure_proposal_grid_listener:
+        class: '%pimee_workflow.datagrid.event_listener.configure_proposal_grid_listener.class%'
+        arguments:
+            - '@pimee_datagrid.datagrid.configuration.proposal.context_configurator'
+            - '@pim_datagrid.datagrid.configuration.product.filters_configurator.ce'
+        tags:
+            - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.before.proposal-grid, method: buildBefore }
+
     pimee_workflow.event_listener.product_drafts_grid_listener:
         class: '%pim_datagrid.event_listener.add_parameters_to_grid.class%'
         arguments:
@@ -82,7 +91,15 @@ services:
             - '@security.authorization_checker'
             - '@pimee_workflow.helper.product_draft_changes_permission'
 
-    # Result record
+    # Datasource
+    pimee_catalog.datasource.product_draft:
+        class: '%pimee_workflow.datagrid.datasource.product_draft.class%'
+        arguments:
+            - '@pim_catalog.object_manager.product'
+            - '@pim_datagrid.datasource.result_record.hydrator.product_draft'
+        tags:
+            - { name: oro_datagrid.datasource, type: pimee_datasource_product_draft }
+
     pim_datagrid.datasource.result_record.hydrator.product_draft:
         class: '%pimee_workflow.datasource.result_record.hydrator.product_draft.class%'
         arguments:
@@ -107,11 +124,3 @@ services:
             - [ setMassActionRepository, ['@pimee_workflow.repository.product_draft' ]]
         tags:
             - { name: oro_datagrid.datasource, type: pimee_datasource_proposal_product }
-
-    pimee_catalog.datasource.product_draft:
-        class: '%pimee_workflow.datagrid.datasource.product_draft.class%'
-        arguments:
-            - '@pim_catalog.object_manager.product'
-            - '@pim_datagrid.datasource.result_record.hydrator.product_draft'
-        tags:
-            - { name: oro_datagrid.datasource, type: pimee_datasource_product_draft }
