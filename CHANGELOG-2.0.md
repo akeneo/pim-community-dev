@@ -16,6 +16,7 @@ PIM-6885: Display all product information to users having only view rights
 
 - API: Apply permissions on products model and variant products
 - API-547: Standardization of the API responses when the user is no granted to view a product
+- AOB-63: Submit draft on variant product via the API
 
 # 2.0.16 (2018-02-22)
 
