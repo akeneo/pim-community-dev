@@ -1,4 +1,3 @@
-@javascript
 Feature: Import attributes
   In order to reuse the attributes of my products
   As a product manager
@@ -6,7 +5,6 @@ Feature: Import attributes
 
   Scenario: Successfully import attributes in CSV
     Given the "footwear" catalog configuration
-    And I am logged in as "Julia"
     And the following CSV file to import:
       """
       type;code;label-en_US;group;unique;useable_as_grid_filter;localizable;scopable;allowed_extensions;metric_family;default_metric_unit;sort_order;decimals_allowed;negative_allowed
@@ -23,11 +21,7 @@ Feature: Import attributes
       pim_catalog_date;release;"Release date";info;0;1;0;0;;;;0;;
       pim_catalog_metric;lace_length;"Lace length";info;0;0;0;0;;Length;CENTIMETER;0;0;0
       """
-    And the following job "csv_footwear_attribute_import" configuration:
-      | filePath | %file to import% |
-    When I am on the "csv_footwear_attribute_import" import job page
-    And I launch the import job
-    And I wait for the "csv_footwear_attribute_import" job to finish
+    When the attributes are imported via the job csv_footwear_attribute_import
     Then there should be the following attributes:
       | type                         | code         | label-en_US  | group     | unique | useable_as_grid_filter | localizable | scopable | allowed_extensions | metric_family | default_metric_unit | sort_order |
       | pim_catalog_text             | shortname    | Shortname    | info      | 0      | 1                      | 1           | 0        |                    |               |                     | 1          |
@@ -43,6 +37,7 @@ Feature: Import attributes
       | pim_catalog_date             | release      | Release date | info      | 0      | 1                      | 0           | 0        |                    |               |                     | 0          |
       | pim_catalog_metric           | lace_length  | Lace length  | info      | 0      | 0                      | 0           | 0        |                    | Length        | CENTIMETER          | 0          |
 
+  @javascript
   Scenario: Fail to change immutable properties of attributes during the import
     Given an "apparel" catalog configuration
     And I am logged in as "Julia"
@@ -64,6 +59,7 @@ Feature: Import attributes
     And I should see the text "metricFamily: This property cannot be changed."
 
   @jira https://akeneo.atlassian.net/browse/PIM-3266
+  @javascript
   Scenario: Skip new attributes with invalid data during an import
     Given the "footwear" catalog configuration
     And I am logged in as "Julia"
@@ -85,6 +81,7 @@ Feature: Import attributes
     And there should be 27 attributes
 
   @jira https://akeneo.atlassian.net/browse/PIM-3266
+  @javascript
   Scenario: Skip existing attributes with invalid data during an import
     Given the "footwear" catalog configuration
     And I am logged in as "Julia"
@@ -106,6 +103,7 @@ Feature: Import attributes
       | pim_catalog_metric       | length     | Length         | info   | 0      | 0                      | 0           | 0        |                    | Length        | CENTIMETER          | 10         |
 
   @jira https://akeneo.atlassian.net/browse/PIM-3311
+  @javascript
   Scenario: Skip attributes with empty code
     Given the "footwear" catalog configuration
     And I am logged in as "Julia"
@@ -122,6 +120,7 @@ Feature: Import attributes
     And I should see the text "Field \"code\" must be filled"
 
   @jira https://akeneo.atlassian.net/browse/PIM-3786
+  @javascript
   Scenario: Skip attributes with empty type
     Given the "footwear" catalog configuration
     And I am logged in as "Julia"
@@ -138,6 +137,7 @@ Feature: Import attributes
     Then I should see the text "skipped 1"
     And I should see the text "Property \"type\" does not expect an empty value."
 
+  @javascript
   Scenario: Successfully import and update existing attribute
     Given the "footwear" catalog configuration
     And I am logged in as "Julia"
@@ -157,6 +157,7 @@ Feature: Import attributes
       | type                     | code         | label-en_US     | label-de_DE      | label-fr_FR    | group     | unique | useable_as_grid_filter | localizable | scopable | localizable | scopable | available_locales | sort_order |
       | pim_catalog_simpleselect | manufacturer | My awesome code | Meine große Code | Mon super code | marketing | 0      | 1                      | 0           | 0        | 0           | 0        | en_US,fr_FR       | 3          |
 
+  @javascript
   Scenario: Fail to import attribute with invalid date format
     Given the "footwear" catalog configuration
     And I am logged in as "Julia"
@@ -174,6 +175,7 @@ Feature: Import attributes
     Then I should see the text "skipped 1"
     Then I should see the text "Property \"date_min\" expects a string with the format \"yyyy-mm-dd\" as data, \"2000/12/12\" given."
 
+  @javascript
   Scenario: Fail to import attribute with invalid date
     Given the "footwear" catalog configuration
     And I am logged in as "Julia"
@@ -191,6 +193,7 @@ Feature: Import attributes
     Then I should see the text "skipped 1"
     Then I should see the text "Property \"date_min\" expects a string with the format \"yyyy-mm-dd\" as data, \"2000-99-12\" given."
 
+  @javascript
   Scenario: Fail to import attribute with invalid data
     Given the "footwear" catalog configuration
     And I am logged in as "Julia"
@@ -210,6 +213,7 @@ Feature: Import attributes
     Then I should see the text "maxFileSize: This value should be of type numeric.: not an int"
     Then I should see the text "Property \"group\" expects a valid code. The attribute group does not exist, \"not a group\" given."
 
+  @javascript
   Scenario: Successfully import new attribute
     Given the "footwear" catalog configuration
     And I am logged in as "Julia"
@@ -233,6 +237,7 @@ Feature: Import attributes
       | pim_catalog_text         | myawesometext | My awesome text | Mein gross Text    | Mon super texte | marketing | 0      | 1                      | 0           | 0        | 0           | 0        | en_US,fr_FR       | 2          | 113            | email           |            |            |
       | pim_catalog_date         | myawesomedate | My awesome date | Mein gross Datum   | Ma super date   | marketing | 0      | 1                      | 0           | 0        | 0           | 0        | en_US,fr_FR       | 3          |                |                 | 2000-12-12 | 2015-08-08 |
 
+  @javascript
   Scenario: Fail to update an attribute with new immutable values
     Given the "footwear" catalog configuration
     And I am logged in as "Julia"
@@ -254,7 +259,6 @@ Feature: Import attributes
 
   Scenario: Successfully import attributes in XLSX
     Given the "footwear" catalog configuration
-    And I am logged in as "Julia"
     And the following XLSX file to import:
       """
       type;code;label-en_US;group;unique;useable_as_grid_filter;localizable;scopable;allowed_extensions;metric_family;default_metric_unit;sort_order;decimals_allowed;negative_allowed
@@ -271,11 +275,7 @@ Feature: Import attributes
       pim_catalog_date;release;Release date;info;0;1;0;0;;;;0;;
       pim_catalog_metric;lace_length;Lace length;info;0;0;0;0;;Length;CENTIMETER;0;0;0
       """
-    And the following job "xlsx_footwear_attribute_import" configuration:
-      | filePath | %file to import% |
-    When I am on the "xlsx_footwear_attribute_import" import job page
-    And I launch the import job
-    And I wait for the "xlsx_footwear_attribute_import" job to finish
+    When the attributes are imported via the job xlsx_footwear_attribute_import
     Then there should be the following attributes:
       | type                         | code         | label-en_US  | group     | unique | useable_as_grid_filter | localizable | scopable | allowed_extensions | metric_family | default_metric_unit | sort_order |
       | pim_catalog_text             | shortname    | Shortname    | info      | 0      | 1                      | 1           | 0        |                    |               |                     | 0          |
@@ -291,6 +291,7 @@ Feature: Import attributes
       | pim_catalog_date             | release      | Release date | info      | 0      | 1                      | 0           | 0        |                    |               |                     | 0          |
       | pim_catalog_metric           | lace_length  | Lace length  | info      | 0      | 0                      | 0           | 0        |                    | Length        | CENTIMETER          | 0          |
 
+  @javascript
   Scenario: Only set min_number and max_number when field is filled
     Given the "footwear" catalog configuration
     And I am logged in as "Julia"
@@ -316,46 +317,48 @@ Feature: Import attributes
       | pim_catalog_number | number_with_max     | number3     | info  | 0      | 1                      | 0           | 0        |            | 10         |
       | pim_catalog_number | number_with_min_max | number4     | info  | 0      | 1                      | 0           | 0        | -10        | 10         |
 
-    @jira https://akeneo.atlassian.net/browse/PIM-5711
-    Scenario: Import attributes with no label and successfully display its code in family attribute drop down:
-      Given the "footwear" catalog configuration
-      And I am logged in as "Julia"
-      And the following CSV file to import:
-        """
-        type;code;group;unique;useable_as_grid_filter;localizable;scopable
-        pim_catalog_text;new_name;other;0;1;0;0
-        pim_catalog_textarea;new_description;other;0;1;1;1
-        """
-      And the following job "csv_footwear_attribute_import" configuration:
-        | filePath | %file to import% |
-      When I am on the "csv_footwear_attribute_import" import job page
-      And I launch the import job
-      And I wait for the "csv_footwear_attribute_import" job to finish
-      Then I should see the text "read lines 2"
-      And I should see the text "created 2"
-      When I am on the "Boots" family page
-      And I visit the "Attributes" tab
-      Then I should see available attribute [new_name] in group "Other"
-      And I should see available attribute [new_description] in group "Other"
+  @jira https://akeneo.atlassian.net/browse/PIM-5711
+  @javascript
+  Scenario: Import attributes with no label and successfully display its code in family attribute drop down:
+    Given the "footwear" catalog configuration
+    And I am logged in as "Julia"
+    And the following CSV file to import:
+      """
+      type;code;group;unique;useable_as_grid_filter;localizable;scopable
+      pim_catalog_text;new_name;other;0;1;0;0
+      pim_catalog_textarea;new_description;other;0;1;1;1
+      """
+    And the following job "csv_footwear_attribute_import" configuration:
+      | filePath | %file to import% |
+    When I am on the "csv_footwear_attribute_import" import job page
+    And I launch the import job
+    And I wait for the "csv_footwear_attribute_import" job to finish
+    Then I should see the text "read lines 2"
+    And I should see the text "created 2"
+    When I am on the "Boots" family page
+    And I visit the "Attributes" tab
+    Then I should see available attribute [new_name] in group "Other"
+    And I should see available attribute [new_description] in group "Other"
 
-    @jira https://akeneo.atlassian.net/browse/PIM-5711
-    Scenario: Import attributes with blank label and successfully display its code in family attribute drop down:
-      Given the "footwear" catalog configuration
-      And I am logged in as "Julia"
-      And the following CSV file to import:
-        """
-        type;code;label-de_DE;label-en_US;label-fr_FR;group;unique;useable_as_grid_filter;localizable;scopable
-        pim_catalog_text;new_name;;;;other;0;1;0;0
-        pim_catalog_textarea;new_description;;;;other;0;1;1;1
-        """
-      And the following job "csv_footwear_attribute_import" configuration:
-        | filePath | %file to import% |
-      When I am on the "csv_footwear_attribute_import" import job page
-      And I launch the import job
-      And I wait for the "csv_footwear_attribute_import" job to finish
-      Then I should see the text "read lines 2"
-      And I should see the text "created 2"
-      When I am on the "Boots" family page
-      And I visit the "Attributes" tab
-      Then I should see available attribute [new_name] in group "Other"
-      And I should see available attribute [new_description] in group "Other"
+  @jira https://akeneo.atlassian.net/browse/PIM-5711
+  @javascript
+  Scenario: Import attributes with blank label and successfully display its code in family attribute drop down:
+    Given the "footwear" catalog configuration
+    And I am logged in as "Julia"
+    And the following CSV file to import:
+      """
+      type;code;label-de_DE;label-en_US;label-fr_FR;group;unique;useable_as_grid_filter;localizable;scopable
+      pim_catalog_text;new_name;;;;other;0;1;0;0
+      pim_catalog_textarea;new_description;;;;other;0;1;1;1
+      """
+    And the following job "csv_footwear_attribute_import" configuration:
+      | filePath | %file to import% |
+    When I am on the "csv_footwear_attribute_import" import job page
+    And I launch the import job
+    And I wait for the "csv_footwear_attribute_import" job to finish
+    Then I should see the text "read lines 2"
+    And I should see the text "created 2"
+    When I am on the "Boots" family page
+    And I visit the "Attributes" tab
+    Then I should see available attribute [new_name] in group "Other"
+    And I should see available attribute [new_description] in group "Other"

@@ -1,4 +1,3 @@
-@javascript
 Feature: Import XLSX products
   In order to use existing product information
   As a product manager
@@ -9,7 +8,6 @@ Feature: Import XLSX products
     And the following product groups:
       | code  | label-en_US | type    |
       | CROSS | Bag Cross   | RELATED |
-    And I am logged in as "Julia"
 
   Scenario: Successfully import an XLSX file of products
     Given the following XLSX file to import:
@@ -26,19 +24,17 @@ Feature: Import XLSX products
       SKU-009;sneakers;;;porttitor;sagittis. Duis gravida. Praesent eu nulla at sem molestie sodales.
       SKU-010;boots;CROSS;sandals;non,;vestibulum nec, euismod in, dolor. Fusce feugiat. Lorem ipsum dolor
       """
-    And the following job "xlsx_footwear_product_import" configuration:
-      | filePath | %file to import% |
-    When I am on the "xlsx_footwear_product_import" import job page
-    And I launch the import job
-    And I wait for the "xlsx_footwear_product_import" job to finish
+    When the products are imported via the job xlsx_footwear_product_import
     Then there should be 10 products
     And the family of the product "SKU-006" should be "boots"
     And product "SKU-007" should be enabled
     And the english localizable value name of "SKU-001" should be "Donec"
     And the english tablet description of "SKU-002" should be "Pellentesque habitant morbi tristique senectus et netus et malesuada fames"
 
+  @javascript
   Scenario: Successfully import an XLSX file of product with carriage return in product description
-    Given I am on the "xlsx_footwear_product_import" import job page
+    Given I am logged in as "Julia"
+    And I am on the "xlsx_footwear_product_import" import job page
     When I upload and import the file "product_with_carriage_return.xlsx"
     And I wait for the "xlsx_footwear_product_import" job to finish
     Then there should be 1 products
@@ -51,11 +47,7 @@ Feature: Import XLSX products
       SKU-001;boots
       SKU-002;sneakers;;winter_boots;Donex;Pellentesque habitant morbi tristique senectus et netus et malesuada fames
       """
-    And the following job "xlsx_footwear_product_import" configuration:
-      | filePath | %file to import% |
-    When I am on the "xlsx_footwear_product_import" import job page
-    And I launch the import job
-    And I wait for the "xlsx_footwear_product_import" job to finish
+    When the products are imported via the job xlsx_footwear_product_import
     Then there should be 2 products
 
   @jira https://akeneo.atlassian.net/browse/PIM-5696
@@ -65,11 +57,7 @@ Feature: Import XLSX products
       sku;family;groups;name-en_US;description-en_US-tablet
       123;boots;CROSS;456;7890
       """
-    And the following job "xlsx_footwear_product_import" configuration:
-      | filePath | %file to import% |
-    When I am on the "xlsx_footwear_product_import" import job page
-    And I launch the import job
-    And I wait for the "xlsx_footwear_product_import" job to finish
+    When the products are imported via the job xlsx_footwear_product_import
     Then there should be 1 product
     And the english localizable value name of "123" should be "456"
     And the english tablet description of "123" should be "7890"
@@ -80,18 +68,16 @@ Feature: Import XLSX products
       sku;rating
       renault-kangoo;5
       """
-    And the following job "xlsx_footwear_product_import" configuration:
-      | filePath | %file to import% |
-    When I am on the "xlsx_footwear_product_import" import job page
-    And I launch the import job
-    And I wait for the "xlsx_footwear_product_import" job to finish
+    When the products are imported via the job xlsx_footwear_product_import
     Then there should be 1 products
     And the product "renault-kangoo" should have the following value:
       | rating | [5] |
 
   @jira https://akeneo.atlassian.net/browse/PIM-6085
+  @javascript
   Scenario: Successfully import product associations with modified column name
-    Given the following XLSX file to import:
+    Given I am logged in as "Julia"
+    And the following XLSX file to import:
       """
       sku;family;groupes;catégories;name-en_US;description-en_US-tablet;price;size;color
       SKU-001;boots;similar_boots;winter_boots;Donec;dictum magna. Ut tincidunt orci quis lectus. Nullam suscipit, est;"100 EUR, 90 USD";40;

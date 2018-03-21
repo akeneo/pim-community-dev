@@ -12,11 +12,7 @@ Feature: Import group types
       code;label-en_US
       cross_sell;Cross sell
       """
-    And the following job "csv_footwear_group_type_import" configuration:
-      | filePath | %file to import% |
-    When I am on the "csv_footwear_group_type_import" import job page
-    And I launch the import job
-    And I wait for the "csv_footwear_group_type_import" job to finish
+    When the group types are imported via the job csv_footwear_group_type_import
     Then there should be the following group types:
       | code       | label-en_US |
       | cross_sell | Cross sell  |
@@ -30,11 +26,7 @@ Feature: Import group types
       cross_sell;Cross sell
       RELATED;Related
       """
-    And the following job "csv_footwear_group_type_import" configuration:
-      | filePath | %file to import% |
-    When I am on the "csv_footwear_group_type_import" import job page
-    And I launch the import job
-    And I wait for the "csv_footwear_group_type_import" job to finish
+    When the group types are imported via the job csv_footwear_group_type_import
     Then there should be the following group types:
       | code       | label-en_US |
       | cross_sell | Cross sell  |

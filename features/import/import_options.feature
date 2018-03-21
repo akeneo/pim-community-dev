@@ -1,4 +1,3 @@
-@javascript
 Feature: Import options
   In order to reuse the options
   As a product manager
@@ -9,7 +8,6 @@ Feature: Import options
     And the following attributes:
       | code  | label-en_US | type                     | group |
       | brand | Brand       | pim_catalog_simpleselect | other |
-    And I am logged in as "Julia"
     And the following CSV file to import:
       """
       attribute;code;label-en_US
@@ -18,11 +16,7 @@ Feature: Import options
       brand;Nike;Nike
       brand;Caterpillar;Caterpillar
       """
-    And the following job "csv_footwear_option_import" configuration:
-      | filePath | %file to import% |
-    When I am on the "csv_footwear_option_import" import job page
-    And I launch the import job
-    And I wait for the "csv_footwear_option_import" job to finish
+    When the attribute options are imported via the job csv_footwear_option_import
     Then there should be the following options:
       | attribute | code        | label-en_US |
       | brand     | Converse    | Converse    |
@@ -31,6 +25,7 @@ Feature: Import options
       | brand     | Caterpillar | Caterpillar |
 
   @jira https://akeneo.atlassian.net/browse/PIM-3311
+  @javascript
   Scenario: Skip options with empty code
     Given the "footwear" catalog configuration
     And the following attributes:
@@ -50,6 +45,7 @@ Feature: Import options
     Then I should see the text "skipped 1"
     And I should see the text "code: This value should not be blank"
 
+  @javascript
   Scenario: Skip options with unknown attribute code
     Given the "footwear" catalog configuration
     And the following attributes:
@@ -70,6 +66,7 @@ Feature: Import options
     And I should see the text "Property \"attribute\" expects a valid attribute code. The attribute does not exist, \"unknown\" given."
 
   @jira https://akeneo.atlassian.net/browse/PIM-3820
+  @javascript
   Scenario: Import options with localizable label
     Given the "apparel" catalog configuration
     And the following attributes:
@@ -99,6 +96,7 @@ Feature: Import options
     And I should see the text "05GB"
 
   @jira https://akeneo.atlassian.net/browse/PIM-3820
+  @javascript
   Scenario: Stop an import when a label is provided for a disabled language
     Given the "apparel" catalog configuration
     And the following attributes:
@@ -124,7 +122,6 @@ Feature: Import options
     And the following attributes:
       | code  | label-en_US | type                     | group |
       | brand | Brand       | pim_catalog_simpleselect | other |
-    And I am logged in as "Julia"
     And the following CSV file to import:
       """
       attribute;code;label-en_US
@@ -133,11 +130,7 @@ Feature: Import options
       brand;30;Nike
       brand;04;Caterpillar
       """
-    And the following job "csv_footwear_option_import" configuration:
-      | filePath | %file to import% |
-    When I am on the "csv_footwear_option_import" import job page
-    And I launch the import job
-    And I wait for the "csv_footwear_option_import" job to finish
+    When the attribute options are imported via the job csv_footwear_option_import
     Then there should be the following options:
       | attribute | code | label-en_US |
       | brand     | 1    | Converse    |
@@ -150,7 +143,6 @@ Feature: Import options
     And the following attributes:
       | code  | label-en_US | type                     | group |
       | brand | Brand       | pim_catalog_simpleselect | other |
-    And I am logged in as "Julia"
     And the following XLSX file to import:
       """
       attribute;code;label-en_US
@@ -159,11 +151,7 @@ Feature: Import options
       brand;Nike;Nike
       brand;Caterpillar;Caterpillar
       """
-    And the following job "xlsx_footwear_option_import" configuration:
-      | filePath | %file to import% |
-    When I am on the "xlsx_footwear_option_import" import job page
-    And I launch the import job
-    And I wait for the "xlsx_footwear_option_import" job to finish
+    When the attribute options are imported via the job xlsx_footwear_option_import
     Then there should be the following options:
       | attribute | code        | label-en_US |
       | brand     | Converse    | Converse    |
@@ -177,7 +165,6 @@ Feature: Import options
     And the following attributes:
       | code  | label-en_US | type                     | group |
       | brand | Brand       | pim_catalog_simpleselect | other |
-    And I am logged in as "Julia"
     And the following CSV file to import:
       """
       attribute;code;label-en_US;sort_order
@@ -186,11 +173,7 @@ Feature: Import options
       brand;Nike;Nike;3
       brand;Caterpillar;Caterpillar;4
       """
-    And the following job "csv_footwear_option_import" configuration:
-      | filePath | %file to import% |
-    And I am on the "csv_footwear_option_import" import job page
-    And I launch the import job
-    And I wait for the "csv_footwear_option_import" job to finish
+    When the attribute options are imported via the job csv_footwear_option_import
     And the following CSV file to import:
       """
       attribute;code;label-en_US
@@ -199,11 +182,7 @@ Feature: Import options
       brand;TimberLand;TimberLand
       brand;Converse;Converse
       """
-    And the following job "csv_footwear_option_import" configuration:
-      | filePath | %file to import% |
-    And I am on the "csv_footwear_option_import" import job page
-    And I launch the import job
-    And I wait for the "csv_footwear_option_import" job to finish
+    When the attribute options are imported via the job csv_footwear_option_import
     Then there should be the following options:
       | attribute | code        | label-en_US | sort_order |
       | brand     | Converse    | Converse    | 1          |

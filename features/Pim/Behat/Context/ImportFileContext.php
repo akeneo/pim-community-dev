@@ -36,7 +36,7 @@ final class ImportFileContext extends PimContext implements SnippetAcceptingCont
     private const USERNAME_FOR_JOB_LAUNCH = 'admin';
 
     /**
-     * @When the :entities are imported via the job :jobName
+     * @When /^the (.*) are imported via the job ([\w\_]+)$/
      */
     public function entitiesAreImportedViaTheJob($entities, $jobName)
     {
@@ -44,7 +44,7 @@ final class ImportFileContext extends PimContext implements SnippetAcceptingCont
     }
 
     /**
-     * @When the :entities are imported via the job :jobName with options:
+     * @When /^the (.*) are imported via the job ([\w\_]+) with options:$/
      */
     public function entitiesAreImportedViaTheJobWithOptions($entities, $jobName, TableNode $jobOptions)
     {

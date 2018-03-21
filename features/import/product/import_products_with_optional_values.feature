@@ -1,4 +1,3 @@
-@javascript
 Feature: Import product information with optional values
   In order to enrich product without family or with attributes not belonging to a family
   As a product manager
@@ -25,12 +24,7 @@ Feature: Import product information with optional values
       caterpillar-poum;;;
       caterpillar-pum;PimPamPoum;;
       """
-    And the following job "csv_footwear_product_import" configuration:
-      | filePath | %file to import% |
-    And I am logged in as "Julia"
-    When I am on the "csv_footwear_product_import" import job page
-    And I launch the import job
-    And I wait for the "csv_footwear_product_import" job to finish
+    When the products are imported via the job csv_footwear_product_import
     Then there should be 4 products
     And attribute opt_att_global of "caterpillar-pim" should be "Pim"
     And the english localizable value opt_att_local of "caterpillar-pim" should be "PimUS"
