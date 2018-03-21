@@ -1,3 +1,9 @@
+# 2.0.x
+
+## Improvements
+
+- Remove checks in ES filter before querying
+
 # 2.0.18 (2018-03-20)
 
 ## Bug fixes
