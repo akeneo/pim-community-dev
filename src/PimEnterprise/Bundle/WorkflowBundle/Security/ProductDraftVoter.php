@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Bundle\SecurityBundle\Voter;
+namespace PimEnterprise\Bundle\WorkflowBundle\Security;
 
 use PimEnterprise\Component\Security\Attributes as SecurityAttributes;
 use PimEnterprise\Component\Workflow\Model\ProductDraftInterface;
