@@ -310,7 +310,6 @@ services:
     pim_catalog.query.elasticsearch.filter.parent:
         class: '%pim_catalog.query.elasticsearch.filter.parent.class%'
         arguments:
-            - '@pim_catalog.repository.product_model'
             - ['parent']
             - ['IN', 'EMPTY']
         tags:
