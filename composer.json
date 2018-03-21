@@ -91,7 +91,7 @@
         "friends-of-behat/context-service-extension": "^1.1",
         "friends-of-behat/cross-container-extension": "^1.0",
         "friends-of-behat/symfony-extension": "^1.0",
-        "liuggio/fastest": "~1.4.4"
+        "liuggio/fastest": "1.6.*"
     },
     "suggest": {
         "akeneo/catalogs": "In order to install one of the Akeneo catalogs"

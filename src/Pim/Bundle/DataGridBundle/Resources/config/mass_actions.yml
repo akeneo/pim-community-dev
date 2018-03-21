@@ -97,6 +97,12 @@ services:
         tags:
             - { name: oro_datagrid.extension.mass_action.type, type: delete }
 
+    pim_datagrid.extension.mass_action.type.product_mass_delete:
+        class: '%pim_datagrid.extension.mass_action.type.delete.class%'
+        shared: false
+        tags:
+            - { name: oro_datagrid.extension.mass_action.type, type: mass_delete }
+
     # Handler registry
     pim_datagrid.extension.mass_action.handler.registry:
         class: '%pim_datagrid.extension.mass_action.handler.registry.class%'

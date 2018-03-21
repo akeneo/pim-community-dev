@@ -16,8 +16,9 @@ class Operation extends Wizard
 {
     protected $steps = [
         'Change status'                    => 'Batch ChangeStatus',
-        'Edit attributes'                  => 'Batch EditCommonAttributes',
+        'Edit attributes values'           => 'Batch EditCommonAttributes',
         'Modifier des attributs'           => 'Batch EditCommonAttributes',
+        'Add attributes values'            => 'Batch EditCommonAttributes',
         'Change family'                    => 'Batch ChangeFamily',
         'Add to groups'                    => 'Batch AddToGroups',
         'Set attributes requirements'      => 'Batch SetAttributeRequirements',

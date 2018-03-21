@@ -469,7 +469,7 @@ services:
         class: '%pim_catalog.updater.adder.multiselect_value.class%'
         arguments:
             - '@pim_catalog.builder.entity_with_values'
-            - ['pim_catalog_multiselect']
+            - ['pim_catalog_multiselect', 'pim_reference_data_multiselect']
         tags:
             - { name: 'pim_catalog.updater.adder' }
 

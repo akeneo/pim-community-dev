@@ -66,7 +66,13 @@
 
    &-list {
      &--disabled {
-       background: @AknDisabledInputColor;
+       background-color: @AknDisabledInputColor;
+       cursor: not-allowed;
+       background-image: url("../../../images/icon-lock.svg");
+       background-repeat: no-repeat;
+       background-position: ~"calc(100% - 12px)" center;
+       padding-right: @AknFormHeight - 4px;
+       color: @AknLightFontColor;
      }
   }
 

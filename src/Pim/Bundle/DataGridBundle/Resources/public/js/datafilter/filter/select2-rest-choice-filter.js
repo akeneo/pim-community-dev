@@ -31,6 +31,10 @@ define(
             events: {
                 'click .AknDropdown-menuLink': '_onSelectOperator'
             },
+            criteriaValueSelectors: {
+                'value': 'input[name="value"]',
+                'operator': '.active .operator_choice'
+            },
 
             initialize: function(options) {
                 _.extend(this.events, TextFilter.prototype.events);
@@ -106,14 +110,14 @@ define(
                 } else {
                     this._setInputValue(this.criteriaValueSelectors.value, value.value);
                 }
-                this._setInputValue(this.criteriaValueSelectors.type, value.type);
+                this.$(this.criteriaValueSelectors.operator).data('value', value.type);
                 this._highlightDropdown(value.type, '.operator');
 
                 return this;
             },
 
             _readDOMValue: function() {
-                var operator = this.emptyChoice ? this.$('.active .operator_choice').data('value') : 'in';
+                var operator = this.emptyChoice ? this.$(this.criteriaValueSelectors.operator).data('value') : 'in';
 
                 return {
                     value: _.contains(['empty', 'not empty'], operator) ? {} : this._getInputValue(this.criteriaValueSelectors.value),

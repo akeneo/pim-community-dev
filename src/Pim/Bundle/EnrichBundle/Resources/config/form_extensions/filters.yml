@@ -10,11 +10,21 @@ extensions:
     akeneo-product-completeness-filter:
         module: pim/filter/product/completeness
         config:
+            neverEmpty: true
             operators:
                 - ">="
                 - ALL
                 - GREATER OR EQUALS THAN ON ALL LOCALES
                 - LOWER THAN ON ALL LOCALES
+
+    akeneo-product-model-completeness-filter:
+        module: pim/filter/product/completeness
+        config:
+            neverEmpty: false
+            operators:
+                - ALL
+                - AT LEAST COMPLETE
+                - ALL COMPLETE
 
     akeneo-product-category-filter:
         module: pim/filter/product/category

@@ -164,7 +164,7 @@ define(
             if (!this.inset) {
                 this.initialState();
             }
-            this._selectAll();
+            this._selectAllNotSelected();
         },
 
         /**
@@ -175,6 +175,19 @@ define(
         _selectAll: function () {
             this.collection.each(function (model) {
                 model.trigger("backgrid:select", model, true);
+            });
+        },
+
+        /**
+         * Marks all non selected models in collection as selected
+         *
+         * @private
+         */
+        _selectAllNotSelected: function () {
+            this.collection.each((model) => {
+                if (!this.isSelectedModel(model)) {
+                    model.trigger("backgrid:select", model, true);
+                }
             });
         },
 

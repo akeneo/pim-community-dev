@@ -405,7 +405,7 @@ flash:
         created:                  Attribute successfully created
         updated:                  Attribute successfully updated
         removed:                  Attribute successfully removed
-        identifier not removable: Identifier attribute can not be removed
+        identifier_not_removable: Identifier attribute can not be removed
     attribute group:
         created:           Attribute group successfully created
         updated:           Attribute group successfully updated
@@ -877,13 +877,19 @@ pim_mass_edit:
             error:   Quick export <strong>%label%</strong> failed
             warning: Quick export <strong>%label%</strong> finished with some warnings
             success: Quick export <strong>%label%</strong> finished
+        mass_delete:
+            error:   Mass delete <strong>%label%</strong> failed
+            warning: Mass delete <strong>%label%</strong> finished with some warnings
+            success: Mass delete <strong>%label%</strong> finished
 
 job_execution.summary:
-    mass_edited:        Mass edited
-    skip:               Skipped
-    skipped_products:   Skipped products
+    mass_edited: Mass edited
+    skip: Skipped
+    skipped_products: Skipped products
     skipped_attributes: Skipped attributes
-    skipped_families:   Skipped families
+    skipped_families: Skipped families
+    deleted_products: Deleted products
+    deleted_product_models: Deleted product models
 
 pim_mass_edit_execution_show:  Mass edit executions | Details
 
@@ -905,6 +911,10 @@ batch_jobs:
         label: Update product value
         perform:
             label: Update product value
+    add_attribute_value:
+        label: Add attributes value
+        perform:
+            label: Add attributes value
     edit_common_attributes:
         label: Edit attributes
         perform:
@@ -953,6 +963,8 @@ batch_jobs:
         quick_export.label: Xlsx product grid context quick export
         perform:
             label: Xlsx product grid context quick export
+    delete_products_and_product_models:
+        delete_products_and_product_models.label: Mass delete products
 
 mass_edit report:
     overview: Mass edit reports

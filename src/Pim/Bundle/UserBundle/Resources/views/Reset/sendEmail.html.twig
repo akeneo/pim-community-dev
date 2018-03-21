@@ -9,10 +9,8 @@
     </div>
 
     <form action="" class="form-reset">
-        <h2 class="AknLogin-subTitle">{{ 'Check Email'|trans }}</h2>
-
         <div class="AknMessageBox AknMessageBox--apply">
-            {{ 'password_reset_email_sent'|trans({ '%email%': email }) }}
+            {{ 'password_reset_email_sent'|trans }}
         </div>
         <div class="AknForm">
             <a href="{{ path('oro_default') }}" class="AknLogin-link cancel">{{ 'Go to homepage'|trans }}</a>

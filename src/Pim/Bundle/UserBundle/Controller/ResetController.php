@@ -20,6 +20,8 @@ class ResetController extends Controller
 
     /**
      * Request reset user password
+     *
+     * @Template
      */
     public function sendEmailAction(Request $request)
     {
@@ -27,7 +29,7 @@ class ResetController extends Controller
         $user = $this->get('pim_user.manager')->findUserByUsernameOrEmail($username);
 
         if (null === $user) {
-            return $this->render('PimUserBundle:Reset:request.html.twig', ['invalid_username' => $username]);
+            return [];
         }
 
         if ($user->isPasswordRequestNonExpired($this->container->getParameter('pim_user.reset.ttl'))) {
@@ -61,7 +63,7 @@ class ResetController extends Controller
         $this->get('mailer')->send($message);
         $this->get('pim_user.manager')->updateUser($user);
 
-        return $this->redirect($this->generateUrl('pim_user_reset_check_email'));
+        return [];
     }
 
     /**

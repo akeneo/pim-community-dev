@@ -29,7 +29,7 @@ Feature: Display jobs execution in job tracker
     When I am on the products grid
     Then I select rows Boots, Sandals and Sneakers
     And I press the "Bulk actions" button
-    And I choose the "Edit attributes" operation
+    And I choose the "Edit attributes values" operation
     And I display the Name attribute
     And I change the "Name" to "boots"
     And I confirm mass edit

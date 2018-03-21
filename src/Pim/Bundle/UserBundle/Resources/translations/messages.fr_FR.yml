@@ -175,7 +175,7 @@ Username or Email: Nom d'utilisateur ou Email
 "Forgot Password": "Mot de passe oublié"
 Request: Demande
 Check Email: Vérifier l'email
-password_reset_email_sent: Un email a été envoyé à %email%. Il contient un lien, vous devez cliquer sur ce lien pour réinitialiser votre mot de passe.
+password_reset_email_sent: Un email vous a été envoyé. Il contient un lien pour réinitialiser votre mot de passe.
 Go to homepage: Aller à la page d'accueil
 oro.user.form.choose_user: Choisissez un utilisateur...
 change_password:

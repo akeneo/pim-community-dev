@@ -346,10 +346,13 @@ services:
         arguments:
             - ['completeness']
             -
-                - 'AT_LEAST_COMPLETE'
-                - 'AT_LEAST_INCOMPLETE'
+                - 'AT LEAST COMPLETE'
+                - 'AT LEAST INCOMPLETE'
+                - 'ALL COMPLETE'
+                - 'ALL INCOMPLETE'
         tags:
             - { name: 'pim_catalog.elasticsearch.query.product_and_product_model_filter', priority: 30 }
+            - { name: 'pim_catalog.elasticsearch.query.product_model_filter', priority: 30 }
 
     pim_catalog.query.elasticsearch.filter.with_attributes:
         class: '%pim_catalog.query.elasticsearch.filter.with_attributes.class%'

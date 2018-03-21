@@ -10,6 +10,7 @@ use Akeneo\Component\Batch\Model\JobInstance;
 use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\Classification\Repository\CategoryRepositoryInterface;
 use Akeneo\Component\Localization\Localizer\LocalizerInterface;
+use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Behat\ChainedStepsExtension\Step;
 use Behat\Gherkin\Node\TableNode;
@@ -151,6 +152,25 @@ class FixturesContext extends BaseFixturesContext
     }
 
     /**
+     * @param int $numberOfFamilies
+     *
+     * @Given /^([0-9]+) empty families$/
+     */
+    public function createEmptyFamilies(int $numberOfFamilies)
+    {
+        $families = [];
+
+        for (; $numberOfFamilies > 0; $numberOfFamilies--) {
+            $family = $this->getService('pim_catalog.factory.family')->create();
+            $family->setCode(sprintf('family_%s', $numberOfFamilies));
+            $this->validate($family);
+            $families[] = $family;
+        }
+
+        $this->getFamilySaver()->saveAll($families);
+    }
+
+    /**
      * @param TableNode $table
      *
      * @Given /^the following products?:$/
@@ -160,6 +180,23 @@ class FixturesContext extends BaseFixturesContext
         foreach ($table->getHash() as $data) {
             $this->createProduct($data);
         }
+    }
+
+    /**
+     * @Given the :identifier product created at :createdAt
+     */
+    public function theProductCreatedAt(string $identifier, string $createdAt)
+    {
+        $product = $this->createProduct(['sku' => $identifier]);
+
+        $this->getContainer()->get('doctrine')->getConnection()->update(
+            'pim_catalog_product',
+            ['created' => $createdAt],
+            ['id' => $product->getId()]
+        );
+
+        $this->refresh($product);
+        $this->getProductSaver()->save($product);
     }
 
     /**
@@ -2325,7 +2362,7 @@ class FixturesContext extends BaseFixturesContext
     }
 
     /**
-     * @return SaverInterface
+     * @return SaverInterface|BulkSaverInterface
      */
     protected function getFamilySaver()
     {

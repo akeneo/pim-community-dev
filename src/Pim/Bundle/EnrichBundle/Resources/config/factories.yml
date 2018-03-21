@@ -12,7 +12,7 @@ services:
     pim_enrich.factory.mass_edit_notification:
         class: '%pim_enrich.factory.mass_edit_notification.class%'
         arguments:
-            - ['quick_export', 'mass_edit']
+            - ['quick_export', 'mass_edit', 'mass_delete']
             - '%pim_notification.entity.notification.class%'
         tags:
             - { name: pim_notification.factory.notification }
