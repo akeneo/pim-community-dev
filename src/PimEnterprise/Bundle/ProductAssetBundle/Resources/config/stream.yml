@@ -1,5 +1,5 @@
 services:
-    pim_api.stream.asset_category_partial_update_stream:
+    pimee_product_asset.stream.asset_category_partial_update_stream:
         class: '%pim_api.stream.stream_resource_response.class%'
         arguments:
             - '@http_kernel'
@@ -8,7 +8,7 @@ services:
             - 'pimee_product_asset.controller.asset_category:partialUpdateAction'
             - 'code'
 
-    pim_api.stream.asset_partial_update_stream:
+    pimee_product_asset.stream.asset_partial_update_stream:
         class: '%pim_api.stream.stream_resource_response.class%'
         arguments:
             - '@http_kernel'

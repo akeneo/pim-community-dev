@@ -79,5 +79,6 @@ class PimEnterpriseProductAssetExtension extends Extension
         $loader->load('jobs.yml');
         $loader->load('steps.yml');
         $loader->load('completeness_checkers.yml');
+        $loader->load('stream.yml');
     }
 }

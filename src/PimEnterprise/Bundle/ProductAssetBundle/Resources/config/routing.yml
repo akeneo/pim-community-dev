@@ -17,3 +17,24 @@ pimee_asset_category:
 pimee_channel_transformation:
     resource: '@PimEnterpriseProductAssetBundle/Resources/config/routing/pimee_channel_asset_transformation.yml'
     prefix: /channel_transformation
+
+# External API
+asset_category:
+    resource: '@PimEnterpriseProductAssetBundle/Resources/config/routing/external_api/asset_category.yml'
+    prefix: /rest/v1
+
+asset_reference:
+    resource: '@PimEnterpriseProductAssetBundle/Resources/config/routing/external_api/asset_reference.yml'
+    prefix: /rest/v1
+
+asset_variation:
+    resource: '@PimEnterpriseProductAssetBundle/Resources/config/routing/external_api/asset_variation.yml'
+    prefix: /rest/v1
+
+asset:
+    resource: '@PimEnterpriseProductAssetBundle/Resources/config/routing/external_api/asset.yml'
+    prefix: /rest/v1
+
+asset-tag:
+    resource: '@PimEnterpriseProductAssetBundle/Resources/config/routing/external_api/asset_tag.yml'
+    prefix: /rest/v1
