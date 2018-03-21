@@ -2,14 +2,6 @@ published_product:
     resource: '@PimEnterpriseApiBundle/Resources/config/routing/published_product.yml'
     prefix: /rest/v1
 
-product_draft:
-    resource: '@PimEnterpriseApiBundle/Resources/config/routing/product_draft.yml'
-    prefix: /rest/v1
-
-product_proposal:
-    resource: '@PimEnterpriseApiBundle/Resources/config/routing/product_proposal.yml'
-    prefix: /rest/v1
-
 asset_category:
     resource: '@PimEnterpriseApiBundle/Resources/config/routing/asset_category.yml'
     prefix: /rest/v1

@@ -9,18 +9,15 @@
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Bundle\ApiBundle\Router;
+namespace PimEnterprise\Bundle\WorkflowBundle\Router;
 
 use Pim\Component\Api\Repository\ProductRepositoryInterface;
-use Pim\Component\Catalog\Exception\InvalidArgumentException;
-use PimEnterprise\Component\Security\Attributes;
 use PimEnterprise\Component\Workflow\Repository\ProductDraftRepositoryInterface;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Exception\MissingMandatoryParametersException;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\RequestContext;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
-use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 /**
  * When a product is saved, we send the URI of the product in the headers.

@@ -1,12 +1,12 @@
 <?php
 
-namespace spec\PimEnterprise\Component\Api\Normalizer;
+namespace spec\PimEnterprise\Component\Workflow\Normalizer\ExternalApi;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\ProductInterface;
-use PimEnterprise\Component\Api\Normalizer\ProductNormalizer;
 use PimEnterprise\Component\Security\Attributes;
 use PimEnterprise\Component\Workflow\Model\ProductDraftInterface;
+use PimEnterprise\Component\Workflow\Normalizer\ExternalApi\ProductNormalizer;
 use PimEnterprise\Component\Workflow\Repository\ProductDraftRepositoryInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;

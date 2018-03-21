@@ -9,7 +9,6 @@ use Pim\Component\Catalog\FileStorage;
 use PimEnterprise\Component\Workflow\Repository\ProductDraftRepositoryInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
 class CreateMediaFileWithPermissionsIntegration extends AbstractMediaFileTestCase
 {
@@ -21,9 +20,6 @@ class CreateMediaFileWithPermissionsIntegration extends AbstractMediaFileTestCas
 
     /** @var ProductRepositoryInterface */
     private $productRepository;
-
-    /** @var ProductDraftRepositoryInterface */
-    private $productDraftRepository;
 
     /*** @var FilesystemInterface */
     private $fileSystem;
@@ -189,7 +185,6 @@ JSON;
 
         $this->fileRepository = $this->get('pim_api.repository.media_file');
         $this->productRepository = $this->get('pim_api.repository.product');
-        $this->productDraftRepository = $this->get('pimee_workflow.repository.product_draft');
 
         $product = $this->get('pim_catalog.builder.product')->createProduct('foo');
         $this->get('pim_catalog.saver.product')->save($product);

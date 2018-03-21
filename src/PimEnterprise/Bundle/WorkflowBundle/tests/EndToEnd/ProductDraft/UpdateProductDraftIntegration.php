@@ -1,6 +1,6 @@
 <?php
 
-namespace PimEnterprise\Bundle\ApiBundle\tests\integration\Controller\Product\Update;
+namespace PimEnterprise\Bundle\WorkflowBundle\tests\EndToEnd\ProductDraft;
 
 use Pim\Component\Catalog\FileStorage;
 use Pim\Component\Catalog\tests\integration\Normalizer\NormalizedProductCleaner;

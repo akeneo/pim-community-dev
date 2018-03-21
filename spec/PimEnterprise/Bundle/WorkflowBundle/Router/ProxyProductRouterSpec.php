@@ -1,12 +1,11 @@
 <?php
 
-namespace spec\PimEnterprise\Bundle\ApiBundle\Router;
+namespace spec\PimEnterprise\Bundle\WorkflowBundle\Router;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Api\Repository\ProductRepositoryInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
-use PimEnterprise\Bundle\ApiBundle\Router\ProxyProductRouter;
-use PimEnterprise\Component\Security\Attributes;
+use PimEnterprise\Bundle\WorkflowBundle\Router\ProxyProductRouter;
 use PimEnterprise\Component\Workflow\Model\ProductDraftInterface;
 use PimEnterprise\Component\Workflow\Repository\ProductDraftRepositoryInterface;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
