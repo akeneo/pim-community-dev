@@ -98,7 +98,7 @@ class MassUploadProcessor
         LocaleRepositoryInterface $localeRepository,
         EventDispatcherInterface $eventDispatcher,
         TranslatorInterface $translator,
-        ObjectDetacherInterface $objectDetacher
+        ObjectDetacherInterface $objectDetacher = null
     ) {
         $this->uploadChecker = $uploadChecker;
         $this->importer = $importer;
@@ -153,10 +153,13 @@ class MassUploadProcessor
                 } else {
                     $processedFiles->addItem($file, ProcessedItem::STATE_SUCCESS, $reason);
                 }
-
-                $this->objectDetacher->detach($asset);
             } catch (\Exception $e) {
                 $processedFiles->addItem($file, ProcessedItem::STATE_ERROR, $e->getMessage(), $e);
+            } finally {
+                // @todo - to be refactored on 2.3
+                if (isset($asset) && null !== $this->objectDetacher) {
+                    $this->objectDetacher->detach($asset);
+                }
             }
         }
 
