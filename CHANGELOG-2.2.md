@@ -6,6 +6,10 @@
 
 # 2.2.0-ALPHA2 (2018-03-07)
 
+## Improve Julia's experience
+
+- AOB-2: Add filters on the proposals screen
+
 ## BC breaks
 
 ### Constructors
@@ -52,7 +56,7 @@ Be sure to run the following command `bin/console pim:installer:grant-backend-pr
 
 ## Improve Julia's experience
 
-- PIM-6367: Apply rules on products models values
+- PIM-6367: Apply rules on products models values (this also fixes PIM-7235)
 - PIM-7166: Display on product model edit form that an attribute can be updated by a rule
 
 ## BC breaks
