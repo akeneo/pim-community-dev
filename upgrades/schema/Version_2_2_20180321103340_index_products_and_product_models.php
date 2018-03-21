@@ -8,7 +8,7 @@ use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Input\ArrayInput;
 
 /**
- * Auto-generated Migration: Please modify to your needs!
+ * This migration triggers the reindexation of the products and product models.
  */
 class Version_2_2_20180321103340_index_products_and_product_models extends AbstractMigration
 {
