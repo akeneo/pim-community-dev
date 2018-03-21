@@ -17,6 +17,7 @@ use Akeneo\Component\FileTransformer\Exception\NonRegisteredTransformationExcept
 use Akeneo\Component\FileTransformer\Exception\NotApplicableTransformation\GenericTransformationException;
 use Akeneo\Component\FileTransformer\Exception\NotApplicableTransformation\ImageHeightException;
 use Akeneo\Component\FileTransformer\Exception\NotApplicableTransformation\ImageWidthException;
+use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
 use PimEnterprise\Bundle\ProductAssetBundle\Event\AssetEvent;
@@ -70,6 +71,9 @@ class MassUploadProcessor
     /** @var TranslatorInterface */
     protected $translator;
 
+    /** @var ObjectDetacherInterface */
+    protected $objectDetacher;
+
     /**
      * @param UploadCheckerInterface    $uploadChecker
      * @param ImporterInterface         $importer
@@ -81,6 +85,7 @@ class MassUploadProcessor
      * @param LocaleRepositoryInterface $localeRepository
      * @param EventDispatcherInterface  $eventDispatcher
      * @param TranslatorInterface       $translator
+     * @param ObjectDetacherInterface   $objectDetacher
      */
     public function __construct(
         UploadCheckerInterface $uploadChecker,
@@ -92,7 +97,8 @@ class MassUploadProcessor
         FileStorerInterface $fileStorer,
         LocaleRepositoryInterface $localeRepository,
         EventDispatcherInterface $eventDispatcher,
-        TranslatorInterface $translator
+        TranslatorInterface $translator,
+        ObjectDetacherInterface $objectDetacher
     ) {
         $this->uploadChecker = $uploadChecker;
         $this->importer = $importer;
@@ -104,6 +110,7 @@ class MassUploadProcessor
         $this->localeRepository = $localeRepository;
         $this->eventDispatcher = $eventDispatcher;
         $this->translator = $translator;
+        $this->objectDetacher = $objectDetacher;
     }
 
     /**
@@ -146,6 +153,8 @@ class MassUploadProcessor
                 } else {
                     $processedFiles->addItem($file, ProcessedItem::STATE_SUCCESS, $reason);
                 }
+
+                $this->objectDetacher->detach($asset);
             } catch (\Exception $e) {
                 $processedFiles->addItem($file, ProcessedItem::STATE_ERROR, $e->getMessage(), $e);
             }
