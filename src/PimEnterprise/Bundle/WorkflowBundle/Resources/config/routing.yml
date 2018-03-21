@@ -33,9 +33,9 @@ pimee_workflow_rest_product:
 
 # External API
 api_product_draft:
-    resource: '@PimEnterpriseWorkflowBundle/Resources/config/routing/product_draft.yml'
+    resource: '@PimEnterpriseWorkflowBundle/Resources/config/routing/external_api/product_draft.yml'
     prefix: /rest/v1
 
 product_proposal:
-    resource: '@PimEnterpriseWorkflowBundle/Resources/config/routing/product_proposal.yml'
+    resource: '@PimEnterpriseWorkflowBundle/Resources/config/routing/external_api/product_proposal.yml'
     prefix: /rest/v1
