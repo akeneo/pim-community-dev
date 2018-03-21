@@ -44,18 +44,6 @@ services:
         tags:
             - { name: pim_datagrid.extension.mass_action.handler, alias: rule_impacted_product_count }
 
-    pimee_datagrid.extension.mass_action.type.mass_approve:
-        class: '%oro_datagrid.extension.mass_action.type.redirect.class%'
-        shared: false
-        tags:
-            - { name: oro_datagrid.extension.mass_action.type, type: mass-approve-proposal }
-
-    pimee_datagrid.extension.mass_action.type.mass_refuse:
-        class: '%oro_datagrid.extension.mass_action.type.redirect.class%'
-        shared: false
-        tags:
-            - { name: oro_datagrid.extension.mass_action.type, type: mass-refuse-proposal }
-
     # Dispatchers
     pim_datagrid.extension.mass_action.dispatcher:
         class: '%pim_datagrid.extension.mass_action.dispatcher.class%'

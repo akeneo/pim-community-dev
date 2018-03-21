@@ -7,13 +7,14 @@ parameters:
     pimee_workflow.datagrid.datasource.product_proposal.class: PimEnterprise\Bundle\WorkflowBundle\Datagrid\Datasource\ProductProposalDatasource
     pimee_workflow.datagrid.datasource.product_draft.class: Pim\Bundle\DataGridBundle\Datasource\Datasource
     pimee_workflow.datagrid.event_listener.configure_proposal_grid_listener.class: PimEnterprise\Bundle\WorkflowBundle\Datagrid\EventListener\ConfigureProposalGridListener
+    pimee_workflow.datagrid.configuration.proposal.context_configurator.class: PimEnterprise\Bundle\WorkflowBundle\Datagrid\Configuration\Proposal\ContextConfigurator
 
 services:
     # Listener
     pimee_workflow.datagrid.event_listener.configure_proposal_grid_listener:
         class: '%pimee_workflow.datagrid.event_listener.configure_proposal_grid_listener.class%'
         arguments:
-            - '@pimee_datagrid.datagrid.configuration.proposal.context_configurator'
+            - '@pimee_workflow.datagrid.configuration.proposal.context_configurator'
             - '@pim_datagrid.datagrid.configuration.product.filters_configurator.ce'
         tags:
             - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.before.proposal-grid, method: buildBefore }
@@ -91,6 +92,14 @@ services:
             - '@security.authorization_checker'
             - '@pimee_workflow.helper.product_draft_changes_permission'
 
+    pimee_workflow.datagrid.configuration.proposal.context_configurator:
+        class: '%pimee_workflow.datagrid.configuration.proposal.context_configurator.class%'
+        arguments:
+            - '@oro_datagrid.datagrid.request_params'
+            - '@pim_user.context.user'
+            - '@request_stack'
+            - '@pim_catalog.repository.attribute'
+
     # Datasource
     pimee_catalog.datasource.product_draft:
         class: '%pimee_workflow.datagrid.datasource.product_draft.class%'
@@ -124,3 +133,34 @@ services:
             - [ setMassActionRepository, ['@pimee_workflow.repository.product_draft' ]]
         tags:
             - { name: oro_datagrid.datasource, type: pimee_datasource_proposal_product }
+
+    pimee_workflow.datagrid.extension.mass_action.type.mass_approve:
+        class: '%oro_datagrid.extension.mass_action.type.redirect.class%'
+        shared: false
+        tags:
+            - { name: oro_datagrid.extension.mass_action.type, type: mass-approve-proposal }
+
+    pimee_workflow.datagrid.extension.mass_action.type.mass_refuse:
+        class: '%oro_datagrid.extension.mass_action.type.redirect.class%'
+        shared: false
+        tags:
+            - { name: oro_datagrid.extension.mass_action.type, type: mass-refuse-proposal }
+
+    # Action
+    pimee_datagrid.extension.action.type.approve_proposal:
+        class: '%oro_datagrid.extension.action.type.ajax.class%'
+        shared: false
+        tags:
+            - { name: oro_datagrid.extension.action.type, type: approve-proposal }
+
+    pimee_workflow.datagrid.extension.action.type.reject_proposal:
+        class: '%oro_datagrid.extension.action.type.ajax.class%'
+        shared: false
+        tags:
+            - { name: oro_datagrid.extension.action.type, type: reject-proposal }
+
+    pimee_workflow.datagrid.extension.action.type.remove_proposal:
+        class: '%oro_datagrid.extension.action.type.ajax.class%'
+        shared: false
+        tags:
+            - { name: oro_datagrid.extension.action.type, type: remove-proposal }
