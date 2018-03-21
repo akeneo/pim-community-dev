@@ -62,8 +62,11 @@ class FieldSplitter extends BaseFieldSplitter
     {
         $prices = [];
         if ('' !== $value) {
+            // Strip quotation marks
+            $cleanedValue = preg_replace('/["]/', '', $value);
+
             // Replace commas between prices with semicolons (excluding commas between numbers)
-            $matches = preg_replace('/([a-z]+),/ixm', '\1;', $value);
+            $matches = preg_replace('/([a-z]+),/ixm', '\1;', $cleanedValue);
 
             // Get an array of values by exploding semicolon delimited values
             $prices = explode(';', $matches);
