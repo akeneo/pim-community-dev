@@ -42,12 +42,6 @@ abstract class AbstractProductExportTestCase extends TestCase
             ]
         ]);
 
-        $this->createProductDraft('mary', $product, [
-            'values'     => [
-                'a_number_float' => [['data' => '20.09', 'locale' => null, 'scope' => null]],
-            ]
-        ]);
-
         $this->createProduct('product_viewable_by_everybody_2', [
             'categories' => ['categoryA2', 'categoryB']
         ]);
@@ -88,25 +82,5 @@ abstract class AbstractProductExportTestCase extends TestCase
         $this->get('akeneo_elasticsearch.client.product')->refreshIndex();
 
         return $product;
-    }
-
-    /**
-     * @param string           $userName
-     * @param ProductInterface $product
-     * @param array            $changes
-     *
-     * @return ProductDraftInterface
-     */
-    protected function createProductDraft(
-        string $userName,
-        ProductInterface $product,
-        array $changes
-    ) : ProductDraftInterface {
-        $this->get('pim_catalog.updater.product')->update($product, $changes);
-
-        $productDraft = $this->get('pimee_workflow.builder.draft')->build($product, $userName);
-        $this->get('pimee_workflow.saver.product_draft')->save($productDraft);
-
-        return $productDraft;
     }
 }

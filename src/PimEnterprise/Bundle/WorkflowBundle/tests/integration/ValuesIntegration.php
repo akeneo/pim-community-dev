@@ -1,6 +1,6 @@
 <?php
 
-namespace PimEnterprise\Component\Catalog\tests\integration\Security\ProductDraft;
+namespace PimEnterprise\Bundle\WorkflowBundle\tests\integration;
 
 use PimEnterprise\Component\Catalog\tests\integration\Security\AbstractSecurityTestCase;
 
