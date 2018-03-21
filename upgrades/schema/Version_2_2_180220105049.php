@@ -139,6 +139,6 @@ class Version_2_2_180220105049 extends AbstractMigration implements ContainerAwa
      */
     private function disableMigrationWarning()
     {
-        $this->addSql('SELECT * FROM oro_user');
+        $this->addSql('SELECT * FROM oro_user LIMIT 1');
     }
 }
