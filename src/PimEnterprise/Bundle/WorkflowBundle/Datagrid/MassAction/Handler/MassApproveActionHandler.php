@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Bundle\DataGridBundle\Extension\MassAction\Handler;
+namespace PimEnterprise\Bundle\WorkflowBundle\Datagrid\MassAction\Handler;
 
 use Akeneo\Component\StorageUtils\Cursor\CursorFactoryInterface;
 use Oro\Bundle\DataGridBundle\Datagrid\DatagridInterface;

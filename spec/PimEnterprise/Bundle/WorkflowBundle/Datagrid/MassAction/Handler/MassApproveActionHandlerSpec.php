@@ -1,19 +1,20 @@
 <?php
 
-namespace spec\PimEnterprise\Bundle\DataGridBundle\Extension\MassAction\Handler;
+namespace spec\PimEnterprise\Bundle\WorkflowBundle\Datagrid\MassAction\Handler;
 
 use Akeneo\Component\StorageUtils\Cursor\CursorFactoryInterface;
 use Oro\Bundle\DataGridBundle\Datagrid\DatagridInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Elasticsearch\SearchQueryBuilder;
 use Pim\Bundle\DataGridBundle\Extension\MassAction\Actions\Redirect\EditMassAction;
+use Pim\Bundle\FilterBundle\Datasource\FilterProductDatasourceAdapterInterface;
 use Pim\Component\Catalog\Query\ProductQueryBuilderInterface;
 use PimEnterprise\Bundle\DataGridBundle\Extension\MassAction\Event\MassActionEvents;
 use PimEnterprise\Component\Workflow\Model\ProductDraftInterface;
 use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
-class MassRefuseActionHandlerSpec extends ObjectBehavior
+class MassApproveActionHandlerSpec extends ObjectBehavior
 {
     function let(EventDispatcherInterface $eventDispatcher, CursorFactoryInterface $cursorFactory)
     {
@@ -25,7 +26,7 @@ class MassRefuseActionHandlerSpec extends ObjectBehavior
         $cursorFactory,
         SearchQueryBuilder $searchQueryBuilder,
         DatagridInterface $datagrid,
-        DatasourceSpecInterface $datasource,
+        FilterProductDatasourceAdapterInterface $datasource,
         EditMassAction $massAction,
         ProductQueryBuilderInterface $pqb,
         ProductDraftInterface $productDraft1,
@@ -35,11 +36,11 @@ class MassRefuseActionHandlerSpec extends ObjectBehavior
         $objectIds = ['foo', 'bar', 'baz'];
 
         $eventDispatcher->dispatch(
-            MassActionEvents::MASS_REFUSE_PRE_HANDLER,
+            MassActionEvents::MASS_APPROVE_PRE_HANDLER,
             Argument::type('Pim\Bundle\DataGridBundle\Extension\MassAction\Event\MassActionEvent')
         )->shouldBeCalled();
         $eventDispatcher->dispatch(
-            MassActionEvents::MASS_REFUSE_POST_HANDLER,
+            MassActionEvents::MASS_APPROVE_POST_HANDLER,
             Argument::type('Pim\Bundle\DataGridBundle\Extension\MassAction\Event\MassActionEvent')
         )->shouldBeCalled();
 
