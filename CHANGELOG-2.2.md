@@ -2,7 +2,6 @@
 
 ## Improve Julia's experience
 
-- PIM-7187: Apply rules after mass edit on product models
 - PIM-7097: Add sticky behaviour to product edit form
 - PIM-7097: Change the loading image
 - PIM-7112: Add lock display on images/assets when user has no edit right
@@ -11,6 +10,7 @@
 
 ## Better manage products with variants
 
+- PIM-7187: Apply rules after mass edit on product models
 - PIM-7090: Add completeness filter on product model export builder
 - PIM-7091: Build exports for products models according to their codes
 - PIM-7143: Be able to delete products and product models in mass using a backend job
@@ -75,7 +75,6 @@ Be sure to run the following command `bin/console pim:installer:grant-backend-pr
 
 ## Improve Julia's experience
 
-- PIM-7165: Execute rules after a product model import
 - PIM-7125: As Peter, I would like to use rules to unclassify products from a tree
 - PIM-7186: Don't apply a rule if its action field is an attribute not present in the family
 
@@ -85,6 +84,7 @@ Be sure to run the following command `bin/console pim:installer:grant-backend-pr
 
 ## Better manage products with variants
 
+- PIM-7165: Execute rules after a product model import
 - PIM-7106: Display the 1st variant product created as product model image
 - PIM-6334: Add support of product model to the export builder
 - PIM-6329: The family variant is now removable from the UI
