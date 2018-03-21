@@ -9,12 +9,14 @@
 - PIM-7143: Be able to delete products and product models in mass using a backend job
 - PIM-7112: Add lock display on images/assets when user has no edit right.
 - AOB-100: Apply user timezone on dates in the UI
+- PIM-7091: Build exports for products models according to their codes
+- AOB-99: Add a timezone field to a user
 
 ## BC breaks
 
 ### Interfaces
 
-- AOB-55: Add method `getTimezone` and `setTimezone` to `Pim\Bundle\UserBundle\Entity\UserInterface`
+- AOB-99: Add method `getTimezone` and `setTimezone` to `Pim\Bundle\UserBundle\Entity\UserInterface`
 - PIM-7163: Add `Pim\Bundle\UserBundle\Entity\UserInterface::setPhone` and `Pim\Bundle\UserBundle\Entity\UserInterface::getPhone`
 - AOB-97: Change the constructor of `Akeneo\Bundle\BatchBundle\Launcher\SimpleJobLauncher` to add `Symfony\Component\EventDispatcher\EventDispatcherInterface`
 - AOB-97: Change the constructor of `Akeneo\Bundle\BatchQueueBundle\Launcher\QueueJobLauncher` to add `Symfony\Component\EventDispatcher\EventDispatcherInterface`
