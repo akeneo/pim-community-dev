@@ -49,6 +49,7 @@ class FilterDataValidator extends ConstraintValidator
         foreach ($value['data'] as $data) {
             try {
                 $context = isset($data['context']) ? $data['context'] : [];
+                $context['locales'] = isset($value['structure']['locales']) ? $value['structure']['locales'] : [];
                 $pqb->addFilter($data['field'], $data['operator'], $data['value'], $context);
             } catch (PropertyException $exception) {
                 $this->context->buildViolation(
