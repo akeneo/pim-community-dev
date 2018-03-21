@@ -1,4 +1,3 @@
-@javascript
 Feature: Import media with products
   In order to re-use the images and documents I have set on my products
   As a product manager
@@ -14,7 +13,6 @@ Feature: Import media with products
     And the following family:
       | code         | attributes                         |
       | media_family | frontView,name,userManual,warranty |
-    And I am logged in as "Julia"
 
   Scenario: Successfully import media
     Given the following CSV file to import:
@@ -30,9 +28,7 @@ Feature: Import media with products
       | bic-core-148.txt        |
       | fanatic-freewave-76.gif |
       | fanatic-freewave-76.txt |
-    When I am on the "csv_footwear_product_import" import job page
-    And I launch the import job
-    And I wait for the "csv_footwear_product_import" job to finish
+    When the products are imported via the job csv_footwear_product_import
     Then there should be 2 products
     And the product "bic-core-148" should have the following values:
       | frontView  | bic-core-148.gif |
@@ -53,9 +49,7 @@ Feature: Import media with products
     And import directory of "csv_footwear_product_import" contains the following media:
       | bic-core-148.gif |
       | bic-core-148.txt |
-    When I am on the "csv_footwear_product_import" import job page
-    And I launch the import job
-    And I wait for the "csv_footwear_product_import" job to finish
+    When the products are imported via the job csv_footwear_product_import
     Then there should be 2 products
     And the product "bic-core-148" should have the following values:
       | frontView  | bic-core-148.gif |
@@ -64,8 +58,10 @@ Feature: Import media with products
       | frontView  | **empty** |
       | userManual | **empty** |
 
+  @javascript
   Scenario: Skip products with invalid media attributes
-    Given the following CSV file to import:
+    Given I am logged in as "Julia"
+    And the following CSV file to import:
       """
       sku;family;groups;frontView;name-en_US;userManual;categories
       bic-core-148;media_family;;bic-core-148.txt;"Bic Core 148";;2014_collection
@@ -102,9 +98,7 @@ Feature: Import media with products
     And import directory of "csv_footwear_product_import" contains the following media:
       | fanatic-freewave-76.txt |
       | warranty.txt            |
-    When I am on the "csv_footwear_product_import" import job page
-    And I launch the import job
-    And I wait for the "csv_footwear_product_import" job to finish
+    When the products are imported via the job csv_footwear_product_import
     Then there should be 2 products
     And the product "bic-core-148" should have the following values:
       | warranty   | warranty.txt |
@@ -113,8 +107,10 @@ Feature: Import media with products
       | warranty   | warranty.txt            |
       | userManual | fanatic-freewave-76.txt |
 
+  @javascript
   Scenario: Successfully skip a product without media modification
-    Given the following product:
+    Given I am logged in as "Julia"
+    And the following product:
       | sku                 | name-en_US          | userManual                         |
       | bic-core-148        | Bic Core 148        | %fixtures%/bic-core-148.txt        |
       | fanatic-freewave-76 | Fanatic Freewave 76 | %fixtures%/fanatic-freewave-76.txt |
