@@ -191,7 +191,6 @@ services:
     pim_catalog.query.elasticsearch.filter.family:
         class: '%pim_catalog.query.elasticsearch.filter.family.class%'
         arguments:
-            - '@pim_catalog.repository.family'
             - ['family']
             - ['IN', 'NOT IN', 'EMPTY', 'NOT EMPTY']
         tags:

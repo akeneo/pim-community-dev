@@ -3,11 +3,9 @@
 namespace Pim\Bundle\CatalogBundle\Elasticsearch\Filter\Field;
 
 use Pim\Component\Catalog\Exception\InvalidOperatorException;
-use Pim\Component\Catalog\Exception\ObjectNotFoundException;
 use Pim\Component\Catalog\Query\Filter\FieldFilterHelper;
 use Pim\Component\Catalog\Query\Filter\FieldFilterInterface;
 use Pim\Component\Catalog\Query\Filter\Operators;
-use Pim\Component\Catalog\Repository\FamilyRepositoryInterface;
 
 /**
  * Family filter for an Elasticsearch query
@@ -18,20 +16,14 @@ use Pim\Component\Catalog\Repository\FamilyRepositoryInterface;
  */
 class FamilyFilter extends AbstractFieldFilter implements FieldFilterInterface
 {
-    /** @var FamilyRepositoryInterface */
-    protected $familyRepository;
-
     /**
-     * @param FamilyRepositoryInterface $familyRepository
      * @param array                     $supportedFields
      * @param array                     $supportedOperators
      */
     public function __construct(
-        FamilyRepositoryInterface $familyRepository,
         array $supportedFields = [],
         array $supportedOperators = []
     ) {
-        $this->familyRepository = $familyRepository;
         $this->supportedFields = $supportedFields;
         $this->supportedOperators = $supportedOperators;
     }
@@ -100,8 +92,6 @@ class FamilyFilter extends AbstractFieldFilter implements FieldFilterInterface
      *
      * @param string $field
      * @param mixed  $values
-     *
-     * @throws ObjectNotFoundException
      */
     protected function checkValue($field, $values)
     {
@@ -109,12 +99,6 @@ class FamilyFilter extends AbstractFieldFilter implements FieldFilterInterface
 
         foreach ($values as $value) {
             FieldFilterHelper::checkIdentifier($field, $value, static::class);
-
-            if (null === $this->familyRepository->findOneByIdentifier($value)) {
-                throw new ObjectNotFoundException(
-                    sprintf('Object "family" with code "%s" does not exist', $value)
-                );
-            }
         }
     }
 }
