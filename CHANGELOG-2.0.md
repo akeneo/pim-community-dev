@@ -8,6 +8,7 @@
 - PIM-7214: Fix a bug that prevents to select multiple items across pages in Products, Family and associations grids
 - PIM-7215: Fix wrong direction of sorting arrow in the grids
 - PIM-7220: Fix the filter "is empty" when the attribute belongs to a family
+- PIM-7237: Fix integrity constraint violation during import
 
 # 2.0.17 (2018-03-06)
 
