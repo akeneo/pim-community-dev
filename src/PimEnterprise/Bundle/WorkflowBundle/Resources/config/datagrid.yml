@@ -152,7 +152,7 @@ services:
             - { name: oro_datagrid.extension.mass_action.type, type: mass-refuse-proposal }
 
     # Action
-    pimee_datagrid.extension.action.type.approve_proposal:
+    pimee_workflow.datagrid.extension.action.type.approve_proposal:
         class: '%oro_datagrid.extension.action.type.ajax.class%'
         shared: false
         tags:
