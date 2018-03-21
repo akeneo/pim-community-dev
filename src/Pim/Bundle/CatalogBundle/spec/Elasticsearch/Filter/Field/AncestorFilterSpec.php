@@ -15,10 +15,8 @@ use Pim\Component\Catalog\Repository\ProductModelRepositoryInterface;
 
 class AncestorFilterSpec extends ObjectBehavior
 {
-    public function let(
-        ProductModelRepositoryInterface $productModelRepository
-    ) {
-        $this->beConstructedWith($productModelRepository, ['ancestor.id'], [Operators::IN_LIST, Operators::NOT_IN_LIST]);
+    public function let() {
+        $this->beConstructedWith(['ancestor.id'], [Operators::IN_LIST, Operators::NOT_IN_LIST]);
     }
 
     function it_is_initializable()
@@ -47,7 +45,6 @@ class AncestorFilterSpec extends ObjectBehavior
 
     function it_adds_a_filter_with_operator_in_list(
         SearchQueryBuilder $sqb,
-        $productModelRepository,
         ProductModelInterface $productModel1,
         ProductModelInterface $productModel2
     ) {
@@ -58,9 +55,6 @@ class AncestorFilterSpec extends ObjectBehavior
                 ],
             ]
         )->shouldBeCalled();
-
-        $productModelRepository->findOneBy(['id' => 1])->willReturn($productModel1);
-        $productModelRepository->findOneBy(['id' => 2])->willReturn($productModel2);
 
         $this->setQueryBuilder($sqb);
         $this->addFieldFilter(
@@ -73,15 +67,7 @@ class AncestorFilterSpec extends ObjectBehavior
         );
     }
 
-    function it_adds_a_filter_with_operator_not_in_list(
-        SearchQueryBuilder $sqb,
-        $productModelRepository,
-        ProductModelInterface $productModel1,
-        ProductModelInterface $productModel2
-    ) {
-        $productModelRepository->findOneBy(['id' => 1])->willReturn($productModel1);
-        $productModelRepository->findOneBy(['id' => 2])->willReturn($productModel2);
-
+    function it_adds_a_filter_with_operator_not_in_list(SearchQueryBuilder $sqb) {
         $sqb->addMustNot(
             [
                 'terms' => ['ancestors.ids' => ['product_model_1', 'product_model_2']],
@@ -139,22 +125,5 @@ class AncestorFilterSpec extends ObjectBehavior
         $this->shouldThrow(
             InvalidPropertyTypeException::arrayExpected('ancestors', AncestorFilter::class, 'wrong_value')
         )->during('addFieldFilter', ['parent', Operators::IN_LIST, 'wrong_value', null, null, []]);
-    }
-
-    function it_throws_an_exception_if_the_value_is_not_a_product_model_id(
-        $productModelRepository,
-        SearchQueryBuilder $sqb
-    ) {
-        $this->setQueryBuilder($sqb);
-
-        $productModelRepository->findOneBy(['id' => 'invalid_identifier'])->willReturn(null);
-
-        $sqb->addFilter()->shouldNotBeCalled();
-
-        $this->shouldThrow(
-            new ObjectNotFoundException(
-                'Object "product model" with ID "invalid_identifier" does not exist'
-            )
-        )->during('addFieldFilter', ['ancestor.id', Operators::IN_LIST, ['invalid_identifier'], null, null, []]);
     }
 }

@@ -331,7 +331,6 @@ services:
     pim_catalog.query.elasticsearch.filter.ancestor:
         class: '%pim_catalog.query.elasticsearch.filter.ancestor.class%'
         arguments:
-            - '@pim_catalog.repository.product_model'
             - ['ancestor.id']
             - ['IN', 'NOT IN']
         tags:
