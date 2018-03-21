@@ -10,7 +10,7 @@ use Symfony\Component\Console\Input\ArrayInput;
 /**
  * This migration triggers the reindexation of the products and product models.
  */
-class Version_2_2_20180321103340_index_products_and_product_models extends AbstractMigration
+class Version_2_2_20180321164023_index_products_and_product_models extends AbstractMigration
 {
     /**
      * @param Schema $schema
@@ -22,16 +22,16 @@ class Version_2_2_20180321103340_index_products_and_product_models extends Abstr
 
     public function postUp(Schema $schema)
     {
-        $kernel = new \AppKernel(getenv('SYMFONY_ENV') ?: 'prod', (bool)getenv('SYMFONY_DEBUG'));
+        $kernel = new \AppKernel(getenv('SYMFONY_ENV') ?: 'prod', (bool) getenv('SYMFONY_DEBUG'));
         $application = new Application($kernel);
         $application->setAutoExit(false);
         $application->run(new ArrayInput([
             'command' => 'pim:product-model:index',
-            '--all' => true,
+            '--all'   => true,
         ]));
         $application->run(new ArrayInput([
             'command' => 'pim:product:index',
-            '--all' => true,
+            '--all'   => true,
         ]));
     }
 
@@ -49,7 +49,6 @@ class Version_2_2_20180321103340_index_products_and_product_models extends Abstr
      */
     private function disableMigrationWarning()
     {
-        $this->addSql('SELECT * FROM oro_user');
+        $this->addSql('SELECT * FROM oro_user LIMIT 1');
     }
 }
-
