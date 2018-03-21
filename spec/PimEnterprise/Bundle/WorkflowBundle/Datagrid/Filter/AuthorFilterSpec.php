@@ -1,13 +1,13 @@
 <?php
 
-namespace spec\PimEnterprise\Bundle\FilterBundle\Filter\ProductDraft;
+namespace spec\PimEnterprise\Bundle\WorkflowBundle\Datagrid\Filter;
 
 use Oro\Bundle\FilterBundle\Filter\FilterUtility;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
 use Pim\Bundle\FilterBundle\Filter\ProductFilterUtility;
 use Pim\Component\Catalog\Query\Filter\FieldFilterInterface;
-use PimEnterprise\Bundle\FilterBundle\Filter\ProductDraft\AuthorFilter;
+use PimEnterprise\Bundle\WorkflowBundle\Datagrid\Filter\AuthorFilter;
 use Symfony\Component\Form\FormFactoryInterface;
 
 class AuthorFilterSpec extends ObjectBehavior

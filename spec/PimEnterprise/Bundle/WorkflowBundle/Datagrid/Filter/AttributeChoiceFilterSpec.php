@@ -1,12 +1,12 @@
 <?php
 
-namespace spec\PimEnterprise\Bundle\FilterBundle\Filter\ProductDraft;
+namespace spec\PimEnterprise\Bundle\WorkflowBundle\Datagrid\Filter;
 
 use Oro\Bundle\FilterBundle\Form\Type\Filter\FilterType;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
 use Pim\Component\Catalog\Query\Filter\Operators;
-use PimEnterprise\Bundle\FilterBundle\Filter\ProductDraftFilterUtility;
+use PimEnterprise\Bundle\WorkflowBundle\Datagrid\Filter\ProductDraftFilterUtility;
 use Symfony\Component\Form\FormFactoryInterface;
 
 class AttributeChoiceFilterSpec extends ObjectBehavior

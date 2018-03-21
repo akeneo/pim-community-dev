@@ -8,6 +8,11 @@ parameters:
     pimee_workflow.datagrid.datasource.product_draft.class: Pim\Bundle\DataGridBundle\Datasource\Datasource
     pimee_workflow.datagrid.event_listener.configure_proposal_grid_listener.class: PimEnterprise\Bundle\WorkflowBundle\Datagrid\EventListener\ConfigureProposalGridListener
     pimee_workflow.datagrid.configuration.proposal.context_configurator.class: PimEnterprise\Bundle\WorkflowBundle\Datagrid\Configuration\Proposal\ContextConfigurator
+    pimee_workflow.datagrid.product_draft_utility.class: PimEnterprise\Bundle\WorkflowBundle\Datagrid\Filter\ProductDraftFilterUtility
+    pimee_workflow.datagrid.product_draft_attribute_choice_filter.class: PimEnterprise\Bundle\WorkflowBundle\Datagrid\Filter\AttributeChoiceFilter
+    pimee_workflow.datagrid.product_draft_choice_filter.class: PimEnterprise\Bundle\WorkflowBundle\Datagrid\Filter\ChoiceFilter
+    pimee_workflow.datagrid.product_draft_author_filter.class: PimEnterprise\Bundle\WorkflowBundle\Datagrid\Filter\AuthorFilter
+    pimee_workflow.datagrid.product_draft_date_filter.class: Pim\Bundle\FilterBundle\Filter\ProductValue\DateTimeRangeFilter
 
 services:
     # Listener
@@ -164,3 +169,41 @@ services:
         shared: false
         tags:
             - { name: oro_datagrid.extension.action.type, type: remove-proposal }
+
+    # Utility
+    pimee_workflow.datagrid.product_draft_utility:
+        class: '%pimee_workflow.datagrid.product_draft_utility.class%'
+        arguments:
+            - '@pimee_workflow.repository.product_draft'
+
+    # Filters
+    pimee_workflow.datagrid.product_draft_choice_filter:
+        class: '%pimee_workflow.datagrid.product_draft_choice_filter.class%'
+        arguments:
+            - '@form.factory'
+            - '@pimee_workflow.datagrid.product_draft_utility'
+        tags:
+            - { name: oro_filter.extension.orm_filter.filter, type: product_draft_choice }
+
+    pimee_workflow.datagrid.product_draft_author_filter:
+        class: '%pimee_workflow.datagrid.product_draft_author_filter.class%'
+        arguments:
+            - '@form.factory'
+            - '@pimee_workflow.datagrid.product_draft_utility'
+            - '@pimee_workflow.query.elasticsearch.filter.author'
+        tags:
+            - { name: oro_filter.extension.orm_filter.filter, type: product_draft_author }
+
+    pimee_workflow.datagrid.product_draft_attribute_choice_filter:
+        class: '%pimee_workflow.datagrid.product_draft_attribute_choice_filter.class%'
+        parent: pimee_workflow.datagrid.product_draft_choice_filter
+        tags:
+            - { name: oro_filter.extension.orm_filter.filter, type: product_draft_attribute_choice }
+
+    pimee_workflow.datagrid.product_draft_date_filter:
+        class: '%pimee_workflow.datagrid.product_draft_date_filter.class%'
+        arguments:
+            - '@form.factory'
+            - '@pimee_workflow.datagrid.product_draft_utility'
+        tags:
+            - { name: oro_filter.extension.orm_filter.filter, type: product_draft_date }

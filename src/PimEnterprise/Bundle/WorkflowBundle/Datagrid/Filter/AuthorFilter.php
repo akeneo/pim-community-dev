@@ -9,13 +9,12 @@
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Bundle\FilterBundle\Filter\ProductDraft;
+namespace PimEnterprise\Bundle\WorkflowBundle\Datagrid\Filter;
 
 use Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
 use Oro\Bundle\FilterBundle\Filter\FilterUtility;
 use Pim\Bundle\FilterBundle\Filter\AjaxChoiceFilter;
 use Pim\Component\Catalog\Query\Filter\FieldFilterInterface;
-use PimEnterprise\Bundle\FilterBundle\Filter\ProductDraftFilterUtility;
 use Symfony\Component\Form\FormFactoryInterface;
 
 /**

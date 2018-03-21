@@ -9,12 +9,11 @@
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Bundle\FilterBundle\Filter\ProductDraft;
+namespace PimEnterprise\Bundle\WorkflowBundle\Datagrid\Filter;
 
 use Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
 use Pim\Bundle\FilterBundle\Filter\AjaxChoiceFilter;
 use Pim\Component\Catalog\Query\Filter\Operators;
-use PimEnterprise\Bundle\FilterBundle\Filter\ProductDraftFilterUtility;
 
 /**
  * Extends ChoiceFilter in order to use a different operator that check an attribute code exists in the values

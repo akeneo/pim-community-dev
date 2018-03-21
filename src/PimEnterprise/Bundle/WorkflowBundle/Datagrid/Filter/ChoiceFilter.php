@@ -9,11 +9,10 @@
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Bundle\FilterBundle\Filter\ProductDraft;
+namespace PimEnterprise\Bundle\WorkflowBundle\Datagrid\Filter;
 
 use Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
 use Oro\Bundle\FilterBundle\Filter\ChoiceFilter as OroChoiceFilter;
-use PimEnterprise\Bundle\FilterBundle\Filter\ProductDraftFilterUtility;
 
 /**
  * Choice filter for product draft

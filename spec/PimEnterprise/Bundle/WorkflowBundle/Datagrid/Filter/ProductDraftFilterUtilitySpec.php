@@ -1,9 +1,8 @@
 <?php
 
-namespace spec\PimEnterprise\Bundle\FilterBundle\Filter;
+namespace spec\PimEnterprise\Bundle\WorkflowBundle\Datagrid\Filter;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
 use Pim\Bundle\FilterBundle\Datasource\FilterProductDatasourceAdapterInterface;
 use Pim\Component\Catalog\Query\ProductQueryBuilderInterface;
 use PimEnterprise\Component\Workflow\Repository\ProductDraftRepositoryInterface;
