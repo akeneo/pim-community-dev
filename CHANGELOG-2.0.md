@@ -1,8 +1,14 @@
+# 2.0.x
+
+## Bug fixes
+
+- PIM-7254: Fix teamwork assistant user notification when an attribute group permission has `All` group set
+
 # 2.0.18 (2018-03-20)
 
 ## Bug fixes
 
-PIM-6885: Display all product information to users having only view rights
+- PIM-6885: Display all product information to users having only view rights
 
 # 2.0.17 (2018-03-06)
 
