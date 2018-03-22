@@ -89,6 +89,7 @@ user:
     label: Vista de grilla de producto automática
   default_grid_view:
     none: Ninguno
+  timezone: Zona horaria
 Role: Rol
 Owner: Propietario
 General: General
@@ -175,7 +176,6 @@ Username or Email: Nombre de usuario o Email
 "Forgot Password": "Contraseña olvidada"
 Request: Petición
 Check Email: Revise su correo electrónico
-password_reset_email_sent: Se envió un correo electrónico a %email%. Contiene un enlace que usted debe hacer clic para restablecer su contraseña.
 Go to homepage: Ir a la página de inicio
 Login: Ingresar
 "Create role": "Crear rol"

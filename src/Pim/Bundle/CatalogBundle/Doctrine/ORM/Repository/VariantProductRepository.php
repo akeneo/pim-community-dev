@@ -58,7 +58,7 @@ class VariantProductRepository implements VariantProductRepositoryInterface
             ->select('vp')
             ->from(ProductInterface::class, 'vp')
             ->where('vp.parent = :parent')
-            ->setParameter('parent', $parent->getParent())
+            ->setParameter('parent', $parent)
             ->orderBy('vp.created', 'ASC')
             ->addOrderBy('vp.identifier', 'ASC')
             ->setMaxResults(1)

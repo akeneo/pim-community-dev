@@ -15,6 +15,8 @@ use Pim\Component\Catalog\Query\Filter\Operators;
  * The supported operator are:
  *   - AT_LEAST_COMPLETE
  *   - AT_LEAST_INCOMPLETE
+ *   - ALL_COMPLETE
+ *   - ALL_INCOMPLETE
  *
  * @author    Arnaud Langlade <arnaud.langlade@akeneo.com>
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
@@ -37,7 +39,7 @@ class CompletenessFilter extends AbstractFieldFilter implements FieldFilterInter
      */
     public function addFieldFilter($field, $operator, $value, $locale = null, $channel = null, $options = [])
     {
-        if (empty($locale)) {
+        if (empty($locale) && empty($options['locales'])) {
             throw InvalidPropertyException::dataExpected('completeness', 'a valid locale', static::class);
         }
 
@@ -45,37 +47,84 @@ class CompletenessFilter extends AbstractFieldFilter implements FieldFilterInter
             throw InvalidPropertyException::dataExpected('completeness', 'a valid channel', static::class);
         }
 
-        $productFilterField = sprintf('completeness.%s.%s', $channel, $locale);
+        $locales = empty($locale) ? $options['locales'] : [$locale];
 
+        // How the filter works
+        // - At least one complete:   all_incomplete == false
+        // - All complete:            all_complete == true
+        // - At least one incomplete: all_complete == false
+        // - All incomplete:          all_incomplete == true
         switch ($operator) {
             case Operators::AT_LEAST_COMPLETE:
-                $productModelFilterField = sprintf('at_least_complete.%s.%s', $channel, $locale);
-                $this->searchQueryBuilder->addFilter(
-                    [
+                $shouldClauses = [];
+                foreach ($locales as $locale) {
+                    $completeness = sprintf('completeness.%s.%s', $channel, $locale);
+                    $allIncomplete = sprintf('all_incomplete.%s.%s', $channel, $locale);
+                    $shouldClauses[] = [
                         'bool' => [
                             'should' => [
-                                ['term' => [$productFilterField => 100]],
-                                ['term' => [$productModelFilterField => 1]],
+                                ['term' => [$completeness => 100]],
+                                ['term' => [$allIncomplete => 0]],
                             ],
                             'minimum_should_match' => 1,
                         ],
-                    ]
-                );
+                    ];
+                }
+                $this->searchQueryBuilder->addFilter(['bool' => ['should' => $shouldClauses]]);
+                break;
+
+            case Operators::ALL_COMPLETE:
+                $mustClauses = [];
+                foreach ($locales as $locale) {
+                    $completeness = sprintf('completeness.%s.%s', $channel, $locale);
+                    $allComplete = sprintf('all_complete.%s.%s', $channel, $locale);
+                    $mustClauses[] = [
+                        'bool' => [
+                            'should' => [
+                                ['term' => [$completeness => 100]],
+                                ['term' => [$allComplete => 1]],
+                            ],
+                            'minimum_should_match' => 1,
+                        ],
+                    ];
+                }
+                $this->searchQueryBuilder->addFilter(['bool' => ['must' => $mustClauses]]);
                 break;
 
             case Operators::AT_LEAST_INCOMPLETE:
-                $productModelFilterField = sprintf('at_least_incomplete.%s.%s', $channel, $locale);
-                $this->searchQueryBuilder->addFilter(
-                    [
+                $shouldClause = [];
+                foreach ($locales as $locale) {
+                    $completeness = sprintf('completeness.%s.%s', $channel, $locale);
+                    $allComplete = sprintf('all_complete.%s.%s', $channel, $locale);
+                    $shouldClause[] = [
                         'bool' => [
                             'should' => [
-                                ['range' => [$productFilterField => ['lt' => 100]]],
-                                ['term' => [$productModelFilterField => 1]],
+                                ['range' => [$completeness => ['lt' => 100]]],
+                                ['term' => [$allComplete => 0]],
                             ],
                             'minimum_should_match' => 1,
                         ],
-                    ]
-                );
+                    ];
+                }
+                $this->searchQueryBuilder->addFilter(['bool' => ['should' => $shouldClause]]);
+                break;
+
+            case Operators::ALL_INCOMPLETE:
+                $mustClauses = [];
+                foreach ($locales as $locale) {
+                    $completeness = sprintf('completeness.%s.%s', $channel, $locale);
+                    $allIncomplete = sprintf('all_incomplete.%s.%s', $channel, $locale);
+                    $mustClauses[] = [
+                        'bool' => [
+                            'should' => [
+                                ['range' => [$completeness => ['lt' => 100]]],
+                                ['term' => [$allIncomplete => 1]],
+                            ],
+                            'minimum_should_match' => 1,
+                        ],
+                    ];
+                }
+                $this->searchQueryBuilder->addFilter(['bool' => ['must' => $mustClauses]]);
                 break;
             default:
                 throw InvalidOperatorException::notSupported($operator, static::class);

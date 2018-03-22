@@ -73,11 +73,7 @@ jobs:
             withHeader: true
             with_media: true
             filters:
-                data:
-                    -
-                        field: categories
-                        operator: 'IN CHILDREN'
-                        value: ['master']
+                data: []
                 structure:
                     scope: mobile
                     locales:
@@ -214,6 +210,11 @@ jobs:
         alias:     add_product_value
         label:     Mass add products values
         type:      mass_edit
+    delete_products_and_product_models:
+        connector: Akeneo Mass Edit Connector
+        alias:     delete_products_and_product_models
+        label:     Mass delete products
+        type:      mass_delete
     remove_product_value:
         connector: Akeneo Mass Edit Connector
         alias:     remove_product_value
@@ -243,6 +244,11 @@ jobs:
         connector: Akeneo Mass Edit Connector
         alias:     edit_common_attributes
         label:     Mass edit product attributes
+        type:      mass_edit
+    add_attribute_value:
+        connector: Akeneo Mass Edit Connector
+        alias:     add_attribute_value
+        label:     Mass add attribute value
         type:      mass_edit
     add_to_existing_product_model:
         connector: Akeneo Mass Edit Connector

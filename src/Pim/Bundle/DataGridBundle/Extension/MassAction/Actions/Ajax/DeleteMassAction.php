@@ -2,7 +2,6 @@
 
 namespace Pim\Bundle\DataGridBundle\Extension\MassAction\Actions\Ajax;
 
-use Oro\Bundle\DataGridBundle\Extension\Action\ActionConfiguration;
 use Oro\Bundle\DataGridBundle\Extension\MassAction\Actions\Ajax\AjaxMassAction;
 
 /**
@@ -14,24 +13,4 @@ use Oro\Bundle\DataGridBundle\Extension\MassAction\Actions\Ajax\AjaxMassAction;
  */
 class DeleteMassAction extends AjaxMassAction
 {
-    /**
-     * @var array
-     */
-    protected $requiredOptions = ['handler', 'entity_name'];
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setOptions(ActionConfiguration $options)
-    {
-        if (empty($options['handler'])) {
-            $options['handler'] = 'mass_delete';
-        }
-
-        if (empty($options['route'])) {
-            $options['route'] = 'pim_datagrid_mass_action';
-        }
-
-        return parent::setOptions($options);
-    }
 }

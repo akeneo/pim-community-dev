@@ -346,7 +346,7 @@ flash:
     created: Attributo creato con successo
     updated: Attributo aggiornato con successo
     removed: Attributo eliminato con successo
-    identifier not removable: L'dentificatore attributo non può essere rimosso
+    identifier_not_removable: L'dentificatore attributo non può essere rimosso
   attribute group:
     created: Gruppo di attributi creato con successo
     updated: Gruppo di attributi aggiornato con successo

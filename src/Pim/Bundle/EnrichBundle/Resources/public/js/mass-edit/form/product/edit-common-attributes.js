@@ -70,7 +70,7 @@ define(
                 };
 
                 if (!this.formPromise) {
-                    this.formPromise = FormBuilder.build('pim-mass-product-edit-form').then(function (form) {
+                    this.formPromise = FormBuilder.build(this.config.innerForm).then(function (form) {
                         form.setData(product);
                         form.trigger('pim_enrich:form:entity:post_fetch', product);
                         this.listenTo(form, 'pim_enrich:mass_edit:model_updated', this.updateModel);

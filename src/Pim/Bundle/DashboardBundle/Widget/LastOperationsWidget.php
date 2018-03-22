@@ -89,8 +89,12 @@ class LastOperationsWidget implements WidgetInterface
                 ->translator
                 ->trans('pim_import_export.batch_status.' . $operation['status']);
             if ($operation['date'] instanceof \DateTime) {
-                $locale = $this->tokenStorage->getToken()->getUser()->getUiLocale()->getCode();
-                $operation['date'] = $this->presenter->present($operation['date'], ['locale' => $locale]);
+                $user = $this->tokenStorage->getToken()->getUser();
+                $locale = $user->getUiLocale()->getCode();
+                $operation['date'] = $this->presenter->present($operation['date'], [
+                    'locale' => $locale,
+                    'timezone' => $user->getTimeZone()
+                ]);
             }
             $operation['canSeeReport'] = !in_array($operation['type'], ['import', 'export']) ||
                 $this->securityFacade->isGranted(sprintf('pim_importexport_%s_execution_show', $operation['type']));

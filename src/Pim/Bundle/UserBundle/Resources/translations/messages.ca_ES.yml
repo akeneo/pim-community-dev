@@ -89,6 +89,7 @@ user:
     label: Vista de quadrícula de producte per defecte
   default_grid_view:
     none: Cap
+  timezone: Zona horària
 Role: Rol
 Owner: Propietari
 General: General
@@ -175,7 +176,6 @@ Username or Email: Usuari o correu electrònic
 "Forgot Password": "He oblidat la contrasenya"
 Request: Petició
 Check Email: Comprovar el correu electrònic
-password_reset_email_sent: S'ha enviat un correu electrònic a %email% que conté un enllaç on fer clic per restablir la contrasenya.
 Go to homepage: Anar a la pàgina d'inici
 Login: Iniciar Sessió
 "Create role": "Crear rol"

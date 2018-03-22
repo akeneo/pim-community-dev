@@ -89,6 +89,7 @@ user:
     label: Zadani prikaz tablice proizvoda
   default_grid_view:
     none: Niti jedan
+  timezone: Vremenska zona
 Role: Rola
 Owner: Vlasnik
 General: Općenito
@@ -175,7 +176,6 @@ Username or Email: Korisničko ime ili E-mail
 "Forgot Password": "Zaboravio/la si lozinku"
 Request: Zahtjev
 Check Email: Provjeri e-poštu
-password_reset_email_sent: E-mail je poslan na %email%. Sadrži poveznicu za ponovno postavljanje lozinke.
 Go to homepage: Idi na početnu stranicu
 Login: Prijava
 "Create role": "Kreiraj rolu"

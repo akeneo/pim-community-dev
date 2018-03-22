@@ -334,7 +334,7 @@ flash:
     created: 属性已创建
     updated: 属性已更新
     removed: 属性已删除
-    identifier not removable: 标识属性不能被删除
+    identifier_not_removable: 标识属性不能被删除
   attribute group:
     created: 属性组已创建
     updated: 属性组已更新

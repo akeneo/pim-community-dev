@@ -11,7 +11,7 @@ use Symfony\Component\Translation\Exception\NotFoundResourceException;
 
 /**
  * Background process launcher for mass edit Operations.
- * It internally uses the Akeneo\Bundle\BatchBundle\Launcher\SimpleJobLauncher.
+ * It internally uses the Akeneo\Bundle\BatchQueueBundle\Launcher\QueueJobLauncher.
  *
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
