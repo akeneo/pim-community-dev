@@ -82,14 +82,32 @@ final class ImportFileContext extends PimContext implements SnippetAcceptingCont
     public function iShouldHaveTheWarning(string $expectedWarning)
     {
         foreach ($this->jobExecution->getStepExecutions() as $stepExecution) {
-            foreach ($stepExecution->getWarnings() as $warning) {
+            foreach     ($stepExecution->getWarnings() as $warning) {
                 if (str_replace('\\"', '"', $expectedWarning) === trim($warning->getReason())) {
                     return true;
                 }
             }
         }
 
-        throw new ExpectationException('Cannot find the warning "%s"', $expectedWarning), $this->getSession());
+        throw new ExpectationException(sprintf('Cannot find the warning "%s".', $expectedWarning), $this->getSession());
+    }
+
+    /**
+     * @Then /^I should have the error "(?P<expectedError>(?:[^"]|\\")*)"$/
+     */
+    public function iShouldHaveTheError(string $expectedError)
+    {
+        $expectedError = $this->replacePlaceholders($expectedError);
+
+        foreach ($this->jobExecution->getStepExecutions() as $stepExecution) {
+            foreach ($stepExecution->getFailureExceptions() as $exception) {
+                if (str_replace('\\"', '"', $expectedError) === trim($exception['message'])) {
+                    return true;
+                }
+            }
+        }
+
+        throw new ExpectationException(sprintf('Cannot find the error "%s".', $expectedError), $this->getSession());
     }
 
     private function waitForJobToFinish(JobInstance $jobInstance): JobExecution
