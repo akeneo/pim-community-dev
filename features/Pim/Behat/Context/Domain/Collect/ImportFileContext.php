@@ -6,6 +6,7 @@ use Akeneo\Component\Batch\Model\JobExecution;
 use Akeneo\Component\Batch\Model\JobInstance;
 use Behat\Behat\Context\SnippetAcceptingContext;
 use Behat\Gherkin\Node\TableNode;
+use Behat\Mink\Exception\ExpectationException;
 use Context\Spin\SpinCapableTrait;
 use PHPUnit\Framework\Assert;
 use Pim\Behat\Context\PimContext;
@@ -76,19 +77,19 @@ final class ImportFileContext extends PimContext implements SnippetAcceptingCont
     }
 
     /**
-     * @Then /^I should have the error "(?P<error>(?:[^"]|\\")*)"$/
+     * @Then /^I should have the warning "(?P<expectedWarning>(?:[^"]|\\")*)"$/
      */
-    public function iShouldHaveTheError($error)
+    public function iShouldHaveTheWarning(string $expectedWarning)
     {
         foreach ($this->jobExecution->getStepExecutions() as $stepExecution) {
             foreach ($stepExecution->getWarnings() as $warning) {
-                if (str_replace('\\"', '"', $error) === trim($warning->getReason())) {
+                if (str_replace('\\"', '"', $expectedWarning) === trim($warning->getReason())) {
                     return true;
                 }
             }
         }
 
-        throw new \Exception(sprintf('Cannot find the error "%s"', $error));
+        throw new ExpectationException('Cannot find the warning "%s"', $expectedWarning), $this->getSession());
     }
 
     private function waitForJobToFinish(JobInstance $jobInstance): JobExecution
