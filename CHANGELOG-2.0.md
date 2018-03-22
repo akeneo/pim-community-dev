@@ -1,4 +1,4 @@
-# 2.0.18 (2018-03-20)
+# 2.0.x
 
 ## Bug fixes
 
@@ -7,6 +7,7 @@
 - PIM-7152: Fix errors due to deletion of attributes linked to published products
 - PIM-7214: Fix a bug that prevents to select multiple items across pages in Products, Family and associations grids
 - PIM-7215: Fix wrong direction of sorting arrow in the grids
+- PIM-7203: Fix bulk actions mass edit only some of the selection
 - PIM-7220: Fix the filter "is empty" when the attribute belongs to a family
 - PIM-7237: Fix integrity constraint violation during import
 - PIM-7243: Fix issue on currencies in CSV and XLSX product imports
