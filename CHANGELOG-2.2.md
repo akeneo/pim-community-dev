@@ -1,3 +1,7 @@
+# 2.2.x
+
+# 2.2.0 (2018-03-21)
+
 # 2.2.0-BETA1 (2018-03-21)
 
 ## Improve Julia's experience
