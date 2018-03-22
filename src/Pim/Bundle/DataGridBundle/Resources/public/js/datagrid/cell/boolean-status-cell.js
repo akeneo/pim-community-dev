@@ -14,11 +14,10 @@ define(['oro/datagrid/string-cell', 'oro/translator'],
          */
         return StringCell.extend({
             render: function () {
-                const columnValue = this.model.get(this.column.get('name'))
+                const columnValue = this.model.get(this.column.get('name'));
                 const value = this.formatter.fromRaw(columnValue);
-                const valueIsTrue = (value || value === 'true' || value === 1);
-                const label =  valueIsTrue ? '<strong>' + __('Yes') + '</strong>' : __('No');
-                
+                const label = (true === value || 'true' === value || '1' === value) ? '<strong>' + __('Yes') + '</strong>' : __('No');
+
                 this.$el.empty().html(label);
 
                 return this;
