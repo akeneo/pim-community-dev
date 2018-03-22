@@ -50,7 +50,7 @@ class DateTimeWithUserTimezoneProperty extends FieldProperty
         return $this->presenter->present(
             $value,
             [
-                'locale'   => $this->translator->getLocale(),
+                'locale'   => $this->userContext->getUiLocaleCode(),
                 'timezone' => $this->userContext->getUserTimezone(),
             ]
         );
