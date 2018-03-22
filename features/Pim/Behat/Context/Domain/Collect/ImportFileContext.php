@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Behat\Context;
+namespace Pim\Behat\Context\Domain\Collect;
 
 use Akeneo\Component\Batch\Model\JobExecution;
 use Akeneo\Component\Batch\Model\JobInstance;
@@ -8,6 +8,7 @@ use Behat\Behat\Context\SnippetAcceptingContext;
 use Behat\Gherkin\Node\TableNode;
 use Context\Spin\SpinCapableTrait;
 use PHPUnit\Framework\Assert;
+use Pim\Behat\Context\PimContext;
 
 /**
  * This context aims to contain all methods to the launch of a job.
