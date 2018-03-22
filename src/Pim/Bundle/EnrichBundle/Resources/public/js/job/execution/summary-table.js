@@ -1,6 +1,6 @@
 'use strict';
 /**
- * Launch button
+ * Displays the summary table for a job execution
  *
  * @author    Alban Alnot <alban.alnot@consertotech.pro>
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
