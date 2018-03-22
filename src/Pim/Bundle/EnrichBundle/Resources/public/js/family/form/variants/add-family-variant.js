@@ -48,7 +48,7 @@ define(
                 const modalParameters = {
                     className: 'modal modal--fullPage add-family-variant-modal',
                     content: '',
-                    cancelText: __('pim_enrich.entity.family.variant.cancel'),
+                    cancelText: __('pim_common.cancel'),
                     okText: __('pim_enrich.entity.family.variant.create'),
                     okCloses: false
                 };

@@ -1,3 +1,6 @@
+pim_common:
+    cancel: Cancel
+
 pim_enrich:
     # Product
     product:
@@ -563,7 +566,6 @@ Inactive:                            Inactive
 Do not convert:                      Do not convert
 
 Create:               Create
-Cancel:               Cancel
 Choose a family:      Choose a family
 Choose a unit:        Choose a unit
 No matches found:     No matches found

@@ -1,3 +1,6 @@
+pim_common:
+    cancel: Cancel
+
 # Grid action messages
 confirmation:
     title: Confirm
@@ -38,7 +41,6 @@ pim_datagrid:
         create_view_modal:
             create: Create
             confirm: OK
-            cancel: Cancel
 
 flash:
     item:
@@ -168,7 +170,6 @@ pim_enrich:
              label: Label
              labels:
                  save: Save
-                 cancel: Cancel
         product:
             navigation: Product navigation
             infos: Product infos
@@ -250,7 +251,6 @@ pim_enrich:
                     family: Choose a family
                     family_variant: Choose a family variant
                     save: Save
-                    cancel: Cancel
             message:
                 created: Product successfully created
             completeness: Complete
@@ -274,7 +274,6 @@ pim_enrich:
             title: product models
             add_child:
                 create: Add new
-                cancel: Cancel
                 confirm: Confirm
                 create_label: "Add a new {{ axes }}"
                 fields:
@@ -369,7 +368,6 @@ pim_enrich:
                 create_description: In a family variant, you can define a structure for products with variants. Choose the number of managed variant levels, the attributes used as variant axes for each level, and then define how the attributes are distributed.
                 update_description: Drag & drop attributes to the selected variant level to have these attributes managed at the variant level.
                 create: Create
-                cancel: Cancel
                 code: Code
                 label: Label
                 levels: Variant levels
@@ -614,7 +612,6 @@ pim_enrich:
             add_option_modal:
                 title: Add attribute option
                 confirm: Add
-                cancel: Cancel
         entity:
             switch:
                 "no": "No"
@@ -843,7 +840,6 @@ pim_enrich:
                     empty: All attributes will be exported
                     modal:
                         apply: Apply
-                        cancel: Cancel
                         title: Attribute selection
                 attributes_selector:
                     attribute_group: Attribute groups
@@ -1028,7 +1024,6 @@ pim_enrich:
     mass_edit:
         next: Next
         previous: Back
-        cancel: Cancel
         confirm: Confirm
         product:
             title: Products bulk action

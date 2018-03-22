@@ -227,7 +227,7 @@ define(
                 const modalParameters = {
                     className: 'modal modal--fullPage add-product-model-child',
                     content: '',
-                    cancelText: __('pim_enrich.entity.product_model.add_child.cancel'),
+                    cancelText: __('pim_common.cancel'),
                     okText: __('pim_enrich.entity.product_model.add_child.confirm'),
                     okCloses: false
                 };
