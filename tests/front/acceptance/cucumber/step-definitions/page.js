@@ -4,7 +4,7 @@ module.exports = function(cucumber) {
 
     Then('the title of the page should be {string}', async function (string) {
         const titleElement = await this.page.waitForSelector('.AknTitleContainer-title');
-        const pageTitle = await (await titleElement.getProperty('innerText')).jsonValue();
+        const pageTitle = await (await titleElement.getProperty('textContent')).jsonValue();
         assert.equal(pageTitle.trim(), string);
     });
 };

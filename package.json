@@ -24,15 +24,14 @@
   },
   "devDependencies": {
     "colors": "1.1.2",
-    "cucumber": "^4.0.0",
-    "cucumber-html-reporter": "^4.0.1",
+    "cucumber": "4.0.0",
+    "cucumber-html-reporter": "4.0.1",
     "dep-diff": "1.0.1",
-    "glob": "^7.1.2",
-    "html-webpack-inline-source-plugin": "^0.0.9",
-    "html-webpack-plugin": "^2.30.1",
-    "puppeteer": "^1.1.1",
-    "read-pkg": "2.0.0",
-    "yargs": "^11.0.0"
+    "glob": "7.1.2",
+    "html-webpack-inline-source-plugin": "0.0.9",
+    "html-webpack-plugin": "2.30.1",
+    "puppeteer": "1.1.1",
+    "read-pkg": "2.0.0"
   },
   "dependencies": {
     "JSON2": "0.1.0",

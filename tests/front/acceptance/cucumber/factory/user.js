@@ -1,3 +1,6 @@
+/**
+ * @returns {Object}
+ */
 module.exports = () => {
     return {
         username: 'admin',

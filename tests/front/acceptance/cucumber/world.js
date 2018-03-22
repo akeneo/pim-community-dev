@@ -1,4 +1,4 @@
-const { createUser } = require('./fixtures');
+const createUser = require('./factory/user');
 const puppeteer = require('puppeteer');
 const extensions = require(`${process.cwd()}/web/test_dist/extensions.json`);
 const fs = require('fs');
@@ -82,14 +82,6 @@ module.exports = function(cucumber) {
 
             console.log(`Screenshot available at ${filePath}`);
             await this.attach(imageBuffer, 'image/png');
-            // await fs.writeFile(filePath, imageBuffer);
-            //
-            // await fs.stat(filePath, (err, stats) => {
-            //     if (err) return console.log('Error: ', err);
-            //     console.log('File exists at: ', filePath, stats);
-            // });
-
-            return;
         }
 
         if (!this.parameters.debug) {

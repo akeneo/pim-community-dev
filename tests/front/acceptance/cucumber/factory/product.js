@@ -1,3 +1,16 @@
+/**
+ * Generate a product
+ *
+ * @param {String} identifier
+ * @param {Array} values
+ * @param {Boolean} enabled
+ * @param {String} family
+ * @param {Object} label
+ * @param {String} model_type
+ * @param {Object} image
+ * @param {Array} completeness
+ * @returns {Object}
+ */
 const createProduct = (
     identifier,
     values = [],
@@ -6,7 +19,7 @@ const createProduct = (
     label = {},
     model_type = 'product',
     image = null,
-    completenesses = []
+    completeness = []
 ) => {
     return {
         identifier,
@@ -17,7 +30,7 @@ const createProduct = (
             label,
             model_type,
             image,
-            completenesses
+            completeness
         }
     };
 };
