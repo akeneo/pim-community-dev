@@ -13,6 +13,8 @@ use Symfony\Component\Translation\TranslatorInterface;
  */
 class TranslatedLabelProvider
 {
+    private const DEFAULT_STEPS_KEYS = 'default_steps';
+
     /** @var TranslatorInterface */
     protected $translator;
 
@@ -52,6 +54,8 @@ class TranslatedLabelProvider
      * Get the Step label with the given $stepName, base on the $jobName.
      * Example: "batch_jobs.csv_product_import.perform.label"
      *
+     * If no label was found for this specific job, it will look for the default step labels.
+     *
      * @param string $jobName
      * @param string $stepName
      *
@@ -59,13 +63,14 @@ class TranslatedLabelProvider
      */
     public function getStepLabel($jobName, $stepName)
     {
-        $id = sprintf(
-            '%s.%s.%s.label',
-            $this->keyPrefix,
-            $jobName,
-            $stepName
-        );
+        $id = sprintf('%s.%s.%s.label', $this->keyPrefix, $jobName, $stepName);
 
-        return $this->translator->trans($id);
+        $result = $this->translator->trans($id);
+        if ($result === $id) {
+            $id = sprintf('%s.%s.%s', $this->keyPrefix, self::DEFAULT_STEPS_KEYS, $stepName);
+            $result = $this->translator->trans($id);
+        }
+
+        return $result;
     }
 }

@@ -25,4 +25,13 @@ class TranslatedLabelProviderSpec extends ObjectBehavior
         $this->getStepLabel('csv_product_import', 'perform')
             ->shouldReturn('Import Products');
     }
+
+    function it_returns_default_step($translator)
+    {
+        $translator
+            ->trans('batch_jobs.csv_product_import.perform.label')
+            ->willReturn('batch_jobs.csv_product_import.perform.label');
+        $translator->trans('batch_jobs.default_steps.perform')->willReturn('Perform');
+        $this->getStepLabel('csv_product_import', 'perform')->shouldReturn('Perform');
+    }
 }
