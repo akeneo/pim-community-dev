@@ -6,7 +6,10 @@ use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\TableNode;
 use Doctrine\Common\Util\ClassUtils;
 use Doctrine\ORM\EntityManagerInterface;
+use Pim\Component\Catalog\Exception\ObjectNotFoundException;
+use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Model\ValueInterface;
 use Pim\Component\Catalog\Model\VariantProductInterface;
 use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
 use Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\AttributeColumnInfoExtractor;
@@ -47,22 +50,41 @@ class ProductStorage implements Context
      */
     public function theProductShouldNotHaveTheFollowingValues($identifier, TableNode $table)
     {
-        /** @var ProductInterface $product */
-        $product = $this->productRepository->findOneByIdentifier($identifier);
+        $valueGetter = function (ProductInterface $product, string $attributeCode, array $infos): ?ValueInterface {
+            return $product->getValues()->getByCodes($attributeCode, $infos['locale_code'], $infos['scope_code']);
+        };
 
-        foreach ($table->getRowsHash() as $rawCode => $value) {
-            $infos = $this->attributeColumnInfoExtractor->extractColumnInfo($rawCode);
-
-            $attribute     = $infos['attribute'];
-            $attributeCode = $attribute->getCode();
-            $localeCode    = $infos['locale_code'];
-            $scopeCode     = $infos['scope_code'];
-            $productValue  = $product->getValue($attributeCode, $localeCode, $scopeCode);
-
-            if (null !== $productValue) {
-                throw new \Exception(sprintf('Product value for product "%s" exists', $identifier));
+        $assertion = function (AttributeInterface $attribute, ?ValueInterface $value) use ($identifier) {
+            if (null !== $value) {
+                throw new \Exception(sprintf('The attribute "%s" for product "%s" exists', $attribute->getCode(), $identifier));
             }
-        }
+        };
+
+        $this->assertOnTheFollowingAttributes($identifier, $table, $valueGetter, $assertion);
+    }
+
+    /**
+     * @param $identifier
+     * @param TableNode $attributeCodes
+     * @throws ObjectNotFoundException
+     *
+     * @Then /^the product "([^"]*)" should have the following attribute codes?:$/
+     */
+    public function theProductShouldHaveTheFollowingAttributes($identifier, TableNode $attributeCodes)
+    {
+        $this->entityManager->clear();
+
+        $valueGetter = function (ProductInterface $product, string $attributeCode, array $infos): ?ValueInterface {
+            return $product->getValues()->getByCodes($attributeCode, $infos['locale_code'], $infos['scope_code']);
+        };
+
+        $assertion = function (AttributeInterface $attribute, ?ValueInterface $value) use ($identifier) {
+            if (null === $value) {
+                throw new \Exception(sprintf('The attribute "%s" for product "%s" does not exist', $attribute->getCode(), $identifier));
+            }
+        };
+
+        $this->assertOnTheFollowingAttributes($identifier, $attributeCodes, $valueGetter, $assertion);
     }
 
     /**
@@ -90,20 +112,17 @@ class ProductStorage implements Context
     {
         $this->entityManager->clear();
 
-        /** @var VariantProductInterface $product */
-        $product = $this->productRepository->findOneByIdentifier($identifier);
+        $valuesGetter = function (VariantProductInterface $product, string $attributeCode, array $infos): ?ValueInterface {
+            return $product->getValuesForVariation()->getByCodes($attributeCode, $infos['locale_code'], $infos['scope_code']);
+        };
 
-        foreach ($table->getRowsHash() as $rawCode => $value) {
-            $infos = $this->attributeColumnInfoExtractor->extractColumnInfo($rawCode);
-
-            $attribute = $infos['attribute'];
-            $attributeCode = $attribute->getCode();
-            $productValue = $product->getValuesForVariation()->getByCodes($attributeCode, $infos['locale_code'], $infos['scope_code']);
-
-            if (null !== $productValue) {
-                throw new \Exception(sprintf('Product value for product "%s" exists', $identifier));
+        $assertion = function (AttributeInterface $attribute, ?ValueInterface $value) use ($identifier) {
+            if (null !== $value) {
+                throw new \Exception(sprintf('Attribute %s for variant-product "%s" exists', $attribute->getCode(), $identifier));
             }
-        }
+        };
+
+        $this->assertOnTheFollowingAttributes($identifier, $table, $valuesGetter, $assertion);
     }
 
     /**
@@ -121,6 +140,40 @@ class ProductStorage implements Context
             throw new \Exception(
                 sprintf('The given object must be a variant product, %s given', ClassUtils::getClass($product))
             );
+        }
+    }
+
+    /**
+     * @param string $identifier
+     * @param TableNode $attributeCodes
+     * @param callable $valueGetter(ProductInterface $product, string $attributeCode, array $infos)
+     * @param callable $assertion(AttributeInterface $attribute, ?ValueInterface $value)
+     *
+     * @throws ObjectNotFoundException
+     */
+    private function assertOnTheFollowingAttributes(
+        string $identifier,
+        TableNode $attributeCodes,
+        callable $valueGetter,
+        callable $assertion
+    ): void {
+        $product = $this->productRepository->findOneByIdentifier($identifier);
+
+        if (null === $product) {
+            throw new ObjectNotFoundException(
+                sprintf('The product with identifier %s does not exist', $identifier)
+            );
+        }
+
+        foreach ($attributeCodes->getRowsHash() as $rawCode => $value) {
+            $infos = $this->attributeColumnInfoExtractor->extractColumnInfo($rawCode);
+
+            /** @var AttributeInterface $attribute */
+            $attribute = $infos['attribute'];
+
+            $productValue = $valueGetter($product, $attribute->getCode(), $infos);
+
+            $assertion($attribute, $productValue);
         }
     }
 }

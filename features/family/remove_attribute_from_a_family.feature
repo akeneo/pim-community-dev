@@ -8,29 +8,19 @@ Feature: Remove attribute from a family
     Given the "catalog_modeling" catalog configuration
     And I am logged in as "Peter"
 
-  Scenario: Successfully remove an attribute from a family and display it as removable from product
-    Given I am on the "accessories" family page
-    And I visit the "Attributes" tab
-    Then I should see attributes "EAN" in group "ERP"
-    When I remove the "material" attribute
-    And I save the family
-    And I should not see the text "There are unsaved changes."
-    Then I should see the flash message "Attribute successfully removed from the family"
-    When I am on the "1111111292" product page
-    Then I should not see the text "Material"
-
-  Scenario: Successfully remove an attribute from a family and it does not appear in the variant product product model edit pages
+  Scenario: Successfully remove an attribute from a family and assert its removal from product, product-model, variant-product
     Given I am on the "accessories" family page
     And I visit the "Attributes" tab
     When I remove the "material" attribute
     And I save the family
-    And I should not see the text "There are unsaved changes."
-    Then I should see the flash message "Attribute successfully removed from the family"
-    When I am on the "model-braided-hat" product model page
-    And I should see the text "Supplier"
-    And I should not see the text "Material"
-    And I am on the "braided-hat-m" product page
-    And I should not see the text "Material"
+    And I wait for the "compute_completeness_of_products_family" job to finish
+    And I wait for the "compute_family_variant_structure_changes" job to finish
+    And I wait for the "compute_product_models_descendants" job to finish
+    Then the product "1111111292" should not have the following values:
+      | material |
+    And the variant product "braided-hat-m" should not have the following values:
+      | material |
+    And the product model "model-braided-hat" should not have the following values "material"
 
   Scenario: Impossible to remove some attributes from a family (used as label, used as image, used as axis)
     Given I am on the "shoes" family page
