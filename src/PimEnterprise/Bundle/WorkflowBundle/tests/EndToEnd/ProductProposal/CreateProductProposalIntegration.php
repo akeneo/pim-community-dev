@@ -2,9 +2,6 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\tests\EndToEnd\ProductProposal;
 
-use Akeneo\Test\Integration\Configuration;
-use Pim\Component\Catalog\Model\ProductInterface;
-use Pim\Bundle\ApiBundle\tests\integration\ApiTestCase;
 use PimEnterprise\Component\Workflow\Model\ProductDraft;
 use PimEnterprise\Component\Workflow\Model\ProductDraftInterface;
 use Symfony\Component\HttpFoundation\Response;
@@ -19,7 +16,7 @@ use Symfony\Component\HttpFoundation\Response;
  * | Manager  | View,Edit,Own | View,Edit,Own | View,Edit,Own |
  * +----------+-----------------------------------------------+
  */
-class CreateProductProposalIntegration extends ApiTestCase
+class CreateProductProposalIntegration extends AbstractProposalIntegration
 {
     public function testCreateProductProposalSuccessful()
     {
@@ -154,12 +151,12 @@ JSON;
 
         $expectedResponseContent =
 <<<JSON
-{"code":403,"message":"You can neither view, nor update, nor delete the product \\"product_with_draft\\", as it is only categorized in categories on which you do not have a view permission."}
+{"code":404,"message":"Product \\"product_with_draft\\" does not exist."}
 JSON;
 
         $response = $client->getResponse();
 
-        $this->assertSame(Response::HTTP_FORBIDDEN, $response->getStatusCode());
+        $this->assertSame(Response::HTTP_NOT_FOUND, $response->getStatusCode());
         $this->assertSame($response->getContent(), $expectedResponseContent);
     }
 
@@ -183,58 +180,6 @@ JSON;
         $this->assertSame($response->getContent(), $expectedResponseContent);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function getConfiguration(): Configuration
-    {
-        return $this->catalog->useTechnicalCatalog();
-    }
-
-    /**
-     * @param string $identifier
-     * @param array  $data
-     *
-     * @return ProductInterface
-     */
-    private function createProduct(string $identifier, array $data = []): ProductInterface
-    {
-        $product = $this->get('pim_catalog.builder.product')->createProduct($identifier);
-
-        $this->updateProduct($product, $data);
-
-        return $product;
-    }
-
-    /**
-     * @param ProductInterface $product
-     * @param array            $data
-     */
-    private function updateProduct(ProductInterface $product, array $data): void
-    {
-        $this->get('pim_catalog.updater.product')->update($product, $data);
-        $this->get('pim_catalog.saver.product')->save($product);
-
-        $this->get('akeneo_elasticsearch.client.product')->refreshIndex();
-    }
-
-    /**
-     * @param string           $userName
-     * @param ProductInterface $product
-     * @param array            $changes
-     *
-     * @return ProductDraftInterface
-     */
-    private function createProductDraft(string $userName, ProductInterface $product, array $changes): ProductDraftInterface
-    {
-        $this->get('pim_catalog.updater.product')->update($product, $changes);
-
-        $productDraft = $this->get('pimee_workflow.builder.draft')->build($product, $userName);
-
-        $this->get('pimee_workflow.saver.product_draft')->save($productDraft);
-
-        return $productDraft;
-    }
     /**
      * @param string $userName
      * @param string $productIdentifier

@@ -56,6 +56,8 @@ Feature: Catalog updates - Remove a product used by a project
     And I select rows tshirt-the-witcher-3
     When I select all entities
     And I press the "Delete" button
-    Then I should see the text "Are you sure you want to delete the selected products?"
+    Then I should see the text "Are you sure you want to delete the selected products and product models? All the product models' children will be also deleted."
     When I confirm the removal
+    And I wait for the "delete_products_and_product_models" job to finish
+    And I am on the products grid
     Then the grid should contain 0 element

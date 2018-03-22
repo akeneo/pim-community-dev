@@ -3,6 +3,7 @@
 namespace PimEnterprise\Bundle\ApiBundle\tests\integration\Controller\Product;
 
 use Pim\Component\Catalog\tests\integration\Normalizer\NormalizedProductCleaner;
+use PimEnterprise\Bundle\ApiBundle\tests\integration\Controller\PermissionFixturesLoader;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -35,6 +36,16 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class GetProductWithPermissionsIntegration extends AbstractProductTestCase
 {
+    /** @var PermissionFixturesLoader */
+    private $loader;
+
+    protected function setUp()
+    {
+        parent::setUp();
+
+        $this->loader = new PermissionFixturesLoader($this->testKernel->getContainer());
+    }
+
     public function testProductViewableByManager()
     {
         $standardizedProducts = $this->getStandardizedProducts();
@@ -155,6 +166,77 @@ JSON;
 JSON;
 
         $this->assertResponse($client->getResponse(), $expected);
+    }
+
+    public function testGetProductHavingAssociations()
+    {
+        $this->loader->loadProductsForAssociationPermissions();
+
+        $this->createProduct('product_having_associations', [
+            'categories' => ['categoryA'],
+            'associations' => [
+                'X_SELL' => [
+                    'products' => [
+                        'product_view',
+                        'product_no_view',
+                    ],
+                    'product_models' => [
+                        'product_model_view',
+                        'product_model_no_view',
+                    ],
+                ],
+            ],
+        ]);
+
+        $expectedResponse = <<<JSON
+{
+    "identifier": "product_having_associations",
+    "family": null,
+    "parent": null,
+    "groups": [],
+    "categories": [
+        "categoryA"
+    ],
+    "enabled": true,
+    "values": {},
+    "created": "2018-03-05T13:11:04+00:00",
+    "updated": "2018-03-05T13:11:04+00:00",
+    "associations": {
+        "PACK": {
+            "groups": [],
+            "products": [],
+            "product_models": []
+        },
+        "SUBSTITUTION": {
+            "groups": [],
+            "products": [],
+            "product_models": []
+        },
+        "UPSELL": {
+            "groups": [],
+            "products": [],
+            "product_models": []
+        },
+        "X_SELL": {
+            "groups": [],
+            "products": [
+                "product_view"
+            ],
+            "product_models": [
+                "product_model_view"
+            ]
+        }
+    },
+    "metadata": {
+        "workflow_status": "working_copy"
+    }
+}
+JSON;
+
+        $client = $this->createAuthenticatedClient([], [], null, null, 'mary', 'mary');
+        $client->request('GET', 'api/rest/v1/products/product_having_associations');
+
+        $this->assertResponse($client->getResponse(), $expectedResponse);
     }
 
     /**

@@ -100,6 +100,14 @@ jobs:
             enclosure:  '"'
             withHeader: true
             filePath: /tmp/product_model.csv
+            filters:
+                data: []
+                structure:
+                    scope: mobile
+                    locales:
+                        - de_DE
+                        - en_US
+                        - fr_FR
     csv_clothing_category_import:
         connector: Akeneo CSV Connector
         alias:     csv_category_import
@@ -298,6 +306,14 @@ jobs:
         type:      import
         configuration:
             filePath: '/tmp/xlsx_clothing_product_model_proposal_import.xlsx'
+            filters:
+                data: []
+                structure:
+                    scope: mobile
+                    locales:
+                        - de_DE
+                        - en_US
+                        - fr_FR
     add_product_value:
         connector: Akeneo Mass Edit Connector
         alias:     add_product_value
@@ -358,6 +374,11 @@ jobs:
         alias:     edit_common_attributes
         label:     Mass edit product attributes
         type:      mass_edit
+    add_attribute_value:
+        connector: Akeneo Mass Edit Connector
+        alias:     add_attribute_value
+        label:     Mass add attribute value
+        type:      mass_edit
     add_to_existing_product_model:
         connector: Akeneo Mass Edit Connector
         alias:     add_to_existing_product_model
@@ -368,6 +389,11 @@ jobs:
         alias:     set_attribute_requirements
         label:     Set family attribute requirements
         type:      mass_edit
+    delete_products_and_product_models:
+        connector: Akeneo Mass Edit Connector
+        alias:     delete_products_and_product_models
+        label:     Mass delete products
+        type:      mass_delete
     csv_product_quick_export:
         connector: Akeneo Mass Edit Connector
         alias: csv_product_quick_export

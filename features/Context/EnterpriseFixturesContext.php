@@ -1135,15 +1135,14 @@ class EnterpriseFixturesContext extends BaseFixturesContext
         $convertedData = $converter->convert($data);
         $category = $processor->process($convertedData);
 
-        /*
-         * When using ODM, one must persist and flush category without product
-         * before adding and persisting products inside it
-         */
         $assets = $category->getAssets();
         $this->getContainer()->get('pimee_product_asset.saver.category')->save($category);
-        foreach ($assets as $asset) {
-            $asset->addCategory($category);
-            $this->getContainer()->get('pimee_product_asset.saver.asset')->save($asset);
+
+        if (!empty($assets)) {
+            foreach ($assets as $asset) {
+                $asset->addCategory($category);
+                $this->getContainer()->get('pimee_product_asset.saver.asset')->save($asset);
+            }
         }
 
         return $category;

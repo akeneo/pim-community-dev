@@ -65,11 +65,11 @@ class ProductRuleRunner implements DryRunnerInterface
     public function run(RuleDefinitionInterface $definition, array $options = [])
     {
         $options = $this->resolveOptions($options);
-        $definition = $this->loadRule($definition, $options);
+        $rule = $this->loadRule($definition, $options);
 
-        $subjectSet = $this->selector->select($definition);
+        $subjectSet = $this->selector->select($rule);
         if (!empty($subjectSet)) {
-            $this->applier->apply($definition, $subjectSet);
+            $this->applier->apply($rule, $subjectSet);
         }
     }
 
@@ -79,9 +79,9 @@ class ProductRuleRunner implements DryRunnerInterface
     public function dryRun(RuleDefinitionInterface $definition, array $options = []): RuleSubjectSetInterface
     {
         $options = $this->resolveOptions($options);
-        $definition = $this->loadRule($definition, $options);
+        $rule = $this->loadRule($definition, $options);
 
-        return $this->selector->select($definition);
+        return $this->selector->select($rule);
     }
 
     /**
@@ -100,9 +100,8 @@ class ProductRuleRunner implements DryRunnerInterface
     protected function resolveOptions(array $options): array
     {
         $resolver = new OptionsResolver();
-        $resolver->setDefaults(['selected_products' => [], 'selected_product_models' => [], 'username' => null]);
-        $resolver->setAllowedTypes('selected_products', 'array');
-        $resolver->setAllowedTypes('selected_product_models', 'array');
+        $resolver->setDefaults(['selected_entities_with_values' => [], 'username' => null]);
+        $resolver->setAllowedTypes('selected_entities_with_values', 'array');
         $resolver->setAllowedTypes('username', ['string', 'null']);
         $options = $resolver->resolve($options);
 
@@ -117,30 +116,19 @@ class ProductRuleRunner implements DryRunnerInterface
      */
     protected function loadRule(RuleDefinitionInterface $definition, array $options): RuleInterface
     {
-        $definition = $this->builder->build($definition);
+        $rule = $this->builder->build($definition);
 
-        if (!empty($options['selected_products'])) {
+        if (!empty($options['selected_entities_with_values'])) {
             $condition = new $this->productCondClass(
                 [
                     'field'    => 'id',
                     'operator' => 'IN',
-                    'value'    => $options['selected_products'],
+                    'value'    => $options['selected_entities_with_values'],
                 ]
             );
-            $definition->addCondition($condition);
+            $rule->addCondition($condition);
         }
 
-        if (!empty($options['selected_product_models'])) {
-            $condition = new $this->productCondClass(
-                [
-                    'field'    => 'id',
-                    'operator' => 'IN',
-                    'value'    => $options['selected_product_models'],
-                ]
-            );
-            $definition->addCondition($condition);
-        }
-
-        return $definition;
+        return $rule;
     }
 }

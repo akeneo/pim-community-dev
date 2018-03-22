@@ -147,3 +147,6 @@ job_execution.summary:
   proposal_deleted: eliminato
 pim_enrich_attribute_form:
   isReadOnly: Sola lettura
+batch_jobs:
+  edit_common_attributes:
+    execute_rules.label: Esegui le regole

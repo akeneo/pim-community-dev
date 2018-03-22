@@ -257,37 +257,4 @@ JSON;
         $this->assertSame(Response::HTTP_FORBIDDEN, $response->getStatusCode());
         $this->assertJsonStringEqualsJsonString($expectedMessage, $response->getContent());
     }
-    /**
-    If the ‘associations’ field in the request body uses a product that cannot be viewed through categories,
-    a 403 error code is return
-    @API-352 @API-304 FAIL
-    HTTP 204 is received. Due to the Doctrine\ORM\Events::postLoad event the associated product is already in
-    entity manager and PimEnterprise\Bundle\CatalogBundle\EventSubscriber\FilterNotGrantedProductDataSubscriber
-    does not receive any event to check the data.
-    public function testFailedToUpdateNotViewableAssociatedProductOnAnUncategorizedProduct()
-    {
-    $data = <<<JSON
-    {
-    "associations": {
-    "PACK": {
-    "products": ["product_not_viewable_by_redactor"]
-    }
-    }
-    }
-    JSON;
-
-    $expectedMessage = <<<JSON
-    {
-    "code": 403,
-    "message": "You cannot associate a product on which you have not a view permission."
-    }
-    JSON;
-
-    $client = $this->createAuthenticatedClient([], [], null, null, 'mary', 'mary');
-    $client->request('PATCH', 'api/rest/v1/products/product_without_category', [], [], [], $data);
-    $response = $client->getResponse();
-    $this->assertSame(Response::HTTP_FORBIDDEN, $response->getStatusCode());
-    $this->assertJsonStringEqualsJsonString($expectedMessage, $response->getContent());
-    }
-     */
 }

@@ -34,6 +34,11 @@ jobs:
         alias:     remove_from_category
         label:     Mass remove from categories
         type:      mass_edit
+    delete_products_and_product_models:
+        connector: Akeneo Mass Edit Connector
+        alias:     delete_products_and_product_models
+        label:     Mass delete products
+        type:      mass_delete
     publish_product:
         connector: Akeneo Mass Edit Connector
         alias:     publish_product
@@ -48,6 +53,11 @@ jobs:
         connector: Akeneo Mass Edit Connector
         alias:     edit_common_attributes
         label:     Mass edit product attributes
+        type:      mass_edit
+    add_attribute_value:
+        connector: Akeneo Mass Edit Connector
+        alias:     add_attribute_value
+        label:     Mass add attribute value
         type:      mass_edit
     add_to_existing_product_model:
         connector: Akeneo Mass Edit Connector

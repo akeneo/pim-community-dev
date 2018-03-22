@@ -1,8 +1,8 @@
 @javascript
-Feature: Apply rules after a mass edit have run
+Feature: Apply rules on products after a mass edit execution
   In order to have fully modified products after a mass edit
   As a product manager
-  I need to have rules launched on a product mass edit
+  I need to have rules launched after a mass edit
 
   Background:
     Given a "clothing" catalog configuration
@@ -33,7 +33,7 @@ Feature: Apply rules after a mass edit have run
     When I am on the products grid
     And I select rows tshirt-github, tshirt-docker
     And I press the "Bulk actions" button
-    And I choose the "Edit attributes" operation
+    And I choose the "Edit attributes values" operation
     And I display the Name attribute
     And I visit the "Product information" group
     And I change the "Name" to "tshirt"

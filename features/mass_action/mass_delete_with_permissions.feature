@@ -17,9 +17,10 @@ Feature: Delete many products at once that I own
     And I select row blue_sandal
     And I select all visible entities
     And I press the "Delete" button
-    Then I should see the text "Are you sure you want to delete the selected products?"
+    Then I should see the text "Are you sure you want to delete the selected products and product models? All the product models' children will be also deleted."
     When I confirm the removal
-    And I refresh current page
+    And I wait for the "delete_products_and_product_models" job to finish
+    And I am on the products grid
     Then I should not see products blue_sandal and black_sandal
 
   Scenario: Successfully mass delete with a product not categorized
@@ -32,9 +33,10 @@ Feature: Delete many products at once that I own
     And I select row blue_sandal
     And I select all visible entities
     And I press the "Delete" button
-    Then I should see the text "Are you sure you want to delete the selected products?"
+    Then I should see the text "Are you sure you want to delete the selected products and product models? All the product models' children will be also deleted."
     When I confirm the removal
-    And I refresh current page
+    And I wait for the "delete_products_and_product_models" job to finish
+    And I am on the products grid
     Then I should not see products blue_sandal and black_sandal
 
   Scenario: Successfully mass delete a selection of products categorized in at least one category I own
@@ -47,12 +49,13 @@ Feature: Delete many products at once that I own
     And I select row blue_boot
     And I select all visible entities
     And I press the "Delete" button
-    Then I should see the text "Are you sure you want to delete the selected products?"
+    Then I should see the text "Are you sure you want to delete the selected products and product models? All the product models' children will be also deleted."
     When I confirm the removal
-    And I refresh current page
+    And I wait for the "delete_products_and_product_models" job to finish
+    And I am on the products grid
     Then I should not see products blue_boot and black_boot
 
-  Scenario: Failed to mass delete a selection of products with at least one product I don't own
+  Scenario: Successfully mass delete a selection of products with at least one product I don't own
     Given the following category:
       | code    | label-en_US | parent          |
       | shoes   | Shoes       | 2014_collection |
@@ -69,10 +72,12 @@ Feature: Delete many products at once that I own
     And I select row blue_sandal
     And I select all visible entities
     And I press the "Delete" button
-    Then I should see the text "Are you sure you want to delete the selected products?"
+    Then I should see the text "Are you sure you want to delete the selected products and product models? All the product models' children will be also deleted."
     When I confirm the removal
-    And I refresh current page
-    Then I should see products blue_sandal and black_sandal
+    And I wait for the "delete_products_and_product_models" job to finish
+    And I am on the products grid
+    Then I should see product black_sandal
+    But I should not see product blue_sandal
 
   Scenario: Failed to mass delete a selection of products with at least one published product
     Given the following products:
@@ -85,7 +90,8 @@ Feature: Delete many products at once that I own
     And I select row blue_boot
     And I select all visible entities
     And I press the "Delete" button
-    Then I should see the text "Are you sure you want to delete the selected products?"
+    Then I should see the text "Are you sure you want to delete the selected products and product models? All the product models' children will be also deleted."
     When I confirm the removal
-    And I refresh current page
+    And I wait for the "delete_products_and_product_models" job to finish
+    And I am on the products grid
     Then I should see products blue_boot and black_boot
