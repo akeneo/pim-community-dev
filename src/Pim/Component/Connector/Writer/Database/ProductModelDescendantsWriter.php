@@ -54,6 +54,12 @@ class ProductModelDescendantsWriter implements ItemWriterInterface, StepExecutio
         if (null !== $this->cacheClearer) {
             $this->cacheClearer->clear();
         }
+
+        gc_collect_cycles();
+        $memoryUsage = memory_get_usage();
+        $handle = fopen('/tmp/memory_usage-compute_product_descendants.txt', 'a+');
+        fwrite($handle, (string) $memoryUsage . '\n');
+        fclose($handle);
     }
 
     /**

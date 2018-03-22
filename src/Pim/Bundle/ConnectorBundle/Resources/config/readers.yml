@@ -12,6 +12,7 @@ parameters:
     pim_connector.reader.file.csv_association.class: Pim\Component\Connector\Reader\File\Csv\ProductAssociationReader
     pim_connector.reader.file.csv_product.class: Pim\Component\Connector\Reader\File\Csv\ProductReader
     pim_connector.reader.file.csv_product_model.class: Pim\Component\Connector\Reader\File\Csv\ProductModelReader
+    pim_connector.reader.file.csv_root_product_model.class: Pim\Component\Connector\Reader\File\Csv\RootProductModelReader
 
     pim_connector.reader.file.xlsx.class: Pim\Component\Connector\Reader\File\Xlsx\Reader
     pim_connector.reader.file.xlsx_product.class: Pim\Component\Connector\Reader\File\Xlsx\ProductReader
@@ -211,6 +212,14 @@ services:
 
     pim_connector.reader.file.csv_product_model:
         class: '%pim_connector.reader.file.csv_product_model.class%'
+        arguments:
+            - '@pim_connector.reader.file.csv_iterator_factory'
+            - '@pim_connector.array_converter.flat_to_standard.product_model_delocalized'
+            - '@pim_connector.reader.file.media_path_transformer'
+            - []
+
+    pim_connector.reader.file.csv_root_product_model:
+        class: '%pim_connector.reader.file.csv_root_product_model.class%'
         arguments:
             - '@pim_connector.reader.file.csv_iterator_factory'
             - '@pim_connector.array_converter.flat_to_standard.product_model_delocalized'
