@@ -1,3 +1,9 @@
+# 2.2.x
+
+## Improve Julia's experience
+
+- AOB-101: Apply user timezone on dates in the UI (missing cases)
+
 # 2.2.1 (2018-03-22)
 
 # 2.2.0 (2018-03-21)

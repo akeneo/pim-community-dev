@@ -56,6 +56,15 @@ services:
         tags:
             - { name: oro_datagrid.extension.formatter.property, type: datetime }
 
+    pim_datagrid.extension.formatter.property.date_with_user_timezone_property:
+        class: '%pim_datagrid.extension.formatter.property.datetime_with_user_timezone_property.class%'
+        arguments:
+            - '@translator'
+            - '@pim_catalog.localization.presenter.date'
+            - '@pim_user.context.user'
+        tags:
+            - { name: oro_datagrid.extension.formatter.property, type: date_with_user_timezone }
+
     pim_datagrid.extension.formatter.property.datetime_with_user_timezone_property:
         class: '%pim_datagrid.extension.formatter.property.datetime_with_user_timezone_property.class%'
         arguments:
