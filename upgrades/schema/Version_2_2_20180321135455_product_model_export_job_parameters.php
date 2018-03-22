@@ -59,13 +59,7 @@ class Version_2_2_20180321135455_product_model_export_job_parameters extends Abs
         foreach ($csvExportjobInstances as $jobInstance) {
             $parameters = $jobInstance->getRawParameters();
             $parameters['filters'] = [
-                'data'      => [
-                    [
-                        'field'    => 'completeness',
-                        'operator' => 'ALL',
-                        'value'    => null,
-                    ],
-                ],
+                'data'      => [],
                 'structure' => [
                     'locales' => []
                 ],
