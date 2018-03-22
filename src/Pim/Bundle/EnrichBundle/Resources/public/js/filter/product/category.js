@@ -89,7 +89,7 @@ define([
         openSelector: function () {
             var modal = new TreeModal({
                 title: __('pim_connector.export.categories.selector.modal.title'),
-                cancelText: __('pim_connector.export.categories.selector.modal.cancel'),
+                cancelText: __('pim_common.cancel'),
                 okText: __('pim_connector.export.categories.selector.modal.confirm'),
                 content: ''
             });

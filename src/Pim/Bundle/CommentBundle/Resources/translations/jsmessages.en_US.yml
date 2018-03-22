@@ -1,7 +1,6 @@
 btn:
     post: Add a new comment
     reply: Reply
-    cancel: Cancel
 
 confirmation:
     remove:

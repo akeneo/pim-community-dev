@@ -72,7 +72,7 @@ define(
                 const modal = new Backbone.BootstrapModal({
                     title: __(this.config.labels.title),
                     content: '',
-                    cancelText: __('pim_enrich.entity.create_popin.labels.cancel'),
+                    cancelText: __('pim_common.cancel'),
                     okText: __('pim_enrich.entity.create_popin.labels.save'),
                     okCloses: false
                 });
