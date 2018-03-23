@@ -69,7 +69,7 @@ define(
 
                 Dialog.confirm(
                     __('grid.view_selector.confirmation.remove'),
-                    __('grid.view_selector.confirmation.delete'),
+                    __('pim_common.delete'),
                     function () {
                         this.removeView(this.getRoot().currentView);
                     }.bind(this)

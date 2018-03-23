@@ -85,7 +85,7 @@ define([
 
                 this.confirmModal = Dialog.confirmDelete(
                     __(`confirmation.remove.${entityCode}`),
-                    __('pim_enrich.confirmation.delete_item'),
+                    __('pim_common.confirm_deletion'),
                     this.doDelete.bind(this),
                     this.getEntityHint(true)
                 );

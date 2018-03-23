@@ -99,7 +99,7 @@ extensions:
             trans:
                 title: confirmation.remove.product_model
                 subTitle: pim_menu.item.product_model
-                content: pim_enrich.confirmation.delete.product_model
+                content: pim_common.confirm_deletion
                 success: pim_enrich.entity.product_model.info.deletion_successful
                 fail: pim_enrich.entity.product_model.info.deletion_failed
             redirect: pim_enrich_product_index
