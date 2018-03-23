@@ -1,11 +1,10 @@
 <?php
 
-namespace spec\PimEnterprise\Bundle\SecurityBundle\Voter;
+namespace spec\PimEnterprise\Bundle\WorkflowBundle\Security;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\ProductInterface;
 use PimEnterprise\Component\Security\Attributes as SecurityAttributes;
-use PimEnterprise\Component\Workflow\Model\ProductDraft;
 use PimEnterprise\Component\Workflow\Model\ProductDraftInterface;
 use Prophecy\Argument;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
@@ -16,7 +15,7 @@ class ProductDraftVoterSpec extends ObjectBehavior
 {
     function it_is_initializable()
     {
-        $this->shouldHaveType('PimEnterprise\Bundle\SecurityBundle\Voter\ProductDraftVoter');
+        $this->shouldHaveType('PimEnterprise\Bundle\WorkflowBundle\Security\ProductDraftVoter');
     }
 
     function it_is_a_voter()

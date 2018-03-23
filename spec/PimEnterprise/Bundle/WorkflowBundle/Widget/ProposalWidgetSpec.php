@@ -1,13 +1,13 @@
 <?php
 
-namespace spec\PimEnterprise\Bundle\DashboardBundle\Widget;
+namespace spec\PimEnterprise\Bundle\WorkflowBundle\Widget;
 
 use Akeneo\Component\Localization\Presenter\PresenterInterface;
-use Pim\Bundle\UserBundle\Manager\UserManager;
 use PhpSpec\ObjectBehavior;
-use Pim\Component\User\Model\UserInterface;
+use Pim\Bundle\UserBundle\Manager\UserManager;
 use Pim\Component\Catalog\Model\LocaleInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\User\Model\UserInterface;
 use PimEnterprise\Component\Security\Attributes;
 use PimEnterprise\Component\Workflow\Model\ProductDraftInterface;
 use PimEnterprise\Component\Workflow\Repository\ProductDraftRepositoryInterface;

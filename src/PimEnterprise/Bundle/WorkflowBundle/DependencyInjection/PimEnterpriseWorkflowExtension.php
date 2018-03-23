@@ -65,6 +65,8 @@ class PimEnterpriseWorkflowExtension extends Extension
         $loader->load('twig.yml');
         $loader->load('readers.yml');
         $loader->load('steps.yml');
+        $loader->load('security.yml');
         $loader->load('jobs.yml');
+        $loader->load('widgets.yml');
     }
 }
