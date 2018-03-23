@@ -8,6 +8,7 @@ pim_common:
     create: Create
     created: Created
     delete: Delete
+    edit: Edit
     history: History
     label: Label
     label_translations: Label translations
@@ -588,7 +589,6 @@ pim_enrich:
                 import: Import profile
                 export: Export profile
             button:
-                edit.title: Edit
                 export.title: Export now
                 import.launch: Import now
                 import.upload: Upload and import now
@@ -723,7 +723,6 @@ pim_enrich:
                     title: Locales
                     help: "The locales defines the localized product values to export. Ex: only product information in French."
                 attributes:
-                    edit: Edit
                     label: "{0}All attributes|{1}One attribute selected|]1,Inf[{{ count }} attributes selected"
                     help: "Select the product information to export. Ex: only the technical attributes."
                     empty: All attributes will be exported
