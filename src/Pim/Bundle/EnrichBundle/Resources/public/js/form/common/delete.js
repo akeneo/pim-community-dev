@@ -59,7 +59,7 @@ define(
                         success: 'flash.item.removed',
                         fail: 'error.removing.item',
                         subTitle: '',
-                        buttonText: 'pim_datagrid.mass_action.delete.label'
+                        buttonText: 'pim_common.delete'
                     },
                     redirect: 'oro_default'
                 }, meta.config);

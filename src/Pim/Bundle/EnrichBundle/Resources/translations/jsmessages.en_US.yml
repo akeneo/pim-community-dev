@@ -1,18 +1,19 @@
 pim_common:
-    cancel: Cancel
-    create: Create
-    save: Save
-    confirm: Confirm
-    history: History
-    properties: Properties
-    code: Code
-    attributes: Attributes
-    label_translations: Label translations
-    status: Status
-    label: Label
-    created: Created
-    all: All
     add: Add
+    all: All
+    attributes: Attributes
+    cancel: Cancel
+    code: Code
+    confirm: Confirm
+    create: Create
+    created: Created
+    delete: Delete
+    history: History
+    label: Label
+    label_translations: Label translations
+    properties: Properties
+    save: Save
+    status: Status
     operators:
         "=": Is equal to
         "!=": Is not equal to
@@ -57,7 +58,6 @@ pim_datagrid:
             label: Quick Export
     mass_action:
         delete:
-            label: Delete
             confirm_content: Are you sure you want to delete the selected products?
             success:         Selected products successfully deleted.
             error:           Error ocurred when trying to delete selected products, please try again.
@@ -157,7 +157,6 @@ pim:
                 csv_grid_context: CSV (Grid context)
                 xlsx_all: Excel (All attributes)
                 xlsx_grid_context: Excel (Grid context)
-            delete: Delete
             mass_edit: Bulk actions
             category_edit: Move products in categories
             sequential_edit: Sequential edit
@@ -170,7 +169,6 @@ switch_off: "No"
 pim_enrich:
     item:
         list:
-            delete.label: Delete
             delete.error: Error during item deletion
         delete:
             confirm.content: Are you sure you want to delete this {{ itemName }}? It is not possible to undo this action
@@ -201,7 +199,6 @@ pim_enrich:
                 disabled: Disabled
                 download_pdf: PDF
                 compare_translate: Compare / Translate
-                delete: Delete
             history:
                 version: Version
                 author: Author
