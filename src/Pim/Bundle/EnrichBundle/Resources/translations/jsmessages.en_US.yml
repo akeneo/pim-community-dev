@@ -144,7 +144,6 @@ label:
     attribute_option:
         add_option: Add an option
 
-Code:                           Code
 Edit attributes of the product: Edit attributes of the product
 Classify the product:           Classify the product
 Delete the product:             Delete the product
@@ -576,7 +575,6 @@ pim_enrich:
                 fetching:        Collecting data about job execution...
                 warning:         Warning
                 header.step:     Step
-                header.status:   Status
                 header.warnings: Warnings
                 header.summary:  Summary
                 header.start:    Start
@@ -843,10 +841,8 @@ pim_enrich:
             modal_title: Choose the attribute type
         attribute_group:
             title:       Attribute groups
-            create_btn:  Create
         api_connection:
             title:       "] -Inf, 1] {{ count }} API connection|] 1, Inf [{{ count }} API connections"
-            create_btn:  Create
     mass_edit:
         next: Next
         previous: Back

@@ -42,6 +42,6 @@ extensions:
         aclResourceId: pim_enrich_attributegroup_create
         config:
             iconName: plus
-            label: pim_enrich.index.attribute_group.create_btn
+            label: pim_common.create
             route: pim_enrich_attributegroup_create
             buttonClass: AknButton AknButton--apply
