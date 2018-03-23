@@ -8,6 +8,7 @@ pim_common:
     code: Code
     attributes: Attributes
     label_translations: Label translations
+    status: Status
 
 # Grid action messages
 confirmation:
@@ -225,7 +226,6 @@ pim_enrich:
                         group_label: Label
                         more_products: '{{ count }} more products...'
                         close: Close
-                status: Status
                 scope: Channel
                 locale: Locale
             copy:
@@ -592,8 +592,6 @@ pim_enrich:
             loading:          Loading...
             title.details:    Execution details
             refreshBtn.title: Refresh
-            meta:
-                status.title: Status
             button:
                 show_profile.title: Show profile
                 download_log.title: Download log
@@ -788,7 +786,6 @@ pim_enrich:
                         ">": Updated products since this date
                         "SINCE LAST JOB": Updated products since last export
                 enabled:
-                    title: Status
                     help: "Select the products to export by their status. Ex: Export products whatsoever their status."
                     value:
                         all: All
