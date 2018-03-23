@@ -228,7 +228,7 @@ define(
                     className: 'modal modal--fullPage add-product-model-child',
                     content: '',
                     cancelText: __('pim_common.cancel'),
-                    okText: __('pim_enrich.entity.product_model.add_child.confirm'),
+                    okText: __('pim_common.confirm'),
                     okCloses: false
                 };
 
