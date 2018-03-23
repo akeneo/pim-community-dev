@@ -11,6 +11,7 @@
 
 namespace PimEnterprise\Bundle\CatalogBundle\Doctrine\MongoDBODM;
 
+use Akeneo\Component\StorageUtils\Cursor\CursorInterface;
 use Doctrine\DBAL\Connection;
 use Doctrine\ODM\MongoDB\DocumentManager;
 use Doctrine\ORM\EntityManagerInterface;
@@ -18,6 +19,8 @@ use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\CompletenessGenerator as Commun
 use Pim\Component\Catalog\AttributeTypes as AttributeTypes;
 use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\LocaleInterface;
+use Pim\Component\Catalog\Query\Filter\Operators;
+use Pim\Component\Catalog\Query\ProductQueryBuilderFactoryInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
 use Pim\Component\Catalog\Repository\FamilyRepositoryInterface;
@@ -34,6 +37,8 @@ use PimEnterprise\Component\ProductAsset\Repository\AssetRepositoryInterface;
  */
 class CompletenessGenerator extends CommunityCompletenessGenerator implements CompletenessGeneratorInterface
 {
+    const BULK_SIZE = 50;
+
     /** @var Connection */
     protected $connection;
 
@@ -43,14 +48,18 @@ class CompletenessGenerator extends CommunityCompletenessGenerator implements Co
     /** @var AttributeRepositoryInterface */
     protected $attributeRepository;
 
+    /** @var ProductQueryBuilderFactoryInterface */
+    private $productQueryBuilderFactory;
+
     /**
-     * @param DocumentManager              $documentManager
-     * @param ChannelRepositoryInterface   $channelRepository
-     * @param FamilyRepositoryInterface    $familyRepository
-     * @param AssetRepositoryInterface     $assetRepository
-     * @param AttributeRepositoryInterface $attributeRepository
-     * @param EntityManagerInterface       $manager
-     * @param string                       $productClass
+     * @param DocumentManager                          $documentManager
+     * @param ChannelRepositoryInterface               $channelRepository
+     * @param FamilyRepositoryInterface                $familyRepository
+     * @param AssetRepositoryInterface                 $assetRepository
+     * @param AttributeRepositoryInterface             $attributeRepository
+     * @param EntityManagerInterface                   $manager
+     * @param string                                   $productClass
+     * @param ProductQueryBuilderFactoryInterface|null $productQueryBuilderFactory
      */
     public function __construct(
         DocumentManager $documentManager,
@@ -59,13 +68,15 @@ class CompletenessGenerator extends CommunityCompletenessGenerator implements Co
         AssetRepositoryInterface $assetRepository,
         AttributeRepositoryInterface $attributeRepository,
         EntityManagerInterface $manager,
-        $productClass
+        $productClass,
+        ProductQueryBuilderFactoryInterface $productQueryBuilderFactory = null
     ) {
         parent::__construct($documentManager, $productClass, $channelRepository, $familyRepository);
 
         $this->assetRepository = $assetRepository;
         $this->attributeRepository = $attributeRepository;
         $this->connection = $manager->getConnection();
+        $this->productQueryBuilderFactory = $productQueryBuilderFactory;
     }
 
     /**
@@ -73,10 +84,42 @@ class CompletenessGenerator extends CommunityCompletenessGenerator implements Co
      */
     public function scheduleForAsset(AssetInterface $asset)
     {
+        $attributeCodes = $this->getAssetCollectionAttributeCodes();
+        if (null !== $this->productQueryBuilderFactory) {
+            $this->resetCompletenessUsingPQB($asset, $attributeCodes);
+        } else {
+            $this->resetCompletenessInOneMongoQuery($asset, $attributeCodes);
+        }
+    }
+
+    /**
+     * Better way to reset the completeness of products, using the PQB and taking advantage of customers having
+     * ES bundle.
+     *
+     * @param AssetInterface $asset
+     * @param array          $attributeCodes
+     */
+    public function resetCompletenessUsingPQB(AssetInterface $asset, array $attributeCodes)
+    {
+        foreach ($attributeCodes as $attributeCode) {
+            $productsToReset = $this->getProductsWithAsset($asset, $attributeCode);
+            if ($productsToReset->count() > 0) {
+                $this->bulkResetCompleteness($productsToReset);
+            }
+        }
+    }
+
+    /**
+     * Legacy way of updating the completeness of products having the asset attributes.
+     *
+     * This is made in one query that selects and updates but may be too long to run for big catalogs.
+     *
+     * @param AssetInterface $asset
+     * @param array          $attributesCodes
+     */
+    public function resetCompletenessInOneMongoQuery(AssetInterface $asset, array $attributesCodes)
+    {
         $productQb = $this->documentManager->createQueryBuilder($this->productClass);
-
-        $attributesCodes = $this->attributeRepository->getAttributeCodesByType(AssetAttributeTypes::ASSETS_COLLECTION);
-
         $productQb
             ->update()
             ->multiple(true);
@@ -215,5 +258,75 @@ class CompletenessGenerator extends CommunityCompletenessGenerator implements Co
         }
 
         return $assetsIds;
+    }
+
+    /**
+     * @return string[]
+     */
+    private function getAssetCollectionAttributeCodes()
+    {
+        return $this->attributeRepository->getAttributeCodesByType(AssetAttributeTypes::ASSETS_COLLECTION);
+    }
+
+    /**
+     * @param AssetInterface $asset
+     * @param string         $attributeCode
+     *
+     * @return CursorInterface
+     */
+    private function getProductsWithAsset(AssetInterface $asset, $attributeCode)
+    {
+        $pqb = $this->productQueryBuilderFactory->create();
+        $pqb->addFilter($attributeCode, Operators::IN_LIST, [$asset->getCode()]);
+
+        return $pqb->execute();
+    }
+
+    /**
+     * Resets the completeness of all the products passed in parameters.
+     *
+     * @param CursorInterface $products
+     */
+    private function bulkResetCompleteness(CursorInterface $products)
+    {
+        $productToResetIds = [];
+
+        foreach ($products as $product) {
+            $productToResetIds[] = $product->getId();
+
+            if (0 === \count($productToResetIds) % self::BULK_SIZE) {
+                $this->resetCompleteness($productToResetIds);
+                $productToResetIds = [];
+            }
+        }
+
+        if (!empty($productToResetIds)) {
+            $this->resetCompleteness($productToResetIds);
+        }
+    }
+
+    /**
+     * Reset the completeness of the products corresponding to the ids passed in parameter
+     *
+     * @param array $productToResetIds
+     */
+    private function resetCompleteness(array $productToResetIds)
+    {
+        $productQb = $this->documentManager->createQueryBuilder($this->productClass);
+        $productQb
+            ->update()
+            ->multiple(true);
+
+        foreach ($productToResetIds as $id) {
+            $productQb->addOr(
+                $productQb->expr()->field('id')->equals($id)
+            );
+        }
+
+        $productQb
+            ->field('completenesses')->unsetField()
+            ->field('normalizedData.completenesses')->unsetField()
+            ->getQuery()
+            ->execute();
     }
 }

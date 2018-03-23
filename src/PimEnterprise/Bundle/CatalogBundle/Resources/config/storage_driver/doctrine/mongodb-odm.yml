@@ -21,3 +21,4 @@ services:
             - '@pim_catalog.repository.attribute'
             - '@doctrine.orm.entity_manager'
             - '%pim_catalog.entity.product.class%'
+            - '@pim_catalog.query.product_query_builder_factory'
