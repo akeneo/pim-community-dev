@@ -23,6 +23,6 @@ class ResetUniqueValidationSubscriberSpec extends ObjectBehavior
         $uniqueValueSet->reset()->shouldBeCalled();
         $uniqueAxesCombinationSet->reset()->shouldBeCalled();
 
-        $this->onAkeneoStoragePostsaveall();
+        $this->onAkeneoBatchItemStepAfterBatch();
     }
 }

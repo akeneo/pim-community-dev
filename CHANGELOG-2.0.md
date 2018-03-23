@@ -1,5 +1,9 @@
 # 2.0.x
 
+## Bug fixes
+
+- PIM-7240: Add subscriber to clear the cache between each job step batch
+
 # 2.0.19 (2018-03-23)
 
 ## Bug fixes
