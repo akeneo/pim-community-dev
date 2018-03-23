@@ -104,7 +104,7 @@ extensions:
         config:
             trans:
                 title: confirmation.remove.product
-                subTitle: pim_menu.item.product
+                subTitle: pim_common.products
                 content: pim_common.confirm_deletion
                 success: pim_enrich.entity.product.info.deletion_successful
                 fail: pim_enrich.entity.product.info.deletion_failed

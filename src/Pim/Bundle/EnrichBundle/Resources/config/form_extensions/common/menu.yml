@@ -74,7 +74,7 @@ extensions:
         targetZone: mainMenu
         aclResourceId: pim_enrich_product_index
         config:
-            title: pim_menu.tab.products
+            title: pim_common.products
             iconModifier: iconProduct
             to: pim_enrich_product_index
 

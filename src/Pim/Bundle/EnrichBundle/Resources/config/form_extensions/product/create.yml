@@ -4,7 +4,7 @@ extensions:
        config:
            labels:
                title: pim_common.create
-               subTitle: pim_menu.tab.products
+               subTitle: pim_common.products
            picture: illustrations/Product.svg
            successMessage: pim_enrich.entity.product.message.created
            editRoute: pim_enrich_product_edit
