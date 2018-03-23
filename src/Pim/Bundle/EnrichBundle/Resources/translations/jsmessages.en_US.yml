@@ -7,6 +7,7 @@ pim_common:
     properties: Properties
     code: Code
     attributes: Attributes
+    label_translations: Label translations
 
 # Grid action messages
 confirmation:
@@ -515,12 +516,10 @@ pim_enrich:
             tab:
                 properties:
                     general: General properties
-                    label_translations: Label translations
         group_type:
             tab:
                 properties:
                     general: General properties
-                    label_translations: Label translations
         channel:
             tab:
                 properties:
@@ -528,7 +527,6 @@ pim_enrich:
                     currencies: Currencies
                     locales: Locales
                     category_tree: Category tree
-                    label_translations: Label translations
                     label_conversion_units: Pick a conversion unit for each metric attribute that will be used during product export
                     conversion_unit:
                         do_not_convert: Do not convert
@@ -539,7 +537,6 @@ pim_enrich:
                     attribute_as_label: Attribute used as label
                     attribute_as_image: Attribute used as the main picture
                     empty_attribute_as_image: Not selected
-                    label_translations: Label translations
                 attributes:
                     label_label: Label
                     toolbox:
@@ -570,14 +567,12 @@ pim_enrich:
                 properties:
                     general: General properties
                     type: Type
-                    label_translations: Label translations
                 products:
                     title: Products
         attribute_group:
             tab:
                 properties:
                     general: General properties
-                    label_translations: Label translations
                 attribute:
                     table:
                         name: Name
@@ -731,8 +726,6 @@ pim_enrich:
                         group: Choose the attribute group
                         metric_family: Choose a family
                         reference_data_name: Choose the reference data type
-                labels:
-                    title: Label translations
                 choices:
                     title: Options
         mass_edit:

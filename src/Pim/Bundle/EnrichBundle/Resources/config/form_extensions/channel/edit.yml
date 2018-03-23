@@ -128,7 +128,7 @@ extensions:
         config:
             template: pim/template/form/tab/section
             templateParams:
-                sectionTitle: pim_enrich.form.channel.tab.properties.label_translations
+                sectionTitle: pim_common.label_translations
                 dropZone: content
 
     pim-channel-edit-form-properties-translation:
