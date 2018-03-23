@@ -11,6 +11,7 @@ pim_common:
     status: Status
     label: Label
     created: Created
+    all: All
     operators:
         "=": Is equal to
         "!=": Is not equal to
@@ -239,7 +240,6 @@ pim_enrich:
                 locale: Locale
             copy:
                 select: Select
-                all: All
                 all_visible: All visible
                 none: None
                 copy: Copy
@@ -457,7 +457,6 @@ pim_enrich:
                         no_match: No matches found
                         load_more: Loading more results...
                     attribute_group_selector: Attribute group
-                    attribute_group_all: All
                     attribute_group.to_fill_count: "{1}1 missing required attribute|]1, Inf [{{ count }} missing required attributes"
                     attribute_filter:
                         display: Display
@@ -767,7 +766,6 @@ pim_enrich:
                 enabled:
                     help: "Select the products to export by their status. Ex: Export products whatsoever their status."
                     value:
-                        all: All
                         enabled: Enabled
                         disabled: Disabled
                 completeness:

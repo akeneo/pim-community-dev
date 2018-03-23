@@ -9,5 +9,4 @@
 "from": "from"
 "to": "to"
 "and": "and"
-oro_filter.placeholder.all: All
 "Search": "Search on {{ label }}"
