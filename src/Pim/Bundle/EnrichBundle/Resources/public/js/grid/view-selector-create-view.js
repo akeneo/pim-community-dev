@@ -82,7 +82,7 @@ define(
 
                 let modal = new Backbone.BootstrapModal({
                     content: modalContent,
-                    okText: __('pim_enrich.entity.create_popin.labels.save')
+                    okText: __('pim_common.save')
                 });
                 modal.open();
                 modal.$el.addClass('modal--fullPage');
