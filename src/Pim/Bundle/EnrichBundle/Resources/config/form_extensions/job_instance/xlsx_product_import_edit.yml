@@ -63,7 +63,7 @@ extensions:
         position: 130
         config:
             class: Akeneo\Component\Batch\Model\JobInstance
-            title: pim_enrich.form.job_instance.tab.history.title
+            title: pim_common.history
             tabCode: pim-job-instance-history
 
     pim-job-instance-xlsx-product-import-edit-properties-code:

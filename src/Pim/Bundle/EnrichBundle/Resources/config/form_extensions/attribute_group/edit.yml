@@ -174,4 +174,4 @@ extensions:
         position: 130
         config:
             class: attribute_group
-            title: pim_enrich.form.attribute_group.tab.history.title
+            title: pim_common.history

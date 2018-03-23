@@ -203,7 +203,7 @@ extensions:
         aclResourceId: pim_enrich_attribute_history
         config:
             class: attribute
-            title: pim_enrich.form.attribute.tab.history.title
+            title: pim_common.history
 
     pim-attribute-identifier-create-form-validation-params:
         module: pim/common/simple-view

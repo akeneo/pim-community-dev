@@ -246,4 +246,4 @@ extensions:
         position: 160
         config:
             class: 'family'
-            title: 'pim_enrich.form.family.tab.history.title'
+            title: 'pim_common.history'

@@ -156,4 +156,4 @@ extensions:
         position: 170
         config:
             class: 'channel'
-            title: 'pim_enrich.form.channel.tab.history.title'
+            title: 'pim_common.history'

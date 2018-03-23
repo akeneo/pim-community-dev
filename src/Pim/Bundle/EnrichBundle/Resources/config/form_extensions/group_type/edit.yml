@@ -134,4 +134,4 @@ extensions:
         position: 120
         config:
             class: 'group_type'
-            title: 'pim_enrich.form.group_type.tab.history.title'
+            title: 'pim_common.history'
