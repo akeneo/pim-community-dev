@@ -147,7 +147,7 @@ extensions:
             trans:
                 title: confirmation.remove.export_profile
                 subTitle: pim_menu.item.export_profile
-                content: pim_enrich.confirmation.delete_item
+                content: pim_common.confirm_deletion
                 success: flash.job_instance.removed
                 failed: error.removing.job_instance
             redirect: pim_importexport_export_profile_index

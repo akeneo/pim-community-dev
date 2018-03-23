@@ -51,7 +51,7 @@ extensions:
             trans:
                 title: confirmation.remove.group_type
                 subTitle: pim_menu.item.group_type
-                content: pim_enrich.confirmation.delete_item
+                content: pim_common.confirm_deletion
                 success: flash.group_type.removed
                 fail: error.removing.group_type
             redirect: pim_enrich_grouptype_index

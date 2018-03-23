@@ -51,7 +51,7 @@ extensions:
             trans:
                 title: confirmation.remove.association_type
                 subTitle: pim_menu.item.association_type
-                content: pim_enrich.confirmation.delete_item
+                content: pim_common.confirm_deletion
                 success: flash.association_type.removed
                 fail: error.removing.association_type
             redirect: pim_enrich_associationtype_index

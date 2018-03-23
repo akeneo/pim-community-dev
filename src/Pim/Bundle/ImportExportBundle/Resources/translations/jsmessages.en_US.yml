@@ -9,7 +9,6 @@ pim_connector:
             selector:
                 modal:
                     title: Categories selection
-                    confirm: Confirm
                 label: "{0}All products|{1}One selected category|]1,Inf[{{ count }} selected categories"
                 title: Select categories
         locales:

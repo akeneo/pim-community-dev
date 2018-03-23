@@ -299,7 +299,7 @@ define(
 
                 Dialog.confirm(
                     __('pim_enrich.confirmation.delete.attribute'),
-                    __('pim_enrich.confirmation.delete_item'),
+                    __('pim_common.confirm_deletion'),
                     function () {
                         FetcherRegistry.getFetcher('attribute').fetch(attributeCode).then(function (attribute) {
                             $.ajax({
