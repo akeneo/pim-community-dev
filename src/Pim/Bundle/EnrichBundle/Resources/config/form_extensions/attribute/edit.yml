@@ -128,7 +128,7 @@ extensions:
         position: 100
         config:
             fieldName: type
-            label: pim_enrich.form.attribute.tab.properties.label.type
+            label: pim_common.type
             readOnly: true
 
     pim-attribute-edit-form-properties-common-group:

@@ -3,7 +3,6 @@ pim_dashboard:
         last_operations:
             empty: No operations found
             date: Date
-            type: Type
             profile_name: Profile name
             details: Details
             warning_count: Warnings

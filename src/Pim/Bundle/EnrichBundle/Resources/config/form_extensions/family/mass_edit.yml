@@ -37,7 +37,7 @@ extensions:
         position: 180
         config:
             select2:
-                placeholder:      'pim_enrich.form.mass_edit.family.attributes.toolbox.select_attributes'
+                placeholder:      'pim_common.add_attributes'
                 title:            'pim_common.add'
                 buttonTitle:      'pim_common.add'
                 emptyText:        'pim_enrich.form.mass_edit.family.attributes.toolbox.no_attributes_available'

@@ -123,7 +123,7 @@ extensions:
         aclResourceId: pim_enrich_attributegroup_index
         position: 100
         config:
-            title: pim_menu.item.attribute_group
+            title: pim_common.attribute_groups
             to: pim_enrich_attributegroup_index
 
     pim-menu-settings-attribute:
