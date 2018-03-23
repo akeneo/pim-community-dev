@@ -73,7 +73,7 @@ define(
                     title: __(this.config.labels.title),
                     content: '',
                     cancelText: __('pim_common.cancel'),
-                    okText: __('pim_enrich.entity.create_popin.labels.save'),
+                    okText: __('pim_common.save'),
                     okCloses: false
                 });
 

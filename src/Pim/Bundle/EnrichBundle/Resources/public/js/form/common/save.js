@@ -26,7 +26,7 @@ define(
             loadingMask: null,
             updateFailureMessage: __('pim_enrich.entity.info.update_failed'),
             updateSuccessMessage: __('pim_enrich.entity.info.update_successful'),
-            label: __('pim_enrich.entity.save.label'),
+            label: __('pim_common.save'),
 
             /**
              * {@inheritdoc}
