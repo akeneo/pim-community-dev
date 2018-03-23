@@ -219,7 +219,7 @@ define(
                 </button>\
                 <ul class="AknSeveralActionsButton-menu AknDropdown-menu">\
                     <li><a class="AknDropdown-menuLink" href="#" data-select-all-visible>'+_.__('oro_datagrid.select.visible')+'</a></li>\
-                    <li><a class="AknDropdown-menuLink" href="#" data-select-none>'+_.__('oro_datagrid.select.none')+'</a></li>\
+                    <li><a class="AknDropdown-menuLink" href="#" data-select-none>'+_.__('pim_common.none')+'</a></li>\
                 </ul>\
             </div>');
             this.$el.find('[data-select-all]').on('click', _.bind(function (e) {

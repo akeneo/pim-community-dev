@@ -11,6 +11,7 @@ pim_common:
     history: History
     label: Label
     label_translations: Label translations
+    none: None
     properties: Properties
     save: Save
     status: Status
@@ -223,10 +224,8 @@ pim_enrich:
                 updated: Last update
                 family:
                     title: Family
-                    none: None
                 family_variant:
                     title: Variant
-                    none: None
                 groups:
                     title: Groups
                     modal:
@@ -239,7 +238,6 @@ pim_enrich:
             copy:
                 select: Select
                 all_visible: All visible
-                none: None
                 copy: Copy
             optional_attribute:
                 remove: Remove this attribute

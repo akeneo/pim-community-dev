@@ -72,7 +72,7 @@ define(
                     select: __('oro_datagrid.select.select'),
                     selectAll: __('pim_common.all'),
                     selectVisible: __('oro_datagrid.select.visible'),
-                    selectNone: __('oro_datagrid.select.none')
+                    selectNone: __('pim_common.none')
                 }));
 
                 this.updateView();
