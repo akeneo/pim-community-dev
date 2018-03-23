@@ -1,7 +1,5 @@
 parameters:
     pimee_datagrid.datasource.product_history.class: Pim\Bundle\DataGridBundle\Datasource\Datasource
-    pimee_datagrid.datasource.product_draft.class: Pim\Bundle\DataGridBundle\Datasource\Datasource
-    pimee_datagrid.datasource.product_proposal.class: PimEnterprise\Bundle\DataGridBundle\Datasource\ProductProposalDatasource
 
 services:
     pim_catalog.product_history.product:
@@ -24,14 +22,6 @@ services:
         tags:
             - { name: oro_datagrid.datasource, type: pimee_datasource_published_product }
 
-    pimee_catalog.datasource.product_draft:
-        class: '%pimee_datagrid.datasource.product_draft.class%'
-        arguments:
-            - '@pim_catalog.object_manager.product'
-            - '@pim_datagrid.datasource.result_record.hydrator.product_draft'
-        tags:
-            - { name: oro_datagrid.datasource, type: pimee_datasource_product_draft }
-
     pim_datagrid.datasource.rule:
         class: '%pim_datagrid.datasource.default.class%'
         arguments:
@@ -41,16 +31,6 @@ services:
             - [ setMassActionRepository, ['@pimee_catalog_rule.repository.rule_definition_mass_action' ]]
         tags:
             - { name: oro_datagrid.datasource, type: pim_datasource_rule }
-
-    pim_catalog.datasource.proposal_product:
-        class: '%pimee_datagrid.datasource.product_proposal.class%'
-        arguments:
-            - '@pimee_workflow.doctrine.query.proposal_product_query_builder_from_size_factory_with_permissions'
-            - '@pimee_workflow.normalizer.proposal_product'
-        calls:
-            - [ setMassActionRepository, ['@pimee_workflow.repository.product_draft' ]]
-        tags:
-            - { name: oro_datagrid.datasource, type: pimee_datasource_proposal_product }
 
     pim_datagrid.datasource.adapter_resolver:
         class: '%pim_datagrid.datasource.adapter_resolver.class%'

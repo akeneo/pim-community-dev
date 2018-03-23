@@ -1,7 +1,6 @@
 parameters:
     pim_datagrid.extension.mass_action.util.product_fields_builder.class:         PimEnterprise\Bundle\DataGridBundle\Extension\MassAction\Util\ProductFieldsBuilder
-    pim_datagrid.extension.mass_action.handler.mass_approve.class:                PimEnterprise\Bundle\DataGridBundle\Extension\MassAction\Handler\MassApproveActionHandler
-    pim_datagrid.extension.mass_action.handler.mass_refuse.class:                 PimEnterprise\Bundle\DataGridBundle\Extension\MassAction\Handler\MassRefuseActionHandler
+    pim_datagrid.extension.mass_action.handler.mass_refuse.class:                 PimEnterprise\Bundle\WorkflowBundle\Datagrid\MassAction\Handler\MassRefuseActionHandler
     pim_datagrid.extension.mass_action.handler.rule_impacted_product_count.class: PimEnterprise\Bundle\DataGridBundle\Extension\MassAction\Handler\RuleImpactedProductCountActionHandler
 
 services:
@@ -29,14 +28,6 @@ services:
             - '@pimee_security.repository.attribute_group_access'
             - '@security.token_storage'
 
-    pim_datagrid.extension.mass_action.handler.mass_approve:
-        class: '%pim_datagrid.extension.mass_action.handler.mass_approve.class%'
-        arguments:
-            - '@event_dispatcher'
-            - '@pimee_workflow.factory.product_proposal_cursor'
-        tags:
-            - { name: pim_datagrid.extension.mass_action.handler, alias: mass_approve }
-
     pim_datagrid.extension.mass_action.handler.mass_refuse:
         class: '%pim_datagrid.extension.mass_action.handler.mass_refuse.class%'
         arguments:
@@ -52,18 +43,6 @@ services:
             - '@event_dispatcher'
         tags:
             - { name: pim_datagrid.extension.mass_action.handler, alias: rule_impacted_product_count }
-
-    pimee_datagrid.extension.mass_action.type.mass_approve:
-        class: '%oro_datagrid.extension.mass_action.type.redirect.class%'
-        shared: false
-        tags:
-            - { name: oro_datagrid.extension.mass_action.type, type: mass-approve-proposal }
-
-    pimee_datagrid.extension.mass_action.type.mass_refuse:
-        class: '%oro_datagrid.extension.mass_action.type.redirect.class%'
-        shared: false
-        tags:
-            - { name: oro_datagrid.extension.mass_action.type, type: mass-refuse-proposal }
 
     # Dispatchers
     pim_datagrid.extension.mass_action.dispatcher:

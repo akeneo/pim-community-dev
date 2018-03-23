@@ -30,7 +30,5 @@ class PimEnterpriseFilterExtension extends Extension
     {
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('filters.yml');
-        $loader->load('sorters.yml');
-        $loader->load('utility.yml');
     }
 }
