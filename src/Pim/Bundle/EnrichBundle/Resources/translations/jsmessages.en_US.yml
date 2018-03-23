@@ -10,6 +10,19 @@ pim_common:
     label_translations: Label translations
     status: Status
     label: Label
+    operators:
+        "=": Is equal to
+        "!=": Is not equal to
+        ">=": Greater than or equals
+        ">": Greater than
+        "<=": Lower than or equals
+        "<": Lower than
+        EMPTY: Is empty
+        NOT EMPTY: Is not empty
+        CONTAINS: Contains
+        DOES NOT CONTAIN: Does not contain
+        STARTS WITH: Starts with
+        ENDS WITH: Ends with
 
 # Grid action messages
 confirmation:
@@ -798,70 +811,18 @@ pim_enrich:
                 identifier:
                     title: Identifier
                     help: Use the product identifiers to export separated by commas, spaces or line breaks
-                metric:
-                    operators:
-                        "=": Is equal to
-                        "!=": Is not equal to
-                        ">=": Greater than or equals
-                        ">": Greater than
-                        "<=": Lower than or equals
-                        "<": Lower than
-                        EMPTY: Is empty
-                        NOT EMPTY: Is not empty
                 string:
                     operators:
                         ALL: All
-                        CONTAINS: Contains
-                        DOES NOT CONTAIN: Does not contain
-                        "=": Is equal to
-                        STARTS WITH: Starts with
-                        ENDS WITH: Ends with
-                        EMPTY: Is empty
-                        NOT EMPTY: Is not empty
                 price-collection:
                     operators:
-                        "=": Is equal to
-                        "!=": Is not equal to
-                        ">=": Greater than or equals
-                        ">": Greater than
-                        "<=": Lower than or equals
-                        "<": Lower than
-                        EMPTY: Is empty
-                        NOT EMPTY: Is not empty
                 multi_select:
                     operators:
                         IN: In list
-                        EMPTY: Is empty
-                        NOT EMPTY: Is not empty
-                media:
-                    operators:
-                        CONTAINS: Contains
-                        DOES NOT CONTAIN: Does not contain
-                        "=": Is equal to
-                        STARTS WITH: Starts with
-                        ENDS WITH: Ends with
-                        EMPTY: Is empty
-                        NOT EMPTY: Is not empty
                 date:
                     operators:
-                        ">": Greater than
-                        "<": Lower than
-                        "=": Is equal to
-                        "!=": Is not equal to
                         BETWEEN: Between
                         NOT BETWEEN: Not between
-                        EMPTY: Is empty
-                        NOT EMPTY: Is not empty
-                number:
-                    operators:
-                        "=": Is equal to
-                        "!=": Is not equal to
-                        ">=": Greater than or equals
-                        ">": Greater than
-                        "<=": Lower than or equals
-                        "<": Lower than
-                        EMPTY: Is empty
-                        NOT EMPTY: Is not empty
             global_settings:
                 title: Global settings
     mass_edit_action:
