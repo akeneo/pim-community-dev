@@ -106,7 +106,7 @@ datagrid:
                 label: pimee_catalog_rule.datagrid.rule-grid.mass_edit_action.delete
                 className: 'AknButton AknButton--important AknButtonList-item'
                 messages:
-                    confirm_title: pimee_catalog_rule.datagrid.rule-grid.mass_action.delete.confirm_title
+                    confirm_title: pim_common.confirm_deletion
                     confirm_content: pimee_catalog_rule.datagrid.rule-grid.mass_action.delete.confirm_content
                     confirm_ok: pim_datagrid.mass_action.delete.label
                     success: pimee_catalog_rule.datagrid.rule-grid.mass_action.delete.success

@@ -28,7 +28,7 @@ define(
                 var confirmation = this.getConfirmDialog(
                     'pimee_product_asset.enrich_variation.popin.delete.message',
                     targetUrl,
-                    'pimee_product_asset.enrich_variation.popin.delete.title'
+                    'pim_common.confirm_deletion'
                 );
                 confirmation.open();
             },

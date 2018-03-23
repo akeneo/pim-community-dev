@@ -47,7 +47,6 @@ pimee_catalog_rule:
                     empty_selection: No rules selected.
                 delete:
                     confirm_ok: OK
-                    confirm_title: Confirm deletion
                     confirm_content: Are you sure you want to delete the selected rules?
                     success: You successfuly deleted the rules.
                     error: An error occured during the deletion of the rules.

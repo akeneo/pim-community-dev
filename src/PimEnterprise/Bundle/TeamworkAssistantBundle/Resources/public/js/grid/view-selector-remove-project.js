@@ -71,7 +71,7 @@ define(
 
                 Dialog.confirmDelete(
                     __('teamwork_assistant.grid.view_selector.confirmation.remove'),
-                    __('teamwork_assistant.grid.view_selector.confirmation.delete'),
+                    __('pim_common.confirm_deletion'),
                     function () {
                         this.removeCurrentProject();
                     }.bind(this),
