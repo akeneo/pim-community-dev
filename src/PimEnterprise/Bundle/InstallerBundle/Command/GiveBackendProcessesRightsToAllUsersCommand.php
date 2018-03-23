@@ -99,7 +99,9 @@ class GiveBackendProcessesRightsToAllUsersCommand extends ContainerAwareCommand
             'remove_from_category',
             'add_to_existing_product_model',
             'compute_family_variant_structure_changes',
-            'compute_completeness_of_products_family'
+            'compute_completeness_of_products_family',
+            'delete_products_and_product_models',
+            'add_attribute_value'
         ];
     }
 

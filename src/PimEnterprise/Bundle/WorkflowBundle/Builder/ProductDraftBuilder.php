@@ -83,7 +83,8 @@ class ProductDraftBuilder implements ProductDraftBuilderInterface
      */
     public function build(ProductInterface $product, $username)
     {
-        $newValues = $this->normalizer->normalize($product->getValues(), 'standard');
+        $values = $product->isVariant() ? $product->getValuesForVariation() : $product->getValues();
+        $newValues = $this->normalizer->normalize($values, 'standard');
         $originalValues = $this->getOriginalValues($product);
 
         $values = [];

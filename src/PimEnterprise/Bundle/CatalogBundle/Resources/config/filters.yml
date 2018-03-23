@@ -1,15 +1,16 @@
 parameters:
-    pimee_catalog.filter.attribute_view_right.class:                PimEnterprise\Bundle\CatalogBundle\Filter\AttributeViewRightFilter
-    pimee_catalog.filter.attribute_edit_right.class:                PimEnterprise\Bundle\CatalogBundle\Filter\AttributeEditRightFilter
-    pimee_catalog.filter.attribute_group_view_right.class:          PimEnterprise\Bundle\CatalogBundle\Filter\AttributeGroupViewRightFilter
-    pimee_catalog.filter.product_value_attribute_group_right.class: PimEnterprise\Bundle\CatalogBundle\Filter\ProductValueAttributeGroupRightFilter
-    pimee_catalog.filter.product_value_locale_right.class:          PimEnterprise\Bundle\CatalogBundle\Filter\ProductValueLocaleRightFilter
-    pimee_catalog.filter.product_right_view.class:                  PimEnterprise\Bundle\CatalogBundle\Filter\ProductRightViewFilter
-    pimee_catalog.filter.product_right_edit.class:                  PimEnterprise\Bundle\CatalogBundle\Filter\ProductRightEditFilter
-    pimee_catalog.filter.locale_view_right.class:                   PimEnterprise\Bundle\CatalogBundle\Filter\LocaleViewRightFilter
-    pimee_catalog.filter.locale_edit_right.class:                   PimEnterprise\Bundle\CatalogBundle\Filter\LocaleEditRightFilter
-    pimee_catalog.filter.category.class:                            PimEnterprise\Bundle\CatalogBundle\Filter\CategoryRightFilter
-    pimee_catalog.filter.abstract_authorization.class:              PimEnterprise\Bundle\CatalogBundle\Filter\AbstractAuthorizationFilter
+    pimee_catalog.filter.attribute_view_right.class:                   PimEnterprise\Bundle\CatalogBundle\Filter\AttributeViewRightFilter
+    pimee_catalog.filter.attribute_edit_right.class:                   PimEnterprise\Bundle\CatalogBundle\Filter\AttributeEditRightFilter
+    pimee_catalog.filter.attribute_group_view_right.class:             PimEnterprise\Bundle\CatalogBundle\Filter\AttributeGroupViewRightFilter
+    pimee_catalog.filter.product_value_attribute_group_right.class:    PimEnterprise\Bundle\CatalogBundle\Filter\ProductValueAttributeGroupRightFilter
+    pimee_catalog.filter.product_value_locale_right.class:             PimEnterprise\Bundle\CatalogBundle\Filter\ProductValueLocaleRightFilter
+    pimee_catalog.filter.product_right_view.class:                     PimEnterprise\Bundle\CatalogBundle\Filter\ProductRightViewFilter
+    pimee_catalog.filter.product_right_edit.class:                     PimEnterprise\Bundle\CatalogBundle\Filter\ProductRightEditFilter
+    pimee_catalog.filter.locale_view_right.class:                      PimEnterprise\Bundle\CatalogBundle\Filter\LocaleViewRightFilter
+    pimee_catalog.filter.locale_edit_right.class:                      PimEnterprise\Bundle\CatalogBundle\Filter\LocaleEditRightFilter
+    pimee_catalog.filter.category.class:                               PimEnterprise\Bundle\CatalogBundle\Filter\CategoryRightFilter
+    pimee_catalog.filter.abstract_authorization.class:                 PimEnterprise\Bundle\CatalogBundle\Filter\AbstractAuthorizationFilter
+    pimee_catalog.filter.product_and_product_model_delete_right.class: PimEnterprise\Bundle\CatalogBundle\Filter\ProductAndProductModelDeleteRightFilter
 
 services:
     pimee_catalog.filter.abstract_authorization:
@@ -83,6 +84,12 @@ services:
         parent: pimee_catalog.filter.abstract_authorization
         tags:
             - { name: pim_catalog.filter.object, type: pim.internal_api.locale.edit }
+
+    pimee_catalog.filter.product_and_product_model_delete_right:
+        class: '%pimee_catalog.filter.product_and_product_model_delete_right.class%'
+        parent: pimee_catalog.filter.abstract_authorization
+        tags:
+            - { name: pim_catalog.filter.object, type: pim.enrich.product.delete }
 
     pimee_catalog.filter.category:
         class: '%pimee_catalog.filter.category.class%'

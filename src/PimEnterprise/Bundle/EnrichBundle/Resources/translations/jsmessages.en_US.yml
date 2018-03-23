@@ -268,3 +268,5 @@ batch_jobs:
         export.label: Xlsx published products grid context quick export
         perform:
             label: Xlsx published products grid context quick export
+    add_attribute_value:
+        execute_rules.label: Rules execution

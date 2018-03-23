@@ -12,6 +12,7 @@
 namespace PimEnterprise\Bundle\ApiBundle\Security;
 
 use PimEnterprise\Component\Security\Exception\ResourceAccessDeniedException;
+use PimEnterprise\Component\Security\Exception\ResourceViewAccessDeniedException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
@@ -41,14 +42,18 @@ class AccessDeniedHandler implements AccessDeniedHandlerInterface
     public function handle(Request $request, AccessDeniedException $accessDeniedException): Response
     {
         if ($accessDeniedException instanceof ResourceAccessDeniedException) {
+            $responseCode = $accessDeniedException instanceof ResourceViewAccessDeniedException
+                ? Response::HTTP_NOT_FOUND
+                : Response::HTTP_FORBIDDEN;
+
             $response = new Response(
                 json_encode(
                     [
-                        'code'    => Response::HTTP_FORBIDDEN,
+                        'code'    => $responseCode,
                         'message' => $accessDeniedException->getMessage(),
                     ]
                 ),
-                Response::HTTP_FORBIDDEN
+                $responseCode
             );
 
             $response->headers->set('Content-Type', 'application/json');

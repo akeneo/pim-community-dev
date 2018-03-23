@@ -27,11 +27,13 @@ csv_asset_variation_export;All;IT support,Manager
 yml_asset_channel_configuration_import;All;IT support,Manager
 yml_asset_channel_configuration_export;All;IT support,Manager
 add_product_value;All;
+delete_products_and_product_models;All;
 update_product_value;All;
 remove_product_value;All;
 publish_product;All;
 unpublish_product;All;
 edit_common_attributes;All;
+add_attribute_value;All;
 set_attribute_requirements;All;
 approve_product_draft;All;
 refuse_product_draft;All;

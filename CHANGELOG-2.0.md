@@ -1,10 +1,24 @@
-# 2.0.x
+# 2.0.17 (2018-03-06)
+
+## Bug fixes
+
+- AOB-59: Fix proposal for variant product
+- PIM-7218: Fix save on product when attribute "identifier" belongs to an attribute group not viewable by a user
+- API-591: Fix to handle product models that are only editable and that should act like owned
+
+## API Improvements
+
+- API: Apply permissions on products model and variant products
+- API-547: Standardization of the API responses when the user is no granted to view a product
+
+# 2.0.16 (2018-02-22)
 
 ## Bug fixes
 
 - PIM-7100: Fix permissions are now well applied on parent level when exporting products
 - PIM-7101: Fix permissions are now well applied on parent level when exporting product models
 - PIM-7185: Fix permissions tab on Product Model import/export profiles
+- PIM-7196: Fix locale switching on product edit form in read only mode
 
 ## BC breaks
 

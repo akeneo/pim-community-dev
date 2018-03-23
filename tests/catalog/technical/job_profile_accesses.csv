@@ -5,6 +5,7 @@ remove_product_value;IT support,Manager,Redactor
 publish_product;IT support,Manager,Redactor
 unpublish_product;IT support,Manager,Redactor
 edit_common_attributes;IT support,Manager,Redactor
+add_attribute_value;IT support,Manager,Redactor
 set_attribute_requirements;IT support,Manager,Redactor
 approve_product_draft;IT support,Manager,Redactor
 refuse_product_draft;IT support,Manager,Redactor
