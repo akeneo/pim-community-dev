@@ -61,7 +61,7 @@ extensions:
         targetZone: meta
         position: 90
         config:
-            label: pim_enrich.form.attribute.meta.created
+            label: pim_common.created
             labelBy: pim_enrich.form.attribute.meta.created_by
 
     pim-attribute-identifier-edit-form-updated:
