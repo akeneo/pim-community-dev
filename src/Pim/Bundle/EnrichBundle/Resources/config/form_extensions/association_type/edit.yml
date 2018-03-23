@@ -87,7 +87,7 @@ extensions:
         targetZone: container
         position: 100
         config:
-            label: pim_enrich.form.association_type.tab.properties.title
+            label: pim_common.properties
 
     pim-association-type-edit-form-properties:
         module: pim/common/simple-view

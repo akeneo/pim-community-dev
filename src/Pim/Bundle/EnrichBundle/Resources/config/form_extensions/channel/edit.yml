@@ -84,7 +84,7 @@ extensions:
         targetZone: container
         position: 100
         config:
-            label: pim_enrich.form.channel.tab.properties.title
+            label: pim_common.properties
 
     pim-channel-edit-form-properties:
         module: pim/common/simple-view

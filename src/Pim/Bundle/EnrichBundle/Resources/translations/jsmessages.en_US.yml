@@ -4,6 +4,7 @@ pim_common:
     save: Save
     confirm: Confirm
     history: History
+    properties: Properties
 
 # Grid action messages
 confirmation:
@@ -519,21 +520,18 @@ pim_enrich:
         association_type:
             tab:
                 properties:
-                    title: Properties
                     general: General properties
                     code: Code
                     label_translations: Label translations
         group_type:
             tab:
                 properties:
-                    title: Properties
                     general: General properties
                     code: Code
                     label_translations: Label translations
         channel:
             tab:
                 properties:
-                    title: Properties
                     general: General
                     code: Code
                     currencies: Currencies
@@ -546,7 +544,6 @@ pim_enrich:
         family:
             tab:
                 properties:
-                    title: Properties
                     general: General
                     code: Code
                     attribute_as_label: Attribute used as label
@@ -582,7 +579,6 @@ pim_enrich:
         group:
             tab:
                 properties:
-                    title: Properties
                     general: General properties
                     code: Code
                     type: Type
@@ -592,7 +588,6 @@ pim_enrich:
         attribute_group:
             tab:
                 properties:
-                    title: Properties
                     general: General properties
                     code: Code
                     label_translations: Label translations
@@ -654,7 +649,6 @@ pim_enrich:
                 content:
                     title: Content
                 properties:
-                    title: Properties
                     code:
                         title: Code
                     label:
@@ -718,7 +712,6 @@ pim_enrich:
                 updated_by: by
             tab:
                 properties:
-                    title: Properties
                     section:
                         common: General parameters
                         type_specific: Type specific parameters
@@ -910,8 +903,6 @@ pim_enrich:
                         "<": Lower than
                         EMPTY: Is empty
                         NOT EMPTY: Is not empty
-            properties:
-                title: Properties
             global_settings:
                 title: Global settings
     mass_edit_action:

@@ -42,7 +42,7 @@ extensions:
         targetZone: container
         position: 100
         config:
-            tabTitle: pim_enrich.form.job_instance.tab.properties.title
+            tabTitle: pim_common.properties
             tabCode: pim-job-instance-properties
 
     pim-job-instance-csv-product-import-edit-global:
