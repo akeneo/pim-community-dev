@@ -118,7 +118,13 @@ class ProposalWidget implements WidgetInterface
                     $proposal->getAuthor(),
                     $proposal->getProduct()->getIdentifier()
                 ),
-                'createdAt'        => $this->presenter->present($proposal->getCreatedAt(), ['locale' => $locale])
+                'createdAt' => $this->presenter->present(
+                    $proposal->getCreatedAt(),
+                    [
+                        'locale'   => $locale,
+                        'timezone' => $user->getTimezone(),
+                    ]
+                )
             ];
         }
 

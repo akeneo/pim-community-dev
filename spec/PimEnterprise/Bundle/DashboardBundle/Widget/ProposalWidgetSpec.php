@@ -33,6 +33,7 @@ class ProposalWidgetSpec extends ObjectBehavior
         $token->getUser()->willReturn($user);
 
         $user->getUiLocale()->willReturn($locale);
+        $user->getTimezone()->willReturn('Pacific/Kiritimati');
         $locale->getCode()->willReturn('en');
         $router->generate('pimee_workflow_proposal_index')->willReturn('/my/route/');
 
@@ -97,7 +98,7 @@ class ProposalWidgetSpec extends ObjectBehavior
         $first->getCreatedAt()->willReturn($firstCreatedAt);
         $second->getCreatedAt()->willReturn($secondCreatedAt);
 
-        $options = ['locale' => 'en'];
+        $options = ['locale' => 'en', 'timezone' => 'Pacific/Kiritimati'];
         $presenter->present($firstCreatedAt, $options)->willReturn($firstCreatedAt->format('m/d/Y'));
         $presenter->present($secondCreatedAt, $options)->willReturn($secondCreatedAt->format('m/d/Y'));
 
@@ -155,7 +156,7 @@ class ProposalWidgetSpec extends ObjectBehavior
         $first->getCreatedAt()->willReturn($firstCreatedAt);
         $second->getCreatedAt()->willReturn($secondCreatedAt);
 
-        $options = ['locale' => 'en'];
+        $options = ['locale' => 'en', 'timezone' => 'Pacific/Kiritimati'];
         $presenter->present($firstCreatedAt, $options)->willReturn($firstCreatedAt->format('m/d/Y'));
         $presenter->present($secondCreatedAt, $options)->willReturn($secondCreatedAt->format('m/d/Y'));
 
