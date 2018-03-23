@@ -1,49 +1,10 @@
 parameters:
     pimee_api.normalizer.published_product.class: PimEnterprise\Component\Api\Normalizer\PublishedProductNormalizer
-    pimee_api.component.normalizer.asset_reference.class: PimEnterprise\Component\Api\Normalizer\AssetReferenceNormalizer
-    pimee_api.component.normalizer.asset_variation.class: PimEnterprise\Component\Api\Normalizer\AssetVariationNormalizer
-    pimee_api.bundle.normalizer.asset_reference.class: PimEnterprise\Bundle\ApiBundle\Normalizer\AssetReferenceNormalizer
-    pimee_api.bundle.normalizer.asset_variation.class: PimEnterprise\Bundle\ApiBundle\Normalizer\AssetVariationNormalizer
-    pimee_api.bundle.normalizer.asset.class: PimEnterprise\Bundle\ApiBundle\Normalizer\AssetNormalizer
 
 services:
     pimee_api.normalizer.published_product:
         class: '%pimee_api.normalizer.published_product.class%'
         arguments:
             - '@pim_api.normalizer.product.community'
-        tags:
-            - { name: pim_serializer.normalizer, priority: 100 }
-
-    pimee_api.bundle.normalizer.asset_reference:
-        class: '%pimee_api.bundle.normalizer.asset_reference.class%'
-        arguments:
-            - '@pimee_api.component.normalizer.asset_reference'
-            - '@router'
-        tags:
-            - { name: pim_serializer.normalizer, priority: 100 }
-
-    pimee_api.component.normalizer.asset_reference:
-        class: '%pimee_api.component.normalizer.asset_reference.class%'
-
-    pimee_api.bundle.normalizer.asset_variation:
-        class: '%pimee_api.bundle.normalizer.asset_variation.class%'
-        arguments:
-            - '@pimee_api.component.normalizer.asset_variation'
-            - '@router'
-        tags:
-            - { name: pim_serializer.normalizer, priority: 100 }
-
-    pimee_api.component.normalizer.asset_variation:
-        class: '%pimee_api.component.normalizer.asset_variation.class%'
-        arguments:
-            - '@pimee_product_asset.normalizer.standard.variation'
-
-    pimee_api.bundle.normalizer.asset:
-        class: '%pimee_api.bundle.normalizer.asset.class%'
-        arguments:
-            - '@pimee_product_asset.normalizer.standard.asset'
-            - '@pimee_api.bundle.normalizer.asset_variation'
-            - '@pimee_api.bundle.normalizer.asset_reference'
-            - '@router'
         tags:
             - { name: pim_serializer.normalizer, priority: 100 }

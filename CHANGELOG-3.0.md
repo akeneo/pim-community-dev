@@ -9,11 +9,26 @@
 ## Technical improvement
 
 - TIP-236: Merge Oro User bundle/component into Akeneo User bundle/component 
+- PAV3-4: Regroup PAM Classes
 
+## BC breaks
 
-## BC Breaks
-
+- Move all classes from `PimEnterprise\Bundle\ApiBundle\Normalizer` to `PimEnterprise\Component\ProductAsset\Normalizer\ExternalApi`
+- Move all classes from `PimEnterprise\Bundle\EnrichBundle\Controller\Rest` to `PimEnterprise\Bundle\ProductAssetBundle\Controller\Rest`
+- Move all classes from `PimEnterprise\Bundle\FilterBundle\Filter\Tag` to `PimEnterprise\Bundle\ProductAssetBundle\Datagrid\Filter`
+- Rename `PimEnterprise\Bundle\EnrichBundle\Controller\Rest\ChannelController` to `PimEnterprise\Bundle\ProductAssetBundle\Controller\Rest\AssetTransformationController`
+- Move `PimEnterprise\Bundle\EnrichBundle\Normalizer\AssetNormalizer` to `PimEnterprise\Component\ProductAsset\Normalizer\InternalApi\AssetNormalizer`
+- Move `PimEnterprise\Bundle\SecurityBundle\EventSubscriber\Datagrid\AssetCategoryAccessSubscriber` to `PimEnterprise\Bundle\ProductAssetBundle\Security\AssetCategoryAccessSubscriber`
+- Move `PimEnterprise\Bundle\SecurityBundle\Normalizer\Flat\AssetCategoryNormalizer` to `PimEnterprise\Component\ProductAsset\Normalizer\Flat\AssetCategoryNormalizer`
 - Move `PimEnterprise\Bundle\ApiBundle\Controller\ProductDraftController` to `PimEnterprise\Bundle\WorkflowBundle\Controller\Api\ProductDraftController`
 - Move `PimEnterprise\Bundle\ApiBundle\Controller\ProductProposalController` to `PimEnterprise\Bundle\WorkflowBundle\Controller\Api\ProductProposalController`
 - Move `PimEnterprise\Bundle\ApiBundle\Router\ProxyProductRouter` to `PimEnterprise\Bundle\WorkflowBundle\Router\ProxyProductRouter`
 - Move `PimEnterprise\Component\Api\Normalizer\ProductNormalizer` to `PimEnterprise\Component\Workflow\Normalizer\ExternalApi\ProductNormalizer`
+- Move `PimEnterprise\Bundle\ApiBundle\Doctrine\ORM\Repository\AssetRepository` to `PimEnterprise\Bundle\ProductAssetBundle\Doctrine\ORM\Repository\ExternalApi\AssetRepository`
+- Move `PimEnterprise\Bundle\ApiBundle\Controller\AssetCategoryController` to `PimEnterprise\Bundle\ProductAssetBundle\Controller\ExternalApi\AssetCategoryController`
+- Move `PimEnterprise\Bundle\ApiBundle\Controller\AssetController` to `PimEnterprise\Bundle\ProductAssetBundle\Controller\ExternalApi\AssetController`
+- Move `PimEnterprise\Bundle\ApiBundle\Controller\AssetReferenceController` to `PimEnterprise\Bundle\ProductAssetBundle\Controller\ExternalApi\AssetReferenceController`
+- Move `PimEnterprise\Bundle\ApiBundle\Controller\AssetTagController` to `PimEnterprise\Bundle\ProductAssetBundle\Controller\ExternalApi\AssetTagController`
+- Move `PimEnterprise\Bundle\ApiBundle\Controller\AssetVariationController` to `PimEnterprise\Bundle\ProductAssetBundle\Controller\ExternalApi\AssetVariationController`
+- Move `PimEnterprise\Bundle\ApiBundle\Normalizer\AssetReferenceNormalizer` to `PimEnterprise\Component\ProductAsset\Normalizer\ExternalApi\AssetReferenceNormalizer`
+- Move `PimEnterprise\Bundle\ApiBundle\Normalizer\AssetVariationNormalizer` to `PimEnterprise\Component\ProductAsset\Normalizer\ExternalApi\AssetVariationNormalizer`

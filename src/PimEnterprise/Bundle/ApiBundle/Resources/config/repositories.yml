@@ -1,6 +1,5 @@
 parameters:
     pimee_api.repository.published_product.class: PimEnterprise\Bundle\ApiBundle\Doctrine\ORM\Repository\PublishedProductRepository
-    pimee_api.repository.asset.class: PimEnterprise\Bundle\ApiBundle\Doctrine\ORM\Repository\AssetRepository
 
 services:
     pimee_api.repository.published_product:
@@ -16,13 +15,6 @@ services:
             - '@doctrine.orm.entity_manager'
             - '%pimee_product_asset.model.category.class%'
             - '@pimee_product_asset.repository.asset_category'
-
-    pimee_api.repository.asset:
-        class: '%pimee_api.repository.asset.class%'
-        arguments:
-            - '@doctrine.orm.entity_manager'
-            - '%pimee_product_asset.model.asset.class%'
-            - '@pimee_product_asset.repository.asset'
 
     pimee_api.repository.tag:
         class: '%pim_api.repository.api_resource.class%'

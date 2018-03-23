@@ -2,6 +2,13 @@ parameters:
     pimee_product_asset.controller.product_asset.class:      PimEnterprise\Bundle\ProductAssetBundle\Controller\ProductAssetController
     pimee_product_asset.controller.rest.mass_upload.class:   PimEnterprise\Bundle\ProductAssetBundle\Controller\Rest\MassUploadController
     pimee_product_asset.controller.rest.product_asset.class: PimEnterprise\Bundle\ProductAssetBundle\Controller\Rest\ProductAssetController
+    pimee_product_asset.controller.asset_transformation.class: PimEnterprise\Bundle\ProductAssetBundle\Controller\Rest\AssetTransformationController
+    pimee_product_asset.controller.rest.asset_category.class: PimEnterprise\Bundle\ProductAssetBundle\Controller\Rest\AssetCategoryController
+    pimee_product_asset.controller.asset_category.class: PimEnterprise\Bundle\ProductAssetBundle\Controller\ExternalApi\AssetCategoryController
+    pimee_product_asset.controller.asset_reference.class: PimEnterprise\Bundle\ProductAssetBundle\Controller\ExternalApi\AssetReferenceController
+    pimee_product_asset.controller.asset_variation.class: PimEnterprise\Bundle\ProductAssetBundle\Controller\ExternalApi\AssetVariationController
+    pimee_product_asset.controller.asset.class: PimEnterprise\Bundle\ProductAssetBundle\Controller\ExternalApi\AssetController
+    pimee_product_asset.controller.asset_tag.class: PimEnterprise\Bundle\ProductAssetBundle\Controller\ExternalApi\AssetTagController
 
 services:
     pimee_product_asset.controller.product_asset:
@@ -78,3 +85,98 @@ services:
             - '@security.token_storage'
         calls:
             - [ setContainer, [ '@service_container' ] ]
+
+    pimee_product_asset.controller.rest.asset_category:
+        class: '%pimee_product_asset.controller.rest.asset_category.class%'
+        arguments:
+            - '@pimee_product_asset.repository.asset_category'
+            - '@pim_internal_api_serializer'
+
+    pimee_product_asset.controller.asset_transformation:
+        class: '%pimee_product_asset.controller.asset_transformation.class%'
+        arguments:
+            - '@pimee_product_asset.repository.channel_configuration'
+            - '@pim_internal_api_serializer'
+
+    # External Api
+    pimee_product_asset.controller.asset_category:
+        class: '%pimee_product_asset.controller.asset_category.class%'
+        arguments:
+            - '@pimee_api.repository.asset_category'
+            - '@pim_serializer'
+            - '@pimee_product_asset.factory.category'
+            - '@pimee_product_asset.updater.category'
+            - '@validator'
+            - '@pimee_product_asset.saver.category'
+            - '@router'
+            - '@pim_api.pagination.parameter_validator'
+            - '@pim_api.pagination.offset_hal_paginator'
+            - '@pimee_product_asset.stream.asset_category_partial_update_stream'
+            - '%pim_api.configuration%'
+
+
+    pimee_product_asset.controller.asset_reference:
+        class: '%pimee_product_asset.controller.asset_reference.class%'
+        arguments:
+            - '@pimee_product_asset.repository.asset'
+            - '@pim_api.repository.locale'
+            - '@akeneo_file_storage.file_storage.filesystem_provider'
+            - '@akeneo_file_storage.file_storage.file.streamed_file_fetcher'
+            - '@pim_serializer'
+            - '@validator'
+            - '@akeneo_file_storage.saver.file'
+            - '@akeneo_file_storage.file_storage.file.file_storer'
+            - '@pimee_product_asset.factory.reference'
+            - '@router'
+            - '@pimee_product_asset.updater.files'
+            - '@pimee_product_asset.saver.asset'
+            - '@pimee_product_asset.variations_collection_files_generator'
+            - '@pimee_product_asset.finder.asset'
+
+    pimee_product_asset.controller.asset_variation:
+        class: '%pimee_product_asset.controller.asset_variation.class%'
+        arguments:
+            - '@pimee_product_asset.repository.asset'
+            - '@pim_api.repository.channel'
+            - '@pim_api.repository.locale'
+            - '@akeneo_file_storage.file_storage.filesystem_provider'
+            - '@akeneo_file_storage.file_storage.file.streamed_file_fetcher'
+            - '@pim_serializer'
+            - '@validator'
+            - '@akeneo_file_storage.saver.file'
+            - '@akeneo_file_storage.file_storage.file.file_storer'
+            - '@pimee_product_asset.factory.reference'
+            - '@router'
+            - '@pimee_product_asset.saver.asset'
+            - '@pimee_product_asset.factory.variation'
+
+    pimee_product_asset.controller.asset:
+        class : '%pimee_product_asset.controller.asset.class%'
+        arguments:
+            - '@pimee_product_asset.api.repository.asset'
+            - '@pimee_product_asset.api.repository.asset'
+            - '@pimee_product_asset.api.repository.asset'
+            - '@pim_serializer'
+            - '@pim_api.pagination.parameter_validator'
+            - '@pim_api.pagination.offset_hal_paginator'
+            - '@pim_api.pagination.search_after_hal_paginator'
+            - '@pimee_product_asset.factory.asset'
+            - '@validator'
+            - '@pimee_api.updater.asset'
+            - '@pimee_product_asset.saver.asset'
+            - '@router'
+            - '@pimee_product_asset.stream.asset_partial_update_stream'
+            - '%pim_api.configuration%'
+
+    pimee_product_asset.controller.asset_tag:
+        class : '%pimee_product_asset.controller.asset_tag.class%'
+        arguments:
+            - '@pimee_api.repository.tag'
+            - '@pim_api.pagination.parameter_validator'
+            - '@pim_api.pagination.offset_hal_paginator'
+            - '@pimee_product_asset.factory.tag'
+            - '@pimee_product_asset.updater.tag'
+            - '@validator'
+            - '@pimee_product_asset.saver.tag'
+            - '@router'
+            - '%pim_api.configuration%'

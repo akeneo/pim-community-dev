@@ -3,9 +3,7 @@ parameters:
     pim_enrich.controller.product.class:                    PimEnterprise\Bundle\EnrichBundle\Controller\ProductController
     pim_enrich.controller.product_model.class:              PimEnterprise\Bundle\EnrichBundle\Controller\ProductModelController
     pim_enrich.controller.locale.class:                     PimEnterprise\Bundle\EnrichBundle\Controller\LocaleController
-    pimee_enrich.controller.rest.asset_category.class:      PimEnterprise\Bundle\EnrichBundle\Controller\Rest\AssetCategoryController
     pimee_enrich.controller.rule_relation.class:            PimEnterprise\Bundle\EnrichBundle\Controller\RuleRelationController
-    pimee_enrich.controller.channel.class:                  PimEnterprise\Bundle\EnrichBundle\Controller\Rest\ChannelController
 
 services:
     # overriden to add security checks and use a smarter product saver which update draft or working copy
@@ -113,12 +111,6 @@ services:
         arguments:
             - '@form.factory'
 
-    pimee_enrich.controller.rest.channel:
-        class: '%pimee_enrich.controller.channel.class%'
-        arguments:
-            - '@pimee_product_asset.repository.channel_configuration'
-            - '@pim_internal_api_serializer'
-
     pim_enrich.controller.rest.attribute:
         class: '%pim_enrich.controller.rest.attribute.class%'
         arguments:
@@ -161,8 +153,3 @@ services:
             - '@pim_catalog.filter.chained'
             - '%upload_tmp_dir%'
 
-    pimee_enrich.controller.rest.asset_category:
-        class: '%pimee_enrich.controller.rest.asset_category.class%'
-        arguments:
-            - '@pimee_product_asset.repository.asset_category'
-            - '@pim_internal_api_serializer'

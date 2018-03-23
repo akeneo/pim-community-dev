@@ -39,6 +39,5 @@ class PimEnterpriseApiExtension extends Extension
         $loader->load('repositories.yml');
         $loader->load('filters.yml');
         $loader->load('updaters.yml');
-        $loader->load('stream.yml');
     }
 }
