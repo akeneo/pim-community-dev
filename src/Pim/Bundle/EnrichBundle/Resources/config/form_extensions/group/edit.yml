@@ -132,7 +132,7 @@ extensions:
         position: 110
         config:
             class: 'group'
-            title: 'pim_enrich.form.group.tab.history.title'
+            title: 'pim_common.history'
 
     pim-group-edit-form-products:
         module: pim/group-edit-form/products

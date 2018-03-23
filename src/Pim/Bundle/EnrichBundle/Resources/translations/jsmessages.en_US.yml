@@ -3,6 +3,7 @@ pim_common:
     create: Create
     save: Save
     confirm: Confirm
+    history: History
 
 # Grid action messages
 confirmation:
@@ -492,8 +493,6 @@ pim_enrich:
                         no_family: No family defined. Please define a family to calculate the completeness of this product.
                         no_completeness: You just changed the family of the product. Please save it first to calculate the completeness for the new family.
                     missing_values: "{1}1 missing value|] 1, Inf [{{ count }} missing values"
-                history:
-                    title: History
             switch:
                 "no": "No"
                 "yes": "Yes"
@@ -524,8 +523,6 @@ pim_enrich:
                     general: General properties
                     code: Code
                     label_translations: Label translations
-                history:
-                    title: History
         group_type:
             tab:
                 properties:
@@ -533,12 +530,8 @@ pim_enrich:
                     general: General properties
                     code: Code
                     label_translations: Label translations
-                history:
-                    title: History
         channel:
             tab:
-                history:
-                    title: History
                 properties:
                     title: Properties
                     general: General
@@ -574,8 +567,6 @@ pim_enrich:
                     title: Variants
                     flash:
                         family_variant_created: Family variant successfully created
-                history:
-                    title: History
 
         attribute_option:
             flash:
@@ -596,8 +587,6 @@ pim_enrich:
                     code: Code
                     type: Type
                     label_translations: Label translations
-                history:
-                    title: History
                 products:
                     title: Products
         attribute_group:
@@ -614,7 +603,6 @@ pim_enrich:
                         type: Type
                         scopable: Scopable
                         localizable: Localizable
-                history.title: History
         common:
             tab:
                 attributes:
@@ -721,8 +709,6 @@ pim_enrich:
                         help: Means that the product history is automatically updated, can be switched off to improve performances
                     family_variant_column:
                         title: Family variant column
-                history:
-                    title: History
             file_path: File path
         attribute:
             meta:
@@ -773,8 +759,6 @@ pim_enrich:
                     title: Label translations
                 choices:
                     title: Options
-                history:
-                    title: History
         mass_edit:
             family:
                 attributes:

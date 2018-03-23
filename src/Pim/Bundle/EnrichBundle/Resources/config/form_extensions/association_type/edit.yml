@@ -134,4 +134,4 @@ extensions:
         position: 120
         config:
             class: association_type
-            title: pim_enrich.form.association_type.tab.history.title
+            title: pim_common.history
