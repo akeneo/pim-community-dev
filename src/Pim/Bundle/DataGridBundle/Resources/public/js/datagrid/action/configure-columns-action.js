@@ -177,7 +177,7 @@ define(
                         },
                         allowCancel: true,
                         okCloses: false,
-                        cancelText: __('pim_datagrid.column_configurator.cancel'),
+                        cancelText: __('pim_common.cancel'),
                         title: __('pim_datagrid.column_configurator.title'),
                         content: this.configuratorTemplate(),
                         okText: __('pim_datagrid.column_configurator.apply')

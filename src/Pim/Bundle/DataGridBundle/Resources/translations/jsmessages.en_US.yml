@@ -39,7 +39,6 @@ oro.datagrid.pagination.totalPages: "of {{ totalPages }}"
 oro.datagrid.pagination.totalRecords: "{{ totalRecords }} records"
 oro.datagrid.action.reset: "Reset"
 oro.datagrid.action.refresh: "Refresh"
-oro_datagrid.select.all: "All"
 oro_datagrid.select.visible: "All visible"
 oro_datagrid.select.none: "None"
 oro_datagrid.select.select: "Select"
@@ -70,7 +69,6 @@ pim_datagrid:
         clear:             Clear
         displayed_columns: Selected Columns
         apply:             Apply
-        cancel:            Cancel
         remove_column:     Remove
         description:       Select the information you want to display as column
         attribute_groups:  Attribute groups
