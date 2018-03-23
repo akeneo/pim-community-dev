@@ -70,7 +70,7 @@ define(
                 this.$el.html(this.template({
                     selectedProductsLabel: __(this.config.label),
                     select: __('oro_datagrid.select.select'),
-                    selectAll: __('oro_datagrid.select.all'),
+                    selectAll: __('pim_common.all'),
                     selectVisible: __('oro_datagrid.select.visible'),
                     selectNone: __('oro_datagrid.select.none')
                 }));

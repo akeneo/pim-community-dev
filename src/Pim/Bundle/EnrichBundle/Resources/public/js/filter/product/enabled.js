@@ -43,7 +43,7 @@ define([
                 labels: {
                     title: __('pim_common.status'),
                     valueChoices: {
-                        all: __('pim_enrich.export.product.filter.enabled.value.all'),
+                        all: __('pim_common.all'),
                         enabled: __('pim_enrich.export.product.filter.enabled.value.enabled'),
                         disabled: __('pim_enrich.export.product.filter.enabled.value.disabled')
                     }
