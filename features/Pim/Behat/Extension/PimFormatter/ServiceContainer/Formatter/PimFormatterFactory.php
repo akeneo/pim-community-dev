@@ -20,7 +20,6 @@ use Behat\Testwork\Output\Printer\Factory\FilesystemOutputFactory;
 use Behat\Testwork\Output\Printer\JUnitOutputPrinter;
 use Behat\Testwork\Output\ServiceContainer\Formatter\FormatterFactory;
 use Behat\Testwork\Output\ServiceContainer\OutputExtension;
-use Pim\Behat\Extension\PimFormatter\Output\Node\EventListener\JUnitDurationListener;
 use Pim\Behat\Extension\PimFormatter\Output\Node\EventListener\PimFeatureElementListener;
 use Pim\Behat\Extension\PimFormatter\Output\Node\Printer\PimScenarioPrinter;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -94,7 +93,6 @@ final class PimFormatterFactory implements FormatterFactory
             '%paths.base%',
             new Reference(self::RESULT_TO_STRING_CONVERTER_ID),
             new Reference('pim.output.node.listener.junit.outline'),
-            new Reference('pim.output.node.listener.junit.duration')
         ]);
         $container->setDefinition('pim.output.node.printer.pim.scenario', $definition);
 
@@ -112,17 +110,14 @@ final class PimFormatterFactory implements FormatterFactory
     private function loadRootNodeListener(ContainerBuilder $container) : void
     {
         $definition = new Definition(JUnitOutlineStoreListener::class, [
-            new Reference('pim.output.node.printer.junit.suite')
-        ]);
+                new Reference('pim.output.node.printer.junit.suite')
+            ]
+        );
         $container->setDefinition('pim.output.node.listener.junit.outline', $definition);
-
-        $definition = new Definition(JUnitDurationListener::class);
-        $container->setDefinition('pim.output.node.listener.junit.duration', $definition);
 
         $definition = new Definition(ChainEventListener::class, [
             [
                 new Reference('pim.output.node.listener.junit.outline'),
-                new Reference('pim.output.node.listener.junit.duration'),
                 new Definition(PimFeatureElementListener::class, [
                     new Reference('pim.output.node.printer.junit.feature'),
                     new Reference('pim.output.node.printer.pim.scenario'),
