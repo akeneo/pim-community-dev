@@ -237,19 +237,15 @@ batch_jobs:
     add_product_value_with_permission_and_rules:
         label: Add product value with permission check & rules application
         perform.label: Add product value
-        execute_rules.label: Rules execution
     update_product_value_with_permission_and_rules:
         label: Update product value with permission check & rules application
         perform.label: Update product value
-        execute_rules.label: Rules execution
     remove_product_value_with_permission_and_rules:
         label: Remove product value with permission check & rules application
         perform.label: Remove product value
-        execute_rules.label: Rules execution
     edit_common_attributes_with_permission_and_rules:
         label: Edit attributes with permission check & rules application
         perform.label: Edit attributes
-        execute_rules.label: Rules execution
         cleaner.label: Clean temporary files
     csv_published_product_quick_export:
         export.label: Csv published products quick export
@@ -267,5 +263,3 @@ batch_jobs:
         export.label: Xlsx published products grid context quick export
         perform:
             label: Xlsx published products grid context quick export
-    add_attribute_value:
-        execute_rules.label: Rules execution

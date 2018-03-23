@@ -78,7 +78,6 @@ batch_jobs:
     rule_impacted_product_count:
         label:               Affected products for the rules
         perform.label:       Count impacted products
-        execute_rules.label: Rules execution
     csv_product_import_with_rules:
         label:                     Product import in CSV with rules
         execute_rules.label:       Rules execution
@@ -86,7 +85,6 @@ batch_jobs:
         import_associations.label: Association import
     csv_product_model_import_with_rules:
         label: Product model import in CSV with rules
-        execute_rules.label: Rules execution
         import_root_product_model.label: Root product model import
         import_sub_product_model.label: Sub product model import
     xlsx_product_import_with_rules:
@@ -96,6 +94,5 @@ batch_jobs:
         import_associations.label: Association import
     xlsx_product_model_import_with_rules:
         label: Product model import in XLSX with rules
-        execute_rules.label: Rules execution
         import_root_product_model.label: Root product model import
         import_sub_product_model.label: Sub product model import
