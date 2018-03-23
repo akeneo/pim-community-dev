@@ -106,7 +106,7 @@ extensions:
         targetZone: properties-general
         position: 120
         config:
-            label: 'pim_enrich.form.family.tab.properties.code'
+            label: 'pim_common.code'
             fieldBaseId: 'pim_enrich_family_form_label_'
 
     pim-family-edit-form-properties-general-attribute-as-label:

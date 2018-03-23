@@ -73,7 +73,7 @@ extensions:
         targetZone: properties
         config:
             fieldCode: code
-            label: pim_enrich.form.job_instance.tab.properties.code.title
+            label: pim_common.code
             readOnly: true
 
     pim-job-instance-csv-base-export-edit-properties-label:
