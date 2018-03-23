@@ -10,6 +10,7 @@ use Behat\Gherkin\Node\FeatureNode;
 use Behat\Gherkin\Node\ScenarioLikeInterface;
 use Behat\Testwork\Output\Formatter;
 use Behat\Testwork\Tester\Result\TestResult;
+use Pim\Behat\Extension\PimFormatter\Output\Node\EventListener\JUnitDurationListener;
 
 /**
  * Scenario printer of the PIM, for the CI. Instead of displaying the namespace of the scenario,
@@ -32,16 +33,25 @@ final class PimScenarioPrinter
     /** @var JUnitOutlineStoreListener */
     private $outlineStoreListener;
 
+    /** @var JUnitDurationListener */
+    private $durationListener;
+
     /**
      * @param string                    $basePath
      * @param ResultToStringConverter   $resultConverter
      * @param JUnitOutlineStoreListener $outlineListener
+     * @param JUnitDurationListener     $durationListener
      */
-    public function __construct(string $basePath, ResultToStringConverter $resultConverter, JUnitOutlineStoreListener $outlineListener)
-    {
+    public function __construct(
+        string $basePath,
+        ResultToStringConverter $resultConverter,
+        JUnitOutlineStoreListener $outlineListener,
+        JUnitDurationListener $durationListener
+    ) {
         $this->basePath = $basePath;
         $this->resultConverter = $resultConverter;
         $this->outlineStoreListener = $outlineListener;
+        $this->durationListener= $durationListener;
     }
 
     /**
@@ -59,6 +69,7 @@ final class PimScenarioPrinter
         $outputPrinter->addTestcase([
             'name'   => $fileAndLine,
             'status' => $this->resultConverter->convertResultToString($result),
+            'time' => $this->durationListener->getDuration($scenario),
         ]);
     }
 
