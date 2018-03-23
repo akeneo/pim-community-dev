@@ -90,7 +90,7 @@ extensions:
         targetZone: container
         position: 100
         config:
-            label: 'pim_enrich.form.group.tab.properties.title'
+            label: 'pim_common.properties'
 
     pim-group-edit-form-properties:
         module: pim/common/simple-view

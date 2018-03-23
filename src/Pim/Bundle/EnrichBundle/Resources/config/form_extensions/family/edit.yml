@@ -82,7 +82,7 @@ extensions:
         targetZone: container
         position: 100
         config:
-            label: 'pim_enrich.form.family.tab.properties.title'
+            label: 'pim_common.properties'
 
     pim-family-edit-form-properties:
         module: pim/common/simple-view

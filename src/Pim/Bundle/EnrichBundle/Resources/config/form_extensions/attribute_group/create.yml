@@ -52,7 +52,7 @@ extensions:
         targetZone: container
         position: 100
         config:
-            label: pim_enrich.form.attribute_group.tab.properties.title
+            label: pim_common.properties
 
     pim-attribute-group-create-form-properties:
         module: pim/common/simple-view
