@@ -110,6 +110,28 @@ final class ImportFileContext extends PimContext implements SnippetAcceptingCont
         throw new ExpectationException(sprintf('Cannot find the error "%s".', $expectedError), $this->getSession());
     }
 
+    /**
+     * @When the file :filename is ready for import
+     */
+    public function theFileIsReadyForImport(string $filename)
+    {
+        $source = '%fixtures%' . $filename;
+        $source = $this->replacePlaceholders($source);
+        $source = realpath($source);
+
+        $destination = '%tmp%/' . $filename;
+        $destination = $this->replacePlaceholders($destination);
+
+        @rmdir(dirname($destination));
+        @mkdir(dirname($destination), 0777, true);
+        @copy($source, $destination);
+        if (!is_readable($destination)) {
+            throw new \Exception(sprintf('The file "%s" is not ready to be imported.', $destination));
+        }
+
+        self::$placeholderValues['%file to import%'] = $destination;
+    }
+
     private function waitForJobToFinish(JobInstance $jobInstance): JobExecution
     {
         $jobInstance->getJobExecutions()->setInitialized(false);

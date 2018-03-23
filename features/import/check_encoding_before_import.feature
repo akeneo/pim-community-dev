@@ -1,4 +1,3 @@
-@javascript
 Feature:
   In order to import valid files
   As a product manager
@@ -6,13 +5,11 @@ Feature:
 
   Background:
     Given the "footwear" catalog configuration
-    And I am logged in as "Julia"
 
   Scenario: Import a file that contains non UTF-8 characters
-    Given I am on the "csv_footwear_product_import" import job page
-    When I upload and import the file "product_export_with_non_utf8_characters.csv"
-    And I wait for the "csv_footwear_product_import" job to finish
-    Then I should see the text "The file \"/tmp/pim/upload_tmp_dir/product_export_with_non_utf8_characters.csv\" is not correctly encoded in UTF-8. The lines 11, 15 are erroneous."
+    When the file "product_export_with_non_utf8_characters.csv" is ready for import
+    And the products are imported via the job csv_footwear_product_import
+    Then I should have the error "The file \"%tmp%/product_export_with_non_utf8_characters.csv\" is not correctly encoded in UTF-8. The lines 11, 15 are erroneous."
 
   Scenario: Import a file that contains only UTF-8 characters
     Given the following CSV file to import:
@@ -28,7 +25,6 @@ Feature:
     Then I should see the text "File encoding: UTF-8 OK"
 
   Scenario: Import a file which content encoding should not be checked
-    Given I am on the "csv_footwear_product_import" import job page
-    When I upload and import the file "caterpillar_import.zip"
-    And I wait for the "csv_footwear_product_import" job to finish
+    When the file "caterpillar_import.zip" is ready for import
+    And the products are imported via the job csv_footwear_product_import
     Then I should see the text "File encoding: skipped, extension in white list"
