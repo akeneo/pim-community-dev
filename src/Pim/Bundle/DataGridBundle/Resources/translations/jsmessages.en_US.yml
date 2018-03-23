@@ -74,7 +74,6 @@ pim_datagrid:
         attribute_groups:  Attribute groups
     mass_action:
         delete:
-            confirm_ok:      OK
             empty_selection: No product selected
 
 # Quick export

@@ -16,6 +16,7 @@ pim_common:
     loading: Loading...
     locales: Locales
     none: None
+    ok: OK
     properties: Properties
     save: Save
     status: Status
@@ -68,8 +69,6 @@ pim_datagrid:
             error:           Error ocurred when trying to delete selected products, please try again.
     view_selector:
         view: Views
-        create_view_modal:
-            confirm: OK
 
 flash:
     item:
