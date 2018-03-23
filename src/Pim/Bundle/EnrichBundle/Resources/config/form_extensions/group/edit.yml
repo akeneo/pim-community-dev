@@ -140,5 +140,5 @@ extensions:
         targetZone: container
         position: 80
         config:
-            label: 'pim_enrich.form.group.tab.products.title'
+            label: 'pim_common.products'
             gridId: 'product-group-grid'

@@ -41,8 +41,8 @@ function (
             return this.template(_.extend(templateContext, {
                 value: this.getModelValue(),
                 labels: {
-                    on: __('switch_on'),
-                    off: __('switch_off')
+                    on: __('pim_common.yes'),
+                    off: __('pim_common.no')
                 }
             }));
         },

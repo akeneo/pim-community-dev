@@ -121,7 +121,7 @@ define([
                 this.template({
                     title: __('pim_datagrid.column_configurator.title'),
                     description: __('pim_datagrid.column_configurator.description'),
-                    attributeGroupsLabel: __('pim_datagrid.column_configurator.attribute_groups'),
+                    attributeGroupsLabel: __('pim_common.attribute_groups'),
                     groups:  groups,
                     columns: this.collection.toJSON()
                 })

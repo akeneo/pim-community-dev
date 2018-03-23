@@ -1,7 +1,9 @@
 pim_common:
     add: Add
+    add_attributes: Add attributes
     all: All
     attributes: Attributes
+    attribute_groups: Attribute groups
     cancel: Cancel
     code: Code
     confirm: Confirm
@@ -10,17 +12,21 @@ pim_common:
     created: Created
     delete: Delete
     edit: Edit
+    general_properties: General properties
     history: History
     label: Label
     label_translations: Label translations
     loading: Loading...
     locales: Locales
+    "no": "No"
     none: None
     ok: OK
     properties: Properties
     products: Products
     save: Save
     status: Status
+    type: Type
+    "yes": "Yes"
     operators:
         "=": Is equal to
         "!=": Is not equal to
@@ -168,7 +174,6 @@ pim:
 # Jstree context menu actions
 jstree.done: Done
 switch_on: "Yes"
-switch_off: "No"
 
 pim_enrich:
     item:
@@ -235,7 +240,6 @@ pim_enrich:
                         title: Group {{ group }}
                         view_group: View group
                         more_products: '{{ count }} more products...'
-                        close: Close
                 scope: Channel
                 locale: Locale
             copy:
@@ -442,8 +446,6 @@ pim_enrich:
                     manage_description: Select the products you want to associate with the current product
                     add_associations: Add associations
                 attributes:
-                    btn:
-                        add_attributes: Add attributes
                     info:
                         search_attributes: Search...
                         no_available_attributes: There are no more attributes to add
@@ -465,9 +467,6 @@ pim_enrich:
                         no_family: No family defined. Please define a family to calculate the completeness of this product.
                         no_completeness: You just changed the family of the product. Please save it first to calculate the completeness for the new family.
                     missing_values: "{1}1 missing value|] 1, Inf [{{ count }} missing values"
-            switch:
-                "no": "No"
-                "yes": "Yes"
             sequential_edit:
                 info:
                     previous: Skip back to {{ product }} without saving.
@@ -487,14 +486,6 @@ pim_enrich:
             mass_edit:
                 select_attributes: Select attributes
                 select: Select
-        association_type:
-            tab:
-                properties:
-                    general: General properties
-        group_type:
-            tab:
-                properties:
-                    general: General properties
         channel:
             tab:
                 properties:
@@ -514,7 +505,6 @@ pim_enrich:
                 attributes:
                     toolbox:
                         select_attributes_by_groups: Add by groups
-                        select_attributes: Add attributes
                         attributes_groups_selected: '{{ itemsCount }} group(s) selected'
                     not_required_label: Not required
                     required_label: Required
@@ -529,21 +519,8 @@ pim_enrich:
                 error_creating_option: An error ocurred when trying to create the attribute option
             add_option_modal:
                 title: Add attribute option
-        entity:
-            switch:
-                "no": "No"
-                "yes": "Yes"
-        group:
-            tab:
-                properties:
-                    general: General properties
-                    type: Type
-                products:
-                    title: Products
         attribute_group:
             tab:
-                properties:
-                    general: General properties
                 attribute:
                     table:
                         name: Name
@@ -677,7 +654,6 @@ pim_enrich:
                         number_min: Min number
                         reference_data_name: Reference data type
                         scopable: Value per channel
-                        type: Type
                         unique: Unique value
                         useable_as_grid_filter: Usable in grid
                         validation_regexp: Regular expression
@@ -695,7 +671,6 @@ pim_enrich:
                 attributes:
                     toolbox:
                         select_attributes_by_groups: Add by groups
-                        select_attributes: Add attributes
                         attributes_groups_selected: '{{ itemsCount }} group(s) selected'
         basket:
             title: Basket
@@ -722,7 +697,6 @@ pim_enrich:
                         apply: Apply
                         title: Attribute selection
                 attributes_selector:
-                    attribute_group: Attribute groups
                     attributes: "Search in {{ itemsCount }} attributes"
                     selected: "Selected attributes"
                     clear: Clear
@@ -834,8 +808,6 @@ pim_enrich:
             title:       "] -Inf, 1] {{ count }} attribute|] 1, Inf [{{ count }} attributes"
             create_btn:  Create attribute
             modal_title: Choose the attribute type
-        attribute_group:
-            title:       Attribute groups
         api_connection:
             title:       "] -Inf, 1] {{ count }} API connection|] 1, Inf [{{ count }} API connections"
     mass_edit:
@@ -1005,7 +977,7 @@ pim_menu:
         configuration: Configuration
         user_management: Users Management
         user: Users
-        user_group: Groups
+        user_group: User groups
         user_role: Roles
         info: System information
         job_tracker: Process tracker

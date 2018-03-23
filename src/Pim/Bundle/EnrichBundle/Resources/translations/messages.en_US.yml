@@ -383,7 +383,6 @@ confirmation:
     leave:           Are you sure you want to leave this page?
     discard changes: You will lose changes to the %entity% if you leave the page.
     remove:
-        item:             Are you sure you want to delete this item?
         attribute:        Are you sure you want to delete the attribute %name%?
         attribute group:  Are you sure you want to delete the attribute group %name%?
         category:         Are you sure you want to delete the category %name%?

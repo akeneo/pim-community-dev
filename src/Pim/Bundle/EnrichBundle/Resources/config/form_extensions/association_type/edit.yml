@@ -102,7 +102,7 @@ extensions:
         targetZone: accordion
         position: 100
         config:
-          sectionTitle: pim_enrich.form.association_type.tab.properties.general
+          sectionTitle: pim_common.general_properties
           codeLabel: pim_common.code
           formRequired: pim_enrich.form.required
           inputField: pim_enrich_association_type_form_code

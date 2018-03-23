@@ -2,7 +2,7 @@
 page_title:
     pim_user_index:                  Users
     pim_user_role_index:             Roles
-    pim_user_group_index:            Groups
+    pim_user_group_index:            User groups
     oro_config_configuration_system: Configuration
 
     pim_user_view: 'User {{ username }} | View'

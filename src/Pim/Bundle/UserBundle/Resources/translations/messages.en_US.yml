@@ -42,7 +42,7 @@ oro.user.grid.groups:
 pim_title:
     user.index: Users
     user_role.index: Roles
-    user_group.index: Groups
+    user_group.index: User groups
     system_configuration.index: Configuration
 
 # User
@@ -163,7 +163,7 @@ Create group: Create group
 btn.create.user-group: Create group
 Has group: Has group
 Save and Close: Save and close
-user-group.overview: Groups
+user-group.overview: User groups
 
 # Login page
 Log in: Log in

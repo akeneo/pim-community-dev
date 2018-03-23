@@ -191,7 +191,7 @@ extensions:
         position: 180
         config:
             select2:
-                placeholder:      'pim_enrich.form.family.tab.attributes.toolbox.select_attributes'
+                placeholder:      'pim_common.add_attributes'
                 title:            'pim_enrich.form.family.tab.attributes.toolbox.add'
                 buttonTitle:      'pim_enrich.form.family.tab.attributes.toolbox.add'
                 emptyText:        'pim_enrich.form.family.tab.attributes.toolbox.no_attributes_available'
