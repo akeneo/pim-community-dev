@@ -12,6 +12,7 @@ pim_common:
     label: Label
     created: Created
     all: All
+    add: Add
     operators:
         "=": Is equal to
         "!=": Is not equal to
@@ -448,7 +449,6 @@ pim_enrich:
                     add_associations: Add associations
                 attributes:
                     btn:
-                        add: Add
                         add_attributes: Add attributes
                     info:
                         search_attributes: Search...
@@ -523,7 +523,6 @@ pim_enrich:
                     toolbox:
                         select_attributes_by_groups: Add by groups
                         select_attributes: Add attributes
-                        add: Add
                         attributes_groups_selected: '{{ itemsCount }} group(s) selected'
                     not_required_label: Not required
                     required_label: Required
@@ -538,7 +537,6 @@ pim_enrich:
                 error_creating_option: An error ocurred when trying to create the attribute option
             add_option_modal:
                 title: Add attribute option
-                confirm: Add
         entity:
             switch:
                 "no": "No"
@@ -564,7 +562,6 @@ pim_enrich:
             tab:
                 attributes:
                     btn:
-                        add: Add
                         add_attributes: Add attributes
                     info:
                         search_attributes: Search...
@@ -710,7 +707,6 @@ pim_enrich:
                     toolbox:
                         select_attributes_by_groups: Add by groups
                         select_attributes: Add attributes
-                        add: Add
                         attributes_groups_selected: '{{ itemsCount }} group(s) selected'
         basket:
             title: Basket

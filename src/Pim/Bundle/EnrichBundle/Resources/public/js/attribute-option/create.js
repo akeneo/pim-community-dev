@@ -39,7 +39,7 @@ define(
                         title: _.__('pim_enrich.form.attribute_option.add_option_modal.title'),
                         content: '',
                         cancelText: _.__('pim_common.cancel'),
-                        okText: _.__('pim_enrich.form.attribute_option.add_option_modal.confirm')
+                        okText: _.__('pim_common.add')
                     });
                     modal.open();
 
