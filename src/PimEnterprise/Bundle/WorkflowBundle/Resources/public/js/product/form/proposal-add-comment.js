@@ -26,7 +26,7 @@ define(
             render: function () {
                 this.$el.html(
                     this.template({
-                        subTitleLabel: __('pim_menu.item.product'),
+                        subTitleLabel: __('pim_common.products'),
                         titleLabel: __('pimee_enrich.entity.product_draft.modal.send_for_approval'),
                         label:__('pimee_workflow.entity.proposal.modal.title'),
                         characters: __('pimee_enrich.entity.product_draft.modal.characters')
