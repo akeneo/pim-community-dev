@@ -46,7 +46,7 @@ define(
                 var modalParameters = {
                     title: __('pimee_enrich.entity.product_draft.modal.accept_proposal'),
                     okText: __('pimee_enrich.entity.product_draft.modal.confirm'),
-                    cancelText: __('pimee_enrich.entity.product_draft.modal.cancel')
+                    cancelText: __('pim_common.cancel')
                 };
 
                 var formModal = new FormModal(

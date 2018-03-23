@@ -72,7 +72,7 @@ define(
 
                 this.$('.current-view-type').html(this.$('[data-value="' + viewType + '"]').html());
                 this.$('.select2-selection-label-view .current').html(
-                    __('teamwork_assistant.grid.view_selector.loading')
+                    __('pim_common.loading')
                 );
                 this.select2Instance.select2('readonly', true);
 

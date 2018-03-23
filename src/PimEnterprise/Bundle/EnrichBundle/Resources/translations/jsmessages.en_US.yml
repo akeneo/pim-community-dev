@@ -131,7 +131,6 @@ pimee_enrich:
                 reject_selected_proposal: Reject selected proposal(s)
                 remove_proposal: Remove proposal
                 send_for_approval: Send for approval
-                cancel: Cancel
                 confirm: Send
                 title: Comment your proposal (optional - 255 characters max.)
                 characters: chars.
