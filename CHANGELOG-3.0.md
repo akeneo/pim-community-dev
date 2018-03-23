@@ -41,3 +41,6 @@
 - Move `PimEnterprise\Bundle\FilterBundle\Filter\ProductDraftFilterUtility` to `PimEnterprise\Bundle\WorkflowBundle\Datagrid\Filter\ProductDraftFilterUtility`
 - Move `PimEnterprise\Bundle\DataGridBundle\Extension\MassAction\Handler\MassApproveActionHandler` to `PimEnterprise\Bundle\WorkflowBundle\Datagrid\MassAction\Handler\MassApproveActionHandler`
 - Move `PimEnterprise\Bundle\DataGridBundle\Extension\MassAction\Handler\MassRefuseActionHandler` to `PimEnterprise\Bundle\WorkflowBundle\Datagrid\MassAction\Handler\MassRefuseActionHandler`
+- Move `PimEnterprise\Bundle\SecurityBundle\Voter\ProductDraftVoter` to `PimEnterprise\Bundle\WorkflowBundle\Security\ProductDraftVoter`
+- Move `PimEnterprise\Bundle\DashboardBundle\Widget\ProposalWidget` to `PimEnterprise\Bundle\WorkflowBundle\Widget\ProposalWidget`
+- Move `PimEnterprise\Bundle\DashboardBundle\Widget\ProposalWidget` to `PimEnterprise\Bundle\WorkflowBundle\Widget\ProposalWidget`
