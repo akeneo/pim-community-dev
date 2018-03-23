@@ -52,7 +52,7 @@ extensions:
         targetZone: content
         position: 190
         config:
-            label: pim_enrich.form.mass_edit.family.attributes.label_label
+            label: pim_common.label
 
     pim-mass-family-edit-form-form-model-updater:
         module: pim/mass-family-edit-form/form-model-updater

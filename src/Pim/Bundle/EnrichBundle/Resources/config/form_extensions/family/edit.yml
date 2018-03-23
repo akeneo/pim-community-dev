@@ -206,7 +206,7 @@ extensions:
         targetZone: attributes-content
         position: 190
         config:
-            label: pim_enrich.form.family.tab.attributes.label_label
+            label: pim_common.label
             confirmation:
                 title: pim_enrich.confirmation.remove_item
                 subTitle: pim_common.attributes

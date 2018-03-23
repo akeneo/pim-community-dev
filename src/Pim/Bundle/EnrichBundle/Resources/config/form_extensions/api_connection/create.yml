@@ -17,4 +17,4 @@ extensions:
         targetZone: fields
         config:
             identifier: label
-            label: pim_enrich.entity.create_popin.label
+            label: pim_common.label
