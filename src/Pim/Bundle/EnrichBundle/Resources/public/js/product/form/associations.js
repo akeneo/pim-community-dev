@@ -675,7 +675,7 @@ define(
                                 title: '',
                                 content: '',
                                 cancelText: ' ',
-                                okText: __('confirmation.title')
+                                okText: __('pim_common.confirm')
                             });
                             modal.open();
                             modal.on('cancel', deferred.reject);
