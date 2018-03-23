@@ -9,17 +9,19 @@
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Bundle\VersioningBundle\EventSubscriber;
+namespace PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\PublishedProduct;
 
 use Pim\Bundle\VersioningBundle\EventSubscriber\AddVersionSubscriber as BaseAddVersionSubscriber;
 use PimEnterprise\Component\Workflow\Model\PublishedProductInterface;
 
 /**
- * Disable the versioning of published product in EE
+ * Disable the versioning of published product in EE.
+ * Dirty override of the AddVersionSubscriber :(.
+ * We should instead find a proper way to plug our behavior.
  *
  * @author Nicolas Dupont <nicolas@akeneo.com>
  */
-class AddVersionSubscriber extends BaseAddVersionSubscriber
+class SkipVersionSubscriber extends BaseAddVersionSubscriber
 {
     /**
      * {@inheritdoc}

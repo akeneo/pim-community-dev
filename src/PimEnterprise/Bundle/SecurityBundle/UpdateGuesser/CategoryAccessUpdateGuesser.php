@@ -9,18 +9,18 @@
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Bundle\VersioningBundle\UpdateGuesser;
+namespace PimEnterprise\Bundle\SecurityBundle\UpdateGuesser;
 
 use Doctrine\ORM\EntityManager;
 use Pim\Bundle\VersioningBundle\UpdateGuesser\UpdateGuesserInterface;
-use PimEnterprise\Component\Security\Model\LocaleAccessInterface;
+use PimEnterprise\Component\Security\Model\CategoryAccessInterface;
 
 /**
- * Locale access update guesser
+ * Category access update guesser
  *
  * @author Julien Sanchez <julien@akeneo.com>
  */
-class LocaleAccessUpdateGuesser implements UpdateGuesserInterface
+class CategoryAccessUpdateGuesser implements UpdateGuesserInterface
 {
     /**
      * {@inheritdoc}
@@ -37,8 +37,8 @@ class LocaleAccessUpdateGuesser implements UpdateGuesserInterface
     {
         $pendings = [];
 
-        if ($entity instanceof LocaleAccessInterface) {
-            $pendings[] = $entity->getLocale();
+        if ($entity instanceof CategoryAccessInterface) {
+            $pendings[] = $entity->getCategory();
         }
 
         return $pendings;

@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Bundle\VersioningBundle\Purger;
+namespace PimEnterprise\Bundle\WorkflowBundle\Purger;
 
 use Akeneo\Component\Versioning\Model\VersionInterface;
 use Pim\Bundle\VersioningBundle\Purger\VersionPurgerAdvisorInterface;
