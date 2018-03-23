@@ -205,5 +205,6 @@ services:
         arguments:
             - '@form.factory'
             - '@pimee_workflow.datagrid.product_draft_utility'
+            - '@pim_user.context.user'
         tags:
             - { name: oro_filter.extension.orm_filter.filter, type: product_draft_date }
