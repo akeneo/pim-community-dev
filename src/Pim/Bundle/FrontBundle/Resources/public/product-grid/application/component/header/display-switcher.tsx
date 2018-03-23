@@ -22,10 +22,11 @@ export default ({
           label: __('grid.display_selector.list'),
         },
       ]}
+      className="display-switcher"
       label={__('grid.display_selector.label')}
       selectedElement={displayType}
       onSelectionChange={(selection: DropdownElement) => {
-        onDisplayChange(selection.original);
+        onDisplayChange(Display.Gallery === selection.identifier ? Display.Gallery : Display.List);
       }}
     />
   );

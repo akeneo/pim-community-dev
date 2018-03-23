@@ -4,11 +4,12 @@ import {Provider} from 'react-redux';
 const userContext = require('pim/user-context');
 import {addFilter} from 'pimfront/product-grid/application/action/filter';
 import {updateChannels} from 'pimfront/app/application/action/channel';
-import store from 'pimfront/product-grid/application/store/main';
+import createStore from 'pimfront/product-grid/application/store/main';
 import Grid from 'pimfront/product-grid/application/component/grid';
 import {catalogLocaleChanged, catalogChannelChanged, uiLocaleChanged} from 'pimfront/app/domain/event/user';
 
 const render = (Component: any) => (DOMElement: HTMLElement) => {
+  const store = createStore(false);
   store.dispatch(catalogLocaleChanged(userContext.get('catalogLocale')));
   store.dispatch(catalogChannelChanged(userContext.get('catalogScope')));
   store.dispatch(uiLocaleChanged(userContext.get('uiLocale')));

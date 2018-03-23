@@ -14,7 +14,11 @@ interface Props {
   onLoadChildren: (product: ProductInterface) => void;
 }
 
-export default class ListElement extends React.Component<Props, {isDisplayed: boolean}> {
+interface State {
+  isDisplayed: boolean;
+}
+
+export default class ListElement extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
 
@@ -29,7 +33,11 @@ export default class ListElement extends React.Component<Props, {isDisplayed: bo
     });
   }
 
-  render() {
+  shouldComponentUpdate(nextProps: Props, nextState: State) {
+    return JSON.stringify(nextProps) !== JSON.stringify(this.props) || this.state.isDisplayed !== nextState.isDisplayed;
+  }
+
+  render(): JSX.Element | JSX.Element[] {
     const {product, locale, channel, onRedirectToProduct, onLoadChildren, position, depth = 0} = this.props;
 
     const imageClass = 'AknGrid-image' + (product instanceof ProductModel ? ' AknGrid-image--withLayer' : '');

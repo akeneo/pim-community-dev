@@ -4,16 +4,45 @@ import BooleanPropertyFilter, {Choice} from 'pimfront/product-grid/domain/model/
 import BooleanAttributeFilter from 'pimfront/product-grid/domain/model/filter/attribute/boolean';
 import {InvalidFilterModel} from 'pimfront/product-grid/application/component/filter/error';
 import Filter from 'pimfront/product-grid/domain/model/filter/filter';
+import __ from 'pimfront/tools/translator';
 
 interface FilterViewProps {
   filter: BooleanAttributeFilter | BooleanPropertyFilter;
+  locale: string;
   onFilterChanged: (filter: Filter) => void;
 }
 
 interface FilterViewState {
   isOpen: boolean;
-  selectedItem: Choice;
 }
+
+// <div
+//   className="AknActionButton AknActionButton--withoutBorder"
+//   data-identifier={selectedElement.identifier}
+//   onClick={onClick}
+// >
+//   <div className="AknColumn-subtitle">{__('Locale')}</div>
+//   <div className="AknColumn-value" data-identifier={selectedElement.identifier}>
+//     <Flag locale={selectedElement.original} displayLanguage />
+//   </div>
+// </div>
+
+const BooleanButtonView = ({
+  label,
+  selectedElement,
+  onClick,
+}: {
+  label: string;
+  selectedElement: DropdownElement;
+  onClick: () => void;
+}) => (
+  <span onClick={onClick}>
+    <span className="AknFilterBox-filterLabel">{label}</span>
+    <span className="AknFilterBox-filterCriteria">
+      {__(`pim_enrich.grid.product.filter.boolean.value.${selectedElement.identifier}`)}
+    </span>
+  </span>
+);
 
 export default class Boolean extends React.Component<FilterViewProps, FilterViewState> {
   constructor(props: FilterViewProps) {
@@ -25,42 +54,37 @@ export default class Boolean extends React.Component<FilterViewProps, FilterView
 
     this.state = {
       isOpen: false,
-      selectedItem: props.filter.getChoiceFromFilter(props.filter),
     };
   }
 
   render() {
+    const label =
+      this.props.filter instanceof BooleanPropertyFilter
+        ? __(this.props.filter.field.getLabel(this.props.locale))
+        : this.props.filter.field.getLabel(this.props.locale);
+
+    const selectedItem = this.props.filter.getChoiceFromFilter(this.props.filter);
+
     return (
       <div className="AknFilterBox-filterContainer" data-name="enabled" data-type="choice">
         <div className="AknFilterBox-filter filter-select filter-criteria-selector">
-          <span className="AknFilterBox-filterLabel">Status</span>
           <Dropdown
             elements={this.props.filter.getChoices().map((choice: Choice): DropdownElement => ({
               identifier: choice.identifier,
-              label: `${choice.identifier}`,
+              label: __(`pim_enrich.grid.product.filter.boolean.value.${choice.identifier}`),
               original: choice,
             }))}
-            label={'boolean'}
-            selectedElement={this.state.selectedItem.identifier}
+            ButtonView={BooleanButtonView}
+            label={label}
+            selectedElement={selectedItem.identifier}
             onSelectionChange={(choice: DropdownElement) => {
               const filter = this.props.filter.getFilterFromChoice(choice.original);
 
               this.props.onFilterChanged(filter);
             }}
           />
-          <button
-            type="button"
-            className="ui-multiselect ui-corner-all AknFilterBox-filterCriteria select-filter-widget"
-            aria-haspopup="true"
-          >
-            <span className="filter-criteria-hint">All</span>
-            <span className="AknFilterBox-filterCaret" />
-          </button>
         </div>
-        <a
-          href="javascript:void(0);"
-          className="AknFilterBox-disableFilter AknIconButton AknIconButton--small AknIconButton--remove disable-filter"
-        />
+        <span className="AknFilterBox-disableFilter AknIconButton AknIconButton--small AknIconButton--remove disable-filter" />
       </div>
     );
   }

@@ -30,7 +30,7 @@ interface GridViewState {
 
 export class GridView extends React.Component<GridViewState & GridDispatch, {}> {
   handleScroll(event: any) {
-    const scrollSize = event.target.children[0].offsetHeight;
+    const scrollSize = event.target.querySelector('.grid-scroll-container').offsetHeight;
     const scrollPosition = event.target.scrollTop;
     const containerSize = event.target.offsetHeight;
     const remainingHeightToBottom = scrollSize - scrollPosition - containerSize;
@@ -72,7 +72,7 @@ export class GridView extends React.Component<GridViewState & GridDispatch, {}> 
                 </div>
               </div>
             </header>
-            <div>
+            <div className="grid-scroll-container">
               <div className="AknGridToolbar">
                 <div className="AknGridToolbar-right AknDisplaySelector">
                   <DisplaySwitcher
@@ -81,7 +81,7 @@ export class GridView extends React.Component<GridViewState & GridDispatch, {}> 
                   />
                 </div>
               </div>
-              <div className={this.props.displayType === Display.Gallery ? 'AknGrid--gallery' : ''}>
+              <div className={`AknGrid--${this.props.displayType}`}>
                 <div className="AknGridContainer AknGridContainer--withCheckbox">
                   <Table
                     onRedirectToProduct={this.props.onRedirectToProduct}

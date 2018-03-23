@@ -820,6 +820,16 @@ pim_enrich:
             empty_basket: Basket is empty
     job:
         upload: Drop your {{ type }} file here, or click to browse disk
+    grid:
+        product:
+            filter:
+                boolean:
+                    value:
+                        all: All
+                        enabled: Enabled
+                        disabled: Disabled
+                        yes: Yes
+                        no: No
     export:
         product:
             data:

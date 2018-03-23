@@ -15,6 +15,8 @@
 - filter
     - models [DONE]
     - views
+- https://github.com/bvaughn/react-virtualized/blob/master/docs/Table.md
+- https://reactjs.org/docs/thinking-in-react.html
 - sort
 - add translation to acceptance
 - manage filters

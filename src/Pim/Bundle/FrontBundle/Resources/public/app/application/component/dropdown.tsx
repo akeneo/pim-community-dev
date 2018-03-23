@@ -105,16 +105,10 @@ export default class Dropdown extends React.Component<Props, {isOpen: boolean; s
     }
 
     const openClass = this.state.isOpen ? 'AknDropdown-menu--open' : '';
-    const dropdownButton = (label: string) => {
+    const dropdownButton = (selectedElement: string, label: string) => {
       const Button = undefined !== this.props.ButtonView ? this.props.ButtonView : DefaultButtonView;
 
-      return (
-        <Button
-          label={label}
-          selectedElement={this.getElement(this.state.selectedElement)}
-          onClick={this.open.bind(this)}
-        />
-      );
+      return <Button label={label} selectedElement={this.getElement(selectedElement)} onClick={this.open.bind(this)} />;
     };
 
     const ElementViews = this.props.elements.map((element: DropdownElement) => {
@@ -131,10 +125,10 @@ export default class Dropdown extends React.Component<Props, {isOpen: boolean; s
     });
 
     return (
-      <div className={`AknDropdown ${this.props.className}`}>
-        {dropdownButton(this.getElement(this.state.selectedElement).label)}
+      <div className={`AknDropdown ${undefined !== this.props.className ? this.props.className : ''}`}>
+        {dropdownButton(this.state.selectedElement, this.props.label)}
         <div className={'AknDropdown-menu ' + openClass}>
-          <div className="AknDropdown-menuTitle">{this.props.label}</div>
+          <div className="AknDropdown-menuTitle">{this.getElement(this.state.selectedElement).label}</div>
           {ElementViews}
         </div>
       </div>

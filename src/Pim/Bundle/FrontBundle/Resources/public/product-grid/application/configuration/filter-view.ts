@@ -74,10 +74,6 @@ config:
 
     const View: typeof React.Component = await this.loadModule(viewModulePath);
 
-    // if (!(View instanceof React.Component)) {
-    //   throw new Missconfiguration(`The module "${viewModulePath}" is not a React component.`);
-    // }
-
     return View;
   }
 
@@ -106,10 +102,6 @@ config:
     const viewModulePath = this.configuration.attribute[model.field.type].view;
 
     const View: typeof React.Component = await this.loadModule(viewModulePath);
-
-    // if (!(View typeof React.Component)) {
-    //   throw new Missconfiguration(`The module "${viewModulePath}" is not a React component.`);
-    // }
 
     return View;
   }

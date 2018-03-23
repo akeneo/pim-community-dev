@@ -28,13 +28,13 @@ describe('>>>COMPONENT --- dropdown', () => {
         .find('.AknDropdown-menuTitle')
         .text()
         .trim()
-    ).toEqual('my dropdown');
+    ).toEqual('and this is the second item');
     expect(
       dropdown
         .find('.AknActionButton-highlight')
         .text()
         .trim()
-    ).toEqual('and this is the second item');
+    ).toEqual('my dropdown');
   });
 
   test('Opens on click, list options and change value on selection', () => {
@@ -49,7 +49,7 @@ describe('>>>COMPONENT --- dropdown', () => {
 
     expect(
       dropdown
-        .find('.AknActionButton-highlight')
+        .find('.AknDropdown-menuTitle')
         .text()
         .trim()
     ).toEqual('and this is the second item');
@@ -64,7 +64,7 @@ describe('>>>COMPONENT --- dropdown', () => {
     expect(dropdown.find('.AknDropdown-menu--open').length).toEqual(0);
     expect(
       dropdown
-        .find('.AknActionButton-highlight')
+        .find('.AknDropdown-menuTitle')
         .text()
         .trim()
     ).toEqual('actually this is the first item');
@@ -157,6 +157,6 @@ describe('>>>COMPONENT --- dropdown', () => {
     );
 
     expect(dropdown.find('.myCustomClass').length).toEqual(1);
-    expect(dropdown.find('.myCustomClass').text()).toEqual('and this is the second item');
+    expect(dropdown.find('.myCustomClass').text()).toEqual('my dropdown');
   });
 });

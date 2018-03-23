@@ -59,7 +59,7 @@ export const SidebarView = ({
             </div>
           </div>
           <div className="AknFilterBox-list">
-            <FiltersView filters={filters} onFilterChanged={onFilterChanged} />
+            <FiltersView filters={filters} locale={context.locale} onFilterChanged={onFilterChanged} />
           </div>
         </div>
       </div>
@@ -68,6 +68,7 @@ export const SidebarView = ({
 };
 
 interface FilterViewState {
+  locale: string;
   filters: NormalizedFilter[];
 }
 
@@ -80,17 +81,24 @@ class FiltersView extends React.Component<FilterViewState & FilterDispatch, Filt
 
   componentWillUpdate(nextProps: FilterViewState & FilterDispatch) {
     if (JSON.stringify(this.props.filters) !== JSON.stringify(nextProps.filters)) {
-      this.updateFilters(nextProps.filters);
+      this.updateFilters(nextProps.filters, nextProps.locale);
     }
   }
 
-  private async updateFilters(filters: NormalizedFilter[]): Promise<void> {
+  private async updateFilters(filters: NormalizedFilter[], locale: string): Promise<void> {
     this.filterViews = await Promise.all(
       filters.map(async (filter: NormalizedFilter): Promise<any> => {
         const model = await filterModelProvider.getPopulatedFilter(filter);
         const FilterView = await filterViewProvider.getFilter(model);
 
-        return <FilterView key={model.field.identifier} filter={model} onFilterChanged={this.props.onFilterChanged} />;
+        return (
+          <FilterView
+            key={model.field.identifier}
+            filter={model}
+            onFilterChanged={this.props.onFilterChanged}
+            locale={locale}
+          />
+        );
       })
     );
 

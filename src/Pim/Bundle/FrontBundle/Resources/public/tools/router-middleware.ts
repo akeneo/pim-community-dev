@@ -5,7 +5,5 @@ export default (router: any) => (store: any) => (next: any) => (action: any) => 
     return;
   }
 
-  let result = next(action);
-
-  return result;
+  return next(action);
 };

@@ -4,7 +4,7 @@ Feature: Switching context on grid
       | code      | locales     |
       | ecommerce | en_US,fr_FR |
       | mobile    | fr_FR,de_DE |
-    And the following product labels:
+    And the following products with labels:
       | identifier | en_US           | fr_FR            | de_DE            |
       | shirt      | My nice product | Un produit sympa | Ein shon produkt |
     And a product grid is displayed
@@ -22,7 +22,7 @@ Feature: Switching context on grid
     Given the following channels with locales:
       | code      | locales           |
       | ecommerce | en_US,de_DE,fr_FR |
-    And the following product labels:
+    And the following products with labels:
       | identifier | en_US           | fr_FR            | de_DE            |
       | shirt      | My nice product | Un produit sympa | Ein shon produkt |
     And a product grid is displayed
