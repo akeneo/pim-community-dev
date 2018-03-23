@@ -44,7 +44,7 @@ extensions:
         config:
             trans:
                 title: confirmation.remove.attribute
-                subTitle: pim_menu.item.attribute
+                subTitle: pim_common.attributes
                 content: pim_enrich.confirmation.delete_item
                 success: flash.attribute.removed
                 failed: error.removing.attribute

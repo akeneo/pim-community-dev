@@ -137,7 +137,7 @@ define(
                     function () {
                         this.parent.deleteItem(this);
                     }.bind(this),
-                    __('pim_menu.item.attribute')
+                    __('pim_common.attributes')
                 );
             },
             updateItem: function () {
