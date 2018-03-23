@@ -26,7 +26,7 @@ define(
                 var button = event.currentTarget;
                 var targetUrl = $(button).data('href');
                 var confirmation = this.getConfirmDialog(
-                    'pimee_product_asset.enrich_variation.popin.delete.message',
+                    'confirmation.remove.item',
                     targetUrl,
                     'pim_common.confirm_deletion'
                 );
