@@ -8,7 +8,7 @@ parameters:
     pimee_catalog_rule.repository.asset_mass_action.class:      PimEnterprise\Bundle\ProductAssetBundle\Doctrine\ORM\Repository\AssetMassEditRepository
     pimee_product_asset.repository.category.class:              Akeneo\Bundle\ClassificationBundle\Doctrine\ORM\Repository\CategoryRepository
     pimee_product_asset.repository.tag.class:                   Akeneo\Bundle\ClassificationBundle\Doctrine\ORM\Repository\TagRepository
-    pimee_product_asset.repository.asset.class: PimEnterprise\Bundle\ProductAssetBundle\Doctrine\ORM\Repository\ExternalApi\AssetRepository
+    pimee_product_asset.api.repository.asset.class: PimEnterprise\Bundle\ProductAssetBundle\Doctrine\ORM\Repository\ExternalApi\AssetRepository
 
 services:
     pimee_product_asset.repository.channel_configuration:
@@ -92,8 +92,8 @@ services:
             - '@pimee_product_asset.remover.asset'
 
     # External API
-    pimee_product_asset.repository.asset:
-        class: '%pimee_product_asset.repository.asset.class%'
+    pimee_product_asset.api.repository.asset:
+        class: '%pimee_product_asset.api.repository.asset.class%'
         arguments:
             - '@doctrine.orm.entity_manager'
             - '%pimee_product_asset.model.asset.class%'

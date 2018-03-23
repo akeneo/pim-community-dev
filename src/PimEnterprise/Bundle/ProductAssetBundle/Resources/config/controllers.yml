@@ -153,9 +153,9 @@ services:
     pimee_product_asset.controller.asset:
         class : '%pimee_product_asset.controller.asset.class%'
         arguments:
-            - '@pimee_product_asset.repository.asset'
-            - '@pimee_product_asset.repository.asset'
-            - '@pimee_product_asset.repository.asset'
+            - '@pimee_product_asset.api.repository.asset'
+            - '@pimee_product_asset.api.repository.asset'
+            - '@pimee_product_asset.api.repository.asset'
             - '@pim_serializer'
             - '@pim_api.pagination.parameter_validator'
             - '@pim_api.pagination.offset_hal_paginator'
