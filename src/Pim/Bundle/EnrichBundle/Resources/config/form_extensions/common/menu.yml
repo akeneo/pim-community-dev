@@ -134,7 +134,7 @@ extensions:
         # position: 110
         position: 0
         config:
-            title: pim_menu.item.attribute
+            title: pim_common.attributes
             to: pim_enrich_attribute_index
 
     pim-menu-settings-product-category:

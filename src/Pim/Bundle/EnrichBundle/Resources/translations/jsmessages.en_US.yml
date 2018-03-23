@@ -6,6 +6,7 @@ pim_common:
     history: History
     properties: Properties
     code: Code
+    attributes: Attributes
 
 # Grid action messages
 confirmation:
@@ -462,7 +463,6 @@ pim_enrich:
                     manage_description: Select the products you want to associate with the current product
                     add_associations: Add associations
                 attributes:
-                    title: Attributes
                     btn:
                         add: Add
                         add_attributes: Add attributes
@@ -541,7 +541,6 @@ pim_enrich:
                     empty_attribute_as_image: Not selected
                     label_translations: Label translations
                 attributes:
-                    title: Attributes
                     label_label: Label
                     toolbox:
                         select_attributes_by_groups: Add by groups
@@ -580,7 +579,6 @@ pim_enrich:
                     general: General properties
                     label_translations: Label translations
                 attribute:
-                    title: Attributes
                     table:
                         name: Name
                         type: Type
@@ -757,8 +755,6 @@ pim_enrich:
                 title: Filter the products
             structure:
                 title: Filter the data
-                attributes:
-                    title: Attributes
             filter:
                 channel:
                     title: Channel
@@ -767,7 +763,6 @@ pim_enrich:
                     title: Locales
                     help: "The locales defines the localized product values to export. Ex: only product information in French."
                 attributes:
-                    title: Attributes
                     edit: Edit
                     label: "{0}All attributes|{1}One attribute selected|]1,Inf[{{ count }} attributes selected"
                     help: "Select the product information to export. Ex: only the technical attributes."
@@ -782,7 +777,6 @@ pim_enrich:
                     clear: Clear
                     all_group: All groups
                     empty_selection: All attributes will be exported
-                    title: Attributes
                     description: Select the product information to export
                 family:
                     title: Family
@@ -1331,7 +1325,6 @@ pim_menu:
             helper: Akeneo Help center
     item:
         association_type: Association types
-        attribute: Attributes
         attribute_group: Attribute groups
         category: Categories
         channel: Channels
