@@ -197,7 +197,7 @@ extensions:
         aclResourceId: pim_enrich_locale_index
         position: 190
         config:
-            title: pim_menu.item.locale
+            title: pim_common.locales
             to: pim_enrich_locale_index
 
     pim-menu-settings-channel:

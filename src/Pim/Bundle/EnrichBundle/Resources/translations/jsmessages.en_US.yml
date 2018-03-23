@@ -13,6 +13,7 @@ pim_common:
     label: Label
     label_translations: Label translations
     loading: Loading...
+    locales: Locales
     none: None
     properties: Properties
     save: Save
@@ -504,7 +505,6 @@ pim_enrich:
                 properties:
                     general: General
                     currencies: Currencies
-                    locales: Locales
                     category_tree: Category tree
                     label_conversion_units: Pick a conversion unit for each metric attribute that will be used during product export
                     conversion_unit:
@@ -719,7 +719,6 @@ pim_enrich:
                     title: Channel
                     help: The channel defines the scope for product values, the locales used to select data, and the tree used to select products.
                 locales:
-                    title: Locales
                     help: "The locales defines the localized product values to export. Ex: only product information in French."
                 attributes:
                     label: "{0}All attributes|{1}One attribute selected|]1,Inf[{{ count }} attributes selected"
@@ -1237,7 +1236,6 @@ pim_menu:
         family: Families
         group: Groups
         group_type: Group types
-        locale: Locales
         product: Products
         product_model: Product Models
         published_product: Published Products
