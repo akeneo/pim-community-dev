@@ -5,6 +5,7 @@ pim_common:
     confirm: Confirm
     history: History
     properties: Properties
+    code: Code
 
 # Grid action messages
 confirmation:
@@ -120,8 +121,6 @@ label:
         add_option: Add an option
 
 Code:                           Code
-Edit:                           Edit
-Delete:                         Delete
 Edit attributes of the product: Edit attributes of the product
 Classify the product:           Classify the product
 Delete the product:             Delete the product
@@ -168,7 +167,6 @@ pim_enrich:
             update_failed: Update failed
             update_successful: Successfully updated
         create_popin:
-             code: Code
              label: Label
         product:
             navigation: Product navigation
@@ -273,7 +271,6 @@ pim_enrich:
                 create_label: "Add a new {{ axes }}"
                 fields:
                     required_label: (variant axis)
-                    code: Code
         association_type:
             info:
                 deletion_successful: Association type successfully deleted.
@@ -348,7 +345,6 @@ pim_enrich:
                 create_label: Create a new family variant
                 create_description: In a family variant, you can define a structure for products with variants. Choose the number of managed variant levels, the attributes used as variant axes for each level, and then define how the attributes are distributed.
                 update_description: Drag & drop attributes to the selected variant level to have these attributes managed at the variant level.
-                code: Code
                 label: Label
                 levels: Variant levels
                 axis_level: Variant axis level
@@ -360,7 +356,6 @@ pim_enrich:
             info:
                 update_successful: Family variant successfully updated. The products with variants will be updated with your changes.
         attribute_option:
-            code: Code
             label: Label
             actions: Actions
         group:
@@ -520,19 +515,16 @@ pim_enrich:
             tab:
                 properties:
                     general: General properties
-                    code: Code
                     label_translations: Label translations
         group_type:
             tab:
                 properties:
                     general: General properties
-                    code: Code
                     label_translations: Label translations
         channel:
             tab:
                 properties:
                     general: General
-                    code: Code
                     currencies: Currencies
                     locales: Locales
                     category_tree: Category tree
@@ -544,7 +536,6 @@ pim_enrich:
             tab:
                 properties:
                     general: General
-                    code: Code
                     attribute_as_label: Attribute used as label
                     attribute_as_image: Attribute used as the main picture
                     empty_attribute_as_image: Not selected
@@ -579,7 +570,6 @@ pim_enrich:
             tab:
                 properties:
                     general: General properties
-                    code: Code
                     type: Type
                     label_translations: Label translations
                 products:
@@ -588,7 +578,6 @@ pim_enrich:
             tab:
                 properties:
                     general: General properties
-                    code: Code
                     label_translations: Label translations
                 attribute:
                     title: Attributes
@@ -648,8 +637,6 @@ pim_enrich:
                 content:
                     title: Content
                 properties:
-                    code:
-                        title: Code
                     label:
                         title: Label
                     decimal_separator:
@@ -719,7 +706,6 @@ pim_enrich:
                         allowed_extensions: Allowed extensions
                         auto_option_sorting: Sort automatically options by alphabetical order
                         available_locales: Available locales
-                        code: Code
                         date_max: Max date
                         date_min: Min date
                         decimals_allowed: Decimal values allowed

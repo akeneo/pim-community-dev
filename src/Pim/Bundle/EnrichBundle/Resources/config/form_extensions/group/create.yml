@@ -18,7 +18,7 @@ extensions:
         position: 10
         config:
            identifier: code
-           label: pim_enrich.entity.create_popin.code
+           label: pim_common.code
 
     pim-group-create-type:
         module: pim/form/common/creation/type

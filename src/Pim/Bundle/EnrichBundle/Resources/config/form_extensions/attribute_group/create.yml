@@ -68,7 +68,7 @@ extensions:
         position: 100
         config:
             sectionTitle: pim_enrich.form.channel.tab.properties.general
-            codeLabel: pim_enrich.form.channel.tab.properties.code
+            codeLabel: pim_common.code
 
     pim-attribute-group-create-form-properties-translation-section:
         module: pim/common/simple-view

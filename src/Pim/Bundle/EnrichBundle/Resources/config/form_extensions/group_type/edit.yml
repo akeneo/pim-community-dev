@@ -103,7 +103,7 @@ extensions:
         position: 100
         config:
           sectionTitle: pim_enrich.form.group_type.tab.properties.general
-          codeLabel: pim_enrich.form.group_type.tab.properties.code
+          codeLabel: pim_common.code
           formRequired: pim_enrich.form.required
           inputField: pim_enrich_group_type_form_code
 

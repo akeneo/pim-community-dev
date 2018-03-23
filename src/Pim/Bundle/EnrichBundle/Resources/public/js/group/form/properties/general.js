@@ -33,7 +33,7 @@ define([
                 this.$el.html(this.template({
                     model: this.getFormData(),
                     sectionTitle: __('pim_enrich.form.group.tab.properties.general'),
-                    codeLabel: __('pim_enrich.form.group.tab.properties.code'),
+                    codeLabel: __('pim_common.code'),
                     typeLabel: __('pim_enrich.form.group.tab.properties.type'),
                     __: __
                 }));

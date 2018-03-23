@@ -121,7 +121,7 @@ extensions:
         position: 100
         config:
           sectionTitle: pim_enrich.form.attribute_group.tab.properties.general
-          codeLabel: pim_enrich.form.attribute_group.tab.properties.code
+          codeLabel: pim_common.code
           formRequired: pim_enrich.form.required
           inputField: pim_enrich_attribute_group_form_code
 

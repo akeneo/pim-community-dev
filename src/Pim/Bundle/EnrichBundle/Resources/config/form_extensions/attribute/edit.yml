@@ -135,7 +135,7 @@ extensions:
         position: 90
         config:
             fieldName: code
-            label: pim_enrich.form.attribute.tab.properties.label.code
+            label: pim_common.code
             required: true
             readOnly: true
 
