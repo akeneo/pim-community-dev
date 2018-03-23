@@ -907,66 +907,266 @@ perform.steps.excluded.title: Excluded product
 batch_jobs:
     add_product_value:
         label: Add product value
-        perform:
-            label: Add product value
+        perform.label: Add product value
     update_product_value:
         label: Update product value
-        perform:
-            label: Update product value
+        perform.label: Update product value
     add_attribute_value:
         label: Add attributes value
-        perform:
-            label: Add attributes value
+        perform.label: Add attributes value
     edit_common_attributes:
         label: Edit attributes
-        perform:
-            label: Edit attributes
-        clean:
-            label: Clean files for attributes
-        cleaner:
-            label: Clean files for attributes
+        perform.label: Edit attributes
+        clean.label: Clean files for attributes
+        cleaner.label: Clean files for attributes
     add_to_category:
         label: Add to category
-        perform:
-            label: Add to category
+        perform.label: Add to category
     move_to_category:
         label: Move to category
-        perform:
-            label: Move to category
+        perform.label: Move to category
     remove_from_category:
         label: Remove from category
-        perform:
-            label: Remove from category
+        perform.label: Remove from category
     add_association:
         label: Associate to products
-        perform:
-            label: Associate to products
+        perform.label: Associate to products
     add_to_existing_product_model:
         label: Add to an existing product model
-        perform:
-            label: Add to an existing product model
+        perform.label: Add to an existing product model
     set_attribute_requirements:
         label: Set attributes requirements
-        perform:
-            label: Set attributes requirements
+        perform.label: Set attributes requirements
     csv_product_quick_export:
         quick_export.label: Csv product quick export
-        perform:
-            label: Csv product quick export
+        perform.label: Csv product quick export
     csv_product_grid_context_quick_export:
         quick_export.label: Csv product grid context quick export
-        perform:
-            label: Csv product grid context quick export
+        perform.label: Csv product grid context quick export
     xlsx_product_quick_export:
         quick_export.label: Xlsx product quick export
-        perform:
-            label: Xlsx product quick export
+        perform.label: Xlsx product quick export
     xlsx_product_grid_context_quick_export:
         quick_export.label: Xlsx product grid context quick export
-        perform:
-            label: Xlsx product grid context quick export
+        perform.label: Xlsx product grid context quick export
     delete_products_and_product_models:
         delete_products_and_product_models.label: Mass delete products
+    add_product_value:
+        label: Add product value
+        perform.label: Add product value
+    update_product_value:
+        label: Update product value
+        perform.label: Update product value
+    edit_common_attributes:
+        label: Edit attributes
+        perform.label: Edit attributes
+        cleaner.label: Clean files for attributes
+    add_to_category:
+        label: Add to category
+        perform.label: Add to category
+    move_to_category:
+        label: Move to category
+        perform.label: Move to category
+    remove_from_category:
+        label: Remove from category
+        perform.label: Remove from category
+    add_association:
+        label: Associate to products
+        perform.label: Associate to products
+    add_to_existing_product_model:
+        label: Add to an existing product model
+        perform.label: Add to an existing product model
+    set_attribute_requirements:
+        label: Set attributes requirements
+        perform.label: Set attributes requirements
+    csv_product_quick_export:
+        quick_export.label: CSV product quick export
+        quick_export_product_model.label: CSV product model quick export
+        perform.label: CSV product quick export
+    csv_product_grid_context_quick_export:
+        quick_export.label: CSV product grid context quick export
+        quick_export_product_model.label: CSV product model grid context quick export
+        perform.label: CSV product grid context quick export
+    xlsx_product_quick_export:
+        quick_export.label: XSLX product quick export
+        quick_export_product_model.label: XSLX product model quick export
+        perform.label: XSLX product quick export
+    xlsx_product_grid_context_quick_export:
+        quick_export.label: XSLX product grid context quick export
+        quick_export_product_model.label: XSLX product model grid context quick export
+        perform.label: XSLX product grid context quick export
+    csv_product_export:
+        label: Product export in CSV
+        export.label: Product export
+    csv_product_model_export:
+        label: Product model export in CSV
+        export.label: Product export
+    csv_category_export:
+        label: Category export in CSV
+        export.label: Category export
+    csv_attribute_export:
+        label: Attribute export in CSV
+        export.label: Attribute export
+    csv_attribute_option_export:
+        label: Attribute option export in CSV
+        export.label: Attribute option export
+    csv_association_type_export:
+        label: Association type export in CSV
+        export.label: Association type export
+    csv_group_export:
+        label: Group export in CSV
+        export.label: Group export
+    csv_family_export:
+        label: Family export in CSV
+        export.label: Family export
+    csv_family_variant_export:
+        label: Family variant export in CSV
+        export.label: Family variant export
+    csv_product_import:
+        label: Product import in CSV
+        import.label: Product import
+        import_associations.label: Association import
+    csv_product_model_import:
+        label: Product model import in CSV
+    csv_category_import:
+        label: Category import in CSV
+        import.label: Category import
+    csv_attribute_import:
+        label: Attribute import in CSV
+        import.label: Attribute import
+    csv_attribute_option_import:
+        label: Attribute option import in CSV
+        import.label: Attribute option import
+    csv_association_type_import:
+        label: Association type import in CSV
+        import.label: Association type import
+    csv_family_import:
+        label: Family import in CSV
+        import.label: Family import
+        compute_data_related_to_family_variants.label: Compute product models data
+        compute_data_related_to_family_products.label: Compute products data
+    csv_family_variant_import:
+        label: Family variant import in CSV
+        import.label: Family variant import
+    csv_group_import:
+        label: Group import in CSV
+        import.label: Group import
+    csv_channel_export:
+        label: Channel export in CSV
+        export.label: Channel export
+    csv_locale_export:
+        label: Locale export in CSV
+        export.label: Locale export
+    csv_attribute_group_export:
+        label: Attribute group export in CSV
+        export.label: Attribute group export
+    csv_currency_export:
+        label: Currency export in CSV
+        export.label: Currency export
+    csv_group_type_export:
+        label: Group type export in CSV
+        export.label: Group type export
+    csv_channel_import:
+        label: Channel import in CSV
+        import.label: Channel import
+    csv_locale_import:
+        label: Locale import in CSV
+        import.label: Locale import
+    csv_attribute_group_import:
+        label: Attribute group import in CSV
+        import.label: Attribute group import
+    csv_currency_import:
+        label: Currency import in CSV
+        import.label: Currency import
+    csv_group_type_import:
+        label: Group type import in CSV
+        import.label: Group type import
+    xlsx_category_import:
+        label: Category import in XLSX
+        import.label: Category import
+    xlsx_association_type_import:
+        label: Association type import in XLSX
+        import.label: Association type import
+    xlsx_attribute_import:
+        label: Attribute import in XLSX
+        import.label: Attribute import
+    xlsx_attribute_option_import:
+        label: Attribute option import in XLSX
+        import.label: Attribute option import
+    xlsx_family_import:
+        label: Family import in XLSX
+        import.label: Family import
+        compute_data_related_to_family_variants.label: Compute product models data
+        compute_data_related_to_family_products.label: Compute products data
+    xlsx_family_variant_import:
+        label: Family variant import in XLSX
+        import.label: Family variant import
+    xlsx_product_export:
+        label: Product export in XLSX
+        export.label: Product export
+    xlsx_product_model_export:
+        label: Product model export in XLSX
+        export.label: Product model export
+    xlsx_product_import:
+        label: Product import in XLSX
+        import.label: Product import
+        import_associations.label: Association import
+    xlsx_product_model_import:
+        label: Product model import in XSLX
+    xlsx_group_export:
+        label: Group export in XLSX
+        export.label: Group export
+    xlsx_group_import:
+        label: Group import in XLSX
+        import.label: Group import
+    xlsx_family_export:
+        label: Family export in XLSX
+        export.label: Family export
+    xlsx_family_variant_export:
+        label: Family variant export in XLSX
+        export.label: Family variant export
+    xlsx_category_export:
+        label: Category export in XLSX
+        export.label: Category export
+    xlsx_attribute_export:
+        label: Attribute export in XLSX
+        export.label: Attribute export in XLSX
+    xlsx_attribute_option_export:
+        label: Attribute option export in XLSX
+        export.label: Attribute option export in XLSX
+    xlsx_association_type_export:
+        label: Association type export in XLSX
+        export.label: Association type export in XLSX
+    xlsx_channel_export:
+        label: Channel export in XLSX
+        export.label: Channel export
+    xlsx_locale_export:
+        label: Locale export in XLSX
+        export.label: Locale export
+    xlsx_attribute_group_export:
+        label: Attribute group export in XLSX
+        export.label: Attribute group export
+    xlsx_currency_export:
+        label: Currency export in XLSX
+        export.label: Currency export
+    xlsx_group_type_export:
+        label: Group type export in XLSX
+        export.label: Group type export
+    xlsx_channel_import:
+        label: Channel import in XLSX
+        import.label: Channel import
+    xlsx_locale_import:
+        label: Locale import in XLSX
+        import.label: Locale import
+    xlsx_attribute_group_import:
+        label: Attribute group import in XLSX
+        import.label: Attribute group import
+    xlsx_currency_import:
+        label: Currency import in XLSX
+        import.label: Currency import
+    xlsx_group_type_import:
+        label: Group type import in XLSX
+        import.label: Group type import
 
 mass_edit report:
     overview: Mass edit reports
