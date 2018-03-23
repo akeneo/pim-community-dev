@@ -2,7 +2,6 @@ pim_dashboard:
     widget:
         last_operations:
             empty: No operations found
-            status: Status
             date: Date
             type: Type
             profile_name: Profile name
