@@ -12,6 +12,7 @@ pim_common:
     history: History
     label: Label
     label_translations: Label translations
+    loading: Loading...
     none: None
     properties: Properties
     save: Save
@@ -564,7 +565,6 @@ pim_enrich:
                         search_attributes: Search...
                         no_available_attributes: There are no more attributes to add
         job_execution:
-            loading:          Loading...
             title.details:    Execution details
             refreshBtn.title: Refresh
             button:
@@ -1270,4 +1270,3 @@ pim_menu:
 pim_notification:
     mark_all_as_read: Mark all as read
     no_notifications: No notifications
-    loading: Loading...
