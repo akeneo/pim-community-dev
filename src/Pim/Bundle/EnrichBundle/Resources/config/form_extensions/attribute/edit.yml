@@ -211,7 +211,7 @@ extensions:
         targetZone: container
         position: 120
         config:
-            label: pim_enrich.form.attribute.tab.labels.title
+            label: pim_common.label_translations
 
     pim-attribute-edit-form-labels-container:
         module: pim/common/simple-view
