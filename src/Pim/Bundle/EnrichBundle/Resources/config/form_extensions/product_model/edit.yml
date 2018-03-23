@@ -142,7 +142,7 @@ extensions:
         targetZone: meta
         position: 90
         config:
-            label: pim_enrich.entity.product.meta.created
+            label: pim_common.created
             labelBy: pim_enrich.entity.product.meta.created_by
 
     pim-product-model-edit-form-updated:
