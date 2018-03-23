@@ -64,7 +64,7 @@ define(
                         __: __,
                         isEditable: this.isEditable(),
                         titleEdit: __('pim_common.attributes'),
-                        labelEdit: __('pim_enrich.export.product.filter.attributes.edit'),
+                        labelEdit: __('pim_common.edit'),
                         labelInfo: __(
                             'pim_enrich.export.product.filter.attributes.label',
                             {count: attributes.length},

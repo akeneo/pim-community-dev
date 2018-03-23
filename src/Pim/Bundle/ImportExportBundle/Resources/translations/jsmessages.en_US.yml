@@ -10,8 +10,7 @@ pim_connector:
                 modal:
                     title: Categories selection
                     confirm: Confirm
-                label: "{0} All products|{1} One category selected|]1,Inf[ {{ count }} categories selected"
-                edit: Edit
+                label: "{0}All products|{1}One selected category|]1,Inf[{{ count }} selected categories"
                 title: Select categories
         locales:
             validation:

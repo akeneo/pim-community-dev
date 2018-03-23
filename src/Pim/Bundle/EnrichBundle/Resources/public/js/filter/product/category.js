@@ -47,7 +47,7 @@ define([
             return this.template({
                 isEditable: this.isEditable(),
                 titleEdit: __('pim_connector.export.categories.selector.title'),
-                labelEdit: __('pim_connector.export.categories.selector.edit'),
+                labelEdit: __('pim_common.edit'),
                 labelInfo: __(
                     'pim_connector.export.categories.selector.label',
                     {count: categoryCount},
