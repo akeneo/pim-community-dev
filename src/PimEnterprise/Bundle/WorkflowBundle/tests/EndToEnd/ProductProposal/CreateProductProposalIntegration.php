@@ -2,6 +2,7 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\tests\EndToEnd\ProductProposal;
 
+use PimEnterprise\Bundle\ApiBundle\tests\integration\Controller\ProductProposal\AbstractProposalIntegration;
 use PimEnterprise\Component\Workflow\Model\ProductDraft;
 use PimEnterprise\Component\Workflow\Model\ProductDraftInterface;
 use Symfony\Component\HttpFoundation\Response;
