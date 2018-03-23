@@ -83,7 +83,7 @@ extensions:
         targetZone: properties
         config:
             fieldCode: label
-            label: pim_enrich.form.job_instance.tab.properties.label.title
+            label: pim_common.label
             readOnly: false
 
     pim-job-instance-xlsx-product-model-import-edit-properties-file-path:

@@ -9,6 +9,7 @@ pim_common:
     attributes: Attributes
     label_translations: Label translations
     status: Status
+    label: Label
 
 # Grid action messages
 confirmation:
@@ -164,13 +165,9 @@ pim_enrich:
             back_to_grid: Back to grid
         other_actions: Other actions
     entity:
-        save:
-            label: Save
         info:
             update_failed: Update failed
             update_successful: Successfully updated
-        create_popin:
-             label: Label
         product:
             navigation: Product navigation
             infos: Product infos
@@ -223,7 +220,6 @@ pim_enrich:
                     modal:
                         title: Group {{ group }}
                         view_group: View group
-                        group_label: Label
                         more_products: '{{ count }} more products...'
                         close: Close
                 scope: Channel
@@ -347,7 +343,6 @@ pim_enrich:
                 create_label: Create a new family variant
                 create_description: In a family variant, you can define a structure for products with variants. Choose the number of managed variant levels, the attributes used as variant axes for each level, and then define how the attributes are distributed.
                 update_description: Drag & drop attributes to the selected variant level to have these attributes managed at the variant level.
-                label: Label
                 levels: Variant levels
                 axis_level: Variant axis level
                 required: required
@@ -358,7 +353,6 @@ pim_enrich:
             info:
                 update_successful: Family variant successfully updated. The products with variants will be updated with your changes.
         attribute_option:
-            label: Label
             actions: Actions
         group:
             title: Group
@@ -538,7 +532,6 @@ pim_enrich:
                     attribute_as_image: Attribute used as the main picture
                     empty_attribute_as_image: Not selected
                 attributes:
-                    label_label: Label
                     toolbox:
                         select_attributes_by_groups: Add by groups
                         select_attributes: Add attributes
@@ -628,8 +621,6 @@ pim_enrich:
                 content:
                     title: Content
                 properties:
-                    label:
-                        title: Label
                     decimal_separator:
                         title: Decimal separator
                         help: Determine the decimal separator
@@ -729,7 +720,6 @@ pim_enrich:
         mass_edit:
             family:
                 attributes:
-                    label_label: Label
                     toolbox:
                         select_attributes_by_groups: Add by groups
                         select_attributes: Add attributes

@@ -27,7 +27,7 @@ extensions:
         position: 20
         config:
             identifier: label
-            label: pim_enrich.entity.create_popin.label
+            label: pim_common.label
 
     pim-export-profile-create-job:
         module: pim/form/common/creation/job
