@@ -1,5 +1,6 @@
 pim_common:
     cancel: Cancel
+    create: Create
 
 # Grid action messages
 confirmation:
@@ -39,7 +40,6 @@ pim_datagrid:
     view_selector:
         view: Views
         create_view_modal:
-            create: Create
             confirm: OK
 
 flash:
@@ -141,7 +141,6 @@ pim:
             sequential_edit: Sequential edit
 
 # Jstree context menu actions
-jstree.create: Create
 jstree.done: Done
 switch_on: "Yes"
 switch_off: "No"
@@ -177,7 +176,6 @@ pim_enrich:
             title: product
             locale: Locale
             category: Category
-            create: Create
             subTitle: Create product
             modalTitle: Select your action
             filters: Filters
@@ -246,7 +244,6 @@ pim_enrich:
                 upload: Drag and drop to upload or click here
             create_popin:
                 type: Product
-                title: Create
                 labels:
                     family: Choose a family
                     family_variant: Choose a family variant
@@ -294,8 +291,6 @@ pim_enrich:
             btn:
                 save: Save
             title: association type
-            create_popin:
-                title: Create
             message:
                 created: Association type successfully created
         group_type:
@@ -313,8 +308,6 @@ pim_enrich:
             btn:
                 save: Save
             title: group type
-            create_popin:
-                title: Create
             message:
                 created: Group type successfully created
         channel:
@@ -352,8 +345,6 @@ pim_enrich:
                 updated_by: Updated by
             btn:
                 save: Save
-            create_popin:
-                title: Create
             message:
                 created: Family successfully created
             variant:
@@ -367,7 +358,6 @@ pim_enrich:
                 create_label: Create a new family variant
                 create_description: In a family variant, you can define a structure for products with variants. Choose the number of managed variant levels, the attributes used as variant axes for each level, and then define how the attributes are distributed.
                 update_description: Drag & drop attributes to the selected variant level to have these attributes managed at the variant level.
-                create: Create
                 code: Code
                 label: Label
                 levels: Variant levels
@@ -399,8 +389,6 @@ pim_enrich:
                 created_by: Created by
                 updated: Updated
                 updated_by: Updated by
-            create_popin:
-                title: Create
             message:
                 created: Group successfully created
         job_instance:
@@ -443,8 +431,6 @@ pim_enrich:
                 update_failed: Attribute group could not be updated
                 update_successful: Attribute group successfully updated
         api_connection:
-            create_popin:
-                title: Create
             message:
                 created: API connection successfully created
     confirmation:
@@ -968,8 +954,6 @@ pim_enrich:
             title:      "] -Inf, 1] {{ count }} import profile|] 1, Inf [{{ count }} import profiles"
             create_btn: Create import profile
             list:       Select a job
-            create_popin:
-                title: Create
             message:
                 created: Import profile successfully created
         import_history:
@@ -980,8 +964,6 @@ pim_enrich:
         export_profiles:
             title:      "] -Inf, 1] {{ count }} export profile|] 1, Inf [{{ count }} export profiles"
             create_btn: Create export profile
-            create_popin:
-                title: Create
             message:
                 created: Export profile successfully created
         export_history:

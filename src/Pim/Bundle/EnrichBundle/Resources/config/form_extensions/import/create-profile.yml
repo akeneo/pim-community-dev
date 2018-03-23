@@ -3,7 +3,7 @@ extensions:
         module: pim/form/common/creation/modal
         config:
             labels:
-                title: pim_enrich.index.import_profiles.create_popin.title
+                title: pim_common.create
                 subTitle: pim_menu.item.import_profile
             picture: illustrations/Import.svg
             successMessage: pim_enrich.index.import_profiles.message.created

@@ -49,7 +49,7 @@ define(
                     className: 'modal modal--fullPage add-family-variant-modal',
                     content: '',
                     cancelText: __('pim_common.cancel'),
-                    okText: __('pim_enrich.entity.family.variant.create'),
+                    okText: __('pim_common.create'),
                     okCloses: false
                 };
 
