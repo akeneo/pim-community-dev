@@ -149,4 +149,5 @@ Username or Email: Brugernavn eller e-mail
 Forgot Password: Glemt adgangskode
 Request: Anmodning
 Check Email: Tjek Email
+password_reset_email_sent: En e-mail er blevet sendt til % e-mail %. Den indeholder et link du skal klikke på for at nulstille din adgangskode.
 Go to homepage: Gå til hjemmeside
