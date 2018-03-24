@@ -794,6 +794,10 @@ batch_jobs:
     label: Mise à jour de la valeur du produit
     perform:
       label: Mise à jour de la valeur du produit
+  add_attribute_value:
+    label: Ajouter une valeur d’attribut
+    perform:
+      label: Ajouter une valeur d’attribut
   edit_common_attributes:
     label: Modifier des attributs
     perform:

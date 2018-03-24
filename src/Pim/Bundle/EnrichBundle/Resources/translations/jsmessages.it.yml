@@ -983,8 +983,6 @@ pim_enrich:
           label_count: "{1}Cambia lo stato di <span class=\"AknFullPage-title--highlight\">1 prodotto</span>|] 1, Inf [Cambia lo stato di <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} prodotti</span>"
           description: Gli articoli selezionati saranno attivati o disattivati.
           field: Per attivare
-        edit_common:
-          label: Modificare gli attributi
         change_family:
           label: Cambia famiglia
           label_count: "{1}Modifica la famiglia di <span class=\"AknFullPage-title--highlight\">1 prodotto</span>|] 1, Inf [Modifica la famiglia di <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} prodotti</span>"
