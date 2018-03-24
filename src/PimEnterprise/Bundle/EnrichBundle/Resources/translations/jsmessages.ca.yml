@@ -224,3 +224,5 @@ batch_jobs:
     export.label: Exportació ràpida de la quadrícula de context de productes publicats en Xlsx
     perform:
       label: Exportació ràpida de la quadrícula de context de productes publicats en Xlsx
+  add_attribute_value:
+    execute_rules.label: Execució de les regles

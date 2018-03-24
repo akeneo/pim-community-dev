@@ -224,3 +224,5 @@ batch_jobs:
     export.label: 已发布的产品内容（网页界面）快速导出至XLSX
     perform:
       label: 已发布的产品内容（网页界面）快速导出至XLSX
+  add_attribute_value:
+    execute_rules.label: 执行规则
