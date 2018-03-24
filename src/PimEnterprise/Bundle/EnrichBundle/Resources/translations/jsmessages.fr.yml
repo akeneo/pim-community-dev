@@ -260,3 +260,5 @@ batch_jobs:
     export.label: Export rapide XLSX des produits publiés dans le contexte de grille
     perform:
       label: Export rapide XLSX des produits publiés dans le contexte de grille
+  add_attribute_value:
+    execute_rules.label: Exécution des règles

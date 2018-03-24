@@ -260,3 +260,5 @@ batch_jobs:
     export.label: CSV offentliggjort produkter gitter sammenhæng hurtig eksport
     perform:
       label: CSV offentliggjort produkter gitter sammenhæng hurtig eksport
+  add_attribute_value:
+    execute_rules.label: Regler udførelse
