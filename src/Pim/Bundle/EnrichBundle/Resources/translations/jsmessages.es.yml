@@ -891,8 +891,6 @@ pim_enrich:
           label: Cambiar el estado
           description: Los productos seleccionados serán habilitados o inhabilitados.
           field: Para habilitar
-        edit_common:
-          label: Editar atributos
         change_family:
           description: La familia de los productos seleccionados se cambiará a la familia elegida
           field: Familia
