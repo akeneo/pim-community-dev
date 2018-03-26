@@ -29,13 +29,12 @@ class DateTimeWithUserTimezonePropertySpec extends ObjectBehavior
     }
 
     function it_formats_a_datetime_with_user_timezone(
-        $translator,
         $userContext,
         $presenter
     ) {
         $datetime = new \DateTime('2018-03-20T18:13');
 
-        $translator->getLocale()->willReturn('en_GB');
+        $userContext->getUiLocaleCode()->willReturn('en_GB');
         $userContext->getUserTimezone()->willReturn('Pacific/Kiritimati');
         $presenter->present(
             $datetime,

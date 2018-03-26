@@ -10,6 +10,7 @@ use Akeneo\Component\Batch\Item\ItemReaderInterface;
 use Akeneo\Component\Batch\Job\JobRepositoryInterface;
 use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\StorageUtils\Cache\CacheClearerInterface;
+use Akeneo\Component\StorageUtils\Cache\EntityManagerClearerInterface;
 use Akeneo\Component\StorageUtils\Cursor\CursorInterface;
 use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
@@ -44,7 +45,7 @@ class ComputeDataRelatedToFamilyProductsTasklet implements TaskletInterface, Ini
     /** @var BulkSaverInterface */
     private $productSaver;
 
-    /** @var CacheClearerInterface */
+    /** @var EntityManagerClearerInterface */
     private $cacheClearer;
 
     /** @var ProductQueryBuilderFactoryInterface */
@@ -61,7 +62,7 @@ class ComputeDataRelatedToFamilyProductsTasklet implements TaskletInterface, Ini
      * @param ProductQueryBuilderFactoryInterface   $productQueryBuilderFactory
      * @param ItemReaderInterface                   $familyReader
      * @param BulkSaverInterface                    $productSaver
-     * @param CacheClearerInterface                 $cacheClearer
+     * @param EntityManagerClearerInterface                 $cacheClearer
      * @param JobRepositoryInterface                $jobRepository
      */
     public function __construct(
@@ -70,7 +71,7 @@ class ComputeDataRelatedToFamilyProductsTasklet implements TaskletInterface, Ini
         ItemReaderInterface $familyReader,
         BulkSaverInterface $productSaver,
         ObjectDetacherInterface $objectDetacher,
-        CacheClearerInterface $cacheClearer,
+        EntityManagerClearerInterface $cacheClearer,
         JobRepositoryInterface $jobRepository
     ) {
         $this->familyReader = $familyReader;

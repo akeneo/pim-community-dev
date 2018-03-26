@@ -9,7 +9,6 @@ use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Component\Catalog\Model\FamilyVariantInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\VariantAttributeSetInterface;
-use Pim\Component\Catalog\Model\VariantProductInterface;
 use Pim\Component\Catalog\Normalizer\Indexing\ProductAndProductModel\ProductModelNormalizer;
 use Pim\Component\Catalog\Normalizer\Indexing\ProductAndProductModel\ProductNormalizer;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -57,6 +56,7 @@ class ProductNormalizerSpec extends ObjectBehavior
         FamilyInterface $family
     ) {
         $product->getFamily()->willReturn($family);
+        $product->isVariant()->willReturn(false);
         $family->getAttributeCodes()->willReturn(['attr1', 'attr2']);
         $product->getRawValues()
             ->willReturn([
@@ -79,7 +79,7 @@ class ProductNormalizerSpec extends ObjectBehavior
 
     function it_normalizes_a_variant_product_in_product_and_product_model_format(
         $propertiesNormalizer,
-        VariantProductInterface $variantProduct,
+        ProductInterface $variantProduct,
         FamilyInterface $family,
         FamilyVariantInterface $familyVariant,
         VariantAttributeSetInterface $variantAttributeSet,
@@ -89,6 +89,7 @@ class ProductNormalizerSpec extends ObjectBehavior
         AttributeInterface $axeOne
     ) {
         $variantProduct->getFamily()->willReturn($family);
+        $variantProduct->isVariant()->willReturn(true);
         $variantProduct->getVariationLevel()->willReturn(0);
         $variantProduct->getFamilyVariant()->willReturn($familyVariant);
         $familyVariant->getVariantAttributeSet(0)->willReturn($variantAttributeSet);

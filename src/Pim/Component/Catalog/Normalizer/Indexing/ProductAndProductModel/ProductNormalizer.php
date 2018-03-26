@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Pim\Component\Catalog\Normalizer\Indexing\ProductAndProductModel;
 
 use Pim\Component\Catalog\Model\AttributeInterface;
-use Pim\Component\Catalog\Model\EntityWithFamilyVariantInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
@@ -71,7 +70,7 @@ class ProductNormalizer implements NormalizerInterface
         $attributeCodes = array_keys($product->getRawValues());
 
         $familyAttributesCodes = [];
-        if ($product instanceof EntityWithFamilyVariantInterface) {
+        if ($product->isVariant()) {
             $variationLevel = $product->getVariationLevel();
             $attributeSet = $product->getFamilyVariant()->getVariantAttributeSet($variationLevel);
 
