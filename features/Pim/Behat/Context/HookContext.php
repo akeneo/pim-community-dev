@@ -101,26 +101,8 @@ class HookContext extends PimContext
         if ($event->getResult() === StepEvent::FAILED) {
             $driver = $this->getSession()->getDriver();
 
-            $rootDir   = dirname($this->getParameter('kernel.root_dir'));
-            $filePath  = $event->getLogicalParent()->getFile();
-            $stepStats = [
-                'scenario_file'  => substr($filePath, strlen($rootDir) + 1),
-                'scenario_line'  => $event->getLogicalParent()->getLine(),
-                'scenario_label' => $event->getLogicalParent()->getTitle(),
-                'exception'      => $event->getException()->getMessage(),
-                'step_line'      => $event->getStep()->getLine(),
-                'step_label'     => $event->getStep()->getText(),
-                'status'         => 'failed'
-            ];
-
             if ($driver instanceof Selenium2Driver) {
-                $dir      = getenv('WORKSPACE');
-                $buildUrl = getenv('BUILD_URL');
-                if (false !== $dir) {
-                    $dir = sprintf('%s/app/build/screenshots', $dir);
-                } else {
-                    $dir = '/tmp/behat/screenshots';
-                }
+                $dir = getenv('BEHAT_SCREENSHOT_PATH') ?? '/tmp/behat/screenshots';
 
                 $lineNum  = $event->getStep()->getLine();
                 $filename = strstr($event->getLogicalParent()->getFile(), 'features/');
@@ -130,20 +112,7 @@ class HookContext extends PimContext
                 $fs = new \Symfony\Component\Filesystem\Filesystem();
                 $fs->dumpFile($path, $driver->getScreenshot());
 
-                if (false !== $dir) {
-                    $path = sprintf(
-                        '%s/artifact/app/build/screenshots/%s',
-                        $buildUrl,
-                        $filename
-                    );
-                }
-
-                $stepStats['screenshot'] = $path;
                 $this->getMainContext()->addErrorMessage("Step {$lineNum} failed, screenshot available at {$path}");
-            }
-
-            if ('JENKINS' === getenv('BEHAT_CONTEXT')) {
-                echo sprintf("\033[1;37m##glados_step##%s##glados_step##\033[0m\n", json_encode($stepStats));
             }
         }
     }
