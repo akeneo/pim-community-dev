@@ -3,6 +3,7 @@
 ## Bug fixes
 
 - PIM-7240: Add subscriber to clear the cache between each job step batch
+- PIM-7241: Fix memory consumption issue when archiving an import file
 
 # 2.0.19 (2018-03-23)
 
