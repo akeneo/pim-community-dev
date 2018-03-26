@@ -36,7 +36,7 @@ services:
             - '@pim_api.repository.channel'
             - '@pim_catalog.repository.cached_locale'
             - '@pim_api.repository.attribute'
-            - '@pimee_api.repository.published_product'
+            - '@pimee_workflow.repository.published_product'
             - '@pim_api.pagination.search_after_hal_paginator'
             - '@pim_api.pagination.offset_hal_paginator'
             - '@pim_api.pagination.parameter_validator'
