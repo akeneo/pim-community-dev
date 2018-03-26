@@ -4,6 +4,7 @@
 
 - GITHUB-7507: Fix XLSX product export to allow decimal separator configuration (Thanks [wa-daniel-fahl](https://github.com/wa-daniel-fahl)!
 - PIM-7069: Fix Channel export regarding conversion_units output
+- PIM-7119: Fix missing translation on filters
 
 # 1.7.19 (2018-02-27)
 
