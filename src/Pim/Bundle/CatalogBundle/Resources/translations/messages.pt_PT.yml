@@ -4,3 +4,5 @@ No products to remove: Não há produtos para remover
 pim_catalog:
   constraint:
     product_identifier: Estes identificadores "%s" não existem.
+    0: Ocorreu um erro inesperado.
+    200: Ocorreu um erro interno

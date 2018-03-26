@@ -1245,6 +1245,7 @@ batch_jobs:
     validation.label: Filvalidering
     import.label: Familie import
     compute_data_related_to_family_variants.label: Beregn produkt model data
+    compute_data_related_to_family_products.label: Beregn produkt model data
   csv_family_variant_import:
     label: Familie variant import i CSV
     validation.label: Filvalidering
@@ -1309,6 +1310,7 @@ batch_jobs:
     validation.label: Filvalidering
     import.label: Familie import
     compute_data_related_to_family_variants.label: Beregn produkt model data
+    compute_data_related_to_family_products.label: Beregn produkt model data
   xlsx_family_variant_import:
     label: Familie variant import i XLSX
     validation.label: Filvalidering
