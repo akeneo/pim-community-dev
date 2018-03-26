@@ -68,6 +68,13 @@ services:
             - '@doctrine.orm.entity_manager'
             - '%pimee_product_asset.model.asset.class%'
 
+    pimee_product_asset.repository.external_api.asset_category:
+        class: '%pim_api.repository.api_resource.class%'
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '%pimee_product_asset.model.category.class%'
+            - '@pimee_product_asset.repository.asset_category'
+
     pimee_product_asset.repository.tag:
         class: '%pimee_product_asset.repository.tag.class%'
         factory: 'doctrine.orm.default_entity_manager:getRepository'
@@ -75,6 +82,13 @@ services:
             - '%pimee_product_asset.model.tag.class%'
         tags:
             - { name: 'pim_repository' }
+
+    pimee_product_asset.repository.external_api.tag:
+        class: '%pim_api.repository.api_resource.class%'
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '%pimee_product_asset.model.tag.class%'
+            - '@pimee_product_asset.repository.tag'
 
     pimee_product_asset.repository.asset_category_access:
         class: '%pimee_security.repository.category_access.class%'
