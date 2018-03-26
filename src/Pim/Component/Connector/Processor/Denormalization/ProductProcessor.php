@@ -53,6 +53,8 @@ class ProductProcessor extends AbstractProcessor implements ItemProcessorInterfa
     /** @var AttributeFilterInterface */
     private $productAttributeFilter;
 
+    private $count = 0;
+
     /**
      * @param IdentifiableObjectRepositoryInterface $repository
      * @param FindProductToImport                   $findProductToImport
@@ -89,6 +91,11 @@ class ProductProcessor extends AbstractProcessor implements ItemProcessorInterfa
      */
     public function process($item)
     {
+        $this->count++;
+        if (($this->count % 100) == 99) {
+           meminfo_dump(fopen(sprintf('/tmp/phpmeminfo2/3_php_mem_dump_%s.json', $this->count + 1), 'w'));
+        }
+
         $itemHasStatus = isset($item['enabled']);
         if (!isset($item['enabled'])) {
             $item['enabled'] = $jobParameters = $this->stepExecution->getJobParameters()->get('enabled');

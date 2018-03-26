@@ -2,6 +2,7 @@
 
 namespace Akeneo\Component\Batch\Step;
 
+use Akeneo\Component\Batch\Event\EventInterface;
 use Akeneo\Component\Batch\Item\FlushableInterface;
 use Akeneo\Component\Batch\Item\InitializableInterface;
 use Akeneo\Component\Batch\Item\InvalidItemException;
@@ -100,20 +101,34 @@ class ItemStep extends AbstractStep
     {
         $itemsToWrite = [];
         $writeCount = 0;
+        $readCount = 0;
 
         $this->initializeStepElements($stepExecution);
 
         while (true) {
             try {
                 $readItem = $this->reader->read();
-                if (null === $readItem) {
-                    break;
-                }
             } catch (InvalidItemException $e) {
                 $this->handleStepExecutionWarning($this->stepExecution, $this->reader, $e);
 
                 continue;
             }
+
+            if (null === $readItem) {
+                break;
+            }
+            $readCount++;
+
+            //$processedItem = $this->process($readItem);
+            //if (null !== $processedItem) {
+            //    $itemsToWrite[] = $processedItem;
+            //    $writeCount++;
+            //}
+            //
+            //
+            //if (0 === $writeCount % $this->batchSize) {
+            //    $this->getJobRepository()->updateStepExecution($stepExecution);
+            //}
 
             $processedItem = $this->process($readItem);
             if (null !== $processedItem) {
@@ -125,11 +140,18 @@ class ItemStep extends AbstractStep
                     $this->getJobRepository()->updateStepExecution($stepExecution);
                 }
             }
+
+            if (0 === $readCount % $this->batchSize) {
+                $this->dispatchStepExecutionEvent(EventInterface::ITEM_STEP_AFTER_BATCH, $stepExecution);
+            }
         }
 
         if (count($itemsToWrite) > 0) {
             $this->write($itemsToWrite);
         }
+
+        $this->dispatchStepExecutionEvent(EventInterface::ITEM_STEP_AFTER_BATCH, $stepExecution);
+
         $this->flushStepElements();
     }
 
