@@ -4,18 +4,23 @@ namespace spec\PimEnterprise\Component\ProductAsset\Upload;
 
 use Akeneo\Component\FileStorage\File\FileStorerInterface;
 use Akeneo\Component\FileStorage\Model\FileInfoInterface;
+use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
+use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
 use PimEnterprise\Bundle\ProductAssetBundle\Doctrine\Common\Saver\AssetSaver;
+use PimEnterprise\Bundle\ProductAssetBundle\Event\AssetEvent;
 use PimEnterprise\Component\ProductAsset\Factory\AssetFactory;
 use PimEnterprise\Component\ProductAsset\FileStorage;
 use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
 use PimEnterprise\Component\ProductAsset\Model\ReferenceInterface;
+use PimEnterprise\Component\ProductAsset\ProcessedItemList;
 use PimEnterprise\Component\ProductAsset\Repository\AssetRepositoryInterface;
 use PimEnterprise\Component\ProductAsset\Updater\FilesUpdaterInterface;
 use PimEnterprise\Component\ProductAsset\Upload\ImporterInterface;
 use PimEnterprise\Component\ProductAsset\Upload\ParsedFilename;
 use PimEnterprise\Component\ProductAsset\Upload\UploadCheckerInterface;
+use PimEnterprise\Component\ProductAsset\Upload\UploadContext;
 use Prophecy\Argument;
 use SplFileInfo;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -33,7 +38,8 @@ class MassUploadProcessorSpec extends ObjectBehavior
         FileStorerInterface $fileStorer,
         LocaleRepositoryInterface $localeRepository,
         EventDispatcherInterface $eventDispatcher,
-        TranslatorInterface $translator
+        TranslatorInterface $translator,
+        ObjectDetacherInterface $objectDetacher
     ) {
         $this->beConstructedWith(
             $uploadChecker,
@@ -45,7 +51,8 @@ class MassUploadProcessorSpec extends ObjectBehavior
             $fileStorer,
             $localeRepository,
             $eventDispatcher,
-            $translator
+            $translator,
+            $objectDetacher
         );
     }
 
@@ -72,7 +79,8 @@ class MassUploadProcessorSpec extends ObjectBehavior
             $asset,
             $reference,
             $filesUpdater,
-            $fileStorer
+            $fileStorer,
+            'foobar.jpg'
         );
 
         $parsedFilename->getAssetCode()->willReturn('foobar');
@@ -122,7 +130,8 @@ class MassUploadProcessorSpec extends ObjectBehavior
             $asset,
             $reference,
             $filesUpdater,
-            $fileStorer
+            $fileStorer,
+            'foobar.jpg'
         );
 
         $file->getFilename()->willReturn('foobar-en_US.jpg');
@@ -174,7 +183,8 @@ class MassUploadProcessorSpec extends ObjectBehavior
             $asset,
             $reference,
             $filesUpdater,
-            $fileStorer
+            $fileStorer,
+            'foobar.jpg'
         );
 
         $file->getFilename()->willReturn('foobar-en_US.jpg');
@@ -204,15 +214,90 @@ class MassUploadProcessorSpec extends ObjectBehavior
             ->shouldReturn($asset);
     }
 
+    function it_mass_upload_file(
+        AssetInterface $asset,
+        FileInfoInterface $fileInfo,
+        ObjectDetacherInterface $objectDetacher,
+        ParsedFilename $parsedFilename,
+        ProcessedItemList $processedFiles,
+        ReferenceInterface $reference,
+        SaverInterface $assetSaver,
+        SplFileInfo $file,
+        UploadContext $uploadContext,
+        $importer,
+        $uploadChecker,
+        $assetFactory,
+        $assetRepository,
+        $filesUpdater,
+        $fileStorer,
+        $eventDispatcher
+    ) {
+
+        $this->initializeApplyImportedUpload($file,
+            $fileInfo,
+            $asset,
+            $reference,
+            $filesUpdater,
+            $fileStorer,
+            'foobar-en_US.jpg'
+        );
+
+        $importer->getImportedFiles($uploadContext)->shouldBeCalled()->willReturn([$file]);
+
+        $file->getFilename()->willReturn('foobar-en_US.jpg');
+
+        $parsedFilename->getAssetCode()->willReturn('foobar');
+        $parsedFilename->getLocaleCode()->willReturn('en_US');
+
+        $uploadChecker->getParsedFilename('foobar-en_US.jpg')
+            ->willReturn($parsedFilename);
+
+        $uploadChecker->validateFilenameFormat($parsedFilename)
+            ->willReturn(null);
+
+        $assetRepository->findOneByIdentifier('foobar')
+            ->willReturn($asset);
+
+        $assetFactory->create()
+            ->shouldNotBeCalled();
+
+        $asset->getCode()
+            ->willReturn('foobar');
+
+
+        $this->applyImportedUpload($file)
+            ->shouldReturn($asset);
+
+        $asset->getId()->willReturn(null);
+
+        $uploadChecker->getParsedFilename('foobar-en_US.jpg')
+            ->willReturn($parsedFilename);
+
+        $filesUpdater->resetAllVariationsFiles(Argument::any(), true)->shouldBeCalled();
+        $assetSaver->save($asset)->shouldBeCalled();
+
+        $event = new AssetEvent();
+        $event->setProcessedList($processedFiles->getWrappedObject());
+        $eventDispatcher->dispatch(AssetEvent::POST_UPLOAD_FILES, Argument::any())
+            ->willReturn($event);
+
+        $processedFiles->getItemsInState(Argument::any())->willReturn([]);
+
+        $objectDetacher->detach($asset)->shouldBeCalled();
+
+        $this->applyMassUpload($uploadContext)->shouldHaveType(ProcessedItemList::class);
+    }
+
     protected function initializeApplyImportedUpload(
         SplFileInfo $file,
         FileInfoInterface $fileInfo,
         AssetInterface $asset,
         ReferenceInterface $reference,
         $filesUpdater,
-        $fileStorer
+        $fileStorer,
+        $filename
     ) {
-        $file->getFilename()->willReturn('foobar.jpg');
+        $file->getFilename()->willReturn($filename);
 
         $fileStorer->store($file, FileStorage::ASSET_STORAGE_ALIAS, true)
             ->willReturn($fileInfo);

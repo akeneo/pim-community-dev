@@ -1,3 +1,9 @@
+# 2.0.x
+
+## Bug fixes
+
+- PIM-7249: Fix memory leak on mass upload assets
+
 # 2.0.19 (2018-03-23)
 
 ## Bug fixes
