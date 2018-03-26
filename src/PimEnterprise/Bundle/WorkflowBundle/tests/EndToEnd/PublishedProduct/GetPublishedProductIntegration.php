@@ -1,6 +1,6 @@
 <?php
 
-namespace PimEnterprise\Bundle\ApiBundle\tests\integration\Controller\PublishedProduct;
+namespace PimEnterprise\Bundle\WorkflowBundle\tests\EndToEnd\PublishedProduct;
 
 use Pim\Component\Catalog\tests\integration\Normalizer\NormalizedProductCleaner;
 use Symfony\Component\HttpFoundation\Response;

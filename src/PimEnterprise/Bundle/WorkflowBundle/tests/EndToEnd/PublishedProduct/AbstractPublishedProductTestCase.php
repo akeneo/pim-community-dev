@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PimEnterprise\Bundle\ApiBundle\tests\integration\Controller\PublishedProduct;
+namespace PimEnterprise\Bundle\WorkflowBundle\tests\EndToEnd\PublishedProduct;
 
 use Pim\Component\Catalog\Model\ProductInterface;
 use PimEnterprise\Bundle\ApiBundle\tests\integration\Controller\Product\AbstractProductTestCase;
