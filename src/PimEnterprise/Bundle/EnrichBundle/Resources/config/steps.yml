@@ -25,6 +25,7 @@ services:
             - '@pim_connector.reader.database.product'
             - '@pimee_enrich.mass_edit.add_product_value.processor'
             - '@pim_connector.writer.database.product'
+            - '%pim_job_product_batch_size%'
 
     pimee_enrich.step.update_product_value_with_permission.perform:
         class: '%pim_connector.step.item_step.class%'
@@ -35,6 +36,7 @@ services:
             - '@pim_connector.reader.database.product'
             - '@pimee_enrich.mass_edit.update_product_value.processor'
             - '@pim_connector.writer.database.product'
+            - '%pim_job_product_batch_size%'
 
     pimee_enrich.step.remove_product_value_with_permission.perform:
         class: '%pim_connector.step.item_step.class%'
@@ -45,6 +47,7 @@ services:
             - '@pim_connector.reader.database.product'
             - '@pimee_enrich.mass_edit.remove_product_value.processor'
             - '@pim_connector.writer.database.product'
+            - '%pim_job_product_batch_size%'
 
     pimee_enrich.step.edit_common_attributes_with_permission.perform:
         class: '%pim_connector.step.item_step.class%'
@@ -55,7 +58,8 @@ services:
             - '@pim_connector.reader.database.product'
             - '@pim_enrich.connector.processor.mass_edit.product.edit_common_attributes'
             - '@pimee_enrich.connector.writer.mass_edit.product'
-            - 1000
+            - '%pim_job_product_batch_size%'
+            - '%pim_job_product_batch_size%'
 
     pimee_enrich.step.add_to_variant_group_with_rules.perform:
         class: '%pim_connector.step.item_step.class%'
@@ -66,7 +70,8 @@ services:
             - '@pim_enrich.connector.reader.mass_edit.variant_group_product'
             - '@pim_enrich.connector.processor.mass_edit.product.add_to_variant_group'
             - '@pim_connector.writer.database.product'
-            - 1000
+            - '%pim_job_product_batch_size%'
+            - '%pim_job_product_batch_size%'
 
     # CSV Quick Export steps ------------------------------------------------------------------------------------------
     pimee_enrich.step.csv_published_product.quick_export:
@@ -78,7 +83,7 @@ services:
             - '@pimee_workflow.connector.reader.mass_edit.published_product'
             - '@pim_enrich.connector.processor.quick_export.product'
             - '@pim_connector.writer.file.csv_product_quick_export'
-            - 1000
+            - '%pim_job_product_batch_size%'
 
     # XLSX Quick Export steps -----------------------------------------------------------------------------------------
     pimee_enrich.step.xlsx_published_product.quick_export:
@@ -90,7 +95,7 @@ services:
             - '@pimee_workflow.connector.reader.mass_edit.published_product'
             - '@pim_enrich.connector.processor.quick_export.product'
             - '@pim_connector.writer.file.xlsx_product_quick_export'
-            - 1000
+            - '%pim_job_product_batch_size%'
 
     # Execute Rules steps ---------------------------------------------------------------------------------------------
     pimee_enrich.step.execute_rules:
@@ -102,7 +107,7 @@ services:
             - '@pim_connector.reader.database.product'
             - '@pimee_catalog_rule.processor.product_loader'
             - '@pimee_catalog_rule.executor.rules'
-            - 100
+            - '%pim_job_product_batch_size%'
 
     # Clean steps -----------------------------------------------------------------------------------------------------
     pimee_enrich.step.clean:
