@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Pim\Component\Catalog\EntityWithFamily\Event;
 
-use Pim\Component\Catalog\Model\VariantProductInterface;
+use Pim\Component\Catalog\Model\ProductInterface;
 use Symfony\Component\EventDispatcher\Event;
 
 /**
@@ -16,7 +16,7 @@ use Symfony\Component\EventDispatcher\Event;
  */
 class ParentHasBeenAddedToProduct extends Event
 {
-    /** @var VariantProductInterface */
+    /** @var ProductInterface */
     private $variantProduct;
 
     /** @var string */
@@ -25,19 +25,19 @@ class ParentHasBeenAddedToProduct extends Event
     public const EVENT_NAME = 'PARENT_HAS_BEEN_ADDED_TO_PRODUCT';
 
     /**
-     * @param VariantProductInterface $variantProduct
-     * @param string $parentCode
+     * @param ProductInterface $variantProduct
+     * @param string           $parentCode
      */
-    public function __construct(VariantProductInterface $variantProduct, string $parentCode)
+    public function __construct(ProductInterface $variantProduct, string $parentCode)
     {
         $this->variantProduct = $variantProduct;
         $this->parentCode = $parentCode;
     }
 
     /**
-     * @return VariantProductInterface
+     * @return ProductInterface
      */
-    public function convertedProduct(): VariantProductInterface
+    public function convertedProduct(): ProductInterface
     {
         return $this->variantProduct;
     }

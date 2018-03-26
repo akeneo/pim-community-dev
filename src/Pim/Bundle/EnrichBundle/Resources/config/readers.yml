@@ -8,7 +8,7 @@ services:
     pim_enrich.reader.database.filtered_product_and_product_model:
         class: '%pim_enrich.reader.database.filtered_product_and_product_model.class%'
         arguments:
-            - '@pim_enrich.query.product_and_product_model_query_builder_factory'
+            - '@pim_catalog.query.product_and_product_model_query_builder_factory'
             - '@pim_catalog.repository.channel'
             - '@pim_catalog.manager.completeness'
             - '@pim_catalog.converter.metric'
@@ -18,7 +18,7 @@ services:
     pim_enrich.reader.database.product_and_product_model:
         class: '%pim_enrich.reader.database.product_and_product_model.class%'
         arguments:
-            - '@pim_enrich.query.product_and_product_model_query_builder_factory'
+            - '@pim_catalog.query.product_and_product_model_query_builder_factory'
             - '@pim_catalog.repository.channel'
             - '@pim_catalog.manager.completeness'
             - true
@@ -26,7 +26,7 @@ services:
     pim_enrich.reader.database.grouped_product_and_product_model:
         class: '%pim_enrich.reader.database.product_and_product_model.class%'
         arguments:
-            - '@pim_enrich.query.product_and_product_model_query_builder_factory'
+            - '@pim_catalog.query.product_and_product_model_query_builder_factory'
             - '@pim_catalog.repository.channel'
             - '@pim_catalog.manager.completeness'
             - false
@@ -34,7 +34,7 @@ services:
     pim_enrich.reader.database.add_association:
         class: '%pim_enrich.reader.database.filtered_product_and_product_model.class%'
         arguments:
-            - '@pim_enrich.query.product_and_product_model_query_builder_factory'
+            - '@pim_catalog.query.product_and_product_model_query_builder_factory'
             - '@pim_catalog.repository.channel'
             - '@pim_catalog.manager.completeness'
             - '@pim_catalog.converter.metric'
@@ -44,7 +44,7 @@ services:
     pim_enrich.reader.database.product:
         class: '%pim_enrich.reader.database.filtered_product_reader.class%'
         arguments:
-            - '@pim_enrich.query.product_and_product_model_query_builder_factory'
+            - '@pim_catalog.query.product_and_product_model_query_builder_factory'
             - '@pim_catalog.repository.channel'
             - '@pim_catalog.manager.completeness'
             - '@pim_catalog.converter.metric'
@@ -53,6 +53,6 @@ services:
     pim_enrich.reader.database.product_model:
         class: '%pim_enrich.reader.database.filtered_product_model_reader.class%'
         arguments:
-            - '@pim_enrich.query.product_and_product_model_query_builder_factory'
+            - '@pim_catalog.query.product_and_product_model_query_builder_factory'
             - '@pim_catalog.repository.channel'
             - '@pim_catalog.converter.metric'

@@ -2,18 +2,15 @@
 
 namespace spec\Pim\Component\Connector\Reader\File\Xlsx;
 
-use Akeneo\Component\Batch\Item\FlushableInterface;
-use Akeneo\Component\Batch\Item\ItemReaderInterface;
 use Akeneo\Component\Batch\Job\JobParameters;
 use Akeneo\Component\Batch\Model\StepExecution;
-use Akeneo\Component\Batch\Step\StepExecutionAwareInterface;
 use Pim\Component\Connector\ArrayConverter\ArrayConverterInterface;
 use Pim\Component\Connector\Reader\File\FileIteratorFactory;
 use Pim\Component\Connector\Reader\File\FileIteratorInterface;
+use Pim\Component\Connector\Reader\File\FileReaderInterface;
 use Pim\Component\Connector\Reader\File\MediaPathTransformer;
 use Pim\Component\Connector\Reader\File\Xlsx\ProductModelReader;
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 
 class ProductModelReaderSpec extends ObjectBehavior
 {
@@ -32,19 +29,9 @@ class ProductModelReaderSpec extends ObjectBehavior
         $this->shouldHaveType(ProductModelReader::class);
     }
 
-    function it_is_a_reader()
+    function it_is_a_file_reader()
     {
-        $this->shouldImplement(ItemReaderInterface::class);
-    }
-
-    function it_is_a_step_aware_execution()
-    {
-        $this->shouldImplement(StepExecutionAwareInterface::class);
-    }
-
-    function it_is_a_flushable()
-    {
-        $this->shouldImplement(FlushableInterface::class);
+        $this->shouldImplement(FileReaderInterface::class);
     }
 
     function it_transforms_media_paths_to_absolute_paths(

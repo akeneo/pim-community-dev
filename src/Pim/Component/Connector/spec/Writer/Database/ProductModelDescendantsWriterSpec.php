@@ -3,7 +3,7 @@
 namespace spec\Pim\Component\Connector\Writer\Database;
 
 use Akeneo\Component\Batch\Model\StepExecution;
-use Akeneo\Component\StorageUtils\Cache\CacheClearerInterface;
+use Akeneo\Component\StorageUtils\Cache\EntityManagerClearerInterface;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
 use Pim\Component\Connector\Writer\Database\ProductModelDescendantsWriter;
@@ -11,7 +11,7 @@ use PhpSpec\ObjectBehavior;
 
 class ProductModelDescendantsWriterSpec extends ObjectBehavior
 {
-    function let(StepExecution $stepExecution, SaverInterface $descendantsSaver, CacheClearerInterface $cacheClearer)
+    function let(StepExecution $stepExecution, SaverInterface $descendantsSaver, EntityManagerClearerInterface $cacheClearer)
     {
         $this->beConstructedWith($descendantsSaver, $cacheClearer);
         $this->setStepExecution($stepExecution);

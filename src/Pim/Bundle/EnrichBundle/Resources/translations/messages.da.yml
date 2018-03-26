@@ -185,6 +185,8 @@ pim_enrich:
       edit_attributes: Rediger attributterne for en familie
       remove: Fjern en familie
       history: Se familie historik
+    family_variant:
+      remove: Vælg en familie variant
     attribute_group:
       index: List attributgrupper
       create: Opret en attributgruppe
@@ -343,6 +345,7 @@ confirmation:
     attribute group: Er du sikker på du vil slette attributgruppen %name%?
     category: Er du sikker på du vil slette kategorien %name%?
     family: Er du sikker på du vil slette denne familie %name%?
+    family_variant: Er du sikker på at du vil slette denne familie variant %name%?
     product: Er du sikker på du vil slette produktet %name%?
     group: Er du sikker på du vil slette produktet %name%?
     group type: Er du sikker på du vil slette produktet %name%?
@@ -762,12 +765,18 @@ pim_mass_edit:
       error: Hurtig eksport <strong>%label%</strong> mislykkedes
       warning: Hurtig eksport <strong>%label%</strong> afsluttede med nogle advarsler
       success: Hurtig eksport <strong>%label%</strong> mislykkedes
+    mass_delete:
+      error: Masse slet <strong>%label%</strong> mislykkedes
+      warning: Masse slet <strong>%label%</strong> gennemført med advarsler
+      success: Masse slet <strong>%label%</strong> afsluttet
 job_execution.summary:
   mass_edited: Masse redigeret
   skip: Sprunget over
   skipped_products: produkter sprunget over
   skipped_attributes: Attributter sprunget over
   skipped_families: Familier sprunget over
+  deleted_products: Slettede produkter
+  deleted_product_models: Slettede produktmodeller
 pim_mass_edit_execution_show: Masse redigere udførsler | Detaljer
 edit_common_attributes.steps.edit_common_attributes_processor.title: Rediger attributter
 update_product_value.steps.update_product_value_processor.title: Opdatere produktets værdi
@@ -833,6 +842,8 @@ batch_jobs:
     quick_export.label: Xlsx-produkt gitter sammenhæng hurtig eksport
     perform:
       label: Xlsx-produkt gitter sammenhæng hurtig eksport
+  delete_products_and_product_models:
+    delete_products_and_product_models.label: Masse slet produkter
 mass_edit report:
   overview: Masse redigere rapporter
 job_tracker:

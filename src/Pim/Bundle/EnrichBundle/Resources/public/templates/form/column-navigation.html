@@ -4,7 +4,7 @@
         <div class="AknDropdown-menu">
             <div class="AknDropdown-menuTitle"><%= title %></div>
             <% _.each(navigationItems, function (navigationItem) { %>
-                <div class="AknDropdown-menuLink navigation-link" data-tab="<%- navigationItem.code %>">
+                <div class="AknDropdown-menuLink navigation-link" data-tab="<%- navigationItem.route %>">
                     <%- navigationItem.label %>
                 </div>
             <% }); %>

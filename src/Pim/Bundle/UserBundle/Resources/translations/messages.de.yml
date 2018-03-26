@@ -89,6 +89,7 @@ user:
     label: Standardansicht Produktübersicht
   default_grid_view:
     none: Keine
+  timezone: Zeitzone
 Role: Rolle
 Owner: Eigentümer
 General: Allgemein

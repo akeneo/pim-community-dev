@@ -10,13 +10,32 @@ use Pim\Component\Catalog\Model\ProductModelInterface;
 use Pim\Component\Catalog\Model\ValueCollectionInterface;
 use Pim\Component\Catalog\Normalizer\Indexing\ProductModel\ProductModelNormalizer;
 use Pim\Component\Catalog\Normalizer\Indexing\ProductModel\ProductModelPropertiesNormalizer;
+use Pim\Component\Catalog\ProductAndProductModel\Query\CompleteFilterData;
+use Pim\Component\Catalog\ProductAndProductModel\Query\CompleteFilterInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\SerializerInterface;
 
 class ProductModelPropertiesNormalizerSpec extends ObjectBehavior
 {
-    function let(SerializerInterface $serializer)
-    {
+    function let(
+        SerializerInterface $serializer,
+        CompleteFilterInterface $completenessGridFilter,
+        CompleteFilterData $completenessGridFilterData
+    ) {
+        $this->beConstructedWith($completenessGridFilter);
+
+        $completenessGridFilterData->allIncomplete()->willReturn([
+            'ecommerce' => [
+                'fr_FR' => 0
+            ]
+        ]);
+
+        $completenessGridFilterData->allComplete()->willReturn([
+            'ecommerce' => [
+                'fr_FR' => 0
+            ]
+        ]);
+
         $serializer->implement(NormalizerInterface::class);
         $this->setSerializer($serializer);
     }
@@ -39,6 +58,8 @@ class ProductModelPropertiesNormalizerSpec extends ObjectBehavior
 
     function it_normalizes_a_root_product_model_properties_with_minimum_filled_fields_and_values(
         $serializer,
+        $completenessGridFilter,
+        $completenessGridFilterData,
         ProductModelInterface $productModel,
         ValueCollectionInterface $productValueCollection,
         FamilyInterface $family,
@@ -81,6 +102,8 @@ class ProductModelPropertiesNormalizerSpec extends ObjectBehavior
 
         $productModel->getCategoryCodes()->willReturn(['category_A', 'category_B']);
 
+        $completenessGridFilter->findCompleteFilterData($productModel)->willReturn($completenessGridFilterData);
+
         $this->normalize($productModel, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_MODEL_INDEX)->shouldReturn(
             [
                 'id'             => '67',
@@ -92,14 +115,26 @@ class ProductModelPropertiesNormalizerSpec extends ObjectBehavior
                 'categories'     => ['category_A', 'category_B'],
                 'parent'         => null,
                 'values'         => [],
-                'label'          => [],
+                'all_complete' => [
+                    'ecommerce' => [
+                        'fr_FR' => 0
+                    ]
+                ],
+                'all_incomplete' => [
+                    'ecommerce' => [
+                        'fr_FR' => 0
+                    ]
+                ],
                 'ancestors'     => ['ids' => [], 'codes' => []],
+                'label'          => [],
             ]
         );
     }
 
     function it_normalizes_a_root_product_model_fields_and_values(
         $serializer,
+        $completenessGridFilter,
+        $completenessGridFilterData,
         ProductModelInterface $productModel,
         ValueCollectionInterface $productValueCollection,
         FamilyInterface $family,
@@ -158,6 +193,8 @@ class ProductModelPropertiesNormalizerSpec extends ObjectBehavior
                 ]
             );
 
+        $completenessGridFilter->findCompleteFilterData($productModel)->willReturn($completenessGridFilterData);
+
         $this->normalize($productModel, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_MODEL_INDEX)->shouldReturn(
             [
                 'id'             => '67',
@@ -181,14 +218,26 @@ class ProductModelPropertiesNormalizerSpec extends ObjectBehavior
                         ],
                     ],
                 ],
-                'label'          => [],
+                'all_complete' => [
+                    'ecommerce' => [
+                        'fr_FR' => 0
+                    ]
+                ],
+                'all_incomplete' => [
+                    'ecommerce' => [
+                        'fr_FR' => 0
+                    ]
+                ],
                 'ancestors'     => ['ids' => [], 'codes' => []],
+                'label'          => [],
             ]
         );
     }
 
     function it_normalizes_a_product_model_fields_and_values_with_its_parents_values(
         $serializer,
+        $completenessGridFilter,
+        $completenessGridFilterData,
         ProductModelInterface $productModel,
         ProductModelInterface $parent,
         ValueCollectionInterface $valueCollection,
@@ -260,6 +309,8 @@ class ProductModelPropertiesNormalizerSpec extends ObjectBehavior
                 ]
             );
 
+        $completenessGridFilter->findCompleteFilterData($productModel)->willReturn($completenessGridFilterData);
+
         $this->normalize($productModel, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_MODEL_INDEX)->shouldReturn(
             [
                 'id'             => '67',
@@ -293,8 +344,18 @@ class ProductModelPropertiesNormalizerSpec extends ObjectBehavior
                         ],
                     ],
                 ],
-                'label'          => [],
+                'all_complete' => [
+                    'ecommerce' => [
+                        'fr_FR' => 0
+                    ]
+                ],
+                'all_incomplete' => [
+                    'ecommerce' => [
+                        'fr_FR' => 0
+                    ]
+                ],
                 'ancestors'     => ['ids' => ['product_model_1'], 'codes' => ['parent_A']],
+                'label'          => [],
             ]
         );
     }

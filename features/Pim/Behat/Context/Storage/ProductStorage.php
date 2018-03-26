@@ -8,7 +8,6 @@ use Doctrine\Common\Util\ClassUtils;
 use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\Assert;
 use Pim\Component\Catalog\Model\ProductInterface;
-use Pim\Component\Catalog\Model\VariantProductInterface;
 use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
 use Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\AttributeColumnInfoExtractor;
 
@@ -72,8 +71,6 @@ class ProductStorage implements Context
     public function productHaveParent(string $productIdentifier, string $parentCode)
     {
         $this->entityManager->clear();
-
-        /** @var VariantProductInterface $product */
         $product = $this->productRepository->findOneByIdentifier($productIdentifier);
 
         Assert::assertEquals($product->getParent()->getCode(), $parentCode);
@@ -90,8 +87,6 @@ class ProductStorage implements Context
     public function theVariantProductShouldNotHaveTheFollowingValues(string $identifier, TableNode $table)
     {
         $this->entityManager->clear();
-
-        /** @var VariantProductInterface $product */
         $product = $this->productRepository->findOneByIdentifier($identifier);
 
         foreach ($table->getRowsHash() as $rawCode => $value) {
@@ -110,7 +105,7 @@ class ProductStorage implements Context
     /**
      * @Then :productIdentifier should be a product
      */
-    public function productShouldNotHaveAParent(string $productIdentifier): void
+    public function shouldBeProduct(string $productIdentifier): void
     {
         $product = $this->productRepository->findOneByIdentifier($productIdentifier);
 
@@ -118,10 +113,20 @@ class ProductStorage implements Context
             throw new \Exception(sprintf('The product "%s" does not exist', $productIdentifier));
         }
 
-        if (!$product instanceof ProductInterface || $productIdentifier instanceof VariantProductInterface) {
-            throw new \Exception(
-                sprintf('The given object must be a variant product, %s given', ClassUtils::getClass($product))
-            );
+        Assert::isFalse($product->isVariant());
+    }
+
+    /**
+     * @Then :productIdentifier should be a variant product
+     */
+    public function shouldBeVariantProduct(string $productIdentifier): void
+    {
+        $product = $this->productRepository->findOneByIdentifier($productIdentifier);
+
+        if (null === $product) {
+            throw new \Exception(sprintf('The product "%s" does not exist', $productIdentifier));
         }
+
+        Assert::isTrue($product->isVariant());
     }
 }

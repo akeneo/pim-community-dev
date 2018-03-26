@@ -8,7 +8,7 @@ use Akeneo\Component\Batch\Item\InvalidItemException;
 use Akeneo\Component\Batch\Item\ItemReaderInterface;
 use Akeneo\Component\Batch\Job\JobRepositoryInterface;
 use Akeneo\Component\Batch\Model\StepExecution;
-use Akeneo\Component\StorageUtils\Cache\CacheClearerInterface;
+use Akeneo\Component\StorageUtils\Cache\EntityManagerClearerInterface;
 use Akeneo\Component\StorageUtils\Cursor\CursorInterface;
 use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
@@ -18,7 +18,7 @@ use Pim\Bundle\EnrichBundle\ProductQueryBuilder\ProductAndProductModelQueryBuild
 use Pim\Component\Catalog\EntityWithFamilyVariant\KeepOnlyValuesForVariation;
 use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
-use Pim\Component\Catalog\Model\VariantProductInterface;
+use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Query\Filter\Operators;
 use Pim\Component\Catalog\Query\ProductQueryBuilderFactoryInterface;
 use Pim\Component\Catalog\Repository\FamilyRepositoryInterface;
@@ -38,7 +38,7 @@ class ComputeDataRelatedToFamilyVariantsTaskletSpec extends ObjectBehavior
         BulkSaverInterface $productModelSaver,
         BulkSaverInterface $productSaver,
         ObjectDetacherInterface $objectDetacher,
-        CacheClearerInterface $cacheClearer,
+        EntityManagerClearerInterface $cacheClearer,
         JobRepositoryInterface $jobRepository
     ) {
         $this->beConstructedWith(
@@ -73,7 +73,7 @@ class ComputeDataRelatedToFamilyVariantsTaskletSpec extends ObjectBehavior
         FamilyInterface $family,
         ProductModelInterface $rootProductModel,
         ProductModelInterface $subProductModel,
-        VariantProductInterface $product,
+        ProductInterface $product,
         StepExecution $stepExecution,
         ProductAndProductModelQueryBuilder $pqb,
         CursorInterface $cursor,
@@ -155,8 +155,8 @@ class ComputeDataRelatedToFamilyVariantsTaskletSpec extends ObjectBehavior
         ArrayCollection $productCollection2,
         ProductModelInterface $subProductModel1,
         ProductModelInterface $rootProductModel2,
-        VariantProductInterface $product1,
-        VariantProductInterface $product2,
+        ProductInterface $product1,
+        ProductInterface $product2,
         StepExecution $stepExecution,
         ProductAndProductModelQueryBuilder $pqb1,
         ProductAndProductModelQueryBuilder $pqb2,

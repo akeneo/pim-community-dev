@@ -28,3 +28,4 @@ quick_export: Export rapide
 import: Import
 export: Export
 mass_edit: Edition en masse
+mass_delete: Suppression massive

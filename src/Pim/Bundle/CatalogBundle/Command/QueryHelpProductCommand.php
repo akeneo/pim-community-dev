@@ -39,7 +39,7 @@ class QueryHelpProductCommand extends ContainerAwareCommand
      */
     protected function getFieldFilterDumper()
     {
-        return $this->getContainer()->get('pim_catalog.query.filter.field_dumper');
+        return $this->getContainer()->get('pim_catalog.query.filter.product.field_dumper');
     }
 
     /**
@@ -47,6 +47,6 @@ class QueryHelpProductCommand extends ContainerAwareCommand
      */
     protected function getAttributeFilterDumper()
     {
-        return $this->getContainer()->get('pim_catalog.query.filter.attribute_dumper');
+        return $this->getContainer()->get('pim_catalog.query.filter.product.attribute_dumper');
     }
 }

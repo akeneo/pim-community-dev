@@ -17,7 +17,6 @@ use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
 use Pim\Component\Catalog\Model\ValueCollectionInterface;
 use Pim\Component\Catalog\Model\ValueInterface;
-use Pim\Component\Catalog\Model\VariantProductInterface;
 use Prophecy\Argument;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -73,6 +72,7 @@ class ProductNormalizerSpec extends ObjectBehavior
             'data_locale'  => 'en_US',
         ];
 
+        $product->isVariant()->willReturn(false);
         $product->getId()->willReturn(78);
         $filter->filterCollection($values, 'pim.transform.product_value.structured', $context)
             ->willReturn($values);
@@ -176,6 +176,7 @@ class ProductNormalizerSpec extends ObjectBehavior
             'data_locale'  => 'en_US',
         ];
 
+        $product->isVariant()->willReturn(false);
         $product->getId()->willReturn(78);
         $filter->filterCollection($productValues, 'pim.transform.product_value.structured', $context)
             ->willReturn($productValues);
@@ -261,7 +262,7 @@ class ProductNormalizerSpec extends ObjectBehavior
         $normalizer,
         $filter,
         $imageNormalizer,
-        VariantProductInterface $product,
+        ProductInterface $product,
         ProductModelInterface $productModel,
         GroupInterface $promotion,
         GroupTranslationInterface $promotionEN,
@@ -283,6 +284,7 @@ class ProductNormalizerSpec extends ObjectBehavior
         $productModel->getCode()->willReturn('parent_code');
         $product->getParent()->willReturn($productModel);
 
+        $product->isVariant()->willReturn(true);
         $product->getId()->willReturn(78);
         $filter->filterCollection($productValues, 'pim.transform.product_value.structured', $context)
             ->willReturn($productValues);

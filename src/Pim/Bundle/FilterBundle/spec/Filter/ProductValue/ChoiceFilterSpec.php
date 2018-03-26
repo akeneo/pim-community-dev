@@ -108,16 +108,18 @@ class ChoiceFilterSpec extends ObjectBehavior
         Form $form,
         AttributeInterface $attribute,
         $factory,
-        $repository
+        $repository,
+        $userContext
     ) {
         $repository->findOneByCode('data_name_key')->willReturn($attribute);
+        $userContext->getCurrentLocaleCode()->willReturn('en_US');
 
         $factory->create(AjaxChoiceFilterType::class, [], [
             'csrf_protection'   => false,
             'choice_url'        => 'pim_ui_ajaxentity_list',
             'choice_url_params' => [
                 'class'        => 'attributeOptionClass',
-                'dataLocale'   => null,
+                'dataLocale'   => 'en_US',
                 'collectionId' => null,
                 'options'      => [
                     'type' => 'code',

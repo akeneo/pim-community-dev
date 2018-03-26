@@ -267,9 +267,10 @@ class DateTimeFilter extends AbstractFieldFilter implements FieldFilterInterface
     protected function getFormattedDate($field, $value)
     {
         $dateTime = $value;
+        $utcTimeZone = new \DateTimeZone('UTC');
 
         if (!$dateTime instanceof \DateTime) {
-            $dateTime = \DateTime::createFromFormat(static::DATETIME_FORMAT, $dateTime);
+            $dateTime = \DateTime::createFromFormat(static::DATETIME_FORMAT, $dateTime, $utcTimeZone);
 
             if (false === $dateTime || 0 < $dateTime->getLastErrors()['warning_count']) {
                 throw InvalidPropertyException::dateExpected(
@@ -281,7 +282,7 @@ class DateTimeFilter extends AbstractFieldFilter implements FieldFilterInterface
             }
         }
 
-        $dateTime->setTimezone(new \DateTimeZone('UTC'));
+        $dateTime->setTimezone($utcTimeZone);
 
         return $dateTime->format('c');
     }

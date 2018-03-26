@@ -23,7 +23,7 @@ class ChangeVariantFamilyStructureIntegration extends TestCase
 
     public function testMoveAttributeUpRemovesValuesOnOneLevel()
     {
-        $product = $this->get('pim_catalog.repository.variant_product')->findOneByIdentifier('1111111287');
+        $product = $this->get('pim_catalog.repository.product')->findOneByIdentifier('1111111287');
         $this->assertInstanceOf(ValueInterface::class, $product->getValuesForVariation()->getByCodes('weight'));
 
         $familyVariant = $this->get('pim_catalog.repository.family_variant')->findOneByIdentifier('shoes_size');
@@ -59,7 +59,7 @@ class ChangeVariantFamilyStructureIntegration extends TestCase
 
         $this->get('doctrine.orm.default_entity_manager')->clear();
 
-        $product = $this->get('pim_catalog.repository.variant_product')
+        $product = $this->get('pim_catalog.repository.product')
             ->findOneByIdentifier('1111111287');
 
         $this->assertNull($product->getValuesForVariation()->getByCodes('weight'));
@@ -76,7 +76,7 @@ class ChangeVariantFamilyStructureIntegration extends TestCase
 
     public function testMoveAttributeDownKeepsValuesOnOneLevel()
     {
-        $product = $this->get('pim_catalog.repository.variant_product')
+        $product = $this->get('pim_catalog.repository.product')
             ->findOneByIdentifier('1111111287');
 
         $this->assertNull($product->getValuesForVariation()->getByCodes('name'));
@@ -116,7 +116,7 @@ class ChangeVariantFamilyStructureIntegration extends TestCase
 
         $this->get('doctrine.orm.default_entity_manager')->clear();
 
-        $product = $this->get('pim_catalog.repository.variant_product')
+        $product = $this->get('pim_catalog.repository.product')
             ->findOneByIdentifier('1111111287');
 
         $value = $product->getValuesForVariation()->getByCodes('name', null, 'en_US');
@@ -136,7 +136,7 @@ class ChangeVariantFamilyStructureIntegration extends TestCase
 
     public function testMoveAttributeUpRemovesValuesOnTwoLevels()
     {
-        $product = $this->get('pim_catalog.repository.variant_product')
+        $product = $this->get('pim_catalog.repository.product')
             ->findOneByIdentifier('running-shoes-m-antique-white');
 
         $this->get('pim_catalog.updater.product')->update($product, [
@@ -203,7 +203,7 @@ class ChangeVariantFamilyStructureIntegration extends TestCase
 
         $this->get('doctrine.orm.default_entity_manager')->clear();
 
-        $product = $this->get('pim_catalog.repository.variant_product')
+        $product = $this->get('pim_catalog.repository.product')
             ->findOneByIdentifier('running-shoes-m-antique-white');
 
         $this->assertNull($product->getValuesForVariation()->getByCodes('composition'));
@@ -220,7 +220,7 @@ class ChangeVariantFamilyStructureIntegration extends TestCase
 
     public function testMoveAttributeDownKeepsValuesOnTwoLevels()
     {
-        $product = $this->get('pim_catalog.repository.variant_product')
+        $product = $this->get('pim_catalog.repository.product')
             ->findOneByIdentifier('running-shoes-m-antique-white');
 
         $this->assertNull($product->getValuesForVariation()->getByCodes('material'));
@@ -276,7 +276,7 @@ class ChangeVariantFamilyStructureIntegration extends TestCase
 
         $this->get('doctrine.orm.default_entity_manager')->clear();
 
-        $product = $this->get('pim_catalog.repository.variant_product')
+        $product = $this->get('pim_catalog.repository.product')
             ->findOneByIdentifier('running-shoes-m-antique-white');
 
         $value = $product->getValuesForVariation()->getByCodes('material');
@@ -311,7 +311,7 @@ class ChangeVariantFamilyStructureIntegration extends TestCase
 
     public function testBulkMoveAnAttributeFromItsLevelDoesNotRunBackgroundJobs()
     {
-        $product = $this->get('pim_catalog.repository.variant_product')->findOneByIdentifier('1111111287');
+        $product = $this->get('pim_catalog.repository.product')->findOneByIdentifier('1111111287');
         $this->assertInstanceOf(ValueInterface::class, $product->getValuesForVariation()->getByCodes('weight'));
 
         $familyVariant = $this->get('pim_catalog.repository.family_variant')->findOneByIdentifier('shoes_size');
@@ -347,7 +347,7 @@ class ChangeVariantFamilyStructureIntegration extends TestCase
 
         $this->get('doctrine.orm.default_entity_manager')->clear();
 
-        $product = $this->get('pim_catalog.repository.variant_product')
+        $product = $this->get('pim_catalog.repository.product')
             ->findOneByIdentifier('1111111287');
 
         $this->assertNotNull($product->getValuesForVariation()->getByCodes('weight'));

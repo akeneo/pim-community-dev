@@ -799,8 +799,6 @@ pim_enrich:
           label: Canviar l'estat
           description: Els productes seleccionats seran activats o desactivats.
           field: Per activar
-        edit_common:
-          label: Editar atributs
         change_family:
           description: La família dels productes seleccionats es canviarà per la família escollida
           field: Família

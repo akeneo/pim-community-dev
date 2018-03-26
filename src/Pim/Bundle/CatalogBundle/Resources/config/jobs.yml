@@ -87,7 +87,7 @@ services:
         class: '%pim_catalog.tasklet.compute_family_variant_structure_changes.class%'
         arguments:
             - '@pim_catalog.repository.family_variant'
-            - '@pim_catalog.repository.variant_product'
+            - '@pim_catalog.repository.product'
             - '@pim_catalog.repository.product_model'
             - '@pim_catalog.saver.product'
             - '@pim_catalog.saver.product_model'

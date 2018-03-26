@@ -89,6 +89,7 @@ user:
     label: Visualizzazione predefinita griglia prodotti
   default_grid_view:
     none: Nessun
+  timezone: Fuso orario
 Role: Ruolo
 Owner: Proprietario
 General: Generale

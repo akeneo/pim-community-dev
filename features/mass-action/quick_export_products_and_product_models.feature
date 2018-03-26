@@ -44,8 +44,8 @@ Feature: Export products and product models
     Then I should see the text "COMPLETED"
     And second exported file of "csv_product_grid_context_quick_export" should contain:
       """
-      code;description-de_DE-ecommerce;description-de_DE-mobile;description-de_DE-print;description-en_US-ecommerce;description-en_US-mobile;description-en_US-print;description-fr_FR-ecommerce;description-fr_FR-mobile;description-fr_FR-print
-      amor;Heritage jacket navy blue tweed suit with single breasted 2 button. 53% wool, 22% polyester, 18% acrylic, 5% nylon, 1% cotton, 1% viscose. Dry Cleaning uniquement.Le mannequin measuring 1m85 and wears UK size 40, size 50 FR;;;;;
+      code;description-de_DE-ecommerce;description-en_US-ecommerce;description-fr_FR-ecommerce
+      amor;;"Heritage jacket navy blue tweed suit with single breasted 2 button. 53% wool, 22% polyester, 18% acrylic, 5% nylon, 1% cotton, 1% viscose. Dry Cleaning uniquement.Le mannequin measuring 1m85 and wears UK size 40, size 50 FR";
       """
 
   Scenario: Successfully export all columns for quick export product models
@@ -56,6 +56,6 @@ Feature: Export products and product models
     Then I should see the text "COMPLETED"
     And second exported file of "csv_product_quick_export" should contain:
       """
-      brand;care_instructions;categories;code;collection;description-de_DE-ecommerce;description-de_DE-mobile;description-de_DE-print;description-en_US-ecommerce;description-en_US-mobile;description-en_US-print;description-fr_FR-ecommerce;description-fr_FR-mobile;description-fr_FR-print;erp_name-de_DE;erp_name-en_US;erp_name-fr_FR;family_variant;image;keywords-de_DE;keywords-en_US;keywords-fr_FR;material;meta_description-de_DE;meta_description-en_US;meta_description-fr_FR;meta_title-de_DE;meta_title-en_US;meta_title-fr_FR;name-de_DE;name-en_US;name-fr_FR;notice;parent;price-EUR;price-USD;supplier;wash_temperature;weight;weight-unit
-      ;;master_men_blazers,supplier_zaro;amor;summer_2016;;;;Heritage jacket navy blue tweed suit with single breasted 2 button. 53% wool, 22% polyester, 18% acrylic, 5% nylon, 1% cotton, 1% viscose. Dry Cleaning uniquement.Le mannequin measuring 1m85 and wears UK size 40, size 50 FR;;;;;;;Amor;;clothing_colorsize;;;;;;;;;;;;;Heritage jacket navy;;;;999;;zaro;800;;
+      code;brand;care_instructions;categories;collection;description-de_DE-ecommerce;description-en_US-ecommerce;description-fr_FR-ecommerce;erp_name-de_DE;erp_name-en_US;erp_name-fr_FR;family_variant;image;keywords-de_DE;keywords-en_US;keywords-fr_FR;material;meta_description-de_DE;meta_description-en_US;meta_description-fr_FR;meta_title-de_DE;meta_title-en_US;meta_title-fr_FR;name-de_DE;name-en_US;name-fr_FR;notice;parent;price-EUR;price-USD;supplier;wash_temperature;weight;weight-unit
+      amor;;;master_men_blazers,supplier_zaro;summer_2016;;"Heritage jacket navy blue tweed suit with single breasted 2 button. 53% wool, 22% polyester, 18% acrylic, 5% nylon, 1% cotton, 1% viscose. Dry Cleaning uniquement.Le mannequin measuring 1m85 and wears UK size 40, size 50 FR";;;amor;;clothing_colorsize;;;;;;;;;;;;;"Heritage jacket navy";;;;999;;zaro;800;;
       """

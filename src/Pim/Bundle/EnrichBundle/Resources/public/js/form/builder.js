@@ -39,7 +39,11 @@ https://docs.akeneo.com/latest/design_pim/overview.html#register-it`
                 const form = new FormClass(formMeta);
                 form.code = formMeta.code;
 
-                const extensionPromises = extensionsMeta.map((extension) => {
+                const filteredExtensionsMeta = extensionsMeta.filter(
+                    (extensionsMeta) => null !== extensionsMeta.module
+                );
+
+                const extensionPromises = filteredExtensionsMeta.map((extension) => {
                     return getFormMeta(extension.code)
                         .then(buildForm)
                         .then(function (loadedModule) {
@@ -50,7 +54,7 @@ https://docs.akeneo.com/latest/design_pim/overview.html#register-it`
                 });
 
                 return $.when.apply($, extensionPromises).then(function () {
-                    extensionsMeta.forEach((extension) => {
+                    filteredExtensionsMeta.forEach((extension) => {
                         form.addExtension(
                             extension.code,
                             extension.loadedModule,

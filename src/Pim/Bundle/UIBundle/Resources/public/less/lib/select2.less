@@ -35,7 +35,8 @@
     }
   }
 
-  &.select2-container-disabled .select2-choice {
+  &.select2-container-disabled .select2-choice,
+  &.select2-container-disabled .select2-choices {
     background: @AknDisabledInputColor;
     color: @AknLightFontColor;
     border-color: @AknBorderColor;
@@ -215,7 +216,7 @@
   }
 
   &.select2-container-disabled .select2-choices {
-    background: @AknDisabledInputColor;
+    background-color: @AknDisabledInputColor;
 
     .select2-search-choice {
       padding: 0 8px;
