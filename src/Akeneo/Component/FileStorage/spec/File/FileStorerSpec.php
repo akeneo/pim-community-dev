@@ -31,7 +31,7 @@ class FileStorerSpec extends ObjectBehavior
         Filesystem $fs,
         FileInfoInterface $fileInfo
     ) {
-        $localPathname = __DIR__ . DIRECTORY_SEPARATOR . 'my file.php';
+        $localPathname = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'my file.php';
         touch($localPathname);
         $rawFile->getPathname()->willReturn($localPathname);
         $fs->has(Argument::any())->willReturn(false);
@@ -59,7 +59,7 @@ class FileStorerSpec extends ObjectBehavior
         Filesystem $fs,
         FileInfoInterface $fileInfo
     ) {
-        $localPathname = __DIR__ . DIRECTORY_SEPARATOR . 'my file.php';
+        $localPathname = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'my file.php';
         touch($localPathname);
         $rawFile->getPathname()->willReturn($localPathname);
         $fs->has(Argument::any())->willReturn(false);
