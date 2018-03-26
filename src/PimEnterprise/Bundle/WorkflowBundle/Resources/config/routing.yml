@@ -32,10 +32,14 @@ pimee_workflow_rest_product:
     prefix: /workflow
 
 # External API
-api_product_draft:
+external_api_product_draft:
     resource: '@PimEnterpriseWorkflowBundle/Resources/config/routing/external_api/product_draft.yml'
     prefix: /api/rest/v1
 
-product_proposal:
+external_apiproduct_proposal:
     resource: '@PimEnterpriseWorkflowBundle/Resources/config/routing/external_api/product_proposal.yml'
+    prefix: /api/rest/v1
+
+external_apipublished_product:
+    resource: '@PimEnterpriseWorkflowBundle/Resources/config/routing/external_api/published_product.yml'
     prefix: /api/rest/v1
