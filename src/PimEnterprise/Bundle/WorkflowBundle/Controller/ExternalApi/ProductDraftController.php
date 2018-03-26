@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Bundle\WorkflowBundle\Controller\Api;
+namespace PimEnterprise\Bundle\WorkflowBundle\Controller\ExternalApi;
 
 use Pim\Component\Api\Repository\ProductRepositoryInterface;
 use PimEnterprise\Component\Security\Attributes;
