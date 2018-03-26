@@ -7,6 +7,7 @@
 - PIM-7241: Fix memory consumption issue when archiving an import file
 - PIM-7256: Add missing filters on product group grid
 - PIM-6945: Fix missing header elements on identifier attribute edit form
+- PIM-7259: Remove only attribute's option removed for multi select attribute
 
 # 2.0.19 (2018-03-23)
 
