@@ -4,6 +4,7 @@ parameters:
     pimee_product_asset.updater.asset.class:                                 PimEnterprise\Component\ProductAsset\Updater\AssetUpdater
     pimee_product_asset.updater.setter.product_asset_collection_value.class: Pim\Component\Catalog\Updater\Setter\AttributeSetter
     pimee_product_asset.updater.copier.product_asset_collection_value.class: Pim\Component\ReferenceData\Updater\Copier\ReferenceDataCollectionAttributeCopier
+    pimee_product_asset.updater.external_api.asset.class: PimEnterprise\Component\ProductAsset\Updater\ExternalApi\AssetUpdater
 
 services:
     pimee_product_asset.updater.setter.product_asset_collection_value:
@@ -50,3 +51,8 @@ services:
         arguments:
             - '@pimee_product_asset.updater.category.base'
             - '@pim_localization.updater.translatable'
+
+    pimee_product_asset.updater.external_api.asset:
+        class: '%pimee_product_asset.updater.external_api.asset.class%'
+        arguments:
+            - '@pimee_product_asset.updater.asset'

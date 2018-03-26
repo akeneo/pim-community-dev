@@ -162,7 +162,7 @@ services:
             - '@pim_api.pagination.search_after_hal_paginator'
             - '@pimee_product_asset.factory.asset'
             - '@validator'
-            - '@pimee_api.updater.asset'
+            - '@pimee_product_asset.updater.external_api.asset'
             - '@pimee_product_asset.saver.asset'
             - '@router'
             - '@pimee_product_asset.stream.asset_partial_update_stream'
