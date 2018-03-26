@@ -4,6 +4,7 @@ parameters:
     pimee_workflow_controller.external_api.publish_product.class: PimEnterprise\Bundle\WorkflowBundle\Controller\ExternalApi\PublishedProductController
     pimee_api.router.proxy_product.class: PimEnterprise\Bundle\WorkflowBundle\Router\ProxyProductRouter
     pimee_api.normalizer.product.class: PimEnterprise\Component\Workflow\Normalizer\ExternalApi\ProductNormalizer
+    pimee_workflow.normalizer.external_api.published_product.class: PimEnterprise\Component\Workflow\Normalizer\ExternalApi\PublishedProductNormalizer
 
 services:
     # Controllers
@@ -63,3 +64,10 @@ services:
             - '@pimee_workflow.repository.product_draft'
             - '@security.authorization_checker'
             - '@security.token_storage'
+
+    pimee_workflow.normalizer.external_api.published_product:
+        class: '%pimee_workflow.normalizer.external_api.published_product.class%'
+        arguments:
+            - '@pim_api.normalizer.product.community'
+        tags:
+            - { name: pim_serializer.normalizer, priority: 100 }

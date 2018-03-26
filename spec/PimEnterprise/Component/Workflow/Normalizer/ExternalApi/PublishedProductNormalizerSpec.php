@@ -1,10 +1,10 @@
 <?php
 
-namespace spec\PimEnterprise\Component\Api\Normalizer;
+namespace spec\PimEnterprise\Component\WorkFlow\Normalizer\ExternalApi;
 
 use PhpSpec\ObjectBehavior;
-use PimEnterprise\Component\Api\Normalizer\PublishedProductNormalizer;
 use PimEnterprise\Component\Workflow\Model\PublishedProductInterface;
+use PimEnterprise\Component\Workflow\Normalizer\ExternalApi\PublishedProductNormalizer;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class PublishedProductNormalizerSpec extends ObjectBehavior
