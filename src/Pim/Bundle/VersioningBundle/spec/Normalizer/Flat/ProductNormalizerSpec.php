@@ -18,6 +18,7 @@ use Pim\Component\Catalog\Model\ProductModelInterface;
 use Pim\Component\Catalog\Model\ProductPriceInterface;
 use Pim\Component\Catalog\Model\ValueCollectionInterface;
 use Pim\Component\Catalog\Model\ValueInterface;
+use Pim\Component\Catalog\Model\VariantProductInterface;
 use Prophecy\Argument;
 use Symfony\Component\Serializer\SerializerInterface;
 
@@ -49,7 +50,7 @@ class ProductNormalizerSpec extends ObjectBehavior
 
     function it_normalizes_variant_product(
         $filter,
-        ProductInterface $product,
+        VariantProductInterface $product,
         AttributeInterface $skuAttribute,
         ValueInterface $sku,
         ValueCollectionInterface $values,
@@ -64,7 +65,6 @@ class ProductNormalizerSpec extends ObjectBehavior
         $sku->getAttribute()->willReturn($skuAttribute);
         $sku->getData()->willReturn('sku-001');
 
-        $product->isVariant()->willReturn(true);
         $product->getIdentifier()->willReturn($sku);
         $product->getFamily()->willReturn($family);
         $product->isEnabled()->willReturn(true);
@@ -104,7 +104,6 @@ class ProductNormalizerSpec extends ObjectBehavior
         $sku->getAttribute()->willReturn($skuAttribute);
         $sku->getData()->willReturn('sku-001');
 
-        $product->isVariant()->willReturn(false);
         $product->getIdentifier()->willReturn($sku);
         $product->getFamily()->willReturn($family);
         $product->isEnabled()->willReturn(true);
@@ -185,7 +184,6 @@ class ProductNormalizerSpec extends ObjectBehavior
             ])
         );
 
-        $product->isVariant()->willReturn(false);
         $product->getIdentifier()->willReturn($sku);
         $product->getFamily()->willReturn($family);
         $product->isEnabled()->willReturn(true);
@@ -241,7 +239,6 @@ class ProductNormalizerSpec extends ObjectBehavior
         $colors->getAttribute()->willReturn($colorsAttribute);
         $colors->getData()->willReturn([$red, $blue]);
 
-        $product->isVariant()->willReturn(false);
         $product->getIdentifier()->willReturn($sku);
         $product->getFamily()->willReturn($family);
         $product->isEnabled()->willReturn(true);
@@ -295,7 +292,6 @@ class ProductNormalizerSpec extends ObjectBehavior
 
         $price->getData()->willReturn($prices);
 
-        $product->isVariant()->willReturn(false);
         $product->getIdentifier()->willReturn($price);
         $product->getFamily()->willReturn($family);
         $product->isEnabled()->willReturn(true);

@@ -1,3 +1,0 @@
-imports:
-    - { resource: config_behat.yml }
-    - { resource: ../../tests/Acceptance/Resources/config/pim/repositories.yml }

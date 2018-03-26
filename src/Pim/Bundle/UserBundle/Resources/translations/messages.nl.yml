@@ -1,6 +1,7 @@
 pim_user:
   user:
     tab:
+      general.title: Algemeen
       additional.title: Extra
       group_and_role.title: Groepen en rollen
       password.title: Wachtwoord
@@ -76,7 +77,6 @@ Removed user: Verwijderde gebruiker
 user:
   default_grid_view:
     none: Geen
-  timezone: Tijdzone
 Role: Rol
 Owner: Eigenaar
 General: Algemeen

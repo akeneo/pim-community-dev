@@ -6,6 +6,7 @@ use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterfa
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Builder\ProductBuilderInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Model\VariantProductInterface;
 use Pim\Component\Connector\Processor\Denormalization\Product\FindProductToImport;
 use Prophecy\Argument;
 
@@ -13,11 +14,13 @@ class FindProductToImportSpec extends ObjectBehavior
 {
     function let(
         IdentifiableObjectRepositoryInterface $productRepository,
-        ProductBuilderInterface $productBuilder
+        ProductBuilderInterface $productBuilder,
+        ProductBuilderInterface $variantProductBuilder
     ) {
         $this->beConstructedWith(
             $productRepository,
-            $productBuilder
+            $productBuilder,
+            $variantProductBuilder
         );
     }
 
@@ -32,7 +35,16 @@ class FindProductToImportSpec extends ObjectBehavior
     ) {
         $productRepository->findOneByIdentifier('product_identifier')->willReturn($product);
 
-        $this->fromFlatData('product_identifier', 'family')->shouldReturn($product);
+        $this->fromFlatData('product_identifier', 'family', '')->shouldReturn($product);
+    }
+
+    function it_finds_variant_product_from_flat_data_given_by_the_reader(
+        $productRepository,
+        VariantProductInterface $variantProduct
+    ) {
+        $productRepository->findOneByIdentifier('product_identifier')->willReturn($variantProduct);
+
+        $this->fromFlatData('product_identifier', 'family', 'parent_code')->shouldReturn($variantProduct);
     }
 
     function it_creates_product_from_flat_data_given_by_the_reader(
@@ -44,5 +56,16 @@ class FindProductToImportSpec extends ObjectBehavior
         $productBuilder->createProduct('product_identifier', 'family')->willReturn($product);
 
         $this->fromFlatData('product_identifier', 'family', '')->shouldReturn($product);
+    }
+
+    function it_creates_variant_product_from_flat_data_given_by_the_reader(
+        $productRepository,
+        $variantProductBuilder,
+        VariantProductInterface $variantProduct
+    ) {
+        $productRepository->findOneByIdentifier('product_identifier')->willReturn(null);
+        $variantProductBuilder->createProduct('product_identifier', 'family')->willReturn($variantProduct);
+
+        $this->fromFlatData('product_identifier', 'family', 'parent_code')->shouldReturn($variantProduct);
     }
 }

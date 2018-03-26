@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Pim\Bundle\EnrichBundle\Normalizer;
 
 use Pim\Bundle\EnrichBundle\Provider\Form\FormProviderInterface;
-use Pim\Bundle\UserBundle\Context\UserContext;
 use Pim\Bundle\VersioningBundle\Manager\VersionManager;
 use Pim\Component\Catalog\FamilyVariant\EntityWithFamilyVariantAttributesProvider;
 use Pim\Component\Catalog\Localization\Localizer\AttributeConverterInterface;
@@ -74,8 +73,6 @@ class ProductModelNormalizer implements NormalizerInterface
     /** @var NormalizerInterface */
     private $incompleteValuesNormalizer;
 
-    /** @var UserContext */
-    private $userContext;
 
     /**
      * @param NormalizerInterface                       $normalizer
@@ -93,7 +90,6 @@ class ProductModelNormalizer implements NormalizerInterface
      * @param ImageAsLabel                              $imageAsLabel
      * @param AscendantCategoriesInterface              $ascendantCategoriesQuery
      * @param NormalizerInterface                       $incompleteValuesNormalizer
-     * @param UserContext                               $userContext
      */
     public function __construct(
         NormalizerInterface $normalizer,
@@ -110,8 +106,7 @@ class ProductModelNormalizer implements NormalizerInterface
         VariantProductRatioInterface $variantProductRatioQuery,
         ImageAsLabel $imageAsLabel,
         AscendantCategoriesInterface $ascendantCategoriesQuery,
-        NormalizerInterface $incompleteValuesNormalizer,
-        UserContext $userContext
+        NormalizerInterface $incompleteValuesNormalizer
     ) {
         $this->normalizer = $normalizer;
         $this->versionNormalizer = $versionNormalizer;
@@ -128,7 +123,6 @@ class ProductModelNormalizer implements NormalizerInterface
         $this->imageAsLabel = $imageAsLabel;
         $this->ascendantCategoriesQuery = $ascendantCategoriesQuery;
         $this->incompleteValuesNormalizer = $incompleteValuesNormalizer;
-        $this->userContext = $userContext;
     }
 
     /**
@@ -151,18 +145,8 @@ class ProductModelNormalizer implements NormalizerInterface
         $oldestLog = $this->versionManager->getOldestLogEntry($productModel);
         $newestLog = $this->versionManager->getNewestLogEntry($productModel);
 
-        $created = null !== $oldestLog ?
-            $this->versionNormalizer->normalize(
-                $oldestLog,
-                'internal_api',
-                ['timezone' => $this->userContext->getUserTimezone()]
-            ) : null;
-        $updated = null !== $newestLog ?
-            $this->versionNormalizer->normalize(
-                $newestLog,
-                'internal_api',
-                ['timezone' => $this->userContext->getUserTimezone()]
-            ) : null;
+        $created = null !== $oldestLog ? $this->versionNormalizer->normalize($oldestLog, 'internal_api') : null;
+        $updated = null !== $newestLog ? $this->versionNormalizer->normalize($newestLog, 'internal_api') : null;
 
         $levelAttributes = [];
         foreach ($this->attributesProvider->getAttributes($productModel) as $attribute) {

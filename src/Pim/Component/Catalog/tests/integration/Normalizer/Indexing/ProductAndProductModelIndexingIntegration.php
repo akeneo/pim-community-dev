@@ -53,8 +53,8 @@ class ProductAndProductModelIndexingIntegration extends TestCase
                     ],
                 ],
             ],
-            'all_complete' => [],
-            'all_incomplete' => [],
+            'at_least_complete' => [],
+            'at_least_incomplete' => [],
             'ancestors' => [
                 'ids' => [],
                 'codes' => [],
@@ -123,8 +123,8 @@ class ProductAndProductModelIndexingIntegration extends TestCase
                     ],
                 ],
             ],
-            'all_complete' => [],
-            'all_incomplete' => [],
+            'at_least_complete' => [],
+            'at_least_incomplete' => [],
             'ancestors' => [
                 'ids' => ['product_model_150'],
                 'codes' => ['qux'],

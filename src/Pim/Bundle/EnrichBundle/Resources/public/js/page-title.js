@@ -1,6 +1,6 @@
 'use strict';
 
-define(['pim/router', 'oro/translator'], function (router, __) {
+define(['pim-router', 'oro/translator'], function (router, __) {
     let routeParams = {};
     let render = (name, params) => {
         document.title = __('page_title.' + name, params);

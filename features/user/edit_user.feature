@@ -11,13 +11,11 @@ Feature: Edit a user
   Scenario: Successfully edit a user
     Given I edit the "admin" user
     When I fill in the following information:
-      | First name | John         |
-      | Last name  | Smith        |
-      | Phone      | +33755337788 |
+      | First name | John  |
+      | Last name  | Smith |
     And I save the user
     Then I should see the flash message "User saved"
     And I should see the text "John Smith"
-    And the field Phone should contain "+33755337788"
 
   Scenario: Successfully edit and apply user preferences
     When I edit the "Peter" user
@@ -55,14 +53,3 @@ Feature: Edit a user
     When I am logged in as "Mary"
     And I edit the "admin" user
     Then I should see the text "Edit user - John Doe"
-
-  Scenario: Successfully setup user timezone
-    Given I edit the "Peter" user
-    And I visit the "Interfaces" tab
-    Then I should see the text "UTC"
-    When I fill in the following information:
-      | Timezone | Paris |
-    And I save the user
-    And I reload the page
-    And I visit the "Interfaces" tab
-    Then I should see the text "Paris CET (UTC+01:00)"

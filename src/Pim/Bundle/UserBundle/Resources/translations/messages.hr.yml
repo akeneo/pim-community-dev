@@ -89,7 +89,6 @@ user:
     label: Zadani prikaz tablice proizvoda
   default_grid_view:
     none: Niti jedan
-  timezone: Vremenska zona
 Role: Rola
 Owner: Vlasnik
 General: Općenito

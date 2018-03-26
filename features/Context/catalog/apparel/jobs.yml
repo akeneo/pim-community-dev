@@ -298,11 +298,6 @@ jobs:
         alias:     edit_common_attributes
         label:     Mass edit product attributes
         type:      mass_edit
-    add_attribute_value:
-        connector: Akeneo Mass Edit Connector
-        alias:     add_attribute_value
-        label:     Mass add attribute value
-        type:      mass_edit
     add_to_existing_product_model:
         connector: Akeneo Mass Edit Connector
         alias:     add_to_existing_product_model
@@ -323,8 +318,3 @@ jobs:
         alias:     compute_family_variant_structure_changes
         label:     Compute variant structure changes
         type:      compute_family_variant_structure_changes
-    delete_products_and_product_models:
-        connector: Akeneo Mass Edit Connector
-        alias:     delete_products_and_product_models
-        label:     Mass delete products
-        type:      mass_delete

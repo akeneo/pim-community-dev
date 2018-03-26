@@ -82,7 +82,6 @@ services:
         arguments:
             - '@form.factory'
             - '@pim_filter.product_utility'
-            - '@pim_user.context.user'
         tags:
             - { name: oro_filter.extension.orm_filter.filter, type: product_date }
 
@@ -156,7 +155,6 @@ services:
         arguments:
             - '@form.factory'
             - '@pim_filter.product_utility'
-            - '@pim_user.context.user'
         tags:
             - { name: oro_filter.extension.orm_filter.filter, type: product_value_datetime }
 

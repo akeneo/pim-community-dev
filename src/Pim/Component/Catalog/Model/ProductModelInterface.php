@@ -51,13 +51,13 @@ interface ProductModelInterface extends
     /**
      * Adds an product to the product model.
      *
-     * @param ProductInterface $product
+     * @param VariantProductInterface $product
      *
      * @throws \LogicException
      *
      * @return ProductModelInterface
      */
-    public function addProduct(ProductInterface $product): ProductModelInterface;
+    public function addProduct(VariantProductInterface $product): ProductModelInterface;
 
     /**
      * Removes an product from the product model.
