@@ -3,20 +3,29 @@
 {% block bodyClass %}AknLogin{% endblock %}
 
 {% block content %}
-<div class="container">
-    <div class="title-box">
+
+<div class="AknLogin-mainContainer container">
+    <div class="AknLogin-title">
         {% embed 'PimUIBundle::logo.html.twig' %}{% endembed %}
     </div>
 
     <form action="{{ path('oro_user_reset_reset', { token: token }) }}" {{ form_enctype(form) }} method="post" class="form-signin">
-        <h2 class="title">{{ 'Password Reset'|trans }}</h2>
+
+        <h2 class="AknLogin-subTitle">{{ 'Password Reset'|trans }}</h2>
         <fieldset>
-            {{ form_errors(form) }}
-            {{ form_widget(form.plainPassword) }}
-            {{ form_widget(form._token) }}
-            <div class="form-row">
-                <a href="{{ path('oro_user_security_login') }}" class="btn btn-large extra-btn-large">{{ 'Cancel'|trans }}</a>
-                <button type="submit" class="btn btn-large pull-right btn-primary">{{ 'Reset'|trans }}</button>
+            <div class="AknLogin-form">
+                <input type="password" id="oro_user_reset_form_plainPassword_first" name="oro_user_reset_form[plainPassword][first]" required="required" placeholder="{{ 'Password'|trans }}" options="Array" class=" AknLogin-formInput">
+                <input type="password" id="oro_user_reset_form_plainPassword_second" name="oro_user_reset_form[plainPassword][second]" required="required" placeholder="{{ 'Password (again)'|trans }}" options="Array" class=" AknLogin-formInput">
+
+                <button type="submit" class="AknButton AknButton--important AknButton--big AknButton--uppercase">{{ 'Reset'|trans }}</button>
+            </div>
+            <div class="AknLogin-form">
+                {{ form_widget(form._token) }}
+                {{ form_errors(form.plainPassword) }}
+                <div class="AknLogin-formCell"></div>
+                <div class="AknLogin-formCell AknLogin-formCell--small">
+                    <a href="{{ path('oro_user_security_login') }}" class="AknLogin-link">{{ 'Cancel'|trans }}</a>
+                </div>
             </div>
         </fieldset>
     </form>
