@@ -176,10 +176,20 @@ JSON;
         $this->get('security.token_storage')->setToken($token);
 
         $encrypter = $this->get('pim_api.security.primary_key_encrypter');
-        $publishedProductRepository = $this->get('pimee_api.repository.published_product');
+        $publishedProductRepository = $this->get('pimee_workflow.repository.published_product');
 
         $product = $publishedProductRepository->findOneByIdentifier($publishedProductIdentifier);
 
         return $encrypter->encrypt($product->getId());
+    }
+
+    /**
+     * @param string $productIdentifier
+     */
+    protected function assertProductNotDeleted(string $productIdentifier): void
+    {
+        $product = $this->get('pim_catalog.repository.product_without_permission')->findOneByIdentifier($productIdentifier);
+
+        $this->assertNotNull($product);
     }
 }
