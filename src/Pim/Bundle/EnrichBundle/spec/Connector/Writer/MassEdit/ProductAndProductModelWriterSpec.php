@@ -6,7 +6,7 @@ use Akeneo\Component\Batch\Item\ItemWriterInterface;
 use Akeneo\Component\Batch\Job\JobParameters;
 use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\Batch\Step\StepExecutionAwareInterface;
-use Akeneo\Component\StorageUtils\Cache\CacheClearerInterface;
+use Akeneo\Component\StorageUtils\Cache\EntityManagerClearerInterface;
 use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\EnrichBundle\Connector\Writer\MassEdit\ProductAndProductModelWriter;
@@ -22,7 +22,7 @@ class ProductAndProductModelWriterSpec extends ObjectBehavior
         VersionManager $versionManager,
         BulkSaverInterface $productSaver,
         BulkSaverInterface $productModelSaver,
-        CacheClearerInterface $cacheClearer,
+        EntityManagerClearerInterface $cacheClearer,
         StepExecution $stepExecution
     ) {
         $this->beConstructedWith($versionManager, $productSaver, $productModelSaver, $cacheClearer);

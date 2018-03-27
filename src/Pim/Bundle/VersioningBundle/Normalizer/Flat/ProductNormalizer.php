@@ -9,7 +9,6 @@ use Pim\Component\Catalog\Model\GroupInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ValueCollectionInterface;
 use Pim\Component\Catalog\Model\ValueInterface;
-use Pim\Component\Catalog\Model\VariantProductInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\SerializerAwareInterface;
 use Symfony\Component\Serializer\SerializerAwareTrait;
@@ -117,7 +116,7 @@ class ProductNormalizer implements NormalizerInterface, SerializerAwareInterface
      */
     protected function getFilteredValues(ProductInterface $product, array $context = [])
     {
-        if ($product instanceof VariantProductInterface) {
+        if ($product->isVariant()) {
             $values = $product->getValuesForVariation();
         } else {
             $values = $product->getValues();

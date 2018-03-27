@@ -793,8 +793,6 @@ pim_enrich:
           label: 更改状态
           description: 将启用或禁用选定的产品。
           field: 启用
-        edit_common:
-          label: 编辑属性
         change_family:
           description: 选定产品的品类将更改为被选定的品类
           field: 产品族

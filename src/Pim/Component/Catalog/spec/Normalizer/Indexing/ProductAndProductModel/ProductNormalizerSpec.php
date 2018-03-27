@@ -33,7 +33,7 @@ class ProductNormalizerSpec extends ObjectBehavior
 
     function it_supports_products_and_variant_products(
         ProductInterface $product,
-        VariantProductInterface $variantProduct
+        ProductInterface $variantProduct
     ) {
         $this->supportsNormalization($product, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)
             ->shouldReturn(true);

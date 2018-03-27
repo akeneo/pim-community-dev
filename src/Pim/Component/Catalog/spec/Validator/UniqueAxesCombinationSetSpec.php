@@ -5,7 +5,7 @@ namespace spec\Pim\Component\Catalog\Validator;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\FamilyVariantInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
-use Pim\Component\Catalog\Model\VariantProductInterface;
+use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Validator\UniqueAxesCombinationSet;
 use Prophecy\Argument;
 
@@ -20,7 +20,7 @@ class UniqueAxesCombinationSetSpec extends ObjectBehavior
         FamilyVariantInterface $familyVariant,
         ProductModelInterface $rootProductModel,
         ProductModelInterface $productModel,
-        VariantProductInterface $variantProduct
+        ProductInterface $variantProduct
     ) {
         $familyVariant->getCode()->willReturn('family_variant');
 

@@ -47,7 +47,7 @@ services:
             - '@pim_analytics.repository.family'
             - '@pim_analytics.repository.user'
             - '@pim_analytics.repository.product_model'
-            - '@pim_analytics.repository.variant_product'
+            - '@pim_analytics.query.count_variant_product'
             - '@pim_analytics.repository.family_variant'
         tags:
             - { name: pim_analytics.data_collector, type: update_checker }

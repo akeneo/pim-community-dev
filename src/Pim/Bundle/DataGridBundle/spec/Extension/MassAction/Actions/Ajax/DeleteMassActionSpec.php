@@ -3,33 +3,17 @@
 namespace spec\Pim\Bundle\DataGridBundle\Extension\MassAction\Actions\Ajax;
 
 use Oro\Bundle\DataGridBundle\Extension\Action\ActionConfiguration;
+use Oro\Bundle\DataGridBundle\Extension\MassAction\Actions\MassActionInterface;
 use PhpSpec\ObjectBehavior;
+use Pim\Bundle\DataGridBundle\Extension\MassAction\Actions\Ajax\DeleteMassAction;
 use Prophecy\Argument;
 
 class DeleteMassActionSpec extends ObjectBehavior
 {
-    function it_requires_the_entity_name()
+    function it_is_initializable()
     {
-        $options = ActionConfiguration::createNamed('delete', []);
-
-        $this->shouldThrow(
-            new \LogicException('There is no option "entity_name" for action "delete".')
-        )->duringSetOptions($options);
-    }
-
-    function it_defines_default_values()
-    {
-        $params = ['entity_name' => 'foo'];
-        $options = ActionConfiguration::createNamed('delete', $params);
-
-        $this->setOptions($options)->shouldNotThrow(Argument::any());
-
-        $this->getOptions()->getName()->shouldReturn('delete');
-        $this->getOptions()->offsetGet('frontend_type')->shouldReturn('ajax');
-        $this->getOptions()->offsetGet('route_parameters')->shouldReturn([]);
-        $this->getOptions()->offsetGet('handler')->shouldReturn('mass_delete');
-        $this->getOptions()->offsetGet('route')->shouldReturn('pim_datagrid_mass_action');
-        $this->getOptions()->offsetGet('confirmation')->shouldReturn(true);
+        $this->shouldHaveType(DeleteMassAction::class);
+        $this->shouldImplement(MassActionInterface::class);
     }
 
     function it_overwrites_default_values()
@@ -51,15 +35,5 @@ class DeleteMassActionSpec extends ObjectBehavior
         $this->getOptions()->offsetGet('handler')->shouldReturn('my_handler');
         $this->getOptions()->offsetGet('route')->shouldReturn('baz');
         $this->getOptions()->offsetGet('confirmation')->shouldReturn(false);
-    }
-
-    function it_doesnt_allow_overriding_frontend_type()
-    {
-        $params = ['entity_name' => 'foo', 'frontend_type' => 'bar'];
-        $options = ActionConfiguration::createNamed('edit', $params);
-
-        $this->setOptions($options)->shouldNotThrow(Argument::any());
-
-        $this->getOptions()->offsetGet('frontend_type')->shouldReturn('ajax');
     }
 }

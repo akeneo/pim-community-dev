@@ -42,11 +42,11 @@ Feature: Quick export many products with localized attributes from datagrid
     And the names of the exported files of "csv_product_quick_export" should be "1_products_export_en_US_mobile.csv,2_product_models_export_en_US_mobile.csv"
     And first exported file of "csv_product_quick_export" should contain:
     """
-    sku;categories;color;description-en_US-mobile;destocking_date;enabled;family;groups;lace_color;manufacturer;name-en_US;price-EUR;price-USD;rate_sale;rating;side_view;size;top_view;weather_conditions;weight;weight-unit
-    boots;winter_collection;black;;28/12/1999;1;boots;;;;"Amazing boots";20,80;25,35;75,50;;;40;;;250;GRAM
-    sneakers;summer_collection;white;;;1;sneakers;;;;Sneakers;50;60;75;;;42;;;125,50;GRAM
-    sandals;summer_collection;red;;;1;sandals;;;;Sandals;5;5;75;;;40;;;0,50;GRAM
-    pump;summer_collection;blue;;;1;;;;;Pump;15;20;;;;41;;;;
+    sku;categories;color;description-en_US-mobile;description-fr_FR-mobile;destocking_date;enabled;family;groups;lace_color;manufacturer;name-en_US;name-fr_FR;price-EUR;price-USD;rate_sale;rating;side_view;size;top_view;weather_conditions;weight;weight-unit
+    boots;winter_collection;black;;;28/12/1999;1;boots;;;;"Amazing boots";;20,80;25,35;75,50;;;40;;;250;GRAM
+    sneakers;summer_collection;white;;;;1;sneakers;;;;Sneakers;;50;60;75;;;42;;;125,50;GRAM
+    sandals;summer_collection;red;;;;1;sandals;;;;Sandals;;5;5;75;;;40;;;0,50;GRAM
+    pump;summer_collection;blue;;;;1;;;;;Pump;;15;20;;;;41;;;;
     """
 
   Scenario: Successfully quick export XLSX products with localized attributes
@@ -64,8 +64,8 @@ Feature: Quick export many products with localized attributes from datagrid
     Then I should see the text "TERMINÉ"
     And the names of the exported files of "xlsx_product_quick_export" should be "1_products_export_en_US_mobile.xlsx,2_product_models_export_en_US_mobile.xlsx"
     And exported xlsx file 1 of "xlsx_product_quick_export" should contain:
-      | sku      | categories        | color | description-en_US-mobile | destocking_date | enabled | family   | groups | lace_color | manufacturer | name-en_US    | price-EUR | price-USD | rate_sale | rating | side_view | size | top_view | weather_conditions | weight | weight-unit |
-      | boots    | winter_collection | black |                          | 28/12/1999      | 1       | boots    |        |            |              | Amazing boots | 20,80     | 25,35     | 75,50     |        |           | 40   |          |                    | 250    | GRAM        |
-      | sneakers | summer_collection | white |                          |                 | 1       | sneakers |        |            |              | Sneakers      | 50        | 60        | 75        |        |           | 42   |          |                    | 125,50 | GRAM        |
-      | sandals  | summer_collection | red   |                          |                 | 1       | sandals  |        |            |              | Sandals       | 5         | 5         | 75        |        |           | 40   |          |                    | 0,50   | GRAM        |
-      | pump     | summer_collection | blue  |                          |                 | 1       |          |        |            |              | Pump          | 15        | 20        |           |        |           | 41   |          |                    |        |             |
+      | sku      | categories        | color | description-en_US-mobile | description-fr_FR-mobile | destocking_date | enabled | family   | groups | lace_color | manufacturer | name-en_US    | name-fr_FR | price-EUR | price-USD | rate_sale | rating | side_view | size | top_view | weather_conditions | weight | weight-unit |
+      | boots    | winter_collection | black |                          |                          | 28/12/1999      | 1       | boots    |        |            |              | Amazing boots |            | 20,80     | 25,35     | 75,50     |        |           | 40   |          |                    | 250    | GRAM        |
+      | sneakers | summer_collection | white |                          |                          |                 | 1       | sneakers |        |            |              | Sneakers      |            | 50        | 60        | 75        |        |           | 42   |          |                    | 125,50 | GRAM        |
+      | sandals  | summer_collection | red   |                          |                          |                 | 1       | sandals  |        |            |              | Sandals       |            | 5         | 5         | 75        |        |           | 40   |          |                    | 0,50   | GRAM        |
+      | pump     | summer_collection | blue  |                          |                          |                 | 1       |          |        |            |              | Pump          |            | 15        | 20        |           |        |           | 41   |          |                    |        |             |

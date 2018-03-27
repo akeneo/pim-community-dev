@@ -323,7 +323,7 @@ function($, _, Backbone, routing, router, __, mediator, messenger, error, Dialog
                 return entityHint.replace(/y$/, 'ies');
             }
 
-            return `${entityHint}s`;
+            return `${entityHint.replace('_', ' ')}s`;
         }
     });
 });

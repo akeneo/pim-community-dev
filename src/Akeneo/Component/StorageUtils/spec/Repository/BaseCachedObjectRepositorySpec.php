@@ -14,7 +14,7 @@ class BaseCachedObjectRepositorySpec extends ObjectBehavior
 
     function it_is_a_cache_clearer()
     {
-        $this->shouldImplement('Akeneo\Component\StorageUtils\Cache\CacheClearerInterface');
+        $this->shouldImplement('Akeneo\Component\StorageUtils\Cache\EntityManagerClearerInterface');
     }
 
     function it_is_an_identifiable_object_repository()

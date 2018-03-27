@@ -10,6 +10,7 @@ use Akeneo\Component\Batch\Item\ItemReaderInterface;
 use Akeneo\Component\Batch\Item\ItemWriterInterface;
 use Akeneo\Component\Batch\Job\JobRepositoryInterface;
 use Akeneo\Component\Batch\Model\StepExecution;
+use Akeneo\Component\Batch\Model\Warning;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
@@ -21,17 +22,17 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
  */
 class ItemStep extends AbstractStep
 {
-    /** @var int */
-    protected $batchSize;
-
     /** @var ItemReaderInterface */
     protected $reader = null;
+
+    /** @var ItemProcessorInterface */
+    protected $processor = null;
 
     /** @var ItemWriterInterface */
     protected $writer = null;
 
-    /** @var ItemProcessorInterface */
-    protected $processor = null;
+    /** @var int */
+    protected $batchSize;
 
     /** @var StepExecution */
     protected $stepExecution = null;
@@ -200,12 +201,14 @@ class ItemStep extends AbstractStep
         $element,
         InvalidItemException $e
     ) {
-        $this->jobRepository->insertWarning(
+        $warning = new Warning(
             $stepExecution,
             $e->getMessage(),
             $e->getMessageParameters(),
             $e->getItem()->getInvalidData()
         );
+
+        $this->jobRepository->addWarning($warning);
 
         $this->dispatchInvalidItemEvent(
             get_class($element),

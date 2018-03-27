@@ -3,7 +3,9 @@ declare(strict_types=1);
 
 namespace Pim\Component\Catalog\Normalizer\Standard;
 
+use Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
+use Pim\Component\Catalog\Model\ValueCollectionInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\SerializerAwareNormalizer;
 
@@ -22,6 +24,17 @@ class ProductModelNormalizer extends SerializerAwareNormalizer implements Normal
     private const FIELD_UPDATED = 'updated';
     private const FIELD_PARENT = 'parent';
 
+    /** @var CollectionFilterInterface */
+    private $filter;
+
+    /**
+     * @param CollectionFilterInterface $filter The collection filter
+     */
+    public function __construct(CollectionFilterInterface $filter)
+    {
+        $this->filter = $filter;
+    }
+
     /**
      * {@inheritdoc}
      *
@@ -33,11 +46,13 @@ class ProductModelNormalizer extends SerializerAwareNormalizer implements Normal
             throw new \LogicException('Serializer must be a normalizer');
         }
 
+        $context = array_merge(['filter_types' => ['pim.transform.product_value.structured']], $context);
+
         $data[self::FIELD_CODE] = $productModel->getCode();
         $data[self::FIELD_FAMILY_VARIANT] = $productModel->getFamilyVariant()->getCode();
         $data[self::FIELD_PARENT] = null !== $productModel->getParent() ? $productModel->getParent()->getCode() : null;
         $data[self::FIELD_CATEGORIES] = $productModel->getCategoryCodes();
-        $data[self::FIELD_VALUES] = $this->serializer->normalize($productModel->getValues(), $format, $context);
+        $data[self::FIELD_VALUES] = $this->normalizeValues($productModel->getValues(), $format, $context);
         $data[self::FIELD_CREATED] = $this->serializer->normalize($productModel->getCreated(), $format, $context);
         $data[self::FIELD_UPDATED] = $this->serializer->normalize($productModel->getUpdated(), $format, $context);
 
@@ -50,5 +65,25 @@ class ProductModelNormalizer extends SerializerAwareNormalizer implements Normal
     public function supportsNormalization($data, $format = null): bool
     {
         return $data instanceof ProductModelInterface && 'standard' === $format;
+    }
+
+    /**
+     * Normalize the values of the product model
+     *
+     * @param ValueCollectionInterface $values
+     * @param string                   $format
+     * @param array                    $context
+     *
+     * @return ArrayCollection
+     */
+    private function normalizeValues(ValueCollectionInterface $values, string $format, array $context = [])
+    {
+        foreach ($context['filter_types'] as $filterType) {
+            $values = $this->filter->filterCollection($values, $filterType, $context);
+        }
+
+        $data = $this->serializer->normalize($values, $format, $context);
+
+        return $data;
     }
 }

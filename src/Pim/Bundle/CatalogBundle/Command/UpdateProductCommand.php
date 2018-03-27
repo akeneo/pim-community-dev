@@ -257,7 +257,7 @@ class UpdateProductCommand extends ContainerAwareCommand
      */
     protected function getProductPropertyAdder()
     {
-        return $this->getContainer()->get('pim_catalog.updater.product_property_adder');
+        return $this->getContainer()->get('pim_catalog.updater.property_adder');
     }
 
     /**
@@ -265,7 +265,7 @@ class UpdateProductCommand extends ContainerAwareCommand
      */
     protected function getProductPropertyRemover()
     {
-        return $this->getContainer()->get('pim_catalog.updater.product_property_remover');
+        return $this->getContainer()->get('pim_catalog.updater.property_remover');
     }
 
     /**
@@ -273,7 +273,7 @@ class UpdateProductCommand extends ContainerAwareCommand
      */
     protected function getProductPropertyCopier()
     {
-        return $this->getContainer()->get('pim_catalog.updater.product_property_copier');
+        return $this->getContainer()->get('pim_catalog.updater.property_copier');
     }
 
     /**

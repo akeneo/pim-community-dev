@@ -6,7 +6,6 @@ namespace Pim\Component\Connector\Processor\Denormalization\Product;
 
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Pim\Component\Catalog\Builder\ProductBuilderInterface;
-use Pim\Component\Catalog\Model\EntityWithFamilyInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 
 /**
@@ -24,22 +23,16 @@ class FindProductToImport
     /** @var ProductBuilderInterface */
     private $productBuilder;
 
-    /** @var ProductBuilderInterface */
-    private $variantProductBuilder;
-
     /**
      * @param IdentifiableObjectRepositoryInterface $productRepository
      * @param ProductBuilderInterface               $productBuilder
-     * @param ProductBuilderInterface               $variantProductBuilder
      */
     public function __construct(
         IdentifiableObjectRepositoryInterface $productRepository,
-        ProductBuilderInterface $productBuilder,
-        ProductBuilderInterface $variantProductBuilder
+        ProductBuilderInterface $productBuilder
     ) {
         $this->productRepository = $productRepository;
         $this->productBuilder = $productBuilder;
-        $this->variantProductBuilder = $variantProductBuilder;
     }
 
     /**
@@ -47,20 +40,14 @@ class FindProductToImport
      *
      * @param string $productIdentifierCode
      * @param string $familyCode
-     * @param string $parentProductModelCode
      *
      * @return ProductInterface
      */
     public function fromFlatData(
         string $productIdentifierCode,
-        string $familyCode,
-        string $parentProductModelCode
+        string $familyCode
     ): ProductInterface {
         $product = $this->productRepository->findOneByIdentifier($productIdentifierCode);
-
-        if (null === $product && '' !== $parentProductModelCode) {
-            return $this->variantProductBuilder->createProduct($productIdentifierCode, $familyCode);
-        }
 
         if (null === $product) {
             return $this->productBuilder->createProduct($productIdentifierCode, $familyCode);

@@ -139,10 +139,10 @@ class ExportProductModelsIntegration extends AbstractExportTestCase
     public function testProductModelsExport()
     {
         $expectedCsv = <<<CSV
-code;family_variant;parent;categories;color;name-de_DE;name-en_US;name-fr_FR;name-zh_CN;variation_image;variation_name
-apollon;clothing_color_size;;tshirt;;;;;;;
-apollon_blue;clothing_color_size;apollon;summer,tshirt,v-neck;blue;;;;;;"my blue tshirt"
-apollon_pink;clothing_color_size;apollon;round-neck,tshirt;pink;;;;;;"my pink tshirt"
+code;family_variant;parent;categories;color;name-en_US;variation_image;variation_name
+apollon;clothing_color_size;;tshirt;;;;
+apollon_blue;clothing_color_size;apollon;summer,tshirt,v-neck;blue;;;"my blue tshirt"
+apollon_pink;clothing_color_size;apollon;round-neck,tshirt;pink;;;"my pink tshirt"
 
 CSV;
 

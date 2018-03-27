@@ -5,6 +5,9 @@ namespace Pim\Bundle\CatalogBundle\EventSubscriber;
 use Akeneo\Component\StorageUtils\StorageEvents;
 use Pim\Component\Catalog\Model\EntityWithFamilyVariantInterface;
 use Pim\Component\Catalog\Model\EntityWithValuesInterface;
+use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Model\ProductModelInterface;
+use Pim\Component\Catalog\Model\ValueCollectionInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
@@ -59,13 +62,28 @@ class ComputeEntityRawValuesSubscriber implements EventSubscriberInterface
             return;
         }
 
-        if ($subject instanceof EntityWithFamilyVariantInterface) {
-            $values = $subject->getValuesForVariation();
-        } else {
-            $values = $subject->getValues();
-        }
-
+        $values = $this->getValues($subject);
         $rawValues = $this->normalizer->normalize($values, 'storage');
         $subject->setRawValues($rawValues);
+    }
+
+    /**
+     * For products and product models we want to retrieve only the values of the current variation.
+     *
+     * @param EntityWithValuesInterface $entity
+     *
+     * @return ValueCollectionInterface
+     */
+    private function getValues(EntityWithValuesInterface $entity): ValueCollectionInterface
+    {
+        if ($entity instanceof ProductModelInterface) {
+            return $entity->getValuesForVariation();
+        }
+
+        if ($entity instanceof ProductInterface) {
+            return $entity->getValuesForVariation();
+        }
+
+        return $entity->getValues();
     }
 }

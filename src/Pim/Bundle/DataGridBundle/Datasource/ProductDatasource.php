@@ -43,7 +43,7 @@ class ProductDatasource extends Datasource
         ObjectManager $om,
         ProductQueryBuilderFactoryInterface $factory,
         NormalizerInterface $serializer,
-        FilterEntityWithValuesSubscriber $filterEntityWithValuesSubscriber = null
+        FilterEntityWithValuesSubscriber $filterEntityWithValuesSubscriber
     ) {
         $this->om = $om;
         $this->factory = $factory;
@@ -56,15 +56,12 @@ class ProductDatasource extends Datasource
      */
     public function getResults()
     {
-        // TODO: remove null condition on master
-        if (null !== $this->filterEntityWithValuesSubscriber) {
-            $attributeIdsToDisplay = $this->getConfiguration('displayed_attribute_ids');
-            $attributes = $this->getConfiguration('attributes_configuration');
-            $attributeCodesToFilter = $this->getAttributeCodesToFilter($attributeIdsToDisplay, $attributes);
-            $this->filterEntityWithValuesSubscriber->configure(
-                FilterEntityWithValuesSubscriberConfiguration::filterEntityValues($attributeCodesToFilter)
-            );
-        }
+        $attributeIdsToDisplay = $this->getConfiguration('displayed_attribute_ids');
+        $attributes = $this->getConfiguration('attributes_configuration');
+        $attributeCodesToFilter = $this->getAttributeCodesToFilter($attributeIdsToDisplay, $attributes);
+        $this->filterEntityWithValuesSubscriber->configure(
+            FilterEntityWithValuesSubscriberConfiguration::filterEntityValues($attributeCodesToFilter)
+        );
 
         $entitiesWithValues = $this->pqb->execute();
         $context = [

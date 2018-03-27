@@ -13,7 +13,6 @@ Pim\Bundle\UserBundle\Entity\User:
             - Length:
                 min:        6
                 max:        255
-            - Email:        ~
             - Regex:
                 pattern: /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*))@([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}$/
                 message: This value is not a valid email address.

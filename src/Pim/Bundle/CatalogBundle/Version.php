@@ -15,7 +15,7 @@ class Version
     const VERSION = '2.1.8';
 
     /** @staticvar string */
-    const VERSION_CODENAME = 'Prest-O Change-O';
+    const VERSION_CODENAME = 'Bonanza Bunny';
 
     /** @staticvar string */
     const EDITION = 'CE';

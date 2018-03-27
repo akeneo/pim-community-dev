@@ -47,6 +47,7 @@ class LoggerSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return array(
+            EventInterface::JOB_EXECUTION_CREATED      => 'jobExecutionCreated',
             EventInterface::BEFORE_JOB_EXECUTION       => 'beforeJobExecution',
             EventInterface::JOB_EXECUTION_STOPPED      => 'jobExecutionStopped',
             EventInterface::JOB_EXECUTION_INTERRUPTED  => 'jobExecutionInterrupted',
@@ -79,6 +80,18 @@ class LoggerSubscriber implements EventSubscriberInterface
     public function setTranslationDomain($translationDomain)
     {
         $this->translationDomain = $translationDomain;
+    }
+
+    /**
+     * Log the job execution creation
+     *
+     * @param JobExecutionEvent $event
+     */
+    public function jobExecutionCreated(JobExecutionEvent $event)
+    {
+        $jobExecution = $event->getJobExecution();
+
+        $this->logger->debug(sprintf('Job execution is created: %s', $jobExecution));
     }
 
     /**

@@ -5,12 +5,15 @@ declare(strict_types=1);
 namespace Pim\Bundle\EnrichBundle\Controller\Rest;
 
 use Akeneo\Component\StorageUtils\Factory\SimpleFactoryInterface;
+use Akeneo\Component\StorageUtils\Remover\RemoverInterface;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
+use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Pim\Component\Catalog\Model\FamilyVariantInterface;
 use Pim\Component\Catalog\Repository\FamilyVariantRepositoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -46,6 +49,9 @@ class FamilyVariantController
     /** @var SaverInterface */
     protected $saver;
 
+    /** @var RemoverInterface */
+    private $remover;
+
     /**
      * @param FamilyVariantRepositoryInterface $familyVariantRepository
      * @param NormalizerInterface              $normalizer
@@ -54,6 +60,7 @@ class FamilyVariantController
      * @param ValidatorInterface               $validator
      * @param NormalizerInterface              $constraintViolationNormalizer
      * @param SaverInterface                   $saver
+     * @param RemoverInterface                 $remover
      */
     public function __construct(
         FamilyVariantRepositoryInterface $familyVariantRepository,
@@ -62,7 +69,8 @@ class FamilyVariantController
         ObjectUpdaterInterface $updater,
         ValidatorInterface $validator,
         NormalizerInterface $constraintViolationNormalizer,
-        SaverInterface $saver
+        SaverInterface $saver,
+        RemoverInterface $remover
     ) {
         $this->familyVariantRepository = $familyVariantRepository;
         $this->normalizer = $normalizer;
@@ -71,6 +79,7 @@ class FamilyVariantController
         $this->validator = $validator;
         $this->constraintViolationNormalizer = $constraintViolationNormalizer;
         $this->saver = $saver;
+        $this->remover = $remover;
     }
 
     /**
@@ -120,7 +129,41 @@ class FamilyVariantController
     }
 
     /**
-     * Gets familyVariant
+     * @param Request $request
+     * @param         $familyVariantCode
+     *
+     * @return JsonResponse
+     *
+     * @throws HttpExceptionInterface
+     *
+     * @AclAncestor("pim_enrich_family_variant_remove")
+     */
+    public function removeAction(Request $request, $familyVariantCode)
+    {
+        if (!$request->isXmlHttpRequest()) {
+            return new JsonResponse(['message' => 'An error occurred.', 'global' => true], Response::HTTP_BAD_REQUEST);
+        }
+
+        $familyVariant = $this->getFamilyVariant($familyVariantCode);
+        try {
+            $this->remover->remove($familyVariant);
+        } catch (\LogicException $e) {
+            return new JsonResponse(
+                [
+                    'message' => sprintf(
+                        'Cannot remove family variant "%s" as it is used by some product models',
+                        $familyVariant->getCode()
+                    ),
+                ],
+                Response::HTTP_UNPROCESSABLE_ENTITY
+            );
+        }
+
+        return new JsonResponse(null, Response::HTTP_NO_CONTENT);
+    }
+
+    /**
+     * Gets familyVariant using its code
      *
      * @param string $code
      *

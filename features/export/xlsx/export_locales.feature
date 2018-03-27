@@ -103,7 +103,7 @@ Feature: Export locales
       | fr_BE       | 0         |
       | fr_CA       | 0         |
       | fr_CH       | 0         |
-      | fr_FR       | 0         |
+      | fr_FR       | 1         |
       | fr_LU       | 0         |
       | fr_MC       | 0         |
       | fy_NL       | 0         |
@@ -324,7 +324,7 @@ Feature: Export locales
       | fr_BE       | 0 |
       | fr_CA       | 0 |
       | fr_CH       | 0 |
-      | fr_FR       | 0 |
+      | fr_FR       | 1 |
       | fr_LU       | 0 |
       | fr_MC       | 0 |
       | fy_NL       | 0 |

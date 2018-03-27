@@ -25,7 +25,7 @@ class MultiSelectAttributeCopierIntegration extends AbstractCopierTestCase
             ],
         ]);
 
-        $this->get('pim_catalog.updater.product_property_copier')->copyData(
+        $this->get('pim_catalog.updater.property_copier')->copyData(
             $product,
             $product,
             'a_multi_select',

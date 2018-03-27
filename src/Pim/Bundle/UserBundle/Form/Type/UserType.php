@@ -4,7 +4,6 @@ namespace Pim\Bundle\UserBundle\Form\Type;
 
 use Oro\Bundle\UserBundle\Form\EventListener\UserSubscriber;
 use Oro\Bundle\UserBundle\Form\Type\ChangePasswordType;
-use Pim\Bundle\EnrichBundle\Form\Type\ProductGridFilterChoiceType;
 use Pim\Bundle\UIBundle\Form\Type\DateType;
 use Pim\Bundle\UserBundle\Doctrine\ORM\Repository\GroupRepository;
 use Pim\Bundle\UserBundle\Doctrine\ORM\Repository\RoleRepository;
@@ -19,6 +18,7 @@ use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\TimezoneType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
@@ -265,6 +265,14 @@ class UserType extends AbstractType
                 ]
             )
             ->add(
+                'phone',
+                TextType::class,
+                [
+                    'label'    => 'Phone',
+                    'required' => false,
+                ]
+            )
+            ->add(
                 'birthday',
                 DateType::class,
                 [
@@ -278,6 +286,24 @@ class UserType extends AbstractType
                 [
                     'label'    => 'Avatar',
                     'required' => false,
+                ]
+            )
+            ->add(
+                'timezone',
+                TimezoneType::class,
+                [
+                    'label'    => 'user.timezone',
+                    'required' => true,
+                    'choice_label' => function ($timezone, $key) {
+                        $currentDateTime = new \DateTime('now', new \DateTimeZone($timezone));
+
+                        return 'UTC' !== $timezone ? sprintf(
+                            '%s %s (UTC%s)',
+                            $key,
+                            $currentDateTime->format('T'),
+                            $currentDateTime->format('P')
+                        ) : $timezone;
+                    },
                 ]
             );
     }

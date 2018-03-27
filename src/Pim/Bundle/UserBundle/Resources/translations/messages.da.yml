@@ -89,6 +89,7 @@ user:
     label: Standard produkt gittervisningen
   default_grid_view:
     none: Ingen
+  timezone: Tidszone
 Role: Rolle
 Owner: Ejer
 General: Generelt

@@ -4,14 +4,12 @@ namespace spec\Pim\Component\Catalog\Builder;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Builder\EntityWithValuesBuilderInterface;
-use Pim\Component\Catalog\Manager\AttributeValuesResolverInterface;
 use Pim\Component\Catalog\Model\Association;
 use Pim\Component\Catalog\Model\AssociationTypeInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Component\Catalog\Model\Product;
 use Pim\Component\Catalog\Model\ProductInterface;
-use Pim\Component\Catalog\Model\ValueInterface;
 use Pim\Component\Catalog\ProductEvents;
 use Pim\Component\Catalog\Repository\AssociationTypeRepositoryInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
@@ -29,7 +27,6 @@ class ProductBuilderSpec extends ObjectBehavior
         FamilyRepositoryInterface $familyRepository,
         AssociationTypeRepositoryInterface $assocTypeRepository,
         EventDispatcherInterface $eventDispatcher,
-        AttributeValuesResolverInterface $valuesResolver,
         EntityWithValuesBuilderInterface $entityWithValuesBuilder
     ) {
         $entityConfig = [
@@ -42,7 +39,6 @@ class ProductBuilderSpec extends ObjectBehavior
             $familyRepository,
             $assocTypeRepository,
             $eventDispatcher,
-            $valuesResolver,
             $entityWithValuesBuilder,
             $entityConfig
         );
@@ -61,8 +57,7 @@ class ProductBuilderSpec extends ObjectBehavior
         $eventDispatcher,
         $entityWithValuesBuilder,
         FamilyInterface $tshirtFamily,
-        AttributeInterface $identifierAttribute,
-        ValueInterface $identifierValue
+        AttributeInterface $identifierAttribute
     ) {
         $attributeRepository->getIdentifier()->willReturn($identifierAttribute);
         $entityWithValuesBuilder->addOrReplaceValue(

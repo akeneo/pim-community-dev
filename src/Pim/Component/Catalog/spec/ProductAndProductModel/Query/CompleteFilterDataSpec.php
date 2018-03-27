@@ -55,7 +55,25 @@ class CompleteFilterDataSpec extends ObjectBehavior
 
     function it_has_complete_variant_product()
     {
-        $this->atLeastComplete()->shouldReturn([
+        $this->allIncomplete()->shouldReturn([
+            'ecommerce' => [
+                'en_US' => 1,
+            ],
+            'print' => [
+                'en_US' => 1,
+                'fr_FR' => 0,
+            ],
+            'tablet' => [
+                'en_US' => 1,
+                'fr_FR' => 1,
+                'de_DE' => 0,
+            ],
+        ]);
+    }
+
+    function it_has_incomplete_variant_product()
+    {
+        $this->allComplete()->shouldReturn([
             'ecommerce' => [
                 'en_US' => 0,
             ],
@@ -65,26 +83,8 @@ class CompleteFilterDataSpec extends ObjectBehavior
             ],
             'tablet' => [
                 'en_US' => 0,
-                'fr_FR' => 0,
-                'de_DE' => 1,
-            ],
-        ]);
-    }
-
-    function it_has_incomplete_variant_product()
-    {
-        $this->atLeastIncomplete()->shouldReturn([
-            'ecommerce' => [
-                'en_US' => 1,
-            ],
-            'print' => [
-                'en_US' => 1,
-                'fr_FR' => 0,
-            ],
-            'tablet' => [
-                'en_US' => 1,
-                'fr_FR' => 0,
-                'de_DE' => 1,
+                'fr_FR' => 1,
+                'de_DE' => 0,
             ],
         ]);
     }

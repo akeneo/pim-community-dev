@@ -49,8 +49,8 @@ class AkeneoElasticsearchExtension extends Extension
 
         foreach ($config['indexes'] as $index) {
             $configurationLoaderServiceName = sprintf(
-                'akeneo_elasticsearch.index_configuration.%s.files',
-                $index['index_name']
+                '%s.index_configuration.files',
+                $index['service_name']
             );
             $container->register($configurationLoaderServiceName, Loader::class)
                 ->setArguments([$index['configuration_files']]);
