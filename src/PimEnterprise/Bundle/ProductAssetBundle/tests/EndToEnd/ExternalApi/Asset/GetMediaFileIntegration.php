@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Bundle\ApiBundle\tests\EndToEnd\Controller\Media;
+namespace PimEnterprise\Bundle\ProductAssetBundle\tests\EndToEnd\ExternalApi\Asset;
 
 use Akeneo\Test\Integration\Configuration;
 use Pim\Bundle\ApiBundle\tests\integration\ApiTestCase;
