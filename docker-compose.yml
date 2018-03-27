@@ -6,10 +6,6 @@ services:
     environment:
       BEHAT_TMPDIR: '/srv/pim/var/cache/tmp'
       COMPOSER_HOME: '/home/docker/.composer'
-      PHP_IDE_CONFIG: 'serverName=pim-ce-cli'
-      PHP_XDEBUG_ENABLED: 0
-      PHP_XDEBUG_IDE_KEY: 'XDEBUG_IDE_KEY'
-      XDEBUG_CONFIG: 'remote_host=xxx.xxx.xxx.xxx'
     user: docker
     volumes:
       - ./:/srv/pim
@@ -35,8 +31,6 @@ services:
 
   selenium:
     image: selenium/standalone-firefox-debug:2.53.1-beryllium
-    ports:
-      - '5910:5900'
     volumes:
       - ./:/srv/pim:ro
     networks:
@@ -46,10 +40,6 @@ services:
     image: httpd:2.4
     depends_on:
       - fpm
-    environment:
-      PHP_IDE_CONFIG: 'serverName=pim-ce'
-    ports:
-      - '8080:80'
     volumes:
       - ./:/srv/pim:ro
       - ./docker/httpd.conf:/usr/local/apache2/conf/httpd.conf:ro
@@ -61,10 +51,6 @@ services:
     image: httpd:2.4
     depends_on:
       - fpm
-    environment:
-      PHP_IDE_CONFIG: 'serverName=pim-ce-behat'
-    ports:
-      - '8081:80'
     volumes:
       - ./:/srv/pim:ro
       - ./docker/httpd.conf:/usr/local/apache2/conf/httpd.conf:ro
@@ -79,8 +65,6 @@ services:
       MYSQL_USER: akeneo_pim
       MYSQL_PASSWORD: akeneo_pim
       MYSQL_DATABASE: akeneo_pim
-    ports:
-      - '33006:3306'
     networks:
       - akeneo
 
@@ -91,8 +75,6 @@ services:
       MYSQL_USER: akeneo_pim
       MYSQL_PASSWORD: akeneo_pim
       MYSQL_DATABASE: akeneo_pim
-    ports:
-      - '33007:3306'
     networks:
       - behat
 
@@ -101,8 +83,6 @@ services:
     environment:
       ES_JAVA_OPTS: '-Xms512m -Xmx512m'
       discovery.type: 'single-node'
-    ports:
-      - '9210:9200'
     networks:
       - akeneo
       - behat
