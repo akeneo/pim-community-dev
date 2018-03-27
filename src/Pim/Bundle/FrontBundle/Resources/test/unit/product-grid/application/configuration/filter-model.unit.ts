@@ -35,10 +35,6 @@ const attributeFetcher = {
   },
 };
 
-const fetcherRegistry = {
-  getFetcher: () => attributeFetcher,
-};
-
 const config = {
   property: {
     enabled: {
@@ -86,7 +82,7 @@ const moduleLoader = modulePath => {
   }
 };
 
-let filterProvider = new FilterProvider(config, fetcherRegistry, moduleLoader);
+let filterProvider = new FilterProvider(config, attributeFetcher, moduleLoader);
 
 describe('>>>APPLICATION --- config - filters', () => {
   test('It throw an exception for the given unknown property code', async () => {

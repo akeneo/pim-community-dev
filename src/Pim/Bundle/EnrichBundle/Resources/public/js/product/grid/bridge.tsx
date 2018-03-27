@@ -15,6 +15,7 @@ const render = (Component: any) => (DOMElement: HTMLElement) => {
   store.dispatch(uiLocaleChanged(userContext.get('uiLocale')));
   store.dispatch(updateChannels());
   store.dispatch(addFilter('enabled'));
+  store.dispatch(addFilter('auto_exposure'));
 
   return ReactDOM.render(
     <Provider store={store}>

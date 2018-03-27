@@ -24,9 +24,12 @@ export class Attribute implements AttributeInterface {
   readonly labels: {[locale: string]: string};
   readonly type: string;
 
-  private constructor({identifier, labels, type}: RawAttributeInterface) {
+  private constructor(rawAttribute: RawAttributeInterface) {
+    const {identifier, labels, type} = rawAttribute;
+
     if (undefined === identifier) {
-      throw new Error('Property identifier needs to be defined to create an attribute');
+      throw new Error(`Property identifier needs to be defined to create an attribute
+Given: ${JSON.stringify(rawAttribute)}`);
     }
 
     if (undefined === type) {

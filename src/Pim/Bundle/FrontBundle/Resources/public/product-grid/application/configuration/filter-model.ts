@@ -1,4 +1,3 @@
-const fetcherRegistry = require('pimenrich/js/fetcher/fetcher-registry');
 const requireContext = require('require-context');
 import Filter, {
   AttributeFilter,
@@ -11,6 +10,7 @@ import {Value} from 'pimfront/product-grid/domain/model/filter/value';
 import {BaseOperator as Operator} from 'pimfront/product-grid/domain/model/filter/operator';
 import {InvalidArgument} from 'pimfront/product-grid/domain/model/error';
 import {UnknownProperty, Missconfiguration} from 'pimfront/product-grid/application/configuration/error';
+import attributeFetcher, {AttributeFetcher} from 'pimfront/app/infrastructure/fetcher/attribute';
 
 interface PropertyFilterConfiguration {
   [property: string]: {
@@ -38,17 +38,21 @@ interface FilterConfiguration {
 
 export class FilterProvider {
   private configuration: FilterConfiguration;
-  private fetcherRegistry: any;
+  private attributeFetcher: AttributeFetcher;
   private requireContext: any;
 
-  private constructor(configuration: FilterConfiguration, fetcherRegistry: any, requireContext: any) {
+  private constructor(configuration: FilterConfiguration, attributeFetcher: AttributeFetcher, requireContext: any) {
     this.configuration = configuration;
-    this.fetcherRegistry = fetcherRegistry;
+    this.attributeFetcher = attributeFetcher;
     this.requireContext = requireContext;
   }
 
-  public static create(configuration: FilterConfiguration, fetcherRegistry: any, requireContext: any): FilterProvider {
-    return new FilterProvider(configuration, fetcherRegistry, requireContext);
+  public static create(
+    configuration: FilterConfiguration,
+    attributeFetcher: AttributeFetcher,
+    requireContext: any
+  ): FilterProvider {
+    return new FilterProvider(configuration, attributeFetcher, requireContext);
   }
 
   public async getEmptyFilter(code: string = ''): Promise<Filter> {
@@ -83,7 +87,7 @@ export class FilterProvider {
 
     let rawAttribute;
     try {
-      rawAttribute = await this.fetcherRegistry.getFetcher('attribute').fetch(code);
+      rawAttribute = await this.attributeFetcher.fetch(code);
     } catch (error) {
       throw new UnknownProperty(
         `The property "${code}" is neither an attribute filter nor a property filter. Did you registered it well in the requirejs configuration?`
@@ -157,7 +161,7 @@ config:
       );
     }
 
-    const rawAttribute = await this.fetcherRegistry.getFetcher('attribute').fetch(code);
+    const rawAttribute = await this.attributeFetcher.fetch(code);
 
     return Attribute.createFromAttribute(rawAttribute);
   }
@@ -209,4 +213,4 @@ Did you register well the value factory in your configuration?`);
   }
 }
 
-export default FilterProvider.create(__moduleConfig as FilterConfiguration, fetcherRegistry, requireContext);
+export default FilterProvider.create(__moduleConfig as FilterConfiguration, attributeFetcher, requireContext);

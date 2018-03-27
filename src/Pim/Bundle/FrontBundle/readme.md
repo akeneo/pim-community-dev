@@ -14,7 +14,7 @@
 - add option to test commands [DONE]
 - filter
     - models [DONE]
-    - views
+    - views [DONE]
 - https://github.com/bvaughn/react-virtualized/blob/master/docs/Table.md
 - https://reactjs.org/docs/thinking-in-react.html
 - sort
