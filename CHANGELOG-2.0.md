@@ -3,6 +3,7 @@
 ## Bug fixes
 
 - PIM-7240: Add subscriber to clear the cache between each job step batch
+- PIM-7257: Add missing translations in product grid
 - PIM-7241: Fix memory consumption issue when archiving an import file
 - PIM-7256: Add missing filters on product group grid
 - PIM-6945: Fix missing header elements on identifier attribute edit form
