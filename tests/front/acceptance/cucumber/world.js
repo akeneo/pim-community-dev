@@ -1,6 +1,6 @@
 const createUser = require('./factory/user');
 const puppeteer = require('puppeteer');
-const extensions = require(`${process.cwd()}/web/test_dist/extensions.json`);
+const extensions = require(`${process.cwd()}/web/js/extensions.json`);
 const fs = require('fs');
 const path = require('path');
 const os = require('os');

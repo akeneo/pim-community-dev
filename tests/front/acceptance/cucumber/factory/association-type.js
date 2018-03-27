@@ -21,7 +21,7 @@ function createLabels({
  * Example:
  *
  * const createAssociationType = require('../../factory/association-type');
- * createAssociationType('Similar', { en_AU: 'Simila })
+ * createAssociationType('Similar', { en_AU: 'Simila' })
  *
  * @param {String} code
  * @param {Object} locales
