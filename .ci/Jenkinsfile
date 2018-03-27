@@ -296,19 +296,19 @@ stage("Test") {
         )
     } finally {
         clearTemplateNames()
-        def uuid = UUID.randomUUID().toString()
-        podTemplate(label: "cleanup-" + uuid, containers: [
-            containerTemplate(name: "docker", ttyEnabled: true, alwaysPullImage: true, command: 'cat', image: "google/cloud-sdk:slim", resourceRequestCpu: '100m', resourceRequestMemory: '200Mi')
-        ]) {
-            node("cleanup-" + uuid) {
-                container("docker") {
-                    sh "gcloud -q container images delete eu.gcr.io/akeneo-ci/pim-community-dev:pull-request-${env.CHANGE_ID}-build-${env.BUILD_NUMBER}-ce"
-                    if (editions.contains("ee")) {
-                        sh "gcloud -q container images delete eu.gcr.io/akeneo-ci/pim-community-dev:pull-request-${env.CHANGE_ID}-build-${env.BUILD_NUMBER}-ee"
-                    }
-                }
-            }
-        }
+        // def uuid = UUID.randomUUID().toString()
+        // podTemplate(label: "cleanup-" + uuid, containers: [
+        //     containerTemplate(name: "docker", ttyEnabled: true, alwaysPullImage: true, command: 'cat', image: "google/cloud-sdk:slim", resourceRequestCpu: '100m', resourceRequestMemory: '200Mi')
+        // ]) {
+        //     node("cleanup-" + uuid) {
+        //         container("docker") {
+        //             sh "gcloud -q container images delete eu.gcr.io/akeneo-ci/pim-community-dev:pull-request-${env.CHANGE_ID}-build-${env.BUILD_NUMBER}-ce"
+        //             if (editions.contains("ee")) {
+        //                 sh "gcloud -q container images delete eu.gcr.io/akeneo-ci/pim-community-dev:pull-request-${env.CHANGE_ID}-build-${env.BUILD_NUMBER}-ee"
+        //             }
+        //         }
+        //     }
+        // }
 
         notifySlack(slackChannel);
     }
