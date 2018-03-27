@@ -3,6 +3,7 @@
 namespace Pim\Bundle\DataGridBundle\Extension\Formatter\Property\ProductValue;
 
 use Akeneo\Component\Localization\Presenter\PresenterInterface;
+use Oro\Bundle\DataGridBundle\Datasource\ResultRecordInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 
 /**
@@ -36,5 +37,20 @@ class DateProperty extends FieldProperty
         $result = !$value instanceof \DateTime ? $this->getBackendData($value) : $value;
 
         return $this->presenter->present($result, ['locale' => $this->translator->getLocale()]);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getRawValue(ResultRecordInterface $record)
+    {
+        try {
+            $value = $record->getValue($this->getOr(self::DATA_NAME_KEY, $this->get(self::NAME_KEY)));
+        } catch (\LogicException $e) {
+            // default value
+            $value = null;
+        }
+
+        return $value;
     }
 }
