@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\PimEnterprise\Component\Api\Updater;
+namespace spec\PimEnterprise\Component\ProductAsset\Updater\ExternalApi;
 
 use Akeneo\Component\StorageUtils\Exception\InvalidObjectException;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
