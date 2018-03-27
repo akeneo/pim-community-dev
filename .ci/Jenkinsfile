@@ -108,7 +108,7 @@ stage("Build") {
                         for (feature in features) {
                             sh "sed -i \"/paths/a\\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ -\\ ${feature}\" behat.yml"
                         }
-
+                        sh "gcloud config set gcloudignore/enabled false"
                         sh "gcloud container builds submit --tag eu.gcr.io/akeneo-ci/pim-community-dev:pull-request-${env.CHANGE_ID}-build-${env.BUILD_NUMBER}-ee ."
                     }
                 })
