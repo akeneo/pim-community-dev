@@ -72,10 +72,6 @@ class UpdateNormalizedProductDataSubscriber implements EventSubscriber
         foreach ($uow->getScheduledCollectionUpdates() as $entity) {
             $this->scheduleQueriesAfterUpdate($entity, $uow->getEntityChangeSet($entity));
         }
-
-        foreach ($uow->getScheduledEntityInsertions() as $entity) {
-            $this->scheduleQueriesAfterUpdate($entity, $uow->getEntityChangeSet($entity));
-        }
     }
 
     /**
