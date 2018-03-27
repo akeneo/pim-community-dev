@@ -1,3 +1,9 @@
+# 1.7.x
+
+## Bug fixes
+
+- PIM-7069: Fix Channel export regarding conversion_units output
+
 # 1.7.19 (2018-02-27)
 
 ## Improvements

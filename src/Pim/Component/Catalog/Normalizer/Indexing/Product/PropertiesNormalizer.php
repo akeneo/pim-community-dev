@@ -4,6 +4,7 @@ namespace Pim\Component\Catalog\Normalizer\Indexing\Product;
 
 use Pim\Component\Catalog\Model\EntityWithFamilyVariantInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Model\VariantProductInterface;
 use Pim\Component\Catalog\Normalizer\Standard\Product\PropertiesNormalizer as StandardPropertiesNormalizer;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\SerializerAwareInterface;
@@ -123,7 +124,7 @@ class PropertiesNormalizer implements NormalizerInterface, SerializerAwareInterf
     private function getUpdatedAt(ProductInterface $product): \Datetime
     {
         $date = $product->getUpdated();
-        if ($product->isVariant()) {
+        if ($product instanceof VariantProductInterface) {
             $dates = [$date];
             $parent = $product->getParent();
             while (null !== $parent) {
@@ -139,15 +140,15 @@ class PropertiesNormalizer implements NormalizerInterface, SerializerAwareInterf
 
 
     /**
-     * @param ProductInterface $product
+     * @param $product
      *
      * @return array
      */
-    private function getAncestors(ProductInterface $product): array
+    private function getAncestors($product): array
     {
         $ancestorsIds = [];
         $ancestorsCodes = [];
-        if ($product->isVariant()) {
+        if ($product instanceof EntityWithFamilyVariantInterface) {
             $ancestorsIds = $this->getAncestorsIds($product);
             $ancestorsCodes = $this->getAncestorsCodes($product);
         }

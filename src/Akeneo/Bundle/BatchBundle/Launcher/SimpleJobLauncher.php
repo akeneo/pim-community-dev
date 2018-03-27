@@ -4,15 +4,12 @@ declare(strict_types=1);
 
 namespace Akeneo\Bundle\BatchBundle\Launcher;
 
-use Akeneo\Component\Batch\Event\EventInterface;
-use Akeneo\Component\Batch\Event\JobExecutionEvent;
 use Akeneo\Component\Batch\Job\JobParametersFactory;
 use Akeneo\Component\Batch\Job\JobParametersValidator;
 use Akeneo\Component\Batch\Job\JobRegistry;
 use Akeneo\Component\Batch\Job\JobRepositoryInterface;
 use Akeneo\Component\Batch\Model\JobExecution;
 use Akeneo\Component\Batch\Model\JobInstance;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Process\PhpExecutableFinder;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
@@ -36,9 +33,6 @@ class SimpleJobLauncher implements JobLauncherInterface
     /** @var JobParametersValidator */
     protected $jobParametersValidator;
 
-    /** @var EventDispatcherInterface */
-    protected $eventDispatcher;
-
     /** @var string */
     protected $rootDir;
 
@@ -51,21 +45,19 @@ class SimpleJobLauncher implements JobLauncherInterface
     /**
      * Constructor
      *
-     * @param JobRepositoryInterface    $jobRepository
-     * @param JobParametersFactory      $jobParametersFactory
-     * @param JobRegistry               $jobRegistry
-     * @param JobParametersValidator    $jobParametersValidator
-     * @param EventDispatcherInterface  $eventDispatcher
-     * @param string                    $rootDir
-     * @param string                    $environment
-     * @param string                    $logDir
+     * @param JobRepositoryInterface $jobRepository
+     * @param JobParametersFactory   $jobParametersFactory
+     * @param JobRegistry            $jobRegistry
+     * @param JobParametersValidator $jobParametersValidator
+     * @param string                 $rootDir
+     * @param string                 $environment
+     * @param string                 $logDir
      */
     public function __construct(
         JobRepositoryInterface $jobRepository,
         JobParametersFactory $jobParametersFactory,
         JobRegistry $jobRegistry,
         JobParametersValidator $jobParametersValidator,
-        EventDispatcherInterface $eventDispatcher,
         $rootDir,
         $environment,
         $logDir
@@ -74,7 +66,6 @@ class SimpleJobLauncher implements JobLauncherInterface
         $this->jobParametersFactory = $jobParametersFactory;
         $this->jobRegistry = $jobRegistry;
         $this->jobParametersValidator = $jobParametersValidator;
-        $this->eventDispatcher = $eventDispatcher;
         $this->rootDir = $rootDir;
         $this->environment = $environment;
         $this->logDir = $logDir;
@@ -163,21 +154,7 @@ class SimpleJobLauncher implements JobLauncherInterface
         $jobExecution->setUser($user->getUsername());
         $this->jobRepository->updateJobExecution($jobExecution);
 
-        $this->dispatchJobExecutionEvent(EventInterface::JOB_EXECUTION_CREATED, $jobExecution);
-
         return $jobExecution;
-    }
-
-    /**
-     * Trigger event linked to JobExecution
-     *
-     * @param string       $eventName    Name of the event
-     * @param JobExecution $jobExecution Object to store job execution
-     */
-    private function dispatchJobExecutionEvent($eventName, JobExecution $jobExecution)
-    {
-        $event = new JobExecutionEvent($jobExecution);
-        $this->eventDispatcher->dispatch($eventName, $event);
     }
 
     /**

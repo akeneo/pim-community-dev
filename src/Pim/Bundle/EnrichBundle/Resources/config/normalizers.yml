@@ -95,7 +95,6 @@ services:
             - '@pim_catalog.product_models.image_as_label'
             - '@pim_enrich.doctrine.query.ascendant_categories'
             - '@pim_enrich.normalizer.incomplete_values'
-            - '@pim_user.context.user'
         tags:
             - { name: pim_internal_api_serializer.normalizer }
 

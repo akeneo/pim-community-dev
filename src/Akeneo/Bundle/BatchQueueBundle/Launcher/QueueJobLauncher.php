@@ -5,8 +5,6 @@ declare(strict_types=1);
 namespace Akeneo\Bundle\BatchQueueBundle\Launcher;
 
 use Akeneo\Bundle\BatchBundle\Launcher\JobLauncherInterface;
-use Akeneo\Component\Batch\Event\EventInterface;
-use Akeneo\Component\Batch\Event\JobExecutionEvent;
 use Akeneo\Component\Batch\Job\JobParametersFactory;
 use Akeneo\Component\Batch\Job\JobParametersValidator;
 use Akeneo\Component\Batch\Job\JobRegistry;
@@ -15,7 +13,6 @@ use Akeneo\Component\Batch\Model\JobExecution;
 use Akeneo\Component\Batch\Model\JobInstance;
 use Akeneo\Component\BatchQueue\Queue\JobExecutionMessage;
 use Akeneo\Component\BatchQueue\Queue\JobExecutionQueueInterface;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 
@@ -46,9 +43,6 @@ class QueueJobLauncher implements JobLauncherInterface
     /** @var string */
     private $environment;
 
-    /** @var EventDispatcherInterface */
-    private $eventDispatcher;
-
     /**
      * @param JobRepositoryInterface     $jobRepository
      * @param JobParametersFactory       $jobParametersFactory
@@ -56,7 +50,6 @@ class QueueJobLauncher implements JobLauncherInterface
      * @param JobParametersValidator     $jobParametersValidator
      * @param JobExecutionQueueInterface $queue
      * @param string                     $environment
-     * @param EventDispatcherInterface  $eventDispatcher
      */
     public function __construct(
         JobRepositoryInterface $jobRepository,
@@ -64,7 +57,6 @@ class QueueJobLauncher implements JobLauncherInterface
         JobRegistry $jobRegistry,
         JobParametersValidator $jobParametersValidator,
         JobExecutionQueueInterface $queue,
-        EventDispatcherInterface $eventDispatcher,
         string $environment
     ) {
         $this->jobRepository = $jobRepository;
@@ -72,7 +64,6 @@ class QueueJobLauncher implements JobLauncherInterface
         $this->jobRegistry = $jobRegistry;
         $this->jobParametersValidator = $jobParametersValidator;
         $this->queue = $queue;
-        $this->eventDispatcher = $eventDispatcher;
         $this->environment = $environment;
     }
 
@@ -131,21 +122,7 @@ class QueueJobLauncher implements JobLauncherInterface
         $jobExecution->setUser($user->getUsername());
         $this->jobRepository->updateJobExecution($jobExecution);
 
-        $this->dispatchJobExecutionEvent(EventInterface::JOB_EXECUTION_CREATED, $jobExecution);
-
         return $jobExecution;
-    }
-
-    /**
-     * Trigger event linked to JobExecution
-     *
-     * @param string       $eventName    Name of the event
-     * @param JobExecution $jobExecution Object to store job execution
-     */
-    private function dispatchJobExecutionEvent($eventName, JobExecution $jobExecution)
-    {
-        $event = new JobExecutionEvent($jobExecution);
-        $this->eventDispatcher->dispatch($eventName, $event);
     }
 
     /**

@@ -202,18 +202,6 @@ class FamilyController
         }
 
         $family = $this->getFamily($code);
-        if (!$family->getFamilyVariants()->isEmpty()) {
-            return new JsonResponse(
-                [
-                    'message' => sprintf(
-                        'Can not remove family "%s" because it is linked to family variants.',
-                        $family->getCode()
-                    )
-                ],
-                Response::HTTP_UNPROCESSABLE_ENTITY
-            );
-        }
-
         $this->remover->remove($family);
 
         return new JsonResponse(null, Response::HTTP_NO_CONTENT);

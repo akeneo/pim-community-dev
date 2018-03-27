@@ -2,15 +2,14 @@
 
 namespace spec\Pim\Component\Connector\Reader\File;
 
+use Akeneo\Component\Batch\Item\ItemReaderInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Connector\ArrayConverter\ArrayConverterInterface;
-use Pim\Component\Connector\Reader\File\ArrayReader;
-use Pim\Component\Connector\Reader\File\FileReaderInterface;
 
 class ArrayReaderSpec extends ObjectBehavior
 {
     function let(
-        FileReaderInterface $reader,
+        ItemReaderInterface $reader,
         ArrayConverterInterface $converter
     ) {
         $this->beConstructedWith($reader, $converter);
@@ -18,12 +17,22 @@ class ArrayReaderSpec extends ObjectBehavior
     
     function it_is_initializable()
     {
-        $this->shouldHaveType(ArrayReader::class);
+        $this->shouldHaveType('Pim\Component\Connector\Reader\File\ArrayReader');
     }
 
-    function it_is_a_file_reader()
+    function it_is_an_item_reader()
     {
-        $this->shouldHaveType(FileReaderInterface::class);
+        $this->shouldHaveType('Akeneo\Component\Batch\Item\ItemReaderInterface');
+    }
+
+    function it_is_step_execution_aware()
+    {
+        $this->shouldHaveType('Akeneo\Component\Batch\Step\StepExecutionAwareInterface');
+    }
+
+    function it_is_flushable()
+    {
+        $this->shouldHaveType('Akeneo\Component\Batch\Item\FlushableInterface');
     }
 
     function it_returns_null_with_no_elements(

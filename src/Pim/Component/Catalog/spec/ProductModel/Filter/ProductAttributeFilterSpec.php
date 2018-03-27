@@ -56,8 +56,6 @@ class ProductAttributeFilterSpec extends ObjectBehavior
 
         $productRepository->findOneByIdentifier('tshirt')->willReturn($product);
 
-        $product->isVariant()->willReturn(false);
-
         $expected = [
             'identifier' => 'tshirt',
             'family' => 'Summer Tshirt',
@@ -148,8 +146,6 @@ class ProductAttributeFilterSpec extends ObjectBehavior
         $weight->getCode()->willReturn('weight');
         $description->getCode()->willReturn('description');
         $color->getCode()->willReturn('color');
-
-        $product->isVariant()->willReturn(false);
 
         $expected = [
             'identifier' => 'tshirt',
@@ -267,7 +263,6 @@ class ProductAttributeFilterSpec extends ObjectBehavior
         $attributes->toArray()->willReturn([$sku, $euShoesSize]);
 
         $axes->toArray()->willReturn([$weight]);
-        $product->isVariant()->willReturn(false);
 
         $sku->getCode()->willReturn('sku');
         $weight->getCode()->willReturn('weight');

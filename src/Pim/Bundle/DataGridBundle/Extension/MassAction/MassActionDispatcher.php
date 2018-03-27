@@ -40,27 +40,27 @@ class MassActionDispatcher
     protected $parametersParser;
 
     /** @var array */
-    protected $supportedGridNames;
+    protected $gridsWithoutMassActionRepository;
 
     /**
      * @param MassActionHandlerRegistry  $handlerRegistry
      * @param ManagerInterface           $manager
      * @param RequestParameters          $requestParams
      * @param MassActionParametersParser $parametersParser
-     * @param array                      $supportedGridNames
+     * @param array                      $gridsWithoutMassActionRepository
      */
     public function __construct(
         MassActionHandlerRegistry $handlerRegistry,
         ManagerInterface $manager,
         RequestParameters $requestParams,
         MassActionParametersParser $parametersParser,
-        array $supportedGridNames
+        array $gridsWithoutMassActionRepository
     ) {
         $this->handlerRegistry = $handlerRegistry;
         $this->manager = $manager;
         $this->requestParams = $requestParams;
         $this->parametersParser = $parametersParser;
-        $this->supportedGridNames = $supportedGridNames;
+        $this->gridsWithoutMassActionRepository = $gridsWithoutMassActionRepository;
     }
 
     /**
@@ -157,7 +157,7 @@ class MassActionDispatcher
         }
 
         $datasource = $datagrid->getDatasource();
-        if (in_array($parameters['gridName'], $this->supportedGridNames)) {
+        if ($datasource instanceof ProductDatasource) {
             $qb = $datasource->getProductQueryBuilder();
         }
 

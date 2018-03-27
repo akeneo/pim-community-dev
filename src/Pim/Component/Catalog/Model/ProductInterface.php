@@ -24,8 +24,7 @@ interface ProductInterface extends
     CommentSubjectInterface,
     ReferableInterface,
     CategoryAwareInterface,
-    EntityWithFamilyInterface,
-    EntityWithFamilyVariantInterface
+    EntityWithFamilyInterface
 {
     /**
      * Get the ID of the product
@@ -271,16 +270,4 @@ interface ProductInterface extends
      * @param $data Collection
      */
     public function setUniqueData(Collection $data): void;
-
-    /**
-     * @return bool
-     */
-    public function isVariant(): bool;
-
-    /**
-     * Return the categories for a variation
-     *
-     * @return Collection
-     */
-    public function getCategoriesForVariation(): Collection;
 }

@@ -228,6 +228,7 @@ pim_enrich:
         update_successful: Modelo de producto actualizado exitosamente. La integridad de sus productos variantes se recalculará.
         update_failed: El modelo de producto no pudo ser actualizado.
         field_not_ready: "El modelo de producto no puede ser guardado en el momento. Los siguientes campos no están listos: {{ fields }}"
+      variant_axis: Eje variante
       add_child:
         create: Añadir nuevo
         cancel: Cancelar
@@ -331,6 +332,7 @@ pim_enrich:
         deletion_failed: No se pudo eliminar el grupo.
         update_successful: El grupo se ha actualizado correctamente.
         update_failed: El grupo no puede ser actualizado.
+        field_not_ready: "El grupo no puede ser guardado en este momento. Los siguientes campos no están listos: {{ fields }}"
       btn:
         save: Guardar
       meta:
@@ -350,7 +352,13 @@ pim_enrich:
         update_successful: El perfil de trabajo ha sido actualizado exitosamente.
     attribute:
       info:
+        deletion_successful: Atributo exitosamente borrado.
         deletion_failed: No se ha podido eliminar el atributo.
+        update_successful: Atributo exitosamente actualizado.
+        update_failed: El atributo no pudo ser actualizado.
+        create_successful: Atributo creado exitosamente.
+        create_failed: El atributo no pudo ser creado.
+        field_not_ready: "El atributo no puede ser guardado ahora. No están listos los siguientes campos: {{ fields }}"
       scopable: Scopable
       type:
         pim_catalog_identifier: Identificador
@@ -374,17 +382,22 @@ pim_enrich:
       title: atributo
     attribute_group:
       info:
+        update_failed: El grupo del atributo no pudo ser actualizado
         update_successful: Grupo de atributos actualizado correctamente
     api_connection:
       create_popin:
         title: Crear
+      message:
+        created: Conexión API creada exitosamente
   confirmation:
     leave: '¿Está seguro que desea salir de esta página?'
     discard_changes: Perderá los cambios realizados sobre {{ entity }} si abandona esta página.
     delete_item: Confirmar la eliminación
+    remove_item: Confirme eliminación
     remove: Quitar
     delete:
       attribute: '¿Está usted seguro que desea eliminar el atributo de este producto?'
+      attribute_group: '¿Está seguro que desea eliminar el atributo {{ attribute }} de este grupo de atributos?'
       product_model: Confirmar la eliminación
   info:
     not_applicable: N / A
@@ -393,6 +406,7 @@ pim_enrich:
   error:
     upload: Un error ha ocurrido durante la subida del fichero
   alert:
+    not_allowed: Prohibido. Usted no tiene permitido acceder a esta página
     error_occured: Un error ha ocurrido durante la carga de esta página
   form:
     required: (obligatorio)
@@ -891,6 +905,8 @@ pim_enrich:
           label: Cambiar el estado
           description: Los productos seleccionados serán habilitados o inhabilitados.
           field: Para habilitar
+        edit_common:
+          label: Editar atributos
         change_family:
           description: La familia de los productos seleccionados se cambiará a la familia elegida
           field: Familia
@@ -912,6 +928,8 @@ pim_enrich:
           label: Confirmar
 pim_enrich.error:
   exception.title: Oups! Un error {{ status_code }} ha ocurrido...
+  http:
+    403: Prohibido. Usted no tiene permitido acceder a esta página
 page_title:
   oro_default: Cartelera
   pim_enrich_attributegroup_index: Grupos de atributos
