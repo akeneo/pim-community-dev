@@ -36,42 +36,44 @@ function (
             fetcherRegistry.getFetcher('locale').clear();
             fetcherRegistry.getFetcher('measure').clear();
 
-            return fetcherRegistry.getFetcher('attribute').fetch(route.params.code, {cached: false})
-                .then((attribute) => {
-                    var label = _.escape(
-                        i18n.getLabel(
-                            attribute.labels,
-                            UserContext.get('catalogLocale'),
-                            attribute.code
-                        )
-                    );
+            return fetcherRegistry.getFetcher('attribute').fetch(route.params.code, {
+                cached: false,
+                apply_filters: false
+            }).then((attribute) => {
+                var label = _.escape(
+                    i18n.getLabel(
+                        attribute.labels,
+                        UserContext.get('catalogLocale'),
+                        attribute.code
+                    )
+                );
 
-                    PageTitle.set({'attribute.label': label});
+                PageTitle.set({'attribute.label': label});
 
-                    var formName = 'pim_catalog_identifier' === attribute.type ?
-                        'pim-attribute-identifier-edit-form' :
-                        'pim-attribute-edit-form';
+                var formName = 'pim_catalog_identifier' === attribute.type ?
+                    'pim-attribute-identifier-edit-form' :
+                    'pim-attribute-edit-form';
 
-                    return FormBuilder.getFormMeta(formName)
-                        .then(FormBuilder.buildForm)
-                        .then((form) => {
-                            form.setType(attribute.type);
+                return FormBuilder.getFormMeta(formName)
+                    .then(FormBuilder.buildForm)
+                    .then((form) => {
+                        form.setType(attribute.type);
 
-                            return form.configure().then(() => {
-                                return form;
-                            });
-                        })
-                        .then((form) => {
-                            this.on('pim:controller:can-leave', function (event) {
-                                form.trigger('pim_enrich:form:can-leave', event);
-                            });
-                            form.setData(attribute);
-                            form.trigger('pim_enrich:form:entity:post_fetch', attribute);
-                            form.setElement(this.$el).render();
-
+                        return form.configure().then(() => {
                             return form;
                         });
-                });
+                    })
+                    .then((form) => {
+                        this.on('pim:controller:can-leave', function (event) {
+                            form.trigger('pim_enrich:form:can-leave', event);
+                        });
+                        form.setData(attribute);
+                        form.trigger('pim_enrich:form:entity:post_fetch', attribute);
+                        form.setElement(this.$el).render();
+
+                        return form;
+                    });
+            });
         }
     });
 });

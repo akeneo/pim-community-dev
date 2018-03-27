@@ -191,16 +191,21 @@ class AttributeController
     /**
      * Get attribute by identifier
      *
-     * @param string $identifier
+     * @param Request $request
+     * @param string  $identifier
+     *
+     * @throws NotFoundHttpException
      *
      * @return JsonResponse
      */
-    public function getAction($identifier)
+    public function getAction(Request $request, $identifier)
     {
         $attribute = $this->attributeRepository->findOneByIdentifier($identifier);
 
-        $attribute = $this->attributeFilter
-            ->filterObject($attribute, 'pim.internal_api.attribute.view') ? null : $attribute;
+        if ($request->query->getBoolean('apply_filters', true)) {
+            $attribute = $this->attributeFilter
+                ->filterObject($attribute, 'pim.internal_api.attribute.view') ? null : $attribute;
+        }
 
         if (null === $attribute) {
             throw new NotFoundHttpException(sprintf('Attribute with code "%s" not found', $identifier));
