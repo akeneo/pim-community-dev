@@ -3,7 +3,6 @@
 namespace Pim\Bundle\EnrichBundle\Controller\Rest;
 
 use Pim\Bundle\CatalogBundle\Resolver\FQCNResolver;
-use Pim\Bundle\UserBundle\Context\UserContext;
 use Pim\Bundle\VersioningBundle\Repository\VersionRepositoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -26,25 +25,19 @@ class VersioningController
     /** @var NormalizerInterface */
     protected $normalizer;
 
-    /** @var UserContext */
-    protected $userContext;
-
     /**
      * @param VersionRepositoryInterface $versionRepository
      * @param FQCNResolver               $FQCNResolver
      * @param NormalizerInterface        $normalizer
-     * @param UserContext                $userContext
      */
     public function __construct(
         VersionRepositoryInterface $versionRepository,
         FQCNResolver $FQCNResolver,
-        NormalizerInterface $normalizer,
-        UserContext $userContext
+        NormalizerInterface $normalizer
     ) {
         $this->versionRepository = $versionRepository;
         $this->FQCNResolver = $FQCNResolver;
         $this->normalizer = $normalizer;
-        $this->userContext = $userContext;
     }
 
     /**
@@ -60,8 +53,7 @@ class VersioningController
         return new JsonResponse(
             $this->normalizer->normalize(
                 $this->versionRepository->getLogEntries($this->FQCNResolver->getFQCN($entityType), $entityId),
-                'internal_api',
-                ['timezone' => $this->userContext->getUserTimezone()]
+                'internal_api'
             )
         );
     }

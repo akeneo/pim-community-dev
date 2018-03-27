@@ -39,11 +39,6 @@ jobs:
         alias:     edit_common_attributes
         label:     Mass edit product attributes
         type:      mass_edit
-    add_attribute_value:
-        connector: Akeneo Mass Edit Connector
-        alias:     add_attribute_value
-        label:     Mass add attribute value
-        type:      mass_edit
     set_attribute_requirements:
         connector: Akeneo Mass Edit Connector
         alias:     set_attribute_requirements
@@ -54,11 +49,6 @@ jobs:
         alias:     add_to_existing_product_model
         label:     Add to existing product model
         type:      mass_edit
-    delete_products_and_product_models:
-        connector: Akeneo Mass Edit Connector
-        alias:     delete_products_and_product_models
-        label:     Mass delete products
-        type:      mass_delete
     csv_product_quick_export:
         connector: Akeneo CSV Connector
         alias: csv_product_quick_export
@@ -101,12 +91,6 @@ jobs:
             enclosure:  '"'
             withHeader: true
             with_media: true
-            filters:
-                data: []
-                structure:
-                    scope: ecommerce
-                    locales:
-                        - en_US
     xlsx_product_grid_context_quick_export:
         connector: Akeneo XLSX Connector
         alias: xlsx_product_grid_context_quick_export

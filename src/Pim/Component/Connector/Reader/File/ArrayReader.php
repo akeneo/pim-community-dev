@@ -2,7 +2,10 @@
 
 namespace Pim\Component\Connector\Reader\File;
 
+use Akeneo\Component\Batch\Item\FlushableInterface;
+use Akeneo\Component\Batch\Item\ItemReaderInterface;
 use Akeneo\Component\Batch\Model\StepExecution;
+use Akeneo\Component\Batch\Step\StepExecutionAwareInterface;
 use Pim\Component\Connector\ArrayConverter\ArrayConverterInterface;
 
 /**
@@ -23,9 +26,9 @@ use Pim\Component\Connector\ArrayConverter\ArrayConverterInterface;
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ArrayReader implements FileReaderInterface
+class ArrayReader implements ItemReaderInterface, StepExecutionAwareInterface, FlushableInterface
 {
-    /** @var FileReaderInterface */
+    /** @var ItemReaderInterface */
     protected $reader;
 
     /** @var ArrayConverterInterface */
@@ -35,11 +38,11 @@ class ArrayReader implements FileReaderInterface
     protected $remainingItems;
 
     /**
-     * @param FileReaderInterface     $reader
+     * @param ItemReaderInterface     $reader
      * @param ArrayConverterInterface $converter
      */
     public function __construct(
-        FileReaderInterface $reader,
+        ItemReaderInterface $reader,
         ArrayConverterInterface $converter
     ) {
         $this->reader = $reader;
@@ -74,7 +77,9 @@ class ArrayReader implements FileReaderInterface
      */
     public function setStepExecution(StepExecution $stepExecution)
     {
-        $this->reader->setStepExecution($stepExecution);
+        if ($this->reader instanceof StepExecutionAwareInterface) {
+            $this->reader->setStepExecution($stepExecution);
+        }
     }
 
     /**
@@ -82,6 +87,8 @@ class ArrayReader implements FileReaderInterface
      */
     public function flush()
     {
-        $this->reader->flush();
+        if ($this->reader instanceof FlushableInterface) {
+            $this->reader->flush();
+        }
     }
 }

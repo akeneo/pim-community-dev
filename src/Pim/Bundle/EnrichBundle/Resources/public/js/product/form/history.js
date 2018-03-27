@@ -152,6 +152,10 @@ define(
                     return FetcherRegistry.getFetcher('product-model-history');
                 }
 
+                if (null !== entity.meta.family_variant) {
+                    return FetcherRegistry.getFetcher('variant-product-history');
+                }
+
                 return FetcherRegistry.getFetcher('product-history');
             },
 

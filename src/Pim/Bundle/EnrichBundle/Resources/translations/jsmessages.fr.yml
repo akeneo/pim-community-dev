@@ -6,7 +6,6 @@ confirmation:
     attribute: Êtes-vous sûr(e) de vouloir supprimer cet attribut ?
     attribute_group: Êtes-vous sûr(e) de vouloir supprimer ce groupe d'attributs ?
     family: Êtes-vous sûr(e) de que vouloir supprimer cette famille ?
-    family_variant: Êtes-vous sûr(e) de vouloir supprimer la variante de famille ?
     product: Êtes-vous sûr(e) de que vouloir supprimer ce produit ?
     product_model: Êtes-vous sûr de que vouloir supprimer ce modèle de produit ? Tous ses enfants, modèles de produit et de variantes de produits seront également supprimés.
     channel: Êtes-vous sûr(e) de que vouloir supprimer ce canal ?
@@ -18,7 +17,6 @@ confirmation:
     role: Êtes-vous sûr(e) de vouloir supprimer ce rôle ?
     job_instance: Êtes-vous sûr(e) de vouloir supprimer cette opération ?
     api_connection: Êtes-vous certain(e) de vouloir révoquer cette connexion API ? Toutes les requêtes API renverront ensuite une erreur.
-    products_and_product_models: Êtes-vous sûr(e) de vouloir supprimer les produits et modèles de produits sélectionnés ? Tous les enfants des modèles de produits seront aussi supprimés.
 pim_datagrid:
   mass_action_group:
     bulk_actions:
@@ -48,8 +46,6 @@ flash:
     removed: Groupe d'attributs supprimé avec succès
   family:
     removed: Famille supprimée avec succès
-  family_variant:
-    removed: La variante de famille a été supprimée
   product:
     removed: Produit supprimé avec succès
   product_model:
@@ -114,7 +110,6 @@ Classify the product: Classer le produit
 Delete the product: Supprimer le produit
 Change status: Changer le statut
 Toggle status: Changer le statut
-mass_delete: Suppression massive
 pim:
   grid:
     mass_action:
@@ -869,8 +864,6 @@ pim_enrich:
             ">=": Complet sur au moins une locale sélectionnée
             "GREATER OR EQUALS THAN ON ALL LOCALES": Complet sur toutes les locales sélectionnées
             LOWER THAN ON ALL LOCALES: Incomplet sur toutes les locales sélectionnées
-            AT LEAST COMPLETE: Au moins un produit enfant complet sur une locale sélectionnée
-            ALL COMPLETE: Tous les produits enfants complets sur toutes les locales sélectionnées
           empty_selection: Sélectionnez une famille
         category:
           title: Catégorie
@@ -1038,13 +1031,9 @@ pim_enrich:
           description: Les produits sélectionnés vont être activés ou désactivés.
           field: Pour activer
         edit_common:
-          label: Modifier les valeurs d’attributs
-          label_count: "{1}Editer les valeurs d'attributs d'<span class=\"AknFullPage-title--highlight\">1 product</span>|] 1, Inf [Editer les valeurs d'attributs de <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} produits</span>"
+          label: Modifier des attributs
+          label_count: "{1}Editer les attributs d'<span class=\"AknFullPage-title--highlight\">1 product</span>|] 1, Inf [Editer les attributs de <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} produits</span>"
           description: Seuls les attributs appartenant aux familles des produits sélectionnés seront édités avec les données suivantes pour la locale {{ locale }} et le canal de {{ scope }}.
-        add_attribute_value:
-          label: Ajouter des valeurs d’attributs
-          label_count: "{1}Ajouter des valeurs d'attributs d'<span class=\"AknFullPage-title--highlight\">1 product</span>|] 1, Inf [Ajouter des valeurs d'attributs de <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} produits</span>"
-          description: Seuls les attributs à valeur multiple appartenant aux famille des produits seront édités avec les données suivantes pour la locale {{ locale }} et le canal {{ scope }}. Les valeurs d'attributes sont ajoutées, les précédentes valeurs sont conservées.
         change_family:
           label: Changer de famille
           label_count: "{1}Changer la famille d'<span class=\"AknFullPage-title--highlight\">1 produit</span>|] 1, Inf [Changer la famille de <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} produits</span>"

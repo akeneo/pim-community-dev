@@ -7,6 +7,7 @@ use Akeneo\Component\Batch\Item\DataInvalidItem;
 use Pim\Bundle\EnrichBundle\Connector\Processor\AbstractProcessor;
 use Pim\Component\Catalog\EntityWithFamilyVariant\AddParent;
 use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Model\VariantProductInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
@@ -42,7 +43,7 @@ class AddToExistingProductModelProcessor extends AbstractProcessor
         $actions = $this->getConfiguredActions();
         $parentProductModelCode = $actions[0]['value'];
 
-        if ($product->isVariant()) {
+        if ($product instanceof VariantProductInterface) {
             $this->stepExecution->incrementSummaryInfo('skipped_products');
             $this->stepExecution->addWarning(
                 'The parent of a variant product cannot be changed',

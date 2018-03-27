@@ -34,7 +34,7 @@ class ResetIndexesCommandIntegration extends TestCase
 
     private function assertIndexesNotEmpty(): void
     {
-        $esClients = $this->getEsClients();
+        $esClients = $this->get('akeneo_elasticsearch.registry.clients')->getClients();
 
         foreach ($esClients as $esClient) {
             $allDocuments = $esClient->search('pim_catalog_product', [
@@ -56,7 +56,7 @@ class ResetIndexesCommandIntegration extends TestCase
 
     private function assertIndexesEmpty(): void
     {
-        $esClients = $this->getEsClients();
+        $esClients = $this->get('akeneo_elasticsearch.registry.clients')->getClients();
 
         foreach ($esClients as $esClient) {
             $allDocuments = $esClient->search('pim_catalog_product', [
@@ -66,14 +66,5 @@ class ResetIndexesCommandIntegration extends TestCase
             ]);
             $this->assertEquals(0, count($allDocuments['hits']['hits']));
         }
-    }
-
-    private function getEsClients(): array
-    {
-        return [
-            $this->get('akeneo_elasticsearch.client.product'),
-            $this->get('akeneo_elasticsearch.client.product_model'),
-            $this->get('akeneo_elasticsearch.client.product_and_product_model'),
-        ];
     }
 }

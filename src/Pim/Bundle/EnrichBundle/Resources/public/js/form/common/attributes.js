@@ -236,8 +236,6 @@ define(
                             }
                             this.renderExtensions();
                             this.delegateEvents();
-
-                            _.defer(this.sticky.bind(this));
                         });
                     });
 
@@ -529,22 +527,6 @@ define(
                 toFillFieldProvider.clear();
 
                 this.getRoot().trigger('pim_enrich:form:to-fill:cleared')
-            },
-
-            /**
-             * Make the header and section header sticky
-             */
-            sticky: function () {
-                const makeItSticky = (position) => (element) => {
-                    element.style.position = 'sticky';
-                    element.style.top = `${position}px`;
-                };
-
-                const header = this.getZone('header');
-                makeItSticky(this.getRoot().headerSize())(header);
-
-                const sectionTitles = this.el.querySelectorAll('.AknSubsection-title');
-                _.each(sectionTitles, makeItSticky(header.offsetHeight + this.getRoot().headerSize()));
             }
         });
     }

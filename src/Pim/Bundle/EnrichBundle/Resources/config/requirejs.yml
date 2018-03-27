@@ -13,8 +13,6 @@ config:
             exports: Translator
 
     config:
-        pim/router:
-            indexRoute: pim_dashboard_index
         # Forwarded events from mediator
         pim/form/common/edit-form:
             forwarded-events:
@@ -44,8 +42,6 @@ config:
             url: pim_enrich_channel_rest_remove
         pim/remover/family:
             url: pim_enrich_family_rest_remove
-        pim/remover/family-variant:
-            url: pim_enrich_family_variant_rest_remove
         pim/remover/group:
             url: pim_enrich_group_rest_remove
         pim/remover/product:
@@ -179,6 +175,11 @@ config:
                     options:
                         urls:
                             get: pim_enrich_product_history_rest_get
+                variant-product-history:
+                    module: pim/base-fetcher
+                    options:
+                        urls:
+                            get: pim_enrich_variant_product_history_rest_get
                 product:
                     module: pim/product-fetcher
                     options:
@@ -512,6 +513,7 @@ config:
         translator: pimenrich/js/translator
         routing: pimenrich/js/fos-routing-wrapper
         pim/datagrid-view-fetcher: pimdatagrid/js/fetcher/datagrid-view-fetcher
+        pim-router: pimenrich/js/router
         jquery-setup: pimui/js/jquery-setup.js
 
         # Controllers
@@ -594,7 +596,6 @@ config:
         pim/remover/group-type:          pimenrich/js/remover/group-type-remover
         pim/remover/channel:             pimenrich/js/remover/channel
         pim/remover/family:              pimenrich/js/remover/family
-        pim/remover/family-variant:      pimenrich/js/remover/family-variant
         pim/remover/product:             pimenrich/js/remover/product-remover
         pim/remover/product-model:       pimenrich/js/remover/product-model-remover
         pim/remover/group:               pimenrich/js/remover/group-remover
@@ -666,7 +667,6 @@ config:
         pim/family-variant-edit-form/edit:                                  pimenrich/js/family-variant/form/edit
         pim/family-variant-edit-form/attribute-set:                         pimenrich/js/family-variant/form/attribute-set
         pim/family-variant-edit-form/save:                                  pimenrich/js/family-variant/form/save
-        pim/family-variant-edit-form/delete:                                pimenrich/js/family-variant/form/delete
 
         # Exports
         pim/job-instance-edit-form/save:        pimenrich/js/job/common/edit/save
@@ -801,7 +801,6 @@ config:
         pim/mass-edit-form/product/associate:                         pimenrich/js/mass-edit/form/product/associate
         pim/mass-edit-form/product/change-status:                     pimenrich/js/mass-edit/form/product/change-status
         pim/mass-edit-form/product/edit-common-attributes:            pimenrich/js/mass-edit/form/product/edit-common-attributes
-        pim/mass-edit-form/product/add-attribute-values:              pimenrich/js/mass-edit/form/product/edit-common-attributes
         pim/mass-edit-form/product/add-to-existing-product-model:     pimenrich/js/mass-edit/form/product/add-to-existing-product-model
         pim/mass-edit-form/product/change-family:                     pimenrich/js/mass-edit/form/product/change-family
         pim/mass-edit-form/product/add-to-group:                      pimenrich/js/mass-edit/form/product/add-to-group

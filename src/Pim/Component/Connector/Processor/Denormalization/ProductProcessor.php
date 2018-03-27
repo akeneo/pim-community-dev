@@ -11,6 +11,7 @@ use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Pim\Component\Catalog\Comparator\Filter\FilterInterface;
 use Pim\Component\Catalog\EntityWithFamilyVariant\AddParent;
 use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Model\VariantProductInterface;
 use Pim\Component\Catalog\ProductModel\Filter\AttributeFilterInterface;
 use Pim\Component\Connector\Processor\Denormalization\Product\FindProductToImport;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
@@ -108,7 +109,7 @@ class ProductProcessor extends AbstractProcessor implements ItemProcessorInterfa
             $familyCode = $this->getFamilyCode($item);
             $filteredItem = $this->filterItemData($item);
 
-            $product = $this->findProductToImport->fromFlatData($identifier, $familyCode);
+            $product = $this->findProductToImport->fromFlatData($identifier, $familyCode, $parentProductModelCode);
         } catch (AccessDeniedException $e) {
             $this->skipItemWithMessage($item, $e->getMessage(), $e);
         }
@@ -130,7 +131,7 @@ class ProductProcessor extends AbstractProcessor implements ItemProcessorInterfa
             }
         }
 
-        if ('' !== $parentProductModelCode && !$product->isVariant()) {
+        if ('' !== $parentProductModelCode && !$product instanceof VariantProductInterface) {
             try {
                 $product = $this->addParent->to($product, $parentProductModelCode);
             } catch (\InvalidArgumentException $e) {

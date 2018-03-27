@@ -98,17 +98,6 @@ define(
                         messenger.notify('error', error.message);
                     }
                 })
-            },
-
-            /**
-             * Get header size of the form
-             *
-             * @return {number}
-             */
-            headerSize: function () {
-                const header = this.el.querySelector('header.navigation');
-
-                return null !== header ? header.offsetHeight : 0;
             }
         });
     }

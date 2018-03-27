@@ -22,7 +22,6 @@ class User implements UserInterface
     const ROLE_DEFAULT = 'ROLE_USER';
     const GROUP_DEFAULT = 'All';
     const ROLE_ANONYMOUS = 'IS_AUTHENTICATED_ANONYMOUSLY';
-    const DEFAULT_TIMEZONE = 'UTC';
 
     /** @var int|string */
     protected $id;
@@ -141,19 +140,12 @@ class User implements UserInterface
     /** @var array */
     protected $productGridFilters = [];
 
-    /** @var string */
-    protected $phone;
-
-    /** @var string */
-    protected $timezone;
-
     public function __construct()
     {
         $this->salt = base_convert(sha1(uniqid(mt_rand(), true)), 16, 36);
         $this->roles = new ArrayCollection();
         $this->groups = new ArrayCollection();
         $this->defaultGridViews = new ArrayCollection();
-        $this->timezone = self::DEFAULT_TIMEZONE;
     }
 
     /**
@@ -1028,42 +1020,6 @@ class User implements UserInterface
         if (null !== $defaultGridView) {
             $this->defaultGridViews->set($alias, $defaultGridView);
         }
-
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getPhone(): ?string
-    {
-        return $this->phone;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setPhone(?string $phone): UserInterface
-    {
-        $this->phone = $phone;
-
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getTimezone(): string
-    {
-        return $this->timezone;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setTimezone(string $timezone): UserInterface
-    {
-        $this->timezone = $timezone;
 
         return $this;
     }

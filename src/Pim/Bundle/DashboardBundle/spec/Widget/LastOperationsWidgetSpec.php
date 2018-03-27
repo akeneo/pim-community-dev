@@ -69,9 +69,8 @@ class LastOperationsWidgetSpec extends ObjectBehavior
         $tokenStorage->getToken()->willReturn($token);
         $token->getUser()->willReturn($user);
         $user->getUiLocale()->willReturn($locale);
-        $user->getTimezone()->willReturn('Pacific/Kiritimati');
         $locale->getCode()->willReturn('fr_FR');
-        $presenter->present($date, ['locale' => 'fr_FR', 'timezone' => 'Pacific/Kiritimati'])->willReturn('01/12/2015');
+        $presenter->present($date, ['locale' => 'fr_FR'])->willReturn('01/12/2015');
 
         $operation['statusLabel'] = 'Completed';
         $operation['date'] = '01/12/2015';

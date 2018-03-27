@@ -8,7 +8,6 @@ use Pim\Component\Catalog\Model\ProductModelInterface;
 use Pim\Component\Catalog\Model\ValueInterface;
 use Pim\Component\Catalog\Repository\ProductModelRepositoryInterface;
 use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
-use Pim\Component\Catalog\Repository\VariantProductRepositoryInterface;
 
 /**
  * For a given ProductModel, this class retrieves the ValueInterface of its attribute as image,
@@ -28,12 +27,12 @@ class ImageAsLabel
     private $productRepository;
 
     /**
-     * @param ProductModelRepositoryInterface   $productModelRepository
-     * @param VariantProductRepositoryInterface $productRepository
+     * @param ProductModelRepositoryInterface $productModelRepository
+     * @param ProductRepositoryInterface      $productRepository
      */
     public function __construct(
         ProductModelRepositoryInterface $productModelRepository,
-        VariantProductRepositoryInterface $productRepository
+        ProductRepositoryInterface $productRepository
     ) {
         $this->productModelRepository = $productModelRepository;
         $this->productRepository = $productRepository;
@@ -69,21 +68,25 @@ class ImageAsLabel
         do {
             $modelChild = current($this->productModelRepository->findBy(
                 ['parent' => $entity],
-                ['created' => 'ASC', 'code' => 'ASC'],
+                ['created' => 'DESC', 'code' => 'ASC'],
                 1
             ));
 
-            $productChild = $this->productRepository->findLastCreatedByParent($entity);
+            $productChild = current($this->productRepository->findBy(
+                ['parent' => $entity],
+                ['created' => 'DESC', 'identifier' => 'ASC'],
+                1
+            ));
 
             if (false !== $modelChild) {
                 $entity = $modelChild;
             }
 
-            if (null !== $productChild) {
+            if (false !== $productChild) {
                 $entity = $productChild;
             }
 
-            if (false === $modelChild && null === $productChild) {
+            if (false === $modelChild && false === $productChild) {
                 return null;
             }
 

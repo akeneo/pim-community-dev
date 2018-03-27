@@ -2,7 +2,7 @@ define(
     [
         'underscore',
         'jquery',
-        'pim/router',
+        'pim-router',
         'oro/datagrid-builder',
         'oro/pageable-collection',
         'pim/datagrid/state',

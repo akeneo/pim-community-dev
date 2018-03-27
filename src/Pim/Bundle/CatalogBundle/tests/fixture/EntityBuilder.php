@@ -2,9 +2,10 @@
 
 namespace Pim\Bundle\CatalogBundle\tests\fixture;
 
-use Pim\Component\Catalog\Model\Product;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
+use Pim\Component\Catalog\Model\VariantProduct;
+use Pim\Component\Catalog\Model\VariantProductInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -103,7 +104,7 @@ class EntityBuilder
      * @param ProductModelInterface $parent
      * @param array                 $data
      *
-     * @return ProductInterface
+     * @return VariantProductInterface
      */
     public function createVariantProduct(
         string $identifier,
@@ -111,8 +112,8 @@ class EntityBuilder
         string $familyVariantCode,
         ProductModelInterface $parent,
         array $data
-    ): ProductInterface {
-        $variantProduct = new Product();
+    ): VariantProductInterface {
+        $variantProduct = new VariantProduct();
 
         $identifierAttribute = $this->container->get('pim_catalog.repository.attribute')->findOneByCode('sku');
 
@@ -155,10 +156,10 @@ class EntityBuilder
     }
 
     /**
-     * @param ProductInterface $variantProduct
-     * @param array            $data
+     * @param VariantProductInterface $variantProduct
+     * @param array                   $data
      */
-    protected function updateVariantProduct(ProductInterface $variantProduct, array $data): void
+    protected function updateVariantProduct(VariantProductInterface $variantProduct, array $data): void
     {
         $this->container->get('pim_catalog.updater.product')->update($variantProduct, $data);
         $this->container->get('pim_catalog.saver.product')->save($variantProduct);
