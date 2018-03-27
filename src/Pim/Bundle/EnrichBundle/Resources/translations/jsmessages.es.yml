@@ -228,6 +228,7 @@ pim_enrich:
         update_successful: Modelo de producto actualizado exitosamente. La integridad de sus productos variantes se recalculará.
         update_failed: El modelo de producto no pudo ser actualizado.
         field_not_ready: "El modelo de producto no puede ser guardado en el momento. Los siguientes campos no están listos: {{ fields }}"
+      variant_axis: Eje variante
       add_child:
         create: Añadir nuevo
         cancel: Cancelar
