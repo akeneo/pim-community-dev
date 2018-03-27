@@ -15,6 +15,10 @@
 - filter
     - models [DONE]
     - views [DONE]
+    - add new types (at least 2)
+    - add the remove action
+    - add dismiss action
+    finalize the documentation/rework the extension
 - https://github.com/bvaughn/react-virtualized/blob/master/docs/Table.md
 - https://reactjs.org/docs/thinking-in-react.html
 - sort
