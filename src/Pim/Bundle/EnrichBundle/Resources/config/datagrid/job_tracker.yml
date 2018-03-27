@@ -13,9 +13,9 @@ datagrid:
                 label: Type
                 type:  job_type
             started_at:
-                label:         job_tracker.filter.started_at
-                type:          datetime_with_user_timezone
-                data_name:     startTime
+                label: job_tracker.filter.started_at
+                data_name: startTime
+                type: datetime
                 frontend_type: datetime
             status:
                 label:         Status

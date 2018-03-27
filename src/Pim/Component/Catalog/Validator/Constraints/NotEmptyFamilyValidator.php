@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Pim\Component\Catalog\Validator\Constraints;
 
-use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Model\VariantProductInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
@@ -20,25 +20,21 @@ class NotEmptyFamilyValidator extends ConstraintValidator
     /**
      * {@inheritdoc}
      *
-     * @param ProductInterface $product
+     * @param VariantProductInterface $variantProduct
      */
-    public function validate($product, Constraint $constraint)
+    public function validate($variantProduct, Constraint $constraint)
     {
-        if (!$product instanceof ProductInterface) {
-            throw new UnexpectedTypeException($constraint, ProductInterface::class);
+        if (!$variantProduct instanceof VariantProductInterface) {
+            throw new UnexpectedTypeException($constraint, VariantProductInterface::class);
         }
 
         if (!$constraint instanceof NotEmptyFamily) {
             throw new UnexpectedTypeException($constraint, NotEmptyFamily::class);
         }
 
-        if (!$product->isVariant()) {
-            return;
-        }
-
-        if (null === $product->getFamily()) {
+        if (null === $variantProduct->getFamily()) {
             $this->context->buildViolation(NotEmptyFamily::MESSAGE, [
-                   '%sku%' => $product->getIdentifier()
+                   '%sku%' => $variantProduct->getIdentifier()
                 ])->atPath($constraint->propertyPath)->addViolation();
         }
     }

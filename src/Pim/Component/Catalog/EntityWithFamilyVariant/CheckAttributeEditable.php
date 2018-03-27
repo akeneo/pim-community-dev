@@ -6,8 +6,8 @@ namespace Pim\Component\Catalog\EntityWithFamilyVariant;
 
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\EntityWithFamilyInterface;
-use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
+use Pim\Component\Catalog\Model\VariantProductInterface;
 
 /**
  * This service checks if an attribute of an entity with family is editable.
@@ -72,14 +72,6 @@ class CheckAttributeEditable
      */
     private function isNonVariantProduct(EntityWithFamilyInterface $entity): bool
     {
-        if ($entity instanceof ProductModelInterface) {
-            return false;
-        }
-
-        if ($entity instanceof ProductInterface) {
-            return !$entity->isVariant();
-        }
-
-        return false;
+        return !$entity instanceof VariantProductInterface && !$entity instanceof ProductModelInterface;
     }
 }

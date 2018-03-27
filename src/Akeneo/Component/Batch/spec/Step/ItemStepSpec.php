@@ -12,7 +12,6 @@ use Akeneo\Component\Batch\Item\ItemWriterInterface;
 use Akeneo\Component\Batch\Job\BatchStatus;
 use Akeneo\Component\Batch\Job\ExitStatus;
 use Akeneo\Component\Batch\Model\StepExecution;
-use Akeneo\Component\Batch\Model\Warning;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -26,15 +25,7 @@ class ItemStepSpec extends ObjectBehavior
         ItemProcessorInterface $processor,
         ItemWriterInterface $writer
     ) {
-        $this->beConstructedWith(
-            'myname',
-            $dispatcher,
-            $repository,
-            $reader,
-            $processor,
-            $writer,
-            3
-        );
+        $this->beConstructedWith('myname', $dispatcher, $repository, $reader, $processor, $writer, 3);
     }
 
     function it_executes_with_success(
@@ -109,9 +100,8 @@ class ItemStepSpec extends ObjectBehavior
             new InvalidItemException('my msg', new FileInvalidItem(['r4'], 7))
         );
 
-        $warning = new Warning($execution->getWrappedObject(), 'my msg', [], ['r4']);
         $repository
-            ->addWarning($warning)
+            ->insertWarning($execution, 'my msg', [], ['r4'])
             ->shouldBeCalled();
         $dispatcher->dispatch(Argument::any(), Argument::any())->shouldBeCalled();
 

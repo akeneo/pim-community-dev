@@ -1,5 +1,0 @@
-username;first_name;last_name;email;password;catalog_default_locale;user_default_locale;catalog_default_scope;default_category_tree;roles;groups;enabled
-admin;John;Doe;admin@example.com;admin;en_US;en_US;ecommerce;master;ROLE_ADMINISTRATOR;IT support;1
-julia;Julia;Stark;julia@example.com;julia;en_US;en_US;ecommerce;master;ROLE_CATALOG_MANAGER;Manager;1
-mary;Mary;Smith;mary@example.com;mary;en_US;en_US;ecommerce;master;ROLE_USER;Redactor;1
-kevin;Kevin;Michel;kevin@example.com;kevin;en_US;en_US;ecommerce;master;ROLE_TRAINEE;Redactor;1

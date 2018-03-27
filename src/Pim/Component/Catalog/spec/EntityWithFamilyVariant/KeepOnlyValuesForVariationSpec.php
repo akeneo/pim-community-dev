@@ -5,13 +5,14 @@ namespace spec\Pim\Component\Catalog\EntityWithFamilyVariant;
 use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\AbstractAttribute;
+use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\CommonAttributeCollection;
 use Pim\Component\Catalog\Model\FamilyVariantInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
 use Pim\Component\Catalog\Model\ValueCollectionInterface;
 use Pim\Component\Catalog\Model\ValueInterface;
 use Pim\Component\Catalog\Model\VariantAttributeSetInterface;
-use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Model\VariantProductInterface;
 
 class KeepOnlyValuesForVariationSpec extends ObjectBehavior
 {
@@ -144,7 +145,7 @@ class KeepOnlyValuesForVariationSpec extends ObjectBehavior
     }
 
     function it_updates_variant_products_values(
-        ProductInterface $variantProduct,
+        VariantProductInterface $variantProduct,
         FamilyVariantInterface $familyVariant,
         AbstractAttribute $description,
         AbstractAttribute $price,

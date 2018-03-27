@@ -4,6 +4,7 @@ namespace Context;
 
 use Acme\Bundle\AppBundle\Entity\Color;
 use Acme\Bundle\AppBundle\Entity\Fabric;
+use Akeneo\Bundle\ElasticsearchBundle\Client;
 use Akeneo\Component\Batch\Job\JobParameters;
 use Akeneo\Component\Batch\Model\JobExecution;
 use Akeneo\Component\Batch\Model\JobInstance;
@@ -33,7 +34,6 @@ use Pim\Component\Catalog\Builder\EntityWithValuesBuilderInterface;
 use Pim\Component\Catalog\Model\Association;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\AttributeOptionInterface;
-use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Component\Catalog\Model\LocaleInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
@@ -135,7 +135,7 @@ class FixturesContext extends BaseFixturesContext
 
         $this->buildProductHistory($product);
 
-        $this->refreshEsIndexes();
+        $this->getElasticsearchProductClient()->refreshIndex();
 
         return $product;
     }
@@ -181,23 +181,6 @@ class FixturesContext extends BaseFixturesContext
         foreach ($table->getHash() as $data) {
             $this->createProduct($data);
         }
-    }
-
-    /**
-     * @Given the :identifier product created at :createdAt
-     */
-    public function theProductCreatedAt(string $identifier, string $createdAt)
-    {
-        $product = $this->createProduct(['sku' => $identifier]);
-
-        $this->getContainer()->get('doctrine')->getConnection()->update(
-            'pim_catalog_product',
-            ['created' => $createdAt],
-            ['id' => $product->getId()]
-        );
-
-        $this->refresh($product);
-        $this->getProductSaver()->save($product);
     }
 
     /**
@@ -248,34 +231,6 @@ class FixturesContext extends BaseFixturesContext
         }
 
         $saver->saveAll($families);
-    }
-
-    /**
-     * @Given the family :familyCode has the attributes :attributeCodes
-     */
-    public function theFamilyHasTheAttributes($familyCode, $attributeCodes)
-    {
-        $familyRepository = $this->getContainer()->get('pim_catalog.repository.family');
-        $familySaver = $this->getContainer()->get('pim_catalog.saver.family');
-        $attributeRepository = $this->getContainer()->get('pim_catalog.repository.attribute');
-
-        $family = $familyRepository->findOneByIdentifier($familyCode);
-
-        if (null === $family) {
-            throw new \Exception(sprintf('The family "%s" does not exist.', $familyCode));
-        }
-
-        foreach ($this->listToArray($attributeCodes) as $attributeCode) {
-            $attribute = $attributeRepository->findOneByIdentifier($attributeCode);
-
-            if (null === $family) {
-                throw new \Exception(sprintf('The attribute "%s" does not exist.', $attributeCode));
-            }
-
-            $family->addAttribute($attribute);
-        }
-
-        $familySaver->save($family);
     }
 
     /**
@@ -334,7 +289,7 @@ class FixturesContext extends BaseFixturesContext
             $uniqueAxesCombinationSet->reset();
 
             $this->refresh($productModel);
-            $this->refreshEsIndexes();
+            $this->getContainer()->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
         }
     }
 
@@ -378,7 +333,7 @@ class FixturesContext extends BaseFixturesContext
             $uniqueAxesCombinationSet->reset();
 
             $this->refresh($productModel);
-            $this->refreshEsIndexes();
+            $this->getContainer()->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
         }
     }
 
@@ -2449,13 +2404,10 @@ class FixturesContext extends BaseFixturesContext
     }
 
     /**
-     * Refresh all the elasticsearch indexes.
+     * @return Client
      */
-    protected function refreshEsIndexes()
+    protected function getElasticsearchProductClient()
     {
-        $clients = $this->getMainContext()->getContainer()->get('akeneo_elasticsearch.registry.clients')->getClients();
-        foreach ($clients as $client) {
-            $client->refreshIndex();
-        }
+        return $this->getContainer()->get('akeneo_elasticsearch.client.product');
     }
 }

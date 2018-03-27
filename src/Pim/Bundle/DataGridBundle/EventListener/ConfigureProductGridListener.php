@@ -6,6 +6,7 @@ use Oro\Bundle\DataGridBundle\Event\BuildBefore;
 use Pim\Bundle\DataGridBundle\Datagrid\Configuration\ConfiguratorInterface;
 use Pim\Bundle\DataGridBundle\Datagrid\Configuration\Product\ColumnsConfigurator;
 use Pim\Bundle\DataGridBundle\Datagrid\Configuration\Product\ContextConfigurator;
+use Pim\Bundle\DataGridBundle\Datagrid\Configuration\Product\FiltersConfigurator;
 use Pim\Bundle\DataGridBundle\Datagrid\Configuration\Product\SortersConfigurator;
 
 /**
@@ -28,7 +29,7 @@ class ConfigureProductGridListener
     protected $columnsConfigurator;
 
     /**
-     * @var ConfiguratorInterface
+     * @var FiltersConfigurator
      */
     protected $filtersConfigurator;
 
@@ -38,15 +39,17 @@ class ConfigureProductGridListener
     protected $sortersConfigurator;
 
     /**
-     * @param ContextConfigurator   $contextConfigurator
-     * @param ColumnsConfigurator   $columnsConfigurator
-     * @param ConfiguratorInterface $filtersConfigurator
-     * @param SortersConfigurator   $sortersConfigurator
+     * Constructor
+     *
+     * @param ContextConfigurator $contextConfigurator
+     * @param ColumnsConfigurator $columnsConfigurator
+     * @param FiltersConfigurator $filtersConfigurator
+     * @param SortersConfigurator $sortersConfigurator
      */
     public function __construct(
         ContextConfigurator $contextConfigurator,
         ColumnsConfigurator $columnsConfigurator,
-        ConfiguratorInterface $filtersConfigurator,
+        FiltersConfigurator $filtersConfigurator,
         SortersConfigurator $sortersConfigurator
     ) {
         $this->contextConfigurator = $contextConfigurator;

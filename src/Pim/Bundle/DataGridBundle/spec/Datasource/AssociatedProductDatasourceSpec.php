@@ -12,7 +12,6 @@ use PhpSpec\ObjectBehavior;
 use Pim\Bundle\DataGridBundle\Datasource\AssociatedProductDatasource;
 use Pim\Bundle\DataGridBundle\Datasource\DatasourceInterface;
 use Pim\Bundle\DataGridBundle\Datasource\ParameterizableInterface;
-use Pim\Bundle\DataGridBundle\EventSubscriber\FilterEntityWithValuesSubscriber;
 use Pim\Component\Catalog\Model\AssociationInterface;
 use Pim\Component\Catalog\Model\AssociationTypeInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
@@ -29,10 +28,9 @@ class AssociatedProductDatasourceSpec extends ObjectBehavior
     public function let(
         ObjectManager $objectManager,
         ProductQueryBuilderFactoryInterface $pqbFactory,
-        NormalizerInterface $productNormalizer,
-        FilterEntityWithValuesSubscriber $subscriber
+        NormalizerInterface $productNormalizer
     ) {
-        $this->beConstructedWith($objectManager, $pqbFactory, $productNormalizer, $subscriber);
+        $this->beConstructedWith($objectManager, $pqbFactory, $productNormalizer);
 
         $this->setSortOrder(Directions::DESCENDING);
         $this->setParameters(['dataLocale' => 'a_locale']);

@@ -5,7 +5,6 @@ namespace Akeneo\Component\Batch\Job;
 use Akeneo\Component\Batch\Model\JobExecution;
 use Akeneo\Component\Batch\Model\JobInstance;
 use Akeneo\Component\Batch\Model\StepExecution;
-use Akeneo\Component\Batch\Model\Warning;
 
 /**
  * Common interface for Job repositories which should handle how job are stored, updated
@@ -72,6 +71,4 @@ interface JobRepositoryInterface
      * @param array $jobsExecutions
      */
     public function remove(array $jobsExecutions);
-
-    public function addWarning(Warning $warning): void;
 }

@@ -2,12 +2,14 @@
 
 namespace tests\integration\Pim\Bundle\CatalogBundle\Doctrine\Common\Saver;
 
+use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use Doctrine\DBAL\Statement;
-use Pim\Component\Catalog\Model\Product;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductModel;
 use Pim\Component\Catalog\Model\ProductModelInterface;
+use Pim\Component\Catalog\Model\VariantProduct;
+use Pim\Component\Catalog\Model\VariantProductInterface;
 use Pim\Component\Catalog\tests\integration\Normalizer\NormalizedProductCleaner;
 
 /**
@@ -114,11 +116,11 @@ class ProductSaverIntegration extends TestCase
      * @param string                $productIdentifier
      * @param string                $familyVariantCode
      *
-     * @return ProductInterface
+     * @return VariantProductInterface
      */
-    private function createVariantProduct(ProductModelInterface $productModel, string $productIdentifier, string $familyVariantCode): ProductInterface
+    private function createVariantProduct(ProductModelInterface $productModel, string $productIdentifier, string $familyVariantCode): VariantProductInterface
     {
-        $product = new Product();
+        $product = new VariantProduct();
         $product->setParent($productModel);
 
         $familyVariant = $this->get('pim_catalog.repository.family_variant')->findOneByIdentifier($familyVariantCode);

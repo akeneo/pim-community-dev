@@ -8,12 +8,11 @@ use Akeneo\Component\Batch\Job\JobInterface;
 use Akeneo\Component\Batch\Job\JobParameters;
 use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\Batch\Step\StepExecutionAwareInterface;
-use Akeneo\Component\StorageUtils\Cache\EntityManagerClearerInterface;
-use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
-use Pim\Component\Catalog\Model\EntityWithFamilyInterface;
+use Akeneo\Component\StorageUtils\Cache\CacheClearerInterface;
+use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
-use Pim\Component\Catalog\Model\ProductModelInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
+use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
 use Pim\Component\Catalog\ValuesFiller\EntityWithFamilyValuesFillerInterface;
 use Pim\Component\Connector\Processor\BulkMediaFetcher;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -30,11 +29,14 @@ class ProductProcessor implements ItemProcessorInterface, StepExecutionAwareInte
     /** @var NormalizerInterface */
     protected $normalizer;
 
-    /** @var IdentifiableObjectRepositoryInterface */
+    /** @var ChannelRepositoryInterface */
     protected $channelRepository;
 
     /** @var AttributeRepositoryInterface */
     protected $attributeRepository;
+
+    /** @var ObjectDetacherInterface */
+    protected $detacher;
 
     /** @var StepExecution */
     protected $stepExecution;
@@ -45,31 +47,34 @@ class ProductProcessor implements ItemProcessorInterface, StepExecutionAwareInte
     /** @var EntityWithFamilyValuesFillerInterface */
     protected $productValuesFiller;
 
-    /** @var EntityManagerClearerInterface */
+    /** @var CacheClearerInterface */
     protected $cacheClearer;
 
     /**
      * @param NormalizerInterface                   $normalizer
-     * @param IdentifiableObjectRepositoryInterface $channelRepository
+     * @param ChannelRepositoryInterface            $channelRepository
      * @param AttributeRepositoryInterface          $attributeRepository
+     * @param ObjectDetacherInterface               $detacher
      * @param BulkMediaFetcher                      $mediaFetcher
      * @param EntityWithFamilyValuesFillerInterface $productValuesFiller
-     * @param EntityManagerClearerInterface         $cacheClearer
+     * @param CacheClearerInterface                 $cacheClearer
      */
     public function __construct(
         NormalizerInterface $normalizer,
-        IdentifiableObjectRepositoryInterface $channelRepository,
+        ChannelRepositoryInterface $channelRepository,
         AttributeRepositoryInterface $attributeRepository,
+        ObjectDetacherInterface $detacher,
         BulkMediaFetcher $mediaFetcher,
         EntityWithFamilyValuesFillerInterface $productValuesFiller,
-        EntityManagerClearerInterface $cacheClearer
+        CacheClearerInterface $cacheClearer = null
     ) {
-        $this->normalizer          = $normalizer;
-        $this->channelRepository   = $channelRepository;
+        $this->normalizer = $normalizer;
+        $this->detacher = $detacher;
+        $this->channelRepository = $channelRepository;
         $this->attributeRepository = $attributeRepository;
-        $this->mediaFetcher        = $mediaFetcher;
+        $this->mediaFetcher = $mediaFetcher;
         $this->productValuesFiller = $productValuesFiller;
-        $this->cacheClearer        = $cacheClearer;
+        $this->cacheClearer = $cacheClearer;
     }
 
     /**
@@ -82,18 +87,13 @@ class ProductProcessor implements ItemProcessorInterface, StepExecutionAwareInte
         $channel = $this->channelRepository->findOneByIdentifier($structure['scope']);
         $this->productValuesFiller->fillMissingValues($product);
 
-        $productStandard = $this->normalizer->normalize(
-            $product,
-            'standard',
-            [
-                'filter_types' => ['pim.transform.product_value.structured'],
-                'channels' => [$channel->getCode()],
-                'locales'  => array_intersect(
-                    $channel->getLocaleCodes(),
-                    $parameters->get('filters')['structure']['locales']
-                ),
-            ]
-        );
+        $productStandard = $this->normalizer->normalize($product, 'standard', [
+            'channels' => [$channel->getCode()],
+            'locales'  => array_intersect(
+                $channel->getLocaleCodes(),
+                $parameters->get('filters')['structure']['locales']
+            ),
+        ]);
 
         if ($this->areAttributesToFilter($parameters)) {
             $attributesToFilter = $this->getAttributesToFilter($parameters);
@@ -116,7 +116,12 @@ class ProductProcessor implements ItemProcessorInterface, StepExecutionAwareInte
             );
         }
 
-        $this->cacheClearer->clear();
+        if (null !== $this->cacheClearer) {
+            $this->cacheClearer->clear();
+        } else {
+            // TODO Remove $this->detacher, the upper condition and update the constructor on merge to master
+            $this->detacher->detach($product);
+        }
 
         return $productStandard;
     }
@@ -132,12 +137,12 @@ class ProductProcessor implements ItemProcessorInterface, StepExecutionAwareInte
     /**
      * Fetch medias on the local filesystem
      *
-     * @param EntityWithFamilyInterface $product
+     * @param ProductInterface $product
      * @param string           $directory
      */
-    protected function fetchMedia(EntityWithFamilyInterface $product, $directory)
+    protected function fetchMedia(ProductInterface $product, $directory)
     {
-        $identifier = $product instanceof ProductModelInterface ? $product->getCode() : $product->getIdentifier();
+        $identifier = $product->getIdentifier();
         $this->mediaFetcher->fetchAll($product->getValues(), $directory, $identifier);
 
         foreach ($this->mediaFetcher->getErrors() as $error) {

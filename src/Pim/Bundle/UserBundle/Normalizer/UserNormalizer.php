@@ -39,7 +39,6 @@ class UserNormalizer implements NormalizerInterface
             'catalogScope'  => $user->getCatalogScope()->getCode(),
             'defaultTree'   => $user->getDefaultTree()->getCode(),
             'avatar'        => $user->getImagePath(),
-            'timezone'      => $user->getTimezone(),
             'meta'          => [
                 'id' => $user->getId()
             ]

@@ -5,7 +5,7 @@ namespace spec\Pim\Component\Catalog\Validator\Constraints;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\EntityWithFamilyVariantInterface;
 use Pim\Component\Catalog\Model\FamilyInterface;
-use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Model\VariantProductInterface;
 use Pim\Component\Catalog\Validator\Constraints\NotEmptyFamily;
 use Prophecy\Argument;
 use Symfony\Component\Validator\Constraint;
@@ -41,12 +41,11 @@ class NotEmptyFamilyValidatorSpec extends ObjectBehavior
 
     function it_raises_no_violation_if_the_entity_has_a_family(
         $context,
-        ProductInterface $entity,
+        VariantProductInterface $entity,
         FamilyInterface $family,
         NotEmptyFamily $constraint
     ) {
         $entity->getFamily()->willReturn($family);
-        $entity->isVariant()->willReturn(true);
 
         $context->buildViolation(Argument::cetera())->shouldNotBeCalled();
 
@@ -55,13 +54,13 @@ class NotEmptyFamilyValidatorSpec extends ObjectBehavior
 
     function it_raises_a_violation_if_the_family_is_null(
         $context,
-        ProductInterface $entity,
+        VariantProductInterface $entity,
+        FamilyInterface $family,
         NotEmptyFamily $constraint,
         ConstraintViolationBuilderInterface $violation
     ) {
         $entity->getFamily()->willReturn(null);
         $entity->getIdentifier()->willReturn('product_sku');
-        $entity->isVariant()->willReturn(true);
 
         $context
             ->buildViolation(

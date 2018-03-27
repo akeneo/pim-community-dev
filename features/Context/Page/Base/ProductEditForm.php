@@ -55,18 +55,6 @@ class ProductEditForm extends Form
     }
 
     /**
-     * @param string $label
-     *
-     * @return NodeElement[]
-     */
-    public function findFieldIcons($label)
-    {
-        $field = $this->findFieldContainer($label);
-
-        return $field->findAll('css', 'i[class*="icon-"]');
-    }
-
-    /**
      * This method allows to fill a field by passing the label
      *
      * @param string  $label

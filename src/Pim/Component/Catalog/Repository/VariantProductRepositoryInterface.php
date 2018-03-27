@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace Pim\Component\Catalog\Repository;
 
-use Doctrine\Common\Persistence\ObjectRepository;
-use Pim\Component\Catalog\Model\ProductInterface;
-use Pim\Component\Catalog\Model\ProductModelInterface;
+use Pim\Component\Catalog\Model\VariantProductInterface;
 
 /**
  * @author    Damien Carcel <damien.carcel@akeneo.com>
@@ -18,16 +16,9 @@ interface VariantProductRepositoryInterface
     /**
      * Finds products with the same parent than the provided $product.
      *
-     * @param ProductInterface $product
+     * @param VariantProductInterface $product
      *
-     * @return ProductInterface[]
+     * @return VariantProductInterface[]
      */
-    public function findSiblingsProducts(ProductInterface $product): array;
-
-    /**
-     * @param ProductModelInterface $parent
-     *
-     * @return null|ProductInterface
-     */
-    public function findLastCreatedByParent(ProductModelInterface $parent): ?ProductInterface;
+    public function findSiblingsProducts(VariantProductInterface $product): array;
 }

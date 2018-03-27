@@ -120,7 +120,7 @@ define([
             var container = $('<span class="AknFieldContainer-contextContainer AknButtonList filter-context">');
 
             if (attribute.scopable) {
-                var scopeSwitcher = new ScopeSwitcher({config: {context: 'base_product'}});
+                var scopeSwitcher = new ScopeSwitcher();
                 scopeSwitcher.setDisplayInline(false);
                 scopeSwitcher.setDisplayLabel(false);
 
@@ -141,7 +141,7 @@ define([
             }
 
             if (attribute.localizable) {
-                var localeSwitcher = new LocaleSwitcher({config: {context: 'base_product'}});
+                var localeSwitcher = new LocaleSwitcher();
                 localeSwitcher.setDisplayInline(false);
                 localeSwitcher.setDisplayLabel(false);
 

@@ -66,12 +66,8 @@ define(
              *
              * {@inheritdoc}
              */
-            fetchItems: function (searchParameters) {
-                if (undefined !== this.config.attributeTypes && Array.isArray(this.config.attributeTypes)) {
-                    searchParameters.types = this.config.attributeTypes.join(',');
-                }
-
-                return BaseAddSelect.prototype.fetchItems.apply(this, [searchParameters])
+            fetchItems: function () {
+                return BaseAddSelect.prototype.fetchItems.apply(this, arguments)
                     .then(function (attributes) {
                         var groupCodes = _.unique(_.pluck(attributes, 'group'));
 
