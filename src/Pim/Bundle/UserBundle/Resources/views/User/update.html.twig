@@ -84,7 +84,7 @@
             {% if form.vars.value.id %}
                 {{ elements.link(
                     'Cancel'|trans,
-                    path('oro_user_profile_view', {'id': form.vars.value.id}),
+                    path('oro_user_index'),
                     { icon: 'chevron-left', class:'AknButtonList-item AknButton--grey' }
                 ) }}
             {% endif %}
