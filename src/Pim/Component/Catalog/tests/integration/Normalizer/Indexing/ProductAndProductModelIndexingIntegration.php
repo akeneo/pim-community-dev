@@ -53,15 +53,35 @@ class ProductAndProductModelIndexingIntegration extends TestCase
                     ],
                 ],
             ],
-            'all_complete' => [],
-            'all_incomplete' => [],
+            'at_least_complete' => [],
+            'at_least_incomplete' => [],
             'ancestors' => [
                 'ids' => [],
                 'codes' => [],
             ],
             'label'         => [],
             'document_type' => ProductModelInterface::class,
-            'attributes_for_this_level' => ['a_text']
+            'attributes_for_this_level' => [
+                'a_date',
+                'a_file',
+                'a_localizable_image',
+                'a_localized_and_scopable_text_area',
+                'a_metric',
+                'a_multi_select',
+                'a_number_float',
+                'a_number_float_negative',
+                'a_number_integer',
+                'a_price',
+                'a_ref_data_multi_select',
+                'a_ref_data_simple_select',
+                'a_scopable_price',
+                'a_simple_select',
+                'a_text',
+                'a_text_area',
+                'a_yes_no',
+                'an_image',
+                'sku',
+            ]
         ];
 
         $this->assertProductModelIndexingFormat('qux', $expected);
@@ -103,8 +123,8 @@ class ProductAndProductModelIndexingIntegration extends TestCase
                     ],
                 ],
             ],
-            'all_complete' => [],
-            'all_incomplete' => [],
+            'at_least_complete' => [],
+            'at_least_incomplete' => [],
             'ancestors' => [
                 'ids' => ['product_model_150'],
                 'codes' => ['qux'],
@@ -167,7 +187,10 @@ class ProductAndProductModelIndexingIntegration extends TestCase
             ],
             'label'         => [],
             'document_type' => ProductInterface::class,
-            'attributes_for_this_level' => ['sku', 'a_yes_no']
+            'attributes_for_this_level' => [
+                'sku',
+                'a_yes_no',
+            ]
         ];
 
         $this->assertProductIndexingFormat('qux', $expected);
@@ -229,7 +252,6 @@ class ProductAndProductModelIndexingIntegration extends TestCase
             ],
             'enabled'        => true,
             'categories'     => ['categoryA1', 'categoryB'],
-            'groups'         => ['groupA', 'groupB'],
             'groups'         => ['groupA', 'groupB'],
             'in_group'       => [
                 'groupA'   => true,
@@ -447,31 +469,31 @@ class ProductAndProductModelIndexingIntegration extends TestCase
             'label' => [],
             'document_type' => ProductInterface::class,
             'attributes_for_this_level' => [
-                123,
-                'sku',
                 'a_date',
                 'a_file',
-                'a_text',
-                'a_price',
+                'a_localizable_image',
+                'a_localized_and_scopable_text_area',
                 'a_metric',
-                'a_yes_no',
-                'an_image',
-                'a_text_area',
+                'a_metric_negative',
+                'a_metric_without_decimal',
+                'a_metric_without_decimal_negative',
                 'a_multi_select',
                 'a_number_float',
-                'a_simple_select',
-                'a_number_integer',
-                'a_scopable_price',
-                'a_metric_negative',
-                'a_localizable_image',
                 'a_number_float_negative',
+                'a_number_integer',
+                'a_number_integer_negative',
+                'a_price',
                 'a_price_without_decimal',
                 'a_ref_data_multi_select',
-                'a_metric_without_decimal',
                 'a_ref_data_simple_select',
-                'a_number_integer_negative',
-                'a_metric_without_decimal_negative',
-                'a_localized_and_scopable_text_area',
+                'a_scopable_price',
+                'a_simple_select',
+                'a_text',
+                'a_text_area',
+                'a_yes_no',
+                'an_image',
+                'sku',
+                123,
             ]
         ];
 

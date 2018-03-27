@@ -1012,6 +1012,8 @@ pim_enrich:
           label_count: "{1}ステータスを変更<span class=\"AknFullPage-title--highlight\"> 1 製品</span> |]1、Inf [ ステータスを変更 <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} 製品</span>"
           description: 選択した製品は有効または無効になります。
           field: 有効にするには
+        edit_common:
+          label: 属性を編集
         change_family:
           label: ファミリーの変更
           label_count: "{1}ファミリーを変更<span class=\"AknFullPage-title--highlight\"> 1 製品</span> |]1、Inf [ ファミリーを変更 <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} 製品</span>"

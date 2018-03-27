@@ -1,0 +1,92 @@
+parameters:
+    akeneo_integration_tests.loader.reference_data_loader.class: Akeneo\Test\IntegrationTestsBundle\Loader\ReferenceDataLoader
+    akeneo_integration_tests.loader.fixtures_loader.class: Akeneo\Test\IntegrationTestsBundle\Loader\FixturesLoader
+    akeneo_integration_tests.loader.database_schema_handler.class: Akeneo\Test\IntegrationTestsBundle\Loader\DatabaseSchemaHandler
+    akeneo_integration_tests.doctrine.connection.connection_closer.class: Akeneo\Test\IntegrationTestsBundle\Doctrine\Connection\ConnectionCloser
+    akeneo_integration_tests.security.system_user_authenticator.class: Akeneo\Test\IntegrationTestsBundle\Security\SystemUserAuthenticator
+    akeneo_integration_tests.configuration.catalog.class: Akeneo\Test\IntegrationTestsBundle\Configuration\Catalog
+    akeneo_integration_tests.launcher.job_launcher.class: Akeneo\Test\IntegrationTestsBundle\Launcher\JobLauncher
+    akeneo_integration_tests.launcher.job_execution_observer.class: Akeneo\Test\IntegrationTestsBundle\Jobs\JobExecutionObserver
+
+services:
+    akeneo_integration_tests.loader.reference_data_loader:
+        class: '%akeneo_integration_tests.loader.reference_data_loader.class%'
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '%kernel.bundles%'
+            - 'AcmeAppBundle'
+            - '\Acme\Bundle\AppBundle\Entity\Fabric'
+            - '\Acme\Bundle\AppBundle\Entity\Color'
+
+    akeneo_integration_tests.loader.fixtures_loader:
+        class: '%akeneo_integration_tests.loader.fixtures_loader.class%'
+        arguments:
+            - '@kernel'
+            - '@akeneo_integration_tests.loader.database_schema_handler'
+            - '@akeneo_integration_tests.security.system_user_authenticator'
+            - '@akeneo_integration_tests.catalog.configuration'
+
+    akeneo_integration_tests.loader.database_schema_handler:
+        class: '%akeneo_integration_tests.loader.database_schema_handler.class%'
+        arguments:
+            - '@kernel'
+
+    akeneo_integration_tests.doctrine.connection.connection_closer:
+        class: '%akeneo_integration_tests.doctrine.connection.connection_closer.class%'
+        arguments:
+            - '@doctrine'
+
+    akeneo_integration_tests.security.system_user_authenticator:
+        class: '%akeneo_integration_tests.security.system_user_authenticator.class%'
+        arguments:
+            - '@service_container'
+
+    akeneo_integration_tests.catalog.fixture.build_entity:
+        class: 'Pim\Bundle\CatalogBundle\tests\fixture\EntityBuilder'
+        arguments:
+            - '@service_container'
+
+    akeneo_integration_tests.catalog.fixture.completeness_filter:
+        class: 'Pim\Bundle\CatalogBundle\tests\fixture\CompletenessFilter'
+        arguments:
+            - '@akeneo_integration_tests.catalog.fixture.build_entity'
+
+    akeneo_integration_tests.launcher.job_launcher:
+        class: '%akeneo_integration_tests.launcher.job_launcher.class%'
+        arguments:
+            - '@kernel'
+
+    akeneo_integration_tests.launcher.job_execution_observer:
+        class: '%akeneo_integration_tests.launcher.job_execution_observer.class%'
+        arguments:
+            - '@pim_enrich.repository.job_instance'
+            - '@pim_enrich.repository.job_execution'
+            - '@akeneo_batch.saver.job_instance'
+            - '@doctrine.orm.default_entity_manager'
+
+    akeneo_integration_tests.configuration.catalog:
+        class: '%akeneo_integration_tests.configuration.catalog.class%'
+
+    akeneo_integration_tests.catalog.configuration:
+        synthetic: true
+
+    akeneo_integration_tests.catalog.factory.product:
+        class: 'Akeneo\Test\IntegrationTestsBundle\Fixture\Factory\Product'
+        arguments:
+            - '@pim_catalog.builder.product'
+            - '@pim_catalog.updater.product'
+            - '@validator'
+
+    akeneo_integration_tests.catalog.factory.product_model:
+        class: 'Akeneo\Test\IntegrationTestsBundle\Fixture\Factory\ProductModel'
+        arguments:
+            - '@pim_catalog.factory.product_model'
+            - '@pim_catalog.updater.product_model'
+            - '@pim_catalog.repository.product_model'
+            - '@validator'
+
+    akeneo_integration_tests.fixture.saver.entity_with_value:
+        class: 'Akeneo\Test\IntegrationTestsBundle\Doctrine\Repository\EntityWithValue'
+        arguments:
+            - '@doctrine.orm.default_entity_manager'
+            - '@pim_serializer'

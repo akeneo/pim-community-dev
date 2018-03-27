@@ -7,22 +7,22 @@ class PimCatalogCompletenessIntegration extends AbstractPimCatalogTestCase
     public function testQueryCompleteOrIncompleteProductModel()
     {
         $this->assertDocument(
-            $this->executeProductModelQuery('all_incomplete', 'ecommerce', 'en_US'),
+            $this->executeProductModelQuery('at_least_complete', 'ecommerce', 'en_US'),
             ['document_1', 'document_2']
         );
 
         $this->assertDocument(
-            $this->executeProductModelQuery('all_incomplete', 'ecommerce', 'fr_FR'),
+            $this->executeProductModelQuery('at_least_complete', 'ecommerce', 'fr_FR'),
             ['document_2']
         );
 
         $this->assertDocument(
-            $this->executeProductModelQuery('all_complete', 'ecommerce', 'en_US'),
+            $this->executeProductModelQuery('at_least_incomplete', 'ecommerce', 'en_US'),
             ['document_1']
         );
 
         $this->assertDocument(
-            $this->executeProductModelQuery('all_complete', 'ecommerce', 'fr_FR'),
+            $this->executeProductModelQuery('at_least_incomplete', 'ecommerce', 'fr_FR'),
             []
         );
     }
@@ -39,7 +39,7 @@ class PimCatalogCompletenessIntegration extends AbstractPimCatalogTestCase
                                     'bool' => [
                                         'should' => [
                                             ['term' => ['completeness.ecommerce.en_US' => 100]],
-                                            ['term' => ['all_incomplete.ecommerce.en_US' => 0]],
+                                            ['term' => ['at_least_complete.ecommerce.en_US' => 1]],
                                         ],
                                         'minimum_should_match' => 1,
                                     ],
@@ -68,7 +68,7 @@ class PimCatalogCompletenessIntegration extends AbstractPimCatalogTestCase
                                     'bool' => [
                                         'should' => [
                                             ['range' => ['completeness.ecommerce.fr_FR' => ['lt' => 100]]],
-                                            ['term' => ['all_complete.ecommerce.fr_FR' => 0]],
+                                            ['term' => ['at_least_incomplete.ecommerce.fr_FR' => 1]],
                                         ],
                                         'minimum_should_match' => 1,
                                     ],
@@ -93,31 +93,31 @@ class PimCatalogCompletenessIntegration extends AbstractPimCatalogTestCase
         $products = [
             [
                 'identifier' => 'document_1',
-                'all_incomplete' => [
+                'at_least_complete' => [
                     'ecommerce' => [
-                        'en_US' => 0,
-                        'fr_FR' => 1
+                        'en_US' => 1,
+                        'fr_FR' => 0
                     ],
                 ],
-                'all_complete' => [
+                'at_least_incomplete' => [
                     'ecommerce' => [
-                        'en_US' => 0,
-                        'fr_FR' => 1
+                        'en_US' => 1,
+                        'fr_FR' => 0
                     ],
                 ],
             ],
             [
                 'identifier' => 'document_2',
-                'all_incomplete' => [
-                    'ecommerce' => [
-                        'en_US' => 0,
-                        'fr_FR' => 0,
-                    ],
-                ],
-                'all_complete' => [
+                'at_least_complete' => [
                     'ecommerce' => [
                         'en_US' => 1,
                         'fr_FR' => 1,
+                    ],
+                ],
+                'at_least_incomplete' => [
+                    'ecommerce' => [
+                        'en_US' => 0,
+                        'fr_FR' => 0,
                     ],
                 ],
             ],
@@ -134,7 +134,7 @@ class PimCatalogCompletenessIntegration extends AbstractPimCatalogTestCase
                 'identifier' => 'document_4',
             ],
         ];
-
+        
         $this->indexDocuments($products);
     }
 
@@ -154,7 +154,7 @@ class PimCatalogCompletenessIntegration extends AbstractPimCatalogTestCase
                 'constant_score' => [
                     'filter' => [
                         'term' => [
-                            $fieldName => 0,
+                            $fieldName => 1,
                         ],
                     ],
                 ],

@@ -24,15 +24,15 @@ class ProductModelPropertiesNormalizerSpec extends ObjectBehavior
     ) {
         $this->beConstructedWith($completenessGridFilter);
 
-        $completenessGridFilterData->allIncomplete()->willReturn([
+        $completenessGridFilterData->atLeastComplete()->willReturn([
             'ecommerce' => [
-                'fr_FR' => 0
+                'fr_FR' => 1
             ]
         ]);
 
-        $completenessGridFilterData->allComplete()->willReturn([
+        $completenessGridFilterData->atLeastIncomplete()->willReturn([
             'ecommerce' => [
-                'fr_FR' => 0
+                'fr_FR' => 1
             ]
         ]);
 
@@ -114,14 +114,14 @@ class ProductModelPropertiesNormalizerSpec extends ObjectBehavior
                 'categories'     => ['category_A', 'category_B'],
                 'parent'         => null,
                 'values'         => [],
-                'all_complete' => [
+                'at_least_complete' => [
                     'ecommerce' => [
-                        'fr_FR' => 0
+                        'fr_FR' => 1
                     ]
                 ],
-                'all_incomplete' => [
+                'at_least_incomplete' => [
                     'ecommerce' => [
-                        'fr_FR' => 0
+                        'fr_FR' => 1
                     ]
                 ],
                 'ancestors' => [
@@ -220,14 +220,14 @@ class ProductModelPropertiesNormalizerSpec extends ObjectBehavior
                         ],
                     ],
                 ],
-                'all_complete' => [
+                'at_least_complete' => [
                     'ecommerce' => [
-                        'fr_FR' => 0
+                        'fr_FR' => 1
                     ]
                 ],
-                'all_incomplete' => [
+                'at_least_incomplete' => [
                     'ecommerce' => [
-                        'fr_FR' => 0
+                        'fr_FR' => 1
                     ]
                 ],
                 'ancestors' => [
@@ -349,14 +349,14 @@ class ProductModelPropertiesNormalizerSpec extends ObjectBehavior
                         ],
                     ],
                 ],
-                'all_complete' => [
+                'at_least_complete' => [
                     'ecommerce' => [
-                        'fr_FR' => 0
+                        'fr_FR' => 1
                     ]
                 ],
-                'all_incomplete' => [
+                'at_least_incomplete' => [
                     'ecommerce' => [
-                        'fr_FR' => 0
+                        'fr_FR' => 1
                     ]
                 ],
                 'ancestors' => [

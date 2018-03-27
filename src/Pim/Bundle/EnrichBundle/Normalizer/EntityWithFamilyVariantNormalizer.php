@@ -8,9 +8,9 @@ use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Completeness\CompletenessCalculatorInterface;
 use Pim\Component\Catalog\FamilyVariant\EntityWithFamilyVariantAttributesProvider;
 use Pim\Component\Catalog\Model\EntityWithFamilyVariantInterface;
-use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
 use Pim\Component\Catalog\Model\ValueInterface;
+use Pim\Component\Catalog\Model\VariantProductInterface;
 use Pim\Component\Catalog\ProductModel\ImageAsLabel;
 use Pim\Component\Catalog\ProductModel\Query\VariantProductRatioInterface;
 use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
@@ -87,11 +87,11 @@ class EntityWithFamilyVariantNormalizer implements NormalizerInterface
      */
     public function normalize($entity, $format = null, array $context = []): array
     {
-        if (!$entity instanceof ProductModelInterface && !$entity instanceof ProductInterface) {
+        if (!$entity instanceof ProductModelInterface && !$entity instanceof VariantProductInterface) {
             throw new \InvalidArgumentException(sprintf(
                 '"%s" or "%s" expected, "%s" received',
                 ProductModelInterface::class,
-                ProductInterface::class,
+                VariantProductInterface::class,
                 get_class($entity)
             ));
         }
@@ -209,7 +209,7 @@ class EntityWithFamilyVariantNormalizer implements NormalizerInterface
             return $this->variantProductRatioQuery->findComplete($entity)->values();
         }
 
-        if ($entity instanceof ProductInterface && $entity->isVariant()) {
+        if ($entity instanceof VariantProductInterface) {
             $completenessCollection = $entity->getCompletenesses();
             if ($completenessCollection->isEmpty()) {
                 $newCompletenesses = $this->completenessCalculator->calculate($entity);

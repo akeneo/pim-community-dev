@@ -36,6 +36,8 @@ class SaveFamilyVariantOnFamilyUpdateSubscriber implements EventSubscriberInterf
     private $bulkfamilyVariantSaver;
 
     /**
+     * TODO: @migration 2.2 : remove $bulkFamilyVariantSaver and $objectDetacher
+     *
      * @param ValidatorInterface          $validator
      * @param SaverInterface              $familyVariantSaver
      * @param BulkSaverInterface          $bulkFamilyVariantSaver
@@ -44,8 +46,8 @@ class SaveFamilyVariantOnFamilyUpdateSubscriber implements EventSubscriberInterf
     public function __construct(
         ValidatorInterface $validator,
         SaverInterface $familyVariantSaver,
-        BulkSaverInterface $bulkFamilyVariantSaver,
-        BulkObjectDetacherInterface $objectDetacher
+        BulkSaverInterface $bulkFamilyVariantSaver = null,
+        BulkObjectDetacherInterface $objectDetacher = null
     ) {
         $this->validator = $validator;
         $this->familyVariantSaver = $familyVariantSaver;
@@ -95,8 +97,9 @@ class SaveFamilyVariantOnFamilyUpdateSubscriber implements EventSubscriberInterf
         foreach ($validFamilyVariants as $familyVariant) {
             $this->familyVariantSaver->save($familyVariant);
         }
-
-        $this->objectDetacher->detachAll($validFamilyVariants);
+        if (null !== $this->objectDetacher) {
+            $this->objectDetacher->detachAll($validFamilyVariants);
+        }
 
         if (!empty($allViolations)) {
             $errorMessage = $this->getErrorMessage($allViolations);
@@ -130,8 +133,12 @@ class SaveFamilyVariantOnFamilyUpdateSubscriber implements EventSubscriberInterf
         $validFamilyVariants = $validationResponse['valid_family_variants'];
         $allViolations = $validationResponse['violations'];
 
-        $this->bulkfamilyVariantSaver->saveAll($validFamilyVariants);
-        $this->objectDetacher->detachAll($validFamilyVariants);
+        if (null !== $this->bulkfamilyVariantSaver) {
+            $this->bulkfamilyVariantSaver->saveAll($validFamilyVariants);
+        }
+        if (null !== $this->objectDetacher) {
+            $this->objectDetacher->detachAll($validFamilyVariants);
+        }
 
         if (!empty($allViolations)) {
             $errorMessage = $this->getErrorMessage($allViolations);

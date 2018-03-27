@@ -72,14 +72,6 @@ jobs:
             enclosure:  '"'
             withHeader: true
             with_media: true
-            filters:
-                data: []
-                structure:
-                    scope: mobile
-                    locales:
-                        - fr_FR
-                        - en_US
-                        - de_DE
     csv_category_import:
         connector: Akeneo CSV Connector
         alias:     csv_category_import
@@ -210,11 +202,6 @@ jobs:
         alias:     add_product_value
         label:     Mass add products values
         type:      mass_edit
-    delete_products_and_product_models:
-        connector: Akeneo Mass Edit Connector
-        alias:     delete_products_and_product_models
-        label:     Mass delete products
-        type:      mass_delete
     remove_product_value:
         connector: Akeneo Mass Edit Connector
         alias:     remove_product_value
@@ -244,11 +231,6 @@ jobs:
         connector: Akeneo Mass Edit Connector
         alias:     edit_common_attributes
         label:     Mass edit product attributes
-        type:      mass_edit
-    add_attribute_value:
-        connector: Akeneo Mass Edit Connector
-        alias:     add_attribute_value
-        label:     Mass add attribute value
         type:      mass_edit
     add_to_existing_product_model:
         connector: Akeneo Mass Edit Connector
@@ -340,18 +322,6 @@ jobs:
         configuration:
             withHeader: true
             with_media: true
-            filters:
-                data:
-                    -
-                        field: categories
-                        operator: 'IN CHILDREN'
-                        value: ['master']
-                structure:
-                    scope: mobile
-                    locales:
-                        - fr_FR
-                        - en_US
-                        - de_DE
     xlsx_group_export:
         connector: Akeneo XLSX Connector
         alias:     xlsx_group_export

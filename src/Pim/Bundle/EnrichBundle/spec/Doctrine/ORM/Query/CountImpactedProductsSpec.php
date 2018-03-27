@@ -244,7 +244,7 @@ class CountImpactedProductsSpec extends ObjectBehavior
             ],
             [
                 'field'    => 'completeness',
-                'operator' => 'AT LEAST COMPLETE',
+                'operator' => 'AT_LEAST_COMPLETE',
                 'value'    => null,
                 'context'  => []
             ]
@@ -281,7 +281,7 @@ class CountImpactedProductsSpec extends ObjectBehavior
             ],
             [
                 'field'    => 'completeness',
-                'operator' => 'AT LEAST COMPLETE',
+                'operator' => 'AT_LEAST_COMPLETE',
                 'value'    => null,
                 'context'  => []
             ]

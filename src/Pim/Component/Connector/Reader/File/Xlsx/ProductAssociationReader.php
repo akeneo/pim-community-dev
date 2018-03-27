@@ -2,7 +2,9 @@
 
 namespace Pim\Component\Connector\Reader\File\Xlsx;
 
-use Pim\Component\Connector\Reader\File\FileReaderInterface;
+use Akeneo\Component\Batch\Item\FlushableInterface;
+use Akeneo\Component\Batch\Item\ItemReaderInterface;
+use Akeneo\Component\Batch\Step\StepExecutionAwareInterface;
 
 /**
  * Product Association XLSX reader
@@ -11,7 +13,10 @@ use Pim\Component\Connector\Reader\File\FileReaderInterface;
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductAssociationReader extends Reader implements FileReaderInterface
+class ProductAssociationReader extends Reader implements
+    ItemReaderInterface,
+    StepExecutionAwareInterface,
+    FlushableInterface
 {
     /**
      * {@inheritdoc}
