@@ -37,7 +37,6 @@ class PimEnterpriseDataGridExtension extends Extension
         $loader->load('extensions.yml');
         $loader->load('filters.yml');
         $loader->load('helpers.yml');
-        $loader->load('hydrators.yml');
         $loader->load('managers.yml');
         $loader->load('mass_actions.yml');
         $loader->load('pagers.yml');
