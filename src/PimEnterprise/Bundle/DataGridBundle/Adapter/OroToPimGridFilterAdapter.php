@@ -22,11 +22,11 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class OroToPimGridFilterAdapter extends BaseAdapter
 {
-    const APPROVE_GRID_NAME = 'proposal-grid';
+    private const APPROVE_GRID_NAME = 'proposal-grid';
 
-    const PUBLISHED_PRODUCT_GRID_NAME = 'published-product-grid';
+    private const PUBLISHED_PRODUCT_GRID_NAME = 'published-product-grid';
 
-    const RULE_GRID_NAME = 'rule-grid';
+    private const RULE_GRID_NAME = 'rule-grid';
 
     /**
      * @param MassActionDispatcher $massActionDispatcher
