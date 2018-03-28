@@ -46,6 +46,22 @@ $rootRules = [
     ),
 ];
 
-$config = new Configuration($rootRules, $finder);
+const PIM_ENRICHMENT = 'Akeneo\Pim\Enrichment';
+const PIM_STRUCTURE = 'Akeneo\Pim\Structure';
+const PIM_SECURITY = 'Akeneo\Pim\Security';
+const PIM_AUTOMATION = 'Akeneo\Pim\Automation';
+const PIM_WORKORG = 'Akeneo\Pim\WorkOrganisation';
+const PIM_WORKORG_TWA = 'Akeneo\Pim\WorkOrganisation\TeamWorkAssistant';
+const PIM_WORKORG_WFL = 'Akeneo\Pim\WorkOrganisation\Workflow';
+
+$pimRules = [
+    new Rule(PIM_STRUCTURE, [PIM_ENRICHMENT, PIM_AUTOMATION, PIM_WORKORG, PIM_SECURITY], RuleInterface::TYPE_FORBIDDEN),
+    new Rule(PIM_ENRICHMENT, [PIM_AUTOMATION, PIM_WORKORG, PIM_SECURITY], RuleInterface::TYPE_FORBIDDEN),
+    new Rule(PIM_WORKORG_TWA, [PIM_WORKORG_WFL, PIM_AUTOMATION], RuleInterface::TYPE_FORBIDDEN),
+    new Rule(PIM_WORKORG_WFL, [PIM_WORKORG_TWA, PIM_AUTOMATION, PIM_STRUCTURE], RuleInterface::TYPE_FORBIDDEN),
+    new Rule(PIM_AUTOMATION, [PIM_WORKORG, PIM_STRUCTURE, PIM_SECURITY], RuleInterface::TYPE_FORBIDDEN),
+];
+
+$config = new Configuration(array_merge($rootRules, $pimRules), $finder);
 
 return $config;
