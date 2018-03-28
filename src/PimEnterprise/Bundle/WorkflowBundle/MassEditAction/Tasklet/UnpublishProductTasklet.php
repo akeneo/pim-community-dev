@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Bundle\EnrichBundle\MassEditAction\Tasklet;
+namespace PimEnterprise\Bundle\WorkflowBundle\MassEditAction\Tasklet;
 
 use Akeneo\Component\Batch\Item\DataInvalidItem;
 use Akeneo\Component\StorageUtils\Cursor\PaginatorFactoryInterface;

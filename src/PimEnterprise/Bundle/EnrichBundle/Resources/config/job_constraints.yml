@@ -1,6 +1,3 @@
-parameters:
-    pimee_enrich.connector.job.job_parameters.constraint_collection_provider.mass_publish.class: PimEnterprise\Bundle\EnrichBundle\Connector\Job\JobParameters\ConstraintCollectionProvider\MassPublish
-
 services:
     pimee_enrich.connector.job.job_parameters.constraint_collection_provider.product_mass_edit:
         class: '%pim_enrich.connector.job.job_parameters.constraint_collection_provider.product_mass_edit.class%'
@@ -14,15 +11,6 @@ services:
                 - 'update_product_value_with_permission_and_rules'
                 - 'remove_product_value_with_permission_and_rules'
                 - 'edit_common_attributes_with_permission_and_rules'
-        tags:
-            - { name: akeneo_batch.job.job_parameters.constraint_collection_provider }
-
-    pimee_enrich.connector.job.job_parameters.constraint_collection_provider.mass_publish:
-        class: '%pimee_enrich.connector.job.job_parameters.constraint_collection_provider.mass_publish.class%'
-        arguments:
-            -
-                - 'publish_product'
-                - 'unpublish_product'
         tags:
             - { name: akeneo_batch.job.job_parameters.constraint_collection_provider }
 
