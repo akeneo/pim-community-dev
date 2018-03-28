@@ -63,3 +63,27 @@ services:
             - '@event_dispatcher'
             - '@akeneo_batch.job_repository'
             - '@pimee_workflow.mass_review_tasklet.refuse_draft'
+
+    # CSV Quick Export steps ------------------------------------------------------------------------------------------
+    pimee_workflow.step.csv_published_product.quick_export:
+        class: '%pim_connector.step.item_step.class%'
+        arguments:
+            - 'export'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@pimee_workflow.connector.reader.mass_edit.published_product'
+            - '@pim_enrich.connector.processor.quick_export.product'
+            - '@pimee_workflow.writer.file.csv_published_product_quick_export'
+            - 1000
+
+    # XLSX Quick Export steps -----------------------------------------------------------------------------------------
+    pimee_workflow.step.xlsx_published_product.quick_export:
+        class: '%pim_connector.step.item_step.class%'
+        arguments:
+            - 'export'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@pimee_workflow.connector.reader.mass_edit.published_product'
+            - '@pim_enrich.connector.processor.quick_export.product'
+            - '@pimee_workflow.writer.file.xlsx_published_product_quick_export'
+            - 1000

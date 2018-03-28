@@ -108,30 +108,6 @@ services:
             - '@pimee_enrich.connector.writer.mass_edit.product_and_product_model'
             - 1000
 
-    # CSV Quick Export steps ------------------------------------------------------------------------------------------
-    pimee_enrich.step.csv_published_product.quick_export:
-        class: '%pim_connector.step.item_step.class%'
-        arguments:
-            - 'export'
-            - '@event_dispatcher'
-            - '@akeneo_batch.job_repository'
-            - '@pimee_workflow.connector.reader.mass_edit.published_product'
-            - '@pim_enrich.connector.processor.quick_export.product'
-            - '@pimee_connector.writer.file.csv_published_product_quick_export'
-            - 1000
-
-    # XLSX Quick Export steps -----------------------------------------------------------------------------------------
-    pimee_enrich.step.xlsx_published_product.quick_export:
-        class: '%pim_connector.step.item_step.class%'
-        arguments:
-            - 'export'
-            - '@event_dispatcher'
-            - '@akeneo_batch.job_repository'
-            - '@pimee_workflow.connector.reader.mass_edit.published_product'
-            - '@pim_enrich.connector.processor.quick_export.product'
-            - '@pimee_connector.writer.file.xlsx_published_product_quick_export'
-            - 1000
-
     # Execute Rules steps ---------------------------------------------------------------------------------------------
     pimee_enrich.step.execute_rules:
         class: '%pim_connector.step.item_step.class%'
