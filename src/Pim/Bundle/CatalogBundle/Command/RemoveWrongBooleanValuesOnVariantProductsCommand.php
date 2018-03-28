@@ -23,12 +23,12 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class RemoveWrongBooleanValuesOnVariantProductsCommand extends ContainerAwareCommand
 {
-    const PRODUCT_BULK_SIZE = 100;
+    private const PRODUCT_BULK_SIZE = 100;
 
     /**
      * {@inheritdoc}
      */
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setHidden(true)
@@ -40,7 +40,7 @@ class RemoveWrongBooleanValuesOnVariantProductsCommand extends ContainerAwareCom
     /**
      * {@inheritdoc}
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): void
     {
         $output->writeln("<info>Cleaning wrong boolean values on variant products...</info>");
 
@@ -59,7 +59,6 @@ class RemoveWrongBooleanValuesOnVariantProductsCommand extends ContainerAwareCom
                     $this->cleanProductForAttribute($variantProduct, $attribute);
                     $isModified = true;
                 }
-
             }
 
             if ($isModified) {
