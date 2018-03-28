@@ -1,4 +1,3 @@
 - [Draft] Extract test about draft from `PimEnterprise\Bundle\ConnectorBundle\tests\integration\Import\Product\ImportProductsWithCategoriesIntegration`
 - [Draft] Extract test about draft from `PimEnterprise\Bundle\ConnectorBundle\tests\integration\Import\Product\ImportProducsWithValuesIntegration`
 - [Draft] Extract test about draft from `\PimEnterprise\Component\Catalog\Security\Updater\GrantedProductUpdater`
-- [Draft] Find a way to split `PimEnterprise\Bundle\EnrichBundle\Normalizer\ProductNormalizer`

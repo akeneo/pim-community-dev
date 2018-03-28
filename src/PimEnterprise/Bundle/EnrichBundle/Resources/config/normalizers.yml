@@ -1,7 +1,7 @@
 parameters:
     pimee_enrich.serializer.normalizer.rule_relation.class: PimEnterprise\Bundle\EnrichBundle\Normalizer\RuleRelationNormalizer
     pimee_enrich.normalizer.version.class:                  PimEnterprise\Bundle\EnrichBundle\Normalizer\VersionNormalizer
-    pimee_enrich.normalizer.product.class:                  PimEnterprise\Bundle\EnrichBundle\Normalizer\ProductNormalizer
+    pimee_enrich.normalizer.product.class:                  PimEnterprise\Bundle\WorkflowBundle\Normalizer\ProductNormalizer
     pimee_enrich.normalizer.attribute.class:                PimEnterprise\Bundle\EnrichBundle\Normalizer\AttributeNormalizer
     pimee_enrich.normalizer.image.class:                    PimEnterprise\Bundle\EnrichBundle\Normalizer\ImageNormalizer
     pimee_enrich.normalizer.incomplete_values.class:        PimEnterprise\Bundle\EnrichBundle\Normalizer\IncompleteValuesNormalizer
