@@ -367,7 +367,7 @@ class AssertionContext extends PimContext
                 $expectedDate = $data['date'];
                 $date = $row->find('css', '[data-column="loggedAt"]')->getText();
                 assertLessThan(
-                    60,
+                    90,
                     abs(strtotime($expectedDate) - strtotime($date)),
                     sprintf(
                         'Expecting the date of version "%s" to be "%s", got "%s"',

@@ -31,7 +31,8 @@ services:
         tags:
             - { name: oro_datagrid.extension.formatter.property, type: product_value_date }
 
-    pim_datagrid.extension.formatter.property.datetime_property:
+    #@todo - to be rename on master (pim_datagrid.extension.formatter.property.date_property)
+    pim_datagrid.extension.formatter.property.product_value.datetime_property:
         class: '%pim_datagrid.extension.formatter.property.datetime_property.class%'
         arguments:
             - '@translator'

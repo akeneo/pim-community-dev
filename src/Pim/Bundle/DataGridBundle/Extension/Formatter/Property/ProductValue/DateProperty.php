@@ -3,7 +3,6 @@
 namespace Pim\Bundle\DataGridBundle\Extension\Formatter\Property\ProductValue;
 
 use Akeneo\Component\Localization\Presenter\PresenterInterface;
-use Oro\Bundle\DataGridBundle\Datasource\ResultRecordInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 
 /**
