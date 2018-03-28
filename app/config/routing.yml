@@ -29,9 +29,6 @@ pim_user:
 pim_importexport:
     resource: "@PimImportExportBundle/Resources/config/routing.yml"
 
-pimee_datagrid:
-    resource: "@PimEnterpriseDataGridBundle/Resources/config/routing.yml"
-
 pimee_workflow:
     resource: "@PimEnterpriseWorkflowBundle/Resources/config/routing.yml"
 
