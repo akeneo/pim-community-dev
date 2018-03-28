@@ -2,14 +2,15 @@
 
 use Akeneo\CouplingDetector\Configuration\Configuration;
 use Akeneo\CouplingDetector\Configuration\DefaultFinder;
-use Akeneo\CouplingDetector\Domain\Rule;
-use Akeneo\CouplingDetector\Domain\RuleInterface;
+use Akeneo\CouplingDetector\RuleBuilder;
 
 $finder = new DefaultFinder();
 $finder->notPath('Oro');
 $finder->notPath('Acme');
 $finder->notPath('spec');
 $finder->notPath('tests');
+
+$builder = new RuleBuilder();
 
 const USER_MANAGEMENT_NAMESPACE = 'Akeneo\UserManagement';
 const PIM_NAMESPACE = 'Akeneo\Pim';
@@ -18,32 +19,14 @@ const MDM_NAMESPACE = 'Akeneo\Mdm';
 const TARGET_MARKET_NAMESPACE = 'Akeneo\TargetMarket';
 
 $rootRules = [
-    new Rule(
-        USER_MANAGEMENT_NAMESPACE,
-        [
-            PIM_NAMESPACE,
-            PAM_NAMESPACE,
-            MDM_NAMESPACE,
-            TARGET_MARKET_NAMESPACE,
-        ],
-        RuleInterface::TYPE_FORBIDDEN
-    ),
-    new Rule(
-        TARGET_MARKET_NAMESPACE,
-        [
-            PIM_NAMESPACE,
-            PAM_NAMESPACE,
-            MDM_NAMESPACE,
-            USER_MANAGEMENT_NAMESPACE,
-        ],
-        RuleInterface::TYPE_FORBIDDEN
-    ),
-    new Rule(MDM_NAMESPACE, [PIM_NAMESPACE], RuleInterface::TYPE_FORBIDDEN),
-    new Rule(
-        PAM_NAMESPACE,
-        [PIM_NAMESPACE, MDM_NAMESPACE],
-        RuleInterface::TYPE_FORBIDDEN
-    ),
+    $builder
+        ->forbids([PIM_NAMESPACE, PAM_NAMESPACE, MDM_NAMESPACE, TARGET_MARKET_NAMESPACE])
+        ->in(USER_MANAGEMENT_NAMESPACE),
+    $builder
+        ->forbids([PIM_NAMESPACE, PAM_NAMESPACE, MDM_NAMESPACE, USER_MANAGEMENT_NAMESPACE])
+        ->in(TARGET_MARKET_NAMESPACE),
+    $builder->forbids([PIM_NAMESPACE])->in(MDM_NAMESPACE),
+    $builder->forbids([PIM_NAMESPACE, MDM_NAMESPACE])->in(PAM_NAMESPACE),
 ];
 
 const PIM_ENRICHMENT = 'Akeneo\Pim\Enrichment';
@@ -55,11 +38,21 @@ const PIM_WORKORG_TWA = 'Akeneo\Pim\WorkOrganisation\TeamWorkAssistant';
 const PIM_WORKORG_WFL = 'Akeneo\Pim\WorkOrganisation\Workflow';
 
 $pimRules = [
-    new Rule(PIM_STRUCTURE, [PIM_ENRICHMENT, PIM_AUTOMATION, PIM_WORKORG, PIM_SECURITY], RuleInterface::TYPE_FORBIDDEN),
-    new Rule(PIM_ENRICHMENT, [PIM_AUTOMATION, PIM_WORKORG, PIM_SECURITY], RuleInterface::TYPE_FORBIDDEN),
-    new Rule(PIM_WORKORG_TWA, [PIM_WORKORG_WFL, PIM_AUTOMATION], RuleInterface::TYPE_FORBIDDEN),
-    new Rule(PIM_WORKORG_WFL, [PIM_WORKORG_TWA, PIM_AUTOMATION, PIM_STRUCTURE], RuleInterface::TYPE_FORBIDDEN),
-    new Rule(PIM_AUTOMATION, [PIM_WORKORG, PIM_STRUCTURE, PIM_SECURITY], RuleInterface::TYPE_FORBIDDEN),
+    $builder
+        ->forbids([PIM_ENRICHMENT, PIM_AUTOMATION, PIM_WORKORG, PIM_SECURITY])
+        ->in(PIM_STRUCTURE),
+    $builder
+        ->forbids([PIM_AUTOMATION, PIM_WORKORG, PIM_SECURITY])
+        ->in(PIM_ENRICHMENT),
+    $builder
+        ->forbids([PIM_WORKORG_WFL, PIM_AUTOMATION])
+        ->in(PIM_WORKORG_TWA),
+    $builder
+        ->forbids([PIM_WORKORG_TWA, PIM_AUTOMATION, PIM_STRUCTURE])
+        ->in(PIM_WORKORG_WFL),
+    $builder
+        ->forbids([PIM_WORKORG, PIM_STRUCTURE, PIM_SECURITY])
+        ->in(PIM_AUTOMATION),
 ];
 
 $config = new Configuration(array_merge($rootRules, $pimRules), $finder);
