@@ -6,27 +6,33 @@ use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use PimEnterprise\Bundle\UserBundle\Entity\UserInterface;
 use PimEnterprise\Component\Security\Attributes;
+use Prophecy\Argument;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
+use Symfony\Component\Serializer\Exception\NotNormalizableValueException;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class CachedAuthorizationCheckerSpec extends ObjectBehavior
 {
-    function let(AuthorizationCheckerInterface $authorizationChecker, TokenStorageInterface $tokenStorage): void
+    function let(
+        AuthorizationCheckerInterface $authorizationChecker,
+        TokenStorageInterface $tokenStorage,
+        NormalizerInterface $normalizer
+    ): void
     {
-        $this->beConstructedWith($authorizationChecker, $tokenStorage);
+        $this->beConstructedWith($authorizationChecker, $tokenStorage, $normalizer);
     }
 
     function it_is_an_authorization_checker(): void
     {
-        $this->shouldImplement(
-            'Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface'
-        );
+        $this->shouldImplement(AuthorizationCheckerInterface::class);
     }
 
     function it_caches_previous_results_for_object_resources(
         $authorizationChecker,
         $tokenStorage,
+        $normalizer,
         TokenInterface $token,
         UserInterface $user
     ): void {
@@ -36,6 +42,7 @@ class CachedAuthorizationCheckerSpec extends ObjectBehavior
         $token->getUser()->willReturn($user);
         $user->getId()->willReturn(3);
         $user->getUsername()->willReturn('arthur_dent');
+        $normalizer->normalize($resourceToCheck, 'authorization')->willThrow(NotNormalizableValueException::class);
 
         $authorizationChecker->isGranted(Attributes::EDIT, $resourceToCheck)
             ->willReturn(true)
@@ -53,6 +60,7 @@ class CachedAuthorizationCheckerSpec extends ObjectBehavior
     function it_caches_previous_results_for_non_object_resources(
         $authorizationChecker,
         $tokenStorage,
+        $normalizer,
         TokenInterface $token,
         UserInterface $user
     ): void {
@@ -60,6 +68,7 @@ class CachedAuthorizationCheckerSpec extends ObjectBehavior
         $token->getUser()->willReturn($user);
         $user->getId()->willReturn(3);
         $user->getUsername()->willReturn('arthur_dent');
+        $normalizer->normalize(Argument::any(), 'authorization')->shouldNotBeCalled();
 
         $authorizationChecker->isGranted(Attributes::VIEW, 2)
             ->willReturn(true)
@@ -72,6 +81,7 @@ class CachedAuthorizationCheckerSpec extends ObjectBehavior
     function it_caches_previous_results_even_if_user_has_no_id(
         $authorizationChecker,
         $tokenStorage,
+        $normalizer,
         TokenInterface $token,
         UserInterface $user
     ): void {
@@ -79,6 +89,7 @@ class CachedAuthorizationCheckerSpec extends ObjectBehavior
         $token->getUser()->willReturn($user);
         $user->getId()->willReturn(null);
         $user->getUsername()->willReturn('arthur_dent');
+        $normalizer->normalize(Argument::any(), 'authorization')->shouldNotBeCalled();
 
         $authorizationChecker->isGranted(Attributes::VIEW, 2)
             ->willReturn(true)
@@ -91,9 +102,11 @@ class CachedAuthorizationCheckerSpec extends ObjectBehavior
     function it_does_not_use_the_cache_when_the_resource_has_been_modified(
         $authorizationChecker,
         $tokenStorage,
+        $normalizer,
         TokenInterface $token,
         UserInterface $user
-    ): void {
+    ): void
+    {
         $resourceToCheck = new Resource('gold');
 
         $tokenStorage->getToken()->willReturn($token);
@@ -101,13 +114,14 @@ class CachedAuthorizationCheckerSpec extends ObjectBehavior
         $user->getId()->willReturn(3);
         $user->getUsername()->willReturn('arthur_dent');
 
-        $authorizationChecker->isGranted(Attributes::OWN, $resourceToCheck)
-            ->willReturn(false)
-            ->shouldBeCalledTimes(2);
+        $normalizer->normalize($resourceToCheck, 'authorization')->willReturn(['name' => 'gold']);
+
+        $authorizationChecker->isGranted(Attributes::OWN, $resourceToCheck)->willReturn(false)->shouldBeCalledTimes(2);
 
         $this->isGranted(Attributes::OWN, $resourceToCheck);
 
         $resourceToCheck->setName('stone');
+        $normalizer->normalize($resourceToCheck, 'authorization')->willReturn(['name' => 'stone']);
         $this->isGranted(Attributes::OWN, $resourceToCheck);
     }
 }
