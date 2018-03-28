@@ -74,7 +74,7 @@ datagrid:
                 type:  ajax
                 label: Unpublish the product
                 link:  unpublish_link
-        action_configuration: '@pimee_datagrid.datagrid.configuration.published_product.grid_helper->getActionConfigurationClosure'
+        action_configuration: '@pimee_workflow.datagrid.configuration.published_product.grid_helper->getActionConfigurationClosure'
         mass_actions_groups:
             quick_export:
                 label: pim_datagrid.mass_action_group.quick_export.label

@@ -13,6 +13,7 @@ parameters:
     pimee_workflow.datagrid.product_draft_choice_filter.class: PimEnterprise\Bundle\WorkflowBundle\Datagrid\Filter\ChoiceFilter
     pimee_workflow.datagrid.product_draft_author_filter.class: PimEnterprise\Bundle\WorkflowBundle\Datagrid\Filter\AuthorFilter
     pimee_workflow.datagrid.product_draft_date_filter.class: Pim\Bundle\FilterBundle\Filter\ProductValue\DateTimeRangeFilter
+    pimee_workflow.datagrid.configuration.published_product.grid_helper.class: PimEnterprise\Bundle\WorkflowBundle\Datagrid\Configuration\PublishedProduct\GridHelper
 
 services:
     # Listener
@@ -104,6 +105,12 @@ services:
             - '@pim_user.context.user'
             - '@request_stack'
             - '@pim_catalog.repository.attribute'
+
+    pimee_workflow.datagrid.configuration.published_product.grid_helper:
+        class: '%pimee_workflow.datagrid.configuration.published_product.grid_helper.class%'
+        arguments:
+            - '@security.authorization_checker'
+            - '@pimee_workflow.repository.published_product'
 
     # Datasource
     pimee_catalog.datasource.product_draft:
