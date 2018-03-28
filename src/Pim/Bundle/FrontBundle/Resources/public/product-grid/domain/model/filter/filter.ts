@@ -1,5 +1,6 @@
 import {Field, PropertyInterface, AttributeInterface} from 'pimfront/product-grid/domain/model/field';
 import {Operator} from 'pimfront/product-grid/domain/model/filter/operator';
+import All from 'pimfront/product-grid/domain/model/filter/operator/all';
 import {Value} from 'pimfront/product-grid/domain/model/filter/value';
 import {InvalidArgument} from 'pimfront/product-grid/domain/model/error';
 
@@ -42,7 +43,7 @@ Supported: ${this.getOperators().map((mappedOperator: Operator) => `"${mappedOpe
   }
 
   isEmpty(): boolean {
-    return this.operator.needValue && this.value.isEmpty();
+    return this.operator.equals(All.create()) || (this.operator.needValue && this.value.isEmpty());
   }
 
   abstract getOperators(): Operator[];

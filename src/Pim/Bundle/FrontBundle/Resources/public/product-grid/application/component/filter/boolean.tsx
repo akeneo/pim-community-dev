@@ -12,20 +12,7 @@ interface FilterViewProps {
   onFilterChanged: (filter: Filter) => void;
 }
 
-interface FilterViewState {
-  isOpen: boolean;
-}
-
-// <div
-//   className="AknActionButton AknActionButton--withoutBorder"
-//   data-identifier={selectedElement.identifier}
-//   onClick={onClick}
-// >
-//   <div className="AknColumn-subtitle">{__('Locale')}</div>
-//   <div className="AknColumn-value" data-identifier={selectedElement.identifier}>
-//     <Flag locale={selectedElement.original} displayLanguage />
-//   </div>
-// </div>
+interface FilterViewState {}
 
 const BooleanButtonView = ({
   label,
@@ -51,10 +38,6 @@ export default class Boolean extends React.Component<FilterViewProps, FilterView
     if (!(props.filter instanceof BooleanAttributeFilter || props.filter instanceof BooleanPropertyFilter)) {
       throw new InvalidFilterModel('The provided model is not compatible witht the Boolean component');
     }
-
-    this.state = {
-      isOpen: false,
-    };
   }
 
   render() {
@@ -66,7 +49,7 @@ export default class Boolean extends React.Component<FilterViewProps, FilterView
     const selectedItem = this.props.filter.getChoiceFromFilter(this.props.filter);
 
     return (
-      <div className="AknFilterBox-filterContainer" data-name="enabled" data-type="choice">
+      <div className="AknFilterBox-filterContainer" data-name={this.props.filter.field.identifier} data-type="choice">
         <div className="AknFilterBox-filter filter-select filter-criteria-selector">
           <Dropdown
             elements={this.props.filter.getChoices().map((choice: Choice): DropdownElement => ({

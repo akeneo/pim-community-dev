@@ -79,7 +79,7 @@ interface FilterDispatch {
 class FiltersView extends React.Component<FilterViewState & FilterDispatch, FilterViewState> {
   private filterViews: any[] = [];
 
-  componentWillUpdate(nextProps: FilterViewState & FilterDispatch) {
+  componentDidUpdate(nextProps: FilterViewState & FilterDispatch) {
     if (JSON.stringify(this.props.filters) !== JSON.stringify(nextProps.filters)) {
       this.updateFilters(nextProps.filters, nextProps.locale);
     }
