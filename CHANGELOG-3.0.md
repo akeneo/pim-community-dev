@@ -50,3 +50,5 @@
 - Move `PimEnterprise\Bundle\ApiBundle\Controller\PublishedProductController` to `PimEnterprise\Bundle\WorkflowBundle\Controller\ExternalApi\PublishedProductController`
 - Move `PimEnterprise\Component\Api\Normalizer\PublishedProductNormalizer` to `PimEnterprise\Component\Workflow\Normalizer\ExternalApi\PublishedProductNormalizer`
 - Remove `PimEnterprise\Component\Api\Repository\PublishedProductRepositoryInterface`
+- Move `PimEnterprise\Bundle\DataGridBundle\Datagrid\Configuration\PublishedProduct\GridHelper` to `PimEnterprise\Bundle\WorkflowBundle\Datagrid\Configuration\PublishedProduct\GridHelper`
+- Move `PimEnterprise\Bundle\DataGridBundle\Datasource\ResultRecord\ORM\ProductHistoryHydrator` to `PimEnterprise\Bundle\WorkflowBundle\Datagrid\Datasource\ResultRecord\PublishedProductHistoryHydrator`
