@@ -19,8 +19,8 @@ Feature: Display the attribute group history
     When I visit the "History" tab
     Then there should be 1 update
     And I should see history:
-      | version | property | value     |
-      | 1       | code     | Technical |
+      | version | property | value     | date |
+      | 1       | code     | Technical | now  |
     When I visit the "Properties" tab
     And I fill in the following information:
       | English (United States) | My technical group |
@@ -29,9 +29,9 @@ Feature: Display the attribute group history
     When I visit the "History" tab
     Then there should be 2 updates
     And I should see history:
-      | version | property    | value              |
-      | 1       | code        | Technical          |
-      | 2       | label-en_US | My technical group |
+      | version | property    | value              | date |
+      | 1       | code        | Technical          | now  |
+      | 2       | label-en_US | My technical group | now  |
 
     When I visit the "Attributes" tab
     And I add available attributes SKU, Description
@@ -40,10 +40,10 @@ Feature: Display the attribute group history
     When I visit the "History" tab
     Then there should be 3 updates
     And I should see history:
-      | version | property    | value              |
-      | 1       | code        | Technical          |
-      | 2       | label-en_US | My technical group |
-      | 3       | attributes  | sku,description    |
+      | version | property    | value              | date |
+      | 1       | code        | Technical          | now  |
+      | 2       | label-en_US | My technical group | now  |
+      | 3       | attributes  | sku,description    | now  |
 
     When I visit the "Attributes" tab
     And I remove the "Description" attribute
@@ -53,8 +53,8 @@ Feature: Display the attribute group history
     When I visit the "History" tab
     Then there should be 4 updates
     And I should see history:
-      | version | property    | value              |
-      | 1       | code        | Technical          |
-      | 2       | label-en_US | My technical group |
-      | 3       | attributes  | sku,description    |
-      | 4       | attributes  | sku                |
+      | version | property    | value              | date |
+      | 1       | code        | Technical          | now  |
+      | 2       | label-en_US | My technical group | now  |
+      | 3       | attributes  | sku,description    | now  |
+      | 4       | attributes  | sku                | now  |
