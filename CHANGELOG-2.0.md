@@ -2,6 +2,7 @@
 
 ## Bug fixes
 
+- PIM-7269: Fix rendering of a proposal on an asset collection attribute
 - PIM-7249: Fix memory leak on mass upload assets
 
 # 2.0.19 (2018-03-23)
