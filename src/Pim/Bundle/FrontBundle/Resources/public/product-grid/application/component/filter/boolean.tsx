@@ -36,7 +36,7 @@ export default class Boolean extends React.Component<FilterViewProps, FilterView
     super(props);
 
     if (!(props.filter instanceof BooleanAttributeFilter || props.filter instanceof BooleanPropertyFilter)) {
-      throw new InvalidFilterModel('The provided model is not compatible witht the Boolean component');
+      throw new InvalidFilterModel('The provided model is not compatible with the Boolean component');
     }
   }
 
@@ -50,7 +50,7 @@ export default class Boolean extends React.Component<FilterViewProps, FilterView
 
     return (
       <div className="AknFilterBox-filterContainer" data-name={this.props.filter.field.identifier} data-type="choice">
-        <div className="AknFilterBox-filter filter-select filter-criteria-selector">
+        <div className="AknFilterBox-filter">
           <Dropdown
             elements={this.props.filter.getChoices().map((choice: Choice): DropdownElement => ({
               identifier: choice.identifier,

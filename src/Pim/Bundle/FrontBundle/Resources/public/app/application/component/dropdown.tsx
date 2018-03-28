@@ -126,6 +126,7 @@ export default class Dropdown extends React.Component<Props, {isOpen: boolean; s
 
     return (
       <div className={`AknDropdown ${undefined !== this.props.className ? this.props.className : ''}`}>
+        {this.state.isOpen ? <div className="AknDropdown-mask" onClick={this.close.bind(this)} /> : null}
         {dropdownButton(this.state.selectedElement, this.props.label)}
         <div className={'AknDropdown-menu ' + openClass}>
           <div className="AknDropdown-menuTitle">{this.getElement(this.state.selectedElement).label}</div>

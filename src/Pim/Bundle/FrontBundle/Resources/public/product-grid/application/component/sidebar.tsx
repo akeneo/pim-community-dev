@@ -81,7 +81,7 @@ class FiltersView extends React.Component<FilterViewState & FilterDispatch, Filt
 
   componentDidUpdate(nextProps: FilterViewState & FilterDispatch) {
     if (JSON.stringify(this.props.filters) !== JSON.stringify(nextProps.filters)) {
-      this.updateFilters(nextProps.filters, nextProps.locale);
+      this.updateFilters(this.props.filters, this.props.locale);
     }
   }
 

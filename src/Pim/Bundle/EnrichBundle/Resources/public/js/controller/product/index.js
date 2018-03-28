@@ -25,7 +25,7 @@ define(
             * {@inheritdoc}
             */
             renderForm() {
-                setTimeout(bridge.default(this.el));
+                setTimeout(() => bridge.default(this.el));
 
                 return $.Deferred().resolve();
             }
