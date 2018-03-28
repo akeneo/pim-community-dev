@@ -253,6 +253,11 @@ services:
         tags:
             - { name: oro_filter.extension.orm_filter.filter, type: product_draft_date }
 
+    pimee_workflow.datagrid.filter.published_product_category:
+        parent: pim_filter.product_category_filter
+        tags:
+            - { name: oro_filter.extension.orm_filter.filter, type: published_product_category }
+
     # Controller
     pimee_workflow.datagrid.controller.published_product_export:
         class: '%pim_datagrid.controller.product_export.class%'

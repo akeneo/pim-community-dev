@@ -11,8 +11,3 @@ services:
             - '@pimee_security.repository.category_access'
         tags:
             - { name: oro_filter.extension.orm_filter.filter, type: product_permission }
-
-    pimee_filter.published_product_category_filter:
-        parent: pim_filter.product_category_filter
-        tags:
-            - { name: oro_filter.extension.orm_filter.filter, type: published_product_category }
