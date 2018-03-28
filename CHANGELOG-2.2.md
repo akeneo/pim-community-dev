@@ -1,5 +1,9 @@
 # 2.2.x
 
+## BC Breaks
+
+- Rename `Akeneo\Component\StorageUtils\Cache\CacheClearerInterface` to `Akeneo\Component\StorageUtils\Cache\EntityManagerClearerInterface`
+
 ## Improve Julia's experience
 
 - AOB-101: Apply user timezone on dates in the UI (missing cases)

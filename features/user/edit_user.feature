@@ -61,8 +61,8 @@ Feature: Edit a user
     And I visit the "Interfaces" tab
     Then I should see the text "UTC"
     When I fill in the following information:
-      | Timezone | Paris |
+      | Timezone | Panama |
     And I save the user
     And I reload the page
     And I visit the "Interfaces" tab
-    Then I should see the text "Paris CET (UTC+01:00)"
+    Then I should see the text "Panama EST (UTC-05:00)"
