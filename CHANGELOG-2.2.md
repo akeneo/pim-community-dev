@@ -8,6 +8,10 @@
 
 - AOB-101: Apply user timezone on dates in the UI (missing cases)
 
+## Bug fixes
+
+- PIM-7263: Create a purging command (`pim:catalog:remove-wrong-values-on-variant-products`) for boolean values on variant products that should belong to parents
+
 # 2.2.1 (2018-03-22)
 
 # 2.2.0 (2018-03-21)
