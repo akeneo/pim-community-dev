@@ -1,14 +1,7 @@
 parameters:
-    pimee_datagrid.datagrid.configuration.published_product.grid_helper.class: PimEnterprise\Bundle\DataGridBundle\Datagrid\Configuration\PublishedProduct\GridHelper
     pimee_datagrid.datagrid.configuration.product_history.grid_helper.class:   PimEnterprise\Bundle\DataGridBundle\Datagrid\Configuration\ProductHistory\GridHelper
 
 services:
-    pimee_datagrid.datagrid.configuration.published_product.grid_helper:
-        class: '%pimee_datagrid.datagrid.configuration.published_product.grid_helper.class%'
-        arguments:
-            - '@security.authorization_checker'
-            - '@pimee_workflow.repository.published_product'
-
     pimee_datagrid.datagrid.configuration.product_history.grid_helper:
         class: '%pimee_datagrid.datagrid.configuration.product_history.grid_helper.class%'
         arguments:

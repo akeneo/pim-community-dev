@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Bundle\DataGridBundle\Datasource\ResultRecord\ORM;
+namespace PimEnterprise\Bundle\WorkflowBundle\Datagrid\Datasource\ResultRecord;
 
 use Oro\Bundle\DataGridBundle\Datasource\ResultRecord;
 use Pim\Bundle\DataGridBundle\Datasource\ResultRecord\HydratorInterface;
@@ -20,7 +20,7 @@ use PimEnterprise\Component\Workflow\Repository\PublishedProductRepositoryInterf
  *
  * @author Julien Janvier <julien.janvier@akeneo.com>
  */
-class ProductHistoryHydrator implements HydratorInterface
+class PublishedProductHistoryHydrator implements HydratorInterface
 {
     /** @var PublishedProductRepositoryInterface */
     protected $publishedRepository;

@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Bundle\DataGridBundle\Datagrid\Configuration\PublishedProduct;
+namespace PimEnterprise\Bundle\WorkflowBundle\Datagrid\Configuration\PublishedProduct;
 
 use Oro\Bundle\DataGridBundle\Datasource\ResultRecordInterface;
 use PimEnterprise\Component\Security\Attributes;

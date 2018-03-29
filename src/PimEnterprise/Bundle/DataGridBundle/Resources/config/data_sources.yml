@@ -6,21 +6,9 @@ services:
         class: '%pim_datagrid.datasource.default.class%'
         arguments:
             - '@pim_catalog.object_manager.product'
-            - '@pimee_datagrid.datasource.result_record.hydrator.product_history'
+            - '@pimee_workflow.datagrid.datasource.result_record.hydrator.published_product_history'
         tags:
             - { name: oro_datagrid.datasource, type: pimee_datasource_product_history }
-
-    pim_catalog.datasource.published_product:
-        class: '%pim_datagrid.datasource.product.class%'
-        arguments:
-            - '@pim_catalog.object_manager.product'
-            - '@pimee_workflow.doctrine.query.published_product_query_builder_from_size_factory'
-            - '@pim_datagrid.normalizer.product'
-            - '@pim_datagrid.event_subscriber.filter_entity_with_values_subscriber'
-        calls:
-            - [ setMassActionRepository, ['@pimee_workflow.repository.published_product_mass_action' ]]
-        tags:
-            - { name: oro_datagrid.datasource, type: pimee_datasource_published_product }
 
     pim_datagrid.datasource.rule:
         class: '%pim_datagrid.datasource.default.class%'
