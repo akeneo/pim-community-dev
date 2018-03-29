@@ -1,3 +1,9 @@
+# 2.0.x
+
+## Bug fixes
+
+- PIM-7251: Fix history date on all grids (except product grid)
+
 # 2.0.20 (2018-03-29)
 
 ## Bug fixes
