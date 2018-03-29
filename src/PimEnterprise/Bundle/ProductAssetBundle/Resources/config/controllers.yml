@@ -102,7 +102,7 @@ services:
     pimee_product_asset.controller.asset_category:
         class: '%pimee_product_asset.controller.asset_category.class%'
         arguments:
-            - '@pimee_api.repository.asset_category'
+            - '@pimee_product_asset.repository.external_api.asset_category'
             - '@pim_serializer'
             - '@pimee_product_asset.factory.category'
             - '@pimee_product_asset.updater.category'
@@ -162,7 +162,7 @@ services:
             - '@pim_api.pagination.search_after_hal_paginator'
             - '@pimee_product_asset.factory.asset'
             - '@validator'
-            - '@pimee_api.updater.asset'
+            - '@pimee_product_asset.updater.external_api.asset'
             - '@pimee_product_asset.saver.asset'
             - '@router'
             - '@pimee_product_asset.stream.asset_partial_update_stream'
@@ -171,7 +171,7 @@ services:
     pimee_product_asset.controller.asset_tag:
         class : '%pimee_product_asset.controller.asset_tag.class%'
         arguments:
-            - '@pimee_api.repository.tag'
+            - '@pimee_product_asset.repository.external_api.tag'
             - '@pim_api.pagination.parameter_validator'
             - '@pim_api.pagination.offset_hal_paginator'
             - '@pimee_product_asset.factory.tag'

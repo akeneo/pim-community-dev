@@ -1,12 +1,12 @@
 <?php
 
-namespace spec\PimEnterprise\Component\Api\Updater;
+namespace spec\PimEnterprise\Component\ProductAsset\Updater\ExternalApi;
 
 use Akeneo\Component\StorageUtils\Exception\InvalidObjectException;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use PhpSpec\ObjectBehavior;
-use PimEnterprise\Component\Api\Updater\AssetUpdater;
 use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
+use PimEnterprise\Component\ProductAsset\Updater\ExternalApi\AssetUpdater;
 
 class AssetUpdaterSpec extends ObjectBehavior
 {

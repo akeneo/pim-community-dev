@@ -1,23 +1,7 @@
 parameters:
-    pimee_api.controller.published_product.class: PimEnterprise\Bundle\ApiBundle\Controller\PublishedProductController
 
 services:
-    pimee_api.controller.published_product:
-        class: '%pimee_api.controller.published_product.class%'
-        arguments:
-            - '@pimee_workflow.doctrine.query.published_product_query_builder_search_after_size_factory_with_permissions'
-            - '@pimee_workflow.doctrine.query.published_product_query_builder_from_size_factory_with_permissions'
-            - '@pim_api.checker.query_parameters'
-            - '@pim_serializer'
-            - '@pim_api.repository.channel'
-            - '@pim_catalog.repository.cached_locale'
-            - '@pim_api.repository.attribute'
-            - '@pimee_api.repository.published_product'
-            - '@pim_api.pagination.search_after_hal_paginator'
-            - '@pim_api.pagination.offset_hal_paginator'
-            - '@pim_api.pagination.parameter_validator'
-            - '@pim_api.security.primary_key_encrypter'
-            - '%pim_api.configuration%'
+
 
     pim_api.controller.media_file:
         class: '%pim_api.controller.media_file.class%'
@@ -58,7 +42,7 @@ services:
             - '@pim_catalog.remover.product'
             - '@pim_catalog.updater.product'
             - '@pimee_workflow.saver.product_delegating'
-            - '@pimee_api.router.proxy_product'
+            - '@pimee_workflow.router.proxy_product'
             - '@pim_catalog.comparator.filter.product'
             - '@pim_api.stream.product_partial_update_stream'
             - '@pim_api.security.primary_key_encrypter'

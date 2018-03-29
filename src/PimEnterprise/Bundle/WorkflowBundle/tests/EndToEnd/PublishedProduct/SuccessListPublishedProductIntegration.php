@@ -1,6 +1,6 @@
 <?php
 
-namespace PimEnterprise\Bundle\ApiBundle\tests\integration\Controller\PublishedProduct;
+namespace PimEnterprise\Bundle\WorkflowBundle\tests\EndToEnd\PublishedProduct;
 
 use Doctrine\Common\Collections\Collection;
 

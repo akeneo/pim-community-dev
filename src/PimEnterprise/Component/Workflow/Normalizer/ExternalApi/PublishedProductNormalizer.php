@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Component\Api\Normalizer;
+namespace PimEnterprise\Component\Workflow\Normalizer\ExternalApi;
 
 use PimEnterprise\Component\Workflow\Model\PublishedProductInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
