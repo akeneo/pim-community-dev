@@ -62,7 +62,7 @@ define(
 
                         $.get(
                           router.generate(
-                              'pimee_versioning_revert_product',
+                              'pimee_revert_revert_product',
                               { id: $(event.currentTarget).parents('.entity-version').data('version-id') }
                           )
                         ).done(

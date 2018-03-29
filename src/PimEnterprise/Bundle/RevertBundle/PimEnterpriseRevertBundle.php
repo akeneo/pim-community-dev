@@ -9,18 +9,18 @@
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Bundle\VersioningBundle;
+namespace PimEnterprise\Bundle\RevertBundle;
 
 use Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\RegisterSerializerPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 /**
- * Enterprise versioning bundle
+ * Enterprise revert bundle
  *
  * @author Nicolas Dupont <nicolas@akeneo.com>
  */
-class PimEnterpriseVersioningBundle extends Bundle
+class PimEnterpriseRevertBundle extends Bundle
 {
     /**
      * {@inheritdoc}

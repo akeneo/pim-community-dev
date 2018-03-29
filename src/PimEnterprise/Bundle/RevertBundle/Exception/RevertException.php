@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Bundle\VersioningBundle\Exception;
+namespace PimEnterprise\Bundle\RevertBundle\Exception;
 
 /**
  * Revert exception

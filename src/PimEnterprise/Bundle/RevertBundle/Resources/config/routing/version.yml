@@ -1,0 +1,6 @@
+pimee_revert_revert_product:
+    path: /{id}/revert/product
+    defaults: { _controller: pimee_revert.controller.product_version:revertAction }
+    requirements:
+        id: '[0-9a-f]+'
+    methods: [GET]

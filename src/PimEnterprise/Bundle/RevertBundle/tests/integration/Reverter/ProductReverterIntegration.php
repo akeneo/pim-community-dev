@@ -1,6 +1,6 @@
 <?php
 
-namespace PimEnterprise\Bundle\VersioningBundle\tests\integration\Reverter;
+namespace PimEnterprise\Bundle\RevertBundle\tests\integration\Reverter;
 
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
@@ -9,7 +9,7 @@ use Akeneo\Test\Integration\TestCase;
 use Doctrine\Common\Util\ClassUtils;
 use Pim\Bundle\VersioningBundle\Repository\VersionRepositoryInterface;
 use Pim\Component\Catalog\Builder\ProductBuilderInterface;
-use PimEnterprise\Bundle\VersioningBundle\Reverter\ProductReverter;
+use PimEnterprise\Bundle\RevertBundle\Reverter\ProductReverter;
 use PimEnterprise\Component\ActivityManager\Repository\ProductRepositoryInterface;
 
 /**
@@ -143,7 +143,7 @@ class ProductReverterIntegration extends TestCase
      */
     protected function getProductReverter()
     {
-        return $this->get('pimee_versioning.reverter.product');
+        return $this->get('pimee_revert.reverter.product');
     }
 
     /**
