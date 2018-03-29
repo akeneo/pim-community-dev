@@ -105,13 +105,18 @@ class AssociationTypeController
 
     /**
      * @param Request $request
+     * @param string  $code
      *
-     * @return JsonResponse
+     * @return Response
      *
      * @AclAncestor("pim_enrich_associationtype_edit")
      */
     public function postAction(Request $request, $code)
     {
+        if (!$request->isXmlHttpRequest()) {
+            return new RedirectResponse('/');
+        }
+
         $associationType = $this->getAssociationTypeOr404($code);
 
         $data = json_decode($request->getContent(), true);
@@ -142,7 +147,8 @@ class AssociationTypeController
     /**
      * Remove action
      *
-     * @param $code
+     * @param Request $request
+     * @param string  $code
      *
      * @return Response
      *
