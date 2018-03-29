@@ -3,6 +3,7 @@
 ## Bug fixes
 
 - PIM-7305: Fix memory leak on purge job command
+- GITHUB-7709: Fix multiple session save (thank you so much [muspelheim](https://github.com/muspelheim))
 
 # 2.2.4 (2018-04-26)
 
