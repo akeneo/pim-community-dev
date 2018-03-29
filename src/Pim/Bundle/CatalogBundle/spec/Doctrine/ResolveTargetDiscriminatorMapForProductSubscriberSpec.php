@@ -4,9 +4,10 @@ namespace spec\Pim\Bundle\CatalogBundle\Doctrine;
 
 use Doctrine\Common\Persistence\Event\LoadClassMetadataEventArgs;
 use Doctrine\ORM\Mapping\ClassMetadata;
-use PhpSpec\Exception\Example\NotEqualException;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\AbstractProduct;
+use Pim\Component\Catalog\Model\Product;
+use Prophecy\Argument;
 
 class ResolveTargetDiscriminatorMapForProductSubscriberSpec extends ObjectBehavior
 {
@@ -22,6 +23,17 @@ class ResolveTargetDiscriminatorMapForProductSubscriberSpec extends ObjectBehavi
         $args->getClassMetadata()->willReturn($classMetadata);
         $classMetadata->getName()->willReturn(AbstractProduct::class);
         $classMetadata->setDiscriminatorMap(['product' => 'foo', 'variant_product' => 'bar'])->shouldBeCalled();
+
+        $this->loadClassMetadata($args);
+    }
+
+    function it_adds_the_discriminator_value_on_the_product_class(
+        LoadClassMetadataEventArgs $args,
+        ClassMetadata $classMetadata
+    ) {
+        $args->getClassMetadata()->willReturn($classMetadata);
+        $classMetadata->getName()->willReturn(Product::class);
+        $classMetadata->setDiscriminatorMap(Argument::any())->shouldNotBeCalled();
 
         $this->loadClassMetadata($args);
     }
