@@ -13,9 +13,10 @@ declare(strict_types=1);
 
 namespace PimEnterprise\Component\Security\Authorization;
 
-use Doctrine\Common\Util\ClassUtils;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
+use Symfony\Component\Serializer\Exception\NotNormalizableValueException;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
  * Decorates the authorization checker from symfony to be able to cache results.
@@ -33,16 +34,21 @@ class CachedAuthorizationChecker implements AuthorizationCheckerInterface
     /** @var TokenStorageInterface */
     private $tokenStorage;
 
+    /** @var NormalizerInterface */
+    private $normalizer;
+
     /**
      * @param AuthorizationCheckerInterface $authorizationChecker
      * @param TokenStorageInterface         $tokenStorage
      */
     public function __construct(
         AuthorizationCheckerInterface $authorizationChecker,
-        TokenStorageInterface $tokenStorage
+        TokenStorageInterface $tokenStorage,
+        NormalizerInterface $normalizer
     ) {
         $this->authorizationChecker = $authorizationChecker;
         $this->tokenStorage = $tokenStorage;
+        $this->normalizer = $normalizer;
         $this->cachedResults = [];
     }
 
@@ -86,6 +92,8 @@ class CachedAuthorizationChecker implements AuthorizationCheckerInterface
      * We use the hash of the serialized object as a key because voters results are often based on object
      * content (properties), so when the content of an object changes, its cache key must be different.
      *
+     * To avoid to serialize too big objects (for instance a product), we normalize them before.
+     *
      * @param mixed $object
      *
      * @return string
@@ -93,7 +101,13 @@ class CachedAuthorizationChecker implements AuthorizationCheckerInterface
     private function getObjectAsIndex($object): string
     {
         if (is_object($object)) {
-            return md5(serialize(($object)));
+            try {
+                $normalizer = $this->normalizer->normalize($object, 'authorization');
+            } catch (NotNormalizableValueException $e) {
+                $normalizer = $object;
+            }
+
+            return md5(serialize($normalizer));
         }
 
         return (string) $object;

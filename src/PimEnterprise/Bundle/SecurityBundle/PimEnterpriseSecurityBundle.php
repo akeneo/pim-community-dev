@@ -11,6 +11,8 @@
 
 namespace PimEnterprise\Bundle\SecurityBundle;
 
+use Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\RegisterSerializerPass;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 /**
@@ -20,4 +22,12 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
  */
 class PimEnterpriseSecurityBundle extends Bundle
 {
+    /**
+     * {@inheritdoc}
+     */
+    public function build(ContainerBuilder $container)
+    {
+        $container
+            ->addCompilerPass(new RegisterSerializerPass('pimee_authorization_serializer'));
+    }
 }
