@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Bundle\EnrichBundle\Normalizer;
+namespace PimEnterprise\Bundle\WorkflowBundle\Versioning;
 
 use PimEnterprise\Component\Workflow\Repository\PublishedProductRepositoryInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;

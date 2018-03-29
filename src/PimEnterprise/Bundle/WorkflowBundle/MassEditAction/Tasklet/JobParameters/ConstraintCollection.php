@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Bundle\EnrichBundle\Connector\Job\JobParameters\ConstraintCollectionProvider;
+namespace PimEnterprise\Bundle\WorkflowBundle\MassEditAction\Tasklet\JobParameters;
 
 use Akeneo\Component\Batch\Job\JobInterface;
 use Akeneo\Component\Batch\Job\JobParameters\ConstraintCollectionProviderInterface;
@@ -24,7 +24,7 @@ use Symfony\Component\Validator\Constraints\Type;
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class MassPublish implements ConstraintCollectionProviderInterface
+class ConstraintCollection implements ConstraintCollectionProviderInterface
 {
     /** @var array */
     protected $supportedJobNames;

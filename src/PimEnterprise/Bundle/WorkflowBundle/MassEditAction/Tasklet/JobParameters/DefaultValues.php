@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Bundle\EnrichBundle\Connector\Job\JobParameters\DefaultValuesProvider;
+namespace PimEnterprise\Bundle\WorkflowBundle\MassEditAction\Tasklet\JobParameters;
 
 use Akeneo\Component\Batch\Job\JobInterface;
 use Akeneo\Component\Batch\Job\JobParameters\DefaultValuesProviderInterface;
@@ -21,7 +21,7 @@ use Akeneo\Component\Batch\Job\JobParameters\DefaultValuesProviderInterface;
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class MassPublish implements DefaultValuesProviderInterface
+class DefaultValues implements DefaultValuesProviderInterface
 {
     /** @var array */
     protected $supportedJobNames;

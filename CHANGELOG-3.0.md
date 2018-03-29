@@ -53,3 +53,10 @@
 - Remove `PimEnterprise\Component\Api\Repository\PublishedProductRepositoryInterface`
 - Move `PimEnterprise\Bundle\DataGridBundle\Datagrid\Configuration\PublishedProduct\GridHelper` to `PimEnterprise\Bundle\WorkflowBundle\Datagrid\Configuration\PublishedProduct\GridHelper`
 - Move `PimEnterprise\Bundle\DataGridBundle\Datasource\ResultRecord\ORM\ProductHistoryHydrator` to `PimEnterprise\Bundle\WorkflowBundle\Datagrid\Datasource\ResultRecord\PublishedProductHistoryHydrator`
+- Move `PimEnterprise\Bundle\EnrichBundle\MassEditAction\Tasklet\AbstractProductPublisherTasklet` to `PimEnterprise\Bundle\WorkflowBundle\MassEditAction\Tasklet\AbstractProductPublisherTasklet`
+- Move `PimEnterprise\Bundle\EnrichBundle\Connector\Job\JobParameters\ConstraintCollectionProvider\MassPublish` to `PimEnterprise\Bundle\WorkflowBundle\MassEditAction\Tasklet\JobParameters\ConstraintCollection`
+- Move `PimEnterprise\Bundle\EnrichBundle\Connector\Job\JobParameters\DefaultValuesProvider\MassPublish` to `PimEnterprise\Bundle\WorkflowBundle\MassEditAction\Tasklet\JobParameters\DefaultValues`
+- Move `PimEnterprise\Bundle\EnrichBundle\MassEditAction\Tasklet\PublishProductTasklet` to `PimEnterprise\Bundle\WorkflowBundle\MassEditAction\Tasklet\PublishProductTasklet`
+- Move `PimEnterprise\Bundle\EnrichBundle\MassEditAction\Tasklet\UnpublishProductTasklet` to `PimEnterprise\Bundle\WorkflowBundle\MassEditAction\Tasklet\UnpublishProductTasklet`
+- Move `PimEnterprise\Bundle\EnrichBundle\Normalizer\ProductNormalizer` to `PimEnterprise\Bundle\WorkflowBundle\Normalizer\ProductNormalizer`
+- Move `PimEnterprise\Bundle\EnrichBundle\Normalizer\VersionNormalizer` to `PimEnterprise\Bundle\WorkflowBundle\Versioning\VersionNormalizer`
