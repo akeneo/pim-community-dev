@@ -68,6 +68,14 @@ class ParentFilter extends AbstractFieldFilter implements FieldFilterInterface
 
                 $this->searchQueryBuilder->addMustNot($clause);
                 break;
+            case Operators::IS_NOT_EMPTY:
+                $clause = [
+                    'exists' => [
+                        'field' => $field,
+                    ],
+                ];
+                $this->searchQueryBuilder->addFilter($clause);
+                break;
             default:
                 throw InvalidOperatorException::notSupported($operator, static::class);
         }
