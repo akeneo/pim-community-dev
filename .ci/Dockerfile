@@ -1,4 +1,4 @@
-FROM php:7.1.16-fpm
+FROM php:7.2-fpm
 
 ARG COMPOSER_COMMAND=update
 
@@ -15,7 +15,7 @@ RUN apt-get update && apt-get install -y apt-transport-https \
   && curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer \
   && curl -sS https://deb.nodesource.com/gpgkey/nodesource.gpg.key | apt-key add - \
   && curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - \
-  && echo "deb https://deb.nodesource.com/node_8.x jessie main" > /etc/apt/sources.list.d/nodesource.list \
+  && echo "deb https://deb.nodesource.com/node_8.x stretch main" > /etc/apt/sources.list.d/nodesource.list \
   && echo "deb https://dl.yarnpkg.com/debian/ stable main" > /etc/apt/sources.list.d/yarn.list \
   && apt-get update && apt-get install -y --no-install-recommends \
     apache2 \
@@ -42,7 +42,6 @@ RUN apt-get update && apt-get install -y apt-transport-https \
       gd \
       intl \
       mbstring \
-      mcrypt \
       opcache \
       pdo_mysql \
       soap \
