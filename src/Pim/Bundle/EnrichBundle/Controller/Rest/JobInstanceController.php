@@ -198,10 +198,14 @@ class JobInstanceController
      *
      * @AclAncestor("pim_importexport_import_profile_edit")
      *
-     * @return JsonResponse
+     * @return Response
      */
     public function putImportAction(Request $request, $identifier)
     {
+        if (!$request->isXmlHttpRequest()) {
+            return new RedirectResponse('/');
+        }
+
         return $this->putAction($request, $identifier);
     }
 
@@ -213,10 +217,14 @@ class JobInstanceController
      *
      * @AclAncestor("pim_importexport_export_profile_edit")
      *
-     * @return JsonResponse
+     * @return Response
      */
     public function putExportAction(Request $request, $identifier)
     {
+        if (!$request->isXmlHttpRequest()) {
+            return new RedirectResponse('/');
+        }
+
         return $this->putAction($request, $identifier);
     }
 
@@ -264,10 +272,14 @@ class JobInstanceController
      *
      * @AclAncestor("pim_importexport_import_profile_launch")
      *
-     * @return JsonResponse
+     * @return Response
      */
     public function launchImportAction(Request $request, $code)
     {
+        if (!$request->isXmlHttpRequest()) {
+            return new RedirectResponse('/');
+        }
+
         return $this->launchAction($request, $code);
     }
 
@@ -279,10 +291,14 @@ class JobInstanceController
      *
      * @AclAncestor("pim_importexport_export_profile_launch")
      *
-     * @return JsonResponse
+     * @return Response
      */
     public function launchExportAction(Request $request, $code)
     {
+        if (!$request->isXmlHttpRequest()) {
+            return new RedirectResponse('/');
+        }
+
         return $this->launchAction($request, $code);
     }
 
