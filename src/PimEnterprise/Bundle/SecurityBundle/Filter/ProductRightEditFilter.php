@@ -9,32 +9,32 @@
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Bundle\CatalogBundle\Filter;
+namespace PimEnterprise\Bundle\SecurityBundle\Filter;
 
 use Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface;
 use Pim\Bundle\CatalogBundle\Filter\ObjectFilterInterface;
-use Pim\Component\Catalog\Model\LocaleInterface;
+use Pim\Component\Catalog\Model\ProductInterface;
 use PimEnterprise\Component\Security\Attributes;
 
 /**
- * Locale filter
+ * Product view filter
  *
  * @author Julien Sanchez <julien@akeneo.com>
  */
-class LocaleViewRightFilter extends AbstractAuthorizationFilter implements
+class ProductRightEditFilter extends AbstractAuthorizationFilter implements
     CollectionFilterInterface,
     ObjectFilterInterface
 {
     /**
      * {@inheritdoc}
      */
-    public function filterObject($locale, $type, array $options = [])
+    public function filterObject($product, $type, array $options = [])
     {
-        if (!$this->supportsObject($locale, $type, $options)) {
-            throw new \LogicException('This filter only handles objects of type "LocaleInterface"');
+        if (!$this->supportsObject($product, $type, $options)) {
+            throw new \LogicException('This filter only handles objects of type "ProductInterface"');
         }
 
-        return !$this->authorizationChecker->isGranted(Attributes::VIEW_ITEMS, $locale);
+        return !$this->authorizationChecker->isGranted(Attributes::EDIT, $product);
     }
 
     /**
@@ -42,6 +42,6 @@ class LocaleViewRightFilter extends AbstractAuthorizationFilter implements
      */
     public function supportsObject($object, $type, array $options = [])
     {
-        return parent::supportsObject($options, $type, $options) && $object instanceof LocaleInterface;
+        return parent::supportsObject($options, $type, $options) && $object instanceof ProductInterface;
     }
 }

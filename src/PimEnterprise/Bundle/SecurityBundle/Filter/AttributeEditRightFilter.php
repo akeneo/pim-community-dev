@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Bundle\CatalogBundle\Filter;
+namespace PimEnterprise\Bundle\SecurityBundle\Filter;
 
 use Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface;
 use Pim\Bundle\CatalogBundle\Filter\ObjectFilterInterface;
@@ -19,15 +19,12 @@ use PimEnterprise\Component\Security\Attributes;
 /**
  * Attribute filter
  *
- * @author Julien Sanchez <julien@akeneo.com>
+ * @author Yohan Blain <yohan.blain@akeneo.com>
  */
-class AttributeViewRightFilter extends AbstractAuthorizationFilter implements
+class AttributeEditRightFilter extends AbstractAuthorizationFilter implements
     CollectionFilterInterface,
     ObjectFilterInterface
 {
-    /** @var array */
-    protected $authorizations = [];
-
     /**
      * {@inheritdoc}
      */
@@ -37,14 +34,7 @@ class AttributeViewRightFilter extends AbstractAuthorizationFilter implements
             throw new \LogicException('This filter only handles objects of type "AttributeInterface"');
         }
 
-        $group = $attribute->getGroup();
-        $key = $group->getId();
-
-        if (!isset($this->authorizations[$key])) {
-            $this->authorizations[$key] = $this->authorizationChecker->isGranted(Attributes::VIEW_ATTRIBUTES, $group);
-        }
-
-        return !$this->authorizations[$key];
+        return !$this->authorizationChecker->isGranted(Attributes::EDIT_ATTRIBUTES, $attribute->getGroup());
     }
 
     /**

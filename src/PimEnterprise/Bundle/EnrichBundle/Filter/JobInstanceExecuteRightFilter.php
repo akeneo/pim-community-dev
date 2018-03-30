@@ -14,7 +14,7 @@ namespace PimEnterprise\Bundle\EnrichBundle\Filter;
 use Akeneo\Component\Batch\Model\JobInstance;
 use Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface;
 use Pim\Bundle\CatalogBundle\Filter\ObjectFilterInterface;
-use PimEnterprise\Bundle\CatalogBundle\Filter\AbstractAuthorizationFilter;
+use PimEnterprise\Bundle\SecurityBundle\Filter\AbstractAuthorizationFilter;
 use PimEnterprise\Component\Security\Attributes;
 
 /**

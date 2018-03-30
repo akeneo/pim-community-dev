@@ -9,32 +9,32 @@
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Bundle\CatalogBundle\Filter;
+namespace PimEnterprise\Bundle\SecurityBundle\Filter;
 
 use Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface;
 use Pim\Bundle\CatalogBundle\Filter\ObjectFilterInterface;
-use Pim\Component\Catalog\Model\AttributeGroupInterface;
+use Pim\Component\Catalog\Model\LocaleInterface;
 use PimEnterprise\Component\Security\Attributes;
 
 /**
- * Attribute group filter
+ * Locale filter
  *
  * @author Julien Sanchez <julien@akeneo.com>
  */
-class AttributeGroupViewRightFilter extends AbstractAuthorizationFilter implements
+class LocaleViewRightFilter extends AbstractAuthorizationFilter implements
     CollectionFilterInterface,
     ObjectFilterInterface
 {
     /**
      * {@inheritdoc}
      */
-    public function filterObject($attributeGroup, $type, array $options = [])
+    public function filterObject($locale, $type, array $options = [])
     {
-        if (!$this->supportsObject($attributeGroup, $type, $options)) {
-            throw new \LogicException('This filter only handles objects of type "AttributeGroupInterface"');
+        if (!$this->supportsObject($locale, $type, $options)) {
+            throw new \LogicException('This filter only handles objects of type "LocaleInterface"');
         }
 
-        return !$this->authorizationChecker->isGranted(Attributes::VIEW_ATTRIBUTES, $attributeGroup);
+        return !$this->authorizationChecker->isGranted(Attributes::VIEW_ITEMS, $locale);
     }
 
     /**
@@ -42,6 +42,6 @@ class AttributeGroupViewRightFilter extends AbstractAuthorizationFilter implemen
      */
     public function supportsObject($object, $type, array $options = [])
     {
-        return parent::supportsObject($options, $type, $options) && $object instanceof AttributeGroupInterface;
+        return parent::supportsObject($options, $type, $options) && $object instanceof LocaleInterface;
     }
 }
