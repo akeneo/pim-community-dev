@@ -24,6 +24,7 @@
     "read-pkg": "2.0.0"
   },
   "dependencies": {
+    "@types/node": "^9.6.1",
     "JSON2": "0.1.0",
     "babel-cli": "6.26.0",
     "babel-core": "6.26.0",
