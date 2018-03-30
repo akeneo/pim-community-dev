@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Bundle\ApiBundle\Security;
+namespace PimEnterprise\Bundle\SecurityBundle\Api;
 
 use PimEnterprise\Component\Security\Exception\ResourceAccessDeniedException;
 use PimEnterprise\Component\Security\Exception\ResourceViewAccessDeniedException;

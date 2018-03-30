@@ -1,5 +1,6 @@
 parameters:
     pimee_security.api.checker.query_parameters.class: PimEnterprise\Bundle\SecurityBundle\Api\QueryParametersChecker
+    pimee_security.api.access_denied_handler.class: PimEnterprise\Bundle\SecurityBundle\Api\AccessDeniedHandler
 
 services:
     pimee_security.api.checker.query_parameters:
@@ -13,3 +14,10 @@ services:
             - '@pim_catalog.repository.cached_attribute'
             - '@pim_catalog.repository.cached_category'
         public: false
+
+    pimee_security.api.access_denied_handler:
+        class: '%pimee_security.api.access_denied_handler.class%'
+        decorates: pim_api.security.access_denied_handler
+        decoration_inner_name: pim_api.security.access_denied_handler.community
+        arguments:
+            - '@pim_api.security.access_denied_handler.community'
