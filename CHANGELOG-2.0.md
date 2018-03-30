@@ -11,6 +11,7 @@
 - PIM-6962: Fix breadcrumb links issue after the save on the edit page
 - PIM-7267: Fix boolean attributes not added to variant product
 - PIM-7263: (BACKPORT for 2.0) Create a purging command (`pim:catalog:remove-wrong-boolean-values-on-variant-products`) for boolean values on variant products that should belong to parents
+- PIM-6999: Fix flash message on edit user
 
 ## BC breaks
 
