@@ -15,6 +15,7 @@ define(
         'pim/fetcher-registry',
         'pim/mass-edit-form/product/operation',
         'pim/tree/associate',
+        'pim/common/property',
         'pim/template/mass-edit/product/category'
     ],
     function (
@@ -25,6 +26,7 @@ define(
         FetcherRegistry,
         BaseOperation,
         TreeAssociate,
+        propertyAccessor,
         template
     ) {
         return BaseOperation.extend({
@@ -189,6 +191,16 @@ define(
                 }
 
                 return this.categoryCache[id].code;
+            },
+
+            /**
+             * Checks ...
+             */
+            validate: function () {
+                const data = this.getFormData();
+                const categories = propertyAccessor.accessProperty(data, 'actions.0.value', []);
+
+                return $.Deferred().resolve(0 !== categories.length);
             }
         });
     }
