@@ -308,7 +308,7 @@ define(
                     this.$el.append(this.addButtonTemplate(
                         {
                             filters: this.filters,
-                            systemFilterGroup: __('system_filter_group')
+                            systemFilterGroup: __('pim_datagrid.column_configurator.system_group')
                         }
                     ));
                 }

@@ -56,7 +56,7 @@ define(
                 }
 
                 this.$el.html(this.template({
-                    label: __('grid.view_selector.create_view')
+                    label: __('pim_datagrid.view_selector.create_view')
                 }));
 
                 this.$('[data-toggle="tooltip"]').tooltip();
@@ -75,8 +75,8 @@ define(
                     titleLabel: __('pim_common.create'),
                     picture: 'illustrations/Views.svg',
                     fields: this.templateInput({
-                        placeholder: __('grid.view_selector.placeholder'),
-                        label: __('grid.view_selector.choose_label')
+                        placeholder: __('pim_datagrid.view_selector.placeholder'),
+                        label: __('pim_datagrid.view_selector.choose_label')
                     })
                 });
 

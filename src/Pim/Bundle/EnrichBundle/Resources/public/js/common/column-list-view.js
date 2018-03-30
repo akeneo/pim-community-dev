@@ -17,7 +17,7 @@ define([
         defaults: {
             label: '',
             displayed: false,
-            group: __('system_filter_group')
+            group: __('pim_datagrid.column_configurator.system_group')
         }
     });
 
@@ -88,10 +88,10 @@ define([
         },
 
         render: function () {
-            var systemColumn = this.collection.where({group: __('system_filter_group')});
+            var systemColumn = this.collection.where({group: __('pim_datagrid.column_configurator.system_group')});
 
             var groups = 0 !== systemColumn.length ?
-                [{ position: 0, name: __('system_filter_group'), itemCount: 0 }] :
+                [{ position: 0, name: __('pim_datagrid.column_configurator.system_group'), itemCount: 0 }] :
                 [];
 
             _.each(this.collection.toJSON(), function (column) {

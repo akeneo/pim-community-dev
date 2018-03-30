@@ -28,6 +28,7 @@ pim_common:
     more_than: More than
     "no": "No"
     none: None
+    not_available: N/A
     now: Now
     ok: OK
     properties: Properties
@@ -995,3 +996,9 @@ pim_menu:
 pim_notification:
     mark_all_as_read: Mark all as read
     no_notifications: No notifications
+
+grid:
+  empty_results:
+    associated_product:
+      hint: There are no associated products
+      subHint: 'Click on the button "Add associations" to associate this product'

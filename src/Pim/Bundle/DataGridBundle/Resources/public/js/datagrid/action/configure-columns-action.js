@@ -34,7 +34,7 @@ define(
                 removable: true,
                 label: '',
                 displayed: false,
-                group: __('system_filter_group')
+                group: __('pim_datagrid.column_configurator.system_group')
             }
         });
 

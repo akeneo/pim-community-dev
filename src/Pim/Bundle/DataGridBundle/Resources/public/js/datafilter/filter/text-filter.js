@@ -220,7 +220,7 @@ define(
                     selectedOperator: this.emptyValue.type,
                     emptyChoice: this.emptyChoice,
                     selectedOperatorLabel: this._getOperatorChoices()[this.emptyValue.type],
-                    operatorLabel: __('pim.grid.choice_filter.operator'),
+                    operatorLabel: __('pim_datagrid.filters.choice_filter.operator'),
                     updateLabel: __('pim_common.update')
                 })
             );
