@@ -31,7 +31,7 @@ services:
             - '@pim_catalog.repository.cached_locale'
             - '@security.authorization_checker'
 
-  pimee_catalog.filter.abstract_authorization:
+    pimee_catalog.filter.abstract_authorization:
         class: '%pimee_catalog.filter.abstract_authorization.class%'
         abstract: true
         public: false
