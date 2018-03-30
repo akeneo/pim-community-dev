@@ -1,5 +1,4 @@
 # ORO messages
-Update:        Update
 Selected Rows: Selected Rows
 "Yes, Delete": "Yes, Delete"
 "Yes, I Agree": "Yes, I Agree"
@@ -10,12 +9,10 @@ Selected Rows: Selected Rows
 "Unexpected error occured. Please contact system administrator.": "Unexpected error occured. Please contact system administrator."
 "Yes, revoke": "Yes, Revoke"
 "Revoke Confirmation": "Revoke Confirmation"
-Now: Now
 Prev: Prev
 Next: Next
 Today: Today
 Wk: Wk
-Done: Done
 AM: AM
 A: A
 PM: PM
@@ -33,7 +30,6 @@ Microsecond: Microsecond
 Localized value: Localized value
 Columns: Columns
 Datagrid Configuration: Datagrid Configuration
-Apply: Apply
 
 # Filters
 Action:   Action

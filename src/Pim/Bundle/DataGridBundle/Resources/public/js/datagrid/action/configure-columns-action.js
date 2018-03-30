@@ -180,7 +180,7 @@ define(
                         cancelText: __('pim_common.cancel'),
                         title: __('pim_datagrid.column_configurator.title'),
                         content: this.configuratorTemplate(),
-                        okText: __('pim_datagrid.column_configurator.apply')
+                        okText: __('pim_common.apply')
                     });
 
                     loadingMask.hide();

@@ -111,7 +111,7 @@ define(
                     cancelText: __('pim_common.cancel'),
                     title: __('pim_enrich.export.product.filter.attributes.modal.title'),
                     content: '<div class="AknColumnConfigurator attribute-selector"></div>',
-                    okText: __('pim_enrich.export.product.filter.attributes.modal.apply'),
+                    okText: __('pim_common.apply'),
                     attributeCount: 0
                 });
 
