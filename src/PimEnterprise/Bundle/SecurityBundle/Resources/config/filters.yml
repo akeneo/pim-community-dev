@@ -4,7 +4,7 @@ parameters:
 
 services:
     pimee_security.filter.granted_product_attribute_filter:
-        class: '%pimee_api.filter.granted_product_attribute_filter.class%'
+        class: '%pimee_security.filter.granted_product_attribute_filter.class%'
         arguments:
             - '@pim_api.filter.product_attribute_filter'
             - '@pim_catalog.repository.cached_attribute'

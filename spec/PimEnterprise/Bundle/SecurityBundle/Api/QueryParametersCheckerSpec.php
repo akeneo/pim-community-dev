@@ -9,6 +9,7 @@ use Pim\Component\Catalog\Model\AttributeGroupInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\CategoryInterface;
 use Pim\Component\Catalog\Model\LocaleInterface;
+use PimEnterprise\Bundle\SecurityBundle\Api\QueryParametersChecker;
 use PimEnterprise\Component\Security\Attributes;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
@@ -33,7 +34,7 @@ class QueryParametersCheckerSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType(\PimEnterprise\Bundle\SecurityBundle\Api\QueryParametersChecker::class);
+        $this->shouldHaveType(QueryParametersChecker::class);
     }
 
     function it_should_be_a_query_param_checker()

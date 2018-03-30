@@ -1,7 +1,7 @@
 imports:
     - { resource: '@PimEnrichBundle/Resources/config/pim.yml' }
     - { resource: '@PimEnterpriseEnrichBundle/Resources/config/bundles/oneup_flysystem.yml' }
-    - { resource: '@ProductAssetBundle/Resources/config/external_api/config.yml' }
+    - { resource: '@PimEnterpriseProductAssetBundle/Resources/config/external_api/config.yml' }
 
 assetic:
     bundles:
