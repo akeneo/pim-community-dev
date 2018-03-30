@@ -46,7 +46,7 @@ export default class Boolean extends React.Component<FilterViewProps, FilterView
         ? __(this.props.filter.field.getLabel(this.props.locale))
         : this.props.filter.field.getLabel(this.props.locale);
 
-    const selectedItem = this.props.filter.getChoiceFromFilter(this.props.filter);
+    const selectedItem = this.props.filter.toChoice();
 
     return (
       <div className="AknFilterBox-filterContainer" data-name={this.props.filter.field.identifier} data-type="choice">

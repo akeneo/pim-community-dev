@@ -1,10 +1,10 @@
 import {BaseOperator} from 'pimfront/product-grid/domain/model/filter/operator';
 
-export default class InArray extends BaseOperator {
+export default class InList extends BaseOperator {
   readonly identifier: string = 'IN';
   readonly needValue: boolean = true;
 
-  public static create(): InArray {
-    return new InArray();
+  public static create(): InList {
+    return new InList();
   }
 }

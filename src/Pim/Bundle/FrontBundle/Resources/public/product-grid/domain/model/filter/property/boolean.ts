@@ -1,4 +1,4 @@
-import Filter, {PropertyFilter} from 'pimfront/product-grid/domain/model/filter/filter';
+import {PropertyFilter} from 'pimfront/product-grid/domain/model/filter/filter';
 import {Null, Boolean as BooleanValue, Value} from 'pimfront/product-grid/domain/model/filter/value';
 import {Operator} from 'pimfront/product-grid/domain/model/filter/operator';
 import All from 'pimfront/product-grid/domain/model/filter/operator/all';
@@ -54,16 +54,16 @@ export default class Boolean extends PropertyFilter {
     ];
   }
 
-  getChoiceFromFilter(filter: Filter): Choice {
+  toChoice(): Choice {
     const choices = this.getChoices();
 
     const choice = choices.find(
       (currentChoice: Choice) =>
-        currentChoice.value.operator.equals(filter.operator) && currentChoice.value.value.equals(filter.value)
+        currentChoice.value.operator.equals(this.operator) && currentChoice.value.value.equals(this.value)
     );
 
     if (undefined === choice) {
-      throw new Error(`Cannot find choice for ${filter}`);
+      throw new Error(`Cannot find choice for filter "${this.field.identifier}"`);
     }
 
     return choice;

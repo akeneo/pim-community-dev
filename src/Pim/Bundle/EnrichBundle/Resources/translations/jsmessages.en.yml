@@ -823,6 +823,10 @@ pim_enrich:
     grid:
         product:
             filter:
+                text:
+                    label:
+                        all: All
+                        equal: Is equal to "{{ value }}"
                 boolean:
                     value:
                         all: All
