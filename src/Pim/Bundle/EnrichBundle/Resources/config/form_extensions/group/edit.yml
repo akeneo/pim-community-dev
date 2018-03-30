@@ -142,13 +142,3 @@ extensions:
         config:
             label: 'pim_enrich.form.group.tab.products.title'
             gridId: 'product-group-grid'
-
-    pim-group-edit-form-filters-list:
-        module: oro/datafilter/filters-list
-        parent: pim-group-edit-form-products
-        targetZone: filters
-
-    pim-group-edit-form-filters-manage:
-        module: oro/datafilter/filters-button
-        parent: pim-group-edit-form-products
-        targetZone: filters
