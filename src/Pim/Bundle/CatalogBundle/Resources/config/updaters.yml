@@ -47,6 +47,7 @@ parameters:
     pim_catalog.updater.remover.price_collection_value.class: Pim\Component\Catalog\Updater\Remover\PriceCollectionAttributeRemover
     pim_catalog.updater.remover.group_field.class:            Pim\Component\Catalog\Updater\Remover\GroupFieldRemover
     pim_catalog.updater.remover.multiselect_value.class:      Pim\Component\Catalog\Updater\Remover\MultiSelectAttributeRemover
+    pim_catalog.updater.remover.wrong_boolean_value_on_variant_products.class: Pim\Component\Catalog\Updater\Remover\WrongBooleanValuesOnVariantProductsRemover
     pim_catalog.updater.category_translatable.class:          Pim\Component\Catalog\Localization\CategoryUpdater
 
 services:
@@ -529,5 +530,14 @@ services:
             - '@pim_catalog.validator.helper.attribute'
             - '@pim_catalog.builder.entity_with_values'
             - ['pim_catalog_multiselect']
+        tags:
+            - { name: 'pim_catalog.updater.remover' }
+
+    pim_catalog.updater.remover.wrong_boolean_value_on_variant_products:
+        class: '%pim_catalog.updater.remover.wrong_boolean_value_on_variant_products.class%'
+        arguments:
+            - '@pim_catalog.validator.product'
+            - '@pim_catalog.saver.product'
+            - '@pim_catalog.elasticsearch.indexer.product'
         tags:
             - { name: 'pim_catalog.updater.remover' }
