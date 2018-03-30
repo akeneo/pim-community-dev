@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Bundle\CatalogBundle\Security\Elasticsearch;
+namespace PimEnterprise\Bundle\SecurityBundle\Persistence\ORM\EntityWithValue;
 
 use Pim\Component\Catalog\Query\Filter\Operators;
 use Pim\Component\Catalog\Query\ProductQueryBuilderFactoryInterface;

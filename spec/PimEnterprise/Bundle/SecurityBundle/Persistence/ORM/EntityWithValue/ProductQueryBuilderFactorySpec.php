@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\PimEnterprise\Bundle\CatalogBundle\Security\Elasticsearch;
+namespace spec\PimEnterprise\Bundle\SecurityBundle\Persistence\ORM\EntityWithValue;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Query\Filter\Operators;
@@ -8,7 +8,6 @@ use Pim\Component\Catalog\Query\ProductQueryBuilderFactoryInterface;
 use Pim\Component\Catalog\Query\ProductQueryBuilderInterface;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;
 use PimEnterprise\Component\Security\Attributes;
-use Prophecy\Argument;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -30,7 +29,9 @@ class ProductQueryBuilderFactorySpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('PimEnterprise\Bundle\CatalogBundle\Security\Elasticsearch\ProductQueryBuilderFactory');
+        $this->shouldHaveType(
+            'PimEnterprise\Bundle\SecurityBundle\Persistence\ORM\EntityWithValue\ProductQueryBuilderFactory'
+        );
     }
 
     function it_injects_granted_categories_in_pqb(
