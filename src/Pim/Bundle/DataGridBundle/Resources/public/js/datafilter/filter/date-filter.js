@@ -168,7 +168,7 @@ function(
                     selectedChoice: this.emptyValue.type,
                     inputClass: this.inputClass,
                     selectedOperatorLabel: _.findWhere(this.choices, {value: this.emptyValue.type}).label,
-                    operatorLabel: __('pim.grid.choice_filter.operator'),
+                    operatorLabel: __('pim_datagrid.filters.common.operator'),
                     updateLabel: __('pim_common.update'),
                     fromLabel: __('pim_common.from'),
                     toLabel: __('pim_common.to')

@@ -73,7 +73,7 @@ define(
                         selectedOperator: this._getDisplayValue().type,
                         emptyChoice: this.emptyChoice,
                         selectedOperatorLabel: this._getOperatorChoices()[this._getDisplayValue().type],
-                        operatorLabel: __('pim.grid.choice_filter.operator'),
+                        operatorLabel: __('pim_datagrid.filters.choice_filter.operator'),
                         updateLabel: __('pim_common.update'),
                         units: this.units,
                         unitLabel: __('pim.grid.metric_filter.label'),

@@ -106,7 +106,7 @@ define([
             getErrorDialog: function(message) {
                 if (!this.errorModal) {
                     this.errorModal = new Modal({
-                        title: __('Delete Error'),
+                        title: __('pim_datagrid.delete_error.title'),
                         content: '' === message ? __('error.removing.' + this.getEntityHint()) : message,
                         cancelText: false
                     });

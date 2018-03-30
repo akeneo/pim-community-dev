@@ -224,8 +224,8 @@ define(
                             const objectValuesDom = this.$('.object-values').empty();
                             if (_.isEmpty(fields)) {
                                 objectValuesDom.append(this.noDataTemplate({
-                                    hint: __('oro.datagrid.noresults'),
-                                    subHint: __('oro.datagrid.noresults_subTitle'),
+                                    hint: __('pim_datagrid.no_results'),
+                                    subHint: __('pim_datagrid.no_results_subtitle'),
                                     imageClass: ''
                                 }));
                             } else {
