@@ -49,5 +49,6 @@ class PimEnterpriseSecurityExtension extends Extension
         $loader->load('voters.yml');
         $loader->load('normalizers.yml');
         $loader->load('writers.yml');
+        $loader->load('filters.yml');
     }
 }

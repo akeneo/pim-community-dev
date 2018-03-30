@@ -88,7 +88,7 @@ services:
             - '@pim_catalog.saver.product_model'
             - '@router'
             - '@pim_catalog.validator.product_model'
-            - '@pimee_api.filter.granted_product_model_attribute_filter'
+            - '@pimee_security.filter.granted_product_model_attribute_filter'
             - '@pim_catalog.repository.product_model'
             - '@pim_api.stream.product_model_partial_update_stream'
             - '%pim_api.configuration%'
