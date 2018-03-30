@@ -162,32 +162,3 @@ job_execution.summary:
 
 pim_enrich_attribute_form:
     isReadOnly: Read only
-
-batch_jobs:
-    yml_asset_channel_configuration_import:
-        import.label: Asset channel configuration import
-    add_product_value_with_permission_and_rules:
-        label: Add product value with permission check & rules application
-        perform.label: Add product value
-    update_product_value_with_permission_and_rules:
-        label: Update product value with permission check & rules application
-        perform.label: Update product value
-    remove_product_value_with_permission_and_rules:
-        label: Remove product value with permission check & rules application
-        perform.label: Remove product value
-    edit_common_attributes_with_permission_and_rules:
-        label: Edit attributes with permission check & rules application
-        perform.label: Edit attributes
-        cleaner.label: Clean temporary files
-    csv_published_product_quick_export:
-        export.label: Csv published products quick export
-        perform.label: Csv published products quick export
-    csv_published_product_grid_context_quick_export:
-        export.label: Csv published products grid context quick export
-        perform.label: Csv published products grid context quick export
-    xlsx_published_product_quick_export:
-        export.label: Xlsx published products quick export
-        perform.label: Xlsx published products quick export
-    xlsx_published_product_grid_context_quick_export:
-        export.label: Xlsx published products grid context quick export
-        perform.label: Xlsx published products grid context quick export
