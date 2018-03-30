@@ -76,7 +76,7 @@ extensions:
         targetZone: state
         position: 900
         config:
-            entity: pim_enrich.entity.channel.title
+            entity: pim_common.channel
 
     pim-channel-edit-form-properties-tab:
         module: pim/common/tab

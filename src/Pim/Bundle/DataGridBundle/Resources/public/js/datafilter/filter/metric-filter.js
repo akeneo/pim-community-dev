@@ -74,7 +74,7 @@ define(
                         emptyChoice: this.emptyChoice,
                         selectedOperatorLabel: this._getOperatorChoices()[this._getDisplayValue().type],
                         operatorLabel: __('pim.grid.choice_filter.operator'),
-                        updateLabel: __('Update'),
+                        updateLabel: __('pim_common.update'),
                         units: this.units,
                         unitLabel: __('pim.grid.metric_filter.label'),
                         selectedUnit: this._getDisplayValue().unit,

@@ -77,7 +77,7 @@ define(
                         emptyChoice: this.emptyChoice,
                         selectedOperatorLabel: this._getOperatorChoices()[this._getDisplayValue().type],
                         operatorLabel: __('pim.grid.choice_filter.operator'),
-                        updateLabel: __('Update'),
+                        updateLabel: __('pim_common.update'),
                         currencies: this.currencies,
                         currencyLabel: __('pim.grid.price_filter.label'),
                         selectedCurrency: this._getDisplayValue().currency,

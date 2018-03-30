@@ -1,10 +1,15 @@
 pim_common:
     add: Add
     add_attributes: Add attributes
+    after: After
     all: All
+    apply: Apply
     attributes: Attributes
     attribute_groups: Attribute groups
+    before: Before
     cancel: Cancel
+    categories: Categories
+    channel: Channel
     code: Code
     confirm: Confirm
     confirm_deletion: Confirm deletion
@@ -12,20 +17,26 @@ pim_common:
     created: Created
     delete: Delete
     edit: Edit
+    from: From
     general_properties: General properties
     history: History
     label: Label
     label_translations: Label translations
+    less_than: Less than
     loading: Loading...
     locales: Locales
+    more_than: More than
     "no": "No"
     none: None
+    now: Now
     ok: OK
     properties: Properties
     products: Products
     save: Save
     status: Status
+    to: to
     type: Type
+    update: Update
     "yes": "Yes"
     operators:
         "=": Is equal to
@@ -171,10 +182,6 @@ pim:
             category_edit: Move products in categories
             sequential_edit: Sequential edit
 
-# Jstree context menu actions
-jstree.done: Done
-switch_on: "Yes"
-
 pim_enrich:
     item:
         list:
@@ -240,7 +247,6 @@ pim_enrich:
                         title: Group {{ group }}
                         view_group: View group
                         more_products: '{{ count }} more products...'
-                scope: Channel
                 locale: Locale
             copy:
                 select: Select
@@ -306,7 +312,6 @@ pim_enrich:
             message:
                 created: Group type successfully created
         channel:
-            title: channel
             info:
                 deletion_successful: Channel successfully deleted.
                 deletion_failed: Channel could not be deleted.
@@ -406,7 +411,6 @@ pim_enrich:
         leave:           Are you sure you want to leave this page?
         discard_changes: You will lose changes to the {{ entity }} if you leave the page.
         remove_item:     Confirm removal
-        remove:          Remove
         delete:
             attribute: Are you sure you want to delete this attribute from the product?
             attribute_group: Are you sure you want to remove the attribute {{ attribute }} from this attribute group?
@@ -458,8 +462,6 @@ pim_enrich:
                         display: Display
                         all: All attributes
                         missing_required: All missing required attributes
-                categories:
-                    title: Categories
             panel:
                 completeness:
                     title: Completeness
@@ -685,7 +687,6 @@ pim_enrich:
                 title: Filter the data
             filter:
                 channel:
-                    title: Channel
                     help: The channel defines the scope for product values, the locales used to select data, and the tree used to select products.
                 locales:
                     help: "The locales defines the localized product values to export. Ex: only product information in French."
@@ -694,7 +695,6 @@ pim_enrich:
                     help: "Select the product information to export. Ex: only the technical attributes."
                     empty: All attributes will be exported
                     modal:
-                        apply: Apply
                         title: Attribute selection
                 attributes_selector:
                     attributes: "Search in {{ itemsCount }} attributes"
@@ -961,7 +961,6 @@ pim_menu:
     item:
         association_type: Association types
         attribute_group: Attribute groups
-        category: Categories
         channel: Channels
         currency: Currencies
         dashboard: Dashboard
