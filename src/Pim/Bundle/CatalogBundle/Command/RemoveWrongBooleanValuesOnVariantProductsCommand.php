@@ -60,7 +60,7 @@ class RemoveWrongBooleanValuesOnVariantProductsCommand extends ContainerAwareCom
         foreach ($variantProducts as $variantProduct) {
             $progressBar->advance();
 
-            // TODO: Drop this check for 2.2 version
+            // TODO: Replace this check for 2.2 version by ``if (!$variantProduct->isVariant()) {}``
             if (!($variantProduct instanceof VariantProductInterface)) {
                 continue;
             }
@@ -76,6 +76,7 @@ class RemoveWrongBooleanValuesOnVariantProductsCommand extends ContainerAwareCom
             $this->getContainer()->get('pim_catalog.elasticsearch.indexer.product')->indexAll($productsToSave);
         }
 
+        $output->writeln('');
         $output->writeln(sprintf('<info>%s variant products cleaned</info>', count($productsToSave)));
     }
 
