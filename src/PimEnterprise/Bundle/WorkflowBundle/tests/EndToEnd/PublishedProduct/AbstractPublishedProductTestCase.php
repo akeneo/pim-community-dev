@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace PimEnterprise\Bundle\WorkflowBundle\tests\EndToEnd\PublishedProduct;
 
 use Pim\Component\Catalog\Model\ProductInterface;
-use PimEnterprise\Bundle\ApiBundle\tests\integration\Controller\Product\AbstractProductTestCase;
+use PimEnterprise\Bundle\SecurityBundle\tests\EndToEnd\Product\AbstractProductTestCase;
 use PimEnterprise\Component\Workflow\Model\PublishedProductInterface;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
