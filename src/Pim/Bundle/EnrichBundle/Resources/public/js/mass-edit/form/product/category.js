@@ -10,6 +10,7 @@ define(
     [
         'underscore',
         'oro/translator',
+        'oro/messenger',
         'pim/i18n',
         'pim/user-context',
         'pim/fetcher-registry',
@@ -21,6 +22,7 @@ define(
     function (
         _,
         __,
+        messenger,
         i18n,
         UserContext,
         FetcherRegistry,
@@ -126,7 +128,10 @@ define(
              */
             updateModel: function (event) {
                 this.selectedCategories = event.target.value.split(',');
-                this.setValue(_.map(this.selectedCategories, this.getCategoryCode.bind(this)));
+                const selectedCategories = this.selectedCategories
+                    .filter((category) => '' !== category)
+                    .map(this.getCategoryCode.bind(this));
+                this.setValue(selectedCategories);
             },
 
             /**
@@ -194,13 +199,19 @@ define(
             },
 
             /**
-             * Checks ...
+             * Checks there is at least one category selected to go to the next step
              */
             validate: function () {
                 const data = this.getFormData();
                 const categories = propertyAccessor.accessProperty(data, 'actions.0.value', []);
 
-                return $.Deferred().resolve(0 !== categories.length);
+                const hasUpdates = 0 !== categories.length;
+
+                if (!hasUpdates) {
+                    messenger.notify('error', __(`pim_enrich.mass_edit.product.operation.${data.operation}.no_update`));
+                }
+
+                return $.Deferred().resolve(hasUpdates);
             }
         });
     }

@@ -10,19 +10,23 @@ define(
     [
         'underscore',
         'oro/translator',
+        'oro/messenger',
         'pim/i18n',
         'pim/user-context',
         'pim/mass-edit-form/product/operation',
         'pim/fetcher-registry',
+        'pim/common/property',
         'pim/template/mass-edit/product/add-to-group'
     ],
     function (
         _,
         __,
+        messenger,
         i18n,
         UserContext,
         BaseOperation,
         FetcherRegistry,
+        propertyAccessor,
         template
     ) {
         return BaseOperation.extend({
@@ -102,6 +106,22 @@ define(
                 var action = _.findWhere(this.getFormData().actions, {field: 'groups'})
 
                 return action ? action.value : null;
+            },
+
+            /**
+             * Checks there is at least one group selected to go to the next step
+             */
+            validate: function () {
+                const data = this.getFormData();
+                const categories = propertyAccessor.accessProperty(data, 'actions.0.value', []);
+
+                const hasUpdates = 0 !== categories.length;
+
+                if (!hasUpdates) {
+                    messenger.notify('error', __('pim_enrich.mass_edit.product.operation.add_to_group.no_update'));
+                }
+
+                return $.Deferred().resolve(hasUpdates);
             }
         });
     }
