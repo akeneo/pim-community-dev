@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Bundle\ApiBundle\Checker;
+namespace PimEnterprise\Bundle\SecurityBundle\Api;
 
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Pim\Bundle\ApiBundle\Checker\QueryParametersCheckerInterface;
