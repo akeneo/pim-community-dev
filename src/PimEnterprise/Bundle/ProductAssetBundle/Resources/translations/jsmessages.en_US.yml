@@ -48,9 +48,6 @@ pimee_product_asset:
             status: status
             progress: progress
             actions: actions
-        action:
-            cancel: Cancel
-            remove: Remove
         status:
             added: Added
             queued: Queued

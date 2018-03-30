@@ -262,7 +262,7 @@ define(
                         titleLabel: __('pim_common.create'),
                         picture: 'illustrations/Project.svg',
                         fields: this.template({
-                            channelLabel: __('teamwork_assistant.project.channel'),
+                            channelLabel: __('pim_common.channel'),
                             channelValue: channelValue,
                             localeLabel: __('teamwork_assistant.project.locale'),
                             localeValue: localeValue,

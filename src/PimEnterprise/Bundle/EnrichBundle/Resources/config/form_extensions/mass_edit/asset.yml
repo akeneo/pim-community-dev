@@ -44,7 +44,7 @@ extensions:
             jobInstanceCode: classify_assets
             listRoute: pimee_product_asset_listcategories
             childrenRoute: pimee_asset_categorytree_children
-            field: pimee_enrich.mass_edit.asset.operation.add_to_category.field
+            field: pim_common.categories
             icon: icon-folders
             illustration: assets
             fetcher: asset-category
