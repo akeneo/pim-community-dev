@@ -7,9 +7,9 @@ datagrid:
                 - oro/datagrid/pagination-input
             displayTypes:
                 default:
-                    label: grid.display_selector.list
+                    label: pim_datagrid.display_selector.list
                 gallery:
-                    label: grid.display_selector.gallery
+                    label: pim_datagrid.display_selector.gallery
                     rowView: oro/datagrid/asset-row
         source:
             acl_resource:      pimee_product_asset_index

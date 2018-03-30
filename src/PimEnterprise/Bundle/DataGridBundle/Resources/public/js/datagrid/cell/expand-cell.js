@@ -16,8 +16,8 @@ define(
                 'click .mask': 'toggle'
             },
             collapsed: true,
-            expandText: __('pimee_datagrid.cell.expand.expandText'),
-            collapseText: __('pimee_datagrid.cell.expand.collapseText'),
+            expandText: __('pimee_datagrid.cells.expand.expand_text'),
+            collapseText: __('pimee_datagrid.cells.expand.collapse_text'),
             render: function () {
                 this.$el.html(this.template({
                     'changes': this.model.get(this.column.get('name')),
