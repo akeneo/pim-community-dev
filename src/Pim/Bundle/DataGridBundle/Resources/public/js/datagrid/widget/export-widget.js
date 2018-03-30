@@ -19,7 +19,7 @@ define(
                             _.__('pim.grid.mass_action.quick_export.launched')
                         );
                     })
-                    .error(function (jqXHR) {
+                    .fail(function (jqXHR) {
                         messenger.notify(
                             'error',
                             _.__(jqXHR.responseText)

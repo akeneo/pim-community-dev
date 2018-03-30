@@ -59,9 +59,6 @@ define(
             configure: function () {
                 this.locale = UserContext.get('catalogLocale');
                 this.scope  = UserContext.get('catalogScope');
-                this.getScopeLabel(this.scope).then(function (scopeLabel) {
-                    this.scopeLabel = scopeLabel;
-                }.bind(this));
 
                 this.listenTo(this.getRoot(), 'pim_enrich:form:field:extension:add', this.addFieldExtension);
                 this.listenTo(this.getRoot(), 'pim_enrich:form:scope_switcher:pre_render', this.initScope.bind(this));
@@ -80,8 +77,8 @@ define(
 
                 return this.getScopeLabel(this.scope).then(function (scopeLabel) {
                     this.scopeLabel = scopeLabel;
-                }.bind(this)).then(function () {
-                    return BaseForm.prototype.configure.apply(this, arguments)
+                }.bind(this)).then(() => {
+                    return BaseForm.prototype.configure.apply(this, arguments);
                 });
             },
 

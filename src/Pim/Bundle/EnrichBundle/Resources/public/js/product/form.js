@@ -186,7 +186,7 @@ define(
             doShutdown: function () {
                 this.stopListening();
                 this.undelegateEvents();
-                this.$el.removeData().unbind();
+                this.$el.removeData().off();
                 this.remove();
                 Backbone.View.prototype.remove.call(this);
             },

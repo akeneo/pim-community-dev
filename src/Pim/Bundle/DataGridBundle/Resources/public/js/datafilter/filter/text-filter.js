@@ -306,7 +306,7 @@ define(
          * @protected
          */
         _focusCriteria: function() {
-            this.$(this.criteriaSelector + ' input').focus().select();
+            this.$(this.criteriaSelector + ' input').trigger('focus').trigger('select');
         },
 
         /**

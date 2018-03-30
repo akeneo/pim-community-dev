@@ -73,6 +73,7 @@ define(
                             currentLocale = _.first(locales);
                         }
 
+                        this.$el.removeClass('open');
                         this.$el.html(
                             this.template({
                                 locales: locales,
@@ -83,6 +84,7 @@ define(
                                 label: __('pim_enrich.entity.product.meta.locale')
                             })
                         );
+
                         this.delegateEvents();
                     }.bind(this));
 

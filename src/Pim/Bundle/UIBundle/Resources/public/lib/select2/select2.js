@@ -1804,7 +1804,7 @@ the specific language governing permissions and limitations under the Apache Lic
         close: function () {
             if (!this.opened()) return;
             this.parent.close.apply(this, arguments);
-            this.focusser.removeAttr("disabled");
+            this.focusser.prop("disabled", false);
             this.focusser.focus();
         },
 
@@ -1813,7 +1813,7 @@ the specific language governing permissions and limitations under the Apache Lic
             if (this.opened()) {
                 this.close();
             } else {
-                this.focusser.removeAttr("disabled");
+                this.focusser.prop("disabled", false);
                 this.focusser.focus();
             }
         },
@@ -1826,7 +1826,7 @@ the specific language governing permissions and limitations under the Apache Lic
         // single
         cancel: function () {
             this.parent.cancel.apply(this, arguments);
-            this.focusser.removeAttr("disabled");
+            this.focusser.prop("disabled", false);
             this.focusser.focus();
         },
 

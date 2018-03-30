@@ -29,13 +29,13 @@ define(
                     $preview.removeClass('empty').attr('title', filename);
                     $removeBtn.removeClass('hide');
                     $input.addClass('hide');
-                    $removeCheckbox.removeAttr('checked');
+                    $removeCheckbox.prop('checked', false);
                 } else {
                     $filename.html($filename.attr('data-empty-title'));
                     $zone.addClass('empty');
                     $preview.addClass('empty').removeAttr('title');
                     $removeBtn.addClass('hide');
-                    $input.removeAttr('disabled').removeClass('hide');
+                    $input.prop('disabled', false).removeClass('hide');
                     $removeCheckbox.attr('checked', 'checked');
                 }
             });
@@ -50,7 +50,7 @@ define(
             $el.parent().on('mouseover', '.upload-zone:not(.empty)', function () {
                 $el.attr('disabled', 'disabled');
             }).on('mouseout', '.upload-zone:not(.empty)', function () {
-                $el.removeAttr('disabled');
+                $el.prop('disabled', false);
             });
 
             // Initialize slimbox

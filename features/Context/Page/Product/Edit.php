@@ -381,9 +381,11 @@ class Edit extends ProductEditForm
      */
     public function getImagePreview()
     {
-        $preview = $this->getElement('Image preview');
+        $preview = $this->spin(function () {
+            return $this->getElement('Image preview');
+        }, 'Image preview not found.');
 
-        if (!$preview || false === strpos($preview->getAttribute('style'), 'display: block')) {
+        if (!$preview || false === $preview->isVisible()) {
             return null;
         }
 
