@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\PimEnterprise\Bundle\SecurityBundle\Persistence\ORM;
+namespace spec\PimEnterprise\Bundle\SecurityBundle\Persistence\ORM\EntityWithValue;
 
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\AbstractQuery;

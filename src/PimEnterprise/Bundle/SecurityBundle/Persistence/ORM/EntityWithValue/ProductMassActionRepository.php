@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Bundle\SecurityBundle\Persistence\ORM;
+namespace PimEnterprise\Bundle\SecurityBundle\Persistence\ORM\EntityWithValue;
 
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Query\Expr\Join;
