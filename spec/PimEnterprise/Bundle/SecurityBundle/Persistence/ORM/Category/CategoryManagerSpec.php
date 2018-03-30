@@ -1,17 +1,14 @@
 <?php
 
-namespace spec\PimEnterprise\Bundle\CatalogBundle\Manager;
+namespace spec\PimEnterprise\Bundle\SecurityBundle\Persistence\ORM\Category;
 
 use Akeneo\Component\Classification\Repository\CategoryRepositoryInterface;
 use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Persistence\ObjectManager;
 use PhpSpec\ObjectBehavior;
-use Pim\Component\User\Model\UserInterface;
 use Pim\Component\Catalog\Model\CategoryInterface;
+use Pim\Component\User\Model\UserInterface;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;
 use PimEnterprise\Component\Security\Attributes;
-use Prophecy\Argument;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 class CategoryManagerSpec extends ObjectBehavior
@@ -30,7 +27,7 @@ class CategoryManagerSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('PimEnterprise\Bundle\CatalogBundle\Manager\CategoryManager');
+        $this->shouldHaveType('PimEnterprise\Bundle\SecurityBundle\Persistence\ORM\Category\CategoryManager');
     }
 
     function it_gets_accessible_trees_for_display(

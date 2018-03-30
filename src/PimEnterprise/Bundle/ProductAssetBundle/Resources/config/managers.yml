@@ -1,5 +1,5 @@
 services:
-    pimee_product_asset.manager.category_access:
+    pimee_security.manager.category_access:
         class: '%pimee_security.manager.category_access.class%'
         arguments:
             - '@pimee_product_asset.repository.asset_category_access'
@@ -8,10 +8,3 @@ services:
             - '@pimee_security.saver.asset_category_access'
             - '@pimee_security.remover.asset_category_access'
             - '%pimee_security.entity.asset_category_access.class%'
-
-    pimee_product_asset.manager.category:
-        class: '%pim_catalog.manager.category.class%'
-        arguments:
-            - '@pimee_product_asset.repository.category'
-            - '@pimee_security.repository.category_access'
-            - '@security.authorization_checker'

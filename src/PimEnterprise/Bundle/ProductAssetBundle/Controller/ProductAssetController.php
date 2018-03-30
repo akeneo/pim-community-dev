@@ -27,10 +27,10 @@ use Pim\Bundle\EnrichBundle\Flash\Message;
 use Pim\Component\Catalog\Model\LocaleInterface;
 use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
 use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
-use PimEnterprise\Bundle\CatalogBundle\Manager\CategoryManager;
 use PimEnterprise\Bundle\ProductAssetBundle\Event\AssetEvent;
 use PimEnterprise\Bundle\ProductAssetBundle\Form\Type\AssetType;
 use PimEnterprise\Bundle\ProductAssetBundle\Form\Type\CreateAssetType;
+use PimEnterprise\Bundle\SecurityBundle\Persistence\ORM\Category\CategoryManager;
 use PimEnterprise\Bundle\UserBundle\Context\UserContext;
 use PimEnterprise\Component\ProductAsset\Factory\AssetFactory;
 use PimEnterprise\Component\ProductAsset\FileStorage;
@@ -122,30 +122,30 @@ class ProductAssetController extends Controller
     /** @var CategoryRepositoryInterface */
     protected $categoryRepository;
 
-    /** @var CategoryManager */
+    /** @var \PimEnterprise\Bundle\SecurityBundle\Persistence\ORM\Category\CategoryManager */
     protected $categoryManager;
 
     /**
-     * @param AssetRepositoryInterface         $assetRepository
-     * @param ReferenceRepositoryInterface     $referenceRepository
-     * @param VariationRepositoryInterface     $variationRepository
-     * @param FileMetadataRepositoryInterface  $metadataRepository
-     * @param LocaleRepositoryInterface        $localeRepository
-     * @param ChannelRepositoryInterface       $channelRepository
-     * @param VariationFileGeneratorInterface  $variationFileGenerator
+     * @param AssetRepositoryInterface                                                      $assetRepository
+     * @param ReferenceRepositoryInterface                                                  $referenceRepository
+     * @param VariationRepositoryInterface                                                  $variationRepository
+     * @param FileMetadataRepositoryInterface                                               $metadataRepository
+     * @param LocaleRepositoryInterface                                                     $localeRepository
+     * @param ChannelRepositoryInterface                                                    $channelRepository
+     * @param VariationFileGeneratorInterface                                               $variationFileGenerator
      * @param FilesUpdaterInterface            $assetFilesUpdater
      * @param SaverInterface                   $assetSaver
      * @param SaverInterface                   $referenceSaver
      * @param SaverInterface                   $variationSaver
-     * @param RemoverInterface                 $assetRemover
-     * @param EventDispatcherInterface         $eventDispatcher
-     * @param AssetFactory                     $assetFactory
-     * @param FileInfoFactoryInterface         $fileInfoFactory
-     * @param UserContext                      $userContext
-     * @param FileController                   $fileController
-     * @param AssetCategoryRepositoryInterface $assetCategoryRepo
-     * @param CategoryRepositoryInterface      $categoryRepository
-     * @param CategoryManager                  $categoryManager
+     * @param RemoverInterface                                                              $assetRemover
+     * @param EventDispatcherInterface                                                      $eventDispatcher
+     * @param AssetFactory                                                                  $assetFactory
+     * @param FileInfoFactoryInterface                                                      $fileInfoFactory
+     * @param UserContext                                                                   $userContext
+     * @param FileController                                                                $fileController
+     * @param AssetCategoryRepositoryInterface                                              $assetCategoryRepo
+     * @param CategoryRepositoryInterface                                                   $categoryRepository
+     * @param \PimEnterprise\Bundle\SecurityBundle\Persistence\ORM\Category\CategoryManager $categoryManager
      */
     public function __construct(
         AssetRepositoryInterface $assetRepository,

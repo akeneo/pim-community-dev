@@ -1,15 +1,7 @@
 parameters:
-    pim_catalog.manager.category.class: PimEnterprise\Bundle\CatalogBundle\Manager\CategoryManager
     pimee_catalog.resolver.attribute_values.class: PimEnterprise\Component\Catalog\Manager\AttributeValuesResolver
 
 services:
-    pim_catalog.manager.category:
-        class: '%pim_catalog.manager.category.class%'
-        arguments:
-            - '@pim_catalog.repository.category'
-            - '@pimee_security.repository.category_access'
-            - '@security.authorization_checker'
-
     pim_catalog.resolver.attribute_values_with_permissions:
         class: '%pimee_catalog.resolver.attribute_values.class%'
         decorates: pim_catalog.resolver.attribute_values
