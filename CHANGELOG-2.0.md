@@ -7,6 +7,7 @@
 ## Bug fixes
 
 - PIM-7251: Fix history date on all grids (except product grid)
+- PIM-6993: Fix pagination on user grid in role and group edition
 - PIM-7275: Fix regression on group products grid filters
 - PIM-6962: Fix breadcrumb links issue after the save on the edit page
 - PIM-7267: Fix boolean attributes not added to variant product
