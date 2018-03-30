@@ -814,7 +814,7 @@ config:
 
         # Product edit form
         pim/field-manager: pimenrich/js/product/field-manager
-        pim/provider/to-fill-field-provider: pimenrich/js/provider/to-fill-field-provider
+        pim/provider/to-fill-field-provider: pimenrich/js/provider/to-fill-field-provider.ts
         pim/provider/sequential-edit-provider: pimenrich/js/provider/sequential-edit-provider
 
         # Mass product edit form
