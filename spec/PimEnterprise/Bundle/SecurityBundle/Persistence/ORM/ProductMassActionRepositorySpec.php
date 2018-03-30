@@ -1,16 +1,16 @@
 <?php
 
-namespace spec\PimEnterprise\Bundle\CatalogBundle\Doctrine\ORM\Repository;
+namespace spec\PimEnterprise\Bundle\SecurityBundle\Persistence\ORM;
 
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\AbstractQuery;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Query\Expr;
 use Doctrine\ORM\QueryBuilder;
-use Pim\Component\User\Model\Group;
 use PhpSpec\ObjectBehavior;
-use Pim\Component\User\Model\UserInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\User\Model\Group;
+use Pim\Component\User\Model\UserInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Doctrine\ORM\Repository\PublishedProductRepository;
 use Prophecy\Argument;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;

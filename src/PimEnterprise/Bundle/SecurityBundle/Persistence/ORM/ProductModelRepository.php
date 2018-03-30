@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Bundle\CatalogBundle\Doctrine\ORM\Repository;
+namespace PimEnterprise\Bundle\SecurityBundle\Persistence\ORM;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;

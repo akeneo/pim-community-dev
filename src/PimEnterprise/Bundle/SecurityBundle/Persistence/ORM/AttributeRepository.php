@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Bundle\CatalogBundle\Doctrine\ORM\Repository;
+namespace PimEnterprise\Bundle\SecurityBundle\Persistence\ORM;
 
 use Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\AttributeRepository as BaseAttributeRepository;
 

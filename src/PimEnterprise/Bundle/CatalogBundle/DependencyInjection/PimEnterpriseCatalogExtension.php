@@ -34,7 +34,6 @@ class PimEnterpriseCatalogExtension extends Extension
         $loader->load('event_subscribers.yml');
         $loader->load('filters.yml');
         $loader->load('managers.yml');
-        $loader->load('repositories.yml');
         $loader->load('security/factories.yml');
         $loader->load('security/filters.yml');
         $loader->load('security/mergers.yml');
