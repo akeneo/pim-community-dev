@@ -33,10 +33,11 @@ const utils = {
             } catch (e) {}
         });
 
-        const extensions = formExtensions.merge(formExtensions.collectPaths());
+        const watchPaths = formExtensions.collectPaths();
+        const extensions = formExtensions.merge(watchPaths);
         config['pim/form-config-provider'] = extensions;
 
-        return { config, paths };
+        return { config, paths, watchPaths };
     },
 
     /**

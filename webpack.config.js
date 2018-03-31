@@ -143,7 +143,6 @@ module.exports = {
                 ]
             },
 
-
             // Process the pim webpack files with babel
             {
                 test: /\.js$/,

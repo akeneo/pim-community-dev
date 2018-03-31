@@ -5,7 +5,6 @@ define(['jquery'], function ($) {
         const deferred = $.Deferred();
         const formExtensions = __moduleConfig;
         deferred.resolve(formExtensions);
-        console.log('config', formExtensions);
 
         return deferred.promise();
     };
