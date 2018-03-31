@@ -5,10 +5,7 @@ const rootDir = process.cwd();
 const webpack = require('webpack');
 const path = require('path');
 const _ = require('lodash');
-
-const WebpackCleanupPlugin = require('webpack-cleanup-plugin');
 const LiveReloadPlugin = require('webpack-livereload-plugin');
-
 const isProd = process.argv && process.argv.indexOf('--env=prod') > -1;
 const sourcePath = path.join(rootDir, 'web/js/require-paths.js');
 
@@ -74,7 +71,6 @@ module.exports = {
                     }
                 ]
             },
-
             // Load html without needing to prefix the requires with 'text!'
             {
                 test: /\.html$/,
@@ -131,7 +127,6 @@ module.exports = {
                     }
                 ]
             },
-
             // Expose the require-polyfill to window
             {
                 test: path.resolve(__dirname, './webpack/require-polyfill.js'),
@@ -142,7 +137,6 @@ module.exports = {
                     }
                 ]
             },
-
             // Process the pim webpack files with babel
             {
                 test: /\.js$/,
@@ -158,20 +152,14 @@ module.exports = {
             }
         ]
     },
-
     watchOptions: {
         ignored: /node_modules|app|app\/cache|vendor/
     },
-
     // Support old loader declarations
     resolveLoader: {
         moduleExtensions: ['-loader']
     },
-
     plugins: [
-        // Clean up the dist folder and source maps before rebuild
-        new WebpackCleanupPlugin(),
-
         // Map modules to variables for global use
         new webpack.ProvidePlugin({'_': 'underscore', 'Backbone': 'backbone', '$': 'jquery', 'jQuery': 'jquery'}),
 
@@ -184,17 +172,6 @@ module.exports = {
         ]),
 
         // Inject live reload to auto refresh the page (hmr not compatible with our app)
-        new LiveReloadPlugin({appendScriptTag: true, ignore: /node_modules/}),
-
-        // Split the app into chunks for performance
-        new webpack.optimize.CommonsChunkPlugin({
-            name: 'lib',
-            minChunks: module => module.context && module.context.indexOf('lib') !== -1
-        }),
-        new webpack.optimize.CommonsChunkPlugin({
-            name: 'vendor',
-            minChunks: module => module.context && module.context.indexOf('node_modules') !== -1
-        }),
-        new webpack.optimize.CommonsChunkPlugin({name: 'manifest'})
+        new LiveReloadPlugin({appendScriptTag: true, ignore: /node_modules/})
     ]
 };
