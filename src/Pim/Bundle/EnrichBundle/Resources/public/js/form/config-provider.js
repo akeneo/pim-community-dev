@@ -1,12 +1,26 @@
 'use strict';
 
-define(['jquery'], function ($) {
-    const loadConfig = function () {
-        const deferred = $.Deferred();
-        const formExtensions = __moduleConfig;
-        deferred.resolve(formExtensions);
+define(['jquery', 'underscore', 'pim/security-context'], function ($, _, SecurityContext) {
+    let runningPromise = null;
 
-        return deferred.promise();
+    const filterByGranted = function(extensions) {
+        return _.filter(extensions, extension => {
+            return null === extension.aclResourceId || SecurityContext.isGranted(extension.aclResourceId)
+        });
+    }
+
+    const loadConfig = function () {
+        const formExtensions = __moduleConfig;
+
+        if (null === runningPromise) {
+            runningPromise = SecurityContext.initialize().then(() => {
+                formExtensions.extensions = filterByGranted(formExtensions.extensions);
+
+                return formExtensions;
+            });
+        }
+
+        return runningPromise;
     };
 
     return {
@@ -16,9 +30,7 @@ define(['jquery'], function ($) {
              * @return {Promise}
              */
         getExtensionMap: function () {
-            return loadConfig().then(function (config) {
-                return Object.values(config.extensions);
-            });
+            return loadConfig().then(config => Object.values(config.extensions));
         },
 
         /**
@@ -27,16 +39,14 @@ define(['jquery'], function ($) {
              * @return {Promise}
              */
         getAttributeFields: function () {
-            return loadConfig().then(function (config) {
-                return config.attribute_fields;
-            });
+            return loadConfig().then(config => config.attribute_fields);
         },
 
         /**
              * Clear cache of form registry
              */
         clear: function () {
-
+            runningPromise = null;
         }
     };
 });
