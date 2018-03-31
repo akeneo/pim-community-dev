@@ -147,6 +147,3 @@ job_execution.summary:
   proposal_deleted: удалено
 pim_enrich_attribute_form:
   isReadOnly: Только для чтения
-batch_jobs:
-  edit_common_attributes:
-    execute_rules.label: Выполнить привила
