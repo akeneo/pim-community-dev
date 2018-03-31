@@ -1,4 +1,0 @@
-pim_enrich_form_extension_rest_index:
-    path: /extensions
-    defaults: { _controller: pim_enrich.controller.rest.form_extension:getAction }
-    methods: [GET]
