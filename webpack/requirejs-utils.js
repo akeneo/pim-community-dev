@@ -3,6 +3,7 @@ const deepMerge = require('deepmerge');
 const path = require('path');
 const { parse } = require('yamljs');
 const { readFileSync, writeFileSync } = require('fs');
+const formExtensions = require('./form-extensions.js');
 
 const utils = {
     /**
@@ -31,6 +32,9 @@ const utils = {
                 config = deepMerge(config, parsed.config.config || {});
             } catch (e) {}
         });
+
+        const extensions = formExtensions.merge(formExtensions.collectPaths());
+        config['pim/form-config-provider'] = extensions;
 
         return { config, paths };
     },

@@ -86,7 +86,6 @@ module.exports = {
                     }
                 ]
             },
-
             // Expose the Backbone variable to window
             {
                 test: /node_modules\/backbone\/backbone.js/,
