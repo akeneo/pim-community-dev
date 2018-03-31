@@ -1,0 +1,24 @@
+job_execution:
+  summary:
+    display_item: Object weergeven
+    hide_item: Object verbergen
+pim_connector:
+  export:
+    categories:
+      selector:
+        modal:
+          title: Categorie selectie
+          cancel: Annuleren
+        label: "{0} alle producten |{1} één categorie geselecteerd |] 1, Inf [{{ count }} categorieën geselecteerd"
+        edit: Bewerken
+        title: Selecteer categorieën
+    locales:
+      validation:
+        not_blank: Één landinstelling moet worden geselecteerd, kies een landinstelling om te exporteren.
+page_title:
+  pim_importexport_export_profile_index: Beheer van exportprofielen
+  pim_importexport_export_execution_index: Exportverwerkingen geschiedenis
+  pim_importexport_export_execution_show: Exportverwerkingen | Details
+  pim_importexport_import_profile_index: Beheer van importprofielen
+  pim_importexport_import_execution_index: Importverwerkingen geschiedenis
+  pim_importexport_import_execution_show: Importverwerkingen | Details

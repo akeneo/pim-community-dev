@@ -1,0 +1,25 @@
+job_execution:
+  summary:
+    display_item: 显示条目
+    hide_item: 隐藏条目
+pim_connector:
+  export:
+    categories:
+      selector:
+        modal:
+          title: 类别选择
+          cancel: 取消
+          confirm: 确认
+        label: "{0} 所有产品 |{1} 一类别选择 |]1，Inf [{{ count }} 类别选择"
+        edit: 编辑
+        title: 选择类别
+    locales:
+      validation:
+        not_blank: 必须选择一个本地化语言，请选择要导出的本地化语言。
+page_title:
+  pim_importexport_export_profile_index: 导出配置文件管理
+  pim_importexport_export_execution_index: 导出处理记录
+  pim_importexport_export_execution_show: 导出处理记录|详情
+  pim_importexport_import_profile_index: 导入配置文件管理
+  pim_importexport_import_execution_index: 导入处理记录
+  pim_importexport_import_execution_show: 导入处理记录|详情

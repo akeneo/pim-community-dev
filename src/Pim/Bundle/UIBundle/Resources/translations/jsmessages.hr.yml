@@ -1,0 +1,117 @@
+Close: Zatvori
+Update: Ažuriraj
+Selected Rows: Odabrani retci
+"Yes": "Da"
+"Yes, Delete": "Da, Izbriši"
+"Yes, I Agree": "Da, slažem se"
+"Yes, do it": "Da, uradi"
+"No": "Ne"
+"Ok, got it.": "Dobro, razumijem."
+"Cancel": "Poništi"
+"Delete Confirmation": "Potvrdi brisanje"
+"Edit": "Uredi"
+"Unexpected error occured. Please contact system administrator.": "Došlo je do neočekivane pogreške. Obratite se administratoru sustava."
+Now: Sada
+Prev: Prethodna
+Next: Sljedeća
+Today: Danas
+Wk: Tj
+Done: Gotovo
+AM: AM
+A: A
+PM: PM
+P: P
+"Choose Time": "Odaberi vrijeme"
+Time: Vrijeme
+Hour: Sat
+Minute: Minuta
+Second: Sekunda
+Millisecond: Milisekundi
+Microsecond: Mikrosekundi
+"Time Zone": "Vremenska zona"
+Localized value: Vrijednost regionalnih postavki
+Columns: Stupci
+Datagrid Configuration: DataGrid konfiguracija
+Apply: Primijeni
+Action: Akcija
+Unit: Jedinica
+Currency: Valuta
+jstree:
+  all: Svi proizvodi
+  unclassified: Neklasificirani proizvodi
+  product:
+    all: Svi proizvodi
+    unclassified: Neklasificirani proizvodi
+  no_tree: Nema dostupanog stabla
+  include_sub: Uključuje pod-kategorije
+  loading: Učitavanje ...
+datetimepicker:
+  days:
+    Sunday: Nedjelja
+    Monday: Ponedjeljak
+    Tuesday: Utorak
+    Wednesday: Srijeda
+    Thursday: Četvrtak
+    Friday: Petak
+    Saturday: Subota
+  daysShort:
+    Sun: Ned
+    Mon: Pon
+    Tue: Uto
+    Wed: Sri
+    Thu: Čet
+    Fri: Pet
+    Sat: Sub
+  daysMin:
+    Su: Ne
+    Mo: Po
+    Tu: Ut
+    We: Sr
+    Th: Če
+    Fr: Pe
+    Sa: Su
+  months:
+    January: Siječanj
+    February: Veljača
+    March: Ožujak
+    April: Travanj
+    May: Svibanj
+    June: Lipanj
+    July: Srpanj
+    August: Kolovoz
+    September: Rujan
+    October: Listopad
+    November: Studeni
+    December: Prosinac
+  monthsShort:
+    Jan: Sije
+    Feb: Velj
+    Mar: Ožu
+    Apr: Tra
+    May: Svibanj
+    Jun: Lip
+    Jul: Srp
+    Aug: Kol
+    Sep: Ruj
+    Oct: Lis
+    Nov: Stud
+    Dec: Pro
+oro_config:
+  form:
+    config:
+      title: Konfiguracija sustava
+      tab:
+        system:
+          title: Sustav
+      group:
+        localization:
+          title: Lokalizacija
+          system_locale: Jezik
+        notification:
+          title: Obavijesti
+          system_notification: Obavijesti o novoj inačici
+        loading_message:
+          title: Učitavanje poruka
+          label: Omogućiti učitavanje poruke
+        loading_messages:
+          label: Dostupno učitavanje poruka

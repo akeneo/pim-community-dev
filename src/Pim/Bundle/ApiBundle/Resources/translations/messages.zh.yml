@@ -1,0 +1,25 @@
+pim_api:
+  acl:
+    attribute:
+      list: 列出属性
+    attribute_group:
+      list: 列出属性组
+    category:
+      list: 列出目录
+    family:
+      list: 列出品类
+    channel:
+      list: 列出渠道
+    locale.list: 列出本地化语言
+    currency.list: 列出货币
+    association_type:
+      list: 列出关联类型
+  acl_group:
+    attribute: 属性
+    attribute_group: 属性组
+    category: 分类
+    family: 品类
+    channel: 渠道
+    locale: 本地化语言
+    currency: 货币
+    association_type: 关联类型

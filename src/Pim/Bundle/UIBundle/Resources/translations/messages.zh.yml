@@ -1,0 +1,40 @@
+User: 用户
+Run demo: 运行演示
+Product: 产品
+Attribute list: 属性列表
+Attribute Group list: 属性组列表
+Users: 用户
+Roles: 角色
+Groups: 分组
+Configuration: 配置
+Currency list: 货币列表
+Locale list: 本地化语言列表
+Logged in as: 登录为
+Logout: 退出登录
+Login: 登陆
+Previous: 上一页
+Next: 下一页
+Channel list: 渠道列表
+Select file: 请选择文件
+Change file: 更改文件
+Remove file: 移除文件
+Delete: 删除
+Save: 保存
+Cancel: 取消
+Get help: 获得帮助
+My User: 我的帐户
+oro.form.choose_value: 选择一个值....
+Read more: 了解更多
+oro.form.click_here_to_select: 单击此处进行选择
+Add: 增加
+"Learn how to use this space": "了解如何使用此空间"
+"How To Use Pinbar": "如何使用 Pinbar"
+Pinbar: Pinbar
+Favorites: 收藏夾
+Most Viewed: 最多浏览商品
+"Add this page to favorites": "将此页添加到收藏夹"
+"Minimize the window to the pinbar": "最小化窗口到 pinbar"
+"Loading ...": "正在加载"
+"Yes": "是"
+"No": "否　"
+required: '（必填）'

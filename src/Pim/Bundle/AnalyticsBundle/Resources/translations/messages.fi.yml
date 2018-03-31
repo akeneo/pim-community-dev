@@ -1,0 +1,45 @@
+pim_analytics:
+  new_patch_available: Uusi päivitys saatavilla
+  system_config:
+    group:
+      notification.title: Ilmoitukset
+      version_update.title: Versiopäivitykset
+    form:
+      version_update.label: Uuden version päivitykset
+      version_update.tooltip: Lähetä pyyntö etäpalvelimelle hakemaan tietoa uusien päivityksien julkaisuista
+  system_info:
+    title: Järjestelmätiedot
+    download: TXT
+  info_type:
+    pim_edition: Painos
+    pim_version: Versio
+    pim_storage_driver: Tallennus
+    pim_environment: Ympäristö
+    pim_install_time: Asennusaika
+    registered_bundles: Rekisteröidyt ohjelmapaketit
+    nb_channels: Kanavien määrä
+    nb_products: Tuotteiden määrä
+    nb_product_models: Tuotemallien määrä
+    nb_variant_products: Varianttien määrä
+    nb_family_variants: Varianttiperheiden määrä
+    nb_attributes: Attribuuttien määrä
+    nb_scopable_attributes: Kanavakohtaisten attribuuttien määrä
+    nb_localizable_attributes: Kielikohtaisten attribuuttien määrä
+    nb_scopable_localizable_attributes: Kielikohtaisten ja kanavakohtaisten attribuuttien määrä
+    nb_locales: Lokaatioiden määrä
+    nb_families: Perheiden määrä
+    nb_users: Käyttäjien määrä
+    pim_storage_version: Tallennusversio
+    os_version: Käyttöjärjestelmäversio
+    php_version: PHP-versio
+    mysql_version: MySQL-versio
+    mariadb_version: MariaDB-versio
+    mongodb_version: MongoDB-versio
+    server_version: Palvelimen versio
+    php_extensions: PHP-laajennukset
+  acl:
+    system_info:
+      index: Järjestelmätiedot
+pim_menu:
+  item:
+    system_info: Järjestelmätiedot

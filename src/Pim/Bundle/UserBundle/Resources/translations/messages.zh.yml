@@ -1,0 +1,156 @@
+pim_user:
+  user:
+    tab:
+      general.title: 一般信息
+      additional.title: 附加
+      group_and_role.title: 分组和角色
+      password.title: 密码
+      business_unit.title: 业务单元
+      email_synchronization.title: 电子邮件同步设置
+      interfaces.title: 界面
+  group:
+    tab:
+      general.title: 一般信息
+      users.title: 用户
+oro.user.controller:
+  group.message.saved: "分组已保存"
+  role.message.saved: "角色已保存"
+  user.message.saved: "用户已保存"
+  status.message.saved: "状态已保存"
+oro.user.grid.users:
+  columns:
+    username: "用户名"
+    email: "电子邮件"
+    firstName: "名"
+    lastName: "姓"
+    createdAt: "创建于"
+    updatedAt: "更新于"
+    enabled: "状态"
+oro.user.grid.roles:
+  columns:
+    label: "标签"
+oro.user.grid.groups:
+  columns:
+    name: "名称"
+pim_title:
+  user.index: 用户
+  user_role.index: 角色
+  user_group.index: 分组
+  system_configuration.index: 配置
+user.title: 用户
+user.overview: 用户
+Users Management: 用户管理
+Create user: 创建用户
+btn.create.user: 创建用户
+New user: 新用户
+Additional: 附加
+Groups and Roles: 分组和角色
+Username: 用户名
+Password: 密码
+Re-enter password: 重复密码
+Name prefix: 名称前缀
+First name: 名
+Middle name: 中间名
+Last name: 姓
+Name suffix: 名称后缀
+Date of birth: 出生日期
+Avatar: 头像
+Additional emails: 附加电子邮件
+Add another email: 添加另一个电子邮件
+Catalog locale: 区域设置
+Catalog scope: 范围
+Default tree: 默认大类
+Business Units: 业务单元
+Email synchronization settings: 电子邮件同步设置
+Host: 主机
+Port: 端口
+Ssl: SSL
+Last logged in: 上次登录
+Login count: 登录计数
+Additional Information: 更多信息
+Interfaces: 界面
+Basic Information: 基本信息
+Contact Information: 联系方式
+User name: 用户名
+Birthday: 出生日期
+API key: API 密钥
+Ui locale: 界面语言
+UI locale: 界面语言
+User salt: 用户盐
+Current password: 当前密码
+New password: 新密码
+Repeat new password: 新密码 (重复)
+Generate key: 生成密钥
+Primary: 首要
+Removed user: 已删除用户
+user:
+  product_grid_filters: 商品过滤器
+  default_product_grid_view:
+    label: 默认产品网格视图
+  default_grid_view:
+    none: 无
+Role: 角色
+Owner: 所有者
+General: 一般信息
+Entity: 实体
+Capabilities: 功能
+Save and close: 保存并关闭
+Has role: 有角色
+role:
+  title: 角色
+  overview: 角色
+  edit: 编辑角色
+  create: 创建角色
+btn.create.role: 创建角色
+rights:
+  action: 权限
+oro_security:
+  acl_group:
+    user: 用户
+    role: 角色
+    group: 用户组
+  acl:
+    user:
+      view: 用户列表
+      create: 创建用户
+      edit: 编辑用户
+      delete: 删除用户
+    role:
+      view: 角色列表
+      create: 创建角色
+      edit: 编辑角色
+      delete: 删除角色
+    group:
+      view: 用户组列表
+      create: 创建用户组
+      edit: 编辑用户组
+      delete: 删除用户组
+(default): 实体上的默认权限
+VIEW: 视图
+CREATE: 创建
+EDIT: 编辑
+DELETE: 删除
+ASSIGN: 指派
+SHARE: 共享
+oro:
+  security:
+    access-level:
+      BASIC: 用户
+      LOCAL: 业务单元
+      DEEP: 分割
+      GLOBAL: 组织
+      SYSTEM: 系统
+      NONE: 无
+Create group: 创建组
+btn.create.user-group: 创建组
+Has group: 有分组
+Save and Close: 保存并关闭
+user-group.overview: 分组
+Log in: 登录
+Remember me on this computer: 在这台计算机上记住我
+Forgot your password?: 忘记密码？
+Username or Email: 用户名或电子邮箱
+Forgot Password: 忘记密码
+Request: 请求
+Check Email: 检查电子邮件
+Go to homepage: 转到主页

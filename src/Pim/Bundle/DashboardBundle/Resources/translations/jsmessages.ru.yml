@@ -1,0 +1,20 @@
+pim_dashboard:
+  widget:
+    last_operations:
+      empty: Операции не найдены
+      status: Статус
+      date: Дата
+      type: Тип
+      profile_name: Название профиля
+      details: Подробности
+      job_type:
+        import: Импорт
+        export: Экспорт
+        mass_edit: Массовое редактирование
+        quick_export: Быстрый экспорт
+    completeness:
+      load_more: 'Загрузить больше...'
+    header:
+      view_all: Просмотреть все
+page_title:
+  pim_dashboard_index: Панель управления

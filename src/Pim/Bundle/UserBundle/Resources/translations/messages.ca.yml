@@ -1,0 +1,156 @@
+pim_user:
+  user:
+    tab:
+      general.title: General
+      additional.title: Addicional
+      group_and_role.title: Grups i Rols
+      password.title: Contrasenya
+      business_unit.title: Unitats de negoci
+      email_synchronization.title: Configuració de sincronització de correu electrònic
+      interfaces.title: Interfícies
+  group:
+    tab:
+      general.title: General
+      users.title: Usuaris
+oro.user.controller:
+  group.message.saved: "Grup desat"
+  role.message.saved: "Rol desat"
+  user.message.saved: "Usuari desat"
+  status.message.saved: "Estat desat"
+oro.user.grid.users:
+  columns:
+    username: "Nom d’usuari"
+    email: "Adreça electrònica"
+    firstName: "Nom"
+    lastName: "Segon cognom"
+    createdAt: "Creat el"
+    updatedAt: "Actualitzat el"
+    enabled: "Estat"
+oro.user.grid.roles:
+  columns:
+    label: "Etiqueta"
+oro.user.grid.groups:
+  columns:
+    name: "Nom"
+pim_title:
+  user.index: Usuaris
+  user_role.index: Rols
+  user_group.index: Grups
+  system_configuration.index: Configuració
+user.title: Usuari
+user.overview: Usuari
+Users Management: Gestió d'usuaris
+Create user: Crear usuari
+btn.create.user: Crear usuari
+New user: Nou usuari
+Additional: Addicional
+Groups and Roles: Grups i Rols
+Username: Nom d’usuari
+Password: Contrasenya
+Re-enter password: Torneu a introduir la contrasenya
+Name prefix: Prefix del nom
+First name: Nom
+Middle name: Primer cognom
+Last name: Segon cognom
+Name suffix: Sufix del nom
+Date of birth: Data de naixement
+Avatar: Avatar
+Additional emails: Adreces electròniques addicionals
+Add another email: Afegir una altra adreça electrònica
+Catalog locale: Catàleg de configuracions regionals
+Catalog scope: Catàleg d'abastos
+Default tree: Arbre per defecte
+Business Units: Unitats de negoci
+Email synchronization settings: Configuració de sincronització de correu electrònic
+Host: Host
+Port: Port
+Ssl: SSL
+Last logged in: Darrer inici de sessió
+Login count: Recompte d'inicis de sessió
+Additional Information: Informació addicional
+Interfaces: Interfícies
+Basic Information: Informació bàsica
+Contact Information: Informació de contacte
+User name: Nom d'usuari
+Birthday: Aniversari
+API key: Clau d'API
+Ui locale: Configuració regional de la interfície d'usuari
+UI locale: Configuració regional de la interfície d'usuari
+User salt: Usuari per sal
+Current password: Contrasenya actual
+New password: Contrasenya nova
+Repeat new password: Nova contrasenya (repetir)
+Generate key: Generar clau
+Primary: primari
+Removed user: Usuari suprimit
+user:
+  product_grid_filters: Filtres de quadrícula de producte
+  default_product_grid_view:
+    label: Vista de quadrícula de producte per defecte
+  default_grid_view:
+    none: Cap
+Role: Rol
+Owner: Propietari
+General: General
+Entity: Entitat
+Capabilities: Capacitats
+Save and close: Desar i tancar
+Has role: Té rol
+role:
+  title: rol
+  overview: rol
+  edit: Editar rol
+  create: Crear rol
+btn.create.role: Crear rol
+rights:
+  action: Permisos
+oro_security:
+  acl_group:
+    user: Usuaris
+    role: Rols
+    group: Grup d'usuaris
+  acl:
+    user:
+      view: Llistar usuaris
+      create: Crear un usuari
+      edit: Editar usuaris
+      delete: Suprimir un usuari
+    role:
+      view: Llistar rols
+      create: Crear un rol
+      edit: Editar rol
+      delete: Suprimir un rol
+    group:
+      view: Llistar grups d'usuaris
+      create: Crear un grup d'usuaris
+      edit: Editar grups d'usuaris
+      delete: Suprimir un grup d'usuaris
+(default): Permís per defecte a les entitats
+VIEW: Vista
+CREATE: Crear
+EDIT: Editar
+DELETE: Suprimir
+ASSIGN: Assignar
+SHARE: Compartir
+oro:
+  security:
+    access-level:
+      BASIC: Usuari
+      LOCAL: Unitats de negoci
+      DEEP: Divisió
+      GLOBAL: Organització
+      SYSTEM: Sistema
+      NONE: Cap
+Create group: Crear grup
+btn.create.user-group: Crear grup
+Has group: Té grup
+Save and Close: Desar i tancar
+user-group.overview: Grups
+Log in: Entrar
+Remember me on this computer: Recorda'm en aquest ordinador
+Forgot your password?: Heu oblidat la contrasenya?
+Username or Email: Usuari o correu electrònic
+Forgot Password: He oblidat la contrasenya
+Request: Petició
+Check Email: Comprovar el correu electrònic
+Go to homepage: Anar a la pàgina d'inici

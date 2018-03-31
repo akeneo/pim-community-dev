@@ -1,0 +1,27 @@
+pim_dashboard:
+  title: Panell de contol
+  version: Versió
+  link.label:
+    product: Gestionar de productes
+    category: Gestionar categories
+    attribute: Gestionar atributs
+    family: Gestionar famílies
+  widget:
+    error:
+      title: Error en carregar el widget
+      message: El widget "%alias%" no existeix
+    completeness:
+      title: Integritat per canals i locales
+    last_operations:
+      title: Últimes operacions
+      empty: No s'han trobat operacions
+      status: Estat
+      date: Data
+      type: Tipus
+      "profile name": Nom del perfil
+      details: Detalls
+      job_type:
+        import: Importar
+        export: Exportar
+        mass_edit: Edició massiva
+        quick_export: Exportació ràpida

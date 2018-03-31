@@ -1,0 +1,144 @@
+pim_user:
+  user:
+    tab:
+      general.title: Algemeen
+      additional.title: Extra
+      group_and_role.title: Groepen en rollen
+      password.title: Wachtwoord
+      business_unit.title: Bedrijfsdivisies
+      email_synchronization.title: Synchronisatie-instellingen voor e-mail
+  group:
+    tab:
+      general.title: Algemeen
+      users.title: Gebruikers
+oro.user.controller:
+  group.message.saved: "Groep opgeslagen"
+  role.message.saved: "Rol opgeslagen"
+  user.message.saved: "Gebruiker opgeslagen"
+  status.message.saved: "Status opgeslagen"
+oro.user.grid.users:
+  columns:
+    username: "Gebruikersnaam"
+    email: "E-mail"
+    firstName: "Voornaam"
+    lastName: "Achternaam"
+    createdAt: "Aangemaakt op"
+    updatedAt: "Bijgewerkt op"
+    enabled: "Status"
+oro.user.grid.roles:
+  columns:
+    label: "Label"
+oro.user.grid.groups:
+  columns:
+    name: "Naam"
+pim_title:
+  user.index: Gebruikers
+  user_role.index: Rollen
+  user_group.index: Groepen
+  system_configuration.index: Configuratie
+user.title: Gebruiker
+user.overview: Gebruiker
+Users Management: Gebruikersbeheer
+Create user: Gebruiker aanmaken
+btn.create.user: Gebruiker aanmaken
+New user: Nieuwe gebruiker
+Additional: Extra
+Groups and Roles: Groepen en rollen
+Username: Gebruikersnaam
+Password: Wachtwoord
+Re-enter password: Voer wachtwoord opnieuw in
+Name prefix: Voorvoegsel
+First name: Voornaam
+Middle name: Tussenvoegsel
+Last name: Achternaam
+Name suffix: Achtervoegsel
+Date of birth: Geboortedatum
+Avatar: Profielafbeelding
+Additional emails: Extra e-mails
+Add another email: Een ander e-mailadres toevoegen
+Catalog locale: Catalogus lokalisatie
+Catalog scope: Scope van catalogus
+Default tree: Standaardstructuur
+Business Units: Bedrijfsdivisies
+Email synchronization settings: Synchronisatie-instellingen voor e-mail
+Host: Host
+Port: Poort
+Last logged in: Laatst aangemeld
+Login count: Aantal logins
+Additional Information: Extra informatie
+Basic Information: Algemene gegevens
+Contact Information: Contactinformatie
+User name: Gebruikersnaam
+Birthday: Verjaardag
+API key: API-sleutel
+Generate key: Sleutel genereren
+Primary: primaire
+Removed user: Verwijderde gebruiker
+user:
+  default_grid_view:
+    none: Geen
+Role: Rol
+Owner: Eigenaar
+General: Algemeen
+Entity: Entiteit
+Capabilities: Mogelijkheden
+Save and close: Opslaan en sluiten
+Has role: Heeft rol
+role:
+  title: rol
+  overview: rol
+  edit: Rol bewerken
+  create: Rol aanmaken
+btn.create.role: Rol aanmaken
+rights:
+  action: Machtigingen
+oro_security:
+  acl_group:
+    user: Gebruikers
+    role: Rollen
+    group: Gebruikersgroepen
+  acl:
+    user:
+      view: Lijst gebruikers
+      create: Een gebruiker maken
+      edit: Gebruikers bewerken
+      delete: Een gebruiker verwijderen
+    role:
+      view: Lijst met rollen
+      create: Maak een rol
+      edit: Rollen bewerken
+      delete: Een rol verwijderen
+    group:
+      view: Lijst gebruikersgroepen
+      create: Maak een gebruikersgroep
+      edit: Bewerken van gebruikersgroepen
+      delete: De gebruikersgroep van een verwijderen
+(default): Standaardmachtiging op entiteiten
+VIEW: Bekijken
+CREATE: Aanmaken
+EDIT: Bewerken
+DELETE: Verwijderen
+ASSIGN: Toewijzen
+SHARE: Delen
+oro:
+  security:
+    access-level:
+      BASIC: Gebruiker
+      LOCAL: Bedrijfsdivisie
+      DEEP: Divisie
+      GLOBAL: Organisatie
+      SYSTEM: Systeem
+      NONE: Geen
+Create group: Groep aanmaken
+btn.create.user-group: Groep aanmaken
+Has group: Heeft groep
+Save and Close: Opslaan en sluiten
+user-group.overview: Groepen
+Log in: Login
+Remember me on this computer: Onthoud mijn gegevens op deze computer
+Forgot your password?: Uw wachtwoord vergeten?
+Username or Email: Gebruikersnaam of E-mail
+Forgot Password: Wachtwoord vergeten
+Request: Aanvragen
+Check Email: E-mail controleren
+Go to homepage: Ga naar de homepage

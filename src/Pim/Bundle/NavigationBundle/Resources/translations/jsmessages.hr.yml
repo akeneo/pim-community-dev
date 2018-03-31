@@ -1,0 +1,4 @@
+"Sorry, page was not loaded correctly": "Žao nam je, stranica nije ispravno učitana"
+"Your local changes will be lost. Are you sure you want to refresh the page?": "Lokalne promjene će biti izgubljene. Jeste li sigurni da želite osvježiti stranicu?"
+"navigation.message.content.outdated": "Sadržaj {{ title }} stranice je zastario, molimo <a href='#' data-action='page-refresh'> osvježite stranicu</a>"
+"Content of pinned page is outdated": "Sadržaj prikvačene stranice je zastario"

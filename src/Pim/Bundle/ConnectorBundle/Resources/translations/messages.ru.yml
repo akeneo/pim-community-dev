@@ -1,0 +1,170 @@
+pim_connector:
+  steps:
+    dummy_reader.title: Заглушка
+    product_reader.title: Извелечение продуктов
+    entity_reader.title: Извлечение объектов
+    csv_reader:
+      title: Считыватель из CSV
+    csv_product_reader.title: Считыватель продуктов из CSV
+    csv_category_reader.title: Считыватель категорий из CSV
+    dummy_processor.title: Заглушка
+    product_processor.title: Создание продукта
+    category_processor.title: Создание категорий
+    association_processor.title: Создание ассоциаций
+    product_association_processor.title: Создание ассоциаций
+    group_processor.title: Создание групп
+    attribute_processor.title: Создание атрибутов
+    attribute_option_processor.title: Создание выборов атрибутов
+    heterogeneous_processor.title: Сериализатор продукта в CSV
+    homogeneous_processor.title: Сериализатор объектов в CSV
+    transformer_processor.title: Преобразование
+    dummy_writer.title: Заглушка
+    file_writer.title: Вывод в файл
+    product_writer.title: Хранилище продуктов
+    category_writer.title: Хранилище категорий
+    writer.title: Хранилище объектов
+    csv_writer.title: Записыватель CSV
+job_execution.summary:
+  read: прочитано
+  write: записано
+  skip: пропущено
+  create: создано
+  process: обработано
+  update_products: обновленных продуктов
+  process_products: обработанных продуктов
+  skip_products: пропущенных продуктов
+  displayed: отображены первые предупреждения
+  charset_validator:
+    title: 'Кодировка файла:'
+    skipped: пропущено, расширение из белого списка
+  product_skipped_no_diff: пропущен продукт (без разницы)
+  item_position: прочитанных строк
+batch_jobs:
+  csv_product_export:
+    label: Экспорт продуктов в CSV
+    export.label: Экспорт продуктов
+  csv_category_export:
+    label: Экспорт категорий в CSV
+    export.label: Экспорт категорий
+  csv_attribute_export:
+    label: Экспорт атрибутов в CSV
+    export.label: Экспорт атрибутов
+  csv_attribute_option_export:
+    label: Экспорт элементов списочных атрибутов в CSV
+    export.label: Экспорт элементов списочных атрибутов
+  csv_association_type_export:
+    label: Экспорт типов ассоциаций в CSV
+    export.label: Экспорт типов ассоциаций
+  csv_group_export:
+    label: Экспорт групп в CSV
+    export.label: Экспорт групп
+  csv_family_export:
+    label: Экспорт семейств в CSV
+    export.label: Экспорт семейств
+  csv_product_import:
+    label: Импорт продуктов из CSV
+    validation.label: Проверка файла
+    import.label: Импорт продуктов
+    import_associations.label: Импорт ассоциаций
+  csv_product_model_import:
+    validation.label: Проверка файла
+  csv_category_import:
+    label: Импорт категорий из CSV
+    validation.label: Проверка файла
+    import.label: Импорт категории
+  csv_attribute_import:
+    label: Импорт атрибутов из CSV
+    validation.label: Проверка файла
+    import.label: Импорт атрибутов
+  csv_attribute_option_import:
+    label: Импорт элементов списочных атрибутов из CSV
+    validation.label: Проверка файла
+    import.label: Импорт элементов списочных атрибутов
+  csv_association_type_import:
+    label: Импорт типов ассоциаций из CSV
+    validation.label: Проверка файла
+    import.label: Импорт типов ассоциаций
+  csv_family_import:
+    label: Импорт семейств из CSV
+    validation.label: Проверка файла
+    import.label: Импорт семейств
+  csv_family_variant_import:
+    validation.label: Проверка файла
+  csv_group_import:
+    label: Импорт группы из CSV
+    validation.label: Проверка файла
+    import.label: Импорт группы
+  csv_channel_import:
+    validation.label: Проверка файла
+  csv_locale_import:
+    validation.label: Проверка файла
+  csv_attribute_group_import:
+    validation.label: Проверка файла
+  csv_currency_import:
+    validation.label: Проверка файла
+  csv_group_type_import:
+    validation.label: Проверка файла
+  xlsx_category_import:
+    label: Импорт категорий из XLSX
+    validation.label: Проверка файла
+    import.label: Импорт категории
+  xlsx_association_type_import:
+    label: Импорт типов ассоциаций из XLSX
+    validation.label: Проверка файла
+    import.label: Импорт типов ассоциаций
+  xlsx_attribute_import:
+    label: Импорт атрибутов из XLSX
+    validation.label: Проверка файла
+    import.label: Импорт атрибутов
+  xlsx_attribute_option_import:
+    label: Импорт элементов списочных атрибутов из XLSX
+    validation.label: Проверка файла
+    import.label: Импорт элементов списочных атрибутов
+  xlsx_family_import:
+    label: Импорт семейств из XLSX
+    validation.label: Проверка файла
+    import.label: Импорт семейств
+  xlsx_family_variant_import:
+    validation.label: Проверка файла
+  xlsx_product_export:
+    label: Экспорт продуктов в XLSX
+    export.label: Экспорт продуктов
+  xlsx_product_import:
+    label: Импорт продуктов из XLSX
+    validation.label: Проверка файла
+    import.label: Импорт продуктов
+    import_associations.label: Импорт ассоциаций
+  xlsx_product_model_import:
+    validation.label: Проверка файла
+  xlsx_group_export:
+    label: Экспорт групп в XLSX
+    export.label: Экспорт групп
+  xlsx_group_import:
+    label: Импорт групп из XLSX
+    validation.label: Проверка файла
+    import.label: Импорт группы
+  xlsx_family_export:
+    label: Экспорт семейств в XLSX
+    export.label: Экспорт семейств
+  xlsx_category_export:
+    label: Экспорт категорий в XLSX
+    export.label: Экспорт категорий
+  xlsx_attribute_export:
+    label: Экспорт атрибутов в XLSX
+    export.label: Экспорт атрибутов в XLSX
+  xlsx_attribute_option_export:
+    label: Экспорт элементов списочных атрибутов в XLSX
+    export.label: Экспорт элементов списочных атрибутов в XLSX
+  xlsx_association_type_export:
+    label: Экспорт типов ассоциаций в XLSX
+    export.label: Экспорт типов ассоциаций в XLSX
+  xlsx_channel_import:
+    validation.label: Проверка файла
+  xlsx_locale_import:
+    validation.label: Проверка файла
+  xlsx_attribute_group_import:
+    validation.label: Проверка файла
+  xlsx_currency_import:
+    validation.label: Проверка файла
+  xlsx_group_type_import:
+    validation.label: Проверка файла

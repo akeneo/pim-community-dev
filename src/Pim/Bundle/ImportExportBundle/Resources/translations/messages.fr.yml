@@ -1,0 +1,154 @@
+Job: Tâche
+Connector: Connecteur
+pim_import_export:
+  job: Tâche
+  connector: Connecteur
+  status:
+    - Prêt
+  batch_status:
+    1: Terminé
+    2: Démarrage
+    3: Démarré
+    4: En cours d'arrêt
+    5: Arrêté
+    6: Echoué
+    7: Abandonné
+    8: Inconnu
+  download_archive:
+    archive: Télécharger l'archive générée|Télécharger les archives générées
+    output: Télécharger le fichier généré|Télécharger les fichiers générés
+    input: Télécharger le fichier lu|Télécharger les fichiers lus
+    invalid_xlsx: télécharger les données invalides
+    invalid_csv: télécharger les données invalides
+  notification:
+    export:
+      error: L'export de <strong>%label%</strong> a échoué
+      warning: L'export de <strong>%label%</strong> est terminé mais il y a des avertissements
+      success: L'export de <strong>%label%</strong> est terminé
+    import:
+      error: L'import de <strong>%label%</strong> a échoué
+      warning: L'import de <strong>%label%</strong> est terminé mais il y a des avertissements
+      success: L'import de <strong>%label%</strong> est terminé
+  list: Sélectionner une tâche
+  job_profile:
+    tab:
+      property.title: Propriétés générales
+      history.title: Historique
+      job_content.title: Contenu
+pim_title.export_profile.index: Gestion des profils d'export
+pim_title.export_profile.edit: Profil d'export %job.label% | Modification
+pim_title.export_profile.show: Profil d'export %job.label% | Visualisation
+pim_title.export_execution.index: Exporter l'historique des exécutions
+pim_title.export_execution.show: Executions d'exports | Détails
+pim_title.import_profile.index: Gestion des profils d’import
+pim_title.import_profile.edit: Profil d'import %job.label% | Modification
+pim_title.import_profile.show: Profil d'import %job.label% | Visualisation
+pim_title.import_execution.index: Historique d'exécution des imports
+pim_title.import_execution.show: Executions d'imports | Détails
+export profile:
+  title: Profil d'export
+  edit: Modifier un profil d'export
+import profile:
+  title: Profil d'import
+  edit: Modifier un profil d'import
+pim_importexport:
+  acl:
+    export_profile:
+      index: Visualiser la liste des profils d'export
+      create: Créer un profil d'export
+      show: Voir le profil d'export
+      edit: Modifier un profil d'export
+      remove: Supprimer un profil d'export
+      launch: Lancer un profil d'export
+      property_edit: Modifier les propriétés générales d'un profil d'export
+      property_show: Voir les propriétés générales d'un profil d'export
+      history: Afficher l'historique du profil d'export
+      content_edit: Modifier le contenu d'un profil d'export
+      content_show: Voir le contenu d'un profil d'export
+    import_profile:
+      index: Visualiser la liste des profils d'import
+      create: Créer un profil d'import
+      show: Voir le profil d'import
+      edit: Modifier un profil d'import
+      remove: Supprimer un profil d'import
+      launch: Lancer un profil d'import
+      history: Afficher l'historique du profil d'import
+    export_execution:
+      index: Visualiser la liste des rapports d'export
+      show: Visualiser les détails du rapport d'export
+      dl_log: Télécharger le rapport d'export
+      dl_files: Télécharger les fichiers exportés
+    import_execution:
+      index: Visualiser la liste des rapports d'import
+      show: Visualiser les détails du rapport d'import
+      dl_log: Télécharger le rapport d'import
+      dl_files: Télécharger les fichiers importés
+  acl_group:
+    export: Profils d'export
+    import: Profils d'import
+btn:
+  create:
+    export profile: Créer un profil d'export
+    import profile: Créer un profil d'import
+Upload and import now: Télécharger et importer maintenant
+import now: Importer maintenant
+export now: Exporter maintenant
+confirmation:
+  remove:
+    export profile: Êtes-vous sûr(e) de vouloir supprimer le profil d'export %name% ?
+    import profile: Êtes-vous sûr(e) de vouloir supprimer le profil d'import %name% ?
+flash:
+  export:
+    created: L'export a été correctement créé
+    removed: Le profil d'export a été supprimé
+    updated: L'export a correctement été mis à jour
+    running: L'export est en cours d'exécution
+  import:
+    created: L'import a été correctement créé
+    removed: Le profil d'import a été supprimé
+    updated: L'import a correctement été mis à jour
+    running: L'import est en cours d'exécution
+General properties: Propriétés générales
+History: Historique
+pane.accordion:
+  properties: Propriétés
+  global_settings: Paramètres généraux
+  filters: Filtres
+popin.create:
+  export_profile.title: Créer un nouveau profil d'export
+  import_profile.title: Créer un nouveau profil d'import
+'Display item': Afficher l'élément
+'Hide item': Masquer l'élément
+'Collecting data about job execution...': Collecte de données de l'exécution...
+'You must select a file to upload': Vous devez sélectionner un fichier à télécharger
+Download log: Télécharger l'historique
+Show profile: Afficher le profil
+execution details: détails d'exécution
+job_execution.summary:
+  read: lu(s)
+  write: écrit(s)
+  skip: ignoré(s)
+  create: créé(s)
+  update: mis à jour
+  update_products: produits mis à jour
+  skip_products: produits ignorés
+  displayed: premiers avertissements affichés
+  charset_validator:
+    title: 'Encodage du fichier :'
+    skipped: ignoré(s), extension dans la liste blanche
+Step: Étape
+Status: État
+Warnings: Avertissements
+Summary: Résumé
+Start: Début
+End: Fin
+set_attribute_requirements: Configurer les exigences d'attributs
+COMPLETED: Terminé
+STARTING: Démarrage
+STARTED: Démarré
+STOPPING: En cours d'arrêt
+STOPPED: Arrêté
+FAILED: Echoué
+ABANDONED: Abandonné
+UNKNOWN: Inconnu
+warning.label: Attention

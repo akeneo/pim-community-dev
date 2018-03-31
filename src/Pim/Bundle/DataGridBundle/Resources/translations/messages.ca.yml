@@ -1,0 +1,28 @@
+"oro_datagrid.no_data_hint %entityHint%": '%entityHint% no existeix.'
+oro_datagrid.label_add_filter: Administrar filtres
+oro_datagrid.label_loading_mask: Carregant . . .
+oro.grid.mass_action.selected_rows: Files seleccionades
+oro.grid.mass_action.confirm_title: Confirmació massiva de l'acció
+oro.grid.mass_action.confirm_content: Esteu segur que voleu fer-ho?
+oro.grid.mass_action.confirm_ok: Sí, fes-ho
+oro.grid.mass_action.error_title: Error d'acció de massiva
+oro.grid.mass_action.error_content: No es pot realitzar l'acció de massiva
+oro.grid.mass_action.delete.label: Suprimir
+oro.grid.mass_action.delete.confirm_title: Confirmació d'eliminació massiva
+oro.grid.mass_action.delete.confirm_content: Esteu segur que voleu suprimir els elements seleccionats?
+oro.grid.datagrid.page_size.all: Tots
+oro.grid.mass_action.delete.success_message: "{0} no s'ha eliminat cap entitat|{1} s'ha eliminat una entitat|] 1, Inf [s'han eliminat %count% entitats"
+datagrid_view:
+  columns:
+    min_message: Heu de seleccionar almenys una columna de la graella de dades per mostrar
+  label:
+    unique_message: L'etiqueta ha de ser única
+    not_blank_message: L'etiqueta no pot quedar en blanc
+grid.view_selector.flash:
+  created: Vista de Graella de dades creada correctament
+  removed: Vista de Graella de dades eliminada correctament
+  not_removable: No teniu els drets necesssaris per eliminar aquesta vista
+quick_export: Exportació ràpida
+import: Importar
+export: Exportar
+mass_edit: Edició massiva

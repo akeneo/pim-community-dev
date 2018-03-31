@@ -1,0 +1,29 @@
+job_execution:
+  summary:
+    display_item: Näytä kohde
+    hide_item: Piilota kohde
+pim_connector:
+  export:
+    categories:
+      selector:
+        modal:
+          title: Kategoriavalinta
+          cancel: Peruuta
+          confirm: Vahvista
+        label: "{0} Kaikki tuotteet|{1} Yksi kategoria valittu|]1,Inf[ {{ count }} kategoriaa valittu"
+        edit: Muokkaa
+        title: Valitse kategoriat
+    locales:
+      validation:
+        not_blank: Yksi lokaatio on valittava, valitse vietävä lokaatio.
+page_title:
+  pim_importexport_export_profile_index: Profiilien viennin hallinta
+  pim_importexport_export_profile_edit: Vientiprofiili {{ job.label }} | Muokkaa
+  pim_importexport_export_profile_show: Vientiprofiili {{ job.label }} | Näytä
+  pim_importexport_export_execution_index: Vientien historia
+  pim_importexport_export_execution_show: Vientisuoritukset | Yksityiskohdat
+  pim_importexport_import_profile_index: Profiilien tuonnin hallinta
+  pim_importexport_import_profile_edit: Tuontiprofiili {{ job.label }} | Muokkaa
+  pim_importexport_import_profile_show: Tuontiprofiili {{ job.label }} | Näytä
+  pim_importexport_import_execution_index: Tuontihistoria
+  pim_importexport_import_execution_show: Tuontisuoritukset | Yksityiskohdat

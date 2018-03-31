@@ -1,0 +1,29 @@
+job_execution:
+  summary:
+    display_item: Visualizza articoli
+    hide_item: Nascondi articoli
+pim_connector:
+  export:
+    categories:
+      selector:
+        modal:
+          title: Selezione categorie
+          cancel: Annulla
+          confirm: Conferma
+        label: "{0} Tutti i prodotti|{1} Una categoria selezionata |] 1, Inf[ {{ count }} categorie selezionate"
+        edit: Modifica
+        title: Seleziona categorie
+    locales:
+      validation:
+        not_blank: Una impostazione internazionale deve essere selezionata, si prega di scegliere una impostazione internazionale per l'esportazione.
+page_title:
+  pim_importexport_export_profile_index: Gestione profili di esportazione
+  pim_importexport_export_profile_edit: Profilo di esportazione {{ job.label }} | Modifica
+  pim_importexport_export_profile_show: Profilo di esportazione {{ job.label }} | Visualizza
+  pim_importexport_export_execution_index: Esportare la cronologia delle esecuzioni
+  pim_importexport_export_execution_show: Esecuzioni di esportazione | Dettagli
+  pim_importexport_import_profile_index: Gestione profili di importazione
+  pim_importexport_import_profile_edit: Profilo di importazione {{ job.label }} | Modifica
+  pim_importexport_import_profile_show: Profilo di importazione {{ job.label }} | Visualizza
+  pim_importexport_import_execution_index: Importare la cronologia delle esecuzioni
+  pim_importexport_import_execution_show: Importare le esecuzioni | Dettagli
