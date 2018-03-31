@@ -3,6 +3,8 @@ const requirePaths = require('../web/js/require-paths');
 const merge = require('deepMerge');
 const rootDir = process.cwd();
 const formExtensions = require('./form-extensions.js');
+const extensionPaths = formExtensions.collectPaths();
+
 const { parse } = require('yamljs');
 const { readFileSync, writeFileSync } = require('fs');
 const { resolve, join } = require('path');
@@ -54,8 +56,6 @@ function getModuleAliases() {
         underscore: require.resolve('underscore')
     });
 
-    console.log(aliases['require-context']);
-
     return aliases;
 }
 
@@ -64,7 +64,6 @@ function getModuleAliases() {
  * It also injects the form extensions config into the form config provider.
  */
 function getModuleConfigs() {
-    const extensionPaths = formExtensions.collectPaths();
     const extensions = formExtensions.merge(extensionPaths);
     requireContents.config['pim/form-config-provider'] = extensions;
 
@@ -103,6 +102,7 @@ const moduleAliases = getModuleAliases();
 const manifest = {
     rootDir,
     moduleAliases,
+    extensionPaths,
     moduleConfigs: getModuleConfigs()
 };
 
