@@ -3,6 +3,7 @@
 ## Bug fixes
 
 - PIM-7251: Fix history date on all grids (except product grid)
+- PIM-7275: Fix regression on group products grid filters
 
 # 2.0.20 (2018-03-29)
 
