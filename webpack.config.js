@@ -1,24 +1,10 @@
-/* eslint-env es6 */
-const fs = require('fs');
 const process = require('process');
-const rootDir = process.cwd();
 const webpack = require('webpack');
 const path = require('path');
 const _ = require('lodash');
 const LiveReloadPlugin = require('webpack-livereload-plugin');
 const isProd = process.argv && process.argv.indexOf('--env=prod') > -1;
-const sourcePath = path.join(rootDir, 'web/js/require-paths.js');
-
-if (!fs.existsSync(sourcePath)) {
-    throw new Error(`The web/js/require-paths.js module does not exist - You need to run
-    "bin/console pim:install" or "bin/console pim:installer:dump-require-paths" before
-    running webpack \n`);
-}
-
-const { getModulePaths, createModuleRegistry } = require('./webpack/requirejs-utils');
-const { aliases, config } = getModulePaths(rootDir, __dirname, sourcePath);
-
-createModuleRegistry(Object.keys(aliases), rootDir);
+const { moduleAliases, moduleConfigs, rootDir } = require('./webpack/manifest.json');
 
 const babelPresets = [['babel-preset-env', {
     targets: {
@@ -26,9 +12,7 @@ const babelPresets = [['babel-preset-env', {
     }
 }]];
 
-if (isProd) {
-    babelPresets.push('babel-preset-minify');
-}
+if (isProd) babelPresets.push('babel-preset-minify');
 
 console.log('Starting webpack from', rootDir, 'in', isProd ? 'prod' : 'dev', 'mode');
 
@@ -54,7 +38,7 @@ module.exports = {
     devtool: 'source-map',
     resolve: {
         symlinks: false,
-        alias: _.mapKeys(aliases, (path, key) => `${key}$`)
+        alias: _.mapKeys(moduleAliases, (path, key) => `${key}$`)
     },
     module: {
         rules: [
@@ -66,7 +50,7 @@ module.exports = {
                     {
                         loader: path.resolve(__dirname, 'webpack/config-loader'),
                         options: {
-                            configMap: config
+                            configMap: moduleConfigs
                         }
                     }
                 ]
