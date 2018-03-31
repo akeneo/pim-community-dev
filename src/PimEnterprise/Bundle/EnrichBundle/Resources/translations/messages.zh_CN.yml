@@ -147,6 +147,3 @@ job_execution.summary:
   proposal_deleted: 已被删除
 pim_enrich_attribute_form:
   isReadOnly: 只读
-batch_jobs:
-  edit_common_attributes:
-    execute_rules.label: 执行规则
