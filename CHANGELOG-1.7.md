@@ -2,7 +2,12 @@
 
 ## Bug fixes
 
+- PIM-6825: Fix cancel button redirection when editing a user
+- GITHUB-7507: Fix XLSX product export to allow decimal separator configuration (Thanks [wa-daniel-fahl](https://github.com/wa-daniel-fahl)!
 - PIM-7069: Fix Channel export regarding conversion_units output
+- PIM-7119: Fix missing translation on filters
+- PIM-7264: Fix validation on import decimal number greater than limit in database (MySQL)
+- PIM-7162: Fix issue with CSS on reset password form
 
 # 1.7.19 (2018-02-27)
 
