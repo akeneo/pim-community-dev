@@ -1,6 +1,6 @@
 const process = require('process');
 const requirePaths = require('../web/js/require-paths');
-const merge = require('deepMerge');
+const merge = require('deepmerge');
 const rootDir = process.cwd();
 const formExtensions = require('./form-extensions.js');
 const extensionPaths = formExtensions.collectPaths();
