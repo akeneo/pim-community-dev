@@ -86,7 +86,11 @@ define([
                         breadcrumbTab: breadcrumbTab,
                         breadcrumbItem: breadcrumbItem
                     }));
+
+                    this.delegateEvents();
                 }.bind(this));
+
+                return this;
             },
 
             /**
