@@ -51,10 +51,10 @@ class RemoveWrongBooleanValuesOnVariantProductsCommand extends ContainerAwareCom
             $this->getContainer()->getParameter('pim_job_product_batch_size') :
             self::DEFAULT_PRODUCT_BULK_SIZE;
 
-        $progressBar = new ProgressBar($output);
-        $progressBar->start();
-
         $variantProducts = $this->getVariantProducts();
+
+        $progressBar = new ProgressBar($output, $variantProducts->count());
+        $progressBar->start();
 
         $productsToSave = [];
 
