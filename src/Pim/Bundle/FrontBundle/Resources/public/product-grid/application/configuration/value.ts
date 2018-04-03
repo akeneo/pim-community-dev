@@ -10,7 +10,7 @@ export default (value: any) => {
   if (typeof value === 'string') {
     return String.fromValue(value);
   }
-  if (value.isArray()) {
+  if (Object.prototype.toString.call(value) === '[object Array]') {
     return Collection.fromValue(value);
   }
 
