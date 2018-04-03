@@ -165,7 +165,12 @@ module.exports = {
             {
                 test: /\.tsx?$/,
                 use: [
-                    'ts-loader',
+                    {
+                        loader: 'ts-loader',
+                        options: {
+                            configFile: path.resolve(__dirname, 'tsconfig.json'),
+                        }
+                    },
                     {
                         loader: path.resolve(__dirname, 'webpack/config-loader'),
                         options: {
