@@ -121,7 +121,7 @@ JSON;
      */
     private function getListSize()
     {
-        $cursorPageSize = (int)$this->getParameter('pim_catalog.factory.product_cursor.page_size');
+        $cursorPageSize = (int)$this->getParameter('pim_job_product_batch_size');
 
         return $cursorPageSize * 2;
     }
