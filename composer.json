@@ -16,11 +16,11 @@
         "psr-4": {
             "Pim\\Upgrade\\": "upgrades/",
             "Pim\\Behat\\": "features/Pim/Behat",
-            "Akeneo\\Test\\IntegrationTestsBundle\\": "tests/Integration/IntegrationTestsBundle/",
-            "Akeneo\\Test\\Integration\\": "tests/Integration/",
-            "Akeneo\\Test\\Acceptance\\": "tests/Acceptance/"
+            "Akeneo\\Test\\IntegrationTestsBundle\\": "tests/back/Integration/IntegrationTestsBundle/",
+            "Akeneo\\Test\\Integration\\": "tests/back/Integration/",
+            "Akeneo\\Test\\Acceptance\\": "tests/back/Acceptance/"
         },
-        "classmap": [ "app/AppKernel.php", "app/AppCache.php", "tests/Integration/AppKernelTest.php" ]
+        "classmap": [ "app/AppKernel.php", "app/AppCache.php", "tests/back/Integration/AppKernelTest.php" ]
     },
     "require": {
         "php": ">=7.1.0",
