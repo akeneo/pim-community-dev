@@ -16,7 +16,7 @@ class UiLocaleProviderSpec extends ObjectBehavior
         MessageCatalogueInterface $messageCatalogue_en_US,
         MessageCatalogueInterface $messageCatalogue_de_DE
     ) {
-        $this->beConstructedWith($translator, 0.7);
+        $this->beConstructedWith($translator, 0.7, ['en_US', 'fr_FR', 'de_DE']);
         $translator->getFallbackLocales()->willReturn(['en_US']);
         $translator->getCatalogue(Argument::any())->willReturn($messageCatalogueAll);
         $messageCatalogueAll->all()->willReturn([]);

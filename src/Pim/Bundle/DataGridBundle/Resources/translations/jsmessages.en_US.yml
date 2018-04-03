@@ -4,6 +4,10 @@ pim_datagrid:
   no_results: "Sorry, there is no {{ entityHint }} for your search."
   no_results_subtitle: "Try again with new search criteria."
 
+  select:
+    title: Select
+    all_visible: All visible
+
   delete_error:
     title: Delete Error
 
@@ -46,17 +50,6 @@ pim_datagrid:
   mass_action:
     delete:
       empty_selection: No product selected
-
-  action:
-    default:
-      confirmation:
-        title: Execution confirmation
-        content: Are you sure you want to do this?
-      success: Action performed
-      error: Action was not performed
-      no_items: Please, select item to perform action.
-
-  mass_action:
     default:
       confirmation:
         title: Mass action confirmation
@@ -67,6 +60,17 @@ pim_datagrid:
     quick_export:
       title: Quick Export
       success: Quick export has been launched
+
+  action:
+    default:
+      confirmation:
+        title: Execution confirmation
+        content: Are you sure you want to do this?
+      success: Action performed
+      error: Action was not performed
+      no_items: Please, select item to perform action.
+    show:
+      title: Show
 
   filters:
     common:
