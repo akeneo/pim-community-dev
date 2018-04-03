@@ -38,7 +38,7 @@
 - Move `PimEnterprise\Bundle\DataGridBundle\Datagrid\Configuration\Proposal\GridHelper` to `PimEnterprise\Bundle\WorkflowBundle\Datagrid\Configuration\Proposal\GridHelper`
 - Move `PimEnterprise\Bundle\DataGridBundle\Datasource\ProductProposalDatasource` to `PimEnterprise\Bundle\WorkflowBundle\Datagrid\Datasource\ProductProposalDatasource`
 - Move `PimEnterprise\Bundle\DataGridBundle\Datasource\ResultRecord\ORM\ProductDraftHydrator` to `PimEnterprise\Bundle\WorkflowBundle\Datagrid\Datasource\ResultRecord\ProductDraftHydrator`
-- Move `PimEnterprise\Bundle\DataGridBundle\EventListener\ConfigureProposalGridListener` to `PimEnterprise\Bundle\WorkflowBundle\Datagrid\EventListener\ConfigureProposalGridListener`
+- Move `PimEnterprise\Bundle\SecurityBundle\Datagrid\EventListener\ConfigureProposalGridListener` to `PimEnterprise\Bundle\WorkflowBundle\Datagrid\EventListener\ConfigureProposalGridListener`
 - Move `PimEnterprise\Bundle\FilterBundle\Filter\ProductDraft\AttributeChoiceFilter` to `PimEnterprise\Bundle\WorkflowBundle\Datagrid\Filter\AttributeChoiceFilter`
 - Move `PimEnterprise\Bundle\FilterBundle\Filter\ProductDraft\AuthorFilter` to `PimEnterprise\Bundle\WorkflowBundle\Datagrid\Filter\AuthorFilter`
 - Move `PimEnterprise\Bundle\FilterBundle\Filter\ProductDraft\ChoiceFilter` to `PimEnterprise\Bundle\WorkflowBundle\Datagrid\Filter\ChoiceFilter`

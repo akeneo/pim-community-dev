@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Bundle\DataGridBundle\EventListener;
+namespace PimEnterprise\Bundle\SecurityBundle\Datagrid\EventListener;
 
 use Oro\Bundle\DataGridBundle\Event\BuildBefore;
 use Pim\Bundle\DataGridBundle\Datagrid\Configuration\ConfiguratorInterface;
@@ -27,15 +27,15 @@ use PimEnterprise\Bundle\SecurityBundle\Datagrid\Product\RowActionsConfigurator;
  */
 class ConfigureProductGridListener extends BaseConfigureProductGridListener
 {
-    /** @var \PimEnterprise\Bundle\SecurityBundle\Datagrid\Product\RowActionsConfigurator */
+    /** @var RowActionsConfigurator */
     protected $actionsConfigurator;
 
     /**
-     * @param ContextConfigurator                                                          $contextConfigurator
-     * @param ColumnsConfigurator                                                          $columnsConfigurator
-     * @param ConfiguratorInterface                                                        $filtersConfigurator
-     * @param SortersConfigurator                                                          $sortersConfigurator
-     * @param \PimEnterprise\Bundle\SecurityBundle\Datagrid\Product\RowActionsConfigurator $actionsConfigurator
+     * @param ContextConfigurator    $contextConfigurator
+     * @param ColumnsConfigurator    $columnsConfigurator
+     * @param ConfiguratorInterface  $filtersConfigurator
+     * @param SortersConfigurator    $sortersConfigurator
+     * @param RowActionsConfigurator $actionsConfigurator
      */
     public function __construct(
         ContextConfigurator $contextConfigurator,

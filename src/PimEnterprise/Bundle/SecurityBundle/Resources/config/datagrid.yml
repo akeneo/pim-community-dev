@@ -2,8 +2,12 @@ parameters:
     pim_datagrid.adapter.oro_to_pim_grid_filter.class: PimEnterprise\Bundle\SecurityBundle\Datagrid\OroToPimGridFilterAdapter
     pimee_security.datagrid.configuration.product.filters_configurator.class: PimEnterprise\Bundle\DataGridBundle\Datagrid\Configuration\Product\FiltersConfigurator
     pimee_security.datagrid.configuration.product.row_actions_configurator.class: PimEnterprise\Bundle\SecurityBundle\Datagrid\Product\RowActionsConfigurator
+    pim_datagrid.event_listener.configure_product_grid_listener.class: PimEnterprise\Bundle\SecurityBundle\Datagrid\EventListener\ConfigureProductGridListener
+    pimee_security.datagrid.event_listener.add_permissions_to_grid.class: PimEnterprise\Bundle\SecurityBundle\Datagrid\EventListener\AddPermissionsToGridListener
+    pimee_security.datagrid.event_listener.configure_job_profile_grid_listener.class: PimEnterprise\Bundle\SecurityBundle\Datagrid\EventListener\ConfigureJobProfileGridListener
 
 services:
+    # Configuration
     pimee_security.datagrid.configuration.product.filters_configurator:
         class: '%pimee_security.datagrid.configuration.product.filters_configurator.class%'
         decorates: pim_datagrid.datagrid.configuration.product.filters_configurator
@@ -22,3 +26,24 @@ services:
             - '@pim_catalog.repository.product'
             - '@pim_catalog.repository.locale'
             - '@pim_catalog.repository.product_model'
+
+    # EventListener
+    pimee_security.datagrid.event_listener.inject_job_profile_access:
+        class: '%pimee_security.datagrid.event_listener.add_permissions_to_grid.class%'
+        arguments:
+            - '@pimee_security.repository.job_profile_access'
+            - '@security.token_storage'
+            - 'EXECUTE_JOB_PROFILE'
+        tags:
+            - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.after.export-profile-grid, method: onBuildAfter }
+            - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.after.import-profile-grid, method: onBuildAfter }
+            - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.after.export-execution-grid, method: onBuildAfter }
+            - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.after.import-execution-grid, method: onBuildAfter }
+
+    pimee_security.datagrid.event_listener.configure_job_profile_grid:
+        class: '%pimee_security.datagrid.event_listener.configure_job_profile_grid_listener.class%'
+        arguments:
+            - '@security.authorization_checker'
+        tags:
+            - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.before.export-profile-grid, method: onBuildBefore }
+            - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.before.import-profile-grid, method: onBuildBefore }
