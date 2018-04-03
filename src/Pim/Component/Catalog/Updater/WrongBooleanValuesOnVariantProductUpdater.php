@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Pim\Component\Catalog\Updater\Remover;
+namespace Pim\Component\Catalog\Updater;
 use Akeneo\Component\StorageUtils\Indexer\BulkIndexerInterface;
 use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
 use Pim\Component\Catalog\AttributeTypes;
@@ -13,76 +13,30 @@ use Symfony\Component\Validator\Validator\RecursiveValidator;
 
 
 /**
- * TODO
+ * Update the variant product to clean all the wrong boolean values.
  *
  * @author    Christophe Chausseray <christophe.chausseray@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class WrongBooleanValuesOnVariantProductsRemover
+class WrongBooleanValuesOnVariantProductUpdater
 {
-    /** @var VariantProductInterface[]  */
-    protected $productsToSave = [];
-
-    /** @var RecursiveValidator  */
-    protected $validator;
-
-    /** @var BulkSaverInterface  */
-    protected $saver;
-
-    /** @var BulkIndexerInterface  */
-    protected $indexer;
-
-    public function __construct(
-        RecursiveValidator $validator,
-        BulkSaverInterface $saver,
-        BulkIndexerInterface $indexer
-    ) {
-        $this->validator = $validator;
-        $this->saver = $saver;
-        $this->indexer = $indexer;
-    }
-
     /**
      * @param VariantProductInterface $variantProduct
-     * @param int                     $productBatchSize
-     *
-     * @return array
+     * @return bool
      */
-    public function removeWrongBooleanValues(VariantProductInterface $variantProduct, int $productBatchSize): array
+    public function updateProduct(VariantProductInterface $variantProduct): bool
     {
         $isModified = false;
 
         foreach ($variantProduct->getFamily()->getAttributes() as $attribute) {
-            if ($this->isProductImpacted($variantProduct, $attribute)) {
+            if ($this->isProductImpactedForAttribute($variantProduct, $attribute)) {
                 $this->cleanProductForAttribute($variantProduct, $attribute);
                 $isModified = true;
             }
         }
 
-        if ($isModified) {
-            $violations = $this->validator->validate($variantProduct);
-
-            if ($violations->count() > 0) {
-                throw new \LogicException(
-                    sprintf(
-                        'Product "%s" is not valid and cannot be saved',
-                        $variantProduct->getIdentifier()
-                    )
-                );
-            }
-
-            $this->productsToSave[] = $variantProduct;
-        }
-
-        if (count($this->productsToSave) >= $productBatchSize) {
-            $this->saver->saveAll($this->productsToSave);
-            $this->indexer->indexAll($this->productsToSave);
-
-            $this->productsToSave = [];
-        }
-
-        return $this->productsToSave;
+        return $isModified;
     }
 
     /**
@@ -91,7 +45,7 @@ class WrongBooleanValuesOnVariantProductsRemover
      *
      * @return bool
      */
-    private function isProductImpacted($variantProduct, AttributeInterface $attribute): bool
+    private function isProductImpactedForAttribute($variantProduct, AttributeInterface $attribute): bool
     {
         if ($attribute->getType() !== AttributeTypes::BOOLEAN) {
             return false;

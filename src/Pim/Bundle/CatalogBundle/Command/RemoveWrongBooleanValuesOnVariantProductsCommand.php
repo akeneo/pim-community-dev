@@ -34,7 +34,8 @@ class RemoveWrongBooleanValuesOnVariantProductsCommand extends ContainerAwareCom
     {
         $this
             ->setHidden(true)
-            ->setName('pim:catalog:remove-wrong-boolean-values-on-variant-products')
+            ->setName('pim:catalog:remove-wrong-values-on-variant-products')
+            ->setAliases(['pim:catalog:remove-wrong-boolean-values-on-variant-products'])
             ->setDescription('Remove boolean values on variant products that should belong to their parents')
         ;
     }
@@ -65,9 +66,31 @@ class RemoveWrongBooleanValuesOnVariantProductsCommand extends ContainerAwareCom
                 continue;
             }
 
-            $productsToSave = $this->getContainer()
-                ->get('pim_catalog.updater.remover.wrong_boolean_value_on_variant_products')
-                ->removeWrongBooleanValues($variantProduct, $productBatchSize);
+            $isModified = $this->getContainer()
+                ->get('pim_catalog.updater.wrong_boolean_value_on_variant_product')
+                ->updateProduct($variantProduct);
+
+            if ($isModified) {
+                $violations = $this->getContainer()->get('pim_catalog.validator.product')->validate($variantProduct);
+
+                if ($violations->count() > 0) {
+                    throw new \LogicException(
+                        sprintf(
+                            'Product "%s" is not valid and cannot be saved',
+                            $variantProduct->getIdentifier()
+                        )
+                    );
+                }
+
+                $productsToSave[] = $variantProduct;
+            }
+
+            if (count($productsToSave) >= $productBatchSize) {
+                $this->getContainer()->get('pim_catalog.saver.product')->saveAll($this->productsToSave);
+                $this->getContainer()->get('pim_catalog.elasticsearch.indexer.product')->indexAll($this->productsToSave);
+
+                $productsToSave = [];
+            }
         }
         $progressBar->finish();
 

@@ -1,54 +1,54 @@
 parameters:
-    pim_catalog.updater.product.class:                        Pim\Component\Catalog\Updater\ProductUpdater
-    pim_catalog.updater.product_model.class:                  Pim\Component\Catalog\Updater\ProductModelUpdater
-    pim_catalog.updater.entity_with_values.class:             Pim\Component\Catalog\Updater\EntityWithValuesUpdater
-    pim_catalog.updater.property_setter.class:                Pim\Component\Catalog\Updater\PropertySetter
-    pim_catalog.updater.product_property_adder.class:         Pim\Component\Catalog\Updater\ProductPropertyAdder
-    pim_catalog.updater.product_property_copier.class:        Pim\Component\Catalog\Updater\ProductPropertyCopier
-    pim_catalog.updater.product_property_remover.class:       Pim\Component\Catalog\Updater\ProductPropertyRemover
-    pim_catalog.updater.attribute_option.class:               Pim\Component\Catalog\Updater\AttributeOptionUpdater
-    pim_catalog.updater.attribute.class:                      Pim\Component\Catalog\Updater\AttributeUpdater
-    pim_catalog.updater.group.class:                          Pim\Component\Catalog\Updater\GroupUpdater
-    pim_catalog.updater.association_type.class:               Pim\Component\Catalog\Updater\AssociationTypeUpdater
-    pim_catalog.updater.family.class:                         Pim\Component\Catalog\Updater\FamilyUpdater
-    pim_catalog.updater.family_variant.class:                 Pim\Component\Catalog\Updater\FamilyVariantUpdater
-    pim_catalog.updater.channel.class:                        Pim\Component\Catalog\Updater\ChannelUpdater
-    pim_catalog.updater.locale.class:                         Pim\Component\Catalog\Updater\LocaleUpdater
-    pim_catalog.updater.attribute_group.class:                Pim\Component\Catalog\Updater\AttributeGroupUpdater
-    pim_catalog.updater.group_type.class:                     Pim\Component\Catalog\Updater\GroupTypeUpdater
-    pim_catalog.updater.currency.class:                       Pim\Component\Catalog\Updater\CurrencyUpdater
+    pim_catalog.updater.product.class:                                 Pim\Component\Catalog\Updater\ProductUpdater
+    pim_catalog.updater.product_model.class:                           Pim\Component\Catalog\Updater\ProductModelUpdater
+    pim_catalog.updater.entity_with_values.class:                      Pim\Component\Catalog\Updater\EntityWithValuesUpdater
+    pim_catalog.updater.property_setter.class:                         Pim\Component\Catalog\Updater\PropertySetter
+    pim_catalog.updater.product_property_adder.class:                  Pim\Component\Catalog\Updater\ProductPropertyAdder
+    pim_catalog.updater.product_property_copier.class:                 Pim\Component\Catalog\Updater\ProductPropertyCopier
+    pim_catalog.updater.product_property_remover.class:                Pim\Component\Catalog\Updater\ProductPropertyRemover
+    pim_catalog.updater.attribute_option.class:                        Pim\Component\Catalog\Updater\AttributeOptionUpdater
+    pim_catalog.updater.attribute.class:                               Pim\Component\Catalog\Updater\AttributeUpdater
+    pim_catalog.updater.group.class:                                   Pim\Component\Catalog\Updater\GroupUpdater
+    pim_catalog.updater.association_type.class:                        Pim\Component\Catalog\Updater\AssociationTypeUpdater
+    pim_catalog.updater.family.class:                                  Pim\Component\Catalog\Updater\FamilyUpdater
+    pim_catalog.updater.family_variant.class:                          Pim\Component\Catalog\Updater\FamilyVariantUpdater
+    pim_catalog.updater.channel.class:                                 Pim\Component\Catalog\Updater\ChannelUpdater
+    pim_catalog.updater.locale.class:                                  Pim\Component\Catalog\Updater\LocaleUpdater
+    pim_catalog.updater.attribute_group.class:                         Pim\Component\Catalog\Updater\AttributeGroupUpdater
+    pim_catalog.updater.group_type.class:                              Pim\Component\Catalog\Updater\GroupTypeUpdater
+    pim_catalog.updater.currency.class:                                Pim\Component\Catalog\Updater\CurrencyUpdater
+    pim_catalog.updater.wrong_boolean_value_on_variant_product.class:  Pim\Component\Catalog\Updater\WrongBooleanValuesOnVariantProductUpdater
 
-    pim_catalog.updater.setter.registry.class:                Pim\Component\Catalog\Updater\Setter\SetterRegistry
-    pim_catalog.updater.setter.abstract.class:                Pim\Component\Catalog\Updater\Setter\AbstractAttributeSetter
-    pim_catalog.updater.setter.value.class:                   Pim\Component\Catalog\Updater\Setter\AttributeSetter
-    pim_catalog.updater.setter.category_field.class:          Pim\Component\Catalog\Updater\Setter\CategoryFieldSetter
-    pim_catalog.updater.setter.group_field.class:             Pim\Component\Catalog\Updater\Setter\GroupFieldSetter
-    pim_catalog.updater.setter.family_field.class:            Pim\Component\Catalog\Updater\Setter\FamilyFieldSetter
-    pim_catalog.updater.setter.parent_field.class:            Pim\Component\Catalog\Updater\Setter\ParentFieldSetter
-    pim_catalog.updater.setter.association_field.class:       Pim\Component\Catalog\Updater\Setter\AssociationFieldSetter
-    pim_catalog.updater.setter.enabled_field.class:           Pim\Component\Catalog\Updater\Setter\EnabledFieldSetter
-    pim_catalog.updater.setter.media_value.class:             Pim\Component\Catalog\Updater\Setter\MediaAttributeSetter
+    pim_catalog.updater.setter.registry.class:                         Pim\Component\Catalog\Updater\Setter\SetterRegistry
+    pim_catalog.updater.setter.abstract.class:                         Pim\Component\Catalog\Updater\Setter\AbstractAttributeSetter
+    pim_catalog.updater.setter.value.class:                            Pim\Component\Catalog\Updater\Setter\AttributeSetter
+    pim_catalog.updater.setter.category_field.class:                   Pim\Component\Catalog\Updater\Setter\CategoryFieldSetter
+    pim_catalog.updater.setter.group_field.class:                      Pim\Component\Catalog\Updater\Setter\GroupFieldSetter
+    pim_catalog.updater.setter.family_field.class:                     Pim\Component\Catalog\Updater\Setter\FamilyFieldSetter
+    pim_catalog.updater.setter.parent_field.class:                     Pim\Component\Catalog\Updater\Setter\ParentFieldSetter
+    pim_catalog.updater.setter.association_field.class:                Pim\Component\Catalog\Updater\Setter\AssociationFieldSetter
+    pim_catalog.updater.setter.enabled_field.class:                    Pim\Component\Catalog\Updater\Setter\EnabledFieldSetter
+    pim_catalog.updater.setter.media_value.class:                      Pim\Component\Catalog\Updater\Setter\MediaAttributeSetter
 
-    pim_catalog.updater.copier.registry.class:                Pim\Component\Catalog\Updater\Copier\CopierRegistry
-    pim_catalog.updater.copier.abstract.class:                Pim\Component\Catalog\Updater\Copier\AbstractAttributeCopier
-    pim_catalog.updater.copier.value.class:                   Pim\Component\Catalog\Updater\Copier\AttributeCopier
-    pim_catalog.updater.copier.media_value.class:             Pim\Component\Catalog\Updater\Copier\MediaAttributeCopier
-    pim_catalog.updater.copier.metric_value.class:            Pim\Component\Catalog\Updater\Copier\MetricAttributeCopier
+    pim_catalog.updater.copier.registry.class:                         Pim\Component\Catalog\Updater\Copier\CopierRegistry
+    pim_catalog.updater.copier.abstract.class:                         Pim\Component\Catalog\Updater\Copier\AbstractAttributeCopier
+    pim_catalog.updater.copier.value.class:                            Pim\Component\Catalog\Updater\Copier\AttributeCopier
+    pim_catalog.updater.copier.media_value.class:                      Pim\Component\Catalog\Updater\Copier\MediaAttributeCopier
+    pim_catalog.updater.copier.metric_value.class:                     Pim\Component\Catalog\Updater\Copier\MetricAttributeCopier
 
-    pim_catalog.updater.adder.registry.class:                 Pim\Component\Catalog\Updater\Adder\AdderRegistry
-    pim_catalog.updater.adder.category_field.class:           Pim\Component\Catalog\Updater\Adder\CategoryFieldAdder
-    pim_catalog.updater.adder.association_field.class:        Pim\Component\Catalog\Updater\Adder\AssociationFieldAdder
-    pim_catalog.updater.adder.group_field.class:              Pim\Component\Catalog\Updater\Adder\GroupFieldAdder
-    pim_catalog.updater.adder.multiselect_value.class:        Pim\Component\Catalog\Updater\Adder\MultiSelectAttributeAdder
-    pim_catalog.updater.adder.price_collection_value.class:   Pim\Component\Catalog\Updater\Adder\PriceCollectionAttributeAdder
+    pim_catalog.updater.adder.registry.class:                          Pim\Component\Catalog\Updater\Adder\AdderRegistry
+    pim_catalog.updater.adder.category_field.class:                    Pim\Component\Catalog\Updater\Adder\CategoryFieldAdder
+    pim_catalog.updater.adder.association_field.class:                 Pim\Component\Catalog\Updater\Adder\AssociationFieldAdder
+    pim_catalog.updater.adder.group_field.class:                       Pim\Component\Catalog\Updater\Adder\GroupFieldAdder
+    pim_catalog.updater.adder.multiselect_value.class:                 Pim\Component\Catalog\Updater\Adder\MultiSelectAttributeAdder
+    pim_catalog.updater.adder.price_collection_value.class:            Pim\Component\Catalog\Updater\Adder\PriceCollectionAttributeAdder
 
-    pim_catalog.updater.remover.registry.class:               Pim\Component\Catalog\Updater\Remover\RemoverRegistry
-    pim_catalog.updater.remover.category_field.class:         Pim\Component\Catalog\Updater\Remover\CategoryFieldRemover
-    pim_catalog.updater.remover.price_collection_value.class: Pim\Component\Catalog\Updater\Remover\PriceCollectionAttributeRemover
-    pim_catalog.updater.remover.group_field.class:            Pim\Component\Catalog\Updater\Remover\GroupFieldRemover
-    pim_catalog.updater.remover.multiselect_value.class:      Pim\Component\Catalog\Updater\Remover\MultiSelectAttributeRemover
-    pim_catalog.updater.remover.wrong_boolean_value_on_variant_products.class: Pim\Component\Catalog\Updater\Remover\WrongBooleanValuesOnVariantProductsRemover
-    pim_catalog.updater.category_translatable.class:          Pim\Component\Catalog\Localization\CategoryUpdater
+    pim_catalog.updater.remover.registry.class:                        Pim\Component\Catalog\Updater\Remover\RemoverRegistry
+    pim_catalog.updater.remover.category_field.class:                  Pim\Component\Catalog\Updater\Remover\CategoryFieldRemover
+    pim_catalog.updater.remover.price_collection_value.class:          Pim\Component\Catalog\Updater\Remover\PriceCollectionAttributeRemover
+    pim_catalog.updater.remover.group_field.class:                     Pim\Component\Catalog\Updater\Remover\GroupFieldRemover
+    pim_catalog.updater.remover.multiselect_value.class:               Pim\Component\Catalog\Updater\Remover\MultiSelectAttributeRemover
+    pim_catalog.updater.category_translatable.class:                   Pim\Component\Catalog\Localization\CategoryUpdater
 
 services:
     # Updaters
@@ -533,11 +533,5 @@ services:
         tags:
             - { name: 'pim_catalog.updater.remover' }
 
-    pim_catalog.updater.remover.wrong_boolean_value_on_variant_products:
-        class: '%pim_catalog.updater.remover.wrong_boolean_value_on_variant_products.class%'
-        arguments:
-            - '@pim_catalog.validator.product'
-            - '@pim_catalog.saver.product'
-            - '@pim_catalog.elasticsearch.indexer.product'
-        tags:
-            - { name: 'pim_catalog.updater.remover' }
+    pim_catalog.updater.wrong_boolean_value_on_variant_product:
+        class: '%pim_catalog.updater.wrong_boolean_value_on_variant_product.class%'
