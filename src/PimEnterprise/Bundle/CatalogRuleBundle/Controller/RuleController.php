@@ -18,7 +18,7 @@ use Akeneo\Component\StorageUtils\Remover\RemoverInterface;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionParametersParser;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
-use PimEnterprise\Bundle\DataGridBundle\Adapter\OroToPimGridFilterAdapter;
+use PimEnterprise\Bundle\SecurityBundle\Datagrid\OroToPimGridFilterAdapter;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -134,18 +134,18 @@ class RuleController
         $parameters = $this->parameterParser->parse($request);
         $filters = $this->gridFilterAdapter->adapt($parameters);
         $jobInstance = $this->jobInstanceRepo->findOneByIdentifier(self::MASS_RULE_IMPACTED_PRODUCTS);
-        $user =  $this->tokenStorage->getToken()->getUser();
+        $user = $this->tokenStorage->getToken()->getUser();
 
         $configuration = [
             'ruleIds' => $filters['values'],
-            'user_to_notify' => $user->getUsername()
+            'user_to_notify' => $user->getUsername(),
         ];
 
         $this->simpleJobLauncher->launch($jobInstance, $user, $configuration);
 
         return new JsonResponse(
             [
-                'message'    => 'flash.rule.impacted_product_count',
+                'message' => 'flash.rule.impacted_product_count',
                 'successful' => true,
             ]
         );
@@ -176,7 +176,7 @@ class RuleController
 
         return new JsonResponse(
             [
-                'message'    => 'flash.rule.executed',
+                'message' => 'flash.rule.executed',
                 'successful' => true,
             ]
         );
