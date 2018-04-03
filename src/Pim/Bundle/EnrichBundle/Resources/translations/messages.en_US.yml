@@ -842,7 +842,6 @@ Format address by address country: Format address by address country
 Language: Language
 Timezone: Timezone
 Currency: Currency
-settings: Settings
 oro.locale:
     address_format:
         region_name_type:

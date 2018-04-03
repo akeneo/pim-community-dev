@@ -9,3 +9,10 @@ pim_datagrid:
       created: Datagrid view successfully created
       removed: Datagrid view successfully removed
       not_removable: You don't have the permission to remove this view
+  cells:
+    type:
+      quick_export: Quick Export
+      import: Import
+      export: Export
+      mass_edit: Mass Edit
+      mass_delete: Mass Delete

@@ -266,7 +266,7 @@ define([
                 if (translation === key) {
                     translation = __('pim_common.operators.' + operator);
                 }
-                result[operator] = translation
+                result[operator] = translation;
             });
 
             return result;

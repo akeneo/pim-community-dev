@@ -24,14 +24,19 @@ class UiLocaleProvider implements LocaleProviderInterface
     /** @var float */
     protected $minPercentage;
 
+    /** @var string[] */
+    protected $localeCodes;
+
     /**
      * @param TranslatorInterface $translator
      * @param float               $minPercentage
+     * @param string[]            $localeCodes
      */
-    public function __construct(TranslatorInterface $translator, $minPercentage)
+    public function __construct(TranslatorInterface $translator, $minPercentage, array $localeCodes)
     {
         $this->translator = $translator;
         $this->minPercentage = (float) $minPercentage;
+        $this->localeCodes = $localeCodes;
     }
 
     /**
@@ -47,9 +52,9 @@ class UiLocaleProvider implements LocaleProviderInterface
         $localeNames = Intl::getLocaleBundle()->getLocaleNames(self::MAIN_LOCALE);
         $mainProgress = $this->getProgress(self::MAIN_LOCALE);
 
-        foreach ($localeNames as $code => $locale) {
+        foreach ($this->localeCodes as $code) {
             if ($this->isAvailableLocale($fallbackLocales, $code, $mainProgress)) {
-                $locales[$code] = $locale;
+                $locales[$code] = $localeNames[$code];
             }
         }
 

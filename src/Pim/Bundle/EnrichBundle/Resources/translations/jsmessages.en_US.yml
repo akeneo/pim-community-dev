@@ -3,6 +3,7 @@ pim_common:
     add_attributes: Add attributes
     after: After
     all: All
+    and: and
     apply: Apply
     attributes: Attributes
     attribute_groups: Attribute groups
@@ -90,6 +91,12 @@ pim_datagrid:
             error:           Error ocurred when trying to delete selected products, please try again.
     view_selector:
         view: Views
+    actions:
+      edit_product_attributes: Edit attributes of the product
+      classify_product: Classify the product
+      delete_product: Delete the product
+      change_status: Change status
+      toggle_status: Toggle status
 
 flash:
     item:
@@ -165,11 +172,6 @@ label:
     attribute_option:
         add_option: Add an option
 
-Edit attributes of the product: Edit attributes of the product
-Classify the product:           Classify the product
-Delete the product:             Delete the product
-Change status:                  Change status
-Toggle status:                  Toggle status
 mass_delete: Mass delete
 
 # Quick export labels
@@ -723,6 +725,7 @@ pim_enrich:
                         ">": Updated products since this date
                         "SINCE LAST JOB": Updated products since last export
                 enabled:
+                    title: Status
                     help: "Select the products to export by their status. Ex: Export products whatsoever their status."
                     value:
                         enabled: Enabled
@@ -749,7 +752,7 @@ pim_enrich:
                         ALL: All
                 price-collection:
                     operators:
-                multi_select:
+                select:
                     operators:
                         IN: In list
                 date:
@@ -998,6 +1001,11 @@ pim_menu:
 pim_notification:
     mark_all_as_read: Mark all as read
     no_notifications: No notifications
+    types:
+        import: Import
+        export: Export
+        quick_export: Quick Export
+        mass_edit: Mass Edit
 
 grid:
   empty_results:
