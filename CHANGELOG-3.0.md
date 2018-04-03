@@ -64,3 +64,26 @@
 - Remove `PimEnterprise\Bundle\ApiBundle\DependencyInjection\PimEnterpriseApiExtension`
 - Move `PimEnterprise\Bundle\ApiBundle\Security\AccessDeniedHandler` to `PimEnterprise\Bundle\SecurityBundle\Api\AccessDeniedHandler`
 - Move `PimEnterprise\Bundle\ApiBundle\Checker\QueryParametersChecker` to `PimEnterprise\Bundle\SecurityBundle\Api\QueryParametersChecker`
+- Move `PimEnterprise\Bundle\CatalogBundle\Filter\AbstractAuthorizationFilter\DatagridViewFilter` to `PimEnterprise\Bundle\SecurityBundle\Filter\AbstractAuthorizationFilter\DatagridViewFilter`
+- Move `PimEnterprise\Bundle\CatalogBundle\Manager\CategoryManager\ProductController` to `PimEnterprise\Bundle\SecurityBundle\Persistence\ORM\Category\CategoryManager\ProductController`
+- Move `PimEnterprise\Bundle\CatalogBundle\Manager\CategoryManager\ProductModelController` to `PimEnterprise\Bundle\SecurityBundle\Persistence\ORM\Category\CategoryManager\ProductModelController`
+- Move `PimEnterprise\Bundle\CatalogBundle\Filter\AttributeViewRightFilter\AttributeRepository` to `PimEnterprise\Bundle\SecurityBundle\Filter\AttributeViewRightFilter\AttributeRepository`
+- Move `PimEnterprise\Bundle\CatalogBundle\Filter\JobInstanceEditRightFilter` to `PimEnterprise\Bundle\SecurityBundle\Filter\JobInstanceEditRightFilter`
+- Move `PimEnterprise\Bundle\CatalogBundle\Filter\AbstractAuthorizationFilter` to `PimEnterprise\Bundle\SecurityBundle\Filter\AbstractAuthorizationFilter`
+- Move `PimEnterprise\Bundle\CatalogBundle\Filter\AttributeEditRightFilter` to `PimEnterprise\Bundle\SecurityBundle\Filter\AttributeEditRightFilter`
+- Move `PimEnterprise\Bundle\CatalogBundle\Filter\AttributeGroupViewRightFilter` to `PimEnterprise\Bundle\SecurityBundle\Filter\AttributeGroupViewRightFilter`
+- Move `PimEnterprise\Bundle\CatalogBundle\Filter\AttributeViewRightFilter` to `PimEnterprise\Bundle\SecurityBundle\Filter\AttributeViewRightFilter`
+- Move `PimEnterprise\Bundle\CatalogBundle\Filter\LocaleEditRightFilter` to `PimEnterprise\Bundle\SecurityBundle\Filter\LocaleEditRightFilter`
+- Move `PimEnterprise\Bundle\CatalogBundle\Filter\LocaleViewRightFilter` to `PimEnterprise\Bundle\SecurityBundle\Filter\LocaleViewRightFilter`
+- Move `PimEnterprise\Bundle\CatalogBundle\Filter\ProductAndProductModelDeleteRightFilter` to `PimEnterprise\Bundle\SecurityBundle\Filter\ProductAndProductModelDeleteRightFilter`
+- Move `PimEnterprise\Bundle\CatalogBundle\Filter\ProductRightEditFilter` to `PimEnterprise\Bundle\SecurityBundle\Filter\ProductRightEditFilter`
+- Move `PimEnterprise\Bundle\CatalogBundle\Filter\ProductRightViewFilter` to `PimEnterprise\Bundle\SecurityBundle\Filter\ProductRightViewFilter`
+- Move `PimEnterprise\Bundle\CatalogBundle\Filter\ProductValueAttributeGroupRightFilter` to `PimEnterprise\Bundle\SecurityBundle\Filter\ProductValueAttributeGroupRightFilter`
+- Move `PimEnterprise\Bundle\CatalogBundle\Filter\ProductValueLocaleRightFilter` to `PimEnterprise\Bundle\SecurityBundle\Filter\ProductValueLocaleRightFilter`
+- Move `PimEnterprise\Bundle\CatalogBundle\Doctrine\ORM\Repository\AttributeRepository` to `PimEnterprise\Bundle\SecurityBundle\Persistence\ORM\Attribute\AttributeRepository`
+- Move `PimEnterprise\Bundle\CatalogBundle\Manager\CategoryManager` to `PimEnterprise\Bundle\SecurityBundle\Persistence\ORM\Category\CategoryManager`
+- Move `PimEnterprise\Bundle\CatalogBundle\Doctrine\ORM\Repository\ProductMassActionRepository` to `PimEnterprise\Bundle\SecurityBundle\Persistence\ORM\EntityWithValue\ProductMassActionRepository`
+- Move `PimEnterprise\Bundle\CatalogBundle\Doctrine\ORM\Repository\ProductModelRepository` to `PimEnterprise\Bundle\SecurityBundle\Persistence\ORM\EntityWithValue\ProductModelRepository`
+- Move `PimEnterprise\Bundle\CatalogBundle\Security\Elasticsearch\ProductQueryBuilderFactory` to `PimEnterprise\Bundle\SecurityBundle\Persistence\ORM\EntityWithValue\ProductQueryBuilderFactory`
+- Move `PimEnterprise\Bundle\CatalogBundle\Doctrine\ORM\Repository\ProductRepository` to `PimEnterprise\Bundle\SecurityBundle\Persistence\ORM\EntityWithValue\ProductRepository`
+- Move `PimEnterprise\Bundle\CatalogBundle\Security\Doctrine\Common\Saver\FilteredEntitySaver` to `PimEnterprise\Bundle\SecurityBundle\Persistence\ORM\FilteredEntitySaver`
