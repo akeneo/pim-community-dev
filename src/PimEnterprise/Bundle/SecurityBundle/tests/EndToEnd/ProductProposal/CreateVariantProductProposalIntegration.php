@@ -1,8 +1,7 @@
 <?php
 
-namespace PimEnterprise\Bundle\WorkflowBundle\tests\EndToEnd\ProductProposal;
+namespace PimEnterprise\Bundle\SecurityBundle\tests\EndToEnd\ProductProposal;
 
-use PimEnterprise\Bundle\SecurityBundle\tests\EndToEnd\ProductProposal\AbstractProposalIntegration;
 use PimEnterprise\Component\Workflow\Model\ProductDraft;
 use PimEnterprise\Component\Workflow\Model\ProductDraftInterface;
 use Symfony\Component\HttpFoundation\Response;
@@ -17,14 +16,14 @@ use Symfony\Component\HttpFoundation\Response;
  * | Manager  | View,Edit,Own | View,Edit,Own | View,Edit,Own |
  * +----------+-----------------------------------------------+
  */
-class CreateProductProposalIntegration extends AbstractProposalIntegration
+class CreateVariantProductProposalIntegration extends AbstractProposalIntegration
 {
     public function testCreateProductProposalSuccessful()
     {
-        $productDraft = $this->createDefaultProductDraft('mary', 'product_with_draft');
+        $productDraft = $this->createDefaultProductDraft('mary', 'variant_product_with_draft');
 
         $client = $this->createAuthenticatedClient([], [], null, null, 'mary', 'mary');
-        $client->request('POST', 'api/rest/v1/products/product_with_draft/proposal', [], [], [], '{}');
+        $client->request('POST', 'api/rest/v1/products/variant_product_with_draft/proposal', [], [], [], '{}');
 
         $response = $client->getResponse();
         $this->assertSame('', $response->getContent());
@@ -32,50 +31,23 @@ class CreateProductProposalIntegration extends AbstractProposalIntegration
 
         $productDraft = $this->get('pimee_workflow.repository.product_draft')->findUserProductDraft($productDraft->getProduct(), 'mary');
         $this->assertSame(ProductDraft::READY, $productDraft->getStatus());
-    }
-
-    public function testProductNotFound()
-    {
-        $client = $this->createAuthenticatedClient([], [], null, null, 'mary', 'mary');
-        $client->request('POST', 'api/rest/v1/products/unknown_product/proposal', [], [], [], '{}');
-
-        $expectedResponseContent =
-<<<JSON
-{"code":404,"message":"Product \\"unknown_product\\" does not exist."}
-JSON;
-
-        $response = $client->getResponse();
-        $this->assertSame(Response::HTTP_NOT_FOUND, $response->getStatusCode());
-        $this->assertSame($response->getContent(), $expectedResponseContent);
-    }
-
-    public function testInvalidRequestBody()
-    {
-        $this->createDefaultProductDraft('mary', 'product_with_draft');
-
-        $client = $this->createAuthenticatedClient([], [], null, null, 'mary', 'mary');
-        $client->request('POST', 'api/rest/v1/products/product_with_draft/proposal', [], [], [], '');
-
-        $expectedResponseContent =
-<<<JSON
-{"code":400,"message":"Invalid json message received."}
-JSON;
-
-        $response = $client->getResponse();
-        $this->assertSame(Response::HTTP_BAD_REQUEST, $response->getStatusCode());
-        $this->assertSame($response->getContent(), $expectedResponseContent);
+        $this->assertEquals([
+            'a_localized_and_scopable_text_area' => [
+                ['data' => 'Modified US in draft', 'locale' => 'en_US', 'scope' => 'ecommerce'],
+            ]
+        ], $productDraft->getChanges()['values']);
     }
 
     public function testUserIsOwner()
     {
-        $this->createDefaultProductDraft('mary', 'product_with_draft');
+        $this->createDefaultProductDraft('mary', 'variant_product_with_draft');
 
         $client = $this->createAuthenticatedClient([], [], null, null, 'julia', 'julia');
-        $client->request('POST', 'api/rest/v1/products/product_with_draft/proposal', [], [], [], '{}');
+        $client->request('POST', 'api/rest/v1/products/variant_product_with_draft/proposal', [], [], [], '{}');
 
         $expectedResponseContent =
 <<<JSON
-{"code":403,"message":"You have ownership on the product \\"product_with_draft\\", you cannot send a draft for approval."}
+{"code":403,"message":"You have ownership on the product \\"variant_product_with_draft\\", you cannot send a draft for approval."}
 JSON;
 
         $response = $client->getResponse();
@@ -83,12 +55,12 @@ JSON;
         $this->assertSame($response->getContent(), $expectedResponseContent);
     }
 
-    public function testProductHasNoDraft()
+    public function testVariantProductHasNoDraft()
     {
-        $this->createDefaultProductDraft('kevin', 'product_modified_by_kevin');
+        $this->createDefaultProductDraft('kevin', 'variant_product_modified_by_kevin');
 
         $client = $this->createAuthenticatedClient([], [], null, null, 'mary', 'mary');
-        $client->request('POST', 'api/rest/v1/products/product_modified_by_kevin/proposal', [], [], [], '{}');
+        $client->request('POST', 'api/rest/v1/products/variant_product_modified_by_kevin/proposal', [], [], [], '{}');
 
         $expectedResponseContent =
 <<<JSON
@@ -102,11 +74,11 @@ JSON;
 
     public function testApprovalAlreadySubmitted()
     {
-        $productDraft = $this->createDefaultProductDraft('mary', 'product_with_draft');
+        $productDraft = $this->createDefaultProductDraft('mary', 'variant_product_with_draft');
         $this->get('pimee_workflow.manager.product_draft')->markAsReady($productDraft);
 
         $client = $this->createAuthenticatedClient([], [], null, null, 'mary', 'mary');
-        $client->request('POST', 'api/rest/v1/products/product_with_draft/proposal', [], [], [], '{}');
+        $client->request('POST', 'api/rest/v1/products/variant_product_with_draft/proposal', [], [], [], '{}');
 
         $expectedResponseContent =
 <<<JSON
@@ -120,18 +92,18 @@ JSON;
 
     public function testUserHasOnlyViewPermission()
     {
-        $productDraft = $this->createDefaultProductDraft('mary', 'product_with_draft');
+        $productDraft = $this->createDefaultProductDraft('mary', 'variant_product_with_draft');
 
         $this->updateProduct($productDraft->getProduct(), [
             'categories' => ['categoryA1'],
         ]);
 
         $client = $this->createAuthenticatedClient([], [], null, null, 'mary', 'mary');
-        $client->request('POST', 'api/rest/v1/products/product_with_draft/proposal', [], [], [], '{}');
+        $client->request('POST', 'api/rest/v1/products/variant_product_with_draft/proposal', [], [], [], '{}');
 
         $expectedResponseContent =
 <<<JSON
-{"code":403,"message":"You only have view permission on the product \\"product_with_draft\\", you cannot send a draft for approval."}
+{"code":403,"message":"You only have view permission on the product \\"variant_product_with_draft\\", you cannot send a draft for approval."}
 JSON;
 
         $response = $client->getResponse();
@@ -141,18 +113,18 @@ JSON;
 
     public function testUserWithoutAnyPermission()
     {
-        $productDraft = $this->createDefaultProductDraft('mary', 'product_with_draft');
+        $productDraft = $this->createDefaultProductDraft('mary', 'variant_product_with_draft');
 
         $this->updateProduct($productDraft->getProduct(), [
             'categories' => ['categoryB'],
         ]);
 
         $client = $this->createAuthenticatedClient([], [], null, null, 'mary', 'mary');
-        $client->request('POST', 'api/rest/v1/products/product_with_draft/proposal', [], [], [], '{}');
+        $client->request('POST', 'api/rest/v1/products/variant_product_with_draft/proposal', [], [], [], '{}');
 
         $expectedResponseContent =
 <<<JSON
-{"code":404,"message":"Product \\"product_with_draft\\" does not exist."}
+{"code":404,"message":"Product \\"variant_product_with_draft\\" does not exist."}
 JSON;
 
         $response = $client->getResponse();
@@ -161,18 +133,18 @@ JSON;
         $this->assertSame($response->getContent(), $expectedResponseContent);
     }
 
-    public function testCreateProposalOnAnUnclassifiedProduct()
+    public function testCreateProposalOnAnUnclassifiedVariantProduct()
     {
-        $productDraft = $this->createDefaultProductDraft('mary', 'product_with_draft');
+        $productDraft = $this->createDefaultProductDraft('mary', 'variant_product_with_draft');
 
         $this->updateProduct($productDraft->getProduct(), ['categories' => []]);
 
         $client = $this->createAuthenticatedClient([], [], null, null, 'mary', 'mary');
-        $client->request('POST', 'api/rest/v1/products/product_with_draft/proposal', [], [], [], '{}');
+        $client->request('POST', 'api/rest/v1/products/variant_product_with_draft/proposal', [], [], [], '{}');
 
         $expectedResponseContent =
 <<<JSON
-{"code":403,"message":"You have ownership on the product \\"product_with_draft\\", you cannot send a draft for approval."}
+{"code":403,"message":"You have ownership on the product \\"variant_product_with_draft\\", you cannot send a draft for approval."}
 JSON;
 
         $response = $client->getResponse();
@@ -189,8 +161,22 @@ JSON;
      */
     private function createDefaultProductDraft(string $userName, string $productIdentifier): ProductDraftInterface
     {
-        $product = $this->createProduct($productIdentifier, [
+        $productModel = $this->get('pim_catalog.factory.product_model')->create();
+        $this->get('pim_catalog.updater.product_model')->update($productModel, [
+            'code' => 'product_model',
+            'family_variant' => 'familyVariantA1',
+            'values' => [
+                'a_multi_select' => [
+                    ['data' => ['optionA', 'optionB'], 'locale' => null, 'scope' => null],
+                ],
+            ]
+        ]);
+
+        $this->get('pim_catalog.saver.product_model')->save($productModel);
+
+        $product = $this->createVariantProduct($productIdentifier, [
             'categories' => ['categoryA'],
+            'parent' => 'product_model',
             'values' => [
                 'a_localized_and_scopable_text_area' => [
                     ['data' => 'Unchanged US', 'locale' => 'en_US', 'scope' => 'ecommerce'],

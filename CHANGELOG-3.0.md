@@ -60,3 +60,7 @@
 - Move `PimEnterprise\Bundle\EnrichBundle\MassEditAction\Tasklet\UnpublishProductTasklet` to `PimEnterprise\Bundle\WorkflowBundle\MassEditAction\Tasklet\UnpublishProductTasklet`
 - Move `PimEnterprise\Bundle\EnrichBundle\Normalizer\ProductNormalizer` to `PimEnterprise\Bundle\WorkflowBundle\Normalizer\ProductNormalizer`
 - Move `PimEnterprise\Bundle\EnrichBundle\Normalizer\VersionNormalizer` to `PimEnterprise\Bundle\WorkflowBundle\Versioning\VersionNormalizer`
+- Remove `PimEnterprise\Bundle\ApiBundle\DependencyInjection\Configuration`
+- Remove `PimEnterprise\Bundle\ApiBundle\DependencyInjection\PimEnterpriseApiExtension`
+- Move `PimEnterprise\Bundle\ApiBundle\Security\AccessDeniedHandler` to `PimEnterprise\Bundle\SecurityBundle\Api\AccessDeniedHandler`
+- Move `PimEnterprise\Bundle\ApiBundle\Checker\QueryParametersChecker` to `PimEnterprise\Bundle\SecurityBundle\Api\QueryParametersChecker`

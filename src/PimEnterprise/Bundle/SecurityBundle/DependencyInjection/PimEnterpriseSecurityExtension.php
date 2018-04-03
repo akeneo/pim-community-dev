@@ -29,6 +29,7 @@ class PimEnterpriseSecurityExtension extends Extension
     public function load(array $configs, ContainerBuilder $container)
     {
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
+        $loader->load('api.yml');
         $loader->load('analytics.yml');
         $loader->load('array_converters.yml');
         $loader->load('controllers.yml');
@@ -48,5 +49,6 @@ class PimEnterpriseSecurityExtension extends Extension
         $loader->load('voters.yml');
         $loader->load('normalizers.yml');
         $loader->load('writers.yml');
+        $loader->load('filters.yml');
     }
 }

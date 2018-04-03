@@ -4,7 +4,7 @@ namespace PimEnterprise\Bundle\WorkflowBundle\tests\EndToEnd\ProductDraft;
 
 use Pim\Component\Catalog\FileStorage;
 use Pim\Component\Catalog\tests\integration\Normalizer\NormalizedProductCleaner;
-use PimEnterprise\Bundle\ApiBundle\tests\integration\Controller\Product\AbstractProductTestCase;
+use PimEnterprise\Bundle\SecurityBundle\tests\EndToEnd\Product\AbstractProductTestCase;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Response;
 
