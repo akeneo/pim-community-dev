@@ -120,7 +120,11 @@ export class Collection<CollectionElement> implements Value {
     this.values = values;
   }
 
-  public static fromValue<CollectionElement>(values: any[]): Collection<CollectionElement> {
+  public static fromValue<CollectionElement>(values: any): Collection<CollectionElement> {
+    if (Object.prototype.toString.call(values) !== '[object Array]') {
+      throw new InvalidArgument(`An array value is required to create a Collection value (${typeof values} given)`);
+    }
+
     return new Collection<CollectionElement>(values);
   }
 

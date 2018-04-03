@@ -1,4 +1,4 @@
-import {PropertyFilter} from 'pimfront/product-grid/domain/model/filter/filter';
+import {AttributeFilter} from 'pimfront/product-grid/domain/model/filter/filter';
 import {Null, Value} from 'pimfront/product-grid/domain/model/filter/value';
 import {Operator} from 'pimfront/product-grid/domain/model/filter/operator';
 import All from 'pimfront/product-grid/domain/model/filter/operator/all';
@@ -8,9 +8,9 @@ import StartsWith from 'pimfront/product-grid/domain/model/filter/operator/start
 import IsEmpty from 'pimfront/product-grid/domain/model/filter/operator/is-empty';
 import InList from 'pimfront/product-grid/domain/model/filter/operator/in-list';
 import Equal from 'pimfront/product-grid/domain/model/filter/operator/equal';
-import {PropertyInterface} from 'pimfront/product-grid/domain/model/field';
+import {AttributeInterface} from 'pimfront/product-grid/domain/model/field';
 
-export default class Text extends PropertyFilter {
+export default class Text extends AttributeFilter {
   private static operators: Operator[] = [
     All.create(),
     Equal.create(),
@@ -21,11 +21,11 @@ export default class Text extends PropertyFilter {
     InList.create(),
   ];
 
-  public static createEmpty(attribute: PropertyInterface) {
+  public static createEmpty(attribute: AttributeInterface) {
     return new Text(attribute, All.create(), Null.null());
   }
 
-  public static create(attribute: PropertyInterface, operator: Operator, value: Value) {
+  public static create(attribute: AttributeInterface, operator: Operator, value: Value) {
     return new Text(attribute, operator, value);
   }
 

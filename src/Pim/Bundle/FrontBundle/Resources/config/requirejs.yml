@@ -5,12 +5,20 @@ config:
                 enabled:
                     model: pimfront/product-grid/domain/model/filter/property/boolean
                     label: Status
+                identifier:
+                    model: pimfront/product-grid/domain/model/filter/attribute/text
+                    label: Identifier
             attribute:
                 pim_catalog_boolean:
                     model: pimfront/product-grid/domain/model/filter/attribute/boolean
             operator:
                 ALL: pimfront/product-grid/domain/model/filter/operator/all
+                'CONTAINS': pimfront/product-grid/domain/model/filter/operator/contains
+                'DOES NOT CONTAIN': pimfront/product-grid/domain/model/filter/operator/does-not-contain
                 '=': pimfront/product-grid/domain/model/filter/operator/equal
+                'IN LIST': pimfront/product-grid/domain/model/filter/operator/in-list
+                'EMPTY': pimfront/product-grid/domain/model/filter/operator/is-empty
+                'STARTS WITH': pimfront/product-grid/domain/model/filter/operator/starts-with
             value:
                 - pimfront/product-grid/application/configuration/value
 
@@ -18,6 +26,8 @@ config:
             property:
                 enabled:
                     view: pimfront/product-grid/application/component/filter/boolean
+                identifier:
+                    view: pimfront/product-grid/application/component/filter/text
             attribute:
                 pim_catalog_boolean:
                     view: pimfront/product-grid/application/component/filter/boolean

@@ -16,6 +16,7 @@ const render = (Component: any) => (DOMElement: HTMLElement) => {
   store.dispatch(updateChannels());
   store.dispatch(addFilter('enabled'));
   store.dispatch(addFilter('auto_exposure'));
+  store.dispatch(addFilter('identifier'));
 
   return ReactDOM.render(
     <Provider store={store}>

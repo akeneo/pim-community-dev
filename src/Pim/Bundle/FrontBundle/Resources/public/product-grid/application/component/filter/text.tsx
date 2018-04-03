@@ -1,58 +1,60 @@
-import * as React from 'react';
-import TextPropertyFilter from 'pimfront/product-grid/domain/model/filter/property/boolean';
-import TextAttributeFilter from 'pimfront/product-grid/domain/model/filter/attribute/boolean';
-import {InvalidFilterModel} from 'pimfront/product-grid/application/component/filter/error';
-import Filter from 'pimfront/product-grid/domain/model/filter/filter';
-import All from 'pimfront/product-grid/domain/model/filter/operator/all';
-import __ from 'pimfront/tools/translator';
+// import * as React from 'react';
+// import TextAttributeFilter from 'pimfront/product-grid/domain/model/filter/attribute/text';
+// // import TextAttributeFilter from 'pimfront/product-grid/domain/model/filter/attribute/boolean';
+// import {InvalidFilterModel} from 'pimfront/product-grid/application/component/filter/error';
+// import Filter from 'pimfront/product-grid/domain/model/filter/filter';
+// import All from 'pimfront/product-grid/domain/model/filter/operator/all';
+// import __ from 'pimfront/tools/translator';
 
-interface FilterViewProps {
-  filter: TextAttributeFilter | TextPropertyFilter;
-  locale: string;
-  onFilterChanged: (filter: Filter) => void;
-}
+// interface FilterViewProps {
+//   // filter: TextAttributeFilter | TextAttributeFilter;
+//   filter: TextAttributeFilter;
+//   locale: string;
+//   onFilterChanged: (filter: Filter) => void;
+// }
 
-interface FilterViewState {
-  isOpen: boolean;
-}
+// interface FilterViewState {
+//   isOpen: boolean;
+// }
 
-const toString = (filter: Filter) => {
-  return filter.operator.equals(All.create())
-    ? __('pim_enrich.grid.product.filter.text.label.all')
-    : __('pim_enrich.grid.product.filter.text.label.' + filter.operator.identifier, {value: filter.value.toString()});
-};
+// const toString = (filter: Filter) => {
+//   return filter.operator.equals(All.create())
+//     ? __('pim_enrich.grid.product.filter.text.label.all')
+//     : __('pim_enrich.grid.product.filter.text.label.' + filter.operator.identifier, {value: filter.value.toString()});
+// };
 
-export default class Text extends React.Component<FilterViewProps, FilterViewState> {
-  constructor(props: FilterViewProps) {
-    super(props);
+// export default class Text extends React.Component<FilterViewProps, FilterViewState> {
+//   constructor(props: FilterViewProps) {
+//     super(props);
 
-    if (!(props.filter instanceof TextAttributeFilter || props.filter instanceof TextPropertyFilter)) {
-      throw new InvalidFilterModel(`The provided model is not compatible witht the Text component
-Given: ${JSON.stringify(props.filter)}`);
-    }
+//     // if (!(props.filter instanceof TextAttributeFilter || props.filter instanceof TextAttributeFilter)) {
+//     if (!(props.filter instanceof TextAttributeFilter)) {
+//       throw new InvalidFilterModel(`The provided model is not compatible with the Text component
+// Given: ${JSON.stringify(props.filter)}`);
+//     }
 
-    this.state = {
-      isOpen: false,
-    };
-  }
+//     this.state = {
+//       isOpen: false,
+//     };
+//   }
 
-  render() {
-    const label =
-      this.props.filter instanceof TextPropertyFilter
-        ? __(this.props.filter.field.getLabel(this.props.locale))
-        : this.props.filter.field.getLabel(this.props.locale);
+//   render() {
+//     const label =
+//       this.props.filter instanceof TextAttributeFilter
+//         ? __(this.props.filter.field.getLabel(this.props.locale))
+//         : this.props.filter.field.getLabel(this.props.locale);
 
-    return (
-      <div className="AknFilterBox-filterContainer" data-name={this.props.filter.field.identifier} data-type="string">
-        <div className="AknFilterBox-filter">
-          <span className="AknFilterBox-filterLabel">{label}</span>
-          <span className="AknFilterBox-filterCriteria">{toString(this.props.filter)}</span>
-        </div>
-        <span className="AknFilterBox-disableFilter AknIconButton AknIconButton--small AknIconButton--remove disable-filter" />
-      </div>
-    );
-  }
-}
+//     return (
+//       <div className="AknFilterBox-filterContainer" data-name={this.props.filter.field.identifier} data-type="string">
+//         <div className="AknFilterBox-filter">
+//           <span className="AknFilterBox-filterLabel">{label}</span>
+//           <span className="AknFilterBox-filterCriteria">{toString(this.props.filter)}</span>
+//         </div>
+//         <span className="AknFilterBox-disableFilter AknIconButton AknIconButton--small AknIconButton--remove disable-filter" />
+//       </div>
+//     );
+//   }
+// }
 
 // <div class="AknFilterBox-filterContainer filter-item oro-drop open-filter" data-name="sku" data-type="string">
 // <div class="AknFilterBox-filter filter-criteria-selector oro-drop-opener">

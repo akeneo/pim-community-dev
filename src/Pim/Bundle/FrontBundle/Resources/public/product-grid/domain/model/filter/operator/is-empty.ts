@@ -1,4 +1,5 @@
 import {BaseOperator} from 'pimfront/product-grid/domain/model/filter/operator';
+import {Value, Null} from 'pimfront/product-grid/domain/model/filter/value';
 
 export default class IsEmpty extends BaseOperator {
   readonly identifier: string = 'EMPTY';
@@ -6,5 +7,9 @@ export default class IsEmpty extends BaseOperator {
 
   public static create(): IsEmpty {
     return new IsEmpty();
+  }
+
+  public supportsValue(value: Value): boolean {
+    return value instanceof Null;
   }
 }

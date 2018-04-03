@@ -37,6 +37,12 @@ Given: ${operator.identifier}
 Supported: ${this.getOperators().map((mappedOperator: Operator) => `"${mappedOperator.identifier}"`)}
 `);
     }
+
+    if (!operator.supportsValue(value)) {
+      throw new InvalidArgument(`The operator "${operator.identifier}" given to create the "${field.identifier}"
+filter does not support the value ${value.toString()}.`);
+    }
+
     this.field = field;
     this.operator = operator;
     this.value = value;

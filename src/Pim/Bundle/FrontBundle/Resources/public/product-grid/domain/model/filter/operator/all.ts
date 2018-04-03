@@ -1,4 +1,5 @@
 import {BaseOperator} from 'pimfront/product-grid/domain/model/filter/operator';
+import {Value, Null} from 'pimfront/product-grid/domain/model/filter/value';
 
 export default class All extends BaseOperator {
   readonly identifier: string = 'ALL';
@@ -6,5 +7,9 @@ export default class All extends BaseOperator {
 
   public static create(): All {
     return new All();
+  }
+
+  public supportsValue(value: Value): boolean {
+    return value instanceof Null;
   }
 }

@@ -16,12 +16,12 @@ export interface Choice {
 export default class Boolean extends PropertyFilter {
   private static operators: Operator[] = [All.create(), Equal.create()];
 
-  public static createEmpty(attribute: PropertyInterface) {
-    return new Boolean(attribute, All.create(), Null.null());
+  public static createEmpty(property: PropertyInterface) {
+    return new Boolean(property, All.create(), Null.null());
   }
 
-  public static create(attribute: PropertyInterface, operator: Operator, value: Value) {
-    return new Boolean(attribute, operator, value);
+  public static create(property: PropertyInterface, operator: Operator, value: Value) {
+    return new Boolean(property, operator, value);
   }
 
   getOperators(): Operator[] {
