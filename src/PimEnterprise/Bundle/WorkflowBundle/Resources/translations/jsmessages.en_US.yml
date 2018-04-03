@@ -5,12 +5,11 @@ Refuse: Reject
 Approve selected: Approve selected
 Refuse selected: Reject selected
 
-oro:
-    datagrid:
-        noentities:
-            proposal: There is no proposal to review.
-        noresults:
-            proposal: There is no proposal to review. Try to change your search criteria.
+pim_datagrid:
+    no_entities:
+        proposal: There is no proposal to review.
+    no_results:
+        proposal: There is no proposal to review. Try to change your search criteria.
 
 pimee_workflow:
     entity:
@@ -63,3 +62,14 @@ batch_jobs:
     xlsx_product_proposal_import:
         label: Product proposal import in XLSX
         import.label: Product proposal import in XLSX
+
+pim_notification:
+    types:
+        pimee_workflow_product_draft_notification_new_proposal: New proposal
+        pimee_workflow_import_notification_new_proposals: New proposals from import
+        pimee_workflow_product_draft_notification_partial_approve: Proposal partially approved
+        pimee_workflow_product_draft_notification_partial_reject: Proposal partially rejected
+        pimee_workflow_product_draft_notification_partial_remove: Proposal partially deleted
+        pimee_workflow_product_draft_notification_approve: Proposal approved
+        pimee_workflow_product_draft_notification_refuse: Proposal rejected
+        pimee_workflow_product_draft_notification_remove: Proposal deleted

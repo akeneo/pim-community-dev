@@ -63,3 +63,8 @@ batch_jobs:
     refresh_project_completeness_calculation:
         label: Refresh project completeness
         refresh_project_completeness_calculation.label: Refresh project completeness
+
+pim_notification:
+    types:
+        project_created: A new project for you
+        project_finished: Project finished

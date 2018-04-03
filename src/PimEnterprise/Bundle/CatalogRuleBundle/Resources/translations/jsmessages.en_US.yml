@@ -43,7 +43,7 @@ pimee_catalog_rule:
                     error: An error occured during the execution of the rules.
                     empty_selection: No rules selected.
                 delete:
-                    confirm_ok: OK
+                    confirm_title: Confirm execution
                     confirm_content: Are you sure you want to delete the selected rules?
                     success: You successfuly deleted the rules.
                     error: An error occured during the deletion of the rules.
@@ -91,3 +91,8 @@ batch_jobs:
         label: Product model import in XLSX with rules
         import_root_product_model.label: Root product model import
         import_sub_product_model.label: Sub product model import
+
+
+pim_notification:
+    types:
+        rule: Rules Settings

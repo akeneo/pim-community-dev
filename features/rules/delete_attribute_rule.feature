@@ -31,4 +31,4 @@ Feature: Delete a rule
     And I should see the text "Confirm deletion"
     And I should see the text "Are you sure you want to delete this rule?"
     And I confirm the deletion
-    Then I should see the text "No records found"
+    Then I should see the text "No rule found"

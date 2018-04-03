@@ -227,8 +227,7 @@ page_title:
     pimee_asset_categorytree_index: Categories
     pimee_asset_categorytree_edit: Category {{ category.label }} | Edit
     pimee_catalog_rule_rule_index: Rules
-
-
+    pimee_enrich_locale_edit: Locales | Edit
 
 batch_jobs:
     yml_asset_channel_configuration_import:
