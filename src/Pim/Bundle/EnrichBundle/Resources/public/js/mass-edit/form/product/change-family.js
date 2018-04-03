@@ -10,21 +10,17 @@ define(
     [
         'underscore',
         'oro/translator',
-        'oro/messenger',
         'pim/mass-edit-form/product/operation',
         'pim/common/select2/family',
         'pim/template/mass-edit/product/change-family',
-        'pim/common/property',
         'pim/initselect2'
     ],
     function (
         _,
         __,
-        messenger,
         BaseOperation,
         Select2Configurator,
         template,
-        propertyAccessor,
         initSelect2
     ) {
         return BaseOperation.extend({
@@ -88,24 +84,9 @@ define(
              * @return {string}
              */
             getValue: function () {
-                const action = _.findWhere(this.getFormData().actions, {field: 'family'})
+                var action = _.findWhere(this.getFormData().actions, {field: 'family'})
 
                 return action ? action.value : null;
-            },
-
-            /**
-             * Checks there is a one family selected to go to the next step
-             */
-            validate: function () {
-                const data = this.getFormData();
-                const family = propertyAccessor.accessProperty(data, 'actions.0.value', null);
-
-                const hasUpdate = null !== family;
-                if (!hasUpdate) {
-                    messenger.notify('error', __('pim_enrich.mass_edit.product.operation.change_family.no_update'));
-                }
-
-                return $.Deferred().resolve(hasUpdate);
             }
         });
     }

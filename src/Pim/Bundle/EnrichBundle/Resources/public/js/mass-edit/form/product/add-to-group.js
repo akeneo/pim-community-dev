@@ -8,6 +8,7 @@
  */
 define(
     [
+        'jquery',
         'underscore',
         'oro/translator',
         'oro/messenger',
@@ -19,6 +20,7 @@ define(
         'pim/template/mass-edit/product/add-to-group'
     ],
     function (
+        $,
         _,
         __,
         messenger,

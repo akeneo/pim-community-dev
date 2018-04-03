@@ -1043,34 +1043,34 @@ pim_enrich:
                     label: Edit attributes
                     label_count: "{1}Edit attributes of <span class=\"AknFullPage-title--highlight\">1 product</span>|] 1, Inf [Edit attributes of <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span>"
                     description: Only the attributes belonging to the families of the selected products will be edited with the following data for the {{ locale }} locale and the {{ scope }} channel.
-                    no_update: There was no update set for the mass edit. Please select an attribute to update with the new value.
+                    no_update: There was no attribute selected to perform the mass-edit. Please select an attribute.
                 change_family:
                     label: Change family
                     label_count: "{1}Change the family of <span class=\"AknFullPage-title--highlight\">1 product</span>|] 1, Inf [Change the family of <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span>"
                     description: The family of the selected products will be changed to the chosen family
                     field: Family
-                    no_update: There is no family selected to add the selected entities to.
+                    no_update: There is no family selected to add the selected products to.
                 add_to_group:
                     label: Add to groups
                     label_count: "{1}Add <span class=\"AknFullPage-title--highlight\">1 product</span> to groups|] 1, Inf [Add <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span> to groups"
                     description: Select the groups in which to add the selected products
                     field: Groups
-                    no_update: There is no group selected to add the selected entities to.
+                    no_update: There is no group selected to add the selected products to.
                 add_to_category:
                     label: Add to categories
                     label_count: "{1}Add <span class=\"AknFullPage-title--highlight\">1 product</span> to categories|] 1, Inf [Add <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span> to categories"
                     description: The products will be positioned into following categories, the existing placement is kept.
-                    no_update:  There is no category checked to add the selected entities to.
+                    no_update:  There is no category checked to add the selected products to.
                 move_to_category:
                     label: Move between categories
                     label_count: "{1}Move <span class=\"AknFullPage-title--highlight\">1 product</span> between categories|] 1, Inf [Move <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span> between categories"
                     description: The products will be positioned into following categories, the existing placement is lost.
-                    no_update: There is no category checked to move the selected entities to.
+                    no_update: There is no category checked to move the selected products to.
                 remove_from_category:
                     label: Remove from categories
                     label_count: "{1}Remove <span class=\"AknFullPage-title--highlight\">1 product</span> from categories|] 1, Inf [Remove <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span> from categories"
                     description: The products will be removed from the following categories.
-                    no_update:  There is no category checked to remove the selected entities from.
+                    no_update:  There is no category checked to remove the selected products from.
                 add_to_existing_product_model:
                     label: Add to an existing product model
                     label_count: "{1}Add <span class=\"AknFullPage-title--highlight\">1 product</span> to an existing product model|] 1, Inf [Add <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span> to an existing product model"

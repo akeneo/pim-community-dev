@@ -6,7 +6,7 @@
         <div class="tab-pane active" id="product-categories">
             <div id="trees" data-id="<%- product.meta.id %>" data-datalocale="<%- locale %>" data-selected-tree="<%- trees[0].id %>">
                 <% _.each(trees, function (tree) { %>
-                    <div class="tree root-unselectable" data-tree-id="<%- tree.id %>">
+                    <div id="root-unselectable" class="tree root-unselectable" data-tree-id="<%- tree.id %>">
                         <div id="tree-<%- tree.id %>" class="buffer-small-left"></div>
                     </div>
                 <% }); %>

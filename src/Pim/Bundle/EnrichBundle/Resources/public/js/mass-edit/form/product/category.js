@@ -8,6 +8,7 @@
  */
 define(
     [
+        'jquery',
         'underscore',
         'oro/translator',
         'oro/messenger',
@@ -20,6 +21,7 @@ define(
         'pim/template/mass-edit/product/category'
     ],
     function (
+        $,
         _,
         __,
         messenger,
