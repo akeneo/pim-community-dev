@@ -1495,15 +1495,15 @@ catalog_volume:
             title: Axes regarding the variant modelling
     axis:
         products: Products
-        attributes_by_family: Attributes by family
+        attributes_per_family: Attributes per family
         channels: Channels
         locales: Locales
         scopable_attributes: Scopable attributes
-        localizable_scopable_attributes: Localizable and scopable attributes
+        localizable_and_scopable_attributes: Localizable and scopable attributes
         localizable_attributes: Localizable attributes
         families: Families
         attributes: Attributes
-        options_by_attribute: Options by attribute
+        options_per_attribute: Options by attribute
         categories: Categories
         category_trees: Category trees
         variant_products: Product variants

@@ -28,9 +28,10 @@ define(
             config: {
                 warningText: __('catalog_volume.axis.warning'),
                 templates: {
-                    mean_max: 'pim/template/catalog-volume/mean-max',
-                    number: 'pim/template/catalog-volume/number'
-                }
+                    average_max: 'pim/template/catalog-volume/average-max',
+                    count: 'pim/template/catalog-volume/number'
+                },
+                axes: []
             },
             /**
              * {@inheritdoc}
@@ -51,17 +52,29 @@ define(
                 return !!localStorage.getItem(this.config.hint.code);
             },
 
+            sectionHasData(sectionData, sectionAxes) {
+                return Object.keys(sectionData).filter(field => sectionAxes.indexOf(field) > -1).length > 0;
+            },
+
             /**
              * {@inheritdoc}
              */
             render() {
+                const sectionData = this.getRoot().getFormData();
+                const sectionAxes = this.config.axes;
+                const sectionHasData = this.sectionHasData(sectionData, sectionAxes);
+
+                if (false === sectionHasData) {
+                    return;
+                }
+
                 this.$el.empty().html(this.template({
                     title: __(this.config.title),
                     hintTitle: __(this.config.hint.title),
                     hintIsHidden: this.hintIsHidden()
                 }));
 
-                this.renderAxes(this.config.axes, this.getRoot().getFormData());
+                this.renderAxes(this.config.axes, sectionData);
             },
 
             /**
@@ -72,13 +85,21 @@ define(
             renderAxes(axes, data) {
                 axes.forEach(name => {
                     const axis = data[name];
-                    const type = this.config.templates[axis.type];
-                    const template = _.template(requireContext(type));
+
+                    if (undefined === axis) return;
+
+                    const typeTemplate = this.config.templates[axis.type];
+
+                    if (undefined === typeTemplate) {
+                        throw Error('The axis', name, 'does not have a template for', axis.type);
+                    }
+
+                    const template = _.template(requireContext(typeTemplate));
 
                     const el = template({
-                        icon: name.replace(/[_]/g, '-'),
+                        icon: name.replace(/_/g, '-'),
                         value: axis.value,
-                        warning: axis.warning,
+                        has_warning: axis.has_warning,
                         title: __(`catalog_volume.axis.${name}`),
                         warningText: this.config.warningText
                     });

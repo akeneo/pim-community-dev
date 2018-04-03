@@ -55,7 +55,7 @@ extensions:
             hint:
                 code: hint-product-values
                 title: catalog_volume.section.product_values.hint
-            axes: [products, channels, scopable_attributes, attributes_by_family, locales, localizable_scopable_attributes, localizable_attributes]
+            axes: [products, channels, scopable_attributes, attributes_per_family, locales, localizable_and_scopable_attributes, localizable_attributes]
 
     pim-catalog-volume-catalog-structure-section:
         module: pim/catalog-volume/section
@@ -68,7 +68,7 @@ extensions:
             hint:
                 code: hint-catalog-structure
                 title: catalog_volume.section.catalog_structure.hint
-            axes: [families, attributes, options_by_attribute, categories, category_trees]
+            axes: [families, attributes, options_per_attribute, categories, category_trees]
 
     pim-catalog-volume-variant-modelling-section:
         module: pim/catalog-volume/section

@@ -3,11 +3,11 @@
     <div class="AknCatalogVolume-title">
         <%- title %>
         <div class="AknCatalogVolume-value">
-            <span>Mean:</span><%- value.mean %>
+            <span>Mean:</span><%- value.average %>
             <span>Max:</span> <%- value.max %>
         </div>
 
-        <% if (true === warning) { %>
+        <% if (true === has_warning) { %>
             <div class="AknCatalogVolume-warning">
                 <%- warningText %>
             </div>

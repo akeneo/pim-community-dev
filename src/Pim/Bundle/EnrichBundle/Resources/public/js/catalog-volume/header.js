@@ -14,7 +14,6 @@ define(
         template
     ) {
         return BaseForm.extend({
-            className: 'AknCatalogVolume-hint AknCatalogVolume-hint--header',
             template: _.template(template),
 
             /**
@@ -35,12 +34,14 @@ define(
                     product_values_average
                 } = this.getRoot().getFormData();
 
-                this.$el.html(this.template({
-                    title: __(this.config.title)
-                        .replace('{{values}}', parseInt(product_values.value).toLocaleString('en', { useGrouping: true }))
-                        .replace('{{average}}', product_values_average.value),
-                    description: __(this.config.description)
-                }));
+                if (undefined !== product_values && product_values > 0) {
+                    this.$el.html(this.template({
+                        title: __(this.config.title)
+                            .replace('{{values}}', parseInt(product_values.value).toLocaleString('en', { useGrouping: true }))
+                            .replace('{{average}}', product_values_average.value),
+                        description: __(this.config.description)
+                    }));
+                }
             }
         });
     }
