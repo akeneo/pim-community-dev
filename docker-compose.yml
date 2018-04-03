@@ -6,7 +6,7 @@ services:
     environment:
       BEHAT_TMPDIR: '/srv/pim/var/cache/tmp'
       COMPOSER_HOME: '/home/docker/.composer'
-    user: docker
+      PHP_IDE_CONFIG: 'serverName=pim-ce-cli'
     volumes:
       - ./:/srv/pim
       - ~/.composer:/home/docker/.composer
@@ -40,6 +40,8 @@ services:
     image: httpd:2.4
     depends_on:
       - fpm
+    environment:
+      PHP_IDE_CONFIG: 'serverName=pim-ce'
     volumes:
       - ./:/srv/pim:ro
       - ./docker/httpd.conf:/usr/local/apache2/conf/httpd.conf:ro
