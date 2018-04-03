@@ -1,6 +1,6 @@
 <?php
 
-namespace PimEnterprise\Bundle\ConnectorBundle\tests\integration\Import\Product;
+namespace PimEnterprise\Bundle\SecurityBundle\tests\integration\Import\Product;
 
 use Akeneo\Component\Batch\Job\BatchStatus;
 use Akeneo\Component\Batch\Model\JobExecution;

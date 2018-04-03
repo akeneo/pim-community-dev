@@ -1,6 +1,6 @@
 <?php
 
-namespace PimEnterprise\Bundle\ConnectorBundle\tests\integration\Export\PublishedProduct;
+namespace PimEnterprise\Bundle\SecurityBundle\tests\integration\Export\PublishedProduct;
 
 use Akeneo\Test\IntegrationTestsBundle\Launcher\JobLauncher;
 
