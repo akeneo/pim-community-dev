@@ -34,8 +34,8 @@ class RemoveWrongBooleanValuesOnVariantProductsCommand extends ContainerAwareCom
     {
         $this
             ->setHidden(true)
-            ->setName('pim:catalog:remove-wrong-values-on-variant-products')
-            ->setAliases(['pim:catalog:remove-wrong-boolean-values-on-variant-products'])
+            ->setName('pim:catalog:remove-wrong-boolean-values-on-variant-products')
+            ->setAliases(['pim:catalog:remove-wrong-values-on-variant-products'])
             ->setDescription('Remove boolean values on variant products that should belong to their parents')
         ;
     }
@@ -59,8 +59,6 @@ class RemoveWrongBooleanValuesOnVariantProductsCommand extends ContainerAwareCom
         $productsToSave = [];
 
         foreach ($variantProducts as $variantProduct) {
-            $progressBar->advance();
-
             // TODO: Replace this check for 2.2 version by ``if (!$variantProduct->isVariant()) {}``
             if (!($variantProduct instanceof VariantProductInterface)) {
                 continue;
@@ -91,13 +89,16 @@ class RemoveWrongBooleanValuesOnVariantProductsCommand extends ContainerAwareCom
 
                 $productsToSave = [];
             }
+
+            $progressBar->advance();
         }
-        $progressBar->finish();
 
         if (!empty($productsToSave)) {
             $this->getContainer()->get('pim_catalog.saver.product')->saveAll($productsToSave);
             $this->getContainer()->get('pim_catalog.elasticsearch.indexer.product')->indexAll($productsToSave);
         }
+
+        $progressBar->finish();
 
         $output->writeln('');
         $output->writeln(sprintf('<info>%s variant products cleaned</info>', count($productsToSave)));

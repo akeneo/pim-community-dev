@@ -22,7 +22,10 @@ use Symfony\Component\Validator\Validator\RecursiveValidator;
 class WrongBooleanValuesOnVariantProductUpdater
 {
     /**
+     * Return true if the product has been modified, false otherwise
+     *
      * @param VariantProductInterface $variantProduct
+     *
      * @return bool
      */
     public function updateProduct(VariantProductInterface $variantProduct): bool

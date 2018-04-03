@@ -181,6 +181,9 @@ services:
             - '@pim_catalog.repository.attribute'
             - '@pim_catalog.query.product_query_builder_factory'
 
+    pim_catalog.updater.wrong_boolean_value_on_variant_product:
+        class: '%pim_catalog.updater.wrong_boolean_value_on_variant_product.class%'
+
     # Setters
     pim_catalog.updater.setter.registry:
         class: '%pim_catalog.updater.setter.registry.class%'
@@ -532,6 +535,3 @@ services:
             - ['pim_catalog_multiselect']
         tags:
             - { name: 'pim_catalog.updater.remover' }
-
-    pim_catalog.updater.wrong_boolean_value_on_variant_product:
-        class: '%pim_catalog.updater.wrong_boolean_value_on_variant_product.class%'
