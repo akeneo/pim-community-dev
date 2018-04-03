@@ -17,7 +17,7 @@ use Pim\Bundle\DataGridBundle\Datagrid\Configuration\Product\ColumnsConfigurator
 use Pim\Bundle\DataGridBundle\Datagrid\Configuration\Product\ContextConfigurator;
 use Pim\Bundle\DataGridBundle\Datagrid\Configuration\Product\SortersConfigurator;
 use Pim\Bundle\DataGridBundle\EventListener\ConfigureProductGridListener as BaseConfigureProductGridListener;
-use PimEnterprise\Bundle\DataGridBundle\Datagrid\Configuration\Product\RowActionsConfigurator;
+use PimEnterprise\Bundle\SecurityBundle\Datagrid\Product\RowActionsConfigurator;
 
 /**
  * Grid listener to configure columns, filters, sorters and rows actions
@@ -27,15 +27,15 @@ use PimEnterprise\Bundle\DataGridBundle\Datagrid\Configuration\Product\RowAction
  */
 class ConfigureProductGridListener extends BaseConfigureProductGridListener
 {
-    /** @var RowActionsConfigurator */
+    /** @var \PimEnterprise\Bundle\SecurityBundle\Datagrid\Product\RowActionsConfigurator */
     protected $actionsConfigurator;
 
     /**
-     * @param ContextConfigurator    $contextConfigurator
-     * @param ColumnsConfigurator    $columnsConfigurator
-     * @param ConfiguratorInterface  $filtersConfigurator
-     * @param SortersConfigurator    $sortersConfigurator
-     * @param RowActionsConfigurator $actionsConfigurator
+     * @param ContextConfigurator                                                          $contextConfigurator
+     * @param ColumnsConfigurator                                                          $columnsConfigurator
+     * @param ConfiguratorInterface                                                        $filtersConfigurator
+     * @param SortersConfigurator                                                          $sortersConfigurator
+     * @param \PimEnterprise\Bundle\SecurityBundle\Datagrid\Product\RowActionsConfigurator $actionsConfigurator
      */
     public function __construct(
         ContextConfigurator $contextConfigurator,

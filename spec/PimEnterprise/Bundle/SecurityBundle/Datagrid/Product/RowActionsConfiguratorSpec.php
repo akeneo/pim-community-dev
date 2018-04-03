@@ -1,17 +1,17 @@
 <?php
 
-namespace spec\PimEnterprise\Bundle\DataGridBundle\Datagrid\Configuration\Product;
+namespace spec\PimEnterprise\Bundle\SecurityBundle\Datagrid\Product;
 
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use Oro\Bundle\DataGridBundle\Datasource\ResultRecordInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\DataGridBundle\Datagrid\Configuration\Product\ConfigurationRegistry;
-use Pim\Component\User\Model\UserInterface;
 use Pim\Component\Catalog\Model\LocaleInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
 use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
+use Pim\Component\User\Model\UserInterface;
 use PimEnterprise\Component\Security\Attributes;
 use Prophecy\Argument;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
@@ -50,7 +50,7 @@ class RowActionsConfiguratorSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('PimEnterprise\Bundle\DataGridBundle\Datagrid\Configuration\Product\RowActionsConfigurator');
+        $this->shouldHaveType('PimEnterprise\Bundle\SecurityBundle\Datagrid\Product\RowActionsConfigurator');
     }
 
     function it_configures_the_grid($datagridConfiguration, $authorizationChecker)

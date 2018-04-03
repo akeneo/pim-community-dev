@@ -1,2 +1,24 @@
 parameters:
     pim_datagrid.adapter.oro_to_pim_grid_filter.class: PimEnterprise\Bundle\SecurityBundle\Datagrid\OroToPimGridFilterAdapter
+    pimee_security.datagrid.configuration.product.filters_configurator.class: PimEnterprise\Bundle\DataGridBundle\Datagrid\Configuration\Product\FiltersConfigurator
+    pimee_security.datagrid.configuration.product.row_actions_configurator.class: PimEnterprise\Bundle\SecurityBundle\Datagrid\Product\RowActionsConfigurator
+
+services:
+    pimee_security.datagrid.configuration.product.filters_configurator:
+        class: '%pimee_security.datagrid.configuration.product.filters_configurator.class%'
+        decorates: pim_datagrid.datagrid.configuration.product.filters_configurator
+        decoration_inner_name: pim_datagrid.datagrid.configuration.product.filters_configurator.ce
+        arguments:
+            - '@pim_datagrid.datagrid.configuration.product.filters_configurator.ce'
+            - '@request_stack'
+            - '@pimee_teamwork_assistant.repository.project'
+            - '@security.token_storage'
+
+    pimee_security.datagrid.configuration.product.row_actions_configurator:
+        class: '%pimee_security.datagrid.configuration.product.row_actions_configurator.class%'
+        arguments:
+            - '@pim_datagrid.datagrid.configuration.product.configuration_registry'
+            - '@security.authorization_checker'
+            - '@pim_catalog.repository.product'
+            - '@pim_catalog.repository.locale'
+            - '@pim_catalog.repository.product_model'

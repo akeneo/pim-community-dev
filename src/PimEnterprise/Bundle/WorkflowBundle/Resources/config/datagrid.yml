@@ -48,7 +48,7 @@ services:
             - '@pim_datagrid.datagrid.configuration.product.columns_configurator'
             - '@pim_datagrid.datagrid.configuration.product.filters_configurator'
             - '@pim_datagrid.datagrid.configuration.product.sorters_configurator'
-            - '@pimee_datagrid.datagrid.configuration.product.row_actions_configurator'
+            - '@pimee_security.datagrid.configuration.product.row_actions_configurator'
         tags:
             - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.before.product-grid, method: buildBefore }
 

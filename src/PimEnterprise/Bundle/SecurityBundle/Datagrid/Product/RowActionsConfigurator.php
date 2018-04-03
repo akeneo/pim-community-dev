@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Bundle\DataGridBundle\Datagrid\Configuration\Product;
+namespace PimEnterprise\Bundle\SecurityBundle\Datagrid\Product;
 
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;

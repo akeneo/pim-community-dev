@@ -5,7 +5,7 @@ namespace spec\PimEnterprise\Bundle\ProductAssetBundle\Event;
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use Oro\Bundle\DataGridBundle\Event\BuildBefore;
 use PhpSpec\ObjectBehavior;
-use PimEnterprise\Bundle\DataGridBundle\Datagrid\Configuration\Product\ContextConfigurator;
+use PimEnterprise\Bundle\SecurityBundle\Datagrid\Product\ContextConfigurator;
 
 class ConfigureAssetGridListenerSpec extends ObjectBehavior
 {
