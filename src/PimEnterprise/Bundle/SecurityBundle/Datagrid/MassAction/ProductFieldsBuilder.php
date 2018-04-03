@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Bundle\DataGridBundle\Extension\MassAction\Util;
+namespace PimEnterprise\Bundle\SecurityBundle\Datagrid\MassAction;
 
 use Pim\Bundle\CatalogBundle\Context\CatalogContext;
 use Pim\Bundle\DataGridBundle\Extension\MassAction\Util\ProductFieldsBuilder as BaseProductFieldsBuilder;
