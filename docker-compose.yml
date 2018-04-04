@@ -54,6 +54,8 @@ services:
     image: httpd:2.4
     depends_on:
       - fpm
+    environment:		
+       PHP_IDE_CONFIG: 'serverName=pim-ce-behat'
     volumes:
       - ./:/srv/pim:ro
       - ./docker/httpd.conf:/usr/local/apache2/conf/httpd.conf:ro
