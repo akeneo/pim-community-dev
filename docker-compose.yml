@@ -42,12 +42,12 @@ services:
       - fpm
     environment:
       PHP_IDE_CONFIG: 'serverName=pim-ce'
-    ports:
-      - '${DOCKER_PORT_HTTP}:80'
     volumes:
       - ./:/srv/pim:ro
       - ./docker/httpd.conf:/usr/local/apache2/conf/httpd.conf:ro
       - ./docker/akeneo.conf:/usr/local/apache2/conf/vhost.conf:ro
+    ports:
+      - '${DOCKER_PORT_HTTP}:80'
     networks:
       - akeneo
 
@@ -55,14 +55,12 @@ services:
     image: httpd:2.4
     depends_on:
       - fpm
-    ports:
-      - '${DOCKER_PORT_HTTP_BEHAT}:80'
-    environment:
-       PHP_IDE_CONFIG: 'serverName=pim-ce-behat'
     volumes:
       - ./:/srv/pim:ro
       - ./docker/httpd.conf:/usr/local/apache2/conf/httpd.conf:ro
       - ./docker/akeneo-behat.conf:/usr/local/apache2/conf/vhost.conf:ro
+    ports:
+      - '${DOCKER_PORT_HTTP_BEHAT}:80'
     networks:
       - behat
 
