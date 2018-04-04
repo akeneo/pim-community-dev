@@ -33,7 +33,7 @@
     "no-use-before-define": 0,
     "newline-before-return": 2,
     "new-cap": [
-      1,
+      0,
       {
         "properties": false
       }

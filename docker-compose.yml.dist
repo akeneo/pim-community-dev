@@ -15,7 +15,6 @@ services:
       - ./:/srv/pim
       - ~/.composer:/home/docker/.composer
       - /tmp/behat/screenshots:/tmp/behat/screenshots
-      - /tmp/js-acceptance/:/tmp/js-acceptance
     working_dir: /srv/pim
     networks:
       - akeneo

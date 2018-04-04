@@ -10,9 +10,8 @@
     "webpack-test": "webpack --config webpack-test.config.js",
     "lint": "node ./node_modules/eslint/bin/eslint 'src/**/*.js' --ignore-path .eslintignore --quiet",
     "lint-fix": "node ./node_modules/eslint/bin/eslint 'src/**/*.js' --ignore-path .eslintignore --quiet --fix",
-    "acceptance": "cucumber-js -r ./webpack/test/acceptance/run-steps.js -r ./tests/front/acceptance/cucumber ./tests/front/acceptance/features/",
-    "acceptance-debug": "cucumber-js -r ./webpack/test/acceptance/run-steps.js -r ./tests/front/acceptance/cucumber/step-definitions ./tests/front/acceptance/features/ --world-parameters='{\"debug\": true}'",
-    "acceptance-report": "yarn run acceptance -- -f json:web/test_dist/acceptance-js.json && node webpack/test/acceptance/generate-report.js"
+    "acceptance": "cucumber-js --tags @acceptance-front -r ./webpack/test/acceptance/run-steps.js -r ./tests/front/acceptance/cucumber",
+    "acceptance-report": "yarn run acceptance ./tests/features/ -f json:web/test_dist/acceptance-js.json && node webpack/test/acceptance/generate-report.js"
   },
   "repository": {
     "type": "git",

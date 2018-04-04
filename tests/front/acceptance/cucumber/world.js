@@ -9,9 +9,6 @@ module.exports = function(cucumber) {
     const {Before, After, Status} = cucumber;
 
     Before({timeout: 10 * 1000}, async function() {
-        process.env.RANDOM = this.parameters.random || true;
-        process.env.MAX_RANDOM_LATENCY_MS = this.parameters.maxLatency || 1000;
-
         this.baseUrl = 'http://pim.com/';
         this.browser = await puppeteer.launch({
             ignoreHTTPSErrors: true,
@@ -62,7 +59,6 @@ module.exports = function(cucumber) {
             const { uri, line } = scenario.sourceLocation;
             const fileName = `${uri}:${line}.png`;
             const folder = path.join(os.tmpdir(), 'js-acceptance');
-
             const filePath = path.join(folder, fileName.replace(/\//g, '__'));
             const imageBuffer = await this.page.screenshot({path: filePath});
 
@@ -73,11 +69,6 @@ module.exports = function(cucumber) {
 
                 this.attach(logMessages, 'text/plain');
                 console.log(logMessages);
-            }
-
-            if (!this.parameters.debug) {
-                await this.page.close();
-                await this.browser.close();
             }
 
             console.log(`Screenshot available at ${filePath}`);
