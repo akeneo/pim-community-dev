@@ -67,6 +67,9 @@ pimee_api:
     resource: "@PimEnterpriseApiBundle/Resources/config/routing.yml"
     prefix: /api
 
+pim_volume_monitoring:
+    resource: "@PimCatalogVolumeMonitoringBundle/Resources/config/routing.yml"
+
 # Oro platform
 
 oro_default:
