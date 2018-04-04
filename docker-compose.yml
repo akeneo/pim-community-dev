@@ -4,10 +4,9 @@ services:
   fpm:
     image: akeneo/fpm:php-7.1
     environment:
-      BEHAT_TMPDIR: '/srv/pim/var/cache/tmp'
       COMPOSER_HOME: '/home/docker/.composer'
-      PHP_IDE_CONFIG: 'serverName=pim-ce-cli'
-    user: docker      
+      BEHAT_TMPDIR: '/srv/pim/var/cache/tmp'
+    user: docker
     volumes:
       - ./:/srv/pim
       - ~/.composer:/home/docker/.composer
@@ -43,6 +42,8 @@ services:
       - fpm
     environment:
       PHP_IDE_CONFIG: 'serverName=pim-ce'
+    ports:
+      - '${DOCKER_PORT_HTTP}:80'
     volumes:
       - ./:/srv/pim:ro
       - ./docker/httpd.conf:/usr/local/apache2/conf/httpd.conf:ro
@@ -54,7 +55,9 @@ services:
     image: httpd:2.4
     depends_on:
       - fpm
-    environment:		
+    ports:
+      - '${DOCKER_PORT_HTTP_BEHAT}:80'
+    environment:
        PHP_IDE_CONFIG: 'serverName=pim-ce-behat'
     volumes:
       - ./:/srv/pim:ro
@@ -93,5 +96,5 @@ services:
       - behat
 
 networks:
-  akeneo: ~
-  behat: ~
+  akeneo:
+  behat:
