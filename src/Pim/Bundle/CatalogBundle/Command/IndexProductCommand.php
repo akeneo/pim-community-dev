@@ -105,9 +105,9 @@ class IndexProductCommand extends ContainerAwareCommand
 
         while (!empty($products = $this->productRepository->searchAfter($lastProduct, self::BULK_SIZE))) {
             $output->writeln(sprintf(
-                'Indexing products %d to %d',
-                $progress + 1,
-                $progress + count($products)
+                'Indexing products %d of %d',
+                $progress,
+                $totalElements
             ));
 
             $this->bulkProductIndexer->indexAll($products, ['index_refresh' => Refresh::disable()]);

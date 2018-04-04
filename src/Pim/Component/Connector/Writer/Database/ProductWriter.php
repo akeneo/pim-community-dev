@@ -29,17 +29,11 @@ class ProductWriter implements ItemWriterInterface, StepExecutionAwareInterface,
     /** @var BulkSaverInterface */
     protected $productSaver;
 
-    /** @var CacheClearerInterface */
-    protected $cacheClearer;
-
     /**
      * Constructor
      *
      * @param VersionManager        $versionManager
      * @param BulkSaverInterface    $productSaver
-     * @param CacheClearerInterface $cacheClearer
-     *
-     * @todo @merge Remove $cacheClearer. It's not used anymore.
      */
     public function __construct(
         VersionManager $versionManager,
@@ -48,7 +42,6 @@ class ProductWriter implements ItemWriterInterface, StepExecutionAwareInterface,
     ) {
         $this->versionManager = $versionManager;
         $this->productSaver = $productSaver;
-        $this->cacheClearer = $cacheClearer;
     }
 
     /**

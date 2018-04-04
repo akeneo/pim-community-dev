@@ -1,5 +1,9 @@
 # 2.0.x
 
+## Improvements
+
+- PIM-7084: Add command to clean product values after attribute deletion
+
 ## Bug fixes
 
 - PIM-7251: Fix history date on all grids (except product grid)
