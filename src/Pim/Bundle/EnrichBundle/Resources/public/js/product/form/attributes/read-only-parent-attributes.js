@@ -34,7 +34,7 @@ define(
              */
             addFieldExtension: function (event) {
                 const entity = this.getFormData();
-                if (null === entity.meta.family_variant) {
+                if (undefined === entity.meta || null === entity.meta.family_variant) {
                     return;
                 }
 

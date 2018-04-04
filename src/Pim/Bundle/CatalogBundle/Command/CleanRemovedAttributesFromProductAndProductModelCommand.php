@@ -50,14 +50,13 @@ class CleanRemovedAttributesFromProductAndProductModelCommand extends ContainerA
 
         $cacheClearer = $this->getContainer()->get('pim_connector.doctrine.cache_clearer');
         $pqbFactory = $this->getContainer()->get('pim_enrich.query.product_and_product_model_query_builder_factory');
-
+        $rootDir = $this->getContainer()->get('kernel')->getRootDir();
         $env = $input->getOption('env');
 
         $io->title('Clean removed attributes values');
         $answer = $io->confirm(
             'This command with removes all values of deleted attributes on all products and product models' . "\n" .
-            'Do you want to proceed?'
-        , false);
+            'Do you want to proceed?', false);
 
         if (!$answer) {
             $io->text('That\'s ok, see you!');
@@ -76,7 +75,7 @@ class CleanRemovedAttributesFromProductAndProductModelCommand extends ContainerA
 
         $progressBar = new ProgressBar($output, count($products));
 
-        $this->cleanProducts($products, $progressBar, $productBatchSize, $cacheClearer, $env);
+        $this->cleanProducts($products, $progressBar, $productBatchSize, $cacheClearer, $env, $rootDir);
         $io->newLine();
         $io->text(sprintf('%d products well cleaned', $products->count()));
     }
@@ -103,13 +102,15 @@ class CleanRemovedAttributesFromProductAndProductModelCommand extends ContainerA
      * @param  int                   $productBatchSize
      * @param  CacheClearerInterface $cacheClearer
      * @param  string                $env
+     * @param  string                $rootDir
      */
     private function cleanProducts(
         CursorInterface $products,
         ProgressBar $progressBar,
         int $productBatchSize,
         CacheClearerInterface $cacheClearer,
-        string $env
+        string $env,
+        string $rootDir
     ): void {
         $progressBar->start();
 
@@ -118,7 +119,7 @@ class CleanRemovedAttributesFromProductAndProductModelCommand extends ContainerA
             $productIds[] = IdEncoder::encode($product instanceof ProductModel ? 'product_model' : 'product', $product->getId());
             $productToCleanCount++;
             if (0 === $productToCleanCount % $productBatchSize) {
-                $this->launchCleanTask($productIds, $env);
+                $this->launchCleanTask($productIds, $env, $rootDir);
                 $cacheClearer->clear();
                 $productIds = [];
 
@@ -126,7 +127,7 @@ class CleanRemovedAttributesFromProductAndProductModelCommand extends ContainerA
             }
         }
         if (count($productIds) > 0) {
-            $this->launchCleanTask($productIds, $env);
+            $this->launchCleanTask($productIds, $env, $rootDir);
         }
 
         $progressBar->finish();
@@ -137,10 +138,10 @@ class CleanRemovedAttributesFromProductAndProductModelCommand extends ContainerA
      *
      * @param array  $productIds
      * @param string $env
+     * @param string $rootDir
      */
-    private function launchCleanTask(array $productIds, string $env)
+    private function launchCleanTask(array $productIds, string $env, string $rootDir)
     {
-        $rootDir = $this->getContainer()->get('kernel')->getRootDir();
         $process = new Process([sprintf('%s/../bin/console', $rootDir), 'pim:product:refresh', sprintf('--env=%s', $env), implode(',', $productIds)]);
         $process->run();
     }

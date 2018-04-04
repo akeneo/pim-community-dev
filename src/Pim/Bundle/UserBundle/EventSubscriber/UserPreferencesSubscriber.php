@@ -3,7 +3,7 @@
 namespace Pim\Bundle\UserBundle\EventSubscriber;
 
 use Doctrine\Common\EventSubscriber;
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Event\OnFlushEventArgs;
 use Doctrine\ORM\Event\PostFlushEventArgs;
 use Doctrine\ORM\UnitOfWork;
@@ -70,7 +70,7 @@ class UserPreferencesSubscriber implements EventSubscriber
             $this->preUpdate($uow, $entity);
         }
         foreach ($uow->getScheduledEntityDeletions() as $entity) {
-            $this->preRemove($uow, $entity);
+            $this->preRemove($uow, $manager, $entity);
         }
     }
 
@@ -91,12 +91,14 @@ class UserPreferencesSubscriber implements EventSubscriber
     /**
      * Before remove
      *
-     * @param object $entity
+     * @param UnitOfWork             $uow
+     * @param EntityManagerInterface $manager
+     * @param object                 $entity
      */
-    protected function preRemove(UnitOfWork $uow, $entity)
+    protected function preRemove(UnitOfWork $uow, EntityManagerInterface $manager, $entity)
     {
         if ($entity instanceof ChannelInterface) {
-            $this->onChannelRemoved($uow, $entity);
+            $this->onChannelRemoved($uow, $manager, $entity);
         }
 
         if ($entity instanceof CategoryInterface && $entity->isRoot()) {
@@ -122,15 +124,16 @@ class UserPreferencesSubscriber implements EventSubscriber
     /**
      * Get the metadata of an entity
      *
-     * @param object $entity
+     * @param EntityManagerInterface $manager
+     * @param object                 $entity
      *
      * @return array
      */
-    protected function getMetadata($entity)
+    protected function getMetadata(EntityManagerInterface $manager, $entity)
     {
         $className = get_class($entity);
         if (!isset($this->metadata[$className])) {
-            $this->metadata[$className] = $this->manager->getClassMetadata($className);
+            $this->metadata[$className] = $manager->getClassMetadata($className);
         }
 
         return $this->metadata[$className];
@@ -139,21 +142,28 @@ class UserPreferencesSubscriber implements EventSubscriber
     /**
      * Compute changeset
      *
-     * @param object $entity
+     * @param UnitOfWork             $uow
+     * @param EntityManagerInterface $manager
+     * @param object                 $entity
      */
-    protected function computeChangeset(UnitOfWork $uow, $entity)
+    protected function computeChangeset(UnitOfWork $uow, EntityManagerInterface $manager, $entity)
     {
         $uow->persist($entity);
-        $uow->computeChangeSet($this->getMetadata($entity), $entity);
+        $uow->computeChangeSet($this->getMetadata($manager, $entity), $entity);
     }
 
     /**
      * Update catalog scope of users using a channel that will be removed
      *
-     * @param ChannelInterface $channel
+     * @param UnitOfWork             $uow
+     * @param EntityManagerInterface $manager
+     * @param ChannelInterface       $channel
      */
-    protected function onChannelRemoved(UnitOfWork $uow, ChannelInterface $channel)
-    {
+    protected function onChannelRemoved(
+        UnitOfWork $uow,
+        EntityManagerInterface $manager,
+        ChannelInterface $channel
+    ) {
         $users = $this->findUsersBy(['catalogScope' => $channel]);
         $scopes = $this->container->get('pim_catalog.repository.channel')->findAll();
 
@@ -168,7 +178,7 @@ class UserPreferencesSubscriber implements EventSubscriber
 
         foreach ($users as $user) {
             $user->setCatalogScope($defaultScope);
-            $this->computeChangeset($uow, $user);
+            $this->computeChangeset($uow, $manager, $user);
         }
     }
 
@@ -200,7 +210,7 @@ class UserPreferencesSubscriber implements EventSubscriber
     /**
      * Update catalog locale of users using a deactivated locale
      */
-    protected function onLocalesDeactivated(EntityManager $manager)
+    protected function onLocalesDeactivated(EntityManagerInterface $manager)
     {
         $localeRepository = $this->container->get('pim_catalog.repository.locale');
         $activeLocales = $localeRepository->getActivatedLocales();
