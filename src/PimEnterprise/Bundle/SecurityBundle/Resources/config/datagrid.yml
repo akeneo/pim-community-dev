@@ -5,6 +5,7 @@ parameters:
     pim_datagrid.event_listener.configure_product_grid_listener.class: PimEnterprise\Bundle\SecurityBundle\Datagrid\EventListener\ConfigureProductGridListener
     pimee_security.datagrid.event_listener.add_permissions_to_grid.class: PimEnterprise\Bundle\SecurityBundle\Datagrid\EventListener\AddPermissionsToGridListener
     pimee_security.datagrid.event_listener.configure_job_profile_grid_listener.class: PimEnterprise\Bundle\SecurityBundle\Datagrid\EventListener\ConfigureJobProfileGridListener
+    pimee_security.datagrid.filter.datagrid_view.class: PimEnterprise\Bundle\SecurityBundle\Datagrid\DatagridViewFilter
 
 services:
     # Configuration
@@ -47,3 +48,10 @@ services:
         tags:
             - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.before.export-profile-grid, method: onBuildBefore }
             - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.before.import-profile-grid, method: onBuildBefore }
+
+    pimee_security.datagrid.filter.datagrid_view:
+        class: '%pimee_security.datagrid.filter.datagrid_view.class%'
+        parent: pimee_catalog.filter.abstract_authorization
+        tags:
+            - { name: pim_catalog.filter.collection, type: pim.internal_api.datagrid_view.view }
+            - { name: pim_catalog.filter.object, type: pim.internal_api.datagrid_view.view }

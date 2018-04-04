@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Bundle\DataGridBundle\Filter;
+namespace PimEnterprise\Bundle\SecurityBundle\Datagrid;
 
 use Pim\Bundle\DataGridBundle\Entity\DatagridView;
 use PimEnterprise\Bundle\SecurityBundle\Filter\AbstractAuthorizationFilter;
