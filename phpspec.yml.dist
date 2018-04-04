@@ -123,6 +123,11 @@ suites:
         psr4_prefix: Pim\Component\User
         spec_path: src/Pim/Component/User
         src_path: src/Pim/Component/User
+    CatalogVolumeMonitoring:
+        namespace: Pim\Component\CatalogVolumeMonitoring
+        psr4_prefix: Pim\Component\CatalogVolumeMonitoring
+        spec_path: src/Pim/Component/CatalogVolumeMonitoring
+        src_path: src/Pim/Component/CatalogVolumeMonitoring
 
     ## Pim Bundles
     AnalyticsBundle:
@@ -215,6 +220,11 @@ suites:
         psr4_prefix: Pim\Bundle\VersioningBundle
         spec_path: src/Pim/Bundle/VersioningBundle
         src_path: src/Pim/Bundle/VersioningBundle
+    CatalogVolumeMonitoringBundle:
+        namespace: Pim\Bundle\CatalogVolumeMonitoringBundle
+        psr4_prefix: Pim\Bundle\CatalogVolumeMonitoringBundle
+        spec_path: src/Pim/Bundle/CatalogVolumeMonitoringBundle
+        src_path: src/Pim/Bundle/CatalogVolumeMonitoringBundle
 
     ## Oro bundles
     OroFilterBundle:

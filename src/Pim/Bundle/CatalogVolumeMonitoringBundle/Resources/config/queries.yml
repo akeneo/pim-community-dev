@@ -1,0 +1,11 @@
+parameters:
+    pim_volume_monitoring.persistence.query.attributes_per_family.class: Pim\Bundle\CatalogVolumeMonitoringBundle\Persistence\Query\Sql\SqlAttributesPerFamily
+
+services:
+    pim_volume_monitoring.persistence.query.attributes_per_family:
+        class: '%pim_volume_monitoring.persistence.query.attributes_per_family.class%'
+        arguments:
+            - '@database_connection'
+            - '%attributes_per_family_limit%'
+        tags:
+            - { name: pim_volume_monitoring.persistence.average_max_query }
