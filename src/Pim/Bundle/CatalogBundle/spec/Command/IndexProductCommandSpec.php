@@ -73,9 +73,9 @@ class IndexProductCommandSpec extends ObjectBehavior
         $objectManager->clear()->shouldBeCalledTimes(3);
 
         $output->writeln('<info>5 products to index</info>')->shouldBeCalled();
-        $output->writeln('Indexing products 1 to 2')->shouldBeCalled();
-        $output->writeln('Indexing products 3 to 4')->shouldBeCalled();
-        $output->writeln('Indexing products 5 to 5')->shouldBeCalled();
+        $output->writeln('Indexing products 0 of 5')->shouldBeCalled();
+        $output->writeln('Indexing products 2 of 5')->shouldBeCalled();
+        $output->writeln('Indexing products 4 of 5')->shouldBeCalled();
         $output->writeln('<info>5 products indexed</info>')->shouldBeCalled();
 
         $commandInput = new ArrayInput([

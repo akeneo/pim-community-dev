@@ -24,12 +24,6 @@ class UserPreferencesSubscriber implements EventSubscriber
     /** @var ContainerInterface */
     protected $container;
 
-    /** @var EntityManager */
-    protected $manager;
-
-    /** @var UnitOfWork */
-    protected $uow;
-
     /** @var array */
     protected $metadata = [];
 
@@ -70,13 +64,13 @@ class UserPreferencesSubscriber implements EventSubscriber
      */
     public function onFlush(OnFlushEventArgs $args)
     {
-        $this->manager = $args->getEntityManager();
-        $this->uow = $this->manager->getUnitOfWork();
-        foreach ($this->uow->getScheduledEntityUpdates() as $entity) {
-            $this->preUpdate($entity);
+        $manager = $args->getEntityManager();
+        $uow = $manager->getUnitOfWork();
+        foreach ($uow->getScheduledEntityUpdates() as $entity) {
+            $this->preUpdate($uow, $entity);
         }
-        foreach ($this->uow->getScheduledEntityDeletions() as $entity) {
-            $this->preRemove($entity);
+        foreach ($uow->getScheduledEntityDeletions() as $entity) {
+            $this->preRemove($uow, $entity);
         }
     }
 
@@ -87,10 +81,10 @@ class UserPreferencesSubscriber implements EventSubscriber
      */
     public function postFlush(PostFlushEventArgs $args)
     {
-        $this->manager = $args->getEntityManager();
+        $manager = $args->getEntityManager();
 
         if (!empty($this->deactivatedLocales)) {
-            $this->onLocalesDeactivated();
+            $this->onLocalesDeactivated($manager);
         }
     }
 
@@ -99,14 +93,14 @@ class UserPreferencesSubscriber implements EventSubscriber
      *
      * @param object $entity
      */
-    protected function preRemove($entity)
+    protected function preRemove(UnitOfWork $uow, $entity)
     {
         if ($entity instanceof ChannelInterface) {
-            $this->onChannelRemoved($entity);
+            $this->onChannelRemoved($uow, $entity);
         }
 
         if ($entity instanceof CategoryInterface && $entity->isRoot()) {
-            $this->onTreeRemoved($entity);
+            $this->onTreeRemoved($uow, $entity);
         }
     }
 
@@ -115,10 +109,10 @@ class UserPreferencesSubscriber implements EventSubscriber
      *
      * @param object $entity
      */
-    protected function preUpdate($entity)
+    protected function preUpdate(UnitOfWork $uow, $entity)
     {
         if ($entity instanceof LocaleInterface && !$entity->isActivated()) {
-            $changeset = $this->uow->getEntityChangeSet($entity);
+            $changeset = $uow->getEntityChangeSet($entity);
             if (isset($changeset['activated'])) {
                 $this->deactivatedLocales[] = $entity->getCode();
             }
@@ -147,10 +141,10 @@ class UserPreferencesSubscriber implements EventSubscriber
      *
      * @param object $entity
      */
-    protected function computeChangeset($entity)
+    protected function computeChangeset(UnitOfWork $uow, $entity)
     {
-        $this->uow->persist($entity);
-        $this->uow->computeChangeSet($this->getMetadata($entity), $entity);
+        $uow->persist($entity);
+        $uow->computeChangeSet($this->getMetadata($entity), $entity);
     }
 
     /**
@@ -158,7 +152,7 @@ class UserPreferencesSubscriber implements EventSubscriber
      *
      * @param ChannelInterface $channel
      */
-    protected function onChannelRemoved(ChannelInterface $channel)
+    protected function onChannelRemoved(UnitOfWork $uow, ChannelInterface $channel)
     {
         $users = $this->findUsersBy(['catalogScope' => $channel]);
         $scopes = $this->container->get('pim_catalog.repository.channel')->findAll();
@@ -174,7 +168,7 @@ class UserPreferencesSubscriber implements EventSubscriber
 
         foreach ($users as $user) {
             $user->setCatalogScope($defaultScope);
-            $this->computeChangeset($user);
+            $this->computeChangeset($uow, $user);
         }
     }
 
@@ -183,7 +177,7 @@ class UserPreferencesSubscriber implements EventSubscriber
      *
      * @param CategoryInterface $category
      */
-    protected function onTreeRemoved(CategoryInterface $category)
+    protected function onTreeRemoved(UnitOfWork $uow, CategoryInterface $category)
     {
         $users = $this->findUsersBy(['defaultTree' => $category]);
         $trees = $this->container->get('pim_catalog.repository.category')->getTrees();
@@ -199,14 +193,14 @@ class UserPreferencesSubscriber implements EventSubscriber
 
         foreach ($users as $user) {
             $user->setDefaultTree($defaultTree);
-            $this->computeChangeset($user);
+            $this->computeChangeset($uow, $user);
         }
     }
 
     /**
      * Update catalog locale of users using a deactivated locale
      */
-    protected function onLocalesDeactivated()
+    protected function onLocalesDeactivated(EntityManager $manager)
     {
         $localeRepository = $this->container->get('pim_catalog.repository.locale');
         $activeLocales = $localeRepository->getActivatedLocales();
@@ -218,12 +212,12 @@ class UserPreferencesSubscriber implements EventSubscriber
 
             foreach ($users as $user) {
                 $user->setCatalogLocale($defaultLocale);
-                $this->manager->persist($user);
+                $manager->persist($user);
             }
         }
         $this->deactivatedLocales = [];
 
-        $this->manager->flush();
+        $manager->flush();
     }
 
     /**
