@@ -1,10 +1,8 @@
 <?php
 declare(strict_types=1);
 
-namespace spec\Pim\Component\Catalog\Updater;
+namespace spec\Pim\Bundle\CatalogBundle\Command\Updater;
 
-use Akeneo\Component\StorageUtils\Indexer\BulkIndexerInterface;
-use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\FamilyInterface;
@@ -12,9 +10,6 @@ use Pim\Component\Catalog\Model\FamilyVariantInterface;
 use Pim\Component\Catalog\Model\ValueCollectionInterface;
 use Pim\Component\Catalog\Model\ValueInterface;
 use Pim\Component\Catalog\Model\VariantProductInterface;
-use Symfony\Component\Validator\ConstraintViolationListInterface;
-use Symfony\Component\Validator\Validator\RecursiveValidator;
-use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class WrongBooleanValuesOnVariantProductUpdaterSpec extends ObjectBehavior
 {

@@ -4,14 +4,12 @@ declare(strict_types=1);
 namespace Pim\Bundle\CatalogBundle\Command;
 
 use Akeneo\Component\StorageUtils\Cursor\CursorInterface;
-use Pim\Component\Catalog\AttributeTypes;
-use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\VariantProductInterface;
 use Pim\Component\Catalog\Query\Filter\Operators;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
-use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Style\SymfonyStyle;
 
 /**
  * Command to fix PIM-7263.
@@ -45,7 +43,8 @@ class RemoveWrongBooleanValuesOnVariantProductsCommand extends ContainerAwareCom
      */
     protected function execute(InputInterface $input, OutputInterface $output): void
     {
-        $output->writeln("<info>Cleaning wrong boolean values on variant products...</info>");
+        $io = new SymfonyStyle($input, $output);
+        $io->text('Cleaning wrong boolean values on variant products...');
 
         $productBatchSize = $this->getContainer()->hasParameter('pim_job_product_batch_size') ?
             $this->getContainer()->getParameter('pim_job_product_batch_size') :
@@ -53,8 +52,7 @@ class RemoveWrongBooleanValuesOnVariantProductsCommand extends ContainerAwareCom
 
         $variantProducts = $this->getVariantProducts();
 
-        $progressBar = new ProgressBar($output, $variantProducts->count());
-        $progressBar->start();
+        $io->progressStart($variantProducts->count());
 
         $productsToSave = [];
 
@@ -90,7 +88,7 @@ class RemoveWrongBooleanValuesOnVariantProductsCommand extends ContainerAwareCom
                 $productsToSave = [];
             }
 
-            $progressBar->advance();
+            $io->progressAdvance($productBatchSize);
         }
 
         if (!empty($productsToSave)) {
@@ -98,10 +96,10 @@ class RemoveWrongBooleanValuesOnVariantProductsCommand extends ContainerAwareCom
             $this->getContainer()->get('pim_catalog.elasticsearch.indexer.product')->indexAll($productsToSave);
         }
 
-        $progressBar->finish();
+        $io->progressFinish();
 
-        $output->writeln('');
-        $output->writeln(sprintf('<info>%s variant products cleaned</info>', count($productsToSave)));
+        $io->newLine();
+        $io->text(sprintf('%s variant products cleaned', count($productsToSave)));
     }
 
     /**

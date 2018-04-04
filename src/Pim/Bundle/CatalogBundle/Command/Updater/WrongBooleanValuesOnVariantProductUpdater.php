@@ -1,7 +1,8 @@
 <?php
 declare(strict_types=1);
 
-namespace Pim\Component\Catalog\Updater;
+namespace Pim\Bundle\CatalogBundle\Command\Updater;
+
 use Akeneo\Component\StorageUtils\Indexer\BulkIndexerInterface;
 use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
 use Pim\Component\Catalog\AttributeTypes;
@@ -43,18 +44,17 @@ class WrongBooleanValuesOnVariantProductUpdater
     }
 
     /**
-     * @param mixed              $variantProduct
-     * @param AttributeInterface $attribute
+     * @param VariantProductInterface $variantProduct
+     * @param AttributeInterface      $attribute
      *
      * @return bool
      */
-    private function isProductImpactedForAttribute($variantProduct, AttributeInterface $attribute): bool
+    private function isProductImpactedForAttribute(VariantProductInterface $variantProduct, AttributeInterface $attribute): bool
     {
         if ($attribute->getType() !== AttributeTypes::BOOLEAN) {
             return false;
         }
 
-        /** @var FamilyVariantInterface $familyVariant */
         $familyVariant = $variantProduct->getFamilyVariant();
         $attributeLevel = $familyVariant->getLevelForAttributeCode($attribute->getCode());
         $attributeIsOnLastLevel = $attributeLevel === $familyVariant->getNumberOfLevel();
@@ -67,12 +67,11 @@ class WrongBooleanValuesOnVariantProductUpdater
     }
 
     /**
-     * @param mixed              $variantProduct
-     * @param AttributeInterface $attribute
+     * @param VariantProductInterface  $variantProduct
+     * @param AttributeInterface       $attribute
      */
-    private function cleanProductForAttribute($variantProduct, AttributeInterface $attribute): void
+    private function cleanProductForAttribute(VariantProductInterface $variantProduct, AttributeInterface $attribute): void
     {
-        /** @var ValueCollectionInterface $values */
         $values = $variantProduct->getValues();
         $values->removeByAttribute($attribute);
         $variantProduct->setValues($values);
