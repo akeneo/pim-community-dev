@@ -259,10 +259,10 @@ define(
 
                     this.$el.html(this.templateModal({
                         subTitleLabel: __('teamwork_assistant.grid.view_selector.projects'),
-                        titleLabel: __('teamwork_assistant.grid.view_selector.popin_title'),
+                        titleLabel: __('pim_common.create'),
                         picture: 'illustrations/Project.svg',
                         fields: this.template({
-                            channelLabel: __('teamwork_assistant.project.channel'),
+                            channelLabel: __('pim_common.channel'),
                             channelValue: channelValue,
                             localeLabel: __('teamwork_assistant.project.locale'),
                             localeValue: localeValue,

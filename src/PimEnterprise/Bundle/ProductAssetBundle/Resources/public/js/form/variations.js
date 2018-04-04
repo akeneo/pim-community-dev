@@ -26,9 +26,9 @@ define(
                 var button = event.currentTarget;
                 var targetUrl = $(button).data('href');
                 var confirmation = this.getConfirmDialog(
-                    'pimee_product_asset.enrich_variation.popin.delete.message',
+                    'confirmation.remove.item',
                     targetUrl,
-                    'pimee_product_asset.enrich_variation.popin.delete.title'
+                    'pim_common.confirm_deletion'
                 );
                 confirmation.open();
             },

@@ -186,7 +186,10 @@ assets_mass_upload.steps:
 
 import_asset.steps.channel_configuration_processor.title: Process channel configurations
 
-mass_upload: Mass Upload Assets
+pim_datagrid:
+    cells:
+        type:
+            mass_upload: Mass Upload Assets
 
 pim_analytics:
     info_type:

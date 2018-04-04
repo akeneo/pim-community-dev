@@ -162,7 +162,7 @@ extensions:
         position: 100
         config:
             iconName: pencil
-            label: pim_enrich.form.job_instance.button.edit.title
+            label: pim_common.edit
             route: pim_importexport_export_profile_edit
             buttonClass: AknButton AknButton--action
             identifier:
@@ -176,7 +176,7 @@ extensions:
         position: 100
         config:
             iconName: pencil
-            label: pim_enrich.form.job_instance.button.edit.title
+            label: pim_common.edit
             route: pim_importexport_import_profile_edit
             buttonClass: AknButton AknButton--action
             identifier:
@@ -190,7 +190,7 @@ extensions:
         position: 100
         config:
             iconName: pencil
-            label: pim_enrich.form.job_instance.button.edit.title
+            label: pim_common.edit
             route: pim_importexport_export_profile_edit
             buttonClass: AknButton AknButton--action
             identifier:
@@ -204,7 +204,7 @@ extensions:
         position: 100
         config:
             iconName: pencil
-            label: pim_enrich.form.job_instance.button.edit.title
+            label: pim_common.edit
             route: pim_importexport_import_profile_edit
             buttonClass: AknButton AknButton--action
             identifier:
@@ -218,7 +218,7 @@ extensions:
         position: 100
         config:
             iconName: pencil
-            label: pim_enrich.form.job_instance.button.edit.title
+            label: pim_common.edit
             route: pim_importexport_export_profile_edit
             buttonClass: AknButton AknButton--action
             identifier:
@@ -232,7 +232,7 @@ extensions:
         position: 100
         config:
             iconName: pencil
-            label: pim_enrich.form.job_instance.button.edit.title
+            label: pim_common.edit
             route: pim_importexport_import_profile_edit
             buttonClass: AknButton AknButton--action
             identifier:
@@ -246,7 +246,7 @@ extensions:
         position: 100
         config:
             iconName: pencil
-            label: pim_enrich.form.job_instance.button.edit.title
+            label: pim_common.edit
             route: pim_importexport_export_profile_edit
             buttonClass: AknButton AknButton--action
             identifier:
@@ -260,7 +260,7 @@ extensions:
         position: 100
         config:
             iconName: pencil
-            label: pim_enrich.form.job_instance.button.edit.title
+            label: pim_common.edit
             route: pim_importexport_import_profile_edit
             buttonClass: AknButton AknButton--action
             identifier:
@@ -274,7 +274,7 @@ extensions:
         position: 100
         config:
             iconName: pencil
-            label: pim_enrich.form.job_instance.button.edit.title
+            label: pim_common.edit
             route: pim_importexport_export_profile_edit
             buttonClass: AknButton AknButton--action
             identifier:
@@ -288,7 +288,7 @@ extensions:
         position: 100
         config:
             iconName: pencil
-            label: pim_enrich.form.job_instance.button.edit.title
+            label: pim_common.edit
             route: pim_importexport_import_profile_edit
             buttonClass: AknButton AknButton--action
             identifier:

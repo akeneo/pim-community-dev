@@ -1,4 +1,3 @@
-View the product: View the product
 pimee_enrich.product_history.action.revert: Revert to this version
 
 permission-changes:
@@ -131,7 +130,6 @@ pimee_enrich:
                 reject_selected_proposal: Reject selected proposal(s)
                 remove_proposal: Remove proposal
                 send_for_approval: Send for approval
-                cancel: Cancel
                 confirm: Send
                 title: Comment your proposal (optional - 255 characters max.)
                 characters: chars.
@@ -209,7 +207,6 @@ pimee_enrich:
                     label: Classify assets in categories
                     description: The assets will be positioned into following categories, the existing placement will be lost.
                     label_count: "{1}Classify <span class=\"AknFullPage-title--highlight\">1 asset</span> to categories|] 1, Inf [Classify <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} assets</span> to categories"
-                    field: Categories
 
 pim_menu:
     tab:
@@ -230,43 +227,33 @@ page_title:
     pimee_asset_categorytree_index: Categories
     pimee_asset_categorytree_edit: Category {{ category.label }} | Edit
     pimee_catalog_rule_rule_index: Rules
+    pimee_enrich_locale_edit: Locales | Edit
 
 batch_jobs:
     yml_asset_channel_configuration_import:
-        import:
-            label: Asset channel configuration import
+        import.label: Asset channel configuration import
     add_product_value_with_permission_and_rules:
         label: Add product value with permission check & rules application
         perform.label: Add product value
-        execute_rules.label: Rules execution
     update_product_value_with_permission_and_rules:
         label: Update product value with permission check & rules application
         perform.label: Update product value
-        execute_rules.label: Rules execution
     remove_product_value_with_permission_and_rules:
         label: Remove product value with permission check & rules application
         perform.label: Remove product value
-        execute_rules.label: Rules execution
     edit_common_attributes_with_permission_and_rules:
         label: Edit attributes with permission check & rules application
         perform.label: Edit attributes
-        execute_rules.label: Rules execution
         cleaner.label: Clean temporary files
     csv_published_product_quick_export:
         export.label: Csv published products quick export
-        perform:
-            label: Csv published products quick export
+        perform.label: Csv published products quick export
     csv_published_product_grid_context_quick_export:
         export.label: Csv published products grid context quick export
-        perform:
-            label: Csv published products grid context quick export
+        perform.label: Csv published products grid context quick export
     xlsx_published_product_quick_export:
         export.label: Xlsx published products quick export
-        perform:
-            label: Xlsx published products quick export
+        perform.label: Xlsx published products quick export
     xlsx_published_product_grid_context_quick_export:
         export.label: Xlsx published products grid context quick export
-        perform:
-            label: Xlsx published products grid context quick export
-    add_attribute_value:
-        execute_rules.label: Rules execution
+        perform.label: Xlsx published products grid context quick export

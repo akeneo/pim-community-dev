@@ -32,22 +32,18 @@ pimee_catalog_rule:
                 execute:
                     confirm_title: Confirm execution
                     confirm_content: Are you sure you want to execute the rule?
-                    confirm_ok: OK
             mass_edit_action:
                 confirm_title: Confirm calculation
                 confirm_content: Are you sure you want to calculate the affected products for the rules?
-                confirm_ok: OK
             mass_action:
                 execute:
-                    confirm_ok: OK
                     confirm_title: Confirm execution
                     confirm_content: Are you sure you want to execute the selected rules?
                     success: The bulk action to execute the selected rules has been launched. You will be notified when it is done
                     error: An error occured during the execution of the rules.
                     empty_selection: No rules selected.
                 delete:
-                    confirm_ok: OK
-                    confirm_title: Confirm deletion
+                    confirm_title: Confirm execution
                     confirm_content: Are you sure you want to delete the selected rules?
                     success: You successfuly deleted the rules.
                     error: An error occured during the deletion of the rules.
@@ -68,38 +64,35 @@ flash:
 pim_dashboard.widget.last_operations.job_type.mass_edit_rule: Rules settings
 
 batch_jobs:
+    default_steps:
+        execute_rules: Rules execution
     yml_rule_import:
         label:        Rule import in YAML
         import.label: Rule import
-        execute_rules.label: Rule execution
     yml_rule_export:
         label:        Rule export in YAML
         export.label: Rule export
     rule_impacted_product_count:
         label:               Affected products for the rules
         perform.label:       Count impacted products
-        execute_rules.label: Rules execution
     csv_product_import_with_rules:
         label:                     Product import in CSV with rules
-        execute_rules.label:       Rules execution
-        validation.label:          File validation
         import.label:              Product import
         import_associations.label: Association import
     csv_product_model_import_with_rules:
         label: Product model import in CSV with rules
-        execute_rules.label: Rules execution
-        validation.label: File validation
         import_root_product_model.label: Root product model import
         import_sub_product_model.label: Sub product model import
     xlsx_product_import_with_rules:
         label:                     Product import in XLSX with rules
-        execute_rules.label:       Rules execution
-        validation.label:          File validation
         import.label:              Product import
         import_associations.label: Association import
     xlsx_product_model_import_with_rules:
         label: Product model import in XLSX with rules
-        execute_rules.label: Rules execution
-        validation.label: File validation
         import_root_product_model.label: Root product model import
         import_sub_product_model.label: Sub product model import
+
+
+pim_notification:
+    types:
+        rule: Rules Settings

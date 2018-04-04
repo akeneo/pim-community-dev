@@ -52,7 +52,7 @@ datagrid:
                 messages:
                     confirm_title: pimee_catalog_rule.datagrid.rule-grid.actions.execute.confirm_title
                     confirm_content: pimee_catalog_rule.datagrid.rule-grid.actions.execute.confirm_content
-                    confirm_ok: pimee_catalog_rule.datagrid.rule-grid.actions.execute.confirm_ok
+                    confirm_ok: pim_common.ok
             delete:
                 launcherOptions:
                     className: AknIconButton AknIconButton--small AknIconButton--trash
@@ -84,7 +84,7 @@ datagrid:
                 messages:
                     confirm_title: pimee_catalog_rule.datagrid.rule-grid.mass_edit_action.confirm_title
                     confirm_content: pimee_catalog_rule.datagrid.rule-grid.mass_edit_action.confirm_content
-                    confirm_ok: pimee_catalog_rule.datagrid.rule-grid.mass_edit_action.confirm_ok
+                    confirm_ok: pim_common.ok
             execute:
                 type: ajax
                 acl_resource: pimee_catalog_rule_rule_execute_permissions
@@ -94,7 +94,7 @@ datagrid:
                 messages:
                     confirm_title: pimee_catalog_rule.datagrid.rule-grid.mass_action.execute.confirm_title
                     confirm_content: pimee_catalog_rule.datagrid.rule-grid.mass_action.execute.confirm_content
-                    confirm_ok: pimee_catalog_rule.datagrid.rule-grid.mass_action.execute.confirm_ok
+                    confirm_ok: pim_common.ok
                     success: pimee_catalog_rule.datagrid.rule-grid.mass_action.execute.success
                     error: pimee_catalog_rule.datagrid.rule-grid.mass_action.execute.error
                     empty_selection: pimee_catalog_rule.datagrid.rule-grid.mass_action.execute.empty_selection
@@ -106,7 +106,7 @@ datagrid:
                 label: pimee_catalog_rule.datagrid.rule-grid.mass_edit_action.delete
                 className: 'AknButton AknButton--important AknButtonList-item'
                 messages:
-                    confirm_title: pimee_catalog_rule.datagrid.rule-grid.mass_action.delete.confirm_title
+                    confirm_title: pim_common.confirm_deletion
                     confirm_content: pimee_catalog_rule.datagrid.rule-grid.mass_action.delete.confirm_content
                     confirm_ok: pim_datagrid.mass_action.delete.label
                     success: pimee_catalog_rule.datagrid.rule-grid.mass_action.delete.success

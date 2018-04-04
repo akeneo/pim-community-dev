@@ -107,7 +107,7 @@ define(
                     callback,
                     {
                         title: __('pimee_enrich.entity.product_draft.modal.send_for_approval'),
-                        cancelText: __('pimee_enrich.entity.product_draft.modal.cancel'),
+                        cancelText: __('pim_common.cancel'),
                         okText: __('pimee_enrich.entity.product_draft.modal.confirm')
                     }
                 );

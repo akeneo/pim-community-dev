@@ -72,8 +72,8 @@ define(
                 var modal = new Backbone.BootstrapModal({
                     title: __('teamwork_assistant.edit_project_modal.title'),
                     content: '',
-                    cancelText: __('teamwork_assistant.edit_project_modal.cancel'),
-                    okText: __('teamwork_assistant.edit_project_modal.confirm'),
+                    cancelText: __('pim_common.cancel'),
+                    okText: __('pim_common.save'),
                     okCloses: false
                 });
 
