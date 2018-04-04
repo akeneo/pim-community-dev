@@ -8,3 +8,6 @@ services:
             - '@pimee_security.saver.asset_category_access'
             - '@pimee_security.remover.asset_category_access'
             - '%pimee_security.entity.asset_category_access.class%'
+
+    pimee_product_asset.manager.category:
+        alias: 'pim_catalog.manager.category'

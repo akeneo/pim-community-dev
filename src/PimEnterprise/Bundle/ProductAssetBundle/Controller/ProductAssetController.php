@@ -122,30 +122,30 @@ class ProductAssetController extends Controller
     /** @var CategoryRepositoryInterface */
     protected $categoryRepository;
 
-    /** @var \PimEnterprise\Bundle\SecurityBundle\Persistence\ORM\Category\CategoryManager */
+    /** @var CategoryManager */
     protected $categoryManager;
 
     /**
-     * @param AssetRepositoryInterface                                                      $assetRepository
-     * @param ReferenceRepositoryInterface                                                  $referenceRepository
-     * @param VariationRepositoryInterface                                                  $variationRepository
-     * @param FileMetadataRepositoryInterface                                               $metadataRepository
-     * @param LocaleRepositoryInterface                                                     $localeRepository
-     * @param ChannelRepositoryInterface                                                    $channelRepository
-     * @param VariationFileGeneratorInterface                                               $variationFileGenerator
+     * @param AssetRepositoryInterface         $assetRepository
+     * @param ReferenceRepositoryInterface     $referenceRepository
+     * @param VariationRepositoryInterface     $variationRepository
+     * @param FileMetadataRepositoryInterface  $metadataRepository
+     * @param LocaleRepositoryInterface        $localeRepository
+     * @param ChannelRepositoryInterface       $channelRepository
+     * @param VariationFileGeneratorInterface  $variationFileGenerator
      * @param FilesUpdaterInterface            $assetFilesUpdater
      * @param SaverInterface                   $assetSaver
      * @param SaverInterface                   $referenceSaver
      * @param SaverInterface                   $variationSaver
-     * @param RemoverInterface                                                              $assetRemover
-     * @param EventDispatcherInterface                                                      $eventDispatcher
-     * @param AssetFactory                                                                  $assetFactory
-     * @param FileInfoFactoryInterface                                                      $fileInfoFactory
-     * @param UserContext                                                                   $userContext
-     * @param FileController                                                                $fileController
-     * @param AssetCategoryRepositoryInterface                                              $assetCategoryRepo
-     * @param CategoryRepositoryInterface                                                   $categoryRepository
-     * @param \PimEnterprise\Bundle\SecurityBundle\Persistence\ORM\Category\CategoryManager $categoryManager
+     * @param RemoverInterface                 $assetRemover
+     * @param EventDispatcherInterface         $eventDispatcher
+     * @param AssetFactory                     $assetFactory
+     * @param FileInfoFactoryInterface         $fileInfoFactory
+     * @param UserContext                      $userContext
+     * @param FileController                   $fileController
+     * @param AssetCategoryRepositoryInterface $assetCategoryRepo
+     * @param CategoryRepositoryInterface      $categoryRepository
+     * @param CategoryManager                  $categoryManager
      */
     public function __construct(
         AssetRepositoryInterface $assetRepository,
@@ -257,7 +257,7 @@ class ProductAssetController extends Controller
 
             return new JsonResponse(
                 [
-                    'route'  => $route,
+                    'route' => $route,
                     'params' => $params,
                 ]
             );
@@ -267,7 +267,7 @@ class ProductAssetController extends Controller
             if (!empty($errors)) {
                 $message = '';
                 foreach ($errors as $error) {
-                    $message .= $error->getMessage() . ' ';
+                    $message .= $error->getMessage().' ';
                 }
 
                 $this->addFlashMessage('error', $message);
@@ -279,7 +279,7 @@ class ProductAssetController extends Controller
         }
 
         return [
-            'form' => $form->createView()
+            'form' => $form->createView(),
         ];
     }
 
@@ -300,7 +300,7 @@ class ProductAssetController extends Controller
         if (!empty($codes)) {
             $nextId = 1;
             $code = substr($code, 0, strlen($code));
-            while (in_array($code . '_' . $nextId, $codes)) {
+            while (in_array($code.'_'.$nextId, $codes)) {
                 $nextId++;
             }
 
@@ -539,8 +539,8 @@ class ProductAssetController extends Controller
         $trees = $this->categoryManager->getGrantedFilledTree($parent, $categories);
 
         return [
-            'trees'      => $trees,
-            'categories' => $categories
+            'trees' => $trees,
+            'categories' => $categories,
         ];
     }
 
@@ -677,13 +677,16 @@ class ProductAssetController extends Controller
 
         $trees = $this->assetCategoryRepo->getItemCountByGrantedTree($productAsset, $this->userContext->getUser());
 
-        return $this->render('PimEnterpriseProductAssetBundle:ProductAsset:edit.html.twig', [
-            'asset'         => $productAsset,
-            'form'          => $assetForm->createView(),
-            'metadata'      => $this->getAssetMetadata($productAsset),
-            'currentLocale' => $locale,
-            'trees'         => $trees,
-        ]);
+        return $this->render(
+            'PimEnterpriseProductAssetBundle:ProductAsset:edit.html.twig',
+            [
+                'asset' => $productAsset,
+                'form' => $assetForm->createView(),
+                'metadata' => $this->getAssetMetadata($productAsset),
+                'currentLocale' => $locale,
+                'trees' => $trees,
+            ]
+        );
     }
 
     /**
@@ -710,11 +713,14 @@ class ProductAssetController extends Controller
             $attachments[$refKey]['reference'] = $reference;
         }
 
-        return $this->render('PimEnterpriseProductAssetBundle:ProductAsset:view.html.twig', [
-            'asset'       => $productAsset,
-            'attachments' => $attachments,
-            'metadata'    => $this->getAssetMetadata($productAsset)
-        ]);
+        return $this->render(
+            'PimEnterpriseProductAssetBundle:ProductAsset:view.html.twig',
+            [
+                'asset' => $productAsset,
+                'attachments' => $attachments,
+                'metadata' => $this->getAssetMetadata($productAsset),
+            ]
+        );
     }
 
     /**
@@ -770,7 +776,7 @@ class ProductAssetController extends Controller
      * Switch case to redirect after saving a product asset from the edit form
      *
      * @param Request $request
-     * @param array   $params  Request parameters
+     * @param array   $params Request parameters
      *
      * @return Response
      */
@@ -782,7 +788,7 @@ class ProductAssetController extends Controller
 
         return new JsonResponse(
             [
-                'route'  => 'pimee_product_asset_edit',
+                'route' => 'pimee_product_asset_edit',
                 'params' => $params,
             ]
         );
@@ -803,7 +809,7 @@ class ProductAssetController extends Controller
 
         if (null === $productAsset) {
             throw new NotFoundHttpException(
-                sprintf('Product asset with id "%s" cannot be found.', (string) $id)
+                sprintf('Product asset with id "%s" cannot be found.', (string)$id)
             );
         }
 
@@ -847,7 +853,7 @@ class ProductAssetController extends Controller
 
         if (null === $reference) {
             throw new NotFoundHttpException(
-                sprintf('Asset reference with id "%s" could not be found.', (string) $id)
+                sprintf('Asset reference with id "%s" could not be found.', (string)$id)
             );
         }
 
@@ -869,7 +875,7 @@ class ProductAssetController extends Controller
 
         if (null === $variation) {
             throw new NotFoundHttpException(
-                sprintf('Asset variation with id "%s" could not be found.', (string) $id)
+                sprintf('Asset variation with id "%s" could not be found.', (string)$id)
             );
         }
 
