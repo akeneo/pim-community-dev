@@ -15,16 +15,13 @@ use Pim\Component\CatalogVolumeMonitoring\Volume\ReadModel\AverageMaxVolumes;
 class InMemoryAverageMaxQuery implements AverageMaxQuery
 {
     /** @var int */
-    private $averageVolume;
-
-    /** @var int */
-    private $maxVolume;
-
-    /** @var int */
     private $limit;
 
     /** @var string */
     private $volumeName;
+
+    /** @var array */
+    private $values = [];
 
     /**
      * @param string $volumeName
@@ -32,8 +29,6 @@ class InMemoryAverageMaxQuery implements AverageMaxQuery
     public function __construct(string $volumeName)
     {
         $this->volumeName = $volumeName;
-        $this->averageVolume = -1;
-        $this->maxVolume = -1;
         $this->limit = -1;
     }
 
@@ -42,23 +37,10 @@ class InMemoryAverageMaxQuery implements AverageMaxQuery
      */
     public function fetch(): AverageMaxVolumes
     {
-        return new AverageMaxVolumes($this->maxVolume, $this->averageVolume, $this->limit, $this->volumeName);
-    }
+        $averageVolume = empty($this->values) ? 0 : array_sum($this->values) / count($this->values);
+        $maxVolume =  empty($this->values) ? 0 : max($this->values);
 
-    /**
-     * @param int $averageVolume
-     */
-    public function setAverageVolume(int $averageVolume): void
-    {
-        $this->averageVolume = $averageVolume;
-    }
-
-    /**
-     * @param int $maxVolume
-     */
-    public function setMaxVolume(int $maxVolume): void
-    {
-        $this->maxVolume = $maxVolume;
+        return new AverageMaxVolumes($maxVolume, $averageVolume, $this->limit, $this->volumeName);
     }
 
     /**
@@ -67,5 +49,13 @@ class InMemoryAverageMaxQuery implements AverageMaxQuery
     public function setLimit(int $limit): void
     {
         $this->limit = $limit;
+    }
+
+    /**
+     * @param int $value
+     */
+    public function addValue(int $value): void
+    {
+        $this->values[] = $value;
     }
 }

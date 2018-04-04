@@ -152,6 +152,19 @@ acceptance:
                 - test.catalog_volume_limits.report_context
                 - test.catalog_volume_limits.attribute_per_family_context
                 - test.catalog_volume_limits.product_context
+                - test.catalog_volume_limits.channel_context
+                - test.catalog_volume_limits.locale_context
+                - test.catalog_volume_limits.scopable_attribute_context
+                - test.catalog_volume_limits.localizable_attribute_context
+                - test.catalog_volume_limits.localizable_and_scopable_attribute_context
+                - test.catalog_volume_limits.family_context
+                - test.catalog_volume_limits.attribute_context
+                - test.catalog_volume_limits.option_per_attribute_context
+                - test.catalog_volume_limits.category_context
+                - test.catalog_volume_limits.category_tree_context
+                - test.catalog_volume_limits.variant_product_context
+                - test.catalog_volume_limits.product_model_context
+                - test.catalog_volume_limits.product_value_context
             filters:
                 tags: '@acceptance'
 

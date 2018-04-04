@@ -1,8 +1,128 @@
 services:
+    test.catalog_volume_limits.report_context:
+        class: 'Pim\Bundle\CatalogVolumeMonitoringBundle\tests\Acceptance\Context\ReportContext'
+        arguments:
+            - '@__symfony__.pim_volume_monitoring.volume.normalizer.volumes'
+        tags:
+            - { name: fob.context_service }
+
     test.catalog_volume_limits.attribute_per_family_context:
         class: 'Pim\Bundle\CatalogVolumeMonitoringBundle\tests\Acceptance\Context\AttributePerFamilyContext'
         arguments:
-            - '@__symfony__.pim_volume_monitoring.volume.normalizer.volumes'
-            - '@__symfony__.pim_volume_monitoring.persistence.query.attributes_per_family'
+            - '@test.catalog_volume_limits.report_context'
+            - '@__symfony__.pim_volume_monitoring.persistence.query.average_max_attributes_per_family'
+        tags:
+            - { name: fob.context_service }
+
+    test.catalog_volume_limits.product_context:
+        class: 'Pim\Bundle\CatalogVolumeMonitoringBundle\tests\Acceptance\Context\ProductContext'
+        arguments:
+            - '@test.catalog_volume_limits.report_context'
+            - '@__symfony__.pim_volume_monitoring.persistence.query.count_products'
+        tags:
+            - { name: fob.context_service }
+
+    test.catalog_volume_limits.channel_context:
+        class: 'Pim\Bundle\CatalogVolumeMonitoringBundle\tests\Acceptance\Context\ChannelContext'
+        arguments:
+            - '@test.catalog_volume_limits.report_context'
+            - '@__symfony__.pim_volume_monitoring.persistence.query.count_channels'
+        tags:
+            - { name: fob.context_service }
+
+    test.catalog_volume_limits.locale_context:
+        class: 'Pim\Bundle\CatalogVolumeMonitoringBundle\tests\Acceptance\Context\LocaleContext'
+        arguments:
+            - '@test.catalog_volume_limits.report_context'
+            - '@__symfony__.pim_volume_monitoring.persistence.query.count_locales'
+        tags:
+            - { name: fob.context_service }
+
+    test.catalog_volume_limits.scopable_attribute_context:
+        class: 'Pim\Bundle\CatalogVolumeMonitoringBundle\tests\Acceptance\Context\ScopableAttributeContext'
+        arguments:
+            - '@test.catalog_volume_limits.report_context'
+            - '@__symfony__.pim_volume_monitoring.persistence.query.count_scopable_attributes'
+        tags:
+            - { name: fob.context_service }
+
+    test.catalog_volume_limits.localizable_attribute_context:
+        class: 'Pim\Bundle\CatalogVolumeMonitoringBundle\tests\Acceptance\Context\LocalizableAttributeContext'
+        arguments:
+            - '@test.catalog_volume_limits.report_context'
+            - '@__symfony__.pim_volume_monitoring.persistence.query.count_localizable_attributes'
+        tags:
+            - { name: fob.context_service }
+
+    test.catalog_volume_limits.localizable_and_scopable_attribute_context:
+        class: 'Pim\Bundle\CatalogVolumeMonitoringBundle\tests\Acceptance\Context\LocalizableAndScopableAttributeContext'
+        arguments:
+            - '@test.catalog_volume_limits.report_context'
+            - '@__symfony__.pim_volume_monitoring.persistence.query.count_localizable_and_scopable_attributes'
+        tags:
+            - { name: fob.context_service }
+
+    test.catalog_volume_limits.family_context:
+        class: 'Pim\Bundle\CatalogVolumeMonitoringBundle\tests\Acceptance\Context\FamilyContext'
+        arguments:
+            - '@test.catalog_volume_limits.report_context'
+            - '@__symfony__.pim_volume_monitoring.persistence.query.count_families'
+        tags:
+            - { name: fob.context_service }
+
+    test.catalog_volume_limits.attribute_context:
+        class: 'Pim\Bundle\CatalogVolumeMonitoringBundle\tests\Acceptance\Context\AttributeContext'
+        arguments:
+            - '@test.catalog_volume_limits.report_context'
+            - '@__symfony__.pim_volume_monitoring.persistence.query.count_attributes'
+        tags:
+            - { name: fob.context_service }
+
+    test.catalog_volume_limits.option_per_attribute_context:
+        class: 'Pim\Bundle\CatalogVolumeMonitoringBundle\tests\Acceptance\Context\OptionPerAttributeContext'
+        arguments:
+            - '@test.catalog_volume_limits.report_context'
+            - '@__symfony__.pim_volume_monitoring.persistence.query.average_max_options_per_attribute'
+        tags:
+            - { name: fob.context_service }
+
+    test.catalog_volume_limits.category_context:
+        class: 'Pim\Bundle\CatalogVolumeMonitoringBundle\tests\Acceptance\Context\CategoryContext'
+        arguments:
+            - '@test.catalog_volume_limits.report_context'
+            - '@__symfony__.pim_volume_monitoring.persistence.query.count_categories'
+        tags:
+            - { name: fob.context_service }
+
+    test.catalog_volume_limits.category_tree_context:
+        class: 'Pim\Bundle\CatalogVolumeMonitoringBundle\tests\Acceptance\Context\CategoryTreeContext'
+        arguments:
+            - '@test.catalog_volume_limits.report_context'
+            - '@__symfony__.pim_volume_monitoring.persistence.query.count_category_trees'
+        tags:
+            - { name: fob.context_service }
+
+    test.catalog_volume_limits.variant_product_context:
+        class: 'Pim\Bundle\CatalogVolumeMonitoringBundle\tests\Acceptance\Context\VariantProductContext'
+        arguments:
+            - '@test.catalog_volume_limits.report_context'
+            - '@__symfony__.pim_volume_monitoring.persistence.query.count_variant_products'
+        tags:
+            - { name: fob.context_service }
+
+    test.catalog_volume_limits.product_model_context:
+        class: 'Pim\Bundle\CatalogVolumeMonitoringBundle\tests\Acceptance\Context\ProductModelContext'
+        arguments:
+            - '@test.catalog_volume_limits.report_context'
+            - '@__symfony__.pim_volume_monitoring.persistence.query.count_product_models'
+        tags:
+            - { name: fob.context_service }
+
+    test.catalog_volume_limits.product_value_context:
+        class: 'Pim\Bundle\CatalogVolumeMonitoringBundle\tests\Acceptance\Context\ProductValueContext'
+        arguments:
+            - '@test.catalog_volume_limits.report_context'
+            - '@__symfony__.pim_volume_monitoring.persistence.query.count_product_values'
+            - '@__symfony__.pim_volume_monitoring.persistence.query.average_max_product_values'
         tags:
             - { name: fob.context_service }
