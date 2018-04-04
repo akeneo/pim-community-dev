@@ -18,7 +18,7 @@ function (_, __, Modal, confirmModalTemplate) {
             options = _.extend({
                 title: __('Delete Confirmation'),
                 okText: __('Yes, Delete'),
-                cancelText: __('Cancel'),
+                cancelText: __('pim_common.cancel'),
                 template: this.confirmModalTemplate,
                 type: '',
                 buttonClass: 'AknButton--important',

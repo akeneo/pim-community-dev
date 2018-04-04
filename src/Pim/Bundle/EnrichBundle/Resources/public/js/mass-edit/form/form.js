@@ -93,7 +93,7 @@ define(
                     confirm: __(this.config.confirm, {itemsCount}, itemsCount),
                     previousLabel: __('pim_enrich.mass_edit.previous'),
                     nextLabel: __('pim_enrich.mass_edit.next'),
-                    confirmLabel: __('pim_enrich.mass_edit.confirm'),
+                    confirmLabel: __('pim_common.confirm'),
                     illustrationClass: step.getIllustrationClass(),
                     __: __
                 }));

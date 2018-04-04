@@ -56,7 +56,7 @@ define(
             disabled: false,
             defaultConfig: {
                 select2: {
-                    placeholder: 'pim_enrich.form.common.base-add-select.btn.add',
+                    placeholder: 'pim_common.add',
                     title: '',
                     buttonTitle: '',
                     emptyText: '',

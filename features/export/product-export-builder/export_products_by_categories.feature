@@ -57,7 +57,7 @@ Feature: Export products from any given categories
     And I click on the "action_figures" category
     And I click on the "1234" category
     And I press the "Confirm" button
-    Then I should see the text "3 categories selected"
+    Then I should see the text "3 selected categories"
     When I press the "Save" button
     Then I should not see the text "There are unsaved changes."
     And I am on the "csv_product_export" export job page

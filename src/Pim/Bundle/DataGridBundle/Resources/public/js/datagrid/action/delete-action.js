@@ -85,7 +85,7 @@ define([
 
                 this.confirmModal = Dialog.confirmDelete(
                     __(`confirmation.remove.${entityCode}`),
-                    __('pim_enrich.confirmation.delete_item'),
+                    __('pim_common.confirm_deletion'),
                     this.doDelete.bind(this),
                     this.getEntityHint(true)
                 );
@@ -101,7 +101,7 @@ define([
             getErrorDialog: function(message) {
                 if (!this.errorModal) {
                     this.errorModal = new Modal({
-                        title: __('Delete Error'),
+                        title: __('pim_datagrid.delete_error.title'),
                         content: '' === message ? __('error.removing.' + this.getEntityHint()) : message,
                         cancelText: false
                     });

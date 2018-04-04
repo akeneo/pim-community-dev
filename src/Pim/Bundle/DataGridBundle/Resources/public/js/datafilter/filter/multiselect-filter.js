@@ -26,11 +26,11 @@ function(_, __, SelectFilter) {
                         '<% if(_.isObject(option.value)) { %>' +
                             '<optgroup label="<%= option.label %>">' +
                                 '<% _.each(option.value, function (value) { %>' +
-                                    '<option value="<%= value.value %>"><%= value.label %></option>' +
+                                    '<option value="<%= value.value %>"><%= _.__(value.label) %></option>' +
                                 '<% }); %>' +
                             '</optgroup>' +
                         '<% } else { %>' +
-                            '<option value="<%= option.value %>"><%= option.label %></option>' +
+                            '<option value="<%= option.value %>"><%= _.__(option.label) %></option>' +
                         '<% } %>' +
                     '<% }); %>' +
                 '</select>' +

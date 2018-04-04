@@ -1,3 +1,9 @@
+pim_common:
+  edit: Modifier
+  history: Historique
+  attributes: Attributs
+  save: Enregistrer
+
 confirmation:
   title: Confirmer
   remove:

@@ -1,25 +1,17 @@
 # ORO messages
-Close:         Close
-Update:        Update
-Selected Rows: Selected Rows
-"Yes": "Yes"
 "Yes, Delete": "Yes, Delete"
 "Yes, I Agree": "Yes, I Agree"
 "Yes, do it": "Yes, do it"
-"No": "No"
 "Ok, got it.": "Ok, got it."
-"Cancel": "Cancel"
 "Delete Confirmation": "Delete Confirmation"
 "Edit": "Edit"
 "Unexpected error occured. Please contact system administrator.": "Unexpected error occured. Please contact system administrator."
 "Yes, revoke": "Yes, Revoke"
 "Revoke Confirmation": "Revoke Confirmation"
-Now: Now
 Prev: Prev
 Next: Next
 Today: Today
 Wk: Wk
-Done: Done
 AM: AM
 A: A
 PM: PM
@@ -37,7 +29,6 @@ Microsecond: Microsecond
 Localized value: Localized value
 Columns: Columns
 Datagrid Configuration: Datagrid Configuration
-Apply: Apply
 
 # Filters
 Action:   Action
@@ -52,7 +43,6 @@ jstree:
         unclassified: Unclassified products
     no_tree:      No tree available
     include_sub:  Include sub-categories
-    loading:      Loading ...
 
 # Datetimepicker
 datetimepicker:

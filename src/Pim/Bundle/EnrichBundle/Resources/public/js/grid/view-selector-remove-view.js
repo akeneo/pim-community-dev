@@ -53,7 +53,7 @@ define(
                 }
 
                 this.$el.html(this.template({
-                    label: __('grid.view_selector.remove')
+                    label: __('pim_datagrid.view_selector.remove')
                 }));
 
                 this.$('[data-toggle="tooltip"]').tooltip();
@@ -68,8 +68,8 @@ define(
                 event.stopPropagation();
 
                 Dialog.confirm(
-                    __('grid.view_selector.confirmation.remove'),
-                    __('grid.view_selector.confirmation.delete'),
+                    __('pim_datagrid.view_selector.confirmation.remove'),
+                    __('pim_common.delete'),
                     function () {
                         this.removeView(this.getRoot().currentView);
                     }.bind(this)

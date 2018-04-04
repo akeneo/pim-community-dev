@@ -213,13 +213,13 @@ define(
             // thus implementation is done just to check functionality.
             // For future render method will depend on options or will be empty
             this.$el.empty().append('<div class="AknSeveralActionsButton AknSeveralActionsButton--small AknDropdown">\
-                <button type="button" class="AknSeveralActionsButton-mainAction" data-select-all>'+_.__('oro_datagrid.select.all')+'</button>\
+                <button type="button" class="AknSeveralActionsButton-mainAction" data-select-all>'+_.__('pim_common.all')+'</button>\
                 <button type="button" class="AknSeveralActionsButton-caretContainer dropdown-toggle" data-toggle="dropdown">\
                     <i class="AknCaret AknCaret--inverse"></i>\
                 </button>\
                 <ul class="AknSeveralActionsButton-menu AknDropdown-menu">\
                     <li><a class="AknDropdown-menuLink" href="#" data-select-all-visible>'+_.__('oro_datagrid.select.visible')+'</a></li>\
-                    <li><a class="AknDropdown-menuLink" href="#" data-select-none>'+_.__('oro_datagrid.select.none')+'</a></li>\
+                    <li><a class="AknDropdown-menuLink" href="#" data-select-none>'+_.__('pim_common.none')+'</a></li>\
                 </ul>\
             </div>');
             this.$el.find('[data-select-all]').on('click', _.bind(function (e) {

@@ -102,7 +102,7 @@ define([
             const locale = UserContext.get('catalogLocale');
 
             this.$el.html(this.template({
-                label: __('pim_enrich.form.group.tab.properties.type'),
+                label: __('pim_common.type'),
                 type: formData.type,
                 required: __('pim_enrich.form.required'),
                 isEditable: this.options.config.editable
