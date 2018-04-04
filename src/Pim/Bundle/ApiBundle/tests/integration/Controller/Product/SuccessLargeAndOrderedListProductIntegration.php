@@ -50,13 +50,13 @@ class SuccessLargeAndOrderedListProductIntegration extends AbstractProductTestCa
         $lastEncryptedId = rawurlencode($this->getEncryptedId(end($this->products)));
 
         $client = $this->createAuthenticatedClient();
-        $client->request('GET', 'api/rest/v1/products?limit=100&pagination_type=search_after');
+        $client->request('GET', "api/rest/v1/products?limit={$this->getListSize()}&pagination_type=search_after");
         $expected = <<<JSON
 {
     "_links": {
-        "self"  : {"href": "http://localhost/api/rest/v1/products?pagination_type=search_after&limit=100"},
-        "first" : {"href": "http://localhost/api/rest/v1/products?pagination_type=search_after&limit=100"},
-        "next" : {"href": "http://localhost/api/rest/v1/products?pagination_type=search_after&limit=100&search_after={$lastEncryptedId}"}
+        "self"  : {"href": "http://localhost/api/rest/v1/products?pagination_type=search_after&limit={$this->getListSize()}"},
+        "first" : {"href": "http://localhost/api/rest/v1/products?pagination_type=search_after&limit={$this->getListSize()}"},
+        "next" : {"href": "http://localhost/api/rest/v1/products?pagination_type=search_after&limit={$this->getListSize()}&search_after={$lastEncryptedId}"}
     },
     "_embedded"    : {
 		"items": [
@@ -121,7 +121,7 @@ JSON;
     }
 
     /**
-     * We want to test the API is capable of returning a list of 100 items.
+     * We want to test the API is capable of returning a list of 20 items.
      * (Twice the page of the cursor).
      *
      * @return int
