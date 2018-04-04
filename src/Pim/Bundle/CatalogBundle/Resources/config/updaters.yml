@@ -17,7 +17,7 @@ parameters:
     pim_catalog.updater.attribute_group.class:                         Pim\Component\Catalog\Updater\AttributeGroupUpdater
     pim_catalog.updater.group_type.class:                              Pim\Component\Catalog\Updater\GroupTypeUpdater
     pim_catalog.updater.currency.class:                                Pim\Component\Catalog\Updater\CurrencyUpdater
-    pim_catalog.updater.wrong_boolean_value_on_variant_product.class:  Pim\Bundle\CatalogBundle\Command\Updater\WrongBooleanValuesOnVariantProductUpdater
+    pim_catalog.updater.wrong_boolean_value_on_variant_product.class:  Pim\Bundle\CatalogBundle\Command\Cleaner\WrongBooleanValuesOnVariantProductCleaner
 
     pim_catalog.updater.setter.registry.class:                         Pim\Component\Catalog\Updater\Setter\SetterRegistry
     pim_catalog.updater.setter.abstract.class:                         Pim\Component\Catalog\Updater\Setter\AbstractAttributeSetter

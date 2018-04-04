@@ -1,17 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace Pim\Bundle\CatalogBundle\Command\Updater;
+namespace Pim\Bundle\CatalogBundle\Command\Cleaner;
 
-use Akeneo\Component\StorageUtils\Indexer\BulkIndexerInterface;
-use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
 use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Model\AttributeInterface;
-use Pim\Component\Catalog\Model\FamilyVariantInterface;
-use Pim\Component\Catalog\Model\ValueCollectionInterface;
 use Pim\Component\Catalog\Model\VariantProductInterface;
-use Symfony\Component\Validator\Validator\RecursiveValidator;
-
 
 /**
  * Update the variant product to clean all the wrong boolean values.
@@ -20,7 +14,7 @@ use Symfony\Component\Validator\Validator\RecursiveValidator;
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class WrongBooleanValuesOnVariantProductUpdater
+class WrongBooleanValuesOnVariantProductCleaner
 {
     /**
      * Return true if the product has been modified, false otherwise

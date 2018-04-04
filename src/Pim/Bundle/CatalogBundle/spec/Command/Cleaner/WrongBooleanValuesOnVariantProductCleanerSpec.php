@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace spec\Pim\Bundle\CatalogBundle\Command\Updater;
+namespace spec\Pim\Bundle\CatalogBundle\Command\Cleaner;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\AttributeInterface;
@@ -11,7 +11,7 @@ use Pim\Component\Catalog\Model\ValueCollectionInterface;
 use Pim\Component\Catalog\Model\ValueInterface;
 use Pim\Component\Catalog\Model\VariantProductInterface;
 
-class WrongBooleanValuesOnVariantProductUpdaterSpec extends ObjectBehavior
+class WrongBooleanValuesOnVariantProductCleanerSpec extends ObjectBehavior
 {
     function it_updates_wrong_boolean_values_on_impacted_variant_products(
         VariantProductInterface $variantProductImpacted,
