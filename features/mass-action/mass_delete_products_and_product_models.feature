@@ -28,4 +28,5 @@ Feature: Delete many products but not the product models
     When I confirm the removal
     Then I should not see products 1111111171 and 1111111172
     And I filter by "family" with operator "in list" and value "Clothing"
+    And I sort by "ID" value ascending
     And I should see the product models amor
