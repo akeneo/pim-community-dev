@@ -11,7 +11,7 @@ use Doctrine\ORM\QueryBuilder;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\GroupInterface;
-use PimEnterprise\Bundle\CatalogBundle\Filter\AttributeViewRightFilter;
+use PimEnterprise\Bundle\SecurityBundle\Filter\AttributeViewRightFilter;
 
 class AttributeRepositorySpec extends ObjectBehavior
 {

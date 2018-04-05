@@ -20,7 +20,7 @@ use Pim\Component\Catalog\Builder\ProductBuilderInterface;
 use Pim\Component\Catalog\Model\CategoryInterface;
 use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
 use Pim\Component\Catalog\ValuesFiller\EntityWithFamilyValuesFillerInterface;
-use PimEnterprise\Bundle\CatalogBundle\Manager\CategoryManager;
+use PimEnterprise\Bundle\SecurityBundle\Persistence\ORM\Category\CategoryManager;
 use Symfony\Component\Translation\TranslatorInterface;
 
 /**

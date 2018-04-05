@@ -4,6 +4,7 @@ parameters:
     pimee_security.manager.job_profile_access.class:     PimEnterprise\Bundle\SecurityBundle\Manager\JobProfileAccessManager
     pimee_security.manager.locale_access.class:          PimEnterprise\Bundle\SecurityBundle\Manager\LocaleAccessManager
     pimee_security.manager.datagtrid_view_access.class:  PimEnterprise\Bundle\SecurityBundle\Manager\DatagridViewAccessManager
+    pim_catalog.manager.category.class: PimEnterprise\Bundle\SecurityBundle\Persistence\ORM\Category\CategoryManager
 
 services:
     pimee_security.manager.attribute_group_access:
@@ -45,3 +46,17 @@ services:
             - '@pim_catalog.repository.category'
             - '@pimee_security.manager.attribute_group_access'
             - '@pimee_security.manager.category_access'
+
+    pimee_security.manager.product_asset_category:
+        class: '%pim_catalog.manager.category.class%'
+        arguments:
+            - '@pimee_product_asset.repository.category'
+            - '@pimee_security.repository.category_access'
+            - '@security.authorization_checker'
+
+    pim_catalog.manager.category:
+        class: '%pim_catalog.manager.category.class%'
+        arguments:
+            - '@pim_catalog.repository.category'
+            - '@pimee_security.repository.category_access'
+            - '@security.authorization_checker'

@@ -12,7 +12,7 @@
 namespace PimEnterprise\Bundle\DataGridBundle\Filter;
 
 use Pim\Bundle\DataGridBundle\Entity\DatagridView;
-use PimEnterprise\Bundle\CatalogBundle\Filter\AbstractAuthorizationFilter;
+use PimEnterprise\Bundle\SecurityBundle\Filter\AbstractAuthorizationFilter;
 use PimEnterprise\Component\Security\Attributes;
 
 /**

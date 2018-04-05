@@ -18,7 +18,7 @@ use Pim\Bundle\EnrichBundle\Controller\ProductModelController as BaseProductMode
 use Pim\Component\Catalog\Model\CategoryInterface;
 use Pim\Component\Catalog\Repository\ProductModelRepositoryInterface;
 use Pim\Component\Catalog\ValuesFiller\EntityWithFamilyValuesFillerInterface;
-use PimEnterprise\Bundle\CatalogBundle\Manager\CategoryManager;
+use PimEnterprise\Bundle\SecurityBundle\Persistence\ORM\Category\CategoryManager;
 
 /**
  * Product model controller
