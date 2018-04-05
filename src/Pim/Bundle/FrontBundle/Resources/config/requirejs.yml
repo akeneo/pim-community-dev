@@ -5,12 +5,11 @@ config:
                 enabled:
                     model: pimfront/product-grid/domain/model/filter/property/boolean
                     label: Status
-                identifier:
-                    model: pimfront/product-grid/domain/model/filter/attribute/text
-                    label: Identifier
             attribute:
                 pim_catalog_boolean:
                     model: pimfront/product-grid/domain/model/filter/attribute/boolean
+                pim_catalog_identifier:
+                    model: pimfront/product-grid/domain/model/filter/attribute/text
             operator:
                 ALL: pimfront/product-grid/domain/model/filter/operator/all
                 'CONTAINS': pimfront/product-grid/domain/model/filter/operator/contains
@@ -26,8 +25,8 @@ config:
             property:
                 enabled:
                     view: pimfront/product-grid/application/component/filter/boolean
-                identifier:
-                    view: pimfront/product-grid/application/component/filter/text
             attribute:
                 pim_catalog_boolean:
                     view: pimfront/product-grid/application/component/filter/boolean
+                pim_catalog_identifier:
+                    view: pimfront/product-grid/application/component/filter/text

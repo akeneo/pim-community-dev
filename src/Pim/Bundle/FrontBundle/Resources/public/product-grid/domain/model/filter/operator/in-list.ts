@@ -12,4 +12,8 @@ export default class InList extends BaseOperator {
   public supportsValue(value: Value): boolean {
     return value instanceof Collection;
   }
+
+  public defaultValue(): Collection<string> {
+    return Collection.fromValue([]);
+  }
 }

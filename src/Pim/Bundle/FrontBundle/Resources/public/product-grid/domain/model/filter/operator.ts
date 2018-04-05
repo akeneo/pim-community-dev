@@ -6,6 +6,7 @@ export interface Operator {
 
   equals(operator: Operator): boolean;
   supportsValue(value: Value): boolean;
+  defaultValue(): Value;
 }
 
 export abstract class BaseOperator implements Operator {
@@ -17,4 +18,5 @@ export abstract class BaseOperator implements Operator {
   }
 
   public abstract supportsValue(value: Value): boolean;
+  public abstract defaultValue(): Value;
 }

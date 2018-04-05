@@ -78,6 +78,13 @@ config:
   }
 
   private async getAttributeFilter(model: AttributeFilter): Promise<typeof React.Component> {
+    if (undefined === model.field.type) {
+      throw new Missconfiguration(
+        `it seems like the filter "${model.field.identifier}" doesn't have a type property.
+This often mean that you configured your Property filter with an Attribute model.`
+      );
+    }
+
     const modelPathIsNotWellConfigured =
       undefined === this.configuration.attribute[model.field.type] ||
       undefined === this.configuration.attribute[model.field.type].view;

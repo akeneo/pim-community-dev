@@ -12,4 +12,8 @@ export default class All extends BaseOperator {
   public supportsValue(value: Value): boolean {
     return value instanceof Null;
   }
+
+  public defaultValue(): Null {
+    return Null.fromValue(null);
+  }
 }

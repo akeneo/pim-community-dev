@@ -28,7 +28,7 @@ export default class Boolean extends AttributeFilter {
     return Boolean.operators;
   }
 
-  getChoices() {
+  getChoices(): Choice[] {
     return [
       {
         identifier: 'all',
@@ -63,7 +63,7 @@ export default class Boolean extends AttributeFilter {
     );
 
     if (undefined === choice) {
-      throw new Error(`Cannot find choice for filter ${this.field.identifier}`);
+      throw new Error(`Cannot find choice for filter "${this.field.identifier}"`);
     }
 
     return choice;

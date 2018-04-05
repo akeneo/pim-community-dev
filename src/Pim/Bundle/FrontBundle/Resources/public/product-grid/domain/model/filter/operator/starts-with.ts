@@ -12,4 +12,8 @@ export default class StartsWith extends BaseOperator {
   public supportsValue(value: Value): boolean {
     return value instanceof String;
   }
+
+  public defaultValue(): String {
+    return String.fromValue('');
+  }
 }

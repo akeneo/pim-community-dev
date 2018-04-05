@@ -10,8 +10,10 @@ import InList from 'pimfront/product-grid/domain/model/filter/operator/in-list';
 import Equal from 'pimfront/product-grid/domain/model/filter/operator/equal';
 import {AttributeInterface} from 'pimfront/product-grid/domain/model/field';
 
+type SupportedOperator = All | Equal | Contains | DoesNotContain | StartsWith | IsEmpty | InList;
+
 export default class Text extends AttributeFilter {
-  private static operators: Operator[] = [
+  private static operators: SupportedOperator[] = [
     All.create(),
     Equal.create(),
     Contains.create(),
@@ -25,8 +27,14 @@ export default class Text extends AttributeFilter {
     return new Text(attribute, All.create(), Null.null());
   }
 
-  public static create(attribute: AttributeInterface, operator: Operator, value: Value) {
+  public static create(attribute: AttributeInterface, operator: Operator, value: Value): Text {
     return new Text(attribute, operator, value);
+  }
+
+  public setOperator(operator: Operator): Text {
+    const value = operator.supportsValue(this.value) ? this.value : operator.defaultValue();
+
+    return Text.create(this.field, operator, value);
   }
 
   getOperators(): Operator[] {
