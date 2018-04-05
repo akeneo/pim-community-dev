@@ -295,3 +295,9 @@ extensions:
         module: pim/product-edit-form/attribute-filter-missing-required
         parent: pim-product-model-edit-form-attribute-filter
         position: 110
+
+    pim-product-model-edit-form-attribute-filter-at-this-level-filter:
+        module: pim/product-edit-form/attribute-filter-at-this-level
+        parent: pim-product-model-edit-form-attribute-filter
+        targetZone: self
+        position: 120
