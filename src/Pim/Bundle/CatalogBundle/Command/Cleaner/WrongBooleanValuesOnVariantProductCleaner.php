@@ -23,7 +23,7 @@ class WrongBooleanValuesOnVariantProductCleaner
      *
      * @return bool
      */
-    public function updateProduct(VariantProductInterface $variantProduct): bool
+    public function cleanProduct(VariantProductInterface $variantProduct): bool
     {
         $isModified = false;
 

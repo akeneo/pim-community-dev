@@ -65,8 +65,8 @@ class RemoveWrongBooleanValuesOnVariantProductsCommand extends ContainerAwareCom
             }
 
             $isModified = $this->getContainer()
-                ->get('pim_catalog.updater.wrong_boolean_value_on_variant_product')
-                ->updateProduct($variantProduct);
+                ->get('pim_catalog.command.cleaner.wrong_boolean_value_on_variant_product')
+                ->cleanProduct($variantProduct);
 
             if ($isModified) {
                 $violations = $this->getContainer()->get('pim_catalog.validator.product')->validate($variantProduct);

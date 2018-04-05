@@ -38,7 +38,7 @@ class WrongBooleanValuesOnVariantProductCleanerSpec extends ObjectBehavior
         $values->removeByAttribute($booleanAttribute)->shouldBeCalled();
         $variantProductImpacted->setValues($values)->shouldBeCalled();
 
-        $this->updateProduct($variantProductImpacted);
+        $this->cleanProduct($variantProductImpacted);
     }
 
     function it_does_not_update_product_without_boolean_in_their_family(
@@ -56,7 +56,7 @@ class WrongBooleanValuesOnVariantProductCleanerSpec extends ObjectBehavior
         $familyVariant->getLevelForAttributeCode('bool_attribute')->willReturn(0);
         $familyVariant->getNumberOfLevel()->willReturn(1);
 
-        $this->updateProduct($variantProductNotImpacted);
+        $this->cleanProduct($variantProductNotImpacted);
     }
 
     function it_does_not_update_product_if_boolean_is_on_product_level(
@@ -74,7 +74,7 @@ class WrongBooleanValuesOnVariantProductCleanerSpec extends ObjectBehavior
         $familyVariant->getLevelForAttributeCode('bool_attribute')->willReturn(1);
         $familyVariant->getNumberOfLevel()->willReturn(1);
 
-        $this->updateProduct($variantProductNotImpacted);
+        $this->cleanProduct($variantProductNotImpacted);
     }
 
     function it_does_not_update_product_if_product_does_not_have_any_value_on_this_attribute(
@@ -96,6 +96,6 @@ class WrongBooleanValuesOnVariantProductCleanerSpec extends ObjectBehavior
         $variantProductNotImpacted->getValuesForVariation()->willReturn($valuesForVariation);
         $valuesForVariation->getByCodes('bool_attribute')->willReturn(null);
 
-        $this->updateProduct($variantProductNotImpacted);
+        $this->cleanProduct($variantProductNotImpacted);
     }
 }
