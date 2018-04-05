@@ -9,14 +9,12 @@
  * file that was distributed with this source code.
 */
 
-namespace PimEnterprise\Bundle\EnrichBundle\Connector\Processor\MassEdit\Product;
+namespace PimEnterprise\Bundle\SecurityBundle\MassEdit\Processor;
 
 use Akeneo\Component\Batch\Item\DataInvalidItem;
-use Akeneo\Component\Batch\Model\StepExecution;
-use Akeneo\Component\StorageUtils\Updater\PropertyAdderInterface;
-use Pim\Bundle\EnrichBundle\Connector\Processor\MassEdit\Product\AddProductValueProcessor as BaseProcessor;
+use Akeneo\Component\StorageUtils\Updater\PropertySetterInterface;
+use Pim\Bundle\EnrichBundle\Connector\Processor\MassEdit\Product\UpdateProductValueProcessor as BaseProcessor;
 use Pim\Bundle\UserBundle\Manager\UserManager;
-use Pim\Component\Catalog\Model\EntityWithValuesInterface;
 use PimEnterprise\Component\Security\Attributes;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
@@ -24,11 +22,11 @@ use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
- * It adds a product value but check if the user has right to mass edit the product (if he is the owner).
+ * It updates a product value but check if the user has right to mass edit the product (if he is the owner).
  *
- * @author Olivier Soulet <olivier.soulet@akeneo.com>
+ * @author Adrien Pétremann <adrien.petremann@akeneo.com>
  */
-class AddProductValueWithPermissionProcessor extends BaseProcessor
+class UpdateProductValueWithPermissionProcessor extends BaseProcessor
 {
     /** @var AuthorizationCheckerInterface */
     protected $authorizationChecker;
@@ -40,20 +38,21 @@ class AddProductValueWithPermissionProcessor extends BaseProcessor
     protected $tokenStorage;
 
     /**
-     * @param PropertyAdderInterface        $propertyAdder
+     * @param PropertySetterInterface       $propertySetter
      * @param ValidatorInterface            $validator
      * @param UserManager                   $userManager
      * @param AuthorizationCheckerInterface $authorizationChecker
      * @param TokenStorageInterface         $tokenStorage
      */
     public function __construct(
-        PropertyAdderInterface $propertyAdder,
+        PropertySetterInterface $propertySetter,
         ValidatorInterface $validator,
         UserManager $userManager,
         AuthorizationCheckerInterface $authorizationChecker,
         TokenStorageInterface $tokenStorage
     ) {
-        parent::__construct($propertyAdder, $validator);
+        parent::__construct($propertySetter, $validator);
+
         $this->authorizationChecker = $authorizationChecker;
         $this->tokenStorage = $tokenStorage;
         $this->userManager = $userManager;
@@ -66,46 +65,23 @@ class AddProductValueWithPermissionProcessor extends BaseProcessor
      */
     public function process($product)
     {
-        $this->initSecurityContext($this->stepExecution);
-        if ($this->hasRight($product)) {
-            return BaseProcessor::process($product);
-        }
-
-        return null;
-    }
-
-    /**
-     * Initialize the SecurityContext from the given $stepExecution
-     *
-     * @param StepExecution $stepExecution
-     */
-    protected function initSecurityContext(StepExecution $stepExecution)
-    {
-        $username = $stepExecution->getJobExecution()->getUser();
+        $username = $this->stepExecution->getJobExecution()->getUser();
         $user = $this->userManager->findUserByUsername($username);
 
         $token = new UsernamePasswordToken($user, null, 'main', $user->getRoles());
         $this->tokenStorage->setToken($token);
-    }
 
-    /**
-     * @param EntityWithValuesInterface $product
-     *
-     * @return bool
-     */
-    protected function hasRight(EntityWithValuesInterface $product)
-    {
-        $isAuthorized = $this->authorizationChecker->isGranted(Attributes::OWN, $product);
-
-        if (!$isAuthorized) {
+        if ($this->authorizationChecker->isGranted(Attributes::OWN, $product)) {
+            return BaseProcessor::process($product);
+        } else {
             $this->stepExecution->addWarning(
                 'pim_enrich.mass_edit_action.edit_common_attributes.message.error',
                 [],
                 new DataInvalidItem($product)
             );
             $this->stepExecution->incrementSummaryInfo('skipped_products');
-        }
 
-        return $isAuthorized;
+            return null;
+        }
     }
 }

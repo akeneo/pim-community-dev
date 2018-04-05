@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
 */
 
-namespace PimEnterprise\Bundle\EnrichBundle\Connector\Processor\MassEdit\Product;
+namespace PimEnterprise\Bundle\SecurityBundle\MassEdit\Processor;
 
 use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
@@ -29,7 +29,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  *
  * @author Adrien Pétremann <adrien.petremann@akeneo.com>
  *
- * @deprecated please use PimEnterprise\Bundle\EnrichBundle\Connector\Processor\MassEdit\Product\EditAttributesProcessor
+ * @deprecated please use PimEnterprise\Bundle\SecurityBundle\MassEdit\Processor\EditAttributesProcessor
  *             instead, will be removed in 2.1.
  */
 class EditCommonAttributesProcessor extends BaseProcessor

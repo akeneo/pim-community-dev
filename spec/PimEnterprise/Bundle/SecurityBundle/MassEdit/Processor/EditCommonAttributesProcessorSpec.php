@@ -1,17 +1,17 @@
 <?php
 
-namespace spec\PimEnterprise\Bundle\EnrichBundle\Connector\Processor\MassEdit\Product;
+namespace spec\PimEnterprise\Bundle\SecurityBundle\MassEdit\Processor;
 
 use Akeneo\Component\Batch\Job\JobParameters;
 use Akeneo\Component\Batch\Model\JobExecution;
 use Akeneo\Component\Batch\Model\StepExecution;
-use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
+use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
-use Pim\Bundle\UserBundle\Manager\UserManager;
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\EntityWithFamilyVariant\CheckAttributeEditable;
+use Pim\Bundle\UserBundle\Manager\UserManager;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
 use PimEnterprise\Bundle\UserBundle\Entity\UserInterface;
 use PimEnterprise\Component\Security\Attributes;
 use Prophecy\Argument;
@@ -20,27 +20,23 @@ use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Validator\ConstraintViolationList;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-class EditAttributesProcessorSpec extends ObjectBehavior
+class EditCommonAttributesProcessorSpec extends ObjectBehavior
 {
     function let(
-        ValidatorInterface $productValidator,
-        ValidatorInterface $productModelValidator,
+        ValidatorInterface $validator,
+        ProductRepositoryInterface $productRepository,
         ObjectUpdaterInterface $productUpdater,
-        ObjectUpdaterInterface $productModelUpdater,
-        IdentifiableObjectRepositoryInterface $attributeRepository,
-        CheckAttributeEditable $checkAttributeEditable,
+        ObjectDetacherInterface $productDetacher,
         UserManager $userManager,
         TokenStorageInterface $tokenStorage,
         AuthorizationCheckerInterface $authorizationChecker,
         StepExecution $stepExecution
     ) {
         $this->beConstructedWith(
-            $productValidator,
-            $productModelValidator,
+            $validator,
+            $productRepository,
             $productUpdater,
-            $productModelUpdater,
-            $attributeRepository,
-            $checkAttributeEditable,
+            $productDetacher,
             $userManager,
             $tokenStorage,
             $authorizationChecker
@@ -49,13 +45,12 @@ class EditAttributesProcessorSpec extends ObjectBehavior
     }
 
     function it_sets_values_if_user_is_a_product_owner(
-        $productValidator,
+        $validator,
         $productUpdater,
         $userManager,
         $authorizationChecker,
+        $productRepository,
         $stepExecution,
-        $attributeRepository,
-        $checkAttributeEditable,
         AttributeInterface $attribute,
         ProductInterface $product,
         JobExecution $jobExecution,
@@ -80,10 +75,6 @@ class EditAttributesProcessorSpec extends ObjectBehavior
                 'attribute_locale'  => 'en_US'
             ]]
         ];
-
-        $attributeRepository->findOneByIdentifier('categories')->willReturn($attribute);
-        $checkAttributeEditable->isEditable($product, $attribute)->willReturn(true);
-
         $stepExecution->getJobParameters()->willReturn($jobParameters);
         $jobParameters->get('filters')->willReturn($configuration['filters']);
         $jobParameters->get('actions')->willReturn($configuration['actions']);
@@ -95,8 +86,11 @@ class EditAttributesProcessorSpec extends ObjectBehavior
         $authorizationChecker->isGranted(Attributes::OWN, $product)->willReturn(true);
 
         $violations = new ConstraintViolationList([]);
-        $productValidator->validate($product)->willReturn($violations);
+        $validator->validate($product)->willReturn($violations);
+        $product->getId()->willReturn(10);
+        $product->isAttributeEditable($attribute)->willReturn(true);
         $product->getId()->willReturn(42);
+        $productRepository->hasAttributeInFamily(42, 'categories')->willReturn(true);
 
         $productUpdater->update($product, ['values' => $values])->shouldBeCalled();
 
@@ -104,14 +98,12 @@ class EditAttributesProcessorSpec extends ObjectBehavior
     }
 
     function it_sets_values_if_user_is_a_product_editor(
-        $productValidator,
+        $validator,
         $productUpdater,
         $userManager,
         $authorizationChecker,
         $productRepository,
         $stepExecution,
-        $attributeRepository,
-        $checkAttributeEditable,
         AttributeInterface $attribute,
         ProductInterface $product,
         JobExecution $jobExecution,
@@ -137,9 +129,6 @@ class EditAttributesProcessorSpec extends ObjectBehavior
             ]]
         ];
 
-        $attributeRepository->findOneByIdentifier('categories')->willReturn($attribute);
-        $checkAttributeEditable->isEditable($product, $attribute)->willReturn(true);
-
         $stepExecution->getJobParameters()->willReturn($jobParameters);
         $jobParameters->get('filters')->willReturn($configuration['filters']);
         $jobParameters->get('actions')->willReturn($configuration['actions']);
@@ -152,11 +141,12 @@ class EditAttributesProcessorSpec extends ObjectBehavior
         $authorizationChecker->isGranted(Attributes::EDIT, $product)->willReturn(true);
 
         $violations = new ConstraintViolationList([]);
-        $productValidator->validate($product)->willReturn($violations);
+        $validator->validate($product)->willReturn($violations);
         $product->getId()->willReturn(10);
 
         $product->isAttributeEditable($attribute)->willReturn(true);
         $product->getId()->willReturn(42);
+        $productRepository->hasAttributeInFamily(42, 'categories')->willReturn(true);
         $productUpdater->update($product, ['values' => $values])->shouldBeCalled();
 
         $this->process($product);

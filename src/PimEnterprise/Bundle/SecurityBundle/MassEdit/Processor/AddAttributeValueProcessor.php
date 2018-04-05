@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
 */
 
-namespace PimEnterprise\Bundle\EnrichBundle\Connector\Processor\MassEdit\Product;
+namespace PimEnterprise\Bundle\SecurityBundle\MassEdit\Processor;
 
 use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;

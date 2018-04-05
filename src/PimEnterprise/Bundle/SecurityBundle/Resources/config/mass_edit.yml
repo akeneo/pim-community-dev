@@ -1,10 +1,11 @@
 parameters:
-    pim_enrich.connector.processor.mass_edit.product.edit_common_attributes.class:          PimEnterprise\Bundle\EnrichBundle\Connector\Processor\MassEdit\Product\EditCommonAttributesProcessor
-    pim_enrich.connector.processor.mass_edit.product.edit_attributes.class:                 PimEnterprise\Bundle\EnrichBundle\Connector\Processor\MassEdit\Product\EditAttributesProcessor
-    pim_enrich.connector.processor.mass_edit.product.add_attribute_value.class:             PimEnterprise\Bundle\EnrichBundle\Connector\Processor\MassEdit\Product\AddAttributeValueProcessor
-    pimee_enrich.connector.processor.mass_edit.product.add_value_with_permissions.class:    PimEnterprise\Bundle\EnrichBundle\Connector\Processor\MassEdit\Product\AddProductValueWithPermissionProcessor
-    pimee_enrich.connector.processor.mass_edit.product.update_value_with_permissions.class: PimEnterprise\Bundle\EnrichBundle\Connector\Processor\MassEdit\Product\UpdateProductValueWithPermissionProcessor
-    pimee_enrich.connector.processor.mass_edit.product.remove_value_with_permissions.class: PimEnterprise\Bundle\EnrichBundle\Connector\Processor\MassEdit\Product\RemoveProductValueWithPermissionProcessor
+    pim_enrich.connector.processor.mass_edit.product.edit_common_attributes.class:          PimEnterprise\Bundle\SecurityBundle\MassEdit\Processor\EditCommonAttributesProcessor
+    pim_enrich.connector.processor.mass_edit.product.edit_attributes.class:                 PimEnterprise\Bundle\SecurityBundle\MassEdit\Processor\EditAttributesProcessor
+    pim_enrich.connector.processor.mass_edit.product.add_attribute_value.class:             PimEnterprise\Bundle\SecurityBundle\MassEdit\Processor\AddAttributeValueProcessor
+    pimee_enrich.connector.processor.mass_edit.product.add_value_with_permissions.class:    PimEnterprise\Bundle\SecurityBundle\MassEdit\Processor\AddProductValueWithPermissionProcessor
+    pimee_enrich.connector.processor.mass_edit.product.update_value_with_permissions.class: PimEnterprise\Bundle\SecurityBundle\MassEdit\Processor\UpdateProductValueWithPermissionProcessor
+    pimee_enrich.connector.processor.mass_edit.product.remove_value_with_permissions.class: PimEnterprise\Bundle\SecurityBundle\MassEdit\Processor\RemoveProductValueWithPermissionProcessor
+    pimee_security.connector.writer.mass_edit.product_and_product_model.class: PimEnterprise\Bundle\SecurityBundle\MassEdit\Writer\ProductAndProductModelWriter
 
 services:
     # overriden processor from CE
@@ -71,3 +72,12 @@ services:
             - '@pim_user.manager'
             - '@security.authorization_checker'
             - '@security.token_storage'
+
+    pimee_security.connector.writer.mass_edit.product_and_product_model:
+        class: '%pimee_security.connector.writer.mass_edit.product_and_product_model.class%'
+        arguments:
+            - '@pimee_workflow.saver.product_delegating'
+            - '@pim_catalog.saver.product_model'
+            - '@pim_versioning.manager.version'
+            - '@pim_connector.doctrine.cache_clearer'
+            - '@security.authorization_checker'

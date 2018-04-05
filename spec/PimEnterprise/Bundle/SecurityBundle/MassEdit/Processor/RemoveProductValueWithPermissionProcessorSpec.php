@@ -1,27 +1,26 @@
 <?php
 
-namespace spec\PimEnterprise\Bundle\EnrichBundle\Connector\Processor\MassEdit\Product;
+namespace spec\PimEnterprise\Bundle\SecurityBundle\MassEdit\Processor;
 
-use Akeneo\Component\Batch\Item\InvalidItemInterface;
 use Akeneo\Component\Batch\Job\JobParameters;
 use Akeneo\Component\Batch\Model\JobExecution;
 use Akeneo\Component\Batch\Model\StepExecution;
-use Akeneo\Component\StorageUtils\Updater\PropertyAdderInterface;
-use Pim\Bundle\UserBundle\Manager\UserManager;
+use Akeneo\Component\StorageUtils\Updater\PropertyRemoverInterface;
 use PhpSpec\ObjectBehavior;
+use Pim\Bundle\UserBundle\Manager\UserManager;
 use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\User\Model\UserInterface;
 use PimEnterprise\Component\Security\Attributes;
 use Prophecy\Argument;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
-use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\ConstraintViolationList;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-class AddProductValueWithPermissionProcessorSpec extends ObjectBehavior
+class RemoveProductValueWithPermissionProcessorSpec extends ObjectBehavior
 {
     function let(
-        PropertyAdderInterface $productFieldUpdater,
+        PropertyRemoverInterface $propertyRemover,
         ValidatorInterface $validator,
         UserManager $userManager,
         AuthorizationCheckerInterface $authorizationChecker,
@@ -29,7 +28,7 @@ class AddProductValueWithPermissionProcessorSpec extends ObjectBehavior
         StepExecution $stepExecution
     ) {
         $this->beConstructedWith(
-            $productFieldUpdater,
+            $propertyRemover,
             $validator,
             $userManager,
             $authorizationChecker,
@@ -49,7 +48,7 @@ class AddProductValueWithPermissionProcessorSpec extends ObjectBehavior
         $this->setStepExecution($stepExecution)->shouldReturn($this);
     }
 
-    function it_processes(
+    function it_should_processes(
         $authorizationChecker,
         $tokenStorage,
         $userManager,
@@ -80,7 +79,7 @@ class AddProductValueWithPermissionProcessorSpec extends ObjectBehavior
         $this->process($product)->shouldReturn($product);
     }
 
-    function it_processes_without_permissions(
+    function it_should_processes_without_permissions(
         $authorizationChecker,
         $tokenStorage,
         $userManager,
@@ -88,8 +87,7 @@ class AddProductValueWithPermissionProcessorSpec extends ObjectBehavior
         JobExecution $jobExecution,
         UserInterface $userJulia,
         ProductInterface $product,
-        JobParameters $jobParameters,
-        InvalidItemInterface $invalidItem
+        JobParameters $jobParameters
     ) {
         $configuration  = [
             'filters' => [], 'actions' => [['field' => 'categories', 'value' => ['office', 'bedroom']]]

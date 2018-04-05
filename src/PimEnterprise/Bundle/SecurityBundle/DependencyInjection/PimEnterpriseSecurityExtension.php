@@ -53,5 +53,6 @@ class PimEnterpriseSecurityExtension extends Extension
         $loader->load('filters.yml');
         $loader->load('query_builder.yml');
         $loader->load('datagrid.yml');
+        $loader->load('mass_edit.yml');
     }
 }
