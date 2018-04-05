@@ -85,8 +85,6 @@ class RemoveWrongBooleanValuesOnVariantProductsCommand extends ContainerAwareCom
 
             if (count($productsToSave) >= $productBatchSize) {
                 $this->getContainer()->get('pim_catalog.saver.product')->saveAll($productsToSave);
-                $this->getContainer()->get('pim_catalog.elasticsearch.indexer.product')->indexAll($productsToSave);
-
                 $productsToSave = [];
             }
 
@@ -99,7 +97,6 @@ class RemoveWrongBooleanValuesOnVariantProductsCommand extends ContainerAwareCom
 
         if (!empty($productsToSave)) {
             $this->getContainer()->get('pim_catalog.saver.product')->saveAll($productsToSave);
-            $this->getContainer()->get('pim_catalog.elasticsearch.indexer.product')->indexAll($productsToSave);
         }
 
         $io->progressFinish();
