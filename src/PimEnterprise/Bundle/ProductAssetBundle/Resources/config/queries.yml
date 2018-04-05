@@ -1,0 +1,29 @@
+parameters:
+    pimee_volume_monitoring.persistence.query.count_assets.class: PimEnterprise\Bundle\ProductAssetBundle\Persistence\Query\Sql\CountAssets
+    pimee_volume_monitoring.persistence.query.count_asset_categories.class: PimEnterprise\Bundle\ProductAssetBundle\Persistence\Query\Sql\CountAssetCategories
+    pimee_volume_monitoring.persistence.query.count_asset_category_trees.class: PimEnterprise\Bundle\ProductAssetBundle\Persistence\Query\Sql\CountAssetCategoryTrees
+
+services:
+    pimee_volume_monitoring.persistence.query.count_assets:
+        class: '%pimee_volume_monitoring.persistence.query.count_assets.class%'
+        arguments:
+            - '@database_connection'
+            - '%assets_limit%'
+        tags:
+            - { name: pim_volume_monitoring.persistence.count_query }
+
+    pimee_volume_monitoring.persistence.query.count_asset_categories:
+        class: '%pimee_volume_monitoring.persistence.query.count_asset_categories.class%'
+        arguments:
+            - '@database_connection'
+            - '%asset_categories_limit%'
+        tags:
+            - { name: pim_volume_monitoring.persistence.count_query }
+
+    pimee_volume_monitoring.persistence.query.count_asset_category_trees:
+        class: '%pimee_volume_monitoring.persistence.query.count_asset_category_trees.class%'
+        arguments:
+            - '@database_connection'
+            - '%asset_category_trees_limit%'
+        tags:
+            - { name: pim_volume_monitoring.persistence.count_query }
