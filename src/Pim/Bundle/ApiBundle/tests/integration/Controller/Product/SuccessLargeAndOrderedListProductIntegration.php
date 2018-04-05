@@ -72,7 +72,7 @@ JSON;
      */
     protected function getConfiguration(): Configuration
     {
-        return $this->catalog->useTechnicalSqlCatalog();
+        return $this->catalog->useMinimalCatalog();
     }
 
     /**
