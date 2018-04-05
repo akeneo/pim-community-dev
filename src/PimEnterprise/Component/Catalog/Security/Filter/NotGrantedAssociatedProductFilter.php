@@ -17,7 +17,6 @@ use Doctrine\Common\Util\ClassUtils;
 use Pim\Component\Catalog\Model\ProductInterface;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Query\ItemCategoryAccessQuery;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;
-use PimEnterprise\Component\Security\Attributes;
 use PimEnterprise\Component\Security\NotGrantedDataFilterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
@@ -43,9 +42,9 @@ class NotGrantedAssociatedProductFilter implements NotGrantedDataFilterInterface
 
     /**
      * @param AuthorizationCheckerInterface $authorizationChecker
-     * @param ItemCategoryAccessQuery|null  $productCategoryAccessQuery
-     * @param ItemCategoryAccessQuery|null  $productModelCategoryAccessQuery
-     * @param TokenStorageInterface|null    $tokenStorage
+     * @param ItemCategoryAccessQuery       $productCategoryAccessQuery
+     * @param ItemCategoryAccessQuery       $productModelCategoryAccessQuery
+     * @param TokenStorageInterface         $tokenStorage
      *
      * @merge make $productCategoryAccessQuery mandatory on master.
      * @merge make $productModelCategoryAccessQuery mandatory on master.
@@ -54,9 +53,9 @@ class NotGrantedAssociatedProductFilter implements NotGrantedDataFilterInterface
      */
     public function __construct(
         AuthorizationCheckerInterface $authorizationChecker,
-        ItemCategoryAccessQuery $productCategoryAccessQuery = null,
-        ItemCategoryAccessQuery $productModelCategoryAccessQuery = null,
-        TokenStorageInterface $tokenStorage = null
+        ItemCategoryAccessQuery $productCategoryAccessQuery,
+        ItemCategoryAccessQuery $productModelCategoryAccessQuery,
+        TokenStorageInterface $tokenStorage
     ) {
         $this->authorizationChecker = $authorizationChecker;
         $this->productCategoryAccessQuery = $productCategoryAccessQuery;
@@ -89,31 +88,18 @@ class NotGrantedAssociatedProductFilter implements NotGrantedDataFilterInterface
             $associatedProducts = clone $clonedAssociation->getProducts();
             $associatedProductModels = clone $clonedAssociation->getProductModels();
 
-            if (null !== $this->productCategoryAccessQuery && null !== $this->productModelCategoryAccessQuery && null !== $this->tokenStorage) {
-                $grantedProductIds = $this->productCategoryAccessQuery->getGrantedItemIds($associatedProducts->toArray(), $user);
+            $grantedProductIds = $this->productCategoryAccessQuery->getGrantedItemIds($associatedProducts->toArray(), $user);
 
-                foreach ($associatedProducts as $associatedProduct) {
-                    if (!isset($grantedProductIds[$associatedProduct->getId()])) {
-                        $associatedProducts->removeElement($associatedProduct);
-                    }
+            foreach ($associatedProducts as $associatedProduct) {
+                if (!isset($grantedProductIds[$associatedProduct->getId()])) {
+                    $associatedProducts->removeElement($associatedProduct);
                 }
+            }
 
-                $grantedProductModelIds = $this->productModelCategoryAccessQuery->getGrantedItemIds($associatedProductModels->toArray(), $user);
-                foreach ($associatedProductModels as $associatedProductModel) {
-                    if (!isset($grantedProductModelIds[$associatedProductModel->getId()])) {
-                        $associatedProductModels->removeElement($associatedProductModel);
-                    }
-                }
-            } else { // TODO: @merge to remove on master.
-                foreach ($associatedProducts as $associatedProduct) {
-                    if (!$this->authorizationChecker->isGranted([Attributes::VIEW], $associatedProduct)) {
-                        $associatedProducts->removeElement($associatedProduct);
-                    }
-                }
-                foreach ($associatedProductModels as $associatedProductModel) {
-                    if (!$this->authorizationChecker->isGranted([Attributes::VIEW], $associatedProductModel)) {
-                        $associatedProductModels->removeElement($associatedProductModel);
-                    }
+            $grantedProductModelIds = $this->productModelCategoryAccessQuery->getGrantedItemIds($associatedProductModels->toArray(), $user);
+            foreach ($associatedProductModels as $associatedProductModel) {
+                if (!isset($grantedProductModelIds[$associatedProductModel->getId()])) {
+                    $associatedProductModels->removeElement($associatedProductModel);
                 }
             }
 
