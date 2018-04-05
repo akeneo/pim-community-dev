@@ -58,11 +58,16 @@ define([
                     url: this.getLink(),
                     wait: true,
                     error: function(element, response) {
+                        let contentType = response.getResponseHeader('content-type');
                         let message = '';
-                        const decodedResponse = JSON.parse(response.responseText);
-                        if (undefined !== decodedResponse.message) {
-                            message = decodedResponse.message
+                        //Need to check if it is a json because the backend can return an error
+                        if (contentType.indexOf("application/json") !== -1) {
+                            const decodedResponse = JSON.parse(response.responseText);
+                            if (undefined !== decodedResponse.message) {
+                                message = decodedResponse.message
+                            }
                         }
+
                         this.getErrorDialog(message).open();
                     }.bind(this),
                     success: function() {

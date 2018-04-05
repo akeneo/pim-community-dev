@@ -29,7 +29,7 @@ class SimpleJobLauncherSpec extends ObjectBehavior
         JobParametersValidator $jobParametersValidator,
         EventDispatcherInterface $eventDispatcher
     ) {
-        $this->beConstructedWith($jobRepository, $jobParametersFactory, $jobRegistry, $jobParametersValidator, $eventDispatcher, '/', 'prod', '/logs');
+        $this->beConstructedWith($jobRepository, $jobParametersFactory, $jobRegistry, $jobParametersValidator, $eventDispatcher, '/', 'prod', 'var/logs');
     }
 
     function it_is_a_job_launcher()

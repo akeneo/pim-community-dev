@@ -940,8 +940,6 @@ pim_enrich:
           label: Status ändern
           description: Die ausgewählten Produkte werden aktiviert oder deaktiviert.
           field: Aktivieren
-        edit_common:
-          label: Attribute bearbeiten
         change_family:
           description: Die Produktfamilie der ausgewählten Produkte wird auf die gewählte Produktfamilie geändert
           field: Produktfamilie

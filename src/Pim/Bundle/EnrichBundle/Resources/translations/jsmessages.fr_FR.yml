@@ -1044,9 +1044,13 @@ pim_enrich:
           description: Les produits sélectionnés vont être activés ou désactivés.
           field: Pour activer
         edit_common:
-          label: Modifier des attributs
-          label_count: "{1}Editer les attributs d'<span class=\"AknFullPage-title--highlight\">1 product</span>|] 1, Inf [Editer les attributs de <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} produits</span>"
+          label: Modifier les valeurs d’attributs
+          label_count: "{1}Editer les valeurs d'attributs d'<span class=\"AknFullPage-title--highlight\">1 product</span>|] 1, Inf [Editer les valeurs d'attributs de <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} produits</span>"
           description: Seuls les attributs appartenant aux familles des produits sélectionnés seront édités avec les données suivantes pour la locale {{ locale }} et le canal de {{ scope }}.
+        add_attribute_value:
+          label: Ajouter des valeurs d’attributs
+          label_count: "{1}Ajouter des valeurs d'attributs d'<span class=\"AknFullPage-title--highlight\">1 product</span>|] 1, Inf [Ajouter des valeurs d'attributs de <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} produits</span>"
+          description: Seuls les attributs à valeur multiple appartenant aux famille des produits seront édités avec les données suivantes pour la locale {{ locale }} et le canal {{ scope }}. Les valeurs d'attributes sont ajoutées, les précédentes valeurs sont conservées.
         change_family:
           label: Changer de famille
           label_count: "{1}Changer la famille d'<span class=\"AknFullPage-title--highlight\">1 produit</span>|] 1, Inf [Changer la famille de <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} produits</span>"
@@ -1253,6 +1257,7 @@ batch_jobs:
     validation.label: Validation du fichier
     import.label: Import des familles
     compute_data_related_to_family_variants.label: Mise à jour des données des modèles de produit
+    compute_data_related_to_family_products.label: Calcul des données produits
   csv_family_variant_import:
     label: Import des variantes de famille en CSV
     validation.label: Validation du fichier
@@ -1317,6 +1322,7 @@ batch_jobs:
     validation.label: Validation du fichier
     import.label: Import des familles
     compute_data_related_to_family_variants.label: Mise à jour des données des modèles de produit
+    compute_data_related_to_family_products.label: Calcul des données produits
   xlsx_family_variant_import:
     label: Import des variantes de famille en XLSX
     validation.label: Validation du fichier

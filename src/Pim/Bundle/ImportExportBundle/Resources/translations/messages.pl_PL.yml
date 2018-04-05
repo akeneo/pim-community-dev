@@ -49,6 +49,7 @@ pim_importexport:
       edit: Edycja profilu eksportu
       remove: Usuwanie profilu eksportu
       launch: Uruchamianie profilu eksportu
+      property_edit: Edycja właściwości ogólnych eksportowanego profilu
       history: Przeglądanie historii profilu eksportu
     import_profile:
       index: Przeglądanie listy profili importu

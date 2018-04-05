@@ -1,0 +1,20 @@
+parameters:
+    pim_volume_monitoring.volume.normalizer.average_max_volumes.class: Pim\Component\CatalogVolumeMonitoring\Volume\Normalizer\AverageMaxVolumesNormalizer
+    pim_volume_monitoring.volume.normalizer.count_volume.class: Pim\Component\CatalogVolumeMonitoring\Volume\Normalizer\CountVolumeNormalizer
+    pim_volume_monitoring.volume.normalizer.volumes.class: Pim\Component\CatalogVolumeMonitoring\Volume\Normalizer\Volumes
+
+services:
+    pim_volume_monitoring.volume.normalizer.average_max_volumes:
+        class: '%pim_volume_monitoring.volume.normalizer.average_max_volumes.class%'
+
+    pim_volume_monitoring.volume.normalizer.count_volume:
+        class: '%pim_volume_monitoring.volume.normalizer.count_volume.class%'
+
+    pim_volume_monitoring.volume.normalizer.volumes:
+        class: '%pim_volume_monitoring.volume.normalizer.volumes.class%'
+        arguments:
+            - '@pim_volume_monitoring.volume.normalizer.count_volume'
+            - '@pim_volume_monitoring.volume.normalizer.average_max_volumes'
+            - !tagged pim_volume_monitoring.persistence.count_query
+            - !tagged pim_volume_monitoring.persistence.average_max_query
+

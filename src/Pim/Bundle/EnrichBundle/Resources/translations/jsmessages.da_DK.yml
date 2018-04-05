@@ -18,6 +18,7 @@ confirmation:
     role: Er du sikker på du vil slette denne rolle?
     job_instance: Er du sikker på du vil slette dette job?
     api_connection: Er du sikker på, du vil tilbagekalde denne API tilslutning? Alle API forbindelser via denne forbindelse vil fremover fejle.
+    products_and_product_models: Er du sikker på du vil slette de valgte produkter og produktmodeller? Alle produktmodeller og undeliggende produkter bliver også slettet.
 pim_datagrid:
   mass_action_group:
     bulk_actions:
@@ -113,6 +114,7 @@ Classify the product: Klassificere produktet
 Delete the product: Slet produktet
 Change status: Skift status
 Toggle status: Skift status
+mass_delete: Masse slet
 pim:
   grid:
     mass_action:
@@ -867,6 +869,8 @@ pim_enrich:
             ">=": Komplet på mindst én valgte landestandard
             "GREATER OR EQUALS THAN ON ALL LOCALES": Komplet på alle valgte landestandarder
             LOWER THAN ON ALL LOCALES: Ikke komplet på nogle af de valgte landestandarder
+            AT LEAST COMPLETE: Mindst ét underordnet produkt komplet på én valgte landestandard
+            ALL COMPLETE: Alle underliggende produkter komplet på alle valgte landestandarder
           empty_selection: Vælg en familie
         category:
           title: Kategori
@@ -1034,8 +1038,6 @@ pim_enrich:
           description: De valgte produkter vil blive aktiveret eller deaktiveret.
           field: At aktivere
         edit_common:
-          label: Rediger attributter
-          label_count: "{1}Ret fælles attributter af <span class=\"AknFullPage-title--highlight\"> 1 produkt</span> |] 1, Inf [Rediger fælles attributter af <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} produkter</span>"
           description: Kun de attributter, der tilhører familierne til de valgte produkter vil blive redigeret med følgende data for {{ locale }} locale og {{ scope }} kanal.
         change_family:
           label: Ændre familie
@@ -1243,6 +1245,7 @@ batch_jobs:
     validation.label: Filvalidering
     import.label: Familie import
     compute_data_related_to_family_variants.label: Beregn produkt model data
+    compute_data_related_to_family_products.label: Beregn produkt model data
   csv_family_variant_import:
     label: Familie variant import i CSV
     validation.label: Filvalidering
@@ -1307,6 +1310,7 @@ batch_jobs:
     validation.label: Filvalidering
     import.label: Familie import
     compute_data_related_to_family_variants.label: Beregn produkt model data
+    compute_data_related_to_family_products.label: Beregn produkt model data
   xlsx_family_variant_import:
     label: Familie variant import i XLSX
     validation.label: Filvalidering

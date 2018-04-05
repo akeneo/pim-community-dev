@@ -20,7 +20,7 @@ class Catalog implements CatalogInterface
     public function useTechnicalSqlCatalog(): Configuration
     {
         $catalogDirectories = [
-            (string) new Path('tests', 'Integration', 'catalog','technical_sql'),
+            (string) new Path('back', 'Integration', 'catalog','technical_sql'),
         ];
 
         $fixtureDirectories = [
@@ -37,7 +37,7 @@ class Catalog implements CatalogInterface
     public function useTechnicalCatalog(): Configuration
     {
         $catalogDirectories = [
-            (string) new Path('tests', 'Integration', 'catalog','technical'),
+            (string) new Path('back', 'Integration', 'catalog','technical'),
         ];
 
         $fixtureDirectories = [
@@ -54,7 +54,7 @@ class Catalog implements CatalogInterface
     public function useMinimalCatalog(): Configuration
     {
         $catalogDirectories = [
-            (string) new Path('src', 'Pim','Bundle','InstallerBundle','Resources','fixtures', 'minimal'),
+            (string) new Path('..', 'src', 'Pim', 'Bundle', 'InstallerBundle', 'Resources', 'fixtures', 'minimal'),
         ];
 
         $fixtureDirectories = [
@@ -71,11 +71,11 @@ class Catalog implements CatalogInterface
     public function useFunctionalCatalog(string $catalog): Configuration
     {
         $catalogDirectories = [
-            (string) new Path('features', 'Context','catalog', $catalog),
+            (string) new Path('..', 'features', 'Context', 'catalog', $catalog),
         ];
 
         $fixtureDirectories = [
-            (string) new Path('features', 'Context'),
+            (string) new Path('..', 'features', 'Context'),
             $this->getReferenceDataFixtures()
         ];
 
@@ -89,7 +89,7 @@ class Catalog implements CatalogInterface
      */
     private function getReferenceDataFixtures(): string
     {
-        return (string) new Path('src', 'Acme','Bundle','AppBundle','Resources','fixtures');
+        return (string) new Path('..', 'src', 'Acme', 'Bundle', 'AppBundle', 'Resources', 'fixtures');
     }
 
     /**
@@ -99,6 +99,6 @@ class Catalog implements CatalogInterface
      */
     private function getTechnicalFixtures(): string
     {
-        return (string) new Path('tests', 'Integration', 'fixtures');
+        return (string) new Path('back', 'Integration', 'fixtures');
     }
 }

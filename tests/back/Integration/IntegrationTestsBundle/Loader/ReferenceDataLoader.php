@@ -76,14 +76,14 @@ final class ReferenceDataLoader
 
     private function getFabricsSql(): string
     {
-        $path = (string) new Path('src', 'Acme', 'Bundle', 'AppBundle', 'Resources', 'fixtures', 'fabrics.sql');
+        $path = (string) new Path('..', 'src', 'Acme', 'Bundle', 'AppBundle', 'Resources', 'fixtures', 'fabrics.sql');
 
         return file_get_contents($path);
     }
 
     private function getColorSql(): string
     {
-        $path = (string) new Path('src', 'Acme', 'Bundle', 'AppBundle', 'Resources', 'fixtures', 'colors.sql');
+        $path = (string) new Path('..', 'src', 'Acme', 'Bundle', 'AppBundle', 'Resources', 'fixtures', 'colors.sql');
 
         return file_get_contents($path);
     }

@@ -130,16 +130,18 @@ acceptance:
     suites:
         acceptance:
             paths:
-                - tests/features
+                - tests/back/features
             contexts_services:
                 - test.locale.context
                 - test.channel.context
+                - test.catalog_volume_limits.attribute_per_family_context
             filters:
                 tags: '@acceptance'
     extensions:
         FriendsOfBehat\ContextServiceExtension:
            imports:
-               - "tests/Acceptance/Resources/config/behat/services.yml"
+               - "tests/back/Acceptance/Resources/config/behat/services.yml"
+               - "src/Pim/Bundle/CatalogVolumeMonitoringBundle/tests/Acceptance/Resources/config/behat/services.yml"
         FriendsOfBehat\CrossContainerExtension: ~
         FriendsOfBehat\SymfonyExtension:
             kernel:

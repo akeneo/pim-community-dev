@@ -1028,8 +1028,6 @@ pim_enrich:
           description: Valitut tuotteet otetaan käyttöön tai pois käytöstä.
           field: Ottaa käyttöön
         edit_common:
-          label: Muokkaa attribuutteja
-          label_count: "{1}Muokkaa <span class=\"AknFullPage-title--highlight\">1 tuotteen</span> attribuutteja|] 1, Inf [Muokkaa <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} tuotteen</span> attribuutteja"
           description: Vain attribuutit, jotka kuuluvat valittujen tuotteiden perheisiin muokataan seuraavilla tiedoilla ({{ locale }} / {{ scope }}).
         change_family:
           label: Muuta perhe

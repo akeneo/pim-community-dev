@@ -47,7 +47,7 @@ extensions:
                 subTitle: pim_common.attributes
                 content: pim_common.confirm_deletion
                 success: flash.attribute.removed
-                fail: error.removing.attribute
+                failed: error.removing.attribute
             redirect: pim_enrich_attribute_index
 
     pim-attribute-edit-form-save-buttons:

@@ -799,8 +799,6 @@ pim_enrich:
           label: Promjena statusa
           description: Odabrani proizvodi će biti omogućeni ili onemogućeni.
           field: Da se omogući
-        edit_common:
-          label: Uredi atribute
         change_family:
           description: Obitelj odabranih proizvoda će se promijeniti u odabranu obitelj
           field: Obitelj
