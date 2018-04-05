@@ -8,6 +8,7 @@ use PhpSpec\ObjectBehavior;
 use Pim\Bundle\DataGridBundle\Datagrid\Configuration\Product\ColumnsConfigurator;
 use Pim\Bundle\DataGridBundle\Datagrid\Configuration\Product\FiltersConfigurator;
 use Pim\Bundle\DataGridBundle\Datagrid\Configuration\Product\SortersConfigurator;
+use PimEnterprise\Bundle\SecurityBundle\Datagrid\EventListener\ConfigureProductGridListener;
 use PimEnterprise\Bundle\SecurityBundle\Datagrid\Product\ContextConfigurator;
 use PimEnterprise\Bundle\SecurityBundle\Datagrid\Product\RowActionsConfigurator;
 
@@ -15,7 +16,7 @@ class ConfigureProductGridListenerSpec extends ObjectBehavior
 {
     function it_is_initializable()
     {
-        $this->shouldHaveType('PimEnterprise\Bundle\DataGridBundle\EventListener\ConfigureProductGridListener');
+        $this->shouldHaveType(ConfigureProductGridListener::class);
     }
 
     function let(
