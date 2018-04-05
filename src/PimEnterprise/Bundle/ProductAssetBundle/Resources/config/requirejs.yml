@@ -25,3 +25,9 @@ config:
                         warmup: false
                         urls:
                             list: pimee_product_asset_rest_index
+
+        pim/attribute-edit-form/type-specific-form-registry:
+            formNames:
+                pim_assets_collection:
+                    create: pim-attribute-form-assets-collection
+                    edit:   pim-attribute-form-assets-collection

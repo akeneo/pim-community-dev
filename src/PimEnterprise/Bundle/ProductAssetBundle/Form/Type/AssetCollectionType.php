@@ -57,7 +57,6 @@ class AssetCollectionType extends AbstractType
         $resolver->setDefaults([
             'data_class' => null,
             'attr'       => [
-                'locale' => $this->userContext->getCurrentLocale()->getCode(),
                 'scope'  => $this->userContext->getUserChannel()->getCode()
             ]
         ]);
