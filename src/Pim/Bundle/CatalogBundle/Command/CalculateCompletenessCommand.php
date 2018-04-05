@@ -47,7 +47,7 @@ class CalculateCompletenessCommand extends ContainerAwareCommand
         foreach ($products as $product) {
             $productsToSave[] = $product;
 
-            if (count($productsToSave) === $container->getParameter('pim_catalog.factory.product_cursor.page_size')) {
+            if (count($productsToSave) === $container->getParameter('pim_job_product_batch_size')) {
                 $container->get('pim_catalog.saver.product')->saveAll($productsToSave);
                 $container->get('pim_catalog.elasticsearch.indexer.product')->indexAll($productsToSave);
 
