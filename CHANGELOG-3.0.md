@@ -2,7 +2,8 @@
 
 ## Technical improvement
 
-- TIP-236: Merge Oro User bundle/component into Akeneo User bundle/component 
+- TIP-236: Merge Oro User bundle/component into Akeneo User bundle/component
+- TIP-854: Clean translations (remove useless, duplicate and reorganize keys) 
 
 ## Enhancements
 

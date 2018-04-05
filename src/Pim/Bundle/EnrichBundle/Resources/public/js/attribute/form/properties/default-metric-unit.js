@@ -49,11 +49,11 @@ function (
          * {@inheritdoc}
          */
         renderInput: function (templateContext) {
-            var metricFamily = this.getFormData().metric_family;
+            const metricFamily = this.getFormData().metric_family;
 
             return this.template(_.extend(templateContext, {
                 value: this.getFormData()[this.fieldName],
-                choices: this.formatChoices(this.measures[metricFamily].units),
+                choices: this.formatChoices(metricFamily, this.measures[metricFamily].units),
                 multiple: false,
                 labels: {
                     defaultLabel: __('pim_enrich.form.attribute.tab.properties.default_label.default_metric_unit')
@@ -94,14 +94,17 @@ function (
          *
          * (for locale fr_FR)
          *
+         * @param {string} metricFamily
          * @param {Object} units
          */
-        formatChoices: function (units) {
-            var unitCodes = _.keys(units);
+        formatChoices: function (metricFamily, units) {
+            const unitCodes = _.keys(units);
 
             return _.object(
                 unitCodes,
-                _.map(unitCodes, __)
+                unitCodes.map((unitCode) => {
+                    return __('pim_measure.units.' + metricFamily + '.' + unitCode)
+                })
             );
         },
 

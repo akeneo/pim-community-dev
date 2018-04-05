@@ -76,9 +76,10 @@ define(
                         operatorLabel: __('pim_common.operator'),
                         updateLabel: __('pim_common.update'),
                         units: this.units,
-                        unitLabel: __('pim.grid.metric_filter.label'),
+                        unitLabel: __('pim_datagrid.filters.metric_filter.label'),
                         selectedUnit: this._getDisplayValue().unit,
-                        value: this._getDisplayValue().value
+                        value: this._getDisplayValue().value,
+                        metricFamily: this.options.family
                     })
                 );
                 return this;
@@ -109,7 +110,7 @@ define(
              * @inheritDoc
              */
             _getCriteriaHint: function () {
-                var value = (arguments.length > 0) ? this._getDisplayValue(arguments[0]) : this._getDisplayValue();
+                const value = (arguments.length > 0) ? this._getDisplayValue(arguments[0]) : this._getDisplayValue();
                 if (_.contains(['empty', 'not empty'], value.type)) {
                     return this._getChoiceOption(value.type).label;
                 }
@@ -117,7 +118,9 @@ define(
                     return this.placeholder;
                 } else {
                     const option = this._getChoiceOption(value.type);
-                    return option.label + ' ' + value.value + ' ' + value.unit;
+                    return option.label + ' ' +
+                        value.value + ' ' +
+                        __('pim_measure.units.' + this.options.family + '.' + value.unit);
                 }
             },
 
@@ -222,7 +225,7 @@ define(
             _onSelectUnit: function(e) {
                 const value = $(e.currentTarget).find('.unit_choice').attr('data-value');
                 $(this.criteriaValueSelectors.unit).val(value);
-                this._highlightDropdown(value.unit, '.unit');
+                this._highlightDropdown(value, '.unit');
 
                 e.preventDefault();
             },

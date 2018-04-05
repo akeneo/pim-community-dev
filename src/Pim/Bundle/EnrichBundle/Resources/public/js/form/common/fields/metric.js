@@ -67,8 +67,9 @@ define([
             return this.template(_.extend(templateContext, {
                 value: {
                     amount: this.getModelValuePart('amount'),
-                    unit: this.getModelValuePart('unit')
-                }
+                    unit: this.getModelValuePart('unit'),
+                },
+                metricFamily: this.metricFamily
             }));
         },
 

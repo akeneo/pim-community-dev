@@ -21,14 +21,16 @@
         <div class="AknFilterChoice-unit">
             <div class="AknDropdown unit">
                 <div class="AknActionButton AknActionButton--withoutBorder" data-toggle="dropdown">
-                    <span class="AknActionButton-highlight"><%- selectedUnit %></span>
+                    <span class="AknActionButton-highlight"><%- __('pim_measure.units.' + metricFamily + '.' + selectedUnit) %></span>
                     <span class="AknActionButton-caret"></span>
                 </div>
                 <div class="AknDropdown-menu unit">
                     <div class="AknDropdown-menuTitle"><%- unitLabel %></div>
                     <% _.each(units, function (symbol, code) { %>
                     <div class="AknDropdown-menuLink<% if (selectedUnit == code) { %> AknDropdown-menuLink--active active<% } %>">
-                        <span class="label unit_choice" data-value="<%= code %>"><%- __(code) %></span>
+                        <span class="label unit_choice" data-value="<%= code %>">
+                            <%- __('pim_measure.units.' + metricFamily + '.' + code) %>
+                        </span>
                     </div>
                     <% }); %>
                 </div>

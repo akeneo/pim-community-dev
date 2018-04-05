@@ -3,6 +3,7 @@
 namespace Pim\Bundle\DataGridBundle\Normalizer\Product;
 
 use Pim\Bundle\UserBundle\Context\UserContext;
+use Pim\Component\Catalog\Localization\Presenter\MetricPresenter;
 use Pim\Component\Catalog\Localization\Presenter\PresenterRegistryInterface;
 use Pim\Component\Catalog\Model\ValueCollectionInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -48,7 +49,7 @@ class ProductValuesNormalizer implements NormalizerInterface, SerializerAwareInt
 
             $attributeCode = $value->getAttribute()->getCode();
             $presenter = $this->presenterRegistry->getPresenterByAttributeCode($attributeCode);
-            if (null !== $presenter) {
+            if (null !== $presenter && get_class($presenter) !== MetricPresenter::class) {
                 $normalizedValue['data'] = $presenter->present($normalizedValue['data'], [
                     'locale' => $this->userContext->getUiLocaleCode()
                 ]);

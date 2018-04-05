@@ -32,7 +32,7 @@ class MetricNormalizer implements NormalizerInterface
 
         return [
             'amount' => $amount,
-            'unit'   => $metric->getUnit(),
+            'unit'   => $metric->getUnit()
         ];
     }
 
