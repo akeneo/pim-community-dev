@@ -15,7 +15,7 @@ extensions:
 
     pimee-product-view-form-user-navigation:
         module: pim/menu/user-navigation
-        parent: pimee-product-view-form:
+        parent: pimee-product-view-form
         targetZone: user-menu
         config:
             userAccount: pim_menu.user.user_account
@@ -32,11 +32,11 @@ extensions:
         targetZone: bottom-panel
         position: 100
 
-
     pimee-product-view-left-column:
         module: pim/form/common/column
         parent: pimee-product-view-form
         position: 5
+        targetZone: column
         config:
           stateCode: product_edit_form
 

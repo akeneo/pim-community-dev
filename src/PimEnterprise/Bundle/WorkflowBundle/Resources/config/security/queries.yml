@@ -1,0 +1,6 @@
+services:
+    pimee_workflow.query.published_product_category_access:
+        class: '%pimee_security.query.product_category_access.class%'
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '%pimee_workflow.entity.published_product.class%'

@@ -4,6 +4,7 @@ parameters:
     pimee_enrich.normalizer.attribute.class:                PimEnterprise\Bundle\EnrichBundle\Normalizer\AttributeNormalizer
     pimee_enrich.normalizer.image.class:                    PimEnterprise\Bundle\EnrichBundle\Normalizer\ImageNormalizer
     pimee_enrich.normalizer.incomplete_values.class:        PimEnterprise\Bundle\EnrichBundle\Normalizer\IncompleteValuesNormalizer
+    pimee_enrich.normalizer.published_product.class:        PimEnterprise\Bundle\EnrichBundle\Normalizer\PublishedProductNormalizer
 
 services:
     pimee_enrich.serializer.normalizer.granted_family:
@@ -56,3 +57,10 @@ services:
             - '@security.authorization_checker'
         tags:
             - { name: pim_internal_api_serializer.normalizer }
+
+    pimee_enrich.normalizer.published_product:
+        class: '%pimee_enrich.normalizer.published_product.class%'
+        arguments:
+            - '@pimee_enrich.normalizer.product'
+        tags:
+            - { name: pim_internal_api_serializer.normalizer, priority: 130 }

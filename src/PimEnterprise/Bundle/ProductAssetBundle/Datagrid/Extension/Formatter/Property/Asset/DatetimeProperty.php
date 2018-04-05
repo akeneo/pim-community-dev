@@ -48,20 +48,4 @@ class DatetimeProperty extends FieldProperty
     {
         return $this->presenter->present($datetime, ['locale' => $this->userContext->getUiLocaleCode()]);
     }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function getRawValue(ResultRecordInterface $record)
-    {
-        $value = null;
-
-        try {
-            $value = $record->getValue($this->getOr(self::DATA_NAME_KEY, $this->get(self::NAME_KEY)));
-        } catch (\LogicException $e) {
-            return null;
-        }
-
-        return $value;
-    }
 }

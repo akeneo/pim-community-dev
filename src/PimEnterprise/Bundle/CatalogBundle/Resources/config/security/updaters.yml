@@ -30,6 +30,9 @@ services:
             - '@pim_catalog.repository.product_without_permission'
             - ['associations']
             - '@pim_catalog.repository.product_model_without_permission'
+            - '@pimee_security.query.product_category_access'
+            - '@pimee_security.query.product_model_category_access'
+            - '@security.token_storage'
         tags:
             - { name: 'pim_catalog.updater.setter' }
 

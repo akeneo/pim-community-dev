@@ -11,16 +11,25 @@ use Pim\Component\Catalog\Model\AssociationInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
 use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
+use PimEnterprise\Bundle\SecurityBundle\Entity\Query\ItemCategoryAccessQuery;
+use PimEnterprise\Component\Catalog\Security\Filter\NotGrantedAssociatedProductFilter;
 use PimEnterprise\Component\Security\Attributes;
 use PimEnterprise\Component\Security\NotGrantedDataFilterInterface;
 use Prophecy\Argument;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 class NotGrantedAssociatedProductFilterSpec extends ObjectBehavior
 {
-    function let(AuthorizationCheckerInterface $authorizationChecker)
-    {
-        $this->beConstructedWith($authorizationChecker);
+    function let(
+        AuthorizationCheckerInterface $authorizationChecker,
+        ItemCategoryAccessQuery $productCategoryAccessQuery,
+        ItemCategoryAccessQuery $productModelCategoryAccessQuery,
+        TokenStorageInterface $tokenStorage
+    ) {
+        $this->beConstructedWith($authorizationChecker, $productCategoryAccessQuery, $productModelCategoryAccessQuery, $tokenStorage);
     }
 
     function it_implements_a_filter_interface()
@@ -30,11 +39,13 @@ class NotGrantedAssociatedProductFilterSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('PimEnterprise\Component\Catalog\Security\Filter\NotGrantedAssociatedProductFilter');
+        $this->shouldHaveType(NotGrantedAssociatedProductFilter::class);
     }
 
     function it_removes_not_granted_associated_products_from_a_product(
-        $authorizationChecker,
+        $productCategoryAccessQuery,
+        $productModelCategoryAccessQuery,
+        $tokenStorage,
         ProductInterface $product,
         ProductInterface $associatedProduct1,
         ProductInterface $associatedProduct2,
@@ -46,8 +57,18 @@ class NotGrantedAssociatedProductFilterSpec extends ObjectBehavior
         Collection $associatedProductModels,
         \ArrayIterator $iterator,
         \ArrayIterator $iteratorProducts,
-        \ArrayIterator $iteratorProductModels
+        \ArrayIterator $iteratorProductModels,
+        TokenInterface $token,
+        UserInterface $user
     ) {
+        $tokenStorage->getToken()->willReturn($token);
+        $token->getUser()->willReturn($user);
+
+        $associatedProduct1->getId()->willReturn(1);
+        $associatedProduct2->getId()->willReturn(2);
+        $associatedProduct3->getId()->willReturn(3);
+        $associatedProductModel1->getId()->willReturn(1);
+
         $product->getAssociations()->willReturn($associations);
         $associations->getIterator()->willReturn($iterator);
         $iterator->rewind()->shouldBeCalled();
@@ -57,28 +78,28 @@ class NotGrantedAssociatedProductFilterSpec extends ObjectBehavior
 
         $associationXSELL->getProducts()->willReturn($associatedProducts);
         $associatedProducts->getIterator()->willReturn($iteratorProducts);
+        $associatedProducts->toArray()->willReturn([$associatedProduct1, $associatedProduct2, $associatedProduct3]);
         $iteratorProducts->rewind()->shouldBeCalled();
         $iteratorProducts->valid()->willReturn(true, true, true, false);
-        $iteratorProducts->current()->willReturn($associatedProduct1);
+        $iteratorProducts->current()->willReturn($associatedProduct1, $associatedProduct2, $associatedProduct3);
         $iteratorProducts->next()->shouldBeCalled();
 
         $associationXSELL->getProductModels()->willReturn($associatedProductModels);
         $associatedProductModels->getIterator()->willReturn($iteratorProductModels);
+        $associatedProductModels->toArray()->willReturn([$associatedProductModel1]);
         $iteratorProductModels->rewind()->shouldBeCalled();
         $iteratorProductModels->valid()->willReturn(true, false);
         $iteratorProductModels->current()->willReturn($associatedProductModel1);
         $iteratorProductModels->next()->shouldBeCalled();
 
-        $authorizationChecker->isGranted([Attributes::VIEW], $associatedProduct1)->willReturn(false);
+        $productCategoryAccessQuery->getGrantedItemIds([$associatedProduct1, $associatedProduct2, $associatedProduct3], $user)
+            ->willReturn([2 => 2, 3 => 3]);
         $associatedProducts->removeElement($associatedProduct1)->shouldBeCalled();
-
-        $authorizationChecker->isGranted([Attributes::VIEW], $associatedProduct2)->willReturn(true);
         $associatedProducts->removeElement($associatedProduct2)->shouldNotBeCalled();
-
-        $authorizationChecker->isGranted([Attributes::VIEW], $associatedProduct3)->willReturn(true);
         $associatedProducts->removeElement($associatedProduct3)->shouldNotBeCalled();
 
-        $authorizationChecker->isGranted([Attributes::VIEW], $associatedProductModel1)->willReturn(true);
+        $productModelCategoryAccessQuery->getGrantedItemIds([$associatedProductModel1], $user)
+            ->willReturn([1 => 1]);
         $associatedProductModels->removeElement($associatedProductModel1)->shouldNotBeCalled();
 
         $associationXSELL->setProducts($associatedProducts)->shouldBeCalled();

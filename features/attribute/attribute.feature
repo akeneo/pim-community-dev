@@ -37,6 +37,28 @@ Feature: Display available field options
     When I am on the "my-jacket" product page
     Then the field Description should be disabled
 
+  Scenario: Error dialog displayed when deleting an attribute linked to a published product from the attribute page
+    Given I am on the "my-jacket" product page
+    And I fill in the following information:
+      | Name | My Jacket |
+    And I press the "Save" button
+    And I publish the product "my-jacket"
+    And I am on the "name" attribute page
+    When I press the secondary action "Delete"
+    And I confirm the removal
+    Then I should see the text "Cannot delete this attribute"
+
+  Scenario: Error dialog displayed when deleting an attribute linked to a published product from the attribute grid page
+    Given I am on the "my-jacket" product page
+    And I fill in the following information:
+      | Name | My Jacket |
+    And I press the "Save" button
+    And I publish the product "my-jacket"
+    And I am on the attributes page
+    When I click on the "Delete" action of the row which contains "Name"
+    And I confirm the removal
+    Then I should see the text "Cannot delete this attribute"
+
   @skip @info To be fixed in TIP-764
   Scenario: Successfully set attribute to read only during mass edit
     Given I am on the "description" attribute page

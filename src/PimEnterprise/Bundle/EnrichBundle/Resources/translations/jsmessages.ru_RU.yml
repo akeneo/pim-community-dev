@@ -224,3 +224,5 @@ batch_jobs:
     export.label: Быстрый экспорт контекста сетки опубликованных товаров в XLSX
     perform:
       label: Быстрый экспорт контекста сетки опубликованных товаров в XLSX
+  add_attribute_value:
+    execute_rules.label: Выполнение правил
