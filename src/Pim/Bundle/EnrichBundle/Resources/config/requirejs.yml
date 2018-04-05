@@ -473,7 +473,9 @@ config:
                 pim_catalog_file:
                     create: pim-attribute-form-file
                     edit:   pim-attribute-form-file
-                # pim_catalog_identifier has a fully dedicated view tree
+                pim_catalog_identifier:
+                    create: pim-attribute-form-identifier
+                    edit:   pim-attribute-form-identifier
                 pim_catalog_image:
                     create: pim-attribute-form-image
                     edit:   pim-attribute-form-image
