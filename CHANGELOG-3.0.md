@@ -38,7 +38,7 @@
 - Move `PimEnterprise\Bundle\DataGridBundle\Datagrid\Configuration\Proposal\GridHelper` to `PimEnterprise\Bundle\WorkflowBundle\Datagrid\Configuration\Proposal\GridHelper`
 - Move `PimEnterprise\Bundle\DataGridBundle\Datasource\ProductProposalDatasource` to `PimEnterprise\Bundle\WorkflowBundle\Datagrid\Datasource\ProductProposalDatasource`
 - Move `PimEnterprise\Bundle\DataGridBundle\Datasource\ResultRecord\ORM\ProductDraftHydrator` to `PimEnterprise\Bundle\WorkflowBundle\Datagrid\Datasource\ResultRecord\ProductDraftHydrator`
-- Move `PimEnterprise\Bundle\SecurityBundle\Datagrid\EventListener\ConfigureProposalGridListener` to `PimEnterprise\Bundle\WorkflowBundle\Datagrid\EventListener\ConfigureProposalGridListener`
+- Move `PimEnterprise\Bundle\DataGridBundle\EventListener\ConfigureProposalGridListener` to `PimEnterprise\Bundle\WorkflowBundle\Datagrid\EventListener\ConfigureProposalGridListener`
 - Move `PimEnterprise\Bundle\FilterBundle\Filter\ProductDraft\AttributeChoiceFilter` to `PimEnterprise\Bundle\WorkflowBundle\Datagrid\Filter\AttributeChoiceFilter`
 - Move `PimEnterprise\Bundle\FilterBundle\Filter\ProductDraft\AuthorFilter` to `PimEnterprise\Bundle\WorkflowBundle\Datagrid\Filter\AuthorFilter`
 - Move `PimEnterprise\Bundle\FilterBundle\Filter\ProductDraft\ChoiceFilter` to `PimEnterprise\Bundle\WorkflowBundle\Datagrid\Filter\ChoiceFilter`
@@ -90,3 +90,11 @@
 - Move `PimEnterprise\Bundle\CatalogBundle\Security\Elasticsearch\ProductQueryBuilderFactory` to `PimEnterprise\Bundle\SecurityBundle\Persistence\ORM\EntityWithValue\ProductQueryBuilderFactory`
 - Move `PimEnterprise\Bundle\CatalogBundle\Doctrine\ORM\Repository\ProductRepository` to `PimEnterprise\Bundle\SecurityBundle\Persistence\ORM\EntityWithValue\ProductRepository`
 - Move `PimEnterprise\Bundle\CatalogBundle\Security\Doctrine\Common\Saver\FilteredEntitySaver` to `PimEnterprise\Bundle\SecurityBundle\Persistence\ORM\FilteredEntitySaver`
+- Move `PimEnterprise\Bundle\DataGridBundle\Adapter\OroToPimGridFilterAdapter\RuleController` to `PimEnterprise\Bundle\SecurityBundle\Datagrid\OroToPimGridFilterAdapter\RuleController`
+- Move `PimEnterprise\Bundle\DataGridBundle\Filter\DatagridViewFilter` to `PimEnterprise\Bundle\SecurityBundle\Datagrid\DatagridViewFilter`
+- Move `PimEnterprise\Bundle\DataGridBundle\Manager\DatagridViewManager` to `PimEnterprise\Bundle\SecurityBundle\Datagrid\DatagridViewManager`
+- Move `PimEnterprise\Bundle\DataGridBundle\EventListener\AddPermissionsToGridListener` to `PPimEnterprise\Bundle\SecurityBundle\Datagrid\EventListener\AddPermissionsToGridListener`
+- Move `PimEnterprise\Bundle\DataGridBundle\EventListener\ConfigureProductGridListener` to `PPimEnterprise\Bundle\SecurityBundle\Datagrid\EventListener\ConfigureProductGridListener`
+- Move `PimEnterprise\Bundle\DataGridBundle\Extension\MassAction\Util\ProductFieldsBuilder` to `PimEnterprise\Bundle\SecurityBundle\Datagrid\MassAction\ProductFieldsBuilder`
+- Move `PimEnterprise\Bundle\DataGridBundle\Adapter\OroToPimGridFilterAdapter` to `PimEnterprise\Bundle\SecurityBundle\Datagrid\OroToPimGridFilterAdapter`
+- Move `PimEnterprise\Bundle\DataGridBundle\Datagrid\Configuration\Product\RowActionsConfigurator` to `PimEnterprise\Bundle\SecurityBundle\Datagrid\Product\RowActionsConfigurator`
