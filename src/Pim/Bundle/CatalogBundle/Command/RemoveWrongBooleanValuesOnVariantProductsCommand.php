@@ -46,6 +46,7 @@ class RemoveWrongBooleanValuesOnVariantProductsCommand extends ContainerAwareCom
         $io = new SymfonyStyle($input, $output);
         $io->text('Cleaning wrong boolean values on variant products...');
 
+        $progressBatchSize = 50;
         $productBatchSize = $this->getContainer()->hasParameter('pim_job_product_batch_size') ?
             $this->getContainer()->getParameter('pim_job_product_batch_size') :
             self::DEFAULT_PRODUCT_BULK_SIZE;
@@ -55,6 +56,7 @@ class RemoveWrongBooleanValuesOnVariantProductsCommand extends ContainerAwareCom
         $io->progressStart($variantProducts->count());
 
         $productsToSave = [];
+        $productsParsedCount = 0;
 
         foreach ($variantProducts as $variantProduct) {
             // TODO: Replace this check for 2.2 version by ``if (!$variantProduct->isVariant()) {}``
@@ -88,7 +90,11 @@ class RemoveWrongBooleanValuesOnVariantProductsCommand extends ContainerAwareCom
                 $productsToSave = [];
             }
 
-            $io->progressAdvance($productBatchSize);
+            $productsParsedCount++;
+            if ($productsParsedCount >= $progressBatchSize) {
+                $io->progressAdvance($productsParsedCount);
+                $productsParsedCount = 0;
+            }
         }
 
         if (!empty($productsToSave)) {
