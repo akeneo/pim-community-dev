@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Bundle\SecurityBundle\Datagrid;
+namespace PimEnterprise\Bundle\DataGridBundle\Adapter;
 
 use Pim\Bundle\DataGridBundle\Adapter\OroToPimGridFilterAdapter as BaseAdapter;
 use Pim\Bundle\DataGridBundle\Extension\MassAction\MassActionDispatcher;

@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\PimEnterprise\Bundle\SecurityBundle\Datagrid;
+namespace spec\PimEnterprise\Bundle\DataGridBundle\Adapter;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\DataGridBundle\Extension\MassAction\MassActionDispatcher;

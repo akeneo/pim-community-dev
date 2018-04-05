@@ -1,8 +1,7 @@
 <?php
 
-namespace PimEnterprise\Bundle\SecurityBundle\tests\integration\Export\PublishedProduct;
+namespace PimEnterprise\Bundle\WorkflowBundle\tests\EndToEnd\PublishedProduct\Export;
 
-use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use Akeneo\Test\IntegrationTestsBundle\Launcher\JobLauncher;
 use Pim\Component\Catalog\Model\ProductInterface;
