@@ -6,12 +6,11 @@ define([
     'oro/translator',
     'backbone',
     'pim/filter/filter',
-    'routing',
     'pim/filter/product/category/selector',
     'pim/fetcher-registry',
     'pim/template/filter/product/category',
     'jquery.select2'
-], function ($, _, __, Backbone, BaseFilter, Routing, CategoryTree, fetcherRegistry, template) {
+], function ($, _, __, Backbone, BaseFilter, CategoryTree, fetcherRegistry, template) {
     var TreeModal = Backbone.BootstrapModal.extend({
         className: 'modal jstree-modal'
     });

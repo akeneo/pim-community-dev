@@ -8,25 +8,21 @@
  */
 define(
     [
-        'jquery',
         'underscore',
         'oro/translator',
         'pim/template/export/product/edit/content/structure/scope',
         'pim/form',
         'pim/fetcher-registry',
         'pim/user-context',
-        'jquery.select2',
         'pim/i18n'
     ],
     function (
-        $,
         _,
         __,
         template,
         BaseForm,
         fetcherRegistry,
         UserContext,
-        select2,
         i18n
     ) {
         return BaseForm.extend({

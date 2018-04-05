@@ -1,8 +1,8 @@
 'use strict';
 
-define(['jquery', 'backbone', 'underscore', 'pim/router', 'oro/translator', 'oro/app', 'oro/mediator', 'oro/layout',
+define(['jquery', 'backbone', 'underscore', 'pim/router', 'oro/translator', 'oro/mediator', 'oro/layout',
         'pim/dialog', 'oro/messenger', 'bootstrap', 'jquery-setup'
-], function ($, Backbone, _, router, __, app, mediator, layout, Dialog, messenger) {
+], function ($, Backbone, _, router, __, mediator, layout, Dialog, messenger) {
 
 
     /* ============================================================

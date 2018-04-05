@@ -8,27 +8,21 @@
  */
 define(
     [
-        'jquery',
         'underscore',
         'oro/translator',
         'backbone',
         'pim/template/export/product/edit/content/structure/attributes',
         'pim/form',
         'oro/loading-mask',
-        'pim/fetcher-registry',
-        'pim/user-context',
         'pim/job/product/edit/content/structure/attributes-selector'
     ],
     function (
-        $,
         _,
         __,
         Backbone,
         template,
         BaseForm,
         LoadingMask,
-        fetcherRegistry,
-        UserContext,
         AttributeSelector
     ) {
         return BaseForm.extend({

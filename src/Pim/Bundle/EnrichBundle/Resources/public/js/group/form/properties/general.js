@@ -11,7 +11,6 @@ define([
         'underscore',
         'oro/translator',
         'pim/form',
-        'pim/fetcher-registry',
         'pim/template/group/tab/properties/general',
         'jquery.select2'
     ],
@@ -19,7 +18,6 @@ define([
         _,
         __,
         BaseForm,
-        FetcherRegistry,
         template
     ) {
         return BaseForm.extend({

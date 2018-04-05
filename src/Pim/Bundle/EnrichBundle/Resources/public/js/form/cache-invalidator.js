@@ -3,10 +3,9 @@
 define([
         'underscore',
         'pim/form',
-        'oro/mediator',
         'pim/fetcher-registry'
     ],
-    function (_, BaseForm, mediator, FetcherRegistry) {
+    function (_, BaseForm, FetcherRegistry) {
         return BaseForm.extend({
             /**
              * {@inheritdoc}

@@ -8,7 +8,6 @@
  */
 define(
     [
-        'jquery',
         'underscore',
         'oro/translator',
         'pim/form',
@@ -17,7 +16,6 @@ define(
         'pim/i18n'
     ],
     function (
-        $,
         _,
         __,
         BaseForm,

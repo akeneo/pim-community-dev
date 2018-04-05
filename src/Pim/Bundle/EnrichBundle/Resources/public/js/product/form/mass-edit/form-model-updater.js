@@ -13,11 +13,10 @@
 define(
     [
         'underscore',
-        'jquery',
         'pim/form',
         'pim/user-context'
     ],
-    function (_, $, BaseForm, UserContext) {
+    function (_, BaseForm, UserContext) {
         return BaseForm.extend({
             /**
              * {@inheritdoc}

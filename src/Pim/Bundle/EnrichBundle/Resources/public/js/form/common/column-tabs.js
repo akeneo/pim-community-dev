@@ -9,12 +9,11 @@
  */
 define(
     [
-        'jquery',
         'underscore',
         'pim/form/common/form-tabs',
         'pim/template/form/column-tabs'
     ],
-    function ($, _, FormTabs, template) {
+    function (_, FormTabs, template) {
         return FormTabs.extend({
             className: '',
 

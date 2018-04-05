@@ -1,6 +1,6 @@
 'use strict';
 
-define(['jquery', 'underscore', 'pim/security-context'], function ($, _, SecurityContext) {
+define(['underscore', 'pim/security-context'], function (_, SecurityContext) {
     let runningPromise = null;
 
     const filterByGranted = function(extensions) {

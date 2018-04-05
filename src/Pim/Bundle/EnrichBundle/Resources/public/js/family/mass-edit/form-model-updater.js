@@ -10,10 +10,9 @@
 define(
     [
         'underscore',
-        'jquery',
         'pim/form'
     ],
-    function (_, $, BaseForm) {
+    function (_, BaseForm) {
         return BaseForm.extend({
             /**
              * {@inheritdoc}

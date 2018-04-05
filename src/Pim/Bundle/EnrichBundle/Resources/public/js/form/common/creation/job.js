@@ -9,22 +9,14 @@
 define([
     'jquery',
     'underscore',
-    'backbone',
-    'routing',
     'pim/form',
-    'pim/user-context',
-    'pim/i18n',
     'oro/translator',
     'pim/template/form/creation/job',
     'pim/base-fetcher'
 ], function(
         $,
         _,
-        Backbone,
-        Routing,
         BaseForm,
-        UserContext,
-        i18n,
         __,
         template,
         BaseFetcher

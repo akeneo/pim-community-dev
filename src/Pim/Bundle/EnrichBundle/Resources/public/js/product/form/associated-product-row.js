@@ -10,7 +10,6 @@ define(
         'underscore',
         'jquery',
         'oro/datagrid/product-row',
-        'pim/media-url-generator',
         'pim/template/product/tab/associated-product-row',
         'oro/mediator',
         'pim/security-context'
@@ -19,7 +18,6 @@ define(
         _,
         $,
         BaseRow,
-        mediaUrlGenerator,
         thumbnailTemplate,
         mediator,
         SecurityContext

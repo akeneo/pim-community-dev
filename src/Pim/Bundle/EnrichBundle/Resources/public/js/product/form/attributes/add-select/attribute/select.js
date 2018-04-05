@@ -15,7 +15,6 @@ define(
         'pim/common/add-select',
         'pim/product/add-select/attribute/line',
         'pim/fetcher-registry',
-        'pim/attribute-manager',
         'pim/formatter/choices/base'
     ],
     function (
@@ -25,7 +24,6 @@ define(
         BaseAddSelect,
         LineView,
         FetcherRegistry,
-        AttributeManager,
         ChoicesFormatter
     ) {
         return BaseAddSelect.extend({

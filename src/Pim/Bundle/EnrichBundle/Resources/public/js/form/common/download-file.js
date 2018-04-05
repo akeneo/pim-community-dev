@@ -14,7 +14,6 @@ define(
         'pim/form',
         'pim/template/form/download-file',
         'routing',
-        'pim/user-context',
         'pim/common/property'
     ],
     function (
@@ -23,7 +22,6 @@ define(
         BaseForm,
         template,
         Routing,
-        UserContext,
         propertyAccessor
     ) {
         return BaseForm.extend({

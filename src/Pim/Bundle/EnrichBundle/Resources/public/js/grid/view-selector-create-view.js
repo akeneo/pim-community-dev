@@ -10,7 +10,6 @@
  */
 define(
     [
-        'jquery',
         'underscore',
         'oro/translator',
         'backbone',
@@ -23,7 +22,6 @@ define(
         'oro/messenger'
     ],
     function (
-        $,
         _,
         __,
         Backbone,

@@ -8,7 +8,6 @@
  */
 define(
     [
-        'jquery',
         'underscore',
         'oro/translator',
         'pim/template/export/product/edit/content/structure/locales',
@@ -17,7 +16,6 @@ define(
         'jquery.select2'
     ],
     function (
-        $,
         _,
         __,
         template,

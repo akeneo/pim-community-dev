@@ -11,11 +11,10 @@ define(
         'underscore',
         'oro/translator',
         'pim/form',
-        'oro/mediator',
         'pim/template/form/meta/status',
         'pim/common/property'
     ],
-    function (_, __, BaseForm, mediator, formTemplate, propertyAccessor) {
+    function (_, __, BaseForm, formTemplate, propertyAccessor) {
         return BaseForm.extend({
             tagName: 'span',
             className: 'AknTitleContainer-metaItem',

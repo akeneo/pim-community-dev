@@ -1,30 +1,18 @@
 'use strict';
 
 define([
-    'jquery',
     'underscore',
     'oro/translator',
     'pim/filter/filter',
-    'routing',
     'pim/template/filter/product/updated',
-    'pim/fetcher-registry',
-    'pim/user-context',
-    'pim/i18n',
-    'jquery.select2',
     'datepicker',
     'pim/date-context',
     'pim/formatter/date'
 ], function (
-    $,
     _,
     __,
     BaseFilter,
-    Routing,
     template,
-    fetcherRegistry,
-    userContext,
-    i18n,
-    initSelect2,
     Datepicker,
     DateContext,
     DateFormatter

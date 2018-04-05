@@ -8,115 +8,113 @@
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 define([
-        'jquery',
-        'underscore',
-        'oro/translator',
-        'pim/form',
-        'pim/fetcher-registry',
-        'pim/common/property',
-        'routing',
-        'pim/router',
-        'pim/user-context',
-        'pim/i18n',
-        'pim/template/form/attribute-group/list'
-    ],
-    function (
-        $,
-        _,
-        __,
-        BaseForm,
-        FetcherRegistry,
-        propertyAccessor,
-        Routing,
-        router,
-        UserContext,
-        i18n,
-        template
-    ) {
-        return BaseForm.extend({
-            className: 'tabsection',
-            template: _.template(template),
-            attributeGroups: [],
-            events: {
-                'click .attribute-group-link': 'redirectToGroup'
-            },
+    'jquery',
+    'underscore',
+    'oro/translator',
+    'pim/form',
+    'pim/fetcher-registry',
+    'routing',
+    'pim/router',
+    'pim/user-context',
+    'pim/i18n',
+    'pim/template/form/attribute-group/list'
+],
+function (
+    $,
+    _,
+    __,
+    BaseForm,
+    FetcherRegistry,
+    Routing,
+    router,
+    UserContext,
+    i18n,
+    template
+) {
+    return BaseForm.extend({
+        className: 'tabsection',
+        template: _.template(template),
+        attributeGroups: [],
+        events: {
+            'click .attribute-group-link': 'redirectToGroup'
+        },
 
-            /**
+        /**
              * {@inheritdoc}
              */
-            configure: function () {
-                return $.when(
-                    FetcherRegistry.getFetcher('attribute-group').fetchAll(),
-                    BaseForm.prototype.configure.apply(this, arguments)
-                ).then(function (attributeGroups) {
-                    this.attributeGroups = attributeGroups;
-                }.bind(this));
-            },
+        configure: function () {
+            return $.when(
+                FetcherRegistry.getFetcher('attribute-group').fetchAll(),
+                BaseForm.prototype.configure.apply(this, arguments)
+            ).then(function (attributeGroups) {
+                this.attributeGroups = attributeGroups;
+            }.bind(this));
+        },
 
-            /**
+        /**
              * {@inheritdoc}
              */
-            render: function () {
-                this.$el.html(this.template({
-                    attributeGroups: _.sortBy(_.values(this.attributeGroups), 'sort_order'),
-                    i18n: i18n,
-                    uiLocale: UserContext.get('uiLocale')
-                }));
+        render: function () {
+            this.$el.html(this.template({
+                attributeGroups: _.sortBy(_.values(this.attributeGroups), 'sort_order'),
+                i18n: i18n,
+                uiLocale: UserContext.get('uiLocale')
+            }));
 
-                this.$('tbody').sortable({
-                    handle: '.handle',
-                    containment: 'parent',
-                    tolerance: 'pointer',
-                    update: this.updateAttributeOrders.bind(this),
-                    helper: function(e, tr) {
-                        var $originals = tr.children();
-                        var $helper = tr.clone();
-                        $helper.children().each(function(index) {
-                            $(this).width($originals.eq(index).width());
-                        });
+            this.$('tbody').sortable({
+                handle: '.handle',
+                containment: 'parent',
+                tolerance: 'pointer',
+                update: this.updateAttributeOrders.bind(this),
+                helper: function(e, tr) {
+                    var $originals = tr.children();
+                    var $helper = tr.clone();
+                    $helper.children().each(function(index) {
+                        $(this).width($originals.eq(index).width());
+                    });
 
-                        return $helper;
-                    }
-                });
+                    return $helper;
+                }
+            });
 
-                this.renderExtensions();
-            },
+            this.renderExtensions();
+        },
 
-            /**
+        /**
              * Update the attribute order based on the dom
              */
-            updateAttributeOrders: function () {
-                var sortOrder = _.reduce(this.$('.attribute-group'), function (previous, current, order) {
-                    var next = _.extend({}, previous);
-                    next[current.dataset.attributeGroupCode] = order;
+        updateAttributeOrders: function () {
+            var sortOrder = _.reduce(this.$('.attribute-group'), function (previous, current, order) {
+                var next = _.extend({}, previous);
+                next[current.dataset.attributeGroupCode] = order;
 
-                    return next;
-                }, {});
+                return next;
+            }, {});
 
-                $.ajax({
-                    url: Routing.generate('pim_enrich_attributegroup_rest_sort'),
-                    type: 'PATCH',
-                    data: JSON.stringify(sortOrder)
-                }).then(function (attributeGroups) {
-                    this.attributeGroups = attributeGroups;
+            $.ajax({
+                url: Routing.generate('pim_enrich_attributegroup_rest_sort'),
+                type: 'PATCH',
+                data: JSON.stringify(sortOrder)
+            }).then(function (attributeGroups) {
+                this.attributeGroups = attributeGroups;
 
-                    FetcherRegistry.getFetcher('attribute-group').clear();
+                FetcherRegistry.getFetcher('attribute-group').clear();
 
-                    this.render();
-                }.bind(this));
-            },
+                this.render();
+            }.bind(this));
+        },
 
-            /**
+        /**
              * Redirect to attribute group page
              *
              * @param {event} event
              */
-            redirectToGroup: function (event) {
-                router.redirectToRoute(
-                    'pim_enrich_attributegroup_edit',
-                    {identifier: event.target.dataset.attributeGroupCode}
-                )
-            }
-        });
-    }
+        redirectToGroup: function (event) {
+            router.redirectToRoute(
+                'pim_enrich_attributegroup_edit',
+                {identifier: event.target.dataset.attributeGroupCode}
+            );
+        }
+    });
+}
 );

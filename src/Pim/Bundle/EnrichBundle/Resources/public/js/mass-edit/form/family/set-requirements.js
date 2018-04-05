@@ -10,9 +10,7 @@ define(
     [
         'underscore',
         'oro/translator',
-        'routing',
         'pim/mass-edit-form/product/operation',
-        'pim/user-context',
         'pim/form-builder',
         'pim/common/property',
         'pim/fetcher-registry',
@@ -21,9 +19,7 @@ define(
     function (
         _,
         __,
-        Routing,
         BaseOperation,
-        UserContext,
         FormBuilder,
         propertyAccessor,
         FetcherRegistry,

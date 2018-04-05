@@ -9,14 +9,12 @@
  */
 define(
     [
-        'jquery',
         'underscore',
         'backbone',
-        'oro/mediator',
         'pim/form',
         'pim/template/form/save-buttons'
     ],
-    function ($, _, Backbone, mediator, BaseForm, template) {
+    function (_, Backbone, BaseForm, template) {
         return BaseForm.extend({
             className: 'AknTitleContainer-rightButton',
             template: _.template(template),

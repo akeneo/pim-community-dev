@@ -8,16 +8,12 @@
 'use strict';
 
 define([
-    'jquery',
     'underscore',
-    'backbone',
     'oro/translator',
     'pim/form',
     'require-context'
 ], function (
-    $,
     _,
-    Backbone,
     __,
     BaseForm,
     requireContext

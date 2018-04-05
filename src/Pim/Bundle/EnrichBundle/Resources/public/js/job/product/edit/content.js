@@ -10,14 +10,12 @@ define(
     [
         'underscore',
         'oro/translator',
-        'backbone',
         'pim/template/export/product/edit/content',
         'pim/form'
     ],
     function (
         _,
         __,
-        Backbone,
         template,
         BaseForm
     ) {

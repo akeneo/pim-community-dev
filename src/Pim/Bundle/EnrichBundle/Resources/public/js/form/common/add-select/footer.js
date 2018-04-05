@@ -9,13 +9,11 @@
  */
 define(
     [
-        'jquery',
         'underscore',
         'backbone',
         'pim/template/form/add-select/footer'
     ],
     function (
-        $,
         _,
         Backbone,
         template

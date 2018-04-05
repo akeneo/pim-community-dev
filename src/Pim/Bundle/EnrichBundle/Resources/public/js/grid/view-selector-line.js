@@ -10,16 +10,12 @@
  */
 define(
     [
-        'jquery',
         'underscore',
-        'backbone',
         'pim/form',
         'pim/template/grid/view-selector/line'
     ],
     function (
-        $,
         _,
-        Backbone,
         BaseForm,
         template
     ) {

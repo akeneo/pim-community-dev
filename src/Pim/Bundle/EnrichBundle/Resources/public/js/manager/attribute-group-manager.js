@@ -1,8 +1,8 @@
 'use strict';
 
 define(
-    ['jquery', 'underscore', 'pim/fetcher-registry'],
-    function ($, _, FetcherRegistry) {
+    ['underscore', 'pim/fetcher-registry'],
+    function (_, FetcherRegistry) {
     return {
         /**
          * Get all the attribute group for the given product

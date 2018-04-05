@@ -9,13 +9,11 @@
  */
 define(
     [
-        'jquery',
         'underscore',
-        'backbone',
         'pim/form',
         'pim/template/form/form-tabs'
     ],
-    function ($, _, Backbone, BaseForm, template) {
+    function (_, BaseForm, template) {
         return BaseForm.extend({
             template: _.template(template),
 

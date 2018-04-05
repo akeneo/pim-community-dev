@@ -7,12 +7,11 @@
  */
 
 define([
-    'jquery',
     'underscore',
     'oro/translator',
     'pim/form',
     'pim/template/form/creation/field'
-], function($, _, __, BaseForm, template) {
+], function(_, __, BaseForm, template) {
 
     return BaseForm.extend({
         template: _.template(template),

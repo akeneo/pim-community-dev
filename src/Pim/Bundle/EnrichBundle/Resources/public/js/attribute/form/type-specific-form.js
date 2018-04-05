@@ -11,17 +11,13 @@
 'use strict';
 
 define([
-    'jquery',
     'underscore',
-    'backbone',
     'oro/translator',
     'pim/form',
     'pim/form-builder',
     'pim/attribute-edit-form/type-specific-form-registry'
 ], function (
-    $,
     _,
-    Backbone,
     __,
     BaseForm,
     FormBuilder,

@@ -7,9 +7,7 @@
  */
 
 define([
-    'jquery',
     'underscore',
-    'backbone',
     'routing',
     'pim/form',
     'pim/user-context',
@@ -19,9 +17,7 @@ define([
     'pim/initselect2',
     'pim/template/form/creation/type'
 ], function(
-    $,
     _,
-    Backbone,
     Routing,
     BaseForm,
     UserContext,

@@ -8,7 +8,6 @@
  */
 define(
     [
-        'jquery',
         'underscore',
         'oro/translator',
         'oro/messenger',
@@ -16,7 +15,6 @@ define(
         'pim/form-modal'
     ],
     function(
-        $,
         _,
         __,
         messenger,

@@ -1,8 +1,8 @@
 'use strict';
 
 define(
-    ['jquery', 'pim/form-config-provider'],
-    function ($, ConfigProvider) {
+    ['pim/form-config-provider'],
+    function (ConfigProvider) {
         const getFormExtensions = (formMeta) => {
             return ConfigProvider.getExtensionMap().then((extensionMap) => {
                 return extensionMap.filter(extension => extension.parent === formMeta.code);

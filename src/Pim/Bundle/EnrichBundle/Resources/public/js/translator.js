@@ -1,5 +1,5 @@
-define(['module', 'underscore', 'translator-lib', 'json'],
-function (module, _, Translator) {
+define(['underscore', 'translator-lib', 'json'],
+function (_, Translator) {
     'use strict';
 
     var dict = {};

@@ -8,7 +8,6 @@ define(
         'oro/mediator',
         'oro/loading-mask',
         'pim/dialog',
-        'pim/template/attribute-option/index',
         'pim/template/attribute-option/edit',
         'pim/template/attribute-option/show',
         'jquery-ui'
@@ -22,7 +21,6 @@ define(
         mediator,
         LoadingMask,
         Dialog,
-        indexTemplate,
         editTemplate,
         showTemplate
     ) {

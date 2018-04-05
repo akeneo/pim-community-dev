@@ -10,17 +10,13 @@
  */
 define(
     [
-        'jquery',
         'underscore',
-        'backbone',
         'pim/form',
-        'oro/mediator',
         'oro/messenger',
-        'pim/field-manager',
         'pim/product-edit-form/attributes/validation-error',
         'pim/user-context'
     ],
-    function ($, _, Backbone, BaseForm, mediator, messenger, FieldManager, ValidationError, UserContext) {
+    function (_, BaseForm, messenger, ValidationError, UserContext) {
         return BaseForm.extend({
             validationErrors: {},
 

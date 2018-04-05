@@ -11,7 +11,6 @@ define([
         'underscore',
         'oro/translator',
         'pim/form',
-        'pim/fetcher-registry',
         'pim/template/create/tab/properties/general',
         'pim/user-context',
         'oro/mediator',
@@ -22,10 +21,8 @@ define([
         _,
         __,
         BaseForm,
-        FetcherRegistry,
         template,
         UserContext,
-        mediator,
         propertyAccessor
     ) {
         return BaseForm.extend({

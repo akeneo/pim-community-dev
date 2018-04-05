@@ -9,16 +9,13 @@
  */
 define(
     [
-        'jquery',
         'underscore',
         'oro/translator',
-        'pim/user-context',
         'pim/form',
-        'oro/mediator',
         'pim/fetcher-registry',
         'pim/template/form/group-selector'
     ],
-    function ($, _, __, UserContext, BaseForm, mediator, fetcherRegistry, template) {
+    function (_, __, BaseForm, fetcherRegistry, template) {
         return BaseForm.extend({
             tagName: 'ul',
             className: 'AknVerticalNavtab nav nav-tabs group-selector',

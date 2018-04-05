@@ -11,14 +11,13 @@ define(
     [
         'jquery',
         'underscore',
-        'oro/mediator',
         'pim/form',
         'pim/template/product/meta/family',
         'pim/fetcher-registry',
         'pim/user-context',
         'pim/i18n'
     ],
-    function ($, _, mediator, BaseForm, template, FetcherRegistry, UserContext, i18n) {
+    function ($, _, BaseForm, template, FetcherRegistry, UserContext, i18n) {
         return BaseForm.extend({
             className: 'AknColumn-block',
 

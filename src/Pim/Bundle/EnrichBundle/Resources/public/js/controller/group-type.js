@@ -8,11 +8,10 @@ define(
         'pim/form-builder',
         'pim/fetcher-registry',
         'pim/user-context',
-        'pim/dialog',
         'pim/page-title',
         'pim/i18n'
     ],
-    function (_, __, BaseController, FormBuilder, FetcherRegistry, UserContext, Dialog, PageTitle, i18n) {
+    function (_, __, BaseController, FormBuilder, FetcherRegistry, UserContext, PageTitle, i18n) {
         return BaseController.extend({
             /**
              * {@inheritdoc}

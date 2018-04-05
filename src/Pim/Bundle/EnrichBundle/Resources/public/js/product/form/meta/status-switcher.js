@@ -11,14 +11,12 @@ define(
     [
         'underscore',
         'oro/translator',
-        'oro/mediator',
         'pim/form',
         'pim/template/product/meta/status-switcher'
     ],
     function (
         _,
         __,
-        mediator,
         BaseForm,
         template
     ) {

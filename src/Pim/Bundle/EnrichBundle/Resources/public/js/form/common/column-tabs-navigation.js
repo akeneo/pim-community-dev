@@ -12,14 +12,12 @@
  */
 define(
     [
-        'jquery',
         'underscore',
         'oro/translator',
         'pim/form',
         'pim/template/form/column-tabs-navigation'
     ],
     function (
-        $,
         _,
         __,
         BaseForm,

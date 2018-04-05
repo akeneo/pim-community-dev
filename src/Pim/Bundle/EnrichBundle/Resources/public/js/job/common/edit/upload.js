@@ -8,12 +8,11 @@
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 define([
-    'jquery',
     'underscore',
     'oro/translator',
     'pim/form',
     'pim/template/export/common/edit/upload'
-], function ($, _, __, BaseForm, template) {
+], function (_, __, BaseForm, template) {
     return BaseForm.extend({
         template: _.template(template),
         events: {

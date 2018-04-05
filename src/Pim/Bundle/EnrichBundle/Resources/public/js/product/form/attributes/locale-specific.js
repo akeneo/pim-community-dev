@@ -8,12 +8,11 @@
  */
 define(
     [
-        'jquery',
         'underscore',
         'oro/translator',
         'pim/form'
     ],
-    function ($, _, __, BaseForm) {
+    function (_, __, BaseForm) {
         return BaseForm.extend({
             configure: function () {
                 this.listenTo(this.getRoot(), 'pim_enrich:form:field:extension:add', this.addFieldExtension);

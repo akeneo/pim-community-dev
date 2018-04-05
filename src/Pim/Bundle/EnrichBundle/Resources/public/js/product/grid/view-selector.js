@@ -8,13 +8,11 @@
 define(
     [
         'underscore',
-        'jquery',
         'pim/form-builder',
         'pim/form'
     ],
     function(
         _,
-        $,
         FormBuilder,
         BaseForm
     ) {

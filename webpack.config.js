@@ -37,10 +37,16 @@ module.exports = {
     },
     devtool: 'source-map',
     resolve: {
+        extensions: ['.js', '.ts', '.json', '.html'],
+        cacheWithContext: false,
         symlinks: false,
+        modules: [path.resolve(rootDir, './web/bundles'), 'node_modules'],
         alias: _.mapKeys(moduleAliases, (path, key) => `${key}$`)
     },
     module: {
+        noParse: function(content) {
+            return /underscore/.test(content);
+        },
         rules: [
             // Inject the module config (to replace module.config() from requirejs)
             {
@@ -58,6 +64,7 @@ module.exports = {
             // Load html without needing to prefix the requires with 'text!'
             {
                 test: /\.html$/,
+                include: /web\/bundles/,
                 exclude: /node_modules|spec/,
                 use: [
                     {
@@ -124,13 +131,13 @@ module.exports = {
             // Process the pim webpack files with babel
             {
                 test: /\.js$/,
-                include: /(web\/bundles|webpack|spec)/,
-                exclude: /lib|node_modules/,
+                include: /(web\/bundles)/,
+                exclude: /lib|node_modules|src|spec/,
                 use: {
                     loader: 'babel-loader',
                     options: {
                         presets: babelPresets,
-                        cacheDirectory: 'web/cache'
+                        cacheDirectory: 'web/cache/babel'
                     }
                 }
             }
