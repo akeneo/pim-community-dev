@@ -1,5 +1,5 @@
 import StartsWith from 'pimfront/product-grid/domain/model/filter/operator/starts-with';
-import Equal from 'pimfront/product-grid/domain/model/filter/operator/equal';
+import Equal from 'pimfront/product-grid/domain/model/filter/operator/equal-boolean';
 
 describe('>>>DOMAIN --- model - operator - starts with', () => {
   test('I can create a new starts with operator', () => {

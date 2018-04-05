@@ -1,5 +1,5 @@
 import Contains from 'pimfront/product-grid/domain/model/filter/operator/contains';
-import Equal from 'pimfront/product-grid/domain/model/filter/operator/equal';
+import Equal from 'pimfront/product-grid/domain/model/filter/operator/equal-boolean';
 
 describe('>>>DOMAIN --- model - operator - contains', () => {
   test('I can create a new contains operator', () => {

@@ -7,6 +7,7 @@ import All from 'pimfront/product-grid/domain/model/filter/operator/all';
 import __ from 'pimfront/tools/translator';
 import Dropdown, {DropdownElement} from 'pimfront/app/application/component/dropdown';
 import {Operator} from 'pimfront/product-grid/domain/model/filter/operator';
+import {Value, String} from 'pimfront/product-grid/domain/model/filter/value';
 
 interface FilterViewProps {
   // filter: TextAttributeFilter | TextAttributeFilter;
@@ -17,6 +18,7 @@ interface FilterViewProps {
 
 interface FilterViewState {
   isOpen: boolean;
+  value: string | string[];
 }
 
 const toString = (filter: Filter) => {
@@ -37,7 +39,12 @@ Given: ${JSON.stringify(props.filter)}`);
 
     this.state = {
       isOpen: false,
+      value: props.filter.value.getValue(),
     };
+  }
+
+  static getDerivedStateFromProps(nextProps: FilterViewProps, prevState: FilterViewState) {
+    return nextProps.filter.value.getValue() !== prevState.value ? {value: nextProps.filter.value.getValue()} : null;
   }
 
   private open() {
@@ -50,6 +57,14 @@ Given: ${JSON.stringify(props.filter)}`);
 
   private onOperatorChange(operator: Operator) {
     this.props.onFilterChanged(this.props.filter.setOperator(operator));
+  }
+
+  private onValueChange(value: Value) {
+    this.props.onFilterChanged(this.props.filter.setValue(value));
+  }
+
+  private onStringValueChange(value: string) {
+    this.onValueChange(String.fromValue(value));
   }
 
   private renderView(label: string) {
@@ -69,6 +84,13 @@ Given: ${JSON.stringify(props.filter)}`);
                 label: operator.identifier,
                 original: operator,
               }))}
+            />
+            <input
+              type="text"
+              value={this.state.value}
+              onChange={event => {
+                this.onStringValueChange(event.target.value);
+              }}
             />
           </div>
         </div>

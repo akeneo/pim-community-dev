@@ -1,5 +1,5 @@
 import IsEmpty from 'pimfront/product-grid/domain/model/filter/operator/is-empty';
-import Equal from 'pimfront/product-grid/domain/model/filter/operator/equal';
+import Equal from 'pimfront/product-grid/domain/model/filter/operator/equal-boolean';
 
 describe('>>>DOMAIN --- model - operator - is empty', () => {
   test('I can create a new is empty operator', () => {

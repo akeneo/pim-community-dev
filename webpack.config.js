@@ -194,6 +194,9 @@ module.exports = {
     },
 
     plugins: [
+        new webpack.DefinePlugin({
+            'process.env.NODE_ENV': isProd ? JSON.stringify('production') : JSON.stringify('development')
+        }),
         // Clean up the dist folder and source maps before rebuild
         new WebpackCleanupPlugin(),
 
@@ -220,7 +223,6 @@ module.exports = {
             name: 'vendor',
             minChunks: module => module.context && module.context.indexOf('node_modules') !== -1
         }),
-        new webpack.optimize.CommonsChunkPlugin({name: 'manifest'}),
-
+        new webpack.optimize.CommonsChunkPlugin({ name: 'manifest' })
     ]
 };

@@ -2,7 +2,7 @@ import {AttributeFilter} from 'pimfront/product-grid/domain/model/filter/filter'
 import {Null, Boolean as BooleanValue, Value} from 'pimfront/product-grid/domain/model/filter/value';
 import {Operator} from 'pimfront/product-grid/domain/model/filter/operator';
 import All from 'pimfront/product-grid/domain/model/filter/operator/all';
-import Equal from 'pimfront/product-grid/domain/model/filter/operator/equal';
+import Equal from 'pimfront/product-grid/domain/model/filter/operator/equal-boolean';
 import {AttributeInterface} from 'pimfront/product-grid/domain/model/field';
 
 export interface Choice {

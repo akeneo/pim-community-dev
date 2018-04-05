@@ -1,5 +1,5 @@
 import DoesNotContain from 'pimfront/product-grid/domain/model/filter/operator/does-not-contain';
-import Equal from 'pimfront/product-grid/domain/model/filter/operator/equal';
+import Equal from 'pimfront/product-grid/domain/model/filter/operator/equal-boolean';
 
 describe('>>>DOMAIN --- model - operator - all', () => {
   test('I can create a new all operator', () => {

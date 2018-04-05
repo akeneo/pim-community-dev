@@ -1,5 +1,5 @@
 import InList from 'pimfront/product-grid/domain/model/filter/operator/in-list';
-import Equal from 'pimfront/product-grid/domain/model/filter/operator/equal';
+import Equal from 'pimfront/product-grid/domain/model/filter/operator/equal-boolean';
 
 describe('>>>DOMAIN --- model - operator - in list', () => {
   test('I can create a new all operator', () => {

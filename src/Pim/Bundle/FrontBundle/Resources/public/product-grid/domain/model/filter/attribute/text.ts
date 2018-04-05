@@ -7,7 +7,7 @@ import DoesNotContain from 'pimfront/product-grid/domain/model/filter/operator/d
 import StartsWith from 'pimfront/product-grid/domain/model/filter/operator/starts-with';
 import IsEmpty from 'pimfront/product-grid/domain/model/filter/operator/is-empty';
 import InList from 'pimfront/product-grid/domain/model/filter/operator/in-list';
-import Equal from 'pimfront/product-grid/domain/model/filter/operator/equal';
+import Equal from 'pimfront/product-grid/domain/model/filter/operator/equal-string';
 import {AttributeInterface} from 'pimfront/product-grid/domain/model/field';
 
 type SupportedOperator = All | Equal | Contains | DoesNotContain | StartsWith | IsEmpty | InList;
@@ -35,6 +35,10 @@ export default class Text extends AttributeFilter {
     const value = operator.supportsValue(this.value) ? this.value : operator.defaultValue();
 
     return Text.create(this.field, operator, value);
+  }
+
+  public setValue(value: Value): Text {
+    return Text.create(this.field, this.operator, value);
   }
 
   getOperators(): Operator[] {

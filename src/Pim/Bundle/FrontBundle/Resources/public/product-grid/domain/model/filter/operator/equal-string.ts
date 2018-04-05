@@ -1,5 +1,5 @@
 import {BaseOperator} from 'pimfront/product-grid/domain/model/filter/operator';
-import {Value, String, Boolean} from 'pimfront/product-grid/domain/model/filter/value';
+import {Value, String} from 'pimfront/product-grid/domain/model/filter/value';
 
 export default class Equal extends BaseOperator {
   readonly identifier: string = '=';
@@ -10,7 +10,7 @@ export default class Equal extends BaseOperator {
   }
 
   public supportsValue(value: Value): boolean {
-    return value instanceof String || value instanceof Boolean;
+    return value instanceof String;
   }
 
   public defaultValue(): String {

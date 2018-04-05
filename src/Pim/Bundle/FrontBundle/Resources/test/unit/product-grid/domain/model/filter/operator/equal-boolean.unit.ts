@@ -1,4 +1,4 @@
-import Equal from 'pimfront/product-grid/domain/model/filter/operator/equal';
+import Equal from 'pimfront/product-grid/domain/model/filter/operator/equal-boolean';
 import All from 'pimfront/product-grid/domain/model/filter/operator/all';
 
 describe('>>>DOMAIN --- model - operator - equal', () => {
