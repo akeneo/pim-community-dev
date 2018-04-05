@@ -149,24 +149,6 @@ extensions:
             fieldName: localizable
             label: pim_enrich.form.attribute.tab.properties.label.localizable
 
-    pim-attribute-create-form-properties-common-is-locale-specific:
-        module: pim/attribute-edit-form/properties/is-locale-specific
-        parent: pim-attribute-create-form-properties-common
-        targetZone: content
-        position: 150
-        config:
-            fieldName: is_locale_specific
-            label: pim_enrich.form.attribute.tab.properties.label.is_locale_specific
-
-    pim-attribute-create-form-properties-common-available-locales:
-        module: pim/attribute-edit-form/properties/available-locales
-        parent: pim-attribute-create-form-properties-common
-        targetZone: content
-        position: 160
-        config:
-            fieldName: available_locales
-            label: pim_enrich.form.attribute.tab.properties.label.available_locales
-
     pim-attribute-create-form-properties-common-usable-as-grid-filter:
         module: pim/form/common/fields/boolean
         parent: pim-attribute-create-form-properties-common

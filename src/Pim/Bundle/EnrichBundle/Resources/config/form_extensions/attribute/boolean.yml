@@ -1,0 +1,24 @@
+extensions:
+    pim-attribute-form-boolean:
+        module: pim/common/simple-view
+        config:
+            template: pim/template/common/drop-zone
+
+    pim-attribute-edit-form-boolean-is-locale-specific:
+        module: pim/attribute-edit-form/properties/is-locale-specific
+        parent: pim-attribute-form-boolean
+        targetZone: content
+        position: 80
+        config:
+            fieldName: is_locale_specific
+            label: pim_enrich.form.attribute.tab.properties.label.is_locale_specific
+
+    pim-attribute-edit-form-boolean-available-locales:
+        module: pim/attribute-edit-form/properties/available-locales
+        parent: pim-attribute-form-boolean
+        targetZone: content
+        position: 90
+        config:
+            fieldName: available_locales
+            label: pim_enrich.form.attribute.tab.properties.label.available_locales
+
