@@ -59,3 +59,16 @@ parameters:
     # these parameters indicate the advisable limitations of the PIM in term of volume
     # if your volume of data exceeds these limits, it can impact the performance
     attributes_per_family_limit: 100
+    options_per_attribute_limit: 100
+    attributes_limit: 100
+    categories_limit: 100
+    category_trees_limit: 100
+    channels_limit: 100
+    families_limit: 100
+    locales_limit: 100
+    localizable_and_scopable_attributes_limit: 100
+    localizable_attributes_limit: 100
+    scopable_attributes_limit: 100
+    products_limit: 100
+    product_models_limit: 100
+    variant_products_limit: 100

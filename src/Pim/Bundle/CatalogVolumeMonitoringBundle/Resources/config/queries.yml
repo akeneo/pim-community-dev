@@ -1,5 +1,18 @@
 parameters:
-    pim_volume_monitoring.persistence.query.attributes_per_family.class: Pim\Bundle\CatalogVolumeMonitoringBundle\Persistence\Query\Sql\SqlAttributesPerFamily
+    pim_volume_monitoring.persistence.query.attributes_per_family.class: Pim\Bundle\CatalogVolumeMonitoringBundle\Persistence\Query\Sql\AttributesPerFamily
+    pim_volume_monitoring.persistence.query.options_per_attribute.class: Pim\Bundle\CatalogVolumeMonitoringBundle\Persistence\Query\Sql\OptionsPerAttribute
+    pim_volume_monitoring.persistence.query.attributes.class: Pim\Bundle\CatalogVolumeMonitoringBundle\Persistence\Query\Sql\Attributes
+    pim_volume_monitoring.persistence.query.categories.class: Pim\Bundle\CatalogVolumeMonitoringBundle\Persistence\Query\Sql\Categories
+    pim_volume_monitoring.persistence.query.category_trees.class: Pim\Bundle\CatalogVolumeMonitoringBundle\Persistence\Query\Sql\CategoryTrees
+    pim_volume_monitoring.persistence.query.channels.class: Pim\Bundle\CatalogVolumeMonitoringBundle\Persistence\Query\Sql\Channels
+    pim_volume_monitoring.persistence.query.families.class: Pim\Bundle\CatalogVolumeMonitoringBundle\Persistence\Query\Sql\Families
+    pim_volume_monitoring.persistence.query.locales.class: Pim\Bundle\CatalogVolumeMonitoringBundle\Persistence\Query\Sql\Locales
+    pim_volume_monitoring.persistence.query.localizable_and_scopable_attributes.class: Pim\Bundle\CatalogVolumeMonitoringBundle\Persistence\Query\Sql\LocalizableAndScopableAttributes
+    pim_volume_monitoring.persistence.query.localizable_attributes.class: Pim\Bundle\CatalogVolumeMonitoringBundle\Persistence\Query\Sql\LocalizableAttributes
+    pim_volume_monitoring.persistence.query.scopable_attributes.class: Pim\Bundle\CatalogVolumeMonitoringBundle\Persistence\Query\Sql\ScopableAttributes
+    pim_volume_monitoring.persistence.query.products.class: Pim\Bundle\CatalogVolumeMonitoringBundle\Persistence\Query\Sql\Products
+    pim_volume_monitoring.persistence.query.product_models.class: Pim\Bundle\CatalogVolumeMonitoringBundle\Persistence\Query\Sql\ProductModels
+    pim_volume_monitoring.persistence.query.variant_products.class: Pim\Bundle\CatalogVolumeMonitoringBundle\Persistence\Query\Sql\VariantProducts
 
 services:
     pim_volume_monitoring.persistence.query.attributes_per_family:
@@ -9,3 +22,109 @@ services:
             - '%attributes_per_family_limit%'
         tags:
             - { name: pim_volume_monitoring.persistence.average_max_query }
+
+    pim_volume_monitoring.persistence.query.options_per_attribute:
+        class: '%pim_volume_monitoring.persistence.query.options_per_attribute.class%'
+        arguments:
+            - '@database_connection'
+            - '%options_per_attribute_limit%'
+        tags:
+            - { name: pim_volume_monitoring.persistence.average_max_query }
+
+    pim_volume_monitoring.persistence.query.attributes:
+        class: '%pim_volume_monitoring.persistence.query.attributes.class%'
+        arguments:
+            - '@database_connection'
+            - '%attributes_limit%'
+        tags:
+            - { name: pim_volume_monitoring.persistence.average_max_query }
+
+    pim_volume_monitoring.persistence.query.categories:
+        class: '%pim_volume_monitoring.persistence.query.categories.class%'
+        arguments:
+            - '@database_connection'
+            - '%categories_limit%'
+        tags:
+            - { name: pim_volume_monitoring.persistence.average_max_query }
+
+    pim_volume_monitoring.persistence.query.category_trees:
+        class: '%pim_volume_monitoring.persistence.query.category_trees.class%'
+        arguments:
+            - '@database_connection'
+            - '%category_trees_limit%'
+        tags:
+            - { name: pim_volume_monitoring.persistence.average_max_query }
+
+    pim_volume_monitoring.persistence.query.channels:
+        class: '%pim_volume_monitoring.persistence.query.channels.class%'
+        arguments:
+            - '@database_connection'
+            - '%channels_limit%'
+        tags:
+            - { name: pim_volume_monitoring.persistence.average_max_query }
+
+    pim_volume_monitoring.persistence.query.families:
+        class: '%pim_volume_monitoring.persistence.query.families.class%'
+        arguments:
+            - '@database_connection'
+            - '%families_limit%'
+        tags:
+            - { name: pim_volume_monitoring.persistence.average_max_query }
+
+    pim_volume_monitoring.persistence.query.locales:
+        class: '%pim_volume_monitoring.persistence.query.locales.class%'
+        arguments:
+            - '@database_connection'
+            - '%locales_limit%'
+        tags:
+            - { name: pim_volume_monitoring.persistence.average_max_query }
+
+    pim_volume_monitoring.persistence.query.localizable_and_scopable_attributes:
+        class: '%pim_volume_monitoring.persistence.query.localizable_and_scopable_attributes.class%'
+        arguments:
+            - '@database_connection'
+            - '%localizable_and_scopable_attributes_limit%'
+        tags:
+            - { name: pim_volume_monitoring.persistence.average_max_query }
+
+    pim_volume_monitoring.persistence.query.localizable_attributes:
+        class: '%pim_volume_monitoring.persistence.query.localizable_attributes.class%'
+        arguments:
+            - '@database_connection'
+            - '%localizable_attributes_limit%'
+        tags:
+            - { name: pim_volume_monitoring.persistence.average_max_query }
+
+    pim_volume_monitoring.persistence.query.scopable_attributes:
+        class: '%pim_volume_monitoring.persistence.query.scopable_attributes.class%'
+        arguments:
+            - '@database_connection'
+            - '%scopable_attributes_limit%'
+        tags:
+            - { name: pim_volume_monitoring.persistence.average_max_query }
+
+    pim_volume_monitoring.persistence.query.products:
+        class: '%pim_volume_monitoring.persistence.query.products.class%'
+        arguments:
+            - '@database_connection'
+            - '%products_limit%'
+        tags:
+            - { name: pim_volume_monitoring.persistence.average_max_query }
+
+    pim_volume_monitoring.persistence.query.product_models:
+        class: '%pim_volume_monitoring.persistence.query.product_models.class%'
+        arguments:
+            - '@database_connection'
+            - '%product_models_limit%'
+        tags:
+            - { name: pim_volume_monitoring.persistence.average_max_query }
+
+    pim_volume_monitoring.persistence.query.variant_products:
+        class: '%pim_volume_monitoring.persistence.query.variant_products.class%'
+        arguments:
+            - '@database_connection'
+            - '%variant_products_limit%'
+        tags:
+            - { name: pim_volume_monitoring.persistence.average_max_query }
+
+
