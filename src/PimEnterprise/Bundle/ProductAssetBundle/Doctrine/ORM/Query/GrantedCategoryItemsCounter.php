@@ -9,12 +9,12 @@
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Bundle\EnrichBundle\Doctrine\Counter;
+namespace PimEnterprise\Bundle\ProductAssetBundle\Doctrine\ORM\Query;
 
 use Akeneo\Component\Classification\Model\CategoryInterface;
 use Akeneo\Component\Classification\Repository\CategoryRepositoryInterface;
 use Akeneo\Component\Classification\Repository\ItemCategoryRepositoryInterface;
-use Pim\Bundle\EnrichBundle\Doctrine\Counter\CategoryItemsCounter;
+use Pim\Bundle\EnrichBundle\Doctrine\Counter\CategoryItemsCounterInterface;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;
 use PimEnterprise\Component\Security\Attributes;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
@@ -25,16 +25,22 @@ use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
  *
  * @author Marie Bochu <marie.bochu@akeneo.com>
  */
-class GrantedCategoryItemsCounter extends CategoryItemsCounter
+class GrantedCategoryItemsCounter implements CategoryItemsCounterInterface
 {
+    /** @var ItemCategoryRepositoryInterface */
+    private $itemRepository;
+
+    /** @var CategoryRepositoryInterface */
+    private $categoryRepository;
+
     /** @var CategoryAccessRepository */
-    protected $categoryAccessRepo;
+    private $categoryAccessRepo;
 
     /** @var AuthorizationCheckerInterface */
-    protected $authorizationChecker;
+    private $authorizationChecker;
 
     /** @var TokenStorageInterface */
-    protected $tokenStorage;
+    private $tokenStorage;
 
     /**
      * @param ItemCategoryRepositoryInterface $itemRepository       Item repository
@@ -50,8 +56,8 @@ class GrantedCategoryItemsCounter extends CategoryItemsCounter
         AuthorizationCheckerInterface $authorizationChecker,
         TokenStorageInterface $tokenStorage
     ) {
-        parent::__construct($itemRepository, $categoryRepository);
-
+        $this->itemRepository = $itemRepository;
+        $this->categoryRepository = $categoryRepository;
         $this->categoryAccessRepo = $categoryAccessRepo;
         $this->authorizationChecker = $authorizationChecker;
         $this->tokenStorage = $tokenStorage;

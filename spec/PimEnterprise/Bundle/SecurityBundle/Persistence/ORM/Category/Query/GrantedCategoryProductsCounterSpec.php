@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace spec\PimEnterprise\Bundle\EnrichBundle\Doctrine\Counter;
+namespace spec\PimEnterprise\Bundle\SecurityBundle\Persistence\ORM\Category\Query;
 
 use Akeneo\Component\Classification\Model\CategoryInterface;
 use Akeneo\Component\Classification\Repository\CategoryRepositoryInterface;
 use Akeneo\Component\StorageUtils\Cursor\CursorInterface;
 use PhpSpec\ObjectBehavior;
-use Pim\Component\User\Model\UserInterface;
 use Pim\Component\Catalog\Query\Filter\Operators;
 use Pim\Component\Catalog\Query\ProductQueryBuilderFactoryInterface;
 use Pim\Component\Catalog\Query\ProductQueryBuilderInterface;
+use Pim\Component\User\Model\UserInterface;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;
 use PimEnterprise\Component\Security\Attributes;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;

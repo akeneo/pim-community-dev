@@ -11,11 +11,11 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Bundle\EnrichBundle\Doctrine\Counter;
+namespace PimEnterprise\Bundle\SecurityBundle\Persistence\ORM\Category\Query;
 
 use Akeneo\Component\Classification\Model\CategoryInterface;
 use Akeneo\Component\Classification\Repository\CategoryRepositoryInterface;
-use Pim\Bundle\EnrichBundle\Doctrine\Counter\CategoryProductsCounter;
+use Pim\Bundle\EnrichBundle\Doctrine\Counter\CategoryItemsCounterInterface;
 use Pim\Component\Catalog\Query\Filter\Operators;
 use Pim\Component\Catalog\Query\ProductQueryBuilderFactoryInterface;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;
@@ -29,16 +29,22 @@ use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
  *
  * @author Adrien Pétremann <adrien.petremann@akeneo.com>
  */
-class GrantedCategoryProductsCounter extends CategoryProductsCounter
+class GrantedCategoryProductsCounter implements CategoryItemsCounterInterface
 {
+    /** @var ProductQueryBuilderFactoryInterface */
+    private $pqbFactory;
+
+    /** @var CategoryRepositoryInterface */
+    private $categoryRepository;
+
     /** @var CategoryAccessRepository */
-    protected $categoryAccessRepo;
+    private $categoryAccessRepo;
 
     /** @var AuthorizationCheckerInterface */
-    protected $authorizationChecker;
+    private $authorizationChecker;
 
     /** @var TokenStorageInterface */
-    protected $tokenStorage;
+    private $tokenStorage;
 
     /**
      * @param ProductQueryBuilderFactoryInterface $pqbFactory
@@ -54,8 +60,8 @@ class GrantedCategoryProductsCounter extends CategoryProductsCounter
         AuthorizationCheckerInterface $authorizationChecker,
         TokenStorageInterface $tokenStorage
     ) {
-        parent::__construct($pqbFactory, $categoryRepository);
-
+        $this->pqbFactory = $pqbFactory;
+        $this->categoryRepository = $categoryRepository;
         $this->categoryAccessRepo = $categoryAccessRepo;
         $this->authorizationChecker = $authorizationChecker;
         $this->tokenStorage = $tokenStorage;
