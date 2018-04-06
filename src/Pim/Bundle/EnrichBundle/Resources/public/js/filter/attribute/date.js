@@ -1,7 +1,6 @@
 'use strict';
 
 define([
-    'jquery',
     'underscore',
     'oro/translator',
     'pim/filter/attribute/attribute',
@@ -11,7 +10,6 @@ define([
     'pim/date-context',
     'jquery.select2'
 ], function (
-    $,
     _,
     __,
     BaseFilter,

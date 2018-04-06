@@ -9,14 +9,12 @@ define(
     [
         'underscore',
         'jquery',
-        'pim/form-builder',
         'pim/form',
         'oro/datafilter/product_category-filter'
     ],
     function(
         _,
         $,
-        FormBuilder,
         BaseForm,
         CategoryFilter
     ) {

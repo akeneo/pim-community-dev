@@ -9,7 +9,6 @@
  */
 define(
     [
-        'jquery',
         'underscore',
         'oro/translator',
         'pim/form/common/save',
@@ -21,7 +20,6 @@ define(
         'pim/router'
     ],
     function (
-        $,
         _,
         __,
         BaseSave,

@@ -7,10 +7,9 @@ define(
         'oro/translator',
         'pim/controller/front',
         'pim/form-builder',
-        'pim/page-title',
         'routing'
     ],
-    function ($, _, __, BaseController, FormBuilder, PageTitle, Routing) {
+    function ($, _, __, BaseController, FormBuilder, Routing) {
         return BaseController.extend({
             /**
              * {@inheritdoc}

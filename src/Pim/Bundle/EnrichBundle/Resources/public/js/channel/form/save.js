@@ -15,10 +15,6 @@ define(
         'pim/form/common/save',
         'oro/messenger',
         'pim/saver/channel',
-        'pim/field-manager',
-        'pim/i18n',
-        'pim/user-context',
-        'routing',
         'pim/router'
     ],
     function (
@@ -28,10 +24,6 @@ define(
         BaseSave,
         messenger,
         ChannelSaver,
-        FieldManager,
-        i18n,
-        UserContext,
-        Routing,
         router
     ) {
         return BaseSave.extend({

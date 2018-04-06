@@ -3,13 +3,12 @@
 define(
     [
         'underscore',
-        'backbone',
         'pim/form',
         'pim/template/attribute-option/form',
         'pim/user-context',
         'pim/i18n'
     ],
-    function (_, Backbone, BaseForm, template, UserContext, i18n) {
+    function (_, BaseForm, template, UserContext, i18n) {
         return BaseForm.extend({
             template: _.template(template),
             events: {

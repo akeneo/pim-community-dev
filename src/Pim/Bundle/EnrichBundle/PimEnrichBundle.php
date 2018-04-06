@@ -25,7 +25,6 @@ class PimEnrichBundle extends Bundle
     {
         $container
             ->addCompilerPass(new Compiler\RegisterViewElementsPass(new ReferenceFactory()))
-            ->addCompilerPass(new Compiler\RegisterFormExtensionsPass())
             ->addCompilerPass(new Compiler\RegisterGenericProvidersPass(new ReferenceFactory(), 'field'))
             ->addCompilerPass(new Compiler\RegisterGenericProvidersPass(new ReferenceFactory(), 'empty_value'))
             ->addCompilerPass(new Compiler\RegisterGenericProvidersPass(new ReferenceFactory(), 'form'))

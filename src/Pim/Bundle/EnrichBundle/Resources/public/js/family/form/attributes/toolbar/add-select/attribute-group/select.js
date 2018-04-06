@@ -9,15 +9,9 @@
  */
 define(
     [
-        'jquery',
-        'underscore',
-        'oro/translator',
         'pim/common/add-select'
     ],
     function (
-        $,
-        _,
-        __,
         BaseAddSelect
     ) {
         return BaseAddSelect.extend({

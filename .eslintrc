@@ -3,6 +3,9 @@
   "env": {
     "browser": true
   },
+  "plugins": [
+    "amd-imports"
+  ],
   "globals": {
     "Translator": true,
     "require": true,
@@ -14,6 +17,9 @@
     "__contextPaths": true
   },
   "rules": {
+    "amd-imports/no-unexisting-imports": 2,
+    "amd-imports/no-unused-imports": 2,
+    "amd-imports/prefer-relative-imports": 0,
     "space-infix-ops": 2,
     "no-bitwise": 2,
     "curly": 0,
@@ -26,7 +32,7 @@
       1,
       4,
       {
-        "ArrayExpression": "first",
+        "ArrayExpression": "first"
       }
     ],
     "no-use-before-define": 0,
@@ -62,13 +68,6 @@
       2,
       "never"
     ],
-    # "key-spacing": [
-    #   2,
-    #   {
-    #     "beforeColon": false,
-    #     "afterColon": true
-    #   }
-    # ],
     "space-unary-ops": [
       2,
       {
@@ -96,7 +95,7 @@
       {
         "allowSingleLine": false
       }
-    ],
+  ],
     "no-multiple-empty-lines": 2,
     "no-multi-str": 2,
     "one-var": [

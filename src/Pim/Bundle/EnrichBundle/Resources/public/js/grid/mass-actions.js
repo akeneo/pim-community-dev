@@ -9,18 +9,14 @@
  */
 define(
     [
-        'jquery',
         'underscore',
         'oro/translator',
-        'backbone',
         'pim/form',
         'pim/template/grid/mass-actions'
     ],
     function (
-        $,
         _,
         __,
-        Backbone,
         BaseForm,
         template
     ) {

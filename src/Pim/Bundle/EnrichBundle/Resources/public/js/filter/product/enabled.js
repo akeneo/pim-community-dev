@@ -6,13 +6,12 @@ define([
         'underscore',
         'oro/translator',
         'pim/filter/filter',
-        'routing',
         'pim/template/filter/product/enabled',
         'pim/fetcher-registry',
         'pim/user-context',
         'pim/i18n',
         'jquery.select2'
-    ], function (_, __, BaseFilter, Routing, template) {
+    ], function (_, __, BaseFilter, template) {
     return BaseFilter.extend({
         shortname: 'enabled',
         template: _.template(template),

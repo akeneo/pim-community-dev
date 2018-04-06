@@ -17,7 +17,6 @@ define(
         'oro/mediator',
         'pim/fetcher-registry',
         'pim/field-manager',
-        'pim/form-builder',
         'oro/messenger'
     ],
     function (
@@ -29,7 +28,6 @@ define(
         mediator,
         FetcherRegistry,
         FieldManager,
-        formBuilder,
         messenger
     ) {
         return BaseForm.extend({

@@ -1,7 +1,7 @@
 'use strict';
 
-define(['jquery', 'underscore', 'pim/base-fetcher', 'require-context'],
-function ($, _, BaseFetcher, requireContext) {
+define(['jquery', 'underscore', 'require-context'],
+function ($, _, requireContext) {
     return {
         fetchers: {},
         initializePromise: null,
@@ -11,9 +11,9 @@ function ($, _, BaseFetcher, requireContext) {
          */
         initialize: function () {
             if (null === this.initializePromise) {
-                var fetcherList = __moduleConfig.fetchers
+                var fetcherList = __moduleConfig.fetchers;
                 var deferred = $.Deferred();
-                var defaultFetcher = 'pim/base-fetcher'
+                var defaultFetcher = 'pim/base-fetcher';
                 var fetchers = {};
 
                 _.each(fetcherList, function (config, name) {
@@ -23,10 +23,10 @@ function ($, _, BaseFetcher, requireContext) {
                 });
 
                 for (var fetcher in fetcherList) {
-                    var moduleName = fetcherList[fetcher].module || defaultFetcher
+                    var moduleName = fetcherList[fetcher].module || defaultFetcher;
                     var ResolvedModule = requireContext(moduleName);
                     fetchers[fetcher].loadedModule = new ResolvedModule(fetchers[fetcher].options)
-                    fetchers[fetcher].options = fetcherList[fetcher].options
+                    fetchers[fetcher].options = fetcherList[fetcher].options;
                 }
 
                 this.fetchers = fetchers;
@@ -46,7 +46,7 @@ function ($, _, BaseFetcher, requireContext) {
          * @return Fetcher
          */
         getFetcher: function (entityType) {
-            var fetcher = (this.fetchers[entityType] || this.fetchers.default)
+            var fetcher = (this.fetchers[entityType] || this.fetchers.default);
 
             return fetcher.loadedModule;
         },

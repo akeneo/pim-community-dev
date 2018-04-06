@@ -11,7 +11,6 @@ define([
     'underscore',
     'oro/translator',
     'pim/form',
-    'pim/fetcher-registry',
     'pim/common/property',
     'pim/template/form/tab/section',
     'oro/loading-mask'
@@ -20,7 +19,6 @@ define([
         _,
         __,
         BaseForm,
-        FetcherRegistry,
         propertyAccessor,
         template,
         LoadingMask

@@ -17,7 +17,6 @@ define([
         'pim/security-context',
         'pim/i18n',
         'pim/fetcher-registry',
-        'pim/dialog',
         'oro/messenger',
         'oro/loading-mask'
     ],
@@ -31,7 +30,6 @@ define([
         SecurityContext,
         i18n,
         FetcherRegistry,
-        Dialog,
         Messenger,
         LoadingMask
     ) {

@@ -12,14 +12,12 @@ define(
         'jquery',
         'underscore',
         'pim/product-fetcher',
-        'oro/mediator',
         'routing'
     ],
     function (
         $,
         _,
         ProductFetcher,
-        mediator,
         Routing
     ) {
         return ProductFetcher.extend({

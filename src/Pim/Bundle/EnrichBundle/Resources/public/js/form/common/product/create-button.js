@@ -14,8 +14,6 @@ define(
         'pim/form',
         'pim/template/product/create-button',
         'pim/template/product/create-modal-content',
-        'pim/fetcher-registry',
-        'bootstrap-modal',
         'pim/form-builder',
         'pim/security-context'
     ],
@@ -27,8 +25,6 @@ define(
         BaseForm,
         template,
         templateModal,
-        FetcherRegistry,
-        BootstrapModal,
         FormBuilder,
         SecurityContext
     ) {

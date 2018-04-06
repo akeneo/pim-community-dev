@@ -6,8 +6,6 @@ define([
     'oro/translator',
     'pim/filter/attribute/attribute',
     'pim/fetcher-registry',
-    'pim/user-context',
-    'pim/i18n',
     'pim/template/filter/attribute/price-collection',
     'jquery.select2'
 ], function (
@@ -16,8 +14,6 @@ define([
     __,
     BaseFilter,
     FetcherRegistry,
-    UserContext,
-    i18n,
     template
 ) {
     return BaseFilter.extend({

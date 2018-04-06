@@ -9,13 +9,11 @@
  */
 define(
     [
-        'jquery',
         'underscore',
         'pim/common/add-select/line',
         'pim/template/product/add-select/attribute/line'
     ],
     function (
-        $,
         _,
         BaseLine,
         template

@@ -9,7 +9,6 @@
  */
 define(
     [
-        'jquery',
         'underscore',
         'oro/translator',
         'pim/form',
@@ -19,7 +18,6 @@ define(
         'pim/form-builder'
     ],
     function (
-        $,
         _,
         __,
         BaseForm,

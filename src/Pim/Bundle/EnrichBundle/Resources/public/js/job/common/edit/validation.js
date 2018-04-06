@@ -6,10 +6,9 @@ define([
     'oro/translator',
     'pim/form',
     'pim/template/export/common/edit/validation',
-    'oro/messenger',
     'pim/common/property'
 
-], function ($, _, __, BaseForm, template, messenger, propertyAccessor) {
+], function ($, _, __, BaseForm, template, propertyAccessor) {
     return BaseForm.extend({
         template: _.template(template),
         errors: [],

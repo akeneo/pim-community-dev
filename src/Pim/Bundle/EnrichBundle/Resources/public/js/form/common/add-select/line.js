@@ -9,13 +9,11 @@
  */
 define(
     [
-        'jquery',
         'underscore',
         'backbone',
         'pim/template/form/add-select/line'
     ],
     function (
-        $,
         _,
         Backbone,
         template

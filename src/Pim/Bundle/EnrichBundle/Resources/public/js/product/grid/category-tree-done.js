@@ -9,14 +9,12 @@ define(
     [
         'underscore',
         'oro/translator',
-        'jquery',
         'pim/form',
         'pim/template/product/grid/category-tree-done'
     ],
     function(
         _,
         __,
-        $,
         BaseForm,
         template
     ) {

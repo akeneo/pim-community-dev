@@ -1,20 +1,14 @@
 'use strict';
 
 define([
-    'jquery',
     'underscore',
     'oro/translator',
     'pim/filter/filter',
-    'pim/fetcher-registry',
-    'pim/user-context',
     'pim/template/filter/product/identifier'
 ], function (
-    $,
     _,
     __,
     BaseFilter,
-    FetcherRegistry,
-    UserContext,
     template
 ) {
     return BaseFilter.extend({

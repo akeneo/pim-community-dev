@@ -9,7 +9,6 @@
  */
 define(
     [
-        'jquery',
         'underscore',
         'pim/product/add-select/attribute',
         'pim/fetcher-registry',
@@ -17,7 +16,6 @@ define(
         'pim/common/add-select/line'
     ],
     function (
-        $,
         _,
         AddAttributeSelect,
         FetcherRegistry,

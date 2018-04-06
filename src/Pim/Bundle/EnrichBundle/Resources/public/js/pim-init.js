@@ -2,7 +2,6 @@ define(
     [
     'jquery',
     'underscore',
-    'backbone',
     'oro/mediator',
     'oro/messenger',
     'pim/dialog',
@@ -16,7 +15,6 @@ define(
     function (
         $,
         _,
-        Backbone,
         mediator,
         messenger,
         Dialog,

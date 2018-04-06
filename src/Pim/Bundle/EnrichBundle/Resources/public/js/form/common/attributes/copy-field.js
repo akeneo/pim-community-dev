@@ -8,14 +8,13 @@
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 define([
-        'backbone',
         'underscore',
         'pim/field',
         'pim/template/form/tab/attribute/copy-field',
         'pim/i18n',
         'oro/mediator'
     ],
-    function (Backbone, _, Field, template, i18n, mediator) {
+    function (_, Field, template, i18n, mediator) {
         return Field.extend({
             tagName: 'div',
             field: null,

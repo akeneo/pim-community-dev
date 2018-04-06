@@ -8,14 +8,12 @@
  */
 define(
     [
-        'jquery',
         'underscore',
         'pim/form',
-        'pim/fetcher-registry',
         'pim/user-context',
         'pim/provider/to-fill-field-provider'
     ],
-    function ($, _, BaseForm, fetcherRegistry, UserContext, toFillFieldProvider) {
+    function (_, BaseForm, UserContext, toFillFieldProvider) {
         return BaseForm.extend({
             configure: function () {
                 this.listenTo(this.getRoot(), 'pim_enrich:form:field:extension:add', this.addFieldExtension);

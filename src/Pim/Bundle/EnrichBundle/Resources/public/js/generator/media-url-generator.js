@@ -1,14 +1,6 @@
 'use strict';
 
-define([
-        'jquery',
-        'underscore',
-        'routing'
-    ], function (
-        $,
-        _,
-        Routing
-    ) {
+define(['routing'], function(Routing) {
         return {
             /**
              * Get the show media URL

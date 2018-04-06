@@ -950,7 +950,7 @@ config:
         pim/textarea-field:         pimenrich/js/product/field/textarea-field
         pim/wysiwyg-field:          pimenrich/js/product/field/wysiwyg-field
 
-        # Product add select
+        # Product add selects
         pim/product/add-select/attribute/line: pimenrich/js/product/form/attributes/add-select/attribute/line
         pim/product/add-select/attribute:      pimenrich/js/product/form/attributes/add-select/attribute/select
         pim/attribute-group/add-select/attribute: pimenrich/js/attribute-group/form/tab/select

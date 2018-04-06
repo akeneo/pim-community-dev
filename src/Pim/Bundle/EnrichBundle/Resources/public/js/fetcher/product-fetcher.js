@@ -3,7 +3,6 @@
 define(
     [
         'jquery',
-        'backbone',
         'pim/base-fetcher',
         'routing',
         'oro/mediator',
@@ -11,7 +10,6 @@ define(
     ],
     function (
         $,
-        Backbone,
         BaseFetcher,
         Routing,
         mediator,

@@ -8,14 +8,12 @@
  */
 define(
     [
-        'jquery',
         'underscore',
         'oro/translator',
         'pim/form',
         'pim/template/product/start-copy'
     ],
     function (
-        $,
         _,
         __,
         BaseForm,

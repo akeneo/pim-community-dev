@@ -17,8 +17,6 @@ define(
         'pim/form',
         'pim/template/grid/view-selector/save-view',
         'pim/datagrid/state',
-        'pim/dialog',
-        'routing',
         'pim/user-context',
         'pim/saver/datagrid-view',
         'oro/messenger'
@@ -30,8 +28,6 @@ define(
         BaseForm,
         template,
         DatagridState,
-        Dialog,
-        Routing,
         UserContext,
         DatagridViewSaver,
         messenger

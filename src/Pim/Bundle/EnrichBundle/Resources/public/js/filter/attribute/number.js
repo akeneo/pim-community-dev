@@ -1,23 +1,15 @@
 'use strict';
 
 define([
-    'jquery',
     'underscore',
     'oro/translator',
     'pim/filter/attribute/attribute',
-    'pim/fetcher-registry',
-    'pim/user-context',
-    'pim/i18n',
     'pim/template/filter/attribute/number',
     'jquery.select2'
 ], function (
-    $,
     _,
     __,
     BaseFilter,
-    FetcherRegistry,
-    UserContext,
-    i18n,
     template
 ) {
     return BaseFilter.extend({

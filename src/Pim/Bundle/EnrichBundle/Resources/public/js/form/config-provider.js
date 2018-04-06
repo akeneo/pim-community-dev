@@ -1,51 +1,52 @@
 'use strict';
 
-define(
-    ['jquery', 'underscore', 'routing'],
-    function ($, _, Routing) {
-        var promise = null;
+define(['underscore', 'pim/security-context'], function (_, SecurityContext) {
+    let runningPromise = null;
 
-        var loadConfig = function () {
-            if (null === promise) {
-                promise = $.getJSON(Routing.generate('pim_enrich_form_extension_rest_index')).fail(() => {
-                    throw Error('It seems that your web server is not well configured as we were not able ' +
-                        'to load the frontend configuration. The most likely reason is that the mod_rewrite ' +
-                        'module is not installed/enabled.')
-                });
-            }
+    const filterByGranted = function(extensions) {
+        return _.filter(extensions, extension => {
+            return null === extension.aclResourceId || SecurityContext.isGranted(extension.aclResourceId)
+        });
+    }
 
-            return promise;
-        };
+    const loadConfig = function () {
+        const formExtensions = __moduleConfig;
 
-        return {
-            /**
+        if (null === runningPromise) {
+            runningPromise = SecurityContext.initialize().then(() => {
+                formExtensions.extensions = filterByGranted(formExtensions.extensions);
+
+                return formExtensions;
+            });
+        }
+
+        return runningPromise;
+    };
+
+    return {
+        /**
              * Returns configuration for extensions.
              *
              * @return {Promise}
              */
-            getExtensionMap: function () {
-                return loadConfig().then(function (config) {
-                    return Object.values(config.extensions);
-                });
-            },
+        getExtensionMap: function () {
+            return loadConfig().then(config => Object.values(config.extensions));
+        },
 
-            /**
+        /**
              * Returns configuration for attribute fields.
              *
              * @return {Promise}
              */
-            getAttributeFields: function () {
-                return loadConfig().then(function (config) {
-                    return config.attribute_fields;
-                });
-            },
+        getAttributeFields: function () {
+            return loadConfig().then(config => config.attribute_fields);
+        },
 
-            /**
+        /**
              * Clear cache of form registry
              */
-            clear: function () {
-                promise = null;
-            }
-        };
-    }
-);
+        clear: function () {
+            runningPromise = null;
+        }
+    };
+});

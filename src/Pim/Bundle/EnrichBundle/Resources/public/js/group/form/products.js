@@ -10,14 +10,12 @@
 define([
         'oro/translator',
         'pim/form',
-        'pim/fetcher-registry',
         'pim/user-context',
         'pim/common/grid'
     ],
     function (
         __,
         BaseForm,
-        FetcherRegistry,
         UserContext,
         Grid
     ) {

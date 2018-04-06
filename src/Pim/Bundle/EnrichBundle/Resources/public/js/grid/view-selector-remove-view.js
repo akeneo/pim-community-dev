@@ -10,7 +10,6 @@
  */
 define(
     [
-        'jquery',
         'underscore',
         'oro/translator',
         'pim/form',
@@ -21,7 +20,6 @@ define(
         'oro/messenger'
     ],
     function (
-        $,
         _,
         __,
         BaseForm,

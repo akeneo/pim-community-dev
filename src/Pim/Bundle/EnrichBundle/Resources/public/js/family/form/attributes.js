@@ -12,14 +12,12 @@ define(
         'underscore',
         'oro/translator',
         'pim/form',
-        'pim/fetcher-registry',
         'pim/template/family/tab/attributes'
     ],
     function (
         _,
         __,
         BaseForm,
-        FetcherRegistry,
         template
     ) {
         return BaseForm.extend({

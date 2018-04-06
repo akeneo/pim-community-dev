@@ -10,7 +10,6 @@ define(
     [
         'underscore',
         'oro/translator',
-        'pim/router',
         'pim/form',
         'pim/user-context',
         'pim/provider/to-fill-field-provider',
@@ -19,7 +18,6 @@ define(
     function (
         _,
         __,
-        router,
         BaseForm,
         UserContext,
         toFillFieldProvider,

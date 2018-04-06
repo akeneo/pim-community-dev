@@ -9,13 +9,11 @@
  */
 define(
     [
-        'jquery',
         'underscore',
         'pim/fetcher-registry',
         'pim/family-edit-form/attributes/toolbar/add-select/attribute'
     ],
     function (
-        $,
         _,
         FetcherRegistry,
         FamilyAddAttributeSelect

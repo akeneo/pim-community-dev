@@ -13,11 +13,6 @@ define(
         'underscore',
         'oro/translator',
         'pim/form/common/save',
-        'oro/messenger',
-        'pim/field-manager',
-        'pim/i18n',
-        'pim/user-context',
-        'routing',
         'pim/router'
     ],
     function (
@@ -25,11 +20,6 @@ define(
         _,
         __,
         BaseSave,
-        messenger,
-        FieldManager,
-        i18n,
-        UserContext,
-        Routing,
         router
     ) {
         return BaseSave.extend({

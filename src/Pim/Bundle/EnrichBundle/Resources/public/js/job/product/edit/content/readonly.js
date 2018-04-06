@@ -8,15 +8,11 @@
 'use strict';
 
 define([
-    'jquery',
     'underscore',
-    'backbone',
     'pim/form'
 ],
 function (
-    $,
     _,
-    Backbone,
     BaseForm
 ) {
     return BaseForm.extend({
