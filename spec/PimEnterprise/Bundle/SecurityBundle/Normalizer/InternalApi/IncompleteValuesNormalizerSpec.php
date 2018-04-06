@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\PimEnterprise\Bundle\EnrichBundle\Normalizer;
+namespace spec\PimEnterprise\Bundle\SecurityBundle\Normalizer\InternalApi;
 
 use Akeneo\Component\Classification\Model\CategoryInterface;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -19,7 +19,6 @@ use Pim\Component\Catalog\Model\ChannelTranslationInterface;
 use Pim\Component\Catalog\Model\EntityWithFamilyInterface;
 use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Component\Catalog\Model\LocaleInterface;
-use PimEnterprise\Bundle\EnrichBundle\Normalizer\IncompleteValuesNormalizer;
 use PimEnterprise\Component\Security\Attributes;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -42,7 +41,7 @@ class IncompleteValuesNormalizerSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType(IncompleteValuesNormalizer::class);
+        $this->shouldHaveType(\PimEnterprise\Bundle\SecurityBundle\Normalizer\InternalApi\IncompleteValuesNormalizer::class);
     }
 
     function it_supports_entity_with_family(EntityWithFamilyInterface $entityWithFamily, CategoryInterface $category)

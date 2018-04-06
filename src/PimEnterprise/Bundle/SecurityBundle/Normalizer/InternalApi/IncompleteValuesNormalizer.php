@@ -1,6 +1,6 @@
 <?php
 
-namespace PimEnterprise\Bundle\EnrichBundle\Normalizer;
+namespace PimEnterprise\Bundle\SecurityBundle\Normalizer\InternalApi;
 
 use Pim\Bundle\EnrichBundle\Normalizer\IncompleteValuesNormalizer as BaseIncompleteValuesNormalizer;
 use Pim\Component\Catalog\EntityWithFamily\IncompleteValueCollectionFactory;
