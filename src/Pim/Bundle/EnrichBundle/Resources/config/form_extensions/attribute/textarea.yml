@@ -4,6 +4,15 @@ extensions:
         config:
             template: pim/template/common/drop-zone
 
+    pim-attribute-textarea-form-properties-common-usable-as-grid-filter:
+        module: pim/form/common/fields/boolean
+        parent: pim-attribute-form-textarea
+        targetZone: content
+        position: 70
+        config:
+            fieldName: useable_as_grid_filter
+            label: pim_enrich.form.attribute.tab.properties.label.useable_as_grid_filter
+
     pim-attribute-edit-form-textarea-is-locale-specific:
         module: pim/attribute-edit-form/properties/is-locale-specific
         parent: pim-attribute-form-textarea
