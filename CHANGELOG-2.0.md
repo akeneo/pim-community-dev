@@ -10,6 +10,11 @@
 - PIM-7275: Fix regression on group products grid filters
 - PIM-6962: Fix breadcrumb links issue after the save on the edit page
 - PIM-7267: Fix boolean attributes not added to variant product
+- PIM-7263: (BACKPORT for 2.0) Create a purging command (`pim:catalog:remove-wrong-boolean-values-on-variant-products`) for boolean values on variant products that should belong to parents
+
+## BC breaks
+
+- Add method signature from `Pim\Component\Catalog\Model\FamilyVariantInterface::getLevelForAttributeCode(string $attributeCode)`
 
 # 2.0.20 (2018-03-29)
 
