@@ -29,14 +29,14 @@ datagrid:
                 launcherOptions:
                     className: AknIconButton AknIconButton--small AknIconButton--edit
                 type:      navigate
-                label:     pim_common.edit
+                label:     Edit
                 link:      edit_link
                 rowAction: true
             delete:
                 launcherOptions:
                     className: AknIconButton AknIconButton--small AknIconButton--trash
                 type:  delete
-                label: pim_common.delete
+                label: Delete
                 link:  delete_link
         sorters:
             columns:

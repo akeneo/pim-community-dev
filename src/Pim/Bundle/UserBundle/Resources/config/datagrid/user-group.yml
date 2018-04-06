@@ -11,10 +11,10 @@ datagrid:
                     - g.id
                     - g.name
                 from:
-                    - { table: Pim\Component\User\Model\Group, alias: g }
+                    - { table: OroUserBundle:Group, alias: g }
                 where:
                     and:
-                        - g.name <> '%pim_user.entity.user.class%::GROUP_DEFAULT'
+                        - g.name <> '%oro_user.entity.class%::GROUP_DEFAULT'
         columns:
             name:
                 label: oro.user.grid.groups.columns.name
@@ -24,13 +24,13 @@ datagrid:
             id: ~
             update_link:
                 type: url
-                route: pim_user_group_update
+                route: oro_user_group_update
                 params:
                     - id
 
             delete_link:
                 type: url
-                route: pim_user_group_delete
+                route: oro_user_group_delete
                 params:
                     - id
 
@@ -39,7 +39,7 @@ datagrid:
                 launcherOptions:
                     className: AknIconButton AknIconButton--small AknIconButton--edit
                 type:          navigate
-                label:         pim_common.update
+                label:         Update
                 link:          update_link
                 acl_resource:  pim_user_group_edit
                 rowAction:     true
@@ -47,7 +47,7 @@ datagrid:
                 launcherOptions:
                     className: AknIconButton AknIconButton--small AknIconButton--trash
                 type:          delete
-                label:         pim_common.delete
+                label:         Delete
                 link:          delete_link
                 acl_resource:  pim_user_group_remove
 

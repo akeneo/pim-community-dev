@@ -1,0 +1,355 @@
+confirmation:
+  remove:
+    item: Tem a certeza que pretende eliminar este item?
+    association type: Tem certeza que deseja eliminar este tipo de associação?
+    attribute: Tem certeza que deseja eliminar este atributo?
+    family: Tem certeza que deseja eliminar esta família?
+    product: Tem certeza que deseja eliminar este produto?
+    channel: Tem certeza que deseja eliminar este canal?
+    group: Tem certeza que deseja eliminar este grupo?
+    variant group: Tem certeza que deseja eliminar este grupo variante?
+    group type: Tem certeza que deseja eliminar este tipo de grupo?
+    import profile: Tem certeza que deseja eliminar este perfil de importação?
+    export profile: Tem certeza que deseja eliminar este perfil de exportação?
+    user: Tem a certeza que deseja eliminar este utilizador?
+    role: Tem certeza que deseja eliminar esta função?
+pim_datagrid:
+  mass_action_group:
+    quick_export:
+      label: Exportação rápida
+  mass_action:
+    delete:
+      confirm_content: Tem certeza que deseja eliminar os produtos selecionados?
+      success: Produtos selecionados eliminados com sucesso.
+      error: Ocorreu um erro ao tentar eliminar os produtos seleccionados, por favor tente novamente.
+flash:
+  item:
+    removed: Item removido com sucesso
+  association type:
+    removed: Tipo de associação removido com sucesso
+  attribute:
+    removed: Atributo removido com sucesso
+  family:
+    removed: Família removida com sucesso
+  product:
+    removed: Produto removido com sucesso
+  channel:
+    removed: Canal removido com sucesso
+  group:
+    removed: Grupo removido com sucesso
+  variant group:
+    removed: Grupo variante removido com sucesso
+  group type:
+    removed: Tipo de grupo removido com sucesso
+  import profile:
+    removed: Perfil de importação removido com sucesso
+  export profile:
+    removed: Perfil de exportação removido com sucesso
+  user:
+    removed: Utilizador removido com sucesso
+  role:
+    removed: Função removida com sucesso
+error:
+  removing:
+    item: Não é possível eliminar este item
+    association type: Não é possível eliminar este tipo de associação
+    attribute: Não é possível eliminar este atributo
+    family: Não é possível eliminar esta família
+    product: Não é possível eliminar este produto
+    channel: Não é possível eliminar este canal
+    group: Não é possível eliminar este grupo
+    variant group: Não é possível eliminar este grupo variante
+    group type: Não é possível eliminar este tipo de grupo
+    import profile: Não é possível eliminar este perfil de importação
+    export profile: Não é possível eliminar este perfil de exportação
+    user: Não é possível eliminar este utilizador
+    role: Não é possível eliminar esta função
+    attribute_option: Erro na eliminação da opção de atributo
+  saving:
+    attribute_option: Não é possível gravar opção de atributo
+alert:
+  attribute_option:
+    error_occured_during_submission: Ocorreu um erro durante o envio do formulário para o servidor
+    save_before_edit_other: Por favor, registe as suas modificações noutras linhas antes de editar esta
+  session_storage:
+    not_available: O seu navegador não parece ser compatível com sessionStorage. Por favor, contate o administrador do sistema
+confirm:
+  attribute_option:
+    cancel_edition_on_new_option_text: Atenção, irá perder os dados não guardados. Tem certeza que deseja cancelar a modificação desta nova opção?
+    cancel_edition_on_new_option_title: Cancelar a modificação
+label:
+  attribute_option:
+    add_option: Adicionar uma opção
+Code: Código
+Edit: Editar
+Delete: Eliminar
+Edit attributes of the product: Editar atributos do produto
+Classify the product: Classificar o produto
+Delete the product: Eliminar o produto
+Change status: Alterar estado
+Toggle status: Ativar estado
+pim:
+  grid:
+    mass_action:
+      quick_export:
+        csv_all: CSV (todos os atributos)
+jstree.create: Criar
+switch_on: "Sim"
+switch_off: "Não"
+pim_enrich:
+  item:
+    list:
+      delete.label: Eliminar
+      delete.error: Erro durante a eliminação do item
+    delete:
+      confirm.content: Tem certeza que deseja eliminar este {{ itemName }}? Não é possível desfazer essa ação
+      confirm.title: Eliminar este {{ itemName }}
+  navigation:
+    link:
+      back_to_grid: Voltar à grelha
+  entity:
+    save:
+      label: Guardar
+    info:
+      update_failed: A atualização falhou
+      update_successful: Atualizado com sucesso
+    product:
+      title: produto
+      btn:
+        enable: Ativar
+        enabled: Ativo
+        disable: Desativar
+        disabled: Inativo
+        download_pdf: PDF
+        compare_translate: Comparar / traduzir
+        delete: Eliminar
+        save: Guardar
+        save_and_back: Gravar e voltar à grelha
+      history:
+        more: Mais
+        less: Menos
+        from: De
+        modified: Modificado
+        property: Propriedade
+        actions: Ações
+      info:
+        deletion_successful: Produto eliminado com sucesso.
+        deletion_failed: Não foi possível eliminar o produto.
+        update_successful: Produto atualizado com sucesso.
+        update_failed: O produto não pôde ser atualizado.
+        field_not_ready:
+          The product cannot be saved right now. The following fields are not ready:
+            - campos
+        already_in_upload: Um ficheiro já se encntra em upload para este atributo na linguagem "{{ locale }}" e âmbito "{{ scope }}"
+      error:
+        upload: Ocorreu um erro no envio do ficheiro
+      meta:
+        created: Criado
+        created_by: Por
+        updated_by: Por
+        updated: Última atualização
+        family:
+          title: Família
+          none: Nenhum
+        groups:
+          title: Grupos
+          modal:
+            title: Grupo {{ group }}
+            view_group: Visualizar grupo
+            group_label: Rótulo
+            more_products: '{{ count }} mais produtos...'
+            close: Fechar
+      copy:
+        select: Selecionar
+        all: Tudo
+        all_visible: Tudo visível
+        none: Nenhum
+        copy: Copiar
+      variant_group:
+        updated_by: Atualizado por um grupo variante
+        switch:
+          "yes": Sim
+          "no": Não
+      optional_attribute:
+        remove: Remover este atributo
+      locale_specific_attribute:
+        unavailable: Este campo de linguagem específica não está disponível nesta linguagem
+      localizable:
+        channel_locale_unavailable: Este campo localizável não está disponível para a linguagem '{{ locale }}' e canal '{{ channel }}'
+      media:
+        upload: Arraste e solte para fazer o envio ou clique aqui
+      create_popin:
+        title: Criar um novo produto
+        labels:
+          family: Escolha uma família
+          save: Guardar
+          cancel: Cancelar
+    attribute_option:
+      code: Código
+      label: Rótulo
+    variant_group:
+      info:
+        field_not_ready:
+          The variant group cannot be saved right now. The following fields are not ready:
+            - campos
+        already_in_upload: Um ficheiro já se encntra em upload para este atributo na linguagem "{{ locale }}" e âmbito "{{ scope }}"
+        no_attributes: Este grupo variante ainda não tem atributos
+      btn:
+        save: Guardar
+      meta:
+        product_count: Produtos
+        created: Criado
+        updated: Atualizado
+  confirmation:
+    leave: Tem certeza que deseja sair desta página?
+    discard_changes: Irá perderá as alterações para {{ entity }}, se abandonar a página.
+    delete_item: Confirmar eliminação
+  info:
+    not_applicable: N/A
+    entity:
+      updated: Existem alterações não guardadas.
+  error:
+    upload: Ocorreu um erro durante o envio do ficheiro
+  alert:
+    not_allowed: Não tem autorização para aceder a esta página
+    error_occured: Ocorreu um erro durante o carregamento da página
+  form:
+    product:
+      tab:
+        associations:
+          title: Associações
+          info:
+            none_exist: Nenhum tipo de associação existente.
+            show_products: Mostrar produtos
+            show_groups: Mostrar grupos
+            number_of_associations: '{{ productCount }} produtos e {{ groupCount }} grupos'
+        attributes:
+          title: Atributos
+          btn:
+            add: Adicionar
+            add_attributes: Adicionar atributos
+          info:
+            search_attributes: Pesquisar...
+            no_available_attributes: Não há mais atributos para adicionar
+            attributes_selected: '{{ attributeCount }} atributo(s) selecionado(s)'
+            no_match: Nenhuma correspondência encontrada
+            load_more: A carregar mais resultados...
+        categories:
+          title: Categorias
+      panel:
+        completeness:
+          title: '% de Dados Completos'
+          info:
+            no_family: Nenhuma família definida. Por favor defina uma família para calcular a integridade da informação deste produto.
+            no_completeness: Alterou a família do produto. Por favor, grave-o primeiro para calcular a integridade dos dados para a nova família.
+          missing_values: Valores em falta
+        history:
+          title: Histórico
+      switch:
+        "no": Não
+        "yes": Sim
+      sequential_edit:
+        info:
+          products: produtos
+          previous: Voltar ao {{ product }} sem gravar.
+          next: Saltar para o {{ product }} sem gravar.
+        btn:
+          save_and_next: Gravar e avançar
+          save_and_finish: Gravar e terminar
+      change_family:
+        modal:
+          title: Mudar a família do produto
+          merge_attributes: Os atributos atuais serão fundidos com os da nova família.
+          keep_attributes: Nenhuns atributos serão removidos.
+          change_family_to: Mudar a família para
+          empty_selection: Escolha uma família
+      flash:
+        attribute_deletion_error: Ocorreu um erro durante a eliminação do atributo
+      mass_edit:
+        select_attributes: Selecionar atributos
+        select: Selecionar
+    attribute_option:
+      flash:
+        option_created: Opção de atributo criada com sucesso
+        error_creating_option: Ocorreu um erro ao tentar criar a opção de atributo
+      add_option_modal:
+        title: Adicionar a opção de atributo
+        confirm: Adicionar
+        cancel: Cancelar
+    entity:
+      switch:
+        "no": Não
+        "yes": Sim
+    variant_group:
+      axis.help: Os eixos definem os atributos sobre os quais os produtos do grupo devem variar. Os eixos são atributos com opções, não localizáveis e sem âmbito. Eles não podem ser alterados após a criação do grupo variante.
+      tab:
+        properties:
+          title: Propriedades
+          general: Propriedades gerais
+          code: Código
+          type: Tipo
+          axis: Eixo
+          label_translations: Traduções de rótulo
+        history:
+          title: Histórico
+        products:
+          title: Produtos
+        attributes:
+          title: Atributos
+    common:
+      tab:
+        attributes:
+          btn:
+            add: Adicionar
+            add_attributes: Adicionar atributos
+          info:
+            search_attributes: Pesquisar...
+            no_available_attributes: Não há mais atributos para adicionar
+  export:
+    product:
+      structure:
+        attributes:
+          title: Atributos
+      filter:
+        channel:
+          title: Canal
+        locales:
+          title: Linguagens
+        attributes:
+          title: Atributos
+          edit: Editar
+          modal:
+            apply: Aplicar
+            cancel: Cancelar
+        attributes_selector:
+          attribute_group: Grupos de atributos
+          clear: Limpar
+          all_group: Todos os grupos
+        family:
+          title: Família
+        updated:
+          operators:
+            ALL: Sem restrição de data
+            SINCE LAST JOB: Produtos atualizados desde a última exportação
+        enabled:
+          title: Estado
+          value:
+            all: Tudo
+            enabled: Ativo
+            disabled: Inativo
+        completeness:
+          title: '% de Dados Completos'
+          operators:
+            ">=": Completo em pelo menos uma das linguagens selecionadas
+            GREATER OR EQUALS THAN ON ALL LOCALES: Completo em todas as linguagens escolhidas
+            LOWER THAN ON ALL LOCALES: Não completo em todas as linguagens escolhidas
+        identifier:
+          title: Identificador
+        string:
+          operators:
+            ALL: Tudo
+  mass_edit_action:
+    edit_common_attributes:
+      description: Os atributos dos produtos selecionados serão editados com os seguintes dados para a linguagem <span class="highlight">{{ locale }}</span> e o canal <span class="highlight">{{ channel }}</span>, escolhidos na grelha de produtos.
+pim_enrich.error:
+  exception.title: Ora bolas! Ocorreu o erro {{ status_code }}...

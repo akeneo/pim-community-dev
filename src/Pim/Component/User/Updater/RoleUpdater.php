@@ -6,8 +6,8 @@ use Akeneo\Component\StorageUtils\Exception\InvalidObjectException;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Doctrine\Common\Util\ClassUtils;
 use Oro\Bundle\SecurityBundle\Acl\Persistence\AclManager;
-use Pim\Component\User\Model\RoleInterface;
-use Pim\Component\User\Model\User;
+use Oro\Bundle\UserBundle\Entity\Role;
+use Pim\Bundle\UserBundle\Entity\User;
 
 /**
  * Updates a role
@@ -35,15 +35,15 @@ class RoleUpdater implements ObjectUpdaterInterface
      * Expected input format :
      * {
      *     'role': 'ROLE_ADMINISTRATOR',
-     *     'label': 'Administrator',
+     *     'name': 'Administrator',
      * }
      */
     public function update($role, array $data, array $options = [])
     {
-        if (!$role instanceof RoleInterface) {
+        if (!$role instanceof Role) {
             throw InvalidObjectException::objectExpected(
                 ClassUtils::getClass($role),
-                RoleInterface::class
+                Role::class
             );
         }
 
@@ -58,13 +58,13 @@ class RoleUpdater implements ObjectUpdaterInterface
     }
 
     /**
-     * @param RoleInterface $role
-     * @param string        $field
-     * @param mixed         $data
+     * @param Role   $role
+     * @param string $field
+     * @param mixed  $data
      *
      * @throws \InvalidArgumentException
      */
-    protected function setData(RoleInterface $role, $field, $data)
+    protected function setData(Role $role, $field, $data)
     {
         switch ($field) {
             case 'role':
@@ -79,9 +79,9 @@ class RoleUpdater implements ObjectUpdaterInterface
     /**
      * Load the ACL per role
      *
-     * @param RoleInterface $role
+     * @param Role $role
      */
-    protected function loadAcls(RoleInterface $role)
+    protected function loadAcls(Role $role)
     {
         if (User::ROLE_ANONYMOUS === $role->getRole()) {
             return;

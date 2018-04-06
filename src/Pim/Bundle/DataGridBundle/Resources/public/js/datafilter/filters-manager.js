@@ -308,7 +308,7 @@ define(
                     this.$el.append(this.addButtonTemplate(
                         {
                             filters: this.filters,
-                            systemFilterGroup: __('pim_datagrid.column_configurator.system_group')
+                            systemFilterGroup: __('system_filter_group')
                         }
                     ));
                 }
@@ -392,7 +392,7 @@ define(
         _addDoneButton() {
             if (!this.selectWidget.getWidget().find('.close').length) {
                 const button = $(this.doneButtonTemplate({
-                    label: __('pim_common.done')
+                    label: __('pim.grid.category_filter.done')
                 }));
                 button.on('click', () => this._onClose());
                 const container = $(this.doneContainerTemplate());

@@ -41,7 +41,7 @@ define(
                 contextmenu: {
                     items: {
                         create: {
-                            label: _.__('pim_common.create')
+                            label: _.__('jstree.create')
                         },
                         ccp: false,
                         rename: false,

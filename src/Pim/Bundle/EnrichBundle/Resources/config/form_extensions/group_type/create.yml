@@ -3,7 +3,7 @@ extensions:
        module: pim/form/common/creation/modal
        config:
            labels:
-               title: pim_common.create
+               title: pim_enrich.entity.group_type.create_popin.title
                subTitle: pim_menu.item.group_type
            picture: illustrations/Groups.svg
            successMessage: pim_enrich.entity.group_type.message.created
@@ -17,4 +17,4 @@ extensions:
        targetZone: fields
        config:
           identifier: code
-          label: pim_common.code
+          label: pim_enrich.entity.create_popin.code

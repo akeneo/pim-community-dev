@@ -8,7 +8,6 @@ use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\NoResultException;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Pim\Bundle\VersioningBundle\Repository\VersionRepositoryInterface;
-use Pim\Component\User\Model\UserInterface;
 
 /**
  * Version repository
@@ -98,7 +97,7 @@ class VersionRepository extends EntityRepository implements VersionRepositoryInt
         $qb
             ->addSelect(sprintf('%s as author', $authorExpr))
             ->leftJoin(
-                UserInterface::class,
+                'PimUserBundle:User',
                 'u',
                 'WITH',
                 'u.username = v.author'

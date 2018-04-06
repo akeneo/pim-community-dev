@@ -3,7 +3,7 @@ extensions:
        module: pim/form/common/creation/modal/client
        config:
            labels:
-               title: pim_common.create
+               title: pim_enrich.entity.api_connection.create_popin.title
                subTitle: pim_menu.item.api_connection
            picture: illustrations/Api.svg
            successMessage: pim_enrich.entity.api_connection.message.created
@@ -17,4 +17,4 @@ extensions:
         targetZone: fields
         config:
             identifier: label
-            label: pim_common.label
+            label: pim_enrich.entity.create_popin.label

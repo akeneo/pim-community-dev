@@ -98,8 +98,8 @@ extensions:
         config:
             trans:
                 title: confirmation.remove.product_model
-                subTitle: pim_common.products_model
-                content: pim_common.confirm_deletion
+                subTitle: pim_menu.item.product_model
+                content: pim_enrich.confirmation.delete.product_model
                 success: pim_enrich.entity.product_model.info.deletion_successful
                 fail: pim_enrich.entity.product_model.info.deletion_failed
             redirect: pim_enrich_product_index
@@ -142,7 +142,7 @@ extensions:
         targetZone: meta
         position: 90
         config:
-            label: pim_common.created
+            label: pim_enrich.entity.product.meta.created
             labelBy: pim_enrich.entity.product.meta.created_by
 
     pim-product-model-edit-form-updated:
@@ -163,7 +163,7 @@ extensions:
         config:
             removeAttributeRoute: pim_enrich_product_remove_attribute_rest
             removeAttributeACL: pim_enrich_product_remove_attribute
-            tabTitle: pim_common.attributes
+            tabTitle: pim_enrich.form.product.tab.attributes.title
             deletionFailed: pim_enrich.form.product.flash.attribute_deletion_error
 
     pim-product-model-edit-form-categories:

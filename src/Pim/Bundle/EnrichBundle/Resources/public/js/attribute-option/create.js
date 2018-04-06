@@ -38,8 +38,8 @@ define(
                         okCloses: false,
                         title: _.__('pim_enrich.form.attribute_option.add_option_modal.title'),
                         content: '',
-                        cancelText: _.__('pim_common.cancel'),
-                        okText: _.__('pim_common.add')
+                        cancelText: _.__('pim_enrich.form.attribute_option.add_option_modal.cancel'),
+                        okText: _.__('pim_enrich.form.attribute_option.add_option_modal.confirm')
                     });
                     modal.open();
 

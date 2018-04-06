@@ -41,7 +41,7 @@ Feature: Create a user
       | Status            | Inactive |
     And I scroll down
     And I fill in the following information:
-      | E-mail | jack.doeexample.com |
+      | E-mail | jack..doe@example.com |
     And I visit the "Groups and Roles" tab
     And I select the role "User"
     When I save the user

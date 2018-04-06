@@ -34,7 +34,7 @@ define(
                 removable: true,
                 label: '',
                 displayed: false,
-                group: __('pim_datagrid.column_configurator.system_group')
+                group: __('system_filter_group')
             }
         });
 
@@ -177,10 +177,10 @@ define(
                         },
                         allowCancel: true,
                         okCloses: false,
-                        cancelText: __('pim_common.cancel'),
+                        cancelText: __('pim_datagrid.column_configurator.cancel'),
                         title: __('pim_datagrid.column_configurator.title'),
                         content: this.configuratorTemplate(),
-                        okText: __('pim_common.apply')
+                        okText: __('pim_datagrid.column_configurator.apply')
                     });
 
                     loadingMask.hide();

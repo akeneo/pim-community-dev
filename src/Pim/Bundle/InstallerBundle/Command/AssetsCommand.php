@@ -74,7 +74,7 @@ class AssetsCommand extends ContainerAwareCommand
             ->runCommand('assetic:dump')
             ->runCommand('oro:assetic:dump')
             ->runCommand('pim:installer:dump-require-paths');
-        $defaultLocales = $this->getContainer()->getParameter('pim_localization.provider.ui_locale.locale_codes');
+        $defaultLocales = ['en', 'fr', 'nl', 'de', 'ru', 'ja', 'pt', 'it'];
         $this->commandExecutor->runCommand('oro:translation:dump', ['locale' => implode(', ', $defaultLocales)]);
 
         if (true === $input->getOption('symlink')) {

@@ -42,7 +42,7 @@ extensions:
         targetZone: container
         position: 100
         config:
-            tabTitle: pim_common.properties
+            tabTitle: pim_enrich.form.job_instance.tab.properties.title
             tabCode: pim-job-instance-properties
 
     pim-job-instance-csv-product-model-import-edit-global:
@@ -63,7 +63,7 @@ extensions:
         position: 130
         config:
             class: Akeneo\Component\Batch\Model\JobInstance
-            title: pim_common.history
+            title: pim_enrich.form.job_instance.tab.history.title
             tabCode: pim-job-instance-history
 
     pim-job-instance-csv-product-model-import-edit-properties-code:
@@ -73,7 +73,7 @@ extensions:
         targetZone: properties
         config:
             fieldCode: code
-            label: pim_common.code
+            label: pim_enrich.form.job_instance.tab.properties.code.title
             readOnly: true
 
     pim-job-instance-csv-product-model-import-edit-properties-label:
@@ -83,7 +83,7 @@ extensions:
         targetZone: properties
         config:
             fieldCode: label
-            label: pim_common.label
+            label: pim_enrich.form.job_instance.tab.properties.label.title
 
     pim-job-instance-csv-product-model-import-edit-properties-file-path:
         module: pim/job/common/edit/field/text
@@ -233,7 +233,7 @@ extensions:
         config:
             trans:
                 title: confirmation.remove.import_profile
-                content: pim_common.confirm_deletion
+                content: pim_enrich.confirmation.delete_item
                 success: flash.job_instance.removed
                 failed: error.removing.job_instance
             redirect: pim_importexport_import_profile_index

@@ -5,7 +5,7 @@ namespace spec\Pim\Bundle\DataGridBundle\DataTransformer;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\DataGridBundle\Entity\DatagridView;
 use Pim\Bundle\DataGridBundle\Repository\DatagridViewRepositoryInterface;
-use Pim\Component\User\Model\UserInterface;
+use Pim\Bundle\UserBundle\Entity\UserInterface;
 
 class DefaultViewDataTransformerSpec extends ObjectBehavior
 {

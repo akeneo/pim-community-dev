@@ -31,7 +31,7 @@ datagrid:
                 launcherOptions:
                     className: AknIconButton AknIconButton--small AknIconButton--edit
                 type:         edit-in-modal
-                label:        pim_common.edit
+                label:        Edit family variant
                 propertyCode: familyVariantCode
                 fetcher:      family-variant
                 form:         pim-family-variant-edit-form
@@ -40,7 +40,7 @@ datagrid:
                 launcherOptions:
                     className: AknIconButton AknIconButton--small AknIconButton--trash
                 type:  delete
-                label: pim_common.delete
+                label: Delete
                 link:  delete_link
                 acl_resource: pim_enrich_family_variant_remove
         filters:

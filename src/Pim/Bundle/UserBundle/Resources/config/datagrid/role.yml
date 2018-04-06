@@ -12,10 +12,10 @@ datagrid:
                     - r.role
                     - r.label
                 from:
-                    - { table: Pim\Component\User\Model\Role, alias: r }
+                    - { table: OroUserBundle:Role, alias: r }
                 where:
                     and:
-                        - r.role <> '%pim_user.entity.user.class%::ROLE_ANONYMOUS'
+                        - r.role <> '%oro_user.entity.class%::ROLE_ANONYMOUS'
         columns:
             label:
                 label: oro.user.grid.roles.columns.label
@@ -25,13 +25,13 @@ datagrid:
             id: ~
             update_link:
                 type: url
-                route: pim_user_role_update
+                route: oro_user_role_update
                 params:
                     - id
 
             delete_link:
                 type: url
-                route: pim_user_role_delete
+                route: oro_user_role_delete
                 params:
                     - id
 
@@ -48,7 +48,7 @@ datagrid:
                 launcherOptions:
                     className: AknIconButton AknIconButton--small AknIconButton--trash
                 type:          delete
-                label:         pim_common.delete
+                label:         Delete
                 link:          delete_link
                 acl_resource:  pim_user_role_remove
 

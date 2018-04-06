@@ -46,7 +46,7 @@ define(
                     title: title,
                     content: content,
                     okText: __('OK'),
-                    cancelText: __('pim_common.cancel'),
+                    cancelText: __('Cancel'),
                     template: this.template,
                     buttonClass: 'AknButton--action',
                     illustrationClass: this.getIllustrationClass(subTitle)
@@ -71,7 +71,7 @@ define(
                         title: title,
                         content: content,
                         okText: okText,
-                        cancelText: __('pim_common.cancel')
+                        cancelText: __('Cancel')
                     });
 
                     redirectModal.on('ok', function () {
@@ -108,7 +108,7 @@ define(
                     title: __(title),
                     content: __(content),
                     okText: __(buttonText) || __('OK'),
-                    cancelText: __('pim_common.cancel'),
+                    cancelText: __('Cancel'),
                     buttonClass: buttonClass || 'AknButton--action',
                     template: this.template,
                     allowCancel: true,

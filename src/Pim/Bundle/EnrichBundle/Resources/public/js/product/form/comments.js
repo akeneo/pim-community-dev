@@ -162,7 +162,7 @@ define(
             removeComment: function (event) {
                 Dialog.confirm(
                     __('confirmation.remove.comment'),
-                    __('pim_common.confirm_deletion'),
+                    __('pim_enrich.confirmation.delete_item'),
                     this.doRemove.bind(this, event)
                 );
             },
