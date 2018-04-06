@@ -172,15 +172,6 @@ extensions:
             label: pim_enrich.form.attribute.tab.properties.label.localizable
             readOnly: true
 
-    pim-attribute-edit-form-properties-common-usable-as-grid-filter:
-        module: pim/form/common/fields/boolean
-        parent: pim-attribute-edit-form-properties-common
-        targetZone: content
-        position: 170
-        config:
-            fieldName: useable_as_grid_filter
-            label: pim_enrich.form.attribute.tab.properties.label.useable_as_grid_filter
-
     pim-attribute-edit-form-properties-type-specific:
         module: pim/attribute-edit-form/type-specific-form
         parent: pim-attribute-edit-form-properties
