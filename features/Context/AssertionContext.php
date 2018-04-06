@@ -334,7 +334,7 @@ class AssertionContext extends PimContext
         }, 'Could not find the history block');
 
         foreach ($table->getHash() as $data) {
-            $unknownColumns = array_diff(array_keys($data), ['author', 'version', 'property', 'value', 'before']);
+            $unknownColumns = array_diff(array_keys($data), ['author', 'version', 'property', 'date', 'value', 'before']);
             if (0 !== count($unknownColumns)) {
                 throw new \InvalidArgumentException(sprintf(
                     'Unrecognized columns "%s"',
@@ -360,6 +360,21 @@ class AssertionContext extends PimContext
                         $expectedVersion,
                         $expectedAuthor,
                         $author
+                    )
+                );
+            }
+
+            if (array_key_exists('date', $data)) {
+                $expectedDate = $data['date'];
+                $date = $row->find('css', '[data-column="loggedAt"]')->getText();
+                assertLessThan(
+                    90,
+                    abs(strtotime($expectedDate) - strtotime($date)),
+                    sprintf(
+                        'Expecting the date of version "%s" to be "%s", got "%s"',
+                        $expectedVersion,
+                        $expectedDate,
+                        $date
                     )
                 );
             }

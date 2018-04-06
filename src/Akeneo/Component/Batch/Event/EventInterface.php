@@ -26,4 +26,7 @@ interface EventInterface
     const STEP_EXECUTION_ERRORED = 'akeneo_batch.step_execution_errored';
     const STEP_EXECUTION_COMPLETED = 'akeneo_batch.step_execution_completed';
     const INVALID_ITEM = 'akeneo_batch.invalid_item';
+
+    /** Item step events */
+    const ITEM_STEP_AFTER_BATCH = 'akeneo_batch.item_step_after_batch';
 }

@@ -86,8 +86,7 @@ class BooleanAttributeTypeCompletenessIntegration extends AbstractCompletenessPe
         $this->assertMissingAttributeForProduct($productDataNull, ['a_boolean']);
 
         $productWithoutValues = $this->createProductWithStandardValues($family, 'product_without_values');
-        // TODO: This is not as it should be, but inevitable because of PIM-6056
-        // TODO: When PIM-6056 is fixed, we should be able to use "assertNotComplete"
+        // @todo @merge : this assertion must not be removed (a mistake has been made in 2.2)
         $this->assertComplete($productWithoutValues);
         $this->assertBooleanValueIsFalse($productWithoutValues, 'a_boolean');
     }

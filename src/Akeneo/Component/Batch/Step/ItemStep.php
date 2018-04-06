@@ -2,6 +2,7 @@
 
 namespace Akeneo\Component\Batch\Step;
 
+use Akeneo\Component\Batch\Event\EventInterface;
 use Akeneo\Component\Batch\Item\FlushableInterface;
 use Akeneo\Component\Batch\Item\InitializableInterface;
 use Akeneo\Component\Batch\Item\InvalidItemException;
@@ -98,7 +99,7 @@ class ItemStep extends AbstractStep
     public function doExecute(StepExecution $stepExecution)
     {
         $itemsToWrite = [];
-        $writeCount = 0;
+        $batchCount = 0;
 
         $this->initializeStepElements($stepExecution);
 
@@ -114,21 +115,33 @@ class ItemStep extends AbstractStep
                 continue;
             }
 
+            $batchCount++;
+
             $processedItem = $this->process($readItem);
             if (null !== $processedItem) {
                 $itemsToWrite[] = $processedItem;
-                $writeCount++;
-                if (0 === $writeCount % $this->batchSize) {
+            }
+
+            if ($batchCount >= $this->batchSize) {
+                if (!empty($itemsToWrite)) {
                     $this->write($itemsToWrite);
                     $itemsToWrite = [];
-                    $this->getJobRepository()->updateStepExecution($stepExecution);
                 }
+
+                $this->getJobRepository()->updateStepExecution($stepExecution);
+                $this->dispatchStepExecutionEvent(EventInterface::ITEM_STEP_AFTER_BATCH, $stepExecution);
+                $batchCount = 0;
             }
         }
 
-        if (count($itemsToWrite) > 0) {
+        if (!empty($itemsToWrite)) {
             $this->write($itemsToWrite);
         }
+
+        if ($batchCount > 0) {
+            $this->dispatchStepExecutionEvent(EventInterface::ITEM_STEP_AFTER_BATCH, $stepExecution);
+        }
+
         $this->flushStepElements();
     }
 

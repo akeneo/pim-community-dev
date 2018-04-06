@@ -31,13 +31,14 @@ services:
         tags:
             - { name: oro_datagrid.extension.formatter.property, type: product_value_date }
 
+    #@todo - to be rename on master (pim_datagrid.extension.formatter.property.date_property)
     pim_datagrid.extension.formatter.property.product_value.datetime_property:
-        class: '%pim_datagrid.extension.formatter.property.product_value.date_property.class%'
+        class: '%pim_datagrid.extension.formatter.property.datetime_property.class%'
         arguments:
             - '@translator'
             - '@pim_catalog.localization.presenter.datetime'
         tags:
-            - { name: oro_datagrid.extension.formatter.property, type: product_value_datetime }
+            - { name: oro_datagrid.extension.formatter.property, type: property_date }
 
     pim_datagrid.extension.formatter.property.changeset:
         class: '%pim_datagrid.extension.formatter.property.changeset.class%'

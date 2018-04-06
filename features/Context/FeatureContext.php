@@ -26,6 +26,7 @@ use Pim\Behat\Context\Domain\TreeContext;
 use Pim\Behat\Context\HookContext;
 use Pim\Behat\Context\JobContext;
 use Pim\Behat\Context\PimContext;
+use Pim\Behat\Context\Storage\AttributeOptionStorage;
 use Pim\Behat\Context\Storage\FileInfoStorage;
 use Pim\Behat\Context\Storage\ProductStorage;
 use Symfony\Component\HttpKernel\KernelInterface;
@@ -109,6 +110,7 @@ class FeatureContext extends PimContext implements KernelAwareContext
         $this->contexts['viewSelector'] = $environment->getContext(ViewSelectorContext::class);
         $this->contexts['storage-product'] = $environment->getContext(ProductStorage::class);
         $this->contexts['storage-file-info'] = $environment->getContext(FileInfoStorage::class);
+        $this->contexts['storage-attribute-option'] = $environment->getContext(AttributeOptionStorage::class);
         $this->contexts['attribute-validation'] = $environment->getContext(AttributeValidationContext::class);
         $this->contexts['role'] = $environment->getContext(PermissionsContext::class);
         $this->contexts['export-builder'] = $environment->getContext(ExportBuilderContext::class);

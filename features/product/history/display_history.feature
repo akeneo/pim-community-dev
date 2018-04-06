@@ -17,8 +17,8 @@ Feature: Display the product history
     When I visit the "History" column tab
     Then there should be 1 update
     And I should see history:
-      | version | property | value       |
-      | 1       | SKU      | sandals-001 |
+      | version | property | value       | date |
+      | 1       | SKU      | sandals-001 | now  |
 
   @jira https://akeneo.atlassian.net/browse/PIM-3628
   Scenario: Update product history when updating product prices
@@ -38,9 +38,9 @@ Feature: Display the product history
     And I visit the "History" column tab
     Then there should be 2 update
     And I should see history:
-      | version | property  | value  |
-      | 2       | Price EUR | €10.00 |
-      | 2       | Price USD | $20.00 |
+      | version | property  | value  | date |
+      | 2       | Price EUR | €10.00 | now  |
+      | 2       | Price USD | $20.00 | now  |
     When I visit the "Attributes" column tab
     And I visit the "Marketing" group
     And I change the "Price" to "19 USD"
@@ -62,9 +62,9 @@ Feature: Display the product history
     When I visit the "History" column tab
     Then there should be 4 updates
     And I should see history:
-      | version | property  | value |
-      | 4       | Price EUR |       |
-      | 4       | Price USD |       |
+      | version | property  | value | date |
+      | 4       | Price EUR |       | now  |
+      | 4       | Price USD |       | now  |
 
   @jira https://akeneo.atlassian.net/browse/PIM-3628
   Scenario: Update product history when updating product metric
@@ -79,9 +79,9 @@ Feature: Display the product history
     When I visit the "History" column tab
     Then there should be 2 update
     And I should see history:
-      | version | property    | value      |
-      | 2       | Length      | 30         |
-      | 2       | Length unit | Centimeter |
+      | version | property    | value      | date |
+      | 2       | Length      | 30         | now  |
+      | 2       | Length unit | Centimeter | now  |
     When I visit the "Attributes" column tab
     And I change the "Length" to "35 Centimeter"
     And I save the product
@@ -89,8 +89,8 @@ Feature: Display the product history
     When I visit the "History" column tab
     Then there should be 3 updates
     And I should see history:
-      | version | property | value |
-      | 3       | Length   | 35    |
+      | version | property | value | date |
+      | 3       | Length   | 35    | now  |
     When I visit the "Attributes" column tab
     And I remove the "Length" attribute
     And I confirm the deletion
@@ -99,9 +99,9 @@ Feature: Display the product history
     When I visit the "History" column tab
     Then there should be 4 updates
     And I should see history:
-      | version | property    | value |
-      | 4       | Length      |       |
-      | 4       | Length unit |       |
+      | version | property    | value | date |
+      | 4       | Length      |       | now  |
+      | 4       | Length unit |       | now  |
 
   @jira https://akeneo.atlassian.net/browse/PIM-3628
   Scenario: Update product history when updating product media
@@ -121,8 +121,8 @@ Feature: Display the product history
     When I visit the "History" column tab
     Then there should be 2 updates
     And I should see history:
-      | version | property  | value           |
-      | 2       | Side view | .*SNKRS_1R\.png |
+      | version | property  | value           | date |
+      | 2       | Side view | .*SNKRS_1R\.png | now  |
     When I visit the "Attributes" column tab
     And I visit the "Media" group
     And I remove the "Side view" file
@@ -131,5 +131,5 @@ Feature: Display the product history
     When I visit the "History" column tab
     Then there should be 3 updates
     And I should see history:
-      | version | property  | value |
-      | 3       | Side view |       |
+      | version | property  | value | date |
+      | 3       | Side view |       | now  |
