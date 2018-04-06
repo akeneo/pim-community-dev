@@ -13,12 +13,21 @@
     "webpack": "yarn run sync && NODE_PATH=node_modules webpack --config $npm_package_config_source/webpack.config.js --env=prod",
     "webpack-dev": "yarn run sync && NODE_PATH=node_modules webpack --config $npm_package_config_source/webpack.config.js",
     "webpack-watch": "yarn run sync && NODE_PATH=node_modules webpack --progress --config $npm_package_config_source/webpack.config.js --watch",
+    "webpack-test": "webpack --config $npm_package_config_source/webpack-test.config.js",
     "lint": "eslint 'src/**/*.js' --config $npm_package_config_source/.eslintrc --ignore-path $npm_package_config_source/.eslintignore --quiet",
-    "lint-fix": "eslint 'src/**/*.js' --config $npm_package_config_source/.eslintrc --ignore-path $npm_package_config_source/.eslintignore --quiet --fix"
+    "lint-fix": "eslint 'src/**/*.js' --config $npm_package_config_source/.eslintrc --ignore-path $npm_package_config_source/.eslintignore --quiet --fix",
+    "acceptance": "NODE_PATH=./node_modules cucumber-js --tags @acceptance-front -r ./webpack/test/acceptance/run-steps.js -r ./tests/front/acceptance/cucumber",
+    "acceptance-report": "NODE_PATH=./node_modules yarn run acceptance -- -f json:web/test_dist/acceptance-js.json && node $npm_package_config_source/webpack/test/acceptance/generate-report.js"
   },
   "devDependencies": {
     "colors": "1.1.2",
+    "cucumber": "^4.0.0",
+    "cucumber-html-reporter": "^4.0.2",
     "dep-diff": "1.0.1",
+    "glob": "^7.1.2",
+    "html-webpack-inline-source-plugin": "^0.0.9",
+    "html-webpack-plugin": "^3.0.6",
+    "puppeteer": "^1.1.1",
     "read-pkg": "2.0.0"
   },
   "dependencies": {
