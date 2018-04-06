@@ -6,11 +6,11 @@ use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Component\StorageUtils\Exception\UnknownPropertyException;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
-use Oro\Bundle\UserBundle\Entity\Group;
-use Oro\Bundle\UserBundle\Entity\Role;
-use Oro\Bundle\UserBundle\Entity\UserManager;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\UserBundle\Entity\UserInterface;
+use Pim\Bundle\UserBundle\Manager\UserManager;
+use Pim\Component\User\Model\Group;
+use Pim\Component\User\Model\Role;
 use Pim\Component\User\Updater\UserUpdater;
 
 class UserUpdaterSpec extends ObjectBehavior

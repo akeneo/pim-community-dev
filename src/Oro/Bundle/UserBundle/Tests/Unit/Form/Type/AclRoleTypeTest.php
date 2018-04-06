@@ -2,7 +2,7 @@
 
 namespace Oro\Bundle\UserBundle\Tests\Unit\Form\Type;
 
-use Oro\Bundle\UserBundle\Form\Type\AclRoleType;
+use Pim\Bundle\UserBundle\Form\Type\AclRoleType;
 
 class AclRoleTypeTest extends \PHPUnit_Framework_TestCase
 {
@@ -32,7 +32,7 @@ class AclRoleTypeTest extends \PHPUnit_Framework_TestCase
 
     public function testGetName()
     {
-        $this->assertEquals('oro_user_role_form', $this->formType->getName());
+        $this->assertEquals('pim_user_role_form', $this->formType->getName());
     }
 
     public function testSetDefaultOptions()
@@ -44,7 +44,7 @@ class AclRoleTypeTest extends \PHPUnit_Framework_TestCase
         $resolver->expects($this->once())->method('setDefaults')
             ->with(
                 [
-                    'data_class' => 'Oro\Bundle\UserBundle\Entity\Role',
+                    'data_class' => 'Pim\Component\User\Model\Role',
                     'intention'  => 'role'
                 ]
             );

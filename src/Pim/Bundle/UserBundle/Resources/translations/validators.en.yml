@@ -1,1 +1,2 @@
-"The phone has to respect the international format (eg: +33755667788).": "The phone has to respect the international format (eg: +33755667788)."
+You must select at least {{ limit }} role:  You must select at least {{ limit }} role.|You must select at least {{ limit }} roles.
+"The password fields must match.": "The password fields must match."

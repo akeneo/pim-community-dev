@@ -66,5 +66,5 @@ extensions:
         aclResourceId: pim_user_group_create
         config:
             label: pim_enrich.index.user_group.create_btn
-            route: oro_user_group_create
+            route: pim_user_group_create
             buttonClass: AknButton AknButton--apply

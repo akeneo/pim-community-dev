@@ -6,6 +6,6 @@ services:
         class: '%pim_notification.notifier.class%'
         arguments:
             - '@pim_notification.factory.user_notification'
-            - '@oro_user.manager'
+            - '@pim_user.manager'
             - '@pim_notification.saver.notification'
             - '@pim_notification.saver.user_notification'

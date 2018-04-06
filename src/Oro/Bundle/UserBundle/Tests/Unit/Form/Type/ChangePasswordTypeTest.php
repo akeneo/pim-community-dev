@@ -2,7 +2,7 @@
 
 namespace Oro\Bundle\UserBundle\Tests\Unit\Type;
 
-use Oro\Bundle\UserBundle\Form\Type\ChangePasswordType;
+use Pim\Bundle\UserBundle\Form\Type\ChangePasswordType;
 use Symfony\Component\Form\Test\FormIntegrationTestCase;
 
 class ChangePasswordTypeTest extends FormIntegrationTestCase

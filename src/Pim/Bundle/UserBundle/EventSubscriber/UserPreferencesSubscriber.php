@@ -235,6 +235,6 @@ class UserPreferencesSubscriber implements EventSubscriber
      */
     protected function findUsersBy(array $criteria)
     {
-        return $this->container->get('oro_user.manager')->getRepository()->findBy($criteria);
+        return $this->container->get('pim_user.manager')->getRepository()->findBy($criteria);
     }
 }
