@@ -156,7 +156,8 @@ module.exports = {
                     loader: 'babel-loader',
                     options: {
                         presets: babelPresets,
-                        cacheDirectory: 'web/cache'
+                        cacheDirectory: 'web/cache',
+                        plugins: ["add-module-exports"]
                     }
                 }
             },
@@ -220,6 +221,7 @@ module.exports = {
             name: 'vendor',
             minChunks: module => module.context && module.context.indexOf('node_modules') !== -1
         }),
-        new webpack.optimize.CommonsChunkPlugin({name: 'manifest'})
+        new webpack.optimize.CommonsChunkPlugin({name: 'manifest'}),
+
     ]
 };
