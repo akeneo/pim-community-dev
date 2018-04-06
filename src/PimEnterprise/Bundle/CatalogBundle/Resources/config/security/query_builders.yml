@@ -72,5 +72,5 @@ services:
             - '@akeneo_elasticsearch.client.product'
             - '@pim_catalog.repository.product_without_permission'
             - '%akeneo_elasticsearch.cursor.cursor.class%'
-            - '%pim_catalog.factory.product_cursor.page_size%'
+            - '%pim_job_product_batch_size%'
             - 'pim_catalog_product'

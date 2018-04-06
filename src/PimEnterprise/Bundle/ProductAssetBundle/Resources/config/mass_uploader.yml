@@ -32,6 +32,7 @@ services:
             - '@pim_catalog.repository.locale'
             - '@event_dispatcher'
             - '@translator'
+            - '@akeneo_storage_utils.doctrine.object_detacher'
 
     pimee_product_asset.mass_upload.tasklet:
         class: '%pimee_product_asset.mass_upload.tasklet.class%'

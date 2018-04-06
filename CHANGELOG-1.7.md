@@ -1,3 +1,9 @@
+# 1.7.20 (2018-04-03)
+
+# Improvements:
+
+- PIM-7221: Improve the way the completeness is computed when updating an asset collection in MongoDB.
+
 # 1.7.19 (2018-02-27)
 
 # 1.7.18 (2018-02-22)
