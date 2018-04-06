@@ -100,6 +100,9 @@ default:
                     - 'Context\EnterpriseFeatureContext'
                 - Pim\Behat\Context\Storage\VariantProductStorage:
                     - '@pim_catalog.repository.product'
+                - Pim\Behat\Context\Storage\AttributeOptionStorage:
+                    - '@pim_catalog.repository.attribute_option'
+                    - '@doctrine.orm.default_entity_manager'
     extensions:
         Behat\ChainedStepsExtension: ~
         Behat\MinkExtension:

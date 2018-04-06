@@ -120,10 +120,14 @@ class ChannelController
      * @throws \LogicException
      * @throws \InvalidArgumentException
      *
-     * @return JsonResponse
+     * @return Response
      */
     public function postAction(Request $request)
     {
+        if (!$request->isXmlHttpRequest()) {
+            return new RedirectResponse('/');
+        }
+
         $channel = $this->channelFactory->create();
 
         return $this->saveChannel($channel, $request);
@@ -142,10 +146,14 @@ class ChannelController
      * @throws \LogicException
      * @throws \InvalidArgumentException
      *
-     * @return JsonResponse
+     * @return Response
      */
     public function putAction(Request $request, $code)
     {
+        if (!$request->isXmlHttpRequest()) {
+            return new RedirectResponse('/');
+        }
+
         $channel = $this->getChannel($code);
 
         return $this->saveChannel($channel, $request);
@@ -156,12 +164,11 @@ class ChannelController
      *
      * @AclAncestor("pim_enrich_channel_remove")
      *
-     * @param $code
-     *
-     * @throws HttpExceptionInterface
-     * @throws \InvalidArgumentException
+     * @param Request $request
+     * @param string  $code
      *
      * @return Response
+     * @throws HttpExceptionInterface
      */
     public function removeAction(Request $request, $code)
     {

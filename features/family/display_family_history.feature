@@ -26,8 +26,8 @@ Feature: Display the family history
     When I visit the "History" tab
     Then there should be 1 update
     And I should see history:
-      | version | property | value |
-      | 1       | code     | Flyer |
+      | version | property | value | date |
+      | 1       | code     | Flyer | now  |
     When I visit the "Properties" tab
     And I fill in the following information:
       | English (United States) | Fly |
@@ -37,6 +37,6 @@ Feature: Display the family history
     When I visit the "History" tab
     Then there should be 2 updates
     And I should see history:
-      | version | property    | value |
-      | 1       | code        | Flyer |
-      | 2       | label-en_US | Fly   |
+      | version | property    | value | date |
+      | 1       | code        | Flyer | now  |
+      | 2       | label-en_US | Fly   | now  |

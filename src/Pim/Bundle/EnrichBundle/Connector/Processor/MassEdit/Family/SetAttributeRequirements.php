@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\EnrichBundle\Connector\Processor\MassEdit\Family;
 
+use Akeneo\Component\Batch\Item\DataInvalidItem;
 use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use Pim\Bundle\EnrichBundle\Connector\Processor\AbstractProcessor;
 use Pim\Component\Catalog\Factory\AttributeRequirementFactory;
@@ -82,7 +83,7 @@ class SetAttributeRequirements extends AbstractProcessor
         if (0 !== $violations->count()) {
             foreach ($violations as $violation) {
                 $errors = sprintf("Family %s: %s\n", (string) $family, $violation->getMessage());
-                $this->stepExecution->addWarning($this->getName(), $errors, [], $family);
+                $this->stepExecution->addWarning($errors, [], new DataInvalidItem($family));
             }
 
             $this->stepExecution->incrementSummaryInfo('skipped_families');

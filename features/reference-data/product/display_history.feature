@@ -23,15 +23,15 @@ Feature: Display the product history
     And I save the product
     When I visit the "History" column tab
     Then I should see history:
-      | version | property   | value |
-      | 2       | Heel color | Red   |
+      | version | property   | value | date |
+      | 2       | Heel color | Red   | now  |
     When I visit the "Attributes" column tab
     And I change the "Heel color" to "Green"
     And I save the product
     And I visit the "History" column tab
     Then I should see history:
-      | version | property   | value |
-      | 3       | Heel color | Green |
+      | version | property   | value | date |
+      | 3       | Heel color | Green | now  |
 
   Scenario: Add an available "multi select" reference data to a product
     Given I visit the "Other" group
@@ -39,5 +39,5 @@ Feature: Display the product history
     And I save the product
     When I visit the "History" column tab
     Then I should see history:
-      | version | property    | value     |
-      | 2       | Sole fabric | Nylon,PVC |
+      | version | property    | value     | date |
+      | 2       | Sole fabric | Nylon,PVC | now  |

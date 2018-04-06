@@ -24,6 +24,7 @@ class FamilySpec extends ObjectBehavior
     function it_allows_removing_attributes(AttributeInterface $name)
     {
         $name->getType()->willReturn('pim_catalog_text');
+        $name->getCode()->willReturn('code1');
         $this->addAttribute($name)->shouldReturn($this);
         $this->hasAttribute($name)->shouldReturn(true);
         $this->removeAttribute($name)->shouldReturn($this);
@@ -33,6 +34,7 @@ class FamilySpec extends ObjectBehavior
     function it_throws_an_exception_when_removing_the_identifier_attribute(AttributeInterface $sku)
     {
         $sku->getType()->willReturn('pim_catalog_identifier');
+        $sku->getCode()->willReturn('code1');
         $this->addAttribute($sku)->shouldReturn($this);
         $this->hasAttribute($sku)->shouldReturn(true);
         $this
@@ -43,7 +45,7 @@ class FamilySpec extends ObjectBehavior
 
     function it_allows_defining_an_attribute_to_use_as_label(AttributeInterface $name)
     {
-        $name->getType()->willReturn('pim_catalog_text');
+        $name->getCode()->willReturn('pim_catalog_text');
         $this->getAttributeAsLabel()->shouldReturn(null);
         $this->setAttributeAsLabel($name)->shouldReturn($this);
     }

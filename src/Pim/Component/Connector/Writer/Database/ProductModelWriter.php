@@ -35,6 +35,8 @@ class ProductModelWriter implements ItemWriterInterface, StepExecutionAwareInter
      * @param VersionManager        $versionManager
      * @param BulkSaverInterface    $productModelSaver
      * @param CacheClearerInterface $cacheClearer
+     *
+     * @todo @merge Remove $cacheClearer. It's not used anymore.
      */
     public function __construct(
         VersionManager $versionManager,
@@ -60,7 +62,6 @@ class ProductModelWriter implements ItemWriterInterface, StepExecutionAwareInter
         }
 
         $this->productModelSaver->saveAll($items);
-        $this->cacheClearer->clear();
     }
 
     /**

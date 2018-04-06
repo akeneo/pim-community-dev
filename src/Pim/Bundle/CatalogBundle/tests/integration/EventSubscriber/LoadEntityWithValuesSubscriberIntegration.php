@@ -70,6 +70,7 @@ class LoadEntityWithValuesSubscriberIntegration extends TestCase
     public function testItDoesNotLoadValuesOfAProductForWhichThereIsARemovedAttributeOptionOfMultiselect()
     {
         $this->removeAttributeOptionFromAttribute('a_multi_select', 'optionA');
+        $this->removeAttributeOptionFromAttribute('a_multi_select', 'optionB');
         $amputatedStandardValues = $this->removeAttributeFromAllStandardValues('a_multi_select');
         $expectedValues = $this->getValuesFromStandardValues(
             $amputatedStandardValues

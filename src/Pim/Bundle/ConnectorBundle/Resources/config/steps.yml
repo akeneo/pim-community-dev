@@ -1,8 +1,6 @@
 parameters:
     pim_connector.step.validator.class: Pim\Component\Connector\Step\ValidatorStep
     pim_connector.step.tasklet.class:   Pim\Component\Connector\Step\TaskletStep
-    pim_connector.step.product.import.bulk_size: 1000
-    pim_connector.step.product_model.import.bulk_size: 100
     pim_connector.tasklet.family.compute_data_related_to_family_variants.class: Pim\Component\Connector\Job\ComputeDataRelatedToFamilyVariantsTasklet
     pim_connector.tasklet.family.compute_data_related_to_family_products.class: Pim\Component\Connector\Job\ComputeDataRelatedToFamilyProductsTasklet
 
@@ -127,7 +125,7 @@ services:
             - '@pim_connector.reader.file.csv_product'
             - '@pim_connector.processor.denormalization.product'
             - '@pim_connector.writer.database.product'
-            - '%pim_connector.step.product.import.bulk_size%'
+            - '%pim_job_product_batch_size%'
 
     pim_connector.step.csv_root_product_model.import:
         class: '%pim_connector.step.item_step.class%'
@@ -138,7 +136,7 @@ services:
             - '@pim_connector.reader.file.csv_product_model'
             - '@pim_connector.processor.denormalization.root_product_model'
             - '@pim_connector.writer.database.product_model'
-            - '%pim_connector.step.product_model.import.bulk_size%'
+            - '%pim_job_product_batch_size%'
 
     pim_connector.step.csv_sub_product_model.import:
         class: '%pim_connector.step.item_step.class%'
@@ -149,7 +147,7 @@ services:
             - '@pim_connector.reader.file.csv_product_model'
             - '@pim_connector.processor.denormalization.sub_product_model'
             - '@pim_connector.writer.database.product_model'
-            - '%pim_connector.step.product_model.import.bulk_size%'
+            - '%pim_job_product_batch_size%'
 
     pim_connector.step.csv_compute_product_models_descendants.import:
         class: '%pim_connector.step.item_step.class%'
@@ -160,7 +158,7 @@ services:
             - '@pim_connector.reader.file.csv_product_model'
             - '@pim_connector.processor.denormalization.product_model_loader'
             - '@pim_connector.writer.database.product_model_descendants'
-            - '%pim_connector.step.product_model.import.bulk_size%'
+            - '%pim_job_product_batch_size%'
 
     pim_connector.step.csv_product.import_associations:
         class: '%pim_connector.step.item_step.class%'
@@ -304,7 +302,7 @@ services:
             - '@pim_connector.reader.database.product'
             - '@pim_connector.processor.normalization.product'
             - '@pim_connector.writer.file.csv_product'
-            - 10
+            - '%pim_job_product_batch_size%'
 
     pim_connector.step.csv_product_model.export:
         class: '%pim_connector.step.item_step.class%'
@@ -315,7 +313,7 @@ services:
             - '@pim_connector.reader.database.product_model'
             - '@pim_connector.processor.normalization.product_model'
             - '@pim_connector.writer.file.csv_product_model'
-            - 10
+            - '%pim_job_product_batch_size%'
 
     pim_connector.step.csv_category.export:
         class: '%pim_connector.step.item_step.class%'
@@ -488,7 +486,7 @@ services:
             - '@pim_connector.reader.file.xlsx_product'
             - '@pim_connector.processor.denormalization.product'
             - '@pim_connector.writer.database.product'
-            - '%pim_connector.step.product.import.bulk_size%'
+            - '%pim_job_product_batch_size%'
 
     pim_connector.step.xlsx_root_product_model.import:
         class: '%pim_connector.step.item_step.class%'
@@ -499,7 +497,7 @@ services:
             - '@pim_connector.reader.file.xlsx_product_model'
             - '@pim_connector.processor.denormalization.root_product_model'
             - '@pim_connector.writer.database.product_model'
-            - '%pim_connector.step.product_model.import.bulk_size%'
+            - '%pim_job_product_batch_size%'
 
     pim_connector.step.xlsx_sub_product_model.import:
         class: '%pim_connector.step.item_step.class%'
@@ -510,7 +508,7 @@ services:
             - '@pim_connector.reader.file.xlsx_product_model'
             - '@pim_connector.processor.denormalization.sub_product_model'
             - '@pim_connector.writer.database.product_model'
-            - '%pim_connector.step.product_model.import.bulk_size%'
+            - '%pim_job_product_batch_size%'
 
     pim_connector.step.xlsx_compute_product_models_descendants.import:
         class: '%pim_connector.step.item_step.class%'
@@ -521,7 +519,7 @@ services:
             - '@pim_connector.reader.file.xlsx_product_model'
             - '@pim_connector.processor.denormalization.product_model_loader'
             - '@pim_connector.writer.database.product_model_descendants'
-            - '%pim_connector.step.product_model.import.bulk_size%'
+            - '%pim_job_product_batch_size%'
 
     pim_connector.step.xlsx_product.import_associations:
         class: '%pim_connector.step.item_step.class%'
@@ -670,7 +668,7 @@ services:
             - '@pim_connector.reader.database.product'
             - '@pim_connector.processor.normalization.product'
             - '@pim_connector.writer.file.xlsx_product'
-            - 10
+            - '%pim_job_product_batch_size%'
 
     pim_connector.step.xlsx_product_model.export:
         class: '%pim_connector.step.item_step.class%'
@@ -681,7 +679,7 @@ services:
             - '@pim_connector.reader.database.product_model'
             - '@pim_connector.processor.normalization.product_model'
             - '@pim_connector.writer.file.xlsx_product_model'
-            - 10
+            - '%pim_job_product_batch_size%'
 
     pim_connector.step.xlsx_category.export:
         class: '%pim_connector.step.item_step.class%'
