@@ -63,8 +63,8 @@ define(
                     this.template({
                         __: __,
                         isEditable: this.isEditable(),
-                        titleEdit: __('pim_common.attributes'),
-                        labelEdit: __('pim_common.edit'),
+                        titleEdit: __('pim_enrich.export.product.filter.attributes.title'),
+                        labelEdit: __('pim_enrich.export.product.filter.attributes.edit'),
                         labelInfo: __(
                             'pim_enrich.export.product.filter.attributes.label',
                             {count: attributes.length},
@@ -108,10 +108,10 @@ define(
                     },
                     allowCancel: true,
                     okCloses: false,
-                    cancelText: __('pim_common.cancel'),
-                    title: __('pim_enrich.export.product.filter.attributes.modal.title'),
+                    cancelText: _.__('pim_enrich.export.product.filter.attributes.modal.cancel'),
+                    title: _.__('pim_enrich.export.product.filter.attributes.modal.title'),
                     content: '<div class="AknColumnConfigurator attribute-selector"></div>',
-                    okText: __('pim_common.apply'),
+                    okText: _.__('pim_enrich.export.product.filter.attributes.modal.apply'),
                     attributeCount: 0
                 });
 

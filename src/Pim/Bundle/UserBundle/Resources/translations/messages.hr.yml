@@ -1,0 +1,157 @@
+pim_user:
+  user:
+    tab:
+      general.title: Općenito
+      additional.title: Dodatno
+      group_and_role.title: Grupe i role
+      password.title: Lozinka
+      business_unit.title: Poslovne jedinice
+      email_synchronization.title: Postavke sinkronizacije e-pošte
+      interfaces.title: Sučelja
+  group:
+    tab:
+      general.title: Općenito
+      users.title: Korisnici
+oro.user.controller:
+  group.message.saved: "Grupa je spremljena"
+  role.message.saved: "Rola je spremljena"
+  user.message.saved: "Korisnik je spremljen"
+  status.message.saved: "Status je spremljen"
+oro.user.grid.users:
+  columns:
+    username: "Korisničko ime"
+    email: "Email"
+    firstName: "Ime"
+    lastName: "Prezime"
+    createdAt: "Kreirano u"
+    updatedAt: "Ažurirano u"
+    enabled: "Status"
+oro.user.grid.roles:
+  columns:
+    label: "Oznaka"
+oro.user.grid.groups:
+  columns:
+    name: "Ime"
+pim_title:
+  user.index: Korisnici
+  user_role.index: Role
+  user_group.index: Grupe
+  system_configuration.index: Konfiguracija
+user.title: Korisnik
+user.overview: Korisnik
+Users Management: Upravljanje korisnicima
+Create user: Kreiraj korisnika
+btn.create.user: Kreiraj korisnika
+New user: Novi korisnik
+Additional: Dodatno
+Groups and Roles: Grupe i role
+Username: Korisničko ime
+Password: Lozinka
+Re-enter password: Ponovo upiši lozinku
+Name prefix: Prefiks imena
+First name: Ime
+Middle name: Srednje ime
+Last name: Prezime
+Name suffix: Sufiks imena
+Date of birth: Datum rođenja
+Avatar: Avatar
+Additional emails: Dodatni e-mailovi
+Add another email: Dodaj drugi e-mail
+Catalog locale: Katalog regionalnih postavki
+Catalog scope: Katalog opsega
+Default tree: Zadano stablo
+Business Units: Poslovne jedinice
+Email synchronization settings: Postavke sinkronizacije e-pošte
+Host: Računalo
+Port: Port
+Ssl: SSL
+Last logged in: Zadnji prijavljeni
+Login count: Broj prijava
+Additional Information: Dodatne informacije
+Interfaces: Sučelja
+Basic Information: Osnovni podaci
+Contact Information: Kontakt informacije
+User name: Korisničko ime
+Birthday: Datum rođenja
+API key: API ključ
+Ui locale: Regionalne postavke UI sučelja
+UI locale: Regionalne postavke UI sučelja
+User salt: Korisnik je zaštićen
+Current password: Trenutna lozinka
+New password: Nova lozinka
+Repeat new password: Nova lozinka (ponovi)
+Generate key: Generiraj ključ
+Primary: glavno
+Removed user: Uklonjen korisnik
+user:
+  product_grid_filters: Filtri tablice proizvoda
+  default_product_grid_view:
+    label: Zadani prikaz tablice proizvoda
+  default_grid_view:
+    none: Niti jedan
+  timezone: Vremenska zona
+Role: Rola
+Owner: Vlasnik
+General: Općenito
+Entity: Entitet
+Capabilities: Mogućnosti
+Save and close: Spremi i zatvori
+Has role: Ima rolu
+role:
+  title: rola
+  overview: rola
+  edit: Uredi rolu
+  create: Kreiraj rolu
+btn.create.role: Kreiraj rolu
+rights:
+  action: Dozvole
+oro_security:
+  acl_group:
+    user: Korisnici
+    role: Role
+    group: Korisničke grupe
+  acl:
+    user:
+      view: Popis korisnika
+      create: Kreiraj korisnika
+      edit: Uredi korisnika
+      delete: Ukloni korisnika
+    role:
+      view: Popis rola
+      create: Kreiraj rolu
+      edit: Uredi rolu
+      delete: Ukloni rolu
+    group:
+      view: Popis korisničkih grupa
+      create: Kreiraj korisničku grupu
+      edit: Uredi korisničke grupe
+      delete: Ukloni korisničku grupu
+(default): Zadane dozvole na entitete
+VIEW: Prikaz
+CREATE: Kreiraj
+EDIT: Uredi
+DELETE: Obriši
+ASSIGN: Dodijeli
+SHARE: Podijeli
+oro:
+  security:
+    access-level:
+      BASIC: Korisnik
+      LOCAL: Poslovna jedinica
+      DEEP: Odjel
+      GLOBAL: Organizacija
+      SYSTEM: Sustav
+      NONE: Niti jedan
+Create group: Kreiraj grupu
+btn.create.user-group: Kreiraj grupu
+Has group: Sadržava grupu
+Save and Close: Spremi i zatvori
+user-group.overview: Grupe
+Log in: Prijava
+Remember me on this computer: Zapamti me na ovom računalu
+Forgot your password?: Zaboravili ste svoju lozinku?
+Username or Email: Korisničko ime ili E-mail
+Forgot Password: Zaboravio/la si lozinku
+Request: Zahtjev
+Check Email: Provjeri e-poštu
+Go to homepage: Idi na početnu stranicu

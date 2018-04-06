@@ -60,7 +60,7 @@ Feature: Edit a product with localized attributes
     When I am on the User profile edit page
     And I visit the "Interfaces" tab
     And I fill in the following information:
-      | Langue de l'interface | anglais (États-Unis) |
+      | Langue de l'interface | anglais (Royaume-Uni) |
     And I save the user
     And I am on the "foo" product page
     Then the field Date should contain "28/05/2015"

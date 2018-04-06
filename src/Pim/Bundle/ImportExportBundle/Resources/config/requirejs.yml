@@ -1,0 +1,4 @@
+config:
+    paths:
+        pim/job-execution-view: pimimportexport/js/job-execution-view
+

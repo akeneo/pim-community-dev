@@ -3,7 +3,7 @@ extensions:
         module: pim/form/common/creation/modal
         config:
             labels:
-                title: pim_common.create
+                title: pim_enrich.index.export_profiles.create_popin.title
                 subTitle: pim_menu.item.export_profile
             picture: illustration-attribute.svg
             successMessage: pim_enrich.index.export_profiles.message.created
@@ -18,7 +18,7 @@ extensions:
         position: 10
         config:
             identifier: code
-            label: pim_common.code
+            label: pim_enrich.entity.create_popin.code
 
     pim-export-profile-create-label:
         module: pim/form/common/creation/field
@@ -27,7 +27,7 @@ extensions:
         position: 20
         config:
             identifier: label
-            label: pim_common.label
+            label: pim_enrich.entity.create_popin.label
 
     pim-export-profile-create-job:
         module: pim/form/common/creation/job

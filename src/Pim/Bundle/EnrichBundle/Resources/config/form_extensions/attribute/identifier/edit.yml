@@ -22,7 +22,7 @@ extensions:
         config:
             trans:
                 title: confirmation.remove.attribute
-                content: pim_common.confirm_deletion
+                content: pim_enrich.confirmation.delete_item
                 success: flash.attribute.removed
                 fail: error.removing.attribute
             redirect: pim_enrich_attribute_index
@@ -61,7 +61,7 @@ extensions:
         targetZone: meta
         position: 90
         config:
-            label: pim_common.created
+            label: pim_enrich.form.attribute.meta.created
             labelBy: pim_enrich.form.attribute.meta.created_by
 
     pim-attribute-identifier-edit-form-updated:
@@ -85,7 +85,7 @@ extensions:
         targetZone: container
         position: 100
         config:
-            label: pim_common.properties
+            label: pim_enrich.form.attribute.tab.properties.title
 
     pim-attribute-identifier-edit-form-properties:
         module: pim/common/simple-view
@@ -112,7 +112,7 @@ extensions:
         position: 90
         config:
             fieldName: code
-            label: pim_common.code
+            label: pim_enrich.form.attribute.tab.properties.label.code
             required: true
             readOnly: true
 
@@ -123,7 +123,7 @@ extensions:
         position: 100
         config:
             fieldName: type
-            label: pim_common.type
+            label: pim_enrich.form.attribute.tab.properties.label.type
             readOnly: true
 
     pim-attribute-identifier-edit-form-properties-common-group:
@@ -194,7 +194,7 @@ extensions:
         targetZone: container
         position: 120
         config:
-            label: pim_common.label_translations
+            label: pim_enrich.form.attribute.tab.labels.title
 
     pim-attribute-identifier-edit-form-labels-container:
         module: pim/common/simple-view
@@ -220,7 +220,7 @@ extensions:
         aclResourceId: pim_enrich_attribute_history
         config:
             class: attribute
-            title: pim_common.history
+            title: pim_enrich.form.attribute.tab.history.title
 
     pim-attribute-identifier-edit-form-validation-params:
         module: pim/common/simple-view

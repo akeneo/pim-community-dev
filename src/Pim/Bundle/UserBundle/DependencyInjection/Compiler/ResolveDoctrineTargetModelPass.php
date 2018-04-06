@@ -19,7 +19,7 @@ class ResolveDoctrineTargetModelPass extends AbstractResolveDoctrineTargetModelP
     protected function getParametersMapping()
     {
         return [
-            'Pim\Component\User\Model\UserInterface' => 'pim_user.entity.user.class',
+            'Pim\Bundle\UserBundle\Entity\UserInterface' => 'pim_user.entity.user.class',
         ];
     }
 }

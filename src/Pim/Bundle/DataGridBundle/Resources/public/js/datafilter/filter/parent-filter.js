@@ -11,8 +11,8 @@ define(['underscore', 'oro/translator', 'oro/datafilter/choice-filter'],
         return ChoiceFilter.extend({
             initialize: function() {
                 this.choices = [
-                    {'label': __('pim_datagrid.filters.common.in_list'), 'value': 'in'},
-                    {'label': __('pim_datagrid.filters.common.empty'), 'value': 'empty'},
+                    {'label': __('pim.grid.choice_filter.label_in_list'), 'value': 'in'},
+                    {'label': __('pim.grid.choice_filter.label_empty'), 'value': 'empty'},
                 ];
                 this.emptyValue = { 'type': 'in', 'value': ''};
 
@@ -24,8 +24,8 @@ define(['underscore', 'oro/translator', 'oro/datafilter/choice-filter'],
              */
             _getOperatorChoices() {
                 return {
-                    'in': __('pim_datagrid.filters.common.in_list'),
-                    'empty': __('pim_datagrid.filters.common.empty'),
+                    'in': __('pim.grid.choice_filter.label_in_list'),
+                    'empty': __('pim.grid.choice_filter.label_empty'),
                 };
             },
 

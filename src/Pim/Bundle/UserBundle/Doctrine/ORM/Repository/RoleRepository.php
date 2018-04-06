@@ -2,12 +2,9 @@
 
 namespace Pim\Bundle\UserBundle\Doctrine\ORM\Repository;
 
-use Doctrine\ORM\EntityRepository;
-use Doctrine\ORM\QueryBuilder;
-use Pim\Component\User\Model\RoleInterface;
-use Pim\Component\User\Model\User;
-use Pim\Component\User\Model\UserInterface;
-use Pim\Component\User\Repository\RoleRepositoryInterface;
+use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
+use Oro\Bundle\UserBundle\Entity\Repository\RoleRepository as BaseRoleRepository;
+use Pim\Bundle\UserBundle\Entity\User;
 
 /**
  * Role repository
@@ -16,16 +13,9 @@ use Pim\Component\User\Repository\RoleRepositoryInterface;
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class RoleRepository extends EntityRepository implements RoleRepositoryInterface
+class RoleRepository extends BaseRoleRepository implements
+    IdentifiableObjectRepositoryInterface
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function getIdentifierProperties()
-    {
-        return ['role'];
-    }
-
     /**
      * {@inheritdoc}
      */
@@ -37,9 +27,9 @@ class RoleRepository extends EntityRepository implements RoleRepositoryInterface
     /**
      * Create a QB to find all roles but the anonymous one
      *
-     * @return QueryBuilder
+     * @return \Doctrine\ORM\QueryBuilder
      */
-    public function getAllButAnonymousQB(): QueryBuilder
+    public function getAllButAnonymousQB()
     {
         return $this->createQueryBuilder('r')
             ->where('r.role <> :anon')
@@ -47,19 +37,10 @@ class RoleRepository extends EntityRepository implements RoleRepositoryInterface
     }
 
     /**
-     * Get user query builder
-     *
-     * @param  RoleInterface $role
-     *
-     * @return QueryBuilder
+     * {@inheritdoc}
      */
-    public function getUserQueryBuilder(RoleInterface $role): QueryBuilder
+    public function getIdentifierProperties()
     {
-        return $this->_em->createQueryBuilder()
-            ->select('u')
-            ->from(UserInterface::class, 'u')
-            ->join('u.roles', 'role')
-            ->where('role = :role')
-            ->setParameter('role', $role);
+        return ['role'];
     }
 }

@@ -1,8 +1,0 @@
-pim_dashboard:
-  title: Dashboard
-  version: Bersyon
-  widget:
-    last_operations:
-      status: Estado
-      date: Petsa
-      type: Uri

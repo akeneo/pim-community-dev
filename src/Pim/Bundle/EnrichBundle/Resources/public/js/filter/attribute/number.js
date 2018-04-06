@@ -56,7 +56,7 @@ define([
                 value: this.getValue(),
                 field: this.getField(),
                 operator: this.getOperator(),
-                operators: this.getLabelledOperatorChoices(this.shortname)
+                operatorChoices: this.config.operators
             }));
         },
 

@@ -3,12 +3,11 @@ define(
         'backbone',
         'jquery',
         'underscore',
-        'oro/translator',
         'routing',
         'pim/router',
         'pim/template/notification/notification-list'
     ],
-    function (Backbone, $, _, __, Routing, router, template) {
+    function (Backbone, $, _, Routing, router, template) {
         'use strict';
 
         var Notification = Backbone.Model.extend({
@@ -20,6 +19,7 @@ define(
                 type:              'success',
                 createdAt:         null,
                 actionType:        null,
+                actionTypeMessage: null,
                 showReportButton:  true,
                 comment:           null
             }
@@ -95,9 +95,8 @@ define(
                         type: this.model.get('type'),
                         createdAt: this.model.get('createdAt'),
                         actionType: this.camelize(this.model.get('actionType')),
-                        actionTypeMessage: 'foo',
                         buttonLabel: this.model.get('buttonLabel'),
-                        actionTypeMessage: __('pim_notification.types.' + this.model.get('actionType')),
+                        actionTypeMessage: this.model.get('actionTypeMessage'),
                         showReportButton: this.model.get('showReportButton'),
                         comment: this.model.get('comment')
                     }

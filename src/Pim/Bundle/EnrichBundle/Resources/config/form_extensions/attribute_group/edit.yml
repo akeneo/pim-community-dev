@@ -50,8 +50,8 @@ extensions:
         config:
             trans:
                 title: confirmation.remove.attribute_group
-                subTitle: pim_common.attribute_groups
-                content: pim_common.confirm_deletion
+                subTitle: pim_menu.item.attribute_group
+                content: pim_enrich.confirmation.delete_item
                 success: flash.attribute_group.removed
                 fail: error.removing.attribute_group
             redirect: pim_enrich_attributegroup_index
@@ -105,7 +105,7 @@ extensions:
         targetZone: container
         position: 100
         config:
-            label: pim_common.properties
+            label: pim_enrich.form.attribute_group.tab.properties.title
 
     pim-attribute-group-edit-form-properties:
         module: pim/common/simple-view
@@ -120,8 +120,8 @@ extensions:
         targetZone: accordion
         position: 100
         config:
-          sectionTitle: pim_common.general_properties
-          codeLabel: pim_common.code
+          sectionTitle: pim_enrich.form.attribute_group.tab.properties.general
+          codeLabel: pim_enrich.form.attribute_group.tab.properties.code
           formRequired: pim_enrich.form.required
           inputField: pim_enrich_attribute_group_form_code
 
@@ -133,7 +133,7 @@ extensions:
         config:
             template: pim/template/form/tab/section
             templateParams:
-                sectionTitle: pim_common.label_translations
+                sectionTitle: pim_enrich.form.attribute_group.tab.properties.label_translations
                 dropZone: content
 
     pim-attribute-group-edit-form-properties-translation:
@@ -150,13 +150,13 @@ extensions:
         targetZone: container
         position: 120
         config:
-            title: pim_common.attributes
+            title: pim_enrich.form.attribute_group.tab.attribute.title
             otherGroup: other
             confirmation:
                 title: pim_enrich.confirmation.remove_item
-                subTitle: pim_common.attribute_groups
+                subTitle: pim_menu.item.attribute_group
                 message: pim_enrich.confirmation.delete.attribute_group
-                buttonText: pim_common.remove
+                buttonText: pim_enrich.confirmation.remove
             removeAttributeACL: pim_enrich_attributegroup_remove_attribute
             addAttributeACL: pim_enrich_attributegroup_add_attribute
 
@@ -174,4 +174,4 @@ extensions:
         position: 130
         config:
             class: attribute_group
-            title: pim_common.history
+            title: pim_enrich.form.attribute_group.tab.history.title

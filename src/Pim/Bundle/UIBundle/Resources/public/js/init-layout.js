@@ -140,7 +140,7 @@ define(['jquery', 'backbone', 'underscore', 'pim/router', 'oro/translator', 'oro
 
             this.confirmModal = Dialog.confirmDelete(
                 message,
-                __('pim_common.confirm_deletion'),
+                __('pim_enrich.confirmation.delete_item'),
                 doDelete,
                 subTitle
             );

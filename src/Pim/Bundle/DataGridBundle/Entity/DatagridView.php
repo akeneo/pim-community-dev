@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\DataGridBundle\Entity;
 
-use Pim\Component\User\Model\UserInterface;
+use Pim\Bundle\UserBundle\Entity\UserInterface;
 
 /**
  * Datagrid view entity
