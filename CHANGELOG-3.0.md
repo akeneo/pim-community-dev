@@ -7,6 +7,8 @@
 
 ## BC breaks
 
+- Change constructor of `PimEnterprise\Component\Catalog\Security\Updater\Setter\GrantedAssociationFieldSetter`. Add arguments `Akeneo\Component\StorageUtils\Repository\CursorableRepositoryInterface`, `PimEnterprise\Bundle\SecurityBundle\Entity\Query\ItemCategoryAccessQuery` two times and `Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface`.
+- Change constructor of `PimEnterprise\Component\Catalog\Security\Merger\NotGrantedAssociatedProductMerger`. Add arguments `PimEnterprise\Bundle\SecurityBundle\Entity\Query\ItemCategoryAccessQuery` two times and `Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface`.
 - Change constructor of `PimEnterprise\Component\Catalog\Security\Filter\NotGrantedAssociatedProductFilter`. Add arguments `PimEnterprise\Bundle\SecurityBundle\Entity\Query\ItemCategoryAccessQuery` two times and `Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface`.
 - Move namespace `PimEnterprise\Bundle\VersioningBundle` to `PimEnterprise\Bundle\RevertBundle`
 - Move namespace `PimEnterprise\Bundle\VersioningBundle\UpdateGuesser` to `PimEnterprise\Bundle\SecurityBundle\UpdateGuesser`
