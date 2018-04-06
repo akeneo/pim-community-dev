@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Bundle\SecurityBundle\EventSubscriber\Datagrid;
+namespace PimEnterprise\Bundle\SecurityBundle\Datagrid\EventListener;
 
 use Oro\Bundle\DataGridBundle\Event\BuildAfter;
 use Pim\Bundle\DataGridBundle\Datasource\ProductDatasource;

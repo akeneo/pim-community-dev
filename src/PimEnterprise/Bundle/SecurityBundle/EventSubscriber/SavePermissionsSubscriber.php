@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Bundle\EnrichBundle\EventSubscriber;
+namespace PimEnterprise\Bundle\SecurityBundle\EventSubscriber;
 
 use Akeneo\Component\Batch\Model\JobInstance;
 use Doctrine\ORM\EntityRepository;

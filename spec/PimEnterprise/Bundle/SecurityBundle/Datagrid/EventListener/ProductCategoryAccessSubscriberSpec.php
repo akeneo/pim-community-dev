@@ -1,16 +1,17 @@
 <?php
 
-namespace spec\PimEnterprise\Bundle\SecurityBundle\EventSubscriber\Datagrid;
+namespace spec\PimEnterprise\Bundle\SecurityBundle\Datagrid\EventListener;
 
 use Oro\Bundle\DataGridBundle\Datagrid\DatagridInterface;
 use Oro\Bundle\DataGridBundle\Datasource\DatasourceInterface;
 use Oro\Bundle\DataGridBundle\Event\BuildAfter;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\DataGridBundle\Datasource\ProductDatasource;
-use Pim\Component\User\Model\UserInterface;
 use Pim\Component\Catalog\Query\ProductQueryBuilderInterface;
+use Pim\Component\User\Model\UserInterface;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;
 use PimEnterprise\Component\Security\Attributes;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 
@@ -25,7 +26,7 @@ class ProductCategoryAccessSubscriberSpec extends ObjectBehavior
 
     public function it_is_an_event_subscriber()
     {
-        $this->shouldHaveType('Symfony\Component\EventDispatcher\EventSubscriberInterface');
+        $this->shouldHaveType(EventSubscriberInterface::class);
     }
 
     public function it_subscribes_events()
