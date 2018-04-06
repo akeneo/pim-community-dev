@@ -143,7 +143,7 @@ acceptance:
     suites:
         acceptance:
             paths:
-                - vendor/akeneo/pim-community-dev/tests/features/
+                - vendor/akeneo/pim-community-dev/tests/back/features/
             contexts_services:
                 - test.locale.context
                 - test.channel.context
@@ -152,7 +152,7 @@ acceptance:
     extensions:
         FriendsOfBehat\ContextServiceExtension:
            imports:
-               - "vendor/akeneo/pim-community-dev/tests/Acceptance/Resources/config/behat/services.yml"
+               - "vendor/akeneo/pim-community-dev/tests/back/Acceptance/Resources/config/behat/services.yml"
         FriendsOfBehat\CrossContainerExtension: ~
         FriendsOfBehat\SymfonyExtension:
             kernel:
