@@ -32,7 +32,7 @@ class FormExtensionController
     {
         return new JsonResponse(
             [
-                'extensions'       => $this->extensionProvider->getExtensions(),
+                'extensions'       => $this->extensionProvider->getFilteredExtensions(),
                 'attribute_fields' => $this->extensionProvider->getAttributeFields()
             ]
         );
