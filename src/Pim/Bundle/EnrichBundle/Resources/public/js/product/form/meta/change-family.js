@@ -46,7 +46,7 @@ define(
             showModal: function () {
                 var familyModal = new Backbone.BootstrapModal({
                     allowCancel: true,
-                    cancelText: _.__('pim_enrich.entity.product.meta.groups.modal.close'),
+                    cancelText: _.__('pim_common.close'),
                     title: _.__('pim_enrich.form.product.change_family.modal.title'),
                     content: this.modalTemplate({
                         product: this.getFormData()

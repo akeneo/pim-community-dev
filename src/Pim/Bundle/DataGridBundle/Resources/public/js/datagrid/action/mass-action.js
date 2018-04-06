@@ -13,12 +13,12 @@ function(_, messenger, __, Dialog, AbstractAction) {
     return AbstractAction.extend({
         /** @property {Object} */
         defaultMessages: {
-            confirm_title: __('Mass Action Confirmation'),
-            confirm_content: __('Are you sure you want to do this?'),
-            confirm_ok: __('Yes, do it'),
-            success: __('Mass action performed.'),
-            error: __('Mass action is not performed.'),
-            empty_selection: __('Please, select items to perform mass action.')
+            confirm_title: __('pim_datagrid.mass_action.default.confirmation.title'),
+            confirm_content: __('pim_datagrid.mass_action.default.confirmation.content'),
+            confirm_ok: __('pim_common.yes'),
+            success: __('pim_datagrid.mass_action.default.success'),
+            error: __('pim_datagrid.mass_action.default.error'),
+            empty_selection: __('pim_datagrid.mass_action.default.no_items')
         },
 
         initialize: function(options) {

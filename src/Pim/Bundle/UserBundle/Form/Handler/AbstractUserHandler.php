@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\UserBundle\Form\Handler;
 
-use Pim\Bundle\UserBundle\Entity\UserInterface;
 use Pim\Bundle\UserBundle\Manager\UserManager;
+use Pim\Component\User\Model\UserInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -74,7 +74,7 @@ abstract class AbstractUserHandler
     /**
      * "Success" form handler
      *
-     * @param UserInterface $user
+     * @param \Pim\Component\User\Model\UserInterface $user
      */
     abstract protected function onSuccess(UserInterface $user);
 }

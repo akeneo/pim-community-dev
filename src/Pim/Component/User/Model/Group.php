@@ -5,6 +5,11 @@ namespace Pim\Component\User\Model;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 
+/**
+ * @author    Arnaud Langlade <arnaud.langlade@akeneo.com>
+ * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
 class Group implements GroupInterface
 {
     /** @var integer */
@@ -26,33 +31,33 @@ class Group implements GroupInterface
     }
 
     /**
-     * @return int
+     * {@inheritdoc}
      */
-    public function getId()
+    public function getId(): ?int
     {
         return $this->id;
     }
 
     /**
-     * @return string
+     * {@inheritdoc}
      */
-    public function getName()
+    public function getName(): ?string
     {
         return $this->name;
     }
 
     /**
-     * @param  string $name
-     * @return Group
+     * {@inheritdoc}
      */
-    public function setName($name)
+    public function setName($name): void
     {
         $this->name = $name;
-
-        return $this;
     }
 
-    public function getRoleLabelsAsString()
+    /**
+     * {@inheritdoc}
+     */
+    public function getRoleLabelsAsString(): string
     {
         $labels = [];
         /** @var $role Role */
@@ -64,20 +69,17 @@ class Group implements GroupInterface
     }
 
     /**
-     * Returns the group roles
-     * @return Collection The roles
+     * {@inheritdoc}
      */
-    public function getRoles()
+    public function getRoles(): Collection
     {
         return $this->roles;
     }
 
     /**
-     * Get role by string
-     * @param  string $roleName Role name
-     * @return Role|null
+     * {@inheritdoc}
      */
-    public function getRole($roleName)
+    public function getRole($roleName): ?RoleInterface
     {
         /** @var $role Role */
         foreach ($this->getRoles() as $role) {
@@ -90,11 +92,9 @@ class Group implements GroupInterface
     }
 
     /**
-     * @param  Role|string $role
-     * @throws \InvalidArgumentException
-     * @return boolean
+     * {@inheritdoc}
      */
-    public function hasRole($role)
+    public function hasRole($role): bool
     {
         if ($role instanceof Role) {
             $roleName = $role->getRole();
@@ -102,7 +102,7 @@ class Group implements GroupInterface
             $roleName = $role;
         } else {
             throw new \InvalidArgumentException(
-                '$role must be an instance of Pim\Component\User\Model\Group or a string'
+                sprintf('$role must be an instance of %s or a string', Group::class)
             );
         }
 
@@ -110,26 +110,19 @@ class Group implements GroupInterface
     }
 
     /**
-     * Adds a Role to the Collection
-     * @param  Role $role
-     * @return Group
+     * {@inheritdoc}
      */
-    public function addRole(Role $role)
+    public function addRole(RoleInterface $role): void
     {
         if (!$this->hasRole($role)) {
             $this->roles->add($role);
         }
-
-        return $this;
     }
 
     /**
-     * Remove the Role object from collection
-     * @param  Role|string $role
-     * @throws \InvalidArgumentException
-     * @return Group
+     * {@inheritdoc}
      */
-    public function removeRole($role)
+    public function removeRole($role): void
     {
         if ($role instanceof Role) {
             $roleObject = $role;
@@ -137,23 +130,18 @@ class Group implements GroupInterface
             $roleObject = $this->getRole($role);
         } else {
             throw new \InvalidArgumentException(
-                '$role must be an instance of Pim\Component\User\Model\Group or a string'
+                sprintf('$role must be an instance of %s or a string', Group::class)
             );
         }
         if ($roleObject) {
             $this->roles->removeElement($roleObject);
         }
-
-        return $this;
     }
 
     /**
-     * Set new Roles collection
-     * @param  array|Collection $roles
-     * @throws \InvalidArgumentException
-     * @return Group
+     * {@inheritdoc}
      */
-    public function setRoles($roles)
+    public function setRoles($roles): void
     {
         if ($roles instanceof Collection) {
             $this->roles->clear();
@@ -168,8 +156,6 @@ class Group implements GroupInterface
                 '$roles must be an instance of Doctrine\Common\Collections\Collection or an array'
             );
         }
-
-        return $this;
     }
 
     /**
@@ -177,7 +163,7 @@ class Group implements GroupInterface
      *
      * @return string
      */
-    public function __toString()
+    public function __toString(): string
     {
         return (string) $this->name;
     }

@@ -47,8 +47,8 @@ class AuthorProperty extends FieldProperty
         }
 
         return [
-            'author'  => $author,
-            'context' => $context
+            'author' => $author,
+            'context' => $context,
         ];
     }
 

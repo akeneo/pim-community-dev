@@ -81,7 +81,7 @@ define([
             getConfirmDialog: function(data) {
                 this.confirmModal = Dialog.confirmDelete(
                     __(this.config.confirmLabel),
-                    __('pim_enrich.confirmation.delete_item'),
+                    __('pim_common.confirm_deletion'),
                     this.doMassDelete.bind(this, data),
                     this.getEntityHint(true)
                 );

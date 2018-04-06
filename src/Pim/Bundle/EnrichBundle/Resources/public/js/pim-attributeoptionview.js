@@ -137,7 +137,7 @@ define(
                     function () {
                         this.parent.deleteItem(this);
                     }.bind(this),
-                    __('pim_menu.item.attribute')
+                    __('pim_common.attributes')
                 );
             },
             updateItem: function () {
@@ -290,7 +290,7 @@ define(
                 this.$el.html(this.template({
                     locales: this.locales,
                     add_option_label: __('label.attribute_option.add_option'),
-                    code_label: __('Code')
+                    code_label: __('pim_common.code')
                 }));
 
                 _.each(_.sortBy(this.collection.models, function (attributeOptionItem) {

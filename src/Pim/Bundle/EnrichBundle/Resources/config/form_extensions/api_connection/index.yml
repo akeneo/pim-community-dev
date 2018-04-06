@@ -65,5 +65,5 @@ extensions:
         position: 100
         config:
            iconName:  plus
-           title:     pim_enrich.index.api_connection.create_btn
+           title:     pim_common.create
            modalForm: pim-api-connection-create-modal

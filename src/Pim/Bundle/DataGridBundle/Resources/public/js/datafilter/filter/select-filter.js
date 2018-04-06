@@ -23,7 +23,7 @@ function(_, __, AbstractFilter, MultiselectDecorator) {
                 '<% } %>' +
                 '<select>' +
                     '<% _.each(options, function (option) { %>' +
-                        '<option value="<%= option.value %>"<% if (option.value == emptyValue.type) { %> selected="selected"<% } %>><%= option.label %></option>' +
+                        '<option value="<%= option.value %>"<% if (option.value == emptyValue.type) { %> selected="selected"<% } %>><%= _.__(option.label) %></option>' +
                     '<% }); %>' +
                 '</select>' +
             '</div>' +

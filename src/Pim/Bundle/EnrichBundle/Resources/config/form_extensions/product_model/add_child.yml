@@ -49,4 +49,4 @@ extensions:
         module: pim/form/common/fields/text
         config:
             required: true
-            label: pim_enrich.entity.product_model.add_child.fields.code
+            label: pim_common.code

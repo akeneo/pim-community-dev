@@ -106,7 +106,7 @@ define([
         renderDisplayTypes(types) {
             const firstType = Object.keys(types)[0];
             let selectedType = this.getStoredType();
-            const displayLabel = __('grid.display_selector.label');
+            const displayLabel = __('pim_datagrid.display_selector.label');
 
             if (undefined === types[selectedType]) {
                 selectedType = firstType;

@@ -47,7 +47,7 @@ define([
             return this.template({
                 isEditable: this.isEditable(),
                 titleEdit: __('pim_connector.export.categories.selector.title'),
-                labelEdit: __('pim_connector.export.categories.selector.edit'),
+                labelEdit: __('pim_common.edit'),
                 labelInfo: __(
                     'pim_connector.export.categories.selector.label',
                     {count: categoryCount},
@@ -89,8 +89,8 @@ define([
         openSelector: function () {
             var modal = new TreeModal({
                 title: __('pim_connector.export.categories.selector.modal.title'),
-                cancelText: __('pim_connector.export.categories.selector.modal.cancel'),
-                okText: __('pim_connector.export.categories.selector.modal.confirm'),
+                cancelText: __('pim_common.cancel'),
+                okText: __('pim_common.confirm'),
                 content: ''
             });
 

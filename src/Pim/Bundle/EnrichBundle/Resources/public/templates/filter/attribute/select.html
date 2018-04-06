@@ -1,7 +1,7 @@
 <select class="select2 operator" name="filter-operator" <%- editable ? '' : 'disabled' %>>
-    <% _.each(operators, function (operatorChoice) { %>
+    <% _.each(operators, function (operatorChoiceLabel, operatorChoice) { %>
         <option value="<%- operatorChoice %>"<%- operator === operatorChoice ? ' selected' : '' %>>
-            <%- __('pim_enrich.export.product.filter.multi_select.operators.' + operatorChoice) %>
+            <%- operatorChoiceLabel %>
         </option>
     <% }); %>
 </select>

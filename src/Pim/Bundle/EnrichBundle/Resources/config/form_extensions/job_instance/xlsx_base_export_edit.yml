@@ -42,7 +42,7 @@ extensions:
         targetZone: container
         position: 100
         config:
-            tabTitle: pim_enrich.form.job_instance.tab.properties.title
+            tabTitle: pim_common.properties
             tabCode: pim-job-instance-properties
 
     pim-job-instance-xlsx-base-export-edit-global:
@@ -63,7 +63,7 @@ extensions:
         position: 130
         config:
             class: Akeneo\Component\Batch\Model\JobInstance
-            title: pim_enrich.form.job_instance.tab.history.title
+            title: pim_common.history
             tabCode: pim-job-instance-history
 
     pim-job-instance-xlsx-base-export-edit-properties-code:
@@ -73,7 +73,7 @@ extensions:
         targetZone: properties
         config:
             fieldCode: code
-            label: pim_enrich.form.job_instance.tab.properties.code.title
+            label: pim_common.code
             readOnly: true
 
     pim-job-instance-xlsx-base-export-edit-properties-label:
@@ -83,7 +83,7 @@ extensions:
         targetZone: properties
         config:
             fieldCode: label
-            label: pim_enrich.form.job_instance.tab.properties.label.title
+            label: pim_common.label
             readOnly: false
 
     pim-job-instance-xlsx-base-export-edit-properties-file-path:
@@ -147,7 +147,7 @@ extensions:
             trans:
                 title: confirmation.remove.export_profile
                 subTitle: pim_menu.item.export_profile
-                content: pim_enrich.confirmation.delete_item
+                content: pim_common.confirm_deletion
                 success: flash.job_instance.removed
                 failed: error.removing.job_instance
             redirect: pim_importexport_export_profile_index
