@@ -9,12 +9,11 @@
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Bundle\EnrichBundle\Filter;
+namespace PimEnterprise\Bundle\SecurityBundle\Filter;
 
 use Akeneo\Component\Batch\Model\JobInstance;
 use Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface;
 use Pim\Bundle\CatalogBundle\Filter\ObjectFilterInterface;
-use PimEnterprise\Bundle\SecurityBundle\Filter\AbstractAuthorizationFilter;
 use PimEnterprise\Component\Security\Attributes;
 
 /**

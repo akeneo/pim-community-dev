@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\PimEnterprise\Bundle\EnrichBundle\Filter;
+namespace spec\PimEnterprise\Bundle\SecurityBundle\Filter;
 
 use PhpSpec\ObjectBehavior;
 

@@ -1,18 +1,10 @@
 <?php
 
-namespace spec\PimEnterprise\Bundle\EnrichBundle\Filter;
+namespace spec\PimEnterprise\Bundle\SecurityBundle\Filter;
 
-use Oro\Bundle\SecurityBundle\SecurityFacade;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Filter\ObjectFilterInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
-use Pim\Component\Catalog\Model\ChannelInterface;
-use Pim\Component\Catalog\Model\LocaleInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
-use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
-use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
-use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
-use Prophecy\Argument;
 
 class ProductValuesEditDataFilterSpec extends ObjectBehavior
 {

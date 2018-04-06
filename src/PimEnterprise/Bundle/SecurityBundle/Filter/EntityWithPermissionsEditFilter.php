@@ -11,7 +11,7 @@
 
 declare(strict_types=1);
 
-namespace PimEnterprise\Bundle\EnrichBundle\Filter;
+namespace PimEnterprise\Bundle\SecurityBundle\Filter;
 
 use Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface;
 

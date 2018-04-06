@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Bundle\EnrichBundle\Filter;
+namespace PimEnterprise\Bundle\SecurityBundle\Filter;
 
 use Pim\Bundle\EnrichBundle\Filter\ProductEditDataFilter as BaseProductEditFilter;
 use Pim\Component\Catalog\Model\ProductInterface;
