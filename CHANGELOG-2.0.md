@@ -28,6 +28,7 @@
 - PIM-7259: Remove only attribute's option removed for multi select attribute
 - PIM-7270: Fix [object Object] empty filter value
 - PIM-7252: Fix permissions on attributes settings page
+- PIM-7260: Add form validation in the 'configure' step of mass edits
 
 # 2.0.19 (2018-03-23)
 

@@ -1,5 +1,12 @@
 @import '../base/variables';
 
+.jstree-icon(@url) {
+  background: url(@url) 50% 50% no-repeat;
+  height: 22px;
+  width: 22px;
+  margin: 0 5px 0 0;
+}
+
 .jstree.jstree-default {
   padding: 0;
 
@@ -8,13 +15,6 @@
     margin-left: -20px;
     overflow: auto;
     max-height: ~"calc(100vh - 223px)";
-
-    .jstree-icon(@url) {
-      background: url(@url) 50% 50% no-repeat;
-      height: 22px;
-      width: 22px;
-      margin: 0 5px 0 0;
-    }
 
     a {
       height: 35px;
@@ -205,8 +205,17 @@
   }
 }
 
-.root-unselectable .jstree-root > a > .jstree-checkbox {
-  display: none;
+#root-unselectable .jstree-root > a {
+  font-weight: normal;
+  color: @AknDarkBlue !important;
+
+  > .jstree-checkbox {
+    display: none;
+  }
+
+  > .jstree-icon {
+    .jstree-icon("../../images/jstree/icon-folders.svg")
+  }
 }
 
 .AknColumnConfigurator-column .jstree.jstree-default {
