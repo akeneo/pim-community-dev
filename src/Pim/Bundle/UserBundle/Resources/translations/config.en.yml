@@ -4,3 +4,16 @@ entity.role.name: Role
 entity.role.description: user role
 entity.group.name: Group
 entity.group.description: Role group
+
+entity:
+    user:
+        name:           User
+        description:    Represent user profile
+
+    role:
+        name:           Role
+        description:    User's role
+
+    group:
+        name:           Group
+        description:    Group of roles

@@ -4,7 +4,7 @@ namespace Pim\Bundle\DataGridBundle\Extension\Formatter\Property\Version;
 
 use Oro\Bundle\DataGridBundle\Datasource\ResultRecordInterface;
 use Oro\Bundle\DataGridBundle\Extension\Formatter\Property\FieldProperty;
-use Oro\Bundle\UserBundle\Entity\UserManager;
+use Pim\Bundle\UserBundle\Manager\UserManager;
 use Symfony\Component\Translation\TranslatorInterface;
 
 /**
@@ -16,15 +16,15 @@ use Symfony\Component\Translation\TranslatorInterface;
  */
 class AuthorProperty extends FieldProperty
 {
-    /** @var UserManager */
+    /** @var \Pim\Bundle\UserBundle\Manager\UserManager */
     protected $userManager;
 
     /** @var string[] */
     protected $userCachedResults;
 
     /**
-     * @param TranslatorInterface $translator
-     * @param UserManager         $userManager
+     * @param TranslatorInterface                        $translator
+     * @param \Pim\Bundle\UserBundle\Manager\UserManager $userManager
      */
     public function __construct(TranslatorInterface $translator, UserManager $userManager)
     {

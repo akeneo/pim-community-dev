@@ -364,7 +364,7 @@
         {% for field in privileges_config['permissions'] %}
             {% for permission in form if permission.vars.value.name == field %}
                 {% set additionalClass = field == 'ASSIGN' or '(default)' == form.parent.vars.value.identity.name ? ' default-field hide' : '' %}
-                {% if 'entity:Oro\\Bundle\\UserBundle\\Entity\\Role' == form.parent.vars.value.identity.id %}
+                {% if 'entity:Pim\\Component\\User\\Model\\Role' == form.parent.vars.value.identity.id %}
                     {% set additionalClass = additionalClass ~ ' default-field-toggle' %}
                 {% endif %}
                 <div class="acl-permission{{ additionalClass }}" data-permission="{{ field }}">

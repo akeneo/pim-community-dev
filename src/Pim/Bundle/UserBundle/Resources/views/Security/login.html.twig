@@ -19,7 +19,7 @@
         </div>
     {% endif %}
 
-    <form action="{{ path('oro_user_security_check') }}" method="post" class="form-signin form-inline">
+    <form action="{{ path('pim_user_security_check') }}" method="post" class="form-signin form-inline">
         <div class="AknLogin-form">
             <div class="AknLogin-formCell">
                 <input class="AknTextField" type="text" id="prependedInput" autofocus="autofocus" name="_username" value="{{ last_username }}" required="required" placeholder="{{ 'Username or Email'|trans }}" size="1"/>
@@ -36,7 +36,7 @@
             </div>
             <div class="AknLogin-formCell AknLogin-formCell--small">
                 <div class="signin-help">
-                    <a class="AknLogin-link" href="{{ path('oro_user_reset_request') }}">{{ 'Forgot your password?'|trans }}</a>
+                    <a class="AknLogin-link" href="{{ path('pim_user_reset_request') }}">{{ 'Forgot your password?'|trans }}</a>
                 </div>
                 <button class="AknButton AknButton--apply AknButton--big" type="submit" id="_submit" name="_submit">{{ 'Log in'|trans }}</button>
             </div>

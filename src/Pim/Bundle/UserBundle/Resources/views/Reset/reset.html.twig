@@ -9,7 +9,7 @@
     </div>
 
     {{ form_start(form, {
-        'action': path('oro_user_reset_reset', {token: token}),
+        'action': path('pim_user_reset_reset', {token: token}),
         'method': 'post',
         'class': 'form-signin'
     }) }}
@@ -21,7 +21,7 @@
         <div class="AknLogin-form">
             <div class="AknLogin-formCell"></div>
             <div class="AknLogin-formCell AknLogin-formCell--small">
-                <a href="{{ path('oro_user_security_login') }}" class="AknLogin-link">{{ 'Cancel'|trans }}</a>
+                <a href="{{ path('pim_user_security_login') }}" class="AknLogin-link">{{ 'Cancel'|trans }}</a>
                 <button type="submit" class="AknButton AknButton--apply AknButton--big AknButton--uppercase">{{ 'Reset'|trans }}</button>
             </div>
         </div>

@@ -5,13 +5,13 @@
 {% set entityId = form.vars.value.id %}
 {% set title = entityId ? 'Update Group'|trans : 'New Group'|trans %}
 {% set gridName = 'pimgroup-user-grid' %}
-{% set formAction = entityId ? path('oro_user_group_update', { 'id': entityId}) : path('oro_user_group_create') %}
+{% set formAction = entityId ? path('pim_user_group_update', { 'id': entityId}) : path('pim_user_group_create') %}
 
 {% set breadcrumbs = {} %}
 {% if entityId %}
     {% set breadcrumbs = {
         'entity':      form.vars.value,
-        'indexPath':   path('oro_user_group_index'),
+        'indexPath':   path('pim_user_group_index'),
         'indexLabel': 'Groups'|trans,
         'entityTitle': form.vars.value.name
     }
@@ -29,8 +29,8 @@
           <div class="AknDropdown-menu AknDropdown-menu--right">
               <div class="AknDropdown-menuTitle">{{'other_actions'|trans}}</div>
               {{ UI.deleteButton({
-                  'dataUrl': path('oro_user_group_delete', {'id': entityId}),
-                  'dataRedirect': path('oro_user_group_index'),
+                  'dataUrl': path('pim_user_group_delete', {'id': entityId}),
+                  'dataRedirect': path('pim_user_group_index'),
                   'aCss': 'AknDropdown-menuLink remove-button no-hash',
                   'dataId': entityId,
                   'id': 'btn-remove-group',

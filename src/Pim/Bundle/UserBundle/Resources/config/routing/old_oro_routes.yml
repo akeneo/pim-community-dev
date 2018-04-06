@@ -1,0 +1,107 @@
+pim_user_group_create:
+    path: /user/group/create
+    defaults: { _controller: PimUserBundle:Group:create }
+
+pim_user_group_update:
+    path: /user/group/update/{id}
+    defaults: { _controller: PimUserBundle:Group:update, id: 0 }
+    requirements:
+        id: \d+
+
+pim_user_group_index:
+    path: /user/group/
+
+pim_user_group_delete:
+    path: /user/group/delete/{id}
+    defaults: { _controller: PimUserBundle:Group:delete }
+    requirements:
+        id: \d+
+    methods: [DELETE]
+
+pim_user_reset_request:
+    path: /user/reset-request
+    defaults: { _controller: PimUserBundle:Reset:request }
+    methods: [GET]
+
+pim_user_reset_send_email:
+    path: /user/send-email
+    defaults: { _controller: PimUserBundle:Reset:sendEmail }
+    methods: [POST]
+
+pim_user_reset_check_email:
+    path: /user/check-email
+    defaults: { _controller: PimUserBundle:Reset:checkEmail }
+    methods: [GET]
+
+pim_user_reset_reset:
+    path: /user/reset/{token}
+    defaults: { _controller: PimUserBundle:Reset:reset }
+    methods: [GET, POST]
+    requirements:
+        token: \w+
+
+pim_user_role_create:
+    path: /user/role/create
+    defaults: { _controller: PimUserBundle:Role:create }
+
+pim_user_role_update:
+    path: /user/role/update/{id}
+    defaults: { _controller: PimUserBundle:Role:update, id: 0 }
+    requirements:
+        id: \d+
+
+pim_user_role_index:
+    path: /user/role/
+
+pim_user_role_delete:
+    path: /user/role/delete/{id}
+    defaults: { _controller: PimUserBundle:Role:delete }
+    requirements:
+        id: \d+
+    methods: [DELETE]
+
+pim_user_security_login:
+    path: /user/login
+    defaults: { _controller: PimUserBundle:Security:login }
+
+pim_user_security_check:
+    path: /user/login-check
+    defaults: { _controller: PimUserBundle:Security:check }
+
+pim_user_security_logout:
+    path: /user/logout
+    defaults: { _controller: PimUserBundle:Security:logout }
+
+pim_user_view:
+    path: /user/view/{id}
+    defaults: { _controller: PimUserBundle:User:view }
+    requirements:
+        id: \d+
+
+pim_user_profile_view:
+    path: /user/profile/view
+    defaults: { _controller: PimUserBundle:User:viewProfile }
+
+pim_user_profile_update:
+    path: /user/profile/edit
+    defaults: { _controller: PimUserBundle:User:updateProfile }
+
+pim_user_create:
+    path: /user/create
+    defaults: { _controller: PimUserBundle:User:create }
+
+pim_user_update:
+    path: /user/update/{id}
+    defaults: { _controller: PimUserBundle:User:update, id: 0 }
+    requirements:
+        id: \d+
+
+pim_user_index:
+    path: /user/
+
+pim_user_user_delete:
+    path: /user/delete/{id}
+    defaults: { _controller: PimUserBundle:User:delete }
+    requirements:
+        id: \d+
+    methods: [DELETE]

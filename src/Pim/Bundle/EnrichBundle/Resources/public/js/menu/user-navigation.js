@@ -74,14 +74,14 @@ define(
              * Redirect user to logout
              */
             logout: function () {
-                router.redirectToRoute('oro_user_security_logout');
+                router.redirectToRoute('pim_user_security_logout');
             },
 
             /**
              * Redirect user it's account details
              */
             userAccount: function () {
-                router.redirectToRoute('oro_user_profile_view');
+                router.redirectToRoute('pim_user_profile_view');
             }
         });
     });

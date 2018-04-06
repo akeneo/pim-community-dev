@@ -340,31 +340,31 @@ config:
                 pim_enrich_family_edit:
                     module: pim/controller/family
                     aclResourceId: pim_enrich_family_index
-                oro_user_index:
+                pim_user_index:
                     module: pim/controller/common/index
                     config:
                         entity: user
-                oro_user_create:
+                pim_user_create:
                     module: pim/controller/form
-                oro_user_update:
+                pim_user_update:
                     module: pim/controller/user
-                oro_user_profile_update:
+                pim_user_profile_update:
                     module: pim/controller/user
-                oro_user_role_index:
+                pim_user_role_index:
                     module: pim/controller/common/index
                     config:
                         entity: user-role
-                oro_user_role_create:
+                pim_user_role_create:
                     module: pim/controller/form
-                oro_user_role_update:
+                pim_user_role_update:
                     module: pim/controller/role
-                oro_user_group_create:
+                pim_user_group_create:
                     module: pim/controller/form
-                oro_user_group_index:
+                pim_user_group_index:
                     module: pim/controller/common/index
                     config:
                         entity: user-group
-                oro_user_group_update:
+                pim_user_group_update:
                     module: pim/controller/form
                 pim_importexport_import_profile_launch_upload:
                     module: pim/controller/redirect
@@ -381,7 +381,7 @@ config:
                 pim_importexport_export_profile_remove:
                     module: pim/controller/redirect
                     aclResourceId: pim_importexport_export_profile_remove
-                oro_user_profile_update:
+                pim_user_profile_update:
                     module: pim/controller/form
                 pim_enrich_locale_index:
                     module: pim/controller/common/index
@@ -463,7 +463,7 @@ config:
                     aclResourceId: pim_enrich_api_connection_manage
                     config:
                         entity: api-connection
-                oro_user_security_logout:
+                pim_user_security_logout:
                     module: pim/controller/logout
         pim/attribute-edit-form/type-specific-form-registry:
             formNames:
