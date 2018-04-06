@@ -11,7 +11,6 @@
 
 namespace PimEnterprise\Bundle\EnrichBundle\Twig;
 
-use Pim\Bundle\EnrichBundle\Twig\AttributeExtension as BaseAttributeExtension;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 
 /**
@@ -19,7 +18,7 @@ use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
  *
  * @author Willy Mesnage <willy.mesnage@akeneo.com>
  */
-class AttributeExtension extends BaseAttributeExtension
+class AttributeExtension extends \Twig_Extension
 {
     /**
      * @param AttributeRepositoryInterface $repository
@@ -27,8 +26,6 @@ class AttributeExtension extends BaseAttributeExtension
     public function __construct(AttributeRepositoryInterface $repository)
     {
         $this->repository = $repository;
-
-        parent::__construct($repository);
     }
 
     /**
