@@ -78,24 +78,6 @@ extensions:
         config:
             entity: pim_enrich.entity.attribute.title
 
-    pim-attribute-edit-form-created:
-        module: pim/form/common/meta/created
-        parent: pim-attribute-edit-form
-        targetZone: meta
-        position: 90
-        config:
-            label: pim_enrich.form.attribute.meta.created
-            labelBy: pim_enrich.form.attribute.meta.created_by
-
-    pim-attribute-edit-form-updated:
-        module: pim/form/common/meta/updated
-        parent: pim-attribute-edit-form
-        targetZone: meta
-        position: 100
-        config:
-            label: pim_enrich.form.attribute.meta.updated
-            labelBy: pim_enrich.form.attribute.meta.updated_by
-
     pim-attribute-edit-form-form-tabs:
         module: pim/form/common/form-tabs
         parent: pim-attribute-edit-form
