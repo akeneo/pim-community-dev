@@ -1,5 +1,5 @@
 parameters:
-    pim_user.normalizer.user.class: Pim\Bundle\UserBundle\Normalizer\UserNormalizer
+    pim_user.normalizer.user.class: Pim\Component\User\Normalizer\UserNormalizer
 
 services:
     pim_user.normalizer.user:

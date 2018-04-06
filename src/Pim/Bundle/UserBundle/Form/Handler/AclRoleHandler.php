@@ -6,9 +6,9 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Persistence\ObjectManager;
 use Oro\Bundle\SecurityBundle\Acl\Persistence\AclManager;
 use Oro\Bundle\SecurityBundle\Acl\Persistence\AclPrivilegeRepository;
-use Pim\Bundle\UserBundle\Entity\UserInterface;
 use Pim\Bundle\UserBundle\Form\Type\AclRoleType;
 use Pim\Component\User\Model\Role;
+use Pim\Component\User\Model\UserInterface;
 use Symfony\Component\Form\FormFactory;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -42,8 +42,8 @@ class AclRoleHandler
     protected $privilegeConfig;
 
     /**
-     * @param FormFactory $formFactory
-     * @param array $privilegeConfig
+     * @param FormFactory  $formFactory
+     * @param array        $privilegeConfig
      * @param RequestStack $requestStack
      */
     public function __construct(FormFactory $formFactory, array $privilegeConfig, RequestStack $requestStack)
@@ -92,11 +92,11 @@ class AclRoleHandler
         return $this->form;
     }
 
-
     /**
      * Save role
      *
      * @param Role $role
+     *
      * @return bool
      */
     public function process(Role $role)
@@ -181,7 +181,8 @@ class AclRoleHandler
 
     /**
      * @param ArrayCollection $privileges
-     * @param array $rootIds
+     * @param array           $rootIds
+     *
      * @return ArrayCollection
      */
     protected function filterPrivileges(ArrayCollection $privileges, array $rootIds)

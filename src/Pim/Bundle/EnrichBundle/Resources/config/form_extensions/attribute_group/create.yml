@@ -52,7 +52,7 @@ extensions:
         targetZone: container
         position: 100
         config:
-            label: pim_enrich.form.attribute_group.tab.properties.title
+            label: pim_common.properties
 
     pim-attribute-group-create-form-properties:
         module: pim/common/simple-view
@@ -68,7 +68,7 @@ extensions:
         position: 100
         config:
             sectionTitle: pim_enrich.form.channel.tab.properties.general
-            codeLabel: pim_enrich.form.channel.tab.properties.code
+            codeLabel: pim_common.code
 
     pim-attribute-group-create-form-properties-translation-section:
         module: pim/common/simple-view
@@ -78,7 +78,7 @@ extensions:
         config:
             template: pim/template/form/tab/section
             templateParams:
-                sectionTitle: pim_enrich.form.attribute_group.tab.properties.label_translations
+                sectionTitle: pim_common.label_translations
                 dropZone: content
 
     pim-attribute-group-create-form-properties-translation:

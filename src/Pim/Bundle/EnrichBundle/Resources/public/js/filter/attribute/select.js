@@ -72,7 +72,7 @@ define([
                 field: this.getField(),
                 operator: this.getOperator(),
                 editable: this.isEditable(),
-                operators: this.config.operators
+                operators: this.getLabelledOperatorChoices(this.shortname)
             });
         },
 

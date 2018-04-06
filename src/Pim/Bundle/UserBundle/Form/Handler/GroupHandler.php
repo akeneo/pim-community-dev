@@ -3,8 +3,8 @@
 namespace Pim\Bundle\UserBundle\Form\Handler;
 
 use Doctrine\Common\Persistence\ObjectManager;
-use Pim\Bundle\UserBundle\Entity\UserInterface;
 use Pim\Component\User\Model\GroupInterface;
+use Pim\Component\User\Model\UserInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -66,7 +66,7 @@ class GroupHandler
     /**
      * "Success" form handler
      *
-     * @param GroupInterface  $entity
+     * @param GroupInterface                            $entity
      * @param UserInterface[] $appendUsers
      * @param UserInterface[] $removeUsers
      */
@@ -81,7 +81,7 @@ class GroupHandler
     /**
      * Append users to group
      *
-     * @param GroupInterface  $group
+     * @param GroupInterface                            $group
      * @param UserInterface[] $users
      */
     protected function appendUsers(GroupInterface $group, array $users)
@@ -96,7 +96,7 @@ class GroupHandler
     /**
      * Remove users from group
      *
-     * @param GroupInterface  $group
+     * @param GroupInterface                            $group
      * @param UserInterface[] $users
      */
     protected function removeUsers(GroupInterface $group, array $users)

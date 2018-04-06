@@ -55,11 +55,11 @@ define(
                 this.config = _.extend({}, {
                     trans: {
                         title: 'confirmation.remove.item',
-                        content: 'pim_enrich.confirmation.delete_item',
+                        content: 'pim_common.confirm_deletion',
                         success: 'flash.item.removed',
                         fail: 'error.removing.item',
                         subTitle: '',
-                        buttonText: 'pim_datagrid.mass_action.delete.label'
+                        buttonText: 'pim_common.delete'
                     },
                     redirect: 'oro_default'
                 }, meta.config);

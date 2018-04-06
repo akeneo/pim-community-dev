@@ -4,7 +4,7 @@ extensions:
        config:
            labels:
                title: pim_enrich.entity.product_model.create_popin.title
-               subTitle: pim_menu.tab.products
+               subTitle: pim_common.products
                content: pim_enrich.entity.product_model.create_popin.content
            picture: illustrations/Product-model.svg
            successMessage: pim_enrich.entity.product_model.info.create_successful
@@ -19,7 +19,7 @@ extensions:
         position: 10
         config:
             identifier: code
-            label: pim_enrich.entity.create_popin.code
+            label: pim_common.code
 
     pim-product-model-create-family:
         module: pim/form/common/fields/simple-select-async

@@ -168,10 +168,10 @@ function(
                     selectedChoice: this.emptyValue.type,
                     inputClass: this.inputClass,
                     selectedOperatorLabel: _.findWhere(this.choices, {value: this.emptyValue.type}).label,
-                    operatorLabel: __('pim.grid.choice_filter.operator'),
-                    updateLabel: __('Update'),
-                    fromLabel: __('from'),
-                    toLabel: __('to')
+                    operatorLabel: __('pim_datagrid.filters.common.operator'),
+                    updateLabel: __('pim_common.update'),
+                    fromLabel: __('pim_common.from'),
+                    toLabel: __('pim_common.to')
                 })
             );
 
@@ -201,30 +201,30 @@ function(
 
                 switch (type) {
                     case this.typeValues.moreThan.toString():
-                        hint += [__('more than'), start].join(' ');
+                        hint += [__('pim_common.more_than'), start].join(' ');
                         break;
                     case this.typeValues.lessThan.toString():
-                        hint += [__('less than'), end].join(' ');
+                        hint += [__('pim_common.less_than'), end].join(' ');
                         break;
                     case this.typeValues.notBetween.toString():
                         if (start && end) {
                             option = this._getChoiceOption(this.typeValues.notBetween);
-                            hint += [option.label, start, __('and'), end].join(' ');
+                            hint += [option.label, start, __('pim_common.and'), end].join(' ');
                         } else if (start) {
-                            hint += [__('before'), start].join(' ');
+                            hint += [__('pim_common.before'), start].join(' ');
                         } else if (end) {
-                            hint += [__('after'), end].join(' ');
+                            hint += [__('pim_common.after'), end].join(' ');
                         }
                         break;
                     case this.typeValues.between.toString():
                     default:
                         if (start && end) {
                             option = this._getChoiceOption(this.typeValues.between);
-                            hint += [option.label, start, __('and'), end].join(' ');
+                            hint += [option.label, start, __('pim_common.and'), end].join(' ');
                         } else if (start) {
-                            hint += [__('from'), start].join(' ');
+                            hint += [__('pim_common.from'), start].join(' ');
                         } else if (end) {
-                            hint += [__('to'), end].join(' ');
+                            hint += [__('pim_common.to'), end].join(' ');
                         }
                         break;
                 }

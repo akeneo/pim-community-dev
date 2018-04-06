@@ -2,9 +2,9 @@
 
 namespace Pim\Bundle\UserBundle\Form\Handler;
 
-use Pim\Bundle\UserBundle\Entity\User;
-use Pim\Bundle\UserBundle\Entity\UserInterface;
 use Pim\Component\User\Model\Group;
+use Pim\Component\User\Model\User;
+use Pim\Component\User\Model\UserInterface;
 
 /**
  * Overridden UserHandler to remove tag management
@@ -36,7 +36,7 @@ class UserHandler extends AbstractUserHandler
     }
 
     /**
-     * @param UserInterface $user
+     * @param \Pim\Component\User\Model\UserInterface $user
      */
     protected function onSuccess(UserInterface $user)
     {
