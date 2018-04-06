@@ -33,7 +33,7 @@ class AttributeExtension extends \Twig_Extension
      */
     public function getFunctions()
     {
-        return array_merge(parent::getFunctions(), [
+        return array_merge([
             new \Twig_SimpleFunction('is_attribute_localizable', [$this, 'isAttributeLocalizable']),
         ]);
     }

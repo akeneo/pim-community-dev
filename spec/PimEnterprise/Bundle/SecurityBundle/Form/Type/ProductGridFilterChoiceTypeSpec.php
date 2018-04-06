@@ -6,6 +6,7 @@ use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use Oro\Bundle\DataGridBundle\Datagrid\Manager;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Enrich\Provider\TranslatedLabelsProviderInterface;
+use PimEnterprise\Bundle\SecurityBundle\Form\Type\ProductGridFilterChoiceType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ProductGridFilterChoiceTypeSpec extends ObjectBehavior
@@ -17,7 +18,7 @@ class ProductGridFilterChoiceTypeSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('PimEnterprise\Bundle\EnrichBundle\Form\Type\ProductGridFilterChoiceType');
+        $this->shouldHaveType(ProductGridFilterChoiceType::class);
     }
 
     function it_is_a_form()
