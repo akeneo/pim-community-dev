@@ -27,7 +27,7 @@ class ListProductModelWithPermissionIntegration extends ApiTestCase
 
         $client = $this->createAuthenticatedClient([], [], null, null, 'mary', 'mary');
 
-        $client->request('GET', 'api/rest/v1/product-models?limit=20');
+        $client->request('GET', 'api/rest/v1/product-models?limit=10');
         $response = $client->getResponse();
 
         Assert::assertSame(Response::HTTP_OK, $response->getStatusCode());
@@ -42,8 +42,6 @@ class ListProductModelWithPermissionIntegration extends ApiTestCase
             'shoes_view',
             'tshirt_view',
             'sweat_edit',
-            'shoes_own',
-            'trousers',
             'colored_shoes_view',
             'colored_tshirt_view',
             'colored_sweat_edit',
