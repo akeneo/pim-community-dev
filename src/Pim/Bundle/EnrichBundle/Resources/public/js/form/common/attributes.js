@@ -227,8 +227,8 @@ define(
                             const objectValuesDom = this.$('.object-values').empty();
                             if (_.isEmpty(fields)) {
                                 objectValuesDom.append(this.noDataTemplate({
-                                    hint: __('oro.datagrid.noresults'),
-                                    subHint: __('oro.datagrid.noresults_subTitle'),
+                                    hint: __('pim_datagrid.no_results'),
+                                    subHint: __('pim_datagrid.no_results_subtitle'),
                                     imageClass: ''
                                 }));
                             } else {
@@ -302,7 +302,7 @@ define(
 
                 Dialog.confirm(
                     __('pim_enrich.confirmation.delete.attribute'),
-                    __('pim_enrich.confirmation.delete_item'),
+                    __('pim_common.confirm_deletion'),
                     function () {
                         FetcherRegistry.getFetcher('attribute').fetch(attributeCode).then(function (attribute) {
                             $.ajax({

@@ -7,7 +7,7 @@ services:
     pim_user.updater.user:
         class: '%pim_user.updater.user.class%'
         arguments:
-            - '@oro_user.manager'
+            - '@pim_user.manager'
             - '@pim_catalog.repository.category'
             - '@pim_catalog.repository.locale'
             - '@pim_catalog.repository.channel'

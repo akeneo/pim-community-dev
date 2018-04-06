@@ -41,8 +41,8 @@ define([
                 this.$el.html(this.template({
                     notification: this.getFormData()['pim_analytics___version_update'].value,
                     label_system_notification: __('oro_config.form.config.group.notification.system_notification'),
-                    label_yes: __('pim_enrich.form.entity.switch.yes'),
-                    label_no: __('pim_enrich.form.entity.switch.no')
+                    label_yes: __('pim_common.yes'),
+                    label_no: __('pim_common.no')
                 }));
 
                 this.$('.switch').bootstrapSwitch();

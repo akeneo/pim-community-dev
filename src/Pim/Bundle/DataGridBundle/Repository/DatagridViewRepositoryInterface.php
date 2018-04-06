@@ -3,7 +3,7 @@
 namespace Pim\Bundle\DataGridBundle\Repository;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use Pim\Bundle\UserBundle\Entity\UserInterface;
+use Pim\Component\User\Model\UserInterface;
 
 /**
  * Datagrid view repository interface
@@ -17,7 +17,7 @@ interface DatagridViewRepositoryInterface
     /**
      * Get all datagrid view type for a given user
      *
-     * @param UserInterface $user
+     * @param \Pim\Component\User\Model\UserInterface $user
      *
      * @return ArrayCollection
      */

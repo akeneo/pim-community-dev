@@ -4,7 +4,7 @@ namespace Pim\Bundle\DataGridBundle\Extension\Formatter\Property\Version;
 
 use Oro\Bundle\DataGridBundle\Datasource\ResultRecordInterface;
 use Oro\Bundle\DataGridBundle\Extension\Formatter\Property\FieldProperty;
-use Oro\Bundle\UserBundle\Entity\UserManager;
+use Pim\Bundle\UserBundle\Manager\UserManager;
 use Symfony\Component\Translation\TranslatorInterface;
 
 /**
@@ -47,8 +47,8 @@ class AuthorProperty extends FieldProperty
         }
 
         return [
-            'author'  => $author,
-            'context' => $context
+            'author' => $author,
+            'context' => $context,
         ];
     }
 

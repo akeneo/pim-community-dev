@@ -76,10 +76,10 @@ define(
                         selectedOperator: this._getDisplayValue().type,
                         emptyChoice: this.emptyChoice,
                         selectedOperatorLabel: this._getOperatorChoices()[this._getDisplayValue().type],
-                        operatorLabel: __('pim.grid.choice_filter.operator'),
-                        updateLabel: __('Update'),
+                        operatorLabel: __('pim_common.operator'),
+                        updateLabel: __('pim_common.update'),
                         currencies: this.currencies,
-                        currencyLabel: __('pim.grid.price_filter.label'),
+                        currencyLabel: __('pim_datagrid.filters.price_filter.label'),
                         selectedCurrency: this._getDisplayValue().currency,
                         value: this._getDisplayValue().value
                     })

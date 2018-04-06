@@ -19,7 +19,7 @@ define(
                 core: {
                     animation: 200,
                     html_titles: true,
-                    strings: { loading:  _.__('jstree.loading') }
+                    strings: { loading:  _.__('pim_common.loading') }
                 },
                 plugins: [
                     'themes',

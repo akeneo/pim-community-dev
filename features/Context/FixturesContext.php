@@ -17,7 +17,6 @@ use Behat\Gherkin\Node\TableNode;
 use Doctrine\Common\Util\ClassUtils;
 use League\Flysystem\MountManager;
 use OAuth2\OAuth2;
-use Oro\Bundle\UserBundle\Entity\Role;
 use PHPUnit\Framework\Assert;
 use Pim\Behat\Context\FixturesContext as BaseFixturesContext;
 use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
@@ -27,13 +26,11 @@ use Pim\Bundle\CatalogBundle\Entity\GroupType;
 use Pim\Bundle\CommentBundle\Entity\Comment;
 use Pim\Bundle\CommentBundle\Model\CommentInterface;
 use Pim\Bundle\DataGridBundle\Entity\DatagridView;
-use Pim\Bundle\UserBundle\Entity\User;
 use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Builder\EntityWithValuesBuilderInterface;
 use Pim\Component\Catalog\Model\Association;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\AttributeOptionInterface;
-use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Component\Catalog\Model\LocaleInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
@@ -45,6 +42,8 @@ use Pim\Component\Connector\Job\JobParameters\DefaultValuesProvider\ProductCsvIm
 use Pim\Component\Connector\Job\JobParameters\DefaultValuesProvider\ProductModelCsvImport;
 use Pim\Component\Connector\Job\JobParameters\DefaultValuesProvider\SimpleCsvExport;
 use Pim\Component\ReferenceData\Model\ReferenceDataInterface;
+use Pim\Component\User\Model\Role;
+use Pim\Component\User\Model\User;
 
 /**
  * A context for creating entities
@@ -1583,7 +1582,7 @@ class FixturesContext extends BaseFixturesContext
     /**
      * @param string $userGroupName
      *
-     * @return \Oro\Bundle\UserBundle\Entity\Group
+     * @return Group
      *
      * @Then /^there should be a "([^"]+)" user group$/
      */
@@ -1597,7 +1596,7 @@ class FixturesContext extends BaseFixturesContext
     /**
      * @param string $userRoleName
      *
-     * @return \Oro\Bundle\UserBundle\Entity\Role
+     * @return Role
      *
      * @Then /^there should be a "([^"]+)" user role$/
      */
@@ -1609,7 +1608,7 @@ class FixturesContext extends BaseFixturesContext
     /**
      * @param string $roleLabel
      *
-     * @return \Oro\Bundle\UserBundle\Entity\Role
+     * @return Role
      */
     public function getRole($roleLabel)
     {

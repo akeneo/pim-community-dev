@@ -57,7 +57,7 @@ extensions:
         parent: pim-product-index
         targetZone: buttons
         config:
-            buttonTitle: pim_enrich.entity.product.create
+            buttonTitle: pim_common.create
             modalTitle: pim_enrich.entity.product.modalTitle
             subTitle: pim_enrich.entity.product.subTitle
             choices:

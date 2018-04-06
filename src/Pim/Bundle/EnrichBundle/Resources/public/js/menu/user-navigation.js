@@ -60,7 +60,7 @@ define(
 
                 var notificationView = new Notifications({
                     imgUrl: 'bundles/pimimportexport/images/loading.gif',
-                    loadingText: __('pim_notification.loading'),
+                    loadingText: __('pim_common.loading'),
                     noNotificationsMessage: __('pim_notification.no_notifications'),
                     markAsReadMessage: __('pim_notification.mark_all_as_read')
                 });
@@ -74,14 +74,14 @@ define(
              * Redirect user to logout
              */
             logout: function () {
-                router.redirectToRoute('oro_user_security_logout');
+                router.redirectToRoute('pim_user_security_logout');
             },
 
             /**
              * Redirect user it's account details
              */
             userAccount: function () {
-                router.redirectToRoute('oro_user_profile_view');
+                router.redirectToRoute('pim_user_profile_view');
             }
         });
     });

@@ -20,7 +20,7 @@ class SecurityContext extends PimContext
      */
     public function iMakeADirectCallToDeleteTheUserGroup($userGroupLabel)
     {
-        $routeName = 'oro_user_group_delete';
+        $routeName = 'pim_user_group_delete';
 
         $userGroup = $this
             ->getService('pim_user.repository.group')
@@ -38,7 +38,7 @@ class SecurityContext extends PimContext
      */
     public function iMakeADirectCallToDeleteTheUserRole($role)
     {
-        $routeName = 'oro_user_role_delete';
+        $routeName = 'pim_user_role_delete';
 
         $userRole = $this
             ->getService('pim_user.repository.role')
@@ -56,7 +56,7 @@ class SecurityContext extends PimContext
      */
     public function iMakeADirectCallToDeleteTheUser($username)
     {
-        $routeName = 'oro_user_user_delete';
+        $routeName = 'pim_user_user_delete';
 
         $user = $this
             ->getService('pim_user.repository.user')

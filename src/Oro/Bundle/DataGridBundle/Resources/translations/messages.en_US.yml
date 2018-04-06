@@ -1,0 +1,5 @@
+oro:
+  grid:
+    mass_action:
+      delete:
+        success_message: "{0} No entities were removed|{1} One entity was removed|]1,Inf[ %count% entities were removed"

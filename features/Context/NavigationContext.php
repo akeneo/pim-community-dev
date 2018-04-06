@@ -3,17 +3,15 @@
 namespace Context;
 
 use Akeneo\Component\Batch\Model\JobInstance;
-use Oro\Bundle\UserBundle\Entity\Role;
 use PHPUnit\Framework\Assert;
 use Pim\Behat\Context\NavigationContext as BaseNavigationContext;
 use Pim\Bundle\CatalogBundle\Entity\Category;
 use Pim\Component\Catalog\Model\AssociationTypeInterface;
 use Pim\Component\Catalog\Model\AttributeGroupInterface;
 use Pim\Component\Catalog\Model\GroupTypeInterface;
-use Pim\Component\Catalog\Model\Product;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductModel;
-use Pim\Component\Catalog\Model\ProductModelInterface;
+use Pim\Component\User\Model\Role;
 
 /**
  * Context for navigating the website

@@ -87,7 +87,7 @@ define(
             return {
                 core: {
                     animation: 200,
-                    strings: { loading: _.__('jstree.loading') }
+                    strings: { loading: _.__('pim_common.loading') }
                 },
                 plugins: [
                     'tree_selector',

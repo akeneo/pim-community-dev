@@ -66,5 +66,5 @@ extensions:
         aclResourceId: pim_user_user_create
         config:
             label: pim_enrich.index.user.create_btn
-            route: oro_user_create
+            route: pim_user_create
             buttonClass: AknButton AknButton--apply

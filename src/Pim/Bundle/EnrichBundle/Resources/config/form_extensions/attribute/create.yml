@@ -70,7 +70,7 @@ extensions:
         targetZone: container
         position: 100
         config:
-            label: pim_enrich.form.attribute.tab.properties.title
+            label: pim_common.properties
 
     pim-attribute-create-form-properties:
         module: pim/common/simple-view
@@ -97,7 +97,7 @@ extensions:
         position: 90
         config:
             fieldName: code
-            label: pim_enrich.form.attribute.tab.properties.label.code
+            label: pim_common.code
             required: true
 
     pim-attribute-create-form-properties-common-type:
@@ -107,7 +107,7 @@ extensions:
         position: 100
         config:
             fieldName: type
-            label: pim_enrich.form.attribute.tab.properties.label.type
+            label: pim_common.type
             readOnly: true
 
     pim-attribute-create-form-properties-common-group:
@@ -190,7 +190,7 @@ extensions:
         targetZone: container
         position: 110
         config:
-            label: pim_enrich.form.attribute.tab.labels.title
+            label: pim_common.label_translations
 
     pim-attribute-create-form-labels-container:
         module: pim/common/simple-view

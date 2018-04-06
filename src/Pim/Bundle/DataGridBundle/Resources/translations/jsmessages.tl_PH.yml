@@ -1,0 +1,90 @@
+Item deleted: Ang aytem ay nabura
+Are you sure you want to delete this item?: Sigurado ka bang gusto mong burahin ang aytem na ito?
+Delete Error: Ibura ang error
+Are you sure you want to do remove selected items?: Sigurado ka bang itanggal ang napiling mga aytems?
+Selected items were removed.: Ang napiling mga aytems ay natanggal.
+Selected items were not removed.: Ang napiling mga aytems ay natanggal.
+Please, select items to remove.: Pakiusap, piliin ang mga aytems na itanggal.
+Cannot delete item.: Hindi pwede mabura ang aytem.
+Refresh Confirmation: I-refresh ang kompirmasyon
+Your local changes will be lost. Are you sure you want to refresh grid?: Ang lokal na pagbabago ay mawawala. Sigurado ka bang i-refresh mo ang grid?
+Reset Confirmation: I-reset ang kompirmasyon
+Your local changes will be lost. Are you sure you want to reset grid?: Ang iyong lokal na pagbabago ay mawawala. Sigurado ka bang i-reset ang grid?
+Confirmation: Kompirmasyon
+edit: i-edit
+copy: kopyahin
+remove: itanggal
+Status: Estado
+All: Lahat
+Per page: Kada pahina
+Mass Action Confirmation: Malawakang Gawain para sa Kompirmasyon
+Mass action performed.: Malawakang gawain na naisagawa.
+Mass action is not performed.: Ang malawakang aksyon ay hindi naisagawa.
+Please, select items to perform mass action.: Pakiusap, pumili ng mga aytems para maisagawa ang malawakang aksyon.
+Execution Confirmation: Kumpirmasyon sa pagpapatupad
+Are you sure you want to do this?: Sigurado ka bang gusto mo ito gawin?
+Action performed.: Mga gawain na naisagawa na.
+Action is not performed.: Ang gawain ay hindi pa naisagaw.
+Please, select item to perform action.: Pakiusap, pumili ng aytem para maisagawa ang aksyon.
+View per page: Pagtanaw kada pahina
+Enabled: Pinagana
+Disabled: Hindi pinagana
+not_available: N/A
+Yes: true
+No: false
+oro.datagrid.entityHint: Entity
+oro.datagrid.noentities: Walang mga rekord na nahahanap
+oro.datagrid.nocolumns: Walang mga kolums na na konfigyur sa grid na ito
+oro.datagrid.pagination.label: "Pahina"
+oro.datagrid.pagination.totalPages: "sa {{ totalPages }}"
+oro.datagrid.pagination.totalRecords: "{{ totalRecords }} mga rekord"
+oro.datagrid.action.reset: "I-reset"
+oro.datagrid.action.refresh: "I refresh"
+oro_datagrid.select.all: "Lahat"
+oro_datagrid.select.visible: "Makikita lahat"
+oro_datagrid.select.none: "Wala"
+oro_datagrid.select.select: "Pumili"
+pim.grid.ajax_choice_filter.label_empty: ay walang laman
+pim:
+  grid:
+    choice_filter:
+      label_empty: ay walang laman
+Available Columns: Pwedeng magagamit na kolums
+Displayed Columns: Ang napiling mga kolums
+datagrid_view.columns.min_message: Pumili ka kahit isang datagrid kolum para ipakita
+pim_datagrid:
+  column_configurator:
+    all_groups: Lahat na mga grupo
+    search: Maghanap
+    clear: Malinaw
+    displayed_columns: Ang napiling mga kolums
+    cancel: Kansel
+    remove_column: Tanggal
+    attribute_groups: Mga grupo ng mga katangian
+  mass_action:
+    delete:
+      confirm_title: Kompirmadong pagtanggal
+      confirm_ok: Okay
+      empty_selection: Walang produkto na pinili
+pim.grid.mass_action.quick_export.title: Madaliang pagluwas
+pim.grid.mass_action.quick_export.launched: Ang madaliang pagluwas ay nailunsad na
+pim.grid.action.launch.title: Ilunsad
+pim.grid.action.show.title: Ipakita
+Please select view: Pakiusap pumili ng tanawin
+Loading...: Naglo-loading...
+View: Tingnan
+grid.view_selector:
+  default_view: Default na pagtanaw
+  save_changes: I-save ang tanawin na ito
+  remove: Burahin ang tanawin na ito
+  create_view: Lumikha ng tanawin
+  create: Lumikha
+  search: Maghanap
+  views: Mga pagtanaw
+  placeholder: Pangalan sa bagong tanawin
+  choose_label: Pumili ng label sa tanawin
+  confirmation:
+    delete: Kompirmadong pagtanggal
+grid.view_selector.flash.updated: Datagrid na tanawin ang matagumpay na nai-update
+grid.display_selector:
+  label: Ipakita
