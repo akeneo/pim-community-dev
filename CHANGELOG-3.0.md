@@ -96,3 +96,17 @@
 - Move `PimEnterprise\Bundle\DataGridBundle\EventListener\ConfigureProductGridListener` to `PPimEnterprise\Bundle\SecurityBundle\Datagrid\EventListener\ConfigureProductGridListener`
 - Move `PimEnterprise\Bundle\DataGridBundle\Extension\MassAction\Util\ProductFieldsBuilder` to `PimEnterprise\Bundle\SecurityBundle\Datagrid\MassAction\ProductFieldsBuilder`
 - Move `PimEnterprise\Bundle\DataGridBundle\Datagrid\Configuration\Product\RowActionsConfigurator` to `PimEnterprise\Bundle\SecurityBundle\Datagrid\Product\RowActionsConfigurator`
+- Remove `PimEnterprise\Bundle\EnrichBundle\Connector\Reader\MassEdit\FilteredProductAndProductModelReader`
+- Remove `PimEnterprise\Bundle\EnrichBundle\Connector\Writer\MassEdit\ProductWriter`
+- Remove `PimEnterprise\Bundle\EnrichBundle\Form\Type\AvailableAttributesType`
+- Move `PimEnterprise\Bundle\EnrichBundle\Doctrine\Counter\GrantedCategoryItemsCounter` to `PimEnterprise\Bundle\ProductAssetBundle\Doctrine\ORM\Query\GrantedCategoryItemsCounter`
+- Move `PimEnterprise\Bundle\EnrichBundle\Doctrine\Counter\GrantedCategoryProductsCounter` to `PimEnterprise\Bundle\SecurityBundle\Persistence\ORM\Category\Query\GrantedCategoryProductsCounter`
+- Move `PimEnterprise\Bundle\SecurityBundle\EventSubscriber\Datagrid\ProductCategoryAccessSubscriber` to `PimEnterprise\Bundle\SecurityBundle\Datagrid\EventListener\ProductCategoryAccessSubscriber`
+- Move `PimEnterprise\Bundle\EnrichBundle\EventSubscriber\SavePermissionsSubscriber` to `PimEnterprise\Bundle\SecurityBundle\EventSubscriber\SavePermissionsSubscriber`
+- Move namespace `PimEnterprise\Bundle\EnrichBundle\Filter` to `PimEnterprise\Bundle\SecurityBundle\Filter`
+- Move namespace `PimEnterprise\Bundle\EnrichBundle\Form\Subscriber` to `PimEnterprise\Bundle\SecurityBundle\Form\EventListener`
+- Move namespace `PimEnterprise\Bundle\EnrichBundle\Provider\Form` to `PimEnterprise\Bundle\SecurityBundle\Form\Provider`
+- Move namespace `PimEnterprise\Bundle\EnrichBundle\Form\Type` to `PimEnterprise\Bundle\SecurityBundle\Form\Type`
+- Move namespace `PimEnterprise\Bundle\EnrichBundle\Connector\Processor\MassEdit\Product` to `PimEnterprise\Bundle\SecurityBundle\MassEdit\Processor`
+- Move `PimEnterprise\Bundle\EnrichBundle\Connector\Writer\MassEdit\ProductAndProductModelWriter` to `PimEnterprise\Bundle\SecurityBundle\MassEdit\Writer\ProductAndProductModelWriter`
+- Move `PimEnterprise\Bundle\EnrichBundle\Normalizer\IncompleteValuesNormalizer` to `PimEnterprise\Bundle\SecurityBundle\Normalizer\InternalApi\IncompleteValuesNormalizer`
