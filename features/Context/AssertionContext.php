@@ -367,7 +367,7 @@ class AssertionContext extends PimContext
             if (array_key_exists('date', $data)) {
                 $expectedDate = $data['date'];
                 $date = $row->find('css', '[data-column="loggedAt"]')->getText();
-                assertLessThan(
+                Assert::assertLessThan(
                     90,
                     abs(strtotime($expectedDate) - strtotime($date)),
                     sprintf(
