@@ -9,19 +9,18 @@
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Bundle\EnrichBundle\Form\Type;
+namespace PimEnterprise\Bundle\SecurityBundle\Form\Type;
 
-use PimEnterprise\Bundle\SecurityBundle\Form\Type\GroupsType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
- * Form type for AttributeGroup permissions
+ * Form type for Locale permissions
  *
- * @author Filips Alpe <filips@akeneo.com>
+ * @author Nicolas Dupont <nicolas@akeneo.com>
  */
-class AttributeGroupPermissionsType extends AbstractType
+class LocalePermissionsType extends AbstractType
 {
     /**
      * {@inheritdoc}
@@ -31,12 +30,12 @@ class AttributeGroupPermissionsType extends AbstractType
         $builder->add(
             'view',
             GroupsType::class,
-            ['label' => 'attribute group.permissions.view.label', 'help' => 'attribute group.permissions.view.help']
+            ['label' => 'locale.permissions.view.label', 'help' => 'locale.permissions.view.help']
         );
         $builder->add(
             'edit',
             GroupsType::class,
-            ['label' => 'attribute group.permissions.edit.label', 'help' => 'attribute group.permissions.edit.help']
+            ['label' => 'locale.permissions.edit.label', 'help' => 'locale.permissions.edit.help']
         );
     }
 
@@ -53,6 +52,6 @@ class AttributeGroupPermissionsType extends AbstractType
      */
     public function getBlockPrefix()
     {
-        return 'pimee_enrich_attribute_group_permissions';
+        return 'pimee_enrich_locale_permissions';
     }
 }

@@ -1,8 +1,37 @@
 parameters:
     pimee_security.form.type.groups.class: PimEnterprise\Bundle\SecurityBundle\Form\Type\GroupsType
+    pimee_security.form.type.attribute_group_permissions.class: PimEnterprise\Bundle\SecurityBundle\Form\Type\AttributeGroupPermissionsType
+    pimee_security.form.type.category_permissions.class: PimEnterprise\Bundle\SecurityBundle\Form\Type\CategoryPermissionsType
+    pimee_security.form.type.locale_permissions.class: PimEnterprise\Bundle\SecurityBundle\Form\Type\LocalePermissionsType
+    pimee_security.form.type.product_grid_filter_choice.class: PimEnterprise\Bundle\SecurityBundle\Form\Type\ProductGridFilterChoiceType
 
 services:
     pimee_security.form.type.groups:
         class: '%pimee_security.form.type.groups.class%'
         tags:
             - { name: form.type, alias: pimee_security_groups }
+
+    pimee_security.form.type.attribute_group_permissions:
+        class: '%pimee_security.form.type.attribute_group_permissions.class%'
+        tags:
+            - { name: form.type, alias: pimee_enrich_attribute_group_permissions }
+
+    pimee_security.form.type.category_permissions:
+        class: '%pimee_security.form.type.category_permissions.class%'
+        tags:
+            - { name: form.type, alias: pimee_enrich_category_permissions }
+
+    pimee_security.form.type.locale_permissions:
+        class: '%pimee_security.form.type.locale_permissions.class%'
+        tags:
+            - { name: form.type, alias: pimee_enrich_locale_permissions }
+
+    pimee_security.form.type.product_grid_filter_choice:
+        class: '%pimee_security.form.type.product_grid_filter_choice.class%'
+        arguments:
+            - '@pimee_enrich.repository.attribute'
+            - '@oro_datagrid.datagrid.manager'
+            - 'product-grid'
+            - ['scope', 'locale']
+        tags:
+            - { name: form.type, alias: pim_enrich_product_grid_filter_choice }

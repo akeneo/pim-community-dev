@@ -12,10 +12,9 @@
 namespace PimEnterprise\Bundle\EnrichBundle\Form\Subscriber;
 
 use Oro\Bundle\SecurityBundle\SecurityFacade;
-use PimEnterprise\Bundle\EnrichBundle\Form\Type\LocalePermissionsType;
+use PimEnterprise\Bundle\SecurityBundle\Form\Type\LocalePermissionsType;
 use PimEnterprise\Bundle\SecurityBundle\Manager\LocaleAccessManager;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 

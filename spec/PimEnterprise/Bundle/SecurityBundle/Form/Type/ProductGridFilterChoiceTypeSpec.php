@@ -1,12 +1,11 @@
 <?php
 
-namespace spec\PimEnterprise\Bundle\EnrichBundle\Form\Type;
+namespace spec\PimEnterprise\Bundle\SecurityBundle\Form\Type;
 
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use Oro\Bundle\DataGridBundle\Datagrid\Manager;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Enrich\Provider\TranslatedLabelsProviderInterface;
-use Prophecy\Argument;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ProductGridFilterChoiceTypeSpec extends ObjectBehavior

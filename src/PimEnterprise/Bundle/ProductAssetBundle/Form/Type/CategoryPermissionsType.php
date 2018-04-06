@@ -11,7 +11,7 @@
 
 namespace PimEnterprise\Bundle\ProductAssetBundle\Form\Type;
 
-use PimEnterprise\Bundle\EnrichBundle\Form\Type\CategoryPermissionsType as BaseCategoryPermissionsType;
+use PimEnterprise\Bundle\SecurityBundle\Form\Type\CategoryPermissionsType as BaseCategoryPermissionsType;
 use PimEnterprise\Bundle\SecurityBundle\Form\Type\GroupsType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\FormBuilderInterface;

@@ -14,10 +14,9 @@ namespace PimEnterprise\Bundle\EnrichBundle\Form\Subscriber;
 use Akeneo\Component\Classification\Model\CategoryInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
-use PimEnterprise\Bundle\EnrichBundle\Form\Type\CategoryPermissionsType;
+use PimEnterprise\Bundle\SecurityBundle\Form\Type\CategoryPermissionsType;
 use PimEnterprise\Bundle\SecurityBundle\Manager\CategoryAccessManager;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 

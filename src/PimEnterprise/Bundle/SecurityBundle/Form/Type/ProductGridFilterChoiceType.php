@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Bundle\EnrichBundle\Form\Type;
+namespace PimEnterprise\Bundle\SecurityBundle\Form\Type;
 
 use Pim\Bundle\EnrichBundle\Form\Type\ProductGridFilterChoiceType as BaseProductGridFilterChoiceType;
 
