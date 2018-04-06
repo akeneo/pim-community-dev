@@ -13,9 +13,9 @@ datagrid:
                 label: Type
                 type:  job_type
             started_at:
-                label: job_tracker.filter.started_at
-                data_name: startTime
-                type: datetime
+                label:         job_tracker.filter.started_at
+                type:          datetime_with_user_timezone
+                data_name:     startTime
                 frontend_type: datetime
             status:
                 label:         Status
@@ -33,7 +33,7 @@ datagrid:
                 launcherOptions:
                     className: AknIconButton AknIconButton--small AknIconButton--view
                 type:      navigate
-                label:     pim_datagrid.action.show.title
+                label:     pim.grid.action.show.title
                 link:      show_link
                 rowAction: true
         sorters:

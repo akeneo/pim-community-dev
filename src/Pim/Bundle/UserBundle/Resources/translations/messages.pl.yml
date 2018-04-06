@@ -1,0 +1,155 @@
+pim_user:
+  user:
+    tab:
+      general.title: Ogólne
+      additional.title: Dodatkowe
+      group_and_role.title: Grupy i role
+      password.title: Hasło
+      business_unit.title: Jednostki biznesowe
+      email_synchronization.title: Ustawienia synchronizacji poczty e-mail
+      interfaces.title: Interfejsy
+  group:
+    tab:
+      general.title: Ogólne
+      users.title: Użytkownicy
+oro.user.controller:
+  group.message.saved: "Grupa zapisana"
+  role.message.saved: "Rola zapisana"
+  user.message.saved: "Użytkownik zapisany"
+  status.message.saved: "Status zapisany"
+oro.user.grid.users:
+  columns:
+    username: "Nazwa użytkownika"
+    email: "Adres e-mail"
+    firstName: "Imię"
+    lastName: "Nazwisko"
+    createdAt: "Data utworzenia"
+    updatedAt: "Data aktualizacji"
+    enabled: "Status"
+oro.user.grid.roles:
+  columns:
+    label: "Etykieta"
+oro.user.grid.groups:
+  columns:
+    name: "Nazwa"
+pim_title:
+  user.index: Użytkownicy
+  user_role.index: Role
+  user_group.index: Grupy
+  system_configuration.index: Konfiguracja
+user.title: Użytkownik
+user.overview: Użytkownik
+Users Management: Zarządzanie użytkownikami
+Create user: Utwórz użytkownika
+btn.create.user: Utwórz użytkownika
+New user: Nowy użytkownik
+Additional: Dodatkowe
+Groups and Roles: Grupy i role
+Username: Nazwa użytkownika
+Password: Hasło
+Re-enter password: Powtórz hasło
+Name prefix: Prefiks nazwy
+First name: Imię
+Middle name: Drugie imię
+Last name: Nazwisko
+Name suffix: Sufiks nazwy
+Date of birth: Data urodzenia
+Avatar: Awatar
+Additional emails: Dodatkowe adresy email
+Add another email: Dodaj kolejny e-mail
+Catalog locale: Język katalogu
+Catalog scope: Zasięg katalogu
+Default tree: Drzewo domyślne
+Business Units: Jednostki biznesowe
+Email synchronization settings: Ustawienia synchronizacji poczty e-mail
+Host: Host
+Port: Port
+Last logged in: Ostatnio zalogowany
+Login count: Liczba logowań
+Additional Information: Dodatkowe informacje
+Interfaces: Interfejsy
+Basic Information: Podstawowe informacje
+Contact Information: Informacje kontaktowe
+User name: Nazwa użytkownika
+Birthday: Data urodzenia
+API key: Klucz API
+Ui locale: Język Interfejsu
+UI locale: Język Interfejsu
+User salt: Sól użytkownika
+Current password: Aktualne hasło
+New password: Nowe Hasło
+Repeat new password: Nowe hasło (powtórz)
+Generate key: Wygeneruj klucz
+Primary: podstawowy
+Removed user: Użytkownik usunięty
+user:
+  product_grid_filters: Filtry listy produktów
+  default_product_grid_view:
+    label: Widok domyślny listy produktów
+  default_grid_view:
+    none: Brak
+Role: Rola
+Owner: Właściciel
+General: Ogólne
+Entity: Encja
+Capabilities: Możliwości
+Save and close: Zapisz i zamknij
+Has role: Ma rolę
+role:
+  title: rola
+  overview: rola
+  edit: Edytowanie roli
+  create: Utwórz rolę
+btn.create.role: Utwórz rolę
+rights:
+  action: Uprawnienia
+oro_security:
+  acl_group:
+    user: Użytkownicy
+    role: Role
+    group: Grupy użytkowników
+  acl:
+    user:
+      view: Przeglądanie użytkowników
+      create: Tworzenie użytkownika
+      edit: Edycja użytkowników
+      delete: Usuwanie użytkownika
+    role:
+      view: Przeglądanie ról
+      create: Tworzenie roli
+      edit: Edycja ról
+      delete: Usuwanie roli
+    group:
+      view: Przeglądanie grup użytkowników
+      create: Tworzenie grup użytkowników
+      edit: Edycja grup użytkowników
+      delete: Usuwanie grup użytkowników
+(default): Domyślne uprawnienia encji
+VIEW: Zobacz
+CREATE: Utwórz
+EDIT: Edytuj
+DELETE: Usuń
+ASSIGN: Przypisz
+SHARE: Udostępnij
+oro:
+  security:
+    access-level:
+      BASIC: Użytkownik
+      LOCAL: Jednostka biznesowa
+      DEEP: Podział
+      GLOBAL: Organizacja
+      SYSTEM: System
+      NONE: Brak
+Create group: Utwórz grupę
+btn.create.user-group: Utwórz grupę
+Has group: Ma grupę
+Save and Close: Zapisz i zamknij
+user-group.overview: Grupy
+Log in: Zaloguj się
+Remember me on this computer: Zapamiętaj mnie na tym komputerze
+Forgot your password?: Zapomniałeś hasła?
+Username or Email: Login lub E-mail
+Forgot Password: Zapomniałem hasła
+Request: Żądanie
+Check Email: Sprawdź Email
+Go to homepage: Przejdź do strony głównej

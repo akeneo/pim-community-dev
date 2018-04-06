@@ -355,21 +355,16 @@ define(
                 this.loadingMask.hide();
             },
 
-            /**
-             * Returns the messages to display when there is no results.
-             *
-             * @returns {{hint, subHint: *, imageClass: string}}
-             */
             getDefaultNoDataOptions() {
-                const entityHint = (this.entityHint || __('pim_datagrid.entity_hint')).toLowerCase();
-                let key = 'pim_datagrid.' + (_.isEmpty(this.collection.state.filters) ? 'no_entities' : 'no_results');
+                const entityHint = (this.entityHint || __('oro.datagrid.entityHint')).toLowerCase();
+                let key = 'oro.datagrid.' + (_.isEmpty(this.collection.state.filters) ? 'noentities' : 'noresults');
 
                 if (Translator.has('jsmessages:' + key + '.' + entityHint)) {
                     key += '.' + entityHint;
                 }
 
                 const hint = __(key, {entityHint: entityHint}).replace('\n', '<br />');
-                const subHint = __('pim_datagrid.no_results_subtitle');
+                const subHint = __('oro.datagrid.noresults_subTitle');
 
                 return { hint, subHint, imageClass: '' };
             },

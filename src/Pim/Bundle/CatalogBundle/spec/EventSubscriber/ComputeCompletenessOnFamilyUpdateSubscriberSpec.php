@@ -8,7 +8,7 @@ use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterfa
 use Akeneo\Component\StorageUtils\StorageEvents;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\EventSubscriber\ComputeCompletenessOnFamilyUpdateSubscriber;
-use Pim\Component\User\Model\UserInterface;
+use Pim\Bundle\UserBundle\Entity\UserInterface;
 use Pim\Component\Catalog\Model\AttributeRequirementInterface;
 use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Component\Catalog\Repository\AttributeRequirementRepositoryInterface;
@@ -33,16 +33,14 @@ class ComputeCompletenessOnFamilyUpdateSubscriberSpec extends ObjectBehavior
         $this->shouldHaveType(ComputeCompletenessOnFamilyUpdateSubscriber::class);
     }
 
-    function it_subsribes_to_events()
+    function it_subscribes_to_events()
     {
         $this->getSubscribedEvents()->shouldReturn([
-            StorageEvents::PRE_SAVE  => 'areAttributeRequirementsUpdated',
             StorageEvents::POST_SAVE => 'computeCompletenessOfProductsFamily',
         ]);
     }
 
-    function it_detects_that_the_attribute_requirements_of_the_family_changed_on_pre_save_and_run_job_on_post_save(
-        $attributeRequirementRepository,
+    function it_runs_completeness_computation_job_on_post_save(
         $tokenStorage,
         $jobInstanceRepository,
         $jobLauncher,
@@ -59,19 +57,6 @@ class ComputeCompletenessOnFamilyUpdateSubscriberSpec extends ObjectBehavior
 
         $family->getId()->willReturn(152);
 
-        $attributeRequirementRepository->findRequiredAttributesCodesByFamily($family)->willReturn(
-            [
-                [
-                    'attribute' => 'price',
-                    'channel'   => 'ecommerce',
-                ],
-                [
-                    'attribute' => 'text',
-                    'channel'   => 'ecommerce',
-                ],
-            ]
-        );
-
         $family->getAttributeRequirements()->willReturn(
             [
                 'price_ecommerce' => $attributeRequirement1
@@ -84,63 +69,6 @@ class ComputeCompletenessOnFamilyUpdateSubscriberSpec extends ObjectBehavior
         $family->getCode()->willReturn('accessories');
         $jobLauncher->launch($jobInstance, $user, ['family_code' => 'accessories'])->shouldBeCalled();
 
-        $this->areAttributeRequirementsUpdated($event);
-        $this->computeCompletenessOfProductsFamily($event);
-    }
-
-    function it_detects_that_the_attribute_requirements_of_the_family_has_not_changed_on_pre_save_and_do_not_run_job_on_post_save(
-        $attributeRequirementRepository,
-        $jobLauncher,
-        GenericEvent $event,
-        FamilyInterface $family,
-        AttributeRequirementInterface $attributeRequirement1,
-        AttributeRequirementInterface $attributeRequirement2
-    ) {
-        $event->getSubject()->willReturn($family);
-        $event->hasArgument('unitary')->willReturn(true);
-        $event->getArgument('unitary')->willReturn(true);
-
-        $family->getId()->willReturn(152);
-
-        $attributeRequirementRepository->findRequiredAttributesCodesByFamily($family)->willReturn(
-            [
-                [
-                    'attribute' => 'price',
-                    'channel'   => 'ecommerce',
-                ],
-                [
-                    'attribute' => 'text',
-                    'channel'   => 'ecommerce',
-                ],
-            ]
-        );
-
-        $family->getAttributeRequirements()->willReturn(
-            [
-                'price_ecommerce' => $attributeRequirement1,
-                'text_ecommerce' => $attributeRequirement2
-            ]
-        );
-
-        $jobLauncher->launch(Argument::cetera())->shouldNotBeCalled();
-
-        $this->areAttributeRequirementsUpdated($event);
-        $this->computeCompletenessOfProductsFamily($event);
-    }
-
-    function it_does_not_run_the_job_for_new_families(
-        $jobLauncher,
-        GenericEvent $event,
-        FamilyInterface $family
-    ) {
-        $event->hasArgument('unitary')->willReturn(true);
-        $event->getArgument('unitary')->willReturn(true);
-
-        $family->getId()->willReturn(null);
-        $event->getSubject()->willReturn($family);
-        $jobLauncher->launch(Argument::cetera())->shouldNotBeCalled();
-
-        $this->areAttributeRequirementsUpdated($event);
         $this->computeCompletenessOfProductsFamily($event);
     }
 
@@ -152,7 +80,6 @@ class ComputeCompletenessOnFamilyUpdateSubscriberSpec extends ObjectBehavior
 
         $jobLauncher->launch(Argument::cetera())->shouldNotBeCalled();
 
-        $this->areAttributeRequirementsUpdated($event);
         $this->computeCompletenessOfProductsFamily($event);
     }
 
@@ -167,7 +94,6 @@ class ComputeCompletenessOnFamilyUpdateSubscriberSpec extends ObjectBehavior
 
         $jobLauncher->launch(Argument::cetera())->shouldNotBeCalled();
 
-        $this->areAttributeRequirementsUpdated($event);
         $this->computeCompletenessOfProductsFamily($event);
     }
 }

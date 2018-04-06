@@ -1,6 +1,6 @@
 datagrid:
     pim-user-grid:
-        extended_entity_name: '%pim_user.entity.user.class%'
+        extended_entity_name: '%oro_user.entity.class%'
         options:
             entityHint: user
             manageFilters: false
@@ -18,7 +18,7 @@ datagrid:
                     - u.updatedAt
                     - u.enabled
                 from:
-                    - { table: '%pim_user.entity.user.class%', alias: u }
+                    - { table: '%oro_user.entity.class%', alias: u }
         columns:
             username:
                 label: oro.user.grid.users.columns.username
@@ -38,17 +38,17 @@ datagrid:
             id: ~
             update_link:
                 type: url
-                route: pim_user_update
+                route: oro_user_update
                 params:
                     - id
             view_link:
                 type: url
-                route: pim_user_view
+                route: oro_user_view
                 params:
                     - id
             delete_link:
                 type: url
-                route: pim_user_user_delete
+                route: oro_user_user_delete
                 params:
                     - id
         sorters:
@@ -104,6 +104,6 @@ datagrid:
                 launcherOptions:
                     className: AknIconButton AknIconButton--small AknIconButton--trash
                 type:          delete
-                label:         pim_common.delete
+                label:         Delete
                 link:          delete_link
                 acl_resource:  pim_user_user_remove

@@ -1,0 +1,107 @@
+Close: Fechar
+Update: Atualizar
+Selected Rows: Linhas Selecionadas
+"Yes": "Sim"
+"Yes, Delete": "Sim, Eliminar"
+"Yes, I Agree": "Sim, Eu Concordo"
+"Yes, do it": "Sim, avançar"
+"No": "Não"
+"Ok, got it.": "Ok, entendi."
+"Cancel": "Cancelar"
+"Delete Confirmation": "Confirmar Eliminação"
+"Edit": "Editar"
+"Unexpected error occured. Please contact system administrator.": "Ocorreu um erro inesperado. Por favor, contate o administrador do sistema."
+Now: Agora
+Prev: Anterior
+Next: Seguinte
+Today: Hoje
+Done: Terminado
+AM: AM
+A: A
+PM: PM
+P: P
+"Choose Time": "Escolher Hora"
+Time: Horas
+Hour: Hora
+Minute: Minuto
+Second: Segundo
+Millisecond: Milissegundo
+Microsecond: Microssegundo
+"Time Zone": "Fuso Horário"
+Localized value: Valor multi-linguagem
+Columns: Colunas
+Datagrid Configuration: Configuração da grelha de dados
+Apply: Aplicar
+Action: Ação
+Unit: Unidade
+Currency: Moeda
+jstree:
+  all: Todos os produtos
+  unclassified: Produtos não classificados
+  product:
+    all: Todos os produtos
+    unclassified: Produtos não classificados
+  no_tree: Nenhuma árvore disponível
+  include_sub: Incluir subcategorias
+  loading: A carregar ...
+datetimepicker:
+  days:
+    Sunday: Domingo
+    Monday: Segunda
+    Tuesday: Terça
+    Wednesday: Quarta
+    Thursday: Quinta
+    Friday: Sexta
+    Saturday: Sábado
+  daysShort:
+    Sun: Dom
+    Mon: Seg
+    Tue: Ter
+    Wed: Qua
+    Thu: Qui
+    Fri: Sex
+    Sat: Sab
+  daysMin:
+    Su: Do
+    Mo: Se
+    Tu: Te
+    We: Qa
+    Th: Qi
+    Fr: Sx
+    Sa: Sa
+  months:
+    January: Janeiro
+    February: Fevereiro
+    March: Março
+    April: Abril
+    May: Maio
+    June: Junho
+    July: Julho
+    August: Agosto
+    September: Setembro
+    October: Outubro
+    November: Novembro
+    December: Dezembro
+  monthsShort:
+    Jan: Jan
+    Feb: Fev
+    Mar: Mar
+    Apr: Abr
+    May: Mai
+    Jun: Jun
+    Jul: Jul
+    Aug: Ago
+    Sep: Set
+    Oct: Out
+    Nov: Nov
+    Dec: Dez
+oro_config:
+  form:
+    config:
+      tab:
+        system:
+          title: Sistema
+      group:
+        notification:
+          title: Notificações
+          system_notification: Notificações de novas versões

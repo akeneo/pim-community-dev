@@ -16,7 +16,7 @@ define(
                     .done(function () {
                         messenger.notify(
                             'success',
-                            _.__('pim_datagrid.mass_action.quick_export.success')
+                            _.__('pim.grid.mass_action.quick_export.launched')
                         );
                     })
                     .error(function (jqXHR) {

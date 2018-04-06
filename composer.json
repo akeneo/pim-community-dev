@@ -16,11 +16,11 @@
         "psr-4": {
             "Pim\\Upgrade\\": "upgrades/",
             "Pim\\Behat\\": "features/Pim/Behat",
-            "Akeneo\\Test\\IntegrationTestsBundle\\": "tests/Integration/IntegrationTestsBundle/",
-            "Akeneo\\Test\\Integration\\": "tests/Integration/",
-            "Akeneo\\Test\\Acceptance\\": "tests/Acceptance/"
+            "Akeneo\\Test\\IntegrationTestsBundle\\": "tests/back/Integration/IntegrationTestsBundle/",
+            "Akeneo\\Test\\Integration\\": "tests/back/Integration/",
+            "Akeneo\\Test\\Acceptance\\": "tests/back/Acceptance/"
         },
-        "classmap": [ "app/AppKernel.php", "app/AppCache.php", "tests/Integration/AppKernelTest.php" ]
+        "classmap": [ "app/AppKernel.php", "app/AppCache.php", "tests/back/Integration/AppKernelTest.php" ]
     },
     "require": {
         "php": ">=7.1.0",
@@ -71,7 +71,7 @@
     },
     "require-dev": {
         "akeneo/phpspec-skip-example-extension": "2.0.*",
-        "akeneo/php-coupling-detector": "dev-master",
+        "akeneo/php-coupling-detector": "0.2.0",
         "behat/behat": "3.4.3",
         "behat/gherkin":"4.5.1",
         "behat/mink":"1.7.1",
@@ -117,11 +117,11 @@
             "Incenteev\\ParameterHandler\\ScriptHandler::buildParameters",
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::buildBootstrap",
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::clearCache",
+            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installAssets",
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installRequirementsFile",
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::removeSymfonyStandardFiles",
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::prepareDeploymentTarget",
-            "php bin/console --ansi fos:js-routing:dump --target=web/js/routes.js",
-            "php bin/console --ansi pim:installer:assets"
+            "php bin/console fos:js-routing:dump --target=web/js/routes.js"
         ],
         "post-install-cmd": [
             "@symfony-scripts"
@@ -150,6 +150,7 @@
         },
         "branch-alias": {
             "dev-master": "3.0.x-dev",
+            "dev-2.3": "2.3.x-dev",
             "dev-2.2": "2.2.x-dev",
             "dev-2.1": "2.1.x-dev",
             "dev-2.0": "2.0.x-dev",

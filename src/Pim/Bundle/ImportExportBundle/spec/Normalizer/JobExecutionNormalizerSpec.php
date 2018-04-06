@@ -7,6 +7,7 @@ use Akeneo\Component\Batch\Model\JobExecution;
 use Akeneo\Component\Batch\Model\JobInstance;
 use Akeneo\Component\Batch\Model\StepExecution;
 use PhpSpec\ObjectBehavior;
+use Pim\Bundle\ImportExportBundle\JobLabel\TranslatedLabelProvider;
 use Prophecy\Argument;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\SerializerInterface;
@@ -14,9 +15,9 @@ use Symfony\Component\Translation\TranslatorInterface;
 
 class JobExecutionNormalizerSpec extends ObjectBehavior
 {
-    function let(SerializerInterface $serializer, TranslatorInterface $translator, NormalizerInterface $jobInstanceNormalizer)
+    function let(SerializerInterface $serializer, TranslatorInterface $translator, TranslatedLabelProvider $labelProvider, NormalizerInterface $jobInstanceNormalizer)
     {
-        $this->beConstructedWith($translator, $jobInstanceNormalizer);
+        $this->beConstructedWith($translator, $labelProvider, $jobInstanceNormalizer);
 
         $serializer->implement('Symfony\Component\Serializer\Normalizer\NormalizerInterface');
         $this->setSerializer($serializer);
@@ -36,6 +37,7 @@ class JobExecutionNormalizerSpec extends ObjectBehavior
     function it_normalizes_a_job_execution_instance(
         $serializer,
         $translator,
+        $labelProvider,
         $jobInstanceNormalizer,
         JobInstance $jobInstance,
         JobExecution $jobExecution,
@@ -50,6 +52,7 @@ class JobExecutionNormalizerSpec extends ObjectBehavior
         );
         $jobInstance->getJobName()->willReturn('wow_job');
         $translator->trans('error', ['foo' => 'bar'])->willReturn('Such error');
+        $labelProvider->getJobLabel('wow_job')->willReturn('Wow job');
 
         $jobExecution->isRunning()->willReturn(true);
         $jobExecution->getStatus()->willReturn($status);

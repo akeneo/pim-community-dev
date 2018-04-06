@@ -85,7 +85,7 @@ define(
                         attributeCount: attributeCount,
                         currentGroup: this.currentGroup,
                         selectedAttributes: selectedAttributes,
-                        title: __('pim_common.attributes'),
+                        title: __('pim_enrich.export.product.filter.attributes_selector.title'),
                         description: __('pim_enrich.export.product.filter.attributes_selector.description')
                     }));
 

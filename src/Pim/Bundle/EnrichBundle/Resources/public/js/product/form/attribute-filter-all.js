@@ -26,6 +26,13 @@ define(
             },
 
             /**
+             * @returns {Boolean}
+             */
+            isVisible() {
+                return true;
+            },
+
+            /**
              * @param {Object} values
              *
              * @returns {Promise}

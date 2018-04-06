@@ -1,6 +1,6 @@
 'use strict';
 /**
- * Displays the summary table for a job execution
+ * Launch button
  *
  * @author    Alban Alnot <alban.alnot@consertotech.pro>
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
@@ -66,27 +66,10 @@ define(
                     stepExecutions: model.stepExecutions,
                     status: model.status,
                     failures: model.failures,
-                    id: model.meta.id,
-                    translateStepExecutionLabel: this.translateStepExecutionLabel
+                    id: model.meta.id
                 }));
 
                 return this;
-            },
-
-            /**
-             * Get the translation of a stepExecution.
-             * If the translation exists for this specific job, returns it, else returns the default one.
-             *
-             * @param stepExecution
-             * @returns {string}
-             */
-            translateStepExecutionLabel: function(stepExecution) {
-                let key = 'batch_jobs.' + stepExecution.job + '.' + stepExecution.label + '.label';
-                if (__(key) === key) {
-                    key = 'batch_jobs.default_steps.' + stepExecution.label;
-                }
-
-                return __(key);
             }
         });
     }

@@ -54,3 +54,8 @@ parameters:
     # Files used as configuration for the Elasticsearch index
     elasticsearch_index_configuration_files:
         - '%pim_ce_dev_src_folder_location%/src/Pim/Bundle/CatalogBundle/Resources/elasticsearch/index_configuration.yml'
+
+
+    # these parameters indicate the advisable limitations of the PIM in term of volume
+    # if your volume of data exceeds these limits, it can impact the performance
+    attributes_per_family_limit: 100

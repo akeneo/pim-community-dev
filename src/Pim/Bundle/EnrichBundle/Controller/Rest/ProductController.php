@@ -368,9 +368,8 @@ class ProductController
     protected function findProductOr404($id)
     {
         $product = $this->productRepository->find($id);
-        $product = $this->objectFilter->filterObject($product, 'pim.internal_api.product.view') ? null : $product;
 
-        if (!$product) {
+        if (null === $product) {
             throw new NotFoundHttpException(
                 sprintf('Product with id %s could not be found.', $id)
             );
@@ -433,9 +432,6 @@ class ProductController
      */
     protected function getNormalizationContext(): array
     {
-        return $this->userContext->toArray() + [
-            'filter_types'               => ['pim.internal_api.product_value.view'],
-            'disable_grouping_separator' => true
-        ];
+        return $this->userContext->toArray() + ['filter_types' => []];
     }
 }

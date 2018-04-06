@@ -17,6 +17,7 @@ use Behat\Gherkin\Node\TableNode;
 use Doctrine\Common\Util\ClassUtils;
 use League\Flysystem\MountManager;
 use OAuth2\OAuth2;
+use Oro\Bundle\UserBundle\Entity\Role;
 use PHPUnit\Framework\Assert;
 use Pim\Behat\Context\FixturesContext as BaseFixturesContext;
 use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
@@ -26,11 +27,13 @@ use Pim\Bundle\CatalogBundle\Entity\GroupType;
 use Pim\Bundle\CommentBundle\Entity\Comment;
 use Pim\Bundle\CommentBundle\Model\CommentInterface;
 use Pim\Bundle\DataGridBundle\Entity\DatagridView;
+use Pim\Bundle\UserBundle\Entity\User;
 use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Builder\EntityWithValuesBuilderInterface;
 use Pim\Component\Catalog\Model\Association;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\AttributeOptionInterface;
+use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Component\Catalog\Model\LocaleInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
@@ -42,8 +45,6 @@ use Pim\Component\Connector\Job\JobParameters\DefaultValuesProvider\ProductCsvIm
 use Pim\Component\Connector\Job\JobParameters\DefaultValuesProvider\ProductModelCsvImport;
 use Pim\Component\Connector\Job\JobParameters\DefaultValuesProvider\SimpleCsvExport;
 use Pim\Component\ReferenceData\Model\ReferenceDataInterface;
-use Pim\Component\User\Model\Role;
-use Pim\Component\User\Model\User;
 
 /**
  * A context for creating entities
@@ -241,9 +242,12 @@ class FixturesContext extends BaseFixturesContext
         $processor = $this->getContainer()->get('pim_connector.processor.denormalization.family');
         $saver     = $this->getContainer()->get('pim_catalog.saver.family');
 
+        $families = [];
         foreach ($table->getHash() as $data) {
-            $saver->save($processor->process($converter->convert($data)));
+            $families[] = $processor->process($converter->convert($data));
         }
+
+        $saver->saveAll($families);
     }
 
     /**
@@ -1579,7 +1583,7 @@ class FixturesContext extends BaseFixturesContext
     /**
      * @param string $userGroupName
      *
-     * @return Group
+     * @return \Oro\Bundle\UserBundle\Entity\Group
      *
      * @Then /^there should be a "([^"]+)" user group$/
      */
@@ -1593,7 +1597,7 @@ class FixturesContext extends BaseFixturesContext
     /**
      * @param string $userRoleName
      *
-     * @return Role
+     * @return \Oro\Bundle\UserBundle\Entity\Role
      *
      * @Then /^there should be a "([^"]+)" user role$/
      */
@@ -1605,7 +1609,7 @@ class FixturesContext extends BaseFixturesContext
     /**
      * @param string $roleLabel
      *
-     * @return Role
+     * @return \Oro\Bundle\UserBundle\Entity\Role
      */
     public function getRole($roleLabel)
     {

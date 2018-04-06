@@ -60,6 +60,19 @@ class ParentFilterSpec extends ObjectBehavior
         $this->addFieldFilter('parent', Operators::IS_EMPTY, null, null, null, []);
     }
 
+    function it_adds_a_filter_with_operator_is_not_empty(
+        SearchQueryBuilder $sqb
+    ) {
+        $sqb->addFilter(
+            [
+                'exists' => ['field' => 'parent'],
+            ]
+        )->shouldBeCalled();
+
+        $this->setQueryBuilder($sqb);
+        $this->addFieldFilter('parent', Operators::IS_NOT_EMPTY, null, null, null, []);
+    }
+
     function it_throws_an_exception_when_the_search_query_builder_is_not_initialized()
     {
         $this->shouldThrow(

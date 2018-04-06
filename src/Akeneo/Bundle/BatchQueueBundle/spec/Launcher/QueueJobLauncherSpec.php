@@ -16,7 +16,7 @@ use Akeneo\Component\Batch\Model\JobInstance;
 use Akeneo\Component\BatchQueue\Queue\JobExecutionMessage;
 use Akeneo\Component\BatchQueue\Queue\JobExecutionQueueInterface;
 use PhpSpec\ObjectBehavior;
-use Pim\Component\User\Model\User;
+use Pim\Bundle\UserBundle\Entity\User;
 use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Security\Core\User\UserInterface;

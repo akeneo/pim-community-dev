@@ -2,9 +2,9 @@
 
 namespace Pim\Bundle\UserBundle\Form\Handler;
 
-use Pim\Component\User\Model\Group;
-use Pim\Component\User\Model\User;
-use Pim\Component\User\Model\UserInterface;
+use Oro\Bundle\UserBundle\Form\Handler\AbstractUserHandler;
+use Pim\Bundle\UserBundle\Entity\User;
+use Pim\Bundle\UserBundle\Entity\UserInterface;
 
 /**
  * Overridden UserHandler to remove tag management
@@ -36,7 +36,7 @@ class UserHandler extends AbstractUserHandler
     }
 
     /**
-     * @param \Pim\Component\User\Model\UserInterface $user
+     * @param UserInterface $user
      */
     protected function onSuccess(UserInterface $user)
     {
@@ -59,7 +59,7 @@ class UserHandler extends AbstractUserHandler
     {
         if (!$user->hasGroup(User::GROUP_DEFAULT)) {
             $group = $this->manager->getStorageManager()
-                ->getRepository(Group::class)->getDefaultUserGroup();
+                ->getRepository('OroUserBundle:Group')->getDefaultUserGroup();
 
             if (!$group) {
                 throw new \RuntimeException('Default user group not found');

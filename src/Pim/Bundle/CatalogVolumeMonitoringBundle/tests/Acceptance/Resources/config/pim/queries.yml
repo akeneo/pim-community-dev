@@ -1,0 +1,10 @@
+parameters:
+    pim_volume_monitoring.persistence.query.attributes_per_family.class: Pim\Bundle\CatalogVolumeMonitoringBundle\tests\Acceptance\Persistence\Query\InMemory\InMemoryAverageMaxQuery
+
+services:
+    pim_volume_monitoring.persistence.query.attributes_per_family:
+        class: '%pim_volume_monitoring.persistence.query.attributes_per_family.class%'
+        arguments:
+            - 'attributes_per_family'
+        tags:
+            - { name: pim_volume_monitoring.persistence.average_max_query }

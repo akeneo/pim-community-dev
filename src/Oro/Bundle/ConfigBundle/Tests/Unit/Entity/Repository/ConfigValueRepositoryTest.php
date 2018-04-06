@@ -79,7 +79,7 @@ class ConfigValueRepositoryTest extends \PHPUnit_Framework_TestCase
             ->method('commit');
 
         $removed = [
-            ['pim_user', 'level']
+            ['oro_user', 'level']
         ];
 
         $this->repository->removeValues(1, $removed);

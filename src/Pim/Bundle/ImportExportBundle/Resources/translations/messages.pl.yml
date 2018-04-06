@@ -1,0 +1,129 @@
+Job: Zadanie
+Connector: Wtyczka
+pim_import_export:
+  job: Zadanie
+  connector: Wtyczka
+  status:
+    - Gotowe
+  download_archive:
+    output: pobierz utworzony plik|pobierz utworzone pliki
+    input: pobierz wczytany plik|pobierz wczytane pliki
+    invalid_xlsx: pobierz nieprawidłowe dane
+    invalid_csv: pobierz nieprawidłowe dane
+  notification:
+    export:
+      error: Eksport <strong>%label%</strong> nie powiódł się
+      warning: Eksport <strong>%label%</strong> zakończony z ostrzeżeniami
+      success: Eksport <strong>%label%</strong> zakończony
+    import:
+      error: Import <strong>%label%</strong> nie powiódł się
+      warning: Import <strong>%label%</strong> zakończony z ostrzeżeniami
+      success: Import <strong>%label%</strong> zakończony
+  list: Wybierz zadanie
+  job_profile:
+    tab:
+      property.title: Ustawienia ogólne
+      history.title: Historia
+pim_title.export_profile.index: Zarządzanie profilami eksportu
+pim_title.export_profile.edit: Profile eksportu %job.label% | Edytuj
+pim_title.export_profile.show: Profile eksportu %job.label% | Pokaż
+pim_title.export_execution.index: Historia wykonanych eksportów
+pim_title.export_execution.show: Wykonane eksporty | Szczegóły
+pim_title.import_profile.index: Zarządzanie profilami importu
+pim_title.import_profile.edit: Profile importu %job.label% | Edytuj
+pim_title.import_profile.show: Profile importu %job.label% | Pokaż
+pim_title.import_execution.index: Historia wykonanych importów
+pim_title.import_execution.show: Wykonane importy | Szczegóły
+export profile:
+  title: eksportuj profil
+  edit: edytuj profil eksportu
+import profile:
+  title: profil importu
+  edit: edytuj profil importu
+pim_importexport:
+  acl:
+    export_profile:
+      index: Przeglądanie listy profili eksportu
+      create: Tworzenie profilu eksportu
+      show: Przeglądanie profilu eksportu
+      edit: Edycja profilu eksportu
+      remove: Usuwanie profilu eksportu
+      launch: Uruchamianie profilu eksportu
+      property_edit: Edycja właściwości ogólnych eksportowanego profilu
+      history: Przeglądanie historii profilu eksportu
+    import_profile:
+      index: Przeglądanie listy profili importu
+      create: Tworzenie profilu importu
+      show: Przeglądanie profilu importu
+      edit: Edycja profilu importu
+      remove: Usuwanie profilu importu
+      launch: Uruchamianie profilu importu
+      history: Przeglądanie historii profilu importu
+    export_execution:
+      index: Przeglądanie listy raportów eksportów
+      show: Zobacz szczegóły raportu eksportu
+      dl_log: Pobieranie log-a raportu eksportu
+      dl_files: Pobieranie wyeksportowanych plików
+    import_execution:
+      index: Przeglądanie listy raportów importu
+      show: Przeglądanie raportu wykonania importu
+      dl_log: Pobieranie raportu wykonania importu
+      dl_files: Pobieranie zaimportowanych plików
+  acl_group:
+    export: Profile eksportu
+    import: Profile importu
+btn:
+  create:
+    export profile: utwórz profil eksportu
+    import profile: utwórz profil importu
+Upload and import now: Załaduj pliki i importuj teraz
+import now: Importuj teraz
+export now: Eksportuj teraz
+confirmation:
+  remove:
+    export profile: Czy na pewno chcesz usunąć profil eksportu %name%?
+    import profile: Czy na pewno chcesz usunąć profil importu %name%?
+flash:
+  export:
+    created: Eksport został pomyślnie utworzony
+    removed: Eksport został usunięty
+    updated: Eksport został pomyślnie zaktualizowany
+    running: Eksport jest uruchomiony
+  import:
+    created: Import został pomyślnie utworzony
+    removed: Import został usunięty
+    updated: Import został pomyślnie zaktualizowany
+    running: Import jest uruchomiony
+General properties: Ustawienia ogólne
+History: Historia
+pane.accordion:
+  properties: Właściwości
+  global_settings: Ustawienia ogólne
+popin.create:
+  export_profile.title: Utwórz nowy profil eksportu
+  import_profile.title: Utwórz nowy profil importu
+'Display item': Pokaż element
+'Hide item': Ukryj element
+'Collecting data about job execution...': Zbieranie danych o wykonywaniu zadania...
+'You must select a file to upload': Musisz wybrać plik do przesłania
+Download log: Pobierz dziennik
+Show profile: Pokaż profil
+execution details: szczegóły wykonania
+job_execution.summary:
+  read: odczytano
+  write: zapisano
+  skip: pominięto
+  create: utworzono
+  update: zaktualizowano
+  update_products: zaktualizowano produktów
+  skip_products: pominięte produkty
+  displayed: pierwsze ostrzeżenie wyświetlone
+  charset_validator:
+    title: 'Strona kodowa pliku:'
+    skipped: pominięte, rozszerzenie na białej liście
+Step: Krok
+Status: Status
+Summary: Podsumowanie
+Start: Start
+End: Koniec
+set_attribute_requirements: Określ wymagania atrybutów

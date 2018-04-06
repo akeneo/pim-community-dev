@@ -260,7 +260,7 @@ define(
                                 title: '',
                                 content: '',
                                 cancelText: ' ',
-                                okText: __('pim_common.confirm')
+                                okText: __('confirmation.title')
                             });
                             modal.open();
                             modal.on('cancel', deferred.reject);

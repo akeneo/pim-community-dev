@@ -15,7 +15,8 @@ class ChannelSpec extends ObjectBehavior
             'locales'     => '',
             'currencies'  => 'GLD,PST',
             'tree'        => 'master_catalog',
-            'color'       => 'orange'
+            'color'       => 'orange',
+            'conversion_units' => 'weight:KILOGRAM,size:CENTIMETER'
         ];
 
         $item = [
@@ -30,7 +31,11 @@ class ChannelSpec extends ObjectBehavior
                 'PST'
             ],
             'category_tree'   => 'master_catalog',
-            'color'           => 'orange'
+            'color'           => 'orange',
+            'conversion_units' => [
+                'weight' => 'KILOGRAM',
+                'size'   => 'CENTIMETER'
+            ]
         ];
 
         $this->convert($item)->shouldReturn($expected);

@@ -41,9 +41,9 @@ define([
             return this.template({
                 isEditable: this.isEditable(),
                 labels: {
-                    title: __('pim_common.status'),
+                    title: __('pim_enrich.export.product.filter.enabled.title'),
                     valueChoices: {
-                        all: __('pim_common.all'),
+                        all: __('pim_enrich.export.product.filter.enabled.value.all'),
                         enabled: __('pim_enrich.export.product.filter.enabled.value.enabled'),
                         disabled: __('pim_enrich.export.product.filter.enabled.value.disabled')
                     }

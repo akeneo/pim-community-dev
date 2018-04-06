@@ -5,7 +5,7 @@ imports:
     - { resource: '@PimEnrichBundle/Resources/config/pim.yml' }
 
 framework:
-    translator:      { fallback: en_US }
+    translator:      { fallback: en }
     secret:          "%secret%"
     router:
         resource: "%kernel.root_dir%/config/routing.yml"

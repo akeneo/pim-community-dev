@@ -121,7 +121,7 @@ services:
     pim_enrich.normalizer.version:
         class: '%pim_enrich.normalizer.version.class%'
         arguments:
-            - '@pim_user.manager'
+            - '@oro_user.manager'
             - '@translator'
             - '@pim_catalog.localization.presenter.datetime'
             - '@pim_catalog.localization.presenter.registry'

@@ -1,8 +1,0 @@
-pim_dashboard:
-  widget:
-    last_operations:
-      status: Estado
-      date: Petsa
-      type: Uri
-page_title:
-  pim_dashboard_index: Dashboard

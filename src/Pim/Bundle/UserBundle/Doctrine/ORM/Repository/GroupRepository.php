@@ -2,12 +2,9 @@
 
 namespace Pim\Bundle\UserBundle\Doctrine\ORM\Repository;
 
-use Doctrine\ORM\EntityRepository;
-use Doctrine\ORM\QueryBuilder;
-use Pim\Component\User\Model\GroupInterface;
-use Pim\Component\User\Model\User;
-use Pim\Component\User\Model\UserInterface;
-use Pim\Component\User\Repository\GroupRepositoryInterface;
+use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
+use Oro\Bundle\UserBundle\Entity\Repository\GroupRepository as BaseGroupRepository;
+use Pim\Bundle\UserBundle\Entity\User;
 
 /**
  * User group repository
@@ -16,32 +13,15 @@ use Pim\Component\User\Repository\GroupRepositoryInterface;
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class GroupRepository extends EntityRepository implements GroupRepositoryInterface
+class GroupRepository extends BaseGroupRepository implements
+    IdentifiableObjectRepositoryInterface
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function getIdentifierProperties()
-    {
-        return ['name'];
-    }
-
     /**
      * {@inheritdoc}
      */
     public function findOneByIdentifier($code)
     {
         return $this->findOneBy(['name' => $code]);
-    }
-
-    /**
-     * Get the default user group
-     *
-     * @return null|object
-     */
-    public function getDefaultUserGroup()
-    {
-        return $this->findOneByIdentifier(User::GROUP_DEFAULT);
     }
 
     /**
@@ -67,19 +47,20 @@ class GroupRepository extends EntityRepository implements GroupRepositoryInterfa
     }
 
     /**
-     * Get user query builder
+     * Get the default user group
      *
-     * @param  GroupInterface $group
-     *
-     * @return QueryBuilder
+     * @return null|object
      */
-    public function getUserQueryBuilder(GroupInterface $group)
+    public function getDefaultUserGroup()
     {
-        return $this->_em->createQueryBuilder()
-            ->select('u')
-            ->from(UserInterface::class, 'u')
-            ->join('u.groups', 'groups')
-            ->where('groups = :group')
-            ->setParameter('group', $group);
+        return $this->findOneByIdentifier(User::GROUP_DEFAULT);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getIdentifierProperties()
+    {
+        return ['name'];
     }
 }

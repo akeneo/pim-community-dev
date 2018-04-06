@@ -51,3 +51,20 @@ Feature: Edit product model and filter attributes
     Then I should see the text "Collection"
     But I should not see the text "Size"
     And I should see the text "Model description"
+
+  Scenario: Edit the product model and show only attributes at this level
+    And I am on the "1111111286" product page
+    When I filter attributes with "All level specific attributes"
+    And I visit the "All" group
+    Then I should see the text "EAN"
+    And I should see the text "SKU"
+    And I should see the text "Weight"
+    And I should see the text "Size"
+    But I should not see the text "Supplier"
+    And I should not see the text "ERP name"
+    And I should not see the text "Price"
+    And I should not see the text "Model name"
+    And I should not see the text "Collection"
+    And I should not see the text "Brand"
+    When I filter attributes with "All attributes"
+    Then I should see the text "Collection"
