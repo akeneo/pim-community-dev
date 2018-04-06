@@ -559,7 +559,7 @@ config:
         pim/attributeoptionview:            pimenrich/js/pim-attributeoptionview
         pim/item/tableview:                 pimenrich/js/pim-item-tableview
         pim/item/view:                      pimenrich/js/pim-item-view
-        pim/i18n:                           pimenrich/js/i18n
+        pim/i18n:                           pimenrich/js/i18n.ts
         pim/user-context:                   pimenrich/js/user-context
         pim/date-context:                   pimenrich/js/date-context
         pim/error:                          pimenrich/js/error/error
@@ -814,7 +814,7 @@ config:
 
         # Product edit form
         pim/field-manager: pimenrich/js/product/field-manager
-        pim/provider/to-fill-field-provider: pimenrich/js/provider/to-fill-field-provider
+        pim/provider/to-fill-field-provider: pimenrich/js/provider/to-fill-field-provider.ts
         pim/provider/sequential-edit-provider: pimenrich/js/provider/sequential-edit-provider
 
         # Mass product edit form

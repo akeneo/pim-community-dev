@@ -33,6 +33,7 @@
     "read-pkg": "2.0.0"
   },
   "dependencies": {
+    "@types/node": "^9.6.1",
     "JSON2": "0.1.0",
     "babel-cli": "6.26.0",
     "babel-core": "6.26.0",
@@ -57,6 +58,8 @@
     "regexp-replace-loader": "1.0.0",
     "summernote": "0.6.5",
     "text-loader": "0.0.1",
+    "ts-loader": "^3.5.0",
+    "typescript": "^2.7.2",
     "underscore": "1.8.3",
     "webpack": "3.5.5",
     "webpack-cleanup-plugin": "0.5.1",

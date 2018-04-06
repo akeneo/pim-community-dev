@@ -57,7 +57,9 @@ module.exports = {
     devtool: 'source-map',
     resolve: {
         symlinks: false,
-        alias: _.mapKeys(aliases, (path, key) => `${key}$`)
+        alias: _.mapKeys(aliases, (path, key) => `${key}$`),
+        modules: [path.resolve('./web/bundles'), path.resolve('./node_modules')],
+        extensions: ['.js', '.json', '.ts', '.tsx']
     },
     module: {
         rules: [
@@ -157,6 +159,27 @@ module.exports = {
                         cacheDirectory: 'web/cache'
                     }
                 }
+            },
+
+            // Process the typescript loader files
+            {
+                test: /\.tsx?$/,
+                use: [
+                    {
+                        loader: 'ts-loader',
+                        options: {
+                            configFile: path.resolve(__dirname, 'tsconfig.json'),
+                        }
+                    },
+                    {
+                        loader: path.resolve(__dirname, 'webpack/config-loader'),
+                        options: {
+                            configMap: config
+                        }
+                    },
+                ],
+                include: /(web\/bundles)/,
+                exclude: /lib|node_modules|vendor/
             }
         ]
     },
