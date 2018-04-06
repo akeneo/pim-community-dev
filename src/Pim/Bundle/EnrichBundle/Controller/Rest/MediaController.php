@@ -5,7 +5,9 @@ namespace Pim\Bundle\EnrichBundle\Controller\Rest;
 use Akeneo\Component\FileStorage\PathGeneratorInterface;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
@@ -43,10 +45,14 @@ class MediaController
      *
      * @param Request $request
      *
-     * @return JsonResponse
+     * @return Response
      */
     public function postAction(Request $request)
     {
+        if (!$request->isXmlHttpRequest()) {
+            return new RedirectResponse('/');
+        }
+
         /** @var \Symfony\Component\HttpFoundation\File\UploadedFile $file */
         $file = $request->files->get('file');
         $violations = $this->validator->validate($file);

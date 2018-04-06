@@ -93,4 +93,35 @@ class ProductSaverSpec extends ObjectBehavior
             ->shouldThrow(new \InvalidArgumentException('Expects a Pim\Component\Catalog\Model\ProductInterface, "stdClass" provided'))
             ->duringSave($otherObject);
     }
+
+    function it_does_not_save_duplicate_products(
+        $objectManager,
+        $completenessManager,
+        $eventDispatcher,
+        $uniqueDataSynchronizer,
+        ProductInterface $product1,
+        ProductInterface $product2
+    ) {
+        $completenessManager->schedule($product1)->shouldBeCalledTimes(1);
+        $completenessManager->schedule($product2)->shouldBeCalled();
+
+        $completenessManager->generateMissingForProduct($product1)->shouldBeCalledTimes(1);
+        $completenessManager->generateMissingForProduct($product2)->shouldBeCalled();
+
+        $objectManager->persist($product1)->shouldBeCalledTimes(1);
+        $uniqueDataSynchronizer->synchronize($product1)->shouldBeCalledTimes(1);
+
+        $objectManager->persist($product2)->shouldBeCalled();
+        $uniqueDataSynchronizer->synchronize($product2)->shouldBeCalled();
+
+        $objectManager->flush()->shouldBeCalled();
+
+        $eventDispatcher->dispatch(StorageEvents::PRE_SAVE_ALL, Argument::cetera())->shouldBeCalled();
+        $eventDispatcher->dispatch(StorageEvents::POST_SAVE_ALL, Argument::cetera())->shouldBeCalled();
+
+        $eventDispatcher->dispatch(StorageEvents::PRE_SAVE, Argument::cetera())->shouldBeCalledTimes(2);
+        $eventDispatcher->dispatch(StorageEvents::POST_SAVE, Argument::cetera())->shouldBeCalledTimes(2);
+
+        $this->saveAll([$product1, $product2, $product1]);
+    }
 }

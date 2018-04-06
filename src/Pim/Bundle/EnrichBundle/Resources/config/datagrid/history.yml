@@ -19,7 +19,7 @@ datagrid:
                 frontend_type: string
             loggedAt:
                 label: Logged at
-                type: product_value_datetime
+                type: property_date
                 frontend_type: datetime
             changes:
                 label: Changes

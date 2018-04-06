@@ -73,6 +73,8 @@ class ProductAndProductModelReader implements
      */
     public function initialize(): void
     {
+        $this->firstRead = true;
+
         $channel = $this->getConfiguredChannel();
         if (null !== $channel) {
             $this->completenessManager->generateMissingForChannel($channel);
@@ -100,6 +102,7 @@ class ProductAndProductModelReader implements
             }
             $this->stepExecution->incrementSummaryInfo('read');
         }
+        $this->firstRead = false;
 
         $this->firstRead = false;
 
