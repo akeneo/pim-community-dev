@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\PimEnterprise\Bundle\EnrichBundle\Provider\Form;
+namespace spec\PimEnterprise\Bundle\SecurityBundle\Form\Provider;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\EnrichBundle\Provider\Form\FormProviderInterface;

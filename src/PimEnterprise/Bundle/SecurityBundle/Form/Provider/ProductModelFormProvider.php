@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Bundle\EnrichBundle\Provider\Form;
+namespace PimEnterprise\Bundle\SecurityBundle\Form\Provider;
 
 use Pim\Bundle\EnrichBundle\Provider\Form\FormProviderInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;

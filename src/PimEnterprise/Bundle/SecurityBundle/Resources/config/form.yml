@@ -6,6 +6,8 @@ parameters:
     pimee_security.form.type.product_grid_filter_choice.class: PimEnterprise\Bundle\SecurityBundle\Form\Type\ProductGridFilterChoiceType
     pimee_security.form.subscriber.category_permissions.class: PimEnterprise\Bundle\SecurityBundle\Form\EventListener\CategoryPermissionsSubscriber
     pimee_security.form.subscriber.locale_permissions.class:   PimEnterprise\Bundle\SecurityBundle\Form\EventListener\LocalePermissionsSubscriber
+    pimee_security.form.provider.form.product.class: PimEnterprise\Bundle\SecurityBundle\Form\Provider\ProductFormProvider
+    pimee_security.form.provider.form.product_model.class: PimEnterprise\Bundle\SecurityBundle\Form\Provider\ProductModelFormProvider
 
 services:
     # Form
@@ -51,3 +53,18 @@ services:
         arguments:
             - '@pimee_security.manager.locale_access'
             - '@oro_security.security_facade'
+
+    # Provider
+    pimee_security.form.provider.form.product:
+        class: '%pimee_security.form.provider.form.product.class%'
+        arguments:
+            - '@security.authorization_checker'
+        tags:
+            - { name: pim_enrich.provider.form, priority: 90 }
+
+    pimee_security.form.provider.form.product_model:
+        class: '%pimee_security.form.provider.form.product_model.class%'
+        arguments:
+            - '@security.authorization_checker'
+        tags:
+            - { name: pim_enrich.provider.form, priority: 90 }
