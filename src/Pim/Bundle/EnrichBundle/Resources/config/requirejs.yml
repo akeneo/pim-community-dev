@@ -687,6 +687,7 @@ config:
         pim/product-edit-form/attribute-filter:                  pimenrich/js/product/form/attribute-filter
         pim/product-edit-form/attribute-filter-all:              pimenrich/js/product/form/attribute-filter-all
         pim/product-edit-form/attribute-filter-missing-required: pimenrich/js/product/form/attribute-filter-missing-required
+        pim/product-edit-form/attribute-filter-at-this-level:    pimenrich/js/product/form/attribute-filter-at-this-level
         pim/product-edit-form/attributes/validation:             pimenrich/js/product/form/attributes/validation
         pim/product-edit-form/attributes/validation-error:       pimenrich/js/product/form/attributes/validation-error
         pim/product-edit-form/attributes/locale-specific:        pimenrich/js/product/form/attributes/locale-specific

@@ -252,6 +252,12 @@ extensions:
         parent: pim-product-edit-form-attribute-filter
         position: 110
 
+    pim-product-edit-form-attribute-filter-at-this-level-filter:
+        module: pim/product-edit-form/attribute-filter-at-this-level
+        parent: pim-product-edit-form-attribute-filter
+        targetZone: self
+        position: 120
+
     pim-product-edit-form-copy:
         module: pim/form/common/attributes/copy
         parent: pim-product-edit-form-attributes

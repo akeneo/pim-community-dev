@@ -467,6 +467,9 @@ pim_enrich:
                         display: Display
                         all: All attributes
                         missing_required: All missing required attributes
+                        at_this_level: All level specific attributes
+                categories:
+                    title: Categories
             panel:
                 completeness:
                     title: Completeness
