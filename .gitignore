@@ -3,6 +3,7 @@ web/media/*
 web/css/*
 web/js/*
 web/dist/*
+web/test_dist/*
 web/cache/*
 app/archive/*
 app/cache/*
@@ -43,3 +44,4 @@ docker-compose.yml
 yarn.lock
 package-lock.json
 yarn-error.log
+coverage/*

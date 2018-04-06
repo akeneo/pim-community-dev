@@ -44,7 +44,7 @@ stage("Build") {
         podTemplate(label: "build-" + uuid, containers: [
             containerTemplate(name: "docker", image: "paulwoelfel/docker-gcloud:v1.13", ttyEnabled: true, command: 'cat', resourceRequestCpu: '100m', resourceRequestMemory: '200Mi'),
             containerTemplate(name: "php", ttyEnabled: true, command: 'cat', image: "eu.gcr.io/akeneo-ci/php:7.1-fpm", envVars: [envVar(key: "COMPOSER_AUTH", value: "{\"github-oauth\":{\"github.com\": \"$token\"}}")], resourceRequestCpu: '750m', resourceRequestMemory: '2000Mi'),
-            containerTemplate(name: "node", ttyEnabled: true, command: 'cat', image: "node:8", resourceRequestCpu: '750m', resourceRequestMemory: '2000Mi')
+            containerTemplate(name: "node", ttyEnabled: true, command: 'cat', image: "juliensnz/node", resourceRequestCpu: '750m', resourceRequestMemory: '2000Mi')
         ]) {
             node("build-" + uuid) {
                 dir('/home/jenkins/pim') {
@@ -55,6 +55,7 @@ stage("Build") {
                         sh "composer update --ansi --optimize-autoloader --no-interaction --no-progress --prefer-dist --ignore-platform-reqs --no-suggest"
                         sh "bin/console --ansi assets:install"
                         sh "bin/console --ansi pim:installer:dump-require-paths"
+                        sh "bin/console --ansi pim:installer:dump-extensions"
                     }
                     container("node") {
                         sh "yarn install --no-progress"
@@ -111,6 +112,15 @@ stage("Test") {
                     })
                 } else {
                     echo "Skipping unit test grunt"
+                }
+            },
+            "frontend-acceptance": {
+                if (launchUnitTests.equals("yes")) {
+                    withNode({
+                        sh "cd /home/jenkins/pim && yarn run webpack-test && MAX_RANDOM_LATENCY_MS=100 yarn run acceptance ./vendor/akeneo/pim-community-dev/tests/features ./tests/features"
+                    })
+                } else {
+                    echo "Skipping frontend acceptance tests"
                 }
             },
             "php-coupling-detector": {
@@ -224,7 +234,7 @@ def withNode(body) {
     clearTemplateNames()
     def uuid = UUID.randomUUID().toString()
     podTemplate(label: "node-" + uuid, containers: [
-        containerTemplate(name: "node", ttyEnabled: true, alwaysPullImage: true, command: 'cat', image: "node:8", resourceRequestCpu: '500m', resourceRequestMemory: '1000Mi')
+        containerTemplate(name: "node", ttyEnabled: true, alwaysPullImage: true, command: 'cat', image: "juliensnz/node", resourceRequestCpu: '500m', resourceRequestMemory: '1000Mi')
     ], annotations: [
         podAnnotation(key: "pod.beta.kubernetes.io/init-containers", value: "[{\"name\": \"pim\", \"imagePullPolicy\": \"Always\", \"image\": \"eu.gcr.io/akeneo-ci/pim-enterprise-dev:pull-request-${env.CHANGE_ID}-build-${env.BUILD_NUMBER}\", \"command\": [\"sh\", \"-c\", \"cp -Rp /pim /home/jenkins\"], \"volumeMounts\":[{\"name\":\"workspace-volume\",\"mountPath\":\"/home/jenkins\"}]}]")
     ]) {
