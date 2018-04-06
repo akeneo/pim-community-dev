@@ -11,7 +11,7 @@ services:
         tags:
             - { name: form.type, alias: pim_category }
         calls:
-            - [addEventSubscriber, ['@pimee_enrich.form.subscriber.category_permissions']]
+            - [addEventSubscriber, ['@pimee_security.form.subscriber.category_permissions']]
 
     ##
     # New forms
@@ -21,7 +21,7 @@ services:
         tags:
             - { name: form.type, alias: pimee_enrich_locale }
         calls:
-            - [addEventSubscriber, ['@pimee_enrich.form.subscriber.locale_permissions']]
+            - [addEventSubscriber, ['@pimee_security.form.subscriber.locale_permissions']]
 
 
 

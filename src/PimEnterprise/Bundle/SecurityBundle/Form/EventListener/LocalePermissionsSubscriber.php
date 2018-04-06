@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Bundle\EnrichBundle\Form\Subscriber;
+namespace PimEnterprise\Bundle\SecurityBundle\Form\EventListener;
 
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use PimEnterprise\Bundle\SecurityBundle\Form\Type\LocalePermissionsType;

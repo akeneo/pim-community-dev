@@ -4,8 +4,11 @@ parameters:
     pimee_security.form.type.category_permissions.class: PimEnterprise\Bundle\SecurityBundle\Form\Type\CategoryPermissionsType
     pimee_security.form.type.locale_permissions.class: PimEnterprise\Bundle\SecurityBundle\Form\Type\LocalePermissionsType
     pimee_security.form.type.product_grid_filter_choice.class: PimEnterprise\Bundle\SecurityBundle\Form\Type\ProductGridFilterChoiceType
+    pimee_security.form.subscriber.category_permissions.class: PimEnterprise\Bundle\SecurityBundle\Form\EventListener\CategoryPermissionsSubscriber
+    pimee_security.form.subscriber.locale_permissions.class:   PimEnterprise\Bundle\SecurityBundle\Form\EventListener\LocalePermissionsSubscriber
 
 services:
+    # Form
     pimee_security.form.type.groups:
         class: '%pimee_security.form.type.groups.class%'
         tags:
@@ -35,3 +38,16 @@ services:
             - ['scope', 'locale']
         tags:
             - { name: form.type, alias: pim_enrich_product_grid_filter_choice }
+
+    # Event listener
+    pimee_security.form.subscriber.category_permissions:
+        class: '%pimee_security.form.subscriber.category_permissions.class%'
+        arguments:
+            - '@pimee_security.manager.category_access'
+            - '@oro_security.security_facade'
+
+    pimee_security.form.subscriber.locale_permissions:
+        class: '%pimee_security.form.subscriber.locale_permissions.class%'
+        arguments:
+            - '@pimee_security.manager.locale_access'
+            - '@oro_security.security_facade'
