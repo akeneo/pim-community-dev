@@ -498,6 +498,7 @@ pim_enrich:
             display: Affichage
             all: Tous les attributs
             missing_required: Tous les attributs requis manquants
+            at_this_level: Tous les attributs spécifiques à ce niveau
         categories:
           title: Catégories
       panel:

@@ -3,7 +3,7 @@ confirmation:
   remove:
     item: Oletko varma että haluat poistaa tämän kohteen?
     association_type: Oletko varma, että haluat poistaa tämän assosiaatiotyypin?
-    attribute: Oletko varma, että haluat poistaa tämän attribuutin?
+    attribute: Oletko varma, että haluat poistaa tämän määritteen?
     attribute_group: Oletko varma, että haluat poistaa tämän attribuuttiryhmän?
     family: Oletko varma, että haluat poistaa tämän ryhmän?
     product: Oletko varma, että haluat poistaa tämän tuotteen?
@@ -85,9 +85,9 @@ error:
     export profile: Vientiprofiilia ei voi poistaa
     user: Käyttäjää ei voi poistaa
     role: Roolia ei voi poistaa
-    attribute_option: Virhe attribuutin vaihtoehdon poistossa
+    attribute_option: Määriteasetuksen poistossa virhe
   saving:
-    attribute_option: Attribuutin vaihtoehtoa ei voi tallentaa
+    attribute_option: Määriteasennusta ei voi tallentaa
     export_profile: Vientiprofiilia ei voi tallentaa. Tarkista että suodattimet on täytetty oikein
 alert:
   attribute_option:
@@ -114,7 +114,7 @@ pim:
   grid:
     mass_action:
       quick_export:
-        csv_all: CSV (kaikki attribuutit)
+        csv_all: CSV (kaikki määritteet)
         csv_grid_context: CSV (Ruudukon konteksti)
         xlsx_all: Excel (Kaikki attribuutit)
         xlsx_grid_context: Excel (Ruudukon konteksti)
@@ -173,7 +173,7 @@ pim_enrich:
       history:
         version: Versio
         author: Tekijä
-        logged_at: Kirjautunut
+        logged_at: Kirjattu
         from: Lähettäjä
         modified: Muutettu
         old_value: Vanha arvo
@@ -185,7 +185,7 @@ pim_enrich:
         update_successful: Tuote päivitetty.
         update_failed: Tuotetta ei voitu päivittää.
         field_not_ready: "Tuotetta ei voida tallentaa. Seuraavat kentät eivät ole vielä valmiina: {{ fields }}"
-        already_in_upload: Tiedosto on jo ladattu attribuutin lokaatiossa "{{ locale }}" ja laajuudessa "{{ scope }}"
+        already_in_upload: Tiedosto on jo ladattu määritteen lokaatiossa "{{ locale }}" ja laajuudessa "{{ scope }}"
       error:
         upload: Virhe tiedoston lataamisessa
       meta:
@@ -249,7 +249,6 @@ pim_enrich:
         deletion_successful: Tuotemallin poisto onnistui.
         update_failed: Tuotemallia ei voitu päivittää.
         field_not_ready: "Tuotemallia ei voida tallentaa. Seuraavat kentät eivät ole valmiita: {{ fields }}"
-      read_only_parent_attribute_from_common: Tätä attribuuttia voidaan muokata yhteisissä attribuuteissa.
       variant_axis: Varianttiulottuvuus
       title: tuotemallit
       add_child:
@@ -399,7 +398,7 @@ pim_enrich:
         create_successful: Attribuutin luominen onnistui.
         create_failed: Attribuuttia ei voitu luoda.
         field_not_ready: "Attribuuttia ei voida tallentaa. Seuraavat kentät eivät ole valmiita: {{ fields }}"
-      scopable: Scopable
+      scopable: Kanavakohtainen
       type:
         pim_catalog_identifier: Tunniste
         pim_catalog_text: Teksti
@@ -436,7 +435,7 @@ pim_enrich:
     remove_item: Vahvista poisto
     remove: Poista
     delete:
-      attribute: Oletko varma, että haluat poistaa tämän attribuutin tuotteesta?
+      attribute: Oletko varma, että haluat poistaa tämän määritteen tuotteesta?
       attribute_group: Oletko varma, että haluat poistaa attribuutin {{ attribute }} tästä attribuuttiryhmästä?
       product_model: Vahvista poisto
   info:
@@ -465,10 +464,8 @@ pim_enrich:
         associations:
           title: Assosiaatiot
           info:
-            none_exist: Sidostyyppiä ei ole olemassa.
-            show_products: Näytä tuotteet
+            none_exist: Assosiaatiotyyppiä ei ole olemassa.
             show_groups: Näytä ryhmät
-            number_of_associations: "{{ productCount }} tuotetta, {{ productModelCount }} tuotemallia ja {{ groupCount }} ryhmää"
           association_type_selector: Assosiaatiotyyppi
           target: Kohde
           manage: Lisää {{ associationType }} assosiaatiot
@@ -487,7 +484,6 @@ pim_enrich:
             load_more: Ladataan lisää tuloksia...
           attribute_group_selector: Attribuuttiryhmä
           attribute_group_all: Kaikki
-          attribute_group.to_fill_count: "{1}1 vaadittu attribuutti puuttuu|]1, Inf [{{ count }} vaadittua attribuuttia puuttuu"
           attribute_filter:
             display: Näytä
             all: Kaikki attribuutit
@@ -498,7 +494,7 @@ pim_enrich:
         completeness:
           title: Valmistumisaste
           info:
-            no_family: Perhettä ei ole määritelty. Määritä perhe, jotta voit laskea tuotteen täyttöasteen.
+            no_family: Ryhmää ei ole määritelty. Määritä ryhmä jotta voit laskea tuotteen täyttöasteen.
             no_completeness: Olet juuri muuttanut tuotteen ryhmän. Tallenna se ensin, jotta voit laskea uuden ryhmän täyttöasteen.
           missing_values: "{1}1 puuttuva arvo|] 1, Inf [{{ count }} puuttuvaa arvoa"
         history:
@@ -522,7 +518,7 @@ pim_enrich:
           change_family_to: Vaihda perhe olemaan
           empty_selection: Valitse perhe
       flash:
-        attribute_deletion_error: Attribuutin poistamisessa tapahtui virhe
+        attribute_deletion_error: Määritteen poistamisen aikana tapahtui virhe
       mass_edit:
         select_attributes: Valitse attribuutit
         select: Valitse
@@ -556,7 +552,7 @@ pim_enrich:
           locales: Alueet
           category_tree: Kategoriahierarkia
           label_translations: Nimikkeiden käännökset
-          label_conversion_units: Valitse muunnosyksikkö jokaisella metriselle attribuutille, jota käytetään tuotteen viennin yhteydessä
+          label_conversion_units: Valitse muunnosyksikkö jokaisella metrimääritteelle jota käytetään tuotteen viennin yhteydessä
           conversion_unit:
             do_not_convert: Älä muunna
     family:
@@ -565,7 +561,7 @@ pim_enrich:
           title: Ominaisuudet
           general: Yleinen
           code: Koodi
-          attribute_as_label: Attribuutti käytössä otsikkona
+          attribute_as_label: Otsikkona käytettävä attribuutti
           attribute_as_image: Pääkuvana käytettävä attribuutti
           empty_attribute_as_image: Ei ole valittu
           label_translations: Nimikkeiden käännökset
@@ -587,10 +583,10 @@ pim_enrich:
           title: Historia
     attribute_option:
       flash:
-        option_created: Attribuutin vaihtoehdon luominen onnistui
-        error_creating_option: Virhe yritettäessä luoda attribuutin vaihtoehtoa
+        option_created: Määritteen asetuksen luominen onnistui
+        error_creating_option: Virhe yritettäessä luoda määritteen asetusta
       add_option_modal:
-        title: Lisää attribuutin vaihtoehto
+        title: Lisää määritteen vaihtoehto
         confirm: Lisää
         cancel: Peruuta
     entity:
@@ -621,7 +617,7 @@ pim_enrich:
           table:
             name: Nimi
             type: Tyyppi
-            scopable: Scopable
+            scopable: Kanavakohtainen
             localizable: Lokalisoitavissa
         history.title: Historia
     common:
@@ -641,7 +637,7 @@ pim_enrich:
         status.title: Status
       button:
         show_profile.title: Näytä profiili
-        download_log.title: Latauslogi
+        download_log.title: Lataa loki
         download_file.title: Lataa viety tiedosto
         download_archive.title: Lataa viety tallenne
       summary:
@@ -712,7 +708,7 @@ pim_enrich:
             help: Kategoriasarakkeen nimi
           escape:
             title: Koodinvaihto
-            help: Yhtä merkkiä käytetään kentän "poistu" määrittämiseen
+            help: Ohjausmerkki
           family_column:
             title: Perhesarake
             help: Perhesarakkeen nimi
@@ -1044,11 +1040,9 @@ pim_enrich:
         add_to_category:
           label: Lisää kategorioihin
           label_count: "{1}Lisää <span class=\"AknFullPage-title--highlight\">1 tuote</span> to categories|] 1, Inf [Lisää <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} tuotetta</span> kategorioihin"
-          description: Tuotteet liitetään seuraaviin kategorioihin. Olemassa oleva liitokset säilytetään.
         move_to_category:
           label: Siirrä kategorioihin
           label_count: "{1}Siirrä <span class=\"AknFullPage-title--highlight\">1 tuote</span> kategorioihin|] 1, Inf [Siirrä <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} tuotetta</span> kategorioihin"
-          description: Tuotteet liitetään seuraaviin kategorioihin. Olemassa olevat liitokset poistetaan.
         remove_from_category:
           label: Poista kategorioista
           label_count: "{1}Poista <span class=\"AknFullPage-title--highlight\">1 tuote</span> kategorioista|] 1, Inf [Poista <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} tuotetta</span> kategorioista"
@@ -1057,11 +1051,6 @@ pim_enrich:
           label: Lisää olemassaolevaan tuotemalliin
           label_count: "{1}Lisää <span class=\"AknFullPage-title--highlight\">1 tuote</span> olemassa olevaan tuotemalliin|] 1, Inf [Lisää <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} tuotetta</span> olemassa olevaan tuotemalliin"
           description: Valittu tuotemalli kokoaa tuotteet ja mahdollistaa niiden yhteisten attribuuttien rikastamisen.
-        associate_to_product_and_product_model:
-          label: Luo assosiaatio tuotteisiin
-          label_count: "{1}Liitä <span class=\"AknFullPage-title--highlight\">1 tuote</span> tuotteisiin tai tuotemalleihin|] 1, Inf [Liitä <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} tuotetta</span> tuotteisiin tai tuotemalleihin"
-          description: Tuoteruudukossa valittuihin tuotteisiin luodaan valitsemasi tyyppinen assosiaatio niiltä tuotteilta tai tuotemalleilta, jotka seuraavaksi valitset
-          validate: Ole hyvä ja lisää assosiaatio ennen kuin siirryt seuraavaan vaiheeseen
     family:
       title: Perheiden massamuokkaus
       confirm: "{1}Olet muokkaamassa perhettä seuraavilla tiedoilla, ole hyvä ja vahvista.|] 1, Inf [Olet muokkaamassa {{ itemsCount }} perhettä seuraavilla tiedoilla, ole hyvä ja vahvista."
@@ -1114,14 +1103,14 @@ page_title:
   pim_enrich_associationtype_edit: Assosiaatiotyyppi {{ association type.label }} | Muokkaa
   pim_enrich_grouptype_index: Ryhmätyypit
   pim_enrich_grouptype_edit: Ryhmätyyppi {{ group type.label }} | Muokkaa
-  pim_enrich_mass_edit_action_choose: Massaedit | Valitse
-  pim_enrich_mass_edit_action_configure: Massaedit | Määritä
+  pim_enrich_mass_edit_action_choose: Massamuokkaus | Valitse
+  pim_enrich_mass_edit_action_configure: Massamuokkaus | Määritä
   pim_enrich_mass_edit_action_perform: Massamuokkas | Suorita
   pim_enrich_job_tracker_index: Prosessiseurain
   pim_enrich_job_tracker_show: Prosessin tracker | Näytä työ
   pim_enrich_api_connection_index: API -yhteydet
   pim_enrich_api_connection_create: API -yhteydet| Luo
-  pim_enrich_mass_edit_action: Massaedit
+  pim_enrich_mass_edit_action: Massamuokkaus
   pim_analytics_system_info_index: Järjestelmätiedot
 batch_jobs:
   add_product_value:
@@ -1136,22 +1125,6 @@ batch_jobs:
     label: Muokkaa attribuutteja
     perform:
       label: Muokkaa attribuutteja
-  add_to_category:
-    label: Lisää kategorioihin
-    perform:
-      label: Lisää kategorioihin
-  move_to_category:
-    label: Siirrä kategorioihin
-    perform:
-      label: Siirrä kategorioihin
-  remove_from_category:
-    label: Poista kategorioista
-    perform:
-      label: Poista kategorioista
-  add_association:
-    label: Luo assosiaatio tuotteisiin
-    perform:
-      label: Luo assosiaatio tuotteisiin
   add_to_existing_product_model:
     label: Lisää olemassaolevaan tuotemalliin
     perform:
@@ -1193,8 +1166,8 @@ batch_jobs:
     label: Attribuuttien vienti CSV-muodossa
     export.label: Attribuuttien vienti
   csv_attribute_option_export:
-    label: Attribuutin vaihtoehtojen vienti CSV-muodossa
-    export.label: Attribuutin vaihtoehtojen vienti
+    label: Attribuuttien määritteiden vienti CSV-muodossa
+    export.label: Attribuuttien määritteiden vienti
   csv_association_type_export:
     label: Liitännäistyyppien vienti CSV-muodossa
     export.label: Liitännäistyyppien vienti
@@ -1223,9 +1196,9 @@ batch_jobs:
     validation.label: Tiedostojen tarkistaminen
     import.label: Attribuuttien tuonti
   csv_attribute_option_import:
-    label: Attribuutin vaihtoehtojen tuonti CSV-muodossa
+    label: Attribuuttien määritteiden tuonti CSV-muodossa
     validation.label: Tiedostojen tarkistaminen
-    import.label: Attribuuttien vaihtoehtojen tuonti
+    import.label: Attribuuttien määritteiden tuonti
   csv_association_type_import:
     label: Liitännäistyyppien tuonti CSV-muodossa
     validation.label: Tiedostojen tarkistaminen
@@ -1290,9 +1263,9 @@ batch_jobs:
     validation.label: Tiedostojen tarkistaminen
     import.label: Attribuuttien tuonti
   xlsx_attribute_option_import:
-    label: Attribuuttien vaihtoehtojen tuonti XLSX-muodossa
+    label: Attribuuttien määritteiden tuonti XLSX-muodossa
     validation.label: Tiedostojen tarkistaminen
-    import.label: Attribuuttien vaihtoehtojen tuonti
+    import.label: Attribuuttien määritteiden tuonti
   xlsx_family_import:
     label: Perheiden tuonti XLSX-muodossa
     validation.label: Tiedostojen tarkistaminen
@@ -1334,8 +1307,8 @@ batch_jobs:
     label: Attribuuttivienti XLSX-muodossa
     export.label: Attribuuttivienti XLSX-muodossa
   xlsx_attribute_option_export:
-    label: Attribuuttien vaihtoehtojen vienti XLSX-muodossa
-    export.label: Attribuuttien vaihtoehtojen vienti XLSX-muodossa
+    label: Attribuuttien määritteiden vienti XLSX-muodossa
+    export.label: Attribuuttien määritteiden vienti XLSX-muodossa
   xlsx_association_type_export:
     label: Liitännäistyyppien vienti XLSX-muodossa
     export.label: Liitännäistyyppien vienti XLSX-muodossa
