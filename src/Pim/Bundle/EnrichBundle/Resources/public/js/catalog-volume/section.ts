@@ -27,6 +27,13 @@ interface Axis {
     type: string
 }
 
+/**
+ * Section view for catalog volume screen
+ *
+ * @author    Tamara Robichet <tamara.robichet@akeneo.com>
+ * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
 class SectionView extends (BaseForm as { new(): any; }) {
     readonly className: string = 'AknCatalogVolume-section'
     readonly template = _.template(template)
@@ -72,6 +79,12 @@ class SectionView extends (BaseForm as { new(): any; }) {
         return !!localStorage.getItem(this.config.hint.code);
     }
 
+    /**
+     * Returns true if the section contains data
+     * 
+     * @param sectionData 
+     * @param sectionAxes 
+     */
     sectionHasData(sectionData: object, sectionAxes: Array<string>): boolean {
         return Object.keys(sectionData).filter(field => sectionAxes.indexOf(field) > -1).length > 0;
     }

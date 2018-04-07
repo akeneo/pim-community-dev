@@ -8,9 +8,21 @@ interface HeaderConfig {
     description: string
 }
 
+/**
+ * Header view for catalog volume screen
+ *
+ * @author    Tamara Robichet <tamara.robichet@akeneo.com>
+ * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
 class HeaderView extends (BaseForm as { new(): any; }) {
     readonly headerTemplate =  _.template(template);
 
+    /**
+     * Initialize
+     * 
+     * @param options 
+     */
     constructor(options: { config: HeaderConfig }) {
         super();
 
@@ -19,6 +31,9 @@ class HeaderView extends (BaseForm as { new(): any; }) {
         return BaseForm.prototype.initialize.apply(this, arguments);
     }
 
+    /**
+     * {@inheritdoc}
+     */
     render(): any {
         const data = this.getRoot().getFormData();
         const product_values: { value: number } = data.product_values;
