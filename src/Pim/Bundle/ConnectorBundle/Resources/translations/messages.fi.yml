@@ -5,6 +5,8 @@ pim_connector:
     entity_reader.title: Kohteen poisto
     csv_reader:
       title: CSV-lukija
+    file_reader:
+      invalid_item_columns_count: 'Odotettiin %totalColumnsCount% saraketta, mutta havaittiin %itemColumnsCount% tiedostossa %filePath%:%lineno%'
     csv_product_reader.title: CSV-tuotteen lukija
     csv_category_reader.title: CSV-kategorian lukija
     dummy_processor.title: Malliprosessori
@@ -25,7 +27,7 @@ pim_connector:
     writer.title: Yksikön varastointi
     csv_writer.title: CSV-kirjoittaja
 job_execution.summary:
-  read: lue
+  read: luettu
   write: kirjoitettu
   skip: ohitettu
   create: luotu

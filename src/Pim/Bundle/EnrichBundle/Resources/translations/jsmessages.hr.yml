@@ -1049,6 +1049,7 @@ pim_menu:
     group_type: Tipovi grupa
     locale: Lokalizacija
     product: Proizvodi
+    published_product: Objavljeni proizvodi
     export_history: Povijest izvoza
     export_profile: Izvoz profila
     import_history: Povijest izvoza

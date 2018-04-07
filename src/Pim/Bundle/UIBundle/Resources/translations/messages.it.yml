@@ -37,7 +37,7 @@ Most Viewed: Più visualizzati
 "Loading ...": "Caricamento in corso ..."
 "Yes": "Sì"
 "No": "No"
-required: (richiesto)
+required: (obbligatorio)
 pim_ui.system_config:
   form:
     loading_message_enabled.label: Abilita i messaggi di caricamento
