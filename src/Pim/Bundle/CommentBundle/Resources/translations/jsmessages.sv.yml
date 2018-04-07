@@ -19,6 +19,8 @@ flash:
 comment:
   index:
     empty: Inga kommentarer hittades
+    header_comment: '{{ user }} kommentarer produkt'
+    header_reply: '{{ user }} svar till kommentar'
   placeholder:
     new: Skriv en ny kommentar...
     reply: Svara på denna kommentar...

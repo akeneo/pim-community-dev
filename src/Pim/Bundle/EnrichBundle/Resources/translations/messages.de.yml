@@ -478,7 +478,7 @@ Family: Produktfamilie
 Image: Abbildung
 Variant products: Produktvarianten
 Available locales: Verfügbare Gebietsschemata
-Locale specific: Gebietsschema-spezifisch
+Locale specific: Gebietsschemaspezifisch
 default: Standard
 Axis: Achse
 Add attributes: Attribute hinzufügen
@@ -807,6 +807,6 @@ pim_enrich_attribute_form:
   localizable: Wert je Gebietsschema
   unique: Eindeutiger Wert
   availableLocales: Verfügbare Gebietsschemata
-  locale_specific: Gebietsschema-spezifisch
+  locale_specific: Gebietsschemaspezifisch
   group: Attributgruppe
   useableAsGridFilter: Anwendbar in der Listenansicht

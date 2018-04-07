@@ -418,7 +418,7 @@ pim_enrich:
     not_allowed: Vietato. Non è consentito accedere a questa pagina
     error_occured: Si è verificato un errore durante il caricamento della pagina
   form:
-    required: (richiesto)
+    required: (obbligatorio)
     product_model:
       complete_variant_product: prodotto variante
       complete_variant_products: prodotti varianti
@@ -459,7 +459,7 @@ pim_enrich:
           title: Completamento
           info:
             no_family: Nessuna famiglia definita. Si prega di definire una famiglia per calcolare il livello di completamento di questo prodotto.
-            no_completeness: Hai appena cambiato la famiglia del prodotto. Si prega di salvare prima di calcolare il livello di completamento per la nuova famiglia.
+            no_completeness: Hai appena cambiato la famiglia del prodotto. Si prega di salvarlo prima di calcolare il livello di completamento per la nuova famiglia.
           missing_values: "{1}1 valore mancante|] 1, Inf [{{ count }} valori mancanti"
         history:
           title: Cronologia
@@ -470,7 +470,7 @@ pim_enrich:
         info:
           products: prodotti
           previous: Torna indietro a {{ product }} senza salvare.
-          next: Vai a {{ product }} senza salvare.
+          next: Torna a {{ product }} senza salvare.
         btn:
           save_and_next: Salva e successivo
           save_and_finish: Salva e termina
@@ -737,7 +737,7 @@ pim_enrich:
             default_metric_unit: Scegli un'unità
             group: Scegliere il gruppo attributi
             metric_family: Scegli una famiglia
-            reference_data_name: Scegli il tipo di dati di riferimento
+            reference_data_name: Sceglii il tipo di dati di riferimento
         labels:
           title: Traduzioni etichetta
         choices:
@@ -859,7 +859,7 @@ pim_enrich:
             NOT EMPTY: Non è vuoto
         multi_select:
           operators:
-            IN: In elenco
+            IN: Nell'elenco
             EMPTY: È vuoto
             NOT EMPTY: Non è vuoto
         media:
@@ -902,7 +902,7 @@ pim_enrich:
     import_profiles:
       title: "] -Inf, 1] {{ count }} profilo di importazione|] 1, Inf [{{ count }} profili di importazione"
       create_btn: Crea un profilo di importazione
-      list: Seleziona un job
+      list: Seleziona un lavoro
       create_popin:
         title: Crea
       message:
@@ -1002,7 +1002,7 @@ pim_enrich:
         move_to_category:
           label: Sposta tra categorie
           label_count: "{1}Sposta <span class=\"AknFullPage-title--highlight\">1 prodotto</span> between categories|] 1, Inf [Sposta <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} prodotti</span> between categories"
-          description: I prodotti saranno posizionati nelle seguenti categorie; il posizionamento attuale viene perso.
+          description: I prodotti saranno posizionati nelle seguenti categorie, il posizionamento attuale viene perso.
         remove_from_category:
           label: Rimuovi dalle categorie
           label_count: "{1}Rimuovi <span class=\"AknFullPage-title--highlight\">1 prodotto</span> from categories|] 1, Inf [Rmuovi <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} prodotti</span> from categories"
@@ -1074,9 +1074,9 @@ batch_jobs:
     perform:
       label: Aggiungi un valore di prodotto
   update_product_value:
-    label: Aggiorna il valore di prodotto
+    label: Modifica un valore di prodotto
     perform:
-      label: Aggiorna il valore di prodotto
+      label: Modifica un valore di prodotto
   edit_common_attributes:
     label: Modificare gli attributi
     perform:
@@ -1130,38 +1130,38 @@ batch_jobs:
     export.label: Esportazione famiglie varianti
   csv_product_import:
     label: Importazione prodotti in CSV
-    validation.label: Validazione file
+    validation.label: Validazione del file
     import.label: Importazione prodotti
     import_associations.label: Importazione associazioni
   csv_product_model_import:
     label: Importazione modelli di prodotto in CSV
   csv_category_import:
     label: Importazione categorie in CSV
-    validation.label: Validazione file
+    validation.label: Validazione del file
     import.label: Importazione categorie
   csv_attribute_import:
     label: Importazione attributi in CSV
-    validation.label: Validazione file
+    validation.label: Validazione del file
     import.label: Importazione attributi
   csv_attribute_option_import:
     label: Importazione opzioni degli attributi in CSV
-    validation.label: Validazione file
+    validation.label: Validazione del file
     import.label: Opzioni importazione attributi
   csv_association_type_import:
     label: Importazione tipi associazione in CSV
-    validation.label: Validazione file
+    validation.label: Validazione del file
     import.label: Importazione tipi associazione
   csv_family_import:
     label: Importazione famiglie in CSV
-    validation.label: Validazione file
+    validation.label: Validazione del file
     import.label: Importazione famiglie
   csv_family_variant_import:
     label: Importazione famiglia variante in CSV
-    validation.label: Validazione file
+    validation.label: Validazione del file
     import.label: Importazione famiglia variante
   csv_group_import:
     label: importazione gruppi in CSV
-    validation.label: Validazione file
+    validation.label: Validazione del file
     import.label: importazione gruppi
   csv_channel_export:
     label: Esportazione canali in CSV
@@ -1180,47 +1180,47 @@ batch_jobs:
     export.label: Esportazione dei tipi di gruppo
   csv_channel_import:
     label: Importazione canali in CSB
-    validation.label: Validazione file
+    validation.label: Validazione del file
     import.label: Importazione canali
   csv_locale_import:
     label: Importazione localizzazioni in CSV
-    validation.label: Validazione file
+    validation.label: Validazione del file
     import.label: Importazione localizzazione
   csv_attribute_group_import:
     label: Importazione dei gruppi di attributi in CSV
-    validation.label: Validazione file
+    validation.label: Validazione del file
     import.label: Importazione dei gruppi di attributi
   csv_currency_import:
     label: Importazione valute in CSV
-    validation.label: Validazione file
+    validation.label: Validazione del file
     import.label: Importazione valute
   csv_group_type_import:
     label: Importazione dei tipi di gruppo in CSV
-    validation.label: Validazione file
+    validation.label: Validazione del file
     import.label: Importazione dei tipi di gruppo
   xlsx_category_import:
     label: Importazione categorie in XLSX
-    validation.label: Validazione file
+    validation.label: Validazione del file
     import.label: Importazione categorie
   xlsx_association_type_import:
     label: Importazione dei tipi di associazione in XLSX
-    validation.label: Validazione file
+    validation.label: Validazione del file
     import.label: Importazione tipi associazione
   xlsx_attribute_import:
-    label: Importazione attributi in XLSX
-    validation.label: Validazione file
+    label: Importazione attributi in CSV
+    validation.label: Validazione del file
     import.label: Importazione attributi
   xlsx_attribute_option_import:
     label: Importazione delle opzioni degli attributi in XLSX
-    validation.label: Validazione file
+    validation.label: Validazione del file
     import.label: Opzioni importazione attributi
   xlsx_family_import:
     label: Importazione famiglie in XLSX
-    validation.label: Validazione file
+    validation.label: Validazione del file
     import.label: Importazione famiglie
   xlsx_family_variant_import:
     label: Importazione famiglia variante in XLSX
-    validation.label: Validazione file
+    validation.label: Validazione del file
     import.label: Importazione famiglia variante
   xlsx_product_export:
     label: Esportazione prodotti in XLSX
@@ -1230,7 +1230,7 @@ batch_jobs:
     export.label: Esportazione modello di prodotto
   xlsx_product_import:
     label: Importazione prodotti in XLSX
-    validation.label: Validazione file
+    validation.label: Validazione del file
     import.label: Importazione prodotti
     import_associations.label: Importazione associazioni
   xlsx_product_model_import:
@@ -1240,7 +1240,7 @@ batch_jobs:
     export.label: Esportazione gruppi
   xlsx_group_import:
     label: Importazione gruppi in XLSX
-    validation.label: Validazione file
+    validation.label: Validazione del file
     import.label: importazione gruppi
   xlsx_family_export:
     label: Esportazione famiglie in XLSX
@@ -1277,23 +1277,23 @@ batch_jobs:
     export.label: Esportazione dei tipi di gruppo
   xlsx_channel_import:
     label: Importazione canali in XLSX
-    validation.label: Validazione file
+    validation.label: Validazione del file
     import.label: Importazione canali
   xlsx_locale_import:
     label: Importazione localizzazioni in XLSX
-    validation.label: Validazione file
+    validation.label: Validazione del file
     import.label: Importazione localizzazione
   xlsx_attribute_group_import:
     label: Importazione dei gruppi di attributi in XLSX
-    validation.label: Validazione file
+    validation.label: Validazione del file
     import.label: Importazione dei gruppi di attributi
   xlsx_currency_import:
     label: Importazione valute in XLSX
-    validation.label: Validazione file
+    validation.label: Validazione del file
     import.label: Importazione valute
   xlsx_group_type_import:
     label: Importazione dei tipi di gruppo in XLSX
-    validation.label: Validazione file
+    validation.label: Validazione del file
     import.label: Importazione dei tipi di gruppo
 job_tracker:
   download_archive:
