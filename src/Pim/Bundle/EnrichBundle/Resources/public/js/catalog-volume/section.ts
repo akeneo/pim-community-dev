@@ -1,3 +1,5 @@
+import * as Backbone from 'backbone';
+
 const _ = require('underscore');
 const BaseForm = require('pim/form');
 const __ = require('oro/translator');
@@ -34,15 +36,13 @@ interface Axis {
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class SectionView extends (BaseForm as { new(): any; }) {
+class SectionView extends (BaseForm as { new(): Backbone.View<any> }) {
     readonly className: string = 'AknCatalogVolume-section'
     readonly template = _.template(template)
-
+    
+    // Move to base.ts after
+    readonly getRoot: any
     public hideHint: boolean = false
-    public events: object =  {
-        'click .AknCatalogVolume-remove': 'closeHint',
-        'click .open-hint': 'openHint'
-    }
 
     public config: SectionConfig = {
         warningText: __('catalog_volume.axis.warning'),
@@ -65,6 +65,11 @@ class SectionView extends (BaseForm as { new(): any; }) {
         super();
 
         this.config = Object.assign({}, this.config, options.config);
+
+        this.events = <any> {
+            'click .AknCatalogVolume-remove': 'closeHint',
+            'click .open-hint': 'openHint'
+        }
 
         return BaseForm.prototype.initialize.apply(this, arguments);
     }
@@ -92,13 +97,13 @@ class SectionView extends (BaseForm as { new(): any; }) {
     /**
      * {@inheritdoc}
      */
-    render(): void {
+    render(): Backbone.View<any> {
         const sectionData = this.getRoot().getFormData();
         const sectionAxes = this.config.axes;
         const sectionHasData = this.sectionHasData(sectionData, sectionAxes);
 
         if (false === sectionHasData) {
-            return;
+            return this;
         }
 
         this.$el.empty().html(this.template({
@@ -108,6 +113,8 @@ class SectionView extends (BaseForm as { new(): any; }) {
         }));
 
         this.renderAxes(this.config.axes, sectionData);
+        
+        return this;
     }
 
     /**
