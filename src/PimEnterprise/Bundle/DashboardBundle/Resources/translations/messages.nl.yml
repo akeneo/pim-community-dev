@@ -4,6 +4,5 @@ pimee_dashboard:
       title: Voorstellen te recenseren
       date: Datum
       author: Auteur
-      product: Product
       review: Recensie
       empty: Geen product concepten te recenseren

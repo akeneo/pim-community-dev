@@ -108,11 +108,11 @@ batch_jobs:
     label: Produkt import i CSV-filen med reglerna
     execute_rules.label: Regler utföranden
     validation.label: Filvalidering
-    import.label: Produkt import
+    import.label: Importera produkter
     import_associations.label: Importera associationer
   xlsx_product_import_with_rules:
     label: Produkt import i XLSX med regler
     execute_rules.label: Regler utföranden
     validation.label: Filvalidering
-    import.label: Produkt import
+    import.label: Importera produkter
     import_associations.label: Importera associationer

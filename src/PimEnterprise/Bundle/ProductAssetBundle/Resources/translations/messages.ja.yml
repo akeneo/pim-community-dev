@@ -123,7 +123,7 @@ pimee_product_asset:
     import: インポート
     executed: 大量アップロードの実行
     error:
-      upload: アップロード中にエラーが発生
+      upload: イメージのアップロード中にエラーが発生
       code: アセットの無効なコードの形式
       localizable: アセットは存在しますが、ローカライズができません。
       invalid_locale: ロケールが無効です
