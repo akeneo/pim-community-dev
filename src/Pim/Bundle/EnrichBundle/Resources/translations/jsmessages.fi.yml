@@ -402,7 +402,7 @@ pim_enrich:
           title: Ominaisuudet
           general: Yleinen
           code: Koodi
-          attribute_as_label: Attribuutti käytössä otsikkona
+          attribute_as_label: Otsikkona käytettävä attribuutti
           label_translations: Nimikkeiden käännökset
         attributes:
           title: Attribuutit

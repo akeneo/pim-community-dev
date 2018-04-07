@@ -494,7 +494,7 @@ info:
     show products: Näytä tuotteet
     show groups: Näytä ryhmät
     remove from products: Sidostyypin poistaminen poistaa sen myös %count% tuotteelta.
-    none exist: Sidostyyppiä ei ole olemassa.
+    none exist: Assosiaatiotyyppiä ei ole olemassa.
     create one: Klikkaa tästä luodaksesi sellainen
   attribute:
     auto option sorting: Jos käytössä, vaihtoehdot lajitellaan automaattisesti riippuen niiden alueellisesta otsikosta
@@ -702,7 +702,7 @@ pim_enrich.mass_edit_action:
     success_flash: Tuotteiden tila on muutettu
   edit-common-attributes:
     label: Muokkaa yleisiä attribuutteja
-    description: Valitun tuotteen attribuutit muokataan seuraavalla valitun lokaation datalla.
+    description: Valittujen tuotteiden attribuutit muokataan seuraavalla valitun lokaation datalla.
     empty: Ole hyvä ja valitse attribuutit joita haluat muokata
     success_flash: Tuotteen attribuutit on päivitetty
     message.warning: Valituille tuotteille ei ole yhteistä attribuuttia. Vaihda valintaasi.
@@ -792,7 +792,7 @@ Entity name: Entiteetin nimi
 Entity id: Entiteetin ID
 Data: Tiedot
 Author: Tekijä
-Logged at: Kirjautunut
+Logged at: Kirjattu
 Deleted: Poistettu
 Old values: Vanhat arvot
 New values: Uudet arvot
