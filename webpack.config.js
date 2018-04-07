@@ -177,7 +177,7 @@ module.exports = {
                         options: {
                             configMap: config
                         }
-                    },
+                    }
                 ],
                 include: /(web\/bundles)/,
                 exclude: /lib|node_modules|vendor/

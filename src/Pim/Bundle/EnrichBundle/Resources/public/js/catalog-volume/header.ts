@@ -4,16 +4,16 @@ const __ = require('oro/translator');
 const template = require('pim/template/catalog-volume/header');
 
 interface HeaderConfig {
-    config: {
-        title: string
-        description: string
-    }
+    title: string
+    description: string
 }
 
-class HeaderView extends BaseForm {
-    readonly headerTemplate: string = _.template(template);
+class HeaderView extends (BaseForm as { new(): any; }) {
+    readonly headerTemplate =  _.template(template);
 
-    initialize(options: HeaderConfig): any {
+    constructor(options: { config: HeaderConfig }) {
+        super();
+
         this.config = Object.assign({}, options.config);
 
         return BaseForm.prototype.initialize.apply(this, arguments);
@@ -25,7 +25,7 @@ class HeaderView extends BaseForm {
         const product_values_average: { value: number } = data.product_values_average;
 
         if (undefined !== product_values && product_values.value > 0) {
-            const headerContents: string = this.template({
+            const headerContents: string = this.headerTemplate({
                 title: __(this.config.title)
                     .replace('{{values}}', product_values.value.toLocaleString('en', { useGrouping: true }))
                     .replace('{{average}}', product_values_average.value),
@@ -37,4 +37,4 @@ class HeaderView extends BaseForm {
     }
 }
 
-module.exports = HeaderView;
+export = HeaderView;
