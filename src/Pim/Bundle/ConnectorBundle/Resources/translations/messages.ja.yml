@@ -39,7 +39,7 @@ job_execution.summary:
   charset_validator:
     title: 'ファイルの文字コード:'
     skipped: スキップしました。拡張子がホワイトリストにあります
-  product_skipped_no_diff: スキップされた製品 (変更なし)
+  product_skipped_no_diff: スキップされた商品 (変更なし)
   product_skipped_no_associations: スキップされた商品 (関連性はなし)
   product_model_skipped_no_diff: スキップされた製品モデル (変更なし)
   item_position: 行の読み込み
@@ -148,11 +148,11 @@ batch_jobs:
     validation.label: ファイルの検証
     import.label: グループタイプインポート
   xlsx_category_import:
-    label: カテゴリをXLSX 形式でインポート
+    label: カテゴリをXLSX形式でインポート
     validation.label: ファイルの検証
     import.label: カテゴリのインポート
   xlsx_association_type_import:
-    label: 関連タイプをXLSX形式でインポート
+    label: 関連タイプをXLSXでインポート
     validation.label: ファイルの検証
     import.label: 関連付けタイプのインポート
   xlsx_attribute_import:
@@ -178,7 +178,7 @@ batch_jobs:
     label: 商品モデルをXLSX形式でエクスポート
     export.label: 商品モデルをエクスポート
   xlsx_product_import:
-    label: 製品をXLSX形式でインポート
+    label: 商品をXLSX形式でインポート
     validation.label: ファイルの検証
     import.label: 製品のインポート
     import_associations.label: 関連付けのインポート
@@ -189,7 +189,7 @@ batch_jobs:
     import_sub_product_model.label: サブ製品モデルのインポート
     import_product_model_descendants.label: 製品モデルの子孫を計算します。
   xlsx_group_export:
-    label: グループをXLSX形式でエクスポート
+    label: グループをXLSX形式でインポート
     export.label: グループエクスポート
   xlsx_group_import:
     label: グループをXLSX形式でインポート
@@ -211,8 +211,8 @@ batch_jobs:
     label: 属性オプションをXLSX形式でエクスポート
     export.label: 属性オプションをXLSX形式でエクスポート
   xlsx_association_type_export:
-    label: 関連タイプをXLSX形式でエクスポート
-    export.label: 関連タイプをXLSX形式でエクスポート
+    label: 関連タイプをXLSX形式でインポート
+    export.label: 関連タイプをXLSX形式でインポート
   xlsx_channel_export:
     label: チャネルをXLSX形式でエクスポート
     export.label: チャネルエクスポート

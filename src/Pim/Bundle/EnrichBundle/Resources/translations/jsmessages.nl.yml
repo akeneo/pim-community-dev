@@ -194,8 +194,9 @@ pim_enrich:
         unavailable: Dit specifiek veld van de landinstelling is niet beschikbaar in deze landinstelling
       localizable:
         channel_locale_unavailable: Dit lokaliseerbaar veld is niet beschikbaar voor locale '{{ locale }}' en kanaal '{{ channel }}'
+      media:
+        upload: Klik en sleep om te uploaden of klik hier
       create_popin:
-        type: Product
         title: Aanmaken
         labels:
           family: Kies een familie

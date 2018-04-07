@@ -170,7 +170,7 @@ pim_enrich:
         deletion_failed: El producto no puede ser eliminado.
         update_successful: Producto actualizado con éxito.
         update_failed: El producto no puede ser actualizado.
-        field_not_ready: "El producto no se puede guardar ahora. Los siguientes campos no están listos: {{ fields }}"
+        field_not_ready: "El producto no puede ser guardado en el momento. Los siguientes campos no están listos: {{ fields }}"
         already_in_upload: Un fichero ya está siendo cargado por este atributo en el local "{{ locale }}" y objetivo "{{ scope }}"
       error:
         upload: Ocurrió un error durante la carga del fichero
@@ -229,6 +229,7 @@ pim_enrich:
         update_failed: El modelo de producto no pudo ser actualizado.
         field_not_ready: "El modelo de producto no puede ser guardado en el momento. Los siguientes campos no están listos: {{ fields }}"
       variant_axis: Eje variante
+      title: modelos de productos
       add_child:
         create: Añadir nuevo
         cancel: Cancelar
@@ -313,14 +314,23 @@ pim_enrich:
       message:
         created: Familia creada correctamente
       variant:
+        common:
+          title: Atributos comunes
+          empty: No hay ningún atributo común
         axis.label: Eje variante
         create_label: Crear una nueva variante de familia
         create_description: En una variante de familia, puede definir una estructura para productos con variantes. Elija el número de los distintos niveles de variantes gestionados, los atributos utilizados como ejes variantes para cada nivel y luego defina cómo se distribuyen los atributos.
+        update_description: Arrastrar & soltar los atributos al nivel de variante seleccionado para tener estos atributos administrados en el nivel de dicha variante.
         create: Crear
         cancel: Cancelar
         code: Código
         label: Etiqueta
         levels: Niveles de variantes
+        confirm_attribute_removal:
+          message: Al remover estos atributos los pondrá de vuelta en los atributos comunes de la variante familiar y removerá los valores de los productos variantes
+    family_variant:
+      info:
+        update_successful: Variante familiar exitosamente actualizada. Los productos con variantes serán actualizados con sus cambios.
     attribute_option:
       code: Código
       label: Etiqueta
@@ -332,6 +342,7 @@ pim_enrich:
         deletion_failed: No se pudo eliminar el grupo.
         update_successful: El grupo se ha actualizado correctamente.
         update_failed: El grupo no puede ser actualizado.
+        field_not_ready: "El grupo no puede ser guardado en este momento. Los siguientes campos no están listos: {{ fields }}"
       btn:
         save: Guardar
       meta:
@@ -351,7 +362,13 @@ pim_enrich:
         update_successful: El perfil de trabajo ha sido actualizado exitosamente.
     attribute:
       info:
+        deletion_successful: Atributo exitosamente borrado.
         deletion_failed: No se ha podido eliminar el atributo.
+        update_successful: Atributo exitosamente actualizado.
+        update_failed: El atributo no pudo ser actualizado.
+        create_successful: Atributo creado exitosamente.
+        create_failed: El atributo no pudo ser creado.
+        field_not_ready: "El atributo no puede ser guardado ahora. No están listos los siguientes campos: {{ fields }}"
       scopable: Scopable
       type:
         pim_catalog_identifier: Identificador
@@ -375,17 +392,22 @@ pim_enrich:
       title: atributo
     attribute_group:
       info:
+        update_failed: El grupo del atributo no pudo ser actualizado
         update_successful: Grupo de atributos actualizado correctamente
     api_connection:
       create_popin:
         title: Crear
+      message:
+        created: Conexión API creada exitosamente
   confirmation:
     leave: '¿Está seguro que desea salir de esta página?'
     discard_changes: Perderá los cambios realizados sobre {{ entity }} si abandona esta página.
     delete_item: Confirmar la eliminación
+    remove_item: Confirme eliminación
     remove: Quitar
     delete:
       attribute: '¿Está usted seguro que desea eliminar el atributo de este producto?'
+      attribute_group: '¿Está seguro que desea eliminar el atributo {{ attribute }} de este grupo de atributos?'
       product_model: Confirmar la eliminación
   info:
     not_applicable: N / A
@@ -394,6 +416,7 @@ pim_enrich:
   error:
     upload: Un error ha ocurrido durante la subida del fichero
   alert:
+    not_allowed: Prohibido. Usted no tiene permitido acceder a esta página
     error_occured: Un error ha ocurrido durante la carga de esta página
   form:
     required: (obligatorio)
@@ -913,6 +936,8 @@ pim_enrich:
           label: Confirmar
 pim_enrich.error:
   exception.title: Oups! Un error {{ status_code }} ha ocurrido...
+  http:
+    403: Prohibido. Usted no tiene permitido acceder a esta página
 page_title:
   oro_default: Cartelera
   pim_enrich_attributegroup_index: Grupos de atributos
@@ -1155,6 +1180,7 @@ pim_menu:
     group_type: Tipos de grupo
     locale: Locales
     product: Productos
+    product_model: Modelo de productos
     published_product: Productos publicados
     export_history: Histórico de exportaciones
     export_profile: Perfiles de exportación
