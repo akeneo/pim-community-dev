@@ -172,7 +172,7 @@ pim_enrich:
       history:
         version: Versio
         author: Tekijä
-        logged_at: Kirjautunut
+        logged_at: Kirjattu
         from: Lähettäjä
         modified: Muutettu
         old_value: Vanha arvo
@@ -562,7 +562,7 @@ pim_enrich:
           title: Ominaisuudet
           general: Yleinen
           code: Koodi
-          attribute_as_label: Attribuutti käytössä otsikkona
+          attribute_as_label: Otsikkona käytettävä attribuutti
           attribute_as_image: Pääkuvana käytettävä attribuutti
           empty_attribute_as_image: Ei ole valittu
           label_translations: Nimikkeiden käännökset
@@ -638,7 +638,7 @@ pim_enrich:
         status.title: Status
       button:
         show_profile.title: Näytä profiili
-        download_log.title: Latauslogi
+        download_log.title: Lataa loki
         download_file.title: Lataa viety tiedosto
         download_archive.title: Lataa viety tallenne
       summary:
@@ -709,7 +709,7 @@ pim_enrich:
             help: Kategoriasarakkeen nimi
           escape:
             title: Koodinvaihto
-            help: Yhtä merkkiä käytetään kentän "poistu" määrittämiseen
+            help: Ohjausmerkki
           family_column:
             title: Perhesarake
             help: Perhesarakkeen nimi

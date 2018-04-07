@@ -2,7 +2,7 @@ User: Användare
 Run demo: Kör demo
 Product: Produkt
 Attribute list: Attributlista
-Attribute Group list: Attributgruppslista
+Attribute Group list: Attributgrupp Lista
 Users: Användare
 Roles: Roller
 Groups: Grupper
@@ -16,24 +16,11 @@ Previous: Föregående
 Next: Nästa
 Channel list: Kanallista
 Select file: Välj fil
-Change file: Byta fil
-Remove file: Ta bort fil
-Delete: Radera
+Delete: Ta bort
 Save: Spara
 Cancel: Avbryt
-Get help: Få hjälp
 My User: Mitt konto
-oro.form.choose_value: Välj ett värde...
-Read more: Läs mer
-oro.form.click_here_to_select: Klicka här för att välja...
 Add: Lägg tilll
-"Learn how to use this space": "Lär dig att använda detta utrymme"
-"How To Use Pinbar": "Hur du använder anslagstavlan"
-Pinbar: Anslagstavla
-Favorites: Favoriter
-Most Viewed: Mest visade
-"Add this page to favorites": "Lägg till sidan i favoriter"
-"Minimize the window to the pinbar": "Minimera fönstret till anslagstavlan"
 "Loading ...": "Laddar ..."
 "Yes": "Ja"
 "No": "Nej"
@@ -45,3 +32,4 @@ pim_ui.system_config:
     loading_messages.tooltip: Alla tillgängliga laddningsmeddelanden separerade med radbrytningar
   group:
     loading_message.title: Hämtar meddelanden
+other_actions: Andra åtgärder

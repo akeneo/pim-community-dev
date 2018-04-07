@@ -201,7 +201,7 @@ pim_enrich:
             title: '{{ group }} グループ'
             view_group: 表示グループ
             group_label: ラベル
-            more_products: '{{ count }} 件以上の商品...'
+            more_products: '{{ count }}  件以上の商品...'
             close: 閉じる
         status: ステータス
         scope: チャンネル
@@ -1031,7 +1031,7 @@ pim_enrich:
         move_to_category:
           label: カテゴリ間を移動
           label_count: "{1}動かす <span class=\"AknFullPage-title--highlight\"> 1 カテゴリ間を</span> |]1、Inf [ 動かす <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} カテゴリを</span>"
-          description: 製品は以下のカテゴリに配置され、既存の表示順は削除されます。
+          description: 製品は以下のカテゴリに配置されます、既存の表示順は削除されます。
         remove_from_category:
           label: カテゴリから削除
           label_count: "{1}取り除く <span class=\"AknFullPage-title--highlight\"> 1 製品</span> |]1、Inf [ 取り除く <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} 製品</span>"
@@ -1057,7 +1057,7 @@ pim_enrich:
           description: 以下の属性要件が選択したファミリーに適用されます
           label_count: "{1}必須属性をセット<span class=\"AknFullPage-title--highlight\"> 1 ファミリー</span> |]1、Inf [必須属性をセット<span class=\"AknFullPage-title--highlight\">{{ itemsCount }} ファミリー</span>"
 pim_enrich.error:
-  exception.title: ' {{ status_code }} のエラーが発生しました。'
+  exception.title: ああスナップ！ {{ status_code }} のエラーが発生しました。
   http:
     403: このページにアクセスすることはできません
 page_title:
@@ -1232,11 +1232,11 @@ batch_jobs:
     validation.label: ファイルの検証
     import.label: グループタイプインポート
   xlsx_category_import:
-    label: カテゴリをXLSX 形式でインポート
+    label: カテゴリをXLSX形式でインポート
     validation.label: ファイルの検証
     import.label: カテゴリのインポート
   xlsx_association_type_import:
-    label: 関連タイプをXLSX形式でインポート
+    label: 関連タイプをXLSXでインポート
     validation.label: ファイルの検証
     import.label: 関連付けタイプのインポート
   xlsx_attribute_import:
@@ -1262,14 +1262,14 @@ batch_jobs:
     label: 商品モデルをXLSX形式でエクスポート
     export.label: 商品モデルをエクスポート
   xlsx_product_import:
-    label: 製品をXLSX形式でインポート
+    label: 商品をXLSX形式でインポート
     validation.label: ファイルの検証
     import.label: 製品のインポート
     import_associations.label: 関連付けのインポート
   xlsx_product_model_import:
     label: 商品モデルをXLSX形式でインポート
   xlsx_group_export:
-    label: グループをXLSX形式でエクスポート
+    label: グループをXLSX形式でインポート
     export.label: グループエクスポート
   xlsx_group_import:
     label: グループをXLSX形式でインポート
@@ -1291,8 +1291,8 @@ batch_jobs:
     label: 属性オプションをXLSX形式でエクスポート
     export.label: 属性オプションをXLSX形式でエクスポート
   xlsx_association_type_export:
-    label: 関連タイプをXLSX形式でエクスポート
-    export.label: 関連タイプをXLSX形式でエクスポート
+    label: 関連タイプをXLSX形式でインポート
+    export.label: 関連タイプをXLSX形式でインポート
   xlsx_channel_export:
     label: チャネルをXLSX形式でエクスポート
     export.label: チャネルエクスポート

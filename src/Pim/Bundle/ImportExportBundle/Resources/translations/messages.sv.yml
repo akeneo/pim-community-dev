@@ -36,29 +36,17 @@ pim_import_export:
       history.title: Historik
       job_content.title: Innehåll
 pim_title.export_profile.index: Hantera exportprofiler
-pim_title.export_profile.edit: Exportprofiler %job.label% | Redigera
-pim_title.export_profile.show: Exportprofiler %job.label% | Visa
 pim_title.export_execution.index: Exporthistorik
 pim_title.export_execution.show: Exporthistorik | Detaljer
 pim_title.import_profile.index: Hantera importprofiler
-pim_title.import_profile.edit: Importprofiler %job.label% | Redigera
-pim_title.import_profile.show: Importprofiler %job.label% | Visa
 pim_title.import_execution.index: Importhistorik
 pim_title.import_execution.show: Importhistorik | Detaljer
 export profile:
   title: exportprofil
-  overview: översikt exportprofil
-  create: skapa exportprofil
   edit: redigera exportprofil
-export report:
-  overview: exportrapporter
 import profile:
   title: importprofile
-  overview: översikt importprofil
-  create: skapa importprofil
   edit: redigera importprofil
-import report:
-  overview: importrapport
 pim_importexport:
   acl:
     export_profile:
@@ -116,12 +104,6 @@ flash:
     removed: Importen har tagits bort
     updated: Importen har ändrats med lyckat resultat
     running: Importen körs
-pim_menu:
-  item:
-    export_history: Exporthistorik
-    export_profile: Exportprofiler
-    import_history: Importhistorik
-    import_profile: Importprofiler
 General properties: Allmänna egenskaper
 History: Historik
 pane.accordion:
@@ -139,7 +121,7 @@ Download log: Ladda ner logg
 Show profile: Visa profil
 execution details: utförandedetaljer
 job_execution.summary:
-  read: läs
+  read: läst
   write: skrivet
   skip: hoppades över
   create: skapades
@@ -156,7 +138,6 @@ Warnings: Varningar
 Summary: Sammanfattning
 Start: Start
 End: Slut
-set_attribute_requirements: Ange attributkrav
 COMPLETED: Slutförd
 STARTING: Startar
 STARTED: Startad
