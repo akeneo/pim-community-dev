@@ -109,7 +109,7 @@ oro_config:
           system_locale: Kieli
         notification:
           title: Ilmoitukset
-          system_notification: Uuden version päivitykset
+          system_notification: Versiopäivitykset
         loading_message:
           title: Latausviestit
           label: Aktivoi latausviestit
