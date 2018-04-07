@@ -1,0 +1,51 @@
+pim_datagrid:
+  select:
+    title: Seleccionar
+    all_visible: Tot visible
+  delete_error:
+    title: Error a l'esborrar
+  reset_confirmation:
+    title: Reiniciar la confirmació
+  refresh_confirmation:
+    title: Refresqui la confirmació
+  column_configurator:
+    label: Columnes
+    all_groups: Tots els grups
+    search: Cercar
+    clear: Restablir
+    displayed_columns: Columnes seleccionades
+    remove_column: Eliminar
+    min_message: Heu de seleccionar almenys una columna de la graella de dades per mostrar
+    system_group: Sistema
+  view_selector:
+    create_view: Crear vista
+    placeholder: Nom de la nova vista
+    choose_label: Trieu una etiqueta per a la vista
+    remove: Eliminar aquesta vista
+    save_changes: Desa aquesta vista
+    default_view: Vista per defecte
+    select: Si us plau, seleccioneu la visualització
+  mass_action:
+    delete:
+      empty_selection: No hi ha productes seleccionats
+    default:
+      confirmation:
+        content: Esteu segur que voleu fer-ho?
+      no_items: Si us plau, seleccioneu elements per dur a terme l'acció massiva.
+    quick_export:
+      title: Exportació ràpida
+      success: S'ha executat la exportació ràpida
+  action:
+    default:
+      confirmation:
+        content: Esteu segur que voleu fer-ho?
+      no_items: Si us plau, seleccioneu l'element per realitzar l'acció.
+    show:
+      title: Mostrar
+  filters:
+    common:
+      empty: està buit
+      not_empty: no és buit
+      in_list: a la llista
+    price_filter:
+      label: Moneda

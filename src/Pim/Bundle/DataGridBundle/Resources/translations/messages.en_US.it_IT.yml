@@ -1,0 +1,16 @@
+pim_datagrid:
+  column_configurator:
+    min_message: È necessario selezionare almeno una colonna della griglia di dati da visualizzare
+  label:
+    unique_message: L'etichetta deve essere univoca
+    not_blank_message: L'etichetta non può essere vuota
+  view_selector:
+    flash:
+      created: La griglia di dati è stata creata con successo
+      removed: La griglia di dati è stata rimossa con successo
+  cells:
+    type:
+      quick_export: Esportazione rapida
+      import: Importa
+      export: Esporta
+      mass_edit: Modifica di massa
