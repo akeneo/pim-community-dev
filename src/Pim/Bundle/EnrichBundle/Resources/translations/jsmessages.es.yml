@@ -170,7 +170,7 @@ pim_enrich:
         deletion_failed: El producto no puede ser eliminado.
         update_successful: Producto actualizado con éxito.
         update_failed: El producto no puede ser actualizado.
-        field_not_ready: "El producto no se puede guardar ahora. Los siguientes campos no están listos: {{ fields }}"
+        field_not_ready: "El producto no puede ser guardado en el momento. Los siguientes campos no están listos: {{ fields }}"
         already_in_upload: Un fichero ya está siendo cargado por este atributo en el local "{{ locale }}" y objetivo "{{ scope }}"
       error:
         upload: Ocurrió un error durante la carga del fichero
@@ -228,7 +228,6 @@ pim_enrich:
         update_successful: Modelo de producto actualizado exitosamente. La integridad de sus productos variantes se recalculará.
         update_failed: El modelo de producto no pudo ser actualizado.
         field_not_ready: "El modelo de producto no puede ser guardado en el momento. Los siguientes campos no están listos: {{ fields }}"
-      variant_axis: Eje variante
       add_child:
         create: Añadir nuevo
         cancel: Cancelar
@@ -1155,6 +1154,7 @@ pim_menu:
     group_type: Tipos de grupo
     locale: Locales
     product: Productos
+    product_model: Modelo de productos
     published_product: Productos publicados
     export_history: Histórico de exportaciones
     export_profile: Perfiles de exportación
