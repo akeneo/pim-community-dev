@@ -1,0 +1,27 @@
+pim_dashboard:
+  title: Cartelera
+  version: Versión
+  link.label:
+    product: Gestionar productos
+    category: Gestionar categorías
+    attribute: Gestionar atributos
+    family: Gestionar las familias
+  widget:
+    error:
+      title: Error al cargar el widget
+      message: No existe el widget "%alias%"
+    completeness:
+      title: Integridad por Canales y Locales
+    last_operations:
+      title: Últimas operaciones
+      empty: Ninguna operacione encontrada
+      status: Estado
+      date: Fecha
+      type: Tipo
+      "profile name": Nombre del perfil
+      details: Detalles
+      job_type:
+        import: Importar
+        export: Exportar
+        mass_edit: Edición en masa
+        quick_export: Exportación rápida

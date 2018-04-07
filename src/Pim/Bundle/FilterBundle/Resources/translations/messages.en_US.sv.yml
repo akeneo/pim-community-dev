@@ -1,0 +1,20 @@
+oro.filter.form.label_type_equal: '='
+oro.filter.form.label_type_greater_equal: '>='
+oro.filter.form.label_type_greater_than: '>'
+oro.filter.form.label_type_less_equal: '<='
+oro.filter.form.label_type_less_than: '<'
+oro.filter.form.label_type_yes: "ja"
+oro.filter.form.label_type_no: "nej"
+oro.filter.form.label_type_contains: innehåller
+oro.filter.form.label_type_not_contains: innehåller inte
+oro.filter.form.label_type_equals: är lika med
+oro.filter.form.label_type_start_with: börjar med
+oro.filter.form.label_type_end_with: slutar med
+oro.filter.form.label_type_empty: är tom
+oro.filter.form.label_type_in_list: i listan
+oro.filter.form.label_date_type_between: mellan
+oro.filter.form.label_date_type_not_between: inte mellan
+oro.filter.form.label_date_type_more_than: mer än
+oro.filter.form.label_date_type_less_than: mindre än
+oro.filter.form.label_not_selected: Inte markerad
+oro.filter.form.label_selected: Markerad

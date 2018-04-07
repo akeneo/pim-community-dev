@@ -1,0 +1,16 @@
+pim_datagrid:
+  column_configurator:
+    min_message: 最低でも1つの表示する列を選択してください
+  label:
+    unique_message: ラベルは一意でなければなりません
+    not_blank_message: ラベル名を入力してください
+  view_selector:
+    flash:
+      created: データグリッドビューを作成しました
+      removed: データグリッドビューを削除しました
+  cells:
+    type:
+      quick_export: クイック エクスポート
+      import: インポート
+      export: エクスポート
+      mass_edit: 一括編集
