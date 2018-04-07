@@ -129,12 +129,16 @@ pimee_enrich:
       options:
         width: '%value%px leveys'
         height: '%value%px korkeus'
+add_product_value_with_permission_and_rules:
+  steps.perform: Lisää tuotteen arvo
 update_product_value_with_permission_and_rules:
   steps.perform: Päivitä tuotteen arvo
 edit_common_attributes_with_permission_and_rules:
   steps.perform: Muokkaa yleisiä attribuutteja
   steps.edit_common_attributes_processor.title: Muokkaa yleisiä attribuutteja
 batch_jobs:
+  add_product_value_with_permission_and_rules:
+    perform.label: Lisää tuotteen arvo
   update_product_value_with_permission_and_rules:
     perform.label: Päivitä tuotteen arvo
   remove_product_value_with_permission_and_rules:

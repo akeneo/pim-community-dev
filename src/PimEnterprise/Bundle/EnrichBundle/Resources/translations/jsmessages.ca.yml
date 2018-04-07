@@ -24,7 +24,7 @@ pimee_enrich:
     channel:
       tab:
         asset-transformation:
-          title: Transformacions de recurs
+          title: Transformacions de recursos
   entity:
     product:
       history:
