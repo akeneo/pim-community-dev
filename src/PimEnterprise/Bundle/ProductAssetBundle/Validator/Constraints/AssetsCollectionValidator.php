@@ -32,7 +32,7 @@ class AssetsCollectionValidator extends ConstraintValidator
     {
         if ($attribute instanceof AttributeInterface &&
             (AttributeTypes::ASSETS_COLLECTION === $attribute->getType()) &&
-            ($attribute->isLocalizable() || $attribute->isScopable())) {
+            ($attribute->isLocalizable() || $attribute->isScopable() || $attribute->isLocaleSpecific())) {
             $this->context->buildViolation($constraint->message, [
                 '%attribute%' => $attribute->getCode()
             ])->addViolation();
