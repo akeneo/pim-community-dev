@@ -143,16 +143,16 @@ interface AssociationInterface extends ReferableInterface
     /**
      * Get owner
      *
-     * @return ProductInterface
+     * @return AssociationAwareInterface
      */
     public function getOwner();
 
     /**
      * Set owner
      *
-     * @param ProductInterface $owner
+     * @param AssociationAwareInterface $owner
      *
      * @return AssociationInterface
      */
-    public function setOwner(ProductInterface $owner);
+    public function setOwner(AssociationAwareInterface $owner);
 }
