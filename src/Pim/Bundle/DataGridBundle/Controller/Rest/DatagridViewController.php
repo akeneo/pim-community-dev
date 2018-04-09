@@ -161,14 +161,21 @@ class DatagridViewController
      * @param Request $request
      * @param string  $alias
      *
-     * @return JsonResponse|BadRequestHttpException|NotFoundHttpException
+     * @throws BadRequestHttpException
+     * @throws NotFoundHttpException
+     *
+     * @return Response
      */
     public function saveAction(Request $request, $alias)
     {
+        if (!$request->isXmlHttpRequest()) {
+            return new RedirectResponse('/');
+        }
+
         $view = $request->request->get('view', null);
 
         if (null === $view) {
-            return new BadRequestHttpException('Parameter "view" needed in the request.');
+            throw new BadRequestHttpException('Parameter "view" needed in the request.');
         }
 
         if (isset($view['id'])) {
@@ -183,7 +190,7 @@ class DatagridViewController
         }
 
         if (null === $datagridView) {
-            return new NotFoundHttpException();
+            throw new NotFoundHttpException();
         }
 
         $this->updater->update($datagridView, $view);

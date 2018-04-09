@@ -8,6 +8,7 @@ use Akeneo\Component\StorageUtils\Repository\CachedObjectRepositoryInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Exception\InvalidAttributeException;
 use Pim\Component\Catalog\Exception\InvalidOptionException;
+use Pim\Component\Catalog\Exception\InvalidOptionsException;
 use Pim\Component\Catalog\Factory\ValueCollectionFactory;
 use Pim\Component\Catalog\Factory\ValueFactory;
 use Pim\Component\Catalog\Model\AttributeInterface;
@@ -123,7 +124,7 @@ class ValueCollectionFactorySpec extends ObjectBehavior
         $actualValues->shouldHaveCount(0);
     }
 
-    function it_skips_unknown_options_when_creating_a_values_collection_from_the_storage_format(
+    function it_skips_unknown_option_when_creating_a_values_collection_from_the_storage_format(
         $valueFactory,
         $attributeRepository,
         $logger,
@@ -152,6 +153,45 @@ class ValueCollectionFactorySpec extends ObjectBehavior
 
         $actualValues->shouldReturnAnInstanceOf(ValueCollection::class);
         $actualValues->shouldHaveCount(0);
+    }
+
+    function it_skips_unknown_options_when_creating_a_values_collection_from_the_storage_format(
+        $valueFactory,
+        $attributeRepository,
+        $logger,
+        AttributeInterface $color,
+        ValueInterface $purpleColor
+    ) {
+        $color->getCode()->willReturn('code');
+        $color->isUnique()->willReturn(false);
+        $attributeRepository->findOneByIdentifier('color')->willReturn($color);
+        $valueFactory->create($color, null, null, ['red', 'purple', 'yellow'])->willThrow(
+            InvalidOptionsException::validEntityListCodesExpected(
+                'color',
+                'codes',
+                'The options do not exist',
+                static::class,
+                ['red', 'yellow']
+            )
+        );
+
+        $purpleColor->getAttribute()->willReturn($color);
+        $purpleColor->getLocale()->willReturn(null);
+        $purpleColor->getScope()->willReturn(null);
+        $purpleColor->getData()->willReturn('purple');
+        $valueFactory->create($color, null, null, [1 => 'purple'])->willReturn($purpleColor);
+        $logger->warning('Tried to load a product value with the options "red, yellow" that do not exist.')->shouldBeCalled();
+
+        $actualValues = $this->createFromStorageFormat([
+            'color' => [
+                '<all_channels>' => [
+                    '<all_locales>' => ['red', 'purple', 'yellow']
+                ],
+            ],
+        ]);
+
+        $actualValues->shouldReturnAnInstanceOf(ValueCollection::class);
+        $actualValues->shouldHaveCount(1);
     }
 
     function it_skips_invalid_attributes_when_creating_a_values_collection_from_the_storage_format(

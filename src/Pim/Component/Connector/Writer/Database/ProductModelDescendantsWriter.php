@@ -24,19 +24,15 @@ class ProductModelDescendantsWriter implements ItemWriterInterface, StepExecutio
     /** @var SaverInterface */
     protected $descendantsSaver;
 
-    /** @var EntityManagerClearerInterface */
-    protected $cacheClearer;
-
     /**
-     * @param SaverInterface                $descendantsSaver
-     * @param EntityManagerClearerInterface $cacheClearer
+     * @param SaverInterface        $descendantsSaver
+     * @param CacheClearerInterface $cacheClearer
      */
     public function __construct(
         SaverInterface $descendantsSaver,
         EntityManagerClearerInterface $cacheClearer
     ) {
         $this->descendantsSaver = $descendantsSaver;
-        $this->cacheClearer = $cacheClearer;
     }
 
     /**
@@ -50,8 +46,6 @@ class ProductModelDescendantsWriter implements ItemWriterInterface, StepExecutio
                 $this->stepExecution->incrementSummaryInfo('process');
             }
         }
-
-        $this->cacheClearer->clear();
     }
 
     /**

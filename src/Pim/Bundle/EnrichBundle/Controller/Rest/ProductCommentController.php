@@ -14,7 +14,9 @@ use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -134,10 +136,14 @@ class ProductCommentController
      * @param Request $request
      * @param string  $id
      *
-     * @return JsonResponse
+     * @return Response
      */
     public function postAction(Request $request, $id)
     {
+        if (!$request->isXmlHttpRequest()) {
+            return new RedirectResponse('/');
+        }
+
         $product = $this->findProductOr404($id);
         $data = json_decode($request->getContent(), true);
         $comment = $this->commentBuilder->buildComment($product, $this->getUser());
@@ -170,10 +176,14 @@ class ProductCommentController
      * @param string  $id
      * @param string  $commentId
      *
-     * @return JsonResponse
+     * @return Response
      */
     public function postReplyAction(Request $request, $id, $commentId)
     {
+        if (!$request->isXmlHttpRequest()) {
+            return new RedirectResponse('/');
+        }
+
         $product = $this->findProductOr404($id);
 
         $data = json_decode($request->getContent(), true);

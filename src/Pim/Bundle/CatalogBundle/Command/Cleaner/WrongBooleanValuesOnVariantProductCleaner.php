@@ -6,6 +6,7 @@ namespace Pim\Bundle\CatalogBundle\Command\Cleaner;
 use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Model\VariantProductInterface;
 
 /**
  * Update the variant product to clean all the wrong boolean values.
