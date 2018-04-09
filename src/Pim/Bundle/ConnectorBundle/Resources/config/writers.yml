@@ -54,20 +54,17 @@ services:
         arguments:
             - '@pim_versioning.manager.version'
             - '@pim_catalog.saver.product'
-            - '@pim_connector.doctrine.cache_clearer'
 
     pim_connector.writer.database.product_model:
         class: '%pim_connector.writer.database.product_model.class%'
         arguments:
             - '@pim_versioning.manager.version'
             - '@pim_catalog.saver.product_model'
-            - '@pim_connector.doctrine.cache_clearer'
 
     pim_connector.writer.database.product_model_descendants:
         class: '%pim_connector.writer.database.product_model_descendants.class%'
         arguments:
             - '@pim_catalog.saver.product_model_descendants'
-            - '@pim_connector.doctrine.cache_clearer'
 
     pim_connector.writer.database.product_association:
         class: '%pim_connector.writer.database.product_association.class%'
