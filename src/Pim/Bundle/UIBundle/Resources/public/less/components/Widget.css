@@ -1,0 +1,33 @@
+.AknWidget {
+  margin: 20px auto;
+  width: 100%;
+}
+.AknWidget-header {
+  color: #11324D;
+  border-bottom: 1px solid #11324D;
+  font-size: 14px;
+  text-transform: uppercase;
+  line-height: 44px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.AknWidget-header--compact {
+  height: 44px;
+}
+.AknWidget-subTitle {
+  padding: 5px 0;
+  border-bottom: 1px solid #11324D;
+}
+.AknWidget-content {
+  position: relative;
+  min-height: 50px;
+}
+.AknWidget-content--withPadding {
+  padding: 10px;
+}
+.AknWidget-footer {
+  border-top: 1px solid #ccd1d8;
+  padding-top: 10px;
+  margin-top: 10px;
+}

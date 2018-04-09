@@ -14,6 +14,7 @@
 
     &-remove {
         margin: 15px;
+        background-size: 20px;
     }
 
     &-hint {
@@ -64,6 +65,7 @@
         background-repeat: no-repeat;
         background-position: 50% 15px;
         background-size: 29px auto;
+        position: relative;
 
         &--products {
             background-image: url("../../images/icon-product.svg");
@@ -143,6 +145,17 @@
             background-size: 80%;
             background-position: 50%;
             width: 95px;
+        }
+
+        &--warning:after {
+            position: absolute;
+            top: 10px;
+            right: 12px;
+            width: 8px;
+            height: 8px;
+            border-radius: 8px;
+            background:@AknLightPurple;
+            content: '';
         }
     }
 

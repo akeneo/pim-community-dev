@@ -61,7 +61,8 @@ class SectionView extends (BaseForm as { new(): Backbone.View<any> }) {
     events() {
         return {
             'click .AknCatalogVolume-remove': 'closeHint',
-            'click .open-hint': 'openHint'
+            'click .AknCatalogVolume-icon--active': 'closeHint',
+            'click .open-hint:not(.AknCatalogVolume-icon--active)': 'openHint'
         }
     }
 
