@@ -156,8 +156,7 @@ module.exports = {
                     loader: 'babel-loader',
                     options: {
                         presets: babelPresets,
-                        cacheDirectory: 'web/cache',
-                        plugins: ["add-module-exports"]
+                        cacheDirectory: 'web/cache'
                     }
                 }
             },
