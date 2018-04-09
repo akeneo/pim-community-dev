@@ -10,6 +10,7 @@ use Pim\Component\User\Model\RoleInterface;
 use Pim\Component\User\Updater\RoleUpdater;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
+use Symfony\Component\Security\Acl\Model\SecurityIdentityInterface;
 
 class RoleUpdaterSpec extends ObjectBehavior
 {
@@ -28,10 +29,15 @@ class RoleUpdaterSpec extends ObjectBehavior
         $this->shouldImplement(ObjectUpdaterInterface::class);
     }
 
-    function it_updates_the_role_properties(RoleInterface $role)
+    function it_updates_the_role_properties(RoleInterface $role, SecurityIdentityInterface $sid, $aclManager)
     {
         $role->setRole('ROLE_ADMINISTRATOR')->shouldBeCalled();
+        $role->getRole()->willReturn('ROLE_ADMINISTRATOR');
         $role->setLabel('name')->shouldBeCalled();
+
+        $aclManager->getAllExtensions()->willReturn([]);
+        $aclManager->getSid($role)->willReturn($sid);
+        $aclManager->flush()->shouldBeCalled();
 
         $this->update(
             $role,
