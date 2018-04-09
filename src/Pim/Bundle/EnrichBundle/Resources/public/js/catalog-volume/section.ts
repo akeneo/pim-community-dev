@@ -39,10 +39,10 @@ interface Axis {
 class SectionView extends (BaseForm as { new(): Backbone.View<any> }) {
     readonly className: string = 'AknCatalogVolume-section'
     readonly template = _.template(template)
-    
+
     // Move to base.ts after
     readonly getRoot: any
-    public hideHint: boolean = false
+    public hideHint: any = false
 
     public config: SectionConfig = {
         warningText: __('catalog_volume.axis.warning'),
@@ -58,6 +58,13 @@ class SectionView extends (BaseForm as { new(): Backbone.View<any> }) {
         title: ''
     }
 
+    events() {
+        return {
+            'click .AknCatalogVolume-remove': 'closeHint',
+            'click .open-hint': 'openHint'
+        }
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -65,11 +72,7 @@ class SectionView extends (BaseForm as { new(): Backbone.View<any> }) {
         super();
 
         this.config = Object.assign({}, this.config, options.config);
-
-        this.events = <any> {
-            'click .AknCatalogVolume-remove': 'closeHint',
-            'click .open-hint': 'openHint'
-        }
+        this.hideHint = false;
 
         return BaseForm.prototype.initialize.apply(this, arguments);
     }
@@ -86,9 +89,9 @@ class SectionView extends (BaseForm as { new(): Backbone.View<any> }) {
 
     /**
      * Returns true if the section contains data
-     * 
-     * @param sectionData 
-     * @param sectionAxes 
+     *
+     * @param sectionData
+     * @param sectionAxes
      */
     sectionHasData(sectionData: object, sectionAxes: Array<string>): boolean {
         return Object.keys(sectionData).filter(field => sectionAxes.indexOf(field) > -1).length > 0;
@@ -113,7 +116,7 @@ class SectionView extends (BaseForm as { new(): Backbone.View<any> }) {
         }));
 
         this.renderAxes(this.config.axes, sectionData);
-        
+
         return this;
     }
 
@@ -129,7 +132,7 @@ class SectionView extends (BaseForm as { new(): Backbone.View<any> }) {
             if (undefined === axis) return;
 
             const typeTemplate: string = this.config.templates[axis.type];
-            
+
             if (undefined === typeTemplate) {
                 throw Error(`The axis ${name} does not have a template for ${axis.type}`);
             }
@@ -152,7 +155,7 @@ class SectionView extends (BaseForm as { new(): Backbone.View<any> }) {
      * Close the hint box and store the key in localStorage
      */
     closeHint() {
-        localStorage.setItem(this.config.hint.code, '');
+        localStorage.setItem(this.config.hint.code, '1');
         this.hideHint = true;
         this.render();
     }
