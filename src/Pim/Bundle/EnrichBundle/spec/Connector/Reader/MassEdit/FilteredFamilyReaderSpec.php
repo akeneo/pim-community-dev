@@ -37,8 +37,11 @@ class FilteredFamilyReaderSpec extends ObjectBehavior
         );
 
         $stepExecution->getJobExecution()->willReturn($jobExecution);
-        $families = [$pantFamily, $sockFamily];
-        $familyRepository->findByIds([12, 13, 14])->willReturn($families);
+
+        $familyRepository->find(12)->willReturn($pantFamily);
+        $familyRepository->find(13)->willReturn(null);
+        $familyRepository->find(14)->willReturn($sockFamily);
+
         $stepExecution->incrementSummaryInfo('read')->shouldBeCalled();
 
         $this->setStepExecution($stepExecution);

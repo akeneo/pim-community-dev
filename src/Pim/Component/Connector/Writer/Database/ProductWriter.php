@@ -6,7 +6,6 @@ use Akeneo\Component\Batch\Item\InitializableInterface;
 use Akeneo\Component\Batch\Item\ItemWriterInterface;
 use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\Batch\Step\StepExecutionAwareInterface;
-use Akeneo\Component\StorageUtils\Cache\EntityManagerClearerInterface;
 use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
 use Pim\Bundle\VersioningBundle\Manager\VersionManager;
 use Pim\Component\Catalog\Model\ProductInterface;
@@ -29,24 +28,18 @@ class ProductWriter implements ItemWriterInterface, StepExecutionAwareInterface,
     /** @var BulkSaverInterface */
     protected $productSaver;
 
-    /** @var EntityManagerClearerInterface */
-    protected $cacheClearer;
-
     /**
      * Constructor
      *
-     * @param VersionManager                $versionManager
-     * @param BulkSaverInterface            $productSaver
-     * @param EntityManagerClearerInterface $cacheClearer
+     * @param VersionManager        $versionManager
+     * @param BulkSaverInterface    $productSaver
      */
     public function __construct(
         VersionManager $versionManager,
-        BulkSaverInterface $productSaver,
-        EntityManagerClearerInterface $cacheClearer
+        BulkSaverInterface $productSaver
     ) {
         $this->versionManager = $versionManager;
         $this->productSaver = $productSaver;
-        $this->cacheClearer = $cacheClearer;
     }
 
     /**
@@ -59,7 +52,6 @@ class ProductWriter implements ItemWriterInterface, StepExecutionAwareInterface,
         }
 
         $this->productSaver->saveAll($items);
-        $this->cacheClearer->clear();
     }
 
     /**
