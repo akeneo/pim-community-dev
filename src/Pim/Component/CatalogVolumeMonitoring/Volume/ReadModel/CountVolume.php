@@ -46,6 +46,6 @@ class CountVolume
 
     public function hasWarning(): bool
     {
-        return $this->volume > $this->limit;
+        return $this->limit >= 0 && $this->volume > $this->limit;
     }
 }
