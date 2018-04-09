@@ -5,6 +5,7 @@ datagrid:
             requireJSModules:
                 - pim/datagrid/column-form-listener
                 - oro/datagrid/pagination-input
+                - oro/datafilter-builder
             columnListener:
                 dataField: id
                 columnName: is_checked

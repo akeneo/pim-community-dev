@@ -30,6 +30,8 @@ class ProductModelDescendantsWriter implements ItemWriterInterface, StepExecutio
     /**
      * @param SaverInterface        $descendantsSaver
      * @param CacheClearerInterface $cacheClearer
+     *
+     * @todo @merge Remove $cacheClearer. It's not used anymore.
      */
     public function __construct(
         SaverInterface $descendantsSaver,
@@ -49,10 +51,6 @@ class ProductModelDescendantsWriter implements ItemWriterInterface, StepExecutio
             if (null !== $this->stepExecution) {
                 $this->stepExecution->incrementSummaryInfo('process');
             }
-        }
-
-        if (null !== $this->cacheClearer) {
-            $this->cacheClearer->clear();
         }
     }
 

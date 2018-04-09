@@ -5,6 +5,7 @@ namespace Pim\Component\Catalog\Factory\Value;
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Pim\Component\Catalog\Exception\InvalidOptionException;
+use Pim\Component\Catalog\Exception\InvalidOptionsException;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\AttributeOptionInterface;
 
@@ -112,50 +113,35 @@ class OptionsValueFactory implements ValueFactoryInterface
      * @param AttributeInterface $attribute
      * @param string[]           $data
      *
+     * @throws InvalidOptionsException
      * @return array
      */
     protected function getOptions(AttributeInterface $attribute, array $data)
     {
         $options = [];
+        $notFoundOptions = [];
 
         foreach ($data as $optionCode) {
-            if (null !== $option = $this->getOption($attribute, $optionCode)) {
+            $identifier = $attribute->getCode() . '.' . $optionCode;
+            $option = $this->attrOptionRepository->findOneByIdentifier($identifier);
+
+            if (null === $option) {
+                $notFoundOptions[] = $optionCode;
+            } else {
                 $options[] = $option;
             }
         }
 
-        return $options;
-    }
-
-    /**
-     * Gets an attribute option from its code.
-     *
-     * @todo TIP-684: When deleting one element of the collection, we will end up throwing the exception.
-     *       Problem is, when loading a product value from single storage, it will be skipped because of
-     *       one option, when the others in the collection could be valid. So the value will not be loaded
-     *       at all, when what we want is the value to be loaded minus the wrong option.
-     *
-     * @param AttributeInterface $attribute
-     * @param string             $optionCode
-     *
-     * @throws InvalidOptionException
-     * @return AttributeOptionInterface|null
-     */
-    protected function getOption(AttributeInterface $attribute, $optionCode)
-    {
-        $identifier = $attribute->getCode() . '.' . $optionCode;
-        $option = $this->attrOptionRepository->findOneByIdentifier($identifier);
-
-        if (null === $option) {
-            throw InvalidOptionException::validEntityCodeExpected(
+        if (!empty($notFoundOptions)) {
+            throw InvalidOptionsException::validEntityListCodesExpected(
                 $attribute->getCode(),
-                'code',
-                'The option does not exist',
+                'codes',
+                'The options do not exist',
                 static::class,
-                $optionCode
+                $notFoundOptions
             );
         }
 
-        return $option;
+        return $options;
     }
 }

@@ -10,6 +10,7 @@ Feature: Edit an identifier attribute
 
   Scenario: Successfully display the identifier related fields
     Given I am on the "SKU" attribute page
+    Then I should see the secondary action "Delete"
     Then I should see the Max characters and Validation rule fields
     And the fields Unique, Value per channel and Usable in grid should be disabled
 

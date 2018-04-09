@@ -65,9 +65,10 @@ define([
                         this.setData('products', selection);
                     }.bind(this));
 
-                    this.getRoot().on('pim_enrich:form:entity:post_fetch', function () {
-                        this.productGroupGrid.refresh();
-                    }.bind(this));
+                    this.getRoot().on('pim_enrich:form:entity:post_fetch', () => {
+                        const shouldRefresh = this.code === this.getParent().getCurrentTab()
+                        if (shouldRefresh) this.productGroupGrid.refresh();
+                    });
                 }
 
                 this.$el.empty().append(this.productGroupGrid.render().$el);

@@ -19,5 +19,5 @@ Feature: Display the product model history
     When I visit the "History" column tab
     Then there should be 2 update
     And I should see history:
-      | version | property  | value   |
-      | 2       | Price USD | $999.00 |
+      | version | property  | value   | date |
+      | 2       | Price USD | $999.00 | now  |
