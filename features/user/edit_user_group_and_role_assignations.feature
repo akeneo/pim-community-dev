@@ -79,3 +79,40 @@ Feature: Edit a user groups and roles
     When I logout
     And I am logged in as "Peter"
     Then I am on the Role index page
+
+  @jira https://akeneo.atlassian.net/browse/PIM-6993
+  Scenario: Successfully show pagination on users grid in group or role page
+    Given the following users:
+      | username | first_name | last_name | email            | password | enabled | roles              | groups  |
+      | antoine  | Antoine    | Doe       | antoine@doe.com  | psswd    | yes     | ROLE_ADMINISTRATOR | manager |
+      | arnaud   | Arnaud     | Doe       | arnaud@doe.com   | psswd    | yes     | ROLE_ADMINISTRATOR | manager |
+      | pascale  | Pascale    | Doe       | pascale@doe.com  | psswd    | yes     | ROLE_ADMINISTRATOR | manager |
+      | helene   | Helene     | Doe       | helene@doe.com   | psswd    | yes     | ROLE_ADMINISTRATOR | manager |
+      | leopold  | Leopold    | Doe       | leopold@doe.com  | psswd    | yes     | ROLE_ADMINISTRATOR | manager |
+      | bernard  | Bernard    | Doe       | bernard@doe.com  | psswd    | yes     | ROLE_ADMINISTRATOR | manager |
+      | maxime   | Maxime     | Doe       | maxime@doe.com   | psswd    | yes     | ROLE_ADMINISTRATOR | manager |
+      | charles  | Charles    | Doe       | charles@doe.com  | psswd    | yes     | ROLE_ADMINISTRATOR | manager |
+      | aurelie  | Aurelie    | Doe       | aurelie@doe.com  | psswd    | yes     | ROLE_ADMINISTRATOR | manager |
+      | remi     | Remi       | Doe       | remi@doe.com     | psswd    | yes     | ROLE_ADMINISTRATOR | manager |
+      | laurent  | Laurent    | Doe       | laurent@doe.com  | psswd    | yes     | ROLE_ADMINISTRATOR | manager |
+      | alex     | Alex       | Doe       | alex@doe.com     | psswd    | yes     | ROLE_ADMINISTRATOR | manager |
+      | emmy     | Emmy       | Doe       | emmy@doe.com     | psswd    | yes     | ROLE_ADMINISTRATOR | manager |
+      | zoe      | Zoe        | Doe       | zoe@doe.com      | psswd    | yes     | ROLE_ADMINISTRATOR | manager |
+      | carole   | Carole     | Doe       | carole@doe.com   | psswd    | yes     | ROLE_ADMINISTRATOR | manager |
+      | mylene   | Mylene     | Doe       | mylene@doe.com   | psswd    | yes     | ROLE_ADMINISTRATOR | manager |
+      | robin    | Robin      | Doe       | robin@doe.com    | psswd    | yes     | ROLE_ADMINISTRATOR | manager |
+      | yvette   | Yvette     | Doe       | yvette@doe.com   | psswd    | yes     | ROLE_ADMINISTRATOR | manager |
+      | tatiana  | Tatiana    | Doe       | tatiana@doe.com  | psswd    | yes     | ROLE_ADMINISTRATOR | manager |
+      | ulric    | Ulric      | Doe       | ulric@doe.com    | psswd    | yes     | ROLE_ADMINISTRATOR | manager |
+      | amandin  | Amandin    | Doe       | amandin@doe.com  | psswd    | yes     | ROLE_ADMINISTRATOR | manager |
+      | lucifer  | Lucifer    | Doe       | lucifer@doe.com  | psswd    | yes     | ROLE_ADMINISTRATOR | manager |
+      | quentin  | Quentin    | Doe       | quentin@doe.com  | psswd    | yes     | ROLE_ADMINISTRATOR | manager |
+      | xavier   | Xavier     | Doe       | xavier@doe.com   | psswd    | yes     | ROLE_ADMINISTRATOR | manager |
+      | valerie  | Valerie    | Doe       | valerie@doe.com  | psswd    | yes     | ROLE_ADMINISTRATOR | manager |
+      | wilbert  | Wilbert    | Doe       | wilbert@doe.com  | psswd    | yes     | ROLE_ADMINISTRATOR | manager |
+    When I edit the "Administrator" Role
+    And I visit the "Users" tab
+    Then the last page number should be 2
+    When I edit the "Manager" UserGroup
+    And I visit the "Users" tab
+    Then the last page number should be 2

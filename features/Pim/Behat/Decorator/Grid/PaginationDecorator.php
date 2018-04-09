@@ -23,6 +23,7 @@ class PaginationDecorator extends ElementDecorator
         'page size button' => '.page-size .AknActionButton',
         'page size list'   => '.page-size .AknDropdown-menu',
         'page size items'  => '.page-size .AknDropdown-menuLink',
+        'pagination last page'   => '.AknGridToolbar-center .AknGridToolbar-actionButton:last-child span',
     ];
 
     /**
@@ -60,6 +61,17 @@ class PaginationDecorator extends ElementDecorator
     {
         preg_match('/^\d+/', $this->getPageSizeButton()->getHtml(), $size);
         return (int) $size[0];
+    }
+
+    /**
+     * Get the Last page
+     *
+     * @return int
+     */
+    public function getLastPage()
+    {
+        preg_match('/^\d+/', $this->getLastPageButton()->getHtml(), $lastPage);
+        return (int) $lastPage[0];
     }
 
     /**
@@ -114,5 +126,17 @@ class PaginationDecorator extends ElementDecorator
         return $this->spin(function () {
             return $this->find('css', $this->selectors['page size button']);
         }, 'Cannot find the change page size button');
+    }
+
+    /**
+     * Get the button element of the last page
+     *
+     * @return NodeElement
+     */
+    protected function getLastPageButton()
+    {
+        return $this->spin(function () {
+            return $this->find('css', $this->selectors['pagination last page']);
+        }, 'Cannot find the button for the last page');
     }
 }

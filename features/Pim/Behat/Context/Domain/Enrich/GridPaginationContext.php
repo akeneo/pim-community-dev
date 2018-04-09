@@ -2,6 +2,7 @@
 
 namespace Pim\Behat\Context\Domain\Enrich;
 
+use Behat\Mink\Exception\ExpectationException;
 use Pim\Behat\Context\PimContext;
 
 /**
@@ -27,6 +28,24 @@ class GridPaginationContext extends PimContext
         if ($pageNumber !== (int) $num) {
             throw  $this->getMainContext()->createExpectationException(
                 sprintf('Expecting page "%s" got "%s" instead', $num, $pageNumber)
+            );
+        }
+    }
+
+    /**
+     * @param int $num
+     *
+     * @throws ExpectationException
+     *
+     * @Then /^the last page number should be (\d+)$/
+     */
+    public function theLastPageShouldBe($num)
+    {
+        $pageNumber = $this->getCurrentPage()->getCurrentGrid()->getLastPage();
+
+        if ($pageNumber !== (int) $num) {
+            throw  $this->getMainContext()->createExpectationException(
+                sprintf('Expecting last page "%s" got "%s" instead', $num, $pageNumber)
             );
         }
     }
