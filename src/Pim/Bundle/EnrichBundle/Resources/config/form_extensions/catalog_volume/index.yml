@@ -51,6 +51,7 @@ extensions:
         targetZone: content
         position: 20
         config:
+            align: right
             title: catalog_volume.section.product_values.title
             hint:
                 code: hint-product-values

@@ -13,6 +13,7 @@ interface Templates {
 }
 
 interface SectionConfig {
+    align: string
     warningText: string
     templates: Templates
     axes: Array<string>
@@ -37,14 +38,12 @@ interface Axis {
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 class SectionView extends (BaseForm as { new(): Backbone.View<any> }) {
-    readonly className: string = 'AknCatalogVolume-section'
     readonly template = _.template(template)
-
-    // Move to base.ts after
     readonly getRoot: any
     public hideHint: any = false
 
     public config: SectionConfig = {
+        align: 'left',
         warningText: __('catalog_volume.axis.warning'),
         templates: {
             average_max: 'pim/template/catalog-volume/average-max',
@@ -58,7 +57,7 @@ class SectionView extends (BaseForm as { new(): Backbone.View<any> }) {
         title: ''
     }
 
-    events() {
+   public events(): Backbone.EventsHash {
         return {
             'click .AknCatalogVolume-remove': 'closeHint',
             'click .AknCatalogVolume-icon--active': 'closeHint',
@@ -74,8 +73,6 @@ class SectionView extends (BaseForm as { new(): Backbone.View<any> }) {
 
         this.config = Object.assign({}, this.config, options.config);
         this.hideHint = false;
-
-        return BaseForm.prototype.initialize.apply(this, arguments);
     }
 
     /**
@@ -113,7 +110,8 @@ class SectionView extends (BaseForm as { new(): Backbone.View<any> }) {
         this.$el.empty().html(this.template({
             title: __(this.config.title),
             hintTitle: __(this.config.hint.title),
-            hintIsHidden: this.hintIsHidden()
+            hintIsHidden: this.hintIsHidden(),
+            align: this.config.align
         }));
 
         this.renderAxes(this.config.axes, sectionData);

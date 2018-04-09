@@ -5,8 +5,8 @@
     </div>
     <div class="AknCatalogVolume-hint <%- hintIsHidden ? 'AknCatalogVolume-hint--hidden' : '' %>">
         <div class="AknCatalogVolume-icon AknCatalogVolume-icon--info"></div>
-        <div class="AknCatalogVolume-hintTitle"> <%- hintTitle %></div>
+        <div class="AknCatalogVolume-hintTitle"> <%= hintTitle %></div>
         <div class="AknCatalogVolume-remove AknIconButton AknIconButton--remove"></div>
     </div>
 </div>
-<div class="AknCatalogVolume-axisContainer"></div>
+<div class="AknCatalogVolume-axisContainer <%- align === 'right' ? 'AknCatalogVolume-axisContainer--right' : '' %> "></div>

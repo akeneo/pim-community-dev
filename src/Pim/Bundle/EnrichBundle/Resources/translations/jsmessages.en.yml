@@ -1485,7 +1485,7 @@ catalog_volume:
     product_values_description: 'The more product values you have, the more valuable your PIM is, the higher your ROI is! More details <a href="#">here</a>'
     section:
         product_values:
-            hint: Did you know that the total number of product values in your PIM is directly linked to the following axes? To have more details, we invite you to browse this article.
+            hint: Did you know that the total number of product values in your PIM is directly linked to the following axes?<br/>To have more details, we invite you to <a href="{{}}" target="_blank">browse this article</a>.
             title: Axes that leverage the number of product values
         catalog_structure:
             hint: You may know that a good catalog structure is really important and is a condition to efficient enrichment. Below are the various axes to monitor your catalog structure.

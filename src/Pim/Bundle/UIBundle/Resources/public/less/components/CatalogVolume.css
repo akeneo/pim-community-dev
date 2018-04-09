@@ -145,6 +145,9 @@
   flex-direction: row;
   align-items: flex-start;
 }
+.AknCatalogVolume-axisContainer--right {
+  justify-content: flex-end;
+}
 .AknCatalogVolume-warning {
   font-size: 13px;
   margin-top: 10px;
