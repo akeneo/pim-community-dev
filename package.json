@@ -7,7 +7,7 @@
     "webpack": "webpack --config webpack.config.js --env=prod",
     "webpack-dev": "webpack --config webpack.config.js",
     "webpack-watch": "webpack --progress --config webpack.config.js --watch",
-    "prettier": "prettier --config $npm_package_config_source/.prettierrc.json --parser typescript --write \"./src/**/*.ts\";",
+    "prettier": "prettier --config .prettierrc.json --parser typescript --write \"./src/**/*.ts\";",
     "before-commit": "yarn prettier && yarn lint",
     "webpack-test": "webpack --config webpack-test.config.js",
     "lint": "node ./node_modules/eslint/bin/eslint 'src/**/*.js' --ignore-path .eslintignore --quiet",
@@ -31,8 +31,8 @@
     "glob": "7.1.2",
     "html-webpack-inline-source-plugin": "0.0.9",
     "html-webpack-plugin": "2.30.1",
+    "prettier": "^1.11.1",
     "puppeteer": "1.1.1",
-    "prettier": "^1.10.2",
     "read-pkg": "2.0.0"
   },
   "dependencies": {

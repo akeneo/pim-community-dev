@@ -32,7 +32,7 @@ class BaseView extends Backbone.View<any> implements View {
     super(config);
 
     this.extensions = {};
-    this.zones      = {};
+    this.zones = {};
     this.targetZone = '';
     this.configured = false;
   }
@@ -67,11 +67,11 @@ class BaseView extends Backbone.View<any> implements View {
   addExtension(code: string, extension: View, zone: string, position: number) {
     extension.setParent(this);
 
-    extension.code       = code;
+    extension.code = code;
     extension.targetZone = zone;
-    extension.position   = position;
+    extension.position = position;
 
-    if ((undefined === this.extensions) || (null === this.extensions)) {
+    if (undefined === this.extensions || null === this.extensions) {
       throw 'this.extensions have to be defined. Please ensure you called parent initialize() method.';
     }
 
@@ -85,7 +85,7 @@ class BaseView extends Backbone.View<any> implements View {
    * @return {View}
    */
   getExtension(code: string): View {
-    const extensionKey = _.findKey(this.extensions, function (extension: View) {
+    const extensionKey = _.findKey(this.extensions, (extension: View) => {
       const expectedPosition = extension.code.length - code.length;
 
       return expectedPosition >= 0 && expectedPosition === extension.code.indexOf(code, expectedPosition);
@@ -99,18 +99,16 @@ class BaseView extends Backbone.View<any> implements View {
    *
    * @param {View} parent
    */
-  setParent (parent: View) {
+  setParent(parent: View) {
     this.parent = parent;
-
-    return this;
   }
 
   /**
    * Get the parent of the extension
    *
-   * @return {View|null}
+   * @return {View | null}
    */
-  getParent(): View|null {
+  getParent(): View | null {
     return this.parent;
   }
 
@@ -134,16 +132,9 @@ class BaseView extends Backbone.View<any> implements View {
   /**
    * Set data in the root model
    *
-   * @param {Object} data
-   * @param {Object} options If silent is set to true, don't fire events
-   *                         pim_enrich:form:entity:pre_update and pim_enrich:form:entity:post_update
-   */
-
-  /**
-   * Set data in the root model
-   *
    * @param {any}                data
-   * @param {{silent?: boolean}} options
+   * @param {{silent?: boolean}} options If silent is set to true, don't fire events
+   *                                       pim_enrich:form:entity:pre_update and pim_enrich:form:entity:post_update
    */
   setData(data: any, options: {silent?: boolean} = {}) {
     if (!options.silent) {
@@ -155,8 +146,6 @@ class BaseView extends Backbone.View<any> implements View {
     if (!options.silent) {
       this.getRoot().trigger(this.postUpdateEventName, data);
     }
-
-    return this;
   }
 
   /**
@@ -171,9 +160,9 @@ class BaseView extends Backbone.View<any> implements View {
   /**
    * Get the form data (backbone model)
    *
-   * @return {any}
+   * @return {Backbone.Model}
    */
-  getFormModel(): any {
+  getFormModel(): Backbone.Model {
     return this.getRoot().model;
   }
 
@@ -212,7 +201,7 @@ class BaseView extends Backbone.View<any> implements View {
   /**
    * Render the child extensions
    *
-   * @return {Object}
+   * @return {View}
    */
   renderExtensions(): View {
     // If the view is no longer attached to the DOM, don't render the extensions
@@ -238,8 +227,9 @@ class BaseView extends Backbone.View<any> implements View {
     var zone = this.getZone(extension.targetZone);
 
     if (null === zone) {
-      throw new Error('Can not render extension "' + extension.code + '" in "' + this.code + '": ' +
-        'zone "' + extension.targetZone + '" does not exist');
+      throw new Error(
+        `Can not render extension "${extension.code}" in "${this.code}": zone "${extension.targetZone}" does not exist`
+      );
     }
 
     zone.appendChild(extension.el);
@@ -251,12 +241,11 @@ class BaseView extends Backbone.View<any> implements View {
    * Initialize dropzone cache
    */
   initializeDropZones() {
-    this.zones = this.$('[data-drop-zone]').toArray().reduce(
-      (zones: {[code: string]: HTMLElement}, zone: HTMLElement) => {
-        return {...zones, [<string>zone.dataset.dropZone]: zone}
-      },
-      {}
-    );
+    this.zones = this.el
+      .querySelectorAll('[data-drop-zone]')
+      .reduce((zones: {[code: string]: HTMLElement}, zone: HTMLElement) => {
+        return {...zones, [<string>zone.dataset.dropZone]: zone};
+      }, {});
 
     this.zones['self'] = this.el;
   }
@@ -266,11 +255,11 @@ class BaseView extends Backbone.View<any> implements View {
    *
    * @param {string} code
    *
-   * @return {HTMLElement|null}
+   * @return {HTMLElement | null}
    */
-  getZone(code: string): HTMLElement|null {
+  getZone(code: string): HTMLElement | null {
     if (!(code in this.zones)) {
-      this.zones[code] = this.$(`[data-drop-zone="${code}"]`)[0];
+      this.zones[code] = this.el.querySelector(`[data-drop-zone="${code}"]`);
     }
 
     if (!this.zones[code]) {
@@ -286,7 +275,7 @@ class BaseView extends Backbone.View<any> implements View {
   triggerExtensions() {
     const options = Object.values(arguments);
 
-    Object.values(this.extensions).forEach((extension) => {
+    Object.values(this.extensions).forEach(extension => {
       extension.trigger.apply(extension, options);
       extension.triggerExtensions.apply(extension, options);
     });
