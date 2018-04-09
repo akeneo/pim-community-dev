@@ -18,7 +18,8 @@ interface ProductModelInterface extends
     TimestampableInterface,
     VersionableInterface,
     CategoryAwareInterface,
-    EntityWithFamilyVariantInterface
+    EntityWithFamilyVariantInterface,
+    AssociationAwareInterface
 {
     /**
      * Gets the ID of the product model.

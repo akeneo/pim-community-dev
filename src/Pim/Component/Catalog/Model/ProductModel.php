@@ -62,6 +62,9 @@ class ProductModel implements ProductModelInterface
     /** @var FamilyVariantInterface */
     protected $familyVariant;
 
+    /** @var Collection $associations */
+    protected $associations;
+
     /**
      * Create an instance of ProductModel.
      */
@@ -622,5 +625,78 @@ class ProductModel implements ProductModelInterface
         }
 
         return false;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function addAssociation(AssociationInterface $association)
+    {
+        if (!$this->associations->contains($association)) {
+            $associationType = $association->getAssociationType();
+            if (null !== $associationType && null !== $this->getAssociationForType($associationType)) {
+                throw new \LogicException(
+                    sprintf(
+                        'Can not add an association of type %s because the product already has one',
+                        $associationType->getCode()
+                    )
+                );
+            }
+
+            $this->associations->add($association);
+            $association->setOwner($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function removeAssociation(AssociationInterface $association)
+    {
+        $this->associations->removeElement($association);
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getAssociations()
+    {
+        return $this->associations;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getAssociationForType(AssociationTypeInterface $type)
+    {
+        return $this->getAssociationForTypeCode($type->getCode());
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getAssociationForTypeCode($typeCode)
+    {
+        foreach ($this->associations as $association) {
+            if ($association->getAssociationType()->getCode() === $typeCode) {
+                return $association;
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setAssociations(Collection $associations)
+    {
+        $this->associations = $associations;
+
+        return $this;
     }
 }
