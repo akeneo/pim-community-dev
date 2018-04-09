@@ -1,3 +1,3 @@
-FROM alpine:3.6
+FROM gcr.io/google-containers/startup-script:v1 
 
 ADD . /pim

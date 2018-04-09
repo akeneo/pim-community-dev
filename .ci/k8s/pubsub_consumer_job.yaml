@@ -7,14 +7,17 @@ spec:
   parallelism: JOB_SCALE
   template:
     spec:
-      initContainers:
+      containers:
         - name: pim
           image: PIM_IMAGE
-          command: ['sh', '-c', 'cp -Rp /pim /home/jenkins']
-          imagePullPolicy: Always
+          env:
+            - name: STARTUP_SCRIPT
+              value: |
+                #! /bin/bash
+                ln -sf /pim /home/jenkins/pim
+                echo "done"
           volumeMounts:
             - { mountPath: /home/jenkins, name: pim }
-      containers:
         - name: mysql
           image: eu.gcr.io/akeneo-ci/mysql:5.7-5
           volumeMounts:
@@ -88,7 +91,7 @@ spec:
               wait $CHILD_PID
               if [[ -f "/tmp/pod/main-terminated" ]]; then exit 0; fi
           volumeMounts:
-            - { name: pim, mountPath: /home/jenkins }
+            - { name: pim, mountPath: /home/jenkins, readOnly: true }
             - { name: tmp-pod, mountPath: /tmp/pod, readOnly: true }
           resources:
             requests: {cpu: "100m", memory: "200Mi"}
@@ -123,9 +126,9 @@ spec:
             - { name: POD_NAME, valueFrom: { fieldRef: { fieldPath: metadata.name } } }
             - { name: NAMESPACE, valueFrom: { fieldRef: { fieldPath: metadata.namespace } } }
           volumeMounts:
-            - { name: pim, mountPath: /home/jenkins }
-            - { name: artifacts, mountPath: /tmp/behat/screenshots }
-            - { name: tmp-pod, mountPath: /tmp/pod }
+            - { name: pim, mountPath: /home/jenkins, readOnly: true }
+            - { name: artifacts, mountPath: /tmp/behat/screenshots, readOnly: false }
+            - { name: tmp-pod, mountPath: /tmp/pod, readOnly: false }
           resources:
             requests: {cpu: "100m", memory: "100Mi"}
       volumes:
@@ -134,3 +137,4 @@ spec:
         - { name: artifacts, emptyDir: {medium: Memory}}
         - { name: mysql, emptyDir: {medium: Memory}}
       restartPolicy: Never
+
