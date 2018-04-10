@@ -169,6 +169,7 @@ module.exports = {
                         loader: 'ts-loader',
                         options: {
                             configFile: path.resolve(__dirname, 'tsconfig.json'),
+                            context: path.resolve(rootDir)
                         }
                     },
                     {
