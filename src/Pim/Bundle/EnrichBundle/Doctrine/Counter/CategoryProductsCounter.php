@@ -41,23 +41,10 @@ class CategoryProductsCounter implements CategoryItemsCounterInterface
      */
     public function getItemsCountInCategory(CategoryInterface $category, $inChildren = false, $inProvided = true)
     {
-        $categoryCodes = $inChildren
-            ? $this->categoryRepository->getAllChildrenCodes($category, $inProvided)
-            : [$category->getCode()];
-
-        $options = [
-            'filters' => [
-                [
-                    'field' => 'categories',
-                    'operator' => Operators::IN_LIST,
-                    'value' => $categoryCodes
-                ]
-            ]
-        ];
-
-        $pqb = $this->pqbFactory->create($options);
-        $items = $pqb->execute();
-
-        return $items->count();
+        if ($inChildren) {
+            return $this->categoryRepository->countProductsWithChildren($category);
+        } else {
+            return $this->categoryRepository->countProducts($category);
+        }
     }
 }

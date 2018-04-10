@@ -170,4 +170,22 @@ interface CategoryRepositoryInterface extends
      * @return array Multi-dimensional array representing the tree
      */
     public function getFilledTree(CategoryInterface $root, Collection $categories);
+
+    /**
+     * Products count for a category and its children
+     *
+     * @param CategoryInterface $category      Tree root category
+     *
+     * @return int                             Count of products in this category and his children
+     */
+    public function countProductsWithChildren(CategoryInterface $category): int;
+
+    /**
+     * Products count for a category
+     *
+     * @param CategoryInterface $category      Tree root category
+     *
+     * @return int                             Count of products in this category
+     */
+    public function countProducts(CategoryInterface $category): int;
 }

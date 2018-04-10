@@ -2,6 +2,7 @@
 
 namespace Akeneo\Bundle\ClassificationBundle\Doctrine\ORM\Repository;
 
+use Akeneo\Bundle\StorageUtilsBundle\Doctrine\TableNameBuilder;
 use Akeneo\Component\Classification\Model\CategoryInterface;
 use Akeneo\Component\Classification\Repository\CategoryRepositoryInterface;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
@@ -22,6 +23,36 @@ class CategoryRepository extends NestedTreeRepository implements
     IdentifiableObjectRepositoryInterface,
     CategoryRepositoryInterface
 {
+    /** @var TableNameBuilder */
+    protected $tableNameBuilder;
+
+    /**
+     * Set table name builder
+     *
+     * @param TableNameBuilder $tableNameBuilder
+     *
+     * @return CategoryRepository
+     */
+    public function setTableNameBuilder(TableNameBuilder $tableNameBuilder)
+    {
+        $this->tableNameBuilder = $tableNameBuilder;
+
+        return $this;
+    }
+
+    /**
+     * Get table name of entity defined
+     *
+     * @param string      $classParam
+     * @param string|null $targetEntity
+     *
+     * @return string
+     */
+    protected function getTableName($classParam, $targetEntity = null)
+    {
+        return $this->tableNameBuilder->getTableName($classParam, $targetEntity);
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -397,5 +428,73 @@ class CategoryRepository extends NestedTreeRepository implements
     protected function getAllChildrenQueryBuilder(CategoryInterface $category, $includeNode = false)
     {
         return $this->getChildrenQueryBuilder($category, false, null, 'ASC', $includeNode);
+    }
+
+    /**
+     * Products count for a category and its children
+     *
+     * @param CategoryInterface $category
+     * @return int
+     * @throws \Doctrine\DBAL\DBALException
+     */
+    public function countProductsWithChildren(CategoryInterface $category): int
+    {
+        $categoryTable = $this->getTableName('pim_catalog.entity.category.class');
+        $categoryProductTable = $this->getTableName('pim_catalog.entity.abstract_product.class', 'categories');
+
+        $sql = sprintf(
+            "SELECT COUNT(DISTINCT category_product.product_id) as product_count
+                FROM %s category
+                JOIN %s category_product
+                  ON category_product.category_id = category.id
+                WHERE category.lft >= :category_left
+                  AND category.rgt <= :category_right
+                  AND category.root=:category_root",
+            $categoryTable,
+            $categoryProductTable
+        );
+
+        $stmt = $this->_em->getConnection()->prepare($sql);
+
+        $stmt->bindValue(':category_left', $category->getLeft());
+        $stmt->bindValue(':category_right', $category->getRight());
+        $stmt->bindValue(':category_root', $category->getRoot());
+
+        $stmt->execute();
+        $result = $stmt->fetch();
+
+        return (int) $result['product_count'];
+    }
+
+    /**
+     * Products count for a category
+     *
+     * @param CategoryInterface $category
+     * @return int
+     * @throws \Doctrine\DBAL\DBALException
+     */
+    public function countProducts(CategoryInterface $category): int
+    {
+        $categoryTable = $this->getTableName('pim_catalog.entity.category.class');
+        $categoryProductTable = $this->getTableName('pim_catalog.entity.abstract_product.class', 'categories');
+
+        $sql = sprintf(
+            "SELECT COUNT(DISTINCT category_product.product_id) as product_count
+                FROM %s category
+                JOIN %s category_product
+                  ON category_product.category_id = category.id
+                WHERE category.id = :category_id",
+            $categoryTable,
+            $categoryProductTable
+        );
+
+        $stmt = $this->_em->getConnection()->prepare($sql);
+
+        $stmt->bindValue(':category_id', $category->getId());
+
+        $stmt->execute();
+        $result = $stmt->fetch();
+
+        return (int) $result['product_count'];
     }
 }
