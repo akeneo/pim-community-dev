@@ -127,7 +127,7 @@ class Reader implements ItemReaderInterface, StepExecutionAwareInterface, Flusha
     {
         $jobParameters = $this->stepExecution->getJobParameters();
         $filePath = $jobParameters->get('filePath');
-        $fileData = current(Yaml::parse(file_get_contents($filePath)));
+        $fileData = current(Yaml::parse(file_get_contents($filePath), Yaml::PARSE_CONSTANT));
         if (null === $fileData) {
             return null;
         }
