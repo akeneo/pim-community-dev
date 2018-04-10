@@ -80,11 +80,7 @@ class SetAttributeRequirements extends AbstractProcessor
         $violations = $this->validator->validate($family);
 
         if (0 !== $violations->count()) {
-            foreach ($violations as $violation) {
-                $errors = sprintf("Family %s: %s\n", (string) $family, $violation->getMessage());
-                $this->stepExecution->addWarning($this->getName(), $errors, [], $family);
-            }
-
+            $this->addWarningMessage($violations, $family);
             $this->stepExecution->incrementSummaryInfo('skipped_families');
             $this->detacher->detach($family);
 

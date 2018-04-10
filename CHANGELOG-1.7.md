@@ -1,3 +1,9 @@
+# 1.7.x
+
+## Bug fixes
+
+- GITHUB-7750: Fix the fatal error when having violations during a bulk action on families (Thanks [FabienSalles](https://github.com/FabienSalles)!)
+
 # 1.7.20 (2018-04-03)
 
 ## Bug fixes
