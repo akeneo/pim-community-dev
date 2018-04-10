@@ -3,6 +3,7 @@
 ## Bug fixes
 
 - GITHUB-7750: Fix the fatal error when having violations during a bulk action on families (Thanks [FabienSalles](https://github.com/FabienSalles)!)
+- PIM-7279: Fix XSS issue on history grid
 
 # 1.7.20 (2018-04-03)
 

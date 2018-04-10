@@ -4,14 +4,14 @@
         {% if fieldValue.old|length %}
         {% for collKey, collValue in fieldValue.old %}
     <li>
-        <strong>{{ collKey }}:</strong> {{ collValue|attribute_option_presenter(collKey) }}
+        <strong>{{ collKey }}:</strong> {{ collValue|attribute_option_presenter(collKey)|escape }}
     </li>
         {% endfor %}
         {% endif %}
     {% else %}
     <li>
         <strong>{{ fieldKey }}:</strong>
-        {{ fieldValue.old|attribute_option_presenter(fieldKey) }}
+        {{ fieldValue.old|attribute_option_presenter(fieldKey)|escape }}
     </li>
     {% endif %}
 {% endfor %}
