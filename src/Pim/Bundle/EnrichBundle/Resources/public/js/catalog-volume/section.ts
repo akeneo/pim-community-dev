@@ -119,6 +119,10 @@ class SectionView extends (BaseForm as { new(): Backbone.View<any> }) {
         return this;
     }
 
+    getIconName(name: string): string {
+        return name.replace(/_/g, '-');
+    }
+
     /**
      * Generates the html for each axis depending on the type, appends the axis to the axis container
      * @param  {Array} axes An array of field names for each axis
@@ -139,7 +143,7 @@ class SectionView extends (BaseForm as { new(): Backbone.View<any> }) {
             const template = _.template(requireContext(typeTemplate));
 
             const el = template({
-                icon: name.replace(/_/g, '-'),
+                icon: this.getIconName(name),
                 value: axis.value,
                 has_warning: axis.has_warning,
                 title: __(`catalog_volume.axis.${name}`),

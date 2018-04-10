@@ -56,7 +56,7 @@ extensions:
             hint:
                 code: hint-product-values
                 title: catalog_volume.section.product_values.hint
-            axes: [products, channels, scopable_attributes, attributes_per_family, locales, localizable_and_scopable_attributes, localizable_attributes]
+            axes: [count_products, count_channels, count_scopable_attributes, average_max_attributes_per_family, count_locales, count_localizable_and_scopable_attributes, count_localizable_attributes]
 
     pim-catalog-volume-catalog-structure-section:
         module: pim/catalog-volume/section
@@ -69,7 +69,7 @@ extensions:
             hint:
                 code: hint-catalog-structure
                 title: catalog_volume.section.catalog_structure.hint
-            axes: [families, attributes, options_per_attribute, categories, category_trees]
+            axes: [count_families, count_attributes, average_max_options_per_attribute, count_categories, count_category_trees]
 
     pim-catalog-volume-variant-modelling-section:
         module: pim/catalog-volume/section
@@ -82,4 +82,4 @@ extensions:
             hint:
                 code: hint-variant-modelling
                 title: catalog_volume.section.variant_modelling.hint
-            axes: [variant_products, product_models]
+            axes: [count_variant_products, count_product_models]
