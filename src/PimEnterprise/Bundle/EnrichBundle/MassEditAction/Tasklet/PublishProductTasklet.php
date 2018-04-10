@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Akeneo PIM Enterprise Edition.
  *
@@ -17,6 +19,7 @@ use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use Oro\Bundle\UserBundle\Entity\UserManager;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Query\ProductQueryBuilderFactoryInterface;
+use Pim\Component\Catalog\Query\ProductQueryBuilderInterface;
 use Pim\Component\Connector\Step\TaskletInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Manager\PublishedProductManager;
 use PimEnterprise\Component\Security\Attributes;
@@ -73,7 +76,7 @@ class PublishProductTasklet extends AbstractProductPublisherTasklet implements T
     /**
      * {@inheritdoc}
      */
-    public function execute()
+    public function execute(): void
     {
         $this->initSecurityContext($this->stepExecution);
 
@@ -82,32 +85,38 @@ class PublishProductTasklet extends AbstractProductPublisherTasklet implements T
         $paginator = $this->paginatorFactory->createPaginator($cursor);
 
         foreach ($paginator as $productsPage) {
-            $invalidProducts = [];
-            foreach ($productsPage as $index => $product) {
-                $violations = $this->validator->validate($product);
-                $isAuthorized = $this->authorizationChecker->isGranted(Attributes::OWN, $product);
+            $invalidEntitiesWithFamily = [];
+            foreach ($productsPage as $index => $entityWithFamily) {
+                if (!$entityWithFamily instanceof ProductInterface) {
+                    $invalidEntitiesWithFamily[$index] = $entityWithFamily;
+
+                    continue;
+                }
+
+                $violations = $this->validator->validate($entityWithFamily);
+                $isAuthorized = $this->authorizationChecker->isGranted(Attributes::OWN, $entityWithFamily);
 
                 if (0 === $violations->count() && $isAuthorized) {
                     $this->stepExecution->incrementSummaryInfo('mass_published');
                 } else {
                     $this->stepExecution->incrementSummaryInfo('skipped_products');
-                    $invalidProducts[$index] = $product;
+                    $invalidEntitiesWithFamily[$index] = $entityWithFamily;
 
                     if (0 < $violations->count()) {
-                        $this->addWarningMessage($violations, $product);
+                        $this->addWarningMessage($violations, $entityWithFamily);
                     }
                     if (!$isAuthorized) {
                         $this->stepExecution->addWarning(
                             'pim_enrich.mass_edit_action.publish.message.error',
                             [],
-                            new DataInvalidItem($product)
+                            new DataInvalidItem($entityWithFamily)
                         );
                     }
                 }
             }
 
-            $productsPage = array_diff_key($productsPage, $invalidProducts);
-            $this->detachProducts($invalidProducts);
+            $productsPage = array_diff_key($productsPage, $invalidEntitiesWithFamily);
+            $this->detachProducts($invalidEntitiesWithFamily);
             $this->manager->publishAll($productsPage);
             $this->detachProducts($productsPage);
         }
@@ -116,16 +125,17 @@ class PublishProductTasklet extends AbstractProductPublisherTasklet implements T
     /**
      * {@inheritdoc}
      */
-    protected function getProductQueryBuilder(array $filters = [])
+    protected function getProductQueryBuilder(array $filters = []): ProductQueryBuilderInterface
     {
+        $filters = array_map(function ($filter) {
+            if ('id' === $filter['field']) {
+                $filter['field'] = 'self_and_ancestor.id';
+            }
+
+            return $filter;
+        }, $filters);
+
         $pqb = $this->pqbFactory->create(['filters' => $filters]);
-
-        // dirty trick to skip the product models
-        // TODO: revert when PIM-6565 is done properly
-        $searchQueryBuilder = $pqb->getQueryBuilder();
-        $searchQueryBuilder->addFilter(['term' => ['document_type' => ProductInterface::class]]);
-
-        $pqb->setQueryBuilder($searchQueryBuilder);
 
         return $pqb;
     }
