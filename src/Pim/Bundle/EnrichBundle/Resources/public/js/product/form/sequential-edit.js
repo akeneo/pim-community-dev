@@ -120,14 +120,12 @@ define(
 
                 var promises = [];
                 if (previous) {
-                    promises.push(FetcherRegistry.getFetcher(previous.type.replace('_', '-'))
-                        .fetch(previous.id).then(function (product) {
+                    promises.push(this.getEntity(previous.type, previous.id).then(function (product) {
                             previousObject = getObjectViewParams(product);
                         }));
                 }
                 if (next) {
-                    promises.push(FetcherRegistry.getFetcher(next.type.replace('_', '-'))
-                        .fetch(next.id).then(function (product) {
+                    promises.push(this.getEntity(next.type, next.id).then(function (product) {
                             nextObject = getObjectViewParams(product);
                         }));
                 }
@@ -151,8 +149,8 @@ define(
                 );
                 var pending = objectSet[currentIndex + 2];
                 if (pending) {
-                    setTimeout(function () {
-                        FetcherRegistry.getFetcher('product').fetch(pending);
+                    setTimeout(() => {
+                        this.getEntity(pending.type, pending.id)
                     }, 2000);
                 }
             },
@@ -187,6 +185,9 @@ define(
             },
             finish: function () {
                 router.redirectToRoute('pim_enrich_product_index');
+            },
+            getEntity(type, id) {
+                return FetcherRegistry.getFetcher(type.replace('_', '-')).fetch(id);
             }
         });
     }

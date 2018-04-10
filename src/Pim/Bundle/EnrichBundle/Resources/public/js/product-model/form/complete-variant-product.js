@@ -27,7 +27,7 @@ define(
             /**
              * {@inheritdoc}
              */
-            initialize: function () {
+            configure: function () {
                 UserContext.off('change:catalogLocale change:catalogScope', this.render);
 
                 this.listenTo(UserContext, 'change:catalogLocale change:catalogScope', this.render);

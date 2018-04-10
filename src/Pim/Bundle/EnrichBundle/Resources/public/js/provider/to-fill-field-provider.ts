@@ -1,6 +1,6 @@
 const _ = require('underscore');
 
-export const getMissingRequiredFields = (product :any, scope :string, locale :string) :string[] => {
+export const getMissingRequiredFields = (product: any, scope: string, locale: string): string[] => {
   const scopeMissingAttributes = _.findWhere(product.meta.required_missing_attributes, {channel: scope});
   if (undefined === scopeMissingAttributes) {
     return [];
@@ -16,5 +16,3 @@ export const getMissingRequiredFields = (product :any, scope :string, locale :st
 
   return missingAttributeCodes.filter((missingAttribute: string) => levelAttributeCodes.includes(missingAttribute));
 };
-
-

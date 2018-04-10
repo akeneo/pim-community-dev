@@ -1234,7 +1234,7 @@ config:
         pim/template/product-model-edit-form/add-child-form-fields-container: pimenrich/templates/product_model/add-child/fields-container.html
 
         # Order last
-        pim/form: pimenrich/js/product/form
+        pim/form: pimenrich/js/view/base
 
         # Alias overrides
         pimcommunity/job/common/edit/launch:      pimenrich/js/job/common/edit/launch
