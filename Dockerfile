@@ -117,6 +117,7 @@ RUN cp app/config/parameters_test.yml.dist app/config/parameters_test.yml \
   && mysql -e "GRANT ALL ON \`akeneo_pim\`.* TO 'akeneo_pim'@'%' ;" \
   && mysql -e "FLUSH PRIVILEGES;" \
   && bin/console --env=test pim:install --force \
+  && bin/console --env=test pim:installer:dump-extensions \
   && a2ensite pim \
   && chown -R www-data:www-data var web \
   && chmod 777 -R /tmp/pim app/file_storage app/uploads app/archive features/Context/fixtures/
