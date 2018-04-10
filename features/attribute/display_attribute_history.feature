@@ -24,8 +24,8 @@ Feature: Display the attribute history
     When I visit the "History" tab
     Then there should be 2 update
     And I should see history:
-      | version | property | value     |
-      | 1       | code     | packaging |
+      | version | property | value     | date |
+      | 1       | code     | packaging | now  |
     And I visit the "Options" tab
     And I create the following attribute options:
       | Code      |

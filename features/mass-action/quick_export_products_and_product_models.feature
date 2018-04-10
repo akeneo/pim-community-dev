@@ -49,7 +49,8 @@ Feature: Export products and product models
       """
 
   Scenario: Successfully export all columns for quick export product models
-    When I select row amor
+    When I sort by "ID" value ascending
+    And I select row amor
     And I press "CSV (All attributes)" on the "Quick Export" dropdown button
     And I wait for the "csv_product_quick_export" quick export to finish
     And I go on the last executed job resume of "csv_product_quick_export"

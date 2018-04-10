@@ -19,9 +19,6 @@ class FilteredFamilyReader implements ItemReaderInterface, StepExecutionAwareInt
     /** @var StepExecution */
     protected $stepExecution;
 
-    /** @var bool */
-    protected $isExecuted;
-
     /** @var ArrayCollection */
     protected $families;
 
@@ -34,7 +31,6 @@ class FilteredFamilyReader implements ItemReaderInterface, StepExecutionAwareInt
     public function __construct(FamilyRepositoryInterface $familyRepository)
     {
         $this->familyRepository = $familyRepository;
-        $this->isExecuted = false;
     }
 
     /**
@@ -42,22 +38,20 @@ class FilteredFamilyReader implements ItemReaderInterface, StepExecutionAwareInt
      */
     public function read()
     {
-        $filters = $this->getConfiguredFilters();
-        if (!$this->isExecuted) {
-            $this->isExecuted = true;
+        if (null === $this->families) {
+            $filters = $this->getConfiguredFilters();
             $this->families = $this->getFamilies($filters);
-        }
-
-        $result = $this->families->current();
-
-        if (!empty($result)) {
-            $this->stepExecution->incrementSummaryInfo('read');
-            $this->families->next();
         } else {
-            $result = null;
+            $this->families->next();
         }
 
-        return $result;
+        $family = $this->families->current();
+
+        if (null !== $family) {
+            $this->stepExecution->incrementSummaryInfo('read');
+        }
+
+        return $family;
     }
 
     /**
@@ -75,7 +69,7 @@ class FilteredFamilyReader implements ItemReaderInterface, StepExecutionAwareInt
      *
      * @param array $filters
      *
-     * @return \Doctrine\Common\Collections\ArrayCollection
+     * @return \Generator
      */
     protected function getFamilies(array $filters)
     {
@@ -87,7 +81,13 @@ class FilteredFamilyReader implements ItemReaderInterface, StepExecutionAwareInt
 
         $familiesIds = $filter['value'];
 
-        return new ArrayCollection($this->familyRepository->findByIds($familiesIds));
+        foreach ($familiesIds as $familyId) {
+            $family = $this->familyRepository->find($familyId);
+
+            if (null !== $family) {
+                yield $family;
+            }
+        }
     }
 
     /**

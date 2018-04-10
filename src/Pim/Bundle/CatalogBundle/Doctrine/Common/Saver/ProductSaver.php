@@ -81,6 +81,8 @@ class ProductSaver implements SaverInterface, BulkSaverInterface
             return;
         }
 
+        $products = array_unique($products, SORT_REGULAR);
+
         foreach ($products as $product) {
             $this->validateProduct($product);
         }
@@ -88,7 +90,6 @@ class ProductSaver implements SaverInterface, BulkSaverInterface
         $options['unitary'] = false;
 
         $this->eventDispatcher->dispatch(StorageEvents::PRE_SAVE_ALL, new GenericEvent($products, $options));
-
 
         foreach ($products as $product) {
             $this->eventDispatcher->dispatch(StorageEvents::PRE_SAVE, new GenericEvent($product, $options));

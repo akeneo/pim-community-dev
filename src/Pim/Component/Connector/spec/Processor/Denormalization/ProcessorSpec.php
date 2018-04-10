@@ -2,6 +2,8 @@
 
 namespace spec\Pim\Component\Connector\Processor\Denormalization;
 
+use Akeneo\Component\Batch\Item\ExecutionContext;
+use Akeneo\Component\Batch\Item\ItemProcessorInterface;
 use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
@@ -26,11 +28,10 @@ class ProcessorSpec extends ObjectBehavior
         SimpleFactory $factory,
         ObjectUpdaterInterface $updater,
         ValidatorInterface $validator,
-        ObjectDetacherInterface $objectDetacher,
-        StepExecution $stepExecution
+        ObjectDetacherInterface $objectDetacher
+
     ) {
         $this->beConstructedWith($repository, $factory, $updater, $validator, $objectDetacher);
-        $this->setStepExecution($stepExecution);
     }
 
     function it_is_a_processor()
@@ -134,6 +135,61 @@ class ProcessorSpec extends ObjectBehavior
                 'process',
                 [$values]
             );
+    }
+
+    function it_does_not_create_the_same_channel_twice_in_the_same_batch(
+        $repository,
+        $updater,
+        $validator,
+        $factory,
+        StepExecution $stepExecution,
+        ExecutionContext $executionContext,
+        ConstraintViolationListInterface $violationList,
+        ChannelInterface $channel
+    ) {
+        $this->setStepExecution($stepExecution);
+        $repository->getIdentifierProperties()->willReturn(['code']);
+        $stepExecution->getExecutionContext()->willReturn($executionContext);
+        $executionContext->get('processed_items_batch')->willReturn(null);
+
+        $repository->findOneByIdentifier('mycode')->willReturn(null);
+        $factory->create()->shouldBeCalledTimes(1)->willReturn($channel);
+
+        $executionContext
+            ->put('processed_items_batch', ['mycode' => $channel])
+            ->shouldBeCalled()
+            ->will(function() use ($executionContext, $channel) {
+                $executionContext->get('processed_items_batch')->willReturn(['mycode' => $channel]);
+            });
+
+        $firstChannelValues = $this->getValues();
+
+        $updater
+            ->update($channel, $firstChannelValues)
+            ->shouldBeCalled();
+
+        $validator
+            ->validate($channel)
+            ->willReturn($violationList);
+
+        $this
+            ->process($firstChannelValues)
+            ->shouldReturn($channel);
+
+        $secondChannelValues = $this->getValues();
+        $secondChannelValues['label'] = 'Another label';
+
+        $updater
+            ->update($channel, $secondChannelValues)
+            ->shouldBeCalled();
+
+        $validator
+            ->validate($channel)
+            ->willReturn($violationList);
+
+        $this
+            ->process($secondChannelValues)
+            ->shouldReturn($channel);
     }
 
     protected function getValues()

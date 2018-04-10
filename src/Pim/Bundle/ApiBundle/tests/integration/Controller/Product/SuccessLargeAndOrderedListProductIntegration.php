@@ -8,8 +8,7 @@ use Akeneo\Test\Integration\Configuration;
 use Pim\Component\Catalog\Model\ProductInterface;
 
 /**
- * We want to test the API is capable of returning an ordered list of 100 items.
- * ie, twice the size of a cursor page
+ * We want to test the API is capable of returning an ordered list twice the size of a cursor page
  *
  * @group ce
  */
@@ -35,8 +34,7 @@ class SuccessLargeAndOrderedListProductIntegration extends AbstractProductTestCa
             $this->products[$product->getId()] = $product;
         }
         // the API will return products sorted alphabetical by MySQL ID, and that's what we expect
-        // for instance, if we have 100 products
-        // 1, 10, 100, 11, 12, 13, 14, 15, 16, 17, 18, 19, 2, 20, 21...
+        // 1, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 2, 20, 21...
         ksort($this->products, SORT_STRING);
     }
 
@@ -50,13 +48,13 @@ class SuccessLargeAndOrderedListProductIntegration extends AbstractProductTestCa
         $lastEncryptedId = rawurlencode($this->getEncryptedId(end($this->products)));
 
         $client = $this->createAuthenticatedClient();
-        $client->request('GET', 'api/rest/v1/products?limit=100&pagination_type=search_after');
+        $client->request('GET', "api/rest/v1/products?limit={$this->getListSize()}&pagination_type=search_after");
         $expected = <<<JSON
 {
     "_links": {
-        "self"  : {"href": "http://localhost/api/rest/v1/products?pagination_type=search_after&limit=100"},
-        "first" : {"href": "http://localhost/api/rest/v1/products?pagination_type=search_after&limit=100"},
-        "next" : {"href": "http://localhost/api/rest/v1/products?pagination_type=search_after&limit=100&search_after={$lastEncryptedId}"}
+        "self"  : {"href": "http://localhost/api/rest/v1/products?pagination_type=search_after&limit={$this->getListSize()}"},
+        "first" : {"href": "http://localhost/api/rest/v1/products?pagination_type=search_after&limit={$this->getListSize()}"},
+        "next" : {"href": "http://localhost/api/rest/v1/products?pagination_type=search_after&limit={$this->getListSize()}&search_after={$lastEncryptedId}"}
     },
     "_embedded"    : {
 		"items": [
@@ -74,7 +72,7 @@ JSON;
      */
     protected function getConfiguration(): Configuration
     {
-        return $this->catalog->useTechnicalSqlCatalog();
+        return $this->catalog->useMinimalCatalog();
     }
 
     /**
@@ -121,14 +119,13 @@ JSON;
     }
 
     /**
-     * We want to test the API is capable of returning a list of 100 items.
-     * (Twice the page of the cursor).
+     * We want to test the API is capable of returning a list twice the page of the cursor
      *
      * @return int
      */
     private function getListSize(): int
     {
-        $cursorPageSize = (int)$this->getParameter('pim_catalog.factory.product_cursor.page_size');
+        $cursorPageSize = (int)$this->getParameter('pim_job_product_batch_size');
 
         return $cursorPageSize * 2;
     }
