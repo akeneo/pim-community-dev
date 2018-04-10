@@ -9,9 +9,10 @@ parameters:
     pimee_security.form.provider.form.product.class: PimEnterprise\Bundle\SecurityBundle\Form\Provider\ProductFormProvider
     pimee_security.form.provider.form.product_model.class: PimEnterprise\Bundle\SecurityBundle\Form\Provider\ProductModelFormProvider
     pimee_security.form.subscriber.job_profile_permissions.class: PimEnterprise\Bundle\SecurityBundle\Form\EventListener\JobProfilePermissionsSubscriber
+    pimee_security.form.type.job_profile_permissions.class: PimEnterprise\Bundle\SecurityBundle\Form\Type\JobProfilePermissionsType
 
 services:
-    # Form
+    # Form type
     pimee_security.form.type.groups:
         class: '%pimee_security.form.type.groups.class%'
         tags:
@@ -41,6 +42,11 @@ services:
             - ['scope', 'locale']
         tags:
             - { name: form.type, alias: pim_enrich_product_grid_filter_choice }
+
+    pimee_security.form.type.job_profile_permissions:
+        class: '%pimee_security.form.type.job_profile_permissions.class%'
+        tags:
+            - { name: form.type, alias: pimee_import_export_job_profile_permissions }
 
     # Event listener
     pimee_security.form.subscriber.category_permissions:

@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\PimEnterprise\Bundle\ImportExportBundle\Form\Type;
+namespace spec\PimEnterprise\Bundle\SecurityBundle\Form\Type;
 
 use PhpSpec\ObjectBehavior;
 use PimEnterprise\Bundle\SecurityBundle\Form\Type\GroupsType;

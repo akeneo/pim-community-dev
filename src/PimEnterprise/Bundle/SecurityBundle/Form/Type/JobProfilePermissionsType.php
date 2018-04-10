@@ -9,9 +9,8 @@
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Bundle\ImportExportBundle\Form\Type;
+namespace PimEnterprise\Bundle\SecurityBundle\Form\Type;
 
-use PimEnterprise\Bundle\SecurityBundle\Form\Type\GroupsType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;

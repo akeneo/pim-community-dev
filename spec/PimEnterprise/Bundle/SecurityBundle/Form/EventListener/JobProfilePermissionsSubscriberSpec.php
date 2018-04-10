@@ -6,7 +6,7 @@ use Akeneo\Component\Batch\Model\JobInstance;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\UserBundle\Doctrine\ORM\Repository\GroupRepository;
-use PimEnterprise\Bundle\ImportExportBundle\Form\Type\JobProfilePermissionsType;
+use PimEnterprise\Bundle\SecurityBundle\Form\Type\JobProfilePermissionsType;
 use PimEnterprise\Bundle\SecurityBundle\Manager\JobProfileAccessManager;
 use Prophecy\Argument;
 use Symfony\Component\Form\Form;
