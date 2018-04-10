@@ -57,12 +57,13 @@ Feature: Display the attribute group history
       | 3       | attributes  | description        |
       | 4       | attributes  |                    |
 
-    When I visit the "Properties" tab
+  @javascript @jira https://akeneo.atlassian.net/browse/PIM-7279
+  Scenario: Prevent javascript execution from history tab while updating attribute group label translations
+    Given I am on the "other" attribute group page
     And I fill in the following information:
       | English (United States) | <script>document.getElementById('top-page').classList.add('foo');</script> |
-    And I save the group
-    Then I should see the flash message "Attribute group successfully updated"
+    And I save the attribute group
+    Then I should see the flash message "Attribute group successfully updated."
     When I visit the "History" tab
     Then I should not see a "#top-page.foo" element
-    And there should be 5 update
     And I should see "label-en_US: <script>document.getElementById('top-page').classList.add('foo');</script>"
