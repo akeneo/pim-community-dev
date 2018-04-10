@@ -267,10 +267,6 @@ class CategoryTreeController extends Controller
      */
     public function createAction(Request $request, $parent = null)
     {
-        if (!$request->isXmlHttpRequest()) {
-            return new RedirectResponse('/');
-        }
-
         if (false === $this->securityFacade->isGranted($this->buildAclName('category_create'))) {
             throw new AccessDeniedException();
         }
@@ -326,10 +322,6 @@ class CategoryTreeController extends Controller
      */
     public function editAction(Request $request, $id)
     {
-        if (!$request->isXmlHttpRequest()) {
-            return new RedirectResponse('/');
-        }
-
         if (false === $this->securityFacade->isGranted($this->buildAclName('category_edit'))) {
             throw new AccessDeniedException();
         }
