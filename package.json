@@ -82,7 +82,6 @@
     "loader-utils": "1.1.0",
     "lodash": "4.17.4",
     "merge-objects": "1.0.5",
-    "puppeteer": "^1.0.0",
     "raw-loader": "0.5.1",
     "react": "^16.3.1",
     "react-dom": "^16.3.1",

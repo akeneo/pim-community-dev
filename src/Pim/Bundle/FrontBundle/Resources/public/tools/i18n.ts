@@ -19,3 +19,8 @@ export const getFlag = (locale: string, displayLanguage: boolean = true): string
 export const getLabel = (labels: {[locale: string]: string}, locale: string, fallback: string): string => {
   return labels[locale] ? labels[locale] : `[${fallback}]`;
 };
+
+export default {
+  getLabel,
+  getFlag,
+};
