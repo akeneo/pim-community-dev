@@ -3,6 +3,7 @@
 namespace Akeneo\Bundle\ElasticsearchBundle\IndexConfiguration;
 
 use Symfony\Component\Yaml\Parser;
+use Symfony\Component\Yaml\Yaml;
 
 /**
  * Elasticsearch configuration loader. Allows to load "index settings", "mappings" and "aliases".
@@ -48,7 +49,7 @@ class Loader
                 );
             }
 
-            $configuration = $yaml->parse(file_get_contents($configurationFile));
+            $configuration = $yaml->parse(file_get_contents($configurationFile), Yaml::PARSE_CONSTANT);
 
             if (isset($configuration['settings'])) {
                 $settings = array_merge_recursive($settings, $configuration['settings']);
