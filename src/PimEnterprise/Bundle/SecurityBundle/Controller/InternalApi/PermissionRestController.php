@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Bundle\SecurityBundle\Controller;
+namespace PimEnterprise\Bundle\SecurityBundle\Controller\InternalApi;
 
 use Doctrine\ORM\EntityRepository;
 use Pim\Bundle\UserBundle\Context\UserContext;
