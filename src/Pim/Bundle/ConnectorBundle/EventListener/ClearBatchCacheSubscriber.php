@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Pim\Bundle\ConnectorBundle\EventListener;
 
 use Akeneo\Component\Batch\Event\EventInterface;
-use Akeneo\Component\StorageUtils\Cache\CacheClearerInterface;
+use Akeneo\Component\StorageUtils\Cache\EntityManagerClearerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
@@ -17,13 +17,13 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
  */
 class ClearBatchCacheSubscriber implements EventSubscriberInterface
 {
-    /** @var CacheClearerInterface */
+    /** @var EntityManagerClearerInterface */
     private $cacheClearer;
 
     /**
-     * @param CacheClearerInterface $cacheClearer
+     * @param EntityManagerClearerInterface $cacheClearer
      */
-    public function __construct(CacheClearerInterface $cacheClearer)
+    public function __construct(EntityManagerClearerInterface $cacheClearer)
     {
         $this->cacheClearer = $cacheClearer;
     }

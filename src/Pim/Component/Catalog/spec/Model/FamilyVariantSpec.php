@@ -141,20 +141,6 @@ class FamilyVariantSpec extends ObjectBehavior
         ]);
     }
 
-    function it_gets_the_attribute_set_level_for_provided_attribute_code()
-    {
-        $name = new Attribute();
-        $name->setCode('name');
-        $variantAttributeSet = new VariantAttributeSet();
-        $variantAttributeSet->addAttribute($name);
-        $variantAttributeSet->setLevel(1);
-        $family = new Family();
-        $family->addAttribute($name);
-        $this->setFamily($family);
-        $this->addVariantAttributeSet($variantAttributeSet);
-        $this->getLevelForAttributeCode('name')->shouldReturn(1);
-    }
-
     function it_throws_an_exception_if_family_variant_does_not_contain_asked_attribute_code()
     {
         $attribute = new Attribute();
