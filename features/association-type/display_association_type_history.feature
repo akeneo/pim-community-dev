@@ -20,3 +20,16 @@ Feature: Display the association type history
     And I should see history:
       | version | property | value       |
       | 1       | code     | REPLACEMENT |
+
+  @javascript @jira https://akeneo.atlassian.net/browse/PIM-7279
+  Scenario: Prevent javascript execution from history tab while updating association type label translations
+    Given a "default" catalog configuration
+    And I am logged in as "Julia"
+    And I am on the "Pack" association type page
+    And I fill in the following information:
+      | English (United States) | <script>document.getElementById('top-page').classList.add('foo');</script> |
+    And I save the association type
+    Then I should see the flash message "Association type successfully updated."
+    When I visit the "History" tab
+    Then I should not see a "#top-page.foo" element
+    And I should see "label-en_US: <script>document.getElementById('top-page').classList.add('foo');</script>"
