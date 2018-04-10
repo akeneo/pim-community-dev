@@ -47,5 +47,4 @@ Feature: Display the attribute history
     Then I should see the flash message "Attribute successfully updated."
     When I visit the "History" tab
     Then I should not see a "#top-page.foo" element
-    And there should be 2 update
     And I should see "label-en_US: <script>document.getElementById('top-page').classList.add('foo');</script>"
