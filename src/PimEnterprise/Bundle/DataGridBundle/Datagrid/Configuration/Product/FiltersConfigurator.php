@@ -14,8 +14,8 @@ namespace PimEnterprise\Bundle\DataGridBundle\Datagrid\Configuration\Product;
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use Oro\Bundle\FilterBundle\Grid\Extension\Configuration as FilterConfiguration;
 use Pim\Bundle\DataGridBundle\Datagrid\Configuration\ConfiguratorInterface;
-use PimEnterprise\Bundle\FilterBundle\Filter\Product\PermissionFilter;
-use PimEnterprise\Bundle\FilterBundle\Filter\Product\ProjectCompletenessFilter;
+use PimEnterprise\Bundle\SecurityBundle\Datagrid\Filter\PermissionFilter;
+use PimEnterprise\Bundle\TeamworkAssistantBundle\Datagrid\Filter\ProjectCompletenessFilter;
 use PimEnterprise\Component\TeamworkAssistant\Repository\ProjectRepositoryInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
@@ -122,7 +122,7 @@ class FiltersConfigurator implements ConfiguratorInterface
                     'multiple' => false,
                     'choices'  => [
                         'pimee_workflow.product.permission.own' => PermissionFilter::OWN,
-                        'pimee_workflow.product.permission.edit' => PermissionFilter::EDIT,
+                        'pimee_workflow.product.permission.edit' => \PimEnterprise\Bundle\SecurityBundle\Datagrid\Filter\PermissionFilter::EDIT,
                         'pimee_workflow.product.permission.view' => PermissionFilter::VIEW,
                     ]
                 ]
@@ -148,14 +148,14 @@ class FiltersConfigurator implements ConfiguratorInterface
         }
 
         $choices = [
-            'teamwork_assistant.datagrid.contributor_todo'        => ProjectCompletenessFilter::CONTRIBUTOR_TODO,
+            'teamwork_assistant.datagrid.contributor_todo'        => \PimEnterprise\Bundle\TeamworkAssistantBundle\Datagrid\Filter\ProjectCompletenessFilter::CONTRIBUTOR_TODO,
             'teamwork_assistant.datagrid.contributor_in_progress' => ProjectCompletenessFilter::CONTRIBUTOR_IN_PROGRESS,
-            'teamwork_assistant.datagrid.contributor_done'        => ProjectCompletenessFilter::CONTRIBUTOR_DONE,
+            'teamwork_assistant.datagrid.contributor_done'        => \PimEnterprise\Bundle\TeamworkAssistantBundle\Datagrid\Filter\ProjectCompletenessFilter::CONTRIBUTOR_DONE,
         ];
 
         if ($this->isProjectOwner) {
             $choices['teamwork_assistant.datagrid.owner_todo'] = ProjectCompletenessFilter::OWNER_TODO;
-            $choices['teamwork_assistant.datagrid.owner_in_progress'] = ProjectCompletenessFilter::OWNER_IN_PROGRESS;
+            $choices['teamwork_assistant.datagrid.owner_in_progress'] = \PimEnterprise\Bundle\TeamworkAssistantBundle\Datagrid\Filter\ProjectCompletenessFilter::OWNER_IN_PROGRESS;
             $choices['teamwork_assistant.datagrid.owner_done'] = ProjectCompletenessFilter::OWNER_DONE;
         }
 

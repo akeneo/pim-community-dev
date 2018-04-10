@@ -6,6 +6,7 @@ parameters:
     pimee_security.datagrid.event_listener.configure_job_profile_grid_listener.class: PimEnterprise\Bundle\SecurityBundle\Datagrid\EventListener\ConfigureJobProfileGridListener
     pimee_security.datagrid.filter.datagrid_view.class: PimEnterprise\Bundle\SecurityBundle\Datagrid\DatagridViewFilter
     pimee_security.datagrid.manager.datagrid_view.class: PimEnterprise\Bundle\SecurityBundle\Datagrid\DatagridViewManager
+    pimee_security.datagrid.product_permission_filter.class: PimEnterprise\Bundle\SecurityBundle\Datagrid\Filter\PermissionFilter
 
 services:
     # Configuration
@@ -64,3 +65,14 @@ services:
             - '@pim_datagrid.saver.datagrid_view'
             - '@pim_datagrid.remover.datagrid_view'
             - '@security.authorization_checker'
+
+    # Filter
+    pimee_security.datagrid.product_permission_filter:
+        class: '%pimee_security.datagrid.product_permission_filter.class%'
+        arguments:
+            - '@form.factory'
+            - '@oro_filter.filter_utility'
+            - '@security.token_storage'
+            - '@pimee_security.repository.category_access'
+        tags:
+            - { name: oro_filter.extension.orm_filter.filter, type: product_permission }

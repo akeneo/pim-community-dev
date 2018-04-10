@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Bundle\FilterBundle\Filter\Product;
+namespace PimEnterprise\Bundle\SecurityBundle\Datagrid\Filter;
 
 use Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
 use Oro\Bundle\FilterBundle\Filter\ChoiceFilter as OroChoiceFilter;

@@ -1,13 +1,13 @@
 <?php
 
-namespace spec\PimEnterprise\Bundle\FilterBundle\Filter\Product;
+namespace spec\PimEnterprise\Bundle\SecurityBundle\Datagrid\Filter;
 
 use Oro\Bundle\FilterBundle\Filter\FilterUtility;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\FilterBundle\Datasource\Orm\OrmFilterProductDatasourceAdapter;
-use Pim\Component\User\Model\UserInterface;
 use Pim\Component\Catalog\Query\Filter\Operators;
 use Pim\Component\Catalog\Query\ProductQueryBuilderInterface;
+use Pim\Component\User\Model\UserInterface;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;
 use PimEnterprise\Component\Security\Attributes;
 use Prophecy\Argument;

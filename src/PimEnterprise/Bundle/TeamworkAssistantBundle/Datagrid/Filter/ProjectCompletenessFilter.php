@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Bundle\FilterBundle\Filter\Product;
+namespace PimEnterprise\Bundle\TeamworkAssistantBundle\Datagrid\Filter;
 
 use Oro\Bundle\DataGridBundle\Datagrid\RequestParameters;
 use Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;

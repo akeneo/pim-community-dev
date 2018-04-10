@@ -12,7 +12,7 @@
 namespace PimEnterprise\Bundle\TeamworkAssistantBundle\Doctrine\ORM\Repository;
 
 use Doctrine\ORM\EntityManager;
-use PimEnterprise\Bundle\FilterBundle\Filter\Product\ProjectCompletenessFilter;
+use PimEnterprise\Bundle\TeamworkAssistantBundle\Datagrid\Filter\ProjectCompletenessFilter;
 use PimEnterprise\Bundle\TeamworkAssistantBundle\Doctrine\ORM\TableNameMapper;
 use PimEnterprise\Component\TeamworkAssistant\Model\ProjectCompleteness;
 use PimEnterprise\Component\TeamworkAssistant\Model\ProjectInterface;

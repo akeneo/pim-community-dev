@@ -15,7 +15,7 @@ use Akeneo\Component\StorageUtils\Remover\RemoverInterface;
 use Akeneo\Component\StorageUtils\Repository\SearchableRepositoryInterface;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
-use PimEnterprise\Bundle\FilterBundle\Filter\Product\ProjectCompletenessFilter;
+use PimEnterprise\Bundle\TeamworkAssistantBundle\Datagrid\Filter\ProjectCompletenessFilter;
 use PimEnterprise\Bundle\TeamworkAssistantBundle\Datagrid\FilterConverter;
 use PimEnterprise\Bundle\TeamworkAssistantBundle\Job\ProjectCalculationJobLauncher;
 use PimEnterprise\Bundle\TeamworkAssistantBundle\Security\ProjectVoter;
