@@ -243,8 +243,7 @@ class PimRequirements extends SymfonyRequirements
     {
         return new PDO(
             sprintf(
-                'mysql:port=%s;host=%s',
-                $parameters['parameters']['database_port'],
+                'mysql:host=%s',
                 $parameters['parameters']['database_host']
             ),
             $parameters['parameters']['database_user'],

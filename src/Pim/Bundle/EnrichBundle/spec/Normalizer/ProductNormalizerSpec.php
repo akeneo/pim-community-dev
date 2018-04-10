@@ -2,10 +2,13 @@
 
 namespace spec\Pim\Bundle\EnrichBundle\Normalizer;
 
+use Akeneo\Component\FileStorage\Model\FileInfoInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Persistence\ObjectManager;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface;
+use Pim\Bundle\EnrichBundle\Doctrine\ORM\Query\AscendantCategories;
+use Pim\Bundle\EnrichBundle\Normalizer\FileNormalizer;
 use Pim\Bundle\EnrichBundle\Normalizer\ImageNormalizer;
 use Pim\Bundle\EnrichBundle\Normalizer\VariantNavigationNormalizer;
 use Pim\Bundle\EnrichBundle\Provider\Form\FormProviderInterface;
@@ -25,6 +28,7 @@ use Pim\Component\Catalog\Model\GroupInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
 use Pim\Component\Catalog\Model\ValueInterface;
+use Pim\Component\Catalog\Model\VariantProductInterface;
 use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
 use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
 use Pim\Component\Catalog\ValuesFiller\EntityWithFamilyValuesFillerInterface;
@@ -143,7 +147,6 @@ class ProductNormalizerSpec extends ObjectBehavior
             'picture'             => [['data' => 'a/b/c/my_picture.jpg', 'locale' => null, 'scope' => null]]
         ];
 
-        $userContext->getUserTimezone()->willReturn('Pacific/Kiritimati');
         $normalizer->normalize($mug, 'standard', $options)->willReturn($productNormalized);
         $localizedConverter->convertToLocalizedFormats($productNormalized['values'], $options)->willReturn($valuesLocalized);
 
@@ -164,14 +167,11 @@ class ProductNormalizerSpec extends ObjectBehavior
 
         $productValueConverter->convert($valuesLocalized)->willReturn($valuesConverted);
 
-        $mug->isVariant()->willReturn(false);
         $mug->getId()->willReturn(12);
         $versionManager->getOldestLogEntry($mug)->willReturn('create_version');
-        $versionNormalizer->normalize('create_version', 'internal_api', ['timezone' => 'Pacific/Kiritimati'])
-            ->willReturn('normalized_create_version');
+        $versionNormalizer->normalize('create_version', 'internal_api')->willReturn('normalized_create_version');
         $versionManager->getNewestLogEntry($mug)->willReturn('update_version');
-        $versionNormalizer->normalize('update_version', 'internal_api', ['timezone' => 'Pacific/Kiritimati'])
-            ->willReturn('normalized_update_version');
+        $versionNormalizer->normalize('update_version', 'internal_api')->willReturn('normalized_update_version');
 
         $localeRepository->getActivatedLocaleCodes()->willReturn(['en_US', 'fr_FR']);
         $mug->getLabel('en_US', 'mobile')->willReturn('A nice Mug!');
@@ -256,7 +256,7 @@ class ProductNormalizerSpec extends ObjectBehavior
         $attributesProvider,
         $ascendantCategories,
         $incompleteValuesNormalizer,
-        ProductInterface $mug,
+        VariantProductInterface $mug,
         AssociationInterface $upsell,
         AssociationTypeInterface $groupType,
         GroupInterface $group,
@@ -298,8 +298,6 @@ class ProductNormalizerSpec extends ObjectBehavior
             'picture'             => [['data' => 'a/b/c/my_picture.jpg', 'locale' => null, 'scope' => null]]
         ];
 
-        $mug->isVariant()->willReturn(true);
-        $userContext->getUserTimezone()->willReturn('Pacific/Kiritimati');
         $normalizer->normalize($mug, 'standard', $options)->willReturn($productNormalized);
         $localizedConverter->convertToLocalizedFormats($productNormalized['values'], $options)->willReturn($valuesLocalized);
 
@@ -322,11 +320,9 @@ class ProductNormalizerSpec extends ObjectBehavior
 
         $mug->getId()->willReturn(12);
         $versionManager->getOldestLogEntry($mug)->willReturn('create_version');
-        $versionNormalizer->normalize('create_version', 'internal_api', ['timezone' => 'Pacific/Kiritimati'])
-            ->willReturn('normalized_create_version');
+        $versionNormalizer->normalize('create_version', 'internal_api')->willReturn('normalized_create_version');
         $versionManager->getNewestLogEntry($mug)->willReturn('update_version');
-        $versionNormalizer->normalize('update_version', 'internal_api', ['timezone' => 'Pacific/Kiritimati'])
-            ->willReturn('normalized_update_version');
+        $versionNormalizer->normalize('update_version', 'internal_api')->willReturn('normalized_update_version');
 
         $localeRepository->getActivatedLocaleCodes()->willReturn(['en_US', 'fr_FR']);
         $mug->getLabel('en_US', 'mobile')->willReturn('A nice Mug!');

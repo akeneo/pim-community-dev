@@ -13,8 +13,10 @@ use Pim\Component\Catalog\Completeness\CompletenessCalculatorInterface;
 use Pim\Component\Catalog\FamilyVariant\EntityWithFamilyVariantAttributesProvider;
 use Pim\Component\Catalog\Localization\Localizer\AttributeConverterInterface;
 use Pim\Component\Catalog\Manager\CompletenessManager;
+use Pim\Component\Catalog\Model\EntityWithFamilyVariantInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ValueInterface;
+use Pim\Component\Catalog\Model\VariantProductInterface;
 use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
 use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
 use Pim\Component\Catalog\ValuesFiller\EntityWithFamilyValuesFillerInterface;
@@ -146,7 +148,7 @@ class ProductNormalizer implements NormalizerInterface
         EntityWithFamilyVariantAttributesProvider $attributesProvider,
         VariantNavigationNormalizer $navigationNormalizer,
         AscendantCategoriesInterface $ascendantCategoriesQuery,
-        NormalizerInterface $incompleteValuesNormalizer
+        NormalizerInterface $incompleteValuesNormalizer = null
     ) {
         $this->normalizer                       = $normalizer;
         $this->versionNormalizer                = $versionNormalizer;
@@ -190,22 +192,16 @@ class ProductNormalizer implements NormalizerInterface
         $oldestLog = $this->versionManager->getOldestLogEntry($product);
         $newestLog = $this->versionManager->getNewestLogEntry($product);
 
-        $created = null !== $oldestLog ?
-            $this->versionNormalizer->normalize(
-                $oldestLog,
-                'internal_api',
-                ['timezone' => $this->userContext->getUserTimezone()]
-            ) : null;
-        $updated = null !== $newestLog ?
-            $this->versionNormalizer->normalize(
-                $newestLog,
-                'internal_api',
-                ['timezone' => $this->userContext->getUserTimezone()]
-            ) : null;
+        $created = null !== $oldestLog ? $this->versionNormalizer->normalize($oldestLog, 'internal_api') : null;
+        $updated = null !== $newestLog ? $this->versionNormalizer->normalize($newestLog, 'internal_api') : null;
 
         $scopeCode = $context['channel'] ?? null;
 
-        $incompleteValues = $this->incompleteValuesNormalizer->normalize($product);
+        $incompleteValues = [];
+        // TODO: remove this check on master
+        if (null !== $this->incompleteValuesNormalizer) {
+            $incompleteValues = $this->incompleteValuesNormalizer->normalize($product);
+        }
 
         $normalizedProduct['meta'] = [
             'form'              => $this->formProvider->getForm($product),
@@ -219,8 +215,10 @@ class ProductNormalizer implements NormalizerInterface
             'image'             => $this->normalizeImage($product->getImage(), $context),
         ] + $this->getLabels($product, $scopeCode) + $this->getAssociationMeta($product);
 
-        $normalizedProduct['meta']['ascendant_category_ids'] = $product->isVariant() ?
-            $this->ascendantCategoriesQuery->getCategoryIds($product) : [];
+        $normalizedProduct['meta']['ascendant_category_ids'] =
+            ($product instanceof EntityWithFamilyVariantInterface)
+            ? $this->ascendantCategoriesQuery->getCategoryIds($product)
+            : [];
 
         $normalizedProduct['meta'] += $this->getMetaForVariantProduct($product, $format, $context);
 
@@ -326,7 +324,7 @@ class ProductNormalizer implements NormalizerInterface
             'level'                     => null,
         ];
 
-        if (!$product instanceof ProductInterface || !$product->isVariant()) {
+        if (!$product instanceof VariantProductInterface) {
             return $meta;
         }
 

@@ -5,7 +5,6 @@ namespace Pim\Component\User\Updater;
 use Akeneo\Component\Classification\Model\CategoryInterface;
 use Akeneo\Component\StorageUtils\Exception\InvalidObjectException;
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
-use Akeneo\Component\StorageUtils\Exception\UnknownPropertyException;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Doctrine\Common\Util\ClassUtils;
@@ -142,16 +141,16 @@ class UserUpdater implements ObjectUpdaterInterface
             case 'email_notifications':
                 $user->setEmailNotifications($data);
                 break;
-            case 'catalog_default_locale':
-                $user->setCatalogLocale($this->findLocale('catalog_default_locale', $data));
+            case 'catalog_locale':
+                $user->setCatalogLocale($this->findLocale('catalog_locale', $data));
                 break;
-            case 'user_default_locale':
-                $user->setUiLocale($this->findLocale('user_default_locale', $data));
+            case 'user_locale':
+                $user->setUiLocale($this->findLocale('user_locale', $data));
                 break;
-            case 'catalog_default_scope':
+            case 'catalog_scope':
                 $user->setCatalogScope($this->findChannel($data));
                 break;
-            case 'default_category_tree':
+            case 'default_tree':
                 $user->setDefaultTree($this->findCategory($data));
                 break;
             case 'roles':
@@ -166,17 +165,6 @@ class UserUpdater implements ObjectUpdaterInterface
                     $user->addGroup($role);
                 }
                 break;
-            case 'phone':
-                $user->setPhone($data);
-                break;
-            case 'enabled':
-                $user->setEnabled($data);
-                break;
-            case 'timezone':
-                $user->setTimezone($data);
-                break;
-            default:
-                throw UnknownPropertyException::unknownProperty($field);
         }
     }
 
@@ -193,7 +181,7 @@ class UserUpdater implements ObjectUpdaterInterface
 
         if (null === $category) {
             throw InvalidPropertyException::validEntityCodeExpected(
-                'default_category_tree',
+                'default_tree',
                 'category code',
                 'The category does not exist',
                 static::class,
@@ -242,7 +230,7 @@ class UserUpdater implements ObjectUpdaterInterface
 
         if (null === $channel) {
             throw InvalidPropertyException::validEntityCodeExpected(
-                'catalog_default_scope',
+                'catalog_scope',
                 'channel code',
                 'The channel does not exist',
                 static::class,

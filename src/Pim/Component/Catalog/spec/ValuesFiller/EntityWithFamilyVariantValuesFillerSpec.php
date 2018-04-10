@@ -7,7 +7,6 @@ use Pim\Component\Catalog\Builder\EntityWithValuesBuilderInterface;
 use Pim\Component\Catalog\FamilyVariant\EntityWithFamilyVariantAttributesProvider;
 use Pim\Component\Catalog\Manager\AttributeValuesResolverInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
-use Pim\Component\Catalog\Model\EntityWithFamilyInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
 use Pim\Component\Catalog\Model\ValueInterface;
@@ -26,9 +25,9 @@ class EntityWithFamilyVariantValuesFillerSpec extends ObjectBehavior
     }
 
     function it_throws_an_exception_if_this_is_not_an_entity_with_a_family_variant(
-        EntityWithFamilyInterface $foo
+        ProductInterface $product
     ) {
-        $this->shouldThrow(\InvalidArgumentException::class)->during('fillMissingValues', [$foo]);
+        $this->shouldThrow(\InvalidArgumentException::class)->during('fillMissingValues', [$product]);
     }
 
     function it_fills_missing_product_values_from_attribute_set_on_new_entity_with_family_variant(

@@ -122,7 +122,7 @@ class IdentifierFilter extends AbstractFieldFilter implements FieldFilterInterfa
             case Operators::STARTS_WITH:
                 $clause = [
                     'query_string' => [
-                        'default_field' => static::IDENTIFIER_KEY,
+                        'default_field' => self::IDENTIFIER_KEY,
                         'query'         => $value . '*',
                     ],
                 ];
@@ -132,7 +132,7 @@ class IdentifierFilter extends AbstractFieldFilter implements FieldFilterInterfa
             case Operators::CONTAINS:
                 $clause = [
                     'query_string' => [
-                        'default_field' => static::IDENTIFIER_KEY,
+                        'default_field' => self::IDENTIFIER_KEY,
                         'query'         => '*' . $value . '*',
                     ],
                 ];
@@ -142,13 +142,13 @@ class IdentifierFilter extends AbstractFieldFilter implements FieldFilterInterfa
             case Operators::DOES_NOT_CONTAIN:
                 $mustNotClause = [
                     'query_string' => [
-                        'default_field' => static::IDENTIFIER_KEY,
+                        'default_field' => self::IDENTIFIER_KEY,
                         'query'         => '*' . $value . '*',
                     ],
                 ];
 
                 $filterClause = [
-                    'exists' => ['field' => static::IDENTIFIER_KEY],
+                    'exists' => ['field' => self::IDENTIFIER_KEY],
                 ];
 
                 $this->searchQueryBuilder->addMustNot($mustNotClause);
@@ -158,7 +158,7 @@ class IdentifierFilter extends AbstractFieldFilter implements FieldFilterInterfa
             case Operators::EQUALS:
                 $clause = [
                     'term' => [
-                        static::IDENTIFIER_KEY => $value,
+                        self::IDENTIFIER_KEY => $value,
                     ],
                 ];
                 $this->searchQueryBuilder->addFilter($clause);
@@ -167,13 +167,13 @@ class IdentifierFilter extends AbstractFieldFilter implements FieldFilterInterfa
             case Operators::NOT_EQUAL:
                 $mustNotClause = [
                     'term' => [
-                        static::IDENTIFIER_KEY => $value,
+                        self::IDENTIFIER_KEY => $value,
                     ],
                 ];
 
                 $filterClause = [
                     'exists' => [
-                        'field' => static::IDENTIFIER_KEY,
+                        'field' => self::IDENTIFIER_KEY,
                     ],
                 ];
                 $this->searchQueryBuilder->addMustNot($mustNotClause);
@@ -183,7 +183,7 @@ class IdentifierFilter extends AbstractFieldFilter implements FieldFilterInterfa
             case Operators::IN_LIST:
                 $clause = [
                     'terms' => [
-                        static::IDENTIFIER_KEY => $value,
+                        self::IDENTIFIER_KEY => $value,
                     ],
                 ];
 
@@ -193,7 +193,7 @@ class IdentifierFilter extends AbstractFieldFilter implements FieldFilterInterfa
             case Operators::NOT_IN_LIST:
                 $clause = [
                     'terms' => [
-                        static::IDENTIFIER_KEY => $value,
+                        self::IDENTIFIER_KEY => $value,
                     ],
                 ];
 

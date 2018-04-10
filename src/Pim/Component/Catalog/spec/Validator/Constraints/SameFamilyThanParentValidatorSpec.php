@@ -6,6 +6,7 @@ use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Component\Catalog\Model\FamilyVariantInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
+use Pim\Component\Catalog\Model\VariantProductInterface;
 use Pim\Component\Catalog\Validator\Constraints\SameFamilyThanParent;
 use Pim\Component\Catalog\Validator\Constraints\SameFamilyThanParentValidator;
 use PhpSpec\ObjectBehavior;
@@ -30,7 +31,7 @@ class SameFamilyThanParentValidatorSpec extends ObjectBehavior
 
     function it_validates_that_the_family_is_the_same_than_its_parent(
         ExecutionContextInterface $context,
-        ProductInterface $variantProduct,
+        VariantProductInterface $variantProduct,
         SameFamilyThanParent $collaborator,
         ProductModelInterface $productModel,
         FamilyVariantInterface $familyVariant,
@@ -40,7 +41,6 @@ class SameFamilyThanParentValidatorSpec extends ObjectBehavior
     ) {
         $this->initialize($context);
 
-        $variantProduct->isVariant()->willReturn(true);
         $variantProduct->getParent()->willReturn($productModel);
         $productModel->getFamilyVariant()->willReturn($familyVariant);
         $familyVariant->getFamily()->willReturn($productModelFamily);
@@ -57,26 +57,13 @@ class SameFamilyThanParentValidatorSpec extends ObjectBehavior
         $this->validate($variantProduct, $collaborator);
     }
 
-    function it_only_works_with_product_object(SameFamilyThanParent $constraint, \stdClass $product)
+    function it_only_works_with_variant_product_object(SameFamilyThanParent $constraint, ProductInterface $product)
     {
         $this->shouldThrow(UnexpectedTypeException::class)->during('validate', [$product, $constraint]);
     }
 
-    function it_only_works_with_family_variant_axes_constraint(NotBlank $constraint, ProductInterface $product)
+    function it_only_works_with_family_variant_axes_constraint(NotBlank $constraint, VariantProductInterface $product)
     {
         $this->shouldThrow(UnexpectedTypeException::class)->during('validate', [$product, $constraint]);
-    }
-
-    function it_does_not_build_violation_if_product_is_not_variant(
-        ExecutionContextInterface $context,
-        ProductInterface $product,
-        SameFamilyThanParent $constraint
-    ) {
-        $this->initialize($context);
-
-        $product->isVariant()->willReturn(false);
-        $context->buildViolation(Argument::cetera())->shouldNotBeCalled();
-
-        $this->validate($product, $constraint);
     }
 }

@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Pim\Component\Catalog\Validator\Constraints;
 
-use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Model\VariantProductInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
@@ -20,29 +20,25 @@ class SameFamilyThanParentValidator extends ConstraintValidator
     /**
      * {@inheritdoc}
      *
-     * @param ProductInterface $product
+     * @param VariantProductInterface $variantProduct
      */
-    public function validate($product, Constraint $constraint)
+    public function validate($variantProduct, Constraint $constraint)
     {
-        if (!$product instanceof ProductInterface) {
-            throw new UnexpectedTypeException($constraint, ProductInterface::class);
+        if (!$variantProduct instanceof VariantProductInterface) {
+            throw new UnexpectedTypeException($constraint, VariantProductInterface::class);
         }
 
         if (!$constraint instanceof SameFamilyThanParent) {
             throw new UnexpectedTypeException($constraint, SameFamilyThanParent::class);
         }
 
-        if (!$product->isVariant()) {
-            return;
-        }
-
-        if (null === $parent = $product->getParent()) {
+        if (null === $parent = $variantProduct->getParent()) {
             return;
         }
 
         $parentFamily = $parent->getFamilyVariant()->getFamily();
 
-        if (null !== $product->getFamily() && $product->getFamily()->getCode() !== $parentFamily->getCode()) {
+        if (null !== $variantProduct->getFamily() && $variantProduct->getFamily()->getCode() !== $parentFamily->getCode()) {
             $this->context->buildViolation(SameFamilyThanParent::MESSAGE)->atPath($constraint->propertyPath)->addViolation();
         }
     }

@@ -2,6 +2,8 @@
 
 namespace Pim\Component\Catalog\Builder;
 
+use Pim\Component\Catalog\AttributeTypes;
+use Pim\Component\Catalog\Manager\AttributeValuesResolverInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\EntityWithValuesInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
@@ -36,6 +38,9 @@ class ProductBuilder implements ProductBuilderInterface
     /** @var EventDispatcherInterface */
     protected $eventDispatcher;
 
+    /** @var AttributeValuesResolverInterface */
+    protected $valuesResolver;
+
     /** @var string */
     protected $productClass;
 
@@ -47,6 +52,7 @@ class ProductBuilder implements ProductBuilderInterface
      * @param FamilyRepositoryInterface          $familyRepository    Family repository
      * @param AssociationTypeRepositoryInterface $assocTypeRepository Association type repository
      * @param EventDispatcherInterface           $eventDispatcher     Event dispatcher
+     * @param AttributeValuesResolverInterface   $valuesResolver      Attributes values resolver
      * @param EntityWithValuesBuilderInterface   $entityWithValuesBuilder
      * @param array                              $classes             Model classes
      */
@@ -55,6 +61,7 @@ class ProductBuilder implements ProductBuilderInterface
         FamilyRepositoryInterface $familyRepository,
         AssociationTypeRepositoryInterface $assocTypeRepository,
         EventDispatcherInterface $eventDispatcher,
+        AttributeValuesResolverInterface $valuesResolver,
         EntityWithValuesBuilderInterface $entityWithValuesBuilder,
         array $classes
     ) {
@@ -62,6 +69,7 @@ class ProductBuilder implements ProductBuilderInterface
         $this->familyRepository        = $familyRepository;
         $this->assocTypeRepository     = $assocTypeRepository;
         $this->eventDispatcher         = $eventDispatcher;
+        $this->valuesResolver          = $valuesResolver;
         $this->productClass            = $classes['product'];
         $this->associationClass        = $classes['association'];
         $this->entityWithValuesBuilder = $entityWithValuesBuilder;
@@ -82,6 +90,7 @@ class ProductBuilder implements ProductBuilderInterface
         if (null !== $familyCode) {
             $family = $this->familyRepository->findOneByIdentifier($familyCode);
             $product->setFamily($family);
+            $this->addBooleanToProduct($product);
         }
 
         $event = new GenericEvent($product);
@@ -126,5 +135,35 @@ class ProductBuilder implements ProductBuilderInterface
         $data
     ) {
         $this->entityWithValuesBuilder->addOrReplaceValue($values, $attribute, $locale, $scope, $data);
+    }
+
+    /**
+     * Set product values to "false" by default for every boolean attributes in the product's family.
+     *
+     * This workaround is due to the UI that does not manage null values for boolean attributes, only false or true.
+     * It avoids to automatically submit boolean attributes belonging to the product's family in a proposal,
+     * even if those boolean attributes were not modified by the user.
+     *
+     * FIXME : To remove when the UI will manage null values in boolean attributes (PIM-6056).
+     *
+     * @param ProductInterface $product
+     */
+    private function addBooleanToProduct(ProductInterface $product)
+    {
+        $family = $product->getFamily();
+
+        if (null === $family) {
+            return;
+        }
+
+        foreach ($family->getAttributes() as $attribute) {
+            if (AttributeTypes::BOOLEAN === $attribute->getType()) {
+                $requiredValues = $this->valuesResolver->resolveEligibleValues([$attribute]);
+
+                foreach ($requiredValues as $value) {
+                    $this->addOrReplaceValue($product, $attribute, $value['locale'], $value['scope'], false);
+                }
+            }
+        }
     }
 }

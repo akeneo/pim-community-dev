@@ -801,6 +801,8 @@ pim_enrich:
           label: Status wijzigen
           description: De geselecteerde producten zullen worden ingeschakeld of uitgeschakeld.
           field: Om in te schakelen
+        edit_common:
+          label: Bewerk attributen
         change_family:
           description: De familie van de geselecteerde producten zal worden gewijzigd in de gekozen familie
           field: Familie
