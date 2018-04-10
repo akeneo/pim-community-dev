@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Bundle\ImportExportBundle\Manager;
+namespace PimEnterprise\Bundle\SecurityBundle\Manager;
 
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Pim\Bundle\ImportExportBundle\Manager\JobExecutionManager as BaseJobExecutionManager;
