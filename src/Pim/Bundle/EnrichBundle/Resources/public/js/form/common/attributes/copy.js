@@ -82,7 +82,7 @@ define(
                     this.scopeLabel = scopeLabel;
                 }.bind(this)).then(function () {
                     return BaseForm.prototype.configure.apply(this, arguments)
-                });
+                }.bind(this));
             },
 
             /**
