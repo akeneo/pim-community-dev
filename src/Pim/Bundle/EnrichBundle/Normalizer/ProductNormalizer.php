@@ -217,7 +217,7 @@ class ProductNormalizer implements NormalizerInterface
             'completenesses'    => $this->getNormalizedCompletenesses($product),
             'required_missing_attributes' => $incompleteValues,
             'image'             => $this->normalizeImage($product->getImage(), $context),
-        ] + $this->getLabels($product, $scopeCode) + $this->getAssociationMeta($product);
+        ] + $this->getLabels($product, $scopeCode);
 
         $normalizedProduct['meta']['ascendant_category_ids'] = $product->isVariant() ?
             $this->ascendantCategoriesQuery->getCategoryIds($product) : [];
@@ -250,29 +250,6 @@ class ProductNormalizer implements NormalizerInterface
         }
 
         return ['label' => $labels];
-    }
-
-    /**
-     * @param ProductInterface $product
-     *
-     * @return array
-     */
-    protected function getAssociationMeta(ProductInterface $product)
-    {
-        $meta = [];
-        $associations = $product->getAssociations();
-
-        foreach ($associations as $association) {
-            $associationType = $association->getAssociationType();
-            $meta[$associationType->getCode()]['groupIds'] = array_map(
-                function ($group) {
-                    return $group->getId();
-                },
-                $association->getGroups()->toArray()
-            );
-        }
-
-        return ['associations' => $meta];
     }
 
     /**
