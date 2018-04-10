@@ -38,9 +38,6 @@ pim_versioning:
 pim_comment:
     resource: "@PimCommentBundle/Resources/config/routing.yml"
 
-pim_pdf_generator:
-    resource: "@PimEnterprisePdfGeneratorBundle/Resources/config/routing.yml"
-
 pim_notification:
     resource: "@PimNotificationBundle/Resources/config/routing.yml"
 

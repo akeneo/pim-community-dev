@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Bundle\PdfGeneratorBundle\Controller;
+namespace PimEnterprise\Bundle\SecurityBundle\Controller;
 
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Pim\Bundle\PdfGeneratorBundle\Controller\ProductController as BaseController;

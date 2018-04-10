@@ -1,5 +1,6 @@
 parameters:
     pimee_security.controller.permission_rest.class: PimEnterprise\Bundle\SecurityBundle\Controller\InternalApi\PermissionRestController
+    pimee_security.controller.product.class: PimEnterprise\Bundle\SecurityBundle\Controller\ProductController
 
 services:
     pimee_security.controller.permission_rest:
@@ -10,3 +11,10 @@ services:
             - '@pimee_security.repository.category_access'
             - '@pim_user.context.user'
             - '@akeneo_batch.job.job_instance_repository'
+
+    pimee_security.controller.product:
+        class: '%pimee_security.controller.product.class%'
+        parent: pim_pdf_generator.controller.product
+        arguments:
+            - '@security.authorization_checker'
+            - '@pim_user.context.user'
