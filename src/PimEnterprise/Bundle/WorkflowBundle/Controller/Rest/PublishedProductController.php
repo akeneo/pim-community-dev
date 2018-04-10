@@ -17,7 +17,9 @@ use PimEnterprise\Bundle\WorkflowBundle\Manager\PublishedProductManager;
 use PimEnterprise\Component\Security\Attributes;
 use PimEnterprise\Component\Workflow\Model\PublishedProductInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
@@ -97,10 +99,14 @@ class PublishedProductController
      *
      * @throws AccessDeniedException
      *
-     * @return JsonResponse
+     * @return Response
      */
     public function publishAction(Request $request)
     {
+        if (!$request->isXmlHttpRequest()) {
+            return new RedirectResponse('/');
+        }
+
         $product = $this->findOr404($request->query->get('originalId'));
 
         $isOwner = $this->authorizationChecker->isGranted(Attributes::OWN, $product);
@@ -122,10 +128,14 @@ class PublishedProductController
      *
      * @throws AccessDeniedException
      *
-     * @return JsonResponse
+     * @return Response
      */
     public function unpublishAction(Request $request)
     {
+        if (!$request->isXmlHttpRequest()) {
+            return new RedirectResponse('/');
+        }
+
         $published = $this->findPublishedByOriginalIdOr404($request->query->get('originalId'));
 
         $isOwner = $this->authorizationChecker->isGranted(Attributes::OWN, $published->getOriginalProduct());

@@ -2,6 +2,7 @@
 
 namespace spec\PimEnterprise\Bundle\CatalogRuleBundle\Datagrid\Extension\Selector\Orm\Attribute;
 
+use Doctrine\ORM\Query\Expr;
 use Doctrine\ORM\QueryBuilder;
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use PhpSpec\ObjectBehavior;
@@ -38,22 +39,25 @@ class IsSmartSelectorExtensionSpec extends ObjectBehavior
     function it_joins_and_selects_the_smart_property_of_attributes(
         DatasourceInterface $ds,
         DatagridConfiguration $config,
-        QueryBuilder $qb
+        QueryBuilder $qb,
+        Expr $expr
     ) {
         $ds->getQueryBuilder()->willReturn($qb);
         $qb->getRootAliases()->willReturn(['a']);
+        $qb->expr()->willReturn($expr);
+
+        $expr->andX(null, null)->shouldBeCalled();
+        $expr->eq("r.resourceId", "a.id")->shouldBeCalled();
+        $expr->eq("r.resourceName", null)->shouldBeCalled();
+        $expr->literal("Attribute")->shouldBeCalled();
 
         $qb
             ->leftJoin(
                 'Resource',
                 'r',
                 'WITH',
-                'r.resourceId = a.id AND r.resourceName = :attributeClass'
+                null
             )
-            ->shouldBeCalled()
-            ->willReturn($qb);
-
-        $qb->setParameter('attributeClass', 'Attribute')
             ->shouldBeCalled()
             ->willReturn($qb);
 
