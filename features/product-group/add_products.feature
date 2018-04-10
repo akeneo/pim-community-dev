@@ -19,6 +19,7 @@ Feature: Add products to a group
   Scenario: Successfully add products in groups
     Given I am on the "CROSS_SELL" product group page
     And I should see products sandal-white-37 and sandal-white-38
+    And I should see the filters family, in_group and enabled
     And I check the row "sandal-white-37"
     And I check the row "sandal-white-38"
     And I save the group

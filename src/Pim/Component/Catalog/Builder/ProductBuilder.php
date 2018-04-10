@@ -49,6 +49,8 @@ class ProductBuilder implements ProductBuilderInterface
      * @param EventDispatcherInterface           $eventDispatcher     Event dispatcher
      * @param EntityWithValuesBuilderInterface   $entityWithValuesBuilder
      * @param array                              $classes             Model classes
+     *
+     * @todo @merge Remove unused parameter $valuesResolver in master
      */
     public function __construct(
         AttributeRepositoryInterface $attributeRepository,

@@ -46,7 +46,6 @@ class ProductWriter implements ItemWriterInterface, StepExecutionAwareInterface,
     ) {
         $this->versionManager = $versionManager;
         $this->productSaver = $productSaver;
-        $this->cacheClearer = $cacheClearer;
     }
 
     /**
@@ -59,7 +58,6 @@ class ProductWriter implements ItemWriterInterface, StepExecutionAwareInterface,
         }
 
         $this->productSaver->saveAll($items);
-        $this->cacheClearer->clear();
     }
 
     /**

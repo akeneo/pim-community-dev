@@ -1,6 +1,3 @@
-parameters:
-    pim_catalog.factory.product_cursor.page_size: 50
-
 services:
     pim_catalog.object_manager.product:
         alias: doctrine.orm.entity_manager
@@ -14,7 +11,7 @@ services:
             - '@akeneo_elasticsearch.client.product'
             - '@pim_catalog.repository.product'
             - '%akeneo_elasticsearch.cursor.cursor.class%'
-            - '%pim_catalog.factory.product_cursor.page_size%'
+            - '%pim_job_product_batch_size%'
             - 'pim_catalog_product'
 
     pim_catalog.factory.product_search_after_size_cursor:
@@ -23,7 +20,7 @@ services:
             - '@akeneo_elasticsearch.client.product'
             - '@pim_catalog.repository.product'
             - '%akeneo_elasticsearch.cursor.search_after_size_cursor.class%'
-            - '%pim_catalog.factory.product_cursor.page_size%'
+            - '%pim_job_product_batch_size%'
             - 'pim_catalog_product'
 
     pim_catalog.factory.product_from_size_cursor:
@@ -32,7 +29,7 @@ services:
             - '@akeneo_elasticsearch.client.product'
             - '@pim_catalog.repository.product'
             - '%akeneo_elasticsearch.cursor.from_size_cursor.class%'
-            - '%pim_catalog.factory.product_cursor.page_size%'
+            - '%pim_job_product_batch_size%'
             - 'pim_catalog_product'
 
     pim_catalog.factory.product_model_cursor:
@@ -41,7 +38,7 @@ services:
             - '@akeneo_elasticsearch.client.product_model'
             - '@pim_catalog.repository.product_model'
             - '%akeneo_elasticsearch.cursor.cursor.class%'
-            - '%pim_catalog.factory.product_cursor.page_size%'
+            - '%pim_job_product_batch_size%'
             - 'pim_catalog_product'
 
     pim_catalog.factory.product_model_from_size_cursor:
@@ -50,7 +47,7 @@ services:
             - '@akeneo_elasticsearch.client.product_model'
             - '@pim_catalog.repository.product_model'
             - '%akeneo_elasticsearch.cursor.from_size_cursor.class%'
-            - '%pim_catalog.factory.product_cursor.page_size%'
+            - '%pim_job_product_batch_size%'
             - 'pim_catalog_product'
 
     pim_catalog.factory.product_model_search_after_size_cursor:
@@ -59,5 +56,5 @@ services:
             - '@akeneo_elasticsearch.client.product_model'
             - '@pim_catalog.repository.product_model'
             - '%akeneo_elasticsearch.cursor.search_after_size_cursor.class%'
-            - '%pim_catalog.factory.product_cursor.page_size%'
+            - '%pim_job_product_batch_size%'
             - 'pim_catalog_product'
