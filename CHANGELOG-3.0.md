@@ -110,3 +110,13 @@
 - Move namespace `PimEnterprise\Bundle\EnrichBundle\Connector\Processor\MassEdit\Product` to `PimEnterprise\Bundle\SecurityBundle\MassEdit\Processor`
 - Move `PimEnterprise\Bundle\EnrichBundle\Connector\Writer\MassEdit\ProductAndProductModelWriter` to `PimEnterprise\Bundle\SecurityBundle\MassEdit\Writer\ProductAndProductModelWriter`
 - Move `PimEnterprise\Bundle\EnrichBundle\Normalizer\IncompleteValuesNormalizer` to `PimEnterprise\Bundle\SecurityBundle\Normalizer\InternalApi\IncompleteValuesNormalizer`
+- Remove `PimEnterprise\Bundle\FilterBundle\PimEnterpriseFilterBundle()`
+- Remove `PimEnterprise\Bundle\ImportExportBundle\PimEnterpriseImportExportBundle()`
+- Remove `PimEnterprise\Bundle\FilterBundle\DependencyInjection\PimEnterpriseFilterExtension()`
+- Remove `PimEnterprise\Bundle\ImportExportBundle\DependencyInjection\PimEnterpriseImportExportExtension()`
+- Move `PimEnterprise\Bundle\EnrichBundle\Normalizer\IncompleteValuesNormalizer` to `PimEnterprise\Bundle\SecurityBundle\Normalizer\InternalApi\IncompleteValuesNormalizer`
+- Move `PimEnterprise\Bundle\FilterBundle\Filter\Product\PermissionFilter` to `PimEnterprise\Bundle\SecurityBundle\Datagrid\Filter\PermissionFilter`
+- Move `PimEnterprise\Bundle\ImportExportBundle\Form\Subscriber\JobProfilePermissionsSubscriber` to `PimEnterprise\Bundle\SecurityBundle\Form\EventListener\JobProfilePermissionsSubscriber`
+- Move `PimEnterprise\Bundle\ImportExportBundle\Form\Type\JobProfilePermissionsType` to `PimEnterprise\Bundle\SecurityBundle\Form\Type\JobProfilePermissionsType`
+- Move `PimEnterprise\Bundle\ImportExportBundle\Manager\JobExecutionManager` to `PimEnterprise\Bundle\SecurityBundle\Manager\JobExecutionManager`
+- Move `PimEnterprise\Bundle\FilterBundle\Filter\Product\ProjectCompletenessFilter` to `PimEnterprise\Bundle\TeamworkAssistantBundle\Datagrid\Filter\ProjectCompletenessFilter`
