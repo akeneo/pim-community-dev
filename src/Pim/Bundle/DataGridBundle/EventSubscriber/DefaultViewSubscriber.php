@@ -4,8 +4,8 @@ namespace Pim\Bundle\DataGridBundle\EventSubscriber;
 
 use Pim\Bundle\DataGridBundle\DataTransformer\DefaultViewDataTransformer;
 use Pim\Bundle\DataGridBundle\Repository\DatagridViewRepositoryInterface;
-use Pim\Bundle\UserBundle\Entity\UserInterface;
-use Pim\Bundle\UserBundle\Event\UserFormBuilderEvent;
+use Pim\Bundle\UserBundle\Form\Event\UserFormBuilderEvent;
+use Pim\Component\User\Model\UserInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\FormEvent;

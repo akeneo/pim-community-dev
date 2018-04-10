@@ -3,9 +3,9 @@
 namespace Pim\Bundle\UserBundle\Controller;
 
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
-use Pim\Bundle\UserBundle\Entity\User;
-use Pim\Bundle\UserBundle\Entity\UserInterface;
-use Pim\Bundle\UserBundle\Event\UserEvent;
+use Pim\Component\User\Event\UserEvent;
+use Pim\Component\User\Model\User;
+use Pim\Component\User\Model\UserInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\EventDispatcher\GenericEvent;
@@ -131,7 +131,7 @@ class UserController extends Controller
         $currentUser = $tokenStorage ? $tokenStorage->getUser() : null;
         if (is_object($currentUser) && $currentUser->getId() != $id) {
             $em = $this->get('doctrine.orm.entity_manager');
-            $userClass = $this->container->getParameter('pim_user.entity.class');
+            $userClass = $this->container->getParameter('pim_user.entity.user.class');
             $user = $em->getRepository($userClass)->find($id);
 
             if (!$user) {

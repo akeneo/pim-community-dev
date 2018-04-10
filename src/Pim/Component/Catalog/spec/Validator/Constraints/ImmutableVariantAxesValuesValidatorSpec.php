@@ -5,7 +5,7 @@ namespace spec\Pim\Component\Catalog\Validator\Constraints;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\UnitOfWork;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\UserBundle\Entity\UserInterface;
+use Pim\Component\User\Model\UserInterface;
 use Pim\Component\Catalog\Factory\ValueCollectionFactoryInterface;
 use Pim\Component\Catalog\FamilyVariant\EntityWithFamilyVariantAttributesProvider;
 use Pim\Component\Catalog\Model\AttributeInterface;
