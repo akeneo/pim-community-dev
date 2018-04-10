@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Pim\Component\Catalog\Normalizer\Standard;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
 use Pim\Component\Catalog\Model\ValueCollectionInterface;
@@ -25,15 +26,20 @@ class ProductModelNormalizer extends SerializerAwareNormalizer implements Normal
     private const FIELD_PARENT = 'parent';
     const FIELD_ASSOCIATIONS = 'associations';
 
+    /** @var NormalizerInterface */
+    private $associationsNormalizer;
+
     /** @var CollectionFilterInterface */
     private $filter;
 
     /**
      * @param CollectionFilterInterface $filter The collection filter
+     * @param NormalizerInterface       $associationsNormalizer
      */
-    public function __construct(CollectionFilterInterface $filter)
+    public function __construct(CollectionFilterInterface $filter, NormalizerInterface $associationsNormalizer)
     {
         $this->filter = $filter;
+        $this->associationsNormalizer = $associationsNormalizer;
     }
 
     /**
@@ -56,6 +62,7 @@ class ProductModelNormalizer extends SerializerAwareNormalizer implements Normal
         $data[self::FIELD_VALUES] = $this->normalizeValues($productModel->getValues(), $format, $context);
         $data[self::FIELD_CREATED] = $this->serializer->normalize($productModel->getCreated(), $format, $context);
         $data[self::FIELD_UPDATED] = $this->serializer->normalize($productModel->getUpdated(), $format, $context);
+        $data[self::FIELD_ASSOCIATIONS] = $this->associationsNormalizer->normalize($productModel, $format, $context);
 
         return $data;
     }
@@ -72,12 +79,12 @@ class ProductModelNormalizer extends SerializerAwareNormalizer implements Normal
      * Normalize the values of the product model
      *
      * @param ValueCollectionInterface $values
-     * @param string                   $format
-     * @param array                    $context
+     * @param string $format
+     * @param array $context
      *
      * @return ArrayCollection
      */
-    private function normalizeValues(ValueCollectionInterface $values, string $format, array $context = [])
+    private function normalizeValues(ValueCollectionInterface $values, ?string $format, array $context = [])
     {
         foreach ($context['filter_types'] as $filterType) {
             $values = $this->filter->filterCollection($values, $filterType, $context);
