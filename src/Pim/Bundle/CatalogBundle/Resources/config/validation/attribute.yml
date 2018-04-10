@@ -1,6 +1,7 @@
 Pim\Bundle\CatalogBundle\Entity\Attribute:
     constraints:
         - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity: code
+        - Pim\Component\Catalog\Validator\Constraints\CodeAttribute: ~
         - Pim\Component\Catalog\Validator\Constraints\SingleIdentifierAttribute:
             payload:
                 standardPropertyName: type
