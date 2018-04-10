@@ -1,13 +1,15 @@
-Feature: Import products coming from an external application
-  In order to enrich existing product information
-  As an administrator
-  I need to be able to import products regularly
+@javascript
+Feature: Execute a job
+  In order to use existing product information
+  As a product manager
+  I need to be able to import products
 
   Background:
     Given the "footwear" catalog configuration
     And the following product groups:
       | code  | label-en_US | type    |
       | CROSS | Bag Cross   | RELATED |
+    And I am logged in as "Julia"
 
   Scenario: Successfully import a csv file of products
     Given the following CSV file to import:
@@ -24,7 +26,11 @@ Feature: Import products coming from an external application
       SKU-009;sneakers;;;porttitor;sagittis. Duis gravida. Praesent eu nulla at sem molestie sodales.
       SKU-010;boots;CROSS;sandals;non,;vestibulum nec, euismod in, dolor. Fusce feugiat. Lorem ipsum dolor
       """
-    When the products are imported via the job csv_footwear_product_import
+    And the following job "csv_footwear_product_import" configuration:
+      | filePath | %file to import% |
+    When I am on the "csv_footwear_product_import" import job page
+    And I launch the import job
+    And I wait for the "csv_footwear_product_import" job to finish
     Then there should be 10 products
     And the family of the product "SKU-006" should be "boots"
     And product "SKU-007" should be enabled
@@ -43,7 +49,11 @@ Feature: Import products coming from an external application
 
       "
       """
-    When the products are imported via the job csv_footwear_product_import
+    And the following job "csv_footwear_product_import" configuration:
+      | filePath | %file to import% |
+    When I am on the "csv_footwear_product_import" import job page
+    And I launch the import job
+    And I wait for the "csv_footwear_product_import" job to finish
     Then there should be 1 products
     And the english tablet description of "SKU-001" should be "dictum magna. Ut tincidunt|NL|orci quis lectus.|NL||NL|Nullam suscipit,|NL|est|NL||NL|"
 
@@ -54,7 +64,11 @@ Feature: Import products coming from an external application
       SKU-001;boots;;winter_boots;Donec;dictum magna. Ut tincidunt orci quis lectus. Nullam suscipit, est
       SKU-001;sneakers;;winter_boots;Donex;Pellentesque habitant morbi tristique senectus et netus et malesuada fames
       """
-    When the products are imported via the job csv_footwear_product_import
+    And the following job "csv_footwear_product_import" configuration:
+      | filePath | %file to import% |
+    When I am on the "csv_footwear_product_import" import job page
+    And I launch the import job
+    And I wait for the "csv_footwear_product_import" job to finish
     Then there should be 1 product
     And the english localizable value name of "SKU-001" should be "Donec"
     And the english tablet description of "SKU-001" should be "dictum magna. Ut tincidunt orci quis lectus. Nullam suscipit, est"
@@ -65,7 +79,11 @@ Feature: Import products coming from an external application
       sku;family;groups;categories;name-en_US;description-en_US-tablet;comment
       SKU-001;boots;;winter_boots;Donec;dictum magna. Ut tincidunt orci quis lectus. Nullam suscipit, est;This comment should not be imported
       """
-    When the products are imported via the job csv_footwear_product_import
+    And the following job "csv_footwear_product_import" configuration:
+      | filePath | %file to import% |
+    When I am on the "csv_footwear_product_import" import job page
+    And I launch the import job
+    And I wait for the "csv_footwear_product_import" job to finish
     Then the product "SKU-001" should not have the following values:
       | comment |
 
@@ -78,15 +96,17 @@ Feature: Import products coming from an external application
       sku;family;groups;categories;name-en_US;description-en_US-tablet
       SKU-001;boots;;winter_boots;Donec;dictum magna. Ut tincidunt orci quis lectus. Nullam suscipit, est
       """
-    When the products are imported via the job csv_footwear_product_import
+    And the following job "csv_footwear_product_import" configuration:
+      | filePath | %file to import% |
+    When I am on the "csv_footwear_product_import" import job page
+    And I launch the import job
+    And I wait for the "csv_footwear_product_import" job to finish
     Then there should be 1 product
     And the english localizable value name of "SKU-001" should be "Donec"
     And the english tablet description of "SKU-001" should be "dictum magna. Ut tincidunt orci quis lectus. Nullam suscipit, est"
 
-  @javascript
   Scenario: Successfully import products through file upload
-    Given I am logged in as "Julia"
-    And the following CSV file to import:
+    Given the following CSV file to import:
       """
       sku;family;groups;categories;name-en_US;description-en_US-tablet
       SKU-001;boots;;winter_boots;Donec;dictum magna. Ut tincidunt orci quis lectus. Nullam suscipit, est
@@ -114,7 +134,11 @@ Feature: Import products coming from an external application
       SKU-001;"100 EUR, 90 USD"
       SKU-002;50 EUR
       """
-    When the products are imported via the job csv_footwear_product_import
+    And the following job "csv_footwear_product_import" configuration:
+      | filePath | %file to import% |
+    When I am on the "csv_footwear_product_import" import job page
+    And I launch the import job
+    And I wait for the "csv_footwear_product_import" job to finish
     Then there should be 2 products
     And the product "SKU-001" should have the following value:
       | price | 100.00 EUR, 90.00 USD |
@@ -130,7 +154,11 @@ Feature: Import products coming from an external application
       sku;price
       SKU-001;"100 EUR, 90 USD"
       """
-    When the products are imported via the job csv_footwear_product_import
+    And the following job "csv_footwear_product_import" configuration:
+      | filePath | %file to import% |
+    When I am on the "csv_footwear_product_import" import job page
+    And I launch the import job
+    And I wait for the "csv_footwear_product_import" job to finish
     Then there should be 1 products
     And the product "SKU-001" should have the following value:
       | price | 100.00 EUR, 90.00 USD |
@@ -141,7 +169,11 @@ Feature: Import products coming from an external application
       sku;length
       SKU-001;4000 CENTIMETER
       """
-    When the products are imported via the job csv_footwear_product_import
+    And the following job "csv_footwear_product_import" configuration:
+      | filePath | %file to import% |
+    When I am on the "csv_footwear_product_import" import job page
+    And I launch the import job
+    And I wait for the "csv_footwear_product_import" job to finish
     Then there should be 1 products
     And the product "SKU-001" should have the following value:
       | length | 4000.0000 CENTIMETER |
@@ -152,7 +184,11 @@ Feature: Import products coming from an external application
       sku;length;length-unit
       SKU-001;4000;CENTIMETER
       """
-    When the products are imported via the job csv_footwear_product_import
+    And the following job "csv_footwear_product_import" configuration:
+      | filePath | %file to import% |
+    When I am on the "csv_footwear_product_import" import job page
+    And I launch the import job
+    And I wait for the "csv_footwear_product_import" job to finish
     Then there should be 1 products
     And the product "SKU-001" should have the following value:
       | length | 4000.0000 CENTIMETER |
@@ -166,21 +202,29 @@ Feature: Import products coming from an external application
       sku;family;categories;name-en_US;description-en_US-tablet
       SKU-001;boots;winter_boots;FooBar;dictum magna. Ut tincidunt orci quis lectus. Nullam suscipit, est
       """
-    When the products are imported via the job csv_footwear_product_import
+    And the following job "csv_footwear_product_import" configuration:
+      | filePath | %file to import% |
+    When I am on the "csv_footwear_product_import" import job page
+    And I launch the import job
+    And I wait for the "csv_footwear_product_import" job to finish
     Then there should be 1 product
-    And there should be 1 product skipped because there is no difference
+    And I should see the text "skipped product (no differences) 1"
 
   Scenario: Successfully import products with attributes with full numeric codes
-    Given the following family:
+    And the following family:
       | code      | attributes           |
       | my_family | name,123,description |
-    And the following CSV file to import:
+    Given the following CSV file to import:
       """
       sku;123;family;groups;categories;name-en_US;description-en_US-tablet
       SKU-001;aaa;my_family;;winter_boots;Donec;dictum magna. Ut tincidunt orci quis lectus. Nullam suscipit, est
       SKU-002;bbb;my_family;;winter_boots;Donex;Pellentesque habitant morbi tristique senectus et netus et malesuada fames
       """
-    When the products are imported via the job csv_footwear_product_import
+    And the following job "csv_footwear_product_import" configuration:
+      | filePath | %file to import% |
+    When I am on the "csv_footwear_product_import" import job page
+    And I launch the import job
+    And I wait for the "csv_footwear_product_import" job to finish
     Then there should be 2 product
     And the product "SKU-001" should have the following values:
       | name-en_US | Donec |
@@ -196,7 +240,11 @@ Feature: Import products coming from an external application
       SKU-001;boots
       SKU-002;sneakers
       """
-    When the products are imported via the job csv_footwear_product_import
+    And the following job "csv_footwear_product_import" configuration:
+      | filePath | %file to import% |
+    When I am on the "csv_footwear_product_import" import job page
+    And I launch the import job
+    And I wait for the "csv_footwear_product_import" job to finish
     Then there should be 2 products
 
   Scenario: Successfully import a csv file of products without enabled column default yes
@@ -205,7 +253,7 @@ Feature: Import products coming from an external application
       | SKU-001 | John Deere | Best of tractors                            | no      |
       | SKU-002 | Class      | Leader in agricultural harvesting equipment | yes     |
       | SKU-003 | Renault    | French Tractors                             | no      |
-    And the following CSV file to import:
+    Given the following CSV file to import:
       """
       sku;name-en_US;description-en_US-tablet
       SKU-001;John Deere;Go fast with John Deere
@@ -213,8 +261,12 @@ Feature: Import products coming from an external application
       SKU-003;Renault;French touch for tractors
       SKU-004;New Holland;Faster tractors
       """
-    When the products are imported via the job csv_footwear_product_import with options:
-      | enabled | yes |
+    And the following job "csv_footwear_product_import" configuration:
+      | filePath | %file to import% |
+      | enabled  | yes              |
+    When I am on the "csv_footwear_product_import" import job page
+    And I launch the import job
+    And I wait for the "csv_footwear_product_import" job to finish
     Then there should be 4 products
     And product "SKU-001" should be disabled
     And product "SKU-002" should be enabled
@@ -227,7 +279,7 @@ Feature: Import products coming from an external application
       | SKU-001 | John Deere | Best of tractors                            | no      |
       | SKU-002 | Class      | Leader in agricultural harvesting equipment | yes     |
       | SKU-003 | Renault    | French Tractors                             | no      |
-    And the following CSV file to import:
+    Given the following CSV file to import:
       """
       sku;name-en_US;description-en_US-tablet
       SKU-001;John Deere;Go fast with John Deere
@@ -235,18 +287,20 @@ Feature: Import products coming from an external application
       SKU-003;Renault;French touch for tractors
       SKU-004;New Holland;Faster tractors
       """
-    When the products are imported via the job csv_footwear_product_import with options:
-      | enabled | no |
+    And the following job "csv_footwear_product_import" configuration:
+      | filePath | %file to import% |
+      | enabled  | no               |
+    When I am on the "csv_footwear_product_import" import job page
+    And I launch the import job
+    And I wait for the "csv_footwear_product_import" job to finish
     Then there should be 4 products
     And product "SKU-001" should be disabled
     And product "SKU-002" should be enabled
     And product "SKU-003" should be disabled
     And product "SKU-004" should be disabled
 
-  @javascript
   Scenario: Successfully import products when category code is integer
-    Given I am logged in as "Julia"
-    And the following products:
+    Given the following products:
       | sku    |
       | jacket |
     And I am on the category "2014_collection" node creation page
@@ -258,13 +312,15 @@ Feature: Import products coming from an external application
       sku;categories
       jacket;123
       """
-    When the products are imported via the job csv_footwear_product_import
+    And the following job "csv_footwear_product_import" configuration:
+      | filePath | %file to import% |
+    When I am on the "csv_footwear_product_import" import job page
+    And I launch the import job
+    And I wait for the "csv_footwear_product_import" job to finish
     Then the category of the product "jacket" should be "123"
 
-  @javascript
   Scenario: Successfully import a csv file of products and the completeness should be computed
-    Given I am logged in as "Julia"
-    And the following CSV file to import:
+    Given the following CSV file to import:
       """
       sku;family;groups;categories;name-en_US;description-en_US-tablet;price;size;color
       SKU-001;boots;similar_boots;winter_boots;Donec;dictum magna. Ut tincidunt orci quis lectus. Nullam suscipit, est;"100 EUR, 90 USD";40;
@@ -289,10 +345,8 @@ Feature: Import products coming from an external application
       | mobile  | en_US  | success | 0              | 100%  |
 
   @jira https://akeneo.atlassian.net/browse/PIM-6085
-  @javascript
   Scenario: Successfully import product associations with modified column name
-    Given I am logged in as "Julia"
-    And the following CSV file to import:
+    Given the following CSV file to import:
       """
       sku;family;groupes;catégories;name-en_US;description-en_US-tablet;price;size;color
       SKU-001;boots;similar_boots;winter_boots;Donec;dictum magna. Ut tincidunt orci quis lectus. Nullam suscipit, est;"100 EUR, 90 USD";40;

@@ -11,8 +11,7 @@
 | Q                                 | A
 | --------------------------------- | ---
 | Added Specs                       | Todo
-| Added legacy Behats               | Todo
-| Added acceptance tests            | Todo
+| Added Behats                      | Todo
 | Added integration tests           | Todo
 | Changelog updated                 | Todo
 | Review and 2 GTM                  | Todo

@@ -36,7 +36,7 @@ Feature: Update product history when mass editing products
     And I press the "Bulk actions" button
 
   Scenario: Display history when editing product attributes
-    Given I choose the "Edit attributes values" operation
+    Given I choose the "Edit attributes" operation
     And I display the Name attribute
     And I change the "Name" to "cool boots"
     And I confirm mass edit
@@ -45,17 +45,17 @@ Feature: Update product history when mass editing products
     And I visit the "History" column tab
     Then there should be 2 updates
     And I should see history:
-      | version | property | value      |
-      | 2       | Name en  | cool boots |
+      | version | property | value      | date |
+      | 2       | Name en  | cool boots | now  |
     When I edit the "sandals" product
     And I visit the "History" column tab
     Then there should be 2 updates
     And I should see history:
-      | version | property | value      |
-      | 2       | Name en  | cool boots |
+      | version | property | value      | date |
+      | 2       | Name en  | cool boots | now  |
     When I edit the "sneakers" product
     And I visit the "History" column tab
     Then there should be 2 updates
     And I should see history:
-      | version | property | value      |
-      | 2       | Name en  | cool boots |
+      | version | property | value      | date |
+      | 2       | Name en  | cool boots | now  |

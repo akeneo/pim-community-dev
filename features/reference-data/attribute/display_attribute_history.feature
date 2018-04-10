@@ -28,5 +28,5 @@ Feature: Display the attribute history
     When I visit the "History" tab
     Then there should be 2 update
     And I should see history:
-      | version | property | value     |
-      | 2       | group    | technical |
+      | version | property | value     | date |
+      | 2       | group    | technical | now  |

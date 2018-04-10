@@ -89,7 +89,6 @@ user:
     label: デフォルト製品のグリッドビュー
   default_grid_view:
     none: なし
-  timezone: タイムゾーン
 Role: ロール
 Owner: オーナー
 General: 全般

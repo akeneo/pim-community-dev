@@ -89,7 +89,6 @@ user:
     label: Standardansicht Produktübersicht
   default_grid_view:
     none: Keine
-  timezone: Zeitzone
 Role: Rolle
 Owner: Eigentümer
 General: Allgemein
@@ -154,4 +153,4 @@ Username or Email: Benutzername oder E-Mail
 Forgot Password: Passwort vergessen
 Request: Anfrage
 Check Email: Posteingang überprüfen
-Go to homepage: Zurück zur Hauptseite
+Go to homepage: Zur Startseite

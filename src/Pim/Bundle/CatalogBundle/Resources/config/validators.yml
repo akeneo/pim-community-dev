@@ -1,4 +1,6 @@
 parameters:
+    product_value_decimal_limit: 9999999999.9999
+
     symfony.validator.recursive.class:                                     Symfony\Component\Validator\Validator\RecursiveValidator
 
     pim_catalog.validator.helper.attribute.class:                          Pim\Component\Catalog\Validator\AttributeValidatorHelper
@@ -34,6 +36,7 @@ parameters:
     pim_catalog.validator.constraint_guesser.currency.class:               Pim\Component\Catalog\Validator\ConstraintGuesser\CurrencyGuesser
     pim_catalog.validator.constraint_guesser.regex.class:                  Pim\Component\Catalog\Validator\ConstraintGuesser\RegexGuesser
     pim_catalog.validator.constraint_guesser.not_decimal.class:            Pim\Component\Catalog\Validator\ConstraintGuesser\NotDecimalGuesser
+    pim_catalog.validator.constraint_guesser.decimal.class:                Pim\Component\Catalog\Validator\ConstraintGuesser\DecimalGuesser
     pim_catalog.validator.constraint_guesser.url.class:                    Pim\Component\Catalog\Validator\ConstraintGuesser\UrlGuesser
     pim_catalog.validator.constraint_guesser.unique_value.class:           Pim\Component\Catalog\Validator\ConstraintGuesser\UniqueValueGuesser
     pim_catalog.validator.constraint_guesser.price_collection.class:       Pim\Component\Catalog\Validator\ConstraintGuesser\PriceCollectionGuesser
@@ -54,7 +57,6 @@ parameters:
     pim_catalog.validator.constraint.immutable_variant_axis_values.class:  Pim\Component\Catalog\Validator\Constraints\ImmutableVariantAxesValuesValidator
     pim_catalog.validator.constraint.family_attribute_used_as_axis.class:  Pim\Component\Catalog\Validator\Constraints\FamilyAttributeUsedAsAxisValidator
     pim_catalog.validator.constraint.unique_product.class:                 Pim\Component\Catalog\Validator\Constraints\UniqueEntityValidator
-    pim_catalog.validator.constraint.activated_locale.class:               Pim\Component\Catalog\Validator\Constraints\ActivatedLocaleValidator
 
 services:
     # Helpers
@@ -335,6 +337,14 @@ services:
         tags:
             - { name: pim_catalog.constraint_guesser.attribute }
 
+    pim_catalog.validator.constraint_guesser.decimal:
+        public: false
+        class: '%pim_catalog.validator.constraint_guesser.decimal.class%'
+        arguments:
+            - '%product_value_decimal_limit%'
+        tags:
+            - { name: pim_catalog.constraint_guesser.attribute }
+
     pim_catalog.validator.constraint_guesser.url:
         public: false
         class: '%pim_catalog.validator.constraint_guesser.url.class%'
@@ -418,10 +428,3 @@ services:
             - '@doctrine.orm.entity_manager'
         tags:
             - { name: validator.constraint_validator, alias: pim_unique_product_validator }
-
-    pim_catalog.validator.constraint.activated_locale:
-        class: '%pim_catalog.validator.constraint.activated_locale.class%'
-        arguments:
-            - '@pim_catalog.repository.cached_locale'
-        tags:
-            - { name: validator.constraint_validator, alias: pim_activated_locale_validator }

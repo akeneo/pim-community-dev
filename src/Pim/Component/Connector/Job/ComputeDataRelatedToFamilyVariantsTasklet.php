@@ -9,7 +9,7 @@ use Akeneo\Component\Batch\Item\InvalidItemException;
 use Akeneo\Component\Batch\Item\ItemReaderInterface;
 use Akeneo\Component\Batch\Job\JobRepositoryInterface;
 use Akeneo\Component\Batch\Model\StepExecution;
-use Akeneo\Component\StorageUtils\Cache\EntityManagerClearerInterface;
+use Akeneo\Component\StorageUtils\Cache\CacheClearerInterface;
 use Akeneo\Component\StorageUtils\Cursor\CursorInterface;
 use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
@@ -51,7 +51,7 @@ class ComputeDataRelatedToFamilyVariantsTasklet implements TaskletInterface, Ini
     /** @var BulkSaverInterface */
     private $productSaver;
 
-    /** @var EntityManagerClearerInterface */
+    /** @var CacheClearerInterface */
     private $cacheClearer;
 
     /** @var ProductQueryBuilderFactoryInterface */
@@ -78,7 +78,7 @@ class ComputeDataRelatedToFamilyVariantsTasklet implements TaskletInterface, Ini
      * @param BulkSaverInterface                  $familyVariantSaver
      * @param BulkSaverInterface                  $productModelSaver
      * @param BulkSaverInterface                  $productSaver
-     * @param EntityManagerClearerInterface       $cacheClearer
+     * @param CacheClearerInterface               $cacheClearer
      * @param JobRepositoryInterface              $jobRepository
      */
     public function __construct(
@@ -90,7 +90,7 @@ class ComputeDataRelatedToFamilyVariantsTasklet implements TaskletInterface, Ini
         BulkSaverInterface $productModelSaver,
         BulkSaverInterface $productSaver,
         ObjectDetacherInterface $objectDetacher,
-        EntityManagerClearerInterface $cacheClearer,
+        CacheClearerInterface $cacheClearer,
         JobRepositoryInterface $jobRepository
     ) {
         $this->familyReader = $familyReader;

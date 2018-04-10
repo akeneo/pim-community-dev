@@ -185,8 +185,6 @@ pim_enrich:
       edit_attributes: Modifier les attributs d'une famille
       remove: Supprimer une famille
       history: Afficher l'historique de la famille
-    family_variant:
-      remove: Supprimez une variante de famille
     attribute_group:
       index: Liste des groupes d'attributs
       create: Créer un groupe d'attributs
@@ -345,7 +343,6 @@ confirmation:
     attribute group: Êtes-vous sûr(e) de vouloir supprimer le groupe d'attributs %name% ?
     category: Êtes-vous sûr(e) de vouloir supprimer la catégorie %name% ?
     family: Êtes-vous sûr(e) de vouloir supprimer la famille %name% ?
-    family_variant: Êtes-vous sûr(e) de vouloir supprimer la variante de famille %name% ?
     product: Êtes-vous sûr(e) de vouloir supprimer le produit %name% ?
     group: Êtes-vous sûr(e) de vouloir supprimer le groupe %name% ?
     group type: Êtes-vous sûr(e) de vouloir supprimer le groupe %name% ?
@@ -495,6 +492,8 @@ Smart: Intelligent
 Useable as grid column: Utilisable dans les colonnes de la grille
 Useable as grid filter: Utilisable sur la grille
 Family: Famille
+Image: Image
+Variant products: Produits variants
 Available locales: Locales disponibles
 Locale specific: Spécifique à une locale
 default: Défaut
@@ -765,18 +764,12 @@ pim_mass_edit:
       error: L'export rapide <strong>%label%</strong> a échoué
       warning: L'export rapide <strong>%label%</strong> est terminé avec quelques mises en garde
       success: L'export rapide <strong>%label%</strong> est terminé
-    mass_delete:
-      error: La suppression massive <strong>%label%</strong> a echoué
-      warning: La suppression massive <strong>%label%</strong> est terminée avec quelques avertissements
-      success: La suppression massive <strong>%label%</strong> est terminée
 job_execution.summary:
   mass_edited: Édition en masse
   skip: Ignoré
   skipped_products: Produits ignorés
   skipped_attributes: Attributs ignorés
   skipped_families: Familles ignorées
-  deleted_products: Produits supprimés
-  deleted_product_models: Modèles de produits supprimés
 pim_mass_edit_execution_show: Exécutions des éditions en masse | Détails
 edit_common_attributes.steps.edit_common_attributes_processor.title: Modifier des attributs
 update_product_value.steps.update_product_value_processor.title: Mise à jour de la valeur du produit
@@ -794,10 +787,6 @@ batch_jobs:
     label: Mise à jour de la valeur du produit
     perform:
       label: Mise à jour de la valeur du produit
-  add_attribute_value:
-    label: Ajouter une valeur d’attribut
-    perform:
-      label: Ajouter une valeur d’attribut
   edit_common_attributes:
     label: Modifier des attributs
     perform:
@@ -846,8 +835,6 @@ batch_jobs:
     quick_export.label: Export rapide de la grille de produits en XLSX
     perform:
       label: Export rapide de la grille de produits en XLSX
-  delete_products_and_product_models:
-    delete_products_and_product_models.label: Suppression massive de produits
 mass_edit report:
   overview: Rapports des éditions en masse
 job_tracker:

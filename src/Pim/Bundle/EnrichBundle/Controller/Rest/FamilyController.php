@@ -170,10 +170,14 @@ class FamilyController
      * @param Request $request
      * @param string  $code
      *
-     * @return JsonResponse
+     * @return Response
      */
     public function putAction(Request $request, $code)
     {
+        if (!$request->isXmlHttpRequest()) {
+            return new RedirectResponse('/');
+        }
+
         if (!$this->securityFacade->isGranted('pim_enrich_family_edit_properties') &&
             !$this->securityFacade->isGranted('pim_enrich_family_edit_attributes')
         ) {
@@ -202,18 +206,6 @@ class FamilyController
         }
 
         $family = $this->getFamily($code);
-        if (!$family->getFamilyVariants()->isEmpty()) {
-            return new JsonResponse(
-                [
-                    'message' => sprintf(
-                        'Can not remove family "%s" because it is linked to family variants.',
-                        $family->getCode()
-                    )
-                ],
-                Response::HTTP_UNPROCESSABLE_ENTITY
-            );
-        }
-
         $this->remover->remove($family);
 
         return new JsonResponse(null, Response::HTTP_NO_CONTENT);

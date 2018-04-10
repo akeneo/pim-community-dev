@@ -2,6 +2,7 @@
 
 namespace Akeneo\Component\Batch\Step;
 
+use Akeneo\Component\Batch\Event\EventInterface;
 use Akeneo\Component\Batch\Item\FlushableInterface;
 use Akeneo\Component\Batch\Item\InitializableInterface;
 use Akeneo\Component\Batch\Item\InvalidItemException;
@@ -10,7 +11,6 @@ use Akeneo\Component\Batch\Item\ItemReaderInterface;
 use Akeneo\Component\Batch\Item\ItemWriterInterface;
 use Akeneo\Component\Batch\Job\JobRepositoryInterface;
 use Akeneo\Component\Batch\Model\StepExecution;
-use Akeneo\Component\Batch\Model\Warning;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
@@ -22,17 +22,17 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
  */
 class ItemStep extends AbstractStep
 {
+    /** @var int */
+    protected $batchSize;
+
     /** @var ItemReaderInterface */
     protected $reader = null;
-
-    /** @var ItemProcessorInterface */
-    protected $processor = null;
 
     /** @var ItemWriterInterface */
     protected $writer = null;
 
-    /** @var int */
-    protected $batchSize;
+    /** @var ItemProcessorInterface */
+    protected $processor = null;
 
     /** @var StepExecution */
     protected $stepExecution = null;
@@ -99,7 +99,7 @@ class ItemStep extends AbstractStep
     public function doExecute(StepExecution $stepExecution)
     {
         $itemsToWrite = [];
-        $writeCount = 0;
+        $batchCount = 0;
 
         $this->initializeStepElements($stepExecution);
 
@@ -115,21 +115,33 @@ class ItemStep extends AbstractStep
                 continue;
             }
 
+            $batchCount++;
+
             $processedItem = $this->process($readItem);
             if (null !== $processedItem) {
                 $itemsToWrite[] = $processedItem;
-                $writeCount++;
-                if (0 === $writeCount % $this->batchSize) {
+            }
+
+            if ($batchCount >= $this->batchSize) {
+                if (!empty($itemsToWrite)) {
                     $this->write($itemsToWrite);
                     $itemsToWrite = [];
-                    $this->getJobRepository()->updateStepExecution($stepExecution);
                 }
+
+                $this->getJobRepository()->updateStepExecution($stepExecution);
+                $this->dispatchStepExecutionEvent(EventInterface::ITEM_STEP_AFTER_BATCH, $stepExecution);
+                $batchCount = 0;
             }
         }
 
-        if (count($itemsToWrite) > 0) {
+        if (!empty($itemsToWrite)) {
             $this->write($itemsToWrite);
         }
+
+        if ($batchCount > 0) {
+            $this->dispatchStepExecutionEvent(EventInterface::ITEM_STEP_AFTER_BATCH, $stepExecution);
+        }
+
         $this->flushStepElements();
     }
 
@@ -201,14 +213,12 @@ class ItemStep extends AbstractStep
         $element,
         InvalidItemException $e
     ) {
-        $warning = new Warning(
+        $this->jobRepository->insertWarning(
             $stepExecution,
             $e->getMessage(),
             $e->getMessageParameters(),
             $e->getItem()->getInvalidData()
         );
-
-        $this->jobRepository->addWarning($warning);
 
         $this->dispatchInvalidItemEvent(
             get_class($element),

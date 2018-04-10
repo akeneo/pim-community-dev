@@ -44,7 +44,6 @@ Feature: Define the attribute requirement
     Then I should see the completeness:
       | channel | locale | state   | missing_values | ratio |
       | mobile  | en_US  | success | 0              | 100%  |
-      | mobile  | fr_FR  | warning | 1              | 80%   |
       | tablet  | en_US  | warning | 4              | 55%   |
     And I am on the "Boots" family page
     And I visit the "Attributes" tab
@@ -62,5 +61,4 @@ Feature: Define the attribute requirement
     Then I should see the completeness:
       | channel | locale | state   | missing_values | ratio |
       | mobile  | en_US  | success | 0              | 100%  |
-      | mobile  | fr_FR  | warning | 1              | 80%   |
       | tablet  | en_US  | warning | 3              | 62%   |

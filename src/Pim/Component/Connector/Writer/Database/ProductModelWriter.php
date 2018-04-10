@@ -6,7 +6,7 @@ namespace Pim\Component\Connector\Writer\Database;
 use Akeneo\Component\Batch\Item\ItemWriterInterface;
 use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\Batch\Step\StepExecutionAwareInterface;
-use Akeneo\Component\StorageUtils\Cache\EntityManagerClearerInterface;
+use Akeneo\Component\StorageUtils\Cache\CacheClearerInterface;
 use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
 use Pim\Bundle\VersioningBundle\Manager\VersionManager;
 
@@ -28,18 +28,20 @@ class ProductModelWriter implements ItemWriterInterface, StepExecutionAwareInter
     /** @var BulkSaverInterface */
     protected $productModelSaver;
 
-    /** @var EntityManagerClearerInterface */
+    /** @var CacheClearerInterface */
     protected $cacheClearer;
 
     /**
-     * @param VersionManager                $versionManager
-     * @param BulkSaverInterface            $productModelSaver
-     * @param EntityManagerClearerInterface $cacheClearer
+     * @param VersionManager        $versionManager
+     * @param BulkSaverInterface    $productModelSaver
+     * @param CacheClearerInterface $cacheClearer
+     *
+     * @todo @merge Remove $cacheClearer. It's not used anymore.
      */
     public function __construct(
         VersionManager $versionManager,
         BulkSaverInterface $productModelSaver,
-        EntityManagerClearerInterface $cacheClearer
+        CacheClearerInterface $cacheClearer
     ) {
         $this->versionManager = $versionManager;
         $this->productModelSaver = $productModelSaver;
@@ -60,7 +62,6 @@ class ProductModelWriter implements ItemWriterInterface, StepExecutionAwareInter
         }
 
         $this->productModelSaver->saveAll($items);
-        $this->cacheClearer->clear();
     }
 
     /**

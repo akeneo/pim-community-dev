@@ -101,15 +101,15 @@ JSON;
                 'message' => 'Validation failed.',
                 'errors' => [
                     [
-                        'property' => 'attribute',
-                        'message' => 'Attribute "a_simple_select" cannot be empty, as it is defined as an ' .
-                            'axis for this entity'
-                    ],
-                    [
                         'property' => 'parent',
                         'message' => 'The variant product "product_family_variant" cannot have product model ' .
                             '"test" as parent, (this product model can only have other product models as children)'
                     ],
+                    [
+                        'property' => 'attribute',
+                        'message' => 'Attribute "a_simple_select" cannot be empty, as it is defined as an ' .
+                            'axis for this entity'
+                    ]
                 ]
             ],
             json_decode($response->getContent(), true)
@@ -140,13 +140,7 @@ JSON;
         $this->assertSame(
             [
                 'code' => 422,
-                'message' => 'Validation failed.',
-                'errors' => [
-                    [
-                        'property' => 'family',
-                        'message' => 'The variant product family must be the same than its parent'
-                    ]
-                ],
+                'message' => 'Product and product model families should be the same.'
             ],
             json_decode($response->getContent(), true)
         );
@@ -154,6 +148,14 @@ JSON;
 
     public function testProductHasNoValueForTheVariantAxis()
     {
+        $this->createProductModel(
+            [
+                'code' => 'parent_product_no_value',
+                'family_variant' => 'familyVariantA2',
+                'values'  => []
+            ]
+        );
+
         $this->createProduct('product_no_value', [
             'family' => 'familyA',
             'categories' => ['categoryA2'],
@@ -163,7 +165,7 @@ JSON;
         $data =
 <<<JSON
     {
-        "parent": "amor"
+        "parent": "parent_product_no_value"
     }
 JSON;
 
@@ -178,7 +180,7 @@ JSON;
                 'errors' => [
                     [
                         'property' => 'attribute',
-                        'message' => 'Attribute "a_yes_no" cannot be empty, as it is defined as an axis for this entity'
+                        'message' => 'Attribute "a_simple_select" cannot be empty, as it is defined as an axis for this entity'
                     ]
                 ]
             ],

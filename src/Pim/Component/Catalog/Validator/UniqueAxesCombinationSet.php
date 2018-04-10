@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Pim\Component\Catalog\Validator;
 
 use Pim\Component\Catalog\Model\EntityWithFamilyVariantInterface;
-use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Model\VariantProductInterface;
 
 /**
  * Contains the state of the unique axes combination for an entity with family variant.
@@ -82,7 +82,7 @@ class UniqueAxesCombinationSet
      */
     private function getEntityCode(EntityWithFamilyVariantInterface $entity): string
     {
-        if ($entity instanceof ProductInterface) {
+        if ($entity instanceof VariantProductInterface) {
             return $entity->getIdentifier();
         }
 

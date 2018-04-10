@@ -2,6 +2,7 @@
 
 namespace Pim\Component\Catalog\Builder;
 
+use Pim\Component\Catalog\Manager\AttributeValuesResolverInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\EntityWithValuesInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
@@ -36,6 +37,9 @@ class ProductBuilder implements ProductBuilderInterface
     /** @var EventDispatcherInterface */
     protected $eventDispatcher;
 
+    /** @var AttributeValuesResolverInterface */
+    protected $valuesResolver;
+
     /** @var string */
     protected $productClass;
 
@@ -47,14 +51,18 @@ class ProductBuilder implements ProductBuilderInterface
      * @param FamilyRepositoryInterface          $familyRepository    Family repository
      * @param AssociationTypeRepositoryInterface $assocTypeRepository Association type repository
      * @param EventDispatcherInterface           $eventDispatcher     Event dispatcher
+     * @param AttributeValuesResolverInterface   $valuesResolver      Attributes values resolver
      * @param EntityWithValuesBuilderInterface   $entityWithValuesBuilder
      * @param array                              $classes             Model classes
+     *
+     * @todo @merge Remove unused parameter $valuesResolver in master
      */
     public function __construct(
         AttributeRepositoryInterface $attributeRepository,
         FamilyRepositoryInterface $familyRepository,
         AssociationTypeRepositoryInterface $assocTypeRepository,
         EventDispatcherInterface $eventDispatcher,
+        AttributeValuesResolverInterface $valuesResolver,
         EntityWithValuesBuilderInterface $entityWithValuesBuilder,
         array $classes
     ) {
@@ -62,6 +70,7 @@ class ProductBuilder implements ProductBuilderInterface
         $this->familyRepository        = $familyRepository;
         $this->assocTypeRepository     = $assocTypeRepository;
         $this->eventDispatcher         = $eventDispatcher;
+        $this->valuesResolver          = $valuesResolver;
         $this->productClass            = $classes['product'];
         $this->associationClass        = $classes['association'];
         $this->entityWithValuesBuilder = $entityWithValuesBuilder;

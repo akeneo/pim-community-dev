@@ -1,7 +1,5 @@
 parameters:
     pim_enrich.step.mass_edit.step.class: Pim\Bundle\EnrichBundle\Connector\Step\MassEditStep
-    pim_enrich.delete_products_and_product_models.tasklet_name: 'delete_products_and_product_models'
-    pim_enrich.tasklet.delete_products_and_product_models.class: Pim\Component\Enrich\Job\DeleteProductsAndProductModelsTasklet
 
 services:
     # CSV Quick Export steps ------------------------------------------------------------------------------------------
@@ -14,7 +12,7 @@ services:
             - '@pim_enrich.reader.database.product'
             - '@pim_enrich.connector.processor.quick_export.product'
             - '@pim_connector.writer.file.csv_product_quick_export'
-            - 1000
+            - '%pim_job_product_batch_size%'
 
     pim_enrich.step.csv_product_model.quick_export:
         class: '%pim_connector.step.item_step.class%'
@@ -25,7 +23,7 @@ services:
             - '@pim_enrich.reader.database.product_model'
             - '@pim_enrich.connector.processor.quick_export.product_model'
             - '@pim_connector.writer.file.csv_product_model_quick_export'
-            - 1000
+            - '%pim_job_product_batch_size%'
 
     # XLSX Quick Export steps -----------------------------------------------------------------------------------------
     pim_enrich.step.xlsx_product.quick_export:
@@ -37,7 +35,7 @@ services:
             - '@pim_enrich.reader.database.product'
             - '@pim_enrich.connector.processor.quick_export.product'
             - '@pim_connector.writer.file.xlsx_product_quick_export'
-            - 1000
+            - '%pim_job_product_batch_size%'
 
     pim_enrich.step.xlsx_product_model.quick_export:
         class: '%pim_connector.step.item_step.class%'
@@ -48,7 +46,7 @@ services:
             - '@pim_enrich.reader.database.product_model'
             - '@pim_enrich.connector.processor.quick_export.product_model'
             - '@pim_connector.writer.file.xlsx_product_model_quick_export'
-            - 1000
+            - '%pim_job_product_batch_size%'
 
     # Mass Edit steps -------------------------------------------------------------------------------------------------
     pim_enrich.step.update_product_value.mass_edit:
@@ -60,6 +58,7 @@ services:
             - '@pim_enrich.reader.database.filtered_product_and_product_model'
             - '@pim_enrich.connector.processor.mass_edit.product.update_value'
             - '@pim_connector.writer.database.product'
+            - '%pim_job_product_batch_size%'
 
     pim_enrich.step.add_product_value.mass_edit:
         class: '%pim_connector.step.item_step.class%'
@@ -70,6 +69,7 @@ services:
             - '@pim_enrich.reader.database.filtered_product_and_product_model'
             - '@pim_enrich.connector.processor.mass_edit.product.add_value'
             - '@pim_connector.writer.database.product'
+            - '%pim_job_product_batch_size%'
 
     pim_enrich.step.remove_product_value.mass_edit:
         class: '%pim_connector.step.item_step.class%'
@@ -80,6 +80,7 @@ services:
             - '@pim_enrich.reader.database.filtered_product_and_product_model'
             - '@pim_enrich.connector.processor.mass_edit.product.remove_value'
             - '@pim_connector.writer.database.product'
+            - '%pim_job_product_batch_size%'
 
     pim_enrich.step.move_to_category.mass_edit:
         class: '%pim_connector.step.item_step.class%'
@@ -130,16 +131,7 @@ services:
             - '@pim_enrich.reader.database.product_and_product_model'
             - '@pim_enrich.connector.processor.mass_edit.product.edit_attributes'
             - '@pim_enrich.writer.database.product_and_product_model_writer'
-
-    pim_enrich.step.add_attribute_value.mass_edit:
-        class: '%pim_connector.step.item_step.class%'
-        arguments:
-            - 'perform'
-            - '@event_dispatcher'
-            - '@akeneo_batch.job_repository'
-            - '@pim_enrich.reader.database.product_and_product_model'
-            - '@pim_enrich.connector.processor.mass_edit.product.add_attribute_value'
-            - '@pim_enrich.writer.database.product_and_product_model_writer'
+            - '%pim_job_product_batch_size%'
 
     pim_enrich.step.add_to_existing_product_model.mass_edit:
         class: '%pim_connector.step.item_step.class%'
@@ -160,24 +152,7 @@ services:
             - '@pim_enrich.connector.reader.mass_edit.family'
             - '@pim_enrich.connector.processor.mass_edit.family.set_requirements'
             - '@pim_connector.writer.database.family'
-
-    pim_enrich.step.delete_products_and_product_models.mass_edit:
-        class: '%pim_connector.step.tasklet.class%'
-        arguments:
-            - '%pim_enrich.delete_products_and_product_models.tasklet_name%'
-            - '@event_dispatcher'
-            - '@akeneo_batch.job_repository'
-            - '@pim_enrich.tasklet.delete_products_and_product_models'
-
-    pim_enrich.tasklet.delete_products_and_product_models:
-        class: '%pim_enrich.tasklet.delete_products_and_product_models.class%'
-        arguments:
-            - '@pim_catalog.query.product_and_product_model_query_builder_factory'
-            - '@pim_catalog.remover.product'
-            - '@pim_catalog.remover.product_model'
-            - '@pim_connector.doctrine.cache_clearer'
-            - '@pim_catalog.filter.chained'
-            - 100
+            - '%pim_job_product_batch_size%'
 
     # Cleaner steps -------------------------------------------------------------------------------------------------
     pim_enrich.step.clean:

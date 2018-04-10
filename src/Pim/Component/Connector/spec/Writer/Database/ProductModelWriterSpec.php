@@ -6,20 +6,19 @@ use Akeneo\Component\Batch\Item\ItemWriterInterface;
 use Akeneo\Component\Batch\Job\JobParameters;
 use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\Batch\Step\StepExecutionAwareInterface;
-use Akeneo\Component\StorageUtils\Cache\EntityManagerClearerInterface;
+use Akeneo\Component\StorageUtils\Cache\CacheClearerInterface;
 use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
 use Pim\Bundle\VersioningBundle\Manager\VersionManager;
 use Pim\Component\Catalog\Model\ProductModelInterface;
 use Pim\Component\Connector\Writer\Database\ProductModelWriter;
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 
 class ProductModelWriterSpec extends ObjectBehavior
 {
     function let(
         VersionManager $versionManager,
         BulkSaverInterface $productSaver,
-        EntityManagerClearerInterface $cacheClearer,
+        CacheClearerInterface $cacheClearer,
         StepExecution $stepExecution
     ) {
         $this->beConstructedWith($versionManager, $productSaver, $cacheClearer);
@@ -79,25 +78,5 @@ class ProductModelWriterSpec extends ObjectBehavior
         $stepExecution->incrementSummaryInfo('create')->shouldBeCalled();
 
         $this->write([$product1, $product2]);
-    }
-
-    function it_clears_cache(
-        $stepExecution,
-        ProductModelInterface $product1,
-        ProductModelInterface $product2,
-        JobParameters $jobParameters
-    ) {
-        $stepExecution->getJobParameters()->willReturn($jobParameters);
-        $jobParameters->get('realTimeVersioning')->willReturn(true);
-
-        $items = [$product1, $product2];
-
-        $product1->getId()->willReturn('45');
-        $product2->getId()->willReturn(null);
-
-        $stepExecution->incrementSummaryInfo('create')->shouldBeCalled();
-        $stepExecution->incrementSummaryInfo('process')->shouldBeCalled();
-
-        $this->write($items);
     }
 }

@@ -1,4 +1,4 @@
-legacy:
+default:
     suites:
         all:
             paths:
@@ -70,8 +70,6 @@ legacy:
                     - 1024
                 - Pim\Behat\Context\JobContext:
                     - 'Context\FeatureContext'
-                - Pim\Behat\Context\ImportFileContext:
-                    - 'Context\FeatureContext'
                 - Pim\Behat\Context\Storage\FileInfoStorage:
                     - 'Context\FeatureContext'
                 - Pim\Behat\Context\Storage\ProductStorage:
@@ -88,10 +86,13 @@ legacy:
                     - '@pim_catalog.saver.product_model'
                 - Pim\Behat\Context\Domain\Enrich\FamilyVariantConfigurationContext:
                     - 'Context\FeatureContext'
-                - Pim\Behat\Context\Storage\VariantProductStorage:
-                    - '@pim_catalog.repository.product'
                 - Pim\Behat\Context\Domain\Enrich\ItemPickerContext:
                     - 'Context\FeatureContext'
+                - Pim\Behat\Context\Storage\VariantProductStorage:
+                    - '@pim_catalog.repository.product'
+                - Pim\Behat\Context\Storage\AttributeOptionStorage:
+                    - '@pim_catalog.repository.attribute_option'
+                    - '@doctrine.orm.default_entity_manager'
     extensions:
         Behat\ChainedStepsExtension: ~
         Behat\MinkExtension:
@@ -123,24 +124,3 @@ legacy:
         pretty: true
         pim:
             output_path: app/build/logs/behat/
-
-acceptance:
-    suites:
-        acceptance:
-            paths:
-                - '%paths.base%/tests/features/'
-            contexts_services:
-                - test.locale.context
-                - test.channel.context
-            filters:
-                tags: '@acceptance'
-
-    extensions:
-        Liuggio\Fastest\Behat\ListFeaturesExtension\Extension: ~
-        FriendsOfBehat\ContextServiceExtension:
-           imports:
-               - "tests/Acceptance/Resources/config/behat/services.yml"
-        FriendsOfBehat\CrossContainerExtension: ~
-        FriendsOfBehat\SymfonyExtension:
-            kernel:
-                env: acceptance

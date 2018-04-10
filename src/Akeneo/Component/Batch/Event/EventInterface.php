@@ -12,7 +12,6 @@ namespace Akeneo\Component\Batch\Event;
 interface EventInterface
 {
     /** Job execution events */
-    const JOB_EXECUTION_CREATED = 'akeneo_batch.job_execution_created';
     const BEFORE_JOB_EXECUTION = 'akeneo_batch.before_job_execution';
     const JOB_EXECUTION_STOPPED = 'akeneo_batch.job_execution_stopped';
     const JOB_EXECUTION_INTERRUPTED = 'akeneo_batch.job_execution_interrupted';
@@ -27,4 +26,7 @@ interface EventInterface
     const STEP_EXECUTION_ERRORED = 'akeneo_batch.step_execution_errored';
     const STEP_EXECUTION_COMPLETED = 'akeneo_batch.step_execution_completed';
     const INVALID_ITEM = 'akeneo_batch.invalid_item';
+
+    /** Item step events */
+    const ITEM_STEP_AFTER_BATCH = 'akeneo_batch.item_step_after_batch';
 }

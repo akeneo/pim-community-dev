@@ -90,7 +90,7 @@ class FamilyVariant implements FamilyVariantInterface
      */
     public function getVariantAttributeSet(int $level): ?VariantAttributeSetInterface
     {
-        if (0 >= $level) {
+        if ($level <= 0) {
             throw new \InvalidArgumentException('The level must be greater than 0');
         }
 
@@ -255,25 +255,20 @@ class FamilyVariant implements FamilyVariantInterface
                 $this->getFamily()->getCode()
             ));
         }
-
         $level = 0;
-
         foreach ($this->variantAttributeSets as $attributeSet) {
             $variantAttributeSetHasAttribute = false;
-
             foreach ($attributeSet->getAttributes() as $attribute) {
                 if ($attribute->getCode() === $attributeCode) {
                     $variantAttributeSetHasAttribute = true;
                     break;
                 }
             }
-
             if ($variantAttributeSetHasAttribute) {
                 $level = $attributeSet->getLevel();
                 break;
             }
         }
-
         return $level;
     }
 

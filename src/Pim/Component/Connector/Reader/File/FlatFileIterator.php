@@ -29,7 +29,7 @@ class FlatFileIterator implements FileIteratorInterface
     /** @var string */
     protected $filePath;
 
-    /** @var FileReaderInterface */
+    /** @var ReaderInterface */
     protected $reader;
 
     /** @var \SplFileInfo */

@@ -10,6 +10,7 @@ use Pim\Component\Catalog\Model\FamilyVariantInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
 use Pim\Component\Catalog\Model\ValueCollectionInterface;
+use Pim\Component\Catalog\Model\VariantProductInterface;
 use Pim\Component\Catalog\Normalizer\Indexing\ProductAndProductModel\ProductModelNormalizer;
 use Pim\Component\Catalog\Normalizer\Indexing\ProductAndProductModel\ProductPropertiesNormalizer;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -30,7 +31,7 @@ class ProductPropertiesNormalizerSpec extends ObjectBehavior
 
     function it_support_products_and_variant_products(
         ProductInterface $product,
-        ProductInterface $variantProduct
+        VariantProductInterface $variantProduct
     ) {
         $this->supportsNormalization($product, 'whatever')->shouldReturn(false);
         $this->supportsNormalization($product, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)
@@ -55,7 +56,6 @@ class ProductPropertiesNormalizerSpec extends ObjectBehavior
         $now = new \DateTime('now', new \DateTimeZone('UTC'));
         $family = null;
 
-        $product->isVariant()->willReturn(false);
         $product->getIdentifier()->willReturn('sku-001');
         $product->getFamily()->willReturn($family);
         $serializer->normalize($family, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)
@@ -119,7 +119,6 @@ class ProductPropertiesNormalizerSpec extends ObjectBehavior
     ) {
         $now = new \DateTime('now', new \DateTimeZone('UTC'));
 
-        $product->isVariant()->willReturn(false);
         $product->getId()->willReturn(67);
         $product->getIdentifier()->willReturn('sku-001');
 
@@ -233,7 +232,7 @@ class ProductPropertiesNormalizerSpec extends ObjectBehavior
 
     function it_normalizes_variant_product_properties_with_fields_and_values(
         $serializer,
-        ProductInterface $variantProduct,
+        VariantProductInterface $variantProduct,
         ValueCollectionInterface $valueCollection,
         FamilyInterface $family,
         FamilyVariantInterface $familyVariant,
@@ -243,7 +242,6 @@ class ProductPropertiesNormalizerSpec extends ObjectBehavior
     ) {
         $now = new \DateTime('now', new \DateTimeZone('UTC'));
 
-        $variantProduct->isVariant()->willReturn(true);
         $variantProduct->getId()->willReturn(67);
         $variantProduct->getIdentifier()->willReturn('sku-001');
 
@@ -366,7 +364,7 @@ class ProductPropertiesNormalizerSpec extends ObjectBehavior
 
     function it_normalizes_variant_product_properties_with_minimum_filled_fields_and_values(
         $serializer,
-        ProductInterface $variantProduct,
+        VariantProductInterface $variantProduct,
         ValueCollectionInterface $valueCollection,
         Collection $completenesses,
         FamilyInterface $family,
@@ -377,7 +375,6 @@ class ProductPropertiesNormalizerSpec extends ObjectBehavior
     ) {
         $now = new \DateTime('now', new \DateTimeZone('UTC'));
 
-        $variantProduct->isVariant()->willReturn(true);
         $variantProduct->getId()->willReturn(67);
         $variantProduct->getIdentifier()->willReturn('sku-001');
         $variantProduct->getFamily()->willReturn($family);
@@ -460,7 +457,7 @@ class ProductPropertiesNormalizerSpec extends ObjectBehavior
 
     function it_normalizes_variant_product_properties_with_fields_and_values_and_its_parents_values(
         $serializer,
-        ProductInterface $variantProduct,
+        VariantProductInterface $variantProduct,
         ValueCollectionInterface $valueCollection,
         Collection $completenesses,
         FamilyInterface $family,
@@ -470,7 +467,6 @@ class ProductPropertiesNormalizerSpec extends ObjectBehavior
     ) {
         $now = new \DateTime('now', new \DateTimeZone('UTC'));
 
-        $variantProduct->isVariant()->willReturn(true);
         $variantProduct->getId()->willReturn(67);
         $variantProduct->getIdentifier()->willReturn('sku-001');
         $variantProduct->getFamily()->willReturn($family);

@@ -89,7 +89,6 @@ user:
     label: Tuoteruudukon oletusnäkymä
   default_grid_view:
     none: Ei yhtään
-  timezone: Aikavyöhyke
 Role: Rooli
 Owner: Omistaja
 General: Yleinen
