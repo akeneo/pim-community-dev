@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\PimEnterprise\Bundle\ImportExportBundle\Form\Subscriber;
+namespace spec\PimEnterprise\Bundle\SecurityBundle\Form\EventListener;
 
 use Akeneo\Component\Batch\Model\JobInstance;
 use Oro\Bundle\SecurityBundle\SecurityFacade;

@@ -8,6 +8,7 @@ parameters:
     pimee_security.form.subscriber.locale_permissions.class:   PimEnterprise\Bundle\SecurityBundle\Form\EventListener\LocalePermissionsSubscriber
     pimee_security.form.provider.form.product.class: PimEnterprise\Bundle\SecurityBundle\Form\Provider\ProductFormProvider
     pimee_security.form.provider.form.product_model.class: PimEnterprise\Bundle\SecurityBundle\Form\Provider\ProductModelFormProvider
+    pimee_security.form.subscriber.job_profile_permissions.class: PimEnterprise\Bundle\SecurityBundle\Form\EventListener\JobProfilePermissionsSubscriber
 
 services:
     # Form
@@ -53,6 +54,13 @@ services:
         arguments:
             - '@pimee_security.manager.locale_access'
             - '@oro_security.security_facade'
+
+    pimee_security.form.subscriber.job_profile_permissions:
+        class: '%pimee_security.form.subscriber.job_profile_permissions.class%'
+        arguments:
+            - '@pimee_security.manager.job_profile_access'
+            - '@oro_security.security_facade'
+            - '@pim_user.repository.group'
 
     # Provider
     pimee_security.form.provider.form.product:

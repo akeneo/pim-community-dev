@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Bundle\ImportExportBundle\Form\Subscriber;
+namespace PimEnterprise\Bundle\SecurityBundle\Form\EventListener;
 
 use Akeneo\Component\Batch\Model\JobInstance;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
