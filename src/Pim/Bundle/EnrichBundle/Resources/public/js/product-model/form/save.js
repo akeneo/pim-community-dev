@@ -32,6 +32,12 @@ define(
             updateSuccessMessage: __('pim_enrich.entity.product_model.info.update_successful'),
             updateFailureMessage: __('pim_enrich.entity.product_model.info.update_failed'),
 
+            configure: function () {
+                this.listenTo(this.getRoot(), 'pim_enrich:form:update-association', this.save);
+
+                return BaseSave.prototype.configure.apply(this, arguments);
+            },
+
             /**
              * {@inheritdoc}
              */
@@ -41,7 +47,6 @@ define(
 
                 delete productModel.meta;
                 delete productModel.family;
-                delete productModel.associations;
 
                 var notReadyFields = FieldManager.getNotReadyFields();
 
