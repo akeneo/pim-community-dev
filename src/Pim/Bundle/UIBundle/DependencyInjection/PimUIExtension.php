@@ -49,7 +49,7 @@ class PimUIExtension extends Extension
         foreach ($bundles as $bundle) {
             $reflection = new \ReflectionClass($bundle);
             if (is_file($file = dirname($reflection->getFilename()) . '/Resources/config/placeholders.yml')) {
-                $placeholderData = Yaml::parse(file_get_contents(realpath($file)), Yaml::PARSE_CONSTANT);
+                $placeholderData = Yaml::parse(file_get_contents(realpath($file)));
                 if (isset($placeholderData['placeholders'])) {
                     $placeholders = array_merge_recursive($placeholders, $placeholderData['placeholders']);
                 }

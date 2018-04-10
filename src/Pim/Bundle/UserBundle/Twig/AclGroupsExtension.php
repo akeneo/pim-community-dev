@@ -69,7 +69,7 @@ class AclGroupsExtension extends \Twig_Extension
             $reflection = new \ReflectionClass($class);
             $path = dirname($reflection->getFileName()) . '/Resources/config/acl_groups.yml';
             if (file_exists($path)) {
-                $config = Yaml::parse(file_get_contents($path), Yaml::PARSE_CONSTANT) + $config;
+                $config = Yaml::parse(file_get_contents($path)) + $config;
             }
         }
 
