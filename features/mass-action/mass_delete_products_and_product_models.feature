@@ -65,7 +65,7 @@ Feature: Delete many products and product models at once
     And I filter by "completeness" with operator "equals" and value "yes"
     And I select row Braided hat
     And I press the "Delete" button
-    Then I should see the text "Are you sure you want to delete the selected products and product models? All the product models' children will be also deleted."
+    And I should see the text "Are you sure you want to delete the selected products and product models? All the product models' children will be also deleted."
     When I confirm the removal
     And I wait for the "delete_products_and_product_models" job to finish
     And I am on the products grid

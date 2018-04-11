@@ -2,6 +2,22 @@ extensions:
     pim-attribute-identifier-edit-form:
         module: pim/attribute-edit-form
 
+    pim-attribute-identifier-edit-form-breadcrumbs:
+        module: pim/common/breadcrumbs
+        parent: pim-attribute-identifier-edit-form
+        targetZone: breadcrumbs
+        config:
+            tab: pim-menu-settings
+            item: pim-menu-settings-attribute
+
+    pim-attribute-identifier-edit-form-user-navigation:
+        module: pim/menu/user-navigation
+        parent: pim-attribute-identifier-edit-form
+        targetZone: user-menu
+        config:
+            userAccount: pim_menu.user.user_account
+            logout: pim_menu.user.logout
+
     pim-attribute-identifier-edit-form-cache-invalidator:
         module: pim/cache-invalidator
         parent: pim-attribute-identifier-edit-form
@@ -13,18 +29,25 @@ extensions:
         targetZone: title
         position: 90
 
-    pim-attribute-identifier-edit-form-delete:
-        module: pim/attribute-edit-form/delete
+    pim-attribute-identifier-edit-form-secondary-actions:
+        module: pim/form/common/secondary-actions
         parent: pim-attribute-identifier-edit-form
         targetZone: buttons
+        position: 50
+
+    pim-attribute-identifier-edit-form-delete:
+        module: pim/attribute-edit-form/delete
+        parent: pim-attribute-identifier-edit-form-secondary-actions
         position: 100
+        targetZone: secondary-actions
         aclResourceId: pim_enrich_attribute_remove
         config:
             trans:
                 title: confirmation.remove.attribute
+                subTitle: pim_menu.item.attribute
                 content: pim_enrich.confirmation.delete_item
                 success: flash.attribute.removed
-                fail: error.removing.attribute
+                failed: error.removing.attribute
             redirect: pim_enrich_attribute_index
 
     pim-attribute-identifier-edit-form-save-buttons:

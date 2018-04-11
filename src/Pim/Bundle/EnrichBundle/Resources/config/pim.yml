@@ -15,6 +15,9 @@ imports:
     - { resource: '@PimEnrichBundle/Resources/config/bundles/twig.yml' }
     - { resource: '@PimApiBundle/Resources/config/api.yml' }
 
+parameters:
+    pim_job_product_batch_size: 10
+
 services:
     oro.cache.abstract:
         abstract:  true

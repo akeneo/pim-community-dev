@@ -53,13 +53,13 @@ class FileReaderArchiverSpec extends ObjectBehavior
         $jobExecution->getJobParameters()->willReturn($jobParameters);
         $jobParameters->get('filePath')->willReturn($pathname);
 
-        $filesystem->put(
+        $filesystem->putStream(
             'type' . DIRECTORY_SEPARATOR .
             'my_job_name' . DIRECTORY_SEPARATOR .
             '12' . DIRECTORY_SEPARATOR .
             'input' . DIRECTORY_SEPARATOR .
             $filename,
-            ''
+            Argument::any()
         )->shouldBeCalled();
 
         $this->archive($jobExecution);
@@ -84,7 +84,7 @@ class FileReaderArchiverSpec extends ObjectBehavior
         $job->getSteps()->willReturn([$step]);
         $step->getReader()->willReturn($reader);
 
-        $filesystem->put(Argument::any())->shouldNotBeCalled();
+        $filesystem->putStream(Argument::any())->shouldNotBeCalled();
 
         $this->archive($jobExecution);
     }
@@ -109,7 +109,7 @@ class FileReaderArchiverSpec extends ObjectBehavior
         $jobInstance->getType()->willReturn('type');
         $job->getSteps()->willReturn([$step]);
 
-        $filesystem->put(Argument::any())->shouldNotBeCalled();
+        $filesystem->putStream(Argument::any())->shouldNotBeCalled();
 
         $this->archive($jobExecution);
     }
