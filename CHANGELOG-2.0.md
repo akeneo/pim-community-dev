@@ -1,3 +1,9 @@
+# 2.0.x
+
+## Bug fixes
+
+- PIM-7283: Fix slowness on count product in categories for the product grid 
+
 # 2.0.20 (2018-03-29)
 
 ## Bug fixes
