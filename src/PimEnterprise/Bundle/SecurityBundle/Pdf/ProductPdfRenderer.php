@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Bundle\PdfGeneratorBundle\Renderer;
+namespace PimEnterprise\Bundle\SecurityBundle\Pdf;
 
 use Liip\ImagineBundle\Imagine\Cache\CacheManager;
 use Liip\ImagineBundle\Imagine\Data\DataManager;

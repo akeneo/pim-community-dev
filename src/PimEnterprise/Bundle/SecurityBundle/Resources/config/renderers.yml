@@ -1,9 +1,9 @@
 parameters:
-    pimee_pdf_generator.renderer.product_pdf.class: PimEnterprise\Bundle\PdfGeneratorBundle\Renderer\ProductPdfRenderer
+    pimee_security.renderer.product_pdf.class: PimEnterprise\Bundle\SecurityBundle\Pdf\ProductPdfRenderer
 
 services:
-    pimee_pdf_generator.renderer.product_pdf:
-        class: '%pimee_pdf_generator.renderer.product_pdf.class%'
+    pimee_security.renderer.product_pdf:
+        class: '%pimee_security.renderer.product_pdf.class%'
         arguments:
             - '@templating'
             - '@pim_pdf_generator.builder.dompdf'

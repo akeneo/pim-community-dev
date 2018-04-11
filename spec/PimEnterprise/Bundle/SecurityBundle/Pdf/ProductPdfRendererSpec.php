@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\PimEnterprise\Bundle\PdfGeneratorBundle\Renderer;
+namespace spec\PimEnterprise\Bundle\SecurityBundle\Pdf;
 
 use Akeneo\Component\FileStorage\Model\FileInfoInterface;
 use Doctrine\Common\Collections\ArrayCollection;
