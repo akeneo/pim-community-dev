@@ -41,17 +41,19 @@ class IsSmartFilterSpec extends ObjectBehavior
 
     function it_applies_a_true_filter($ds, $qb, $expr)
     {
+        $expr->andX(null, null)->shouldBeCalled();
+        $expr->eq("rlr.resourceId", "a.id")->shouldBeCalled();
+        $expr->eq("rlr.resourceName", null)->shouldBeCalled();
+        $expr->literal("Attribute")->shouldBeCalled();
         $qb
             ->leftJoin(
                 'Resource',
                 'rlr',
                 'WITH',
-                'rlr.resourceId = a.id AND rlr.resourceName = :attributeClass'
+                null
             )
             ->shouldBeCalled()
             ->willReturn($qb);
-
-        $qb->setParameter('attributeClass', 'Attribute')->shouldBeCalled();
 
         $expr->isNotNull('rlr.resourceId')->shouldBeCalled()->willReturn('rlr.resourceId IS NOT NULL');
 
@@ -62,17 +64,19 @@ class IsSmartFilterSpec extends ObjectBehavior
 
     function it_applies_a_false_filter($ds, $qb, $expr)
     {
+        $expr->andX(null, null)->shouldBeCalled();
+        $expr->eq("rlr.resourceId", "a.id")->shouldBeCalled();
+        $expr->eq("rlr.resourceName", null)->shouldBeCalled();
+        $expr->literal("Attribute")->shouldBeCalled();
         $qb
             ->leftJoin(
                 'Resource',
                 'rlr',
                 'WITH',
-                'rlr.resourceId = a.id AND rlr.resourceName = :attributeClass'
+                null
             )
             ->shouldBeCalled()
             ->willReturn($qb);
-
-        $qb->setParameter('attributeClass', 'Attribute')->shouldBeCalled();
 
         $expr->isNull('rlr.resourceId')->shouldBeCalled()->willReturn('rlr.resourceId IS NULL');
 

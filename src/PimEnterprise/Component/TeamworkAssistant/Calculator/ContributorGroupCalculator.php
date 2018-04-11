@@ -68,7 +68,10 @@ class ContributorGroupCalculator implements ProjectItemCalculatorInterface
         foreach ($attributeContributorGroups as $attributeUserGroup) {
             if (0 === count($productContributorsGroupNames) && 0 === count($product->getCategories())) {
                 $contributorGroups[] = $attributeUserGroup;
-            } elseif (in_array($attributeUserGroup->getName(), $productContributorsGroupNames, true)) {
+            } elseif (
+                in_array($attributeUserGroup->getName(), $productContributorsGroupNames, true) ||
+                'All' === $attributeUserGroup->getName()
+            ) {
                 $contributorGroups[] = $attributeUserGroup;
             }
         }
