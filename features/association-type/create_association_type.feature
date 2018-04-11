@@ -5,8 +5,8 @@ Feature: Association type creation
   I need to be able to manually create an association type
 
   Background:
-    Given the "default" catalog configuration
-    And I am logged in as "Julia"
+    Given the minimal catalog
+    And the manager "Julia Stark"
     And I am on the association types page
     And I create a new association type
 

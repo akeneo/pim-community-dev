@@ -89,6 +89,17 @@ legacy:
                     - '@pim_catalog.repository.product'
                 - Pim\Behat\Context\Domain\Enrich\ItemPickerContext:
                     - 'Context\FeatureContext'
+                - Pim\Behat\Context\Fixture\CatalogContext:
+                    - '@behat.fixture.builder.group'
+                    - '@behat.fixture.builder.role'
+                    - '@behat.fixture.builder.user'
+                    - '@behat.fixture.builder.attribute'
+                    - '@behat.fixture.builder.attribute_group'
+                    - '@behat.fixture.builder.category'
+                    - '@behat.fixture.builder.channel'
+                    - '@behat.fixture.builder.currency'
+                    - '@behat.fixture.builder.job_instance'
+                    - '@behat.fixture.builder.locale'
     extensions:
         Behat\ChainedStepsExtension: ~
         Behat\MinkExtension:
