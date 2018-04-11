@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\PimEnterprise\Bundle\UserBundle\Twig;
+namespace spec\PimEnterprise\Bundle\WorkflowBundle\Twig;
 
 use PhpSpec\ObjectBehavior;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;
