@@ -30,11 +30,10 @@ use Pim\Bundle\DataGridBundle\Entity\DatagridView;
 use Pim\Bundle\UserBundle\Entity\User;
 use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Builder\EntityWithValuesBuilderInterface;
-use Pim\Component\Catalog\Model\Association;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\AttributeOptionInterface;
-use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Component\Catalog\Model\LocaleInterface;
+use Pim\Component\Catalog\Model\ProductAssociation;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
 use Pim\Component\Catalog\Model\ValueInterface;
@@ -1984,7 +1983,7 @@ class FixturesContext extends BaseFixturesContext
                     ->get('pim_catalog.repository.association_type')
                     ->findOneBy(['code' => $row['type']]);
 
-                $association = new Association();
+                $association = new ProductAssociation();
                 $association->setAssociationType($associationType);
                 $owner->addAssociation($association);
             }
