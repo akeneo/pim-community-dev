@@ -86,7 +86,7 @@ class SavingProductModelDescendantsIntegration extends TestCase
     {
         $this->createProductsAndProductModelsTree('seed');
 
-        $this->assertCompletenessForChannel('seed_variant_product_2', 'ecommerce', 10);
+        $this->assertCompletenessForChannel('seed_variant_product_2', 'ecommerce', 5);
 
         $this->get('doctrine.orm.entity_manager')->clear();
 
@@ -107,7 +107,7 @@ class SavingProductModelDescendantsIntegration extends TestCase
             $this->launcher->launchConsumerOnce();
         }
 
-        $this->assertCompletenessForChannel('seed_variant_product_2', 'ecommerce', 15);
+        $this->assertCompletenessForChannel('seed_variant_product_2', 'ecommerce', 10);
     }
 
     /**
