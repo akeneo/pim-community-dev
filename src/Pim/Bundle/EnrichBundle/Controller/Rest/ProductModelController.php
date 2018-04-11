@@ -19,7 +19,9 @@ use Pim\Component\Catalog\Repository\FamilyVariantRepositoryInterface;
 use Pim\Component\Catalog\Repository\ProductModelRepositoryInterface;
 use Pim\Component\Enrich\Converter\ConverterInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -185,10 +187,14 @@ class ProductModelController
      *
      * @AclAncestor("pim_enrich_product_model_create")
      *
-     * @return JsonResponse
+     * @return Response
      */
-    public function createAction(Request $request): JsonResponse
+    public function createAction(Request $request): Response
     {
+        if (!$request->isXmlHttpRequest()) {
+            return new RedirectResponse('/');
+        }
+
         $productModel = $this->productModelFactory->create();
         $content = json_decode($request->getContent(), true);
 
@@ -227,10 +233,14 @@ class ProductModelController
      *
      * @AclAncestor("pim_enrich_product_model_edit_attributes")
      *
-     * @return JsonResponse
+     * @return Response
      */
-    public function postAction(Request $request, int $id): JsonResponse
+    public function postAction(Request $request, int $id): Response
     {
+        if (!$request->isXmlHttpRequest()) {
+            return new RedirectResponse('/');
+        }
+
         $productModel = $this->productModelRepository->find($id);
         $data = json_decode($request->getContent(), true);
 
