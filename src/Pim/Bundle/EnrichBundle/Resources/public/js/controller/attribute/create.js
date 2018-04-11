@@ -27,11 +27,7 @@ function (_, BaseController, FormBuilder, fetcherRegistry) {
 
             var type = this.getQueryParam(location.href, 'attribute_type');
 
-            var formName = 'pim_catalog_identifier' === type ?
-                'pim-attribute-identifier-create-form' :
-                'pim-attribute-create-form';
-
-            return FormBuilder.getFormMeta(formName)
+            return FormBuilder.getFormMeta('pim-attribute-create-form')
                 .then(FormBuilder.buildForm)
                 .then((form) => {
                     form.setType(type);

@@ -4,6 +4,33 @@ extensions:
         config:
             template: pim/template/common/drop-zone
 
+    pim-attribute-metric-edit-form-properties-common-usable-as-grid-filter:
+        module: pim/form/common/fields/boolean
+        parent: pim-attribute-form-metric-edit
+        targetZone: content
+        position: 70
+        config:
+            fieldName: useable_as_grid_filter
+            label: pim_enrich.form.attribute.tab.properties.label.useable_as_grid_filter
+
+    pim-attribute-edit-form-metric-edit-is-locale-specific:
+        module: pim/attribute-edit-form/properties/is-locale-specific
+        parent: pim-attribute-form-metric-edit
+        targetZone: content
+        position: 80
+        config:
+            fieldName: is_locale_specific
+            label: pim_enrich.form.attribute.tab.properties.label.is_locale_specific
+
+    pim-attribute-edit-form-metric-edit-available-locales:
+        module: pim/attribute-edit-form/properties/available-locales
+        parent: pim-attribute-form-metric-edit
+        targetZone: content
+        position: 90
+        config:
+            fieldName: available_locales
+            label: pim_enrich.form.attribute.tab.properties.label.available_locales
+
     pim-attribute-form-metric-edit-type-specific-params:
         module: pim/common/simple-view
         parent: pim-attribute-form-metric-edit

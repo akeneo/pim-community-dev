@@ -473,7 +473,9 @@ config:
                 pim_catalog_file:
                     create: pim-attribute-form-file
                     edit:   pim-attribute-form-file
-                # pim_catalog_identifier has a fully dedicated view tree
+                pim_catalog_identifier:
+                    create: pim-attribute-form-identifier
+                    edit:   pim-attribute-form-identifier
                 pim_catalog_image:
                     create: pim-attribute-form-image
                     edit:   pim-attribute-form-image
@@ -498,6 +500,9 @@ config:
                 pim_catalog_textarea:
                     create: pim-attribute-form-textarea
                     edit:   pim-attribute-form-textarea
+                pim_catalog_boolean:
+                    create: pim-attribute-form-boolean
+                    edit:   pim-attribute-form-boolean
 
     paths:
         pim/app:                            pimenrich/js/app
@@ -559,7 +564,7 @@ config:
         pim/attributeoptionview:            pimenrich/js/pim-attributeoptionview
         pim/item/tableview:                 pimenrich/js/pim-item-tableview
         pim/item/view:                      pimenrich/js/pim-item-view
-        pim/i18n:                           pimenrich/js/i18n
+        pim/i18n:                           pimenrich/js/i18n.ts
         pim/user-context:                   pimenrich/js/user-context
         pim/date-context:                   pimenrich/js/date-context
         pim/error:                          pimenrich/js/error/error
@@ -814,7 +819,7 @@ config:
 
         # Product edit form
         pim/field-manager: pimenrich/js/product/field-manager
-        pim/provider/to-fill-field-provider: pimenrich/js/provider/to-fill-field-provider
+        pim/provider/to-fill-field-provider: pimenrich/js/provider/to-fill-field-provider.ts
         pim/provider/sequential-edit-provider: pimenrich/js/provider/sequential-edit-provider
 
         # Mass product edit form
@@ -1229,7 +1234,7 @@ config:
         pim/template/product-model-edit-form/add-child-form-fields-container: pimenrich/templates/product_model/add-child/fields-container.html
 
         # Order last
-        pim/form: pimenrich/js/product/form
+        pim/form: pimenrich/js/view/base
 
         # Alias overrides
         pimcommunity/job/common/edit/launch:      pimenrich/js/job/common/edit/launch

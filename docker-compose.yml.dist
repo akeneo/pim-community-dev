@@ -21,7 +21,7 @@ services:
       - behat
 
   node:
-    image: node:8
+    image: juliensnz/node
     environment:
       YARN_CACHE_FOLDER: '/home/node/.yarn-cache'
     user: node
