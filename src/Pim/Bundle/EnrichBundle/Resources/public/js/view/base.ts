@@ -241,8 +241,8 @@ class BaseView extends Backbone.View<any> implements View {
    * Initialize dropzone cache
    */
   initializeDropZones() {
-    this.zones = this.el
-      .querySelectorAll('[data-drop-zone]')
+    this.zones = this.$('[data-drop-zone]')
+      .toArray()
       .reduce((zones: {[code: string]: HTMLElement}, zone: HTMLElement) => {
         return {...zones, [<string>zone.dataset.dropZone]: zone};
       }, {});
