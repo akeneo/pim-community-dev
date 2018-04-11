@@ -1,4 +1,4 @@
-Pim\Component\Catalog\Model\Association:
+Pim\Component\Catalog\Model\ProductAssociation:
     type: entity
     table: pim_catalog_association
     changeTrackingPolicy: DEFERRED_EXPLICIT

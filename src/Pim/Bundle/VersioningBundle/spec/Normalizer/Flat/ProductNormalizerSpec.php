@@ -6,7 +6,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface;
-use Pim\Component\Catalog\Model\Association;
+use Pim\Component\Catalog\Model\ProductAssociation;
 use Pim\Component\Catalog\Model\AssociationTypeInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\AttributeOptionInterface;
@@ -132,9 +132,9 @@ class ProductNormalizerSpec extends ObjectBehavior
         ProductInterface $product,
         AttributeInterface $skuAttribute,
         ValueInterface $sku,
-        Association $myCrossSell,
+        ProductAssociation $myCrossSell,
         AssociationTypeInterface $crossSell,
-        Association $myUpSell,
+        ProductAssociation $myUpSell,
         AssociationTypeInterface $upSell,
         GroupInterface $associatedGroup1,
         GroupInterface $associatedGroup2,

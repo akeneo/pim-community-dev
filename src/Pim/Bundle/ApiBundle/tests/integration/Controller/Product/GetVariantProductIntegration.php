@@ -6,7 +6,7 @@ namespace Pim\Bundle\ApiBundle\tests\integration\Controller\Product;
 
 use Akeneo\Test\Integration\Configuration;
 use PHPUnit\Framework\Assert;
-use Pim\Component\Catalog\Model\Association;
+use Pim\Component\Catalog\Model\ProductAssociation;
 use Pim\Component\Catalog\tests\integration\Normalizer\NormalizedProductCleaner;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -19,7 +19,7 @@ class GetVariantProductIntegration extends AbstractProductTestCase
     {
         $product = $this->get('pim_catalog.repository.product')->findoneByIdentifier('biker-jacket-leather-xxs');
 
-        $association = new Association();
+        $association = new ProductAssociation();
         $association->setAssociationType(
             $this->get('pim_catalog.repository.association_type')->findoneByIdentifier('PACK')
         );

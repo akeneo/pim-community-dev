@@ -72,7 +72,7 @@ Pim\Component\Catalog\Model\Product:
                         onDelete: CASCADE
     oneToMany:
         associations:
-            targetEntity: Pim\Component\Catalog\Model\AssociationInterface
+            targetEntity: Pim\Component\Catalog\Model\ProductAssociationInterface
             mappedBy: owner
             cascade:
                 - persist
