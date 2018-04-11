@@ -120,3 +120,11 @@
 - Move `PimEnterprise\Bundle\ImportExportBundle\Form\Type\JobProfilePermissionsType` to `PimEnterprise\Bundle\SecurityBundle\Form\Type\JobProfilePermissionsType`
 - Move `PimEnterprise\Bundle\ImportExportBundle\Manager\JobExecutionManager` to `PimEnterprise\Bundle\SecurityBundle\Manager\JobExecutionManager`
 - Move `PimEnterprise\Bundle\FilterBundle\Filter\Product\ProjectCompletenessFilter` to `PimEnterprise\Bundle\TeamworkAssistantBundle\Datagrid\Filter\ProjectCompletenessFilter`
+- Remove `PimEnterprise\Bundle\PdfGeneratorBundle\PimEnterprisePdfGeneratorBundle()`
+- Remove `PimEnterprise\Bundle\PdfGeneratorBundle\DependencyInjection\PimEnterprisePdfGeneratorExtension()`
+- Remove `PimEnterprise\Bundle\UIBundle\DependencyInjection\PimEnterpriseUIExtension()`
+- Move `PimEnterprise\Bundle\UIBundle\Controller\AjaxOptionController` to `PimEnterprise\Bundle\ProductAssetBundle\Controller\Rest\AjaxOptionController`
+- Move `PimEnterprise\Bundle\PdfGeneratorBundle\Twig\ImageExtension` to `PimEnterprise\Bundle\ProductAssetBundle\TwigExtension\ImageExtension`
+- Move `PimEnterprise\Bundle\SecurityBundle\Controller\PermissionRestController` to `PimEnterprise\Bundle\SecurityBundle\Controller\InternalApi\PermissionRestController`
+- Move `PimEnterprise\Bundle\PdfGeneratorBundle\Controller\ProductController` to `PimEnterprise\Bundle\SecurityBundle\Controller\ProductController`
+- Move `PimEnterprise\Bundle\PdfGeneratorBundle\Renderer\ProductPdfRenderer` to `PimEnterprise\Bundle\SecurityBundle\Pdf\ProductPdfRenderer`
