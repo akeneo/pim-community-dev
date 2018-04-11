@@ -9,7 +9,7 @@ parameters:
     pimee_product_asset.controller.asset_variation.class: PimEnterprise\Bundle\ProductAssetBundle\Controller\ExternalApi\AssetVariationController
     pimee_product_asset.controller.asset.class: PimEnterprise\Bundle\ProductAssetBundle\Controller\ExternalApi\AssetController
     pimee_product_asset.controller.asset_tag.class: PimEnterprise\Bundle\ProductAssetBundle\Controller\ExternalApi\AssetTagController
-    pimee_security.controller.ajax_option.class: PimEnterprise\Bundle\ProductAssetBundle\Controller\Rest\AjaxOptionController
+    pimee_product_asset.controller.ajax_option.class: PimEnterprise\Bundle\ProductAssetBundle\Controller\Rest\AjaxOptionController
 
 services:
     pimee_product_asset.controller.product_asset:
@@ -182,8 +182,8 @@ services:
             - '@router'
             - '%pim_api.configuration%'
 
-    pimee_security.controller.ajax_option:
-        class: '%pimee_security.controller.ajax_option.class%'
+    pimee_product_asset.controller.ajax_option:
+        class: '%pimee_product_asset.controller.ajax_option.class%'
         arguments:
             - '@doctrine'
             - '@pim_reference_data.registry'

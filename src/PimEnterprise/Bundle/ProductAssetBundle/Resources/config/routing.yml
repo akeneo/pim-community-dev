@@ -42,4 +42,4 @@ asset-tag:
 # CE Override
 pim_ui_ajaxentity_list:
     path: /list.json
-    defaults: { _controller: pimee_security.controller.ajax_option:listAction, _format: json }
+    defaults: { _controller: pimee_product_asset.controller.ajax_option:listAction, _format: json }
