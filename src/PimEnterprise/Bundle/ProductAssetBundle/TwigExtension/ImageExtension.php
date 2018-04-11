@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Bundle\PdfGeneratorBundle\Twig;
+namespace PimEnterprise\Bundle\ProductAssetBundle\TwigExtension;
 
 use Pim\Bundle\PdfGeneratorBundle\Twig\ImageExtension as BaseImageExtension;
 use Pim\Component\Catalog\Model\AttributeInterface;
