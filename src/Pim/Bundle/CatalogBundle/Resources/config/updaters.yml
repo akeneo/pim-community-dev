@@ -238,6 +238,7 @@ services:
             - '@pim_catalog.repository.product'
             - '@pim_catalog.repository.product_model'
             - '@pim_catalog.repository.group'
+            - '@pim_catalog.repository.association_type'
             - '@pim_catalog.builder.product'
             - ['associations']
         tags:
@@ -479,6 +480,7 @@ services:
             - '@pim_catalog.repository.product'
             - '@pim_catalog.repository.product_model'
             - '@pim_catalog.repository.group'
+            - '@pim_catalog.repository.association_type'
             - '@pim_catalog.builder.product'
             - ['associations']
         tags:
