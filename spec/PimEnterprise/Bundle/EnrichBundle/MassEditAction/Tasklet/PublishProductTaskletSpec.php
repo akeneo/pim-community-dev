@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace spec\PimEnterprise\Bundle\EnrichBundle\MassEditAction\Tasklet;
 
 use Akeneo\Component\Batch\Job\JobParameters;
@@ -10,7 +12,6 @@ use Akeneo\Component\StorageUtils\Cursor\PaginatorFactoryInterface;
 use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use Oro\Bundle\UserBundle\Entity\UserManager;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Elasticsearch\SearchQueryBuilder;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Query\ProductQueryBuilder;
 use Pim\Component\Catalog\Query\ProductQueryBuilderFactoryInterface;
@@ -70,7 +71,6 @@ class PublishProductTaskletSpec extends ObjectBehavior
     }
 
     function it_executes_a_mass_publish_operation_with_a_configuration(
-        $pqb,
         $paginatorFactory,
         $manager,
         $cursor,
@@ -82,8 +82,7 @@ class PublishProductTaskletSpec extends ObjectBehavior
         ProductInterface $product1,
         ProductInterface $product2,
         ConstraintViolationListInterface $violations,
-        JobParameters $jobParameters,
-        SearchQueryBuilder $searchQueryBuilder
+        JobParameters $jobParameters
     ) {
         $configuration = [
             'filters' => [
@@ -123,14 +122,10 @@ class PublishProductTaskletSpec extends ObjectBehavior
 
         $manager->publishAll([$product1, $product2])->shouldBeCalled();
 
-        $pqb->getQueryBuilder()->willReturn($searchQueryBuilder);
-        $pqb->setQueryBuilder($searchQueryBuilder)->shouldBeCalled();
-
         $this->execute();
     }
 
     function it_executes_a_mass_publish_operation_with_a_configuration_with_invalid_items(
-        $pqb,
         $paginatorFactory,
         $manager,
         $cursor,
@@ -142,8 +137,7 @@ class PublishProductTaskletSpec extends ObjectBehavior
         ProductInterface $product1,
         ProductInterface $product2,
         ObjectDetacherInterface $objectDetacher,
-        JobParameters $jobParameters,
-        SearchQueryBuilder $searchQueryBuilder
+        JobParameters $jobParameters
     ) {
         $configuration = [
             'filters' => [
@@ -195,15 +189,11 @@ class PublishProductTaskletSpec extends ObjectBehavior
 
         $manager->publishAll([])->shouldBeCalled();
 
-        $pqb->getQueryBuilder()->willReturn($searchQueryBuilder);
-        $pqb->setQueryBuilder($searchQueryBuilder)->shouldBeCalled();
-
         $this->setStepExecution($stepExecution);
         $this->execute($configuration);
     }
 
     function it_skips_product_when_user_does_not_have_own_right_on_it(
-        $pqb,
         $paginatorFactory,
         $manager,
         $cursor,
@@ -215,8 +205,7 @@ class PublishProductTaskletSpec extends ObjectBehavior
         ProductInterface $product1,
         ProductInterface $product2,
         ConstraintViolationListInterface $violations,
-        JobParameters $jobParameters,
-        SearchQueryBuilder $searchQueryBuilder
+        JobParameters $jobParameters
     ) {
         $configuration = [
             'filters' => [
@@ -262,9 +251,6 @@ class PublishProductTaskletSpec extends ObjectBehavior
         $violations->count()->willReturn(0);
 
         $manager->publishAll([$product1])->shouldBeCalled();
-
-        $pqb->getQueryBuilder()->willReturn($searchQueryBuilder);
-        $pqb->setQueryBuilder($searchQueryBuilder)->shouldBeCalled();
 
         $this->execute();
     }
