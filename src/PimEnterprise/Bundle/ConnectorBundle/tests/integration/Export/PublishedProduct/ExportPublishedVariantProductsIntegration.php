@@ -27,7 +27,7 @@ class ExportPublishedVariantProductsIntegration extends TestCase
         $this->jobLauncher       = new JobLauncher(static::$kernel);
         $publishedProductManager = $this->get('pimee_workflow.manager.published_product');
 
-        $product = $this->get('pimee_catalog.repository.product')->findOneByIdentifier('1111111113');
+        $product = $this->get('pimee_security.repository.product')->findOneByIdentifier('1111111113');
         $publishedProductManager->publish($product, ['flush' => true]);
 
         $this->get('akeneo_elasticsearch.client.product')->refreshIndex();
