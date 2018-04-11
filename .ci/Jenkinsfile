@@ -73,6 +73,11 @@ stage("Test") {
                 container: tag,
                 script: "cd /var/www/pim && yarn run lint"
             )},
+            "frontend-acceptance": {testif(
+                condition: launchUnitTests.equals("yes"),
+                container: tag,
+                script: "cd /var/www/pim && yarn run webpack-test && MAX_RANDOM_LATENCY_MS=100 yarn run acceptance /var/www/pim/vendor/akeneo/pim-community-dev/tests/features /var/www/pim/tests/features"
+            )},
             "php-coupling-detector": {testif(
                 condition: launchUnitTests.equals("yes"),
                 container: tag,
