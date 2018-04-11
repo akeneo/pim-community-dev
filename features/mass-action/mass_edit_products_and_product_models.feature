@@ -50,28 +50,15 @@ Feature: Apply a mass action on products only (and not product models)
     Then I should see the text "COMPLETED"
     And I should see the text "processed 1"
     And I should see the text "skipped 1"
-    And I should see the text "Skipped products 1"
-    And I should see the text "The variant product family must be the same than its parent: tshirt-unique-size-navy-blue"
-    And I should see the text "This bulk action doesn't support Product models entities yet."
+    And I should see the text "Skipped products 5"
+    And I should see the text "family: The variant product family must be the same than its parent: tshirt-divided-navy-blue-xxs"
+    And I should see the text "family: The variant product family must be the same than its parent: tshirt-divided-navy-blue-m"
+    And I should see the text "family: The variant product family must be the same than its parent: tshirt-divided-navy-blue-l"
+    And I should see the text "family: The variant product family must be the same than its parent: tshirt-divided-navy-blue-xxxl"
+    And I should see the text "family: The variant product family must be the same than its parent: tshirt-unique-size-navy-blue"
     And the family of product "watch" should be "shoes"
     And the family of product "tshirt-unique-size-crimson-red" should be "clothing"
     And the family of product model "model-tshirt-divided-crimson-red" should be "clothing"
-
-  Scenario: Mass edits status of only products within a selection of products and product models
-    Given I show the filter "color"
-    And I filter by "color" with operator "in list" and value "Navy blue"
-    And I select rows watch, tshirt-unique-size-navy-blue and model-tshirt-divided-navy-blue
-    And I press the "Bulk actions" button
-    And I choose the "Change status" operation
-    And I disable the products
-    And I wait for the "update_product_value" job to finish
-    When I go on the last executed job resume of "update_product_value"
-    Then I should see the text "COMPLETED"
-    And I should see the text "processed 2"
-    And I should see the text "skipped 1"
-    And I should see the text "This bulk action doesn't support Product models entities yet."
-    And product "watch" should be disabled
-    And product "tshirt-unique-size-navy-blue" should be disabled
 
   Scenario: Mass edits groups of only products within a selection of products and product models
     Given I show the filter "color"
