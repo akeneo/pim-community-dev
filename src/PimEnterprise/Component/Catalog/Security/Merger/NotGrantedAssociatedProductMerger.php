@@ -146,7 +146,6 @@ class NotGrantedAssociatedProductMerger implements NotGrantedDataMergerInterface
                     $associationCodes[$association->getAssociationType()->getCode()]['product_models'][] = $associatedProductModel->getCode();
                 }
             }
-
         }
 
         foreach ($filteredProduct->getAssociations() as $association) {
