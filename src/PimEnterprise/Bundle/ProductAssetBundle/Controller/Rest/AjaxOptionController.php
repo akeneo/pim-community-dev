@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Bundle\UIBundle\Controller;
+namespace PimEnterprise\Bundle\ProductAssetBundle\Controller\Rest;
 
 use Pim\Bundle\UIBundle\Controller\AjaxOptionController as BaseAjaxOptionController;
 use Pim\Component\ReferenceData\ConfigurationRegistryInterface;
