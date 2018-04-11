@@ -13,7 +13,6 @@ use Pim\Component\Catalog\Model\FamilyVariantInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
 use Pim\Component\Catalog\Model\VariantAttributeSetInterface;
-use Pim\Component\Catalog\Model\VariantProductInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
@@ -63,8 +62,7 @@ class AddBooleanValuesToNewProductSubscriber implements EventSubscriberInterface
             return;
         }
 
-        // TODO @merge Use $product->isVariant() to determine if the product is variant (since 2.2).
-        $booleanAttributes = $product instanceof VariantProductInterface
+        $booleanAttributes = $product->isVariant()
             ? $this->getBooleanAttributesFromFamilyVariant($product)
             : $this->getBooleanAttributesFromFamily($product);
 
@@ -100,13 +98,11 @@ class AddBooleanValuesToNewProductSubscriber implements EventSubscriberInterface
     }
 
     /**
-     * @param VariantProductInterface $product
+     * @param ProductInterface $product
      *
      * @return \Generator
-     *
-     * @todo @merge Replace VariantProductInterface by ProductInterface when merging to 2.2
      */
-    private function getBooleanAttributesFromFamilyVariant(VariantProductInterface $product): \Generator
+    private function getBooleanAttributesFromFamilyVariant(ProductInterface $product): \Generator
     {
         $parentProduct = $product->getParent();
         if (!$parentProduct instanceof ProductModelInterface) {

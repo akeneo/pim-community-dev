@@ -114,7 +114,7 @@ class AddBooleanValuesToNewProductIntegration extends TestCase
             ]
         ]);
 
-        $variantProduct = $this->get('pim_catalog.builder.variant_product')
+        $variantProduct = $this->get('pim_catalog.builder.product')
             ->createProduct('a_new_variant_product', 'family_with_booleans');
 
         $this->get('pim_catalog.updater.product')->update($variantProduct, ['parent' => 'product_model_with_boolean']);
@@ -215,7 +215,7 @@ class AddBooleanValuesToNewProductIntegration extends TestCase
             ]
         ]);
 
-        $variantProduct = $this->get('pim_catalog.builder.variant_product')
+        $variantProduct = $this->get('pim_catalog.builder.product')
             ->createProduct('a_new_variant_product', 'family_with_booleans');
 
         $this->get('pim_catalog.updater.product')->update($variantProduct, ['parent' => 'level_2_product_model_with_boolean']);
