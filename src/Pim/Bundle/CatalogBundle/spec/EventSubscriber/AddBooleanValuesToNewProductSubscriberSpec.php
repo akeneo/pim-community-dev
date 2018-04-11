@@ -72,6 +72,7 @@ class AddBooleanValuesToNewProductSubscriberSpec extends ObjectBehavior
         $event->getSubject()->willReturn($product);
         $product->getId()->willReturn(null);
         $product->getFamily()->willReturn($family);
+        $product->isVariant()->willReturn(false);
         $family->getAttributes()->willReturn([$textAttribute, $booleanAttribute]);
         $textAttribute->getType()->willReturn(AttributeTypes::TEXT);
         $booleanAttribute->getType()->willReturn(AttributeTypes::BOOLEAN);
@@ -111,6 +112,7 @@ class AddBooleanValuesToNewProductSubscriberSpec extends ObjectBehavior
         $event->getSubject()->willReturn($product);
         $product->getId()->willReturn(null);
         $product->getFamily()->willReturn($family);
+        $product->isVariant()->willReturn(false);
         $family->getAttributes()->willReturn([$booleanAttribute]);
         $booleanAttribute->getType()->willReturn(AttributeTypes::BOOLEAN);
         $booleanAttribute->getCode()->willReturn('is_boolean');
@@ -133,7 +135,7 @@ class AddBooleanValuesToNewProductSubscriberSpec extends ObjectBehavior
         $valuesResolver,
         $productValueFactory,
         GenericEvent $event,
-        VariantProductInterface $variantProduct,
+        ProductInterface $variantProduct,
         ProductModelInterface $parentProduct,
         FamilyVariantInterface $familyVariant,
         AttributeInterface $booleanAttribute,
@@ -144,6 +146,7 @@ class AddBooleanValuesToNewProductSubscriberSpec extends ObjectBehavior
         $variantProduct->getId()->willReturn(null);
         $variantProduct->getParent()->willReturn($parentProduct);
         $variantProduct->getVariationLevel()->willReturn(1);
+        $variantProduct->isVariant()->willReturn(true);
         $parentProduct->getFamilyVariant()->willReturn($familyVariant);
 
         $booleanAttribute->getType()->willReturn(AttributeTypes::BOOLEAN);
@@ -172,7 +175,7 @@ class AddBooleanValuesToNewProductSubscriberSpec extends ObjectBehavior
         $valuesResolver,
         $productValueFactory,
         GenericEvent $event,
-        VariantProductInterface $variantProduct,
+        ProductInterface $variantProduct,
         ProductModelInterface $parentProduct,
         FamilyVariantInterface $familyVariant,
         AttributeInterface $booleanAttribute,
@@ -184,6 +187,7 @@ class AddBooleanValuesToNewProductSubscriberSpec extends ObjectBehavior
         $variantProduct->getId()->willReturn(null);
         $variantProduct->getParent()->willReturn($parentProduct);
         $variantProduct->getVariationLevel()->willReturn(1);
+        $variantProduct->isVariant()->willReturn(true);
         $parentProduct->getFamilyVariant()->willReturn($familyVariant);
 
         $booleanAttribute->getType()->willReturn(AttributeTypes::BOOLEAN);
