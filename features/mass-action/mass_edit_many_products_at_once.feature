@@ -75,9 +75,9 @@ Feature: Mass edit many products at once via a form
     And I select rows "product_1"
     And I select all entities
     And I press the "Bulk actions" button
-    And I choose the "Edit attributes" operation
+    And I choose the "Edit attributes values" operation
     And I move on to the choose step
-    And I choose the "Edit attributes" operation
+    And I choose the "Edit attributes values" operation
     And I display the Name attribute
     And I change the "Name" to "Same product"
     And I confirm mass edit
