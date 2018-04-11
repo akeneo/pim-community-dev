@@ -21,8 +21,8 @@ use Pim\Bundle\DataGridBundle\Extension\Filter\FilterExtension as BaseFilterExte
 use Pim\Bundle\DataGridBundle\Repository\DatagridViewRepositoryInterface;
 use PimEnterprise\Bundle\EnrichBundle\Repository\AttributeRepositoryInterface;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\AttributeGroupAccessRepository;
+use PimEnterprise\Bundle\SecurityBundle\User\UserContext;
 use PimEnterprise\Bundle\TeamworkAssistantBundle\Datagrid\DatagridViewTypes;
-use PimEnterprise\Bundle\UserBundle\Context\UserContext;
 use PimEnterprise\Component\Security\Attributes;
 use Symfony\Component\Translation\TranslatorInterface;
 
@@ -38,7 +38,7 @@ class FilterExtension extends BaseFilterExtension
     /** @var AttributeGroupAccessRepository */
     protected $accessRepository;
 
-    /** @var UserContext */
+    /** @var \PimEnterprise\Bundle\SecurityBundle\User\UserContext */
     protected $userContext;
 
     /** @var DatagridViewRepositoryInterface */

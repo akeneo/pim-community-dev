@@ -29,7 +29,6 @@ class PimEnterpriseUserExtension extends Extension
     public function load(array $configs, ContainerBuilder $container)
     {
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
-        $loader->load('context.yml');
         $loader->load('entities.yml');
         $loader->load('form_types.yml');
         $loader->load('subscribers.yml');

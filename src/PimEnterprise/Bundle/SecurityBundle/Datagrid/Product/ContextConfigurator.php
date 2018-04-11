@@ -19,7 +19,7 @@ use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Pim\Component\Catalog\Repository\GroupRepositoryInterface;
 use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\AttributeGroupAccessRepository;
-use PimEnterprise\Bundle\UserBundle\Context\UserContext;
+use PimEnterprise\Bundle\SecurityBundle\User\UserContext;
 use PimEnterprise\Component\Security\Attributes;
 use Symfony\Component\HttpFoundation\RequestStack;
 

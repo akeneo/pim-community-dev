@@ -14,7 +14,7 @@ namespace PimEnterprise\Bundle\ProductAssetBundle\Datagrid\Extension\Formatter\P
 use Akeneo\Component\Localization\Presenter\PresenterInterface;
 use Oro\Bundle\DataGridBundle\Datasource\ResultRecordInterface;
 use Oro\Bundle\DataGridBundle\Extension\Formatter\Property\FieldProperty;
-use PimEnterprise\Bundle\UserBundle\Context\UserContext;
+use PimEnterprise\Bundle\SecurityBundle\User\UserContext;
 
 /**
  * Datetime property for an asset.

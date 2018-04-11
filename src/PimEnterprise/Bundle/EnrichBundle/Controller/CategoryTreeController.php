@@ -19,7 +19,7 @@ use Doctrine\Common\Persistence\ObjectRepository;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Pim\Bundle\EnrichBundle\Controller\CategoryTreeController as BaseCategoryTreeController;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;
-use PimEnterprise\Bundle\UserBundle\Context\UserContext;
+use PimEnterprise\Bundle\SecurityBundle\User\UserContext;
 use PimEnterprise\Component\Security\Attributes;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -53,16 +53,16 @@ class CategoryTreeController extends BaseCategoryTreeController
     protected $tokenStorage;
 
     /**
-     * @param EventDispatcherInterface    $eventDispatcher
-     * @param UserContext                 $userContext
-     * @param SaverInterface              $categorySaver
-     * @param RemoverInterface            $categoryRemover
-     * @param SimpleFactoryInterface      $categoryFactory
-     * @param CategoryRepositoryInterface $categoryRepository
-     * @param SecurityFacade              $securityFacade
-     * @param array                       $rawConfiguration
-     * @param CategoryAccessRepository    $categoryAccessRepo
-     * @param TokenStorageInterface       $tokenStorage
+     * @param EventDispatcherInterface                              $eventDispatcher
+     * @param \PimEnterprise\Bundle\SecurityBundle\User\UserContext $userContext
+     * @param SaverInterface                                        $categorySaver
+     * @param RemoverInterface                                      $categoryRemover
+     * @param SimpleFactoryInterface                                $categoryFactory
+     * @param CategoryRepositoryInterface                           $categoryRepository
+     * @param SecurityFacade                                        $securityFacade
+     * @param array                                                 $rawConfiguration
+     * @param CategoryAccessRepository                              $categoryAccessRepo
+     * @param TokenStorageInterface                                 $tokenStorage
      */
     public function __construct(
         EventDispatcherInterface $eventDispatcher,

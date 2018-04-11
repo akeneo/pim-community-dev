@@ -1,15 +1,15 @@
 <?php
 
-namespace spec\PimEnterprise\Bundle\UserBundle\Context;
+namespace spec\PimEnterprise\Bundle\SecurityBundle\User;
 
 use Akeneo\Component\Classification\Repository\CategoryRepositoryInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Builder\ChoicesBuilderInterface;
-use Pim\Component\User\Model\UserInterface;
 use Pim\Component\Catalog\Model\CategoryInterface;
 use Pim\Component\Catalog\Model\LocaleInterface;
 use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
 use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
+use Pim\Component\User\Model\UserInterface;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;
 use PimEnterprise\Component\Security\Attributes;
 use Symfony\Component\HttpFoundation\Request;
@@ -23,7 +23,7 @@ class UserContextSpec extends ObjectBehavior
 {
     function it_is_initializable()
     {
-        $this->shouldHaveType('PimEnterprise\Bundle\UserBundle\Context\UserContext');
+        $this->shouldHaveType('PimEnterprise\Bundle\SecurityBundle\User\UserContext');
     }
 
     function let(
