@@ -91,11 +91,24 @@ RUN apt-get update && apt-get install -y apt-transport-https \
   && ln -fs /opt/geckodriver-0.10.0 /usr/bin/geckodriver \
   && mkdir -p /opt/selenium \
   && curl -SL https://selenium-release.storage.googleapis.com/2.53/selenium-server-standalone-2.53.1.jar -o /opt/selenium/selenium-server-standalone.jar \
+  ## Pupeter & Cucumber JS
+  && apt-get install -yq libgconf-2-4 \
+  && apt-get install -y wget --no-install-recommends \
+  && wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add - \
+  && sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list' \
+  && apt-get update \
+  && apt-get install -y google-chrome-unstable fonts-ipafont-gothic fonts-wqy-zenhei fonts-thai-tlwg fonts-kacst ttf-freefont --no-install-recommends \
+  && apt-get install -yq gconf-service libasound2 libatk1.0-0 libc6 libcairo2 libcups2 libdbus-1-3 \
+    libexpat1 libfontconfig1 libgcc1 libgconf-2-4 libgdk-pixbuf2.0-0 libglib2.0-0 libgtk-3-0 libnspr4 \
+    libpango-1.0-0 libpangocairo-1.0-0 libstdc++6 libx11-6 libx11-xcb1 libxcb1 libxcomposite1 \
+    libxcursor1 libxdamage1 libxext6 libxfixes3 libxi6 libxrandr2 libxrender1 libxss1 libxtst6 \
+    ca-certificates fonts-liberation libappindicator1 libnss3 lsb-release xdg-utils \
   ## Cleanup
   && rm -rf /var/www/html/ \
   && apt-get remove --purge -y $BUILD_PACKAGES \
   && apt-get autoremove -y \
   && apt-get clean -y \
+  && rm -rf /src/*.deb \
   && rm -rf /var/lib/apt/lists/*
 
 ADD . /var/www/pim
@@ -121,6 +134,15 @@ RUN cp app/config/parameters_test.yml.dist app/config/parameters_test.yml \
   && a2ensite pim \
   && chown -R www-data:www-data var web \
   && chmod 777 -R /tmp/pim app/file_storage app/uploads app/archive features/Context/fixtures/
+
+ADD https://github.com/Yelp/dumb-init/releases/download/v1.2.0/dumb-init_1.2.0_amd64 /usr/local/bin/dumb-init
+RUN chmod +x /usr/local/bin/dumb-init \
+  && cd / \
+  && yarn add puppeteer \
+  && groupadd -r pptruser && useradd -r -g pptruser -G audio,video pptruser \
+  && mkdir -p /home/pptruser/Downloads \
+  && chown -R pptruser:pptruser /home/pptruser \
+  && chown -R pptruser:pptruser /node_modules 
 
 EXPOSE 80 9200 4444 3306
 
