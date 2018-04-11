@@ -127,3 +127,13 @@ batch_jobs:
         perform.label: Move assets to categories
     add_tags_to_assets:
         perform.label: Add tags to assets
+jstree:
+    asset:
+        all:          All assets
+        unclassified: Unclassified assets
+asset_grid:
+    title: "] -Inf, 1] {{ count }} Product asset|] 1, Inf [{{ count }} Product assets"
+    selected: selected assets
+    label: Product assets
+create_asset:
+    title: Create an asset
