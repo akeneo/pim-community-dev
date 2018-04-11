@@ -1,0 +1,28 @@
+{
+  "transform": {
+    "^.+\\.tsx?$": "ts-jest"
+  },
+  "testPathIgnorePatterns": [
+    "node_modules",
+    "vendor"
+  ],
+  "projects": [
+    "<rootDir>/web/bundles"
+  ],
+  "moduleDirectories": [
+    "node_modules",
+    "web/bundles"
+  ],
+  "moduleFileExtensions": [
+    "ts",
+    "tsx",
+    "js",
+    "jsx",
+    "json",
+    "node"
+  ],
+  "collectCoverage": true,
+  "coverageReporters": [
+    "html"
+  ]
+}
