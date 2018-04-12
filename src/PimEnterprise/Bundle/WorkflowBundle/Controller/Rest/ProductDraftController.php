@@ -133,10 +133,14 @@ class ProductDraftController
      *
      * @throws AccessDeniedHttpException
      *
-     * @return JsonResponse
+     * @return Response
      */
     public function readyAction(Request $request, $productId)
     {
+        if (!$request->isXmlHttpRequest()) {
+            return new RedirectResponse('/');
+        }
+
         $product = $this->findProductOr404($productId);
         $productDraft = $this->findDraftForProductOr404($product);
         $comment = $request->get('comment') ?: null;
@@ -172,10 +176,14 @@ class ProductDraftController
      * @throws \LogicException
      * @throws AccessDeniedHttpException
      *
-     * @return JsonResponse
+     * @return Response
      */
     public function partialReviewAction(Request $request, $id, $code, $action)
     {
+        if (!$request->isXmlHttpRequest()) {
+            return new RedirectResponse('/');
+        }
+
         $productDraft = $this->findProductDraftOr404($id);
 
         if (!in_array($action, $this->supportedReviewActions)) {
