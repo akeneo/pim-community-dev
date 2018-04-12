@@ -4,6 +4,10 @@
 
 - TIP-236: Merge Oro User bundle/component into Akeneo User bundle/component 
 
+## Enhancements
+
+- TIP-832: Enable regional languages for UI
+
 ## BC breaks
 
 - Move `Pim\Bundle\UserBundle\Entity\UserInterface` to `Pim\Component\User\Model\UserInterface`
@@ -39,3 +43,8 @@
 - Remove `Oro\Bundle\UserBundle\OroUserBundle`
 - Remove `Oro\Bundle\UserBundle\DependencyInjection`
 - Remove `Oro\Bundle\UserBundle\OroUserBundle`
+- Remove `Pim\Bundle\ImportExportBundle\JobLabel\TranslatedLabelProvider`
+- Change constructor of `Pim\Bundle\ImportExportBundle\Datagrid\JobDatagridProvider`, remove `Pim\Bundle\ImportExportBundle\JobLabel\TranslatedLabelProvider` argument 
+- Change constructor of `Pim\Bundle\ImportExportBundle\Form\Type\JobInstanceFormType`, remove `Pim\Bundle\ImportExportBundle\JobLabel\TranslatedLabelProvider` argument 
+- Change constructor of `Pim\Bundle\ImportExportBundle\Normalizer\JobExecutionNormalizer`, remove `Pim\Bundle\ImportExportBundle\JobLabel\TranslatedLabelProvider` argument 
+- Change constructor of `Pim\Bundle\ImportExportBundle\Normalizer\StepExecutionNormalizer`, remove `Pim\Bundle\ImportExportBundle\JobLabel\TranslatedLabelProvider` argument  

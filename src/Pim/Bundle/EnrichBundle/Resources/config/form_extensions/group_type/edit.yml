@@ -51,7 +51,7 @@ extensions:
             trans:
                 title: confirmation.remove.group_type
                 subTitle: pim_menu.item.group_type
-                content: pim_enrich.confirmation.delete_item
+                content: pim_common.confirm_deletion
                 success: flash.group_type.removed
                 fail: error.removing.group_type
             redirect: pim_enrich_grouptype_index
@@ -87,7 +87,7 @@ extensions:
         targetZone: container
         position: 100
         config:
-            label: pim_enrich.form.group_type.tab.properties.title
+            label: pim_common.properties
 
     pim-group-type-edit-form-properties:
         module: pim/common/simple-view
@@ -102,8 +102,8 @@ extensions:
         targetZone: accordion
         position: 100
         config:
-          sectionTitle: pim_enrich.form.group_type.tab.properties.general
-          codeLabel: pim_enrich.form.group_type.tab.properties.code
+          sectionTitle: pim_common.general_properties
+          codeLabel: pim_common.code
           formRequired: pim_enrich.form.required
           inputField: pim_enrich_group_type_form_code
 
@@ -115,7 +115,7 @@ extensions:
         config:
             template: pim/template/form/tab/section
             templateParams:
-                sectionTitle: pim_enrich.form.group_type.tab.properties.label_translations
+                sectionTitle: pim_common.label_translations
                 dropZone: content
 
     pim-group-type-edit-form-properties-translation:
@@ -134,4 +134,4 @@ extensions:
         position: 120
         config:
             class: 'group_type'
-            title: 'pim_enrich.form.group_type.tab.history.title'
+            title: 'pim_common.history'

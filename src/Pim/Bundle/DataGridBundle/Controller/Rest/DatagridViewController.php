@@ -203,7 +203,7 @@ class DatagridViewController
 
         if ($creation) {
             $request->getSession()->getFlashBag()
-                ->add('success', new Message('grid.view_selector.flash.created'));
+                ->add('success', new Message('pim_datagrid.view_selector.flash.created'));
         }
 
         return new JsonResponse(['id' => $datagridView->getId()]);
@@ -230,12 +230,12 @@ class DatagridViewController
         $view = $this->datagridViewRepo->findOneBy(['owner' => $user, 'id' => $identifier]);
 
         if (null === $view) {
-            return new JsonResponse($this->translator->trans('grid.view_selector.flash.not_removable'), 404);
+            return new JsonResponse($this->translator->trans('pim_datagrid.view_selector.flash.not_removable'), 404);
         }
 
         $this->remover->remove($view);
         $request->getSession()->getFlashBag()
-            ->add('success', new Message('grid.view_selector.flash.removed'));
+            ->add('success', new Message('pim_datagrid.view_selector.flash.removed'));
 
         return new JsonResponse(null, 204);
     }

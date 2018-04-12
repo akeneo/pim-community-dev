@@ -44,8 +44,8 @@ extensions:
         config:
             trans:
                 title: confirmation.remove.attribute
-                subTitle: pim_menu.item.attribute
-                content: pim_enrich.confirmation.delete_item
+                subTitle: pim_common.attributes
+                content: pim_common.confirm_deletion
                 success: flash.attribute.removed
                 failed: error.removing.attribute
             redirect: pim_enrich_attribute_index
@@ -90,7 +90,7 @@ extensions:
         targetZone: container
         position: 100
         config:
-            label: pim_enrich.form.attribute.tab.properties.title
+            label: pim_common.properties
 
     pim-attribute-edit-form-properties:
         module: pim/common/simple-view
@@ -117,7 +117,7 @@ extensions:
         position: 90
         config:
             fieldName: code
-            label: pim_enrich.form.attribute.tab.properties.label.code
+            label: pim_common.code
             required: true
             readOnly: true
 
@@ -128,7 +128,7 @@ extensions:
         position: 100
         config:
             fieldName: type
-            label: pim_enrich.form.attribute.tab.properties.label.type
+            label: pim_common.type
             readOnly: true
 
     pim-attribute-edit-form-properties-common-group:
@@ -211,7 +211,7 @@ extensions:
         targetZone: container
         position: 120
         config:
-            label: pim_enrich.form.attribute.tab.labels.title
+            label: pim_common.label_translations
 
     pim-attribute-edit-form-labels-container:
         module: pim/common/simple-view
@@ -237,4 +237,4 @@ extensions:
         aclResourceId: pim_enrich_attribute_history
         config:
             class: attribute
-            title: pim_enrich.form.attribute.tab.history.title
+            title: pim_common.history

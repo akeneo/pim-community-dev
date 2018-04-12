@@ -51,9 +51,9 @@ define(
                 }
 
                 this.operatorChoices = {
-                    'in': __('pim.grid.choice_filter.label_in_list'),
-                    'empty': __('pim.grid.choice_filter.label_empty'),
-                    'not empty': __('pim.grid.choice_filter.label_not_empty')
+                    'in': __('pim_datagrid.filters.common.in_list'),
+                    'empty': __('pim_datagrid.filters.common.empty'),
+                    'not empty': __('pim_datagrid.filters.common.not_empty')
                 };
 
                 TextFilter.prototype.initialize.apply(this, arguments);

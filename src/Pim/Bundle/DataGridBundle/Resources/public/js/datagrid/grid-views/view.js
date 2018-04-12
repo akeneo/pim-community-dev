@@ -137,7 +137,7 @@ function (Backbone, _, __, GridViewsCollection) {
                     }, this)
                 );
 
-                var currentViewLabel = currentView.length ? _.first(currentView).label : __('Please select view');
+                var currentViewLabel = currentView.length ? _.first(currentView).label : __('pim_datagrid.view_selector.select');
 
                 this.$el.append(
                     $(
