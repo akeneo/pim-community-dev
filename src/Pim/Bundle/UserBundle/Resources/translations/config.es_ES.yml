@@ -1,0 +1,13 @@
+entity.user.name: Usuario
+entity.user.description: Perfil de Usuario
+entity.role.name: Rol
+entity.role.description: rol de usuario
+entity.group.name: Grupo
+entity.group.description: Grupo del rol
+entity:
+  user:
+    name: Usuario
+  role:
+    name: Rol
+  group:
+    name: Grupo

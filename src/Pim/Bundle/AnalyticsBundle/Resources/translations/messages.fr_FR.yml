@@ -1,0 +1,45 @@
+pim_analytics:
+  new_patch_available: Nouveau patch disponible
+  system_config:
+    group:
+      notification.title: Notifications
+      version_update.title: Mises à jour de version
+    form:
+      version_update.label: Notifications de nouvelles versions
+      version_update.tooltip: Envoyer une requête à un serveur distant pour récupérer les informations concernant les nouveaux patchs
+  system_info:
+    title: Informations système
+    download: TXT
+  info_type:
+    pim_edition: Édition
+    pim_version: Version
+    pim_storage_driver: Stockage
+    pim_environment: Environnement
+    pim_install_time: Date d'installation
+    registered_bundles: Paquets installés
+    nb_channels: Nombre de canaux
+    nb_products: Nombre de produits
+    nb_product_models: Nombre de modèles de produit
+    nb_variant_products: Nombre de produits variants
+    nb_family_variants: Nombre de variantes de famille
+    nb_attributes: Nombre d'attributs
+    nb_scopable_attributes: Nombre d’attributs déclinés par canal
+    nb_localizable_attributes: Nombre d’attributs traduisibles
+    nb_scopable_localizable_attributes: Nombre d’attributs traduisibles et déclinés par canal
+    nb_locales: Nombre de locales
+    nb_families: Nombre de familles
+    nb_users: Nombre d’utilisateurs
+    pim_storage_version: Version de stockage
+    os_version: Version du système d'exploitation
+    php_version: Version de PHP
+    mysql_version: Version de MySQL
+    mariadb_version: Version de MariaDB
+    mongodb_version: Version de MongoDB
+    server_version: Version du serveur
+    php_extensions: Extensions PHP
+  acl:
+    system_info:
+      index: Informations système
+pim_menu:
+  item:
+    system_info: Informations système

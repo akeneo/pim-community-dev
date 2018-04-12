@@ -1,0 +1,18 @@
+"Update status": "Opdateringsstatus"
+page_title:
+  pim_user_index: Brugere
+  pim_user_role_index: Roller
+  pim_user_group_index: Brugergrupper
+  oro_config_configuration_system: Konfiguration
+  pim_user_view: 'Bruger {{ username }} | Vis'
+  pim_user_update: 'Bruger {{ username }} | Vis'
+  pim_user_create: 'Brugere | Opret'
+  pim_user_profile_view: '{{ username }}'
+  pim_user_profile_update: '{{ username }} | Ret'
+  pim_user_role_update: 'Rolle {{ role }} | Ret'
+  pim_user_role_create: 'Rolle | Opret'
+  pim_user_security_login: Login
+  pim_user_reset_request: Glemt adgangskode
+  pim_user_reset_check_email: Nulstil adgangskode | Tjek email
+  pim_user_group_create: 'Grupper | Opret'
+  pim_user_group_update: 'Gruppe {{ group }} | Ret'

@@ -1,0 +1,18 @@
+pim_datagrid:
+  column_configurator:
+    min_message: Vous devez sélectionner au moins une colonne à afficher
+  label:
+    unique_message: Le titre doit être unique
+    not_blank_message: Le titre ne doit pas être vide
+  view_selector:
+    flash:
+      created: Vue de grille créée avec succès
+      removed: Vue de grille supprimée avec succès
+      not_removable: Vous n'avez pas les permissions pour supprimer cette vue
+  cells:
+    type:
+      quick_export: Export rapide
+      import: Import
+      export: Export
+      mass_edit: Edition en masse
+      mass_delete: Suppression massive

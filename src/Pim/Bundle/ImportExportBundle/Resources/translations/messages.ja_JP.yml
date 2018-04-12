@@ -1,0 +1,154 @@
+Job: ジョブ
+Connector: コネクター
+pim_import_export:
+  job: ジョブ
+  connector: コネクター
+  status:
+    0: 準備完了
+  batch_status:
+    1: 完了
+    2: 開始中...
+    3: 開始
+    4: 停止中
+    5: 停止
+    6: 失敗
+    7: 破棄された
+    8: 不明
+  download_archive:
+    archive: 生成したアーカイブをダウンロード | 生成したアーカイブをダウンロード
+    output: 生成したファイルをダウンロード | 生成したファイルをダウンロード
+    input: 読み込んだファイルをダウンロード | 読み込んだファイルをダウンロード
+    invalid_xlsx: 無効なデータをダウンロード
+    invalid_csv: 無効なデータをダウンロード
+  notification:
+    export:
+      error: エクスポート<strong>%label%</strong> が失敗しました
+      warning: エクスポート <strong>%label%</strong> がいくつかのエラーで終了しました
+      success: エクスポート <strong>%label%</strong> が完了しました
+    import:
+      error: インポート <strong>%label%</strong> が失敗しました
+      warning: インポート <strong>%label%</strong> がいくつかのエラーで終了しました
+      success: インポート <strong>%label%</strong> が完了しました
+  list: ジョブ選択
+  job_profile:
+    tab:
+      property.title: 全般プロパティ
+      history.title: 履歴
+      job_content.title: コンテンツ
+pim_title.export_profile.index: エクスポート プロファイルの管理
+pim_title.export_profile.edit: '%job.label% のエクスポート プロファイル |編集'
+pim_title.export_profile.show: '%job.label% のエクスポート プロファイル |表示'
+pim_title.export_execution.index: 実行履歴をエクスポート
+pim_title.export_execution.show: エクスポートの実行 |詳細
+pim_title.import_profile.index: インポート プロファイル管理
+pim_title.import_profile.edit: '%job.label% のインポート プロファイル |編集'
+pim_title.import_profile.show: '%job.label% のインポート プロファイル |表示'
+pim_title.import_execution.index: インポート実行履歴
+pim_title.import_execution.show: インポートの実行 |詳細
+export profile:
+  title: エクスポートプロファイル
+  edit: エクスポート プロファイルを編集
+import profile:
+  title: インポートプロファイル
+  edit: インポート プロファイルを編集
+pim_importexport:
+  acl:
+    export_profile:
+      index: エクスポートプロファイルリストの表示
+      create: エクスポート プロファイルを作成
+      show: エクスポート プロファイルを表示
+      edit: エクスポート プロファイルを編集
+      remove: エクスポート プロファイルを削除
+      launch: エクスポート プロファイルを起動
+      property_edit: エクスポート プロファイルの一般プロパティを編集
+      property_show: エクスポート プロファイルの一般プロパティを表示
+      history: エクスポートプロファイルの履歴を表示
+      content_edit: エクスポート プロファイルを編集
+      content_show: エクスポート プロファイルを表示
+    import_profile:
+      index: インポートプロファイルリストを表示
+      create: インポート プロファイルを作成
+      show: インポート プロファイルを表示
+      edit: インポート プロファイルを編集
+      remove: インポート プロファイルを削除
+      launch: インポート プロファイルを起動
+      history: インポートプロファイルの履歴を表示
+    export_execution:
+      index: エクスポートレポート一覧を表示
+      show: エクスポート レポートの詳細の表示
+      dl_log: エクスポートレポートログをダウンロード
+      dl_files: エクスポートしたファイルをダウンロード
+    import_execution:
+      index: インポートレポートを表示
+      show: インポート レポートの詳細の表示
+      dl_log: インポート レポートログをダウンロード
+      dl_files: インポートしたファイルをダウンロード
+  acl_group:
+    export: エクスポートプロファイル
+    import: インポートプロファイル
+btn:
+  create:
+    export profile: エクスポート プロファイルを作成
+    import profile: インポート プロファイルを作成
+Upload and import now: アップロードしてインポートする
+import now: 今すぐインポート
+export now: 今すぐエクスポート
+confirmation:
+  remove:
+    export profile: エクスポート プロファイル %name% を削除してもよろしいですか。
+    import profile: インポート プロファイル %name% を削除してもよろしいですか。
+flash:
+  export:
+    created: エクスポートが正常に作成されました。
+    removed: エクスポートを削除しました
+    updated: エクスポートを正常に更新しました
+    running: エクスポートを実行しています。
+  import:
+    created: インポートを正常に作成しました
+    removed: インポートを削除しました
+    updated: インポートが正常に更新されました
+    running: エクスポートを実行しています。
+General properties: 全般プロパティ
+History: 履歴
+pane.accordion:
+  properties: プロパティ
+  global_settings: グローバル設定
+  filters: フィルタ
+popin.create:
+  export_profile.title: 新しいエクスポート プロファイルを作成
+  import_profile.title: 新しいインポート プロファイルを作成
+'Display item': アイテムを表示
+'Hide item': アイテムを隠す
+'Collecting data about job execution...': ジョブの実行に関するデータを収集しています...
+'You must select a file to upload': アップロードするファイルを選択してください
+Download log: ログをダウンロード
+Show profile: プロファイルを表示
+execution details: 実行の詳細
+job_execution.summary:
+  read: 読み込み
+  write: 書き込み
+  skip: スキップ
+  create: 作成
+  update: 更新
+  update_products: 更新された製品
+  skip_products: スキップされた製品
+  displayed: 最初の警告が表示されます
+  charset_validator:
+    title: 'ファイルの文字コード:'
+    skipped: スキップしました。拡張子がホワイトリストにあります
+Step: ステップ
+Status: ステータス
+Warnings: 警告
+Summary: サマリ
+Start: 開始
+End: 終了
+set_attribute_requirements: 属性の要件を設定
+COMPLETED: 完了
+STARTING: 開始中...
+STARTED: 開始
+STOPPING: 停止中
+STOPPED: 停止
+FAILED: 失敗
+ABANDONED: 破棄された
+UNKNOWN: 不明
+warning.label: 警告

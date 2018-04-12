@@ -4,3 +4,10 @@ entity.role.name: Roll
 entity.role.description: användarroll
 entity.group.name: Grupp
 entity.group.description: Rollgrupp
+entity:
+  user:
+    name: Användare
+  role:
+    name: Roll
+  group:
+    name: Grupp

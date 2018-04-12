@@ -1,0 +1,47 @@
+pim_connector:
+  steps:
+    dummy_reader.title: Lettore di prova
+    product_reader.title: Estrazione prodotti
+    entity_reader.title: Estrazione entità
+    csv_reader:
+      title: CSV reader
+    file_reader:
+      invalid_item_columns_count: 'Erano attese %totalColumnsCount% colonne, invece ci sono %itemColumnsCount% in %filePath%:%lineno%'
+    csv_product_reader.title: Lettore prodotti in CSV
+    csv_category_reader.title: Lettore categorie in CSV
+    dummy_processor.title: Processore di prova
+    product_processor.title: Creazione prodotti
+    category_processor.title: Creazione categorie
+    association_processor.title: Creazione associazioni
+    product_association_processor.title: Creazione associazioni
+    group_processor.title: Creazione gruppi
+    attribute_processor.title: Creazione attributi
+    attribute_option_processor.title: Creazione opzioni attributi
+    heterogeneous_processor.title: CSV product serializer
+    homogeneous_processor.title: CSV entity serializer
+    transformer_processor.title: Trasformazione
+    dummy_writer.title: Scrittore di prova
+    file_writer.title: Output
+    product_writer.title: Archivio prodotti
+    category_writer.title: Archivio categorie
+    writer.title: Archivio entità
+    csv_writer.title: Csv Writer
+job_execution.summary:
+  read: leggere
+  write: scritti
+  skip: saltato
+  create: creato
+  process: elaborato
+  update_products: prodotti aggiornati
+  process_products: prodotti elaborati
+  skip_products: prodotti saltati
+  displayed: primi avvisi visualizzati
+  charset_validator:
+    title: 'Codifica del file:'
+    skipped: saltato, estensione nella white list
+  product_skipped_no_diff: prodotto saltato (nessuna differenza)
+  product_skipped_no_associations: prodotto saltato (associazioni non rilevate)
+  product_model_skipped_no_diff: modello di prodotto saltato (nessuna differenza)
+  item_position: linee lette
+  skipped_in_root_product_model: modello di prodotto con padre saltato
+  skipped_in_sub_product_model: modello di prodotto senza padre saltato

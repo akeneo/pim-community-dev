@@ -1,0 +1,4 @@
+This directory is not writable: このディレクトリは書き込み可能ではありません。
+This directory is not valid: このディレクトリは無効です。
+pim_import_export.job_instance.unknown_job_definition: 不明なジョブ定義のため、%job_type%の作成に失敗しました
+This code is already taken: このコードは既に使用されています
