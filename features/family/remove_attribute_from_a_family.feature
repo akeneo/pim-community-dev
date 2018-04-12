@@ -26,8 +26,9 @@ Feature: Remove attribute from a family
     And I save the family
     And I should not see the text "There are unsaved changes."
     Then I should see the flash message "Attribute successfully removed from the family"
-    When I am on the "model-braided-hat" product model page
-    And I should see the text "Supplier"
+    When I wait 5 seconds
+    And I am on the "model-braided-hat" product model page
+    Then I should see the text "Supplier"
     And I should not see the text "Material"
     And I am on the "braided-hat-m" product page
     And I should not see the text "Material"

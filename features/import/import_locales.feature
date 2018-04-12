@@ -12,11 +12,7 @@ Feature: Import locales
       code
       fr_FR,1
       """
-    And the following job "csv_footwear_locale_import" configuration:
-      | filePath | %file to import% |
-    When I am on the "csv_footwear_locale_import" import job page
-    And I launch the import job
-    And I wait for the "csv_footwear_locale_import" job to finish
+    When the locales are imported via the job csv_footwear_locale_import
     Then there should be the following locales:
       | code  | activated |
       | fr_FR | 1         |
