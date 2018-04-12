@@ -1,3 +1,9 @@
+# 2.0.x
+
+## Bug fixes
+
+- PIM-7282: Add validation on the code value during the attribute creation to prohibit the "entity_type" value.
+
 # 2.0.21 (2018-04-10)
 
 ## Improvements
@@ -13,7 +19,6 @@
 - PIM-7267: Fix boolean attributes not added to variant product
 - PIM-7263: (BACKPORT for 2.0) Create a purging command (`pim:catalog:remove-wrong-boolean-values-on-variant-products`) for boolean values on variant products that should belong to parents
 - PIM-6999: Fix flash message on edit user
-- PIM-7282: Add validation on the code value during the attribute creation to prohibit the "entity_type" value.
 
 ## BC breaks
 
