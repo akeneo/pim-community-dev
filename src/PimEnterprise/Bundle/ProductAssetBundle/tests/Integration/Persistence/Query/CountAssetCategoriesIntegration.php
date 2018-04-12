@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace PimEnterprise\Bundle\ProductAssetBundle\tests\Integration\Persistence\Query;
 
 use PHPUnit\Framework\Assert;
-use PimEnterprise\Bundle\ProductAssetBundle\tests\Integration\Persistence\PimEnterpriseBuilderQueryTestCase;
+use PimEnterprise\Bundle\ProductAssetBundle\tests\Integration\Persistence\PimEnterpriseQueryTestCase;
 
-class CountAssetCategoriesIntegration extends PimEnterpriseBuilderQueryTestCase
+class CountAssetCategoriesIntegration extends PimEnterpriseQueryTestCase
 {
     /**
      * @throws \Exception

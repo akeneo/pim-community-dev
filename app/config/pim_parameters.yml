@@ -61,20 +61,22 @@ parameters:
 
     # these parameters indicate the advisable limitations of the PIM in term of volume
     # if your volume of data exceeds these limits, it can impact the performance
-    attributes_per_family_limit: 100
-    options_per_attribute_limit: 100
-    attributes_limit: 100
-    categories_limit: 100
-    category_trees_limit: 100
-    channels_limit: 100
-    families_limit: 100
-    locales_limit: 100
-    localizable_and_scopable_attributes_limit: 100
-    localizable_attributes_limit: 100
-    scopable_attributes_limit: 100
-    products_limit: 100
-    product_models_limit: 100
-    variant_products_limit: 100
-    assets_limit: 100
-    asset_categories_limit: 100
-    asset_category_trees_limit: 100
+    average_max_attributes_per_family_limit: 100
+    average_max_options_per_attribute_limit: -1
+    average_max_product_values_limit: -1
+    count_attributes_limit: 500
+    count_categories_limit: 5000
+    count_category_trees_limit: 3
+    count_channels_limit: 3
+    count_families_limit: 100
+    count_locales_limit: 5
+    count_localizable_and_scopable_attributes_limit: 65
+    count_localizable_attributes_limit: 125
+    count_scopable_attributes_limit: 65
+    count_products_limit: 130000
+    count_product_models_limit: -1
+    count_variant_products_limit: -1
+    count_product_values_limit: -1
+    count_assets_limit: -1
+    count_asset_categories_limit: -1
+    count_asset_category_trees_limit: -1

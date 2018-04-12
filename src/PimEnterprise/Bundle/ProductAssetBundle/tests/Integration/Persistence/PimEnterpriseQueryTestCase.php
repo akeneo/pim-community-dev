@@ -2,12 +2,12 @@
 
 namespace PimEnterprise\Bundle\ProductAssetBundle\tests\Integration\Persistence;
 
-use Pim\Bundle\CatalogVolumeMonitoringBundle\tests\Integration\Persistence\BuilderQueryTestCase;
+use Pim\Bundle\CatalogVolumeMonitoringBundle\tests\Integration\Persistence\QueryTestCase;
 use PimEnterprise\Component\ProductAsset\FileStorage;
 use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
 use PimEnterprise\Component\ProductAsset\Model\CategoryInterface;
 
-class PimEnterpriseBuilderQueryTestCase extends BuilderQueryTestCase
+class PimEnterpriseQueryTestCase extends QueryTestCase
 {
     /**
      * Creates an asset with data.
