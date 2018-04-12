@@ -115,6 +115,7 @@ define(
         getPages() {
             const collection = this.collection;
             const state = collection.state;
+            const max_rescore_window = 10000;
 
             let lastPage = state.lastPage ? state.lastPage : state.firstPage;
             lastPage = state.firstPage === 0 ? lastPage : lastPage - 1;
@@ -128,7 +129,10 @@ define(
             for (let i = windowStart; i < windowEnd; i++) {
                 ids.push(i);
             }
-            ids.push(lastPage);
+
+            if (state.totalRecords < max_rescore_window) {
+                ids.push(lastPage);
+            }
 
             return _.uniq(ids);
         },
