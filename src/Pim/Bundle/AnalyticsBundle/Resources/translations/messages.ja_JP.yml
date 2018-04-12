@@ -1,0 +1,42 @@
+pim_analytics:
+  new_patch_available: 新しいパッチが利用可能です
+  system_config:
+    group:
+      notification.title: お知らせ
+      version_update.title: バージョンアップデート
+    form:
+      version_update.label: 新しいバージョンの通知
+      version_update.tooltip: 新しいバージョンの通知を受け取るために外部サーバーにリクエストを送信します
+  system_info:
+    title: システム情報
+    download: TXT
+  info_type:
+    pim_edition: エディション
+    pim_version: バージョン
+    pim_storage_driver: ストレージ
+    pim_environment: 環境
+    pim_install_time: インストール日時
+    registered_bundles: 登録済みバンドル
+    nb_channels: チャンネル数
+    nb_products: 商品数
+    nb_attributes: 属性の数
+    nb_scopable_attributes: Scopable 属性の数
+    nb_localizable_attributes: Localizable 属性の数
+    nb_scopable_localizable_attributes: Localizable 属性とScopable 属性の数
+    nb_locales: ロケールの数
+    nb_families: 家族の数
+    nb_users: ユーザ数
+    pim_storage_version: ストレージ バージョン
+    os_version: OSバージョン
+    php_version: PHPバージョン
+    mysql_version: MySQL バージョン
+    mariadb_version: MariaDB バージョン
+    mongodb_version: MongoDB バージョン
+    server_version: サーバーのバージョン
+    php_extensions: PHP の拡張モジュール
+  acl:
+    system_info:
+      index: システム情報
+pim_menu:
+  item:
+    system_info: システム情報
