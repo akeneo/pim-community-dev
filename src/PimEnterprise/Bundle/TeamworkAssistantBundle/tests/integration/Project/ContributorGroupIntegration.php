@@ -72,6 +72,32 @@ class ContributorGroupIntegration extends TeamworkAssistantTestCase
     }
 
     /**
+     * The group "All" access to the de_DE locale and has permission to edit the technical attribute group
+     */
+    public function testToCreateAProjectWithAnAttributeGroupContainsAllForEditAttributes()
+    {
+        $attributeGroupRepository = $this->get('pim_catalog.repository.attribute_group');
+        $technicalGroup = $attributeGroupRepository->findOneByIdentifier('technical');
+
+        $attributeGroupAccessManager = $this->get('pimee_security.manager.attribute_group_access');
+        $attributeGroupAccessManager->setAccess(
+            $technicalGroup,
+            $this->getUserGroups(['All']),
+            $this->getUserGroups(['All'])
+        );
+
+        $project = $this->createProject('Tshirt - ecommerce', 'Julia', 'de_DE', 'ecommerce', [
+            [
+                'field'    => 'family',
+                'operator' => 'IN',
+                'value'    => ['tshirt'],
+            ],
+        ]);
+
+        $this->checkContributorGroup($project, ['Catalog Manager', 'Marketing', 'Technical High-Tech', 'All']);
+    }
+
+    /**
      * Check the contributor group is well calculated
      *
      * @param ProjectInterface $project
@@ -94,5 +120,18 @@ SQL;
         $diff = array_diff(array_column($userGroups, 'name'), $expectedGroup);
 
         $this->assertCount(0, $diff);
+    }
+
+
+    /**
+     * @param string[] $groupNames
+     *
+     * @return array
+     */
+    private function getUserGroups($groupNames): array
+    {
+        return array_filter($this->get('pim_user.repository.group')->findAll(), function ($group) use ($groupNames) {
+            return in_array($group->getName(), $groupNames);
+        });
     }
 }

@@ -63,9 +63,11 @@ class IsSmartSelectorExtension extends AbstractExtension
                 $this->relationClass,
                 'r',
                 'WITH',
-                sprintf('r.resourceId = %s.id AND r.resourceName = :attributeClass', $rootAlias)
+                $qb->expr()->andX(
+                    $qb->expr()->eq('r.resourceId', sprintf('%s.id', $rootAlias)),
+                    $qb->expr()->eq('r.resourceName', $qb->expr()->literal($this->attributeClass))
+                )
             )
-            ->setParameter('attributeClass', $this->attributeClass)
             ->addSelect('CASE WHEN r.resourceId IS NULL THEN false ELSE true END AS is_smart')
             ->distinct(true);
     }

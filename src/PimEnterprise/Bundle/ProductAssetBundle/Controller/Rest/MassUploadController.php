@@ -23,6 +23,7 @@ use Symfony\Component\Filesystem\Exception\IOException;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\File\MimeType\MimeTypeGuesser;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
@@ -151,12 +152,17 @@ class MassUploadController
     /**
      * @AclAncestor("pimee_product_asset_mass_upload")
      *
-     * @param $filename
+     * @param Request $request
+     * @param string  $filename
      *
-     * @return JsonResponse
+     * @return Response
      */
-    public function deleteUploadedFileAction($filename)
+    public function deleteUploadedFileAction(Request $request, $filename)
     {
+        if (!$request->isXmlHttpRequest()) {
+            return new RedirectResponse('/');
+        }
+
         $filePath = $this->getUploadContext()->getTemporaryUploadDirectory()
             . DIRECTORY_SEPARATOR . $this->cleanFilename($filename);
 
@@ -207,12 +213,16 @@ class MassUploadController
     /**
      * @AclAncestor("pimee_product_asset_mass_upload")
      *
-     * @throws \Exception
+     * @param Request $request
      *
-     * @return JsonResponse
+     * @return Response
      */
-    public function importAction()
+    public function importAction(Request $request)
     {
+        if (!$request->isXmlHttpRequest()) {
+            return new RedirectResponse('/');
+        }
+
         $result = $this->importer->import($this->getUploadContext());
         $jobInstance = $this->jobInstanceRepo->findOneByIdentifier('apply_assets_mass_upload');
         $user =  $this->tokenStorage->getToken()->getUser();
