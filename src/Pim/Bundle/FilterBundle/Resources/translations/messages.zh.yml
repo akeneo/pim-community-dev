@@ -11,6 +11,7 @@ oro.filter.form.label_type_equals: 等于
 oro.filter.form.label_type_start_with: 开始于
 oro.filter.form.label_type_end_with: 结束于
 oro.filter.form.label_type_empty: 为空
+oro.filter.form.label_type_not_empty: 不为空
 oro.filter.form.label_type_in_list: 在列表中
 oro.filter.form.label_date_type_between: 介于
 oro.filter.form.label_date_type_not_between: 不介于

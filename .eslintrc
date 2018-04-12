@@ -12,7 +12,7 @@
     "__moduleConfig": true,
     "__contextPlaceholder": true,
     "__contextPaths": true,
-    "process"
+    "process": true
   },
   "rules": {
     "space-infix-ops": 2,
@@ -27,7 +27,7 @@
       1,
       4,
       {
-        "ArrayExpression": "first",
+        "ArrayExpression": "first"
       }
     ],
     "no-use-before-define": 0,
@@ -63,13 +63,6 @@
       2,
       "never"
     ],
-    # "key-spacing": [
-    #   2,
-    #   {
-    #     "beforeColon": false,
-    #     "afterColon": true
-    #   }
-    # ],
     "space-unary-ops": [
       2,
       {
@@ -112,13 +105,13 @@
       2,
       "last"
     ],
-    'comma-spacing': ['error', {
-      'before': false,
-      'after': true
+    "comma-spacing": ["error", {
+      "before": false,
+      "after": true
     }],
-    'semi-spacing': ['error', {
-      'before': false,
-      'after': true
+    "semi-spacing": ["error", {
+      "before": false,
+      "after": true
     }],
     "eol-last": 2,
     "dot-notation": 2,
