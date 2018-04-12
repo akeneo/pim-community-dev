@@ -50,8 +50,7 @@ function (
 
                 PageTitle.set({'attribute.label': label});
 
-                    return FormBuilder.getFormMeta(
-                        'pim-attribute-edit-form' )
+                    return FormBuilder.getFormMeta('pim-attribute-edit-form')
                         .then(FormBuilder.buildForm)
                         .then((form) => {
                             form.setType(attribute.type);
