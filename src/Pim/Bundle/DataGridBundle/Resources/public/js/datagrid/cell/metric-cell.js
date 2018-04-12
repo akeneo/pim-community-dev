@@ -2,11 +2,13 @@
 define(
     [
         'oro/translator',
-        'oro/datagrid/string-cell'
+        'oro/datagrid/string-cell',
+        'pim/user-context'
     ],
     function (
         __,
-        StringCell
+        StringCell,
+        UserContext
     ) {
         'use strict';
 
@@ -20,7 +22,9 @@ define(
                 const metricData = this.model.get(this.column.get('name'));
                 if (null !== metricData) {
                     const translatedUnit = __('pim_measure.units.' + metricData.family + '.' + metricData.unit);
-                    const translatedNumber = parseFloat(metricData.amount).toLocaleString('en-US');
+                    const locale = UserContext.get('uiLocale').replace(/_/, '-');
+                    const translatedNumber = parseFloat(metricData.amount).toLocaleString(locale);
+
                     this.$el.html(translatedNumber + ' ' + translatedUnit);
                 }
 
