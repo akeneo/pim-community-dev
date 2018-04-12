@@ -122,6 +122,7 @@ class AppKernel extends Kernel
             new Pim\Bundle\AnalyticsBundle\PimAnalyticsBundle(),
             new Pim\Bundle\ApiBundle\PimApiBundle(),
             new Pim\Bundle\CatalogBundle\PimCatalogBundle(),
+            new Pim\Bundle\CatalogVolumeMonitoringBundle\PimCatalogVolumeMonitoringBundle(),
             new Pim\Bundle\CommentBundle\PimCommentBundle(),
             new Pim\Bundle\ConnectorBundle\PimConnectorBundle(),
             new Pim\Bundle\DashboardBundle\PimDashboardBundle(),

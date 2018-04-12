@@ -3,25 +3,40 @@
 namespace spec\PimEnterprise\Component\Catalog\Security\Updater\Setter;
 
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
-use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
+use Akeneo\Component\StorageUtils\Repository\CursorableRepositoryInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\ProductInterface;
-use Pim\Component\Catalog\Repository\ProductModelRepositoryInterface;
+use Pim\Component\Catalog\Model\ProductModelInterface;
 use Pim\Component\Catalog\Updater\Setter\FieldSetterInterface;
+use PimEnterprise\Bundle\SecurityBundle\Entity\Query\ItemCategoryAccessQuery;
 use PimEnterprise\Component\Catalog\Security\Updater\Setter\GrantedAssociationFieldSetter;
-use PimEnterprise\Component\Security\Attributes;
 use PimEnterprise\Component\Security\Exception\ResourceAccessDeniedException;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 class GrantedAssociationFieldSetterSpec extends ObjectBehavior
 {
     function let(
-        FieldSetterInterface $categoryFieldSetter,
+        FieldSetterInterface $associationFieldSetter,
         AuthorizationCheckerInterface $authorizationChecker,
-        IdentifiableObjectRepositoryInterface $productRepository,
-        ProductModelRepositoryInterface $productModelRepository
+        CursorableRepositoryInterface $productRepository,
+        CursorableRepositoryInterface $productModelRepository,
+        ItemCategoryAccessQuery $productCategoryAccessQuery,
+        ItemCategoryAccessQuery $productModelCategoryAccessQuery,
+        TokenStorageInterface $tokenStorage
     ) {
-        $this->beConstructedWith($categoryFieldSetter, $authorizationChecker, $productRepository, ['associations'], $productModelRepository);
+        $this->beConstructedWith(
+            $associationFieldSetter,
+            $authorizationChecker,
+            $productRepository,
+            ['associations'],
+            $productModelRepository,
+            $productCategoryAccessQuery,
+            $productModelCategoryAccessQuery,
+            $tokenStorage
+        );
     }
 
     function it_implements_a_filter_interface()
@@ -34,12 +49,22 @@ class GrantedAssociationFieldSetterSpec extends ObjectBehavior
         $this->shouldHaveType('PimEnterprise\Component\Catalog\Security\Updater\Setter\GrantedAssociationFieldSetter');
     }
 
-    function it_sets_associations($productRepository, $authorizationChecker, ProductInterface $product)
-    {
+    function it_sets_associations(
+        $productRepository,
+        $tokenStorage,
+        $productCategoryAccessQuery,
+        ProductInterface $product,
+        TokenInterface $token,
+        UserInterface $user
+    ) {
         $data = ['X_SELL' => ['products' => ['associationA']]];
 
-        $productRepository->findOneByIdentifier('associationA')->willReturn($product);
-        $authorizationChecker->isGranted([Attributes::VIEW], $product)->willReturn(true);
+        $tokenStorage->getToken()->willReturn($token);
+        $token->getUser()->willReturn($user);
+
+        $productRepository->getItemsFromIdentifiers(['associationA'])->willReturn([$product]);
+        $product->getId()->willReturn(1);
+        $productCategoryAccessQuery->getGrantedItemIds([$product], $user)->willReturn([1 => 1]);
 
         $this->shouldNotThrow(
             new ResourceAccessDeniedException(
@@ -51,21 +76,26 @@ class GrantedAssociationFieldSetterSpec extends ObjectBehavior
 
     function it_throws_an_exception_if_an_association_is_not_granted_on_a_product(
         $productRepository,
-        $authorizationChecker,
-        $categoryFieldSetter,
+        $associationFieldSetter,
+        $tokenStorage,
+        $productCategoryAccessQuery,
         ProductInterface $product,
         ProductInterface $associatedProductA,
-        ProductInterface $associatedProductB
+        ProductInterface $associatedProductB,
+        TokenInterface $token,
+        UserInterface $user
     ) {
         $data = ['X_SELL' => ['products' => ['associationA', 'associationB']]];
 
-        $productRepository->findOneByIdentifier('associationA')->willReturn($associatedProductA);
-        $authorizationChecker->isGranted([Attributes::VIEW], $associatedProductA)->willReturn(true);
+        $tokenStorage->getToken()->willReturn($token);
+        $token->getUser()->willReturn($user);
 
-        $productRepository->findOneByIdentifier('associationB')->willReturn($associatedProductB);
-        $authorizationChecker->isGranted([Attributes::VIEW], $associatedProductB)->willReturn(false);
-
-        $categoryFieldSetter->setFieldData($product, 'associations', $data, [])->shouldBeCalled();
+        $productRepository->getItemsFromIdentifiers(['associationA', 'associationB'])->willReturn([$associatedProductA, $associatedProductB]);
+        $associationFieldSetter->setFieldData($product, 'associations', $data, [])->shouldBeCalled();
+        $associatedProductA->getId()->willReturn(1);
+        $associatedProductB->getId()->willReturn(2);
+        $associatedProductB->getIdentifier()->willReturn('associationB');
+        $productCategoryAccessQuery->getGrantedItemIds([$associatedProductA, $associatedProductB], $user)->willReturn([1 => 1]);
 
         $this->shouldThrow(
             InvalidPropertyException::validEntityCodeExpected(
@@ -80,21 +110,28 @@ class GrantedAssociationFieldSetterSpec extends ObjectBehavior
 
     function it_throws_an_exception_if_an_association_is_not_granted_on_a_product_model(
         $productModelRepository,
-        $authorizationChecker,
-        $categoryFieldSetter,
+        $associationFieldSetter,
+        $tokenStorage,
+        $productModelCategoryAccessQuery,
         ProductInterface $product,
-        ProductInterface $associatedProductA,
-        ProductInterface $associatedProductB
+        ProductModelInterface $associatedProductModelA,
+        ProductModelInterface $associatedProductModelB,
+        TokenInterface $token,
+        UserInterface $user
     ) {
         $data = ['X_SELL' => ['product_models' => ['associationA', 'associationB']]];
 
-        $productModelRepository->findOneByIdentifier('associationA')->willReturn($associatedProductA);
-        $authorizationChecker->isGranted([Attributes::VIEW], $associatedProductA)->willReturn(true);
+        $tokenStorage->getToken()->willReturn($token);
+        $token->getUser()->willReturn($user);
 
-        $productModelRepository->findOneByIdentifier('associationB')->willReturn($associatedProductB);
-        $authorizationChecker->isGranted([Attributes::VIEW], $associatedProductB)->willReturn(false);
+        $productModelRepository->getItemsFromIdentifiers(['associationA', 'associationB'])
+            ->willReturn([$associatedProductModelA, $associatedProductModelB]);
+        $associationFieldSetter->setFieldData($product, 'associations', $data, [])->shouldBeCalled();
 
-        $categoryFieldSetter->setFieldData($product, 'associations', $data, [])->shouldBeCalled();
+        $associatedProductModelA->getId()->willReturn(1);
+        $associatedProductModelB->getId()->willReturn(2);
+        $associatedProductModelB->getCode()->willReturn('associationB');
+        $productModelCategoryAccessQuery->getGrantedItemIds([$associatedProductModelA, $associatedProductModelB], $user)->willReturn([1 => 1]);
 
         $this->shouldThrow(
             InvalidPropertyException::validEntityCodeExpected(

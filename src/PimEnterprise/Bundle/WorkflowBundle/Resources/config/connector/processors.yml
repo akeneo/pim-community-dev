@@ -11,3 +11,13 @@ services:
             - '@pimee_workflow.builder.draft'
             - '@pimee_workflow.applier.product_draft'
             - '@pimee_workflow.repository.product_draft'
+
+    pimee_workflow.processor.normalization.published_product:
+        class: '%pim_connector.processor.normalization.product.class%'
+        arguments:
+            - '@pimee_workflow.normalizer.published_product'
+            - '@pim_catalog.repository.channel'
+            - '@pim_catalog.repository.attribute'
+            - '@pim_connector.processor.bulk_media_fetcher'
+            - '@pim_catalog.values_filler.product'
+            - '@pim_connector.doctrine.cache_clearer'

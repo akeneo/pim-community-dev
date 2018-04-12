@@ -247,3 +247,5 @@ batch_jobs:
     export.label: Kontextbezogener Schnellexport veröffentlichter Produkte als XLSX
     perform:
       label: Kontextbezogener Schnellexport veröffentlichter Produkte als XLSX
+  add_attribute_value:
+    execute_rules.label: Regel-Ausführung

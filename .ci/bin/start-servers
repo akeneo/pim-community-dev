@@ -7,6 +7,7 @@ su -s /bin/bash -c "/usr/share/elasticsearch/bin/elasticsearch -d -p /var/run/el
 php-fpm -D
 apachectl start
 xvfb-run -n 99 --server-args="-screen 0 1360x1020x24 -ac +extension RANDR" java -Xms1g -Xmx1g -jar /opt/selenium/selenium-server-standalone.jar&
+node
 
 while [[ $(mysqladmin ping --silent) != "mysqld is alive" ]]; do
     printf .

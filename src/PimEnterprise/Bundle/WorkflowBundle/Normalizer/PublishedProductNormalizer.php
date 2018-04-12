@@ -1,9 +1,10 @@
 <?php
+declare(strict_types=1);
 
 /*
  * This file is part of the Akeneo PIM Enterprise Edition.
  *
- * (c) 2015 Akeneo SAS (http://www.akeneo.com)
+ * (c) 2018 Akeneo SAS (http://www.akeneo.com)
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -11,28 +12,29 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\Normalizer;
 
+use Pim\Component\Catalog\Model\ProductInterface;
 use PimEnterprise\Component\Workflow\Model\PublishedProductInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
  * Published product normalizer
  *
- * @author Julien Sanchez <julien@akeneo.com>
+ * @author Christophe Chausseray <christophe.chausseray@akeneo.com>
  */
 class PublishedProductNormalizer implements NormalizerInterface
 {
-    /** @var string[] */
-    protected $supportedFormat = ['internal_api'];
-
     /** @var NormalizerInterface */
-    protected $normalizer;
+    protected $productNormalizer;
+
+    /** @var string[] */
+    protected $supportedFormat = ['standard'];
 
     /**
-     * @param NormalizerInterface $normalizer
+     * @param NormalizerInterface $productNormalizer
      */
-    public function __construct(NormalizerInterface $normalizer)
+    public function __construct(NormalizerInterface $productNormalizer)
     {
-        $this->normalizer = $normalizer;
+        $this->productNormalizer = $productNormalizer;
     }
 
     /**
@@ -40,13 +42,12 @@ class PublishedProductNormalizer implements NormalizerInterface
      */
     public function normalize($publishedProduct, $format = null, array $context = [])
     {
-        $normalizedProduct = $this->normalizer->normalize($publishedProduct, 'standard', $context);
-        $normalizedProduct['meta'] = array_merge(
-            $normalizedProduct['meta'],
-            [
-                'original_product_id' => $publishedProduct->getOriginalProduct()->getId()
-            ]
-        );
+        $normalizedProduct = $this->productNormalizer->normalize($publishedProduct, $format, $context);
+        $originalProduct = $publishedProduct->getOriginalProduct();
+
+        if ($originalProduct->isVariant()) {
+            $normalizedProduct['parent'] = $originalProduct->getParent()->getCode();
+        }
 
         return $normalizedProduct;
     }

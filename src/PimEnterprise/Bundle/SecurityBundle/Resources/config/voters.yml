@@ -75,6 +75,7 @@ services:
         arguments:
             - '@security.base_authorization_checker'
             - '@security.token_storage'
+            - '@pimee_authorization_serializer'
 
     pimee_security.deny_not_granted_categorized_entity:
         class: '%pimee_security.deny_not_granted_categorized_entity.class%'

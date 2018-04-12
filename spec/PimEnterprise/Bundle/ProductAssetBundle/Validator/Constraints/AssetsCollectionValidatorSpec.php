@@ -47,6 +47,7 @@ class AssetsCollectionValidatorSpec extends ObjectBehavior
         $attribute->getType()->willReturn('pim_assets_collection');
         $attribute->isLocalizable()->willReturn(true);
         $attribute->isScopable()->willReturn(false);
+        $attribute->isLocaleSpecific()->willReturn(false);
         $attribute->getCode()->willReturn('code');
         $violationData = [ '%attribute%' => 'code' ];
 
@@ -66,6 +67,27 @@ class AssetsCollectionValidatorSpec extends ObjectBehavior
         $attribute->getType()->willReturn('pim_assets_collection');
         $attribute->isLocalizable()->willReturn(false);
         $attribute->isScopable()->willReturn(true);
+        $attribute->isLocaleSpecific()->willReturn(false);
+        $attribute->getCode()->willReturn('code');
+        $violationData = [ '%attribute%' => 'code' ];
+
+        $context->buildViolation($constraint->message, $violationData)
+            ->shouldBeCalled()
+            ->willReturn($violation);
+
+        $this->validate($attribute, $constraint);
+    }
+
+    function it_adds_violation_if_attribute_is_locale_specific(
+        $context,
+        AssetsCollectionConstraint $constraint,
+        AttributeInterface $attribute,
+        ConstraintViolationBuilderInterface $violation
+    ) {
+        $attribute->getType()->willReturn('pim_assets_collection');
+        $attribute->isLocalizable()->willReturn(false);
+        $attribute->isScopable()->willReturn(false);
+        $attribute->isLocaleSpecific()->willReturn(true);
         $attribute->getCode()->willReturn('code');
         $violationData = [ '%attribute%' => 'code' ];
 
@@ -84,6 +106,7 @@ class AssetsCollectionValidatorSpec extends ObjectBehavior
         $attribute->getType()->willReturn('pim_assets_collection');
         $attribute->isLocalizable()->willReturn(false);
         $attribute->isScopable()->willReturn(false);
+        $attribute->isLocaleSpecific()->willReturn(false);
         $attribute->getCode()->willReturn('code');
 
         $context->buildViolation(Argument::cetera())->shouldNotBeCalled();

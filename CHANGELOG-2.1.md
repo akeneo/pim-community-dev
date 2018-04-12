@@ -1,3 +1,11 @@
+# 2.1.8 (2018-03-27)
+
+## Bug fixes
+
+- PIM-7213: Improve performances with a big amounts of associations
+
+# 2.1.7 (2018-03-20)
+
 # 2.1.6 (2018-03-13)
 
 ## Web API

@@ -39,11 +39,11 @@ datagrid:
                 frontend_type: date
                 label:         pimee_product_asset.endOfUse.label
             createdAt:
-                type:          asset_datetime
+                type:          date_with_user_timezone
                 frontend_type: date
                 label:         pimee_product_asset.createdAt.label
             updatedAt:
-                type:          asset_datetime
+                type:          date_with_user_timezone
                 frontend_type: date
                 label:         pimee_product_asset.updatedAt.label
         properties:

@@ -251,3 +251,5 @@ batch_jobs:
     export.label: Esportazione rapida in Xlsx dei prodotti pubblicati presenti nel contesto griglia
     perform:
       label: Esportazione rapida in Xlsx dei prodotti pubblicati presenti nel contesto griglia
+  add_attribute_value:
+    execute_rules.label: Esecuzione regole
