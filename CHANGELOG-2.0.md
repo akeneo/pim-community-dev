@@ -1,3 +1,9 @@
+# 2.0.x
+
+## Bug fixes
+
+- PIM-7300: fix the status filter on product grid for products with parent
+
 # 2.0.21 (2018-04-10)
 
 ## Improvements
