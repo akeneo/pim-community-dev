@@ -58,20 +58,37 @@ abstract class AbstractProcessor implements StepExecutionAwareInterface
      */
     protected function findObject(IdentifiableObjectRepositoryInterface $repository, array $data)
     {
+        $identifier = $this->getItemIdentifier($repository, $data);
+
+        return $repository->findOneByIdentifier($identifier);
+    }
+
+    /**
+     * Get the identifier of a processed item
+     *
+     * @param IdentifiableObjectRepositoryInterface $repository
+     * @param array                                 $item
+     *
+     * @throws MissingIdentifierException if the processed item doesn't contain the identifier properties
+     *
+     * @return string
+     */
+    protected function getItemIdentifier(IdentifiableObjectRepositoryInterface $repository, array $item)
+    {
         $properties = $repository->getIdentifierProperties();
         $references = [];
         foreach ($properties as $property) {
-            if (!isset($data[$property])) {
+            if (!isset($item[$property])) {
                 throw new MissingIdentifierException(sprintf(
                     'Missing identifier column "%s". Columns found: %s.',
                     $property,
-                    implode(', ', array_keys($data))
+                    implode(', ', array_keys($item))
                 ));
             }
-            $references[] = $data[$property];
+            $references[] = $item[$property];
         }
 
-        return $repository->findOneByIdentifier(implode('.', $references));
+        return implode('.', $references);
     }
 
     /**

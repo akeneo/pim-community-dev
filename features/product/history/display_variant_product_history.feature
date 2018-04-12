@@ -15,5 +15,5 @@ Feature: Display the variant product history
     When I visit the "History" column tab
     Then there should be 2 update
     And I should see history:
-      | version | property | value |
-      | 2       | Weight   | 750   |
+      | version | property | value | date |
+      | 2       | Weight   | 750   | now  |

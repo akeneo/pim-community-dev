@@ -6,7 +6,9 @@ use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
+use Pim\Component\Catalog\Exception\InvalidOptionsException;
 use Pim\Component\Catalog\Factory\Value\OptionsValueFactory;
+use Pim\Component\Catalog\Factory\Value\OptionValueFactory;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\AttributeOptionInterface;
 use Pim\Component\Catalog\Value\ScalarValue;
@@ -202,7 +204,8 @@ class OptionsValueFactorySpec extends ObjectBehavior
 
     function it_throws_an_exception_if_option_does_not_exist(
         $attributeOptionRepository,
-        AttributeInterface $attribute
+        AttributeInterface $attribute,
+        AttributeOptionInterface $bar
     ) {
         $attribute->isScopable()->willReturn(true);
         $attribute->isLocalizable()->willReturn(true);
@@ -211,19 +214,21 @@ class OptionsValueFactorySpec extends ObjectBehavior
         $attribute->getBackendType()->willReturn('options');
         $attribute->isBackendTypeReferenceData()->willReturn(false);
 
-        $attributeOptionRepository->findOneByIdentifier('multi_select_attribute.foobar')->willReturn(null);
+        $attributeOptionRepository->findOneByIdentifier('multi_select_attribute.bar')->willReturn($bar);
+        $attributeOptionRepository->findOneByIdentifier('multi_select_attribute.foo')->willReturn(null);
+        $attributeOptionRepository->findOneByIdentifier('multi_select_attribute.baz')->willReturn(null);
 
-        $exception = InvalidPropertyException::validEntityCodeExpected(
+        $exception = InvalidOptionsException::validEntityListCodesExpected(
             'multi_select_attribute',
-            'code',
-            'The option does not exist',
+            'codes',
+            'The options do not exist',
             OptionsValueFactory::class,
-            'foobar'
+            ['foo', 'baz']
         );
 
         $this
             ->shouldThrow($exception)
-            ->during('create', [$attribute, 'ecommerce', 'en_US', ['foobar']]);
+            ->during('create', [$attribute, 'ecommerce', 'en_US', ['foo', 'bar', 'baz']]);
     }
 
     public function getMatchers()

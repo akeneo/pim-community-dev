@@ -21,8 +21,8 @@ Feature: Display the product history
     When I visit the "History" column tab
     Then there should be 2 update
     And I should see history:
-      | version | property           | value      |
-      | 2       | Weather conditions | snowy,cold |
+      | version | property           | value      | date |
+      | 2       | Weather conditions | snowy,cold | now  |
     When I am on the "weather_conditions" attribute page
     And I visit the "Options" tab
     And I remove the "snowy" option
@@ -33,8 +33,8 @@ Feature: Display the product history
     And I visit the "History" column tab
     Then there should be 2 updates
     And I should see history:
-      | version | property           | value      |
-      | 2       | Weather conditions | snowy,cold |
+      | version | property           | value      | date |
+      | 2       | Weather conditions | snowy,cold | now  |
 
   @skip @info https://akeneo.atlassian.net/browse/TIP-233
   Scenario: Update product history when a linked category is removed
@@ -55,8 +55,8 @@ Feature: Display the product history
     When I visit the "History" column tab
     Then there should be 2 update
     And I should see history:
-      | version | property   | value        |
-      | 2       | categories | winter_boots |
+      | version | property   | value        | date |
+      | 2       | categories | winter_boots | now  |
     When I edit the "winter_boots" category
     And I press the "Delete" button and wait for modal
     And I confirm the deletion
@@ -65,8 +65,8 @@ Feature: Display the product history
     When I visit the "History" column tab
     Then there should be 3 updates
     And I should see history:
-      | version | property   | value |
-      | 3       | categories |       |
+      | version | property   | value | date |
+      | 3       | categories |       | now  |
 
   @skip @info https://akeneo.atlassian.net/browse/TIP-233
   Scenario: Update product history when multiple linked categories are removed
@@ -91,8 +91,8 @@ Feature: Display the product history
     When I visit the "History" column tab
     Then there should be 2 update
     And I should see history:
-      | version | property   | value                                    |
-      | 2       | categories | men_2014,men_2015_autumn,men_2015_winter |
+      | version | property   | value                                    | date |
+      | 2       | categories | men_2014,men_2015_autumn,men_2015_winter | now  |
     When I edit the "men_2015_autumn" category
     And I press the "Delete" button and wait for modal
     And I confirm the deletion
@@ -101,8 +101,8 @@ Feature: Display the product history
     When I visit the "History" column tab
     Then there should be 3 updates
     And I should see history:
-      | version | property   | value                    |
-      | 3       | categories | men_2014,men_2015_winter |
+      | version | property   | value                    | date |
+      | 3       | categories | men_2014,men_2015_winter | now  |
 
   @jira https://akeneo.atlassian.net/browse/PIM-3420
   Scenario: Update product history when a linked attribute is removed
@@ -122,8 +122,8 @@ Feature: Display the product history
     When I visit the "History" column tab
     Then there should be 2 update
     And I should see history:
-      | version | property     | value    |
-      | 2       | Manufacturer | Converse |
+      | version | property     | value    | date |
+      | 2       | Manufacturer | Converse | now  |
     When I am on the "manufacturer" attribute page
     And I press the secondary action "Delete"
     And I confirm the deletion
@@ -132,8 +132,8 @@ Feature: Display the product history
     When I visit the "History" column tab
     Then there should be 2 updates
     And I should see history:
-      | version | property     | value    |
-      | 2       | manufacturer | Converse |
+      | version | property     | value    | date |
+      | 2       | manufacturer | Converse | now  |
 
   @jira https://akeneo.atlassian.net/browse/PIM-3420
   Scenario: Update product history when multiple linked attributes are removed
@@ -154,9 +154,9 @@ Feature: Display the product history
     When I visit the "History" column tab
     Then there should be 2 update
     And I should see history:
-      | version | property           | value      |
-      | 2       | Weather conditions | snowy,cold |
-      | 2       | Name en            | Nice boots |
+      | version | property           | value      | date |
+      | 2       | Weather conditions | snowy,cold | now  |
+      | 2       | Name en            | Nice boots | now  |
     When I am on the "weather_conditions" attribute page
     And I press the secondary action "Delete"
     And I confirm the deletion
@@ -168,6 +168,6 @@ Feature: Display the product history
     When I visit the "History" column tab
     Then there should be 2 update
     And I should see history:
-      | version | property           | value      |
-      | 2       | weather_conditions | snowy,cold |
-      | 2       | name-en_US         | Nice boots |
+      | version | property           | value      | date |
+      | 2       | weather_conditions | snowy,cold | now  |
+      | 2       | name-en_US         | Nice boots | now  |

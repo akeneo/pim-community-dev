@@ -126,7 +126,7 @@ define(
             const operator = this.emptyChoice ? this.$('.active .operator_choice').data('value') : 'in';
 
             return {
-                value: _.contains(['empty', 'not empty'], operator) ? {} : this._getInputValue(this.criteriaValueSelectors.value),
+                value: _.contains(['empty', 'not empty'], operator) ? '' : this._getInputValue(this.criteriaValueSelectors.value),
                 type: operator
             };
         },

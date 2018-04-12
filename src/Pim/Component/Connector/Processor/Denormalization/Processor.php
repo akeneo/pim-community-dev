@@ -60,7 +60,8 @@ class Processor extends AbstractProcessor implements ItemProcessorInterface, Ste
      */
     public function process($item)
     {
-        $entity = $this->findOrCreateObject($item);
+        $itemIdentifier = $this->getItemIdentifier($this->repository, $item);
+        $entity = $this->findOrCreateObject($itemIdentifier);
 
         try {
             $this->updater->update($entity, $item);
@@ -74,22 +75,46 @@ class Processor extends AbstractProcessor implements ItemProcessorInterface, Ste
             $this->skipItemWithConstraintViolations($item, $violations);
         }
 
+        if (null !== $this->stepExecution) {
+            $this->saveProcessedItemInStepExecutionContext($itemIdentifier, $entity);
+        }
+
         return $entity;
     }
 
     /**
-     * @param array $convertedItem
+     * @param string $itemIdentifier
      *
      * @return mixed
      */
-    protected function findOrCreateObject(array $convertedItem)
+    protected function findOrCreateObject(string $itemIdentifier)
     {
-        $entity = $this->findObject($this->repository, $convertedItem);
+        $entity = $this->repository->findOneByIdentifier($itemIdentifier);
         if (null === $entity) {
-            return $this->factory->create();
+            return $this->createObject($itemIdentifier);
         }
 
         return $entity;
+    }
+
+    /**
+     * Creates an empty new object to process.
+     * We look first if there is already a processed item save in the execution context for the same identifier.
+     *
+     * @param string $itemIdentifier
+     *
+     * @return object
+     */
+    protected function createObject(string $itemIdentifier)
+    {
+        if ('' === $itemIdentifier || null === $this->stepExecution) {
+            return $this->factory->create();
+        }
+
+        $executionContext = $this->stepExecution->getExecutionContext();
+        $processedItemsBatch = $executionContext->get('processed_items_batch') ?? [];
+
+        return $processedItemsBatch[$itemIdentifier] ?? $this->factory->create();
     }
 
     /**
@@ -102,5 +127,18 @@ class Processor extends AbstractProcessor implements ItemProcessorInterface, Ste
     protected function validate($entity)
     {
         return $this->validator->validate($entity);
+    }
+
+    /**
+     * @param string $itemIdentifier
+     * @param mixed  $processedItem
+     */
+    protected function saveProcessedItemInStepExecutionContext(string $itemIdentifier, $processedItem)
+    {
+        $executionContext = $this->stepExecution->getExecutionContext();
+        $processedItemsBatch = $executionContext->get('processed_items_batch') ?? [];
+        $processedItemsBatch[$itemIdentifier] = $processedItem;
+
+        $executionContext->put('processed_items_batch', $processedItemsBatch);
     }
 }

@@ -107,7 +107,7 @@ class ProductAndProductModelReaderSpec extends ObjectBehavior
             }
         );
         $cursor->current()->will(new ReturnPromise($products));
-        $cursor->next()->shouldBeCalled();
+        $cursor->next()->shouldBeCalledTimes(5);
 
         $stepExecution->incrementSummaryInfo('read')->shouldBeCalledTimes(6);
 
