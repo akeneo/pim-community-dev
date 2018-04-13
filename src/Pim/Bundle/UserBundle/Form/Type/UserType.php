@@ -7,12 +7,12 @@ use Pim\Bundle\UserBundle\Doctrine\ORM\Repository\GroupRepository;
 use Pim\Bundle\UserBundle\Doctrine\ORM\Repository\RoleRepository;
 use Pim\Bundle\UserBundle\Form\Event\UserFormBuilderEvent;
 use Pim\Bundle\UserBundle\Form\Subscriber\UserPreferencesSubscriber;
-use Pim\Bundle\UserBundle\Form\Subscriber\UserSubscriber;
 use Pim\Component\User\Model\Group;
 use Pim\Component\User\Model\Role;
 use Pim\Component\User\Model\UserInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
@@ -25,32 +25,23 @@ use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Validator\Constraints\Valid;
 
 /**
- * Overriden user form to add a custom subscriber
- *
  * @author    Filips Alpe <filips@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 class UserType extends AbstractType
 {
-    /** @var UserPreferencesSubscriber */
-    protected $subscriber;
-
-    /** @var RoleRepository  */
+    /** @var RoleRepository */
     protected $roleRepository;
 
     /** @var GroupRepository  */
     protected $groupRepository;
 
-    /** @var EventDispatcherInterface  */
+    /** @var EventDispatcherInterface */
     protected $eventDispatcher;
-
-    /** @var TokenStorageInterface */
-    protected $tokenStorage;
 
     /** @var bool */
     protected $isMyProfilePage;
@@ -58,30 +49,27 @@ class UserType extends AbstractType
     /** @var string */
     protected $productGridFilterTypeClassName;
 
+    /** @var array */
+    private $eventSubscribers;
+
     /**
-     * @param TokenStorageInterface     $tokenStorage
      * @param RequestStack              $requestStack
-     * @param UserPreferencesSubscriber $subscriber
      * @param RoleRepository            $roleRepository
      * @param GroupRepository           $groupRepository
      * @param EventDispatcherInterface  $eventDispatcher
      * @param string                    $productGridFilterTypeClassName
      */
     public function __construct(
-        TokenStorageInterface $tokenStorage,
         RequestStack $requestStack,
-        UserPreferencesSubscriber $subscriber,
         RoleRepository $roleRepository,
         GroupRepository $groupRepository,
         EventDispatcherInterface $eventDispatcher,
         string $productGridFilterTypeClassName
     ) {
-        $this->tokenStorage = $tokenStorage;
         $this->isMyProfilePage = 'pim_user_profile_update' === $requestStack
                 ->getCurrentRequest()
                 ->attributes
                 ->get('_route');
-        $this->subscriber = $subscriber;
         $this->roleRepository = $roleRepository;
         $this->groupRepository = $groupRepository;
         $this->eventDispatcher = $eventDispatcher;
@@ -93,10 +81,13 @@ class UserType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        foreach ($this->eventSubscribers as $eventSubscriber) {
+            $builder->addEventSubscriber($eventSubscriber);
+        }
+
         $this->addEntityFields($builder);
 
         $this->eventDispatcher->dispatch(UserFormBuilderEvent::POST_BUILD, new UserFormBuilderEvent($builder));
-        $builder->addEventSubscriber($this->subscriber);
     }
 
     /**
@@ -104,9 +95,6 @@ class UserType extends AbstractType
      */
     public function addEntityFields(FormBuilderInterface $builder)
     {
-        $builder->addEventSubscriber(
-            new UserSubscriber($builder->getFormFactory(), $this->tokenStorage)
-        );
         $this->setDefaultUserFields($builder);
         $builder
             ->add(
@@ -307,5 +295,14 @@ class UserType extends AbstractType
                     },
                 ]
             );
+
+    }
+
+    /**
+     * @param EventSubscriberInterface $eventSubscriber
+     */
+    public function addEventSubscribers(EventSubscriberInterface $eventSubscriber): void
+    {
+        $this->eventSubscribers[] = $eventSubscriber;
     }
 }
