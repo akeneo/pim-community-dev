@@ -12,7 +12,7 @@ use Pim\Bundle\NotificationBundle\Entity\NotificationInterface;
 use Pim\Bundle\NotificationBundle\NotifierInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\User\Repository\UserRepositoryInterface;
-use PimEnterprise\Bundle\UserBundle\Entity\UserInterface;
+use Pim\Component\User\Model\UserInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Provider\OwnerGroupsProvider;
 use PimEnterprise\Bundle\WorkflowBundle\Provider\UsersToNotifyProvider;
 use PimEnterprise\Component\Workflow\Model\ProductDraftInterface;

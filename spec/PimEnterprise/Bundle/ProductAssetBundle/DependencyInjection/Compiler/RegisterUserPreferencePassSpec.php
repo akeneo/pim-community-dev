@@ -28,7 +28,7 @@ class RegisterUserPreferencePassSpec extends ObjectBehavior
         $container->getDefinition('pim_user.form.type.user')->willreturn($userSubscriberPreference);
         $userSubscriberPreference->addMethodCall(
             'addEventSubscribers',
-            ['pimee_product_asset.form.subscriber.user_preferences']
+            ['pimee_product_asset.form_event_listener.user_preference_subscriber']
         )->shouldBeCalled();
 
         $this->process($container)->shouldReturn(null);

@@ -12,7 +12,7 @@
 namespace PimEnterprise\Bundle\WorkflowBundle\Provider;
 
 use Pim\Component\User\Repository\UserRepositoryInterface;
-use PimEnterprise\Bundle\UserBundle\Entity\UserInterface;
+use Pim\Component\User\Model\UserInterface;
 
 /**
  * Class UsersToNotifyProvider

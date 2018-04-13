@@ -7,13 +7,14 @@ use Pim\Component\Enrich\Provider\TranslatedLabelsProviderInterface;
 use PimEnterprise\Bundle\ProductAssetBundle\Form\EventListener\UserPreferencesSubscriber;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormInterface;
 
-class UserSubscriberSpec extends ObjectBehavior
+class UserPreferencesSubscriberSpec extends ObjectBehavior
 {
     function let(TranslatedLabelsProviderInterface $categoryProvider)
     {
@@ -23,6 +24,11 @@ class UserSubscriberSpec extends ObjectBehavior
     function it_is_initializable()
     {
         $this->shouldHaveType(UserPreferencesSubscriber::class);
+    }
+
+    function it_is_a_subscriber()
+    {
+        $this->shouldImplement(EventSubscriberInterface::class);
     }
 
     function it_subscribes_to_form_event()

@@ -8,7 +8,7 @@ use Pim\Bundle\DataGridBundle\Entity\DatagridView;
 use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\LocaleInterface;
 use Pim\Component\User\Model\GroupInterface;
-use PimEnterprise\Bundle\UserBundle\Entity\UserInterface;
+use Pim\Component\User\Model\UserInterface;
 use PimEnterprise\Component\TeamworkAssistant\Model\Project;
 use PimEnterprise\Component\TeamworkAssistant\Model\ProjectInterface;
 

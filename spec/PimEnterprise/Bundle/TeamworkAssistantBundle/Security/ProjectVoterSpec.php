@@ -4,7 +4,7 @@ namespace spec\PimEnterprise\Bundle\TeamworkAssistantBundle\Security;
 
 use PhpSpec\ObjectBehavior;
 use PimEnterprise\Bundle\TeamworkAssistantBundle\Security\ProjectVoter;
-use PimEnterprise\Bundle\UserBundle\Entity\UserInterface;
+use Pim\Component\User\Model\UserInterface;
 use PimEnterprise\Component\TeamworkAssistant\Model\ProjectInterface;
 use PimEnterprise\Component\TeamworkAssistant\Repository\UserRepositoryInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;

@@ -7,8 +7,8 @@ use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Entity\Locale;
 use Pim\Bundle\DataGridBundle\Datagrid\Configuration\ConfiguratorInterface;
 use Pim\Bundle\DataGridBundle\Datagrid\Request\RequestParametersExtractorInterface;
+use Pim\Component\User\Model\UserInterface;
 use PimEnterprise\Bundle\SecurityBundle\User\UserContext;
-use PimEnterprise\Bundle\UserBundle\Entity\User;
 
 class AssetContextConfiguratorSpec extends ObjectBehavior
 {
@@ -37,7 +37,7 @@ class AssetContextConfiguratorSpec extends ObjectBehavior
         $configuration,
         $userContext,
         $paramsExtractor,
-        User $user,
+        UserInterface $user,
         Locale $locale
     ) {
         $paramsExtractor->getParameter('dataLocale')

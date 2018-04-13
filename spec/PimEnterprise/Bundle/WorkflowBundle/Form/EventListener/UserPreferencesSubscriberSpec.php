@@ -5,9 +5,10 @@ namespace spec\PimEnterprise\Bundle\WorkflowBundle\Form\EventListener;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\UIBundle\Form\Type\SwitchType;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;
-use PimEnterprise\Bundle\UserBundle\Entity\UserInterface;
+use Pim\Component\User\Model\UserInterface;
 use PimEnterprise\Component\Security\Attributes;
 use Prophecy\Argument;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormInterface;
@@ -19,11 +20,10 @@ class UserPreferencesSubscriberSpec extends ObjectBehavior
         $this->beConstructedWith($categoryAccessRepo);
     }
 
-    function it_is_an_event_subscriber()
+    function it_is_a_subscriber()
     {
-        $this->shouldImplement('Symfony\Component\EventDispatcher\EventSubscriberInterface');
+        $this->shouldImplement(EventSubscriberInterface::class);
     }
-
     function it_has_subscribed_event()
     {
         $events = $this->getSubscribedEvents();

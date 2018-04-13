@@ -15,6 +15,7 @@ namespace PimEnterprise\Bundle\ProductAssetBundle\Form\EventListener;
 
 use Pim\Bundle\EnrichBundle\Form\Type\LightEntityType;
 use Pim\Component\Enrich\Provider\TranslatedLabelsProviderInterface;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\FormEvent;
@@ -23,7 +24,7 @@ use Symfony\Component\Form\FormEvents;
 /**
  * @author Arnaud Langlade <arnaud.langlade@akeneo.com>
  */
-class UserPreferencesSubscriber
+class UserPreferencesSubscriber implements EventSubscriberInterface
 {
     /** @var TranslatedLabelsProviderInterface */
     private $categoryProvider;
@@ -39,7 +40,7 @@ class UserPreferencesSubscriber
     /**
      * {@inheritdoc}
      */
-    public function getSubscribedEvents(): array
+    public static function getSubscribedEvents(): array
     {
         return [
             FormEvents::PRE_SET_DATA => 'addFieldToForm'

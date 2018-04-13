@@ -12,7 +12,7 @@
 namespace PimEnterprise\Bundle\WorkflowBundle\Twig;
 
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;
-use PimEnterprise\Bundle\UserBundle\Entity\UserInterface;
+use Pim\Component\User\Model\UserInterface;
 use PimEnterprise\Component\Security\Attributes;
 
 /**
