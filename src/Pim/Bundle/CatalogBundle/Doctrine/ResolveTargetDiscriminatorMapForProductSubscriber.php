@@ -8,6 +8,7 @@ use Doctrine\Common\EventSubscriber;
 use Doctrine\Common\Persistence\Event\LoadClassMetadataEventArgs;
 use Pim\Component\Catalog\Model\AbstractProduct;
 use Pim\Component\Catalog\Model\Product;
+use Pim\Component\Catalog\Model\VariantProduct;
 
 /**
  * Resolve the discriminator map of the AbstractProduct class
@@ -68,6 +69,10 @@ class ResolveTargetDiscriminatorMapForProductSubscriber implements EventSubscrib
 
         if (Product::class === $className || is_subclass_of($className, Product::class)) {
             $classMetadata->discriminatorValue = 'product';
+        }
+
+        if (VariantProduct::class === $className || is_subclass_of($className, VariantProduct::class)) {
+            $classMetadata->discriminatorValue = 'variant_product';
         }
     }
 }
