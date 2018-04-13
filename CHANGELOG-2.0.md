@@ -2,6 +2,7 @@
 
 ## Bug fixes
 
+- PIM-7300: fix the status filter on product grid for products with parent.
 - PIM-7282: Add validation on the code value during the attribute creation to prohibit the "entity_type" value.
 
 # 2.0.21 (2018-04-10)
