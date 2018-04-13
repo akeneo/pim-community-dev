@@ -38,19 +38,12 @@ Feature: Delete a family
     And the grid should contain 4 elements
     But I should not see family Sneakers
 
-  @jira https://akeneo.atlassian.net/browse/PIM-6031
-  Scenario: Successfully delete a family used by a product
+  Scenario: Fail to delete a family used by a product
     Given the following product:
       | sku | family   |
       | foo | sneakers |
-    When I am on the products grid
-    And I display the columns SKU, Family
-    Then I should see the text "Sneakers"
-    When I am on the "sneakers" family page
-    And I press the secondary action "Delete"
+    And I am on the families grid
+    When I click on the "Delete" action of the row which contains "Sneakers"
     And I confirm the deletion
-    And I am on the products grid
-    And I display the columns SKU, Family
-    Then I should not see the text "Sneakers"
-    When I edit the "foo" product
-    Then I should see the text "Family None"
+    Then I should see the text "Delete error"
+    And there should be a "Sneakers" family
