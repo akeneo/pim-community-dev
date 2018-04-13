@@ -122,7 +122,7 @@ services:
             - '%pim_catalog.entity.product.class%'
             - '%pim_catalog.entity.association_type.class%'
             - '%pim_catalog.entity.group.class%'
-            - '%pim_catalog.entity.association.class%'
+            - '%pim_catalog.entity.product_association.class%'
         tags:
             - { name: form.type, alias: pim_enrich_association }
 

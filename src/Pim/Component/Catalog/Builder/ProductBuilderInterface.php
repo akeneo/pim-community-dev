@@ -2,8 +2,7 @@
 
 namespace Pim\Component\Catalog\Builder;
 
-use Pim\Component\Catalog\Model\ChannelInterface;
-use Pim\Component\Catalog\Model\LocaleInterface;
+use Pim\Component\Catalog\Model\AssociationAwareInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 
 /**
@@ -30,9 +29,9 @@ interface ProductBuilderInterface extends EntityWithValuesBuilderInterface
     /**
      * Add empty associations for each association types when they don't exist yet
      *
-     * @param ProductInterface $product
+     * @param AssociationAwareInterface $entity
      *
      * @return EntityWithValuesBuilderInterface
      */
-    public function addMissingAssociations(ProductInterface $product);
+    public function addMissingAssociations(AssociationAwareInterface $entity);
 }

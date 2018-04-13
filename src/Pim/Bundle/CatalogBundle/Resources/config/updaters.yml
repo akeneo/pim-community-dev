@@ -68,7 +68,7 @@ services:
             - '@pim_catalog.updater.entity_with_values'
             - '@pim_catalog.repository.family_variant'
             - '@pim_catalog.repository.product_model'
-            - ['categories']
+            - ['categories', 'associations']
             - ['identifier', 'created', 'updated']
 
     pim_catalog.updater.entity_with_values:
@@ -243,6 +243,7 @@ services:
             - '@pim_catalog.repository.product'
             - '@pim_catalog.repository.product_model'
             - '@pim_catalog.repository.group'
+            - '@pim_catalog.repository.association_type'
             - '@pim_catalog.builder.product'
             - ['associations']
         tags:
@@ -484,6 +485,7 @@ services:
             - '@pim_catalog.repository.product'
             - '@pim_catalog.repository.product_model'
             - '@pim_catalog.repository.group'
+            - '@pim_catalog.repository.association_type'
             - '@pim_catalog.builder.product'
             - ['associations']
         tags:
