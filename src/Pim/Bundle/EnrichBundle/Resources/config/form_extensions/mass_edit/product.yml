@@ -88,7 +88,7 @@ extensions:
             labelCount: pim_enrich.mass_edit.product.operation.add_to_group.label_count
             description: pim_enrich.mass_edit.product.operation.add_to_group.description
             code: add_to_group
-            jobInstanceCode: add_product_value
+            jobInstanceCode: add_to_group
             icon: icon-groups
             illustration: group
 

@@ -57,7 +57,7 @@ services:
             - 'perform'
             - '@event_dispatcher'
             - '@akeneo_batch.job_repository'
-            - '@pim_enrich.reader.database.update_product_value'
+            - '@pim_enrich.reader.database.products_and_variant_products_of_product_models'
             - '@pim_enrich.connector.processor.mass_edit.product.update_value'
             - '@pim_connector.writer.database.product'
             - '%pim_job_product_batch_size%'
@@ -69,6 +69,17 @@ services:
             - '@event_dispatcher'
             - '@akeneo_batch.job_repository'
             - '@pim_enrich.reader.database.filtered_product_and_product_model'
+            - '@pim_enrich.connector.processor.mass_edit.product.add_value'
+            - '@pim_connector.writer.database.product'
+            - '%pim_job_product_batch_size%'
+
+    pim_enrich.step.add_to_group.mass_edit:
+        class: '%pim_connector.step.item_step.class%'
+        arguments:
+            - 'perform'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@pim_enrich.reader.database.products_and_variant_products_of_product_models'
             - '@pim_enrich.connector.processor.mass_edit.product.add_value'
             - '@pim_connector.writer.database.product'
             - '%pim_job_product_batch_size%'
