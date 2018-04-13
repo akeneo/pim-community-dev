@@ -143,7 +143,7 @@ define(
                         this.groupModal = new Backbone.BootstrapModal({
                             allowCancel: true,
                             okText: __('pim_enrich.entity.product.meta.groups.modal.view_group'),
-                            cancelText: __('pim_common.close'),
+                            cancelText: __('pim_common.cancel'),
                             title: __(
                                 'pim_enrich.entity.product.meta.groups.modal.title',
                                 { group: i18n.getLabel(group.labels, UserContext.get('catalogLocale'), group.code) }

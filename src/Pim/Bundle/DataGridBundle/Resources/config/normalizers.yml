@@ -7,6 +7,7 @@ parameters:
     pim_datagrid.normalizer.product.option.class: Pim\Bundle\DataGridBundle\Normalizer\Product\OptionNormalizer
     pim_datagrid.normalizer.product.options.class: Pim\Bundle\DataGridBundle\Normalizer\Product\OptionsNormalizer
     pim_datagrid.normalizer.product.file.class: Pim\Bundle\DataGridBundle\Normalizer\Product\FileNormalizer
+    pim_datagrid.normalizer.product.metric.class: Pim\Bundle\DataGridBundle\Normalizer\Product\MetricNormalizer
     pim_datagrid.normalizer.datetime.class: Pim\Bundle\DataGridBundle\Normalizer\DateTimeNormalizer
     pim_datagrid.normalizer.group_product.class: Pim\Bundle\DataGridBundle\Normalizer\GroupProductNormalizer
     pim_datagrid.normalizer.family_variant.class: Pim\Bundle\DataGridBundle\Normalizer\FamilyVariantNormalizer
@@ -69,6 +70,11 @@ services:
         tags:
             - { name: pim_serializer.normalizer }
 
+    pim_datagrid.normalizer.product.metric:
+        class: '%pim_datagrid.normalizer.product.metric.class%'
+        tags:
+            - { name: pim_serializer.normalizer, priority: 95 }
+
     pim_datagrid.normalizer.product.product_value:
         class: '%pim_datagrid.normalizer.product.product_value.class%'
         arguments:
@@ -88,3 +94,4 @@ services:
         class: '%pim_datagrid.normalizer.family_variant.class%'
         arguments:
             - '@pim_catalog.normalizer.standard.translation'
+

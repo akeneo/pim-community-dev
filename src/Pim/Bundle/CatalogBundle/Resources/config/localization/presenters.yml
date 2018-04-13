@@ -2,7 +2,6 @@ parameters:
     pim_catalog.localization.presenter.registry.class: Pim\Component\Catalog\Localization\Presenter\PresenterRegistry
 
     pim_catalog.localization.presenter.prices.class:   Pim\Component\Catalog\Localization\Presenter\PricesPresenter
-    pim_catalog.localization.presenter.metric.class:   Pim\Component\Catalog\Localization\Presenter\MetricPresenter
     pim_catalog.localization.presenter.number.class:   Akeneo\Component\Localization\Presenter\NumberPresenter
     pim_catalog.localization.presenter.date.class:     Akeneo\Component\Localization\Presenter\DatePresenter
     pim_catalog.localization.presenter.boolean.class:  Akeneo\Component\Localization\Presenter\BooleanPresenter
@@ -19,15 +18,6 @@ services:
         arguments:
             - '@pim_catalog.localization.factory.currency'
             - ['pim_catalog_price_collection']
-        tags:
-            - { name: pim_catalog.localization.presenter, type: 'product_value' }
-
-    pim_catalog.localization.presenter.metric:
-        class: '%pim_catalog.localization.presenter.metric.class%'
-        arguments:
-            - '@pim_catalog.localization.factory.number'
-            - ['pim_catalog_metric']
-            - '@pim_catalog.localization.translator.proxy'
         tags:
             - { name: pim_catalog.localization.presenter, type: 'product_value' }
 

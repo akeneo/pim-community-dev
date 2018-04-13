@@ -12,7 +12,7 @@
     <select class="select2 unit" name="filter-unit" <%- editable ? '' : 'disabled' %>>
         <% _.each(_.keys(units.units), function (key) { %>
             <option value="<%- key %>"<%- value.unit === key ? ' selected' : '' %>>
-                <%- __(key) %>
+                <%- __('pim_measure.units.' + attribute.metric_family + '.' + key) %>
             </option>
         <% }); %>
     </select>

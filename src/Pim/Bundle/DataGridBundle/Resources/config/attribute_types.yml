@@ -124,6 +124,7 @@ parameters:
     pim_datagrid.product.attribute_type.pim_catalog_metric:
         column:
             type:          product_value_field
+            frontend_type: metric
         filter:
             type:          product_value_metric
             ftype:         metric
