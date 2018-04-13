@@ -87,8 +87,7 @@ stage("Test") {
                 condition: launchIntegrationTests.equals("yes"),
                 container: tag,
                 verbose: (verboseOutputs == "yes"),
-                parallelism: 75,
-                fetcher: {return pimIntegrationFetcher(paths: ["/var/www/pim/src", "/var/www/pim/vendor/akeneo/pim-community-dev"])}
+                fetcher: {return pimIntegrationFetcher(testsuites: ["PIM_Integration_Test"])}
             )},
             "behat": {queue(
                 condition: launchBehatTests.equals("yes"),
