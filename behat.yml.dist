@@ -140,14 +140,39 @@ legacy:
 
 acceptance:
     suites:
-        acceptance:
+        pim:
             paths:
-                - '%paths.base%/tests/back/features/'
-                - '%paths.base%/vendor/akeneo/pim-community-dev/tests/back/features/'
+                - '%paths.base%/tests/features/pim'
+                - '%paths.base%/vendor/akeneo/pim-community-dev/tests/features/pim'
             contexts_services:
                 - test.locale.context
                 - test.channel.context
+            filters:
+                tags: '@acceptance-back'
+        volume-monitoring:
+            paths:
+                - '%paths.base%/tests/features/volume-monitoring'
+                - '%paths.base%/vendor/akeneo/pim-community-dev/tests/features/volume-monitoring'
+            contexts_services:
+                - test.catalog_volume_limits.report_context
                 - test.catalog_volume_limits.attribute_per_family_context
+                - test.catalog_volume_limits.product_context
+                - test.catalog_volume_limits.channel_context
+                - test.catalog_volume_limits.locale_context
+                - test.catalog_volume_limits.scopable_attribute_context
+                - test.catalog_volume_limits.localizable_attribute_context
+                - test.catalog_volume_limits.localizable_and_scopable_attribute_context
+                - test.catalog_volume_limits.family_context
+                - test.catalog_volume_limits.attribute_context
+                - test.catalog_volume_limits.option_per_attribute_context
+                - test.catalog_volume_limits.category_context
+                - test.catalog_volume_limits.category_tree_context
+                - test.catalog_volume_limits.variant_product_context
+                - test.catalog_volume_limits.product_model_context
+                - test.catalog_volume_limits.product_value_context
+                - test.product_asset.asset_context
+                - test.product_asset.asset_category_context
+                - test.product_asset.asset_category_tree_context
             filters:
                 tags: '@acceptance-back'
     extensions:
@@ -156,6 +181,7 @@ acceptance:
                - "tests/back/Acceptance/Resources/config/behat/services.yml"
                - "vendor/akeneo/pim-community-dev/tests/back/Acceptance/Resources/config/behat/services.yml"
                - "vendor/akeneo/pim-community-dev/src/Pim/Bundle/CatalogVolumeMonitoringBundle/tests/Acceptance/Resources/config/behat/services.yml"
+               - "src/PimEnterprise/Bundle/ProductAssetBundle/tests/Acceptance/Resources/config/behat/services.yml"
         FriendsOfBehat\CrossContainerExtension: ~
         FriendsOfBehat\SymfonyExtension:
             kernel:

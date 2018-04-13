@@ -1,0 +1,21 @@
+services:
+    pimee_volume_monitoring.persistence.query.count_assets:
+        class: 'Pim\Bundle\CatalogVolumeMonitoringBundle\tests\Acceptance\Persistence\Query\InMemory\InMemoryCountQuery'
+        arguments:
+            - 'count_assets'
+        tags:
+            - { name: pim_volume_monitoring.persistence.count_query }
+
+    pimee_volume_monitoring.persistence.query.count_asset_categories:
+        class: 'Pim\Bundle\CatalogVolumeMonitoringBundle\tests\Acceptance\Persistence\Query\InMemory\InMemoryCountQuery'
+        arguments:
+            - 'count_asset_categories'
+        tags:
+            - { name: pim_volume_monitoring.persistence.count_query }
+
+    pimee_volume_monitoring.persistence.query.count_asset_category_trees:
+        class: 'Pim\Bundle\CatalogVolumeMonitoringBundle\tests\Acceptance\Persistence\Query\InMemory\InMemoryCountQuery'
+        arguments:
+            - 'count_asset_category_trees'
+        tags:
+            - { name: pim_volume_monitoring.persistence.count_query }
