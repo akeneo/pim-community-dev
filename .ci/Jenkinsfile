@@ -108,8 +108,7 @@ stage("Test") {
                 condition: launchIntegrationTests.equals("yes") && editions.contains("ce"),
                 verbose: (verboseOutputs == "yes"),
                 container: tag,
-                parallelism: 65,
-                fetcher: {return pimIntegrationFetcher(paths: ["/var/www/pim/src", "/var/www/pim/vendor/akeneo/pim-community-dev"])}
+                fetcher: {return pimIntegrationFetcher(testsuites: ["PIM_Integration_Test"])}
             )},
             "behat-ce": {queue(
                 condition: launchBehatTests.equals("yes") && editions.contains("ce"),
@@ -121,8 +120,7 @@ stage("Test") {
                 condition: launchIntegrationTests.equals("yes") && editions.contains("ee"),
                 verbose: (verboseOutputs == "yes"),
                 container: "${tag}-ee",
-                parallelism: 75,
-                fetcher: {return pimIntegrationFetcher(paths: ["/var/www/pim/src", "/var/www/pim/vendor/akeneo/pim-community-dev"])}
+                fetcher: {return pimIntegrationFetcher(testsuites: ["PIM_Integration_Test"])}
             )},
             "behat-ee": {queue(
                 condition: launchBehatTests.equals("yes") && editions.contains("ee"),
