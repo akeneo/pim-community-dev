@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\PimEnterprise\Bundle\UserBundle\Form\Subscriber;
+namespace spec\PimEnterprise\Bundle\WorkflowBundle\Form\EventListener;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\UIBundle\Form\Type\SwitchType;

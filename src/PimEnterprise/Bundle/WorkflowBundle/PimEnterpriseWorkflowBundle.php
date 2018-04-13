@@ -47,6 +47,7 @@ class PimEnterpriseWorkflowBundle extends Bundle
 
         $container
             ->addCompilerPass(new Compiler\RegisterProductDraftPresentersPass())
-            ->addCompilerPass(new Compiler\RegisterPublishersPass());
+            ->addCompilerPass(new Compiler\RegisterPublishersPass())
+            ->addCompilerPass(new Compiler\RegisterUserPreferencePass());
     }
 }

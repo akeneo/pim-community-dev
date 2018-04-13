@@ -18,6 +18,7 @@ use PimEnterprise\Bundle\ProductAssetBundle\Command\GenerateVariationFilesFromRe
 use PimEnterprise\Bundle\ProductAssetBundle\Command\ProcessMassUploadCommand;
 use PimEnterprise\Bundle\ProductAssetBundle\Command\SendAlertNotificationsCommand;
 use PimEnterprise\Bundle\ProductAssetBundle\DependencyInjection\Compiler\RegisterMetadataBuildersPass;
+use PimEnterprise\Bundle\ProductAssetBundle\DependencyInjection\Compiler\RegisterUserPreferencePass;
 use PimEnterprise\Bundle\ProductAssetBundle\DependencyInjection\Compiler\ResolveDoctrineTargetModelPass;
 use Symfony\Component\Console\Application;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -44,6 +45,7 @@ class PimEnterpriseProductAssetBundle extends Bundle
             realpath(__DIR__ . '/Resources/config/model/doctrine') => 'PimEnterprise\Component\ProductAsset\Model'
         ];
 
+        $container->addCompilerPass(new RegisterUserPreferencePass());
         $container->addCompilerPass(
             DoctrineOrmMappingsPass::createYamlMappingDriver(
                 $mappings,

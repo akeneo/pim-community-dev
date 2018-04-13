@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Bundle\UserBundle\Form\Subscriber;
+namespace PimEnterprise\Bundle\WorkflowBundle\Form\EventListener;
 
 use Pim\Bundle\UIBundle\Form\Type\SwitchType;
 use Pim\Component\User\Model\UserInterface;
