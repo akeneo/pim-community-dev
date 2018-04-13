@@ -1,9 +1,5 @@
 parameters:
-    pim_user.form.type.acl_role_type.class: PimEnterprise\Bundle\UserBundle\Form\Type\AclRoleType
     pim_user.form.type.user.class:        PimEnterprise\Bundle\UserBundle\Form\Type\UserType
-    pim_user.form.type.role.api.class:    PimEnterprise\Bundle\UserBundle\Form\Type\RoleApiType
-    pim_user.form.type.group.class:       PimEnterprise\Bundle\UserBundle\Form\Type\GroupType
-    pim_user.form.handler.acl_role.class: PimEnterprise\Bundle\UserBundle\Form\Handler\AclRoleHandler
 
 services:
     pim_user.form.type.user:
@@ -21,9 +17,3 @@ services:
         tags:
             - { name: form.type, alias: pim_user_user }
 
-    pim_user.form.type.acl_role:
-        class: '%pim_user.form.type.acl_role_type.class%'
-        arguments:
-            - []
-        tags:
-            - { name: form.type, alias: pim_user_acl_role }
