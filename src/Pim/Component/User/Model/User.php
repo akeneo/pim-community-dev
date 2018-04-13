@@ -146,6 +146,18 @@ class User implements UserInterface
     /** @var string */
     protected $timezone;
 
+    /** @var int The delay in days to send an email before the expiration of an asset */
+    protected $assetDelayReminder = 5;
+
+    /** @var CategoryInterface */
+    protected $defaultAssetTree;
+
+    /** @var bool Be notified when the user receives a proposal to review */
+    protected $proposalsToReviewNotification = true;
+
+    /** @var bool Be notified when the user's proposal has been accepted or rejected */
+    protected $proposalsStateNotification = true;
+
     public function __construct()
     {
         $this->salt = base_convert(sha1(uniqid(mt_rand(), true)), 16, 36);
@@ -1063,6 +1075,78 @@ class User implements UserInterface
     public function setTimezone(string $timezone): UserInterface
     {
         $this->timezone = $timezone;
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getAssetDelayReminder()
+    {
+        return $this->assetDelayReminder;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setAssetDelayReminder($assetDelayReminder)
+    {
+        $this->assetDelayReminder = (int) $assetDelayReminder;
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getDefaultAssetTree()
+    {
+        return $this->defaultAssetTree;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setDefaultAssetTree(CategoryInterface $defaultAssetTree)
+    {
+        $this->defaultAssetTree = $defaultAssetTree;
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function hasProposalsToReviewNotification()
+    {
+        return $this->proposalsToReviewNotification;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setProposalsToReviewNotification($proposalsToReviewNotification)
+    {
+        $this->proposalsToReviewNotification = $proposalsToReviewNotification;
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function hasProposalsStateNotification()
+    {
+        return $this->proposalsStateNotification;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setProposalsStateNotification($proposalsStateNotification)
+    {
+        $this->proposalsStateNotification = $proposalsStateNotification;
 
         return $this;
     }
