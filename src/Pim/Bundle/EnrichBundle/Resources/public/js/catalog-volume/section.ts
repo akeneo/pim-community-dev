@@ -143,6 +143,7 @@ class SectionView extends (BaseForm as { new(): Backbone.View<any> }) {
             const template = _.template(requireContext(typeTemplate));
 
             const el = template({
+                name,
                 icon: this.getIconName(name),
                 value: axis.value,
                 has_warning: axis.has_warning,

@@ -18,9 +18,23 @@ const csvToArray = (csv, separator = ',') => {
     return csv.split(separator).map(value => value.trim());
 };
 
+const renderFormExtension = async (page, extension, data) => {
+    await page.evaluate((volumes) => {
+        const FormBuilder = require('pim/form-builder');
+
+        return FormBuilder.build('pim-catalog-volume-index').then((form) => {
+            form.setData(volumes);
+            form.setElement(document.getElementById('app')).render();
+
+            return form;
+        });
+    }, data);
+};
+
 module.exports = {
     answer,
     answerJson,
     json,
-    csvToArray
+    csvToArray,
+    renderFormExtension
 };
