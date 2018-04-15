@@ -1,7 +1,7 @@
 import * as Backbone from 'backbone';
+import BaseView = require('pimenrich/js/view/base')
 
 const _ = require('underscore');
-const BaseForm = require('pim/form');
 const __ = require('oro/translator');
 const template = require('pim/template/catalog-volume/section');
 const requireContext = require('require-context');
@@ -37,9 +37,8 @@ interface Axis {
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class SectionView extends (BaseForm as { new(): Backbone.View<any> }) {
+class SectionView extends BaseView {
     readonly template = _.template(template)
-    readonly getRoot: any
     public hideHint: any = false
 
     public config: SectionConfig = {
@@ -69,7 +68,7 @@ class SectionView extends (BaseForm as { new(): Backbone.View<any> }) {
      * {@inheritdoc}
      */
     constructor(options: { config: SectionConfig}) {
-        super();
+        super(options);
 
         this.config = Object.assign({}, this.config, options.config);
         this.hideHint = false;
@@ -98,7 +97,7 @@ class SectionView extends (BaseForm as { new(): Backbone.View<any> }) {
     /**
      * {@inheritdoc}
      */
-    render(): Backbone.View<any> {
+    render(): BaseView {
         const sectionData = this.getRoot().getFormData();
         const sectionAxes = this.config.axes;
         const sectionHasData = this.sectionHasData(sectionData, sectionAxes);

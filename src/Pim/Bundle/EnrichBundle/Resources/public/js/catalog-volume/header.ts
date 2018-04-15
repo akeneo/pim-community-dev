@@ -1,6 +1,5 @@
-import * as Backbone from 'backbone';
+import BaseView = require('pimenrich/js/view/base')
 
-const BaseForm = require('pim/form');
 const _ = require('underscore');
 const __ = require('oro/translator');
 const template = require('pim/template/catalog-volume/header');
@@ -17,22 +16,19 @@ interface HeaderConfig {
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class HeaderView extends (BaseForm as { new(): Backbone.View<any> }) {
+class HeaderView extends BaseView {
     readonly headerTemplate =  _.template(template);
     public config: HeaderConfig;
-    public getRoot: any;
 
     /**
      * Initialize
-     * 
-     * @param options 
+     *
+     * @param options
      */
     constructor(options: { config: HeaderConfig }) {
-        super();
+        super(options);
 
         this.config = Object.assign({}, options.config);
-
-        return BaseForm.prototype.initialize.apply(this, arguments);
     }
 
     /**
