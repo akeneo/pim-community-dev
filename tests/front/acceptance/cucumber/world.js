@@ -5,6 +5,9 @@ const fs = require('fs');
 const path = require('path');
 const os = require('os');
 
+const createLocale = require('./factory/locale');
+const  { csvToArray } = require('./tools');
+
 module.exports = function(cucumber) {
     const {Before, After, Status} = cucumber;
 
@@ -47,11 +50,22 @@ module.exports = function(cucumber) {
                     body: `${JSON.stringify(extensions)}`
                 });
             }
+
+            if (request.url().includes('/js/translation')) {
+                const language = path.basename(request.url());
+                const languageContents = fs.readFileSync(path.join(process.cwd(), `./web/js/translation/${language}`), 'utf-8');
+
+                request.respond({
+                    contentType: 'application/json',
+                    body: `${JSON.stringify(languageContents)}`
+                });
+            }
         });
 
         await this.page.goto(this.baseUrl);
         await this.page.evaluate(async () => await require('pim/fetcher-registry').initialize());
         await this.page.evaluate(async () => await require('pim/user-context').initialize());
+        await this.page.evaluate(async () => await require('pim/init-translator').fetch());
     });
 
     After(async function(scenario) {

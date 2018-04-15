@@ -12,37 +12,40 @@ module.exports = async function(cucumber) {
     });
 
     When('the administrator user asks for the catalog volume monitoring report', async function () {
-        assert(true);
-
         const data = {
-            product_values: { value: 36867028 },
-            product_values_average: { value: 326 },
-            products: { value: 120000, has_warning: false, type: 'count'},
-            attributes_per_family: { value: {average: 75, max: 75 }, has_warning: false, type: 'average_max'},
-            channels: { value: 3, has_warning: false, type: 'count'},
-            locales: { value: 4, has_warning: false, type: 'count'},
-            scopable_attributes:{ value: 2, has_warning: false, type: 'count'},
-            localizable_and_scopable_attributes: { value: 4, has_warning: false, type: 'count'},
-            localizable_attributes: { value: 8, has_warning: false, type: 'count'},
-            families: { value: 24, has_warning: false, type: 'count'},
-            attributes: { value: 120, has_warning: false, type: 'count'},
-            options_per_attribute: { value: { average: 10, max: 20 }, has_warning: false, type: 'average_max'},
-            categories: { value: 10001, has_warning: true, type: 'count'},
-            category_trees: { value: 3, has_warning: false, type: 'count'},
-            variant_products: { value: 120000, has_warning: false, type: 'count'},
-            product_models: { value: 21000, has_warning: false, type: 'count'}
+            count_product_values: { value: 36867028, has_warning: false, type: 'count'},
+            average_max_product_values_average: { value: { average: 10, max: 20 }, has_warning: false, type: 'average_max' },
+            count_products: { value: 120000, has_warning: false, type: 'count'},
+            average_max_attributes_per_family: { value: {average: 75, max: 75 }, has_warning: false, type: 'average_max'},
+            count_channels: { value: 3, has_warning: false, type: 'count'},
+            count_locales: { value: 4, has_warning: false, type: 'count'},
+            count_scopable_attributes:{ value: 2, has_warning: false, type: 'count'},
+            count_localizable_and_scopable_attributes: { value: 4, has_warning: false, type: 'count'},
+            count_localizable_attributes: { value: 8, has_warning: false, type: 'count'},
+            count_families: { value: 24, has_warning: false, type: 'count'},
+            count_attributes: { value: 120, has_warning: false, type: 'count'},
+            average_max_options_per_attribute: { value: { average: 10, max: 20 }, has_warning: false, type: 'average_max'},
+            count_categories: { value: 10001, has_warning: true, type: 'count'},
+            count_category_trees: { value: 3, has_warning: false, type: 'count'},
+            count_variant_products: { value: 120000, has_warning: false, type: 'count'},
+            count_product_models: { value: 21000, has_warning: false, type: 'count'}
         };
 
-        await this.page.evaluate((associationType) => {
+        await this.page.evaluate((volumes) => {
             const FormBuilder = require('pim/form-builder');
 
             return FormBuilder.build('pim-catalog-volume-index').then((form) => {
-                form.setData(associationType);
+                form.setData(volumes);
                 form.setElement(document.getElementById('app')).render();
 
                 return form;
             });
         }, data);
+
+        const titleElement = await this.page.waitForSelector('.AknTitleContainer-title');
+        const pageTitle = await (await titleElement.getProperty('textContent')).jsonValue();
+        assert.equal(pageTitle.trim(), 'Catalog volume monitoring');
+
         // Only check that the page loads
 
         // Load the catalog volume monitoring view and render the axes
