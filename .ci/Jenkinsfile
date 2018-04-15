@@ -44,6 +44,7 @@ stage("Build") {
                 sh "bin/console --ansi assets:install"
                 sh "bin/console --ansi pim:installer:dump-require-paths"
                 sh "bin/console --ansi pim:installer:dump-extensions"
+                sh "bin/console --ansi oro:translation:dump"
             }
             container("node") {
                 sh "yarn install --no-progress"
@@ -92,6 +93,7 @@ stage("Build") {
                         sh "bin/console --ansi assets:install"
                         sh "bin/console --ansi pim:installer:dump-require-paths"
                         sh "bin/console --ansi pim:installer:dump-extensions"
+                        sh "bin/console --ansi oro:translation:dump"
                     }
                     container("node") {
                         sh "yarn install --no-progress"
@@ -173,13 +175,22 @@ stage("Test") {
                     echo "Skipping unit test grunt"
                 }
             },
-            "frontend-acceptance": {
-                if (launchUnitTests.equals("yes")) {
+            "frontend-acceptance-ce": {
+                if (launchUnitTests.equals("yes") && editions.contains("ce")) {
                     withNode({
                         sh "cd /home/jenkins/pim && yarn run webpack-test && MAX_RANDOM_LATENCY_MS=100 yarn run acceptance ./tests/features"
                     })
                 } else {
-                    echo "Skipping frontend acceptance tests"
+                    echo "Skipping frontend CE acceptance tests"
+                }
+            },
+            "frontend-acceptance-ee": {
+                if (launchUnitTests.equals("yes") && editions.contains("ee")) {
+                    withNode({
+                        sh "cd /home/jenkins/pim && yarn run webpack-test && MAX_RANDOM_LATENCY_MS=100 yarn run acceptance ./vendor/akeneo/pim-community-dev/tests/features ./tests/features"
+                    })
+                } else {
+                    echo "Skipping frontend EE acceptance tests"
                 }
             },
             "php-coupling-detector": {
