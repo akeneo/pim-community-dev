@@ -118,6 +118,11 @@ class SectionView extends BaseView {
         return this;
     }
 
+    /**
+     * Replaces underscores with dashes given a string
+     *
+     * @param name
+     */
     getIconName(name: string): string {
         return name.replace(/_/g, '-');
     }
