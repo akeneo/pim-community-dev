@@ -4,7 +4,7 @@ pim_import_export:
   job: Työ
   connector: Liitin
   status:
-    - Valmiina
+    0: Valmiina
   batch_status:
     1: Valmis
     2: Alkaa

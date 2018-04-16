@@ -4,7 +4,7 @@ pim_import_export:
   job: Jobb
   connector: Connector
   status:
-    - Redo
+    0: Redo
   batch_status:
     1: Slutförd
     2: Startar
