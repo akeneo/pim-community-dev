@@ -7,3 +7,8 @@
 ## Technical improvements
 
 - Add typescript support
+
+## BC Breaks
+
+- Remove methods `getAssociations`, `setAssociations`, `addAssociation`, `removeAssociation`, `getAssociationForType` and `getAssociationForTypeCode` from `Pim\Component\Catalog\Model\ProductInterface`. These methods are now in the `Pim\Component\Catalog\Model\AssociationAwareInterface`.
+- Rename `Pim\Component\Catalog\Model\AssociationInterface` to `Pim\Component\Catalog\Model\ProductAssociationInterface`
