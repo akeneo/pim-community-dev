@@ -1,33 +1,39 @@
 import * as Backbone from 'backbone';
-import BaseView = require('pimenrich/js/view/base')
+import * as _ from 'underscore';
+import BaseView = require('pimenrich/js/view/base');
 
-const _ = require('underscore');
 const __ = require('oro/translator');
 const template = require('pim/template/catalog-volume/section');
 const requireContext = require('require-context');
 
+class NoTemplateForAxisError extends Error {}
+
 interface Templates {
-    average_max?: string;
-    count?: string;
-    [propName: string]: any;
+  averageMax?: string;
+  count?: string;
+  [propName: string]: any;
+}
+
+interface SectionData {
+  [propName: string]: any;
 }
 
 interface SectionConfig {
-    align: string
-    warningText: string
-    templates: Templates
-    axes: Array<string>
-    hint: {
-        code: string
-        title: string
-    },
-    title: string
+  align: string;
+  warningText: string;
+  templates: Templates;
+  axes: Array<string>;
+  hint: {
+    code: string;
+    title: string;
+  };
+  title: string;
 }
 
 interface Axis {
-    value: number | object
-    has_warning: boolean,
-    type: string
+  value: number | {average: number; max: number};
+  hasWarning: boolean;
+  type: string;
 }
 
 /**
@@ -38,143 +44,168 @@ interface Axis {
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 class SectionView extends BaseView {
-    readonly template = _.template(template)
-    public hideHint: any = false
+  readonly template = _.template(template);
+  public hideHint: boolean = false;
 
-    public config: SectionConfig = {
-        align: 'left',
-        warningText: __('catalog_volume.axis.warning'),
-        templates: {
-            average_max: 'pim/template/catalog-volume/average-max',
-            count: 'pim/template/catalog-volume/number'
-        },
-        axes: [],
-        hint: {
-            code: '',
-            title: ''
-        },
-        title: ''
+  readonly config: SectionConfig = {
+    align: 'left',
+    warningText: __('catalog_volume.axis.warning'),
+    templates: {
+      averageMax: 'pim/template/catalog-volume/average-max',
+      count: 'pim/template/catalog-volume/number',
+    },
+    axes: [],
+    hint: {
+      code: '',
+      title: '',
+    },
+    title: '',
+  };
+
+  public events(): Backbone.EventsHash {
+    return {
+      'click .AknCatalogVolume-remove': 'closeHint',
+      'click .AknCatalogVolume-icon--active': 'closeHint',
+      'click .open-hint:not(.AknCatalogVolume-icon--active)': 'openHint',
+    };
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  constructor(options: {config: SectionConfig}) {
+    super(options);
+
+    this.config = {...this.config, ...options.config};
+    this.hideHint = false;
+  }
+
+  /**
+   * If the hint key is in localStorage, don't show it on first render
+   * @return {Boolean}
+   */
+  hintIsHidden(): boolean {
+    if (false === this.hideHint) {
+      return false;
     }
 
-   public events(): Backbone.EventsHash {
-        return {
-            'click .AknCatalogVolume-remove': 'closeHint',
-            'click .AknCatalogVolume-icon--active': 'closeHint',
-            'click .open-hint:not(.AknCatalogVolume-icon--active)': 'openHint'
-        }
+    return !!localStorage.getItem(this.config.hint.code);
+  }
+
+  /**
+   * Returns true if the section contains data
+   *
+   * @param sectionData
+   * @param sectionAxes
+   */
+  sectionHasData(sectionData: SectionData, sectionAxes: string[]): boolean {
+    return Object.keys(sectionData).filter(field => sectionAxes.includes(field)).length > 0;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  render(): BaseView {
+    const sectionData: SectionData = this.getRoot().getFormData();
+    const sectionAxes: string[] = this.config.axes;
+    const sectionHasData = this.sectionHasData(sectionData, sectionAxes);
+
+    if (false === sectionHasData) {
+      return this;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    constructor(options: { config: SectionConfig}) {
-        super(options);
+    this.$el.empty().html(
+      this.template({
+        title: __(this.config.title),
+        hintTitle: __(this.config.hint.title),
+        hintIsHidden: this.hintIsHidden(),
+        align: this.config.align,
+      })
+    );
 
-        this.config = Object.assign({}, this.config, options.config);
-        this.hideHint = false;
-    }
+    this.renderAxes(this.config.axes, sectionData);
 
-    /**
-     * If the hint key is in localStorage, don't show it on first render
-     * @return {Boolean}
-     */
-    hintIsHidden(): boolean {
-        if (false === this.hideHint) return false;
+    return this;
+  }
 
-        return !!localStorage.getItem(this.config.hint.code);
-    }
+  /**
+   * Replaces underscores with dashes given a string
+   *
+   * @param name
+   */
+  getIconName(name: string): string {
+    return name.replace(/_/g, '-');
+  }
 
-    /**
-     * Returns true if the section contains data
-     *
-     * @param sectionData
-     * @param sectionAxes
-     */
-    sectionHasData(sectionData: object, sectionAxes: Array<string>): boolean {
-        return Object.keys(sectionData).filter(field => sectionAxes.indexOf(field) > -1).length > 0;
-    }
+  /**
+   * Gets the name of the template from the type
+   *
+   * @param name
+   */
+  getTemplateName(name: string): string {
+    return name
+      .toLowerCase()
+      .replace(/_(.)/g, letter => letter.toUpperCase())
+      .replace(/_/g, '');
+  }
 
-    /**
-     * {@inheritdoc}
-     */
-    render(): BaseView {
-        const sectionData = this.getRoot().getFormData();
-        const sectionAxes = this.config.axes;
-        const sectionHasData = this.sectionHasData(sectionData, sectionAxes);
+  /**
+   * Generates the html for each axis depending on the type, appends the axis to the axis container
+   * @param  {Array} axes An array of field names for each axis
+   * @param  {Object} data An object containing data for each axis
+   */
+  renderAxes(axes: string[], data: {[key: string]: any}): void {
+    axes.forEach((name: string) => {
+      const axisData: {[key: string]: any} | undefined = data[name];
 
-        if (false === sectionHasData) {
-            return this;
-        }
+      if (undefined === axisData) {
+        return;
+      }
 
-        this.$el.empty().html(this.template({
-            title: __(this.config.title),
-            hintTitle: __(this.config.hint.title),
-            hintIsHidden: this.hintIsHidden(),
-            align: this.config.align
-        }));
+      const axis: Axis = {
+        value: axisData.value,
+        hasWarning: axisData.has_warning,
+        type: axisData.type,
+      };
 
-        this.renderAxes(this.config.axes, sectionData);
+      const templateName: string = this.getTemplateName(axis.type);
+      const typeTemplate: string = this.config.templates[templateName];
 
-        return this;
-    }
+      if (undefined === typeTemplate) {
+        throw new NoTemplateForAxisError(`The axis ${name} does not have a template for ${axis.type}`);
+      }
 
-    /**
-     * Replaces underscores with dashes given a string
-     *
-     * @param name
-     */
-    getIconName(name: string): string {
-        return name.replace(/_/g, '-');
-    }
+      const template = _.template(requireContext(typeTemplate));
 
-    /**
-     * Generates the html for each axis depending on the type, appends the axis to the axis container
-     * @param  {Array} axes An array of field names for each axis
-     * @param  {Object} data An object containing data for each axis
-     */
-    renderAxes(axes: Array<string>, data: any) {
-        axes.forEach(name => {
-            const axis: Axis = data[name];
+      const el = template({
+        name,
+        icon: this.getIconName(name),
+        value: axis.value,
+        has_warning: axis.hasWarning,
+        title: __(`catalog_volume.axis.${name}`),
+        warningText: this.config.warningText,
+      });
 
-            if (undefined === axis) return;
+      this.$('.AknCatalogVolume-axisContainer').append(el);
+    });
+  }
 
-            const typeTemplate: string = this.config.templates[axis.type];
+  /**
+   * Close the hint box and store the key in localStorage
+   */
+  closeHint(): void {
+    localStorage.setItem(this.config.hint.code, '1');
+    this.hideHint = true;
+    this.render();
+  }
 
-            if (undefined === typeTemplate) {
-                throw Error(`The axis ${name} does not have a template for ${axis.type}`);
-            }
-
-            const template = _.template(requireContext(typeTemplate));
-
-            const el = template({
-                name,
-                icon: this.getIconName(name),
-                value: axis.value,
-                has_warning: axis.has_warning,
-                title: __(`catalog_volume.axis.${name}`),
-                warningText: this.config.warningText
-            });
-
-            this.$('.AknCatalogVolume-axisContainer').append(el);
-        });
-    }
-
-    /**
-     * Close the hint box and store the key in localStorage
-     */
-    closeHint() {
-        localStorage.setItem(this.config.hint.code, '1');
-        this.hideHint = true;
-        this.render();
-    }
-
-    /**
-     * Open the hint box
-     */
-    openHint() {
-        this.hideHint = false;
-        this.render();
-    }
-};
+  /**
+   * Open the hint box
+   */
+  openHint(): void {
+    this.hideHint = false;
+    this.render();
+  }
+}
 
 export = SectionView;
