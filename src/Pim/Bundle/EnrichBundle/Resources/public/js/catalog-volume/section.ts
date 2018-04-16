@@ -6,9 +6,15 @@ const __ = require('oro/translator');
 const template = require('pim/template/catalog-volume/section');
 const requireContext = require('require-context');
 
+class NoTemplateForAxisError extends Error {}
+
 interface Templates {
-  average_max?: string;
+  averageMax?: string;
   count?: string;
+  [propName: string]: any;
+}
+
+interface SectionData {
   [propName: string]: any;
 }
 
@@ -25,7 +31,7 @@ interface SectionConfig {
 }
 
 interface Axis {
-  value: number | object;
+  value: number | {average: number; max: number};
   hasWarning: boolean;
   type: string;
 }
@@ -45,7 +51,7 @@ class SectionView extends BaseView {
     align: 'left',
     warningText: __('catalog_volume.axis.warning'),
     templates: {
-      average_max: 'pim/template/catalog-volume/average-max',
+      averageMax: 'pim/template/catalog-volume/average-max',
       count: 'pim/template/catalog-volume/number',
     },
     axes: [],
@@ -92,7 +98,7 @@ class SectionView extends BaseView {
    * @param sectionData
    * @param sectionAxes
    */
-  sectionHasData(sectionData: object, sectionAxes: string[]): boolean {
+  sectionHasData(sectionData: SectionData, sectionAxes: string[]): boolean {
     return Object.keys(sectionData).filter(field => sectionAxes.includes(field)).length > 0;
   }
 
@@ -100,8 +106,8 @@ class SectionView extends BaseView {
    * {@inheritdoc}
    */
   render(): BaseView {
-    const sectionData = this.getRoot().getFormData();
-    const sectionAxes = this.config.axes;
+    const sectionData: SectionData = this.getRoot().getFormData();
+    const sectionAxes: string[] = this.config.axes;
     const sectionHasData = this.sectionHasData(sectionData, sectionAxes);
 
     if (false === sectionHasData) {
@@ -132,6 +138,18 @@ class SectionView extends BaseView {
   }
 
   /**
+   * Gets the name of the template from the type
+   *
+   * @param name
+   */
+  getTemplateName(name: string): string {
+    return name
+      .toLowerCase()
+      .replace(/_(.)/g, letter => letter.toUpperCase())
+      .replace(/_/g, '');
+  }
+
+  /**
    * Generates the html for each axis depending on the type, appends the axis to the axis container
    * @param  {Array} axes An array of field names for each axis
    * @param  {Object} data An object containing data for each axis
@@ -150,10 +168,11 @@ class SectionView extends BaseView {
         type: axisData.type,
       };
 
-      const typeTemplate: string = this.config.templates[axis.type];
+      const templateName: string = this.getTemplateName(axis.type);
+      const typeTemplate: string = this.config.templates[templateName];
 
       if (undefined === typeTemplate) {
-        throw Error(`The axis ${name} does not have a template for ${axis.type}`);
+        throw new NoTemplateForAxisError(`The axis ${name} does not have a template for ${axis.type}`);
       }
 
       const template = _.template(requireContext(typeTemplate));
