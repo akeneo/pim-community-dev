@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Pim\Bundle\EnrichBundle\Controller\Rest;
 
 use Akeneo\Component\StorageUtils\Factory\SimpleFactoryInterface;
+use Akeneo\Component\StorageUtils\Repository\SearchableRepositoryInterface;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Pim\Component\Catalog\Model\FamilyVariantInterface;
@@ -48,6 +49,9 @@ class FamilyVariantController
     /** @var SaverInterface */
     protected $saver;
 
+    /** @var SearchableRepositoryInterface */
+    protected $searchableRepository;
+
     /**
      * @param FamilyVariantRepositoryInterface $familyVariantRepository
      * @param NormalizerInterface              $normalizer
@@ -56,6 +60,7 @@ class FamilyVariantController
      * @param ValidatorInterface               $validator
      * @param NormalizerInterface              $constraintViolationNormalizer
      * @param SaverInterface                   $saver
+     * @param SearchableRepositoryInterface    $searchableRepository
      */
     public function __construct(
         FamilyVariantRepositoryInterface $familyVariantRepository,
@@ -64,7 +69,8 @@ class FamilyVariantController
         ObjectUpdaterInterface $updater,
         ValidatorInterface $validator,
         NormalizerInterface $constraintViolationNormalizer,
-        SaverInterface $saver
+        SaverInterface $saver,
+        SearchableRepositoryInterface $searchableRepository
     ) {
         $this->familyVariantRepository = $familyVariantRepository;
         $this->normalizer = $normalizer;
@@ -73,6 +79,40 @@ class FamilyVariantController
         $this->validator = $validator;
         $this->constraintViolationNormalizer = $constraintViolationNormalizer;
         $this->saver = $saver;
+        $this->searchableRepository = $searchableRepository;
+    }
+
+    /**
+     * @param Request $request
+     *
+     * @return JsonResponse
+     */
+    public function indexAction(Request $request)
+    {
+        $options = $request->query->get('options', ['limit' => 20]);
+
+        if ($request->query->has('family_id')) {
+            $options['familyId'] = $request->query->get('family_id');
+        }
+
+        if ($request->query->has('identifiers')) {
+            $options['identifiers'] = explode(',', $request->query->get('identifiers'));
+        }
+
+        $familyVariants = $this->searchableRepository->findBySearch(
+            $request->query->get('search'),
+            $options
+        );
+
+        $normalizedFamilyVariants = [];
+        foreach ($familyVariants as $familyVariant) {
+            $normalizedFamilyVariants[$familyVariant->getCode()] = $this->normalizer->normalize(
+                $familyVariant,
+                'internal_api'
+            );
+        }
+
+        return new JsonResponse($normalizedFamilyVariants);
     }
 
     /**
