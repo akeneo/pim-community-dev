@@ -71,12 +71,12 @@ pim_enrich:
     family:
       page_title: Famílias
       page_subtitle: Editar em Massa (1 família) | Editar em Massa (%count% famílias)
-      title: Escolher operação
+      title: Escolher Operação
       subtitle: Escolha a operação que deseja executar na familia selecionada| Escolha a operação que deseja executar nas %count% famílias selecionadas
       confirm: Está prestes a atualizar um produto com a seguinte informação, por favor confirme. | Está prestes a atualizar %count% produtos com a seguinte informação, por favor confirme.
       steps:
         first: Escolher famílias
-        second: Escolher operação
+        second: Escolher Operação
         third: Configurar
         fourth: Confirmar
     change-status:
@@ -598,23 +598,23 @@ pim_enrich.mass_edit_action:
   product:
     page_title: Produtos
     page_subtitle: Editar em Massa (1 produto) | Editar em Massa (%count% produtos)
-    title: Escolher operação
+    title: Escolher Operação
     subtitle: Escolha a operação que deseja executar no produto selecionado | Escolha a operação que deseja executar nos %count% produtos selecionados
     confirm: Está prestes a atualizar um produto com a seguinte informação, por favor confirme. | Está prestes a atualizar %count% produtos com a seguinte informação, por favor confirme.
     steps:
-      first: Escolher produtos
-      second: Escolher operação
+      first: Escolha os produtos
+      second: Escolher Operação
       third: Configurar
       fourth: Confirmar
   family:
     page_title: Famílias
     page_subtitle: Editar em Massa (1 família) | Editar em Massa (%count% famílias)
-    title: Escolher operação
+    title: Escolher Operação
     subtitle: Escolha a operação que deseja executar na familia selecionada| Escolha a operação que deseja executar nas %count% famílias selecionadas
     confirm: Está prestes a atualizar um produto com a seguinte informação, por favor confirme. | Está prestes a atualizar %count% produtos com a seguinte informação, por favor confirme.
     steps:
       first: Escolher famílias
-      second: Escolher operação
+      second: Escolher Operação
       third: Configurar
       fourth: Confirmar
   change-status:

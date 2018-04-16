@@ -8,6 +8,7 @@ use Behat\Mink\Driver\Selenium2Driver;
 use Behat\Mink\Exception\ElementNotFoundException;
 use Behat\Mink\Exception\ExpectationException;
 use Context\Spin\SpinCapableTrait;
+use PHPUnit\Framework\Assert;
 use Pim\Behat\Context\PimContext;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
 
@@ -366,7 +367,7 @@ class AssertionContext extends PimContext
             if (array_key_exists('date', $data)) {
                 $expectedDate = $data['date'];
                 $date = $row->find('css', '[data-column="loggedAt"]')->getText();
-                assertLessThan(
+                Assert::assertLessThan(
                     90,
                     abs(strtotime($expectedDate) - strtotime($date)),
                     sprintf(
