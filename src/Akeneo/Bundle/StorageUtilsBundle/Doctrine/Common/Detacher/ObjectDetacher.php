@@ -202,7 +202,20 @@ class ObjectDetacher implements ObjectDetacherInterface, BulkObjectDetacherInter
     {
         $objectManager = $this->getObjectManager($object);
         $uow = $objectManager->getUnitOfWork();
-        $objectIds = [spl_object_hash($object)];
+
+        if ($uow->isInIdentityMap($object)) {
+            $uow->removeFromIdentityMap($object);
+        }
+
+        $identityMapObjectIds = $uow->getIdentityMap();
+        $objectIds = [];
+
+        foreach ($identityMapObjectIds as $objects) {
+            foreach ($objects as $entity) {
+                $oid = spl_object_hash($entity);
+                $objectIds[] = $oid;
+            }
+        }
 
         $originalDocumentData = &$this->getOriginalDocumentData($uow);
         foreach (array_diff(array_keys($originalDocumentData), $objectIds) as $id) {
@@ -217,11 +230,6 @@ class ObjectDetacher implements ObjectDetacherInterface, BulkObjectDetacherInter
         $embeddedDocumentsRegistry = &$this->getEmbeddedDocumentsRegistry($uow);
         foreach (array_diff(array_keys($embeddedDocumentsRegistry), $objectIds) as $id) {
             unset($embeddedDocumentsRegistry[$id]);
-        }
-
-        $identityMap = &$this->getIdentityMap($uow);
-        foreach (array_diff(array_keys($identityMap), $objectIds) as $id) {
-            unset($identityMap[$id]);
         }
     }
 
@@ -268,22 +276,6 @@ class ObjectDetacher implements ObjectDetacherInterface, BulkObjectDetacherInter
     {
         $closure = \Closure::bind(function &($uow) {
             return $uow->embeddedDocumentsRegistry;
-        }, null, $uow);
-
-        return $closure($uow);
-    }
-
-    /**
-     * Get the private identityMap from UoW
-     *
-     * @param UnitOfWork $uow
-     *
-     * @return array
-     */
-    private function &getIdentityMap($uow)
-    {
-        $closure = \Closure::bind(function &($uow) {
-            return $uow->identityMap;
         }, null, $uow);
 
         return $closure($uow);
