@@ -489,7 +489,7 @@ class WebUser extends PimContext
     public function iConfirmThe()
     {
         $this->getCurrentPage()->confirmDialog();
-        
+
         $this->wait();
     }
 
@@ -2800,6 +2800,34 @@ class WebUser extends PimContext
                 throw $this->createExpectationException('Status switcher should be visible');
             }
         }
+    }
+
+    /**
+     * @param string $field
+     *
+     * @When /^I open the (.*) select2 field$/
+     */
+    public function iOpenTheSelect2Field($field)
+    {
+        $this->getCurrentPage()->findSelect2Field($field)->open();
+    }
+
+    /**
+     * @param string $field
+     *
+     * @When /^I scroll down the (.*) select2 options$/
+     */
+    public function iScrollDownTheSelect2Options($field)
+    {
+        $this->getCurrentPage()->findSelect2Field($field)->scrollDown();
+    }
+
+    /**
+     * @When /^I search "([^"]*)" in the (.*) select2 field$/
+     */
+    public function iSearchTheSelect2Field($search, $field)
+    {
+        $this->getCurrentPage()->findSelect2Field($field)->search($search);
     }
 
     /**

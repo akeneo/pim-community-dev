@@ -244,6 +244,28 @@ class Select2Decorator extends ElementDecorator
     }
 
     /**
+     * Scrolls down the select2 options; this may trigger a pagination (infinite scroll)
+     */
+    public function scrollDown()
+    {
+        $widget = $this->getWidget();
+        $widgetClasses = '.' . str_replace(' ', '.', $widget->getAttribute('class'));
+
+        $scrollHeight = $this->getSession()->evaluateScript(sprintf(
+            'return $(\'%s .select2-results:visible\').prop(\'scrollHeight\');',
+            $widgetClasses
+        ));
+
+        $this->getSession()->executeScript(
+            sprintf(
+                '$(\'%s .select2-results\').scrollTop(%d);',
+                $widgetClasses,
+                $scrollHeight
+            )
+        );
+    }
+
+    /**
      * Get the current value for the Select2
      *
      * @return string

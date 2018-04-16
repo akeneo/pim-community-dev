@@ -998,4 +998,27 @@ class Form extends Base
 
         return !$this->getClosest($button, 'select2-container')->hasClass('select2-container-disabled');
     }
+
+    /**
+     * Finds a select2 field identified by its label
+     *
+     * @param string $label
+     * @return mixed|\Pim\Behat\Decorator\ElementDecorator
+     * @throws TimeoutException
+     */
+    public function findSelect2Field($label)
+    {
+        $select2 = $this->spin(function () use ($label) {
+            $labelElement = $this->extractLabelElement($label);
+            $container = $this->getClosest($labelElement, 'AknFieldContainer');
+            if (null === $container) {
+                return false;
+            }
+
+            return $container->find('css', '.select2-container');
+        }, 'Impossible to find the select2 field');
+        $select2 = $this->decorate($select2, [Select2Decorator::class]);
+
+        return $select2;
+    }
 }
