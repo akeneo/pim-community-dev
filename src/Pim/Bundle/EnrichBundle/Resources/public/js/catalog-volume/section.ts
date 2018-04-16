@@ -141,15 +141,15 @@ class SectionView extends BaseView {
     axes.forEach(name => {
       const axisData = data[name];
 
+      if (undefined === axisData) {
+        return;
+      }
+
       const axis: Axis = {
         value: axisData.value,
         hasWarning: axisData.has_warning,
         type: axisData.type,
       };
-
-      if (undefined === axis) {
-        return;
-      }
 
       const typeTemplate: string = this.config.templates[axis.type];
 

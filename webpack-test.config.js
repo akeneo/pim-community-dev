@@ -24,7 +24,7 @@ config.plugins.push(
         template: path.resolve(__dirname, './webpack/test/templates/index.html'),
         minify: {},
         inlineSource: '.(js)$'
-    }),
+    })
 );
 
 module.exports = config;
