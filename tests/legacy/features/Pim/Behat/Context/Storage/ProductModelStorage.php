@@ -162,6 +162,20 @@ class ProductModelStorage extends RawMinkContext
     }
 
     /**
+     * @param string $productModelCode
+     *
+     * @Then product model :productModelCode should not have any children
+     */
+    public function productModelShouldNotHaveAnyChildren(string $productModelCode): void
+    {
+        $parentProductModel = $this->productModelRepository->findOneByIdentifier($productModelCode);
+
+        $children = $parentProductModel->getProducts();
+
+        Assert::assertTrue($children->isEmpty());
+    }
+
+    /**
      * @param ProductModelInterface $productModel
      * @param string                $propertyName
      * @param mixed                 $value

@@ -43,11 +43,6 @@ class ParentFieldSetter extends AbstractFieldSetter
             );
         }
 
-        // TODO: This is to be removed in PIM-6350.
-        if (null !== $product->getParent() && $data !== $product->getParent()->getCode()) {
-            throw ImmutablePropertyException::immutableProperty($field, $data, static::class);
-        }
-
         if (null === $data) {
             return;
         }
@@ -64,6 +59,7 @@ class ParentFieldSetter extends AbstractFieldSetter
 
         $familyVariant = $parent->getFamilyVariant();
 
+        // Check that new parent family variant is the same than the old one.
         $product->setParent($parent);
         $product->setFamilyVariant($familyVariant);
         if (null === $product->getFamily()) {
