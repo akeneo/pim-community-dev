@@ -1,6 +1,6 @@
 import BaseView = require('pimenrich/js/view/base')
+import * as _ from 'underscore';
 
-const _ = require('underscore');
 const __ = require('oro/translator');
 const template = require('pim/template/catalog-volume/header');
 
@@ -28,7 +28,7 @@ class HeaderView extends BaseView {
     constructor(options: { config: HeaderConfig }) {
         super(options);
 
-        this.config = Object.assign({}, options.config);
+        this.config = {...this.config, ...options.config};
     }
 
     /**
@@ -36,14 +36,14 @@ class HeaderView extends BaseView {
      */
     render(): any {
         const data = this.getRoot().getFormData();
-        const product_values: { value: number } = data.product_values;
-        const product_values_average: { value: number } = data.product_values_average;
+        const productValues: { value: number } = data.product_values;
+        const productValuesAverage: { value: number } = data.product_values_average;
 
-        if (undefined !== product_values && product_values.value > 0) {
+        if (undefined !== productValues && productValues.value > 0) {
             const headerContents: string = this.headerTemplate({
                 title: __(this.config.title)
-                    .replace('{{values}}', product_values.value.toLocaleString('en', { useGrouping: true }))
-                    .replace('{{average}}', product_values_average.value),
+                    .replace('{{values}}', productValues.value.toLocaleString('en', { useGrouping: true }))
+                    .replace('{{average}}', productValuesAverage.value),
                 description: __(this.config.description)
             })
 

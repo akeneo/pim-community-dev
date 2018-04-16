@@ -39,9 +39,9 @@ interface Axis {
  */
 class SectionView extends BaseView {
     readonly template = _.template(template)
-    public hideHint: any = false
+    public hideHint: boolean = false
 
-    public config: SectionConfig = {
+    readonly config: SectionConfig = {
         align: 'left',
         warningText: __('catalog_volume.axis.warning'),
         templates: {
@@ -70,7 +70,7 @@ class SectionView extends BaseView {
     constructor(options: { config: SectionConfig}) {
         super(options);
 
-        this.config = Object.assign({}, this.config, options.config);
+        this.config = {...this.config, ...options.config}
         this.hideHint = false;
     }
 
@@ -79,7 +79,9 @@ class SectionView extends BaseView {
      * @return {Boolean}
      */
     hintIsHidden(): boolean {
-        if (false === this.hideHint) return false;
+        if (false === this.hideHint) {
+            return false;
+        }
 
         return !!localStorage.getItem(this.config.hint.code);
     }
@@ -91,6 +93,7 @@ class SectionView extends BaseView {
      * @param sectionAxes
      */
     sectionHasData(sectionData: object, sectionAxes: Array<string>): boolean {
+        console.log('sectionHasData', Object.keys(sectionData), sectionAxes)
         return Object.keys(sectionData).filter(field => sectionAxes.indexOf(field) > -1).length > 0;
     }
 
@@ -132,11 +135,13 @@ class SectionView extends BaseView {
      * @param  {Array} axes An array of field names for each axis
      * @param  {Object} data An object containing data for each axis
      */
-    renderAxes(axes: Array<string>, data: any) {
+    renderAxes(axes: string[], data: {[key: string]: any }) {
         axes.forEach(name => {
             const axis: Axis = data[name];
 
-            if (undefined === axis) return;
+            if (undefined === axis) {
+                return;
+            }
 
             const typeTemplate: string = this.config.templates[axis.type];
 
