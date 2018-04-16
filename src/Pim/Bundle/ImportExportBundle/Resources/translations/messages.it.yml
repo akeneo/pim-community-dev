@@ -4,7 +4,7 @@ pim_import_export:
   job: Lavoro
   connector: Connettore
   status:
-    - Pronto
+    0: Pronto
   batch_status:
     1: Completato
     2: In avvio
@@ -15,7 +15,7 @@ pim_import_export:
     7: Abbandonato
     8: Sconosciuto
   download_archive:
-    archive: scarica l'archivio generato |scarica gli archivi generati
+    archive: scaricar l'arhivio generato |scarica gli archivi generati
     output: scarica il file generato |scarica i files generati
     input: scarica il file letto |scarica i files letti
     invalid_xlsx: Scarica dati non validi

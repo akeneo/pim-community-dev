@@ -195,7 +195,6 @@ pim_enrich:
       localizable:
         channel_locale_unavailable: Dit lokaliseerbaar veld is niet beschikbaar voor locale '{{ locale }}' en kanaal '{{ channel }}'
       create_popin:
-        type: Product
         title: Aanmaken
         labels:
           family: Kies een familie

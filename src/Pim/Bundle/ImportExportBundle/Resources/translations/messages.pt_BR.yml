@@ -4,7 +4,7 @@ pim_import_export:
   job: Tarefa
   connector: Conector
   status:
-    - Pronto
+    0: Pronto
   batch_status:
     1: Concluído
     2: Iniciando
@@ -15,6 +15,7 @@ pim_import_export:
     7: Abandonado
     8: Desconhecido
   download_archive:
+    archive: transferir ficheiro gerado | transferir ficheiros gerados
     output: baixar arquivo gerado | baixar arquivos gerados
     input: baixar arquivo de leitura|baixar arquivos de leitura
     invalid_xlsx: baixar dados inválidos
@@ -35,13 +36,9 @@ pim_import_export:
       history.title: Histórico
       job_content.title: Conteúdo
 pim_title.export_profile.index: Gerenciamento dos perfis de exportação
-pim_title.export_profile.edit: Perfis de exportação %job.label% | Editar
-pim_title.export_profile.show: Perfis de exportação %job.label% | Mostrar
 pim_title.export_execution.index: Histórico de execuções de exportação
 pim_title.export_execution.show: Execuções de exportação | Detalhes
 pim_title.import_profile.index: Gerenciamento dos perfis de importação
-pim_title.import_profile.edit: Perfis de importação %job.label% | Editar
-pim_title.import_profile.show: Perfis de importação %job.label% | Mostrar
 pim_title.import_execution.index: Histórico de execuções de importação
 pim_title.import_execution.show: Execuções de importação | Detalhes
 export profile:
@@ -97,12 +94,12 @@ flash:
     created: A exportação foi criada com sucesso
     removed: A exportação foi removida
     updated: A exportação foi atualizada com sucesso
-    running: A exportação está a ser executada
+    running: A exportação está sendo executado
   import:
     created: A importação foi criada com sucesso
     removed: A importação foi removida
     updated: A importação foi atualizada com sucesso
-    running: A importação está a ser executada
+    running: A importação está em execução
 General properties: Propriedades gerais
 History: Histórico
 pane.accordion:

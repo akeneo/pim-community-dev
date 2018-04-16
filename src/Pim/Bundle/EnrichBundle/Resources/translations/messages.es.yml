@@ -151,6 +151,8 @@ pim_enrich:
       comment: Comentario de Productos
       download: Descargar el producto en formato PDF
       history: Ver historial de producto
+    product_model:
+      create: Cree un modelo de producto
     category:
       list: Lista de categorías
       create: Crear una categoría
