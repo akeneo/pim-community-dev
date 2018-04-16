@@ -1,9 +1,9 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Pim\Component\Catalog\Updater\Setter;
 
-use Akeneo\Component\StorageUtils\Exception\ImmutablePropertyException;
 use Akeneo\Component\StorageUtils\Exception\InvalidObjectException;
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
@@ -24,6 +24,7 @@ class ParentFieldSetter extends AbstractFieldSetter
 
     /**
      * @param IdentifiableObjectRepositoryInterface $productModelRepository
+     * @param string[]                              $supportedFields
      */
     public function __construct(IdentifiableObjectRepositoryInterface $productModelRepository, array $supportedFields)
     {
@@ -58,6 +59,18 @@ class ParentFieldSetter extends AbstractFieldSetter
         }
 
         $familyVariant = $parent->getFamilyVariant();
+
+        if (null !== $familyVariant && $product->isVariant() && $product->getFamilyVariant() !== $familyVariant) {
+            throw InvalidPropertyException::expected(
+                sprintf(
+                    'New parent "%s" of variant product "%s" must have the same family variant "%" than the previous parent',
+                    $parent->getCode(),
+                    $product->getIdentifier(),
+                    $product->getFamilyVariant()->getCode()
+                ),
+                static::class
+            );
+        }
 
         // Check that new parent family variant is the same than the old one.
         $product->setParent($parent);

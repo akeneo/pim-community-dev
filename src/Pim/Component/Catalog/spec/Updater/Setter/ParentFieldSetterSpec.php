@@ -2,7 +2,6 @@
 
 namespace spec\Pim\Component\Catalog\Updater\Setter;
 
-use Akeneo\Component\StorageUtils\Exception\ImmutablePropertyException;
 use Akeneo\Component\StorageUtils\Exception\InvalidObjectException;
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
@@ -40,7 +39,7 @@ class ParentFieldSetterSpec extends ObjectBehavior
 
     function it_set_the_parent_to_a_variant_product(
         $productModelRepository,
-        ProductInterface $product,
+        ProductInterface $variantProduct,
         ProductModelInterface $productModel,
         FamilyVariantInterface $familyVariant,
         FamilyInterface $family
@@ -48,16 +47,19 @@ class ParentFieldSetterSpec extends ObjectBehavior
         $productModelRepository->findOneByIdentifier('parent_code')->willReturn($productModel);
         $productModel->getFamilyVariant()->willReturn($familyVariant);
 
-        $product->setParent($productModel)->shouldBeCalled();
-        $product->setFamilyVariant($familyVariant)->shouldBeCalled();
-        $product->getFamily()->willReturn($family);
+        $variantProduct->isVariant()->willReturn(true);
+        $variantProduct->getFamilyVariant()->willReturn($familyVariant);
 
-        $this->setFieldData($product, 'parent', 'parent_code')->shouldReturn(null);
+        $variantProduct->setParent($productModel)->shouldBeCalled();
+        $variantProduct->setFamilyVariant($familyVariant)->shouldBeCalled();
+        $variantProduct->getFamily()->willReturn($family);
+
+        $this->setFieldData($variantProduct, 'parent', 'parent_code');
     }
 
     function it_sets_the_variant_product_s_parent_family_if_none(
         $productModelRepository,
-        ProductInterface $product,
+        ProductInterface $variantProduct,
         ProductModelInterface $productModel,
         FamilyVariantInterface $familyVariant,
         FamilyInterface $family
@@ -66,31 +68,15 @@ class ParentFieldSetterSpec extends ObjectBehavior
         $productModel->getFamilyVariant()->willReturn($familyVariant);
         $familyVariant->getFamily()->willReturn($family);
 
-        $product->setParent($productModel)->shouldBeCalled();
-        $product->setFamilyVariant($familyVariant)->shouldBeCalled();
-        $product->getFamily()->willReturn(null);
-        $product->setFamily($family)->shouldBeCalled();
+        $variantProduct->isVariant()->willReturn(true);
+        $variantProduct->getFamilyVariant()->willReturn($familyVariant);
 
-        $this->setFieldData($product, 'parent', 'parent_code')->shouldReturn(null);
-    }
+        $variantProduct->setParent($productModel)->shouldBeCalled();
+        $variantProduct->setFamilyVariant($familyVariant)->shouldBeCalled();
+        $variantProduct->getFamily()->willReturn(null);
+        $variantProduct->setFamily($family)->shouldBeCalled();
 
-    function it_changes_the_parent_of_a_variant_product(
-        $productModelRepository,
-        ProductInterface $product,
-        ProductModelInterface $productModel,
-        FamilyVariantInterface $familyVariant,
-        FamilyInterface $family
-    ) {
-        $productModelRepository->findOneByIdentifier('parent_code')->willReturn($productModel);
-        $productModel->getFamilyVariant()->willReturn($familyVariant);
-        $familyVariant->getFamily()->willReturn($family);
-
-        $product->setParent($productModel)->shouldBeCalled();
-        $product->setFamilyVariant($familyVariant)->shouldBeCalled();
-        $product->getFamily()->willReturn(null);
-        $product->setFamily($family)->shouldBeCalled();
-
-        $this->setFieldData($product, 'parent', 'parent_code')->shouldReturn(null);
+        $this->setFieldData($variantProduct, 'parent', 'parent_code');
     }
 
     function it_throws_exception_if_the_provided_object_is_not_a_product(ProductModelInterface $productModel)
@@ -106,6 +92,29 @@ class ParentFieldSetterSpec extends ObjectBehavior
         ProductInterface $variantProduct
     ) {
         $productModelRepository->findOneByIdentifier('parent_code')->willReturn(null);
+
+        $this->shouldThrow(InvalidPropertyException::class)->during(
+            'setFieldData',
+            [$variantProduct, 'parent', 'parent_code']
+        );
+    }
+
+    function it_throws_an_exception_if_the_family_variant_of_the_new_variant_product_parent_is_different(
+        $productModelRepository,
+        ProductInterface $variantProduct,
+        ProductModelInterface $productModel,
+        FamilyVariantInterface $previousFamilyVariant,
+        FamilyVariantInterface $familyVariant
+    ) {
+        $productModelRepository->findOneByIdentifier('parent_code')->willReturn($productModel);
+        $productModel->getFamilyVariant()->willReturn($familyVariant);
+
+        $variantProduct->isVariant()->willReturn(true);
+        $variantProduct->getFamilyVariant()->willReturn($previousFamilyVariant);
+
+        $productModel->getCode()->willReturn('parent_code');
+        $variantProduct->getIdentifier()->willReturn('variant_product');
+        $previousFamilyVariant->getCode()->willReturn('previous_family_variant');
 
         $this->shouldThrow(InvalidPropertyException::class)->during(
             'setFieldData',
