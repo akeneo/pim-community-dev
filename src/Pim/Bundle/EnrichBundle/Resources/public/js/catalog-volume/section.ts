@@ -93,8 +93,7 @@ class SectionView extends BaseView {
    * @param sectionAxes
    */
   sectionHasData(sectionData: object, sectionAxes: string[]): boolean {
-    console.log('sectionHasData', Object.keys(sectionData), sectionAxes);
-    return Object.keys(sectionData).filter(field => sectionAxes.indexOf(field) > -1).length > 0;
+    return Object.keys(sectionData).filter(field => sectionAxes.includes(field)).length > 0;
   }
 
   /**
