@@ -1,11 +1,61 @@
 pim_common:
-  edit: Modifier
-  history: Historique
+  add: Ajouter
+  add_attributes: Ajouter des attributs
+  after: Après
+  all: Tous
+  and: et
+  apply: Appliquer
   attributes: Attributs
+  attribute_groups: Groupes d'attributs
+  before: Avant
+  cancel: Annuler
+  categories: Catégories
+  channel: Canal
+  code: Code
+  confirm: Confirmer
+  confirm_deletion: Supprimer l'élément
+  create: Créer
+  created: Créé
+  delete: Supprimer
+  done: Fait
+  edit: Modifier
+  from: De
+  general_properties: Propriétés générales
+  history: Historique
+  label: Libellé
+  label_translations: Traduction des libellés
+  less_than: Moins de
+  loading: Chargement en cours...
+  locales: Locales
+  more_than: Plus de
+  "no": "Non"
+  none: Aucun
+  not_available: N/A
+  now: Maintenant
+  ok: OK
+  properties: Propriétés
+  products: Produits
   save: Enregistrer
-
+  status: État
+  to: À
+  type: Type
+  update: Mettre à jour
+  "yes": "Oui"
+  operator: Opérateur
+  operators:
+    "=": Est égal à
+    "!=": N'est pas égal à
+    ">=": Supérieur ou égal à
+    ">": Supérieur à
+    "<=": Inférieur ou égal à
+    "<": Inférieur à
+    EMPTY: Est vide
+    NOT EMPTY: N'est pas vide
+    CONTAINS: Contient
+    DOES NOT CONTAIN: Ne contient pas
+    STARTS WITH: Commence par
+    ENDS WITH: Finit par
 confirmation:
-  title: Confirmer
   remove:
     item: Êtes-vous sûr(e) de vouloir supprimer cet élément ?
     association_type: Êtes-vous sûr(e) de que vouloir supprimer ce type d'association ?
@@ -33,16 +83,17 @@ pim_datagrid:
       label: Export rapide
   mass_action:
     delete:
-      label: Supprimer
       confirm_content: Êtes-vous sûr(e) de vouloir supprimer les produits sélectionnés ?
       success: Les produits sélectionnés ont été supprimés.
       error: Une erreur s'est produite lors de la suppression des produits sélectionnés, merci d'essayer à nouveau.
   view_selector:
     view: Vues
-    create_view_modal:
-      create: Créer
-      confirm: OK
-      cancel: Annuler
+  actions:
+    edit_product_attributes: Modifier les attributs du produit
+    classify_product: Classer le produit
+    delete_product: Supprimer le produit
+    change_status: Changer le statut
+    toggle_status: Changer le statut
 flash:
   item:
     removed: Élément supprimé avec succès
@@ -112,14 +163,6 @@ confirm:
 label:
   attribute_option:
     add_option: Ajouter une option
-Code: Code
-Edit: Modifier
-Delete: Supprimer
-Edit attributes of the product: Modifier les attributs du produit
-Classify the product: Classer le produit
-Delete the product: Supprimer le produit
-Change status: Changer le statut
-Toggle status: Changer le statut
 mass_delete: Suppression massive
 pim:
   grid:
@@ -129,18 +172,12 @@ pim:
         csv_grid_context: CSV (contexte de la grille)
         xlsx_all: Excel (tous les attributs)
         xlsx_grid_context: Excel (contexte de la grille)
-      delete: Supprimer
       mass_edit: Actions de masse
       category_edit: Déplacer des produits vers des catégories
       sequential_edit: Modification séquentielle
-jstree.create: Créer
-jstree.done: Fait
-switch_on: "Oui"
-switch_off: "Non"
 pim_enrich:
   item:
     list:
-      delete.label: Supprimer
       delete.error: Erreur lors de la suppression de l'élément
     delete:
       confirm.content: Êtes-vous sûr(e) de vouloir supprimer {{ itemName }} ? Il est impossible d'annuler cette action
@@ -150,17 +187,9 @@ pim_enrich:
       back_to_grid: Retour à la grille
     other_actions: Autres actions
   entity:
-    save:
-      label: Enregistrer
     info:
       update_failed: Échec de la mise à jour
       update_successful: Mise à jour effectuée avec succès
-    create_popin:
-      code: Code
-      label: Libellé
-      labels:
-        save: Enregistrer
-        cancel: Annuler
     product:
       navigation: Navigation produit
       infos: Infos produit
@@ -168,7 +197,6 @@ pim_enrich:
       title: produit
       locale: Locale
       category: Catégorie
-      create: Créer
       subTitle: Créer un produit
       modalTitle: Sélectionnez une action
       filters: Filtres
@@ -179,8 +207,6 @@ pim_enrich:
         disabled: Désactivé
         download_pdf: PDF
         compare_translate: Comparer / Traduire
-        delete: Supprimer
-        save: Enregistrer
       history:
         version: Version
         author: Auteur
@@ -200,32 +226,23 @@ pim_enrich:
       error:
         upload: Une erreur s'est produite lors du transfert du fichier.
       meta:
-        created: Créé
         created_by: par
         updated_by: par
         updated: Dernière mise à jour
         family:
           title: Famille
-          none: Aucun
         family_variant:
           title: Variante
-          none: Aucun
         groups:
           title: Groupes
           modal:
             title: Groupe {{ group }}
             view_group: Afficher le groupe
-            group_label: Libellé
             more_products: '{{ count }} produits supplémentaires...'
-            close: Fermer
-        status: État
-        scope: Canal
         locale: Locale
       copy:
         select: Sélectionner
-        all: Tous
         all_visible: Tous les éléments visibles
-        none: Aucun
         copy: Copier
       optional_attribute:
         remove: Supprimer cet attribut
@@ -237,12 +254,9 @@ pim_enrich:
         upload: Glissez et déposez un fichier pour le télécharger ou cliquez ici
       create_popin:
         type: Produit
-        title: Créer
         labels:
           family: Choisir une famille
           family_variant: Sélectionnez une variante de famille
-          save: Enregistrer
-          cancel: Annuler
       message:
         created: Produit créé avec succès
       completeness: Complet
@@ -266,12 +280,9 @@ pim_enrich:
       title: modèles de produits
       add_child:
         create: Créer
-        cancel: Annuler
-        confirm: Confirmer
         create_label: "Créer un nouvel axe avec {{ axes }}"
         fields:
           required_label: (axe de variante)
-          code: Code
     association_type:
       info:
         deletion_successful: Le type d'association a été créé avec succès.
@@ -279,16 +290,7 @@ pim_enrich:
         update_successful: Le type d'association a été mis à jour avec succès.
         update_failed: Le type d’association n’a pas pu être modifié.
         field_not_ready: "Le type d'association ne peut être sauvé dès maintenant. Les champs suivants ne sont pas prêts : {{ fields }}"
-      meta:
-        created: Créé
-        created_by: Créé par
-        updated: Mis à jour
-        updated_by: Mis à jour par
-      btn:
-        save: Enregistrer
       title: type d'association
-      create_popin:
-        title: Créer
       message:
         created: Le type d'association est créé avec succès
     group_type:
@@ -298,20 +300,10 @@ pim_enrich:
         update_successful: Le type de groupe a bien été mis à jour.
         update_failed: Le type de groupe n'a pas pu être mis à jour.
         field_not_ready: "Le type de groupe ne peut être sauvé dès maintenant. Les champs suivants ne sont pas prêts : {{ fields }}"
-      meta:
-        created: Créé
-        created_by: Créé par
-        updated: Mis à jour
-        updated_by: Mis à jour par
-      btn:
-        save: Enregistrer
       title: type de groupe
-      create_popin:
-        title: Créer
       message:
         created: Le type de groupe a bien été créé
     channel:
-      title: canal
       info:
         deletion_successful: Le canal a bien été supprimé.
         deletion_failed: Le canal ne peut pas être supprimé.
@@ -320,13 +312,6 @@ pim_enrich:
         create_successful: Canal créé avec succès.
         create_failed: Le canal ne peut pas être créé.
         field_not_ready: "Le canal ne peut être sauvé dès maintenant. Les champs suivants ne sont pas prêts : {{ fields }}"
-      meta:
-        created: Créé
-        created_by: Créé par
-        updated: Mis à jour
-        updated_by: Mis à jour par
-      btn:
-        save: Enregistrer
     family:
       title: famille
       selected: familles sélectionnées
@@ -338,15 +323,6 @@ pim_enrich:
         cant_remove_attribute_as_image: Impossible de supprimer un attribut utilisé comme image principale
         attribute_edit_permission_is_not_granted: Vous n'avez pas les permissions pour mettre à jour les attributs de la famille
         cant_remove_attribute_used_as_axis: Impossible d'enlever cet attribut car il est utilisé comme axe de variation de la variante de famille
-      meta:
-        created: Créé
-        created_by: Créé par
-        updated: Mis à jour
-        updated_by: Mis à jour par
-      btn:
-        save: Enregistrer
-      create_popin:
-        title: Créer
       message:
         created: Famille créée avec succès
       variant:
@@ -360,10 +336,6 @@ pim_enrich:
         create_label: Créer une nouvelle variante de famille
         create_description: Dans une variante de famille, vous pouvez définir la structure de vos produits avec variantes. Choisissez le nombreux de niveaux variants gérés, les attributs utilisés comme axes de variantes pour chaque niveau. Puis, définissez la répartition des attributs de la famille.
         update_description: Glissez & déposez les attributs au niveau de variante choisi, afin d’avoir ces attributs gérés à ce niveau.
-        create: Créer
-        cancel: Annuler
-        code: Code
-        label: Libellé
         levels: Niveaux variants
         axis_level: Axe de variantes niveau
         required: obligatoire
@@ -374,8 +346,6 @@ pim_enrich:
       info:
         update_successful: Famille variante mise à jour avec succès. Les produits avec variantes vont être mis à jour avec vos changements.
     attribute_option:
-      code: Code
-      label: Libellé
       actions: Actions
     group:
       title: Groupe
@@ -385,16 +355,6 @@ pim_enrich:
         update_successful: Groupe mis à jour avec succès.
         update_failed: Le groupe n'a pas pu être mis à jour.
         field_not_ready: "Le groupe ne peut être sauvé dès maintenant. Les champs suivants ne sont pas prêts : {{ fields }}"
-      btn:
-        save: Enregistrer
-      meta:
-        product_count: Produits
-        created: Créé
-        created_by: Créé par
-        updated: Mis à jour
-        updated_by: Mis à jour par
-      create_popin:
-        title: Créer
       message:
         created: Groupe créé avec succès
     job_instance:
@@ -437,20 +397,15 @@ pim_enrich:
         update_failed: Le groupe d'attributs n'a pas pu être mis à jour.
         update_successful: Groupe d'attributs mis à jour avec succès
     api_connection:
-      create_popin:
-        title: Créer
       message:
         created: Connexion API créée avec succès
   confirmation:
     leave: Êtes-vous sûr(e) de vouloir quitter cette page ?
     discard_changes: Vous perdrez les modifications effectuées sur {{ entity }} si vous quittez la page.
-    delete_item: Supprimer l'élément
     remove_item: Confirmer la suppression
-    remove: Supprimer
     delete:
       attribute: Êtes-vous sûr(e) de vouloir supprimer cet attribut du produit ?
       attribute_group: Êtes vous sûr(e) de vouloir retirer l'attribut {{ attribute }} de ce groupe d'attributs ?
-      product_model: Supprimer l'élément
   info:
     not_applicable: N/A
     entity:
@@ -487,10 +442,6 @@ pim_enrich:
           manage_description: Sélectionner les produits que vous souhaitez associer avec le produit actuel
           add_associations: Ajouter des associations
         attributes:
-          title: Attributs
-          btn:
-            add: Ajouter
-            add_attributes: Ajouter des attributs
           info:
             search_attributes: Rechercher...
             no_available_attributes: Il n'y a plus d'attributs disponibles
@@ -498,14 +449,12 @@ pim_enrich:
             no_match: Aucune correspondance trouvée
             load_more: Chargement de plus de résultats...
           attribute_group_selector: Groupe d'attributs
-          attribute_group_all: Tous
           attribute_group.to_fill_count: "{1}1 attribut requis manquant |] 1, Inf [{{ count }} attributs requis manquants"
           attribute_filter:
             display: Affichage
             all: Tous les attributs
             missing_required: Tous les attributs requis manquants
-        categories:
-          title: Catégories
+            at_this_level: Tous les attributs spécifiques à ce niveau
       panel:
         completeness:
           title: Complétude
@@ -513,14 +462,8 @@ pim_enrich:
             no_family: Aucune famille définie. Merci de définir une famille pour calculer la complétude de ce produit.
             no_completeness: Vous venez de modifier la famille du produit. Merci de l'enregistrer en premier pour calculer la complétude de la nouvelle famille.
           missing_values: "{1}1 valeur manquante|] 1, Inf [{{ count }} valeurs manquantes"
-        history:
-          title: Historique
-      switch:
-        "no": "Non"
-        "yes": "Oui"
       sequential_edit:
         info:
-          products: Produits
           previous: Retourner à {{ product }} sans enregistrer les modifications.
           next: Passer à {{ product }} sans enregistrer les modifications.
         btn:
@@ -538,56 +481,25 @@ pim_enrich:
       mass_edit:
         select_attributes: Sélectionnez les attributs
         select: Sélectionner
-    association_type:
-      tab:
-        properties:
-          title: Propriétés
-          general: Propriétés générales
-          code: Code
-          label_translations: Traduction des libellés
-        history:
-          title: Historique
-    group_type:
-      tab:
-        properties:
-          title: Propriétés
-          general: Propriétés générales
-          code: Code
-          label_translations: Traduction des libellés
-        history:
-          title: Historique
     channel:
       tab:
-        history:
-          title: Historique
         properties:
-          title: Propriétés
           general: Général
-          code: Code
           currencies: Devises
-          locales: Locales
           category_tree: Arborescence
-          label_translations: Traduction des libellés
           label_conversion_units: Choisissez une unité de conversion pour chaque unité de mesure. Elle sera utilisée lors de l'export du produit
           conversion_unit:
             do_not_convert: Ne pas convertir
     family:
       tab:
         properties:
-          title: Propriétés
           general: Général
-          code: Code
           attribute_as_label: Attribut utilisé comme étiquette
           attribute_as_image: Attribut utilisé comme l’image principale
           empty_attribute_as_image: Pas sélectionné
-          label_translations: Traduction des libellés
         attributes:
-          title: Attributs
-          label_label: Libellé
           toolbox:
             select_attributes_by_groups: Ajouter par groupes
-            select_attributes: Ajouter des attributs
-            add: Ajouter
             attributes_groups_selected: '{{ itemsCount }} groupe(s) sélectionné(s)'
           not_required_label: Non requis
           required_label: Obligatoire
@@ -595,62 +507,31 @@ pim_enrich:
           title: Variantes
           flash:
             family_variant_created: La variante de famille a été créée
-        history:
-          title: Historique
     attribute_option:
       flash:
         option_created: L'option d'attribut a été créée avec succès.
         error_creating_option: Une erreur s'est produite en essayant de créer l'option d'attribut.
       add_option_modal:
         title: Ajouter une option d'attribut
-        confirm: Ajouter
-        cancel: Annuler
-    entity:
-      switch:
-        "no": "Non"
-        "yes": "Oui"
-    group:
-      tab:
-        properties:
-          title: Propriétés
-          general: Propriétés générales
-          code: Code
-          type: Type
-          label_translations: Traduction des libellés
-        history:
-          title: Historique
-        products:
-          title: Produits
     attribute_group:
       tab:
-        properties:
-          title: Propriétés
-          general: Propriétés générales
-          code: Code
-          label_translations: Traduction des libellés
         attribute:
-          title: Attributs
           table:
             name: Nom
             type: Type
             scopable: Décliné par canal
             localizable: Localisable
-        history.title: Historique
     common:
       tab:
         attributes:
           btn:
-            add: Ajouter
             add_attributes: Ajouter des attributs
           info:
             search_attributes: Rechercher...
             no_available_attributes: Il n'y a plus d'attributs disponibles
     job_execution:
-      loading: Chargement en cours...
       title.details: Détails d'exécution
       refreshBtn.title: Mettre à jour
-      meta:
-        status.title: État
       button:
         show_profile.title: Afficher le profil
         download_log.title: Télécharger l'historique
@@ -660,7 +541,6 @@ pim_enrich:
         fetching: Collecte de données de l'exécution...
         warning: Attention
         header.step: Étape
-        header.status: État
         header.warnings: Avertissements
         header.summary: Résumé
         header.start: Début
@@ -673,7 +553,6 @@ pim_enrich:
         import: Profil d'import
         export: Profil d'export
       button:
-        edit.title: Modifier
         export.title: Exporter maintenant
         import.launch: Importer maintenant
         import.upload: Télécharger et importer maintenant
@@ -687,11 +566,6 @@ pim_enrich:
         content:
           title: Contenu
         properties:
-          title: Propriétés
-          code:
-            title: Code
-          label:
-            title: Libellé
           decimal_separator:
             title: Séparateur de décimales
             help: Détermine le séparateur de décimale
@@ -742,18 +616,14 @@ pim_enrich:
             help: Signifie que l'historique des produits est automatiquement mis à jour, peut être désactivé pour améliorer les performances
           family_variant_column:
             title: Colonne variante de famille
-        history:
-          title: Historique
       file_path: Chemin du fichier
     attribute:
       meta:
-        created: Créé
         created_by: par
         updated: Dernière mise à jour
         updated_by: par
       tab:
         properties:
-          title: Propriétés
           section:
             common: Paramètres généraux
             type_specific: Paramètres spécifiques
@@ -762,7 +632,6 @@ pim_enrich:
             allowed_extensions: Extensions autorisées
             auto_option_sorting: Trier automatiquement les options par ordre alphabétique
             available_locales: Locales disponibles
-            code: Code
             date_max: Date maxi
             date_min: Date mini
             decimals_allowed: Valeurs décimales autorisées
@@ -779,7 +648,6 @@ pim_enrich:
             number_min: Nombre min
             reference_data_name: Type de données de référence
             scopable: Valeur par canal
-            type: Type
             unique: Valeur unique
             useable_as_grid_filter: Utilisable sur la grille
             validation_regexp: Expression régulière
@@ -790,20 +658,13 @@ pim_enrich:
             group: Choisir le groupe d'attributs
             metric_family: Choisir une famille
             reference_data_name: Choisir un type de données référentielles
-        labels:
-          title: Traduction des libellés
         choices:
           title: Options
-        history:
-          title: Historique
     mass_edit:
       family:
         attributes:
-          label_label: Libellé
           toolbox:
             select_attributes_by_groups: Ajouter par groupes
-            select_attributes: Ajouter des attributs
-            add: Ajouter
             attributes_groups_selected: '{{ itemsCount }} groupe(s) sélectionné(s)'
     basket:
       title: Panier
@@ -816,33 +677,23 @@ pim_enrich:
         title: Filtrer les produits
       structure:
         title: Filtrer les données
-        attributes:
-          title: Attributs
       filter:
         channel:
-          title: Canal
           help: Le canal définit la portée des valeurs des produits, les locales utilisées pour sélectionner les données ainsi que l'arbre de catégories utilisé pour sélectionner les produits.
         locales:
-          title: Locales
           help: "Les locales définissent les valeurs de produits traduisibles à exporter. Par ex.: les informations des produits en allemand."
         attributes:
-          title: Attributs
-          edit: Modifier
           label: "{0}Tous les attributs|{1}1 attribut sélectionné|]1,Inf[{{ count }} attributs sélectionnés"
           help: "Sélectionne les informations du produit à exporter. Par ex. : seulement les attributs techniques."
           empty: Tous les attributs vont être exportés
           modal:
-            apply: Appliquer
-            cancel: Annuler
             title: Sélection d'attributs
         attributes_selector:
-          attribute_group: Groupes d'attributs
           attributes: "Rechercher dans les {{ itemsCount }} attributs"
           selected: "Attributs sélectionnés"
           clear: Réinitialiser
           all_group: Tous les groupes
           empty_selection: Tous les attributs vont être exportés
-          title: Attributs
           description: Sélectionnez les informations produit à exporter
         family:
           title: Famille
@@ -864,7 +715,6 @@ pim_enrich:
           title: État
           help: "Choisir les produits à exporter selon leur statut. Par ex. : exporter les produits quel que soit leur statut."
           value:
-            all: Tous
             enabled: Activé
             disabled: Désactivé
         completeness:
@@ -884,72 +734,16 @@ pim_enrich:
         identifier:
           title: Identifiant
           help: Les identifiants des produits que vous souhaitez exporter, séparés par une virgule, par un espace ou par un saut de ligne
-        metric:
-          operators:
-            "=": Est égal à
-            "!=": N'est pas égal à
-            ">=": Supérieur ou égal à
-            ">": Supérieur à
-            "<=": Inférieur ou égal à
-            "<": Inférieur à
-            EMPTY: Est vide
-            NOT EMPTY: N'est pas vide
         string:
           operators:
             ALL: Tous
-            CONTAINS: Contient
-            DOES NOT CONTAIN: Ne contient pas
-            "=": Est égal à
-            STARTS WITH: Commence par
-            ENDS WITH: Finit par
-            EMPTY: Est vide
-            NOT EMPTY: N'est pas vide
-        price-collection:
-          operators:
-            "=": Est égal à
-            "!=": N'est pas égal à
-            ">=": Supérieur ou égal à
-            ">": Supérieur à
-            "<=": Inférieur ou égal à
-            "<": Inférieur à
-            EMPTY: Est vide
-            NOT EMPTY: N'est pas vide
-        multi_select:
+        select:
           operators:
             IN: Dans la liste
-            EMPTY: Est vide
-            NOT EMPTY: N'est pas vide
-        media:
-          operators:
-            CONTAINS: Contient
-            DOES NOT CONTAIN: Ne contient pas
-            "=": Est égal à
-            STARTS WITH: Commence par
-            ENDS WITH: Finit par
-            EMPTY: Est vide
-            NOT EMPTY: N'est pas vide
         date:
           operators:
-            ">": Supérieur à
-            "<": Inférieur à
-            "=": Est égal à
-            "!=": N'est pas égal à
             BETWEEN: Entre
             NOT BETWEEN: Pas entre
-            EMPTY: Est vide
-            NOT EMPTY: N'est pas vide
-        number:
-          operators:
-            "=": Est égal à
-            "!=": N'est pas égal à
-            ">=": Supérieur ou égal à
-            ">": Supérieur à
-            "<=": Inférieur ou égal à
-            "<": Inférieur à
-            EMPTY: Est vide
-            NOT EMPTY: N'est pas vide
-      properties:
-        title: Propriétés
       global_settings:
         title: Paramètres généraux
   mass_edit_action:
@@ -963,8 +757,6 @@ pim_enrich:
       title: "] -Inf, 1] {{ count }} profil d'import|] 1, Inf [{{ count }} profils d'import"
       create_btn: Créer un profil d'import
       list: Sélectionner une tâche
-      create_popin:
-        title: Créer
       message:
         created: Le profil d'export a bien été créé
     import_history:
@@ -975,8 +767,6 @@ pim_enrich:
     export_profiles:
       title: "] -Inf, 1] {{ count }} profil d'export|] 1, Inf [{{ count }} profils d'export"
       create_btn: Créer un profil d'export
-      create_popin:
-        title: Créer
       message:
         created: Le profil d'exportation a bien été créé
     export_history:
@@ -1009,17 +799,11 @@ pim_enrich:
       title: "] -Inf, 1] {{ count }} attribut|] 1, Inf [{{ count }} attributs"
       create_btn: Créer un attribut
       modal_title: Choisir le type d'attribut
-    attribute_group:
-      title: Groupes d'attributs
-      create_btn: Créer
     api_connection:
       title: "] -Inf, 1] {{ count }} connexion API|] 1, Inf [{{ count }} connexion API"
-      create_btn: Créer
   mass_edit:
     next: Suivant
     previous: Retour
-    cancel: Annuler
-    confirm: Confirmer
     product:
       title: Action de masse sur les produits
       confirm: "{1}Vous êtes sur le point de mettre à jour un produit avec les renseignements suivants, merci de confirmer.|] 1, Inf [Vous êtes sur le point de mettre à jour {{ itemsCount }} produits avec les renseignements suivants, merci de confirmer."
@@ -1143,65 +927,117 @@ page_title:
   pim_enrich_api_connection_create: Connexions d'API | Créer
   pim_enrich_mass_edit_action: Edition en masse
   pim_analytics_system_info_index: Informations système
+job_tracker:
+  download_archive:
+    archive: Télécharger l'archive générée
+    output: Télécharger les fichiers générés
+    input: Télécharger les fichiers lus
+    invalid_xlsx: Télécharger les données invalides
+    invalid_csv: Télécharger les données invalides
+pim_menu:
+  tab:
+    activity: Activité
+    imports: Imports
+    exports: Exports
+    settings: Paramètres
+    system: Système
+    help:
+      title: Aide
+      helper: Centre d'aide Akeneo
+  item:
+    association_type: Types d'association
+    attribute_group: Groupes d'attributs
+    channel: Canaux
+    currency: Devises
+    dashboard: Tableau de bord
+    family: Familles
+    group: Groupes
+    group_type: Types de groupe
+    product_model: Modèles de produits
+    published_product: Produits publiés
+    export_history: Historique des exports
+    export_profile: Profils d'export
+    import_history: Historique des imports
+    import_profile: Profils d'import
+    configuration: Configuration
+    user_management: Gestion des utilisateurs
+    user: Utilisateurs
+    user_group: Groupes d'utilisateurs
+    user_role: Rôles
+    info: Informations système
+    job_tracker: Traqueur de processus
+    api_connection: Connexions API
+  navigation:
+    activity: Centre d'activité
+    system: Navigation système
+    user: Navigation utilisateurs
+    settings: Navigation paramètres
+  user:
+    logout: Déconnexion
+    user_account: Mon compte
+pim_notification:
+  mark_all_as_read: Marquer tout comme lu
+  no_notifications: Pas de notification
+  types:
+    import: Import
+    export: Export
+    quick_export: Export rapide
+    mass_edit: Edition en masse
+grid:
+  empty_results:
+    associated_product:
+      hint: Il n’y a aucun produit associé
+      subHint: 'Cliquez sur le bouton « Ajouter des associations » pour associer ce produit'
 batch_jobs:
   add_product_value:
     label: Ajouter une valeur de produit
-    perform:
-      label: Ajouter une valeur de produit
+    perform.label: Ajouter une valeur de produit
   update_product_value:
     label: Mise à jour de la valeur du produit
-    perform:
-      label: Mise à jour de la valeur du produit
+    perform.label: Mise à jour de la valeur du produit
+  add_attribute_value:
+    label: Ajouter une valeur d’attribut
+    perform.label: Ajouter une valeur d’attribut
   edit_common_attributes:
     label: Modifier des attributs
-    perform:
-      label: Modifier des attributs
-    cleaner:
-      label: Nettoyer les fichiers pour les attributs
+    perform.label: Modifier des attributs
+    cleaner.label: Nettoyer les fichiers pour les attributs
   add_to_category:
     label: Ajouter à une catégorie
-    perform:
-      label: Ajouter à une catégorie
+    perform.label: Ajouter à une catégorie
   move_to_category:
     label: Déplacer dans la catégorie
-    perform:
-      label: Déplacer dans la catégorie
+    perform.label: Déplacer dans la catégorie
   remove_from_category:
     label: Retirer de la catégorie
-    perform:
-      label: Retirer de la catégorie
+    perform.label: Retirer de la catégorie
   add_association:
     label: Associer aux produits
-    perform:
-      label: Associer aux produits
+    perform.label: Associer aux produits
   add_to_existing_product_model:
     label: Ajouter à un modèle de produit existant
-    perform:
-      label: Ajouter à un modèle de produit existant
+    perform.label: Ajouter à un modèle de produit existant
   set_attribute_requirements:
     label: Configurer les exigences d'attributs
-    perform:
-      label: Configurer les exigences d'attributs
+    perform.label: Configurer les exigences d'attributs
   csv_product_quick_export:
     quick_export.label: Export rapide de produits en CSV
     quick_export_product_model.label: Export rapide de modèles de produit en CSV
-    perform:
-      label: Export rapide de produits en CSV
+    perform.label: Export rapide de produits en CSV
   csv_product_grid_context_quick_export:
     quick_export.label: Export rapide de la grille de produits en CSV
     quick_export_product_model.label: Export rapide de la grille de modèles de produit en CSV
-    perform:
-      label: Export rapide de la grille de produits en CSV
+    perform.label: Export rapide de la grille de produits en CSV
   xlsx_product_quick_export:
     quick_export.label: Export rapide de produits en XLSX
     quick_export_product_model.label: Export rapide de modèles de produit en XLSX
-    perform:
-      label: Export rapide de produits en XLSX
+    perform.label: Export rapide de produits en XLSX
   xlsx_product_grid_context_quick_export:
     quick_export.label: Export rapide de la grille de produits en XLSX
     quick_export_product_model.label: Export rapide de la grille de modèles de produit en XLSX
-    perform:
-      label: Export rapide de la grille de produits en XLSX
+    perform.label: Export rapide de la grille de produits en XLSX
+  delete_products_and_product_models:
+    delete_products_and_product_models.label: Suppression massive de produits
   csv_product_export:
     label: Export des produits en CSV
     export.label: Export des produits
@@ -1231,40 +1067,32 @@ batch_jobs:
     export.label: Export des variantes de famille
   csv_product_import:
     label: Import des produits en CSV
-    validation.label: Validation du fichier
     import.label: Import des produits
     import_associations.label: Import des associations de produits
   csv_product_model_import:
     label: Import de modèles de produit en CSV
   csv_category_import:
     label: Import des catégories en CSV
-    validation.label: Validation du fichier
     import.label: Import des catégories
   csv_attribute_import:
     label: Import des attributs en CSV
-    validation.label: Validation du fichier
     import.label: Import des attributs
   csv_attribute_option_import:
     label: Import des options d'attributs en CSV
-    validation.label: Validation du fichier
     import.label: Import des options d'attributs
   csv_association_type_import:
     label: Import des types d'association en CSV
-    validation.label: Validation du fichier
     import.label: Import des types d'association
   csv_family_import:
     label: Import des familles en CSV
-    validation.label: Validation du fichier
     import.label: Import des familles
     compute_data_related_to_family_variants.label: Mise à jour des données des modèles de produit
     compute_data_related_to_family_products.label: Calcul des données produits
   csv_family_variant_import:
     label: Import des variantes de famille en CSV
-    validation.label: Validation du fichier
     import.label: Import des variantes de famille
   csv_group_import:
     label: Import des groupes en CSV
-    validation.label: Validation du fichier
     import.label: Import des groupes
   csv_channel_export:
     label: Export des canaux en CSV
@@ -1283,49 +1111,38 @@ batch_jobs:
     export.label: Export des types de groupe
   csv_channel_import:
     label: Import des canaux en CSV
-    validation.label: Validation du fichier
     import.label: Import des canaux
   csv_locale_import:
     label: Import des locales en CSV
-    validation.label: Validation du fichier
     import.label: Import des locales
   csv_attribute_group_import:
     label: Import des groupes d'attributs en CSV
-    validation.label: Validation du fichier
     import.label: Import des groupes d'attributs
   csv_currency_import:
     label: Import des devises en CSV
-    validation.label: Validation du fichier
     import.label: Import des devises
   csv_group_type_import:
     label: Import des types de groupe en CSV
-    validation.label: Validation du fichier
     import.label: Import des types de groupe
   xlsx_category_import:
     label: Import des catégories en XLSX
-    validation.label: Validation du fichier
     import.label: Import des catégories
   xlsx_association_type_import:
     label: Import des types d'association en XLSX
-    validation.label: Validation du fichier
     import.label: Import des types d'association
   xlsx_attribute_import:
     label: Import des attributs en XLSX
-    validation.label: Validation du fichier
     import.label: Import des attributs
   xlsx_attribute_option_import:
     label: Import des options d'attributs en XLSX
-    validation.label: Validation du fichier
     import.label: Import des options d'attributs
   xlsx_family_import:
     label: Import des familles en XLSX
-    validation.label: Validation du fichier
     import.label: Import des familles
     compute_data_related_to_family_variants.label: Mise à jour des données des modèles de produit
     compute_data_related_to_family_products.label: Calcul des données produits
   xlsx_family_variant_import:
     label: Import des variantes de famille en XLSX
-    validation.label: Validation du fichier
     import.label: Import des variantes de famille
   xlsx_product_export:
     label: Export des produits en XLSX
@@ -1335,7 +1152,6 @@ batch_jobs:
     export.label: Export de modèles de produit
   xlsx_product_import:
     label: Import des produits en XLSX
-    validation.label: Validation du fichier
     import.label: Import des produits
     import_associations.label: Import des associations de produits
   xlsx_product_model_import:
@@ -1345,7 +1161,6 @@ batch_jobs:
     export.label: Export de groupes
   xlsx_group_import:
     label: Import des groupes en XLSX
-    validation.label: Validation du fichier
     import.label: Import des groupes
   xlsx_family_export:
     label: Export des familles en XLSX
@@ -1382,78 +1197,16 @@ batch_jobs:
     export.label: Export des types de groupe
   xlsx_channel_import:
     label: Import des canaux en XLSX
-    validation.label: Validation du fichier
     import.label: Import des canaux
   xlsx_locale_import:
     label: Import des locales en XLSX
-    validation.label: Validation du fichier
     import.label: Import des locales
   xlsx_attribute_group_import:
     label: Import des groupes d'attributs en XLSX
-    validation.label: Validation du fichier
     import.label: Import des groupes d'attributs
   xlsx_currency_import:
     label: Import des devises en XLSX
-    validation.label: Validation du fichier
     import.label: Import des devises
   xlsx_group_type_import:
     label: Import des types de groupe en XLSX
-    validation.label: Validation du fichier
     import.label: Import des types de groupe
-job_tracker:
-  download_archive:
-    archive: Télécharger l'archive générée
-    output: Télécharger les fichiers générés
-    input: Télécharger les fichiers lus
-    invalid_xlsx: Télécharger les données invalides
-    invalid_csv: Télécharger les données invalides
-pim_menu:
-  tab:
-    activity: Activité
-    imports: Imports
-    products: Produits
-    exports: Exports
-    settings: Paramètres
-    system: Système
-    help:
-      title: Aide
-      helper: Centre d'aide Akeneo
-  item:
-    association_type: Types d'association
-    attribute: Attributs
-    attribute_group: Groupes d'attributs
-    category: Catégories
-    channel: Canaux
-    currency: Devises
-    dashboard: Tableau de bord
-    family: Familles
-    group: Groupes
-    group_type: Types de groupe
-    locale: Locales
-    product: Produits
-    product_model: Modèles de produits
-    published_product: Produits publiés
-    export_history: Historique des exports
-    export_profile: Profils d'export
-    import_history: Historique des imports
-    import_profile: Profils d'import
-    configuration: Configuration
-    user_management: Gestion des utilisateurs
-    user: Utilisateurs
-    user_group: Groupes
-    user_role: Rôles
-    info: Informations système
-    job_tracker: Traqueur de processus
-    api_connection: Connexions API
-  navigation:
-    activity: Centre d'activité
-    system: Navigation système
-    user: Navigation utilisateurs
-    settings: Navigation paramètres
-  user:
-    logout: Déconnexion
-    user_account: Mon compte
-pim_notification:
-  mark_all_as_read: Marquer tout comme lu
-  no_notifications: Pas de notification
-  loading: Chargement en cours...

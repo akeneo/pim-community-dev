@@ -1,3 +1,5 @@
+pim_common:
+  cancel: Annuler
 pim_enrich:
   product:
     tab:
@@ -340,7 +342,6 @@ confirmation:
   leave: Êtes-vous sûr(e) de vouloir quitter cette page ?
   discard changes: Vous perdrez toutes les modifications apportées à l'objet %entity% si vous quittez cette page.
   remove:
-    item: Êtes-vous sûr(e) de vouloir supprimer cet élément ?
     attribute: Êtes-vous sûr(e) de vouloir supprimer l'attribut %name% ?
     attribute group: Êtes-vous sûr(e) de vouloir supprimer le groupe d'attributs %name% ?
     category: Êtes-vous sûr(e) de vouloir supprimer la catégorie %name% ?
@@ -516,7 +517,6 @@ Active: Actif
 Inactive: Inactif
 Do not convert: Ne pas convertir
 Create: Créer
-Cancel: Annuler
 Choose a family: Choisir une famille
 Choose a unit: Choisir une unité
 No matches found: Aucune correspondance trouvée
@@ -733,7 +733,6 @@ Format address by address country: Format d'adresse par pays
 Language: Langue
 Timezone: Fuseau horaire
 Currency: Devise
-settings: Paramètres
 oro.locale:
   address_format:
     region_name_type:
@@ -785,69 +784,6 @@ edit_common_attributes: Modifier des attributs
 edit_common_attributes_clean: Nettoyer les fichiers pour les attributs
 perform.steps.duplicated.title: Axe dupliqué
 perform.steps.excluded.title: Produit exclu
-batch_jobs:
-  add_product_value:
-    label: Ajouter une valeur de produit
-    perform:
-      label: Ajouter une valeur de produit
-  update_product_value:
-    label: Mise à jour de la valeur du produit
-    perform:
-      label: Mise à jour de la valeur du produit
-  add_attribute_value:
-    label: Ajouter une valeur d’attribut
-    perform:
-      label: Ajouter une valeur d’attribut
-  edit_common_attributes:
-    label: Modifier des attributs
-    perform:
-      label: Modifier des attributs
-    clean:
-      label: Nettoyer les fichiers pour les attributs
-    cleaner:
-      label: Nettoyer les fichiers pour les attributs
-  add_to_category:
-    label: Ajouter à une catégorie
-    perform:
-      label: Ajouter à une catégorie
-  move_to_category:
-    label: Déplacer dans la catégorie
-    perform:
-      label: Déplacer dans la catégorie
-  remove_from_category:
-    label: Retirer de la catégorie
-    perform:
-      label: Retirer de la catégorie
-  add_association:
-    label: Associer aux produits
-    perform:
-      label: Associer aux produits
-  add_to_existing_product_model:
-    label: Ajouter à un modèle de produit existant
-    perform:
-      label: Ajouter à un modèle de produit existant
-  set_attribute_requirements:
-    label: Configurer les exigences d'attributs
-    perform:
-      label: Configurer les exigences d'attributs
-  csv_product_quick_export:
-    quick_export.label: Export rapide de produits en CSV
-    perform:
-      label: Export rapide de produits en CSV
-  csv_product_grid_context_quick_export:
-    quick_export.label: Export rapide de la grille de produits en CSV
-    perform:
-      label: Export rapide de la grille de produits en CSV
-  xlsx_product_quick_export:
-    quick_export.label: Export rapide de produits en XLSX
-    perform:
-      label: Export rapide de produits en XLSX
-  xlsx_product_grid_context_quick_export:
-    quick_export.label: Export rapide de la grille de produits en XLSX
-    perform:
-      label: Export rapide de la grille de produits en XLSX
-  delete_products_and_product_models:
-    delete_products_and_product_models.label: Suppression massive de produits
 mass_edit report:
   overview: Rapports des éditions en masse
 job_tracker:

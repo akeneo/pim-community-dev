@@ -1,24 +1,16 @@
-Close: Chiudi
-Update: Carica
-Selected Rows: Righe selezionate
-"Yes": "Sì"
 "Yes, Delete": "Sì, elimina"
 "Yes, I Agree": "Sì, sono d'accordo"
 "Yes, do it": "Sì, prosegui"
-"No": "No"
 "Ok, got it.": "Ok, capito."
-"Cancel": "Annulla"
 "Delete Confirmation": "Conferma cancellazione"
 "Edit": "Modifica"
 "Unexpected error occured. Please contact system administrator.": "Si è verificato un errore imprevisto. Contattare l'amministratore di sistema."
 "Yes, revoke": "Si, revoca"
 "Revoke Confirmation": "Revoca conferma"
-Now: Ora
 Prev: Precedente
 Next: Successivo
 Today: Oggi
 Wk: Wk
-Done: Completato
 AM: AM
 A: A
 PM: PM
@@ -34,7 +26,6 @@ Microsecond: Microsecondi
 Localized value: Valori localizzati
 Columns: Colonne
 Datagrid Configuration: Configurazione tabella di dati
-Apply: Applica
 Action: Azione
 Unit: Unità
 Currency: Valuta
@@ -46,7 +37,6 @@ jstree:
     unclassified: Prodotti non classificati
   no_tree: Nessuna struttura disponibile
   include_sub: Includere le sotto-categorie
-  loading: Caricamento in corso ...
 datetimepicker:
   days:
     Sunday: Domenica

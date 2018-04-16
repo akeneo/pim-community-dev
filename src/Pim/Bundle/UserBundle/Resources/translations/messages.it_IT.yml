@@ -35,7 +35,7 @@ oro.user.grid.groups:
 pim_title:
   user.index: Utenti
   user_role.index: Ruoli
-  user_group.index: Gruppi
+  user_group.index: Gruppi degli utenti
   system_configuration.index: Configurazione
 user.title: Utente
 user.overview: Utente
@@ -134,24 +134,50 @@ DELETE: Eliminare
 ASSIGN: Assegna
 SHARE: Condividi
 oro:
-  security:
-    access-level:
-      BASIC: Utente
-      LOCAL: Business Unit
-      DEEP: Divisione
-      GLOBAL: Organizzazione
-      SYSTEM: Sistema
-      NONE: Nessun
-Create group: Crea gruppo
+  user:
+    controller:
+      group:
+        message:
+          saved: "Gruppo salvato"
+      role:
+        message:
+          saved: "Ruolo salvato"
+      user:
+        message:
+          saved: "Utente salvato"
+      status:
+        message:
+          saved: "Stato salvato"
+    grid:
+      users:
+        columns:
+          username: "Nome utente"
+          email: "Email"
+          firstName: "Nome"
+          lastName: "Cognome"
+          createdAt: "Creato il"
+          updatedAt: "Caricato il"
+          enabled: "Stato"
+      roles:
+        columns:
+          label: "Etichetta"
+      groups:
+        columns:
+          name: "Nome"
+"Create group": "Crea gruppo"
 btn.create.user-group: Crea gruppo
 Has group: Ha gruppo
 Save and Close: Salva e chiudi
-user-group.overview: Gruppi
+user-group.overview: Gruppi degli utenti
 Log in: Accedi
 Remember me on this computer: Ricordami su questo computer
 Forgot your password?: Hai dimenticato la password?
 Username or Email: Nome utente o Email
-Forgot Password: Password Dimenticata
+"Forgot Password": "Password Dimenticata"
 Request: Richiesta
 Check Email: Controlla la tua email
 Go to homepage: Vai alla Homepage
+Login: Login
+"Create role": "Crea Ruolo"
+"Edit role": "Modifica ruolo"
+"Logout": "Disconnetti"

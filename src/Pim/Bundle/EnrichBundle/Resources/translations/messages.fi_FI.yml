@@ -1,3 +1,5 @@
+pim_common:
+  cancel: Peruuta
 pim_enrich:
   product:
     tab:
@@ -41,7 +43,7 @@ pim_enrich:
       property.title: Ominaisuudet
       permission.title: Käyttöoikeudet
   group:
-    axis.help: 'Keskiviiva määrittää määritteet, joiden yli ryhmän tuotteiden tulee vaihdella. Keskiviivat ovat määritteitä joissa on vaihtoehtoja. Niitä ei voi lokalisoida tai scoped. Niitä ei voi muuttaa tuotevariaatioryhmän perustamisen jälkeen.'
+    axis.help: 'Akseli määrittää attribuutit, joiden yli ryhmän tuotteiden tulee vaihdella. Akselit ovat attribuutteja joissa on vaihtoehtoja, ne ei saa olla lokalisoitavissa taikka kanavakohtaisia. Akseleita ei voi muuttaa tuotevariaatioryhmän perustamisen jälkeen.'
     type:
       VARIANT: Tuotevariaatio
       X_SELL: X-Sell
@@ -88,7 +90,7 @@ pim_enrich:
       launched_flash: Massatoiminto "Muuta tilaa" on käynnistetty. Sinulle ilmoitetaan, kun se on valmis.
     edit-common-attributes:
       label: Muokkaa attribuutteja
-      description: Valitun tuotteen attribuutit muokataan seuraavalla valitun lokaation datalla.
+      description: Valittujen tuotteiden attribuutit muokataan seuraavalla valitun lokaation datalla.
       empty: Ole hyvä ja valitse attribuutit joita haluat muokata
       success_flash: Työ "Tuotteiden tilan päivitys" on tällä hetkellä käynnissä
       launched_flash: Massatoiminto "muokkaa attribuutteja" on käynnistetty. Sinulle ilmoitetaan, kun se on valmis.
@@ -125,8 +127,8 @@ pim_enrich:
     set-attribute-requirements:
       label: Aseta vaaditut attribuutit
       description: Seuraavat attribuuttivaatimukset otetaan käyttöön valituille perheille
-      success_flash: Attribuuttivaatimukset otetaan käyttöön valituille perheille
-      launched_flash: Massatoiminto "aseta attribuuttivaatimukset" on käynnistetty. Sinulle ilmoitetaan, kun se on valmis.
+      success_flash: Määritteen vaatimuksia sovellettiin valittuihin ryhmiin
+      launched_flash: Bulkkitoiminto "Aseta määritteen vaatimukset" on käynnistetty. Saat ilmoituksen, kun se on valmis.
     mass_action:
       quick_export:
         launched_flash: Tuotteiden vienti on parhaillaan käynnissä
@@ -145,15 +147,15 @@ pim_enrich:
       create: Luo tuote
       edit_attributes: Muokkaa tuotteen ominaisuuksia
       remove: Poista tuote
-      add_attribute: Lisää attribuutti tuotteeseen
-      remove_attribute: Poista attribuutti tuotteelta
+      add_attribute: Lisää määrite tuotteeseen
+      remove_attribute: Poista määrite tuotteesta
       categories_view: Katso tuotteen kategorioita
       associations_view: Näytä tuotteen assosiaatiot
       associations_edit: Lisää tuotteelle assosiaatioita
       change_family: Vaihda tuoteryhmää
       change_state: Muuta tuotteen tilaa
       add_to_groups: Lisää tuote ryhmiin
-      mass_edit: Tuotteen massaedit-toiminnot
+      mass_edit: Tuotteen massamuokkaustoiminnot
       comment: Kommentoi tuotteita
       download: Lataa tuote PDF:nä
       history: Näytä tuotehistoria
@@ -182,14 +184,14 @@ pim_enrich:
       index: Listaa tuoteperheet
       create: Luo tuoteperhe
       edit_properties: Muokkaa tuoteperheen ominaisuuksia
-      edit_attributes: Muokkaa perheen attribuutteja
+      edit_attributes: Muokkaa tuoteperheen määritteitä
       remove: Poista tuoteperhe
       history: Tarkastele tuoteperheen historiaa
     attribute_group:
-      index: Listaa attribuuttiryhmät
-      create: Luo attribuuttiryhmä
+      index: Listaa määriteryhmät
+      create: Luo määriteryhmä
       edit: Muokkaa attribuuttiryhmää
-      remove: Poista attribuuttiryhmä
+      remove: Poista määriteryhmä
       sort: Lajittele attribuuttiryhmiä
       add_attribute: Lisää attribuutti ryhmään
       remove_attribute: Poista attribuutti ryhmästä
@@ -213,11 +215,11 @@ pim_enrich:
       edit: Editoi ryhmätyyppiä
       remove: Poista ryhmätyyppi
     association_type:
-      index: Listaa assosiaatiotyypit
-      create: Luo assosiaatiotyyppi
-      edit: Muokkaa assosiaatiotyyppiä
-      remove: Poista assosiaatiotyyppi
-      history: Näytä assosiaatiotyypin historia
+      index: Listaa määritetyypit
+      create: Luo määritetyyppi
+      edit: Muokkaa määritetyyppiä
+      remove: Poista määritetyyppi
+      history: Näytä määritetyypin historia
     association:
       remove: Poista tuotteen assosiaatiot
     job_tracker:
@@ -333,7 +335,6 @@ confirmation:
   leave: Oletko varma että haluat poistua sivulta?
   discard changes: Menetät muutokset kohteeseen %entity% jos poistut sivulta.
   remove:
-    item: Oletko varma että haluat poistaa tämän kohteen?
     attribute: Oletko varma että haluat poistaa attribuutin %name%?
     attribute group: Oletko varma että haluat poistaa attribuuttiryhmän %name%?
     category: Oletko varma että haluat poistaa kategoian %name%?
@@ -380,7 +381,7 @@ flash:
   family:
     updated: Tuoteperhe päivitetty
     removed: Tuoteperhe poistettu
-    identifier not removable: Tunniste-attribuuttia ei voi poistaa perheeltä
+    identifier not removable: Tunnus-määritettä ei voi poistaa tuoteperheestä
     label attribute not removable: Attribuuttia ei voi poistaa koska sitä käytetään tuoteperheen nimikkeenä
     attribute not found: Attribuutti ei kuulu tähän tuoteperheeseen
     attributes added: Attribuutit lisätty tuoteperheeseen
@@ -438,7 +439,7 @@ info:
     show products: Näytä tuotteet
     show groups: Näytä ryhmät
     remove from products: Sidostyypin poistaminen poistaa sen myös %count% tuotteelta.
-    none exist: Sidostyyppiä ei ole olemassa.
+    none exist: Assosiaatiotyyppiä ei ole olemassa.
     create one: Klikkaa tästä luodaksesi sellainen
   attribute:
     auto option sorting: Jos käytössä, vaihtoehdot lajitellaan automaattisesti riippuen niiden alueellisesta otsikosta
@@ -462,7 +463,7 @@ Required: Vaadittu
 Unique: Ainutlaatuinen
 Not required: Ei vaadittu
 Translatable: Käännettävissä
-Scopable: Scopable
+Scopable: Kanavakohtainen
 Localizable: Lokalisoitavissa
 Unique value: Yksilöllinen arvo
 Attribute group: Attribuuttiryhmä
@@ -508,13 +509,12 @@ Active: Aktiivinen
 Inactive: Ei aktiivinen
 Do not convert: Älä muunna
 Create: Luo
-Cancel: Peruuta
 Choose a family: Valitse perhe
 Choose a unit: Valitse yksikkö
 No matches found: Vastaavuuksia ei löydy
 Category tree: Kategoriahierarkia
 Completeness: Valmistumisaste
-Attribute used as label: Attribuutti käytössä otsikkona
+Attribute used as label: Otsikkona käytettävä attribuutti
 Credentials: Tunnistetiedot
 Global: Globaali
 Channel: Kanava
@@ -545,7 +545,7 @@ None: Ei yhtään
 E-mail: Sähköposti
 URL: URL-osoite
 Regular expression: Tavallinen virke
-Minimum input length: Input vähimmäispituus
+Minimum input length: Syötteen vähimmäispituus
 Default: Oletusarvo
 Attributes: Attribuutit
 Title: Nimike
@@ -580,15 +580,15 @@ pim_title.group:
   edit: "Ryhmien %group.label% | Muokkaa"
 pim_title.association_type:
   index: "Assosiaatiotyypit"
-  edit: "Assosiaatiotyypit %association type.label% | Muokkaa"
+  edit: "Määritetyypit %association type.label% | Muokkaa"
 pim_title.group_type:
   index: "Ryhmätyypit"
   edit: "Ryhmätyypit %group type.label% | Muokkaa"
 pim_title.mass_edit_product_action:
-  choose: "Massaedit | Valitse"
-  configure: "Massamuokkus | Määritä"
+  choose: "Massamuokkaus | Valitse"
+  configure: "Massamuokkaus | Määritä"
 pim_title.mass_edit_family_action:
-  choose: "Massaedit | Valitse"
+  choose: "Massamuokkaus | Valitse"
   configure: "Massamuokkaus | Määritä"
 pim_title.job_tracker:
   index: Prosessiseurain
@@ -644,7 +644,7 @@ pim_enrich.mass_edit_action:
     success_flash: Tuotteiden tila on muutettu
   edit-common-attributes:
     label: Muokkaa attribuutteja
-    description: Valitun tuotteen attribuutit muokataan seuraavalla valitun lokaation datalla.
+    description: Valittujen tuotteiden attribuutit muokataan seuraavalla valitun lokaation datalla.
     empty: Ole hyvä ja valitse attribuutit joita haluat muokata
     success_flash: Tuotteen attribuutit on päivitetty
     message.warning: Valituille tuotteille ei ole yhteistä attribuuttia. Vaihda valintaasi.
@@ -665,7 +665,7 @@ pim_enrich.mass_edit_action:
   set-attribute-requirements:
     label: Aseta vaaditut attribuutit
     description: Seuraavat attribuuttivaatimukset otetaan käyttöön valituille perheille
-    success_flash: Attribuuttivaatimukset otetaan käyttöön valituille perheille
+    success_flash: Määritteen vaatimuksia sovellettiin valittuihin ryhmiin
 To enable: Ottaa käyttöön
 Select attributes: Valitse attribuutit
 Select: Valitse
@@ -688,7 +688,7 @@ pane.accordion:
   options: Vaihtoehdot
   group_values: Ryhmän arvot
 popin.create:
-  association_type.title: Luo uusi assosiaatiotyyppi
+  association_type.title: Luo uusi määritetyyppi
   group.title: Luo uusi ryhmä
   product.title: Luo uusi tuote
   option.title: Luo uusi vaihtoehto
@@ -711,7 +711,7 @@ Entity name: Entiteetin nimi
 Entity id: Entiteetin ID
 Data: Tiedot
 Author: Tekijä
-Logged at: Kirjautunut
+Logged at: Kirjattu
 Deleted: Poistettu
 Old values: Vanhat arvot
 New values: Uudet arvot
@@ -725,7 +725,6 @@ Format address by address country: Muotoile osoite osoitteen maan mukaan
 Language: Kieli
 Timezone: Aikavyöhyke
 Currency: Valuutta
-settings: Asetukset
 oro.locale:
   address_format:
     region_name_type:
@@ -750,9 +749,9 @@ Selected products successfully deleted: Valitut tuotteet poistettiin
 pim_mass_edit:
   notification:
     mass_edit:
-      error: <strong>%label%</strong> massaeditointi päättyi
-      warning: <strong>%label%</strong>n massaeditointi päättyi, joitakin varoituksia
-      success: <strong>%label%</strong> massaeditointi päättyi
+      error: <strong>%label%</strong> massamuokkaus epäonnistui
+      warning: <strong>%label%</strong>n massamuokkaus päättyi varoituksilla
+      success: <strong>%label%</strong> massamuokkaus päättyi
     quick_export:
       error: <strong>%label%</strong>n pikavienti epäonnistui
       warning: <strong>%label%</strong>n pikavienti päättyi, joitakin varoituksia
@@ -770,59 +769,6 @@ remove_product_value.steps.update_product_value_processor.title: Poista tuotteen
 edit_common_attributes: Muokkaa attribuutteja
 perform.steps.duplicated.title: Päällekkäät akselit
 perform.steps.excluded.title: Poissuljetut tuotteet
-batch_jobs:
-  add_product_value:
-    label: Lisää tuotteen arvo
-    perform:
-      label: Lisää tuotteen arvo
-  update_product_value:
-    label: Päivitä tuotteen arvo
-    perform:
-      label: Päivitä tuotteen arvo
-  edit_common_attributes:
-    label: Muokkaa attribuutteja
-    perform:
-      label: Muokkaa attribuutteja
-  add_to_category:
-    label: Lisää kategorioihin
-    perform:
-      label: Lisää kategorioihin
-  move_to_category:
-    label: Siirrä kategorioihin
-    perform:
-      label: Siirrä kategorioihin
-  remove_from_category:
-    label: Poista kategorioista
-    perform:
-      label: Poista kategorioista
-  add_association:
-    label: Luo assosiaatio tuotteisiin
-    perform:
-      label: Luo assosiaatio tuotteisiin
-  add_to_existing_product_model:
-    label: Lisää olemassaolevaan tuotemalliin
-    perform:
-      label: Lisää olemassaolevaan tuotemalliin
-  set_attribute_requirements:
-    label: Aseta vaaditut attribuutit
-    perform:
-      label: Aseta vaaditut attribuutit
-  csv_product_quick_export:
-    quick_export.label: Tuotteen nopea vienti CSV:nä
-    perform:
-      label: Tuotteen nopea vienti CSV:nä
-  csv_product_grid_context_quick_export:
-    quick_export.label: Tuoteruudukon kontekstin nopea vienti CSV:nä
-    perform:
-      label: Tuoteruudukon kontekstin nopea vienti CSV:nä
-  xlsx_product_quick_export:
-    quick_export.label: Tuotteen nopea vienti XLSX:nä
-    perform:
-      label: Tuotteen nopea vienti XLSX:nä
-  xlsx_product_grid_context_quick_export:
-    quick_export.label: Tuoteruudukon kontekstin nopea vienti XLSX:nä
-    perform:
-      label: Tuoteruudukon kontekstin nopea vienti XLSX:nä
 mass_edit report:
   overview: Massamuokkaa vientejä
 job_tracker:

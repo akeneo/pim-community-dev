@@ -8,10 +8,6 @@ pim_connector:
       selector:
         modal:
           title: カテゴリ選択
-          cancel: キャンセル
-          confirm: 確認
-        label: "{0} すべての製品 |{1} 1つのカテゴリの選択 |]1、Inf [{{ count }} カテゴリの選択"
-        edit: 編集
         title: カテゴリ選択
     locales:
       validation:
