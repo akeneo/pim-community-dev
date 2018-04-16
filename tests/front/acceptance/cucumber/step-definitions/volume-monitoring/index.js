@@ -1,29 +1,55 @@
 module.exports = async function(cucumber) {
     const { Given, Then, When } = cucumber;
     const assert = require('assert');
+    const { renderFormExtension } = require('../../tools.js');
 
-    // @TODO - to complete in PIM-7211
-    Given('a family with {int} attributes', async function (int) {
-        assert(int);
-    });
+    let data = {
+        average_max_attributes_per_family: {
+            value: { average: 7, max: 10 },
+            has_warning: false,
+            type: 'average_max'
+        }
+    };
 
-    Given('the limit of the number of attributes per family is set to {int}', async function (int) {
-        assert(int);
+    Given('a family with {int} attributes', int => assert(int));
+
+    Given('the limit of the number of attributes per family is set to {int}', int => {
+        if (data.average_max_attributes_per_family.value.max > int) {
+            data.average_max_attributes_per_family.has_warning = true;
+        }
+
+        assert(true);
     });
 
     When('the administrator user asks for the catalog volume monitoring report', async function () {
-        assert(true);
-    });
+        await renderFormExtension(this.page, 'pim-catalog-volume-index', data);
 
-    Then('the report warns the users that the number of attributes per family is high', async function () {
-        assert(true);
+        const titleElement = await this.page.waitForSelector('.AknTitleContainer-title');
+        const pageTitle = await (await titleElement.getProperty('textContent')).jsonValue();
+        assert.equal(pageTitle.trim(), 'Catalog volume monitoring');
     });
 
     Then('the report returns that the average number of attributes per family is {int}', async function (int) {
-        assert(int);
+        const meanSelector = '[data-field="average_max_attributes_per_family"] span:nth-child(1) div';
+        const valueElement = await this.page.waitForSelector(meanSelector);
+        const value = await (await valueElement.getProperty('textContent')).jsonValue();
+        assert.equal(value, int);
     });
 
-    Then('the report returns that the maximum number of attributes per family is {int}', function (int) {
-        assert(int);
+    Then('the report returns that the maximum number of attributes per family is {int}', async function (int) {
+        const meanSelector = '[data-field="average_max_attributes_per_family"] span:nth-child(2) div';
+        const valueElement = await this.page.waitForSelector(meanSelector);
+        const value = await (await valueElement.getProperty('textContent')).jsonValue();
+        assert.equal(value, int);
+    });
+
+    Then('the report warns the users that the number of attributes per family is high', async function () {
+        const warningSelector = '[data-field="average_max_attributes_per_family"] + .AknCatalogVolume-warning';
+        const valueElement = await this.page.waitForSelector(warningSelector);
+        const value = await (await valueElement.getProperty('textContent')).jsonValue();
+        assert.equal(
+            value.trim(),
+            'Wow! You hit a record with this axis! Don\'t hesitate to contact us if you need any help with this kind of volume.'
+        );
     });
 };
