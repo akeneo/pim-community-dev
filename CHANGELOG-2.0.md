@@ -4,6 +4,11 @@
 
 - PIM-7300: fix the status filter on product grid for products with parent.
 - PIM-7282: Add validation on the code value during the attribute creation to prohibit the "entity_type" value.
+- PIM-7299: Add pagination for family variants on several screens
+
+## BC Breaks
+
+- Changes the constructor of `Pim\Bundle\EnrichBundle\Controller\Rest\FamilyVariant` to add `Akeneo\Component\StorageUtils\Repository\SearchableRepositoryInterface`
 
 # 2.0.21 (2018-04-10)
 
