@@ -10,4 +10,4 @@ extensions:
             hint:
                 code: hint-asset-axes
                 title: catalog_volume.section.assets.hint
-            axes: [assets, asset_categories, asset_category_trees]
+            axes: [count_assets, count_asset_categories, count_asset_category_trees]

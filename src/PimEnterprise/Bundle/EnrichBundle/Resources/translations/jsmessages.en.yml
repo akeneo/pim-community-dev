@@ -279,6 +279,6 @@ catalog_volume:
             title: Axes on assets
             hint: You can follow the volume regarding the assets right here
     axis:
-        assets: Assets
-        asset_categories: Asset categories
-        asset_category_trees: Asset category trees
+        count_assets: Assets
+        count_asset_categories: Asset categories
+        count_asset_category_trees: Asset category trees
