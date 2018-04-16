@@ -6,7 +6,7 @@ namespace Pim\Component\Catalog\Model;
 use Doctrine\Common\Collections\Collection;
 
 /**
- * Interface to implement for any entity that should be aware of any associations attached to it.
+ * Interface to implement for any entity that should be aware of any associations it is holding.
  *
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
