@@ -272,3 +272,13 @@ batch_jobs:
         execute_rules.label: Rules execution
     publish_product:
         perform.label: Publish products
+
+catalog_volume:
+    section:
+        assets:
+            title: Axes on assets
+            hint: You can follow the volume regarding the assets right here
+    axis:
+        count_assets: Assets
+        count_asset_categories: Asset categories
+        count_asset_category_trees: Asset category trees

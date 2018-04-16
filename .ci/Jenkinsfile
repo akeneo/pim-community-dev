@@ -56,6 +56,7 @@ stage("Build") {
                         sh "bin/console --ansi assets:install"
                         sh "bin/console --ansi pim:installer:dump-require-paths"
                         sh "bin/console --ansi pim:installer:dump-extensions"
+                        sh "bin/console --ansi oro:translation:dump"
                     }
                     container("node") {
                         sh "yarn install --no-progress"
