@@ -92,7 +92,7 @@ class SectionView extends BaseView {
    * @param sectionData
    * @param sectionAxes
    */
-  sectionHasData(sectionData: object, sectionAxes: Array<string>): boolean {
+  sectionHasData(sectionData: object, sectionAxes: string[]): boolean {
     console.log('sectionHasData', Object.keys(sectionData), sectionAxes);
     return Object.keys(sectionData).filter(field => sectionAxes.indexOf(field) > -1).length > 0;
   }
@@ -137,9 +137,9 @@ class SectionView extends BaseView {
    * @param  {Array} axes An array of field names for each axis
    * @param  {Object} data An object containing data for each axis
    */
-  renderAxes(axes: string[], data: {[key: string]: any}) {
-    axes.forEach(name => {
-      const axisData = data[name];
+  renderAxes(axes: string[], data: {[key: string]: any}): void {
+    axes.forEach((name: string) => {
+      const axisData: {[key: string]: any} | undefined = data[name];
 
       if (undefined === axisData) {
         return;
@@ -175,7 +175,7 @@ class SectionView extends BaseView {
   /**
    * Close the hint box and store the key in localStorage
    */
-  closeHint() {
+  closeHint(): void {
     localStorage.setItem(this.config.hint.code, '1');
     this.hideHint = true;
     this.render();
@@ -184,7 +184,7 @@ class SectionView extends BaseView {
   /**
    * Open the hint box
    */
-  openHint() {
+  openHint(): void {
     this.hideHint = false;
     this.render();
   }

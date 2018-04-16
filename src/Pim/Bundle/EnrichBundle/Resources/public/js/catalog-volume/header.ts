@@ -34,7 +34,7 @@ class HeaderView extends BaseView {
   /**
    * {@inheritdoc}
    */
-  render(): any {
+  render(): BaseView {
     const data = this.getRoot().getFormData();
     const productValues: {value: number} = data.product_values;
     const productValuesAverage: {value: number} = data.product_values_average;
@@ -49,6 +49,8 @@ class HeaderView extends BaseView {
 
       this.$el.html(headerContents);
     }
+
+    return this;
   }
 }
 
