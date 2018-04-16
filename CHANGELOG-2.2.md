@@ -1,3 +1,9 @@
+# 2.2.x
+
+## Bug fixes
+
+- PIM-7281: Fix inappropriate calls to the cache clearer
+
 # 2.2.3 (2018-04-12)
 
 ## BC Breaks
