@@ -2805,27 +2805,17 @@ class WebUser extends PimContext
     /**
      * @param string $field
      *
-     * @When /^I open the (.*) select2 field$/
+     * @When /^I open the (.*) select field$/
      */
-    public function iOpenTheSelect2Field($field)
+    public function iOpenTheSelectField($field)
     {
         $this->getCurrentPage()->findSelect2Field($field)->open();
     }
 
     /**
-     * @param string $field
-     *
-     * @When /^I scroll down the (.*) select2 options$/
+     * @When /^I search "([^"]*)" in the (.*) select field$/
      */
-    public function iScrollDownTheSelect2Options($field)
-    {
-        $this->getCurrentPage()->findSelect2Field($field)->scrollDown();
-    }
-
-    /**
-     * @When /^I search "([^"]*)" in the (.*) select2 field$/
-     */
-    public function iSearchTheSelect2Field($search, $field)
+    public function iSearchTheSelectField($search, $field)
     {
         $this->getCurrentPage()->findSelect2Field($field)->search($search);
     }

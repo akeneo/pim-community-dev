@@ -130,7 +130,7 @@ Feature: Create a product model
     Then I should see the SKU and Family fields
 
   @jira https://akeneo.atlassian.net/browse/PIM-7299
-  Scenario: Search and paginate family variants in the select2 field
+  Scenario: Search family variants in the product model create form
     Given the following family:
       | code                      | label-en_US   | attributes      |
       | family_with_many_variants | Many variants | sku,color,image |
@@ -169,11 +169,8 @@ Feature: Create a product model
     When I create a product model
     And I fill in the following information in the popin:
       | Family | Many variants |
-    And I open the Variant select2 field
+    And I open the Variant select field
     Then I should see 20 items in the autocomplete
-    When I scroll down the Variant select2 options
-    And I wait 1 seconds
-    Then I should see 30 items in the autocomplete
-    When I search "1" in the Variant select2 field
-    And I wait 1 seconds
-    Then I should see 12 items in the autocomplete
+    And I should not see the choices [variant_23] and [variant_30] in Variant
+    When I search "3" in the Variant select field
+    Then I should see the choices [variant_3], [variant_13], [variant_23] and [variant_30] in Variant
