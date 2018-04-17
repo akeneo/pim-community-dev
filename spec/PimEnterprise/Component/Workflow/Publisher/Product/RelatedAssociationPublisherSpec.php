@@ -3,7 +3,7 @@
 namespace spec\PimEnterprise\Component\Workflow\Publisher\Product;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Model\Association;
+use Pim\Component\Catalog\Model\AssociationInterface;
 use Pim\Component\Catalog\Model\AssociationTypeInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Repository\AssociationRepositoryInterface;
@@ -40,9 +40,9 @@ class RelatedAssociationPublisherSpec extends ObjectBehavior
         ProductInterface $product1,
         ProductInterface $product2,
         ProductInterface $product3,
-        Association $association1,
+        AssociationInterface $association1,
         AssociationTypeInterface $type1,
-        Association $association3,
+        AssociationInterface $association3,
         AssociationTypeInterface $type3,
         PublishedProductAssociation $publishedAssociation
     ) {
