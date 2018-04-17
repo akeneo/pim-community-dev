@@ -190,10 +190,6 @@ class FilteredProductAndProductModelReader implements
             $this->productsAndProductModels->next();
 
             if ($entity instanceof ProductModelInterface) {
-                if ($this->stepExecution) {
-                    $this->stepExecution->incrementSummaryInfo('skip');
-                }
-
                 $entity = null;
                 continue;
             }
