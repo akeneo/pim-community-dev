@@ -23,34 +23,34 @@ Feature: Change the parent of a variant product
 
   Scenario: Add to a new product model some variant products coming from an existing product model
     Given the following root product models:
-      | code  | categories | family_variant |
-      | james | default    | bags_variant   |
-      | rita  | default    | bags_variant   |
+      | code  | family_variant |
+      | james | bags_variant   |
+      | rita  | bags_variant   |
     And the following products:
-      | sku        | parent | family | categories | color  |
-      | bag_yellow | james  | bags   | default    | yellow |
+      | sku        | parent | family | color  |
+      | bag_yellow | james  | bags   | yellow |
     When the parent of variant product bag_yellow is changed for rita product model
     Then the parent of the product bag_yellow should be rita
 
   Scenario: Put every variant products from 2 product models into one
     Given the following root product models:
-      | code  | categories | family_variant  |
-      | james | default    | bags_variant    |
-      | rita  | default    | bags_variant    |
-      | basic | default    | tshirts_variant |
-      | tall  | default    | tshirts_variant |
+      | code  | family_variant  |
+      | james | bags_variant    |
+      | rita  | bags_variant    |
+      | basic | tshirts_variant |
+      | tall  | tshirts_variant |
     And the following products:
-      | sku        | parent | family  | categories | color  | size |
-      | bag_yellow | james  | bags    | default    | yellow |      |
-      | bag_white  | james  | bags    | default    | white  |      |
-      | bag_black  | james  | bags    | default    | black  |      |
-      | bag_blue   | james  | bags    | default    | blue   |      |
-      | bag_green  | james  | bags    | default    | green  |      |
-      | tshirt_s   | basic  | tshirts | default    |        | s    |
-      | tshirt_m   | basic  | tshirts | default    |        | m    |
-      | tshirt_l   | basic  | tshirts | default    |        | l    |
-      | tshirt_xl  | tall   | tshirts | default    |        | xl   |
-      | tshirt_xxl | tall   | tshirts | default    |        | xxl  |
+      | sku        | parent | family  | color  | size |
+      | bag_yellow | james  | bags    | yellow |      |
+      | bag_white  | james  | bags    | white  |      |
+      | bag_black  | james  | bags    | black  |      |
+      | bag_blue   | james  | bags    | blue   |      |
+      | bag_green  | james  | bags    | green  |      |
+      | tshirt_s   | basic  | tshirts |        | s    |
+      | tshirt_m   | basic  | tshirts |        | m    |
+      | tshirt_l   | basic  | tshirts |        | l    |
+      | tshirt_xl  | tall   | tshirts |        | xl   |
+      | tshirt_xxl | tall   | tshirts |        | xxl  |
     When the parents of the following products are changed:
       | sku        | parent |
       | bag_yellow | rita   |
@@ -65,15 +65,27 @@ Feature: Change the parent of a variant product
     And the parent of the product tshirt_xxl should be basic
     And product model tall should not have any children
 
-  Scenario: Fail to change the product model parent with a different level
+  Scenario: Fail to change the level of the variant product parent
     Given the following root product models:
-      | code       | categories | family_variant    |
-      | round_neck | default    | tshirts_variant_2 |
+      | code       | family_variant    |
+      | round_neck | tshirts_variant_2 |
     And the following sub product model:
       | code             | parent     | family_variant    | color |
       | white_round_neck | round_neck | tshirts_variant_2 | white |
     And the following product:
       | sku                    | parent           | family  | size |
       | small_white_round_neck | white_round_neck | tshirts | s    |
-    When the parent of variant product small_white_round_neck is changed for its grand parent
-    Then the parent of the product small_white_round_neck should still be white_round_neck
+    When the parent of variant product small_white_round_neck is changed for incorrect round_neck product model
+    Then the parent of the product small_white_round_neck should be white_round_neck
+
+  Scenario: Fail to change the variant product parent if new model already has a variant product with same axis value
+    Given the following root product models:
+      | code  | family_variant |
+      | james | bags_variant   |
+      | paul  | bags_variant   |
+    And the following product:
+      | sku          | parent | family | color  |
+      | yellow_james | james  | bags   | yellow |
+      | yellow_paul  | paul   | bags   | yellow |
+    When the parent of variant product yellow_james is changed for incorrect paul product model
+    Then the parent of the product yellow_james should be james

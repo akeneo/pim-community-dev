@@ -77,7 +77,6 @@ class ParentFieldSetter extends AbstractFieldSetter
             );
         }
 
-        // Check that new parent family variant is the same than the old one.
         $product->setParent($parent);
         $product->setFamilyVariant($familyVariant);
         if (null === $product->getFamily()) {

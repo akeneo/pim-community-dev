@@ -5,18 +5,19 @@ declare(strict_types=1);
 namespace Pim\Behat\Context\Domain\Enrich;
 
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
+use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
+use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Behat\Gherkin\Node\TableNode;
 use Context\Spin\SpinCapableTrait;
 use Doctrine\ORM\EntityManagerInterface;
 use Pim\Behat\Context\PimContext;
-use Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\ProductSaver;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
-use Webmozart\Assert\Assert;
 
 /**
  * @author    Damien Carcel <damien.carcel@akeneo.com>
+ * @author    Julian Prud'homme <julian.prudhomme@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
@@ -30,7 +31,7 @@ class VariantProductContext extends PimContext
     /** @var ObjectUpdaterInterface */
     private $productUpdater;
 
-    /** @var ProductSaver */
+    /** @var SaverInterface|BulkSaverInterface */
     private $productSaver;
 
     /** @var ValidatorInterface */
@@ -39,14 +40,11 @@ class VariantProductContext extends PimContext
     /** @var EntityManagerInterface */
     private $entityManager;
 
-    /** @var \Exception */
-    private $exception;
-
     /**
      * @param string                                $mainContextClass
      * @param IdentifiableObjectRepositoryInterface $productRepository
      * @param ObjectUpdaterInterface                $productUpdater
-     * @param ProductSaver                          $productSaver
+     * @param SaverInterface                        $productSaver
      * @param ValidatorInterface                    $validator
      * @param EntityManagerInterface                $entityManager
      */
@@ -54,7 +52,7 @@ class VariantProductContext extends PimContext
         string $mainContextClass,
         IdentifiableObjectRepositoryInterface $productRepository,
         ObjectUpdaterInterface $productUpdater,
-        ProductSaver $productSaver,
+        SaverInterface $productSaver,
         ValidatorInterface $validator,
         EntityManagerInterface $entityManager
     ) {
@@ -71,7 +69,7 @@ class VariantProductContext extends PimContext
      * @param string $productIdentifier
      * @param string $productModelCode
      *
-     * @When the parent of variant product :productIdentifier is changed for :productCode product model
+     * @When the parent of variant product :productIdentifier is changed for :productModelCode product model
      */
     public function changeVariantProductParent(string $productIdentifier, string $productModelCode): void
     {
@@ -102,36 +100,15 @@ class VariantProductContext extends PimContext
 
     /**
      * @param string $productIdentifier
-     *
-     * @When the parent of variant product :productIdentifier is changed for its grand parent
-     */
-    public function setGrandParentAsParent(string $productIdentifier): void
-    {
-        $product = $this->findProduct($productIdentifier);
-
-        $this->productUpdater->update($product, ['parent' => $product->getParent()->getParent()->getCode()]);
-
-        try {
-            $this->validateProduct($product);
-        } catch (\InvalidArgumentException $e) {
-            $this->exception = $e;
-        }
-    }
-
-    /**
-     * @param string $productIdentifier
      * @param string $productModelCode
      *
-     * @Then the parent of the product :productIdentifier should still be :productModelCode
+     * @When the parent of variant product :productIdentifier is changed for incorrect :productModelCode product model
      */
-    public function productStillHasParent(string $productIdentifier, string $productModelCode): void
+    public function setInvalidParent(string $productIdentifier, string $productModelCode): void
     {
-        $this->entityManager->clear();
-
         $product = $this->findProduct($productIdentifier);
 
-        Assert::same($product->getParent()->getCode(), $productModelCode);
-        Assert::isInstanceOf($this->exception, \InvalidArgumentException::class);
+        $this->productUpdater->update($product, ['parent' => $productModelCode]);
     }
 
     /**
@@ -158,7 +135,7 @@ class VariantProductContext extends PimContext
     {
         $violations = $this->validator->validate($product);
 
-        if (0 < $violations->count()) {
+        if (0 !== $violations->count()) {
             $messages = [];
             foreach ($violations as $violation) {
                 $messages[] = $violation->getMessage();
