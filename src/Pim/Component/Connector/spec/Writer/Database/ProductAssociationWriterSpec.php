@@ -7,7 +7,7 @@ use Akeneo\Component\StorageUtils\Detacher\BulkObjectDetacherInterface;
 use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Model\Association;
+use Pim\Component\Catalog\Model\ProductAssociation;
 use Pim\Component\Catalog\Model\AssociationInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 
@@ -40,7 +40,7 @@ class ProductAssociationWriterSpec extends ObjectBehavior
         $bulkDetacher->detachAll([$product1, $product2]);
 
         $product1->getId()->willReturn(null);
-        $association1 = new Association();
+        $association1 = new ProductAssociation();
         $product1->getAssociations()->willReturn(new ArrayCollection([$association1]));
         $stepExecution->incrementSummaryInfo('process')->shouldBeCalled();
 

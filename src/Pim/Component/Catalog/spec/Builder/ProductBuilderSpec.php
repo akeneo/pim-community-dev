@@ -4,7 +4,8 @@ namespace spec\Pim\Component\Catalog\Builder;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Builder\EntityWithValuesBuilderInterface;
-use Pim\Component\Catalog\Model\Association;
+use Pim\Component\Catalog\Model\ProductAssociation;
+use Pim\Component\Catalog\Model\AssociationAwareInterface;
 use Pim\Component\Catalog\Model\AssociationTypeInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\FamilyInterface;
@@ -20,7 +21,7 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 class ProductBuilderSpec extends ObjectBehavior
 {
     const PRODUCT_CLASS = Product::class;
-    const ASSOCIATION_CLASS = Association::class;
+    const ASSOCIATION_CLASS = ProductAssociation::class;
 
     function let(
         AttributeRepositoryInterface $attributeRepository,
@@ -80,8 +81,8 @@ class ProductBuilderSpec extends ObjectBehavior
 
     function it_adds_missing_product_associations(
         $assocTypeRepository,
-        ProductInterface $productOne,
-        ProductInterface $productTwo,
+        AssociationAwareInterface $productOne,
+        AssociationAwareInterface $productTwo,
         AssociationTypeInterface $type
     ) {
         $assocTypeRepository->findMissingAssociationTypes($productOne)->willReturn([$type]);
