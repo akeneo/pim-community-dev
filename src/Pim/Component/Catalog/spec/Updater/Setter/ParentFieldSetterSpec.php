@@ -2,6 +2,7 @@
 
 namespace spec\Pim\Component\Catalog\Updater\Setter;
 
+use Akeneo\Component\StorageUtils\Exception\ImmutablePropertyException;
 use Akeneo\Component\StorageUtils\Exception\InvalidObjectException;
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
@@ -91,6 +92,7 @@ class ParentFieldSetterSpec extends ObjectBehavior
         $productModelRepository,
         ProductInterface $variantProduct
     ) {
+        $variantProduct->isVariant()->willReturn(true);
         $productModelRepository->findOneByIdentifier('parent_code')->willReturn(null);
 
         $this->shouldThrow(InvalidPropertyException::class)->during(
@@ -119,6 +121,17 @@ class ParentFieldSetterSpec extends ObjectBehavior
         $this->shouldThrow(InvalidPropertyException::class)->during(
             'setFieldData',
             [$variantProduct, 'parent', 'parent_code']
+        );
+    }
+
+    function it_throw_an_exception_if_the_parent_is_empty_on_a_product_with_a_parent(
+        ProductInterface $variantProduct
+    ) {
+        $variantProduct->isVariant()->willReturn(true);
+
+        $this->shouldThrow(ImmutablePropertyException::class)->during(
+            'setFieldData',
+            [$variantProduct, 'parent', null]
         );
     }
 }

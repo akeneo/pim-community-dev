@@ -1446,12 +1446,6 @@ JSON;
     {
         $client = $this->createAuthenticatedClient();
 
-        $files = [
-            'akeneo_pdf' => $this->getFixturePath('akeneo.pdf'),
-            'akeneo_jpg' => $this->getFixturePath('akeneo.jpg'),
-            'ziggy_png'  => $this->getFixturePath('ziggy.png'),
-        ];
-
         $data =
 <<<JSON
     {

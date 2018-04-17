@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Pim\Component\Catalog\Updater\Setter;
 
+use Akeneo\Component\StorageUtils\Exception\ImmutablePropertyException;
 use Akeneo\Component\StorageUtils\Exception\InvalidObjectException;
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
@@ -42,6 +43,10 @@ class ParentFieldSetter extends AbstractFieldSetter
                 ClassUtils::getClass($product),
                 ProductInterface::class
             );
+        }
+
+        if ($product->isVariant() && null === $data) {
+            throw ImmutablePropertyException::immutableProperty($field, $data, static::class);
         }
 
         if (null === $data) {
