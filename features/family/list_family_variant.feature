@@ -23,8 +23,8 @@ Feature: list family variant
   @jira https://akeneo.atlassian.net/browse/PIM-7299
   Scenario: Successfully show pagination on family variant grid in family edit form
     Given the following family:
-      | code                      | label-en_US       | attributes      |
-      | family_with_many_variants | Many variants     | sku,color,image |
+      | code                      | label-en_US   | attributes      |
+      | family_with_many_variants | Many variants | sku,color,image |
     And the following family variants:
       | code       | family                    | variant-axes_1 | variant-attributes_1 |
       | variant_1  | family_with_many_variants | color          | sku,image            |
@@ -57,7 +57,7 @@ Feature: list family variant
       | variant_28 | family_with_many_variants | color          | sku,image            |
       | variant_29 | family_with_many_variants | color          | sku,image            |
       | variant_30 | family_with_many_variants | color          | sku,image            |
-    When I am on the "Many variants" family page
+    When I am on the "family_with_many_variants" family page
     And I visit the "Variants" tab
     Then the grid should contain 25 elements
     And the last page number should be 2
