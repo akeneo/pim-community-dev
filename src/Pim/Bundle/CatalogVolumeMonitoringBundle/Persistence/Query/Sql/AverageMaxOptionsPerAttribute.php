@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Pim\Bundle\CatalogVolumeMonitoringBundle\Persistence\Query\Sql;
 
 use Doctrine\DBAL\Connection;
+use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\CatalogVolumeMonitoring\Volume\Query\AverageMaxQuery;
 use Pim\Component\CatalogVolumeMonitoring\Volume\ReadModel\AverageMaxVolumes;
 
@@ -37,6 +38,9 @@ class AverageMaxOptionsPerAttribute implements AverageMaxQuery
      */
     public function fetch(): AverageMaxVolumes
     {
+        $simpleSelect   = AttributeTypes::OPTION_SIMPLE_SELECT;
+        $multipleSelect = AttributeTypes::OPTION_MULTI_SELECT;
+
         $sql = <<<SQL
             SELECT 
                 CEIL(AVG(opa.count_options_per_attribute)) average,
@@ -45,7 +49,7 @@ class AverageMaxOptionsPerAttribute implements AverageMaxQuery
                 SELECT ao.attribute_id, COUNT(ao.id) as count_options_per_attribute
                 FROM pim_catalog_attribute_option ao
                 JOIN pim_catalog_attribute AS a ON ao.attribute_id = a.id
-		        WHERE a.attribute_type IN ('pim_catalog_simpleselect', 'pim_catalog_multiselect')
+		        WHERE a.attribute_type IN ('$simpleSelect', '$multipleSelect')
                 GROUP BY ao.attribute_id
             ) as opa
 SQL;

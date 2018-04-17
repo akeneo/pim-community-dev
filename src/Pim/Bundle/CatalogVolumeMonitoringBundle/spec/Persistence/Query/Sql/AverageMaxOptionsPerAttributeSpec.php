@@ -24,7 +24,7 @@ class AverageMaxOptionsPerAttributeSpec extends ObjectBehavior
         $this->shouldHaveType(AverageMaxOptionsPerAttribute::class);
     }
 
-    function it_is_an_average_ad_max_query()
+    function it_is_an_average_and_max_query()
     {
         $this->shouldImplement(AverageMaxQuery::class);
     }

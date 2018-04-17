@@ -6,15 +6,16 @@ namespace Pim\Bundle\CatalogVolumeMonitoringBundle\tests\Integration\Persistence
 
 use PHPUnit\Framework\Assert;
 use Pim\Bundle\CatalogVolumeMonitoringBundle\tests\Integration\Persistence\QueryTestCase;
+use Pim\Component\Catalog\AttributeTypes;
 
 class AverageMaxOptionsPerAttributeIntegration extends QueryTestCase
 {
     public function testGetAverageAndMaximumNumberOfOptionsPerAttribute()
     {
         $query = $this->get('pim_volume_monitoring.persistence.query.average_max_options_per_attribute');
-        $this->createAttributeWithOptions(4, 'pim_catalog_simpleselect');
-        $this->createAttributeWithOptions(8, 'pim_catalog_multiselect');
-        $this->createAttributeWithOptions(2, 'pim_catalog_multiselect');
+        $this->createAttributeWithOptions(4, AttributeTypes::OPTION_SIMPLE_SELECT);
+        $this->createAttributeWithOptions(8, AttributeTypes::OPTION_MULTI_SELECT);
+        $this->createAttributeWithOptions(2, AttributeTypes::OPTION_SIMPLE_SELECT);
 
         $volume = $query->fetch();
 

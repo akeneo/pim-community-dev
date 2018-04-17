@@ -24,12 +24,12 @@ class CountLocalizableAttributesSpec extends ObjectBehavior
         $this->shouldHaveType(CountLocalizableAttributes::class);
     }
 
-    function it_is_an_average_ad_max_query()
+    function it_is_a_count_query()
     {
         $this->shouldImplement(CountQuery::class);
     }
 
-    function it_gets_average_and_max_volume($connection, Statement $statement)
+    function it_gets_count_volume($connection, Statement $statement)
     {
         $connection->query(Argument::type('string'))->willReturn($statement);
         $statement->fetch()->willReturn(['count' => '4']);
