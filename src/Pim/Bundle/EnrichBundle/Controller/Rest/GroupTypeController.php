@@ -11,6 +11,7 @@ use Pim\Component\Catalog\Factory\GroupTypeFactory;
 use Pim\Component\Catalog\Model\GroupTypeInterface;
 use Pim\Component\Catalog\Repository\GroupTypeRepositoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -122,12 +123,16 @@ class GroupTypeController
      *
      * @param Request $request
      *
-     * @return JsonResponse
+     * @return Response
      *
      * @AclAncestor("pim_enrich_grouptype_edit")
      */
     public function postAction(Request $request, $identifier)
     {
+        if (!$request->isXmlHttpRequest()) {
+            return new RedirectResponse('/');
+        }
+
         $groupType = $this->getGroupTypeOr404($identifier);
 
         $data = json_decode($request->getContent(), true);
@@ -211,10 +216,14 @@ class GroupTypeController
      *
      * @param Request $request
      *
-     * @return JsonResponse
+     * @return Response
      */
     public function createAction(Request $request)
     {
+        if (!$request->isXmlHttpRequest()) {
+            return new RedirectResponse('/');
+        }
+
         $groupType = $this->groupTypeFactory->create();
         $this->updater->update($groupType, json_decode($request->getContent(), true));
         $violations = $this->validator->validate($groupType);

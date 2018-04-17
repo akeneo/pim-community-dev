@@ -57,6 +57,7 @@ datagrid:
         options:
             requireJSModules:
               - oro/datagrid/column-form-listener
+              - oro/datagrid/pagination-input
             columnListener:
                 dataField: id
                 columnName: has_group

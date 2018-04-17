@@ -273,10 +273,14 @@ class FamilyController
      * @param Request         $request
      * @param FamilyInterface $family
      *
-     * @return JsonResponse
+     * @return Response
      */
     protected function saveFamily(Request $request, FamilyInterface $family)
     {
+        if (!$request->isXmlHttpRequest()) {
+            return new RedirectResponse('/');
+        }
+
         $data = json_decode($request->getContent(), true);
 
         if (!$this->securityFacade->isGranted('pim_enrich_family_edit_properties')) {
@@ -321,10 +325,14 @@ class FamilyController
      *
      * @param Request $request
      *
-     * @return JsonResponse
+     * @return Response
      */
     public function createAction(Request $request)
     {
+        if (!$request->isXmlHttpRequest()) {
+            return new RedirectResponse('/');
+        }
+
         $family = $this->familyFactory->create();
         $this->updater->update($family, json_decode($request->getContent(), true));
         $violations = $this->validator->validate($family);

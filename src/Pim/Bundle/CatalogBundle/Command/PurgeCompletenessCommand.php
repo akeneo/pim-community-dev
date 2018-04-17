@@ -2,19 +2,22 @@
 
 namespace Pim\Bundle\CatalogBundle\Command;
 
-use Doctrine\ORM\EntityManager;
-use Doctrine\ORM\QueryBuilder;
+use Akeneo\Component\StorageUtils\Cache\CacheClearerInterface;
+use Akeneo\Component\StorageUtils\Cursor\CursorInterface;
 use Doctrine\ORM\Tools\Pagination\Paginator;
-use Pim\Component\Catalog\Manager\CompletenessManager;
+use Pim\Component\Catalog\Query\ProductQueryBuilderFactoryInterface;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Style\SymfonyStyle;
+use Symfony\Component\Process\Process;
 
 /**
- * Purge the completeness of the products family by family: rows from the table "pim_catalog_completeness" will be deleted
+ * Purge the completeness of the products: rows from the table "pim_catalog_completeness" will be deleted
  *
- * @author    Julien Janvier <jjanvier@akeneo.com>
- * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
+ * @author    Julien Sanchez <julien@akeneo.com>
+ * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 class PurgeCompletenessCommand extends ContainerAwareCommand
@@ -34,52 +37,89 @@ class PurgeCompletenessCommand extends ContainerAwareCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $qb = $this->getFamilyQueryBuilder();
-        $paginator = new Paginator($qb);
+        $productBatchSize = $this->getContainer()->getParameter('pim_job_product_batch_size');
 
-        foreach ($paginator as $family) {
-            $output->writeln(sprintf('Purging completenesses of the family "%s"...', $family->getCode()));
-            $this->getCompletenessManager()->scheduleForFamily($family);
+        $io = new SymfonyStyle($input, $output);
+
+        $cacheClearer = $this->getContainer()->get('pim_connector.doctrine.cache_clearer');
+        $pqbFactory = $this->getContainer()->get('pim_catalog.query.product_query_builder_factory');
+        $rootDir = $this->getContainer()->get('kernel')->getRootDir();
+        $env = $input->getOption('env');
+
+        $io->title('Purge all product completenesses');
+        $io->newLine(1);
+
+        $products = $this->getProducts($pqbFactory);
+
+        $progressBar = new ProgressBar($output, count($products));
+        $this->cleanCompletenesses($products, $progressBar, $productBatchSize, $cacheClearer, $env, $rootDir);
+        $io->newLine();
+        $io->text(sprintf('%d product completenesses well purged', $products->count()));
+    }
+
+    /**
+     * Get products
+     *
+     * @param ProductQueryBuilderFactoryInterface $pqbFactory
+     *
+     * @return CursorInterface
+     */
+    private function getProducts(ProductQueryBuilderFactoryInterface $pqbFactory): CursorInterface
+    {
+        $pqb = $pqbFactory->create();
+
+        return $pqb->execute();
+    }
+
+    /**
+     * Iterate over given products to launch purge commands
+     *
+     * @param  CursorInterface       $products
+     * @param  ProgressBar           $progressBar
+     * @param  int                   $productBatchSize
+     * @param  CacheClearerInterface $cacheClearer
+     * @param  string                $env
+     * @param  string                $rootDir
+     */
+    private function cleanCompletenesses(
+        CursorInterface $products,
+        ProgressBar $progressBar,
+        int $productBatchSize,
+        CacheClearerInterface $cacheClearer,
+        string $env,
+        string $rootDir
+    ): void {
+        $progressBar->start();
+
+        $productToCleanCount = 0;
+        foreach ($products as $product) {
+            $productIds[] = $product->getId();
+            $productToCleanCount++;
+            if (0 === $productToCleanCount % $productBatchSize) {
+                $this->launchPurgeTask($productIds, $env, $rootDir);
+                $cacheClearer->clear();
+                $productIds = [];
+
+                $progressBar->advance($productBatchSize);
+            }
+        }
+        if (count($productIds) > 0) {
+            $this->launchPurgeTask($productIds, $env, $rootDir);
         }
 
-        $output->writeln('<info>Completenesses purged.</info>');
+        $progressBar->finish();
     }
 
     /**
-     * @return CompletenessManager
+     * Lanches the purge command on given ids
+     *
+     * @param array  $productIds
+     * @param string $env
+     * @param string $rootDir
      */
-    protected function getCompletenessManager()
+    private function launchPurgeTask(array $productIds, string $env, string $rootDir)
     {
-        return $this
-            ->getContainer()
-            ->get('pim_catalog.manager.completeness');
-    }
-
-    /**
-     * @return QueryBuilder
-     */
-    protected function getFamilyQueryBuilder()
-    {
-        $em = $this->getEntityManager();
-
-        return $em->createQueryBuilder()
-            ->select('f')
-            ->from($this->getFamilyClass(), 'f');
-    }
-
-    /**
-     * @return EntityManager
-     */
-    protected function getEntityManager()
-    {
-        return $this->getContainer()->get('doctrine.orm.entity_manager');
-    }
-
-    /**
-     * @return string
-     */
-    protected function getFamilyClass()
-    {
-        return $this->getContainer()->getParameter('pim_catalog.entity.family.class');
+        $process = new Process([sprintf('%s/../bin/console', $rootDir), 'pim:completeness:purge-products', sprintf('--env=%s', $env), implode(',', $productIds)]);
+        $process->run();
     }
 }
