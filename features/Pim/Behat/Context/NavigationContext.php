@@ -5,6 +5,7 @@ namespace Pim\Behat\Context;
 use Behat\ChainedStepsExtension\Step;
 use Behat\ChainedStepsExtension\Step\Then;
 use Context\Spin\SpinCapableTrait;
+use PHPUnit\Framework\Assert;
 use SensioLabs\Behat\PageObjectExtension\Context\PageObjectAware;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Factory as PageObjectFactory;
 
@@ -169,7 +170,7 @@ class NavigationContext extends PimContext implements PageObjectAware
             $actualUrl = $this->sanitizeUrl($actualFullUrl);
 
             $result = $expectedUrl === $actualUrl;
-            assertTrue($result, sprintf('Expecting to be on the grid %s, not %s', $expectedUrl, $actualUrl));
+            Assert::assertTrue($result, sprintf('Expecting to be on the grid %s, not %s', $expectedUrl, $actualUrl));
 
             return $this->getCurrentPage()->find('css', '.AknGridContainer');
         }, sprintf('You are not on the %s grid', $pageName));

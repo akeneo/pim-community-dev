@@ -2,6 +2,14 @@
 
 ## Bug fixes
 
+- GITHUB-7750: Fix the fatal error when having violations during a bulk action on families (Thanks [FabienSalles](https://github.com/FabienSalles)!)
+- PIM-7279: Fix XSS issue on history grid
+- SDS-3172: Fix ObjectDetacher::detach() for MongoODM storage
+
+# 1.7.20 (2018-04-03)
+
+## Bug fixes
+
 - PIM-6825: Fix cancel button redirection when editing a user
 - GITHUB-7507: Fix XLSX product export to allow decimal separator configuration (Thanks [wa-daniel-fahl](https://github.com/wa-daniel-fahl)!)
 - PIM-7069: Fix Channel export regarding conversion_units output
