@@ -5,9 +5,10 @@ namespace Pim\Component\Catalog\Updater\Adder;
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
-use Pim\Component\Catalog\Builder\ProductBuilderInterface;
+use Pim\Component\Catalog\Model\AssociationAwareInterface;
 use Pim\Component\Catalog\Model\AssociationInterface;
-use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Model\ProductAssociation;
+use Pim\Component\Catalog\Model\ProductModelAssociation;
 use Pim\Component\Catalog\Model\ProductModelInterface;
 
 /**
@@ -28,27 +29,27 @@ class AssociationFieldAdder extends AbstractFieldAdder
     /** @var IdentifiableObjectRepositoryInterface */
     protected $groupRepository;
 
-    /** @var ProductBuilderInterface */
-    protected $productBuilder;
+    /** @var IdentifiableObjectRepositoryInterface */
+    protected $associationTypeRepository;
 
     /**
      * @param IdentifiableObjectRepositoryInterface $productRepository
      * @param IdentifiableObjectRepositoryInterface $productModelRepository
      * @param IdentifiableObjectRepositoryInterface $groupRepository
-     * @param ProductBuilderInterface               $productBuilder
+     * @param IdentifiableObjectRepositoryInterface $associationTypeRepository
      * @param array                                 $supportedFields
      */
     public function __construct(
         IdentifiableObjectRepositoryInterface $productRepository,
         IdentifiableObjectRepositoryInterface $productModelRepository,
         IdentifiableObjectRepositoryInterface $groupRepository,
-        ProductBuilderInterface $productBuilder,
+        IdentifiableObjectRepositoryInterface $associationTypeRepository,
         array $supportedFields
     ) {
         $this->productRepository = $productRepository;
         $this->productModelRepository = $productModelRepository;
         $this->groupRepository = $groupRepository;
-        $this->productBuilder = $productBuilder;
+        $this->associationTypeRepository = $associationTypeRepository;
         $this->supportedFields = $supportedFields;
     }
 
@@ -72,41 +73,27 @@ class AssociationFieldAdder extends AbstractFieldAdder
     public function addFieldData($product, $field, $data, array $options = [])
     {
         $this->checkData($field, $data);
-        $this->addMissingAssociations($product);
         $this->addProductsAndGroupsToAssociations($product, $data);
-    }
-
-    /**
-     * Add missing associations (if association type has been added after the last processing)
-     *
-     * @param ProductInterface|ProductModelInterface $product
-     */
-    protected function addMissingAssociations($product)
-    {
-        $this->productBuilder->addMissingAssociations($product);
     }
 
     /**
      * Add products and groups to associations
      *
-     * @param ProductInterface|ProductModelInterface $product
-     * @param mixed                                  $data
+     * @param AssociationAwareInterface $entity
+     * @param mixed                     $data
      *
      * @throws InvalidPropertyException
      */
-    protected function addProductsAndGroupsToAssociations($product, $data)
+    protected function addProductsAndGroupsToAssociations($entity, $data)
     {
         foreach ($data as $typeCode => $items) {
-            $association = $product->getAssociationForTypeCode($typeCode);
+            $association = $entity->getAssociationForTypeCode($typeCode);
+
             if (null === $association) {
-                throw InvalidPropertyException::validEntityCodeExpected(
-                    'associations',
-                    'association type code',
-                    'The association type does not exist',
-                    static::class,
-                    $typeCode
-                );
+                $association = $this->createAssociation($entity, $typeCode);
+                $entity->addAssociation($association);
             }
+
             $this->addAssociatedProducts($association, $items['products']);
             $this->addAssociatedGroups($association, $items['groups']);
             $this->addAssociatedProductModels($association, $items['product_models']);
@@ -245,6 +232,18 @@ class AssociationFieldAdder extends AbstractFieldAdder
 
             $this->checkAssociationItems($field, $assocTypeCode, $data, $itemData);
         }
+
+        $associationType = $this->associationTypeRepository->findOneByIdentifier($assocTypeCode);
+
+        if (null === $associationType) {
+            throw InvalidPropertyException::validEntityCodeExpected(
+                'associations',
+                'association type code',
+                'The association type does not exist',
+                static::class,
+                $assocTypeCode
+            );
+        }
     }
 
     /**
@@ -267,5 +266,28 @@ class AssociationFieldAdder extends AbstractFieldAdder
                 );
             }
         }
+    }
+
+    /**
+     * @param AssociationAwareInterface $entity
+     * @param string                    $associationTypeCode
+     *
+     * @return AssociationInterface
+     */
+    protected function createAssociation(AssociationAwareInterface $entity, string $associationTypeCode): AssociationInterface
+    {
+        $associationClass = ProductAssociation::class;
+
+        if ($entity instanceof ProductModelInterface) {
+            $associationClass = ProductModelAssociation::class;
+        }
+
+        $associationType = $this->associationTypeRepository->findOneByIdentifier($associationTypeCode);
+
+        /** @var AssociationInterface $association */
+        $association = new $associationClass();
+        $association->setAssociationType($associationType);
+
+        return $association;
     }
 }
