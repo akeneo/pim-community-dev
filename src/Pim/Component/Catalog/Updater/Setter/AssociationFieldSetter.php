@@ -6,10 +6,12 @@ use Akeneo\Component\StorageUtils\Exception\InvalidObjectException;
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
-use Pim\Component\Catalog\Builder\ProductBuilderInterface;
 use Pim\Component\Catalog\Model\AssociationAwareInterface;
 use Pim\Component\Catalog\Model\AssociationInterface;
 use Pim\Component\Catalog\Model\EntityWithValuesInterface;
+use Pim\Component\Catalog\Model\ProductAssociation;
+use Pim\Component\Catalog\Model\ProductModelAssociation;
+use Pim\Component\Catalog\Model\ProductModelInterface;
 
 /**
  * Sets the association field
@@ -29,27 +31,27 @@ class AssociationFieldSetter extends AbstractFieldSetter
     /** @var IdentifiableObjectRepositoryInterface */
     protected $groupRepository;
 
-    /** @var ProductBuilderInterface */
-    protected $productBuilder;
+    /** @var IdentifiableObjectRepositoryInterface  */
+    protected $associationTypeRepository;
 
     /**
      * @param IdentifiableObjectRepositoryInterface $productRepository
      * @param IdentifiableObjectRepositoryInterface $productModelRepository
      * @param IdentifiableObjectRepositoryInterface $groupRepository
-     * @param ProductBuilderInterface               $productBuilder
+     * @param IdentifiableObjectRepositoryInterface $associationTypeRepository
      * @param array                                 $supportedFields
      */
     public function __construct(
         IdentifiableObjectRepositoryInterface $productRepository,
         IdentifiableObjectRepositoryInterface $productModelRepository,
         IdentifiableObjectRepositoryInterface $groupRepository,
-        ProductBuilderInterface $productBuilder,
+        IdentifiableObjectRepositoryInterface $associationTypeRepository,
         array $supportedFields
     ) {
         $this->productRepository = $productRepository;
         $this->productModelRepository = $productModelRepository;
         $this->groupRepository = $groupRepository;
-        $this->productBuilder = $productBuilder;
+        $this->associationTypeRepository = $associationTypeRepository;
         $this->supportedFields = $supportedFields;
     }
 
@@ -78,7 +80,6 @@ class AssociationFieldSetter extends AbstractFieldSetter
 
         $this->checkData($field, $data);
         $this->clearAssociations($entity, $data);
-        $this->addMissingAssociations($entity);
         $this->setProductsAndGroupsToAssociations($entity, $data);
     }
 
@@ -135,16 +136,6 @@ class AssociationFieldSetter extends AbstractFieldSetter
     }
 
     /**
-     * Add missing associations (if association type has been added after the last processing)
-     *
-     * @param AssociationAwareInterface $entity
-     */
-    protected function addMissingAssociations(AssociationAwareInterface $entity)
-    {
-        $this->productBuilder->addMissingAssociations($entity);
-    }
-
-    /**
      * Set products and groups to associations
      *
      * @param AssociationAwareInterface $entity
@@ -156,15 +147,12 @@ class AssociationFieldSetter extends AbstractFieldSetter
         foreach ($data as $typeCode => $items) {
             $typeCode = (string) $typeCode;
             $association = $entity->getAssociationForTypeCode($typeCode);
+
             if (null === $association) {
-                throw InvalidPropertyException::validEntityCodeExpected(
-                    'associations',
-                    'association type code',
-                    'The association type does not exist',
-                    static::class,
-                    $typeCode
-                );
+                $association = $this->createAssociation($entity, $typeCode);
+                $entity->addAssociation($association);
             }
+
             if (isset($items['products'])) {
                 $this->setAssociatedProducts($association, $items['products']);
             }
@@ -311,6 +299,18 @@ class AssociationFieldSetter extends AbstractFieldSetter
 
             $this->checkAssociationItems($field, $assocTypeCode, $data, $itemData);
         }
+
+        $associationType = $this->associationTypeRepository->findOneByIdentifier($assocTypeCode);
+
+        if (null === $associationType) {
+            throw InvalidPropertyException::validEntityCodeExpected(
+                'associations',
+                'association type code',
+                'The association type does not exist',
+                static::class,
+                $assocTypeCode
+            );
+        }
     }
 
     /**
@@ -333,5 +333,28 @@ class AssociationFieldSetter extends AbstractFieldSetter
                 );
             }
         }
+    }
+
+    /**
+     * @param AssociationAwareInterface $entity
+     * @param string                    $associationTypeCode
+     *
+     * @return AssociationInterface
+     */
+    protected function createAssociation(AssociationAwareInterface $entity, string $associationTypeCode): AssociationInterface
+    {
+        $associationClass = ProductAssociation::class;
+
+        if ($entity instanceof ProductModelInterface) {
+            $associationClass = ProductModelAssociation::class;
+        }
+
+        $associationType = $this->associationTypeRepository->findOneByIdentifier($associationTypeCode);
+
+        /** @var AssociationInterface $association */
+        $association = new $associationClass();
+        $association->setAssociationType($associationType);
+
+        return $association;
     }
 }
