@@ -2,8 +2,8 @@
 
 namespace Pim\Behat\Context\Domain\Enrich;
 
-use PHPUnit\Framework\Assert;
 use Behat\Mink\Exception\ExpectationException;
+use PHPUnit\Framework\Assert;
 use Pim\Behat\Context\PimContext;
 
 /**

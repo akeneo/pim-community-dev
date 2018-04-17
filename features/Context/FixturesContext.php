@@ -155,8 +155,13 @@ class FixturesContext extends BaseFixturesContext
         } elseif (isset($data['enabled']) && in_array($data['enabled'], ['yes', 'no'])) {
             $data['enabled'] = ($data['enabled'] === 'yes');
         }
-        if (!isset($data['user_locale'])) {
-            $data['user_locale'] = 'en_US';
+
+        if (!isset($data['user_default_locale'])) {
+            $data['user_default_locale'] = 'en_US';
+        }
+        
+        if (!isset($data['catalog_default_locale'])) {
+            $data['catalog_default_locale'] = 'en_US';
         }
 
         foreach ($data as $key => $value) {
