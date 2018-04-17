@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Command;
 
-use Akeneo\Component\StorageUtils\Cache\CacheClearerInterface;
+use Akeneo\Component\StorageUtils\Cache\EntityManagerClearerInterface;
 use Akeneo\Component\StorageUtils\Cursor\CursorInterface;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Pim\Component\Catalog\Query\ProductQueryBuilderFactoryInterface;
@@ -74,18 +74,18 @@ class PurgeCompletenessCommand extends ContainerAwareCommand
     /**
      * Iterate over given products to launch purge commands
      *
-     * @param  CursorInterface       $products
-     * @param  ProgressBar           $progressBar
-     * @param  int                   $productBatchSize
-     * @param  CacheClearerInterface $cacheClearer
-     * @param  string                $env
-     * @param  string                $rootDir
+     * @param  CursorInterface               $products
+     * @param  ProgressBar                   $progressBar
+     * @param  int                           $productBatchSize
+     * @param  EntityManagerClearerInterface $cacheClearer
+     * @param  string                        $env
+     * @param  string                        $rootDir
      */
     private function cleanCompletenesses(
         CursorInterface $products,
         ProgressBar $progressBar,
         int $productBatchSize,
-        CacheClearerInterface $cacheClearer,
+        EntityManagerClearerInterface $cacheClearer,
         string $env,
         string $rootDir
     ): void {
