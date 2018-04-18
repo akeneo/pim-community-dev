@@ -126,7 +126,7 @@ acceptance:
                 - test.channel.context
                 - test.catalog_volume_limits.attribute_per_family_context
             filters:
-                tags: '@acceptance'
+                tags: '@acceptance-back'
     extensions:
         FriendsOfBehat\ContextServiceExtension:
            imports:
