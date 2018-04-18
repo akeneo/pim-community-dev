@@ -8,6 +8,7 @@ use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Test\Acceptance\Common\NotImplementedException;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Model\AttributeGroupInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\FamilyInterface;
@@ -168,7 +169,7 @@ class InMemoryAttributeRepository implements AttributeRepositoryInterface, Saver
      */
     public function getIdentifier()
     {
-        throw new NotImplementedException(__METHOD__);
+        return current($this->findBy(['type' => AttributeTypes::IDENTIFIER]));
     }
 
     /**
