@@ -3,8 +3,10 @@
 namespace Pim\Component\Catalog\Builder;
 
 use Pim\Component\Catalog\Model\AssociationAwareInterface;
+use Pim\Component\Catalog\Model\AssociationInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\EntityWithValuesInterface;
+use Pim\Component\Catalog\Model\ProductModelInterface;
 use Pim\Component\Catalog\ProductEvents;
 use Pim\Component\Catalog\Repository\AssociationTypeRepositoryInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
@@ -42,6 +44,9 @@ class ProductBuilder implements ProductBuilderInterface
     /** @var string */
     protected $associationClass;
 
+    /** @var string */
+    private $productModelAssociationClass;
+
     /**
      * @param AttributeRepositoryInterface       $attributeRepository Attribute repository
      * @param FamilyRepositoryInterface          $familyRepository    Family repository
@@ -66,6 +71,7 @@ class ProductBuilder implements ProductBuilderInterface
         $this->eventDispatcher         = $eventDispatcher;
         $this->productClass            = $classes['product'];
         $this->associationClass        = $classes['association'];
+        $this->productModelAssociationClass = $classes['product_model_association'];
         $this->entityWithValuesBuilder = $entityWithValuesBuilder;
     }
 
@@ -100,7 +106,7 @@ class ProductBuilder implements ProductBuilderInterface
         $missingAssocTypes = $this->assocTypeRepository->findMissingAssociationTypes($entity);
         if (!empty($missingAssocTypes)) {
             foreach ($missingAssocTypes as $associationType) {
-                $association = new $this->associationClass();
+                $association = $this->getNewAssociation($entity);
                 $association->setAssociationType($associationType);
                 $entity->addAssociation($association);
             }
@@ -128,5 +134,21 @@ class ProductBuilder implements ProductBuilderInterface
         $data
     ) {
         $this->entityWithValuesBuilder->addOrReplaceValue($values, $attribute, $locale, $scope, $data);
+    }
+
+    /**
+     * @param AssociationAwareInterface $entity
+     *
+     * @return AssociationInterface
+     */
+    private function getNewAssociation(AssociationAwareInterface $entity): AssociationInterface
+    {
+        $class = $this->associationClass;
+
+        if ($entity instanceof ProductModelInterface) {
+            $class = $this->productModelAssociationClass;
+        }
+
+        return new $class();
     }
 }

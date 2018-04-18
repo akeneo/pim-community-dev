@@ -6,6 +6,7 @@ namespace Pim\Component\Connector\ArrayConverter\FlatToStandard;
 
 use Pim\Component\Connector\ArrayConverter\ArrayConverterInterface;
 use Pim\Component\Connector\ArrayConverter\FieldsRequirementChecker;
+use Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\AssociationColumnsResolver;
 use Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\AttributeColumnsResolver;
 use Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\ColumnsMapper;
 use Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\ColumnsMerger;
@@ -38,13 +39,20 @@ class ProductModel implements ArrayConverterInterface
     /** @var FieldsRequirementChecker */
     private $fieldsRequirementChecker;
 
+    /** @var AssociationColumnsResolver */
+    private $assocColumnsResolver;
+
+    /** @var array */
+    private $optionalAssocFields = [];
+
     /**
-     * @param ColumnsMapper            $columnsMapper
-     * @param FieldConverter           $fieldConverter
-     * @param ArrayConverterInterface  $productValueConverter
-     * @param ColumnsMerger            $columnsMerger
-     * @param AttributeColumnsResolver $attributeColumnsResolver ,
-     * @param FieldsRequirementChecker $fieldsRequirementChecker
+     * @param ColumnsMapper              $columnsMapper
+     * @param FieldConverter             $fieldConverter
+     * @param ArrayConverterInterface    $productValueConverter
+     * @param ColumnsMerger              $columnsMerger
+     * @param AttributeColumnsResolver   $attributeColumnsResolver ,
+     * @param FieldsRequirementChecker   $fieldsRequirementChecker
+     * @param AssociationColumnsResolver $assocColumnsResolver
      */
     public function __construct(
         ColumnsMapper $columnsMapper,
@@ -52,7 +60,8 @@ class ProductModel implements ArrayConverterInterface
         ArrayConverterInterface $productValueConverter,
         ColumnsMerger $columnsMerger,
         AttributeColumnsResolver $attributeColumnsResolver,
-        FieldsRequirementChecker $fieldsRequirementChecker
+        FieldsRequirementChecker $fieldsRequirementChecker,
+        AssociationColumnsResolver $assocColumnsResolver
     ) {
         $this->columnsMapper = $columnsMapper;
         $this->fieldConverter = $fieldConverter;
@@ -60,6 +69,8 @@ class ProductModel implements ArrayConverterInterface
         $this->columnsMerger = $columnsMerger;
         $this->attributeColumnsResolver = $attributeColumnsResolver;
         $this->fieldsRequirementChecker = $fieldsRequirementChecker;
+        $this->assocColumnsResolver = $assocColumnsResolver;
+        $this->optionalAssocFields = [];
     }
 
     /**
@@ -68,11 +79,38 @@ class ProductModel implements ArrayConverterInterface
     public function convert(array $flatProductModel, array $options = []): array
     {
         $mappedFlatProductModel = $this->mapFields($flatProductModel, $options);
-        $this->validateItem($mappedFlatProductModel);
-        $mergedFlatProductModel = $this->columnsMerger->merge($mappedFlatProductModel);
+        $filteredItem = $this->filterFields($mappedFlatProductModel, true);
+        $this->validateItem($filteredItem);
+
+        $mergedFlatProductModel = $this->columnsMerger->merge($filteredItem);
         $convertedProductModel = $this->convertItem($mergedFlatProductModel);
 
         return $convertedProductModel;
+    }
+
+    /**
+     * @param array $mappedItem
+     * @param bool  $withAssociations
+     *
+     * @return array
+     */
+    protected function filterFields(array $mappedItem, $withAssociations): array
+    {
+        if (false === $withAssociations) {
+            $isGroupAssPattern = '/^\w+'.AssociationColumnsResolver::GROUP_ASSOCIATION_SUFFIX.'$/';
+            $isProductAssPattern = '/^\w+'.AssociationColumnsResolver::PRODUCT_ASSOCIATION_SUFFIX.'$/';
+            $isProductModelAssPattern = '/^\w+'.AssociationColumnsResolver::PRODUCT_MODEL_ASSOCIATION_SUFFIX.'$/';
+            foreach (array_keys($mappedItem) as $field) {
+                $isGroup = (1 === preg_match($isGroupAssPattern, $field));
+                $isProduct = (1 === preg_match($isProductAssPattern, $field));
+                $isProductModel = (1 === preg_match($isProductModelAssPattern, $field));
+                if ($isGroup || $isProduct || $isProductModel) {
+                    unset($mappedItem[$field]);
+                }
+            }
+        }
+
+        return $mappedItem;
     }
 
     /**
@@ -109,7 +147,8 @@ class ProductModel implements ArrayConverterInterface
     {
         $optionalFields = array_merge(
             ['categories', 'code', 'family_variant', 'parent'],
-            $this->attributeColumnsResolver->resolveAttributeColumns()
+            $this->attributeColumnsResolver->resolveAttributeColumns(),
+            $this->getOptionalAssociationFields()
         );
 
         // index $optionalFields by keys to improve performances
@@ -127,6 +166,20 @@ class ProductModel implements ArrayConverterInterface
 
             throw new StructureArrayConversionException(sprintf($message, implode(', ', $unknownFields)));
         }
+    }
+
+    /**
+     * Returns associations fields (resolves once)
+     *
+     * @return array
+     */
+    protected function getOptionalAssociationFields(): array
+    {
+        if (empty($this->optionalAssocFields)) {
+            $this->optionalAssocFields = $this->assocColumnsResolver->resolveAssociationColumns();
+        }
+
+        return $this->optionalAssocFields;
     }
 
     /**
