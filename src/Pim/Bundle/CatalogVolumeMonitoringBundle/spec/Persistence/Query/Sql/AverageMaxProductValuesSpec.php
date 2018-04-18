@@ -7,12 +7,12 @@ namespace spec\Pim\Bundle\CatalogVolumeMonitoringBundle\Persistence\Query\Sql;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Driver\Statement;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogVolumeMonitoringBundle\Persistence\Query\Sql\SqlAttributesPerFamily;
+use Pim\Bundle\CatalogVolumeMonitoringBundle\Persistence\Query\Sql\AverageMaxProductValues;
 use Pim\Component\CatalogVolumeMonitoring\Volume\Query\AverageMaxQuery;
 use Pim\Component\CatalogVolumeMonitoring\Volume\ReadModel\AverageMaxVolumes;
 use Prophecy\Argument;
 
-class SqlAttributesPerFamilySpec extends ObjectBehavior
+class AverageMaxProductValuesSpec extends ObjectBehavior
 {
     function let(Connection $connection)
     {
@@ -21,10 +21,10 @@ class SqlAttributesPerFamilySpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType(SqlAttributesPerFamily::class);
+        $this->shouldHaveType(AverageMaxProductValues::class);
     }
 
-    function it_is_an_average_ad_max_query()
+    function it_is_an_average_and_max_query()
     {
         $this->shouldImplement(AverageMaxQuery::class);
     }
@@ -33,6 +33,6 @@ class SqlAttributesPerFamilySpec extends ObjectBehavior
     {
         $connection->query(Argument::type('string'))->willReturn($statement);
         $statement->fetch()->willReturn(['average' => '4', 'max' => '10']);
-        $this->fetch()->shouldBeLike(new AverageMaxVolumes(10, 4, 12, 'attributes_per_family'));
+        $this->fetch()->shouldBeLike(new AverageMaxVolumes(10, 4, 12, 'average_max_product_values'));
     }
 }
