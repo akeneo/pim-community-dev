@@ -40,6 +40,9 @@ define(
             }
         },
 
+        /** @property */
+        maxRescoreWindow: 10000,
+
         /**
          * @inheritDoc
          */
@@ -82,6 +85,7 @@ define(
 
             if (this.collection.mode !== 'infinite') {
                 let previousId = _.first(pageIds);
+
                 pageIds.forEach((id) => {
                     if (id - previousId > 1) {
                         handles.push({
@@ -97,6 +101,14 @@ define(
                         className: currentPage === id ? 'active AknActionButton--highlight' : undefined
                     });
                 });
+
+                if (state.totalRecords > this.maxRescoreWindow) {
+                    handles.push({
+                        label: this.fastForwardHandleConfig.gap.label,
+                        title: this.fastForwardHandleConfig.gap.label,
+                        className: 'AknActionButton--unclickable'
+                    });
+                }
             }
 
             return handles;
@@ -121,7 +133,10 @@ define(
             for (let i = windowStart; i < windowEnd; i++) {
                 ids.push(i);
             }
-            ids.push(lastPage);
+
+            if (state.totalRecords < this.maxRescoreWindow) {
+                ids.push(lastPage);
+            }
 
             return _.uniq(ids);
         },
