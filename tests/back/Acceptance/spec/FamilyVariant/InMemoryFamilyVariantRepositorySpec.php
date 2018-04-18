@@ -23,7 +23,7 @@ class InMemoryFamilyVariantRepositorySpec extends ObjectBehavior
         $this->shouldBeAnInstanceOf(IdentifiableObjectRepositoryInterface::class);
     }
 
-    function it_is_a_familiy_variant_repository()
+    function it_is_a_family_variant_repository()
     {
         $this->shouldBeAnInstanceOf(FamilyVariantRepositoryInterface::class);
     }

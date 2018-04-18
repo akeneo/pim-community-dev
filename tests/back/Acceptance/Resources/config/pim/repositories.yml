@@ -6,3 +6,4 @@ parameters:
     pim_catalog.repository.family.class: Akeneo\Test\Acceptance\Family\InMemoryFamilyRepository
     pim_catalog.repository.family_variant.class: Akeneo\Test\Acceptance\FamilyVariant\InMemoryFamilyVariantRepository
     pim_catalog.repository.product.class: Akeneo\Test\Acceptance\Product\InMemoryProductRepository
+    pim_catalog.repository.product_model.class: Akeneo\Test\Acceptance\ProductModel\InMemoryProductModelRepository
