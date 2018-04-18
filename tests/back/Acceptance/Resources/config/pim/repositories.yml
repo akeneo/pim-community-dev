@@ -10,3 +10,8 @@ parameters:
     pim_catalog.repository.attribute.class: Akeneo\Test\Acceptance\Attribute\InMemoryAttributeRepository
     pim_catalog.repository.attribute_option.class: Akeneo\Test\Acceptance\AttributeOption\InMemoryAttributeOptionRepository
     pim_catalog.repository.attribute_group.class: Akeneo\Test\Acceptance\AttributeGroup\InMemoryAttributeGroupRepository
+    pim_user.repository.role: Akeneo\Test\Acceptance\User\InMemoryRoleRepository
+    pim_user.repository.user: Akeneo\Test\Acceptance\User\InMemoryUserRepository
+    pim_user.repository.group: Akeneo\Test\Acceptance\User\InMemoryGroupRepository
+    pim_catalog.repository.group_type: Akeneo\Test\Acceptance\Catalog\InMemoryGroupTypeRepository
+    pim_catalog.repository.group: Akeneo\Test\Acceptance\Catalog\InMemoryGroupRepository
