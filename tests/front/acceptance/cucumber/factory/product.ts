@@ -39,4 +39,4 @@ const createProductWithLabels = (identifier, labels) => {
     return createProduct(identifier, undefined, undefined, undefined, labels);
 };
 
-module.exports = { createProduct, createProductWithLabels };
+export default { createProduct, createProductWithLabels };

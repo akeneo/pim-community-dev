@@ -1,7 +1,9 @@
-module.exports = async function(cucumber) {
+import * as cucumber from 'cucumber';
+import * as assert from 'assert';
+import { renderFormExtension } from '../../tools';
+
+export default async function() {
     const { Given, Then, When } = cucumber;
-    const assert = require('assert');
-    const { renderFormExtension } = require('../../tools.js');
 
     let data = {
         average_max_attributes_per_family: {
@@ -11,7 +13,7 @@ module.exports = async function(cucumber) {
         }
     };
 
-    Given('a family with {int} attributes', int => assert(int));
+    Given('a family with {int} attributes', (int: number) => assert(int));
 
     Given('the limit of the number of attributes per family is set to {int}', int => {
         if (data.average_max_attributes_per_family.value.max > int) {
@@ -23,7 +25,6 @@ module.exports = async function(cucumber) {
 
     When('the administrator user asks for the catalog volume monitoring report', async function () {
         await renderFormExtension(this.page, 'pim-catalog-volume-index', data);
-
         const titleElement = await this.page.waitForSelector('.AknTitleContainer-title');
         const pageTitle = await (await titleElement.getProperty('textContent')).jsonValue();
         assert.equal(pageTitle.trim(), 'Catalog volume monitoring');

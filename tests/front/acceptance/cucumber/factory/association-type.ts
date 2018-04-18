@@ -27,7 +27,7 @@ function createLabels({
  * @param {Object} locales
  * @returns {Object}
  */
-module.exports = (
+export default (
     code = 'code',
     locales = {
         en_US: 'Type description',

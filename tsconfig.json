@@ -23,7 +23,8 @@
     "suppressImplicitAnyIndexErrors": false,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "removeComments": true
+    "removeComments": true,
+    "importHelpers": true
   },
   "exclude": [
     "node_modules",

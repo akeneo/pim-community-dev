@@ -1,3 +1,17 @@
+interface Languages {
+    de: string,
+    fr: string,
+    en: string
+    [key: string]: any;
+}
+
+interface Regions {
+    de: string,
+    fr: string,
+    us: string
+    [key: string]: any;
+}
+
 /**
  * Generate a locale
  *
@@ -9,9 +23,9 @@
  * @param {String} code
  * @returns {Object}
  */
-module.exports = function createLocale(code) {
-    const languages = { de: 'German', fr: 'French', en: 'English'};
-    const regions = { de: 'Germany', fr: 'France', us: 'United States'};
+export default function createLocale(code: string) {
+    const languages: Languages = { de: 'German', fr: 'French', en: 'English'};
+    const regions: Regions = { de: 'Germany', fr: 'France', us: 'United States'};
     const [language, region] = code.split('_');
     const languageLabel = language.toLowerCase();
 
