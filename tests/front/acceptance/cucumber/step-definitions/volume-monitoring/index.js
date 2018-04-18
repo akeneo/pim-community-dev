@@ -1,57 +1,15 @@
-
-
-const Header = async (nodeElement) => {
-    const getTitle = async () => {
-        const title =  await nodeElement.$('.AknTitleContainer-title')
-        const text = await (await title.getProperty('textContent')).jsonValue();
-
-        return text.trim();
-    };
-
-    return { getTitle };
-};
-
-const Report = async (nodeElement) => {
-    const children = {
-        'Header':  {
-            selector: '.AknTitleContainer',
-            decorator: Header
-        }
-    };
-    const getChildren = createElementDecorator(children, nodeElement);
-    const getHeader = async () => await getChildren('Header');
-
-    return { getHeader };
-};
-
-// See where to put it
-const config = {
-    'Catalog volume report':  {
-        selector: '.AknDefault-mainContent',
-        decorator: Report
-    }
-};
-
-const createElementDecorator = (config, parent) => async (key) => {
-    // Throw an error if you don't find the key
-    // 'keyname':  {
-    //     selector: '.report',
-    //     decorator: Report
-    // }
-    const elementConfig = config[key];
-    const element = await parent.$(elementConfig.selector);
-
-    if (elementConfig.decorator) {
-        return elementConfig.decorator(element);
-    }
-
-    return element;
-};
-
 module.exports = async function(cucumber) {
     const { Given, Then, When, Before } = cucumber;
     const assert = require('assert');
-    const { renderView } = require('../../tools.js');
+    const { renderView } = require('../../tools');
+    const createElementDecorator = require('../../decorators/common/create-element-decorator');
+
+    const config = {
+        'Catalog volume report':  {
+            selector: '.AknDefault-mainContent',
+            decorator: require('../../decorators/catalog-volume/report')
+        }
+    };
 
     let data = {
         average_max_attributes_per_family: {
