@@ -22,7 +22,7 @@ stage("Build") {
                 choice(choices: 'no\nyes', description: 'Enable Verbose mode', name: 'verboseOutputs'),
                 string(defaultValue: '', description: 'Channel or user to notify (example : "#channel,@user")', name: 'slackChannel'),
                 string(defaultValue: 'ee,ce', description: 'PIM edition the behat tests should run on (comma separated values)', name: 'editions'),
-                string(defaultValue: 'features,vendor/akeneo/pim-community-dev/features', description: 'Behat scenarios to build', name: 'features'),
+                string(defaultValue: 'tests/legacy/features,vendor/akeneo/pim-community-dev/tests/legacy/features', description: 'Behat scenarios to build', name: 'features'),
             ])
 
             editions = userInput['editions'].tokenize(',')
@@ -52,8 +52,10 @@ stage("Build") {
             }
             container("docker") {
                 sh "cp .ci/behat.community.yml behat.yml"
+                String featureEscaped = ""
                 for (feature in features) {
-                    sh "sed -i \"/paths/a\\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ -\\ ${feature}\" behat.yml"
+                    featureEscaped = feature.replaceAll("/", "\\\\/");
+                    sh "sed -i \'0,/paths\\:/s//paths\\:\\n\\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ -\\ \"${featureEscaped}\"/\' behat.yml"
                 }
 
                 sh "cp app/config/parameters_test.yml.dist app/config/parameters_test.yml"

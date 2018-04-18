@@ -1,6 +1,8 @@
 legacy:
     suites:
         TEST-pim:
+            paths:
+                - '%paths.base%/tests/legacy/features/'
             contexts:
                 - Behat\MinkExtension\Context\MinkContext
                 - Context\FeatureContext:
@@ -104,7 +106,7 @@ legacy:
                 selenium2:
                     selenium2: ~
             base_url: http://akeneo-pim-behat.local/
-            files_path: 'features/Context/fixtures/'
+            files_path: 'tests/legacy/features/Context/fixtures/'
         Behat\Symfony2Extension:
             kernel:
                 env: behat
