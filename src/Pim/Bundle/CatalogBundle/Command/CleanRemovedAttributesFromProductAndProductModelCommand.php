@@ -25,8 +25,6 @@ use Symfony\Component\Process\Process;
  */
 class CleanRemovedAttributesFromProductAndProductModelCommand extends ContainerAwareCommand
 {
-    const DEFAULT_PRODUCT_BULK_SIZE = 100;
-
     /**
      * {@inheritdoc}
      */
@@ -42,9 +40,7 @@ class CleanRemovedAttributesFromProductAndProductModelCommand extends ContainerA
      */
     protected function execute(InputInterface $input, OutputInterface $output): void
     {
-        $productBatchSize = $this->getContainer()->hasParameter('pim_job_product_batch_size') ?
-            $this->getContainer()->getParameter('pim_job_product_batch_size') :
-            self::DEFAULT_PRODUCT_BULK_SIZE;
+        $productBatchSize = $this->getContainer()->getParameter('pim_job_product_batch_size');
 
         $io = new SymfonyStyle($input, $output);
 
@@ -95,7 +91,7 @@ class CleanRemovedAttributesFromProductAndProductModelCommand extends ContainerA
     }
 
     /**
-     * Iterate over given products to launch clean jobs
+     * Iterate over given products to launch clean commands
      *
      * @param  CursorInterface       $products
      * @param  ProgressBar           $progressBar

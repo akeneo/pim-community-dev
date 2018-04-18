@@ -44,6 +44,7 @@ use Pim\Component\Catalog\Value\OptionValueInterface;
 use Pim\Component\Connector\Job\JobParameters\DefaultValuesProvider\ProductCsvImport;
 use Pim\Component\Connector\Job\JobParameters\DefaultValuesProvider\ProductModelCsvImport;
 use Pim\Component\Connector\Job\JobParameters\DefaultValuesProvider\SimpleCsvExport;
+use Pim\Component\Connector\Job\JobParameters\DefaultValuesProvider\SimpleCsvImport;
 use Pim\Component\ReferenceData\Model\ReferenceDataInterface;
 
 /**
@@ -141,6 +142,57 @@ class FixturesContext extends BaseFixturesContext
     }
 
     /**
+     * @param array|string $data
+     *
+     * @return \Pim\Component\Catalog\Model\ProductInterface
+     *
+     * @Given /^a "([^"]*)" user/
+     */
+    public function createUser($data)
+    {
+        if (is_string($data)) {
+            $data = ['username' => $data];
+        } elseif (isset($data['enabled']) && in_array($data['enabled'], ['yes', 'no'])) {
+            $data['enabled'] = ($data['enabled'] === 'yes');
+        }
+
+        if (!isset($data['user_default_locale'])) {
+            $data['user_default_locale'] = 'en_US';
+        }
+        
+        if (!isset($data['catalog_default_locale'])) {
+            $data['catalog_default_locale'] = 'en_US';
+        }
+
+        foreach ($data as $key => $value) {
+            $data[$key] = $this->replacePlaceholders($value);
+        }
+
+        $converter = $this->getContainer()->get('pim_connector.array_converter.flat_to_standard.user');
+        $processor = $this->getContainer()->get('pim_connector.processor.denormalization.user');
+
+        $jobExecution = new JobExecution();
+        $provider = new SimpleCsvImport([]);
+        $params = $provider->getDefaultValues();
+        $params['enabledComparison'] = false;
+        $params['dateFormat'] = LocalizerInterface::DEFAULT_DATE_FORMAT;
+        $params['decimalSeparator'] = LocalizerInterface::DEFAULT_DECIMAL_SEPARATOR;
+        $jobParameters = new JobParameters($params);
+        $jobExecution->setJobParameters($jobParameters);
+        $stepExecution = new StepExecution('processor', $jobExecution);
+        $processor->setStepExecution($stepExecution);
+
+        $convertedData = $converter->convert($data);
+        $user = $processor->process($convertedData);
+        $em = $this->getEntityManager();
+        $em->persist($user);
+        $em->flush();
+
+        return $user;
+    }
+
+
+    /**
      * @param int $numberOfProducts
      *
      * @Given /^([0-9]+) empty products(?: for the "([^"]+)" family)?$/
@@ -198,6 +250,18 @@ class FixturesContext extends BaseFixturesContext
 
         $this->refresh($product);
         $this->getProductSaver()->save($product);
+    }
+
+    /**
+     * @param TableNode $table
+     *
+     * @Given /^the following users?:$/
+     */
+    public function theFollowingUser(TableNode $table)
+    {
+        foreach ($table->getHash() as $data) {
+            $this->createUser($data);
+        }
     }
 
     /**
@@ -2457,5 +2521,13 @@ class FixturesContext extends BaseFixturesContext
         foreach ($clients as $client) {
             $client->refreshIndex();
         }
+    }
+
+    /**
+     * @return Client
+     */
+    protected function getElasticsearchUserClient()
+    {
+        return $this->getContainer()->get('akeneo_elasticsearch.client.user');
     }
 }

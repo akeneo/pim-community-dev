@@ -34,3 +34,20 @@ Feature: Display the attribute history
     Then I should not see the text "There are unsaved change"
     When I visit the "History" tab
     Then there should be 3 updates
+
+  @javascript @jira https://akeneo.atlassian.net/browse/PIM-7279
+  Scenario: Prevent javascript execution from history tab while updating attribute label translations
+    Given the following attribute:
+      | label-en_US | type             | useable_as_grid_filter | localizable | group | code |
+      | name        | pim_catalog_text | 1                      | 1           | other | name |
+    And I am on the "name" attribute page
+    And I visit the "Label translations" tab
+    And I fill in the following information:
+      | English (United States) | <script>document.getElementById('top-page').classList.add('foo');</script> |
+    And I save the attribute
+    Then I should see the flash message "Attribute successfully updated."
+    When I visit the "History" tab
+    Then I should not see a "#top-page.foo" element
+    And I should see history:
+      | version | property    | value                                                                                 | date |
+      | 2       | label-en_US | \<script\>document\.getElementById\('top-page'\)\.classList\.add\('foo'\);\</script\> | now  |

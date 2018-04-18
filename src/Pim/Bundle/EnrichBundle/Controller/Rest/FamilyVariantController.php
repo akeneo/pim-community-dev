@@ -12,6 +12,7 @@ use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Pim\Component\Catalog\Model\FamilyVariantInterface;
 use Pim\Component\Catalog\Repository\FamilyVariantRepositoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
@@ -88,6 +89,7 @@ class FamilyVariantController
      * @param string $identifier
      *
      * @return JsonResponse
+     * @throws HttpExceptionInterface
      */
     public function getAction(string $identifier): JsonResponse
     {
@@ -104,10 +106,14 @@ class FamilyVariantController
     /**
      * @param Request $request
      *
-     * @return JsonResponse
+     * @return Response
      */
-    public function createAction(Request $request): JsonResponse
+    public function createAction(Request $request): Response
     {
+        if (!$request->isXmlHttpRequest()) {
+            return new RedirectResponse('/');
+        }
+
         $familyVariant = $this->familyVariantFactory->create();
         $content = json_decode($request->getContent(), true);
 
@@ -118,10 +124,15 @@ class FamilyVariantController
      * @param Request $request
      * @param string  $identifier
      *
-     * @return JsonResponse
+     * @return Response
+     * @throws HttpExceptionInterface
      */
-    public function putAction(Request $request, string $identifier): JsonResponse
+    public function putAction(Request $request, string $identifier): Response
     {
+        if (!$request->isXmlHttpRequest()) {
+            return new RedirectResponse('/');
+        }
+
         $familyVariant = $this->getFamilyVariant($identifier);
         $content = json_decode($request->getContent(), true);
 

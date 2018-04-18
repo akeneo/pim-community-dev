@@ -17,6 +17,7 @@ use Pim\Component\Catalog\Model\AttributeInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
@@ -205,12 +206,16 @@ class AttributeGroupController
     /**
      * @param Request $request
      *
-     * @return JsonResponse
+     * @return Response
      *
      * @AclAncestor("pim_enrich_attributegroup_create")
      */
     public function createAction(Request $request)
     {
+        if (!$request->isXmlHttpRequest()) {
+            return new RedirectResponse('/');
+        }
+
         $attributeGroup = $this->attributeGroupFactory->create();
 
         $data = json_decode($request->getContent(), true);
@@ -245,12 +250,16 @@ class AttributeGroupController
      * @param Request $request
      * @param string $identifier
      *
-     * @return JsonResponse
+     * @return Response
      *
      * @AclAncestor("pim_enrich_attributegroup_edit")
      */
     public function postAction(Request $request, $identifier)
     {
+        if (!$request->isXmlHttpRequest()) {
+            return new RedirectResponse('/');
+        }
+
         $attributeGroup = $this->getAttributeGroupOr404($identifier);
 
         $data = json_decode($request->getContent(), true);
@@ -308,10 +317,14 @@ class AttributeGroupController
      *
      * @param  Request $request
      *
-     * @return JsonResponse
+     * @return Response
      */
     public function sortAction(Request $request)
     {
+        if (!$request->isXmlHttpRequest()) {
+            return new RedirectResponse('/');
+        }
+
         $data = json_decode($request->getContent(), true);
 
         foreach ($data as $attributeGroupCode => $sortOrder) {

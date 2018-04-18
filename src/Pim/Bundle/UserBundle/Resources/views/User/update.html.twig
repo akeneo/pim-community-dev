@@ -152,3 +152,11 @@
 </div>
 {% endblock %}
 {% endblock %}
+
+{% block content_data %}
+    <script type="text/javascript">
+        require('pim/page-title').set({'user': '{{ form.vars.value.name }}'});
+
+        window.flashMessages = JSON.parse('{{ app.session.flashbag.all|json_encode()|raw }}');
+    </script>
+{% endblock %}
