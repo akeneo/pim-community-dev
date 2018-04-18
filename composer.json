@@ -10,12 +10,18 @@
     ],
     "autoload": {
         "psr-0": {
-            "": "src/",
-            "Context": "features/"
+            "": "src/"
         },
         "psr-4": {
-            "Pim\\Upgrade\\": "upgrades/",
-            "Pim\\Behat\\": "features/Pim/Behat",
+            "Pim\\Upgrade\\": "upgrades/"
+        }
+    },
+    "autoload-dev": {
+        "psr-0": {
+            "Context": "tests/legacy/features/"
+        },
+        "psr-4": {
+            "Pim\\Behat\\": "tests/legacy/features/Pim/Behat",
             "Akeneo\\Test\\IntegrationTestsBundle\\": "tests/back/Integration/IntegrationTestsBundle/",
             "Akeneo\\Test\\Integration\\": "tests/back/Integration/",
             "Akeneo\\Test\\Acceptance\\": "tests/back/Acceptance/",

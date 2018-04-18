@@ -142,8 +142,8 @@ acceptance:
     suites:
         acceptance:
             paths:
-                - '%paths.base%/tests/back/features/'
-                - '%paths.base%/vendor/akeneo/pim-community-dev/tests/back/features/'
+                - '%paths.base%/tests/features/'
+                - '%paths.base%/vendor/akeneo/pim-community-dev/tests/features/'
             contexts_services:
                 - test.locale.context
                 - test.channel.context
