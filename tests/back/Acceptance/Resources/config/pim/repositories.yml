@@ -1,3 +1,4 @@
 parameters:
     akeneo_rule_engine.repository.rule_definition.class: AkeneoEnterprise\Test\Acceptance\Rule\RuleDefinition\InMemoryRuleDefinitionRepository
     pimee_product_asset.repository.asset.class: AkeneoEnterprise\Test\Acceptance\ProductAsset\Asset\InMemoryAssetRepository
+    pimee_product_asset.repository.asset_category.class: AkeneoEnterprise\Test\Acceptance\ProductAsset\AssetCategory\InMemoryAssetCategoryRepository
