@@ -50,6 +50,11 @@ class InMemoryProductRepositorySpec extends ObjectBehavior
         $this->findOneByIdentifier('a-product')->shouldReturn($product);
     }
 
+    function it_finds_nothing_if_it_does_not_exist()
+    {
+        $this->findOneByIdentifier('a-non-existing-product')->shouldReturn(null);
+    }
+
     function it_saves_a_product()
     {
         $product = new Product();

@@ -49,6 +49,11 @@ class InMemoryFamilyRepositorySpec extends ObjectBehavior
         $this->findOneByIdentifier('a-family')->shouldReturn($family);
     }
 
+    function it_finds_nothing_if_it_does_not_exist()
+    {
+        $this->findOneByIdentifier('a-non-existing-family')->shouldReturn(null);
+    }
+
     function it_saves_a_family()
     {
         $family = new Family();

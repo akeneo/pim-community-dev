@@ -47,6 +47,11 @@ class InMemoryFamilyVariantRepositorySpec extends ObjectBehavior
         $this->findOneByIdentifier('a-family-variant')->shouldReturn($familyVariant);
     }
 
+    function it_finds_nothing_if_it_does_not_exist()
+    {
+        $this->findOneByIdentifier('a-non-existing-family-variant')->shouldReturn(null);
+    }
+
     function it_saves_a_family_variant()
     {
         $familyVariant = new FamilyVariant();
