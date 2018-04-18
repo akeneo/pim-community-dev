@@ -40,6 +40,9 @@ define(
             }
         },
 
+        /** @property */
+        maxRescoreWindow: 10000,
+
         /**
          * @inheritDoc
          */
@@ -82,6 +85,7 @@ define(
 
             if (this.collection.mode !== 'infinite') {
                 let previousId = _.first(pageIds);
+
                 pageIds.forEach((id) => {
                     if (id - previousId > 1) {
                         handles.push({
@@ -97,6 +101,14 @@ define(
                         className: currentPage === id ? 'active AknActionButton--highlight' : undefined
                     });
                 });
+
+                if (state.totalRecords > this.maxRescoreWindow) {
+                    handles.push({
+                        label: this.fastForwardHandleConfig.gap.label,
+                        title: this.fastForwardHandleConfig.gap.label,
+                        className: 'AknActionButton--unclickable'
+                    });
+                }
             }
 
             return handles;
@@ -108,7 +120,6 @@ define(
         getPages() {
             const collection = this.collection;
             const state = collection.state;
-            const max_rescore_window = 10000;
 
             let lastPage = state.lastPage ? state.lastPage : state.firstPage;
             lastPage = state.firstPage === 0 ? lastPage : lastPage - 1;
@@ -123,7 +134,7 @@ define(
                 ids.push(i);
             }
 
-            if (state.totalRecords < max_rescore_window) {
+            if (state.totalRecords < this.maxRescoreWindow) {
                 ids.push(lastPage);
             }
 
