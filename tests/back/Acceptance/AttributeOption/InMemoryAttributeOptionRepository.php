@@ -41,9 +41,9 @@ class InMemoryAttributeOptionRepository implements AttributeOptionRepositoryInte
     /**
      * {@inheritdoc}
      */
-    public function findOneByIdentifier($code)
+    public function findOneByIdentifier($identifier)
     {
-        return $this->attributeOptions->get($code);
+        return $this->attributeOptions->get($identifier);
     }
 
     /**

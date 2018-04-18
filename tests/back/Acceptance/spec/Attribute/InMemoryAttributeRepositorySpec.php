@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace spec\Akeneo\Test\Acceptance\Attribute;
 
 use PhpSpec\ObjectBehavior;

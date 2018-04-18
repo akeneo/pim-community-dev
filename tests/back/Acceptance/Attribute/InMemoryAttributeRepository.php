@@ -43,9 +43,9 @@ class InMemoryAttributeRepository implements AttributeRepositoryInterface, Saver
     /**
      * {@inheritdoc}
      */
-    public function findOneByIdentifier($code)
+    public function findOneByIdentifier($identifier)
     {
-        return $this->attributes->get($code);
+        return $this->attributes->get($identifier);
     }
 
     /**
