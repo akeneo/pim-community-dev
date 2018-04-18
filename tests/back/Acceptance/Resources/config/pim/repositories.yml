@@ -5,3 +5,4 @@ parameters:
     pim_catalog.repository.currency.class: Akeneo\Test\Acceptance\Currency\InMemoryCurrencyRepository
     pim_catalog.repository.family.class: Akeneo\Test\Acceptance\Family\InMemoryFamilyRepository
     pim_catalog.repository.family_variant.class: Akeneo\Test\Acceptance\FamilyVariant\InMemoryFamilyVariantRepository
+    pim_catalog.repository.product.class: Akeneo\Test\Acceptance\Product\InMemoryProductRepository
