@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Test\IntegrationTestsBundle\Fixture\EntityWithValue;
+namespace Akeneo\Test\Common\Builder\EntityWithValue;
 
 final class Code
 {
@@ -55,6 +55,9 @@ final class Code
         return new self($entity->getCode());
     }
 
+    /**
+     * @return bool
+     */
     public function empty(): bool
     {
         return '' === $this->code;

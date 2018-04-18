@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Test\IntegrationTestsBundle\Fixture\EntityWithValue;
+namespace Akeneo\Test\Common\Builder\EntityWithValue;
 
 use Doctrine\Common\Collections\ArrayCollection;
 
