@@ -52,7 +52,7 @@ class InMemoryAttributeGroupRepository implements AttributeGroupRepositoryInterf
     public function save($attributeGroup, array $options = [])
     {
         if (!$attributeGroup instanceof AttributeGroupInterface) {
-            throw new \InvalidArgumentException('The object argument should be a attribute');
+            throw new \InvalidArgumentException('The object argument should be a attribute group');
         }
 
         $this->attributeGroups->set($attributeGroup->getCode(), $attributeGroup);
