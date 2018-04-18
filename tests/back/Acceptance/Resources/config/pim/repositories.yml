@@ -1,1 +1,2 @@
-parameters: ~
+parameters:
+    akeneo_rule_engine.repository.rule_definition.class: AkeneoEnterprise\Test\Acceptance\Rule\RuleDefinition\InMemoryRuleDefinitionRepository
