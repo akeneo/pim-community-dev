@@ -139,7 +139,7 @@ acceptance:
                 - test.locale.context
                 - test.channel.context
             filters:
-                tags: '@acceptance'
+                tags: '@acceptance-back'
     extensions:
         FriendsOfBehat\ContextServiceExtension:
            imports:
