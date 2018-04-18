@@ -18,11 +18,11 @@
         },
         "psr-4": {
             "Akeneo\\Test\\IntegrationTestsBundle\\": "vendor/akeneo/pim-community-dev/tests/back/IntegrationTestsBundle/",
-            "AkeneoEnterprise\\Test\\IntegrationTestsBundle\\": "tests/IntegrationTestsBundle/",
+            "AkeneoEnterprise\\Test\\IntegrationTestsBundle\\": "tests/back/Integration/IntegrationTestsBundle/",
             "Akeneo\\Test\\Integration\\": "vendor/akeneo/pim-community-dev/tests/back/Integration/",
             "Pim\\Upgrade\\": "upgrades/"
         },
-        "classmap": [ "app/AppKernel.php", "app/AppCache.php", "tests/AppKernelTest.php"]
+        "classmap": [ "app/AppKernel.php", "app/AppCache.php", "tests/back/Integration/AppKernelTest.php"]
     },
     "require": {
         "akeneo/pim-community-dev": "2.3.x-dev@dev",
