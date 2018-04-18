@@ -3,15 +3,30 @@ parameters:
     pim_catalog.repository.channel.class: Akeneo\Test\Acceptance\Channel\InMemoryChannelRepository
     pim_catalog.repository.category.class: Akeneo\Test\Acceptance\Category\InMemoryCategoryRepository
     pim_catalog.repository.currency.class: Akeneo\Test\Acceptance\Currency\InMemoryCurrencyRepository
-    pim_catalog.repository.family.class: Akeneo\Test\Acceptance\Family\InMemoryFamilyRepository
-    pim_catalog.repository.family_variant.class: Akeneo\Test\Acceptance\FamilyVariant\InMemoryFamilyVariantRepository
-    pim_catalog.repository.product.class: Akeneo\Test\Acceptance\Product\InMemoryProductRepository
-    pim_catalog.repository.product_model.class: Akeneo\Test\Acceptance\ProductModel\InMemoryProductModelRepository
-    pim_catalog.repository.attribute.class: Akeneo\Test\Acceptance\Attribute\InMemoryAttributeRepository
-    pim_catalog.repository.attribute_option.class: Akeneo\Test\Acceptance\AttributeOption\InMemoryAttributeOptionRepository
-    pim_catalog.repository.attribute_group.class: Akeneo\Test\Acceptance\AttributeGroup\InMemoryAttributeGroupRepository
     pim_user.repository.role: Akeneo\Test\Acceptance\User\InMemoryRoleRepository
     pim_user.repository.user: Akeneo\Test\Acceptance\User\InMemoryUserRepository
     pim_user.repository.group: Akeneo\Test\Acceptance\User\InMemoryGroupRepository
     pim_catalog.repository.group_type: Akeneo\Test\Acceptance\Catalog\InMemoryGroupTypeRepository
     pim_catalog.repository.group: Akeneo\Test\Acceptance\Catalog\InMemoryGroupRepository
+
+services:
+    pim_catalog.repository.family:
+        class: 'Akeneo\Test\Acceptance\Family\InMemoryFamilyRepository'
+
+    pim_catalog.repository.family_variant:
+        class: 'Akeneo\Test\Acceptance\FamilyVariant\InMemoryFamilyVariantRepository'
+
+    pim_catalog.repository.product:
+        class: 'Akeneo\Test\Acceptance\Product\InMemoryProductRepository'
+
+    pim_catalog.repository.product_model:
+        class: 'Akeneo\Test\Acceptance\ProductModel\InMemoryProductModelRepository'
+
+    pim_catalog.repository.attribute:
+        class: 'Akeneo\Test\Acceptance\Attribute\InMemoryAttributeRepository'
+
+    pim_catalog.repository.attribute_option:
+        class: 'Akeneo\Test\Acceptance\AttributeOption\InMemoryAttributeOptionRepository'
+
+    pim_catalog.repository.attribute_group:
+        class: 'Akeneo\Test\Acceptance\AttributeGroup\InMemoryAttributeGroupRepository'
