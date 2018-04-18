@@ -115,6 +115,7 @@ class FamilyUpdaterSpec extends ObjectBehavior
 
         $skuMobileRqrmt->getAttribute()->willReturn($skuAttribute);
         $skuMobileRqrmt->getChannelCode()->willReturn('mobile');
+        $skuMobileRqrmt->isRequired()->willReturn(true);
 
         $skuPrintRqrmt->getAttribute()->willReturn($skuAttribute);
         $skuPrintRqrmt->getChannelCode()->willReturn('print');
@@ -269,8 +270,11 @@ class FamilyUpdaterSpec extends ObjectBehavior
 
         $family->setCode('mycode')->shouldBeCalled();
         $skuEcommerceRqrmt->getChannelCode()->willReturn('ecommerce');
+        $skuEcommerceRqrmt->isRequired()->willReturn(true);
         $skuMobileRqrmt->getChannelCode()->willReturn('mobile');
+        $skuMobileRqrmt->isRequired()->willReturn(true);
         $nameEcommerceRqrmt->getChannelCode()->willReturn('ecommerce');
+        $nameEcommerceRqrmt->isRequired()->willReturn();
 
         $skuMobileRqrmt->getAttribute()->willReturn($skuAttribute);
 
@@ -691,5 +695,71 @@ class FamilyUpdaterSpec extends ObjectBehavior
                 )
             )
             ->during('update', [$family, $data, []]);
+    }
+
+    function it_sets_requirement_as_required_for_a_new_channel
+    (
+        $channelRepository,
+        $attributeRequirementRepo,
+        FamilyInterface $family,
+        AttributeRepositoryInterface $attributeRepository,
+        AttributeInterface $skuAttribute,
+        AttributeInterface $nameAttribute,
+        AttributeRequirementInterface $skuNewChannelRqrmt,
+        AttributeRequirementInterface $nameNewChannelRqrmt,
+        ChannelInterface $newChannel
+    ) {
+        $data = [
+            'code'                   => 'mycode',
+            'attribute_requirements' => [
+                'new_channel' => ['name'],
+            ]
+        ];
+
+        $family->getAttributeRequirements()->willReturn([$skuNewChannelRqrmt, $nameNewChannelRqrmt]);
+        $family->getId()->willReturn(1);
+
+        $skuAttribute->getCode()->willReturn('sku');
+        $skuAttribute->getType()->willReturn(AttributeTypes::IDENTIFIER);
+        $skuAttribute->getId()->willReturn(1);
+
+        $nameAttribute->getCode()->willReturn('name');
+        $nameAttribute->getType()->willReturn(AttributeTypes::TEXT);
+        $nameAttribute->getId()->willReturn(2);
+
+        $skuNewChannelRqrmt->getChannelCode()->willReturn('new_channel');
+        $skuNewChannelRqrmt->getAttribute()->willReturn($skuAttribute);
+        $skuNewChannelRqrmt->isRequired()->willReturn(true);
+
+        $nameNewChannelRqrmt->getChannelCode()->willReturn('new_channel');
+        $nameNewChannelRqrmt->getAttribute()->willReturn($nameAttribute);
+        $nameNewChannelRqrmt->isRequired()->willReturn(false);
+
+        $newChannel->getId()->willReturn(44);
+
+        $channelRepository->findOneByIdentifier('new_channel')->willReturn($newChannel);
+        $attributeRepository->findOneByIdentifier('sku')->willReturn($skuAttribute);
+        $attributeRepository->findOneByIdentifier('name')->willReturn($nameAttribute);
+
+        $attributeRequirementRepo->findOneBy(
+            [
+                'attribute' => 1,
+                'channel' => 44,
+                'family' => 1,
+            ]
+        )->willReturn($skuNewChannelRqrmt);
+        $attributeRequirementRepo->findOneBy(
+            [
+                'attribute' => 2,
+                'channel'   => 44,
+                'family'    => 1,
+            ]
+        )->willReturn($nameNewChannelRqrmt);
+
+        $family->setCode('mycode')->shouldBeCalled();
+        $nameNewChannelRqrmt->setRequired(true)->shouldBeCalled();
+        $family->addAttributeRequirement($nameNewChannelRqrmt)->shouldBeCalled();
+
+        $this->update($family, $data);
     }
 }
