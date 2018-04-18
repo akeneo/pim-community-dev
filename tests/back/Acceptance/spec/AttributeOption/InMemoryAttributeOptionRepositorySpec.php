@@ -2,13 +2,11 @@
 
 namespace spec\Akeneo\Test\Acceptance\AttributeOption;
 
-use Akeneo\Test\Acceptance\AttributeOption\InMemoryAttributeOptionRepository;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Entity\Attribute;
 use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\AttributeOptionInterface;
-use Prophecy\Argument;
 
 class InMemoryAttributeOptionRepositorySpec extends ObjectBehavior
 {
@@ -17,7 +15,7 @@ class InMemoryAttributeOptionRepositorySpec extends ObjectBehavior
         $this->getIdentifierProperties()->shouldReturn(['code']);
     }
 
-    function it_find_one_attribute_option_by_identifier()
+    function it_finds_one_attribute_option_by_identifier()
     {
         $attribute = new Attribute();
         $attributeOption = $this->createAttributeOption('attribute_option_1', $attribute);
@@ -35,7 +33,7 @@ class InMemoryAttributeOptionRepositorySpec extends ObjectBehavior
         $this->findOneByIdentifier('attribute_option_1')->shouldReturn($attributeOption);
     }
 
-    function it_find_attribute_options_by_criteria()
+    function it_finds_attribute_options_by_criteria()
     {
         $attribute = new Attribute();
         $attributeOption = $this->createAttributeOption('attribute_option_1', $attribute);
