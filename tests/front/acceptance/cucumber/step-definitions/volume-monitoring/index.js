@@ -1,5 +1,65 @@
+const Title = async (nodeElement) => {
+    const getText = async () => {
+        const title = await (await nodeElement.getProperty('textContent')).jsonValue();
+
+        return title.trim();
+    };
+
+    return {getText};
+}
+
+const Header = async (nodeElement) => {
+    const children = {
+        'Title':  {
+            selector: '.AknTitleContainer-title',
+            decorator: Title
+        },
+    };
+    const getChildren = createElementDecorator(children, nodeElement);
+    const getTitle = async () => await getChildren('Title');
+
+    return { getTitle }
+}
+
+const Report = async (nodeElement) => {
+    const children = {
+        'Header':  {
+            selector: '.AknTitleContainer',
+            decorator: Header
+        },
+    };
+    const getChildren = createElementDecorator(children, nodeElement);
+    const getHeader = async () => await getChildren('Header');
+
+    return { getHeader }
+}
+
+// See where to put it
+const config = {
+    'Catalog volume report':  {
+        selector: '.AknDefault-mainContent',
+        decorator: Report
+    }
+}
+
+ const createElementDecorator = (config, parent) => async (key) => {
+    // Throw an error if you don't find the key
+    // 'keyname':  {
+    //     selector: '.report',
+    //     decorator: Report
+    // }
+    const elementConfig = config[key];
+    const element = await parent.$(elementConfig.selector);
+
+    if (elementConfig.decorator) {
+        return elementConfig.decorator(element);
+    }
+
+    return element;
+};
+
 module.exports = async function(cucumber) {
-    const { Given, Then, When } = cucumber;
+    const { Given, Then, When, Before } = cucumber;
     const assert = require('assert');
     const { renderFormExtension } = require('../../tools.js');
 
@@ -10,6 +70,10 @@ module.exports = async function(cucumber) {
             type: 'average_max'
         }
     };
+
+    Before(async function() {
+        this.getElement = createElementDecorator(config, this.page);
+    });
 
     Given('a family with {int} attributes', int => assert(int));
 
@@ -24,9 +88,12 @@ module.exports = async function(cucumber) {
     When('the administrator user asks for the catalog volume monitoring report', async function () {
         await renderFormExtension(this.page, 'pim-catalog-volume-index', data);
 
-        const titleElement = await this.page.waitForSelector('.AknTitleContainer-title');
-        const pageTitle = await (await titleElement.getProperty('textContent')).jsonValue();
-        assert.equal(pageTitle.trim(), 'Catalog volume monitoring');
+        const report = await this.getElement('Catalog volume report');
+        const header = await report.getHeader();
+        const title = await header.getTitle();
+        const text = await title.getText();
+
+        assert.equal(text, 'Catalog volume monitoring');
     });
 
     Then('the report returns that the average number of attributes per family is {int}', async function (int) {
