@@ -61,9 +61,7 @@ function (
                 if (this.getFormData().family) {
                     this.getFamilyIdFromCode(this.getFormData().family).then((familyId) => {
                         this.setChoiceUrl(Routing.generate(this.config.loadUrl, {
-                            alias: 'family-variant-grid',
-                            'family-variant-grid[family_id]': familyId,
-                            'family-variant-grid[localeCode]': UserContext.get('catalogLocale')
+                            'family_id': familyId
                         }));
                         this.readOnly = false;
                         this.setData({[this.fieldName]: null});
@@ -103,29 +101,6 @@ function (
             return FetcherRegistry.getFetcher('family-variant')
                 .fetch(code)
                 .then(familyVariant => familyVariant.labels[UserContext.get('catalogLocale')]);
-        },
-
-        /**
-         * {@inheritdoc}
-         */
-        select2Results(response) {
-            const responseJSON = JSON.parse(response.data);
-            const variantData = responseJSON.data;
-
-            return {
-                more: this.resultsPerPage === Object.keys(variantData).length,
-                results: variantData.map(item => this.convertBackendItem(item))
-            };
-        },
-
-        /**
-         * {@inheritdoc}
-         */
-        convertBackendItem(item) {
-            return {
-                id: item.familyVariantCode,
-                text: item.label
-            };
         },
 
         /**
