@@ -18,7 +18,7 @@ const csvToArray = (csv, separator = ',') => {
     return csv.split(separator).map(value => value.trim());
 };
 
-const renderFormExtension = async (page, extension, data) => {
+const renderView = async (page, extension, data) => {
     await page.evaluate((volumes) => {
         const FormBuilder = require('pim/form-builder');
 
@@ -36,5 +36,5 @@ module.exports = {
     answerJson,
     json,
     csvToArray,
-    renderFormExtension
+    renderView
 };
