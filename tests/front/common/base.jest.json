@@ -1,7 +1,4 @@
 {
-  "transform": {
-    "^.+\\.tsx?$": "ts-jest"
-  },
   "testPathIgnorePatterns": [
     "node_modules",
     "vendor"
@@ -14,8 +11,6 @@
     "web/bundles"
   ],
   "moduleFileExtensions": [
-    "ts",
-    "tsx",
     "js",
     "jsx",
     "json",

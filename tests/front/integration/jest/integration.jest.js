@@ -1,5 +1,5 @@
 const fs = require('fs');
-const baseConfig = JSON.parse(fs.readFileSync(`${__dirname}/../../common/base.jest.json`, 'utf8'));
+const baseConfig = require(`${__dirname}/../../common/base.jest.json`);
 
 const integrationConfig = {
   rootDir: process.cwd(),

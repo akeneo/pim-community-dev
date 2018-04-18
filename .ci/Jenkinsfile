@@ -204,11 +204,11 @@ stage("Test") {
             },
             "frontend-integration-ee": {
                 if (launchUnitTests.equals("yes") && editions.contains("ee")) {
-                    withNodeEE({
+                    withNode({
                         sh "cd /home/jenkins/pim && yarn run webpack-test && yarn run integration"
-                    }, "ee@")
+                    }, "ee")
                 } else {
-                    echo "Skipping frontend CE integration tests"
+                    echo "Skipping frontend EE integration tests"
                 }
             },
             "php-coupling-detector": {
@@ -395,7 +395,7 @@ def withNode(body, edition = "ce") {
     podTemplate(label: "node-" + uuid, containers: [
         containerTemplate(name: "node", ttyEnabled: true, alwaysPullImage: true, command: 'cat', image: "juliensnz/node", resourceRequestCpu: '500m', resourceRequestMemory: '1000Mi')
     ], annotations: [
-        podAnnotation(key: "pod.beta.kubernetes.io/init-containers", value: "[{\"name\": \"pim\", \"imagePullPolicy\": \"Always\", \"image\": \"eu.gcr.io/akeneo-ci/pim-community-dev:pull-request-${env.CHANGE_ID}-build-${env.BUILD_NUMBER}-\" + edition + \", \"command\": [\"sh\", \"-c\", \"cp -Rp /pim /home/jenkins\"], \"volumeMounts\":[{\"name\":\"workspace-volume\",\"mountPath\":\"/home/jenkins\"}]}]")
+        podAnnotation(key: "pod.beta.kubernetes.io/init-containers", value: "[{\"name\": \"pim\", \"imagePullPolicy\": \"Always\", \"image\": \"eu.gcr.io/akeneo-ci/pim-community-dev:pull-request-${env.CHANGE_ID}-build-${env.BUILD_NUMBER}-${edition}\", \"command\": [\"sh\", \"-c\", \"cp -Rp /pim /home/jenkins\"], \"volumeMounts\":[{\"name\":\"workspace-volume\",\"mountPath\":\"/home/jenkins\"}]}]")
     ]) {
         node("node-" + uuid) {
             container("node") {
