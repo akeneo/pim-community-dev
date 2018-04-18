@@ -196,6 +196,7 @@ define(
                 width: '290px',
                 formatNoMatches: function() { return ''; }
             });
+            this.$(this.criteriaValueSelectors.value).on('change', () => { this._updateCriteriaSelectorPosition() });
             this.$(this.criteriaValueSelectors.value).addClass('AknTextField--select2');
         },
 
