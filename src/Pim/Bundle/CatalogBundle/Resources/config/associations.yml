@@ -1,0 +1,13 @@
+services:
+    pim_catalog.association.class_resolver:
+        class: 'Pim\Component\Catalog\Association\AssociationClassResolver'
+        arguments:
+            -
+                Pim\Component\Catalog\Model\Product: Pim\Component\Catalog\Model\ProductAssociation
+                Pim\Component\Catalog\Model\ProductModel: Pim\Component\Catalog\Model\ProductModelAssociation
+
+    pim_catalog.association.missing_association_adder:
+        class: 'Pim\Component\Catalog\Association\MissingAssociationAdder'
+        arguments:
+            - '@pim_catalog.repository.association_type'
+            - '@pim_catalog.association.class_resolver'

@@ -9,13 +9,10 @@ services:
         arguments:
             - '@pim_catalog.repository.attribute'
             - '@pim_catalog.repository.family'
-            - '@pim_catalog.repository.association_type'
             - '@event_dispatcher'
             - '@pim_catalog.builder.entity_with_values'
-            -
-                product: '%pim_catalog.entity.product.class%'
-                association: '%pim_catalog.entity.association.class%'
-                product_model_association: 'Pim\Component\Catalog\Model\ProductModelAssociation'
+            - '@pim_catalog.association.missing_association_adder'
+            - {product: '%pim_catalog.entity.product.class%'}
 
     pim_catalog.builder.entity_with_values:
         class: '%pim_catalog.builder.entity_with_values.class%'

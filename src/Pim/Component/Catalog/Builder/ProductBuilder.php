@@ -2,13 +2,11 @@
 
 namespace Pim\Component\Catalog\Builder;
 
+use Pim\Component\Catalog\Association\MissingAssociationAdder;
 use Pim\Component\Catalog\Model\AssociationAwareInterface;
-use Pim\Component\Catalog\Model\AssociationInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\EntityWithValuesInterface;
-use Pim\Component\Catalog\Model\ProductModelInterface;
 use Pim\Component\Catalog\ProductEvents;
-use Pim\Component\Catalog\Repository\AssociationTypeRepositoryInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Pim\Component\Catalog\Repository\FamilyRepositoryInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -32,47 +30,39 @@ class ProductBuilder implements ProductBuilderInterface
     /** @var FamilyRepositoryInterface */
     protected $familyRepository;
 
-    /** @var AssociationTypeRepositoryInterface */
-    protected $assocTypeRepository;
-
     /** @var EventDispatcherInterface */
     protected $eventDispatcher;
 
     /** @var string */
     protected $productClass;
 
-    /** @var string */
-    protected $associationClass;
-
-    /** @var string */
-    private $productModelAssociationClass;
+    /** @var MissingAssociationAdder */
+    protected $missingAssociationAdder;
 
     /**
      * @param AttributeRepositoryInterface       $attributeRepository Attribute repository
-     * @param FamilyRepositoryInterface          $familyRepository    Family repository
-     * @param AssociationTypeRepositoryInterface $assocTypeRepository Association type repository
-     * @param EventDispatcherInterface           $eventDispatcher     Event dispatcher
+     * @param FamilyRepositoryInterface          $familyRepository Family repository
+     * @param EventDispatcherInterface           $eventDispatcher Event dispatcher
      * @param EntityWithValuesBuilderInterface   $entityWithValuesBuilder
-     * @param array                              $classes             Model classes
+     * @param MissingAssociationAdder            $missingAssociationAdder
+     * @param array                              $classes Model classes
      *
      * @todo @merge Remove unused parameter $valuesResolver in master
      */
     public function __construct(
         AttributeRepositoryInterface $attributeRepository,
         FamilyRepositoryInterface $familyRepository,
-        AssociationTypeRepositoryInterface $assocTypeRepository,
         EventDispatcherInterface $eventDispatcher,
         EntityWithValuesBuilderInterface $entityWithValuesBuilder,
+        MissingAssociationAdder $missingAssociationAdder,
         array $classes
     ) {
         $this->attributeRepository     = $attributeRepository;
         $this->familyRepository        = $familyRepository;
-        $this->assocTypeRepository     = $assocTypeRepository;
         $this->eventDispatcher         = $eventDispatcher;
         $this->productClass            = $classes['product'];
-        $this->associationClass        = $classes['association'];
-        $this->productModelAssociationClass = $classes['product_model_association'];
         $this->entityWithValuesBuilder = $entityWithValuesBuilder;
+        $this->missingAssociationAdder = $missingAssociationAdder;
     }
 
     /**
@@ -103,14 +93,7 @@ class ProductBuilder implements ProductBuilderInterface
      */
     public function addMissingAssociations(AssociationAwareInterface $entity)
     {
-        $missingAssocTypes = $this->assocTypeRepository->findMissingAssociationTypes($entity);
-        if (!empty($missingAssocTypes)) {
-            foreach ($missingAssocTypes as $associationType) {
-                $association = $this->getNewAssociation($entity);
-                $association->setAssociationType($associationType);
-                $entity->addAssociation($association);
-            }
-        }
+        $this->missingAssociationAdder->addMissingAssociations($entity);
 
         return $this;
     }
@@ -134,21 +117,5 @@ class ProductBuilder implements ProductBuilderInterface
         $data
     ) {
         $this->entityWithValuesBuilder->addOrReplaceValue($values, $attribute, $locale, $scope, $data);
-    }
-
-    /**
-     * @param AssociationAwareInterface $entity
-     *
-     * @return AssociationInterface
-     */
-    private function getNewAssociation(AssociationAwareInterface $entity): AssociationInterface
-    {
-        $class = $this->associationClass;
-
-        if ($entity instanceof ProductModelInterface) {
-            $class = $this->productModelAssociationClass;
-        }
-
-        return new $class();
     }
 }

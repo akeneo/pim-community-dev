@@ -32,6 +32,8 @@ interface ProductBuilderInterface extends EntityWithValuesBuilderInterface
      * @param AssociationAwareInterface $entity
      *
      * @return EntityWithValuesBuilderInterface
+     *
+     * @deprecated since 2.3 in favor of \Pim\Component\Catalog\Association\MissingAssociationAdder
      */
     public function addMissingAssociations(AssociationAwareInterface $entity);
 }
