@@ -118,7 +118,7 @@ legacy:
                     selenium2:
                         wd_host: 'http://127.0.0.1:4444/wd/hub'
             base_url: 'http://127.0.0.1/'
-            files_path: 'features/Context/fixtures/'
+            files_path: 'tests/legacy/features/Context/fixtures/'
         Behat\Symfony2Extension:
             kernel:
                 env: behat

@@ -20,9 +20,9 @@
     },
     "autoload-dev": {
         "psr-0": {
-            "Context": "features/",
-            "PimEnterprise\\Behat": "features/",
-            "Pim\\Behat": "vendor/akeneo/pim-community-dev/features/"
+            "Context": "tests/legacy/features/",
+            "PimEnterprise\\Behat": "tests/legacy/features/",
+            "Pim\\Behat": "vendor/akeneo/pim-community-dev/tests/legacy/features/"
         },
         "psr-4": {
             "Akeneo\\Test\\IntegrationTestsBundle\\": "vendor/akeneo/pim-community-dev/tests/back/IntegrationTestsBundle/",
