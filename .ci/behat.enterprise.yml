@@ -147,6 +147,7 @@ acceptance:
             contexts_services:
                 - test.locale.context
                 - test.channel.context
+                - test.catalog_volume_limits.attribute_per_family_context
             filters:
                 tags: '@acceptance-back'
     extensions:
@@ -154,6 +155,7 @@ acceptance:
            imports:
                - "tests/back/Acceptance/Resources/config/behat/services.yml"
                - "vendor/akeneo/pim-community-dev/tests/back/Acceptance/Resources/config/behat/services.yml"
+               - "vendor/akeneo/pim-community-dev/src/Pim/Bundle/CatalogVolumeMonitoringBundle/tests/Acceptance/Resources/config/behat/services.yml"
         FriendsOfBehat\CrossContainerExtension: ~
         FriendsOfBehat\SymfonyExtension:
             kernel:
