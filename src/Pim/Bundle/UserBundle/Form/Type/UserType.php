@@ -50,7 +50,7 @@ class UserType extends AbstractType
     protected $productGridFilterTypeClassName;
 
     /** @var array */
-    private $eventSubscribers;
+    private $eventSubscribers = [];
 
     /**
      * @param RequestStack              $requestStack
