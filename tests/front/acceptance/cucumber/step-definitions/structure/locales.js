@@ -1,6 +1,7 @@
 module.exports = function(cucumber) {
     const { Given } = cucumber;
-    const createLocale = require('../../factory/locale');
+    const LocaleBuilder = require('../../../../common/builder/locale');
+    const createLocale = (localeCode) => (new LocaleBuilder()).setCode(localeCode).build();
     const  { answerJson, csvToArray } = require('../../tools');
 
     Given('the locales {string}', async function(csvLocaleCodes) {

@@ -1,12 +1,11 @@
-const createUser = require('./factory/user');
+const UserBuilder = require('../../common/builder/user');
 const puppeteer = require('puppeteer');
 const extensions = require(`${process.cwd()}/web/js/extensions.json`);
 const fs = require('fs');
 const path = require('path');
 const os = require('os');
 
-const createLocale = require('./factory/locale');
-const  { csvToArray } = require('./tools');
+const userBuilder = new UserBuilder();
 
 module.exports = function(cucumber) {
     const {Before, After, Status} = cucumber;
@@ -40,7 +39,7 @@ module.exports = function(cucumber) {
             if (request.url().includes('/rest/user/')) {
                 request.respond({
                     contentType: 'application/json',
-                    body: `${JSON.stringify(createUser())}`
+                    body: `${JSON.stringify(userBuilder.build())}`
                 });
             }
 
