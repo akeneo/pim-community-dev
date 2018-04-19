@@ -8,6 +8,7 @@
 - PIM-7043: Remove the last pagination button if it has more than 10 000 products on the product grid.
 - PIM-7299: Add pagination for family variants on several screens
 - PIM-7313: prevent the same job to be executed by two different daemons due to race condition
+- PIM-7297: Fix memory leak on completeness purge command
 
 ## BC Breaks
 
