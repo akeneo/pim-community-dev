@@ -53,6 +53,6 @@ find ./src/ -type f -print0 | xargs -0 sed -i 's/PimEnterprise\Bundle\EnrichBund
 find ./src/ -type f -print0 | xargs -0 sed -i 's/PimEnterprise\Bundle\EnrichBundle\Provider\Form/PimEnterprise\Bundle\SecurityBundle\Form\Provider/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/PimEnterprise\Bundle\EnrichBundle\Form\Type/PimEnterprise\Bundle\SecurityBundle\Form\Type/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/PimEnterprise\Bundle\EnrichBundle\Connector\Processor\MassEdit\Product/PimEnterprise\Bundle\SecurityBundle\MassEdit\Processor/g'
-
+find ./src/ -type f -print0 | xargs -0 sed -i 's/PimEnterprise\Bundle\EnrichBundle\NormalizerProduct\PublishedProductNormalizer/PimEnterprise\Component\Workflow\Normalizer\InternalApi\Processor\PublishedProductNormalizer/g'
 ```
 

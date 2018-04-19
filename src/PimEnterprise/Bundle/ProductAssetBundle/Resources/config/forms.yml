@@ -75,4 +75,4 @@ services:
     pimee_product_asset.form_event_listener.user_preference_subscriber:
         class: 'PimEnterprise\Bundle\ProductAssetBundle\Form\EventListener\UserPreferencesSubscriber'
         arguments:
-            - '@pim_enrich.repository.attribute'
+            - '@pimee_enrich.repository.asset_category_choices'
