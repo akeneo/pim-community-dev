@@ -15,7 +15,7 @@ const createLocale = require('./locale');
  * @param {String} category_tree
  * @returns {Object}
  */
-module.exports = (code, locales = [], labels = null, category_tree = null) => {
+export default (code, locales = [], labels = null, category_tree = null) => {
     const activatedLocaleCode = ['en_US', 'fr_FR', 'de_DE'];
     const localeCodes = 0 === locales.length ? activatedLocaleCode : locales;
 

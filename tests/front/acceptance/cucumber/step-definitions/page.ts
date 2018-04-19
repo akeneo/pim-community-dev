@@ -1,4 +1,6 @@
-module.exports = function(cucumber) {
+import * as cucumber from 'cucumber';
+
+export default function() {
     const {Then} = cucumber;
     const assert = require('assert');
 
@@ -7,4 +9,4 @@ module.exports = function(cucumber) {
         const pageTitle = await (await titleElement.getProperty('textContent')).jsonValue();
         assert.equal(pageTitle.trim(), string);
     });
-};
+}

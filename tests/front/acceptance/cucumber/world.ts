@@ -1,17 +1,16 @@
-const createUser = require('./factory/user');
-const puppeteer = require('puppeteer');
+import * as puppeteer from 'puppeteer';
+import * as cucumber from 'cucumber';
+import * as fs from 'fs';
+import * as path from 'path';
+import { createUser } from './factory/user';
+
 const extensions = require(`${process.cwd()}/web/js/extensions.json`);
-const fs = require('fs');
-const path = require('path');
-const os = require('os');
 
-const createLocale = require('./factory/locale');
-const  { csvToArray } = require('./tools');
-
-module.exports = function(cucumber) {
-    const {Before, After, Status} = cucumber;
+const World: cucumber.World = function() {
+    const { Before, After, Status } = cucumber;
 
     Before({timeout: 10 * 1000}, async function() {
+
         this.baseUrl = 'http://pim.com/';
         this.browser = await puppeteer.launch({
             ignoreHTTPSErrors: true,
@@ -24,13 +23,13 @@ module.exports = function(cucumber) {
         await this.page.setRequestInterception(true);
 
         this.consoleLogs = [];
-        this.page.on('console', message => {
+        this.page.on('console', (message: puppeteer.ConsoleMessage) => {
             if (['error', 'warning'].includes(message.type())) {
                 this.consoleLogs.push(message.text());
             }
         });
 
-        this.page.on('request', request => {
+        this.page.on('request', (request: puppeteer.Request) => {
             if (request.url() === this.baseUrl) {
                 request.respond({
                     contentType: 'text/html',
@@ -63,16 +62,16 @@ module.exports = function(cucumber) {
         });
 
         await this.page.goto(this.baseUrl);
-        await this.page.evaluate(async () => await require('pim/fetcher-registry').initialize());
-        await this.page.evaluate(async () => await require('pim/user-context').initialize());
-        await this.page.evaluate(async () => await require('pim/init-translator').fetch());
+        await this.page.evaluate(`require('pim/fetcher-registry').initialize()`);
+        await this.page.evaluate(`require('pim/user-context').initialize()`);
+        await this.page.evaluate(`require('pim/init-translator').fetch()`);
     });
 
-    After(async function(scenario) {
+    After(async function(scenario: cucumber.HookScenarioResult) {
         if (Status.FAILED === scenario.result.status) {
             if (0 < this.consoleLogs.length) {
                 const logMessages = this.consoleLogs.reduce(
-                    (result, message) => `${result}\nError logged: ${message}`, ''
+                    (result: string, message: string) => `${result}\nError logged: ${message}`, ''
                 );
 
                 this.attach(logMessages, 'text/plain');
@@ -85,4 +84,8 @@ module.exports = function(cucumber) {
             await this.browser.close();
         }
     });
-};
+}
+
+export default {
+    World: World
+}

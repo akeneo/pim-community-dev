@@ -1,7 +1,8 @@
 /**
  * @returns {Object}
  */
-module.exports = () => {
+
+ export function createUser(): object {
     return {
         username: 'admin',
         email: 'admin@example.com',
@@ -23,4 +24,4 @@ module.exports = () => {
             id: 1
         }
     };
-};
+ }
