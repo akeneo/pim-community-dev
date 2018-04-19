@@ -2,7 +2,7 @@
 
 namespace Pim\Component\User;
 
-use Pim\Component\Catalog\Model\CategoryInterface;
+use Akeneo\Component\Classification\Model\CategoryInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 interface EntityUploadedImageInterface
