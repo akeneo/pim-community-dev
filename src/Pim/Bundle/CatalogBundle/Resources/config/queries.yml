@@ -24,3 +24,8 @@ services:
         class: '%pim_catalog.doctrine.query.count_entity_with_family_variant.class%'
         arguments:
             - '@doctrine.orm.entity_manager'
+
+    pim_catalog.doctrine.query.count_products_with_family:
+        class: 'Pim\Bundle\CatalogBundle\Doctrine\ORM\Query\CountProductsWithFamily'
+        arguments:
+            - '@doctrine.orm.entity_manager'
