@@ -89,7 +89,6 @@ class ProductModelAssociationProcessor extends AbstractProcessor implements
         $parameters = $this->stepExecution->getJobParameters();
         $enabledComparison = $parameters->get('enabledComparison');
         if ($enabledComparison) {
-
             $item = $this->filterIdenticalData($entity, $item);
 
             if (empty($item)) {

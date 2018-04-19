@@ -1542,6 +1542,36 @@ class FixturesContext extends BaseFixturesContext
     }
 
     /**
+     * @param string    $code
+     * @param TableNode $table
+     *
+     * @Then /^the product model "([^"]*)" should have the following associations?:$/
+     */
+    public function theProductModelShouldHaveTheFollowingAssociations($code, TableNode $table)
+    {
+        $this->getMainContext()->getSubcontext('hook')->clearUOW();
+        $filter = $this->getContainer()->get('pim_catalog.comparator.filter.product_model_association');
+
+        $expected['associations'] = [];
+        foreach ($table->getHash() as $row) {
+            if (isset($row['products'])) {
+                $expected['associations'][$row['type']]['products'] = explode(',', $row['products']);
+            }
+
+            if (isset($row['groups'])) {
+                $expected['associations'][$row['type']]['groups'] = explode(',', $row['groups']);
+            }
+
+            if (isset($row['product_models'])) {
+                $expected['associations'][$row['type']]['product_models'] = explode(',', $row['product_models']);
+            }
+        }
+
+        $filtered = $filter->filter($this->getProductModel($code), $expected);
+        Assert::assertSame([], $filtered);
+    }
+
+    /**
      * @param string $productCode
      * @param string $familyCode
      *
