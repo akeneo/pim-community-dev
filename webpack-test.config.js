@@ -7,7 +7,7 @@ const prodConfig = require('./webpack.config.js');
 const config = Object.assign({}, prodConfig, {
     entry: [
         'babel-polyfill',
-        path.resolve(__dirname, './webpack/test/templates/index.js')
+        path.resolve(__dirname, './tests/front/common/templates/index.js')
     ],
     output: {
         path: path.resolve('./web/test_dist/'),
@@ -21,7 +21,7 @@ config.plugins.push(new HtmlWebpackInlineSourcePlugin());
 config.plugins.push(
     new HtmlWebpackPlugin({
         inject: 'head',
-        template: path.resolve(__dirname, './webpack/test/templates/index.html'),
+        template: path.resolve(__dirname, './tests/front/common/templates/index.html'),
         minify: {},
         inlineSource: '.(js)$'
     })

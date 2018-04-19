@@ -1,0 +1,23 @@
+{
+  "testPathIgnorePatterns": [
+    "node_modules",
+    "vendor"
+  ],
+  "projects": [
+    "<rootDir>/web/bundles"
+  ],
+  "moduleDirectories": [
+    "node_modules",
+    "web/bundles"
+  ],
+  "moduleFileExtensions": [
+    "js",
+    "jsx",
+    "json",
+    "node"
+  ],
+  "collectCoverage": true,
+  "coverageReporters": [
+    "html"
+  ]
+}
