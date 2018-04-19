@@ -44,7 +44,10 @@
 - Remove `Oro\Bundle\UserBundle\DependencyInjection`
 - Remove `Oro\Bundle\UserBundle\OroUserBundle`
 - Remove `Pim\Bundle\ImportExportBundle\JobLabel\TranslatedLabelProvider`
+
 - Change constructor of `Pim\Bundle\ImportExportBundle\Datagrid\JobDatagridProvider`, remove `Pim\Bundle\ImportExportBundle\JobLabel\TranslatedLabelProvider` argument 
 - Change constructor of `Pim\Bundle\ImportExportBundle\Form\Type\JobInstanceFormType`, remove `Pim\Bundle\ImportExportBundle\JobLabel\TranslatedLabelProvider` argument 
 - Change constructor of `Pim\Bundle\ImportExportBundle\Normalizer\JobExecutionNormalizer`, remove `Pim\Bundle\ImportExportBundle\JobLabel\TranslatedLabelProvider` argument 
 - Change constructor of `Pim\Bundle\ImportExportBundle\Normalizer\StepExecutionNormalizer`, remove `Pim\Bundle\ImportExportBundle\JobLabel\TranslatedLabelProvider` argument  
+
+- Change constructor of `Pim\Bundle\UserBundle\Form\Type\UserType`, remove `Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface` and `Pim\Bundle\UserBundle\Form\Subscriber\UserSubscriber` argument  
