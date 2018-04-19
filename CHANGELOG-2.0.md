@@ -15,6 +15,10 @@
 
 - Changes the constructor of `Pim\Bundle\EnrichBundle\Controller\Rest\FamilyVariant` to add `Akeneo\Component\StorageUtils\Repository\SearchableRepositoryInterface`
 
+## Improvements
+
+- PIM-7321: Prevent concurrent calculation of the completeness
+
 # 2.0.21 (2018-04-10)
 
 ## Improvements
