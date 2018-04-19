@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Test\IntegrationTestsBundle\Fixture\EntityWithValue\Builder;
+namespace Akeneo\Test\Common\Builder\EntityWithValue\Builder;
 
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
-use Akeneo\Test\IntegrationTestsBundle\Fixture\EntityBuilder;
-use Akeneo\Test\IntegrationTestsBundle\Fixture\EntityWithValue\Code;
-use Akeneo\Test\IntegrationTestsBundle\Fixture\EntityWithValue\ListOfCodes;
-use Akeneo\Test\IntegrationTestsBundle\Fixture\EntityWithValue\Value;
-use Akeneo\Test\IntegrationTestsBundle\Fixture\EntityWithValue\ListOfValues;
+use Akeneo\Test\Common\Builder\EntityBuilder;
+use Akeneo\Test\Common\Builder\EntityWithValue\Code;
+use Akeneo\Test\Common\Builder\EntityWithValue\ListOfCodes;
+use Akeneo\Test\Common\Builder\EntityWithValue\Value;
+use Akeneo\Test\Common\Builder\EntityWithValue\ListOfValues;
 use Pim\Component\Catalog\Model\ProductModelInterface;
 
 /**

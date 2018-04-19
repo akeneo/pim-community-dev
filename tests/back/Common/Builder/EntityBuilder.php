@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Test\Acceptance\Common;
+namespace Akeneo\Test\Common\Builder;
 
 use Akeneo\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
@@ -44,7 +44,7 @@ final class EntityBuilder
      *
      * @return object
      *
-     * @throws \Exception
+     * @throws \InvalidArgumentException
      */
     public function build(array $data)
     {
@@ -62,7 +62,9 @@ final class EntityBuilder
                 );
             }
 
-            throw new \Exception("An error occurred on resource creation:" . implode("\n", $errorMessages));
+            throw new \InvalidArgumentException(
+                "An error occurred on resource creation:".implode("\n", $errorMessages)
+            );
         }
 
         return $entity;

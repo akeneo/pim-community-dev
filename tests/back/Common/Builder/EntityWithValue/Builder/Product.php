@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Test\IntegrationTestsBundle\Fixture\EntityWithValue\Builder;
+namespace Akeneo\Test\Common\Builder\EntityWithValue\Builder;
 
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
-use Akeneo\Test\IntegrationTestsBundle\Fixture\EntityWithValue\Association;
-use Akeneo\Test\IntegrationTestsBundle\Fixture\EntityWithValue\Code;
-use Akeneo\Test\IntegrationTestsBundle\Fixture\EntityWithValue\ListOfCodes;
-use Akeneo\Test\IntegrationTestsBundle\Fixture\EntityWithValue\Status;
-use Akeneo\Test\IntegrationTestsBundle\Fixture\EntityWithValue\Value;
-use Akeneo\Test\IntegrationTestsBundle\Fixture\EntityWithValue\ListOfValues;
+use Akeneo\Test\Common\Builder\EntityWithValue\Association;
+use Akeneo\Test\Common\Builder\EntityWithValue\Code;
+use Akeneo\Test\Common\Builder\EntityWithValue\ListOfCodes;
+use Akeneo\Test\Common\Builder\EntityWithValue\Status;
+use Akeneo\Test\Common\Builder\EntityWithValue\Value;
+use Akeneo\Test\Common\Builder\EntityWithValue\ListOfValues;
 use Doctrine\Common\Collections\Collection;
 use Pim\Component\Catalog\Builder\ProductBuilderInterface;
 use Pim\Component\Catalog\Model\ProductInterface;

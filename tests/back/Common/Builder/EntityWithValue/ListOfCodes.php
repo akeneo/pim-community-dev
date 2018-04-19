@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Test\IntegrationTestsBundle\Fixture\EntityWithValue;
+namespace Akeneo\Test\Common\Builder\EntityWithValue;
 
 final class ListOfCodes
 {
@@ -19,7 +19,7 @@ final class ListOfCodes
     private function __construct(array $arrayOfCodes)
     {
         foreach ($arrayOfCodes as $code) {
-            if (!$code instanceOf Code){
+            if (!$code instanceOf Code) {
                 throw new \InvalidArgumentException('You must provider a list of Code object');
             }
         }
