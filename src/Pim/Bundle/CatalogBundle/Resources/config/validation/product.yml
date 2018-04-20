@@ -5,8 +5,7 @@ Pim\Component\Catalog\Model\Product:
         - UniqueAxis
         - api
     constraints:
-        - Pim\Component\Catalog\Validator\Constraints\UniqueEntity:
-            entityClass: Pim\Component\Catalog\Model\ProductInterface
+        - Pim\Component\Catalog\Validator\Constraints\Product\UniqueProductEntity: ~
         - Pim\Component\Catalog\Validator\Constraints\NotEmptyFamily:
             groups:
               - api
