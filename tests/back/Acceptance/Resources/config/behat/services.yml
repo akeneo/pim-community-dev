@@ -1,28 +1,28 @@
 services:
     ### Entity builder
     test.channel.builder:
-        class: 'Akeneo\Test\Common\Builder\EntityBuilder'
+        class: 'Akeneo\Test\Common\EntityBuilder'
         arguments:
             - '@__symfony__.pim_catalog.factory.channel'
             - '@__symfony__.pim_catalog.updater.channel'
             - '@__symfony__.validator'
 
     test.locale.builder:
-        class: 'Akeneo\Test\Common\Builder\EntityBuilder'
+        class: 'Akeneo\Test\Common\EntityBuilder'
         arguments:
             - '@__symfony__.pim_catalog.factory.locale'
             - '@__symfony__.pim_catalog.updater.locale'
             - '@__symfony__.validator'
 
     test.category.builder:
-        class: 'Akeneo\Test\Common\Builder\EntityBuilder'
+        class: 'Akeneo\Test\Common\EntityBuilder'
         arguments:
             - '@__symfony__.pim_catalog.factory.category'
             - '@__symfony__.pim_catalog.updater.category'
             - '@__symfony__.validator'
 
     test.currency.builder:
-        class: 'Akeneo\Test\Common\Builder\EntityBuilder'
+        class: 'Akeneo\Test\Common\EntityBuilder'
         arguments:
             - '@__symfony__.pim_catalog.factory.currency'
             - '@__symfony__.pim_catalog.updater.currency'
@@ -50,7 +50,7 @@ services:
             - '@__symfony__.validator'
 
     test.catalog.product.builder:
-        class: 'Akeneo\Test\Common\Builder\EntityWithValue\Builder\Product'
+        class: 'Akeneo\Test\Common\EntityWithValue\Builder\Product'
         shared: false
         arguments:
             - '@__symfony__.pim_catalog.builder.product'

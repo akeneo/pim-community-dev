@@ -72,7 +72,7 @@ services:
 
     ### Builder
     akeneo_integration_tests.catalog.product.builder:
-        class: 'Akeneo\Test\Common\Builder\EntityWithValue\Builder\Product'
+        class: 'Akeneo\Test\Common\EntityWithValue\Builder\Product'
         shared: false
         arguments:
             - '@pim_catalog.builder.product'
@@ -80,7 +80,7 @@ services:
             - '@validator'
 
     akeneo_integration_tests.base.product_model.builder:
-        class: 'Akeneo\Test\Common\Builder\EntityBuilder'
+        class: 'Akeneo\Test\Common\EntityBuilder'
         shared: false
         arguments:
             - '@pim_catalog.factory.product_model'
@@ -88,7 +88,7 @@ services:
             - '@validator'
 
     akeneo_integration_tests.catalog.product_model.builder:
-        class: 'Akeneo\Test\Common\Builder\EntityWithValue\Builder\ProductModel'
+        class: 'Akeneo\Test\Common\EntityWithValue\Builder\ProductModel'
         shared: false
         arguments:
             - '@akeneo_integration_tests.base.product_model.builder'

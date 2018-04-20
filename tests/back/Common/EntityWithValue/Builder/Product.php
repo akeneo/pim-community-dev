@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Test\Common\Builder\EntityWithValue\Builder;
+namespace Akeneo\Test\Common\EntityWithValue\Builder;
 
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
-use Akeneo\Test\Common\Builder\EntityWithValue\Association;
-use Akeneo\Test\Common\Builder\EntityWithValue\Code;
-use Akeneo\Test\Common\Builder\EntityWithValue\ListOfCodes;
-use Akeneo\Test\Common\Builder\EntityWithValue\Status;
-use Akeneo\Test\Common\Builder\EntityWithValue\Value;
-use Akeneo\Test\Common\Builder\EntityWithValue\ListOfValues;
+use Akeneo\Test\Common\EntityWithValue\Association;
+use Akeneo\Test\Common\EntityWithValue\Code;
+use Akeneo\Test\Common\EntityWithValue\ListOfCodes;
+use Akeneo\Test\Common\EntityWithValue\ListOfValues;
+use Akeneo\Test\Common\EntityWithValue\Status;
+use Akeneo\Test\Common\EntityWithValue\Value;
 use Doctrine\Common\Collections\Collection;
 use Pim\Component\Catalog\Builder\ProductBuilderInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
