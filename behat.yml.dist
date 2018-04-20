@@ -129,14 +129,14 @@ legacy:
 
 acceptance:
     suites:
-        acceptance:
+        pim:
             paths:
-                - '%paths.base%/tests/features/'
+                - '%paths.base%/tests/features/pim'
             contexts_services:
                 - test.locale.context
                 - test.channel.context
             filters:
-                tags: '@acceptance'
+                tags: '@acceptance-back'
         volume-monitoring:
             paths:
                 - '%paths.base%/tests/features/volume-monitoring'

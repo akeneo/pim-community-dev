@@ -3,7 +3,7 @@ Feature: Monitor catalog volume
   As an administrator user
   I want to monitor the volume of product models
 
-  @acceptance
+  @acceptance-back
   Scenario: Monitor the number of product models
     Given a catalog with 10 product models
     When the administrator user asks for the catalog volume monitoring report

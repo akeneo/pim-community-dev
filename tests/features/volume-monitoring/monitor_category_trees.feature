@@ -3,7 +3,7 @@ Feature: Monitor catalog volume
   As an administrator user
   I want to monitor the volume of category trees
 
-  @acceptance
+  @acceptance-back
   Scenario: Monitor the number of category trees
     Given a catalog with 3 category trees
     And the limit of the number of category trees is set to 5
@@ -11,7 +11,7 @@ Feature: Monitor catalog volume
     Then the report returns that the number of category trees is 3
     And the report does not warn the users that the number of category trees is high
 
-  @acceptance
+  @acceptance-back
   Scenario: Warn the user administrator when the maximum number of category trees is high
     Given a catalog with 6 category trees
     And the limit of the number of category trees is set to 5

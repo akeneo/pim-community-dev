@@ -3,7 +3,7 @@ Feature: Monitor catalog volume
   As an administrator user
   I want to monitor the volume of attributes
 
-  @acceptance
+  @acceptance-back
   Scenario: Monitor the number of attributes
     Given a catalog with 99 attributes
     And the limit of the number of attributes is set to 100
@@ -11,7 +11,7 @@ Feature: Monitor catalog volume
     Then the report returns that the number of attributes is 99
     And the report does not warn the users that the number of attributes is high
 
-  @acceptance
+  @acceptance-back
   Scenario: Warn the user administrator when the maximum number of attributes is high
     Given a catalog with 101 attributes
     And the limit of the number of attributes is set to 100

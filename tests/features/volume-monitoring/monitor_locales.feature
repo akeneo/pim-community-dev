@@ -3,7 +3,7 @@ Feature: Monitor catalog volume
   As an administrator user
   I want to monitor the volume of locales
 
-  @acceptance
+  @acceptance-back
   Scenario: Monitor the number of locales
     Given a catalog with 5 locales
     And the limit of the number of locales is set to 6
@@ -11,7 +11,7 @@ Feature: Monitor catalog volume
     Then the report returns that the number of locales is 5
     And the report does not warn the users that the number of locales is high
 
-  @acceptance
+  @acceptance-back
   Scenario: Warn the user administrator when the maximum number of locales is high
     Given a catalog with 6 locales
     And the limit of the number of locales is set to 5

@@ -3,7 +3,7 @@ Feature: Monitor catalog volume
   As an administrator user
   I want to monitor the volume of variant products
 
-  @acceptance
+  @acceptance-back
   Scenario: Monitor the number of variant products
     Given a catalog with 10 variant products
     When the administrator user asks for the catalog volume monitoring report

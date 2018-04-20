@@ -3,7 +3,7 @@ Feature: Monitor catalog volume
   As an administrator user
   I want to monitor the volume of options per attribute
 
-  @acceptance @acceptance-front
+  @acceptance-back
   Scenario: Monitor the number of options per attribute
     Given an attribute with 10 options
     And an attribute with 4 options

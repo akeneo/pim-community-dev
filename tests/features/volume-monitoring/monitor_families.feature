@@ -3,7 +3,7 @@ Feature: Monitor catalog volume
   As an administrator user
   I want to monitor the volume of families
 
-  @acceptance
+  @acceptance-back
   Scenario: Monitor the number of families
     Given a catalog with 10 families
     And the limit of the number of families is set to 11
@@ -11,7 +11,7 @@ Feature: Monitor catalog volume
     Then the report returns that the number of families is 10
     And the report does not warn the users that the number of families is high
 
-  @acceptance
+  @acceptance-back
   Scenario: Warn the user administrator when the maximum number of families is high
     Given a catalog with 11 families
     And the limit of the number of families is set to 10

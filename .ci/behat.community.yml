@@ -136,13 +136,12 @@ legacy:
 
 acceptance:
     suites:
-        acceptance:
+        pim:
             paths:
-                - '%paths.base%/tests/features/'
+                - '%paths.base%/tests/features/pim'
             contexts_services:
                 - test.locale.context
                 - test.channel.context
-                - test.catalog_volume_limits.attribute_per_family_context
             filters:
                 tags: '@acceptance-back'
         volume-monitoring:
@@ -166,10 +165,9 @@ acceptance:
                 - test.catalog_volume_limits.product_model_context
                 - test.catalog_volume_limits.product_value_context
             filters:
-                tags: '@acceptance'
+                tags: '@acceptance-back'
 
     extensions:
-        Liuggio\Fastest\Behat\ListFeaturesExtension\Extension: ~
         FriendsOfBehat\ContextServiceExtension:
            imports:
                - "tests/back/Acceptance/Resources/config/behat/services.yml"
