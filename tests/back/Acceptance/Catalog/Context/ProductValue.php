@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Test\Acceptance\Catalog\Context;
 
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
-use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
+use Akeneo\Test\Acceptance\Product\InMemoryProductRepository;
 use Akeneo\Test\IntegrationTestsBundle\Fixture\EntityWithValue\Builder;
 use Behat\Behat\Context\Context;
 use Pim\Bundle\CatalogBundle\Entity\Attribute;
@@ -35,29 +35,19 @@ final class ProductValue implements Context
     /** @var ProductRepositoryInterface */
     private $productRepository;
 
-    /** @var ObjectUpdaterInterface */
-    private $productUpdater;
-
     /** @var ValidatorInterface */
     private $productValidator;
-
-    /** @var SaverInterface */
-    private $productSaver;
 
     public function __construct(
         SaverInterface $attributeSaver,
         Builder\Product $productBuilder,
-        ProductRepositoryInterface $productRepository,
-        ObjectUpdaterInterface $productUpdater,
-        ValidatorInterface $productValidator,
-        SaverInterface $productSaver
+        InMemoryProductRepository $productRepository,
+        ValidatorInterface $productValidator
     ) {
         $this->attributeSaver = $attributeSaver;
         $this->productBuilder = $productBuilder;
         $this->productRepository = $productRepository;
-        $this->productUpdater = $productUpdater;
         $this->productValidator = $productValidator;
-        $this->productSaver = $productSaver;
     }
 
     /**
@@ -72,7 +62,7 @@ final class ProductValue implements Context
         $this->attributeSaver->save($attribute);
 
         $product = $this->productBuilder->withIdentifier($identifier)->build();
-        $this->productSaver->save($product);
+        $this->productRepository->save($product);
     }
 
     /**
@@ -80,11 +70,13 @@ final class ProductValue implements Context
      */
     public function aProductIsCreatedWithIdentifier($identifier)
     {
-        $this->updatedProduct = $this->productBuilder->withIdentifier($identifier)->build();
+        $this->updatedProduct = $this->productBuilder->withIdentifier($identifier)->build(false);
     }
 
     /**
      * @Then an error should be raised because of :errorMessage
+     *
+     * @throws \Exception
      */
     public function anErrorShouldBeRaisedBecauseOf($errorMessage)
     {

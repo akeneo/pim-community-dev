@@ -7,7 +7,7 @@ use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\CategoryInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
 use Pim\Component\Catalog\Validator\Constraints\Product\UniqueProductModelEntity;
-use Pim\Component\Catalog\Validator\Constraints\UniqueEntityValidator;
+use Pim\Component\Catalog\Validator\Constraints\Product\UniqueProductModelEntityValidator;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
@@ -26,7 +26,7 @@ class UniqueProductModelEntityValidatorSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType(UniqueEntityValidator::class);
+        $this->shouldHaveType(UniqueProductModelEntityValidator::class);
     }
 
     function it_adds_violation_to_the_context_if_a_product_already_exist_in_the_database(
@@ -44,7 +44,7 @@ class UniqueProductModelEntityValidatorSpec extends ObjectBehavior
         $productModelInDatabase->getId()->willReturn(40);
         $productModel->getId()->willReturn(64);
 
-        $context->buildViolation('The same identifier is already set on another product')
+        $context->buildViolation('The same identifier is already set on another product model')
             ->willReturn($constraintViolationBuilder);
         $constraintViolationBuilder->atPath('code')->willReturn($constraintViolationBuilder);
         $constraintViolationBuilder->addViolation()->ShouldBeCalled();

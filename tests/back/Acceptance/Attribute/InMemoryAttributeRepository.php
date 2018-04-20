@@ -169,7 +169,11 @@ class InMemoryAttributeRepository implements AttributeRepositoryInterface, Saver
      */
     public function getIdentifier()
     {
-        return current($this->findBy(['type' => AttributeTypes::IDENTIFIER]));
+        $attribute =$this->attributes->filter(function (AttributeInterface $attribute) {
+            return  $attribute->getType() === AttributeTypes::IDENTIFIER;
+        })->first();
+
+        return false !== $attribute ? $attribute : null;
     }
 
     /**

@@ -76,11 +76,16 @@ final class Product
     }
 
     /**
+     * Why do we need the $dataValidation param? We are using anemic model, that means we validate model before
+     * its creation. Sometimes we need to create invalid model to check validation rules.
+     *
+     * @param bool $dataValidation
+     *
      * @return ProductInterface
      *
      * @throws \InvalidArgumentException
      */
-    public function build(): ProductInterface
+    public function build($dataValidation = true): ProductInterface
     {
         $productStandardFormat = [
             'values' => $this->values->toStandardFormat(),
@@ -94,7 +99,7 @@ final class Product
         $this->productUpdater->update($product, $productStandardFormat);
 
         $errors = $this->validator->validate($product);
-        if (0 < $errors->count()) {
+        if ($dataValidation && 0 < $errors->count()) {
             throw new \InvalidArgumentException(sprintf('The given product data are invalid: %s', $errors));
         }
 

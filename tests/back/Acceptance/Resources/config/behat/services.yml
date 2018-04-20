@@ -95,7 +95,6 @@ services:
             - '@__symfony__.pim_catalog.repository.attribute'
             - '@test.catalog.product.builder'
             - '@__symfony__.pim_catalog.repository.product'
-            - '@__symfony__.pim_catalog.updater.product'
             - '@__symfony__.validator'
             - '@__symfony__.pim_catalog.repository.product'
         tags:
