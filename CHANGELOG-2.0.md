@@ -11,6 +11,7 @@
 - PIM-7297: Fix memory leak on completeness purge command
 - PIM-7312: Fix attribute requirements update for a newly created channel
 - PIM-7322: Fix cast of a product model as string to format correctly violations
+- PIM-7320: Fix memory leak on boolean values purge command
 
 ## BC Breaks
 
