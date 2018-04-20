@@ -631,7 +631,7 @@ class ProductModel implements ProductModelInterface
     /**
      * {@inheritdoc}
      */
-    public function addAssociation(AssociationInterface $association)
+    public function addAssociation(AssociationInterface $association): AssociationAwareInterface
     {
         if (!$this->associations->contains($association)) {
             $associationType = $association->getAssociationType();
@@ -654,7 +654,7 @@ class ProductModel implements ProductModelInterface
     /**
      * {@inheritdoc}
      */
-    public function removeAssociation(AssociationInterface $association)
+    public function removeAssociation(AssociationInterface $association): AssociationAwareInterface
     {
         $this->associations->removeElement($association);
 
@@ -672,7 +672,7 @@ class ProductModel implements ProductModelInterface
     /**
      * {@inheritdoc}
      */
-    public function getAssociationForType(AssociationTypeInterface $type)
+    public function getAssociationForType(AssociationTypeInterface $type): ?AssociationInterface
     {
         return $this->getAssociationForTypeCode($type->getCode());
     }
@@ -680,7 +680,7 @@ class ProductModel implements ProductModelInterface
     /**
      * {@inheritdoc}
      */
-    public function getAssociationForTypeCode($typeCode)
+    public function getAssociationForTypeCode($typeCode): ?AssociationInterface
     {
         foreach ($this->associations as $association) {
             if ($association->getAssociationType()->getCode() === $typeCode) {
@@ -694,7 +694,7 @@ class ProductModel implements ProductModelInterface
     /**
      * {@inheritdoc}
      */
-    public function setAssociations(Collection $associations)
+    public function setAssociations(Collection $associations): AssociationAwareInterface
     {
         $this->associations = $associations;
 

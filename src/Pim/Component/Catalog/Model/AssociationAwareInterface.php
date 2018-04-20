@@ -28,7 +28,7 @@ interface AssociationAwareInterface
      *
      * @return AssociationAwareInterface
      */
-    public function setAssociations(Collection $associations);
+    public function setAssociations(Collection $associations): AssociationAwareInterface;
 
     /**
      * Add a type of an association
@@ -39,7 +39,7 @@ interface AssociationAwareInterface
      *
      * @return AssociationAwareInterface
      */
-    public function addAssociation(AssociationInterface $association);
+    public function addAssociation(AssociationInterface $association): AssociationAwareInterface;
 
     /**
      * Remove a type of an association
@@ -48,7 +48,7 @@ interface AssociationAwareInterface
      *
      * @return AssociationAwareInterface
      */
-    public function removeAssociation(AssociationInterface $association);
+    public function removeAssociation(AssociationInterface $association): AssociationAwareInterface;
 
     /**
      * Get the product association for an Association type
@@ -57,7 +57,7 @@ interface AssociationAwareInterface
      *
      * @return AssociationInterface|null
      */
-    public function getAssociationForType(AssociationTypeInterface $type);
+    public function getAssociationForType(AssociationTypeInterface $type): ?AssociationInterface;
 
     /**
      * Get the product association for an association type code
@@ -66,5 +66,5 @@ interface AssociationAwareInterface
      *
      * @return AssociationInterface|null
      */
-    public function getAssociationForTypeCode($typeCode);
+    public function getAssociationForTypeCode($typeCode): ?AssociationInterface;
 }
