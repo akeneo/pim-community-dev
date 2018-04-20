@@ -37,35 +37,15 @@ class ProductUniqueDataSynchronizer
      */
     public function synchronize(ProductInterface $product)
     {
-        $uniqueDataCollection = $product->getUniqueData();
-
-        foreach ($product->getValues()->getUniqueValues() as $value) {
-            $attribute = $value->getAttribute();
-
-            $uniqueData = $this->getUniqueDataFromCollection($uniqueDataCollection, $attribute);
-            if (null !== $uniqueData) {
-                $uniqueData->setProductValue($value);
-            } else {
-                $uniqueData = $this->factory->create($product, $value);
-                $product->addUniqueData($uniqueData);
-            }
-        }
-    }
-
-    /**
-     * @param Collection         $uniqueDataCollection
-     * @param AttributeInterface $attribute
-     *
-     * @return ProductUniqueDataInterface|null
-     */
-    protected function getUniqueDataFromCollection(Collection $uniqueDataCollection, AttributeInterface $attribute)
-    {
-        foreach ($uniqueDataCollection as $uniqueData) {
-            if ($attribute === $uniqueData->getAttribute()) {
-                return $uniqueData;
-            }
+        $oldProductUniqueData = $product->getUniqueData();
+        foreach ($oldProductUniqueData as $uniqueData) {
+            $oldProductUniqueData->remove($uniqueData);
         }
 
-        return null;
+        $newProductUniqueData = $product->getValues()->getUniqueValues();
+        foreach ($newProductUniqueData as $value) {
+            $uniqueData = $this->factory->create($product, $value);
+            $product->addUniqueData($uniqueData);
+        }
     }
 }
