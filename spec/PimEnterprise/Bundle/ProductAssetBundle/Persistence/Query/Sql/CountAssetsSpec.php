@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace spec\PimEntreprise\Bundle\ProductAssetBundle\Persistence\Query\Sql;
+namespace spec\PimEnterprise\Bundle\ProductAssetBundle\Persistence\Query\Sql;
 
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Driver\Statement;

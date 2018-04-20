@@ -3,6 +3,12 @@ extensions:
     Akeneo\SkipExampleExtension: ~
 
 suites:
+    PimEnterprise:
+        namespace: PimEnterprise
+
+    Akeneo:
+        namespace: Akeneo
+
     ## Acceptance
     Acceptance:
         namespace: AkeneoEnterprise\Test\Acceptance
