@@ -117,6 +117,8 @@ legacy:
             factory:
                 page_parameters:
                     base_url: http://akeneo-pim-behat.local/
+        Pim\Behat\Extension\PimFormatter\PimFormatterExtension: ~
+        Liuggio\Fastest\Behat\ListFeaturesExtension\Extension: ~
 
 acceptance:
     suites:
@@ -138,3 +140,5 @@ acceptance:
         FriendsOfBehat\SymfonyExtension:
             kernel:
                 env: acceptance
+        Pim\Behat\Extension\PimFormatter\PimFormatterExtension: ~
+        Liuggio\Fastest\Behat\ListFeaturesExtension\Extension: ~
