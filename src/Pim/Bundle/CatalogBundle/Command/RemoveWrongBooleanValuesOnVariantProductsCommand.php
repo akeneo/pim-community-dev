@@ -10,6 +10,7 @@ use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
+use Symfony\Component\Process\Process;
 
 /**
  * Command to fix PIM-7263.
@@ -23,15 +24,12 @@ use Symfony\Component\Console\Style\SymfonyStyle;
  */
 class RemoveWrongBooleanValuesOnVariantProductsCommand extends ContainerAwareCommand
 {
-    private const DEFAULT_PRODUCT_BULK_SIZE = 100;
-
     /**
      * {@inheritdoc}
      */
     protected function configure(): void
     {
         $this
-            ->setHidden(true)
             ->setName('pim:catalog:remove-wrong-boolean-values-on-variant-products')
             ->setAliases(['pim:catalog:remove-wrong-values-on-variant-products'])
             ->setDescription('Remove boolean values on variant products that should belong to their parents')
@@ -46,63 +44,34 @@ class RemoveWrongBooleanValuesOnVariantProductsCommand extends ContainerAwareCom
         $io = new SymfonyStyle($input, $output);
         $io->text('Cleaning wrong boolean values on variant products...');
 
-        $progressBatchSize = 50;
-        $productBatchSize = $this->getContainer()->hasParameter('pim_job_product_batch_size') ?
-            $this->getContainer()->getParameter('pim_job_product_batch_size') :
-            self::DEFAULT_PRODUCT_BULK_SIZE;
+        $productBatchSize = $this->getContainer()->getParameter('pim_job_product_batch_size');
+        $rootDir = $this->getContainer()->get('kernel')->getRootDir();
+        $env = $input->getOption('env');
+        $cacheClearer = $this->getContainer()->get('pim_connector.doctrine.cache_clearer');
 
         $variantProducts = $this->getVariantProducts();
 
         $io->progressStart($variantProducts->count());
 
-        $productsToSave = [];
-        $productsParsedCount = 0;
-
+        $productsToClean = [];
         foreach ($variantProducts as $variantProduct) {
-            // TODO: Replace this check for 2.2 version by ``if (!$variantProduct->isVariant()) {}``
-            if (!($variantProduct instanceof VariantProductInterface)) {
-                continue;
-            }
+            $productsToClean[] = $variantProduct->getId();
 
-            $isModified = $this->getContainer()
-                ->get('pim_catalog.command.cleaner.wrong_boolean_value_on_variant_product')
-                ->cleanProduct($variantProduct);
-
-            if ($isModified) {
-                $violations = $this->getContainer()->get('pim_catalog.validator.product')->validate($variantProduct);
-
-                if ($violations->count() > 0) {
-                    throw new \LogicException(
-                        sprintf(
-                            'Product "%s" is not valid and cannot be saved',
-                            $variantProduct->getIdentifier()
-                        )
-                    );
-                }
-
-                $productsToSave[] = $variantProduct;
-            }
-
-            if (count($productsToSave) >= $productBatchSize) {
-                $this->getContainer()->get('pim_catalog.saver.product')->saveAll($productsToSave);
-                $productsToSave = [];
-            }
-
-            $productsParsedCount++;
-            if ($productsParsedCount >= $progressBatchSize) {
-                $io->progressAdvance($productsParsedCount);
-                $productsParsedCount = 0;
+            if (count($productsToClean) >= $productBatchSize) {
+                $this->launchCleanTask($productsToClean, $env, $rootDir);
+                $cacheClearer->clear();
+                $io->progressAdvance(count($productsToClean));
+                $productsToClean = [];
             }
         }
 
-        if (!empty($productsToSave)) {
-            $this->getContainer()->get('pim_catalog.saver.product')->saveAll($productsToSave);
+        if (!empty($productsToClean)) {
+            $this->launchCleanTask($productsToClean, $env, $rootDir);
+            $io->progressAdvance(count($productsToClean));
         }
 
         $io->progressFinish();
-
-        $io->newLine();
-        $io->text(sprintf('%s variant products cleaned', count($productsToSave)));
+        $io->text('Cleaning wrong boolean values on variant products [DONE]');
     }
 
     /**
@@ -117,5 +86,23 @@ class RemoveWrongBooleanValuesOnVariantProductsCommand extends ContainerAwareCom
         $pqb->addFilter('parent', Operators::IS_NOT_EMPTY, null);
 
         return $pqb->execute();
+    }
+
+    /**
+     * Lanches the clean command on given ids
+     *
+     * @param array  $productIds
+     * @param string $env
+     * @param string $rootDir
+     */
+    private function launchCleanTask(array $productIds, string $env, string $rootDir)
+    {
+        $process = new Process([
+            sprintf('%s/../bin/console', $rootDir),
+            'pim:catalog:remove-wrong-boolean-values-on-variant-products-batch',
+            sprintf('--env=%s', $env),
+            implode(',', $productIds)
+        ]);
+        $process->run();
     }
 }
