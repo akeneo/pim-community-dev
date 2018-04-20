@@ -1,3 +1,17 @@
 ## Rename this file in phpspec.yml to customize the phpspec configuration
 extensions:
     Akeneo\SkipExampleExtension: ~
+
+suites:
+    PimEnterprise:
+        namespace: PimEnterprise
+
+    Akeneo:
+        namespace: Akeneo
+
+    ## Acceptance
+    Acceptance:
+        namespace: AkeneoEnterprise\Test\Acceptance
+        psr4_prefix: AkeneoEnterprise\Test\Acceptance
+        spec_path: tests/back/Acceptance
+        src_path: tests/back/Acceptance

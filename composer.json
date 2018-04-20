@@ -20,6 +20,7 @@
             "Akeneo\\Test\\IntegrationTestsBundle\\": "vendor/akeneo/pim-community-dev/tests/back/IntegrationTestsBundle/",
             "AkeneoEnterprise\\Test\\IntegrationTestsBundle\\": "tests/back/Integration/IntegrationTestsBundle/",
             "Akeneo\\Test\\Integration\\": "vendor/akeneo/pim-community-dev/tests/back/Integration/",
+            "AkeneoEnterprise\\Test\\Acceptance\\": "tests/back/Acceptance/",
             "Pim\\Upgrade\\": "upgrades/"
         },
         "classmap": [ "app/AppKernel.php", "app/AppCache.php", "tests/back/Integration/AppKernelTest.php"]
