@@ -47,7 +47,7 @@ class ProductModelReaderSpec extends ObjectBehavior
 
         $cursor->valid()->willReturn(true, true, true, false);
         $cursor->current()->willReturn($productModel1, $productModel2, $productModel3);
-        $cursor->next()->shouldBeCalled();
+        $cursor->next()->shouldBeCalledTimes(2);
 
         $stepExecution->incrementSummaryInfo('read')->shouldBeCalledTimes(3);
 

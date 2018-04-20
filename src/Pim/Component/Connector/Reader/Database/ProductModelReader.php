@@ -26,6 +26,9 @@ class ProductModelReader implements ItemReaderInterface, InitializableInterface,
     /** @var CursorInterface */
     protected $productModels;
 
+    /** @var bool */
+    private $firstRead = true;
+
     /**
      * @param ProductQueryBuilderFactoryInterface $pqbFactory
      */
@@ -40,6 +43,7 @@ class ProductModelReader implements ItemReaderInterface, InitializableInterface,
     public function initialize()
     {
         $this->productModels = $this->getProductModelsCursor();
+        $this->firstRead = true;
     }
 
     /**
@@ -50,10 +54,14 @@ class ProductModelReader implements ItemReaderInterface, InitializableInterface,
         $productModel = null;
 
         if ($this->productModels->valid()) {
+            if (!$this->firstRead) {
+                $this->productModels->next();
+            }
             $productModel = $this->productModels->current();
             $this->stepExecution->incrementSummaryInfo('read');
-            $this->productModels->next();
         }
+
+        $this->firstRead = false;
 
         return $productModel;
     }

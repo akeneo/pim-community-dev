@@ -12,6 +12,7 @@
 - PIM-7312: Fix attribute requirements update for a newly created channel
 - PIM-7322: Fix cast of a product model as string to format correctly violations
 - PIM-7320: Fix memory leak on boolean values purge command
+- PIM-7317: Fix iterator misuse in the database product model reader
 
 ## BC Breaks
 
