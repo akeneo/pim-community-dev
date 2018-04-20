@@ -10,6 +10,7 @@
 - PIM-7313: prevent the same job to be executed by two different daemons due to race condition
 - PIM-7297: Fix memory leak on completeness purge command
 - PIM-7312: Fix attribute requirements update for a newly created channel
+- PIM-7322: Fix cast of a product model as string to format correctly violations
 
 ## BC Breaks
 
