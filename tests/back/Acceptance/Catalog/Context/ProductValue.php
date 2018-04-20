@@ -6,7 +6,7 @@ namespace Akeneo\Test\Acceptance\Catalog\Context;
 
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Test\Acceptance\Product\InMemoryProductRepository;
-use Akeneo\Test\IntegrationTestsBundle\Fixture\EntityWithValue\Builder;
+use Akeneo\Test\Common\Builder\EntityWithValue\Builder;
 use Behat\Behat\Context\Context;
 use Pim\Bundle\CatalogBundle\Entity\Attribute;
 use Pim\Component\Catalog\AttributeTypes;

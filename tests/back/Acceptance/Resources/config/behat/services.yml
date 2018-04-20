@@ -50,7 +50,7 @@ services:
             - '@__symfony__.validator'
 
     test.catalog.product.builder:
-        class: 'Akeneo\Test\IntegrationTestsBundle\Fixture\EntityWithValue\Builder\Product'
+        class: 'Akeneo\Test\Common\Builder\EntityWithValue\Builder\Product'
         shared: false
         arguments:
             - '@__symfony__.pim_catalog.builder.product'
