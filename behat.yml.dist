@@ -1,4 +1,4 @@
-default:
+legacy:
     suites:
         TEST-enterprise-pim:
             paths:
@@ -128,3 +128,24 @@ default:
             factory:
                 page_parameters:
                     base_url: 'http://akeneo-pim-enterprise-behat.local/'
+
+acceptance:
+    suites:
+        acceptance:
+            paths:
+                - '%paths.base%/tests/back/features/'
+                - '%paths.base%/vendor/akeneo/pim-community-dev/tests/back/features/'
+            contexts_services:
+                - test.locale.context
+                - test.channel.context
+            filters:
+                tags: '@acceptance-back'
+    extensions:
+        FriendsOfBehat\ContextServiceExtension:
+           imports:
+               - "tests/back/Acceptance/Resources/config/behat/services.yml"
+               - "vendor/akeneo/pim-community-dev/tests/back/Acceptance/Resources/config/behat/services.yml"
+        FriendsOfBehat\CrossContainerExtension: ~
+        FriendsOfBehat\SymfonyExtension:
+            kernel:
+                env: acceptance
