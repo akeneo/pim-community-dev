@@ -1,7 +1,7 @@
 pimee_workflow:
   product_draft:
     author: Forfatter
-    created: Foreslået på
+    created: Foreslået af
     changes: Ændringer
     locale: Locale kontext
     product:
@@ -80,16 +80,8 @@ pimee_workflow:
         second: Vælg handling
         third: Konfigurér
         fourth: Bekræft
-pimee_workflow_product_draft_notification_new_proposal: Ny forslag
-pimee_workflow_import_notification_new_proposals: Nye forslag fra import
 btn.publish: Publicér
 btn.unpublish: Afpublisér
-pimee_workflow_product_draft_notification_partial_approve: Forslag delvist godkendt
-pimee_workflow_product_draft_notification_partial_reject: Forslag delvist afvist
-pimee_workflow_product_draft_notification_partial_remove: Forslag delvist slettet
-pimee_workflow_product_draft_notification_approve: Forslag godkendt
-pimee_workflow_product_draft_notification_refuse: Forslag afvist
-pimee_workflow_product_draft_notification_remove: Forslag slettet
 flash:
   product:
     published: Produktet er nu publiceret.
@@ -120,7 +112,7 @@ confirmation:
   product:
     publish: Er du sikker på at du vil publicere dette produkt ?
     unpublish: Er du sikker på du vil afpublicere dette produkt ?
-Attributes.title: Attributter
+Attributes.title: Egenskaber
 Completeness.title: Fuldstændighed
 publish_product.steps.publish_product_tasklet.title: Publicer produkter
 unpublish_product.steps.unpublish_product_tasklet.title: Afpublicer af produkter

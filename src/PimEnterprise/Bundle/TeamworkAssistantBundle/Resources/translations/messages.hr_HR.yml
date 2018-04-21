@@ -7,4 +7,5 @@ teamwork_assistant:
     due_date:
       start: Početak
   datagrid:
+    contributor_in_progress: U tijeku
     contributor_done: Gotovo

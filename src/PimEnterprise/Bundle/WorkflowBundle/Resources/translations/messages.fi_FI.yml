@@ -54,14 +54,8 @@ pimee_workflow:
         second: Valitse toiminto
         third: Konfiguroi
         fourth: Vahvista
-pimee_workflow_product_draft_notification_new_proposal: Uusi ehdotus
-pimee_workflow_import_notification_new_proposals: Uusia ehdotuksia tuontiin
 btn.publish: Julkaise
 btn.unpublish: Peruuta julkaisu
-pimee_workflow_product_draft_notification_partial_approve: Osittain hyväksytty ehdotus
-pimee_workflow_product_draft_notification_approve: Ehdotus hyväksytty
-pimee_workflow_product_draft_notification_refuse: Ehdotus hylätty
-pimee_workflow_product_draft_notification_remove: Ehdotus poistettu
 flash:
   product:
     published: Tuote on julkaistu onnistuneesti.

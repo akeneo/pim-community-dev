@@ -1,5 +1,5 @@
 pimee_datagrid:
-  cell:
+  cells:
     expand:
-      expandText: Aufklappen
-      collapseText: Zuklappen
+      expand_text: Aufklappen
+      collapse_text: Zuklappen

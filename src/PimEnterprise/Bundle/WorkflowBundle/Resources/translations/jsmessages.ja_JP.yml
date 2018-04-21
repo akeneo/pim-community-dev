@@ -4,17 +4,16 @@ Approve: 承認
 Refuse: 拒否
 Approve selected: 承認を選択しました。
 Refuse selected: 選択の拒否
-oro:
-  datagrid:
-    noentities:
-      proposal: レビューする提案はありません
-    noresults:
-      proposal: レビュー提案がありません。検索条件を変更してください。
+pim_datagrid:
+  no_entities:
+    proposal: レビューする提案はありません
+  no_results:
+    proposal: レビュー提案がありません。検索条件を変更してください。
 pimee_workflow:
   entity:
     published_product:
       btn:
-        original_product: 作業コピーを編集
+        original_product: 作業コピーを編集します。
     proposal:
       modal.title: コメントを残す (255 文字まで)
   proposal:
@@ -59,3 +58,13 @@ batch_jobs:
   xlsx_product_proposal_import:
     label: 製品提案をXLSX形式でインポート
     import.label: 製品提案をXLSX形式でインポート
+pim_notification:
+  types:
+    pimee_workflow_product_draft_notification_new_proposal: 新しい提案
+    pimee_workflow_import_notification_new_proposals: インポートからの新しい提案
+    pimee_workflow_product_draft_notification_partial_approve: 提案は、部分的に承認
+    pimee_workflow_product_draft_notification_partial_reject: 提案は、部分的に拒否
+    pimee_workflow_product_draft_notification_partial_remove: 提案は、部分的に削除
+    pimee_workflow_product_draft_notification_approve: 提案の承認
+    pimee_workflow_product_draft_notification_refuse: 提案が却下されました
+    pimee_workflow_product_draft_notification_remove: 提案が削除されました

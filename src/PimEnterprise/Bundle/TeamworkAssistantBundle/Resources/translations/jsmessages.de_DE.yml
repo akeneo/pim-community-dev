@@ -8,17 +8,13 @@ teamwork_assistant:
       edit: Projekt bearbeiten
       remove: Projekt entfernen
       create_from_view: Neues Projekt aus dieser Ansicht anlegen
-      loading: Lädt...
       start_new_project: Neues Projekt starten
       confirmation:
         remove: Sind Sie sicher, dass Sie dieses Projekt entfernen möchten?
-        delete: Löschen bestätigen
-      popin_title: Anlegen
       projects: Projekte
   project:
     label: Name
     locale: Gebietsschema
-    channel: Ausgabekanal
     label_maxlength: Dieser Wert ist zu lang. Er sollte {{ max }} oder weniger Zeichen haben.
     description: Beschreibung
     due_date: Fälligkeitsdatum
@@ -27,13 +23,9 @@ teamwork_assistant:
   edit_project_modal:
     saved: Das Projekt wurde gespeichert.
     title: Projekt bearbeiten
-    confirm: Speichern
-    cancel: Abbrechen
   create_project_modal:
     saved: Das Projekt wurde gespeichert. Sie werden benachrichtigt, sobald die Berechnung abgeschlossen ist.
     title: Projekt erstellen
-    confirm: Speichern
-    cancel: Abbrechen
   widget:
     no_project: Sie haben aktuell kein Projekt
     no_project_create: ein neues Projekt erstellen
@@ -60,3 +52,15 @@ pim_dashboard:
       job_type:
         refresh_project_completeness_calculation: Teamwork Assistant
         project_calculation: Teamwork Assistant
+batch_jobs:
+  project_calculation:
+    project_calculation.label: Projekt-Kalkulation
+    prepare_project_calculation.label: Projekt-Kalkulation vorbereiten
+    clean_contributor_group.label: Überprüfe Benutzerberechtigung für das Gebietsschema des Projekts
+  refresh_project_completeness_calculation:
+    label: Projektvollständigkeit aktualisieren
+    refresh_project_completeness_calculation.label: Projektvollständigkeit aktualisieren
+pim_notification:
+  types:
+    project_created: Ein neues Projekt für Sie
+    project_finished: Projekt abgeschlossen

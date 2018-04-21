@@ -2,25 +2,21 @@ teamwork_assistant:
   common:
     required: Vaadittu
     warning: Ole huoleti, projektin muodostaminen voi kestää hetken, joten projektisi ei välttämättä näy välittömästi.
-  grid:
-    view_selector:
-      loading: Ladataan...
-      confirmation:
-        delete: Vahvista poisto
-      popin_title: Luo
   project:
     label: Nimi
     locale: Lokaatio
-    channel: Kanava
     description: Kuvaus
-  edit_project_modal:
-    confirm: Tallenna
-    cancel: Peruuta
-  create_project_modal:
-    confirm: Tallenna
-    cancel: Peruuta
   widget:
     no_project_create: luo uusi projekti
     description: Kuvaus
     completeness:
       to_start: TUOTTEET TYÖJONOSSA
+batch_jobs:
+  project_calculation:
+    clean_contributor_group.label: Tarkista käyttäjien käyttöoikeudet projektin lokaaliin
+  refresh_project_completeness_calculation:
+    label: Päivitä projektin täyttöaste
+    refresh_project_completeness_calculation.label: Päivitä projektin täyttöaste
+pim_notification:
+  types:
+    project_created: Uusi projekti sinulle

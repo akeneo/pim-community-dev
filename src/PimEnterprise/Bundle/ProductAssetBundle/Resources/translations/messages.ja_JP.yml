@@ -124,10 +124,10 @@ pimee_product_asset:
     import: インポート
     executed: 大量アップロードの実行
     error:
-      upload: アップロード中にエラーが発生
+      upload: イメージのアップロード中にエラーが発生
       code: アセットの無効なコードの形式
       localizable: アセットは存在しますが、ローカライズができません。
-      invalid_locale: ロケールが無効です
+      invalid_locale: ロケールが無効です。
   category:
     menu: アセットカテゴリー
     permissions:
@@ -177,7 +177,10 @@ job_execution.summary:
 assets_mass_upload.steps:
   asset_mass_upload.title: アセットの大量アップロード
 import_asset.steps.channel_configuration_processor.title: プロセスのチャネル構成
-mass_upload: アセットの大量アップロード
+pim_datagrid:
+  cells:
+    type:
+      mass_upload: アセットの大量アップロード
 pim_analytics:
   info_type:
     nb_assets: アセット数

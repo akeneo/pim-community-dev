@@ -24,7 +24,7 @@ pimee_catalog_rule:
       "set": Entonces %value% es establecido en %field%
       "set_value": Entonces %value% es establecido en %field%
       "add": Entonces %value% es agregado en %field%
-      "remove": Entonces %value% es elimiado de %field%
+      "remove": Entonces %value% es eliminado de %field%
   condition:
     label: Si %field% %operator% %value%
     operators:
@@ -84,6 +84,5 @@ pimee_catalog_rule:
       error: Un error ocurrió durante el cálculo de los productos afectados por la(s) regla(s)
 btn:
   Execute rules: Ejecutar reglas
-rule: Configuración de reglas
 mass_edit_rule: Configuración de reglas
 job_execution.summary.rule_calculated: Número de reglas

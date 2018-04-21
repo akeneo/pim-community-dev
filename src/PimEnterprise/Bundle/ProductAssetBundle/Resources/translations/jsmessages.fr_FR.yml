@@ -5,8 +5,6 @@ pimee_product_asset:
         manage: Gérer les ressources
         manage_asset:
           title: Gérer les ressources
-          cancel: Annuler
-          confirm: Confirmer
         title: Gérer les ressources
         description: Choisissez les ressources que vous souhaitez attacher à votre produit
     asset:
@@ -18,9 +16,6 @@ pimee_product_asset:
       edit: Editer les propriétés de la ressource
   enrich_variation:
     popin:
-      delete:
-        title: Supprimer l'élément
-        message: Êtes-vous certain de vouloir supprimer cet élément ?
       reset:
         title: Réinitialisation les variations
         message: Êtes-vous sûr de vouloir réinitialiser toutes les variations ?
@@ -28,7 +23,6 @@ pimee_product_asset:
     menu: Télécharger les ressources
     btn:
       remove_all_files: Supprimer tous les fichiers
-      delete: Supprimer
       import: Import
       upload: Télécharger les ressources
     success:
@@ -54,9 +48,6 @@ pimee_product_asset:
       status: statut
       progress: progression
       actions: actions
-    action:
-      cancel: Annuler
-      remove: Supprimer
     status:
       added: Ajouté
       queued: En attente
@@ -84,14 +75,12 @@ batch_jobs:
     perform.label: Téléchargement massif
   yml_asset_channel_configuration_import:
     label: Import des configurations de transformations de ressources en Yaml
-    validation.label: Validation du fichier
     import_asset.label: Import des configurations de transformations de ressources en Yaml
   yml_asset_channel_configuration_export:
     label: Export de la configuration des canaux de ressources en Yaml
     export.label: Export de la configuration des canaux de ressources en Yaml
   csv_asset_import:
     label: Import de ressources en CSV
-    validation.label: Validation du fichier
     import_tags.label: Import des mots clés en CSV
     import_asset.label: Import de ressources en CSV
   csv_asset_export:
@@ -102,31 +91,25 @@ batch_jobs:
     export.label: Export des variations de ressources en CSV
   csv_tag_import:
     label: Import des mots clés en CSV
-    validation.label: Validation du fichier
     import.label: Import des mots clés en CSV
   csv_asset_category_import:
     label: Import des catégories de ressources en CSV
-    validation.label: Validation du fichier
     import_asset_category.label: Import des catégories de ressources en CSV
   csv_asset_configuration_import:
     label: Import des configurations des transformations pour les canaux en CSV
-    validation.label: Validation du fichier
     import_asset.label: Import des configurations des transformations pour les canaux en CSV
   csv_asset_category_export:
     label: Import des catégories de ressources en CSV
     export.label: Import des catégories de ressources en CSV
   xlsx_tag_import:
     label: Import des mots clés en XLSX
-    validation.label: Validation du fichier
     import.label: Import des mots clés en XLSX
   xlsx_asset_import:
     label: Import des ressources en XLSX
-    validation.label: Validation du fichier
     import_tags.label: Import des mots clés en XLSX
     import_asset.label: Import des ressources en XLSX
   xlsx_asset_category_import:
     label: Import des catégories de ressources en XLSX
-    validation.label: Validation du fichier
     import_asset_category.label: Import des catégories de ressources en XLSX
   xlsx_asset_export:
     label: Export des ressources en XLSX

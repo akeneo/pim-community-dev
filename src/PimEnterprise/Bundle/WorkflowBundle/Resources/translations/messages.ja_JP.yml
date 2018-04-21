@@ -80,16 +80,8 @@ pimee_workflow:
         second: 操作を選択
         third: 構成
         fourth: 確認
-pimee_workflow_product_draft_notification_new_proposal: 新しい提案
-pimee_workflow_import_notification_new_proposals: インポートからの新しい提案
-btn.publish: 公開
+btn.publish: 公開する
 btn.unpublish: 非公開
-pimee_workflow_product_draft_notification_partial_approve: 提案は、部分的に承認
-pimee_workflow_product_draft_notification_partial_reject: 提案は、部分的に拒否
-pimee_workflow_product_draft_notification_partial_remove: 提案は、部分的に削除
-pimee_workflow_product_draft_notification_approve: 提案の承認
-pimee_workflow_product_draft_notification_refuse: 提案が却下されました
-pimee_workflow_product_draft_notification_remove: 提案が削除されました
 flash:
   product:
     published: 製品は、正常に公開されています
@@ -115,7 +107,7 @@ pim_title:
     show: "製品 %product.label% |表示"
   proposal:
     index: 提案
-btn.editworkingcopy: 作業コピーを編集
+btn.editworkingcopy: 作業コピーを編集します。
 confirmation:
   product:
     publish: この製品を公開してもよろしいですか？

@@ -5,8 +5,6 @@ pimee_product_asset:
         manage: Upravljanje imovinom
         manage_asset:
           title: Upravljanje imovinom
-          cancel: Poništi
-          confirm: Potvrdi
         title: Upravljanje imovinom
     asset:
       not_empty: Kod je potreban. Ne može biti prazan.
@@ -15,17 +13,12 @@ pimee_product_asset:
       edit: Uredi svojstva imovine
   enrich_variation:
     popin:
-      delete:
-        title: Potvrdi brisanje
-        message: Jeste li sigurni da želite izbrisati ovu stavku?
       reset:
         title: Vrati izvorne varijacije
-        message: Jeste li sigurni da želite vratiti sve varijacije?
   mass_upload:
     menu: Prijenos imovine
     btn:
       remove_all_files: Uklonite sve datoteke
-      delete: Obriši
       import: Uvoz
       upload: Prijenos imovine
     success:
@@ -51,9 +44,6 @@ pimee_product_asset:
       status: status
       progress: napredak
       actions: akcije
-    action:
-      cancel: Poništi
-      remove: Ukloni
     status:
       added: Dodano
       queued: U redu čekanja
@@ -79,22 +69,50 @@ batch_jobs:
     label: Masovni prijenos imovine
     perform.label: Masovni prijenos
   yml_asset_channel_configuration_import:
-    validation.label: Provjera valjanosti datoteke
+    label: Uvoz konfiguracije kanala imovine iz Yaml
+    import_asset.label: Uvoz konfiguracije kanala imovine iz Yaml
+  yml_asset_channel_configuration_export:
+    label: Izvoz konfiguracije kanala imovine u Yaml
+    export.label: Izvoz konfiguracije kanala imovine u Yaml
   csv_asset_import:
-    validation.label: Provjera valjanosti datoteke
+    label: Uvoz imovine iz CSV
+    import_tags.label: Uvoz oznaka iz CSV
+    import_asset.label: Uvoz imovine iz CSV
+  csv_asset_export:
+    label: Izvoz imovine u CSV
+    export.label: Izvoz imovine u CSV
+  csv_asset_variation_export:
+    label: Izvoz varijacije imovine u CSV
+    export.label: Izvoz varijacije imovine u CSV
   csv_tag_import:
-    validation.label: Provjera valjanosti datoteke
+    label: Uvoz oznaka iz CSV
+    import.label: Uvoz oznaka iz CSV
   csv_asset_category_import:
-    validation.label: Provjera valjanosti datoteke
+    label: Uvoz kategorije imovine iz CSV
+    import_asset_category.label: Uvoz kategorije imovine iz CSV
   csv_asset_configuration_import:
-    validation.label: Provjera valjanosti datoteke
+    label: Uvoz konfiguracije kanala imovine iz CSV
+    import_asset.label: Uvoz konfiguracije kanala imovine iz CSV
+  csv_asset_category_export:
+    label: Izvoz kategorije imovine u CSV
+    export.label: Izvoz kategorije imovine u CSV
   xlsx_tag_import:
-    validation.label: Provjera valjanosti datoteke
+    label: Uvoz oznake iz XLSX
+    import.label: Uvoz oznake iz XLSX
   xlsx_asset_import:
-    validation.label: Provjera valjanosti datoteke
+    label: Uvoz imovine iz XLSX
+    import_tags.label: Uvoz oznake iz XLSX
+    import_asset.label: Uvoz imovine iz XLSX
   xlsx_asset_category_import:
-    validation.label: Provjera valjanosti datoteke
+    label: Uvoz kategorije imovine iz XLSX
+    import_asset_category.label: Uvoz kategorije imovine iz XLSX
+  xlsx_asset_export:
+    label: Izvoz imovine u XLSX
+    export.label: Izvoz imovine u XLSX
+  xlsx_asset_category_export:
+    label: Izvoz kategorije imovine u XLSX
+    export.label: Izvoz kategorije imovine u XLSX
   classify_assets:
-    perform.label: Premjesti imovinu u kategorije
+    perform.label: Premjestiti imovinu u kategorije
   add_tags_to_assets:
-    perform.label: Dodaj oznake u imovine
+    perform.label: Dodavanje oznaka u imovinu

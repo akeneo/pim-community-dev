@@ -27,20 +27,15 @@ pimee_catalog_rule:
       actions:
         execute:
           confirm_content: Esteu segur que voleu executar la regla?
-          confirm_ok: OK
       mass_edit_action:
         confirm_content: Esteu segur que voleu calcular els productes afectats per la regla?
-        confirm_ok: OK
       mass_action:
         execute:
-          confirm_ok: OK
           confirm_content: Esteu segur que voleu executar les regles seleccionades?
           success: L'acció massiva per executar les regles seleccionades s'ha posat en marxa. Se li notificarà quan finalitzi
           error: S'ha produït un error durant l'execució de les regles.
           empty_selection: No hi ha cap regla seleccionada.
         delete:
-          confirm_ok: OK
-          confirm_title: Confirmar l'eliminació
           confirm_content: Esteu segur que voleu suprimir les regles seleccionades?
           success: Heu suprimit les regles correctament.
           error: S'ha produït un error durant l'execució de les regles.
@@ -60,6 +55,8 @@ flash:
     executed: S'ha engegat la execució de la regla. Se li notificarà quan finalitzi.
 pim_dashboard.widget.last_operations.job_type.mass_edit_rule: Configuració de les regles
 batch_jobs:
+  default_steps:
+    execute_rules: Execució de les regles
   yml_rule_import:
     label: Importació de regla en YAML
     import.label: Importació de la regla
@@ -69,22 +66,14 @@ batch_jobs:
   rule_impacted_product_count:
     label: Productes afectats per les regles
     perform.label: Comptar productes afectats
-    execute_rules.label: Execució de les regles
   csv_product_import_with_rules:
     label: Importació de productes amb regles a CSV
-    execute_rules.label: Execució de les regles
-    validation.label: Validar arxius
     import.label: Importar productes
     import_associations.label: Importar associacions
-  csv_product_model_import_with_rules:
-    execute_rules.label: Execució de les regles
-    validation.label: Validar arxius
   xlsx_product_import_with_rules:
     label: Importació de productes amb regles a XLSX
-    execute_rules.label: Execució de les regles
-    validation.label: Validar arxius
     import.label: Importar productes
     import_associations.label: Importar associacions
-  xlsx_product_model_import_with_rules:
-    execute_rules.label: Execució de les regles
-    validation.label: Validar arxius
+pim_notification:
+  types:
+    rule: Configuració de les regles

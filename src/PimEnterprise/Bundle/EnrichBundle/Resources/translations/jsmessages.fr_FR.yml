@@ -1,4 +1,3 @@
-View the product: Voir le produit
 pimee_enrich.product_history.action.revert: Restaurer cette version
 permission-changes:
   category:
@@ -126,7 +125,6 @@ pimee_enrich:
         reject_selected_proposal: Rejeter le(s) proposition(s) sélectionnée(s)
         remove_proposal: Supprimer la proposition
         send_for_approval: Soumettre pour validation
-        cancel: Annuler
         confirm: Envoyer
         title: Commenter votre proposition (facultatif - 255 caractères max.)
         characters: caractères.
@@ -204,7 +202,6 @@ pimee_enrich:
           label: Classifier les ressources dans des catégories
           description: Les ressources seront positionnées dans les catégories suivantes, le placement existant avant l'opération sera perdu.
           label_count: "{1}Classer <span class=\"AknFullPage-title--highlight\">1 resources</span> dans des catégories|] 1, Inf [Classer <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} ressources</span> dans des categories"
-          field: Catégories
 pim_menu:
   tab:
     asset: Ressources
@@ -223,42 +220,36 @@ page_title:
   pimee_asset_categorytree_index: Catégories
   pimee_asset_categorytree_edit: Catégorie {{ category.label }} | Modification
   pimee_catalog_rule_rule_index: Règles
+  pimee_enrich_locale_edit: Locales | Edition
 batch_jobs:
   yml_asset_channel_configuration_import:
-    import:
-      label: Import des configurations des transformations pour les canaux
+    import.label: Import des configurations des transformations pour les canaux
   add_product_value_with_permission_and_rules:
     label: Ajouter une valeur de produit avec vérification des permissions et application des règles
     perform.label: Ajouter une valeur de produit
-    execute_rules.label: Exécution des règles
   update_product_value_with_permission_and_rules:
     label: Mettre à jour une valeur de produit avec vérification des permissions et application des règles
     perform.label: Mise à jour de la valeur du produit
-    execute_rules.label: Exécution des règles
   remove_product_value_with_permission_and_rules:
     label: Supprime une valeur de produit avec vérification des permissions et application des règles
     perform.label: Suppression de la valeur du produit
-    execute_rules.label: Exécution des règles
   edit_common_attributes_with_permission_and_rules:
     label: Mettre à jour les attributs avec vérification des permissions et application des règles
     perform.label: Modifier des attributs
-    execute_rules.label: Exécution des règles
     cleaner.label: Nettoyage des fichiers temporaires
   csv_published_product_quick_export:
     export.label: Export rapide CSV des produits publiés
-    perform:
-      label: Export rapide CSV des produits publiés
+    perform.label: Export rapide CSV des produits publiés
   csv_published_product_grid_context_quick_export:
     export.label: Export rapide CSV des produits publiés dans le contexte de grille
-    perform:
-      label: Export rapide CSV des produits publiés dans le contexte de grille
+    perform.label: Export rapide CSV des produits publiés dans le contexte de grille
   xlsx_published_product_quick_export:
     export.label: Export rapide XLSX des produits publiés
-    perform:
-      label: Export rapide XLSX des produits publiés
+    perform.label: Export rapide XLSX des produits publiés
   xlsx_published_product_grid_context_quick_export:
     export.label: Export rapide XLSX des produits publiés dans le contexte de grille
-    perform:
-      label: Export rapide XLSX des produits publiés dans le contexte de grille
+    perform.label: Export rapide XLSX des produits publiés dans le contexte de grille
   add_attribute_value:
     execute_rules.label: Exécution des règles
+  publish_product:
+    perform.label: Publier les produits

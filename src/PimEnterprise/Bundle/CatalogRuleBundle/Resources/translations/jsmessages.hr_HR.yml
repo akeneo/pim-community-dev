@@ -27,20 +27,15 @@ pimee_catalog_rule:
       actions:
         execute:
           confirm_content: Jeste li sigurni da želite izvršiti pravilo?
-          confirm_ok: OK
       mass_edit_action:
         confirm_content: Sigurno želite izračunati zahvaćene proizvode za pravila?
-        confirm_ok: OK
       mass_action:
         execute:
-          confirm_ok: OK
           confirm_content: Jeste li sigurni da želite izvršiti odabrana pravila?
           success: Pokrenuta je masovna radnja izvršenja odabranih pravila. Biti ćete obaviješteni kad bude gotovo
           error: Došlo je do pogreške tijekom izvođenja pravila.
           empty_selection: Nije odabrano niti jedno pravilo.
         delete:
-          confirm_ok: OK
-          confirm_title: Potvrdi brisanje
           confirm_content: Jeste li sigurni da želite obrisati odabrana pravila?
           success: Uspješno ste izbrisali pravila.
           error: Došlo je do pogreške tijekom brisanja pravila.
@@ -60,8 +55,10 @@ flash:
     executed: Izvođenje pravila je pokrenuto. Biti ćete obaviješteni kad bude gotovo.
 pim_dashboard.widget.last_operations.job_type.mass_edit_rule: Postavke pravila
 batch_jobs:
+  default_steps:
+    execute_rules: Izvođenje pravila
   yml_rule_import:
-    label: Uvoz pravila u YAML
+    label: Uvoz pravila iz YAML
     import.label: Uvoz pravila
   yml_rule_export:
     label: Izvoz pravila u YAML
@@ -69,22 +66,14 @@ batch_jobs:
   rule_impacted_product_count:
     label: Zahvaćeni proizvodi za pravila
     perform.label: Izračunaj zahvaćene proizvode
-    execute_rules.label: Izvođenje pravila
   csv_product_import_with_rules:
     label: Uvoz proizvoda u CSV s pravilima
-    execute_rules.label: Izvođenje pravila
-    validation.label: Provjera valjanosti datoteke
     import.label: Uvoz proizvoda
     import_associations.label: Uvoz pridruživanja
-  csv_product_model_import_with_rules:
-    execute_rules.label: Izvođenje pravila
-    validation.label: Provjera valjanosti datoteke
   xlsx_product_import_with_rules:
     label: Uvoz proizvoda u XLSX s pravilima
-    execute_rules.label: Izvođenje pravila
-    validation.label: Provjera valjanosti datoteke
     import.label: Uvoz proizvoda
     import_associations.label: Uvoz pridruživanja
-  xlsx_product_model_import_with_rules:
-    execute_rules.label: Izvođenje pravila
-    validation.label: Provjera valjanosti datoteke
+pim_notification:
+  types:
+    rule: Postavke pravila

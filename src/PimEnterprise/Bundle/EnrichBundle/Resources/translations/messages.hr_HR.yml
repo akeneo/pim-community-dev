@@ -48,6 +48,7 @@ pim_enrich:
         third: Konfiguriraj
         fourth: Potvrdi
     publish:
+      label: Objavi
       description: Objavi odabrane proizvode, trenutno objavljeni podaci biti će obrisani prema trenutnoj radnoj kopiji.
       success_flash: Odabrani proizvodi su uspješno objavljeni.
       launched_flash: Proces objavljivanja proizvoda se trenutno izvodi.
@@ -57,6 +58,7 @@ pim_enrich:
         info: '%nbProducts% odabranih proizvoda će biti objavljeno.'
       not_editable: Nemate dozvolu za uređivanje proizvoda "%identifiers%".
     unpublish:
+      label: Poništi objavu
       description: Poništi objavu odabranih proizvoda, trenutno objavljeni podaci će biti izbrisani.
       success_flash: Uspješno je poništena objava odabranih proizvoda.
       launched_flash: Trenutno se izvodi proces poništavanja obavljivanja proizvoda.
@@ -79,6 +81,9 @@ pimee_enrich:
   attribute_group:
     tab:
       permission.title: Dozvole
+  product:
+    tab:
+      proposal.title: Prijedlozi
   category:
     tab:
       permission.title: Dozvole
@@ -136,6 +141,9 @@ add_product_value_with_permission.steps.add_product_value_with_permission_proces
 update_product_value_with_permission.steps.update_product_value_with_permission_processor.title: Ažuriraj vrijednost proizvoda sa dozvolom
 remove_product_value_with_permission.steps.update_product_value_with_permission_processor.title: Ukloni vrijednost proizvoda sa dozvolom
 job_execution.summary:
+  mass_published: Proizvod je objavljen
+  mass_unpublished: Poništena je objava proizvoda
+  proposal: Kreiran je prijedlog
   proposal_deleted: obrisano
 pim_enrich_attribute_form:
   isReadOnly: Samo za čitanje

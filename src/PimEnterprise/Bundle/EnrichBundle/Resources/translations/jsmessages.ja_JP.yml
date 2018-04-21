@@ -1,4 +1,3 @@
-View the product: 製品を表示
 pimee_enrich.product_history.action.revert: このバージョンに戻す
 permission-changes:
   category:
@@ -62,7 +61,7 @@ pimee_enrich:
       smart_attribute:
         come_from: "この属性は、ルールによって更新することができます。"
       btn:
-        publish: 公開
+        publish: 公開する
         publish_this_version: このバージョンを公開する
         unpublish: 非公開
         save_draft: 下書きを保存
@@ -126,7 +125,6 @@ pimee_enrich:
         reject_selected_proposal: 選択した提案を拒否
         remove_proposal: 提案を削除する
         send_for_approval: 承認のために送信
-        cancel: キャンセル
         confirm: 送信
         title: あなたの提案のコメント (オプション - 最大 255 文字)
         characters: 文字数。
@@ -134,7 +132,7 @@ pimee_enrich:
         discard_changes: 未保存の変更は失われます。変更を保存せずに、下書きを承諾へ送信しますか？
         discard_changes_title: この下書きを送信してもよろしいですか？
   asset_transformation:
-    not_found: 変更を発見できませんでした
+    not_found: 変換を発見できませんでした
     title:
       transformation: 変換
       options: オプション
@@ -171,7 +169,7 @@ pimee_enrich:
     product:
       operation:
         publish:
-          label: 公開
+          label: 公開する
           label_count: "{1}公開 <span class=\"AknFullPage-title--highlight\"> 1 製品</span> |]1、Inf [ 公開 <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} 製品</span>"
           description: 製品を公開予定
           warning: 選択した {{ itemsCount }} の製品を公開予定です。
@@ -198,7 +196,6 @@ pimee_enrich:
           field: タグ
         add_to_category:
           label: アセットをカテゴリに分類
-          field: カテゴリ
 pim_menu:
   tab:
     asset: アセット
@@ -219,39 +216,32 @@ page_title:
   pimee_catalog_rule_rule_index: ルール
 batch_jobs:
   yml_asset_channel_configuration_import:
-    import:
-      label: アセットチャネル構成をインポート
+    import.label: アセットチャネル構成をインポート
   add_product_value_with_permission_and_rules:
     label: 許可チェック＆ルール適用による製品価値の追加
     perform.label: 製品の値を追加
-    execute_rules.label: ルールの実行
   update_product_value_with_permission_and_rules:
     label: 許可チェック＆ルール適用による製品価値の更新
     perform.label: 製品の値を更新
-    execute_rules.label: ルールの実行
   remove_product_value_with_permission_and_rules:
     label: 許可チェック＆ルール適用による製品価値の削除
     perform.label: 製品の値を削除
-    execute_rules.label: ルールの実行
   edit_common_attributes_with_permission_and_rules:
     perform.label: 属性を編集
-    execute_rules.label: ルールの実行
     cleaner.label: 一時ファイルを削除
   csv_published_product_quick_export:
-    export.label: Csvの公開された製品のクイックエクスポート
-    perform:
-      label: Csvの公開された製品のクイックエクスポート
+    export.label: Csvの公開済み製品のクイックエクスポート
+    perform.label: Csvの公開済み製品のクイックエクスポート
   csv_published_product_grid_context_quick_export:
-    export.label: Csv の公開済み製品のグリッドコンテキストのクイックエクスポート
-    perform:
-      label: Csv の公開済み製品のグリッドコンテキストのクイックエクスポート
+    export.label: Csvの公開済み製品のグリッドコンテキストのクイックエクスポート
+    perform.label: Csvの公開済み製品のグリッドコンテキストのクイックエクスポート
   xlsx_published_product_quick_export:
     export.label: Xlsxの公開済み製品のクイックエクスポート
-    perform:
-      label: Xlsxの公開済み製品のクイックエクスポート
+    perform.label: Xlsxの公開済み製品のクイックエクスポート
   xlsx_published_product_grid_context_quick_export:
     export.label: Xlsxの公開済み製品のグリッドコンテキストのクイックエクスポート
-    perform:
-      label: Xlsxの公開済み製品のグリッドコンテキストのクイックエクスポート
+    perform.label: Xlsxの公開済み製品のグリッドコンテキストのクイックエクスポート
   add_attribute_value:
     execute_rules.label: ルールの実行
+  publish_product:
+    perform.label: 公開製品

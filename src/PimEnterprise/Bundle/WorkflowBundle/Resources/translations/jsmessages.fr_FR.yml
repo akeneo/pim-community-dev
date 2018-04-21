@@ -4,12 +4,11 @@ Approve: Accepter
 Refuse: Rejeter
 Approve selected: Approuver les éléments sélectionnés
 Refuse selected: Rejeter les éléments sélectionnés
-oro:
-  datagrid:
-    noentities:
-      proposal: Il n'y a aucune proposition à réviser.
-    noresults:
-      proposal: Il n'y a aucune proposition à réviser. Tentez de modifier vos critères de recherche.
+pim_datagrid:
+  no_entities:
+    proposal: Il n'y a aucune proposition à réviser.
+  no_results:
+    proposal: Il n'y a aucune proposition à réviser. Tentez de modifier vos critères de recherche.
 pimee_workflow:
   entity:
     published_product:
@@ -59,3 +58,13 @@ batch_jobs:
   xlsx_product_proposal_import:
     label: Import des propositions en XLSX
     import.label: Import des propositions en XLSX
+pim_notification:
+  types:
+    pimee_workflow_product_draft_notification_new_proposal: Nouvelle proposition
+    pimee_workflow_import_notification_new_proposals: Nouvelles propositions de relectures venant d'un import
+    pimee_workflow_product_draft_notification_partial_approve: Proposition partiellement approuvée
+    pimee_workflow_product_draft_notification_partial_reject: Proposition partiellement rejetée
+    pimee_workflow_product_draft_notification_partial_remove: Proposition partiellement supprimée
+    pimee_workflow_product_draft_notification_approve: Proposition approuvée
+    pimee_workflow_product_draft_notification_refuse: Proposition rejetée
+    pimee_workflow_product_draft_notification_remove: Proposition supprimée

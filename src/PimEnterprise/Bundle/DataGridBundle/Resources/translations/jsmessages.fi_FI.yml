@@ -1,5 +1,5 @@
 pimee_datagrid:
-  cell:
+  cells:
     expand:
-      expandText: Laajenna
-      collapseText: Paina kokoon
+      expand_text: Laajenna
+      collapse_text: Paina kokoon

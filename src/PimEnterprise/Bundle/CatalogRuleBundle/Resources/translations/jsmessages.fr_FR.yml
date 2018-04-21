@@ -32,22 +32,18 @@ pimee_catalog_rule:
         execute:
           confirm_title: Confirmer l’exécution
           confirm_content: Êtes-vous sûr de vouloir exécuter la règle ?
-          confirm_ok: OK
       mass_edit_action:
         confirm_title: Confirmer le calcul
         confirm_content: Êtes-vous sûr de vouloir calculer le nombre de produits affecté par les règles ?
-        confirm_ok: OK
       mass_action:
         execute:
-          confirm_ok: OK
           confirm_title: Confirmer l’exécution
           confirm_content: Êtes-vous sûr de vouloir exécuter les règles sélectionnées ?
           success: L'exécution des règles choisies est en cours, vous serez notifié(e) lorsque cela sera terminé
           error: Une erreur s'est produite lors de l'exécution des règles.
           empty_selection: Aucune règle n'a été sélectionnée.
         delete:
-          confirm_ok: OK
-          confirm_title: Supprimer l'élément
+          confirm_title: Confirmer l’exécution
           confirm_content: Êtes-vous sûr de vouloir supprimer la (les) règle(s) sélectionnée(s) ?
           success: Les règles ont bien été supprimées.
           error: Une erreur s'est produite lors de la suppression des règles.
@@ -67,38 +63,33 @@ flash:
     executed: L'exécution des règles est en cours, vous serez notifié(e) lorsque la modification sera terminée.
 pim_dashboard.widget.last_operations.job_type.mass_edit_rule: Paramètres des règles
 batch_jobs:
+  default_steps:
+    execute_rules: Exécution des règles
   yml_rule_import:
     label: Import des règles en YAML
     import.label: Import des règles
-    execute_rules.label: Exécution de règle
   yml_rule_export:
     label: Export des règles en YAML
     export.label: Export des règles
   rule_impacted_product_count:
     label: Produits affectés par les règles
     perform.label: Calcul du nombre de produits affectés
-    execute_rules.label: Exécution des règles
   csv_product_import_with_rules:
     label: Import de produits en CSV avec exécution des règles
-    execute_rules.label: Exécution des règles
-    validation.label: Validation du fichier
     import.label: Import des produits
     import_associations.label: Import des associations de produits
   csv_product_model_import_with_rules:
     label: Import de modèles de produits en CSV avec exécution des règles
-    execute_rules.label: Exécution des règles
-    validation.label: Validation du fichier
     import_root_product_model.label: Import modèle de produit racine
     import_sub_product_model.label: Import sous-modèle de produit
   xlsx_product_import_with_rules:
     label: Import de produits en XLSX avec exécution des règles
-    execute_rules.label: Exécution des règles
-    validation.label: Validation du fichier
     import.label: Import des produits
     import_associations.label: Import des associations de produits
   xlsx_product_model_import_with_rules:
     label: Import de modèles de produits en XLSX avec exécution des règles
-    execute_rules.label: Exécution des règles
-    validation.label: Validation du fichier
     import_root_product_model.label: Import modèle de produit racine
     import_sub_product_model.label: Import sous-modèle de produit
+pim_notification:
+  types:
+    rule: Paramètres des règles

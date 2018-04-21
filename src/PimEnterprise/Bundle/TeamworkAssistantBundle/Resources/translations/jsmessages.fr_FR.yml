@@ -8,17 +8,13 @@ teamwork_assistant:
       edit: Modifier le projet
       remove: Supprimer ce projet
       create_from_view: Créer un projet basé sur cette vue
-      loading: Chargement en cours...
       start_new_project: Démarrer un nouveau projet
       confirmation:
         remove: Etes vous sûr de vouloir supprimer ce projet?
-        delete: Supprimer l'élément
-      popin_title: Créer
       projects: Projets
   project:
     label: Nom
     locale: Locale
-    channel: Canal
     label_maxlength: Cette valeur est trop longue. Elle doit avoir {{ max }} caractères ou moins.
     description: Description
     due_date: Date d'échéance
@@ -27,13 +23,9 @@ teamwork_assistant:
   edit_project_modal:
     saved: Le projet a été enregistré.
     title: Modifier le projet
-    confirm: Enregistrer
-    cancel: Annuler
   create_project_modal:
     saved: Le projet a été enregistré, vous serez notifié quand le calcul sera terminé.
     title: Créer un projet
-    confirm: Enregistrer
-    cancel: Annuler
   widget:
     no_project: Vous n'avez aucun projet courant
     no_project_create: Créer un nouveau projet
@@ -60,3 +52,15 @@ pim_dashboard:
       job_type:
         refresh_project_completeness_calculation: Teamwork Assistant
         project_calculation: Teamwork Assistant
+batch_jobs:
+  project_calculation:
+    project_calculation.label: Calcul du projet
+    prepare_project_calculation.label: Préparer le calcul de projet
+    clean_contributor_group.label: Vérifier les autorisations des utilisateurs sur les locales du projet
+  refresh_project_completeness_calculation:
+    label: Rafraîchir la complétude du projet
+    refresh_project_completeness_calculation.label: Rafraîchir la complétude du projet
+pim_notification:
+  types:
+    project_created: Un nouveau projet pour vous
+    project_finished: Projet fini

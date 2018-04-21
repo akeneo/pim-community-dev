@@ -84,6 +84,5 @@ pimee_catalog_rule:
       error: Während der Berechnung, der von diesen Regeln betroffenen Produkte, ist ein Fehler aufgetreten
 btn:
   Execute rules: Regeln anwenden
-rule: Regeleinstellungen
 mass_edit_rule: Regeleinstellungen
 job_execution.summary.rule_calculated: Anzahl der Regeln

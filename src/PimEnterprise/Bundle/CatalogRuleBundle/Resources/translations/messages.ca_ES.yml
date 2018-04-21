@@ -84,6 +84,5 @@ pimee_catalog_rule:
       error: S'ha produït un error durant el càlcul dels productes afectats per les regles
 btn:
   Execute rules: Executar regles
-rule: Configuració de les regles
 mass_edit_rule: Configuració de les regles
 job_execution.summary.rule_calculated: Quantitat de regles

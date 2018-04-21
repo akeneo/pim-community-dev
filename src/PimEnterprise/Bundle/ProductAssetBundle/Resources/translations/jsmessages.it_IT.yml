@@ -5,8 +5,6 @@ pimee_product_asset:
         manage: Gestisci asset
         manage_asset:
           title: Gestisci asset
-          cancel: Annulla
-          confirm: Conferma
         title: Gestisci asset
         description: Scegli gli asset che vuoi allegare al prodotto
     asset:
@@ -16,19 +14,14 @@ pimee_product_asset:
       edit: Modifica le proprietà dell'asset
   enrich_variation:
     popin:
-      delete:
-        title: Conferma cancellazione
-        message: Sei sicuro di voler eliminare questo elemento?
       reset:
         title: Reimposta varianti
-        message: Sei sicuro di voler resettare tutte le varianti?
   mass_upload:
-    menu: Carica asset
+    menu: Caricamento di asset
     btn:
       remove_all_files: Rimuovi tutti i file
-      delete: Eliminare
       import: Importa
-      upload: Carica asset
+      upload: Caricamento di asset
     success:
       new: Verrà creato un nuovo asset
       imported: File importati per l'elaborazione di asset
@@ -37,12 +30,12 @@ pimee_product_asset:
     error:
       list: Non è possibile leggere file già caricati
       upload: Si è verificato un errore durante il caricamento
-      delete: Impossibile eliminare il file dal server
+      delete: Impossibile eliminare i file dal server
       import: Si è verificato un errore durante l'importazione
       filename: Nome file non valido per l'asset
       code: Formato codice non valido per l'asset
-      locale: Un asset esiste ma non è traducibile
-      invalid_locale: L'impostazione internazionale è disabilitata o non valida
+      locale: Un asset esiste ma non è localizzabile
+      invalid_locale: Le impostazioni internazionali sono disabilitate o non valide
       exists: Un file con lo stesso nome è già importato
       conflicts: Conflitto di nomi di file
     grid:
@@ -52,13 +45,10 @@ pimee_product_asset:
       status: stato
       progress: progresso
       actions: azioni
-    action:
-      cancel: Annulla
-      remove: Rimuovere
     status:
       added: Aggiunto
       queued: Accodato
-      uploading: Caricamento
+      uploading: In upload
       error: Errore
       success: Successo
     drag_and_drop: Trascina e rilascia qui i tuoi asset per caricarli o fai click qui
@@ -74,21 +64,19 @@ pim_dashboard:
       job_type:
         mass_upload: Caricamento di massa
 page_title:
-  pimee_product_asset_mass_upload: Carica asset
+  pimee_product_asset_mass_upload: Caricamento di asset
 batch_jobs:
   apply_assets_mass_upload:
     label: Caricamento di massa di asset
     perform.label: Caricamento di massa
   yml_asset_channel_configuration_import:
     label: Importazione in Yaml della configurazione del canale asset
-    validation.label: Validazione file
     import_asset.label: Importazione in Yaml della configurazione del canale asset
   yml_asset_channel_configuration_export:
-    label: Configurazione dell'esportazione in Yaml degli asset
-    export.label: Configurazione dell'esportazione in Yaml degli asset
+    label: Esportazione in Yaml della configurazione del canale asset
+    export.label: Esportazione in Yaml della configurazione del canale asset
   csv_asset_import:
     label: Importazione asset in CSV
-    validation.label: Validazione file
     import_tags.label: Importazione tag in CSV
     import_asset.label: Importazione asset in CSV
   csv_asset_export:
@@ -99,31 +87,25 @@ batch_jobs:
     export.label: Esportazione varianti asset in CSV
   csv_tag_import:
     label: Importazione tag in CSV
-    validation.label: Validazione file
     import.label: Importazione tag in CSV
   csv_asset_category_import:
     label: Importazione categorie asset in CSV
-    validation.label: Validazione file
     import_asset_category.label: Importazione categorie asset in CSV
   csv_asset_configuration_import:
     label: Importazione in CSV della configurazione del canale asset
-    validation.label: Validazione file
     import_asset.label: Importazione in CSV della configurazione del canale asset
   csv_asset_category_export:
     label: Esportazione categorie asset in CSV
     export.label: Esportazione categorie asset in CSV
   xlsx_tag_import:
     label: Importazione tag in XLSX
-    validation.label: Validazione file
     import.label: Importazione tag in XLSX
   xlsx_asset_import:
     label: Importazione asset in XLSX
-    validation.label: Validazione file
     import_tags.label: Importazione tag in XLSX
     import_asset.label: Importazione asset in XLSX
   xlsx_asset_category_import:
     label: Importazione categorie asset in XLSX
-    validation.label: Validazione file
     import_asset_category.label: Importazione categorie asset in XLSX
   xlsx_asset_export:
     label: Esportazione asset in XLSX
@@ -132,6 +114,6 @@ batch_jobs:
     label: Esportazione categorie asset in XLSX
     export.label: Esportazione categorie asset in XLSX
   classify_assets:
-    perform.label: Sposta gli asset nelle categorie
+    perform.label: Spostare gli asset nelle categorie
   add_tags_to_assets:
     perform.label: Aggiungi tag agli asset

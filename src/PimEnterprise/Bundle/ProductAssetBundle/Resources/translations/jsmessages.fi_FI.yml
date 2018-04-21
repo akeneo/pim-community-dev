@@ -5,8 +5,6 @@ pimee_product_asset:
         manage: Hallinnoi resursseja
         manage_asset:
           title: Hallinnoi resursseja
-          cancel: Peruuta
-          confirm: Vahvista
         title: Hallinnoi resursseja
         description: Valitse assetit, jotka haluat liittää tuotteelle
     asset:
@@ -18,16 +16,11 @@ pimee_product_asset:
       edit: Muokkaa assetin ominaisuuksia
   enrich_variation:
     popin:
-      delete:
-        title: Vahvista poisto
-        message: Oletko varma että haluat poistaa tämän kohteen?
       reset:
         title: Nollaa variaatiot
-        message: Oletko varma että haluat nollata kaikki variaatiot?
   mass_upload:
     menu: Tuo assetteja
     btn:
-      delete: Poista
       import: Tuonti
       upload: Tuo assetteja
     success:
@@ -50,9 +43,6 @@ pimee_product_asset:
       status: status
       progress: edistyminen
       actions: toiminnot
-    action:
-      cancel: Peruuta
-      remove: Poista
     status:
       added: Lisätty
       queued: Jonossa
@@ -76,28 +66,15 @@ batch_jobs:
     perform.label: Massatuonti
   yml_asset_channel_configuration_import:
     label: Assettikanavien konfiguraation tuonti Yaml muodossa
-    validation.label: Tiedostojen tarkistaminen
     import_asset.label: Assettikanavien konfiguraation tuonti Yaml muodossa
   yml_asset_channel_configuration_export:
     label: Assettikanavien asetusten vienti Yaml -muodossa
     export.label: Assettikanavien asetusten vienti Yaml -muodossa
   csv_asset_import:
-    validation.label: Tiedostojen tarkistaminen
     import_tags.label: Tunnisteiden tuonti CSV-muodossa
   csv_tag_import:
     label: Tunnisteiden tuonti CSV-muodossa
-    validation.label: Tiedostojen tarkistaminen
     import.label: Tunnisteiden tuonti CSV-muodossa
-  csv_asset_category_import:
-    validation.label: Tiedostojen tarkistaminen
-  csv_asset_configuration_import:
-    validation.label: Tiedostojen tarkistaminen
-  xlsx_tag_import:
-    validation.label: Tiedostojen tarkistaminen
-  xlsx_asset_import:
-    validation.label: Tiedostojen tarkistaminen
-  xlsx_asset_category_import:
-    validation.label: Tiedostojen tarkistaminen
   xlsx_asset_variation_export:
     label: Assettien variaatioiden vienti CSV-muodossa
     export.label: Assettien variaatioiden vienti CSV-muodossa
