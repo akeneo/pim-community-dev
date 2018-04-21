@@ -35,7 +35,7 @@ oro.user.grid.groups:
 pim_title:
   user.index: Käyttäjät
   user_role.index: Roolit
-  user_group.index: Ryhmät
+  user_group.index: Käyttäjäryhmät
   system_configuration.index: Kokoonpano
 user.title: Käyttäjä
 user.overview: Käyttäjä
@@ -76,7 +76,7 @@ Birthday: Syntymäpäivä
 API key: API-avain
 Ui locale: Käyttöliittymän kieli
 UI locale: Käyttöliittymän kieli
-User salt: Käyttäjän salt
+User salt: Käyttäjän suola
 Current password: Nykyinen salasana
 New password: Uusi salasana
 Repeat new password: Uusi salasana (toista)
@@ -134,24 +134,50 @@ DELETE: Poista
 ASSIGN: Määritä
 SHARE: Jaa
 oro:
-  security:
-    access-level:
-      BASIC: Käyttäjä
-      LOCAL: Liiketoimintayksikkö
-      DEEP: Divisioona
-      GLOBAL: Organisaatio
-      SYSTEM: Järjestelmä
-      NONE: Ei yhtään
-Create group: Luo ryhmä
+  user:
+    controller:
+      group:
+        message:
+          saved: "Ryhmä tallennettu"
+      role:
+        message:
+          saved: "Rooli tallennettu"
+      user:
+        message:
+          saved: "Käyttäjän tallennettu"
+      status:
+        message:
+          saved: "Tila tallennettu"
+    grid:
+      users:
+        columns:
+          username: "Käyttäjänimi"
+          email: "Sähköpostiosoite"
+          firstName: "Etunimi"
+          lastName: "Sukunimi"
+          createdAt: "Luotu"
+          updatedAt: "Päivitetty"
+          enabled: "Status"
+      roles:
+        columns:
+          label: "Nimike"
+      groups:
+        columns:
+          name: "Nimi"
+"Create group": "Luo ryhmä"
 btn.create.user-group: Luo ryhmä
 Has group: Ryhmä on olemassa
 Save and Close: Tallenna ja sulje
-user-group.overview: Ryhmät
+user-group.overview: Käyttäjäryhmät
 Log in: Kirjaudu
 Remember me on this computer: Muista minut tässä tietokoneessa
 Forgot your password?: Unohditko salasanasi?
 Username or Email: Käyttäjänimi tai sähköpostiosoite
-Forgot Password: Unohdin salasanani
+"Forgot Password": "Unohdin salasanani"
 Request: Pyyntö
 Check Email: Tarkista sähköpostisi
 Go to homepage: Siirry etusivulle
+Login: Kirjaudu sisään
+"Create role": "Luo rooli"
+"Edit role": "Muokkaa roolia"
+"Logout": "Kirjaudu ulos"

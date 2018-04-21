@@ -1,7 +1,6 @@
 btn:
   post: Lisää uusi kommentti
   reply: Vastaa
-  cancel: Peruuta
 confirmation:
   remove:
     comment: Oletko varma että haluat poistaa tämän kommentin?

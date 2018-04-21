@@ -20,14 +20,13 @@ Change file: Skift fil
 Remove file: Fjern fil
 Delete: Slet
 Save: Gem
-Cancel: Annuller
 Get help: Få hjælp
 My User: Min konto
 oro.form.choose_value: Vælg en værdi...
 Read more: Læs mere
 oro.form.click_here_to_select: Klik her for at vælge...
 Add: Tilføj
-"Learn how to use this space": "Lær at bruge denne plads"
+"Learn how to use this space": "Lær at bruge dette omåde"
 "How To Use Pinbar": "Sådan bruges Pinbar"
 Pinbar: Pinbar
 Favorites: Favoritter
@@ -41,7 +40,6 @@ required: (Påkrævet)
 pim_ui.system_config:
   form:
     loading_message_enabled.label: Aktivere indlæsning af meddelelser
-    loading_message_enabled.tooltip: Vis brugervenlige beskeder mens siden indlæses
     loading_messages.label: Tilgængelige indlæsnings meddelelser
     loading_messages.tooltip: Alle tilgængelige indlæsnings meddelelser adskilt med linjeskift
   group:

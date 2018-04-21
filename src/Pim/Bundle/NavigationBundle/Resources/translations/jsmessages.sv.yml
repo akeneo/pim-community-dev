@@ -1,0 +1,4 @@
+"Sorry, page was not loaded correctly": "Tyvärr, sidan laddades inte korrekt"
+"Your local changes will be lost. Are you sure you want to refresh the page?": "Dina lokala ändringar går förlorade. Är du säker på att du vill uppdatera sidan?"
+"navigation.message.content.outdated": "Innehållet på sidan {{ title }} är föråldrad. Vänligen <a href='#' data-action='page-refresh'>uppdatera sidan</a>"
+"Content of pinned page is outdated": "Innehållet på fäst sida är föråldrad"

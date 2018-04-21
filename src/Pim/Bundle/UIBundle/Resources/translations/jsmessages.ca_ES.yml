@@ -1,22 +1,14 @@
-Close: Tancar
-Update: Actualitzar
-Selected Rows: Files seleccionades
-"Yes": "Sí"
 "Yes, Delete": "Sí, Suprimir"
 "Yes, I Agree": "Sí, Estic d'acord"
 "Yes, do it": "Sí, fes-ho"
-"No": "No"
 "Ok, got it.": "D'acord, ho entenc."
-"Cancel": "Cancelar"
 "Delete Confirmation": "Suprimir Confirmació"
 "Edit": "Editar"
 "Unexpected error occured. Please contact system administrator.": "Error inesperat. Contacti amb el seu administrador de sistemes."
-Now: Ara
 Prev: Anterior
 Next: Següent
 Today: Avui
 Wk: Setm
-Done: Fet
 AM: AM
 A: A
 PM: PM
@@ -32,7 +24,6 @@ Microsecond: Microsegon
 Localized value: Valor amb configuració regional
 Columns: Columnes
 Datagrid Configuration: Configuració de la quadrícula de dades
-Apply: Aplicar
 Action: Acció
 Unit: Unitat
 Currency: Moneda
@@ -44,7 +35,6 @@ jstree:
     unclassified: Productes sense classificar
   no_tree: No hi ha cap arbre disponible
   include_sub: Incloure subcategories
-  loading: Carregant ...
 datetimepicker:
   days:
     Sunday: Diumenge

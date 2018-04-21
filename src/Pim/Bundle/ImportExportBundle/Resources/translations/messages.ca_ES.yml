@@ -4,9 +4,9 @@ pim_import_export:
   job: Job
   connector: Connector
   status:
-    - A punt
+    0: A punt
   download_archive:
-    archive: descarregar l' arxiu generat | descarregar arxius generats
+    archive: descarregar l'arxiu generat | descarregar els arxius generats
     output: descarregar fitxer generat|descarregar fitxers generats
     input: descarregar fitxer llegit|descarregar fitxers llegits
     invalid_xlsx: descarregar dades no vàlides

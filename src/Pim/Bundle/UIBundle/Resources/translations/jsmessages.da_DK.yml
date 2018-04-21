@@ -1,24 +1,16 @@
-Close: Luk
-Update: Opdater
-Selected Rows: Markerede rækker
-"Yes": "Ja"
 "Yes, Delete": "Ja, slet"
 "Yes, I Agree": "Ja, jeg er enig"
 "Yes, do it": "Ja, gør det"
-"No": "Nej"
 "Ok, got it.": "OK, fik det."
-"Cancel": "Annuller"
 "Delete Confirmation": "Slet bekræftelse"
 "Edit": "Redigér"
 "Unexpected error occured. Please contact system administrator.": "Der opstod en uventet fejl. Kontakt systemadministratoren."
 "Yes, revoke": "Ja, tilbagekald"
 "Revoke Confirmation": "Tilbagekald bekræftelse"
-Now: Nu
 Prev: Forrige
 Next: Næste
 Today: I dag
 Wk: Wk
-Done: Udført
 AM: AM
 A: A
 PM: PM
@@ -34,7 +26,6 @@ Microsecond: Mikrosekund
 Localized value: Lokaliseret værdi
 Columns: Kolonner
 Datagrid Configuration: DataGrid konfiguration
-Apply: Anvend
 Action: Handling
 Unit: Enhed
 Currency: Valuta
@@ -44,9 +35,8 @@ jstree:
   product:
     all: Alle produkter
     unclassified: Ikke-klassificerede produkter
-  no_tree: Intet tilgængelig træ
+  no_tree: Intet træ tilgængeligt
   include_sub: Inkluder underkategorier
-  loading: Indlæser ...
 datetimepicker:
   days:
     Sunday: Søndag

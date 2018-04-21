@@ -1,7 +1,6 @@
 btn:
   post: Afegir un nou comentari
   reply: Respondre
-  cancel: Cancelar
 confirmation:
   remove:
     comment: Està segur que vol suprimir aquest comentari?

@@ -1,3 +1,5 @@
+pim_common:
+  cancel: キャンセル
 pim_enrich:
   product:
     tab:
@@ -102,7 +104,7 @@ pim_enrich:
       launched_flash: '"カテゴリに追加"一括操作が開始されています。終了後に通知されます。'
     classify-move:
       label: カテゴリ間を移動
-      description: 製品は以下のカテゴリに配置され、既存の表示順は削除されます。
+      description: 製品は以下のカテゴリに配置されます、既存の表示順は削除されます。
       success_flash: 選択したカテゴリに製品が移動されました
       launched_flash: カテゴリに移動する一括操作が開始されています。終了後に通知されます。
     classify-remove:
@@ -327,7 +329,6 @@ confirmation:
   leave: このページから移動してもよろしいですか？
   discard changes: このページから移動する場合は %entity% に対する変更が失われます。
   remove:
-    item: このアイテムを削除してもよろしいですか?
     attribute: 属性 %name% を削除してもよろしいですか。
     attribute group: 属性グループ %name% を削除してもよろしいですか。
     category: カテゴリー %name% を削除してもよろしいですか。
@@ -502,7 +503,6 @@ Active: アクティブ
 Inactive: 非アクティブ
 Do not convert: 変換しない
 Create: 作成
-Cancel: キャンセル
 Choose a family: ファミリーを選択してください
 Choose a unit: 単位を選択
 No matches found: 一致するものがみつかりません
@@ -719,7 +719,6 @@ Format address by address country: 住所の国で住所をフォーマット
 Language: 言語
 Timezone: タイムゾーン
 Currency: 通貨
-settings: 設定
 oro.locale:
   address_format:
     region_name_type:
@@ -764,39 +763,6 @@ remove_product_value.steps.update_product_value_processor.title: 製品の値を
 edit_common_attributes: 属性を編集
 perform.steps.duplicated.title: 重複した軸
 perform.steps.excluded.title: 除外製品
-batch_jobs:
-  add_product_value:
-    label: 製品の値を追加
-    perform:
-      label: 製品の値を追加
-  update_product_value:
-    label: 製品の値を更新
-    perform:
-      label: 製品の値を更新
-  edit_common_attributes:
-    label: 属性を編集
-    perform:
-      label: 属性を編集
-  set_attribute_requirements:
-    label: 属性の要件を設定
-    perform:
-      label: 属性の要件を設定
-  csv_product_quick_export:
-    quick_export.label: Csv 製品のクイックエクスポート
-    perform:
-      label: Csv 製品のクイックエクスポート
-  csv_product_grid_context_quick_export:
-    quick_export.label: Csv 製品のグリッドコンテキストのクイックエクスポート
-    perform:
-      label: Csv 製品のグリッドコンテキストのクイックエクスポート
-  xlsx_product_quick_export:
-    quick_export.label: Xlsx 製品のクイックエクスポート
-    perform:
-      label: Xlsx 製品のクイックエクスポート
-  xlsx_product_grid_context_quick_export:
-    quick_export.label: Xlsx 製品のグリッドコンテキストのクイックエクスポート
-    perform:
-      label: Xlsx 製品のグリッドコンテキストのクイックエクスポート
 mass_edit report:
   overview: 一括編集レポート
 job_tracker:

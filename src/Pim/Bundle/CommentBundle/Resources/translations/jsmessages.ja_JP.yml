@@ -1,7 +1,6 @@
 btn:
   post: コメントを追加
   reply: 返答
-  cancel: キャンセル
 confirmation:
   remove:
     comment: コメントを削除しますか？

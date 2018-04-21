@@ -2,9 +2,7 @@ pim_dashboard:
   widget:
     last_operations:
       empty: 操作が見つかりません
-      status: ステータス
       date: 日付
-      type: タイプ
       profile_name: プロファイル名
       details: 詳細
       warning_count: 警告
