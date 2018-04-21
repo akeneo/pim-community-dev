@@ -20,14 +20,17 @@
     },
     "autoload-dev": {
         "psr-0": {
-            "Context": "tests/legacy/features/",
-            "PimEnterprise\\Behat": "tests/legacy/features/",
-            "Pim\\Behat": "vendor/akeneo/pim-community-dev/tests/legacy/features/"
+            "Context": "vendor/akeneo/pim-community-dev/tests/legacy/features/",
+            "": "tests/legacy/features/"
         },
         "psr-4": {
-            "Akeneo\\Test\\IntegrationTestsBundle\\": "vendor/akeneo/pim-community-dev/tests/back/IntegrationTestsBundle/",
-            "AkeneoEnterprise\\Test\\IntegrationTestsBundle\\": "tests/back/Integration/IntegrationTestsBundle/",
+            "Pim\\Behat\\": "vendor/akeneo/pim-community-dev/tests/legacy/features/Pim/Behat",
+            "Akeneo\\Test\\IntegrationTestsBundle\\": "vendor/akeneo/pim-community-dev/tests/back/Integration/IntegrationTestsBundle/",
             "Akeneo\\Test\\Integration\\": "vendor/akeneo/pim-community-dev/tests/back/Integration/",
+            "Akeneo\\Test\\Acceptance\\": "vendor/akeneo/pim-community-dev/tests/back/Acceptance/",
+            "Akeneo\\Test\\Common\\": "vendor/akeneo/pim-community-dev/tests/back/Common/",
+            "PimEnterprise\\Behat\\": "tests/legacy/features/Pim/Behat/",
+            "AkeneoEnterprise\\Test\\IntegrationTestsBundle\\": "tests/back/Integration/IntegrationTestsBundle/",
             "AkeneoEnterprise\\Test\\Acceptance\\": "tests/back/Acceptance/"
         }
     },
