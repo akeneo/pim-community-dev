@@ -19,7 +19,7 @@ pim_enrich:
       pim_assets_collection: Aktive samling
     attribute:
       type:
-        pim_assets_collection: Aktive samling
+        pim_assets_collection: Aktiver samling
   form:
     attribute:
       tab:
@@ -195,10 +195,10 @@ pimee_enrich:
           label: Bekræft
       operation:
         add_tag:
-          label: Tilføj etiketter til aktiver
+          label: Tilføje tags til aktiver
           description: Tags vil blive tilføjet til aktiverne.
           label_count: "{1}Tilføj mærkater til <span class=\"AknFullPage-title--highlight\"> 1 aktiv</span> |] 1, Inf [Tilføj mærkater til <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} aktiver</span>"
-          field: Tags
+          field: Etiketter
           empty_selection: Vælg venligst mærkat
         add_to_category:
           label: Klassificere produkter i kategorier

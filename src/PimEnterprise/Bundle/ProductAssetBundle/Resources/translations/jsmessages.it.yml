@@ -32,7 +32,7 @@ pimee_product_asset:
       remove_all_files: Rimuovi tutti i file
       delete: Eliminare
       import: Importa
-      upload: Carica asset
+      upload: Caricamento di asset
     success:
       new: Verrà creato un nuovo asset
       imported: File importati per l'elaborazione di asset
@@ -41,7 +41,7 @@ pimee_product_asset:
     error:
       list: Non è possibile leggere file già caricati
       upload: Si è verificato un errore durante il caricamento
-      delete: Impossibile eliminare il file dal server
+      delete: Impossibile eliminare i file dal server
       import: Si è verificato un errore durante l'importazione
       filename: Nome file non valido per l'asset
       code: Formato codice non valido per l'asset
@@ -78,21 +78,21 @@ pim_dashboard:
       job_type:
         mass_upload: Caricamento di massa
 page_title:
-  pimee_product_asset_mass_upload: Carica asset
+  pimee_product_asset_mass_upload: Caricamento di asset
 batch_jobs:
   apply_assets_mass_upload:
     label: Caricamento di massa di asset
     perform.label: Caricamento di massa
   yml_asset_channel_configuration_import:
     label: Importazione in Yaml della configurazione del canale asset
-    validation.label: Validazione file
+    validation.label: Validazione del file
     import_asset.label: Importazione in Yaml della configurazione del canale asset
   yml_asset_channel_configuration_export:
-    label: Configurazione dell'esportazione in Yaml degli asset
-    export.label: Configurazione dell'esportazione in Yaml degli asset
+    label: Esportazione in Yaml della configurazione del canale asset
+    export.label: Esportazione in Yaml della configurazione del canale asset
   csv_asset_import:
     label: Importazione asset in CSV
-    validation.label: Validazione file
+    validation.label: Validazione del file
     import_tags.label: Importazione tag in CSV
     import_asset.label: Importazione asset in CSV
   csv_asset_export:
@@ -103,31 +103,31 @@ batch_jobs:
     export.label: Esportazione varianti asset in CSV
   csv_tag_import:
     label: Importazione tag in CSV
-    validation.label: Validazione file
+    validation.label: Validazione del file
     import.label: Importazione tag in CSV
   csv_asset_category_import:
     label: Importazione categorie asset in CSV
-    validation.label: Validazione file
+    validation.label: Validazione del file
     import_asset_category.label: Importazione categorie asset in CSV
   csv_asset_configuration_import:
     label: Importazione in CSV della configurazione del canale asset
-    validation.label: Validazione file
+    validation.label: Validazione del file
     import_asset.label: Importazione in CSV della configurazione del canale asset
   csv_asset_category_export:
     label: Esportazione categorie asset in CSV
     export.label: Esportazione categorie asset in CSV
   xlsx_tag_import:
     label: Importazione tag in XLSX
-    validation.label: Validazione file
+    validation.label: Validazione del file
     import.label: Importazione tag in XLSX
   xlsx_asset_import:
     label: Importazione asset in XLSX
-    validation.label: Validazione file
+    validation.label: Validazione del file
     import_tags.label: Importazione tag in XLSX
     import_asset.label: Importazione asset in XLSX
   xlsx_asset_category_import:
     label: Importazione categorie asset in XLSX
-    validation.label: Validazione file
+    validation.label: Validazione del file
     import_asset_category.label: Importazione categorie asset in XLSX
   xlsx_asset_export:
     label: Esportazione asset in XLSX
@@ -136,6 +136,6 @@ batch_jobs:
     label: Esportazione categorie asset in XLSX
     export.label: Esportazione categorie asset in XLSX
   classify_assets:
-    perform.label: Sposta gli asset nelle categorie
+    perform.label: Spostare gli asset nelle categorie
   add_tags_to_assets:
     perform.label: Aggiungi tag agli asset

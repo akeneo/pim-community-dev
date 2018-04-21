@@ -54,6 +54,7 @@ pimee_enrich:
           added: El grupo {{ group }} será autorizado a {{ permission }} grupo de atributos
   entity:
     product:
+      index_title: "] -Inf, 1] {{ count }} resultado|] 1, Inf [{{ count }} resultado"
       navigation: Productos publicados
       history:
         published: Publicado
@@ -234,9 +235,9 @@ batch_jobs:
     perform:
       label: Exportación rápida en CSV de los productos publicados
   csv_published_product_grid_context_quick_export:
-    export.label: Exportación rápida de la grilla de productos publicados en CSV
+    export.label: Exportación rápida de la tabla de productos publicados en CSV
     perform:
-      label: Exportación rápida de la grilla de productos publicados en CSV
+      label: Exportación rápida de la tabla de productos publicados en CSV
   xlsx_published_product_quick_export:
     export.label: Exportación rápida en XLSX de los productos publicados
     perform:

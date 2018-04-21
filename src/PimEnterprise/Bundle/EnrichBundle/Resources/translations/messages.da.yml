@@ -5,7 +5,7 @@ pane.accordion.permissions: Rettigheder
 attribute group.permissions:
   view.label: Rettighed til at se attributter
   view.help: Rettighed til at se produkterne i denne attribut gruppe
-  edit.label: Tillad at redigere attributter
+  edit.label: Rettighed til at redigere attributter
   edit.help: Rettighed til at se produkterne i denne attribut gruppe
   no_access_to_attributes: Du har ikke adgang til nogen attributter for dette produkt. Kontakt din administrator.
 category.permissions:
