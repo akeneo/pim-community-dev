@@ -4,7 +4,7 @@ pim_import_export:
   job: Tarefa
   connector: Conector
   status:
-    - Pronto
+    0: Pronto
   batch_status:
     1: Concluído
     2: Iniciando
