@@ -82,7 +82,7 @@ services:
         class: 'Pim\Bundle\CatalogVolumeMonitoringBundle\tests\Acceptance\Context\OptionPerAttributeContext'
         arguments:
             - '@test.catalog_volume_limits.report_context'
-            - '@__symfony__.pim_volume_monitoring.persistence.query.average_max_options_per_attribute'
+            - '@__symfony__.pim_volume_monitoring.persistence.query.aggregated_average_max_options_per_attribute'
         tags:
             - { name: fob.context_service }
 
@@ -122,7 +122,7 @@ services:
         class: 'Pim\Bundle\CatalogVolumeMonitoringBundle\tests\Acceptance\Context\ProductValueContext'
         arguments:
             - '@test.catalog_volume_limits.report_context'
-            - '@__symfony__.pim_volume_monitoring.persistence.query.count_product_values'
-            - '@__symfony__.pim_volume_monitoring.persistence.query.average_max_product_values'
+            - '@__symfony__.pim_volume_monitoring.persistence.query.aggregated_count_product_and_product_model_values'
+            - '@__symfony__.pim_volume_monitoring.persistence.query.aggregated_average_max_product_and_product_model_values'
         tags:
             - { name: fob.context_service }

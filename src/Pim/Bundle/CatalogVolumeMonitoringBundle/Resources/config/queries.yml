@@ -13,10 +13,26 @@ services:
             - '@database_connection'
             - '%average_max_options_per_attribute_limit%'
         tags:
+            - { name: pim_volume_monitoring.persistence.average_max_query_to_aggregate }
+
+    pim_volume_monitoring.persistence.query.aggregated_average_max_options_per_attribute:
+        class: Pim\Bundle\CatalogVolumeMonitoringBundle\Persistence\Query\Sql\AggregatedAverageMaxOptionsPerAttribute
+        arguments:
+            - '@database_connection'
+            - '%average_max_options_per_attribute_limit%'
+        tags:
             - { name: pim_volume_monitoring.persistence.average_max_query }
 
     pim_volume_monitoring.persistence.query.average_max_product_values:
         class: 'Pim\Bundle\CatalogVolumeMonitoringBundle\Persistence\Query\Sql\AverageMaxProductValues'
+        arguments:
+            - '@database_connection'
+            - '%average_max_product_values_limit%'
+        tags:
+            - { name: pim_volume_monitoring.persistence.average_max_query_to_aggregate }
+
+    pim_volume_monitoring.persistence.query.aggregated_average_max_product_values:
+        class: Pim\Bundle\CatalogVolumeMonitoringBundle\Persistence\Query\Sql\AggregatedAverageMaxProductValues
         arguments:
             - '@database_connection'
             - '%average_max_product_values_limit%'
@@ -121,6 +137,14 @@ services:
 
     pim_volume_monitoring.persistence.query.count_product_values:
         class: 'Pim\Bundle\CatalogVolumeMonitoringBundle\Persistence\Query\Sql\CountProductValues'
+        arguments:
+            - '@database_connection'
+            - '%count_product_values_limit%'
+        tags:
+            - { name: pim_volume_monitoring.persistence.count_query_to_aggregate }
+
+    pim_volume_monitoring.persistence.query.aggregated_count_product_values:
+        class: Pim\Bundle\CatalogVolumeMonitoringBundle\Persistence\Query\Sql\AggregatedCountProductValues
         arguments:
             - '@database_connection'
             - '%count_product_values_limit%'

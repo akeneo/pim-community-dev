@@ -1,0 +1,18 @@
+Pim\Component\CatalogVolumeMonitoring\Volume\Model\AggregatedVolume:
+    type: entity
+    table: pim_aggregated_volume
+    changeTrackingPolicy: DEFERRED_EXPLICIT
+    fields:
+        volumeName:
+                id: true
+                column: volume_name
+                type: string
+                length: 255
+                generator:
+                    srategy: NONE
+        volume:
+            column: volume
+            type: native_json
+        aggregatedAt:
+            column: aggregated_at
+            type: datetime

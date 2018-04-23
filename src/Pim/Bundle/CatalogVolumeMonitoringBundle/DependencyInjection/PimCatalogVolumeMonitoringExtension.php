@@ -24,5 +24,6 @@ class PimCatalogVolumeMonitoringExtension extends Extension
         $loader->load('queries.yml');
         $loader->load('normalizers.yml');
         $loader->load('controllers.yml');
+        $loader->load('repositories.yml');
     }
 }

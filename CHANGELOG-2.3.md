@@ -31,3 +31,7 @@
 ## New jobs
 IMPORTANT: In order for your PIM to work properly, you will need to run the following commands to add the missing job instances.
 - Add the job instance `add_to_group`: `bin/console akeneo:batch:create-job "Akeneo Mass Edit Connector" "add_to_group" "mass_delete" "add_to_group" '{}' "Mass add product to group" --env=prod`
+
+## Migrations
+
+Please run the doctrine migrations command in order to see the new catalog volume monitoring screen: `bin/console doctrine:migrations:migrate --env=prod`

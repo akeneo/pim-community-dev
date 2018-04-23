@@ -2,11 +2,7 @@
 
 namespace Pim\Bundle\CatalogVolumeMonitoringBundle;
 
-use Akeneo\Bundle\StorageUtilsBundle\AkeneoStorageUtilsBundle;
 use Doctrine\Bundle\DoctrineBundle\DependencyInjection\Compiler\DoctrineOrmMappingsPass;
-use Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\RegisterSerializerPass;
-use Pim\Bundle\VersioningBundle\DependencyInjection\Compiler\RegisterUpdateGuessersPass;
-use Pim\Bundle\VersioningBundle\DependencyInjection\Compiler\RegisterVersionPurgerAdvisorPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
@@ -17,4 +13,21 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
  */
 class PimCatalogVolumeMonitoringBundle extends Bundle
 {
+    /**
+     * {@inheritdoc}
+     */
+    public function build(ContainerBuilder $container)
+    {
+        $doctrineMappings = [
+            realpath(__DIR__ . '/Resources/config/model/doctrine') => 'Pim\Component\CatalogVolumeMonitoring\Volume\Model',
+        ];
+
+        $container->addCompilerPass(
+            DoctrineOrmMappingsPass::createYamlMappingDriver(
+                $doctrineMappings,
+                ['doctrine.orm.entity_manager'],
+                false
+            )
+        );
+    }
 }
