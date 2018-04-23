@@ -52,7 +52,7 @@ use Pim\Component\Catalog\Model\ProductModelInterface;
  * | product_15               | tshirt-unique-color-l        |                  | red    | L    | Cotton    | 50%          |                   | clothing    | clothing_size          |
  * | product_16               | tshirt-unique-color-xl       |                  | red    | XL   | Cotton    | 60%          |                   | clothing    | clothing_size          |
  * |--------------------------|------------------------------|------------------|-----------------------------------------------------------------------------------------------------|
- * | product_17               | watch                        |                  | blue   |      | Metal     | 0%           |                   | clothing    | clothing_size          |
+ * | product_17               | watch                        |                  | blue   |      | Metal     | 0%           |                   | clothing    |                        |
  * |--------------------------|------------------------------|------------------|-----------------------------------------------------------------------------------------------------|
  * | product_model_6          | model-hat                    |                  | grey   |      | Wool      |              | 2/2               | accessories | accessories_size       |
  * | product_18               | hat-m                        |                  | grey   | M    | Wool      | 100%         |                   | accessories | accessories_size       |
