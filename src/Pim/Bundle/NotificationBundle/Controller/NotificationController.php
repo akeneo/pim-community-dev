@@ -55,7 +55,7 @@ class NotificationController
      *
      * @param Request $request
      *
-     * @return JsonResponse
+     * @return Response
      */
     public function listAction(Request $request)
     {
@@ -105,6 +105,7 @@ class NotificationController
     /**
      * Remove a notification
      *
+     * @param Request $request
      * @param int $id
      *
      * @return Response

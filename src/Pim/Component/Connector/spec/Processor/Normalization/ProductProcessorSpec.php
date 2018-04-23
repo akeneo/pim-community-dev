@@ -113,8 +113,6 @@ class ProductProcessorSpec extends ObjectBehavior
         $mediaFetcher->fetchAll(Argument::cetera())->shouldNotBeCalled();
         $mediaFetcher->getErrors()->shouldNotBeCalled();
 
-        $clearer->clear()->shouldBeCalled();
-
         $this->process($product)->shouldReturn([
             'enabled'    => true,
             'categories' => ['cat1', 'cat2'],
@@ -195,8 +193,6 @@ class ProductProcessorSpec extends ObjectBehavior
         $mediaFetcher->getErrors()->willReturn([]);
 
         $this->process($product)->shouldReturn($productStandard);
-
-        $clearer->clear()->shouldBeCalled();
     }
 
     function it_throws_an_exception_if_media_of_product_is_not_found(
@@ -272,7 +268,5 @@ class ProductProcessorSpec extends ObjectBehavior
         )->shouldBeCalled();
 
         $this->process($product)->shouldReturn($productStandard);
-
-        $clearer->clear()->shouldBeCalled();
     }
 }

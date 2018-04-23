@@ -55,6 +55,8 @@ class ProductProcessor implements ItemProcessorInterface, StepExecutionAwareInte
      * @param BulkMediaFetcher                      $mediaFetcher
      * @param EntityWithFamilyValuesFillerInterface $productValuesFiller
      * @param EntityManagerClearerInterface         $cacheClearer
+     *
+     * @todo @merge On master : remove $cacheClearer. It is not used anymore. The cache is now cleared in a dedicated subscriber.
      */
     public function __construct(
         NormalizerInterface $normalizer,
@@ -115,8 +117,6 @@ class ProductProcessor implements ItemProcessorInterface, StepExecutionAwareInte
                 ARRAY_FILTER_USE_KEY
             );
         }
-
-        $this->cacheClearer->clear();
 
         return $productStandard;
     }

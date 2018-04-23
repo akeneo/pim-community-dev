@@ -49,7 +49,6 @@ Feature: Edit common attributes of many products at once
     When I remove the "Name" attribute
     Then I should not see the "Name" field
     And I should not see a remove link next to the "Name" field
-    And I confirm mass edit
 
   Scenario: Successfully update many text values at once
     Given I am on the products grid

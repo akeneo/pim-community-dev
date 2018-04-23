@@ -6,3 +6,4 @@ pim_catalog:
     product_identifier: Estes identificadores "%s" não existem.
     0: Ocorreu um erro inesperado.
     200: Ocorreu um erro interno
+    205: Ocorreu um erro interno

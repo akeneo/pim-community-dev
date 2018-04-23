@@ -222,10 +222,14 @@ class GroupController
      *
      * @param Request $request
      *
-     * @return JsonResponse
+     * @return Response
      */
     public function createAction(Request $request)
     {
+        if (!$request->isXmlHttpRequest()) {
+            return new RedirectResponse('/');
+        }
+
         $data = json_decode($request->getContent(), true);
         $group = $this->groupFactory->createGroup();
         $this->updater->update($group, $data);

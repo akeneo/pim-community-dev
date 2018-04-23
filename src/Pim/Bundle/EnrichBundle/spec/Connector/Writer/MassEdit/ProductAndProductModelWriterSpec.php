@@ -12,7 +12,6 @@ use PhpSpec\ObjectBehavior;
 use Pim\Bundle\EnrichBundle\Connector\Writer\MassEdit\ProductAndProductModelWriter;
 use Pim\Bundle\VersioningBundle\Manager\VersionManager;
 use Pim\Component\Catalog\Model\ProductInterface;
-use Pim\Component\Catalog\Model\ProductModel;
 use Pim\Component\Catalog\Model\ProductModelInterface;
 use Prophecy\Argument;
 
@@ -95,24 +94,6 @@ class ProductAndProductModelWriterSpec extends ObjectBehavior
 
         $stepExecution->incrementSummaryInfo('create')->shouldBeCalled();
         $stepExecution->incrementSummaryInfo('process')->shouldBeCalledTimes(2);
-
-        $this->write($items);
-    }
-
-    function it_clears_cache(
-        $cacheClearer,
-        $stepExecution,
-        ProductInterface $product,
-        ProductModelInterface $productModel,
-        JobParameters $jobParameters
-    ) {
-        $stepExecution->getJobParameters()->willReturn($jobParameters);
-        $jobParameters->get('realTimeVersioning')->willReturn(true);
-
-        $items = [$product, $productModel];
-
-        $stepExecution->incrementSummaryInfo('create')->shouldBeCalled();
-        $cacheClearer->clear()->shouldBeCalled();
 
         $this->write($items);
     }

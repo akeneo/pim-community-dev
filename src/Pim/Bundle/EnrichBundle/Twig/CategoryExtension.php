@@ -424,7 +424,7 @@ class CategoryExtension extends \Twig_Extension
 
         // set label in bold
         if ($selectedChildren > 0) {
-            $result['data'] = sprintf('<strong>%s</strong>', $result['data']);
+            $result['data'] = sprintf('%s', $result['data']);
         }
 
         return $result;

@@ -8,23 +8,29 @@
  */
 define(
     [
+        'jquery',
         'underscore',
         'oro/translator',
+        'oro/messenger',
         'pim/i18n',
         'pim/user-context',
         'pim/fetcher-registry',
         'pim/mass-edit-form/product/operation',
         'pim/tree/associate',
+        'pim/common/property',
         'pim/template/mass-edit/product/category'
     ],
     function (
+        $,
         _,
         __,
+        messenger,
         i18n,
         UserContext,
         FetcherRegistry,
         BaseOperation,
         TreeAssociate,
+        propertyAccessor,
         template
     ) {
         return BaseOperation.extend({
@@ -124,7 +130,10 @@ define(
              */
             updateModel: function (event) {
                 this.selectedCategories = event.target.value.split(',');
-                this.setValue(_.map(this.selectedCategories, this.getCategoryCode.bind(this)));
+                const selectedCategories = this.selectedCategories
+                    .filter((category) => '' !== category)
+                    .map(this.getCategoryCode.bind(this));
+                this.setValue(selectedCategories);
             },
 
             /**
@@ -189,6 +198,22 @@ define(
                 }
 
                 return this.categoryCache[id].code;
+            },
+
+            /**
+             * Checks there is at least one category selected to go to the next step
+             */
+            validate: function () {
+                const data = this.getFormData();
+                const categories = propertyAccessor.accessProperty(data, 'actions.0.value', []);
+
+                const hasUpdates = 0 !== categories.length;
+
+                if (!hasUpdates) {
+                    messenger.notify('error', __(`pim_enrich.mass_edit.product.operation.${data.operation}.no_update`));
+                }
+
+                return $.Deferred().resolve(hasUpdates);
             }
         });
     }

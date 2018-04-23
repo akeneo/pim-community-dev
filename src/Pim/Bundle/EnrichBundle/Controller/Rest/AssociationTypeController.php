@@ -200,10 +200,14 @@ class AssociationTypeController
      *
      * @param Request $request
      *
-     * @return JsonResponse
+     * @return Response
      */
     public function createAction(Request $request)
     {
+        if (!$request->isXmlHttpRequest()) {
+            return new RedirectResponse('/');
+        }
+
         $associationType = new AssociationType();
         $this->updater->update($associationType, json_decode($request->getContent(), true));
         $violations = $this->validator->validate($associationType);
