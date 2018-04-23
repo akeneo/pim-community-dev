@@ -1,7 +1,6 @@
 teamwork_assistant:
   common:
     required: Obligatorisk
-    warning: Oroa dig inte, projekt beräkning kan ta en stund, så ditt projekt inte kanske syns direkt.
   grid:
     view_selector:
       create: Skapa projekt
@@ -12,7 +11,9 @@ teamwork_assistant:
       start_new_project: Starta ett nytt projekt
       confirmation:
         remove: Är du säker du vill ta bort detta projekt?
-        delete: Bekräfta borttagning
+        delete: Bekräfta radering
+      popin_title: Skapa
+      projects: Projekt
   project:
     label: Namn
     locale: Språk
@@ -34,7 +35,6 @@ teamwork_assistant:
     cancel: Avbryt
   widget:
     no_project: Du har inga aktuella projekt
-    no_project_create: skapa ett nytt projekt
     description: Beskrivning
     due_date: Förfallodatum
     todo: ATT GÖRA
@@ -46,7 +46,6 @@ teamwork_assistant:
       contributor_selector: Sök medarbetare
       project_selector: Sök projekt
     completeness:
-      to_start: PRODUKTER TILL START
       in_progress: PRODUKTER PÅGÅR
       done: PRODUKTER SOM GJORT
 pim_datagrid:

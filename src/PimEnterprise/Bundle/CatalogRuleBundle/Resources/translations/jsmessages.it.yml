@@ -4,7 +4,7 @@ pimee_catalog_rule:
   selected: 'regole selezionate'
   popin:
     execute_rules:
-      confirm_content: Sei sicuro di voler eseguire tutte le regole? (potrebbe richiedere molto tempo)
+      confirm_content: Sei sicuro di voler eseguire tutte le regole? (questo potrebbe richiedere molto tempo)
   notification:
     fail: L'azione potrebbe non essere eseguita
     launched: L'esecuzione delle regole è stata lanciata. Sarai avvisato quando finisce.
@@ -76,12 +76,12 @@ batch_jobs:
   csv_product_import_with_rules:
     label: Importazione prodotti in formato CSV con regole
     execute_rules.label: Esecuzione regole
-    validation.label: Validazione file
+    validation.label: Validazione del file
     import.label: Importazione prodotti
     import_associations.label: Importazione associazioni
   xlsx_product_import_with_rules:
     label: Importazione prodotti in formato XLSX con regole
     execute_rules.label: Esecuzione regole
-    validation.label: Validazione file
+    validation.label: Validazione del file
     import.label: Importazione prodotti
     import_associations.label: Importazione associazioni

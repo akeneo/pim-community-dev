@@ -1,7 +1,7 @@
 pimee_workflow:
   product_draft:
     author: Forfatter
-    created: Foreslået på
+    created: Foreslået af
     changes: Ændringer
     locale: Locale kontext
     product:

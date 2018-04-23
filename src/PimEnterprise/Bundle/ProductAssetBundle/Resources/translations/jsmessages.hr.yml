@@ -83,22 +83,58 @@ batch_jobs:
     label: Masovni prijenos imovine
     perform.label: Masovni prijenos
   yml_asset_channel_configuration_import:
+    label: Uvoz konfiguracije kanala imovine iz Yaml
     validation.label: Provjera valjanosti datoteke
+    import_asset.label: Uvoz konfiguracije kanala imovine iz Yaml
+  yml_asset_channel_configuration_export:
+    label: Izvoz konfiguracije kanala imovine u Yaml
+    export.label: Izvoz konfiguracije kanala imovine u Yaml
   csv_asset_import:
+    label: Uvoz imovine iz CSV
     validation.label: Provjera valjanosti datoteke
+    import_tags.label: Uvoz oznaka iz CSV
+    import_asset.label: Uvoz imovine iz CSV
+  csv_asset_export:
+    label: Izvoz imovine u CSV
+    export.label: Izvoz imovine u CSV
+  csv_asset_variation_export:
+    label: Izvoz varijacije imovine u CSV
+    export.label: Izvoz varijacije imovine u CSV
   csv_tag_import:
+    label: Uvoz oznaka iz CSV
     validation.label: Provjera valjanosti datoteke
+    import.label: Uvoz oznaka iz CSV
   csv_asset_category_import:
+    label: Uvoz kategorije imovine iz CSV
     validation.label: Provjera valjanosti datoteke
+    import_asset_category.label: Uvoz kategorije imovine iz CSV
   csv_asset_configuration_import:
+    label: Uvoz konfiguracije kanala imovine iz CSV
     validation.label: Provjera valjanosti datoteke
+    import_asset.label: Uvoz konfiguracije kanala imovine iz CSV
+  csv_asset_category_export:
+    label: Izvoz kategorije imovine u CSV
+    export.label: Izvoz kategorije imovine u CSV
   xlsx_tag_import:
+    label: Uvoz oznake iz XLSX
     validation.label: Provjera valjanosti datoteke
+    import.label: Uvoz oznake iz XLSX
   xlsx_asset_import:
+    label: Uvoz imovine iz XLSX
     validation.label: Provjera valjanosti datoteke
+    import_tags.label: Uvoz oznake iz XLSX
+    import_asset.label: Uvoz imovine iz XLSX
   xlsx_asset_category_import:
+    label: Uvoz kategorije imovine iz XLSX
     validation.label: Provjera valjanosti datoteke
+    import_asset_category.label: Uvoz kategorije imovine iz XLSX
+  xlsx_asset_export:
+    label: Izvoz imovine u XLSX
+    export.label: Izvoz imovine u XLSX
+  xlsx_asset_category_export:
+    label: Izvoz kategorije imovine u XLSX
+    export.label: Izvoz kategorije imovine u XLSX
   classify_assets:
-    perform.label: Premjesti imovinu u kategorije
+    perform.label: Premjestiti imovinu u kategorije
   add_tags_to_assets:
-    perform.label: Dodaj oznake u imovine
+    perform.label: Dodavanje oznaka u imovinu
