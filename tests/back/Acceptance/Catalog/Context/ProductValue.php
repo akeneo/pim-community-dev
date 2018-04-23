@@ -8,11 +8,11 @@ use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Test\Acceptance\Product\InMemoryProductRepository;
 use Akeneo\Test\Common\EntityWithValue\Builder;
 use Behat\Behat\Context\Context;
-use Pim\Bundle\CatalogBundle\Entity\Attribute;
 use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Akeneo\Test\Common\Structure\Attribute;
 
 /**
  * @author    Samir Boulil <samir.boulil@akeneo.com>
@@ -38,16 +38,21 @@ final class ProductValue implements Context
     /** @var ValidatorInterface */
     private $productValidator;
 
+    /** @var Attribute\Builder */
+    private $attributeBuilder;
+
     public function __construct(
         SaverInterface $attributeSaver,
         Builder\Product $productBuilder,
         InMemoryProductRepository $productRepository,
-        ValidatorInterface $productValidator
+        ValidatorInterface $productValidator,
+        Attribute\Builder $attributeBuilder
     ) {
         $this->attributeSaver = $attributeSaver;
         $this->productBuilder = $productBuilder;
         $this->productRepository = $productRepository;
         $this->productValidator = $productValidator;
+        $this->attributeBuilder = $attributeBuilder;
     }
 
     /**
@@ -55,10 +60,10 @@ final class ProductValue implements Context
      */
     public function aProductWithAnIdentifier(string $identifier)
     {
-        // Todo: Create/use a proper attribute builder
-        $attribute = (new Attribute())
-            ->setType(AttributeTypes::IDENTIFIER)
-            ->setCode(self::IDENTIFIER_ATTRIBUTE);
+        $attribute = $this->attributeBuilder->aIdentifier()
+            ->withCode(self::IDENTIFIER_ATTRIBUTE)
+            ->build();
+
         $this->attributeSaver->save($attribute);
 
         $product = $this->productBuilder->withIdentifier($identifier)->build();

@@ -22,10 +22,10 @@ class BuilderSpec extends ObjectBehavior
     function it_builds_an_attribute()
     {
         $this->withCode('metric');
-        $this->withType(AttributeTypes::METRIC);
+        $this->aIdentifier();
 
         $attribute = $this->build();
-        $attribute->getType()->shouldReturn(AttributeTypes::METRIC);
+        $attribute->getType()->shouldReturn(AttributeTypes::IDENTIFIER);
         $attribute->getCode()->shouldReturn('metric');
     }
 
@@ -34,8 +34,8 @@ class BuilderSpec extends ObjectBehavior
         $this->withCode('code')->shouldReturn($this);
     }
 
-    function its_type_is_mutable()
+    function it_will_build_an_identifier()
     {
-        $this->withType(AttributeTypes::METRIC)->shouldReturn($this);
+        $this->aIdentifier()->shouldReturn($this);
     }
 }

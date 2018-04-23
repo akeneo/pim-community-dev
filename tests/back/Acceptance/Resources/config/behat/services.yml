@@ -100,7 +100,6 @@ services:
             - '@test.catalog.product.builder'
             - '@__symfony__.pim_catalog.repository.product'
             - '@__symfony__.validator'
-            - '@__symfony__.pim_catalog.repository.product'
             - '@test.structure.attribute.builder'
         tags:
             - { name: fob.context_service }

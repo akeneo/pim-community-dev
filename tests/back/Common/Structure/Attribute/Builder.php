@@ -9,6 +9,7 @@ use Pim\Bundle\CatalogBundle\Entity;
 use Pim\Component\Catalog\AttributeTypes;
 
 /**
+ * @Todo This builder should be improved. For now, you can use to create a identifier attribute with a code
  *
  * @author    Arnaud Langlade <arnaud.langlade@akeneo.com>
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
@@ -53,13 +54,11 @@ class Builder
     }
 
     /**
-     * @param string $type
-     *
      * @return Builder
      */
-    public function withType(string $type): Builder
+    public function aIdentifier(): Builder
     {
-        $this->type = $type;
+        $this->type = new Type(AttributeTypes::IDENTIFIER);
 
         return $this;
     }
