@@ -227,6 +227,10 @@ class AttributeController
      */
     public function createAction(Request $request)
     {
+        if (!$request->isXmlHttpRequest()) {
+            return new RedirectResponse('/');
+        }
+
         $attribute = $this->factory->create();
 
         $data = json_decode($request->getContent(), true);
@@ -267,6 +271,10 @@ class AttributeController
      */
     public function postAction(Request $request, $identifier)
     {
+        if (!$request->isXmlHttpRequest()) {
+            return new RedirectResponse('/');
+        }
+
         $attribute = $this->getAttributeOr404($identifier);
 
         $data = json_decode($request->getContent(), true);

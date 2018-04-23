@@ -1,5 +1,11 @@
 # 2.2.x
 
+## Bug fixes
+
+- PIM-7281: Fix inappropriate calls to the cache clearer
+
+# 2.2.3 (2018-04-12)
+
 ## BC Breaks
 
 - Rename command `pim:catalog:remove-wrong-values-on-variant-products` to `pim:catalog:remove-wrong-boolean-values-on-variant-products` (but an alias is still here so calling it from the old name will still work)

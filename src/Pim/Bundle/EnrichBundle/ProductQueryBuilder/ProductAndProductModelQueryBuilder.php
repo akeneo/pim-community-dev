@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\EnrichBundle\ProductQueryBuilder;
 
+use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Query\Filter\Operators;
 use Pim\Component\Catalog\Query\ProductQueryBuilderInterface;
 
@@ -77,14 +78,20 @@ class ProductAndProductModelQueryBuilder implements ProductQueryBuilderInterface
      */
     public function execute()
     {
-        if ($this->shouldSearchDocumentsWithoutParent()) {
-            $this->addFilter('parent', Operators::IS_EMPTY, null);
-        }
+        $shouldFilterOnlyOnProducts = $this->shouldFilterOnlyOnProducts();
 
-        $attributeFilters = $this->getAttributeFilters();
-        if (!empty($attributeFilters)) {
-            $attributeFilterKeys = array_column($attributeFilters, 'field');
-            $this->addFilter('attributes_for_this_level', Operators::IN_LIST, $attributeFilterKeys);
+        if ($shouldFilterOnlyOnProducts) {
+            $this->addFilter('entity_type', Operators::EQUALS, ProductInterface::class);
+        } else {
+            if ($this->shouldSearchDocumentsWithoutParent()) {
+                $this->addFilter('parent', Operators::IS_EMPTY, null);
+            }
+
+            $attributeFilters = $this->getAttributeFilters();
+            if (!empty($attributeFilters)) {
+                $attributeFilterKeys = array_column($attributeFilters, 'field');
+                $this->addFilter('attributes_for_this_level', Operators::IN_LIST, $attributeFilterKeys);
+            }
         }
 
         return $this->pqb->execute();
@@ -105,6 +112,18 @@ class ProductAndProductModelQueryBuilder implements ProductQueryBuilderInterface
         );
 
         return $attributeFilters;
+    }
+
+    /**
+     * Should we only filter on lower level products
+     *
+     * @return bool
+     */
+    private function shouldFilterOnlyOnProducts(): bool
+    {
+        $hasStatusFilter = $this->hasRawFilter('field', 'enabled');
+
+        return $hasStatusFilter;
     }
 
     /**

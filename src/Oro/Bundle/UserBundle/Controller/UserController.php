@@ -98,7 +98,7 @@ class UserController extends Controller
         if ($this->get('oro_user.form.handler.user')->process($user)) {
             $this->update($user);
 
-            return new RedirectResponse($route);
+            return new JsonResponse('', 204);
         }
 
         return [

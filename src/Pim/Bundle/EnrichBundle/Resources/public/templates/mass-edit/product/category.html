@@ -22,7 +22,7 @@
         <div class="tab-pane active">
             <div id="trees" data-datalocale="<%- locale %>" data-selected-tree="<%- currentTree.id %>">
                 <% _.each(trees, function (tree) { %>
-                    <div class="tree root-unselectable" data-tree-id="<%- tree.id %>">
+                    <div id="root-unselectable" class="tree root-unselectable" data-tree-id="<%- tree.id %>">
                         <div id="tree-<%- tree.id %>" class="buffer-small-left"></div>
                     </div>
                 <% }); %>
