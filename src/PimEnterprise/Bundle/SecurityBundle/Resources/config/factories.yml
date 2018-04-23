@@ -1,3 +1,6 @@
+parameters:
+    pimee_catalog.security.factory.filtered_entity.class: PimEnterprise\Component\Security\Factory\FilteredEntityFactory
+
 services:
     pimee_security.factory.locale_access:
         class: '%akeneo_storage_utils.factory.simple.class%'
@@ -23,3 +26,20 @@ services:
         class: '%akeneo_storage_utils.factory.simple.class%'
         arguments:
             - '%pimee_security.entity.job_profile_access.class%'
+
+    pimee_catalog.security.factory.filtered_product:
+        class: '%pimee_catalog.security.factory.filtered_entity.class%'
+        arguments:
+            -
+              - '@pimee_catalog.security.filter.not_granted_parent'
+              - '@pimee_catalog.security.filter.not_granted_associated_product'
+              - '@pimee_catalog.security.filter.not_granted_category'
+              - '@pimee_catalog.security.filter.not_granted_values'
+
+    pimee_catalog.security.factory.filtered_product_model:
+        class: '%pimee_catalog.security.factory.filtered_entity.class%'
+        arguments:
+            -
+              - '@pimee_catalog.security.filter.not_granted_parent'
+              - '@pimee_catalog.security.filter.not_granted_category'
+              - '@pimee_catalog.security.filter.not_granted_values'
