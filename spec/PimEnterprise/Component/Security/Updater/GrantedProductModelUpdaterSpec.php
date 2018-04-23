@@ -1,13 +1,13 @@
 <?php
 
-namespace spec\PimEnterprise\Component\Catalog\Security\Updater;
+namespace spec\PimEnterprise\Component\Security\Updater;
 
 use Akeneo\Component\StorageUtils\Exception\InvalidObjectException;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Comparator\Filter\FilterInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
-use PimEnterprise\Component\Catalog\Security\Updater\GrantedProductModelUpdater;
+use PimEnterprise\Component\Security\Updater\GrantedProductModelUpdater;
 use PimEnterprise\Component\Security\Attributes;
 use PimEnterprise\Component\Security\Exception\ResourceAccessDeniedException;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;

@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\PimEnterprise\Component\Catalog\Security\Updater;
+namespace spec\PimEnterprise\Component\Security\Updater;
 
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use PhpSpec\ObjectBehavior;
@@ -9,6 +9,7 @@ use Pim\Component\Catalog\Comparator\Filter\ProductFilterInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use PimEnterprise\Component\Security\Attributes;
 use PimEnterprise\Component\Security\Exception\ResourceAccessDeniedException;
+use PimEnterprise\Component\Security\Updater\GrantedProductUpdater;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Security\Core\Exception\InvalidArgumentException;
 
@@ -39,7 +40,7 @@ class GrantedProductUpdaterSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('PimEnterprise\Component\Catalog\Security\Updater\GrantedProductUpdater');
+        $this->shouldHaveType(GrantedProductUpdater::class);
     }
 
     function it_filters_fields_on_a_draft(

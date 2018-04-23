@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\PimEnterprise\Component\Catalog\Security\Updater\Setter;
+namespace spec\PimEnterprise\Component\Security\Updater\Setter;
 
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Component\StorageUtils\Repository\CursorableRepositoryInterface;
@@ -9,7 +9,7 @@ use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
 use Pim\Component\Catalog\Updater\Setter\FieldSetterInterface;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Query\ItemCategoryAccessQuery;
-use PimEnterprise\Component\Catalog\Security\Updater\Setter\GrantedAssociationFieldSetter;
+use PimEnterprise\Component\Security\Updater\Setter\GrantedAssociationFieldSetter;
 use PimEnterprise\Component\Security\Exception\ResourceAccessDeniedException;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
@@ -46,7 +46,7 @@ class GrantedAssociationFieldSetterSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('PimEnterprise\Component\Catalog\Security\Updater\Setter\GrantedAssociationFieldSetter');
+        $this->shouldHaveType(GrantedAssociationFieldSetter::class);
     }
 
     function it_sets_associations(

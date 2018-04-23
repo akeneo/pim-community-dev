@@ -1,9 +1,9 @@
 parameters:
-    pimee_catalog.security.updater.setter.granted_category_field.class: PimEnterprise\Component\Catalog\Security\Updater\Setter\GrantedCategoryFieldSetter
-    pimee_catalog.security.updater.setter.granted_association_field.class: PimEnterprise\Component\Catalog\Security\Updater\Setter\GrantedAssociationFieldSetter
-    pimee_catalog.security.updater.entity_with_granted_values_property_setter.class: PimEnterprise\Component\Catalog\Security\Updater\Setter\EntityWithGrantedValuesPropertySetter
-    pimee_catalog.security.updater.granted_product.class: PimEnterprise\Component\Catalog\Security\Updater\GrantedProductUpdater
-    pimee_catalog.security.updater.granted_product_model.class: PimEnterprise\Component\Catalog\Security\Updater\GrantedProductModelUpdater
+    pimee_catalog.security.updater.setter.granted_category_field.class: PimEnterprise\Component\Security\Updater\Setter\GrantedCategoryFieldSetter
+    pimee_catalog.security.updater.setter.granted_association_field.class: PimEnterprise\Component\Security\Updater\Setter\GrantedAssociationFieldSetter
+    pimee_catalog.security.updater.entity_with_granted_values_property_setter.class: PimEnterprise\Component\Security\Updater\Setter\EntityWithGrantedValuesPropertySetter
+    pimee_catalog.security.updater.granted_product.class: PimEnterprise\Component\Security\Updater\GrantedProductUpdater
+    pimee_catalog.security.updater.granted_product_model.class: PimEnterprise\Component\Security\Updater\GrantedProductModelUpdater
 
 services:
     pimee_catalog.security.updater.setter.granted_category_field:

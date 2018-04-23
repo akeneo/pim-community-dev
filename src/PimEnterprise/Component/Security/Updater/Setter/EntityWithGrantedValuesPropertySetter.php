@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Component\Catalog\Security\Updater\Setter;
+namespace PimEnterprise\Component\Security\Updater\Setter;
 
 use Akeneo\Component\StorageUtils\Exception\InvalidObjectException;
 use Akeneo\Component\StorageUtils\Exception\UnknownPropertyException;

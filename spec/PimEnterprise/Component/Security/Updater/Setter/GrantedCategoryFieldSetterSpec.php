@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\PimEnterprise\Component\Catalog\Security\Updater\Setter;
+namespace spec\PimEnterprise\Component\Security\Updater\Setter;
 
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -15,6 +15,7 @@ use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
 use Pim\Component\Catalog\Updater\Setter\FieldSetterInterface;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;
 use PimEnterprise\Component\Security\Attributes;
+use PimEnterprise\Component\Security\Updater\Setter\GrantedCategoryFieldSetter;
 use Prophecy\Argument;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
@@ -47,7 +48,7 @@ class GrantedCategoryFieldSetterSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('PimEnterprise\Component\Catalog\Security\Updater\Setter\GrantedCategoryFieldSetter');
+        $this->shouldHaveType(GrantedCategoryFieldSetter::class);
     }
 
     function it_sets_categories(
@@ -167,7 +168,7 @@ class GrantedCategoryFieldSetterSpec extends ObjectBehavior
                 'categories',
                 'category code',
                 'The category does not exist',
-                'PimEnterprise\Component\Catalog\Security\Updater\Setter\GrantedCategoryFieldSetter',
+                GrantedCategoryFieldSetter::class,
                 'categoryB'
             )
         )->during('setFieldData', [$product, 'categories', $data, []]);

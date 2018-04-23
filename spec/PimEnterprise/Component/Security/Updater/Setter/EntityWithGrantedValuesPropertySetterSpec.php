@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\PimEnterprise\Component\Catalog\Security\Updater\Setter;
+namespace spec\PimEnterprise\Component\Security\Updater\Setter;
 
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Component\StorageUtils\Updater\PropertySetterInterface;
@@ -10,6 +10,7 @@ use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\EntityWithValuesInterface;
 use PimEnterprise\Component\Security\Attributes;
 use PimEnterprise\Component\Security\Exception\ResourceAccessDeniedException;
+use PimEnterprise\Component\Security\Updater\Setter\EntityWithGrantedValuesPropertySetter;
 use Prophecy\Argument;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
@@ -31,7 +32,7 @@ class EntityWithGrantedValuesPropertySetterSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('PimEnterprise\Component\Catalog\Security\Updater\Setter\EntityWithGrantedValuesPropertySetter');
+        $this->shouldHaveType(EntityWithGrantedValuesPropertySetter::class);
     }
 
     function it_sets_values(
