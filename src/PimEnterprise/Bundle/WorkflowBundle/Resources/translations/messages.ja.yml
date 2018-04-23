@@ -82,7 +82,7 @@ pimee_workflow:
         fourth: 確認
 pimee_workflow_product_draft_notification_new_proposal: 新しい提案
 pimee_workflow_import_notification_new_proposals: インポートからの新しい提案
-btn.publish: 公開
+btn.publish: 公開する
 btn.unpublish: 非公開
 pimee_workflow_product_draft_notification_partial_approve: 提案は、部分的に承認
 pimee_workflow_product_draft_notification_partial_reject: 提案は、部分的に拒否
@@ -115,7 +115,7 @@ pim_title:
     show: "製品 %product.label% |表示"
   proposal:
     index: 提案
-btn.editworkingcopy: 作業コピーを編集
+btn.editworkingcopy: 作業コピーを編集します。
 confirmation:
   product:
     publish: この製品を公開してもよろしいですか？

@@ -1,3 +1,11 @@
+# 2.2.x
+
+## Bug fixes
+
+- PIM-7314: handle all attribute case for product proposal migration
+
+# 2.2.3 (2018-04-12)
+
 # 2.2.1 (2018-03-22)
 
 # 2.2.0 (2018-03-21)
