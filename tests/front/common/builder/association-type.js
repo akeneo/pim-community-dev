@@ -34,32 +34,36 @@ class AssociationTypeBuilder {
     this.author = 'System';
     this.updatedDate = new Date();
     this.id = '123-456';
-    this.labels = createLabels({ locales, addPrefix: false });
-    this.labelSnapshot = createLabels({ locales, addChangeset: true });
-    this.labelChangeset = createLabels({ locales });
+    this.labels = createLabels({ locales: this.locales, addPrefix: false });
+    this.labelSnapshot = createLabels({ locales: this.locales, addChangeset: true });
+    this.labelChangeset = createLabels({ locales: this.locales });
   }
 
-  setCode(code) {
+  withCode(code) {
     this.code = code;
+
+    return this;
   }
 
-  setLabels(labels) {
+  withLabels(labels) {
     this.labels = labels;
+
+    return this;
   }
 
   build() {
     return {
-      this.code,
-      this.labels,
+      code: this.code,
+      labels: this.labels,
       meta: {
         id,
         form: 'pim-association-type-edit-form',
         model_type: 'association_type',
         created: {
-          this.id,
-          this.author,
+          id: this.id,
+          author: this.author,
           resource_id: this.id,
-          snapshot: { this.code, ...this.labelSnapshot },
+          snapshot: { code: this.code, ...this.labelSnapshot },
           changeset: {
             code: { old: '', new: this.code },
             ...this.labelChangeset
@@ -70,10 +74,10 @@ class AssociationTypeBuilder {
           pending: false
         },
         updated: {
-          this.id,
-          this.author,
+          id: this.id,
+          author: this.author,
           resource_id: this.id,
-          snapshot: { this.code, ...this.labelSnapshot },
+          snapshot: { code: this.code, ...this.labelSnapshot },
           changeset: {
             code: { old: '', 'new': this.code },
             ...this.labelChangeset
@@ -87,3 +91,5 @@ class AssociationTypeBuilder {
     };
   }
 }
+
+module.exports = AssociationTypeBuilder;

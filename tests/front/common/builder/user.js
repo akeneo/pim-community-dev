@@ -23,50 +23,50 @@ class UserBuilder {
     }
   }
 
-  setUsername(username) {
+  withUsername(username) {
     this.user.username = username;
     this.user.email = `${username}@example.com`;
 
     return this;
   }
 
-  setEmail(email) {
+  withEmail(email) {
     this.user.email = email;
 
     return this;
   }
 
-  setFirstName(firstName) {
+  withFirstName(firstName) {
     this.user.firstName = firstName;
 
     return this;
   }
 
-  setLastName(lastName) {
+  withLastName(lastName) {
     this.user.lastName = lastName;
 
     return this;
   }
 
-  setCatalogLocale(catalogLocale) {
+  withCatalogLocale(catalogLocale) {
     this.user.catalogLocale = catalogLocale;
 
     return this;
   }
 
-  setUiLocale(uiLocale) {
+  withUiLocale(uiLocale) {
     this.user.uiLocale = uiLocale;
 
     return this;
   }
 
-  setCatalogScope(catalogScope) {
+  withCatalogScope(catalogScope) {
     this.user.catalogScope = catalogScope;
 
     return this;
   }
 
-  setDefaultTree(defaultTree) {
+  withDefaultTree(defaultTree) {
     this.user.defaultTree = defaultTree;
 
     return this;
