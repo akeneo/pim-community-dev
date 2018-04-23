@@ -221,7 +221,7 @@ class AttributeController
     /**
      * @param Request $request
      *
-     * @return JsonResponse
+     * @return Response
      *
      * @AclAncestor("pim_enrich_attribute_create")
      */
@@ -265,7 +265,7 @@ class AttributeController
      * @param Request $request
      * @param string  $identifier
      *
-     * @return JsonResponse
+     * @return Response
      *
      * @AclAncestor("pim_enrich_attribute_edit")
      */
