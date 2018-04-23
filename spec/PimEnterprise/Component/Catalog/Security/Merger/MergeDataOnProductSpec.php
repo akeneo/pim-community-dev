@@ -11,6 +11,7 @@ use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\EntityWithFamilyVariant\AddParent;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\FamilyInterface;
+use Pim\Component\Catalog\Model\FamilyVariantInterface;
 use Pim\Component\Catalog\Model\Product;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
@@ -104,14 +105,14 @@ class MergeDataOnProductSpec extends ObjectBehavior
         $productModelRepository,
         $attributeRepository,
         $addParent,
+        $valuesMerger,
+        $associationMerger,
+        $categoryMerger,
         ProductInterface $filteredVariantProduct,
         ProductInterface $fullProduct,
         ProductInterface $fullVariantProduct,
         ProductModelInterface $parent,
         ProductModelInterface $parentInUoW,
-        $valuesMerger,
-        $associationMerger,
-        $categoryMerger,
         FamilyInterface $family,
         ValueInterface $identifierValue,
         AttributeInterface $identifierAttribute,
@@ -197,6 +198,59 @@ class MergeDataOnProductSpec extends ObjectBehavior
         $fullProduct->setUniqueData($uniqueData)->shouldBeCalled();
 
         $this->merge($filteredProduct, $fullProduct)->shouldReturn($fullProduct);
+    }
+
+    function it_changes_the_parent_of_a_variant_product(
+        $productModelRepository,
+        $attributeRepository,
+        $valuesMerger,
+        $associationMerger,
+        $categoryMerger,
+        ProductInterface $filteredVariantProduct,
+        ProductInterface $fullVariantProduct,
+        ProductModelInterface $parent,
+        ProductModelInterface $parentInUoW,
+        FamilyInterface $family,
+        ValueInterface $identifierValue,
+        AttributeInterface $identifierAttribute,
+        ArrayCollection $groups,
+        ArrayCollection $uniqueData,
+        FamilyVariantInterface $familyVariant
+    ) {
+        $filteredVariantProduct->getParent()->willReturn($parent);
+        $parent->getId()->willReturn(1);
+        $productModelRepository->find(1)->willReturn($parentInUoW);
+        $filteredVariantProduct->setParent($parentInUoW)->shouldBeCalled();
+
+        $filteredVariantProduct->getId()->willReturn(1);
+        $filteredVariantProduct->isEnabled()->willReturn(true);
+        $filteredVariantProduct->getFamily()->willReturn($family);
+        $filteredVariantProduct->getFamilyId()->willReturn(2);
+        $filteredVariantProduct->getIdentifier()->willReturn('my_sku');
+        $filteredVariantProduct->getGroups()->willReturn($groups);
+        $filteredVariantProduct->getUniqueData()->willReturn($uniqueData);
+        $filteredVariantProduct->getFamilyVariant()->willReturn($familyVariant);
+        $filteredVariantProduct->isVariant()->willReturn(true);
+
+        $attributeRepository->getIdentifierCode()->willReturn('sku');
+        $fullVariantProduct->getValue('sku')->willReturn($identifierValue);
+        $identifierValue->getAttribute()->willReturn($identifierAttribute);
+
+        $fullVariantProduct->isVariant()->willReturn(true);
+        $fullVariantProduct->setEnabled(true)->shouldBeCalled();
+        $fullVariantProduct->setFamily($family)->shouldBeCalled();
+        $fullVariantProduct->setFamilyId(2)->shouldBeCalled();
+        $fullVariantProduct->setIdentifier(Argument::type(ScalarValue::class))->shouldBeCalled();
+        $fullVariantProduct->setGroups($groups)->shouldBeCalled();
+        $fullVariantProduct->setUniqueData($uniqueData)->shouldBeCalled();
+        $fullVariantProduct->setFamilyVariant($familyVariant)->shouldBeCalled();
+        $fullVariantProduct->setParent(Argument::type(ProductModelInterface::class))->shouldBeCalled();
+
+        $valuesMerger->merge($filteredVariantProduct, $fullVariantProduct)->willReturn($fullVariantProduct);
+        $associationMerger->merge($filteredVariantProduct, $fullVariantProduct)->willReturn($fullVariantProduct);
+        $categoryMerger->merge($filteredVariantProduct, $fullVariantProduct)->willReturn($fullVariantProduct);
+
+         $this->merge($filteredVariantProduct, $fullVariantProduct);
     }
 
     function it_throws_an_exception_if_filtered_subject_is_not_a_product()
