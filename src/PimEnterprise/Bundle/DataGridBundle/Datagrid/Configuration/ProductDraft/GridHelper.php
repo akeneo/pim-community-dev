@@ -14,7 +14,7 @@ namespace PimEnterprise\Bundle\DataGridBundle\Datagrid\Configuration\ProductDraf
 use Oro\Bundle\DataGridBundle\Datasource\ResultRecordInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Helper\ProductDraftChangesPermissionHelper;
 use PimEnterprise\Component\Security\Attributes;
-use PimEnterprise\Component\Workflow\Model\ProductDraftInterface;
+use PimEnterprise\Component\Workflow\Model\EntityWithValuesDraftInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 /**
@@ -55,9 +55,9 @@ class GridHelper
             $canReview = $this->permissionHelper->canEditOneChangeToReview($productDraft);
             $canDelete = $this->permissionHelper->canEditOneChangeDraft($productDraft);
 
-            $toReview = $productDraft->getStatus() === ProductDraftInterface::READY;
+            $toReview = $productDraft->getStatus() === EntityWithValuesDraftInterface::READY;
             $inProgress = $productDraft->isInProgress();
-            $isOwner = $this->authorizationChecker->isGranted(Attributes::OWN, $productDraft->getProduct());
+            $isOwner = $this->authorizationChecker->isGranted(Attributes::OWN, $productDraft->getEntityWithValue());
 
             return [
                 'approve' => $toReview && $isOwner && $canReview,
@@ -75,8 +75,8 @@ class GridHelper
     public function getStatusChoices()
     {
         return [
-            ProductDraftInterface::IN_PROGRESS => 'pimee_workflow.product_draft.status.in_progress',
-            ProductDraftInterface::READY       => 'pimee_workflow.product_draft.status.ready',
+            EntityWithValuesDraftInterface::IN_PROGRESS => 'pimee_workflow.product_draft.status.in_progress',
+            EntityWithValuesDraftInterface::READY       => 'pimee_workflow.product_draft.status.ready',
         ];
     }
 }

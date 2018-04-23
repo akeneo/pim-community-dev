@@ -14,7 +14,7 @@ use Pim\Component\Catalog\Model\ValueCollectionInterface;
 use PimEnterprise\Component\Workflow\Applier\ProductDraftApplierInterface;
 use PimEnterprise\Component\Workflow\Event\ProductDraftEvents;
 use PimEnterprise\Component\Workflow\Factory\ProductDraftFactory;
-use PimEnterprise\Component\Workflow\Model\ProductDraftInterface;
+use PimEnterprise\Component\Workflow\Model\EntityWithValuesDraftInterface;
 use PimEnterprise\Component\Workflow\Repository\ProductDraftRepositoryInterface;
 use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -47,10 +47,10 @@ class ProductDraftManagerSpec extends ObjectBehavior
     }
 
     function it_throws_an_exception_when_trying_to_approve_a_change_on_a_non_ready_draft(
-        ProductDraftInterface $draft,
+        EntityWithValuesDraftInterface $draft,
         AttributeInterface $attribute
     ) {
-        $draft->getStatus()->willReturn(ProductDraftInterface::IN_PROGRESS);
+        $draft->getStatus()->willReturn(EntityWithValuesDraftInterface::IN_PROGRESS);
         $this->shouldThrow('PimEnterprise\Component\Workflow\Exception\DraftNotReviewableException')->during('approveChange', [$draft, $attribute]);
     }
 
@@ -61,25 +61,25 @@ class ProductDraftManagerSpec extends ObjectBehavior
         $applier,
         $workingCopySaver,
         $remover,
-        ProductDraftInterface $draft,
+        EntityWithValuesDraftInterface $draft,
         AttributeInterface $attribute,
         ProductInterface $product,
-        ProductDraftInterface $partialDraft,
+        EntityWithValuesDraftInterface $partialDraft,
         ValueCollectionInterface $values
     ) {
-        $draft->getStatus()->willReturn(ProductDraftInterface::READY);
-        $draft->getProduct()->willReturn($product);
+        $draft->getStatus()->willReturn(EntityWithValuesDraftInterface::READY);
+        $draft->getEntityWithValue()->willReturn($product);
         $draft->getAuthor()->willReturn('author');
         $draft->getValues()->willReturn($values);
         $values->getByCodes('sku', null, null)->willReturn(null);
         $attribute->getCode()->willReturn('sku');
-        $partialDraft->getProduct()->willReturn($product);
+        $partialDraft->getEntityWithValue()->willReturn($product);
 
         $dispatcher->dispatch(ProductDraftEvents::PRE_PARTIAL_APPROVE, Argument::any())->shouldBeCalled();
         $dispatcher->dispatch(ProductDraftEvents::POST_PARTIAL_APPROVE, Argument::any())->shouldBeCalled();
 
-        $draft->getChange('sku', null, null)->willReturn('ak-mug');
-        $wholeChange = ['sku' => [['locale' => null, 'scope' => null, 'data' => 'ak-mug']]];
+        $draft->getChange('sku', null, null)->willReturn(['ak-mug']);
+        $wholeChange = ['sku' => [['locale' => null, 'scope' => null, 'data' => ['ak-mug']]]];
 
         $valuesFilter->filterCollection(
             $wholeChange,
@@ -102,10 +102,10 @@ class ProductDraftManagerSpec extends ObjectBehavior
     }
 
     function it_throws_an_exception_when_trying_to_refuse_a_change_on_a_non_ready_draft(
-        ProductDraftInterface $draft,
+        EntityWithValuesDraftInterface $draft,
         AttributeInterface $attribute
     ) {
-        $draft->getStatus()->willReturn(ProductDraftInterface::IN_PROGRESS);
+        $draft->getStatus()->willReturn(EntityWithValuesDraftInterface::IN_PROGRESS);
         $this->shouldThrow('PimEnterprise\Component\Workflow\Exception\DraftNotReviewableException')->during('refuseChange', [$draft, $attribute]);
     }
 
@@ -113,19 +113,19 @@ class ProductDraftManagerSpec extends ObjectBehavior
         $dispatcher,
         $valuesFilter,
         $workingCopySaver,
-        ProductDraftInterface $draft,
+        EntityWithValuesDraftInterface $draft,
         AttributeInterface $attribute,
         ProductInterface $product,
-        ProductDraftInterface $partialDraft,
+        EntityWithValuesDraftInterface $partialDraft,
         ValueCollectionInterface $values
     ) {
-        $draft->getStatus()->willReturn(ProductDraftInterface::READY);
-        $draft->getProduct()->willReturn($product);
+        $draft->getStatus()->willReturn(EntityWithValuesDraftInterface::READY);
+        $draft->getEntityWithValue()->willReturn($product);
         $draft->getAuthor()->willReturn('author');
         $draft->getValues()->willReturn($values);
         $values->getByCodes('sku', null, null)->willReturn(null);
         $attribute->getCode()->willReturn('sku');
-        $partialDraft->getProduct()->willReturn($product);
+        $partialDraft->getEntityWithValue()->willReturn($product);
 
         $dispatcher->dispatch(ProductDraftEvents::PRE_PARTIAL_REFUSE, Argument::any())->shouldBeCalled();
         $dispatcher->dispatch(ProductDraftEvents::POST_PARTIAL_REFUSE, Argument::any())->shouldBeCalled();
@@ -137,15 +137,15 @@ class ProductDraftManagerSpec extends ObjectBehavior
             'pim.internal_api.attribute.edit'
         )->shouldBeCalled()->willReturn($wholeChange);
 
-        $draft->setReviewStatusForChange(ProductDraftInterface::CHANGE_DRAFT, 'sku', null, null )->shouldBeCalled();
+        $draft->setReviewStatusForChange(EntityWithValuesDraftInterface::CHANGE_DRAFT, 'sku', null, null )->shouldBeCalled();
         $workingCopySaver->save($draft);
 
         $this->refuseChange($draft, $attribute);
     }
 
-    function it_throws_an_exception_when_trying_to_approve_a_whole_non_ready_draft(ProductDraftInterface $draft)
+    function it_throws_an_exception_when_trying_to_approve_a_whole_non_ready_draft(EntityWithValuesDraftInterface $draft)
     {
-        $draft->getStatus()->willReturn(ProductDraftInterface::IN_PROGRESS);
+        $draft->getStatus()->willReturn(EntityWithValuesDraftInterface::IN_PROGRESS);
         $this->shouldThrow('PimEnterprise\Component\Workflow\Exception\DraftNotReviewableException')->during('approve', [$draft]);
     }
 
@@ -156,12 +156,12 @@ class ProductDraftManagerSpec extends ObjectBehavior
         $applier,
         $workingCopySaver,
         $remover,
-        ProductDraftInterface $draft,
+        EntityWithValuesDraftInterface $draft,
         ProductInterface $product,
         ValueCollectionInterface $values
     ) {
-        $draft->getStatus()->willReturn(ProductDraftInterface::READY);
-        $draft->getProduct()->willReturn($product);
+        $draft->getStatus()->willReturn(EntityWithValuesDraftInterface::READY);
+        $draft->getEntityWithValue()->willReturn($product);
         $draft->getValues()->willReturn($values);
         $values->getByCodes('description', 'ecommerce', 'en_US')->willReturn(null);
         $values->getByCodes('description', 'tablet', 'fr_FR')->willReturn(null);
@@ -208,18 +208,18 @@ class ProductDraftManagerSpec extends ObjectBehavior
         $workingCopySaver,
         $remover,
         $draftSaver,
-        ProductDraftInterface $draft,
+        EntityWithValuesDraftInterface $draft,
         ProductInterface $product,
-        ProductDraftInterface $partialDraft,
+        EntityWithValuesDraftInterface $partialDraft,
         ValueCollectionInterface $values
     ) {
-        $draft->getStatus()->willReturn(ProductDraftInterface::READY);
-        $draft->getProduct()->willReturn($product);
+        $draft->getStatus()->willReturn(EntityWithValuesDraftInterface::READY);
+        $draft->getEntityWithValue()->willReturn($product);
         $draft->getAuthor()->willReturn('author');
         $draft->getValues()->willReturn($values);
         $values->getByCodes('sku', null, null)->willReturn(null);
         $values->getByCodes('description', 'tablet', 'fr_FR')->willReturn(null);
-        $partialDraft->getProduct()->willReturn($product);
+        $partialDraft->getEntityWithValue()->willReturn($product);
 
         $dispatcher->dispatch(ProductDraftEvents::PRE_APPROVE, Argument::any())->shouldBeCalled();
         $dispatcher->dispatch(ProductDraftEvents::POST_APPROVE, Argument::any())->shouldBeCalled();
@@ -262,9 +262,9 @@ class ProductDraftManagerSpec extends ObjectBehavior
         $this->approve($draft);
     }
 
-    function it_throws_an_exception_when_trying_to_refuse_a_whole_non_ready_draft(ProductDraftInterface $draft)
+    function it_throws_an_exception_when_trying_to_refuse_a_whole_non_ready_draft(EntityWithValuesDraftInterface $draft)
     {
-        $draft->getStatus()->willReturn(ProductDraftInterface::IN_PROGRESS);
+        $draft->getStatus()->willReturn(EntityWithValuesDraftInterface::IN_PROGRESS);
         $this->shouldThrow('PimEnterprise\Component\Workflow\Exception\DraftNotReviewableException')->during('refuse', [$draft]);
     }
 
@@ -272,10 +272,10 @@ class ProductDraftManagerSpec extends ObjectBehavior
         $dispatcher,
         $valuesFilter,
         $draftSaver,
-        ProductDraftInterface $draft,
+        EntityWithValuesDraftInterface $draft,
         ValueCollectionInterface $values
     ) {
-        $draft->getStatus()->willReturn(ProductDraftInterface::READY);
+        $draft->getStatus()->willReturn(EntityWithValuesDraftInterface::READY);
         $draft->getValues()->willReturn($values);
         $values->getByCodes('sku', null, null)->willReturn(null);
         $values->getByCodes('description', 'tablet', 'fr_FR')->willReturn(null);
@@ -303,9 +303,9 @@ class ProductDraftManagerSpec extends ObjectBehavior
             'pim.internal_api.attribute.edit'
         )->shouldBeCalled()->willReturn($refusableChanges);
 
-        $draft->setReviewStatusForChange(ProductDraftInterface::CHANGE_DRAFT, 'sku', null, null )->shouldBeCalled();
-        $draft->setReviewStatusForChange(ProductDraftInterface::CHANGE_DRAFT, 'description', 'fr_FR', 'tablet' )->shouldBeCalled();
-        $draft->setReviewStatusForChange(ProductDraftInterface::CHANGE_DRAFT, 'description', 'en_US', 'ecommerce' )->shouldNotBeCalled();
+        $draft->setReviewStatusForChange(EntityWithValuesDraftInterface::CHANGE_DRAFT, 'sku', null, null )->shouldBeCalled();
+        $draft->setReviewStatusForChange(EntityWithValuesDraftInterface::CHANGE_DRAFT, 'description', 'fr_FR', 'tablet' )->shouldBeCalled();
+        $draft->setReviewStatusForChange(EntityWithValuesDraftInterface::CHANGE_DRAFT, 'description', 'en_US', 'ecommerce' )->shouldNotBeCalled();
 
         $draftSaver->save($draft)->shouldBeCalled();
 
@@ -317,7 +317,7 @@ class ProductDraftManagerSpec extends ObjectBehavior
         $repository,
         UserInterface $user,
         ProductInterface $product,
-        ProductDraftInterface $productDraft
+        EntityWithValuesDraftInterface $productDraft
     ) {
         $user->getUsername()->willReturn('peter');
         $userContext->getUser()->willReturn($user);
@@ -332,7 +332,7 @@ class ProductDraftManagerSpec extends ObjectBehavior
         $factory,
         UserInterface $user,
         ProductInterface $product,
-        ProductDraftInterface $productDraft
+        EntityWithValuesDraftInterface $productDraft
     ) {
         $user->getUsername()->willReturn('peter');
         $userContext->getUser()->willReturn($user);
@@ -353,7 +353,7 @@ class ProductDraftManagerSpec extends ObjectBehavior
             ->duringFindOrCreate($product, 'fr_FR');
     }
 
-    function it_marks_product_draft_as_ready($dispatcher, $draftSaver, ProductDraftInterface $productDraft)
+    function it_marks_product_draft_as_ready($dispatcher, $draftSaver, EntityWithValuesDraftInterface $productDraft)
     {
         $dispatcher
             ->dispatch(
@@ -361,7 +361,7 @@ class ProductDraftManagerSpec extends ObjectBehavior
                 Argument::type('Symfony\Component\EventDispatcher\GenericEvent')
             )
             ->shouldBeCalled();
-        $productDraft->setAllReviewStatuses(ProductDraftInterface::CHANGE_TO_REVIEW)->shouldBeCalled();
+        $productDraft->setAllReviewStatuses(EntityWithValuesDraftInterface::CHANGE_TO_REVIEW)->shouldBeCalled();
         $draftSaver->save($productDraft)->shouldBeCalled();
         $dispatcher
             ->dispatch(
@@ -377,9 +377,9 @@ class ProductDraftManagerSpec extends ObjectBehavior
         $valuesFilter,
         $dispatcher,
         $remover,
-        ProductDraftInterface $productDraft
+        EntityWithValuesDraftInterface $productDraft
     ) {
-        $productDraft->getStatus()->willReturn(ProductDraftInterface::IN_PROGRESS);
+        $productDraft->getStatus()->willReturn(EntityWithValuesDraftInterface::IN_PROGRESS);
         $values = [
             'description' => [
                 ['locale' => 'fr_FR', 'scope' => 'tablet', 'data' => 'bar'],
@@ -387,7 +387,7 @@ class ProductDraftManagerSpec extends ObjectBehavior
             ]
         ];
         $valuesFilter->filterCollection($values, 'pim.internal_api.attribute.edit')->willReturn($values);
-        $productDraft->getChangesByStatus(ProductDraftInterface::CHANGE_DRAFT)->willReturn(['values' => $values]);
+        $productDraft->getChangesByStatus(EntityWithValuesDraftInterface::CHANGE_DRAFT)->willReturn(['values' => $values]);
 
         $dispatcher
             ->dispatch(
@@ -411,10 +411,10 @@ class ProductDraftManagerSpec extends ObjectBehavior
         $dispatcher,
         $remover,
         $draftSaver,
-        ProductDraftInterface $productDraft,
+        EntityWithValuesDraftInterface $productDraft,
         ValueCollectionInterface $values
     ) {
-        $productDraft->getStatus()->willReturn(ProductDraftInterface::IN_PROGRESS);
+        $productDraft->getStatus()->willReturn(EntityWithValuesDraftInterface::IN_PROGRESS);
         $productDraft->getValues()->willReturn($values);
         $values->getByCodes('sku', null, null)->willReturn(null);
         $values->getByCodes('description', 'tablet', 'fr_FR')->willReturn(null);
@@ -431,7 +431,7 @@ class ProductDraftManagerSpec extends ObjectBehavior
                 ['locale' => 'fr_FR', 'scope' => 'mobile', 'data' => 'foo']
             ]
         ]);
-        $productDraft->getChangesByStatus(ProductDraftInterface::CHANGE_DRAFT)->willReturn(['values' => $values]);
+        $productDraft->getChangesByStatus(EntityWithValuesDraftInterface::CHANGE_DRAFT)->willReturn(['values' => $values]);
 
         $productDraft->removeChange('description', 'fr_FR', 'mobile')->shouldBeCalled();
         $productDraft->hasChanges()->willReturn(true);
@@ -457,9 +457,9 @@ class ProductDraftManagerSpec extends ObjectBehavior
 
     function it_throws_an_exception_when_trying_to_remove_a_product_draft_in_ready_state(
         $remover,
-        ProductDraftInterface $productDraft
+        EntityWithValuesDraftInterface $productDraft
     ) {
-        $productDraft->getStatus()->willReturn(ProductDraftInterface::READY);
+        $productDraft->getStatus()->willReturn(EntityWithValuesDraftInterface::READY);
 
         $remover->remove($productDraft)->shouldNotBeCalled();
         $this->shouldThrow('PimEnterprise\Component\Workflow\Exception\DraftNotReviewableException')->during('remove', [$productDraft]);
@@ -468,17 +468,17 @@ class ProductDraftManagerSpec extends ObjectBehavior
     function it_throws_an_exception_when_trying_to_approve_a_single_change_without_permission(
         $valuesFilter,
         AttributeInterface $attribute,
-        ProductDraftInterface $productDraft,
+        EntityWithValuesDraftInterface $productDraft,
         LocaleInterface $locale
     ) {
         $attribute->getCode()->willReturn('name');
         $locale->getCode()->willReturn('fr_FR');
-        $productDraft->getStatus()->willReturn(ProductDraftInterface::READY);
-        $productDraft->getChange('name', 'fr_FR', null)->willReturn('Le nouveau nom');
+        $productDraft->getStatus()->willReturn(EntityWithValuesDraftInterface::READY);
+        $productDraft->getChange('name', 'fr_FR', null)->willReturn(['Le nouveau nom']);
 
         $valuesFilter->filterCollection([
             'name' => [
-                ['locale' => 'fr_FR', 'scope' => null, 'data' => 'Le nouveau nom']
+                ['locale' => 'fr_FR', 'scope' => null, 'data' => ['Le nouveau nom']]
             ]
         ], 'pim.internal_api.attribute.edit')->willReturn([]);
 
@@ -494,12 +494,12 @@ class ProductDraftManagerSpec extends ObjectBehavior
     function it_throws_an_exception_when_trying_to_refuse_a_single_change_without_permission(
         $valuesFilter,
         AttributeInterface $attribute,
-        ProductDraftInterface $productDraft,
+        EntityWithValuesDraftInterface $productDraft,
         LocaleInterface $locale
     ) {
         $attribute->getCode()->willReturn('name');
         $locale->getCode()->willReturn('fr_FR');
-        $productDraft->getStatus()->willReturn(ProductDraftInterface::READY);
+        $productDraft->getStatus()->willReturn(EntityWithValuesDraftInterface::READY);
 
         $valuesFilter->filterCollection([
             'name' => [

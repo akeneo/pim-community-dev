@@ -16,7 +16,7 @@ use Akeneo\Component\StorageUtils\StorageEvents;
 use Pim\Component\Catalog\Model\ProductInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Elasticsearch\Indexer\ProductProposalIndexer;
 use PimEnterprise\Component\Workflow\Event\ProductDraftEvents;
-use PimEnterprise\Component\Workflow\Model\ProductDraftInterface;
+use PimEnterprise\Component\Workflow\Model\EntityWithValuesDraftInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
@@ -58,7 +58,7 @@ class IndexProductProposalsSubscriber implements EventSubscriberInterface
     public function indexProductProposal(GenericEvent $event)
     {
         $productProposal = $event->getSubject();
-        if (!$productProposal instanceof ProductDraftInterface) {
+        if (!$productProposal instanceof EntityWithValuesDraftInterface) {
             return;
         }
 
@@ -66,7 +66,7 @@ class IndexProductProposalsSubscriber implements EventSubscriberInterface
             return;
         }
 
-        if ($productProposal instanceof ProductDraftInterface) {
+        if ($productProposal instanceof EntityWithValuesDraftInterface) {
             $changesToReview = $productProposal->getChangesToReview();
             if (!empty($changesToReview['values'])) {
                 $productProposal->setChanges($changesToReview);
@@ -89,7 +89,7 @@ class IndexProductProposalsSubscriber implements EventSubscriberInterface
             return;
         }
 
-        if (!current($productProposals) instanceof ProductDraftInterface) {
+        if (!current($productProposals) instanceof EntityWithValuesDraftInterface) {
             return;
         }
 
@@ -122,8 +122,8 @@ class IndexProductProposalsSubscriber implements EventSubscriberInterface
     public function deleteProductProposal(GenericEvent $event)
     {
         $productProposal = $event->getSubject();
-        if (!$productProposal instanceof ProductDraftInterface ||
-            $productProposal->getStatus() === ProductDraftInterface::IN_PROGRESS) {
+        if (!$productProposal instanceof EntityWithValuesDraftInterface ||
+            $productProposal->getStatus() === EntityWithValuesDraftInterface::IN_PROGRESS) {
             return;
         }
 

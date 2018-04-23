@@ -21,7 +21,7 @@ use Pim\Bundle\UserBundle\Entity\UserInterface;
 use Pim\Bundle\UserBundle\Repository\UserRepositoryInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Provider\OwnerGroupsProvider;
 use PimEnterprise\Bundle\WorkflowBundle\Provider\UsersToNotifyProvider;
-use PimEnterprise\Component\Workflow\Model\ProductDraftInterface;
+use PimEnterprise\Component\Workflow\Model\EntityWithValuesDraftInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
@@ -105,8 +105,8 @@ class ImportProposalsSubscriber implements EventSubscriberInterface
     public function saveGroupIdsToNotify(GenericEvent $event)
     {
         $productDraft = $event->getSubject();
-        if ($productDraft instanceof ProductDraftInterface && $this->isProposalImport($productDraft->getAuthor())) {
-            $product = $productDraft->getProduct();
+        if ($productDraft instanceof EntityWithValuesDraftInterface && $this->isProposalImport($productDraft->getAuthor())) {
+            $product = $productDraft->getEntityWithValue();
             $ownerGroupIds = $this->ownerGroupsProvider->getOwnerGroupIds($product);
 
             $this->ownerGroupIds = array_unique(array_merge($this->ownerGroupIds, $ownerGroupIds));

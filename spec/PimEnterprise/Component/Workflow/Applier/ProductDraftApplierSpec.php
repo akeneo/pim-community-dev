@@ -8,7 +8,7 @@ use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use PimEnterprise\Component\Workflow\Event\ProductDraftEvents;
-use PimEnterprise\Component\Workflow\Model\ProductDraftInterface;
+use PimEnterprise\Component\Workflow\Model\EntityWithValuesDraftInterface;
 use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
@@ -31,7 +31,7 @@ class ProductDraftApplierSpec extends ObjectBehavior
         $propertySetter,
         $dispatcher,
         ProductInterface $product,
-        ProductDraftInterface $productDraft
+        EntityWithValuesDraftInterface $productDraft
     ) {
         $dispatcher
             ->dispatch(
@@ -48,6 +48,8 @@ class ProductDraftApplierSpec extends ObjectBehavior
             )
             ->shouldNotBeCalled();
 
+        $productDraft->getChanges()->willReturn([]);
+
         $this->applyAllChanges($product, $productDraft);
     }
 
@@ -56,7 +58,7 @@ class ProductDraftApplierSpec extends ObjectBehavior
         $dispatcher,
         $repository,
         ProductInterface $product,
-        ProductDraftInterface $productDraft,
+        EntityWithValuesDraftInterface $productDraft,
         AttributeInterface $fakeAttribute
     ) {
         $productDraft->getChangesToReview()->willReturn([
@@ -72,13 +74,13 @@ class ProductDraftApplierSpec extends ObjectBehavior
             ],
             'review_statuses' => [
                 'name' => [
-                    ['scope' => null, 'locale' => null, 'status' => ProductDraftInterface::CHANGE_TO_REVIEW],
+                    ['scope' => null, 'locale' => null, 'status' => EntityWithValuesDraftInterface::CHANGE_TO_REVIEW],
                 ],
                 'description' => [
-                    ['scope' => 'ecommerce', 'locale' => 'en_US', 'status' => ProductDraftInterface::CHANGE_TO_REVIEW],
-                    ['scope' => 'print',     'locale' => 'en_US', 'status' => ProductDraftInterface::CHANGE_TO_REVIEW],
-                    ['scope' => 'ecommerce', 'locale' => 'fr_FR', 'status' => ProductDraftInterface::CHANGE_TO_REVIEW],
-                    ['scope' => 'print',     'locale' => 'fr_FR', 'status' => ProductDraftInterface::CHANGE_DRAFT]
+                    ['scope' => 'ecommerce', 'locale' => 'en_US', 'status' => EntityWithValuesDraftInterface::CHANGE_TO_REVIEW],
+                    ['scope' => 'print',     'locale' => 'en_US', 'status' => EntityWithValuesDraftInterface::CHANGE_TO_REVIEW],
+                    ['scope' => 'ecommerce', 'locale' => 'fr_FR', 'status' => EntityWithValuesDraftInterface::CHANGE_TO_REVIEW],
+                    ['scope' => 'print',     'locale' => 'fr_FR', 'status' => EntityWithValuesDraftInterface::CHANGE_DRAFT]
                 ]
             ]
         ]);
@@ -122,7 +124,7 @@ class ProductDraftApplierSpec extends ObjectBehavior
         $dispatcher,
         $repository,
         ProductInterface $product,
-        ProductDraftInterface $productDraft,
+        EntityWithValuesDraftInterface $productDraft,
         AttributeInterface $fakeAttribute
     ) {
         $productDraft->getChanges()->willReturn([
@@ -139,13 +141,13 @@ class ProductDraftApplierSpec extends ObjectBehavior
             ],
             'review_statuses' => [
                 'name' => [
-                    ['scope' => null, 'locale' => null, 'status' => ProductDraftInterface::CHANGE_TO_REVIEW],
+                    ['scope' => null, 'locale' => null, 'status' => EntityWithValuesDraftInterface::CHANGE_TO_REVIEW],
                 ],
                 'description' => [
-                    ['scope' => 'ecommerce', 'locale' => 'en_US', 'status' => ProductDraftInterface::CHANGE_TO_REVIEW],
-                    ['scope' => 'print',     'locale' => 'en_US', 'status' => ProductDraftInterface::CHANGE_TO_REVIEW],
-                    ['scope' => 'ecommerce', 'locale' => 'fr_FR', 'status' => ProductDraftInterface::CHANGE_TO_REVIEW],
-                    ['scope' => 'print',     'locale' => 'fr_FR', 'status' => ProductDraftInterface::CHANGE_DRAFT]
+                    ['scope' => 'ecommerce', 'locale' => 'en_US', 'status' => EntityWithValuesDraftInterface::CHANGE_TO_REVIEW],
+                    ['scope' => 'print',     'locale' => 'en_US', 'status' => EntityWithValuesDraftInterface::CHANGE_TO_REVIEW],
+                    ['scope' => 'ecommerce', 'locale' => 'fr_FR', 'status' => EntityWithValuesDraftInterface::CHANGE_TO_REVIEW],
+                    ['scope' => 'print',     'locale' => 'fr_FR', 'status' => EntityWithValuesDraftInterface::CHANGE_DRAFT]
                 ]
             ]
         ]);

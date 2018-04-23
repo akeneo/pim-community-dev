@@ -12,7 +12,7 @@ use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use PimEnterprise\Bundle\UserBundle\Entity\UserInterface;
 use PimEnterprise\Component\Workflow\Event\ProductDraftEvents;
-use PimEnterprise\Component\Workflow\Model\ProductDraftInterface;
+use PimEnterprise\Component\Workflow\Model\EntityWithValuesDraftInterface;
 use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
@@ -60,7 +60,7 @@ class RemoveNotificationSubscriberSpec extends ObjectBehavior
         $notifier,
         $userRepository,
         $context,
-        ProductDraftInterface $draft,
+        EntityWithValuesDraftInterface $draft,
         GenericEvent $event
     ) {
         $event->getSubject()->willReturn($draft);
@@ -84,7 +84,7 @@ class RemoveNotificationSubscriberSpec extends ObjectBehavior
         $userRepository,
         $notifier,
         $context,
-        ProductDraftInterface $draft,
+        EntityWithValuesDraftInterface $draft,
         UserInterface $author,
         GenericEvent $event
     ) {
@@ -115,7 +115,7 @@ class RemoveNotificationSubscriberSpec extends ObjectBehavior
         GenericEvent $event,
         UserInterface $owner,
         UserInterface $author,
-        ProductDraftInterface $draft,
+        EntityWithValuesDraftInterface $draft,
         ProductInterface $product,
         NotificationInterface $notification
     ) {
@@ -142,7 +142,7 @@ class RemoveNotificationSubscriberSpec extends ObjectBehavior
         $context->getUser()->willReturn($owner);
 
         $draft->getAuthor()->willReturn('author');
-        $draft->getProduct()->willReturn($product);
+        $draft->getEntityWithValue()->willReturn($product);
 
         $product->getId()->willReturn(42);
         $product->getLabel(Argument::any())->willReturn('T-Shirt');
@@ -173,7 +173,7 @@ class RemoveNotificationSubscriberSpec extends ObjectBehavior
         GenericEvent $event,
         UserInterface $owner,
         UserInterface $author,
-        ProductDraftInterface $draft,
+        EntityWithValuesDraftInterface $draft,
         ProductInterface $product,
         NotificationInterface $notification
     ) {
@@ -199,7 +199,7 @@ class RemoveNotificationSubscriberSpec extends ObjectBehavior
         $context->getUser()->willReturn($owner);
 
         $draft->getAuthor()->willReturn('author');
-        $draft->getProduct()->willReturn($product);
+        $draft->getEntityWithValue()->willReturn($product);
 
         $product->getId()->willReturn(42);
         $product->getLabel(Argument::any())->willReturn('T-Shirt');

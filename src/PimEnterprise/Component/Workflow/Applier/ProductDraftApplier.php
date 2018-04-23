@@ -15,7 +15,7 @@ use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterfa
 use Akeneo\Component\StorageUtils\Updater\PropertySetterInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use PimEnterprise\Component\Workflow\Event\ProductDraftEvents;
-use PimEnterprise\Component\Workflow\Model\ProductDraftInterface;
+use PimEnterprise\Component\Workflow\Model\EntityWithValuesDraftInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
@@ -53,7 +53,7 @@ class ProductDraftApplier implements ProductDraftApplierInterface
     /**
      * {@inheritdoc}
      */
-    public function applyAllChanges(ProductInterface $product, ProductDraftInterface $productDraft)
+    public function applyAllChanges(ProductInterface $product, EntityWithValuesDraftInterface $productDraft)
     {
         $this->dispatcher->dispatch(ProductDraftEvents::PRE_APPLY, new GenericEvent($productDraft));
 
@@ -70,7 +70,7 @@ class ProductDraftApplier implements ProductDraftApplierInterface
     /**
      * {@inheritdoc}
      */
-    public function applyToReviewChanges(ProductInterface $product, ProductDraftInterface $productDraft)
+    public function applyToReviewChanges(ProductInterface $product, EntityWithValuesDraftInterface $productDraft)
     {
         $this->dispatcher->dispatch(ProductDraftEvents::PRE_APPLY, new GenericEvent($productDraft));
 

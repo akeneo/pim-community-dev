@@ -12,7 +12,7 @@
 namespace PimEnterprise\Bundle\WorkflowBundle\Command;
 
 use Pim\Component\Catalog\Model\ProductInterface;
-use PimEnterprise\Component\Workflow\Model\ProductDraftInterface;
+use PimEnterprise\Component\Workflow\Model\EntityWithValuesDraftInterface;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -72,16 +72,16 @@ class SendDraftForApprovalCommand extends ContainerAwareCommand
             return -1;
         }
 
-        $productDraft->setAllReviewStatuses(ProductDraftInterface::CHANGE_TO_REVIEW);
+        $productDraft->setAllReviewStatuses(EntityWithValuesDraftInterface::CHANGE_TO_REVIEW);
         $this->saveDraft($productDraft);
 
         return 0;
     }
 
     /**
-     * @param ProductDraftInterface $productDraft
+     * @param EntityWithValuesDraftInterface $productDraft
      */
-    protected function saveDraft(ProductDraftInterface $productDraft)
+    protected function saveDraft(EntityWithValuesDraftInterface $productDraft)
     {
         $saver = $this->getContainer()->get('pimee_workflow.saver.product_draft');
         $saver->save($productDraft);
@@ -91,7 +91,7 @@ class SendDraftForApprovalCommand extends ContainerAwareCommand
      * @param ProductInterface $product
      * @param string           $username
      *
-     * @return null|ProductDraftInterface
+     * @return null|EntityWithValuesDraftInterface
      */
     protected function getProductDraft(ProductInterface $product, $username)
     {

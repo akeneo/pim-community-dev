@@ -6,7 +6,7 @@ use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterfa
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\LocaleInterface;
-use PimEnterprise\Component\Workflow\Model\ProductDraftInterface;
+use PimEnterprise\Component\Workflow\Model\EntityWithValuesDraftInterface;
 use Prophecy\Argument;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
@@ -27,7 +27,7 @@ class ProductDraftGrantedAttributeProviderSpec extends ObjectBehavior
     function it_provides_attributes(
         $attributeRepository,
         $authorizationChecker,
-        ProductDraftInterface $draft,
+        EntityWithValuesDraftInterface $draft,
         AttributeInterface $attribute
     ) {
         $attributeRepository->findOneByIdentifier('attribute')->willReturn($attribute);
@@ -46,7 +46,7 @@ class ProductDraftGrantedAttributeProviderSpec extends ObjectBehavior
     function it_filters_invisible_attributes(
         $attributeRepository,
         $authorizationChecker,
-        ProductDraftInterface $draft,
+        EntityWithValuesDraftInterface $draft,
         AttributeInterface $attribute
     ) {
         $attributeRepository->findOneByIdentifier('attribute')->willReturn($attribute);
@@ -64,7 +64,7 @@ class ProductDraftGrantedAttributeProviderSpec extends ObjectBehavior
         $attributeRepository,
         $localeRepository,
         $authorizationChecker,
-        ProductDraftInterface $draft,
+        EntityWithValuesDraftInterface $draft,
         AttributeInterface $attribute,
         LocaleInterface $locale
     ) {

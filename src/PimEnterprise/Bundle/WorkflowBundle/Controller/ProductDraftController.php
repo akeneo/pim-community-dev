@@ -155,7 +155,7 @@ class ProductDraftController
             throw new NotFoundHttpException(sprintf('Product draft "%s" not found', $id));
         }
 
-        if (!$this->authorizationChecker->isGranted(SecurityAttributes::OWN, $productDraft->getProduct())) {
+        if (!$this->authorizationChecker->isGranted(SecurityAttributes::OWN, $productDraft->getEntityWithValue())) {
             throw new AccessDeniedHttpException();
         }
 

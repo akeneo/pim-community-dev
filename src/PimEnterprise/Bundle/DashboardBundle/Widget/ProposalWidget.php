@@ -111,12 +111,12 @@ class ProposalWidget implements WidgetInterface
 
         foreach ($proposals as $proposal) {
             $result[] = [
-                'productId'        => $proposal->getProduct()->getId(),
-                'productLabel'     => $proposal->getProduct()->getLabel(),
+                'productId'        => $proposal->getEntityWithValue()->getId(),
+                'productLabel'     => $proposal->getEntityWithValue()->getLabel(),
                 'authorFullName'   => $this->getAuthorFullName($proposal->getAuthor()),
                 'productReviewUrl' => $route . $this->getProposalGridParametersAsUrl(
                     $proposal->getAuthor(),
-                    $proposal->getProduct()->getIdentifier()
+                    $proposal->getEntityWithValue()->getIdentifier()
                 ),
                 'createdAt' => $this->presenter->present(
                     $proposal->getCreatedAt(),

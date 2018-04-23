@@ -16,7 +16,7 @@ use Pim\Component\Catalog\Model\EntityWithValuesInterface;
 /**
  * @author Marie Bochu <marie.bochu@akeneo.com>
  */
-interface EntityWithValueDraftInterface
+interface EntityWithValuesDraftInterface extends EntityWithValuesInterface
 {
     const IN_PROGRESS = 0;
     const READY = 1;
@@ -25,11 +25,16 @@ interface EntityWithValueDraftInterface
     const CHANGE_TO_REVIEW = 'to_review';
 
     /**
+     * @return int
+     */
+    public function getId(): ?int;
+
+    /**
      * @param string $author
      *
-     * @return EntityWithValueDraftInterface
+     * @return EntityWithValuesDraftInterface
      */
-    public function setAuthor(string $author): EntityWithValueDraftInterface;
+    public function setAuthor(string $author): EntityWithValuesDraftInterface;
 
     /**
      * @return string
@@ -39,9 +44,9 @@ interface EntityWithValueDraftInterface
     /**
      * @param \DateTime $createdAt
      *
-     * @return EntityWithValueDraftInterface
+     * @return EntityWithValuesDraftInterface
      */
-    public function setCreatedAt(\DateTime $createdAt): EntityWithValueDraftInterface;
+    public function setCreatedAt(\DateTime $createdAt): EntityWithValuesDraftInterface;
 
     /**
      * @return \DateTime
@@ -51,14 +56,14 @@ interface EntityWithValueDraftInterface
     /**
      * @param array $changes
      *
-     * @return EntityWithValueDraftInterface
+     * @return EntityWithValuesDraftInterface
      */
-    public function setChanges(array $changes): EntityWithValueDraftInterface;
+    public function setChanges(array $changes): EntityWithValuesDraftInterface;
 
     /**
      * @return array
      */
-    public function getChanges(): array;
+    public function getChanges(): ?array;
 
     /**
      * @return bool
@@ -67,87 +72,46 @@ interface EntityWithValueDraftInterface
 
     /**
      * Return only changes with the given $status
-     *
-     * @param string $status
-     *
-     * @return array
      */
     public function getChangesByStatus(string $status): array;
 
     /**
      * Return only changes to review
-     *
-     * @return array
      */
     public function getChangesToReview(): array;
 
     /**
      * Get the change associated to the the given attribute code if it exists.
-     *
-     * @param string $fieldCode
-     * @param string $localeCode
-     * @param string $channelCode
-     *
-     * @return array|null
      */
     public function getChange(string $fieldCode, ?string $localeCode, ?string $channelCode): ?array;
 
     /**
      * Remove the change associated to the attribute code if it exists
-     *
-     * @param string $fieldCode
-     * @param string $localeCode
-     * @param string $channelCode
      */
     public function removeChange(string $fieldCode, ?string $localeCode, ?string $channelCode);
 
     /**
      * Get the review status associated to the the given attribute code if it exists.
-     *
-     * @param string $fieldCode
-     * @param string $localeCode
-     * @param string $channelCode
-     *
-     * @return array|null
      */
-    public function getReviewStatusForChange(string $fieldCode, string $localeCode, string $channelCode): ?array;
+    public function getReviewStatusForChange(?string $fieldCode, ?string $localeCode, ?string $channelCode): ?string;
 
     /**
      * Set the review status associated to the the given attribute code if it exists.
-     *
-     * @param string $status
-     * @param string $fieldCode
-     * @param string $localeCode
-     * @param string $channelCode
-     *
-     * @return EntityWithValueDraftInterface
      */
-    public function setReviewStatusForChange(string $status, string $fieldCode, ?string $localeCode, ?string $channelCode): EntityWithValueDraftInterface;
+    public function setReviewStatusForChange(string $status, string $fieldCode, ?string $localeCode, ?string $channelCode): EntityWithValuesDraftInterface;
 
     /**
      * Set all review statuses to the specified one.
-     *
-     * @param string $status
-     *
-     * @return EntityWithValueDraftInterface
      */
-    public function setAllReviewStatuses(string $status): EntityWithValueDraftInterface;
+    public function setAllReviewStatuses(string $status): EntityWithValuesDraftInterface;
 
     /**
      * Remove the review status associated to the attribute code if it exists
-     *
-     * @param string $fieldCode
-     * @param string $localeCode
-     * @param string $channelCode
      */
     public function removeReviewStatusForChange(string $fieldCode, ?string $localeCode, ?string $channelCode): void;
 
     /**
      * Check if all review statuses matches the specified one
-     *
-     * @param string $status
-     *
-     * @return bool
      */
     public function areAllReviewStatusesTo(string $status): bool;
 
@@ -163,27 +127,23 @@ interface EntityWithValueDraftInterface
 
     /**
      * Get status of the draft. Either IN_PROGRESS or READY for review.
-     *
-     * @return string
      */
     public function getStatus(): int;
 
     /**
      * Whether or not product draft is in progress
-     *
-     * @return bool
      */
     public function isInProgress(): bool;
 
     /**
      * @param EntityWithValuesInterface $entityWithValues
      *
-     * @return EntityWithValueDraftInterface
+     * @return EntityWithValuesDraftInterface
      */
-    public function setEntityWithValue(EntityWithValuesInterface $entityWithValues): EntityWithValueDraftInterface;
+    public function setEntityWithValue(EntityWithValuesInterface $entityWithValues): EntityWithValuesDraftInterface;
 
     /**
-     * @return EntityWithValueDraftInterface
+     * @return EntityWithValuesDraftInterface
      */
     public function getEntityWithValue(): EntityWithValuesInterface;
 }

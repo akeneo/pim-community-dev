@@ -6,7 +6,7 @@ use Akeneo\Test\Integration\Configuration;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\tests\integration\Normalizer\NormalizedProductCleaner;
 use Pim\Bundle\ApiBundle\tests\integration\ApiTestCase;
-use PimEnterprise\Component\Workflow\Model\ProductDraftInterface;
+use PimEnterprise\Component\Workflow\Model\EntityWithValuesDraftInterface;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -91,7 +91,7 @@ JSON;
     {
         $productDraft = $this->createDefaultProductDraft('mary', 'product_with_draft');
 
-        $this->updateProduct($productDraft->getProduct(), [
+        $this->updateProduct($productDraft->getEntityWithValue(), [
             'categories' => ['categoryB'],
         ]);
 
@@ -130,7 +130,7 @@ JSON;
     {
         $productDraft = $this->createDefaultProductDraft('mary', 'product_with_draft');
 
-        $this->updateProduct($productDraft->getProduct(), [
+        $this->updateProduct($productDraft->getEntityWithValue(), [
             'categories' => ['categoryA1'],
         ]);
 
@@ -205,7 +205,7 @@ JSON;
      * @param ProductInterface $product
      * @param array            $changes
      *
-     * @return ProductDraftInterface
+     * @return EntityWithValuesDraftInterface
      */
     protected function createProductDraft($userName, ProductInterface $product, array $changes)
     {
@@ -222,7 +222,7 @@ JSON;
      * @param string $userName
      * @param string $productIdentifier
      *
-     * @return ProductDraftInterface
+     * @return EntityWithValuesDraftInterface
      */
     private function createDefaultProductDraft($userName, $productIdentifier)
     {

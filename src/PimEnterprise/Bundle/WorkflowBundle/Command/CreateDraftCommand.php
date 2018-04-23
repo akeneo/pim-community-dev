@@ -13,7 +13,7 @@ namespace PimEnterprise\Bundle\WorkflowBundle\Command;
 
 use Pim\Bundle\CatalogBundle\Command\UpdateProductCommand;
 use PimEnterprise\Component\Workflow\Builder\ProductDraftBuilderInterface;
-use PimEnterprise\Component\Workflow\Model\ProductDraftInterface;
+use PimEnterprise\Component\Workflow\Model\EntityWithValuesDraftInterface;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -75,10 +75,10 @@ class CreateDraftCommand extends UpdateProductCommand
                 InputArgument::OPTIONAL,
                 sprintf(
                     "The product draft status, for instance, '%s', '%s'",
-                    ProductDraftInterface::IN_PROGRESS,
-                    ProductDraftInterface::READY
+                    EntityWithValuesDraftInterface::IN_PROGRESS,
+                    EntityWithValuesDraftInterface::READY
                 ),
-                ProductDraftInterface::IN_PROGRESS
+                EntityWithValuesDraftInterface::IN_PROGRESS
             );
     }
 
@@ -114,9 +114,9 @@ class CreateDraftCommand extends UpdateProductCommand
         }
 
         if (null !== $productDraft = $this->getProductDraftBuilder()->build($product, $username)) {
-            $status = ProductDraftInterface::READY === $input->getArgument('draft_status') ?
-                ProductDraftInterface::CHANGE_TO_REVIEW :
-                ProductDraftInterface::CHANGE_DRAFT;
+            $status = EntityWithValuesDraftInterface::READY === $input->getArgument('draft_status') ?
+                EntityWithValuesDraftInterface::CHANGE_TO_REVIEW :
+                EntityWithValuesDraftInterface::CHANGE_DRAFT;
             $productDraft->setAllReviewStatuses($status);
 
             $this->saveDraft($productDraft);
@@ -131,9 +131,9 @@ class CreateDraftCommand extends UpdateProductCommand
     }
 
     /**
-     * @param ProductDraftInterface $productDraft
+     * @param EntityWithValuesDraftInterface $productDraft
      */
-    protected function saveDraft(ProductDraftInterface $productDraft)
+    protected function saveDraft(EntityWithValuesDraftInterface $productDraft)
     {
         $saver = $this->getContainer()->get('pimee_workflow.saver.product_draft');
         $saver->save($productDraft);

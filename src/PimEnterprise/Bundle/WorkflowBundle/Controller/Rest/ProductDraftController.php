@@ -24,7 +24,7 @@ use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
 use PimEnterprise\Bundle\UserBundle\Context\UserContext;
 use PimEnterprise\Bundle\WorkflowBundle\Manager\ProductDraftManager;
 use PimEnterprise\Component\Security\Attributes as SecurityAttributes;
-use PimEnterprise\Component\Workflow\Model\ProductDraftInterface;
+use PimEnterprise\Component\Workflow\Model\EntityWithValuesDraftInterface;
 use PimEnterprise\Component\Workflow\Repository\ProductDraftRepositoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -190,7 +190,7 @@ class ProductDraftController
             throw new \LogicException(sprintf('"%s" is not a valid review action', $action));
         }
 
-        if (!$this->authorizationChecker->isGranted(SecurityAttributes::OWN, $productDraft->getProduct())) {
+        if (!$this->authorizationChecker->isGranted(SecurityAttributes::OWN, $productDraft->getEntityWithValue())) {
             throw new AccessDeniedHttpException();
         }
 
@@ -220,7 +220,7 @@ class ProductDraftController
             'disable_grouping_separator' => true
         ];
 
-        $product = $productDraft->getProduct();
+        $product = $productDraft->getEntityWithValue();
 
         return new JsonResponse($this->normalizer->normalize(
             $product,
@@ -253,7 +253,7 @@ class ProductDraftController
             throw new \LogicException(sprintf('"%s" is not a valid review action', $action));
         }
 
-        if (!$this->authorizationChecker->isGranted(SecurityAttributes::OWN, $productDraft->getProduct())) {
+        if (!$this->authorizationChecker->isGranted(SecurityAttributes::OWN, $productDraft->getEntityWithValue())) {
             throw new AccessDeniedHttpException();
         }
 
@@ -268,10 +268,10 @@ class ProductDraftController
             'disable_grouping_separator' => true
         ];
 
-        $product = $productDraft->getProduct();
+        $product = $productDraft->getEntityWithValue();
 
         return new JsonResponse($this->normalizer->normalize(
-            $productDraft->getProduct(),
+            $productDraft->getEntityWithValue(),
             'internal_api',
             $normalizationContext
         ));
@@ -296,7 +296,7 @@ class ProductDraftController
 
         $productDraft = $this->findProductDraftOr404($id);
 
-        if (!$this->authorizationChecker->isGranted(SecurityAttributes::OWN, $productDraft->getProduct())) {
+        if (!$this->authorizationChecker->isGranted(SecurityAttributes::OWN, $productDraft->getEntityWithValue())) {
             throw new AccessDeniedHttpException();
         }
 
@@ -309,7 +309,7 @@ class ProductDraftController
             'disable_grouping_separator' => true
         ];
 
-        $product = $productDraft->getProduct();
+        $product = $productDraft->getEntityWithValue();
 
         return new JsonResponse($this->normalizer->normalize(
             $product,
@@ -382,7 +382,7 @@ class ProductDraftController
      *
      * @throws NotFoundHttpException
      *
-     * @return ProductDraftInterface
+     * @return EntityWithValuesDraftInterface
      */
     protected function findDraftForProductOr404(ProductInterface $product)
     {
@@ -421,7 +421,7 @@ class ProductDraftController
      *
      * @throws NotFoundHttpException
      *
-     * @return ProductDraftInterface
+     * @return EntityWithValuesDraftInterface
      */
     protected function findProductDraftOr404($draftId)
     {

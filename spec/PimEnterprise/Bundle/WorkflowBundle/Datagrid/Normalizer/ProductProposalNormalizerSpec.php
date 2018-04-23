@@ -6,7 +6,7 @@ use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ValueCollectionInterface;
-use PimEnterprise\Component\Workflow\Model\ProductDraftInterface;
+use PimEnterprise\Component\Workflow\Model\EntityWithValuesDraftInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
@@ -24,7 +24,7 @@ class ProductProposalNormalizerSpec extends ObjectBehavior
         $this->shouldImplement(NormalizerAwareInterface::class);
     }
 
-    function it_supports_product_proposal_normalization(ProductDraftInterface $productProposal)
+    function it_supports_product_proposal_normalization(EntityWithValuesDraftInterface $productProposal)
     {
         $this->supportsNormalization($productProposal, 'datagrid')->shouldReturn(true);
     }
@@ -32,7 +32,7 @@ class ProductProposalNormalizerSpec extends ObjectBehavior
     function it_normalizes(
         $normalizer,
         CollectionFilterInterface $filter,
-        ProductDraftInterface $productProposal,
+        EntityWithValuesDraftInterface $productProposal,
         ValueCollectionInterface $valueCollection,
         ProductInterface $product
     ) {
@@ -62,7 +62,7 @@ class ProductProposalNormalizerSpec extends ObjectBehavior
         $productProposal->getId()->willReturn(1);
         $productProposal->getAuthor()->willReturn('Mary');
         $productProposal->getStatus()->willReturn(1);
-        $productProposal->getProduct()->willReturn($product);
+        $productProposal->getEntityWithValue()->willReturn($product);
         $productProposal->getCreatedAt()->willReturn($created);
         $productProposal->getValues()->willReturn($valueCollection);
 

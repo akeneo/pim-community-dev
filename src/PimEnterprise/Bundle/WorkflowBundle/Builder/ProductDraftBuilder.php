@@ -19,7 +19,7 @@ use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ValueCollection;
 use PimEnterprise\Component\Workflow\Builder\ProductDraftBuilderInterface;
 use PimEnterprise\Component\Workflow\Factory\ProductDraftFactory;
-use PimEnterprise\Component\Workflow\Model\ProductDraftInterface;
+use PimEnterprise\Component\Workflow\Model\EntityWithValuesDraftInterface;
 use PimEnterprise\Component\Workflow\Repository\ProductDraftRepositoryInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
@@ -120,7 +120,7 @@ class ProductDraftBuilder implements ProductDraftBuilderInterface
             $productDraft = $this->getProductDraft($product, $username);
             $productDraft->setValues(new ValueCollection($values));
             $productDraft->setChanges($diff);
-            $productDraft->setAllReviewStatuses(ProductDraftInterface::CHANGE_DRAFT);
+            $productDraft->setAllReviewStatuses(EntityWithValuesDraftInterface::CHANGE_DRAFT);
 
             return $productDraft;
         }
@@ -132,7 +132,7 @@ class ProductDraftBuilder implements ProductDraftBuilderInterface
      * @param ProductInterface $product
      * @param string           $username
      *
-     * @return ProductDraftInterface
+     * @return EntityWithValuesDraftInterface
      */
     protected function getProductDraft(ProductInterface $product, $username)
     {

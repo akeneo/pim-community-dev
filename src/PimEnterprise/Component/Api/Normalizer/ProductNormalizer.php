@@ -13,7 +13,7 @@ namespace PimEnterprise\Component\Api\Normalizer;
 
 use Pim\Component\Catalog\Model\ProductInterface;
 use PimEnterprise\Component\Security\Attributes;
-use PimEnterprise\Component\Workflow\Model\ProductDraftInterface;
+use PimEnterprise\Component\Workflow\Model\EntityWithValuesDraftInterface;
 use PimEnterprise\Component\Workflow\Repository\ProductDraftRepositoryInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
@@ -107,7 +107,7 @@ class ProductNormalizer implements NormalizerInterface
                 return static::WORKFLOW_STATUS_WORKING_COPY;
             }
 
-            if (ProductDraftInterface::READY === $productDraft->getStatus()) {
+            if (EntityWithValuesDraftInterface::READY === $productDraft->getStatus()) {
                 return static::WORKFLOW_STATUS_WAITING_FOR_APPROVAL;
             }
 
