@@ -1,0 +1,7 @@
+services:
+    pim_volume_monitoring.volume.aggregation:
+        class: Pim\Component\CatalogVolumeMonitoring\Volume\Service\VolumeAggregation
+        arguments:
+            - '@pim_volume_monitoring.volume.repository.aggregated_volume'
+            - !tagged pim_volume_monitoring.persistence.count_query_to_aggregate
+            - !tagged pim_volume_monitoring.persistence.average_max_query_to_aggregate
