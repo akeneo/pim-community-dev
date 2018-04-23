@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace spec\PimEnterprise\Component\Catalog\Security\Merger;
+namespace spec\PimEnterprise\Component\Security\Merger;
 
 use Akeneo\Component\StorageUtils\Exception\InvalidObjectException;
 use Doctrine\Common\Collections\ArrayCollection;

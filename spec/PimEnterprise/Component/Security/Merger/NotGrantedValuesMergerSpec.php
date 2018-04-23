@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\PimEnterprise\Component\Catalog\Security\Merger;
+namespace spec\PimEnterprise\Component\Security\Merger;
 
 use Akeneo\Component\StorageUtils\Exception\InvalidObjectException;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
@@ -16,6 +16,7 @@ use Pim\Component\Catalog\Model\ValueCollectionInterface;
 use Pim\Component\Catalog\Model\ValueInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use PimEnterprise\Component\Security\Attributes;
+use PimEnterprise\Component\Security\Merger\NotGrantedValuesMerger;
 use PimEnterprise\Component\Security\NotGrantedDataMergerInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
@@ -38,7 +39,7 @@ class NotGrantedValuesMergerSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('PimEnterprise\Component\Catalog\Security\Merger\NotGrantedValuesMerger');
+        $this->shouldHaveType(NotGrantedValuesMerger::class);
     }
 
     function it_merges_values_in_product(

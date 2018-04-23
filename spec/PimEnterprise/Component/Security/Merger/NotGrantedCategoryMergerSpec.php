@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\PimEnterprise\Component\Catalog\Security\Merger;
+namespace spec\PimEnterprise\Component\Security\Merger;
 
 use Akeneo\Component\Classification\CategoryAwareInterface;
 use Akeneo\Component\Classification\Repository\ItemCategoryRepositoryInterface;
@@ -12,6 +12,7 @@ use Pim\Component\Catalog\Model\Product;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Updater\Setter\FieldSetterInterface;
 use PimEnterprise\Component\Security\Attributes;
+use PimEnterprise\Component\Security\Merger\NotGrantedCategoryMerger;
 use PimEnterprise\Component\Security\NotGrantedDataMergerInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
@@ -31,7 +32,7 @@ class NotGrantedCategoryMergerSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('PimEnterprise\Component\Catalog\Security\Merger\NotGrantedCategoryMerger');
+        $this->shouldHaveType(NotGrantedCategoryMerger::class);
     }
 
     function it_merges_not_granted_categories_and_removed_a_granted_category(

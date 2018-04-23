@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\PimEnterprise\Component\Catalog\Security\Merger;
+namespace spec\PimEnterprise\Component\Security\Merger;
 
 use Akeneo\Component\StorageUtils\Exception\InvalidObjectException;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -13,6 +13,7 @@ use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
 use Pim\Component\Catalog\Updater\Setter\FieldSetterInterface;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Query\ItemCategoryAccessQuery;
+use PimEnterprise\Component\Security\Merger\NotGrantedAssociatedProductMerger;
 use PimEnterprise\Component\Security\NotGrantedDataMergerInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
@@ -44,7 +45,7 @@ class NotGrantedAssociatedProductMergerSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('PimEnterprise\Component\Catalog\Security\Merger\NotGrantedAssociatedProductMerger');
+        $this->shouldHaveType(NotGrantedAssociatedProductMerger::class);
     }
 
     function it_merges_not_granted_associated_products_in_product(

@@ -12,8 +12,6 @@ use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
 use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Query\ItemCategoryAccessQuery;
-use PimEnterprise\Component\Catalog\Security\Filter\NotGrantedAssociatedProductFilter;
-use PimEnterprise\Component\Security\Attributes;
 use PimEnterprise\Component\Security\Filter\NotGrantedAssociatedProductFilter;
 use PimEnterprise\Component\Security\NotGrantedDataFilterInterface;
 use Prophecy\Argument;

@@ -1,9 +1,9 @@
 parameters:
-    pimee_catalog.security.merger.not_granted_category.class: PimEnterprise\Component\Catalog\Security\Merger\NotGrantedCategoryMerger
-    pimee_catalog.security.merger.not_granted_associated_product.class: PimEnterprise\Component\Catalog\Security\Merger\NotGrantedAssociatedProductMerger
-    pimee_catalog.security.merger.not_granted_values.class: PimEnterprise\Component\Catalog\Security\Merger\NotGrantedValuesMerger
-    pimee_catalog.security.merger.merge_data_on_product.class: PimEnterprise\Component\Catalog\Security\Merger\MergeDataOnProduct
-    pimee_catalog.security.merger.merge_data_on_product_model.class: PimEnterprise\Component\Catalog\Security\Merger\MergeDataOnProductModel
+    pimee_catalog.security.merger.not_granted_category.class: PimEnterprise\Component\Security\Merger\NotGrantedCategoryMerger
+    pimee_catalog.security.merger.not_granted_associated_product.class: PimEnterprise\Component\Security\Merger\NotGrantedAssociatedProductMerger
+    pimee_catalog.security.merger.not_granted_values.class: PimEnterprise\Component\Security\Merger\NotGrantedValuesMerger
+    pimee_catalog.security.merger.merge_data_on_product.class: PimEnterprise\Component\Security\Merger\MergeDataOnProduct
+    pimee_catalog.security.merger.merge_data_on_product_model.class: PimEnterprise\Component\Security\Merger\MergeDataOnProductModel
 
 services:
     pimee_catalog.security.merger.not_granted_category:
