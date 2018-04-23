@@ -3,8 +3,8 @@ services:
         class: 'Pim\Component\Catalog\Association\AssociationClassResolver'
         arguments:
             -
-                Pim\Component\Catalog\Model\Product: Pim\Component\Catalog\Model\ProductAssociation
-                Pim\Component\Catalog\Model\ProductModel: Pim\Component\Catalog\Model\ProductModelAssociation
+                Pim\Component\Catalog\Model\ProductInterface: Pim\Component\Catalog\Model\ProductAssociation
+                Pim\Component\Catalog\Model\ProductModelInterface: Pim\Component\Catalog\Model\ProductModelAssociation
 
     pim_catalog.association.missing_association_adder:
         class: 'Pim\Component\Catalog\Association\MissingAssociationAdder'

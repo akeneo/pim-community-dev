@@ -34,14 +34,16 @@ class AssociationClassResolver
      */
     public function resolveAssociationClass(AssociationAwareInterface $entity): string
     {
-        $entityClass = get_class($entity);
-
-        if (!isset($this->associationClassMap[$entityClass])) {
-            throw new InvalidArgumentException(sprintf(
-                'Cannot find any association class for entity of type "%s"', $entityClass
-            ));
+        foreach ($this->associationClassMap as $className => $associationClassName) {
+            if ($entity instanceof $className) {
+                return $associationClassName;
+            }
         }
 
-        return $this->associationClassMap[$entityClass];
+        $entityClass = get_class($entity);
+
+        throw new InvalidArgumentException(sprintf(
+            'Cannot find any association class for entity of type "%s"', $entityClass
+        ));
     }
 }
