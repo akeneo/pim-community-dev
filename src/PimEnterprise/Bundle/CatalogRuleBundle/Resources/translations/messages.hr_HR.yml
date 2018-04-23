@@ -84,6 +84,5 @@ pimee_catalog_rule:
       error: Došlo je do pogreške prilikom izračuna zahvaćenih proizvoda za pravila
 btn:
   Execute rules: Izvrši pravila
-rule: Postavke pravila
 mass_edit_rule: Postavke pravila
 job_execution.summary.rule_calculated: Broj pravila

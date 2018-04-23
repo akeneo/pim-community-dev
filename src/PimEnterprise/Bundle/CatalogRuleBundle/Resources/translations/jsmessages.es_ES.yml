@@ -27,20 +27,15 @@ pimee_catalog_rule:
       actions:
         execute:
           confirm_content: '¿Está seguro que desea ejecutar esta regla?'
-          confirm_ok: OK
       mass_edit_action:
         confirm_content: '¿Está seguro que desea calcular los productos afectados por la regla?'
-        confirm_ok: OK
       mass_action:
         execute:
-          confirm_ok: OK
           confirm_content: '¿Está seguro que desea ejecutar las reglas seleccionadas?'
           success: La acción en masa para ejecutar las reglas seleccionadas ha sido lanzada. Será notificado una vez finalizada
           error: Ha ocurrido un error durante la ejecución de las reglas.
           empty_selection: Ninguna regla seleccionada.
         delete:
-          confirm_ok: OK
-          confirm_title: Confirmar la eliminación
           confirm_content: '¿Está seguro que desea eliminar las reglas seleccionadas?'
           success: Ha eliminado las reglas.
           error: Ha ocurrido un error durante la eliminación de las reglas.
@@ -60,6 +55,8 @@ flash:
     executed: La ejecución de la regla ha sido lanzada. Será notificado una vez finalizada.
 pim_dashboard.widget.last_operations.job_type.mass_edit_rule: Configuración de reglas
 batch_jobs:
+  default_steps:
+    execute_rules: Ejecución de las reglas
   yml_rule_import:
     label: Importación de regla en YAML
     import.label: Importación de regla
@@ -69,22 +66,14 @@ batch_jobs:
   rule_impacted_product_count:
     label: Productos afectados por las reglas
     perform.label: Cuenta de productos afectados
-    execute_rules.label: Ejecución de las reglas
   csv_product_import_with_rules:
     label: Importar productos en CSV con reglas
-    execute_rules.label: Ejecución de las reglas
-    validation.label: Validación de archivo
     import.label: Importar productos
     import_associations.label: Importar asociaciones
-  csv_product_model_import_with_rules:
-    execute_rules.label: Ejecución de las reglas
-    validation.label: Validación de archivo
   xlsx_product_import_with_rules:
     label: Importar productos en XLSX con reglas
-    execute_rules.label: Ejecución de las reglas
-    validation.label: Validación de archivo
     import.label: Importar productos
     import_associations.label: Importar asociaciones
-  xlsx_product_model_import_with_rules:
-    execute_rules.label: Ejecución de las reglas
-    validation.label: Validación de archivo
+pim_notification:
+  types:
+    rule: Configuración de reglas

@@ -80,16 +80,8 @@ pimee_workflow:
         second: Choisir une opération
         third: Configurer
         fourth: Confirmer
-pimee_workflow_product_draft_notification_new_proposal: Nouvelle proposition
-pimee_workflow_import_notification_new_proposals: Nouvelles propositions de relectures venant d'un import
 btn.publish: Publier
 btn.unpublish: Dépublier
-pimee_workflow_product_draft_notification_partial_approve: Proposition partiellement approuvée
-pimee_workflow_product_draft_notification_partial_reject: Proposition partiellement rejetée
-pimee_workflow_product_draft_notification_partial_remove: Proposition partiellement supprimée
-pimee_workflow_product_draft_notification_approve: Proposition approuvée
-pimee_workflow_product_draft_notification_refuse: Proposition rejetée
-pimee_workflow_product_draft_notification_remove: Proposition supprimée
 flash:
   product:
     published: Le produit a été publié avec succès.

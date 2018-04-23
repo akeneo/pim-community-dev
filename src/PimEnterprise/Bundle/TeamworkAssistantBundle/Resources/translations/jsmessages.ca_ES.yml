@@ -1,22 +1,9 @@
 teamwork_assistant:
   common:
     required: Obligatori
-  grid:
-    view_selector:
-      loading: Carregant...
-      confirmation:
-        delete: Confirmar l'eliminació
-      popin_title: Crear
   project:
     label: Nom
     locale: Configuració Regional
-    channel: Canal
     description: Descripció
-  edit_project_modal:
-    confirm: Desar
-    cancel: Cancelar
-  create_project_modal:
-    confirm: Desar
-    cancel: Cancelar
   widget:
     description: Descripció

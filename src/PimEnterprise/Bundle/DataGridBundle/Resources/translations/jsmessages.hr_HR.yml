@@ -1,5 +1,5 @@
 pimee_datagrid:
-  cell:
+  cells:
     expand:
-      expandText: Proširi
-      collapseText: Sažmi
+      expand_text: Proširi
+      collapse_text: Sažmi

@@ -30,20 +30,15 @@ pimee_catalog_rule:
       actions:
         execute:
           confirm_content: Sind Sie sicher, dass Sie die Regel anwenden möchten?
-          confirm_ok: OK
       mass_edit_action:
         confirm_content: Sind Sie sicher, dass Sie die von dieser Regel betroffenen Produkte berechnen möchten?
-        confirm_ok: OK
       mass_action:
         execute:
-          confirm_ok: OK
           confirm_content: Sind Sie sicher, dass Sie die ausgewählten Regeln anwenden möchten?
           success: Die Ausführung der ausgewählten Regeln wurde gestartet. Sie werden benachrichtigt, sobald der Vorgang abgeschlossen ist.
           error: Beim Anwenden der Regeln ist ein Fehler aufgetreten.
           empty_selection: Keine Regeln ausgewählt.
         delete:
-          confirm_ok: OK
-          confirm_title: Löschen bestätigen
           confirm_content: Sind Sie sicher, dass Sie die ausgewählten Regeln löschen möchten?
           success: Die Regeln wurden erfolgreich gelöscht.
           error: Beim Löschen der Regeln ist ein Fehler aufgetreten.
@@ -63,6 +58,8 @@ flash:
     executed: Die Anwendung der Regel wurde gestartet. Sie werden benachrichtigt, sobald der Vorgang abgeschlossen ist.
 pim_dashboard.widget.last_operations.job_type.mass_edit_rule: Regeleinstellungen
 batch_jobs:
+  default_steps:
+    execute_rules: Regel-Ausführung
   yml_rule_import:
     label: Regel-Import in YAML
     import.label: Regel-Import
@@ -72,26 +69,20 @@ batch_jobs:
   rule_impacted_product_count:
     label: Von dieser Regel betroffene Produkte
     perform.label: Anzahl der betroffenen Produkte
-    execute_rules.label: Regel-Ausführung
   csv_product_import_with_rules:
     label: Produktimport in CSV mit Regeln
-    execute_rules.label: Regel-Ausführung
-    validation.label: Dateivalidierung
     import.label: Produkt import
     import_associations.label: Produktverbindungen-Import
   csv_product_model_import_with_rules:
-    execute_rules.label: Regel-Ausführung
-    validation.label: Dateivalidierung
     import_root_product_model.label: Produktmodell-Import Hauptebene
     import_sub_product_model.label: Produktmodell-Import Subebene
   xlsx_product_import_with_rules:
     label: Produktimport in XLSX mit Regeln
-    execute_rules.label: Regel-Ausführung
-    validation.label: Dateivalidierung
     import.label: Produkt import
     import_associations.label: Produktverbindungen-Import
   xlsx_product_model_import_with_rules:
-    execute_rules.label: Regel-Ausführung
-    validation.label: Dateivalidierung
     import_root_product_model.label: Produktmodell-Import Hauptebene
     import_sub_product_model.label: Produktmodell-Import Subebene
+pim_notification:
+  types:
+    rule: Regeleinstellungen

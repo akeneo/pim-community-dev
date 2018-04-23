@@ -1,5 +1,5 @@
 pimee_datagrid:
-  cell:
+  cells:
     expand:
-      expandText: Desplegar
-      collapseText: Replegar
+      expand_text: Desplegar
+      collapse_text: Replegar

@@ -8,17 +8,13 @@ teamwork_assistant:
       edit: Rediger projekt
       remove: Slet projekt
       create_from_view: Oprette et projekt fra denne visning
-      loading: Indlæser...
       start_new_project: Starte et nyt projekt
       confirmation:
         remove: Er du sikker på, du vil slette projektet?
-        delete: Bekræft sletning
-      popin_title: Opret
       projects: Projekter
   project:
     label: Navn
     locale: Landestandard
-    channel: Kanal
     label_maxlength: Denne værdi er for lang. Det skal have {{ max }} tegn eller mindre.
     description: Beskrivelse
     due_date: Forfaldsdato
@@ -27,13 +23,9 @@ teamwork_assistant:
   edit_project_modal:
     saved: Projektet er blevet gemt.
     title: Rediger projekt
-    confirm: Gem
-    cancel: Annuller
   create_project_modal:
     saved: Projektet er blevet gemt, får du besked, når beregningen er færdig.
     title: Opret projekt
-    confirm: Gem
-    cancel: Annuller
   widget:
     no_project: Du har ingen aktuelle projekt
     no_project_create: Opret et nyt projekt
@@ -60,3 +52,15 @@ pim_dashboard:
       job_type:
         refresh_project_completeness_calculation: Teamwork assistent
         project_calculation: Teamwork assistent
+batch_jobs:
+  project_calculation:
+    project_calculation.label: Projekt beregning
+    prepare_project_calculation.label: Forbered beregningen af projekt
+    clean_contributor_group.label: Kontrollere brugernes tilladelse på projektets landestandard
+  refresh_project_completeness_calculation:
+    label: Opdater projekt fuldstændighed
+    refresh_project_completeness_calculation.label: Opdater projekt fuldstændighed
+pim_notification:
+  types:
+    project_created: Et nyt projekt til dig
+    project_finished: Projekt færdig

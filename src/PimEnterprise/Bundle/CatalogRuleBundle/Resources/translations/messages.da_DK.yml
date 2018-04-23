@@ -3,7 +3,7 @@ pimee_catalog_rule:
     rule-grid:
       actions:
         delete: Slet
-        execute: Udfør
+        execute: Eksekvér
       title: Regler
       column:
         code: Kode
@@ -15,7 +15,7 @@ pimee_catalog_rule:
           no_yet_calculated: Endnu ikke beregnet
       mass_edit_action:
         impacted_product_count: Beregn de berørte produkter
-        execute: Udfør
+        execute: Eksekvér
         delete: Slet
   actions:
     type:
@@ -45,7 +45,7 @@ pimee_catalog_rule:
       "BETWEEN": mellem
       "NOT BETWEEN": ikke mellem
       "=": er lig med
-      "!=": ikke lig med
+      "!=": ikke lige
       ">": større end
       ">=": er lig med eller større end
       "<": mindre end
@@ -57,7 +57,7 @@ pimee_catalog_rule:
       view_permissions: Se reglerne
       delete_permissions: Slet reglerne
       impacted_product_count_permissions: Beregne de berørte produkter for reglerne, der
-      execute_permissions: Udfør regler
+      execute_permissions: Kør regler
   attribute:
     tab:
       rule.title: Regler
@@ -80,12 +80,11 @@ pimee_catalog_rule:
     rules_execution.title: Regler udførelse
   notification:
     rule:
-      executed: Udførelse af regler afsluttet
+      executed: Udførelse af de færdige regler
     mass_edit_rule:
       success: Beregningen af de berørte produkter for de færdige bestemmelser
       error: Der opstod en fejl under beregningen af de berørte produkter for reglerne, der
 btn:
-  Execute rules: Udfør regler
-rule: Regler indstillinger
+  Execute rules: Kør regler
 mass_edit_rule: Regler indstillinger
 job_execution.summary.rule_calculated: Antallet af regler

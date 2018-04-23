@@ -32,22 +32,18 @@ pimee_catalog_rule:
         execute:
           confirm_title: 実行を確認する
           confirm_content: このルールを実行しますか？
-          confirm_ok: OK
       mass_edit_action:
         confirm_title: 計算を確認する
         confirm_content: ルールの影響を受ける製品を計算しますか？
-        confirm_ok: OK
       mass_action:
         execute:
-          confirm_ok: OK
           confirm_title: 実行を確認する
           confirm_content: 選択中のルールを実行しようとしていますが、よろしいでしょうか？
           success: 選択されたルールの影響を受ける一括操作が開始されています。終了後に通知されます。
           error: ルールの実行中にエラーが発生しました。
           empty_selection: ルールが選択されていません。
         delete:
-          confirm_ok: OK
-          confirm_title: 削除を確認する
+          confirm_title: 実行を確認する
           confirm_content: 選択中のルールを削除しようとしていますが、よろしいでしょうか？
           success: あなたは正常にルールを削除しました
           error: ルールの削除中にエラーが発生しました。
@@ -67,6 +63,8 @@ flash:
     executed: ルールの実行が開始されました。完了後、あなたに通知されます。
 pim_dashboard.widget.last_operations.job_type.mass_edit_rule: ルールの設定
 batch_jobs:
+  default_steps:
+    execute_rules: ルールの実行
   yml_rule_import:
     label: ルールを、YAML形式でインポートする
     import.label: ルールのインポート
@@ -76,26 +74,20 @@ batch_jobs:
   rule_impacted_product_count:
     label: ルールの影響を受ける製品
     perform.label: 影響を受けた製品をカウント
-    execute_rules.label: ルールの実行
   csv_product_import_with_rules:
     label: ルールのある CSV 形式で製品をインポート
-    execute_rules.label: ルールの実行
-    validation.label: ファイルの検証
     import.label: 製品のインポート
     import_associations.label: 関連付けのインポート
   csv_product_model_import_with_rules:
-    execute_rules.label: ルールの実行
-    validation.label: ファイルの検証
     import_root_product_model.label: ルート製品モデルのインポート
     import_sub_product_model.label: サブ製品モデルのインポート
   xlsx_product_import_with_rules:
     label: ルールのあるXLSX 形式で製品のインポート
-    execute_rules.label: ルールの実行
-    validation.label: ファイルの検証
     import.label: 製品のインポート
     import_associations.label: 関連付けのインポート
   xlsx_product_model_import_with_rules:
-    execute_rules.label: ルールの実行
-    validation.label: ファイルの検証
     import_root_product_model.label: ルート製品モデルのインポート
     import_sub_product_model.label: サブ製品モデルのインポート
+pim_notification:
+  types:
+    rule: ルールの設定

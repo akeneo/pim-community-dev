@@ -1,22 +1,9 @@
 teamwork_assistant:
   common:
     required: Obavezno
-  grid:
-    view_selector:
-      loading: Učitavanje...
-      confirmation:
-        delete: Potvrdi brisanje
-      popin_title: Kreiraj
   project:
     label: Ime
     locale: Postavke jezika i regije
-    channel: Kanal
     description: Opis
-  edit_project_modal:
-    confirm: Spremi
-    cancel: Poništi
-  create_project_modal:
-    confirm: Spremi
-    cancel: Poništi
   widget:
     description: Opis

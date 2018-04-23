@@ -4,12 +4,11 @@ Approve: Aprobar
 Refuse: Rebutjar
 Approve selected: Aprovar la selecció
 Refuse selected: Rebutja els seleccionats
-oro:
-  datagrid:
-    noentities:
-      proposal: No hi ha cap proposta per revisar.
-    noresults:
-      proposal: No hi ha cap proposta per revisar. Intentar canviar els criteris de cerca.
+pim_datagrid:
+  no_entities:
+    proposal: No hi ha cap proposta per revisar.
+  no_results:
+    proposal: No hi ha cap proposta per revisar. Intentar canviar els criteris de cerca.
 pimee_workflow:
   entity:
     published_product:
@@ -57,3 +56,13 @@ batch_jobs:
   xlsx_product_proposal_import:
     label: Importació en XLSX del producte proposat
     import.label: Importació en XLSX del producte proposat
+pim_notification:
+  types:
+    pimee_workflow_product_draft_notification_new_proposal: Nova proposta
+    pimee_workflow_import_notification_new_proposals: Noves propostes d'importació
+    pimee_workflow_product_draft_notification_partial_approve: Proposta aprovada parcialment
+    pimee_workflow_product_draft_notification_partial_reject: Proposta rebutjada parcialment
+    pimee_workflow_product_draft_notification_partial_remove: Proposta suprimida parcialment
+    pimee_workflow_product_draft_notification_approve: Proposta aprovada
+    pimee_workflow_product_draft_notification_refuse: Proposta rebutjada
+    pimee_workflow_product_draft_notification_remove: Proposta esborrada

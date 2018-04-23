@@ -1,4 +1,3 @@
-View the product: Se produktet
 pimee_enrich.product_history.action.revert: Vend tilbage til version
 permission-changes:
   category:
@@ -16,10 +15,10 @@ permission-changes:
 pim_enrich:
   entity:
     attribute_label:
-      pim_assets_collection: Aktive samling
+      pim_assets_collection: Aktiver samling
     attribute:
       type:
-        pim_assets_collection: Aktive samling
+        pim_assets_collection: Aktiver samling
   form:
     attribute:
       tab:
@@ -43,13 +42,13 @@ pimee_enrich:
     channel:
       tab:
         asset-transformation:
-          title: Aktiver transformationer
+          title: Aktiv transformationer
     attribute_group:
       tab:
         permission:
           title: Rettigheder
           view.label: Rettighed til at se attributter
-          edit.label: Tillad at redigere attributter
+          edit.label: Rettighed til at redigere attributter
           removed: Gruppe {{ group }} vil ikke blive tilladt at {{ permission }} attributgruppe
           added: Gruppe {{ group }} vil være tilladt at {{ permission }} attributgruppe
   entity:
@@ -93,7 +92,7 @@ pimee_enrich:
               success: Forslaget er blevet fjernet.
       confirmation:
         revert:
-          title: Gendan bekræftelse
+          title: Gendanne bekræftelse
           content: Er du sikker på at du vil gendanne produktet til denne version?
         publish:
           title: Offentliggøre dette produkt
@@ -114,7 +113,7 @@ pimee_enrich:
         update_failed: Produkt kladde kunne ikke opdateres
         value_modified: Denne værdi er ændret af det nuværende udkast
       flash:
-        sent_for_approval: Produkt udkast sendt til godkendelse
+        sent_for_approval: Produkt udkast sendes til godkendelse
         draft_not_sendable: Du kan ikke sende dette udkast til godkendelse
       btn:
         send_for_approval: Send til godkendelse
@@ -123,10 +122,9 @@ pimee_enrich:
         accept_proposal: Acceptere forslag
         accept_selected_proposal: Acceptere valgte forslag(ene)
         reject_proposal: Afvis forslag
-        reject_selected_proposal: Afvis valgte forslag
+        reject_selected_proposal: Afvis valgte forslag(ene)
         remove_proposal: Fjern forslag
         send_for_approval: Send til godkendelse
-        cancel: Annuller
         confirm: Afsend
         title: Kommentere dine forslag (valgfri - maks. 255 tegn)
         characters: tegn.
@@ -137,7 +135,7 @@ pimee_enrich:
     not_found: Ingen transformation fundet
     title:
       transformation: Transformation
-      options: Valgmuligheder
+      options: Muligheder
     colorspace:
       title: Farverum
       options:
@@ -153,13 +151,13 @@ pimee_enrich:
         resolution: '%value%'
         resolution-unit: '%value%'
     scale:
-      title: Skala
+      title: Skaler
       options:
         width: '%value%px bredde'
         height: '%value%px højde'
         ratio: '%value%% forhold'
     thumbnail:
-      title: Thumbnail
+      title: Miniature
       options:
         width: '%value%px bredde'
         height: '%value%px højde'
@@ -195,16 +193,15 @@ pimee_enrich:
           label: Bekræft
       operation:
         add_tag:
-          label: Tilføj etiketter til aktiver
+          label: Tilføje tags til aktiver
           description: Tags vil blive tilføjet til aktiverne.
           label_count: "{1}Tilføj mærkater til <span class=\"AknFullPage-title--highlight\"> 1 aktiv</span> |] 1, Inf [Tilføj mærkater til <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} aktiver</span>"
-          field: Tags
+          field: Etiketter
           empty_selection: Vælg venligst mærkat
         add_to_category:
           label: Klassificere produkter i kategorier
           description: Produkterne vil blive placeret i følgende kategorier, den nuværende placering er bibeholdt.
           label_count: "{1}Klassificer <span class=\"AknFullPage-title--highlight\"> 1 aktiv</span> på kategorier |] 1, Inf [klassificere <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} aktiver</span> på kategorier"
-          field: Kategorier
 pim_menu:
   tab:
     asset: Aktiver
@@ -225,40 +222,33 @@ page_title:
   pimee_catalog_rule_rule_index: Regler
 batch_jobs:
   yml_asset_channel_configuration_import:
-    import:
-      label: Aktiv kanal konfiguration import
+    import.label: Aktiv kanal konfiguration import
   add_product_value_with_permission_and_rules:
     label: Tilføj produktværdi med tilladelse tjek & regler anvendelse
     perform.label: Tilføj produktværdi
-    execute_rules.label: Regler udførelse
   update_product_value_with_permission_and_rules:
     label: Tilføj produktværdi med tilladelse tjek & regler anvendelse
     perform.label: Opdatere produktets værdi
-    execute_rules.label: Regler udførelse
   remove_product_value_with_permission_and_rules:
     label: Tilføj produktværdi med tilladelse tjek & regler anvendelse
     perform.label: Fjern produktværdi
-    execute_rules.label: Regler udførelse
   edit_common_attributes_with_permission_and_rules:
     label: Rediger fælles attributter med tilladelse kontrol & regel anvendelse
     perform.label: Rediger attributter
-    execute_rules.label: Regler udførelse
     cleaner.label: Ryd midlertidige filer
   csv_published_product_quick_export:
     export.label: CSV offentliggjort produkter hurtig eksport
-    perform:
-      label: CSV offentliggjort produkter hurtig eksport
+    perform.label: CSV offentliggjort produkter hurtig eksport
   csv_published_product_grid_context_quick_export:
     export.label: CSV offentliggjort produkter gitter sammenhæng hurtig eksport
-    perform:
-      label: CSV offentliggjort produkter gitter sammenhæng hurtig eksport
+    perform.label: CSV offentliggjort produkter gitter sammenhæng hurtig eksport
   xlsx_published_product_quick_export:
     export.label: CSV offentliggjort produkter hurtig eksport
-    perform:
-      label: CSV offentliggjort produkter hurtig eksport
+    perform.label: CSV offentliggjort produkter hurtig eksport
   xlsx_published_product_grid_context_quick_export:
     export.label: CSV offentliggjort produkter gitter sammenhæng hurtig eksport
-    perform:
-      label: CSV offentliggjort produkter gitter sammenhæng hurtig eksport
+    perform.label: CSV offentliggjort produkter gitter sammenhæng hurtig eksport
   add_attribute_value:
     execute_rules.label: Regler udførelse
+  publish_product:
+    perform.label: Udgiv produkter

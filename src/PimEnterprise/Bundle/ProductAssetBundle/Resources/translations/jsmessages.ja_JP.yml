@@ -5,8 +5,6 @@ pimee_product_asset:
         manage: アセット管理
         manage_asset:
           title: アセット管理
-          cancel: キャンセル
-          confirm: 確認
         title: アセット管理
         description: 製品に添付するアセットを選択
     asset:
@@ -16,17 +14,12 @@ pimee_product_asset:
       edit: アセットのプロパティを編集
   enrich_variation:
     popin:
-      delete:
-        title: 削除を確認する
-        message: このアイテムを削除しますか？
       reset:
         title: バリエーションをリセット
-        message: 変更を本当にリセットしますか？
   mass_upload:
     menu: アセットをアップロードする
     btn:
       remove_all_files: ファイルを全て削除する
-      delete: 削除
       import: インポート
       upload: アセットをアップロードする
     success:
@@ -36,13 +29,13 @@ pimee_product_asset:
       deleted: アップロードされたファイルは正常に削除されました
     error:
       list: すでにアップロードされたファイルを読み込めません
-      upload: アップロード中にエラーが発生
+      upload: イメージのアップロード中にエラーが発生
       delete: エラー発生。サーバーからファイルを削除できません
       import: インポート中にエラーが発生しました
       filename: アセットの無効なファイル名
       code: アセットの無効なコードの形式
       locale: アセットは存在しますが、ローカライズができません。
-      invalid_locale: ロケールが無効です
+      invalid_locale: ロケールが無効です。
       exists: すでに同じ名前のファイルがインポートされています
       conflicts: ファイル名の競合
     grid:
@@ -52,9 +45,6 @@ pimee_product_asset:
       status: ステータス
       progress: 進行状況
       actions: アクション
-    action:
-      cancel: キャンセル
-      remove: 削除
     status:
       added: 追加
       queued: 処理待ち
@@ -82,14 +72,12 @@ batch_jobs:
     perform.label: 大量アップロード
   yml_asset_channel_configuration_import:
     label: Yaml においてアセットチャネル構成のインポート
-    validation.label: ファイルの検証
     import_asset.label: Yaml においてアセットチャネル構成のインポート
   yml_asset_channel_configuration_export:
     label: Yaml においてアセットチャネル構成のエクスポート
     export.label: Yaml においてアセットチャネル構成のエクスポート
   csv_asset_import:
     label: アセットを CSV 形式でインポート
-    validation.label: ファイルの検証
     import_tags.label: タグを CSV 形式でインポート
     import_asset.label: アセットを CSV 形式でインポート
   csv_asset_export:
@@ -100,31 +88,25 @@ batch_jobs:
     export.label: アセットバリエーションを CSV 形式でエクスポート
   csv_tag_import:
     label: タグを CSV 形式でインポート
-    validation.label: ファイルの検証
     import.label: タグを CSV 形式でインポート
   csv_asset_category_import:
     label: アセットカテゴリを CSV 形式でインポート
-    validation.label: ファイルの検証
     import_asset_category.label: アセットカテゴリを CSV 形式でインポート
   csv_asset_configuration_import:
     label: アセットチャネル構成を CSV 形式でインポート
-    validation.label: ファイルの検証
     import_asset.label: アセットチャネル構成を CSV 形式でインポート
   csv_asset_category_export:
     label: アセットカテゴリを CSV 形式でエクスポート
     export.label: アセットカテゴリを CSV 形式でエクスポート
   xlsx_tag_import:
     label: タグをXLSX形式でインポート
-    validation.label: ファイルの検証
     import.label: タグをXLSX形式でインポート
   xlsx_asset_import:
     label: アセットをXLSX形式でインポート
-    validation.label: ファイルの検証
     import_tags.label: タグをXLSX形式でインポート
     import_asset.label: アセットをXLSX形式でインポート
   xlsx_asset_category_import:
     label: アセットカテゴリをXLSX形式でインポート
-    validation.label: ファイルの検証
     import_asset_category.label: アセットカテゴリをXLSX形式でインポート
   xlsx_asset_export:
     label: アセットをXLSX形式でエクスポート

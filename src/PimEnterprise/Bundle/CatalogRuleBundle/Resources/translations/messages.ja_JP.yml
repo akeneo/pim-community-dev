@@ -80,10 +80,9 @@ pimee_catalog_rule:
     rule:
       executed: ルールの実行完了
     mass_edit_rule:
-      success: ルール完了の影響を受ける製品の計算
+      success: ルール完了の影響を受ける製品を計算する
       error: ルールの影響を受ける製品の計算中に発生したエラー
 btn:
   Execute rules: ルールを実行
-rule: ルールの設定
 mass_edit_rule: ルールの設定
 job_execution.summary.rule_calculated: ルールの数

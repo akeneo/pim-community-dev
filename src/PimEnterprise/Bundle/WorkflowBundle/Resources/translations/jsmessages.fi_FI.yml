@@ -41,3 +41,11 @@ batch_jobs:
     perform.label: Hylkää ehdotus
   xlsx_published_product_export:
     export.label: Julkaistun tuotteen vienti
+pim_notification:
+  types:
+    pimee_workflow_product_draft_notification_new_proposal: Uusi ehdotus
+    pimee_workflow_import_notification_new_proposals: Uusia ehdotuksia tuontiin
+    pimee_workflow_product_draft_notification_partial_approve: Osittain hyväksytty ehdotus
+    pimee_workflow_product_draft_notification_approve: Ehdotus hyväksytty
+    pimee_workflow_product_draft_notification_refuse: Ehdotus hylätty
+    pimee_workflow_product_draft_notification_remove: Ehdotus poistettu

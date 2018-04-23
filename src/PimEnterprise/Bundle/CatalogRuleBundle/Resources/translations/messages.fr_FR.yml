@@ -86,6 +86,5 @@ pimee_catalog_rule:
       error: Une erreur que s’est produite lors du calcul du nombre de produits affectés par les règles
 btn:
   Execute rules: Exécuter les règles
-rule: Paramètres des règles
 mass_edit_rule: Paramètres des règles
 job_execution.summary.rule_calculated: Nombre de règles

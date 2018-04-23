@@ -73,23 +73,15 @@ pimee_workflow:
       page_title: Productos publicados
       page_subtitle: Edición en masa (1 producto publicado)|Edición en masa (%count% productos publicados)
       title: Elegir operación
-      subtitle: Seleccione la operación que desea ejecutar en el producto publicado que ha seleccionado|Seleccione la operación que desea ejecutar en los %count% productos publicados que ha seleccionado
+      subtitle: Seleccione la operación que desea ejecutar en los productos publicados que ha seleccionado|Seleccione la operación que desea ejecutar en los %count% productos publicados que ha seleccionado
       confirm: Está a punto de actualizar un producto publicado con la siguiente información, por favor confirme.|Está a punto de actualizar %count% productos publicados con la siguiente información, por favor confirme.
       steps:
         first: Seleccione los productos publicados
         second: Elegir operación
         third: Configurar
         fourth: Confirmar
-pimee_workflow_product_draft_notification_new_proposal: Nueva propuesta
-pimee_workflow_import_notification_new_proposals: Nuevas propuestas provenientes de una importación
 btn.publish: Publicar
 btn.unpublish: Despublicar
-pimee_workflow_product_draft_notification_partial_approve: Propuesta aprobada parcialmente
-pimee_workflow_product_draft_notification_partial_reject: Propuesta parcialmente rechazada
-pimee_workflow_product_draft_notification_partial_remove: Propuesta parcialmente rechazada
-pimee_workflow_product_draft_notification_approve: Propuesta aprobada
-pimee_workflow_product_draft_notification_refuse: Propuesta rechazada
-pimee_workflow_product_draft_notification_remove: Propuesta eliminada
 flash:
   product:
     published: El producto ha sido publicado exitosamente.

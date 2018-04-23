@@ -167,5 +167,8 @@ job_execution.summary:
 assets_mass_upload.steps:
   asset_mass_upload.title: Assettien massatuonti
 import_asset.steps.channel_configuration_processor.title: Prosessikanavien konfiguraatiot
-mass_upload: Massatuo assetteja
+pim_datagrid:
+  cells:
+    type:
+      mass_upload: Massatuo assetteja
 pim_assets_collection: Resurssien keruu

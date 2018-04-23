@@ -25,14 +25,14 @@ locale.permissions:
   edit.help: Consenti di modificare le informazioni di prodotto in questa lingua (implica il permesso Visualizza)
   no_access_to_products: Non hai accesso ai dati di prodotto in nessuna delle lingue attivate. Si prega di contattare l'amministratore
 btn:
-  save working copy: Salva la copia di lavoro
+  save working copy: Salvare la copia di lavoro
   save draft: Salva bozza
   save working copy and next: Salva la copia di lavoro e vai avanti
   save draft and next: Salva la bozza e vai avanti
   save working copy and finish: Salva la copia di lavoro e termina
   save draft and finish: Salva la bozza e termina
   send for approval: Invia per approvazione
-  sent for approval: Inviata per approvazione
+  sent for approval: Inviato per approvazione
 pim_enrich:
   mass_edit_action:
     product:
@@ -58,8 +58,8 @@ pim_enrich:
         info: I %nbProducts% prodotti selezionati saranno pubblicati.
       not_editable: Non hai il permesso di modificare i prodotti "%identifiers%".
     unpublish:
-      label: Annulla la pubblicazione
-      description: 'Annulla la pubblicazione dei prodotti selezionati: gli attuali dati pubblicati verranno cancellati.'
+      label: Ritira
+      description: 'Annulla la pubblicazione dei prodotti selezionati: i dati pubblicati correnti verranno cancellati.'
       success_flash: I prodotti selezionati sono stati ritirati con successo.
       launched_flash: Il job di annullamento della pubblicazione del(i) prodotto(i) è attualmente in esecuzione.
       message:
@@ -76,7 +76,7 @@ pim_enrich:
         error: Non sei il proprietario del prodotto, non puoi modificarlo.
 flash.product.updated: La copia di lavoro del prodotto è stata aggiornata
 flash.product_draft.updated: La bozza è stata salvata con successo
-flash.locale.updated: La lingua e i permessi sono stati aggiornati
+flash.locale.updated: Le lingua e i permessi sono stati aggiornati
 pimee_enrich:
   attribute_group:
     tab:
@@ -92,7 +92,7 @@ pimee_enrich:
       permission.title: Autorizzazioni
   channel:
     tab:
-      asset_transformation.title: Trasformazioni asset
+      asset_transformation.title: Trasformazioni di asset
   acl.product_ownership.title: Proprietà
   attributes:
     empty: nessuno
@@ -107,12 +107,12 @@ pimee_enrich:
     colorspace:
       title: Spazio colori
       options:
-        colorspace: 'spazio colore %value%'
+        colorspace: '%value% spazio colore'
     resize:
       title: Ridimensiona
       options:
         width: '%value%px di larghezza'
-        height: '%value%px di altezza'
+        height: '% value%px di altezza'
     resolution:
       title: Risoluzione
       options:
@@ -122,24 +122,24 @@ pimee_enrich:
       title: Scala
       options:
         width: '%value%px di larghezza'
-        height: '%value%px di altezza'
+        height: '% value%px di altezza'
         ratio: '%value% % di rapporto'
     thumbnail:
       title: Thumbnail
       options:
         width: '%value%px di larghezza'
-        height: '%value%px di altezza'
+        height: '% value%px di altezza'
 add_product_value_with_permission_and_rules:
   steps.perform: Aggiungi un valore di prodotto
 update_product_value_with_permission_and_rules:
-  steps.perform: Aggiorna il valore di prodotto
+  steps.perform: Modifica un valore di prodotto
 edit_common_attributes_with_permission_and_rules:
   steps.perform: Modificare gli attributi
   steps.edit_common_attributes_processor.title: Modificare gli attributi
 edit_common_attributes_with_permission_and_rules.steps.edit_common_attributes_processor.title: Modificare gli attributi
-add_product_value_with_permission.steps.add_product_value_with_permission_processor.title: Aggiungi il valore del prodotto con il permesso
-update_product_value_with_permission.steps.update_product_value_with_permission_processor.title: Aggiorna il valore del prodotto con il permesso
-remove_product_value_with_permission.steps.update_product_value_with_permission_processor.title: Rimuovi il valore del prodotto con permesso
+add_product_value_with_permission.steps.add_product_value_with_permission_processor.title: Aggiungi il valore del prodotto con l'autorizzazione
+update_product_value_with_permission.steps.update_product_value_with_permission_processor.title: Aggiorna il valore del prodotto con l'autorizzazione
+remove_product_value_with_permission.steps.update_product_value_with_permission_processor.title: Rimuovi il valore del prodotto con l'autorizzazione
 job_execution.summary:
   mass_published: Prodotto pubblicato
   mass_unpublished: Prodotto ritirato

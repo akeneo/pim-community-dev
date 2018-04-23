@@ -1,4 +1,3 @@
-project_created: Uusi projekti sinulle
 teamwork_assistant:
   project:
     project_locale: Projektin lokaali "{{ locale }}" on oltava käytössä.
@@ -15,11 +14,3 @@ teamwork_assistant:
     project_completeness: Projektin edistyminen
     contributor_in_progress: Toiminto käynnissä
     contributor_done: Valmis
-batch_jobs:
-  project_calculation:
-    clean_contributor_group:
-      label: Tarkista käyttäjien käyttöoikeudet projektin lokaaliin
-  refresh_project_completeness_calculation:
-    label: Päivitä projektin täyttöaste
-    refresh_project_completeness_calculation:
-      label: Päivitä projektin täyttöaste

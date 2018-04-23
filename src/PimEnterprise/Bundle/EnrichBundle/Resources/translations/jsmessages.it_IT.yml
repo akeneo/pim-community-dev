@@ -1,4 +1,3 @@
-View the product: Mostra il prodotto
 pimee_enrich.product_history.action.revert: Ritorna a questa versione
 permission-changes:
   category:
@@ -8,10 +7,10 @@ permission-changes:
     grant: Il gruppo <strong>{{ group }}</strong> verrà <strong>{{ permission }}</strong> in questa impostazione locale
     revoke: Il gruppo <strong>{{ group }}</strong> <strong>non verrà {{ permission }}</strong> in questa impostazione locale
   attribute group:
-    grant: Il gruppo <strong>{{ group }}</strong> sarà <strong>{{ permission }}</strong> per questo gruppo di attributi
-    revoke: Il gruppo <strong>{{ group }}</strong> <strong>non avrà il permesso di {{ permission }}</strong> per questo gruppo di attributi
+    grant: Il gruppo <strong>{{ group }}</strong> verrà <strong>{{ permission }}</strong> di questo attributo di gruppo
+    revoke: Il gruppo <strong>{{ group }}</strong> <strong>non verrà {{ permission }}</strong> per questo attributo di gruppo
   job profile:
-    grant: Il gruppo <strong>{{ group }}</strong> avrà il permesso <strong>{{ permission }}</strong>
+    grant: Il gruppo <strong>{{ group }}</strong> verrà <strong>{{ permission }}</strong>
     revoke: Il gruppo <strong>{{ group }}</strong> <strong>non verrà {{ permission }}</strong>
 pim_enrich:
   entity:
@@ -43,7 +42,7 @@ pimee_enrich:
     channel:
       tab:
         asset-transformation:
-          title: Trasformazioni asset
+          title: Trasformazioni di asset
     attribute_group:
       tab:
         permission:
@@ -63,7 +62,7 @@ pimee_enrich:
       btn:
         publish: Pubblica
         publish_this_version: Pubblica questa versione
-        unpublish: Annulla la pubblicazione
+        unpublish: Ritira
         save_draft: Salva bozza
       flash:
         product_unpublished: Prodotto ritirato con successo
@@ -117,7 +116,7 @@ pimee_enrich:
         draft_not_sendable: Non è possibile inviare questa bozza per l'approvazione
       btn:
         send_for_approval: Invia per approvazione
-        sent_for_approval: Inviata per approvazione
+        sent_for_approval: Inviato per approvazione
       modal:
         accept_proposal: Accetta la proposta
         accept_selected_proposal: Accetta la(e) proposta(e) selezionata(e)
@@ -125,7 +124,6 @@ pimee_enrich:
         reject_selected_proposal: Rifiuta la(e) proposta(e) selezionata(e)
         remove_proposal: Rimuovi la proposta
         send_for_approval: Invia per approvazione
-        cancel: Annulla
         confirm: Invia
         title: Commenta la tua proposta (opzionale - 255 caratteri max.)
         characters: caratteri.
@@ -140,12 +138,12 @@ pimee_enrich:
     colorspace:
       title: Spazio colori
       options:
-        colorspace: 'spazio colore %value%'
+        colorspace: '%value% spazio colore'
     resize:
       title: Ridimensiona
       options:
         width: '%value%px di larghezza'
-        height: '%value%px di altezza'
+        height: '% value%px di altezza'
     resolution:
       title: Risoluzione
       options:
@@ -155,13 +153,13 @@ pimee_enrich:
       title: Scala
       options:
         width: '%value%px di larghezza'
-        height: '%value%px di altezza'
+        height: '% value%px di altezza'
         ratio: '%value% % di rapporto'
     thumbnail:
       title: Thumbnail
       options:
         width: '%value%px di larghezza'
-        height: '%value%px di altezza'
+        height: '% value%px di altezza'
   mass_edit:
     next: Successivo
     previous: Indietro
@@ -175,7 +173,7 @@ pimee_enrich:
           description: I prodotti saranno pubblicati
           warning: I {{ itemsCount }} prodotti selezionati saranno pubblicati.
         unpublish:
-          label: Annulla la pubblicazione
+          label: Ritira
           description: I prodotti saranno ritirati
           warning: I {{ itemsCount }} prodotti selezionati saranno ritirati.
     asset:
@@ -196,7 +194,6 @@ pimee_enrich:
           field: Tag
         add_to_category:
           label: Classificare gli asset in categorie
-          field: Categorie
 pim_menu:
   tab:
     asset: Asset
@@ -217,39 +214,32 @@ page_title:
   pimee_catalog_rule_rule_index: Regole
 batch_jobs:
   yml_asset_channel_configuration_import:
-    import:
-      label: Importazione della configurazione del canale asset
+    import.label: Importazione della configurazione del canale asset
   add_product_value_with_permission_and_rules:
-    label: Aggiungi il valore del prodotto con controllo dei permessi & con l'applicazione delle regole
+    label: Aggiungi il valore del prodotto con controllo dell'autorizzazione & delle regole applicazione
     perform.label: Aggiungi un valore di prodotto
-    execute_rules.label: Esecuzione regole
   update_product_value_with_permission_and_rules:
-    label: Aggiorna il valore del prodotto con controllo dei permessi & con l'applicazione delle regole
-    perform.label: Aggiorna il valore di prodotto
-    execute_rules.label: Esecuzione regole
+    label: Aggiorna il valore del prodotto con controllo dell'autorizzazione & delle regole applicazione
+    perform.label: Modifica un valore di prodotto
   remove_product_value_with_permission_and_rules:
-    label: Rimuovi il valore del prodotto con controllo del permesso & con l'applicazione delle regole
-    perform.label: Rimuovi il valore di prodotto
-    execute_rules.label: Esecuzione regole
+    label: Rimuovi il valore del prodotto con controllo dell'autorizzazione & delle regole applicazione
+    perform.label: Rimuovi un valore di prodotto
   edit_common_attributes_with_permission_and_rules:
     perform.label: Modificare gli attributi
-    execute_rules.label: Esecuzione regole
     cleaner.label: Elimina file temporanei
   csv_published_product_quick_export:
     export.label: Esportazione rapida in CSV dei prodotti pubblicati
-    perform:
-      label: Esportazione rapida in CSV dei prodotti pubblicati
+    perform.label: Esportazione rapida in CSV dei prodotti pubblicati
   csv_published_product_grid_context_quick_export:
     export.label: Esportazione rapida in Csv dei prodotti pubblicati presenti nel contesto griglia
-    perform:
-      label: Esportazione rapida in Csv dei prodotti pubblicati presenti nel contesto griglia
+    perform.label: Esportazione rapida in Csv dei prodotti pubblicati presenti nel contesto griglia
   xlsx_published_product_quick_export:
     export.label: Esportazione rapida in Xlsx dei prodotti pubblicati
-    perform:
-      label: Esportazione rapida in Xlsx dei prodotti pubblicati
+    perform.label: Esportazione rapida in Xlsx dei prodotti pubblicati
   xlsx_published_product_grid_context_quick_export:
     export.label: Esportazione rapida in Xlsx dei prodotti pubblicati presenti nel contesto griglia
-    perform:
-      label: Esportazione rapida in Xlsx dei prodotti pubblicati presenti nel contesto griglia
+    perform.label: Esportazione rapida in Xlsx dei prodotti pubblicati presenti nel contesto griglia
   add_attribute_value:
     execute_rules.label: Esecuzione regole
+  publish_product:
+    perform.label: Pubblica i prodotti

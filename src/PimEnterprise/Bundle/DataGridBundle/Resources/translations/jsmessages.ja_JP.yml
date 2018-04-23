@@ -1,5 +1,5 @@
 pimee_datagrid:
-  cell:
+  cells:
     expand:
-      expandText: 展開
-      collapseText: 閉じる
+      expand_text: 展開
+      collapse_text: 閉じる

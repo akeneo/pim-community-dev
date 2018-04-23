@@ -1,0 +1,11 @@
+pimee_enrich.acl.locale.edit_permissions: Hantera språkbehörigheter
+pimee_enrich.acl.category.edit_permissions: Hantera kategoribehörigheter
+pimee_enrich.acl.attribute_group.edit_permissions: Hantera attributet behörigheter
+pimee_importexport.acl.export_profile.edit_permissions: Hantera behörigheter för export profil
+pimee_importexport.acl.import_profile.edit_permissions: Hantera behörigheter för export profil
+pimee_enrich.groups.label: Ägargrupper
+pim_analytics:
+  info_type:
+    nb_custom_locale_accesses: Antal anpassade språk åtkomster
+    nb_custom_category_accesses: Antal anpassad kategori åtkomster
+    nb_custom_attribute_group_accesses: Antal anpassade attribut grupp åtkomster

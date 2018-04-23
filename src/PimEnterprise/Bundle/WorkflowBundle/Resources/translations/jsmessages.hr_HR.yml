@@ -1,6 +1,68 @@
+View the product: Pogledaj proizvod
+Unpublish the product: Poništi objavu proizvoda
+Approve: Dozvoli
+Refuse: Odbij
+Approve selected: Odobri odabrano
+Refuse selected: Odbaci odabrano
+pim_datagrid:
+  no_entities:
+    proposal: Ne postoji nijedan prijedlog za pregled.
+  no_results:
+    proposal: Ne postoji nijedan prijedlog za pregled. Pokušajte promijeniti kriterije pretraživanja.
+pimee_workflow:
+  entity:
+    published_product:
+      btn:
+        original_product: Uredi radnu kopiju
+    proposal:
+      modal.title: Ostavi komentar (opcionalno - 255 znakova max.)
+  proposal:
+    mass_action_group:
+      review:
+        label: Masovna radnja
+    partial_accept:
+      modal.title: Odobri djelomične informacije
+      modal.label: Ostavi komentar (opcionalno)
+      modal.error: Došlo je do pogreške, prijedlog nije djelomično odobren
+      modal.success: Prijedlog je djelomično uspješno provjeren
+    partial_approve:
+      modal:
+        title: Djelomično odobri promjene
+        label: Ostavi komentar (opcionalno)
+        error: Došlo je do pogreške, prijedlog nije djelomično odobren
+        success: Promjene su uspješno odobrene
+    partial_reject:
+      modal:
+        title: Djelomično odbaci promjene
+        label: Ostavi komentar (opcionalno)
+        error: Došlo je do pogreške, prijedlog nije djelomično odobren
+        success: Promjene su uspješno odbijene
 batch_jobs:
   csv_published_product_export:
     label: Izvoz objavljenih proizvoda u CSV
     export.label: Izvoz objavljenih proizvoda
+  csv_product_proposal_import:
+    label: Uvoz prijedloga proizvoda iz CSV
+    import.label: Uvoz prijedloga proizvoda
+  approve_product_draft:
+    label: Odobri prijedlog
+    perform.label: Odobri prijedlog
+  refuse_product_draft:
+    label: Odbij prijedlog
+    perform.label: Odbij prijedlog
   xlsx_published_product_export:
+    label: Izvoz objavljenih proizvoda u XLSX
     export.label: Izvoz objavljenih proizvoda
+  xlsx_product_proposal_import:
+    label: Uvoz prijedloga proizvoda iz XLSX
+    import.label: Uvoz prijedloga proizvoda iz XLSX
+pim_notification:
+  types:
+    pimee_workflow_product_draft_notification_new_proposal: Novi prijedlog
+    pimee_workflow_import_notification_new_proposals: Novi prijedlozi iz uvoza
+    pimee_workflow_product_draft_notification_partial_approve: Prijedlog je djelomično odobren
+    pimee_workflow_product_draft_notification_partial_reject: Prijedlog je djelomično odbijen
+    pimee_workflow_product_draft_notification_partial_remove: Prijedlog je djelomično izbrisan
+    pimee_workflow_product_draft_notification_approve: Prijedlog je odobren
+    pimee_workflow_product_draft_notification_refuse: Prijedlog je odbačen
+    pimee_workflow_product_draft_notification_remove: Prijedlog je izbrisan

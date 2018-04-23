@@ -177,7 +177,10 @@ job_execution.summary:
 assets_mass_upload.steps:
   asset_mass_upload.title: Téléchargement massif de ressources
 import_asset.steps.channel_configuration_processor.title: Traiter les configurations des canaux
-mass_upload: Téléchargement en masse de ressources
+pim_datagrid:
+  cells:
+    type:
+      mass_upload: Téléchargement en masse de ressources
 pim_analytics:
   info_type:
     nb_assets: Nombre de ressources produit

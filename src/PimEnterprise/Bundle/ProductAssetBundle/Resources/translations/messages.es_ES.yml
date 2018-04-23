@@ -176,7 +176,10 @@ job_execution.summary:
 assets_mass_upload.steps:
   asset_mass_upload.title: Carga masiva de recursos
 import_asset.steps.channel_configuration_processor.title: Configuración de procesos de canal
-mass_upload: Cargar recursos masivamente
+pim_datagrid:
+  cells:
+    type:
+      mass_upload: Cargar recursos masivamente
 pim_analytics:
   info_type:
     nb_assets: Número de recursos

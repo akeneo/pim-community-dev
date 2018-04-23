@@ -1,6 +1,6 @@
 pimee_catalog_rule:
   overview: "[] -Inf, 1] {{ count }} regel |] 1, Inf [{{ count }} regler"
-  execution_button: Udfør regler
+  execution_button: Kør regler
   selected: 'udvalgte regler'
   popin:
     execute_rules:
@@ -32,22 +32,18 @@ pimee_catalog_rule:
         execute:
           confirm_title: Bekræfte udførsel
           confirm_content: Er du sikker på, du vil køre reglen?
-          confirm_ok: OK
       mass_edit_action:
         confirm_title: Bekræfte beregning
         confirm_content: Er du sikker på, du vil beregne de berørte produkter for reglerne?
-        confirm_ok: OK
       mass_action:
         execute:
-          confirm_ok: OK
           confirm_title: Bekræfte udførsel
           confirm_content: Er du sikker på du vil udføre de valgte regler?
           success: Massehandling til at udføre de valgte regler er blevet igangsat. Du vil blive underrettet, når det er gennemført
           error: Der opstod en fejl under udførelse af reglerne.
           empty_selection: Ingen regler valgt.
         delete:
-          confirm_ok: OK
-          confirm_title: Bekræft sletning
+          confirm_title: Bekræfte udførsel
           confirm_content: Er du sikker på du vil udføre de valgte regler?
           success: Reglerne er slettet.
           error: Der opstod en fejl under udførelse af reglerne.
@@ -65,40 +61,35 @@ flash:
     removed: Rollen blev slettet
     impacted_product_count: Massehandling til at beregne de berørte produkter for reglerne, der er blevet igangsat. Du får besked, når det er gennemført.
     executed: Regeludførelsen er blevet igangsat. Du får besked, når det er gennemført.
-pim_dashboard.widget.last_operations.job_type.mass_edit_rule: Regel indstillinger
+pim_dashboard.widget.last_operations.job_type.mass_edit_rule: Regler indstillinger
 batch_jobs:
+  default_steps:
+    execute_rules: Regler udførelse
   yml_rule_import:
     label: Regel import i YAML
     import.label: Regel import
-    execute_rules.label: Regeludførelsen
   yml_rule_export:
     label: Regel eksport i YAML
     export.label: Regel eksport
   rule_impacted_product_count:
     label: De berørte produkter for reglerne, der
-    perform.label: Optæl berørte produkter
-    execute_rules.label: Regler udførelse
+    perform.label: Tælle påvirket produkter
   csv_product_import_with_rules:
     label: Produkt import i CSV med regler
-    execute_rules.label: Regler udførelse
-    validation.label: Filvalidering
     import.label: Produkt import
     import_associations.label: Association import
   csv_product_model_import_with_rules:
     label: Produkt model import i CSV med regler
-    execute_rules.label: Regler udførelse
-    validation.label: Filvalidering
     import_root_product_model.label: Rodprodukt import
     import_sub_product_model.label: Under produkt import
   xlsx_product_import_with_rules:
     label: Produkt import i CSV med regler
-    execute_rules.label: Regler udførelse
-    validation.label: Filvalidering
     import.label: Produkt import
     import_associations.label: Association import
   xlsx_product_model_import_with_rules:
     label: Produkt model import i XLSX med regler
-    execute_rules.label: Regler udførelse
-    validation.label: Filvalidering
     import_root_product_model.label: Rodprodukt import
     import_sub_product_model.label: Under produkt import
+pim_notification:
+  types:
+    rule: Regler indstillinger

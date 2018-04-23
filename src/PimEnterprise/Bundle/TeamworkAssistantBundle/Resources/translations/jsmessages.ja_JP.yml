@@ -8,17 +8,13 @@ teamwork_assistant:
       edit: プロジェクトの編集
       remove: プロジェクトの削除
       create_from_view: このビューからプロジェクトを作成します。
-      loading: 読み込んでいます.
       start_new_project: プロジェクトを新規作成
       confirmation:
         remove: この製品を削除してもよろしいですか？
-        delete: 削除を確認する
-      popin_title: 作成
       projects: プロジェクト
   project:
     label: 名前
     locale: ロケール
-    channel: チャンネル
     label_maxlength: 値が長すぎます。{{ max }} 以下の文字数で設定してください。
     description: 説明
     due_date: 期限
@@ -27,13 +23,9 @@ teamwork_assistant:
   edit_project_modal:
     saved: プロジェクトが保存されました
     title: プロジェクトの編集
-    confirm: 保存
-    cancel: キャンセル
   create_project_modal:
     saved: プロジェクトが保存されました、計算が終了するときに通知されます。
     title: プロジェクトを作成
-    confirm: 保存
-    cancel: キャンセル
   widget:
     no_project: プロジェクトは現在ありません
     no_project_create: プロジェクトを新規作成
@@ -60,3 +52,15 @@ pim_dashboard:
       job_type:
         refresh_project_completeness_calculation: チームワーク アシスタント
         project_calculation: チームワーク アシスタント
+batch_jobs:
+  project_calculation:
+    project_calculation.label: プロジェクトの計算
+    prepare_project_calculation.label: プロジェクト計算の準備をします。
+    clean_contributor_group.label: プロジェクトのロケールに対するユーザー権限を確認してください。
+  refresh_project_completeness_calculation:
+    label: プロジェクトの完全性を更新します。
+    refresh_project_completeness_calculation.label: プロジェクトの完全性を更新します。
+pim_notification:
+  types:
+    project_created: あなたのための新しいプロジェクト
+    project_finished: プロジェクト完成
