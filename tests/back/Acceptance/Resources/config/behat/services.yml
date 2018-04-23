@@ -57,6 +57,10 @@ services:
             - '@__symfony__.pim_catalog.updater.product'
             - '@__symfony__.validator'
 
+    test.structure.attribute.builder:
+        class: 'Akeneo\Test\Common\Structure\Attribute\Builder'
+        shared: false
+
     ### Behat context, don't forget to tag them (fob.context_service)
     test.locale.context:
         class: 'Akeneo\Test\Acceptance\Locale\LocaleContext'
@@ -97,5 +101,6 @@ services:
             - '@__symfony__.pim_catalog.repository.product'
             - '@__symfony__.validator'
             - '@__symfony__.pim_catalog.repository.product'
+            - '@test.structure.attribute.builder'
         tags:
             - { name: fob.context_service }
