@@ -124,20 +124,6 @@ class ProductModelUpdaterSpec extends ObjectBehavior
         ]]);
     }
 
-    function it_throws_an_exception_if_the_parent_is_updated(
-        ProductModelInterface $productModel,
-        ProductModelInterface $parent
-    ) {
-        $productModel->getId()->willReturn(42);
-        $productModel->isRootProductModel()->willReturn(false);
-        $productModel->getParent()->willReturn($parent);
-        $parent->getCode()->willReturn('parent');
-
-        $this->shouldThrow(ImmutablePropertyException::class)->during('update', [$productModel, [
-            'parent' => 'new_parent'
-        ]]);
-    }
-
     function it_throws_an_exception_if_the_family_variant_code_is_invalid(
         $familyVariantRepository,
         ProductModelInterface $productModel

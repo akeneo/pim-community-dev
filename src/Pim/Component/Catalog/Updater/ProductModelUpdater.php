@@ -204,11 +204,7 @@ class ProductModelUpdater implements ObjectUpdaterInterface
             return;
         }
 
-        // TODO: To remove in PIM-6350.
-        if (null !== $productModel->getId() && (
-            $productModel->isRootProductModel() ||
-            (null !== $productModel->getParent() && $parentCode !== $productModel->getParent()->getCode())
-        )) {
+        if (null !== $productModel->getId() && $productModel->isRootProductModel()) {
             throw ImmutablePropertyException::immutableProperty(
                 'parent',
                 $parentCode,
