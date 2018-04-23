@@ -6,43 +6,27 @@ use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\LocaleInterface;
-use PimEnterprise\Component\Workflow\Model\ProductDraftInterface;
+use PimEnterprise\Component\Workflow\Model\ProductEntityWithValueDraftInterface;
 
 class ProductDraftSpec extends ObjectBehavior
 {
-    function it_removes_category_id()
-    {
-        $this->setCategoryIds([4, 8, 15, 16, 23, 42]);
-        $this->removeCategoryId(15);
-
-        $this->getCategoryIds()->shouldReturn([4, 8, 16, 23, 42]);
-    }
-
-    function it_ignores_unknown_value_while_remove_category_id()
-    {
-        $this->setCategoryIds([4, 8, 15, 16, 23, 42]);
-        $this->removeCategoryId(17);
-
-        $this->getCategoryIds()->shouldReturn([4, 8, 15, 16, 23, 42]);
-    }
-
     function it_gives_changes_for_attribute() {
         $this->setChanges([
             'values' => [
                 'name' => [
-                    ['scope' => 'ecommerce', 'locale' => 'en_US', 'data' => 'an english name'],
-                    ['scope' => 'ecommerce', 'locale' => 'fr_FR', 'data' => 'a french name']
+                    ['scope' => 'ecommerce', 'locale' => 'en_US', 'data' => ['an english name']],
+                    ['scope' => 'ecommerce', 'locale' => 'fr_FR', 'data' => ['a french name']]
                 ]
             ],
             'review_statuses' => [
                 'name' => [
-                    ['scope' => 'ecommerce', 'locale' => 'en_US', 'status' => ProductDraftInterface::CHANGE_TO_REVIEW],
-                    ['scope' => 'ecommerce', 'locale' => 'fr_FR', 'status' => ProductDraftInterface::CHANGE_TO_REVIEW]
+                    ['scope' => 'ecommerce', 'locale' => 'en_US', 'status' => ProductEntityWithValueDraftInterface::CHANGE_TO_REVIEW],
+                    ['scope' => 'ecommerce', 'locale' => 'fr_FR', 'status' => ProductEntityWithValueDraftInterface::CHANGE_TO_REVIEW]
                 ]
             ]
         ]);
 
-        $this->getChange('name', 'en_US', 'ecommerce')->shouldReturn('an english name');
+        $this->getChange('name', 'en_US', 'ecommerce')->shouldReturn(['an english name']);
     }
 
     function it_does_not_give_changes_for_unknown_attribute() {
@@ -59,8 +43,8 @@ class ProductDraftSpec extends ObjectBehavior
             ],
             'review_statuses' => [
                 'name' => [
-                    ['scope' => 'ecommerce', 'locale' => 'en_US', 'status' => ProductDraftInterface::CHANGE_TO_REVIEW],
-                    ['scope' => 'ecommerce', 'locale' => 'fr_FR', 'status' => ProductDraftInterface::CHANGE_TO_REVIEW]
+                    ['scope' => 'ecommerce', 'locale' => 'en_US', 'status' => ProductEntityWithValueDraftInterface::CHANGE_TO_REVIEW],
+                    ['scope' => 'ecommerce', 'locale' => 'fr_FR', 'status' => ProductEntityWithValueDraftInterface::CHANGE_TO_REVIEW]
                 ]
             ]
         ]);
@@ -75,7 +59,7 @@ class ProductDraftSpec extends ObjectBehavior
             ],
             'review_statuses' => [
                 'name' => [
-                    ['scope' => 'ecommerce', 'locale' => 'fr_FR', 'status' => ProductDraftInterface::CHANGE_TO_REVIEW]
+                    ['scope' => 'ecommerce', 'locale' => 'fr_FR', 'status' => ProductEntityWithValueDraftInterface::CHANGE_TO_REVIEW]
                 ]
             ]
         ]);
@@ -90,7 +74,7 @@ class ProductDraftSpec extends ObjectBehavior
             ],
             'review_statuses' => [
                 'name' => [
-                    ['scope' => 'ecommerce', 'locale' => 'en_US', 'status' => ProductDraftInterface::CHANGE_TO_REVIEW]
+                    ['scope' => 'ecommerce', 'locale' => 'en_US', 'status' => ProductEntityWithValueDraftInterface::CHANGE_TO_REVIEW]
                 ]
             ]
         ]);
@@ -121,7 +105,7 @@ class ProductDraftSpec extends ObjectBehavior
             ],
             'review_statuses' => [
                 'name' => [
-                    ['scope' => 'ecommerce', 'locale' => 'en_US', 'status' => ProductDraftInterface::CHANGE_TO_REVIEW]
+                    ['scope' => 'ecommerce', 'locale' => 'en_US', 'status' => ProductEntityWithValueDraftInterface::CHANGE_TO_REVIEW]
                 ]
             ]
         ]);
@@ -140,13 +124,13 @@ class ProductDraftSpec extends ObjectBehavior
             ],
             'review_statuses' => [
                 'name' => [
-                    ['scope' => 'ecommerce', 'locale' => 'en_US', 'status' => ProductDraftInterface::CHANGE_TO_REVIEW],
-                    ['scope' => 'ecommerce', 'locale' => 'fr_FR', 'status' => ProductDraftInterface::CHANGE_DRAFT]
+                    ['scope' => 'ecommerce', 'locale' => 'en_US', 'status' => [ProductEntityWithValueDraftInterface::CHANGE_TO_REVIEW]],
+                    ['scope' => 'ecommerce', 'locale' => 'fr_FR', 'status' => [ProductEntityWithValueDraftInterface::CHANGE_DRAFT]]
                 ]
             ]
         ]);
 
-        $this->getChangesToReview()->shouldReturn([
+        $result = [
             'values' => [
                 'name' => [
                     ['scope' => 'ecommerce', 'locale' => 'en_US', 'data' => 'an english name']
@@ -154,10 +138,14 @@ class ProductDraftSpec extends ObjectBehavior
             ],
             'review_statuses' => [
                 'name' => [
-                    ['scope' => 'ecommerce', 'locale' => 'en_US', 'status' => ProductDraftInterface::CHANGE_TO_REVIEW],
-                    ['scope' => 'ecommerce', 'locale' => 'fr_FR', 'status' => ProductDraftInterface::CHANGE_DRAFT]
+                    ['scope' => 'ecommerce', 'locale' => 'en_US', 'status' => [ProductEntityWithValueDraftInterface::CHANGE_TO_REVIEW]],
+                    ['scope' => 'ecommerce', 'locale' => 'fr_FR', 'status' => [ProductEntityWithValueDraftInterface::CHANGE_DRAFT]]
                 ]
             ]
-        ]);
+        ];
+
+        var_dump($result);
+
+        $this->getChangesToReview()->shouldReturn($result);
     }
 }

@@ -11,12 +11,12 @@
 
 namespace PimEnterprise\Component\Workflow\Model;
 
+use Pim\Component\Catalog\Model\EntityWithValuesInterface;
+
 /**
- * Draft interface
- *
  * @author Marie Bochu <marie.bochu@akeneo.com>
  */
-interface DraftInterface
+interface EntityWithValueDraftInterface
 {
     const IN_PROGRESS = 0;
     const READY = 1;
@@ -27,9 +27,9 @@ interface DraftInterface
     /**
      * @param string $author
      *
-     * @return DraftInterface
+     * @return EntityWithValueDraftInterface
      */
-    public function setAuthor(string $author): DraftInterface;
+    public function setAuthor(string $author): EntityWithValueDraftInterface;
 
     /**
      * @return string
@@ -39,9 +39,9 @@ interface DraftInterface
     /**
      * @param \DateTime $createdAt
      *
-     * @return DraftInterface
+     * @return EntityWithValueDraftInterface
      */
-    public function setCreatedAt(\DateTime $createdAt): DraftInterface;
+    public function setCreatedAt(\DateTime $createdAt): EntityWithValueDraftInterface;
 
     /**
      * @return \DateTime
@@ -51,9 +51,9 @@ interface DraftInterface
     /**
      * @param array $changes
      *
-     * @return DraftInterface
+     * @return EntityWithValueDraftInterface
      */
-    public function setChanges(array $changes): DraftInterface;
+    public function setChanges(array $changes): EntityWithValueDraftInterface;
 
     /**
      * @return array
@@ -90,7 +90,7 @@ interface DraftInterface
      *
      * @return array|null
      */
-    public function getChange(string $fieldCode, string $localeCode, string $channelCode): ?array;
+    public function getChange(string $fieldCode, ?string $localeCode, ?string $channelCode): ?array;
 
     /**
      * Remove the change associated to the attribute code if it exists
@@ -99,7 +99,7 @@ interface DraftInterface
      * @param string $localeCode
      * @param string $channelCode
      */
-    public function removeChange(string $fieldCode, string $localeCode, string $channelCode);
+    public function removeChange(string $fieldCode, ?string $localeCode, ?string $channelCode);
 
     /**
      * Get the review status associated to the the given attribute code if it exists.
@@ -120,18 +120,18 @@ interface DraftInterface
      * @param string $localeCode
      * @param string $channelCode
      *
-     * @return DraftInterface
+     * @return EntityWithValueDraftInterface
      */
-    public function setReviewStatusForChange(string $status, string $fieldCode, string $localeCode, string $channelCode): DraftInterface;
+    public function setReviewStatusForChange(string $status, string $fieldCode, ?string $localeCode, ?string $channelCode): EntityWithValueDraftInterface;
 
     /**
      * Set all review statuses to the specified one.
      *
      * @param string $status
      *
-     * @return DraftInterface
+     * @return EntityWithValueDraftInterface
      */
-    public function setAllReviewStatuses(string $status): DraftInterface;
+    public function setAllReviewStatuses(string $status): EntityWithValueDraftInterface;
 
     /**
      * Remove the review status associated to the attribute code if it exists
@@ -140,7 +140,7 @@ interface DraftInterface
      * @param string $localeCode
      * @param string $channelCode
      */
-    public function removeReviewStatusForChange(string $fieldCode, string $localeCode, string $channelCode);
+    public function removeReviewStatusForChange(string $fieldCode, ?string $localeCode, ?string $channelCode): void;
 
     /**
      * Check if all review statuses matches the specified one
@@ -154,19 +154,19 @@ interface DraftInterface
     /**
      * Mark the draft as in progress
      */
-    public function markAsInProgress();
+    public function markAsInProgress(): void;
 
     /**
      * Mark the draft as ready
      */
-    public function markAsReady();
+    public function markAsReady(): void;
 
     /**
      * Get status of the draft. Either IN_PROGRESS or READY for review.
      *
      * @return string
      */
-    public function getStatus(): string;
+    public function getStatus(): int;
 
     /**
      * Whether or not product draft is in progress
@@ -174,4 +174,16 @@ interface DraftInterface
      * @return bool
      */
     public function isInProgress(): bool;
+
+    /**
+     * @param EntityWithValuesInterface $entityWithValues
+     *
+     * @return EntityWithValueDraftInterface
+     */
+    public function setEntityWithValue(EntityWithValuesInterface $entityWithValues): EntityWithValueDraftInterface;
+
+    /**
+     * @return EntityWithValueDraftInterface
+     */
+    public function getEntityWithValue(): EntityWithValuesInterface;
 }
