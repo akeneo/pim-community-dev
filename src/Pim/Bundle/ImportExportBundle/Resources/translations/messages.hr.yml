@@ -4,7 +4,7 @@ pim_import_export:
   job: Posao
   connector: Priključak
   status:
-    - Spreman
+    0: Spreman
   download_archive:
     archive: preuzimanje generirane arhive|preuzimanje generiranih arhiva
     output: preuzimanje generirane datoteke|preuzimanje generiranih datoteka
